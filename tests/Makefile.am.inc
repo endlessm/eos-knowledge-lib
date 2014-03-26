@@ -1,0 +1,28 @@
+## Copyright 2014 Endless Mobile, Inc.
+## Included in toplevel Makefile.am
+
+javascript_tests = \
+	tests/eosknowledge/testHello.js \
+	$(NULL)
+EXTRA_DIST += $(javascript_tests)
+
+# Run tests when running 'make check'
+TESTS = $(javascript_tests)
+LOG_COMPILER = gtester
+AM_LOG_FLAGS = -k --verbose
+
+## Define required variables and include Jasmine makefile fragment
+TEST_EXTENSIONS =
+AM_JS_LOG_FLAGS =
+JASMINE_SUBMODULE_PATH = $(top_srcdir)/tests/jasmine
+include tests/jasmine/Makefile-jasmine.am.inc
+
+# Use locally built versions of EosKnowledge-0.gir, JS modules, and libraries.
+# We clobber GJS_PATH and include $(top_builddir) so that override modules are
+# looked for in $(top_builddir)/overrides.
+# (May need to change to AM_TESTS_ENVIRONMENT in a later version of Automake)
+TESTS_ENVIRONMENT = \
+	export GJS_PATH="$(top_builddir):$(top_srcdir)/overrides:$(top_builddir)/overrides"; \
+	export GI_TYPELIB_PATH="$(top_builddir)$${GI_TYPELIB_PATH:+:$$GI_TYPELIB_PATH}"; \
+	export LD_LIBRARY_PATH="$(top_builddir)/.libs$${LD_LIBRARY_PATH:+:$$LD_LIBRARY_PATH}"; \
+	$(NULL)

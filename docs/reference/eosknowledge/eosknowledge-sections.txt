@@ -1,0 +1,9 @@
+<SECTION>
+<FILE>hello</FILE>
+ekn_hello_c
+ekn_hello_c_provider_get_greeting
+<SUBSECTION Private>
+EKN_ALL_API_VERSIONS
+EKN_DEFINE_ENUM_TYPE
+EKN_ENUM_VALUE
+</SECTION>

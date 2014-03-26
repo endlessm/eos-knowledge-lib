@@ -1,0 +1,2 @@
+// Private module for configure-time constants
+const GETTEXT_PACKAGE = '@GETTEXT_PACKAGE@';

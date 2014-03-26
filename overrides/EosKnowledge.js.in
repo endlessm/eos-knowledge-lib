@@ -1,0 +1,17 @@
+const Lang = imports.lang;
+
+let EosKnowledge;
+
+let _oldSearchPath = imports.searchPath;
+imports.searchPath.unshift('@pkgdatadir@/overrides');
+
+const Hello = imports.hello;
+
+imports.searchPath = _oldSearchPath;
+
+function _init() {
+    // "this" is imports.gi.EosKnowledge
+    EosKnowledge = this;
+
+    Lang.copyPublicProperties(Hello, EosKnowledge);
+}
