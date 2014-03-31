@@ -29,6 +29,7 @@ eosknowledge_public_installed_headers = eosknowledge/eosknowledge.h
 eosknowledge_private_installed_headers = \
 	eosknowledge/ekn-enums.h \
 	eosknowledge/ekn-hello.h \
+	eosknowledge/ekn-history-item-model.h \
 	eosknowledge/ekn-macros.h \
 	eosknowledge/ekn-types.h \
 	eosknowledge/ekn-version.h \
@@ -36,6 +37,7 @@ eosknowledge_private_installed_headers = \
 
 eosknowledge_library_sources = \
 	eosknowledge/ekn-hello.c \
+	eosknowledge/ekn-history-item-model.c \
 	eosknowledge/ekn-init.c eosknowledge/ekn-init-private.h \
 	eosknowledge/ekn-resource.c eosknowledge/ekn-resource-private.h \
 	$(NULL)

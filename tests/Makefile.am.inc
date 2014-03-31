@@ -3,6 +3,7 @@
 
 javascript_tests = \
 	tests/eosknowledge/testHello.js \
+	tests/eosknowledge/testHistoryItemModel.js \
 	$(NULL)
 EXTRA_DIST += $(javascript_tests)
 

@@ -16,7 +16,16 @@
   </bookinfo>
 
   <chapter>
-    <title>API Reference</title>
+    <title>Graphical API reference</title>
+  </chapter>
+
+  <chapter>
+    <title>Model API Reference</title>
+    <xi:include href="xml/history-item-model.xml"/>
+  </chapter>
+
+  <chapter>
+    <title>Bogus API Reference</title>
     <xi:include href="xml/hello.xml"/>
   </chapter>
 
