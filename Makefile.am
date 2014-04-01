@@ -34,6 +34,7 @@ AM_DISTCHECK_CONFIGURE_FLAGS = \
 CLEANFILES =
 DISTCLEANFILES =
 dist_noinst_DATA =
+nobase_pkgdata_DATA =
 
 # Make sure that 'make dist' includes documentation
 if !CAN_MAKE_DIST

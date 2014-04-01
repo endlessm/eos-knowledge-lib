@@ -1,0 +1,28 @@
+.card {
+    border-radius: 5px;
+    padding: 10px;
+    color: orange;
+    background-color: white;
+    transition:color 250ms ease-in-out;
+    transition:background-color 250ms ease-in-out;
+}
+
+.card:hover {
+    color: white;
+    background-color: orange;
+}
+
+.card .title {
+    font-size: 2em;
+}
+
+.card .subtitle {
+    font-size: 1em;
+}
+
+.card .thumbnail {
+    padding-top: 200px; /* thumbnail width */
+    padding-left: 300px; /* thumbnail height */
+    background-size: cover;
+    border-width: 0px;
+}
