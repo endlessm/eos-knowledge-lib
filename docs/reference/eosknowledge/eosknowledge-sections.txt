@@ -7,3 +7,17 @@ EKN_ALL_API_VERSIONS
 EKN_DEFINE_ENUM_TYPE
 EKN_ENUM_VALUE
 </SECTION>
+
+<SECTION>
+<FILE>history-item-model</FILE>
+EknHistoryItemModel
+EknHistoryItemModelInterface
+<SUBSECTION Getters>
+ekn_history_item_model_get_title
+<SUBSECTION Standard>
+EKN_HISTORY_ITEM_MODEL
+EKN_IS_HISTORY_ITEM_MODEL
+EKN_HISTORY_ITEM_MODEL_GET_INTERFACE
+EKN_TYPE_HISTORY_ITEM_MODEL
+ekn_history_item_model_get_type
+</SECTION>

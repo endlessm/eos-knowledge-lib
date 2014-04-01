@@ -11,6 +11,7 @@ G_BEGIN_DECLS
 #define _EKN_INSIDE_EOSKNOWLEDGE_H
 
 /* Pull in other header files */
+#include "ekn-history-item-model.h"
 #include "ekn-types.h"
 
 #undef _EKN_INSIDE_EOSKNOWLEDGE_H
