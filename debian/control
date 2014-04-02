@@ -1,0 +1,55 @@
+Source: eos-knowledge
+Priority: standard
+Maintainer: Philip Chimento <philip@endlessm.com>
+Build-Depends: autotools-dev,
+               debhelper (>= 8.0.0),
+               eos-sdk-dev,
+               gobject-introspection,
+               gtk-doc-tools (>= 1.18),
+               libgirepository1.0-dev,
+               libglib2.0-dev (>= 2.38),
+               libgtk-3-dev,
+               naturaldocs,
+               pkg-config,
+               yelp-tools,
+               yelp-xsl
+Standards-Version: 3.9.4
+Section: non-free/libs
+Homepage: http://www.endlessm.com
+
+Package: libeosknowledge-0-dev
+Section: non-free/libdevel
+Architecture: any
+Depends: libeosknowledge-0-0 (= ${binary:Version}),
+         ${misc:Depends}
+Description: Files needed for developing using the EndlessOS
+ Knowledge Library. Install this package if you are compiling
+ C programs that use the EndlessOS Knowledge Library.
+
+Package: libeosknowledge-0-0
+Section: non-free/libs
+Architecture: any
+Depends: ${shlibs:Depends},
+         ${misc:Depends}
+Description: EndlessOS Knowledge Library
+ Library for displaying UI elements in knowledge apps
+
+Package: libeosknowledge-0-doc
+Section: non-free/doc
+Architecture: all
+Depends: ${misc:Depends}
+Suggests: devhelp
+Description: EndlessOS Knowledge Library API documentation
+ API documentation for the EndlessOS Knowledge Library. Install this if
+ you want to access the API documentation locally, either in your
+ browser or in the Devhelp program.
+
+Package: gir1.2-eosknowledge-0
+Section: non-free/introspection
+Architecture: any
+Depends: ${gir:Depends},
+         ${misc:Depends}
+Description: EndlessOS Knowledge Library introspection files
+ Introspection data for the EndlessOS Knowledge Library. Install this if
+ you want to use the GObject introspection bindings for the EndlessOS
+ Knowledge Library from a language such as Javascript.
