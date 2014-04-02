@@ -68,6 +68,6 @@ libeosknowledge_@EKN_API_VERSION@_la_LDFLAGS = \
 # Public header files
 publicincludedir = $(includedir)/@EKN_API_NAME@
 nobase_publicinclude_HEADERS = \
-	$(endless_public_installed_headers) \
-	$(endless_private_installed_headers) \
+	$(eosknowledge_public_installed_headers) \
+	$(eosknowledge_private_installed_headers) \
 	$(NULL)
