@@ -46,16 +46,6 @@ distdir:
 	@false
 endif
 
-# General-purpose sed script for replacing installed directory locations. Use
-# this to replace $datadir and friends inside a script, as suggested by the
-# Autoconf manual; because $datadir and friends only work inside Makefiles.
-# If referenced from configure.ac, they may be incorrect or not fully expanded.
-replace_dirs = sed \
-	-e 's|@datadir[@]|$(datadir)|g' \
-	-e 's|@pkgdatadir[@]|$(pkgdatadir)|g' \
-	-e 's|@pkglibdir[@]|$(pkglibdir)|g' \
-	$(NULL)
-
 # # # LIBRARY # # #
 
 # Main library

@@ -7,7 +7,6 @@
 /docs/reference/eosknowledge/version.xml
 /eosknowledge-0.pc
 /eosknowledge/ekn-resource*.[ch]
-/overrides/EosKnowledge.js
 /overrides/config.js
 
 # Autotools/Gettext droppings
