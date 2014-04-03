@@ -1,10 +1,11 @@
 const Gio = imports.gi.Gio;
 const Lang = imports.lang;
+const Endless = imports.gi.Endless;
 
 let EosKnowledge;
 
 let _oldSearchPath = imports.searchPath;
-imports.searchPath.unshift('@pkgdatadir@/overrides');
+imports.searchPath.unshift(Endless.getCurrentFileDir());
 
 const Hello = imports.hello;
 const Card = imports.card;
