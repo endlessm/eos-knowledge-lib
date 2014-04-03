@@ -8,6 +8,7 @@ naturaldocs_input_files = \
 	overrides/EosKnowledge.js \
 	overrides/hello.js \
 	overrides/config.js \
+	overrides/card.js \
 	$(NULL)
 # Stamp file is present if all the docs have been built, and carries the
 # timestamp of the last successful build.

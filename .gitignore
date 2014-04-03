@@ -3,6 +3,7 @@
 *.lo
 *.gir
 *.typelib
+*.gresource
 /docs/reference/eosknowledge/version.xml
 /eosknowledge-0.pc
 /eosknowledge/ekn-resource*.[ch]
@@ -17,6 +18,7 @@ Makefile.in
 stamp*
 *.stamp
 *.log
+*.trs
 /ABOUT-NLS
 /aclocal.m4
 /ar-lib
@@ -78,6 +80,7 @@ stamp*
 /po/quot.sed
 /po/remove-potcdate.sed
 /po/remove-potcdate.sin
+/test-driver
 
 # Gtk-Doc droppings
 /docs/reference/eosknowledge/*.bak

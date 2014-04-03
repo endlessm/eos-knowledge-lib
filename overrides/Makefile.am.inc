@@ -7,6 +7,8 @@ overrides_DATA = overrides/EosKnowledge.js
 dist_pkgoverrides_DATA = \
 	overrides/config.js \
 	overrides/hello.js \
+	overrides/card.js \
+	overrides/composite_button.js \
 	$(NULL)
 
 overrides/EosKnowledge.js: overrides/EosKnowledge.js.in
