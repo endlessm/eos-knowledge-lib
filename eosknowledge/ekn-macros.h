@@ -82,4 +82,32 @@ enum_type##_get_type (void) \
  */
 #define EKN_STYLE_CLASS_TITLE "title"
 
+/**
+ * EKN_STYLE_CLASS_LIGHTBOX:
+ *
+ * A CSS class to match #EknLightbox widgets.
+ */
+#define EKN_STYLE_CLASS_LIGHTBOX "lightbox"
+
+/**
+ * EKN_STYLE_CLASS_LIGHTBOX_SHADOW:
+ *
+ * A CSS class to match the overlay shadow of #EknLightbox widgets.
+ */
+#define EKN_STYLE_CLASS_LIGHTBOX_SHADOW "lightbox-shadow"
+
+/**
+ * EKN_STYLE_CLASS_INFOBOX:
+ *
+ * A CSS class to match the infobox in #EknLightbox widgets.
+ */
+#define EKN_STYLE_CLASS_INFOBOX "infobox"
+
+/**
+ * EKN_STYLE_CLASS_INFOBOX_ARROW:
+ *
+ * A CSS class to match the arrow in the infobox of #EknLightbox widgets.
+ */
+#define EKN_STYLE_CLASS_INFOBOX_ARROW "infobox-arrow"
+
 #endif /* EKN_MACROS_H */

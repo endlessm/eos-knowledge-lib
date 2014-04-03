@@ -10,6 +10,7 @@ naturaldocs_input_files = \
 	overrides/card.js \
 	overrides/config.js \
 	overrides/lessonCard.js \
+	overrides/lightbox.js \
 	overrides/listCard.js \
 	overrides/progressCard.js \
 	$(NULL)

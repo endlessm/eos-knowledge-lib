@@ -72,3 +72,28 @@
         shade(lighter(orange), 1.1),
         shade(lighter(orange), 0.9));
 }
+
+.lightbox-shadow {
+    background-color: alpha(black, 0.5);
+}
+
+.infobox {
+    padding: 10px 50px 0px 50px;
+    border-radius: 10px 10px 0px 0px;
+    border-width: 2px 2px 0px 2px;
+    border-style: solid;
+    border-color: black;
+    background-color: #333333;
+    font-size: 20px;
+    color: white;
+    transition: background-color, padding 250ms ease-in-out;
+}
+
+.infobox:hover {
+    padding: 13px 53px 0px 53px;
+    background-color: #383838;
+}
+
+.infobox-arrow {
+    padding-bottom: 7px;
+}

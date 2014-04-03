@@ -10,6 +10,7 @@ imports.searchPath.unshift(Endless.getCurrentFileDir());
 const ArticleCard = imports.articleCard;
 const Card = imports.card;
 const LessonCard = imports.lessonCard;
+const Lightbox = imports.lightbox;
 const ListCard = imports.listCard;
 const ProgressCard = imports.progressCard;
 
@@ -52,9 +53,10 @@ function _init() {
         }
     });
 
-    EosKnowledge.Card = Card.Card;
     EosKnowledge.ArticleCard = ArticleCard.ArticleCard;
+    EosKnowledge.Card = Card.Card;
     EosKnowledge.LessonCard = LessonCard.LessonCard;
+    EosKnowledge.Lightbox = Lightbox.Lightbox;
     EosKnowledge.ListCard = ListCard.ListCard;
     EosKnowledge.ProgressCard = ProgressCard.ProgressCard;
 }
