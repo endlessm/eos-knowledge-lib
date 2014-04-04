@@ -93,6 +93,7 @@ EosKnowledge_@EKN_API_VERSION@_gir_INCLUDES = \
 	GLib-2.0 \
 	Gio-2.0 \
 	Gtk-3.0 \
+	Endless-0 \
 	$(NULL)
 EosKnowledge_@EKN_API_VERSION@_gir_SCANNERFLAGS = \
 	--identifier-prefix=Ekn \
