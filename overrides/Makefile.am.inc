@@ -14,7 +14,7 @@ dist_pkgoverrides_DATA = \
 install-data-hook:
 	$(MKDIR_P) $(DESTDIR)$(overridesdir)
 	rm -f $(DESTDIR)$(overridesdir)/EosKnowledge.js
-	ln -s $(DESTDIR)$(pkgoverridesdir)/EosKnowledge.js \
+	ln -s $(pkgoverridesdir)/EosKnowledge.js \
 		$(DESTDIR)$(overridesdir)/EosKnowledge.js
 
 uninstall-hook:
