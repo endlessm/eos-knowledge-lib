@@ -1,4 +1,4 @@
-Source: eos-knowledge
+Source: eos-knowledge-lib
 Priority: standard
 Maintainer: Philip Chimento <philip@endlessm.com>
 Build-Depends: autotools-dev,
