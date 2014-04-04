@@ -20,11 +20,13 @@ JASMINE_SUBMODULE_PATH = $(top_srcdir)/tests/jasmine
 include tests/jasmine/Makefile-jasmine.am.inc
 
 # Use locally built versions of EosKnowledge-0.gir, JS modules, and libraries.
-# We clobber GJS_PATH and include $(top_builddir) so that override modules are
-# looked for in $(top_builddir)/overrides.
+# We clobber GJS_PATH and include $(top_builddir) and $(top_srcdir) so that
+# gjs will find override modules in /overrides. The override directory itself
+# is also added to the gjs path for testing private js functionality not added
+# to the EosKnowledge module
 # (May need to change to AM_TESTS_ENVIRONMENT in a later version of Automake)
 TESTS_ENVIRONMENT = \
-	export GJS_PATH="$(top_builddir):$(top_srcdir)/overrides:$(top_builddir)/overrides"; \
+	export GJS_PATH="$(top_builddir):$(top_srcdir):$(top_builddir)/overrides:$(top_srcdir)/overrides"; \
 	export GI_TYPELIB_PATH="$(top_builddir)$${GI_TYPELIB_PATH:+:$$GI_TYPELIB_PATH}"; \
 	export LD_LIBRARY_PATH="$(top_builddir)/.libs$${LD_LIBRARY_PATH:+:$$LD_LIBRARY_PATH}"; \
 	$(NULL)
