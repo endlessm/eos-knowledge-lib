@@ -1,0 +1,6 @@
+Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: eos-knowledge
+Upstream-Contact: Philip Chimento <philip@endlessm.com>
+Disclaimer: This package is not part of Debian. It is proprietary software.
+Copyright: Copyright 2014 Endless Mobile, Inc.
+License: Proprietary
