@@ -105,7 +105,7 @@ PKG_PROG_PKG_CONFIG
 # Gettext
 AM_GNU_GETTEXT([external])
 AM_GNU_GETTEXT_VERSION([0.18.1])
-# Gtk-doc; 0.18 required for Markdown parsing
+# Gtk-doc; 1.18 required for Markdown parsing
 GTK_DOC_CHECK([1.18], [--flavour no-tmpl])
 # GObject Introspection
 GOBJECT_INTROSPECTION_REQUIRE([1.30])
@@ -119,6 +119,15 @@ AC_ARG_VAR([NATURALDOCS], [Path to naturaldocs])
 AC_SUBST([GLIB_COMPILE_RESOURCES], [`$PKG_CONFIG --variable glib_compile_resources gio-2.0`])
 
 AC_CACHE_SAVE
+
+# Workaround for odd bug; in version 1.20.1 at least, $GTKDOC_CHECK contains the
+# value "gtkdoc-check.test" instead of the path to the program. However, 1.18
+# doesn't define GTKDOC_CHECK_PATH...
+AC_MSG_CHECKING([that gtkdoc-check is in the right place])
+AS_IF([test "x$GTKDOC_CHECK" = "xgtkdoc-check.test"],
+    [AC_SUBST([GTKDOC_CHECK], ["$GTKDOC_CHECK_PATH"])
+        AC_MSG_RESULT([corrected])],
+    [AC_MSG_RESULT([no correction needed])])
 
 # Check that the compiler really supports C99
 AS_IF([test "x$ac_cv_prog_cc_c99" = "xno"], [AC_MSG_ERROR([C99 is required.])])
