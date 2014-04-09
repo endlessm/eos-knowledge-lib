@@ -42,6 +42,14 @@ enum_type##_get_type (void) \
  */
 
 /**
+ * EKN_STYLE_CLASS_CARD:
+ *
+ * A CSS class to match #EknCard widgets.
+ * It is present on any card widget or subclass thereof.
+ */
+#define EKN_STYLE_CLASS_CARD "card"
+
+/**
  * EKN_STYLE_CLASS_COMPLETE:
  *
  * A CSS class to match #EknLessonCard widgets that have been marked as
@@ -50,5 +58,28 @@ enum_type##_get_type (void) \
  * to %TRUE.
  */
 #define EKN_STYLE_CLASS_COMPLETE "complete"
+
+/**
+ * EKN_STYLE_CLASS_SUBTITLE:
+ *
+ * A CSS class to match a #GtkLabel or similar widget representing a subtitle.
+ */
+#define EKN_STYLE_CLASS_SUBTITLE "subtitle"
+
+/**
+ * EKN_STYLE_CLASS_THUMBNAIL:
+ *
+ * A CSS class to match a #GtkImage or similar widget displaying a thumbnail
+ * illustration, for example on a #EknCard.
+ */
+#define EKN_STYLE_CLASS_THUMBNAIL "thumbnail"
+
+/**
+ * EKN_STYLE_CLASS_TITLE:
+ *
+ * A CSS class to match a #GtkLabel or similar widget representing the title of
+ * something.
+ */
+#define EKN_STYLE_CLASS_TITLE "title"
 
 #endif /* EKN_MACROS_H */

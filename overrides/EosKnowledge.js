@@ -21,6 +21,7 @@ function _init() {
     // here we force the C lib to be initialized along with it its gresource
     this.hello_c;
 
+    Card._EosKnowledge = EosKnowledge;
     LessonCard._EosKnowledge = EosKnowledge;
 
     Lang.copyPublicProperties(Card, EosKnowledge);
