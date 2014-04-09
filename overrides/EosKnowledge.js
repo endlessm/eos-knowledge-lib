@@ -7,7 +7,6 @@ let EosKnowledge;
 let _oldSearchPath = imports.searchPath;
 imports.searchPath.unshift(Endless.getCurrentFileDir());
 
-const Hello = imports.hello;
 const Card = imports.card;
 const LessonCard = imports.lesson_card;
 
@@ -24,7 +23,6 @@ function _init() {
 
     LessonCard._EosKnowledge = EosKnowledge;
 
-    Lang.copyPublicProperties(Hello, EosKnowledge);
     Lang.copyPublicProperties(Card, EosKnowledge);
     Lang.copyPublicProperties(LessonCard, EosKnowledge);
 }

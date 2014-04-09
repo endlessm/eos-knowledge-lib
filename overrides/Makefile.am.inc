@@ -6,7 +6,6 @@ pkgoverridesdir = $(pkgdatadir)/overrides
 dist_pkgoverrides_DATA = \
 	overrides/EosKnowledge.js \
 	overrides/config.js \
-	overrides/hello.js \
 	overrides/lesson_card.js \
 	overrides/card.js \
 	overrides/composite_button.js \
