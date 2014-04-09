@@ -6,7 +6,10 @@ javascript_tests = \
 	tests/eosknowledge/testHello.js \
 	tests/eosknowledge/testHistoryItemModel.js \
 	$(NULL)
-EXTRA_DIST += $(javascript_tests)
+EXTRA_DIST += \
+	$(javascript_tests) \
+	tests/CssClassMatcher.js \
+	$(NULL)
 
 # Run tests when running 'make check'
 TESTS = $(javascript_tests)
@@ -23,10 +26,11 @@ include tests/jasmine/Makefile-jasmine.am.inc
 # We clobber GJS_PATH and include $(top_builddir) and $(top_srcdir) so that
 # gjs will find override modules in /overrides. The override directory itself
 # is also added to the gjs path for testing private js functionality not added
-# to the EosKnowledge module
+# to the EosKnowledge module, and lastly the tests directory is added for
+# utility modules local to the tests.
 # (May need to change to AM_TESTS_ENVIRONMENT in a later version of Automake)
 TESTS_ENVIRONMENT = \
-	export GJS_PATH="$(top_builddir):$(top_srcdir):$(top_builddir)/overrides:$(top_srcdir)/overrides"; \
+	export GJS_PATH="$(top_builddir):$(top_srcdir):$(top_srcdir)/overrides:$(top_srcdir)/tests"; \
 	export GI_TYPELIB_PATH="$(top_builddir)$${GI_TYPELIB_PATH:+:$$GI_TYPELIB_PATH}"; \
 	export LD_LIBRARY_PATH="$(top_builddir)/.libs$${LD_LIBRARY_PATH:+:$$LD_LIBRARY_PATH}"; \
 	$(NULL)
