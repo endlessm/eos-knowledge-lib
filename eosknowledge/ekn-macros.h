@@ -31,4 +31,24 @@ enum_type##_get_type (void) \
   return g_define_type_id__volatile; \
 }
 
+/**
+ * SECTION:style-classes
+ * @title: Style classes
+ * @short_description: CSS style classes defined in this library
+ *
+ * These are the style classes predefined by this library, and used by its
+ * widgets.
+ * Use them in your custom CSS to customize the theming.
+ */
+
+/**
+ * EKN_STYLE_CLASS_COMPLETE:
+ *
+ * A CSS class to match #EknLessonCard widgets that have been marked as
+ * completed.
+ * It is present on the card widget itself when #EknLessonCard:complete is set
+ * to %TRUE.
+ */
+#define EKN_STYLE_CLASS_COMPLETE "complete"
+
 #endif /* EKN_MACROS_H */

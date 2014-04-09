@@ -7,6 +7,7 @@ build_naturaldocs_verbose_0 = @echo '  DOC    Building JS overrides docs';
 naturaldocs_input_files = \
 	overrides/EosKnowledge.js \
 	overrides/hello.js \
+	overrides/lesson_card.js \
 	overrides/config.js \
 	overrides/card.js \
 	$(NULL)

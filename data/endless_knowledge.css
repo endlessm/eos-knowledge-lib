@@ -22,7 +22,29 @@
 
 .card .thumbnail {
     padding-top: 200px; /* thumbnail width */
-    padding-left: 300px; /* thumbnail height */
+    padding-left: 200px; /* thumbnail height */
     background-size: cover;
     border-width: 0px;
+}
+
+.card .FIXME-private-banner {
+    color: white;
+    background-color: #2e3436;
+    border-radius: 4px;
+}
+
+.card .FIXME-private-index {
+    padding: 0 5px;
+}
+
+.card .FIXME-private-checkmark {
+    padding-right: 5px;
+}
+
+.card .FIXME-private-banner:hover {
+    background-color: darker(orange);
+}
+
+.card.complete .FIXME-private-index {
+    color: #d3d7cf;
 }

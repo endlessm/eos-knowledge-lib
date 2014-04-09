@@ -35,6 +35,40 @@ const TestApplication = new Lang.Class ({
                 title: 'Everything card',
                 subtitle: 'This card has everything',
                 thumbnail_uri: TESTDIR + '/test-content/pig2.jpg',
+            }),
+            new EosKnowledge.LessonCard({
+                title: 'Ketchup lesson',
+                subtitle: 'No index',
+                // By Rachel Tayse, CC-BY
+                // http://en.wikipedia.org/wiki/File:Homemade_ketchup_canned_(4156502791).jpg
+                thumbnail_uri: TESTDIR + '/test-content/ketchup.jpg',
+                item_index: 0
+            }),
+            new EosKnowledge.LessonCard({
+                title: 'Mustard lesson',
+                subtitle: 'Sample, incomplete',
+                // By Bogdan29roman, CC-BY-SA
+                // http://en.wikipedia.org/wiki/File:Mu%C5%9Ftar.jpg
+                thumbnail_uri: TESTDIR + '/test-content/mustard.jpg',
+                item_index: 1,
+                complete: false
+            }),
+            new EosKnowledge.LessonCard({
+                title: 'Relish lesson',
+                subtitle: 'Sample, completed',
+                // Public domain image
+                thumbnail_uri: TESTDIR + '/test-content/relish.jpg',
+                item_index: 2,
+                complete: true
+            }),
+            new EosKnowledge.LessonCard({
+                title: 'Onion lessson',
+                subtitle: 'No index, completed',
+                // By Asb at the German language Wikipedia, CC-BY-SA
+                // http://en.wikipedia.org/wiki/File:Rote_Zwiebeln_aufgeschnitten_asb_2004_PICT4222.JPG
+                thumbnail_uri: TESTDIR + '/test-content/onion.jpg',
+                item_index: 0,
+                complete: true
             })
         ];
         let grid = new Gtk.Grid({
@@ -48,7 +82,7 @@ const TestApplication = new Lang.Class ({
             card.connect('clicked', function () {
                 print('Card', index + 1, 'clicked');
             });
-            grid.add(card);
+            grid.attach(card, index % 4, Math.floor(index / 4), 1, 1);
         });
 
         let window = new Endless.Window({

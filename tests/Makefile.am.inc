@@ -5,6 +5,7 @@ javascript_tests = \
 	tests/eosknowledge/testCard.js \
 	tests/eosknowledge/testHello.js \
 	tests/eosknowledge/testHistoryItemModel.js \
+	tests/eosknowledge/testLessonCard.js \
 	$(NULL)
 EXTRA_DIST += \
 	$(javascript_tests) \
