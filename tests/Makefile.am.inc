@@ -2,6 +2,7 @@
 ## Included in toplevel Makefile.am
 
 javascript_tests = \
+	tests/eosknowledge/testArticleCard.js \
 	tests/eosknowledge/testCard.js \
 	tests/eosknowledge/testHello.js \
 	tests/eosknowledge/testHistoryItemModel.js \

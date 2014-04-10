@@ -5,6 +5,7 @@ overridesdir = $(datadir)/gjs-1.0/overrides
 pkgoverridesdir = $(pkgdatadir)/overrides
 dist_pkgoverrides_DATA = \
 	overrides/EosKnowledge.js \
+	overrides/articleCard.js \
 	overrides/config.js \
 	overrides/lesson_card.js \
 	overrides/card.js \
