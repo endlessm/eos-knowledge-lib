@@ -17,6 +17,7 @@
 
   <chapter>
     <title>Graphical API reference</title>
+    <xi:include href="xml/style-classes.xml"/>
   </chapter>
 
   <chapter>

@@ -16,50 +16,74 @@ const TestApplication = new Lang.Class ({
         this.parent();
 
         let provider = new Gtk.CssProvider();
-        let css_file = Gio.File.new_for_uri('resource:///com/endlessm/knowledge/endless_knowledge.css')
+        let css_file = Gio.File.new_for_uri('resource:///com/endlessm/knowledge/endless_knowledge.css');
         provider.load_from_file(css_file);
         Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(),
                                                  provider,
                                                  Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 
-        let card1 = new EosKnowledge.Card({
-            title: 'Subtitled Card',
-            subtitle: 'This is the Subtitle',
-            expand: true,
-            valign: Gtk.Align.CENTER,
-            halign: Gtk.Align.CENTER
-        });
-        card1.connect('clicked', function () {
-            print('Card 1 clicked');
-        });
-        let card2 = new EosKnowledge.Card({
-            title: 'Picture Card',
-            thumbnail_uri: TESTDIR + '/test-content/pig1.jpg',
-            expand: true,
-            valign: Gtk.Align.CENTER,
-            halign: Gtk.Align.CENTER
-        });
-        card2.connect('clicked', function () {
-            print('Card 2 clicked');
-        });
-        let card3 = new EosKnowledge.Card({
-            title: 'Everything card',
-            subtitle: 'This card has everything',
-            thumbnail_uri: TESTDIR + '/test-content/pig2.jpg',
-            expand: true,
-            valign: Gtk.Align.CENTER,
-            halign: Gtk.Align.CENTER
-        });
-        card3.connect('clicked', function () {
-            print('Card 3 clicked');
-        });
-
+        let cards = [
+            new EosKnowledge.Card({
+                title: 'Subtitled Card',
+                subtitle: 'This is the Subtitle',
+            }),
+            new EosKnowledge.Card({
+                title: 'Picture Card',
+                thumbnail_uri: TESTDIR + '/test-content/pig1.jpg',
+            }),
+            new EosKnowledge.Card({
+                title: 'Everything card',
+                subtitle: 'This card has everything',
+                thumbnail_uri: TESTDIR + '/test-content/pig2.jpg',
+            }),
+            new EosKnowledge.LessonCard({
+                title: 'Ketchup lesson',
+                subtitle: 'No index',
+                // By Rachel Tayse, CC-BY
+                // http://en.wikipedia.org/wiki/File:Homemade_ketchup_canned_(4156502791).jpg
+                thumbnail_uri: TESTDIR + '/test-content/ketchup.jpg',
+                item_index: 0
+            }),
+            new EosKnowledge.LessonCard({
+                title: 'Mustard lesson',
+                subtitle: 'Sample, incomplete',
+                // By Bogdan29roman, CC-BY-SA
+                // http://en.wikipedia.org/wiki/File:Mu%C5%9Ftar.jpg
+                thumbnail_uri: TESTDIR + '/test-content/mustard.jpg',
+                item_index: 1,
+                complete: false
+            }),
+            new EosKnowledge.LessonCard({
+                title: 'Relish lesson',
+                subtitle: 'Sample, completed',
+                // Public domain image
+                thumbnail_uri: TESTDIR + '/test-content/relish.jpg',
+                item_index: 2,
+                complete: true
+            }),
+            new EosKnowledge.LessonCard({
+                title: 'Onion lessson',
+                subtitle: 'No index, completed',
+                // By Asb at the German language Wikipedia, CC-BY-SA
+                // http://en.wikipedia.org/wiki/File:Rote_Zwiebeln_aufgeschnitten_asb_2004_PICT4222.JPG
+                thumbnail_uri: TESTDIR + '/test-content/onion.jpg',
+                item_index: 0,
+                complete: true
+            })
+        ];
         let grid = new Gtk.Grid({
             orientation: Gtk.Orientation.HORIZONTAL
         });
-        grid.add(card1);
-        grid.add(card2);
-        grid.add(card3);
+
+        cards.forEach(function (card, index) {
+            card.expand = true;
+            card.valign = Gtk.Align.CENTER;
+            card.halign = Gtk.Align.CENTER;
+            card.connect('clicked', function () {
+                print('Card', index + 1, 'clicked');
+            });
+            grid.attach(card, index % 4, Math.floor(index / 4), 1, 1);
+        });
 
         let window = new Endless.Window({
             application: this

@@ -1,10 +1,14 @@
-const Gtk = imports.gi.Gtk;
-const GObject = imports.gi.GObject;
-const Gio = imports.gi.Gio;
-const Gdk = imports.gi.Gdk;
-const Lang = imports.lang;
+// Copyright 2014 Endless Mobile, Inc.
 
-const CompositeButton = imports.composite_button;
+/* global _EosKnowledge */
+
+const _Gtk = imports.gi.Gtk;
+const _GObject = imports.gi.GObject;
+const _Gio = imports.gi.Gio;
+const _Gdk = imports.gi.Gdk;
+const _Lang = imports.lang;
+
+const _CompositeButton = imports.composite_button;
 
 /**
  * Class: Card
@@ -20,45 +24,46 @@ const CompositeButton = imports.composite_button;
  * Signal generated when user clicked the card.
  * > card.connect("clicked", function (widget) { print("Clicked!"); });
  */
-const Card = new Lang.Class({
+const Card = new _Lang.Class({
     Name: 'Card',
-    Extends: CompositeButton.CompositeButton,
+    GTypeName: 'EknCard',
+    Extends: _CompositeButton.CompositeButton,
     Properties: {
         /**
          * Property: title
          * A string with the title of the card. Defaults to an empty string.
          */
-        'title': GObject.ParamSpec.string('title', 'Card Title',
+        'title': _GObject.ParamSpec.string('title', 'Card Title',
             'Title of the card',
-            GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE, ''),
+            _GObject.ParamFlags.READABLE | _GObject.ParamFlags.WRITABLE, ''),
         /**
          * Property: subtitle
          * A string with the subtitle of the card. Defaults to an empty string.
          */
-        'subtitle': GObject.ParamSpec.string('subtitle', 'Card Description',
+        'subtitle': _GObject.ParamSpec.string('subtitle', 'Card Description',
             'Subtitle of the card',
-            GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE, ''),
+            _GObject.ParamFlags.READABLE | _GObject.ParamFlags.WRITABLE, ''),
         /**
          * Property: thumbnail-uri
          * A string with the URI of the thumbnail image. An empty string means
          * no thumbnail should be visible. Defaults to an empty string.
          */
-        'thumbnail-uri': GObject.ParamSpec.string('thumbnail-uri', 'Thumbnail URI',
+        'thumbnail-uri': _GObject.ParamSpec.string('thumbnail-uri', 'Thumbnail URI',
             'URI of the background image',
-            GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE, '')
+            _GObject.ParamFlags.READABLE | _GObject.ParamFlags.WRITABLE, '')
     },
 
     _init: function(params) {
-        this._title_label = new Gtk.Label();
-        this._subtitle_label = new Gtk.Label();
-        this._frame = new Gtk.Frame();
-        this._background_provider = new Gtk.CssProvider();
+        this._title_label = new _Gtk.Label();
+        this._subtitle_label = new _Gtk.Label();
+        this._frame = new _Gtk.Frame();
+        this._background_provider = new _Gtk.CssProvider();
         this._thumbnail_uri = null;
 
         this.parent(params);
 
-        let grid = new Gtk.Grid({
-            orientation: Gtk.Orientation.VERTICAL
+        let grid = new _Gtk.Grid({
+            orientation: _Gtk.Orientation.VERTICAL
         });
         grid.add(this._frame);
         grid.add(this._title_label);
@@ -68,10 +73,10 @@ const Card = new Lang.Class({
 
         this.setSensitiveChildren([this._title_label, this._subtitle_label, this._frame]);
 
-        this.get_style_context().add_class('card');
-        this._title_label.get_style_context().add_class('title');
-        this._subtitle_label.get_style_context().add_class('subtitle');
-        this._frame.get_style_context().add_class('thumbnail');
+        this.get_style_context().add_class(_EosKnowledge.STYLE_CLASS_CARD);
+        this._title_label.get_style_context().add_class(_EosKnowledge.STYLE_CLASS_TITLE);
+        this._subtitle_label.get_style_context().add_class(_EosKnowledge.STYLE_CLASS_SUBTITLE);
+        this._frame.get_style_context().add_class(_EosKnowledge.STYLE_CLASS_THUMBNAIL);
     },
 
     set title (v) {
@@ -105,7 +110,7 @@ const Card = new Lang.Class({
             let frame_css = '* { background-image: url("' + this._thumbnail_uri + '"); }';
             this._background_provider.load_from_data(frame_css);
             let context = this._frame.get_style_context();
-            context.add_provider(this._background_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+            context.add_provider(this._background_provider, _Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
         }
         this.notify('thumbnail-uri');
     },

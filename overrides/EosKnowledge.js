@@ -7,8 +7,8 @@ let EosKnowledge;
 let _oldSearchPath = imports.searchPath;
 imports.searchPath.unshift(Endless.getCurrentFileDir());
 
-const Hello = imports.hello;
 const Card = imports.card;
+const LessonCard = imports.lesson_card;
 
 imports.searchPath = _oldSearchPath;
 
@@ -21,6 +21,13 @@ function _init() {
     // here we force the C lib to be initialized along with it its gresource
     this.hello_c;
 
-    Lang.copyPublicProperties(Hello, EosKnowledge);
-    Lang.copyPublicProperties(Card, EosKnowledge);
+    let modulesToImport = [Card, LessonCard];
+    modulesToImport.forEach(function (module) {
+        // Inject the EosKnowledge module into the module being imported, to
+        // avoid recursive imports
+        module._EosKnowledge = EosKnowledge;
+        // Copy the module's public properties into the EosKnowledge module --
+        // remember to make all toplevel non-public symbols private with _
+        Lang.copyPublicProperties(module, EosKnowledge);
+    });
 }
