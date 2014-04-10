@@ -7,9 +7,9 @@ build_naturaldocs_verbose_0 = @echo '  DOC    Building JS overrides docs';
 naturaldocs_input_files = \
 	overrides/EosKnowledge.js \
 	overrides/articleCard.js \
-	overrides/lesson_card.js \
-	overrides/config.js \
 	overrides/card.js \
+	overrides/config.js \
+	overrides/lessonCard.js \
 	overrides/listCard.js \
 	$(NULL)
 # Stamp file is present if all the docs have been built, and carries the

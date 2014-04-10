@@ -9,7 +9,7 @@ imports.searchPath.unshift(Endless.getCurrentFileDir());
 
 const ArticleCard = imports.articleCard;
 const Card = imports.card;
-const LessonCard = imports.lesson_card;
+const LessonCard = imports.lessonCard;
 const ListCard = imports.listCard;
 
 imports.searchPath = _oldSearchPath;

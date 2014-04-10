@@ -1,5 +1,3 @@
-const Gtk = imports.gi.Gtk;
-const Endless = imports.gi.Endless;
 const EosKnowledge = imports.gi.EosKnowledge;
 
 const CssClassMatcher = imports.CssClassMatcher;
