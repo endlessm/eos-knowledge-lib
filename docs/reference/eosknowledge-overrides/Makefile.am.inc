@@ -10,6 +10,7 @@ naturaldocs_input_files = \
 	overrides/lesson_card.js \
 	overrides/config.js \
 	overrides/card.js \
+	overrides/listCard.js \
 	$(NULL)
 # Stamp file is present if all the docs have been built, and carries the
 # timestamp of the last successful build.

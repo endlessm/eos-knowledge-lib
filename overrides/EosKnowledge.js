@@ -10,6 +10,7 @@ imports.searchPath.unshift(Endless.getCurrentFileDir());
 const ArticleCard = imports.articleCard;
 const Card = imports.card;
 const LessonCard = imports.lesson_card;
+const ListCard = imports.listCard;
 
 imports.searchPath = _oldSearchPath;
 
@@ -22,7 +23,7 @@ function _init() {
     // here we force the C lib to be initialized along with it its gresource
     this.hello_c;
 
-    let modulesToImport = [ArticleCard, Card, LessonCard];
+    let modulesToImport = [ArticleCard, Card, LessonCard, ListCard];
     modulesToImport.forEach(function (module) {
         // Inject the EosKnowledge module into the module being imported, to
         // avoid recursive imports
