@@ -9,6 +9,34 @@ EKN_ENUM_VALUE
 </SECTION>
 
 <SECTION>
+<FILE>history-model</FILE>
+EknHistoryModel
+EknHistoryModelClass
+ekn_history_model_new
+<SUBSECTION Methods>
+ekn_history_model_clear
+ekn_history_model_get_item
+ekn_history_model_go_back
+ekn_history_model_go_forward
+<SUBSECTION Getters>
+ekn_history_model_get_back_list
+ekn_history_model_get_can_go_back
+ekn_history_model_get_can_go_forward
+ekn_history_model_get_current_item
+ekn_history_model_get_forward_list
+<SUBSECTION Setters>
+ekn_history_model_set_current_item
+<SUBSECTION Standard>
+EKN_HISTORY_MODEL
+EKN_HISTORY_MODEL_CLASS
+EKN_HISTORY_MODEL_GET_CLASS
+EKN_IS_HISTORY_MODEL
+EKN_IS_HISTORY_MODEL_CLASS
+EKN_TYPE_HISTORY_MODEL
+ekn_history_model_get_type
+</SECTION>
+
+<SECTION>
 <FILE>history-item-model</FILE>
 EknHistoryItemModel
 EknHistoryItemModelInterface

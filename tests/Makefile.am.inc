@@ -6,6 +6,7 @@ javascript_tests = \
 	tests/eosknowledge/testCard.js \
 	tests/eosknowledge/testHello.js \
 	tests/eosknowledge/testHistoryItemModel.js \
+	tests/eosknowledge/testHistoryModel.js \
 	tests/eosknowledge/testLessonCard.js \
 	tests/eosknowledge/testListCard.js \
 	$(NULL)
