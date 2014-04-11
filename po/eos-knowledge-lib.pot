@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: eos-knowledge-lib 0.0.0\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-"
 "inc\n"
-"POT-Creation-Date: 2014-04-09 16:18-0700\n"
+"POT-Creation-Date: 2014-04-10 15:19-0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,7 +22,7 @@ msgstr ""
 msgid "Hello C world!"
 msgstr ""
 
-#: overrides/lesson_card.js:128
+#: overrides/lessonCard.js:131
 #, c-format
 msgid "Lesson %d"
 msgstr ""

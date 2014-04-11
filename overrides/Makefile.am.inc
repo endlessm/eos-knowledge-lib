@@ -5,10 +5,12 @@ overridesdir = $(datadir)/gjs-1.0/overrides
 pkgoverridesdir = $(pkgdatadir)/overrides
 dist_pkgoverrides_DATA = \
 	overrides/EosKnowledge.js \
-	overrides/config.js \
-	overrides/lesson_card.js \
+	overrides/articleCard.js \
 	overrides/card.js \
-	overrides/composite_button.js \
+	overrides/compositeButton.js \
+	overrides/config.js \
+	overrides/lessonCard.js \
+	overrides/listCard.js \
 	$(NULL)
 
 install-data-hook:

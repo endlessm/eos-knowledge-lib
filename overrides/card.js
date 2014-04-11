@@ -8,7 +8,7 @@ const _Gio = imports.gi.Gio;
 const _Gdk = imports.gi.Gdk;
 const _Lang = imports.lang;
 
-const _CompositeButton = imports.composite_button;
+const _CompositeButton = imports.compositeButton;
 
 /**
  * Class: Card
