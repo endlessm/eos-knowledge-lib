@@ -47,7 +47,7 @@ const LessonCard = new Lang.Class({
         /**
          * Property: complete
          *
-         * Set to *true* if this lesson has been completed or othwerise "checked
+         * Set to *true* if this lesson has been completed or otherwise "checked
          * off."
          */
         'complete': GObject.ParamSpec.boolean('complete', 'Complete',
