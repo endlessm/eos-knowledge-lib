@@ -11,6 +11,7 @@ dist_pkgoverrides_DATA = \
 	overrides/config.js \
 	overrides/lessonCard.js \
 	overrides/listCard.js \
+	overrides/progressCard.js \
 	$(NULL)
 
 install-data-hook:
