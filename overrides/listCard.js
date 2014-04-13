@@ -1,8 +1,8 @@
 // Copyright 2014 Endless Mobile, Inc.
 
-const _Lang = imports.lang;
+const Lang = imports.lang;
 
-const _Card = imports.card;
+const Card = imports.card;
 
 /**
  * Class: ListCard
@@ -12,10 +12,10 @@ const _Card = imports.card;
  * Extends:
  *   <Card>
  */
-const ListCard = new _Lang.Class({
+const ListCard = new Lang.Class({
     Name: 'ListCard',
     GTypeName: 'EknListCard',
-    Extends: _Card.Card,
+    Extends: Card.Card,
 
     _init: function (props) {
         this.parent(props);
