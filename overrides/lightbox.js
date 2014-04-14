@@ -99,7 +99,7 @@ const Lightbox = new Lang.Class({
         inner_overlay.add_overlay(this._infobox_container);
         inner_overlay.show_all();
 
-        this._revealer = new Gtk.Revealer({
+        this._revealer = new HackRevealer({
             no_show_all: true,
             transition_type: Gtk.RevealerTransitionType.CROSSFADE
         });
@@ -172,6 +172,22 @@ const Lightbox = new Lang.Class({
     }
 });
 
+// This revealer works around a bug in GtkRevealer's size_allocate
+// https://bugzilla.gnome.org/show_bug.cgi?id=724742. The bug is fixed
+// upstream and this class should be removed when we move to Gtk 3.12
+const HackRevealer = new Lang.Class({
+    Name: 'HackRevealer',
+    Extends: Gtk.Revealer,
+
+    vfunc_size_allocate: function (alloc) {
+        let child = this.get_child();
+        if (child)
+            child.height_request = alloc.height;
+        this.parent(alloc);
+        if (child)
+            child.height_request = -1;
+    }
+});
 
 // A private container used to house the lightbox-widget in the overlay. Right
 // now just a GtkAlignment which listens to the exact mouse event we care
