@@ -36,10 +36,13 @@ const ProgressCard = new Lang.Class({
          *
          * The number of completable items represented by this card.
          * If set to 0, then the number will not be displayed.
+         *
+         * Flags:
+         *   Construct only
          */
         'total-items': GObject.ParamSpec.uint('total-items', 'Total items',
             'Number of completable items in total',
-            GObject.ParamFlags.READWRITE,
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             0, GLib.MAXUINT32, 0),
         /**
          * Property: completed-items
@@ -89,27 +92,26 @@ const ProgressCard = new Lang.Class({
     },
 
     get completed_items() {
-        let realComplete = Math.min(this._complete, this._total);
-        return realComplete;
+        return this._complete;
     },
 
     set completed_items(value) {
-        this._complete = value;
+        this._complete = Math.min(value, this._total);
         this._update_bar();
     },
 
     // Private
 
     _update_bar: function () {
-        if (this._total > 0 && this.completed_items === this._total)
+        if (this._total > 0 && this._complete === this._total)
             this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_COMPLETE);
         else
             this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_COMPLETE);
 
-        this._progress.text = _("%d of %d done").format(this.completed_items,
+        this._progress.text = _("%d of %d done").format(this._complete,
             this._total);
         if (this._total > 0) {
-            this._progress.fraction = this.completed_items / this._total;
+            this._progress.fraction = this._complete / this._total;
             this._progress.show();
         } else {
             this._progress.hide();
