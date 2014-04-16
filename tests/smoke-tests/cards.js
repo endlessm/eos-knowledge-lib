@@ -69,6 +69,15 @@ const TestApplication = new Lang.Class ({
                 thumbnail_uri: TESTDIR + '/test-content/onion.jpg',
                 item_index: 0,
                 complete: true
+            }),
+            new EosKnowledge.ProgressCard({
+                title: 'Doing nothing',
+                subtitle: 'No items'
+            }),
+            new EosKnowledge.ProgressCard({
+                title: 'Click me',
+                subtitle: 'To progress',
+                total_items: 5
             })
         ];
         let grid = new Gtk.Grid({
@@ -83,6 +92,10 @@ const TestApplication = new Lang.Class ({
                 print('Card', index + 1, 'clicked');
             });
             grid.attach(card, index % 4, Math.floor(index / 4), 1, 1);
+        });
+
+        cards[8].connect('clicked', function (card) {
+            card.completed_items = (card.completed_items + 1) % (card.total_items + 1);
         });
 
         let window = new Endless.Window({

@@ -11,6 +11,7 @@ const ArticleCard = imports.articleCard;
 const Card = imports.card;
 const LessonCard = imports.lessonCard;
 const ListCard = imports.listCard;
+const ProgressCard = imports.progressCard;
 
 imports.searchPath = _oldSearchPath;
 
@@ -55,4 +56,5 @@ function _init() {
     EosKnowledge.ArticleCard = ArticleCard.ArticleCard;
     EosKnowledge.LessonCard = LessonCard.LessonCard;
     EosKnowledge.ListCard = ListCard.ListCard;
+    EosKnowledge.ProgressCard = ProgressCard.ProgressCard;
 }

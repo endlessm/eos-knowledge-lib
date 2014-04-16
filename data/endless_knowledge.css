@@ -21,16 +21,20 @@
 }
 
 .card .thumbnail {
-    padding-top: 200px; /* thumbnail width */
-    padding-left: 200px; /* thumbnail height */
+    padding-top: 100px; /* thumbnail width */
+    padding-left: 150px; /* thumbnail height */
     background-size: cover;
     border-width: 0px;
 }
 
-.card .FIXME-private-banner {
+.card .FIXME-private-banner,
+.card .FIXME-private-progress.trough {
     color: white;
-    background-color: #2e3436;
+    border: solid 1px shade(#2e3436, 0.8);
     border-radius: 4px;
+    background-image: linear-gradient(to bottom,
+        shade(#2e3436, 0.9),
+        shade(#2e3436, 1.1));
 }
 
 .card .FIXME-private-index {
@@ -41,10 +45,30 @@
     padding-right: 5px;
 }
 
-.card .FIXME-private-banner:hover {
-    background-color: darker(orange);
+.card .FIXME-private-banner:hover,
+.card .FIXME-private-progress.trough:hover {
+    border-color: shade(darker(orange), 0.8);
+    background-image: linear-gradient(to bottom,
+        shade(darker(orange), 0.9),
+        shade(darker(orange), 1.1));
 }
 
 .card.complete .FIXME-private-index {
     color: #d3d7cf;
+}
+
+.card .FIXME-private-progress {
+    color: #ce5c00;
+    border: solid 1px shade(orange, 0.8);
+    border-radius: 4px;
+    background-image: linear-gradient(to bottom,
+        shade(orange, 1.1),
+        shade(orange, 0.9));
+}
+
+.card .FIXME-private-progress:hover {
+    border-color: shade(lighter(orange), 0.8);
+    background-image: linear-gradient(to bottom,
+        shade(lighter(orange), 1.1),
+        shade(lighter(orange), 0.9));
 }
