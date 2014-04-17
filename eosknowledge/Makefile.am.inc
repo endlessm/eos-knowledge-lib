@@ -33,6 +33,7 @@ eosknowledge_private_installed_headers = \
 	eosknowledge/ekn-history-model.h \
 	eosknowledge/ekn-macros.h \
 	eosknowledge/ekn-types.h \
+	eosknowledge/ekn-util.h \
 	eosknowledge/ekn-version.h \
 	$(NULL)
 
@@ -42,6 +43,7 @@ eosknowledge_library_sources = \
 	eosknowledge/ekn-history-model.c \
 	eosknowledge/ekn-init.c eosknowledge/ekn-init-private.h \
 	eosknowledge/ekn-resource.c eosknowledge/ekn-resource-private.h \
+	eosknowledge/ekn-util.c \
 	$(NULL)
 
 # Endless Knowledge Apps GUI library

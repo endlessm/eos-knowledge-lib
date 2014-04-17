@@ -10,6 +10,7 @@ dist_pkgoverrides_DATA = \
 	overrides/compositeButton.js \
 	overrides/config.js \
 	overrides/lessonCard.js \
+	overrides/lightbox.js \
 	overrides/listCard.js \
 	overrides/progressCard.js \
 	$(NULL)
