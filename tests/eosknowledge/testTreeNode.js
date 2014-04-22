@@ -8,14 +8,14 @@ const TEST_OBJ = {
     tableOfContents: [
         {
             '@id': '_:1',
-            nodeIndex: 1,
+            nodeIndex: 0,
             nodeIndexLabel: '1',
             nodeLabel: 'Foo',
             nodeContent: 'http://skynet.com/content#Foo'
         },
         {
             '@id': '_:1.a',
-            nodeIndex: 1,
+            nodeIndex: 0,
             nodeIndexLabel: '1.a',
             nodeLabel: 'Lorum',
             nodeParent: '_:1',
@@ -23,7 +23,7 @@ const TEST_OBJ = {
         },
         {
             '@id': '_:1.b',
-            nodeIndex: 2,
+            nodeIndex: 1,
             nodeIndexLabel: '1.b',
             nodeLabel: 'Ipsum',
             nodeParent: '_:1',
@@ -31,7 +31,7 @@ const TEST_OBJ = {
         },
         {
             '@id': '_:1.b.i',
-            nodeIndex: 1,
+            nodeIndex: 0,
             nodeIndexLabel: '1.b.i',
             nodeLabel: 'Blah',
             nodeParent: '_:1.b',
@@ -39,14 +39,14 @@ const TEST_OBJ = {
         },
         {
             '@id': '_:2',
-            nodeIndex: 2,
+            nodeIndex: 1,
             nodeIndexLabel: '2',
             nodeLabel: 'Bar',
             nodeContent: 'http://skynet.com/content#Bar'
         },
         {
             '@id': '_:3',
-            nodeIndex: 3,
+            nodeIndex: 2,
             nodeIndexLabel: '3',
             nodeLabel: 'Baz',
             nodeContent: 'http://skynet.com/content#Baz'

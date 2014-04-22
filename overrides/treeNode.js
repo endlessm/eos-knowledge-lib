@@ -28,7 +28,7 @@ const NODE_CONTENT_SCHEMA = 'nodeContent';
  *   hasParent (<TreeNode>) - The <TreeNode> which is this node's parent, or
  *                            *null* if it has none
  *   hasIndex (Integer) - An integer describing the ordering of this node
- *                        amongst its siblings
+ *                        amongst its siblings (0-based indexing)
  *   hasIndexLabel (String) - A displayable string representing this node's
  *                            index (order notwithstanding)
  *   hasLabel (String) - A displayable string describing the node's content
@@ -90,7 +90,7 @@ function tree_model_from_tree_node(json_obj) {
     let flat_list = [];
     toc_copy.forEach(function (item) {
         let new_item;
-        let this_index = item[NODE_INDEX_SCHEMA] - 1; // 1-based indexing
+        let this_index = item[NODE_INDEX_SCHEMA];
         // Create a 'proxy node' in our tree structure so as not to modify the
         // original node. Proxy nodes can be blank if a child refers to a parent
         // that hasn't been processed yet, but at the end there should be no
@@ -107,7 +107,7 @@ function tree_model_from_tree_node(json_obj) {
             let parent_id = item[NODE_PARENT_SCHEMA];
             while (parent_id !== undefined) {
                 let parent = objects_by_id[parent_id];
-                indices.unshift(parent[NODE_INDEX_SCHEMA] - 1);
+                indices.unshift(parent[NODE_INDEX_SCHEMA]);
                 parent_id = parent[NODE_PARENT_SCHEMA];
             }
             let list_level = flat_list;
