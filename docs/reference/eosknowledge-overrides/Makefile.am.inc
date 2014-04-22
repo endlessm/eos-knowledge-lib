@@ -13,6 +13,7 @@ naturaldocs_input_files = \
 	overrides/lightbox.js \
 	overrides/listCard.js \
 	overrides/progressCard.js \
+	overrides/treeNode.js \
 	$(NULL)
 # Stamp file is present if all the docs have been built, and carries the
 # timestamp of the last successful build.

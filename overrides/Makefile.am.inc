@@ -13,6 +13,7 @@ dist_pkgoverrides_DATA = \
 	overrides/lightbox.js \
 	overrides/listCard.js \
 	overrides/progressCard.js \
+	overrides/treeNode.js \
 	$(NULL)
 
 install-data-hook:
