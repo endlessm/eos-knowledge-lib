@@ -13,6 +13,7 @@ dist_pkgoverrides_DATA = \
 	overrides/lightbox.js \
 	overrides/listCard.js \
 	overrides/progressCard.js \
+	overrides/tableOfContents.js \
 	overrides/treeNode.js \
 	$(NULL)
 

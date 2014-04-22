@@ -110,4 +110,33 @@ enum_type##_get_type (void) \
  */
 #define EKN_STYLE_CLASS_INFOBOX_ARROW "infobox-arrow"
 
+/**
+ * EKN_STYLE_CLASS_INDEX:
+ *
+ * A CSS class to match a #GtkLabel or similar widget representing the index of
+ * something.
+ */
+#define EKN_STYLE_CLASS_INDEX "index"
+
+/**
+ * EKN_STYLE_CLASS_TOC:
+ *
+ * A CSS class to match a TableOfContents widget.
+ */
+#define EKN_STYLE_CLASS_TOC "toc"
+
+/**
+ * EKN_STYLE_CLASS_TOC_ENTRY:
+ *
+ * A CSS class to match an entry in the TableOfContents widget.
+ */
+#define EKN_STYLE_CLASS_TOC_ENTRY "toc-entry"
+
+/**
+ * EKN_STYLE_CLASS_COLLAPSED:
+ *
+ * A CSS class to match widgets in a collapsed state.
+ */
+#define EKN_STYLE_CLASS_COLLAPSED "collapsed"
+
 #endif /* EKN_MACROS_H */
