@@ -43,6 +43,7 @@ eosknowledge_library_sources = \
 	eosknowledge/ekn-history-model.c \
 	eosknowledge/ekn-init.c eosknowledge/ekn-init-private.h \
 	eosknowledge/ekn-resource.c eosknowledge/ekn-resource-private.h \
+	eosknowledge/ekn-tree-node.c \
 	eosknowledge/ekn-util.c \
 	$(NULL)
 

@@ -13,6 +13,7 @@ const LessonCard = imports.lessonCard;
 const Lightbox = imports.lightbox;
 const ListCard = imports.listCard;
 const ProgressCard = imports.progressCard;
+const TreeNode = imports.treeNode;
 
 imports.searchPath = _oldSearchPath;
 
@@ -59,4 +60,5 @@ function _init() {
     EosKnowledge.Lightbox = Lightbox.Lightbox;
     EosKnowledge.ListCard = ListCard.ListCard;
     EosKnowledge.ProgressCard = ProgressCard.ProgressCard;
+    EosKnowledge.tree_model_from_tree_node = TreeNode.tree_model_from_tree_node;
 }

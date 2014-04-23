@@ -52,6 +52,14 @@ ekn_history_item_model_get_type
 </SECTION>
 
 <SECTION>
+<FILE>tree-node</FILE>
+EknTreeNodeColumn
+<SUBSECTION Standard>
+EKN_TYPE_TREE_NODE_COLUMN
+ekn_tree_node_column_get_type
+</SECTION>
+
+<SECTION>
 <FILE>style-classes</FILE>
 EKN_STYLE_CLASS_CARD
 EKN_STYLE_CLASS_COMPLETE
