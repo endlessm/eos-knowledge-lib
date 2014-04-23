@@ -1,0 +1,57 @@
+{
+    "@context":
+    {
+        "ekn": "ekn:",
+        "ekv": "ekn:_vocab/",
+        "schema": "http://schema.org/",
+        "xsd": "http://www.w3.org/2001/XMLSchema#",
+        "title": "schema:name",
+        "thumbnail": "schema:thumbnailURL",
+        "language": "schema:inLanguage",
+        "copyrightHolder": "schema:organization",
+        "sourceURL": "schema:sameAs",
+        "synopsis": "schema:description",
+        "license": "schema:Text",
+        "resources":
+        {
+            "@container": "@list",
+            "@id": "schema:CreativeWork"
+        },
+        "lastModifiedDate":
+        {
+            "@type": "xsd:dateTime",
+            "@id": "schema:dateModified"
+        },
+        "tags":
+        {
+            "@container": "@list",
+            "@id": "schema:keyword"
+        }
+    },
+    "@type": "ekv:ContentObject",
+    "@id": "ekn:text_editors/Emacs",
+    "title": "Emacs",
+    "tags": ["uninstall plz", "awful", "butterflies"],
+    "language": "pt-BR",
+    "synopsis": "Emacs was invented by Richard Stallman after a long night of drinking.",
+    "lastModifiedDate": "2013-05-09T04:12:44",
+    "license": "Creative-Commons", 
+    "resources": [
+        {
+            "@id": "ekn:text_editors/stallman_the_bard",
+            "@type": "ekv:ImageObject",
+            "contentUrl": "ekn:_media/stallman.jpg",
+            "caption": "Stallman drinks a beer while coding",
+            "contentSize": "60KB",
+            "encodingFormat": "jpeg"
+        },
+        {
+            "@id": "ekn:text_editors/emacs_screenshot",
+            "@type": "ekv:ImageObject",
+            "contentUrl": "ekn:_media/emacs.jpg",
+            "caption": "A screenshot of the emacs program",
+            "contentSize": "32KB",
+            "encodingFormat": "jpeg"
+        }
+    ]
+}

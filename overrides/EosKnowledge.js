@@ -16,6 +16,7 @@ const ListCard = imports.listCard;
 const ProgressCard = imports.progressCard;
 const TableOfContents = imports.tableOfContents;
 const TreeNode = imports.treeNode;
+const ContentObjectModel = imports.contentObjectModel;
 
 imports.searchPath = _oldSearchPath;
 
@@ -65,4 +66,5 @@ function _init() {
     EosKnowledge.TableOfContents = TableOfContents.TableOfContents;
     EosKnowledge.tree_model_from_tree_node = TreeNode.tree_model_from_tree_node;
     EosKnowledge.HomePageA = HomePageA.HomePageA;
+    EosKnowledge.ContentObjectModel = ContentObjectModel.ContentObjectModel;
 }
