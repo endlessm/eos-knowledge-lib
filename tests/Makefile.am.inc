@@ -15,6 +15,7 @@ javascript_tests = \
 	tests/eosknowledge/testProgressCard.js \
 	tests/eosknowledge/testTableOfContents.js \
 	tests/eosknowledge/testTreeNode.js \
+	tests/eosknowledge/testWebviewSwitcher.js \
 	$(NULL)
 EXTRA_DIST += \
 	$(javascript_tests) \

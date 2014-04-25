@@ -16,6 +16,7 @@ public_overrides = \
 	overrides/progressCard.js \
 	overrides/tableOfContents.js \
 	overrides/treeNode.js \
+	overrides/webviewSwitcherView.js \
 	$(NULL)
 private_overrides = \
 	overrides/compositeButton.js \
