@@ -3,13 +3,11 @@
 
 overridesdir = $(datadir)/gjs-1.0/overrides
 pkgoverridesdir = $(pkgdatadir)/overrides
-dist_pkgoverrides_DATA = \
+public_overrides = \
 	overrides/EosKnowledge.js \
 	overrides/articleCard.js \
 	overrides/card.js \
-	overrides/compositeButton.js \
 	overrides/contentObjectModel.js \
-	overrides/config.js \
 	overrides/homePageA.js \
 	overrides/lessonCard.js \
 	overrides/lightbox.js \
@@ -19,6 +17,11 @@ dist_pkgoverrides_DATA = \
 	overrides/tableOfContents.js \
 	overrides/treeNode.js \
 	$(NULL)
+private_overrides = \
+	overrides/compositeButton.js \
+	overrides/config.js \
+	$(NULL)
+dist_pkgoverrides_DATA = $(public_overrides) $(private_overrides)
 
 install-data-hook:
 	$(MKDIR_P) $(DESTDIR)$(overridesdir)
