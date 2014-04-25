@@ -1,4 +1,3 @@
-const Gio = imports.gi.Gio;
 const Lang = imports.lang;
 const Endless = imports.gi.Endless;
 
