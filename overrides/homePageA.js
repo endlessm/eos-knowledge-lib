@@ -95,6 +95,11 @@ const HomePageA = new Lang.Class({
         grid.attach(right_line, 2, 1, 1, 1);
         grid.attach(this._search_box, 0, 2, 3, 1);
 
+        this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_HOME_PAGE);
+        this._title_label.get_style_context().add_class(EosKnowledge.STYLE_CLASS_HOME_PAGE_TITLE);
+        this._subtitle_label.get_style_context().add_class(EosKnowledge.STYLE_CLASS_HOME_PAGE_SUBTITLE);
+        this._search_box.get_style_context().add_class(EosKnowledge.STYLE_CLASS_SEARCH_BOX);
+        this._card_grid.get_style_context().add_class(EosKnowledge.STYLE_CLASS_CARD_CONTAINER);
 
         this.add(grid);
         this.add(this._card_grid)

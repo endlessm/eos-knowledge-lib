@@ -16,10 +16,10 @@ describe('Card widget', function () {
             expect(card).toHaveCssClass('card');
         });
         it('has a descendant with title class', function () {
-            expect(card).toHaveDescendantWithCssClass('title');
+            expect(card).toHaveDescendantWithCssClass('card-title');
         });
         it('has a descendant with subtitle class', function () {
-            expect(card).toHaveDescendantWithCssClass('subtitle');
+            expect(card).toHaveDescendantWithCssClass('card-subtitle');
         });
         it('has a descendant with thumbnail class', function () {
             expect(card).toHaveDescendantWithCssClass('thumbnail');

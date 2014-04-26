@@ -71,8 +71,8 @@ const Card = new Lang.Class({
         this.setSensitiveChildren([this._title_label, this._subtitle_label, this._frame]);
 
         this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_CARD);
-        this._title_label.get_style_context().add_class(EosKnowledge.STYLE_CLASS_TITLE);
-        this._subtitle_label.get_style_context().add_class(EosKnowledge.STYLE_CLASS_SUBTITLE);
+        this._title_label.get_style_context().add_class(EosKnowledge.STYLE_CLASS_CARD_TITLE);
+        this._subtitle_label.get_style_context().add_class(EosKnowledge.STYLE_CLASS_CARD_SUBTITLE);
         this._frame.get_style_context().add_class(EosKnowledge.STYLE_CLASS_THUMBNAIL);
     },
 
