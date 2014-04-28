@@ -14,12 +14,15 @@ javascript_tests = \
 	tests/eosknowledge/testLightbox.js \
 	tests/eosknowledge/testListCard.js \
 	tests/eosknowledge/testProgressCard.js \
+	tests/eosknowledge/testSearchResults.js \
 	tests/eosknowledge/testSectionPageA.js \
 	tests/eosknowledge/testTableOfContents.js \
 	tests/eosknowledge/testTreeNode.js \
 	tests/eosknowledge/testWebviewSwitcher.js \
 	$(NULL)
 test_content = \
+	tests/test-content/article-search-results.jsonld \
+	tests/test-content/content-search-results.jsonld \
 	tests/test-content/emacs.jsonld \
 	tests/test-content/greyjoy-article.jsonld \
 	$(NULL)
