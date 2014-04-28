@@ -9,6 +9,7 @@ imports.searchPath.unshift(Endless.getCurrentFileDir());
 
 const ArticleCard = imports.articleCard;
 const Card = imports.card;
+const ContentObjectModel = imports.contentObjectModel;
 const HomePageA = imports.homePageA;
 const LessonCard = imports.lessonCard;
 const Lightbox = imports.lightbox;
@@ -16,7 +17,6 @@ const ListCard = imports.listCard;
 const ProgressCard = imports.progressCard;
 const TableOfContents = imports.tableOfContents;
 const TreeNode = imports.treeNode;
-const ContentObjectModel = imports.contentObjectModel;
 
 imports.searchPath = _oldSearchPath;
 
@@ -59,12 +59,12 @@ function _init() {
 
     EosKnowledge.ArticleCard = ArticleCard.ArticleCard;
     EosKnowledge.Card = Card.Card;
+    EosKnowledge.ContentObjectModel = ContentObjectModel.ContentObjectModel;
+    EosKnowledge.HomePageA = HomePageA.HomePageA;
     EosKnowledge.LessonCard = LessonCard.LessonCard;
     EosKnowledge.Lightbox = Lightbox.Lightbox;
     EosKnowledge.ListCard = ListCard.ListCard;
     EosKnowledge.ProgressCard = ProgressCard.ProgressCard;
     EosKnowledge.TableOfContents = TableOfContents.TableOfContents;
     EosKnowledge.tree_model_from_tree_node = TreeNode.tree_model_from_tree_node;
-    EosKnowledge.HomePageA = HomePageA.HomePageA;
-    EosKnowledge.ContentObjectModel = ContentObjectModel.ContentObjectModel;
 }

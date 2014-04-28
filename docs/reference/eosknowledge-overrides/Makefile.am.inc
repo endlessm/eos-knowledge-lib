@@ -9,6 +9,7 @@ naturaldocs_input_files = \
 	overrides/articleCard.js \
 	overrides/card.js \
 	overrides/config.js \
+	overrides/contentObjectModel.js \
 	overrides/homePageA.js \
 	overrides/lessonCard.js \
 	overrides/lightbox.js \
@@ -16,7 +17,6 @@ naturaldocs_input_files = \
 	overrides/progressCard.js \
 	overrides/tableOfContents.js \
 	overrides/treeNode.js \
-	overrides/ContentObjectModel.js \
 	$(NULL)
 # Stamp file is present if all the docs have been built, and carries the
 # timestamp of the last successful build.

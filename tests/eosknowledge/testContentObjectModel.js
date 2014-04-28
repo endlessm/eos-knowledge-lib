@@ -1,47 +1,53 @@
 const Endless = imports.gi.Endless;
 const EosKnowledge = imports.gi.EosKnowledge;
+const Gio = imports.gi.Gio;
 
 const CONTENT_OBJECT_EMACS = Endless.getCurrentFileDir() + '/../test-content/emacs.jsonld';
 
-function parse_object_from_file (filename) {
-    var file = Gio.file_new_for_path(CONTENT_OBJECT_EMACS);
-    var data = file.load_contents(null);
-    return JSON.parse(data[1]);
-};
+function parse_object_from_file (the_file) {
+    let file = Gio.file_new_for_path(the_file);
+    let [success, data] = file.load_contents(null);
+    return JSON.parse(data);
+}
 
 describe ("Content Object Model", function () {
     let contentObject;
     let mockContentData = parse_object_from_file(CONTENT_OBJECT_EMACS);
 
-    beforeEach (function() {
-        contentObject = new EosKnowledge.ContentObjectModel(mockContentData);
-    });
-
     describe ("Constructor", function () {
-        it ("throws error when '@type' is not present", function () {
-            let wrongData = {
-                "@context": "ekn:context/FooBar",
-                "@id": "http://localhost:3000/v2/text_editors/Emacs"
-            };
-
-            expect(function () {
-                let wrong = new EosKnowledge.ContentObjectModel(wrongData);
-            }).toThrow();
+        it ("successfully creates new object from properties", function () {
+            print(mockContentData["@id"]);
+            contentObject = new EosKnowledge.ContentObjectModel({
+                ekn_id : mockContentData["@id"],
+                title : mockContentData.title,
+                thumbnail_uri : mockContentData.thumbnail,
+                language : mockContentData.language,
+                copyright_holder : mockContentData.copyrightHolder,
+                source_uri : mockContentData.sourceURL,
+                synopsis : mockContentData.synopsis,
+                last_modified_date : mockContentData.lastModifiedDate,
+                license : mockContentData.license
+            });
+            expect(contentObject.title).toEqual(mockContentData.title);
         });
 
-        it ("throws error when '@id' is not present", function () {
-            let wrongData = {
-                "@type": "ekn:vocab/ContentObject",
-                "@context": "ekn:context/FooBar"
-            };
-
-            expect(function () {
-                let wrong = new EosKnowledge.ContentObjectModel(wrongData);
-            }).toThrow();
+        it ("successfully creates new object from JSON-LD data", function () {
+            contentObject = EosKnowledge.ContentObjectModel.new_from_json_ld(mockContentData);
+            expect(contentObject.title).toEqual(mockContentData.title);
         });
     });
 
     describe ("Properties", function () {
+        beforeEach (function() {
+            contentObject = EosKnowledge.ContentObjectModel.new_from_json_ld(mockContentData);
+            contentObject.set_resources(mockContentData.resources);
+            contentObject.set_tags(mockContentData.tags);
+        });
+
+        it ("should have an ID", function () {
+            expect(contentObject.ekn_id).toEqual(mockContentData["@id"]);
+        });
+
         it ("should have a title", function () {
             expect(contentObject.title).toEqual(mockContentData["title"]);
         });
@@ -59,11 +65,11 @@ describe ("Content Object Model", function () {
         });
 
         it ("should have tags", function () {
-            expect(contentObject.tags).toEqual(mockContentData["tags"]);
+            expect(contentObject.get_tags()).toEqual(mockContentData["tags"]);
         });
 
         it ("should have a license", function () {
             expect(contentObject.license).toEqual(mockContentData["license"]);
         });
-    })
+    });
 });

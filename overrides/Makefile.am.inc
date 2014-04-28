@@ -8,6 +8,7 @@ dist_pkgoverrides_DATA = \
 	overrides/articleCard.js \
 	overrides/card.js \
 	overrides/compositeButton.js \
+	overrides/contentObjectModel.js \
 	overrides/config.js \
 	overrides/homePageA.js \
 	overrides/lessonCard.js \
@@ -16,7 +17,6 @@ dist_pkgoverrides_DATA = \
 	overrides/progressCard.js \
 	overrides/tableOfContents.js \
 	overrides/treeNode.js \
-	overrides/ContentObjectModel.js \
 	$(NULL)
 
 install-data-hook:

@@ -35,7 +35,10 @@
     "language": "pt-BR",
     "synopsis": "Emacs was invented by Richard Stallman after a long night of drinking.",
     "lastModifiedDate": "2013-05-09T04:12:44",
-    "license": "Creative-Commons", 
+    "license": "Creative-Commons",
+    "copyrightHolder": "Wikimedia Foundation",
+    "sourceURL": "http://en.wikipedia.org/wiki/Emacs",
+    "thumbnail": "http://upload.wikimedia.org/wikipedia/commons/e/ef/Emacs_Dired_buffers.png",
     "resources": [
         {
             "@id": "ekn:text_editors/stallman_the_bard",

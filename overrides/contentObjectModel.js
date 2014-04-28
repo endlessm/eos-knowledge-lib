@@ -5,83 +5,96 @@ const EosKnowledge = imports.gi.EosKnowledge;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-
-
-// Objects as properties. This won't be necessary in gjs 3.12 and will
-// actually break as the ParamSpec._new_internal signature will change.
-GObject.ParamSpec.object = function (name, nick, blurb, flags, klass) {
-    let gtype = klass? klass.$gtype : GObject.TYPE_OBJECT;
-    return GObject.ParamSpec._new_internal(name, gtype, nick, blurb, flags);
-};
+const Lang = imports.lang;
 
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 
-const CONTENT_OBJECT_TYPE = "ekv:ContentObject";
-
+/**
+ * Class: ContentObjectModel
+ * This is the base class for all content objects in the knowledge app.
+ *
+ * This object can be configured with a <title>, <thumbnail-uri>, <language>,
+ * <copyright-holder>, <source-uri>, <synopsis>, <resources>, <last-modified-date>, 
+ * <tags>, and <license> properties.
+ */
 const ContentObjectModel = new Lang.Class({
-    Name: "ContentObjectModel",
+    Name: 'ContentObjectModel',
     GTypeName: 'EknContentObjectModel',
     Extends: GObject.Object,
     Properties: {
-        "title": GObject.ParamSpec.string("title", "Title", "Object's Title",
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT, ""),
-        "thumbnail": GObject.ParamSpec.string("thumbnail", "Thumbnail URL", "URL of the Object's Thumbnail",
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT, ""),
-        "language": GObject.ParamSpec.string("language", "Language", "Object's Language",
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT, ""),
-        "copyright_holder": GObject.ParamSpec.string("copyright_holder", "Copyright Holder", "Object's Copyright Holder",
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT, ""),
-        "source_url": GObject.ParamSpec.string("source_url", "Source URL", "URL of the Object's Source Page",
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT, ""),
-        "synopsis": GObject.ParamSpec.string("synopsis", "Synopsis", "Object's Synopsis",
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT, ""),
-        "resources": GObject.ParamSpec.object("resources", "Resources", "Object's Resources", 
-            GObject.ParamFlags.READWRITE, GObject.Object),
-        "last_modified_date": GObject.ParamSpec.string("last_modified_date", "Last Modified Date", "Object's Last Modified Date",
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT, ""),
-        "tags": GObject.ParamSpec.object("tags", "Tags", "Object's Tags", 
-            GObject.ParamFlags.READWRITE, GObject.Object),
-        "license": GObject.ParamSpec.string("license", "License", "Object's License",
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT, "")
+        /**
+         * Property: ekn-id
+         * A string with the ID of the content object. This is an internal ID assigned by EKN.
+         */
+        'ekn-id': GObject.ParamSpec.string('ekn-id', 'Object\'s ID', 'The ID of a document or media object',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT, ''),
+        /**
+         * Property: title
+         * A string with the title of the content object. Defaults to an empty string.
+         */
+        'title': GObject.ParamSpec.string('title', 'Title', 'The title of a document or media object',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT, ''),
+        /**
+         * Property: thumbnail-uri
+         * A string with the URI of the thumbnail image. An empty string means
+         * no thumbnail should be visible. Defaults to an empty string.
+         */
+        'thumbnail-uri': GObject.ParamSpec.string('thumbnail-uri', 'Thumbnail URI', 'URI of the thumbnail image',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT, ''),
+        /**
+         * Property: language
+         * The language for this content object. Defaults to an empty string.
+         */
+        'language': GObject.ParamSpec.string('language', 'Language', 'Language of the document or media object',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT, ''),
+        /**
+         * Property: copyright-holder
+         * The copyright holder for this content object. Defaults to an empty string.
+         */
+        'copyright-holder': GObject.ParamSpec.string('copyright-holder', 'Copyright Holder', 'The copyright holder of the object',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT, ''),
+        /**
+         * Property: source-uri
+         * A string with the URI to the source for this content object.
+         * TODO Should we check to always have a value for <source-uri>?
+         */
+        'source-uri': GObject.ParamSpec.string('source-uri', 'Source URL', 'URI of the source page',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT, ''),
+        /**
+         * Property: synopsis
+         * The synopsis for this content object. Defaults to an empty string.
+         */
+        'synopsis': GObject.ParamSpec.string('synopsis', 'Synopsis', 'Synopsis of the document or media object',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT, ''),
+        /**
+         * Property: last-modified-date
+         * The date of last modification for this content object. It treats dates
+         * according to the ISO8601 standard.
+         */
+        'last-modified-date': GObject.ParamSpec.string('last_modified_date', 'Last Modified Date', 'Last Modified Date of the document or media object',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT, ''),
+        /**
+         * Property: license
+         * The license for this content object. Defaults to an empty string.
+         */
+        'license': GObject.ParamSpec.string('license', 'License', 'License of the document or media object',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT, '')
     },
 
-    _init: function (json_ld_object, params) {
+    _init: function (params) {
         this.parent(params);
-
-        if (typeof json_ld_object["@id"] === "undefined") {
-            throw new Error("Content object ID is missing.");
-        }
-        if (typeof json_ld_object["@type"] === "undefined") {
-            throw new Error("Content object type is missing.");
-        }
-
-        this._new_from_json_ld(json_ld_object);
     },
 
-    _new_from_json_ld: function (json_ld_data) {
-        this._id = json_ld_data["@id"];
-        this._title = json_ld_data["title"];
-        this._thumbnail = json_ld_data["thumbnail"];
-        this._language = json_ld_data["language"];
-        this._copyright_holder = json_ld_data["copyrightHolder"];
-        this._source_url = json_ld_data["sourceURL"];
-        this._synopsis = json_ld_data["synopsis"];
-        this._last_modified_date = new Date(json_ld_data["lastModifiedDate"]);
-        this._tags = json_ld_data["tags"];
-        this._license = json_ld_data["license"];
-
-        this._resources = [];
-        for (let resource in json_ld_data["resources"]) {
-            this._resources.push(resource);
-        }
+    get ekn_id () {
+        return this._ekn_id;
     },
- 
+
     get title () {
         return this._title;
     },
 
-    get thumbnail () {
-        return this._thumbnail;
+    get thumbnail_uri () {
+        return this._thumbnail_uri;
     },
 
     get language () {
@@ -100,28 +113,32 @@ const ContentObjectModel = new Lang.Class({
         return this._synopsis;
     },
 
-    get resources () {
-        return this._resources;
-    },
-
     get last_modified_date () {
-        return this._last_modified_date;
-    },
-
-    get tags () {
-        return this._tags;
+        return new Date(this._last_modified_date);
     },
 
     get license () {
         return this._license;
     },
 
+    get_resources: function () {
+        return this._resources;
+    },
+
+    get_tags: function () {
+        return this._tags;
+    },
+
+    set ekn_id (v) {
+        this._ekn_id = v;
+    },
+
     set title (v) {
         this._title = v;
     },
 
-    set thumbnail (v) {
-        this._thumbnail = v;
+    set thumbnail_uri (v) {
+        this._thumbnail_uri = v;
     },
 
     set language (v) {
@@ -140,19 +157,44 @@ const ContentObjectModel = new Lang.Class({
         this._synopsis = v;
     },
 
-    set resources (v) {
-        this._resources = v;
-    },
-
     set last_modified_date (v) {
         this._last_modified_date = v;
     },
 
-    set tags (v) {
-        this._tags = v;
-    },
-
     set license (v) {
         this._license = v;
+    },
+
+    set_resources: function (v) {
+        if (this._resources === undefined) {
+            this._resources = [];
+        }
+        this._resources = v;
+    },
+
+    set_tags: function (v) {
+        if (this._tags === undefined) {
+            this._tags = [];
+        }
+        this._tags = v;
     }
 });
+
+ContentObjectModel.new_from_json_ld = function (json_ld_data) {
+    let props = ContentObjectModel._props_from_json_ld(json_ld_data);
+    return new EosKnowledge.ContentObjectModel(props);
+};
+
+ContentObjectModel._props_from_json_ld = function (json_ld_data) {
+    return {
+        ekn_id: json_ld_data["@id"],
+        title: json_ld_data.title,
+        thumbnail_uri : json_ld_data.thumbnail,
+        language : json_ld_data.language,
+        copyright_holder : json_ld_data.copyrightHolder,
+        source_uri : json_ld_data.sourceURL,
+        synopsis : json_ld_data.synopsis,
+        last_modified_date : json_ld_data.lastModifiedDate,
+        license : json_ld_data.license
+    };
+};
