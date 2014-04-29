@@ -8,13 +8,6 @@ const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 const Pango = imports.gi.Pango;
 
-// Objects as properties. This won't be necessary in gjs 3.12 and will
-// actually break as the ParamSpec._new_internal signature will change.
-GObject.ParamSpec.object = function (name, nick, blurb, flags, klass) {
-    let gtype = klass? klass.$gtype : GObject.TYPE_OBJECT;
-    return GObject.ParamSpec._new_internal(name, gtype, nick, blurb, flags);
-};
-
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 
 /**
@@ -52,7 +45,7 @@ const TableOfContents = new Lang.Class({
          */
         'section-list': GObject.ParamSpec.object('section-list', 'Section List',
             'TODO',
-            GObject.ParamFlags.READWRITE),
+            GObject.ParamFlags.READWRITE, GObject.Object),
         /**
          * Property: selected-section
          *
