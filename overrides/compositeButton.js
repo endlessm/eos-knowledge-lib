@@ -1,6 +1,8 @@
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
+const MarginButton = imports.marginButton;
+
 // Class for buttons whose :hover and :active CSS pseudoclass states should be
 // inherited by some of their child widgets, since as of GTK 3.10 these flags no
 // longer propagate from a widget to its children. Widgets in sensitiveChildren
@@ -10,7 +12,7 @@ const Lang = imports.lang;
 const CompositeButton = new Lang.Class({
     Name: 'CompositeButton',
     GTypeName: 'CompositeButton',
-    Extends: Gtk.Button,
+    Extends: MarginButton.MarginButton,
 
     _INHERITED_FLAGS: [Gtk.StateFlags.PRELIGHT, Gtk.StateFlags.ACTIVE],
 

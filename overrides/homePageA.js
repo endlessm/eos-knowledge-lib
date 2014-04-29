@@ -1,5 +1,6 @@
 // Copyright 2014 Endless Mobile, Inc.
 
+const Endless = imports.gi.Endless;
 const EosKnowledge = imports.gi.EosKnowledge;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
@@ -62,8 +63,7 @@ const HomePageA = new Lang.Class({
 
         props.orientation = Gtk.Orientation.VERTICAL;
 
-        this._card_grid = new Gtk.Grid({
-            margin_bottom: 30,
+        this._card_container = new HomePageACardContainer({
             halign: Gtk.Align.CENTER
         });
 
@@ -99,10 +99,10 @@ const HomePageA = new Lang.Class({
         this._title_label.get_style_context().add_class(EosKnowledge.STYLE_CLASS_HOME_PAGE_TITLE);
         this._subtitle_label.get_style_context().add_class(EosKnowledge.STYLE_CLASS_HOME_PAGE_SUBTITLE);
         this._search_box.get_style_context().add_class(EosKnowledge.STYLE_CLASS_SEARCH_BOX);
-        this._card_grid.get_style_context().add_class(EosKnowledge.STYLE_CLASS_CARD_CONTAINER);
+        this._card_container.get_style_context().add_class(EosKnowledge.STYLE_CLASS_CARD_CONTAINER);
 
         this.add(grid);
-        this.add(this._card_grid)
+        this.add(this._card_container)
         this.show_all();
     },
 
@@ -135,21 +135,11 @@ const HomePageA = new Lang.Class({
     set cards (v) {
         if (this._cards === v)
             return;
-        if (this._cards !== null){
-            for (let card of this._cards) {
-                this._card_grid.remove(card);
-            }
-        }
-
+        if (this._cards !== null)
+            this._card_container.remove_cards();
         this._cards = v;
-        if (this._cards !== null){
-            for (let card of this._cards) {
-                card.margin_left = 20;
-                card.margin_right = 20;
-                card.halign = Gtk.Align.CENTER;
-                this._card_grid.add(card);
-            }
-        }
+        if (this._cards !== null)
+            this._card_container.add_cards(this._cards);
     },
 
     get cards () {
@@ -160,4 +150,78 @@ const HomePageA = new Lang.Class({
         this.emit('search-entered', widget.text);
     },
 
+});
+
+// Private class to handle the special card container we need on the home
+// page. Will show as many cards horizontally as there are space for, though
+// always shows at least one card.
+const HomePageACardContainer = new Lang.Class({
+    Name: 'HomePageACardContainer',
+    GTypeName: 'EknHomePageACardContainer',
+    Extends: Endless.CustomContainer,
+
+    _init: function (props) {
+        this.parent(props);
+    },
+
+    add_cards: function (cards) {
+        this._cards = cards;
+        for (let card of cards) {
+            this.add(card);
+        }
+    },
+
+    remove_cards: function () {
+        for (let card of this._cards) {
+            this.remove(card);
+        }
+    },
+
+    vfunc_size_allocate: function (alloc) {
+        this.parent(alloc);
+        let [min, nat] = this._cards_max_preferred_width();
+        let visible_cards =  Math.floor(alloc.width / min);
+        let total_width = alloc.width;
+        alloc.width  = Math.min(alloc.width / visible_cards, nat);
+        // Always center the cards in the given allocation
+        let extra_width = total_width - alloc.width * visible_cards;
+        alloc.x += extra_width / 2;
+        for (let card_index = 0; card_index < this._cards.length; card_index++) {
+            let card = this._cards[card_index];
+            if (card_index < visible_cards) {
+                card.size_allocate(alloc);
+                alloc.x += alloc.width;
+                card.set_child_visible(true);
+            } else {
+                card.set_child_visible(false);
+            }
+        }
+    },
+
+    _cards_max_preferred_width: function () {
+        let min = 0, nat = 0;
+        for (let card of this._cards) {
+            let [card_min, card_nat] = card.get_preferred_width();
+            min = Math.max(min, card_min);
+            nat = Math.max(nat, card_nat);
+        }
+        return [min, nat];
+    },
+
+    vfunc_get_preferred_width: function () {
+        let [min, nat] = this._cards_max_preferred_width();
+        // Try to show all cards at natural width, but at worst we show one at
+        // minimal width.
+        return [min, nat * this._cards.length];
+    },
+
+    vfunc_get_preferred_height: function () {
+        let min = 0, nat = 0;
+        for (let card of this._cards) {
+            let [card_min, card_nat] = card.get_preferred_height();
+            min = Math.max(min, card_min);
+            nat = Math.max(nat, card_nat);
+        }
+        return [min, nat];
+    }
 });

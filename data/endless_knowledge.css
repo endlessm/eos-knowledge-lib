@@ -1,6 +1,7 @@
 .card {
     border-radius: 5px;
     padding: 10px;
+    margin: 30px;
     color: orange;
     background-color: white;
     transition:color 250ms ease-in-out;
