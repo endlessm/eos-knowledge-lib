@@ -1,0 +1,58 @@
+{
+    "@context": [
+        "http://localhost:3000/v2/_context/ContentObject.jsonld",
+        {
+            "wordCount": "schema:Integer",
+            "articleBody": "schema:mainContentText",
+            "treeNode": "ekv:TreeNode#",
+            "hasContent": {
+                "@type": "@id",
+                "@id": "treeNode:hasContent"
+            },
+            "hasParent": "treeNode:hasParent",
+            "hasLabel": "treeNode:hasLabel",
+            "hasIndex": "treeNode:hasIndex",
+            "hasIndexLabel": "treeNode:hasIndexLabel",
+            "tableOfContents": {
+                "@container": "@list",
+                "@id": "ekv:TreeNode"
+            }
+        }
+    ],
+    "@id": "ekn:asoiaf/House_Greyjoy",
+    "@type": "ekv:ArticleObject",
+    "title": "House Greyjoy",
+    "synopsis": "We Do Not Sow",
+    "articleBody": "lame",
+    "tableOfContents": [
+        {
+            "@id": "_:1",
+            "nodeIndex": 0,
+            "nodeIndexLabel": "1",
+            "nodeLabel": "History",
+            "nodeContent": "ekn:asoiaf/House_Greyjoy#History"
+        },
+        {
+            "@id": "_:1.a",
+            "nodeIndex": 0,
+            "nodeIndexLabel": "1.a",
+            "nodeLabel": "When They Used To Be Cool",
+            "nodeParent": "_:1",
+            "nodeContent": "ekn:asoiaf/House_Greyjoy#Never"
+        },
+        {
+            "@id": "_:2",
+            "nodeIndex": 1,
+            "nodeIndexLabel": "2",
+            "nodeLabel": "Sigil",
+            "nodeContent": "ekn:asoiaf/House_Greyjoy#Literally_A_Squid"
+        },
+        {
+            "@id": "_:3",
+            "nodeIndex": 2,
+            "nodeIndexLabel": "3",
+            "nodeLabel": "Criticisms",
+            "nodeContent": "ekn:asoiaf/House_Greyjoy#Seriously"
+        } 
+    ]
+}
