@@ -107,14 +107,14 @@
     transition: background-color 150ms ease-in-out;
     border-radius: 1.75em;
     padding: .75em 0em .75em 0em;
-    margin-bottom: 4px;
+    margin-bottom: .4em;
 }
 
-.toc-entry .title {
+.toc-entry-title {
     padding-left: 1.5em;
 }
 
-.toc-entry .index {
+.toc-entry-index {
     padding: 0em 2em 0em 2em;
 }
 
@@ -156,7 +156,7 @@
     border-radius: 1.75em 0em 0em 1.75em;
 }
 
-.toc.collapsed .toc-entry .index {
+.toc.collapsed .toc-entry-index {
     padding-left: 0em;
     padding-right: 0em;
 }

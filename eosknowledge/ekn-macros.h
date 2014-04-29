@@ -116,13 +116,6 @@ enum_type##_get_type (void) \
  */
 #define EKN_STYLE_CLASS_TOC "toc"
 
- /**
- * EKN_STYLE_CLASS_TOC_TITLE:
- *
- * A CSS class to match the title of a TableOfContents widget.
- */
-#define EKN_STYLE_CLASS_TOC_TITLE "toc-title"
-
 /**
  * EKN_STYLE_CLASS_TOC_ENTRY:
  *
@@ -130,19 +123,26 @@ enum_type##_get_type (void) \
  */
 #define EKN_STYLE_CLASS_TOC_ENTRY "toc-entry"
 
+ /**
+ * EKN_STYLE_CLASS_TOC_ENTRY_TITLE:
+ *
+ * A CSS class to match the title of an entry in a TableOfContents widget.
+ */
+#define EKN_STYLE_CLASS_TOC_ENTRY_TITLE "toc-entry-title"
+
+/**
+ * EKN_STYLE_CLASS_TOC_ENTRY_INDEX:
+ *
+ * A CSS class to match the index label of an entry in a TableOfContents widget.
+ */
+#define EKN_STYLE_CLASS_TOC_ENTRY_INDEX "toc-entry-index"
+
 /**
  * EKN_STYLE_CLASS_TOC_ARROW:
  *
  * A CSS class to match the arrow buttons in the TableOfContents widget.
  */
 #define EKN_STYLE_CLASS_TOC_ARROW "toc-arrow"
-
-/**
- * EKN_STYLE_CLASS_TOC_INDEX:
- *
- * A CSS class to match the index label of a TableOfContents widget.
- */
-#define EKN_STYLE_CLASS_TOC_INDEX "toc-index"
 
 /**
  * EKN_STYLE_CLASS_COLLAPSED:

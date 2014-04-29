@@ -38,17 +38,20 @@ const TableOfContents = new Lang.Class({
     Extends: Endless.CustomContainer,
     Properties: {
         /**
-         * Property: section-list
+         * Property: section_list
          *
          * An array of strings defining the section titles to display in the
          * table on contents. Each section entry in the table of contents will
          * display a title as specified here along with an sequential index,
          * starting at 1.
+         *
+         * Note: because gjs does not support list properties for gobjects,
+         * this is not a gobject property right now. This must be set via
+         * assignment and not during object construction. The notify signal
+         * will not function on this property.
+         *
          * > toc.section_list = ['apple', 'orange', 'banana'];
          */
-        'section-list': GObject.ParamSpec.object('section-list', 'Section List',
-            'List of sections to display in the table of contents.',
-            GObject.ParamFlags.READWRITE, GObject.Object),
         /**
          * Property: selected-section
          *
@@ -160,7 +163,6 @@ const TableOfContents = new Lang.Class({
         }
         this._build_sections();
         this.notify('selected-section');
-        this.notify('section-list');
     },
 
     get section_list () {
@@ -179,7 +181,7 @@ const TableOfContents = new Lang.Class({
     },
 
     get selected_section () {
-        if (this._selected_section!==undefined)
+        if (typeof this._selected_section !== 'undefined')
             return this._selected_section;
         return -1;
     },
@@ -309,7 +311,7 @@ const TableOfContents = new Lang.Class({
         // up arrow should be insensitive. If we are at the bottom of the list
         // the down arrow should be. Both should be insensitive if nothing is selected
         this._up_arrow.set_sensitive(this._selected_section > 0);
-        this._down_arrow.set_sensitive(this._selected_section < this._section_list.length -1
+        this._down_arrow.set_sensitive(this._selected_section < this._section_list.length - 1
                                        && this._selected_section > -1);
     },
 
@@ -357,7 +359,7 @@ const SectionButton = new Lang.Class({
             xalign: 0,
             no_show_all: true
         });
-        this.title_label.get_style_context().add_class(EosKnowledge.STYLE_CLASS_TOC_TITLE);
+        this.title_label.get_style_context().add_class(EosKnowledge.STYLE_CLASS_TOC_ENTRY_TITLE);
         this._title_bold = new Gtk.Label({
             label: "<b>" + section_title + "</b>",
             use_markup: true,
@@ -375,7 +377,7 @@ const SectionButton = new Lang.Class({
         this.index_label = new Gtk.Label({
             label: (section_index + 1).toString()
         });
-        this.index_label.get_style_context().add_class(EosKnowledge.STYLE_CLASS_TOC_INDEX);
+        this.index_label.get_style_context().add_class(EosKnowledge.STYLE_CLASS_TOC_ENTRY_INDEX);
 
         let box = new Gtk.Box({
             orientation: Gtk.Orientation.HORIZONTAL
