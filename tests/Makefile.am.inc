@@ -19,6 +19,7 @@ javascript_tests = \
 EXTRA_DIST += \
 	$(javascript_tests) \
 	tests/CssClassMatcher.js \
+	tests/test-content/emacs.jsonld \
 	$(NULL)
 
 # Run tests when running 'make check'
