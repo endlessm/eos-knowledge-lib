@@ -9,6 +9,7 @@ naturaldocs_input_files = \
 	overrides/articleCard.js \
 	overrides/card.js \
 	overrides/config.js \
+	overrides/homePageA.js \
 	overrides/lessonCard.js \
 	overrides/lightbox.js \
 	overrides/listCard.js \

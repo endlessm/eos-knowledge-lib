@@ -9,6 +9,7 @@ dist_pkgoverrides_DATA = \
 	overrides/card.js \
 	overrides/compositeButton.js \
 	overrides/config.js \
+	overrides/homePageA.js \
 	overrides/lessonCard.js \
 	overrides/lightbox.js \
 	overrides/listCard.js \

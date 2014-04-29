@@ -9,6 +9,7 @@ imports.searchPath.unshift(Endless.getCurrentFileDir());
 
 const ArticleCard = imports.articleCard;
 const Card = imports.card;
+const HomePageA = imports.homePageA;
 const LessonCard = imports.lessonCard;
 const Lightbox = imports.lightbox;
 const ListCard = imports.listCard;
@@ -63,4 +64,5 @@ function _init() {
     EosKnowledge.ProgressCard = ProgressCard.ProgressCard;
     EosKnowledge.TableOfContents = TableOfContents.TableOfContents;
     EosKnowledge.tree_model_from_tree_node = TreeNode.tree_model_from_tree_node;
+    EosKnowledge.HomePageA = HomePageA.HomePageA;
 }

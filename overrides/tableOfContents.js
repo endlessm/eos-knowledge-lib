@@ -311,7 +311,7 @@ const SectionButton = new Lang.Class({
             xalign: 0,
             no_show_all: true
         });
-        this._title.get_style_context().add_class(EosKnowledge.STYLE_CLASS_TITLE);
+        this._title.get_style_context().add_class(EosKnowledge.STYLE_CLASS_TOC_TITLE);
         let number = new Gtk.Label({
             label: (section_index + 1).toString()
         });

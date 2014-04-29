@@ -60,11 +60,18 @@ enum_type##_get_type (void) \
 #define EKN_STYLE_CLASS_COMPLETE "complete"
 
 /**
- * EKN_STYLE_CLASS_SUBTITLE:
+ * EKN_STYLE_CLASS_CARD_SUBTITLE:
  *
- * A CSS class to match a #GtkLabel or similar widget representing a subtitle.
+ * A CSS class to match the subtitle on a card.
  */
-#define EKN_STYLE_CLASS_SUBTITLE "subtitle"
+#define EKN_STYLE_CLASS_CARD_SUBTITLE "card-subtitle"
+
+/**
+ * EKN_STYLE_CLASS_CARD_TITLE:
+ *
+ * A CSS class to match the title on a card
+ */
+#define EKN_STYLE_CLASS_CARD_TITLE "card-title"
 
 /**
  * EKN_STYLE_CLASS_THUMBNAIL:
@@ -73,14 +80,6 @@ enum_type##_get_type (void) \
  * illustration, for example on a #EknCard.
  */
 #define EKN_STYLE_CLASS_THUMBNAIL "thumbnail"
-
-/**
- * EKN_STYLE_CLASS_TITLE:
- *
- * A CSS class to match a #GtkLabel or similar widget representing the title of
- * something.
- */
-#define EKN_STYLE_CLASS_TITLE "title"
 
 /**
  * EKN_STYLE_CLASS_LIGHTBOX:
@@ -125,6 +124,13 @@ enum_type##_get_type (void) \
  */
 #define EKN_STYLE_CLASS_TOC "toc"
 
+ /**
+ * EKN_STYLE_CLASS_TOC_TITLE:
+ *
+ * A CSS class to match the title of a TableOfContents widget.
+ */
+#define EKN_STYLE_CLASS_TOC_TITLE "toc-title"
+
 /**
  * EKN_STYLE_CLASS_TOC_ENTRY:
  *
@@ -138,5 +144,40 @@ enum_type##_get_type (void) \
  * A CSS class to match widgets in a collapsed state.
  */
 #define EKN_STYLE_CLASS_COLLAPSED "collapsed"
+
+ /**
+ * EKN_STYLE_CLASS_HOME_PAGE:
+ *
+ * A CSS class to match the HomePage of the knowledge apps.
+ */
+#define EKN_STYLE_CLASS_HOME_PAGE "home-page"
+
+ /**
+ * EKN_STYLE_CLASS_HOME_PAGE_TITLE:
+ *
+ * A CSS class to match the title on the HomePage of the knowledge apps.
+ */
+#define EKN_STYLE_CLASS_HOME_PAGE_TITLE "home-page-title"
+
+ /**
+ * EKN_STYLE_CLASS_HOME_PAGE_SUBTITLE:
+ *
+ * A CSS class to match the subtitle on the HomePage of the knowledge apps.
+ */
+#define EKN_STYLE_CLASS_HOME_PAGE_SUBTITLE "home-page-subtitle"
+
+ /**
+ * EKN_STYLE_CLASS_SEARCH_BOX:
+ *
+ * A CSS class to match the search box of the knowledge apps.
+ */
+#define EKN_STYLE_CLASS_SEARCH_BOX "search-box"
+
+ /**
+ * EKN_STYLE_CLASS_CARD_CONTAINER:
+ *
+ * A CSS class to match the horizontal card container of the knowledge apps.
+ */
+#define EKN_STYLE_CLASS_CARD_CONTAINER "card-container"
 
 #endif /* EKN_MACROS_H */
