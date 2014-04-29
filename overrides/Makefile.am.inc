@@ -8,6 +8,7 @@ dist_pkgoverrides_DATA = \
 	overrides/articleCard.js \
 	overrides/card.js \
 	overrides/compositeButton.js \
+	overrides/contentObjectModel.js \
 	overrides/config.js \
 	overrides/homePageA.js \
 	overrides/lessonCard.js \
