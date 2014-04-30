@@ -3,6 +3,8 @@ const Gtk = imports.gi.Gtk;
 
 const CssClassMatcher = imports.CssClassMatcher;
 
+Gtk.init(null);
+
 describe('Table of contents widget', function () {
     let toc;
     let short_list = ['apple', 'orange', 'banana'];
