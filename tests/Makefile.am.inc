@@ -16,8 +16,12 @@ javascript_tests = \
 	tests/eosknowledge/testTableOfContents.js \
 	tests/eosknowledge/testTreeNode.js \
 	$(NULL)
+test_content = \
+	tests/test-content/emacs.jsonld \
+	$(NULL)
 EXTRA_DIST += \
 	$(javascript_tests) \
+	$(test_content) \
 	tests/CssClassMatcher.js \
 	tests/test-content/emacs.jsonld \
 	$(NULL)
