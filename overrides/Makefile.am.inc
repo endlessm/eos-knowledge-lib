@@ -14,6 +14,7 @@ dist_pkgoverrides_DATA = \
 	overrides/lessonCard.js \
 	overrides/lightbox.js \
 	overrides/listCard.js \
+	overrides/marginButton.js \
 	overrides/progressCard.js \
 	overrides/tableOfContents.js \
 	overrides/treeNode.js \
