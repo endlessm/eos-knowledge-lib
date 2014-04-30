@@ -55,7 +55,6 @@ const HomePageA = new Lang.Class({
         props = props || {};
         this._title_label = new Gtk.Label();
         this._subtitle_label = new Gtk.Label();
-        this._background_provider = new Gtk.CssProvider();
 
         this._cards = null;
         this._title = null;
