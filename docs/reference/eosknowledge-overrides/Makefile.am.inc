@@ -32,8 +32,15 @@ DISTCLEANFILES += \
 distclean-local::
 	@rm -rf docs/reference/eosknowledge-overrides/html
 
+# Copy from $builddir first, and if that's not there (for example during
+# distcheck the docs don't get rebuilt because the stamp file is already there
+# and the source files are not newer) copy from $srcdir.
 dist-hook::
 	@mkdir -p $(distdir)/docs/reference/eosknowledge-overrides/html
-	@cp -r docs/reference/eosknowledge-overrides/html/* $(distdir)/docs/reference/eosknowledge-overrides/html
+	@if test -d docs/reference/eosknowledge-overrides/html; then \
+		cp -r docs/reference/eosknowledge-overrides/html/* $(distdir)/docs/reference/eosknowledge-overrides/html; \
+	elif test -d $(srcdir)/docs/reference/eosknowledge-overrides/html; then \
+		cp -r $(srcdir)/docs/reference/eosknowledge-overrides/html/* $(distdir)/docs/reference/eosknowledge-overrides/html; \
+	fi
 
 endif
