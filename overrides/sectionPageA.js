@@ -58,6 +58,8 @@ const SectionPageA = new Lang.Class({
 
         this._content_grid.add(this._title_label);
 
+        this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_SECTION_PAGE);
+        this._title_label.get_style_context().add_class(EosKnowledge.STYLE_CLASS_SECTION_PAGE_TITLE);
         this.add(this._content_grid);
         this.show_all();
     },
@@ -124,6 +126,10 @@ const CardsSegment = new Lang.Class({
 
     _init: function (props) {
         props = props || {};
+        props.column_spacing = 20;
+        props.row_spacing = 20;
+        props.expand = true;
+
         this._title_label = new Gtk.Label({
             halign: Gtk.Align.START,
             valign: Gtk.Align.START,
@@ -149,6 +155,8 @@ const CardsSegment = new Lang.Class({
         this.attach(this._title_label, 0, 1, 1, 1);
         this.attach(this._flexi_grid, 1, 1, 1, 1);
 
+        this._title_label.get_style_context().add_class(EosKnowledge.STYLE_CLASS_SECTION_PAGE_SEGMENT_TITLE);
+
     },
 
     get title () {
@@ -160,7 +168,7 @@ const CardsSegment = new Lang.Class({
     set title (v) {
         if (this._title === v) return;
         this._title = v;
-        this._title_label.label = this._title;
+        this._title_label.label = this._title.toUpperCase();
         this.notify('title');
     },
 
