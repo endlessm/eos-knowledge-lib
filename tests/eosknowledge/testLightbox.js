@@ -1,7 +1,9 @@
-const Gtk = imports.gi.Gtk;
 const EosKnowledge = imports.gi.EosKnowledge;
+const Gtk = imports.gi.Gtk;
 
 const CssClassMatcher = imports.CssClassMatcher;
+
+Gtk.init(null);
 
 describe('Lightbox widget', function () {
     let lightbox, lightbox_widget, infobox_widget, notify;

@@ -1,6 +1,9 @@
 const EosKnowledge = imports.gi.EosKnowledge;
+const Gtk = imports.gi.Gtk;
 
 const CssClassMatcher = imports.CssClassMatcher;
+
+Gtk.init(null);
 
 describe('Lesson card widget', function () {
     let card;
