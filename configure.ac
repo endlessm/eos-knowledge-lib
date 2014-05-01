@@ -197,7 +197,13 @@ PKG_CHECK_MODULES([EOS_KNOWLEDGE], [
     $EKN_REQUIRED_MODULES_PRIVATE])
 
 # Check installed GIRs for Javascript overrides
+EOS_CHECK_GJS_GIR([Endless], [0])
+EOS_CHECK_GJS_GIR([Gdk], [3.0])
 EOS_CHECK_GJS_GIR([GLib], [2.0])
+EOS_CHECK_GJS_GIR([GObject], [2.0])
+EOS_CHECK_GJS_GIR([Gtk], [3.0])
+EOS_CHECK_GJS_GIR([Pango], [1.0])
+EOS_CHECK_GJS_GIR([WebKit2], [3.0])
 
 AC_CACHE_SAVE
 

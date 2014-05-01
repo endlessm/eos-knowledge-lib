@@ -1,4 +1,3 @@
-const Gio = imports.gi.Gio;
 const Lang = imports.lang;
 const Endless = imports.gi.Endless;
 
@@ -17,6 +16,7 @@ const ListCard = imports.listCard;
 const ProgressCard = imports.progressCard;
 const TableOfContents = imports.tableOfContents;
 const TreeNode = imports.treeNode;
+const WebviewSwitcherView = imports.webviewSwitcherView;
 
 imports.searchPath = _oldSearchPath;
 
@@ -67,4 +67,5 @@ function _init() {
     EosKnowledge.ProgressCard = ProgressCard.ProgressCard;
     EosKnowledge.TableOfContents = TableOfContents.TableOfContents;
     EosKnowledge.tree_model_from_tree_node = TreeNode.tree_model_from_tree_node;
+    EosKnowledge.WebviewSwitcherView = WebviewSwitcherView.WebviewSwitcherView;
 }

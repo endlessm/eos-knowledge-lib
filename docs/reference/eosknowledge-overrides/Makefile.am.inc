@@ -4,20 +4,8 @@ build_naturaldocs_verbose = $(build_naturaldocs_verbose_@AM_V@)
 build_naturaldocs_verbose_ = $(build_naturaldocs_verbose_@AM_DEFAULT_V@)
 build_naturaldocs_verbose_0 = @echo '  DOC    Building JS overrides docs';
 
-naturaldocs_input_files = \
-	overrides/EosKnowledge.js \
-	overrides/articleCard.js \
-	overrides/card.js \
-	overrides/config.js \
-	overrides/contentObjectModel.js \
-	overrides/homePageA.js \
-	overrides/lessonCard.js \
-	overrides/lightbox.js \
-	overrides/listCard.js \
-	overrides/progressCard.js \
-	overrides/tableOfContents.js \
-	overrides/treeNode.js \
-	$(NULL)
+## $(public_overrides) defined in overrides/Makefile.am.inc
+naturaldocs_input_files = $(public_overrides)
 # Stamp file is present if all the docs have been built, and carries the
 # timestamp of the last successful build.
 stamp_file = docs/reference/eosknowledge-overrides/doc-build.stamp
@@ -44,8 +32,15 @@ DISTCLEANFILES += \
 distclean-local::
 	@rm -rf docs/reference/eosknowledge-overrides/html
 
+# Copy from $builddir first, and if that's not there (for example during
+# distcheck the docs don't get rebuilt because the stamp file is already there
+# and the source files are not newer) copy from $srcdir.
 dist-hook::
 	@mkdir -p $(distdir)/docs/reference/eosknowledge-overrides/html
-	@cp -r docs/reference/eosknowledge-overrides/html/* $(distdir)/docs/reference/eosknowledge-overrides/html
+	@if test -d docs/reference/eosknowledge-overrides/html; then \
+		cp -r docs/reference/eosknowledge-overrides/html/* $(distdir)/docs/reference/eosknowledge-overrides/html; \
+	elif test -d $(srcdir)/docs/reference/eosknowledge-overrides/html; then \
+		cp -r $(srcdir)/docs/reference/eosknowledge-overrides/html/* $(distdir)/docs/reference/eosknowledge-overrides/html; \
+	fi
 
 endif
