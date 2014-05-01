@@ -226,3 +226,18 @@
     font-size: 2.75em;
     font-weight: bold;
 }
+
+.section-page-back-button {
+    border-top: 1px solid #d3d7cf;
+    border-bottom: 1px solid #d3d7cf;
+    border-right: 1px solid #d3d7cf;
+    border-left: 0px;
+    border-radius: 0px 27px 27px 0px;
+    background-color: alpha(#888a85, 0.5);
+    padding: 10px 10px 10px 0px;
+    transition: padding 500ms ease-in-out;
+}
+
+.section-page-back-button:hover {
+    padding-left: 10px;
+}
