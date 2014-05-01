@@ -16,3 +16,7 @@
 override_dh_auto_configure:
 	dh_auto_configure -- --enable-gtk-doc --enable-gir-doc --enable-js-doc
 
+# Keep our tests from running when building the debian. This is because our
+# test need a valid display out for running gtk_init. In the future we should
+# look into setting up xvfb in our debian config as gtk and pygobject do.
+override_dh_auto_test:
