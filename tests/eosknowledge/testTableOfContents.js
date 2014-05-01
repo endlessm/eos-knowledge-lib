@@ -30,7 +30,6 @@ describe('Table of contents widget', function () {
         // Seems worth testing this as having a list property in javascript
         // isn't common
         toc.section_list = short_list;
-        expect(notify).toHaveBeenCalledWith('section-list', short_list);
         expect(toc.section_list).toBe(short_list);
     });
 

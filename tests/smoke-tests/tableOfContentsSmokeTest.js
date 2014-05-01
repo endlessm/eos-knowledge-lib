@@ -6,6 +6,7 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const TEST_APPLICATION_ID = 'com.endlessm.knowledge.test.toc';
+const TESTDIR = Endless.getCurrentFileDir() + '/..';
 
 const TestApplication = new Lang.Class({
     Name: 'TestApplication',
@@ -73,7 +74,9 @@ const TestApplication = new Lang.Class({
         let window = new Endless.Window({
             application: this
         });
-        window.get_page_manager().add(grid);
+        window.get_page_manager().add(grid, {
+            background_uri: 'file://' + TESTDIR + '/test-content/background.jpg'
+        });
         window.show_all();
     }
 });

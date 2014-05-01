@@ -3,10 +3,13 @@
 const Endless = imports.gi.Endless;
 const EosKnowledge = imports.gi.EosKnowledge;
 const GLib = imports.gi.GLib;
-const Gtk = imports.gi.Gtk;
+const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
+const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const Pango = imports.gi.Pango;
+
+const MarginButton = imports.marginButton;
 
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 
@@ -35,17 +38,20 @@ const TableOfContents = new Lang.Class({
     Extends: Endless.CustomContainer,
     Properties: {
         /**
-         * Property: section-list
+         * Property: section_list
          *
          * An array of strings defining the section titles to display in the
          * table on contents. Each section entry in the table of contents will
          * display a title as specified here along with an sequential index,
          * starting at 1.
+         *
+         * Note: because gjs does not support list properties for gobjects,
+         * this is not a gobject property right now. This must be set via
+         * assignment and not during object construction. The notify signal
+         * will not function on this property.
+         *
          * > toc.section_list = ['apple', 'orange', 'banana'];
          */
-        'section-list': GObject.ParamSpec.object('section-list', 'Section List',
-            'TODO',
-            GObject.ParamFlags.READWRITE, GObject.Object),
         /**
          * Property: selected-section
          *
@@ -58,7 +64,7 @@ const TableOfContents = new Lang.Class({
          * selected-section must always be less than the <section-list> length.
          */
         'selected-section': GObject.ParamSpec.int('selected-section', 'Selected Section',
-            'TODO',
+            'The index of the currently selected section.',
             GObject.ParamFlags.READWRITE,
             -1, GLib.MAXINT32, -1),
         /**
@@ -101,44 +107,52 @@ const TableOfContents = new Lang.Class({
     },
 
     _MIN_ROWS: 3,
-    _ARROW_SIZE: 32,
+    _ARROW_SIZE: 18,
+    // TODO: replace with our actual svgs for the up and down icon when we get
+    // those from design
+    _UP_ARROW_ICON: 'go-up-symbolic',
+    _DOWN_ARROW_ICON: 'go-down-symbolic',
+
 
     _init: function (params) {
         this._selected_section = -1;
         this._section_list = [];
         this._section_buttons = [];
         this._collapsed = false;
-        this.parent(params);
-        this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_TOC);
-        this.get_style_context().add_class(Gtk.STYLE_CLASS_VIEW);
 
-        let up_image = new Gtk.Image({
-            icon_name: 'go-up',
-            pixel_size: this._ARROW_SIZE
-        });
-        this._up_arrow = new Gtk.Button({
-            image: up_image,
-            halign: Gtk.Align.END
-        });
+        this._up_arrow = this._create_arrow_button_from_icon(this._UP_ARROW_ICON);
         this._up_arrow.connect('clicked', Lang.bind(this, function () {
             this.emit('up-clicked');
         }));
-        this._up_arrow.show_all();
-        this.add(this._up_arrow);
+        this._up_arrow_align = new Gtk.Alignment();
+        this._up_arrow_align.add(this._up_arrow);
+        this._up_arrow_align.show_all();
 
-        let down_image = new Gtk.Image({
-            icon_name: 'go-down',
-            pixel_size: this._ARROW_SIZE
-        });
-        this._down_arrow = new Gtk.Button({
-            image: down_image,
-            halign: Gtk.Align.END
-        });
+        this._down_arrow = this._create_arrow_button_from_icon(this._DOWN_ARROW_ICON);
         this._down_arrow.connect('clicked', Lang.bind(this, function () {
             this.emit('down-clicked');
         }));
-        this._down_arrow.show_all();
-        this.add(this._down_arrow);
+        this._down_arrow_align = new Gtk.Alignment();
+        this._down_arrow_align.add(this._down_arrow);
+        this._down_arrow_align.show_all();
+
+        // We need the index labels and up and down arrows to be centered in a
+        // column on the right. This gets tricky as they can't all be in the
+        // same container, the index label needs to be in the section button
+        // to have the section button background and mouse events. So this
+        // size group is applied to the up and down buttons and index labels
+        // to make sure they have the same size.
+        this._right_column_size_group = new Gtk.SizeGroup({
+            mode: Gtk.SizeGroupMode.HORIZONTAL
+        });
+        this._right_column_size_group.add_widget(this._up_arrow_align);
+        this._right_column_size_group.add_widget(this._down_arrow_align);
+        this.parent(params);
+
+        this.add(this._up_arrow_align);
+        this.add(this._down_arrow_align);
+        this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_TOC);
+        this.get_style_context().add_class(Gtk.STYLE_CLASS_VIEW);
     },
 
     set section_list (v) {
@@ -149,7 +163,6 @@ const TableOfContents = new Lang.Class({
         }
         this._build_sections();
         this.notify('selected-section');
-        this.notify('section-list');
     },
 
     get section_list () {
@@ -163,12 +176,12 @@ const TableOfContents = new Lang.Class({
         v = Math.max(v, -1);
         if (this._selected_section === v) return;
         this._selected_section = v;
-        this._set_selected_flags();
+        this._update_state_flags();
         this.notify('selected-section');
     },
 
     get selected_section () {
-        if (this._selected_section)
+        if (typeof this._selected_section !== 'undefined')
             return this._selected_section;
         return -1;
     },
@@ -206,7 +219,7 @@ const TableOfContents = new Lang.Class({
         let end_index = start_index + max_sections;
         // allocate the children top to bottom
         alloc.height = arrow_height;
-        this._up_arrow.size_allocate(alloc);
+        this._alloc_end(this._up_arrow_align, alloc);
         alloc.y += arrow_height;
         alloc.height = section_height;
         for (let section_index = 0; section_index < num_sections; section_index++) {
@@ -220,7 +233,20 @@ const TableOfContents = new Lang.Class({
             }
         }
         alloc.height = arrow_height;
-        this._down_arrow.size_allocate(alloc);
+        this._alloc_end(this._down_arrow_align, alloc);
+    },
+
+    // Helper for size allocate, allocs the widget at the end horizontally of
+    // the passed in allocation.
+    _alloc_end: function (widget, alloc) {
+        let initial_width = alloc.width;
+        let initial_x = alloc.x;
+        let widget_width = widget.get_preferred_width()[1];
+        alloc.x += initial_width - widget_width;
+        alloc.width = widget_width;
+        widget.size_allocate(alloc);
+        alloc.x = initial_x;
+        alloc.width = initial_width;
     },
 
     vfunc_get_preferred_width: function () {
@@ -241,8 +267,22 @@ const TableOfContents = new Lang.Class({
                 2 * arrow_height + num_sections * section_height];
     },
 
+    _create_arrow_button_from_icon: function (icon_name) {
+        let image = new Gtk.Image({
+            icon_name: icon_name,
+            pixel_size: this._ARROW_SIZE
+        });
+        let arrow = new Gtk.Button({
+            image: image,
+            halign: Gtk.Align.CENTER
+        });
+        arrow.get_style_context().add_class(EosKnowledge.STYLE_CLASS_TOC_ARROW);
+        return arrow;
+    },
+
     _build_sections: function () {
         for (let section_button of this._section_buttons) {
+            this._right_column_size_group.remove_widget(section_button.index_label);
             this.remove(section_button);
         }
         this._section_buttons = [];
@@ -250,15 +290,16 @@ const TableOfContents = new Lang.Class({
             let section_button = new SectionButton(section, this._section_buttons.length);
             section_button.connect('clicked', Lang.bind(this, this._section_button_clicked));
             section_button.show_all();
+            this._right_column_size_group.add_widget(section_button.index_label);
             this.add(section_button);
 
             this._section_buttons.push(section_button);
         }
-        this._set_selected_flags();
+        this._update_state_flags();
         this._collapse_sections();
     },
 
-    _set_selected_flags: function () {
+    _update_state_flags: function () {
         for (let section_button of this._section_buttons) {
             if (this._selected_section === section_button.index) {
                 section_button.set_state_flags(Gtk.StateFlags.SELECTED, false);
@@ -266,6 +307,12 @@ const TableOfContents = new Lang.Class({
                 section_button.unset_state_flags(Gtk.StateFlags.SELECTED);
             }
         }
+        // Update the arrow sensitivity. If we are at the top of the list the
+        // up arrow should be insensitive. If we are at the bottom of the list
+        // the down arrow should be. Both should be insensitive if nothing is selected
+        this._up_arrow.set_sensitive(this._selected_section > 0);
+        this._down_arrow.set_sensitive(this._selected_section < this._section_list.length - 1
+                                       && this._selected_section > -1);
     },
 
     _collapse_sections: function () {
@@ -295,37 +342,52 @@ const TableOfContents = new Lang.Class({
 const SectionButton = new Lang.Class({
     Name: 'SectionButton',
     GTypeName: 'EknSectionButton',
-    Extends: Gtk.Button,
+    Extends: MarginButton.MarginButton,
 
     _MIN_CHARS: 20,
 
     _init: function (section_title, section_index, params) {
         this.parent(params);
         this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_TOC_ENTRY);
+        section_title = section_title.toUpperCase();
         this.index = section_index;
 
-        this._title = new Gtk.Label({
+        this.title_label = new Gtk.Label({
             label: section_title,
             ellipsize: Pango.EllipsizeMode.END,
             width_chars: this._MIN_CHARS, // Demand some characters before ellipsis
             xalign: 0,
             no_show_all: true
         });
-        this._title.get_style_context().add_class(EosKnowledge.STYLE_CLASS_TOC_TITLE);
-        let number = new Gtk.Label({
+        this.title_label.get_style_context().add_class(EosKnowledge.STYLE_CLASS_TOC_ENTRY_TITLE);
+        this._title_bold = new Gtk.Label({
+            label: "<b>" + section_title + "</b>",
+            use_markup: true,
+            ellipsize: Pango.EllipsizeMode.END,
+            width_chars: this._MIN_CHARS, // Demand some characters before ellipsis
+        });
+        // A hacky way to keep the section buttons from growing when they
+        // become bold in the hover state. Add a bold version of the label in
+        // a size group. Title bold isn't added to the widget tree, so we ref
+        // it by adding it to this
+        let size_group = new Gtk.SizeGroup();
+        size_group.add_widget(this.title_label);
+        size_group.add_widget(this._title_bold);
+
+        this.index_label = new Gtk.Label({
             label: (section_index + 1).toString()
         });
-        number.get_style_context().add_class(EosKnowledge.STYLE_CLASS_INDEX);
+        this.index_label.get_style_context().add_class(EosKnowledge.STYLE_CLASS_TOC_ENTRY_INDEX);
 
         let box = new Gtk.Box({
             orientation: Gtk.Orientation.HORIZONTAL
         });
-        box.pack_start(this._title, false, false, 0);
-        box.pack_end(number, false, false, 0);
+        box.pack_start(this.title_label, false, false, 0);
+        box.pack_end(this.index_label, false, false, 0);
         this.add(box);
     },
 
     set_collapsed: function (collapsed) {
-        this._title.set_visible(!collapsed);
+        this.title_label.set_visible(!collapsed);
     }
 });
