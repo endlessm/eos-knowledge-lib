@@ -2,5 +2,7 @@
 <gresources>
   <gresource prefix="/com/endlessm/knowledge">
     <file>endless_knowledge.css</file>
+    <file>scroll_manager.js</file>
+    <file>smooth_scroll.js</file>
   </gresource>
 </gresources>
