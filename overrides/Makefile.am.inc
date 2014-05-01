@@ -8,6 +8,7 @@ public_overrides = \
 	overrides/articleCard.js \
 	overrides/articleObjectModel.js \
 	overrides/articlePageA.js \
+	overrides/articlePresenter.js \
 	overrides/card.js \
 	overrides/contentObjectModel.js \
 	overrides/homePageA.js \
