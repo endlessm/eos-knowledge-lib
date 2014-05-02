@@ -2,6 +2,9 @@ const Endless = imports.gi.Endless;
 const EosKnowledge = imports.gi.EosKnowledge;
 const Gtk = imports.gi.Gtk;
 const InstanceOfMatcher = imports.InstanceOfMatcher;
+
+Gtk.init(null);
+
 const utils = imports.utils;
 
 const MOCK_ARTICLE_PATH = Endless.getCurrentFileDir() + '/../test-content/greyjoy-article.jsonld';
@@ -22,7 +25,6 @@ describe ('Article Object Model', function () {
         });
 
         it ('should inherit properties set by parent class (ContentObjectModel)', function () {
-            print(Object.keys(EosKnowledge.ArticleObjectModel._props_from_json_ld(mockArticleData)));
             expect(articleObject.title).toBeDefined();
             expect(articleObject.synopsis).toBeDefined();
         });

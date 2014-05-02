@@ -21,12 +21,14 @@ javascript_tests = \
 	$(NULL)
 test_content = \
 	tests/test-content/emacs.jsonld \
-	tests/test-content/greyjoyarticle.jsonld \
+	tests/test-content/greyjoy-article.jsonld \
+	$(NULL)
 EXTRA_DIST += \
 	$(javascript_tests) \
 	$(test_content) \
 	tests/CssClassMatcher.js \
-	tests/eosknowledge/utils.js \
+	tests/InstanceOfMatcher.js \
+	tests/utils.js \
 	$(NULL)
 
 # Run tests when running 'make check'
