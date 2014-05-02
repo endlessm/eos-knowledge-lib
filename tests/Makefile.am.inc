@@ -21,6 +21,7 @@ javascript_tests = \
 	tests/eosknowledge/testTableOfContents.js \
 	tests/eosknowledge/testTreeNode.js \
 	tests/eosknowledge/testWebviewSwitcher.js \
+	tests/eosknowledge/testWindowA.js \
 	$(NULL)
 test_content = \
 	tests/test-content/article-search-results.jsonld \

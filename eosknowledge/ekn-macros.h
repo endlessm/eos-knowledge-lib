@@ -243,4 +243,18 @@ enum_type##_get_type (void) \
  */
 #define EKN_STYLE_CLASS_SECTION_PAGE_BACK_BUTTON "section-page-back-button"
 
+/**
+ * EKN_STYLE_CLASS_TOPBAR_BACK_BUTTON:
+ *
+ * A CSS class to match the back button on the top bar.
+ */
+#define EKN_STYLE_CLASS_TOPBAR_BACK_BUTTON "topbar-back-button"
+
+/**
+ * EKN_STYLE_CLASS_TOPBAR_FORWARD_BUTTON:
+ *
+ * A CSS class to match the forward button on the top bar.
+ */
+#define EKN_STYLE_CLASS_TOPBAR_FORWARD_BUTTON "topbar-forward-button"
+
 #endif /* EKN_MACROS_H */

@@ -22,6 +22,7 @@ public_overrides = \
 	overrides/tableOfContents.js \
 	overrides/treeNode.js \
 	overrides/webviewSwitcherView.js \
+	overrides/windowA.js \
 	$(NULL)
 private_overrides = \
 	overrides/compositeButton.js \
