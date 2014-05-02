@@ -160,6 +160,7 @@ const HomePageACardContainer = new Lang.Class({
     Extends: Endless.CustomContainer,
 
     _init: function (props) {
+        this._cards = [];
         this.parent(props);
     },
 
@@ -174,10 +175,13 @@ const HomePageACardContainer = new Lang.Class({
         for (let card of this._cards) {
             this.remove(card);
         }
+        this._cards = [];
     },
 
     vfunc_size_allocate: function (alloc) {
         this.parent(alloc);
+        if (this._cards.length === 0)
+            return;
         let [min, nat] = this._cards_max_preferred_width();
         let visible_cards =  Math.floor(alloc.width / min);
         let total_width = alloc.width;
