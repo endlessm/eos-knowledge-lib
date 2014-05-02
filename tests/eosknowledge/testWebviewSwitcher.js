@@ -8,7 +8,7 @@ Gtk.init(null);
 
 const MockWebview = new Lang.Class({
     Name: 'MockWebview',
-    Extends: Gtk.Widget,
+    Extends: Gtk.Label,
     Signals: {
         'load-changed': {
             param_types: [ GObject.TYPE_INT /* WebKitLoadEvent */ ]

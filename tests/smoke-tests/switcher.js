@@ -173,13 +173,13 @@ const FakeWebview = new Lang.Class({
 
         let title = this._buffer.get_text(wordstart, wordend, false);
         let decision = new FakePolicyDecision();
-        decision.request = title;
+        decision.request = { uri: title };
         let decision_was_made = this.emit('decide-policy', decision,
             this.NAVIGATION_ACTION);
         if (decision._decision === 'nothing' || !decision_was_made)
             decision._decision = 'use';
         if (decision._decision === 'use')
-            this.load_page(title);
+            this.load_uri(title);
 
         return false;
     }
@@ -264,14 +264,13 @@ history.connect('notify::current-item', function (history) {
     page.load_uri(history.current_item.title);
 });
 page.connect('create-webview', function () {
-    let view = new FakeWebview();
-    view.connect('decide-policy', function (view, decision) {
-        page.navigate_forwards = true;
-        history.current_item = new HistoryItem({ title: decision.request });
-        decision.ignore();
-        return true; // decision made
-    });
-    return view;
+    return new FakeWebview();
+});
+page.connect('decide-navigation-policy', function (page, decision) {
+    page.navigate_forwards = true;
+    history.current_item = new HistoryItem({ title: decision.request.uri });
+    decision.ignore();
+    return true; // decision made
 });
 back_button.connect('clicked', function () {
     page.navigate_forwards = false;

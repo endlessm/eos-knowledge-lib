@@ -11,8 +11,8 @@ GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.
  * Class: WebviewSwitcherView
  * View that slides webviews on top of one another
  *
- * This class proxies a WebKit2.WebView (or any other object that has a
- * "load-changed" signal in its interface).
+ * This class proxies a WebKit2.WebView (or any other object that has
+ * "load-changed" and "decide-policy" signals in its interface).
  * It is used to create a "paging" effect in a browser-type environment.
  * Calling <load_uri()> causes a new web view to be created and slide in on top
  * of the previous webview, which is then destroyed in order to save memory.
@@ -66,6 +66,48 @@ const WebviewSwitcherView = new Lang.Class({
             return_type: Gtk.Widget.$gtype,
             flags: GObject.SignalFlags.RUN_LAST,
             accumulator: GObject.AccumulatorType.FIRST_WINS
+        },
+        /**
+         * Event: decide-navigation-policy
+         * Proxy for the *decide-policy* signal of *WebKit2.WebView*
+         *
+         * This signal is emitted when the webview requests making a navigation
+         * decision.
+         * Use it to decide when to switch this view to a new page and when to
+         * let the webview load a new page normally.
+         *
+         * For example, if you want to load a new page in the switcher:
+         * > switcher.connect('decide-navigation-policy', function (switcher, decision) {
+         * >     switcher.load_uri(decision.request.uri);
+         * >     decision.ignore();
+         * >     return true; // decision was made
+         * > });
+         * but if you want to let the page load as normal without switching to
+         * a new page, simply return *false* to let the default rules apply.
+         *
+         * The webview's *decide-policy* signal also asks about different kinds
+         * of policy decisions, such as whether to download a file or load a
+         * resource request, but those are not proxied here.
+         * If you want to track those, connect directly to the webview's
+         * original signal.
+         *
+         * Parameters:
+         *   decision - a *GObject.Object*; if you are using a web view, then
+         *      this will be a *WebKit2.NavigationPolicyDecision*
+         *
+         * Return type:
+         *   boolean
+         *
+         * Flags:
+         *   run last
+         */
+        'decide-navigation-policy': {
+            param_types: [ GObject.TYPE_OBJECT ],
+            return_type: GObject.TYPE_BOOLEAN,
+            flags: GObject.SignalFlags.RUN_LAST,
+            // FIXME (disappointed voice) Oh, GJS...
+            // https://bugzilla.gnome.org/show_bug.cgi?id=729363
+            // accumulator: GObject.AccumulatorType.TRUE_HANDLED
         }
     },
 
@@ -126,10 +168,19 @@ const WebviewSwitcherView = new Lang.Class({
         if (view === null)
             view = this._on_create_webview();
 
+        // Web views try to be clever and so won't load a page if they're not
+        // visible. We are even cleverer, and stick them in an offscreen
+        // window so they think they are visible.
+        let offscreen = new Gtk.OffscreenWindow();
+
         let load_id = view.connect('load-changed', function (v, status) {
             if (status === WebKit2.LoadEvent.FINISHED) {
                 view.show_all();
-                this.add(view);
+                view.reparent(this);
+                if(offscreen !== null) {
+                    offscreen.destroy();
+                    offscreen = null;
+                }
 
                 // Show the prepared view
                 // FIXME: Use notify::transition-running in GTK 3.12
@@ -146,8 +197,16 @@ const WebviewSwitcherView = new Lang.Class({
                 // No transition necessary if there was no previous view
                 if(this._active_view !== null)
                     this.visible_child = view;
+
+                view.connect('decide-policy', function (v, decision, type) {
+                    if(type === WebKit2.PolicyDecisionType.NAVIGATION_ACTION)
+                        return this.emit('decide-navigation-policy', decision);
+                    return false;
+                }.bind(this));
             }
         }.bind(this));
+        offscreen.add(view);
+        offscreen.show_all();
         view.load_uri(uri);
     }
 });
