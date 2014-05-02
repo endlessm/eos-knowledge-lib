@@ -189,3 +189,21 @@
     -GtkWidget-wide-separators: true;
     -GtkWidget-separator-height: 3;
 }
+
+.section-page-title {
+    font-size: 2em;
+    font-weight: bold;
+}
+
+.section-page-segment-title {
+    font-size: 1.2em;
+    padding-left: 30px;
+}
+
+.scrollbar {
+    -GtkRange-slider-width: 5px;
+}
+
+.scrollbar.slider {
+    background-color: orange;
+}

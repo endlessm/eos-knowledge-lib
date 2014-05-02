@@ -151,39 +151,60 @@ enum_type##_get_type (void) \
  */
 #define EKN_STYLE_CLASS_COLLAPSED "collapsed"
 
- /**
+/**
  * EKN_STYLE_CLASS_HOME_PAGE:
  *
  * A CSS class to match the HomePage of the knowledge apps.
  */
 #define EKN_STYLE_CLASS_HOME_PAGE "home-page"
 
- /**
+/**
  * EKN_STYLE_CLASS_HOME_PAGE_TITLE:
  *
  * A CSS class to match the title on the HomePage of the knowledge apps.
  */
 #define EKN_STYLE_CLASS_HOME_PAGE_TITLE "home-page-title"
 
- /**
+/**
  * EKN_STYLE_CLASS_HOME_PAGE_SUBTITLE:
  *
  * A CSS class to match the subtitle on the HomePage of the knowledge apps.
  */
 #define EKN_STYLE_CLASS_HOME_PAGE_SUBTITLE "home-page-subtitle"
 
- /**
+/**
  * EKN_STYLE_CLASS_SEARCH_BOX:
  *
  * A CSS class to match the search box of the knowledge apps.
  */
 #define EKN_STYLE_CLASS_SEARCH_BOX "search-box"
 
- /**
+/**
  * EKN_STYLE_CLASS_CARD_CONTAINER:
  *
  * A CSS class to match the horizontal card container of the knowledge apps.
  */
 #define EKN_STYLE_CLASS_CARD_CONTAINER "card-container"
+
+/**
+ * EKN_STYLE_CLASS_SECTION_PAGE:
+ *
+ * A CSS class to match the SectionPage of the knowledge apps.
+ */
+#define EKN_STYLE_CLASS_SECTION_PAGE "section-page"
+
+/**
+ * EKN_STYLE_CLASS_SECTION_PAGE_TITLE:
+ *
+ * A CSS class to match the title on the SectionPage of the knowledge apps.
+ */
+#define EKN_STYLE_CLASS_SECTION_PAGE_TITLE "section-page-title"
+
+/**
+ * EKN_STYLE_CLASS_SECTION_PAGE_SEGMENT_TITLE:
+ *
+ * A CSS class to match the title on a segment of the SectionPage of the knowledge apps.
+ */
+#define EKN_STYLE_CLASS_SECTION_PAGE_SEGMENT_TITLE "section-page-segment-title"
 
 #endif /* EKN_MACROS_H */

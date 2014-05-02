@@ -14,6 +14,7 @@ const LessonCard = imports.lessonCard;
 const Lightbox = imports.lightbox;
 const ListCard = imports.listCard;
 const ProgressCard = imports.progressCard;
+const SectionPageA = imports.sectionPageA;
 const TableOfContents = imports.tableOfContents;
 const TreeNode = imports.treeNode;
 const WebviewSwitcherView = imports.webviewSwitcherView;
@@ -65,6 +66,7 @@ function _init() {
     EosKnowledge.Lightbox = Lightbox.Lightbox;
     EosKnowledge.ListCard = ListCard.ListCard;
     EosKnowledge.ProgressCard = ProgressCard.ProgressCard;
+    EosKnowledge.SectionPageA = SectionPageA.SectionPageA;
     EosKnowledge.TableOfContents = TableOfContents.TableOfContents;
     EosKnowledge.tree_model_from_tree_node = TreeNode.tree_model_from_tree_node;
     EosKnowledge.WebviewSwitcherView = WebviewSwitcherView.WebviewSwitcherView;
