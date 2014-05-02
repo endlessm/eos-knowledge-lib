@@ -28,7 +28,7 @@ const customMatchers = {
         return {
             compare: function (widget, expected) {
                 if (expected === undefined)
-                    return { pass: true };
+                    return { pass: false };
 
                 let result = {
                     pass: widget.get_style_context().has_class(expected)
@@ -46,7 +46,7 @@ const customMatchers = {
         return {
             compare: function (widget, expected) {
                 if (expected === undefined)
-                    return { pass: true };
+                    return { pass: false };
 
                 let result = {
                     pass: _descendantHasClass(widget, expected)
