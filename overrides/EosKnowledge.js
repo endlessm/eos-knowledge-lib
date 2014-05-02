@@ -16,6 +16,7 @@ const LessonCard = imports.lessonCard;
 const Lightbox = imports.lightbox;
 const ListCard = imports.listCard;
 const ProgressCard = imports.progressCard;
+const SearchResults = imports.searchResults;
 const SectionPageA = imports.sectionPageA;
 const TableOfContents = imports.tableOfContents;
 const TreeNode = imports.treeNode;
@@ -69,6 +70,7 @@ function _init() {
     EosKnowledge.LessonCard = LessonCard.LessonCard;
     EosKnowledge.Lightbox = Lightbox.Lightbox;
     EosKnowledge.ListCard = ListCard.ListCard;
+    EosKnowledge.list_from_search_results = SearchResults.list_from_search_results;
     EosKnowledge.ProgressCard = ProgressCard.ProgressCard;
     EosKnowledge.SectionPageA = SectionPageA.SectionPageA;
     EosKnowledge.TableOfContents = TableOfContents.TableOfContents;
