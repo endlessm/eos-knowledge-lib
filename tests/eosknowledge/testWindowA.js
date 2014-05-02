@@ -1,26 +1,34 @@
 const Endless = imports.gi.Endless;
 const EosKnowledge = imports.gi.EosKnowledge;
+const GLib = imports.gi.GLib;
 const Gtk = imports.gi.Gtk;
 
 const InstanceOfMatcher = imports.InstanceOfMatcher;
 const CssClassMatcher = imports.CssClassMatcher;
 
-let app = new Endless.Application({
-    application_id: 'com.endlessm.knowledge.test.dummy',
-    flags: 0
-});
-app.run([]);
-
 describe('Window A', function () {
     let view;
 
-    beforeEach(function () {
+    beforeEach(function (done) {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
         jasmine.addMatchers(InstanceOfMatcher.customMatchers);
 
-        view = new EosKnowledge.WindowA({
-            application: app
+        // Generate a unique ID for each app instance that we test
+        let fake_pid = GLib.random_int();
+        // FIXME In this version of GJS there is no Posix module, so fake the PID
+        let id_string = 'com.endlessm.knowledge.test.dummy' + GLib.get_real_time() + fake_pid;
+        let app = new Endless.Application({
+            application_id: id_string,
+            flags: 0
         });
+        app.connect('startup', function () {
+            view = new EosKnowledge.WindowA({
+                application: app
+            });
+            done();
+        });
+
+        app.run([]);
     });
 
     afterEach(function () {
@@ -39,7 +47,7 @@ describe('Window A', function () {
         expect(view.section_page).toBeA(EosKnowledge.SectionPageA);
     });
 
-    it('instantiates a article page A', function () {
+    it('instantiates an article page A', function () {
         expect(view.article_page).toBeA(EosKnowledge.ArticlePageA);
     });
 
