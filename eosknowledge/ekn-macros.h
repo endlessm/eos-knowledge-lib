@@ -123,7 +123,7 @@ enum_type##_get_type (void) \
  */
 #define EKN_STYLE_CLASS_TOC_ENTRY "toc-entry"
 
- /**
+/**
  * EKN_STYLE_CLASS_TOC_ENTRY_TITLE:
  *
  * A CSS class to match the title of an entry in a TableOfContents widget.
@@ -154,35 +154,64 @@ enum_type##_get_type (void) \
 /**
  * EKN_STYLE_CLASS_HOME_PAGE:
  *
- * A CSS class to match the HomePage of the knowledge apps.
+ * A CSS class to match the HomePage.
  */
 #define EKN_STYLE_CLASS_HOME_PAGE "home-page"
 
 /**
  * EKN_STYLE_CLASS_HOME_PAGE_TITLE:
  *
- * A CSS class to match the title on the HomePage of the knowledge apps.
+ * A CSS class to match the title on the HomePage.
  */
 #define EKN_STYLE_CLASS_HOME_PAGE_TITLE "home-page-title"
 
 /**
  * EKN_STYLE_CLASS_HOME_PAGE_SUBTITLE:
  *
- * A CSS class to match the subtitle on the HomePage of the knowledge apps.
+ * A CSS class to match the subtitle on the HomePage.
  */
 #define EKN_STYLE_CLASS_HOME_PAGE_SUBTITLE "home-page-subtitle"
 
 /**
+ * EKN_STYLE_CLASS_ARTICLE_PAGE:
+ *
+ * A CSS class to match the ArticlePage.
+ */
+#define EKN_STYLE_CLASS_ARTICLE_PAGE "article-page"
+
+/**
+ * EKN_STYLE_CLASS_ARTICLE_PAGE_TITLE:
+ *
+ * A CSS class to match the title on the ArticlePage.
+ */
+#define EKN_STYLE_CLASS_ARTICLE_PAGE_TITLE "article-page-title"
+
+/**
+ * EKN_STYLE_CLASS_ARTICLE_PAGE_TOOLBAR_FRAME:
+ *
+ * A CSS class to match a frame around the right side toolbar on the
+ * ArticlePage.
+ */
+#define EKN_STYLE_CLASS_ARTICLE_PAGE_TOOLBAR_FRAME "article-page-toolbar-frame"
+
+/**
+ * EKN_STYLE_CLASS_ARTICLE_PAGE_SWITCHER_FRAME:
+ *
+ * A CSS class to match a frame around the switcher on the ArticlePage.
+ */
+#define EKN_STYLE_CLASS_ARTICLE_PAGE_SWITCHER_FRAME "article-page-switcher-frame"
+
+/**
  * EKN_STYLE_CLASS_SEARCH_BOX:
  *
- * A CSS class to match the search box of the knowledge apps.
+ * A CSS class to match the search box.
  */
 #define EKN_STYLE_CLASS_SEARCH_BOX "search-box"
 
 /**
  * EKN_STYLE_CLASS_CARD_CONTAINER:
  *
- * A CSS class to match the horizontal card container of the knowledge apps.
+ * A CSS class to match the horizontal card container.
  */
 #define EKN_STYLE_CLASS_CARD_CONTAINER "card-container"
 
