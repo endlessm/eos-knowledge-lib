@@ -121,7 +121,7 @@
 .toc-entry:hover,
 .toc-entry:selected {
     color: white;
-    font-weight: 900;
+    font-weight: bold;
 }
 
 .toc-entry:selected {
@@ -206,4 +206,23 @@
 
 .scrollbar.slider {
     background-color: orange;
+}
+
+.article-page-toolbar-frame {
+    padding-left: 30px;
+    padding-right: 20px;
+}
+
+.article-page-toolbar-frame.collapsed {
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+.article-page-switcher-frame {
+    padding: 20px 30px 20px 0px;
+}
+
+.article-page-title {
+    font-size: 2.75em;
+    font-weight: bold;
 }

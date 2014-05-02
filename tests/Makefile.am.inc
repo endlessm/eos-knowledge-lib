@@ -4,6 +4,7 @@
 javascript_tests = \
 	tests/eosknowledge/testArticleCard.js \
 	tests/eosknowledge/testArticleObjectModel.js \
+	tests/eosknowledge/testArticlePageA.js \
 	tests/eosknowledge/testCard.js \
 	tests/eosknowledge/testContentObjectModel.js \
 	tests/eosknowledge/testHello.js \

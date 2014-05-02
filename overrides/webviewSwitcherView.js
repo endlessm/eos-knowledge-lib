@@ -111,11 +111,18 @@ const WebviewSwitcherView = new Lang.Class({
         }
     },
 
+    MIN_WIDTH: 400,
+    MIN_HEIGHT: 400,
+
     _init: function (props) {
         this._navigate_forwards = null;
         this._active_view = null;
 
         props = props || {};
+        // WebKit WebViews have no minimum size, so we'll ask for one to keep the
+        // webview from getting unusable small
+        props.width_request = this.MIN_WIDTH;
+        props.height_request = this.MIN_HEIGHT;
         this.parent(props);
     },
 
