@@ -8,9 +8,6 @@ Gtk.init(null);
 
 const TEST_APPLICATION_ID = 'com.endlessm.knowledge.test.scrollmanager';
 
-// eventually will be an EKN uri
-const JQUERY_URI = 'http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js';
-
 const TestApplication = new Lang.Class({
     Name: 'ScrollManagerTest',
     Extends: Endless.Application,
@@ -21,11 +18,6 @@ const TestApplication = new Lang.Class({
         let webview = new WebKit2.WebView({
             expand: true
         });
-
-        webview.set_settings(new WebKit2.Settings({
-            'enable-write-console-messages-to-stdout': true,
-            'enable-developer-extras': true
-        }));
 
         let label = new Gtk.Label({
             label: 'Scroll somewhere man'
@@ -39,10 +31,6 @@ const TestApplication = new Lang.Class({
         });
 
         webview.load_uri('file://' + Endless.getCurrentFileDir() + '/../test-content/Brazil.html');
-
-        webview.run_javascript_from_gresource('/com/endlessm/knowledge/smooth_scroll.js', null, Lang.bind(this, function () {
-            webview.run_javascript_from_gresource('/com/endlessm/knowledge/scroll_manager.js', null, null);
-        }));
 
         let sections = [
             'History',
@@ -64,6 +52,15 @@ const TestApplication = new Lang.Class({
                 if(hash.indexOf('scrolled-past-') === 0) {
                     label.label = 'You\'re reading: ' + hash.split('scrolled-past-')[1];
                 }
+            }
+        });
+
+        // Only load the javascript when the webview is ready
+        webview.connect('load-changed', function (widget, status) {
+            if (status === WebKit2.LoadEvent.FINISHED) { 
+                webview.run_javascript_from_gresource('/com/endlessm/knowledge/smooth_scroll.js', null, Lang.bind(this, function () {
+                    webview.run_javascript_from_gresource('/com/endlessm/knowledge/scroll_manager.js', null, null);
+                }));
             }
         });
 
