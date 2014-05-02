@@ -1,18 +1,12 @@
 const Endless = imports.gi.Endless;
 const EosKnowledge = imports.gi.EosKnowledge;
-const Gio = imports.gi.Gio;
+const utils = imports.utils;
 
 const CONTENT_OBJECT_EMACS = Endless.getCurrentFileDir() + '/../test-content/emacs.jsonld';
 
-function parse_object_from_file (the_file) {
-    let file = Gio.file_new_for_path(the_file);
-    let [success, data] = file.load_contents(null);
-    return JSON.parse(data);
-}
-
 describe ("Content Object Model", function () {
     let contentObject;
-    let mockContentData = parse_object_from_file(CONTENT_OBJECT_EMACS);
+    let mockContentData = utils.parse_object_from_path(CONTENT_OBJECT_EMACS);
 
     describe ("Constructor", function () {
         it ("successfully creates new object from properties", function () {
@@ -33,6 +27,15 @@ describe ("Content Object Model", function () {
 
         it ("successfully creates new object from JSON-LD data", function () {
             contentObject = EosKnowledge.ContentObjectModel.new_from_json_ld(mockContentData);
+            expect(contentObject.title).toEqual(mockContentData.title);
+        });
+
+        it ("successfully creates new object from JSON-LD with missing properties", function () {
+            let just_a_title_json_ld = {
+                "@id": mockContentData["@id"],
+                "title": mockContentData["title"]
+            };
+            contentObject = EosKnowledge.ContentObjectModel.new_from_json_ld(just_a_title_json_ld);
             expect(contentObject.title).toEqual(mockContentData.title);
         });
     });

@@ -179,21 +179,44 @@ const ContentObjectModel = new Lang.Class({
     }
 });
 
+/**
+ * Constructor: new_from_json_ld
+ * Creates an ContentObjectModel from a Knowledge Engine ContentObject
+ * JSON-LD document
+ */
 ContentObjectModel.new_from_json_ld = function (json_ld_data) {
     let props = ContentObjectModel._props_from_json_ld(json_ld_data);
     return new EosKnowledge.ContentObjectModel(props);
 };
 
 ContentObjectModel._props_from_json_ld = function (json_ld_data) {
-    return {
-        ekn_id: json_ld_data["@id"],
-        title: json_ld_data.title,
-        thumbnail_uri : json_ld_data.thumbnail,
-        language : json_ld_data.language,
-        copyright_holder : json_ld_data.copyrightHolder,
-        source_uri : json_ld_data.sourceURL,
-        synopsis : json_ld_data.synopsis,
-        last_modified_date : json_ld_data.lastModifiedDate,
-        license : json_ld_data.license
-    };
+    let props = {};
+    if(json_ld_data.hasOwnProperty('@id'))
+        props.ekn_id = json_ld_data['@id'];
+
+    if(json_ld_data.hasOwnProperty('title'))
+        props.title = json_ld_data.title;
+
+    if(json_ld_data.hasOwnProperty('thumbnail'))
+        props.thumbnail_uri = json_ld_data.thumbnail;
+
+    if(json_ld_data.hasOwnProperty('language'))
+        props.language = json_ld_data.language;
+
+    if(json_ld_data.hasOwnProperty('copyrightHolder'))
+        props.copyright_holder = json_ld_data.copyrightHolder;
+
+    if(json_ld_data.hasOwnProperty('sourceURL'))
+        props.source_uri = json_ld_data.sourceURL;
+
+    if(json_ld_data.hasOwnProperty('synopsis'))
+        props.synopsis = json_ld_data.synopsis;
+
+    if(json_ld_data.hasOwnProperty('lastModifiedDate'))
+        props.last_modified_date = json_ld_data.lastModifiedDate;
+
+    if(json_ld_data.hasOwnProperty('license'))
+        props.license = json_ld_data.license;
+
+    return props;
 };

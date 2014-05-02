@@ -3,6 +3,7 @@
 
 javascript_tests = \
 	tests/eosknowledge/testArticleCard.js \
+	tests/eosknowledge/testArticleObjectModel.js \
 	tests/eosknowledge/testCard.js \
 	tests/eosknowledge/testContentObjectModel.js \
 	tests/eosknowledge/testHello.js \
@@ -18,10 +19,14 @@ javascript_tests = \
 	tests/eosknowledge/testTreeNode.js \
 	tests/eosknowledge/testWebviewSwitcher.js \
 	$(NULL)
+test_content = \
+	tests/test-content/emacs.jsonld \
+	tests/test-content/greyjoyarticle.jsonld \
 EXTRA_DIST += \
 	$(javascript_tests) \
+	$(test_content) \
 	tests/CssClassMatcher.js \
-	tests/test-content/emacs.jsonld \
+	tests/eosknowledge/utils.js \
 	$(NULL)
 
 # Run tests when running 'make check'

@@ -6,6 +6,7 @@ pkgoverridesdir = $(pkgdatadir)/overrides
 public_overrides = \
 	overrides/EosKnowledge.js \
 	overrides/articleCard.js \
+	overrides/articleObjectModel.js \
 	overrides/card.js \
 	overrides/contentObjectModel.js \
 	overrides/homePageA.js \

@@ -7,6 +7,7 @@ let _oldSearchPath = imports.searchPath;
 imports.searchPath.unshift(Endless.getCurrentFileDir());
 
 const ArticleCard = imports.articleCard;
+const ArticleObjectModel = imports.articleObjectModel;
 const Card = imports.card;
 const ContentObjectModel = imports.contentObjectModel;
 const HomePageA = imports.homePageA;
@@ -59,6 +60,7 @@ function _init() {
     });
 
     EosKnowledge.ArticleCard = ArticleCard.ArticleCard;
+    EosKnowledge.ArticleObjectModel = ArticleObjectModel.ArticleObjectModel;
     EosKnowledge.Card = Card.Card;
     EosKnowledge.ContentObjectModel = ContentObjectModel.ContentObjectModel;
     EosKnowledge.HomePageA = HomePageA.HomePageA;
