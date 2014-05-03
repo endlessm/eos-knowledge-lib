@@ -17,6 +17,7 @@ public_overrides = \
 	overrides/marginButton.js \
 	overrides/progressCard.js \
 	overrides/searchResults.js \
+	overrides/sectionArticlePageA.js \
 	overrides/sectionPageA.js \
 	overrides/tableOfContents.js \
 	overrides/treeNode.js \

@@ -236,4 +236,11 @@ enum_type##_get_type (void) \
  */
 #define EKN_STYLE_CLASS_SECTION_PAGE_SEGMENT_TITLE "section-page-segment-title"
 
+/**
+ * EKN_STYLE_CLASS_SECTION_PAGE_BACK_BUTTON:
+ *
+ * A CSS class to match the back button on the section and article pages.
+ */
+#define EKN_STYLE_CLASS_SECTION_PAGE_BACK_BUTTON "section-page-back-button"
+
 #endif /* EKN_MACROS_H */
