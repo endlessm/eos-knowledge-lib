@@ -6,7 +6,7 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 /**
- * Class: SectionPage
+ * Class: SectionPageA
  *
  * This represents the section page for template A of the knowledge apps.
  * It will also be used as the search results page.

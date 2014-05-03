@@ -241,3 +241,8 @@
 .section-page-back-button:hover {
     padding-left: 10px;
 }
+
+.topbar-back-button,
+.topbar-forward-button {
+    padding: 3px;
+}

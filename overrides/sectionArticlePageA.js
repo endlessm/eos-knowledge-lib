@@ -2,6 +2,7 @@
 
 const Endless = imports.gi.Endless;
 const EosKnowledge = imports.gi.EosKnowledge;
+const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
@@ -40,7 +41,15 @@ const SectionArticlePageA = new Lang.Class({
          */
         'show-article': GObject.ParamSpec.boolean('show-article', 'Show Article',
             'Boolean property to show whether the article should be shown. Defaults to false',
-            GObject.ParamFlags.READWRITE, false)
+            GObject.ParamFlags.READWRITE, false),
+        /**
+         * Property: transition-duration
+         * Specifies the duration of the transition between pages
+         */
+        'transition-duration': GObject.ParamSpec.uint('transition-duration', 'Transition Duration',
+            'Specifies (in ms) the duration of the transition between pages.',
+            GObject.ParamFlags.READWRITE, 0, GLib.MAXUINT32, 200)
+
     },
     Signals: {
         /**
@@ -65,8 +74,10 @@ const SectionArticlePageA = new Lang.Class({
             transition_type: Gtk.StackTransitionType.SLIDE_LEFT,
             expand: true
         });
-
         this.parent(props);
+
+        this.bind_property('transition-duration', this._section_article_stack,
+            'transition-duration', GObject.BindingFlags.SYNC_CREATE);
 
         /*
          * Back button

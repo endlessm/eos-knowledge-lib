@@ -7,7 +7,7 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 /**
- * Class: HomePage
+ * Class: HomePageA
  *
  * This represents the home page for template A of the knowledge apps.
  * It has a title, subtitle, and list of article cards to show
