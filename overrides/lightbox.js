@@ -31,6 +31,7 @@ GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.
  */
 const Lightbox = new Lang.Class({
     Name: 'Lightbox',
+    GTypeName: 'EknLightbox',
     Extends: Gtk.Overlay,
     Properties: {
         /**
@@ -169,6 +170,7 @@ const Lightbox = new Lang.Class({
 // upstream and this class should be removed when we move to Gtk 3.12
 const HackRevealer = new Lang.Class({
     Name: 'HackRevealer',
+    GTypeName: 'EknHackRevealer',
     Extends: Gtk.Revealer,
 
     vfunc_size_allocate: function (alloc) {
@@ -188,6 +190,7 @@ const HackRevealer = new Lang.Class({
 // widget.
 const LightboxContainer = new Lang.Class({
     Name: 'LightboxContainer',
+    GTypeName: 'EknLightboxContainer',
     Extends: Gtk.Alignment,
     Signals: {
         'clicked': {}
@@ -286,6 +289,7 @@ const LightboxContainer = new Lang.Class({
 // it.
 const InfoboxContainer = new Lang.Class({
     Name: 'InfoboxContainer',
+    GTypeName: 'EknInfoboxContainer',
     Extends: CompositeButton.CompositeButton,
 
     DOWN_ICON: 'go-down',
