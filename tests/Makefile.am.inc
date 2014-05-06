@@ -16,7 +16,6 @@ javascript_tests = \
 	tests/eosknowledge/testLightbox.js \
 	tests/eosknowledge/testListCard.js \
 	tests/eosknowledge/testProgressCard.js \
-	tests/eosknowledge/testSearchResults.js \
 	tests/eosknowledge/testSectionPageA.js \
 	tests/eosknowledge/testSectionArticlePageA.js \
 	tests/eosknowledge/testTableOfContents.js \
