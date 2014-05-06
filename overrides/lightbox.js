@@ -79,6 +79,7 @@ const Lightbox = new Lang.Class({
         this._lightbox_widget = null;
         this._infobox_widget = null;
         this._reveal_overlays = false;
+        this._transition_duration = 0;
 
         this._lightbox_container = new LightboxContainer();
         this._lightbox_container.connect('clicked', Lang.bind(this, function () {
@@ -162,6 +163,17 @@ const Lightbox = new Lang.Class({
 
     get infobox_widget () {
         return this._infobox_widget;
+    },
+
+    set transition_duration (v) {
+        if (this._transition_duration === v)
+            return;
+        this._transition_duration = v;
+        this.notify('transition-duration');
+    },
+
+    get transition_duration () {
+        return this._transition_duration;
     }
 });
 
