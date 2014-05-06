@@ -10,6 +10,7 @@ public_overrides = \
 	overrides/articlePageA.js \
 	overrides/card.js \
 	overrides/contentObjectModel.js \
+	overrides/engine.js \
 	overrides/homePageA.js \
 	overrides/lessonCard.js \
 	overrides/lightbox.js \
