@@ -17,6 +17,7 @@ const HomePageA = imports.homePageA;
 const LessonCard = imports.lessonCard;
 const Lightbox = imports.lightbox;
 const ListCard = imports.listCard;
+const Presenter = imports.presenter;
 const ProgressCard = imports.progressCard;
 const SectionArticlePageA = imports.sectionArticlePageA;
 const SectionPageA = imports.sectionPageA;
@@ -75,6 +76,7 @@ function _init() {
     EosKnowledge.LessonCard = LessonCard.LessonCard;
     EosKnowledge.Lightbox = Lightbox.Lightbox;
     EosKnowledge.ListCard = ListCard.ListCard;
+    EosKnowledge.Presenter = Presenter.Presenter;
     EosKnowledge.ProgressCard = ProgressCard.ProgressCard;
     EosKnowledge.SectionArticlePageA = SectionArticlePageA.SectionArticlePageA;
     EosKnowledge.SectionPageA = SectionPageA.SectionPageA;

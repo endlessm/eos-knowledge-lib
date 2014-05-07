@@ -17,6 +17,7 @@ public_overrides = \
 	overrides/lightbox.js \
 	overrides/listCard.js \
 	overrides/marginButton.js \
+	overrides/presenter.js \
 	overrides/progressCard.js \
 	overrides/sectionArticlePageA.js \
 	overrides/sectionPageA.js \
