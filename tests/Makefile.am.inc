@@ -16,6 +16,7 @@ javascript_tests = \
 	tests/eosknowledge/testLessonCard.js \
 	tests/eosknowledge/testLightbox.js \
 	tests/eosknowledge/testListCard.js \
+	tests/eosknowledge/testPresenter.js \
 	tests/eosknowledge/testProgressCard.js \
 	tests/eosknowledge/testSectionPageA.js \
 	tests/eosknowledge/testSectionArticlePageA.js \
@@ -29,6 +30,7 @@ test_content = \
 	tests/test-content/content-search-results.jsonld \
 	tests/test-content/cyprus.jsonld \
 	tests/test-content/emacs.jsonld \
+	tests/test-content/got_app.json \
 	tests/test-content/greyjoy-article.jsonld \
 	$(NULL)
 EXTRA_DIST += \
