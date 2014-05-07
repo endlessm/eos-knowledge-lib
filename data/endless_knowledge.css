@@ -208,18 +208,8 @@
     background-color: orange;
 }
 
-.article-page-toolbar-frame {
-    padding-left: 30px;
-    padding-right: 20px;
-}
-
-.article-page-toolbar-frame.collapsed {
-    padding-left: 0px;
-    padding-right: 0px;
-}
-
 .article-page-switcher-frame {
-    padding: 20px 30px 20px 0px;
+    padding: 20px 0px;
 }
 
 .article-page-title {
