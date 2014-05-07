@@ -66,6 +66,7 @@ const SectionArticlePageA = new Lang.Class({
 
         this._article_page = null;
         this._section_page = null;
+        this._transition_duration = 0;
 
         /*
          * Pages Stack
@@ -144,5 +145,16 @@ const SectionArticlePageA = new Lang.Class({
 
     get show_article () {
         return this._show_article;
+    },
+
+    set transition_duration (v) {
+        if (this._transition_duration === v)
+            return;
+        this._transition_duration = v;
+        this.notify('transition-duration');
+    },
+
+    get transition_duration () {
+        return this._transition_duration;
     }
 });

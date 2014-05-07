@@ -31,6 +31,7 @@ GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.
  */
 const Lightbox = new Lang.Class({
     Name: 'Lightbox',
+    GTypeName: 'EknLightbox',
     Extends: Gtk.Overlay,
     Properties: {
         /**
@@ -78,6 +79,7 @@ const Lightbox = new Lang.Class({
         this._lightbox_widget = null;
         this._infobox_widget = null;
         this._reveal_overlays = false;
+        this._transition_duration = 0;
 
         this._lightbox_container = new LightboxContainer();
         this._lightbox_container.connect('clicked', Lang.bind(this, function () {
@@ -161,6 +163,17 @@ const Lightbox = new Lang.Class({
 
     get infobox_widget () {
         return this._infobox_widget;
+    },
+
+    set transition_duration (v) {
+        if (this._transition_duration === v)
+            return;
+        this._transition_duration = v;
+        this.notify('transition-duration');
+    },
+
+    get transition_duration () {
+        return this._transition_duration;
     }
 });
 
@@ -169,6 +182,7 @@ const Lightbox = new Lang.Class({
 // upstream and this class should be removed when we move to Gtk 3.12
 const HackRevealer = new Lang.Class({
     Name: 'HackRevealer',
+    GTypeName: 'EknHackRevealer',
     Extends: Gtk.Revealer,
 
     vfunc_size_allocate: function (alloc) {
@@ -188,6 +202,7 @@ const HackRevealer = new Lang.Class({
 // widget.
 const LightboxContainer = new Lang.Class({
     Name: 'LightboxContainer',
+    GTypeName: 'EknLightboxContainer',
     Extends: Gtk.Alignment,
     Signals: {
         'clicked': {}
@@ -286,6 +301,7 @@ const LightboxContainer = new Lang.Class({
 // it.
 const InfoboxContainer = new Lang.Class({
     Name: 'InfoboxContainer',
+    GTypeName: 'EknInfoboxContainer',
     Extends: CompositeButton.CompositeButton,
 
     DOWN_ICON: 'go-down',

@@ -11,7 +11,7 @@ const MarginButton = imports.marginButton;
 
 const CompositeButton = new Lang.Class({
     Name: 'CompositeButton',
-    GTypeName: 'CompositeButton',
+    GTypeName: 'EknCompositeButton',
     Extends: MarginButton.MarginButton,
 
     _INHERITED_FLAGS: [Gtk.StateFlags.PRELIGHT, Gtk.StateFlags.ACTIVE],

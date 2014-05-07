@@ -5,7 +5,7 @@ const Lang = imports.lang;
 // apps a lot easier.
 const MarginButton = new Lang.Class({
     Name: 'MarginButton',
-    GTypeName: 'MarginButton',
+    GTypeName: 'EknMarginButton',
     Extends: Gtk.Button,
 
     _get_margin: function () {
