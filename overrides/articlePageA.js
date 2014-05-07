@@ -5,6 +5,7 @@ const EosKnowledge = imports.gi.EosKnowledge;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
+const Pango = imports.gi.Pango;
 
 const TableOfContents = imports.tableOfContents;
 const WebviewSwitcherView = imports.webviewSwitcherView;
@@ -72,6 +73,7 @@ const ArticlePageA = new Lang.Class({
     _init: function (props) {
         this._title_label = new Gtk.Label({
             wrap: true,
+            wrap_mode: Pango.WrapMode.WORD_CHAR,
             expand: true,
             xalign: 0.0
         });
