@@ -1,5 +1,5 @@
 const Endless = imports.gi.Endless;
-const EosKnowledge = imports.gi.EosKnowledge;
+const EosKnowledge = imports.EosKnowledge.EosKnowledge;
 const GLib = imports.gi.GLib;
 const Gtk = imports.gi.Gtk;
 

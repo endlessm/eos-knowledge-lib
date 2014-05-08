@@ -1,7 +1,7 @@
 ## Copyright 2014 Endless Mobile, Inc.
 ## Included in toplevel Makefile.am
 
-overridesdir = $(datadir)/gjs-1.0/overrides
+overridesdir = $(datadir)/eos-js-common
 pkgoverridesdir = $(pkgdatadir)/overrides
 public_overrides = \
 	overrides/EosKnowledge.js \

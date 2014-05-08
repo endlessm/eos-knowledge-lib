@@ -1,4 +1,4 @@
-const EosKnowledge = imports.gi.EosKnowledge;
+const EosKnowledge = imports.EosKnowledge.EosKnowledge;
 const Endless = imports.gi.Endless;
 const Gtk = imports.gi.Gtk;
 
