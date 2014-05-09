@@ -2,6 +2,7 @@ const Endless = imports.gi.Endless;
 const EosKnowledge = imports.gi.EosKnowledge;
 const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
+const GLib = imports.gi.GLib;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
@@ -65,6 +66,13 @@ const TestApplication = new Lang.Class({
             background_uri: 'file://' + TESTDIR + '/test-content/background.jpg'
         });
         window.show_all();
+
+        let titles = ['Short title', 'Big Old Title Thinger That Should Wrap',
+            'Title With A Looooooooooooooong Word'];
+        GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, 5, function () {
+            article_page.title = titles[(titles.indexOf(article_page.title) + 1) % 3];
+            return true;  // G_SOURCE_CONTINUE
+        });
     }
 });
 

@@ -5,6 +5,8 @@ const EosKnowledge = imports.gi.EosKnowledge;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
+const Pango = imports.gi.Pango;
+const Cairo = imports.gi.cairo;
 
 const TableOfContents = imports.tableOfContents;
 const WebviewSwitcherView = imports.webviewSwitcherView;
@@ -67,11 +69,26 @@ const ArticlePageA = new Lang.Class({
     },
 
     COLLAPSE_TOOLBAR_WIDTH: 800,
-    TOOLBAR_WIDTH_PERCENTAGE: .25,
+    // The following measurements are in fractions of the whole page
+    EXPANDED_LAYOUT: {
+        left_margin_pct: 2 / 56,
+        toolbar_pct: 14 / 56,
+        toolbar_right_margin_pct: 1 / 56,
+        switcher_pct: 36 / 56,
+        right_margin_pct: 3 / 56
+    },
+    COLLAPSED_LAYOUT: {
+        left_margin_pct: 0,
+        toolbar_pct: 3 / 56,
+        toolbar_right_margin_pct: 0,
+        switcher_pct: 50 / 56,
+        right_margin_pct: 3 / 56
+    },
 
     _init: function (props) {
         this._title_label = new Gtk.Label({
             wrap: true,
+            wrap_mode: Pango.WrapMode.WORD_CHAR,
             expand: true,
             xalign: 0.0
         });
@@ -141,11 +158,21 @@ const ArticlePageA = new Lang.Class({
 
         // Allocate toolbar and article frames
         let total_width = alloc.width;
-        alloc.width = this._get_toolbar_width(total_width);
-        this._toolbar_frame.size_allocate(alloc);
-        alloc.x += alloc.width;
-        alloc.width = total_width - alloc.width;
-        this._switcher_frame.size_allocate(alloc);
+        let layout = this._toc.collapsed? this.COLLAPSED_LAYOUT : this.EXPANDED_LAYOUT;
+        let toolbar_alloc = new Cairo.RectangleInt({
+            x: alloc.x + layout.left_margin_pct * total_width,
+            y: alloc.y,
+            width: layout.toolbar_pct * total_width,
+            height: alloc.height
+        });
+        let switcher_alloc = new Cairo.RectangleInt({
+            x: toolbar_alloc.x + toolbar_alloc.width + layout.toolbar_right_margin_pct * total_width,
+            y: alloc.y,
+            width: layout.switcher_pct * total_width,
+            height: alloc.height
+        });
+        this._toolbar_frame.size_allocate(toolbar_alloc);
+        this._switcher_frame.size_allocate(switcher_alloc);
     },
 
     vfunc_get_request_mode: function () {
@@ -167,6 +194,11 @@ const ArticlePageA = new Lang.Class({
 
     _get_toolbar_width: function (total_width) {
         let [toolbar_min, toolbar_nat] = this._toolbar_frame.get_preferred_width();
-        return Math.max(Math.min(toolbar_nat, this.TOOLBAR_WIDTH_PERCENTAGE * total_width), toolbar_min);
+        // This function can be called while the window is sizing down but
+        // before the toolbar collapses, so this._toc.collapsed is not a good
+        // indicator of what size to request here.
+        let layout = total_width < this.COLLAPSE_TOOLBAR_WIDTH? this.COLLAPSED_LAYOUT : this.EXPANDED_LAYOUT;
+        let toolbar_width = layout.toolbar_pct * total_width;
+        return Math.max(Math.min(toolbar_nat, toolbar_width), toolbar_min);
     }
 });
