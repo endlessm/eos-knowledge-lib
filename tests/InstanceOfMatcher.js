@@ -5,7 +5,7 @@ const customMatchers = {
                 let result = {
                     pass: function () {
                         return widget instanceof expectedType;
-                    }
+                    }()
                 }
 
                 let widgetTypeName;
