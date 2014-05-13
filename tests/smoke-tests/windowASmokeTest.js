@@ -214,6 +214,15 @@ const TestApplication = new Lang.Class({
         });
         view.article_page.switcher.load_uri('https://en.wikipedia.org');
 
+        // ============ LIGHTBOX ==================
+        view.lightbox.lightbox_widget = new Gtk.Image({
+            file: TESTDIR + '/test-content/onion.jpg',
+            visible: true
+        });
+        view.connect('key-press-event', function () {
+            view.lightbox.reveal_overlays = !view.lightbox.reveal_overlays;
+        });
+
         view.show_all();
     }
 });
