@@ -8,6 +8,7 @@ const Lang = imports.lang;
 
 const ArticlePageA = imports.articlePageA;
 const HomePageA = imports.homePageA;
+const Lightbox = imports.lightbox;
 const SectionArticlePageA = imports.sectionArticlePageA;
 const SectionPageA = imports.sectionPageA;
 
@@ -16,6 +17,9 @@ const SectionPageA = imports.sectionPageA;
  *
  * This represents the toplevel window widget for template A, containing all
  * template A pages.
+ *
+ * Adds a lightbox above the section and article page, which can be
+ * used to show content above either of these pages.
  */
 const WindowA = new Lang.Class({
     Name: 'WindowA',
@@ -51,7 +55,18 @@ const WindowA = new Lang.Class({
         'article-page': GObject.ParamSpec.object('article-page', 'Article page',
             'The article page of this view widget.',
             GObject.ParamFlags.READABLE,
-            ArticlePageA.ArticlePageA)
+            ArticlePageA.ArticlePageA),
+        /**
+         * Property: lightbox
+         *
+         * The <Lightbox> widget created by this widget. Read-only,
+         * modify using the <Lightbox> API. Use to show content above the <section-page>
+         * or <article-page>.
+         */
+        'lightbox': GObject.ParamSpec.object('lightbox', 'Lightbox',
+            'The lightbox of this view widget.',
+            GObject.ParamFlags.READABLE,
+            Lightbox.Lightbox),
     },
     Signals: {
         /**
@@ -85,6 +100,7 @@ const WindowA = new Lang.Class({
         this._section_article_page.connect('back-clicked', function () {
             this.emit('sidebar-back-clicked');
         }.bind(this));
+        this._lightbox = new Lightbox.Lightbox();
 
         this.parent(props);
 
@@ -110,8 +126,9 @@ const WindowA = new Lang.Class({
         button_box.add(forward_button);
         button_box.show_all();
 
+        this._lightbox.add(this._section_article_page);
         this.page_manager.add(this._home_page);
-        this.page_manager.add(this._section_article_page, {
+        this.page_manager.add(this._lightbox, {
             left_topbar_widget: button_box
         });
         this.page_manager.transition_duration = this.TRANSITION_DURATION;
@@ -132,6 +149,10 @@ const WindowA = new Lang.Class({
         return this._section_article_page.article_page;
     },
 
+    get lightbox () {
+        return this._lightbox;
+    },
+
     /**
      * Method: show_home_page
      *
@@ -150,7 +171,7 @@ const WindowA = new Lang.Class({
     show_section_page: function () {
         this.page_manager.transition_type = Gtk.StackTransitionType.SLIDE_LEFT;
         this._section_article_page.show_article = false;
-        this.page_manager.visible_child = this._section_article_page;
+        this.page_manager.visible_page = this._lightbox;
     },
 
     /**
@@ -161,7 +182,7 @@ const WindowA = new Lang.Class({
     show_article_page: function () {
         this.page_manager.transition_type = Gtk.StackTransitionType.SLIDE_LEFT;
         this._section_article_page.show_article = true;
-        this.page_manager.visible_child = this._section_article_page;
+        this.page_manager.visible_page = this._lightbox;
     },
 
     /**

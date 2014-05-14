@@ -51,6 +51,10 @@ describe('Window A', function () {
         expect(view.article_page).toBeA(EosKnowledge.ArticlePageA);
     });
 
+    it('instantiates a lightbox', function () {
+        expect(view.lightbox).toBeA(EosKnowledge.Lightbox);
+    });
+
     it('visible page updates with show_*_page functions', function () {
         view.show_article_page();
         expect(view.get_visible_page()).toBe(view.article_page);
