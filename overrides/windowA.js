@@ -138,8 +138,8 @@ const WindowA = new Lang.Class({
      * This method causes the window to animate to the home page.
      */
     show_home_page: function () {
-        this.page_manager.transition_type = Endless.PageManagerTransitionType.SLIDE_RIGHT;
-        this.page_manager.visible_page = this._home_page;
+        this.page_manager.transition_type = Gtk.StackTransitionType.SLIDE_RIGHT;
+        this.page_manager.visible_child = this._home_page;
     },
 
     /**
@@ -148,9 +148,9 @@ const WindowA = new Lang.Class({
      * This method causes the window to animate to the section page.
      */
     show_section_page: function () {
-        this.page_manager.transition_type = Endless.PageManagerTransitionType.SLIDE_LEFT;
+        this.page_manager.transition_type = Gtk.StackTransitionType.SLIDE_LEFT;
         this._section_article_page.show_article = false;
-        this.page_manager.visible_page = this._section_article_page;
+        this.page_manager.visible_child = this._section_article_page;
     },
 
     /**
@@ -159,9 +159,9 @@ const WindowA = new Lang.Class({
      * This method causes the window to animate to the article page.
      */
     show_article_page: function () {
-        this.page_manager.transition_type = Endless.PageManagerTransitionType.SLIDE_LEFT;
+        this.page_manager.transition_type = Gtk.StackTransitionType.SLIDE_LEFT;
         this._section_article_page.show_article = true;
-        this.page_manager.visible_page = this._section_article_page;
+        this.page_manager.visible_child = this._section_article_page;
     },
 
     /**
@@ -170,7 +170,7 @@ const WindowA = new Lang.Class({
      * Returns the currently visible page, either the home, section or article page.
      */
     get_visible_page: function () {
-        let visible_page = this.page_manager.visible_page;
+        let visible_page = this.page_manager.visible_child;
         if(visible_page === this._home_page)
             return visible_page;
         if(this._section_article_page.show_article)
