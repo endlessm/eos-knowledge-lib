@@ -96,6 +96,13 @@ enum_type##_get_type (void) \
 #define EKN_STYLE_CLASS_LIGHTBOX_SHADOW "lightbox-shadow"
 
 /**
+ * EKN_STYLE_CLASS_LIGHTBOX_NAVIGATION_BUTTON:
+ *
+ * A CSS class to match the navigation buttons of #EknLightbox.
+ */
+#define EKN_STYLE_CLASS_LIGHTBOX_NAVIGATION_BUTTON "lightbox-navigation-button"
+
+/**
  * EKN_STYLE_CLASS_INFOBOX:
  *
  * A CSS class to match the infobox in #EknLightbox widgets.

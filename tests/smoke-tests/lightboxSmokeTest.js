@@ -40,10 +40,19 @@ const TestApplication = new Lang.Class({
         previewer.show();
 
         this._lightbox = new EosKnowledge.Lightbox({
-            content_widget: previewer,
+            // has_navigation_buttons: false,
+            // has_close_button: false,
+            lightbox_widget: previewer,
             infobox_widget: label
         });
         this._lightbox.add(button);
+
+        this._lightbox.connect('navigation-previous-clicked', Lang.bind(this, function () {
+                print('Previous image, please!');
+        }));
+        this._lightbox.connect('navigation-next-clicked', Lang.bind(this, function () {
+                print('Next image, please!');
+        }));
 
         let window = new Endless.Window({
             application: this

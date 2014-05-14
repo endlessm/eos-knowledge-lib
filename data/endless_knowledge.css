@@ -236,3 +236,14 @@
 .topbar-forward-button {
     padding: 3px;
 }
+
+.lightbox-navigation-button {
+    padding: 7px;
+    border: 0px;
+    border-radius: 27px;
+    background-color: alpha(#888a85, 0.5);
+}
+
+.lightbox-navigation-button:hover {
+    background-color: alpha(#888a85, 0.8);
+}
