@@ -171,7 +171,7 @@ const WindowA = new Lang.Class({
     show_section_page: function () {
         this.page_manager.transition_type = Gtk.StackTransitionType.SLIDE_LEFT;
         this._section_article_page.show_article = false;
-        this.page_manager.visible_page = this._lightbox;
+        this.page_manager.visible_child = this._lightbox;
     },
 
     /**
@@ -182,7 +182,7 @@ const WindowA = new Lang.Class({
     show_article_page: function () {
         this.page_manager.transition_type = Gtk.StackTransitionType.SLIDE_LEFT;
         this._section_article_page.show_article = true;
-        this.page_manager.visible_page = this._lightbox;
+        this.page_manager.visible_child = this._lightbox;
     },
 
     /**
