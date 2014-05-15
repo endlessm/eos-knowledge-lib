@@ -10,48 +10,48 @@ const TEST_OBJ = {
     tableOfContents: [
         {
             '@id': '_:1',
-            nodeIndex: 0,
-            nodeIndexLabel: '1',
-            nodeLabel: 'Foo',
-            nodeContent: 'http://skynet.com/content#Foo'
+            hasIndex: 0,
+            hasIndexLabel: '1',
+            hasLabel: 'Foo',
+            hasContent: 'http://skynet.com/content#Foo'
         },
         {
             '@id': '_:1.a',
-            nodeIndex: 0,
-            nodeIndexLabel: '1.a',
-            nodeLabel: 'Lorum',
-            nodeParent: '_:1',
-            nodeContent: 'http://skynet.com/content#Lorum'
+            hasIndex: 0,
+            hasIndexLabel: '1.a',
+            hasLabel: 'Lorum',
+            hasParent: '_:1',
+            hasContent: 'http://skynet.com/content#Lorum'
         },
         {
             '@id': '_:1.b',
-            nodeIndex: 1,
-            nodeIndexLabel: '1.b',
-            nodeLabel: 'Ipsum',
-            nodeParent: '_:1',
-            nodeContent: 'http://skynet.com/content#Ipsum'
+            hasIndex: 1,
+            hasIndexLabel: '1.b',
+            hasLabel: 'Ipsum',
+            hasParent: '_:1',
+            hasContent: 'http://skynet.com/content#Ipsum'
         },
         {
             '@id': '_:1.b.i',
-            nodeIndex: 0,
-            nodeIndexLabel: '1.b.i',
-            nodeLabel: 'Blah',
-            nodeParent: '_:1.b',
-            nodeContent: 'http://skynet.com/content#Blah'
+            hasIndex: 0,
+            hasIndexLabel: '1.b.i',
+            hasLabel: 'Blah',
+            hasParent: '_:1.b',
+            hasContent: 'http://skynet.com/content#Blah'
         },
         {
             '@id': '_:2',
-            nodeIndex: 1,
-            nodeIndexLabel: '2',
-            nodeLabel: 'Bar',
-            nodeContent: 'http://skynet.com/content#Bar'
+            hasIndex: 1,
+            hasIndexLabel: '2',
+            hasLabel: 'Bar',
+            hasContent: 'http://skynet.com/content#Bar'
         },
         {
             '@id': '_:3',
-            nodeIndex: 2,
-            nodeIndexLabel: '3',
-            nodeLabel: 'Baz',
-            nodeContent: 'http://skynet.com/content#Baz'
+            hasIndex: 2,
+            hasIndexLabel: '3',
+            hasLabel: 'Baz',
+            hasContent: 'http://skynet.com/content#Baz'
         }
     ]
 };
