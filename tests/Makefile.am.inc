@@ -5,6 +5,7 @@ javascript_tests = \
 	tests/eosknowledge/testArticleCard.js \
 	tests/eosknowledge/testArticleObjectModel.js \
 	tests/eosknowledge/testArticlePageA.js \
+	tests/eosknowledge/testArticlePresenter.js \
 	tests/eosknowledge/testCard.js \
 	tests/eosknowledge/testContentObjectModel.js \
 	tests/eosknowledge/testEngine.js \
@@ -26,6 +27,7 @@ javascript_tests = \
 test_content = \
 	tests/test-content/article-search-results.jsonld \
 	tests/test-content/content-search-results.jsonld \
+	tests/test-content/cyprus.jsonld \
 	tests/test-content/emacs.jsonld \
 	tests/test-content/greyjoy-article.jsonld \
 	$(NULL)

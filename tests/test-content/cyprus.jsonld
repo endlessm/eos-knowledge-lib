@@ -1,0 +1,311 @@
+{
+  "@context": "http://localhost:3000/v2/_context/ArticleObject",
+  "@id": "http://localhost:3000/api/travel/10d9cdebdf87c516",
+  "language": "en",
+  "lastModifiedDate": "2014-04-30T12:07:31",
+  "license": "Creative-Commons",
+  "resources": [
+    
+  ],
+  "sourceURL": "http://en.wikipedia.org/wiki/Cyprus",
+  "synopsis": "Cyprus i/ˈsaɪprəs/ (Greek: Κύπρος [ˈcipros]; Turkish: Kıbrıs [ˈkɯbɾɯs]), officially the Republic of Cyprus (Greek: Κυπριακή Δημοκρατία; Turkish: Kıbrıs Cumhuriyeti), is an island country in the Eastern Mediterranean Sea.[6] Cyprus is the third largest and third most populous island in the Mediterranean, and a member state of the European Union. It is located south of Turkey, west of Syria and Lebanon, northwest of Israel, north of Egypt and east of Greece.",
+  "tableOfContents": [
+    {
+      "@id": "_:4566371152",
+      "hasContent": "#Etymology",
+      "hasIndex": 0,
+      "hasIndexLabel": "1",
+      "hasLabel": "Etymology"
+    },
+    {
+      "@id": "_:4566369872",
+      "hasContent": "#Prehistoric_and_Ancient_Cyprus",
+      "hasIndex": 0,
+      "hasIndexLabel": "2.1",
+      "hasLabel": "Prehistoric and Ancient Cyprus",
+      "hasParent": "_:4566368720"
+    },
+    {
+      "@id": "_:4566370320",
+      "hasContent": "#Middle_Ages",
+      "hasIndex": 1,
+      "hasIndexLabel": "2.2",
+      "hasLabel": "Middle Ages",
+      "hasParent": "_:4566368720"
+    },
+    {
+      "@id": "_:4566371344",
+      "hasContent": "#Cyprus_under_the_Ottoman_Empire",
+      "hasIndex": 2,
+      "hasIndexLabel": "2.3",
+      "hasLabel": "Cyprus under the Ottoman Empire",
+      "hasParent": "_:4566368720"
+    },
+    {
+      "@id": "_:4566371024",
+      "hasContent": "#Cyprus_under_the_British_Empire",
+      "hasIndex": 3,
+      "hasIndexLabel": "2.4",
+      "hasLabel": "Cyprus under the British Empire",
+      "hasParent": "_:4566368720"
+    },
+    {
+      "@id": "_:4566369552",
+      "hasContent": "#Independence_and_ensuant_intercommunal_violence",
+      "hasIndex": 4,
+      "hasIndexLabel": "2.5",
+      "hasLabel": "Independence and ensuant intercommunal violence",
+      "hasParent": "_:4566368720"
+    },
+    {
+      "@id": "_:4566370256",
+      "hasContent": "#1974_coup.2C_Turkish_invasion_and_division",
+      "hasIndex": 5,
+      "hasIndexLabel": "2.6",
+      "hasLabel": "1974 coup, Turkish invasion and division",
+      "hasParent": "_:4566368720"
+    },
+    {
+      "@id": "_:4566368592",
+      "hasContent": "#Post-division",
+      "hasIndex": 6,
+      "hasIndexLabel": "2.7",
+      "hasLabel": "Post-division",
+      "hasParent": "_:4566368720"
+    },
+    {
+      "@id": "_:4566368720",
+      "hasContent": "#History",
+      "hasIndex": 1,
+      "hasIndexLabel": "2",
+      "hasLabel": "History"
+    },
+    {
+      "@id": "_:4566372304",
+      "hasContent": "#Climate",
+      "hasIndex": 0,
+      "hasIndexLabel": "3.1",
+      "hasLabel": "Climate",
+      "hasParent": "_:4566372112"
+    },
+    {
+      "@id": "_:4566372048",
+      "hasContent": "#Water_supply",
+      "hasIndex": 1,
+      "hasIndexLabel": "3.2",
+      "hasLabel": "Water supply",
+      "hasParent": "_:4566372112"
+    },
+    {
+      "@id": "_:4566372112",
+      "hasContent": "#Geography",
+      "hasIndex": 2,
+      "hasIndexLabel": "3",
+      "hasLabel": "Geography"
+    },
+    {
+      "@id": "_:4566370512",
+      "hasContent": "#Administrative_divisions",
+      "hasIndex": 0,
+      "hasIndexLabel": "4.1",
+      "hasLabel": "Administrative divisions",
+      "hasParent": "_:4566371920"
+    },
+    {
+      "@id": "_:4566368464",
+      "hasContent": "#Exclaves_and_enclaves",
+      "hasIndex": 1,
+      "hasIndexLabel": "4.2",
+      "hasLabel": "Exclaves and enclaves",
+      "hasParent": "_:4566371920"
+    },
+    {
+      "@id": "_:4566369104",
+      "hasContent": "#Foreign_relations",
+      "hasIndex": 2,
+      "hasIndexLabel": "4.3",
+      "hasLabel": "Foreign relations",
+      "hasParent": "_:4566371920"
+    },
+    {
+      "@id": "_:4566368656",
+      "hasContent": "#Human_rights",
+      "hasIndex": 3,
+      "hasIndexLabel": "4.4",
+      "hasLabel": "Human rights",
+      "hasParent": "_:4566371920"
+    },
+    {
+      "@id": "_:4566372240",
+      "hasContent": "#Armed_forces",
+      "hasIndex": 4,
+      "hasIndexLabel": "4.5",
+      "hasLabel": "Armed forces",
+      "hasParent": "_:4566371920"
+    },
+    {
+      "@id": "_:4566371920",
+      "hasContent": "#Politics",
+      "hasIndex": 3,
+      "hasIndexLabel": "4",
+      "hasLabel": "Politics"
+    },
+    {
+      "@id": "_:4566371280",
+      "hasContent": "#Transport",
+      "hasIndex": 0,
+      "hasIndexLabel": "5.1",
+      "hasLabel": "Transport",
+      "hasParent": "_:4566369424"
+    },
+    {
+      "@id": "_:4566370960",
+      "hasContent": "#Communications",
+      "hasIndex": 1,
+      "hasIndexLabel": "5.2",
+      "hasLabel": "Communications",
+      "hasParent": "_:4566369424"
+    },
+    {
+      "@id": "_:4566369424",
+      "hasContent": "#Economy",
+      "hasIndex": 4,
+      "hasIndexLabel": "5",
+      "hasLabel": "Economy"
+    },
+    {
+      "@id": "_:4566370128",
+      "hasContent": "#Religion",
+      "hasIndex": 0,
+      "hasIndexLabel": "6.1",
+      "hasLabel": "Religion",
+      "hasParent": "_:4566371664"
+    },
+    {
+      "@id": "_:4566368848",
+      "hasContent": "#Languages",
+      "hasIndex": 1,
+      "hasIndexLabel": "6.2",
+      "hasLabel": "Languages",
+      "hasParent": "_:4566371664"
+    },
+    {
+      "@id": "_:4566368976",
+      "hasContent": "#Education",
+      "hasIndex": 2,
+      "hasIndexLabel": "6.3",
+      "hasLabel": "Education",
+      "hasParent": "_:4566371664"
+    },
+    {
+      "@id": "_:4566371664",
+      "hasContent": "#Demographics",
+      "hasIndex": 5,
+      "hasIndexLabel": "6",
+      "hasLabel": "Demographics"
+    },
+    {
+      "@id": "_:4566369616",
+      "hasContent": "#Art",
+      "hasIndex": 0,
+      "hasIndexLabel": "7.1",
+      "hasLabel": "Art",
+      "hasParent": "_:4566370192"
+    },
+    {
+      "@id": "_:4566369488",
+      "hasContent": "#Music",
+      "hasIndex": 1,
+      "hasIndexLabel": "7.2",
+      "hasLabel": "Music",
+      "hasParent": "_:4566370192"
+    },
+    {
+      "@id": "_:4566371088",
+      "hasContent": "#Literature",
+      "hasIndex": 2,
+      "hasIndexLabel": "7.3",
+      "hasLabel": "Literature",
+      "hasParent": "_:4566370192"
+    },
+    {
+      "@id": "_:4684567952",
+      "hasContent": "#Cinema",
+      "hasIndex": 3,
+      "hasIndexLabel": "7.4",
+      "hasLabel": "Cinema",
+      "hasParent": "_:4566370192"
+    },
+    {
+      "@id": "_:4564357264",
+      "hasContent": "#Cuisine",
+      "hasIndex": 4,
+      "hasIndexLabel": "7.5",
+      "hasLabel": "Cuisine",
+      "hasParent": "_:4566370192"
+    },
+    {
+      "@id": "_:4569270416",
+      "hasContent": "#Sports",
+      "hasIndex": 5,
+      "hasIndexLabel": "7.6",
+      "hasLabel": "Sports",
+      "hasParent": "_:4566370192"
+    },
+    {
+      "@id": "_:4566370192",
+      "hasContent": "#Culture",
+      "hasIndex": 6,
+      "hasIndexLabel": "7",
+      "hasLabel": "Culture"
+    },
+    {
+      "@id": "_:4566368528",
+      "hasContent": "#References",
+      "hasIndex": 7,
+      "hasIndexLabel": "8",
+      "hasLabel": "References"
+    },
+    {
+      "@id": "_:4569268560",
+      "hasContent": "#Further_reading",
+      "hasIndex": 8,
+      "hasIndexLabel": "9",
+      "hasLabel": "Further reading"
+    },
+    {
+      "@id": "_:4569269520",
+      "hasContent": "#External_links",
+      "hasIndex": 9,
+      "hasIndexLabel": "10",
+      "hasLabel": "External links"
+    }
+  ],
+  "tags": [
+    "Islands of Europe",
+    "Levant",
+    "Island countries",
+    "International islands",
+    "Countries in Europe",
+    "Hellenistic colonies",
+    "Phoenician colonies",
+    "Mediterranean islands",
+    "Member states of the Union for the Mediterranean",
+    "Republics",
+    "Member states of the Commonwealth of Nations",
+    "Near Eastern countries",
+    "Islands of Asia",
+    "Liberal democracies",
+    "Former British colonies",
+    "Commonwealth republics",
+    "Middle Eastern countries",
+    "Western Asian countries",
+    "Cyprus",
+    "Member states of the United Nations",
+    "Member states of the European Union",
+    "States and territories established in 1960"
+  ],
+  "text": "nada",
+  "title": "Cyprus",
+  "@type": "ekv:ArticleObject"
+}
