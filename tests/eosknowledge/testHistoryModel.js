@@ -3,7 +3,7 @@
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 
-const EosKnowledge = imports.gi.EosKnowledge;
+const EosKnowledge = imports.EosKnowledge.EosKnowledge;
 
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 

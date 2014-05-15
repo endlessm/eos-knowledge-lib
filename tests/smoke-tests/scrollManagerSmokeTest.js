@@ -2,7 +2,7 @@ const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const Endless = imports.gi.Endless;
-const EosKnowledge = imports.gi.EosKnowledge;
+const EosKnowledge = imports.EosKnowledge.EosKnowledge;
 const WebKit2 = imports.gi.WebKit2;
 Gtk.init(null);
 

@@ -1,4 +1,4 @@
-const EosKnowledge = imports.gi.EosKnowledge;
+const EosKnowledge = imports.EosKnowledge.EosKnowledge;
 
 describe('Sample C test', function () {
     it('returns an appropriate greeting', function () {

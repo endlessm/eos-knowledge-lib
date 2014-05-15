@@ -2,7 +2,7 @@ const Gtk = imports.gi.Gtk;
 const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
 const Endless = imports.gi.Endless;
-const EosKnowledge = imports.gi.EosKnowledge;
+const EosKnowledge = imports.EosKnowledge.EosKnowledge;
 const Lang = imports.lang;
 
 const TEST_APPLICATION_ID = 'com.endlessm.knowledge.pages';

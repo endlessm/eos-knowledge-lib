@@ -1,5 +1,5 @@
-const EosKnowledge = imports.gi.EosKnowledge;
 const Endless = imports.gi.Endless;
+const EosKnowledge = imports.EosKnowledge.EosKnowledge;
 const Soup = imports.gi.Soup;
 
 const InstanceOfMatcher = imports.InstanceOfMatcher;
