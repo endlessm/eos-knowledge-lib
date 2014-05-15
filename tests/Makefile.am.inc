@@ -17,9 +17,10 @@ javascript_tests = \
 	tests/eosknowledge/testLightbox.js \
 	tests/eosknowledge/testListCard.js \
 	tests/eosknowledge/testPresenter.js \
+	tests/eosknowledge/testPreviewer.js \
 	tests/eosknowledge/testProgressCard.js \
-	tests/eosknowledge/testSectionPageA.js \
 	tests/eosknowledge/testSectionArticlePageA.js \
+	tests/eosknowledge/testSectionPageA.js \
 	tests/eosknowledge/testTableOfContents.js \
 	tests/eosknowledge/testTreeNode.js \
 	tests/eosknowledge/testWebviewSwitcher.js \

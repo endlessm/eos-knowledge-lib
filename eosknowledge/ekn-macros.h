@@ -257,4 +257,11 @@ enum_type##_get_type (void) \
  */
 #define EKN_STYLE_CLASS_TOPBAR_FORWARD_BUTTON "topbar-forward-button"
 
+/**
+ * EKN_STYLE_CLASS_PREVIEWER:
+ *
+ * A CSS class to match the previewer widget.
+ */
+#define EKN_STYLE_CLASS_PREVIEWER "previewer"
+
 #endif /* EKN_MACROS_H */

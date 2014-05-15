@@ -19,6 +19,7 @@ public_overrides = \
 	overrides/marginButton.js \
 	overrides/presenter.js \
 	overrides/progressCard.js \
+	overrides/previewer.js \
 	overrides/sectionArticlePageA.js \
 	overrides/sectionPageA.js \
 	overrides/tableOfContents.js \
@@ -29,6 +30,7 @@ public_overrides = \
 private_overrides = \
 	overrides/compositeButton.js \
 	overrides/config.js \
+	overrides/imagePreviewer.js \
 	$(NULL)
 dist_pkgoverrides_DATA = $(public_overrides) $(private_overrides)
 
