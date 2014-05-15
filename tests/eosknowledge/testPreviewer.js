@@ -1,11 +1,14 @@
 const Endless = imports.gi.Endless;
 const EosKnowledge = imports.gi.EosKnowledge;
 const Gio = imports.gi.Gio;
+const GLib = imports.gi.GLib;
 const Gtk = imports.gi.Gtk;
 
 const CssClassMatcher = imports.CssClassMatcher;
 
 const TESTDIR = Endless.getCurrentFileDir() + '/..';
+// Working directory should be top of the builddir
+const TESTBUILDDIR = GLib.get_current_dir() + '/tests';
 
 Gtk.init(null);
 
@@ -14,6 +17,9 @@ describe('Previewer widget', function () {
 
     beforeEach(function () {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
+
+        let resource = Gio.Resource.load(TESTBUILDDIR + '/test-content/test-content.gresource');
+        resource._register();
 
         previewer = new EosKnowledge.Previewer();
     });
@@ -25,6 +31,13 @@ describe('Previewer widget', function () {
     it('can open an image file', function () {
         let fn = function () {
             previewer.file = Gio.File.new_for_path(TESTDIR + '/test-content/pig1.jpg');
+        };
+        expect(fn).not.toThrow();
+    });
+
+    it('can open an image file from a resource', function () {
+        let fn = function () {
+            previewer.file = Gio.File.new_for_uri('resource://com/endlessm/knowledge/test/pig1.jpg');
         };
         expect(fn).not.toThrow();
     });

@@ -42,6 +42,20 @@ EXTRA_DIST += \
 	tests/utils.js \
 	$(NULL)
 
+# Test gresource
+gresource = tests/test-content/test-content.gresource
+gresource_deps = $(shell $(GLIB_COMPILE_RESOURCES) --sourcedir=$(srcdir)/tests/test-content --generate-dependencies $(srcdir)/$(gresource).xml)
+tests/test-content/test-content.gresource: $(gresource).xml $(gresource_deps)
+	$(AM_V_GEN) $(MKDIR_P) $(builddir)/tests/test-content && \
+	$(GLIB_COMPILE_RESOURCES) --target=$@ --sourcedir=$(srcdir)/tests/test-content  $<
+EXTRA_DIST += \
+	$(gresource_deps) \
+	$(gresource).xml \
+	$(NULL)
+CLEANFILES += $(gresource)
+# Force gresource to get compiled as part of make check
+check_DATA = tests/test-content/test-content.gresource
+
 # Run tests when running 'make check'
 TESTS = $(javascript_tests)
 LOG_COMPILER = gtester
