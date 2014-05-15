@@ -27,32 +27,32 @@
     "tableOfContents": [
         {
             "@id": "_:1",
-            "nodeIndex": 0,
-            "nodeIndexLabel": "1",
-            "nodeLabel": "History",
-            "nodeContent": "ekn:asoiaf/House_Greyjoy#History"
+            "hasIndex": 0,
+            "hasIndexLabel": "1",
+            "hasLabel": "History",
+            "hasContent": "ekn:asoiaf/House_Greyjoy#History"
         },
         {
             "@id": "_:1.a",
-            "nodeIndex": 0,
-            "nodeIndexLabel": "1.a",
-            "nodeLabel": "When They Used To Be Cool",
-            "nodeParent": "_:1",
-            "nodeContent": "ekn:asoiaf/House_Greyjoy#Never"
+            "hasIndex": 0,
+            "hasIndexLabel": "1.a",
+            "hasLabel": "When They Used To Be Cool",
+            "hasParent": "_:1",
+            "hasContent": "ekn:asoiaf/House_Greyjoy#Never"
         },
         {
             "@id": "_:2",
-            "nodeIndex": 1,
-            "nodeIndexLabel": "2",
-            "nodeLabel": "Sigil",
-            "nodeContent": "ekn:asoiaf/House_Greyjoy#Literally_A_Squid"
+            "hasIndex": 1,
+            "hasIndexLabel": "2",
+            "hasLabel": "Sigil",
+            "hasContent": "ekn:asoiaf/House_Greyjoy#Literally_A_Squid"
         },
         {
             "@id": "_:3",
-            "nodeIndex": 2,
-            "nodeIndexLabel": "3",
-            "nodeLabel": "Criticisms",
-            "nodeContent": "ekn:asoiaf/House_Greyjoy#Seriously"
+            "hasIndex": 2,
+            "hasIndexLabel": "3",
+            "hasLabel": "Criticisms",
+            "hasContent": "ekn:asoiaf/House_Greyjoy#Seriously"
         } 
     ]
 }

@@ -6,11 +6,11 @@ const Gtk = imports.gi.Gtk;
 
 const TABLE_OF_CONTENTS_SCHEMA = 'tableOfContents';
 const ID_SCHEMA = '@id';
-const NODE_PARENT_SCHEMA = 'nodeParent';
-const NODE_INDEX_SCHEMA = 'nodeIndex';
-const NODE_INDEX_LABEL_SCHEMA = 'nodeIndexLabel';
-const NODE_LABEL_SCHEMA = 'nodeLabel';
-const NODE_CONTENT_SCHEMA = 'nodeContent';
+const NODE_PARENT_SCHEMA = 'hasParent';
+const NODE_INDEX_SCHEMA = 'hasIndex';
+const NODE_INDEX_LABEL_SCHEMA = 'hasIndexLabel';
+const NODE_LABEL_SCHEMA = 'hasLabel';
+const NODE_CONTENT_SCHEMA = 'hasContent';
 
 /**
  * Section: TreeNode
@@ -34,8 +34,8 @@ const NODE_CONTENT_SCHEMA = 'nodeContent';
  *   hasLabel (String) - A displayable string describing the node's content
  *   hasContent (<ContentObject>) - The <ContentObject> that this node refers to
  *
- * These properties are represented by the shorthands *nodeParent*, *nodeIndex*,
- * *nodeIndexLabel*, *nodeLabel*, and *nodeContent* respectively.
+ * These properties are represented by the shorthands *hasParent*, *hasIndex*,
+ * *hasIndexLabel*, *hasLabel*, and *hasContent* respectively.
  *
  * For an example, see the <live document at http://goo.gl/t0CF7g>.
  */
