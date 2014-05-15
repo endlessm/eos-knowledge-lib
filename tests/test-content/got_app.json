@@ -1,0 +1,27 @@
+{
+    "domain": "travel",
+    "title": "Game of Thrones",
+    "tagline": "A Song of Ice and Fire",
+    "sections": [
+        {
+            "title": "Whitewalkers",
+            "thumbnail_uri": "tests/test-content/whitewalker.jpg",
+            "tags": ["Europe", "Africa", "Asia"]
+        },
+        {
+            "title": "Kings",
+            "thumbnail_uri": "tests/test-content/joffrey.jpg",
+            "tags": ["regal", "pretentious", "kingdom"]
+        },
+        {
+            "title": "Locations",
+            "thumbnail_uri": "tests/test-content/kings_landing.jpg",
+            "tags": ["castles", "maps", "wall"]
+        },
+        {
+            "title": "Weddings",
+            "thumbnail_uri": "tests/test-content/red_wedding.jpg",
+            "tags": ["seriously", "never", "goto", "a", "georgerrmartin", "wedding"]
+        }
+    ]
+}
