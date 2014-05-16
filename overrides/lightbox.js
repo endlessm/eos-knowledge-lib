@@ -14,18 +14,18 @@ GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.
  * Show widget in a lightbox above other content
  *
  * EosKnowledge.Lightbox is a container which allows displaying a
- * <lightbox-widget> above some base content. The base content widget
+ * <content-widget> above some other base content. The base content
  * should be added with lightbox.add().
  *
  * An optional <infobox-widget> can also be added, in a infobox panel
- * underneath the <lightbox-widget> widget.
+ * underneath the <content-widget> widget.
  *
  * To show or hide both of these widgets above the main content, set the
  * <reveal-overlays> property. The lightbox will animate the content visible
  * and invisible and update the <overlays-revealed> property when the
  * animation is complete.
  *
- * You need to call show() on both the <lightbox-widget> and <infobox-widget>
+ * You need to call show() on both the <content-widget> and <infobox-widget>
  * before adding them to the lightbox. To respect the <reveal-overlays>
  * property show_all() will not work on the widget overlays.
  */
@@ -35,10 +35,10 @@ const Lightbox = new Lang.Class({
     Extends: Gtk.Overlay,
     Properties: {
         /**
-         * Property: lightbox-widget
-         * The widget to display centered in the lightbox above the content
+         * Property: content-widget
+         * The widget to display centered in the lightbox above the base content
          */
-        'lightbox-widget': GObject.ParamSpec.object('lightbox-widget', 'Lightbox Widget',
+        'content-widget': GObject.ParamSpec.object('content-widget', 'Lightbox Widget',
             'The widget in the lightbox',
             GObject.ParamFlags.READWRITE, Gtk.Widget),
         /**
@@ -76,7 +76,7 @@ const Lightbox = new Lang.Class({
 
     _init: function (params) {
         // Property values
-        this._lightbox_widget = null;
+        this._content_widget = null;
         this._infobox_widget = null;
         this._reveal_overlays = false;
         this._transition_duration = 0;
@@ -135,19 +135,19 @@ const Lightbox = new Lang.Class({
         return this._revealer !== undefined && this._revealer.child_revealed;
     },
 
-    set lightbox_widget (v) {
-        if (this._lightbox_widget === v)
+    set content_widget (v) {
+        if (this._content_widget === v)
             return;
-        if (this._lightbox_widget !== null)
-            this._lightbox_container.remove(this._lightbox_widget);
-        this._lightbox_widget = v;
-        if (this._lightbox_widget !== null)
-            this._lightbox_container.add(this._lightbox_widget);
-        this.notify('lightbox-widget');
+        if (this._content_widget !== null)
+            this._lightbox_container.remove(this._content_widget);
+        this._content_widget = v;
+        if (this._content_widget !== null)
+            this._lightbox_container.add(this._content_widget);
+        this.notify('content-widget');
     },
 
-    get lightbox_widget () {
-        return this._lightbox_widget;
+    get content_widget () {
+        return this._content_widget;
     },
 
     set infobox_widget (v) {
@@ -195,7 +195,7 @@ const HackRevealer = new Lang.Class({
     }
 });
 
-// A private container used to house the lightbox-widget in the overlay. Right
+// A private container used to house the content-widget in the overlay. Right
 // now just a GtkAlignment which listens to the exact mouse event we care
 // about and can draw a background. In the future probably a grid or custom
 // container which holds our x button, arrow buttons as well as the lightbox-
@@ -277,7 +277,7 @@ const LightboxContainer = new Lang.Class({
         if (button !== 1)
             return;
         // If the event was generated on our child widgets GdkWindows, don't
-        // emit a clicked signal (the user clicked on the lightbox-widget).
+        // emit a clicked signal (the user clicked on the content-widget).
         if (event.get_window() !== this.get_window())
             return;
         // Not all child widgets will have their own GdkWindows capturing
@@ -296,7 +296,7 @@ const LightboxContainer = new Lang.Class({
     }
 });
 
-// A private container used to house the lightbox-widget in the overlay.
+// A private container used to house the content-widget in the overlay.
 // Collapses and expands the infobox widget inside when the users clicks on
 // it.
 const InfoboxContainer = new Lang.Class({
