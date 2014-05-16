@@ -2,5 +2,6 @@
 <gresources>
   <gresource prefix="/com/endlessm/knowledge/test">
     <file>pig1.jpg</file>
+    <file>sample.mp4</file>
   </gresource>
 </gresources>

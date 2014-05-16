@@ -5,6 +5,7 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const ImagePreviewer = imports.imagePreviewer;
+const VideoPreviewer = imports.videoPreviewer;
 
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 
@@ -37,6 +38,9 @@ const Previewer = new Lang.Class({
         this._image_previewer = new ImagePreviewer.ImagePreviewer({
             visible: true
         });
+        this._video_previewer = new VideoPreviewer.VideoPreviewer({
+            visible: true
+        });
         this.parent(props);
 
         this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_PREVIEWER);
@@ -49,17 +53,21 @@ const Previewer = new Lang.Class({
             this.remove(this.get_child());
         }
         this._image_previewer.file = null;
+        this._video_previewer.file = null;
         this._file = v;
         if (this._file === null) return;
 
-        let type = this._file.query_info("standard::content-type",
+        let type = this._file.query_info('standard::content-type',
                                          Gio.FileQueryInfoFlags.NONE,
                                          null).get_content_type();
         if (this._image_previewer.supports_type(type)) {
             this._image_previewer.file = v;
             this.add(this._image_previewer);
+        } else if (this._video_previewer.supports_type(type)) {
+            this._video_previewer.file = v;
+            this.add(this._video_previewer);
         } else {
-            throw new Error("Previewer does not support type " + type);
+            throw new Error('Previewer does not support type ' + type);
         }
 
         this.notify('file');

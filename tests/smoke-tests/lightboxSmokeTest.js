@@ -21,37 +21,66 @@ const TestApplication = new Lang.Class({
         Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(),
                                                  provider,
                                                  Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+        this._files= {
+            image: Gio.File.new_for_path(TESTDIR + '/test-content/pig1.jpg'),
+            video: Gio.File.new_for_path(TESTDIR + '/test-content/sample.mp4')
+        };
 
-        let button = new Gtk.Button({
-            label: 'Click to show the lightbox'
+        let image_card = new EosKnowledge.Card({
+            title: 'Open image in lightbox'
         });
-        button.connect('clicked', Lang.bind(this, function () {
+        image_card.connect('clicked', Lang.bind(this, function () {
+            this._previewer.file = this._files.image;
             this._lightbox.reveal_overlays = true;
-        }));
+        }.bind(this)));
+
+        let video_card = new EosKnowledge.Card({
+            title: 'Open video in lightbox'
+        });
+        video_card.connect('clicked', Lang.bind(this, function () {
+            this._previewer.file = this._files.video;
+            this._lightbox.reveal_overlays = true;
+        }.bind(this)));
+
+        let grid = new Gtk.Grid();
+        grid.add(image_card);
+        grid.add(video_card);
 
         let label = new Gtk.Label({
-            label: "Don't eat my hat man.\nI'll mess you up"
+            label: "Don't eat my hat man.\nI'll mess you up",
+            visible: true
         });
         label.show();
 
-        let previewer = new EosKnowledge.Previewer({
-            file: Gio.File.new_for_path(TESTDIR + '/test-content/pig1.jpg')
+        this._previewer = new EosKnowledge.Previewer({
+            visible: true
         });
-        previewer.show();
 
         this._lightbox = new EosKnowledge.Lightbox({
             // has_navigation_buttons: false,
             // has_close_button: false,
-            content_widget: previewer,
+            content_widget: this._previewer,
             infobox_widget: label
         });
-        this._lightbox.add(button);
+        this._lightbox.add(grid);
+        this._lightbox.connect("notify::overlays-revealed", function () {
+            if (!this._lightbox.overlays_revealed)
+                this._previewer.file = null;
+        }.bind(this));
 
         this._lightbox.connect('navigation-previous-clicked', Lang.bind(this, function () {
-                print('Previous image, please!');
+            if (this._previewer.file === this._files.image) {
+                this._previewer.file = this._files.video;
+            } else {
+                this._previewer.file = this._files.image;
+            }
         }));
         this._lightbox.connect('navigation-next-clicked', Lang.bind(this, function () {
-                print('Next image, please!');
+            if (this._previewer.file === this._files.image) {
+                this._previewer.file = this._files.video;
+            } else {
+                this._previewer.file = this._files.image;
+            }
         }));
 
         let window = new Endless.Window({
