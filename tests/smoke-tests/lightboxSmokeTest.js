@@ -40,7 +40,7 @@ const TestApplication = new Lang.Class({
         previewer.show();
 
         this._lightbox = new EosKnowledge.Lightbox({
-            lightbox_widget: previewer,
+            content_widget: previewer,
             infobox_widget: label
         });
         this._lightbox.add(button);
