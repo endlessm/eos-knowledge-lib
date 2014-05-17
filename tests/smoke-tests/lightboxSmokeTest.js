@@ -34,13 +34,13 @@ const TestApplication = new Lang.Class({
         });
         label.show();
 
-        let image = new Gtk.Image({
-            file: TESTDIR + '/test-content/pig1.jpg'
+        let previewer = new EosKnowledge.Previewer({
+            file: Gio.File.new_for_path(TESTDIR + '/test-content/pig1.jpg')
         });
-        image.show();
+        previewer.show();
 
         this._lightbox = new EosKnowledge.Lightbox({
-            lightbox_widget: image,
+            lightbox_widget: previewer,
             infobox_widget: label
         });
         this._lightbox.add(button);
