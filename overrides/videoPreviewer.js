@@ -1,5 +1,6 @@
 const Clutter = imports.gi.Clutter;
 const ClutterGst = imports.gi.ClutterGst;
+const EosKnowledge = imports.gi.EosKnowledge;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const GtkClutter = imports.gi.GtkClutter;
@@ -15,7 +16,7 @@ const Lang = imports.lang;
 const VideoPreviewer = Lang.Class({
     Name: 'VideoPreviewer',
     GTypeName: 'EknVideoPreviewer',
-    Extends: GtkClutter.Embed,
+    Extends: Gtk.Stack,
     Properties: {
         /**
          * Property: file
@@ -41,9 +42,18 @@ const VideoPreviewer = Lang.Class({
         this._aspect = 1.0;
         this._natural_width = 0;
 
-        let stage = this.get_stage();
+        this._embed = new GtkClutter.Embed();
+
+        let stage = this._embed.get_stage();
         stage.set_layout_manager(new Clutter.BinLayout());
         stage.add_child(this._video_texture);
+
+        this._frame = new Gtk.Frame();
+        this._frame.get_style_context().add_class(EosKnowledge.STYLE_CLASS_ANIMATING_VIDEO_FRAME);
+
+        this.add(this._embed);
+        this.add(this._frame);
+        this.show_all();
     },
 
     /**
@@ -56,6 +66,30 @@ const VideoPreviewer = Lang.Class({
         // glib mime types. For now we will just support any mime type that
         // starts with video/
         return type.indexOf('video/') === 0;
+    },
+
+    /**
+     * Method: hide_video
+     *
+     * Called by the toplevel previewer when animating. Because ClutterGtk
+     * does not play well with stack or revealer animations we need to hide
+     * the video while the animation is ongoing.
+     */
+    hide_video: function () {
+        this.visible_child = this._frame;
+        if (this._file !== null)
+            this._video_texture.playing = false;
+    },
+
+    /**
+     * Method: show_video
+     *
+     * Called by the toplevel previewer when done animating.
+     */
+    show_video: function () {
+        this.visible_child = this._embed;
+        if (this._file !== null)
+            this._video_texture.playing = true;
     },
 
     set file (v) {

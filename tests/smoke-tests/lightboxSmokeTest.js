@@ -65,9 +65,15 @@ const TestApplication = new Lang.Class({
             infobox_widget: label
         });
         this._lightbox.add(grid);
-        this._lightbox.connect("notify::overlays-revealed", function () {
+        this._lightbox.connect('notify::overlays-revealed', function () {
+            let animating = this._lightbox.overlays_revealed !== this._lightbox.reveal_overlays;
+            this._previewer.animating = animating;
             if (!this._lightbox.overlays_revealed)
                 this._previewer.file = null;
+        }.bind(this));
+        this._lightbox.connect('notify::reveal-overlays', function () {
+            let animating = this._lightbox.overlays_revealed !== this._lightbox.reveal_overlays;
+            this._previewer.animating = animating;
         }.bind(this));
 
         this._lightbox.connect('navigation-previous-clicked', Lang.bind(this, function () {

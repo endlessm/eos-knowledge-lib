@@ -30,20 +30,42 @@ const Previewer = new Lang.Class({
          */
         'file': GObject.ParamSpec.object('file', 'File', 'File to preview',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
-            GObject.Object)
+            GObject.Object),
+        /**
+         * Property: animating
+         *
+         * True if previewer is animating. Currently only used by the video
+         * player which can't display properly during an animation. Will
+         * pause the video and show a black box instead.
+         */
+        'animating': GObject.ParamSpec.boolean('animating', 'Animating',
+            'True if previewer is animating',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
+            false)
     },
 
     _init: function (props) {
         this._file = null;
-        this._image_previewer = new ImagePreviewer.ImagePreviewer({
-            visible: true
-        });
-        this._video_previewer = new VideoPreviewer.VideoPreviewer({
-            visible: true
-        });
+        this._animating = false;
+        this._image_previewer = new ImagePreviewer.ImagePreviewer();
+        this._video_previewer = new VideoPreviewer.VideoPreviewer();
         this.parent(props);
 
         this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_PREVIEWER);
+    },
+
+    set animating (v) {
+        if (v === this._animating) return;
+        this._animating = v;
+        if (this._animating) {
+            this._video_previewer.hide_video();
+        } else {
+            this._video_previewer.show_video();
+        }
+    },
+
+    get animating () {
+        return this._animating;
     },
 
     set file (v) {

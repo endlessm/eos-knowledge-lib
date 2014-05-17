@@ -44,6 +44,8 @@ const ImagePreviewer = Lang.Class({
         this._supported_types = formats.reduce(function(type_list, format) {
             return type_list.concat(format.get_mime_types());
         }, []);
+
+        this.show_all();
     },
 
     /**

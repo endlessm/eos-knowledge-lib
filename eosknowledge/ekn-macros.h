@@ -271,4 +271,13 @@ enum_type##_get_type (void) \
  */
 #define EKN_STYLE_CLASS_PREVIEWER "previewer"
 
+/**
+ * EKN_STYLE_CLASS_ANIMATING_VIDEO_FRAME:
+ *
+ * A CSS class to match a frame that gets shown instead of videos when the
+ * previewer is animating (As our video playing widget can't display properly
+ * during an animation).
+ */
+#define EKN_STYLE_CLASS_ANIMATING_VIDEO_FRAME "animating-video-frame"
+
 #endif /* EKN_MACROS_H */

@@ -247,3 +247,7 @@
 .lightbox-navigation-button:hover {
     background-color: alpha(#888a85, 0.8);
 }
+
+.animating-video-frame {
+    background-color: black;
+}
