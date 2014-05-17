@@ -5,6 +5,8 @@ const Lang = imports.lang;
 
 const EosKnowledge = imports.gi.EosKnowledge;
 
+EosKnowledge.init();
+
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 
 const MockItemModel = new Lang.Class({

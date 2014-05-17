@@ -1,5 +1,7 @@
-const Lang = imports.lang;
+const ClutterGst = imports.gi.ClutterGst;
 const Endless = imports.gi.Endless;
+const GtkClutter = imports.gi.GtkClutter;
+const Lang = imports.lang;
 
 let EosKnowledge;
 
@@ -65,6 +67,17 @@ function _init() {
             get: EosKnowledge.HistoryModel.prototype.get_forward_list
         }
     });
+
+    /**
+     * Method: init
+     *
+     * Call this function before calling into any other EosKnowledge function.
+     * It will initialize all the libraries EosKnowlege depends on.
+     */
+    EosKnowledge.init = function () {
+        GtkClutter.init(null);
+        ClutterGst.init(null);
+    };
 
     EosKnowledge.ArticleCard = ArticleCard.ArticleCard;
     EosKnowledge.ArticleObjectModel = ArticleObjectModel.ArticleObjectModel;

@@ -3,7 +3,7 @@ const Gtk = imports.gi.Gtk;
 
 const InstanceOfMatcher = imports.InstanceOfMatcher;
 
-Gtk.init(null);
+EosKnowledge.init();
 
 const CssClassMatcher = imports.CssClassMatcher;
 

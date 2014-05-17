@@ -3,7 +3,7 @@ const Gtk = imports.gi.Gtk;
 
 const CssClassMatcher = imports.CssClassMatcher;
 
-Gtk.init(null);
+EosKnowledge.init();
 
 describe('Table of contents widget', function () {
     let toc;

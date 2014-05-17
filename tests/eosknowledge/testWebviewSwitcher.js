@@ -4,7 +4,7 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
-Gtk.init(null);
+EosKnowledge.init();
 
 const MockWebview = new Lang.Class({
     Name: 'MockWebview',

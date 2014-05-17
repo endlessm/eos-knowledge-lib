@@ -4,7 +4,7 @@ const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const Gtk = imports.gi.Gtk;
 
-Gtk.init(null);
+EosKnowledge.init();
 
 const TESTDIR = Endless.getCurrentFileDir() + '/..';
 const MOCK_ARTICLE_PATH = TESTDIR + '/test-content/cyprus.jsonld';

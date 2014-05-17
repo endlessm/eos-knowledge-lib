@@ -1,7 +1,7 @@
 const EosKnowledge = imports.gi.EosKnowledge;
 const Gtk = imports.gi.Gtk;
 
-Gtk.init(null);
+EosKnowledge.init();
 
 describe('List card widget', function () {
     let card;

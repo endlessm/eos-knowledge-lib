@@ -2,9 +2,9 @@ const EosKnowledge = imports.gi.EosKnowledge;
 const Endless = imports.gi.Endless;
 const Gtk = imports.gi.Gtk;
 
-Gtk.init(null);
-
 const CssClassMatcher = imports.CssClassMatcher;
+
+EosKnowledge.init();
 
 const TESTDIR = Endless.getCurrentFileDir() + '/..';
 

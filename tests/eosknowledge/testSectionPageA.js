@@ -6,7 +6,7 @@ const CssClassMatcher = imports.CssClassMatcher;
 
 const TESTDIR = Endless.getCurrentFileDir() + '/..';
 
-Gtk.init(null);
+EosKnowledge.init();
 
 let segments = {
 

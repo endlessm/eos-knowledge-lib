@@ -5,8 +5,6 @@ const Gtk = imports.gi.Gtk;
 const GtkClutter = imports.gi.GtkClutter;
 const Lang = imports.lang;
 
-GtkClutter.init(null);
-ClutterGst.init(null);
 
 /**
  * Class: VideoPreviewer
