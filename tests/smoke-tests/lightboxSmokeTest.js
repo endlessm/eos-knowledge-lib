@@ -42,7 +42,7 @@ const TestApplication = new Lang.Class({
         this._lightbox = new EosKnowledge.Lightbox({
             // has_navigation_buttons: false,
             // has_close_button: false,
-            lightbox_widget: previewer,
+            content_widget: previewer,
             infobox_widget: label
         });
         this._lightbox.add(button);

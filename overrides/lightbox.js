@@ -175,12 +175,12 @@ const Lightbox = new Lang.Class({
     set content_widget (v) {
         if (this._content_widget === v)
             return;
-        if (this._lightbox_widget !== null)
-            this._lightbox_container.remove(this._lightbox_widget);
-        this._lightbox_widget = v;
-        if (this._lightbox_widget !== null)
-            this._lightbox_container.attach_widget(this._lightbox_widget);
-        this.notify('lightbox-widget');
+        if (this._content_widget !== null)
+            this._lightbox_container.remove(this._content_widget);
+        this._content_widget = v;
+        if (this._content_widget !== null)
+            this._lightbox_container.attach_widget(this._content_widget);
+        this.notify('content-widget');
     },
 
     get content_widget () {
@@ -306,6 +306,25 @@ const LightboxContainer = new Lang.Class({
             this.emit('close-clicked');
         }.bind(this));
 
+        // Dummy widget used to center main content in screen
+        // We bind its 'visible' property so that its visibility is in sync
+        // with the close button visibility
+        let spacer = new Gtk.Frame();
+        spacer.bind_property(
+            'visible',
+            this.close_button, 'visible',
+            GObject.BindingFlags.BIDIRECTIONAL
+        );
+
+        /**
+         * Size Group to enforce centering of main content widget
+         */
+        this._lightbox_size_group = new Gtk.SizeGroup({
+            mode: Gtk.SizeGroupMode.HORIZONTAL
+        });
+        this._lightbox_size_group.add_widget(spacer);
+        this._lightbox_size_group.add_widget(this.close_button);
+
         /**
          * Navigate previous button
          */
@@ -352,8 +371,9 @@ const LightboxContainer = new Lang.Class({
         this.navigation_box.attach(this._navigation_previous_button, 0, 0, 1, 1);
         this.navigation_box.attach(this._navigation_next_button, 1, 0, 1, 1);
 
-        this._container_grid.attach(this.close_button, 1, 0, 1, 1);
-        this._container_grid.attach(this.navigation_box, 0, 1, 2, 1);
+        this._container_grid.attach(spacer, 0, 0, 1, 1);
+        this._container_grid.attach(this.close_button, 2, 0, 1, 1);
+        this._container_grid.attach(this.navigation_box, 0, 1, 3, 1);
 
         this.add(this._container_grid);
 
@@ -404,8 +424,9 @@ const LightboxContainer = new Lang.Class({
     },
 
     attach_widget: function (w) {
+        this._widget = w;
         // Added this to hide implementation detail
-        this._container_grid.attach(w, 0, 0, 1, 1);
+        this._container_grid.attach(this._widget, 1, 0, 1, 1);
     },
 
     _button_release: function (widget, event) {
@@ -427,8 +448,8 @@ const LightboxContainer = new Lang.Class({
         // Not all child widgets will have their own GdkWindows capturing
         // mouse events. If event is generated inside child widgets allocation
         // return.
-        if (this.get_child()) {
-            let child_alloc = this.get_child().get_allocation();
+        if (this._widget) {
+            let child_alloc = this._widget.get_allocation();
             if (event_x >= child_alloc.x &&
                 event_y >= child_alloc.y &&
                 event_x <= child_alloc.x + child_alloc.width &&
@@ -437,7 +458,7 @@ const LightboxContainer = new Lang.Class({
         }
         // Event must have been in the shadowed area of the container.
         this.emit('clicked');
-    },
+    }
 });
 
 // A private container used to house the content-widget in the overlay.
