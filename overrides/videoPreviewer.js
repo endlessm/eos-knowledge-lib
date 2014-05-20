@@ -29,12 +29,24 @@ const VideoPreviewer = Lang.Class({
             GObject.Object),
     },
 
+    _PLAY_ICON: 'media-playback-start-symbolic',
+    _PAUSE_ICON: 'media-playback-pause-symbolic',
+    _ICON_SIZE: 50,
+
     _init: function (props) {
         this._video_texture = new ClutterGst.VideoTexture({
             x_expand: true,
             y_expand: true
         });
         this._video_texture.connect('size-change', Lang.bind(this, this._texture_size_changed));
+
+        let toolbar = this._build_toolbar();
+        let toolbar_actor = new GtkClutter.Actor({
+            contents: toolbar,
+            x_align: Clutter.ActorAlign.CENTER,
+            y_align: Clutter.ActorAlign.END,
+            y_expand: true
+        });
 
         this.parent(props);
 
@@ -47,6 +59,7 @@ const VideoPreviewer = Lang.Class({
         let stage = this._embed.get_stage();
         stage.set_layout_manager(new Clutter.BinLayout());
         stage.add_child(this._video_texture);
+        stage.add_child(toolbar_actor);
 
         this._frame = new Gtk.Frame();
         this._frame.get_style_context().add_class(EosKnowledge.STYLE_CLASS_ANIMATING_VIDEO_FRAME);
@@ -77,8 +90,10 @@ const VideoPreviewer = Lang.Class({
      */
     hide_video: function () {
         this.visible_child = this._frame;
-        if (this._file !== null)
+        if (this._file !== null) {
+            this._can_play = false;
             this._video_texture.playing = false;
+        }
     },
 
     /**
@@ -89,7 +104,7 @@ const VideoPreviewer = Lang.Class({
     show_video: function () {
         this.visible_child = this._embed;
         if (this._file !== null)
-            this._video_texture.playing = true;
+            this._can_play = true;
     },
 
     set file (v) {
@@ -97,12 +112,7 @@ const VideoPreviewer = Lang.Class({
             return;
         this._file = v;
         this._video_texture.playing = false;
-        if (this._file === null)
-            return;
-
-        this._video_texture.set_uri(this._file.get_uri());
-        this._video_texture.playing = true;
-
+        this._video_texture.set_uri(this._file === null ? '' : this._file.get_uri());
         this.notify('file');
     },
 
@@ -145,4 +155,67 @@ const VideoPreviewer = Lang.Class({
         this._aspect = width / height;
         this.queue_resize();
     },
+
+    _build_toolbar: function () {
+        this._pause_play_image = new Gtk.Image({
+            pixel_size: this._ICON_SIZE
+        });
+        let button = new Gtk.Button({
+            image: this._pause_play_image,
+            halign: Gtk.Align.CENTER
+        });
+        button.get_style_context().add_class(EosKnowledge.STYLE_CLASS_VIDEO_PLAYER_PLAY_BUTTON);
+        button.connect('clicked', function () {
+            this._video_texture.set_playing(this._can_play &&
+                                            this._pause_play_image.icon_name === this._PLAY_ICON);
+            this._update_pause_play_icon();
+        }.bind(this));
+
+        let adjustment = new Gtk.Adjustment({
+            lower: 0,
+            value: 0,
+            upper: 1
+        });
+        this._scale = new Gtk.Scale({
+            width_request: 200,
+            draw_value: false,
+            adjustment: adjustment
+        });
+        this._scale.get_style_context().add_class(EosKnowledge.STYLE_CLASS_VIDEO_PLAYER_SCALE);
+        this._user_update_to_scale = true;
+        this._scale.connect('value-changed', function () {
+            // Only set progress from scale if the user has moved the scale,
+            // otherwise we will loop scale updating progress updating scale.
+            if (this._user_update_to_scale)
+                this._video_texture.progress = this._scale.adjustment.value;
+        }.bind(this));
+        this._video_texture.connect('notify::progress', function () {
+            this._user_update_to_scale = false;
+            this._scale.adjustment.value = this._video_texture.progress;
+            this._user_update_to_scale = true;
+        }.bind(this));
+        this._video_texture.connect('notify::playing', function () {
+            this._update_pause_play_icon();
+        }.bind(this));
+        this._video_texture.connect('eos', function () {
+            this._update_pause_play_icon();
+            this._video_texture.progress = 0;
+        }.bind(this));
+
+        let grid = new Gtk.Grid({
+            orientation: Gtk.Orientation.HORIZONTAL
+        });
+        grid.add(button);
+        grid.add(this._scale);
+        grid.show_all();
+        return grid;
+    },
+
+    _update_pause_play_icon: function () {
+        if (this._video_texture.get_playing()) {
+            this._pause_play_image.icon_name = this._PAUSE_ICON;
+        } else {
+            this._pause_play_image.icon_name = this._PLAY_ICON;
+        }
+    }
 });

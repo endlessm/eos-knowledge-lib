@@ -280,4 +280,18 @@ enum_type##_get_type (void) \
  */
 #define EKN_STYLE_CLASS_ANIMATING_VIDEO_FRAME "animating-video-frame"
 
+/**
+ * EKN_STYLE_CLASS_VIDEO_PLAYER_SCALE:
+ *
+ * A CSS class to match the video player scale (showing video progress).
+ */
+#define EKN_STYLE_CLASS_VIDEO_PLAYER_SCALE "video-player-scale"
+
+/**
+ * EKN_STYLE_CLASS_VIDEO_PLAYER_PLAY_BUTTON:
+ *
+ * A CSS class to match the video player play/pause button.
+ */
+#define EKN_STYLE_CLASS_VIDEO_PLAYER_PLAY_BUTTON "video-player-play-button"
+
 #endif /* EKN_MACROS_H */
