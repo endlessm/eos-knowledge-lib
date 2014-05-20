@@ -1,8 +1,8 @@
 const EosKnowledge = imports.gi.EosKnowledge;
 const Gdk = imports.gi.Gdk;
 const GLib = imports.gi.GLib;
-const Gtk = imports.gi.Gtk;
 const GObject = imports.gi.GObject;
+const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const CompositeButton = imports.compositeButton;
@@ -71,7 +71,26 @@ const Lightbox = new Lang.Class({
         'transition-duration': GObject.ParamSpec.uint('transition-duration', 'Transition Duration',
             'The duration of the animation of the overlays to visible/invisible',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
-            0, GLib.MAXUINT32, 250)
+            0, GLib.MAXUINT32, 250),
+        /**
+         * Property: has-close-button
+         * True if the lightbox should have a close button to dismiss the overlay
+         */
+        'has-close-button':  GObject.ParamSpec.boolean('has-close-button', 'Has Close Button',
+            'True if the lightbox should have a close button to dismiss the overlay. Default is true',
+            GObject.ParamFlags.READWRITE, true),
+        /**
+         * Property: has-navigation-buttons
+         * Whether the navigation buttons should be displayed
+         */
+        'has-navigation-buttons': GObject.ParamSpec.boolean('has-navigation-buttons',
+            'Has Navigation Buttons',
+            'Boolean property to manage whether the lightbox\'s navigation buttons should be shown. Defaults to true',
+            GObject.ParamFlags.READWRITE, true)
+    },
+    Signals: {
+        'navigation-previous-clicked': {},
+        'navigation-next-clicked': {}
     },
 
     _init: function (params) {
@@ -80,9 +99,14 @@ const Lightbox = new Lang.Class({
         this._infobox_widget = null;
         this._reveal_overlays = false;
         this._transition_duration = 0;
+        this._has_close_button = true;
+        this._has_navigation_buttons = true;
 
         this._lightbox_container = new LightboxContainer();
         this._lightbox_container.connect('clicked', Lang.bind(this, function () {
+            this.reveal_overlays = false;
+        }));
+        this._lightbox_container.connect('close-clicked', Lang.bind(this, function () {
             this.reveal_overlays = false;
         }));
 
@@ -107,6 +131,19 @@ const Lightbox = new Lang.Class({
         }));
 
         this.parent(params);
+
+        this._lightbox_container.close_button.set_visible(this._has_close_button);
+        this._lightbox_container.navigation_box.set_visible(this._has_navigation_buttons);
+
+        this._lightbox_container.connect('navigation-previous-clicked',
+            Lang.bind(this, function () {
+                this.emit('navigation-previous-clicked');
+        }));
+        this._lightbox_container.connect('navigation-next-clicked',
+            Lang.bind(this, function () {
+                this.emit('navigation-next-clicked');
+        }));
+
         this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_LIGHTBOX);
         this.bind_property('transition-duration',
                            this._revealer, 'transition-duration',
@@ -142,7 +179,7 @@ const Lightbox = new Lang.Class({
             this._lightbox_container.remove(this._content_widget);
         this._content_widget = v;
         if (this._content_widget !== null)
-            this._lightbox_container.add(this._content_widget);
+            this._lightbox_container.attach_widget(this._content_widget);
         this.notify('content-widget');
     },
 
@@ -174,6 +211,30 @@ const Lightbox = new Lang.Class({
 
     get transition_duration () {
         return this._transition_duration;
+    },
+
+    set has_close_button (v) {
+        if (this._has_close_button === v)
+            return;
+        this._has_close_button = v;
+        this._lightbox_container.close_button.set_visible(this._has_close_button);
+        this.notify('has-close-button');
+    },
+
+    get has_close_button () {
+        return this._has_close_button;
+    },
+
+    set has_navigation_buttons (v) {
+        if (this._has_navigation_buttons === v)
+            return;
+        this._has_navigation_buttons = v;
+        this._lightbox_container.navigation_box.set_visible(this._has_navigation_buttons);
+        this.notify('has-navigation-buttons');
+    },
+
+    get has_navigation_buttons () {
+        return this._has_navigation_buttons;
     }
 });
 
@@ -195,18 +256,20 @@ const HackRevealer = new Lang.Class({
     }
 });
 
-// A private container used to house the content-widget in the overlay. Right
-// now just a GtkAlignment which listens to the exact mouse event we care
-// about and can draw a background. In the future probably a grid or custom
-// container which holds our x button, arrow buttons as well as the lightbox-
-// widget.
+// A private container used to house the lightbox-widget in the overlay.
 const LightboxContainer = new Lang.Class({
     Name: 'LightboxContainer',
     GTypeName: 'EknLightboxContainer',
     Extends: Gtk.Alignment,
     Signals: {
-        'clicked': {}
+        'clicked': {},
+        'close-clicked': {},
+        'navigation-previous-clicked': {},
+        'navigation-next-clicked': {}
     },
+
+    _ICON_SIZE: 18,
+    _ICON_MARGIN: 10,
 
     _init: function (params) {
         params = params || {};
@@ -217,6 +280,102 @@ const LightboxContainer = new Lang.Class({
         this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_LIGHTBOX_SHADOW);
         this.set_events(Gdk.EventMask.BUTTON_PRESS_MASK | Gdk.EventMask.BUTTON_RELEASE_MASK);
         this.set_has_window(true);
+
+        /**
+         * Grid that contains the buttons needed for the UI, as well as the lightbox's content
+         */
+        this._container_grid = new Gtk.Grid({
+            valign: Gtk.Align.CENTER,
+            halign: Gtk.Align.CENTER
+        });
+
+        /**
+         * Close button
+         */
+        let img_close = new Gtk.Image({
+            icon_name: 'window-close-symbolic',
+            pixel_size: this._ICON_SIZE
+        });
+        this.close_button = new Gtk.Button({
+            halign: Gtk.Align.START,
+            valign: Gtk.Align.START,
+            margin: this._ICON_MARGIN,
+            image: img_close
+        });
+        this.close_button.connect('clicked', function () {
+            this.emit('close-clicked');
+        }.bind(this));
+
+        // Dummy widget used to center main content in screen
+        // We bind its 'visible' property so that its visibility is in sync
+        // with the close button visibility
+        let spacer = new Gtk.Frame();
+        spacer.bind_property(
+            'visible',
+            this.close_button, 'visible',
+            GObject.BindingFlags.BIDIRECTIONAL
+        );
+
+        /**
+         * Size Group to enforce centering of main content widget
+         */
+        this._lightbox_size_group = new Gtk.SizeGroup({
+            mode: Gtk.SizeGroupMode.HORIZONTAL
+        });
+        this._lightbox_size_group.add_widget(spacer);
+        this._lightbox_size_group.add_widget(this.close_button);
+
+        /**
+         * Navigate previous button
+         */
+        let img_prev = new Gtk.Image({
+            icon_name: 'go-previous-symbolic',
+            pixel_size: this._ICON_SIZE
+        });
+        this._navigation_previous_button = new Gtk.Button({
+            halign: Gtk.Align.START,
+            valign: Gtk.Align.START,
+            margin: this._ICON_MARGIN,
+            image: img_prev
+        });
+        this._navigation_previous_button.connect('clicked', function () {
+            this.emit('navigation-previous-clicked');
+        }.bind(this));
+        this._navigation_previous_button.get_style_context().add_class(EosKnowledge.STYLE_CLASS_LIGHTBOX_NAVIGATION_BUTTON);
+
+        /**
+         * Navigate next button
+         */
+        let img_next = new Gtk.Image({
+            icon_name: 'go-next-symbolic',
+            pixel_size: this._ICON_SIZE
+        });
+        this._navigation_next_button = new Gtk.Button({
+            halign: Gtk.Align.START,
+            valign: Gtk.Align.START,
+            margin: this._ICON_MARGIN,
+            image: img_next
+        });
+        this._navigation_next_button.connect('clicked', function () {
+            this.emit('navigation-next-clicked');
+        }.bind(this));
+        this._navigation_next_button.get_style_context().add_class(EosKnowledge.STYLE_CLASS_LIGHTBOX_NAVIGATION_BUTTON);
+
+        /**
+         * Navigation Button Box
+         */
+        this.navigation_box = new Gtk.Grid({
+            hexpand: false,
+            halign: Gtk.Align.CENTER
+        });
+        this.navigation_box.attach(this._navigation_previous_button, 0, 0, 1, 1);
+        this.navigation_box.attach(this._navigation_next_button, 1, 0, 1, 1);
+
+        this._container_grid.attach(spacer, 0, 0, 1, 1);
+        this._container_grid.attach(this.close_button, 2, 0, 1, 1);
+        this._container_grid.attach(this.navigation_box, 0, 1, 3, 1);
+
+        this.add(this._container_grid);
 
         this.connect('button-release-event', Lang.bind(this, this._button_release));
     },
@@ -264,6 +423,12 @@ const LightboxContainer = new Lang.Class({
                                           alloc.width, alloc.height);
     },
 
+    attach_widget: function (w) {
+        this._widget = w;
+        // Added this to hide implementation detail
+        this._container_grid.attach(this._widget, 1, 0, 1, 1);
+    },
+
     _button_release: function (widget, event) {
         let [has_button, button] = event.get_button();
         let [has_coords, event_x, event_y] = event.get_coords();
@@ -283,8 +448,8 @@ const LightboxContainer = new Lang.Class({
         // Not all child widgets will have their own GdkWindows capturing
         // mouse events. If event is generated inside child widgets allocation
         // return.
-        if (this.get_child()) {
-            let child_alloc = this.get_child().get_allocation();
+        if (this._widget) {
+            let child_alloc = this._widget.get_allocation();
             if (event_x >= child_alloc.x &&
                 event_y >= child_alloc.y &&
                 event_x <= child_alloc.x + child_alloc.width &&
