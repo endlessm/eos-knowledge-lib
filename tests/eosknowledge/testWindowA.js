@@ -1,5 +1,6 @@
 const Endless = imports.gi.Endless;
 const EosKnowledge = imports.gi.EosKnowledge;
+const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const Gtk = imports.gi.Gtk;
 
@@ -8,12 +9,21 @@ const CssClassMatcher = imports.CssClassMatcher;
 
 EosKnowledge.init();
 
+const TESTDIR = Endless.getCurrentFileDir() + '/..';
+// Working directory should be top of the builddir
+const TESTBUILDDIR = GLib.get_current_dir() + '/tests';
+const BACKGROUND_URI = 'resource:///com/endlessm/thrones/kings_landing.jpg';
+
 describe('Window A', function () {
     let view;
 
     beforeEach(function (done) {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
         jasmine.addMatchers(InstanceOfMatcher.customMatchers);
+
+        // Load and register the GResource which has content for this app
+        let resource = Gio.Resource.load(TESTBUILDDIR + '/test-content/test-content.gresource');
+        resource._register();
 
         // Generate a unique ID for each app instance that we test
         let fake_pid = GLib.random_int();
@@ -55,6 +65,11 @@ describe('Window A', function () {
 
     it('instantiates a lightbox', function () {
         expect(view.lightbox).toBeA(EosKnowledge.Lightbox);
+    });
+
+    it('correctly sets background image', function () {
+        view.background_image_uri = BACKGROUND_URI;
+        expect(view.background_image_uri).toBe(BACKGROUND_URI);
     });
 
     it('visible page updates with show_*_page functions', function () {

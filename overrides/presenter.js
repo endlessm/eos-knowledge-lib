@@ -44,6 +44,7 @@ const Presenter = new Lang.Class({
 
     _setAppContent: function(data) {
         this._domain = data['domain'];
+        this.view.background_image_uri = data['backgroundURI'];
         this.view.home_page.title = data['appTitle'];
         this.view.home_page.subtitle = data['appSubtitle'];
         this.view.home_page.cards = data['sections'].map(function (section) {
