@@ -1,0 +1,18 @@
+#!/usr/bin/env gjs
+
+const EosKnowledge = imports.gi.EosKnowledge;
+
+if (ARGV.length !== 2) {
+
+    printerr("Run this script by passing it an app ID and a gresource file");
+
+} else {
+
+    let app = new EosKnowledge.KnowledgeApp({
+        application_id: ARGV[0],
+        flags: 0
+    }, ARGV[1]);
+
+    app.run([]);
+}
+

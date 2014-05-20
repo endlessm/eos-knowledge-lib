@@ -16,6 +16,7 @@ const Card = imports.card;
 const ContentObjectModel = imports.contentObjectModel;
 const Engine = imports.engine;
 const HomePageA = imports.homePageA;
+const KnowledgeApp = imports.knowledgeApp;
 const LessonCard = imports.lessonCard;
 const Lightbox = imports.lightbox;
 const ListCard = imports.listCard;
@@ -87,6 +88,7 @@ function _init() {
     EosKnowledge.ContentObjectModel = ContentObjectModel.ContentObjectModel;
     EosKnowledge.Engine = Engine.Engine;
     EosKnowledge.HomePageA = HomePageA.HomePageA;
+    EosKnowledge.KnowledgeApp = KnowledgeApp.KnowledgeApp;
     EosKnowledge.LessonCard = LessonCard.LessonCard;
     EosKnowledge.Lightbox = Lightbox.Lightbox;
     EosKnowledge.ListCard = ListCard.ListCard;

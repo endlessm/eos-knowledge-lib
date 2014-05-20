@@ -1,0 +1,23 @@
+{
+    "appTitle": "Game of Thrones",
+    "appSubtitle": "A Song of Ice and Fire",
+    "backgroundURI": "resource:///com/endlessm/thrones/kings_landing.jpg",
+    "templateType": "A",
+    "sections": [
+        {
+            "title": "Whitewalkers",
+            "thumbnailURI": "resource:///com/endlessm/thrones/whitewalker.jpg",
+            "tags": ["asia", "latin america"]
+        },
+        {
+            "title": "Kings",
+            "thumbnailURI": "resource:///com/endlessm/thrones/joffrey.jpg",
+            "tags": ["hostels", "monuments"]
+        },
+        {
+            "title": "Weddings",
+            "thumbnailURI": "resource:///com/endlessm/thrones/red_wedding.jpg",
+            "tags": ["countries", "monuments", "mountains"]
+        }
+    ]
+}

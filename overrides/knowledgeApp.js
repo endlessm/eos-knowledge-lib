@@ -5,17 +5,19 @@ const Endless = imports.gi.Endless;
 const EosKnowledge = imports.gi.EosKnowledge;
 const Lang = imports.lang;
 
-EosKnowledge.init();
+const ENDLESS_PREFIX = '/com/endlessm/';
 
-const TEST_APPLICATION_ID = 'com.endlessm.knowledge.presenter';
-const TESTDIR = Endless.getCurrentFileDir() + '/..';
-
-const TestApplication = new Lang.Class ({
-    Name: 'TestApplication',
+const KnowledgeApp = new Lang.Class ({
+    Name: 'KnowledgeApp',
+    GTypeName: 'EknKnowledgeApp',
     Extends: Endless.Application,
 
-    vfunc_startup: function() {
+    _init: function(props, gresource_filename){
+        this.parent(props);
+        this._gresource_filename = gresource_filename;
+    },
 
+    vfunc_startup: function() {
         this.parent();
         let provider = new Gtk.CssProvider();
         let css_file = Gio.File.new_for_uri('resource:///com/endlessm/knowledge/endless_knowledge.css');
@@ -24,26 +26,22 @@ const TestApplication = new Lang.Class ({
                                                  provider,
                                                  Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 
+        // Load and register the GResource which has content for this app
+        let resource = Gio.Resource.load(this._gresource_filename);
+        resource._register();
+
+        // Parse the appname and personality from the gresource
+        let appname = resource.enumerate_children(ENDLESS_PREFIX, Gio.FileQueryInfoFlags.NONE, null)[0];
+        let app_json_file_uri = 'resource://' + ENDLESS_PREFIX + appname + 'app.json';
+
         let win = new EosKnowledge.WindowA({
             application: this
         });
 
-        // Load and register the GResource which has content for this app
-        let resource = Gio.Resource.load(TESTDIR + '/test-content/test-content.gresource');
-        resource._register();
-
-        let test_app_filename = 'file://' + TESTDIR + '/test-content/app.json';
-
         let presenter = new EosKnowledge.Presenter({
             view: win
-        }, test_app_filename);
+        }, app_json_file_uri);
 
         win.show_all();
     }
 });
-
-let app = new TestApplication({
-    application_id: TEST_APPLICATION_ID,
-    flags: 0
-});
-app.run(ARGV);
