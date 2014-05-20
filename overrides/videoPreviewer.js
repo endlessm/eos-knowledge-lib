@@ -40,13 +40,7 @@ const VideoPreviewer = Lang.Class({
         });
         this._video_texture.connect('size-change', Lang.bind(this, this._texture_size_changed));
 
-        let toolbar = this._build_toolbar();
-        let toolbar_actor = new GtkClutter.Actor({
-            contents: toolbar,
-            x_align: Clutter.ActorAlign.CENTER,
-            y_align: Clutter.ActorAlign.END,
-            y_expand: true
-        });
+        this._build_toolbar();
 
         this.parent(props);
 
@@ -59,7 +53,7 @@ const VideoPreviewer = Lang.Class({
         let stage = this._embed.get_stage();
         stage.set_layout_manager(new Clutter.BinLayout());
         stage.add_child(this._video_texture);
-        stage.add_child(toolbar_actor);
+        this._reattach_toolbar();
 
         this._frame = new Gtk.Frame();
         this._frame.get_style_context().add_class(EosKnowledge.STYLE_CLASS_ANIMATING_VIDEO_FRAME);
@@ -90,6 +84,7 @@ const VideoPreviewer = Lang.Class({
      */
     hide_video: function () {
         this.visible_child = this._frame;
+        this._reattach_toolbar();
         if (this._file !== null) {
             this._can_play = false;
             this._video_texture.playing = false;
@@ -202,13 +197,13 @@ const VideoPreviewer = Lang.Class({
             this._video_texture.progress = 0;
         }.bind(this));
 
-        let grid = new Gtk.Grid({
+        this._toolbar = new Gtk.Grid({
             orientation: Gtk.Orientation.HORIZONTAL
         });
-        grid.add(button);
-        grid.add(this._scale);
-        grid.show_all();
-        return grid;
+        this._toolbar.add(button);
+        this._toolbar.add(this._scale);
+        this._toolbar.show_all();
+        return this._toolbar;
     },
 
     _update_pause_play_icon: function () {
@@ -217,5 +212,23 @@ const VideoPreviewer = Lang.Class({
         } else {
             this._pause_play_image.icon_name = this._PLAY_ICON;
         }
+    },
+
+    // FIXME: haven't figure out why this is necessary yet, but the
+    // GtkClutter.Actor, needs to be rebuilt every time we show a resource
+    // again, or the UI controls won't show up. Fun with GtkClutter
+    _reattach_toolbar: function () {
+        if (this._embed === undefined) return;
+        if (this._toolbar_actor !== undefined) {
+            this._toolbar_actor.get_widget().remove(this._toolbar);
+            this._embed.get_stage().remove_child(this._toolbar_actor);
+        }
+        this._toolbar_actor = new GtkClutter.Actor({
+            contents: this._toolbar,
+            x_align: Clutter.ActorAlign.CENTER,
+            y_align: Clutter.ActorAlign.END,
+            y_expand: true
+        });
+        this._embed.get_stage().add_child(this._toolbar_actor);
     }
 });
