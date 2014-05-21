@@ -3,6 +3,8 @@ const EosKnowledge = imports.gi.EosKnowledge;
 
 const utils = imports.utils;
 
+EosKnowledge.init();
+
 const CONTENT_OBJECT_EMACS = Endless.getCurrentFileDir() + '/../test-content/emacs.jsonld';
 
 describe ("Content Object Model", function () {

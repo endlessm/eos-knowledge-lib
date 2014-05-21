@@ -7,7 +7,7 @@ const Lang = imports.lang;
 const Pango = imports.gi.Pango;
 const WebKit2 = imports.gi.WebKit2;
 
-Gtk.init(null);
+EosKnowledge.init();
 
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 

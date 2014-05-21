@@ -6,6 +6,8 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const Pango = imports.gi.Pango;
 
+EosKnowledge.init();
+
 const VOWELS = 'aeiou'.split('');
 const CONSONANTS = 'bcdfghjklmnpqrstvwyz'.split('');
 const TOPICS = ['intrapsychically', 'slubberdegullion', 'anthropomorphously',

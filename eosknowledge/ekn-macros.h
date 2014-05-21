@@ -271,4 +271,27 @@ enum_type##_get_type (void) \
  */
 #define EKN_STYLE_CLASS_PREVIEWER "previewer"
 
+/**
+ * EKN_STYLE_CLASS_ANIMATING_VIDEO_FRAME:
+ *
+ * A CSS class to match a frame that gets shown instead of videos when the
+ * previewer is animating (As our video playing widget can't display properly
+ * during an animation).
+ */
+#define EKN_STYLE_CLASS_ANIMATING_VIDEO_FRAME "animating-video-frame"
+
+/**
+ * EKN_STYLE_CLASS_VIDEO_PLAYER_SCALE:
+ *
+ * A CSS class to match the video player scale (showing video progress).
+ */
+#define EKN_STYLE_CLASS_VIDEO_PLAYER_SCALE "video-player-scale"
+
+/**
+ * EKN_STYLE_CLASS_VIDEO_PLAYER_PLAY_BUTTON:
+ *
+ * A CSS class to match the video player play/pause button.
+ */
+#define EKN_STYLE_CLASS_VIDEO_PLAYER_PLAY_BUTTON "video-player-play-button"
+
 #endif /* EKN_MACROS_H */

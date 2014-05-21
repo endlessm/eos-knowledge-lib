@@ -3,9 +3,9 @@ const EosKnowledge = imports.gi.EosKnowledge;
 const Gtk = imports.gi.Gtk;
 const InstanceOfMatcher = imports.InstanceOfMatcher;
 
-Gtk.init(null);
-
 const utils = imports.utils;
+
+EosKnowledge.init();
 
 const MOCK_ARTICLE_PATH = Endless.getCurrentFileDir() + '/../test-content/greyjoy-article.jsonld';
 

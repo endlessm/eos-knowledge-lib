@@ -5,6 +5,8 @@ const Endless = imports.gi.Endless;
 const EosKnowledge = imports.gi.EosKnowledge;
 const Lang = imports.lang;
 
+EosKnowledge.init();
+
 const TEST_APPLICATION_ID = 'com.endlessm.knowledge.card';
 const TESTDIR = Endless.getCurrentFileDir() + '/..';
 

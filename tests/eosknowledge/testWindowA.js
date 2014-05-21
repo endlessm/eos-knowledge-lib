@@ -6,6 +6,8 @@ const Gtk = imports.gi.Gtk;
 const InstanceOfMatcher = imports.InstanceOfMatcher;
 const CssClassMatcher = imports.CssClassMatcher;
 
+EosKnowledge.init();
+
 describe('Window A', function () {
     let view;
 

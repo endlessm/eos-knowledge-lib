@@ -247,3 +247,27 @@
 .lightbox-navigation-button:hover {
     background-color: alpha(#888a85, 0.8);
 }
+
+.animating-video-frame {
+    background-color: black;
+}
+
+.video-player-scale {
+    -GtkRange-slider-width: 18px;
+    -GtkRange-trough-border: 2px;
+    -GtkScale-slider-length: 18px;
+}
+
+.video-player-scale.slider {
+    border-color: black;
+    border-style: solid;
+    border-radius: 50%;
+    border-width: 2px;
+    background-color: white;
+}
+
+.video-player-scale.trough {
+    border-radius: 3px;
+    margin: 8px 0;
+    background-color: white;
+}

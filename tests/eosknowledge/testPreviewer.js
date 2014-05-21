@@ -6,11 +6,11 @@ const Gtk = imports.gi.Gtk;
 
 const CssClassMatcher = imports.CssClassMatcher;
 
+EosKnowledge.init();
+
 const TESTDIR = Endless.getCurrentFileDir() + '/..';
 // Working directory should be top of the builddir
 const TESTBUILDDIR = GLib.get_current_dir() + '/tests';
-
-Gtk.init(null);
 
 describe('Previewer widget', function () {
     let previewer;
@@ -38,6 +38,20 @@ describe('Previewer widget', function () {
     it('can open an image file from a resource', function () {
         let fn = function () {
             previewer.file = Gio.File.new_for_uri('resource://com/endlessm/knowledge/test/pig1.jpg');
+        };
+        expect(fn).not.toThrow();
+    });
+
+    it('can open a video file', function () {
+        let fn = function () {
+            previewer.file = Gio.File.new_for_path(TESTDIR + '/test-content/sample.mp4');
+        };
+        expect(fn).not.toThrow();
+    });
+
+    it('can open a video file from a resource', function () {
+        let fn = function () {
+            previewer.file = Gio.File.new_for_uri('resource://com/endlessm/knowledge/test/sample.mp4');
         };
         expect(fn).not.toThrow();
     });

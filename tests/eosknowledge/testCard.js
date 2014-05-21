@@ -3,7 +3,7 @@ const Gtk = imports.gi.Gtk;
 
 const CssClassMatcher = imports.CssClassMatcher;
 
-Gtk.init(null);
+EosKnowledge.init();
 
 describe('Card widget', function () {
     let card;
