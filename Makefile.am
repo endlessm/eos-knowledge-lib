@@ -89,13 +89,11 @@ introspection_sources = \
 
 EosKnowledge-@EKN_API_VERSION@.gir: libeosknowledge-@EKN_API_VERSION@.la
 EosKnowledge_@EKN_API_VERSION@_gir_INCLUDES = \
-	ClutterGst-2.0 \
 	Endless-0 \
 	Gio-2.0 \
 	GLib-2.0 \
 	GObject-2.0 \
 	Gtk-3.0 \
-	GtkClutter-1.0 \
 	$(NULL)
 EosKnowledge_@EKN_API_VERSION@_gir_SCANNERFLAGS = \
 	--identifier-prefix=Ekn \
