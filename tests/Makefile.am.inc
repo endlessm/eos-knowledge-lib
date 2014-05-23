@@ -31,7 +31,7 @@ test_content = \
 	tests/test-content/content-search-results.jsonld \
 	tests/test-content/cyprus.jsonld \
 	tests/test-content/emacs.jsonld \
-	tests/test-content/got_app.json \
+	tests/test-content/app.json \
 	tests/test-content/greyjoy-article.jsonld \
 	tests/test-content/sample.mp4 \
 	$(NULL)

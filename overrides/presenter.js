@@ -37,19 +37,20 @@ const Presenter = new Lang.Class({
     },
 
     _parse_object_from_path: function (path) {
-        let file = Gio.file_new_for_path(path);
+        let file = Gio.file_new_for_uri(path);
         let [success, data] = file.load_contents(null);
         return JSON.parse(data);
     },
 
     _setAppContent: function(data) {
         this._domain = data['domain'];
-        this.view.home_page.title = data['title'];
-        this.view.home_page.subtitle = data['tagline'];
+        this.view.background_image_uri = data['backgroundURI'];
+        this.view.home_page.title = data['appTitle'];
+        this.view.home_page.subtitle = data['appSubtitle'];
         this.view.home_page.cards = data['sections'].map(function (section) {
             let card = new EosKnowledge.Card({
                 title: section['title'],
-                thumbnail_uri: section['thumbnail_uri']
+                thumbnail_uri: section['thumbnailURI']
             });
             card.connect('clicked', this._on_section_card_clicked.bind(this, section['tags']));
             return card;

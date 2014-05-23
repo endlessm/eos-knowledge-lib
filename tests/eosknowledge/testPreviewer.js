@@ -30,14 +30,14 @@ describe('Previewer widget', function () {
 
     it('can open an image file', function () {
         let fn = function () {
-            previewer.file = Gio.File.new_for_path(TESTDIR + '/test-content/pig1.jpg');
+            previewer.file = Gio.File.new_for_path(TESTDIR + '/test-content/joffrey.jpg');
         };
         expect(fn).not.toThrow();
     });
 
     it('can open an image file from a resource', function () {
         let fn = function () {
-            previewer.file = Gio.File.new_for_uri('resource://com/endlessm/knowledge/test/pig1.jpg');
+            previewer.file = Gio.File.new_for_uri('resource://com/endlessm/thrones/joffrey.jpg');
         };
         expect(fn).not.toThrow();
     });
@@ -51,7 +51,7 @@ describe('Previewer widget', function () {
 
     it('can open a video file from a resource', function () {
         let fn = function () {
-            previewer.file = Gio.File.new_for_uri('resource://com/endlessm/knowledge/test/sample.mp4');
+            previewer.file = Gio.File.new_for_uri('resource://com/endlessm/thrones/sample.mp4');
         };
         expect(fn).not.toThrow();
     });

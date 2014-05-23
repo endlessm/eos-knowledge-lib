@@ -12,6 +12,8 @@ const Lightbox = imports.lightbox;
 const SectionArticlePageA = imports.sectionArticlePageA;
 const SectionPageA = imports.sectionPageA;
 
+GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
+
 /**
  * Class: WindowA
  *
@@ -67,6 +69,16 @@ const WindowA = new Lang.Class({
             'The lightbox of this view widget.',
             GObject.ParamFlags.READABLE,
             Lightbox.Lightbox),
+        /**
+         * Property: background-image-uri
+         *
+         * The background image uri for this window.
+         * Gets set on all pages of the application
+         */
+        'background-image-uri': GObject.ParamSpec.string('background-image-uri', 'Background image URI',
+            'The background image of this window.',
+            GObject.ParamFlags.READWRITE,
+            ''),
     },
     Signals: {
         /**
@@ -151,6 +163,24 @@ const WindowA = new Lang.Class({
 
     get lightbox () {
         return this._lightbox;
+    },
+
+    get background_image_uri () {
+        return this._background_image_uri;
+    },
+
+    set background_image_uri (v) {
+        if (this._background_image_uri === v) {
+            return;
+        }
+        this._background_image_uri = v;
+        if (this._background_image_uri !== null) {
+            let frame_css = 'EknWindowA { background-image: url("' + this._background_image_uri + '"); background-repeat: no-repeat; background-size:cover;}';
+            let provider = new Gtk.CssProvider();
+            provider.load_from_data(frame_css);
+            let context = this.get_style_context();
+            context.add_provider(provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+        }
     },
 
     /**

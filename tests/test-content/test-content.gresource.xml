@@ -1,7 +1,13 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" ?>
 <gresources>
-  <gresource prefix="/com/endlessm/knowledge/test">
-    <file>pig1.jpg</file>
-    <file>sample.mp4</file>
-  </gresource>
+    <gresource prefix="/com/endlessm/thrones">
+        <file>pig1.jpg</file>
+        <file>sample.mp4</file>
+        <file compressed="true">app.json</file>
+        <file compressed="true">db.json</file>
+        <file compressed="true">joffrey.jpg</file>
+        <file compressed="true">kings_landing.jpg</file>
+        <file compressed="true">whitewalker.jpg</file>
+        <file compressed="true">red_wedding.jpg</file>
+    </gresource>
 </gresources>
