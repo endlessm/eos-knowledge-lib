@@ -161,15 +161,15 @@
     padding-right: 0em;
 }
 
-.home-page-title {
+.home-page-a-title, .home-page-b-title {
     font-size: 4em;
 }
 
-.home-page-subtitle {
+.home-page-a-subtitle, .home-page-a-subtitle {
     font-size: 1.2em;
 }
 
-.home-page .search-box {
+.home-page-a .search-box, .home-page-b .search-box {
     background: rgba(255,255,255,0.8);
     padding: 4px;
     color: black;
@@ -183,7 +183,7 @@
     border-color: rgba(0, 0, 0, 0.80);
 }
 
-.home-page GtkSeparator {
+.home-page-a, .home-page-b GtkSeparator {
     border-style: solid;
     border-width: 3px;
     -GtkWidget-wide-separators: true;

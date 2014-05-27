@@ -26,32 +26,52 @@ const TestApplication = new Lang.Class ({
 
         let cards = [
             new EosKnowledge.Card({
-                title: 'Subtitled Card',
-                subtitle: 'This is the Subtitle',
+                title: 'Card 1',
+                subtitle: 'The First Card',
+                thumbnail_uri: TESTDIR + '/test-content/relish.jpg',
             }),
             new EosKnowledge.Card({
-                title: 'Picture Card',
+                title: 'Card 2',
+                subtitle: 'The Second Card',
                 thumbnail_uri: TESTDIR + '/test-content/pig1.jpg',
             }),
             new EosKnowledge.Card({
-                title: 'Everything card',
-                subtitle: 'This card has everything',
+                title: 'Card 3',
+                subtitle: 'The Third Card',
                 thumbnail_uri: TESTDIR + '/test-content/pig2.jpg',
             }),
-            new EosKnowledge.LessonCard({
-                title: 'Mustard lesson',
-                subtitle: 'Sample, incomplete',
+            new EosKnowledge.Card({
+                title: 'Card 4',
+                subtitle: 'The Fourth Card',
+                thumbnail_uri: TESTDIR + '/test-content/pig1.jpg',
+            }),
+            new EosKnowledge.Card({
+                title: 'Card 5',
+                subtitle: 'The Fifth Card',
+                thumbnail_uri: TESTDIR + '/test-content/pig2.jpg',
+            }),
+            new EosKnowledge.Card({
+                title: 'Card 6',
+                subtitle: 'The Sixth Card',
                 // By Bogdan29roman, CC-BY-SA
                 // http://en.wikipedia.org/wiki/File:Mu%C5%9Ftar.jpg
-                thumbnail_uri: TESTDIR + '/test-content/mustard.jpg',
-                item_index: 1,
-                complete: false
+                thumbnail_uri: TESTDIR + '/test-content/mustard.jpg'
+            }),
+            new EosKnowledge.Card({
+                title: 'Card 7',
+                subtitle: 'The Seventh Card',
+                thumbnail_uri: TESTDIR + '/test-content/pig2.jpg',
+            }),
+            new EosKnowledge.Card({
+                title: 'Card 8',
+                subtitle: 'The Eighth Card',
+                thumbnail_uri: TESTDIR + '/test-content/pig1.jpg',
             })
         ];
 
-        let home_page = new EosKnowledge.HomePageA({
+        let home_page = new EosKnowledge.HomePageB({
             title: 'Guatemala',
-            subtitle: 'A country where Fernando is king'
+            subtitle: 'The Land of Eternal Spring'
         });
         home_page.cards = cards;
 

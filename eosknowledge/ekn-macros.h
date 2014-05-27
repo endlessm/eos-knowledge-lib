@@ -159,25 +159,46 @@ enum_type##_get_type (void) \
 #define EKN_STYLE_CLASS_COLLAPSED "collapsed"
 
 /**
- * EKN_STYLE_CLASS_HOME_PAGE:
+ * EKN_STYLE_CLASS_HOME_PAGE_A:
  *
- * A CSS class to match the HomePage.
+ * A CSS class to match the Template A's HomePage.
  */
-#define EKN_STYLE_CLASS_HOME_PAGE "home-page"
+#define EKN_STYLE_CLASS_HOME_PAGE_A "home-page-a"
 
 /**
- * EKN_STYLE_CLASS_HOME_PAGE_TITLE:
+ * EKN_STYLE_CLASS_HOME_PAGE_A_TITLE:
  *
- * A CSS class to match the title on the HomePage.
+ * A CSS class to match the title on the Template A's HomePage.
  */
-#define EKN_STYLE_CLASS_HOME_PAGE_TITLE "home-page-title"
+#define EKN_STYLE_CLASS_HOME_PAGE_A_TITLE "home-page-a-title"
 
 /**
- * EKN_STYLE_CLASS_HOME_PAGE_SUBTITLE:
+ * EKN_STYLE_CLASS_HOME_PAGE_A_SUBTITLE:
  *
- * A CSS class to match the subtitle on the HomePage.
+ * A CSS class to match the subtitle on the Template A's HomePage.
  */
-#define EKN_STYLE_CLASS_HOME_PAGE_SUBTITLE "home-page-subtitle"
+#define EKN_STYLE_CLASS_HOME_PAGE_A_SUBTITLE "home-page-a-subtitle"
+
+/**
+ * EKN_STYLE_CLASS_HOME_PAGE_B:
+ *
+ * A CSS class to match the Template B's HomePage.
+ */
+#define EKN_STYLE_CLASS_HOME_PAGE_B "home-page-b"
+
+/**
+ * EKN_STYLE_CLASS_HOME_PAGE_B_TITLE:
+ *
+ * A CSS class to match the title on the Template B's HomePage.
+ */
+#define EKN_STYLE_CLASS_HOME_PAGE_B_TITLE "home-page-b-title"
+
+/**
+ * EKN_STYLE_CLASS_HOME_PAGE_B_SUBTITLE:
+ *
+ * A CSS class to match the subtitle on the Template B's HomePage.
+ */
+#define EKN_STYLE_CLASS_HOME_PAGE_B_SUBTITLE "home-page-b-subtitle"
 
 /**
  * EKN_STYLE_CLASS_ARTICLE_PAGE:
