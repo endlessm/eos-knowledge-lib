@@ -115,6 +115,9 @@ CLEANFILES += $(gir_DATA) $(typelib_DATA)
 endif
 
 # # # TOOLS # # #
+
+EXTRA_DIST += tools/ekn-app-runner
+
 bin_SCRIPTS = \
 	tools/ekn-app-runner \
 	$(NULL)
