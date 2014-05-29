@@ -66,6 +66,14 @@ enum_type##_get_type (void) \
 #define EKN_STYLE_CLASS_CARD_B "card-b"
 
 /**
+ * EKN_STYLE_CLASS_TEXT_CARD:
+ *
+ * A CSS class to match #EknTextCard widgets.
+ * It is present on any text card widget or subclass thereof.
+ */
+#define EKN_STYLE_CLASS_TEXT_CARD "text-card"
+
+/**
  * EKN_STYLE_CLASS_COMPLETE:
  *
  * A CSS class to match #EknLessonCard widgets that have been marked as
@@ -274,6 +282,13 @@ enum_type##_get_type (void) \
 #define EKN_STYLE_CLASS_SECTION_PAGE "section-page"
 
 /**
+ * EKN_STYLE_CLASS_SECTION_PAGE_BACK_BUTTON:
+ *
+ * A CSS class to match the back button on the section and article pages.
+ */
+#define EKN_STYLE_CLASS_SECTION_PAGE_BACK_BUTTON "section-page-back-button"
+
+/**
  * EKN_STYLE_CLASS_SECTION_PAGE_TITLE:
  *
  * A CSS class to match the title on the SectionPage of the knowledge apps.
@@ -281,18 +296,25 @@ enum_type##_get_type (void) \
 #define EKN_STYLE_CLASS_SECTION_PAGE_TITLE "section-page-title"
 
 /**
- * EKN_STYLE_CLASS_SECTION_PAGE_SEGMENT_TITLE:
+ * EKN_STYLE_CLASS_SECTION_PAGE_A:
+ *
+ * A CSS class to match the Template A's SectionPage of the knowledge apps.
+ */
+#define EKN_STYLE_CLASS_SECTION_PAGE_A "section-page-a"
+
+/**
+ * EKN_STYLE_CLASS_SECTION_PAGE_A_SEGMENT_TITLE:
  *
  * A CSS class to match the title on a segment of the SectionPage of the knowledge apps.
  */
-#define EKN_STYLE_CLASS_SECTION_PAGE_SEGMENT_TITLE "section-page-segment-title"
+#define EKN_STYLE_CLASS_SECTION_PAGE_A_SEGMENT_TITLE "section-page-a-segment-title"
 
 /**
- * EKN_STYLE_CLASS_SECTION_PAGE_BACK_BUTTON:
+ * EKN_STYLE_CLASS_SECTION_PAGE_B:
  *
- * A CSS class to match the back button on the section and article pages.
+ * A CSS class to match the Template B' SectionPage of the knowledge apps.
  */
-#define EKN_STYLE_CLASS_SECTION_PAGE_BACK_BUTTON "section-page-back-button"
+#define EKN_STYLE_CLASS_SECTION_PAGE_B "section-page-b"
 
 /**
  * EKN_STYLE_CLASS_TOPBAR_BACK_BUTTON:

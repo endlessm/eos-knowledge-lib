@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: eos-knowledge-lib 0.0.0\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-"
 "inc\n"
-"POT-Creation-Date: 2014-05-30 15:29-0600\n"
+"POT-Creation-Date: 2014-06-24 09:59-0600\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -30,4 +30,12 @@ msgstr ""
 #: overrides/progressCard.js:111
 #, c-format
 msgid "%d of %d done"
+msgstr ""
+
+#: overrides/homePageA.js:58
+msgid "SEE ALL CATEGORIES"
+msgstr ""
+
+#: overrides/categoriesPage.js:53
+msgid "HOME"
 msgstr ""

@@ -5,29 +5,25 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
+const SectionPage = imports.sectionPage;
+
 /**
  * Class: SectionPageA
  *
- * This represents the section page for template A of the knowledge apps.
+ * This class extends <SectionPage> and represents the section page for 
+ * template A of the knowledge apps.
  * It will also be used as the search results page.
- * It has a title and a set of articles to show. Articles are represented
- * by cards. Cards are grouped into sections call 'Segments'. A segment has
- * a title, which is the type of cards in its section, and a list of cards
- * to display.
+ * In addition to the 'title' property published by <SectionPage>, it has 
+ * a set of articles to show. Articles are represented by cards. Cards are 
+ * grouped into sections call 'Segments'. A segment has a title, which is the 
+ * type of cards in its section, and a list of cards to display.
  *
  */
 const SectionPageA = new Lang.Class({
     Name: 'SectionPageA',
     GTypeName: 'EknSectionPageA',
-    Extends: Gtk.ScrolledWindow,
+    Extends: SectionPage.SectionPage,
     Properties: {
-        /**
-         * Property: title
-         * A string with the title of the section page. Defaults to an empty string.
-         */
-        'title': GObject.ParamSpec.string('title', 'Page Title',
-            'Title of the page',
-            GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE, ''),
         /**
          * Property: segments
          * An object where keys are a string label representing a card type, e.g. 'Lesson',
@@ -38,9 +34,11 @@ const SectionPageA = new Lang.Class({
     },
 
     _init: function (props) {
-        props = props || {};
-        props.hscrollbar_policy = Gtk.PolicyType.NEVER;
+        this.parent(props);
 
+        this._scroller = new Gtk.ScrolledWindow({
+            hscrollbar_policy: Gtk.PolicyType.NEVER
+        });
         this._content_grid = new Gtk.Grid({
             orientation: Gtk.Orientation.VERTICAL,
             expand: true,
@@ -50,14 +48,11 @@ const SectionPageA = new Lang.Class({
             margin_right: 100
         });
 
-        this._title_label = new Gtk.Label();
-
         this._segments = null;
-        this._title = null;
 
-        this.parent(props);
-
-        this._content_grid.add(this._title_label);
+        this._content_grid.add(this.title_label);
+        this._scroller.add(this._content_grid);
+        this.add(this._scroller);
 
         // We need the segment titles of all be right aligned with each other.
         // This gets tricky as they aren't all in the same container, so we
@@ -66,23 +61,8 @@ const SectionPageA = new Lang.Class({
             mode: Gtk.SizeGroupMode.HORIZONTAL
         });
 
-        this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_SECTION_PAGE);
-        this._title_label.get_style_context().add_class(EosKnowledge.STYLE_CLASS_SECTION_PAGE_TITLE);
-        this.add(this._content_grid);
+        this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_SECTION_PAGE_A);
         this.show_all();
-    },
-
-    set title (v) {
-        if (this._title === v) return;
-        this._title = v;
-        this._title_label.label = this._title;
-        this.notify('title');
-    },
-
-    get title () {
-        if (this._title)
-            return this._title;
-        return '';
     },
 
     set segments (v) {
@@ -166,7 +146,7 @@ const CardsSegment = new Lang.Class({
         this.attach(this.title_label, 0, 1, 1, 1);
         this.attach(this._flow_box, 1, 1, 1, 1);
 
-        this.title_label.get_style_context().add_class(EosKnowledge.STYLE_CLASS_SECTION_PAGE_SEGMENT_TITLE);
+        this.title_label.get_style_context().add_class(EosKnowledge.STYLE_CLASS_SECTION_PAGE_A_SEGMENT_TITLE);
 
     },
 

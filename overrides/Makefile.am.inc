@@ -29,8 +29,11 @@ public_overrides = \
 	overrides/progressCard.js \
 	overrides/previewer.js \
 	overrides/sectionArticlePageA.js \
+	overrides/sectionPage.js \
 	overrides/sectionPageA.js \
+	overrides/sectionPageB.js \
 	overrides/tableOfContents.js \
+	overrides/textCard.js \
 	overrides/treeNode.js \
 	overrides/webviewSwitcherView.js \
 	overrides/window.js \

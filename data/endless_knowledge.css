@@ -53,6 +53,20 @@ EknWindowA.show-article-page {
     transition: padding 250ms ease-in-out;
 }
 
+.text-card {
+    padding: 10px;
+    margin: 30px;
+    background-color: white;
+    color: orange;
+    transition: color 250ms ease-in-out;
+    transition: background-color 250ms ease-in-out;
+}
+
+.text-card:hover {
+    background-color: orange;
+    color: white;
+}
+
 .card-a .card-title:hover,
 .card-a .card-synopsis:hover {
     /* Add as much padding here as we take out of the card margin, so we don't make
@@ -326,18 +340,27 @@ EknWindowA.show-article-page {
     background-color: black;
 }
 
-.section-page-title {
+.home-page-b {
+    text-shadow: alpha(black, 0.2) 3px 3px 0px;
+}
+
+.section-page-a .section-page-title {
     padding-top: 1.0em;
     padding-bottom: 0.48em;
     font-size: 2.3em;
     font-weight: bold;
 }
 
-.section-page GtkSeparator {
+.section-page-a GtkSeparator {
     color: rgba(255, 255, 255, 0.3);
 }
 
-.section-page-segment-title {
+.section-page-b .section-page-title {
+    font-size: 2em;
+    font-weight: bold;
+}
+
+.section-page-a-segment-title {
     padding-top: 0.2em;
     color: white;
     font-size: 1.4em;

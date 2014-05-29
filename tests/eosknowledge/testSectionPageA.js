@@ -71,8 +71,8 @@ describe('Section page for Template A', function () {
     });
 
     describe('Style class of section page', function () {
-        it('has section-page class', function () {
-            expect(section_page).toHaveCssClass(EosKnowledge.STYLE_CLASS_SECTION_PAGE);
+        it('has section-page-a class', function () {
+            expect(section_page).toHaveCssClass(EosKnowledge.STYLE_CLASS_SECTION_PAGE_A);
         });
 
         it('has a descendant with title class', function () {
@@ -81,7 +81,7 @@ describe('Section page for Template A', function () {
 
         it('has a descendant with segment_title class', function () {
             section_page.segments = segments;
-            expect(section_page).toHaveDescendantWithCssClass(EosKnowledge.STYLE_CLASS_SECTION_PAGE_SEGMENT_TITLE);
+            expect(section_page).toHaveDescendantWithCssClass(EosKnowledge.STYLE_CLASS_SECTION_PAGE_A_SEGMENT_TITLE);
         });
 
     });
