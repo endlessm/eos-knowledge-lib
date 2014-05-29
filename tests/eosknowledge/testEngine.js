@@ -39,8 +39,8 @@ describe('Knowledge Engine Module', function () {
     });
 
     describe('constructor', function () {
-        it('should default its port to 3000', function () {
-            expect(engine.port).toBe(3000);
+        it('should default its port to 3003', function () {
+            expect(engine.port).toBe(3003);
         });
 
         it('should default its hostname to localhost', function () {
@@ -88,7 +88,7 @@ describe('Knowledge Engine Module', function () {
             let request_spy = engine_request_spy();
             let mock_domain = 'foo';
             let mock_id = 'bar';
-            let expected_uri = Soup.URI.new('http://localhost:3000/api/foo/bar');
+            let expected_uri = Soup.URI.new('http://localhost:3003/api/foo/bar');
 
             engine.get_object_by_id(mock_domain, mock_id, noop);
             let last_req_args = request_spy.calls.mostRecent().args;
