@@ -1,0 +1,13 @@
+{
+    "@context": "http://localhost:3000/api/_context/VideoObject",
+    "@type": "ekv:VideoObject",
+    "@id": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    "title": "Never Gonna Give You Up (Never Gonna Let You Down)",
+    "transcript": "We're no strangers to love, etc etc etc",
+    "tags": ["inspiring", "beautiful"],
+    "caption": "If this song was sushi, it would be a Rick Roll",
+    "encodingFormat": "mov",
+    "duration": "P666S",
+    "height": "666",
+    "width": "666"
+}
