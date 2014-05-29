@@ -39,12 +39,12 @@ const Engine = Lang.Class({
          * The port of the Knowledge Engine service. You generally don't need
          * to set this.
          *
-         * Defaults to 3000
+         * Defaults to 3003
          */
         'port': GObject.ParamSpec.int('port', 'Knowledge Engine Port',
             'The port of the Knowledge Engine service',
              GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-             -1, GLib.MAXINT32, 3000),
+             -1, GLib.MAXINT32, 3003),
     },
 
     _init: function (params) {
