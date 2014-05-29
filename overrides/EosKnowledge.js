@@ -20,6 +20,7 @@ const KnowledgeApp = imports.knowledgeApp;
 const LessonCard = imports.lessonCard;
 const Lightbox = imports.lightbox;
 const ListCard = imports.listCard;
+const MediaObjectModel = imports.mediaObjectModel;
 const Presenter = imports.presenter;
 const Previewer = imports.previewer;
 const ProgressCard = imports.progressCard;
@@ -88,10 +89,12 @@ function _init() {
     EosKnowledge.ContentObjectModel = ContentObjectModel.ContentObjectModel;
     EosKnowledge.Engine = Engine.Engine;
     EosKnowledge.HomePageA = HomePageA.HomePageA;
+    EosKnowledge.ImageObjectModel = MediaObjectModel.ImageObjectModel;
     EosKnowledge.KnowledgeApp = KnowledgeApp.KnowledgeApp;
     EosKnowledge.LessonCard = LessonCard.LessonCard;
     EosKnowledge.Lightbox = Lightbox.Lightbox;
     EosKnowledge.ListCard = ListCard.ListCard;
+    EosKnowledge.MediaObjectModel = MediaObjectModel.MediaObjectModel;
     EosKnowledge.Presenter = Presenter.Presenter;
     EosKnowledge.Previewer = Previewer.Previewer;
     EosKnowledge.ProgressCard = ProgressCard.ProgressCard;
@@ -99,6 +102,7 @@ function _init() {
     EosKnowledge.SectionPageA = SectionPageA.SectionPageA;
     EosKnowledge.TableOfContents = TableOfContents.TableOfContents;
     EosKnowledge.tree_model_from_tree_node = TreeNode.tree_model_from_tree_node;
+    EosKnowledge.VideoObjectModel = MediaObjectModel.VideoObjectModel;
     EosKnowledge.WebviewSwitcherView = WebviewSwitcherView.WebviewSwitcherView;
     EosKnowledge.WindowA = WindowA.WindowA;
 }

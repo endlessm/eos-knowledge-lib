@@ -134,7 +134,11 @@ const Engine = Lang.Class({
             'ekv:ContentObject':
                 EosKnowledge.ContentObjectModel,
             'ekv:ArticleObject':
-                EosKnowledge.ArticleObjectModel
+                EosKnowledge.ArticleObjectModel,
+            'ekv:ImageObject':
+                EosKnowledge.ImageObjectModel,
+            'ekv:VideoObject':
+                EosKnowledge.VideoObjectModel,
         };
 
         let json_ld_type = json_ld['@type'];

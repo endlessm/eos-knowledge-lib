@@ -9,6 +9,7 @@ EosKnowledge.init();
 
 const MOCK_CONTENT_PATH = Endless.getCurrentFileDir() + '/../test-content/content-search-results.jsonld';
 const MOCK_ARTICLE_PATH = Endless.getCurrentFileDir() + '/../test-content/article-search-results.jsonld';
+const MOCK_MEDIA_PATH = Endless.getCurrentFileDir() + '/../test-content/media-search-results.jsonld';
 
 describe('Knowledge Engine Module', function () {
     let engine;
@@ -16,6 +17,7 @@ describe('Knowledge Engine Module', function () {
 
     const MOCK_CONTENT_RESULTS = utils.parse_object_from_path(MOCK_CONTENT_PATH);
     const MOCK_ARTICLE_RESULTS = utils.parse_object_from_path(MOCK_ARTICLE_PATH);
+    const MOCK_MEDIA_RESULTS = utils.parse_object_from_path(MOCK_MEDIA_PATH);
 
     // Setup a spy in place of the Soup-based request function
     function engine_request_spy() {
@@ -221,6 +223,16 @@ describe('Knowledge Engine Module', function () {
                 // so expect that they're constructed as such
                 for (let i in results) {
                     expect(results[i]).toBeA(EosKnowledge.ArticleObjectModel);
+                }
+                done();
+            });
+
+            mock_engine_request(undefined, MOCK_MEDIA_RESULTS);
+            engine.get_objects_by_query('mock-media-query', {}, function (err, results) {
+                // All results in MOCK_MEDIA_OBJECT_RESULTS are of @type MediaObject,
+                // so expect that they're constructed as such
+                for (let i in results) {
+                    expect(results[i]).toBeA(EosKnowledge.MediaObjectModel);
                 }
                 done();
             });

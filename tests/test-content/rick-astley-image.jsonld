@@ -1,0 +1,11 @@
+{
+    "@context": "http://localhost:3000/api/_context/ImageObject",
+    "@type": "ekv:ImageObject",
+    "@id": "http://img1.wikia.nocookie.net/__cb20130318151721/epicrapbattlesofhistory/images/6/6d/Rick-astley.jpg",
+    "title": "Rick Astley: The Man, The Myth, The Legend",
+    "tags": ["inspiring", "beautiful"],
+    "caption": "Great musician, or greatest?",
+    "encodingFormat": "jpg",
+    "height": "666",
+    "width": "666"
+}
