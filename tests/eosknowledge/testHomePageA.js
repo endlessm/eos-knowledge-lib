@@ -71,13 +71,13 @@ describe('Home page for Template A', function () {
 
     describe('Style class of table of contents', function () {
         it('has home_page class', function () {
-            expect(home_page).toHaveCssClass(EosKnowledge.STYLE_CLASS_HOME_PAGE);
+            expect(home_page).toHaveCssClass(EosKnowledge.STYLE_CLASS_HOME_PAGE_A);
         });
         it('has a descendant with title class', function () {
-            expect(home_page).toHaveDescendantWithCssClass(EosKnowledge.STYLE_CLASS_HOME_PAGE_TITLE);
+            expect(home_page).toHaveDescendantWithCssClass(EosKnowledge.STYLE_CLASS_HOME_PAGE_A_TITLE);
         });
         it('has a descendant with subtitle class', function () {
-            expect(home_page).toHaveDescendantWithCssClass(EosKnowledge.STYLE_CLASS_HOME_PAGE_SUBTITLE);
+            expect(home_page).toHaveDescendantWithCssClass(EosKnowledge.STYLE_CLASS_HOME_PAGE_A_SUBTITLE);
         });
         it('has a descendant with search box class', function () {
             expect(home_page).toHaveDescendantWithCssClass(EosKnowledge.STYLE_CLASS_SEARCH_BOX);
