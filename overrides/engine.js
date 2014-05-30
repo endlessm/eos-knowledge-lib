@@ -69,7 +69,7 @@ const Engine = Lang.Class({
      *             the successfully retrieved object type
      */
     get_object_by_id: function (domain, id, callback) {
-        let req_uri = this._construct_uri(domain, id);
+        let req_uri = this.get_ekn_uri(domain, id);
 
         this._send_json_ld_request(req_uri, function (err, json_ld) {
             if (typeof err !== 'undefined') {
@@ -109,7 +109,7 @@ const Engine = Lang.Class({
      *             corresponding to the successfully retrieved object type
      */
     get_objects_by_query: function (domain, query_obj, callback) {
-        let req_uri = this._construct_uri(domain, undefined, query_obj);
+        let req_uri = this.get_ekn_uri(domain, undefined, query_obj);
 
         this._send_json_ld_request(req_uri, function (err, json_ld) {
             if (typeof err !== 'undefined') {
@@ -160,9 +160,23 @@ const Engine = Lang.Class({
         return json_ld.results.map(this._model_from_json_ld);
     },
 
-    // Returns a SoupURI which represents the Knowledge Engine resource for
-    // this object or query
-    _construct_uri: function (domain, id, query_obj) {
+    /**
+     * Function: get_ekn_uri
+     * Constructs a URI to the knowledge engine matching the *domain*, *id*,
+     * and *query* specified.
+     *
+     * Parameters:
+     *
+     *   domain - The Knowledge Engine domain for the desired URI
+     *   id - The Knowledge Engine id for the desired URI. (optional)
+     *   query_obj - An object whose keys are query parameters, and values are
+     *           strings. (optional)
+     */
+    get_ekn_uri: function (domain, id, query_obj) {
+        if (typeof domain === 'undefined') {
+            throw new Error('Domain not defined!');
+        }
+
         let host_uri = "http://" + this.host;
         let uri = new Soup.URI(host_uri);
         uri.set_port(this.port);
@@ -182,7 +196,9 @@ const Engine = Lang.Class({
                     // e.g. 'foo': ['bar', 'baz'] => ['foo=bar', 'foo=baz']
                     //
                     // otherwise just add 'param_name=val'
-                    if (Array.isArray(query_obj[param_name])) {
+                    if (typeof query_obj[param_name] === 'undefined') {
+                        throw new Error('Parameter value is undefined!');
+                    } else if (Array.isArray(query_obj[param_name])) {
                         return arr.concat(query_obj[param_name].map(function (v) {
                             return param_name + '=' + encodeURIComponent(v);
                         }));
