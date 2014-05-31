@@ -33,6 +33,23 @@ describe('Knowledge Engine Module', function () {
         }
     }
 
+    // where querystring is the URI component after a '?', and key is the
+    // name of a query parameter, return the value(s) for that parameter
+    // e.g.:
+    //   get_query_vals_for_key('foo=bar', 'foo') => 'bar'
+    //   get_query_vals_for_key('foo=bar&foo=baz', 'foo') => ['bar', 'baz']
+    function get_query_vals_for_key (querystring, key) {
+        let results = querystring.split('&').filter(function (pair) {
+            return pair.indexOf(key + '=') === 0;
+        }).map(function (pair) {
+            return decodeURIComponent(pair.split('=')[1]);
+        });
+
+        if (results.length === 1)
+            return results[0];
+        return results;
+    }
+
     beforeEach(function () {
         jasmine.addMatchers(InstanceOfMatcher.customMatchers);
         engine = new EosKnowledge.Engine();
@@ -71,6 +88,46 @@ describe('Knowledge Engine Module', function () {
                     .toBe('application/ld+json');
                 done();
             });
+        });
+    });
+
+    describe('get_ekn_uri', function () {
+        it('throws error if domain is undefined', function () {
+            expect(function(){ engine.get_ekn_uri()}).toThrow(new Error('Domain not defined!'));
+        });
+
+        it('throws error if query values are undefined', function () {
+            let bad_query_obj = {
+                q: undefined,
+                tag: ['lannister', 'badboy']
+            }
+            expect(function(){ engine.get_ekn_uri('thrones', undefined, bad_query_obj)}).toThrow(new Error('Parameter value is undefined!'));
+        });
+
+        it('makes correct object URIs', function () {
+            let domain = 'thrones';
+            let id = 'tyrion';
+            let mock_uri = engine.get_ekn_uri(domain, id);
+            let correct_uri = Soup.URI.new('http://localhost:3003/api/thrones/tyrion');
+            expect(mock_uri.to_string(false)).toBe(correct_uri.to_string(false));
+
+        });
+
+        it('makes correct query URIs', function () {
+            let domain = 'thrones';
+            let id = 'tyrion';
+
+            let query_obj = {
+                q: 'kings',
+                tag: ['lannister', 'badboy']
+            }
+
+            let mock_uri = engine.get_ekn_uri(domain, id, query_obj);
+            let mock_query_obj = mock_uri.get_query();
+            for (let key in query_obj) {
+                expect(get_query_vals_for_key(mock_query_obj, key))
+                    .toEqual(query_obj[key]);
+            }
         });
     });
 
@@ -114,22 +171,6 @@ describe('Knowledge Engine Module', function () {
     });
 
     describe('get_objects_by_query', function () {
-        // where querystring is the URI component after a '?', and key is the
-        // name of a query parameter, return the value(s) for that parameter
-        // e.g.:
-        //   get_query_vals_for_key('foo=bar', 'foo') => 'bar'
-        //   get_query_vals_for_key('foo=bar&foo=baz', 'foo') => ['bar', 'baz']
-        function get_query_vals_for_key (querystring, key) {
-            let results = querystring.split('&').filter(function (pair) {
-                return pair.indexOf(key + '=') === 0;
-            }).map(function (pair) {
-                return decodeURIComponent(pair.split('=')[1]);
-            });
-
-            if (results.length === 1)
-                return results[0];
-            return results;
-        }
 
         it('sends requests', function () {
             let request_spy = engine_request_spy();
