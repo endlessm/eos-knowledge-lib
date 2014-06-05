@@ -11,6 +11,9 @@
 	http://gomakethings.com/mit/
 
  * ============================================================= */
+// Defines scroll animation parameters
+const SCROLL_EASING_FN = 'easeCubicInOut';
+const SCROLL_ANIMATION_DURATION = 1000;
 
 window.getSmoothScroll = (function (window, document, undefined) {
 
@@ -221,4 +224,11 @@ window.getSmoothScroll = (function (window, document, undefined) {
 		animateScroll: animateScroll
 	};
 
+});
+
+// init smoothScrolling
+window.smoothScroll = window.getSmoothScroll(window, window.document);
+window.smoothScroll.init({
+    speed: SCROLL_ANIMATION_DURATION,
+   easing: SCROLL_EASING_FN
 });

@@ -25,10 +25,6 @@ const SCROLLED_PAST_PREFIX = '#scrolled-past-';
 // we want to watch for when user scrolls
 const SCROLL_NOTIFIER_MATCHER = '.mw-headline';
 
-// Defines scroll animation parameters
-const SCROLL_EASING_FN = 'easeCubicInOut';
-const SCROLL_ANIMATION_DURATION = 1000;
-
 // eat your heart out, jquery
 var $ = function(selector) {
     if (selector.indexOf('#') === 0) {
@@ -46,13 +42,6 @@ var $ = function(selector) {
 // keep track of when scrolling.
 var scrollNotifiers = $(SCROLL_NOTIFIER_MATCHER);
 
-// init smoothScrolling
-window.smoothScroll = window.getSmoothScroll(window, document);
-window.smoothScroll.init({
-    speed: SCROLL_ANIMATION_DURATION,
-    easing: SCROLL_EASING_FN
-});
-
 // Function used to filter scrollNotifiers on each scroll event,
 // returns true if the element should be considered in "view"
 function isInView(node) {
@@ -66,11 +55,12 @@ function isInView(node) {
     return nodePosition > scrollPosition - top_margin && nodePosition < scrollPosition + viewportHeight / 4;
 }
 
-// If the anchor at the specified hash exists, scroll to it
+// If the anchor at the specified hash exists and smooth scrolling is
+// initialized, scroll to it
 // Returns whether the caller should propagate events
 function scrollTo(hash) {
-    if ($(hash) !== null) {
-        smoothScroll.animateScroll(null, hash);
+    if ($(hash) !== null && window.smoothScroll !== null) {
+        window.smoothScroll.animateScroll(null, hash);
         return false;
     }
     else return true;
