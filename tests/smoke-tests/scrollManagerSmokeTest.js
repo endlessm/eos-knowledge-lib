@@ -15,7 +15,8 @@ const TestApplication = new Lang.Class({
 
     vfunc_startup: function () {
         this.parent();
-
+        WebKit2.WebView.prototype.run_javascript_from_gresource_after_load =
+            this.run_javascript_from_gresource_after_load;
         let webview = new WebKit2.WebView({
             expand: true
         });
@@ -56,14 +57,10 @@ const TestApplication = new Lang.Class({
             }
         });
 
-        // Only load the javascript when the webview is ready
-        webview.connect('load-changed', function (widget, status) {
-            if (status === WebKit2.LoadEvent.FINISHED) { 
-                webview.run_javascript_from_gresource('/com/endlessm/knowledge/smooth_scroll.js', null, Lang.bind(this, function () {
-                    webview.run_javascript_from_gresource('/com/endlessm/knowledge/scroll_manager.js', null, null);
-                }));
-            }
-        });
+        webview.run_javascript_from_gresource_after_load(
+                '/com/endlessm/knowledge/smooth_scroll.js', null, null);
+        webview.run_javascript_from_gresource_after_load(
+                '/com/endlessm/knowledge/scroll_manager.js', null, null);
 
         let window = new Endless.Window({
             application: this
@@ -74,7 +71,15 @@ const TestApplication = new Lang.Class({
 
         window.page_manager.add(grid);
         window.show_all();
-    }
+    },
+
+    run_javascript_from_gresource_after_load: function (location, cancellable, callback) {
+        this.connect('load-changed', (function (v, status) {
+            if(status == WebKit2.LoadEvent.FINISHED) {
+                this.run_javascript_from_gresource(location, cancellable, callback);
+            }
+        }).bind(this));
+    },
 });
 
 let app = new TestApplication({

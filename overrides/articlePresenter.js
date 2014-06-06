@@ -9,6 +9,18 @@ const Engine = imports.engine;
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 
 /**
+ * Adds javascript running after load finished to the WebKit2.Webview
+ * prototype.
+ */
+WebKit2.WebView.prototype.run_javascript_from_gresource_after_load = function (location, cancellable, callback) {
+    this.connect('load-changed', (function (v, status) {
+        if(status == WebKit2.LoadEvent.FINISHED) {
+            this.run_javascript_from_gresource(location, cancellable, callback);
+        }
+    }).bind(this));
+};
+
+/**
  * Class: ArticlePresenter
  *
  * A presenter module to act as a intermediary between an <ArticleObjectModel>
@@ -156,14 +168,10 @@ const ArticlePresenter = new GObject.Class({
     _get_connected_webview: function () {
         let webview = new WebKit2.WebView();
 
-        // When the webview has finished loading the dom, load the js
-        webview.connect('load-changed', function (v, status) {
-            if(status == WebKit2.LoadEvent.FINISHED) {
-                webview.run_javascript_from_gresource('/com/endlessm/knowledge/smooth_scroll.js', null, function () {
-                    webview.run_javascript_from_gresource('/com/endlessm/knowledge/scroll_manager.js', null, null);
-                });
-            }
-        });
+        webview.run_javascript_from_gresource_after_load(
+                '/com/endlessm/knowledge/smooth_scroll.js', null, null);
+        webview.run_javascript_from_gresource_after_load(
+                '/com/endlessm/knowledge/scroll_manager.js', null, null);
 
         webview.connect('notify::uri', function () {
             if (webview.uri.indexOf('#') >= 0) {
