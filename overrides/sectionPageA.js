@@ -142,9 +142,9 @@ const CardsSegment = new Lang.Class({
             halign: Gtk.Align.FILL
         });
 
-        this._flexi_grid = new Gtk.Grid({
+        this._flow_box = new Gtk.FlowBox({
             expand: true,
-            halign: Gtk.Align.START
+            halign: Gtk.Align.FILL
         });
 
         this._cards = null;
@@ -153,7 +153,7 @@ const CardsSegment = new Lang.Class({
 
         this.attach(separator, 0, 0, 2, 1);
         this.attach(this._title_label, 0, 1, 1, 1);
-        this.attach(this._flexi_grid, 1, 1, 1, 1);
+        this.attach(this._flow_box, 1, 1, 1, 1);
 
         this._title_label.get_style_context().add_class(EosKnowledge.STYLE_CLASS_SECTION_PAGE_SEGMENT_TITLE);
 
@@ -177,14 +177,14 @@ const CardsSegment = new Lang.Class({
             return;
         if (this._cards !== null) {
             for (let card of this._cards) {
-                this._flexi_grid.remove(card);
+                this._flow_box.remove(card);
             }
         }
 
         this._cards = v;
         if (this._cards !== null) {
             for (let card of this._cards) {
-                this._flexi_grid.add(card);
+                this._flow_box.add(card);
             }
         }
     },
