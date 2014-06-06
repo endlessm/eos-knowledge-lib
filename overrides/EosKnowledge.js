@@ -13,6 +13,7 @@ const ArticleObjectModel = imports.articleObjectModel;
 const ArticlePageA = imports.articlePageA;
 const ArticlePresenter = imports.articlePresenter;
 const Card = imports.card;
+const CategoriesPage = imports.categoriesPage;
 const ContentObjectModel = imports.contentObjectModel;
 const Engine = imports.engine;
 const HomePage = imports.homePage;
@@ -88,6 +89,7 @@ function _init() {
     EosKnowledge.ArticlePageA = ArticlePageA.ArticlePageA;
     EosKnowledge.ArticlePresenter = ArticlePresenter.ArticlePresenter;
     EosKnowledge.Card = Card.Card;
+    EosKnowledge.CategoriesPage = CategoriesPage.CategoriesPage;
     EosKnowledge.ContentObjectModel = ContentObjectModel.ContentObjectModel;
     EosKnowledge.Engine = Engine.Engine;
     EosKnowledge.HomePage = HomePage.HomePage;
