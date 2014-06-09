@@ -114,6 +114,36 @@ const TestApplication = new Lang.Class ({
                     thumbnail_uri: TESTDIR + '/test-content/onion.jpg',
                     item_index: 0,
                     complete: true
+                }),
+
+                new EosKnowledge.LessonCard({
+                    title: 'Onion lessson',
+                    subtitle: 'No index, completed',
+                    // By Asb at the German language Wikipedia, CC-BY-SA
+                    // http://en.wikipedia.org/wiki/File:Rote_Zwiebeln_aufgeschnitten_asb_2004_PICT4222.JPG
+                    thumbnail_uri: TESTDIR + '/test-content/onion.jpg',
+                    item_index: 0,
+                    complete: true
+                }),
+
+                new EosKnowledge.LessonCard({
+                    title: 'Onion lessson',
+                    subtitle: 'No index, completed',
+                    // By Asb at the German language Wikipedia, CC-BY-SA
+                    // http://en.wikipedia.org/wiki/File:Rote_Zwiebeln_aufgeschnitten_asb_2004_PICT4222.JPG
+                    thumbnail_uri: TESTDIR + '/test-content/onion.jpg',
+                    item_index: 0,
+                    complete: true
+                }),
+
+                new EosKnowledge.LessonCard({
+                    title: 'Onion lessson',
+                    subtitle: 'No index, completed',
+                    // By Asb at the German language Wikipedia, CC-BY-SA
+                    // http://en.wikipedia.org/wiki/File:Rote_Zwiebeln_aufgeschnitten_asb_2004_PICT4222.JPG
+                    thumbnail_uri: TESTDIR + '/test-content/onion.jpg',
+                    item_index: 0,
+                    complete: true
                 })
             ]
         }
