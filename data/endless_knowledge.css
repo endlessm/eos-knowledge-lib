@@ -183,7 +183,7 @@
     border-color: rgba(0, 0, 0, 0.80);
 }
 
-.home-page-a, .home-page-b GtkSeparator {
+.home-page-a GtkSeparator, .home-page-b GtkSeparator {
     border-style: solid;
     border-width: 3px;
     -GtkWidget-wide-separators: true;
