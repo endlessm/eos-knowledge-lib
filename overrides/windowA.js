@@ -7,6 +7,7 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const ArticlePageA = imports.articlePageA;
+const CategoriesPage = imports.categoriesPage;
 const HomePageA = imports.homePageA;
 const Lightbox = imports.lightbox;
 const SectionArticlePageA = imports.sectionArticlePageA;
@@ -38,6 +39,16 @@ const WindowA = new Lang.Class({
             'The home page of this view widget.',
             GObject.ParamFlags.READABLE,
             HomePageA.HomePageA),
+        /**
+         * Property: categories-page
+         *
+         * The <CategoriesPage> widget created by this widget. Read-only,
+         * modify using the <CategoriesPage> API.
+         */
+        'categories-page': GObject.ParamSpec.object('categories-page', 'Categories page',
+            'The categories page of this view widget.',
+            GObject.ParamFlags.READABLE,
+            CategoriesPage.CategoriesPage),
         /**
          * Property: section-page
          *
@@ -105,6 +116,7 @@ const WindowA = new Lang.Class({
 
     _init: function (props) {
         this._home_page = new HomePageA.HomePageA();
+        this._categories_page = new CategoriesPage.CategoriesPage();
         this._section_article_page = new SectionArticlePageA.SectionArticlePageA({
             section_page: new SectionPageA.SectionPageA(),
             article_page: new ArticlePageA.ArticlePageA()
@@ -153,6 +165,10 @@ const WindowA = new Lang.Class({
         return this._home_page;
     },
 
+    get categories_page () {
+        return this._categories_page;
+    },
+
     get section_page () {
         return this._section_article_page.section_page;
     },
@@ -191,6 +207,16 @@ const WindowA = new Lang.Class({
     show_home_page: function () {
         this.page_manager.transition_type = Gtk.StackTransitionType.SLIDE_RIGHT;
         this.page_manager.visible_child = this._home_page;
+    },
+
+    /**
+     * Method: show_categories_page
+     *
+     * This method causes the window to animate to the home page.
+     */
+    show_categories_page: function () {
+        this.page_manager.transition_type = Gtk.StackTransitionType.SLIDE_DOWN;
+        this.page_manager.visible_child = this._categories_page;
     },
 
     /**
