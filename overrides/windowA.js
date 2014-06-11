@@ -133,6 +133,22 @@ const WindowA = new Lang.Class({
          */
         'search-text-changed': {
             param_types: [GObject.TYPE_OBJECT]
+        },
+        /**
+         * Event: lightbox-nav-previous-clicked
+         * Emmited when the navigation button in the lightbox is clicked. Passes
+         * the media object currently displayed by the lightbox.
+         */
+        'lightbox-nav-previous-clicked': {
+            param_types: [GObject.TYPE_OBJECT]
+        },
+        /**
+         * Event: lightbox-nav-next-clicked
+         * Emmited when the navigation button in the lightbox is clicked. Passes
+         * the media object currently displayed by the lightbox.
+         */
+        'lightbox-nav-next-clicked': {
+            param_types: [GObject.TYPE_OBJECT]
         }
     },
 
@@ -149,6 +165,12 @@ const WindowA = new Lang.Class({
             this.emit('sidebar-back-clicked');
         }.bind(this));
         this._lightbox = new Lightbox.Lightbox();
+        this._lightbox.connect('navigation-previous-clicked', function (media_object) {
+            this.emit('lightbox-nav-previous-clicked', media_object);
+        }.bind(this));
+        this._lightbox.connect('navigation-next-clicked', function (media_object) {
+            this.emit('lightbox-nav-next-clicked', media_object);
+        }.bind(this));
 
         this.parent(props);
 
@@ -188,7 +210,7 @@ const WindowA = new Lang.Class({
         this.search_box.connect('menu-item-selected', Lang.bind(this, function (search_entry, article_id) {
             this.emit('article-selected', article_id);
         }));
-        this.search_box.show()
+        this.search_box.show();
         this.page_manager.add(this._lightbox, {
             left_topbar_widget: button_box,
             center_topbar_widget: this.search_box

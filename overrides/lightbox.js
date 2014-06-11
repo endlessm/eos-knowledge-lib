@@ -6,6 +6,7 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const CompositeButton = imports.compositeButton;
+const MediaObjectModel = imports.mediaObjectModel;
 
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 
@@ -34,6 +35,13 @@ const Lightbox = new Lang.Class({
     GTypeName: 'EknLightbox',
     Extends: Gtk.Overlay,
     Properties: {
+        /**
+         * Property: media-object
+         * The <MediaObjectModel> being previewed.
+         */
+        'media-object': GObject.ParamSpec.object('media-object',
+            'Media Object', 'The media object being previewed',
+            GObject.ParamFlags.READWRITE, MediaObjectModel.MediaObjectModel),
         /**
          * Property: content-widget
          * The widget to display centered in the lightbox above the base content
@@ -89,12 +97,13 @@ const Lightbox = new Lang.Class({
             GObject.ParamFlags.READWRITE, true)
     },
     Signals: {
-        'navigation-previous-clicked': {},
-        'navigation-next-clicked': {}
+        'navigation-previous-clicked': { param_types: [ GObject.TYPE_OBJECT ] },
+        'navigation-next-clicked': { param_types: [ GObject.TYPE_OBJECT ] }
     },
 
     _init: function (params) {
         // Property values
+        this._media_object = null;
         this._content_widget = null;
         this._infobox_widget = null;
         this._reveal_overlays = false;
@@ -137,11 +146,11 @@ const Lightbox = new Lang.Class({
 
         this._lightbox_container.connect('navigation-previous-clicked',
             Lang.bind(this, function () {
-                this.emit('navigation-previous-clicked');
+                this.emit('navigation-previous-clicked', this._media_object);
         }));
         this._lightbox_container.connect('navigation-next-clicked',
             Lang.bind(this, function () {
-                this.emit('navigation-next-clicked');
+                this.emit('navigation-next-clicked', this._media_object);
         }));
 
         this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_LIGHTBOX);
@@ -149,6 +158,16 @@ const Lightbox = new Lang.Class({
                            this._revealer, 'transition-duration',
                            GObject.BindingFlags.SYNC_CREATE);
         this.add_overlay(this._revealer);
+    },
+
+    set media_object (v) {
+        if (this._media_object !== null && this._media_object.content_uri === v.content_uri)
+            return;
+        this._media_object = v;
+    },
+
+    get media_object () {
+        return this._media_object;
     },
 
     set reveal_overlays (v) {

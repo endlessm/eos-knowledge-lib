@@ -59,5 +59,14 @@
             "contentSize": "32KB",
             "encodingFormat": "jpeg"
         }
+    ],
+    "tableOfContents": [
+        {
+          "@id": "_:4566371152",
+          "hasContent": "#History",
+          "hasIndex": 0,
+          "hasIndexLabel": "1",
+          "hasLabel": "History"
+        }
     ]
 }
