@@ -34,6 +34,7 @@ public_overrides = \
 	$(NULL)
 private_overrides = \
 	overrides/compositeButton.js \
+	overrides/tabButton.js \
 	overrides/config.js \
 	overrides/imagePreviewer.js \
 	overrides/videoPreviewer.js \

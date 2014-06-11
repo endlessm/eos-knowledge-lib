@@ -93,6 +93,19 @@ const Presenter = new Lang.Class({
         });
         this.view.connect('sidebar-back-clicked', this._on_back.bind(this));
         this.view.home_page.connect('search-entered', this._on_search.bind(this));
+        this.view.home_page.connect('show-categories', this._on_categories_button_clicked.bind(this));
+        this.view.categories_page.connect('show-home', this._on_home_button_clicked.bind(this));
+        this._original_page = this.view.home_page;
+    },
+
+    _on_categories_button_clicked: function (button) {
+        this._original_page = this.view.categories_page;
+        this.view.show_categories_page();
+    },
+
+    _on_home_button_clicked: function (button) {
+        this._original_page = this.view.home_page;
+        this.view.show_home_page();
     },
 
     _on_section_card_clicked: function (tags, card) {
@@ -119,7 +132,11 @@ const Presenter = new Lang.Class({
         if (visible_page === this.view.article_page) {
             this.view.show_section_page();
         } else if (visible_page === this.view.section_page) {
-            this.view.show_home_page();
+            if (this._original_page === this.view.home_page){
+                this.view.show_home_page();
+            } else if (this._original_page === this.view.categories_page) {
+                this.view.show_categories_page();
+            }
         } else {
             // Do nothing
         }

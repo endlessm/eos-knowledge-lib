@@ -2,10 +2,17 @@
 
 const Endless = imports.gi.Endless;
 const EosKnowledge = imports.gi.EosKnowledge;
+const Gettext = imports.gettext;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
+const Config = imports.config;
+const TabButton = imports.tabButton;
+
+let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
+
+const BUTTON_TRANSITION_DURATION = 500;
 
 /**
  * Class: CategoriesPage
@@ -17,23 +24,60 @@ const Lang = imports.lang;
 const CategoriesPage = new Lang.Class({
     Name: 'CategoriesPage',
     GTypeName: 'EknCategoriesPage',
-    Extends:Gtk.ScrolledWindow,
+    Extends: Gtk.ScrolledWindow,
+
+    Signals: {
+        /**
+         * Event: show-home
+         * This event is triggered when the home button is clicked.
+         */
+        'show-home': {}
+    },
 
     _init: function (props) {
         props = props || {};
         props.hscrollbar_policy = Gtk.PolicyType.NEVER;
 
+        this._grid = new Gtk.Grid({
+            orientation: Gtk.Orientation.VERTICAL,
+        });
+
+        this._button_stack = new Gtk.Stack({
+            transition_duration: BUTTON_TRANSITION_DURATION
+        });
+
+        this._invisible_frame = new Gtk.Frame();
+
+        this._home_button = new TabButton.TabButton({
+            position: Gtk.PositionType.TOP,
+            label: _("HOME")
+        });
+
+        this._button_stack.connect('notify::transition-running', Lang.bind(this, function (running) {
+            let home_page_request = !this._button_stack.transition_running && this._button_stack.visible_child != this._home_button;
+            if (home_page_request) {
+                this.emit('show-home');
+            }
+        }));
+
+        this._button_stack.add(this._invisible_frame);
+        this._button_stack.add(this._home_button);
+        this._home_button.connect('clicked', this._onHomeClicked.bind(this));
+
         this._card_grid = new Gtk.FlowBox({
             valign: Gtk.Align.START,
             row_spacing: 20,
-            margin: 40
+            margin: 40,
+            expand: true
         });
+
+        this._grid.add(this._button_stack);
+        this._grid.add(this._card_grid);
 
         this._cards = null;
 
         this.parent(props);
-
-        this.add(this._card_grid);
+        this.add(this._grid);
         this.show_all();
     },
 
@@ -55,5 +99,15 @@ const CategoriesPage = new Lang.Class({
 
     get cards () {
         return this._cards;
+    },
+
+    _onHomeClicked: function () {
+        this._button_stack.transition_type = Gtk.StackTransitionType.SLIDE_UP;
+        this._button_stack.visible_child = this._invisible_frame;
+    },
+
+    showButton: function () {
+        this._button_stack.transition_type = Gtk.StackTransitionType.SLIDE_DOWN;
+        this._button_stack.visible_child = this._home_button;
     }
 });
