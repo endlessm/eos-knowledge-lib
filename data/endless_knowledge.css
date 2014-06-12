@@ -1,29 +1,41 @@
 .card {
-    border-radius: 5px;
-    padding: 10px;
-    margin: 30px;
-    color: orange;
-    background-color: white;
-    transition:color 250ms ease-in-out;
-    transition:background-color 250ms ease-in-out;
+    padding: 10px 10px 0px 10px;
+    margin: 13px;
+    background-color: #ececec;
+    transition:margin 250ms ease-in-out;
 }
 
 .card:hover {
-    color: white;
-    background-color: orange;
+    margin: 9px;
 }
 
 .card-title {
-    font-size: 2em;
+    padding: 17px 0px 17px 0px;
+    color: #d16550;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    font-weight: bold;
+    text-shadow: white 0px 1px 0px;
+    transition:padding 250ms ease-in-out;
+}
+
+.card-title:hover {
+    /* Add as much padding hear as we take out of the card margin, so we don't make
+     * more space for the label. Having more letters pop in is distracting. */
+    padding-left: 4px;
+    padding-right: 4px;
 }
 
 .card-subtitle {
-    font-size: 1em;
+    padding: 4px 0px 4px 0px;
+    color: #666666;
+    font-family: 'Lato', sans-serif;
+    font-size: 12px;
+    text-shadow: white 0px 1px 0px;
 }
 
 .card .thumbnail {
-    padding-top: 100px; /* thumbnail width */
-    padding-left: 150px; /* thumbnail height */
+    background-position: center;
     background-size: cover;
     border-width: 0px;
 }
