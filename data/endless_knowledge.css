@@ -158,7 +158,10 @@
 }
 
 .toc-arrow:insensitive {
-    color: alpha(rgb(204, 204, 204), 0.3);
+    color: rgb(204, 204, 204);
+    /* TODO: default theme svg don't support alpha, when we get our own svg for this
+     * asset, move to the color below*/
+    /*color: alpha(rgb(204, 204, 204), 0.3);*/
     border-color: alpha(black, 0.15);
     box-shadow: inset 0px 1px 0px alpha(white, 0.15);
 }
@@ -279,18 +282,23 @@
 }
 
 .section-page-back-button {
-    border-top: 1px solid #d3d7cf;
-    border-bottom: 1px solid #d3d7cf;
-    border-right: 1px solid #d3d7cf;
+    color: white;
+    /* TODO: default theme svg don't support alpha, when we get our own svg for this
+     * asset, move to the color below*/
+    /*color: alpha(white, 0.75);*/
+    background-color: alpha(black, 0.12);
+    border-top: 1px solid alpha(white, 0.2);
+    border-bottom: 1px solid alpha(white, 0.2);
+    border-right: 1px solid alpha(white, 0.2);
     border-left: 0px;
     border-radius: 0px 27px 27px 0px;
-    background-color: alpha(#888a85, 0.5);
-    padding: 10px 10px 10px 0px;
+    box-shadow: inset 0px 1px 2px alpha(black, 0.1);
+    padding: 15px 15px 15px 0px;
     transition: padding 500ms ease-in-out;
 }
 
 .section-page-back-button:hover {
-    padding-left: 10px;
+    padding-left: 15px;
 }
 
 .topbar-back-button,

@@ -59,7 +59,7 @@ const SectionArticlePageA = new Lang.Class({
         'back-clicked': {}
     },
 
-    _ARROW_SIZE: 18,
+    _ARROW_SIZE: 20,
 
     _init: function (props) {
         props = props || {};
