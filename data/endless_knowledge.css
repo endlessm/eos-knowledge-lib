@@ -240,13 +240,25 @@
 }
 
 .section-page-title {
-    font-size: 2em;
+    padding-top: 1.0em;
+    padding-bottom: 0.48em;
+    font-size: 2.3em;
     font-weight: bold;
 }
 
+.section-page GtkSeparator {
+    color: rgba(255, 255, 255, 0.3);
+}
+
 .section-page-segment-title {
-    font-size: 1.2em;
-    padding-left: 30px;
+    padding-top: 0.2em;
+    color: white;
+    font-size: 1.4em;
+    padding-left: 4em;
+    /* TODO: light font weight matches the specs, but looks way to thin in practice.
+       Think there's some difference between how lato renders in web vs gtk or
+       something. */
+    /*font-weight: 300;*/
 }
 
 .scrollbar {
