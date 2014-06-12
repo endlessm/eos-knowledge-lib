@@ -64,7 +64,7 @@ const HomePage = new Lang.Class({
 
         this.grid = new Gtk.Grid({
             halign: Gtk.Align.CENTER,
-            valign: Gtk.Align.CENTER,
+            valign: Gtk.Align.END,
             expand: true,
             orientation: Gtk.Orientation.VERTICAL
         });
