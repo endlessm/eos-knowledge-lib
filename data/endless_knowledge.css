@@ -1,3 +1,9 @@
+EosWindow {
+    /* Changed color here so scrollbars are visible. Only affects smoke tests all
+     * apps have image backgrounds.*/
+    background-color: #888888;
+}
+
 .card {
     padding: 10px 10px 0px 10px;
     margin: 13px;
@@ -265,11 +271,12 @@
 }
 
 .scrollbar {
+    -GtkRange-trough-border: 4px;
     -GtkRange-slider-width: 5px;
 }
 
 .scrollbar.slider {
-    background-color: orange;
+    background-color: #333333;
 }
 
 .article-page-switcher-frame {
