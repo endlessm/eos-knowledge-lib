@@ -53,6 +53,7 @@ const Card = new Lang.Class({
 
     CARD_WIDTH: 183,
     CARD_HEIGHT: 209,
+    CARD_MARGIN: 13,
 
     _init: function(props) {
         props = props || {};
@@ -103,11 +104,11 @@ const Card = new Lang.Class({
     // TODO: we do want all cards to be the same size, but we may want to make
     // this size scale with resolution down the road
     vfunc_get_preferred_width: function () {
-        return [this.CARD_WIDTH, this.CARD_WIDTH];
+        return [this.CARD_WIDTH + 2 * this.CARD_MARGIN, this.CARD_WIDTH + 2 * this.CARD_MARGIN];
     },
 
     vfunc_get_preferred_height: function () {
-        return [this.CARD_HEIGHT, this.CARD_HEIGHT];
+        return [this.CARD_HEIGHT + 2 * this.CARD_MARGIN, this.CARD_HEIGHT + 2 * this.CARD_MARGIN];
     },
 
     vfunc_get_request_mode: function () {
