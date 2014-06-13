@@ -77,5 +77,9 @@ describe ("Content Object Model", function () {
         it ("should have a license", function () {
             expect(contentObject.license).toEqual(mockContentData["license"]);
         });
+
+        it ("should have resources", function () {
+            expect(contentObject.get_resources()).toEqual(mockContentData['resources']);
+        });
     });
 });
