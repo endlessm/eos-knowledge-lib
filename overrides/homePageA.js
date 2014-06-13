@@ -2,11 +2,18 @@
 
 const Endless = imports.gi.Endless;
 const EosKnowledge = imports.gi.EosKnowledge;
+const Gettext = imports.gettext;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
+const Config = imports.config;
 const HomePage = imports.homePage;
+const TabButton = imports.tabButton;
+
+let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
+
+const BUTTON_TRANSITION_DURATION = 500;
 
 /**
  * Class: HomePageA
@@ -27,7 +34,13 @@ const HomePageA = new Lang.Class({
          */
         'search-entered': {
             param_types: [GObject.TYPE_STRING]
-        }
+        },
+
+        /**
+         * Event: show-categories
+         * This event is triggered when the categories button is clicked.
+         */
+        'show-categories': {}
     },
 
     _init: function (props) {
@@ -43,6 +56,29 @@ const HomePageA = new Lang.Class({
         });
         this._card_container.get_style_context().add_class(EosKnowledge.STYLE_CLASS_CARD_CONTAINER);
 
+        this._button_stack = new Gtk.Stack({
+            transition_duration: BUTTON_TRANSITION_DURATION
+        });
+
+        this._invisible_frame = new Gtk.Frame();
+
+        this._all_categories_button = new TabButton.TabButton({
+            position: Gtk.PositionType.BOTTOM,
+            label: _("SEE ALL CATEGORIES")
+        });
+
+        this._button_stack.connect('notify::transition-running', Lang.bind(this, function () {
+            let categories_page_request = !this._button_stack.transition_running && this._button_stack.visible_child != this._all_categories_button;
+            if (!this._button_stack.transition_running && this._button_stack.visible_child != this._all_categories_button) {
+                this.emit('show-categories');
+            }
+        }));
+
+        this._all_categories_button.connect('clicked', this._onAllCategoriesClicked.bind(this));
+
+        this._button_stack.add(this._all_categories_button);
+        this._button_stack.add(this._invisible_frame);
+
         this.set_styles({
             'home_page': EosKnowledge.STYLE_CLASS_HOME_PAGE_A,
             'home_page_title': EosKnowledge.STYLE_CLASS_HOME_PAGE_A_TITLE,
@@ -51,7 +87,18 @@ const HomePageA = new Lang.Class({
         });
 
         this.add(this._card_container);
+        this.add(this._button_stack);
         this.show_all();
+    },
+
+    _onAllCategoriesClicked: function (widget) {
+        this._button_stack.transition_type = Gtk.StackTransitionType.SLIDE_DOWN,
+        this._button_stack.visible_child = this._invisible_frame;
+    },
+
+    showButton: function () {
+        this._button_stack.transition_type = Gtk.StackTransitionType.SLIDE_UP;
+        this._button_stack.visible_child = this._all_categories_button;
     },
 
     set cards (v) {

@@ -152,12 +152,25 @@ const WindowA = new Lang.Class({
 
         this._lightbox.add(this._section_article_page);
         this.page_manager.add(this._home_page);
+        this.page_manager.add(this._categories_page);
         this.page_manager.add(this._lightbox, {
             left_topbar_widget: button_box
         });
         this.page_manager.transition_duration = this.TRANSITION_DURATION;
         this.page_manager.bind_property('transition-duration', this._section_article_page,
             'transition-duration', GObject.BindingFlags.SYNC_CREATE);
+
+        // Connection so that tab buttons are revealed after page transition
+        this.page_manager.connect('notify::transition-running', Lang.bind(this, function () {
+            if (!this.page_manager.transition_running) {
+                if (this.page_manager.visible_child === this.home_page) {
+                    this.home_page.showButton();
+                } else if (this.page_manager.visible_child === this.categories_page) {
+                    this.categories_page.showButton();
+                }
+            }
+        }));
+
         this.show_all();
     },
 
@@ -205,7 +218,12 @@ const WindowA = new Lang.Class({
      * This method causes the window to animate to the home page.
      */
     show_home_page: function () {
-        this.page_manager.transition_type = Gtk.StackTransitionType.SLIDE_RIGHT;
+        let visible_page = this.get_visible_page();
+        if (visible_page == this.categories_page) {
+            this.page_manager.transition_type = Gtk.StackTransitionType.SLIDE_DOWN;
+        } else {
+            this.page_manager.transition_type = Gtk.StackTransitionType.SLIDE_RIGHT;
+        }
         this.page_manager.visible_child = this._home_page;
     },
 
@@ -215,7 +233,12 @@ const WindowA = new Lang.Class({
      * This method causes the window to animate to the home page.
      */
     show_categories_page: function () {
-        this.page_manager.transition_type = Gtk.StackTransitionType.SLIDE_DOWN;
+        let visible_page = this.get_visible_page();
+        if (visible_page == this.home_page) {
+            this.page_manager.transition_type = Gtk.StackTransitionType.SLIDE_UP;
+        } else {
+            this.page_manager.transition_type = Gtk.StackTransitionType.SLIDE_RIGHT;
+        }
         this.page_manager.visible_child = this._categories_page;
     },
 
@@ -248,11 +271,13 @@ const WindowA = new Lang.Class({
      */
     get_visible_page: function () {
         let visible_page = this.page_manager.visible_child;
-        if(visible_page === this._home_page)
+        if (visible_page === this._lightbox) {
+            if (this._section_article_page.show_article)
+                return this._section_article_page.article_page;
+            else
+                return this._section_article_page.section_page;
+        } else {
             return visible_page;
-        if(this._section_article_page.show_article)
-            return this._section_article_page.article_page;
-        else
-            return this._section_article_page.section_page;
+        }
     }
 });

@@ -315,4 +315,11 @@ enum_type##_get_type (void) \
  */
 #define EKN_STYLE_CLASS_VIDEO_PLAYER_PLAY_BUTTON "video-player-play-button"
 
+/**
+ * EKN_STYLE_CLASS_TAB_BUTTON:
+ *
+ * A CSS class to match the tab button.
+ */
+#define EKN_STYLE_CLASS_TAB_BUTTON "tab-button"
+
 #endif /* EKN_MACROS_H */

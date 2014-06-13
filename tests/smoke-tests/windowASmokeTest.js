@@ -36,6 +36,14 @@ const TestApplication = new Lang.Class({
         let view = new EosKnowledge.WindowA({
             application: this
         });
+        view.home_page.connect('show-categories', function () {
+            view.show_categories_page();
+        });
+
+        view.categories_page.connect('show-home', function () {
+            view.show_home_page();
+        });
+
         view.connect('back-clicked', function () {
             if (view.get_visible_page() === view.article_page) {
                 view.show_section_page();
