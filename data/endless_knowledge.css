@@ -170,17 +170,28 @@
 }
 
 .home-page-a .search-box, .home-page-b .search-box {
-    background: rgba(255,255,255,0.8);
-    padding: 4px;
-    color: black;
-    font-size: 1.17em;
+    box-shadow: inset 0em 0.16em 0.16em alpha(black, 0.15);
+    background-image: linear-gradient(to bottom, #dbdbdb, white);
+    background-clip: padding-box;
+    padding: 0.75em 0.55em 0.75em 0.55em;
+    color: #2e3436;
+    font-size: 1em;
 
     -GtkWidget-focus-line-width: 0;
     border-style: solid;
     border-radius: 10em;
 
-    border-width: 3px;
-    border-color: rgba(0, 0, 0, 0.80);
+    border-width: .33em;
+    border-color: rgba(0, 0, 0, 0.2);
+}
+
+.home-page-a .search-box:selected, .home-page-b .search-box:selected {
+    background-color: lighter(#2e3436);
+    color: #eeeeec;
+}
+
+.home-page-a .search-box.image, .home-page-b .search-box.image {
+    color: #919191;
 }
 
 .home-page-a GtkSeparator, .home-page-b GtkSeparator {
