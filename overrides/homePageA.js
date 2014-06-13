@@ -37,7 +37,9 @@ const HomePageA = new Lang.Class({
         this.parent(props);
 
         this._card_container = new HomePageACardContainer({
-            halign: Gtk.Align.CENTER
+            halign: Gtk.Align.CENTER,
+            valign: Gtk.Align.CENTER,
+            expand: true
         });
         this._card_container.get_style_context().add_class(EosKnowledge.STYLE_CLASS_CARD_CONTAINER);
 

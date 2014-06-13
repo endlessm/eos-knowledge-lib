@@ -4,6 +4,7 @@ const EosKnowledge = imports.gi.EosKnowledge;
 const Gtk = imports.gi.Gtk;
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
+const Pango = imports.gi.Pango;
 
 const CompositeButton = imports.compositeButton;
 
@@ -50,14 +51,37 @@ const Card = new Lang.Class({
             GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE, '')
     },
 
-    _init: function(params) {
-        this._title_label = new Gtk.Label();
-        this._subtitle_label = new Gtk.Label();
-        this._frame = new Gtk.Frame();
+    CARD_WIDTH: 183,
+    CARD_HEIGHT: 209,
+
+    _init: function(props) {
+        props = props || {};
+        props.expand = false;
+        props.halign = Gtk.Align.START;
+
+        this._title_label = new Gtk.Label({
+            hexpand: true,
+            ellipsize: Pango.EllipsizeMode.END,
+            max_width_chars: 1,
+            visible: false,
+            no_show_all: true
+        });
+        this._subtitle_label = new Gtk.Label({
+            hexpand: true,
+            ellipsize: Pango.EllipsizeMode.END,
+            max_width_chars: 1,
+            visible: false,
+            no_show_all: true
+        });
+        this._frame = new Gtk.Frame({
+            expand: true,
+            visible: false,
+            no_show_all: true
+        });
         this._background_provider = new Gtk.CssProvider();
         this._thumbnail_uri = null;
 
-        this.parent(params);
+        this.parent(props);
 
         let grid = new Gtk.Grid({
             orientation: Gtk.Orientation.VERTICAL
@@ -76,9 +100,24 @@ const Card = new Lang.Class({
         this._frame.get_style_context().add_class(EosKnowledge.STYLE_CLASS_THUMBNAIL);
     },
 
+    // TODO: we do want all cards to be the same size, but we may want to make
+    // this size scale with resolution down the road
+    vfunc_get_preferred_width: function () {
+        return [this.CARD_WIDTH, this.CARD_WIDTH];
+    },
+
+    vfunc_get_preferred_height: function () {
+        return [this.CARD_HEIGHT, this.CARD_HEIGHT];
+    },
+
+    vfunc_get_request_mode: function () {
+        return Gtk.SizeRequestMode.CONSTANT_SIZE;
+    },
+
     set title (v) {
         if (this._title_label.label === v) return;
         this._title_label.label = v;
+        this._title_label.visible = (v && v.length !== 0);
         this.notify('title');
     },
 
@@ -91,6 +130,7 @@ const Card = new Lang.Class({
     set subtitle (v) {
         if (this._subtitle_label.label === v) return;
         this._subtitle_label.label = v;
+        this._subtitle_label.visible = (v && v.length !== 0);
         this.notify('subtitle');
     },
 
@@ -109,6 +149,7 @@ const Card = new Lang.Class({
             let context = this._frame.get_style_context();
             context.add_provider(this._background_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
         }
+        this._frame.visible = (v && v.length !== 0);
         this.notify('thumbnail-uri');
     },
 
