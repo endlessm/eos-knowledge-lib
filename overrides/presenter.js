@@ -91,11 +91,20 @@ const Presenter = new Lang.Class({
         this.view.connect('forward-clicked', function (view) {
             view.show_article_page();
         });
+        this.view.connect('search-text-changed', this._on_search_text_changed.bind(this));
+        this.view.connect('search-entered', this._on_search.bind(this));
+        this.view.connect('article-selected', this._on_article_selection.bind(this));
+
         this.view.connect('sidebar-back-clicked', this._on_back.bind(this));
+
         this.view.home_page.connect('search-entered', this._on_search.bind(this));
+        this.view.home_page.connect('search-text-changed', this._on_search_text_changed.bind(this));
+        this.view.home_page.connect('article-selected', this._on_article_selection.bind(this));
+
         this.view.home_page.connect('show-categories', this._on_categories_button_clicked.bind(this));
         this.view.categories_page.connect('show-home', this._on_home_button_clicked.bind(this));
         this._original_page = this.view.home_page;
+        this._search_origin_page = this.view.home_page;
     },
 
     _on_categories_button_clicked: function (button) {
@@ -122,6 +131,32 @@ const Presenter = new Lang.Class({
         this.view.section_page.title = "Results for " + query;
     },
 
+    _on_search_text_changed: function (view, entry) {
+        this._engine.get_objects_by_query(this._domain, {
+            'prefix': entry.text
+        }, function (err, results) {
+            entry.set_menu_items(results.map(function (obj) {
+                return {
+                    title: obj.title,
+                    id: obj.ekn_id
+                };
+            }));
+        });
+    },
+
+    _on_article_selection: function (view, id) {
+        if (view === this.view.home_page) {
+            this._search_origin_page = this.view.home_page;
+        } else {
+            this._search_origin_page = this.view.section_page;
+        }
+        let database_id = id.split('/').pop();
+        this._engine.get_object_by_id(this._domain, database_id, Lang.bind(this, function (err, model) {
+            this._article_presenter.load_article_from_model(model);
+            this.view.show_article_page();
+        }));
+    },
+
     _on_article_card_clicked: function (card, model) {
         this._article_presenter.load_article_from_model(model);
         this.view.show_article_page();
@@ -130,7 +165,11 @@ const Presenter = new Lang.Class({
     _on_back: function () {
         let visible_page = this.view.get_visible_page();
         if (visible_page === this.view.article_page) {
-            this.view.show_section_page();
+            if (this._search_origin_page === this.view.home_page) {
+                this.view.show_home_page();
+            } else {
+                this.view.show_section_page();
+            }
         } else if (visible_page === this.view.section_page) {
             if (this._original_page === this.view.home_page){
                 this.view.show_home_page();
@@ -149,6 +188,7 @@ const Presenter = new Lang.Class({
         let segments = {
             'Articles': cards
         };
+        this._search_origin_page = this.view.section_page;
         this.view.section_page.segments = segments;
         this.view.show_section_page();
     },

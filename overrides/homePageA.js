@@ -28,15 +28,6 @@ const HomePageA = new Lang.Class({
     Extends: HomePage.HomePage,
     Signals: {
         /**
-         * Event: search-entered
-         * This event is triggered when the search box is activated. The parameter
-         * is the search query.
-         */
-        'search-entered': {
-            param_types: [GObject.TYPE_STRING]
-        },
-
-        /**
          * Event: show-categories
          * This event is triggered when the categories button is clicked.
          */
