@@ -143,6 +143,8 @@ const Presenter = new Lang.Class({
     },
 
     _load_section_page: function (err, results) {
+        if (typeof err !== 'undefined')
+            print(err);
         let cards = results.map(this._new_card_from_article_model.bind(this));
         let segments = {
             'Articles': cards
