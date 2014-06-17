@@ -157,18 +157,20 @@ const ArticlePageA = new Lang.Class({
         }
 
         // Allocate toolbar and article frames
-        let total_width = alloc.width;
         let layout = this._toc.collapsed? this.COLLAPSED_LAYOUT : this.EXPANDED_LAYOUT;
+        let left_margin = layout.left_margin_pct * alloc.width;
+        let toolbar_right_margin = layout.toolbar_right_margin_pct * alloc.width;
+        let right_margin = layout.right_margin_pct * alloc.width;
         let toolbar_alloc = new Cairo.RectangleInt({
-            x: alloc.x + layout.left_margin_pct * total_width,
+            x: alloc.x + left_margin,
             y: alloc.y,
-            width: layout.toolbar_pct * total_width,
+            width: this._get_toolbar_width(alloc.width),
             height: alloc.height
         });
         let switcher_alloc = new Cairo.RectangleInt({
-            x: toolbar_alloc.x + toolbar_alloc.width + layout.toolbar_right_margin_pct * total_width,
+            x: toolbar_alloc.x + toolbar_alloc.width + toolbar_right_margin,
             y: alloc.y,
-            width: layout.switcher_pct * total_width,
+            width: alloc.width - toolbar_alloc.width - left_margin - toolbar_right_margin - right_margin,
             height: alloc.height
         });
         this._toolbar_frame.size_allocate(toolbar_alloc);
