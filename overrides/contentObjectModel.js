@@ -35,11 +35,11 @@ const ContentObjectModel = new Lang.Class({
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT, ''),
         /**
          * Property: thumbnail-uri
-         * A string with the URI of the thumbnail image. An empty string means
-         * no thumbnail should be visible. Defaults to an empty string.
+         * A ImageObjectModel representing the thumbnail image. Must be set to type GObject, since
+         * ImageObjectModel subclasses this class and so we cannot reference it here.
          */
-        'thumbnail-uri': GObject.ParamSpec.string('thumbnail-uri', 'Thumbnail URI', 'URI of the thumbnail image',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT, ''),
+        'thumbnail': GObject.ParamSpec.object('thumbnail', 'Thumbnail', 'Image object of the thumbnail image',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT, GObject.Object),
         /**
          * Property: language
          * The language for this content object. Defaults to an empty string.
@@ -209,7 +209,7 @@ ContentObjectModel._props_from_json_ld = function (json_ld_data) {
         props.title = json_ld_data.title;
 
     if(json_ld_data.hasOwnProperty('thumbnail'))
-        props.thumbnail_uri = json_ld_data.thumbnail;
+        props.thumbnail = EosKnowledge.ImageObjectModel.new_from_json_ld(json_ld_data.thumbnail);
 
     if(json_ld_data.hasOwnProperty('language'))
         props.language = json_ld_data.language;

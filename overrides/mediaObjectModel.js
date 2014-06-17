@@ -130,12 +130,12 @@ MediaObjectModel._props_from_json_ld = function (json_ld_data) {
     let props = ParentClass._props_from_json_ld(json_ld_data);
 
     // Marshal properties specific to MediaObjectModel
-    if (json_ld_data.hasOwnProperty('@id')) {
-        props.content_uri = json_ld_data['@id'];
-    }
-
     if (json_ld_data.hasOwnProperty('caption')) {
         props.caption = json_ld_data.caption;
+    }
+
+    if (json_ld_data.hasOwnProperty('contentURL')) {
+        props.content_uri = json_ld_data.contentURL;
     }
 
     if (json_ld_data.hasOwnProperty('encodingFormat')) {
