@@ -2,6 +2,7 @@
 
 const Endless = imports.gi.Endless;
 const EosKnowledge = imports.gi.EosKnowledge;
+const GdkPixbuf = imports.gi.GdkPixbuf;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
@@ -14,6 +15,13 @@ const SectionArticlePageA = imports.sectionArticlePageA;
 const SectionPageA = imports.sectionPageA;
 
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
+
+/**
+ * Defines how much the background slides when switching pages, and
+ * therefore also how zoomed in the background image is from its
+ * original size.
+ */
+const PARALLAX_BACKGROUND_SCALE = 1.2;
 
 /**
  * Class: WindowA
@@ -84,12 +92,22 @@ const WindowA = new Lang.Class({
          * Property: background-image-uri
          *
          * The background image uri for this window.
-         * Gets set on all pages of the application
+         * Gets set on home page of the application.
          */
         'background-image-uri': GObject.ParamSpec.string('background-image-uri', 'Background image URI',
             'The background image of this window.',
             GObject.ParamFlags.READWRITE,
             ''),
+        /**
+         * Property: blur-background-image-uri
+         *
+         * The blurred background image uri for this window.
+         * Gets set on section and article pages of the application.
+         */
+        'blur-background-image-uri': GObject.ParamSpec.string('blur-background-image-uri', 'Blurred background image URI',
+            'The blurred background image of this window.',
+            GObject.ParamFlags.READWRITE,
+            '')
     },
     Signals: {
         /**
@@ -230,6 +248,30 @@ const WindowA = new Lang.Class({
             }
         }));
 
+        this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_SHOW_HOME_PAGE);
+        this.connect('size-allocate', Lang.bind(this, function(widget, allocation) {
+            let win_width = allocation.width;
+            let win_height = allocation.height;
+            if (this.background_image_uri &&
+                (this._last_allocation === undefined ||
+                (this._last_allocation.width !== win_width &&
+                this._last_allocation.height !== win_height))) {
+
+                let bg_mult_ratio = Math.max(win_width / this._background_image_width, win_height / this._background_image_height) * PARALLAX_BACKGROUND_SCALE;
+                let bg_width = Math.ceil(this._background_image_width * bg_mult_ratio);
+                let bg_height = Math.ceil(this._background_image_height * bg_mult_ratio);
+
+                let frame_css = 'EknWindowA { background-size: ' + bg_width + 'px ' + bg_height + 'px;}';
+                let context = this.get_style_context();
+                if (this._bg_size_provider === undefined) {
+                    this._bg_size_provider = new Gtk.CssProvider();
+                    context.add_provider(this._bg_size_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+                }
+                this._bg_size_provider.load_from_data(frame_css);
+            }
+            this._last_allocation = allocation;
+        }));
+
         this.show_all();
     },
 
@@ -263,7 +305,41 @@ const WindowA = new Lang.Class({
         }
         this._background_image_uri = v;
         if (this._background_image_uri !== null) {
-            let frame_css = 'EknWindowA { background-image: url("' + this._background_image_uri + '"); background-repeat: no-repeat; background-size:cover;}';
+            let frame_css = 'EknWindowA.show-home-page, EknWindowA.show-categories-page { background-image: url("' + this._background_image_uri + '");}';
+            let provider = new Gtk.CssProvider();
+            provider.load_from_data(frame_css);
+            let context = this.get_style_context();
+            context.add_provider(provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+
+            let bg_image_pixbuf;
+            if (this._background_image_uri.indexOf("file://") === 0) {
+                let filePath = this._background_image_uri.split("file://")[1];
+                bg_image_pixbuf = GdkPixbuf.Pixbuf.new_from_file(filePath);
+            } else if (this._background_image_uri.indexOf("resource://") === 0) {
+                let resource = this._background_image_uri.split("resource://")[1];
+                bg_image_pixbuf = GdkPixbuf.Pixbuf.new_from_resource(resource);
+            } else {
+                printerr("Error: background image URI is not a valid format.");
+            }
+
+            if (bg_image_pixbuf !== undefined) {
+                this._background_image_width = bg_image_pixbuf.width;
+                this._background_image_height = bg_image_pixbuf.height;
+            }
+        }
+    },
+
+    get blur_background_image_uri () {
+        return this._blur_background_image_uri;
+    },
+
+    set blur_background_image_uri (v) {
+        if (this._blur_background_image_uri === v) {
+            return;
+        }
+        this._blur_background_image_uri = v;
+        if (this._blur_background_image_uri !== null) {
+            let frame_css = 'EknWindowA.show-section-page, EknWindowA.show-article-page { background-image: url("' + this._blur_background_image_uri + '");}';
             let provider = new Gtk.CssProvider();
             provider.load_from_data(frame_css);
             let context = this.get_style_context();
@@ -278,12 +354,15 @@ const WindowA = new Lang.Class({
      */
     show_home_page: function () {
         let visible_page = this.get_visible_page();
-        if (visible_page == this.categories_page) {
+        if (visible_page === this.categories_page) {
             this.page_manager.transition_type = Gtk.StackTransitionType.SLIDE_DOWN;
+            this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_SHOW_CATEGORIES_PAGE);
         } else {
             this.page_manager.transition_type = Gtk.StackTransitionType.SLIDE_RIGHT;
+            this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_SHOW_SECTION_PAGE);
         }
         this.page_manager.visible_child = this._home_page;
+        this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_SHOW_HOME_PAGE);
     },
 
     /**
@@ -293,12 +372,15 @@ const WindowA = new Lang.Class({
      */
     show_categories_page: function () {
         let visible_page = this.get_visible_page();
-        if (visible_page == this.home_page) {
+        if (visible_page === this.home_page) {
             this.page_manager.transition_type = Gtk.StackTransitionType.SLIDE_UP;
+            this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_SHOW_HOME_PAGE);
         } else {
             this.page_manager.transition_type = Gtk.StackTransitionType.SLIDE_RIGHT;
+            this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_SHOW_SECTION_PAGE);
         }
         this.page_manager.visible_child = this._categories_page;
+        this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_SHOW_CATEGORIES_PAGE);
     },
 
     /**
@@ -307,9 +389,17 @@ const WindowA = new Lang.Class({
      * This method causes the window to animate to the section page.
      */
     show_section_page: function () {
-        this.page_manager.transition_type = Gtk.StackTransitionType.SLIDE_LEFT;
+        let visible_page = this.get_visible_page();
+        if (visible_page === this.home_page) {
+            this.page_manager.transition_type = Gtk.StackTransitionType.SLIDE_LEFT;
+            this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_SHOW_HOME_PAGE);
+        } else {
+            this.page_manager.transition_type = Gtk.StackTransitionType.SLIDE_RIGHT;
+            this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_SHOW_ARTICLE_PAGE);
+        }
         this._section_article_page.show_article = false;
         this.page_manager.visible_child = this._lightbox;
+        this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_SHOW_SECTION_PAGE);
     },
 
     /**
@@ -321,6 +411,8 @@ const WindowA = new Lang.Class({
         this.page_manager.transition_type = Gtk.StackTransitionType.SLIDE_LEFT;
         this._section_article_page.show_article = true;
         this.page_manager.visible_child = this._lightbox;
+        this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_SHOW_SECTION_PAGE);
+        this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_SHOW_ARTICLE_PAGE);
     },
 
     /**

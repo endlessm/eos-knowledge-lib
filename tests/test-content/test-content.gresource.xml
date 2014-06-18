@@ -10,5 +10,7 @@
         <file compressed="true">whitewalker.jpg</file>
         <file compressed="true">red_wedding.jpg</file>
         <file compressed="true">agot.svg</file>
+        <file compressed="true">background.jpg</file>
+        <file compressed="true">background_blurred.jpg</file>
     </gresource>
 </gresources>

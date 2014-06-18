@@ -10,12 +10,6 @@ EosKnowledge.init();
 
 const TEST_APPLICATION_ID = 'com.endlessm.knowledge.test.window';
 const TESTDIR = Endless.getCurrentFileDir() + '/..';
-const TESTBUILDDIR = GLib.get_current_dir() + '/tests';
-
-const BACKGROUND_CSS = "EknWindowA { \
-    background-image: url('" + TESTDIR + "/test-content/background.jpg'); \
-    background-size: 100% 100%; \
-}";
 
 const TestApplication = new Lang.Class({
     Name: 'TestApplication',
@@ -25,7 +19,7 @@ const TestApplication = new Lang.Class({
         this.parent();
 
         // Load and register the GResource which has content for this app
-        let resource = Gio.Resource.load(TESTBUILDDIR + '/test-content/test-content.gresource');
+        let resource = Gio.Resource.load(TESTDIR + '/test-content/test-content.gresource');
         resource._register();
 
         let provider = new Gtk.CssProvider();
@@ -34,14 +28,11 @@ const TestApplication = new Lang.Class({
         Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(),
                                                  provider,
                                                  Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
-        let background_provider = new Gtk.CssProvider();
-        background_provider.load_from_data(BACKGROUND_CSS);
-        Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(),
-                                                 background_provider,
-                                                 Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 
         let view = new EosKnowledge.WindowA({
-            application: this
+            application: this,
+            background_image_uri: 'resource:///com/endlessm/thrones/background.jpg',
+            blur_background_image_uri: 'resource:///com/endlessm/thrones/background_blurred.jpg'
         });
         view.home_page.connect('show-categories', function () {
             view.show_categories_page();
@@ -70,7 +61,7 @@ const TestApplication = new Lang.Class({
         });
 
         // ============ HOME PAGE ==================
-        view.home_page.title_image_uri = '/com/endlessm/thrones/agot.svg';
+        view.home_page.title_image_uri = 'resource:///com/endlessm/thrones/agot.svg';
         view.home_page.cards = [
             new EosKnowledge.CardA({
                 title: 'Subtitled Card',
