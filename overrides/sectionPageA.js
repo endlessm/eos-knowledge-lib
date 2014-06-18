@@ -154,7 +154,8 @@ const CardsSegment = new Lang.Class({
 
         this._flow_box = new Gtk.FlowBox({
             expand: true,
-            halign: Gtk.Align.FILL
+            halign: Gtk.Align.START,
+            homogeneous: true
         });
 
         this._cards = null;

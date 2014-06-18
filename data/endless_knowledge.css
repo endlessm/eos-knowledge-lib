@@ -6,13 +6,13 @@ EosWindow {
 
 .card {
     padding: 10px 10px 0px 10px;
-    margin: 13px;
+    margin: 7px;
     background-color: #ececec;
     transition:margin 250ms ease-in-out;
 }
 
 .card:hover {
-    margin: 9px;
+    margin: 3px;
 }
 
 .card-title {

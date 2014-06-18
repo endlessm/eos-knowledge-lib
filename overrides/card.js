@@ -53,7 +53,7 @@ const Card = new Lang.Class({
 
     CARD_WIDTH: 183,
     CARD_HEIGHT: 209,
-    CARD_MARGIN: 13,
+    CARD_MARGIN: 7,
 
     _init: function(props) {
         props = props || {};

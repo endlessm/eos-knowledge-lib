@@ -124,6 +124,8 @@ const HomePageACardContainer = new Lang.Class({
     GTypeName: 'EknHomePageACardContainer',
     Extends: Endless.CustomContainer,
 
+    CARD_EXTRA_MARGIN: 8,
+
     _init: function (props) {
         this._cards = [];
         this.parent(props);
@@ -148,6 +150,8 @@ const HomePageACardContainer = new Lang.Class({
         if (this._cards.length === 0)
             return;
         let [min, nat] = this._cards_max_preferred_width();
+        min += this.CARD_EXTRA_MARGIN;
+        nat += this.CARD_EXTRA_MARGIN;
         let visible_cards =  Math.floor(alloc.width / min);
         let total_width = alloc.width;
         alloc.width  = Math.min(alloc.width / visible_cards, nat);
