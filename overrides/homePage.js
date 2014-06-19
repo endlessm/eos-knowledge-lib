@@ -51,6 +51,34 @@ const HomePage = new Lang.Class({
          */
     },
 
+    Signals: {
+        /**
+         * Event: article-selected
+         *
+         * This event is triggered when an article is selected from the autocomplete menu.
+         */
+        'article-selected': {
+            param_types: [GObject.TYPE_STRING]
+        },
+        /**
+         * Event: search-entered
+         * This event is triggered when the search box is activated. The parameter
+         * is the search query.
+         */
+        'search-entered': {
+            param_types: [GObject.TYPE_STRING]
+        },
+
+        /**
+         * Event: search-text-changed
+         * This event is triggered when the text in the search box is changed. The parameter
+         * is the search box.
+         */
+        'search-text-changed': {
+            param_types: [GObject.TYPE_OBJECT]
+        }
+    },
+
     _init: function (props) {
         props = props || {};
         this._title_label = new Gtk.Label();
@@ -76,12 +104,22 @@ const HomePage = new Lang.Class({
 
         // Not using a SearchEntry since that comes with
         // the 'x' as secondary icon, which we don't want
-        this.search_box = new Gtk.Entry({
+        this.search_box = new Endless.SearchBox({
             margin_top: 30,
-            primary_icon_name: 'edit-find-symbolic',
             no_show_all: true
         });
-        this.search_box.connect('activate', Lang.bind(this, this._on_search_entered));
+
+        this.search_box.connect('text-changed', Lang.bind(this, function (search_entry) {
+            this.emit('search-text-changed', search_entry);
+        }));
+
+        this.search_box.connect('activate', Lang.bind(this, function (search_entry) {
+            this.emit('search-entered', search_entry.text);
+        }));
+
+        this.search_box.connect('menu-item-selected', Lang.bind(this, function (search_entry, article_id) {
+            this.emit('article-selected', article_id);
+        }));
 
         this.grid.attach(left_line, 0, 1, 1, 1);
         this.grid.attach(this._subtitle_label, 1, 1, 1, 1);
