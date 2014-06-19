@@ -16,7 +16,7 @@ describe('Home page for Template B', function () {
     let card_list = [
             new EosKnowledge.Card({
                 title: 'Subtitled Card',
-                subtitle: 'This is the Subtitle',
+                synopsis: 'This is the Synopsis',
             }),
             new EosKnowledge.Card({
                 title: 'Picture Card',
@@ -24,12 +24,12 @@ describe('Home page for Template B', function () {
             }),
             new EosKnowledge.Card({
                 title: 'Everything card',
-                subtitle: 'This card has everything',
+                synopsis: 'This card has everything',
                 thumbnail_uri: TESTDIR + '/test-content/pig2.jpg',
             }),
             new EosKnowledge.LessonCard({
                 title: 'Mustard lesson',
-                subtitle: 'Sample, incomplete',
+                synopsis: 'Sample, incomplete',
                 // By Bogdan29roman, CC-BY-SA
                 // http://en.wikipedia.org/wiki/File:Mu%C5%9Ftar.jpg
                 thumbnail_uri: TESTDIR + '/test-content/mustard.jpg',
@@ -38,7 +38,7 @@ describe('Home page for Template B', function () {
             }),
             new EosKnowledge.Card({
                 title: 'Subtitled Card',
-                subtitle: 'This is the Subtitle',
+                synopsis: 'This is the Synopsis',
             }),
             new EosKnowledge.Card({
                 title: 'Picture Card',
@@ -46,12 +46,12 @@ describe('Home page for Template B', function () {
             }),
             new EosKnowledge.Card({
                 title: 'Everything card',
-                subtitle: 'This card has everything',
+                synopsis: 'This card has everything',
                 thumbnail_uri: TESTDIR + '/test-content/pig2.jpg',
             }),
             new EosKnowledge.LessonCard({
                 title: 'Mustard lesson',
-                subtitle: 'Sample, incomplete',
+                synopsis: 'Sample, incomplete',
                 // By Bogdan29roman, CC-BY-SA
                 // http://en.wikipedia.org/wiki/File:Mu%C5%9Ftar.jpg
                 thumbnail_uri: TESTDIR + '/test-content/mustard.jpg',

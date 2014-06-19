@@ -27,44 +27,44 @@ const TestApplication = new Lang.Class ({
         let cards = [
             new EosKnowledge.Card({
                 title: 'Card 1',
-                subtitle: 'The First Card',
+                synopsis: 'The First Card',
                 thumbnail_uri: TESTDIR + '/test-content/relish.jpg',
             }),
             new EosKnowledge.Card({
                 title: 'Card 2',
-                subtitle: 'The Second Card',
+                synopsis: 'The Second Card',
                 thumbnail_uri: TESTDIR + '/test-content/pig1.jpg',
             }),
             new EosKnowledge.Card({
                 title: 'Card 3',
-                subtitle: 'The Third Card',
+                synopsis: 'The Third Card',
                 thumbnail_uri: TESTDIR + '/test-content/pig2.jpg',
             }),
             new EosKnowledge.Card({
                 title: 'Card 4',
-                subtitle: 'The Fourth Card',
+                synopsis: 'The Fourth Card',
                 thumbnail_uri: TESTDIR + '/test-content/pig1.jpg',
             }),
             new EosKnowledge.Card({
                 title: 'Card 5',
-                subtitle: 'The Fifth Card',
+                synopsis: 'The Fifth Card',
                 thumbnail_uri: TESTDIR + '/test-content/pig2.jpg',
             }),
             new EosKnowledge.Card({
                 title: 'Card 6',
-                subtitle: 'The Sixth Card',
+                synopsis: 'The Sixth Card',
                 // By Bogdan29roman, CC-BY-SA
                 // http://en.wikipedia.org/wiki/File:Mu%C5%9Ftar.jpg
                 thumbnail_uri: TESTDIR + '/test-content/mustard.jpg'
             }),
             new EosKnowledge.Card({
                 title: 'Card 7',
-                subtitle: 'The Seventh Card',
+                synopsis: 'The Seventh Card',
                 thumbnail_uri: TESTDIR + '/test-content/pig2.jpg',
             }),
             new EosKnowledge.Card({
                 title: 'Card 8',
-                subtitle: 'The Eighth Card',
+                synopsis: 'The Eighth Card',
                 thumbnail_uri: TESTDIR + '/test-content/pig1.jpg',
             })
         ];

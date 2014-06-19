@@ -76,7 +76,7 @@ const ProgressCard = new Lang.Class({
         grid.remove(this._frame);
         grid.attach_next_to(this._progress, this._title_label,
             Gtk.PositionType.TOP, 1, 1);
-        this.setSensitiveChildren([this._title_label, this._subtitle_label,
+        this.setSensitiveChildren([this._title_label, this._synopsis_label,
             this._progress]);
 
         this.show_all();

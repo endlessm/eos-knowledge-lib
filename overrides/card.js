@@ -13,7 +13,7 @@ const CompositeButton = imports.compositeButton;
  * Base class for topic cards in the knowledge app UI
  *
  * This widget displays a clickable topic to the user. Can be configured with
- * <title>, <subtitle> and <thumbnail-uri> properties. Connect to the <clicked>
+ * <title>, <synopsis> and <thumbnail-uri> properties. Connect to the <clicked>
  * signal to perform an action when the user clicks on the card.
  */
 
@@ -35,11 +35,11 @@ const Card = new Lang.Class({
             'Title of the card',
             GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE, ''),
         /**
-         * Property: subtitle
-         * A string with the subtitle of the card. Defaults to an empty string.
+         * Property: synopsis
+         * A string with the synopsis of the card. Defaults to an empty string.
          */
-        'subtitle': GObject.ParamSpec.string('subtitle', 'Card Description',
-            'Subtitle of the card',
+        'synopsis': GObject.ParamSpec.string('synopsis', 'Card Description',
+            'synopsis of the card',
             GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE, ''),
         /**
          * Property: thumbnail-uri
@@ -67,7 +67,7 @@ const Card = new Lang.Class({
             visible: false,
             no_show_all: true
         });
-        this._subtitle_label = new Gtk.Label({
+        this._synopsis_label = new Gtk.Label({
             hexpand: true,
             ellipsize: Pango.EllipsizeMode.END,
             max_width_chars: 1,
@@ -89,15 +89,15 @@ const Card = new Lang.Class({
         });
         grid.add(this._frame);
         grid.add(this._title_label);
-        grid.add(this._subtitle_label);
+        grid.add(this._synopsis_label);
 
         this.add(grid);
 
-        this.setSensitiveChildren([this._title_label, this._subtitle_label, this._frame]);
+        this.setSensitiveChildren([this._title_label, this._synopsis_label, this._frame]);
 
         this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_CARD);
         this._title_label.get_style_context().add_class(EosKnowledge.STYLE_CLASS_CARD_TITLE);
-        this._subtitle_label.get_style_context().add_class(EosKnowledge.STYLE_CLASS_CARD_SUBTITLE);
+        this._synopsis_label.get_style_context().add_class(EosKnowledge.STYLE_CLASS_CARD_SYNOPSIS);
         this._frame.get_style_context().add_class(EosKnowledge.STYLE_CLASS_THUMBNAIL);
     },
 
@@ -128,16 +128,16 @@ const Card = new Lang.Class({
         return '';
     },
 
-    set subtitle (v) {
-        if (this._subtitle_label.label === v) return;
-        this._subtitle_label.label = v;
-        this._subtitle_label.visible = (v && v.length !== 0);
-        this.notify('subtitle');
+    set synopsis (v) {
+        if (this._synopsis_label.label === v) return;
+        this._synopsis_label.label = v;
+        this._synopsis_label.visible = (v && v.length !== 0);
+        this.notify('synopsis');
     },
 
-    get subtitle () {
-        if (this._subtitle_label)
-            return this._subtitle_label.label;
+    get synopsis () {
+        if (this._synopsis_label)
+            return this._synopsis_label.label;
         return '';
     },
 

@@ -60,11 +60,11 @@ enum_type##_get_type (void) \
 #define EKN_STYLE_CLASS_COMPLETE "complete"
 
 /**
- * EKN_STYLE_CLASS_CARD_SUBTITLE:
+ * EKN_STYLE_CLASS_CARD_SYNOPSIS:
  *
- * A CSS class to match the subtitle on a card.
+ * A CSS class to match the synopsis on a card.
  */
-#define EKN_STYLE_CLASS_CARD_SUBTITLE "card-subtitle"
+#define EKN_STYLE_CLASS_CARD_SYNOPSIS "card-synopsis"
 
 /**
  * EKN_STYLE_CLASS_CARD_TITLE:

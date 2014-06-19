@@ -27,7 +27,7 @@ const TestApplication = new Lang.Class ({
         let cards = [
             new EosKnowledge.Card({
                 title: 'Subtitled Card',
-                subtitle: 'This is the Subtitle',
+                synopsis: 'This is the Subtitle',
             }),
             new EosKnowledge.Card({
                 title: 'Picture Card',
@@ -35,12 +35,12 @@ const TestApplication = new Lang.Class ({
             }),
             new EosKnowledge.Card({
                 title: 'Everything card',
-                subtitle: 'This card has everything',
+                synopsis: 'This card has everything',
                 thumbnail_uri: TESTDIR + '/test-content/pig2.jpg',
             }),
             new EosKnowledge.LessonCard({
                 title: 'Ketchup lesson',
-                subtitle: 'No index',
+                synopsis: 'No index',
                 // By Rachel Tayse, CC-BY
                 // http://en.wikipedia.org/wiki/File:Homemade_ketchup_canned_(4156502791).jpg
                 thumbnail_uri: TESTDIR + '/test-content/ketchup.jpg',
@@ -48,7 +48,7 @@ const TestApplication = new Lang.Class ({
             }),
             new EosKnowledge.LessonCard({
                 title: 'Mustard lesson',
-                subtitle: 'Sample, incomplete',
+                synopsis: 'Sample, incomplete',
                 // By Bogdan29roman, CC-BY-SA
                 // http://en.wikipedia.org/wiki/File:Mu%C5%9Ftar.jpg
                 thumbnail_uri: TESTDIR + '/test-content/mustard.jpg',
@@ -57,7 +57,7 @@ const TestApplication = new Lang.Class ({
             }),
             new EosKnowledge.LessonCard({
                 title: 'Relish lesson',
-                subtitle: 'Sample, completed',
+                synopsis: 'Sample, completed',
                 // Public domain image
                 thumbnail_uri: TESTDIR + '/test-content/relish.jpg',
                 item_index: 2,
@@ -65,7 +65,7 @@ const TestApplication = new Lang.Class ({
             }),
             new EosKnowledge.LessonCard({
                 title: 'Onion lessson',
-                subtitle: 'No index, completed',
+                synopsis: 'No index, completed',
                 // By Asb at the German language Wikipedia, CC-BY-SA
                 // http://en.wikipedia.org/wiki/File:Rote_Zwiebeln_aufgeschnitten_asb_2004_PICT4222.JPG
                 thumbnail_uri: TESTDIR + '/test-content/onion.jpg',
@@ -74,11 +74,11 @@ const TestApplication = new Lang.Class ({
             }),
             new EosKnowledge.ProgressCard({
                 title: 'Doing nothing',
-                subtitle: 'No items'
+                synopsis: 'No items'
             }),
             new EosKnowledge.ProgressCard({
                 title: 'Click me',
-                subtitle: 'To progress',
+                synopsis: 'To progress',
                 total_items: 5
             })
         ];
