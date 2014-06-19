@@ -187,6 +187,14 @@ EosWindow {
     font-size: 1.2em;
 }
 
+@define-color tab-button-background #F16E47;
+@define-color tab-button-gradient-light @tab-button-background;
+@define-color tab-button-gradient-dark mix (@tab-button-background, black, .35);
+@define-color tab-button-gradient-active-light @tab-button-gradient-light;
+@define-color tab-button-gradient-active-dark @tab-button-gradient-dark;
+@define-color tab-button-gradient-hover-light mix (@tab-button-background, black, .05);
+@define-color tab-button-gradient-hover-dark mix (@tab-button-background, black, .5);
+
 .tab-button {
     padding-right: 1.9em;
     padding-left: 2.4em;
@@ -197,20 +205,32 @@ EosWindow {
     -GtkButton-image-spacing: 15px;
     font-weight: bold;
     font-size: 0.8em;
+    background: linear-gradient(to bottom,
+                                @tab-button-gradient-light,
+                                @tab-button-gradient-dark);
+}
+
+.tab-button:hover {
+    background: linear-gradient(to bottom,
+                                @tab-button-gradient-hover-light,
+                                @tab-button-gradient-hover-dark);
+}
+
+.tab-button:active {
+    background: linear-gradient(to bottom,
+                                @tab-button-gradient-active-dark,
+                                @tab-button-gradient-active-light);
 }
 
 .tab-button.bottom {
     border-top-left-radius: 1.5em;
     border-top-right-radius: 1.5em;
-    background: linear-gradient(to bottom,
-        #ff673e 0%, #ef4a2d 80%, #bc2612 100%);
 }
+
 
 .tab-button.top {
     border-bottom-left-radius: 1.5em;
     border-bottom-right-radius: 1.5em;
-    background: linear-gradient(to top,
-        #ff673e 0%, #ef4a2d 80%, #bc2612 100%);
 }
 
 .home-page-a .search-box, .home-page-b .search-box {
