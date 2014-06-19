@@ -27,7 +27,7 @@ const TestApplication = new Lang.Class ({
         let cards = [
             new EosKnowledge.Card({
                 title: 'Subtitled Card',
-                synopsis: 'This is the Subtitle',
+                synopsis: 'This is a really long synopsis. It is so long, that I have to sit here and think of things to write to show how long it is. And I still need more text. What else is there to write?',
             }),
             new EosKnowledge.Card({
                 title: 'Picture Card',

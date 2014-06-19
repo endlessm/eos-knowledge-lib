@@ -70,6 +70,8 @@ const Card = new Lang.Class({
         this._synopsis_label = new Gtk.Label({
             hexpand: true,
             ellipsize: Pango.EllipsizeMode.END,
+            wrap_mode: Pango.WrapMode.WORD,
+            lines: 6,
             max_width_chars: 1,
             visible: false,
             no_show_all: true
