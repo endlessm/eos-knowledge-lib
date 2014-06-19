@@ -12,6 +12,7 @@ javascript_tests = \
 	tests/eosknowledge/testHello.js \
 	tests/eosknowledge/testHistoryItemModel.js \
 	tests/eosknowledge/testHistoryModel.js \
+	tests/eosknowledge/testHomePage.js \
 	tests/eosknowledge/testHomePageA.js \
 	tests/eosknowledge/testHomePageB.js \
 	tests/eosknowledge/testLessonCard.js \

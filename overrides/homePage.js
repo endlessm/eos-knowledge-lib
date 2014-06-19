@@ -13,8 +13,9 @@ GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.
  *
  * This represents the abstract class for the home page of the knowledge apps.
  * It has a title, subtitle, and list of article cards to show.
- * To work properly, subclasses must implement the 'get card' and 'set card' methods.
  *
+ * To work properly, subclasses will want to implement the 'pack_widgets'
+ * and 'pack_cards' methods.
  */
 const HomePage = new Lang.Class({
     Name: 'HomePage',
@@ -35,14 +36,6 @@ const HomePage = new Lang.Class({
         'subtitle': GObject.ParamSpec.string('subtitle', 'Page Subtitle',
             'Subtitle of the page',
             GObject.ParamFlags.READWRITE, ''),
-        /**
-         * Property: has-search-box
-         * True if the home page should have a search box.
-         */
-        'has-search-box':  GObject.ParamSpec.boolean('has-search-box', 'Has Search Box',
-            'True if the home page should have a search box. Default is true',
-            GObject.ParamFlags.READWRITE, true)
-
         /**
          * Property: cards
          * A list of Card objects representing the cards to be displayed on this page.
@@ -81,33 +74,16 @@ const HomePage = new Lang.Class({
 
     _init: function (props) {
         props = props || {};
-        this._title_label = new Gtk.Label();
-        this._subtitle_label = new Gtk.Label();
+        this.title_label = new Gtk.Label();
+        this.subtitle_label = new Gtk.Label();
 
         this._cards = null;
         this._title = null;
         this._subtitle = null;
 
-        props.orientation = Gtk.Orientation.VERTICAL;
-
-        this.grid = new Gtk.Grid({
-            halign: Gtk.Align.CENTER,
-            valign: Gtk.Align.END,
-            expand: true,
-            orientation: Gtk.Orientation.VERTICAL
-        });
-
-        this.grid.attach(this._title_label, 0, 0, 3, 1);
-
-        let left_line = new Gtk.Separator();
-        let right_line = new Gtk.Separator();
-
         // Not using a SearchEntry since that comes with
         // the 'x' as secondary icon, which we don't want
-        this.search_box = new Endless.SearchBox({
-            margin_top: 30,
-            no_show_all: true
-        });
+        this.search_box = new Endless.SearchBox();
 
         this.search_box.connect('text-changed', Lang.bind(this, function (search_entry) {
             this.emit('search-text-changed', search_entry);
@@ -121,20 +97,51 @@ const HomePage = new Lang.Class({
             this.emit('article-selected', article_id);
         }));
 
-        this.grid.attach(left_line, 0, 1, 1, 1);
-        this.grid.attach(this._subtitle_label, 1, 1, 1, 1);
-        this.grid.attach(right_line, 2, 1, 1, 1);
-        this.grid.attach(this.search_box, 0, 2, 3, 1);
-
         this.parent(props);
 
-        this.add(this.grid);
+        this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_HOME_PAGE);
+        this.title_label.get_style_context().add_class(EosKnowledge.STYLE_CLASS_HOME_PAGE_TITLE);
+        this.subtitle_label.get_style_context().add_class(EosKnowledge.STYLE_CLASS_HOME_PAGE_SUBTITLE);
+        this.search_box.get_style_context().add_class(EosKnowledge.STYLE_CLASS_SEARCH_BOX);
+
+        this.pack_widgets();
+        this.show_all();
+    },
+
+    /**
+     * Method: pack_widgets
+     *
+     * A virtual function to be overridden in subclasses. _init will set up
+     * three widgets: title_label, subtitle_label and seach_box, and then call
+     * into this virtual function.
+     *
+     * title_label and subtitle_label will contain the title and subtitle
+     * properties in labels with proper style classes, and the search_box is a
+     * GtkEntry all connectified for homePage search signals. They can be
+     * packed into this widget along with any other widgetry for the subclass
+     * in this function.
+     */
+    pack_widgets: function () {
+        this.add(this.title_label);
+        this.add(this.subtitle_label);
+        this.add(this.search_box);
+    },
+
+    /**
+     * Method: pack_cards
+     *
+     * A virtual function to be overridden in subclasses. This will be called,
+     * whenever the card list changes with a new list of cards to be packed in
+     * the widget
+     */
+    pack_cards: function (cards) {
+        // no-op
     },
 
     set title (v) {
         if (this._title === v) return;
         this._title = v;
-        this._title_label.label = this._title.toUpperCase();
+        this.title_label.label = this._title.toUpperCase();
         this.notify('title');
     },
 
@@ -147,7 +154,7 @@ const HomePage = new Lang.Class({
     set subtitle (v) {
         if (this._subtitle === v) return;
         this._subtitle = v;
-        this._subtitle_label.label = this._subtitle;
+        this.subtitle_label.label = this._subtitle;
         this.notify('subtitle');
     },
 
@@ -157,27 +164,22 @@ const HomePage = new Lang.Class({
         return '';
     },
 
-    set has_search_box (v) {
-        if (this._has_search_box === v)
+    set cards (v) {
+        if (this._cards === v)
             return;
-        this._has_search_box = v;
-        this.search_box.set_visible(this._has_search_box);
-        this.notify('has-search-box');
+        this._cards = v;
+        if (this._cards === null) {
+            this.pack_cards([]);
+        } else {
+            this.pack_cards(this._cards);
+        }
     },
 
-    get has_search_box () {
-        return this._has_search_box;
+    get cards () {
+        return this._cards;
     },
 
     _on_search_entered: function (widget) {
         this.emit('search-entered', widget.text);
     },
-
-    set_styles: function (classes) {
-        this.get_style_context().add_class(classes.home_page);
-        this._title_label.get_style_context().add_class(classes.home_page_title);
-        this._subtitle_label.get_style_context().add_class(classes.home_page_subtitle);
-        if('search_box' in classes)
-            this.search_box.get_style_context().add_class(classes.search_box);
-    }
 });

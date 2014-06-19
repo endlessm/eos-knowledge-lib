@@ -65,7 +65,6 @@ describe('Home page for Template B', function () {
 
         home_page = new EosKnowledge.HomePageB({
             title: "Guatemala",
-            subtitle: "The Land of Eternal Spring"
         });
 
         notify = jasmine.createSpy('notify');
@@ -114,15 +113,9 @@ describe('Home page for Template B', function () {
         });
     });
 
-    describe('Style class of table of contents', function () {
-        it('has home_page class', function () {
+    describe('CSS style context', function () {
+        it('has home page B class', function () {
             expect(home_page).toHaveCssClass(EosKnowledge.STYLE_CLASS_HOME_PAGE_B);
-        });
-        it('has a descendant with title class', function () {
-            expect(home_page).toHaveDescendantWithCssClass(EosKnowledge.STYLE_CLASS_HOME_PAGE_B_TITLE);
-        });
-        it('has a descendant with subtitle class', function () {
-            expect(home_page).toHaveDescendantWithCssClass(EosKnowledge.STYLE_CLASS_HOME_PAGE_B_SUBTITLE);
         });
         it('has a descendant with container class', function () {
             expect(home_page).toHaveDescendantWithCssClass(EosKnowledge.STYLE_CLASS_CARD_CONTAINER);

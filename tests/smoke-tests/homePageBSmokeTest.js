@@ -9,6 +9,10 @@ EosKnowledge.init();
 
 const TEST_APPLICATION_ID = 'com.endlessm.knowledge.pages';
 const TESTDIR = Endless.getCurrentFileDir() + '/..';
+const BACKGROUND_CSS = "EosWindow { \
+    background-image: url('" + TESTDIR + "/test-content/background.jpg'); \
+    background-size: 100% 100%; \
+}";
 
 const TestApplication = new Lang.Class ({
     Name: 'TestApplication',
@@ -22,6 +26,11 @@ const TestApplication = new Lang.Class ({
         provider.load_from_file(css_file);
         Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(),
                                                  provider,
+                                                 Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+        let background_provider = new Gtk.CssProvider();
+        background_provider.load_from_data(BACKGROUND_CSS);
+        Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(),
+                                                 background_provider,
                                                  Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 
         let cards = [
@@ -70,8 +79,7 @@ const TestApplication = new Lang.Class ({
         ];
 
         let home_page = new EosKnowledge.HomePageB({
-            title: 'Guatemala',
-            subtitle: 'The Land of Eternal Spring'
+            title: 'Guatemala'
         });
         home_page.cards = cards;
 
