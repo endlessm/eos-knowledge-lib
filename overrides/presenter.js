@@ -156,7 +156,7 @@ const Presenter = new Lang.Class({
     _new_card_from_article_model: function (model) {
         let card = new EosKnowledge.ArticleCard({
             title: model.title,
-            thumbnail_uri: model.thumbnail_uri
+            thumbnail_uri: model.thumbnail === null? '' : model.thumbnail.content_uri
         });
         card.connect('clicked', function () {
             this._on_article_card_clicked(card, model);

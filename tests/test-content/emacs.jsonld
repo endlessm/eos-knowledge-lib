@@ -38,7 +38,10 @@
     "license": "Creative-Commons",
     "copyrightHolder": "Wikimedia Foundation",
     "sourceURL": "http://en.wikipedia.org/wiki/Emacs",
-    "thumbnail": "http://upload.wikimedia.org/wikipedia/commons/e/ef/Emacs_Dired_buffers.png",
+    "thumbnail": {
+        "@id": "ekn:text_editors/Stallman.jpg",
+        "contentURL": "file://path/to/stallman.jpg"
+    },
     "resources": [
         {
             "@id": "ekn:text_editors/stallman_the_bard",
