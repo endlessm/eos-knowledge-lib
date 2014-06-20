@@ -93,7 +93,7 @@ const LessonCard = new Lang.Class({
         let overlay = new Gtk.Overlay();
         overlay.add(grid);
         this.add(overlay);
-        this.setSensitiveChildren([this._title_label, this._subtitle_label,
+        this.setSensitiveChildren([this._title_label, this._synopsis_label,
             this._frame, this._banner, this._index_label,
             this._checkmark_label]);
 

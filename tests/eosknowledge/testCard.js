@@ -21,8 +21,8 @@ describe('Card widget', function () {
         it('has a descendant with title class', function () {
             expect(card).toHaveDescendantWithCssClass('card-title');
         });
-        it('has a descendant with subtitle class', function () {
-            expect(card).toHaveDescendantWithCssClass('card-subtitle');
+        it('has a descendant with synopsis class', function () {
+            expect(card).toHaveDescendantWithCssClass('card-synopsis');
         });
         it('has a descendant with thumbnail class', function () {
             expect(card).toHaveDescendantWithCssClass('thumbnail');
