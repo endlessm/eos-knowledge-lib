@@ -11,6 +11,7 @@ public_overrides = \
 	overrides/articlePresenter.js \
 	overrides/card.js \
 	overrides/cardA.js \
+	overrides/cardB.js \
 	overrides/categoriesPage.js \
 	overrides/contentObjectModel.js \
 	overrides/engine.js \

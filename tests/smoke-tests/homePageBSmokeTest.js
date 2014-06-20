@@ -34,44 +34,44 @@ const TestApplication = new Lang.Class ({
                                                  Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 
         let cards = [
-            new EosKnowledge.Card({
+            new EosKnowledge.CardB({
                 title: 'Card 1',
                 synopsis: 'The First Card',
                 thumbnail_uri: TESTDIR + '/test-content/relish.jpg',
             }),
-            new EosKnowledge.Card({
+            new EosKnowledge.CardB({
                 title: 'Card 2',
                 synopsis: 'The Second Card',
                 thumbnail_uri: TESTDIR + '/test-content/pig1.jpg',
             }),
-            new EosKnowledge.Card({
+            new EosKnowledge.CardB({
                 title: 'Card 3',
                 synopsis: 'The Third Card',
                 thumbnail_uri: TESTDIR + '/test-content/pig2.jpg',
             }),
-            new EosKnowledge.Card({
+            new EosKnowledge.CardB({
                 title: 'Card 4',
                 synopsis: 'The Fourth Card',
                 thumbnail_uri: TESTDIR + '/test-content/pig1.jpg',
             }),
-            new EosKnowledge.Card({
+            new EosKnowledge.CardB({
                 title: 'Card 5',
                 synopsis: 'The Fifth Card',
                 thumbnail_uri: TESTDIR + '/test-content/pig2.jpg',
             }),
-            new EosKnowledge.Card({
+            new EosKnowledge.CardB({
                 title: 'Card 6',
                 synopsis: 'The Sixth Card',
                 // By Bogdan29roman, CC-BY-SA
                 // http://en.wikipedia.org/wiki/File:Mu%C5%9Ftar.jpg
                 thumbnail_uri: TESTDIR + '/test-content/mustard.jpg'
             }),
-            new EosKnowledge.Card({
+            new EosKnowledge.CardB({
                 title: 'Card 7',
                 synopsis: 'The Seventh Card',
                 thumbnail_uri: TESTDIR + '/test-content/pig2.jpg',
             }),
-            new EosKnowledge.Card({
+            new EosKnowledge.CardB({
                 title: 'Card 8',
                 synopsis: 'The Eighth Card',
                 thumbnail_uri: TESTDIR + '/test-content/pig1.jpg',

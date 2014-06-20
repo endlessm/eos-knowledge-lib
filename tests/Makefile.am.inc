@@ -8,6 +8,7 @@ javascript_tests = \
 	tests/eosknowledge/testArticlePresenter.js \
 	tests/eosknowledge/testCard.js \
 	tests/eosknowledge/testCardA.js \
+	tests/eosknowledge/testCardB.js \
 	tests/eosknowledge/testContentObjectModel.js \
 	tests/eosknowledge/testEngine.js \
 	tests/eosknowledge/testHello.js \
