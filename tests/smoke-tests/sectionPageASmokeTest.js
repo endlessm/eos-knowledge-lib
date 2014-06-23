@@ -27,18 +27,18 @@ const TestApplication = new Lang.Class ({
         let segments = {
 
             'Lessons and Classes': [
-                new EosKnowledge.Card({
+                new EosKnowledge.CardA({
                     title: 'Subtitled Card',
                     synopsis: 'This is the Subtitle',
                 }),
-                new EosKnowledge.Card({
+                new EosKnowledge.CardA({
                     title: 'Picture Card',
                     thumbnail_uri: TESTDIR + '/test-content/pig1.jpg',
                 })
             ],
 
             'Articles and Files': [
-                new EosKnowledge.Card({
+                new EosKnowledge.CardA({
                     title: 'Everything card',
                     synopsis: 'This card has everything',
                     thumbnail_uri: TESTDIR + '/test-content/pig2.jpg',
@@ -64,7 +64,7 @@ const TestApplication = new Lang.Class ({
             ],
 
             'Devon and Higgins': [
-                new EosKnowledge.Card({
+                new EosKnowledge.CardA({
                     title: 'Everything card',
                     synopsis: 'This card has everything',
                     thumbnail_uri: TESTDIR + '/test-content/pig2.jpg',
@@ -81,7 +81,7 @@ const TestApplication = new Lang.Class ({
             ],
 
             'Fernando and Frango': [
-                new EosKnowledge.Card({
+                new EosKnowledge.CardA({
                     title: 'Everything card',
                     synopsis: 'This card has everything',
                     thumbnail_uri: TESTDIR + '/test-content/pig2.jpg',

@@ -28,7 +28,7 @@ const TestApplication = new Lang.Class({
             video: Gio.File.new_for_path(TESTDIR + '/test-content/sample.mp4')
         };
 
-        let image_card = new EosKnowledge.Card({
+        let image_card = new EosKnowledge.CardA({
             title: 'Open image in lightbox'
         });
         image_card.connect('clicked', Lang.bind(this, function () {
@@ -36,7 +36,7 @@ const TestApplication = new Lang.Class({
             this._lightbox.reveal_overlays = true;
         }.bind(this)));
 
-        let video_card = new EosKnowledge.Card({
+        let video_card = new EosKnowledge.CardA({
             title: 'Open video in lightbox'
         });
         video_card.connect('clicked', Lang.bind(this, function () {

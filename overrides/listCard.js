@@ -2,7 +2,7 @@
 
 const Lang = imports.lang;
 
-const Card = imports.card;
+const CardA = imports.cardA;
 
 /**
  * Class: ListCard
@@ -15,7 +15,7 @@ const Card = imports.card;
 const ListCard = new Lang.Class({
     Name: 'ListCard',
     GTypeName: 'EknListCard',
-    Extends: Card.Card,
+    Extends: CardA.CardA,
 
     _init: function (props) {
         this.parent(props);

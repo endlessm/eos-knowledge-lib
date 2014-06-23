@@ -49,7 +49,7 @@ const Presenter = new Lang.Class({
         this.view.home_page.subtitle = data['appSubtitle'];
         for (let page of [this.view.home_page, this.view.categories_page]) {
             let category_cards = data['sections'].map(function (section) {
-                let card = new EosKnowledge.Card({
+                let card = new EosKnowledge.CardA({
                     title: section['title'],
                     thumbnail_uri: section['thumbnailURI']
                 });

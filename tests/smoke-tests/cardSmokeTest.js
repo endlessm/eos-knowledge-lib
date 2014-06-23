@@ -25,15 +25,15 @@ const TestApplication = new Lang.Class ({
                                                  Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 
         let cards = [
-            new EosKnowledge.Card({
-                title: 'Subtitled Card',
+            new EosKnowledge.CardA({
+                title: 'Synopsis Card',
                 synopsis: 'This is a really long synopsis. It is so long, that I have to sit here and think of things to write to show how long it is. And I still need more text. What else is there to write?',
             }),
-            new EosKnowledge.Card({
+            new EosKnowledge.CardA({
                 title: 'Picture Card',
                 thumbnail_uri: TESTDIR + '/test-content/pig1.jpg',
             }),
-            new EosKnowledge.Card({
+            new EosKnowledge.CardA({
                 title: 'Everything card',
                 synopsis: 'This card has everything',
                 thumbnail_uri: TESTDIR + '/test-content/pig2.jpg',

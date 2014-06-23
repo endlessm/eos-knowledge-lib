@@ -4,35 +4,41 @@ EosWindow {
     background-color: #888888;
 }
 
-.card {
+.card .thumbnail {
+    background-position: center;
+    background-size: cover;
+    border-width: 0px;
+}
+
+.card-a {
     padding: 10px 10px 0px 10px;
     margin: 7px;
     background-color: #ececec;
-    transition:margin 250ms ease-in-out;
+    transition: margin 250ms ease-in-out;
 }
 
-.card:hover {
+.card-a:hover {
     margin: 3px;
 }
 
-.card-title {
+.card-a .card-title {
     padding: 17px 0px 17px 0px;
     color: #d16550;
     font-family: 'Montserrat', sans-serif;
     font-size: 13px;
     font-weight: bold;
     text-shadow: white 0px 1px 0px;
-    transition:padding 250ms ease-in-out;
+    transition: padding 250ms ease-in-out;
 }
 
-.card-title:hover {
-    /* Add as much padding hear as we take out of the card margin, so we don't make
+.card-a .card-title:hover {
+    /* Add as much padding here as we take out of the card margin, so we don't make
      * more space for the label. Having more letters pop in is distracting. */
     padding-left: 4px;
     padding-right: 4px;
 }
 
-.card-synopsis {
+.card-a .card-synopsis {
     padding: 4px 0px 4px 0px;
     color: #666666;
     font-family: 'Lato', sans-serif;
@@ -40,14 +46,8 @@ EosWindow {
     text-shadow: white 0px 1px 0px;
 }
 
-.card .thumbnail {
-    background-position: center;
-    background-size: cover;
-    border-width: 0px;
-}
-
-.card .FIXME-private-banner,
-.card .FIXME-private-progress.trough {
+.card-a .FIXME-private-banner,
+.card-a .FIXME-private-progress.trough {
     color: white;
     border: solid 1px shade(#2e3436, 0.8);
     border-radius: 4px;
@@ -56,27 +56,27 @@ EosWindow {
         shade(#2e3436, 1.1));
 }
 
-.card .FIXME-private-index {
+.card-a .FIXME-private-index {
     padding: 0 5px;
 }
 
-.card .FIXME-private-checkmark {
+.card-a .FIXME-private-checkmark {
     padding-right: 5px;
 }
 
-.card .FIXME-private-banner:hover,
-.card .FIXME-private-progress.trough:hover {
+.card-a .FIXME-private-banner:hover,
+.card-a .FIXME-private-progress.trough:hover {
     border-color: shade(darker(orange), 0.8);
     background-image: linear-gradient(to bottom,
         shade(darker(orange), 0.9),
         shade(darker(orange), 1.1));
 }
 
-.card.complete .FIXME-private-index {
+.card-a.complete .FIXME-private-index {
     color: #d3d7cf;
 }
 
-.card .FIXME-private-progress {
+.card-a .FIXME-private-progress {
     color: #ce5c00;
     border: solid 1px shade(orange, 0.8);
     border-radius: 4px;
@@ -85,7 +85,7 @@ EosWindow {
         shade(orange, 0.9));
 }
 
-.card .FIXME-private-progress:hover {
+.card-a .FIXME-private-progress:hover {
     border-color: shade(lighter(orange), 0.8);
     background-image: linear-gradient(to bottom,
         shade(lighter(orange), 1.1),

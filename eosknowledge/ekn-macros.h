@@ -50,6 +50,14 @@ enum_type##_get_type (void) \
 #define EKN_STYLE_CLASS_CARD "card"
 
 /**
+ * EKN_STYLE_CLASS_CARD_A:
+ *
+ * A CSS class to match #EknCardA widgets.
+ * It is present on any template A card.
+ */
+#define EKN_STYLE_CLASS_CARD_A "card-a"
+
+/**
  * EKN_STYLE_CLASS_COMPLETE:
  *
  * A CSS class to match #EknLessonCard widgets that have been marked as
