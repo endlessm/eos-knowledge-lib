@@ -253,14 +253,6 @@ EosWindow {
     border-bottom-right-radius: 1.5em;
 }
 
-.home-page-title {
-    font-size: 4em;
-}
-
-.home-page-subtitle {
-    font-size: 1.2em;
-}
-
 .home-page-a .search-box, .home-page-b .search-box {
     box-shadow: inset 0em 0.16em 0.16em alpha(black, 0.15);
     background-image: linear-gradient(to bottom, #dbdbdb, white);
@@ -297,7 +289,7 @@ EosWindow {
     background-color: black;
 }
 
-.home-page-b .home-page-title {
+.home-page-b {
     text-shadow: alpha(black, 0.2) 3px 3px 0px;
 }
 
