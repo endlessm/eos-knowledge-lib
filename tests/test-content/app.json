@@ -1,6 +1,5 @@
 {
-    "appTitle": "Game of Thrones",
-    "appSubtitle": "A Song of Ice and Fire",
+    "titleImageURI": "resource:///com/endlessm/thrones/agot.svg",
     "backgroundURI": "resource:///com/endlessm/thrones/kings_landing.jpg",
     "domain": "thrones",
     "language": "en",

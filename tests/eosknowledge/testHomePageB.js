@@ -63,9 +63,7 @@ describe('Home page for Template B', function () {
     beforeEach(function () {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
 
-        home_page = new EosKnowledge.HomePageB({
-            title: "Guatemala",
-        });
+        home_page = new EosKnowledge.HomePageB();
 
         notify = jasmine.createSpy('notify');
         home_page.connect('notify', function (object, pspec) {
@@ -76,14 +74,6 @@ describe('Home page for Template B', function () {
     });
 
     it('can be constructed', function () {});
-
-    it('can set title and subtitle', function () {
-        home_page.title = "Brazil";
-        expect(home_page.title).toBe("Brazil");
-
-        home_page.subtitle = "Eu como muito frango";
-        expect(home_page.subtitle).toBe("Eu como muito frango");
-    });
 
     it('can set cards', function () {
         // Seems worth testing this as having a list property in javascript

@@ -42,6 +42,7 @@ test_content = \
 	tests/test-content/rick-astley-image.jsonld \
 	tests/test-content/never-gonna-give-you-up-video.jsonld \
 	tests/test-content/sample.mp4 \
+	tests/test-content/agot.svg \
 	$(NULL)
 EXTRA_DIST += \
 	$(javascript_tests) \

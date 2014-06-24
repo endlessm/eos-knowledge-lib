@@ -2,6 +2,7 @@ const Endless = imports.gi.Endless;
 const EosKnowledge = imports.gi.EosKnowledge;
 const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
+const GLib = imports.gi.GLib;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
@@ -9,6 +10,8 @@ EosKnowledge.init();
 
 const TEST_APPLICATION_ID = 'com.endlessm.knowledge.test.window';
 const TESTDIR = Endless.getCurrentFileDir() + '/..';
+const TESTBUILDDIR = GLib.get_current_dir() + '/tests';
+
 const BACKGROUND_CSS = "EknWindowA { \
     background-image: url('" + TESTDIR + "/test-content/background.jpg'); \
     background-size: 100% 100%; \
@@ -20,6 +23,10 @@ const TestApplication = new Lang.Class({
 
     vfunc_startup: function () {
         this.parent();
+
+        // Load and register the GResource which has content for this app
+        let resource = Gio.Resource.load(TESTBUILDDIR + '/test-content/test-content.gresource');
+        resource._register();
 
         let provider = new Gtk.CssProvider();
         let css_file = Gio.File.new_for_uri('resource:///com/endlessm/knowledge/endless_knowledge.css');
@@ -63,8 +70,7 @@ const TestApplication = new Lang.Class({
         });
 
         // ============ HOME PAGE ==================
-        view.home_page.title = 'Guatemala';
-        view.home_page.subtitle = 'A country where Fernando is king';
+        view.home_page.title_image_uri = '/com/endlessm/thrones/agot.svg';
         view.home_page.cards = [
             new EosKnowledge.CardA({
                 title: 'Subtitled Card',
