@@ -25,42 +25,42 @@ const TestApplication = new Lang.Class ({
                                                  Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 
         let cards = [
-            new EosKnowledge.Card({
-                title: 'Subtitled Card',
-                subtitle: 'This is the Subtitle',
+            new EosKnowledge.CardA({
+                title: 'Synopsis Card',
+                synopsis: 'This is the synopsis',
             }),
-            new EosKnowledge.Card({
+            new EosKnowledge.CardA({
                 title: 'Picture Card',
                 thumbnail_uri: TESTDIR + '/test-content/pig1.jpg',
             }),
-            new EosKnowledge.Card({
+            new EosKnowledge.CardA({
                 title: 'Picture Card',
                 thumbnail_uri: TESTDIR + '/test-content/pig1.jpg',
             }),
-            new EosKnowledge.Card({
+            new EosKnowledge.CardA({
                 title: 'Picture Card',
                 thumbnail_uri: TESTDIR + '/test-content/pig1.jpg',
             }),
-            new EosKnowledge.Card({
+            new EosKnowledge.CardA({
                 title: 'Picture Card',
                 thumbnail_uri: TESTDIR + '/test-content/pig1.jpg',
             }),
-            new EosKnowledge.Card({
+            new EosKnowledge.CardA({
                 title: 'Picture Card',
                 thumbnail_uri: TESTDIR + '/test-content/pig1.jpg',
             }),
-            new EosKnowledge.Card({
+            new EosKnowledge.CardA({
                 title: 'Picture Card',
                 thumbnail_uri: TESTDIR + '/test-content/pig1.jpg',
             }),
-            new EosKnowledge.Card({
+            new EosKnowledge.CardA({
                 title: 'Everything card',
-                subtitle: 'This card has everything',
+                synopsis: 'This card has everything',
                 thumbnail_uri: TESTDIR + '/test-content/pig2.jpg',
             }),
             new EosKnowledge.LessonCard({
                 title: 'Mustard lesson',
-                subtitle: 'Sample, incomplete',
+                synopsis: 'Sample, incomplete',
                 // By Bogdan29roman, CC-BY-SA
                 // http://en.wikipedia.org/wiki/File:Mu%C5%9Ftar.jpg
                 thumbnail_uri: TESTDIR + '/test-content/mustard.jpg',

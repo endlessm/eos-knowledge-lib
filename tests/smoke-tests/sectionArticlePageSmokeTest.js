@@ -26,7 +26,7 @@ const TestApplication = new Lang.Class ({
         let the_section_page = new EosKnowledge.SectionPageA ({
             title: 'The Section'
         });
-        let card = new EosKnowledge.Card({
+        let card = new EosKnowledge.CardA({
             title: 'Picture Card',
             thumbnail_uri: TESTDIR + '/test-content/pig1.jpg',
         });

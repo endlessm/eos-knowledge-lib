@@ -35,11 +35,6 @@ const HomePageA = new Lang.Class({
     },
 
     _init: function (props) {
-
-        props = props || {};
-        props.has_search_box = true;
-        this.parent(props);
-
         this._card_container = new HomePageACardContainer({
             halign: Gtk.Align.CENTER,
             valign: Gtk.Align.CENTER,
@@ -70,16 +65,9 @@ const HomePageA = new Lang.Class({
         this._button_stack.add(this._all_categories_button);
         this._button_stack.add(this._invisible_frame);
 
-        this.set_styles({
-            'home_page': EosKnowledge.STYLE_CLASS_HOME_PAGE_A,
-            'home_page_title': EosKnowledge.STYLE_CLASS_HOME_PAGE_A_TITLE,
-            'home_page_subtitle': EosKnowledge.STYLE_CLASS_HOME_PAGE_A_SUBTITLE,
-            'search_box': EosKnowledge.STYLE_CLASS_SEARCH_BOX
-        });
+        this.parent(props);
 
-        this.add(this._card_container);
-        this.add(this._button_stack);
-        this.show_all();
+        this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_HOME_PAGE_A);
     },
 
     _onAllCategoriesClicked: function (widget) {
@@ -92,18 +80,32 @@ const HomePageA = new Lang.Class({
         this._button_stack.visible_child = this._all_categories_button;
     },
 
-    set cards (v) {
-        if (this._cards === v)
-            return;
-        if (this._cards !== null)
-            this._card_container.remove_cards();
-        this._cards = v;
-        if (this._cards !== null)
-            this._card_container.add_cards(this._cards);
+    pack_widgets: function () {
+        let left_line = new Gtk.Separator();
+        let right_line = new Gtk.Separator();
+        this.search_box.margin_top = 30;
+
+        let inner_grid = new Gtk.Grid({
+            halign: Gtk.Align.CENTER,
+            valign: Gtk.Align.END,
+            expand: true,
+            orientation: Gtk.Orientation.VERTICAL
+        });
+        inner_grid.attach(this.title_label, 0, 0, 3, 1);
+        inner_grid.attach(left_line, 0, 1, 1, 1);
+        inner_grid.attach(this.subtitle_label, 1, 1, 1, 1);
+        inner_grid.attach(right_line, 2, 1, 1, 1);
+        inner_grid.attach(this.search_box, 0, 2, 3, 1);
+
+        this.orientation = Gtk.Orientation.VERTICAL;
+        this.add(inner_grid);
+        this.add(this._card_container);
+        this.add(this._button_stack);
     },
 
-    get cards () {
-        return this._cards;
+    pack_cards: function (cards) {
+        this._card_container.remove_cards();
+        this._card_container.add_cards(this._cards);
     }
 });
 

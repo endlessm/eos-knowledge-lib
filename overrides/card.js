@@ -51,23 +51,15 @@ const Card = new Lang.Class({
             GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE, '')
     },
 
-    CARD_WIDTH: 183,
-    CARD_HEIGHT: 209,
-    CARD_MARGIN: 7,
-
     _init: function(props) {
-        props = props || {};
-        props.expand = false;
-        props.halign = Gtk.Align.START;
-
-        this._title_label = new Gtk.Label({
+        this.title_label = new Gtk.Label({
             hexpand: true,
             ellipsize: Pango.EllipsizeMode.END,
             max_width_chars: 1,
             visible: false,
             no_show_all: true
         });
-        this._synopsis_label = new Gtk.Label({
+        this.synopsis_label = new Gtk.Label({
             hexpand: true,
             ellipsize: Pango.EllipsizeMode.END,
             wrap_mode: Pango.WrapMode.WORD,
@@ -76,70 +68,71 @@ const Card = new Lang.Class({
             visible: false,
             no_show_all: true
         });
-        this._frame = new Gtk.Frame({
+        this.image_frame = new Gtk.Frame({
             expand: true,
             visible: false,
             no_show_all: true
         });
-        this._background_provider = new Gtk.CssProvider();
+        this.background_provider = new Gtk.CssProvider();
         this._thumbnail_uri = null;
 
         this.parent(props);
 
+        this.setSensitiveChildren([this.title_label, this.synopsis_label, this.image_frame]);
+
+        this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_CARD);
+        this.title_label.get_style_context().add_class(EosKnowledge.STYLE_CLASS_CARD_TITLE);
+        this.synopsis_label.get_style_context().add_class(EosKnowledge.STYLE_CLASS_CARD_SYNOPSIS);
+        this.image_frame.get_style_context().add_class(EosKnowledge.STYLE_CLASS_THUMBNAIL);
+
+        this.pack_widgets();
+        this.show_all();
+    },
+
+    /**
+     * Method: pack_widgets
+     *
+     * A virtual function to be overridden by subclasses with custom looks,
+     * _init will set up three widgets: title_label, synopsis_label and
+     * image_frame for the title, synopsis, and thumbnail-uri properties.
+     * These can be packed into any container widget you like. Add the final
+     * widget tree to this button with this.add(). Implementation need not add
+     * all widgets to the tree, if for example they do not want to support a
+     * thumbnail image
+     */
+    pack_widgets: function () {
         let grid = new Gtk.Grid({
             orientation: Gtk.Orientation.VERTICAL
         });
-        grid.add(this._frame);
-        grid.add(this._title_label);
-        grid.add(this._synopsis_label);
-
+        grid.add(this.image_frame);
+        grid.add(this.title_label);
+        grid.add(this.synopsis_label);
         this.add(grid);
-
-        this.setSensitiveChildren([this._title_label, this._synopsis_label, this._frame]);
-
-        this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_CARD);
-        this._title_label.get_style_context().add_class(EosKnowledge.STYLE_CLASS_CARD_TITLE);
-        this._synopsis_label.get_style_context().add_class(EosKnowledge.STYLE_CLASS_CARD_SYNOPSIS);
-        this._frame.get_style_context().add_class(EosKnowledge.STYLE_CLASS_THUMBNAIL);
-    },
-
-    // TODO: we do want all cards to be the same size, but we may want to make
-    // this size scale with resolution down the road
-    vfunc_get_preferred_width: function () {
-        return [this.CARD_WIDTH + 2 * this.CARD_MARGIN, this.CARD_WIDTH + 2 * this.CARD_MARGIN];
-    },
-
-    vfunc_get_preferred_height: function () {
-        return [this.CARD_HEIGHT + 2 * this.CARD_MARGIN, this.CARD_HEIGHT + 2 * this.CARD_MARGIN];
-    },
-
-    vfunc_get_request_mode: function () {
-        return Gtk.SizeRequestMode.CONSTANT_SIZE;
     },
 
     set title (v) {
-        if (this._title_label.label === v) return;
-        this._title_label.label = v;
-        this._title_label.visible = (v && v.length !== 0);
+        if (this.title_label.label === v) return;
+        this.title_label.label = v;
+        this.title_label.visible = (v && v.length !== 0);
         this.notify('title');
     },
 
     get title () {
-        if (this._title_label)
-            return this._title_label.label;
+        if (this.title_label)
+            return this.title_label.label;
         return '';
     },
 
     set synopsis (v) {
-        if (this._synopsis_label.label === v) return;
-        this._synopsis_label.label = v;
-        this._synopsis_label.visible = (v && v.length !== 0);
+        if (this.synopsis_label.label === v) return;
+        this.synopsis_label.label = v;
+        this.synopsis_label.visible = (v && v.length !== 0);
         this.notify('synopsis');
     },
 
     get synopsis () {
-        if (this._synopsis_label)
-            return this._synopsis_label.label;
+        if (this.synopsis_label)
+            return this.synopsis_label.label;
         return '';
     },
 
@@ -148,11 +141,11 @@ const Card = new Lang.Class({
         this._thumbnail_uri = v;
         if (this._thumbnail_uri) {
             let frame_css = '* { background-image: url("' + this._thumbnail_uri + '"); }';
-            this._background_provider.load_from_data(frame_css);
-            let context = this._frame.get_style_context();
-            context.add_provider(this._background_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+            this.background_provider.load_from_data(frame_css);
+            let context = this.image_frame.get_style_context();
+            context.add_provider(this.background_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
         }
-        this._frame.visible = (v && v.length !== 0);
+        this.image_frame.visible = (v && v.length !== 0);
         this.notify('thumbnail-uri');
     },
 
@@ -160,5 +153,5 @@ const Card = new Lang.Class({
         if (this._thumbnail_uri)
             return this._thumbnail_uri;
         return '';
-    },
+    }
 });

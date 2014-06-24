@@ -8,7 +8,7 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
-const Card = imports.card;
+const CardA = imports.cardA;
 const Config = imports.config;
 
 String.prototype.format = Format.format;
@@ -30,7 +30,7 @@ GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.
 const LessonCard = new Lang.Class({
     Name: 'LessonCard',
     GTypeName: 'EknLessonCard',
-    Extends: Card.Card,
+    Extends: CardA.CardA,
     Properties: {
         /**
          * Property: item-index
@@ -84,21 +84,24 @@ const LessonCard = new Lang.Class({
         this._index_label.get_style_context().add_class('FIXME-private-index');
         this._checkmark_label.get_style_context().add_class('FIXME-private-checkmark');
         this.parent(props);
+    },
 
-        // FIXME Reach into the parent class's defined layout. I guess we can't
-        // do this in production code, but it depends on the designs how we
-        // structure the drawing. This is just a placeholder.
-        let grid = this.get_child();
-        this.remove(grid);
+    pack_widgets: function () {
+        let grid = new Gtk.Grid({
+            orientation: Gtk.Orientation.VERTICAL
+        });
+        grid.add(this.image_frame);
+        grid.add(this.title_label);
+        grid.add(this.synopsis_label);
+
         let overlay = new Gtk.Overlay();
         overlay.add(grid);
-        this.add(overlay);
-        this.setSensitiveChildren([this._title_label, this._synopsis_label,
-            this._frame, this._banner, this._index_label,
-            this._checkmark_label]);
-
         overlay.add_overlay(this._banner);
-        this.show_all();
+        this.add(overlay);
+
+        this.setSensitiveChildren([this.title_label, this.synopsis_label,
+            this.image_frame, this._banner, this._index_label,
+            this._checkmark_label]);
     },
 
     get item_index() {

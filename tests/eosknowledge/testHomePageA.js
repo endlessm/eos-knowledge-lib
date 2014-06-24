@@ -69,18 +69,9 @@ describe('Home page for Template A', function () {
         expect(home_page.subtitle).toBe("The land of caipirinhas");
     });
 
-    describe('Style class of table of contents', function () {
-        it('has home_page class', function () {
+    describe('CSS style context', function () {
+        it('has home page A class', function () {
             expect(home_page).toHaveCssClass(EosKnowledge.STYLE_CLASS_HOME_PAGE_A);
-        });
-        it('has a descendant with title class', function () {
-            expect(home_page).toHaveDescendantWithCssClass(EosKnowledge.STYLE_CLASS_HOME_PAGE_A_TITLE);
-        });
-        it('has a descendant with subtitle class', function () {
-            expect(home_page).toHaveDescendantWithCssClass(EosKnowledge.STYLE_CLASS_HOME_PAGE_A_SUBTITLE);
-        });
-        it('has a descendant with search box class', function () {
-            expect(home_page).toHaveDescendantWithCssClass(EosKnowledge.STYLE_CLASS_SEARCH_BOX);
         });
         it('has a descendant with container class', function () {
             expect(home_page).toHaveDescendantWithCssClass(EosKnowledge.STYLE_CLASS_CARD_CONTAINER);

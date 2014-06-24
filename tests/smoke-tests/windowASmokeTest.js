@@ -66,14 +66,14 @@ const TestApplication = new Lang.Class({
         view.home_page.title = 'Guatemala';
         view.home_page.subtitle = 'A country where Fernando is king';
         view.home_page.cards = [
-            new EosKnowledge.Card({
+            new EosKnowledge.CardA({
                 title: 'Subtitled Card',
             }),
-            new EosKnowledge.Card({
+            new EosKnowledge.CardA({
                 title: 'Picture Card',
                 thumbnail_uri: TESTDIR + '/test-content/pig1.jpg',
             }),
-            new EosKnowledge.Card({
+            new EosKnowledge.CardA({
                 title: 'Everything card',
                 thumbnail_uri: TESTDIR + '/test-content/pig2.jpg',
             }),
@@ -96,16 +96,16 @@ const TestApplication = new Lang.Class({
         view.section_page.title = 'History of Guatemala';
         view.section_page.segments = {
             'Lessons and Classes': [
-                new EosKnowledge.Card({
+                new EosKnowledge.CardA({
                     title: 'Subtitled Card',
                 }),
-                new EosKnowledge.Card({
+                new EosKnowledge.CardA({
                     title: 'Picture Card',
                     thumbnail_uri: TESTDIR + '/test-content/pig1.jpg',
                 })
             ],
             'Articles and Files': [
-                new EosKnowledge.Card({
+                new EosKnowledge.CardA({
                     title: 'Everything card',
                     thumbnail_uri: TESTDIR + '/test-content/pig2.jpg',
                 }),
@@ -126,7 +126,7 @@ const TestApplication = new Lang.Class({
                 })
             ],
             'Devon and Higgins': [
-                new EosKnowledge.Card({
+                new EosKnowledge.CardA({
                     title: 'Everything card',
                     thumbnail_uri: TESTDIR + '/test-content/pig2.jpg',
                 }),
@@ -140,7 +140,7 @@ const TestApplication = new Lang.Class({
                 })
             ],
             'Fernando and Frango': [
-                new EosKnowledge.Card({
+                new EosKnowledge.CardA({
                     title: 'Everything card',
                     thumbnail_uri: TESTDIR + '/test-content/pig2.jpg',
                 }),

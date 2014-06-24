@@ -68,18 +68,19 @@ const ProgressCard = new Lang.Class({
         this._progress.get_style_context().add_class('FIXME-private-progress');
 
         this.parent(props);
+    },
 
-        // FIXME Reach into the parent class's defined layout. I guess we can't
-        // do this in production code, but it depends on the designs how we
-        // structure the drawing. This is just a placeholder.
-        let grid = this.get_child();
-        grid.remove(this._frame);
-        grid.attach_next_to(this._progress, this._title_label,
-            Gtk.PositionType.TOP, 1, 1);
-        this.setSensitiveChildren([this._title_label, this._synopsis_label,
+    pack_widgets: function () {
+        let grid = new Gtk.Grid({
+            orientation: Gtk.Orientation.VERTICAL
+        });
+        grid.add(this._progress);
+        grid.add(this.title_label);
+        grid.add(this.synopsis_label);
+        this.add(grid);
+
+        this.setSensitiveChildren([this.title_label, this.synopsis_label,
             this._progress]);
-
-        this.show_all();
     },
 
     get total_items() {
