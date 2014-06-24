@@ -2,7 +2,7 @@
     "appTitle": "Game of Thrones",
     "appSubtitle": "A Song of Ice and Fire",
     "backgroundURI": "resource:///com/endlessm/thrones/kings_landing.jpg",
-    "domain": "thrones",
+    "appId": "com.endlessm.thrones-en",
     "language": "en",
     "templateType": "A",
     "sections": [
