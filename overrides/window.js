@@ -24,7 +24,7 @@ GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.
 const PARALLAX_BACKGROUND_SCALE = 1.2;
 
 /**
- * Class: WindowA
+ * Class: Window
  *
  * This represents the toplevel window widget for template A, containing all
  * template A pages.
@@ -32,9 +32,9 @@ const PARALLAX_BACKGROUND_SCALE = 1.2;
  * Adds a lightbox above the section and article page, which can be
  * used to show content above either of these pages.
  */
-const WindowA = new Lang.Class({
-    Name: 'WindowA',
-    GTypeName: 'EknWindowA',
+const Window = new Lang.Class({
+    Name: 'Window',
+    GTypeName: 'EknWindow',
     Extends: Endless.Window,
     Properties: {
         /**
@@ -261,7 +261,7 @@ const WindowA = new Lang.Class({
                 let bg_width = Math.ceil(this._background_image_width * bg_mult_ratio);
                 let bg_height = Math.ceil(this._background_image_height * bg_mult_ratio);
 
-                let frame_css = 'EknWindowA { background-size: ' + bg_width + 'px ' + bg_height + 'px;}';
+                let frame_css = 'EknWindow { background-size: ' + bg_width + 'px ' + bg_height + 'px;}';
                 let context = this.get_style_context();
                 if (this._bg_size_provider === undefined) {
                     this._bg_size_provider = new Gtk.CssProvider();
@@ -305,7 +305,7 @@ const WindowA = new Lang.Class({
         }
         this._background_image_uri = v;
         if (this._background_image_uri !== null) {
-            let frame_css = 'EknWindowA.show-home-page, EknWindowA.show-categories-page { background-image: url("' + this._background_image_uri + '");}';
+            let frame_css = 'EknWindow.show-home-page, EknWindow.show-categories-page { background-image: url("' + this._background_image_uri + '");}';
             let provider = new Gtk.CssProvider();
             provider.load_from_data(frame_css);
             let context = this.get_style_context();
@@ -339,7 +339,7 @@ const WindowA = new Lang.Class({
         }
         this._blur_background_image_uri = v;
         if (this._blur_background_image_uri !== null) {
-            let frame_css = 'EknWindowA.show-section-page, EknWindowA.show-article-page { background-image: url("' + this._blur_background_image_uri + '");}';
+            let frame_css = 'EknWindow.show-section-page, EknWindow.show-article-page { background-image: url("' + this._blur_background_image_uri + '");}';
             let provider = new Gtk.CssProvider();
             provider.load_from_data(frame_css);
             let context = this.get_style_context();

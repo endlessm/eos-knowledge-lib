@@ -35,7 +35,7 @@ const SectionPageA = imports.sectionPageA;
 const TableOfContents = imports.tableOfContents;
 const TreeNode = imports.treeNode;
 const WebviewSwitcherView = imports.webviewSwitcherView;
-const WindowA = imports.windowA;
+const Window = imports.window;
 
 imports.searchPath = _oldSearchPath;
 
@@ -116,5 +116,5 @@ function _init() {
     EosKnowledge.tree_model_from_tree_node = TreeNode.tree_model_from_tree_node;
     EosKnowledge.VideoObjectModel = MediaObjectModel.VideoObjectModel;
     EosKnowledge.WebviewSwitcherView = WebviewSwitcherView.WebviewSwitcherView;
-    EosKnowledge.WindowA = WindowA.WindowA;
+    EosKnowledge.Window = Window.Window;
 }

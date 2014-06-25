@@ -5,7 +5,7 @@ const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 const System = imports.system;
 
-const WindowA = imports.windowA;
+const Window = imports.window;
 
 /**
  * Class: Presenter
@@ -27,13 +27,13 @@ const Presenter = new Lang.Class({
         /**
          * Property: view
          *
-         * The <WindowA> widget that acts as a top-level view for the application.
+         * The <Window> widget that acts as a top-level view for the application.
          * Construct-only.
          */
         'view': GObject.ParamSpec.object('view', 'Window view',
             'The top level view component for the application',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            WindowA.WindowA)
+            Window.Window)
     },
 
     _parse_object_from_path: function (path) {

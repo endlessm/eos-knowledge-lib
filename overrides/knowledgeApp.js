@@ -43,7 +43,7 @@ const KnowledgeApp = new Lang.Class ({
         Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(),
             overrides_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION + 1);
 
-        let win = new EosKnowledge.WindowA({
+        let win = new EosKnowledge.Window({
             application: this
         });
 

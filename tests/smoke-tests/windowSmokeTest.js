@@ -29,7 +29,7 @@ const TestApplication = new Lang.Class({
                                                  provider,
                                                  Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 
-        let view = new EosKnowledge.WindowA({
+        let view = new EosKnowledge.Window({
             application: this,
             background_image_uri: 'resource:///com/endlessm/thrones/background.jpg',
             blur_background_image_uri: 'resource:///com/endlessm/thrones/background_blurred.jpg'

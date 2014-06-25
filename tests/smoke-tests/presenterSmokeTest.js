@@ -24,7 +24,7 @@ const TestApplication = new Lang.Class ({
                                                  provider,
                                                  Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 
-        let win = new EosKnowledge.WindowA({
+        let win = new EosKnowledge.Window({
             application: this
         });
 

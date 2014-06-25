@@ -30,7 +30,7 @@ describe('Presenter', function () {
         let resource = Gio.Resource.load(TESTBUILDDIR + '/test-content/test-content.gresource');
         resource._register();
 
-        // Borrowed from jasmine test for WindowA
+        // Borrowed from jasmine test for Window
         // Generate a unique ID for each app instance that we test
         let fake_pid = GLib.random_int();
         // FIXME In this version of GJS there is no Posix module, so fake the PID
@@ -40,7 +40,7 @@ describe('Presenter', function () {
             flags: 0
         });
         app.connect('startup', function () {
-            view = new EosKnowledge.WindowA({
+            view = new EosKnowledge.Window({
                 application: app
             });
             presenter = new EosKnowledge.Presenter({

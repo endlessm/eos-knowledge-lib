@@ -14,7 +14,7 @@ const TESTDIR = Endless.getCurrentFileDir() + '/..';
 const TESTBUILDDIR = GLib.get_current_dir() + '/tests';
 const BACKGROUND_URI = 'resource:///com/endlessm/thrones/kings_landing.jpg';
 
-describe('Window A', function () {
+describe('Window', function () {
     let view;
 
     beforeEach(function (done) {
@@ -34,7 +34,7 @@ describe('Window A', function () {
             flags: 0
         });
         app.connect('startup', function () {
-            view = new EosKnowledge.WindowA({
+            view = new EosKnowledge.Window({
                 application: app
             });
             done();
