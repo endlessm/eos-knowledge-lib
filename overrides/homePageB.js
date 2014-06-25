@@ -35,6 +35,7 @@ const HomePageB = new Lang.Class({
     },
 
     pack_widgets: function () {
+        this.title_image.vexpand = true;
         this.search_box.halign = Gtk.Align.CENTER;
         this.search_box.width_chars = 40;
 
