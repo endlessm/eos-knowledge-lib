@@ -63,8 +63,8 @@ EXTRA_DIST += \
 	$(gresource).xml \
 	$(NULL)
 CLEANFILES += $(gresource)
-# Force gresource to get compiled as part of make check
-check_DATA = tests/test-content/test-content.gresource
+# Force gresource to get compiled as part of make
+noinst_DATA = tests/test-content/test-content.gresource
 
 # Run tests when running 'make check'
 TESTS = $(javascript_tests)
