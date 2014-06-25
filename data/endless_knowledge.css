@@ -326,10 +326,6 @@ EknWindowA.show-article-page {
     background-color: black;
 }
 
-.home-page-b {
-    text-shadow: alpha(black, 0.2) 3px 3px 0px;
-}
-
 .section-page-title {
     padding-top: 1.0em;
     padding-bottom: 0.48em;
