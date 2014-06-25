@@ -182,18 +182,11 @@ enum_type##_get_type (void) \
 #define EKN_STYLE_CLASS_HOME_PAGE "home-page"
 
 /**
- * EKN_STYLE_CLASS_HOME_PAGE_TITLE:
+ * EKN_STYLE_CLASS_HOME_PAGE_TITLE_IMAGE:
  *
- * A CSS class to match the title on the Template A's HomePage.
+ * A CSS class to match the title image on the Template A's HomePage.
  */
-#define EKN_STYLE_CLASS_HOME_PAGE_TITLE "home-page-title"
-
-/**
- * EKN_STYLE_CLASS_HOME_PAGE_SUBTITLE:
- *
- * A CSS class to match the subtitle on the Template A's HomePage.
- */
-#define EKN_STYLE_CLASS_HOME_PAGE_SUBTITLE "home-page-subtitle"
+#define EKN_STYLE_CLASS_HOME_PAGE_TITLE_IMAGE "home-page-title-image"
 
 /**
  * EKN_STYLE_CLASS_HOME_PAGE_A:

@@ -59,9 +59,8 @@ describe('Presenter', function () {
 
     it('can be constructed', function () {});
 
-    it('can set title and subtitle on view from json', function () {
-        expect(view.home_page.title).toBe(data['appTitle']);
-        expect(view.home_page.subtitle).toBe(data['appSubtitle']);
+    it('can set title image on view from json', function () {
+        expect(view.home_page.title_image_uri).toBe(data['titleImageURI']);
     });
 
     it('can set cards on view from json', function () {

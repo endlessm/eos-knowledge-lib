@@ -3,6 +3,7 @@
 const Endless = imports.gi.Endless;
 const EosKnowledge = imports.gi.EosKnowledge;
 const GObject = imports.gi.GObject;
+const GdkPixbuf = imports.gi.GdkPixbuf;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
@@ -12,7 +13,7 @@ GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.
  * Class: HomePage
  *
  * This represents the abstract class for the home page of the knowledge apps.
- * It has a title, subtitle, and list of article cards to show.
+ * It has a title image URI and list of article cards to show.
  *
  * To work properly, subclasses will want to implement the 'pack_widgets'
  * and 'pack_cards' methods.
@@ -23,18 +24,11 @@ const HomePage = new Lang.Class({
     Extends: Gtk.Grid,
     Properties: {
         /**
-         * Property: title
-         * A string with the title of the home page. Defaults to an empty string.
+         * Property: title-image-uri
+         * A URI to the title image. Defaults to an empty string.
          */
-        'title': GObject.ParamSpec.string('title', 'Page Title',
-            'Title of the page',
-            GObject.ParamFlags.READWRITE, ''),
-        /**
-         * Property: subtitle
-         * A string with the subtitle of the home page. Defaults to an empty string.
-         */
-        'subtitle': GObject.ParamSpec.string('subtitle', 'Page Subtitle',
-            'Subtitle of the page',
+        'title-image-uri': GObject.ParamSpec.string('title-image-uri', 'Page Title Image URI',
+            'URI to the title image',
             GObject.ParamFlags.READWRITE, ''),
         /**
          * Property: cards
@@ -74,12 +68,10 @@ const HomePage = new Lang.Class({
 
     _init: function (props) {
         props = props || {};
-        this.title_label = new Gtk.Label();
-        this.subtitle_label = new Gtk.Label();
+        this.title_image = new Gtk.Image();
 
         this._cards = null;
-        this._title = null;
-        this._subtitle = null;
+        this._title_image_uri = null;
 
         // Not using a SearchEntry since that comes with
         // the 'x' as secondary icon, which we don't want
@@ -100,8 +92,7 @@ const HomePage = new Lang.Class({
         this.parent(props);
 
         this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_HOME_PAGE);
-        this.title_label.get_style_context().add_class(EosKnowledge.STYLE_CLASS_HOME_PAGE_TITLE);
-        this.subtitle_label.get_style_context().add_class(EosKnowledge.STYLE_CLASS_HOME_PAGE_SUBTITLE);
+        this.title_image.get_style_context().add_class(EosKnowledge.STYLE_CLASS_HOME_PAGE_TITLE_IMAGE);
         this.search_box.get_style_context().add_class(EosKnowledge.STYLE_CLASS_SEARCH_BOX);
 
         this.pack_widgets();
@@ -112,19 +103,16 @@ const HomePage = new Lang.Class({
      * Method: pack_widgets
      *
      * A virtual function to be overridden in subclasses. _init will set up
-     * three widgets: title_label, subtitle_label and seach_box, and then call
-     * into this virtual function.
+     * two widgets: title_image and seach_box, and then call into this virtual
+     * function.
      *
-     * title_label and subtitle_label will contain the title and subtitle
-     * properties in labels with proper style classes, and the search_box is a
-     * GtkEntry all connectified for homePage search signals. They can be
-     * packed into this widget along with any other widgetry for the subclass
-     * in this function.
+     * The title_image is a GtkImage, and the search_box is a GtkEntry all
+     * connectified for homePage search signals. They can be packed into this
+     * widget along with any other widgetry for the subclass in this function.
      */
     pack_widgets: function () {
-        this.add(this.title_label);
-        this.add(this.subtitle_label);
-        this.add(this.search_box);
+        this.attach(this.title_image, 0, 0, 3, 1);
+        this.attach(this.search_box, 0, 1, 3, 1);
     },
 
     /**
@@ -138,29 +126,23 @@ const HomePage = new Lang.Class({
         // no-op
     },
 
-    set title (v) {
-        if (this._title === v) return;
-        this._title = v;
-        this.title_label.label = this._title.toUpperCase();
-        this.notify('title');
+    set title_image_uri (v) {
+        if (this._title_image_uri === v) return;
+
+        // get the path from the URI *after* the protocol name
+        let resource_path = v.substring('resource://'.length);
+
+        // set it from a Pixbuf constructor so we get errors thrown on failure
+        this.title_image.pixbuf = GdkPixbuf.Pixbuf.new_from_resource(resource_path);
+
+        // only actually set the image URI if we successfully set the image
+        this._title_image_uri = v;
+        this.notify('title-image-uri');
     },
 
-    get title () {
-        if (this._title)
-            return this._title;
-        return '';
-    },
-
-    set subtitle (v) {
-        if (this._subtitle === v) return;
-        this._subtitle = v;
-        this.subtitle_label.label = this._subtitle;
-        this.notify('subtitle');
-    },
-
-    get subtitle () {
-        if (this._subtitle)
-            return this._subtitle;
+    get title_image_uri () {
+        if (this._title_image_uri)
+            return this._title_image_uri;
         return '';
     },
 

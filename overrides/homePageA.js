@@ -19,7 +19,7 @@ const BUTTON_TRANSITION_DURATION = 500;
  * Class: HomePageA
  *
  * This represents the home page for template A of the knowledge apps.
- * It extends <HomePage> and has a title, subtitle, and list of article cards to show
+ * It extends <HomePage> and has a title image and list of article cards to show
  *
  */
 const HomePageA = new Lang.Class({
@@ -81,8 +81,6 @@ const HomePageA = new Lang.Class({
     },
 
     pack_widgets: function () {
-        let left_line = new Gtk.Separator();
-        let right_line = new Gtk.Separator();
         this.search_box.margin_top = 30;
 
         let inner_grid = new Gtk.Grid({
@@ -91,11 +89,8 @@ const HomePageA = new Lang.Class({
             expand: true,
             orientation: Gtk.Orientation.VERTICAL
         });
-        inner_grid.attach(this.title_label, 0, 0, 3, 1);
-        inner_grid.attach(left_line, 0, 1, 1, 1);
-        inner_grid.attach(this.subtitle_label, 1, 1, 1, 1);
-        inner_grid.attach(right_line, 2, 1, 1, 1);
-        inner_grid.attach(this.search_box, 0, 2, 3, 1);
+        inner_grid.attach(this.title_image, 0, 0, 3, 1);
+        inner_grid.attach(this.search_box, 0, 1, 3, 1);
 
         this.orientation = Gtk.Orientation.VERTICAL;
         this.add(inner_grid);

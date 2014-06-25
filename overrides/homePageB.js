@@ -13,7 +13,7 @@ const Config = imports.config;
  * Class: HomePageB
  *
  * This represents the home page for template B of the knowledge apps.
- * It extends <HomePage> and has a title, subtitle, and list of article cards to show.
+ * It extends <HomePage> and has a title image and list of article cards to show.
  * The list of cards only accepts 4, 6 or 8 cards.
  *
  */
@@ -37,13 +37,12 @@ const HomePageB = new Lang.Class({
     pack_widgets: function () {
         this.search_box.halign = Gtk.Align.CENTER;
         this.search_box.width_chars = 40;
-        this.title_label.vexpand = true;
 
         let card_container_frame = new Gtk.Frame();
         card_container_frame.get_style_context().add_class(EosKnowledge.STYLE_CLASS_CARD_CONTAINER);
         card_container_frame.add(this._card_container);
 
-        this.attach(this.title_label, 0, 0, 1, 1);
+        this.attach(this.title_image, 0, 0, 1, 1);
         this.attach(this.search_box, 1, 0, 1, 1);
         this.attach(card_container_frame, 0, 1, 2, 1);
     },

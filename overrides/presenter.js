@@ -45,8 +45,7 @@ const Presenter = new Lang.Class({
     _setAppContent: function(data) {
         this._domain = data['appId'].split('.').pop();
         this.view.background_image_uri = data['backgroundURI'];
-        this.view.home_page.title = data['appTitle'];
-        this.view.home_page.subtitle = data['appSubtitle'];
+        this.view.home_page.title_image_uri = data['titleImageURI'];
         for (let page of [this.view.home_page, this.view.categories_page]) {
             let category_cards = data['sections'].map(function (section) {
                 let card = new EosKnowledge.CardA({

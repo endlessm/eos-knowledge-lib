@@ -38,10 +38,7 @@ describe('Home page for Template A', function () {
     beforeEach(function () {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
 
-        home_page = new EosKnowledge.HomePageA({
-            title: "Guatemala",
-            subtitle: "A place where Fernando is king"
-        });
+        home_page = new EosKnowledge.HomePageA();
 
         notify = jasmine.createSpy('notify');
         home_page.connect('notify', function (object, pspec) {
@@ -61,17 +58,12 @@ describe('Home page for Template A', function () {
         expect(home_page.cards).toBe(card_list);
     });
 
-    it('can set title and subtitle', function () {
-        home_page.title = "Brazil";
-        expect(home_page.title).toBe("Brazil");
-
-        home_page.subtitle = "The land of caipirinhas";
-        expect(home_page.subtitle).toBe("The land of caipirinhas");
-    });
-
-    describe('CSS style context', function () {
-        it('has home page A class', function () {
+    describe('Style class of table of contents', function () {
+        it('has home_page class', function () {
             expect(home_page).toHaveCssClass(EosKnowledge.STYLE_CLASS_HOME_PAGE_A);
+        });
+        it('has a descendant with search box class', function () {
+            expect(home_page).toHaveDescendantWithCssClass(EosKnowledge.STYLE_CLASS_SEARCH_BOX);
         });
         it('has a descendant with container class', function () {
             expect(home_page).toHaveDescendantWithCssClass(EosKnowledge.STYLE_CLASS_CARD_CONTAINER);
