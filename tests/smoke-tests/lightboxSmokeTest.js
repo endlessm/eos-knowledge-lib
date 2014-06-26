@@ -23,9 +23,24 @@ const TestApplication = new Lang.Class({
         Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(),
                                                  provider,
                                                  Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
-        this._files= {
+        this._files = {
             image: Gio.File.new_for_path(TESTDIR + '/test-content/pig1.jpg'),
-            video: Gio.File.new_for_path(TESTDIR + '/test-content/sample.mp4')
+            video: Gio.File.new_for_path(TESTDIR + '/test-content/sample.mp4'),
+            copyrighted: Gio.File.new_for_path(TESTDIR + '/test-content/ketchup.jpg')
+        };
+
+        this._infoboxes = {
+            image: new EosKnowledge.MediaInfobox({
+                caption: "Don't eat my hat man.\nI'll mess you up"
+            }),
+            video: new EosKnowledge.MediaInfobox({
+                caption: 'Some kinda rabbit man'
+            }),
+            copyrighted: new EosKnowledge.MediaInfobox({
+                caption: 'The Secret Sauce',
+                license_text: 'NSA Creative Commons Spy Alike',
+                creator_text: 'Yo momma'
+            })
         };
 
         let image_card = new EosKnowledge.CardA({
@@ -34,6 +49,7 @@ const TestApplication = new Lang.Class({
         image_card.connect('clicked', Lang.bind(this, function () {
             this._previewer.file = this._files.image;
             this._lightbox.reveal_overlays = true;
+            this._lightbox.infobox_widget = this._infoboxes.image;
         }.bind(this)));
 
         let video_card = new EosKnowledge.CardA({
@@ -42,27 +58,29 @@ const TestApplication = new Lang.Class({
         video_card.connect('clicked', Lang.bind(this, function () {
             this._previewer.file = this._files.video;
             this._lightbox.reveal_overlays = true;
+            this._lightbox.infobox_widget = this._infoboxes.video;
+        }.bind(this)));
+
+        let copyrighted_card = new EosKnowledge.CardA({
+            title: 'Open secret sauce in lightbox'
+        });
+        copyrighted_card.connect('clicked', Lang.bind(this, function () {
+            this._previewer.file = this._files.copyrighted;
+            this._lightbox.reveal_overlays = true;
+            this._lightbox.infobox_widget = this._infoboxes.copyrighted;
         }.bind(this)));
 
         let grid = new Gtk.Grid();
         grid.add(image_card);
         grid.add(video_card);
-
-        let label = new Gtk.Label({
-            label: "Don't eat my hat man.\nI'll mess you up",
-            visible: true
-        });
-        label.show();
+        grid.add(copyrighted_card);
 
         this._previewer = new EosKnowledge.Previewer({
             visible: true
         });
 
         this._lightbox = new EosKnowledge.Lightbox({
-            // has_navigation_buttons: false,
-            // has_close_button: false,
             content_widget: this._previewer,
-            infobox_widget: label
         });
         this._lightbox.add(grid);
         this._lightbox.connect('notify::overlays-revealed', function () {
@@ -76,19 +94,22 @@ const TestApplication = new Lang.Class({
             this._previewer.animating = animating;
         }.bind(this));
 
+        this._selected_file_index = 0;
         this._lightbox.connect('navigation-previous-clicked', Lang.bind(this, function () {
-            if (this._previewer.file === this._files.image) {
-                this._previewer.file = this._files.video;
-            } else {
-                this._previewer.file = this._files.image;
-            }
+            this._selected_file_index--;
+            if (this._selected_file_index === -1)
+                this._selected_file_index = Object.keys(this._files).length - 1;
+            let key = Object.keys(this._files)[this._selected_file_index];
+            this._previewer.file = this._files[key];
+            this._lightbox.infobox_widget = this._infoboxes[key];
         }));
         this._lightbox.connect('navigation-next-clicked', Lang.bind(this, function () {
-            if (this._previewer.file === this._files.image) {
-                this._previewer.file = this._files.video;
-            } else {
-                this._previewer.file = this._files.image;
-            }
+            this._selected_file_index++;
+            if (this._selected_file_index === Object.keys(this._files).length)
+                this._selected_file_index = 0;
+            let key = Object.keys(this._files)[this._selected_file_index];
+            this._previewer.file = this._files[key];
+            this._lightbox.infobox_widget = this._infoboxes[key];
         }));
 
         let window = new Endless.Window({
