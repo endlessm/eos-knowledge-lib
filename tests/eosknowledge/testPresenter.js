@@ -18,7 +18,6 @@ function parse_object_from_path(path) {
 
 describe('Presenter', function () {
     let presenter;
-    let view;
     let data;
     let test_app_filename = 'file://' + TESTDIR + '/test-content/app.json';
 
@@ -40,12 +39,7 @@ describe('Presenter', function () {
             flags: 0
         });
         app.connect('startup', function () {
-            view = new EosKnowledge.Window({
-                application: app
-            });
-            presenter = new EosKnowledge.Presenter({
-                view: view
-            }, test_app_filename);
+            presenter = new EosKnowledge.Presenter(app, test_app_filename);
             done();
         });
 
@@ -54,25 +48,25 @@ describe('Presenter', function () {
     });
 
     afterEach(function () {
-        view.destroy();
+        presenter.view.destroy();
     });
 
     it('can be constructed', function () {});
 
     it('can set title image on view from json', function () {
-        expect(view.home_page.title_image_uri).toBe(data['titleImageURI']);
+        expect(presenter.view.home_page.title_image_uri).toBe(data['titleImageURI']);
     });
 
     it('can set cards on view from json', function () {
         expect(data['sections'].map(function (section) {
             return section['title'];
-        })).toEqual(view.home_page.cards.map(function (card) {
+        })).toEqual(presenter.view.home_page.cards.map(function (card) {
             return card.title;
         }));
         
         expect(data['sections'].map(function (section) {
             return section['thumbnailURI'];
-        })).toEqual(view.home_page.cards.map(function (card) {
+        })).toEqual(presenter.view.home_page.cards.map(function (card) {
             return card.thumbnail_uri;
         }));
     });

@@ -10,6 +10,7 @@ const Lang = imports.lang;
 const ArticlePageA = imports.articlePageA;
 const CategoriesPage = imports.categoriesPage;
 const HomePageA = imports.homePageA;
+const HomePageB = imports.homePageB;
 const Lightbox = imports.lightbox;
 const SectionArticlePageA = imports.sectionArticlePageA;
 const SectionPageA = imports.sectionPageA;
@@ -107,7 +108,16 @@ const Window = new Lang.Class({
         'blur-background-image-uri': GObject.ParamSpec.string('blur-background-image-uri', 'Blurred background image URI',
             'The blurred background image of this window.',
             GObject.ParamFlags.READWRITE,
-            '')
+            ''),
+        /**
+         * Property: template-type
+         *
+         * A string for the template type the window should render as
+         * currently support 'A' and 'B' templates.
+         */
+        'template-type':  GObject.ParamSpec.string('template-type', 'Template Type',
+            'Which template the window should display with',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, 'A'),
     },
     Signals: {
         /**
@@ -173,7 +183,10 @@ const Window = new Lang.Class({
     TRANSITION_DURATION: 500,
 
     _init: function (props) {
-        this._home_page = new HomePageA.HomePageA();
+        this.parent(props);
+
+        let home_page_class = this.template_type === 'B' ? HomePageB.HomePageB : HomePageA.HomePageA;
+        this._home_page = new home_page_class();
         this._categories_page = new CategoriesPage.CategoriesPage();
         this._section_article_page = new SectionArticlePageA.SectionArticlePageA({
             section_page: new SectionPageA.SectionPageA(),
@@ -189,8 +202,6 @@ const Window = new Lang.Class({
         this._lightbox.connect('navigation-next-clicked', function (media_object) {
             this.emit('lightbox-nav-next-clicked', media_object);
         }.bind(this));
-
-        this.parent(props);
 
         let back_button = new Gtk.Button({
             image: Gtk.Image.new_from_icon_name('go-previous-symbolic',

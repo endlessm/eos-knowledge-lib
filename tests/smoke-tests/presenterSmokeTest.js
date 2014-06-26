@@ -24,21 +24,13 @@ const TestApplication = new Lang.Class ({
                                                  provider,
                                                  Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 
-        let win = new EosKnowledge.Window({
-            application: this
-        });
-
         // Load and register the GResource which has content for this app
         let resource = Gio.Resource.load(TESTDIR + '/test-content/test-content.gresource');
         resource._register();
 
         let test_app_filename = 'file://' + TESTDIR + '/test-content/app.json';
 
-        let presenter = new EosKnowledge.Presenter({
-            view: win
-        }, test_app_filename);
-
-        win.show_all();
+        let presenter = new EosKnowledge.Presenter(this, test_app_filename);
     }
 });
 

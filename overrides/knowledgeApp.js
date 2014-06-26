@@ -5,7 +5,6 @@ const Endless = imports.gi.Endless;
 const Lang = imports.lang;
 
 const Presenter = imports.presenter;
-const Window = imports.window;
 
 const ENDLESS_PREFIX = '/com/endlessm/';
 
@@ -45,14 +44,6 @@ const KnowledgeApp = new Lang.Class ({
         Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(),
             overrides_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION + 1);
 
-        let win = new Window.Window({
-            application: this
-        });
-
-        let presenter = new Presenter.Presenter({
-            view: win
-        }, app_json_file_uri);
-
-        win.show_all();
+        let presenter = new Presenter.Presenter(this, app_json_file_uri);
     }
 });

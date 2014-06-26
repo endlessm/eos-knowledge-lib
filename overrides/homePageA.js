@@ -26,13 +26,6 @@ const HomePageA = new Lang.Class({
     Name: 'HomePageA',
     GTypeName: 'EknHomePageA',
     Extends: HomePage.HomePage,
-    Signals: {
-        /**
-         * Event: show-categories
-         * This event is triggered when the categories button is clicked.
-         */
-        'show-categories': {}
-    },
 
     _init: function (props) {
         this._card_container = new HomePageACardContainer({

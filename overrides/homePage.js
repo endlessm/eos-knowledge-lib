@@ -63,7 +63,12 @@ const HomePage = new Lang.Class({
          */
         'search-text-changed': {
             param_types: [GObject.TYPE_OBJECT]
-        }
+        },
+        /**
+         * Event: show-categories
+         * This event is triggered when the categories button is clicked.
+         */
+        'show-categories': {}
     },
 
     _init: function (props) {

@@ -7,6 +7,7 @@ const System = imports.system;
 const ArticleCard = imports.articleCard;
 const ArticlePresenter = imports.articlePresenter;
 const CardA = imports.cardA;
+const CardB = imports.cardB;
 const Engine = imports.engine;
 const Window = imports.window;
 
@@ -26,59 +27,22 @@ const Presenter = new Lang.Class({
     GTypeName: 'EknPresenter',
     Extends: GObject.Object,
 
-    Properties: {
-        /**
-         * Property: view
-         *
-         * The <Window> widget that acts as a top-level view for the application.
-         * Construct-only.
-         */
-        'view': GObject.ParamSpec.object('view', 'Window view',
-            'The top level view component for the application',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            Window.Window)
-    },
+    _init: function (app, app_filename, props) {
+        this.parent(props);
 
-    _parse_object_from_path: function (path) {
-        let file = Gio.file_new_for_uri(path);
-        let [success, data] = file.load_contents(null);
-        return JSON.parse(data);
-    },
+        let app_content = this._parse_object_from_path(app_filename);
+        this._template_type = app_content['templateType'];
+        this.view = new Window.Window({
+            application: app,
+            template_type: this._template_type
+        });
 
-    _setAppContent: function(data) {
-        this._domain = data['appId'].split('.').pop();
-        this.view.home_page.title_image_uri = data['titleImageURI'];
-        this.view.background_image_uri = data['backgroundHomeURI'];
-        this.view.blur_background_image_uri = data['backgroundSectionURI'];
-        for (let page of [this.view.home_page, this.view.categories_page]) {
-            let category_cards = data['sections'].map(function (section) {
-                let card = new CardA.CardA({
-                    title: section['title'],
-                    thumbnail_uri: section['thumbnailURI']
-                });
-                card.connect('clicked', this._on_section_card_clicked.bind(this, section['tags']));
-                return card;
-            }.bind(this));
-            page.cards = category_cards;
-        }
-    },
-
-    _initAppInfoFromJsonFile: function(filename) {
         try {
-            let app_content = this._parse_object_from_path(filename);
             this._setAppContent(app_content);
         } catch(e) {
             printerr(e);
-            if (e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.NOT_FOUND)) {
-                printerr("****** This app does not support the personality",
-                      Endless.get_system_personality(), "******");
-            }
             System.exit(1);
         }
-    },
-
-    _init: function (props, app_filename) {
-        this.parent(props);
 
         this._engine = new Engine.Engine();
 
@@ -86,8 +50,6 @@ const Presenter = new Lang.Class({
             article_view: this.view.article_page,
             engine: this._engine
         });
-
-        this._initAppInfoFromJsonFile(app_filename);
 
         // Connect signals
         this.view.connect('back-clicked', this._on_back.bind(this));
@@ -111,6 +73,30 @@ const Presenter = new Lang.Class({
         this.view.categories_page.connect('show-home', this._on_home_button_clicked.bind(this));
         this._original_page = this.view.home_page;
         this._search_origin_page = this.view.home_page;
+    },
+
+    _setAppContent: function(data) {
+        this._domain = data['appId'].split('.').pop();
+        this.view.home_page.title_image_uri = data['titleImageURI'];
+        this.view.background_image_uri = data['backgroundHomeURI'];
+        this.view.blur_background_image_uri = data['backgroundSectionURI'];
+        for (let page of [this.view.home_page, this.view.categories_page]) {
+            let category_cards = data['sections'].map(function (section) {
+                let card = new CardA.CardA({
+                    title: section['title'],
+                    thumbnail_uri: section['thumbnailURI']
+                });
+                card.connect('clicked', this._on_section_card_clicked.bind(this, section['tags']));
+                return card;
+            }.bind(this));
+            page.cards = category_cards;
+        }
+    },
+
+    _parse_object_from_path: function (path) {
+        let file = Gio.file_new_for_uri(path);
+        let [success, data] = file.load_contents(null);
+        return JSON.parse(data);
     },
 
     _on_categories_button_clicked: function (button) {
