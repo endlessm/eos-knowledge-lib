@@ -25,6 +25,7 @@ const KnowledgeApp = imports.knowledgeApp;
 const LessonCard = imports.lessonCard;
 const Lightbox = imports.lightbox;
 const ListCard = imports.listCard;
+const MediaInfobox = imports.mediaInfobox;
 const MediaObjectModel = imports.mediaObjectModel;
 const Presenter = imports.presenter;
 const Previewer = imports.previewer;
@@ -104,6 +105,7 @@ function _init() {
     EosKnowledge.LessonCard = LessonCard.LessonCard;
     EosKnowledge.Lightbox = Lightbox.Lightbox;
     EosKnowledge.ListCard = ListCard.ListCard;
+    EosKnowledge.MediaInfobox = MediaInfobox.MediaInfobox;
     EosKnowledge.MediaObjectModel = MediaObjectModel.MediaObjectModel;
     EosKnowledge.Presenter = Presenter.Presenter;
     EosKnowledge.Previewer = Previewer.Previewer;
