@@ -121,7 +121,16 @@ const MediaObjectModel = new Lang.Class({
  */
 MediaObjectModel.new_from_json_ld = function (json_ld_data) {
     let props = MediaObjectModel._props_from_json_ld(json_ld_data);
-    return new MediaObjectModel(props);
+    let media_object_model = new MediaObjectModel(props);
+
+    MediaObjectModel._setup_from_json_ld(media_object_model, json_ld_data);
+    return media_object_model;
+};
+
+MediaObjectModel._setup_from_json_ld = function (model, json_ld_data) {
+    // Inherit setup from parent class
+    let ParentClass = MediaObjectModel.__super__;
+    ParentClass._setup_from_json_ld(model, json_ld_data);
 };
 
 MediaObjectModel._props_from_json_ld = function (json_ld_data) {

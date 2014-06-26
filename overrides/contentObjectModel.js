@@ -186,9 +186,14 @@ const ContentObjectModel = new Lang.Class({
  */
 ContentObjectModel.new_from_json_ld = function (json_ld_data) {
     let props = ContentObjectModel._props_from_json_ld(json_ld_data);
-
     let contentObjectModel = new EosKnowledge.ContentObjectModel(props);
 
+    ContentObjectModel._setup_from_json_ld(contentObjectModel, json_ld_data);
+
+    return contentObjectModel;
+};
+
+ContentObjectModel._setup_from_json_ld = function (model, json_ld_data) {
     let mediaObjectModels = [];
     if (json_ld_data.hasOwnProperty('resources')) {
         json_ld_data.resources.forEach(function (res) {
@@ -196,8 +201,7 @@ ContentObjectModel.new_from_json_ld = function (json_ld_data) {
             mediaObjectModels.push(mediaObject);
         });
     }
-    contentObjectModel.set_resources(mediaObjectModels);
-    return contentObjectModel;
+    model.set_resources(mediaObjectModels);
 };
 
 ContentObjectModel._props_from_json_ld = function (json_ld_data) {
