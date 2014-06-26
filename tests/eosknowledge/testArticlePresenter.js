@@ -3,6 +3,7 @@ const EosKnowledge = imports.gi.EosKnowledge;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const Gtk = imports.gi.Gtk;
+const WebKit2 = imports.gi.WebKit2;
 
 EosKnowledge.init();
 
@@ -13,8 +14,9 @@ describe('Article Presenter', function () {
     let presenter;
     let view;
     let mockArticleData;
-    let articleObject
+    let articleObject;
     let engine;
+    let webview;
 
     beforeEach(function () {
 
@@ -25,7 +27,11 @@ describe('Article Presenter', function () {
 
         articleObject = new EosKnowledge.ArticleObjectModel.new_from_json_ld(mockArticleData);
 
-        view = new EosKnowledge.ArticlePageA()
+        view = new EosKnowledge.ArticlePageA();
+        view.switcher.connect('create-webview', function () {
+            webview = new WebKit2.WebView();
+            return webview;
+        });
 
         engine = new EosKnowledge.Engine();
 
@@ -33,7 +39,7 @@ describe('Article Presenter', function () {
             article_view: view,
             engine: engine
         });
-        presenter.load_article_from_model(articleObject);
+        presenter.article_model = articleObject;
 
     });
 
@@ -54,4 +60,12 @@ describe('Article Presenter', function () {
         expect(view.toc.section_list).toEqual(labels);
     });
 
+    xit('emits signal when webview navigates to media object', function (done) {
+        let redirect_page = '<html><head><meta http-equiv="refresh" content="0;url=media://my_media_url.jpg"></head><body></body></html>';
+        presenter.connect('media-object-clicked', function (widget, media_object_id) {
+            expect(media_object_id).toEqual('my_media_url.jpg');
+            done();
+        }.bind());
+        webview.load_html(redirect_page, null);
+    });
 });

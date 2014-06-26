@@ -3,8 +3,10 @@ const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 const WebKit2 = imports.gi.WebKit2;
 
+const ArticleObjectModel = imports.articleObjectModel;
 const ArticlePageA = imports.articlePageA;
 const Engine = imports.engine;
+const MediaObjectModel = imports.mediaObjectModel;
 
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 
@@ -27,17 +29,23 @@ WebKit2.WebView.prototype.run_javascript_from_gresource_after_load = function (l
  * and an <ArticlePageA>. It connects to signals on the view's widgets and handles
  * those events accordingly.
  *
- * Its properties are an <article-view> and a <engine>. The engine is for
+ * Its properties are an <article-model>, <article-view> and a <engine>. The engine is for
  * communication with the Knowledge Engine server.
- *
- * To load set the presenter up with a model, call load_article_from_model,
- * passing it a <ArticleObjectModel> object.
  */
 const ArticlePresenter = new GObject.Class({
     Name: 'ArticlePresenter',
     GTypeName: 'EknArticlePresenter',
 
     Properties: {
+        /**
+         * Property: article-model
+         *
+         * The <ArticleObjectModel> handled by this widget.
+         */
+        'article-model': GObject.ParamSpec.object('article-model', 'Article model',
+            'The article object model handled by this widget',
+            GObject.ParamFlags.READWRITE, ArticleObjectModel.ArticleObjectModel),
+
         /**
          * Property: article-view
          *
@@ -58,37 +66,99 @@ const ArticlePresenter = new GObject.Class({
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             Engine.Engine),
     },
+    Signals: {
+        /**
+         * Event: media-object-clicked
+         * Emitted when a media URI in the article page is clicked.
+         * Passes the ID of the media object that was clicked and whether it is
+         * a resource of the parent article model.
+         */
+        'media-object-clicked': {
+            param_types: [
+                GObject.TYPE_OBJECT /* MediaContentObject */,
+                GObject.TYPE_BOOLEAN /* Whether the media object is internal */
+            ]
+        }
+    },
 
     _init: function (props) {
         this.parent(props);
+
+        this._article_model = null;
 
         this._connect_toc_widget();
         this._connect_switcher_widget();
     },
 
+    get article_model () {
+        if (this._article_model !== null)
+            return this._article_model;
+        return null;
+    },
+
+    set article_model (v) {
+        if (this._article_model !== null && this._article_model.article_content_uri === v.article_content_uri)
+            return;
+
+        // fully populate the view from a model
+        this._article_model = v;
+
+        // TODO: Once we are on GTK 3.12, connect to notify::transition-running
+        // so that we only set the title and toc once the switcher view has
+        // finished loading
+        this.article_view.switcher.load_uri(this._article_model.article_content_uri);
+
+        this.article_view.title = this._article_model.title;
+
+        this._mainArticleSections = this._get_toplevel_toc_elements(this._article_model.table_of_contents);
+        this.article_view.toc.section_list = this._mainArticleSections.map(function (section) {
+            return section.label;
+        });
+        this.article_view.toc.selected_section = 0;
+        this.notify('article-model');
+    },
+
     _connect_switcher_widget: function () {
         this.article_view.switcher.connect('decide-navigation-policy', function (switcher, decision) {
             let [baseURI, hash] = decision.request.uri.split('#');
+            let _resources = this._article_model.get_resources();
+            let resourceURIs = _resources.map(function (model) {
+                return model.content_uri;
+            });
 
             // If the requested uri is just a hash, then we're
             // navigating within the current article, so don't
             // animate a new webview
-            if (this._articleModel.article_content_uri.indexOf(baseURI) === 0) {
+            if (this._article_model.article_content_uri.indexOf(baseURI) === 0) {
 
                 decision.use();
                 return true;
 
+            } else if (resourceURIs.indexOf(decision.request.uri) !== -1) {
+
+                // Else, if the request corresponds to a media object in the
+                // resources array, emit the bat signal!
+                let media_object = _resources[resourceURIs.indexOf(decision.request.uri)];
+                this.emit('media-object-clicked', media_object, true);
+
+                decision.ignore();
+                return true;
+
             } else {
 
-                // Else, a new article was requested, so load the presenter
-                // with a new article and animate the switcher
+                // Else, the request could be either for a media object
+                // or a new article page
                 let [domain, id] = baseURI.split('/').slice(-2);
                 switcher.navigate_forwards = true;
                 decision.ignore();
 
                 this.engine.get_object_by_id(domain, id, function (err, model) {
                     if (typeof err === 'undefined') {
-                        this.load_article_from_model(model);
+                        if (model instanceof MediaObjectModel) {
+                            this.emit('media-object-clicked', model, false);
+                        } else {
+                            this.article_model = model;
+                        }
                     } else {
                         printerr("ERROR: " + err);
                     }
@@ -125,24 +195,6 @@ const ArticlePresenter = new GObject.Class({
         let baseURI = this._webview.uri.split('#')[0];
         let selectedSectionURI = baseURI + '#scroll-to-' + location;
         this._webview.load_uri(selectedSectionURI);
-    },
-
-    load_article_from_model: function (articleModel) {
-        // fully populate the view from a model
-        this._articleModel = articleModel;
-
-        // TODO: Once we are on GTK 3.12, connect to notify::transition-running
-        // so that we only set the title and toc once the switcher view has
-        // finished loading
-        this.article_view.switcher.load_uri(articleModel.article_content_uri);
-
-        this.article_view.title = articleModel.title;
-
-        this._mainArticleSections = this._get_toplevel_toc_elements(articleModel.table_of_contents);
-        this.article_view.toc.section_list = this._mainArticleSections.map(function (section) {
-            return section.label;
-        });
-        this.article_view.toc.selected_section = 0;
     },
 
     _get_toplevel_toc_elements: function (tree) {
