@@ -46,7 +46,9 @@ const TestApplication = new Lang.Class ({
         });
         this._presenter.article_model = this._model;
         this._presenter.connect('media-object-clicked', function (obj, media_object, is_resource) {
+            let infobox = EosKnowledge.MediaInfobox.new_from_ekn_model(media_object);
             this._previewer.file = Gio.File.new_for_uri(media_object.content_uri);
+            this._lightbox.infobox_widget = infobox;
             this._lightbox.media_object = media_object;
             this._lightbox.reveal_overlays = true;
         }.bind(this));
@@ -106,6 +108,8 @@ const TestApplication = new Lang.Class ({
                 "title": "Richard Stallman at Pittsburgh University,",
                 "tags": ["bear", "beard"],
                 "caption": "Richard Stallman at Pittsburgh University",
+                "license": "GNU",
+                "copyrightHolder": "the world",
                 "encodingFormat": "jpg",
                 "height": "666",
                 "width": "666"
@@ -119,6 +123,8 @@ const TestApplication = new Lang.Class ({
                 "tags": ["Editor", "emacs"],
                 "caption": "Editing C source code in GNU Emacs",
                 "encodingFormat": "png",
+                "license": "GNU",
+                "copyrightHolder": "the world",
                 "height": "666",
                 "width": "666"
             },
@@ -132,6 +138,8 @@ const TestApplication = new Lang.Class ({
                 "caption": "Editing multiple Dired buffers in GNU Emacs",
                 "encodingFormat": "png",
                 "height": "666",
+                "license": "GNU",
+                "copyrightHolder": "the world",
                 "width": "666"
             }
         ];
