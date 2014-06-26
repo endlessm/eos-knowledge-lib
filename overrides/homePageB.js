@@ -51,7 +51,7 @@ const HomePageB = new Lang.Class({
     pack_cards: function (cards) {
         let _allowed_card_numbers = [4, 6, 8];
         if (_allowed_card_numbers.indexOf(cards.length) < 0)
-            throw new Error('Can only set 4, 6 or 8 cards. ' + cards.length);
+            printerr('Should only set 4, 6 or 8 cards in template B. ' + cards.length);
 
         for (let card of this._card_container.get_children()) {
             this._card_container.remove(card);
