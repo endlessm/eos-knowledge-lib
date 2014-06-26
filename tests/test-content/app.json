@@ -1,7 +1,8 @@
 {
     "titleImageURI": "resource:///com/endlessm/thrones/agot.svg",
-    "backgroundURI": "resource:///com/endlessm/thrones/kings_landing.jpg",
     "appId": "com.endlessm.thrones-en",
+    "backgroundHomeURI": "resource:///com/endlessm/thrones/background.jpg",
+    "backgroundSectionURI": "resource:///com/endlessm/thrones/background_blurred.jpg",
     "language": "en",
     "templateType": "A",
     "sections": [

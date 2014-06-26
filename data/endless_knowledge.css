@@ -10,6 +10,28 @@ EosWindow {
     border-width: 0px;
 }
 
+EknWindowA {
+    background-position: 0% 50%;
+    background-repeat: no-repeat;
+    transition: background 0.5s ease-in-out;
+}
+
+EknWindowA.show-home-page {
+    background-position: 0% 50%;
+}
+
+EknWindowA.show-categories-page {
+    background-position: 0% 50%;
+}
+
+EknWindowA.show-section-page {
+    background-position: 50% 50%;
+}
+
+EknWindowA.show-article-page {
+    background-position: 100% 50%;
+}
+
 .card-a {
     padding: 10px 10px 0px 10px;
     margin: 7px;

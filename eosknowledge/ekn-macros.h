@@ -324,4 +324,36 @@ enum_type##_get_type (void) \
  */
 #define EKN_STYLE_CLASS_TAB_BUTTON "tab-button"
 
+/**
+ * EKN_STYLE_CLASS_SHOW_HOME_PAGE:
+ *
+ * A CSS class to set the background image position on the home page,
+ * as part of the parallax effect when switching pages.
+ */
+#define EKN_STYLE_CLASS_SHOW_HOME_PAGE "show-home-page"
+
+/**
+ * EKN_STYLE_CLASS_SHOW_CATEGORIES_PAGE:
+ *
+ * A CSS class to set the background image position on the categories page,
+ * as part of the parallax effect when switching pages.
+ */
+#define EKN_STYLE_CLASS_SHOW_CATEGORIES_PAGE "show-categories-page"
+
+/**
+ * EKN_STYLE_CLASS_SHOW_SECTION_PAGE:
+ *
+ * A CSS class to set the background image position on the section page,
+ * as part of the parallax effect when switching pages.
+ */
+#define EKN_STYLE_CLASS_SHOW_SECTION_PAGE "show-section-page"
+
+/**
+ * EKN_STYLE_CLASS_SHOW_ARTICLE_PAGE:
+ *
+ * A CSS class to set the background image position on the article page,
+ * as part of the parallax effect when switching pages.
+ */
+#define EKN_STYLE_CLASS_SHOW_ARTICLE_PAGE "show-article-page"
+
 #endif /* EKN_MACROS_H */
