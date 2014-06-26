@@ -1,10 +1,13 @@
 const Endless = imports.gi.Endless;
-const EosKnowledge = imports.gi.EosKnowledge;
 const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 const System = imports.system;
 
+const ArticleCard = imports.articleCard;
+const ArticlePresenter = imports.articlePresenter;
+const CardA = imports.cardA;
+const Engine = imports.engine;
 const Window = imports.window;
 
 /**
@@ -49,7 +52,7 @@ const Presenter = new Lang.Class({
         this.view.blur_background_image_uri = data['backgroundSectionURI'];
         for (let page of [this.view.home_page, this.view.categories_page]) {
             let category_cards = data['sections'].map(function (section) {
-                let card = new EosKnowledge.CardA({
+                let card = new CardA.CardA({
                     title: section['title'],
                     thumbnail_uri: section['thumbnailURI']
                 });
@@ -77,9 +80,9 @@ const Presenter = new Lang.Class({
     _init: function (props, app_filename) {
         this.parent(props);
 
-        this._engine = new EosKnowledge.Engine();
+        this._engine = new Engine.Engine();
 
-        this._article_presenter = new EosKnowledge.ArticlePresenter({
+        this._article_presenter = new ArticlePresenter.ArticlePresenter({
             article_view: this.view.article_page,
             engine: this._engine
         });
@@ -226,7 +229,7 @@ const Presenter = new Lang.Class({
     },
 
     _new_card_from_article_model: function (model) {
-        let card = new EosKnowledge.ArticleCard({
+        let card = new ArticleCard.ArticleCard({
             title: model.title,
             synopsis: model.synopsis
         });
