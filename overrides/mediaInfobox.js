@@ -83,7 +83,12 @@ const MediaInfobox = new Lang.Class({
 
     set caption (v) {
         if (this._caption === v) return;
-        this._caption_label.label = v;
+        if (v.length > 0) {
+            this._caption_label.label = v;
+            this._caption_label.show();
+        } else {
+            this._caption_label.hide();
+        }
         this._caption = v;
     },
     
@@ -95,7 +100,12 @@ const MediaInfobox = new Lang.Class({
 
     set license_text (v) {
         if (this._license_text === v) return;
-        this._license_label.label = this.LICENSE_PREAMBLE + v;
+        if (v.length > 0) {
+            this._license_label.label = this.LICENSE_PREAMBLE + v;
+            this._license_label.show();
+        } else {
+            this._license_label.hide();
+        }
         this._license_text = v;
     },
     
@@ -107,7 +117,12 @@ const MediaInfobox = new Lang.Class({
 
     set creator_text (v) {
         if (this._creator_text === v) return;
-        this._creator_label.label = this.CREATOR_PREAMBLE + v;
+        if (v.length > 0) {
+            this._creator_label.label = this.CREATOR_PREAMBLE + v;
+            this._creator_label.show();
+        } else {
+            this._creator_label.hide();
+        }
         this._creator_text = v;
     },
     

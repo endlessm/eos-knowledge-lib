@@ -66,8 +66,11 @@ const TestApplication = new Lang.Class ({
             let resources = this._model.get_resources();
             let current_index = this._get_position_in_resources(media_object.ekn_id, resources);
             if (current_index > 0) {
-                this._previewer.file = Gio.File.new_for_uri(resources[current_index - 1].content_uri);
-                this._lightbox.media_object = resources[current_index - 1];
+                let new_object = resources[current_index - 1];
+                let infobox = EosKnowledge.MediaInfobox.new_from_ekn_model(new_object);
+                this._previewer.file = Gio.File.new_for_uri(new_object.content_uri);
+                this._lightbox.media_object = new_object;
+                this._lightbox.infobox_widget = infobox;
                 this._lightbox.reveal_overlays = true;
             }
         }));
@@ -75,8 +78,11 @@ const TestApplication = new Lang.Class ({
             let resources = this._model.get_resources();
             let current_index = this._get_position_in_resources(media_object.ekn_id, resources);
             if (current_index < resources.length - 1) {
-                this._previewer.file = Gio.File.new_for_uri(resources[current_index + 1].content_uri);
-                this._lightbox.media_object = resources[current_index + 1];
+                let new_object = resources[current_index + 1];
+                let infobox = EosKnowledge.MediaInfobox.new_from_ekn_model(new_object);
+                this._previewer.file = Gio.File.new_for_uri(new_object.content_uri);
+                this._lightbox.media_object = new_object;
+                this._lightbox.infobox_widget = infobox;
                 this._lightbox.reveal_overlays = true;
             }
         }));
@@ -123,8 +129,6 @@ const TestApplication = new Lang.Class ({
                 "tags": ["Editor", "emacs"],
                 "caption": "Editing C source code in GNU Emacs",
                 "encodingFormat": "png",
-                "license": "GNU",
-                "copyrightHolder": "the world",
                 "height": "666",
                 "width": "666"
             },
@@ -138,7 +142,6 @@ const TestApplication = new Lang.Class ({
                 "caption": "Editing multiple Dired buffers in GNU Emacs",
                 "encodingFormat": "png",
                 "height": "666",
-                "license": "GNU",
                 "copyrightHolder": "the world",
                 "width": "666"
             }
