@@ -15,10 +15,10 @@
 
 G_BEGIN_DECLS
 
-EKN_ALL_API_VERSIONS
+EKN_DEPRECATED_IN_0_0
 void         ekn_hello_c                       (void);
 
-EKN_ALL_API_VERSIONS
+EKN_DEPRECATED_IN_0_0
 const gchar *ekn_hello_c_provider_get_greeting (void);
 
 G_END_DECLS

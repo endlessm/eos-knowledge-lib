@@ -64,41 +64,41 @@ struct _EknHistoryModelClass
   GObjectClass parent_class;
 };
 
-EKN_ALL_API_VERSIONS
+EKN_AVAILABLE_IN_0_0
 GType                ekn_history_model_get_type           (void) G_GNUC_CONST;
 
-EKN_ALL_API_VERSIONS
+EKN_AVAILABLE_IN_0_0
 EknHistoryModel     *ekn_history_model_new                (void);
 
-EKN_ALL_API_VERSIONS
+EKN_AVAILABLE_IN_0_0
 void                 ekn_history_model_clear              (EknHistoryModel     *self);
 
-EKN_ALL_API_VERSIONS
+EKN_AVAILABLE_IN_0_0
 void                 ekn_history_model_go_back            (EknHistoryModel     *self);
 
-EKN_ALL_API_VERSIONS
+EKN_AVAILABLE_IN_0_0
 void                 ekn_history_model_go_forward         (EknHistoryModel     *self);
 
-EKN_ALL_API_VERSIONS
+EKN_AVAILABLE_IN_0_0
 EknHistoryItemModel *ekn_history_model_get_item           (EknHistoryModel     *self,
                                                            gint                 index);
 
-EKN_ALL_API_VERSIONS
+EKN_AVAILABLE_IN_0_0
 GSList              *ekn_history_model_get_back_list      (EknHistoryModel     *self);
 
-EKN_ALL_API_VERSIONS
+EKN_AVAILABLE_IN_0_0
 GSList              *ekn_history_model_get_forward_list   (EknHistoryModel     *self);
 
-EKN_ALL_API_VERSIONS
+EKN_AVAILABLE_IN_0_0
 gboolean             ekn_history_model_get_can_go_back    (EknHistoryModel     *self);
 
-EKN_ALL_API_VERSIONS
+EKN_AVAILABLE_IN_0_0
 gboolean             ekn_history_model_get_can_go_forward (EknHistoryModel     *self);
 
-EKN_ALL_API_VERSIONS
+EKN_AVAILABLE_IN_0_0
 EknHistoryItemModel *ekn_history_model_get_current_item   (EknHistoryModel     *self);
 
-EKN_ALL_API_VERSIONS
+EKN_AVAILABLE_IN_0_0
 void                 ekn_history_model_set_current_item   (EknHistoryModel     *self,
                                                            EknHistoryItemModel *item);
 
