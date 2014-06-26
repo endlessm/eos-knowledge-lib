@@ -133,6 +133,27 @@ enum_type##_get_type (void) \
 #define EKN_STYLE_CLASS_INFOBOX_ARROW "infobox-arrow"
 
 /**
+ * EKN_STYLE_CLASS_INFOBOX_CAPTION:
+ *
+ * A CSS class to match the caption label in the infobox of #EknLightbox widgets.
+ */
+#define EKN_STYLE_CLASS_INFOBOX_CAPTION "infobox-caption"
+
+/**
+ * EKN_STYLE_CLASS_INFOBOX_CREATOR_TEXT:
+ *
+ * A CSS class to match the attributable creator label in the infobox of #EknLightbox widgets.
+ */
+#define EKN_STYLE_CLASS_INFOBOX_CREATOR_TEXT "infobox-creator-text"
+
+/**
+ * EKN_STYLE_CLASS_INFOBOX_LICENSE_TEXT:
+ *
+ * A CSS class to match the license label in the infobox of #EknLightbox widgets.
+ */
+#define EKN_STYLE_CLASS_INFOBOX_LICENSE_TEXT "infobox-license-text"
+
+/**
  * EKN_STYLE_CLASS_TOC:
  *
  * A CSS class to match a TableOfContents widget.

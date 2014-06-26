@@ -23,6 +23,7 @@ public_overrides = \
 	overrides/lightbox.js \
 	overrides/listCard.js \
 	overrides/marginButton.js \
+	overrides/mediaInfobox.js \
 	overrides/mediaObjectModel.js \
 	overrides/presenter.js \
 	overrides/progressCard.js \

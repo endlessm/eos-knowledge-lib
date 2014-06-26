@@ -153,8 +153,6 @@ EknWindowA.show-article-page {
     border-style: solid;
     border-color: black;
     background-color: #333333;
-    font-size: 20px;
-    color: white;
     transition: background-color, padding 250ms ease-in-out;
 }
 
@@ -165,6 +163,21 @@ EknWindowA.show-article-page {
 
 .infobox-arrow {
     padding-bottom: 7px;
+}
+
+.infobox-caption {
+    font-size: 20px;
+    color: white;
+}
+
+.infobox-license-text {
+    font-size: 15px;
+    color: lightgray;
+}
+
+.infobox-creator-text {
+    font-size: 15px;
+    color: lightgray;
 }
 
 /* ===== Table of contents styling ===== */
