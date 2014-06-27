@@ -272,7 +272,6 @@ EknWindowA.show-article-page {
     padding-left: 2.4em;
     padding-top: 0.9em;
     padding-bottom: 0.7em;
-    text-shadow: 0px 1px 1px #b2400d;
     border-style: solid;
     -GtkButton-image-spacing: 15px;
     font-weight: bold;
@@ -306,8 +305,10 @@ EknWindowA.show-article-page {
 }
 
 .home-page-a .search-box, .home-page-b .search-box {
-    box-shadow: inset 0em 0.16em 0.16em alpha(black, 0.15);
-    background-image: linear-gradient(to bottom, #dbdbdb, white);
+    box-shadow: inset 0em 0.16em 0.16em alpha(black, 0.14);
+    background-image: linear-gradient(-179deg, alpha(black, 0.17) 0%,
+                                               alpha(white, 0.13) 79%),
+                      linear-gradient(to bottom, white, white);
     background-clip: padding-box;
     padding: 0.75em 0.55em 0.75em 0.55em;
     color: #2e3436;
@@ -318,7 +319,7 @@ EknWindowA.show-article-page {
     border-radius: 10em;
 
     border-width: .33em;
-    border-color: rgba(0, 0, 0, 0.2);
+    border-color: alpha(black, 0.19);
 }
 
 .home-page-a .search-box:selected, .home-page-b .search-box:selected {
