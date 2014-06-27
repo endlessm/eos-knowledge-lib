@@ -39,7 +39,7 @@ const CategoriesPage = new Lang.Class({
         props.hscrollbar_policy = Gtk.PolicyType.NEVER;
 
         this._grid = new Gtk.Grid({
-            orientation: Gtk.Orientation.VERTICAL,
+            orientation: Gtk.Orientation.VERTICAL
         });
 
         this._button_stack = new Gtk.Stack({
@@ -66,9 +66,12 @@ const CategoriesPage = new Lang.Class({
 
         this._card_grid = new Gtk.FlowBox({
             valign: Gtk.Align.START,
+            halign: Gtk.Align.START,
+            homogeneous: true,
+            expand: true,
+            max_children_per_line: 10000,
             row_spacing: 20,
-            margin: 40,
-            expand: true
+            margin: 40
         });
 
         this._grid.add(this._button_stack);
