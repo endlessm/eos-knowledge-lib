@@ -32,7 +32,16 @@ const KnowledgeApp = new Lang.Class ({
 
         // Parse the appname and personality from the gresource
         let appname = resource.enumerate_children(ENDLESS_PREFIX, Gio.FileQueryInfoFlags.NONE, null)[0];
-        let app_json_file_uri = 'resource://' + ENDLESS_PREFIX + appname + 'app.json';
+        let app_resource_uri = 'resource://' + ENDLESS_PREFIX + appname;
+        let app_json_file_uri = app_resource_uri + 'app.json';
+
+        let overrides_css_file = Gio.File.new_for_uri(app_resource_uri + 'overrides.css');
+        let overrides_provider = new Gtk.CssProvider();
+        overrides_provider.load_from_file(overrides_css_file);
+        // Add overrides with one step higher priority than the default
+        // knowledge app CSS
+        Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(),
+            overrides_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION + 1);
 
         let win = new EosKnowledge.WindowA({
             application: this
