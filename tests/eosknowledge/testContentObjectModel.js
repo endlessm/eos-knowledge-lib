@@ -13,7 +13,6 @@ describe ("Content Object Model", function () {
 
     describe ("Constructor", function () {
         it ("successfully creates new object from properties", function () {
-            print(mockContentData["@id"]);
             let image = EosKnowledge.ImageObjectModel.new_from_json_ld(mockContentData.thumbnail);
             contentObject = new EosKnowledge.ContentObjectModel({
                 ekn_id : mockContentData["@id"],
@@ -80,7 +79,7 @@ describe ("Content Object Model", function () {
         });
 
         it ("should have resources", function () {
-            expect(contentObject.get_resources()).toEqual(mockContentData['resources']);
+            expect(contentObject.get_resources()).toEqual(mockContentData.resources);
         });
     });
 });

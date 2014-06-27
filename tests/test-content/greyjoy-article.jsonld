@@ -24,6 +24,24 @@
     "title": "House Greyjoy",
     "synopsis": "We Do Not Sow",
     "articleBody": "lame",
+    "resources": [
+        {
+            "@id": "ekn:squids/squid_people.jpg",
+            "@type": "ekv:ImageObject",
+            "contentURL": "ekn:_media/squid_people.jpg",
+            "caption": "Taste like squid, talk like people",
+            "contentSize": "60KB",
+            "encodingFormat": "jpeg"
+        },
+        {
+            "@id": "ekn:jerks/Theon.jpg",
+            "@type": "ekv:ImageObject",
+            "contentURL": "ekn:_media/Theon.jpg.jpg",
+            "caption": "What a jerk",
+            "contentSize": "32KB",
+            "encodingFormat": "jpeg"
+        }
+    ],
     "tableOfContents": [
         {
             "@id": "_:1",

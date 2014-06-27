@@ -89,7 +89,16 @@ const ArticleObjectModel = new Lang.Class({
  */
 ArticleObjectModel.new_from_json_ld = function (json_ld_data) {
     let props = ArticleObjectModel._props_from_json_ld(json_ld_data);
-    return new ArticleObjectModel(props);
+    let article_object_model = new ArticleObjectModel(props);
+    ArticleObjectModel._setup_from_json_ld(article_object_model, json_ld_data);
+
+    return article_object_model;
+};
+
+ArticleObjectModel._setup_from_json_ld = function (model, json_ld_data) {
+    // Inherit setup from parent class
+    let ParentClass = ArticleObjectModel.__super__;
+    ParentClass._setup_from_json_ld(model, json_ld_data);
 };
 
 ArticleObjectModel._props_from_json_ld = function (json_ld_data) {
