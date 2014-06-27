@@ -27,7 +27,9 @@ javascript_tests = \
 	tests/eosknowledge/testProgressCard.js \
 	tests/eosknowledge/testSectionArticlePageA.js \
 	tests/eosknowledge/testSectionPageA.js \
+	tests/eosknowledge/testSectionPageB.js \
 	tests/eosknowledge/testTableOfContents.js \
+	tests/eosknowledge/testTextCard.js \
 	tests/eosknowledge/testTreeNode.js \
 	tests/eosknowledge/testWebviewSwitcher.js \
 	tests/eosknowledge/testWindow.js \
