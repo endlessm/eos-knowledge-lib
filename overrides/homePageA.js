@@ -26,13 +26,6 @@ const HomePageA = new Lang.Class({
     Name: 'HomePageA',
     GTypeName: 'EknHomePageA',
     Extends: HomePage.HomePage,
-    Signals: {
-        /**
-         * Event: show-categories
-         * This event is triggered when the categories button is clicked.
-         */
-        'show-categories': {}
-    },
 
     _init: function (props) {
         this._card_container = new HomePageACardContainer({
@@ -81,7 +74,7 @@ const HomePageA = new Lang.Class({
     },
 
     pack_widgets: function () {
-        this.search_box.margin_top = 30;
+        this.title_image.margin_bottom = 30;
 
         let inner_grid = new Gtk.Grid({
             halign: Gtk.Align.CENTER,

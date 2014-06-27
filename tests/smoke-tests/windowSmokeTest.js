@@ -29,10 +29,18 @@ const TestApplication = new Lang.Class({
                                                  provider,
                                                  Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 
-        let view = new EosKnowledge.WindowA({
+
+        let template_type = 'A';
+        for (let arg of ARGV) {
+            if (arg === '-b') {
+                template_type = 'B';
+            }
+        }
+        let view = new EosKnowledge.Window({
             application: this,
             background_image_uri: 'resource:///com/endlessm/thrones/background.jpg',
-            blur_background_image_uri: 'resource:///com/endlessm/thrones/background_blurred.jpg'
+            blur_background_image_uri: 'resource:///com/endlessm/thrones/background_blurred.jpg',
+            template_type: template_type,
         });
         view.home_page.connect('show-categories', function () {
             view.show_categories_page();
@@ -62,25 +70,23 @@ const TestApplication = new Lang.Class({
 
         // ============ HOME PAGE ==================
         view.home_page.title_image_uri = 'resource:///com/endlessm/thrones/agot.svg';
+        let card_class = template_type === 'B' ? EosKnowledge.CardB : EosKnowledge.CardA;
         view.home_page.cards = [
-            new EosKnowledge.CardA({
-                title: 'Subtitled Card',
-            }),
-            new EosKnowledge.CardA({
-                title: 'Picture Card',
+            new card_class({
+                title: 'A card',
                 thumbnail_uri: TESTDIR + '/test-content/pig1.jpg',
             }),
-            new EosKnowledge.CardA({
-                title: 'Everything card',
+            new card_class({
+                title: 'B card',
+                thumbnail_uri: TESTDIR + '/test-content/pig1.jpg',
+            }),
+            new card_class({
+                title: 'C card',
                 thumbnail_uri: TESTDIR + '/test-content/pig2.jpg',
             }),
-            new EosKnowledge.LessonCard({
-                title: 'Mustard lesson',
-                // By Bogdan29roman, CC-BY-SA
-                // http://en.wikipedia.org/wiki/File:Mu%C5%9Ftar.jpg
+            new card_class({
+                title: 'Mustard',
                 thumbnail_uri: TESTDIR + '/test-content/mustard.jpg',
-                item_index: 1,
-                complete: false
             })
         ];
         for (let card of view.home_page.cards) {

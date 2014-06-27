@@ -10,6 +10,7 @@ const Lang = imports.lang;
 const ArticlePageA = imports.articlePageA;
 const CategoriesPage = imports.categoriesPage;
 const HomePageA = imports.homePageA;
+const HomePageB = imports.homePageB;
 const Lightbox = imports.lightbox;
 const SectionArticlePageA = imports.sectionArticlePageA;
 const SectionPageA = imports.sectionPageA;
@@ -24,7 +25,7 @@ GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.
 const PARALLAX_BACKGROUND_SCALE = 1.2;
 
 /**
- * Class: WindowA
+ * Class: Window
  *
  * This represents the toplevel window widget for template A, containing all
  * template A pages.
@@ -32,9 +33,9 @@ const PARALLAX_BACKGROUND_SCALE = 1.2;
  * Adds a lightbox above the section and article page, which can be
  * used to show content above either of these pages.
  */
-const WindowA = new Lang.Class({
-    Name: 'WindowA',
-    GTypeName: 'EknWindowA',
+const Window = new Lang.Class({
+    Name: 'Window',
+    GTypeName: 'EknWindow',
     Extends: Endless.Window,
     Properties: {
         /**
@@ -107,7 +108,16 @@ const WindowA = new Lang.Class({
         'blur-background-image-uri': GObject.ParamSpec.string('blur-background-image-uri', 'Blurred background image URI',
             'The blurred background image of this window.',
             GObject.ParamFlags.READWRITE,
-            '')
+            ''),
+        /**
+         * Property: template-type
+         *
+         * A string for the template type the window should render as
+         * currently support 'A' and 'B' templates.
+         */
+        'template-type':  GObject.ParamSpec.string('template-type', 'Template Type',
+            'Which template the window should display with',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, 'A'),
     },
     Signals: {
         /**
@@ -173,7 +183,10 @@ const WindowA = new Lang.Class({
     TRANSITION_DURATION: 500,
 
     _init: function (props) {
-        this._home_page = new HomePageA.HomePageA();
+        this.parent(props);
+
+        let home_page_class = this.template_type === 'B' ? HomePageB.HomePageB : HomePageA.HomePageA;
+        this._home_page = new home_page_class();
         this._categories_page = new CategoriesPage.CategoriesPage();
         this._section_article_page = new SectionArticlePageA.SectionArticlePageA({
             section_page: new SectionPageA.SectionPageA(),
@@ -189,8 +202,6 @@ const WindowA = new Lang.Class({
         this._lightbox.connect('navigation-next-clicked', function (media_object) {
             this.emit('lightbox-nav-next-clicked', media_object);
         }.bind(this));
-
-        this.parent(props);
 
         let back_button = new Gtk.Button({
             image: Gtk.Image.new_from_icon_name('go-previous-symbolic',
@@ -261,7 +272,7 @@ const WindowA = new Lang.Class({
                 let bg_width = Math.ceil(this._background_image_width * bg_mult_ratio);
                 let bg_height = Math.ceil(this._background_image_height * bg_mult_ratio);
 
-                let frame_css = 'EknWindowA { background-size: ' + bg_width + 'px ' + bg_height + 'px;}';
+                let frame_css = 'EknWindow { background-size: ' + bg_width + 'px ' + bg_height + 'px;}';
                 let context = this.get_style_context();
                 if (this._bg_size_provider === undefined) {
                     this._bg_size_provider = new Gtk.CssProvider();
@@ -305,7 +316,7 @@ const WindowA = new Lang.Class({
         }
         this._background_image_uri = v;
         if (this._background_image_uri !== null) {
-            let frame_css = 'EknWindowA.show-home-page, EknWindowA.show-categories-page { background-image: url("' + this._background_image_uri + '");}';
+            let frame_css = 'EknWindow.show-home-page, EknWindow.show-categories-page { background-image: url("' + this._background_image_uri + '");}';
             let provider = new Gtk.CssProvider();
             provider.load_from_data(frame_css);
             let context = this.get_style_context();
@@ -339,7 +350,7 @@ const WindowA = new Lang.Class({
         }
         this._blur_background_image_uri = v;
         if (this._blur_background_image_uri !== null) {
-            let frame_css = 'EknWindowA.show-section-page, EknWindowA.show-article-page { background-image: url("' + this._blur_background_image_uri + '");}';
+            let frame_css = 'EknWindow.show-section-page, EknWindow.show-article-page { background-image: url("' + this._blur_background_image_uri + '");}';
             let provider = new Gtk.CssProvider();
             provider.load_from_data(frame_css);
             let context = this.get_style_context();
