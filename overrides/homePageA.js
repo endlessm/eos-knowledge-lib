@@ -74,7 +74,7 @@ const HomePageA = new Lang.Class({
     },
 
     pack_widgets: function () {
-        this.search_box.margin_top = 30;
+        this.title_image.margin_bottom = 30;
 
         let inner_grid = new Gtk.Grid({
             halign: Gtk.Align.CENTER,
