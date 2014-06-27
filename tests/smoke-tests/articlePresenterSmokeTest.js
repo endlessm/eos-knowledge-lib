@@ -44,7 +44,7 @@ const TestApplication = new Lang.Class ({
             article_view: view,
             engine: engine
         });
-        presenter.load_article_from_model(articleObject);
+        presenter.article_model = articleObject;
         window.show_all();
 
     }
