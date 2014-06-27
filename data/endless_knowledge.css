@@ -47,7 +47,7 @@ EknWindowA.show-article-page {
     padding: 17px 0px 17px 0px;
     color: #d16550;
     font-family: 'Montserrat', sans-serif;
-    font-size: 13px;
+    font-size: 1.05em;  /* 12pt at 72 DPI 1080px */
     font-weight: bold;
     text-shadow: white 0px 1px 0px;
     transition: padding 250ms ease-in-out;
@@ -199,7 +199,9 @@ EknWindowA.show-article-page {
 /* ===== Table of contents styling ===== */
 .toc-entry {
     color: rgb(204, 204, 204);
-    font-size: .75em;
+    font-family: Lato;
+    font-weight: 900;  /* Black */
+    font-size: .79em;  /* 9pt at 72 DPI 1080px */
     background-color: transparent;
     transition: background-color 150ms ease-in-out;
     border-radius: 1.75em;
@@ -218,7 +220,6 @@ EknWindowA.show-article-page {
 .toc-entry:hover,
 .toc-entry:selected {
     color: white;
-    font-weight: bold;
 }
 
 .toc-entry:selected {
@@ -275,7 +276,7 @@ EknWindowA.show-article-page {
     border-style: solid;
     -GtkButton-image-spacing: 15px;
     font-weight: bold;
-    font-size: 0.8em;
+    font-size: 1.23em;  /* 14pt at 72 DPI 1080px */
     background: linear-gradient(to bottom,
                                 @tab-button-gradient-light,
                                 @tab-button-gradient-dark);
@@ -344,11 +345,15 @@ EknWindowA.show-article-page {
     text-shadow: alpha(black, 0.2) 3px 3px 0px;
 }
 
+.section-page-title {
+    font-family: Montserrat;
+    font-weight: bold;
+}
+
 .section-page-a .section-page-title {
     padding-top: 1.0em;
     padding-bottom: 0.48em;
-    font-size: 2.3em;
-    font-weight: bold;
+    font-size: 2.11em;  /* 24pt at 72 DPI 1080px */
 }
 
 .section-page-a GtkSeparator {
@@ -356,14 +361,13 @@ EknWindowA.show-article-page {
 }
 
 .section-page-b .section-page-title {
-    font-size: 2em;
-    font-weight: bold;
+    font-size: 1.58em;  /* 18pt at 72 DPI 1080px */
 }
 
 .section-page-a-segment-title {
     padding-top: 0.2em;
     color: white;
-    font-size: 1.4em;
+    font-size: 1.76em;  /* 20pt at 72 DPI 1080px */
     padding-left: 4em;
     /* TODO: light font weight matches the specs, but looks way to thin in practice.
        Think there's some difference between how lato renders in web vs gtk or
@@ -385,7 +389,8 @@ EknWindowA.show-article-page {
 }
 
 .article-page-title {
-    font-size: 2.75em;
+    font-family: Montserrat;
+    font-size: 1.58em;  /* 18pt at 72 DPI 1080px */
     font-weight: bold;
 }
 
