@@ -1,6 +1,6 @@
 {
-  "@context": "http://localhost:3000/v2/_context/ArticleObject",
-  "@id": "http://localhost:3000/api/travel/10d9cdebdf87c516",
+  "@context": "http://localhost:3003/v2/_context/ArticleObject",
+  "@id": "http://localhost:3003/api/travel/10d9cdebdf87c516",
   "language": "en",
   "lastModifiedDate": "2014-04-30T12:07:31",
   "license": "Creative-Commons",

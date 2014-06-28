@@ -1,6 +1,6 @@
 {
     "@context": [
-        "http://localhost:3000/v2/_context/ContentObject.jsonld",
+        "http://localhost:3003/v2/_context/ContentObject.jsonld",
         {
             "wordCount": "schema:Integer",
             "articleBody": "schema:mainContentText",
