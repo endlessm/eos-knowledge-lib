@@ -1,0 +1,39 @@
+{
+  "@context": "http://localhost:3000/v2/_context/ArticleObject",
+  "@id": "http://localhost:3000/api/travel/10d9cdebdf87c516",
+  "language": "en",
+  "lastModifiedDate": "2014-04-30T12:07:31",
+  "license": "Creative-Commons",
+  "resources": [
+    
+  ],
+  "sourceURL": "http://en.wikipedia.org/wiki/Cyprus",
+  "synopsis": "Cyprus i/ˈsaɪprəs/ (Greek: Κύπρος [ˈcipros]; Turkish: Kıbrıs [ˈkɯbɾɯs]), officially the Republic of Cyprus (Greek: Κυπριακή Δημοκρατία; Turkish: Kıbrıs Cumhuriyeti), is an island country in the Eastern Mediterranean Sea.[6] Cyprus is the third largest and third most populous island in the Mediterranean, and a member state of the European Union. It is located south of Turkey, west of Syria and Lebanon, northwest of Israel, north of Egypt and east of Greece.",
+  "tags": [
+    "Islands of Europe",
+    "Levant",
+    "Island countries",
+    "International islands",
+    "Countries in Europe",
+    "Hellenistic colonies",
+    "Phoenician colonies",
+    "Mediterranean islands",
+    "Member states of the Union for the Mediterranean",
+    "Republics",
+    "Member states of the Commonwealth of Nations",
+    "Near Eastern countries",
+    "Islands of Asia",
+    "Liberal democracies",
+    "Former British colonies",
+    "Commonwealth republics",
+    "Middle Eastern countries",
+    "Western Asian countries",
+    "Cyprus",
+    "Member states of the United Nations",
+    "Member states of the European Union",
+    "States and territories established in 1960"
+  ],
+  "text": "nada",
+  "title": "Cyprus",
+  "@type": "ekv:ArticleObject"
+}

@@ -93,7 +93,9 @@ const ArticlePageA = new Lang.Class({
             xalign: 0.0
         });
         this._toc = new TableOfContents.TableOfContents({
-            expand: true
+            expand: true,
+            no_show_all: true,
+            visible: true
         });
         this._switcher = new WebviewSwitcherView.WebviewSwitcherView();
         this.parent(props);
@@ -141,6 +143,18 @@ const ArticlePageA = new Lang.Class({
     vfunc_size_allocate: function (alloc) {
         this.parent(alloc);
 
+        if (!this._toc.visible) {
+            let margin = this.EXPANDED_LAYOUT.right_margin_pct * alloc.width;
+            let switcher_alloc = new Cairo.RectangleInt({
+                x: alloc.x + margin,
+                y: alloc.y,
+                width: alloc.width - 2 * margin,
+                height: alloc.height
+            });
+            this._switcher_frame.size_allocate(switcher_alloc);
+            return;
+        }
+
         // Decide if toolbar should be collapsed
         if (alloc.width < this.COLLAPSE_TOOLBAR_WIDTH) {
             if (!this._toc.collapsed) {
@@ -182,12 +196,18 @@ const ArticlePageA = new Lang.Class({
     },
 
     vfunc_get_preferred_width: function () {
+        if (!this._toc.visible) {
+            return this._switcher.get_preferred_width();
+        }
         let [toolbar_min, toolbar_nat] = this._toolbar_frame.get_preferred_width();
         let [switcher_min, switcher_nat] = this._switcher_frame.get_preferred_width();
         return [toolbar_min + switcher_min, toolbar_nat + switcher_nat];
     },
 
     vfunc_get_preferred_height_for_width: function (width) {
+        if (!this._toc.visible) {
+            return this._switcher.get_preferred_height_for_width(width);
+        }
         let toolbar_width = this._get_toolbar_width(width);
         let [toolbar_min, toolbar_nat] = this._toolbar_frame.get_preferred_height_for_width(toolbar_width);
         let [switcher_min, switcher_nat] = this._switcher_frame.get_preferred_height_for_width(width - toolbar_width);

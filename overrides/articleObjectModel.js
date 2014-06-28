@@ -120,4 +120,4 @@ ArticleObjectModel._props_from_json_ld = function (json_ld_data) {
     }
 
     return props;
-}
+};

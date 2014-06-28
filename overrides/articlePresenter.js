@@ -110,11 +110,18 @@ const ArticlePresenter = new GObject.Class({
 
         this.article_view.title = this._article_model.title;
 
-        this._mainArticleSections = this._get_toplevel_toc_elements(this._article_model.table_of_contents);
-        this.article_view.toc.section_list = this._mainArticleSections.map(function (section) {
-            return section.label;
-        });
-        this.article_view.toc.selected_section = 0;
+        let _toc_visible = false;
+        if (this._article_model.table_of_contents !== undefined) {
+            this._mainArticleSections = this._get_toplevel_toc_elements(this._article_model.table_of_contents);
+            if (this._mainArticleSections.length > 0) {
+                this.article_view.toc.section_list = this._mainArticleSections.map(function (section) {
+                    return section.label;
+                });
+                this.article_view.toc.selected_section = 0;
+                _toc_visible = true;
+            }
+        }
+        this.article_view.toc.visible = _toc_visible;
         this.notify('article-model');
     },
 
