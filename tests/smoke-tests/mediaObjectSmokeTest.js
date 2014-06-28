@@ -99,9 +99,9 @@ const TestApplication = new Lang.Class ({
     _get_mock_media_objects: function () {
         let json = [
             {
-                "@context": "http://localhost:3000/api/_context/ImageObject",
+                "@context": "http://localhost:3003/api/_context/ImageObject",
                 "@type": "ekv:ImageObject",
-                "@id": "http://localhost:300/img/stallman_up",
+                "@id": "http://localhost:3003/img/stallman_up",
                 "contentURL": "file://" + TESTBUILDDIR + "/test-content/Richard_Stallman_at_Pittsburgh_University.jpg",
                 "title": "Richard Stallman at Pittsburgh University,",
                 "tags": ["bear", "beard"],
@@ -111,9 +111,9 @@ const TestApplication = new Lang.Class ({
                 "width": "666"
             },
             {
-                "@context": "http://localhost:3000/api/_context/ImageObject",
+                "@context": "http://localhost:3003/api/_context/ImageObject",
                 "@type": "ekv:ImageObject",
-                "@id": "http://localhost:300/img/emacs_colorsyntax",
+                "@id": "http://localhost:3003/img/emacs_colorsyntax",
                 "contentURL": "file://" + TESTBUILDDIR + "/test-content/emacs-colorsyntax.png",
                 "title": "Editing C source code in GNU Emacs",
                 "tags": ["Editor", "emacs"],
@@ -123,9 +123,9 @@ const TestApplication = new Lang.Class ({
                 "width": "666"
             },
             {
-                "@context": "http://localhost:3000/api/_context/ImageObject",
+                "@context": "http://localhost:3003/api/_context/ImageObject",
                 "@type": "ekv:ImageObject",
-                "@id": "http://localhost:300/img/emacs_buffers",
+                "@id": "http://localhost:3003/img/emacs_buffers",
                 "contentURL": "file://" + TESTBUILDDIR + "/test-content/Emacs_Dired_buffers.png",
                 "title": "Editing multiple Dired buffers in GNU Emacs",
                 "tags": ["Dired buffers", "emacs"],

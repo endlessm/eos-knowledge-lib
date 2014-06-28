@@ -4,7 +4,7 @@
     "numResults": 2,
     "results": [
         {
-            "@context": "http://localhost:3000/api/_context/ImageObject",
+            "@context": "http://localhost:3003/api/_context/ImageObject",
             "@type": "ekv:ImageObject",
             "@id": "http://img1.wikia.nocookie.net/__cb20130318151721/epicrapbattlesofhistory/images/6/6d/Rick-astley.jpg",
             "title": "Rick Astley: The Man, The Myth, The Legend",
@@ -15,7 +15,7 @@
             "width": "666"
         },
         {
-            "@context": "http://localhost:3000/api/_context/VideoObject",
+            "@context": "http://localhost:3003/api/_context/VideoObject",
             "@type": "ekv:VideoObject",
             "@id": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
             "title": "Never Gonna Give You Up (Never Gonna Let You Down)",
