@@ -36,14 +36,7 @@ const TextCard = new Lang.Class({
     },
 
     pack_widgets: function (title_label, synopsis_label, image_frame) {
-        title_label.valign = Gtk.Align.END;
-
-        let _spacer = new Gtk.Label();
-
-        let grid = new Gtk.Grid();
-        grid.attach(title_label, 0, 0, 1, 1);
-        grid.attach(_spacer, 0, 1, 1, 1);
-
-        this.add(grid);
+        title_label.xalign = 0.0;
+        this.add(title_label);
     }
 });

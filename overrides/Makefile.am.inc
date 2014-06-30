@@ -30,6 +30,7 @@ public_overrides = \
 	overrides/progressCard.js \
 	overrides/previewer.js \
 	overrides/sectionArticlePageA.js \
+	overrides/sectionArticlePageB.js \
 	overrides/sectionPage.js \
 	overrides/sectionPageA.js \
 	overrides/sectionPageB.js \

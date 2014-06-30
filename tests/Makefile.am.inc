@@ -26,6 +26,7 @@ javascript_tests = \
 	tests/eosknowledge/testPreviewer.js \
 	tests/eosknowledge/testProgressCard.js \
 	tests/eosknowledge/testSectionArticlePageA.js \
+	tests/eosknowledge/testSectionArticlePageB.js \
 	tests/eosknowledge/testSectionPageA.js \
 	tests/eosknowledge/testSectionPageB.js \
 	tests/eosknowledge/testTableOfContents.js \

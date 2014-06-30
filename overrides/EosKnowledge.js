@@ -32,6 +32,7 @@ const Presenter = imports.presenter;
 const Previewer = imports.previewer;
 const ProgressCard = imports.progressCard;
 const SectionArticlePageA = imports.sectionArticlePageA;
+const SectionArticlePageB = imports.sectionArticlePageB;
 const SectionPage = imports.sectionPage;
 const SectionPageA = imports.sectionPageA;
 const SectionPageB = imports.sectionPageB;
@@ -116,6 +117,7 @@ function _init() {
     EosKnowledge.Previewer = Previewer.Previewer;
     EosKnowledge.ProgressCard = ProgressCard.ProgressCard;
     EosKnowledge.SectionArticlePageA = SectionArticlePageA.SectionArticlePageA;
+    EosKnowledge.SectionArticlePageB = SectionArticlePageB.SectionArticlePageB;
     EosKnowledge.SectionPage = SectionPage.SectionPage;
     EosKnowledge.SectionPageA = SectionPageA.SectionPageA;
     EosKnowledge.SectionPageB = SectionPageB.SectionPageB;

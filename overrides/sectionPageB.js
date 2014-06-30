@@ -3,6 +3,7 @@
 const Cairo = imports.gi.cairo;
 const Endless = imports.gi.Endless;
 const EosKnowledge = imports.gi.EosKnowledge;
+const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
@@ -25,6 +26,24 @@ const SectionPageB = new Lang.Class({
     Extends: SectionPage.SectionPage,
     Properties: {
         /**
+         * Property: collapsed
+         *
+         * True if the section page should display in a collapsed state.
+         *
+         * Defaults to false.
+         */
+        'collapsed': GObject.ParamSpec.boolean('collapsed', 'Collapsed',
+            'True if table of contents should display in a collapsed state.',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
+            false),
+        /**
+         * Property: transition-duration
+         * Specifies the duration of the transition between pages
+         */
+        'transition-duration': GObject.ParamSpec.uint('transition-duration', 'Transition Duration',
+            'Specifies (in ms) the duration of the transition between pages.',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT, 0, GLib.MAXUINT32, 200),
+        /**
          * Property: cards
          * A list of <TextCard> widgets representing the cards to be displayed
          * on this section.
@@ -37,16 +56,21 @@ const SectionPageB = new Lang.Class({
         this._scroller = new Gtk.ScrolledWindow({
             hscrollbar_policy: Gtk.PolicyType.NEVER,
             vexpand: true,
-            valign: Gtk.Align.FILL
+            hexpand: false,
+            valign: Gtk.Align.FILL,
+            width_request: 400,
+            margin_left: 80
         });
 
         this._card_list_box = new Gtk.ListBox({
-            hexpand: true,
             valign: Gtk.Align.START
         });
         this._scroller.add(this._card_list_box);
 
         this._cards = null;
+        this._transition_duration = 0;
+
+        this._collapsed = false;
 
         this.parent(props);
 
@@ -54,8 +78,23 @@ const SectionPageB = new Lang.Class({
     },
 
     pack_title_label: function (title_label) {
-        this._widget_container = new SectionPageBWidgetContainer(title_label, this._scroller);
-        this.add(this._widget_container);
+        title_label.xalign = 0;
+        title_label.yalign = 1;
+        title_label.expand = true;
+
+        this._title_label_revealer = new Gtk.Revealer({
+            reveal_child: true,
+            expand: true,
+            transition_type: Gtk.RevealerTransitionType.SLIDE_RIGHT
+        });
+        this._title_label_revealer.add(title_label);
+        this.bind_property('transition-duration', this._title_label_revealer,
+            'transition-duration', GObject.BindingFlags.SYNC_CREATE);
+
+        this.orientation = Gtk.Orientation.HORIZONTAL;
+        this.expand = true;
+        this.add(this._title_label_revealer);
+        this.add(this._scroller);
     },
 
     set cards (v) {
@@ -77,65 +116,33 @@ const SectionPageB = new Lang.Class({
     get cards () {
         return this._cards;
     },
-});
 
-// Private class to handle the special widget container we need on the section page.
-// It holds the title label and a scrollable card container.
-const SectionPageBWidgetContainer = new Lang.Class({
-    Name: 'SectionPageBWidgetContainer',
-    GTypeName: 'EknSectionPageBWidgetContainer',
-    Extends: Endless.CustomContainer,
-
-    SCROLLER_WIDTH_PERCENTAGE: 0.4,
-
-    _init: function (title_label, scroller, props) {
-        this.parent(props);
-
-        this._title_label = title_label;
-        this._scroller = scroller;
-
-        this.add(title_label);
-        this.add(scroller);
+    set collapsed (v) {
+        if (this._collapsed === v)
+            return;
+        this._collapsed = v;
+        if (this._collapsed) {
+            this._title_label_revealer.expand = false;
+            this._title_label_revealer.reveal_child = false;
+        } else {
+            this._title_label_revealer.expand = true;
+            this._title_label_revealer.reveal_child = true;
+        }
+        this.notify('collapsed');
     },
 
-    // FIXME: This is a very gross approximation of the sizing specs
-    // while we wait for more detailed instructions
-    vfunc_size_allocate: function (alloc) {
-        this.parent(alloc);
-
-        let label_alloc = new Cairo.RectangleInt({
-            x: alloc.x,
-            y: alloc.y,
-            width: alloc.width * (1 - this.SCROLLER_WIDTH_PERCENTAGE),
-            height: alloc.height
-        });
-        this._title_label.size_allocate(label_alloc);
-
-        let scroller_alloc = new Cairo.RectangleInt({
-            x: label_alloc.x + label_alloc.width,
-            y: alloc.y,
-            width: alloc.width * this.SCROLLER_WIDTH_PERCENTAGE,
-            height: alloc.height
-        });
-        this._scroller.size_allocate(scroller_alloc);
+    get collapsed () {
+        return this._collapsed;
     },
 
-    vfunc_get_request_mode: function () {
-        return Gtk.SizeRequestMode.HEIGHT_FOR_WIDTH;
+    set transition_duration (v) {
+        if (this._transition_duration === v)
+            return;
+        this._transition_duration = v;
+        this.notify('transition-duration');
     },
 
-    vfunc_get_preferred_width: function () {
-        let [label_min, label_nat] = this._title_label.get_preferred_width();
-        let [scroller_min, scroller_nat] = this._scroller.get_preferred_width();
-        return [Math.max(scroller_min / this.SCROLLER_WIDTH_PERCENTAGE, label_min / (1 - this.SCROLLER_WIDTH_PERCENTAGE)),
-                Math.max(scroller_nat / this.SCROLLER_WIDTH_PERCENTAGE, label_nat / (1 - this.SCROLLER_WIDTH_PERCENTAGE))];
+    get transition_duration () {
+        return this._transition_duration;
     },
-
-    vfunc_get_preferred_height_for_width: function (width) {
-        let [label_min, label_nat] = this._title_label.get_preferred_height_for_width(
-            width * (1 - this.SCROLLER_WIDTH_PERCENTAGE));
-        let [scroller_min, scroller_nat] = this._scroller.get_preferred_height_for_width(
-            width * this.SCROLLER_WIDTH_PERCENTAGE);
-        return [label_min + scroller_min, label_nat + scroller_nat];
-    }
 });
