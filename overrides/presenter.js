@@ -9,6 +9,7 @@ const ArticlePresenter = imports.articlePresenter;
 const CardA = imports.cardA;
 const CardB = imports.cardB;
 const Engine = imports.engine;
+const TextCard = imports.textCard;
 const Window = imports.window;
 
 /**
@@ -49,7 +50,8 @@ const Presenter = new Lang.Class({
 
         this._article_presenter = new ArticlePresenter.ArticlePresenter({
             article_view: this.view.article_page,
-            engine: this._engine
+            engine: this._engine,
+            template_type: this._template_type
         });
 
         // Connect signals
@@ -81,16 +83,27 @@ const Presenter = new Lang.Class({
         this.view.home_page.title_image_uri = data['titleImageURI'];
         this.view.background_image_uri = data['backgroundHomeURI'];
         this.view.blur_background_image_uri = data['backgroundSectionURI'];
-        for (let page of [this.view.home_page, this.view.categories_page]) {
-            let category_cards = data['sections'].map(function (section) {
-                let card = new CardA.CardA({
+        if (this._template_type === 'B') {
+            this.view.home_page.cards = data['sections'].map(function (section) {
+                let card = new CardB.CardB({
                     title: section['title'],
                     thumbnail_uri: section['thumbnailURI']
                 });
                 card.connect('clicked', this._on_section_card_clicked.bind(this, section['tags']));
                 return card;
             }.bind(this));
-            page.cards = category_cards;
+        } else {
+            for (let page of [this.view.home_page, this.view.categories_page]) {
+                let category_cards = data['sections'].map(function (section) {
+                    let card = new CardA.CardA({
+                        title: section['title'],
+                        thumbnail_uri: section['thumbnailURI']
+                    });
+                    card.connect('clicked', this._on_section_card_clicked.bind(this, section['tags']));
+                    return card;
+                }.bind(this));
+                page.cards = category_cards;
+            }
         }
     },
 
@@ -219,16 +232,21 @@ const Presenter = new Lang.Class({
             printerr(err.stack);
         }
         let cards = results.map(this._new_card_from_article_model.bind(this));
-        let segments = {
-            'Articles': cards
-        };
         this._search_origin_page = this.view.section_page;
-        this.view.section_page.segments = segments;
+        if (this._template_type === 'B') {
+            this.view.section_page.cards = cards;
+        } else {
+            let segments = {
+                'Articles': cards
+            };
+            this.view.section_page.segments = segments;
+        }
         this.view.show_section_page();
     },
 
     _new_card_from_article_model: function (model) {
-        let card = new ArticleCard.ArticleCard({
+        let card_class = this._template_type === 'B' ? TextCard.TextCard : ArticleCard.ArticleCard;
+        let card = new card_class({
             title: model.title,
             synopsis: model.synopsis
         });

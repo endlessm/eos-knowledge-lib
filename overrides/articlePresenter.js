@@ -65,6 +65,15 @@ const ArticlePresenter = new GObject.Class({
             'The engine module to connect to EKN',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             Engine.Engine),
+        /**
+         * Property: template-type
+         *
+         * A string for the template type the window should render as
+         * currently support 'A' and 'B' templates. Defaults to 'A'.
+         */
+        'template-type':  GObject.ParamSpec.string('template-type', 'Template Type',
+            'Which template the window should display with',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, 'A'),
     },
     Signals: {
         /**
@@ -108,7 +117,7 @@ const ArticlePresenter = new GObject.Class({
             this.article_view.title = this._article_model.title;
 
             let _toc_visible = false;
-            if (this._article_model.table_of_contents !== undefined) {
+            if (this.template_type !== 'B' && this._article_model.table_of_contents !== undefined) {
                 this._mainArticleSections = this._get_toplevel_toc_elements(this._article_model.table_of_contents);
                 if (this._mainArticleSections.length > 0) {
                     this.article_view.toc.section_list = this._mainArticleSections.map(function (section) {

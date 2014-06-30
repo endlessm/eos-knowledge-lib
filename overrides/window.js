@@ -9,11 +9,13 @@ const Lang = imports.lang;
 
 const ArticlePageA = imports.articlePageA;
 const CategoriesPage = imports.categoriesPage;
+const HomePage = imports.homePage;
 const HomePageA = imports.homePageA;
 const HomePageB = imports.homePageB;
 const Lightbox = imports.lightbox;
+const SectionPage = imports.sectionPage;
 const SectionArticlePageA = imports.sectionArticlePageA;
-const SectionPageA = imports.sectionPageA;
+const SectionArticlePageB = imports.sectionArticlePageB;
 
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 
@@ -47,7 +49,7 @@ const Window = new Lang.Class({
         'home-page': GObject.ParamSpec.object('home-page', 'Home page',
             'The home page of this view widget.',
             GObject.ParamFlags.READABLE,
-            HomePageA.HomePageA),
+            HomePage.HomePage),
         /**
          * Property: categories-page
          *
@@ -67,7 +69,7 @@ const Window = new Lang.Class({
         'section-page': GObject.ParamSpec.object('section-page', 'Section page',
             'The section page of this view widget.',
             GObject.ParamFlags.READABLE,
-            SectionPageA.SectionPageA),
+            SectionPage.SectionPage),
         /**
          * Property: article-page
          *
@@ -188,7 +190,13 @@ const Window = new Lang.Class({
         let home_page_class = this.template_type === 'B' ? HomePageB.HomePageB : HomePageA.HomePageA;
         this._home_page = new home_page_class();
         this._categories_page = new CategoriesPage.CategoriesPage();
-        this._section_article_page = new SectionArticlePageA.SectionArticlePageA();
+        if (this.template_type === 'B') {
+            this._home_page = new HomePageB.HomePageB();
+            this._section_article_page = new SectionArticlePageB.SectionArticlePageB();
+        } else {
+            this._home_page = new HomePageA.HomePageA();
+            this._section_article_page = new SectionArticlePageA.SectionArticlePageA();
+        }
         this._section_article_page.connect('back-clicked', function () {
             this.emit('sidebar-back-clicked');
         }.bind(this));
