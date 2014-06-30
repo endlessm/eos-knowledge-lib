@@ -188,10 +188,7 @@ const Window = new Lang.Class({
         let home_page_class = this.template_type === 'B' ? HomePageB.HomePageB : HomePageA.HomePageA;
         this._home_page = new home_page_class();
         this._categories_page = new CategoriesPage.CategoriesPage();
-        this._section_article_page = new SectionArticlePageA.SectionArticlePageA({
-            section_page: new SectionPageA.SectionPageA(),
-            article_page: new ArticlePageA.ArticlePageA()
-        });
+        this._section_article_page = new SectionArticlePageA.SectionArticlePageA();
         this._section_article_page.connect('back-clicked', function () {
             this.emit('sidebar-back-clicked');
         }.bind(this));

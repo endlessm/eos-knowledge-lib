@@ -8,6 +8,8 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const BackButtonOverlay = imports.backButtonOverlay;
+const SectionPageA = imports.sectionPageA;
+const ArticlePageA = imports.articlePageA;
 
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 
@@ -29,14 +31,14 @@ const SectionArticlePageA = new Lang.Class({
          */
         'section-page': GObject.ParamSpec.object('section-page', 'Section Page',
             'The section page to be displayed',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, Gtk.Widget),
+            GObject.ParamFlags.READABLE, SectionPageA.SectionPageA.$gtype),
         /**
          * Property: article-page
          * The article page to be displayed by the page manager.
          */
         'article-page': GObject.ParamSpec.object('article-page', 'Article Page',
             'The article page to be displayed',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, Gtk.Widget),
+            GObject.ParamFlags.READABLE, ArticlePageA.ArticlePageA.$gtype),
         /**
          * Property: show-article
          * Whether the article page should be displayed
@@ -50,15 +52,15 @@ const SectionArticlePageA = new Lang.Class({
          */
         'transition-duration': GObject.ParamSpec.uint('transition-duration', 'Transition Duration',
             'Specifies (in ms) the duration of the transition between pages.',
-            GObject.ParamFlags.READWRITE, 0, GLib.MAXUINT32, 200)
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT, 0, GLib.MAXUINT32, 200)
 
     },
 
     _init: function (props) {
         props = props || {};
 
-        this._article_page = null;
-        this._section_page = null;
+        this._section_page = new SectionPageA.SectionPageA();
+        this._article_page = new ArticlePageA.ArticlePageA();
         this._transition_duration = 0;
 
         /*
@@ -68,6 +70,8 @@ const SectionArticlePageA = new Lang.Class({
             transition_type: Gtk.StackTransitionType.SLIDE_LEFT,
             expand: true
         });
+        this._section_article_stack.add(this._section_page);
+        this._section_article_stack.add(this._article_page);
         this.parent(props);
 
         this.bind_property('transition-duration', this._section_article_stack,
@@ -79,23 +83,8 @@ const SectionArticlePageA = new Lang.Class({
         this.add(this._section_article_stack);
     },
 
-    set section_page (v) {
-        this._section_page = v;
-        this._section_article_stack.add(this._section_page);
-        this.notify('section-page');
-    },
-
-    set article_page (v) {
-        this._article_page = v;
-        this._section_article_stack.add(this._article_page);
-        this.notify('article-page');
-    },
-
     set show_article (v) {
         if (this._show_article === v)
-            return;
-
-        if (this._article_page === null || this._section_page === null)
             return;
 
         this._show_article = v;

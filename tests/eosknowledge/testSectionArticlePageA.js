@@ -18,10 +18,7 @@ describe ('Section -  Article Page', function () {
     beforeEach (function () {
         jasmine.addMatchers (CssClassMatcher.customMatchers);
 
-        the_section_article_page = new EosKnowledge.SectionArticlePageA ({
-            section_page: new Gtk.Label(),
-            article_page: new Gtk.Label()
-        });
+        the_section_article_page = new EosKnowledge.SectionArticlePageA();
         the_section_article_page.show_all();
     });
 
