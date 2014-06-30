@@ -75,7 +75,7 @@ AC_SUBST([EKN_LT_VERSION_INFO], ["$EKN_LT_CURRENT:$EKN_LT_REVISION:$EKN_LT_AGE"]
 GLIB_REQUIREMENT="glib-2.0"
 GOBJECT_REQUIREMENT="gobject-2.0"
 GIO_REQUIREMENT="gio-2.0"
-GTK_REQUIREMENT="gtk+-3.0"
+GTK_REQUIREMENT="gtk+-3.0 >= 3.12"
 # These go into the pkg-config file as Requires: and Requires.private:
 # (Generally, use Requires.private: instead of Requires:)
 AC_SUBST([EKN_REQUIRED_MODULES], [])
