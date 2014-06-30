@@ -229,8 +229,11 @@ const Presenter = new Lang.Class({
         let previewer = new EosKnowledge.Previewer({
             visible: true
         });
+        let infobox = EosKnowledge.MediaInfobox.new_from_ekn_model(media_object);
+
         previewer.file = Gio.File.new_for_path(media_object.content_uri);
         this.view.lightbox.media_object = media_object;
+        this.view.lightbox.infobox_widget = infobox;
         this.view.lightbox.content_widget = previewer;
         this.view.lightbox.reveal_overlays = true;
         this.view.lightbox.has_navigation_buttons = is_resource;
