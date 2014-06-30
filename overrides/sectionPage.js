@@ -29,21 +29,26 @@ const SectionPage = new Lang.Class({
     },
 
     _init: function (props) {
-        props = props || {};
-
-        this.title_label = new Gtk.Label();
+        this._title_label = new Gtk.Label();
 
         this._title = null;
 
         this.parent(props);
 
-        this.title_label.get_style_context().add_class(EosKnowledge.STYLE_CLASS_SECTION_PAGE_TITLE);
+        this._title_label.get_style_context().add_class(EosKnowledge.STYLE_CLASS_SECTION_PAGE_TITLE);
+
+        this.pack_title_label(this._title_label);
+        this.show_all();
+    },
+
+    pack_title_label: function (title_label) {
+        this.add(title_label);
     },
 
     set title (v) {
         if (this._title === v) return;
         this._title = v;
-        this.title_label.label = this._title;
+        this._title_label.label = this._title;
         this.notify('title');
     },
 

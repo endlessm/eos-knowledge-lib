@@ -34,75 +34,6 @@ const SectionPageB = new Lang.Class({
     },
 
     _init: function (props) {
-        props = props || {};
-
-        props.vexpand = true;
-        props.valign = Gtk.Align.FILL;
-
-        this._widget_container = new SectionPageBWidgetContainer();
-
-        this.parent(props);
-
-        this._cards = null;
-
-        this.add(this._widget_container);
-
-        this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_SECTION_PAGE_B);
-        this.show_all();
-    },
-
-    set cards (v) {
-        if (this._cards === v)
-            return;
-        if (this._cards !== null) {
-            this._widget_container.remove_cards(this._cards);
-        }
-
-        this._cards = v;
-        if (this._cards !== null) {
-            this._widget_container.add_cards(this._cards);
-        }
-    },
-
-    get cards () {
-        return this._cards;
-    },
-
-    set title (v) {
-        if (this._title === v)
-            return;
-        this._title = v;
-        this._widget_container.set_title(this._title);
-    },
-
-    get title () {
-        return this._title;
-    }
-});
-
-// Private class to handle the special widget container we need on the section page.
-// It holds the title label and a scrollable card container.
-const SectionPageBWidgetContainer = new Lang.Class({
-    Name: 'SectionPageBWidgetContainer',
-    GTypeName: 'EknSectionPageBWidgetContainer',
-    Extends: Endless.CustomContainer,
-
-    MINIMUM_WIDTH: 335,
-    SCROLLER_WIDTH_PERCENTAGE: 0.4,
-    GRID_MARGIN: 10,
-
-    _init: function (props) {
-        this._cards = [];
-
-        props = props || {};
-        props.margin = 10;
-        this.parent(props);
-
-        this._title_label = new Gtk.Label({
-            valign: Gtk.Align.START,
-            wrap: true
-        });
-
         this._scroller = new Gtk.ScrolledWindow({
             hscrollbar_policy: Gtk.PolicyType.NEVER,
             vexpand: true,
@@ -115,30 +46,56 @@ const SectionPageBWidgetContainer = new Lang.Class({
         });
         this._scroller.add(this._card_list_box);
 
-        this._title_label.get_style_context().add_class(EosKnowledge.STYLE_CLASS_SECTION_PAGE_TITLE);
+        this._cards = null;
 
-        this.add(this._title_label);
-        this.add(this._scroller);
-        this.show_all();
+        this.parent(props);
+
+        this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_SECTION_PAGE_B);
     },
 
-    add_cards: function (cards) {
-        this._cards = cards;
-        for (let card of cards) {
-            this._card_list_box.add(card);
+    pack_title_label: function (title_label) {
+        this._widget_container = new SectionPageBWidgetContainer(title_label, this._scroller);
+        this.add(this._widget_container);
+    },
+
+    set cards (v) {
+        if (this._cards === v)
+            return;
+        if (this._cards !== null) {
+            for (let card of this._cards) {
+                this._card_list_box.remove(card);
+            }
+        }
+        this._cards = v;
+        if (this._cards !== null) {
+            for (let card of this._cards) {
+                this._card_list_box.add(card);
+            }
         }
     },
 
-    remove_cards: function () {
-        for (let card of this._cards) {
-            this._card_list_box.remove(card);
-        }
-        this._cards = [];
+    get cards () {
+        return this._cards;
     },
+});
 
-    set_title: function (title) {
+// Private class to handle the special widget container we need on the section page.
+// It holds the title label and a scrollable card container.
+const SectionPageBWidgetContainer = new Lang.Class({
+    Name: 'SectionPageBWidgetContainer',
+    GTypeName: 'EknSectionPageBWidgetContainer',
+    Extends: Endless.CustomContainer,
 
-        this._title_label.label = title;
+    SCROLLER_WIDTH_PERCENTAGE: 0.4,
+
+    _init: function (title_label, scroller, props) {
+        this.parent(props);
+
+        this._title_label = title_label;
+        this._scroller = scroller;
+
+        this.add(title_label);
+        this.add(scroller);
     },
 
     // FIXME: This is a very gross approximation of the sizing specs
@@ -146,55 +103,39 @@ const SectionPageBWidgetContainer = new Lang.Class({
     vfunc_size_allocate: function (alloc) {
         this.parent(alloc);
 
-        let [min, nat] = this._cards_max_preferred_width();
-
-        let scroller_width_pct = this.SCROLLER_WIDTH_PERCENTAGE;
-        let [lbl_min_height, lbl_nat_height] = this._title_label.get_preferred_height();
-
-        let label_y = (alloc.height - lbl_nat_height) / 2;
-
         let label_alloc = new Cairo.RectangleInt({
             x: alloc.x,
-            y: label_y,
-            width: alloc.width * (1 - scroller_width_pct) - 2 * this.GRID_MARGIN,
-            height: lbl_nat_height
+            y: alloc.y,
+            width: alloc.width * (1 - this.SCROLLER_WIDTH_PERCENTAGE),
+            height: alloc.height
         });
         this._title_label.size_allocate(label_alloc);
 
         let scroller_alloc = new Cairo.RectangleInt({
-            x: alloc.width * (1 - scroller_width_pct),
+            x: label_alloc.x + label_alloc.width,
             y: alloc.y,
-            width: alloc.width * scroller_width_pct - 2 * this.GRID_MARGIN,
+            width: alloc.width * this.SCROLLER_WIDTH_PERCENTAGE,
             height: alloc.height
         });
         this._scroller.size_allocate(scroller_alloc);
     },
 
+    vfunc_get_request_mode: function () {
+        return Gtk.SizeRequestMode.HEIGHT_FOR_WIDTH;
+    },
+
     vfunc_get_preferred_width: function () {
-        let [min, nat] = this._cards_max_preferred_width();
-        min = min * (2 - this.SCROLLER_WIDTH_PERCENTAGE);
-        min = min < this.MINIMUM_WIDTH ? this.MINIMUM_WIDTH : min;
-        nat = nat < min ? min : nat;
-        return [min, nat];
+        let [label_min, label_nat] = this._title_label.get_preferred_width();
+        let [scroller_min, scroller_nat] = this._scroller.get_preferred_width();
+        return [Math.max(scroller_min / this.SCROLLER_WIDTH_PERCENTAGE, label_min / (1 - this.SCROLLER_WIDTH_PERCENTAGE)),
+                Math.max(scroller_nat / this.SCROLLER_WIDTH_PERCENTAGE, label_nat / (1 - this.SCROLLER_WIDTH_PERCENTAGE))];
     },
 
-    vfunc_get_preferred_height: function () {
-        let min = 0, nat = 0;
-        for (let card of this._cards) {
-            let [card_min, card_nat] = card.get_preferred_height();
-            min = Math.max(min, card_min);
-            nat = Math.max(nat, card_nat);
-        }
-        return [min, nat];
-    },
-
-    _cards_max_preferred_width: function () {
-        let min = 0, nat = 0;
-        for (let card of this._cards) {
-            let [card_min, card_nat] = card.get_preferred_width();
-            min = Math.max(min, card_min);
-            nat = Math.max(nat, card_nat);
-        }
-        return [min, nat];
+    vfunc_get_preferred_height_for_width: function (width) {
+        let [label_min, label_nat] = this._title_label.get_preferred_height_for_width(
+            width * (1 - this.SCROLLER_WIDTH_PERCENTAGE));
+        let [scroller_min, scroller_nat] = this._scroller.get_preferred_height_for_width(
+            width * this.SCROLLER_WIDTH_PERCENTAGE);
+        return [label_min + scroller_min, label_nat + scroller_nat];
     }
 });
