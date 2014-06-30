@@ -9,6 +9,7 @@ public_overrides = \
 	overrides/articleObjectModel.js \
 	overrides/articlePageA.js \
 	overrides/articlePresenter.js \
+	overrides/backButtonOverlay.js \
 	overrides/card.js \
 	overrides/cardA.js \
 	overrides/cardB.js \

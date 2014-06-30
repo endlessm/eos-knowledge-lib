@@ -12,6 +12,7 @@ const ArticleCard = imports.articleCard;
 const ArticleObjectModel = imports.articleObjectModel;
 const ArticlePageA = imports.articlePageA;
 const ArticlePresenter = imports.articlePresenter;
+const BackButtonOverlay = imports.backButtonOverlay;
 const Card = imports.card;
 const CardA = imports.cardA;
 const CardB = imports.cardB;
@@ -94,6 +95,7 @@ function _init() {
     EosKnowledge.ArticleObjectModel = ArticleObjectModel.ArticleObjectModel;
     EosKnowledge.ArticlePageA = ArticlePageA.ArticlePageA;
     EosKnowledge.ArticlePresenter = ArticlePresenter.ArticlePresenter;
+    EosKnowledge.BackButtonOverlay = BackButtonOverlay.BackButtonOverlay;
     EosKnowledge.Card = Card.Card;
     EosKnowledge.CardA = CardA.CardA;
     EosKnowledge.CardB = CardB.CardB;
