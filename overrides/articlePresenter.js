@@ -103,26 +103,27 @@ const ArticlePresenter = new GObject.Class({
         // fully populate the view from a model
         this._article_model = v;
 
-        // TODO: Once we are on GTK 3.12, connect to notify::transition-running
-        // so that we only set the title and toc once the switcher view has
-        // finished loading
-        this.article_view.switcher.load_uri(this._article_model.article_content_uri);
+        // Set the title and toc once the switcher view has finished loading
+        let id = this.article_view.switcher.connect('display-ready', function (switcher) {
+            this.article_view.title = this._article_model.title;
 
-        this.article_view.title = this._article_model.title;
-
-        let _toc_visible = false;
-        if (this._article_model.table_of_contents !== undefined) {
-            this._mainArticleSections = this._get_toplevel_toc_elements(this._article_model.table_of_contents);
-            if (this._mainArticleSections.length > 0) {
-                this.article_view.toc.section_list = this._mainArticleSections.map(function (section) {
-                    return section.label;
-                });
-                this.article_view.toc.selected_section = 0;
-                _toc_visible = true;
+            let _toc_visible = false;
+            if (this._article_model.table_of_contents !== undefined) {
+                this._mainArticleSections = this._get_toplevel_toc_elements(this._article_model.table_of_contents);
+                if (this._mainArticleSections.length > 0) {
+                    this.article_view.toc.section_list = this._mainArticleSections.map(function (section) {
+                        return section.label;
+                    });
+                    this.article_view.toc.selected_section = 0;
+                    _toc_visible = true;
+                }
             }
-        }
-        this.article_view.toc.visible = _toc_visible;
-        this.notify('article-model');
+            this.article_view.toc.visible = _toc_visible;
+            this.notify('article-model');
+
+            switcher.disconnect(id);
+        }.bind(this));
+        this.article_view.switcher.load_uri(this._article_model.article_content_uri);
     },
 
     _connect_switcher_widget: function () {
