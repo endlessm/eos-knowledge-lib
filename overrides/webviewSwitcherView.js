@@ -147,9 +147,8 @@ const WebviewSwitcherView = new Lang.Class({
         // constant, which may change
         if (this._navigate_forwards != value) {
             this._navigate_forwards = value;
-            // FIXME: in GTK 3.12, change to OVER_LEFT and UNDER_RIGHT
-            this.transition_type = value? Gtk.StackTransitionType.SLIDE_LEFT :
-                Gtk.StackTransitionType.SLIDE_RIGHT;
+            this.transition_type = value? Gtk.StackTransitionType.OVER_LEFT :
+                Gtk.StackTransitionType.UNDER_RIGHT;
             this.notify('navigate-forwards');
         }
     },
