@@ -73,34 +73,34 @@ const HomePage = new Lang.Class({
 
     _init: function (props) {
         props = props || {};
-        this.title_image = new Gtk.Image();
+        this._title_image = new Gtk.Image();
 
         this._cards = null;
         this._title_image_uri = null;
 
         // Not using a SearchEntry since that comes with
         // the 'x' as secondary icon, which we don't want
-        this.search_box = new Endless.SearchBox();
+        this._search_box = new Endless.SearchBox();
 
-        this.search_box.connect('text-changed', Lang.bind(this, function (search_entry) {
+        this._search_box.connect('text-changed', Lang.bind(this, function (search_entry) {
             this.emit('search-text-changed', search_entry);
         }));
 
-        this.search_box.connect('activate', Lang.bind(this, function (search_entry) {
+        this._search_box.connect('activate', Lang.bind(this, function (search_entry) {
             this.emit('search-entered', search_entry.text);
         }));
 
-        this.search_box.connect('menu-item-selected', Lang.bind(this, function (search_entry, article_id) {
+        this._search_box.connect('menu-item-selected', Lang.bind(this, function (search_entry, article_id) {
             this.emit('article-selected', article_id);
         }));
 
         this.parent(props);
 
         this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_HOME_PAGE);
-        this.title_image.get_style_context().add_class(EosKnowledge.STYLE_CLASS_HOME_PAGE_TITLE_IMAGE);
-        this.search_box.get_style_context().add_class(EosKnowledge.STYLE_CLASS_SEARCH_BOX);
+        this._title_image.get_style_context().add_class(EosKnowledge.STYLE_CLASS_HOME_PAGE_TITLE_IMAGE);
+        this._search_box.get_style_context().add_class(EosKnowledge.STYLE_CLASS_SEARCH_BOX);
 
-        this.pack_widgets();
+        this.pack_widgets(this._title_image, this._search_box);
         this.show_all();
     },
 
@@ -115,9 +115,9 @@ const HomePage = new Lang.Class({
      * connectified for homePage search signals. They can be packed into this
      * widget along with any other widgetry for the subclass in this function.
      */
-    pack_widgets: function () {
-        this.attach(this.title_image, 0, 0, 3, 1);
-        this.attach(this.search_box, 0, 1, 3, 1);
+    pack_widgets: function (title_image, search_box) {
+        this.attach(title_image, 0, 0, 3, 1);
+        this.attach(search_box, 0, 1, 3, 1);
     },
 
     /**
@@ -138,7 +138,7 @@ const HomePage = new Lang.Class({
         let resource_path = v.substring('resource://'.length);
 
         // set it from a Pixbuf constructor so we get errors thrown on failure
-        this.title_image.pixbuf = GdkPixbuf.Pixbuf.new_from_resource(resource_path);
+        this._title_image.pixbuf = GdkPixbuf.Pixbuf.new_from_resource(resource_path);
 
         // only actually set the image URI if we successfully set the image
         this._title_image_uri = v;

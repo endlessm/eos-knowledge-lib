@@ -70,16 +70,16 @@ const ProgressCard = new Lang.Class({
         this.parent(props);
     },
 
-    pack_widgets: function () {
+    pack_widgets: function (title_label, synopsis_label, image_frame) {
         let grid = new Gtk.Grid({
             orientation: Gtk.Orientation.VERTICAL
         });
         grid.add(this._progress);
-        grid.add(this.title_label);
-        grid.add(this.synopsis_label);
+        grid.add(title_label);
+        grid.add(synopsis_label);
         this.add(grid);
 
-        this.setSensitiveChildren([this.title_label, this.synopsis_label,
+        this.setSensitiveChildren([title_label, synopsis_label,
             this._progress]);
     },
 
