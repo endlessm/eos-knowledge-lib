@@ -72,7 +72,10 @@ const TestApplication = new Lang.Class ({
         let window = new Endless.Window({
             application: this
         });
-        window.get_page_manager().add(section_article_page);
+        window.get_page_manager().add(section_article_page, {
+            background_uri: 'file://' + TESTDIR + '/test-content/background.jpg'
+        });
+
         window.show_all();
 
     }
