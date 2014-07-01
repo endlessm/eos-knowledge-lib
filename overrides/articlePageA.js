@@ -152,9 +152,11 @@ const ArticlePageA = new Lang.Class({
                 height: alloc.height
             });
             this._switcher_frame.size_allocate(switcher_alloc);
+            this._toolbar_frame.set_child_visible(false);
             return;
         }
 
+        this._toolbar_frame.set_child_visible(true);
         // Decide if toolbar should be collapsed
         if (alloc.width < this.COLLAPSE_TOOLBAR_WIDTH) {
             if (!this._toc.collapsed) {
