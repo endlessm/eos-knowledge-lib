@@ -89,14 +89,16 @@ describe('Webview switcher view', function () {
 
         describe('asynchronously', function () {
             beforeEach(function (done) {
+                // Wait for two 'display-ready' signals, signifying that each
+                // page has finished loading in turn
+                let displayReadyCount = 0;
+                switcher.connect('display-ready', function () {
+                    displayReadyCount++;
+                    if(displayReadyCount == 2)
+                        done();
+                });
                 switcher.load_uri('baked://beans');
                 switcher.load_uri('corn://bread');
-                // FIXME: in GTK 3.12, wait for notify::transition-running instead?
-                // switcher.connect('notify::transition-running', function () {
-                //     if (!switcher.transition_running)
-                //         done();
-                // });
-                setTimeout(done, 500 /* ms */);
             });
 
             xit('shows the new webview when a page is loaded', function (done) {
