@@ -52,6 +52,7 @@ EXTRA_DIST += \
 	$(test_content) \
 	tests/CssClassMatcher.js \
 	tests/InstanceOfMatcher.js \
+	tests/MockWebview.js \
 	tests/utils.js \
 	$(NULL)
 

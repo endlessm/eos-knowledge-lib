@@ -1,9 +1,8 @@
 const Endless = imports.gi.Endless;
 const EosKnowledge = imports.gi.EosKnowledge;
 const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
-const Gtk = imports.gi.Gtk;
-const WebKit2 = imports.gi.WebKit2;
+
+const MockWebview = imports.MockWebview;
 
 EosKnowledge.init();
 
@@ -29,7 +28,7 @@ describe('Article Presenter', function () {
 
         view = new EosKnowledge.ArticlePageA();
         view.switcher.connect('create-webview', function () {
-            webview = new WebKit2.WebView();
+            webview = new MockWebview.MockWebview();
             return webview;
         });
 
