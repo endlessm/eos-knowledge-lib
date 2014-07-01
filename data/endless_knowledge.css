@@ -396,6 +396,10 @@ EknWindowA.show-article-page {
     padding: 20px 0px;
 }
 
+.article-page-switcher-frame.no-margins {
+    padding: 0px;
+}
+
 .article-page-title {
     font-family: Montserrat;
     font-size: 1.58em;  /* 18pt at 72 DPI 1080px */

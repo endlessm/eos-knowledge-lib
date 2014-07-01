@@ -59,6 +59,7 @@ const SectionArticlePageB = new Lang.Class({
         this._section_page = new SectionPageB.SectionPageB();
         this._article_page = new ArticlePage.ArticlePage();
         this._article_page.toc.hide();
+        this._article_page.has_margins = false;
         this._transition_duration = 0;
 
         this._article_page_revealer = new Gtk.Revealer({
