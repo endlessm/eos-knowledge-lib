@@ -167,7 +167,8 @@ const ArticlePresenter = new GObject.Class({
                             this.article_model = model;
                         }
                     } else {
-                        printerr("ERROR: " + err);
+                        printerr(err);
+                        printerr(err.stack);
                     }
                 }.bind(this));
                 return true;

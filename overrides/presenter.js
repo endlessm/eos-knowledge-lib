@@ -41,6 +41,7 @@ const Presenter = new Lang.Class({
             this._setAppContent(app_content);
         } catch(e) {
             printerr(e);
+            printerr(e.stack);
             System.exit(1);
         }
 
@@ -127,12 +128,17 @@ const Presenter = new Lang.Class({
         this._engine.get_objects_by_query(this._domain, {
             'prefix': entry.text
         }, function (err, results) {
-            entry.set_menu_items(results.map(function (obj) {
-                return {
-                    title: obj.title,
-                    id: obj.ekn_id
-                };
-            }));
+            if (err !== undefined) {
+                printerr(err);
+                printerr(err.stack);
+            } else {
+                entry.set_menu_items(results.map(function (obj) {
+                    return {
+                        title: obj.title,
+                        id: obj.ekn_id
+                    };
+                }));
+            }
         });
     },
 
@@ -144,8 +150,13 @@ const Presenter = new Lang.Class({
         }
         let database_id = id.split('/').pop();
         this._engine.get_object_by_id(this._domain, database_id, Lang.bind(this, function (err, model) {
-            this._article_presenter.article_model = model;
-            this.view.show_article_page();
+            if (err !== undefined) {
+                printerr(err);
+                printerr(err.stack);
+            } else {
+                this._article_presenter.article_model = model;
+                this.view.show_article_page();
+            }
         }));
     },
 
@@ -203,8 +214,10 @@ const Presenter = new Lang.Class({
     },
 
     _load_section_page: function (err, results) {
-        if (typeof err !== 'undefined')
-            print(err);
+        if (typeof err !== 'undefined') {
+            printerr(err);
+            printerr(err.stack);
+        }
         let cards = results.map(this._new_card_from_article_model.bind(this));
         let segments = {
             'Articles': cards
