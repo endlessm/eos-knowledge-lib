@@ -12,6 +12,14 @@ const MockWebview = new Lang.Class({
     Signals: {
         'load-changed': {
             param_types: [ GObject.TYPE_INT /* WebKitLoadEvent */ ]
+        },
+        'decide-policy': {
+            return_type: GObject.TYPE_BOOLEAN,
+            param_types: [
+                GObject.TYPE_OBJECT /* WebKitPolicyDecision */,
+                GObject.TYPE_INT /* WebKitPolicyDecisionType */
+            ],
+            flags: GObject.SignalFlags.RUN_LAST
         }
     },
 
