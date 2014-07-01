@@ -108,7 +108,16 @@ const WebviewSwitcherView = new Lang.Class({
             // FIXME (disappointed voice) Oh, GJS...
             // https://bugzilla.gnome.org/show_bug.cgi?id=729363
             // accumulator: GObject.AccumulatorType.TRUE_HANDLED
-        }
+        },
+
+        /**
+         * Event: display-ready
+         * When the page is loaded and fully displayed
+         *
+         * This signal is emitted when a new page has been loaded and all
+         * animations for displaying it are complete.
+         */
+        'display-ready': {}
     },
 
     MIN_WIDTH: 400,
@@ -147,9 +156,8 @@ const WebviewSwitcherView = new Lang.Class({
         // constant, which may change
         if (this._navigate_forwards != value) {
             this._navigate_forwards = value;
-            // FIXME: in GTK 3.12, change to OVER_LEFT and UNDER_RIGHT
-            this.transition_type = value? Gtk.StackTransitionType.SLIDE_LEFT :
-                Gtk.StackTransitionType.SLIDE_RIGHT;
+            this.transition_type = value? Gtk.StackTransitionType.OVER_LEFT :
+                Gtk.StackTransitionType.UNDER_RIGHT;
             this.notify('navigate-forwards');
         }
     },
@@ -189,21 +197,29 @@ const WebviewSwitcherView = new Lang.Class({
                     offscreen = null;
                 }
 
-                // Show the prepared view
-                // FIXME: Use notify::transition-running in GTK 3.12
-                GLib.timeout_add(GLib.PRIORITY_DEFAULT,
-                    this.transition_duration + 10,  // milliseconds
+                // Show the prepared view and clean up the old view when it is
+                // finished showing
+                let id = this.connect('notify::transition-running',
                     function () {
+                        if (this.transition_running)
+                            return;
+
                         // Make the preparing view the new active view
                         view.disconnect(load_id);
-                        if (this._active_view !== null)
+                        if (this._active_view !== null &&
+                            this === this._active_view.get_parent())
                             this.remove(this._active_view);
                         this._active_view = view;
-                        return false;  // G_SOURCE_REMOVE
+                        this.disconnect(id);
+                        this.emit('display-ready');
                     }.bind(this));
                 // No transition necessary if there was no previous view
                 if(this._active_view !== null)
                     this.visible_child = view;
+                else {
+                    this._active_view = view;
+                    this.emit('display-ready');
+                }
 
                 view.connect('decide-policy', function (v, decision, type) {
                     if(type === WebKit2.PolicyDecisionType.NAVIGATION_ACTION)
