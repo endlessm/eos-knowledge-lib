@@ -162,13 +162,14 @@ const ArticlePresenter = new GObject.Class({
 
                 this.engine.get_object_by_id(domain, id, function (err, model) {
                     if (typeof err === 'undefined') {
-                        if (model instanceof MediaObjectModel) {
+                        if (model instanceof MediaObjectModel.MediaObjectModel) {
                             this.emit('media-object-clicked', model, false);
                         } else {
                             this.article_model = model;
                         }
                     } else {
-                        printerr("ERROR: " + err);
+                        printerr(err);
+                        printerr(err.stack);
                     }
                 }.bind(this));
                 return true;
