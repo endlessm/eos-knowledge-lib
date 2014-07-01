@@ -12,6 +12,14 @@ const MockWebview = new Lang.Class({
     Signals: {
         'load-changed': {
             param_types: [ GObject.TYPE_INT /* WebKitLoadEvent */ ]
+        },
+        'decide-policy': {
+            return_type: GObject.TYPE_BOOLEAN,
+            param_types: [
+                GObject.TYPE_OBJECT /* WebKitPolicyDecision */,
+                GObject.TYPE_INT /* WebKitPolicyDecisionType */
+            ],
+            flags: GObject.SignalFlags.RUN_LAST
         }
     },
 
@@ -36,7 +44,10 @@ describe('Webview switcher view', function () {
     let switcher;
 
     beforeEach(function () {
+        let container = new Gtk.OffscreenWindow();
         switcher = new EosKnowledge.WebviewSwitcherView();
+        container.add(switcher);
+        container.show_all();
     });
 
     it('creates a default webview if signal not connected', function () {
@@ -78,14 +89,16 @@ describe('Webview switcher view', function () {
 
         describe('asynchronously', function () {
             beforeEach(function (done) {
+                // Wait for two 'display-ready' signals, signifying that each
+                // page has finished loading in turn
+                let displayReadyCount = 0;
+                switcher.connect('display-ready', function () {
+                    displayReadyCount++;
+                    if(displayReadyCount == 2)
+                        done();
+                });
                 switcher.load_uri('baked://beans');
                 switcher.load_uri('corn://bread');
-                // FIXME: in GTK 3.12, wait for notify::transition-running instead?
-                // switcher.connect('notify::transition-running', function () {
-                //     if (!switcher.transition_running)
-                //         done();
-                // });
-                setTimeout(done, 500 /* ms */);
             });
 
             xit('shows the new webview when a page is loaded', function (done) {
