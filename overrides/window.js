@@ -7,7 +7,7 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
-const ArticlePageA = imports.articlePageA;
+const ArticlePage = imports.articlePage;
 const CategoriesPage = imports.categoriesPage;
 const HomePage = imports.homePage;
 const HomePageA = imports.homePageA;
@@ -73,13 +73,13 @@ const Window = new Lang.Class({
         /**
          * Property: article-page
          *
-         * The <ArticlePageA> widget created by this widget. Read-only,
-         * modify using the <ArticlePageA> API.
+         * The <ArticlePage> widget created by this widget. Read-only,
+         * modify using the <ArticlePage> API.
          */
         'article-page': GObject.ParamSpec.object('article-page', 'Article page',
             'The article page of this view widget.',
             GObject.ParamFlags.READABLE,
-            ArticlePageA.ArticlePageA),
+            ArticlePage.ArticlePage),
         /**
          * Property: lightbox
          *

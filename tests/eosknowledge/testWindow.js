@@ -60,7 +60,7 @@ describe('Window', function () {
     });
 
     it('instantiates an article page A', function () {
-        expect(view.article_page).toBeA(EosKnowledge.ArticlePageA);
+        expect(view.article_page).toBeA(EosKnowledge.ArticlePage);
     });
 
     it('instantiates a lightbox', function () {

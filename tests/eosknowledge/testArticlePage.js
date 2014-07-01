@@ -14,7 +14,7 @@ describe('Article Page A', function () {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
         jasmine.addMatchers(InstanceOfMatcher.customMatchers);
 
-        page = new EosKnowledge.ArticlePageA();
+        page = new EosKnowledge.ArticlePage();
     });
 
     it('can be constructed', function () {

@@ -4,7 +4,7 @@ const Lang = imports.lang;
 const WebKit2 = imports.gi.WebKit2;
 
 const ArticleObjectModel = imports.articleObjectModel;
-const ArticlePageA = imports.articlePageA;
+const ArticlePage = imports.articlePage;
 const Engine = imports.engine;
 const MediaObjectModel = imports.mediaObjectModel;
 
@@ -26,7 +26,7 @@ WebKit2.WebView.prototype.run_javascript_from_gresource_after_load = function (l
  * Class: ArticlePresenter
  *
  * A presenter module to act as a intermediary between an <ArticleObjectModel>
- * and an <ArticlePageA>. It connects to signals on the view's widgets and handles
+ * and an <ArticlePage>. It connects to signals on the view's widgets and handles
  * those events accordingly.
  *
  * Its properties are an <article-model>, <article-view> and a <engine>. The engine is for
@@ -49,12 +49,12 @@ const ArticlePresenter = new GObject.Class({
         /**
          * Property: article-view
          *
-         * The <ArticlePageA> widget created by this widget. Construct-only.
+         * The <ArticlePage> widget created by this widget. Construct-only.
          */
         'article-view': GObject.ParamSpec.object('article-view', 'Article view',
             'The view component for this presenter',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            ArticlePageA.ArticlePageA),
+            ArticlePage.ArticlePage),
 
         /**
          * Property: engine

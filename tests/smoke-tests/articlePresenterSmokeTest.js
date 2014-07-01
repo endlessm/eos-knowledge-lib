@@ -33,7 +33,7 @@ const TestApplication = new Lang.Class ({
 
         let articleObject = new EosKnowledge.ArticleObjectModel.new_from_json_ld(mockArticleData);
 
-        let view = new EosKnowledge.ArticlePageA()
+        let view = new EosKnowledge.ArticlePage();
         let window = new Endless.Window({
             application: this
         });

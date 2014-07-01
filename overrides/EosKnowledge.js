@@ -10,7 +10,7 @@ imports.searchPath.unshift(Endless.getCurrentFileDir());
 
 const ArticleCard = imports.articleCard;
 const ArticleObjectModel = imports.articleObjectModel;
-const ArticlePageA = imports.articlePageA;
+const ArticlePage = imports.articlePage;
 const ArticlePresenter = imports.articlePresenter;
 const BackButtonOverlay = imports.backButtonOverlay;
 const Card = imports.card;
@@ -94,7 +94,7 @@ function _init() {
 
     EosKnowledge.ArticleCard = ArticleCard.ArticleCard;
     EosKnowledge.ArticleObjectModel = ArticleObjectModel.ArticleObjectModel;
-    EosKnowledge.ArticlePageA = ArticlePageA.ArticlePageA;
+    EosKnowledge.ArticlePage = ArticlePage.ArticlePage;
     EosKnowledge.ArticlePresenter = ArticlePresenter.ArticlePresenter;
     EosKnowledge.BackButtonOverlay = BackButtonOverlay.BackButtonOverlay;
     EosKnowledge.Card = Card.Card;

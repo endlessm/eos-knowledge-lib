@@ -12,7 +12,7 @@ const TableOfContents = imports.tableOfContents;
 const WebviewSwitcherView = imports.webviewSwitcherView;
 
 /**
- * Class: ArticlePageA
+ * Class: ArticlePage
  *
  * The article page of template A of the knowledge apps. Contains a title, a
  * read-only <TableOfContents> widget and a read-only <WebviewSwitcherView>
@@ -31,9 +31,9 @@ const WebviewSwitcherView = imports.webviewSwitcherView;
  * The toolbar frame surrounds the <title> and <toc> on the right. The
  * switcher frame surrounds the <switcher> on the left.
  */
-const ArticlePageA = new Lang.Class({
-    Name: 'ArticlePageA',
-    GTypeName: 'EknArticlePageA',
+const ArticlePage = new Lang.Class({
+    Name: 'ArticlePage',
+    GTypeName: 'EknArticlePage',
     Extends: Endless.CustomContainer,
     Properties: {
         /**

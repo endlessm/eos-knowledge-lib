@@ -7,7 +7,7 @@ public_overrides = \
 	overrides/EosKnowledge.js \
 	overrides/articleCard.js \
 	overrides/articleObjectModel.js \
-	overrides/articlePageA.js \
+	overrides/articlePage.js \
 	overrides/articlePresenter.js \
 	overrides/backButtonOverlay.js \
 	overrides/card.js \

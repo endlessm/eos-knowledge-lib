@@ -9,7 +9,7 @@ const Lang = imports.lang;
 
 const BackButtonOverlay = imports.backButtonOverlay;
 const SectionPageA = imports.sectionPageA;
-const ArticlePageA = imports.articlePageA;
+const ArticlePage = imports.articlePage;
 
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 
@@ -38,7 +38,7 @@ const SectionArticlePageA = new Lang.Class({
          */
         'article-page': GObject.ParamSpec.object('article-page', 'Article Page',
             'The article page to be displayed',
-            GObject.ParamFlags.READABLE, ArticlePageA.ArticlePageA.$gtype),
+            GObject.ParamFlags.READABLE, ArticlePage.ArticlePage.$gtype),
         /**
          * Property: show-article
          * Whether the article page should be displayed
@@ -60,7 +60,7 @@ const SectionArticlePageA = new Lang.Class({
         props = props || {};
 
         this._section_page = new SectionPageA.SectionPageA();
-        this._article_page = new ArticlePageA.ArticlePageA();
+        this._article_page = new ArticlePage.ArticlePage();
         this._transition_duration = 0;
 
         /*
