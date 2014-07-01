@@ -44,7 +44,10 @@ describe('Webview switcher view', function () {
     let switcher;
 
     beforeEach(function () {
+        let container = new Gtk.OffscreenWindow();
         switcher = new EosKnowledge.WebviewSwitcherView();
+        container.add(switcher);
+        container.show_all();
     });
 
     it('creates a default webview if signal not connected', function () {
