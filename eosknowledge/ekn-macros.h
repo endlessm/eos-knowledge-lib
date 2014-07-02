@@ -113,6 +113,13 @@ enum_type##_get_type (void) \
 #define EKN_STYLE_CLASS_LIGHTBOX "lightbox"
 
 /**
+ * EKN_STYLE_CLASS_LIGHTBOX_CONTAINER:
+ *
+ * A CSS class to match a #GtkGrid widget serving as lightbox container.
+ */
+#define EKN_STYLE_CLASS_LIGHTBOX_CONTAINER "lightbox-container"
+
+/**
  * EKN_STYLE_CLASS_LIGHTBOX_SHADOW:
  *
  * A CSS class to match the overlay shadow of #EknLightbox widgets.
@@ -134,13 +141,6 @@ enum_type##_get_type (void) \
 #define EKN_STYLE_CLASS_INFOBOX "infobox"
 
 /**
- * EKN_STYLE_CLASS_INFOBOX_ARROW:
- *
- * A CSS class to match the arrow in the infobox of #EknLightbox widgets.
- */
-#define EKN_STYLE_CLASS_INFOBOX_ARROW "infobox-arrow"
-
-/**
  * EKN_STYLE_CLASS_INFOBOX_CAPTION:
  *
  * A CSS class to match the caption label in the infobox of #EknLightbox widgets.
@@ -148,18 +148,11 @@ enum_type##_get_type (void) \
 #define EKN_STYLE_CLASS_INFOBOX_CAPTION "infobox-caption"
 
 /**
- * EKN_STYLE_CLASS_INFOBOX_CREATOR_TEXT:
+ * EKN_STYLE_CLASS_INFOBOX_ATTRIBUTION_TEXT:
  *
- * A CSS class to match the attributable creator label in the infobox of #EknLightbox widgets.
+ * A CSS class to match the attribution label in the infobox of #EknLightbox widgets.
  */
-#define EKN_STYLE_CLASS_INFOBOX_CREATOR_TEXT "infobox-creator-text"
-
-/**
- * EKN_STYLE_CLASS_INFOBOX_LICENSE_TEXT:
- *
- * A CSS class to match the license label in the infobox of #EknLightbox widgets.
- */
-#define EKN_STYLE_CLASS_INFOBOX_LICENSE_TEXT "infobox-license-text"
+#define EKN_STYLE_CLASS_INFOBOX_ATTRIBUTION_TEXT "infobox-attribution-text"
 
 /**
  * EKN_STYLE_CLASS_TOC:

@@ -119,11 +119,8 @@ const Lightbox = new Lang.Class({
             this.reveal_overlays = false;
         }));
 
-        this._infobox_container = new InfoboxContainer();
-
         let inner_overlay = new Gtk.Overlay();
         inner_overlay.add(this._lightbox_container);
-        inner_overlay.add_overlay(this._infobox_container);
         inner_overlay.show_all();
 
         this._revealer = new Gtk.Revealer({
@@ -132,10 +129,8 @@ const Lightbox = new Lang.Class({
         });
         this._revealer.add(inner_overlay);
         this._revealer.connect('notify::child-revealed', Lang.bind(this, function () {
-            if (!this._revealer.child_revealed) {
+            if (!this._revealer.child_revealed)
                 this._revealer.hide();
-                this._infobox_container.set_reveal_info_widget(false);
-            }
             this.notify('overlays-revealed');
         }));
 
@@ -210,10 +205,12 @@ const Lightbox = new Lang.Class({
         if (this._infobox_widget === v)
             return;
         if (this._infobox_widget !== null)
-            this._infobox_container.remove_info_widget(this._infobox_widget);
+            this._lightbox_container.remove_info_widget(this._infobox_widget);
         this._infobox_widget = v;
+        this._infobox_widget.get_style_context().add_class(EosKnowledge.STYLE_CLASS_INFOBOX);
+
         if (this._infobox_widget !== null)
-            this._infobox_container.add_info_widget(this._infobox_widget);
+            this._lightbox_container.add_info_widget(this._infobox_widget);
         this.notify('infobox-widget');
     },
 
@@ -269,7 +266,7 @@ const LightboxContainer = new Lang.Class({
         'navigation-next-clicked': {}
     },
 
-    _ICON_SIZE: 18,
+    _ICON_SIZE: 24,
     _ICON_MARGIN: 10,
 
     _init: function (params) {
@@ -289,6 +286,20 @@ const LightboxContainer = new Lang.Class({
             valign: Gtk.Align.CENTER,
             halign: Gtk.Align.CENTER
         });
+
+        /**
+         * Grid that contains the main widget to be displayed, along with attribution
+         * information
+         */
+        this.lightbox_main_container = new Gtk.Grid({
+            valign: Gtk.Align.CENTER,
+            halign: Gtk.Align.CENTER,
+            orientation: Gtk.Orientation.VERTICAL
+        });
+
+        this._container_frame = new Gtk.Frame();
+        this._container_frame.get_style_context().add_class(EosKnowledge.STYLE_CLASS_LIGHTBOX_CONTAINER);
+        this._container_frame.add(this.lightbox_main_container);
 
         /**
          * Close button
@@ -373,6 +384,7 @@ const LightboxContainer = new Lang.Class({
         this.navigation_box.attach(this._navigation_next_button, 1, 0, 1, 1);
 
         this._container_grid.attach(spacer, 0, 0, 1, 1);
+        this._container_grid.attach(this._container_frame, 1, 0, 1, 1);
         this._container_grid.attach(this.close_button, 2, 0, 1, 1);
         this._container_grid.attach(this.navigation_box, 0, 1, 3, 1);
 
@@ -427,7 +439,15 @@ const LightboxContainer = new Lang.Class({
     attach_widget: function (w) {
         this._widget = w;
         // Added this to hide implementation detail
-        this._container_grid.attach(this._widget, 1, 0, 1, 1);
+        this.lightbox_main_container.attach(this._widget, 0, 0, 1, 1);
+    },
+
+    add_info_widget: function (widget) {
+        this.lightbox_main_container.attach(widget, 0, 1, 1, 1);
+    },
+
+    remove_info_widget: function (widget) {
+        this.lightbox_main_container.remove_row(1);
     },
 
     _button_release: function (widget, event) {
@@ -459,69 +479,5 @@ const LightboxContainer = new Lang.Class({
         }
         // Event must have been in the shadowed area of the container.
         this.emit('clicked');
-    }
-});
-
-// A private container used to house the content-widget in the overlay.
-// Collapses and expands the infobox widget inside when the users clicks on
-// it.
-const InfoboxContainer = new Lang.Class({
-    Name: 'InfoboxContainer',
-    GTypeName: 'EknInfoboxContainer',
-    Extends: CompositeButton.CompositeButton,
-
-    DOWN_ICON: 'go-down',
-    UP_ICON: 'go-up',
-
-    _init: function (params) {
-        params = params || {};
-        params.halign = Gtk.Align.CENTER;
-        params.valign = Gtk.Align.END;
-        params.no_show_all = true;
-        this.parent(params);
-
-        this._image = new Gtk.Image({
-            icon_name: this.UP_ICON
-        });
-        this._image.get_style_context().add_class(EosKnowledge.STYLE_CLASS_INFOBOX_ARROW);
-        this._infobox_revealer = new Gtk.Revealer({
-            transition_duration: 1000,
-            transition_type: Gtk.RevealerTransitionType.SLIDE_UP
-        });
-        let grid = new Gtk.Grid({
-            orientation: Gtk.Orientation.VERTICAL
-        });
-        grid.add(this._image);
-        grid.add(this._infobox_revealer);
-        this.add(grid);
-        grid.show_all();
-
-        this.setSensitiveChildren([this._image]);
-
-        this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_INFOBOX);
-        this.connect('clicked', Lang.bind(this, function () {
-            this.set_reveal_info_widget(!this.get_reveal_info_widget());
-        }));
-    },
-
-    // Get/set whether the infobox widget should be in collapsed or expanded
-    // state.
-    get_reveal_info_widget: function () {
-        return this._infobox_revealer.reveal_child;
-    },
-
-    set_reveal_info_widget: function (reveal) {
-        this._infobox_revealer.reveal_child = reveal;
-        this._image.icon_name = reveal ? this.DOWN_ICON : this.UP_ICON;
-    },
-
-    remove_info_widget: function (widget) {
-        this._infobox_revealer.remove(widget);
-        this.hide();
-    },
-
-    add_info_widget: function (widget) {
-        this._infobox_revealer.add(widget);
-        this.show();
     }
 });
