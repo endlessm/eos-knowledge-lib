@@ -10,8 +10,9 @@ imports.searchPath.unshift(Endless.getCurrentFileDir());
 
 const ArticleCard = imports.articleCard;
 const ArticleObjectModel = imports.articleObjectModel;
-const ArticlePageA = imports.articlePageA;
+const ArticlePage = imports.articlePage;
 const ArticlePresenter = imports.articlePresenter;
+const BackButtonOverlay = imports.backButtonOverlay;
 const Card = imports.card;
 const CardA = imports.cardA;
 const CardB = imports.cardB;
@@ -31,6 +32,7 @@ const Presenter = imports.presenter;
 const Previewer = imports.previewer;
 const ProgressCard = imports.progressCard;
 const SectionArticlePageA = imports.sectionArticlePageA;
+const SectionArticlePageB = imports.sectionArticlePageB;
 const SectionPage = imports.sectionPage;
 const SectionPageA = imports.sectionPageA;
 const SectionPageB = imports.sectionPageB;
@@ -92,8 +94,9 @@ function _init() {
 
     EosKnowledge.ArticleCard = ArticleCard.ArticleCard;
     EosKnowledge.ArticleObjectModel = ArticleObjectModel.ArticleObjectModel;
-    EosKnowledge.ArticlePageA = ArticlePageA.ArticlePageA;
+    EosKnowledge.ArticlePage = ArticlePage.ArticlePage;
     EosKnowledge.ArticlePresenter = ArticlePresenter.ArticlePresenter;
+    EosKnowledge.BackButtonOverlay = BackButtonOverlay.BackButtonOverlay;
     EosKnowledge.Card = Card.Card;
     EosKnowledge.CardA = CardA.CardA;
     EosKnowledge.CardB = CardB.CardB;
@@ -114,6 +117,7 @@ function _init() {
     EosKnowledge.Previewer = Previewer.Previewer;
     EosKnowledge.ProgressCard = ProgressCard.ProgressCard;
     EosKnowledge.SectionArticlePageA = SectionArticlePageA.SectionArticlePageA;
+    EosKnowledge.SectionArticlePageB = SectionArticlePageB.SectionArticlePageB;
     EosKnowledge.SectionPage = SectionPage.SectionPage;
     EosKnowledge.SectionPageA = SectionPageA.SectionPageA;
     EosKnowledge.SectionPageB = SectionPageB.SectionPageB;

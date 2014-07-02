@@ -12,7 +12,7 @@ const TableOfContents = imports.tableOfContents;
 const WebviewSwitcherView = imports.webviewSwitcherView;
 
 /**
- * Class: ArticlePageA
+ * Class: ArticlePage
  *
  * The article page of template A of the knowledge apps. Contains a title, a
  * read-only <TableOfContents> widget and a read-only <WebviewSwitcherView>
@@ -31,9 +31,9 @@ const WebviewSwitcherView = imports.webviewSwitcherView;
  * The toolbar frame surrounds the <title> and <toc> on the right. The
  * switcher frame surrounds the <switcher> on the left.
  */
-const ArticlePageA = new Lang.Class({
-    Name: 'ArticlePageA',
-    GTypeName: 'EknArticlePageA',
+const ArticlePage = new Lang.Class({
+    Name: 'ArticlePage',
+    GTypeName: 'EknArticlePage',
     Extends: Endless.CustomContainer,
     Properties: {
         /**
@@ -64,8 +64,16 @@ const ArticlePageA = new Lang.Class({
         'switcher': GObject.ParamSpec.object('switcher', 'Switcher',
             'The WebviewSwitcherView widget for displaying article content.',
             GObject.ParamFlags.READABLE,
-            WebviewSwitcherView.WebviewSwitcherView.$gtype)
-
+            WebviewSwitcherView.WebviewSwitcherView.$gtype),
+        /**
+         * Property: has-margins
+         *
+         * Set false if the article page should zero all margins and pack
+         * everything together as closely as possible. Defaults to true.
+         */
+        'has-margins': GObject.ParamSpec.boolean('has-margins', 'No margins',
+            'Set false if the article page should zero all margins.',
+            GObject.ParamFlags.READWRITE, true),
     },
 
     COLLAPSE_TOOLBAR_WIDTH: 800,
@@ -98,6 +106,7 @@ const ArticlePageA = new Lang.Class({
             visible: true
         });
         this._switcher = new WebviewSwitcherView.WebviewSwitcherView();
+        this._has_margins = true;
         this.parent(props);
 
         let grid = new Gtk.Grid({
@@ -140,11 +149,29 @@ const ArticlePageA = new Lang.Class({
         return this._switcher;
     },
 
+    set has_margins (v) {
+        if (this._has_margins === v)
+            return;
+        if (v) {
+            this._switcher_frame.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_NO_MARGINS);
+            this._toolbar_frame.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_NO_MARGINS);
+        } else {
+            this._switcher_frame.get_style_context().add_class(EosKnowledge.STYLE_CLASS_NO_MARGINS);
+            this._toolbar_frame.get_style_context().add_class(EosKnowledge.STYLE_CLASS_NO_MARGINS);
+        }
+        this._has_margins = v;
+        this.notify('has-margins');
+    },
+
+    get has_margins () {
+        return this._has_margins;
+    },
+
     vfunc_size_allocate: function (alloc) {
         this.parent(alloc);
 
         if (!this._toc.visible) {
-            let margin = this.EXPANDED_LAYOUT.right_margin_pct * alloc.width;
+            let margin = this._has_margins ? this.EXPANDED_LAYOUT.right_margin_pct * alloc.width : 0;
             let switcher_alloc = new Cairo.RectangleInt({
                 x: alloc.x + margin,
                 y: alloc.y,
@@ -177,6 +204,11 @@ const ArticlePageA = new Lang.Class({
         let left_margin = layout.left_margin_pct * alloc.width;
         let toolbar_right_margin = layout.toolbar_right_margin_pct * alloc.width;
         let right_margin = layout.right_margin_pct * alloc.width;
+        if (!this._has_margins) {
+            left_margin = 0;
+            toolbar_right_margin = 0;
+            right_margin = 0;
+        }
         let toolbar_alloc = new Cairo.RectangleInt({
             x: alloc.x + left_margin,
             y: alloc.y,

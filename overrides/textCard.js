@@ -32,18 +32,11 @@ const TextCard = new Lang.Class({
         params.hexpand = true;
         this.parent(params);
 
-        this.title_label.get_style_context().add_class(EosKnowledge.STYLE_CLASS_TEXT_CARD);
+        this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_TEXT_CARD);
     },
 
-    pack_widgets: function () {
-        this.title_label.valign = Gtk.Align.END;
-
-        let _spacer = new Gtk.Label();
-
-        let grid = new Gtk.Grid();
-        grid.attach(this.title_label, 0, 0, 1, 1);
-        grid.attach(_spacer, 0, 1, 1, 1);
-
-        this.add(grid);
+    pack_widgets: function (title_label, synopsis_label, image_frame) {
+        title_label.xalign = 0.0;
+        this.add(title_label);
     }
 });

@@ -34,17 +34,17 @@ const HomePageB = new Lang.Class({
         this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_HOME_PAGE_B);
     },
 
-    pack_widgets: function () {
-        this.title_image.vexpand = true;
-        this.search_box.halign = Gtk.Align.CENTER;
-        this.search_box.width_chars = 40;
+    pack_widgets: function (title_image, search_box) {
+        title_image.vexpand = true;
+        search_box.halign = Gtk.Align.CENTER;
+        search_box.width_chars = 40;
 
         let card_container_frame = new Gtk.Frame();
         card_container_frame.get_style_context().add_class(EosKnowledge.STYLE_CLASS_CARD_CONTAINER);
         card_container_frame.add(this._card_container);
 
-        this.attach(this.title_image, 0, 0, 1, 1);
-        this.attach(this.search_box, 1, 0, 1, 1);
+        this.attach(title_image, 0, 0, 1, 1);
+        this.attach(search_box, 1, 0, 1, 1);
         this.attach(card_container_frame, 0, 1, 2, 1);
     },
 

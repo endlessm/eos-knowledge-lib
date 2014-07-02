@@ -7,8 +7,9 @@ public_overrides = \
 	overrides/EosKnowledge.js \
 	overrides/articleCard.js \
 	overrides/articleObjectModel.js \
-	overrides/articlePageA.js \
+	overrides/articlePage.js \
 	overrides/articlePresenter.js \
+	overrides/backButtonOverlay.js \
 	overrides/card.js \
 	overrides/cardA.js \
 	overrides/cardB.js \
@@ -29,6 +30,7 @@ public_overrides = \
 	overrides/progressCard.js \
 	overrides/previewer.js \
 	overrides/sectionArticlePageA.js \
+	overrides/sectionArticlePageB.js \
 	overrides/sectionPage.js \
 	overrides/sectionPageA.js \
 	overrides/sectionPageB.js \

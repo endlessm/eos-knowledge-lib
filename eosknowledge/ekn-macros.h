@@ -399,4 +399,12 @@ enum_type##_get_type (void) \
  */
 #define EKN_STYLE_CLASS_SHOW_ARTICLE_PAGE "show-article-page"
 
+
+/**
+ * EKN_STYLE_CLASS_NO_MARGINS:
+ *
+ * A CSS class for knowledge widgets that should turn their margins off.
+ */
+#define EKN_STYLE_CLASS_NO_MARGINS "no-margins"
+
 #endif /* EKN_MACROS_H */

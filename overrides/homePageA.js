@@ -73,8 +73,8 @@ const HomePageA = new Lang.Class({
         this._button_stack.visible_child = this._all_categories_button;
     },
 
-    pack_widgets: function () {
-        this.title_image.margin_bottom = 30;
+    pack_widgets: function (title_image, search_box) {
+        title_image.margin_bottom = 30;
 
         let inner_grid = new Gtk.Grid({
             halign: Gtk.Align.CENTER,
@@ -82,8 +82,8 @@ const HomePageA = new Lang.Class({
             expand: true,
             orientation: Gtk.Orientation.VERTICAL
         });
-        inner_grid.attach(this.title_image, 0, 0, 3, 1);
-        inner_grid.attach(this.search_box, 0, 1, 3, 1);
+        inner_grid.attach(title_image, 0, 0, 3, 1);
+        inner_grid.attach(search_box, 0, 1, 3, 1);
 
         this.orientation = Gtk.Orientation.VERTICAL;
         this.add(inner_grid);

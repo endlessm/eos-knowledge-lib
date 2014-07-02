@@ -54,17 +54,22 @@ EknWindowA.show-article-page {
 }
 
 .text-card {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #eeccf8;
     padding: 10px;
-    margin: 30px;
-    background-color: white;
-    color: orange;
+    background-color: alpha(#eae7e9, 0);
     transition: color 250ms ease-in-out;
     transition: background-color 250ms ease-in-out;
 }
 
 .text-card:hover {
-    background-color: orange;
-    color: white;
+    color: #d64970;
+    background-color: #eae7e9;
+}
+
+.text-card .card-title {
+    padding-left: 1.5em;
 }
 
 .card-a .card-title:hover,
@@ -342,10 +347,6 @@ EknWindowA.show-article-page {
     background-color: black;
 }
 
-.home-page-b {
-    text-shadow: alpha(black, 0.2) 3px 3px 0px;
-}
-
 .section-page-title {
     font-family: Montserrat;
     font-weight: bold;
@@ -362,7 +363,13 @@ EknWindowA.show-article-page {
 }
 
 .section-page-b .section-page-title {
-    font-size: 1.58em;  /* 18pt at 72 DPI 1080px */
+    font-size: 4em;
+    padding: 1em 1.5em;
+    font-weight: bold;
+}
+
+.section-page-b GtkScrolledWindow {
+    background-color: alpha(black, 0.5);
 }
 
 .section-page-a-segment-title {
@@ -387,6 +394,10 @@ EknWindowA.show-article-page {
 
 .article-page-switcher-frame {
     padding: 20px 0px;
+}
+
+.article-page-switcher-frame.no-margins {
+    padding: 0px;
 }
 
 .article-page-title {

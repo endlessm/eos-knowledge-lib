@@ -52,14 +52,14 @@ const Card = new Lang.Class({
     },
 
     _init: function(props) {
-        this.title_label = new Gtk.Label({
+        this._title_label = new Gtk.Label({
             hexpand: true,
             ellipsize: Pango.EllipsizeMode.END,
             max_width_chars: 1,
             visible: false,
             no_show_all: true
         });
-        this.synopsis_label = new Gtk.Label({
+        this._synopsis_label = new Gtk.Label({
             hexpand: true,
             ellipsize: Pango.EllipsizeMode.END,
             wrap_mode: Pango.WrapMode.WORD,
@@ -68,24 +68,24 @@ const Card = new Lang.Class({
             visible: false,
             no_show_all: true
         });
-        this.image_frame = new Gtk.Frame({
+        this._image_frame = new Gtk.Frame({
             expand: true,
             visible: false,
             no_show_all: true
         });
-        this.background_provider = new Gtk.CssProvider();
+        this._background_provider = new Gtk.CssProvider();
         this._thumbnail_uri = null;
 
         this.parent(props);
 
-        this.setSensitiveChildren([this.title_label, this.synopsis_label, this.image_frame]);
+        this.setSensitiveChildren([this._title_label, this._synopsis_label, this._image_frame]);
 
         this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_CARD);
-        this.title_label.get_style_context().add_class(EosKnowledge.STYLE_CLASS_CARD_TITLE);
-        this.synopsis_label.get_style_context().add_class(EosKnowledge.STYLE_CLASS_CARD_SYNOPSIS);
-        this.image_frame.get_style_context().add_class(EosKnowledge.STYLE_CLASS_THUMBNAIL);
+        this._title_label.get_style_context().add_class(EosKnowledge.STYLE_CLASS_CARD_TITLE);
+        this._synopsis_label.get_style_context().add_class(EosKnowledge.STYLE_CLASS_CARD_SYNOPSIS);
+        this._image_frame.get_style_context().add_class(EosKnowledge.STYLE_CLASS_THUMBNAIL);
 
-        this.pack_widgets();
+        this.pack_widgets(this._title_label, this._synopsis_label, this._image_frame);
         this.show_all();
     },
 
@@ -100,39 +100,39 @@ const Card = new Lang.Class({
      * all widgets to the tree, if for example they do not want to support a
      * thumbnail image
      */
-    pack_widgets: function () {
+    pack_widgets: function (title_label, synopsis_label, image_frame) {
         let grid = new Gtk.Grid({
             orientation: Gtk.Orientation.VERTICAL
         });
-        grid.add(this.image_frame);
-        grid.add(this.title_label);
-        grid.add(this.synopsis_label);
+        grid.add(image_frame);
+        grid.add(title_label);
+        grid.add(synopsis_label);
         this.add(grid);
     },
 
     set title (v) {
-        if (this.title_label.label === v) return;
-        this.title_label.label = v;
-        this.title_label.visible = (v && v.length !== 0);
+        if (this._title_label.label === v) return;
+        this._title_label.label = v;
+        this._title_label.visible = (v && v.length !== 0);
         this.notify('title');
     },
 
     get title () {
-        if (this.title_label)
-            return this.title_label.label;
+        if (this._title_label)
+            return this._title_label.label;
         return '';
     },
 
     set synopsis (v) {
-        if (this.synopsis_label.label === v) return;
-        this.synopsis_label.label = v;
-        this.synopsis_label.visible = (v && v.length !== 0);
+        if (this._synopsis_label.label === v) return;
+        this._synopsis_label.label = v;
+        this._synopsis_label.visible = (v && v.length !== 0);
         this.notify('synopsis');
     },
 
     get synopsis () {
-        if (this.synopsis_label)
-            return this.synopsis_label.label;
+        if (this._synopsis_label)
+            return this._synopsis_label.label;
         return '';
     },
 
@@ -141,11 +141,11 @@ const Card = new Lang.Class({
         this._thumbnail_uri = v;
         if (this._thumbnail_uri) {
             let frame_css = '* { background-image: url("' + this._thumbnail_uri + '"); }';
-            this.background_provider.load_from_data(frame_css);
-            let context = this.image_frame.get_style_context();
-            context.add_provider(this.background_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+            this._background_provider.load_from_data(frame_css);
+            let context = this._image_frame.get_style_context();
+            context.add_provider(this._background_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
         }
-        this.image_frame.visible = (v && v.length !== 0);
+        this._image_frame.visible = (v && v.length !== 0);
         this.notify('thumbnail-uri');
     },
 

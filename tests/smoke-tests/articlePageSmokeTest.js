@@ -25,7 +25,7 @@ const TestApplication = new Lang.Class({
                                                  provider,
                                                  Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 
-        let article_page = new EosKnowledge.ArticlePageA({
+        let article_page = new EosKnowledge.ArticlePage({
             title: 'Big Old Title Thinger That Should Wrap',
             visible: true
         });

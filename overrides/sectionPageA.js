@@ -36,23 +36,7 @@ const SectionPageA = new Lang.Class({
     _init: function (props) {
         this.parent(props);
 
-        this._scroller = new Gtk.ScrolledWindow({
-            hscrollbar_policy: Gtk.PolicyType.NEVER
-        });
-        this._content_grid = new Gtk.Grid({
-            orientation: Gtk.Orientation.VERTICAL,
-            expand: true,
-            valign: Gtk.Align.START,
-            row_spacing: 20,
-            margin_left: 100,
-            margin_right: 100
-        });
-
         this._segments = null;
-
-        this._content_grid.add(this.title_label);
-        this._scroller.add(this._content_grid);
-        this.add(this._scroller);
 
         // We need the segment titles of all be right aligned with each other.
         // This gets tricky as they aren't all in the same container, so we
@@ -62,7 +46,25 @@ const SectionPageA = new Lang.Class({
         });
 
         this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_SECTION_PAGE_A);
-        this.show_all();
+    },
+
+    pack_title_label: function (title_label) {
+        this._content_grid = new Gtk.Grid({
+            orientation: Gtk.Orientation.VERTICAL,
+            expand: true,
+            valign: Gtk.Align.START,
+            row_spacing: 20,
+            margin_left: 100,
+            margin_right: 100
+        });
+        this._content_grid.add(title_label);
+
+        this._scroller = new Gtk.ScrolledWindow({
+            hscrollbar_policy: Gtk.PolicyType.NEVER
+        });
+        this._scroller.add(this._content_grid);
+
+        this.add(this._scroller);
     },
 
     set segments (v) {

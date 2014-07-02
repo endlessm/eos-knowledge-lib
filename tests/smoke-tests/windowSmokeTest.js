@@ -97,86 +97,123 @@ const TestApplication = new Lang.Class({
 
         // ============ SECTION PAGE ==================
         view.section_page.title = 'History of Guatemala';
-        view.section_page.segments = {
-            'Lessons and Classes': [
-                new EosKnowledge.CardA({
-                    title: 'Subtitled Card',
-                }),
-                new EosKnowledge.CardA({
-                    title: 'Picture Card',
-                    thumbnail_uri: TESTDIR + '/test-content/pig1.jpg',
-                })
-            ],
-            'Articles and Files': [
-                new EosKnowledge.CardA({
-                    title: 'Everything card',
-                    thumbnail_uri: TESTDIR + '/test-content/pig2.jpg',
-                }),
-                new EosKnowledge.LessonCard({
-                    title: 'Mustard lesson',
-                    // By Bogdan29roman, CC-BY-SA
-                    // http://en.wikipedia.org/wiki/File:Mu%C5%9Ftar.jpg
-                    thumbnail_uri: TESTDIR + '/test-content/mustard.jpg',
-                    item_index: 1,
-                    complete: false
-                }),
-                new EosKnowledge.LessonCard({
-                    title: 'Ketchup lesson',
-                    // By Rachel Tayse, CC-BY
-                    // http://en.wikipedia.org/wiki/File:Homemade_ketchup_canned_(4156502791).jpg
-                    thumbnail_uri: TESTDIR + '/test-content/ketchup.jpg',
-                    item_index: 0
-                })
-            ],
-            'Devon and Higgins': [
-                new EosKnowledge.CardA({
-                    title: 'Everything card',
-                    thumbnail_uri: TESTDIR + '/test-content/pig2.jpg',
-                }),
-                new EosKnowledge.LessonCard({
-                    title: 'Mustard lesson',
-                    // By Bogdan29roman, CC-BY-SA
-                    // http://en.wikipedia.org/wiki/File:Mu%C5%9Ftar.jpg
-                    thumbnail_uri: TESTDIR + '/test-content/mustard.jpg',
-                    item_index: 1,
-                    complete: false
-                })
-            ],
-            'Fernando and Frango': [
-                new EosKnowledge.CardA({
-                    title: 'Everything card',
-                    thumbnail_uri: TESTDIR + '/test-content/pig2.jpg',
-                }),
-                new EosKnowledge.LessonCard({
-                    title: 'Mustard lesson',
-                    // By Bogdan29roman, CC-BY-SA
-                    // http://en.wikipedia.org/wiki/File:Mu%C5%9Ftar.jpg
-                    thumbnail_uri: TESTDIR + '/test-content/mustard.jpg',
-                    item_index: 1,
-                    complete: false
-                }),
-                new EosKnowledge.LessonCard({
-                    title: 'Ketchup lesson',
-                    // By Rachel Tayse, CC-BY
-                    // http://en.wikipedia.org/wiki/File:Homemade_ketchup_canned_(4156502791).jpg
-                    thumbnail_uri: TESTDIR + '/test-content/ketchup.jpg',
-                    item_index: 0
-                }),
-                new EosKnowledge.LessonCard({
-                    title: 'Onion lessson',
-                    // By Asb at the German language Wikipedia, CC-BY-SA
-                    // http://en.wikipedia.org/wiki/File:Rote_Zwiebeln_aufgeschnitten_asb_2004_PICT4222.JPG
-                    thumbnail_uri: TESTDIR + '/test-content/onion.jpg',
-                    item_index: 0,
-                    complete: true
-                })
-            ]
-        };
-        for (let segment in view.section_page.segments) {
-            for (let card of view.section_page.segments[segment]) {
+        if (template_type === 'B') {
+            view.section_page.cards = [
+                new EosKnowledge.TextCard({title: 'The Mayan Culture'}),
+                new EosKnowledge.TextCard({title: 'Colapse of the Mayans'}),
+                new EosKnowledge.TextCard({title: 'Arrival of the Spaniards'}),
+                new EosKnowledge.TextCard({title: 'The Colonial Era'}),
+                new EosKnowledge.TextCard({title: 'Independence'}),
+                new EosKnowledge.TextCard({title: 'The Republic'}),
+                new EosKnowledge.TextCard({title: 'Military Dictatorships'}),
+                new EosKnowledge.TextCard({title: 'Civil War'}),
+                new EosKnowledge.TextCard({title: 'The Democratic Transition'}),
+                new EosKnowledge.TextCard({title: 'The Mayan Culture'}),
+                new EosKnowledge.TextCard({title: 'Colapse of the Mayans'}),
+                new EosKnowledge.TextCard({title: 'Arrival of the Spaniards'}),
+                new EosKnowledge.TextCard({title: 'The Colonial Era'}),
+                new EosKnowledge.TextCard({title: 'Independence'}),
+                new EosKnowledge.TextCard({title: 'The Republic'}),
+                new EosKnowledge.TextCard({title: 'Military Dictatorships'}),
+                new EosKnowledge.TextCard({title: 'Civil War'}),
+                new EosKnowledge.TextCard({title: 'The Democratic Transition'}),
+                new EosKnowledge.TextCard({title: 'The Mayan Culture'}),
+                new EosKnowledge.TextCard({title: 'Colapse of the Mayans'}),
+                new EosKnowledge.TextCard({title: 'Arrival of the Spaniards'}),
+                new EosKnowledge.TextCard({title: 'The Colonial Era'}),
+                new EosKnowledge.TextCard({title: 'Independence'}),
+                new EosKnowledge.TextCard({title: 'The Republic'}),
+                new EosKnowledge.TextCard({title: 'Military Dictatorships'}),
+                new EosKnowledge.TextCard({title: 'Civil War'}),
+                new EosKnowledge.TextCard({title: 'The Democratic Transition'})
+            ];
+            for (let card of view.section_page.cards) {
                 card.connect('clicked', function () {
                     view.show_article_page();
                 });
+            }
+        } else {
+            view.section_page.segments = {
+                'Lessons and Classes': [
+                    new EosKnowledge.CardA({
+                        title: 'Subtitled Card',
+                    }),
+                    new EosKnowledge.CardA({
+                        title: 'Picture Card',
+                        thumbnail_uri: TESTDIR + '/test-content/pig1.jpg',
+                    })
+                ],
+                'Articles and Files': [
+                    new EosKnowledge.CardA({
+                        title: 'Everything card',
+                        thumbnail_uri: TESTDIR + '/test-content/pig2.jpg',
+                    }),
+                    new EosKnowledge.LessonCard({
+                        title: 'Mustard lesson',
+                        // By Bogdan29roman, CC-BY-SA
+                        // http://en.wikipedia.org/wiki/File:Mu%C5%9Ftar.jpg
+                        thumbnail_uri: TESTDIR + '/test-content/mustard.jpg',
+                        item_index: 1,
+                        complete: false
+                    }),
+                    new EosKnowledge.LessonCard({
+                        title: 'Ketchup lesson',
+                        // By Rachel Tayse, CC-BY
+                        // http://en.wikipedia.org/wiki/File:Homemade_ketchup_canned_(4156502791).jpg
+                        thumbnail_uri: TESTDIR + '/test-content/ketchup.jpg',
+                        item_index: 0
+                    })
+                ],
+                'Devon and Higgins': [
+                    new EosKnowledge.CardA({
+                        title: 'Everything card',
+                        thumbnail_uri: TESTDIR + '/test-content/pig2.jpg',
+                    }),
+                    new EosKnowledge.LessonCard({
+                        title: 'Mustard lesson',
+                        // By Bogdan29roman, CC-BY-SA
+                        // http://en.wikipedia.org/wiki/File:Mu%C5%9Ftar.jpg
+                        thumbnail_uri: TESTDIR + '/test-content/mustard.jpg',
+                        item_index: 1,
+                        complete: false
+                    })
+                ],
+                'Fernando and Frango': [
+                    new EosKnowledge.CardA({
+                        title: 'Everything card',
+                        thumbnail_uri: TESTDIR + '/test-content/pig2.jpg',
+                    }),
+                    new EosKnowledge.LessonCard({
+                        title: 'Mustard lesson',
+                        // By Bogdan29roman, CC-BY-SA
+                        // http://en.wikipedia.org/wiki/File:Mu%C5%9Ftar.jpg
+                        thumbnail_uri: TESTDIR + '/test-content/mustard.jpg',
+                        item_index: 1,
+                        complete: false
+                    }),
+                    new EosKnowledge.LessonCard({
+                        title: 'Ketchup lesson',
+                        // By Rachel Tayse, CC-BY
+                        // http://en.wikipedia.org/wiki/File:Homemade_ketchup_canned_(4156502791).jpg
+                        thumbnail_uri: TESTDIR + '/test-content/ketchup.jpg',
+                        item_index: 0
+                    }),
+                    new EosKnowledge.LessonCard({
+                        title: 'Onion lessson',
+                        // By Asb at the German language Wikipedia, CC-BY-SA
+                        // http://en.wikipedia.org/wiki/File:Rote_Zwiebeln_aufgeschnitten_asb_2004_PICT4222.JPG
+                        thumbnail_uri: TESTDIR + '/test-content/onion.jpg',
+                        item_index: 0,
+                        complete: true
+                    })
+                ]
+            };
+            for (let segment in view.section_page.segments) {
+                for (let card of view.section_page.segments[segment]) {
+                    card.connect('clicked', function () {
+                        view.show_article_page();
+                    });
+                }
             }
         }
 

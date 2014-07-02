@@ -36,7 +36,7 @@ const TestApplication = new Lang.Class ({
         this._model.article_content_uri = 'file://' + TESTBUILDDIR + '/test-content/emacs.html';
         this._model.set_resources(this._get_mock_media_objects());
 
-        this._view = new EosKnowledge.ArticlePageA();
+        this._view = new EosKnowledge.ArticlePage();
 
         this._engine = new EosKnowledge.Engine();
 

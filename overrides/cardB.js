@@ -26,23 +26,25 @@ const CardB = new Lang.Class({
         this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_CARD_B);
     },
 
-    pack_widgets: function () {
-        this.title_label.valign = Gtk.Align.END;
+    pack_widgets: function (title_label, synopsis_label, image_frame) {
+        title_label.valign = Gtk.Align.END;
         // Make title label "transparent" to mouse events
-        this.title_label.connect_after('realize', function (frame) {
-            let gdk_window = frame.get_window();
+        title_label.connect_after('realize', function (widget) {
+            let gdk_window = widget.get_window();
             gdk_window.set_child_input_shapes();
         });
 
-        this.size_group = new Gtk.SizeGroup({
+        // I think we need to ref the size group somehow, so its lifetime is
+        // attached to this widget, hence the "this."
+        this._size_group = new Gtk.SizeGroup({
             mode: Gtk.SizeGroupMode.BOTH
         });
-        this.size_group.add_widget(this.title_label);
-        this.size_group.add_widget(this.image_frame);
+        this._size_group.add_widget(title_label);
+        this._size_group.add_widget(image_frame);
 
         let overlay = new Gtk.Overlay();
-        overlay.add(this.image_frame);
-        overlay.add_overlay(this.title_label);
+        overlay.add(image_frame);
+        overlay.add_overlay(title_label);
 
         this.add(overlay);
     }
