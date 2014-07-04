@@ -187,8 +187,6 @@ const Window = new Lang.Class({
     _init: function (props) {
         this.parent(props);
 
-        let home_page_class = this.template_type === 'B' ? HomePageB.HomePageB : HomePageA.HomePageA;
-        this._home_page = new home_page_class();
         this._categories_page = new CategoriesPage.CategoriesPage();
         if (this.template_type === 'B') {
             this._home_page = new HomePageB.HomePageB();
@@ -196,6 +194,16 @@ const Window = new Lang.Class({
         } else {
             this._home_page = new HomePageA.HomePageA();
             this._section_article_page = new SectionArticlePageA.SectionArticlePageA();
+            // Connection so that tab buttons are revealed after page transition
+            this.page_manager.connect('notify::transition-running', Lang.bind(this, function () {
+                if (!this.page_manager.transition_running) {
+                    if (this.page_manager.visible_child === this.home_page) {
+                        this.home_page.showButton();
+                    } else if (this.page_manager.visible_child === this.categories_page) {
+                        this.categories_page.showButton();
+                    }
+                }
+            }));
         }
         this._section_article_page.connect('back-clicked', function () {
             this.emit('sidebar-back-clicked');
@@ -252,17 +260,6 @@ const Window = new Lang.Class({
         this.page_manager.transition_duration = this.TRANSITION_DURATION;
         this.page_manager.bind_property('transition-duration', this._section_article_page,
             'transition-duration', GObject.BindingFlags.SYNC_CREATE);
-
-        // Connection so that tab buttons are revealed after page transition
-        this.page_manager.connect('notify::transition-running', Lang.bind(this, function () {
-            if (!this.page_manager.transition_running) {
-                if (this.page_manager.visible_child === this.home_page) {
-                    this.home_page.showButton();
-                } else if (this.page_manager.visible_child === this.categories_page) {
-                    this.categories_page.showButton();
-                }
-            }
-        }));
 
         this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_SHOW_HOME_PAGE);
         this.connect('size-allocate', Lang.bind(this, function(widget, allocation) {

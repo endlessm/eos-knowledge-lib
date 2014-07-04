@@ -62,7 +62,8 @@ const SectionPageB = new Lang.Class({
             margin_left: 80
         });
 
-        this._card_list_box = new Gtk.ListBox({
+        this._card_list_box = new Gtk.Grid({
+            orientation: Gtk.Orientation.VERTICAL,
             valign: Gtk.Align.START
         });
         this._scroller.add(this._card_list_box);
