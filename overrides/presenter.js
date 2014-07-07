@@ -263,8 +263,7 @@ const Presenter = new Lang.Class({
             visible: true
         });
         let infobox = MediaInfobox.MediaInfobox.new_from_ekn_model(media_object);
-
-        previewer.file = Gio.File.new_for_path(media_object.content_uri);
+        previewer.file = Gio.File.new_for_uri(media_object.content_uri);
         this.view.lightbox.media_object = media_object;
         this.view.lightbox.infobox_widget = infobox;
         this.view.lightbox.content_widget = previewer;
