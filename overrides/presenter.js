@@ -180,7 +180,7 @@ const Presenter = new Lang.Class({
         this.view.show_article_page();
     },
 
-    _on_media_object_clicked: function (media_object, is_resource) {
+    _on_media_object_clicked: function (article_presenter, media_object, is_resource) {
         this._preview_media_object(media_object, is_resource);
     },
 
