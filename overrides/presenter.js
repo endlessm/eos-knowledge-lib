@@ -180,7 +180,7 @@ const Presenter = new Lang.Class({
         this.view.show_article_page();
     },
 
-    _on_media_object_clicked: function (media_object, is_resource) {
+    _on_media_object_clicked: function (article_presenter, media_object, is_resource) {
         this._preview_media_object(media_object, is_resource);
     },
 
@@ -263,8 +263,7 @@ const Presenter = new Lang.Class({
             visible: true
         });
         let infobox = MediaInfobox.MediaInfobox.new_from_ekn_model(media_object);
-
-        previewer.file = Gio.File.new_for_path(media_object.content_uri);
+        previewer.file = Gio.File.new_for_uri(media_object.content_uri);
         this.view.lightbox.media_object = media_object;
         this.view.lightbox.infobox_widget = infobox;
         this.view.lightbox.content_widget = previewer;
