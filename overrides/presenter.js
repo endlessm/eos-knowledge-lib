@@ -39,6 +39,10 @@ const Presenter = new Lang.Class({
             application: app,
             template_type: this._template_type
         });
+        this._previewer = new Previewer.Previewer({
+            visible: true
+        });
+        this.view.lightbox.content_widget = this._previewer;
 
         try {
             this._setAppContent(app_content);
@@ -259,14 +263,10 @@ const Presenter = new Lang.Class({
     },
 
     _preview_media_object: function (media_object, is_resource) {
-        let previewer = new Previewer.Previewer({
-            visible: true
-        });
         let infobox = MediaInfobox.MediaInfobox.new_from_ekn_model(media_object);
-        previewer.file = Gio.File.new_for_uri(media_object.content_uri);
+        this._previewer.file = Gio.File.new_for_uri(media_object.content_uri);
         this.view.lightbox.media_object = media_object;
         this.view.lightbox.infobox_widget = infobox;
-        this.view.lightbox.content_widget = previewer;
         this.view.lightbox.reveal_overlays = true;
         this.view.lightbox.has_navigation_buttons = is_resource;
     }
