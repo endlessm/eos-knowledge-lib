@@ -195,7 +195,7 @@ const Lightbox = new Lang.Class({
         if (this._content_widget === v)
             return;
         if (this._content_widget !== null)
-            this._lightbox_container.remove(this._content_widget);
+            this._lightbox_container.remove_widget(this._content_widget);
         this._content_widget = v;
         if (this._content_widget !== null)
             this._lightbox_container.attach_widget(this._content_widget);
@@ -428,6 +428,11 @@ const LightboxContainer = new Lang.Class({
         this._widget = w;
         // Added this to hide implementation detail
         this._container_grid.attach(this._widget, 1, 0, 1, 1);
+    },
+
+    remove_widget: function (w) {
+        this._container_grid.remove(w);
+        this._widget = null;
     },
 
     _button_release: function (widget, event) {
