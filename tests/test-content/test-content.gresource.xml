@@ -12,5 +12,7 @@
         <file compressed="true">agot.svg</file>
         <file compressed="true">background.jpg</file>
         <file compressed="true">background_blurred.jpg</file>
+        <file compressed="true">stallman.css</file>
+        <file compressed="true">stallman.js</file>
     </gresource>
 </gresources>

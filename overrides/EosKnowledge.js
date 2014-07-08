@@ -22,6 +22,7 @@ const Engine = imports.engine;
 const HomePage = imports.homePage;
 const HomePageA = imports.homePageA;
 const HomePageB = imports.homePageB;
+const InjectableWebview = imports.injectableWebview;
 const KnowledgeApp = imports.knowledgeApp;
 const LessonCard = imports.lessonCard;
 const Lightbox = imports.lightbox;
@@ -105,6 +106,7 @@ function _init() {
     EosKnowledge.Engine = Engine.Engine;
     EosKnowledge.HomePage = HomePage.HomePage;
     EosKnowledge.HomePageA = HomePageA.HomePageA;
+    EosKnowledge.InjectableWebview = InjectableWebview.InjectableWebview;
     EosKnowledge.ImageObjectModel = MediaObjectModel.ImageObjectModel;
     EosKnowledge.HomePageB = HomePageB.HomePageB;
     EosKnowledge.KnowledgeApp = KnowledgeApp.KnowledgeApp;
