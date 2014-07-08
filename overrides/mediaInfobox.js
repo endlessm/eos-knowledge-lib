@@ -2,6 +2,10 @@ const Gtk = imports.gi.Gtk;
 const GObject = imports.gi.GObject;
 const EosKnowledge = imports.gi.EosKnowledge;
 const Lang = imports.lang;
+const Pango = imports.gi.Pango;
+
+const CompositeButton = imports.compositeButton;
+const Config = imports.config;
 
 /** Class: MediaInfobox
  *
@@ -13,8 +17,7 @@ const MediaInfobox = new Lang.Class({
     GTypeName: 'EknMediaInfobox',
     Extends: Gtk.Grid,
     
-    LICENSE_PREAMBLE: 'License: ',
-    CREATOR_PREAMBLE: 'Created By: ',
+    CAPTION_MAX_CHARS_PER_LINE: 60,
 
     Properties: {
         /**
@@ -24,6 +27,14 @@ const MediaInfobox = new Lang.Class({
          */
         'caption': GObject.ParamSpec.string('caption', 'Caption',
             'Caption to be displayed for the media',
+            GObject.ParamFlags.READWRITE,
+            ''),
+
+        /**
+         *
+         */
+        'media-title': GObject.ParamSpec.string('media-title', 'Media Title',
+            'Title of the media being displayed',
             GObject.ParamFlags.READWRITE,
             ''),
 
@@ -54,22 +65,32 @@ const MediaInfobox = new Lang.Class({
         props.column_homogeneous = true;
 
         this._caption = null;
+        this._media_title = null;
         this._license_text = null;
         this._creator_text = null;
 
-        this._caption_label = new Gtk.Label();
-        this._license_label = new Gtk.Label({
+        this._caption_label = new Gtk.Label({
+            halign: Gtk.Align.START,
+            wrap: true,
+            wrap_mode: Pango.WrapMode.WORD,
+            max_width_chars: this.CAPTION_MAX_CHARS_PER_LINE
+        });
+        this._caption_label.get_style_context().add_class(EosKnowledge.STYLE_CLASS_INFOBOX_CAPTION);
+
+        this._separator = new Gtk.Separator({
+            expand: true,
+            halign: Gtk.Align.FILL
+        });
+
+        this._attribution_composite = new CompositeButton.CompositeButton();
+        this._attribution_label = new Gtk.Label({
             xalign: 0
         });
-        this._creator_label = new Gtk.Label({
-            xalign: 1
-        });
+        this._attribution_composite.get_style_context().add_class(EosKnowledge.STYLE_CLASS_INFOBOX_ATTRIBUTION_TEXT);
+        this._attribution_composite.add(this._attribution_label);
+        this._attribution_composite.setSensitiveChildren([this._attribution_label]);
 
         this.parent(props);
-
-        this._caption_label.get_style_context().add_class(EosKnowledge.STYLE_CLASS_INFOBOX_CAPTION);
-        this._license_label.get_style_context().add_class(EosKnowledge.STYLE_CLASS_INFOBOX_LICENSE_TEXT);
-        this._creator_label.get_style_context().add_class(EosKnowledge.STYLE_CLASS_INFOBOX_CREATOR_TEXT);
 
         this.pack_widgets();
         this.show_all();
@@ -77,8 +98,19 @@ const MediaInfobox = new Lang.Class({
 
     pack_widgets: function () {
         this.attach(this._caption_label, 0, 0, 2, 1);
-        this.attach(this._license_label, 0, 1, 1, 1);
-        this.attach(this._creator_label, 1, 1, 1, 1);
+        this.attach(this._separator, 0, 1, 2, 1);
+        this.attach(this._attribution_composite, 0, 2, 1, 1);
+    },
+
+    _refresh_attribution_label: function () {
+        let attributions = [];
+        if (this._media_title !== null)
+            attributions.push(this._media_title);
+        if (this._license_text !== null)
+            attributions.push(this._license_text);
+        if (this._creator_text !== null)
+            attributions.push(this._creator_text);
+        this._attribution_label.label = attributions.join(' - ').toUpperCase();
     },
 
     set caption (v) {
@@ -100,13 +132,9 @@ const MediaInfobox = new Lang.Class({
 
     set license_text (v) {
         if (this._license_text === v) return;
-        if (v.length > 0) {
-            this._license_label.label = this.LICENSE_PREAMBLE + v;
-            this._license_label.show();
-        } else {
-            this._license_label.hide();
-        }
+
         this._license_text = v;
+        this._refresh_attribution_label();
     },
     
     get license_text () {
@@ -117,19 +145,28 @@ const MediaInfobox = new Lang.Class({
 
     set creator_text (v) {
         if (this._creator_text === v) return;
-        if (v.length > 0) {
-            this._creator_label.label = this.CREATOR_PREAMBLE + v;
-            this._creator_label.show();
-        } else {
-            this._creator_label.hide();
-        }
+
         this._creator_text = v;
+        this._refresh_attribution_label();
     },
     
     get creator_text () {
         if (this._creator_text === null)
             return '';
         return this._creator_text;
+    },
+
+    set media_title (v) {
+        if (this._media_title === v) return;
+
+        this._media_title = v;
+        this._refresh_attribution_label();
+    },
+
+    get media_title () {
+        if (this._media_title === null)
+            return '';
+        return this._media_title;
     }
 });
 

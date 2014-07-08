@@ -31,13 +31,25 @@ const TestApplication = new Lang.Class({
 
         this._infoboxes = {
             image: new EosKnowledge.MediaInfobox({
-                caption: "Don't eat my hat man.\nI'll mess you up"
+                caption: 'Ruínas maias em Tikal, abandonadas por razões desconhecidas no século X.',
+                media_title: 'pig1.jpg',
+                license_text: 'Some license',
+                creator_text: 'Some creator'
             }),
             video: new EosKnowledge.MediaInfobox({
-                caption: 'Some kinda rabbit man'
+                caption: 'Some kinda rabbit man',
+                media_title: 'sample.mp4',
+                license_text: 'Here\'s your license, pal!',
+                creator_text: 'Me'
             }),
             copyrighted: new EosKnowledge.MediaInfobox({
-                caption: 'The Secret Sauce',
+                caption: 'Ruínas maias em Tikal. Em Tikal, nas terras baixas do norte da Guatemala, muitas ruínas maias do III e IV séculos foram escavadas. ' +
+                         'e estudadas. Acredita-se que a área, um dos maiores centros religiosos maia, teve uma população de 50.000 habitantes durante seu ' +
+                         'apogeu, até que foi abandonada por razões desconhecidas no século X.\n' +
+                         'Ruínas maias em Tikal. Em Tikal, nas terras baixas do norte da Guatemala, muitas ruínas maias do III e IV séculos foram escavadas. ' +
+                         'e estudadas. Acredita-se que a área, um dos maiores centros religiosos maia, teve uma população de 50.000 habitantes durante seu ' +
+                         'apogeu, até que foi abandonada por razões desconhecidas no século X.',
+                media_title: 'ketchup.jpg',
                 license_text: 'NSA Creative Commons Spy Alike',
                 creator_text: 'Yo momma'
             })
