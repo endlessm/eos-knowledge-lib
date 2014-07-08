@@ -1,7 +1,6 @@
 const EosKnowledge = imports.gi.EosKnowledge;
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
-const WebKit2 = imports.gi.WebKit2;
 
 const ArticleObjectModel = imports.articleObjectModel;
 const ArticlePage = imports.articlePage;
@@ -9,18 +8,6 @@ const Engine = imports.engine;
 const MediaObjectModel = imports.mediaObjectModel;
 
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
-
-/**
- * Adds javascript running after load finished to the WebKit2.Webview
- * prototype.
- */
-WebKit2.WebView.prototype.run_javascript_from_gresource_after_load = function (location, cancellable, callback) {
-    this.connect('load-changed', (function (v, status) {
-        if(status == WebKit2.LoadEvent.FINISHED) {
-            this.run_javascript_from_gresource(location, cancellable, callback);
-        }
-    }).bind(this));
-};
 
 /**
  * Class: ArticlePresenter
@@ -236,12 +223,11 @@ const ArticlePresenter = new GObject.Class({
     },
 
     _get_connected_webview: function () {
-        let webview = new WebKit2.WebView();
+        let webview = new EosKnowledge.InjectableWebview();
 
-        webview.run_javascript_from_gresource_after_load(
-                '/com/endlessm/knowledge/smooth_scroll.js', null, null);
-        webview.run_javascript_from_gresource_after_load(
-                '/com/endlessm/knowledge/scroll_manager.js', null, null);
+        webview.inject_js_from_resource('resource:///com/endlessm/knowledge/smooth_scroll.js');
+        webview.inject_js_from_resource('resource:///com/endlessm/knowledge/scroll_manager.js');
+        webview.inject_css_from_resource('resource:///com/endlessm/knowledge/hide_title.css');
 
         webview.connect('notify::uri', function () {
             if (webview.uri.indexOf('#') >= 0) {
