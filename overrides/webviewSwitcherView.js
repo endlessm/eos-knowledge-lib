@@ -189,7 +189,7 @@ const WebviewSwitcherView = new Lang.Class({
         let offscreen = new Gtk.OffscreenWindow();
 
         let load_id = view.connect('load-changed', function (v, status) {
-            if (status === WebKit2.LoadEvent.FINISHED) {
+            if (status === WebKit2.LoadEvent.COMMITTED) {
                 view.show_all();
                 view.reparent(this);
                 if(offscreen !== null) {
