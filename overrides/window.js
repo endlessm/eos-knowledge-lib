@@ -4,6 +4,7 @@ const Endless = imports.gi.Endless;
 const EosKnowledge = imports.gi.EosKnowledge;
 const GdkPixbuf = imports.gi.GdkPixbuf;
 const GObject = imports.gi.GObject;
+const Gdk = imports.gi.Gdk;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
@@ -443,5 +444,17 @@ const Window = new Lang.Class({
         } else {
             return visible_page;
         }
+    },
+
+    lock_ui: function () {
+        let gdk_window = this.get_window();
+        gdk_window.cursor = Gdk.Cursor.new(Gdk.CursorType.WATCH);
+        this.sensitive = false;
+    },
+
+    unlock_ui: function () {
+        let gdk_window = this.get_window();
+        gdk_window.cursor = Gdk.Cursor.new(Gdk.CursorType.ARROW);
+        this.sensitive = true;
     }
 });
