@@ -22,12 +22,14 @@ const MockWebview = new Lang.Class({
 
     // Mimic WebKitLoadEvent enum
     STARTED: 0,
+    COMMITTED: 2,
     FINISHED: 3,
 
     load_uri: function (uri) {
         this.uri = uri;
         GLib.idle_add(GLib.PRIORITY_HIGH_IDLE, function () {
             this.emit('load-changed', this.STARTED);
+            this.emit('load-changed', this.COMMITTED);
             GLib.timeout_add(GLib.PRIORITY_DEFAULT, 50 /* ms */, function () {
                 this.emit('load-changed', this.FINISHED);
                 return false;  // G_SOURCE_REMOVE
