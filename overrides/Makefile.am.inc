@@ -15,11 +15,11 @@ public_overrides = \
 	overrides/cardB.js \
 	overrides/categoriesPage.js \
 	overrides/contentObjectModel.js \
+	overrides/eknWebview.js \
 	overrides/engine.js \
 	overrides/homePage.js \
 	overrides/homePageA.js \
 	overrides/homePageB.js \
-	overrides/injectableWebview.js \
 	overrides/knowledgeApp.js \
 	overrides/lessonCard.js \
 	overrides/lightbox.js \

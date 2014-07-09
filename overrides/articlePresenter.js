@@ -223,7 +223,7 @@ const ArticlePresenter = new GObject.Class({
     },
 
     _get_connected_webview: function () {
-        let webview = new EosKnowledge.InjectableWebview();
+        let webview = new EosKnowledge.EknWebview();
 
         webview.inject_js_from_resource('resource:///com/endlessm/knowledge/smooth_scroll.js');
         webview.inject_js_from_resource('resource:///com/endlessm/knowledge/scroll_manager.js');
