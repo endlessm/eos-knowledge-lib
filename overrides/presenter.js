@@ -14,6 +14,8 @@ const Previewer = imports.previewer;
 const TextCard = imports.textCard;
 const Window = imports.window;
 
+const RESULTS_SIZE = 60;
+
 /**
  * Class: Presenter
  *
@@ -130,13 +132,16 @@ const Presenter = new Lang.Class({
     },
 
     _on_section_card_clicked: function (tags, card) {
+        this.view.lock_ui();
         this._engine.get_objects_by_query(this._domain, {
-            'tag': tags
+            'tag': tags,
+            'limit': RESULTS_SIZE
         }, this._load_section_page.bind(this));
         this.view.section_page.title = card.title;
     },
 
     _on_search: function (view, query) {
+        this.view.lock_ui();
         this._engine.get_objects_by_query(this._domain, {
             'q': query
         }, this._load_section_page.bind(this));
@@ -162,6 +167,7 @@ const Presenter = new Lang.Class({
     },
 
     _on_article_selection: function (view, id) {
+        this.view.lock_ui();
         if (view === this.view.home_page) {
             this._search_origin_page = this.view.home_page;
         } else {
@@ -169,6 +175,7 @@ const Presenter = new Lang.Class({
         }
         let database_id = id.split('/').pop();
         this._engine.get_object_by_id(this._domain, database_id, Lang.bind(this, function (err, model) {
+            this.view.unlock_ui();
             if (err !== undefined) {
                 printerr(err);
                 printerr(err.stack);
@@ -247,6 +254,7 @@ const Presenter = new Lang.Class({
             };
             this.view.section_page.segments = segments;
         }
+        this.view.unlock_ui();
         this.view.show_section_page();
     },
 
