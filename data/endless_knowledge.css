@@ -377,6 +377,14 @@ EknWindowA.show-article-page {
     background-color: alpha(black, 0.5);
 }
 
+.section-page-b .scrollbar.trough {
+    background-color: alpha(black, 0.5);
+}
+
+.section-page-b .scrollbar.slider {
+    background-color: #888888;
+}
+
 .section-page-a-segment-title {
     padding-top: 0.2em;
     color: white;
