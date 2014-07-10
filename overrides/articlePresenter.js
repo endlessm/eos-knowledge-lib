@@ -214,10 +214,9 @@ const ArticlePresenter = new GObject.Class({
 
     _scroll_to_section: function (index) {
         // tells the webkit webview directly to scroll to a ToC entry
-        let location = this._mainArticleSections[index].content.slice(1);
-        let baseURI = this._webview.uri.split('#')[0];
-        let selectedSectionURI = baseURI + '#scroll-to-' + location;
-        this._webview.load_uri(selectedSectionURI);
+        let location = this._mainArticleSections[index].content;
+        let script = 'scrollManager.scrollTo(LOCATION)'.replace('LOCATION', location.toSource());
+        this._webview.run_javascript(script, null, null);
     },
 
     _get_toplevel_toc_elements: function (tree) {

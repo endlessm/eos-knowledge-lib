@@ -16,7 +16,7 @@
  *  Only elements in scrollNotifiers will be watched for this
  */
 
-;(function (window, document) {
+window.scrollManager = (function (window, document) {
 // The hash prefixes used to interface with the scroll manager
 const SCROLL_TO_PREFIX = '#scroll-to-';
 const SCROLLED_PAST_PREFIX = '#scrolled-past-';
@@ -55,12 +55,25 @@ function isInView(node) {
     return nodePosition > scrollPosition - top_margin && nodePosition < scrollPosition + viewportHeight / 4;
 }
 
+var state = {
+    isScrolling: false
+};
+
+// Give smoothScroll a callback, which will change our state object when
+// scrolling is complete
+window.smoothScroll.init({
+    callbackAfter: function(toggle, anchor) {state.isScrolling = false;}
+});
+
 // If the anchor at the specified hash exists and smooth scrolling is
 // initialized, scroll to it
 // Returns whether the caller should propagate events
-function scrollTo(hash) {
-    if ($(hash) !== null && window.smoothScroll !== null) {
-        window.smoothScroll.animateScroll(null, hash);
+function scrollTo (hash) {
+    if ($(hash) !== null && window.smoothScroll !== null && !state.isScrolling) {
+        // Set state flag so that we don't trigger a new scroll while this
+        // one is in progress
+        state.isScrolling = true;
+        window.smoothScroll.animateScroll(null, hash.slice(1));
         return false;
     }
     else return true;
@@ -75,18 +88,6 @@ $('a').map(function (element) {
     });
 });
 
-// If the window's hash value changes, see if it's a "scroll-to"
-// hash. If so, strip it of the prefix and smoothly scroll to the
-// hash. Otherwise, handle it normally
-window.addEventListener('hashchange', function (e) {
-    var hash = window.location.hash;
-    if (hash.indexOf(SCROLL_TO_PREFIX) === 0) {
-        var destinationHash = hash.split(SCROLL_TO_PREFIX)[1];
-        return scrollTo(destinationHash);
-    } else {
-        return true;
-    }
-});
 
 // Whenever a scroll event happens, filter the scrollNotifer
 // elements for ones that are inView. If any elements are, 
@@ -107,4 +108,10 @@ window.Object.defineProperty(Element.prototype, 'documentOffsetTop', {
         return this.offsetTop + (this.offsetParent ? this.offsetParent.documentOffsetTop : 0);
     }
 });
+
+return {
+    scrollTo: scrollTo
+};
+
+
 })(window, window.document);
