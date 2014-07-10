@@ -84,6 +84,7 @@ const Presenter = new Lang.Class({
         this.view.categories_page.connect('show-home', this._on_home_button_clicked.bind(this));
         this._original_page = this.view.home_page;
         this._search_origin_page = this.view.home_page;
+        this._autocomplete_results = [];
     },
 
     _setAppContent: function(data) {
@@ -162,8 +163,9 @@ const Presenter = new Lang.Class({
                         id: obj.ekn_id
                     };
                 }));
+                this._autocomplete_results = results;
             }
-        });
+        }.bind(this));
     },
 
     _on_article_selection: function (view, id) {
@@ -173,18 +175,20 @@ const Presenter = new Lang.Class({
         } else {
             this._search_origin_page = this.view.section_page;
         }
-        let database_id = id.split('/').pop();
-        this._engine.get_object_by_id(this._domain, database_id, Lang.bind(this, function (err, model) {
-            this.view.unlock_ui();
-            if (err !== undefined) {
-                printerr(err);
-                printerr(err.stack);
-            } else {
-                model.fetch_all(this._engine);
-                this._article_presenter.article_model = model;
-                this.view.show_article_page();
-            }
-        }));
+
+        // If template B, we need to set the autocomplete results as the cards on the
+        // section page
+        if (this._template_type === 'B') {
+            let cards = this._autocomplete_results.map(this._new_card_from_article_model.bind(this));
+            this.view.section_page.cards = cards;
+        }
+
+        let selected_model = this._autocomplete_results.filter(function (element) {
+            return element.ekn_id === id
+        }, id)[0];
+        this._article_presenter.article_model = selected_model;
+        this.view.unlock_ui();
+        this.view.show_article_page();
     },
 
     _on_article_card_clicked: function (card, model) {
