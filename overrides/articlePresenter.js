@@ -227,7 +227,8 @@ const ArticlePresenter = new GObject.Class({
 
         webview.inject_js_from_resource('resource:///com/endlessm/knowledge/smooth_scroll.js');
         webview.inject_js_from_resource('resource:///com/endlessm/knowledge/scroll_manager.js');
-        webview.inject_css_from_resource('resource:///com/endlessm/knowledge/hide_title.css');
+        if (this.template_type === 'A')
+            webview.inject_css_from_resource('resource:///com/endlessm/knowledge/hide_title.css');
 
         webview.connect('notify::uri', function () {
             if (webview.uri.indexOf('#') >= 0) {
