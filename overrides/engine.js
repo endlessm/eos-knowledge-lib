@@ -157,7 +157,7 @@ const Engine = Lang.Class({
             throw new Error('Cannot marshal search results list from data of type ' + json_ld['@type']);
         }
 
-        return json_ld.results.map(this._model_from_json_ld);
+        return json_ld.results.map(this._model_from_json_ld.bind(this));
     },
 
     /**
