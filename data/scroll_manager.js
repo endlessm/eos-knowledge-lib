@@ -81,7 +81,7 @@ $('a').map(function (element) {
 window.addEventListener('hashchange', function (e) {
     var hash = window.location.hash;
     if (hash.indexOf(SCROLL_TO_PREFIX) === 0) {
-        var destinationHash = '#' + hash.split(SCROLL_TO_PREFIX)[1];
+        var destinationHash = hash.split(SCROLL_TO_PREFIX)[1];
         return scrollTo(destinationHash);
     } else {
         return true;
