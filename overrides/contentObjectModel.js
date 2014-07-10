@@ -12,7 +12,7 @@ GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.
  * Class: ContentObjectModel
  * This is the base class for all content objects in the knowledge app.
  *
- * This object can be configured with a <title>, <thumbnail-uri>, <language>,
+ * This object can be configured with a <title>, <thumbnail>, <language>,
  * <copyright-holder>, <source-uri>, <synopsis>, <resources>, <last-modified-date>, 
  * <tags>, and <license> properties.
  */
@@ -34,7 +34,7 @@ const ContentObjectModel = new Lang.Class({
         'title': GObject.ParamSpec.string('title', 'Title', 'The title of a document or media object',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT, ''),
         /**
-         * Property: thumbnail-uri
+         * Property: thumbnail
          * A ImageObjectModel representing the thumbnail image. Must be set to type GObject, since
          * ImageObjectModel subclasses this class and so we cannot reference it here.
          */
@@ -116,6 +116,24 @@ const ContentObjectModel = new Lang.Class({
     fetch_all: function (engine) {
         this.request_queue.forEach(function (request) {
             engine.get_object_by_id(request.domain, request.id, request.callback);
+        });
+    },
+
+    /**
+     * Function: queue_deferred_property
+     * Queues an engine fetch until later (when fetch_all is called)
+     *
+     * Properties:
+     *   uri - the EKN URI of the property to be fetched
+     *   callback - the callback that'll be called by the engine once the property
+     *              is fetched. Should handle error case
+     */
+    queue_deferred_property: function (uri, callback) {
+        [domain, id] = uri.split('/').slice(-2);
+        this.request_queue.push({
+            domain: domain,
+            id: id,
+            callback: callback
         });
     },
 
@@ -240,6 +258,26 @@ ContentObjectModel.new_from_json_ld = function (json_ld_data) {
 };
 
 ContentObjectModel._setup_from_json_ld = function (model, json_ld_data) {
+
+    // setup thumbnail, if it exists
+    if(json_ld_data.hasOwnProperty('thumbnail')) {
+        if (typeof json_ld_data.thumbnail === 'object') {
+            // if the thumbnail is a JSON-LD object, marshall it now
+            model.thumbnail = EosKnowledge.ImageObjectModel.new_from_json_ld(json_ld_data.thumbnail);
+        } else {
+            // else, defer requesting the thumbnail until fetch_all is called
+            model.queue_deferred_property(json_ld_data.thumbnail,
+                function (err, thumbnail) {
+                    if (err) {
+                        printerr(err);
+                    } else {
+                        model.thumbnail = thumbnail;
+                    }
+                }
+            );
+        }
+    }
+
     // setup resources, if we have any
     if (model.num_resources > 0) {
         if (typeof json_ld_data.resources[0] === 'object') {
@@ -257,11 +295,8 @@ ContentObjectModel._setup_from_json_ld = function (model, json_ld_data) {
             // and when we have them all, alert that they're ready
             model.set_resources([]);
             json_ld_data.resources.forEach(function (uri) {
-                [domain, id] = uri.split('/').slice(-2);
-                model.request_queue.push({
-                    domain: domain,
-                    id: id,
-                    callback: function (err, res) {
+                model.queue_deferred_property(uri,
+                    function (err, res) {
                         if (err) {
                             printerr(err);
                         } else {
@@ -274,7 +309,7 @@ ContentObjectModel._setup_from_json_ld = function (model, json_ld_data) {
                             }
                         }
                     }
-                });
+                );
             });
         }
     }
@@ -287,9 +322,6 @@ ContentObjectModel._props_from_json_ld = function (json_ld_data) {
 
     if(json_ld_data.hasOwnProperty('title'))
         props.title = json_ld_data.title;
-
-    if(json_ld_data.hasOwnProperty('thumbnail'))
-        props.thumbnail = EosKnowledge.ImageObjectModel.new_from_json_ld(json_ld_data.thumbnail);
 
     if(json_ld_data.hasOwnProperty('language'))
         props.language = json_ld_data.language;
