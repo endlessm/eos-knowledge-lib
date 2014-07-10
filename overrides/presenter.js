@@ -187,8 +187,11 @@ const Presenter = new Lang.Class({
     },
 
     _on_article_card_clicked: function (card, model) {
+        if (this.view.get_visible_page() !== this.view.article_page)
+            this._article_presenter.animate_load = false;
         this._article_presenter.article_model = model;
         this.view.show_article_page();
+        this._article_presenter.animate_load = true;
     },
 
     _on_media_object_clicked: function (article_presenter, media_object, is_resource) {
