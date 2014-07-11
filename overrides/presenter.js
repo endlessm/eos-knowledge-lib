@@ -180,6 +180,7 @@ const Presenter = new Lang.Class({
                 printerr(err);
                 printerr(err.stack);
             } else {
+                model.fetch_all(this._engine);
                 this._article_presenter.article_model = model;
                 this.view.show_article_page();
             }
@@ -189,6 +190,7 @@ const Presenter = new Lang.Class({
     _on_article_card_clicked: function (card, model) {
         if (this.view.get_visible_page() !== this.view.article_page)
             this._article_presenter.animate_load = false;
+        model.fetch_all(this._engine);
         this._article_presenter.article_model = model;
         this.view.show_article_page();
         this._article_presenter.animate_load = true;

@@ -12,7 +12,7 @@ GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.
  * Class: ContentObjectModel
  * This is the base class for all content objects in the knowledge app.
  *
- * This object can be configured with a <title>, <thumbnail-uri>, <language>,
+ * This object can be configured with a <title>, <thumbnail>, <language>,
  * <copyright-holder>, <source-uri>, <synopsis>, <resources>, <last-modified-date>, 
  * <tags>, and <license> properties.
  */
@@ -34,7 +34,7 @@ const ContentObjectModel = new Lang.Class({
         'title': GObject.ParamSpec.string('title', 'Title', 'The title of a document or media object',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT, ''),
         /**
-         * Property: thumbnail-uri
+         * Property: thumbnail
          * A ImageObjectModel representing the thumbnail image. Must be set to type GObject, since
          * ImageObjectModel subclasses this class and so we cannot reference it here.
          */
@@ -77,11 +77,64 @@ const ContentObjectModel = new Lang.Class({
          * The license for this content object. Defaults to an empty string.
          */
         'license': GObject.ParamSpec.string('license', 'License', 'License of the document or media object',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT, '')
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT, ''),
+        /**
+         * Property: num-resources
+         * The number of resources belonging to this content object.
+         */
+        'num-resources': GObject.ParamSpec.int('num-resources', 'Number of resources',
+            'Number of resources belonging to this object',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
+             0, GLib.MAXINT32, 0),
+        /**
+         * Property: resources-ready
+         * Whether or not the resources belonging to this content object have
+         * been retrieved/marshalled
+         */
+        'resources-ready': GObject.ParamSpec.boolean('resources-ready', 'Resources ready',
+            'Whether the resources have been fetched/marshalled',
+             GObject.ParamFlags.READABLE,
+             false),
     },
 
     _init: function (params) {
+        this._resources_ready = false;
+        this._num_resources = 0;
+        this.request_queue = [];
         this.parent(params);
+    },
+
+    /**
+     * Function: fetch_all
+     * Attempts to fetch all pending requests for this object. The callback
+     * associated with the request should handle emitting signals to indicate
+     * if the request was successful
+     *
+     * Parameters:
+     *   engine - The Knowledge Engine used to handle the pending requests
+     */
+    fetch_all: function (engine) {
+        this.request_queue.forEach(function (request) {
+            engine.get_object_by_id(request.domain, request.id, request.callback);
+        });
+    },
+
+    /**
+     * Function: queue_deferred_property
+     * Queues an engine fetch until later (when fetch_all is called)
+     *
+     * Properties:
+     *   uri - the EKN URI of the property to be fetched
+     *   callback - the callback that'll be called by the engine once the property
+     *              is fetched. Should handle error case
+     */
+    queue_deferred_property: function (uri, callback) {
+        [domain, id] = uri.split('/').slice(-2);
+        this.request_queue.push({
+            domain: domain,
+            id: id,
+            callback: callback
+        });
     },
 
     get ekn_id () {
@@ -128,6 +181,14 @@ const ContentObjectModel = new Lang.Class({
         return this._tags;
     },
 
+    get num_resources () {
+        return this._num_resources;
+    },
+
+    get resources_ready () {
+        return this._resources_ready;
+    },
+
     set ekn_id (v) {
         this._ekn_id = v;
     },
@@ -164,6 +225,10 @@ const ContentObjectModel = new Lang.Class({
         this._license = v;
     },
 
+    set num_resources (v) {
+        this._num_resources = v;
+    },
+
     set_resources: function (v) {
         if (this._resources === undefined) {
             this._resources = [];
@@ -187,21 +252,67 @@ const ContentObjectModel = new Lang.Class({
 ContentObjectModel.new_from_json_ld = function (json_ld_data) {
     let props = ContentObjectModel._props_from_json_ld(json_ld_data);
     let contentObjectModel = new EosKnowledge.ContentObjectModel(props);
-
     ContentObjectModel._setup_from_json_ld(contentObjectModel, json_ld_data);
 
     return contentObjectModel;
 };
 
 ContentObjectModel._setup_from_json_ld = function (model, json_ld_data) {
-    let mediaObjectModels = [];
-    if (json_ld_data.hasOwnProperty('resources')) {
-        json_ld_data.resources.forEach(function (res) {
-            let mediaObject = EosKnowledge.MediaObjectModel.new_from_json_ld(res);
-            mediaObjectModels.push(mediaObject);
-        });
+
+    // setup thumbnail, if it exists
+    if(json_ld_data.hasOwnProperty('thumbnail')) {
+        if (typeof json_ld_data.thumbnail === 'object') {
+            // if the thumbnail is a JSON-LD object, marshall it now
+            model.thumbnail = EosKnowledge.ImageObjectModel.new_from_json_ld(json_ld_data.thumbnail);
+        } else {
+            // else, defer requesting the thumbnail until fetch_all is called
+            model.queue_deferred_property(json_ld_data.thumbnail,
+                function (err, thumbnail) {
+                    if (err) {
+                        printerr(err);
+                    } else {
+                        model.thumbnail = thumbnail;
+                    }
+                }
+            );
+        }
     }
-    model.set_resources(mediaObjectModels);
+
+    // setup resources, if we have any
+    if (model.num_resources > 0) {
+        if (typeof json_ld_data.resources[0] === 'object') {
+            // if the resources are already in JSON-LD form, just instantiate
+            // them and alert that they're ready
+            let mediaObjectModels =json_ld_data.resources.map(function (resource_json_ld) {
+                return EosKnowledge.MediaObjectModel.new_from_json_ld(resource_json_ld);
+            });
+
+            model.set_resources(mediaObjectModels);
+            model._resources_ready = true;
+            model.notify('resources-ready');
+        } else {
+            // if the resources list is still a list of URIs, fetch them async
+            // and when we have them all, alert that they're ready
+            model.set_resources([]);
+            json_ld_data.resources.forEach(function (uri) {
+                model.queue_deferred_property(uri,
+                    function (err, res) {
+                        if (err) {
+                            printerr(err);
+                        } else {
+                            let resources = model.get_resources();
+                            resources.push(res);
+                            model.set_resources(resources);
+                            if (resources.length === model.num_resources) {
+                                model._resources_ready = true;
+                                model.notify('resources-ready');
+                            }
+                        }
+                    }
+                );
+            });
+        }
+    }
 };
 
 ContentObjectModel._props_from_json_ld = function (json_ld_data) {
@@ -212,11 +323,11 @@ ContentObjectModel._props_from_json_ld = function (json_ld_data) {
     if(json_ld_data.hasOwnProperty('title'))
         props.title = json_ld_data.title;
 
-    if(json_ld_data.hasOwnProperty('thumbnail'))
-        props.thumbnail = EosKnowledge.ImageObjectModel.new_from_json_ld(json_ld_data.thumbnail);
-
     if(json_ld_data.hasOwnProperty('language'))
         props.language = json_ld_data.language;
+
+    if(json_ld_data.hasOwnProperty('resources'))
+        props.num_resources = json_ld_data.resources.length;
 
     if(json_ld_data.hasOwnProperty('copyrightHolder'))
         props.copyright_holder = json_ld_data.copyrightHolder;
