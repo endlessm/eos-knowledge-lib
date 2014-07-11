@@ -10,25 +10,25 @@ EosWindow {
     border-width: 0px;
 }
 
-EknWindowA {
+EknWindow {
     background-position: 0% 50%;
     background-repeat: no-repeat;
     transition: background 0.5s ease-in-out;
 }
 
-EknWindowA.show-home-page {
+EknWindow.show-home-page {
     background-position: 0% 50%;
 }
 
-EknWindowA.show-categories-page {
+EknWindow.show-categories-page {
     background-position: 0% 50%;
 }
 
-EknWindowA.show-section-page {
+EknWindow.show-section-page {
     background-position: 50% 50%;
 }
 
-EknWindowA.show-article-page {
+EknWindow.show-article-page {
     background-position: 100% 50%;
 }
 
