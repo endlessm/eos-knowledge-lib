@@ -100,6 +100,7 @@ const ContentObjectModel = new Lang.Class({
     _init: function (params) {
         this._resources_ready = false;
         this._num_resources = 0;
+        this._resources = [];
         this.request_queue = [];
         this.parent(params);
     },
