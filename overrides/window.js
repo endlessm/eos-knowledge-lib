@@ -261,7 +261,8 @@ const Window = new Lang.Class({
         this.page_manager.transition_duration = this.TRANSITION_DURATION;
         this.page_manager.bind_property('transition-duration', this._section_article_page,
             'transition-duration', GObject.BindingFlags.SYNC_CREATE);
-
+        this.page_manager.bind_property('transition-duration', this._section_article_page.article_page.switcher,
+            'transition-duration', GObject.BindingFlags.SYNC_CREATE);
         this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_SHOW_HOME_PAGE);
         this.connect('size-allocate', Lang.bind(this, function(widget, allocation) {
             let win_width = allocation.width;
