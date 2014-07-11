@@ -31,6 +31,7 @@ describe('Article Presenter', function () {
             webview = new MockWebview.MockWebview();
             return webview;
         });
+        view.switcher.connect_after('display-ready', done);
 
         engine = new EosKnowledge.Engine();
 
@@ -40,7 +41,6 @@ describe('Article Presenter', function () {
         });
         presenter.article_model = articleObject;
 
-        view.switcher.connect('display-ready', done);
     });
 
     it('can be constructed', function () {});
