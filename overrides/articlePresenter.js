@@ -61,6 +61,15 @@ const ArticlePresenter = new GObject.Class({
         'template-type':  GObject.ParamSpec.string('template-type', 'Template Type',
             'Which template the window should display with',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, 'A'),
+        /**
+         * Property: animate-load
+         *
+         * Set true if the ArticlePresenter should use the switcher to animate
+         * in a new article from the right.
+         */
+        'animate-load': GObject.ParamSpec.boolean('animate-load', 'Animate load',
+            'True if article presenter should animate in new articles.',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT, true),
     },
     Signals: {
         /**
@@ -81,6 +90,7 @@ const ArticlePresenter = new GObject.Class({
         this.parent(props);
 
         this._article_model = null;
+        this._webview = null;
 
         this._connect_toc_widget();
         this._connect_switcher_widget();
@@ -99,27 +109,32 @@ const ArticlePresenter = new GObject.Class({
         // fully populate the view from a model
         this._article_model = v;
 
-        // Set the title and toc once the switcher view has finished loading
-        let id = this.article_view.switcher.connect('display-ready', function (switcher) {
-            this.article_view.title = this._article_model.title;
+        if (this.animate_load || this._webview === null) {
+            this.article_view.switcher.load_uri(this._article_model.article_content_uri);
+        } else {
+            this._webview.load_uri(this._article_model.article_content_uri);
+        }
 
-            let _toc_visible = false;
-            if (this.template_type !== 'B' && this._article_model.table_of_contents !== undefined) {
-                this._mainArticleSections = this._get_toplevel_toc_elements(this._article_model.table_of_contents);
-                if (this._mainArticleSections.length > 0) {
-                    this.article_view.toc.section_list = this._mainArticleSections.map(function (section) {
-                        return section.label;
-                    });
-                    this.article_view.toc.selected_section = 0;
-                    _toc_visible = true;
-                }
+        if (!this.animate_load)
+            this._update_title_and_toc();
+    },
+
+    _update_title_and_toc: function () {
+        this.article_view.title = this._article_model.title;
+
+        let _toc_visible = false;
+        if (this.template_type !== 'B' && this._article_model.table_of_contents !== undefined) {
+            this._mainArticleSections = this._get_toplevel_toc_elements(this._article_model.table_of_contents);
+            if (this._mainArticleSections.length > 0) {
+                this.article_view.toc.section_list = this._mainArticleSections.map(function (section) {
+                    return section.label;
+                });
+                this.article_view.toc.selected_section = 0;
+                _toc_visible = true;
             }
-            this.article_view.toc.visible = _toc_visible;
-            this.notify('article-model');
-
-            switcher.disconnect(id);
-        }.bind(this));
-        this.article_view.switcher.load_uri(this._article_model.article_content_uri);
+        }
+        this.article_view.toc.visible = _toc_visible;
+        this.notify('article-model');
     },
 
     _connect_switcher_widget: function () {
@@ -178,6 +193,9 @@ const ArticlePresenter = new GObject.Class({
             this._webview = this._get_connected_webview();
             return this._webview;
         }.bind(this));
+
+        // Set the title and toc once the switcher view has finished loading
+        this.article_view.switcher.connect('display-ready', this._update_title_and_toc.bind(this));
     },
 
     _connect_toc_widget: function () {

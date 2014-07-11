@@ -183,6 +183,20 @@ const WebviewSwitcherView = new Lang.Class({
         if (view === null)
             view = this._on_create_webview();
 
+        if (this._active_view === null) {
+            view.connect('decide-policy', function (v, decision, type) {
+                if (type === WebKit2.PolicyDecisionType.NAVIGATION_ACTION)
+                    return this.emit('decide-navigation-policy', decision);
+                return false;
+            }.bind(this));
+            view.show_all();
+            view.load_uri(uri);
+            this.add(view);
+            this._active_view = view;
+            this.emit('display-ready');
+            return;
+        }
+
         // Web views try to be clever and so won't load a page if they're not
         // visible. We are even cleverer, and stick them in an offscreen
         // window so they think they are visible.
