@@ -42,16 +42,16 @@ describe('Article Page A', function () {
         it('has a descendant with switcher frame class', function () {
             expect(page).toHaveDescendantWithCssClass(EosKnowledge.STYLE_CLASS_ARTICLE_PAGE_SWITCHER_FRAME);
         });
-        it('has a descendant with collapsed class when narrow', function () {
+        it('has a table of contents with collapsed class when narrow', function () {
             let alloc = page.get_allocation();
             alloc.width = 1;
             alloc.height = 9999;
             page.size_allocate(alloc);
-            expect(page).toHaveDescendantWithCssClass(EosKnowledge.STYLE_CLASS_COLLAPSED);
+            expect(page.toc).toHaveCssClass(EosKnowledge.STYLE_CLASS_COLLAPSED);
             alloc.width = 9999;
             alloc.height = 9999;
             page.size_allocate(alloc);
-            expect(page).not.toHaveDescendantWithCssClass(EosKnowledge.STYLE_CLASS_COLLAPSED);
+            expect(page.toc).not.toHaveCssClass(EosKnowledge.STYLE_CLASS_COLLAPSED);
         });
     });
 });
