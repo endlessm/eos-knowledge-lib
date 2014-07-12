@@ -98,8 +98,21 @@ const ArticlePage = new Lang.Class({
             wrap: true,
             wrap_mode: Pango.WrapMode.WORD_CHAR,
             expand: true,
-            xalign: 0.0
+            xalign: 0.0,
+            no_show_all: true,
+            visible: true
         });
+        this._top_title_label = new Gtk.Label({
+            hexpand: true,
+            halign: Gtk.Align.CENTER,
+            margin_bottom: 10,
+            no_show_all: true
+        });
+        this._title_label.bind_property('label',
+            this._top_title_label, 'label', GObject.BindingFlags.SYNC_CREATE);
+        this._title_label.bind_property('visible',
+            this._top_title_label, 'visible',
+            GObject.BindingFlags.SYNC_CREATE | GObject.BindingFlags.INVERT_BOOLEAN);
         this._toc = new TableOfContents.TableOfContents({
             expand: true,
             no_show_all: true,
@@ -118,13 +131,21 @@ const ArticlePage = new Lang.Class({
         this._toolbar_frame.add(grid);
         this.add(this._toolbar_frame);
 
+        let switcher_grid = new Gtk.Grid({
+            orientation: Gtk.Orientation.VERTICAL
+        });
+        switcher_grid.add(this._top_title_label);
+        switcher_grid.add(this._switcher);
         this._switcher_frame = new Gtk.Frame();
-        this._switcher_frame.add(this._switcher);
+        this._switcher_frame.add(switcher_grid);
         this.add(this._switcher_frame);
 
         this.show_all();
         this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_ARTICLE_PAGE);
         this._title_label.get_style_context().add_class(EosKnowledge.STYLE_CLASS_ARTICLE_PAGE_TITLE);
+        let top_label_context = this._top_title_label.get_style_context();
+        top_label_context.add_class(EosKnowledge.STYLE_CLASS_ARTICLE_PAGE_TITLE);
+        top_label_context.add_class(EosKnowledge.STYLE_CLASS_COLLAPSED);
         this._toolbar_frame.get_style_context().add_class(EosKnowledge.STYLE_CLASS_ARTICLE_PAGE_TOOLBAR_FRAME);
         this._switcher_frame.get_style_context().add_class(EosKnowledge.STYLE_CLASS_ARTICLE_PAGE_SWITCHER_FRAME);
     },
