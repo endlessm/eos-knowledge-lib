@@ -118,7 +118,9 @@ const ArticlePage = new Lang.Class({
             no_show_all: true,
             visible: true
         });
-        this._switcher = new WebviewSwitcherView.WebviewSwitcherView();
+        this._switcher = new WebviewSwitcherView.WebviewSwitcherView({
+            expand: true
+        });
         this._has_margins = true;
         this.parent(props);
 
