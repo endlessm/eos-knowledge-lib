@@ -107,7 +107,7 @@ const EknWebview = new Lang.Class({
         }.bind(this));
 
         this._injection_handlers.push(handler);
-    }
+    },
 
     _onNavigation: function (webview, decision, decision_type) {
         if (decision_type === WebKit2.PolicyDecisionType.NAVIGATION_ACTION) {
