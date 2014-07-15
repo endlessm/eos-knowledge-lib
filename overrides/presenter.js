@@ -230,6 +230,9 @@ const Presenter = new Lang.Class({
     },
 
     _on_back: function () {
+        // Make sure to hide any outstanding lightbox overlays
+        // that might have been showing on the article page
+        this.view.lightbox.reveal_overlays = false;
         let visible_page = this.view.get_visible_page();
         if (visible_page === this.view.article_page) {
             if (this._search_origin_page === this.view.home_page) {
