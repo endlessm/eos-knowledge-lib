@@ -46,7 +46,7 @@ const TestApplication = new Lang.Class ({
             engine: engine
         });
         articleObject.article_content_uri = "file://" + TESTDIR + "/test-content/Brazil.html";
-        presenter.article_model = articleObject;
+        presenter.load_article(articleObject);
         window.show_all();
 
     }
