@@ -112,7 +112,7 @@ const ArticlePage = new Lang.Class({
             this._top_title_label, 'label', GObject.BindingFlags.SYNC_CREATE);
         this._title_label.bind_property('visible',
             this._top_title_label, 'visible',
-            GObject.BindingFlags.SYNC_CREATE | GObject.BindingFlags.INVERT_BOOLEAN);
+            GObject.BindingFlags.SYNC_CREATE | GObject.BindingFlags.INVERT_BOOLEAN | GObject.BindingFlags.BIDIRECTIONAL);
         this._toc = new TableOfContents.TableOfContents({
             expand: true,
             no_show_all: true,
@@ -201,8 +201,9 @@ const ArticlePage = new Lang.Class({
                 width: alloc.width - 2 * margin,
                 height: alloc.height
             });
-            this._switcher_frame.size_allocate(switcher_alloc);
             this._toolbar_frame.set_child_visible(false);
+            this._top_title_label.visible = true;
+            this._switcher_frame.size_allocate(switcher_alloc);
             return;
         }
 
@@ -218,8 +219,11 @@ const ArticlePage = new Lang.Class({
             if (this._toc.collapsed) {
                 this._toolbar_frame.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_COLLAPSED);
                 this._toc.collapsed = false;
-                this._title_label.visible = true;
             }
+            // Needs to be outside the if block because title_label could have been made invisible by
+            // an article that had no toc, in which case on the next article, toc will NOT be collapsed
+            // but we still need to tell title_label to become visible
+            this._title_label.visible = true;
         }
 
         // Allocate toolbar and article frames
