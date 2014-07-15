@@ -37,6 +37,15 @@ const ArticlePage = new Lang.Class({
     Extends: Endless.CustomContainer,
     Properties: {
         /**
+         * Property: show-top-title
+         *
+         * Set true if the top title label should be visible when the toc is
+         * either hidden or collapsed.
+         */
+        'show-top-title':  GObject.ParamSpec.boolean('show-top-title', 'Show Top Title',
+            'Whether to show the top title label when toc is collapsed/hidden',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, true),
+        /**
          * Property: title
          *
          * A string title of the article being viewed. Defaults to the empty
@@ -202,7 +211,9 @@ const ArticlePage = new Lang.Class({
                 height: alloc.height
             });
             this._toolbar_frame.set_child_visible(false);
-            this._top_title_label.visible = true;
+            if (this.show_top_title) {
+                this._top_title_label.visible = true;
+            }
             this._switcher_frame.size_allocate(switcher_alloc);
             return;
         }
