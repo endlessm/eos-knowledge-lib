@@ -95,7 +95,7 @@ const Presenter = new Lang.Class({
         if (this._template_type === 'B') {
             this.view.home_page.cards = data['sections'].map(function (section) {
                 let card = new CardB.CardB({
-                    title: section['title'],
+                    title: section['title'].charAt(0).toUpperCase() + section['title'].slice(1),
                     thumbnail_uri: section['thumbnailURI']
                 });
                 card.connect('clicked', this._on_section_card_clicked.bind(this, section['tags']));
@@ -105,7 +105,7 @@ const Presenter = new Lang.Class({
             for (let page of [this.view.home_page, this.view.categories_page]) {
                 let category_cards = data['sections'].map(function (section) {
                     let card = new CardA.CardA({
-                        title: section['title'],
+                        title: section['title'].charAt(0).toUpperCase() + section['title'].slice(1),
                         thumbnail_uri: section['thumbnailURI']
                     });
                     card.connect('clicked', this._on_section_card_clicked.bind(this, section['tags']));
