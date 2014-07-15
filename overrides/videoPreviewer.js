@@ -27,6 +27,15 @@ const VideoPreviewer = Lang.Class({
         'file': GObject.ParamSpec.object('file', 'File', 'File to preview',
             GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE | GObject.ParamFlags.CONSTRUCT,
             GObject.Object),
+        /**
+         * Property: aspect
+         *
+         * The aspect aspect the previewer widget should display at
+         */
+        'aspect': GObject.ParamSpec.float('aspect', 'Aspect',
+            'Aspect ratio of previewer content',
+            GObject.ParamFlags.READABLE,
+            false)
     },
 
     _PLAY_ICON: 'media-playback-start-symbolic',
@@ -47,6 +56,7 @@ const VideoPreviewer = Lang.Class({
         this._file = null;
         this._aspect = 1.0;
         this._natural_width = 0;
+        this._natural_height = 0;
 
         this._embed = new GtkClutter.Embed();
 
@@ -115,17 +125,20 @@ const VideoPreviewer = Lang.Class({
         return this._file;
     },
 
+    get aspect () {
+        return this._aspect;
+    },
+
     vfunc_get_request_mode: function () {
-        return Gtk.SizeRequestMode.HEIGHT_FOR_WIDTH;
+        return Gtk.SizeRequestMode.CONSTANT_SIZE;
     },
 
     vfunc_get_preferred_width: function () {
         return [0, this._natural_width];
     },
 
-    vfunc_get_preferred_height_for_width: function (width) {
-        let height = width / this._aspect;
-        return [height, height];
+    vfunc_get_preferred_height: function () {
+        return [0, this._natural_height];
     },
 
     vfunc_size_allocate: function (alloc) {
@@ -147,6 +160,7 @@ const VideoPreviewer = Lang.Class({
 
     _texture_size_changed: function (texture, width, height) {
         this._natural_width = width;
+        this._natural_height = height;
         this._aspect = width / height;
         this.queue_resize();
     },

@@ -25,6 +25,15 @@ const ImagePreviewer = Lang.Class({
         'file': GObject.ParamSpec.object('file', 'File', 'File to preview',
             GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE | GObject.ParamFlags.CONSTRUCT,
             GObject.Object),
+        /**
+         * Property: aspect
+         *
+         * The aspect aspect the previewer widget should display at
+         */
+        'aspect': GObject.ParamSpec.float('aspect', 'Aspect',
+            'Aspect ratio of previewer content',
+            GObject.ParamFlags.READABLE,
+            false)
     },
 
     _init: function (props) {
@@ -37,6 +46,7 @@ const ImagePreviewer = Lang.Class({
         this._pixbuf = null;
         this._aspect = 1.0;
         this._natural_width = 0;
+        this._natural_height = 0;
         this._last_file = null;
         this._last_allocation = null;
 
@@ -66,6 +76,7 @@ const ImagePreviewer = Lang.Class({
 
         let pixbuf = this._load_pixbuf();
         this._natural_width = pixbuf.get_width();
+        this._natural_height = pixbuf.get_height();
         this._aspect = pixbuf.get_width() / pixbuf.get_height();
         this.queue_draw();
 
@@ -76,17 +87,20 @@ const ImagePreviewer = Lang.Class({
         return this._file;
     },
 
+    get aspect () {
+        return this._aspect;
+    },
+
     vfunc_get_request_mode: function () {
-        return Gtk.SizeRequestMode.HEIGHT_FOR_WIDTH;
+        return Gtk.SizeRequestMode.CONSTANT_SIZE;
     },
 
     vfunc_get_preferred_width: function () {
         return [0, this._natural_width];
     },
 
-    vfunc_get_preferred_height_for_width: function (width) {
-        let height = width / this._aspect;
-        return [height, height];
+    vfunc_get_preferred_height: function () {
+        return [0, this._natural_height];
     },
 
     _load_pixbuf: function () {

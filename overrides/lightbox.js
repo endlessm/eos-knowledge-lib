@@ -1,3 +1,5 @@
+const Cairo = imports.gi.cairo;
+const Endless = imports.gi.Endless;
 const EosKnowledge = imports.gi.EosKnowledge;
 const Gdk = imports.gi.Gdk;
 const GLib = imports.gi.GLib;
@@ -119,15 +121,11 @@ const Lightbox = new Lang.Class({
             this.reveal_overlays = false;
         }));
 
-        let inner_overlay = new Gtk.Overlay();
-        inner_overlay.add(this._lightbox_container);
-        inner_overlay.show_all();
-
         this._revealer = new Gtk.Revealer({
             no_show_all: true,
             transition_type: Gtk.RevealerTransitionType.CROSSFADE
         });
-        this._revealer.add(inner_overlay);
+        this._revealer.add(this._lightbox_container);
         this._revealer.connect('notify::child-revealed', Lang.bind(this, function () {
             if (!this._revealer.child_revealed)
                 this._revealer.hide();
@@ -135,9 +133,6 @@ const Lightbox = new Lang.Class({
         }));
 
         this.parent(params);
-
-        this._lightbox_container.close_button.set_visible(this._has_close_button);
-        this._lightbox_container.navigation_box.set_visible(this._has_navigation_buttons);
 
         this._lightbox_container.connect('navigation-previous-clicked',
             Lang.bind(this, function () {
@@ -190,10 +185,10 @@ const Lightbox = new Lang.Class({
         if (this._content_widget === v)
             return;
         if (this._content_widget !== null)
-            this._lightbox_container.remove_widget(this._content_widget);
+            this._lightbox_container.remove_content_widget(this._content_widget);
         this._content_widget = v;
         if (this._content_widget !== null)
-            this._lightbox_container.attach_widget(this._content_widget);
+            this._lightbox_container.add_content_widget(this._content_widget);
         this.notify('content-widget');
     },
 
@@ -207,10 +202,10 @@ const Lightbox = new Lang.Class({
         if (this._infobox_widget !== null)
             this._lightbox_container.remove_info_widget(this._infobox_widget);
         this._infobox_widget = v;
-        this._infobox_widget.get_style_context().add_class(EosKnowledge.STYLE_CLASS_INFOBOX);
-
-        if (this._infobox_widget !== null)
+        if (this._infobox_widget !== null) {
+            this._infobox_widget.get_style_context().add_class(EosKnowledge.STYLE_CLASS_INFOBOX);
             this._lightbox_container.add_info_widget(this._infobox_widget);
+        }
         this.notify('infobox-widget');
     },
 
@@ -233,7 +228,7 @@ const Lightbox = new Lang.Class({
         if (this._has_close_button === v)
             return;
         this._has_close_button = v;
-        this._lightbox_container.close_button.set_visible(this._has_close_button);
+        this._lightbox_container.close_visible = v;
         this.notify('has-close-button');
     },
 
@@ -245,7 +240,7 @@ const Lightbox = new Lang.Class({
         if (this._has_navigation_buttons === v)
             return;
         this._has_navigation_buttons = v;
-        this._lightbox_container.navigation_box.set_visible(this._has_navigation_buttons);
+        this._lightbox_container.arrows_visible = v;
         this.notify('has-navigation-buttons');
     },
 
@@ -258,7 +253,7 @@ const Lightbox = new Lang.Class({
 const LightboxContainer = new Lang.Class({
     Name: 'LightboxContainer',
     GTypeName: 'EknLightboxContainer',
-    Extends: Gtk.Alignment,
+    Extends: Endless.CustomContainer,
     Signals: {
         'clicked': {},
         'close-clicked': {},
@@ -268,38 +263,23 @@ const LightboxContainer = new Lang.Class({
 
     _ICON_SIZE: 24,
     _ICON_MARGIN: 10,
+    _INFO_RESERVED_WIDTH: 200,
+    _INFO_RESERVED_HEIGHT: 100,
+    _CONTENT_MIN_WIDTH: 200,
+    _CONTENT_MIN_HEIGHT: 200,
+    _MIN_BORDER: 20,
 
     _init: function (params) {
-        params = params || {};
-        params.xscale = 0.0;
-        params.yscale = 0.0;
         this.parent(params);
 
-        this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_LIGHTBOX_SHADOW);
+        this.close_visible = true;
+        this.arrows_visible = true;
+        this._content_widget = null;
+        this._info_widget = null;
+
         this.set_events(Gdk.EventMask.BUTTON_PRESS_MASK | Gdk.EventMask.BUTTON_RELEASE_MASK);
         this.set_has_window(true);
-
-        /**
-         * Grid that contains the buttons needed for the UI, as well as the lightbox's content
-         */
-        this._container_grid = new Gtk.Grid({
-            valign: Gtk.Align.CENTER,
-            halign: Gtk.Align.CENTER
-        });
-
-        /**
-         * Grid that contains the main widget to be displayed, along with attribution
-         * information
-         */
-        this.lightbox_main_container = new Gtk.Grid({
-            valign: Gtk.Align.CENTER,
-            halign: Gtk.Align.CENTER,
-            orientation: Gtk.Orientation.VERTICAL
-        });
-
-        this._container_frame = new Gtk.Frame();
-        this._container_frame.get_style_context().add_class(EosKnowledge.STYLE_CLASS_LIGHTBOX_CONTAINER);
-        this._container_frame.add(this.lightbox_main_container);
+        this._frame_allocation = new Cairo.RectangleInt();
 
         /**
          * Close button
@@ -308,34 +288,15 @@ const LightboxContainer = new Lang.Class({
             icon_name: 'window-close-symbolic',
             pixel_size: this._ICON_SIZE
         });
-        this.close_button = new Gtk.Button({
+        this._close_button = new Gtk.Button({
             halign: Gtk.Align.START,
             valign: Gtk.Align.START,
             margin: this._ICON_MARGIN,
             image: img_close
         });
-        this.close_button.connect('clicked', function () {
+        this._close_button.connect('clicked', function () {
             this.emit('close-clicked');
         }.bind(this));
-
-        // Dummy widget used to center main content in screen
-        // We bind its 'visible' property so that its visibility is in sync
-        // with the close button visibility
-        let spacer = new Gtk.Frame();
-        spacer.bind_property(
-            'visible',
-            this.close_button, 'visible',
-            GObject.BindingFlags.BIDIRECTIONAL
-        );
-
-        /**
-         * Size Group to enforce centering of main content widget
-         */
-        this._lightbox_size_group = new Gtk.SizeGroup({
-            mode: Gtk.SizeGroupMode.HORIZONTAL
-        });
-        this._lightbox_size_group.add_widget(spacer);
-        this._lightbox_size_group.add_widget(this.close_button);
 
         /**
          * Navigate previous button
@@ -344,16 +305,16 @@ const LightboxContainer = new Lang.Class({
             icon_name: 'go-previous-symbolic',
             pixel_size: this._ICON_SIZE
         });
-        this._navigation_previous_button = new Gtk.Button({
+        this._previous_button = new Gtk.Button({
             halign: Gtk.Align.START,
             valign: Gtk.Align.START,
             margin: this._ICON_MARGIN,
             image: img_prev
         });
-        this._navigation_previous_button.connect('clicked', function () {
+        this._previous_button.connect('clicked', function () {
             this.emit('navigation-previous-clicked');
         }.bind(this));
-        this._navigation_previous_button.get_style_context().add_class(EosKnowledge.STYLE_CLASS_LIGHTBOX_NAVIGATION_BUTTON);
+        this._previous_button.get_style_context().add_class(EosKnowledge.STYLE_CLASS_LIGHTBOX_NAVIGATION_BUTTON);
 
         /**
          * Navigate next button
@@ -362,35 +323,23 @@ const LightboxContainer = new Lang.Class({
             icon_name: 'go-next-symbolic',
             pixel_size: this._ICON_SIZE
         });
-        this._navigation_next_button = new Gtk.Button({
+        this._next_button = new Gtk.Button({
             halign: Gtk.Align.START,
             valign: Gtk.Align.START,
             margin: this._ICON_MARGIN,
             image: img_next
         });
-        this._navigation_next_button.connect('clicked', function () {
+        this._next_button.connect('clicked', function () {
             this.emit('navigation-next-clicked');
         }.bind(this));
-        this._navigation_next_button.get_style_context().add_class(EosKnowledge.STYLE_CLASS_LIGHTBOX_NAVIGATION_BUTTON);
+        this._next_button.get_style_context().add_class(EosKnowledge.STYLE_CLASS_LIGHTBOX_NAVIGATION_BUTTON);
 
-        /**
-         * Navigation Button Box
-         */
-        this.navigation_box = new Gtk.Grid({
-            hexpand: false,
-            halign: Gtk.Align.CENTER
-        });
-        this.navigation_box.attach(this._navigation_previous_button, 0, 0, 1, 1);
-        this.navigation_box.attach(this._navigation_next_button, 1, 0, 1, 1);
-
-        this._container_grid.attach(spacer, 0, 0, 1, 1);
-        this._container_grid.attach(this._container_frame, 1, 0, 1, 1);
-        this._container_grid.attach(this.close_button, 2, 0, 1, 1);
-        this._container_grid.attach(this.navigation_box, 0, 1, 3, 1);
-
-        this.add(this._container_grid);
+        this.add(this._close_button);
+        this.add(this._next_button);
+        this.add(this._previous_button);
 
         this.connect('button-release-event', Lang.bind(this, this._button_release));
+        this.show_all();
     },
 
     vfunc_realize: function () {
@@ -419,11 +368,24 @@ const LightboxContainer = new Lang.Class({
     },
 
     vfunc_draw: function (cr) {
+        let context = this.get_style_context();
+
+        context.save();
+        context.add_class(EosKnowledge.STYLE_CLASS_LIGHTBOX_SHADOW);
         let width = this.get_allocated_width();
         let height = this.get_allocated_height();
-        let context = this.get_style_context();
         Gtk.render_background(context, cr, 0, 0, width, height);
         Gtk.render_frame(context, cr, 0, 0, width, height);
+        context.restore();
+
+        context.save();
+        context.add_class(EosKnowledge.STYLE_CLASS_LIGHTBOX_CONTAINER);
+        Gtk.render_background(context, cr, this._frame_allocation.x, this._frame_allocation.y,
+                              this._frame_allocation.width, this._frame_allocation.height);
+        Gtk.render_frame(context, cr, this._frame_allocation.x, this._frame_allocation.y,
+                         this._frame_allocation.width, this._frame_allocation.height);
+        context.restore();
+
         let ret = this.parent(cr);
         cr.$dispose();
         return ret;
@@ -431,28 +393,145 @@ const LightboxContainer = new Lang.Class({
 
     vfunc_size_allocate: function (alloc) {
         this.parent(alloc);
+
         if (this.get_realized())
             this.get_window().move_resize(alloc.x, alloc.y,
                                           alloc.width, alloc.height);
+
+        if (this._content_widget === null)
+            return;
+
+        let content_width = this._content_widget.get_preferred_width()[1];
+        let content_height = this._content_widget.get_preferred_height()[1];
+        let info_width = 0;
+        let info_height = 0;
+        if (this._info_widget !== null) {
+            info_width = this._INFO_RESERVED_WIDTH;
+            info_height = this._INFO_RESERVED_HEIGHT;
+        }
+        let close_width = this._MIN_BORDER;
+        let close_height = this._MIN_BORDER;
+        if (this.close_visible) {
+            close_width = this._close_button.get_preferred_width()[1];
+            close_height = this._close_button.get_preferred_height()[1];
+        }
+        let arrow_width = this._MIN_BORDER;
+        let arrow_height = this._MIN_BORDER;
+        if (this.arrows_visible) {
+            arrow_height = Math.max(this._previous_button.get_preferred_height()[1],
+                                    this._next_button.get_preferred_height()[1]);
+            arrow_width = Math.max(this._previous_button.get_preferred_width()[1],
+                                   this._next_button.get_preferred_width()[1]);
+        }
+
+        this.get_style_context().save();
+        this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_LIGHTBOX_CONTAINER);
+        let padding = this.get_style_context().get_padding(this.get_state_flags());
+        this.get_style_context().restore();
+
+        let available_inner_width = alloc.width - 2 * close_width - padding.left - padding.right;
+        let available_inner_height = alloc.height - 2 * arrow_width - padding.top - padding.bottom;
+        content_width = Math.max(Math.min(available_inner_width, content_width), this._CONTENT_MIN_WIDTH);
+        content_height = Math.max(Math.min(available_inner_height - info_height, content_height), this._CONTENT_MIN_HEIGHT);
+        let aspect = this._content_widget.aspect;
+        if (aspect !== undefined) {
+            if (content_width / content_height > aspect) {
+                content_width = content_height * aspect;
+            } else {
+                content_height = content_width / aspect;
+            }
+        }
+
+        if (this._info_widget !== null) {
+            info_width = Math.max(info_width, content_width, this._info_widget.get_preferred_width()[0]);
+            info_height = Math.max(info_height, this._info_widget.get_preferred_height_for_width(info_width)[0]);
+            // Always give the attribution the height it needs, the media itself
+            // can hopefully stretch.
+            content_height = Math.max(Math.min(content_height, available_inner_height - info_height), this._CONTENT_MIN_HEIGHT);
+        }
+
+        // Frame allocation is what all other allocation will be based on, it
+        // is the allocation of the white box, containing the info and content
+        // widgets
+        this._frame_allocation = new Cairo.RectangleInt({
+            width: Math.max(content_width, info_width) + padding.left + padding.right,
+            height: content_height + info_height + padding.top + padding.bottom
+        });
+        this._frame_allocation.x = alloc.x + (alloc.width - this._frame_allocation.width) / 2;
+        this._frame_allocation.y = alloc.y + (alloc.height - this._frame_allocation.height) / 2;
+
+        // Content widget should be centered in the top of the frame.
+        let content_alloc = new Cairo.RectangleInt({
+            x: this._frame_allocation.x + (this._frame_allocation.width - content_width) / 2,
+            y: this._frame_allocation.y + padding.top,
+            width: content_width,
+            height: content_height
+        });
+        this._content_widget.size_allocate(content_alloc);
+
+        if (this._info_widget !== null) {
+            // Info widget should get the full horizontal allocation at the bottom
+            // of the frame
+            let info_alloc = new Cairo.RectangleInt({
+                x: this._frame_allocation.x + padding.left,
+                y: this._frame_allocation.y + this._frame_allocation.height - padding.bottom - info_height,
+                width: info_width,
+                height: info_height
+            });
+            this._info_widget.size_allocate(info_alloc);
+        }
+
+        if (this.close_visible) {
+            this._close_button.set_child_visible(true);
+            // Close button will appear at the right top of the frame
+            let close_alloc = new Cairo.RectangleInt({
+                x: this._frame_allocation.x + this._frame_allocation.width,
+                y: this._frame_allocation.y,
+                width: close_width,
+                height: close_height
+            });
+            this._close_button.size_allocate(close_alloc);
+        } else {
+            this._close_button.set_child_visible(false);
+        }
+
+        if (this.arrows_visible) {
+            this._previous_button.set_child_visible(true);
+            this._next_button.set_child_visible(true);
+            // Our arrow appear centered underneath the frame
+            let arrow_alloc = new Cairo.RectangleInt({
+                x: alloc.x + (alloc.width - arrow_width * 2) / 2,
+                y: this._frame_allocation.y + this._frame_allocation.height,
+                width: arrow_width,
+                height: arrow_height
+            });
+            this._previous_button.size_allocate(arrow_alloc);
+            arrow_alloc.x += arrow_width;
+            this._next_button.size_allocate(arrow_alloc);
+        } else {
+            this._previous_button.set_child_visible(false);
+            this._next_button.set_child_visible(false);
+        }
     },
 
-    attach_widget: function (w) {
-        this._widget = w;
-        // Added this to hide implementation detail
-        this.lightbox_main_container.attach(this._widget, 0, 0, 1, 1);
+    add_content_widget: function (widget) {
+        this._content_widget = widget;
+        this.add(this._content_widget);
+    },
+
+    remove_content_widget: function (widget) {
+        this.remove(this._content_widget);
+        this._content_widget = null;
     },
 
     add_info_widget: function (widget) {
-        this.lightbox_main_container.attach(widget, 0, 1, 1, 1);
+        this._info_widget = widget;
+        this.add(widget);
     },
 
     remove_info_widget: function (widget) {
-        this.lightbox_main_container.remove_row(1);
-    },
-
-    remove_widget: function (w) {
-        this._container_grid.remove(w);
-        this._widget = null;
+        this.remove(this._info_widget);
+        this._info_widget = null;
     },
 
     _button_release: function (widget, event) {
@@ -474,14 +553,12 @@ const LightboxContainer = new Lang.Class({
         // Not all child widgets will have their own GdkWindows capturing
         // mouse events. If event is generated inside child widgets allocation
         // return.
-        if (this._widget) {
-            let child_alloc = this._widget.get_allocation();
-            if (event_x >= child_alloc.x &&
-                event_y >= child_alloc.y &&
-                event_x <= child_alloc.x + child_alloc.width &&
-                event_y <= child_alloc.y + child_alloc.height)
-                return;
-        }
+        if (event_x >= this._frame_allocation.x &&
+            event_y >= this._frame_allocation.y &&
+            event_x <= this._frame_allocation.x + this._frame_allocation.width &&
+            event_y <= this._frame_allocation.y + this._frame_allocation.height)
+            return;
+
         // Event must have been in the shadowed area of the container.
         this.emit('clicked');
     }
