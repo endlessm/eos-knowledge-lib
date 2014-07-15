@@ -8,37 +8,36 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const BackButtonOverlay = imports.backButtonOverlay;
+const SectionPageA = imports.sectionPageA;
 const SectionPageB = imports.sectionPageB;
 const ArticlePage = imports.articlePage;
 
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 
 /**
- * Class: SectionArticlePageB
+ * Class: SectionArticlePage
  *
- * This class is a page manager for a section and article pair.
- * It has a <section-page>, <article-page>, and a boolean variable, <show-article>
- * to toggle the display of the article plage.
+ * Superclass for section page/article page pairs
  */
-const SectionArticlePageB = new Lang.Class({
-    Name: 'SectionArticlePageB',
-    GTypeName: 'EknSectionArticlePageB',
+const SectionArticlePage = new Lang.Class({
+    Name: 'SectionArticlePage',
+    GTypeName: 'EknSectionArticlePage',
     Extends: BackButtonOverlay.BackButtonOverlay,
     Properties: {
         /**
          * Property: section-page
-         * The section page B created by this widget.
+         * The section page to be displayed by the page manager.
          */
         'section-page': GObject.ParamSpec.object('section-page', 'Section Page',
             'The section page to be displayed',
-            GObject.ParamFlags.READABLE, SectionPageB.SectionPageB.$gtype),
+            GObject.ParamFlags.READABLE, GObject.Object),
         /**
          * Property: article-page
-         * The article page B created by this widget.
+         * The article page to be displayed by the page manager.
          */
         'article-page': GObject.ParamSpec.object('article-page', 'Article Page',
             'The article page to be displayed',
-            GObject.ParamFlags.READABLE, ArticlePage.ArticlePage.$gtype),
+            GObject.ParamFlags.READABLE, GObject.Object),
         /**
          * Property: show-article
          * Whether the article page should be displayed
@@ -53,7 +52,99 @@ const SectionArticlePageB = new Lang.Class({
         'transition-duration': GObject.ParamSpec.uint('transition-duration', 'Transition Duration',
             'Specifies (in ms) the duration of the transition between pages.',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT, 0, GLib.MAXUINT32, 200)
+
     },
+
+    get section_page () {
+        return this._section_page;
+    },
+
+    get article_page () {
+        return this._article_page;
+    },
+
+    set transition_duration (v) {
+        if (this._transition_duration === v)
+            return;
+        this._transition_duration = v;
+        this.notify('transition-duration');
+    },
+
+    get transition_duration () {
+        return this._transition_duration;
+    }
+});
+
+/**
+ * Class: SectionArticlePageA
+ *
+ * This class is a page manager for a section and article pair.
+ * It has a <section-page>, <article-page>, and a boolean variable, <show-article> 
+ * to toggle the display of the article plage.
+ */
+const SectionArticlePageA = new Lang.Class({
+    Name: 'SectionArticlePageA',
+    GTypeName: 'EknSectionArticlePageA',
+    Extends: SectionArticlePage,
+
+    _init: function (props) {
+        props = props || {};
+
+        this._section_page = new SectionPageA.SectionPageA();
+        this._article_page = new ArticlePage.ArticlePage();
+        this._transition_duration = 0;
+
+        /*
+         * Pages Stack
+         */
+        this._section_article_stack = new Gtk.Stack({
+            transition_type: Gtk.StackTransitionType.SLIDE_LEFT,
+            expand: true
+        });
+        this._section_article_stack.add(this._section_page);
+        this._section_article_stack.add(this._article_page);
+        this.parent(props);
+
+        this.bind_property('transition-duration', this._section_article_stack,
+            'transition-duration', GObject.BindingFlags.SYNC_CREATE);
+
+        /*
+         * Attach to page
+         */
+        this.add(this._section_article_stack);
+    },
+
+    get show_article () {
+        return this._show_article;
+    },
+
+    set show_article (v) {
+        if (this._show_article === v)
+            return;
+
+        this._show_article = v;
+        if (this._show_article) {
+            this._section_article_stack.transition_type = Gtk.StackTransitionType.SLIDE_LEFT;
+            this._section_article_stack.visible_child = this._article_page;
+        } else {
+            this._section_article_stack.transition_type = Gtk.StackTransitionType.SLIDE_RIGHT;
+            this._section_article_stack.visible_child = this._section_page;
+        }
+        this.notify('show-article');
+    },
+});
+
+/**
+ * Class: SectionArticlePageB
+ *
+ * This class is a page manager for a section and article pair.
+ * It has a <section-page>, <article-page>, and a boolean variable, <show-article>
+ * to toggle the display of the article plage.
+ */
+const SectionArticlePageB = new Lang.Class({
+    Name: 'SectionArticlePageB',
+    GTypeName: 'EknSectionArticlePageB',
+    Extends: SectionArticlePage,
 
     _init: function (props) {
         this._section_page = new SectionPageB.SectionPageB();
@@ -88,6 +179,10 @@ const SectionArticlePageB = new Lang.Class({
         this.add(grid);
     },
 
+    get show_article () {
+        return this._show_article;
+    },
+
     set show_article (v) {
         if (this._show_article === v)
             return;
@@ -106,27 +201,4 @@ const SectionArticlePageB = new Lang.Class({
         }
         this.notify('show-article');
     },
-
-    get section_page () {
-        return this._section_page;
-    },
-
-    get article_page () {
-        return this._article_page;
-    },
-
-    get show_article () {
-        return this._show_article;
-    },
-
-    set transition_duration (v) {
-        if (this._transition_duration === v)
-            return;
-        this._transition_duration = v;
-        this.notify('transition-duration');
-    },
-
-    get transition_duration () {
-        return this._transition_duration;
-    }
 });
