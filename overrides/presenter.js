@@ -66,10 +66,8 @@ const Presenter = new Lang.Class({
         });
 
         // Connect signals
-        this.view.connect('back-clicked',
-            this._article_presenter.navigate_back.bind(this._article_presenter));
-        this.view.connect('forward-clicked',
-            this._article_presenter.navigate_forward.bind(this._article_presenter));
+        this.view.connect('back-clicked', this._on_back_clicked.bind(this));
+        this.view.connect('forward-clicked', this._on_forward_clicked.bind(this));
         this._history_model.bind_property('can-go-back', this.view.back_button, 'sensitive',
             GObject.BindingFlags.SYNC_CREATE);
         this._history_model.bind_property('can-go-forward', this.view.forward_button, 'sensitive',
@@ -93,6 +91,16 @@ const Presenter = new Lang.Class({
         this._original_page = this.view.home_page;
         this._search_origin_page = this.view.home_page;
         this._autocomplete_results = [];
+    },
+
+    _on_back_clicked: function () {
+        this.view.lightbox.reveal_overlays = false;
+        this._article_presenter.navigate_back();
+    },
+
+    _on_forward_clicked: function () {
+        this.view.lightbox.reveal_overlays = false;
+        this._article_presenter.navigate_forward();
     },
 
     _setAppContent: function(data) {
