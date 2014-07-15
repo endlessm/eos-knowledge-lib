@@ -15,8 +15,7 @@ const HomePageA = imports.homePageA;
 const HomePageB = imports.homePageB;
 const Lightbox = imports.lightbox;
 const SectionPage = imports.sectionPage;
-const SectionArticlePageA = imports.sectionArticlePageA;
-const SectionArticlePageB = imports.sectionArticlePageB;
+const SectionArticlePage = imports.sectionArticlePage;
 
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 
@@ -191,10 +190,10 @@ const Window = new Lang.Class({
         this._categories_page = new CategoriesPage.CategoriesPage();
         if (this.template_type === 'B') {
             this._home_page = new HomePageB.HomePageB();
-            this._section_article_page = new SectionArticlePageB.SectionArticlePageB();
+            this._section_article_page = new SectionArticlePage.SectionArticlePageB();
         } else {
             this._home_page = new HomePageA.HomePageA();
-            this._section_article_page = new SectionArticlePageA.SectionArticlePageA();
+            this._section_article_page = new SectionArticlePage.SectionArticlePageA();
             // Connection so that tab buttons are revealed after page transition
             this.page_manager.connect('notify::transition-running', Lang.bind(this, function () {
                 if (!this.page_manager.transition_running) {
@@ -217,27 +216,40 @@ const Window = new Lang.Class({
             this.emit('lightbox-nav-next-clicked', media_object);
         }.bind(this));
 
-        let back_button = new Gtk.Button({
+        this.back_button = new Gtk.Button({
             image: Gtk.Image.new_from_icon_name('go-previous-symbolic',
                                                 Gtk.IconSize.SMALL_TOOLBAR)
         });
-        back_button.get_style_context().add_class(EosKnowledge.STYLE_CLASS_TOPBAR_BACK_BUTTON);
-        back_button.connect('clicked', function () {
+        this.back_button.get_style_context().add_class(EosKnowledge.STYLE_CLASS_TOPBAR_BACK_BUTTON);
+        this.back_button.connect('clicked', function () {
             this.emit('back-clicked');
         }.bind(this));
-        let forward_button = new Gtk.Button({
+        this.forward_button = new Gtk.Button({
             image: Gtk.Image.new_from_icon_name('go-next-symbolic',
                                                 Gtk.IconSize.SMALL_TOOLBAR)
         });
-        forward_button.get_style_context().add_class(EosKnowledge.STYLE_CLASS_TOPBAR_FORWARD_BUTTON);
-        forward_button.connect('clicked', function () {
+        this.forward_button.get_style_context().add_class(EosKnowledge.STYLE_CLASS_TOPBAR_FORWARD_BUTTON);
+        this.forward_button.connect('clicked', function () {
             this.emit('forward-clicked');
         }.bind(this));
-        let button_box = new Gtk.Box();
-        button_box.get_style_context().add_class(Gtk.STYLE_CLASS_LINKED);
-        button_box.add(back_button);
-        button_box.add(forward_button);
-        button_box.show_all();
+
+        this.button_box = new Gtk.Box();
+        this.button_box.get_style_context().add_class(Gtk.STYLE_CLASS_LINKED);
+        this.button_box.add(this.back_button);
+        this.button_box.add(this.forward_button);
+        this.button_box.show_all();
+
+        this.invisible_box = new Gtk.Box();
+        this.invisible_box.show_all();
+
+        this.button_stack = new Gtk.Stack({
+            transition_type: Gtk.StackTransitionType.CROSSFADE,
+            transition_duration: this.TRANSITION_DURATION
+        });
+        this.button_stack.add(this.button_box);
+        this.button_stack.add(this.invisible_box);
+        this.button_stack.visible_child = this.invisible_box;
+        this.button_stack.show_all();
 
         this._lightbox.add(this._section_article_page);
         this.page_manager.add(this._home_page);
@@ -255,7 +267,7 @@ const Window = new Lang.Class({
         }));
         this.search_box.show();
         this.page_manager.add(this._lightbox, {
-            left_topbar_widget: button_box,
+            left_topbar_widget: this.button_stack,
             center_topbar_widget: this.search_box
         });
         this.page_manager.transition_duration = this.TRANSITION_DURATION;
@@ -415,6 +427,7 @@ const Window = new Lang.Class({
             this.page_manager.transition_type = Gtk.StackTransitionType.SLIDE_RIGHT;
         }
         this._section_article_page.show_article = false;
+        this.button_stack.visible_child = this.invisible_box;
         this.page_manager.visible_child = this._lightbox;
 
         this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_SHOW_HOME_PAGE);
@@ -433,6 +446,7 @@ const Window = new Lang.Class({
         this._section_article_page.show_article = true;
         this.page_manager.visible_child = this._lightbox;
 
+        this.button_stack.visible_child = this.button_box;
         this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_SHOW_HOME_PAGE);
         this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_SHOW_CATEGORIES_PAGE);
         this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_SHOW_SECTION_PAGE);
