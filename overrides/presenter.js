@@ -1,3 +1,4 @@
+const EosKnowledge = imports.gi.EosKnowledge;
 const Endless = imports.gi.Endless;
 const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
@@ -56,17 +57,23 @@ const Presenter = new Lang.Class({
 
         this._engine = new Engine.Engine();
 
+        this._history_model = new EosKnowledge.HistoryModel();
         this._article_presenter = new ArticlePresenter.ArticlePresenter({
             article_view: this.view.article_page,
+            history_model: this._history_model,
             engine: this._engine,
             template_type: this._template_type
         });
 
         // Connect signals
-        this.view.connect('back-clicked', this._on_back.bind(this));
-        this.view.connect('forward-clicked', function (view) {
-            view.show_article_page();
-        });
+        this.view.connect('back-clicked',
+            this._article_presenter.navigate_back.bind(this._article_presenter));
+        this.view.connect('forward-clicked',
+            this._article_presenter.navigate_forward.bind(this._article_presenter));
+        this._history_model.bind_property('can-go-back', this.view.back_button, 'sensitive',
+            GObject.BindingFlags.SYNC_CREATE);
+        this._history_model.bind_property('can-go-forward', this.view.forward_button, 'sensitive',
+            GObject.BindingFlags.SYNC_CREATE);
         this.view.connect('search-text-changed', this._on_search_text_changed.bind(this));
         this.view.connect('search-entered', this._on_search.bind(this));
         this.view.connect('article-selected', this._on_article_selection.bind(this));
@@ -186,7 +193,7 @@ const Presenter = new Lang.Class({
         let selected_model = this._autocomplete_results.filter(function (element) {
             return element.ekn_id === id
         }, id)[0];
-        this._article_presenter.article_model = selected_model;
+        this._article_presenter.load_article(selected_model);
         this.view.unlock_ui();
         this.view.show_article_page();
     },
@@ -195,7 +202,7 @@ const Presenter = new Lang.Class({
         if (this.view.get_visible_page() !== this.view.article_page)
             this._article_presenter.animate_load = false;
         model.fetch_all(this._engine);
-        this._article_presenter.article_model = model;
+        this._article_presenter.load_article(model);
         this.view.show_article_page();
         this._article_presenter.animate_load = true;
     },
