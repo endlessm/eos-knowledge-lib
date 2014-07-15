@@ -157,6 +157,14 @@ const Window = new Lang.Class({
             param_types: [GObject.TYPE_STRING]
         },
         /**
+         * Event: search-focused
+         *
+         * This event is triggered when the user focuses the search bar.
+         */
+        'search-focused': {
+            param_types: [GObject.TYPE_BOOLEAN]
+        },
+        /**
          * Event: search-text-changed
          *
          * This event is triggered when the text in the top bar search box changed.
@@ -256,6 +264,9 @@ const Window = new Lang.Class({
         this.page_manager.add(this._categories_page);
 
         this.search_box = new Endless.SearchBox();
+        this.search_box.connect('notify::has-focus', Lang.bind(this, function () {
+            this.emit('search-focused', this.search_box.has_focus);
+        }).bind(this));
         this.search_box.connect('text-changed', Lang.bind(this, function (search_entry) {
             this.emit('search-text-changed', search_entry);
         }));

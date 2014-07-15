@@ -74,6 +74,7 @@ const Presenter = new Lang.Class({
             GObject.BindingFlags.SYNC_CREATE);
         this._history_model.bind_property('can-go-forward', this.view.forward_button, 'sensitive',
             GObject.BindingFlags.SYNC_CREATE);
+        this.view.connect('search-focused', this._on_search_focus.bind(this));
         this.view.connect('search-text-changed', this._on_search_text_changed.bind(this));
         this.view.connect('search-entered', this._on_search.bind(this));
         this.view.connect('article-selected', this._on_article_selection.bind(this));
@@ -154,6 +155,11 @@ const Presenter = new Lang.Class({
             'q': query
         }, this._load_section_page.bind(this));
         this.view.section_page.title = "Results for " + query;
+    },
+
+    _on_search_focus: function (view, focused) {
+        // If the user focused the search box, ensure that the lightbox is hidden
+        this.view.lightbox.reveal_overlays = false;
     },
 
     _on_search_text_changed: function (view, entry) {
