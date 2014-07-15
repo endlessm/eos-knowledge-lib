@@ -64,13 +64,11 @@ EknWindow.show-article-page {
     padding: 6px;
     border: 2px solid alpha(white, 0);
     background-color: alpha(white, 0);
-    transition: color 250ms ease-in-out;
-    transition: background-color 250ms ease-in-out;
-
-    /* FIXME: The background-image and border transitions seem to stop the
-    background-color transition from executing. So I'm disabling them for now. */
-    /*transition: border 250ms ease-in-out;
-    transition: background-image 250ms ease-in-out;*/
+    transition-timing-function: ease-in-out;
+    transition: color 250ms,
+                background-color 250ms,
+                background-image 250ms,
+                border 250ms;
 }
 
 .text-card:hover {
@@ -175,12 +173,11 @@ EknWindow.show-article-page {
     font-size: 2.45em; /* 28pt at 72 DPI 768px */
     padding: .5em 0em;
     background-color: @card-b-border-color;
-    transition: color 250ms ease-in-out;
-    transition: background-color 250ms ease-in-out;
-    /* FIXME The following two transitions stop the background-color transition
-    from executing? */
-    /*transition: text-shadow 250ms ease-in-out;
-    transition: background-image 250ms ease-in-out;*/
+    transition-timing-function: ease-in-out;
+    transition: color 250ms,
+                background-color 250ms,
+                background-image 250ms,
+                text-shadow 250ms;
 }
 
 .card-b .card-title:hover {
