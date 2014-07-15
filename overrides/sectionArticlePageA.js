@@ -60,7 +60,9 @@ const SectionArticlePageA = new Lang.Class({
         props = props || {};
 
         this._section_page = new SectionPageA.SectionPageA();
-        this._article_page = new ArticlePage.ArticlePage();
+        this._article_page = new ArticlePage.ArticlePage({
+            show_top_title: true
+        });
         this._transition_duration = 0;
 
         /*

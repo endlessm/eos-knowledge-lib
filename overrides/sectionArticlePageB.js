@@ -57,7 +57,9 @@ const SectionArticlePageB = new Lang.Class({
 
     _init: function (props) {
         this._section_page = new SectionPageB.SectionPageB();
-        this._article_page = new ArticlePage.ArticlePage();
+        this._article_page = new ArticlePage.ArticlePage({
+            show_top_title: false
+        });
         this._article_page.toc.hide();
         this._article_page.has_margins = false;
         this._transition_duration = 0;
