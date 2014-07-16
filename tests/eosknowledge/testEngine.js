@@ -60,8 +60,8 @@ describe('Knowledge Engine Module', function () {
             expect(engine.port).toBe(3003);
         });
 
-        it('should default its hostname to localhost', function () {
-            expect(engine.host).toBe('localhost');
+        it('should default its hostname to 127.0.0.1', function () {
+            expect(engine.host).toBe('127.0.0.1');
         });
     });
 
@@ -108,7 +108,7 @@ describe('Knowledge Engine Module', function () {
             let domain = 'thrones';
             let id = 'tyrion';
             let mock_uri = engine.get_ekn_uri(domain, id);
-            let correct_uri = Soup.URI.new('http://localhost:3003/api/thrones/tyrion');
+            let correct_uri = Soup.URI.new('http://127.0.0.1:3003/api/thrones/tyrion');
             expect(mock_uri.to_string(false)).toBe(correct_uri.to_string(false));
 
         });
@@ -145,7 +145,7 @@ describe('Knowledge Engine Module', function () {
             let request_spy = engine_request_spy();
             let mock_domain = 'foo';
             let mock_id = 'bar';
-            let expected_uri = Soup.URI.new('http://localhost:3003/api/foo/bar');
+            let expected_uri = Soup.URI.new('http://127.0.0.1:3003/api/foo/bar');
 
             engine.get_object_by_id(mock_domain, mock_id, noop);
             let last_req_args = request_spy.calls.mostRecent().args;
