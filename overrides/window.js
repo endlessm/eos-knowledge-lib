@@ -292,9 +292,8 @@ const Window = new Lang.Class({
             let win_height = allocation.height;
             if (this.background_image_uri &&
                 (this._last_allocation === undefined ||
-                (this._last_allocation.width !== win_width &&
+                (this._last_allocation.width !== win_width ||
                 this._last_allocation.height !== win_height))) {
-
                 let bg_mult_ratio = Math.max(win_width / this._background_image_width, win_height / this._background_image_height) * PARALLAX_BACKGROUND_SCALE;
                 let bg_width = Math.ceil(this._background_image_width * bg_mult_ratio);
                 let bg_height = Math.ceil(this._background_image_height * bg_mult_ratio);
@@ -307,7 +306,7 @@ const Window = new Lang.Class({
                 }
                 this._bg_size_provider.load_from_data(frame_css);
             }
-            this._last_allocation = allocation;
+            this._last_allocation = { width: win_width, height: win_height };
         }));
 
         this.show_all();
