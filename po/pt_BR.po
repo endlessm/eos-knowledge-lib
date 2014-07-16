@@ -1,0 +1,51 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Endless Mobile, Inc.
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+msgid ""
+msgstr ""
+"Project-Id-Version: eos-knowledge-lib\n"
+"Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
+"POT-Creation-Date: 2014-07-16 05:31+0000\n"
+"PO-Revision-Date: 2014-07-16 05:32+0000\n"
+"Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
+"Language-Team: Portuguese (Brazil) (http://www.transifex.com/projects/p/eos-knowledge-lib/language/pt_BR/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: pt_BR\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: eosknowledge/ekn-hello.c:36
+msgid "Hello C world!"
+msgstr ""
+
+#: overrides/lessonCard.js:133
+#, c-format
+msgid "Lesson %d"
+msgstr ""
+
+#. TRANSLATORS: this appears on top of the search results page; %s will
+#. be replaced with the string that the user searched for.
+#: overrides/presenter.js:178
+#, c-format
+msgid "Results for %s"
+msgstr ""
+
+#: overrides/presenter.js:297
+msgid "Articles"
+msgstr ""
+
+#: overrides/progressCard.js:112
+#, c-format
+msgid "%d of %d done"
+msgstr ""
+
+#: overrides/homePageA.js:46
+msgid "SEE ALL CATEGORIES"
+msgstr ""
+
+#: overrides/categoriesPage.js:53
+msgid "HOME"
+msgstr ""
