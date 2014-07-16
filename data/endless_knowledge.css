@@ -38,8 +38,11 @@ EknWindow.show-article-page {
 .card-a {
     padding: 10px 10px 0px 10px;
     margin: 7px;
-    background-color: #ececec;
+    background-color: white;
+    /* FIXME: background-image: need "noise" asset at 2% opacity */
     transition: margin 250ms ease-in-out;
+    /* FIXME: box-shadow outset doesn't currently work in GTK */
+    box-shadow: 0px 0px 10px 0px alpha(black, 0.3);
 }
 
 .card-a:hover {
@@ -52,7 +55,7 @@ EknWindow.show-article-page {
     font-family: 'Montserrat', sans-serif;
     font-size: 1.05em;  /* 12pt at 72 DPI 1080px */
     font-weight: bold;
-    text-shadow: white 0px 1px 0px;
+    text-shadow: 0px 1px 0px white;
     transition: padding 250ms ease-in-out;
 }
 
@@ -301,6 +304,7 @@ EknWindow.show-article-page {
 @define-color tab-button-gradient-hover-dark mix (@tab-button-background, black, .5);
 
 .tab-button {
+    color: #f6f6f6;
     padding-right: 1.9em;
     padding-left: 2.4em;
     padding-top: 0.9em;
@@ -309,9 +313,12 @@ EknWindow.show-article-page {
     -GtkButton-image-spacing: 15px;
     font-weight: bold;
     font-size: 1.23em;  /* 14pt at 72 DPI 1080px */
+    text-shadow: 0px -1px 1px alpha(black, 0.44);
+    icon-shadow: 0px -1px 1px alpha(black, 0.44);
     background: linear-gradient(to bottom,
                                 @tab-button-gradient-light,
                                 @tab-button-gradient-dark);
+    box-shadow: inset 0px 1px 4px 0px alpha(white, 0.19);
 }
 
 .tab-button:hover {
@@ -383,7 +390,7 @@ EknWindow.show-article-page {
 .section-page-a .section-page-title {
     padding-top: 1.0em;
     padding-bottom: 0.48em;
-    font-size: 2.11em;  /* 24pt at 72 DPI 1080px */
+    font-size: 3.17em; /* 36pt at 72 DPI 768px */
 }
 
 .section-page-a GtkSeparator {
@@ -445,7 +452,7 @@ scrollbars, style the GTK scrollbars to look slightly more like them */
 
 .article-page-title {
     font-family: Montserrat;
-    font-size: 1.58em;  /* 18pt at 72 DPI 1080px */
+    font-size: 3.17em; /* 36pt at 72 DPI 768px */
     font-weight: bold;
 }
 
