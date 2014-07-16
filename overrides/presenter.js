@@ -1,6 +1,8 @@
 const EosKnowledge = imports.gi.EosKnowledge;
 const Endless = imports.gi.Endless;
+const Format = imports.format;
 const Gio = imports.gi.Gio;
+const Gettext = imports.gettext;
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 const System = imports.system;
@@ -9,11 +11,15 @@ const ArticleCard = imports.articleCard;
 const ArticlePresenter = imports.articlePresenter;
 const CardA = imports.cardA;
 const CardB = imports.cardB;
+const Config = imports.config;
 const Engine = imports.engine;
 const MediaInfobox = imports.mediaInfobox;
 const Previewer = imports.previewer;
 const TextCard = imports.textCard;
 const Window = imports.window;
+
+String.prototype.format = Format.format;
+let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
 const RESULTS_SIZE = 60;
 
@@ -167,7 +173,9 @@ const Presenter = new Lang.Class({
         this._engine.get_objects_by_query(this._domain, {
             'q': query
         }, this._load_section_page.bind(this));
-        this.view.section_page.title = "Results for " + query;
+        /* TRANSLATORS: this appears on top of the search results page; %s will
+        be replaced with the string that the user searched for. */
+        this.view.section_page.title = _("Results for %s").format(query);
     },
 
     _on_search_focus: function (view, focused) {
@@ -285,9 +293,8 @@ const Presenter = new Lang.Class({
         if (this._template_type === 'B') {
             this.view.section_page.cards = cards;
         } else {
-            let segments = {
-                'Articles': cards
-            };
+            let segments = {};
+            segments[_("Articles")] = cards;
             this.view.section_page.segments = segments;
         }
         this.view.unlock_ui();
