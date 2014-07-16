@@ -83,9 +83,6 @@ const SectionPageB = new Lang.Class({
         title_label.xalign = 0;
         title_label.yalign = 1;
         title_label.expand = true;
-        title_label.wrap_mode = Pango.WrapMode.WORD;
-        title_label.ellipsize = Pango.EllipsizeMode.END;
-        title_label.max_width_chars = 1;
         title_label.lines = 2;
 
         this._title_label_revealer = new Gtk.Revealer({

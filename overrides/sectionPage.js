@@ -4,6 +4,7 @@ const EosKnowledge = imports.gi.EosKnowledge;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
+const Pango = imports.gi.Pango;
 
 /**
  * Class: SectionPage
@@ -29,7 +30,11 @@ const SectionPage = new Lang.Class({
     },
 
     _init: function (props) {
-        this._title_label = new Gtk.Label();
+        this._title_label = new Gtk.Label({
+            wrap_mode: Pango.WrapMode.WORD_CHAR,
+            ellipsize: Pango.EllipsizeMode.END,
+            max_width_chars: 1,
+        });
 
         this._title = null;
 
