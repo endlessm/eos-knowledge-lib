@@ -180,7 +180,7 @@ const ArticlePresenter = new GObject.Class({
     },
 
     _update_title_and_toc: function () {
-        this.article_view.title = this._article_model.title;
+        this.article_view.title = this._article_model.title.charAt(0).toUpperCase() + this._article_model.title.slice(1);
 
         let _toc_visible = false;
         if (this.template_type !== 'B' && this._article_model.table_of_contents !== undefined) {
