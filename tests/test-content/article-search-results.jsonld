@@ -3,7 +3,7 @@
     {
         "schema": "http://schema.org/",
         "xsd": "http://www.w3.org/2001/XMLSchema#",
-        "ekn": "http://localhost:3003/v2/",
+        "ekn": "http://127.0.0.1:3003/v2/",
         "ekv": "ekn:_vocab/",
         "numResults": "schema:Integer",
         "results":

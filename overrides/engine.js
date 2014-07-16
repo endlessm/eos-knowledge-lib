@@ -26,12 +26,16 @@ const Engine = Lang.Class({
          * The hostname of the Knowledge Engine service. You generally don't
          * need to set this.
          *
-         * Defaults to 'localhost'
+         * Defaults to '127.0.0.1'
+         * FIXME: the default should just be localhost, but libsoup has a bug
+         * whereby it does not resolve localhost when it is offline:
+         * https://bugzilla.gnome.org/show_bug.cgi?id=692291
+         * Once this bug is fixed, we should change this to be localhost.
          */
         'host': GObject.ParamSpec.string('host',
             'Knowledge Engine Hostname', 'HTTP hostname for the Knowledge Engine service',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            'localhost'),
+            '127.0.0.1'),
 
         /**
          * Property: port
