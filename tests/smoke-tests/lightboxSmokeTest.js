@@ -26,7 +26,9 @@ const TestApplication = new Lang.Class({
         this._files = {
             image: Gio.File.new_for_path(TESTDIR + '/test-content/pig1.jpg'),
             video: Gio.File.new_for_path(TESTDIR + '/test-content/sample.mp4'),
-            copyrighted: Gio.File.new_for_path(TESTDIR + '/test-content/ketchup.jpg')
+            copyrighted: Gio.File.new_for_path(TESTDIR + '/test-content/ketchup.jpg'),
+            tallimage: Gio.File.new_for_path(TESTDIR + '/test-content/tall.jpg'),
+            wideimage: Gio.File.new_for_path(TESTDIR + '/test-content/wide.jpg'),
         };
 
         this._infoboxes = {
@@ -52,7 +54,14 @@ const TestApplication = new Lang.Class({
                 media_title: 'ketchup.jpg',
                 license_text: 'NSA Creative Commons Spy Alike',
                 creator_text: 'Yo momma'
-            })
+            }),
+            tallimage: new EosKnowledge.MediaInfobox({
+                caption: 'This image be super tall.',
+                media_title: 'tall.jpg',
+                license_text: 'blar',
+                creator_text: 'O'
+            }),
+            wideimage: null
         };
 
         let image_card = new EosKnowledge.CardA({
@@ -82,10 +91,30 @@ const TestApplication = new Lang.Class({
             this._lightbox.infobox_widget = this._infoboxes.copyrighted;
         }.bind(this)));
 
+        let tallimage_card = new EosKnowledge.CardA({
+            title: 'Open tall image in lightbox'
+        });
+        tallimage_card.connect('clicked', Lang.bind(this, function () {
+            this._previewer.file = this._files.tallimage;
+            this._lightbox.reveal_overlays = true;
+            this._lightbox.infobox_widget = this._infoboxes.tallimage;
+        }.bind(this)));
+
+        let wideimage_card = new EosKnowledge.CardA({
+            title: 'Open wide image in lightbox'
+        });
+        wideimage_card.connect('clicked', Lang.bind(this, function () {
+            this._previewer.file = this._files.wideimage;
+            this._lightbox.reveal_overlays = true;
+            this._lightbox.infobox_widget = this._infoboxes.wideimage;
+        }.bind(this)));
+
         let grid = new Gtk.Grid();
         grid.add(image_card);
         grid.add(video_card);
         grid.add(copyrighted_card);
+        grid.add(tallimage_card);
+        grid.add(wideimage_card);
 
         this._previewer = new EosKnowledge.Previewer({
             visible: true

@@ -41,6 +41,15 @@ const Previewer = new Lang.Class({
         'animating': GObject.ParamSpec.boolean('animating', 'Animating',
             'True if previewer is animating',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
+            false),
+        /**
+         * Property: aspect
+         *
+         * The aspect aspect the previewer widget should display at
+         */
+        'aspect': GObject.ParamSpec.float('aspect', 'Aspect',
+            'Aspect ratio of previewer content',
+            GObject.ParamFlags.READABLE,
             false)
     },
 
@@ -97,5 +106,13 @@ const Previewer = new Lang.Class({
 
     get file () {
         return this._file;
+    },
+
+    get aspect () {
+        let child = this.get_child();
+        if (child !== null) {
+            return child.aspect;
+        }
+        return 1.0;
     }
 });

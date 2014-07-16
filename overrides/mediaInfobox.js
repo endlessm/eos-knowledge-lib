@@ -17,8 +17,6 @@ const MediaInfobox = new Lang.Class({
     GTypeName: 'EknMediaInfobox',
     Extends: Gtk.Grid,
     
-    CAPTION_MAX_CHARS_PER_LINE: 60,
-
     Properties: {
         /**
          * Property: caption
@@ -62,7 +60,7 @@ const MediaInfobox = new Lang.Class({
 
     _init: function (props) {
         props = props || {};
-        props.column_homogeneous = true;
+        props.orientation = Gtk.Orientation.VERTICAL;
 
         this._caption = null;
         this._media_title = null;
@@ -70,10 +68,9 @@ const MediaInfobox = new Lang.Class({
         this._creator_text = null;
 
         this._caption_label = new Gtk.Label({
-            halign: Gtk.Align.START,
+            xalign: 0,
             wrap: true,
-            wrap_mode: Pango.WrapMode.WORD,
-            max_width_chars: this.CAPTION_MAX_CHARS_PER_LINE
+            wrap_mode: Pango.WrapMode.WORD_CHAR
         });
         this._caption_label.get_style_context().add_class(EosKnowledge.STYLE_CLASS_INFOBOX_CAPTION);
 
@@ -92,15 +89,12 @@ const MediaInfobox = new Lang.Class({
 
         this.parent(props);
 
-        this.pack_widgets();
+        this.add(this._caption_label);
+        this.add(this._separator);
+        this.add(this._attribution_composite);
         this.show_all();
     },
 
-    pack_widgets: function () {
-        this.attach(this._caption_label, 0, 0, 2, 1);
-        this.attach(this._separator, 0, 1, 2, 1);
-        this.attach(this._attribution_composite, 0, 2, 1, 1);
-    },
 
     _refresh_attribution_label: function () {
         let attributions = [];
