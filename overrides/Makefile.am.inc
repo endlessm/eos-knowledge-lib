@@ -30,8 +30,7 @@ public_overrides = \
 	overrides/presenter.js \
 	overrides/progressCard.js \
 	overrides/previewer.js \
-	overrides/sectionArticlePageA.js \
-	overrides/sectionArticlePageB.js \
+	overrides/sectionArticlePage.js \
 	overrides/sectionPage.js \
 	overrides/sectionPageA.js \
 	overrides/sectionPageB.js \

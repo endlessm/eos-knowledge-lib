@@ -39,7 +39,7 @@ describe('Article Presenter', function () {
             article_view: view,
             engine: engine
         });
-        presenter.article_model = articleObject;
+        presenter.load_article(articleObject);
 
     });
 

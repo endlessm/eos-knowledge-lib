@@ -1,3 +1,4 @@
+const EosKnowledge = imports.gi.EosKnowledge;
 const Endless = imports.gi.Endless;
 const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
@@ -56,17 +57,20 @@ const Presenter = new Lang.Class({
 
         this._engine = new Engine.Engine();
 
+        this._history_model = new EosKnowledge.HistoryModel();
         this._article_presenter = new ArticlePresenter.ArticlePresenter({
             article_view: this.view.article_page,
+            history_model: this._history_model,
             engine: this._engine,
             template_type: this._template_type
         });
 
         // Connect signals
-        this.view.connect('back-clicked', this._on_back.bind(this));
-        this.view.connect('forward-clicked', function (view) {
-            view.show_article_page();
-        });
+        this.view.connect('back-clicked', this._on_topbar_back_clicked.bind(this));
+        this.view.connect('forward-clicked', this._on_topbar_forward_clicked.bind(this));
+        this._history_model.bind_property('can-go-forward', this.view.forward_button, 'sensitive',
+            GObject.BindingFlags.SYNC_CREATE);
+        this.view.connect('search-focused', this._on_search_focus.bind(this));
         this.view.connect('search-text-changed', this._on_search_text_changed.bind(this));
         this.view.connect('search-entered', this._on_search.bind(this));
         this.view.connect('article-selected', this._on_article_selection.bind(this));
@@ -85,6 +89,23 @@ const Presenter = new Lang.Class({
         this._original_page = this.view.home_page;
         this._search_origin_page = this.view.home_page;
         this._autocomplete_results = [];
+    },
+
+    _on_topbar_back_clicked: function () {
+        this.view.lightbox.reveal_overlays = false;
+
+        // if there's still history to go back to, do that. if not, navigate
+        // back to the category page
+        if (this._history_model.can_go_back) {
+            this._article_presenter.navigate_back();
+        } else {
+            this._on_back();
+        }
+    },
+
+    _on_topbar_forward_clicked: function () {
+        this.view.lightbox.reveal_overlays = false;
+        this._article_presenter.navigate_forward();
     },
 
     _setAppContent: function(data) {
@@ -149,6 +170,11 @@ const Presenter = new Lang.Class({
         this.view.section_page.title = "Results for " + query;
     },
 
+    _on_search_focus: function (view, focused) {
+        // If the user focused the search box, ensure that the lightbox is hidden
+        this.view.lightbox.reveal_overlays = false;
+    },
+
     _on_search_text_changed: function (view, entry) {
         this._engine.get_objects_by_query(this._domain, {
             'prefix': entry.text
@@ -186,7 +212,7 @@ const Presenter = new Lang.Class({
         let selected_model = this._autocomplete_results.filter(function (element) {
             return element.ekn_id === id
         }, id)[0];
-        this._article_presenter.article_model = selected_model;
+        this._article_presenter.load_article(selected_model);
         this.view.unlock_ui();
         this.view.show_article_page();
     },
@@ -195,7 +221,7 @@ const Presenter = new Lang.Class({
         if (this.view.get_visible_page() !== this.view.article_page)
             this._article_presenter.animate_load = false;
         model.fetch_all(this._engine);
-        this._article_presenter.article_model = model;
+        this._article_presenter.load_article(model);
         this.view.show_article_page();
         this._article_presenter.animate_load = true;
     },
@@ -232,6 +258,7 @@ const Presenter = new Lang.Class({
     _on_back: function () {
         let visible_page = this.view.get_visible_page();
         if (visible_page === this.view.article_page) {
+            this._article_presenter.history_model.clear();
             if (this._search_origin_page === this.view.home_page) {
                 this.view.show_home_page();
             } else {
