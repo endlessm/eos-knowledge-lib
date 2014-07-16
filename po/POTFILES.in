@@ -1,5 +1,6 @@
 eosknowledge/ekn-hello.c
 overrides/lessonCard.js
+overrides/presenter.js
 overrides/progressCard.js
 overrides/homePageA.js
 overrides/categoriesPage.js
