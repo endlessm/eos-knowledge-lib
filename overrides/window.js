@@ -371,12 +371,14 @@ const Window = new Lang.Class({
         let visible_page = this.get_visible_page();
         if (visible_page === this.categories_page) {
             this.page_manager.transition_type = Gtk.StackTransitionType.SLIDE_DOWN;
-            this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_SHOW_CATEGORIES_PAGE);
         } else {
             this.page_manager.transition_type = Gtk.StackTransitionType.SLIDE_RIGHT;
-            this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_SHOW_SECTION_PAGE);
         }
         this.page_manager.visible_child = this._home_page;
+
+        this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_SHOW_CATEGORIES_PAGE);
+        this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_SHOW_SECTION_PAGE);
+        this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_SHOW_ARTICLE_PAGE);
         this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_SHOW_HOME_PAGE);
     },
 
@@ -389,12 +391,14 @@ const Window = new Lang.Class({
         let visible_page = this.get_visible_page();
         if (visible_page === this.home_page) {
             this.page_manager.transition_type = Gtk.StackTransitionType.SLIDE_UP;
-            this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_SHOW_HOME_PAGE);
         } else {
             this.page_manager.transition_type = Gtk.StackTransitionType.SLIDE_RIGHT;
-            this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_SHOW_SECTION_PAGE);
         }
         this.page_manager.visible_child = this._categories_page;
+
+        this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_SHOW_HOME_PAGE);
+        this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_SHOW_SECTION_PAGE);
+        this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_SHOW_ARTICLE_PAGE);
         this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_SHOW_CATEGORIES_PAGE);
     },
 
@@ -407,13 +411,15 @@ const Window = new Lang.Class({
         let visible_page = this.get_visible_page();
         if (visible_page === this.home_page) {
             this.page_manager.transition_type = Gtk.StackTransitionType.SLIDE_LEFT;
-            this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_SHOW_HOME_PAGE);
         } else {
             this.page_manager.transition_type = Gtk.StackTransitionType.SLIDE_RIGHT;
-            this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_SHOW_ARTICLE_PAGE);
         }
         this._section_article_page.show_article = false;
         this.page_manager.visible_child = this._lightbox;
+
+        this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_SHOW_HOME_PAGE);
+        this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_SHOW_CATEGORIES_PAGE);
+        this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_SHOW_ARTICLE_PAGE);
         this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_SHOW_SECTION_PAGE);
     },
 
@@ -426,6 +432,9 @@ const Window = new Lang.Class({
         this.page_manager.transition_type = Gtk.StackTransitionType.SLIDE_LEFT;
         this._section_article_page.show_article = true;
         this.page_manager.visible_child = this._lightbox;
+
+        this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_SHOW_HOME_PAGE);
+        this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_SHOW_CATEGORIES_PAGE);
         this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_SHOW_SECTION_PAGE);
         this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_SHOW_ARTICLE_PAGE);
     },
