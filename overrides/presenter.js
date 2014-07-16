@@ -66,10 +66,8 @@ const Presenter = new Lang.Class({
         });
 
         // Connect signals
-        this.view.connect('back-clicked', this._on_back_clicked.bind(this));
-        this.view.connect('forward-clicked', this._on_forward_clicked.bind(this));
-        this._history_model.bind_property('can-go-back', this.view.back_button, 'sensitive',
-            GObject.BindingFlags.SYNC_CREATE);
+        this.view.connect('back-clicked', this._on_topbar_back_clicked.bind(this));
+        this.view.connect('forward-clicked', this._on_topbar_forward_clicked.bind(this));
         this._history_model.bind_property('can-go-forward', this.view.forward_button, 'sensitive',
             GObject.BindingFlags.SYNC_CREATE);
         this.view.connect('search-focused', this._on_search_focus.bind(this));
@@ -93,12 +91,19 @@ const Presenter = new Lang.Class({
         this._autocomplete_results = [];
     },
 
-    _on_back_clicked: function () {
+    _on_topbar_back_clicked: function () {
         this.view.lightbox.reveal_overlays = false;
-        this._article_presenter.navigate_back();
+
+        // if there's still history to go back to, do that. if not, navigate
+        // back to the category page
+        if (this._history_model.can_go_back) {
+            this._article_presenter.navigate_back();
+        } else {
+            this._on_back();
+        }
     },
 
-    _on_forward_clicked: function () {
+    _on_topbar_forward_clicked: function () {
         this.view.lightbox.reveal_overlays = false;
         this._article_presenter.navigate_forward();
     },
@@ -253,6 +258,7 @@ const Presenter = new Lang.Class({
     _on_back: function () {
         let visible_page = this.view.get_visible_page();
         if (visible_page === this.view.article_page) {
+            this._article_presenter.history_model.clear();
             if (this._search_origin_page === this.view.home_page) {
                 this.view.show_home_page();
             } else {
