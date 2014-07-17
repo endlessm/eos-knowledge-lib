@@ -224,31 +224,20 @@ const Window = new Lang.Class({
             this.emit('lightbox-nav-next-clicked', media_object);
         }.bind(this));
 
-        this.back_button = new Gtk.Button({
-            image: Gtk.Image.new_from_icon_name('go-previous-symbolic',
-                                                Gtk.IconSize.SMALL_TOOLBAR)
-        });
-        this.back_button.get_style_context().add_class(EosKnowledge.STYLE_CLASS_TOPBAR_BACK_BUTTON);
-        this.back_button.connect('clicked', function () {
+        this.history_buttons = new Endless.TopbarNavButton();
+
+        this.history_buttons.back_button.connect('clicked', function () {
             this.emit('back-clicked');
         }.bind(this));
-        this.forward_button = new Gtk.Button({
-            image: Gtk.Image.new_from_icon_name('go-next-symbolic',
-                                                Gtk.IconSize.SMALL_TOOLBAR)
-        });
-        this.forward_button.get_style_context().add_class(EosKnowledge.STYLE_CLASS_TOPBAR_FORWARD_BUTTON);
-        this.forward_button.connect('clicked', function () {
+        this.history_buttons.forward_button.connect('clicked', function () {
             this.emit('forward-clicked');
         }.bind(this));
 
         this.button_box = new Gtk.Box();
         this.button_box.get_style_context().add_class(Gtk.STYLE_CLASS_LINKED);
-        this.button_box.add(this.back_button);
-        this.button_box.add(this.forward_button);
-        this.button_box.show_all();
+        this.button_box.add(this.history_buttons);
 
         this.invisible_box = new Gtk.Box();
-        this.invisible_box.show_all();
 
         this.button_stack = new Gtk.Stack({
             transition_type: Gtk.StackTransitionType.CROSSFADE,

@@ -478,11 +478,6 @@ scrollbars, style the GTK scrollbars to look slightly more like them */
     padding-left: 15px;
 }
 
-.topbar-back-button,
-.topbar-forward-button {
-    padding: 3px;
-}
-
 .lightbox-navigation-button {
     padding: 7px;
     border-radius: 27px;
