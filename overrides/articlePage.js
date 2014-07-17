@@ -101,19 +101,25 @@ const ArticlePage = new Lang.Class({
         switcher_pct: 50 / 56,
         right_margin_pct: 3 / 56
     },
+    MAX_TITLE_LINES: 5,
 
     _init: function (props) {
         this._title_label = new Gtk.Label({
             wrap: true,
             wrap_mode: Pango.WrapMode.WORD_CHAR,
+            ellipsize: Pango.EllipsizeMode.END,
+            lines: this.MAX_TITLE_LINES,
             expand: true,
             xalign: 0.0,
             no_show_all: true,
             visible: true
         });
         this._top_title_label = new Gtk.Label({
+            wrap_mode: Pango.WrapMode.WORD_CHAR,
+            ellipsize: Pango.EllipsizeMode.END,
+            max_width_chars: 1,
             hexpand: true,
-            halign: Gtk.Align.CENTER,
+            halign: Gtk.Align.FILL,
             margin_bottom: 10,
             no_show_all: true
         });
