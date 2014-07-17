@@ -58,6 +58,8 @@ const MediaInfobox = new Lang.Class({
             '')
     },
 
+    _MAX_CAPTION_LINES: 5,
+
     _init: function (props) {
         props = props || {};
         props.orientation = Gtk.Orientation.VERTICAL;
@@ -70,7 +72,9 @@ const MediaInfobox = new Lang.Class({
         this._caption_label = new Gtk.Label({
             xalign: 0,
             wrap: true,
-            wrap_mode: Pango.WrapMode.WORD_CHAR
+            wrap_mode: Pango.WrapMode.WORD_CHAR,
+            ellipsize: Pango.EllipsizeMode.END,
+            lines: this._MAX_CAPTION_LINES
         });
         this._caption_label.get_style_context().add_class(EosKnowledge.STYLE_CLASS_INFOBOX_CAPTION);
 
@@ -81,7 +85,9 @@ const MediaInfobox = new Lang.Class({
 
         this._attribution_composite = new CompositeButton.CompositeButton();
         this._attribution_label = new Gtk.Label({
-            xalign: 0
+            xalign: 0,
+            wrap: true,
+            wrap_mode: Pango.WrapMode.WORD_CHAR
         });
         this._attribution_composite.get_style_context().add_class(EosKnowledge.STYLE_CLASS_INFOBOX_ATTRIBUTION_TEXT);
         this._attribution_composite.add(this._attribution_label);
@@ -104,7 +110,9 @@ const MediaInfobox = new Lang.Class({
             attributions.push(this._license_text);
         if (this._creator_text !== null)
             attributions.push(this._creator_text);
-        this._attribution_label.label = attributions.join(' - ').toUpperCase();
+        this._attribution_label.label = attributions.map(function (s) {
+            return s.split('\n')[0];
+        }).join(' - ').toUpperCase();
     },
 
     set caption (v) {
