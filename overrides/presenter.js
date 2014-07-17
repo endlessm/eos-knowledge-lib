@@ -74,7 +74,7 @@ const Presenter = new Lang.Class({
         // Connect signals
         this.view.connect('back-clicked', this._on_topbar_back_clicked.bind(this));
         this.view.connect('forward-clicked', this._on_topbar_forward_clicked.bind(this));
-        this._history_model.bind_property('can-go-forward', this.view.forward_button, 'sensitive',
+        this._history_model.bind_property('can-go-forward', this.view.history_buttons.forward_button, 'sensitive',
             GObject.BindingFlags.SYNC_CREATE);
         this.view.connect('search-focused', this._on_search_focus.bind(this));
         this.view.connect('search-text-changed', this._on_search_text_changed.bind(this));

@@ -84,19 +84,4 @@ describe('Window', function () {
     it('starts on home page', function () {
         expect(view.get_visible_page()).toBe(view.home_page);
     });
-
-    it('has a back and forward button on the section and article page', function () {
-        view.show_section_page();
-        expect(view).toHaveDescendantWithCssClass(EosKnowledge.STYLE_CLASS_TOPBAR_BACK_BUTTON);
-        expect(view).toHaveDescendantWithCssClass(EosKnowledge.STYLE_CLASS_TOPBAR_FORWARD_BUTTON);
-        view.show_article_page();
-        expect(view).toHaveDescendantWithCssClass(EosKnowledge.STYLE_CLASS_TOPBAR_BACK_BUTTON);
-        expect(view).toHaveDescendantWithCssClass(EosKnowledge.STYLE_CLASS_TOPBAR_FORWARD_BUTTON);
-    });
-
-    it('does not have a back and forward button on the home page', function () {
-        view.show_home_page();
-        expect(view).not.toHaveDescendantWithCssClass(EosKnowledge.STYLE_CLASS_TOPBAR_BACK_BUTTON);
-        expect(view).not.toHaveDescendantWithCssClass(EosKnowledge.STYLE_CLASS_TOPBAR_FORWARD_BUTTON);
-    });
 });
