@@ -442,6 +442,11 @@ scrollbars, style the GTK scrollbars to look slightly more like them */
     border-radius: 20px;
 }
 
+/* Hide scrollbars when animating, they look bad. */
+.animating .scrollbar.slider {
+    background-color: transparent;
+}
+
 .article-page-switcher-frame {
     padding: 20px 0px;
 }

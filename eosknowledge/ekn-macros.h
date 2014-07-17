@@ -400,4 +400,11 @@ enum_type##_get_type (void) \
  */
 #define EKN_STYLE_CLASS_NO_MARGINS "no-margins"
 
+/**
+ * EKN_STYLE_CLASS_ANIMATING:
+ *
+ * A CSS class for knowledge widgets that are currently animating.
+ */
+#define EKN_STYLE_CLASS_ANIMATING "animating"
+
 #endif /* EKN_MACROS_H */

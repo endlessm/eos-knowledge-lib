@@ -101,6 +101,13 @@ const SectionArticlePageA = new Lang.Class({
             transition_type: Gtk.StackTransitionType.SLIDE_LEFT,
             expand: true
         });
+        this._section_article_stack.connect('notify::transition-running', function () {
+            if (this._section_article_stack.transition_running) {
+                this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_ANIMATING);
+            } else {
+                this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_ANIMATING);
+            }
+        }.bind(this));
         this._section_article_stack.add(this._section_page);
         this._section_article_stack.add(this._article_page);
         this.parent(props);
