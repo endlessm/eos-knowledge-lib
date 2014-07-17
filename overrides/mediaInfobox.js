@@ -118,7 +118,10 @@ const MediaInfobox = new Lang.Class({
     set caption (v) {
         if (this._caption === v) return;
         if (v.length > 0) {
-            this._caption_label.label = v;
+            // FIXME: We may want to stick this text content in a scroll
+            // area of some sort, and keep newlines. But for now we remove
+            // newlines so the label ellipsizing will work
+            this._caption_label.label = v.split('\n').join(' ');
             this._caption_label.show();
         } else {
             this._caption_label.hide();
