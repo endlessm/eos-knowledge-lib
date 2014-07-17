@@ -195,6 +195,9 @@ const ContentObjectModel = new Lang.Class({
     },
 
     set title (v) {
+        // TODO: Remove this line once we have reliable content
+        // For now we need to programmatically capitalize titles
+        v = v.charAt(0).toUpperCase() + v.slice(1);
         this._title = v;
     },
 

@@ -304,7 +304,7 @@ const Presenter = new Lang.Class({
     _new_card_from_article_model: function (model) {
         let card_class = this._template_type === 'B' ? TextCard.TextCard : ArticleCard.ArticleCard;
         let card = new card_class({
-            title: model.title.charAt(0).toUpperCase() + model.title.slice(1),
+            title: model.title,
             synopsis: model.synopsis
         });
         card.connect('clicked', function () {
