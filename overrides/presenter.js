@@ -169,6 +169,10 @@ const Presenter = new Lang.Class({
     },
 
     _on_search: function (view, query) {
+        // Ignore empty queries
+        if (!(query.trim())) {
+            return;
+        }
         this.view.lock_ui();
         this._engine.get_objects_by_query(this._domain, {
             'q': query
@@ -184,6 +188,10 @@ const Presenter = new Lang.Class({
     },
 
     _on_search_text_changed: function (view, entry) {
+        // Ignore empty queries
+        if (!(entry.text.trim())) {
+            return;
+        }
         this._engine.get_objects_by_query(this._domain, {
             'prefix': entry.text
         }, function (err, results) {
