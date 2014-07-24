@@ -62,6 +62,8 @@ const Presenter = new Lang.Class({
         }
 
         this._engine = new Engine.Engine();
+        // Ping server to spin up knowledge engine
+        this._engine.ping(this._domain);
 
         this._history_model = new EosKnowledge.HistoryModel();
         this._article_presenter = new ArticlePresenter.ArticlePresenter({

@@ -57,6 +57,28 @@ const Engine = Lang.Class({
     },
 
     /**
+     * Function: ping
+     * Pings the knowledge engine with a dummy request. Used to wake
+     * up the knowledge engine from its slumber.
+     *
+     * Parameters:
+     *
+     *   domain - The knowledge engine domain
+     */
+    _DUMMY_QUERY : 'frango',
+    ping: function (domain) {
+        let req_uri = this.get_ekn_uri(domain, undefined, {q: this._DUMMY_QUERY, limit: 1});
+        this._send_json_ld_request(req_uri, function (err, json_ld) {
+            if (typeof err !== 'undefined') {
+                // error occurred during request, so immediately fail with err
+                printerr("Failed to ping EKN");
+            } else{
+                // Successfully pinged knowledge engine
+            }
+        }.bind(this));
+    },
+
+    /**
      * Function: get_object_by_id
      * Sends a request for a Knowledge Engine object at *domain* with ID *id*.
      * *callback* is a function which takes *err* and *result* parameters.
