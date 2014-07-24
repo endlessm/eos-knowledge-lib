@@ -38,6 +38,8 @@ const SectionPageA = new Lang.Class({
 
         this._segments = null;
 
+        this._scroller.hscrollbar_policy = Gtk.PolicyType.NEVER;
+
         // We need the segment titles of all be right aligned with each other.
         // This gets tricky as they aren't all in the same container, so we
         // will keep them in a size group.
@@ -59,11 +61,7 @@ const SectionPageA = new Lang.Class({
         });
         this._content_grid.add(title_label);
 
-        this._scroller = new Gtk.ScrolledWindow({
-            hscrollbar_policy: Gtk.PolicyType.NEVER
-        });
         this._scroller.add(this._content_grid);
-
         this.add(this._scroller);
     },
 
@@ -95,11 +93,13 @@ const SectionPageA = new Lang.Class({
                 segment.show_all();
             }
         }
+        this._scroller.set_need_more_content(false);
     },
 
     get segments () {
         return this._cards_map;
     }
+
 });
 
 const CardsSegment = new Lang.Class({

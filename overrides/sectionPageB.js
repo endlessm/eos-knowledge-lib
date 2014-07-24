@@ -54,20 +54,10 @@ const SectionPageB = new Lang.Class({
     },
 
     _init: function (props) {
-        this._scroller = new Gtk.ScrolledWindow({
-            hscrollbar_policy: Gtk.PolicyType.NEVER,
-            vexpand: true,
-            hexpand: false,
-            valign: Gtk.Align.FILL,
-            width_request: 400,
-            margin_left: 80
-        });
-
         this._card_list_box = new Gtk.Grid({
             orientation: Gtk.Orientation.VERTICAL,
             valign: Gtk.Align.START
         });
-        this._scroller.add(this._card_list_box);
 
         this._cards = null;
         this._transition_duration = 0;
@@ -75,6 +65,14 @@ const SectionPageB = new Lang.Class({
         this._collapsed = false;
 
         this.parent(props);
+
+        this._scroller.add(this._card_list_box);      
+        this._scroller.hscrollbar_policy = Gtk.PolicyType.NEVER;
+        this._scroller.vexpand = true;
+        this._scroller.hexpand = false;
+        this._scroller.valign = Gtk.Align.FILL;
+        this._scroller.width_request = 400;
+        this._scroller.margin_left = 80;
 
         this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_SECTION_PAGE_B);
     },
@@ -114,6 +112,7 @@ const SectionPageB = new Lang.Class({
                 this._card_list_box.add(card);
             }
         }
+        this._scroller.set_need_more_content(false);
     },
 
     get cards () {

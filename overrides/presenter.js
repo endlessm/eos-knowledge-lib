@@ -21,7 +21,7 @@ const Window = imports.window;
 String.prototype.format = Format.format;
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
-const RESULTS_SIZE = 60;
+const RESULTS_SIZE = 10;
 
 /**
  * Class: Presenter
@@ -91,6 +91,8 @@ const Presenter = new Lang.Class({
         this.view.home_page.connect('search-text-changed', this._on_search_text_changed.bind(this));
         this.view.home_page.connect('article-selected', this._on_article_selection.bind(this));
 
+        this.view.section_page.connect('load-more-results', this._on_load_more_results.bind(this));
+
         this.view.home_page.connect('show-categories', this._on_categories_button_clicked.bind(this));
         this._article_presenter.connect('media-object-clicked', this._on_media_object_clicked.bind(this));
         this.view.categories_page.connect('show-home', this._on_home_button_clicked.bind(this));
@@ -111,6 +113,13 @@ const Presenter = new Lang.Class({
                 print("Successfully pinged");
             }
         });
+    },
+
+    _on_load_more_results: function () {
+        this._current_query.limit += 10;
+        this._engine.get_objects_by_query(this._domain, this._current_query, Lang.bind(this,
+            function (error, results) {this._set_section_page_content(results);}));
+
     },
 
     _on_topbar_back_clicked: function () {
@@ -177,10 +186,12 @@ const Presenter = new Lang.Class({
 
     _on_section_card_clicked: function (tags, card) {
         this.view.lock_ui();
-        this._engine.get_objects_by_query(this._domain, {
+
+        this._current_query = {
             'tag': tags,
             'limit': RESULTS_SIZE
-        }, this._load_section_page.bind(this));
+        }
+        this._engine.get_objects_by_query(this._domain, this._current_query, this._load_section_page.bind(this));
         this.view.section_page.title = card.title;
     },
 
@@ -304,6 +315,12 @@ const Presenter = new Lang.Class({
             printerr(err);
             printerr(err.stack);
         }
+        this._set_section_page_content(results);
+        this.view.unlock_ui();
+        this.view.show_section_page();
+    },
+
+    _set_section_page_content: function (results) {
         let cards = results.map(this._new_card_from_article_model.bind(this));
         this._search_origin_page = this.view.section_page;
         if (this._template_type === 'B') {
@@ -313,8 +330,6 @@ const Presenter = new Lang.Class({
             segments[_("Articles")] = cards;
             this.view.section_page.segments = segments;
         }
-        this.view.unlock_ui();
-        this.view.show_section_page();
     },
 
     _new_card_from_article_model: function (model) {
