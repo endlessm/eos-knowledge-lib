@@ -190,6 +190,13 @@ AM_COND_IF([ENABLE_JS_DOC], [], [can_make_dist=no])
 AM_CONDITIONAL([CAN_MAKE_DIST], [test "x$can_make_dist" = "xyes"])
 AC_MSG_RESULT([$can_make_dist])
 
+# --enable-inspector: Allow opening the WebKit inspector in the webviews by
+# right-clicking
+AC_ARG_ENABLE([inspector], AS_HELP_STRING([--enable-inspector],
+    [Allow activating WebKit inspector on HTML pages (default=no)]))
+AS_IF([test "x$enable_inspector" != "xyes"], [inspector=false], [inspector=true])
+AC_SUBST([inspector])
+
 # Required libraries
 # ------------------
 PKG_CHECK_MODULES([EOS_KNOWLEDGE], [

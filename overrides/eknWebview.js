@@ -5,6 +5,8 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const WebKit2 = imports.gi.WebKit2;
 
+const Config = imports.config;
+
 /**
  * Class: EknWebview
  * WebKit WebView subclass which provides utility functions for loading
@@ -27,6 +29,8 @@ const EknWebview = new Lang.Class({
     _init: function (params) {
         this._injection_handlers = [];
         this.parent(params);
+
+        this.get_settings().enable_developer_extras = Config.inspector_enabled;
 
         this.connect('decide-policy', this._onNavigation.bind(this));
     },
