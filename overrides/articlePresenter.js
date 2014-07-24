@@ -278,7 +278,7 @@ const ArticlePresenter = new GObject.Class({
     _scroll_to_section: function (index) {
         // tells the webkit webview directly to scroll to a ToC entry
         let location = this._mainArticleSections[index].content;
-        let script = 'scrollManager.scrollTo(LOCATION)'.replace('LOCATION', location.toSource());
+        let script = 'scrollTo(' + location.toSource() + ', ' + this._SCROLL_DURATION + ');';
         this.article_view.toc.target_section = index;
         this._webview.run_javascript(script, null, null);
     },
@@ -306,7 +306,6 @@ const ArticlePresenter = new GObject.Class({
     _get_connected_webview: function () {
         let webview = new EosKnowledge.EknWebview();
 
-        webview.inject_js_from_resource('resource:///com/endlessm/knowledge/smooth_scroll.js');
         webview.inject_js_from_resource('resource:///com/endlessm/knowledge/scroll_manager.js');
         if (this.template_type === 'A')
             webview.inject_css_from_resource('resource:///com/endlessm/knowledge/hide_title.css');
