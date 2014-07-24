@@ -62,6 +62,8 @@ const Presenter = new Lang.Class({
         }
 
         this._engine = new Engine.Engine();
+        // Ping server to spin up knowledge engine
+        this._ping_engine();
 
         this._history_model = new EosKnowledge.HistoryModel();
         this._article_presenter = new ArticlePresenter.ArticlePresenter({
@@ -95,6 +97,20 @@ const Presenter = new Lang.Class({
         this._original_page = this.view.home_page;
         this._search_origin_page = this.view.home_page;
         this._autocomplete_results = [];
+    },
+
+    _ping_engine: function () {
+        this._engine.get_objects_by_query(this._domain, {
+            'prefix': 'frango',
+            'limit': 1
+        }, function (err, results) {
+            if (err !== undefined) {
+                printerr(err);
+                printerr(err.stack);
+            } else {
+                print("Successfully pinged");
+            }
+        });
     },
 
     _on_topbar_back_clicked: function () {
