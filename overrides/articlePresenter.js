@@ -95,11 +95,15 @@ const ArticlePresenter = new GObject.Class({
         }
     },
 
+    // Duration of animated scroll from section to section in the page.
+    _SCROLL_DURATION: 1000,
+
     _init: function (props) {
         this._history_model = null;
 
         this.parent(props);
 
+        this.article_view.toc.transition_duration = this._SCROLL_DURATION;
         this._article_model = null;
         this._webview = null;
 
@@ -189,7 +193,6 @@ const ArticlePresenter = new GObject.Class({
                 this.article_view.toc.section_list = this._mainArticleSections.map(function (section) {
                     return section.label;
                 });
-                this.article_view.toc.selected_section = 0;
                 _toc_visible = true;
             }
         }
@@ -276,6 +279,7 @@ const ArticlePresenter = new GObject.Class({
         // tells the webkit webview directly to scroll to a ToC entry
         let location = this._mainArticleSections[index].content;
         let script = 'scrollManager.scrollTo(LOCATION)'.replace('LOCATION', location.toSource());
+        this.article_view.toc.target_section = index;
         this._webview.run_javascript(script, null, null);
     },
 
@@ -323,8 +327,12 @@ const ArticlePresenter = new GObject.Class({
                             sectionIndex = index;
                     }
 
-                    if (sectionIndex !== -1)
-                        this.article_view.toc.selected_section = sectionIndex;
+                    if (sectionIndex !== -1 &&
+                        this.article_view.toc.target_section === this.article_view.toc.selected_section) {
+                        this.article_view.toc.transition_duration = 0;
+                        this.article_view.toc.target_section = sectionIndex;
+                        this.article_view.toc.transition_duration = this._SCROLL_DURATION;
+                    }
                 }
             }
         }.bind(this));

@@ -50,13 +50,13 @@ const TestApplication = new Lang.Class({
                             'The quick brown fox jumped over the small brown goat',
                             'Yolo bolo folo molo tolo holo golo brumhilda'];
         toc.connect('section-clicked', function (widget, index) {
-            toc.selected_section = index;
+            toc.target_section = index;
         });
         toc.connect('up-clicked', function () {
-            toc.selected_section -= 1;
+            toc.target_section -= 1;
         });
         toc.connect('down-clicked', function () {
-            toc.selected_section += 1;
+            toc.target_section += 1;
         });
 
         let button = new Gtk.Button({
