@@ -21,7 +21,7 @@ const Window = imports.window;
 String.prototype.format = Format.format;
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
-const RESULTS_SIZE = 60;
+const RESULTS_SIZE = 10;
 
 /**
  * Class: Presenter
@@ -91,12 +91,32 @@ const Presenter = new Lang.Class({
         this.view.home_page.connect('search-text-changed', this._on_search_text_changed.bind(this));
         this.view.home_page.connect('article-selected', this._on_article_selection.bind(this));
 
+        this.view.section_page.connect('load-more-results', this._on_load_more_results.bind(this));
+
         this.view.home_page.connect('show-categories', this._on_categories_button_clicked.bind(this));
         this._article_presenter.connect('media-object-clicked', this._on_media_object_clicked.bind(this));
         this.view.categories_page.connect('show-home', this._on_home_button_clicked.bind(this));
         this._original_page = this.view.home_page;
         this._search_origin_page = this.view.home_page;
         this._autocomplete_results = [];
+    },
+
+    _on_load_more_results: function () {
+        this._get_more_results(RESULTS_SIZE, function (err, results, get_more_results_func) {
+            if (err !== undefined) {
+                printerr(err);
+                printerr(err.stack);
+            } else {
+                let cards = results.map(this._new_card_from_article_model.bind(this));
+                if (this._template_type === 'B') {
+                    this.view.section_page.cards = this.view.section_page.cards.concat(cards);
+                } else {
+                    let article_segment_title = _("Articles");
+                    this.view.section_page.append_to_segment(article_segment_title, cards);
+                }
+                this._get_more_results = get_more_results_func;
+            }
+        }.bind(this));
     },
 
     _on_topbar_back_clicked: function () {
@@ -163,10 +183,12 @@ const Presenter = new Lang.Class({
 
     _on_section_card_clicked: function (tags, card) {
         this.view.lock_ui();
-        this._engine.get_objects_by_query(this._domain, {
+
+        let query = {
             'tag': tags,
             'limit': RESULTS_SIZE
-        }, this._load_section_page.bind(this));
+        }
+        this._engine.get_objects_by_query(this._domain, query, this._load_section_page.bind(this));
         this.view.section_page.title = card.title;
     },
 
@@ -293,23 +315,28 @@ const Presenter = new Lang.Class({
         }
     },
 
-    _load_section_page: function (err, results) {
+    _load_section_page: function (err, results, get_more_results_func) {
         if (err !== undefined) {
             printerr(err);
             printerr(err.stack);
         } else {
-            let cards = results.map(this._new_card_from_article_model.bind(this));
+            this._set_section_page_content(results);
+            this._get_more_results = get_more_results_func;
             this._search_origin_page = this.view.section_page;
-            if (this._template_type === 'B') {
-                this.view.section_page.cards = cards;
-            } else {
-                let segments = {};
-                segments[_("Articles")] = cards;
-                this.view.section_page.segments = segments;
-            }
+            this.view.unlock_ui();
             this.view.show_section_page();
         }
-        this.view.unlock_ui();
+    },
+
+    _set_section_page_content: function (results) {
+        let cards = results.map(this._new_card_from_article_model.bind(this));
+        if (this._template_type === 'B') {
+            this.view.section_page.cards = cards;
+        } else {
+            let article_segment_title = _("Articles");
+            this.view.section_page.remove_all_segments();
+            this.view.section_page.append_to_segment(article_segment_title, cards);
+        }
     },
 
     _new_card_from_article_model: function (model) {
