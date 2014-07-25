@@ -294,21 +294,22 @@ const Presenter = new Lang.Class({
     },
 
     _load_section_page: function (err, results) {
-        if (typeof err !== 'undefined') {
+        if (err !== undefined) {
             printerr(err);
             printerr(err.stack);
-        }
-        let cards = results.map(this._new_card_from_article_model.bind(this));
-        this._search_origin_page = this.view.section_page;
-        if (this._template_type === 'B') {
-            this.view.section_page.cards = cards;
         } else {
-            let segments = {};
-            segments[_("Articles")] = cards;
-            this.view.section_page.segments = segments;
+            let cards = results.map(this._new_card_from_article_model.bind(this));
+            this._search_origin_page = this.view.section_page;
+            if (this._template_type === 'B') {
+                this.view.section_page.cards = cards;
+            } else {
+                let segments = {};
+                segments[_("Articles")] = cards;
+                this.view.section_page.segments = segments;
+            }
+            this.view.show_section_page();
         }
         this.view.unlock_ui();
-        this.view.show_section_page();
     },
 
     _new_card_from_article_model: function (model) {

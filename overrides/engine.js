@@ -104,6 +104,8 @@ const Engine = Lang.Class({
             }
 
             try {
+                if (json_ld === null)
+                    throw new Error("Received null object response for " + req_uri.to_string(false));
                 let model = this._model_from_json_ld(json_ld);
                 callback(undefined, model);
             } catch (err) {
@@ -144,6 +146,8 @@ const Engine = Lang.Class({
             }
 
             try {
+                if (json_ld === null)
+                    throw new Error("Received null object response for " + req_uri.to_string(false));
                 let search_results = this._results_list_from_json_ld(json_ld);
                 callback(undefined, search_results);
             } catch (err) {
@@ -255,17 +259,13 @@ const Engine = Lang.Class({
         request.request_headers.replace('Accept', 'application/ld+json');
 
         this._http_session.queue_message(request, function(session, message) {
-            let data = message.response_body.data;
-            if (data === null) {
-                callback(new Error("EKN message data was null"));
-            } else {
-                try {
-                    let json_ld_response = JSON.parse(data);
-                    callback(undefined, json_ld_response);
-                } catch (err) {
-                    // JSON parse error
-                    callback(err, undefined);
-                }
+            let json_ld_response;
+            try {
+                json_ld_response = JSON.parse(message.response_body.data);
+                callback(undefined, json_ld_response);
+            } catch (err) {
+                // JSON parse error
+                callback(err, undefined);
             }
         });
     }
