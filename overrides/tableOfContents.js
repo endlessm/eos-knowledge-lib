@@ -7,6 +7,7 @@ const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
+const Mainloop = imports.mainloop;
 const Pango = imports.gi.Pango;
 
 const MarginButton = imports.marginButton;
@@ -55,18 +56,42 @@ const TableOfContents = new Lang.Class({
         /**
          * Property: selected-section
          *
-         * The zero based index of the section which should be currently
-         * considered selected. This selected widget will always be visible in
+         * The zero based index of the section which should be is currently
+         * selected. This selected widget will always be visible in
          * the table of contents if not all sections can be displayed, and
          * will have the selected style class on it.
          *
-         * A selected-section of -1 indicates that no section is selected. The
-         * selected-section must always be less than the <section-list> length.
+         * The selected-section is read-only and will animate to follow the
+         * target-section property.
+         *
+         * Changing section-list will reset this to 0.
          */
         'selected-section': GObject.ParamSpec.int('selected-section', 'Selected Section',
             'The index of the currently selected section.',
+            GObject.ParamFlags.READABLE,
+            0, GLib.MAXINT32, 0),
+        /**
+         * Property: target-section
+         *
+         * The zero based index of the section that the table of contents
+         * should select. selected-section will animate to this property
+         * after transition-duration milliseconds have passed.
+         *
+         * Changing section-list will reset this to 0.
+         */
+        'target-section': GObject.ParamSpec.int('target-section', 'Target Section',
+            'The index of the target section to select.',
             GObject.ParamFlags.READWRITE,
-            -1, GLib.MAXINT32, -1),
+            0, GLib.MAXINT32, 0),
+        /**
+         * Property: transition-duration
+         *
+         * The duration of the animation of selected-section to target-section.
+         */
+        'transition-duration': GObject.ParamSpec.uint('transition-duration', 'Transition Duration',
+            'The duration of the animation of the overlays to visible/invisible',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
+            0, GLib.MAXUINT32, 1000),
         /**
          * Property: collapsed
          *
@@ -115,7 +140,10 @@ const TableOfContents = new Lang.Class({
 
 
     _init: function (params) {
-        this._selected_section = -1;
+        this._selected_section = 0;
+        this._target_section = 0;
+        this._transition_duration = 0;
+        this._timer_id = 0;
         this._section_list = [];
         this._section_buttons = [];
         this._collapsed = false;
@@ -158,11 +186,9 @@ const TableOfContents = new Lang.Class({
     set section_list (v) {
         if (this._section_list === v) return;
         this._section_list = v;
-        if (this._selected_section >= this._section_list.length) {
-            this._selected_section = Math.min(this._selected_section, this._section_list.length - 1);
-        }
         this._build_sections();
-        this.notify('selected-section');
+        this._set_selected_section(0);
+        this.target_section = 0;
     },
 
     get section_list () {
@@ -171,19 +197,44 @@ const TableOfContents = new Lang.Class({
         return [];
     },
 
-    set selected_section (v) {
-        v = Math.min(v, this._section_list.length - 1);
-        v = Math.max(v, -1);
-        if (this._selected_section === v) return;
-        this._selected_section = v;
-        this._update_state_flags();
-        this.notify('selected-section');
+    set target_section (v) {
+        v = Math.max(Math.min(v, this._section_list.length - 1), 0);
+        if (this._target_section === v) return;
+        this._target_section = v;
+        this.notify('target-section');
+        if (this._timer_id > 0) {
+            Mainloop.source_remove(this._timer_id);
+            this._timer_id = 0;
+        }
+        if (this._transition_duration <= 0) {
+            this._set_selected_section(this._target_section);
+        } else if (this._target_section !== this._selected_section) {
+            let update_duration = this._transition_duration / Math.abs(this._target_section - this._selected_section);
+            this._timer_id = Mainloop.timeout_add(update_duration, this._update_selected_callback.bind(this));
+        }
+    },
+
+    get target_section () {
+        if (typeof this._target_section !== 'undefined')
+            return this._target_section;
+        return 0;
+    },
+
+    set transition_duration (v) {
+        if (this._transition_duration === v)
+            return;
+        this._transition_duration = v;
+        this.notify('transition-duration');
+    },
+
+    get transition_duration () {
+        return this._transition_duration;
     },
 
     get selected_section () {
         if (typeof this._selected_section !== 'undefined')
             return this._selected_section;
-        return -1;
+        return 0;
     },
 
     set collapsed (v) {
@@ -295,11 +346,25 @@ const TableOfContents = new Lang.Class({
 
             this._section_buttons.push(section_button);
         }
-        this._update_state_flags();
         this._collapse_sections();
     },
 
-    _update_state_flags: function () {
+    _update_selected_callback: function () {
+        if (this._selected_section === this._target_section) {
+            this._timer_id = 0;
+            // finish callback
+            return false;
+        } else if (this._selected_section < this._target_section) {
+            this._set_selected_section(this._selected_section + 1);
+        } else {
+            this._set_selected_section(this._selected_section - 1);
+        }
+        // repeat callback
+        return true;
+    },
+
+    _set_selected_section: function (index) {
+        this._selected_section = index;
         for (let section_button of this._section_buttons) {
             if (this._selected_section === section_button.index) {
                 section_button.set_state_flags(Gtk.StateFlags.SELECTED, false);
@@ -311,8 +376,8 @@ const TableOfContents = new Lang.Class({
         // up arrow should be insensitive. If we are at the bottom of the list
         // the down arrow should be. Both should be insensitive if nothing is selected
         this._up_arrow.set_sensitive(this._selected_section > 0);
-        this._down_arrow.set_sensitive(this._selected_section < this._section_list.length - 1
-                                       && this._selected_section > -1);
+        this._down_arrow.set_sensitive(this._selected_section < this._section_list.length - 1);
+        this.notify('selected-section');
     },
 
     _collapse_sections: function () {

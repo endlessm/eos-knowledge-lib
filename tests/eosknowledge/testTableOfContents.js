@@ -7,13 +7,15 @@ EosKnowledge.init();
 
 describe('Table of contents widget', function () {
     let toc;
-    let short_list = ['apple', 'orange', 'banana'];
-    let long_list = ['one', 'two', 'three', 'four', 'five', 'six'];
+    let toc_entries = ['one', 'two', 'three', 'four', 'five', 'six'];
 
     beforeEach(function () {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
 
-        toc = new EosKnowledge.TableOfContents();
+        toc = new EosKnowledge.TableOfContents({
+            transition_duration: 0
+        });
+        toc.section_list = toc_entries;
 
         notify = jasmine.createSpy('notify');
         toc.connect('notify', function (object, pspec) {
@@ -29,22 +31,26 @@ describe('Table of contents widget', function () {
     it('can set section-list', function () {
         // Seems worth testing this as having a list property in javascript
         // isn't common
-        toc.section_list = short_list;
-        expect(toc.section_list).toBe(short_list);
+        toc.section_list = toc_entries;
+        expect(toc.section_list).toBe(toc_entries);
     });
 
-    it('selected-section always less than list length', function () {
-        toc.selected_section = 999;
-        expect(toc.selected_section).toBe(-1);
-        toc.section_list = long_list;
-        toc.selected_section = 999;
-        expect(toc.selected_section).toBe(long_list.length - 1);
-        toc.selected_section = 4;
-        expect(toc.selected_section).toBe(4);
+    it('target-section always less than list length, greater than 0', function () {
+        toc.target_section = 999;
+        expect(toc.target_section).toBe(toc_entries.length - 1);
+        toc.target_section = -999;
+        expect(toc.target_section).toBe(0);
+        toc.target_section = 4;
+        expect(toc.target_section).toBe(4);
+    });
+
+    it('selected-section follows target-section', function () {
+        expect(toc.target_section).toBe(0);
+        expect(toc.selected_section).toBe(0);
         notify.calls.reset();
-        toc.section_list = short_list;
-        expect(notify).toHaveBeenCalledWith('selected-section', short_list.length - 1);
-        expect(toc.selected_section).toBe(short_list.length - 1);
+        toc.target_section = 4;
+        expect(toc.selected_section).toBe(4);
+        expect(notify).toHaveBeenCalledWith('selected-section', 4);
     });
 
     describe('Style class of table of contents', function () {
@@ -61,7 +67,6 @@ describe('Table of contents widget', function () {
             expect(toc).not.toHaveCssClass(EosKnowledge.STYLE_CLASS_COLLAPSED);
         });
         it('has a descendant with toc entry class', function () {
-            toc.section_list = short_list;
             expect(toc).toHaveDescendantWithCssClass(EosKnowledge.STYLE_CLASS_TOC_ENTRY);
         });
     });
