@@ -233,13 +233,17 @@ const Engine = Lang.Class({
         request.request_headers.replace('Accept', 'application/ld+json');
 
         this._http_session.queue_message(request, function(session, message) {
-            let json_ld_response;
-            try {
-                json_ld_response = JSON.parse(message.response_body.data);
-                callback(undefined, json_ld_response);
-            } catch (err) {
-                // JSON parse error
-                callback(err, undefined);
+            let data = message.response_body.data;
+            if (data === null) {
+                callback(new Error("EKN message data was null"));
+            } else {
+                try {
+                    let json_ld_response = JSON.parse(data);
+                    callback(undefined, json_ld_response);
+                } catch (err) {
+                    // JSON parse error
+                    callback(err, undefined);
+                }
             }
         });
     }
