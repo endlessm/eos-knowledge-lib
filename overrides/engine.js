@@ -104,6 +104,8 @@ const Engine = Lang.Class({
             }
 
             try {
+                if (json_ld === null)
+                    throw new Error("Received null object response for " + req_uri.to_string(false));
                 let model = this._model_from_json_ld(json_ld);
                 callback(undefined, model);
             } catch (err) {
@@ -144,6 +146,8 @@ const Engine = Lang.Class({
             }
 
             try {
+                if (json_ld === null)
+                    throw new Error("Received null object response for " + req_uri.to_string(false));
                 let search_results = this._results_list_from_json_ld(json_ld);
                 callback(undefined, search_results);
             } catch (err) {
