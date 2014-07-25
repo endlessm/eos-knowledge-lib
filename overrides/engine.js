@@ -57,6 +57,28 @@ const Engine = Lang.Class({
     },
 
     /**
+     * Function: ping
+     * Pings the knowledge engine with a dummy request. Used to wake
+     * up the knowledge engine from its slumber.
+     *
+     * Parameters:
+     *
+     *   domain - The knowledge engine domain
+     */
+    _DUMMY_QUERY : 'frango',
+    ping: function (domain) {
+        let req_uri = this.get_ekn_uri(domain, undefined, {q: this._DUMMY_QUERY, limit: 1});
+        this._send_json_ld_request(req_uri, function (err, json_ld) {
+            if (typeof err !== 'undefined') {
+                // error occurred during request, so immediately fail with err
+                printerr("Failed to ping EKN");
+            } else{
+                // Successfully pinged knowledge engine
+            }
+        }.bind(this));
+    },
+
+    /**
      * Function: get_object_by_id
      * Sends a request for a Knowledge Engine object at *domain* with ID *id*.
      * *callback* is a function which takes *err* and *result* parameters.
@@ -233,13 +255,17 @@ const Engine = Lang.Class({
         request.request_headers.replace('Accept', 'application/ld+json');
 
         this._http_session.queue_message(request, function(session, message) {
-            let json_ld_response;
-            try {
-                json_ld_response = JSON.parse(message.response_body.data);
-                callback(undefined, json_ld_response);
-            } catch (err) {
-                // JSON parse error
-                callback(err, undefined);
+            let data = message.response_body.data;
+            if (data === null) {
+                callback(new Error("EKN message data was null"));
+            } else {
+                try {
+                    let json_ld_response = JSON.parse(data);
+                    callback(undefined, json_ld_response);
+                } catch (err) {
+                    // JSON parse error
+                    callback(err, undefined);
+                }
             }
         });
     }
