@@ -29,6 +29,11 @@ const CardA = new Lang.Class({
         this.parent(props);
 
         this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_CARD_A);
+        // Our button size changes via css state selectors on hover, and for
+        // some reason Gtk isn't handling this queue resize for us
+        this.connect('state-flags-changed', function () {
+            this.queue_resize();
+        }.bind(this));
     },
 
     // TODO: we do want all cards to be the same size, but we may want to make

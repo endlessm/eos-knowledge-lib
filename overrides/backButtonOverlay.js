@@ -44,6 +44,12 @@ const BackButtonOverlay = new Lang.Class({
         }.bind(this));
         this._back_button.get_style_context().add_class(EosKnowledge.STYLE_CLASS_SECTION_PAGE_BACK_BUTTON);
         this._back_button.show_all();
+        // Our button size changes via css state selectors on hover, and for
+        // some reason Gtk isn't handling this queue resize for us
+        this._back_button.connect('state-flags-changed', function () {
+            this._back_button.queue_resize();
+        }.bind(this));
+
 
         this.add_overlay(this._back_button);
     }
