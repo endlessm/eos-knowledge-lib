@@ -2,12 +2,15 @@
 
 const Endless = imports.gi.Endless;
 const EosKnowledge = imports.gi.EosKnowledge;
-const GObject = imports.gi.GObject;
 const GdkPixbuf = imports.gi.GdkPixbuf;
+const Gio = imports.gi.Gio;
+const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
+
+const ImagePreviewer = imports.imagePreviewer;
 
 /**
  * Class: HomePage
@@ -73,7 +76,9 @@ const HomePage = new Lang.Class({
 
     _init: function (props) {
         props = props || {};
-        this._title_image = new Gtk.Image();
+        this._title_image = new ImagePreviewer.ImagePreviewer();
+        this._title_image.set_min_percentage(0.4);
+        this._title_image.set_max_percentage(0.7);
 
         this._cards = null;
         this._title_image_uri = null;
@@ -134,11 +139,7 @@ const HomePage = new Lang.Class({
     set title_image_uri (v) {
         if (this._title_image_uri === v) return;
 
-        // get the path from the URI *after* the protocol name
-        let resource_path = v.substring('resource://'.length);
-
-        // set it from a Pixbuf constructor so we get errors thrown on failure
-        this._title_image.pixbuf = GdkPixbuf.Pixbuf.new_from_resource(resource_path);
+        this._title_image.file = Gio.File.new_for_uri(v);
 
         // only actually set the image URI if we successfully set the image
         this._title_image_uri = v;

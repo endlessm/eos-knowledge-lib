@@ -104,6 +104,7 @@ const HomePageA = new Lang.Class({
 
     _SEARCH_BOX_WIDTH: 400,
     pack_widgets: function (title_image, search_box) {
+        title_image.margin_top = 8;
         title_image.margin_bottom = 30;
 
         let inner_grid = new Gtk.Grid({
