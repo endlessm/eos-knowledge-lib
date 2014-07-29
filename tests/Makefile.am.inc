@@ -55,6 +55,7 @@ EXTRA_DIST += \
 	tests/InstanceOfMatcher.js \
 	tests/MockWebview.js \
 	tests/utils.js \
+	tests/WidgetDescendantMatcher.js \
 	$(NULL)
 
 # Test gresource

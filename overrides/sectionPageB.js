@@ -54,20 +54,10 @@ const SectionPageB = new Lang.Class({
     },
 
     _init: function (props) {
-        this._scroller = new Gtk.ScrolledWindow({
-            hscrollbar_policy: Gtk.PolicyType.NEVER,
-            vexpand: true,
-            hexpand: false,
-            valign: Gtk.Align.FILL,
-            width_request: 400,
-            margin_left: 80
-        });
-
         this._card_list_box = new Gtk.Grid({
             orientation: Gtk.Orientation.VERTICAL,
             valign: Gtk.Align.START
         });
-        this._scroller.add(this._card_list_box);
 
         this._cards = null;
         this._transition_duration = 0;
@@ -79,7 +69,7 @@ const SectionPageB = new Lang.Class({
         this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_SECTION_PAGE_B);
     },
 
-    pack_title_label: function (title_label) {
+    pack_title_label: function (title_label, scrolled_window) {
         title_label.xalign = 0;
         title_label.yalign = 1;
         title_label.expand = true;
@@ -97,7 +87,16 @@ const SectionPageB = new Lang.Class({
         this.orientation = Gtk.Orientation.HORIZONTAL;
         this.expand = true;
         this.add(this._title_label_revealer);
-        this.add(this._scroller);
+
+        this._scrolled_window = scrolled_window;
+        this._scrolled_window.add(this._card_list_box);
+        this._scrolled_window.hscrollbar_policy = Gtk.PolicyType.NEVER;
+        this._scrolled_window.vexpand = true;
+        this._scrolled_window.hexpand = false;
+        this._scrolled_window.valign = Gtk.Align.FILL;
+        this._scrolled_window.width_request = 400;
+        this._scrolled_window.margin_left = 80;
+        this.add(this._scrolled_window);
     },
 
     set cards (v) {
@@ -114,6 +113,7 @@ const SectionPageB = new Lang.Class({
                 this._card_list_box.add(card);
             }
         }
+        this._scrolled_window.need_more_content = false;
     },
 
     get cards () {

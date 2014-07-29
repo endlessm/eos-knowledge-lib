@@ -23,20 +23,12 @@ const SectionPageA = new Lang.Class({
     Name: 'SectionPageA',
     GTypeName: 'EknSectionPageA',
     Extends: SectionPage.SectionPage,
-    Properties: {
-        /**
-         * Property: segments
-         * An object where keys are a string label representing a card type, e.g. 'Lesson',
-         * and values are a list of <Card> widgets associated with that type. Each key-value
-         * pair is converted into a 'CardsSegment' in the setter. SectionPage maintains a list of
-         * card segments internally.
-         */
-    },
 
     _init: function (props) {
         this.parent(props);
 
-        this._segments = null;
+        this._segments = {};
+
 
         // We need the segment titles of all be right aligned with each other.
         // This gets tricky as they aren't all in the same container, so we
@@ -48,7 +40,7 @@ const SectionPageA = new Lang.Class({
         this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_SECTION_PAGE_A);
     },
 
-    pack_title_label: function (title_label) {
+    pack_title_label: function (title_label, scrolled_window) {
         this._content_grid = new Gtk.Grid({
             orientation: Gtk.Orientation.VERTICAL,
             expand: true,
@@ -59,46 +51,51 @@ const SectionPageA = new Lang.Class({
         });
         this._content_grid.add(title_label);
 
-        this._scroller = new Gtk.ScrolledWindow({
-            hscrollbar_policy: Gtk.PolicyType.NEVER
-        });
-        this._scroller.add(this._content_grid);
-
-        this.add(this._scroller);
+        this._scrolled_window = scrolled_window;
+        this._scrolled_window.hscrollbar_policy = Gtk.PolicyType.NEVER;
+        this._scrolled_window.add(this._content_grid);
+        this.add(this._scrolled_window);
     },
 
-    set segments (v) {
-        if (this._cards_map === v)
-            return;
-
-        if (this._segments !== null) {
-            for (let segment of this._segments) {
-                this._right_column_size_group.remove_widget(segment.title_label);
-                this._content_grid.remove(segment);
-            }
+    /*
+     *  Method: append_to_segment
+     *
+     *  Appends a set of cards to the segment specified by segment_title
+     *  If no segment with title of segment_title exists, this will create
+     *  one.
+     */
+    append_to_segment: function (segment_title, cards) {
+        if (segment_title in this._segments) {
+            this._segments[segment_title].append_cards(cards);
+        } else {
+            let segment = new CardsSegment({
+                title: segment_title
+            });
+            this._right_column_size_group.add_widget(segment.title_label);
+            this._content_grid.add(segment);
+            segment.show_all();
+            segment.append_cards(cards);
+            this._segments[segment_title] = segment;
         }
-
-        this._cards_map = v;
-        this._segments = [];
-        if (this._cards_map !== null) {
-            for (let segment_title in this._cards_map) {
-                let cards = this._cards_map[segment_title];
-
-                let segment = new CardsSegment({
-                    title: segment_title
-                });
-                this._right_column_size_group.add_widget(segment.title_label);
-
-                segment.cards = cards;
-                this._segments.push(segment);
-                this._content_grid.add(segment);
-                segment.show_all();
-            }
-        }
+        this._scrolled_window.need_more_content = false;
     },
 
-    get segments () {
-        return this._cards_map;
+    /*
+     *  Method: remove_segment
+     *
+     *  Removes the segment specified by segment_title
+     */
+    remove_segment: function (segment_title) {
+        let segment = this._segments[segment_title];
+        this._content_grid.remove(segment);
+        this._right_column_size_group.remove_widget(segment.title_label);
+        delete this._segments[segment_title];
+    },
+
+    remove_all_segments: function () {
+        for (let segment_title in this._segments) {
+            this.remove_segment(segment_title);
+        }
     }
 });
 
@@ -165,24 +162,9 @@ const CardsSegment = new Lang.Class({
         this.notify('title');
     },
 
-    set cards (v) {
-        if (this._cards === v)
-            return;
-        if (this._cards !== null) {
-            for (let card of this._cards) {
-                this._flow_box.remove(card);
-            }
+    append_cards: function (cards) {
+        for (let card of cards) {
+            this._flow_box.add(card);
         }
-
-        this._cards = v;
-        if (this._cards !== null) {
-            for (let card of this._cards) {
-                this._flow_box.add(card);
-            }
-        }
-    },
-
-    get cards () {
-        return this._cards;
     }
 });

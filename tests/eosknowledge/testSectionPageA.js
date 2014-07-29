@@ -3,6 +3,7 @@ const Endless = imports.gi.Endless;
 const Gtk = imports.gi.Gtk;
 
 const CssClassMatcher = imports.CssClassMatcher;
+const WidgetDescendantMatcher = imports.WidgetDescendantMatcher;
 
 const TESTDIR = Endless.getCurrentFileDir() + '/..';
 
@@ -44,6 +45,7 @@ describe('Section page for Template A', function () {
 
     beforeEach(function () {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
+        jasmine.addMatchers(WidgetDescendantMatcher.customMatchers);
 
         section_page = new EosKnowledge.SectionPageA({
             title: "History of Guatemala"
@@ -61,8 +63,12 @@ describe('Section page for Template A', function () {
     it('can be constructed', function () {});
 
     it('can set cards', function () {
-        section_page.segments = segments;
-        expect(section_page.segments).toBe(segments);
+        for (let segment_title in segments) {
+            section_page.append_to_segment(segment_title, segments[segment_title]);
+            for (let card of segments[segment_title]) {
+                expect(section_page).toHaveDescendant(card);
+            }
+        }
     });
 
     it('can set title', function () {
@@ -80,7 +86,9 @@ describe('Section page for Template A', function () {
         });
 
         it('has a descendant with segment_title class', function () {
-            section_page.segments = segments;
+            for (let segment_title in segments) {
+                section_page.append_to_segment(segment_title, segments[segment_title]);
+            }
             expect(section_page).toHaveDescendantWithCssClass(EosKnowledge.STYLE_CLASS_SECTION_PAGE_A_SEGMENT_TITLE);
         });
 
