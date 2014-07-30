@@ -121,7 +121,7 @@ const WebviewSwitcherView = new Lang.Class({
     },
 
     MIN_WIDTH: 400,
-    MIN_HEIGHT: 400,
+    MIN_HEIGHT: 300,
 
     _init: function (props) {
         this._navigate_forwards = null;
