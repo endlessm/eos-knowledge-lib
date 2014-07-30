@@ -76,8 +76,8 @@ const Presenter = new Lang.Class({
         // Connect signals
         this.view.connect('back-clicked', this._on_topbar_back_clicked.bind(this));
         this.view.connect('forward-clicked', this._on_topbar_forward_clicked.bind(this));
-        this._history_model.bind_property('can-go-forward', this.view.history_buttons.forward_button, 'sensitive',
-            GObject.BindingFlags.SYNC_CREATE);
+        this._history_model.connect('notify::can-go-forward', this._update_history_buttons.bind(this));
+        this._history_model.connect('notify::can-go-back', this._update_history_buttons.bind(this));
         this.view.connect('search-focused', this._on_search_focus.bind(this));
         this.view.connect('search-text-changed', this._on_search_text_changed.bind(this));
         this.view.connect('search-entered', this._on_search.bind(this));
@@ -99,6 +99,20 @@ const Presenter = new Lang.Class({
         this._original_page = this.view.home_page;
         this._search_origin_page = this.view.home_page;
         this._autocomplete_results = [];
+        this._update_history_buttons();
+    },
+
+    _update_history_buttons: function () {
+        this.view.history_buttons.forward_button.sensitive = false;
+        this.view.history_buttons.back_button.sensitive = false;
+        if (this.view.get_visible_page() === this.view.article_page) {
+            if (this._history_model.can_go_forward) {
+                this.view.history_buttons.forward_button.sensitive = true;
+            }
+            if (this._history_model.can_go_back) {
+                this.view.history_buttons.back_button.sensitive = true;
+            }
+        }
     },
 
     _on_load_more_results: function () {
@@ -121,14 +135,7 @@ const Presenter = new Lang.Class({
 
     _on_topbar_back_clicked: function () {
         this.view.lightbox.reveal_overlays = false;
-
-        // if there's still history to go back to, do that. if not, navigate
-        // back to the category page
-        if (this._history_model.can_go_back) {
-            this._article_presenter.navigate_back();
-        } else {
-            this._on_back();
-        }
+        this._article_presenter.navigate_back();
     },
 
     _on_topbar_forward_clicked: function () {
@@ -313,6 +320,7 @@ const Presenter = new Lang.Class({
         } else {
             // Do nothing
         }
+        this._update_history_buttons();
     },
 
     _load_section_page: function (err, results, get_more_results_func) {
@@ -325,6 +333,7 @@ const Presenter = new Lang.Class({
             this._search_origin_page = this.view.section_page;
             this.view.unlock_ui();
             this.view.show_section_page();
+            this._update_history_buttons();
         }
     },
 

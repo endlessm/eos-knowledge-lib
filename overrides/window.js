@@ -228,42 +228,38 @@ const Window = new Lang.Class({
             this.emit('forward-clicked');
         }.bind(this));
 
-        this.button_box = new Gtk.Box();
-        this.button_box.get_style_context().add_class(Gtk.STYLE_CLASS_LINKED);
-        this.button_box.add(this.history_buttons);
+        this._button_box = new Gtk.Box();
+        this._button_box.get_style_context().add_class(Gtk.STYLE_CLASS_LINKED);
+        this._button_box.add(this.history_buttons);
+        this._button_box.show_all();
 
-        this.invisible_box = new Gtk.Box();
-
-        this.button_stack = new Gtk.Stack({
-            transition_type: Gtk.StackTransitionType.CROSSFADE,
-            transition_duration: this.TRANSITION_DURATION
-        });
-        this.button_stack.add(this.button_box);
-        this.button_stack.add(this.invisible_box);
-        this.button_stack.visible_child = this.invisible_box;
-        this.button_stack.show_all();
-
-        this._lightbox.add(this._section_article_page);
-        this.page_manager.add(this._home_page);
-        this.page_manager.add(this._categories_page);
-
-        this.search_box = new Endless.SearchBox();
-        this.search_box.connect('notify::has-focus', Lang.bind(this, function () {
-            this.emit('search-focused', this.search_box.has_focus);
+        this._search_box = new Endless.SearchBox();
+        this._search_box.connect('notify::has-focus', Lang.bind(this, function () {
+            this.emit('search-focused', this._search_box.has_focus);
         }).bind(this));
-        this.search_box.connect('text-changed', Lang.bind(this, function (search_entry) {
+        this._search_box.connect('text-changed', Lang.bind(this, function (search_entry) {
             this.emit('search-text-changed', search_entry);
         }));
-        this.search_box.connect('activate', Lang.bind(this, function (search_entry) {
+        this._search_box.connect('activate', Lang.bind(this, function (search_entry) {
             this.emit('search-entered', search_entry.text);
         }));
-        this.search_box.connect('menu-item-selected', Lang.bind(this, function (search_entry, article_id) {
+        this._search_box.connect('menu-item-selected', Lang.bind(this, function (search_entry, article_id) {
             this.emit('article-selected', article_id);
         }));
-        this.search_box.show();
+        this._search_box.show();
+
+        this._lightbox.add(this._section_article_page);
+        this.page_manager.add(this._home_page, {
+            left_topbar_widget: this._button_box,
+            center_topbar_widget: this._search_box
+        });
+        this.page_manager.add(this._categories_page, {
+            left_topbar_widget: this._button_box,
+            center_topbar_widget: this._search_box
+        });
         this.page_manager.add(this._lightbox, {
-            left_topbar_widget: this.button_stack,
-            center_topbar_widget: this.search_box
+            left_topbar_widget: this._button_box,
+            center_topbar_widget: this._search_box
         });
         this.page_manager.transition_duration = this.TRANSITION_DURATION;
         this.page_manager.bind_property('transition-duration', this._section_article_page,
@@ -421,7 +417,6 @@ const Window = new Lang.Class({
             this.page_manager.transition_type = Gtk.StackTransitionType.SLIDE_RIGHT;
         }
         this._section_article_page.show_article = false;
-        this.button_stack.visible_child = this.invisible_box;
         this.page_manager.visible_child = this._lightbox;
 
         this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_SHOW_HOME_PAGE);
@@ -440,7 +435,6 @@ const Window = new Lang.Class({
         this._section_article_page.show_article = true;
         this.page_manager.visible_child = this._lightbox;
 
-        this.button_stack.visible_child = this.button_box;
         this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_SHOW_HOME_PAGE);
         this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_SHOW_CATEGORIES_PAGE);
         this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_SHOW_SECTION_PAGE);
