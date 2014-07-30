@@ -6,8 +6,6 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const Pango = imports.gi.Pango;
 
-const InfiniteScrolledWindow = imports.infiniteScrolledWindow;
-
 /**
  * Class: SectionPage
  *
@@ -52,19 +50,12 @@ const SectionPage = new Lang.Class({
         this.parent(props);
 
         this._title_label.get_style_context().add_class(EosKnowledge.STYLE_CLASS_SECTION_PAGE_TITLE);
-        this._scroller = new InfiniteScrolledWindow.InfiniteScrolledWindow();
-        this._scroller.connect('notify::need-more-content', Lang.bind(this, function () {
-            if (this._scroller.need_more_content) {
-                this.emit('load-more-results');
-            }
-        }))
-        this.pack_title_label(this._title_label, this._scroller);
+        this.pack_title_label(this._title_label);
         this.show_all();
     },
 
-    pack_title_label: function (title_label, scrolled_window) {
+    pack_title_label: function (title_label) {
         this.add(title_label);
-        this.add(scrolled_window);
     },
 
     set title (v) {
