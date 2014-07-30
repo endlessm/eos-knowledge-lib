@@ -53,7 +53,7 @@ EknWindow.show-article-page {
     padding: 17px 0px 17px 0px;
     color: #d16550;
     font-family: 'Montserrat', sans-serif;
-    font-size: 1.05em;  /* 12pt at 72 DPI 1080px */
+    font-size: 0.75em;  /* 12pt * 1/12 * 0.75 DPI correction factor */
     font-weight: bold;
     text-shadow: 0px 1px 0px white;
     transition: padding 250ms ease-in-out;
@@ -61,7 +61,7 @@ EknWindow.show-article-page {
 
 .text-card {
     font-family: Lato;
-    font-size: 1.58em; /* 18pt at 72 DPI 768px */
+    font-size: 1.125em; /* 18pt * 1/12 * 0.75 DPI correction factor */
     font-weight: normal;
     color: @template-b-text-color;
     padding: 6px;
@@ -101,7 +101,7 @@ EknWindow.show-article-page {
     padding: 4px 0px 4px 0px;
     color: #666666;
     font-family: 'Lato', sans-serif;
-    font-size: 12px;
+    font-size: 0.75em; /* 12pt * 1/12 * 0.75 DPI correction factor */
     text-shadow: white 0px 1px 0px;
     transition: padding 250ms ease-in-out;
 }
@@ -170,7 +170,7 @@ EknWindow.show-article-page {
 
 .card-b .card-title {
     color: @template-b-text-color;
-    font-size: 2.45em; /* 28pt at 72 DPI 768px */
+    font-size: 1.75em; /* 28pt * 1/12 * 0.75 DPI correction factor */
     padding: .5em 0em;
     background-color: @card-b-border-color;
     transition-timing-function: ease-in-out;
@@ -213,7 +213,7 @@ EknWindow.show-article-page {
 }
 
 .infobox-caption {
-    font-size: 1.14em;  /* 13pt at 72 DPI 1080px */
+    font-size: .81em;  /* 13pt * 1/12 * 0.75 DPI correction factor */
     font-family: Lato;
     color: #666666;
     padding: 8px 0px 8px 0px;
@@ -221,7 +221,7 @@ EknWindow.show-article-page {
 
 .infobox-attribution-text {
     font-weight: bold;
-    font-size: .88em;  /* 10pt at 72 DPI 1080px */
+    font-size: .62em;  /* 10pt * 1/12 * 0.75 DPI correction factor */
     font-family: Lato;
     color: #b2b2b2;
     padding: 8px 0px 8px 0px;
@@ -237,7 +237,7 @@ EknWindow.show-article-page {
     color: rgb(204, 204, 204);
     font-family: Lato;
     font-weight: 900;  /* Black */
-    font-size: .79em;  /* 9pt at 72 DPI 1080px */
+    font-size: .56em;  /* 9pt * 1/12 * 0.75 DPI correction factor */
     background-color: transparent;
     transition: background-color 150ms ease-in-out;
     border-radius: 1.75em;
@@ -312,7 +312,7 @@ EknWindow.show-article-page {
     border-style: solid;
     -GtkButton-image-spacing: 15px;
     font-weight: bold;
-    font-size: 1.23em;  /* 14pt at 72 DPI 1080px */
+    font-size: .88em;  /* 14pt * 1/12 * 0.75 DPI correction factor */
     text-shadow: 0px -1px 1px alpha(black, 0.44);
     icon-shadow: 0px -1px 1px alpha(black, 0.44);
     background: linear-gradient(to bottom,
@@ -390,7 +390,7 @@ EknWindow.show-article-page {
 .section-page-a .section-page-title {
     padding-top: 1.0em;
     padding-bottom: 0.48em;
-    font-size: 3.17em; /* 36pt at 72 DPI 768px */
+    font-size: 2.25em; /* 36p * 1/12 * 0.75 DPI correction factor */
 }
 
 .section-page-a GtkSeparator {
@@ -398,7 +398,7 @@ EknWindow.show-article-page {
 }
 
 .section-page-b .section-page-title {
-    font-size: 6.33em; /* 72pt at 72 DPI 768px */
+    font-size: 4.5em; /* 72pt * 1/12 * 0.75 DPI correction factor */
     padding: 0.25em 0.25em;
     color: white;
 }
@@ -426,7 +426,7 @@ EknWindow.show-article-page {
 .section-page-a-segment-title {
     padding-top: 0.2em;
     color: white;
-    font-size: 1.76em;  /* 20pt at 72 DPI 1080px */
+    font-size: 1.25em;  /* 20pt * 1/12 * 0.75 DPI correction factor */
     padding-left: 4em;
     /* TODO: light font weight matches the specs, but looks way to thin in practice.
        Think there's some difference between how lato renders in web vs gtk or
@@ -461,7 +461,7 @@ scrollbars, style the GTK scrollbars to look slightly more like them */
 
 .article-page-title {
     font-family: Montserrat;
-    font-size: 3.17em; /* 36pt at 72 DPI 768px */
+    font-size: 2.25em; /* 36pt * 1/12 * 0.75 DPI correction factor */
     font-weight: bold;
 }
 
