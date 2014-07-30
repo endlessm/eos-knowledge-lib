@@ -131,8 +131,6 @@ const HomePageACardContainer = new Lang.Class({
         if (this._cards.length === 0)
             return;
         let [min, nat] = this._cards_max_preferred_width();
-        min += this.CARD_EXTRA_MARGIN;
-        nat += this.CARD_EXTRA_MARGIN;
         let visible_cards =  Math.floor(alloc.width / min);
         let total_width = alloc.width;
         alloc.width  = Math.min(alloc.width / visible_cards, nat);
@@ -157,6 +155,10 @@ const HomePageACardContainer = new Lang.Class({
             let [card_min, card_nat] = card.get_preferred_width();
             min = Math.max(min, card_min);
             nat = Math.max(nat, card_nat);
+        }
+        if (this._cards.length > 0) {
+            min += this.CARD_EXTRA_MARGIN;
+            nat += this.CARD_EXTRA_MARGIN;
         }
         return [min, nat];
     },
