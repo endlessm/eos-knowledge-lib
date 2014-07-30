@@ -27,6 +27,12 @@ const HomePageA = new Lang.Class({
     GTypeName: 'EknHomePageA',
     Extends: HomePage.HomePage,
 
+    Properties: {
+        'animating': GObject.ParamSpec.boolean('animating',
+            'Animating', 'Set true if this page is animating and should hide its show all button',
+            GObject.ParamFlags.READWRITE, false),
+    },
+
     _init: function (props) {
         this._card_container = new HomePageACardContainer({
             halign: Gtk.Align.CENTER,
@@ -46,29 +52,52 @@ const HomePageA = new Lang.Class({
             label: _("SEE ALL CATEGORIES")
         });
 
-        this._button_stack.connect('notify::transition-running', Lang.bind(this, function () {
-            let categories_page_request = !this._button_stack.transition_running && this._button_stack.visible_child != this._all_categories_button;
-            if (!this._button_stack.transition_running && this._button_stack.visible_child != this._all_categories_button) {
-                this.emit('show-categories');
-            }
-        }));
+        this._animating = false;
+        this._all_categories_button.connect('clicked', function () {
+            this._hide_button();
+            let id = this._button_stack.connect('notify::transition-running', function () {
+                if (!this._button_stack.transition_running && this._button_stack.visible_child != this._all_categories_button) {
+                    this.emit('show-categories');
+                }
+                this._button_stack.disconnect(id);
+            }.bind(this));
+        }.bind(this));
+        this._card_container.connect('notify::all-cards-visible', this._update_button_visibility.bind(this));
 
-        this._all_categories_button.connect('clicked', this._onAllCategoriesClicked.bind(this));
-
-        this._button_stack.add(this._all_categories_button);
         this._button_stack.add(this._invisible_frame);
+        this._button_stack.add(this._all_categories_button);
 
         this.parent(props);
 
         this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_HOME_PAGE_A);
     },
 
-    _onAllCategoriesClicked: function (widget) {
+    get animating () {
+        return this._animating;
+    },
+
+    set animating (v) {
+        if (v === this._animating)
+            return;
+        this._animating = v;
+        this._update_button_visibility();
+        this.notify('animating');
+    },
+
+    _update_button_visibility: function () {
+        if (!this._card_container.all_cards_visible && !this._animating && this.get_mapped()) {
+            this._show_button();
+        } else {
+            this._hide_button();
+        }
+    },
+
+    _hide_button: function (widget) {
         this._button_stack.transition_type = Gtk.StackTransitionType.SLIDE_DOWN,
         this._button_stack.visible_child = this._invisible_frame;
     },
 
-    showButton: function () {
+    _show_button: function () {
         this._button_stack.transition_type = Gtk.StackTransitionType.SLIDE_UP;
         this._button_stack.visible_child = this._all_categories_button;
     },
@@ -105,11 +134,22 @@ const HomePageACardContainer = new Lang.Class({
     GTypeName: 'EknHomePageACardContainer',
     Extends: Endless.CustomContainer,
 
+    Properties: {
+        'all-cards-visible': GObject.ParamSpec.boolean('all-cards-visible',
+            'All cards visible', 'True if all cards are currently being shown.',
+            GObject.ParamFlags.READABLE, true),
+    },
+
     CARD_EXTRA_MARGIN: 8,
 
     _init: function (props) {
         this._cards = [];
+        this._all_cards_visible = true;
         this.parent(props);
+    },
+
+    get all_cards_visible () {
+        return this._all_cards_visible;
     },
 
     add_cards: function (cards) {
@@ -137,6 +177,7 @@ const HomePageACardContainer = new Lang.Class({
         // Always center the cards in the given allocation
         let extra_width = total_width - alloc.width * visible_cards;
         alloc.x += extra_width / 2;
+        let all_cards_visible = true;
         for (let card_index = 0; card_index < this._cards.length; card_index++) {
             let card = this._cards[card_index];
             if (card_index < visible_cards) {
@@ -145,7 +186,12 @@ const HomePageACardContainer = new Lang.Class({
                 card.set_child_visible(true);
             } else {
                 card.set_child_visible(false);
+                all_cards_visible = false;
             }
+        }
+        if (all_cards_visible !== this._all_cards_visible) {
+            this._all_cards_visible = all_cards_visible;
+            this.notify('all-cards-visible');
         }
     },
 

@@ -26,6 +26,12 @@ const CategoriesPage = new Lang.Class({
     GTypeName: 'EknCategoriesPage',
     Extends: Gtk.ScrolledWindow,
 
+    Properties: {
+        'animating': GObject.ParamSpec.boolean('animating',
+            'Animating', 'Set true if this page is animating and should hide its show all button',
+            GObject.ParamFlags.READWRITE, false),
+    },
+
     Signals: {
         /**
          * Event: show-home
@@ -53,6 +59,7 @@ const CategoriesPage = new Lang.Class({
             label: _("HOME")
         });
 
+        this._animating = false;
         this._button_stack.connect('notify::transition-running', Lang.bind(this, function (running) {
             let home_page_request = !this._button_stack.transition_running && this._button_stack.visible_child != this._home_button;
             if (home_page_request) {
@@ -62,7 +69,7 @@ const CategoriesPage = new Lang.Class({
 
         this._button_stack.add(this._invisible_frame);
         this._button_stack.add(this._home_button);
-        this._home_button.connect('clicked', this._onHomeClicked.bind(this));
+        this._home_button.connect('clicked', this._hide_button.bind(this));
 
         this._card_grid = new Gtk.FlowBox({
             valign: Gtk.Align.START,
@@ -82,6 +89,19 @@ const CategoriesPage = new Lang.Class({
         this.parent(props);
         this.add(this._grid);
         this.show_all();
+    },
+
+    get animating () {
+        return this._animating;
+    },
+
+    set animating (v) {
+        if (v === this._animating)
+            return;
+        this._animating = v;
+        if (!this._animating && this.get_mapped()) {
+            this._show_button();
+        }
     },
 
     set cards (v) {
@@ -104,12 +124,12 @@ const CategoriesPage = new Lang.Class({
         return this._cards;
     },
 
-    _onHomeClicked: function () {
+    _hide_button: function () {
         this._button_stack.transition_type = Gtk.StackTransitionType.SLIDE_UP;
         this._button_stack.visible_child = this._invisible_frame;
     },
 
-    showButton: function () {
+    _show_button: function () {
         this._button_stack.transition_type = Gtk.StackTransitionType.SLIDE_DOWN;
         this._button_stack.visible_child = this._home_button;
     }

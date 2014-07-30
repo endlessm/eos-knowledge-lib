@@ -204,13 +204,8 @@ const Window = new Lang.Class({
             this._section_article_page = new SectionArticlePage.SectionArticlePageA();
             // Connection so that tab buttons are revealed after page transition
             this.page_manager.connect('notify::transition-running', Lang.bind(this, function () {
-                if (!this.page_manager.transition_running) {
-                    if (this.page_manager.visible_child === this.home_page) {
-                        this.home_page.showButton();
-                    } else if (this.page_manager.visible_child === this.categories_page) {
-                        this.categories_page.showButton();
-                    }
-                }
+                this.home_page.animating = this.page_manager.transition_running;
+                this.categories_page.animating = this.page_manager.transition_running;
             }));
         }
         this._section_article_page.connect('back-clicked', function () {
