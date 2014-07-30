@@ -54,5 +54,9 @@ describe('Section page for Template B', function () {
         it('has a descendant with title class', function () {
             expect(section_page).toHaveDescendantWithCssClass(EosKnowledge.STYLE_CLASS_SECTION_PAGE_TITLE);
         });
+
+        it ('has a descendant with no_search_results class', function () {
+            expect(section_page).toHaveDescendantWithCssClass(EosKnowledge.STYLE_CLASS_SECTION_PAGE_NO_SEARCH_RESULTS);
+        });
     });
 });

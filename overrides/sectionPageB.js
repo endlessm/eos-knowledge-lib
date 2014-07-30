@@ -96,7 +96,20 @@ const SectionPageB = new Lang.Class({
         this._scrolled_window.valign = Gtk.Align.FILL;
         this._scrolled_window.width_request = 400;
         this._scrolled_window.margin_left = 80;
-        this.add(this._scrolled_window);
+
+        this._right_col_size_group = new Gtk.SizeGroup({
+            mode: Gtk.SizeGroupMode.BOTH
+        });
+        this._right_col_size_group.add_widget(this._scrolled_window);
+        this._right_col_size_group.add_widget(this._no_search_results_label);
+
+        this._no_search_results_label.justify = Gtk.Justification.RIGHT;
+        this._no_search_results_label.set_alignment(1, 1);
+
+        this._content_stack.add(this._scrolled_window);
+        this._content_stack.add(this._no_search_results_label);
+
+        this.add(this._content_stack);
     },
 
     set cards (v) {
@@ -114,6 +127,7 @@ const SectionPageB = new Lang.Class({
             }
         }
         this._scrolled_window.need_more_content = false;
+        this._content_stack.visible_child = this._scrolled_window;
     },
 
     get cards () {
