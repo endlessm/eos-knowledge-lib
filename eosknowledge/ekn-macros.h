@@ -393,4 +393,11 @@ enum_type##_get_type (void) \
  */
 #define EKN_STYLE_CLASS_ANIMATING "animating"
 
+/**
+ * EKN_STYLE_CLASS_SECTION_PAGE_B_TITLE_FRAME:
+ *
+ * A CSS class for the frame that holds the category title on section page b.
+ */
+#define EKN_STYLE_CLASS_SECTION_PAGE_B_TITLE_FRAME "section-page-b-title-frame"
+
 #endif /* EKN_MACROS_H */

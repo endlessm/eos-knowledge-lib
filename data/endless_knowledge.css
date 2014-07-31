@@ -419,6 +419,10 @@ EknWindow.show-article-page {
     background-color: #888888;
 }
 
+.section-page-b-title-frame {
+    background-image: linear-gradient(-180deg, rgba(0,0,0,0.0) 65%, rgba(0,0,0,0.30) 85%, rgba(0,0,0,0.70) 100%);
+}
+
 .section-page-a-segment-title {
     padding-top: 0.2em;
     color: white;

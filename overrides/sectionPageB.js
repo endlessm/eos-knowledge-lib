@@ -78,15 +78,21 @@ const SectionPageB = new Lang.Class({
         this._title_label_revealer = new Gtk.Revealer({
             reveal_child: true,
             expand: true,
-            transition_type: Gtk.RevealerTransitionType.SLIDE_RIGHT
+            transition_type: Gtk.RevealerTransitionType.SLIDE_RIGHT,
+            margin_right: 80,
         });
         this._title_label_revealer.add(title_label);
+
+        let title_frame = new Gtk.Frame();
+        title_frame.get_style_context().add_class(EosKnowledge.STYLE_CLASS_SECTION_PAGE_B_TITLE_FRAME);
+        title_frame.add(this._title_label_revealer);
+
         this.bind_property('transition-duration', this._title_label_revealer,
             'transition-duration', GObject.BindingFlags.SYNC_CREATE);
 
         this.orientation = Gtk.Orientation.HORIZONTAL;
         this.expand = true;
-        this.add(this._title_label_revealer);
+        this.add(title_frame);
 
         this._scrolled_window = scrolled_window;
         this._scrolled_window.add(this._card_list_box);
@@ -95,7 +101,6 @@ const SectionPageB = new Lang.Class({
         this._scrolled_window.hexpand = false;
         this._scrolled_window.valign = Gtk.Align.FILL;
         this._scrolled_window.width_request = 400;
-        this._scrolled_window.margin_left = 80;
         this.add(this._scrolled_window);
     },
 
