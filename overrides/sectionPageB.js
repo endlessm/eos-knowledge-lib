@@ -9,6 +9,7 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const Pango = imports.gi.Pango;
 
+const InfiniteScrolledWindow = imports.infiniteScrolledWindow;
 const SectionPage = imports.sectionPage;
 
 /**
@@ -69,7 +70,7 @@ const SectionPageB = new Lang.Class({
         this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_SECTION_PAGE_B);
     },
 
-    pack_title_label: function (title_label, scrolled_window) {
+    pack_title_label: function (title_label) {
         title_label.xalign = 0;
         title_label.yalign = 1;
         title_label.expand = true;
@@ -94,13 +95,13 @@ const SectionPageB = new Lang.Class({
         this.expand = true;
         this.add(title_frame);
 
-        this._scrolled_window = scrolled_window;
+        this._scrolled_window = new SectionPageBScrolledWindow();
+        this._scrolled_window.connect('notify::need-more-content', Lang.bind(this, function () {
+            if (this._scrolled_window.need_more_content) {
+                this.emit('load-more-results');
+            }
+        }));
         this._scrolled_window.add(this._card_list_box);
-        this._scrolled_window.hscrollbar_policy = Gtk.PolicyType.NEVER;
-        this._scrolled_window.vexpand = true;
-        this._scrolled_window.hexpand = false;
-        this._scrolled_window.valign = Gtk.Align.FILL;
-        this._scrolled_window.width_request = 400;
         this.add(this._scrolled_window);
     },
 
@@ -153,4 +154,26 @@ const SectionPageB = new Lang.Class({
     get transition_duration () {
         return this._transition_duration;
     },
+});
+
+const SectionPageBScrolledWindow = new Lang.Class({
+    Name: 'SectionPageBScrolledWindow',
+    GTypeName: 'EknSectionPageBScrolledWindow',
+    Extends: InfiniteScrolledWindow.InfiniteScrolledWindow,
+
+    _NATURAL_WIDTH: 400,
+    _MINIMAL_WIDTH: 200,
+
+    _init: function (props) {
+        props = props || {};
+        props.hscrollbar_policy = Gtk.PolicyType.NEVER;
+        props.vexpand = true;
+        props.hexpand = false;
+        props.valign = Gtk.Align.FILL;
+        this.parent(props);
+    },
+
+    vfunc_get_preferred_width: function () {
+        return [this._MINIMAL_WIDTH, this._NATURAL_WIDTH];
+    }
 });

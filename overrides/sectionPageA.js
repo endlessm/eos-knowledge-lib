@@ -5,6 +5,7 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
+const InfiniteScrolledWindow = imports.infiniteScrolledWindow;
 const SectionPage = imports.sectionPage;
 
 /**
@@ -40,7 +41,16 @@ const SectionPageA = new Lang.Class({
         this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_SECTION_PAGE_A);
     },
 
-    pack_title_label: function (title_label, scrolled_window) {
+    pack_title_label: function (title_label) {
+        this._scrolled_window = new InfiniteScrolledWindow.InfiniteScrolledWindow({
+            hscrollbar_policy: Gtk.PolicyType.NEVER,
+        });
+        this._scrolled_window.connect('notify::need-more-content', Lang.bind(this, function () {
+            if (this._scrolled_window.need_more_content) {
+                this.emit('load-more-results');
+            }
+        }));
+
         this._content_grid = new Gtk.Grid({
             orientation: Gtk.Orientation.VERTICAL,
             expand: true,
@@ -50,9 +60,6 @@ const SectionPageA = new Lang.Class({
             margin_right: 100
         });
         this._content_grid.add(title_label);
-
-        this._scrolled_window = scrolled_window;
-        this._scrolled_window.hscrollbar_policy = Gtk.PolicyType.NEVER;
         this._scrolled_window.add(this._content_grid);
         this.add(this._scrolled_window);
     },
