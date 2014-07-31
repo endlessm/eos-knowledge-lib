@@ -102,6 +102,7 @@ const HomePageA = new Lang.Class({
         this._button_stack.visible_child = this._all_categories_button;
     },
 
+    _SEARCH_BOX_WIDTH: 400,
     pack_widgets: function (title_image, search_box) {
         title_image.margin_bottom = 30;
 
@@ -111,8 +112,10 @@ const HomePageA = new Lang.Class({
             expand: true,
             orientation: Gtk.Orientation.VERTICAL
         });
-        inner_grid.attach(title_image, 0, 0, 3, 1);
-        inner_grid.attach(search_box, 0, 1, 3, 1);
+        search_box.width_request = this._SEARCH_BOX_WIDTH;
+        search_box.halign = Gtk.Align.CENTER;
+        inner_grid.add(title_image);
+        inner_grid.add(search_box);
 
         this.orientation = Gtk.Orientation.VERTICAL;
         this.add(inner_grid);

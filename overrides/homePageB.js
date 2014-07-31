@@ -34,10 +34,11 @@ const HomePageB = new Lang.Class({
         this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_HOME_PAGE_B);
     },
 
+    _SEARCH_BOX_WIDTH: 350,
     pack_widgets: function (title_image, search_box) {
         title_image.vexpand = true;
         search_box.halign = Gtk.Align.CENTER;
-        search_box.width_chars = 40;
+        search_box.width_request = this._SEARCH_BOX_WIDTH;
 
         let card_container_frame = new Gtk.Frame();
         card_container_frame.get_style_context().add_class(EosKnowledge.STYLE_CLASS_CARD_CONTAINER);
