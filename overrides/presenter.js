@@ -78,6 +78,8 @@ const Presenter = new Lang.Class({
         this.view.connect('forward-clicked', this._on_topbar_forward_clicked.bind(this));
         this._history_model.bind_property('can-go-forward', this.view.history_buttons.forward_button, 'sensitive',
             GObject.BindingFlags.SYNC_CREATE);
+        this._history_model.bind_property('can-go-back', this.view.history_buttons.back_button, 'sensitive',
+            GObject.BindingFlags.SYNC_CREATE);
         this.view.connect('search-focused', this._on_search_focus.bind(this));
         this.view.connect('search-text-changed', this._on_search_text_changed.bind(this));
         this.view.connect('search-entered', this._on_search.bind(this));
@@ -121,14 +123,7 @@ const Presenter = new Lang.Class({
 
     _on_topbar_back_clicked: function () {
         this.view.lightbox.reveal_overlays = false;
-
-        // if there's still history to go back to, do that. if not, navigate
-        // back to the category page
-        if (this._history_model.can_go_back) {
-            this._article_presenter.navigate_back();
-        } else {
-            this._on_back();
-        }
+        this._article_presenter.navigate_back();
     },
 
     _on_topbar_forward_clicked: function () {
