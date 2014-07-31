@@ -25,7 +25,7 @@ GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.
  * therefore also how zoomed in the background image is from its
  * original size.
  */
-const PARALLAX_BACKGROUND_SCALE = 1.2;
+const PARALLAX_BACKGROUND_SCALE = 1.1;
 
 /**
  * Class: Window

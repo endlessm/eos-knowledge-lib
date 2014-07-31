@@ -33,7 +33,7 @@ EosWindow {
 EknWindow {
     background-position: 0% 50%;
     background-repeat: no-repeat;
-    transition: background-position 0.5s ease-in-out;
+    transition: background-position 0.5s ease;
 }
 
 EknWindow.show-home-page {
