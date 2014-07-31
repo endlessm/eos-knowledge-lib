@@ -44,9 +44,10 @@ const HomePageB = new Lang.Class({
         card_container_frame.get_style_context().add_class(EosKnowledge.STYLE_CLASS_CARD_CONTAINER);
         card_container_frame.add(this._card_container);
 
+        this.row_homogeneous = true;
         this.attach(title_image, 0, 0, 1, 1);
         this.attach(search_box, 1, 0, 1, 1);
-        this.attach(card_container_frame, 0, 1, 2, 1);
+        this.attach(card_container_frame, 0, 1, 2, 2);
     },
 
     pack_cards: function (cards) {
