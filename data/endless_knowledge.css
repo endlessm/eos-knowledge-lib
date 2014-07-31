@@ -382,18 +382,9 @@ EknWindow.show-article-page {
     background-color: black;
 }
 
-.section-page-title, .section-page-no-search-results {
+.section-page-title {
     font-family: Montserrat;
     font-weight: bold;
-}
-
-/*
- * FIXME: Needs design feedback
- */
-.section-page-a .section-page-no-search-results {
-    padding-top: 1.0em;
-    padding-bottom: 0.48em;
-    font-size: 2.0em;
 }
 
 .section-page-a .section-page-title {
@@ -404,14 +395,6 @@ EknWindow.show-article-page {
 
 .section-page-a GtkSeparator {
     color: rgba(255, 255, 255, 0.3);
-}
-/*
- * FIXME: Needs design feedback
- */
-.section-page-b .section-page-no-search-results {
-    font-size: 2.0em;
-    padding: 0.25em 1.0em 2.5em 0.25em;
-    color: white;
 }
 
 .section-page-b .section-page-title {

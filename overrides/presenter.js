@@ -198,7 +198,6 @@ const Presenter = new Lang.Class({
             return;
         }
         this.view.lock_ui();
-        this.view.section_page.query = query;
         this._engine.get_objects_by_query(this._domain, {
             'q': query
         }, this._load_section_page.bind(this));
@@ -320,10 +319,6 @@ const Presenter = new Lang.Class({
         if (err !== undefined) {
             printerr(err);
             printerr(err.stack);
-        } else if (results.length === 0) {
-            this.view.section_page.display_no_results_message();
-            this.view.unlock_ui();
-            this.view.show_section_page();
         } else {
             this._set_section_page_content(results);
             this._get_more_results = get_more_results_func;

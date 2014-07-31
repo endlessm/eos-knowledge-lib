@@ -41,13 +41,6 @@ const SectionPageA = new Lang.Class({
     },
 
     pack_title_label: function (title_label, scrolled_window) {
-        this._main_grid = new Gtk.Grid({
-            orientation: Gtk.Orientation.VERTICAL,
-            expand: true
-        });
-        this._main_grid.attach(title_label, 0, 0, 1, 1);
-        this._main_grid.attach(this._content_stack, 0, 1, 1, 1);
-
         this._content_grid = new Gtk.Grid({
             orientation: Gtk.Orientation.VERTICAL,
             expand: true,
@@ -56,15 +49,12 @@ const SectionPageA = new Lang.Class({
             margin_left: 100,
             margin_right: 100
         });
+        this._content_grid.add(title_label);
 
         this._scrolled_window = scrolled_window;
         this._scrolled_window.hscrollbar_policy = Gtk.PolicyType.NEVER;
         this._scrolled_window.add(this._content_grid);
-
-        this._content_stack.add(this._scrolled_window);
-        this._content_stack.add(this._no_search_results_label);
-
-        this.add(this._main_grid);
+        this.add(this._scrolled_window);
     },
 
     /*
@@ -88,7 +78,6 @@ const SectionPageA = new Lang.Class({
             this._segments[segment_title] = segment;
         }
         this._scrolled_window.need_more_content = false;
-        this._content_stack.visible_child = this._scrolled_window;
     },
 
     /*

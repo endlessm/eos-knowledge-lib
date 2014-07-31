@@ -282,13 +282,6 @@ enum_type##_get_type (void) \
 #define EKN_STYLE_CLASS_SECTION_PAGE_BACK_BUTTON "section-page-back-button"
 
 /**
- * EKN_STYLE_CLASS_SECTION_PAGE_NO_SEARCH_RESULTS:
- *
- * A CSS class to match the "No search results" label on the SectionPage of the knowledge apps.
- */
-#define EKN_STYLE_CLASS_SECTION_PAGE_NO_SEARCH_RESULTS "section-page-no-search-results"
-
-/**
  * EKN_STYLE_CLASS_SECTION_PAGE_TITLE:
  *
  * A CSS class to match the title on the SectionPage of the knowledge apps.
