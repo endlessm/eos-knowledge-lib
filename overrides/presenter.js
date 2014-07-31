@@ -340,10 +340,16 @@ const Presenter = new Lang.Class({
     },
 
     _new_card_from_article_model: function (model) {
-        let card_class = this._template_type === 'B' ? TextCard.TextCard : ArticleCard.ArticleCard;
+        let fade_in = true;
+        let card_class = ArticleCard.ArticleCard;
+        if (this._template_type === 'B') {
+            fade_in = false;
+            card_class = TextCard.TextCard;
+        }
         let card = new card_class({
             title: model.title,
-            synopsis: model.synopsis
+            synopsis: model.synopsis,
+            fade_in: fade_in,
         });
         card.connect('clicked', function () {
             this._on_article_card_clicked(card, model);

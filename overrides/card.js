@@ -8,6 +8,8 @@ const Pango = imports.gi.Pango;
 
 const CompositeButton = imports.compositeButton;
 
+GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
+
 /**
  * Class: Card
  * Base class for topic cards in the knowledge app UI
@@ -48,7 +50,11 @@ const Card = new Lang.Class({
          */
         'thumbnail-uri': GObject.ParamSpec.string('thumbnail-uri', 'Thumbnail URI',
             'URI of the background image',
-            GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE, '')
+            GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE, ''),
+        'fade-in': GObject.ParamSpec.boolean('fade-in', 'Fade in',
+            'True if the card should fade in to being visible.',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            false),
     },
 
     _init: function(props) {
@@ -84,6 +90,16 @@ const Card = new Lang.Class({
         this._title_label.get_style_context().add_class(EosKnowledge.STYLE_CLASS_CARD_TITLE);
         this._synopsis_label.get_style_context().add_class(EosKnowledge.STYLE_CLASS_CARD_SYNOPSIS);
         this._image_frame.get_style_context().add_class(EosKnowledge.STYLE_CLASS_THUMBNAIL);
+        if (this.fade_in) {
+            // FIXME: for some reason even if initial opacity = 0 in css, the
+            // opacity will start at 1. Triggering a 'notify' on opacity seems
+            // to get the actual initial opacity value in css to be respected
+            this.opacity = 0;
+            this.opacity = 1;
+            this.get_style_context().add_class('fade-in');
+        } else {
+            this.get_style_context().add_class('visible');
+        }
 
         this.pack_widgets(this._title_label, this._synopsis_label, this._image_frame);
         this.show_all();
