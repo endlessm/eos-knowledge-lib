@@ -63,7 +63,7 @@ const Card = new Lang.Class({
             hexpand: true,
             ellipsize: Pango.EllipsizeMode.END,
             wrap_mode: Pango.WrapMode.WORD,
-            lines: 6,
+            lines: 8,
             max_width_chars: 1,
             visible: false,
             no_show_all: true
