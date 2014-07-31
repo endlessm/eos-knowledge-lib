@@ -18,6 +18,7 @@ G_BEGIN_DECLS
 /* Shared typedefs for enumerations */
 
 #define EKN_TYPE_TREE_NODE_COLUMN   (ekn_tree_node_column_get_type ())
+#define EKN_TYPE_LOADING_ANIMATION   (ekn_loading_animation_get_type ())
 
 /**
  * EknTreeNodeColumn:
@@ -41,8 +42,26 @@ typedef enum
   EKN_TREE_NODE_COLUMN_NUM_COLUMNS
 } EknTreeNodeColumn;
 
+/**
+ * EknLoadingAnimation:
+ * @EKN_LOADING_ANIMATION_TYPE_NONE: no animation for webpage
+ * @EKN_LOADING_ANIMATION_TYPE_FORWARDS_NAVIGATION: animation for a forwards navigation of webpage
+ * @EKN_LOADING_ANIMATION_TYPE_BACKWARDS_NAVIGATION: animation for a backwards navigation of webpage
+ *
+ * Constants referring to different types of animation for loading a new webpage
+ */
+typedef enum
+{
+  EKN_LOADING_ANIMATION_TYPE_NONE,
+  EKN_LOADING_ANIMATION_TYPE_FORWARDS_NAVIGATION,
+  EKN_LOADING_ANIMATION_TYPE_BACKWARDS_NAVIGATION
+} EknLoadingAnimation;
+
 EKN_ALL_API_VERSIONS
-GType ekn_tree_node_column_get_type (void) G_GNUC_CONST;
+GType ekn_tree_node_column_get_type  (void) G_GNUC_CONST;
+
+EKN_ALL_API_VERSIONS
+GType ekn_loading_animation_get_type (void) G_GNUC_CONST;
 
 G_END_DECLS
 

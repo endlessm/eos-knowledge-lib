@@ -46,7 +46,7 @@ const TestApplication = new Lang.Class ({
             engine: engine
         });
         articleObject.article_content_uri = "file://" + TESTDIR + "/test-content/Brazil.html";
-        presenter.load_article(articleObject);
+        presenter.load_article(articleObject, EosKnowledge.LoadingAnimationType.NONE);
         window.show_all();
 
     }

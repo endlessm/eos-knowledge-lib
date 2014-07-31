@@ -44,7 +44,7 @@ const TestApplication = new Lang.Class ({
             article_view: this._view,
             engine: this._engine
         });
-        this._presenter.load_article(this._model);
+        this._presenter.load_article(this._model, EosKnowledge.LoadingAnimationType.NONE);
         this._presenter.connect('media-object-clicked', function (obj, media_object, is_resource) {
             let infobox = EosKnowledge.MediaInfobox.new_from_ekn_model(media_object);
             this._previewer.file = Gio.File.new_for_uri(media_object.content_uri);

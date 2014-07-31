@@ -59,6 +59,7 @@ const FakeWebview = new Lang.Class({
 
     // Mimic WebKitLoadEvent enum
     LOAD_STARTED: 0,
+    LOAD_COMMITTED: 2,
     LOAD_FINISHED: 3,
 
     // Mimic WebKitPolicyDecisionType enum
@@ -154,6 +155,7 @@ const FakeWebview = new Lang.Class({
             }
         }
 
+        this.emit('load-changed', this.LOAD_COMMITTED);
         this.emit('load-changed', this.LOAD_FINISHED);
     },
 
@@ -262,28 +264,32 @@ history.bind_property('can-go-back', back_button, 'sensitive',
     GObject.BindingFlags.SYNC_CREATE);
 history.bind_property('can-go-forward', forward_button, 'sensitive',
     GObject.BindingFlags.SYNC_CREATE);
-history.connect('notify::current-item', function (history) {
-    page.load_uri(history.current_item.title);
-});
+
 page.connect('create-webview', function () {
     return new FakeWebview();
 });
 page.connect('decide-navigation-policy', function (page, decision) {
-    page.navigate_forwards = true;
-    history.current_item = new HistoryItem({ title: decision.request.uri });
-    decision.ignore();
-    return true; // decision made
+    if (history.current_item.title.indexOf(decision.request.uri) === 0) {
+        decision.use();
+        return false;
+    } else {
+        history.current_item = new HistoryItem({ title: decision.request.uri });
+        page.load_uri(history.current_item.title, EosKnowledge.LoadingAnimationType.FORWARDS_NAVIGATION);
+        decision.ignore();
+        return true;  // decision made
+    }
 });
 back_button.connect('clicked', function () {
-    page.navigate_forwards = false;
     history.go_back();
+    page.load_uri(history.current_item.title, EosKnowledge.LoadingAnimationType.BACKWARDS_NAVIGATION);
 });
 forward_button.connect('clicked', function () {
-    page.navigate_forwards = true;
     history.go_forward();
+    page.load_uri(history.current_item.title, EosKnowledge.LoadingAnimationType.FORWARDS_NAVIGATION);
 });
 
 // Setup app
+page.load_uri('Home Page', EosKnowledge.LoadingAnimationType.NONE);
 history.current_item = new HistoryItem({ title: 'Home Page' });
 win.show_all();
 

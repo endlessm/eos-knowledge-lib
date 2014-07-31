@@ -59,28 +59,31 @@ history.bind_property('can-go-back', back_button, 'sensitive',
     GObject.BindingFlags.SYNC_CREATE);
 history.bind_property('can-go-forward', forward_button, 'sensitive',
     GObject.BindingFlags.SYNC_CREATE);
-history.connect('notify::current-item', function (history) {
-    page.load_uri(history.current_item.title);
-});
+
 page.connect('decide-navigation-policy', function (page, decision) {
-    page.navigate_forwards = true;
-    history.current_item = new HistoryItem({ title: decision.request.uri });
-    decision.ignore();
-    return true;  // decision made
+    if (history.current_item.title.indexOf(decision.request.uri) === 0) {
+        decision.use();
+        return false;
+    } else {
+        history.current_item = new HistoryItem({ title: decision.request.uri });
+        page.load_uri(history.current_item.title, EosKnowledge.LoadingAnimationType.FORWARDS_NAVIGATION);
+        decision.ignore();
+        return true;  // decision made
+    }
 });
 back_button.connect('clicked', function () {
-    page.navigate_forwards = false;
     history.go_back();
+    page.load_uri(history.current_item.title, EosKnowledge.LoadingAnimationType.BACKWARDS_NAVIGATION);
 });
 forward_button.connect('clicked', function () {
-    page.navigate_forwards = true;
     history.go_forward();
+    page.load_uri(history.current_item.title, EosKnowledge.LoadingAnimationType.FORWARDS_NAVIGATION);
 });
 
-// Setup app
-history.current_item = new HistoryItem({
-    title: 'http://en.wikipedia.org/wiki/Main_Page'
-});
+let wiki_uri = 'http://en.wikipedia.org/wiki/Main_Page';
+page.load_uri(wiki_uri, EosKnowledge.LoadingAnimationType.NONE);
+history.current_item = new HistoryItem({ title: wiki_uri });
+
 win.show_all();
 
 Gtk.main();

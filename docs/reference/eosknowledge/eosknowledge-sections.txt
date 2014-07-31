@@ -60,6 +60,14 @@ ekn_tree_node_column_get_type
 </SECTION>
 
 <SECTION>
+<FILE>webview-switcher</FILE>
+EknLoadingAnimation
+<SUBSECTION Standard>
+EKN_TYPE_LOADING_ANIMATION
+ekn_loading_animation_get_type
+</SECTION>
+
+<SECTION>
 <FILE>style-classes</FILE>
 EKN_STYLE_CLASS_ANIMATING
 EKN_STYLE_CLASS_ANIMATING_VIDEO_FRAME
