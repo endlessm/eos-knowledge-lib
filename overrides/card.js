@@ -54,7 +54,9 @@ const Card = new Lang.Class({
     _init: function(props) {
         this._title_label = new Gtk.Label({
             hexpand: true,
+            wrap_mode: Pango.WrapMode.WORD_CHAR,
             ellipsize: Pango.EllipsizeMode.END,
+            lines: 2,
             max_width_chars: 1,
             visible: false,
             no_show_all: true
@@ -62,7 +64,7 @@ const Card = new Lang.Class({
         this._synopsis_label = new Gtk.Label({
             hexpand: true,
             ellipsize: Pango.EllipsizeMode.END,
-            wrap_mode: Pango.WrapMode.WORD,
+            wrap_mode: Pango.WrapMode.WORD_CHAR,
             lines: 8,
             max_width_chars: 1,
             visible: false,
