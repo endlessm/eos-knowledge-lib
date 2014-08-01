@@ -59,7 +59,8 @@ const NoSearchResultsPage = new Lang.Class({
     },
 
     set query (v) {
-        if (this._query === v) return;
+        if (this._query === v)
+            return;
         this._query = v;
         /* TRANSLATORS: this appears on top of the search results page; %s will
         be replaced with the string that the user searched for. */
@@ -97,7 +98,7 @@ const NoSearchResultsPageA = new Lang.Class({
             valign: Gtk.Align.FILL,
             margin_left: 100,
             margin_right: 100
-        })
+        });
 
         let separator = new Gtk.Separator({
             halign: Gtk.Align.FILL
@@ -115,7 +116,7 @@ const NoSearchResultsPageA = new Lang.Class({
         content_grid.add(this._label_try_again);
 
         this.add(content_grid);
-        
+
         this.show_all();
     }
 });
@@ -134,7 +135,7 @@ const NoSearchResultsPageB = new Lang.Class({
 
     _init: function (props) {
         props = props || {};
-        props.valign = Gtk.Align.BASELINE; 
+        props.valign = Gtk.Align.BASELINE;
         this.parent(props);
 
         this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_NO_SEARCH_RESULTS_PAGE_B);

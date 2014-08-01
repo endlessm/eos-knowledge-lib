@@ -18,23 +18,16 @@ describe('No Search Results page for Template A', function () {
         jasmine.addMatchers(WidgetDescendantMatcher.customMatchers);
 
         no_search_results_page = new EosKnowledge.NoSearchResultsPageA({
-            title: "History of Guatemala"
+            query: 'History of Guatemala'
         });
-
-        no_search_results_page.connect('notify', function (object, pspec) {
-            // Seems properties defined in js can only be accessed through
-            // object[name] with the underscore variant on the name
-            notify(pspec.name, object[pspec.name.replace('-', '_')]);
-        });
-
     });
 
     it('can be constructed', function () {});
 
     it('can set title', function () {
-        let the_title = 'Results for "Foo"';
-        no_search_results_page.title = the_title;
-        expect(no_search_results_page.title).toBe(the_title);
+        // FIXME; this should actually verify that the query text is contained
+        // within the title label text.
+        expect(no_search_results_page.query).toBe('History of Guatemala');
     });
 
     describe('Style class of section page', function () {

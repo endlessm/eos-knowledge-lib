@@ -10,11 +10,11 @@ EosKnowledge.init();
 const TEST_APPLICATION_ID = 'com.endlessm.knowledge.no-search-results-page';
 const TESTDIR = Endless.getCurrentFileDir() + '/..';
 
-const TestApplication = new Lang.Class ({
+const TestApplication = new Lang.Class({
     Name: 'TestApplication',
     Extends: Endless.Application,
 
-    vfunc_startup: function() {
+    vfunc_startup: function () {
         this.parent();
 
         let provider = new Gtk.CssProvider();
@@ -25,8 +25,8 @@ const TestApplication = new Lang.Class ({
                                                  Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 
         let no_search_results_page = new EosKnowledge.NoSearchResultsPageA({
-            title: 'Results for "Big Foot"'
-        })
+            query: 'Big Foot'
+        });
 
         let window = new Endless.Window({
             application: this

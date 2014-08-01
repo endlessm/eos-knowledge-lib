@@ -484,10 +484,10 @@ const Window = new Lang.Class({
         let visible_page = this.get_visible_page();
         if (visible_page === this.home_page) {
             this.page_manager.transition_type = Gtk.StackTransitionType.SLIDE_LEFT;
-        // } else if (visible_page === this.section_page) {
-        //     this.page_manager.transition_type = Gtk.StackTransitionType.CROSSFADE;
-        } else {
+        } else if (visible_page === this.section_page) {
             this.page_manager.transition_type = Gtk.StackTransitionType.CROSSFADE;
+        } else {
+            this.page_manager.transition_type = Gtk.StackTransitionType.SLIDE_RIGHT;
         }
         this._section_article_page.show_article = false;
         this.button_stack.visible_child = this.invisible_box;

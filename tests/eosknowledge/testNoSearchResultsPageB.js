@@ -10,7 +10,7 @@ const TESTDIR = Endless.getCurrentFileDir() + '/..';
 EosKnowledge.init();
 
 
-describe('No Search Results page for Template b', function () {
+describe('No Search Results page for Template B', function () {
     let no_search_results_page;
 
     beforeEach(function () {
@@ -18,27 +18,20 @@ describe('No Search Results page for Template b', function () {
         jasmine.addMatchers(WidgetDescendantMatcher.customMatchers);
 
         no_search_results_page = new EosKnowledge.NoSearchResultsPageB({
-            title: "History of Guatemala"
+            query: 'History of Guatemala'
         });
-
-        no_search_results_page.connect('notify', function (object, pspec) {
-            // Seems properties defined in js can only be accessed through
-            // object[name] with the underscore variant on the name
-            notify(pspec.name, object[pspec.name.replace('-', '_')]);
-        });
-
     });
 
     it('can be constructed', function () {});
 
     it('can set title', function () {
-        let the_title = 'Results for "Foo"';
-        no_search_results_page.title = the_title;
-        expect(no_search_results_page.title).toBe(the_title);
+        // FIXME; this should actually verify that the query text is contained
+        // within the title label text.
+        expect(no_search_results_page.query).toBe('History of Guatemala');
     });
 
     describe('Style class of section page', function () {
-        it('has no-search-results-page-a class', function () {
+        it('has no-search-results-page-b class', function () {
             expect(no_search_results_page).toHaveCssClass(EosKnowledge.STYLE_CLASS_NO_SEARCH_RESULTS_PAGE_B);
         });
 

@@ -198,8 +198,7 @@ const Presenter = new Lang.Class({
         }, this._load_section_page.bind(this));
         /* TRANSLATORS: this appears on top of the search results page; %s will
         be replaced with the string that the user searched for. */
-        let search_title = _("Results for \"%s\"").format(query);
-        this.view.section_page.title = search_title;
+        this.view.section_page.title = _("Results for \"%s\"").format(query);
         this.view.no_search_results_page.query = query;
     },
 

@@ -412,10 +412,18 @@ EknWindow.show-no-search-results-page {
     font-weight: bold;
 }
 
-.section-page-a .section-page-title, .no-search-results-page-a .no-search-results-page-title {
+.section-page-a .section-page-title,
+.no-search-results-page-a .no-search-results-page-title {
     padding-top: 1.0em;
     padding-bottom: 0.48em;
-    font-size: 2.25em; /* 36p * 1/12 * 0.75 DPI correction factor */
+}
+
+.section-page-a .section-page-title {
+    font-size: 2.25em; /* 36pt * 1/12 * 0.75 DPI correction factor */
+}
+
+.no-search-results-page-a .no-search-results-page-title {
+    font-size: 1.91em; /* 85% of .section-page-title font size */
 }
 
 .section-page-a GtkSeparator, .no-search-results-page-a GtkSeparator {
@@ -484,6 +492,7 @@ EknWindow.show-no-search-results-page {
 }
 
 .no-search-results-page-b .no-search-results-page-title {
+    font-size: 4.5em; /* 85% of .section-page-title font size */
     color: white;
     text-shadow: 0px 1px 10px alpha(black, 0.30);
 }
