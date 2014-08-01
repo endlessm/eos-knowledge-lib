@@ -145,6 +145,7 @@ const HomePageACardContainer = new Lang.Class({
     },
 
     CARD_EXTRA_MARGIN: 8,
+    MAX_CARDS: 6,
 
     _init: function (props) {
         this._cards = [];
@@ -175,7 +176,7 @@ const HomePageACardContainer = new Lang.Class({
         if (this._cards.length === 0)
             return;
         let [min, nat] = this._cards_max_preferred_width();
-        let visible_cards =  Math.floor(alloc.width / min);
+        let visible_cards =  Math.min(Math.floor(alloc.width / min), this.MAX_CARDS);
         let total_width = alloc.width;
         alloc.width  = Math.min(alloc.width / visible_cards, nat);
         // Always center the cards in the given allocation
