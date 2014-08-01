@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2014-07-16 05:31+0000\n"
+"POT-Creation-Date: 2014-07-29 04:51+0000\n"
 "PO-Revision-Date: 2014-07-16 05:33+0000\n"
 "Last-Translator: Philip Chimento <philip.chimento@gmail.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/projects/p/eos-knowledge-lib/language/es/)\n"
@@ -31,12 +31,12 @@ msgstr "Lección %d"
 
 #. TRANSLATORS: this appears on top of the search results page; %s will
 #. be replaced with the string that the user searched for.
-#: overrides/presenter.js:178
+#: overrides/presenter.js:184
 #, c-format
 msgid "Results for %s"
 msgstr "Resultados para %s"
 
-#: overrides/presenter.js:297
+#: overrides/presenter.js:307
 msgid "Articles"
 msgstr "Artículos"
 
