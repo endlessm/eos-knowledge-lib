@@ -22,6 +22,8 @@ javascript_tests = \
 	tests/eosknowledge/testListCard.js \
 	tests/eosknowledge/testMediaInfobox.js \
 	tests/eosknowledge/testMediaObjectModels.js \
+	tests/eosknowledge/testNoSearchResultsPageA.js \
+	tests/eosknowledge/testNoSearchResultsPageB.js \
 	tests/eosknowledge/testPresenter.js \
 	tests/eosknowledge/testPreviewer.js \
 	tests/eosknowledge/testProgressCard.js \

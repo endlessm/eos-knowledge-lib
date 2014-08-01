@@ -14,6 +14,7 @@ const HomePage = imports.homePage;
 const HomePageA = imports.homePageA;
 const HomePageB = imports.homePageB;
 const Lightbox = imports.lightbox;
+const NoSearchResultsPage = imports.noSearchResultsPage;
 const SectionPage = imports.sectionPage;
 const SectionArticlePage = imports.sectionArticlePage;
 
@@ -80,6 +81,16 @@ const Window = new Lang.Class({
             'The article page of this view widget.',
             GObject.ParamFlags.READABLE,
             ArticlePage.ArticlePage),
+        /**
+         * Property: no-search-results-page
+         *
+         * The <NoSearchResultsPage> widget created by this widget. Read-only,
+         * modify using the <NoSearchResultsPage> API.
+         */
+        'no-search-results-page': GObject.ParamSpec.object('no-search-results-page', 'No Search Results page',
+            'A message page that is displayed when no search results are found.',
+            GObject.ParamFlags.READABLE,
+            NoSearchResultsPage.NoSearchResultsPage),
         /**
          * Property: lightbox
          *
@@ -199,9 +210,11 @@ const Window = new Lang.Class({
         if (this.template_type === 'B') {
             this._home_page = new HomePageB.HomePageB();
             this._section_article_page = new SectionArticlePage.SectionArticlePageB();
+            this._no_search_results_page = new NoSearchResultsPage.NoSearchResultsPageB();
         } else {
             this._home_page = new HomePageA.HomePageA();
             this._section_article_page = new SectionArticlePage.SectionArticlePageA();
+            this._no_search_results_page = new NoSearchResultsPage.NoSearchResultsPageA();
             // Connection so that tab buttons are revealed after page transition
             this.page_manager.connect('notify::transition-running', Lang.bind(this, function () {
                 this.home_page.animating = this.page_manager.transition_running;
@@ -209,6 +222,9 @@ const Window = new Lang.Class({
             }));
         }
         this._section_article_page.connect('back-clicked', function () {
+            this.emit('sidebar-back-clicked');
+        }.bind(this));
+        this._no_search_results_page.connect('back-clicked', function () {
             this.emit('sidebar-back-clicked');
         }.bind(this));
         this._lightbox = new Lightbox.Lightbox();
@@ -246,7 +262,6 @@ const Window = new Lang.Class({
         this._lightbox.add(this._section_article_page);
         this.page_manager.add(this._home_page);
         this.page_manager.add(this._categories_page);
-
         this.search_box = new Endless.SearchBox();
         this.search_box.connect('notify::has-focus', Lang.bind(this, function () {
             this.emit('search-focused', this.search_box.has_focus);
@@ -261,6 +276,11 @@ const Window = new Lang.Class({
             this.emit('article-selected', article_id);
         }));
         this.search_box.show();
+
+        this.page_manager.add(this._no_search_results_page, {
+            left_topbar_widget: this.button_stack,
+            center_topbar_widget: this.search_box
+        });
         this.page_manager.add(this._lightbox, {
             left_topbar_widget: this.button_stack,
             center_topbar_widget: this.search_box
@@ -312,6 +332,10 @@ const Window = new Lang.Class({
         return this._section_article_page.article_page;
     },
 
+    get no_search_results_page () {
+        return this._no_search_results_page;
+    },
+
     get lightbox () {
         return this._lightbox;
     },
@@ -360,7 +384,7 @@ const Window = new Lang.Class({
         }
         this._blur_background_image_uri = v;
         if (this._blur_background_image_uri !== null) {
-            let frame_css = 'EknWindow.show-section-page, EknWindow.show-article-page { background-image: url("' + this._blur_background_image_uri + '");}';
+            let frame_css = 'EknWindow.show-section-page, EknWindow.show-article-page, EknWindow.show-no-search-results-page { background-image: url("' + this._blur_background_image_uri + '");}';
             let provider = new Gtk.CssProvider();
             provider.load_from_data(frame_css);
             let context = this.get_style_context();
@@ -385,6 +409,7 @@ const Window = new Lang.Class({
         this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_SHOW_CATEGORIES_PAGE);
         this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_SHOW_SECTION_PAGE);
         this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_SHOW_ARTICLE_PAGE);
+        this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_SHOW_NO_SEARCH_RESULTS_PAGE);
         this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_SHOW_HOME_PAGE);
     },
 
@@ -405,6 +430,7 @@ const Window = new Lang.Class({
         this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_SHOW_HOME_PAGE);
         this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_SHOW_SECTION_PAGE);
         this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_SHOW_ARTICLE_PAGE);
+        this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_SHOW_NO_SEARCH_RESULTS_PAGE);
         this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_SHOW_CATEGORIES_PAGE);
     },
 
@@ -427,6 +453,7 @@ const Window = new Lang.Class({
         this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_SHOW_HOME_PAGE);
         this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_SHOW_CATEGORIES_PAGE);
         this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_SHOW_ARTICLE_PAGE);
+        this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_SHOW_NO_SEARCH_RESULTS_PAGE);
         this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_SHOW_SECTION_PAGE);
     },
 
@@ -444,7 +471,33 @@ const Window = new Lang.Class({
         this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_SHOW_HOME_PAGE);
         this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_SHOW_CATEGORIES_PAGE);
         this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_SHOW_SECTION_PAGE);
+        this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_SHOW_NO_SEARCH_RESULTS_PAGE);
         this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_SHOW_ARTICLE_PAGE);
+    },
+
+    /**
+     * Method: show_no_search_results_page
+     *
+     * This method causes the window to animate to the no-search-results page
+     */
+    show_no_search_results_page: function () {
+        let visible_page = this.get_visible_page();
+        if (visible_page === this.home_page) {
+            this.page_manager.transition_type = Gtk.StackTransitionType.SLIDE_LEFT;
+        } else if (visible_page === this.section_page) {
+            this.page_manager.transition_type = Gtk.StackTransitionType.CROSSFADE;
+        } else {
+            this.page_manager.transition_type = Gtk.StackTransitionType.SLIDE_RIGHT;
+        }
+        this._section_article_page.show_article = false;
+        this.button_stack.visible_child = this.invisible_box;
+        this.page_manager.visible_child = this._no_search_results_page;
+
+        this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_SHOW_HOME_PAGE);
+        this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_SHOW_CATEGORIES_PAGE);
+        this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_SHOW_ARTICLE_PAGE);
+        this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_SHOW_SECTION_PAGE);
+        this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_SHOW_NO_SEARCH_RESULTS_PAGE);
     },
 
     /**
