@@ -28,6 +28,7 @@ public_overrides = \
 	overrides/marginButton.js \
 	overrides/mediaInfobox.js \
 	overrides/mediaObjectModel.js \
+	overrides/noSearchResultsPage.js \
 	overrides/presenter.js \
 	overrides/progressCard.js \
 	overrides/previewer.js \

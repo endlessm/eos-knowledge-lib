@@ -378,6 +378,14 @@ enum_type##_get_type (void) \
  */
 #define EKN_STYLE_CLASS_SHOW_ARTICLE_PAGE "show-article-page"
 
+/**
+ * EKN_STYLE_CLASS_SHOW_NO_SEARCH_RESULTS_PAGE:
+ *
+ * A CSS class to set the background image position on the no-search-results page,
+ * as part of the parallax effect when switching pages.
+ */
+#define EKN_STYLE_CLASS_SHOW_NO_SEARCH_RESULTS_PAGE "show-no-search-results-page"
+
 
 /**
  * EKN_STYLE_CLASS_NO_MARGINS:
@@ -399,5 +407,40 @@ enum_type##_get_type (void) \
  * A CSS class for the frame that holds the category title on section page b.
  */
 #define EKN_STYLE_CLASS_SECTION_PAGE_B_TITLE_FRAME "section-page-b-title-frame"
+
+/**
+ * EKN_STYLE_CLASS_NO_SEARCH_RESULTS_PAGE_NO_RESULTS_LABEL:
+ *
+ * A CSS class to match the "no results" label of the NoSearchResultsPage of the knowledge apps.
+ */
+#define EKN_STYLE_CLASS_NO_SEARCH_RESULTS_PAGE_NO_RESULTS_LABEL "no-search-results-page-no-results-label"
+
+/**
+ * EKN_STYLE_CLASS_NO_SEARCH_RESULTS_PAGE_TITLE:
+ *
+ * A CSS class to match the title of the Template A's NoSearchResultsPage of the knowledge apps.
+ */
+#define EKN_STYLE_CLASS_NO_SEARCH_RESULTS_PAGE_TITLE "no-search-results-page-title"
+
+/**
+ * EKN_STYLE_CLASS_NO_SEARCH_RESULTS_PAGE_TRY_AGAIN_LABEL:
+ *
+ * A CSS class to match the "try again" label of the NoSearchResultsPage of the knowledge apps.
+ */
+#define EKN_STYLE_CLASS_NO_SEARCH_RESULTS_PAGE_TRY_AGAIN_LABEL "no-search-results-page-try-again-label"
+
+/**
+ * EKN_STYLE_CLASS_NO_SEARCH_RESULTS_PAGE_A:
+ *
+ * A CSS class to match the Template A's NoSearchResultsPage of the knowledge apps.
+ */
+#define EKN_STYLE_CLASS_NO_SEARCH_RESULTS_PAGE_A "no-search-results-page-a"
+
+/**
+ * EKN_STYLE_CLASS_NO_SEARCH_RESULTS_PAGE_B:
+ *
+ * A CSS class to match the Template B's NoSearchResultsPage of the knowledge apps.
+ */
+#define EKN_STYLE_CLASS_NO_SEARCH_RESULTS_PAGE_B "no-search-results-page-b"
 
 #endif /* EKN_MACROS_H */
