@@ -50,13 +50,17 @@ EknWindow.show-article-page {
 }
 
 .card-a .card-title {
-    padding: 17px 0px 17px 0px;
+    padding: 4px 0px 4px 0px;
     color: #d16550;
     font-family: 'Montserrat', sans-serif;
     font-size: 0.9em;
     font-weight: bold;
     text-shadow: 0px 1px 0px white;
     transition: padding 250ms ease-in-out;
+}
+
+.home-page-a .card-a .card-title {
+    padding: 9px 0px 9px 0px;
 }
 
 .text-card {
