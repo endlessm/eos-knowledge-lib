@@ -7,6 +7,23 @@ EosWindow {
     background-color: #888888;
 }
 
+.card {
+    opacity: 0.0;
+}
+
+.card.visible {
+    opacity: 1.0;
+}
+
+.card.fade-in {
+    /* FIXME: we have to add in a margin transition here or we override the card a
+     * margin transition. Would be good to have to copy the margin theme to two
+     * places. Investigate and fix. */
+    transition: opacity 1000ms ease-in-out,
+                margin 250ms ease-in-out;
+    opacity: 1.0;
+}
+
 .card .thumbnail {
     background-position: center;
     background-size: cover;
