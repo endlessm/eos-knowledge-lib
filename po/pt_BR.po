@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2014-07-29 04:51+0000\n"
+"POT-Creation-Date: 2014-08-01 04:02+0000\n"
 "PO-Revision-Date: 2014-07-16 05:32+0000\n"
 "Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/projects/p/eos-knowledge-lib/language/pt_BR/)\n"
@@ -26,15 +26,15 @@ msgstr ""
 msgid "Lesson %d"
 msgstr ""
 
-#. TRANSLATORS: this appears on top of the search results page; %s will
-#. be replaced with the string that the user searched for.
-#: overrides/presenter.js:184
-#, c-format
-msgid "Results for %s"
+#: overrides/presenter.js:116 overrides/presenter.js:331
+msgid "Articles"
 msgstr ""
 
-#: overrides/presenter.js:307
-msgid "Articles"
+#. TRANSLATORS: this appears on top of the search results page; %s will
+#. be replaced with the string that the user searched for.
+#: overrides/presenter.js:201
+#, c-format
+msgid "Results for %s"
 msgstr ""
 
 #: overrides/progressCard.js:112
@@ -42,10 +42,10 @@ msgstr ""
 msgid "%d of %d done"
 msgstr ""
 
-#: overrides/homePageA.js:46
+#: overrides/homePageA.js:52
 msgid "SEE ALL CATEGORIES"
 msgstr ""
 
-#: overrides/categoriesPage.js:53
+#: overrides/categoriesPage.js:59
 msgid "HOME"
 msgstr ""

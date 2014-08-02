@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2014-07-29 04:51+0000\n"
+"POT-Creation-Date: 2014-08-01 04:02+0000\n"
 "PO-Revision-Date: 2014-07-16 05:33+0000\n"
 "Last-Translator: Philip Chimento <philip.chimento@gmail.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/projects/p/eos-knowledge-lib/language/es/)\n"
@@ -29,26 +29,26 @@ msgstr "Hola Mundo C!"
 msgid "Lesson %d"
 msgstr "Lección %d"
 
+#: overrides/presenter.js:116 overrides/presenter.js:331
+msgid "Articles"
+msgstr "Artículos"
+
 #. TRANSLATORS: this appears on top of the search results page; %s will
 #. be replaced with the string that the user searched for.
-#: overrides/presenter.js:184
+#: overrides/presenter.js:201
 #, c-format
 msgid "Results for %s"
 msgstr "Resultados para %s"
-
-#: overrides/presenter.js:307
-msgid "Articles"
-msgstr "Artículos"
 
 #: overrides/progressCard.js:112
 #, c-format
 msgid "%d of %d done"
 msgstr "%d de %d terminado"
 
-#: overrides/homePageA.js:46
+#: overrides/homePageA.js:52
 msgid "SEE ALL CATEGORIES"
 msgstr "VER TODAS LAS CATEGORÍAS"
 
-#: overrides/categoriesPage.js:53
+#: overrides/categoriesPage.js:59
 msgid "HOME"
 msgstr "INICIO"
