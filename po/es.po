@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2014-08-01 04:02+0000\n"
-"PO-Revision-Date: 2014-07-16 05:33+0000\n"
+"POT-Creation-Date: 2014-08-02 01:36+0000\n"
+"PO-Revision-Date: 2014-08-02 02:56+0000\n"
 "Last-Translator: Philip Chimento <philip.chimento@gmail.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/projects/p/eos-knowledge-lib/language/es/)\n"
 "MIME-Version: 1.0\n"
@@ -29,16 +29,16 @@ msgstr "Hola Mundo C!"
 msgid "Lesson %d"
 msgstr "Lección %d"
 
-#: overrides/presenter.js:116 overrides/presenter.js:331
+#: overrides/presenter.js:116 overrides/presenter.js:336
 msgid "Articles"
 msgstr "Artículos"
 
 #. TRANSLATORS: this appears on top of the search results page; %s will
 #. be replaced with the string that the user searched for.
-#: overrides/presenter.js:201
+#: overrides/presenter.js:201 overrides/noSearchResultsPage.js:67
 #, c-format
-msgid "Results for %s"
-msgstr "Resultados para %s"
+msgid "Results for \"%s\""
+msgstr "Resultados para \"%s\""
 
 #: overrides/progressCard.js:112
 #, c-format
@@ -52,3 +52,11 @@ msgstr "VER TODAS LAS CATEGORÍAS"
 #: overrides/categoriesPage.js:59
 msgid "HOME"
 msgstr "INICIO"
+
+#: overrides/noSearchResultsPage.js:45
+msgid "We didn't find anything."
+msgstr "No encontramos nada."
+
+#: overrides/noSearchResultsPage.js:49
+msgid "Try seaching again with different words."
+msgstr "Trata una nueva búsqueda con palabras diferentes."
