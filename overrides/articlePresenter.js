@@ -152,7 +152,11 @@ const ArticlePresenter = new GObject.Class({
      *   model - the <ArticleObjectModel> to be loaded
      */
     load_article: function (model) {
-        if (this._history_model) {
+        // Only add new item to history model if either there is no current item at all
+        // or if the current item is different (has a different URI) from the new item
+        if (this._history_model &&
+            (this._history_model.current_item === null ||
+            this._history_model.current_item.article_model.article_content_uri !== model.article_content_uri)) {
             this._history_model.current_item = new ArticleHistoryItem({
                 title: model.title,
                 article_model: model
