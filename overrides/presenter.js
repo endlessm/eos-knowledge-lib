@@ -183,8 +183,8 @@ const Presenter = new Lang.Class({
             'tag': tags,
             'limit': RESULTS_SIZE
         }
+        this._target_page_title = card.title;
         this._engine.get_objects_by_query(this._domain, query, this._load_section_page.bind(this));
-        this.view.section_page.title = card.title;
     },
 
     _on_search: function (view, query) {
@@ -192,14 +192,14 @@ const Presenter = new Lang.Class({
         if (!(query.trim())) {
             return;
         }
+        /* TRANSLATORS: this appears on top of the search results page; %s will
+        be replaced with the string that the user searched for. */
+        this._target_page_title = _("Results for \"%s\"").format(query);
+        this._search_query = query;
         this.view.lock_ui();
         this._engine.get_objects_by_query(this._domain, {
             'q': query
         }, this._load_section_page.bind(this));
-        /* TRANSLATORS: this appears on top of the search results page; %s will
-        be replaced with the string that the user searched for. */
-        this.view.section_page.title = _("Results for \"%s\"").format(query);
-        this.view.no_search_results_page.query = query;
     },
 
     _on_search_focus: function (view, focused) {
@@ -316,10 +316,12 @@ const Presenter = new Lang.Class({
             printerr(err);
             printerr(err.stack);
         } else if (results.length === 0) {
+            this.view.no_search_results_page.query = this._search_query;
             this._search_origin_page = this.view.section_page;
             this.view.unlock_ui();
             this.view.show_no_search_results_page();
         } else {
+            this.view.section_page.title = this._target_page_title;
             this._set_section_page_content(results);
             this._get_more_results = get_more_results_func;
             this._search_origin_page = this.view.section_page;
