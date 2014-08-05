@@ -36,6 +36,7 @@ const TextCard = new Lang.Class({
     },
 
     pack_widgets: function (title_label, synopsis_label, image_frame) {
+        title_label.lines = 1;
         title_label.xalign = 0.0;
         this.add(title_label);
     }

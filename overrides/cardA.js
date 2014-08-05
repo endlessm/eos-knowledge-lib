@@ -36,6 +36,11 @@ const CardA = new Lang.Class({
         }.bind(this));
     },
 
+    pack_widgets: function (title_label, synopsis_label, image_frame) {
+        title_label.lines = 2;
+        this.parent(title_label, synopsis_label, image_frame);
+    },
+
     // TODO: we do want all cards to be the same size, but we may want to make
     // this size scale with resolution down the road
     vfunc_get_preferred_width: function () {

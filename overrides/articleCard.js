@@ -24,6 +24,7 @@ const ArticleCard = new Lang.Class({
     },
 
     pack_widgets: function (title_label, synopsis_label, image_frame) {
+        title_label.lines = 2;
         title_label.xalign = 0;
         synopsis_label.xalign = 0;
         synopsis_label.yalign = 0;

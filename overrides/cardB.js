@@ -27,6 +27,7 @@ const CardB = new Lang.Class({
     },
 
     pack_widgets: function (title_label, synopsis_label, image_frame) {
+        title_label.lines = 1;
         title_label.valign = Gtk.Align.END;
         // Make title label "transparent" to mouse events
         title_label.connect_after('realize', function (widget) {
