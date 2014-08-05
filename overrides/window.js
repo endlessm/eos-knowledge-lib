@@ -518,14 +518,14 @@ const Window = new Lang.Class({
     },
 
     lock_ui: function () {
-        let gdk_window = this.get_window();
+        let gdk_window = this.page_manager.get_window();
         gdk_window.cursor = Gdk.Cursor.new(Gdk.CursorType.WATCH);
-        this.sensitive = false;
+        this.page_manager.sensitive = false;
     },
 
     unlock_ui: function () {
-        let gdk_window = this.get_window();
+        let gdk_window = this.page_manager.get_window();
         gdk_window.cursor = Gdk.Cursor.new(Gdk.CursorType.ARROW);
-        this.sensitive = true;
+        this.page_manager.sensitive = true;
     }
 });
