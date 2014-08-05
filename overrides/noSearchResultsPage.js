@@ -34,28 +34,20 @@ const NoSearchResultsPage = new Lang.Class({
             GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE, '')
     },
 
+    MSG_WE_DIDNT_FIND_ANYTHING: _("We didn't find anything."),
+    MSG_TRY_AGAIN_DIFF_WORDS: _("Try seaching again with different words."),
+
     _init: function (props) {
-        this._title_label = new Gtk.Label({
+        this.title_label = new Gtk.Label({
             wrap_mode: Pango.WrapMode.WORD_CHAR,
-            ellipsize: Pango.EllipsizeMode.END,
-            max_width_chars: 1,
-        });
-
-        this._label_no_results = new Gtk.Label({
-            label: _("We didn't find anything.")
-        });
-
-        this._label_try_again = new Gtk.Label({
-            label: _("Try seaching again with different words.")
+            ellipsize: Pango.EllipsizeMode.END
         });
 
         this._query = null;
 
         this.parent(props);
 
-        this._title_label.get_style_context().add_class(EosKnowledge.STYLE_CLASS_NO_SEARCH_RESULTS_PAGE_TITLE);
-        this._label_no_results.get_style_context().add_class(EosKnowledge.STYLE_CLASS_NO_SEARCH_RESULTS_PAGE_NO_RESULTS_LABEL);
-        this._label_try_again.get_style_context().add_class(EosKnowledge.STYLE_CLASS_NO_SEARCH_RESULTS_PAGE_TRY_AGAIN_LABEL);
+        this.title_label.get_style_context().add_class(EosKnowledge.STYLE_CLASS_NO_SEARCH_RESULTS_PAGE_TITLE);
     },
 
     set query (v) {
@@ -64,7 +56,7 @@ const NoSearchResultsPage = new Lang.Class({
         this._query = v;
         /* TRANSLATORS: this appears on top of the search results page; %s will
         be replaced with the string that the user searched for. */
-        this._title_label.label = _("Results for \"%s\"").format(this._query);
+        this.title_label.label = _("Results for \"%s\"").format(this._query);
         this.notify('query');
     },
 
@@ -104,13 +96,21 @@ const NoSearchResultsPageA = new Lang.Class({
             halign: Gtk.Align.FILL
         });
 
-        this._label_no_results.valign = Gtk.Align.END;
-        this._label_no_results.expand = true;
-        this._label_try_again.valign = Gtk.Align.START;
-        this._label_try_again.expand = true;
-        this._label_try_again.margin_bottom = 150;
+        this._label_no_results = new Gtk.Label({
+            label: this.MSG_WE_DIDNT_FIND_ANYTHING,
+            valign: Gtk.Align.END,
+            expand: true
+        });
 
-        content_grid.add(this._title_label);
+        this._label_try_again = new Gtk.Label({
+            label: this.MSG_TRY_AGAIN_DIFF_WORDS,
+            valign: Gtk.Align.START,
+            expand: true
+        });
+        this._label_no_results.get_style_context().add_class(EosKnowledge.STYLE_CLASS_NO_SEARCH_RESULTS_PAGE_NO_RESULTS_LABEL);
+        this._label_try_again.get_style_context().add_class(EosKnowledge.STYLE_CLASS_NO_SEARCH_RESULTS_PAGE_TRY_AGAIN_LABEL);
+
+        content_grid.add(this.title_label);
         content_grid.add(separator);
         content_grid.add(this._label_no_results);
         content_grid.add(this._label_try_again);
@@ -143,24 +143,31 @@ const NoSearchResultsPageB = new Lang.Class({
         let content_grid = new Gtk.Grid({
             orientation: Gtk.Orientation.HORIZONTAL,
             halign: Gtk.Align.START,
-            valign: Gtk.Align.BASELINE,
-            column_spacing: 1,
-            margin_left: 100,
-            margin_right: 100
+            valign: Gtk.Align.BASELINE
         });
 
-        this._title_label.xalign = 0;
+        this.title_label.xalign = 0;
+
+        // Since we have two separate strings in Template A's page, we reuse the same translations
+        let _not_found_msg = this.MSG_WE_DIDNT_FIND_ANYTHING + ' ' + this.MSG_TRY_AGAIN_DIFF_WORDS;
+        this._label_no_results = new Gtk.Label({
+            label: _not_found_msg,
+            valign: Gtk.Align.END,
+            halign: Gtk.Align.START,
+            xalign: 0,
+            expand: true,
+            wrap: true
+        });
+        this._label_no_results.get_style_context().add_class(EosKnowledge.STYLE_CLASS_NO_SEARCH_RESULTS_PAGE_NO_RESULTS_LABEL);
 
         let label_grid = new Gtk.Grid({
-            orientation: Gtk.Orientation.HORIZONTAL,
+            orientation: Gtk.Orientation.VERTICAL,
             expand: true,
-            valign: Gtk.Align.END,
-            margin_bottom: 30
+            valign: Gtk.Align.END
         });
 
-        label_grid.attach(this._title_label, 0, 0, 2, 1);
-        label_grid.attach(this._label_no_results, 0, 1, 1, 1);
-        label_grid.attach(this._label_try_again, 1, 1, 1, 1);
+        label_grid.add(this.title_label);
+        label_grid.add(this._label_no_results);
 
         content_grid.add(label_grid);
 
