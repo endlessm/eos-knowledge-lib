@@ -4,6 +4,7 @@ const EosKnowledge = imports.gi.EosKnowledge;
 const Gtk = imports.gi.Gtk;
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
+const Mainloop = imports.mainloop;
 const Pango = imports.gi.Pango;
 
 const CompositeButton = imports.compositeButton;
@@ -98,6 +99,12 @@ const Card = new Lang.Class({
             this.opacity = 0;
             this.opacity = 1;
             this.get_style_context().add_class('fade-in');
+            // Cards not sensitive till fully faded in
+            this.set_sensitive(false);
+            Mainloop.timeout_add(1000, function () {
+                this.set_sensitive(true);
+                return false;
+            }.bind(this));
         } else {
             this.get_style_context().add_class('visible');
         }
