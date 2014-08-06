@@ -110,11 +110,13 @@ const Presenter = new Lang.Class({
                 printerr(err.stack);
             } else {
                 let cards = results.map(this._new_card_from_article_model.bind(this));
-                if (this._template_type === 'B') {
-                    this.view.section_page.cards = this.view.section_page.cards.concat(cards);
-                } else {
-                    let article_segment_title = _("Articles");
-                    this.view.section_page.append_to_segment(article_segment_title, cards);
+                if (cards.length > 0) {
+                    if (this._template_type === 'B') {
+                        this.view.section_page.cards = this.view.section_page.cards.concat(cards);
+                    } else {
+                        let article_segment_title = _("Articles");
+                        this.view.section_page.append_to_segment(article_segment_title, cards);
+                    }
                 }
                 this._get_more_results = get_more_results_func;
             }
