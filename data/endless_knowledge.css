@@ -480,6 +480,7 @@ EknWindow.show-no-search-results-page {
 
 .no-search-results-page-a .no-search-results-page-try-again-label {
     font-size: 1.32em;  /* 15pt at 72 DPI 1080px */
+    padding-bottom: 100px;
 }
 
 .no-search-results-page-b .no-search-results-page-no-results-label,
@@ -489,12 +490,15 @@ EknWindow.show-no-search-results-page {
     font-size: 1.58em;  /* 18pt at 72 DPI 1080px */
     color: white;
     text-shadow: 0px 1px 10px alpha(black, 0.30);
+    padding-left: 100px;
+    padding-bottom: 100px;
 }
 
 .no-search-results-page-b .no-search-results-page-title {
     font-size: 4.5em; /* 85% of .section-page-title font size */
     color: white;
     text-shadow: 0px 1px 10px alpha(black, 0.30);
+    padding-left: 100px;
 }
 
 /* FIXME: for the time being, until we can properly customize the webkit
