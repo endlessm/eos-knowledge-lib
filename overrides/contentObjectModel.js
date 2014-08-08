@@ -174,6 +174,10 @@ const ContentObjectModel = new Lang.Class({
         return this._license;
     },
 
+    get_coordinates: function () {
+        return this._coordinates;
+    },
+
     get_resources: function () {
         return this._resources;
     },
@@ -229,6 +233,13 @@ const ContentObjectModel = new Lang.Class({
         this._license = v;
     },
 
+    set_coordinates: function (v) {
+        if (this._coordinates === undefined) {
+            this._coordinates = [];
+        }
+        this._coordinates = v;
+    },
+
     set num_resources (v) {
         this._num_resources = v;
     },
@@ -280,6 +291,10 @@ ContentObjectModel._setup_from_json_ld = function (model, json_ld_data) {
                 }
             );
         }
+    }
+
+    if (json_ld_data.hasOwnProperty('coordinates')) {
+        model.set_coordinates(json_ld_data.coordinates);
     }
 
     // setup resources, if we have any
