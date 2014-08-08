@@ -189,9 +189,17 @@ const Presenter = new Lang.Class({
         this._engine.get_objects_by_query(this._domain, query, this._load_section_page.bind(this));
     },
 
+    // Removes newlines and trims whitespace before and after a query string
+    _sanitize_query: function (query) {
+        // Crazy regex for line breaks from
+        // http://stackoverflow.com/questions/10805125/how-to-remove-all-line-breaks-from-a-string
+        return query.replace(/\r?\n|\r/g, ' ').trim();
+    },
+
     _on_search: function (view, query) {
+        query = this._sanitize_query(query);
         // Ignore empty queries
-        if (!(query.trim())) {
+        if (query.length === 0) {
             return;
         }
         /* TRANSLATORS: this appears on top of the search results page; %s will
@@ -210,12 +218,13 @@ const Presenter = new Lang.Class({
     },
 
     _on_search_text_changed: function (view, entry) {
+        let query = this._sanitize_query(entry.text);
         // Ignore empty queries
-        if (!(entry.text.trim())) {
+        if (query.length === 0) {
             return;
         }
         this._engine.get_objects_by_query(this._domain, {
-            'prefix': entry.text
+            'prefix': query
         }, function (err, results) {
             if (err !== undefined) {
                 printerr(err);
