@@ -23,11 +23,16 @@ const SCROLLED_PAST_PREFIX = '#scrolled-past-';
 // we want to watch for when user scrolls
 const SCROLL_NOTIFIER_MATCHER = '.mw-headline';
 
+function sanitize_hash (hash) {
+    var clean_hash = hash.replace(/([.:])/g, '\\$1');
+    return clean_hash;
+}
+
 // If the anchor at the specified hash exists, scroll to it.
 // Returns whether the caller should propagate events
 window.scrollTo = function (hash, duration) {
-    var target = $(hash.replace(/\./g, '\\.'));
-    if (target.length) {
+    var target = $(sanitize_hash(hash));
+    if (target.length > 0) {
         var body = $('html,body');
         var maxScroll = $(document).height() - $(window).height();
         body.stop();
