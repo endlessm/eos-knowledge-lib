@@ -8,9 +8,6 @@ const EosKnowledge = imports.gi.EosKnowledge;
 
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 
-// FIXME: see fixme note below in get_more_results()
-const MAX_RESULTS = 100;
-
 /**
  * Class: Engine
  *
@@ -154,14 +151,8 @@ const Engine = Lang.Class({
                 let search_results = this._results_list_from_json_ld(json_ld);
                 let get_more_results = function (batch_size, new_callback) {
                     query_obj.offset = json_ld.numResults + json_ld.offset;
-                    // FIXME: Once we have the necessary bindings in xapian glib, we should
-                    // restrict the result set size in xapian bridge by specifying a confidence
-                    // interval cutoff. For now, just set a hard-coded limit for the max number
-                    // of search results to fetch.
-                    if (query_obj.offset <= MAX_RESULTS) {
-                        query_obj.limit = batch_size;
-                        this.get_objects_by_query(domain, query_obj, new_callback);
-                    }
+                    query_obj.limit = batch_size;
+                    this.get_objects_by_query(domain, query_obj, new_callback);
                 }.bind(this);
                 callback(undefined, search_results, get_more_results);
             } catch (err) {
