@@ -125,6 +125,10 @@ const HomePageA = new Lang.Class({
     },
 
     pack_cards: function (cards) {
+        cards = cards.map(function (card) {
+            card.title = card.title.toUpperCase();
+            return card;
+        });
         this._card_container.remove_cards();
         this._card_container.add_cards(this._cards);
     }

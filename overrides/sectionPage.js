@@ -61,7 +61,7 @@ const SectionPage = new Lang.Class({
     set title (v) {
         if (this._title === v) return;
         this._title = v;
-        this._title_label.label = this._title;
+        this._title_label.label = this._title.charAt(0).toUpperCase() + this._title.slice(1).toLowerCase();
         this.notify('title');
     },
 
