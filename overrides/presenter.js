@@ -23,6 +23,10 @@ let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
 const RESULTS_SIZE = 10;
 
+// The Featured tag is added to articles which should be ranked higher than
+// any others in a category
+const FEATURED_TAG = 'Featured';
+
 /**
  * Class: Presenter
  *
@@ -181,8 +185,11 @@ const Presenter = new Lang.Class({
     _on_section_card_clicked: function (tags, card) {
         this.view.lock_ui();
 
+        // All section cards should have the special "Featured" tag appended to
+        // their query, which will result in featured articles being ranked
+        // higher than their lowly unfeatured bretheren
         let query = {
-            'tag': tags,
+            'tag': tags.concat(FEATURED_TAG),
             'limit': RESULTS_SIZE
         }
         this._target_page_title = card.title;
