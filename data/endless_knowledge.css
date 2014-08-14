@@ -475,7 +475,9 @@ EknWindow.show-no-search-results-page {
 .no-search-results-page-a .no-search-results-page-try-again-label {
     font-family: Lato;
     color: white;
-    text-shadow: 0px 1px 10px alpha(black, 0.30);
+    /* FIXME: this text shadow slows down page transitions horribly. Probably
+     * something that needs to be fixed in Gtk or lower on the stack. */
+    /*text-shadow: 0px 1px 10px alpha(black, 0.30);*/
 }
 
 .no-search-results-page-a .no-search-results-page-no-results-label {
