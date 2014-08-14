@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
   <gresource prefix="/com/endlessm/knowledge">
+    <file>assets/page.png</file>
+    <file>assets/page_background.png</file>
     <file>endless_knowledge.css</file>
     <file>hide_title.css</file>
     <file>scroll_manager.js</file>

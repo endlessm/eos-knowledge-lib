@@ -278,6 +278,10 @@ EknWindow.show-no-search-results-page {
     padding: 0em 2em 0em 2em;
 }
 
+.toc-entry-page-icon {
+    padding: 13px 15px 13px 0px;
+}
+
 .toc-entry:hover,
 .toc-entry:selected {
     color: white;
@@ -310,9 +314,32 @@ EknWindow.show-no-search-results-page {
     box-shadow: inset 0px 1px 0px alpha(white, 0.15);
 }
 
+.toc.pdf-mode .toc-entry {
+    padding: 0px;
+    margin-bottom: 0px;
+}
+
+.toc.pdf-mode .toc-entry:selected {
+    background-color: transparent;
+    background-size: 100% 100%;
+    background-image: url("assets/page_background.png");
+}
+
+.toc.pdf-mode .toc-entry-index {
+    padding: 0px 0px 0px 9px;
+}
+
+
 /* Style table of contents when collapsed without section titles */
 .toc.collapsed .toc-entry {
+    margin-bottom: .4em;
+    padding: .75em 0em .75em 0em;
     border-radius: 1.75em 0em 0em 1.75em;
+}
+
+.toc.collapsed .toc-entry:selected {
+    background-image: none;
+    background-color: alpha(white, 0.247);
 }
 
 .toc.collapsed .toc-entry-index {

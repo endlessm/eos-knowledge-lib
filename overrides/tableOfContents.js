@@ -107,6 +107,18 @@ const TableOfContents = new Lang.Class({
             'True if table of contents should display in a collapsed state.',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
             false),
+        /**
+         * Property: pdf-mode
+         *
+         * True if table of contents should display in a number of page
+         * thumbnails rather than named categories.
+         *
+         * Defaults to false.
+         */
+        'pdf-mode': GObject.ParamSpec.boolean('pdf-mode', 'PDF Mode',
+            'True if table of contents should display pages of a pdf doc.',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
+            false),
     },
     Signals: {
         /**
@@ -147,6 +159,7 @@ const TableOfContents = new Lang.Class({
         this._section_list = [];
         this._section_buttons = [];
         this._collapsed = false;
+        this._pdf_mode = false;
 
         this._up_arrow = this._create_arrow_button_from_icon(this._UP_ARROW_ICON);
         this._up_arrow.connect('clicked', Lang.bind(this, function () {
@@ -254,6 +267,23 @@ const TableOfContents = new Lang.Class({
         return this._collapsed;
     },
 
+    set pdf_mode (v) {
+        if (this._pdf_mode === v)
+            return;
+        this._pdf_mode = v;
+        if (this._pdf_mode) {
+            this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_PDF_MODE);
+        } else {
+            this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_PDF_MODE);
+        }
+        this._pdfify_sections();
+        this.notify('pdf_mode');
+    },
+
+    get pdf_mode () {
+        return this._pdf_mode;
+    },
+
     vfunc_size_allocate: function (alloc) {
         this.parent(alloc);
         // calculate available space for section buttons
@@ -347,6 +377,7 @@ const TableOfContents = new Lang.Class({
             this._section_buttons.push(section_button);
         }
         this._collapse_sections();
+        this._pdfify_sections();
     },
 
     _update_selected_callback: function () {
@@ -386,6 +417,12 @@ const TableOfContents = new Lang.Class({
         }
     },
 
+    _pdfify_sections: function () {
+        for (let section_button of this._section_buttons) {
+            section_button.set_pdf_mode(this._pdf_mode);
+        }
+    },
+
     _section_button_clicked: function (button) {
         this.emit('section-clicked', button.index);
     },
@@ -416,6 +453,8 @@ const SectionButton = new Lang.Class({
         this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_TOC_ENTRY);
         section_title = section_title.toUpperCase();
         this.index = section_index;
+        this._collapsed = false;
+        this._pdf_mode = false;
 
         this.title_label = new Gtk.Label({
             label: section_title,
@@ -444,15 +483,33 @@ const SectionButton = new Lang.Class({
         });
         this.index_label.get_style_context().add_class(EosKnowledge.STYLE_CLASS_TOC_ENTRY_INDEX);
 
+        this._page_image = new Gtk.Image({
+            resource: '/com/endlessm/knowledge/assets/page.png',
+        });
+        this._page_image.get_style_context().add_class(EosKnowledge.STYLE_CLASS_TOC_ENTRY_PAGE_ICON);
+
         let box = new Gtk.Box({
             orientation: Gtk.Orientation.HORIZONTAL
         });
         box.pack_start(this.title_label, false, false, 0);
+        box.pack_end(this._page_image, false, false, 0);
         box.pack_end(this.index_label, false, false, 0);
         this.add(box);
     },
 
+    _update_visibility: function () {
+        this.title_label.set_visible(!this._collapsed && !this._pdf_mode);
+        this._page_image.set_visible(!this._collapsed && this._pdf_mode);
+    },
+
     set_collapsed: function (collapsed) {
-        this.title_label.set_visible(!collapsed);
+        this._collapsed = collapsed;
+        this._update_visibility();
+    },
+
+    set_pdf_mode: function (pdf_mode) {
+        this.halign = pdf_mode ? Gtk.Align.END : Gtk.Align.FILL;
+        this._pdf_mode = pdf_mode;
+        this._update_visibility();
     }
 });

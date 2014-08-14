@@ -183,6 +183,13 @@ enum_type##_get_type (void) \
 #define EKN_STYLE_CLASS_TOC_ENTRY_INDEX "toc-entry-index"
 
 /**
+ * EKN_STYLE_CLASS_TOC_ENTRY_PAGE_ICON:
+ *
+ * A CSS class to match the page icon of an entry in a TableOfContents widget.
+ */
+#define EKN_STYLE_CLASS_TOC_ENTRY_PAGE_ICON "toc-entry-page-icon"
+
+/**
  * EKN_STYLE_CLASS_TOC_ARROW:
  *
  * A CSS class to match the arrow buttons in the TableOfContents widget.
@@ -195,6 +202,13 @@ enum_type##_get_type (void) \
  * A CSS class to match widgets in a collapsed state.
  */
 #define EKN_STYLE_CLASS_COLLAPSED "collapsed"
+
+/**
+ * EKN_STYLE_CLASS_PDF_MODE:
+ *
+ * A CSS class to match widgets setup for use with pdf content.
+ */
+#define EKN_STYLE_CLASS_PDF_MODE "pdf-mode"
 
 /**
  * EKN_STYLE_CLASS_HOME_PAGE:
