@@ -441,7 +441,7 @@ const Window = new Lang.Class({
      */
     show_section_page: function () {
         let visible_page = this.get_visible_page();
-        if (visible_page === this.home_page) {
+        if (visible_page === this.home_page || visible_page === this.categories_page) {
             this.page_manager.transition_type = Gtk.StackTransitionType.SLIDE_LEFT;
         } else {
             this.page_manager.transition_type = Gtk.StackTransitionType.SLIDE_RIGHT;
