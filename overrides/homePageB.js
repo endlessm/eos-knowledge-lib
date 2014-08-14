@@ -66,6 +66,7 @@ const HomePageB = new Lang.Class({
         for (let card of cards) {
             let col = i % columns;
             let row = Math.floor(i / columns);
+            card.title = card.title.toUpperCase();
             this._card_container.attach(card, col, row, 1, 1);
             i++;
         }
