@@ -38,6 +38,7 @@ const HomePageB = new Lang.Class({
     pack_widgets: function (title_image, search_box) {
         title_image.vexpand = true;
         search_box.halign = Gtk.Align.CENTER;
+        search_box.valign = Gtk.Align.CENTER;
         search_box.width_request = this._SEARCH_BOX_WIDTH;
 
         let card_container_frame = new Gtk.Frame();
