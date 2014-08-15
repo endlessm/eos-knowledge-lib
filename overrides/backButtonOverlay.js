@@ -4,6 +4,8 @@ const EosKnowledge = imports.gi.EosKnowledge;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
+const Utils = imports.utils;
+
 /**
  * Class: BackButtonOverlay
  *
@@ -50,6 +52,7 @@ const BackButtonOverlay = new Lang.Class({
             this._back_button.queue_resize();
         }.bind(this));
 
+        Utils.set_hand_cursor_on_widget(this._back_button);
 
         this.add_overlay(this._back_button);
     }
