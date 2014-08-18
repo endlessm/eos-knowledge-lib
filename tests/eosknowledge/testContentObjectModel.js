@@ -1,7 +1,7 @@
 const Endless = imports.gi.Endless;
 const EosKnowledge = imports.gi.EosKnowledge;
 
-const utils = imports.utils;
+const utils = imports.tests.utils;
 
 EosKnowledge.init();
 

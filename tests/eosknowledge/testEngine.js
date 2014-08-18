@@ -3,7 +3,7 @@ const Endless = imports.gi.Endless;
 const Soup = imports.gi.Soup;
 
 const InstanceOfMatcher = imports.InstanceOfMatcher;
-const utils = imports.utils;
+const utils = imports.tests.utils;
 
 EosKnowledge.init();
 

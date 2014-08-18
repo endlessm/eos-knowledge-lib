@@ -3,7 +3,7 @@ const EosKnowledge = imports.gi.EosKnowledge;
 const Gtk = imports.gi.Gtk;
 const InstanceOfMatcher = imports.InstanceOfMatcher;
 
-const utils = imports.utils;
+const utils = imports.tests.utils;
 
 EosKnowledge.init();
 
