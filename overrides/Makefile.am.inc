@@ -44,9 +44,10 @@ public_overrides = \
 	$(NULL)
 private_overrides = \
 	overrides/compositeButton.js \
-	overrides/tabButton.js \
 	overrides/config.js \
 	overrides/imagePreviewer.js \
+	overrides/tabButton.js \
+	overrides/utils.js \
 	overrides/videoPreviewer.js \
 	$(NULL)
 dist_pkgoverrides_DATA = $(public_overrides) $(private_overrides)

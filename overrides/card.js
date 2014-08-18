@@ -8,6 +8,7 @@ const Mainloop = imports.mainloop;
 const Pango = imports.gi.Pango;
 
 const CompositeButton = imports.compositeButton;
+const Utils = imports.utils;
 
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 
@@ -108,6 +109,8 @@ const Card = new Lang.Class({
         } else {
             this.get_style_context().add_class('visible');
         }
+
+        Utils.set_hand_cursor_on_widget(this);
 
         this.pack_widgets(this._title_label, this._synopsis_label, this._image_frame);
         this.show_all();

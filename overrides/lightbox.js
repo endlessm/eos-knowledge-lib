@@ -9,6 +9,7 @@ const Lang = imports.lang;
 
 const CompositeButton = imports.compositeButton;
 const MediaObjectModel = imports.mediaObjectModel;
+const Utils = imports.utils;
 
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 
@@ -294,6 +295,7 @@ const LightboxContainer = new Lang.Class({
             margin: this._ICON_MARGIN,
             image: img_close
         });
+        Utils.set_hand_cursor_on_widget(this._close_button);
         this._close_button.connect('clicked', function () {
             this.emit('close-clicked');
         }.bind(this));

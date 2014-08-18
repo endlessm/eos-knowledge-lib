@@ -11,6 +11,7 @@ const Mainloop = imports.mainloop;
 const Pango = imports.gi.Pango;
 
 const MarginButton = imports.marginButton;
+const Utils = imports.utils;
 
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 
@@ -152,6 +153,7 @@ const TableOfContents = new Lang.Class({
         this._up_arrow.connect('clicked', Lang.bind(this, function () {
             this.emit('up-clicked');
         }));
+        Utils.set_hand_cursor_on_widget(this._up_arrow);
         this._up_arrow_align = new Gtk.Alignment();
         this._up_arrow_align.add(this._up_arrow);
         this._up_arrow_align.show_all();
@@ -160,6 +162,7 @@ const TableOfContents = new Lang.Class({
         this._down_arrow.connect('clicked', Lang.bind(this, function () {
             this.emit('down-clicked');
         }));
+        Utils.set_hand_cursor_on_widget(this._down_arrow);
         this._down_arrow_align = new Gtk.Alignment();
         this._down_arrow_align.add(this._down_arrow);
         this._down_arrow_align.show_all();
@@ -340,6 +343,7 @@ const TableOfContents = new Lang.Class({
         for (let section of this._section_list) {
             let section_button = new SectionButton(section, this._section_buttons.length);
             section_button.connect('clicked', Lang.bind(this, this._section_button_clicked));
+            Utils.set_hand_cursor_on_widget(section_button);
             section_button.show_all();
             this._right_column_size_group.add_widget(section_button.index_label);
             this.add(section_button);
