@@ -3,13 +3,14 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# Renato Peixoto Pinto <renato@endlessm.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2014-08-02 01:36+0000\n"
-"PO-Revision-Date: 2014-08-02 01:39+0000\n"
-"Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
+"POT-Creation-Date: 2014-08-12 04:52+0000\n"
+"PO-Revision-Date: 2014-08-14 14:28+0000\n"
+"Last-Translator: Renato Peixoto Pinto <renato@endlessm.com>\n"
 "Language-Team: Portuguese (http://www.transifex.com/projects/p/eos-knowledge-lib/language/pt/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -19,41 +20,41 @@ msgstr ""
 
 #: eosknowledge/ekn-hello.c:36
 msgid "Hello C world!"
-msgstr ""
+msgstr "Olá mundo C!"
 
 #: overrides/lessonCard.js:133
 #, c-format
 msgid "Lesson %d"
-msgstr ""
+msgstr "Aula %d"
 
-#: overrides/presenter.js:116 overrides/presenter.js:336
+#: overrides/presenter.js:117 overrides/presenter.js:340
 msgid "Articles"
-msgstr ""
+msgstr "Artigos"
 
 #. TRANSLATORS: this appears on top of the search results page; %s will
 #. be replaced with the string that the user searched for.
-#: overrides/presenter.js:201 overrides/noSearchResultsPage.js:67
+#: overrides/presenter.js:199 overrides/noSearchResultsPage.js:59
 #, c-format
 msgid "Results for \"%s\""
-msgstr ""
+msgstr "Resultados para \"%s\""
 
 #: overrides/progressCard.js:112
 #, c-format
 msgid "%d of %d done"
-msgstr ""
+msgstr "%d de %de realizado"
 
 #: overrides/homePageA.js:52
 msgid "SEE ALL CATEGORIES"
-msgstr ""
+msgstr "Ver todas as categorias"
 
 #: overrides/categoriesPage.js:59
 msgid "HOME"
-msgstr ""
+msgstr "PÁGINA PRINCIPAL"
 
-#: overrides/noSearchResultsPage.js:45
+#: overrides/noSearchResultsPage.js:37
 msgid "We didn't find anything."
-msgstr ""
+msgstr "Nós não encontramos nada."
 
-#: overrides/noSearchResultsPage.js:49
+#: overrides/noSearchResultsPage.js:38
 msgid "Try seaching again with different words."
-msgstr ""
+msgstr "Tente pesquisar novamente com palavras diferentes."
