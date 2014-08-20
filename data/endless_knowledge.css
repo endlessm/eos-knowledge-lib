@@ -392,6 +392,10 @@ EknWindow.show-no-search-results-page {
     color: #eeeeec;
 }
 
+.home-page-a .search-box:focus, .home-page-b .search-box:focus {
+    box-shadow: inset 0px 0px 3px 2px #5097D1;
+}
+
 .home-page-a .search-box.image, .home-page-b .search-box.image {
     color: #919191;
 }
