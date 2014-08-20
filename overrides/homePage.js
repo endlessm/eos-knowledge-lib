@@ -34,6 +34,17 @@ const HomePage = new Lang.Class({
             'URI to the title image',
             GObject.ParamFlags.READWRITE, ''),
         /**
+         * Property: search-box
+         *
+         * The <SearchBox> widget created by this widget. Read-only,
+         * modify using the <SearchBox> API. Use to type search queries and to display the last
+         * query searched.
+         */
+        'search-box': GObject.ParamSpec.object('search-box', 'Search Box',
+            'The Search box of this view widget',
+            GObject.ParamFlags.READABLE,
+            Endless.SearchBox),
+        /**
          * Property: cards
          * A list of Card objects representing the cards to be displayed on this page.
          * It is set as a normal javascript object since GJS does not support setting
@@ -165,6 +176,10 @@ const HomePage = new Lang.Class({
 
     get cards () {
         return this._cards;
+    },
+
+    get search_box () {
+        return this._search_box;
     },
 
     _on_search_entered: function (widget) {

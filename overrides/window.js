@@ -103,6 +103,17 @@ const Window = new Lang.Class({
             GObject.ParamFlags.READABLE,
             Lightbox.Lightbox),
         /**
+         * Property: search-box
+         *
+         * The <SearchBox> widget created by this widget. Read-only,
+         * modify using the <SearchBox> API. Use to type search queries and to display the last
+         * query searched.
+         */
+        'search-box': GObject.ParamSpec.object('search-box', 'Search Box',
+            'The Search box of this view widget',
+            GObject.ParamFlags.READABLE,
+            Endless.SearchBox),
+        /**
          * Property: background-image-uri
          *
          * The background image uri for this window.
@@ -262,28 +273,28 @@ const Window = new Lang.Class({
         this._lightbox.add(this._section_article_page);
         this.page_manager.add(this._home_page);
         this.page_manager.add(this._categories_page);
-        this.search_box = new Endless.SearchBox();
-        this.search_box.connect('notify::has-focus', Lang.bind(this, function () {
-            this.emit('search-focused', this.search_box.has_focus);
-        }).bind(this));
-        this.search_box.connect('text-changed', Lang.bind(this, function (search_entry) {
+        this._search_box = new Endless.SearchBox();
+        this._search_box.connect('notify::has-focus', function () {
+            this.emit('search-focused', this._search_box.has_focus);
+        }.bind(this));
+        this._search_box.connect('text-changed', function (search_entry) {
             this.emit('search-text-changed', search_entry);
-        }));
-        this.search_box.connect('activate', Lang.bind(this, function (search_entry) {
+        }.bind(this));
+        this._search_box.connect('activate', function (search_entry) {
             this.emit('search-entered', search_entry.text);
-        }));
-        this.search_box.connect('menu-item-selected', Lang.bind(this, function (search_entry, article_id) {
+        }.bind(this));
+        this._search_box.connect('menu-item-selected', function (search_entry, article_id) {
             this.emit('article-selected', article_id);
-        }));
-        this.search_box.show();
+        }.bind(this));
+        this._search_box.show();
 
         this.page_manager.add(this._no_search_results_page, {
             left_topbar_widget: this.button_stack,
-            center_topbar_widget: this.search_box
+            center_topbar_widget: this._search_box
         });
         this.page_manager.add(this._lightbox, {
             left_topbar_widget: this.button_stack,
-            center_topbar_widget: this.search_box
+            center_topbar_widget: this._search_box
         });
         this.page_manager.transition_duration = this.TRANSITION_DURATION;
         this.page_manager.bind_property('transition-duration', this._section_article_page,
@@ -338,6 +349,10 @@ const Window = new Lang.Class({
 
     get lightbox () {
         return this._lightbox;
+    },
+
+    get search_box () {
+        return this._search_box;
     },
 
     get background_image_uri () {
