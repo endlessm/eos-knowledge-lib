@@ -214,6 +214,12 @@ const Presenter = new Lang.Class({
         this._target_page_title = _("Results for \"%s\"").format(query);
         this._search_query = query;
         this.view.lock_ui();
+
+        // We clear the search box in the home page after each search
+        // but add the most recent query to the topbar search box 
+        this.view.home_page.search_box.text = '';
+        this.view.search_box.text = query;
+
         this._engine.get_objects_by_query(this._domain, {
             'q': query
         }, this._load_section_page.bind(this));
