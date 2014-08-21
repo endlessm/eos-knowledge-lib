@@ -301,6 +301,13 @@ const Window = new Lang.Class({
             'transition-duration', GObject.BindingFlags.SYNC_CREATE);
         this.page_manager.bind_property('transition-duration', this._section_article_page.article_page.switcher,
             'transition-duration', GObject.BindingFlags.SYNC_CREATE);
+        this.page_manager.connect('notify::transition-running', function () {
+            let context = this._no_search_results_page.get_style_context();
+            if (this.page_manager.transition_running)
+                context.add_class(EosKnowledge.STYLE_CLASS_ANIMATING);
+            else
+                context.remove_class(EosKnowledge.STYLE_CLASS_ANIMATING);
+        }.bind(this));
         this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_SHOW_HOME_PAGE);
         this.connect('size-allocate', Lang.bind(this, function(widget, allocation) {
             let win_width = allocation.width;
