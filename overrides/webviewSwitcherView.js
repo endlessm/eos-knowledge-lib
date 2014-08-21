@@ -1,4 +1,5 @@
 /* Copyright 2014 Endless Mobile, Inc. */
+const EosKnowledge = imports.gi.EosKnowledge;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
@@ -24,25 +25,6 @@ const WebviewSwitcherView = new Lang.Class({
     Name: 'WebviewSwitcherView',
     GTypeName: 'EknWebviewSwitcherView',
     Extends: Gtk.Stack,
-    Properties: {
-        /**
-         * Property: navigate-forwards
-         * Whether the view is conceptually navigating forwards
-         *
-         * Set this property to true if the view should behave like it is
-         * navigating forwards; false if it should behave like it is navigating
-         * backwards, for example through a "Back" button.
-         * This affects how a new page is displayed when it is loaded using
-         * load_uri().
-         *
-         * Flags:
-         *    readwrite, construct
-         */
-        'navigate-forwards': GObject.ParamSpec.boolean('navigate-forwards',
-            'Navigate forwards', 'Whether the view is conceptually navigating forwards or backwards',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
-            true)
-    },
     Signals: {
         /**
          * Event: create-webview
@@ -78,7 +60,7 @@ const WebviewSwitcherView = new Lang.Class({
          *
          * For example, if you want to load a new page in the switcher:
          * > switcher.connect('decide-navigation-policy', function (switcher, decision) {
-         * >     switcher.load_uri(decision.request.uri);
+         * >     switcher.load_uri(decision.request.uri, EosKnowledge.LoadingAnimationType.NONE);
          * >     decision.ignore();
          * >     return true; // decision was made
          * > });
@@ -124,9 +106,8 @@ const WebviewSwitcherView = new Lang.Class({
     MIN_HEIGHT: 300,
 
     _init: function (props) {
-        this._navigate_forwards = null;
         this._active_view = null;
-
+        this._offscreen_window = new Gtk.OffscreenWindow();
         props = props || {};
         // WebKit WebViews have no minimum size, so we'll ask for one to keep the
         // webview from getting unusable small
@@ -147,18 +128,28 @@ const WebviewSwitcherView = new Lang.Class({
         return new WebKit2.WebView();
     },
 
-    get navigate_forwards() {
-        return this._navigate_forwards;
+    _get_new_webview: function () {
+        let view = this.emit('create-webview');
+        // FIXME: this should not be necessary when the bug mentioned above
+        // _on_create_webview() is fixed.
+        if (view === null)
+            view = this._on_create_webview();
+        view.connect('decide-policy', function (v, decision, type) {
+            if (type === WebKit2.PolicyDecisionType.NAVIGATION_ACTION)
+                return this.emit('decide-navigation-policy', decision);
+            return false;
+        }.bind(this));
+        return view;
     },
 
-    set navigate_forwards(value) {
-        // cache the value so we don't have to compare to a StackTransitionType
-        // constant, which may change
-        if (this._navigate_forwards != value) {
-            this._navigate_forwards = value;
-            this.transition_type = value? Gtk.StackTransitionType.OVER_LEFT :
-                Gtk.StackTransitionType.UNDER_RIGHT;
-            this.notify('navigate-forwards');
+    _animation_to_transition_type: function (animation_type) {
+        switch (animation_type) {
+            case EosKnowledge.LoadingAnimationType.BACKWARDS_NAVIGATION:
+                return Gtk.StackTransitionType.UNDER_RIGHT;
+            case EosKnowledge.LoadingAnimationType.FORWARDS_NAVIGATION:
+                return Gtk.StackTransitionType.OVER_LEFT;
+            default:
+                return Gtk.StackTransitionType.NONE;
         }
     },
 
@@ -175,41 +166,27 @@ const WebviewSwitcherView = new Lang.Class({
      *
      * Parameters:
      *    uri - the URI to load (string)
+     *    animation_type - how the webview should animate when loading
+     *    the page
      */
-    load_uri: function (uri) {
-        let view = this.emit('create-webview');
-        // FIXME: this should not be necessary when the bug mentioned above
-        // _on_create_webview() is fixed.
-        if (view === null)
-            view = this._on_create_webview();
-
-        if (this._active_view === null) {
-            view.connect('decide-policy', function (v, decision, type) {
-                if (type === WebKit2.PolicyDecisionType.NAVIGATION_ACTION)
-                    return this.emit('decide-navigation-policy', decision);
-                return false;
-            }.bind(this));
-            view.show_all();
-            view.load_uri(uri);
-            this.add(view);
-            this._active_view = view;
+    load_uri: function (uri, animation_type) {
+        if (animation_type === EosKnowledge.LoadingAnimationType.NONE) {
+            if (this._active_view === null) {
+                this._active_view = this._get_new_webview();
+                this.add(this._active_view);
+                this._active_view.show_all();
+            }
+            this._active_view.load_uri(uri);
+            this._active_view.grab_focus();
             this.emit('display-ready');
-            return;
-        }
+        } else {
+            this.transition_type = this._animation_to_transition_type(animation_type);
+            let view = this._get_new_webview();
+            let load_id = view.connect('load-changed', function (v, status) {
+                if (status !== WebKit2.LoadEvent.COMMITTED)
+                    return;
 
-        // Web views try to be clever and so won't load a page if they're not
-        // visible. We are even cleverer, and stick them in an offscreen
-        // window so they think they are visible.
-        let offscreen = new Gtk.OffscreenWindow();
-
-        let load_id = view.connect('load-changed', function (v, status) {
-            if (status === WebKit2.LoadEvent.COMMITTED) {
-                view.show_all();
                 view.reparent(this);
-                if(offscreen !== null) {
-                    offscreen.destroy();
-                    offscreen = null;
-                }
 
                 // Show the prepared view and clean up the old view when it is
                 // finished showing
@@ -220,30 +197,29 @@ const WebviewSwitcherView = new Lang.Class({
 
                         // Make the preparing view the new active view
                         view.disconnect(load_id);
-                        if (this._active_view !== null &&
-                            this === this._active_view.get_parent())
+                        if (this === this._active_view.get_parent())
                             this.remove(this._active_view);
                         this._active_view = view;
                         this.disconnect(id);
+
+                        this._active_view.grab_focus();
                         this.emit('display-ready');
                     }.bind(this));
-                // No transition necessary if there was no previous view
-                if(this._active_view !== null)
-                    this.visible_child = view;
-                else {
-                    this._active_view = view;
-                    this.emit('display-ready');
-                }
 
-                view.connect('decide-policy', function (v, decision, type) {
-                    if(type === WebKit2.PolicyDecisionType.NAVIGATION_ACTION)
-                        return this.emit('decide-navigation-policy', decision);
-                    return false;
-                }.bind(this));
-            }
-        }.bind(this));
-        offscreen.add(view);
-        offscreen.show_all();
-        view.load_uri(uri);
+                this.visible_child = view;
+            }.bind(this));
+            // Web views try to be clever and so won't load a page if they're not
+            // visible. We are even cleverer, and stick them in an offscreen
+            // window so they think they are visible.
+            // If there is already a webview loading in the offscreen window,
+            // we should destroy it and replace it with the new one
+            if (this._offscreen_window.get_child() !== null)
+                this._offscreen_window.get_child().destroy();
+
+            this._offscreen_window.add(view);
+            this._offscreen_window.show_all();
+
+            view.load_uri(uri);
+        }
     }
 });

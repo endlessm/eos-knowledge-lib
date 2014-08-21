@@ -70,15 +70,6 @@ const ArticlePresenter = new GObject.Class({
         'template-type':  GObject.ParamSpec.string('template-type', 'Template Type',
             'Which template the window should display with',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, 'A'),
-        /**
-         * Property: animate-load
-         *
-         * Set true if the ArticlePresenter should use the switcher to animate
-         * in a new article from the right.
-         */
-        'animate-load': GObject.ParamSpec.boolean('animate-load', 'Animate load',
-            'True if article presenter should animate in new articles.',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT, true),
     },
     Signals: {
         /**
@@ -127,15 +118,6 @@ const ArticlePresenter = new GObject.Class({
 
         // fully populate the view from a model
         this._article_model = v;
-
-        if (this.animate_load || this._webview === null) {
-            this.article_view.switcher.load_uri(this._article_model.article_content_uri);
-        } else {
-            this._webview.load_uri(this._article_model.article_content_uri);
-        }
-
-        if (!this.animate_load)
-            this._update_title_and_toc();
     },
 
     set history_model (v) {
@@ -151,7 +133,7 @@ const ArticlePresenter = new GObject.Class({
      * Parameters:
      *   model - the <ArticleObjectModel> to be loaded
      */
-    load_article: function (model) {
+    load_article: function (model, animation_type) {
         // Only add new item to history model if either there is no current item at all
         // or if the current item is different (has a different URI) from the new item
         if (this._history_model &&
@@ -163,6 +145,7 @@ const ArticlePresenter = new GObject.Class({
             });
         }
         this.article_model = model;
+        this.article_view.switcher.load_uri(this._article_model.article_content_uri, animation_type);
     },
 
     /**
@@ -172,8 +155,7 @@ const ArticlePresenter = new GObject.Class({
      */
     navigate_back: function () {
         this._history_model.go_back();
-        this.article_view.switcher.navigate_forwards = false;
-        this.article_model = this._history_model.current_item.article_model;
+        this.load_article(this._history_model.current_item.article_model, EosKnowledge.LoadingAnimationType.BACKWARDS_NAVIGATION)
     },
 
     /**
@@ -183,8 +165,7 @@ const ArticlePresenter = new GObject.Class({
      */
     navigate_forward: function () {
         this._history_model.go_forward();
-        this.article_view.switcher.navigate_forwards = true;
-        this.article_model = this._history_model.current_item.article_model;
+        this.load_article(this._history_model.current_item.article_model, EosKnowledge.LoadingAnimationType.FORWARDS_NAVIGATION)
     },
 
     _update_title_and_toc: function () {
@@ -212,13 +193,14 @@ const ArticlePresenter = new GObject.Class({
                 return model.content_uri;
             });
 
-            // If the requested uri is just a hash, then we're
-            // navigating within the current article, so don't
-            // animate a new webview
+            // If this check is true, then the base of the requested URI
+            // was equal to that of the article model and so we should just
+            // follow it. This handles the case where we are navigating to
+            // an article for the first time from the section page, or we
+            // are navigating to a hash within the current article.
             if (this._article_model.article_content_uri.indexOf(baseURI) === 0) {
-
                 decision.use();
-                return true;
+                return false;
 
             } else if (resourceURIs.indexOf(decision.request.uri) !== -1) {
 
@@ -235,7 +217,6 @@ const ArticlePresenter = new GObject.Class({
                 // Else, the request could be either for a media object
                 // or a new article page
                 let [domain, id] = baseURI.split('/').slice(-2);
-                switcher.navigate_forwards = true;
                 decision.ignore();
 
                 this.engine.get_object_by_id(domain, id, function (err, model) {
@@ -243,7 +224,7 @@ const ArticlePresenter = new GObject.Class({
                         if (model instanceof MediaObjectModel.MediaObjectModel) {
                             this.emit('media-object-clicked', model, false);
                         } else {
-                            this.load_article(model);
+                            this.load_article(model, EosKnowledge.LoadingAnimationType.FORWARDS_NAVIGATION);
                         }
                     } else {
                         printerr(err);

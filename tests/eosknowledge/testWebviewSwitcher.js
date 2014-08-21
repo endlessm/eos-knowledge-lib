@@ -52,18 +52,22 @@ describe('Webview switcher view', function () {
             expect(createWebview).toHaveBeenCalled();
         });
 
-        describe('asynchronously', function () {
+        function switcher_setup (switcher, done, count) {
+            // Wait for {count} 'display-ready' signals, signifying that each
+            // page has finished loading in turn
+            let displayReadyCount = 0;
+            switcher.connect('display-ready', function () {
+                displayReadyCount++;
+                if(displayReadyCount == count)
+                    done();
+            });
+        }
+
+        describe('asynchronously with animation', function () {
             beforeEach(function (done) {
-                // Wait for two 'display-ready' signals, signifying that each
-                // page has finished loading in turn
-                let displayReadyCount = 0;
-                switcher.connect('display-ready', function () {
-                    displayReadyCount++;
-                    if(displayReadyCount == 2)
-                        done();
-                });
-                switcher.load_uri('baked://beans');
-                switcher.load_uri('corn://bread');
+                switcher_setup(switcher, done, 2);
+                switcher.load_uri('baked://beans', EosKnowledge.LoadingAnimationType.NONE);
+                switcher.load_uri('corn://bread', EosKnowledge.LoadingAnimationType.FORWARDS_NAVIGATION);
             });
 
             xit('shows the new webview when a page is loaded', function (done) {
@@ -80,6 +84,23 @@ describe('Webview switcher view', function () {
             it('removes the old webview when a new page is loaded', function (done) {
                 expect(previousView.uri).toEqual('baked://beans');
                 expect(previousView.get_parent()).toBe(null);
+                done();
+            });
+        });
+        describe('asynchronously without animation', function () {
+            beforeEach(function (done) {
+                switcher_setup(switcher, done, 2)
+                switcher.load_uri('baked://beans', EosKnowledge.LoadingAnimationType.NONE);
+                switcher.load_uri('corn://bread', EosKnowledge.LoadingAnimationType.NONE);
+            });
+
+            it('loads the requested page into the new webview', function (done) {
+                expect(currentView.uri).toEqual('corn://bread');
+                done();
+            });
+
+            it('does not create a new webview when not animating', function (done) {
+                expect(currentView).toEqual(previousView);
                 done();
             });
         });

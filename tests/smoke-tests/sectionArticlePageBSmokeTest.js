@@ -64,7 +64,7 @@ const TestApplication = new Lang.Class ({
         let section_article_page = new EosKnowledge.SectionArticlePageB();
         section_article_page.section_page.title = 'History of Guatemala';
         section_article_page.section_page.cards = cards;
-        section_article_page.article_page.switcher.load_uri('https://google.com');
+        section_article_page.article_page.switcher.load_uri('https://google.com', EosKnowledge.LoadingAnimationType.NONE);
         section_article_page.connect('back-clicked', function () {
             section_article_page.show_article = false;
         });
