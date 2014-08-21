@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: eos-knowledge-lib 0.0.0\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-"
 "inc\n"
-"POT-Creation-Date: 2014-08-19 04:52+0000\n"
+"POT-Creation-Date: 2014-08-21 23:01+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -27,7 +27,7 @@ msgstr ""
 msgid "Lesson %d"
 msgstr ""
 
-#: overrides/presenter.js:121 overrides/presenter.js:356
+#: overrides/presenter.js:121 overrides/presenter.js:360
 msgid "Articles"
 msgstr ""
 
