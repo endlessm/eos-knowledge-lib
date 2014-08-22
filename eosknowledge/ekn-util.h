@@ -15,7 +15,7 @@
 
 G_BEGIN_DECLS
 
-EKN_ALL_API_VERSIONS
+EKN_AVAILABLE_IN_0_0
 GdkWindow *ekn_private_new_input_output_window (GtkWidget *widget);
 
 G_END_DECLS

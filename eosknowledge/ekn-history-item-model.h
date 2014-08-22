@@ -49,10 +49,10 @@ struct _EknHistoryItemModelInterface
   GTypeInterface parent_interface;
 };
 
-EKN_ALL_API_VERSIONS
+EKN_AVAILABLE_IN_0_0
 GType  ekn_history_item_model_get_type  (void) G_GNUC_CONST;
 
-EKN_ALL_API_VERSIONS
+EKN_AVAILABLE_IN_0_0
 gchar *ekn_history_item_model_get_title (EknHistoryItemModel *self);
 
 G_END_DECLS

@@ -57,10 +57,10 @@ typedef enum
   EKN_LOADING_ANIMATION_TYPE_BACKWARDS_NAVIGATION
 } EknLoadingAnimation;
 
-EKN_ALL_API_VERSIONS
+EKN_AVAILABLE_IN_0_0
 GType ekn_tree_node_column_get_type  (void) G_GNUC_CONST;
 
-EKN_ALL_API_VERSIONS
+EKN_AVAILABLE_IN_0_0
 GType ekn_loading_animation_get_type (void) G_GNUC_CONST;
 
 G_END_DECLS
