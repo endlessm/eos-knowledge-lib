@@ -14,23 +14,14 @@ GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.
 /**
  * Class: MediaObjectModel
  * The model class for media objects. A media obejct has the same 
- * properties as a <ContentObjectModel>, plus <content-uri>, <caption>,
- * <encoding-format>, <height> and <width> properties
+ * properties as a <ContentObjectModel>, plus <caption>, <encoding-format>, <height>
+ * and <width> properties
  */
 const MediaObjectModel = new Lang.Class({
     Name: 'MediaObjectModel',
     GTypeName: 'EknMediaObjectModel',
     Extends: ContentObjectModel.ContentObjectModel,
     Properties: {
-        /**
-         * Property: content-uri
-         * The URI at which the content resides. Defaults to "about:blank"
-         */
-        'content-uri': GObject.ParamSpec.string('content-uri',
-            'Media Content URI', 'URI to the media object content',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
-            'about:blank'),
-
         /**
          * Property: caption
          * A displayable string which describes the media object in the same
@@ -77,10 +68,6 @@ const MediaObjectModel = new Lang.Class({
         return this._caption;
     },
 
-    get content_uri () {
-        return this._content_uri;
-    },
-
     get encoding_format () {
         return this._encoding_format;
     },
@@ -95,10 +82,6 @@ const MediaObjectModel = new Lang.Class({
 
     set caption (v) {
         this._caption = v;
-    },
-
-    set content_uri (v) {
-        this._content_uri = v;
     },
 
     set encoding_format (v) {
@@ -141,10 +124,6 @@ MediaObjectModel._props_from_json_ld = function (json_ld_data) {
     // Marshal properties specific to MediaObjectModel
     if (json_ld_data.hasOwnProperty('caption')) {
         props.caption = json_ld_data.caption;
-    }
-
-    if (json_ld_data.hasOwnProperty('contentURL')) {
-        props.content_uri = json_ld_data.contentURL;
     }
 
     if (json_ld_data.hasOwnProperty('encodingFormat')) {

@@ -13,7 +13,7 @@ GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.
  * This is the base class for all content objects in the knowledge app.
  *
  * This object can be configured with a <title>, <thumbnail>, <language>,
- * <copyright-holder>, <source-uri>, <synopsis>, <resources>, <last-modified-date>, 
+ * <copyright-holder>, <source-uri>, <content-uri>, <synopsis>, <resources>, <last-modified-date>,
  * <tags>, and <license> properties.
  */
 const ContentObjectModel = new Lang.Class({
@@ -59,6 +59,14 @@ const ContentObjectModel = new Lang.Class({
          */
         'source-uri': GObject.ParamSpec.string('source-uri', 'Source URL', 'URI of the source page',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT, ''),
+        /**
+         * Property: content-uri
+         * A string with the URI to the file content for this object.
+         */
+        'content-uri': GObject.ParamSpec.string('content-uri', 'Object Content URL',
+            'URI of the source content file',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
+            'about:blank'),
         /**
          * Property: synopsis
          * The synopsis for this content object. Defaults to an empty string.
@@ -162,6 +170,10 @@ const ContentObjectModel = new Lang.Class({
         return this._source_url;
     },
 
+    get content_uri () {
+        return this._content_uri;
+    },
+
     get synopsis () {
         return this._synopsis;
     },
@@ -215,6 +227,10 @@ const ContentObjectModel = new Lang.Class({
 
     set source_url (v) {
         this._source_url = v;
+    },
+
+    set content_uri (v) {
+        this._content_uri = v;
     },
 
     set synopsis (v) {
@@ -338,6 +354,9 @@ ContentObjectModel._props_from_json_ld = function (json_ld_data) {
 
     if(json_ld_data.hasOwnProperty('sourceURL'))
         props.source_uri = json_ld_data.sourceURL;
+
+    if (json_ld_data.hasOwnProperty('contentURL'))
+        props.content_uri = json_ld_data.contentURL;
 
     if(json_ld_data.hasOwnProperty('synopsis'))
         props.synopsis = json_ld_data.synopsis;
