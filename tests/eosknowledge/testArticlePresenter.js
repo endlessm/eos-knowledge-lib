@@ -25,7 +25,7 @@ describe('Article Presenter', function () {
         articleObject = new EosKnowledge.ArticleObjectModel.new_from_json_ld(mockArticleData);
 
         view = new EosKnowledge.ArticlePage();
-        view.switcher.connect('create-webview', function () {
+        view.switcher.connect('create-view-for-file', function () {
             webview = new MockWebview.MockWebview();
             return webview;
         });

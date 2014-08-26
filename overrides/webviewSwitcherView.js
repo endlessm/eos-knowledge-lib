@@ -1,6 +1,6 @@
 /* Copyright 2014 Endless Mobile, Inc. */
 const EosKnowledge = imports.gi.EosKnowledge;
-const GLib = imports.gi.GLib;
+const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
@@ -10,13 +10,16 @@ GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.
 
 /**
  * Class: WebviewSwitcherView
- * View that slides webviews on top of one another
+ * View that slides views on top of one another
  *
  * This class proxies a WebKit2.WebView (or any other object that has
  * "load-changed" and "decide-policy" signals in its interface).
  * It is used to create a "paging" effect in a browser-type environment.
- * Calling <load_uri()> causes a new web view to be created and slide in on top
- * of the previous webview, which is then destroyed in order to save memory.
+ * Calling <load_uri()> causes a new view to be created and slide in on top
+ * of the previous view, which is then destroyed in order to save memory.
+ *
+ * TODO: Rename to ViewSwitcherView since this class now displays more than just
+ * webviews.
  *
  * Parent class:
  *    Gtk.Stack
@@ -43,9 +46,71 @@ const WebviewSwitcherView = new Lang.Class({
          *
          * Flags:
          *   run last
+         *
+         * Deprecated:
+         *   Use <create-view-for-file> instead. (Since version 0.2)
          */
         'create-webview': {
             return_type: Gtk.Widget.$gtype,
+            flags: GObject.SignalFlags.RUN_LAST |
+                GObject.SignalFlags.DEPRECATED,
+            accumulator: GObject.AccumulatorType.FIRST_WINS
+        },
+        /**
+         * Event: create-view-for-file
+         * Request creation of a view to put into this view.
+         *
+         * This signal is emitted when this view is about to load a new page.
+         * The signal handler should return a widget, which must implement at
+         * least the following parts of the *WebKit2.WebView* interface:
+         *
+         * > Signals: {
+         * >     'load-changed': {
+         * >         param_types: [ GObject.TYPE_INT ] // WebKitLoadEvent
+         * >     },
+         * >     'decide-policy': {
+         * >         param_types: [
+         * >             GObject.TYPE_OBJECT, // WebKitPolicyDecision
+         * >             GObject.TYPE_INT // WebKitPolicyDecisionType
+         * >         ],
+         * >         return_type: GObject.TYPE_BOOLEAN,
+         * >         flags: GObject.SignalFlags.RUN_LAST
+         * >     }
+         * > },
+         * > load_uri: function (uri) {
+         * >     ...
+         * > }
+         *
+         * In addition, the object marked WebKitPolicyDecision must have
+         * *use()*, *ignore()*, and *download()* methods, all taking no
+         * parameters.
+         * It does not need to exist if the *decide-policy* signal is never
+         * emitted.
+         *
+         * If a signal handler returns *null*, then the next handler will be
+         * invoked for this signal.
+         *
+         * If all handlers return *null* (or there are no registered handlers),
+         * then a best effort is made to display the relevant content.
+         *
+         * Parameters:
+         *   file - File to display in view (*Gio.File*)
+         *
+         * Return type:
+         *   Gtk.Widget
+         *
+         * Flags:
+         *   run last
+         *
+         * Since:
+         *   Version 0.2
+         */
+        'create-view-for-file' : {
+            param_types: [ Gio.File.$gtype ],
+            return_type: Gtk.Widget.$gtype,
+            // FIXME: possibly the above should be an adapter interface, rather
+            // than a Gtk.Widget that is expected to have certain signals and
+            // methods.
             flags: GObject.SignalFlags.RUN_LAST,
             accumulator: GObject.AccumulatorType.FIRST_WINS
         },
@@ -128,12 +193,25 @@ const WebviewSwitcherView = new Lang.Class({
         return new WebKit2.WebView();
     },
 
-    _get_new_webview: function () {
-        let view = this.emit('create-webview');
-        // FIXME: this should not be necessary when the bug mentioned above
-        // _on_create_webview() is fixed.
-        if (view === null)
-            view = this._on_create_webview();
+    _choose_view: function (uri) {
+        let file = Gio.File.new_for_uri(uri);
+
+        let view_from_handler = this.emit('create-view-for-file', file);
+        if (view_from_handler !== null)
+            return view_from_handler;
+
+        // FIXME: Remove once we bump the major version and remove the
+        // deprecated signal create-webview. Replace with
+        // return new EvinceWebviewAdapter.EvinceWebviewAdapter().
+        let webview = this.emit('create-webview');
+
+        // FIXME: Calling _on_create_webview() should not be necessary when
+        // https://bugzilla.gnome.org/show_bug.cgi?id=729288 is fixed.
+        return webview !== null ? webview : this._on_create_webview();
+    },
+
+    _get_new_view: function (uri) {
+        let view = this._choose_view(uri);
         view.connect('decide-policy', function (v, decision, type) {
             if (type === WebKit2.PolicyDecisionType.NAVIGATION_ACTION)
                 return this.emit('decide-navigation-policy', decision);
@@ -180,27 +258,27 @@ const WebviewSwitcherView = new Lang.Class({
      *    the page
      */
     load_uri: function (uri, animation_type) {
-        if (animation_type === EosKnowledge.LoadingAnimationType.NONE) {
-            if (this._active_view === null) {
-                let view = this._get_new_webview();
-                this.add(view);
-                view.load_uri(uri);
-                view.show_all();
-                this._update_active_view(view);
-                return;
-            }
-            this._active_view.load_uri(uri);
-            this._active_view.grab_focus();
-            this.emit('display-ready');
+        if (this._active_view === null) {
+            let view = this._get_new_view(uri);
+            this.add(view);
+            view.load_uri(uri);
+            view.show_all();
+            this._update_active_view(view);
         } else {
             this.transition_type = this._animation_to_transition_type(animation_type);
-            let view = this._get_new_webview();
+            let view = this._get_new_view(uri);
             let load_id = view.connect('load-changed', function (v, status) {
                 if (status !== WebKit2.LoadEvent.COMMITTED)
                     return;
 
                 view.disconnect(load_id);
                 view.reparent(this);
+
+                if (this.transition_type === Gtk.StackTransitionType.NONE) {
+                    this.visible_child = view;
+                    this._update_active_view(view);
+                    return;
+                }
 
                 // Show the prepared view and clean up the old view when it is
                 // finished showing

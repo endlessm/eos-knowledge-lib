@@ -263,7 +263,7 @@ history.bind_property('can-go-back', back_button, 'sensitive',
 history.bind_property('can-go-forward', forward_button, 'sensitive',
     GObject.BindingFlags.SYNC_CREATE);
 
-page.connect('create-webview', function () {
+page.connect('create-view-for-file', function () {
     return new FakeWebview();
 });
 page.connect('decide-navigation-policy', function (page, decision) {
