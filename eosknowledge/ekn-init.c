@@ -7,6 +7,7 @@
 #include <glib/gi18n-lib.h>
 #include <clutter-gst/clutter-gst.h>
 #include <clutter-gtk/clutter-gtk.h>
+#include <evince-document.h>
 
 #include "ekn-init-private.h"
 
@@ -45,6 +46,8 @@ _ekn_init (void)
         g_critical ("GTK Clutter could not be initialized!");
       if (clutter_gst_init (NULL, NULL) != CLUTTER_INIT_SUCCESS)
         g_critical ("Clutter GST could not be initialized!");
+      if (!ev_init ())
+        g_critical ("Evince did not find any backends! No PDF support.");
 
       _ekn_initialized = TRUE;
     }
@@ -59,4 +62,17 @@ gboolean
 ekn_is_inited (void)
 {
   return _ekn_initialized;
+}
+
+/*
+ * _ekn_fini:
+ *
+ * This function deinitializes the library. It is needed for calling
+ * ev_shutdown() when the library is unloaded.
+ */
+_EKN_DESTRUCTOR(_ekn_fini);
+static void
+_ekn_fini (void)
+{
+  ev_shutdown ();
 }

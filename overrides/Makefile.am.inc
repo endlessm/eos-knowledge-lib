@@ -17,6 +17,7 @@ public_overrides = \
 	overrides/contentObjectModel.js \
 	overrides/eknWebview.js \
 	overrides/engine.js \
+	overrides/evinceWebviewAdapter.js \
 	overrides/homePage.js \
 	overrides/homePageA.js \
 	overrides/homePageB.js \
