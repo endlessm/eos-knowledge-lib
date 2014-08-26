@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2014-08-19 04:52+0000\n"
+"POT-Creation-Date: 2014-08-21 23:01+0000\n"
 "PO-Revision-Date: 2014-08-14 14:28+0000\n"
 "Last-Translator: Renato Peixoto Pinto <renato@endlessm.com>\n"
 "Language-Team: Portuguese (http://www.transifex.com/projects/p/eos-knowledge-lib/language/pt/)\n"
@@ -27,7 +27,7 @@ msgstr "Olá mundo C!"
 msgid "Lesson %d"
 msgstr "Aula %d"
 
-#: overrides/presenter.js:121 overrides/presenter.js:356
+#: overrides/presenter.js:121 overrides/presenter.js:360
 msgid "Articles"
 msgstr "Artigos"
 
