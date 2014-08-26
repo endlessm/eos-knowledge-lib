@@ -153,6 +153,16 @@ const WebviewSwitcherView = new Lang.Class({
         }
     },
 
+    // Make the preparing view the new active view.
+    _update_active_view: function (new_view) {
+        if (this._active_view !== null &&
+            this === this._active_view.get_parent())
+            this.remove(this._active_view);
+        this._active_view = new_view;
+        this._active_view.grab_focus();
+        this.emit('display-ready');
+    },
+
     /**
      * Method: load_uri
      * Load a new page
@@ -172,9 +182,12 @@ const WebviewSwitcherView = new Lang.Class({
     load_uri: function (uri, animation_type) {
         if (animation_type === EosKnowledge.LoadingAnimationType.NONE) {
             if (this._active_view === null) {
-                this._active_view = this._get_new_webview();
-                this.add(this._active_view);
-                this._active_view.show_all();
+                let view = this._get_new_webview();
+                this.add(view);
+                view.load_uri(uri);
+                view.show_all();
+                this._update_active_view(view);
+                return;
             }
             this._active_view.load_uri(uri);
             this._active_view.grab_focus();
@@ -186,6 +199,7 @@ const WebviewSwitcherView = new Lang.Class({
                 if (status !== WebKit2.LoadEvent.COMMITTED)
                     return;
 
+                view.disconnect(load_id);
                 view.reparent(this);
 
                 // Show the prepared view and clean up the old view when it is
@@ -195,15 +209,8 @@ const WebviewSwitcherView = new Lang.Class({
                         if (this.transition_running)
                             return;
 
-                        // Make the preparing view the new active view
-                        view.disconnect(load_id);
-                        if (this === this._active_view.get_parent())
-                            this.remove(this._active_view);
-                        this._active_view = view;
                         this.disconnect(id);
-
-                        this._active_view.grab_focus();
-                        this.emit('display-ready');
+                        this._update_active_view(view);
                     }.bind(this));
 
                 this.visible_child = view;
