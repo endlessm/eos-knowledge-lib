@@ -83,17 +83,6 @@ function _init() {
         }
     });
 
-    /**
-     * Method: init
-     *
-     * Call this function before calling into any other EosKnowledge function.
-     * It will initialize all the libraries EosKnowlege depends on.
-     */
-    EosKnowledge.init = function () {
-        GtkClutter.init(null);
-        ClutterGst.init(null);
-    };
-
     EosKnowledge.ArticleCard = ArticleCard.ArticleCard;
     EosKnowledge.ArticleObjectModel = ArticleObjectModel.ArticleObjectModel;
     EosKnowledge.ArticlePage = ArticlePage.ArticlePage;
