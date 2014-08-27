@@ -5,7 +5,8 @@ const Lang = imports.lang;
 
 let EosKnowledge;
 
-let _oldSearchPath = imports.searchPath;
+// Make a backup copy of the array
+let _oldSearchPath = imports.searchPath.slice(0);
 imports.searchPath.unshift(Endless.getCurrentFileDir());
 
 const ArticleCard = imports.articleCard;
