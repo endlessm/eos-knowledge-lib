@@ -5,8 +5,6 @@ const Endless = imports.gi.Endless;
 const EosKnowledge = imports.gi.EosKnowledge;
 const WebKit2 = imports.gi.WebKit2;
 
-EosKnowledge.init();
-
 const TEST_APPLICATION_ID = 'com.endlessm.knowledge.test.scrollmanager';
 
 const TestApplication = new Lang.Class({

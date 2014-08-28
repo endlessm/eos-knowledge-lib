@@ -5,8 +5,6 @@ const Soup = imports.gi.Soup;
 const InstanceOfMatcher = imports.InstanceOfMatcher;
 const utils = imports.tests.utils;
 
-EosKnowledge.init();
-
 const MOCK_CONTENT_PATH = Endless.getCurrentFileDir() + '/../test-content/content-search-results.jsonld';
 const MOCK_ARTICLE_PATH = Endless.getCurrentFileDir() + '/../test-content/article-search-results.jsonld';
 const MOCK_MEDIA_PATH = Endless.getCurrentFileDir() + '/../test-content/media-search-results.jsonld';

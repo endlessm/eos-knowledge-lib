@@ -3,8 +3,6 @@ const Gtk = imports.gi.Gtk;
 
 const CssClassMatcher = imports.CssClassMatcher;
 
-EosKnowledge.init();
-
 describe('Lightbox widget', function () {
     let lightbox, content_widget, infobox_widget, notify;
 

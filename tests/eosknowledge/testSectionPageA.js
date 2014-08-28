@@ -7,8 +7,6 @@ const WidgetDescendantMatcher = imports.WidgetDescendantMatcher;
 
 const TESTDIR = Endless.getCurrentFileDir() + '/..';
 
-EosKnowledge.init();
-
 let segments = {
 
     'Lessons': [

@@ -5,8 +5,6 @@ const InstanceOfMatcher = imports.InstanceOfMatcher;
 
 const utils = imports.tests.utils;
 
-EosKnowledge.init();
-
 const MOCK_ARTICLE_PATH = Endless.getCurrentFileDir() + '/../test-content/greyjoy-article.jsonld';
 
 describe ('Article Object Model', function () {

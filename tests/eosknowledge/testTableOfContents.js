@@ -3,8 +3,6 @@ const Gtk = imports.gi.Gtk;
 
 const CssClassMatcher = imports.CssClassMatcher;
 
-EosKnowledge.init();
-
 describe('Table of contents widget', function () {
     let toc;
     let toc_entries = ['one', 'two', 'three', 'four', 'five', 'six'];

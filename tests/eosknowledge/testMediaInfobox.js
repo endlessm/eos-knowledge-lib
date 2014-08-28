@@ -5,8 +5,6 @@ const InstanceOfMatcher = imports.InstanceOfMatcher;
 
 const utils = imports.tests.utils;
 
-EosKnowledge.init();
-
 const MOCK_IMAGE_PATH = Endless.getCurrentFileDir() + '/../test-content/rick-astley-image.jsonld';
 
 describe ('Media Infobox', function () {

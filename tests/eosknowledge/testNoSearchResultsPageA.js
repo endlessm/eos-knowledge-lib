@@ -7,9 +7,6 @@ const WidgetDescendantMatcher = imports.WidgetDescendantMatcher;
 
 const TESTDIR = Endless.getCurrentFileDir() + '/..';
 
-EosKnowledge.init();
-
-
 describe('No Search Results page for Template A', function () {
     let no_search_results_page;
 

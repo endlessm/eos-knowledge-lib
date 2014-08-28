@@ -4,8 +4,6 @@ const EosKnowledge = imports.gi.EosKnowledge;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 
-EosKnowledge.init();
-
 const TEST_OBJ = {
     tableOfContents: [
         {

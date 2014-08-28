@@ -6,8 +6,6 @@ const Gtk = imports.gi.Gtk;
 
 const CssClassMatcher = imports.CssClassMatcher;
 
-EosKnowledge.init();
-
 const TESTDIR = Endless.getCurrentFileDir() + '/..';
 // Working directory should be top of the builddir
 const TESTBUILDDIR = GLib.get_current_dir() + '/tests';

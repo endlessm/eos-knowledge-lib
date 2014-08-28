@@ -4,8 +4,6 @@ const Gio = imports.gi.Gio;
 
 const MockWebview = imports.MockWebview;
 
-EosKnowledge.init();
-
 const TESTDIR = Endless.getCurrentFileDir() + '/..';
 const MOCK_ARTICLE_PATH = TESTDIR + '/test-content/cyprus.jsonld';
 

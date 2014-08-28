@@ -3,8 +3,6 @@ const Gtk = imports.gi.Gtk;
 
 const CssClassMatcher = imports.CssClassMatcher;
 
-EosKnowledge.init();
-
 describe('Progress card widget', function () {
     let card;
 
