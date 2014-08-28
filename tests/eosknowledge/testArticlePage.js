@@ -3,8 +3,6 @@ const Gtk = imports.gi.Gtk;
 
 const InstanceOfMatcher = imports.InstanceOfMatcher;
 
-EosKnowledge.init();
-
 const CssClassMatcher = imports.CssClassMatcher;
 
 describe('Article Page A', function () {

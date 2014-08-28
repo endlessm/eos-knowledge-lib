@@ -3,8 +3,6 @@ const Gtk = imports.gi.Gtk;
 
 const MockWebview = imports.MockWebview;
 
-EosKnowledge.init();
-
 describe('Webview switcher view', function () {
     let switcher;
 

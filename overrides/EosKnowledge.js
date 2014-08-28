@@ -5,7 +5,8 @@ const Lang = imports.lang;
 
 let EosKnowledge;
 
-let _oldSearchPath = imports.searchPath;
+// Make a backup copy of the array
+let _oldSearchPath = imports.searchPath.slice(0);
 imports.searchPath.unshift(Endless.getCurrentFileDir());
 
 const ArticleCard = imports.articleCard;
@@ -81,17 +82,6 @@ function _init() {
             get: EosKnowledge.HistoryModel.prototype.get_forward_list
         }
     });
-
-    /**
-     * Method: init
-     *
-     * Call this function before calling into any other EosKnowledge function.
-     * It will initialize all the libraries EosKnowlege depends on.
-     */
-    EosKnowledge.init = function () {
-        GtkClutter.init(null);
-        ClutterGst.init(null);
-    };
 
     EosKnowledge.ArticleCard = ArticleCard.ArticleCard;
     EosKnowledge.ArticleObjectModel = ArticleObjectModel.ArticleObjectModel;

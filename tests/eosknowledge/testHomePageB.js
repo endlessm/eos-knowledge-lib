@@ -4,8 +4,6 @@ const Gtk = imports.gi.Gtk;
 
 const CssClassMatcher = imports.CssClassMatcher;
 
-EosKnowledge.init();
-
 const TESTDIR = Endless.getCurrentFileDir() + '/..';
 
 const THROWING_CARD_COUNTS = [1, 3, 5, 7];

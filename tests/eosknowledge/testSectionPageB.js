@@ -6,8 +6,6 @@ const CssClassMatcher = imports.CssClassMatcher;
 
 const TESTDIR = Endless.getCurrentFileDir() + '/..';
 
-EosKnowledge.init();
-
 describe('Section page for Template B', function () {
     let section_page;
     let card_list;

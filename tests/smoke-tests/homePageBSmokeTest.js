@@ -6,8 +6,6 @@ const Gtk = imports.gi.Gtk;
 const GLib = imports.gi.GLib;
 const Lang = imports.lang;
 
-EosKnowledge.init();
-
 const TEST_APPLICATION_ID = 'com.endlessm.knowledge.pages';
 const TESTDIR = Endless.getCurrentFileDir() + '/..';
 const TESTBUILDDIR = GLib.get_current_dir() + '/tests';

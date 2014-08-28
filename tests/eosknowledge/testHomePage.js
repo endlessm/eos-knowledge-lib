@@ -4,8 +4,6 @@ const Gtk = imports.gi.Gtk;
 
 const CssClassMatcher = imports.CssClassMatcher;
 
-EosKnowledge.init();
-
 const TESTDIR = Endless.getCurrentFileDir() + '/..';
 
 describe('Base home page class', function () {

@@ -5,8 +5,6 @@ const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
-EosKnowledge.init();
-
 const TEST_APPLICATION_ID = 'com.endlessm.knowledge.article_presenter';
 const TESTDIR = Endless.getCurrentFileDir() + '/..';
 

@@ -4,8 +4,6 @@ const Gtk = imports.gi.Gtk;
 const Gio = imports.gi.Gio;
 const Lang = imports.lang;
 
-EosKnowledge.init();
-
 const TEST_APPLICATION_ID = 'com.endlessm.knowledge.test.article-page';
 const TESTDIR = Endless.getCurrentFileDir() + '/..';
 const EMACS_HTML = 'file://' + TESTDIR + '/test-content/emacs.html';

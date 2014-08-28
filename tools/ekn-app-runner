@@ -8,7 +8,6 @@ if (ARGV.length !== 2) {
 
 } else {
 
-    EosKnowledge.init();
     let app = new EosKnowledge.KnowledgeApp({
         application_id: ARGV[0],
         flags: 0
