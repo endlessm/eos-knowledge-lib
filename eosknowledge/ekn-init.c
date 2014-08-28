@@ -15,7 +15,7 @@ should also work on Clang. */
 #if __GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 7)
 
 #define _EKN_CONSTRUCTOR(func) static void __attribute__((constructor)) func (void)
-#define _EKN_DESTRUCTOR(func) static void __atrribute__((destructor)) func (void)
+#define _EKN_DESTRUCTOR(func) static void __attribute__((destructor)) func (void)
 
 #else
 
