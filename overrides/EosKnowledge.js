@@ -21,6 +21,7 @@ const CategoriesPage = imports.categoriesPage;
 const ContentObjectModel = imports.contentObjectModel;
 const EknWebview = imports.eknWebview;
 const Engine = imports.engine;
+const EvinceWebviewAdapter = imports.evinceWebviewAdapter;
 const HomePage = imports.homePage;
 const HomePageA = imports.homePageA;
 const HomePageB = imports.homePageB;
@@ -95,6 +96,7 @@ function _init() {
     EosKnowledge.ContentObjectModel = ContentObjectModel.ContentObjectModel;
     EosKnowledge.EknWebview = EknWebview.EknWebview;
     EosKnowledge.Engine = Engine.Engine;
+    EosKnowledge.EvinceWebviewAdapter = EvinceWebviewAdapter.EvinceWebviewAdapter;
     EosKnowledge.HomePage = HomePage.HomePage;
     EosKnowledge.HomePageA = HomePageA.HomePageA;
     EosKnowledge.ImageObjectModel = MediaObjectModel.ImageObjectModel;

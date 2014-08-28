@@ -236,7 +236,7 @@ const ArticlePresenter = new GObject.Class({
             }
         }.bind(this));
 
-        this.article_view.switcher.connect('create-webview', function () {
+        this.article_view.switcher.connect('create-view-for-file', function () {
             // give us a local ref to the webview for direct navigation
             this._webview = this._get_connected_webview();
             return this._webview;

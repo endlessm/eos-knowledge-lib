@@ -18,7 +18,7 @@ m4_define([_EKN_API_VERSION_MACRO], [0])
 # Minor and micro versions: increment micro version when making a release. Minor
 # version is even for a stable release and odd for a development release.
 # When making any release, if the API changes, set the interface age to 0.
-m4_define([_EKN_MINOR_VERSION_MACRO], [0])
+m4_define([_EKN_MINOR_VERSION_MACRO], [1])
 m4_define([_EKN_MICRO_VERSION_MACRO], [0])
 m4_define([_EKN_INTERFACE_AGE_MACRO], [0])
 
@@ -78,10 +78,11 @@ GIO_REQUIREMENT="gio-2.0"
 GTK_REQUIREMENT="gtk+-3.0 >= 3.12"
 GTK_CLUTTER_REQUIREMENT="clutter-gtk-1.0"
 CLUTTER_GST_REQUIREMENT="clutter-gst-2.0"
+EVINCE_REQUIREMENT="evince-document-3.0"
 # These go into the pkg-config file as Requires: and Requires.private:
 # (Generally, use Requires.private: instead of Requires:)
 AC_SUBST([EKN_REQUIRED_MODULES], [])
-AC_SUBST([EKN_REQUIRED_MODULES_PRIVATE], ["$GLIB_REQUIREMENT $GOBJECT_REQUIREMENT $GIO_REQUIREMENT $GTK_REQUIREMENT $GTK_CLUTTER_REQUIREMENT $CLUTTER_GST_REQUIREMENT"])
+AC_SUBST([EKN_REQUIRED_MODULES_PRIVATE], ["$GLIB_REQUIREMENT $GOBJECT_REQUIREMENT $GIO_REQUIREMENT $GTK_REQUIREMENT $GTK_CLUTTER_REQUIREMENT $CLUTTER_GST_REQUIREMENT $EVINCE_REQUIREMENT"])
 
 # Gettext package name
 AC_SUBST([GETTEXT_PACKAGE], ["$PACKAGE"])
@@ -208,6 +209,8 @@ PKG_CHECK_MODULES([EOS_KNOWLEDGE], [
 # Check installed GIRs for Javascript overrides
 EOS_CHECK_GJS_GIR([ClutterGst], [2.0])
 EOS_CHECK_GJS_GIR([Endless], [0])
+EOS_CHECK_GJS_GIR([EvinceDocument], [3.0])
+EOS_CHECK_GJS_GIR([EvinceView], [3.0])
 EOS_CHECK_GJS_GIR([Gdk], [3.0])
 EOS_CHECK_GJS_GIR([GLib], [2.0])
 EOS_CHECK_GJS_GIR([GObject], [2.0])
