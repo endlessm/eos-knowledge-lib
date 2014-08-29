@@ -270,7 +270,7 @@ const Presenter = new Lang.Class({
         }
 
         let selected_model = this._autocomplete_results.filter(function (element) {
-            return element.ekn_id === id
+            return element.ekn_id === id;
         }, id)[0];
         this._article_presenter.load_article(selected_model, EosKnowledge.LoadingAnimationType.NONE);
         this.view.unlock_ui();

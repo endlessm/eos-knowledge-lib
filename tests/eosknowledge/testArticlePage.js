@@ -1,18 +1,21 @@
 const EosKnowledge = imports.gi.EosKnowledge;
 const Gtk = imports.gi.Gtk;
 
-const InstanceOfMatcher = imports.InstanceOfMatcher;
-
 const CssClassMatcher = imports.CssClassMatcher;
+const InstanceOfMatcher = imports.InstanceOfMatcher;
+const WidgetDescendantMatcher = imports.WidgetDescendantMatcher;
 
 describe('Article Page A', function () {
-    let page;
+    let page, article_a, article_b;
 
     beforeEach(function () {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
         jasmine.addMatchers(InstanceOfMatcher.customMatchers);
+        jasmine.addMatchers(WidgetDescendantMatcher.customMatchers);
 
         page = new EosKnowledge.ArticlePage();
+        article_a = new Gtk.Label();
+        article_b = new Gtk.Label();
     });
 
     it('can be constructed', function () {
@@ -23,8 +26,20 @@ describe('Article Page A', function () {
         expect(page.toc).toBeA(EosKnowledge.TableOfContents);
     });
 
-    it('instantiates a webview switcher widget', function () {
-        expect(page.switcher).toBeA(EosKnowledge.WebviewSwitcherView);
+    it('transitions in new content views', function () {
+        page.switch_in_content_view(article_a, EosKnowledge.LoadingAnimation.NONE);
+        expect(page).toHaveDescendant(article_a);
+        page.switch_in_content_view(article_b, EosKnowledge.LoadingAnimation.NONE);
+        expect(page).toHaveDescendant(article_b);
+    });
+
+    it('calls new-view-transitioned after a new content view is added', function () {
+        let new_view = jasmine.createSpy('new-view');
+        page.connect('new-view-transitioned', function () {
+            new_view();
+        });
+        page.switch_in_content_view(article_a, EosKnowledge.LoadingAnimation.NONE);
+        expect(new_view).toHaveBeenCalled();
     });
 
     describe('Style class of article page A', function () {

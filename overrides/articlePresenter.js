@@ -1,8 +1,11 @@
 const EosKnowledge = imports.gi.EosKnowledge;
 const EvinceDocument = imports.gi.EvinceDocument;
+const EvinceView = imports.gi.EvinceView;
 const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
+const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
+const WebKit2 = imports.gi.WebKit2;
 
 const ArticleObjectModel = imports.articleObjectModel;
 const ArticlePage = imports.articlePage;
@@ -26,15 +29,6 @@ const ArticlePresenter = new GObject.Class({
     GTypeName: 'EknArticlePresenter',
 
     Properties: {
-        /**
-         * Property: article-model
-         *
-         * The <ArticleObjectModel> handled by this widget.
-         */
-        'article-model': GObject.ParamSpec.object('article-model', 'Article model',
-            'The article object model handled by this widget',
-            GObject.ParamFlags.READWRITE, ArticleObjectModel.ArticleObjectModel),
-
         /**
          * Property: history-model
          *
@@ -99,27 +93,14 @@ const ArticlePresenter = new GObject.Class({
         this.article_view.toc.transition_duration = this._SCROLL_DURATION;
         this._article_model = null;
         this._webview = null;
+        this._offscreen_window = new Gtk.OffscreenWindow();
 
         this._connect_toc_widget();
-        this._connect_switcher_widget();
-    },
-
-    get article_model () {
-        if (this._article_model !== null)
-            return this._article_model;
-        return null;
+        this.article_view.connect('new-view-transitioned', this._update_title_and_toc.bind(this));
     },
 
     get history_model () {
         return this._history_model;
-    },
-
-    set article_model (v) {
-        if (this._article_model !== null && this._article_model.ekn_id === v.ekn_id)
-            return;
-
-        // fully populate the view from a model
-        this._article_model = v;
     },
 
     set history_model (v) {
@@ -146,11 +127,40 @@ const ArticlePresenter = new GObject.Class({
                 article_model: model
             });
         }
-        this.article_model = model;
-        if (this._article_model.content_uri !== 'about:blank') {
-            this.article_view.switcher.load_uri(this._article_model.content_uri, animation_type);
+
+        // If we've already loaded/are already loading the page already, just return.
+        if (this._article_model && this._article_model.ekn_id === model.ekn_id)
+            return;
+        this._article_model = model;
+
+        // If the article model has no content_uri, assume html and load the ekn_id uri
+        let uri = this._article_model.ekn_id;
+        let type = 'text/html';
+        if (this._article_model.content_uri.length > 0) {
+            uri = this._article_model.content_uri;
+            let file = Gio.file_new_for_uri(uri);
+            type = file.query_info('standard::content-type',
+                                   Gio.FileQueryInfoFlags.NONE,
+                                   null).get_content_type();
+        }
+
+        if (type === 'text/html') {
+            this._webview = this._get_webview_for_uri(uri);
+            // If there's no animation we'll just transition in the view immediately.
+            // Otherwise we wait for load committed for a hopefully more complete page.
+            if (animation_type === EosKnowledge.LoadingAnimation.NONE) {
+                this.article_view.switch_in_content_view(this._webview, animation_type);
+            } else {
+                this._webview.connect('load-changed', function (view, status) {
+                    if (status === WebKit2.LoadEvent.COMMITTED)
+                        this.article_view.switch_in_content_view(this._webview, animation_type);
+                }.bind(this));
+            }
+        } else if (type === 'application/pdf') {
+            let view = this._get_pdfview_for_uri(uri);
+            this.article_view.switch_in_content_view(view, animation_type);
         } else {
-            this.article_view.switcher.load_uri(this._article_model.ekn_id, animation_type);
+            throw new Error("We don't know how to display " + type + " articles!");
         }
     },
 
@@ -188,80 +198,6 @@ const ArticlePresenter = new GObject.Class({
             }
         }
         this.article_view.toc.visible = _toc_visible;
-        this.notify('article-model');
-    },
-
-    _connect_switcher_widget: function () {
-        this.article_view.switcher.connect('decide-navigation-policy', function (switcher, decision) {
-            let [baseURI, hash] = decision.request.uri.split('#');
-            let _resources = this._article_model.get_resources();
-            let resourceURIs = _resources.map(function (model) {
-                return model.content_uri;
-            });
-
-            // If this check is true, then the base of the requested URI
-            // was equal to that of the article model and so we should just
-            // follow it. This handles the case where we are navigating to
-            // an article for the first time from the section page, or we
-            // are navigating to a hash within the current article.
-            if (this._article_model.ekn_id.indexOf(baseURI) === 0) {
-                decision.use();
-                return false;
-
-            } else if (resourceURIs.indexOf(decision.request.uri) !== -1) {
-
-                // Else, if the request corresponds to a media object in the
-                // resources array, emit the bat signal!
-                let media_object = _resources[resourceURIs.indexOf(decision.request.uri)];
-                this.emit('media-object-clicked', media_object, true);
-
-                decision.ignore();
-                return true;
-
-            } else {
-
-                // Else, the request could be either for a media object
-                // or a new article page
-                let [domain, id] = baseURI.split('/').slice(-2);
-                decision.ignore();
-
-                this.engine.get_object_by_id(domain, id, function (err, model) {
-                    if (typeof err === 'undefined') {
-                        if (model instanceof MediaObjectModel.MediaObjectModel) {
-                            this.emit('media-object-clicked', model, false);
-                        } else {
-                            this.load_article(model, EosKnowledge.LoadingAnimationType.FORWARDS_NAVIGATION);
-                        }
-                    } else {
-                        printerr(err);
-                        printerr(err.stack);
-                    }
-                }.bind(this));
-                return true;
-
-            }
-        }.bind(this));
-
-        this.article_view.switcher.connect('create-view-for-file', function () {
-            if (this.article_model.content_uri !== 'about:blank') {
-                let file = Gio.file_new_for_uri(this.article_model.content_uri);
-                let mime_type = EvinceDocument.file_get_mime_type(file.get_uri(),
-                    false /* don't use fast MIME type detection */);
-                if (mime_type === 'application/pdf') {
-                    let pdfview = new EosKnowledge.EvinceWebviewAdapter();
-                    return pdfview;
-                } else {
-                    printerr('We dont know how to render this type of file! ' + mime_type);
-                    return null;
-                }
-            }
-            // give us a local ref to the webview for direct navigation
-            this._webview = this._get_connected_webview();
-            return this._webview;
-        }.bind(this));
-
-        // Set the title and toc once the switcher view has finished loading
-        this.article_view.switcher.connect('display-ready', this._update_title_and_toc.bind(this));
     },
 
     _connect_toc_widget: function () {
@@ -308,7 +244,7 @@ const ArticlePresenter = new GObject.Class({
         return toplevel_elements;
     },
 
-    _get_connected_webview: function () {
+    _get_webview_for_uri: function (uri) {
         let webview = new EosKnowledge.EknWebview();
 
         webview.inject_js_from_resource('resource:///com/endlessm/knowledge/scroll_manager.js');
@@ -342,8 +278,73 @@ const ArticlePresenter = new GObject.Class({
             }
         }.bind(this));
 
+        webview.connect('decide-policy', function (webview, decision, type) {
+            if (type !== WebKit2.PolicyDecisionType.NAVIGATION_ACTION)
+                return false;
+
+            let [baseURI, hash] = decision.request.uri.split('#');
+            let _resources = this._article_model.get_resources();
+            let resourceURIs = _resources.map(function (model) {
+                return model.content_uri;
+            });
+
+            // If this check is true, then the base of the requested URI
+            // was equal to that of the article model and so we should just
+            // follow it. This handles the case where we are navigating to
+            // an article for the first time from the section page, or we
+            // are navigating to a hash within the current article.
+            if (this._article_model.ekn_id.indexOf(baseURI) === 0) {
+                decision.use();
+                return false;
+            } else if (resourceURIs.indexOf(decision.request.uri) !== -1) {
+                // Else, if the request corresponds to a media object in the
+                // resources array, emit the bat signal!
+                let media_object = _resources[resourceURIs.indexOf(decision.request.uri)];
+                this.emit('media-object-clicked', media_object, true);
+
+                decision.ignore();
+                return true;
+            } else {
+                // Else, the request could be either for a media object
+                // or a new article page
+                let [domain, id] = baseURI.split('/').slice(-2);
+                decision.ignore();
+
+                this.engine.get_object_by_id(domain, id, function (err, model) {
+                    if (typeof err === 'undefined') {
+                        if (model instanceof MediaObjectModel.MediaObjectModel) {
+                            this.emit('media-object-clicked', model, false);
+                        } else {
+                            this.load_article(model, EosKnowledge.LoadingAnimationType.FORWARDS_NAVIGATION);
+                        }
+                    } else {
+                        printerr(err);
+                        printerr(err.stack);
+                    }
+                }.bind(this));
+                return true;
+            }
+        }.bind(this));
+
+        this._offscreen_window.add(webview);
+        this._offscreen_window.show_all();
+        webview.load_uri(uri);
         return webview;
-    }
+    },
+
+    _get_pdfview_for_uri: function (uri) {
+        let evince_document = EvinceDocument.Document.factory_get_document(
+            this._article_model.content_uri,
+            EvinceDocument.DocumentLoadFlags.NONE, null);
+        let document_model = new EvinceView.DocumentModel({
+            document: evince_document
+        });
+        let view = new EvinceView.View();
+        view.set_model(document_model);
+        let scroll_window = new Gtk.ScrolledWindow();
+        scroll_window.add(view);
+        return scroll_window;
+    },
 });
 
 const ArticleHistoryItem = new Lang.Class({

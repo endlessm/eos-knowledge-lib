@@ -2,8 +2,6 @@ const Endless = imports.gi.Endless;
 const EosKnowledge = imports.gi.EosKnowledge;
 const Gio = imports.gi.Gio;
 
-const MockWebview = imports.MockWebview;
-
 const TESTDIR = Endless.getCurrentFileDir() + '/..';
 const MOCK_ARTICLE_PATH = TESTDIR + '/test-content/cyprus.jsonld';
 
@@ -15,7 +13,7 @@ describe('Article Presenter', function () {
     let engine;
     let webview;
 
-    beforeEach(function (done) {
+    beforeEach(function () {
 
         let file = Gio.file_new_for_path(MOCK_ARTICLE_PATH);
 
@@ -25,11 +23,6 @@ describe('Article Presenter', function () {
         articleObject = new EosKnowledge.ArticleObjectModel.new_from_json_ld(mockArticleData);
 
         view = new EosKnowledge.ArticlePage();
-        view.switcher.connect('create-view-for-file', function () {
-            webview = new MockWebview.MockWebview();
-            return webview;
-        });
-        view.switcher.connect_after('display-ready', done);
 
         engine = new EosKnowledge.Engine();
 

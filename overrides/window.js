@@ -299,8 +299,6 @@ const Window = new Lang.Class({
         this.page_manager.transition_duration = this.TRANSITION_DURATION;
         this.page_manager.bind_property('transition-duration', this._section_article_page,
             'transition-duration', GObject.BindingFlags.SYNC_CREATE);
-        this.page_manager.bind_property('transition-duration', this._section_article_page.article_page.switcher,
-            'transition-duration', GObject.BindingFlags.SYNC_CREATE);
         this.page_manager.connect('notify::transition-running', function () {
             let context = this._no_search_results_page.get_style_context();
             if (this.page_manager.transition_running)
