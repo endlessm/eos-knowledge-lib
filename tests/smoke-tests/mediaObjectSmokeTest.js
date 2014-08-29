@@ -31,7 +31,7 @@ const TestApplication = new Lang.Class ({
         });
 
         this._model = new EosKnowledge.ArticleObjectModel.new_from_json_ld(this._get_mock_article_data());
-        this._model.article_content_uri = 'file://' + TESTBUILDDIR + '/test-content/emacs.html';
+        this._model.ekn_id = 'file://' + TESTBUILDDIR + '/test-content/emacs.html';
         this._model.set_resources(this._get_mock_media_objects());
 
         this._view = new EosKnowledge.ArticlePage();

@@ -43,7 +43,7 @@ const TestApplication = new Lang.Class ({
             article_view: view,
             engine: engine
         });
-        articleObject.article_content_uri = "file://" + TESTDIR + "/test-content/Brazil.html";
+        articleObject.ekn_id = "file://" + TESTDIR + "/test-content/Brazil.html";
         presenter.load_article(articleObject, EosKnowledge.LoadingAnimationType.NONE);
         window.show_all();
 
