@@ -42,12 +42,21 @@ _ekn_init (void)
       bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
       bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
 
-      GError *error = NULL;
+      const gchar *display = g_getenv ("DISPLAY");
+      if (display != NULL && *display != '\0')
+        {
+          GError *error = NULL;
 
-      if (gtk_clutter_init_with_args (NULL, NULL, NULL, NULL, NULL, &error) != CLUTTER_INIT_SUCCESS)
-        g_critical ("GTK Clutter could not be initialized! %s", error->message);
-      if (clutter_gst_init_with_args (NULL, NULL, NULL, NULL, NULL, &error) != CLUTTER_INIT_SUCCESS)
-        g_critical ("Clutter GST could not be initialized! %s", error->message);
+          if (gtk_clutter_init_with_args (NULL, NULL, NULL, NULL, NULL, &error) != CLUTTER_INIT_SUCCESS)
+            g_critical ("GTK Clutter could not be initialized! %s", error->message);
+          if (clutter_gst_init_with_args (NULL, NULL, NULL, NULL, NULL, &error) != CLUTTER_INIT_SUCCESS)
+            g_critical ("Clutter GST could not be initialized! %s", error->message);
+        }
+      else
+        {
+          g_warning ("No display found. Skipping Clutter initialization.");
+        }
+
       if (!ev_init ())
         g_critical ("Evince did not find any backends! No PDF support.");
 
