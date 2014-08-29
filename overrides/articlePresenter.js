@@ -1,4 +1,6 @@
 const EosKnowledge = imports.gi.EosKnowledge;
+const EvinceDocument = imports.gi.EvinceDocument;
+const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 
@@ -113,7 +115,7 @@ const ArticlePresenter = new GObject.Class({
     },
 
     set article_model (v) {
-        if (this._article_model !== null && this._article_model.article_content_uri === v.article_content_uri)
+        if (this._article_model !== null && this._article_model.ekn_id === v.ekn_id)
             return;
 
         // fully populate the view from a model
@@ -138,14 +140,18 @@ const ArticlePresenter = new GObject.Class({
         // or if the current item is different (has a different URI) from the new item
         if (this._history_model &&
             (this._history_model.current_item === null ||
-            this._history_model.current_item.article_model.article_content_uri !== model.article_content_uri)) {
+            this._history_model.current_item.article_model.ekn_id !== model.ekn_id)) {
             this._history_model.current_item = new ArticleHistoryItem({
                 title: model.title,
                 article_model: model
             });
         }
         this.article_model = model;
-        this.article_view.switcher.load_uri(this._article_model.article_content_uri, animation_type);
+        if (this._article_model.content_uri !== 'about:blank') {
+            this.article_view.switcher.load_uri(this._article_model.content_uri, animation_type);
+        } else {
+            this.article_view.switcher.load_uri(this._article_model.ekn_id, animation_type);
+        }
     },
 
     /**
@@ -155,7 +161,7 @@ const ArticlePresenter = new GObject.Class({
      */
     navigate_back: function () {
         this._history_model.go_back();
-        this.load_article(this._history_model.current_item.article_model, EosKnowledge.LoadingAnimationType.BACKWARDS_NAVIGATION)
+        this.load_article(this._history_model.current_item.article_model, EosKnowledge.LoadingAnimationType.BACKWARDS_NAVIGATION);
     },
 
     /**
@@ -165,7 +171,7 @@ const ArticlePresenter = new GObject.Class({
      */
     navigate_forward: function () {
         this._history_model.go_forward();
-        this.load_article(this._history_model.current_item.article_model, EosKnowledge.LoadingAnimationType.FORWARDS_NAVIGATION)
+        this.load_article(this._history_model.current_item.article_model, EosKnowledge.LoadingAnimationType.FORWARDS_NAVIGATION);
     },
 
     _update_title_and_toc: function () {
@@ -198,7 +204,7 @@ const ArticlePresenter = new GObject.Class({
             // follow it. This handles the case where we are navigating to
             // an article for the first time from the section page, or we
             // are navigating to a hash within the current article.
-            if (this._article_model.article_content_uri.indexOf(baseURI) === 0) {
+            if (this._article_model.ekn_id.indexOf(baseURI) === 0) {
                 decision.use();
                 return false;
 
@@ -237,6 +243,18 @@ const ArticlePresenter = new GObject.Class({
         }.bind(this));
 
         this.article_view.switcher.connect('create-view-for-file', function () {
+            if (this.article_model.content_uri !== 'about:blank') {
+                let file = Gio.file_new_for_uri(this.article_model.content_uri);
+                let mime_type = EvinceDocument.file_get_mime_type(file.get_uri(),
+                    false /* don't use fast MIME type detection */);
+                if (mime_type === 'application/pdf') {
+                    let pdfview = new EosKnowledge.EvinceWebviewAdapter();
+                    return pdfview;
+                } else {
+                    printerr('We dont know how to render this type of file! ' + mime_type);
+                    return null;
+                }
+            }
             // give us a local ref to the webview for direct navigation
             this._webview = this._get_connected_webview();
             return this._webview;

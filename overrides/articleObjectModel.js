@@ -23,16 +23,6 @@ const ArticleObjectModel = new Lang.Class({
     Extends: ContentObjectModel.ContentObjectModel,
     Properties: {
         /**
-         * Property: article-content-uri
-         * The URI at which the main textual portion of the article resides. Defaults to
-         * "about:blank"
-         */
-        'article-content-uri': GObject.ParamSpec.string('article-content-uri',
-            'Article Content URI', 'URI to the main textual portion of the article',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
-            'about:blank'),
-
-        /**
          * Property: word-count
          * Integer indicating how many words are in the article
          */
@@ -57,20 +47,12 @@ const ArticleObjectModel = new Lang.Class({
         this.parent(params);
     },
 
-    get article_content_uri () {
-        return this._article_content_uri;
-    },
-
     get word_count () {
         return this._word_count;
     },
 
     get table_of_contents () {
         return this._table_of_contents;
-    },
-
-    set article_content_uri (v) {
-        this._article_content_uri = v;
     },
 
     set word_count (v) {
@@ -107,10 +89,6 @@ ArticleObjectModel._props_from_json_ld = function (json_ld_data) {
     let props = ParentClass._props_from_json_ld(json_ld_data);
 
     // Marshal properties specific to ArticleObjectModel
-    if (json_ld_data.hasOwnProperty('@id')) {
-        props.article_content_uri = json_ld_data['@id'];
-    }
-
     if (json_ld_data.hasOwnProperty('wordCount')) {
         props.word_count = parseInt(json_ld_data.wordCount);
     }
