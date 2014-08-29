@@ -42,10 +42,12 @@ _ekn_init (void)
       bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
       bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
 
-      if (gtk_clutter_init (NULL, NULL) != CLUTTER_INIT_SUCCESS)
-        g_critical ("GTK Clutter could not be initialized!");
-      if (clutter_gst_init (NULL, NULL) != CLUTTER_INIT_SUCCESS)
-        g_critical ("Clutter GST could not be initialized!");
+      GError *error = NULL;
+
+      if (gtk_clutter_init_with_args (NULL, NULL, NULL, NULL, NULL, &error) != CLUTTER_INIT_SUCCESS)
+        g_critical ("GTK Clutter could not be initialized! %s", error->message);
+      if (clutter_gst_init_with_args (NULL, NULL, NULL, NULL, NULL, &error) != CLUTTER_INIT_SUCCESS)
+        g_critical ("Clutter GST could not be initialized! %s", error->message);
       if (!ev_init ())
         g_critical ("Evince did not find any backends! No PDF support.");
 
