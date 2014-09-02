@@ -53,6 +53,11 @@ private_overrides = \
 	$(NULL)
 dist_pkgoverrides_DATA = $(public_overrides) $(private_overrides)
 
+reader_overrides = \
+	$(NULL)
+readeroverridesdir = $(pkgoverridesdir)/reader
+dist_readeroverrides_DATA = $(reader_overrides)
+
 install-data-hook:
 	$(MKDIR_P) $(DESTDIR)$(overridesdir)
 	rm -f $(DESTDIR)$(overridesdir)/EosKnowledge.js

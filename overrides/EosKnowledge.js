@@ -124,4 +124,7 @@ function _init() {
     EosKnowledge.VideoObjectModel = MediaObjectModel.VideoObjectModel;
     EosKnowledge.WebviewSwitcherView = WebviewSwitcherView.WebviewSwitcherView;
     EosKnowledge.Window = Window.Window;
+
+    EosKnowledge.Reader = {
+    };
 }
