@@ -9,3 +9,18 @@
     background-color: red;
     color: white;
 }
+
+.done-page .headline {
+    color: yellow;
+    font-style: italic;
+    font-size: 2.5em;
+}
+
+.done-page .bottom-line {
+    padding-top: 3px;
+    color: white;
+}
+
+.done-page .progress-label {
+    color: white;
+}

@@ -45,6 +45,7 @@ const TreeNode = imports.treeNode;
 const WebviewSwitcherView = imports.webviewSwitcherView;
 const Window = imports.window;
 
+const ReaderDonePage = imports.reader.donePage;
 const ReaderProgressLabel = imports.reader.progressLabel;
 
 imports.searchPath = _oldSearchPath;
@@ -136,6 +137,7 @@ function _init() {
      *     (Applies to everything in this namespace.)
      */
     EosKnowledge.Reader = {
+        DonePage: ReaderDonePage.DonePage,
         ProgressLabel: ReaderProgressLabel.ProgressLabel,
     };
 }
