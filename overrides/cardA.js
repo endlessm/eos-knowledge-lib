@@ -38,6 +38,9 @@ const CardA = new Lang.Class({
 
     pack_widgets: function (title_label, synopsis_label, image_frame) {
         title_label.lines = 2;
+        title_label.expand = true;
+        image_frame.hexpand = true;
+        image_frame.vexpand = false;
         this.parent(title_label, synopsis_label, image_frame);
     },
 

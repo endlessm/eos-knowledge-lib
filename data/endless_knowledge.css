@@ -26,7 +26,7 @@ EosWindow {
 
 .card .thumbnail {
     background-position: center;
-    background-size: cover;
+    background-size: 100% 100%;
     border-width: 0px;
 }
 
@@ -68,6 +68,17 @@ EknWindow.show-no-search-results-page {
 
 .card-a:hover {
     margin: 3px;
+}
+
+.card-a .thumbnail {
+    transition: padding 250ms ease-in-out;
+    padding-top: 133px; /* Height of our assets from design */
+}
+
+.card-a .thumbnail:hover {
+    /* Width grows from 163 to 171 right now. 133 * 171 / 163 = 139. This should
+     * preserve aspect ratio, while growing. */
+    padding-top: 139px;
 }
 
 .card-a .card-title {
