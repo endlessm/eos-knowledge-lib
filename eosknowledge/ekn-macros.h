@@ -494,4 +494,14 @@ enum_type##_get_type (void) \
  */
 #define EKN_STYLE_CLASS_READER_BOTTOM_LINE "bottom-line"
 
+/**
+ * EKN_STYLE_CLASS_READER_ARTICLE_PAGE_ATTRIBUTION:
+ *
+ * A CSS class to match the attribution on the reader's ArticlePage.
+ *
+ * > **NOTE**
+ * > This is unstable API.
+ */
+#define EKN_STYLE_CLASS_READER_ARTICLE_PAGE_ATTRIBUTION "article-page-attribution"
+
 #endif /* EKN_MACROS_H */
