@@ -554,21 +554,32 @@ scrollbars, style the GTK scrollbars to look slightly more like them */
     font-weight: bold;
 }
 
-.section-page-back-button {
+.nav-back-button, .nav-forward-button {
     color: alpha(white, 0.75);
     background-color: alpha(black, 0.12);
-    border-top: 1px solid alpha(white, 0.2);
-    border-bottom: 1px solid alpha(white, 0.2);
-    border-right: 1px solid alpha(white, 0.2);
-    border-left: 0px;
-    border-radius: 0px 27px 27px 0px;
+    border: 1px solid alpha(white, 0.2);
     box-shadow: inset 0px 1px 2px alpha(black, 0.1);
-    padding: 15px 15px 15px 0px;
     transition: padding 500ms ease-in-out;
 }
 
-.section-page-back-button:hover {
+.nav-back-button {
+    border-left: 0px;
+    border-radius: 0px 27px 27px 0px;
+    padding: 15px 15px 15px 0px;
+}
+
+.nav-forward-button {
+    border-radius: 27px 0px 0px 27px;
+    border-right: 0px;
+    padding: 15px 0px 15px 15px;
+}
+
+.nav-back-button:hover {
     padding-left: 15px;
+}
+
+.nav-forward-button:hover {
+    padding-right: 15px;
 }
 
 .lightbox-navigation-button {

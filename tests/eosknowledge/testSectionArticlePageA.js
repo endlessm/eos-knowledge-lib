@@ -25,7 +25,7 @@ describe ('Section -  Article Page', function () {
     });
 
     it ('has a back button with the correct CSS class', function () {
-        expect(the_section_article_page).toHaveDescendantWithCssClass(EosKnowledge.STYLE_CLASS_SECTION_PAGE_BACK_BUTTON);
+        expect(the_section_article_page).toHaveDescendantWithCssClass(EosKnowledge.STYLE_CLASS_NAV_BACK_BUTTON);
     });
 
     // TODO Refactor this so that it appropriately tests whether the page is visible

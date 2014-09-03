@@ -9,7 +9,6 @@ public_overrides = \
 	overrides/articleObjectModel.js \
 	overrides/articlePage.js \
 	overrides/articlePresenter.js \
-	overrides/backButtonOverlay.js \
 	overrides/card.js \
 	overrides/cardA.js \
 	overrides/cardB.js \
@@ -29,6 +28,7 @@ public_overrides = \
 	overrides/marginButton.js \
 	overrides/mediaInfobox.js \
 	overrides/mediaObjectModel.js \
+	overrides/navButtonOverlay.js \
 	overrides/noSearchResultsPage.js \
 	overrides/presenter.js \
 	overrides/progressCard.js \
