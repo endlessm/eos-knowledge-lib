@@ -54,6 +54,7 @@ private_overrides = \
 dist_pkgoverrides_DATA = $(public_overrides) $(private_overrides)
 
 reader_overrides = \
+	overrides/reader/progressLabel.js \
 	$(NULL)
 readeroverridesdir = $(pkgoverridesdir)/reader
 dist_readeroverrides_DATA = $(reader_overrides)

@@ -5,7 +5,7 @@ build_naturaldocs_verbose_ = $(build_naturaldocs_verbose_@AM_DEFAULT_V@)
 build_naturaldocs_verbose_0 = @echo '  DOC    Building JS overrides docs';
 
 ## $(public_overrides) defined in overrides/Makefile.am.inc
-naturaldocs_input_files = $(public_overrides)
+naturaldocs_input_files = $(public_overrides) $(reader_overrides)
 # Stamp file is present if all the docs have been built, and carries the
 # timestamp of the last successful build.
 stamp_file = docs/reference/eosknowledge-overrides/doc-build.stamp

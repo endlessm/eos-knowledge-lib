@@ -443,4 +443,25 @@ enum_type##_get_type (void) \
  */
 #define EKN_STYLE_CLASS_NO_SEARCH_RESULTS_PAGE_B "no-search-results-page-b"
 
+/**
+ * EKN_STYLE_CLASS_READER_PROGRESS_LABEL:
+ *
+ * Matches the #EknReaderProgressLabel widget.
+ *
+ * > **NOTE**
+ * > This is unstable API.
+ */
+#define EKN_STYLE_CLASS_READER_PROGRESS_LABEL "progress-label"
+
+/**
+ * EKN_STYLE_CLASS_READER_LAST_PAGE:
+ *
+ * Use to indicate the last page of a reader magazine issue.
+ * This changes the appearance of the #EknReaderProgressLabel, for example.
+ *
+ * > **NOTE**
+ * > This is unstable API.
+ */
+#define EKN_STYLE_CLASS_READER_LAST_PAGE "last-page"
+
 #endif /* EKN_MACROS_H */
