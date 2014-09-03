@@ -299,6 +299,6 @@ const ArticlePage = new Lang.Class({
         // indicator of what size to request here.
         let layout = total_width < this.COLLAPSE_TOOLBAR_WIDTH? this.COLLAPSED_LAYOUT : this.EXPANDED_LAYOUT;
         let toolbar_width = layout.toolbar_pct * total_width;
-        return Math.max(Math.min(toolbar_nat, toolbar_width), toolbar_min);
+        return Math.max(toolbar_width, toolbar_min);
     }
 });

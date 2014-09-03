@@ -15,6 +15,7 @@
 Makefile
 Makefile.in
 stamp*
+*.gmo
 *.stamp
 *.log
 *.trs
