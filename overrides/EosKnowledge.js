@@ -45,6 +45,7 @@ const TreeNode = imports.treeNode;
 const WebviewSwitcherView = imports.webviewSwitcherView;
 const Window = imports.window;
 
+const ReaderDonePage = imports.reader.donePage;
 const ReaderProgressLabel = imports.reader.progressLabel;
 
 imports.searchPath = _oldSearchPath;
@@ -127,7 +128,16 @@ function _init() {
     EosKnowledge.WebviewSwitcherView = WebviewSwitcherView.WebviewSwitcherView;
     EosKnowledge.Window = Window.Window;
 
+    /**
+     * Namespace: Reader
+     * Separate namespace for the 'reader' app
+     *
+     * Stability:
+     *   Unstable - this API is subject to change.
+     *     (Applies to everything in this namespace.)
+     */
     EosKnowledge.Reader = {
+        DonePage: ReaderDonePage.DonePage,
         ProgressLabel: ReaderProgressLabel.ProgressLabel,
     };
 }

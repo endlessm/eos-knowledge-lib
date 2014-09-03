@@ -464,4 +464,34 @@ enum_type##_get_type (void) \
  */
 #define EKN_STYLE_CLASS_READER_LAST_PAGE "last-page"
 
+/**
+ * EKN_STYLE_CLASS_READER_DONE_PAGE:
+ *
+ * Matches the #EknReaderDonePage itself.
+ *
+ * > **NOTE**
+ * > This is unstable API.
+ */
+#define EKN_STYLE_CLASS_READER_DONE_PAGE "done-page"
+
+/**
+ * EKN_STYLE_CLASS_READER_HEADLINE:
+ *
+ * Matches the headline text on the reader's 'done' page.
+ *
+ * > **NOTE**
+ * > This is unstable API.
+ */
+#define EKN_STYLE_CLASS_READER_HEADLINE "headline"
+
+/**
+ * EKN_STYLE_CLASS_READER_BOTTOM_LINE:
+ *
+ * Matches the non-headline text on the reader's 'done' page.
+ *
+ * > **NOTE**
+ * > This is unstable API.
+ */
+#define EKN_STYLE_CLASS_READER_BOTTOM_LINE "bottom-line"
+
 #endif /* EKN_MACROS_H */
