@@ -180,7 +180,7 @@ const ArticlePresenter = new GObject.Class({
         let _toc_visible = false;
         if (this.template_type !== 'B' && this._article_model.table_of_contents !== undefined) {
             this._mainArticleSections = this._get_toplevel_toc_elements(this._article_model.table_of_contents);
-            if (this._mainArticleSections.length > 0) {
+            if (this._mainArticleSections.length > 1) {
                 this.article_view.toc.section_list = this._mainArticleSections.map(function (section) {
                     return section.label;
                 });
