@@ -45,6 +45,8 @@ const TreeNode = imports.treeNode;
 const WebviewSwitcherView = imports.webviewSwitcherView;
 const Window = imports.window;
 
+const ReaderProgressLabel = imports.reader.progressLabel;
+
 imports.searchPath = _oldSearchPath;
 
 function _init() {
@@ -126,5 +128,6 @@ function _init() {
     EosKnowledge.Window = Window.Window;
 
     EosKnowledge.Reader = {
+        ProgressLabel: ReaderProgressLabel.ProgressLabel,
     };
 }
