@@ -127,6 +127,14 @@ function _init() {
     EosKnowledge.WebviewSwitcherView = WebviewSwitcherView.WebviewSwitcherView;
     EosKnowledge.Window = Window.Window;
 
+    /**
+     * Namespace: Reader
+     * Separate namespace for the 'reader' app
+     *
+     * Stability:
+     *   Unstable - this API is subject to change.
+     *     (Applies to everything in this namespace.)
+     */
     EosKnowledge.Reader = {
         ProgressLabel: ReaderProgressLabel.ProgressLabel,
     };
