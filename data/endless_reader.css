@@ -1,6 +1,12 @@
 /* Copyright 2014 Endless Mobile, Inc. */
 
+EosWindow {
+    background-color: #f6f6f5;
+}
+
 .progress-label {
+    font-size: 1.2em;
+    color: #444444;
     padding: 5px;
 }
 
@@ -23,4 +29,18 @@
 
 .done-page .progress-label {
     color: white;
+}
+
+.article-page-title {
+    font-size: 5em;
+    color: #333333;
+    padding-left: 50px;
+    padding-right: 50px;
+}
+
+.article-page-attribution {
+    font-size: 1.5em;
+    color: #ec317a;
+    padding-left: 50px;
+    padding-right: 50px;
 }
