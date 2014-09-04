@@ -274,12 +274,28 @@ enum_type##_get_type (void) \
  */
 #define EKN_STYLE_CLASS_SECTION_PAGE "section-page"
 
+#ifndef EKN_DISABLE_DEPRECATED
 /**
  * EKN_STYLE_CLASS_SECTION_PAGE_BACK_BUTTON:
  *
  * A CSS class to match the back button on the section and article pages.
  */
 #define EKN_STYLE_CLASS_SECTION_PAGE_BACK_BUTTON "section-page-back-button"
+#endif
+
+/**
+ * EKN_STYLE_CLASS_NAV_BACK_BUTTON:
+ *
+ * A CSS class to match the back button on the sidebar.
+ */
+#define EKN_STYLE_CLASS_NAV_BACK_BUTTON "nav-back-button"
+
+/**
+ * EKN_STYLE_CLASS_NAV_FORWARD_BUTTON:
+ *
+ * A CSS class to match the forward button on the sidebar.
+ */
+#define EKN_STYLE_CLASS_NAV_FORWARD_BUTTON "nav-forward-button"
 
 /**
  * EKN_STYLE_CLASS_SECTION_PAGE_TITLE:

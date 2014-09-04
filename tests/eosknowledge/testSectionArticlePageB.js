@@ -21,6 +21,6 @@ describe ('Section Article Page B', function () {
     });
 
     it ('has a back button with the correct CSS class', function () {
-        expect(the_section_article_page).toHaveDescendantWithCssClass(EosKnowledge.STYLE_CLASS_SECTION_PAGE_BACK_BUTTON);
+        expect(the_section_article_page).toHaveDescendantWithCssClass(EosKnowledge.STYLE_CLASS_NAV_BACK_BUTTON);
     });
 });

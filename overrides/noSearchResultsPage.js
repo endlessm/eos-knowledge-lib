@@ -8,7 +8,7 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const Pango = imports.gi.Pango;
 
-const BackButtonOverlay = imports.backButtonOverlay;
+const NavButtonOverlay = imports.navButtonOverlay;
 
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
@@ -23,7 +23,7 @@ let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 const NoSearchResultsPage = new Lang.Class({
     Name: 'NoSearchResultsPage',
     GTypeName: 'EknNoSearchResultsPage',
-    Extends: BackButtonOverlay.BackButtonOverlay,
+    Extends: NavButtonOverlay.NavButtonOverlay,
     Properties: {
         /**
          * Property: query
@@ -38,6 +38,8 @@ const NoSearchResultsPage = new Lang.Class({
     MSG_TRY_AGAIN_DIFF_WORDS: _("Try seaching again with different words."),
 
     _init: function (props) {
+        props = props || {};
+        props.forward_visible = false;
         this.title_label = new Gtk.Label({
             wrap_mode: Pango.WrapMode.WORD_CHAR,
             ellipsize: Pango.EllipsizeMode.END

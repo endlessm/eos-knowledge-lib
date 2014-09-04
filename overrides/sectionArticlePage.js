@@ -7,7 +7,7 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
-const BackButtonOverlay = imports.backButtonOverlay;
+const NavButtonOverlay = imports.navButtonOverlay;
 const SectionPageA = imports.sectionPageA;
 const SectionPageB = imports.sectionPageB;
 const ArticlePage = imports.articlePage;
@@ -22,7 +22,7 @@ GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.
 const SectionArticlePage = new Lang.Class({
     Name: 'SectionArticlePage',
     GTypeName: 'EknSectionArticlePage',
-    Extends: BackButtonOverlay.BackButtonOverlay,
+    Extends: NavButtonOverlay.NavButtonOverlay,
     Properties: {
         /**
          * Property: section-page
@@ -89,6 +89,7 @@ const SectionArticlePageA = new Lang.Class({
 
     _init: function (props) {
         props = props || {};
+        props.forward_visible = false;
 
         this._section_page = new SectionPageA.SectionPageA();
         this._article_page = new ArticlePage.ArticlePage();
@@ -154,6 +155,8 @@ const SectionArticlePageB = new Lang.Class({
     Extends: SectionArticlePage,
 
     _init: function (props) {
+        props = props || {};
+        props.forward_visible = false;
         this._section_page = new SectionPageB.SectionPageB();
         this._article_page = new ArticlePage.ArticlePage({
             show_top_title: false
