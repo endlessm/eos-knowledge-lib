@@ -13,7 +13,7 @@ describe('Article Presenter', function () {
     let engine;
     let webview;
 
-    beforeEach(function () {
+    beforeEach(function (done) {
 
         let file = Gio.file_new_for_path(MOCK_ARTICLE_PATH);
 
@@ -30,7 +30,9 @@ describe('Article Presenter', function () {
             article_view: view,
             engine: engine
         });
-        presenter.load_article(articleObject, EosKnowledge.LoadingAnimationType.NONE);
+        presenter.load_article(articleObject, EosKnowledge.LoadingAnimationType.NONE, function () {
+            done();
+        });
 
     });
 

@@ -115,8 +115,13 @@ const ArticlePresenter = new GObject.Class({
      * Loads an <ArticleObjectModel> and adds it to the viewing history
      * Parameters:
      *   model - the <ArticleObjectModel> to be loaded
+     *   animation_type - the type of <EosKnowledge.LoadingAnimation> to use
+     *   ready - optional, a function to call when the view is ready for display
      */
-    load_article: function (model, animation_type) {
+    load_article: function (model, animation_type, ready) {
+        if (ready === undefined)
+            ready = function () {};
+
         // Only add new item to history model if either there is no current item at all
         // or if the current item is different (has a different URI) from the new item
         if (this._history_model &&
@@ -146,19 +151,17 @@ const ArticlePresenter = new GObject.Class({
 
         if (type === 'text/html') {
             this._webview = this._get_webview_for_uri(uri);
-            // If there's no animation we'll just transition in the view immediately.
-            // Otherwise we wait for load committed for a hopefully more complete page.
-            if (animation_type === EosKnowledge.LoadingAnimation.NONE) {
+            let id = this._webview.connect('load-changed', function (view, status) {
+                if (status !== WebKit2.LoadEvent.COMMITTED)
+                    return;
                 this.article_view.switch_in_content_view(this._webview, animation_type);
-            } else {
-                this._webview.connect('load-changed', function (view, status) {
-                    if (status === WebKit2.LoadEvent.COMMITTED)
-                        this.article_view.switch_in_content_view(this._webview, animation_type);
-                }.bind(this));
-            }
+                this._webview.disconnect(id);
+                ready();
+            }.bind(this));
         } else if (type === 'application/pdf') {
             let view = this._get_pdfview_for_uri(uri);
             this.article_view.switch_in_content_view(view, animation_type);
+            ready();
         } else {
             throw new Error("We don't know how to display " + type + " articles!");
         }
