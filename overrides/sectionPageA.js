@@ -25,6 +25,8 @@ const SectionPageA = new Lang.Class({
     GTypeName: 'EknSectionPageA',
     Extends: SectionPage.SectionPage,
 
+    LOADING_BOTTOM_BUFFER: 250,
+
     _init: function (props) {
         this.parent(props);
 
@@ -44,6 +46,7 @@ const SectionPageA = new Lang.Class({
     pack_title_label: function (title_label) {
         this._scrolled_window = new InfiniteScrolledWindow.InfiniteScrolledWindow({
             hscrollbar_policy: Gtk.PolicyType.NEVER,
+            bottom_buffer: this.LOADING_BOTTOM_BUFFER,
         });
         this._scrolled_window.connect('notify::need-more-content', Lang.bind(this, function () {
             if (this._scrolled_window.need_more_content) {
