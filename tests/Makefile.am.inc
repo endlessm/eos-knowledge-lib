@@ -39,6 +39,7 @@ javascript_tests = \
 	tests/eosknowledge/reader/testArticlePage.js \
 	tests/eosknowledge/reader/testDonePage.js \
 	tests/eosknowledge/reader/testProgressLabel.js \
+	tests/eosknowledge/reader/testWindow.js \
 	$(NULL)
 test_content = \
 	tests/test-content/article-search-results.jsonld \

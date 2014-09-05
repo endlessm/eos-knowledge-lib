@@ -57,6 +57,7 @@ reader_overrides = \
 	overrides/reader/articlePage.js \
 	overrides/reader/donePage.js \
 	overrides/reader/progressLabel.js \
+	overrides/reader/window.js \
 	$(NULL)
 readeroverridesdir = $(pkgoverridesdir)/reader
 dist_readeroverrides_DATA = $(reader_overrides)
