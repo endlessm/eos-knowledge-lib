@@ -44,6 +44,7 @@ const TextCard = imports.textCard;
 const TreeNode = imports.treeNode;
 const Window = imports.window;
 
+const ReaderApplication = imports.reader.application;
 const ReaderArticlePage = imports.reader.articlePage;
 const ReaderDonePage = imports.reader.donePage;
 const ReaderProgressLabel = imports.reader.progressLabel;
@@ -137,6 +138,7 @@ function _init() {
      *     (Applies to everything in this namespace.)
      */
     EosKnowledge.Reader = {
+        Application: ReaderApplication.Application,
         ArticlePage: ReaderArticlePage.ArticlePage,
         DonePage: ReaderDonePage.DonePage,
         ProgressLabel: ReaderProgressLabel.ProgressLabel,

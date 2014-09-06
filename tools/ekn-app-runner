@@ -25,6 +25,9 @@ case 'A':
 case 'B':
     AppClass = EosKnowledge.KnowledgeApp;
     break;
+case 'reader':
+    AppClass = EosKnowledge.Reader.Application;
+    break;
 default:
     printerr('Unknown template type', app_info['templateType']);
     System.exit(1);
