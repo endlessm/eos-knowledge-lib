@@ -152,7 +152,10 @@ const Window = new Lang.Class({
         return this._current_page;
     },
 
-    set current_page(value) { 
+    set current_page(value) {
+        if (value === this._current_page)
+            return;
+
         if (this._is_transitioning_forward(value)) {
             this._stack.set_transition_type(Gtk.StackTransitionType.SLIDE_LEFT);
         } else {
@@ -168,6 +171,7 @@ const Window = new Lang.Class({
         } else {
             throw new Error('Current page value is out of range.');
         }
+        this.notify('current-page');
     },
 
     _is_transitioning_forward: function (value) {
