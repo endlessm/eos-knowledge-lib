@@ -1,7 +1,9 @@
+const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
+GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 
 const InfiniteScrolledWindow = new Lang.Class({
     Name: 'InfiniteScrolledWindow',
@@ -20,14 +22,27 @@ const InfiniteScrolledWindow = new Lang.Class({
          */
         'need-more-content': GObject.ParamSpec.boolean('need-more-content', 'Need More Content',
             'Whether the scroll window needs more content either because it hit the bottom of the scroll or there is not scrollbar',
-            GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE, false)
+            GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE, false),
+        /**
+         * Property: bottom-buffer
+         *
+         * A integer value for the number of pixels of buffer the InfiniteScrolledWindow will still
+         * consider the bottom of the the scroll window. i.e. If button-buffer is 30 this widget will
+         * set need more content to true when the user scrolls to 30 pixels before the bottom.
+         */
+        'bottom-buffer': GObject.ParamSpec.int('bottom-buffer', 'Bottom Buffer',
+            'The pixel size of the bottom buffer',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT, 0, GLib.MAXINT32, 0),
     },
 
     _init: function(props) {
         this._need_more_content = false;
+        this._buttom_buffer = 0;
         this.parent(props);
 
         this.vadjustment.connect('value-changed', this._on_scroll_value_changed.bind(this));
+        this.vadjustment.connect('notify::page-size', this._on_scroll_value_changed.bind(this));
+        this.vadjustment.connect('notify::upper', this._on_scroll_value_changed.bind(this));
         this.connect('size-allocate', this._check_scroll.bind(this));
     },
 
@@ -36,7 +51,7 @@ const InfiniteScrolledWindow = new Lang.Class({
         let value = adjustment.value;
         let upper = adjustment.upper;
         let page_size = adjustment.page_size;
-        if (!(value < (upper - page_size))) {
+        if (value >= (upper - page_size - this._bottom_buffer)) {
             this.need_more_content = true;
         } else {
             this.need_more_content = false;
@@ -52,6 +67,17 @@ const InfiniteScrolledWindow = new Lang.Class({
             return;
         this._need_more_content = v;
         this.notify('need-more-content');
+    },
+
+    get bottom_buffer () {
+        return this._bottom_buffer;
+    },
+
+    set bottom_buffer (v) {
+        if (this._bottom_buffer === v)
+            return;
+        this._bottom_buffer = v;
+        this.notify('bottom-buffer');
     },
 
     /*
