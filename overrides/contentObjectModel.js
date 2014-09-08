@@ -352,8 +352,14 @@ ContentObjectModel._props_from_json_ld = function (json_ld_data) {
     if(json_ld_data.hasOwnProperty('copyrightHolder'))
         props.copyright_holder = json_ld_data.copyrightHolder;
 
+    // This code remains as a patch to ensure that
+    // old databases remain compatible with the new
+    // core packages which have standardized to use sourceURI
     if(json_ld_data.hasOwnProperty('sourceURL'))
         props.source_uri = json_ld_data.sourceURL;
+
+    if(json_ld_data.hasOwnProperty('sourceURI'))
+        props.source_uri = json_ld_data.sourceURI;
 
     if (json_ld_data.hasOwnProperty('contentURL'))
         props.content_uri = json_ld_data.contentURL;
