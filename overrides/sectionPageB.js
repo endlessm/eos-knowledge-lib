@@ -70,6 +70,37 @@ const SectionPageB = new Lang.Class({
         this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_SECTION_PAGE_B);
     },
 
+    highlight_card: function (card) {
+        if (this._highlighted_card === card)
+            return;
+
+        this.clear_highlighted_card();
+
+        this._highlighted_card = card;
+        this._highlighted_card.get_style_context().add_class(EosKnowledge.STYLE_CLASS_HIGHLIGHTED);
+    },
+
+    highlight_card_with_name: function (card_name) {
+        let filtered_cards = this._cards.filter(function (c) {
+            return c.title === card_name;
+        });
+
+        if (filtered_cards.length >= 1)
+            this.highlight_card(filtered_cards[0]);
+        else
+            // This covers the case for when the named card is not in the list,
+            // because we reached this article after navigating from one article
+            // to another.
+            this.clear_highlighted_card();
+    },
+
+    clear_highlighted_card: function () {
+        if (this._highlighted_card !== null && typeof this._highlighted_card !== 'undefined') {
+            this._highlighted_card.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_HIGHLIGHTED);
+            this._highlighted_card = null;
+        }
+    },
+
     pack_title_label: function (title_label) {
         title_label.xalign = 0;
         title_label.yalign = 1;

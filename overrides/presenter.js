@@ -170,6 +170,9 @@ const Presenter = new Lang.Class({
                     this._engine.get_objects_by_query(this._domain, article_origin_query, this._refresh_sidebar_callback.bind(this));
                 }
                 this._article_presenter.load_article(this._history_model.current_item.article_model, animation_type);
+                // For Template B, we reset the highlight to the card with the same title
+                if (this._template_type === 'B')
+                    this.view.section_page.highlight_card_with_name(this._history_model.current_item.title);
                 this.view.show_article_page();
                 break;
             default:
@@ -360,6 +363,8 @@ const Presenter = new Lang.Class({
         this._article_presenter.load_article(model, animation_type, function () {
             this.view.show_article_page();
         }.bind(this));
+        if (this._template_type === 'B')
+            this.view.section_page.highlight_card(card);
     },
 
     _add_history_object_for_article_page: function (model) {
@@ -419,6 +424,10 @@ const Presenter = new Lang.Class({
     _on_article_object_clicked: function (article_presenter, model) {
         this._add_history_object_for_article_page(model);
         this._article_presenter.load_article(model, EosKnowledge.LoadingAnimationType.FORWARDS_NAVIGATION);
+
+        if (this._template_type === 'B')
+            // Highlight the appropriate card, if exists.
+            this.view.section_page.highlight_card_with_name(model.title);
     },
 
     _on_lightbox_previous_clicked: function (view, lightbox) {
@@ -453,6 +462,8 @@ const Presenter = new Lang.Class({
                 this._add_history_object_for_section_page(this._latest_origin_query);
                 this.view.show_section_page();
             }
+            if (this._template_type === 'B')
+                this.view.section_page.clear_highlighted_card();
         } else if (visible_page === this.view.section_page || visible_page === this.view.no_search_results_page) {
             if (this._original_page === this.view.home_page) {
                 this._add_history_object_for_home_page();
