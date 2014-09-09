@@ -30,6 +30,7 @@ public_overrides = \
 	overrides/mediaObjectModel.js \
 	overrides/navButtonOverlay.js \
 	overrides/noSearchResultsPage.js \
+	overrides/pdfCard.js \
 	overrides/presenter.js \
 	overrides/progressCard.js \
 	overrides/previewer.js \

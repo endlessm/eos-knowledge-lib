@@ -14,6 +14,7 @@ const CardB = imports.cardB;
 const Config = imports.config;
 const Engine = imports.engine;
 const MediaInfobox = imports.mediaInfobox;
+const PdfCard = imports.pdfCard;
 const Previewer = imports.previewer;
 const TextCard = imports.textCard;
 const Window = imports.window;
@@ -363,7 +364,13 @@ const Presenter = new Lang.Class({
     _new_card_from_article_model: function (model) {
         let fade_in = true;
         let card_class = ArticleCard.ArticleCard;
-        if (this._template_type === 'B') {
+        // If it has a content_uri, assume it is a PDF.
+        // This may need to change in the future but for now
+        // I think it's the simplest approach and avoids having
+        // to do a file I/O to get mime type for every card.
+        if (model.content_uri.length > 0) {
+            card_class = PdfCard.PdfCard;
+        } else if (this._template_type === 'B') {
             fade_in = false;
             card_class = TextCard.TextCard;
         }
