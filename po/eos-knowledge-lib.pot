@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: eos-knowledge-lib 0.1.0\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-"
 "inc\n"
-"POT-Creation-Date: 2014-09-02 04:50+0000\n"
+"POT-Creation-Date: 2014-09-09 04:49+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -33,7 +33,7 @@ msgstr ""
 
 #. TRANSLATORS: this appears on top of the search results page; %s will
 #. be replaced with the string that the user searched for.
-#: overrides/presenter.js:214 overrides/noSearchResultsPage.js:59
+#: overrides/presenter.js:214 overrides/noSearchResultsPage.js:61
 #, c-format
 msgid "Results for \"%s\""
 msgstr ""
@@ -57,4 +57,13 @@ msgstr ""
 
 #: overrides/noSearchResultsPage.js:38
 msgid "Try seaching again with different words."
+msgstr ""
+
+#: overrides/reader/donePage.js:57
+msgid "Did you like this issue?"
+msgstr ""
+
+#: overrides/reader/donePage.js:63
+msgid ""
+"Don't miss next week's issue with more articles in your favorite magazine!"
 msgstr ""
