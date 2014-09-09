@@ -5,6 +5,7 @@ overridesdir = $(datadir)/gjs-1.0/overrides
 pkgoverridesdir = $(pkgdatadir)/overrides
 public_overrides = \
 	overrides/EosKnowledge.js \
+	overrides/application.js \
 	overrides/articleCard.js \
 	overrides/articleObjectModel.js \
 	overrides/articlePage.js \

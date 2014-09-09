@@ -9,6 +9,7 @@ let EosKnowledge;
 let _oldSearchPath = imports.searchPath.slice(0);
 imports.searchPath.unshift(Endless.getCurrentFileDir());
 
+const Application = imports.application;
 const ArticleCard = imports.articleCard;
 const ArticleObjectModel = imports.articleObjectModel;
 const ArticlePage = imports.articlePage;
@@ -89,6 +90,7 @@ function _init() {
         }
     });
 
+    EosKnowledge.Application = Application.Application;
     EosKnowledge.ArticleCard = ArticleCard.ArticleCard;
     EosKnowledge.ArticleObjectModel = ArticleObjectModel.ArticleObjectModel;
     EosKnowledge.ArticlePage = ArticlePage.ArticlePage;

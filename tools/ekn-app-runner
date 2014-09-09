@@ -1,18 +1,39 @@
 #!/usr/bin/env gjs
 
 const EosKnowledge = imports.gi.EosKnowledge;
+const Gio = imports.gi.Gio;
+const System = imports.system;
 
 if (ARGV.length !== 2) {
-
     printerr("Run this script by passing it an app ID and a gresource file");
-
-} else {
-
-    let app = new EosKnowledge.KnowledgeApp({
-        application_id: ARGV[0],
-        flags: 0
-    }, ARGV[1]);
-
-    app.run([]);
+    System.exit(1);
 }
+
+let resource = Gio.Resource.load(ARGV[1]);
+resource._register();
+
+let appname = resource.enumerate_children('/com/endlessm',
+    Gio.FileQueryInfoFlags.NONE, null)[0];
+let resource_file = Gio.File.new_for_uri('resource:///com/endlessm/' + appname);
+let app_info_file = resource_file.get_child('app.json');
+let [success, contents, length, etag] = app_info_file.load_contents(null);
+let app_info = JSON.parse(contents);
+
+let AppClass;
+switch(app_info['templateType']) {
+case 'A':
+case 'B':
+    AppClass = EosKnowledge.KnowledgeApp;
+    break;
+default:
+    printerr('Unknown template type', app_info['templateType']);
+    System.exit(1);
+}
+
+let app = new AppClass({
+    application_id: ARGV[0],
+    flags: Gio.ApplicationFlags.FLAGS_NONE,
+    resource_file: resource_file,
+});
+app.run([]);
 
