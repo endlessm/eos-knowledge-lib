@@ -342,11 +342,14 @@ const Presenter = new Lang.Class({
             this._search_origin_page = this.view.section_page;
             this.view.unlock_ui();
             this.view.show_no_search_results_page();
-        } else {
+        } else if (this.view.section_page.title != this._target_page_title) {
             this.view.section_page.title = this._target_page_title;
             this._set_section_page_content(results);
             this._get_more_results = get_more_results_func;
             this._search_origin_page = this.view.section_page;
+            this.view.unlock_ui();
+            this.view.show_section_page();
+        } else {
             this.view.unlock_ui();
             this.view.show_section_page();
         }
