@@ -166,6 +166,17 @@ describe('Knowledge Engine Module', function () {
                 done();
             });
         });
+
+        it('does not call its callback more than once', function (done) {
+            mock_engine_request(new Error('I am an error'), undefined);
+
+            let callback_called = 0;
+            engine.get_object_by_id('foo', 'bar', function (err, res) {
+                callback_called++;
+            });
+            setTimeout(done, 100); // pause for a moment for any more callbacks
+            expect(callback_called).toEqual(1);
+        });
     });
 
     describe('get_objects_by_query', function () {
@@ -275,6 +286,17 @@ describe('Knowledge Engine Module', function () {
                 }
                 done();
             });
+        });
+
+        it('does not call its callback more than once', function (done) {
+            mock_engine_request(new Error('I am an error'), undefined);
+
+            let callback_called = 0;
+            engine.get_objects_by_query('mock-query', {}, function (err, res) {
+                callback_called++;
+            });
+            setTimeout(done, 100); // pause for a moment for any more callbacks
+            expect(callback_called).toEqual(1);
         });
     });
 });

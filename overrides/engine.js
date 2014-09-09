@@ -101,17 +101,20 @@ const Engine = Lang.Class({
             if (typeof err !== 'undefined') {
                 // error occurred during request, so immediately fail with err
                 callback(err, undefined);
+                return;
             }
 
+            let model;
             try {
                 if (json_ld === null)
                     throw new Error("Received null object response for " + req_uri.to_string(false));
-                let model = this._model_from_json_ld(json_ld);
-                callback(undefined, model);
+                model = this._model_from_json_ld(json_ld);
             } catch (err) {
                 // Error marshalling the JSON-LD object
                 callback(err, undefined);
+                return;
             }
+            callback(undefined, model);
         }.bind(this));
     },
 
@@ -143,22 +146,25 @@ const Engine = Lang.Class({
             if (typeof err !== 'undefined') {
                 // error occurred during request, so immediately fail with err
                 callback(err, undefined);
+                return;
             }
 
+            let search_results;
             try {
                 if (json_ld === null)
                     throw new Error("Received null object response for " + req_uri.to_string(false));
-                let search_results = this._results_list_from_json_ld(json_ld);
-                let get_more_results = function (batch_size, new_callback) {
-                    query_obj.offset = json_ld.numResults + json_ld.offset;
-                    query_obj.limit = batch_size;
-                    this.get_objects_by_query(domain, query_obj, new_callback);
-                }.bind(this);
-                callback(undefined, search_results, get_more_results);
+                search_results = this._results_list_from_json_ld(json_ld);
             } catch (err) {
                 // Error marshalling (at least) one of the JSON-LD results
                 callback(err, undefined);
+                return;
             }
+            let get_more_results = function (batch_size, new_callback) {
+                query_obj.offset = json_ld.numResults + json_ld.offset;
+                query_obj.limit = batch_size;
+                this.get_objects_by_query(domain, query_obj, new_callback);
+            }.bind(this);
+            callback(undefined, search_results, get_more_results);
         }.bind(this));
     },
 
@@ -267,11 +273,12 @@ const Engine = Lang.Class({
             let json_ld_response;
             try {
                 json_ld_response = JSON.parse(message.response_body.data);
-                callback(undefined, json_ld_response);
             } catch (err) {
                 // JSON parse error
                 callback(err, undefined);
+                return;
             }
+            callback(undefined, json_ld_response);
         });
     }
 });
