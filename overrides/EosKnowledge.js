@@ -47,6 +47,7 @@ const Window = imports.window;
 const ReaderApplication = imports.reader.application;
 const ReaderArticlePage = imports.reader.articlePage;
 const ReaderDonePage = imports.reader.donePage;
+const ReaderPresenter = imports.reader.presenter;
 const ReaderProgressLabel = imports.reader.progressLabel;
 const ReaderWindow = imports.reader.window;
 
@@ -141,6 +142,7 @@ function _init() {
         Application: ReaderApplication.Application,
         ArticlePage: ReaderArticlePage.ArticlePage,
         DonePage: ReaderDonePage.DonePage,
+        Presenter: ReaderPresenter.Presenter,
         ProgressLabel: ReaderProgressLabel.ProgressLabel,
         Window: ReaderWindow.Window,
     };

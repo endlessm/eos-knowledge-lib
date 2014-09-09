@@ -56,6 +56,7 @@ reader_overrides = \
 	overrides/reader/application.js \
 	overrides/reader/articlePage.js \
 	overrides/reader/donePage.js \
+	overrides/reader/presenter.js \
 	overrides/reader/progressLabel.js \
 	overrides/reader/window.js \
 	$(NULL)

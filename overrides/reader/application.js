@@ -2,6 +2,7 @@ const Gio = imports.gi.Gio;
 const Lang = imports.lang;
 
 const EknApplication = imports.application;
+const Engine = imports.engine;
 const Presenter = imports.reader.presenter;
 const Window = imports.reader.window;
 
@@ -28,6 +29,15 @@ const Application = new Lang.Class({
 
     vfunc_startup: function () {
         this.parent();
-        // do nothing yet
+
+        let app_json_file = this.resource_file.get_child('app.json');
+        let view = new Window.Window({
+            application: this,
+        });
+        let presenter = new Presenter.Presenter({
+            app_file: app_json_file,
+            engine: new Engine.Engine(),
+            view: view,
+        });
     },
 });

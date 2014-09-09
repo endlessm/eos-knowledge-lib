@@ -6,3 +6,4 @@ overrides/homePageA.js
 overrides/categoriesPage.js
 overrides/noSearchResultsPage.js
 overrides/reader/donePage.js
+overrides/reader/presenter.js
