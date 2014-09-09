@@ -1,4 +1,5 @@
 const EosKnowledge = imports.gi.EosKnowledge;
+const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
 
 const MockWebview = imports.MockWebview;
@@ -118,7 +119,7 @@ describe('Webview switcher view', function () {
         it('creates a new view for the requested URI when a page is loaded', function () {
             switcher.load_uri('baked://beans');
             expect(createViewForFile.calls.count()).toEqual(1);
-            expect(createViewForFile.calls.argsFor(0)[1].get_uri()).toEqual('baked://beans');
+            expect(createViewForFile.calls.argsFor(0)[1].get_uri()).toEqual(Gio.File.new_for_uri('baked://beans').get_uri());
         });
 
         describe('asynchronously with animation', function () {
