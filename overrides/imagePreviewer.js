@@ -4,6 +4,7 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const GLib = imports.gi.GLib;
 const Lang = imports.lang;
+const Mainloop = imports.mainloop;
 
 /**
  * Class: ImagePreviewer
@@ -44,12 +45,14 @@ const ImagePreviewer = Lang.Class({
         this.set_has_window(false);
 
         this._file = null;
+        this._animation = null;
+        this._animation_iter = null;
+        this._animation_callback_source = 0;
         this._pixbuf = null;
+        this._scaled_pixbuf = null;
         this._aspect = 1.0;
         this._natural_width = 0;
         this._natural_height = 0;
-        this._last_file = null;
-        this._last_allocation = null;
         this._min_percentage = 0.0;
         this._max_percentage = 1.0;
 
@@ -77,12 +80,17 @@ const ImagePreviewer = Lang.Class({
         if (this._file === null)
             return;
 
-        let pixbuf = this._load_pixbuf();
-        this._natural_width = pixbuf.get_width();
-        this._natural_height = pixbuf.get_height();
-        this._aspect = pixbuf.get_width() / pixbuf.get_height();
-        this.queue_draw();
+        this._animation = this._load_animation();
+        if (this._animation !== null) {
+            if (this._animation.is_static_image()) {
+                this._pixbuf = this._animation.get_static_image();
+            }
+            this._natural_width = this._animation.get_width();
+            this._natural_height = this._animation.get_height();
+            this._aspect = this._natural_width / this._natural_height;
+        }
 
+        this.queue_draw();
         this.notify('file');
     },
 
@@ -128,52 +136,75 @@ const ImagePreviewer = Lang.Class({
         return [this._min_percentage * this._natural_height, this._max_percentage * this._natural_height];
     },
 
-    _load_pixbuf: function () {
-        return this._load_pixbuf_at_size(-1, -1);
-    },
-
-    _load_pixbuf_at_size: function (width, height) {
+    _load_animation: function () {
         // GdkPixbuf.Pixbuf has not from_uri methods so we are stuck checking
         // the scheme ourselves
         let scheme = this._file.get_uri_scheme();
         if (scheme === "file") {
-            return GdkPixbuf.Pixbuf.new_from_file_at_scale(this._file.get_path(),
-                                                           width,
-                                                           height,
-                                                           true);
+            return GdkPixbuf.PixbufAnimation.new_from_file(this._file.get_path());
         } else if (scheme === "resource") {
             let resource = this._file.get_uri().split("resource://")[1];
-            return GdkPixbuf.Pixbuf.new_from_resource_at_scale(resource,
-                                                               width,
-                                                               height,
-                                                               true);
+            return GdkPixbuf.PixbufAnimation.new_from_resource(resource);
         }
         return null;
     },
 
-    _update_pixbuf: function () {
-        if (this._file === null) {
-            this._pixbuf = null;
-            return;
+    _animation_timeout: function () {
+        if (this._animation_iter === null) {
+            this._animation_iter = this._animation.get_iter(null);
+        } else {
+            this._animation_iter.advance(null);
+            this.queue_draw();
         }
-        let allocation = this.get_allocation();
-        if (this._file === this._last_file && allocation === this._last_allocation)
+
+        let delay_time = this._animation_iter.get_delay_time();
+        if (delay_time > 0) {
+            this._animation_callback_source = Mainloop.timeout_add(delay_time, this._animation_timeout.bind(this));
+        } else {
+            this._reset_animation_timeout();
+        }
+        return false;
+    },
+
+    _reset_animation_timeout: function () {
+        this._animation_iter = null;
+        this._animation_callback_source = 0;
+    },
+
+    _draw_scaled_pixbuf: function (cr) {
+        if (this._pixbuf === null)
             return;
-        this._last_file = this._file;
-        this._last_allocation = allocation;
-        this._pixbuf = this._load_pixbuf_at_size(Math.min(allocation.width, this._max_percentage * this._natural_width),
-                                                 Math.min(allocation.height, this._max_percentage * this._natural_height));
+        let allocation = this.get_allocation();
+        if (this._pixbuf !== this._last_pixbuf || allocation !== this._last_allocation) {
+            this._last_pixbuf = this._pixbuf;
+            this._last_allocation = allocation;
+            let width = Math.min(allocation.width, this._max_percentage * this._natural_width);
+            let height = Math.min(allocation.height, this._max_percentage * this._natural_height);
+            this._scaled_pixbuf = this._pixbuf.scale_simple(width, height, GdkPixbuf.InterpType.BILINEAR);
+        }
+
+        // Center the pixbuf in the allocation
+        let x = (allocation.width - this._scaled_pixbuf.width) / 2;
+        let y = (allocation.height - this._scaled_pixbuf.height) / 2;
+        Gdk.cairo_set_source_pixbuf(cr, this._scaled_pixbuf, x, y);
+        cr.paint();
+    },
+
+    vfunc_unmap: function () {
+        if (this._animation_callback_source > 0)
+            Mainloop.source_remove(this._animation_callback_source);
+        this._reset_animation_timeout();
+        this.parent();
     },
 
     vfunc_draw: function (cr) {
-        this._update_pixbuf();
-        if (this._pixbuf !== null) {
-            let allocation = this.get_allocation();
-            // Center the pixbuf in the allocation
-            let x = (allocation.width - this._pixbuf.width) / 2;
-            let y = (allocation.height - this._pixbuf.height) / 2;
-            Gdk.cairo_set_source_pixbuf(cr, this._pixbuf, x, y);
-            cr.paint();
+        if (this._animation !== null) {
+            if (!this._animation.is_static_image()) {
+                if (this._animation_callback_source === 0)
+                    this._animation_timeout();
+                this._pixbuf = this._animation_iter.get_pixbuf();
+            }
+            this._draw_scaled_pixbuf(cr);
         }
         // We need to manually call dispose on cairo contexts. This is somewhat related to the bug listed here
         // https://bugzilla.gnome.org/show_bug.cgi?id=685513 for the shell. We should see if they come up with
