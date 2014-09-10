@@ -48,6 +48,7 @@ test_content = \
 	tests/test-content/emacs.jsonld \
 	tests/test-content/media-search-results.jsonld \
 	tests/test-content/app.json \
+	tests/test-content/frango-frito.jsonld \
 	tests/test-content/greyjoy-article.jsonld \
 	tests/test-content/rick-astley-image.jsonld \
 	tests/test-content/never-gonna-give-you-up-video.jsonld \
