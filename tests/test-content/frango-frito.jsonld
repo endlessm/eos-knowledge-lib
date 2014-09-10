@@ -1,0 +1,58 @@
+{
+    "@context": [
+        "http://127.0.0.1:3003/v2/_context/ContentObject.jsonld",
+        {
+            "wordCount": "schema:Integer",
+            "articleBody": "schema:mainContentText",
+            "articleObject": "ekv:ArticleObject#",
+            "treeNode": "ekv:TreeNode#",
+            "hasContent": {
+                "@type": "@id",
+                "@id": "treeNode:hasContent"
+            },
+            "hasParent": "treeNode:hasParent",
+            "hasLabel": "treeNode:hasLabel",
+            "hasIndex": "treeNode:hasIndex",
+            "hasIndexLabel": "treeNode:hasIndexLabel",
+            "issueNumber": "ekv:ArticleObject#issueNumber",
+            "articleNumber": "ekv:ArticleObject#articleNumber",
+            "tableOfContents": {
+                "@container": "@list",
+                "@id": "ekv:TreeNode"
+            }
+        }
+    ],
+    "@id": "ekn:cooking_magazine/Frango_Frito",
+    "@type": "ekv:ArticleObject",
+    "title": "Receita de frango frito",
+    "synopsis": "Como fritar um frango, no estilo brasileiro",
+    "issueNumber": 12,
+    "articleNumber": 25,
+    "articleBody": "Pegue um frango e frite-o!",
+    "resources": [
+        {
+            "@id": "ekn:recipes/Frango_Frito.jpg",
+            "@type": "ekv:ImageObject",
+            "contentURL": "ekn:_media/Frango_Frito.jpg.jpg",
+            "caption": "Frango Frito",
+            "contentSize": "32KB",
+            "encodingFormat": "jpeg"
+        }
+    ],
+    "tableOfContents": [
+        {
+            "@id": "_:1",
+            "hasIndex": 0,
+            "hasIndexLabel": "1",
+            "hasLabel": "Ingredients",
+            "hasContent": "ekn:cooking_magazine/Frango_Frito#Ingredients"
+        },
+        {
+            "@id": "_:2",
+            "hasIndex": 0,
+            "hasIndexLabel": "2",
+            "hasLabel": "Procedure",
+            "hasContent": "ekn:cooking_magazine/Frango_Frito#Procedure"
+        } 
+    ]
+}

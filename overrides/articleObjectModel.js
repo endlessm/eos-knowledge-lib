@@ -41,6 +41,32 @@ const ArticleObjectModel = new Lang.Class({
              'Tree representing the article\'s table of contents',
              GObject.ParamFlags.READWRITE,
              Gtk.TreeStore),
+
+        /**
+         * Property: issue-number
+         * Integer indicating the issue number for the Reader application.
+         * Defaults to 0, which means that this ArticleObject is not part of the
+         * Reader application and hence it does not have an issue number.
+         *
+         * Since: 0.2
+         */
+        'issue-number': GObject.ParamSpec.uint('issue-number', 'Reader\'s Issue Number',
+            'Issue Number for the Reader App',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
+            0, GLib.MAXUINT32, 0),
+
+        /**
+         * Property: article-number
+         * Integer that indicates the order of the ArticleObject within the issue.
+         * Defaults to 0, which means that this ArticleObject is not part of the
+         * Reader application and hence it does not have an article number.
+         *
+         * Since: 0.2
+         */
+        'article-number': GObject.ParamSpec.uint('article-number', 'Reader\'s Article Number',
+            'Article Number for the Reader App',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
+            0, GLib.MAXUINT32, 0),
     },
     
     _init: function (params) {
@@ -55,13 +81,29 @@ const ArticleObjectModel = new Lang.Class({
         return this._table_of_contents;
     },
 
+    get issue_number() {
+        return this._issue_number;
+    },
+
+    get article_number() {
+        return this._article_number;
+    },
+
     set word_count (v) {
         this._word_count = v;
     },
 
     set table_of_contents (v) {
         this._table_of_contents = v;
-    }
+    },
+
+    set issue_number(v) {
+        this._issue_number = v;
+    },
+
+    set article_number(v) {
+        this._article_number = v;
+    },
 });
 
 /**
@@ -95,6 +137,18 @@ ArticleObjectModel._props_from_json_ld = function (json_ld_data) {
 
     if (json_ld_data.hasOwnProperty('tableOfContents')) {
         props.table_of_contents = EosKnowledge.tree_model_from_tree_node(json_ld_data);
+    }
+
+    if (json_ld_data.hasOwnProperty('issueNumber')) {
+        if (json_ld_data.issueNumber < 0)
+            throw new Error('Issue number must be a non-negative integer.');
+        props.issue_number = parseInt(json_ld_data.issueNumber);
+    }
+
+    if (json_ld_data.hasOwnProperty('articleNumber')) {
+        if (json_ld_data.articleNumber < 0)
+            throw new Error('Article number must be a non-negative integer.');
+        props.article_number = parseInt(json_ld_data.articleNumber);
     }
 
     return props;
