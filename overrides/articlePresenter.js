@@ -93,6 +93,7 @@ const ArticlePresenter = new GObject.Class({
         this.article_view.toc.transition_duration = this._SCROLL_DURATION;
         this._article_model = null;
         this._webview = null;
+        this._webview_load_id = 0;
         this._offscreen_window = new Gtk.OffscreenWindow();
 
         this._connect_toc_widget();
@@ -138,6 +139,9 @@ const ArticlePresenter = new GObject.Class({
             return;
         this._article_model = model;
 
+        // Make sure we aren't currently loading anything offscreen
+        this._stop_loading_views();
+
         // If the article model has no content_uri, assume html and load the ekn_id uri
         let uri = this._article_model.ekn_id;
         let type = 'text/html';
@@ -151,11 +155,12 @@ const ArticlePresenter = new GObject.Class({
 
         if (type === 'text/html') {
             this._webview = this._get_webview_for_uri(uri);
-            let id = this._webview.connect('load-changed', function (view, status) {
+            this._webview_load_id = this._webview.connect('load-changed', function (view, status) {
                 if (status !== WebKit2.LoadEvent.COMMITTED)
                     return;
+                this._webview.disconnect(this._webview_load_id);
+                this._webview_load_id = 0;
                 this.article_view.switch_in_content_view(this._webview, animation_type);
-                this._webview.disconnect(id);
                 ready();
             }.bind(this));
         } else if (type === 'application/pdf') {
@@ -164,6 +169,18 @@ const ArticlePresenter = new GObject.Class({
             ready();
         } else {
             throw new Error("We don't know how to display " + type + " articles!");
+        }
+    },
+
+    // Cancels any currently loading offscreen views. Right now just the
+    // webviews, but if our pdf view ever supported an async load this should
+    // cancel that as well.
+    _stop_loading_views: function () {
+        if (this._webview_load_id > 0) {
+            this._webview.disconnect(this._webview_load_id);
+            this._webview_load_id = 0;
+            this._webview.destroy();
+            this._webview = null;
         }
     },
 
