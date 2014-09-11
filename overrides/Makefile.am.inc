@@ -53,8 +53,10 @@ private_overrides = \
 dist_pkgoverrides_DATA = $(public_overrides) $(private_overrides)
 
 reader_overrides = \
+	overrides/reader/application.js \
 	overrides/reader/articlePage.js \
 	overrides/reader/donePage.js \
+	overrides/reader/presenter.js \
 	overrides/reader/progressLabel.js \
 	overrides/reader/window.js \
 	$(NULL)

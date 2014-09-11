@@ -127,5 +127,6 @@ const ArticlePage = new Lang.Class({
         view.expand = true;
         this._content_view = view;
         this.attach(view, 1, 1, 1, 1);
+        view.show_all();
     },
 });

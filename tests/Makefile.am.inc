@@ -37,6 +37,7 @@ javascript_tests = \
 	tests/eosknowledge/testWindow.js \
 	tests/eosknowledge/reader/testArticlePage.js \
 	tests/eosknowledge/reader/testDonePage.js \
+	tests/eosknowledge/reader/testPresenter.js \
 	tests/eosknowledge/reader/testProgressLabel.js \
 	tests/eosknowledge/reader/testWindow.js \
 	$(NULL)
@@ -53,6 +54,7 @@ test_content = \
 	tests/test-content/never-gonna-give-you-up-video.jsonld \
 	tests/test-content/sample.mp4 \
 	tests/test-content/agot.svg \
+	tests/test-content/overrides.css \
 	$(NULL)
 EXTRA_DIST += \
 	$(javascript_tests) \

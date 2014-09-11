@@ -123,7 +123,7 @@ const Engine = Lang.Class({
      * Sends a request for Knowledge Engine objects at *domain* matching
      * *query*. *callback* is a function which takes *err* and *result* parameters.
      * *query* is an object which has four possible options: q (querystring),
-     * tags (comma delimited string of tags), prefix (string matching the prefix
+     * tag (comma delimited string of tags), prefix (string matching the prefix
      * of object titles) and limit (integer representing maximum number of
      * results to retrieve)
      *

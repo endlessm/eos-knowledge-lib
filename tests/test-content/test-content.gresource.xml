@@ -15,5 +15,6 @@
         <file compressed="true">stallman.css</file>
         <file compressed="true">stallman.js</file>
         <file compressed="true">dog.gif</file>
+        <file compressed="true">overrides.css</file>
     </gresource>
 </gresources>
