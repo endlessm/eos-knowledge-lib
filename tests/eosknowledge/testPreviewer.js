@@ -40,6 +40,13 @@ describe('Previewer widget', function () {
         expect(fn).not.toThrow();
     });
 
+    it('can open a gif', function () {
+        let fn = function () {
+            previewer.file = Gio.File.new_for_uri('resource://com/endlessm/thrones/dog.gif');
+        };
+        expect(fn).not.toThrow();
+    });
+
     it('can open a video file', function () {
         let fn = function () {
             previewer.file = Gio.File.new_for_path(TESTDIR + '/test-content/sample.mp4');
