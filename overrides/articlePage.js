@@ -237,6 +237,7 @@ const ArticlePage = new Lang.Class({
             this._switcher.add(view);
         }
         this._switcher.visible_child = view;
+        view.grab_focus();
 
         if (this._switcher.transition_running) {
             let id = this._switcher.connect('notify::transition-running', function () {
