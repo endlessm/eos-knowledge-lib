@@ -53,6 +53,7 @@ test_content = \
 	tests/test-content/never-gonna-give-you-up-video.jsonld \
 	tests/test-content/sample.mp4 \
 	tests/test-content/agot.svg \
+	tests/test-content/overrides.css \
 	$(NULL)
 EXTRA_DIST += \
 	$(javascript_tests) \
