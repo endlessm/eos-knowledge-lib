@@ -2,8 +2,6 @@ const Endless = imports.gi.Endless;
 const EosKnowledge = imports.gi.EosKnowledge;
 const Gio = imports.gi.Gio;
 
-const MockWebview = imports.MockWebview;
-
 const TESTDIR = Endless.getCurrentFileDir() + '/..';
 const MOCK_ARTICLE_PATH = TESTDIR + '/test-content/cyprus.jsonld';
 
@@ -25,11 +23,6 @@ describe('Article Presenter', function () {
         articleObject = new EosKnowledge.ArticleObjectModel.new_from_json_ld(mockArticleData);
 
         view = new EosKnowledge.ArticlePage();
-        view.switcher.connect('create-view-for-file', function () {
-            webview = new MockWebview.MockWebview();
-            return webview;
-        });
-        view.switcher.connect_after('display-ready', done);
 
         engine = new EosKnowledge.Engine();
 
@@ -37,7 +30,9 @@ describe('Article Presenter', function () {
             article_view: view,
             engine: engine
         });
-        presenter.load_article(articleObject, EosKnowledge.LoadingAnimationType.NONE);
+        presenter.load_article(articleObject, EosKnowledge.LoadingAnimationType.NONE, function () {
+            done();
+        });
 
     });
 

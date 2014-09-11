@@ -34,7 +34,6 @@ javascript_tests = \
 	tests/eosknowledge/testTableOfContents.js \
 	tests/eosknowledge/testTextCard.js \
 	tests/eosknowledge/testTreeNode.js \
-	tests/eosknowledge/testWebviewSwitcher.js \
 	tests/eosknowledge/testWindow.js \
 	tests/eosknowledge/reader/testArticlePage.js \
 	tests/eosknowledge/reader/testDonePage.js \
@@ -60,7 +59,6 @@ EXTRA_DIST += \
 	$(test_content) \
 	tests/CssClassMatcher.js \
 	tests/InstanceOfMatcher.js \
-	tests/MockWebview.js \
 	tests/utils.js \
 	tests/WidgetDescendantMatcher.js \
 	$(NULL)

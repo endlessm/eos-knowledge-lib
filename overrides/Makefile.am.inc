@@ -17,7 +17,6 @@ public_overrides = \
 	overrides/contentObjectModel.js \
 	overrides/eknWebview.js \
 	overrides/engine.js \
-	overrides/evinceWebviewAdapter.js \
 	overrides/homePage.js \
 	overrides/homePageA.js \
 	overrides/homePageB.js \
@@ -41,7 +40,6 @@ public_overrides = \
 	overrides/tableOfContents.js \
 	overrides/textCard.js \
 	overrides/treeNode.js \
-	overrides/webviewSwitcherView.js \
 	overrides/window.js \
 	$(NULL)
 private_overrides = \

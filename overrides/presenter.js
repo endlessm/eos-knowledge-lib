@@ -248,7 +248,6 @@ const Presenter = new Lang.Class({
     },
 
     _on_article_selection: function (view, id) {
-        this.view.lock_ui();
         if (view === this.view.home_page) {
             this._search_origin_page = this.view.home_page;
         } else {
@@ -263,18 +262,19 @@ const Presenter = new Lang.Class({
         }
 
         let selected_model = this._autocomplete_results.filter(function (element) {
-            return element.ekn_id === id
+            return element.ekn_id === id;
         }, id)[0];
-        this._article_presenter.load_article(selected_model, EosKnowledge.LoadingAnimationType.NONE);
-        this.view.unlock_ui();
-        this.view.show_article_page();
+        this._article_presenter.load_article(selected_model, EosKnowledge.LoadingAnimationType.NONE, function () {
+            this.view.show_article_page();
+        }.bind(this));
     },
 
     _on_article_card_clicked: function (card, model) {
         let animation_type = this.view.get_visible_page() !== this.view.article_page ? EosKnowledge.LoadingAnimationType.NONE : EosKnowledge.LoadingAnimationType.FORWARDS_NAVIGATION;
         model.fetch_all(this._engine);
-        this._article_presenter.load_article(model, animation_type);
-        this.view.show_article_page();
+        this._article_presenter.load_article(model, animation_type, function () {
+            this.view.show_article_page();
+        }.bind(this));
     },
 
     _on_media_object_clicked: function (article_presenter, media_object, is_resource) {

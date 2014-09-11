@@ -21,7 +21,6 @@ const CategoriesPage = imports.categoriesPage;
 const ContentObjectModel = imports.contentObjectModel;
 const EknWebview = imports.eknWebview;
 const Engine = imports.engine;
-const EvinceWebviewAdapter = imports.evinceWebviewAdapter;
 const HomePage = imports.homePage;
 const HomePageA = imports.homePageA;
 const HomePageB = imports.homePageB;
@@ -43,7 +42,6 @@ const SectionPageB = imports.sectionPageB;
 const TableOfContents = imports.tableOfContents;
 const TextCard = imports.textCard;
 const TreeNode = imports.treeNode;
-const WebviewSwitcherView = imports.webviewSwitcherView;
 const Window = imports.window;
 
 const ReaderArticlePage = imports.reader.articlePage;
@@ -102,7 +100,6 @@ function _init() {
     EosKnowledge.ContentObjectModel = ContentObjectModel.ContentObjectModel;
     EosKnowledge.EknWebview = EknWebview.EknWebview;
     EosKnowledge.Engine = Engine.Engine;
-    EosKnowledge.EvinceWebviewAdapter = EvinceWebviewAdapter.EvinceWebviewAdapter;
     EosKnowledge.HomePage = HomePage.HomePage;
     EosKnowledge.HomePageA = HomePageA.HomePageA;
     EosKnowledge.ImageObjectModel = MediaObjectModel.ImageObjectModel;
@@ -129,7 +126,6 @@ function _init() {
     EosKnowledge.TextCard = TextCard.TextCard;
     EosKnowledge.tree_model_from_tree_node = TreeNode.tree_model_from_tree_node;
     EosKnowledge.VideoObjectModel = MediaObjectModel.VideoObjectModel;
-    EosKnowledge.WebviewSwitcherView = WebviewSwitcherView.WebviewSwitcherView;
     EosKnowledge.Window = Window.Window;
 
     /**

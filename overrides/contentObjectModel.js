@@ -66,7 +66,7 @@ const ContentObjectModel = new Lang.Class({
         'content-uri': GObject.ParamSpec.string('content-uri', 'Object Content URL',
             'URI of the source content file',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
-            'about:blank'),
+            ''),
         /**
          * Property: synopsis
          * The synopsis for this content object. Defaults to an empty string.

@@ -9,19 +9,16 @@ const Pango = imports.gi.Pango;
 const Cairo = imports.gi.cairo;
 
 const TableOfContents = imports.tableOfContents;
-const WebviewSwitcherView = imports.webviewSwitcherView;
 
 /**
  * Class: ArticlePage
  *
- * The article page of template A of the knowledge apps. Contains a title, a
- * read-only <TableOfContents> widget and a read-only <WebviewSwitcherView>
- * widget.
+ * The article page of template A of the knowledge apps.
  *
- * The switcher will house the actual article content using a webview. Both
- * the table of contents and the switcher are created with this widget, but
- * should be modified to display the correct content using their respective
- * APIs.
+ * There are three things that should be updated when displaying a new
+ * article--the title, the table of contents and the article content widget
+ * itself. For the first two use the <title> and <toc> properties, for the
+ * latter the <switch_in_content_view> method.
  *
  * This widget will handle toggling the <TableOfContents.collapsed> parameter
  * of the table of contents depending on available space. It provides two
@@ -65,16 +62,6 @@ const ArticlePage = new Lang.Class({
             GObject.ParamFlags.READABLE,
             TableOfContents.TableOfContents.$gtype),
         /**
-         * Property: switcher
-         *
-         * The <WebviewSwitcherView> widget created by this widget. Read-only,
-         * modify using the switcher api.
-         */
-        'switcher': GObject.ParamSpec.object('switcher', 'Switcher',
-            'The WebviewSwitcherView widget for displaying article content.',
-            GObject.ParamFlags.READABLE,
-            WebviewSwitcherView.WebviewSwitcherView.$gtype),
-        /**
          * Property: has-margins
          *
          * Set false if the article page should zero all margins and pack
@@ -83,6 +70,16 @@ const ArticlePage = new Lang.Class({
         'has-margins': GObject.ParamSpec.boolean('has-margins', 'No margins',
             'Set false if the article page should zero all margins.',
             GObject.ParamFlags.READWRITE, true),
+    },
+
+    Signals: {
+        /**
+         * Event: new-view-transitioned
+         *
+         * This signal is fired when a new content view has completely
+         * finished its transition onto the article page.
+         */
+        'new-view-transitioned': {}
     },
 
     COLLAPSE_TOOLBAR_WIDTH: 800,
@@ -102,6 +99,9 @@ const ArticlePage = new Lang.Class({
         right_margin_pct: 3 / 56
     },
     MAX_TITLE_LINES: 5,
+    MIN_CONTENT_WIDTH: 400,
+    MIN_CONTENT_HEIGHT: 300,
+    CONTENT_TRANSITION_DURATION: 500,
 
     _init: function (props) {
         this._title_label = new Gtk.Label({
@@ -133,9 +133,6 @@ const ArticlePage = new Lang.Class({
             no_show_all: true,
             visible: true
         });
-        this._switcher = new WebviewSwitcherView.WebviewSwitcherView({
-            expand: true
-        });
         this._has_margins = true;
         this.parent(props);
 
@@ -147,6 +144,22 @@ const ArticlePage = new Lang.Class({
         this._toolbar_frame = new Gtk.Frame();
         this._toolbar_frame.add(grid);
         this.add(this._toolbar_frame);
+
+        this._switcher = new Gtk.Stack({
+            expand: true,
+            width_request: this.MIN_CONTENT_WIDTH,
+            height_request: this.MIN_CONTENT_HEIGHT,
+            transition_duration: this.CONTENT_TRANSITION_DURATION,
+        });
+        // Clear old views from the stack when its not animating.
+        this._switcher.connect('notify::transition-running', function () {
+            if (!this._switcher.transition_running) {
+                for (let child of this._switcher.get_children()) {
+                    if (child !== this._switcher.visible_child)
+                        this._switcher.remove(child);
+                }
+            }
+        }.bind(this));
 
         let switcher_grid = new Gtk.Grid({
             orientation: Gtk.Orientation.VERTICAL
@@ -183,10 +196,6 @@ const ArticlePage = new Lang.Class({
         return this._toc;
     },
 
-    get switcher () {
-        return this._switcher;
-    },
-
     set has_margins (v) {
         if (this._has_margins === v)
             return;
@@ -203,6 +212,40 @@ const ArticlePage = new Lang.Class({
 
     get has_margins () {
         return this._has_margins;
+    },
+
+    /**
+     * Method: switch_in_content_view
+     *
+     * Takes a view widget and a <EosKnowledge.LoadingAnimation>. Will
+     * animate in the new content view according to the type of loading
+     * animation specified.
+     */
+    switch_in_content_view: function (view, animation_type) {
+        if (animation_type === EosKnowledge.LoadingAnimation.FORWARDS_NAVIGATION) {
+            this._switcher.transition_type = Gtk.StackTransitionType.OVER_LEFT;
+        } else if (animation_type === EosKnowledge.LoadingAnimation.BACKWARDS_NAVIGATION) {
+            this._switcher.transition_type = Gtk.StackTransitionType.UNDER_RIGHT;
+        } else {
+            this._switcher.transition_type = Gtk.StackTransitionType.NONE;
+        }
+
+        view.show_all();
+        if (view.get_parent() !== null) {
+            view.reparent(this._switcher);
+        } else {
+            this._switcher.add(view);
+        }
+        this._switcher.visible_child = view;
+
+        if (this._switcher.transition_running) {
+            let id = this._switcher.connect('notify::transition-running', function () {
+                this.emit('new-view-transitioned');
+                this._switcher.disconnect(id);
+            }.bind(this));
+        } else {
+            this.emit('new-view-transitioned');
+        }
     },
 
     vfunc_size_allocate: function (alloc) {
