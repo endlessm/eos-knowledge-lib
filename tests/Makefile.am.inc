@@ -37,6 +37,7 @@ javascript_tests = \
 	tests/eosknowledge/testWindow.js \
 	tests/eosknowledge/reader/testArticlePage.js \
 	tests/eosknowledge/reader/testDonePage.js \
+	tests/eosknowledge/reader/testPresenter.js \
 	tests/eosknowledge/reader/testProgressLabel.js \
 	tests/eosknowledge/reader/testWindow.js \
 	$(NULL)

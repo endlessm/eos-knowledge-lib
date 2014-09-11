@@ -10,8 +10,6 @@ const WebKit2 = imports.gi.WebKit2;
 const ArticlePage = imports.reader.articlePage;
 const Config = imports.config;
 const EknWebview = imports.eknWebview;
-const Engine = imports.engine;
-const Window = imports.reader.window;
 
 String.prototype.format = Format.format;
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
@@ -61,7 +59,7 @@ const Presenter = new Lang.Class({
         'engine': GObject.ParamSpec.object('engine', 'Engine',
             'Handle to EOS knowledge engine',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            Engine.Engine.$gtype),
+            GObject.Object.$gtype),
         /**
          * Property: view
          * Reader app view
@@ -76,7 +74,7 @@ const Presenter = new Lang.Class({
         'view': GObject.ParamSpec.object('view', 'View',
             'Reader app view',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            Window.Window.$gtype),
+            GObject.Object.$gtype),
     },
 
     _init: function (props) {
