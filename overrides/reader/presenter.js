@@ -96,10 +96,10 @@ const Presenter = new Lang.Class({
 
         // Connect signals
         this.view.nav_buttons.connect('back-clicked', function () {
-            this.view.current_page--;
+            this._shift_page(-1);
         }.bind(this));
         this.view.nav_buttons.connect('forward-clicked', function () {
-            this.view.current_page++;
+            this._shift_page(1);
         }.bind(this));
         this.view.connect('notify::current-page',
             this._update_forward_button_visibility.bind(this));
@@ -109,6 +109,31 @@ const Presenter = new Lang.Class({
         //Bind properties
         this.view.bind_property('current-page', this.view.nav_buttons,
             'back-visible', GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE);
+    },
+
+    // Presenter logic to move the reader either forward or backwards one page.
+    // Current page is updated, the next page is loaded, and the previous one
+    // is deleted. This ensures we maintain the invariant that the current,
+    // previous, and next page are all loaded, but no other ones are, in order
+    // to minimize memory usage.
+    // Possible values for <delta> are +1 (to move foward) or -1 (to move backwards)
+    _shift_page: function (delta) {
+        if (delta !== -1 && delta !== 1)
+            throw new Error("Invalid input value for this function: " + delta);
+        let to_delete_index = this.view.current_page - delta;
+        this.view.current_page += delta;
+        let to_load_index = this.view.current_page + delta
+        let next_model_to_load = this._article_models[to_load_index];
+        if (next_model_to_load !== undefined) {
+            let next_page_to_load = this.view.get_article_page(to_load_index);
+            this._load_content(next_model_to_load.ekn_id, function (view, error) {
+                this._load_content_callback(next_page_to_load, view, error);
+            }.bind(this));
+        }
+        let to_delete_page = this.view.get_article_page(to_delete_index);
+        if (to_delete_page !== undefined) {
+            to_delete_page.clear_content();
+        }
     },
 
     // First article data has been loaded asynchronously; now we can start
@@ -125,8 +150,12 @@ const Presenter = new Lang.Class({
             return;
         }
 
-        let page = _create_article_page_from_article_model(result[0]);
-        _load_article_content_async(result[0], page);
+        let model = result[0];
+        let page = _create_article_page_from_article_model(model);
+        this._load_content(model.ekn_id, function (view, error) {
+            this._load_content_callback(page, view, error);
+        }.bind(this));
+
         this.view.append_article_page(page);
         this.view.current_page = 0;
         this.view.nav_buttons.back_visible = false;
@@ -159,15 +188,61 @@ const Presenter = new Lang.Class({
             return;
         }
 
-        // FIXME: We pop the first element, since it is already displayed as the
+        // FIXME: We slice out the first element, since it is already displayed as the
         // first page. We will remove this once we have pagination.
-        result.shift();
-        result.forEach(function (model) {
+        result.slice(1).forEach(function (model) {
             let page = _create_article_page_from_article_model(model);
-            _load_article_content_async(model, page);
             this.view.append_article_page(page);
             this._update_forward_button_visibility();
         }, this);
+        this._article_models = result;
+        // If we have at least two articles total, load the next article in sequence
+        if (this._article_models.length > 2) {
+            let first_page = this.view.get_article_page(1);
+            this._load_content(this._article_models[1].ekn_id, function (view, error) {
+                this._load_content_callback(first_page, view, error)
+            }.bind(this));
+        }
+    },
+
+    _load_content: function (uri, ready) {
+        if (ready === undefined) {
+            ready = function () {};
+        }
+        let webview = new EknWebview.EknWebview();
+        webview.load_uri(uri);
+        let load_id = webview.connect('load-changed', function (view, event) {
+            // failsafe: disconnect on load finished even if there was an error
+            if (event === WebKit2.LoadEvent.FINISHED) {
+                view.disconnect(load_id);
+                return;
+            }
+            if (event === WebKit2.LoadEvent.COMMITTED) {
+                ready(view);
+                view.disconnect(load_id);
+                return;
+            }
+        });
+        let fail_id = webview.connect('load-failed', function (view, event, failed_uri, error) {
+            // <error> is undefined under some instances. For example, if you try to load
+            // a bogus uri: http://www.sdfsdfjskkm.com
+            if (error === undefined) {
+                error = new Error("WebKit failed to load this uri");
+            }
+            ready(view, error);
+        });
+    },
+
+    _load_content_callback: function (page, view, error) {
+        if (error !== undefined) {
+            printerr(error);
+            printerr(error.stack);
+            let err_page = _create_error_label(_("Oops!"),
+                _("There was an error loading that page.\nTry another one or try again after restarting your computer."));
+            page.show_content_view(err_page);
+        } else {
+            page.show_content_view(view);
+        }
     },
 
     _update_forward_button_visibility: function () {
@@ -210,29 +285,6 @@ function _create_article_page_from_article_model(model) {
     return new ArticlePage.ArticlePage({
         title: model.title,
         attribution: attribution_string,
-    });
-}
-
-// Start the webview loading the article's content.
-function _load_article_content_async(model, page) {
-    let webview = new EknWebview.EknWebview();
-    webview.load_uri(model.ekn_id);
-    let load_id = webview.connect('load-changed', function (view, event) {
-        // failsafe: disconnect on load finished even if there was an error
-        if (event === WebKit2.LoadEvent.FINISHED) {
-            view.disconnect(load_id);
-            return;
-        }
-        if (event === WebKit2.LoadEvent.COMMITTED) {
-            page.show_content_view(view);
-            view.disconnect(load_id);
-            return;
-        }
-    });
-    let fail_id = webview.connect('load-failed', function (view, event, failed_uri, error) {
-        let err_page = _create_error_label(_("Oops!"),
-            _("There was an error loading that page.\nTry another one or try again after restarting your computer."));
-        page.show_content_view(err_page);
     });
 }
 
