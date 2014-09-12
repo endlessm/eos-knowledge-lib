@@ -10,9 +10,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2014-09-02 04:50+0000\n"
-"PO-Revision-Date: 2014-08-02 02:56+0000\n"
-"Last-Translator: Philip Chimento <philip.chimento@gmail.com>\n"
+"POT-Creation-Date: 2014-09-09 04:49+0000\n"
+"PO-Revision-Date: 2014-09-11 05:56+0000\n"
+"Last-Translator: c.sanchez <cassandra@endlessm.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/projects/p/eos-knowledge-lib/language/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -35,7 +35,7 @@ msgstr "Artículos"
 
 #. TRANSLATORS: this appears on top of the search results page; %s will
 #. be replaced with the string that the user searched for.
-#: overrides/presenter.js:214 overrides/noSearchResultsPage.js:59
+#: overrides/presenter.js:214 overrides/noSearchResultsPage.js:61
 #, c-format
 msgid "Results for \"%s\""
 msgstr "Resultados para \"%s\""
@@ -60,3 +60,12 @@ msgstr "No encontramos nada."
 #: overrides/noSearchResultsPage.js:38
 msgid "Try seaching again with different words."
 msgstr "Trata una nueva búsqueda con palabras diferentes."
+
+#: overrides/reader/donePage.js:57
+msgid "Did you like this issue?"
+msgstr "¿Te gustó esta edición?"
+
+#: overrides/reader/donePage.js:63
+msgid ""
+"Don't miss next week's issue with more articles in your favorite magazine!"
+msgstr "¡No te pierdas la edición de la próxima semana que tendrá más artículos en tu revista favorita!"

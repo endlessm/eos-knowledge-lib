@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: eos-knowledge-lib 0.1.0\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-"
 "inc\n"
-"POT-Creation-Date: 2014-09-09 04:49+0000\n"
+"POT-Creation-Date: 2014-09-12 20:20+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -27,13 +27,13 @@ msgstr ""
 msgid "Lesson %d"
 msgstr ""
 
-#: overrides/presenter.js:121 overrides/presenter.js:360
+#: overrides/presenter.js:117 overrides/presenter.js:353
 msgid "Articles"
 msgstr ""
 
 #. TRANSLATORS: this appears on top of the search results page; %s will
 #. be replaced with the string that the user searched for.
-#: overrides/presenter.js:214 overrides/noSearchResultsPage.js:61
+#: overrides/presenter.js:207 overrides/noSearchResultsPage.js:61
 #, c-format
 msgid "Results for \"%s\""
 msgstr ""
@@ -66,4 +66,45 @@ msgstr ""
 #: overrides/reader/donePage.js:63
 msgid ""
 "Don't miss next week's issue with more articles in your favorite magazine!"
+msgstr ""
+
+#: overrides/reader/presenter.js:120 overrides/reader/presenter.js:150
+#: overrides/reader/presenter.js:233
+msgid "Oops!"
+msgstr ""
+
+#: overrides/reader/presenter.js:121
+msgid ""
+"We could not find this issue of your magazine!\n"
+"Please try again after restarting your computer."
+msgstr ""
+
+#: overrides/reader/presenter.js:151
+msgid ""
+"We thought there were more articles for you to see but we couldn't find "
+"them.\n"
+"Please try again after restarting your computer."
+msgstr ""
+
+#. TRANSLATORS: the %s's are replaced by the name of the author
+#. and the date published, for example "by Ronaldo on Saturday,
+#. September 5, 2014". Make sure to keep the %s's in the
+#. translated string.
+#: overrides/reader/presenter.js:196
+#, c-format
+msgid "by %s on %s"
+msgstr ""
+
+#. TRANSLATORS: the %s is replaced by the name of the author,
+#. for example "by Ronaldo". Make sure to keep the %s in the
+#. translated string.
+#: overrides/reader/presenter.js:203
+#, c-format
+msgid "by %s"
+msgstr ""
+
+#: overrides/reader/presenter.js:234
+msgid ""
+"There was an error loading that page.\n"
+"Try another one or try again after restarting your computer."
 msgstr ""
