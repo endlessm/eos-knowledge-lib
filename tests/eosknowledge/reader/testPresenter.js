@@ -61,7 +61,6 @@ const MockView = new Lang.Class({
 
     show_all: function () {},
     append_article_page: function () {},
-    get_article_index: function () {},
     remove_all_article_pages: function () {},
 });
 

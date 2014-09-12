@@ -132,8 +132,6 @@ const Window = new Lang.Class({
         this._update_progress_labels();
     },
 
-    get_article_index: function (article_page) {
-        return this._article_pages.indexOf(article_page);
     },
 
     remove_all_article_pages: function () {
