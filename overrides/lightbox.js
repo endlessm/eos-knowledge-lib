@@ -91,12 +91,21 @@ const Lightbox = new Lang.Class({
             'True if the lightbox should have a close button to dismiss the overlay. Default is true',
             GObject.ParamFlags.READWRITE, true),
         /**
-         * Property: has-navigation-buttons
-         * Whether the navigation buttons should be displayed
+         * Property: has-forward-button
+         * Whether the forward button should be displayed
          */
-        'has-navigation-buttons': GObject.ParamSpec.boolean('has-navigation-buttons',
-            'Has Navigation Buttons',
-            'Boolean property to manage whether the lightbox\'s navigation buttons should be shown. Defaults to true',
+        'has-forward-button': GObject.ParamSpec.boolean('has-forward-button',
+            'Has Forward Button',
+            'Boolean property to manage whether the lightbox\'s forward button should be shown. Defaults to true',
+            GObject.ParamFlags.READWRITE, true),
+
+        /**
+         * Property: has-back-button
+         * Whether the back button should be displayed
+         */
+        'has-back-button': GObject.ParamSpec.boolean('has-back-button',
+            'Has Back Button',
+            'Boolean property to manage whether the lightbox\'s back button should be shown. Defaults to true',
             GObject.ParamFlags.READWRITE, true)
     },
     Signals: {
@@ -112,7 +121,6 @@ const Lightbox = new Lang.Class({
         this._reveal_overlays = false;
         this._transition_duration = 0;
         this._has_close_button = true;
-        this._has_navigation_buttons = true;
 
         this._lightbox_container = new LightboxContainer();
         this._lightbox_container.connect('clicked', Lang.bind(this, function () {
@@ -237,16 +245,26 @@ const Lightbox = new Lang.Class({
         return this._has_close_button;
     },
 
-    set has_navigation_buttons (v) {
-        if (this._has_navigation_buttons === v)
+    set has_forward_button (v) {
+        if (this._lightbox_container.forward_arrow_visible === v)
             return;
-        this._has_navigation_buttons = v;
-        this._lightbox_container.arrows_visible = v;
-        this.notify('has-navigation-buttons');
+        this._lightbox_container.forward_arrow_visible = v;
+        this.notify('has-forward-button');
     },
 
-    get has_navigation_buttons () {
-        return this._has_navigation_buttons;
+    get has_forward_button () {
+        return this._lightbox_container.forward_arrow_visible;
+    },
+
+    set has_back_button (v) {
+        if (this._lightbox_container.back_arrow_visible === v)
+            return;
+        this._lightbox_container.back_arrow_visible = v;
+        this.notify('has-back-button');
+    },
+
+    get has_back_button () {
+        return this._lightbox_container.back_arrow_visible;
     }
 });
 
@@ -274,7 +292,8 @@ const LightboxContainer = new Lang.Class({
         this.parent(params);
 
         this.close_visible = true;
-        this.arrows_visible = true;
+        this.forward_arrow_visible = true;
+        this.back_arrow_visible = true;
         this._content_widget = null;
         this._info_widget = null;
 
@@ -419,7 +438,7 @@ const LightboxContainer = new Lang.Class({
         }
         let arrow_width = this._MIN_BORDER;
         let arrow_height = this._MIN_BORDER;
-        if (this.arrows_visible) {
+        if (this.back_arrow_visible || this.forward_arrow_visible) {
             arrow_height = Math.max(this._previous_button.get_preferred_height()[1],
                                     this._next_button.get_preferred_height()[1]);
             arrow_width = Math.max(this._previous_button.get_preferred_width()[1],
@@ -497,9 +516,7 @@ const LightboxContainer = new Lang.Class({
             this._close_button.set_child_visible(false);
         }
 
-        if (this.arrows_visible) {
-            this._previous_button.set_child_visible(true);
-            this._next_button.set_child_visible(true);
+        if (this.forward_arrow_visible || this.back_arrow_visible) {
             // Our arrow appear centered underneath the frame
             let arrow_alloc = new Cairo.RectangleInt({
                 x: alloc.x + (alloc.width - arrow_width * 2) / 2,
@@ -510,10 +527,9 @@ const LightboxContainer = new Lang.Class({
             this._previous_button.size_allocate(arrow_alloc);
             arrow_alloc.x += arrow_width;
             this._next_button.size_allocate(arrow_alloc);
-        } else {
-            this._previous_button.set_child_visible(false);
-            this._next_button.set_child_visible(false);
         }
+        this._next_button.set_child_visible(this.forward_arrow_visible);
+        this._previous_button.set_child_visible(this.back_arrow_visible);
     },
 
     add_content_widget: function (widget) {

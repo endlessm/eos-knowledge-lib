@@ -321,8 +321,16 @@ ContentObjectModel._setup_from_json_ld = function (model, json_ld_data) {
                             printerr(err);
                         } else {
                             let resources = model.get_resources();
-                            resources.push(res);
-                            model.set_resources(resources);
+                            let resource_ekn_ids = resources.map(function (model) {
+                                return model.ekn_id;
+                            });
+                            // Never add duplicate resources.
+                            if (resource_ekn_ids.indexOf(res.ekn_id) === -1) {
+                                resources.push(res);
+                                model.set_resources(resources);
+                            } else {
+                                model.num_resources--;
+                            }
                             if (resources.length === model.num_resources) {
                                 model._resources_ready = true;
                                 model.notify('resources-ready');
