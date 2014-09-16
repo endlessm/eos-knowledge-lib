@@ -129,4 +129,11 @@ const ArticlePage = new Lang.Class({
         this.attach(view, 1, 1, 1, 1);
         view.show_all();
     },
+
+    clear_content: function () {
+        if (this._content_view !== null) {
+            this._content_view.destroy();
+            this._content_view = null;
+        }
+    },
 });

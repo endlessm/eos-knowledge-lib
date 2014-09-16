@@ -54,14 +54,19 @@ const MockView = new Lang.Class({
             }; },
         };
         this.total_pages = 0;
+        this._article_pages = [];
         this.page_manager = {
             add: function () {},
         };
     },
 
     show_all: function () {},
-    append_article_page: function () {},
-    get_article_index: function () {},
+    append_article_page: function (page) {
+        this._article_pages.push(page);
+    },
+    get_article_page: function (i) {
+        return this._article_pages[i]
+    },
     remove_all_article_pages: function () {},
 });
 
@@ -151,7 +156,6 @@ describe('Reader presenter', function () {
         let presenter;
 
         beforeEach(function () {
-            spyOn(view, 'append_article_page');
             engine.get_objects_by_query.and.callFake(function (d, q, callback) {
                 if(engine.get_objects_by_query.calls.count() === 1) {
                     callback(undefined, [EXPECTED_RESULTS[0]]);
@@ -164,11 +168,8 @@ describe('Reader presenter', function () {
         });
 
         it('has all articles as pages', function () {
-            expect(view.append_article_page.calls.count()).toBe(3);
-            EXPECTED_TITLES.forEach(function (title) {
-                expect(view.append_article_page).toHaveBeenCalledWith(jasmine.objectContaining({
-                    title: title,
-                }));
+            EXPECTED_TITLES.forEach(function (title, i) {
+                expect(view.get_article_page(i).title).toBe(title)
             });
         });
 
