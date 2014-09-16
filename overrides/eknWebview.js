@@ -30,7 +30,9 @@ const EknWebview = new Lang.Class({
         this._injection_handlers = [];
         this.parent(params);
 
-        this.get_settings().enable_developer_extras = Config.inspector_enabled;
+        let settings = this.get_settings();
+        settings.enable_developer_extras = Config.inspector_enabled;
+        settings.javascript_can_access_clipboard = true;
 
         this.connect('decide-policy', this._onNavigation.bind(this));
     },
