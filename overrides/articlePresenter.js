@@ -135,8 +135,10 @@ const ArticlePresenter = new GObject.Class({
         }
 
         // If we've already loaded/are already loading the page already, just return.
-        if (this._article_model && this._article_model.ekn_id === model.ekn_id)
+        if (this._article_model && this._article_model.ekn_id === model.ekn_id) {
+            ready();
             return;
+        }
         this._article_model = model;
 
         // Make sure we aren't currently loading anything offscreen
