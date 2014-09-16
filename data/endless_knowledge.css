@@ -555,11 +555,17 @@ scrollbars, style the GTK scrollbars to look slightly more like them */
 }
 
 .nav-back-button, .nav-forward-button {
-    color: alpha(white, 0.75);
-    background-color: alpha(black, 0.12);
-    border: 1px solid alpha(white, 0.2);
-    box-shadow: inset 0px 1px 2px alpha(black, 0.1);
+    color: white;
+    background-color: alpha(black, 0.2);
+    border: 1px solid alpha(white, 0.4);
+    box-shadow: inset 0px 1px 1px 0px alpha(black, 0.5),
+        inset 0px 1px 4px 0px alpha(black, 0.4);
     transition: padding 500ms ease-in-out;
+}
+
+.nav-back-button GtkImage, .nav-forward-button GtkImage {
+    color: white;
+    box-shadow: 0px 1px alpha(black, 0.8); /* FIXME: box-shadow outset doesn't currently work in GTK */
 }
 
 .nav-back-button {
