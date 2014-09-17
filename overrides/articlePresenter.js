@@ -30,13 +30,13 @@ const ArticlePresenter = new GObject.Class({
 
     Properties: {
         /**
-         * Property: history-model
+         * Property: article-model
          *
-         * The <HistoryModel> representing the user's article viewing history.
+         * The <ArticleObjectModel> handled by this widget.
          */
-        'history-model': GObject.ParamSpec.object('history-model', 'History model',
-            'The history object model handled by this widget',
-            GObject.ParamFlags.READWRITE, EosKnowledge.HistoryModel),
+        'article-model': GObject.ParamSpec.object('article-model', 'Article model',
+            'The article object model handled by this widget',
+            GObject.ParamFlags.READWRITE, ArticleObjectModel.ArticleObjectModel),
 
         /**
          * Property: article-view
@@ -79,6 +79,17 @@ const ArticlePresenter = new GObject.Class({
                 GObject.TYPE_OBJECT /* MediaContentObject */,
                 GObject.TYPE_BOOLEAN /* Whether the media object is internal */
             ]
+        },
+
+        /**
+         * Event: article-object-clicked
+         * Emitted when a URI to another article page is clicked.
+         * Passes the <ArticleObjectModel> object of that URI.
+         */
+        'article-object-clicked': {
+            param_types: [
+                ArticleObjectModel.ArticleObjectModel.$gtype /* ArticleObject */
+            ]
         }
     },
 
@@ -86,8 +97,6 @@ const ArticlePresenter = new GObject.Class({
     _SCROLL_DURATION: 1000,
 
     _init: function (props) {
-        this._history_model = null;
-
         this.parent(props);
 
         this.article_view.toc.transition_duration = this._SCROLL_DURATION;
@@ -100,15 +109,12 @@ const ArticlePresenter = new GObject.Class({
         this.article_view.connect('new-view-transitioned', this._update_title_and_toc.bind(this));
     },
 
-    get history_model () {
-        return this._history_model;
-    },
-
-    set history_model (v) {
-        if (this._history_model === v)
+    set article_model (v) {
+        if (this._article_model !== null && this._article_model.ekn_id === v.ekn_id)
             return;
-        this._history_model = v;
-        this.notify('history-model');
+
+        this._article_model = v;
+        this.notify('article-model');
     },
 
     /**
@@ -122,17 +128,6 @@ const ArticlePresenter = new GObject.Class({
     load_article: function (model, animation_type, ready) {
         if (ready === undefined)
             ready = function () {};
-
-        // Only add new item to history model if either there is no current item at all
-        // or if the current item is different (has a different URI) from the new item
-        if (this._history_model &&
-            (this._history_model.current_item === null ||
-            this._history_model.current_item.article_model.ekn_id !== model.ekn_id)) {
-            this._history_model.current_item = new ArticleHistoryItem({
-                title: model.title,
-                article_model: model
-            });
-        }
 
         // If we've already loaded/are already loading the page already, just return.
         if (this._article_model && this._article_model.ekn_id === model.ekn_id) {
@@ -184,26 +179,6 @@ const ArticlePresenter = new GObject.Class({
             this._webview.destroy();
             this._webview = null;
         }
-    },
-
-    /**
-     * Function: navigate_back
-     * Loads the previously viewed <ArticleObjectModel> with a 'navigate
-     * backwards' animation.
-     */
-    navigate_back: function () {
-        this._history_model.go_back();
-        this.load_article(this._history_model.current_item.article_model, EosKnowledge.LoadingAnimationType.BACKWARDS_NAVIGATION);
-    },
-
-    /**
-     * Function: navigate_forward
-     * Loads the <ArticleObjectModel> viewed after the current one with a
-     * 'navigate forwards' animation.
-     */
-    navigate_forward: function () {
-        this._history_model.go_forward();
-        this.load_article(this._history_model.current_item.article_model, EosKnowledge.LoadingAnimationType.FORWARDS_NAVIGATION);
     },
 
     _update_title_and_toc: function () {
@@ -338,7 +313,7 @@ const ArticlePresenter = new GObject.Class({
                         if (model instanceof MediaObjectModel.MediaObjectModel) {
                             this.emit('media-object-clicked', model, false);
                         } else {
-                            this.load_article(model, EosKnowledge.LoadingAnimationType.FORWARDS_NAVIGATION);
+                            this.emit('article-object-clicked', model);
                         }
                     } else {
                         printerr(err);
@@ -368,18 +343,4 @@ const ArticlePresenter = new GObject.Class({
         scroll_window.add(view);
         return scroll_window;
     },
-});
-
-const ArticleHistoryItem = new Lang.Class({
-    Name: 'ArticleHistoryItem',
-    Extends: GObject.Object,
-    Implements: [ EosKnowledge.HistoryItemModel ],
-    Properties: {
-        'title': GObject.ParamSpec.string('title', 'override', 'override',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            ''),
-        'article-model': GObject.ParamSpec.object('article-model', 'Article model',
-            'The article object model handled by this widget',
-            GObject.ParamFlags.READWRITE, ArticleObjectModel.ArticleObjectModel),
-    }
 });
