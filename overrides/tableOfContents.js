@@ -341,7 +341,9 @@ const TableOfContents = new Lang.Class({
         }
         this._section_buttons = [];
         for (let section of this._section_list) {
-            let section_button = new SectionButton(section, this._section_buttons.length);
+            let section_button = new SectionButton(section, this._section_buttons.length, {
+                can_focus: false,
+            });
             section_button.connect('clicked', Lang.bind(this, this._section_button_clicked));
             Utils.set_hand_cursor_on_widget(section_button);
             section_button.show_all();
