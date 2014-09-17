@@ -270,7 +270,6 @@ const ArticlePresenter = new GObject.Class({
         let webview = new EosKnowledge.EknWebview();
 
         webview.inject_js_from_resource('resource:///com/endlessm/knowledge/scroll_manager.js');
-        webview.inject_js_from_resource('resource:///com/endlessm/knowledge/no_link_remover.js');
         if (this.template_type === 'A')
             webview.inject_css_from_resource('resource:///com/endlessm/knowledge/hide_title.css');
 
