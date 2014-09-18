@@ -1,6 +1,4 @@
 const EosKnowledge = imports.gi.EosKnowledge;
-const EvinceDocument = imports.gi.EvinceDocument;
-const EvinceView = imports.gi.EvinceView;
 const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
@@ -9,8 +7,10 @@ const WebKit2 = imports.gi.WebKit2;
 
 const ArticleObjectModel = imports.articleObjectModel;
 const ArticlePage = imports.articlePage;
+const EknWebview = imports.eknWebview;
 const Engine = imports.engine;
 const MediaObjectModel = imports.mediaObjectModel;
+const PDFView = imports.PDFView;
 
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 
@@ -267,7 +267,7 @@ const ArticlePresenter = new GObject.Class({
     },
 
     _get_webview_for_uri: function (uri) {
-        let webview = new EosKnowledge.EknWebview();
+        let webview = new EknWebview.EknWebview();
 
         webview.inject_js_from_resource('resource:///com/endlessm/knowledge/scroll_manager.js');
         if (this.template_type === 'A')
@@ -356,17 +356,9 @@ const ArticlePresenter = new GObject.Class({
     },
 
     _get_pdfview_for_uri: function (uri) {
-        let evince_document = EvinceDocument.Document.factory_get_document(
-            this._article_model.content_uri,
-            EvinceDocument.DocumentLoadFlags.NONE, null);
-        let document_model = new EvinceView.DocumentModel({
-            document: evince_document
-        });
-        let view = new EvinceView.View();
-        view.set_model(document_model);
-        let scroll_window = new Gtk.ScrolledWindow();
-        scroll_window.add(view);
-        return scroll_window;
+        let view = new PDFView.PDFView();
+        view.load_uri(uri);
+        return view;
     },
 });
 

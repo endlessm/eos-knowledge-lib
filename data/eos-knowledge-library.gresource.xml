@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
   <gresource prefix="/com/endlessm/knowledge">
+    <file>assets/pdf-background.png</file>
     <file>endless_knowledge.css</file>
     <file>endless_reader.css</file>
     <file>hide_title.css</file>

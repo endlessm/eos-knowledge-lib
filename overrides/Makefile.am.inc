@@ -31,6 +31,7 @@ public_overrides = \
 	overrides/navButtonOverlay.js \
 	overrides/noSearchResultsPage.js \
 	overrides/pdfCard.js \
+	overrides/PDFView.js \
 	overrides/presenter.js \
 	overrides/progressCard.js \
 	overrides/previewer.js \
