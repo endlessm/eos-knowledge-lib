@@ -253,6 +253,7 @@ const Presenter = new Lang.Class({
     // ID and the app's headline.
     _parse_app_info: function (info) {
         this._domain = info['appId'].split('.').pop();
+        this.view.title = info['appTitle'];
     },
 });
 

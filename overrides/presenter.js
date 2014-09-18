@@ -46,7 +46,8 @@ const Presenter = new Lang.Class({
         this._template_type = app_content['templateType'];
         this.view = new Window.Window({
             application: app,
-            template_type: this._template_type
+            template_type: this._template_type,
+            title: app_content['appTitle'],
         });
         this._previewer = new Previewer.Previewer({
             visible: true
