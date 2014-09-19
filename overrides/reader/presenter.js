@@ -254,11 +254,8 @@ const Presenter = new Lang.Class({
     // ID and the app's headline.
     _parse_app_info: function (info) {
         this._domain = info['appId'].split('.').pop();
-<<<<<<< HEAD
         this.view.title = info['appTitle'];
-=======
         this._background_section_uri = info['backgroundSectionURI'];
->>>>>>> 212d856... Added background image for donePage
     },
 });
 
