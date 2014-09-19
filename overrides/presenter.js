@@ -278,32 +278,36 @@ const Presenter = new Lang.Class({
     },
 
     _on_media_object_clicked: function (article_presenter, media_object, is_resource) {
-        this._preview_media_object(media_object, is_resource);
-    },
-
-    _on_lightbox_previous_clicked: function (view, media_object) {
-        let resources = this._article_presenter.article_model.get_resources();
-        let current_index = this._get_position_in_resources(media_object.ekn_id, resources);
-        if (current_index > 0) {
-            // If it equals 0, it's the first resource, can't go to previous
-            this._preview_media_object(resources[current_index - 1]);
+        if (is_resource) {
+            let resources = this._article_presenter._article_model.get_resources();
+            let current_index = resources.indexOf(media_object);
+            // Checks whether forward/back arrows should be displayed.
+            this._preview_media_object(media_object, current_index > 0, current_index < resources.length - 1);
+        } else {
+            this._preview_media_object(media_object, false, false);
         }
     },
 
-    _on_lightbox_next_clicked: function (view, media_object) {
-        let resources = this._article_presenter.article_model.get_resources();
-        let current_index = this._get_position_in_resources(media_object.ekn_id, resources);
-        if (current_index >= 0 && current_index < resources.length - 1) {
-            // If it equals resources.length - 1, it's the last resource, can't go to next
-            this._preview_media_object(resources[current_index - 1]);
+    _on_lightbox_previous_clicked: function (view, lightbox) {
+        let media_object = lightbox.media_object;
+        let resources = this._article_presenter._article_model.get_resources();
+        let current_index = resources.indexOf(media_object);
+        if (current_index > -1) {
+            let new_index = current_index - 1;
+            // If the previous object is not the first, the back arrow should be displayed.
+            this._preview_media_object(resources[new_index], new_index > 0, true); 
         }
     },
 
-    _get_position_in_resources: function (article_model_id, resources) {
-        let resource_ids = resources.map(function (model) {
-            return model.ekn_id;
-        });
-        return resource_ids.indexOf(article_model_id);
+    _on_lightbox_next_clicked: function (view, lightbox) {
+        let media_object = lightbox.media_object;
+        let resources = this._article_presenter._article_model.get_resources();
+        let current_index = resources.indexOf(media_object);
+        if (current_index > -1) {
+            let new_index = current_index + 1;
+            // If the next object is not the last, the forward arrow should be displayed.
+            this._preview_media_object(resources[new_index], true, new_index < resources.length - 1);
+        }
     },
 
     _on_back: function () {
@@ -374,12 +378,13 @@ const Presenter = new Lang.Class({
         return card;
     },
 
-    _preview_media_object: function (media_object, is_resource) {
+    _preview_media_object: function (media_object, previous_arrow_visible, next_arrow_visible) {
         let infobox = MediaInfobox.MediaInfobox.new_from_ekn_model(media_object);
         this._previewer.file = Gio.File.new_for_uri(media_object.content_uri);
         this.view.lightbox.media_object = media_object;
         this.view.lightbox.infobox_widget = infobox;
         this.view.lightbox.reveal_overlays = true;
-        this.view.lightbox.has_navigation_buttons = is_resource;
+        this.view.lightbox.has_back_button = previous_arrow_visible;
+        this.view.lightbox.has_forward_button = next_arrow_visible;
     }
 });

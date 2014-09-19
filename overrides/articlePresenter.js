@@ -305,8 +305,8 @@ const ArticlePresenter = new GObject.Class({
 
             let [baseURI, hash] = decision.request.uri.split('#');
             let _resources = this._article_model.get_resources();
-            let resourceURIs = _resources.map(function (model) {
-                return model.content_uri;
+            let resource_ekn_ids = _resources.map(function (model) {
+                return model.ekn_id;
             });
 
             // If this check is true, then the base of the requested URI
@@ -317,11 +317,13 @@ const ArticlePresenter = new GObject.Class({
             if (this._article_model.ekn_id.indexOf(baseURI) === 0) {
                 decision.use();
                 return false;
-            } else if (resourceURIs.indexOf(decision.request.uri) !== -1) {
+            } else if (resource_ekn_ids.indexOf(decision.request.uri) !== -1) {
                 // Else, if the request corresponds to a media object in the
                 // resources array, emit the bat signal!
-                let media_object = _resources[resourceURIs.indexOf(decision.request.uri)];
-                this.emit('media-object-clicked', media_object, true);
+                let lightbox = _resources.filter(function (resource) {
+                    return decision.request.uri === resource.ekn_id;
+                });
+                this.emit('media-object-clicked', lightbox[0], true);
 
                 decision.ignore();
                 return true;
