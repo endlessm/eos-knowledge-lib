@@ -93,6 +93,7 @@ const Presenter = new Lang.Class({
             limit: 1,
         }, this._create_first_page.bind(this));
         this.view.done_page.get_style_context().add_class('last-page');
+        this.view.done_page.background_image_uri = this._background_section_uri;
 
         // Connect signals
         this.view.nav_buttons.connect('back-clicked', function () {
@@ -253,7 +254,11 @@ const Presenter = new Lang.Class({
     // ID and the app's headline.
     _parse_app_info: function (info) {
         this._domain = info['appId'].split('.').pop();
+<<<<<<< HEAD
         this.view.title = info['appTitle'];
+=======
+        this._background_section_uri = info['backgroundSectionURI'];
+>>>>>>> 212d856... Added background image for donePage
     },
 });
 

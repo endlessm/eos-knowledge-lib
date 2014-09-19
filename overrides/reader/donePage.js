@@ -26,7 +26,7 @@ let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 const DonePage = new Lang.Class({
     Name: 'DonePage',
     GTypeName: 'EknReaderDonePage',
-    Extends: Gtk.Overlay,
+    Extends: Gtk.Frame,
     Properties: {
         /**
          * Property: progress-label
@@ -39,6 +39,16 @@ const DonePage = new Lang.Class({
             'The progress indicator at the top of the page',
             GObject.ParamFlags.READABLE,
             ProgressLabel.ProgressLabel.$gtype),
+        /**
+         * Property: background-image-uri
+         *
+         * The background image uri for this page.
+         * Gets set by the presenter.
+         */
+        'background-image-uri': GObject.ParamSpec.string('background-image-uri', 'Background image URI',
+            'The background image of this page.',
+            GObject.ParamFlags.READWRITE,
+            ''),
     },
 
     _init: function (props) {
@@ -68,8 +78,12 @@ const DonePage = new Lang.Class({
 
         grid.add(headline);
         grid.add(bottom_line);
-        this.add(grid);
-        this.add_overlay(this._progress);
+
+        this._done_overlay = new Gtk.Overlay();
+        this._done_overlay.add(grid);
+        this._done_overlay.add_overlay(this._progress);
+
+        this.add(this._done_overlay);
 
         headline.get_style_context().add_class(EosKnowledge.STYLE_CLASS_READER_HEADLINE);
         bottom_line.get_style_context().add_class(EosKnowledge.STYLE_CLASS_READER_BOTTOM_LINE);
@@ -78,5 +92,23 @@ const DonePage = new Lang.Class({
 
     get progress_label() {
         return this._progress;
+    },
+
+    get background_image_uri () {
+        return this._background_image_uri;
+    },
+
+    set background_image_uri (v) {
+        if (this._background_image_uri === v) {
+            return;
+        }
+        this._background_image_uri = v;
+        if (this._background_image_uri !== null) {
+            let frame_css = '.done-page { background-image: url("' + this._background_image_uri + '");}';
+            let provider = new Gtk.CssProvider();
+            provider.load_from_data(frame_css);
+            let context = this.get_style_context();
+            context.add_provider(provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+        }
     },
 });
