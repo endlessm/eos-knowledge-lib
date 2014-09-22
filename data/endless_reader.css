@@ -44,3 +44,33 @@ EosWindow {
     padding-left: 50px;
     padding-right: 50px;
 }
+
+.nav-back-button, .nav-forward-button {
+    color: white;
+    background-color: alpha(black, 0.2);
+    transition: padding 500ms ease-in-out;
+}
+
+.nav-back-button GtkImage, .nav-forward-button GtkImage {
+    color: white;
+}
+
+.nav-back-button {
+    border-left: 0px;
+    border-radius: 0px 8px 8px 0px;
+    padding: 15px 15px 15px 8px;
+}
+
+.nav-forward-button {
+    border-radius: 8px 0px 0px 8px;
+    border-right: 0px;
+    padding: 15px 8px 15px 15px;
+}
+
+.nav-back-button:hover {
+    padding-left: 15px;
+}
+
+.nav-forward-button:hover {
+    padding-right: 15px;
+}

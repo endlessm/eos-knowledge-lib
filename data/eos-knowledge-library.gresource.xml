@@ -7,5 +7,7 @@
     <file>hide_title.css</file>
     <file>scroll_manager.js</file>
     <file>pdf_icon.png</file>
+    <file>reader/left-arrow.svg</file>
+    <file>reader/right-arrow.svg</file>
   </gresource>
 </gresources>
