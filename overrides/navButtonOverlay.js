@@ -2,6 +2,7 @@
 
 const EosKnowledge = imports.gi.EosKnowledge;
 const GObject = imports.gi.GObject;
+const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
@@ -39,6 +40,20 @@ const NavButtonOverlay = new Lang.Class({
             'Is Forward Visible',
             'Boolean property to manage whether the Forward button should be shown. Defaults to true',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT, true),
+        /**
+         * Property: 'back-image-uri'
+         * Uri of the image to be displayed in the back button
+         */
+        'back-image-uri': GObject.ParamSpec.string('back-image-uri', 'Back Image URI',
+            'URI of the image to be displayed in the back button',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
+        /**
+         * Property: 'forward-image-uri'
+         * The image to be displayed in the forward button
+         */
+        'forward-image-uri': GObject.ParamSpec.string('forward-image-uri', 'Forward Image URI',
+            'URI of the image to be displayed in the forward button',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
     },
 
     Signals: {
@@ -61,12 +76,7 @@ const NavButtonOverlay = new Lang.Class({
         /*
          * Back button
          */
-        let back_image = new Gtk.Image({
-            icon_name: 'go-previous-symbolic',
-            pixel_size: this._ARROW_SIZE,
-        });
         this._back_button = new Gtk.Button({
-            image: back_image,
             halign: Gtk.Align.START,
             valign: Gtk.Align.CENTER,
             no_show_all: true,
@@ -85,12 +95,7 @@ const NavButtonOverlay = new Lang.Class({
         /*
          * Forward button
          */
-        let forward_image = new Gtk.Image({
-            icon_name: 'go-next-symbolic',
-            pixel_size: this._ARROW_SIZE,
-        });
         this._forward_button = new Gtk.Button({
-            image: forward_image,
             halign: Gtk.Align.END,
             valign: Gtk.Align.CENTER,
             no_show_all: true,
@@ -104,10 +109,14 @@ const NavButtonOverlay = new Lang.Class({
             button.queue_resize();
         });
 
+        this.parent(props);
+
+        this._back_button.image = this._create_new_image(this.back_image_uri, 'go-previous-symbolic');
+        this._forward_button.image = this._create_new_image(this.forward_image_uri, 'go-next-symbolic');
+
         Utils.set_hand_cursor_on_widget(this._back_button);
         Utils.set_hand_cursor_on_widget(this._forward_button);
 
-        this.parent(props);
         this.add_overlay(this._back_button);
         this.add_overlay(this._forward_button);
     },
@@ -132,5 +141,21 @@ const NavButtonOverlay = new Lang.Class({
 
     get forward_visible () {
         return this._forward_button.visible;
+    },
+
+    _create_new_image: function (image_uri, fallback_icon_name) {
+        // If the image URIs exists, create new icons for it; otherwise fallback to icon.
+        let new_image;
+        if (image_uri) {
+            let file = Gio.File.new_for_uri(image_uri);
+            let icon = new Gio.FileIcon({ file: file });
+            new_image = new Gtk.Image({ gicon: icon });
+        } else {
+            new_image = new Gtk.Image({
+                icon_name: fallback_icon_name,
+                pixel_size: this._ARROW_SIZE,
+            });
+        }
+        return new_image;
     },
 });
