@@ -1,6 +1,7 @@
 {
     "titleImageURI": "resource:///com/endlessm/thrones/agot.svg",
     "appId": "com.endlessm.thrones-en",
+    "appTitle": "Game of Thrones",
     "backgroundHomeURI": "resource:///com/endlessm/thrones/background.jpg",
     "backgroundSectionURI": "resource:///com/endlessm/thrones/background_blurred.jpg",
     "language": "en",
