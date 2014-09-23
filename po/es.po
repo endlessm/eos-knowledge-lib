@@ -11,8 +11,8 @@ msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
 "POT-Creation-Date: 2014-09-12 20:20+0000\n"
-"PO-Revision-Date: 2014-09-12 20:21+0000\n"
-"Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
+"PO-Revision-Date: 2014-09-17 00:21+0000\n"
+"Last-Translator: c.sanchez <cassandra@endlessm.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/projects/p/eos-knowledge-lib/language/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -73,19 +73,19 @@ msgstr "¡No te pierdas la edición de la próxima semana que tendrá más artí
 #: overrides/reader/presenter.js:120 overrides/reader/presenter.js:150
 #: overrides/reader/presenter.js:233
 msgid "Oops!"
-msgstr ""
+msgstr "¡Ups!"
 
 #: overrides/reader/presenter.js:121
 msgid ""
 "We could not find this issue of your magazine!\n"
 "Please try again after restarting your computer."
-msgstr ""
+msgstr "¡No pudimos encontrar esta edición de tu revista!\nPor favor intenta de nuevo después de reiniciar tu computadora."
 
 #: overrides/reader/presenter.js:151
 msgid ""
 "We thought there were more articles for you to see but we couldn't find them.\n"
 "Please try again after restarting your computer."
-msgstr ""
+msgstr "Pensamos que había más artículos para que leas pero no los pudimos encontrar.\nPor favor intenta de nuevo después de reiniciar tu computadora."
 
 #. TRANSLATORS: the %s's are replaced by the name of the author
 #. and the date published, for example "by Ronaldo on Saturday,
@@ -94,7 +94,7 @@ msgstr ""
 #: overrides/reader/presenter.js:196
 #, c-format
 msgid "by %s on %s"
-msgstr ""
+msgstr "escrito por %s el %s"
 
 #. TRANSLATORS: the %s is replaced by the name of the author,
 #. for example "by Ronaldo". Make sure to keep the %s in the
@@ -102,10 +102,10 @@ msgstr ""
 #: overrides/reader/presenter.js:203
 #, c-format
 msgid "by %s"
-msgstr ""
+msgstr "escrito por %s"
 
 #: overrides/reader/presenter.js:234
 msgid ""
 "There was an error loading that page.\n"
 "Try another one or try again after restarting your computer."
-msgstr ""
+msgstr "Hubo un error al cargar esa página.\nPor favor intenta con otra o intenta de nuevo después de reiniciar tu computadora."
