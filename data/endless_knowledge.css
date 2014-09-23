@@ -624,3 +624,7 @@ scrollbars, style the GTK scrollbars to look slightly more like them */
     margin: 8px 0;
     background-color: white;
 }
+
+.pdf-view {
+    background-image: url("assets/pdf-background.png");
+}

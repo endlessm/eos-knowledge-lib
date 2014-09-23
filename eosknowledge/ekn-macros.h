@@ -520,4 +520,11 @@ enum_type##_get_type (void) \
  */
 #define EKN_STYLE_CLASS_READER_ARTICLE_PAGE_ATTRIBUTION "article-page-attribution"
 
+/**
+ * EKN_STYLE_CLASS_PDF_VIEW:
+ *
+ * A CSS class to match the pdf view.
+ */
+#define EKN_STYLE_CLASS_PDF_VIEW "pdf-view"
+
 #endif /* EKN_MACROS_H */

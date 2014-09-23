@@ -24,6 +24,7 @@ javascript_tests = \
 	tests/eosknowledge/testMediaObjectModels.js \
 	tests/eosknowledge/testNoSearchResultsPageA.js \
 	tests/eosknowledge/testNoSearchResultsPageB.js \
+	tests/eosknowledge/testPDFView.js \
 	tests/eosknowledge/testPresenter.js \
 	tests/eosknowledge/testPreviewer.js \
 	tests/eosknowledge/testProgressCard.js \
@@ -42,19 +43,20 @@ javascript_tests = \
 	tests/eosknowledge/reader/testWindow.js \
 	$(NULL)
 test_content = \
+	tests/test-content/agot.svg \
+	tests/test-content/app.json \
 	tests/test-content/article-search-results.jsonld \
 	tests/test-content/content-search-results.jsonld \
 	tests/test-content/cyprus.jsonld \
 	tests/test-content/emacs.jsonld \
-	tests/test-content/media-search-results.jsonld \
-	tests/test-content/app.json \
 	tests/test-content/frango-frito.jsonld \
 	tests/test-content/greyjoy-article.jsonld \
-	tests/test-content/rick-astley-image.jsonld \
+	tests/test-content/media-search-results.jsonld \
 	tests/test-content/never-gonna-give-you-up-video.jsonld \
-	tests/test-content/sample.mp4 \
-	tests/test-content/agot.svg \
 	tests/test-content/overrides.css \
+	tests/test-content/pdf-sample1.pdf \
+	tests/test-content/rick-astley-image.jsonld \
+	tests/test-content/sample.mp4 \
 	$(NULL)
 EXTRA_DIST += \
 	$(javascript_tests) \
