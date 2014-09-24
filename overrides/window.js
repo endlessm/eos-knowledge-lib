@@ -255,23 +255,13 @@ const Window = new Lang.Class({
             this.emit('forward-clicked');
         }.bind(this));
 
-        this.button_box = new Gtk.Box();
-        this.button_box.get_style_context().add_class(Gtk.STYLE_CLASS_LINKED);
-        this.button_box.add(this.history_buttons);
-
-        this.invisible_box = new Gtk.Box();
-
-        this.button_stack = new Gtk.Stack({
-            transition_type: Gtk.StackTransitionType.CROSSFADE,
-            transition_duration: this.TRANSITION_DURATION
-        });
-        this.button_stack.add(this.button_box);
-        this.button_stack.add(this.invisible_box);
-        this.button_stack.visible_child = this.invisible_box;
-        this.button_stack.show_all();
+        this.history_buttons.get_style_context().add_class(Gtk.STYLE_CLASS_LINKED);
+        this.history_buttons.show_all();
 
         this._lightbox.add(this._section_article_page);
-        this.page_manager.add(this._home_page);
+        this.page_manager.add(this._home_page, {
+            left_topbar_widget: this.history_buttons
+        });
         this.page_manager.add(this._categories_page);
         this._search_box = new Endless.SearchBox();
         this._search_box.connect('notify::has-focus', function () {
@@ -289,11 +279,11 @@ const Window = new Lang.Class({
         this._search_box.show();
 
         this.page_manager.add(this._no_search_results_page, {
-            left_topbar_widget: this.button_stack,
+            left_topbar_widget: this.history_buttons,
             center_topbar_widget: this._search_box
         });
         this.page_manager.add(this._lightbox, {
-            left_topbar_widget: this.button_stack,
+            left_topbar_widget: this.history_buttons,
             center_topbar_widget: this._search_box
         });
         this.page_manager.transition_duration = this.TRANSITION_DURATION;
@@ -467,7 +457,6 @@ const Window = new Lang.Class({
             this.page_manager.transition_type = Gtk.StackTransitionType.SLIDE_RIGHT;
         }
         this._section_article_page.show_article = false;
-        this.button_stack.visible_child = this.invisible_box;
         this.page_manager.visible_child = this._lightbox;
 
         this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_SHOW_HOME_PAGE);
@@ -483,11 +472,11 @@ const Window = new Lang.Class({
      * This method causes the window to animate to the article page.
      */
     show_article_page: function () {
+        this._search_box.text = '';
         this.page_manager.transition_type = Gtk.StackTransitionType.SLIDE_LEFT;
         this._section_article_page.show_article = true;
         this.page_manager.visible_child = this._lightbox;
 
-        this.button_stack.visible_child = this.button_box;
         this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_SHOW_HOME_PAGE);
         this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_SHOW_CATEGORIES_PAGE);
         this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_SHOW_SECTION_PAGE);
@@ -510,7 +499,6 @@ const Window = new Lang.Class({
             this.page_manager.transition_type = Gtk.StackTransitionType.SLIDE_RIGHT;
         }
         this._section_article_page.show_article = false;
-        this.button_stack.visible_child = this.invisible_box;
         this.page_manager.visible_child = this._no_search_results_page;
 
         this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_SHOW_HOME_PAGE);
