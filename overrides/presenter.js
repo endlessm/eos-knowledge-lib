@@ -271,8 +271,8 @@ const Presenter = new Lang.Class({
         this._target_page_title = _("Results for \"%s\"").format(query.q);
         this.view.lock_ui();
 
-        // We clear the search box in the home page after each search
-        // but add the most recent query to the topbar search box 
+        // We clear the search box in the home page after each search.
+        // The topbar search box should also clear once an article has been chosen.
         this.view.home_page.search_box.text = '';
         this.view.search_box.text = query.q;
 
