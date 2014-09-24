@@ -67,9 +67,7 @@ const Application = new Lang.Class({
         this.parent(props);
     },
 
-    vfunc_startup: function () {
-        this.parent();
-
+    vfunc_activate: function () {
         let provider = new Gtk.CssProvider();
         provider.load_from_file(this.css_file);
         Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(),
