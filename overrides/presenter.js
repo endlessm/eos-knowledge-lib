@@ -72,6 +72,7 @@ const Presenter = new Lang.Class({
 
         // Keeps track of the broad query that led to an individual article.
         this._latest_origin_query = '{}';
+        this._latest_search_text = '';
         this._target_page_title = '';
         this._history_model = new EosKnowledge.HistoryModel();
         this._add_history_object_for_home_page();
@@ -286,6 +287,7 @@ const Presenter = new Lang.Class({
 
     _on_search_text_changed: function (view, entry) {
         let query = this._sanitize_query(entry.text);
+        this._latest_search_text = query;
         // Ignore empty queries
         if (query.length === 0) {
             return;
@@ -315,6 +317,9 @@ const Presenter = new Lang.Class({
             this._search_origin_page = this.view.section_page;
         }
 
+        this._latest_origin_query = JSON.stringify({
+            'prefix': this._latest_search_text
+        });
         // If template B, we need to set the autocomplete results as the cards on the
         // section page
         if (this._template_type === 'B') {
