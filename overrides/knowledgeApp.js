@@ -4,7 +4,6 @@ const Lang = imports.lang;
 
 const EknApplication = imports.application;
 const Presenter = imports.presenter;
-const SearchProvider = imports.searchProvider.SearchProvider;
 
 const KnowledgeApp = new Lang.Class ({
     Name: 'KnowledgeApp',
@@ -15,8 +14,6 @@ const KnowledgeApp = new Lang.Class ({
         props = props || {};
         props.css_file = Gio.File.new_for_uri('resource:///com/endlessm/knowledge/endless_knowledge.css');
         this.parent(props);
-
-        this.search_provider = new SearchProvider();
     },
 
     vfunc_startup: function() {
@@ -33,17 +30,6 @@ const KnowledgeApp = new Lang.Class ({
             this.activate();
             this._presenter._on_search(this._presenter.view, query);
         }.bind(this));
-    },
-
-    vfunc_dbus_register: function(connection, path) {
-        this.parent(connection, path);
-        this.search_provider.export(connection, path);
-        return true;
-    },
-
-    vfunc_dbus_unregister: function(connection, path) {
-        this.parent(connection, path);
-        this.search_provider.unexport(connection, path);
     },
 
     vfunc_activate: function () {
