@@ -4,6 +4,8 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
+const SearchProvider = imports.searchProvider.SearchProvider;
+
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 
 /**
@@ -65,11 +67,22 @@ const Application = new Lang.Class({
 
     _init: function (props) {
         this.parent(props);
+
+        this.search_provider = new SearchProvider();
     },
 
-    vfunc_startup: function () {
-        this.parent();
+    vfunc_dbus_register: function(connection, path) {
+        this.parent(connection, path);
+        this.search_provider.export(connection, path);
+        return true;
+    },
 
+    vfunc_dbus_unregister: function(connection, path) {
+        this.parent(connection, path);
+        this.search_provider.unexport(connection, path);
+    },
+
+    vfunc_activate: function () {
         let provider = new Gtk.CssProvider();
         provider.load_from_file(this.css_file);
         Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(),

@@ -4,7 +4,7 @@ const EosKnowledge = imports.gi.EosKnowledge;
 const Gio = imports.gi.Gio;
 const System = imports.system;
 
-if (ARGV.length !== 2) {
+if (ARGV.length < 2) {
     printerr("Run this script by passing it an app ID and a gresource file");
     System.exit(1);
 }
@@ -33,10 +33,16 @@ default:
     System.exit(1);
 }
 
+let flags = Gio.ApplicationFlags.FLAGS_NONE;
+
+if (ARGV.indexOf('--gapplication-service') !== -1) {
+    flags |= Gio.ApplicationFlags.IS_SERVICE;
+}
+
 let app = new AppClass({
     application_id: ARGV[0],
-    flags: Gio.ApplicationFlags.FLAGS_NONE,
+    flags: flags,
+    inactivity_timeout: 12000,
     resource_file: resource_file,
 });
 app.run([]);
-

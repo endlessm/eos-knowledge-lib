@@ -338,6 +338,14 @@ const Presenter = new Lang.Class({
         }.bind(this));
     },
 
+    on_search_result_activated: function (model, query) {
+        this._article_presenter.load_article(model, EosKnowledge.LoadingAnimationType.NONE,
+            function () {
+                this.view.search_box.text = query;
+                this.view.show_article_page();
+            }.bind(this));
+    },
+
     _on_article_card_clicked: function (card, model) {
         let animation_type = this.view.get_visible_page() !== this.view.article_page ? EosKnowledge.LoadingAnimationType.NONE : EosKnowledge.LoadingAnimationType.FORWARDS_NAVIGATION;
         model.fetch_all(this._engine);
