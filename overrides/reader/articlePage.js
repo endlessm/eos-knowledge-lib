@@ -18,7 +18,7 @@ const ProgressLabel = imports.reader.progressLabel;
 const ArticlePage = new Lang.Class({
     Name: 'ArticlePage',
     GTypeName: 'EknReaderArticlePage',
-    Extends: Gtk.Grid,
+    Extends: Gtk.Frame,
     Properties: {
         /**
          * Property: title
@@ -52,9 +52,6 @@ const ArticlePage = new Lang.Class({
 
     _init: function (props) {
         props = props || {};
-        props.column_homogeneous = true;
-        // Keep a minimum width, or the labels get kinda illegible
-        props.width_request = 600;
 
         this._progress_label = new ProgressLabel.ProgressLabel();
         this._title_label = new Gtk.Label({
@@ -84,8 +81,15 @@ const ArticlePage = new Lang.Class({
         this._inner_grid.add(this._title_label);
         this._inner_grid.add(this._attribution_label);
 
-        this.attach(this._progress_label, 0, 0, 2, 1);
-        this.attach(this._inner_grid, 0, 1, 1, 1);
+        this._grid = new Gtk.Grid({
+            column_homogeneous: true,
+            // Keep a minimum width, or the labels get kinda illegible
+            width_request: 600,
+        });
+        this._grid.attach(this._progress_label, 0, 0, 2, 1);
+        this._grid.attach(this._inner_grid, 0, 1, 1, 1);
+
+        this.add(this._grid);
 
         this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_ARTICLE_PAGE);
         this._title_label.get_style_context().add_class(EosKnowledge.STYLE_CLASS_ARTICLE_PAGE_TITLE);
@@ -126,7 +130,7 @@ const ArticlePage = new Lang.Class({
         }
         view.expand = true;
         this._content_view = view;
-        this.attach(view, 1, 1, 1, 1);
+        this._grid.attach(view, 1, 1, 1, 1);
         view.show_all();
     },
 
