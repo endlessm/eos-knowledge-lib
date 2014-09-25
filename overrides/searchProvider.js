@@ -39,7 +39,7 @@ const SearchProviderErrors = {
 };
 
 const SearchProvider = Lang.Class({
-    Name: 'SearchProvider',
+    Name: 'EknSearchProvider',
     Extends: GObject.Object,
 
     Signals: {
@@ -60,7 +60,7 @@ const SearchProvider = Lang.Class({
         this.parent(args);
 
         this._impl = Gio.DBusExportedObject.wrapJSObject(SearchIFace, this);
-        this._search_provider_domain = GLib.quark_from_string("Knowledge App Search Provider Error");
+        this._search_provider_domain = GLib.quark_from_string('Knowledge App Search Provider Error');
 
         this._search_domain = Gio.Application.get_default().application_id.split('.').pop();
 
