@@ -139,7 +139,7 @@ const SearchProvider = Lang.Class({
         for (let obj of result_ekn_objects) {
             if (typeof obj !== 'undefined') {
                 let displayTitle;
-                if (obj.hasOwnProperty('originalTitle')) {
+                if (typeof obj.originalTitle !== 'undefined') {
                     displayTitle = obj.originalTitle;
                 } else {
                     displayTitle = obj.title;
@@ -150,7 +150,7 @@ const SearchProvider = Lang.Class({
                     id: new GLib.Variant('s', obj.ekn_id),
                 };
 
-                if (obj.hasOwnProperty('synopsis')) {
+                if (typeof obj.synopsis !== 'undefined') {
                     result.description = new GLib.Variant('s', obj.synopsis);
                 }
                 result_gvariants.push(result);
