@@ -163,8 +163,29 @@ const SearchProvider = Lang.Class({
     ActivateResult: function (id, terms, timestamp) {
         let query = terms.join(' ');
         let model = this._get_from_cache(id);
-        model.fetch_all(this._engine);
-        this.emit('load-page', model, query, timestamp);
+
+        // if there's a cache miss (because the app auto-quit after a timeout
+        // before the user activated a result), re-fetch it. otherwise just
+        // emit the load-page signal with the cache result
+        if (typeof model === 'undefined') {
+            // id is a full EKN URI, but the engine operates in domains and
+            // SHA ids (the last two components of the EKN URI path)
+            let uri_parts = id.split('/');
+            let obj_id = uri_parts.pop();
+            let domain = uri_parts.pop();
+
+            this._engine.get_object_by_id(domain, obj_id, function (err, new_model) {
+                if (err) {
+                    throw err;
+                } else {
+                    new_model.fetch_all(this._engine);
+                    this.emit('load-page', new_model, query, timestamp);
+                }
+            }.bind(this));
+        } else {
+            model.fetch_all(this._engine);
+            this.emit('load-page', model, query, timestamp);
+        }
     },
 
     LaunchSearch: function (terms, timestamp) {
