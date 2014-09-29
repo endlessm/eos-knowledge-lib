@@ -339,6 +339,7 @@ const Presenter = new Lang.Class({
     },
 
     on_search_result_activated: function (model, query) {
+        this._add_history_object_for_article_page(model);
         this._article_presenter.load_article(model, EosKnowledge.LoadingAnimationType.NONE,
             function () {
                 this.view.search_box.text = query;
