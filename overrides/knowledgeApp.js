@@ -22,7 +22,9 @@ const KnowledgeApp = new Lang.Class ({
         this.search_provider.connect('load-page', function (launcher, model, query, timestamp) {
             this._activation_timestamp = timestamp;
             this.activate();
-            this._presenter.on_search_result_activated(model, query);
+            let results = this.search_provider.get_results();
+            let more_results_callback = this.search_provider.get_more_results_callback();
+            this._presenter.on_search_result_activated(model, query, results, more_results_callback);
         }.bind(this));
 
         this.search_provider.connect('load-query', function (launcher, query, timestamp) {
