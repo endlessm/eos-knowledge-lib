@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2014-09-12 20:20+0000\n"
+"POT-Creation-Date: 2014-09-23 04:50+0000\n"
 "PO-Revision-Date: 2014-09-17 00:21+0000\n"
 "Last-Translator: c.sanchez <cassandra@endlessm.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/projects/p/eos-knowledge-lib/language/es/)\n"
@@ -29,13 +29,13 @@ msgstr "Hola Mundo C!"
 msgid "Lesson %d"
 msgstr "Lección %d"
 
-#: overrides/presenter.js:117 overrides/presenter.js:353
+#: overrides/presenter.js:119 overrides/presenter.js:359
 msgid "Articles"
 msgstr "Artículos"
 
 #. TRANSLATORS: this appears on top of the search results page; %s will
 #. be replaced with the string that the user searched for.
-#: overrides/presenter.js:207 overrides/noSearchResultsPage.js:61
+#: overrides/presenter.js:209 overrides/noSearchResultsPage.js:61
 #, c-format
 msgid "Results for \"%s\""
 msgstr "Resultados para \"%s\""
@@ -70,28 +70,34 @@ msgid ""
 "Don't miss next week's issue with more articles in your favorite magazine!"
 msgstr "¡No te pierdas la edición de la próxima semana que tendrá más artículos en tu revista favorita!"
 
-#: overrides/reader/presenter.js:120 overrides/reader/presenter.js:150
-#: overrides/reader/presenter.js:233
+#: overrides/reader/presenter.js:145 overrides/reader/presenter.js:179
+#: overrides/reader/presenter.js:240
 msgid "Oops!"
 msgstr "¡Ups!"
 
-#: overrides/reader/presenter.js:121
+#: overrides/reader/presenter.js:146
 msgid ""
 "We could not find this issue of your magazine!\n"
 "Please try again after restarting your computer."
 msgstr "¡No pudimos encontrar esta edición de tu revista!\nPor favor intenta de nuevo después de reiniciar tu computadora."
 
-#: overrides/reader/presenter.js:151
+#: overrides/reader/presenter.js:180
 msgid ""
 "We thought there were more articles for you to see but we couldn't find them.\n"
 "Please try again after restarting your computer."
 msgstr "Pensamos que había más artículos para que leas pero no los pudimos encontrar.\nPor favor intenta de nuevo después de reiniciar tu computadora."
 
+#: overrides/reader/presenter.js:241
+msgid ""
+"There was an error loading that page.\n"
+"Try another one or try again after restarting your computer."
+msgstr "Hubo un error al cargar esa página.\nPor favor intenta con otra o intenta de nuevo después de reiniciar tu computadora."
+
 #. TRANSLATORS: the %s's are replaced by the name of the author
 #. and the date published, for example "by Ronaldo on Saturday,
 #. September 5, 2014". Make sure to keep the %s's in the
 #. translated string.
-#: overrides/reader/presenter.js:196
+#: overrides/reader/presenter.js:272
 #, c-format
 msgid "by %s on %s"
 msgstr "escrito por %s el %s"
@@ -99,13 +105,7 @@ msgstr "escrito por %s el %s"
 #. TRANSLATORS: the %s is replaced by the name of the author,
 #. for example "by Ronaldo". Make sure to keep the %s in the
 #. translated string.
-#: overrides/reader/presenter.js:203
+#: overrides/reader/presenter.js:279
 #, c-format
 msgid "by %s"
 msgstr "escrito por %s"
-
-#: overrides/reader/presenter.js:234
-msgid ""
-"There was an error loading that page.\n"
-"Try another one or try again after restarting your computer."
-msgstr "Hubo un error al cargar esa página.\nPor favor intenta con otra o intenta de nuevo después de reiniciar tu computadora."
