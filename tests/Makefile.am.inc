@@ -54,6 +54,7 @@ test_content = \
 	tests/test-content/media-search-results.jsonld \
 	tests/test-content/never-gonna-give-you-up-video.jsonld \
 	tests/test-content/overrides.css \
+	tests/test-content/pdf-article.jsonld \
 	tests/test-content/pdf-sample1.pdf \
 	tests/test-content/rick-astley-image.jsonld \
 	tests/test-content/sample.mp4 \
