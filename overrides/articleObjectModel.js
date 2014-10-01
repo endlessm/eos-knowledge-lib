@@ -67,6 +67,33 @@ const ArticleObjectModel = new Lang.Class({
             'Article Number for the Reader App',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
             0, GLib.MAXUINT32, 0),
+
+        /**
+         * Property: page-begin
+         * Integer that indicates the page number in which the article begins.
+         * Defaults to 1, which means that the ArticleObject begins in the first page
+         * of a PDF document.
+         *
+         * Since: 0.2
+         */
+        'page-begin': GObject.ParamSpec.uint('page-begin', 'PDF Begin Page',
+            'Page number where the article begins for this PDF article',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
+            1, GLib.MAXUINT32, 1),
+
+        /**
+         * Property: page-end
+         * Integer that indicates the page number in which the article ends, if the article
+         * is actually a subset of the whole PDF document.
+         * Defaults to 0, which means that the ArticleObject ends in the last page
+         * of a PDF document.
+         *
+         * Since: 0.2
+         */
+        'page-end': GObject.ParamSpec.uint('page-end', 'PDF End Page',
+            'Page number where the article ends for this PDF article',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
+            0, GLib.MAXUINT32, 0),
     },
     
     _init: function (params) {
@@ -89,6 +116,14 @@ const ArticleObjectModel = new Lang.Class({
         return this._article_number;
     },
 
+    get page_begin () {
+        return this._page_begin;
+    },
+
+    get page_end () {
+        return this._page_end;
+    },
+
     set word_count (v) {
         this._word_count = v;
     },
@@ -103,6 +138,14 @@ const ArticleObjectModel = new Lang.Class({
 
     set article_number(v) {
         this._article_number = v;
+    },
+
+    set page_begin (v) {
+        this._page_begin = v;
+    },
+
+    set page_end (v) {
+        this._page_end = v;
     },
 });
 
@@ -149,6 +192,18 @@ ArticleObjectModel._props_from_json_ld = function (json_ld_data) {
         if (json_ld_data.articleNumber < 0)
             throw new Error('Article number must be a non-negative integer.');
         props.article_number = parseInt(json_ld_data.articleNumber);
+    }
+
+    if (json_ld_data.hasOwnProperty('pageBegin')) {
+        if (json_ld_data.pageBegin < 0)
+            throw new Error('Begin Page must be a positive integer.');
+        props.page_begin = parseInt(json_ld_data.pageBegin);
+    }
+
+    if (json_ld_data.hasOwnProperty('pageEnd')) {
+        if (json_ld_data.pageEnd < 0)
+            throw new Error('End Page must be a non-negative integer.');
+        props.page_end = parseInt(json_ld_data.pageEnd);
     }
 
     return props;

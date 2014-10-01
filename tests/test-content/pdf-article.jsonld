@@ -1,0 +1,42 @@
+{
+    "@context": [
+        "http://127.0.0.1:3003/v2/_context/ContentObject.jsonld",
+        {
+            "wordCount": "schema:Integer",
+            "articleBody": "schema:mainContentText",
+            "articleObject": "ekv:ArticleObject#",
+            "treeNode": "ekv:TreeNode#",
+            "hasContent": {
+                "@type": "@id",
+                "@id": "treeNode:hasContent"
+            },
+            "hasParent": "treeNode:hasParent",
+            "hasLabel": "treeNode:hasLabel",
+            "hasIndex": "treeNode:hasIndex",
+            "hasIndexLabel": "treeNode:hasIndexLabel",
+            "pageBegin": "ekv:ArticleObject#pageBegin",
+            "pageEnd": "ekv:ArticleObject#pageEnd",
+            "tableOfContents": {
+                "@container": "@list",
+                "@id": "ekv:TreeNode"
+            }
+        }
+    ],
+    "@id": "ekn:pdf_app/Sample_Document",
+    "@type": "ekv:ArticleObject",
+    "title": "Sample PDF Document",
+    "synopsis": "Sample PDF Document",
+    "pageBegin": 1,
+    "pageEnd": 5,
+    "articleBody": "This is a sample PDF article.",
+    "resources": [
+        {
+            "@id": "ekn:docs/pdf-sample1.pdf",
+            "@type": "ekv:ImageObject",
+            "contentURL": "ekn:_docs/pdf-sample1.pdf",
+            "caption": "Sample PDF",
+            "contentSize": "32KB",
+            "encodingFormat": "pdf"
+        }
+    ]
+}

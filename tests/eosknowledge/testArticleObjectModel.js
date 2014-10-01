@@ -68,3 +68,27 @@ describe ('Reader App Article Object', function () {
         expect(readerArticleObject.article_number).toBeGreaterThan(-1);
     });
 });
+
+describe ('PDF Article Object', function () {
+    let pdfArticleObject;
+    let mockPdfArticleData = utils.parse_object_from_path(MOCK_ARTICLES_PATH + 'pdf-article.jsonld');
+
+    beforeEach (function () {
+        jasmine.addMatchers(InstanceOfMatcher.customMatchers);
+
+        pdfArticleObject = new EosKnowledge.ArticleObjectModel.new_from_json_ld(mockPdfArticleData);
+    });
+
+    it ('should present the properties inherent to the PDF Article Object', function () {
+        expect(pdfArticleObject.page_begin).toBeDefined();
+        expect(pdfArticleObject.page_end).toBeDefined();
+    });
+
+    it ('should properly parse properties inherent to the PDF Article Object', function () {
+        expect(pdfArticleObject.page_begin).toEqual(jasmine.any(Number));
+        expect(pdfArticleObject.page_begin).toBeGreaterThan(0);
+
+        expect(pdfArticleObject.page_end).toEqual(jasmine.any(Number));
+        expect(pdfArticleObject.page_end).toBeGreaterThan(-1);
+    });
+});
