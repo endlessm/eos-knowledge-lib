@@ -338,7 +338,13 @@ const Presenter = new Lang.Class({
         }.bind(this));
     },
 
-    on_search_result_activated: function (model, query) {
+    on_search_result_activated: function (model, query, results, more_results_callback) {
+        let query_obj = {
+            'q': query,
+        };
+        this._refresh_sidebar_callback(null, results, more_results_callback);
+
+        this._latest_origin_query = JSON.stringify(query_obj);
         this._add_history_object_for_article_page(model);
         this._article_presenter.load_article(model, EosKnowledge.LoadingAnimationType.NONE,
             function () {

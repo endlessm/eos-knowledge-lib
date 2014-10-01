@@ -63,6 +63,8 @@ const SearchProvider = Lang.Class({
         this._search_provider_domain = GLib.quark_from_string('Knowledge App Search Provider Error');
 
         this._search_domain = Gio.Application.get_default().application_id.split('.').pop();
+        this._search_results = null;
+        this._more_results_callback = null;
 
         this._engine = new EosKnowledge.Engine();
         this._object_cache = {};
@@ -86,13 +88,21 @@ const SearchProvider = Lang.Class({
         return this._object_cache[id];
     },
 
+    get_results: function () {
+        return this._search_results;
+    },
+
+    get_more_results_callback: function () {
+        return this._more_results_callback;
+    },
+
     _run_query: function (terms, limit, cb) {
         let search_phrase = terms.join(' ');
         this._engine.get_objects_by_query(this._search_domain, {
             q: search_phrase,
             limit: limit,
-        }, function (err, results) {
-            cb(err, results);
+        }, function (err, results, more_results_callback) {
+            cb(err, results, more_results_callback);
         }.bind(this));
     },
 
@@ -101,9 +111,11 @@ const SearchProvider = Lang.Class({
         app.hold();
 
         let terms = params[0];
-        this._run_query(terms, this.NUM_RESULTS, function (err, results) {
+        this._run_query(terms, this.NUM_RESULTS, function (err, results, more_results_callback) {
             if (!err) {
                 this._add_results_to_cache(results);
+                this._search_results = results;
+                this._more_results_callback = more_results_callback;
                 let ids = results.map(function (result) { return result.ekn_id });
                 invocation.return_value(new GLib.Variant('(as)', [ids]));
             } else {
@@ -119,9 +131,11 @@ const SearchProvider = Lang.Class({
 
         let previous = params[0];
         let terms = params[1];
-        this._run_query(terms, this.NUM_RESULTS, function (err, results) {
+        this._run_query(terms, this.NUM_RESULTS, function (err, results, more_results_callback) {
             if (!err) {
                 this._add_results_to_cache(results);
+                this._search_results = results;
+                this._more_results_callback = more_results_callback;
                 let ids = results.map(function (result) { return result.ekn_id });
                 invocation.return_value(new GLib.Variant('(as)', [ids]));
             } else {
@@ -174,13 +188,24 @@ const SearchProvider = Lang.Class({
             let obj_id = uri_parts.pop();
             let domain = uri_parts.pop();
 
-            this._engine.get_object_by_id(domain, obj_id, function (err, new_model) {
-                if (err) {
-                    throw err;
-                } else {
-                    new_model.fetch_all(this._engine);
-                    this.emit('load-page', new_model, query, timestamp);
-                }
+            let query_obj = {
+                'q': query
+            };
+
+            // If the cache misses, it's necessary to rerun the query to get the results set
+            // before retrieving the requested article.
+            this._engine.get_objects_by_query(domain, query_obj, function (err, results, callback) {
+                this._search_results = results;
+                this._more_results_callback = callback;
+
+                this._engine.get_object_by_id(domain, obj_id, function (err, new_model) {
+                    if (err) {
+                        throw err;
+                    } else {
+                        new_model.fetch_all(this._engine);
+                        this.emit('load-page', new_model, query, timestamp);
+                    }
+                }.bind(this));
             }.bind(this));
         } else {
             model.fetch_all(this._engine);
