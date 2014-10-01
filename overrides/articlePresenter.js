@@ -162,6 +162,9 @@ const ArticlePresenter = new GObject.Class({
             }.bind(this));
         } else if (type === 'application/pdf') {
             let view = this._get_pdfview_for_uri(uri);
+            // FIXME: Remove this line once we support table of contents
+            // widget for PDFs
+            this._article_model.table_of_contents = undefined;
             this.article_view.switch_in_content_view(view, animation_type);
             ready();
         } else {
