@@ -73,12 +73,17 @@ const Window = new Lang.Class({
             0, GLib.MAXUINT32, 1),
     },
     _STACK_TRANSITION_TIME: 500,
+    _BACK_IMAGE_URI: 'resource:///com/endlessm/knowledge/reader/left-arrow.svg',
+    _FORWARD_IMAGE_URI: 'resource:///com/endlessm/knowledge/reader/right-arrow.svg',
 
     _init: function (props) {
         props = props || {};
 
         this._done_page = new DonePage.DonePage();
-        this._nav_buttons = new NavButtonOverlay.NavButtonOverlay();
+        this._nav_buttons = new NavButtonOverlay.NavButtonOverlay({
+            back_image_uri: this._BACK_IMAGE_URI,
+            forward_image_uri: this._FORWARD_IMAGE_URI
+        });
         this._article_pages = [];
         this._current_page = 0;
         this.parent(props);
