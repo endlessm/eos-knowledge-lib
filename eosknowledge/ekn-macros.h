@@ -74,6 +74,15 @@ enum_type##_get_type (void) \
 #define EKN_STYLE_CLASS_TEXT_CARD "text-card"
 
 /**
+ * EKN_STYLE_CLASS_HIGHLIGHTED
+ *
+ * A CSS class to style widgets when they are highlighted.
+ *
+ * Since: 0.2
+ */
+#define EKN_STYLE_CLASS_HIGHLIGHTED "highlighted"
+
+/**
  * EKN_STYLE_CLASS_COMPLETE:
  *
  * A CSS class to match #EknLessonCard widgets that have been marked as
