@@ -527,4 +527,21 @@ enum_type##_get_type (void) \
  */
 #define EKN_STYLE_CLASS_PDF_VIEW "pdf-view"
 
+/**
+ * EKN_STYLE_CLASS_PDF_CARD_ICON:
+ *
+ * A CSS class to match icon of the pdf card.
+ * Since: 0.2
+ */
+#define EKN_STYLE_CLASS_PDF_CARD_ICON "pdf-card-icon"
+
+
+/**
+ * EKN_STYLE_CLASS_PDF_CARD_LABEL:
+ *
+ * A CSS class to match the PDF label on the pdf cards
+ * Since: 0.2
+ */
+#define EKN_STYLE_CLASS_PDF_CARD_LABEL "pdf-card-label"
+
 #endif /* EKN_MACROS_H */
