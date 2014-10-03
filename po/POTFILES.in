@@ -1,9 +1,9 @@
 eosknowledge/ekn-hello.c
+overrides/categoriesPage.js
+overrides/homePageA.js
 overrides/lessonCard.js
+overrides/noSearchResultsPage.js
 overrides/presenter.js
 overrides/progressCard.js
-overrides/homePageA.js
-overrides/categoriesPage.js
-overrides/noSearchResultsPage.js
 overrides/reader/donePage.js
 overrides/reader/presenter.js
