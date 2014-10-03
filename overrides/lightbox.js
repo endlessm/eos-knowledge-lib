@@ -176,8 +176,10 @@ const Lightbox = new Lang.Class({
         if (this._reveal_overlays) {
             this._revealer.show();
             this._revealer.reveal_child = true;
+            this._lightbox_container.grab_focus();
         } else {
             this._revealer.reveal_child = false;
+            this._lightbox_container.has_focus = false;
         }
         this.notify('reveal-overlays');
     },
@@ -289,6 +291,8 @@ const LightboxContainer = new Lang.Class({
     _MIN_BORDER: 20,
 
     _init: function (params) {
+        params = params || {};
+        params.can_focus = true;
         this.parent(params);
 
         this.close_visible = true;
@@ -297,7 +301,7 @@ const LightboxContainer = new Lang.Class({
         this._content_widget = null;
         this._info_widget = null;
 
-        this.set_events(Gdk.EventMask.BUTTON_PRESS_MASK | Gdk.EventMask.BUTTON_RELEASE_MASK);
+        this.set_events(Gdk.EventMask.BUTTON_PRESS_MASK | Gdk.EventMask.BUTTON_RELEASE_MASK | Gdk.EventMask.KEY_PRESS_MASK);
         this.set_has_window(true);
         this._frame_allocation = new Cairo.RectangleInt();
 
@@ -360,6 +364,19 @@ const LightboxContainer = new Lang.Class({
         this.add(this._previous_button);
 
         this.connect('button-release-event', Lang.bind(this, this._button_release));
+        this.connect('key-press-event', function (widget, event) {
+            let [success, keyval] = event.get_keyval();
+            if (!success)
+                return false;
+            if (keyval === Gdk.KEY_Left && this.back_arrow_visible) {
+                this.emit('navigation-previous-clicked');
+            } else if (keyval === Gdk.KEY_Right &&  this.forward_arrow_visible) {
+                this.emit('navigation-next-clicked');
+            } else if (keyval === Gdk.KEY_Escape) {
+                this.emit('close-clicked');
+            }
+            return true;
+        }.bind(this));
         this.show_all();
     },
 
