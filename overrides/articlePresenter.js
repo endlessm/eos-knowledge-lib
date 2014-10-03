@@ -153,11 +153,11 @@ const ArticlePresenter = new GObject.Class({
         if (type === 'text/html') {
             this._webview = this._get_webview_for_uri(uri);
             this._webview_load_id = this._webview.connect('load-changed', function (view, status) {
-                if (status !== WebKit2.LoadEvent.COMMITTED)
-                    return;
-                this._webview.disconnect(this._webview_load_id);
-                this._webview_load_id = 0;
-                this.article_view.switch_in_content_view(this._webview, animation_type);
+                if (status === WebKit2.LoadEvent.COMMITTED) {
+                    this._webview.disconnect(this._webview_load_id);
+                    this._webview_load_id = 0;
+                    this.article_view.switch_in_content_view(this._webview, animation_type);
+                }
                 ready();
             }.bind(this));
         } else if (type === 'application/pdf') {
