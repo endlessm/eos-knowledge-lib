@@ -196,6 +196,23 @@ EknWindow.show-no-search-results-page {
         shade(lighter(orange), 0.9));
 }
 
+.pdf-card-icon {
+    padding-top: 10px;
+    transition: padding 250ms ease-in-out;
+}
+
+.pdf-card-icon:hover {
+    padding-left: 4px;
+}
+
+.pdf-card-label {
+    padding-top: 10px;
+    padding-left: 8px;
+    font-family: 'Lato', sans-serif;
+    font-size: 0.9em;
+    color: #666666
+}
+
 @define-color card-b-border-color alpha(black, 0.7);
 @define-color card-b-border-color-hover white;
 
