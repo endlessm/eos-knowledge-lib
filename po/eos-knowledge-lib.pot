@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: eos-knowledge-lib 0.1.0\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-"
 "inc\n"
-"POT-Creation-Date: 2014-10-02 00:33+0000\n"
+"POT-Creation-Date: 2014-10-07 01:50+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,33 +22,17 @@ msgstr ""
 msgid "Hello C world!"
 msgstr ""
 
-#: overrides/lessonCard.js:133
-#, c-format
-msgid "Lesson %d"
-msgstr ""
-
-#: overrides/presenter.js:129 overrides/presenter.js:492
-msgid "Articles"
-msgstr ""
-
-#. TRANSLATORS: this appears on top of the search results page; %s will
-#. be replaced with the string that the user searched for.
-#: overrides/presenter.js:274 overrides/noSearchResultsPage.js:61
-#, c-format
-msgid "Results for \"%s\""
-msgstr ""
-
-#: overrides/progressCard.js:112
-#, c-format
-msgid "%d of %d done"
+#: overrides/categoriesPage.js:59
+msgid "HOME"
 msgstr ""
 
 #: overrides/homePageA.js:52
 msgid "SEE ALL CATEGORIES"
 msgstr ""
 
-#: overrides/categoriesPage.js:59
-msgid "HOME"
+#: overrides/lessonCard.js:133
+#, c-format
+msgid "Lesson %d"
 msgstr ""
 
 #: overrides/noSearchResultsPage.js:37
@@ -57,6 +41,22 @@ msgstr ""
 
 #: overrides/noSearchResultsPage.js:38
 msgid "Try seaching again with different words."
+msgstr ""
+
+#. TRANSLATORS: this appears on top of the search results page; %s will
+#. be replaced with the string that the user searched for.
+#: overrides/noSearchResultsPage.js:61 overrides/presenter.js:277
+#, c-format
+msgid "Results for \"%s\""
+msgstr ""
+
+#: overrides/presenter.js:129 overrides/presenter.js:503
+msgid "Articles"
+msgstr ""
+
+#: overrides/progressCard.js:112
+#, c-format
+msgid "%d of %d done"
 msgstr ""
 
 #: overrides/reader/donePage.js:67
