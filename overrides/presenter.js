@@ -74,6 +74,7 @@ const Presenter = new Lang.Class({
 
         // Keeps track of the broad query that led to an individual article.
         this._latest_origin_query = '{}';
+        this._latest_article_card_title = '';
         this._latest_search_text = '';
         this._target_page_title = '';
         this._history_model = new EosKnowledge.HistoryModel();
@@ -172,7 +173,10 @@ const Presenter = new Lang.Class({
                 this._article_presenter.load_article(this._history_model.current_item.article_model, animation_type);
                 // For Template B, we reset the highlight to the card with the same title
                 if (this._template_type === 'B')
-                    this.view.section_page.highlight_card_with_name(this._history_model.current_item.title);
+                    this.view.section_page.highlight_card_with_name(
+                        this._history_model.current_item.title,
+                        this._history_model.current_item.article_origin_page
+                    );
                 this.view.show_article_page();
                 break;
             default:
@@ -359,6 +363,11 @@ const Presenter = new Lang.Class({
     _on_article_card_clicked: function (card, model) {
         let animation_type = this.view.get_visible_page() !== this.view.article_page ? EosKnowledge.LoadingAnimationType.NONE : EosKnowledge.LoadingAnimationType.FORWARDS_NAVIGATION;
         model.fetch_all(this._engine);
+
+        // Grab the title of the latest article card clicked.
+        // All subsequent navigations from this article page need to add a visual cue to this card.
+        this._latest_article_card_title = model.title;
+
         this._add_history_object_for_article_page(model);
         this._article_presenter.load_article(model, animation_type, function () {
             this.view.show_article_page();
@@ -374,6 +383,7 @@ const Presenter = new Lang.Class({
             article_model: model, 
             query: '',
             article_origin_query: this._latest_origin_query,
+            article_origin_page: this._latest_article_card_title,
         });
     },
 
@@ -420,14 +430,12 @@ const Presenter = new Lang.Class({
         }
     },
 
-
     _on_article_object_clicked: function (article_presenter, model) {
         this._add_history_object_for_article_page(model);
         this._article_presenter.load_article(model, EosKnowledge.LoadingAnimationType.FORWARDS_NAVIGATION);
 
         if (this._template_type === 'B')
-            // Highlight the appropriate card, if exists.
-            this.view.section_page.highlight_card_with_name(model.title);
+            this.view.section_page.highlight_card_with_name(model.title, this._latest_article_card_title);
     },
 
     _on_lightbox_previous_clicked: function (view, lightbox) {
@@ -463,7 +471,7 @@ const Presenter = new Lang.Class({
                 this.view.show_section_page();
             }
             if (this._template_type === 'B')
-                this.view.section_page.clear_highlighted_card();
+                this.view.section_page.clear_highlighted_cards();
         } else if (visible_page === this.view.section_page || visible_page === this.view.no_search_results_page) {
             if (this._original_page === this.view.home_page) {
                 this._add_history_object_for_home_page();
@@ -601,6 +609,15 @@ const HistoryItem = new Lang.Class({
          */
         'article-origin-query': GObject.ParamSpec.string('article-origin-query', 'Article Origin Query',
             'A JSON query that was used to generate the list of articles from which this object was chosen.',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
+        /**
+         * Property: article-origin-page
+         *
+         * A string that stores the title of the article page from which the user naviated to this
+         * page.
+         */
+        'article-origin-page': GObject.ParamSpec.string('article-origin-page', 'Article Origin Page',
+            'A string that stores the title of the article page from which the user navigated to this page',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
     }
 });

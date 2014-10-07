@@ -74,30 +74,44 @@ const SectionPageB = new Lang.Class({
         if (this._highlighted_card === card)
             return;
 
-        this.clear_highlighted_card();
+        this.clear_highlighted_cards();
 
         this._highlighted_card = card;
         this._highlighted_card.get_style_context().add_class(EosKnowledge.STYLE_CLASS_HIGHLIGHTED);
     },
 
-    highlight_card_with_name: function (card_name) {
-        let filtered_cards = this._cards.filter(function (c) {
-            return c.title === card_name;
-        });
-
-        if (filtered_cards.length >= 1)
-            this.highlight_card(filtered_cards[0]);
-        else
-            // This covers the case for when the named card is not in the list,
-            // because we reached this article after navigating from one article
-            // to another.
-            this.clear_highlighted_card();
+    highlight_card_with_name: function (card_name, fallback_card_name) {
+        this.clear_highlighted_cards();
+        let filtered_card = this._filter_card_with_name(card_name);
+        if (filtered_card) {
+            this.highlight_card(filtered_card);
+        } else {
+            filtered_card = this._filter_card_with_name(fallback_card_name);
+            if (filtered_card)
+                this.shade_card(filtered_card);
+        }
     },
 
-    clear_highlighted_card: function () {
+    shade_card: function (card) {
+        if (this._shaded_card === card)
+            return;
+
+        this._shaded_card = card;
+        this._shaded_card.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_HIGHLIGHTED);
+        this._shaded_card.get_style_context().add_class(EosKnowledge.STYLE_CLASS_SHADED);
+    },
+
+    /*
+     * This method clears both the highlighted and shaded cards, if present.
+     */
+    clear_highlighted_cards: function () {
         if (this._highlighted_card !== null && typeof this._highlighted_card !== 'undefined') {
             this._highlighted_card.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_HIGHLIGHTED);
             this._highlighted_card = null;
+        }
+        if (this._shaded_card !== null && typeof this._shaded_card !== 'undefined') {
+            this._shaded_card.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_SHADED);
+            this._shaded_card = null;
         }
     },
 
@@ -134,6 +148,16 @@ const SectionPageB = new Lang.Class({
         }));
         this._scrolled_window.add(this._card_list_box);
         this.add(this._scrolled_window);
+    },
+
+    _filter_card_with_name: function (card_name) {
+        let filtered_cards = this._cards.filter(function (c) {
+            return c.title === card_name;
+        });
+        if (filtered_cards.length >= 1)
+            return filtered_cards[0];
+        else
+            return null;
     },
 
     set cards (v) {
