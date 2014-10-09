@@ -4,6 +4,8 @@ const EvinceView = imports.gi.EvinceView;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
+const _MAX_PDF_VIEW_WIDTH = 1300;
+
 /**
  * Class: PDFView
  *
@@ -21,6 +23,8 @@ const PDFView = new Lang.Class({
     Extends: Gtk.ScrolledWindow,
 
     _init: function (props) {
+        props = props || {};
+        props.halign = Gtk.Align.CENTER;
         this.parent(props);
 
         this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_PDF_VIEW);
@@ -45,4 +49,9 @@ const PDFView = new Lang.Class({
             this.remove(child);
         this.add(view);
     },
+
+    vfunc_get_preferred_width: function () {
+        let [minimal, natural] = this.parent();
+        return [Math.min(minimal, _MAX_PDF_VIEW_WIDTH), _MAX_PDF_VIEW_WIDTH];
+    }
 });
