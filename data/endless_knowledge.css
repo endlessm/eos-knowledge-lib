@@ -110,7 +110,7 @@ EknWindow.show-no-search-results-page {
                 border 250ms;
 }
 
-.text-card:hover, .text-card.highlighted:hover {
+.text-card:hover, .text-card.highlighted:hover, .text-card.shaded:hover {
     color: @template-b-text-color-hover;
     text-shadow: 0px 1px 0px white;
     border: 2px solid white;
@@ -131,6 +131,10 @@ EknWindow.show-no-search-results-page {
     text-shadow: 0px 1px 0px white;
     font-weight: bold;
     transition-property: none;
+}
+
+.text-card.shaded {
+    background: alpha(white, 0.20);
 }
 
 .card-a .card-title:hover,

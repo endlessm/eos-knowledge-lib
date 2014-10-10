@@ -82,6 +82,15 @@ enum_type##_get_type (void) \
  */
 #define EKN_STYLE_CLASS_HIGHLIGHTED "highlighted"
 
+ /**
+  * EKN_STYLE_CLASS_SHADED
+  *
+  * A CSS class to style card widgets when they are shaded
+  *
+  * Since: 0.2
+  */
+#define EKN_STYLE_CLASS_SHADED "shaded"
+
 /**
  * EKN_STYLE_CLASS_COMPLETE:
  *
