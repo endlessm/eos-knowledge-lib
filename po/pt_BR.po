@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2014-10-02 00:33+0000\n"
+"POT-Creation-Date: 2014-10-07 01:50+0000\n"
 "PO-Revision-Date: 2014-09-12 21:06+0000\n"
 "Last-Translator: Silva <michele@endlessm.com>\n"
 "Language-Team: Portuguese (http://www.transifex.com/projects/p/eos-knowledge-lib/language/pt/)\n"
@@ -23,34 +23,18 @@ msgstr ""
 msgid "Hello C world!"
 msgstr "Olá mundo C!"
 
-#: overrides/lessonCard.js:133
-#, c-format
-msgid "Lesson %d"
-msgstr "Aula %d"
-
-#: overrides/presenter.js:129 overrides/presenter.js:492
-msgid "Articles"
-msgstr "Artigos"
-
-#. TRANSLATORS: this appears on top of the search results page; %s will
-#. be replaced with the string that the user searched for.
-#: overrides/presenter.js:274 overrides/noSearchResultsPage.js:61
-#, c-format
-msgid "Results for \"%s\""
-msgstr "Resultados para \"%s\""
-
-#: overrides/progressCard.js:112
-#, c-format
-msgid "%d of %d done"
-msgstr "%d de %de realizado"
+#: overrides/categoriesPage.js:59
+msgid "HOME"
+msgstr "PÁGINA PRINCIPAL"
 
 #: overrides/homePageA.js:52
 msgid "SEE ALL CATEGORIES"
 msgstr "Ver todas as categorias"
 
-#: overrides/categoriesPage.js:59
-msgid "HOME"
-msgstr "PÁGINA PRINCIPAL"
+#: overrides/lessonCard.js:133
+#, c-format
+msgid "Lesson %d"
+msgstr "Aula %d"
 
 #: overrides/noSearchResultsPage.js:37
 msgid "We didn't find anything."
@@ -59,6 +43,22 @@ msgstr "Nós não encontramos nada."
 #: overrides/noSearchResultsPage.js:38
 msgid "Try seaching again with different words."
 msgstr "Tente pesquisar novamente com palavras diferentes."
+
+#. TRANSLATORS: this appears on top of the search results page; %s will
+#. be replaced with the string that the user searched for.
+#: overrides/noSearchResultsPage.js:61 overrides/presenter.js:277
+#, c-format
+msgid "Results for \"%s\""
+msgstr "Resultados para \"%s\""
+
+#: overrides/presenter.js:129 overrides/presenter.js:503
+msgid "Articles"
+msgstr "Artigos"
+
+#: overrides/progressCard.js:112
+#, c-format
+msgid "%d of %d done"
+msgstr "%d de %de realizado"
 
 #: overrides/reader/donePage.js:67
 msgid "Did you like this issue?"
