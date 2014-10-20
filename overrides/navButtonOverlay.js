@@ -104,6 +104,11 @@ const NavButtonOverlay = new Lang.Class({
             button.queue_resize();
         });
 
+        this.parent(props);
+
+        this._style_nav_button(this._back_button, this.back_image_uri, 'go-previous-symbolic', 'go-previous-rtl-symbolic');
+        this._style_nav_button(this._forward_button, this.forward_image_uri, 'go-next-symbolic', 'go-next-rtl-symbolic');
+
         Utils.set_hand_cursor_on_widget(this._back_button);
         Utils.set_hand_cursor_on_widget(this._forward_button);
 
@@ -132,5 +137,30 @@ const NavButtonOverlay = new Lang.Class({
 
     get forward_visible () {
         return this._forward_button.visible;
+    },
+
+    _style_nav_button: function (button, image_uri, fallback_icon_name, fallback_rtl_icon_name) {
+        if (this.get_default_direction() === Gtk.TextDirection.RTL) {
+            button.image = this._create_new_image(image_uri, fallback_rtl_icon_name);
+            button.get_style_context().add_class(EosKnowledge.STYLE_CLASS_RTL);
+        } else {
+            button.image = this._create_new_image(image_uri, fallback_icon_name);
+        }
+    },
+
+    _create_new_image: function (image_uri, fallback_icon_name) {
+        // If the image URIs exists, create new icons for it; otherwise fallback to icon.
+        let new_image;
+        if (image_uri) {
+            let file = Gio.File.new_for_uri(image_uri);
+            let icon = new Gio.FileIcon({ file: file });
+            new_image = new Gtk.Image({ gicon: icon });
+        } else {
+            new_image = new Gtk.Image({
+                icon_name: fallback_icon_name,
+                pixel_size: this._ARROW_SIZE,
+            });
+        }
+        return new_image;
     },
 });

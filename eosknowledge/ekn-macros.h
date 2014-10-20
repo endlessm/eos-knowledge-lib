@@ -298,6 +298,12 @@ enum_type##_get_type (void) \
 #define EKN_STYLE_CLASS_NAV_FORWARD_BUTTON "nav-forward-button"
 
 /**
+ * EKN_STYLE_CLASS_RTL:
+ * A CSS class to match the Right-to-left (RTL) assets in the UI.
+ */
+#define EKN_STYLE_CLASS_RTL "rtl"
+
+/**
  * EKN_STYLE_CLASS_SECTION_PAGE_TITLE:
  *
  * A CSS class to match the title on the SectionPage of the knowledge apps.
