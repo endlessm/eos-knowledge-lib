@@ -597,23 +597,23 @@ scrollbars, style the GTK scrollbars to look slightly more like them */
     box-shadow: 0px 1px alpha(black, 0.8); /* FIXME: box-shadow outset doesn't currently work in GTK */
 }
 
-.nav-back-button {
+.nav-back-button, .nav-forward-button.rtl {
     border-left: 0px;
     border-radius: 0px 27px 27px 0px;
     padding: 15px 15px 15px 0px;
 }
 
-.nav-forward-button {
+.nav-forward-button, .nav-back-button.rtl {
     border-radius: 27px 0px 0px 27px;
     border-right: 0px;
     padding: 15px 0px 15px 15px;
 }
 
-.nav-back-button:hover {
+.nav-back-button:hover, .nav-forward-button.rtl:hover {
     padding-left: 15px;
 }
 
-.nav-forward-button:hover {
+.nav-forward-button:hover, .nav-back-button.rtl:hover {
     padding-right: 15px;
 }
 

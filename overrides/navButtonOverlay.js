@@ -111,8 +111,8 @@ const NavButtonOverlay = new Lang.Class({
 
         this.parent(props);
 
-        this._back_button.image = this._create_new_image(this.back_image_uri, 'go-previous-symbolic');
-        this._forward_button.image = this._create_new_image(this.forward_image_uri, 'go-next-symbolic');
+        this._style_nav_button(this._back_button, this.back_image_uri, 'go-previous-symbolic', 'go-previous-rtl-symbolic');
+        this._style_nav_button(this._forward_button, this.forward_image_uri, 'go-next-symbolic', 'go-next-rtl-symbolic');
 
         Utils.set_hand_cursor_on_widget(this._back_button);
         Utils.set_hand_cursor_on_widget(this._forward_button);
@@ -141,6 +141,15 @@ const NavButtonOverlay = new Lang.Class({
 
     get forward_visible () {
         return this._forward_button.visible;
+    },
+
+    _style_nav_button: function (button, image_uri, fallback_icon_name, fallback_rtl_icon_name) {
+        if (this.get_default_direction() === Gtk.TextDirection.RTL) {
+            button.image = this._create_new_image(image_uri, fallback_rtl_icon_name);
+            button.get_style_context().add_class(EosKnowledge.STYLE_CLASS_RTL);
+        } else {
+            button.image = this._create_new_image(image_uri, fallback_icon_name);
+        }
     },
 
     _create_new_image: function (image_uri, fallback_icon_name) {
