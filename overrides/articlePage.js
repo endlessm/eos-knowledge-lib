@@ -249,6 +249,12 @@ const ArticlePage = new Lang.Class({
         }
     },
 
+    content_view_grab_focus: function () {
+        if (this._switcher.visible_child) {
+            this._switcher.visible_child.grab_focus();
+        }
+    },
+
     vfunc_size_allocate: function (alloc) {
         this.parent(alloc);
 
