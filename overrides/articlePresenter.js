@@ -131,6 +131,7 @@ const ArticlePresenter = new GObject.Class({
 
         // If we've already loaded/are already loading the page already, just return.
         if (this._article_model && this._article_model.ekn_id === model.ekn_id) {
+            this.article_view.content_view_grab_focus();
             ready();
             return;
         }
