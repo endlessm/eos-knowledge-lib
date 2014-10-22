@@ -266,6 +266,7 @@ const Presenter = new Lang.Class({
             return;
         }
 
+        this.view.search_box.text = query;
         this._add_history_object_for_search_page(JSON.stringify({
             q: query
         }));
@@ -284,7 +285,6 @@ const Presenter = new Lang.Class({
         // We clear the search box in the home page after each search.
         // The topbar search box should also clear once an article has been chosen.
         this.view.home_page.search_box.text = '';
-        this.view.search_box.text = query.q;
 
         this._engine.get_objects_by_query(this._domain, query, this._load_section_page.bind(this));
     },

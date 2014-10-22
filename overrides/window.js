@@ -472,7 +472,6 @@ const Window = new Lang.Class({
      * This method causes the window to animate to the article page.
      */
     show_article_page: function () {
-        this._search_box.text = '';
         this.page_manager.transition_type = Gtk.StackTransitionType.SLIDE_LEFT;
         this._section_article_page.show_article = true;
         this.page_manager.visible_child = this._lightbox;
