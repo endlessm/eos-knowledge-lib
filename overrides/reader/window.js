@@ -75,6 +75,7 @@ const Window = new Lang.Class({
     _STACK_TRANSITION_TIME: 500,
     _BACK_IMAGE_URI: 'resource:///com/endlessm/knowledge/reader/left-arrow.svg',
     _FORWARD_IMAGE_URI: 'resource:///com/endlessm/knowledge/reader/right-arrow.svg',
+    _NAV_IMAGE_SIZE: 23,
 
     _init: function (props) {
         props = props || {};
@@ -82,7 +83,8 @@ const Window = new Lang.Class({
         this._done_page = new DonePage.DonePage();
         this._nav_buttons = new NavButtonOverlay.NavButtonOverlay({
             back_image_uri: this._BACK_IMAGE_URI,
-            forward_image_uri: this._FORWARD_IMAGE_URI
+            forward_image_uri: this._FORWARD_IMAGE_URI,
+            image_size: this._NAV_IMAGE_SIZE,
         });
         this._article_pages = [];
         this._current_page = 0;

@@ -2,11 +2,14 @@
 
 const EosKnowledge = imports.gi.EosKnowledge;
 const GObject = imports.gi.GObject;
+const GLib = imports.gi.GLib;
 const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const Utils = imports.utils;
+
+const _ARROW_SIZE = 20;
 
 /**
  * Class: NavButtonOverlay
@@ -54,6 +57,14 @@ const NavButtonOverlay = new Lang.Class({
         'forward-image-uri': GObject.ParamSpec.string('forward-image-uri', 'Forward Image URI',
             'URI of the image to be displayed in the forward button',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
+        /**
+         * Property: 'image-size'
+         * The size of the images to be used in the navigation buttons.
+         */
+        'image-size': GObject.ParamSpec.uint('image-size', 'Image Size',
+            'Size of the custom images for the navigation buttons',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
+            0, GLib.MAXUINT32, _ARROW_SIZE),
     },
 
     Signals: {
@@ -69,8 +80,6 @@ const NavButtonOverlay = new Lang.Class({
          */
         'forward-clicked': {},
     },
-
-    _ARROW_SIZE: 20,
 
     _init: function (props) {
         /*
@@ -143,6 +152,17 @@ const NavButtonOverlay = new Lang.Class({
         return this._forward_button.visible;
     },
 
+    set image_size (v) {
+        if (this._image_size === v)
+            return;
+        this._image_size = v;
+        this.notify('image-size');
+    },
+
+    get image_size () {
+        return this._image_size;
+    },
+
     _style_nav_button: function (button, image_uri, fallback_icon_name, fallback_rtl_icon_name) {
         if (this.get_default_direction() === Gtk.TextDirection.RTL) {
             button.image = this._create_new_image(image_uri, fallback_rtl_icon_name);
@@ -158,11 +178,14 @@ const NavButtonOverlay = new Lang.Class({
         if (image_uri) {
             let file = Gio.File.new_for_uri(image_uri);
             let icon = new Gio.FileIcon({ file: file });
-            new_image = new Gtk.Image({ gicon: icon });
+            new_image = new Gtk.Image({
+                gicon: icon,
+                pixel_size: this._image_size,
+            });
         } else {
             new_image = new Gtk.Image({
                 icon_name: fallback_icon_name,
-                pixel_size: this._ARROW_SIZE,
+                pixel_size: this._image_size,
             });
         }
         return new_image;
