@@ -112,7 +112,6 @@ const NavButtonOverlay = new Lang.Class({
         Utils.set_hand_cursor_on_widget(this._back_button);
         Utils.set_hand_cursor_on_widget(this._forward_button);
 
-        this.parent(props);
         this.add_overlay(this._back_button);
         this.add_overlay(this._forward_button);
     },
