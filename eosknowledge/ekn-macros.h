@@ -317,6 +317,7 @@ enum_type##_get_type (void) \
 
 /**
  * EKN_STYLE_CLASS_RTL:
+ *
  * A CSS class to match the Right-to-left (RTL) assets in the UI.
  */
 #define EKN_STYLE_CLASS_RTL "rtl"
