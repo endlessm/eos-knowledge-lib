@@ -44,6 +44,7 @@ const Presenter = new Lang.Class({
     _HOME_PAGE: 'home',
     _SEARCH_PAGE: 'search',
     _SECTION_PAGE: 'section',
+    _CATEGORIES_PAGE: 'categories',
 
     _init: function (app, app_filename, props) {
         this.parent(props);
@@ -179,6 +180,9 @@ const Presenter = new Lang.Class({
                     );
                 this.view.show_article_page();
                 break;
+            case this._CATEGORIES_PAGE:
+                this.view.show_categories_page();
+                break;
             default:
                 this.view.show_home_page();
         }
@@ -231,6 +235,7 @@ const Presenter = new Lang.Class({
 
     _on_categories_button_clicked: function (button) {
         this._original_page = this.view.categories_page;
+        this._add_history_object_for_categories_page();
         this.view.show_categories_page();
     },
 
@@ -415,6 +420,16 @@ const Presenter = new Lang.Class({
             page_type: this._HOME_PAGE,
             article_model: null,
             query: '', 
+            article_origin_query: this._latest_origin_query,
+        });
+    },
+
+    _add_history_object_for_categories_page: function () {
+        this._history_model.current_item = new HistoryItem({
+            title: '',
+            page_type: this._CATEGORIES_PAGE,
+            article_model: null,
+            query: '',
             article_origin_query: this._latest_origin_query,
         });
     },
