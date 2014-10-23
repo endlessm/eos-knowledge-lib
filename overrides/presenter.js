@@ -294,6 +294,29 @@ const Presenter = new Lang.Class({
         this.view.lightbox.reveal_overlays = false;
     },
 
+    /*
+     * Returns either the title or origin_title of the obj, depending on which one
+     * is closer to having query as a prefix. Doesn't use a simple indexOf, because
+     * of the fact that query might not be accented, even when titles are.
+     */
+    _get_prefixed_title: function (obj, query) {
+        let title = obj.title.toLowerCase();
+        let original_title = obj.original_title.toLowerCase();
+        query = query.toLowerCase();
+
+        for (let i = 0; i < query.length; i++) {
+            if (title[i] !== original_title[i]) {
+                if (title[i] === query[i]) {
+                    return obj.title;
+                } else if (original_title[i] === query[i]) {
+                    return obj.original_title;
+                }
+            }
+        }
+
+        return obj.title
+    },
+
     _on_search_text_changed: function (view, entry) {
         let query = this._sanitize_query(entry.text);
         this._latest_search_text = query;
@@ -310,10 +333,10 @@ const Presenter = new Lang.Class({
             } else {
                 entry.set_menu_items(results.map(function (obj) {
                     return {
-                        title: obj.title,
+                        title: this._get_prefixed_title(obj, query),
                         id: obj.ekn_id
                     };
-                }));
+                }.bind(this)));
                 this._autocomplete_results = results;
             }
         }.bind(this));

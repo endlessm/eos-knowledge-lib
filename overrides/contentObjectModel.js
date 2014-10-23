@@ -34,6 +34,12 @@ const ContentObjectModel = new Lang.Class({
         'title': GObject.ParamSpec.string('title', 'Title', 'The title of a document or media object',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT, ''),
         /**
+         * Property: original-title
+         * A string with the original title of the content object. Defaults to an empty string.
+         */
+        'original-title': GObject.ParamSpec.string('original-title', 'Original Title', 'The original title (wikipedia title) of a document or media object',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT, ''),
+        /**
          * Property: thumbnail
          * A ImageObjectModel representing the thumbnail image. Must be set to type GObject, since
          * ImageObjectModel subclasses this class and so we cannot reference it here.
@@ -350,6 +356,9 @@ ContentObjectModel._props_from_json_ld = function (json_ld_data) {
 
     if(json_ld_data.hasOwnProperty('title'))
         props.title = json_ld_data.title;
+
+    if(json_ld_data.hasOwnProperty('originalTitle'))
+        props.original_title = json_ld_data.originalTitle;
 
     if(json_ld_data.hasOwnProperty('language'))
         props.language = json_ld_data.language;
