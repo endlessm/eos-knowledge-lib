@@ -39,10 +39,6 @@ msgstr "Artigos"
 msgid "Results for \"%s\""
 msgstr "Resultados para \"%s\""
 
-#: overrides/presenter.js:130 overrides/presenter.js:511
-msgid "Articles"
-msgstr "Artigos"
-
 #: overrides/progressCard.js:112
 #, c-format
 msgid "%d of %d done"
