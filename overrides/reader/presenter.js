@@ -127,7 +127,7 @@ const Presenter = new Lang.Class({
         let next_model_to_load = this._article_models[to_load_index];
         if (next_model_to_load !== undefined) {
             let next_page_to_load = this.view.get_article_page(to_load_index);
-            this._load_content(next_model_to_load.ekn_id, function (view, error) {
+            this._next_page = this._load_content(next_model_to_load.ekn_id, function (view, error) {
                 this._load_content_callback(next_page_to_load, view, error);
             }.bind(this));
         }
@@ -153,7 +153,7 @@ const Presenter = new Lang.Class({
 
         let model = result[0];
         let page = _create_article_page_from_article_model(model);
-        this._load_content(model.ekn_id, function (view, error) {
+        this._first_page = this._load_content(model.ekn_id, function (view, error) {
             this._load_content_callback(page, view, error);
         }.bind(this));
 
@@ -200,7 +200,7 @@ const Presenter = new Lang.Class({
         // If we have at least two articles total, load the next article in sequence
         if (this._article_models.length > 2) {
             let first_page = this.view.get_article_page(1);
-            this._load_content(this._article_models[1].ekn_id, function (view, error) {
+            this._next_page = this._load_content(this._article_models[1].ekn_id, function (view, error) {
                 this._load_content_callback(first_page, view, error)
             }.bind(this));
         }
@@ -211,7 +211,6 @@ const Presenter = new Lang.Class({
             ready = function () {};
         }
         let webview = new EknWebview.EknWebview();
-        webview.load_uri(uri);
         let load_id = webview.connect('load-changed', function (view, event) {
             // failsafe: disconnect on load finished even if there was an error
             if (event === WebKit2.LoadEvent.FINISHED) {
@@ -232,6 +231,8 @@ const Presenter = new Lang.Class({
             }
             ready(view, error);
         });
+        webview.load_uri(uri);
+        return webview;
     },
 
     _load_content_callback: function (page, view, error) {
