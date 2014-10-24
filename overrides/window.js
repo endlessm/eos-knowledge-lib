@@ -262,7 +262,9 @@ const Window = new Lang.Class({
         this.page_manager.add(this._home_page, {
             left_topbar_widget: this.history_buttons
         });
-        this.page_manager.add(this._categories_page);
+        this.page_manager.add(this._categories_page, {
+            left_topbar_widget: this.history_buttons
+        });
         this._search_box = new Endless.SearchBox();
         this._search_box.connect('notify::has-focus', function () {
             this.emit('search-focused', this._search_box.has_focus);
