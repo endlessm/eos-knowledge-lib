@@ -198,7 +198,7 @@ const Presenter = new Lang.Class({
         }, this);
         this._article_models = result;
         // If we have at least two articles total, load the next article in sequence
-        if (this._article_models.length > 2) {
+        if (this._article_models.length >= 2) {
             let first_page = this.view.get_article_page(1);
             this._next_page = this._load_content(this._article_models[1].ekn_id, function (view, error) {
                 this._load_content_callback(first_page, view, error)
