@@ -202,13 +202,11 @@ const SearchProvider = Lang.Class({
                     if (err) {
                         throw err;
                     } else {
-                        new_model.fetch_all(this._engine);
                         this.emit('load-page', new_model, query, timestamp);
                     }
                 }.bind(this));
             }.bind(this));
         } else {
-            model.fetch_all(this._engine);
             this.emit('load-page', model, query, timestamp);
         }
     },

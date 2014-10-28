@@ -390,7 +390,6 @@ const Presenter = new Lang.Class({
 
     _on_article_card_clicked: function (card, model) {
         let animation_type = this.view.get_visible_page() !== this.view.article_page ? EosKnowledge.LoadingAnimationType.NONE : EosKnowledge.LoadingAnimationType.FORWARDS_NAVIGATION;
-        model.fetch_all(this._engine);
 
         // Grab the title of the latest article card clicked.
         // All subsequent navigations from this article page need to add a visual cue to this card.

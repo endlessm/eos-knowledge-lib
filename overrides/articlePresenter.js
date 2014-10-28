@@ -125,6 +125,7 @@ const ArticlePresenter = new GObject.Class({
      *   ready - optional, a function to call when the view is ready for display
      */
     load_article: function (model, animation_type, ready) {
+        model.fetch_all(this.engine);
         if (ready === undefined)
             ready = function () {};
 

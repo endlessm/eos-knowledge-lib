@@ -132,6 +132,7 @@ const ContentObjectModel = new Lang.Class({
         this.request_queue.forEach(function (request) {
             engine.get_object_by_id(request.domain, request.id, request.callback);
         });
+        this.request_queue = [];
     },
 
     /**
