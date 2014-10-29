@@ -1,5 +1,6 @@
 @define-color template-b-text-color #eeccf8;
 @define-color template-b-text-color-hover #d64970;
+@define-color template-b-text-color-highlighted #333333;
 
 EosWindow {
     /* Changed color here so scrollbars are visible. Only affects smoke tests all
@@ -110,8 +111,13 @@ EknWindow.show-no-search-results-page {
                 border 250ms;
 }
 
-.text-card:hover, .text-card.highlighted:hover, .text-card.shaded:hover {
-    color: @template-b-text-color-hover;
+.text-card .card-title {
+    padding-left: 1.5em;
+}
+
+.text-card:hover,
+.text-card.highlighted:hover,
+.text-card.shaded:hover {
     text-shadow: 0px 1px 0px white;
     border: 2px solid white;
     background-color: alpha(white, 0.9);
@@ -121,16 +127,21 @@ EknWindow.show-no-search-results-page {
     box-shadow: 0px 0px 20px 0px black;
 }
 
-.text-card .card-title {
-    padding-left: 1.5em;
+.text-card:hover,
+.text-card.shaded:hover {
+    color: @template-b-text-color-hover;
 }
 
 .text-card.highlighted {
     background: alpha(white, 0.8);
-    color: #333333;
     text-shadow: 0px 1px 0px white;
     font-weight: bold;
     transition-property: none;
+}
+
+.text-card.highlighted,
+.text-card.highlighted:hover {
+    color: @template-b-text-color-highlighted;
 }
 
 .text-card.shaded {
