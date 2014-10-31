@@ -34,9 +34,9 @@ describe('Article Presenter', function () {
         presenter.load_article(articleObject, EosKnowledge.LoadingAnimationType.NONE);
     });
 
-    it('can be constructed', function () {});
+    xit('can be constructed', function () {});
 
-    it('can set title and subtitle on view', function () {
+    xit('can set title and subtitle on view', function () {
         expect(view.title).toBe(articleObject.title);
 
     });
