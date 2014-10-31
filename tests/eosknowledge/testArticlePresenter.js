@@ -3,7 +3,7 @@ const EosKnowledge = imports.gi.EosKnowledge;
 const Gio = imports.gi.Gio;
 
 const TESTDIR = Endless.getCurrentFileDir() + '/..';
-const MOCK_ARTICLE_PATH = TESTDIR + '/test-content/cyprus.jsonld';
+const MOCK_ARTICLE_PATH = TESTDIR + '/test-content/mexico.jsonld';
 
 describe('Article Presenter', function () {
     let presenter;

@@ -8,8 +8,7 @@ const Lang = imports.lang;
 const TEST_APPLICATION_ID = 'com.endlessm.knowledge.article_presenter';
 const TESTDIR = Endless.getCurrentFileDir() + '/..';
 
-const MOCK_ARTICLE_PATH = Endless.getCurrentFileDir() + '/../test-content/cyprus.jsonld';
-// const MOCK_ARTICLE_PATH = Endless.getCurrentFileDir() + '/../test-content/cyprus-no-toc.jsonld';
+const MOCK_ARTICLE_PATH = Endless.getCurrentFileDir() + '/../test-content/mexico.jsonld';
 
 const TestApplication = new Lang.Class ({
     Name: 'TestApplication',
