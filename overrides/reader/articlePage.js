@@ -126,7 +126,7 @@ const ArticlePage = new Lang.Class({
 
     show_content_view: function (view) {
         if (this._content_view !== null) {
-            this.remove(this._content_view);
+            this._grid.remove(this._content_view);
         }
         view.expand = true;
         this._content_view = view;
