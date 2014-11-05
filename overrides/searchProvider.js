@@ -67,6 +67,7 @@ const SearchProvider = Lang.Class({
         this._more_results_callback = null;
 
         this._engine = new EosKnowledge.Engine();
+        this._engine.ping(this._search_domain);
         this._object_cache = {};
     },
 
