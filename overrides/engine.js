@@ -49,6 +49,18 @@ const Engine = Lang.Class({
             'The port of the Knowledge Engine service',
              GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
              -1, GLib.MAXINT32, 3003),
+        /**
+         * Property: bridge-port
+         *
+         * The port of the Xapian Bridge service. You generally don't need
+         * to set this.
+         *
+         * Defaults to 3004
+         */
+        'bridge-port': GObject.ParamSpec.int('bridge-port', 'Xapian Bridge Port',
+            'The port of the Xapian Bridge service',
+             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+             -1, GLib.MAXINT32, 3004),
     },
 
     _init: function (params) {
@@ -67,13 +79,26 @@ const Engine = Lang.Class({
      */
     _DUMMY_QUERY : 'frango',
     ping: function (domain) {
+        // Ping xapian bridge first to get it starting up
+        let host_uri = 'http://' + this.host;
+        let uri = new Soup.URI(host_uri);
+        uri.set_port(this.bridge_port);
+        uri.set_path('/' + domain);
+        let request = new Soup.Message({
+            method: 'GET',
+            uri: uri,
+        });
+        this._http_session.queue_message(request, function(session, message) {
+            if (message.status_code !== 200) {
+                printerr('Failed to ping Xapian');
+            }
+        });
+
+        // Now ping the actual knowledge engine
         let req_uri = this.get_ekn_uri(domain, undefined, {q: this._DUMMY_QUERY, limit: 1});
         this._send_json_ld_request(req_uri, function (err, json_ld) {
             if (typeof err !== 'undefined') {
-                // error occurred during request, so immediately fail with err
                 printerr("Failed to ping EKN");
-            } else{
-                // Successfully pinged knowledge engine
             }
         }.bind(this));
     },
