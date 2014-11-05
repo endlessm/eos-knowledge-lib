@@ -102,49 +102,28 @@ describe('Reader presenter', function () {
             let presenter = new EosKnowledge.Reader.Presenter(construct_props);
             expect(engine.get_objects_by_query).toHaveBeenCalledWith(TEST_DOMAIN,
                 jasmine.objectContaining({
-                    limit: 1
+                    limit: 15,
+                    sortBy: 'articleNumber',
+                    order: 'asc',
                 }), jasmine.any(Function));
         });
 
         it('adds the first article as a page', function () {
             spyOn(view, 'append_article_page');
             engine.get_objects_by_query.and.callFake(function (d, q, callback) {
-                callback(undefined, [EXPECTED_RESULTS[0]]);
+                callback(undefined, EXPECTED_RESULTS);
             });
             let presenter = new EosKnowledge.Reader.Presenter(construct_props);
-            expect(view.append_article_page).toHaveBeenCalledWith(jasmine.objectContaining({
-                title: EXPECTED_TITLES[0],
-            }));
+            EXPECTED_TITLES.forEach(function (title) {
+                expect(view.append_article_page).toHaveBeenCalledWith(jasmine.objectContaining({
+                    title: title,
+                }));
+            })
         });
 
-        it('queries subsequent articles', function () {
-            engine.get_objects_by_query.and.callFake(function (d, q, callback) {
-                callback(undefined, [EXPECTED_RESULTS[0]]);
-            });
-            let presenter = new EosKnowledge.Reader.Presenter(construct_props);
-            expect(engine.get_objects_by_query.calls.count()).toBe(2);
-            expect(engine.get_objects_by_query).toHaveBeenCalledWith(TEST_DOMAIN,
-                jasmine.objectContaining({ limit: 1 }), jasmine.any(Function));
-            expect(engine.get_objects_by_query).toHaveBeenCalledWith(TEST_DOMAIN,
-                jasmine.any(Object), jasmine.any(Function));
-        });
-
-        it('gracefully handles the first query failing', function () {
+        it('gracefully handles the query failing', function () {
             engine.get_objects_by_query.and.callFake(function (d, q, callback) {
                 callback('error', undefined);
-            });
-            expect(function () {
-                let presenter = new EosKnowledge.Reader.Presenter(construct_props);
-            }).not.toThrow();
-        });
-
-        it('gracefully handles the subsequent query failing', function () {
-            engine.get_objects_by_query.and.callFake(function (d, q, callback) {
-                if(engine.get_objects_by_query.calls.count() === 1) {
-                    callback(undefined, [EXPECTED_RESULTS[0]]);
-                } else {
-                    callback('error', undefined);
-                }
             });
             expect(function () {
                 let presenter = new EosKnowledge.Reader.Presenter(construct_props);
@@ -157,11 +136,7 @@ describe('Reader presenter', function () {
 
         beforeEach(function () {
             engine.get_objects_by_query.and.callFake(function (d, q, callback) {
-                if(engine.get_objects_by_query.calls.count() === 1) {
-                    callback(undefined, [EXPECTED_RESULTS[0]]);
-                } else {
-                    callback(undefined, EXPECTED_RESULTS);
-                }
+                callback(undefined, EXPECTED_RESULTS);
             });
             view.total_pages = EXPECTED_TITLES.length + 1;
             presenter = new EosKnowledge.Reader.Presenter(construct_props);
@@ -169,7 +144,7 @@ describe('Reader presenter', function () {
 
         it('has all articles as pages', function () {
             EXPECTED_TITLES.forEach(function (title, i) {
-                expect(view.get_article_page(i).title).toBe(title)
+                expect(view.get_article_page(i).title).toBe(title);
             });
         });
 

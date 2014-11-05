@@ -15,6 +15,8 @@ String.prototype.format = Format.format;
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 
+const RESULTS_SIZE = 15;
+
 /**
  * Class: Reader.Presenter
  * Presenter module to manage the reader application
@@ -83,15 +85,9 @@ const Presenter = new Lang.Class({
         let [success, contents] = this.app_file.load_contents(null);
         this._parse_app_info(JSON.parse(contents));
 
-        // First we load only the first article of the issue, in order to get
-        // something on the screen as quickly as possible. Once that is loaded,
-        // we can start loading the subsequent articles.
-        this.engine.get_objects_by_query(this._domain, {
-            // FIXME: this should be the query that gets the first article of
-            // the current issue
-            tag: this._domain,
-            limit: 1,
-        }, this._create_first_page.bind(this));
+        this._article_models = [];
+        // Load all articles in this issue
+        this._load_all_content()
         this.view.done_page.get_style_context().add_class('last-page');
         this.view.done_page.background_image_uri = this._background_section_uri;
 
@@ -112,6 +108,61 @@ const Presenter = new Lang.Class({
             'back-visible', GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE);
     },
 
+    _load_all_content: function () {
+        this.engine.get_objects_by_query(this._domain, {
+            // FIXME: this should be fetching the right issue number
+            // based on today's date?
+            tag: 'issueNumber1',
+            limit: RESULTS_SIZE,
+            sortBy: 'articleNumber',
+            order: 'asc',
+        }, function (error, results, get_more_results_func) {
+            if (error !== undefined || results.length < 1) {
+                if (error !== undefined) {
+                    printerr(error);
+                    printerr(error.stack);
+                }
+                let err_label = _create_error_label(_("Oops!"),
+                    _("We could not find this issue of your magazine!\nPlease try again after restarting your computer."));
+                this.view.page_manager.add(err_label);
+                this.view.page_manager.visible_child = err_label;
+                this.view.show_all();
+            } else {
+                this._fetch_content_recursive(undefined, results, get_more_results_func);
+
+                this._first_page = this._load_webview_content(this._article_models[0].ekn_id, function (view, error) {
+                    this._load_webview_content_callback(this.view.get_article_page(0), view, error);
+                }.bind(this));
+
+                // If we have at least two articles total, load the next article in sequence
+                if (this._article_models.length >= 2) {
+                    let next_page = this.view.get_article_page(1);
+                    this._next_page = this._load_webview_content(this._article_models[1].ekn_id, function (view, error) {
+                        this._load_webview_content_callback(next_page, view, error);
+                    }.bind(this));
+                }
+
+                this.view.current_page = 0;
+                this.view.nav_buttons.back_visible = false;
+
+                this.view.show_all();
+            }
+        }.bind(this));
+    },
+
+    _fetch_content_recursive: function (err, results, get_more_results_func) {
+        if (err !== undefined) {
+            printerr(error);
+            printerr(error.stack);
+        } else {
+            this._create_pages_from_models(results);
+            // If there are more results to get, then fetch more content
+            if (results.length >= RESULTS_SIZE) {
+                get_more_results_func(RESULTS_SIZE, this._fetch_content_recursive.bind(this));
+            }
+        }
+    },
+
     // Presenter logic to move the reader either forward or backwards one page.
     // Current page is updated, the next page is loaded, and the previous one
     // is deleted. This ensures we maintain the invariant that the current,
@@ -127,8 +178,8 @@ const Presenter = new Lang.Class({
         let next_model_to_load = this._article_models[to_load_index];
         if (next_model_to_load !== undefined) {
             let next_page_to_load = this.view.get_article_page(to_load_index);
-            this._next_page = this._load_content(next_model_to_load.ekn_id, function (view, error) {
-                this._load_content_callback(next_page_to_load, view, error);
+            this._next_page = this._load_webview_content(next_model_to_load.ekn_id, function (view, error) {
+                this._load_webview_content_callback(next_page_to_load, view, error);
             }.bind(this));
         }
         let to_delete_page = this.view.get_article_page(to_delete_index);
@@ -141,72 +192,16 @@ const Presenter = new Lang.Class({
     // loading its content, and show the window. Until this point the user will
     // have seen the loading splash screen. Also start loading the rest of the
     // pages, asynchronously.
-    _create_first_page: function (error, result) {
-        if (error !== undefined || result.length < 1) {
-            let err_label = _create_error_label(_("Oops!"),
-                _("We could not find this issue of your magazine!\nPlease try again after restarting your computer."));
-            this.view.page_manager.add(err_label);
-            this.view.page_manager.visible_child = err_label;
-            this.view.show_all();
-            return;
-        }
-
-        let model = result[0];
-        let page = _create_article_page_from_article_model(model);
-        this._first_page = this._load_content(model.ekn_id, function (view, error) {
-            this._load_content_callback(page, view, error);
-        }.bind(this));
-
-        this.view.append_article_page(page);
-        this.view.current_page = 0;
-        this.view.nav_buttons.back_visible = false;
-
-        // Start loading the following pages
-        this.engine.get_objects_by_query(this._domain, {
-            // FIXME: this should be the query that gets all the articles
-            // belonging to the current issue
-            tag: this._domain,
-            limit: 15,
-        }, this._create_following_pages.bind(this));
-
-        this.view.show_all();
-    },
-
-    // The data about the rest of the pages from this issue has been loaded
-    // asynchronously, so create those pages, add them to the view, and start
-    // loading their content.
-    _create_following_pages: function (error, result) {
-        if (error !== undefined) {
-            let err_label = _create_error_label(_("Oops!"),
-                _("We thought there were more articles for you to see but we couldn't find them.\nPlease try again after restarting your computer."));
-            try {
-                this.view.append_article_page(err_label);
-            } catch (e) {
-                // Technically you're only supposed to append an
-                // EosKnowledge.Reader.ArticlePage this way, so this will throw an
-                // exception; but it should not happen anyway.
-            }
-            return;
-        }
-
-        // FIXME: We slice out the first element, since it is already displayed as the
-        // first page. We will remove this once we have pagination.
-        result.slice(1).forEach(function (model) {
+    _create_pages_from_models: function (models) {
+        models.forEach(function (model) {
             let page = _create_article_page_from_article_model(model);
             this.view.append_article_page(page);
             this._update_forward_button_visibility();
         }, this);
-        this._article_models = result;
-        // If we have at least two articles total, load the next article in sequence
-        if (this._article_models.length >= 2) {
-            let first_page = this.view.get_article_page(1);
-            this._next_page = this._load_content(this._article_models[1].ekn_id, function (view, error) {
-                this._load_content_callback(first_page, view, error)
-            }.bind(this));
-        }
+        this._article_models = this._article_models.concat(models);
     },
 
-    _load_content: function (uri, ready) {
+    _load_webview_content: function (uri, ready) {
         if (ready === undefined) {
             ready = function () {};
         }
@@ -235,7 +230,7 @@ const Presenter = new Lang.Class({
         return webview;
     },
 
-    _load_content_callback: function (page, view, error) {
+    _load_webview_content_callback: function (page, view, error) {
         if (error !== undefined) {
             printerr(error);
             printerr(error.stack);
