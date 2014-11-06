@@ -1,9 +1,46 @@
 const Endless = imports.gi.Endless;
 const EosKnowledge = imports.gi.EosKnowledge;
 const Gio = imports.gi.Gio;
+const GObject = imports.gi.GObject;
+const Lang = imports.lang;
 
 const TESTDIR = Endless.getCurrentFileDir() + '/..';
 const MOCK_ARTICLE_PATH = TESTDIR + '/test-content/mexico.jsonld';
+
+const MockEngine = new Lang.Class({
+    Name: 'MockEngine',
+    Extends: GObject.Object,
+
+    _init: function () {
+        this.parent();
+        this.host = 'localhost';
+        this.port = 3003;
+    },
+
+    ping: function () {},
+    get_object_by_id: function () {},
+    get_ekn_id: function () {},
+    get_objects_by_query: function () {},
+});
+
+const MockView = new Lang.Class({
+    Name: 'MockView',
+    Extends: GObject.Object,
+    Signals: {
+        'new-view-transitioned': {}
+    },
+
+    _init: function (props) {
+        this.parent(props);
+        this.toc = {
+            connect: function () {},
+        }
+    },
+
+    switch_in_content_view: function (view, animation_type) {
+        this.emit('new-view-transitioned');
+    },
+});
 
 describe('Article Presenter', function () {
     let presenter;
@@ -14,7 +51,6 @@ describe('Article Presenter', function () {
     let webview;
 
     beforeEach(function (done) {
-
         let file = Gio.file_new_for_path(MOCK_ARTICLE_PATH);
 
         let [success, data] = file.load_contents(null);
@@ -22,10 +58,11 @@ describe('Article Presenter', function () {
 
         articleObject = new EosKnowledge.ArticleObjectModel.new_from_json_ld(mockArticleData);
 
-        view = new EosKnowledge.ArticlePage();
+        view = new MockView();
         view.connect_after('new-view-transitioned', done);
 
-        engine = new EosKnowledge.Engine();
+        engine = new MockEngine();
+        spyOn(engine, 'get_object_by_id');
 
         presenter = new EosKnowledge.ArticlePresenter({
             article_view: view,
@@ -34,14 +71,13 @@ describe('Article Presenter', function () {
         presenter.load_article(articleObject, EosKnowledge.LoadingAnimationType.NONE);
     });
 
-    xit('can be constructed', function () {});
+    it('can be constructed', function () {});
 
-    xit('can set title and subtitle on view', function () {
+    it('can set title and subtitle on view', function () {
         expect(view.title).toBe(articleObject.title);
-
     });
 
-    xit('can set toc section list', function () {
+    it('can set toc section list', function () {
         let labels = [];
         for (let obj of mockArticleData['tableOfContents']) {
             if (!('hasParent' in obj)) {
@@ -51,12 +87,31 @@ describe('Article Presenter', function () {
         expect(view.toc.section_list).toEqual(labels);
     });
 
-    xit('emits signal when webview navigates to media object', function (done) {
-        let redirect_page = '<html><head><meta http-equiv="refresh" content="0;url=media://my_media_url.jpg"></head><body></body></html>';
-        presenter.connect('media-object-clicked', function (widget, media_object_id) {
-            expect(media_object_id).toEqual('my_media_url.jpg');
+    it('emits signal when webview navigates to media object', function (done) {
+        let dummy_page = '<html><body><p>Frango frango frango</p></body></html>';
+        presenter.connect('media-object-clicked', function (widget, media_object) {
+            expect(media_object.ekn_id).toEqual('mock_model_id');
             done();
         }.bind());
-        webview.load_html(redirect_page, null);
+        engine.get_object_by_id.and.callFake(function (d, i, callback) {
+            callback(undefined, new EosKnowledge.MediaObjectModel({
+                ekn_id: 'mock_model_id'
+            }));
+        });
+        presenter._webview.load_html(dummy_page, null);
+    });
+
+    it('emits signal when webview navigates to article object', function (done) {
+        let dummy_page = '<html><body><p>Frango frango frango</p></body></html>';
+        presenter.connect('article-object-clicked', function (widget, article_object) {
+            expect(article_object.ekn_id).toEqual('mock_model_id');
+            done();
+        }.bind());
+        engine.get_object_by_id.and.callFake(function (d, i, callback) {
+            callback(undefined, new EosKnowledge.ArticleObjectModel({
+                ekn_id: 'mock_model_id'
+            }));
+        });
+        presenter._webview.load_html(dummy_page, null);
     });
 });
