@@ -46,7 +46,7 @@ const ArticlePresenter = new GObject.Class({
         'article-view': GObject.ParamSpec.object('article-view', 'Article view',
             'The view component for this presenter',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            ArticlePage.ArticlePage),
+            GObject.Object),
 
         /**
          * Property: engine
@@ -56,7 +56,7 @@ const ArticlePresenter = new GObject.Class({
         'engine': GObject.ParamSpec.object('engine', 'Engine module',
             'The engine module to connect to EKN',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            Engine.Engine),
+            GObject.Object),
         /**
          * Property: template-type
          *
