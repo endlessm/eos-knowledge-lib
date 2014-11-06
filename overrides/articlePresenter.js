@@ -161,8 +161,10 @@ const ArticlePresenter = new GObject.Class({
                 this.article_view.switch_in_content_view(this._webview, animation_type);
                 ready();
             }.bind(this));
+            this._webview.load_uri(uri);
         } else if (type === 'application/pdf') {
             let view = this._get_pdfview_for_uri(uri);
+            view.load_uri(uri);
             // FIXME: Remove this line once we support table of contents
             // widget for PDFs
             this._article_model.table_of_contents = undefined;
@@ -328,13 +330,11 @@ const ArticlePresenter = new GObject.Class({
             }
         }.bind(this));
 
-        webview.load_uri(uri);
         return webview;
     },
 
     _get_pdfview_for_uri: function (uri) {
         let view = new PDFView.PDFView();
-        view.load_uri(uri);
         return view;
     },
 });
