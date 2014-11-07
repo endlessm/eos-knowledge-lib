@@ -2,7 +2,9 @@ const EosKnowledge = imports.gi.EosKnowledge;
 const Endless = imports.gi.Endless;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
+const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
+const Lang = imports.lang;
 
 const TESTDIR = Endless.getCurrentFileDir() + '/..';
 // Working directory should be top of the builddir
@@ -14,12 +16,65 @@ function parse_object_from_path(path) {
     return JSON.parse(data);
 }
 
+const MockView = new Lang.Class({
+    Name: 'MockView',
+    Extends: GObject.Object,
+
+    _init: function () {
+        this.parent();
+        let connectable_object = {
+            connect: function () {},
+        }
+        this.section_page = connectable_object;
+        this.home_page = connectable_object;
+        this.categories_page = connectable_object;
+        this.article_page = connectable_object;
+        this.lightbox = {};
+        this.history_buttons = {
+            forward_button: new Gtk.Button(),
+            back_button: new Gtk.Button(),
+        };
+    },
+
+    connect: function () {},
+});
+
+const MockEngine = new Lang.Class({
+    Name: 'MockEngine',
+    Extends: GObject.Object,
+
+    _init: function () {
+        this.parent();
+        this.host = 'localhost';
+        this.port = 3003;
+    },
+
+    ping: function () {},
+    get_object_by_id: function () {},
+    get_ekn_id: function () {},
+    get_objects_by_query: function () {},
+});
+
+const MockArticlePresenter = new Lang.Class({
+    Name: 'MockArticlePresenter',
+    Extends: GObject.Object,
+
+    _init: function () {
+        this.parent();
+    },
+
+    connect: function () {},
+});
+
 describe('Presenter', function () {
     let presenter;
     let data;
+    let view;
+    let engine;
+    let article_presenter;
     let test_app_filename = 'file://' + TESTDIR + '/test-content/app.json';
 
-    beforeEach(function (done) {
+    beforeEach(function () {
 
         data = parse_object_from_path(test_app_filename);
 
@@ -27,32 +82,24 @@ describe('Presenter', function () {
         let resource = Gio.Resource.load(TESTBUILDDIR + '/test-content/test-content.gresource');
         resource._register();
 
-        // Borrowed from jasmine test for Window
-        // Generate a unique ID for each app instance that we test
-        let fake_pid = GLib.random_int();
-        // FIXME In this version of GJS there is no Posix module, so fake the PID
-        let id_string = 'com.endlessm.knowledge.test.dummy' + GLib.get_real_time() + fake_pid;
-        let app = new Endless.Application({
-            application_id: id_string,
-            flags: 0
+        view = new MockView();
+        engine = new MockEngine();
+        article_presenter = new MockArticlePresenter();
+        spyOn(engine, 'ping');
+        presenter = new EosKnowledge.Presenter({
+            article_presenter: article_presenter,
+            domain: 'mock_domain',
+            template_type: 'A',
+            engine: engine,
+            view: view,
         });
-        app.connect('startup', function () {
-            presenter = new EosKnowledge.Presenter(app, test_app_filename);
-            done();
-        });
-
-        app.run([]);
-
-    });
-
-    afterEach(function () {
-        presenter.view.destroy();
+        presenter.set_sections(data['sections']);
     });
 
     it('can be constructed', function () {});
 
-    it('can set title image on view from json', function () {
-        expect(presenter.view.home_page.title_image_uri).toBe(data['titleImageURI']);
+    it('pings the knowledge engine on construction', function () {
+         expect(engine.ping).toHaveBeenCalled();
     });
 
     it('can set cards on view from json', function () {
@@ -68,5 +115,4 @@ describe('Presenter', function () {
             return card.thumbnail_uri;
         }));
     });
-
 });

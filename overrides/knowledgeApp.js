@@ -1,9 +1,14 @@
 const Gio = imports.gi.Gio;
 const Gdk = imports.gi.Gdk;
 const Lang = imports.lang;
+const System = imports.system;
 
+const ArticlePresenter = imports.articlePresenter;
 const EknApplication = imports.application;
+const Engine = imports.engine;
 const Presenter = imports.presenter;
+const Window = imports.window;
+const Utils = imports.utils;
 
 const KnowledgeApp = new Lang.Class ({
     Name: 'KnowledgeApp',
@@ -38,7 +43,36 @@ const KnowledgeApp = new Lang.Class ({
         this.parent();
         if (!this._presenter) {
             let app_json_file = this.resource_file.get_child('app.json');
-            this._presenter = new Presenter.Presenter(this, app_json_file.get_uri());
+            let app_content = Utils.parse_object_from_file(app_json_file);
+            let domain = app_content['appId'].split('.').pop();
+            let template_type = app_content['templateType'];
+
+            let view = new Window.Window({
+                application: this,
+                template_type: template_type,
+                title: app_content['appTitle'],
+            });
+
+            view.home_page.title_image_uri = app_content['titleImageURI'];
+            view.background_image_uri = app_content['backgroundHomeURI'];
+            view.blur_background_image_uri = app_content['backgroundSectionURI'];
+
+            let engine = new Engine.Engine();
+
+            let article_presenter = new ArticlePresenter.ArticlePresenter({
+                article_view: view.article_page,
+                engine: engine,
+                template_type: template_type,
+            });
+
+            this._presenter = new Presenter.Presenter({
+                article_presenter: article_presenter,
+                domain: domain,
+                engine: engine,
+                template_type: template_type,
+                view: view,
+            });
+            this._presenter.set_sections(app_content['sections']);
         }
 
         this._presenter.view.show_all();
