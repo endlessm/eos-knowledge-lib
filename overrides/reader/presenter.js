@@ -10,6 +10,9 @@ const WebKit2 = imports.gi.WebKit2;
 const ArticlePage = imports.reader.articlePage;
 const Config = imports.config;
 const EknWebview = imports.eknWebview;
+const Engine = imports.engine;
+const Utils = imports.utils;
+const Window = imports.reader.window;
 
 String.prototype.format = Format.format;
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
@@ -30,6 +33,21 @@ const Presenter = new Lang.Class({
     GTypeName: 'EknReaderPresenter',
     Extends: GObject.Object,
     Properties: {
+        /**
+         * Property: application
+         * The GApplication for the knowledge app
+         *
+         * This should always be set except for during testing. If this is not
+         * set in unit testing, make sure to mock out view object. The real
+         * Endless.Window requires a application on construction.
+         *
+         * Flags:
+         *   Construct only
+         */
+        'application': GObject.ParamSpec.object('application', 'Application',
+            'Presenter for article page',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            GObject.Object.$gtype),
         /**
          * Property: app-file
          * File handle pointing to the app.json file
@@ -80,10 +98,14 @@ const Presenter = new Lang.Class({
     },
 
     _init: function (props) {
+        props.view = props.view || new Window.Window({
+            application: props.application,
+        });
+        props.engine = props.engine || new Engine.Engine();
         this.parent(props);
 
-        let [success, contents] = this.app_file.load_contents(null);
-        this._parse_app_info(JSON.parse(contents));
+        let app_json = Utils.parse_object_from_file(this.app_file);
+        this._parse_app_info(app_json);
 
         this._article_models = [];
         // Load all articles in this issue

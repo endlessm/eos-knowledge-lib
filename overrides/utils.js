@@ -15,3 +15,15 @@ function set_hand_cursor_on_widget(widget) {
         widget.window.set_cursor(null);
     });
 }
+
+/* Helper function to load a JSON object from a file */
+function parse_object_from_file (file) {
+    try {
+        let [success, data] = file.load_contents(null);
+        return JSON.parse(data);
+    } catch(e) {
+        printerr(e);
+        printerr(e.stack);
+    }
+    return null;
+}

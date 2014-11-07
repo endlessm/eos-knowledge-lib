@@ -36,7 +36,8 @@ const ArticlePresenter = new GObject.Class({
          */
         'article-model': GObject.ParamSpec.object('article-model', 'Article model',
             'The article object model handled by this widget',
-            GObject.ParamFlags.READWRITE, ArticleObjectModel.ArticleObjectModel),
+            GObject.ParamFlags.READWRITE,
+            GObject.Object.$gtype),
 
         /**
          * Property: article-view
@@ -46,7 +47,7 @@ const ArticlePresenter = new GObject.Class({
         'article-view': GObject.ParamSpec.object('article-view', 'Article view',
             'The view component for this presenter',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            GObject.Object),
+            GObject.Object.$gtype),
 
         /**
          * Property: engine
@@ -56,7 +57,7 @@ const ArticlePresenter = new GObject.Class({
         'engine': GObject.ParamSpec.object('engine', 'Engine module',
             'The engine module to connect to EKN',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            GObject.Object),
+            GObject.Object.$gtype),
         /**
          * Property: template-type
          *
