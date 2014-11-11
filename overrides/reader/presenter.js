@@ -10,6 +10,9 @@ const WebKit2 = imports.gi.WebKit2;
 const ArticlePage = imports.reader.articlePage;
 const Config = imports.config;
 const EknWebview = imports.eknWebview;
+const Engine = imports.engine;
+const Utils = imports.utils;
+const Window = imports.reader.window;
 
 String.prototype.format = Format.format;
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
@@ -82,8 +85,18 @@ const Presenter = new Lang.Class({
     _init: function (props) {
         this.parent(props);
 
-        let [success, contents] = this.app_file.load_contents(null);
-        this._parse_app_info(JSON.parse(contents));
+        let app_json = Utils.parse_object_from_file(this.app_file);
+        this._parse_app_info(app_json);
+
+        if (this.view === null) {
+            let view = new Window.Window({
+                application: this.application,
+            });
+        }
+
+        if (this.engine === null) {
+            let engine = new Engine.Engine();
+        }
 
         this._article_models = [];
         // Load all articles in this issue

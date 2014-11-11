@@ -17,6 +17,8 @@ const MediaInfobox = imports.mediaInfobox;
 const PdfCard = imports.pdfCard;
 const Previewer = imports.previewer;
 const TextCard = imports.textCard;
+const Window = imports.window;
+const Utils = imports.utils;
 
 String.prototype.format = Format.format;
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
@@ -46,23 +48,37 @@ const Presenter = new Lang.Class({
 
     Properties: {
         /**
-         * Property: domain
+         * Property: application
+         * The GApplication for the knowledge app
          *
-         * A string for the domain the presenter should use.
+         * This should always be set except for during testing. If this is not
+         * set in unit testing, make sure to mock out view object. The real
+         * Endless.Window requires a application on construction.
+         *
+         * Flags:
+         *   Construct only
          */
-        'domain':  GObject.ParamSpec.string('domain', 'Domain',
-            'The Domain for this knowledge app',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
-
+        'application': GObject.ParamSpec.object('application', 'Application',
+            'Presenter for article page',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            GObject.Object.$gtype),
         /**
-         * Property: template-type
+         * Property: app-file
+         * File handle pointing to the app.json file
          *
-         * A string for the template type the presenter should use.
+         * This property is usually set by <Reader.Application>.
+         * Its usual value is the object:
+         * > application.resource_file.get_child('app.json')
+         *
+         * Flags:
+         *   Construct only
          */
-        'template-type':  GObject.ParamSpec.string('template-type', 'Template Type',
-            'Which template the presenter should use',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, 'A'),
-
+        'app-file': GObject.ParamSpec.object('app-file', 'App file',
+            'File handle pointing to the app.json file',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            GObject.Object.$gtype),
+            /* The above should be Gio.File.$gtype; properties with an interface
+            type are broken until GJS 1.42 */
         /**
          * Property: article-presenter
          * Presenter for article page
@@ -78,7 +94,6 @@ const Presenter = new Lang.Class({
             'Presenter for article page',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             GObject.Object.$gtype),
-
         /**
          * Property: engine
          * Handle to EOS knowledge engine
@@ -94,7 +109,6 @@ const Presenter = new Lang.Class({
             'Handle to EOS knowledge engine',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             GObject.Object.$gtype),
-
         /**
          * Property: view
          * Knowledge app view
@@ -115,13 +129,42 @@ const Presenter = new Lang.Class({
     _init: function (props) {
         this.parent(props);
 
+        let app_json = Utils.parse_object_from_file(this.app_file);
+
+        this._template_type = app_json['templateType'];
+        this._domain = app_json['appId'].split('.').pop();
+
+        if (this.view === null) {
+            this.view = new Window.Window({
+                application: this.application,
+                template_type: this._template_type,
+                title: app_json['appTitle'],
+            });
+        }
+        if (this.engine === null) {
+            this.engine = new Engine.Engine();
+        }
+        if (this.article_presenter === null) {
+            this.article_presenter = new ArticlePresenter.ArticlePresenter({
+                article_view: this.view.article_page,
+                engine: this.engine,
+                template_type: this._template_type,
+            });
+        }
+
+        this.view.title = app_json['appTitle'];
+        this.view.home_page.title_image_uri = app_json['titleImageURI'];
+        this.view.background_image_uri = app_json['backgroundHomeURI'];
+        this.view.blur_background_image_uri = app_json['backgroundSectionURI'];
+        this._set_sections(app_json['sections']);
+
         this._previewer = new Previewer.Previewer({
             visible: true
         });
         this.view.lightbox.content_widget = this._previewer;
 
         // Ping server to spin up knowledge engine
-        this.engine.ping(this.domain);
+        this.engine.ping(this._domain);
 
         // Keeps track of the broad query that led to an individual article.
         this._latest_origin_query = '{}';
@@ -170,7 +213,7 @@ const Presenter = new Lang.Class({
             } else {
                 let cards = results.map(this._new_card_from_article_model.bind(this));
                 if (cards.length > 0) {
-                    if (this.template_type === 'B') {
+                    if (this._template_type === 'B') {
                         this.view.section_page.cards = this.view.section_page.cards.concat(cards);
                     } else {
                         let article_segment_title = _("Articles");
@@ -210,15 +253,15 @@ const Presenter = new Lang.Class({
                 break;
             case this._SECTION_PAGE:
                 this._target_page_title = this._history_model.current_item.title;
-                this.engine.get_objects_by_query(this.domain, article_origin_query, this._load_section_page.bind(this));
+                this.engine.get_objects_by_query(this._domain, article_origin_query, this._load_section_page.bind(this));
                 break;
             case this._ARTICLE_PAGE:
                 if (this._history_model.current_item.article_origin_query !== this._latest_origin_query) {
-                    this.engine.get_objects_by_query(this.domain, article_origin_query, this._refresh_sidebar_callback.bind(this));
+                    this.engine.get_objects_by_query(this._domain, article_origin_query, this._refresh_sidebar_callback.bind(this));
                 }
                 this.article_presenter.load_article(this._history_model.current_item.article_model, animation_type);
                 // For Template B, we reset the highlight to the card with the same title
-                if (this.template_type === 'B')
+                if (this._template_type === 'B')
                     this.view.section_page.highlight_card_with_name(
                         this._history_model.current_item.title,
                         this._history_model.current_item.article_origin_page
@@ -243,8 +286,8 @@ const Presenter = new Lang.Class({
         this._get_more_results = get_more_results_func;
     },
 
-    set_sections: function(sections) {
-        if (this.template_type === 'B') {
+    _set_sections: function(sections) {
+        if (this._template_type === 'B') {
             this.view.home_page.cards = sections.map(function (section) {
                 let card = new CardB.CardB({
                     title: section['title'].charAt(0).toUpperCase() + section['title'].slice(1),
@@ -289,7 +332,7 @@ const Presenter = new Lang.Class({
         }
         this._target_page_title = card.title;
         this._add_history_object_for_section_page(JSON.stringify(query));
-        this.engine.get_objects_by_query(this.domain, query, this._load_section_page.bind(this));
+        this.engine.get_objects_by_query(this._domain, query, this._load_section_page.bind(this));
     },
 
     // Removes newlines and trims whitespace before and after a query string
@@ -326,7 +369,7 @@ const Presenter = new Lang.Class({
         // The topbar search box should also clear once an article has been chosen.
         this.view.home_page.search_box.text = '';
 
-        this.engine.get_objects_by_query(this.domain, query, this._load_section_page.bind(this));
+        this.engine.get_objects_by_query(this._domain, query, this._load_section_page.bind(this));
     },
 
     _on_search_focus: function (view, focused) {
@@ -364,7 +407,7 @@ const Presenter = new Lang.Class({
         if (query.length === 0) {
             return;
         }
-        this.engine.get_objects_by_query(this.domain, {
+        this.engine.get_objects_by_query(this._domain, {
             'prefix': query
         }, function (err, results) {
             if (err !== undefined) {
@@ -394,7 +437,7 @@ const Presenter = new Lang.Class({
         });
         // If template B, we need to set the autocomplete results as the cards on the
         // section page
-        if (this.template_type === 'B') {
+        if (this._template_type === 'B') {
             let cards = this._autocomplete_results.map(this._new_card_from_article_model.bind(this));
             this.view.section_page.cards = cards;
         }
@@ -434,7 +477,7 @@ const Presenter = new Lang.Class({
         this.article_presenter.load_article(model, animation_type, function () {
             this.view.show_article_page();
         }.bind(this));
-        if (this.template_type === 'B')
+        if (this._template_type === 'B')
             this.view.section_page.highlight_card(card);
     },
 
@@ -506,7 +549,7 @@ const Presenter = new Lang.Class({
         this._add_history_object_for_article_page(model);
         this.article_presenter.load_article(model, EosKnowledge.LoadingAnimationType.FORWARDS_NAVIGATION);
 
-        if (this.template_type === 'B')
+        if (this._template_type === 'B')
             this.view.section_page.highlight_card_with_name(model.title, this._latest_article_card_title);
     },
 
@@ -542,7 +585,7 @@ const Presenter = new Lang.Class({
                 this._add_history_object_for_section_page(this._latest_origin_query);
                 this.view.show_section_page();
             }
-            if (this.template_type === 'B')
+            if (this._template_type === 'B')
                 this.view.section_page.clear_highlighted_cards();
         } else if (visible_page === this.view.section_page || visible_page === this.view.no_search_results_page) {
             if (this._original_page === this.view.home_page) {
@@ -577,7 +620,7 @@ const Presenter = new Lang.Class({
 
     _set_section_page_content: function (results) {
         let cards = results.map(this._new_card_from_article_model.bind(this));
-        if (this.template_type === 'B') {
+        if (this._template_type === 'B') {
             this.view.section_page.cards = cards;
         } else {
             let article_segment_title = _("Articles");
@@ -595,7 +638,7 @@ const Presenter = new Lang.Class({
         // to do a file I/O to get mime type for every card.
         if (model.content_uri.length > 0) {
             card_class = PdfCard.PdfCard;
-        } else if (this.template_type === 'B') {
+        } else if (this._template_type === 'B') {
             fade_in = false;
             card_class = TextCard.TextCard;
         }
