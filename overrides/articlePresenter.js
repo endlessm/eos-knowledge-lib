@@ -203,11 +203,11 @@ const ArticlePresenter = new GObject.Class({
 
     _connect_toc_widget: function () {
         this.article_view.toc.connect('up-clicked', function () {
-            this._scroll_to_section(this.article_view.toc.selected_section - 1);
+            this._scroll_to_section(this.article_view.toc.target_section - 1);
         }.bind(this));
 
         this.article_view.toc.connect('down-clicked', function () {
-            this._scroll_to_section(this.article_view.toc.selected_section + 1);
+            this._scroll_to_section(this.article_view.toc.target_section + 1);
         }.bind(this));
 
         this.article_view.toc.connect('section-clicked', function (widget, index) {
