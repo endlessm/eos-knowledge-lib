@@ -182,7 +182,7 @@ const Presenter = new Lang.Class({
                     printerr(error);
                     printerr(error.stack);
                 }
-                let err_label = _create_error_label(_("Oops!"),
+                let err_label = this._create_error_label(_("Oops!"),
                     _("We could not find this issue of your magazine!\nPlease try again after restarting your computer."));
                 this.view.page_manager.add(err_label);
                 this.view.page_manager.visible_child = err_label;
@@ -254,7 +254,7 @@ const Presenter = new Lang.Class({
     // pages, asynchronously.
     _create_pages_from_models: function (models) {
         models.forEach(function (model) {
-            let page = _create_article_page_from_article_model(model);
+            let page = this._create_article_page_from_article_model(model);
             this.view.append_article_page(page);
             this._update_forward_button_visibility();
         }, this);
@@ -294,7 +294,7 @@ const Presenter = new Lang.Class({
         if (error !== undefined) {
             printerr(error);
             printerr(error.stack);
-            let err_page = _create_error_label(_("Oops!"),
+            let err_page = this._create_error_label(_("Oops!"),
                 _("There was an error loading that page.\nTry another one or try again after restarting your computer."));
             page.show_content_view(err_page);
         } else {
@@ -313,50 +313,59 @@ const Presenter = new Lang.Class({
         this.view.title = info['appTitle'];
         this._background_section_uri = info['backgroundSectionURI'];
     },
-});
 
-// Take an ArticleObjectModel and create a Reader.ArticlePage view.
-function _create_article_page_from_article_model(model) {
-    let attribution_string = '';
-    // FIXME: this is just a guess about what the metadata property will
-    // look like.
-    if (model.metadata) {
-        let metadata = model.metadata;
-        if ('author' in metadata && 'date' in metadata) {
-            // TRANSLATORS: the %s's are replaced by the name of the author
-            // and the date published, for example "by Ronaldo on Saturday,
-            // September 5, 2014". Make sure to keep the %s's in the
-            // translated string.
-            attribution_string = _("by %s on %s").format(metadata['author'],
-                // FIXME: must be nicely formatted according to locale
-                metadata['date']);
-        } else if ('author' in metadata) {
-            // TRANSLATORS: the %s is replaced by the name of the author,
-            // for example "by Ronaldo". Make sure to keep the %s in the
-            // translated string.
-            attribution_string = _("by %s").format(metadata['author']);
-        } else if ('date' in metadata) {
+    _format_attribution_for_metadata: function (authors, date) {
+        let attribution_string = '';
+        // TRANSLATORS: This "and" is used to join together the names
+        // of authors of a blog post. For example:
+        // Jane Austen and Henry Miller and William Clifford
+        let authors_string = authors.join(" " + _("and") + " ");
+        // TRANSLATORS: This is a string that is going to be substituted
+        // by date values in code. The %B represents a month, the %e represents
+        // the day, and %Y represents the year. Rearrange them how you wish to
+        // match the desired locale. For example, if you wanted the date to look
+        // like "1. December 2014", then you would do: "%e. %B %Y".
+        let formatted_date = new Date(date).toLocaleFormat(_("%B %e, %Y"));
+        if (authors.length > 0 && date) {
+            // TRANSLATORS: anything inside curly braces '{}' is going
+            // to be substituted in code. Please make sure to leave the
+            // curly braces around any words that have them and DO NOT
+            // translate words inside curly braces.
+            attribution_string = _("by {author} on {date}").replace("{author}", authors_string)
+            .replace("{date}", formatted_date);
+        } else if (authors.length > 0) {
+            // TRANSLATORS: anything inside curly braces '{}' is going
+            // to be substituted in code. Please make sure to leave the
+            // curly braces around any words that have them and DO NOT
+            // translate words inside curly braces.
+            attribution_string = _("by {author}").replace("{author}", authors_string);
+        } else if (date) {
             // FIXME: must be nicely formatted according to locale
-            attribution_string = metadata['date'];
+            attribution_string = formatted_date;
         }
-    }
+        return attribution_string;
+    },
 
-    return new ArticlePage.ArticlePage({
-        title: model.title,
-        attribution: attribution_string,
-    });
-}
+    // Take an ArticleObjectModel and create a Reader.ArticlePage view.
+    _create_article_page_from_article_model: function (model) {
+        let formatted_attribution = this._format_attribution_for_metadata(model.get_authors(), model.published);
+        return new ArticlePage.ArticlePage({
+            title: model.title,
+            attribution: formatted_attribution,
+        });
+    },
 
-// Show a friendlier error message when the engine is not working; suggest
-// restarting the computer because that's the only thing under the user's
-// control at this point that might get the knowledge engine back up. This is
-// in order to prevent the "Message Corrupt" effect.
-function _create_error_label(headline, message) {
-    let err_label = new Gtk.Label({
-        label: '<span size="xx-large"><b>' + headline + '</b></span>\n' + message,
-        justify: Gtk.Justification.CENTER,
-        use_markup: true,
-    });
-    err_label.show();
-    return err_label;
-}
+    // Show a friendlier error message when the engine is not working; suggest
+    // restarting the computer because that's the only thing under the user's
+    // control at this point that might get the knowledge engine back up. This is
+    // in order to prevent the "Message Corrupt" effect.
+    _create_error_label: function (headline, message) {
+        let err_label = new Gtk.Label({
+            label: '<span size="xx-large"><b>' + headline + '</b></span>\n' + message,
+            justify: Gtk.Justification.CENTER,
+            use_markup: true,
+        });
+        err_label.show();
+        return err_label;
+    },
+});

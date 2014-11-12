@@ -96,16 +96,34 @@ const MockView = new Lang.Class({
 
 describe('Reader presenter', function () {
     let engine, view, article_nav_buttons, construct_props, test_json,
-        EXPECTED_TITLES, EXPECTED_RESULTS;
+        MOCK_RESULTS;
     let test_app_filename = Endless.getCurrentFileDir() + '/../../test-content/app.json';
 
     beforeEach(function () {
-        EXPECTED_TITLES = ['Title 1', 'Title 2', 'Title 3'];
-        EXPECTED_RESULTS = EXPECTED_TITLES.map(function (title) {
+        let MOCK_DATA = [
+            [
+               'Title 1',
+                ["Kim Kardashian"],
+                '2014/11/13 08:00',
+            ],
+            [
+                'Title 2',
+                ["Kim Kardashian"],
+                '',
+            ],
+            [
+                'Title 3',
+                [],
+                '2014/11/13 08:00',
+            ],
+        ]
+        MOCK_RESULTS = MOCK_DATA.map(function (data) {
             return {
-                title: title,
+                title: data[0],
                 ekn_id: 'about:blank',
-            };
+                get_authors: jasmine.createSpy('get_authors').and.returnValue(data[1]),
+                published: data[2],
+            }
         });
         article_nav_buttons = new MockNavButtons();
         view = new MockView(article_nav_buttons);
@@ -136,12 +154,12 @@ describe('Reader presenter', function () {
         it('adds the first article as a page', function () {
             spyOn(view, 'append_article_page');
             engine.get_objects_by_query.and.callFake(function (d, q, callback) {
-                callback(undefined, EXPECTED_RESULTS);
+                callback(undefined, MOCK_RESULTS);
             });
             let presenter = new EosKnowledge.Reader.Presenter(test_json, construct_props);
-            EXPECTED_TITLES.forEach(function (title) {
+            MOCK_RESULTS.forEach(function (result) {
                 expect(view.append_article_page).toHaveBeenCalledWith(jasmine.objectContaining({
-                    title: title,
+                    title: result.title,
                 }));
             })
         });
@@ -161,15 +179,15 @@ describe('Reader presenter', function () {
 
         beforeEach(function () {
             engine.get_objects_by_query.and.callFake(function (d, q, callback) {
-                callback(undefined, EXPECTED_RESULTS);
+                callback(undefined, MOCK_RESULTS);
             });
-            view.total_pages = EXPECTED_TITLES.length + 1;
+            view.total_pages = MOCK_RESULTS.length + 1;
             presenter = new EosKnowledge.Reader.Presenter(test_json, construct_props);
         });
 
         it('has all articles as pages', function () {
-            EXPECTED_TITLES.forEach(function (title, i) {
-                expect(view.get_article_page(i).title).toBe(title);
+            MOCK_RESULTS.forEach(function (result, i) {
+                expect(view.get_article_page(i).title).toBe(result.title);
             });
         });
 
@@ -257,15 +275,39 @@ describe('Reader presenter', function () {
         it('removes the old pages when loading new pages', function () {
             engine.get_objects_by_query.calls.reset();
             engine.get_objects_by_query.and.callFake(function (d, q, callback) {
-                callback(undefined, [{
-                    title: 'Issue 14 Title',
-                    ekn_id: 'about:blank',
-                }]);
+                callback(undefined, [MOCK_RESULTS[0]]);
             });
             spyOn(view, 'remove_all_article_pages').and.callThrough();
             presenter.issue_number = 14;
-            expect(view.get_article_page(0).title).toBe('Issue 14 Title');
+            expect(view.get_article_page(0).title).toBe('Title 1');
             expect(view.remove_all_article_pages).toHaveBeenCalled();
+        });
+
+        describe('Attribution format', function () {
+            it('is blank if there is no data', function () {
+                let format = presenter._format_attribution_for_metadata([], '');
+                expect(format).toBe('');
+            });
+
+            it('formats one author correctly', function () {
+                let format = presenter._format_attribution_for_metadata(['Kim Kardashian'], '');
+                expect(format).toBe('by Kim Kardashian');
+            });
+
+            it('formats multiple authors correctly', function () {
+                let format = presenter._format_attribution_for_metadata(['Kim Kardashian', "William Shakespeare"], '');
+                expect(format).toBe('by Kim Kardashian and William Shakespeare');
+            });
+
+            it('formats author and date correctly', function () {
+                let format = presenter._format_attribution_for_metadata(['Kim Kardashian'], '2012-08-23T20:00:00');
+                expect(format).toBe('by Kim Kardashian on August 23, 2012');
+            });
+
+            it('formats date alone correctly', function () {
+                let format = presenter._format_attribution_for_metadata([], '2012-08-23T20:00:00');
+                expect(format).toBe('August 23, 2012');
+            });
         });
     });
 });
