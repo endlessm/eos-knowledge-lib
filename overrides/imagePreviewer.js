@@ -180,6 +180,12 @@ const ImagePreviewer = Lang.Class({
             this._last_allocation = allocation;
             let width = Math.min(allocation.width, this._max_percentage * this._natural_width);
             let height = Math.min(allocation.height, this._max_percentage * this._natural_height);
+
+            if (height * this._aspect < width) {
+                width = height * this._aspect;
+            } else if (width / this._aspect < height) {
+                height = width / this._aspect;
+            }
             this._scaled_pixbuf = this._pixbuf.scale_simple(width, height, GdkPixbuf.InterpType.BILINEAR);
         }
 
