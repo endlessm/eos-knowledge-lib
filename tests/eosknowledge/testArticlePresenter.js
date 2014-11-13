@@ -26,6 +26,11 @@ describe('Article Presenter', function () {
         view.connect_after('new-view-transitioned', done);
 
         engine = new EosKnowledge.Engine();
+        engine.ping = function () {};
+        engine.get_object_by_id = function () {};
+        engine.get_ekn_id = function () {};
+        engine.get_objects_by_query = function () {};
+
 
         presenter = new EosKnowledge.ArticlePresenter({
             article_view: view,
