@@ -36,7 +36,8 @@ const ArticlePresenter = new GObject.Class({
          */
         'article-model': GObject.ParamSpec.object('article-model', 'Article model',
             'The article object model handled by this widget',
-            GObject.ParamFlags.READWRITE, ArticleObjectModel.ArticleObjectModel),
+            GObject.ParamFlags.READWRITE,
+            GObject.Object.$gtype),
 
         /**
          * Property: article-view
@@ -46,7 +47,7 @@ const ArticlePresenter = new GObject.Class({
         'article-view': GObject.ParamSpec.object('article-view', 'Article view',
             'The view component for this presenter',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            ArticlePage.ArticlePage),
+            GObject.Object.$gtype),
 
         /**
          * Property: engine
@@ -56,7 +57,7 @@ const ArticlePresenter = new GObject.Class({
         'engine': GObject.ParamSpec.object('engine', 'Engine module',
             'The engine module to connect to EKN',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            Engine.Engine),
+            GObject.Object.$gtype),
         /**
          * Property: template-type
          *
@@ -161,8 +162,10 @@ const ArticlePresenter = new GObject.Class({
                 this.article_view.switch_in_content_view(this._webview, animation_type);
                 ready();
             }.bind(this));
+            this._webview.load_uri(uri);
         } else if (type === 'application/pdf') {
             let view = this._get_pdfview_for_uri(uri);
+            view.load_uri(uri);
             // FIXME: Remove this line once we support table of contents
             // widget for PDFs
             this._article_model.table_of_contents = undefined;
@@ -328,13 +331,11 @@ const ArticlePresenter = new GObject.Class({
             }
         }.bind(this));
 
-        webview.load_uri(uri);
         return webview;
     },
 
     _get_pdfview_for_uri: function (uri) {
         let view = new PDFView.PDFView();
-        view.load_uri(uri);
         return view;
     },
 });

@@ -2,9 +2,7 @@ const Gio = imports.gi.Gio;
 const Lang = imports.lang;
 
 const EknApplication = imports.application;
-const Engine = imports.engine;
 const Presenter = imports.reader.presenter;
-const Window = imports.reader.window;
 
 /**
  * Class: Reader.Application
@@ -31,13 +29,9 @@ const Application = new Lang.Class({
         this.parent();
 
         let app_json_file = this.resource_file.get_child('app.json');
-        let view = new Window.Window({
-            application: this,
-        });
         let presenter = new Presenter.Presenter({
+            application: this,
             app_file: app_json_file,
-            engine: new Engine.Engine(),
-            view: view,
         });
     },
 });

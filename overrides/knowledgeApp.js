@@ -38,7 +38,10 @@ const KnowledgeApp = new Lang.Class ({
         this.parent();
         if (!this._presenter) {
             let app_json_file = this.resource_file.get_child('app.json');
-            this._presenter = new Presenter.Presenter(this, app_json_file.get_uri());
+            this._presenter = new Presenter.Presenter({
+                application: this,
+                app_file: app_json_file,
+            });
         }
 
         this._presenter.view.show_all();
