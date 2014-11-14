@@ -2,7 +2,8 @@ const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
-const EosKnowledge = imports.gi.EosKnowledge;
+
+const Engine = imports.engine;
 
 const SearchIFace = '\
 <node name="/" xmlns:doc="http://www.freedesktop.org/dbus/1.0/doc.dtd"> \
@@ -30,8 +31,7 @@ const SearchIFace = '\
       <arg type="u" name="Timestamp" direction="in" /> \
     </method> \
   </interface> \
-</node> \
-'
+</node>';
 
 // Enum for error codes
 const SearchProviderErrors = {
@@ -41,6 +41,17 @@ const SearchProviderErrors = {
 const SearchProvider = Lang.Class({
     Name: 'EknSearchProvider',
     Extends: GObject.Object,
+
+    Properties: {
+        /**
+         * Property: search_domain
+         *
+         * The Knowledge Engine domain from which to provide results
+         */
+        'search-domain': GObject.ParamSpec.string('search-domain',
+            'Search Domain', 'Search Domain within knowledge engine',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT, ''),
+    },
 
     Signals: {
         'load-page': { param_types: [
@@ -62,11 +73,10 @@ const SearchProvider = Lang.Class({
         this._impl = Gio.DBusExportedObject.wrapJSObject(SearchIFace, this);
         this._search_provider_domain = GLib.quark_from_string('Knowledge App Search Provider Error');
 
-        this._search_domain = Gio.Application.get_default().application_id.split('.').pop();
         this._search_results = null;
         this._more_results_callback = null;
 
-        this._engine = new EosKnowledge.Engine();
+        this._engine = new Engine.Engine();
         this._object_cache = {};
     },
 
@@ -98,7 +108,7 @@ const SearchProvider = Lang.Class({
 
     _run_query: function (terms, limit, cb) {
         let search_phrase = terms.join(' ');
-        this._engine.get_objects_by_query(this._search_domain, {
+        this._engine.get_objects_by_query(this.search_domain, {
             q: search_phrase,
             limit: limit,
         }, function (err, results, more_results_callback) {
@@ -116,7 +126,7 @@ const SearchProvider = Lang.Class({
                 this._add_results_to_cache(results);
                 this._search_results = results;
                 this._more_results_callback = more_results_callback;
-                let ids = results.map(function (result) { return result.ekn_id });
+                let ids = results.map(function (result) { return result.ekn_id; });
                 invocation.return_value(new GLib.Variant('(as)', [ids]));
             } else {
                 invocation.return_error_literal(this._search_provider_domain, SearchProviderErrors.RetrievalError, 'Error retrieving results: ' + err);
@@ -136,7 +146,7 @@ const SearchProvider = Lang.Class({
                 this._add_results_to_cache(results);
                 this._search_results = results;
                 this._more_results_callback = more_results_callback;
-                let ids = results.map(function (result) { return result.ekn_id });
+                let ids = results.map(function (result) { return result.ekn_id; });
                 invocation.return_value(new GLib.Variant('(as)', [ids]));
             } else {
                 invocation.return_error_literal(this._search_provider_domain, SearchProviderErrors.RetrievalError, 'Error retrieving results: ' + err);
@@ -147,7 +157,7 @@ const SearchProvider = Lang.Class({
 
     GetResultMetas: function (params) {
         let identifiers = params;
-        
+
         let result_gvariants = [];
         let result_ekn_objects = identifiers.map(this._get_from_cache.bind(this));
         for (let obj of result_ekn_objects) {

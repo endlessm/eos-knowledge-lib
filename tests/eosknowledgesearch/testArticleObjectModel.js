@@ -1,5 +1,5 @@
 const Endless = imports.gi.Endless;
-const EosKnowledge = imports.gi.EosKnowledge;
+const EosKnowledgeSearch = imports.EosKnowledgeSearch;
 const Gtk = imports.gi.Gtk;
 const InstanceOfMatcher = imports.InstanceOfMatcher;
 
@@ -14,9 +14,9 @@ describe ('Article Object Model', function () {
     beforeEach(function () {
         jasmine.addMatchers(InstanceOfMatcher.customMatchers);
 
-        articleObject = new EosKnowledge.ArticleObjectModel.new_from_json_ld(mockArticleData);
+        articleObject = new EosKnowledgeSearch.ArticleObjectModel.new_from_json_ld(mockArticleData);
     });
-    
+
     describe ('JSON-LD marshaler', function () {
         it ('should construct from a JSON-LD document', function () {
             expect(articleObject).toBeDefined();
@@ -35,7 +35,7 @@ describe ('Article Object Model', function () {
             let expectedURIs = mockArticleData.resources.map(function (v) {
                 return v.contentURL;
             });
-            expect(articleObject.get_resources()[0]).toBeA(EosKnowledge.MediaObjectModel);
+            expect(articleObject.get_resources()[0]).toBeA(EosKnowledgeSearch.MediaObjectModel);
             expect(contentURIs).toEqual(expectedURIs);
         });
 
@@ -52,7 +52,7 @@ describe ('Reader App Article Object', function () {
     beforeEach(function () {
         jasmine.addMatchers(InstanceOfMatcher.customMatchers);
 
-        readerArticleObject = new EosKnowledge.ArticleObjectModel.new_from_json_ld(mockReaderArticleData);
+        readerArticleObject = new EosKnowledgeSearch.ArticleObjectModel.new_from_json_ld(mockReaderArticleData);
     });
 
     it ('should present the properties inherent to the Reader App', function () {

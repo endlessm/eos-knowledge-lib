@@ -1,13 +1,14 @@
 const EosKnowledge = imports.gi.EosKnowledge;
+const EosKnowledgeSearch = imports.EosKnowledgeSearch;
 const Endless = imports.gi.Endless;
 const Format = imports.format;
 const Gio = imports.gi.Gio;
 const Gettext = imports.gettext;
 const GObject = imports.gi.GObject;
+const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const ArticleCard = imports.articleCard;
-const ArticleObjectModel = imports.articleObjectModel;
 const ArticlePresenter = imports.articlePresenter;
 const CardA = imports.cardA;
 const CardB = imports.cardB;
@@ -63,23 +64,6 @@ const Presenter = new Lang.Class({
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             GObject.Object.$gtype),
         /**
-         * Property: app-file
-         * File handle pointing to the app.json file
-         *
-         * This property is usually set by <Reader.Application>.
-         * Its usual value is the object:
-         * > application.resource_file.get_child('app.json')
-         *
-         * Flags:
-         *   Construct only
-         */
-        'app-file': GObject.ParamSpec.object('app-file', 'App file',
-            'File handle pointing to the app.json file',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            GObject.Object.$gtype),
-            /* The above should be Gio.File.$gtype; properties with an interface
-            type are broken until GJS 1.42 */
-        /**
          * Property: article-presenter
          * Presenter for article page
          *
@@ -126,16 +110,18 @@ const Presenter = new Lang.Class({
             GObject.Object.$gtype),
     },
 
-    _init: function (props) {
-        let app_json = Utils.parse_object_from_file(props.app_file);
+    _init: function (app_json, props) {
         this._template_type = app_json['templateType'];
         this._domain = app_json['appId'].split('.').pop();
+
+        let css = Gio.File.new_for_uri('resource:///com/endlessm/knowledge/endless_knowledge.css');
+        Utils.add_css_provider_from_file(css, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 
         props.view = props.view || new Window.Window({
             application: props.application,
             template_type: this._template_type,
         });
-        props.engine = props.engine || new Engine.Engine();
+        props.engine = props.engine || new EosKnowledgeSearch.Engine();
         props.article_presenter = props.article_presenter || new ArticlePresenter.ArticlePresenter({
                 article_view: props.view.article_page,
                 engine: props.engine,
@@ -695,7 +681,7 @@ const HistoryItem = new Lang.Class({
          */
         'article-model': GObject.ParamSpec.object('article-model', 'Article model',
             'The article object model handled by this widget. Only not null for pages of type \'article\'',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ArticleObjectModel.ArticleObjectModel),
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, EosKnowledgeSearch.ArticleObjectModel),
         /**
          * Property: query
          *

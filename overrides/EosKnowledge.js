@@ -9,32 +9,27 @@ let EosKnowledge;
 let _oldSearchPath = imports.searchPath.slice(0);
 imports.searchPath.unshift(Endless.getCurrentFileDir());
 
-const Application = imports.application;
 const ArticleCard = imports.articleCard;
-const ArticleObjectModel = imports.articleObjectModel;
 const ArticlePage = imports.articlePage;
 const ArticlePresenter = imports.articlePresenter;
 const Card = imports.card;
 const CardA = imports.cardA;
 const CardB = imports.cardB;
 const CategoriesPage = imports.categoriesPage;
-const ContentObjectModel = imports.contentObjectModel;
 const EknWebview = imports.eknWebview;
-const Engine = imports.engine;
 const HomePage = imports.homePage;
 const HomePageA = imports.homePageA;
 const HomePageB = imports.homePageB;
-const KnowledgeApp = imports.knowledgeApp;
 const LessonCard = imports.lessonCard;
 const Lightbox = imports.lightbox;
 const ListCard = imports.listCard;
 const MediaInfobox = imports.mediaInfobox;
-const MediaObjectModel = imports.mediaObjectModel;
 const NavButtonOverlay = imports.navButtonOverlay;
 const NoSearchResultsPage = imports.noSearchResultsPage;
 const PdfCard = imports.pdfCard;
 const PDFView = imports.PDFView;
 const Presenter = imports.presenter;
+const PresenterLoader = imports.presenterLoader;
 const Previewer = imports.previewer;
 const ProgressCard = imports.progressCard;
 const SectionArticlePage = imports.sectionArticlePage;
@@ -46,7 +41,6 @@ const TextCard = imports.textCard;
 const TreeNode = imports.treeNode;
 const Window = imports.window;
 
-const ReaderApplication = imports.reader.application;
 const ReaderArticlePage = imports.reader.articlePage;
 const ReaderDonePage = imports.reader.donePage;
 const ReaderPresenter = imports.reader.presenter;
@@ -92,28 +86,22 @@ function _init() {
         }
     });
 
-    EosKnowledge.Application = Application.Application;
     EosKnowledge.ArticleCard = ArticleCard.ArticleCard;
-    EosKnowledge.ArticleObjectModel = ArticleObjectModel.ArticleObjectModel;
     EosKnowledge.ArticlePage = ArticlePage.ArticlePage;
     EosKnowledge.ArticlePresenter = ArticlePresenter.ArticlePresenter;
     EosKnowledge.Card = Card.Card;
     EosKnowledge.CardA = CardA.CardA;
     EosKnowledge.CardB = CardB.CardB;
     EosKnowledge.CategoriesPage = CategoriesPage.CategoriesPage;
-    EosKnowledge.ContentObjectModel = ContentObjectModel.ContentObjectModel;
     EosKnowledge.EknWebview = EknWebview.EknWebview;
-    EosKnowledge.Engine = Engine.Engine;
+    EosKnowledge.get_presenter_for_resource = PresenterLoader.get_presenter_for_resource;
     EosKnowledge.HomePage = HomePage.HomePage;
     EosKnowledge.HomePageA = HomePageA.HomePageA;
-    EosKnowledge.ImageObjectModel = MediaObjectModel.ImageObjectModel;
     EosKnowledge.HomePageB = HomePageB.HomePageB;
-    EosKnowledge.KnowledgeApp = KnowledgeApp.KnowledgeApp;
     EosKnowledge.LessonCard = LessonCard.LessonCard;
     EosKnowledge.Lightbox = Lightbox.Lightbox;
     EosKnowledge.ListCard = ListCard.ListCard;
     EosKnowledge.MediaInfobox = MediaInfobox.MediaInfobox;
-    EosKnowledge.MediaObjectModel = MediaObjectModel.MediaObjectModel;
     EosKnowledge.NavButtonOverlay = NavButtonOverlay.NavButtonOverlay;
     EosKnowledge.NoSearchResultsPage = NoSearchResultsPage.NoSearchResultsPage;
     EosKnowledge.NoSearchResultsPageA = NoSearchResultsPage.NoSearchResultsPageA;
@@ -130,8 +118,6 @@ function _init() {
     EosKnowledge.SectionPageB = SectionPageB.SectionPageB;
     EosKnowledge.TableOfContents = TableOfContents.TableOfContents;
     EosKnowledge.TextCard = TextCard.TextCard;
-    EosKnowledge.tree_model_from_tree_node = TreeNode.tree_model_from_tree_node;
-    EosKnowledge.VideoObjectModel = MediaObjectModel.VideoObjectModel;
     EosKnowledge.Window = Window.Window;
 
     /**
@@ -143,7 +129,6 @@ function _init() {
      *     (Applies to everything in this namespace.)
      */
     EosKnowledge.Reader = {
-        Application: ReaderApplication.Application,
         ArticlePage: ReaderArticlePage.ArticlePage,
         DonePage: ReaderDonePage.DonePage,
         Presenter: ReaderPresenter.Presenter,

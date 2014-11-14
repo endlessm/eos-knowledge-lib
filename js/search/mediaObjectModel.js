@@ -1,10 +1,8 @@
 // Copyright 2014 Endless Mobile, Inc.
 
 const Endless = imports.gi.Endless;
-const EosKnowledge = imports.gi.EosKnowledge;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
-const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const ContentObjectModel = imports.contentObjectModel;
@@ -13,7 +11,7 @@ GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.
 
 /**
  * Class: MediaObjectModel
- * The model class for media objects. A media obejct has the same 
+ * The model class for media objects. A media obejct has the same
  * properties as a <ContentObjectModel>, plus <caption>, <encoding-format>, <height>
  * and <width> properties
  */
@@ -59,7 +57,7 @@ const MediaObjectModel = new Lang.Class({
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
             0, GLib.MAXUINT32, 0)
     },
-    
+
     _init: function (params) {
         this.parent(params);
     },

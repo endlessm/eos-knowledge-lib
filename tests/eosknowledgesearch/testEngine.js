@@ -1,4 +1,4 @@
-const EosKnowledge = imports.gi.EosKnowledge;
+const EosKnowledgeSearch = imports.EosKnowledgeSearch;
 const Endless = imports.gi.Endless;
 const Soup = imports.gi.Soup;
 
@@ -50,7 +50,7 @@ describe('Knowledge Engine Module', function () {
 
     beforeEach(function () {
         jasmine.addMatchers(InstanceOfMatcher.customMatchers);
-        engine = new EosKnowledge.Engine();
+        engine = new EosKnowledgeSearch.Engine();
     });
 
     describe('constructor', function () {
@@ -161,7 +161,7 @@ describe('Knowledge Engine Module', function () {
             engine.get_object_by_id('foo', 'bar', function (err, res) {
                 print(err);
                 expect(err).not.toBeDefined();
-                expect(res).toBeA(EosKnowledge.ArticleObjectModel);
+                expect(res).toBeA(EosKnowledgeSearch.ArticleObjectModel);
                 expect(res.synopsis).toBe("NOW IS THE WINTER OF OUR DISCONTENT");
                 done();
             });
@@ -262,7 +262,7 @@ describe('Knowledge Engine Module', function () {
                 // All results in MOCK_CONTENT_OBJECT_RESULTS are of @type ContentObject,
                 // so expect that they're constructed as such
                 for (let i in results) {
-                    expect(results[i]).toBeA(EosKnowledge.ContentObjectModel);
+                    expect(results[i]).toBeA(EosKnowledgeSearch.ContentObjectModel);
                 }
                 done();
             });
@@ -272,7 +272,7 @@ describe('Knowledge Engine Module', function () {
                 // All results in MOCK_ARTICLE_OBJECT_RESULTS are of @type ArticleObject,
                 // so expect that they're constructed as such
                 for (let i in results) {
-                    expect(results[i]).toBeA(EosKnowledge.ArticleObjectModel);
+                    expect(results[i]).toBeA(EosKnowledgeSearch.ArticleObjectModel);
                 }
                 done();
             });
@@ -282,7 +282,7 @@ describe('Knowledge Engine Module', function () {
                 // All results in MOCK_MEDIA_OBJECT_RESULTS are of @type MediaObject,
                 // so expect that they're constructed as such
                 for (let i in results) {
-                    expect(results[i]).toBeA(EosKnowledge.MediaObjectModel);
+                    expect(results[i]).toBeA(EosKnowledgeSearch.MediaObjectModel);
                 }
                 done();
             });

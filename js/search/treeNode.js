@@ -1,6 +1,5 @@
 // Copyright 2014 Endless Mobile, Inc.
 
-const EosKnowledge = imports.gi.EosKnowledge;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 
@@ -11,6 +10,13 @@ const NODE_INDEX_SCHEMA = 'hasIndex';
 const NODE_INDEX_LABEL_SCHEMA = 'hasIndexLabel';
 const NODE_LABEL_SCHEMA = 'hasLabel';
 const NODE_CONTENT_SCHEMA = 'hasContent';
+
+let TreeNodeColumn = {
+    LABEL: 0,
+    INDEX_LABEL: 1,
+    CONTENT: 2,
+};
+TreeNodeColumn.NUM_COLUMNS = Object.keys(TreeNodeColumn).length;
 
 /**
  * Section: TreeNode
@@ -52,7 +58,7 @@ const NODE_CONTENT_SCHEMA = 'hasContent';
  * Returns:
  *
  *   a *Gtk.TreeModel* with three string columns; see
- *     *EosKnowledge.TreeNodeColumn*.
+ *     *TreeNodeColumn*.
  */
 function tree_model_from_tree_node(json_obj) {
     let retval = new Gtk.TreeStore();
@@ -133,9 +139,9 @@ function tree_model_from_tree_node(json_obj) {
 function _add_items_to_tree_model_recursive(model, parent_iter, list) {
     list.forEach(function (item) {
         let iter = model.append(parent_iter);
-        model.set_value(iter, EosKnowledge.TreeNodeColumn.LABEL, item.label);
-        model.set_value(iter, EosKnowledge.TreeNodeColumn.INDEX_LABEL, item.index_label);
-        model.set_value(iter, EosKnowledge.TreeNodeColumn.CONTENT, item.content);
+        model.set_value(iter, TreeNodeColumn.LABEL, item.label);
+        model.set_value(iter, TreeNodeColumn.INDEX_LABEL, item.index_label);
+        model.set_value(iter, TreeNodeColumn.CONTENT, item.content);
         _add_items_to_tree_model_recursive(model, iter, item.children);
     });
 }

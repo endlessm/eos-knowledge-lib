@@ -1,15 +1,12 @@
-const EosKnowledge = imports.gi.EosKnowledge;
+const EosKnowledgeSearch = imports.EosKnowledgeSearch;
 const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const WebKit2 = imports.gi.WebKit2;
 
-const ArticleObjectModel = imports.articleObjectModel;
 const ArticlePage = imports.articlePage;
 const EknWebview = imports.eknWebview;
-const Engine = imports.engine;
-const MediaObjectModel = imports.mediaObjectModel;
 const PDFView = imports.PDFView;
 
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
@@ -89,7 +86,7 @@ const ArticlePresenter = new GObject.Class({
          */
         'article-object-clicked': {
             param_types: [
-                ArticleObjectModel.ArticleObjectModel.$gtype /* ArticleObject */
+                EosKnowledgeSearch.ArticleObjectModel.$gtype /* ArticleObject */
             ]
         }
     },
@@ -233,9 +230,9 @@ const ArticlePresenter = new GObject.Class({
         let [success, child_iter] = tree.get_iter_first();
         let toplevel_elements = [];
         while (success) {
-            let label = tree.get_value(child_iter, EosKnowledge.TreeNodeColumn.LABEL);
-            let indexLabel = tree.get_value(child_iter, EosKnowledge.TreeNodeColumn.INDEX_LABEL);
-            let content = tree.get_value(child_iter, EosKnowledge.TreeNodeColumn.CONTENT);
+            let label = tree.get_value(child_iter, EosKnowledgeSearch.TreeNodeColumn.LABEL);
+            let indexLabel = tree.get_value(child_iter, EosKnowledgeSearch.TreeNodeColumn.INDEX_LABEL);
+            let content = tree.get_value(child_iter, EosKnowledgeSearch.TreeNodeColumn.CONTENT);
             toplevel_elements.push({
                 'label': label,
                 'indexLabel': indexLabel,
@@ -317,7 +314,7 @@ const ArticlePresenter = new GObject.Class({
 
                 this.engine.get_object_by_id(domain, id, function (err, model) {
                     if (typeof err === 'undefined') {
-                        if (model instanceof MediaObjectModel.MediaObjectModel) {
+                        if (model instanceof EosKnowledgeSearch.MediaObjectModel) {
                             this.emit('media-object-clicked', model, false);
                         } else {
                             this.emit('article-object-clicked', model);

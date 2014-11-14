@@ -4,7 +4,9 @@ const Soup = imports.gi.Soup;
 const GObject = imports.gi.GObject;
 const GLib = imports.gi.GLib;
 
-const EosKnowledge = imports.gi.EosKnowledge;
+const ArticleObjectModel = imports.articleObjectModel;
+const ContentObjectModel = imports.contentObjectModel;
+const MediaObjectModel = imports.mediaObjectModel;
 
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 
@@ -173,13 +175,13 @@ const Engine = Lang.Class({
     _model_from_json_ld: function (json_ld) {
         let ekn_model_by_ekv_type = {
             'ekv:ContentObject':
-                EosKnowledge.ContentObjectModel,
+                ContentObjectModel.ContentObjectModel,
             'ekv:ArticleObject':
-                EosKnowledge.ArticleObjectModel,
+                ArticleObjectModel.ArticleObjectModel,
             'ekv:ImageObject':
-                EosKnowledge.ImageObjectModel,
+                MediaObjectModel.ImageObjectModel,
             'ekv:VideoObject':
-                EosKnowledge.VideoObjectModel,
+                MediaObjectModel.VideoObjectModel,
         };
 
         let json_ld_type = json_ld['@type'];

@@ -1,5 +1,5 @@
 const Endless = imports.gi.Endless;
-const EosKnowledge = imports.gi.EosKnowledge;
+const EosKnowledgeSearch = imports.EosKnowledgeSearch;
 
 const utils = imports.tests.utils;
 
@@ -11,8 +11,8 @@ describe ("Content Object Model", function () {
 
     describe ("Constructor", function () {
         it ("successfully creates new object from properties", function () {
-            let image = EosKnowledge.ImageObjectModel.new_from_json_ld(mockContentData.thumbnail);
-            contentObject = new EosKnowledge.ContentObjectModel({
+            let image = EosKnowledgeSearch.ImageObjectModel.new_from_json_ld(mockContentData.thumbnail);
+            contentObject = new EosKnowledgeSearch.ContentObjectModel({
                 ekn_id : mockContentData["@id"],
                 title : mockContentData.title,
                 thumbnail : image,
@@ -27,7 +27,7 @@ describe ("Content Object Model", function () {
         });
 
         it ("successfully creates new object from JSON-LD data", function () {
-            contentObject = EosKnowledge.ContentObjectModel.new_from_json_ld(mockContentData);
+            contentObject = EosKnowledgeSearch.ContentObjectModel.new_from_json_ld(mockContentData);
             expect(contentObject.title).toEqual(mockContentData.title);
         });
 
@@ -36,14 +36,14 @@ describe ("Content Object Model", function () {
                 "@id": mockContentData["@id"],
                 "title": mockContentData["title"]
             };
-            contentObject = EosKnowledge.ContentObjectModel.new_from_json_ld(just_a_title_json_ld);
+            contentObject = EosKnowledgeSearch.ContentObjectModel.new_from_json_ld(just_a_title_json_ld);
             expect(contentObject.title).toEqual(mockContentData.title);
         });
     });
 
     describe ("Properties", function () {
         beforeEach (function() {
-            contentObject = EosKnowledge.ContentObjectModel.new_from_json_ld(mockContentData);
+            contentObject = EosKnowledgeSearch.ContentObjectModel.new_from_json_ld(mockContentData);
             contentObject.set_resources(mockContentData.resources);
             contentObject.set_tags(mockContentData.tags);
         });

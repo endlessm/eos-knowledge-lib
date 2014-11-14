@@ -1,4 +1,5 @@
 const Gdk = imports.gi.Gdk;
+const Gtk = imports.gi.Gtk;
 
 /* Not part of public API. Changes @widget's GdkWindow to have the 'hand' cursor
 indicating a clickable UI element. */
@@ -26,4 +27,12 @@ function parse_object_from_file (file) {
         printerr(e.stack);
     }
     return null;
+}
+
+/* Helper add a new css provider to the default screen object */
+function add_css_provider_from_file (file, priority) {
+    let provider = new Gtk.CssProvider();
+    provider.load_from_file(file);
+    Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(),
+            provider, priority);
 }

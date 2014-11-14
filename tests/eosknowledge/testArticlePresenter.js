@@ -1,5 +1,6 @@
 const Endless = imports.gi.Endless;
 const EosKnowledge = imports.gi.EosKnowledge;
+const EosKnowledgeSearch = imports.EosKnowledgeSearch;
 const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
@@ -56,7 +57,7 @@ describe('Article Presenter', function () {
         let [success, data] = file.load_contents(null);
         mockArticleData = JSON.parse(data);
 
-        articleObject = new EosKnowledge.ArticleObjectModel.new_from_json_ld(mockArticleData);
+        articleObject = new EosKnowledgeSearch.ArticleObjectModel.new_from_json_ld(mockArticleData);
 
         view = new MockView();
         view.connect_after('new-view-transitioned', done);
@@ -94,7 +95,7 @@ describe('Article Presenter', function () {
             done();
         }.bind());
         engine.get_object_by_id.and.callFake(function (d, i, callback) {
-            callback(undefined, new EosKnowledge.MediaObjectModel({
+            callback(undefined, new EosKnowledgeSearch.MediaObjectModel({
                 ekn_id: 'mock_model_id'
             }));
         });
@@ -108,7 +109,7 @@ describe('Article Presenter', function () {
             done();
         }.bind());
         engine.get_object_by_id.and.callFake(function (d, i, callback) {
-            callback(undefined, new EosKnowledge.ArticleObjectModel({
+            callback(undefined, new EosKnowledgeSearch.ArticleObjectModel({
                 ekn_id: 'mock_model_id'
             }));
         });

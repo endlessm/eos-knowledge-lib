@@ -1,4 +1,4 @@
-const EosKnowledge = imports.gi.EosKnowledge;
+const EosKnowledgeSearch = imports.EosKnowledgeSearch;
 const Format = imports.format;
 const Gettext = imports.gettext;
 const Gio = imports.gi.Gio;
@@ -49,23 +49,6 @@ const Presenter = new Lang.Class({
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             GObject.Object.$gtype),
         /**
-         * Property: app-file
-         * File handle pointing to the app.json file
-         *
-         * This property is usually set by <Reader.Application>.
-         * Its usual value is the object:
-         * > application.resource_file.get_child('app.json')
-         *
-         * Flags:
-         *   Construct only
-         */
-        'app-file': GObject.ParamSpec.object('app-file', 'App file',
-            'File handle pointing to the app.json file',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            GObject.Object.$gtype),
-            /* The above should be Gio.File.$gtype; properties with an interface
-            type are broken until GJS 1.42 */
-        /**
          * Property: engine
          * Handle to EOS knowledge engine
          *
@@ -97,14 +80,13 @@ const Presenter = new Lang.Class({
             GObject.Object.$gtype),
     },
 
-    _init: function (props) {
+    _init: function (app_json, props) {
         props.view = props.view || new Window.Window({
             application: props.application,
         });
-        props.engine = props.engine || new Engine.Engine();
+        props.engine = props.engine || new EosKnowledgeSearch.Engine();
         this.parent(props);
 
-        let app_json = Utils.parse_object_from_file(this.app_file);
         this._parse_app_info(app_json);
 
         this._article_models = [];

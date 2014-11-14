@@ -4,11 +4,7 @@ const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 
-function parse_object_from_path(path) {
-    let file = Gio.file_new_for_path(path);
-    let [success, data] = file.load_contents(null);
-    return JSON.parse(data);
-}
+const utils = imports.tests.utils;
 
 const MockView = new Lang.Class({
     Name: 'MockView',
@@ -69,15 +65,13 @@ describe('Presenter', function () {
     let test_app_filename = Endless.getCurrentFileDir() + '/../test-content/app.json';
 
     beforeEach(function () {
-
-        data = parse_object_from_path(test_app_filename);
+        data = utils.parse_object_from_path(test_app_filename);
 
         view = new MockView();
         engine = new MockEngine();
         article_presenter = new MockArticlePresenter();
         spyOn(engine, 'ping');
-        presenter = new EosKnowledge.Presenter({
-            app_file: Gio.File.new_for_path(test_app_filename),
+        presenter = new EosKnowledge.Presenter(data, {
             article_presenter: article_presenter,
             engine: engine,
             view: view,
