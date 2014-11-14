@@ -1,4 +1,5 @@
 usr/bin/ekn-app-runner
 usr/lib/girepository-1.0/EosKnowledge*.typelib
-usr/share/gjs-1.0/overrides/*
+usr/share/gjs-1.0/*
 usr/share/eos-knowledge-lib/overrides/*
+usr/share/eos-knowledge-lib/js/*
