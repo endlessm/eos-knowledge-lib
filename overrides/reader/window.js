@@ -143,8 +143,13 @@ const Window = new Lang.Class({
         return this._article_pages[index];
     },
 
+    /**
+     * Method: remove_all_article_pages
+     * Clear the view entirely of articles
+     */
     remove_all_article_pages: function () {
-        this._article_pages.map(this.remove_article_page);
+        let pages = this._article_pages.slice();
+        pages.forEach(this.remove_article_page, this);
     },
 
     get done_page() {

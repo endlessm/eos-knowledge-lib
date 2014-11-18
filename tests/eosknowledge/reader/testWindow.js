@@ -58,6 +58,11 @@ describe('Window widget', function () {
         expect(view.total_pages).toMatch(String(EXPECTED_TOTAL_PAGES));
     });
 
+    it('can remove all pages but the done page', function () {
+        view.remove_all_article_pages();
+        expect(view.total_pages).toBe(1);  // done-page remains
+    });
+
     it('throws an error when out of bounds pages are accessed', function () {
         expect(function () {
             view.current_page = EXPECTED_TOTAL_PAGES + 1;
