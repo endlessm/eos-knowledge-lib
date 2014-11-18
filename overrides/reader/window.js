@@ -48,6 +48,18 @@ const Window = new Lang.Class({
             DonePage.DonePage.$gtype),
 
         /**
+         * Property: issue-nav-buttons
+         *
+         * An <Endless.TopbarNavButton> widget created by this window.
+         * Not normally shown except for debugging purposes.
+         * Read-only.
+         */
+        'issue-nav-buttons': GObject.ParamSpec.object('issue-nav-buttons',
+            'Issue nav buttons', 'Secret buttons for navigating issues',
+            GObject.ParamFlags.READABLE,
+            Endless.TopbarNavButton.$gtype),
+
+        /**
          * Property: current-page
          *
          * The current page number.
@@ -86,6 +98,14 @@ const Window = new Lang.Class({
             forward_image_uri: this._FORWARD_IMAGE_URI,
             image_size: this._NAV_IMAGE_SIZE,
         });
+
+        this._issue_nav_buttons = new Endless.TopbarNavButton({
+            no_show_all: true,
+        });
+        // No need for localization; this is debug only
+        this._issue_nav_buttons.back_button.label = 'Prev issue';
+        this._issue_nav_buttons.forward_button.label = 'Next issue';
+
         this._article_pages = [];
         this._current_page = 0;
         this.parent(props);
@@ -95,7 +115,9 @@ const Window = new Lang.Class({
         });
         this._stack.add(this._done_page);
         this._nav_buttons.add(this._stack);
-        this.page_manager.add(this._nav_buttons);
+        this.page_manager.add(this._nav_buttons, {
+            center_topbar_widget: this._issue_nav_buttons,
+        });
     },
 
     _update_progress_labels: function () {
@@ -158,6 +180,10 @@ const Window = new Lang.Class({
 
     get nav_buttons() {
         return this._nav_buttons;
+    },
+
+    get issue_nav_buttons() {
+        return this._issue_nav_buttons;
     },
 
     get current_page() {
