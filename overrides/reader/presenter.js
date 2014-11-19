@@ -157,6 +157,14 @@ const Presenter = new Lang.Class({
         }
     },
 
+    // Right now these functions are just stubs which we will need to flesh out
+    // if we ever want to register search providers for the reader apps. The
+    // former will be called by ekn-app-runner if the user asks to view a search
+    // query within an application, and the latter if the user asks to view a
+    // specific article.
+    search: function (query) {},
+    activate_search_result: function (model, query) {},
+
     _load_all_content: function () {
         this.engine.get_objects_by_query(this._domain, {
             tag: 'issueNumber' + this.issue_number,
