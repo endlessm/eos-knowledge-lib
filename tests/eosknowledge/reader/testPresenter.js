@@ -95,7 +95,7 @@ const MockView = new Lang.Class({
 });
 
 describe('Reader presenter', function () {
-    let engine, view, buttons, construct_props, test_json,
+    let engine, view, article_nav_buttons, construct_props, test_json,
         EXPECTED_TITLES, EXPECTED_RESULTS;
     let test_app_filename = Endless.getCurrentFileDir() + '/../../test-content/app.json';
 
@@ -107,8 +107,8 @@ describe('Reader presenter', function () {
                 ekn_id: 'about:blank',
             };
         });
-        buttons = new MockNavButtons();
-        view = new MockView(buttons);
+        article_nav_buttons = new MockNavButtons();
+        view = new MockView(article_nav_buttons);
         engine = new MockEngine();
         spyOn(engine, 'get_objects_by_query');
         construct_props = {
@@ -178,33 +178,33 @@ describe('Reader presenter', function () {
         });
 
         it('disables the back button on the first page', function () {
-            expect(buttons.back_visible).toBe(false);
+            expect(article_nav_buttons.back_visible).toBe(false);
         });
 
         it('enables the forward button when not on the last page', function () {
-            expect(buttons.forward_visible).toBe(true);
+            expect(article_nav_buttons.forward_visible).toBe(true);
         });
 
         it('enables the back button when not on the first page', function () {
             view.current_page = view.total_pages - 1;
             view.notify('current-page');
-            expect(buttons.back_visible).toBe(true);
+            expect(article_nav_buttons.back_visible).toBe(true);
         });
 
         it('disables the forward button on the last page', function () {
             view.current_page = view.total_pages - 1;
             view.notify('current-page');
-            expect(buttons.forward_visible).toBe(false);
+            expect(article_nav_buttons.forward_visible).toBe(false);
         });
 
         it('increments the current page when clicking the forward button', function () {
-            buttons.emit('forward-clicked');
+            article_nav_buttons.emit('forward-clicked');
             expect(view.current_page).toBe(1);
         });
 
         it('decrements the current page when clicking the back button', function () {
-            buttons.emit('forward-clicked');
-            buttons.emit('back-clicked');
+            article_nav_buttons.emit('forward-clicked');
+            article_nav_buttons.emit('back-clicked');
             expect(view.current_page).toBe(0);
         });
 
@@ -243,8 +243,8 @@ describe('Reader presenter', function () {
 
         it('updates the state of the paging buttons when loading a new issue', function () {
             presenter.issue_number = 14;
-            expect(buttons.forward_visible).toBe(true);
-            expect(buttons.back_visible).toBe(false);
+            expect(article_nav_buttons.forward_visible).toBe(true);
+            expect(article_nav_buttons.back_visible).toBe(false);
         });
 
         it('loads content from the appropriate issue', function () {
