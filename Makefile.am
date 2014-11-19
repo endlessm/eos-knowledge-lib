@@ -35,6 +35,7 @@ CLEANFILES =
 DISTCLEANFILES =
 dist_noinst_DATA =
 nobase_pkgdata_DATA =
+bin_SCRIPTS =
 
 # Make sure that 'make dist' includes documentation
 if !CAN_MAKE_DIST
@@ -134,11 +135,3 @@ typelib_DATA = $(INTROSPECTION_GIRS:.gir=.typelib)
 
 CLEANFILES += $(gir_DATA) $(typelib_DATA)
 endif
-
-# # # TOOLS # # #
-
-EXTRA_DIST += tools/ekn-app-runner
-
-bin_SCRIPTS = \
-	tools/ekn-app-runner \
-	$(NULL)
