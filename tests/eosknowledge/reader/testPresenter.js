@@ -5,6 +5,8 @@ const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 
+const utils = imports.tests.utils;
+
 const TEST_DOMAIN = 'thrones-en';
 
 const MockEngine = new Lang.Class({
@@ -71,8 +73,9 @@ const MockView = new Lang.Class({
 });
 
 describe('Reader presenter', function () {
-    let engine, view, buttons, construct_props,
+    let engine, view, buttons, construct_props, test_json,
         EXPECTED_TITLES, EXPECTED_RESULTS;
+    let test_app_filename = Endless.getCurrentFileDir() + '/../../test-content/app.json';
 
     beforeEach(function () {
         EXPECTED_TITLES = ['Title 1', 'Title 2', 'Title 3'];
@@ -87,19 +90,19 @@ describe('Reader presenter', function () {
         engine = new MockEngine();
         spyOn(engine, 'get_objects_by_query');
         construct_props = {
-            app_file: Gio.File.new_for_path(Endless.getCurrentFileDir() + '/../../test-content/app.json'),
             engine: engine,
             view: view,
         };
+        test_json = utils.parse_object_from_path(test_app_filename);
     });
 
     describe('construction process', function () {
         it('works', function () {
-            let presenter = new EosKnowledge.Reader.Presenter(construct_props);
+            let presenter = new EosKnowledge.Reader.Presenter(test_json, construct_props);
         });
 
         it('queries the first article', function () {
-            let presenter = new EosKnowledge.Reader.Presenter(construct_props);
+            let presenter = new EosKnowledge.Reader.Presenter(test_json, construct_props);
             expect(engine.get_objects_by_query).toHaveBeenCalledWith(TEST_DOMAIN,
                 jasmine.objectContaining({
                     limit: 15,
@@ -113,7 +116,7 @@ describe('Reader presenter', function () {
             engine.get_objects_by_query.and.callFake(function (d, q, callback) {
                 callback(undefined, EXPECTED_RESULTS);
             });
-            let presenter = new EosKnowledge.Reader.Presenter(construct_props);
+            let presenter = new EosKnowledge.Reader.Presenter(test_json, construct_props);
             EXPECTED_TITLES.forEach(function (title) {
                 expect(view.append_article_page).toHaveBeenCalledWith(jasmine.objectContaining({
                     title: title,
@@ -126,7 +129,7 @@ describe('Reader presenter', function () {
                 callback('error', undefined);
             });
             expect(function () {
-                let presenter = new EosKnowledge.Reader.Presenter(construct_props);
+                let presenter = new EosKnowledge.Reader.Presenter(test_json, construct_props);
             }).not.toThrow();
         });
     });
@@ -139,7 +142,7 @@ describe('Reader presenter', function () {
                 callback(undefined, EXPECTED_RESULTS);
             });
             view.total_pages = EXPECTED_TITLES.length + 1;
-            presenter = new EosKnowledge.Reader.Presenter(construct_props);
+            presenter = new EosKnowledge.Reader.Presenter(test_json, construct_props);
         });
 
         it('has all articles as pages', function () {

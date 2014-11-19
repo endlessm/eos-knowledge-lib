@@ -1,5 +1,6 @@
 const Endless = imports.gi.Endless;
 const EosKnowledge = imports.gi.EosKnowledge;
+const EosKnowledgeSearch = imports.EosKnowledgeSearch;
 const Gtk = imports.gi.Gtk;
 const InstanceOfMatcher = imports.InstanceOfMatcher;
 
@@ -13,7 +14,7 @@ describe ('Media Infobox', function () {
 
     beforeEach(function () {
         jasmine.addMatchers(InstanceOfMatcher.customMatchers);
-        imageObject = new EosKnowledge.ImageObjectModel.new_from_json_ld(mockImageData);
+        imageObject = new EosKnowledgeSearch.ImageObjectModel.new_from_json_ld(mockImageData);
         
     });
 

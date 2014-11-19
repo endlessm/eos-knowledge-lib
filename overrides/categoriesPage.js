@@ -1,7 +1,6 @@
 // Copyright 2014 Endless Mobile, Inc.
 
 const Endless = imports.gi.Endless;
-const EosKnowledge = imports.gi.EosKnowledge;
 const Gettext = imports.gettext;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;

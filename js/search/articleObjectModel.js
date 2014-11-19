@@ -1,19 +1,17 @@
 // Copyright 2014 Endless Mobile, Inc.
-
-const Endless = imports.gi.Endless;
-const EosKnowledge = imports.gi.EosKnowledge;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const ContentObjectModel = imports.contentObjectModel;
+const TreeNode = imports.treeNode;
 
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 
 /**
  * Class: ArticleObjectModel
- * The model class for article objects. An article has the same 
+ * The model class for article objects. An article has the same
  * properties as a <ContentObjectModel>, plus a <article-content-uri>,
  * <word-count>, and <table-of-contents>.
  */
@@ -68,7 +66,7 @@ const ArticleObjectModel = new Lang.Class({
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
             0, GLib.MAXUINT32, 0),
     },
-    
+
     _init: function (params) {
         this.parent(params);
     },
@@ -136,7 +134,7 @@ ArticleObjectModel._props_from_json_ld = function (json_ld_data) {
     }
 
     if (json_ld_data.hasOwnProperty('tableOfContents')) {
-        props.table_of_contents = EosKnowledge.tree_model_from_tree_node(json_ld_data);
+        props.table_of_contents = TreeNode.tree_model_from_tree_node(json_ld_data);
     }
 
     if (json_ld_data.hasOwnProperty('issueNumber')) {

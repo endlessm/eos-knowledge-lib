@@ -1,6 +1,7 @@
 const Cairo = imports.gi.cairo;
 const Endless = imports.gi.Endless;
 const EosKnowledge = imports.gi.EosKnowledge;
+const EosKnowledgeSearch = imports.EosKnowledgeSearch;
 const Gdk = imports.gi.Gdk;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
@@ -8,7 +9,6 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const CompositeButton = imports.compositeButton;
-const MediaObjectModel = imports.mediaObjectModel;
 const Utils = imports.utils;
 
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
@@ -44,7 +44,7 @@ const Lightbox = new Lang.Class({
          */
         'media-object': GObject.ParamSpec.object('media-object',
             'Media Object', 'The media object being previewed',
-            GObject.ParamFlags.READWRITE, MediaObjectModel.MediaObjectModel),
+            GObject.ParamFlags.READWRITE, EosKnowledgeSearch.MediaObjectModel),
         /**
          * Property: content-widget
          * The widget to display centered in the lightbox above the base content

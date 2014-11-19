@@ -1,6 +1,6 @@
 // Copyright 2014 Endless Mobile, Inc.
 
-const EosKnowledge = imports.gi.EosKnowledge;
+const EosKnowledgeSearch = imports.EosKnowledgeSearch;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 
@@ -66,15 +66,15 @@ let EXPECTED_TREE = {
 describe('TreeNode to GtkTreeModel converter', function () {
     let model;
     beforeEach(function () {
-        model = EosKnowledge.tree_model_from_tree_node(TEST_OBJ);
+        model = EosKnowledgeSearch.tree_model_from_tree_node(TEST_OBJ);
     });
 
     it('creates a tree model with the appropriate columns', function () {
-        expect(model.get_n_columns()).toEqual(EosKnowledge.TreeNodeColumn.NUM_COLUMNS);
+        expect(model.get_n_columns()).toEqual(EosKnowledgeSearch.TreeNodeColumn.NUM_COLUMNS);
         expect([
-            EosKnowledge.TreeNodeColumn.LABEL,
-            EosKnowledge.TreeNodeColumn.INDEX_LABEL,
-            EosKnowledge.TreeNodeColumn.CONTENT
+            EosKnowledgeSearch.TreeNodeColumn.LABEL,
+            EosKnowledgeSearch.TreeNodeColumn.INDEX_LABEL,
+            EosKnowledgeSearch.TreeNodeColumn.CONTENT
         ].map(function (undef, index) {
             return model.get_column_type(index);
         })).toEqual([
@@ -86,7 +86,7 @@ describe('TreeNode to GtkTreeModel converter', function () {
 
     it('converts an empty TreeNode', function () {
         const EMPTY_OBJ = { tableOfContents: [] };
-        model = EosKnowledge.tree_model_from_tree_node(EMPTY_OBJ);
+        model = EosKnowledgeSearch.tree_model_from_tree_node(EMPTY_OBJ);
         let [has_elements, iter] = model.get_iter_first();
         expect(has_elements).toBe(false);
     });
@@ -99,13 +99,13 @@ describe('TreeNode to GtkTreeModel converter', function () {
     it('populates the correct fields of the model', function () {
         let [has_elements, iter] = model.get_iter_first();
 
-        let label = model.get_value(iter, EosKnowledge.TreeNodeColumn.LABEL);
+        let label = model.get_value(iter, EosKnowledgeSearch.TreeNodeColumn.LABEL);
         expect(label).toEqual('Foo');
 
-        let index_label = model.get_value(iter, EosKnowledge.TreeNodeColumn.INDEX_LABEL);
+        let index_label = model.get_value(iter, EosKnowledgeSearch.TreeNodeColumn.INDEX_LABEL);
         expect(index_label).toEqual('1');
 
-        let content = model.get_value(iter, EosKnowledge.TreeNodeColumn.CONTENT);
+        let content = model.get_value(iter, EosKnowledgeSearch.TreeNodeColumn.CONTENT);
         expect(content).toEqual('http://skynet.com/content#Foo');
     });
 
@@ -113,7 +113,7 @@ describe('TreeNode to GtkTreeModel converter', function () {
         Object.getOwnPropertyNames(EXPECTED_TREE).forEach(function (path_string) {
             let [success, iter] = model.get_iter_from_string(path_string);
             expect(success).toBe(true);
-            let label = model.get_value(iter, EosKnowledge.TreeNodeColumn.LABEL);
+            let label = model.get_value(iter, EosKnowledgeSearch.TreeNodeColumn.LABEL);
             expect(label).toEqual(EXPECTED_TREE[path_string]);
         });
     });
@@ -124,12 +124,12 @@ describe('TreeNode to GtkTreeModel converter', function () {
         let reversed_test_obj = {
             tableOfContents: TEST_OBJ.tableOfContents.slice(0).reverse()
         };
-        model = EosKnowledge.tree_model_from_tree_node(reversed_test_obj);
+        model = EosKnowledgeSearch.tree_model_from_tree_node(reversed_test_obj);
 
         Object.getOwnPropertyNames(EXPECTED_TREE).forEach(function (path_string) {
             let [success, iter] = model.get_iter_from_string(path_string);
             expect(success).toBe(true);
-            let label = model.get_value(iter, EosKnowledge.TreeNodeColumn.LABEL);
+            let label = model.get_value(iter, EosKnowledgeSearch.TreeNodeColumn.LABEL);
             expect(label).toEqual(EXPECTED_TREE[path_string]);
         });
     });

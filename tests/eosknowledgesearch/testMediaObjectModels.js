@@ -1,5 +1,5 @@
 const Endless = imports.gi.Endless;
-const EosKnowledge = imports.gi.EosKnowledge;
+const EosKnowledgeSearch = imports.EosKnowledgeSearch;
 const Gtk = imports.gi.Gtk;
 const InstanceOfMatcher = imports.InstanceOfMatcher;
 
@@ -14,16 +14,16 @@ describe ('Image Object Model', function () {
 
     beforeEach(function () {
         jasmine.addMatchers(InstanceOfMatcher.customMatchers);
-        imageObject = new EosKnowledge.ImageObjectModel.new_from_json_ld(mockImageData);
+        imageObject = new EosKnowledgeSearch.ImageObjectModel.new_from_json_ld(mockImageData);
     });
 
     describe ('type', function () {
         it ('should be an ImageObjectModel', function () {
-            expect(imageObject).toBeA(EosKnowledge.ImageObjectModel);
+            expect(imageObject).toBeA(EosKnowledgeSearch.ImageObjectModel);
         });
 
         it ('should be an MediaObjectModel', function () {
-            expect(imageObject).toBeA(EosKnowledge.MediaObjectModel);
+            expect(imageObject).toBeA(EosKnowledgeSearch.MediaObjectModel);
         });
     });
 
@@ -47,16 +47,16 @@ describe ('Video Object Model', function () {
 
     beforeEach(function () {
         jasmine.addMatchers(InstanceOfMatcher.customMatchers);
-        videoObject = new EosKnowledge.VideoObjectModel.new_from_json_ld(mockVideoData);
+        videoObject = new EosKnowledgeSearch.VideoObjectModel.new_from_json_ld(mockVideoData);
     });
 
     describe ('type', function () {
         it ('should be an VideoObjectModel', function () {
-            expect(videoObject).toBeA(EosKnowledge.VideoObjectModel);
+            expect(videoObject).toBeA(EosKnowledgeSearch.VideoObjectModel);
         });
 
         it ('should be an MediaObjectModel', function () {
-            expect(videoObject).toBeA(EosKnowledge.MediaObjectModel);
+            expect(videoObject).toBeA(EosKnowledgeSearch.MediaObjectModel);
         });
     });
 

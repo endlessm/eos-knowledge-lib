@@ -3,14 +3,11 @@
 
 javascript_tests = \
 	tests/eosknowledge/testArticleCard.js \
-	tests/eosknowledge/testArticleObjectModel.js \
 	tests/eosknowledge/testArticlePage.js \
 	tests/eosknowledge/testArticlePresenter.js \
 	tests/eosknowledge/testCard.js \
 	tests/eosknowledge/testCardA.js \
 	tests/eosknowledge/testCardB.js \
-	tests/eosknowledge/testContentObjectModel.js \
-	tests/eosknowledge/testEngine.js \
 	tests/eosknowledge/testHello.js \
 	tests/eosknowledge/testHistoryItemModel.js \
 	tests/eosknowledge/testHistoryModel.js \
@@ -21,7 +18,6 @@ javascript_tests = \
 	tests/eosknowledge/testLightbox.js \
 	tests/eosknowledge/testListCard.js \
 	tests/eosknowledge/testMediaInfobox.js \
-	tests/eosknowledge/testMediaObjectModels.js \
 	tests/eosknowledge/testNoSearchResultsPageA.js \
 	tests/eosknowledge/testNoSearchResultsPageB.js \
 	tests/eosknowledge/testPDFView.js \
@@ -34,13 +30,17 @@ javascript_tests = \
 	tests/eosknowledge/testSectionPageB.js \
 	tests/eosknowledge/testTableOfContents.js \
 	tests/eosknowledge/testTextCard.js \
-	tests/eosknowledge/testTreeNode.js \
 	tests/eosknowledge/testWindow.js \
 	tests/eosknowledge/reader/testArticlePage.js \
 	tests/eosknowledge/reader/testDonePage.js \
 	tests/eosknowledge/reader/testPresenter.js \
 	tests/eosknowledge/reader/testProgressLabel.js \
 	tests/eosknowledge/reader/testWindow.js \
+	tests/eosknowledgesearch/testArticleObjectModel.js \
+	tests/eosknowledgesearch/testContentObjectModel.js \
+	tests/eosknowledgesearch/testEngine.js \
+	tests/eosknowledgesearch/testMediaObjectModels.js \
+	tests/eosknowledgesearch/testTreeNode.js \
 	$(NULL)
 test_content = \
 	tests/test-content/agot.svg \
@@ -97,11 +97,12 @@ include tests/jasmine/Makefile-jasmine.am.inc
 # We clobber GJS_PATH and include $(top_builddir) and $(top_srcdir) so that
 # gjs will find override modules in /overrides. The override directory itself
 # is also added to the gjs path for testing private js functionality not added
-# to the EosKnowledge module, and lastly the tests directory is added for
-# utility modules local to the tests.
+# to the EosKnowledge module. The directories in /js are added for our pure
+# javascript libraries. Lastly the tests directory is added for utility modules
+# local to the tests.
 # (May need to change to AM_TESTS_ENVIRONMENT in a later version of Automake)
 TESTS_ENVIRONMENT = \
-	export GJS_PATH="$(top_builddir):$(top_srcdir):$(top_srcdir)/overrides:$(top_srcdir)/tests"; \
+	export GJS_PATH="$(top_builddir):$(top_srcdir):$(top_srcdir)/overrides:$(top_srcdir)/js/search:$(top_srcdir)/tests"; \
 	export GI_TYPELIB_PATH="$(top_builddir)$${GI_TYPELIB_PATH:+:$$GI_TYPELIB_PATH}"; \
 	export LD_LIBRARY_PATH="$(top_builddir)/.libs$${LD_LIBRARY_PATH:+:$$LD_LIBRARY_PATH}"; \
 	$(NULL)

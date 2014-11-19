@@ -57,8 +57,26 @@ pkgconfig_DATA = @EKN_API_NAME@.pc
 DISTCLEANFILES += @EKN_API_NAME@.pc
 EXTRA_DIST += @EKN_API_NAME@.pc.in
 
-# Pure Javascript part of library
+# Javascript overrides for main library
 include $(top_srcdir)/overrides/Makefile.am.inc
+# Pure Javascript libraries
+include $(top_srcdir)/js/Makefile.am.inc
+
+# Link our libraries to the system gjs directory
+gjsdir = $(datadir)/gjs-1.0
+overridesdir = $(gjsdir)/overrides
+install-data-hook:
+	$(MKDIR_P) $(DESTDIR)$(overridesdir)
+	rm -f $(DESTDIR)$(overridesdir)/EosKnowledge.js
+	ln -s $(pkgoverridesdir)/EosKnowledge.js \
+		$(DESTDIR)$(overridesdir)/EosKnowledge.js
+	rm -f $(DESTDIR)$(gjsdir)/EosKnowledgeSearch.js
+	ln -s $(searchdir)/EosKnowledgeSearch.js \
+		$(DESTDIR)$(gjsdir)/EosKnowledgeSearch.js
+
+uninstall-hook:
+	rm -f $(DESTDIR)$(overridesdir)/EosKnowledge.js
+	rm -f $(DESTDIR)$(gjsdir)/EosKnowledgeSearch.js
 
 # Tests
 include $(top_srcdir)/tests/Makefile.am.inc

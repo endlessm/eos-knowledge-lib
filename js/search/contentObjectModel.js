@@ -1,7 +1,5 @@
 // Copyright 2014 Endless Mobile, Inc.
-
-const Endless = imports.gi.Endless;
-const EosKnowledge = imports.gi.EosKnowledge;
+const EosKnowledgeSearch = imports.EosKnowledgeSearch;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
@@ -278,19 +276,18 @@ const ContentObjectModel = new Lang.Class({
  */
 ContentObjectModel.new_from_json_ld = function (json_ld_data) {
     let props = ContentObjectModel._props_from_json_ld(json_ld_data);
-    let contentObjectModel = new EosKnowledge.ContentObjectModel(props);
+    let contentObjectModel = new ContentObjectModel(props);
     ContentObjectModel._setup_from_json_ld(contentObjectModel, json_ld_data);
 
     return contentObjectModel;
 };
 
 ContentObjectModel._setup_from_json_ld = function (model, json_ld_data) {
-
     // setup thumbnail, if it exists
     if(json_ld_data.hasOwnProperty('thumbnail')) {
         if (typeof json_ld_data.thumbnail === 'object') {
             // if the thumbnail is a JSON-LD object, marshall it now
-            model.thumbnail = EosKnowledge.ImageObjectModel.new_from_json_ld(json_ld_data.thumbnail);
+            model.thumbnail = EosKnowledgeSearch.ImageObjectModel.new_from_json_ld(json_ld_data.thumbnail);
         } else {
             // else, defer requesting the thumbnail until fetch_all is called
             model.queue_deferred_property(json_ld_data.thumbnail,
@@ -311,7 +308,7 @@ ContentObjectModel._setup_from_json_ld = function (model, json_ld_data) {
             // if the resources are already in JSON-LD form, just instantiate
             // them and alert that they're ready
             let mediaObjectModels =json_ld_data.resources.map(function (resource_json_ld) {
-                return EosKnowledge.MediaObjectModel.new_from_json_ld(resource_json_ld);
+                return EosKnowledgeSearch.MediaObjectModel.new_from_json_ld(resource_json_ld);
             });
 
             model.set_resources(mediaObjectModels);
