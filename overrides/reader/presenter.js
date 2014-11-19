@@ -110,7 +110,6 @@ const Presenter = new Lang.Class({
 
         this._parse_app_info(app_json);
 
-        this._article_models = [];
         // Load all articles in this issue
         this._load_all_content()
         this.view.done_page.get_style_context().add_class('last-page');
@@ -127,6 +126,13 @@ const Presenter = new Lang.Class({
             this._update_forward_button_visibility.bind(this));
         this.view.connect('notify::total-pages',
             this._update_forward_button_visibility.bind(this));
+        this.view.issue_nav_buttons.back_button.connect('clicked', function () {
+            this.issue_number--;
+        }.bind(this));
+        this.view.issue_nav_buttons.forward_button.connect('clicked', function () {
+            this.issue_number++;
+        }.bind(this));
+        this.connect('notify::issue-number', this._load_all_content.bind(this));
         let handler = this.view.connect('debug-hotkey-pressed', function () {
             this.view.issue_nav_buttons.show();
             this.view.disconnect(handler);  // One-shot signal handler only.
@@ -135,6 +141,9 @@ const Presenter = new Lang.Class({
         //Bind properties
         this.view.bind_property('current-page', this.view.nav_buttons,
             'back-visible', GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE);
+        this.bind_property('issue-number',
+            this.view.issue_nav_buttons.back_button, 'sensitive',
+            GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE);
     },
 
     get issue_number() {
@@ -155,6 +164,19 @@ const Presenter = new Lang.Class({
             sortBy: 'articleNumber',
             order: 'asc',
         }, function (error, results, get_more_results_func) {
+            // Clear out state from any issue that was already displaying.
+            this._article_models = [];
+            this.view.remove_all_article_pages();
+            // Make sure to drop all references to any webviews we are holding.
+            if (this._first_page) {
+                this._first_page.destroy();
+                this._first_page = null;
+            }
+            if (this._next_page) {
+                this._next_page.destroy();
+                this._next_page = null;
+            }
+
             if (error !== undefined || results.length < 1) {
                 if (error !== undefined) {
                     printerr(error);
