@@ -1,32 +1,32 @@
 if ENABLE_JS_DOC
 
-build_naturaldocs_verbose = $(build_naturaldocs_verbose_@AM_V@)
-build_naturaldocs_verbose_ = $(build_naturaldocs_verbose_@AM_DEFAULT_V@)
-build_naturaldocs_verbose_0 = @echo '  DOC    Building JS overrides docs';
+build_overridedocs_verbose = $(build_overridedocs_verbose_@AM_V@)
+build_overridedocs_verbose_ = $(build_overridedocs_verbose_@AM_DEFAULT_V@)
+build_overridedocs_verbose_0 = @echo '  DOC    Building JS overrides docs';
 
 ## $(public_overrides) defined in overrides/Makefile.am.inc
-naturaldocs_input_files = $(public_overrides) $(reader_overrides)
+overridedocs_input_files = $(public_overrides) $(reader_overrides)
 # Stamp file is present if all the docs have been built, and carries the
 # timestamp of the last successful build.
-stamp_file = docs/reference/eosknowledge-overrides/doc-build.stamp
+override_stamp_file = docs/reference/eosknowledge-overrides/doc-build.stamp
 
-$(stamp_file): $(naturaldocs_input_files) docs/reference/eosknowledge-overrides/eos.css
-	$(build_naturaldocs_verbose)$(MKDIR_P) $(@D)/html && \
+$(override_stamp_file): $(overridedocs_input_files) docs/reference/eosknowledge-overrides/eos.css
+	$(build_overridedocs_verbose)$(MKDIR_P) $(@D)/html && \
 	naturaldocs -i $(<D) -o HTML $(@D)/html -p $(@D) -s Default eos -hl All && \
 	touch $@
 
-dist_noinst_DATA += $(stamp_file)
+dist_noinst_DATA += $(override_stamp_file)
 
-naturaldocs_extra_clean_files = \
+overridedocs_extra_clean_files = \
 	docs/reference/eosknowledge-overrides/Data/*.nd \
 	docs/reference/eosknowledge-overrides/Menu.txt \
 	docs/reference/eosknowledge-overrides/Topics.txt \
 	docs/reference/eosknowledge-overrides/Languages.txt \
 	$(NULL)
 EXTRA_DIST += docs/reference/eosknowledge-overrides/eos.css
-CLEANFILES += $(stamp_file)
+CLEANFILES += $(override_stamp_file)
 DISTCLEANFILES += \
-	$(naturaldocs_extra_clean_files) \
+	$(overridedocs_extra_clean_files) \
 	$(NULL)
 
 distclean-local::

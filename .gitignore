@@ -97,16 +97,16 @@ stamp*
 /docs/reference/eosknowledge/eosknowledge.signals
 /docs/reference/eosknowledge/eosknowledge.types
 /docs/reference/eosknowledge/gtkdoc-check.test
-/docs/reference/eosknowledge/html/
 /docs/reference/eosknowledge/xml/
 
 # GIR Doc droppings
 /docs/reference/eosknowledge-js/*.page
-/docs/reference/eosknowledge-js/html/
 
 # NaturalDocs droppings
-/docs/reference/eosknowledge-overrides/Data/
-/docs/reference/eosknowledge-overrides/Languages.txt
-/docs/reference/eosknowledge-overrides/Menu.txt
-/docs/reference/eosknowledge-overrides/Topics.txt
-/docs/reference/eosknowledge-overrides/html/
+/docs/reference/*/Data/
+/docs/reference/*/Languages.txt
+/docs/reference/*/Menu.txt
+/docs/reference/*/Topics.txt
+
+# html doc output
+/docs/reference/*/html/

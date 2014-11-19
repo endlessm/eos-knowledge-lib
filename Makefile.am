@@ -91,6 +91,9 @@ include $(top_srcdir)/docs/reference/eosknowledge-js/Makefile.am.inc
 # JS documentation of Javascript-only parts
 include $(top_srcdir)/docs/reference/eosknowledge-overrides/Makefile.am.inc
 
+# JS documentation of EosKnowledgeSearch
+include $(top_srcdir)/docs/reference/eosknowledgesearch/Makefile.am.inc
+
 # # # INTROSPECTION # # #
 
 -include $(INTROSPECTION_MAKEFILE)

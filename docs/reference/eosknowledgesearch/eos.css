@@ -1,0 +1,46 @@
+* {
+    font-family: "Lato";
+}
+
+p {
+    font-size: 15pt;
+    text-indent: 0;
+    margin-bottom: 1em;
+}
+
+.STitle,
+.CTitle,
+.CGroup .CTitle {
+    font-size: 17pt;
+}
+
+.CHeading {
+    font-size: 13pt;
+}
+
+.SMain td,
+.SClass td,
+.STable,
+.CDLEntry,
+.CDLDescription {
+    font-size: 11pt;
+}
+
+.ContentPage #Content,
+.IndexPage #Index {
+    margin-left: 55ex;
+}
+
+.ContentPage #Menu,
+.IndexPage #Menu {
+    font-size: 11pt;
+    width: 41ex;
+}
+
+.Prototype *,
+.prettyprint *,
+.CBody pre,
+.CDLEntry {
+    font-family: "DejaVu Sans Mono";
+    font-size: 12pt;
+}
