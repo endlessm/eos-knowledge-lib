@@ -2,6 +2,7 @@ const EosKnowledgeSearch = imports.EosKnowledgeSearch;
 const Format = imports.format;
 const Gettext = imports.gettext;
 const Gio = imports.gi.Gio;
+const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
@@ -78,6 +79,21 @@ const Presenter = new Lang.Class({
             'Reader app view',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             GObject.Object.$gtype),
+
+        /**
+         * Property: issue-number
+         * Current issue number
+         *
+         * Magazine issue that the user is currently reading in the view.
+         * The number is zero-based, that is, 0 means the first issue.
+         *
+         * Default value:
+         *  0
+         */
+        'issue-number': GObject.ParamSpec.uint('issue-number', 'Issue number',
+            'Current issue number',
+            GObject.ParamFlags.READWRITE,
+            0, GLib.MAXINT64, 0),
     },
 
     _init: function (app_json, props) {
@@ -85,6 +101,11 @@ const Presenter = new Lang.Class({
             application: props.application,
         });
         props.engine = props.engine || new EosKnowledgeSearch.Engine();
+
+        // FIXME: this should be fetching the right issue number based on
+        // today's date?
+        this._issue_number = 0;
+
         this.parent(props);
 
         this._parse_app_info(app_json);
@@ -116,11 +137,20 @@ const Presenter = new Lang.Class({
             'back-visible', GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE);
     },
 
+    get issue_number() {
+        return this._issue_number;
+    },
+
+    set issue_number(value) {
+        if (value !== this._issue_number) {
+            this._issue_number = value;
+            this.notify('issue-number');
+        }
+    },
+
     _load_all_content: function () {
         this.engine.get_objects_by_query(this._domain, {
-            // FIXME: this should be fetching the right issue number
-            // based on today's date?
-            tag: 'issueNumber1',
+            tag: 'issueNumber' + this.issue_number,
             limit: RESULTS_SIZE,
             sortBy: 'articleNumber',
             order: 'asc',
