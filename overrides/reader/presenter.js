@@ -106,6 +106,10 @@ const Presenter = new Lang.Class({
             this._update_forward_button_visibility.bind(this));
         this.view.connect('notify::total-pages',
             this._update_forward_button_visibility.bind(this));
+        let handler = this.view.connect('debug-hotkey-pressed', function () {
+            this.view.issue_nav_buttons.show();
+            this.view.disconnect(handler);  // One-shot signal handler only.
+        }.bind(this));
 
         //Bind properties
         this.view.bind_property('current-page', this.view.nav_buttons,

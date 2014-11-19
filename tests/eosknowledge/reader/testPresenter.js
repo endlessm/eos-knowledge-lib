@@ -46,10 +46,16 @@ const MockView = new Lang.Class({
             GObject.ParamFlags.READWRITE,
             0, GLib.MAXUINT32, 0),
     },
+    Signals: {
+        'debug-hotkey-pressed': {},
+    },
 
     _init: function (nav_buttons) {
         this.parent();
         this.nav_buttons = nav_buttons;
+        this.issue_nav_buttons = {
+            show: jasmine.createSpy('show'),
+        };
         this.done_page = {
             get_style_context: function () { return {
                 add_class: function () {},
@@ -184,6 +190,11 @@ describe('Reader presenter', function () {
             buttons.emit('forward-clicked');
             buttons.emit('back-clicked');
             expect(view.current_page).toBe(0);
+        });
+
+        it('shows the debug buttons when told to', function () {
+            view.emit('debug-hotkey-pressed');
+            expect(view.issue_nav_buttons.show).toHaveBeenCalled();
         });
     });
 });
