@@ -2,6 +2,7 @@
 
 const Endless = imports.gi.Endless;
 const EosKnowledge = imports.gi.EosKnowledge;
+const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
@@ -48,6 +49,18 @@ const Window = new Lang.Class({
             DonePage.DonePage.$gtype),
 
         /**
+         * Property: issue-nav-buttons
+         *
+         * An <Endless.TopbarNavButton> widget created by this window.
+         * Not normally shown except for debugging purposes.
+         * Read-only.
+         */
+        'issue-nav-buttons': GObject.ParamSpec.object('issue-nav-buttons',
+            'Issue nav buttons', 'Secret buttons for navigating issues',
+            GObject.ParamFlags.READABLE,
+            Endless.TopbarNavButton.$gtype),
+
+        /**
          * Property: current-page
          *
          * The current page number.
@@ -72,6 +85,11 @@ const Window = new Lang.Class({
             GObject.ParamFlags.READABLE,
             0, GLib.MAXUINT32, 1),
     },
+
+    Signals: {
+        'debug-hotkey-pressed': {},
+    },
+
     _STACK_TRANSITION_TIME: 500,
     _BACK_IMAGE_URI: 'resource:///com/endlessm/knowledge/reader/left-arrow.svg',
     _FORWARD_IMAGE_URI: 'resource:///com/endlessm/knowledge/reader/right-arrow.svg',
@@ -86,16 +104,35 @@ const Window = new Lang.Class({
             forward_image_uri: this._FORWARD_IMAGE_URI,
             image_size: this._NAV_IMAGE_SIZE,
         });
+
+        this._issue_nav_buttons = new Endless.TopbarNavButton({
+            no_show_all: true,
+        });
+        // No need for localization; this is debug only
+        this._issue_nav_buttons.back_button.label = 'Prev issue';
+        this._issue_nav_buttons.forward_button.label = 'Next issue';
+
         this._article_pages = [];
         this._current_page = 0;
         this.parent(props);
+
+        this._debug_hotkey_action = new Gio.SimpleAction({
+            name: 'debug-mode',
+        });
+        this.application.add_action(this._debug_hotkey_action);
+        this.application.add_accelerator('<Control><Shift>B', 'app.debug-mode', null);
+        this._debug_hotkey_action.connect('activate', function () {
+            this.emit('debug-hotkey-pressed');
+        }.bind(this));
 
         this._stack = new Gtk.Stack({
             transition_duration: this._STACK_TRANSITION_TIME,
         });
         this._stack.add(this._done_page);
         this._nav_buttons.add(this._stack);
-        this.page_manager.add(this._nav_buttons);
+        this.page_manager.add(this._nav_buttons, {
+            center_topbar_widget: this._issue_nav_buttons,
+        });
     },
 
     _update_progress_labels: function () {
@@ -143,8 +180,13 @@ const Window = new Lang.Class({
         return this._article_pages[index];
     },
 
+    /**
+     * Method: remove_all_article_pages
+     * Clear the view entirely of articles
+     */
     remove_all_article_pages: function () {
-        this._article_pages.map(this.remove_article_page);
+        let pages = this._article_pages.slice();
+        pages.forEach(this.remove_article_page, this);
     },
 
     get done_page() {
@@ -153,6 +195,10 @@ const Window = new Lang.Class({
 
     get nav_buttons() {
         return this._nav_buttons;
+    },
+
+    get issue_nav_buttons() {
+        return this._issue_nav_buttons;
     },
 
     get current_page() {

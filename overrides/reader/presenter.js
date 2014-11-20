@@ -2,6 +2,7 @@ const EosKnowledgeSearch = imports.EosKnowledgeSearch;
 const Format = imports.format;
 const Gettext = imports.gettext;
 const Gio = imports.gi.Gio;
+const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
@@ -78,6 +79,21 @@ const Presenter = new Lang.Class({
             'Reader app view',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             GObject.Object.$gtype),
+
+        /**
+         * Property: issue-number
+         * Current issue number
+         *
+         * Magazine issue that the user is currently reading in the view.
+         * The number is zero-based, that is, 0 means the first issue.
+         *
+         * Default value:
+         *  0
+         */
+        'issue-number': GObject.ParamSpec.uint('issue-number', 'Issue number',
+            'Current issue number',
+            GObject.ParamFlags.READWRITE,
+            0, GLib.MAXINT64, 0),
     },
 
     _init: function (app_json, props) {
@@ -85,11 +101,15 @@ const Presenter = new Lang.Class({
             application: props.application,
         });
         props.engine = props.engine || new EosKnowledgeSearch.Engine();
+
+        // FIXME: this should be fetching the right issue number based on
+        // today's date?
+        this._issue_number = 0;
+
         this.parent(props);
 
         this._parse_app_info(app_json);
 
-        this._article_models = [];
         // Load all articles in this issue
         this._load_all_content()
         this.view.done_page.get_style_context().add_class('last-page');
@@ -106,21 +126,57 @@ const Presenter = new Lang.Class({
             this._update_forward_button_visibility.bind(this));
         this.view.connect('notify::total-pages',
             this._update_forward_button_visibility.bind(this));
+        this.view.issue_nav_buttons.back_button.connect('clicked', function () {
+            this.issue_number--;
+        }.bind(this));
+        this.view.issue_nav_buttons.forward_button.connect('clicked', function () {
+            this.issue_number++;
+        }.bind(this));
+        this.connect('notify::issue-number', this._load_all_content.bind(this));
+        let handler = this.view.connect('debug-hotkey-pressed', function () {
+            this.view.issue_nav_buttons.show();
+            this.view.disconnect(handler);  // One-shot signal handler only.
+        }.bind(this));
 
         //Bind properties
         this.view.bind_property('current-page', this.view.nav_buttons,
             'back-visible', GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE);
+        this.bind_property('issue-number',
+            this.view.issue_nav_buttons.back_button, 'sensitive',
+            GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE);
+    },
+
+    get issue_number() {
+        return this._issue_number;
+    },
+
+    set issue_number(value) {
+        if (value !== this._issue_number) {
+            this._issue_number = value;
+            this.notify('issue-number');
+        }
     },
 
     _load_all_content: function () {
         this.engine.get_objects_by_query(this._domain, {
-            // FIXME: this should be fetching the right issue number
-            // based on today's date?
-            tag: 'issueNumber1',
+            tag: 'issueNumber' + this.issue_number,
             limit: RESULTS_SIZE,
             sortBy: 'articleNumber',
             order: 'asc',
         }, function (error, results, get_more_results_func) {
+            // Clear out state from any issue that was already displaying.
+            this._article_models = [];
+            this.view.remove_all_article_pages();
+            // Make sure to drop all references to any webviews we are holding.
+            if (this._first_page) {
+                this._first_page.destroy();
+                this._first_page = null;
+            }
+            if (this._next_page) {
+                this._next_page.destroy();
+                this._next_page = null;
+            }
+
             if (error !== undefined || results.length < 1) {
                 if (error !== undefined) {
                     printerr(error);

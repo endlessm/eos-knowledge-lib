@@ -1,8 +1,10 @@
-const CssClassMatcher = imports.CssClassMatcher;
 const Endless = imports.gi.Endless;
 const EosKnowledge = imports.gi.EosKnowledge;
 const GLib = imports.gi.GLib;
 const Gtk = imports.gi.Gtk;
+
+const CssClassMatcher = imports.CssClassMatcher;
+const InstanceOfMatcher = imports.InstanceOfMatcher;
 
 const EXPECTED_CURRENT_PAGE = 0;
 const EXPECTED_TOTAL_PAGES = 16;
@@ -12,6 +14,7 @@ describe('Window widget', function () {
 
     beforeEach(function (done) {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
+        jasmine.addMatchers(InstanceOfMatcher.customMatchers);
 
         // Generate a unique ID for each app instance that we test
         let fake_pid = GLib.random_int();
@@ -41,13 +44,15 @@ describe('Window widget', function () {
     it('constructs', function () {});
 
     it('has a done-page widget', function () {
-        expect(view.done_page).toBeDefined();
-        expect(view.done_page).not.toBe(null);
+        expect(view.done_page).toBeA(Gtk.Widget);
     });
 
     it('has a nav-buttons widget', function () {
-        expect(view.nav_buttons).toBeDefined();
-        expect(view.nav_buttons).not.toBe(null);
+        expect(view.nav_buttons).toBeA(Gtk.Widget);
+    });
+
+    it('has a debug buttons widget', function () {
+        expect(view.issue_nav_buttons).toBeA(Gtk.Widget);
     });
 
     it('starts on the zeroeth page', function () {
@@ -56,6 +61,11 @@ describe('Window widget', function () {
 
     it('contains 16 pages', function () {
         expect(view.total_pages).toMatch(String(EXPECTED_TOTAL_PAGES));
+    });
+
+    it('can remove all pages but the done page', function () {
+        view.remove_all_article_pages();
+        expect(view.total_pages).toBe(1);  // done-page remains
     });
 
     it('throws an error when out of bounds pages are accessed', function () {
