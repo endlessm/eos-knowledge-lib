@@ -96,7 +96,7 @@ const Engine = Lang.Class({
      *             *result* where is an <ContentObjectModel> corresponding to
      *             the successfully retrieved object type
      */
-    get_object_by_id: function (domain, id, callback) {
+    get_object_by_id: function (domain, id, callback, cancellable = null) {
         let req_uri = this.get_ekn_uri(domain, id);
 
         this._send_json_ld_request(req_uri, function (err, json_ld) {
@@ -117,7 +117,7 @@ const Engine = Lang.Class({
                 return;
             }
             callback(undefined, model);
-        }.bind(this));
+        }.bind(this), cancellable);
     },
 
     /**
@@ -141,7 +141,7 @@ const Engine = Lang.Class({
      *             error, and *result* is a list of <ContentObjectModel>s
      *             corresponding to the successfully retrieved object type
      */
-    get_objects_by_query: function (domain, query_obj, callback) {
+    get_objects_by_query: function (domain, query_obj, callback, cancellable = null) {
         let req_uri = this.get_ekn_uri(domain, undefined, query_obj);
 
         this._send_json_ld_request(req_uri, function (err, json_ld) {
@@ -167,7 +167,7 @@ const Engine = Lang.Class({
                 this.get_objects_by_query(domain, query_obj, new_callback);
             }.bind(this);
             callback(undefined, search_results, get_more_results);
-        }.bind(this));
+        }.bind(this), cancellable);
     },
 
     // Returns a marshaled ObjectModel based on json_ld's @type value, or throws
@@ -264,7 +264,9 @@ const Engine = Lang.Class({
     // Queues a SoupMessage for *req_uri* to the current http session. Only
     // accepts JSON-LD responses, and calls *callback* on any errors encountered
     // and the parsed JSON
-    _send_json_ld_request: function (req_uri, callback) {
+    _send_json_ld_request: function (req_uri, callback, cancellable = null) {
+        if (cancellable && cancellable.is_cancelled())
+            return;
         let request = new Soup.Message({
             method: 'GET',
             uri: req_uri
@@ -282,5 +284,10 @@ const Engine = Lang.Class({
             }
             callback(undefined, json_ld_response);
         });
+        if (cancellable) {
+            cancellable.connect(function () {
+                this._http_session.cancel_message(request, Soup.Status.CANCELLED);
+            }.bind(this));
+        }
     }
 });

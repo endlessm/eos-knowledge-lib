@@ -108,12 +108,15 @@ const SearchProvider = Lang.Class({
 
     _run_query: function (terms, limit, cb) {
         let search_phrase = terms.join(' ');
+        if (this._cancellable)
+            this._cancellable.cancel();
+        this._cancellable = new Gio.Cancellable();
         this._engine.get_objects_by_query(this.search_domain, {
             q: search_phrase,
             limit: limit,
         }, function (err, results, more_results_callback) {
             cb(err, results, more_results_callback);
-        }.bind(this));
+        }.bind(this), this._cancellable);
     },
 
     GetInitialResultSetAsync: function (params, invocation) {
