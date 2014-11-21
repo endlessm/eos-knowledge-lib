@@ -47,14 +47,14 @@ const Application = new Lang.Class({
             this._activation_timestamp = null;
             let results = this._search_provider.get_results();
             let more_results_callback = this._search_provider.get_more_results_callback();
-            this._presenter.on_search_result_activated(model, query, results, more_results_callback);
+            this._presenter.activate_search_result(model, query, results, more_results_callback);
         }.bind(this));
 
         this._search_provider.connect('load-query', function (launcher, query, timestamp) {
             this._activation_timestamp = timestamp;
             this.activate();
             this._activation_timestamp = null;
-            this._presenter._on_search(this._presenter.view, query);
+            this._presenter.search(query);
         }.bind(this));
     },
 

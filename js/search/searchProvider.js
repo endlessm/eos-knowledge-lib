@@ -38,13 +38,27 @@ const SearchProviderErrors = {
     RetrievalError: 0
 };
 
+/**
+ * Class: SearchProvider
+ *
+ * Adds search provider functionality to a knowledge app, to be used through
+ * dbus by the shell's global search. To use you will need to extend the
+ * vfunc_dbus_register and vfunc_dbus_unregister virtual functions on a
+ * GApplication and call into the export and unexport function here. This class
+ * will then run queries into the <search-domain> given and return the results
+ * to the shell.
+ *
+ * Exposes two signals <load-page> and <load-query> when the shell asks
+ * for a particular search result to be activated. You will want to connect
+ * to both of those signals.
+ */
 const SearchProvider = Lang.Class({
     Name: 'EknSearchProvider',
     Extends: GObject.Object,
 
     Properties: {
         /**
-         * Property: search_domain
+         * Property: search-domain
          *
          * The Knowledge Engine domain from which to provide results
          */
@@ -54,11 +68,30 @@ const SearchProvider = Lang.Class({
     },
 
     Signals: {
+        /**
+         * Event: load-page
+         *
+         * Emitted when the shell has asked to to activate the application with
+         * a specific article. Emits the <ArticleObjectModel> of the article,
+         * the query string, and the timestamp of the user action which started
+         * the activation.
+         *
+         * > search_provider.connect('load-page', function (provider, model, query, timestamp) {} );
+         */
         'load-page': { param_types: [
             GObject.TYPE_OBJECT,
             GObject.TYPE_STRING,
             GObject.TYPE_UINT
         ] },
+        /**
+         * Event: load-query
+         *
+         * Emitted when the shell has asked to to activate a query. Emits the
+         * query string, and the timestamp of the user action which started the
+         * activation.
+         *
+         * > search_provider.connect('load-query', function (provider, query, timestamp) {} );
+         */
         'load-query': { param_types: [
             GObject.TYPE_STRING,
             GObject.TYPE_UINT

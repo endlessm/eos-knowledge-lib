@@ -9,7 +9,7 @@
 
 # Subdirectories where we also want to run make
 # (Make sure that the library is built before the docs)
-SUBDIRS = po . docs/reference/eosknowledge
+SUBDIRS = po . docs/reference/eosknowledge docs/reference/eosknowledge-overrides docs/reference/eosknowledgesearch
 
 # Our Autoconf macros are kept in the m4/ directory
 ACLOCAL_AMFLAGS = -I m4
@@ -35,6 +35,7 @@ CLEANFILES =
 DISTCLEANFILES =
 dist_noinst_DATA =
 nobase_pkgdata_DATA =
+bin_SCRIPTS =
 
 # Make sure that 'make dist' includes documentation
 if !CAN_MAKE_DIST
@@ -83,13 +84,10 @@ include $(top_srcdir)/tests/Makefile.am.inc
 
 # # # DOCUMENTATION # # #
 
-# Regular Gtk-Doc is built in with recursive make, because Gtk-Doc requires it
+# Regular Gtk-Doc and naturaldocs documentation are built with recursive make
 
 # JS documentation generated from GIR
 include $(top_srcdir)/docs/reference/eosknowledge-js/Makefile.am.inc
-
-# JS documentation of Javascript-only parts
-include $(top_srcdir)/docs/reference/eosknowledge-overrides/Makefile.am.inc
 
 # # # INTROSPECTION # # #
 
@@ -131,11 +129,3 @@ typelib_DATA = $(INTROSPECTION_GIRS:.gir=.typelib)
 
 CLEANFILES += $(gir_DATA) $(typelib_DATA)
 endif
-
-# # # TOOLS # # #
-
-EXTRA_DIST += tools/ekn-app-runner
-
-bin_SCRIPTS = \
-	tools/ekn-app-runner \
-	$(NULL)

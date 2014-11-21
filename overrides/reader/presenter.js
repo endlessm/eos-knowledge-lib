@@ -97,6 +97,9 @@ const Presenter = new Lang.Class({
     },
 
     _init: function (app_json, props) {
+        let css = Gio.File.new_for_uri('resource:///com/endlessm/knowledge/endless_reader.css');
+        Utils.add_css_provider_from_file(css, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+
         props.view = props.view || new Window.Window({
             application: props.application,
         });
@@ -156,6 +159,14 @@ const Presenter = new Lang.Class({
             this.notify('issue-number');
         }
     },
+
+    // Right now these functions are just stubs which we will need to flesh out
+    // if we ever want to register search providers for the reader apps. The
+    // former will be called by ekn-app-runner if the user asks to view a search
+    // query within an application, and the latter if the user asks to view a
+    // specific article.
+    search: function (query) {},
+    activate_search_result: function (model, query) {},
 
     _load_all_content: function () {
         this.engine.get_objects_by_query(this._domain, {

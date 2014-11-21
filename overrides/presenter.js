@@ -160,14 +160,18 @@ const Presenter = new Lang.Class({
             GObject.BindingFlags.SYNC_CREATE);
         this.view.connect('search-focused', this._on_search_focus.bind(this));
         this.view.connect('search-text-changed', this._on_search_text_changed.bind(this));
-        this.view.connect('search-entered', this._on_search.bind(this));
+        this.view.connect('search-entered', function (view, query) {
+            this.search(query);
+        }.bind(this));
         this.view.connect('article-selected', this._on_article_selection.bind(this));
 
         this.view.connect('sidebar-back-clicked', this._on_back.bind(this));
         this.view.connect('lightbox-nav-previous-clicked', this._on_lightbox_previous_clicked.bind(this));
         this.view.connect('lightbox-nav-next-clicked', this._on_lightbox_next_clicked.bind(this));
 
-        this.view.home_page.connect('search-entered', this._on_search.bind(this));
+        this.view.home_page.connect('search-entered', function (view, query) {
+            this.search(query);
+        }.bind(this));
         this.view.home_page.connect('search-text-changed', this._on_search_text_changed.bind(this));
         this.view.home_page.connect('article-selected', this._on_article_selection.bind(this));
 
@@ -319,7 +323,7 @@ const Presenter = new Lang.Class({
         return query.replace(/\r?\n|\r/g, ' ').trim();
     },
 
-    _on_search: function (view, query) {
+    search: function (query) {
         query = this._sanitize_query(query);
         // Ignore empty queries
         if (query.length === 0) {
@@ -330,7 +334,7 @@ const Presenter = new Lang.Class({
         this._add_history_object_for_search_page(JSON.stringify({
             q: query
         }));
-        this._perform_search(view, {
+        this._perform_search(this.view, {
             q: query
         });
     },
@@ -428,7 +432,7 @@ const Presenter = new Lang.Class({
         }.bind(this));
     },
 
-    on_search_result_activated: function (model, query, results, more_results_callback) {
+    activate_search_result: function (model, query, results, more_results_callback) {
         let query_obj = {
             'q': query,
         };
