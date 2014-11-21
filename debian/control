@@ -39,7 +39,8 @@ Package: libeosknowledge-0-0
 Section: non-free/libs
 Architecture: any
 Depends: ${shlibs:Depends},
-         ${misc:Depends}
+         ${misc:Depends},
+         fonts-roboto
 Description: EndlessOS Knowledge Library
  Library for displaying UI elements in knowledge apps
 
