@@ -1,5 +1,6 @@
 const EosKnowledgeSearch = imports.EosKnowledgeSearch;
 const Endless = imports.gi.Endless;
+const Gio = imports.gi.Gio;
 const Soup = imports.gi.Soup;
 
 const InstanceOfMatcher = imports.InstanceOfMatcher;
@@ -64,28 +65,40 @@ describe('Knowledge Engine Module', function () {
     });
 
     describe('HTTP requests', function () {
-        let queue_message_spy;
-
         beforeEach(function () {
-            queue_message_spy = jasmine.createSpy('queue_message');
-
-            // spy on and mock the queue_message method
-            engine._http_session = {
-                queue_message: function (req, cb) {
-                    queue_message_spy(req, cb);
-                    cb();
-                }
-            }
+            // spy on the queue_message and cancel_message methods
+            spyOn(engine._http_session, 'queue_message').and.callFake(function (req, cb) {
+                cb();
+            });
+            spyOn(engine._http_session, 'cancel_message');
         });
 
         it('has Accept headers set to JSON-LD', function (done) {
             engine.get_object_by_id('foo', 'bar', function () {
-                let args = queue_message_spy.calls.mostRecent().args;
-                let sent_message = args[0];
-                expect(sent_message.request_headers.get('Accept'))
+                let message = engine._http_session.queue_message.calls.mostRecent().args[0];
+                expect(message.request_headers.get('Accept'))
                     .toBe('application/ld+json');
                 done();
             });
+        });
+
+        it('can be cancelled', function () {
+            let cancellable = new Gio.Cancellable();
+            engine.get_object_by_id('sqwert', 'alert', function () {}, cancellable);
+            cancellable.cancel();
+            expect(engine._http_session.cancel_message).toHaveBeenCalled();
+            let message = engine._http_session.cancel_message.calls.mostRecent().args[0];
+            // Make sure we are canceling the right Soup Message
+            expect(message).toBeA(Soup.Message);
+            expect(message.uri.to_string(true)).toMatch('sqwert');
+            expect(message.uri.to_string(true)).toMatch('alert');
+        });
+
+        it('does not make a request if already cancelled', function () {
+            let cancellable = new Gio.Cancellable();
+            cancellable.cancel();
+            engine.get_object_by_id('sqwert', 'alert', function () {}, cancellable);
+            expect(engine._http_session.queue_message).not.toHaveBeenCalled();
         });
     });
 
