@@ -82,7 +82,6 @@ const ArticlePage = new Lang.Class({
         this._inner_grid.add(this._attribution_label);
 
         this._grid = new Gtk.Grid({
-            column_homogeneous: true,
             // Keep a minimum width, or the labels get kinda illegible
             width_request: 600,
         });
@@ -90,6 +89,11 @@ const ArticlePage = new Lang.Class({
         this._grid.attach(this._inner_grid, 0, 1, 1, 1);
 
         this.add(this._grid);
+
+        this._size_group = new Gtk.SizeGroup({
+            mode: Gtk.SizeGroupMode.BOTH,
+        });
+        this._size_group.add_widget(this._inner_grid);
 
         this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_ARTICLE_PAGE);
         this._title_label.get_style_context().add_class(EosKnowledge.STYLE_CLASS_ARTICLE_PAGE_TITLE);
@@ -127,10 +131,12 @@ const ArticlePage = new Lang.Class({
     show_content_view: function (view) {
         if (this._content_view !== null) {
             this._grid.remove(this._content_view);
+            this._size_group.remove_widget(this._content_view);
         }
         view.expand = true;
         this._content_view = view;
         this._grid.attach(view, 1, 1, 1, 1);
+        this._size_group.add_widget(view);
         view.show_all();
     },
 
