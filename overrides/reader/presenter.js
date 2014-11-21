@@ -1,3 +1,4 @@
+const EosKnowledge = imports.gi.EosKnowledge;
 const EosKnowledgeSearch = imports.EosKnowledgeSearch;
 const Format = imports.format;
 const Gettext = imports.gettext;
@@ -376,6 +377,7 @@ const Presenter = new Lang.Class({
             justify: Gtk.Justification.CENTER,
             use_markup: true,
         });
+        err_label.get_style_context().add_class(EosKnowledge.STYLE_CLASS_READER_ERROR_PAGE);
         err_label.show();
         return err_label;
     },
