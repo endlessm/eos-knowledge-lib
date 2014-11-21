@@ -28,7 +28,7 @@ describe('Window widget', function () {
                 application: app,
             });
             for (let i = 0; i < 15; i++) {
-                let a = new EosKnowledge.Reader.ArticlePage({title : 'Example page #' + (i + 1)});
+                let a = new EosKnowledge.Reader.ArticlePage();
                 view.append_article_page(a);
             }
             done();
@@ -77,8 +77,8 @@ describe('Window widget', function () {
         }).not.toThrow();
     });
 
-    it('sets progress labels correctly', function () {    
-        let a = new EosKnowledge.Reader.ArticlePage({title : "Example page #" + (EXPECTED_TOTAL_PAGES)});
+    it('sets progress labels correctly', function () {
+        let a = new EosKnowledge.Reader.ArticlePage();
         view.append_article_page(a);
         view.current_page = EXPECTED_TOTAL_PAGES;
         expect(a.progress_label.current_page).toBe(EXPECTED_TOTAL_PAGES);

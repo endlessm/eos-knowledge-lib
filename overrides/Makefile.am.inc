@@ -52,6 +52,7 @@ reader_overrides = \
 	overrides/reader/donePage.js \
 	overrides/reader/presenter.js \
 	overrides/reader/progressLabel.js \
+	overrides/reader/titleView.js \
 	overrides/reader/window.js \
 	$(NULL)
 readeroverridesdir = $(pkgoverridesdir)/reader

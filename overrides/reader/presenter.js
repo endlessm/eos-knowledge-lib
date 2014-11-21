@@ -360,10 +360,10 @@ const Presenter = new Lang.Class({
     // Take an ArticleObjectModel and create a Reader.ArticlePage view.
     _create_article_page_from_article_model: function (model) {
         let formatted_attribution = this._format_attribution_for_metadata(model.get_authors(), model.published);
-        return new ArticlePage.ArticlePage({
-            title: model.title,
-            attribution: formatted_attribution,
-        });
+        let article_page = new ArticlePage.ArticlePage();
+        article_page.title_view.title = model.title;
+        article_page.title_view.attribution = formatted_attribution;
+        return article_page;
     },
 
     // Show a friendlier error message when the engine is not working; suggest

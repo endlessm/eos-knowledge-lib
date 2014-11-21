@@ -16,6 +16,11 @@ EosWindow {
     color: white;
 }
 
+.separator {
+    border: 1px solid;
+    color: alpha(black, 0.1);
+}
+
 .done-page .headline {
     color: yellow;
     font-style: italic;

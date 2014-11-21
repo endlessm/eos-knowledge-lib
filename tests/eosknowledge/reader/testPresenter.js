@@ -157,11 +157,10 @@ describe('Reader presenter', function () {
                 callback(undefined, MOCK_RESULTS);
             });
             let presenter = new EosKnowledge.Reader.Presenter(test_json, construct_props);
-            MOCK_RESULTS.forEach(function (result) {
-                expect(view.append_article_page).toHaveBeenCalledWith(jasmine.objectContaining({
-                    title: result.title,
-                }));
-            })
+            expect(view.append_article_page.calls.count()).toEqual(MOCK_RESULTS.length);
+            MOCK_RESULTS.forEach(function (result, index) {
+                expect(view.append_article_page.calls.argsFor(index)[0].title_view.title).toEqual(result.title);
+            });
         });
 
         it('gracefully handles the query failing', function () {
@@ -187,7 +186,7 @@ describe('Reader presenter', function () {
 
         it('has all articles as pages', function () {
             MOCK_RESULTS.forEach(function (result, i) {
-                expect(view.get_article_page(i).title).toBe(result.title);
+                expect(view.get_article_page(i).title_view.title).toBe(result.title);
             });
         });
 
@@ -279,7 +278,7 @@ describe('Reader presenter', function () {
             });
             spyOn(view, 'remove_all_article_pages').and.callThrough();
             presenter.issue_number = 14;
-            expect(view.get_article_page(0).title).toBe('Title 1');
+            expect(view.get_article_page(0).title_view.title).toBe('Title 1');
             expect(view.remove_all_article_pages).toHaveBeenCalled();
         });
 
