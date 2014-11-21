@@ -104,6 +104,7 @@ stamp*
 
 # NaturalDocs droppings
 /docs/reference/*/Data/
+/docs/reference/*/eos.css
 /docs/reference/*/Languages.txt
 /docs/reference/*/Menu.txt
 /docs/reference/*/Topics.txt

@@ -9,7 +9,7 @@
 
 # Subdirectories where we also want to run make
 # (Make sure that the library is built before the docs)
-SUBDIRS = po . docs/reference/eosknowledge
+SUBDIRS = po . docs/reference/eosknowledge docs/reference/eosknowledge-overrides docs/reference/eosknowledgesearch
 
 # Our Autoconf macros are kept in the m4/ directory
 ACLOCAL_AMFLAGS = -I m4
@@ -84,16 +84,10 @@ include $(top_srcdir)/tests/Makefile.am.inc
 
 # # # DOCUMENTATION # # #
 
-# Regular Gtk-Doc is built in with recursive make, because Gtk-Doc requires it
+# Regular Gtk-Doc and naturaldocs documentation are built with recursive make
 
 # JS documentation generated from GIR
 include $(top_srcdir)/docs/reference/eosknowledge-js/Makefile.am.inc
-
-# JS documentation of Javascript-only parts
-include $(top_srcdir)/docs/reference/eosknowledge-overrides/Makefile.am.inc
-
-# JS documentation of EosKnowledgeSearch
-include $(top_srcdir)/docs/reference/eosknowledgesearch/Makefile.am.inc
 
 # # # INTROSPECTION # # #
 
