@@ -255,16 +255,10 @@ const ContentObjectModel = new Lang.Class({
     },
 
     set_resources: function (v) {
-        if (this._resources === undefined) {
-            this._resources = [];
-        }
         this._resources = v;
     },
 
     set_tags: function (v) {
-        if (this._tags === undefined) {
-            this._tags = [];
-        }
         this._tags = v;
     }
 });
@@ -317,7 +311,6 @@ ContentObjectModel._setup_from_json_ld = function (model, json_ld_data) {
         } else {
             // if the resources list is still a list of URIs, fetch them async
             // and when we have them all, alert that they're ready
-            model.set_resources([]);
             json_ld_data.resources.forEach(function (uri) {
                 model.queue_deferred_property(uri,
                     function (err, res) {

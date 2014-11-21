@@ -65,9 +65,18 @@ const ArticleObjectModel = new Lang.Class({
             'Article Number for the Reader App',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
             0, GLib.MAXUINT32, 0),
+
+        /**
+         * Property: published
+         * The date this article was published. It treats dates
+         * according to the ISO8601 standard.
+         */
+        'published': GObject.ParamSpec.string('published', 'Publication Date', 'Publication Date of the article',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT, ''),
     },
 
     _init: function (params) {
+        this._authors = [];
         this.parent(params);
     },
 
@@ -102,6 +111,22 @@ const ArticleObjectModel = new Lang.Class({
     set article_number(v) {
         this._article_number = v;
     },
+
+    set published (v) {
+        this._published = v;
+    },
+
+    get published () {
+        return this._published;
+    },
+
+    set_authors: function (v) {
+        this._authors = v;
+    },
+
+    get_authors: function () {
+        return this._authors;
+    },
 });
 
 /**
@@ -121,6 +146,10 @@ ArticleObjectModel._setup_from_json_ld = function (model, json_ld_data) {
     // Inherit setup from parent class
     let ParentClass = ArticleObjectModel.__super__;
     ParentClass._setup_from_json_ld(model, json_ld_data);
+    if (json_ld_data.hasOwnProperty('authors')) {
+        model.set_authors(json_ld_data.authors);
+    }
+
 };
 
 ArticleObjectModel._props_from_json_ld = function (json_ld_data) {
@@ -147,6 +176,10 @@ ArticleObjectModel._props_from_json_ld = function (json_ld_data) {
         if (json_ld_data.articleNumber < 0)
             throw new Error('Article number must be a non-negative integer.');
         props.article_number = parseInt(json_ld_data.articleNumber);
+    }
+
+    if (json_ld_data.hasOwnProperty('published')) {
+        props.published = json_ld_data.published;
     }
 
     return props;
