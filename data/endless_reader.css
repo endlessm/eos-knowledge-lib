@@ -46,13 +46,17 @@ EosWindow {
 }
 
 .article-page-title {
+    font-family: Roboto;
     font-size: 5em;
-    color: #333333;
+    font-style: italic;
+    color: white;
 }
 
 .article-page-attribution {
-    font-size: 1.5em;
-    color: #ec317a;
+    font-family: Roboto;
+    font-weight: 900; /* Black */
+    font-size: 0.75em; /* 12px, 72 DPI */
+    color: #94a723;
 }
 
 .article-page-ornament {

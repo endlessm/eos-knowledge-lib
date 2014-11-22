@@ -52,6 +52,7 @@ const TitleView = new Lang.Class({
             wrap_mode: Pango.WrapMode.WORD_CHAR,
             lines: 3,
             xalign: 0,
+            use_markup: true,
             margin_bottom: _TITLE_LABEL_BOTTOM_MARGIN_PX,
         });
         this._attribution_label = new Gtk.Label({
@@ -63,6 +64,7 @@ const TitleView = new Lang.Class({
             wrap_mode: Pango.WrapMode.WORD_CHAR,
             lines: 2,
             xalign: 0,
+            use_markup: true,
         });
         this.parent(props);
 
@@ -85,28 +87,33 @@ const TitleView = new Lang.Class({
     },
 
     set title(value) {
-        if (this._title_label.label === value)
+        if (this._title_text === value)
             return;
-        this._title_label.label = value;
+        this._title_text = value;
+        this._title_label.label = ('<span background="black"> ' +
+            this._title_text.toLocaleUpperCase() +
+            ' </span>');
         this.notify('title');
     },
 
     get title() {
-        if (this._title_label)
-            return this._title_label.label;
+        if (this._title_text)
+            return this._title_text;
         return '';
     },
 
     set attribution(value) {
-        if (this._attribution_label.label === value)
+        if (this._attribution_text === value)
             return;
-        this._attribution_label.label = value;
+        this._attribution_text = value;
+        this._attribution_label.label = ('<span letter_spacing="1024">' +
+            this._attribution_text.toLocaleUpperCase() + '</span>');
         this.notify('attribution');
     },
 
     get attribution() {
-        if (this._attribution_label)
-            return this._attribution_label.label;
+        if (this._attribution_text)
+            return this._attribution_text;
         return '';
     },
 });
