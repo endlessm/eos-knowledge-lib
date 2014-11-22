@@ -43,15 +43,15 @@ EosWindow {
 .article-page-title {
     font-size: 5em;
     color: #333333;
-    padding-left: 60px;
-    padding-right: 50px;
 }
 
 .article-page-attribution {
     font-size: 1.5em;
     color: #ec317a;
-    padding-left: 50px;
-    padding-right: 50px;
+}
+
+.article-page-ornament {
+    background-color: #e3e3e3;
 }
 
 .nav-back-button, .nav-forward-button {

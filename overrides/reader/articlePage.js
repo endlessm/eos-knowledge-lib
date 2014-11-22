@@ -9,6 +9,8 @@ const Lang = imports.lang;
 const ProgressLabel = imports.reader.progressLabel;
 const TitleView = imports.reader.titleView;
 
+const _TITLE_VIEW_LEFT_MARGIN_PX = 60;
+
 /**
  * Class: Reader.ArticlePage
  * The article page of the reader app.
@@ -48,9 +50,9 @@ const ArticlePage = new Lang.Class({
 
         this._progress_label = new ProgressLabel.ProgressLabel();
         this._title_view = new TitleView.TitleView({
-            orientation: Gtk.Orientation.VERTICAL,
             expand: true,
             valign: Gtk.Align.CENTER,
+            margin_left: _TITLE_VIEW_LEFT_MARGIN_PX,
         });
         this._content_view = null;
         this.parent(props);

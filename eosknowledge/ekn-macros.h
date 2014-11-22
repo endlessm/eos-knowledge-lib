@@ -546,6 +546,16 @@ enum_type##_get_type (void) \
 #define EKN_STYLE_CLASS_READER_ARTICLE_PAGE_ATTRIBUTION "article-page-attribution"
 
 /**
+ * EKN_STYLE_CLASS_READER_ARTICLE_PAGE_ORNAMENT:
+ *
+ * A CSS class to match the ornament on the reader's ArticlePage.
+ *
+ * > **NOTE**
+ * > This is unstable API.
+ */
+#define EKN_STYLE_CLASS_READER_ARTICLE_PAGE_ORNAMENT "article-page-ornament"
+
+/**
  * EKN_STYLE_CLASS_READER_ERROR_PAGE:
  *
  * A CSS class to match the error message page in the reader.
