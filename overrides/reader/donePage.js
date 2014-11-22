@@ -64,7 +64,7 @@ const DonePage = new Lang.Class({
             margin_top: 5,
         });
         let headline = new Gtk.Label({
-            label: _("Did you like this issue?"),
+            label: _("Did you like this issue?").toLocaleUpperCase(),
             expand: true,
             valign: Gtk.Align.END,
             halign: Gtk.Align.CENTER,

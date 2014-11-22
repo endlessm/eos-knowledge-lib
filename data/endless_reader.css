@@ -22,14 +22,19 @@ EosWindow {
 }
 
 .done-page .headline {
-    color: yellow;
+    font-family: Roboto;
+    font-weight: bold;
     font-style: italic;
-    font-size: 2.5em;
+    font-size: 2.56em; /* 41px, 72 DPI */
+    color: #e5ff51;
 }
 
 .done-page .bottom-line {
     padding-top: 3px;
-    color: white;
+    font-family: Roboto;
+    font-weight: 300; /* Light */
+    font-size: 1em; /* 16px, 72 DPI */
+    color: #f2f2f2;
 }
 
 .done-page .progress-label {
