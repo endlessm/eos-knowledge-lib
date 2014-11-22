@@ -56,7 +56,8 @@ EosWindow {
 
 .nav-back-button, .nav-forward-button {
     color: white;
-    background-color: alpha(black, 0.2);
+    background-color: black;
+    opacity: 0.3;
     transition: padding 500ms ease-in-out;
 }
 
@@ -66,12 +67,12 @@ EosWindow {
 
 .nav-back-button {
     border-left: 0px;
-    border-radius: 0px 8px 8px 0px;
+    border-radius: 0px 4px 4px 0px;
     padding: 17px;
 }
 
 .nav-forward-button {
-    border-radius: 8px 0px 0px 8px;
+    border-radius: 4px 0px 0px 4px;
     border-right: 0px;
     padding: 17px;
 }
