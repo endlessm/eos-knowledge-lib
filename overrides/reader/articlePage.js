@@ -10,6 +10,7 @@ const ProgressLabel = imports.reader.progressLabel;
 const TitleView = imports.reader.titleView;
 
 const _TITLE_VIEW_LEFT_MARGIN_PX = 60;
+const _CONTENT_VIEW_TOP_MARGIN_PX = 40;
 
 /**
  * Class: Reader.ArticlePage
@@ -48,7 +49,10 @@ const ArticlePage = new Lang.Class({
     _init: function (props) {
         props = props || {};
 
-        this._progress_label = new ProgressLabel.ProgressLabel();
+        this._progress_label = new ProgressLabel.ProgressLabel({
+            vexpand: false,
+            valign: Gtk.Align.CENTER,
+        });
         this._title_view = new TitleView.TitleView({
             expand: true,
             valign: Gtk.Align.CENTER,
@@ -60,15 +64,17 @@ const ArticlePage = new Lang.Class({
         let separator = new Gtk.Separator({
             orientation: Gtk.Orientation.VERTICAL,
             hexpand: false,
+            vexpand: true,
             halign: Gtk.Align.CENTER,
+            valign: Gtk.Align.FILL,
         });
 
         this._grid = new Gtk.Grid({
             // Keep a minimum width, or the labels get kinda illegible
             width_request: 600,
         });
-        this._grid.attach(this._progress_label, 0, 0, 3, 1);
-        this._grid.attach(this._title_view, 0, 1, 1, 1);
+        this._grid.attach(this._title_view, 0, 0, 1, 2);
+        this._grid.attach(this._progress_label, 1, 0, 1, 1);
         this._grid.attach(separator, 1, 1, 1, 1);
 
         this.add(this._grid);
@@ -95,8 +101,9 @@ const ArticlePage = new Lang.Class({
             this._size_group.remove_widget(this._content_view);
         }
         view.expand = true;
+        view.margin_top = _CONTENT_VIEW_TOP_MARGIN_PX;
         this._content_view = view;
-        this._grid.attach(view, 2, 1, 1, 1);
+        this._grid.attach(view, 2, 0, 1, 2);
         this._size_group.add_widget(view);
         view.show_all();
     },
