@@ -5,14 +5,14 @@ EosWindow {
 }
 
 .progress-label {
+    font-weight: 900; /* Black */
     font-size: 1.2em;
-    color: #444444;
-    padding: 5px;
+    color: #494949;
+    padding-top: 10px;
+    padding-bottom: 20px;
 }
 
 .last-page .progress-label {
-    border-radius: 5px;
-    background-color: red;
     color: white;
 }
 

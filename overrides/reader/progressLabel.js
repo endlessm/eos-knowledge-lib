@@ -51,7 +51,7 @@ const ProgressLabel = new Lang.Class({
         this._total_pages = 0;
 
         props = props || {};
-        props.label = '<b>0</b> / 0';
+        props.label = '0 / 0';
         props.use_markup = true;
         this.parent(props);
 
@@ -77,10 +77,9 @@ const ProgressLabel = new Lang.Class({
     },
 
     _update_ui: function () {
-        let current_page_string = '<b>' + this._current_page + '</b>';
         // The string below may need to be localized if it needs to be displayed
         // differently in some locales; for example, maybe a punctuation mark
         // other than 'slash' would be used.
-        this.label = '%s / %d'.format(current_page_string, this._total_pages);
+        this.label = '%d / %d'.format(this._current_page, this._total_pages);
     },
 });
