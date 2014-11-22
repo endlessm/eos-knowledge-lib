@@ -141,7 +141,7 @@ describe('Reader presenter', function () {
             let presenter = new EosKnowledge.Reader.Presenter(test_json, construct_props);
         });
 
-        it('queries the first article', function () {
+        it('queries the articles in the initial issue', function () {
             let presenter = new EosKnowledge.Reader.Presenter(test_json, construct_props);
             expect(engine.get_objects_by_query).toHaveBeenCalledWith(TEST_DOMAIN,
                 jasmine.objectContaining({
@@ -151,7 +151,7 @@ describe('Reader presenter', function () {
                 }), jasmine.any(Function));
         });
 
-        it('adds the first article as a page', function () {
+        it('adds the articles as pages', function () {
             spyOn(view, 'append_article_page');
             engine.get_objects_by_query.and.callFake(function (d, q, callback) {
                 callback(undefined, MOCK_RESULTS);
