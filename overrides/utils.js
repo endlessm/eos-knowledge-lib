@@ -29,6 +29,16 @@ function parse_object_from_file (file) {
     return null;
 }
 
+/* Helper function to save a JSON object to a file */
+function save_object_to_file (object, file) {
+    // Magic parameters ahead! See: devhelp
+    let etag_1 = null;
+    let make_backup = false;
+    let flags = 0;
+    let cancellable = null;
+    file.replace_contents(JSON.stringify(object), etag_1, make_backup, flags, cancellable);
+}
+
 /* Helper add a new css provider to the default screen object */
 function add_css_provider_from_file (file, priority) {
     let provider = new Gtk.CssProvider();

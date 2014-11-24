@@ -53,6 +53,7 @@ reader_overrides = \
 	overrides/reader/presenter.js \
 	overrides/reader/progressLabel.js \
 	overrides/reader/titleView.js \
+	overrides/reader/userSettingsModel.js \
 	overrides/reader/window.js \
 	$(NULL)
 readeroverridesdir = $(pkgoverridesdir)/reader
