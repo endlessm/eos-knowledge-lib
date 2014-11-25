@@ -1,3 +1,4 @@
+const EosKnowledge = imports.gi.EosKnowledge;
 const EosKnowledgeSearch = imports.EosKnowledgeSearch;
 const Format = imports.format;
 const Gettext = imports.gettext;
@@ -360,10 +361,10 @@ const Presenter = new Lang.Class({
     // Take an ArticleObjectModel and create a Reader.ArticlePage view.
     _create_article_page_from_article_model: function (model) {
         let formatted_attribution = this._format_attribution_for_metadata(model.get_authors(), model.published);
-        return new ArticlePage.ArticlePage({
-            title: model.title,
-            attribution: formatted_attribution,
-        });
+        let article_page = new ArticlePage.ArticlePage();
+        article_page.title_view.title = model.title;
+        article_page.title_view.attribution = formatted_attribution;
+        return article_page;
     },
 
     // Show a friendlier error message when the engine is not working; suggest
@@ -376,6 +377,7 @@ const Presenter = new Lang.Class({
             justify: Gtk.Justification.CENTER,
             use_markup: true,
         });
+        err_label.get_style_context().add_class(EosKnowledge.STYLE_CLASS_READER_ERROR_PAGE);
         err_label.show();
         return err_label;
     },

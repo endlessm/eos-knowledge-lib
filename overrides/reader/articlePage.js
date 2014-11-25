@@ -5,9 +5,12 @@ const Gettext = imports.gettext;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
-const Pango = imports.gi.Pango;
 
 const ProgressLabel = imports.reader.progressLabel;
+const TitleView = imports.reader.titleView;
+
+const _TITLE_VIEW_LEFT_MARGIN_PX = 60;
+const _CONTENT_VIEW_TOP_MARGIN_PX = 40;
 
 /**
  * Class: Reader.ArticlePage
@@ -21,23 +24,16 @@ const ArticlePage = new Lang.Class({
     Extends: Gtk.Frame,
     Properties: {
         /**
-         * Property: title
+         * Property: title-view
          *
-         * A string title of the article being viewed. Defaults to the empty
-         * string.
+         * The <Reader.TitleView> widget created by this widget.
+         * Read-only, modify using the title view API.
          */
-        'title': GObject.ParamSpec.string('title', 'Title',
-            'Title of the article',
-            GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE, ''),
-        /**
-         * Property: attribution
-         *
-         * A string attribution of the article being viewed. Defaults to the empty
-         * string.
-         */
-        'attribution': GObject.ParamSpec.string('attribution', 'Attribution',
-            'Attribution of the article',
-            GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE, ''),
+        'title-view': GObject.ParamSpec.object('title-view', 'Title view',
+            'The title view on the left-hand side of the page',
+            GObject.ParamFlags.READABLE,
+            TitleView.TitleView.$gtype),
+
         /**
          * Property: progress-label
          *
@@ -53,84 +49,62 @@ const ArticlePage = new Lang.Class({
     _init: function (props) {
         props = props || {};
 
-        this._progress_label = new ProgressLabel.ProgressLabel();
-        this._title_label = new Gtk.Label({
-            wrap: true,
-            halign: Gtk.Align.START,
-            ellipsize: Pango.EllipsizeMode.END,
-            wrap_mode: Pango.WrapMode.WORD_CHAR,
-            lines: 3,
-            xalign: 0,
+        this._progress_label = new ProgressLabel.ProgressLabel({
+            vexpand: false,
+            valign: Gtk.Align.CENTER,
         });
-        this._attribution_label = new Gtk.Label({
-            wrap: true,
-            halign: Gtk.Align.START,
-            ellipsize: Pango.EllipsizeMode.END,
-            wrap_mode: Pango.WrapMode.WORD_CHAR,
-            lines: 2,
-            xalign: 0,
+        this._title_view = new TitleView.TitleView({
+            expand: true,
+            valign: Gtk.Align.CENTER,
+            margin_left: _TITLE_VIEW_LEFT_MARGIN_PX,
         });
         this._content_view = null;
         this.parent(props);
 
-        this._inner_grid = new Gtk.Grid({
+        let separator = new Gtk.Separator({
             orientation: Gtk.Orientation.VERTICAL,
-            expand: true,
-            valign: Gtk.Align.CENTER,
+            hexpand: false,
+            vexpand: true,
+            halign: Gtk.Align.CENTER,
+            valign: Gtk.Align.FILL,
         });
-        this._inner_grid.add(this._title_label);
-        this._inner_grid.add(this._attribution_label);
 
         this._grid = new Gtk.Grid({
-            column_homogeneous: true,
             // Keep a minimum width, or the labels get kinda illegible
             width_request: 600,
         });
-        this._grid.attach(this._progress_label, 0, 0, 2, 1);
-        this._grid.attach(this._inner_grid, 0, 1, 1, 1);
+        this._grid.attach(this._title_view, 0, 0, 1, 2);
+        this._grid.attach(this._progress_label, 1, 0, 1, 1);
+        this._grid.attach(separator, 1, 1, 1, 1);
 
         this.add(this._grid);
 
+        this._size_group = new Gtk.SizeGroup({
+            mode: Gtk.SizeGroupMode.BOTH,
+        });
+        this._size_group.add_widget(this._title_view);
+
         this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_ARTICLE_PAGE);
-        this._title_label.get_style_context().add_class(EosKnowledge.STYLE_CLASS_ARTICLE_PAGE_TITLE);
-        this._attribution_label.get_style_context().add_class(EosKnowledge.STYLE_CLASS_READER_ARTICLE_PAGE_ATTRIBUTION);
-    },
-
-    set title(v) {
-        if (this._title_label.label === v) return;
-        this._title_label.label = v;
-        this.notify('title');
-    },
-
-    get title() {
-        if (this._title_label)
-            return this._title_label.label;
-        return '';
-    },
-
-    set attribution(v) {
-        if (this._attribution_label.label === v) return;
-        this._attribution_label.label = v;
-        this.notify('attribution');
-    },
-
-    get attribution() {
-        if (this._attribution_label)
-            return this._attribution_label.label;
-        return '';
     },
 
     get progress_label() {
         return this._progress_label;
     },
 
+    get title_view() {
+        return this._title_view;
+    },
+
     show_content_view: function (view) {
         if (this._content_view !== null) {
             this._grid.remove(this._content_view);
+            this._size_group.remove_widget(this._content_view);
         }
         view.expand = true;
+        view.margin_top = _CONTENT_VIEW_TOP_MARGIN_PX;
         this._content_view = view;
-        this._grid.attach(view, 1, 1, 1, 1);
+        this._grid.attach(view, 2, 0, 1, 2);
+        this._size_group.add_widget(view);
         view.show_all();
     },
 

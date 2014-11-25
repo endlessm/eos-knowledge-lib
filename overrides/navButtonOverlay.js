@@ -10,6 +10,7 @@ const Lang = imports.lang;
 const Utils = imports.utils;
 
 const _ARROW_SIZE = 20;
+const _SCROLLBAR_MARGIN_PX = 13;  // FIXME should be dynamic
 
 /**
  * Class: NavButtonOverlay
@@ -65,6 +66,19 @@ const NavButtonOverlay = new Lang.Class({
             'Size of the custom images for the navigation buttons',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
             0, GLib.MAXUINT32, _ARROW_SIZE),
+
+        /**
+         * Property: accommodate-scrollbar
+         * Whether to move the rightmost button to accommodate a scrollbar.
+         *
+         * If this property is set to true, then the right-side button gets an
+         * extra margin equal to the width of a scrollbar.
+         */
+        'accommodate-scrollbar': GObject.ParamSpec.boolean('accommodate-scrollbar',
+            'Accommodate scrollbar',
+            'Whether to give the forward button an extra margin',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
+            false),
     },
 
     Signals: {
@@ -108,6 +122,7 @@ const NavButtonOverlay = new Lang.Class({
             halign: Gtk.Align.END,
             valign: Gtk.Align.CENTER,
             no_show_all: true,
+            margin_end: this._accommodate_scrollbar ? _SCROLLBAR_MARGIN_PX : 0,
         });
         this._forward_button.connect('clicked', function () {
             this.emit('forward-clicked');
@@ -161,6 +176,16 @@ const NavButtonOverlay = new Lang.Class({
 
     get image_size () {
         return this._image_size;
+    },
+
+    set accommodate_scrollbar(value) {
+        this._accommodate_scrollbar = value;
+        this._forward_button.margin_end = value ? _SCROLLBAR_MARGIN_PX : 0;
+        this.notify('accommodate-scrollbar');
+    },
+
+    get accommodate_scrollbar() {
+        return this._accommodate_scrollbar;
     },
 
     _style_nav_button: function (button, image_uri, fallback_icon_name, fallback_rtl_icon_name) {

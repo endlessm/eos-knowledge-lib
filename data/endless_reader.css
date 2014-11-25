@@ -1,53 +1,72 @@
 /* Copyright 2014 Endless Mobile, Inc. */
 
 EosWindow {
-    background-color: #888888;
+    background-color: #efefef;
 }
 
 .progress-label {
+    font-weight: 900; /* Black */
     font-size: 1.2em;
-    color: #444444;
-    padding: 5px;
+    color: #494949;
+    padding-top: 10px;
+    padding-bottom: 20px;
 }
 
 .last-page .progress-label {
-    border-radius: 5px;
-    background-color: red;
     color: white;
 }
 
+.separator {
+    border: 1px solid;
+    color: alpha(black, 0.1);
+}
+
 .done-page .headline {
-    color: yellow;
+    font-family: Roboto;
+    font-weight: bold;
     font-style: italic;
-    font-size: 2.5em;
+    font-size: 2.56em; /* 41px, 72 DPI */
+    color: #e5ff51;
 }
 
 .done-page .bottom-line {
     padding-top: 3px;
-    color: white;
+    font-family: Roboto;
+    font-weight: 300; /* Light */
+    font-size: 1em; /* 16px, 72 DPI */
+    color: #f2f2f2;
 }
 
 .done-page .progress-label {
     color: white;
 }
 
+.error-page {
+    color: black;
+}
+
 .article-page-title {
+    font-family: Roboto;
     font-size: 5em;
-    color: #333333;
-    padding-left: 60px;
-    padding-right: 50px;
+    font-style: italic;
+    color: white;
 }
 
 .article-page-attribution {
-    font-size: 1.5em;
-    color: #ec317a;
-    padding-left: 50px;
-    padding-right: 50px;
+    font-family: Roboto;
+    font-weight: 900; /* Black */
+    font-size: 0.75em; /* 12px, 72 DPI */
+    color: #94a723;
+}
+
+.article-page-ornament {
+    background-color: #e3e3e3;
 }
 
 .nav-back-button, .nav-forward-button {
     color: white;
-    background-color: alpha(black, 0.2);
+    background-color: black;
+    opacity: 0.3;
     transition: padding 500ms ease-in-out;
 }
 
@@ -57,12 +76,12 @@ EosWindow {
 
 .nav-back-button {
     border-left: 0px;
-    border-radius: 0px 8px 8px 0px;
+    border-radius: 0px 4px 4px 0px;
     padding: 17px;
 }
 
 .nav-forward-button {
-    border-radius: 8px 0px 0px 8px;
+    border-radius: 4px 0px 0px 4px;
     border-right: 0px;
     padding: 17px;
 }

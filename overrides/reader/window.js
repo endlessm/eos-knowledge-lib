@@ -103,6 +103,7 @@ const Window = new Lang.Class({
             back_image_uri: this._BACK_IMAGE_URI,
             forward_image_uri: this._FORWARD_IMAGE_URI,
             image_size: this._NAV_IMAGE_SIZE,
+            accommodate_scrollbar: true,
         });
 
         this._issue_nav_buttons = new Endless.TopbarNavButton({
