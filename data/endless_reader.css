@@ -21,6 +21,11 @@ EosWindow {
     color: alpha(black, 0.1);
 }
 
+.done-page {
+    background-size: cover;
+    background-position: center;
+}
+
 .done-page .headline {
     font-family: Roboto;
     font-weight: bold;
