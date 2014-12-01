@@ -485,6 +485,47 @@ enum_type##_get_type (void) \
 #define EKN_STYLE_CLASS_NO_SEARCH_RESULTS_PAGE_B "no-search-results-page-b"
 
 /**
+ * EKN_STYLE_CLASS_READER_OVERVIEW_PAGE:
+ *
+ * Use to indicate the overview page of a reader magazine issue.
+ *
+ * > **NOTE**
+ * > This is unstable API.
+ */
+#define EKN_STYLE_CLASS_READER_OVERVIEW_PAGE "overview-page"
+
+/**
+ * EKN_STYLE_CLASS_READER_ARTICLE_SNIPPET
+ *
+ * Matches the ArticleSnippet widget used in the OverviewPage of the Reader
+ * apps.
+ *
+ * > **NOTE**
+ * > This is unstable API.
+ */
+#define EKN_STYLE_CLASS_READER_ARTICLE_SNIPPET "article-snippet"
+
+/**
+ * EKN_STYLE_CLASS_READER_TITLE:
+ *
+ * Matches title labels across Reader apps.
+ *
+ * > **NOTE**
+ * > This is unstable API.
+ */
+#define EKN_STYLE_CLASS_READER_TITLE "title"
+
+/**
+ * EKN_STYLE_CLASS_READER_SYNOPSIS
+ *
+ * Matches synopsis labels across Reader apps.
+ *
+ * > **NOTE**
+ * > This is unstable API.
+ */
+#define EKN_STYLE_CLASS_READER_SYNOPSIS "synopsis"
+
+/**
  * EKN_STYLE_CLASS_READER_PROGRESS_LABEL:
  *
  * Matches the #EknReaderProgressLabel widget.

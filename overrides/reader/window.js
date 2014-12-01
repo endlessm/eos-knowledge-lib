@@ -10,6 +10,7 @@ const Lang = imports.lang;
 
 const DonePage = imports.reader.donePage;
 const NavButtonOverlay = imports.navButtonOverlay;
+const OverviewPage = imports.reader.overviewPage;
 const ProgressLabel = imports.reader.progressLabel;
 
 /**
@@ -37,6 +38,16 @@ const Window = new Lang.Class({
         'nav-buttons': GObject.ParamSpec.object('nav-buttons', 'Nav Buttons',
             'The nav buttons of the window.',
             GObject.ParamFlags.READABLE, NavButtonOverlay.NavButtonOverlay.$gtype),
+
+        /**
+         * Property: overview-page
+         *
+         * The <Reader.OverviewPage> widget created by this widget. Read-only.
+         */
+        'overview-page': GObject.ParamSpec.object('overview-page', 'Overview Page',
+            'The splash page that appears when the app starts.',
+            GObject.ParamFlags.READABLE,
+            OverviewPage.OverviewPage.$gtype),
 
         /**
          * Property: done-page
@@ -98,6 +109,7 @@ const Window = new Lang.Class({
     _init: function (props) {
         props = props || {};
 
+        this._overview_page = new OverviewPage.OverviewPage();
         this._done_page = new DonePage.DonePage();
         this._nav_buttons = new NavButtonOverlay.NavButtonOverlay({
             back_image_uri: this._BACK_IMAGE_URI,
@@ -129,16 +141,20 @@ const Window = new Lang.Class({
         this._stack = new Gtk.Stack({
             transition_duration: this._STACK_TRANSITION_TIME,
         });
+        this._stack.add(this._overview_page);
         this._stack.add(this._done_page);
         this._nav_buttons.add(this._stack);
         this.page_manager.add(this._nav_buttons, {
             center_topbar_widget: this._issue_nav_buttons,
         });
+        this._overview_page.show_all();
+        this._stack.set_visible_child(this._overview_page);
     },
 
     _update_progress_labels: function () {
         for (let i = 0; i < this._article_pages.length; i++) {
-            this._article_pages[i].progress_label.current_page = i + 1;
+            // Account for overview and done pages
+            this._article_pages[i].progress_label.current_page = i + 2;
             this._article_pages[i].progress_label.total_pages = this.total_pages;
         }
         this._done_page.progress_label.current_page = this.total_pages;
@@ -156,10 +172,6 @@ const Window = new Lang.Class({
             this._article_pages.push(article_page);
         }
         this._stack.add(article_page);
-
-        if (this._article_pages.length === 1) {
-            this._stack.set_visible_child(article_page); 
-        }
         this._update_progress_labels();
     },
 
@@ -190,6 +202,10 @@ const Window = new Lang.Class({
         pages.forEach(this.remove_article_page, this);
     },
 
+    get overview_page() {
+        return this._overview_page;
+    },
+
     get done_page() {
         return this._done_page;
     },
@@ -216,10 +232,14 @@ const Window = new Lang.Class({
             this._stack.set_transition_type(Gtk.StackTransitionType.SLIDE_RIGHT);
         }
 
-        if (value < this._article_pages.length && value > -1) {
+        if (value === 0) {
             this._current_page = value;
-            this._stack.set_visible_child(this._article_pages[value]);
-        } else if (value === this._article_pages.length) {
+            this._overview_page.show_all();
+            this._stack.set_visible_child(this._overview_page);
+        } else if (value <= this._article_pages.length && value > 0) {
+            this._current_page = value;
+            this._stack.set_visible_child(this._article_pages[value - 1]);
+        } else if (value === this._article_pages.length + 1) {
             this._current_page = value;
             this._done_page.show_all();
             this._stack.set_visible_child(this._done_page);
@@ -234,8 +254,8 @@ const Window = new Lang.Class({
     },
 
     get total_pages() {
-        // Done page accounts for extra incrementation.
-        return this._article_pages.length + 1;
+        // Done page and overview page account for extra incrementation.
+        return this._article_pages.length + 2;
     },
 
 });

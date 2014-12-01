@@ -43,6 +43,7 @@ const Window = imports.window;
 
 const ReaderArticlePage = imports.reader.articlePage;
 const ReaderDonePage = imports.reader.donePage;
+const ReaderOverviewPage = imports.reader.overviewPage;
 const ReaderPresenter = imports.reader.presenter;
 const ReaderProgressLabel = imports.reader.progressLabel;
 const ReaderTitleView = imports.reader.titleView;
@@ -133,6 +134,7 @@ function _init() {
     EosKnowledge.Reader = {
         ArticlePage: ReaderArticlePage.ArticlePage,
         DonePage: ReaderDonePage.DonePage,
+        OverviewPage: ReaderOverviewPage.OverviewPage,
         Presenter: ReaderPresenter.Presenter,
         ProgressLabel: ReaderProgressLabel.ProgressLabel,
         TitleView: ReaderTitleView.TitleView,

@@ -89,11 +89,19 @@ const MockView = new Lang.Class({
             forward_button: new MockButton(),
             show: jasmine.createSpy('show'),
         };
-        this.done_page = {
-            get_style_context: function () { return {
+        let get_style_context = function () {
+            return {
                 add_class: function () {},
-            }; },
+            }
+        }
+        this.done_page = {
+            get_style_context: get_style_context,
         };
+        this.overview_page = {
+            get_style_context: get_style_context,
+            set_article_snippets: function () {},
+        };
+
         this.total_pages = 0;
         this._article_pages = [];
         this.page_manager = {

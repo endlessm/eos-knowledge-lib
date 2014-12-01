@@ -7,7 +7,7 @@ const CssClassMatcher = imports.CssClassMatcher;
 const InstanceOfMatcher = imports.InstanceOfMatcher;
 
 const EXPECTED_CURRENT_PAGE = 0;
-const EXPECTED_TOTAL_PAGES = 16;
+const EXPECTED_TOTAL_PAGES = 17;
 
 describe('Window widget', function () {
     let view;
@@ -65,7 +65,7 @@ describe('Window widget', function () {
 
     it('can remove all pages but the done page', function () {
         view.remove_all_article_pages();
-        expect(view.total_pages).toBe(1);  // done-page remains
+        expect(view.total_pages).toBe(2);  // done-page and overview page remain
     });
 
     it('throws an error when out of bounds pages are accessed', function () {
