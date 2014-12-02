@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2014-10-14 01:50+0000\n"
+"POT-Creation-Date: 2014-10-29 15:59+0000\n"
 "PO-Revision-Date: 2014-10-03 01:33+0000\n"
 "Last-Translator: Eddy Alegria <eddy@endlessm.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/projects/p/eos-knowledge-lib/language/es/)\n"
@@ -47,12 +47,12 @@ msgstr "Trata una nueva búsqueda con palabras diferentes."
 
 #. TRANSLATORS: this appears on top of the search results page; %s will
 #. be replaced with the string that the user searched for.
-#: overrides/noSearchResultsPage.js:61 overrides/presenter.js:281
+#: overrides/noSearchResultsPage.js:61 overrides/presenter.js:287
 #, c-format
 msgid "Results for \"%s\""
 msgstr "Resultados para \"%s\""
 
-#: overrides/presenter.js:130 overrides/presenter.js:511
+#: overrides/presenter.js:131 overrides/presenter.js:548
 msgid "Articles"
 msgstr "Artículos"
 
@@ -71,7 +71,7 @@ msgid ""
 msgstr "¡No te pierdas la edición de la próxima semana que tendrá más artículos en tu revista favorita!"
 
 #: overrides/reader/presenter.js:146 overrides/reader/presenter.js:180
-#: overrides/reader/presenter.js:241
+#: overrides/reader/presenter.js:242
 msgid "Oops!"
 msgstr "¡Ups!"
 
@@ -87,7 +87,7 @@ msgid ""
 "Please try again after restarting your computer."
 msgstr "Pensamos que había más artículos para que leas pero no los pudimos encontrar.\nPor favor intenta de nuevo después de reiniciar tu computadora."
 
-#: overrides/reader/presenter.js:242
+#: overrides/reader/presenter.js:243
 msgid ""
 "There was an error loading that page.\n"
 "Try another one or try again after restarting your computer."
@@ -97,7 +97,7 @@ msgstr "Hubo un error al cargar esa página.\nPor favor intenta con otra o inten
 #. and the date published, for example "by Ronaldo on Saturday,
 #. September 5, 2014". Make sure to keep the %s's in the
 #. translated string.
-#: overrides/reader/presenter.js:274
+#: overrides/reader/presenter.js:275
 #, c-format
 msgid "by %s on %s"
 msgstr "escrito por %s el %s"
@@ -105,7 +105,7 @@ msgstr "escrito por %s el %s"
 #. TRANSLATORS: the %s is replaced by the name of the author,
 #. for example "by Ronaldo". Make sure to keep the %s in the
 #. translated string.
-#: overrides/reader/presenter.js:281
+#: overrides/reader/presenter.js:282
 #, c-format
 msgid "by %s"
 msgstr "escrito por %s"
