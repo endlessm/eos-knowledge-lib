@@ -13,6 +13,7 @@ const ArticlePage = imports.reader.articlePage;
 const Config = imports.config;
 const EknWebview = imports.eknWebview;
 const Engine = imports.engine;
+const UserSettingsModel = imports.reader.userSettingsModel;
 const Utils = imports.utils;
 const Window = imports.reader.window;
 
@@ -66,6 +67,20 @@ const Presenter = new Lang.Class({
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             GObject.Object.$gtype),
         /**
+         * Property: settings
+         * Handles the User Settings
+         *
+         * Handles the <UserSettingsModel>, which controls things like the
+         * last article read and last issue read.
+         *
+         * Flags:
+         *   Construct only
+         */
+        'settings': GObject.ParamSpec.object('settings', 'User Settings',
+            'Handles the User Settings',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            GObject.Object.$gtype),
+        /**
          * Property: view
          * Reader app view
          *
@@ -80,21 +95,6 @@ const Presenter = new Lang.Class({
             'Reader app view',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             GObject.Object.$gtype),
-
-        /**
-         * Property: issue-number
-         * Current issue number
-         *
-         * Magazine issue that the user is currently reading in the view.
-         * The number is zero-based, that is, 0 means the first issue.
-         *
-         * Default value:
-         *  0
-         */
-        'issue-number': GObject.ParamSpec.uint('issue-number', 'Issue number',
-            'Current issue number',
-            GObject.ParamFlags.READWRITE,
-            0, GLib.MAXINT64, 0),
     },
 
     _init: function (app_json, props) {
@@ -105,10 +105,9 @@ const Presenter = new Lang.Class({
             application: props.application,
         });
         props.engine = props.engine || new EosKnowledgeSearch.Engine();
-
-        // FIXME: this should be fetching the right issue number based on
-        // today's date?
-        this._issue_number = 0;
+        props.settings = props.settings || new UserSettingsModel.UserSettingsModel({
+            settings_file: Gio.File.new_for_path(props.application.config_dir.get_path() + '/user_settings.json'),
+        });
 
         this.parent(props);
 
@@ -122,21 +121,23 @@ const Presenter = new Lang.Class({
         // Connect signals
         this.view.nav_buttons.connect('back-clicked', function () {
             this._shift_page(-1);
+            this.settings.bookmark_article--;
         }.bind(this));
         this.view.nav_buttons.connect('forward-clicked', function () {
             this._shift_page(1);
+            this.settings.bookmark_article++;
         }.bind(this));
         this.view.connect('notify::current-page',
             this._update_forward_button_visibility.bind(this));
         this.view.connect('notify::total-pages',
             this._update_forward_button_visibility.bind(this));
         this.view.issue_nav_buttons.back_button.connect('clicked', function () {
-            this.issue_number--;
+            this.settings.bookmark_issue--;
         }.bind(this));
         this.view.issue_nav_buttons.forward_button.connect('clicked', function () {
-            this.issue_number++;
+            this.settings.bookmark_issue++;
         }.bind(this));
-        this.connect('notify::issue-number', this._load_all_content.bind(this));
+        this.settings.connect('notify::bookmark-issue', this._load_all_content.bind(this));
         let handler = this.view.connect('debug-hotkey-pressed', function () {
             this.view.issue_nav_buttons.show();
             this.view.disconnect(handler);  // One-shot signal handler only.
@@ -145,20 +146,9 @@ const Presenter = new Lang.Class({
         //Bind properties
         this.view.bind_property('current-page', this.view.nav_buttons,
             'back-visible', GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE);
-        this.bind_property('issue-number',
+        this.settings.bind_property('bookmark-issue',
             this.view.issue_nav_buttons.back_button, 'sensitive',
             GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE);
-    },
-
-    get issue_number() {
-        return this._issue_number;
-    },
-
-    set issue_number(value) {
-        if (value !== this._issue_number) {
-            this._issue_number = value;
-            this.notify('issue-number');
-        }
     },
 
     // Right now these functions are just stubs which we will need to flesh out
@@ -171,7 +161,7 @@ const Presenter = new Lang.Class({
 
     _load_all_content: function () {
         this.engine.get_objects_by_query(this._domain, {
-            tag: 'issueNumber' + this.issue_number,
+            tag: 'issueNumber' + this.settings.bookmark_issue,
             limit: RESULTS_SIZE,
             sortBy: 'articleNumber',
             order: 'asc',
@@ -180,13 +170,17 @@ const Presenter = new Lang.Class({
             this._article_models = [];
             this.view.remove_all_article_pages();
             // Make sure to drop all references to any webviews we are holding.
-            if (this._first_page) {
-                this._first_page.destroy();
-                this._first_page = null;
+            if (this._current_page) {
+                this._current_page.destroy();
+                this._current_page = null;
             }
             if (this._next_page) {
                 this._next_page.destroy();
                 this._next_page = null;
+            }
+            if (this._previous_page) {
+                this._previous_page.destroy();
+                this._previous_page = null;
             }
 
             if (error !== undefined || results.length < 1) {
@@ -201,25 +195,42 @@ const Presenter = new Lang.Class({
                 this.view.show_all();
             } else {
                 this._fetch_content_recursive(undefined, results, get_more_results_func);
-
-                this._first_page = this._load_webview_content(this._article_models[0].ekn_id, function (view, error) {
-                    this._load_webview_content_callback(this.view.get_article_page(0), view, error);
-                }.bind(this));
-
-                // If we have at least two articles total, load the next article in sequence
-                if (this._article_models.length >= 2) {
-                    let next_page = this.view.get_article_page(1);
-                    this._next_page = this._load_webview_content(this._article_models[1].ekn_id, function (view, error) {
-                        this._load_webview_content_callback(next_page, view, error);
-                    }.bind(this));
-                }
-
-                this.view.current_page = 0;
-                this.view.nav_buttons.back_visible = false;
-
-                this.view.show_all();
             }
         }.bind(this));
+    },
+
+    // FIXME: We're breaking the ability to show content as soon as possible!
+    // Under this implementation, you have to wait for metadata for all articles
+    // in an issue to be fetched before seeing content for the article you were on
+    _initialize_first_pages: function () {
+        let current_article = this.settings.bookmark_article;
+
+        if (current_article < this._article_models.length) {
+            this._current_page = this._load_webview_content(this._article_models[current_article].ekn_id, function (view, error) {
+                this._load_webview_content_callback(this.view.get_article_page(current_article), view, error);
+            }.bind(this));
+
+            // Load the next page if needed
+            if (current_article + 1 < this._article_models.length) {
+                let next_page = this.view.get_article_page(current_article + 1);
+                this._next_page = this._load_webview_content(this._article_models[current_article + 1].ekn_id, function (view, error) {
+                    this._load_webview_content_callback(next_page, view, error);
+                }.bind(this));
+            }
+        }
+
+        // Likewise, load the previous page if needed
+        if (current_article > 0) {
+            let previous_page = this.view.get_article_page(current_article - 1);
+            this._previous_page = this._load_webview_content(this._article_models[current_article - 1].ekn_id, function (view, error) {
+                this._load_webview_content_callback(previous_page, view, error);
+            }.bind(this));
+        }
+
+        this.view.current_page = current_article;
+        this._update_forward_button_visibility();
+
+        this.view.show_all();
     },
 
     _fetch_content_recursive: function (err, results, get_more_results_func) {
@@ -231,6 +242,10 @@ const Presenter = new Lang.Class({
             // If there are more results to get, then fetch more content
             if (results.length >= RESULTS_SIZE) {
                 get_more_results_func(RESULTS_SIZE, this._fetch_content_recursive.bind(this));
+            } else {
+                // We now have all the articles for this issue. Now we load the HTML content
+                // for the first few pages into the webview
+                this._initialize_first_pages();
             }
         }
     },

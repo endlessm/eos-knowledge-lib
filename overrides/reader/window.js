@@ -221,6 +221,7 @@ const Window = new Lang.Class({
             this._stack.set_visible_child(this._article_pages[value]);
         } else if (value === this._article_pages.length) {
             this._current_page = value;
+            this._done_page.show_all();
             this._stack.set_visible_child(this._done_page);
         } else {
             throw new Error('Current page value is out of range.');

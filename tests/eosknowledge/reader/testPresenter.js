@@ -8,6 +8,20 @@ const Lang = imports.lang;
 const utils = imports.tests.utils;
 
 const TEST_DOMAIN = 'thrones-en';
+GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
+
+const MockUserSettingsModel = new Lang.Class({
+    Name: 'MockUserSettingsModel',
+    Extends: GObject.Object,
+    Properties: {
+        'bookmark-issue': GObject.ParamSpec.uint('bookmark-issue', '', '',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
+            0, GLib.MAXINT64, 0),
+        'bookmark-article': GObject.ParamSpec.uint('bookmark-article', '', '',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
+            0, GLib.MAXINT64, 0),
+    },
+});
 
 const MockEngine = new Lang.Class({
     Name: 'MockEngine',
@@ -95,7 +109,7 @@ const MockView = new Lang.Class({
 });
 
 describe('Reader presenter', function () {
-    let engine, view, article_nav_buttons, construct_props, test_json,
+    let engine, settings, view, article_nav_buttons, construct_props, test_json,
         MOCK_RESULTS;
     let test_app_filename = Endless.getCurrentFileDir() + '/../../test-content/app.json';
 
@@ -128,9 +142,11 @@ describe('Reader presenter', function () {
         article_nav_buttons = new MockNavButtons();
         view = new MockView(article_nav_buttons);
         engine = new MockEngine();
+        settings = new MockUserSettingsModel();
         spyOn(engine, 'get_objects_by_query');
         construct_props = {
             engine: engine,
+            settings: settings,
             view: view,
         };
         test_json = utils.parse_object_from_path(test_app_filename);
@@ -217,12 +233,14 @@ describe('Reader presenter', function () {
         it('increments the current page when clicking the forward button', function () {
             article_nav_buttons.emit('forward-clicked');
             expect(view.current_page).toBe(1);
+            expect(settings.bookmark_article).toBe(1);
         });
 
         it('decrements the current page when clicking the back button', function () {
             article_nav_buttons.emit('forward-clicked');
             article_nav_buttons.emit('back-clicked');
             expect(view.current_page).toBe(0);
+            expect(settings.bookmark_article).toBe(0);
         });
 
         it('shows the debug buttons when told to', function () {
@@ -231,42 +249,44 @@ describe('Reader presenter', function () {
         });
 
         it('loads a subsequent issue when the debug forward button is clicked', function () {
-            presenter.issue_number = 0;
+            settings.bookmark_issue = 0;
             view.issue_nav_buttons.forward_button.emit('clicked');
-            expect(presenter.issue_number).toBe(1);
+            expect(settings.bookmark_issue).toBe(1);
         });
 
         it('loads a previous issue when the debug back button is clicked', function () {
-            presenter.issue_number = 10;
+            settings.bookmark_issue = 10;
             view.issue_nav_buttons.back_button.emit('clicked');
-            expect(presenter.issue_number).toBe(9);
+            expect(settings.bookmark_issue).toBe(9);
         });
 
         it('enables the debug back button when not on the first issue', function () {
-            presenter.issue_number = 5;
+            settings.bookmark_issue = 5;
+            settings.notify('bookmark-issue');
             expect(view.issue_nav_buttons.back_button.sensitive).toBe(true);
         });
 
         it('disables the debug back button when returning to the first issue', function () {
-            presenter.issue_number = 5;
-            presenter.issue_number = 0;
+            settings.bookmark_issue = 5;
+            settings.bookmark_issue = 0;
             expect(view.issue_nav_buttons.back_button.sensitive).toBe(false);
         });
 
         it('returns to page zero when loading a new issue', function () {
-            presenter.issue_number = 14;
+            settings.bookmark_issue = 14;
             expect(view.current_page).toBe(0);
         });
 
         it('updates the state of the paging buttons when loading a new issue', function () {
-            presenter.issue_number = 14;
+            settings.bookmark_issue = 14;
             expect(article_nav_buttons.forward_visible).toBe(true);
             expect(article_nav_buttons.back_visible).toBe(false);
         });
 
         it('loads content from the appropriate issue', function () {
             engine.get_objects_by_query.calls.reset();
-            presenter.issue_number = 14;
+            settings.bookmark_issue = 14;
+            settings.notify('bookmark-issue');
             expect(engine.get_objects_by_query).toHaveBeenCalled();
             expect(engine.get_objects_by_query.calls.argsFor(0)[1]['tag']).toBe('issueNumber14');
         });
@@ -277,7 +297,8 @@ describe('Reader presenter', function () {
                 callback(undefined, [MOCK_RESULTS[0]]);
             });
             spyOn(view, 'remove_all_article_pages').and.callThrough();
-            presenter.issue_number = 14;
+            settings.bookmark_issue = 14;
+            settings.notify('bookmark-issue');
             expect(view.get_article_page(0).title_view.title).toBe('Title 1');
             expect(view.remove_all_article_pages).toHaveBeenCalled();
         });

@@ -36,6 +36,7 @@ javascript_tests = \
 	tests/eosknowledge/reader/testPresenter.js \
 	tests/eosknowledge/reader/testProgressLabel.js \
 	tests/eosknowledge/reader/testTitleView.js \
+	tests/eosknowledge/reader/testUserSettingsModel.js \
 	tests/eosknowledge/reader/testWindow.js \
 	tests/eosknowledgesearch/testArticleObjectModel.js \
 	tests/eosknowledgesearch/testContentObjectModel.js \

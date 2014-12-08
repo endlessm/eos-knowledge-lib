@@ -46,6 +46,7 @@ const ReaderDonePage = imports.reader.donePage;
 const ReaderPresenter = imports.reader.presenter;
 const ReaderProgressLabel = imports.reader.progressLabel;
 const ReaderTitleView = imports.reader.titleView;
+const ReaderUserSettingsModel = imports.reader.userSettingsModel;
 const ReaderWindow = imports.reader.window;
 
 imports.searchPath = _oldSearchPath;
@@ -135,6 +136,7 @@ function _init() {
         Presenter: ReaderPresenter.Presenter,
         ProgressLabel: ReaderProgressLabel.ProgressLabel,
         TitleView: ReaderTitleView.TitleView,
+        UserSettingsModel: ReaderUserSettingsModel.UserSettingsModel,
         Window: ReaderWindow.Window,
     };
 }
