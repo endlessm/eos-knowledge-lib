@@ -125,11 +125,11 @@ const Presenter = new Lang.Class({
         // Connect signals
         this.view.nav_buttons.connect('back-clicked', function () {
             this._shift_page(-1);
-            this.settings.bookmark_article--;
+            this.settings.bookmark_page--;
         }.bind(this));
         this.view.nav_buttons.connect('forward-clicked', function () {
             this._shift_page(1);
-            this.settings.bookmark_article++;
+            this.settings.bookmark_page++;
         }.bind(this));
         this.view.connect('notify::current-page',
             this._update_forward_button_visibility.bind(this));
@@ -171,7 +171,7 @@ const Presenter = new Lang.Class({
 
     _update_issue: function () {
         this.settings.update_timestamp = Date.now();
-        this.settings.bookmark_article = 0;
+        this.settings.bookmark_page = 0;
         this.settings.bookmark_issue++;
     },
 
@@ -219,7 +219,7 @@ const Presenter = new Lang.Class({
     // Under this implementation, you have to wait for metadata for all articles
     // in an issue to be fetched before seeing content for the article you were on
     _initialize_first_pages: function () {
-        let current_article = this.settings.bookmark_article;
+        let current_article = this.settings.bookmark_page;
 
         if (current_article < this._article_models.length) {
             this._current_page = this._load_webview_content(this._article_models[current_article].ekn_id, function (view, error) {

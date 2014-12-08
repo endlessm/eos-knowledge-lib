@@ -18,7 +18,7 @@ const MockUserSettingsModel = new Lang.Class({
         'bookmark-issue': GObject.ParamSpec.uint('bookmark-issue', '', '',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
             0, GLib.MAXINT64, 0),
-        'bookmark-article': GObject.ParamSpec.uint('bookmark-article', '', '',
+        'bookmark-page': GObject.ParamSpec.uint('bookmark-page', '', '',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
             0, GLib.MAXINT64, 0),
         'update-timestamp': GObject.ParamSpec.uint('update-timestamp', 'Last Update Time',
@@ -149,7 +149,7 @@ describe('Reader presenter', function () {
         engine = new MockEngine();
         settings = new MockUserSettingsModel({
             bookmark_issue: 0,
-            bookmark_article: 0,
+            bookmark_page: 0,
             update_timestamp: GLib.MAXINT64,
         });
         spyOn(engine, 'get_objects_by_query');
@@ -243,14 +243,14 @@ describe('Reader presenter', function () {
         it('increments the current page when clicking the forward button', function () {
             article_nav_buttons.emit('forward-clicked');
             expect(view.current_page).toBe(1);
-            expect(settings.bookmark_article).toBe(1);
+            expect(settings.bookmark_page).toBe(1);
         });
 
         it('decrements the current page when clicking the back button', function () {
             article_nav_buttons.emit('forward-clicked');
             article_nav_buttons.emit('back-clicked');
             expect(view.current_page).toBe(0);
-            expect(settings.bookmark_article).toBe(0);
+            expect(settings.bookmark_page).toBe(0);
         });
 
         it('shows the debug buttons when told to', function () {
@@ -331,7 +331,7 @@ describe('Reader presenter', function () {
         it('has correct values after issue update', function () {
             spyOn(presenter, '_update_issue').and.callThrough();
             expect(settings.bookmark_issue).toBe(1);
-            expect(settings.bookmark_article).toBe(0);
+            expect(settings.bookmark_page).toBe(0);
             expect(settings.update_timestamp).toBeGreaterThan(current_time);
         });
 
