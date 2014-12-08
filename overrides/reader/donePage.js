@@ -61,7 +61,6 @@ const DonePage = new Lang.Class({
         this._progress = new ProgressLabel.ProgressLabel({
             valign: Gtk.Align.START,
             halign: Gtk.Align.CENTER,
-            margin_top: 5,
         });
         let headline = new Gtk.Label({
             label: _("Did you like this issue?").toLocaleUpperCase(),

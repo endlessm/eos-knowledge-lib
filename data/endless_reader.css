@@ -5,7 +5,6 @@ EosWindow {
 }
 
 .progress-label {
-    font-weight: 900; /* Black */
     font-size: 1.2em;
     color: #494949;
     padding-top: 10px;
