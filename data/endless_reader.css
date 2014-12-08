@@ -27,6 +27,7 @@ EosWindow {
     font-style: italic;
     font-size: 2.56em; /* 41px, 72 DPI */
     color: #e5ff51;
+    padding-bottom: 25px;
 }
 
 .done-page .bottom-line {
