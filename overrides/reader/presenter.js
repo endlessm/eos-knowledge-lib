@@ -170,13 +170,17 @@ const Presenter = new Lang.Class({
             this._article_models = [];
             this.view.remove_all_article_pages();
             // Make sure to drop all references to any webviews we are holding.
-            if (this._first_page) {
-                this._first_page.destroy();
-                this._first_page = null;
+            if (this._current_page) {
+                this._current_page.destroy();
+                this._current_page = null;
             }
             if (this._next_page) {
                 this._next_page.destroy();
                 this._next_page = null;
+            }
+            if (this._previous_page) {
+                this._previous_page.destroy();
+                this._previous_page = null;
             }
 
             if (error !== undefined || results.length < 1) {
@@ -191,25 +195,42 @@ const Presenter = new Lang.Class({
                 this.view.show_all();
             } else {
                 this._fetch_content_recursive(undefined, results, get_more_results_func);
-
-                this._first_page = this._load_webview_content(this._article_models[0].ekn_id, function (view, error) {
-                    this._load_webview_content_callback(this.view.get_article_page(0), view, error);
-                }.bind(this));
-
-                // If we have at least two articles total, load the next article in sequence
-                if (this._article_models.length >= 2) {
-                    let next_page = this.view.get_article_page(1);
-                    this._next_page = this._load_webview_content(this._article_models[1].ekn_id, function (view, error) {
-                        this._load_webview_content_callback(next_page, view, error);
-                    }.bind(this));
-                }
-
-                this.view.current_page = 0;
-                this.view.nav_buttons.back_visible = false;
-
-                this.view.show_all();
             }
         }.bind(this));
+    },
+
+    // FIXME: We're breaking the ability to show content as soon as possible!
+    // Under this implementation, you have to wait for metadata for all articles
+    // in an issue to be fetched before seeing content for the article you were on
+    _initialize_first_pages: function () {
+        let current_article = this.settings.bookmark_article;
+
+        if (current_article < this._article_models.length) {
+            this._current_page = this._load_webview_content(this._article_models[current_article].ekn_id, function (view, error) {
+                this._load_webview_content_callback(this.view.get_article_page(current_article), view, error);
+            }.bind(this));
+
+            // Load the next page if needed
+            if (current_article + 1 < this._article_models.length) {
+                let next_page = this.view.get_article_page(current_article + 1);
+                this._next_page = this._load_webview_content(this._article_models[current_article + 1].ekn_id, function (view, error) {
+                    this._load_webview_content_callback(next_page, view, error);
+                }.bind(this));
+            }
+        }
+
+        // Likewise, load the previous page if needed
+        if (current_article > 0) {
+            let previous_page = this.view.get_article_page(current_article - 1);
+            this._previous_page = this._load_webview_content(this._article_models[current_article - 1].ekn_id, function (view, error) {
+                this._load_webview_content_callback(previous_page, view, error);
+            }.bind(this));
+        }
+
+        this.view.current_page = current_article;
+        this._update_forward_button_visibility();
+
+        this.view.show_all();
     },
 
     _fetch_content_recursive: function (err, results, get_more_results_func) {
@@ -221,6 +242,10 @@ const Presenter = new Lang.Class({
             // If there are more results to get, then fetch more content
             if (results.length >= RESULTS_SIZE) {
                 get_more_results_func(RESULTS_SIZE, this._fetch_content_recursive.bind(this));
+            } else {
+                // We now have all the articles for this issue. Now we load the HTML content
+                // for the first few pages into the webview
+                this._initialize_first_pages();
             }
         }
     },
