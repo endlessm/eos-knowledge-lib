@@ -26,9 +26,9 @@ spinner1.bind_property('value', label, 'current-page', flags);
 spinner2.bind_property('value', label, 'total-pages', flags);
 label.connect('notify', function () {
     if (label.current_page === label.total_pages)
-        grid.get_style_context().add_class(EosKnowledge.STYLE_CLASS_READER_LAST_PAGE);
+        grid.get_style_context().add_class(EosKnowledge.STYLE_CLASS_READER_DONE_PAGE);
     else
-        grid.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_READER_LAST_PAGE);
+        grid.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_READER_DONE_PAGE);
 });
 win.connect('destroy', Gtk.main_quit);
 

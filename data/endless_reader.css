@@ -12,10 +12,6 @@ EosWindow {
     padding-bottom: 20px;
 }
 
-.last-page .progress-label {
-    color: white;
-}
-
 .separator {
     border: 1px solid;
     color: alpha(black, 0.1);

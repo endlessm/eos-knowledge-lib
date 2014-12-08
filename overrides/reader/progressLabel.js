@@ -19,7 +19,6 @@ GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.
  *
  * CSS classes:
  *   progress-label - on the widget
- *   last-page - on the widget when <current-page> and <total-pages> are equal
  */
 const ProgressLabel = new Lang.Class({
     Name: 'ProgressLabel',

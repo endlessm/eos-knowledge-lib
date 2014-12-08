@@ -115,7 +115,6 @@ const Presenter = new Lang.Class({
 
         // Load all articles in this issue
         this._load_all_content()
-        this.view.done_page.get_style_context().add_class('last-page');
         this.view.done_page.background_image_uri = this._background_section_uri;
 
         // Connect signals
