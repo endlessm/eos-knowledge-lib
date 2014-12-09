@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2014-10-29 15:59+0000\n"
-"PO-Revision-Date: 2014-10-22 10:03+0000\n"
+"POT-Creation-Date: 2014-12-02 22:14+0000\n"
+"PO-Revision-Date: 2014-12-02 22:16+0000\n"
 "Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
 "Language-Team: Arabic (http://www.transifex.com/projects/p/eos-knowledge-lib/language/ar/)\n"
 "MIME-Version: 1.0\n"
@@ -21,7 +21,7 @@ msgstr ""
 msgid "Hello C world!"
 msgstr "مرحباً بـعالم C!"
 
-#: overrides/categoriesPage.js:59
+#: overrides/categoriesPage.js:58
 msgid "HOME"
 msgstr "الصفحة الرئيسية"
 
@@ -44,12 +44,12 @@ msgstr "حاول البحث مرة أخرى باستخدام كلمات مختل
 
 #. TRANSLATORS: this appears on top of the search results page; %s will
 #. be replaced with the string that the user searched for.
-#: overrides/noSearchResultsPage.js:61 overrides/presenter.js:287
+#: overrides/noSearchResultsPage.js:61 overrides/presenter.js:346
 #, c-format
 msgid "Results for \"%s\""
 msgstr "النتائج لـ \"%s\""
 
-#: overrides/presenter.js:131 overrides/presenter.js:548
+#: overrides/presenter.js:200 overrides/presenter.js:607
 msgid "Articles"
 msgstr "مقالات"
 
@@ -67,42 +67,50 @@ msgid ""
 "Don't miss next week's issue with more articles in your favorite magazine!"
 msgstr "لا تفوت مسألة الأسبوع المقبل مع المزيد من المقالات في المجلة المفضلة لديك!"
 
-#: overrides/reader/presenter.js:146 overrides/reader/presenter.js:180
-#: overrides/reader/presenter.js:242
+#: overrides/reader/presenter.js:197 overrides/reader/presenter.js:309
 msgid "Oops!"
 msgstr "يا لهذا!"
 
-#: overrides/reader/presenter.js:147
+#: overrides/reader/presenter.js:198
 msgid ""
 "We could not find this issue of your magazine!\n"
 "Please try again after restarting your computer."
 msgstr "لم نستطع العثور على هذا الإصدار من مجلتك!\nيُرجى المحاولة مرة أخرى بعد إعادة تشغيل الكمبيوتر."
 
-#: overrides/reader/presenter.js:181
-msgid ""
-"We thought there were more articles for you to see but we couldn't find them.\n"
-"Please try again after restarting your computer."
-msgstr "ظننا أن هناك المزيد من المقالات لتراها، إلا أننا لم نستطع العثور عليها. يُرجى المُحاولة مرة أخرى بعد إعادة تشغيل الكمبيوتر."
-
-#: overrides/reader/presenter.js:243
+#: overrides/reader/presenter.js:310
 msgid ""
 "There was an error loading that page.\n"
 "Try another one or try again after restarting your computer."
 msgstr "وقع خطأٌ ما أثناء تحميل تلك الصفحة.\nجرب صفحة أخرى أو حاول مرة أخرى فيما بعد بعد إعادة تشغيل الكمبيوتر."
 
-#. TRANSLATORS: the %s's are replaced by the name of the author
-#. and the date published, for example "by Ronaldo on Saturday,
-#. September 5, 2014". Make sure to keep the %s's in the
-#. translated string.
-#: overrides/reader/presenter.js:275
-#, c-format
-msgid "by %s on %s"
-msgstr "بمعرفة %s في %s"
+#. TRANSLATORS: This "and" is used to join together the names
+#. of authors of a blog post. For example:
+#. Jane Austen and Henry Miller and William Clifford
+#: overrides/reader/presenter.js:334
+msgid "and"
+msgstr ""
 
-#. TRANSLATORS: the %s is replaced by the name of the author,
-#. for example "by Ronaldo". Make sure to keep the %s in the
-#. translated string.
-#: overrides/reader/presenter.js:282
-#, c-format
-msgid "by %s"
-msgstr "بمعرفة %s"
+#. TRANSLATORS: This is a string that is going to be substituted
+#. by date values in code. The %B represents a month, the %e represents
+#. the day, and %Y represents the year. Rearrange them how you wish to
+#. match the desired locale. For example, if you wanted the date to look
+#. like "1. December 2014", then you would do: "%e. %B %Y".
+#: overrides/reader/presenter.js:340
+msgid "%B %e, %Y"
+msgstr ""
+
+#. TRANSLATORS: anything inside curly braces '{}' is going
+#. to be substituted in code. Please make sure to leave the
+#. curly braces around any words that have them and DO NOT
+#. translate words inside curly braces.
+#: overrides/reader/presenter.js:346
+msgid "by {author} on {date}"
+msgstr ""
+
+#. TRANSLATORS: anything inside curly braces '{}' is going
+#. to be substituted in code. Please make sure to leave the
+#. curly braces around any words that have them and DO NOT
+#. translate words inside curly braces.
+#: overrides/reader/presenter.js:353
+msgid "by {author}"
+msgstr ""
