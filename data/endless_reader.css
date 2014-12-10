@@ -5,15 +5,10 @@ EosWindow {
 }
 
 .progress-label {
-    font-weight: 900; /* Black */
     font-size: 1.2em;
     color: #494949;
     padding-top: 10px;
     padding-bottom: 20px;
-}
-
-.last-page .progress-label {
-    color: white;
 }
 
 .separator {
@@ -32,6 +27,7 @@ EosWindow {
     font-style: italic;
     font-size: 2.56em; /* 41px, 72 DPI */
     color: #e5ff51;
+    padding-bottom: 25px;
 }
 
 .done-page .bottom-line {

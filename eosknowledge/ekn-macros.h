@@ -495,17 +495,6 @@ enum_type##_get_type (void) \
 #define EKN_STYLE_CLASS_READER_PROGRESS_LABEL "progress-label"
 
 /**
- * EKN_STYLE_CLASS_READER_LAST_PAGE:
- *
- * Use to indicate the last page of a reader magazine issue.
- * This changes the appearance of the #EknReaderProgressLabel, for example.
- *
- * > **NOTE**
- * > This is unstable API.
- */
-#define EKN_STYLE_CLASS_READER_LAST_PAGE "last-page"
-
-/**
  * EKN_STYLE_CLASS_READER_DONE_PAGE:
  *
  * Matches the #EknReaderDonePage itself.
