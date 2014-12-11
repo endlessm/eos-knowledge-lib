@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2014-12-02 22:14+0000\n"
+"POT-Creation-Date: 2014-12-09 03:02+0000\n"
 "PO-Revision-Date: 2014-12-02 22:16+0000\n"
 "Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/projects/p/eos-knowledge-lib/language/es/)\n"
@@ -70,17 +70,17 @@ msgid ""
 "Don't miss next week's issue with more articles in your favorite magazine!"
 msgstr "¡No te pierdas la edición de la próxima semana que tendrá más artículos en tu revista favorita!"
 
-#: overrides/reader/presenter.js:197 overrides/reader/presenter.js:309
+#: overrides/reader/presenter.js:191 overrides/reader/presenter.js:324
 msgid "Oops!"
 msgstr "¡Ups!"
 
-#: overrides/reader/presenter.js:198
+#: overrides/reader/presenter.js:192
 msgid ""
 "We could not find this issue of your magazine!\n"
 "Please try again after restarting your computer."
 msgstr "¡No pudimos encontrar esta edición de tu revista!\nPor favor intenta de nuevo después de reiniciar tu computadora."
 
-#: overrides/reader/presenter.js:310
+#: overrides/reader/presenter.js:325
 msgid ""
 "There was an error loading that page.\n"
 "Try another one or try again after restarting your computer."
@@ -89,7 +89,7 @@ msgstr "Hubo un error al cargar esa página.\nPor favor intenta con otra o inten
 #. TRANSLATORS: This "and" is used to join together the names
 #. of authors of a blog post. For example:
 #. Jane Austen and Henry Miller and William Clifford
-#: overrides/reader/presenter.js:334
+#: overrides/reader/presenter.js:349
 msgid "and"
 msgstr ""
 
@@ -98,7 +98,7 @@ msgstr ""
 #. the day, and %Y represents the year. Rearrange them how you wish to
 #. match the desired locale. For example, if you wanted the date to look
 #. like "1. December 2014", then you would do: "%e. %B %Y".
-#: overrides/reader/presenter.js:340
+#: overrides/reader/presenter.js:355
 msgid "%B %e, %Y"
 msgstr ""
 
@@ -106,7 +106,7 @@ msgstr ""
 #. to be substituted in code. Please make sure to leave the
 #. curly braces around any words that have them and DO NOT
 #. translate words inside curly braces.
-#: overrides/reader/presenter.js:346
+#: overrides/reader/presenter.js:361
 msgid "by {author} on {date}"
 msgstr ""
 
@@ -114,6 +114,6 @@ msgstr ""
 #. to be substituted in code. Please make sure to leave the
 #. curly braces around any words that have them and DO NOT
 #. translate words inside curly braces.
-#: overrides/reader/presenter.js:353
+#: overrides/reader/presenter.js:368
 msgid "by {author}"
 msgstr ""
