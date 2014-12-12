@@ -279,6 +279,7 @@ describe('Reader presenter', function () {
         it('disables the debug back button when returning to the first issue', function () {
             settings.bookmark_issue = 5;
             settings.bookmark_issue = 0;
+            settings.notify('bookmark-issue');
             expect(view.issue_nav_buttons.back_button.sensitive).toBe(false);
         });
 
