@@ -68,7 +68,7 @@ const UserSettingsModel = new Lang.Class({
          * Property: update-timestamp
          * Update Timestamp
          *
-         * The last time that the readable content was updated.
+         * The last time that the readable content was updated, in milliseconds.
          *
          * Default value:
          *  0

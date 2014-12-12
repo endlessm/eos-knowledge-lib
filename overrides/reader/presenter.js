@@ -23,6 +23,9 @@ GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.
 
 const RESULTS_SIZE = 15;
 
+// 1 week in miliseconds
+const UPDATE_INTERVAL_MS = 604800000;
+
 /**
  * Class: Reader.Presenter
  * Presenter module to manage the reader application
@@ -111,6 +114,8 @@ const Presenter = new Lang.Class({
 
         this.parent(props);
 
+        this._check_for_issue_update();
+
         this._parse_app_info(app_json);
 
         // Load all articles in this issue
@@ -157,6 +162,18 @@ const Presenter = new Lang.Class({
     // specific article.
     search: function (query) {},
     activate_search_result: function (model, query) {},
+
+    _check_for_issue_update: function() {
+        if (Date.now() - this.settings.update_timestamp >= UPDATE_INTERVAL_MS) {
+            this._update_issue();
+        }
+    },
+
+    _update_issue: function () {
+        this.settings.update_timestamp = Date.now();
+        this.settings.bookmark_article = 0;
+        this.settings.bookmark_issue++;
+    },
 
     _load_all_content: function () {
         this.engine.get_objects_by_query(this._domain, {
