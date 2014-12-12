@@ -63,6 +63,20 @@ const UserSettingsModel = new Lang.Class({
             'File in which to store user settings',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             GObject.Object.$gtype),
+
+        /**
+         * Property: update-timestamp
+         * Update Timestamp
+         *
+         * The last time that the readable content was updated.
+         *
+         * Default value:
+         *  0
+         */
+        'update-timestamp': GObject.ParamSpec.uint('update-timestamp', 'Last Update Time',
+            'Last time content was updated',
+            GObject.ParamFlags.READWRITE,
+            0, GLib.MAXINT64, 0),
     },
 
     _init: function (props) {
@@ -70,6 +84,7 @@ const UserSettingsModel = new Lang.Class({
         this._user_settings_file = props.settings_file || Gio.File.new_for_path(Gio.Application.get_default().config_dir.get_path() + '/user_settings.json');
         this._bookmark_issue = 0;
         this._bookmark_article = 0;
+        this._update_timestamp = 0;
         this._pending_operation = null;
 
         this._load_user_settings_from_file();
@@ -94,6 +109,7 @@ const UserSettingsModel = new Lang.Class({
             let settings = JSON.parse(json_contents);
             this._bookmark_issue = settings.bookmark_issue;
             this._bookmark_article = settings.bookmark_article;
+            this._update_timestamp = settings.update_timestamp;
         } catch (e) {
             // Parse error ... get out!
             return;
@@ -111,6 +127,7 @@ const UserSettingsModel = new Lang.Class({
             let obj = {
                 bookmark_article: this._bookmark_article,
                 bookmark_issue: this._bookmark_issue,
+                update_timestamp: this._update_timestamp,
             };
             Utils.save_object_to_file(obj, this._user_settings_file);
             this._pending_operation = null;
@@ -143,5 +160,19 @@ const UserSettingsModel = new Lang.Class({
         this._bookmark_article = v;
         this._save_user_settings_to_file();
         this.notify('bookmark-article');
+    },
+
+    get update_timestamp() {
+        if (this._update_timestamp)
+            return this._update_timestamp;
+        return 0;
+    },
+
+    set update_timestamp(v) {
+        if (this._update_timestamp === v)
+            return;
+        this._update_timestamp = v;
+        this._save_user_settings_to_file();
+        this.notify('update-timestamp');
     },
 });

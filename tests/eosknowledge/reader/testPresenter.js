@@ -20,6 +20,10 @@ const MockUserSettingsModel = new Lang.Class({
         'bookmark-article': GObject.ParamSpec.uint('bookmark-article', '', '',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
             0, GLib.MAXINT64, 0),
+        'update-timestamp': GObject.ParamSpec.uint('update-timestamp', 'Last Update Time',
+            'Last time content was updated',
+            GObject.ParamFlags.READWRITE,
+            0, GLib.MAXINT64, 0),
     },
 });
 
@@ -142,7 +146,11 @@ describe('Reader presenter', function () {
         article_nav_buttons = new MockNavButtons();
         view = new MockView(article_nav_buttons);
         engine = new MockEngine();
-        settings = new MockUserSettingsModel();
+        settings = new MockUserSettingsModel({
+            bookmark_issue: 0,
+            bookmark_article: 0,
+            update_timestamp: GLib.MAXINT64,
+        });
         spyOn(engine, 'get_objects_by_query');
         construct_props = {
             engine: engine,
