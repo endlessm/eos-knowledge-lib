@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2014-12-09 03:02+0000\n"
+"POT-Creation-Date: 2014-12-11 00:26+0000\n"
 "PO-Revision-Date: 2014-12-02 22:16+0000\n"
 "Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
 "Language-Team: Portuguese (http://www.transifex.com/projects/p/eos-knowledge-lib/language/pt/)\n"
@@ -60,26 +60,26 @@ msgstr "Artigos"
 msgid "%d of %d done"
 msgstr "%d de %de realizado"
 
-#: overrides/reader/donePage.js:67
+#: overrides/reader/donePage.js:66
 msgid "Did you like this issue?"
 msgstr "Você gostou dessa edição?"
 
-#: overrides/reader/donePage.js:73
+#: overrides/reader/donePage.js:72
 msgid ""
 "Don't miss next week's issue with more articles in your favorite magazine!"
 msgstr "Não perca a edição da próxima semana com mais artigos em sua revista favorita!"
 
-#: overrides/reader/presenter.js:191 overrides/reader/presenter.js:324
+#: overrides/reader/presenter.js:190 overrides/reader/presenter.js:323
 msgid "Oops!"
 msgstr "Oops!"
 
-#: overrides/reader/presenter.js:192
+#: overrides/reader/presenter.js:191
 msgid ""
 "We could not find this issue of your magazine!\n"
 "Please try again after restarting your computer."
 msgstr "Não conseguimos encontrar esta edição da sua revista!\nPor favor, tente novamente após reiniciar o seu computador. "
 
-#: overrides/reader/presenter.js:325
+#: overrides/reader/presenter.js:324
 msgid ""
 "There was an error loading that page.\n"
 "Try another one or try again after restarting your computer."
@@ -88,7 +88,7 @@ msgstr "Ocorreu um erro no carregamento da página. \nTente outro ou tente novam
 #. TRANSLATORS: This "and" is used to join together the names
 #. of authors of a blog post. For example:
 #. Jane Austen and Henry Miller and William Clifford
-#: overrides/reader/presenter.js:349
+#: overrides/reader/presenter.js:348
 msgid "and"
 msgstr ""
 
@@ -97,7 +97,7 @@ msgstr ""
 #. the day, and %Y represents the year. Rearrange them how you wish to
 #. match the desired locale. For example, if you wanted the date to look
 #. like "1. December 2014", then you would do: "%e. %B %Y".
-#: overrides/reader/presenter.js:355
+#: overrides/reader/presenter.js:354
 msgid "%B %e, %Y"
 msgstr ""
 
@@ -105,7 +105,7 @@ msgstr ""
 #. to be substituted in code. Please make sure to leave the
 #. curly braces around any words that have them and DO NOT
 #. translate words inside curly braces.
-#: overrides/reader/presenter.js:361
+#: overrides/reader/presenter.js:360
 msgid "by {author} on {date}"
 msgstr ""
 
@@ -113,6 +113,6 @@ msgstr ""
 #. to be substituted in code. Please make sure to leave the
 #. curly braces around any words that have them and DO NOT
 #. translate words inside curly braces.
-#: overrides/reader/presenter.js:368
+#: overrides/reader/presenter.js:367
 msgid "by {author}"
 msgstr ""
