@@ -1,10 +1,12 @@
 const Endless = imports.gi.Endless;
 const EosKnowledge = imports.gi.EosKnowledge;
 const Gio = imports.gi.Gio;
+const GLib = imports.gi.GLib;
 
 describe('Reader user settings model', function () {
     let test_content_dir_path = Endless.getCurrentFileDir() + '/../../test-content/';
     let user_settings_file;
+    let current_time = Date.now();
 
     beforeEach(function () {
         user_settings_file = Gio.File.new_tmp(null)[0];
@@ -21,6 +23,7 @@ describe('Reader user settings model', function () {
             let data = {
                 bookmark_issue: 3,
                 bookmark_article: 8,
+                update_timestamp: current_time,
             };
             user_settings_file.replace_contents(JSON.stringify(data), null, false, 0, null);
             let settings = new EosKnowledge.Reader.UserSettingsModel({
@@ -28,6 +31,7 @@ describe('Reader user settings model', function () {
             });
             expect(settings.bookmark_issue).toBe(3);
             expect(settings.bookmark_article).toBe(8);
+            expect(settings.update_timestamp).toBe(current_time);
         });
 
         it('gracefully handles a settings file that is not JSON', function () {
@@ -38,6 +42,7 @@ describe('Reader user settings model', function () {
             });
             expect(settings.bookmark_issue).toBe(0);
             expect(settings.bookmark_article).toBe(0);
+            expect(settings.update_timestamp).toBe(0);
         });
 
         it('gracefully handles case where settings file does not exist', function () {
@@ -46,6 +51,7 @@ describe('Reader user settings model', function () {
             });
             expect(settings.bookmark_issue).toBe(0);
             expect(settings.bookmark_article).toBe(0);
+            expect(settings.update_timestamp).toBe(0);
         });
     });
 

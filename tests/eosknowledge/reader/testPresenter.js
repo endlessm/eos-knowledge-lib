@@ -8,6 +8,7 @@ const Lang = imports.lang;
 const utils = imports.tests.utils;
 
 const TEST_DOMAIN = 'thrones-en';
+const UPDATE_INTERVAL_MS = 604800000;
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 
 const MockUserSettingsModel = new Lang.Class({
@@ -19,6 +20,10 @@ const MockUserSettingsModel = new Lang.Class({
             0, GLib.MAXINT64, 0),
         'bookmark-article': GObject.ParamSpec.uint('bookmark-article', '', '',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
+            0, GLib.MAXINT64, 0),
+        'update-timestamp': GObject.ParamSpec.uint('update-timestamp', 'Last Update Time',
+            'Last time content was updated',
+            GObject.ParamFlags.READWRITE,
             0, GLib.MAXINT64, 0),
     },
 });
@@ -142,7 +147,11 @@ describe('Reader presenter', function () {
         article_nav_buttons = new MockNavButtons();
         view = new MockView(article_nav_buttons);
         engine = new MockEngine();
-        settings = new MockUserSettingsModel();
+        settings = new MockUserSettingsModel({
+            bookmark_issue: 0,
+            bookmark_article: 0,
+            update_timestamp: GLib.MAXINT64,
+        });
         spyOn(engine, 'get_objects_by_query');
         construct_props = {
             engine: engine,
@@ -191,6 +200,7 @@ describe('Reader presenter', function () {
 
     describe('object', function () {
         let presenter;
+        let current_time = Date.now();
 
         beforeEach(function () {
             engine.get_objects_by_query.and.callFake(function (d, q, callback) {
@@ -269,6 +279,7 @@ describe('Reader presenter', function () {
         it('disables the debug back button when returning to the first issue', function () {
             settings.bookmark_issue = 5;
             settings.bookmark_issue = 0;
+            settings.notify('bookmark-issue');
             expect(view.issue_nav_buttons.back_button.sensitive).toBe(false);
         });
 
@@ -301,6 +312,27 @@ describe('Reader presenter', function () {
             settings.notify('bookmark-issue');
             expect(view.get_article_page(0).title_view.title).toBe('Title 1');
             expect(view.remove_all_article_pages).toHaveBeenCalled();
+        });
+
+        it('updates the issue after enough time has passed since the last update', function () {
+            settings.update_timestamp = Date.now() - UPDATE_INTERVAL_MS - 1000;
+            spyOn(presenter, '_update_issue');
+            presenter._check_for_issue_update();
+            expect(presenter._update_issue).toHaveBeenCalled();
+        });
+
+        it('does not update the issue if very little time has passed since the last update', function () {
+            settings.update_timestamp = Date.now() - (UPDATE_INTERVAL_MS / 2);
+            spyOn(presenter, '_update_issue');
+            presenter._check_for_issue_update();
+            expect(presenter._update_issue).not.toHaveBeenCalled();
+        });
+
+        it('has correct values after issue update', function () {
+            spyOn(presenter, '_update_issue').and.callThrough();
+            expect(settings.bookmark_issue).toBe(1);
+            expect(settings.bookmark_article).toBe(0);
+            expect(settings.update_timestamp).toBeGreaterThan(current_time);
         });
 
         describe('Attribution format', function () {
