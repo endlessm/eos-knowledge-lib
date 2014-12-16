@@ -18,7 +18,7 @@ const MockUserSettingsModel = new Lang.Class({
         'bookmark-issue': GObject.ParamSpec.uint('bookmark-issue', '', '',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
             0, GLib.MAXINT64, 0),
-        'bookmark-article': GObject.ParamSpec.uint('bookmark-article', '', '',
+        'bookmark-page': GObject.ParamSpec.uint('bookmark-page', '', '',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
             0, GLib.MAXINT64, 0),
         'update-timestamp': GObject.ParamSpec.uint('update-timestamp', 'Last Update Time',
@@ -89,11 +89,19 @@ const MockView = new Lang.Class({
             forward_button: new MockButton(),
             show: jasmine.createSpy('show'),
         };
-        this.done_page = {
-            get_style_context: function () { return {
+        let get_style_context = function () {
+            return {
                 add_class: function () {},
-            }; },
+            }
+        }
+        this.done_page = {
+            get_style_context: get_style_context,
         };
+        this.overview_page = {
+            get_style_context: get_style_context,
+            set_article_snippets: function () {},
+        };
+
         this.total_pages = 0;
         this._article_pages = [];
         this.page_manager = {
@@ -149,7 +157,7 @@ describe('Reader presenter', function () {
         engine = new MockEngine();
         settings = new MockUserSettingsModel({
             bookmark_issue: 0,
-            bookmark_article: 0,
+            bookmark_page: 0,
             update_timestamp: GLib.MAXINT64,
         });
         spyOn(engine, 'get_objects_by_query');
@@ -243,14 +251,14 @@ describe('Reader presenter', function () {
         it('increments the current page when clicking the forward button', function () {
             article_nav_buttons.emit('forward-clicked');
             expect(view.current_page).toBe(1);
-            expect(settings.bookmark_article).toBe(1);
+            expect(settings.bookmark_page).toBe(1);
         });
 
         it('decrements the current page when clicking the back button', function () {
             article_nav_buttons.emit('forward-clicked');
             article_nav_buttons.emit('back-clicked');
             expect(view.current_page).toBe(0);
-            expect(settings.bookmark_article).toBe(0);
+            expect(settings.bookmark_page).toBe(0);
         });
 
         it('shows the debug buttons when told to', function () {
@@ -331,11 +339,18 @@ describe('Reader presenter', function () {
         it('has correct values after issue update', function () {
             spyOn(presenter, '_update_issue').and.callThrough();
             expect(settings.bookmark_issue).toBe(1);
-            expect(settings.bookmark_article).toBe(0);
+            expect(settings.bookmark_page).toBe(0);
             expect(settings.update_timestamp).toBeGreaterThan(current_time);
         });
 
         describe('Attribution format', function () {
+            let date_str = '2012-08-23T20:00:00';
+            let localized_date_str;
+            beforeEach(function () {
+                let date = new Date(date_str);
+                localized_date_str = date.toLocaleFormat("%B %e, %Y");
+            });
+
             it('is blank if there is no data', function () {
                 let format = presenter._format_attribution_for_metadata([], '');
                 expect(format).toBe('');
@@ -352,13 +367,13 @@ describe('Reader presenter', function () {
             });
 
             it('formats author and date correctly', function () {
-                let format = presenter._format_attribution_for_metadata(['Kim Kardashian'], '2012-08-23T20:00:00');
-                expect(format).toBe('by Kim Kardashian on August 23, 2012');
+                let format = presenter._format_attribution_for_metadata(['Kim Kardashian'], date_str);
+                expect(format).toBe('by Kim Kardashian on ' + localized_date_str);
             });
 
             it('formats date alone correctly', function () {
-                let format = presenter._format_attribution_for_metadata([], '2012-08-23T20:00:00');
-                expect(format).toBe('August 23, 2012');
+                let format = presenter._format_attribution_for_metadata([], date_str);
+                expect(format).toBe(localized_date_str);
             });
         });
     });

@@ -22,6 +22,7 @@ let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 
 const RESULTS_SIZE = 15;
+const NUM_SNIPPETS_ON_OVERVIEW_PAGE = 3;
 
 // 1 week in miliseconds
 const UPDATE_INTERVAL_MS = 604800000;
@@ -119,17 +120,16 @@ const Presenter = new Lang.Class({
         this._parse_app_info(app_json);
 
         // Load all articles in this issue
-        this._load_all_content()
-        this.view.done_page.background_image_uri = this._background_section_uri;
+        this._load_all_content();
 
         // Connect signals
         this.view.nav_buttons.connect('back-clicked', function () {
             this._shift_page(-1);
-            this.settings.bookmark_article--;
+            this.settings.bookmark_page--;
         }.bind(this));
         this.view.nav_buttons.connect('forward-clicked', function () {
             this._shift_page(1);
-            this.settings.bookmark_article++;
+            this.settings.bookmark_page++;
         }.bind(this));
         this.view.connect('notify::current-page',
             this._update_forward_button_visibility.bind(this));
@@ -171,7 +171,7 @@ const Presenter = new Lang.Class({
 
     _update_issue: function () {
         this.settings.update_timestamp = Date.now();
-        this.settings.bookmark_article = 0;
+        this.settings.bookmark_page = 0;
         this.settings.bookmark_issue++;
     },
 
@@ -219,20 +219,21 @@ const Presenter = new Lang.Class({
     // Under this implementation, you have to wait for metadata for all articles
     // in an issue to be fetched before seeing content for the article you were on
     _initialize_first_pages: function () {
-        let current_article = this.settings.bookmark_article;
-
-        if (current_article < this._article_models.length) {
+        // The article number you are on is 1 less than the bookmarked page because we have the overview page
+        // in the beginning
+        let current_article = this.settings.bookmark_page - 1;
+        if (current_article >= 0 && current_article < this._article_models.length) {
             this._current_page = this._load_webview_content(this._article_models[current_article].ekn_id, function (view, error) {
                 this._load_webview_content_callback(this.view.get_article_page(current_article), view, error);
             }.bind(this));
+        }
 
             // Load the next page if needed
-            if (current_article + 1 < this._article_models.length) {
-                let next_page = this.view.get_article_page(current_article + 1);
-                this._next_page = this._load_webview_content(this._article_models[current_article + 1].ekn_id, function (view, error) {
-                    this._load_webview_content_callback(next_page, view, error);
-                }.bind(this));
-            }
+        if (current_article + 1 < this._article_models.length) {
+            let next_page = this.view.get_article_page(current_article + 1);
+            this._next_page = this._load_webview_content(this._article_models[current_article + 1].ekn_id, function (view, error) {
+                this._load_webview_content_callback(next_page, view, error);
+            }.bind(this));
         }
 
         // Likewise, load the previous page if needed
@@ -243,7 +244,7 @@ const Presenter = new Lang.Class({
             }.bind(this));
         }
 
-        this.view.current_page = current_article;
+        this.view.current_page = this.settings.bookmark_page;
         this._update_forward_button_visibility();
 
         this.view.show_all();
@@ -261,6 +262,7 @@ const Presenter = new Lang.Class({
             } else {
                 // We now have all the articles for this issue. Now we load the HTML content
                 // for the first few pages into the webview
+                this._load_overview_snippets_from_articles();
                 this._initialize_first_pages();
             }
         }
@@ -275,9 +277,10 @@ const Presenter = new Lang.Class({
     _shift_page: function (delta) {
         if (delta !== -1 && delta !== 1)
             throw new Error("Invalid input value for this function: " + delta);
-        let to_delete_index = this.view.current_page - delta;
+        let current_article = this.view.current_page - 1;
+        let to_delete_index = current_article - delta;
         this.view.current_page += delta;
-        let to_load_index = this.view.current_page + delta
+        let to_load_index = current_article + delta;
         let next_model_to_load = this._article_models[to_load_index];
         if (next_model_to_load !== undefined) {
             let next_page_to_load = this.view.get_article_page(to_load_index);
@@ -354,7 +357,9 @@ const Presenter = new Lang.Class({
     _parse_app_info: function (info) {
         this._domain = info['appId'].split('.').pop();
         this.view.title = info['appTitle'];
-        this._background_section_uri = info['backgroundSectionURI'];
+        this.view.overview_page.title_image_uri = info['titleImageURI'];
+        this.view.overview_page.background_image_uri = info['backgroundHomeURI'];
+        this.view.done_page.background_image_uri = info['backgroundSectionURI'];
     },
 
     _format_attribution_for_metadata: function (authors, date) {
@@ -411,5 +416,15 @@ const Presenter = new Lang.Class({
         err_label.get_style_context().add_class(EosKnowledge.STYLE_CLASS_READER_ERROR_PAGE);
         err_label.show();
         return err_label;
+    },
+
+    _load_overview_snippets_from_articles: function () {
+        let snippets = this._article_models.slice(0, NUM_SNIPPETS_ON_OVERVIEW_PAGE).map(function (snippet) {
+            return {
+                "title": snippet.title,
+                "synopsis": snippet.synopsis
+            };
+        });
+        this.view.overview_page.set_article_snippets(snippets);
     },
 });

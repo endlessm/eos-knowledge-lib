@@ -16,9 +16,43 @@ EosWindow {
     color: alpha(black, 0.1);
 }
 
-.done-page {
+.article-snippet .title, .article-snippet .synopsis {
+    font-family: Roboto;
+    font-style: italic;
+    font-weight: bold;
+}
+
+.article-snippet .title {
+    font-size: 3.0em;
+}
+
+.article-snippet .synopsis {
+    padding-top: 10px;
+    color: white;
+    font-size: 0.8em;
+}
+
+/* These individual snippet stylings will be
+overridden by app specific CSS */
+#snippet0 .title {
+    color: #F4FA58;
+}
+
+#snippet1 .title {
+    color: #F781F3;
+}
+
+#snippet2 .title {
+    color: #00FFFF;
+}
+
+.overview-page, .done-page {
     background-size: cover;
     background-position: center;
+}
+
+.overview-page {
+    padding: 100px;
 }
 
 .done-page .headline {
@@ -93,4 +127,12 @@ EosWindow {
 
 .nav-forward-button:hover {
     padding-right: 24px;
+}
+
+.overview-page .scrollbar.trough {
+    background-color: alpha(black, 0.5);
+}
+
+.overview-page .scrollbar.slider {
+    background-color: #888888;
 }

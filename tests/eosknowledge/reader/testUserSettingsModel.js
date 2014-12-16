@@ -22,7 +22,7 @@ describe('Reader user settings model', function () {
         it('correctly loads settings from file', function () {
             let data = {
                 bookmark_issue: 3,
-                bookmark_article: 8,
+                bookmark_page: 8,
                 update_timestamp: current_time,
             };
             user_settings_file.replace_contents(JSON.stringify(data), null, false, 0, null);
@@ -30,7 +30,7 @@ describe('Reader user settings model', function () {
                 settings_file: user_settings_file,
             });
             expect(settings.bookmark_issue).toBe(3);
-            expect(settings.bookmark_article).toBe(8);
+            expect(settings.bookmark_page).toBe(8);
             expect(settings.update_timestamp).toBe(current_time);
         });
 
@@ -41,7 +41,7 @@ describe('Reader user settings model', function () {
                 settings_file: user_settings_file,
             });
             expect(settings.bookmark_issue).toBe(0);
-            expect(settings.bookmark_article).toBe(0);
+            expect(settings.bookmark_page).toBe(0);
             expect(settings.update_timestamp).toBe(0);
         });
 
@@ -50,7 +50,7 @@ describe('Reader user settings model', function () {
                 settings_file: Gio.File.new_for_path('nothing/here'),
             });
             expect(settings.bookmark_issue).toBe(0);
-            expect(settings.bookmark_article).toBe(0);
+            expect(settings.bookmark_page).toBe(0);
             expect(settings.update_timestamp).toBe(0);
         });
     });
@@ -70,7 +70,7 @@ describe('Reader user settings model', function () {
                 settings_file: user_settings_file,
             });
             spyOn(settings, '_save_user_settings_to_file');
-            settings.bookmark_article = 9;
+            settings.bookmark_page = 9;
             expect(settings._save_user_settings_to_file).toHaveBeenCalled();
         });
     });

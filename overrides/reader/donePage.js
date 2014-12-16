@@ -103,7 +103,7 @@ const DonePage = new Lang.Class({
         }
         this._background_image_uri = v;
         if (this._background_image_uri !== null) {
-            let frame_css = '.done-page { background-image: url("' + this._background_image_uri + '");}';
+            let frame_css = '* { background-image: url("' + this._background_image_uri + '");}';
             let provider = new Gtk.CssProvider();
             provider.load_from_data(frame_css);
             let context = this.get_style_context();
