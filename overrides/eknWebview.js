@@ -34,7 +34,17 @@ const EknWebview = new Lang.Class({
         settings.enable_developer_extras = Config.inspector_enabled;
         settings.javascript_can_access_clipboard = true;
 
+        this.connect('context-menu', this._load_context_menu.bind(this));
         this.connect('decide-policy', this._onNavigation.bind(this));
+    },
+
+    _load_context_menu: function (webview, context_menu, event) {
+        context_menu.get_items().forEach(function (item) {
+            // Remove all menu items except 'Copy'
+            if (item.get_stock_action() !== WebKit2.ContextMenuAction.COPY) {
+                context_menu.remove(item);
+            }
+        });
     },
 
     /**
