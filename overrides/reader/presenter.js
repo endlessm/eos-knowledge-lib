@@ -150,9 +150,6 @@ const Presenter = new Lang.Class({
         //Bind properties
         this.view.bind_property('current-page', this.view.nav_buttons,
             'back-visible', GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE);
-        this.settings.bind_property('bookmark-issue',
-            this.view.issue_nav_buttons.back_button, 'sensitive',
-            GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE);
     },
 
     // Right now these functions are just stubs which we will need to flesh out
@@ -176,6 +173,7 @@ const Presenter = new Lang.Class({
     },
 
     _load_all_content: function () {
+        this.view.issue_nav_buttons.back_button.sensitive = (this.settings.bookmark_issue !== 0);
         this.engine.get_objects_by_query(this._domain, {
             tag: 'issueNumber' + this.settings.bookmark_issue,
             limit: RESULTS_SIZE,

@@ -16,15 +16,36 @@ const MockUserSettingsModel = new Lang.Class({
     Extends: GObject.Object,
     Properties: {
         'bookmark-issue': GObject.ParamSpec.uint('bookmark-issue', '', '',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
+            GObject.ParamFlags.READWRITE,
             0, GLib.MAXINT64, 0),
         'bookmark-page': GObject.ParamSpec.uint('bookmark-page', '', '',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
+            GObject.ParamFlags.READWRITE,
             0, GLib.MAXINT64, 0),
         'update-timestamp': GObject.ParamSpec.uint('update-timestamp', 'Last Update Time',
             'Last time content was updated',
             GObject.ParamFlags.READWRITE,
             0, GLib.MAXINT64, 0),
+    },
+
+    _init: function (props) {
+        props = props || {};
+        this._bookmark_issue = 0;
+        this._bookmark_page = 0;
+        this._update_timestamp = 0;
+        this.parent(props);
+    },
+
+    get bookmark_issue() {
+        if (this._bookmark_issue)
+            return this._bookmark_issue;
+        return 0;
+    },
+
+    set bookmark_issue(v) {
+        if (this._bookmark_issue === v)
+            return;
+        this._bookmark_issue = v;
+        this.notify('bookmark-issue');
     },
 });
 
@@ -287,7 +308,6 @@ describe('Reader presenter', function () {
         it('disables the debug back button when returning to the first issue', function () {
             settings.bookmark_issue = 5;
             settings.bookmark_issue = 0;
-            settings.notify('bookmark-issue');
             expect(view.issue_nav_buttons.back_button.sensitive).toBe(false);
         });
 
