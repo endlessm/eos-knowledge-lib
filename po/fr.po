@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
 "POT-Creation-Date: 2014-12-11 00:26+0000\n"
-"PO-Revision-Date: 2014-12-02 22:16+0000\n"
+"PO-Revision-Date: 2014-12-17 00:02+0000\n"
 "Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
 "Language-Team: French (http://www.transifex.com/projects/p/eos-knowledge-lib/language/fr/)\n"
 "MIME-Version: 1.0\n"
@@ -88,7 +88,7 @@ msgstr "Il y a eu une erreur pendant le chargement de cette page.\nEssayez-en un
 #. Jane Austen and Henry Miller and William Clifford
 #: overrides/reader/presenter.js:348
 msgid "and"
-msgstr ""
+msgstr "et"
 
 #. TRANSLATORS: This is a string that is going to be substituted
 #. by date values in code. The %B represents a month, the %e represents
@@ -97,7 +97,7 @@ msgstr ""
 #. like "1. December 2014", then you would do: "%e. %B %Y".
 #: overrides/reader/presenter.js:354
 msgid "%B %e, %Y"
-msgstr ""
+msgstr "%e %B %Y"
 
 #. TRANSLATORS: anything inside curly braces '{}' is going
 #. to be substituted in code. Please make sure to leave the
@@ -105,7 +105,7 @@ msgstr ""
 #. translate words inside curly braces.
 #: overrides/reader/presenter.js:360
 msgid "by {author} on {date}"
-msgstr ""
+msgstr "par {author} le {date}"
 
 #. TRANSLATORS: anything inside curly braces '{}' is going
 #. to be substituted in code. Please make sure to leave the
@@ -113,4 +113,4 @@ msgstr ""
 #. translate words inside curly braces.
 #: overrides/reader/presenter.js:367
 msgid "by {author}"
-msgstr ""
+msgstr "par {author}"
