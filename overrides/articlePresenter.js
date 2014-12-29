@@ -283,9 +283,16 @@ const ArticlePresenter = new GObject.Class({
                 return false;
 
             let [baseURI, hash] = decision.request.uri.split('#');
+            let [request_domain, request_id] = baseURI.split('/').slice(-2);
             let _resources = this._article_model.get_resources();
-            let resource_ekn_ids = _resources.map(function (model) {
-                return model.ekn_id;
+
+            var ekn_id_match = function (ekn_uri) {
+                let [domain, id] = ekn_uri.split('/').slice(-2);
+                return (domain === request_domain && id === request_id);
+            }
+
+            let resource_match = _resources.filter(function (model) {
+                return ekn_id_match(model.ekn_id);
             });
 
             // If this check is true, then the base of the requested URI
@@ -293,26 +300,21 @@ const ArticlePresenter = new GObject.Class({
             // follow it. This handles the case where we are navigating to
             // an article for the first time from the section page, or we
             // are navigating to a hash within the current article.
-            if (this._article_model.ekn_id.indexOf(baseURI) === 0) {
+            if (ekn_id_match(this._article_model.ekn_id)) {
                 decision.use();
                 return false;
-            } else if (resource_ekn_ids.indexOf(decision.request.uri) !== -1) {
+            } else if (resource_match.length > 0) {
                 // Else, if the request corresponds to a media object in the
                 // resources array, emit the bat signal!
-                let lightbox = _resources.filter(function (resource) {
-                    return decision.request.uri === resource.ekn_id;
-                });
-                this.emit('media-object-clicked', lightbox[0], true);
-
+                this.emit('media-object-clicked', resource_match[0], true);
                 decision.ignore();
                 return true;
             } else {
                 // Else, the request could be either for a media object
                 // or a new article page
-                let [domain, id] = baseURI.split('/').slice(-2);
                 decision.ignore();
 
-                this.engine.get_object_by_id(domain, id, function (err, model) {
+                this.engine.get_object_by_id(request_domain, request_id, function (err, model) {
                     if (typeof err === 'undefined') {
                         if (model instanceof EosKnowledgeSearch.MediaObjectModel) {
                             this.emit('media-object-clicked', model, false);
