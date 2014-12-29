@@ -311,7 +311,9 @@ const Presenter = new Lang.Class({
         if (ready === undefined) {
             ready = function () {};
         }
-        let webview = new EknWebview.EknWebview();
+        let webview = new EknWebview.EknWebview({
+            engine: this.engine,
+        });
         let load_id = webview.connect('load-changed', function (view, event) {
             // failsafe: disconnect on load finished even if there was an error
             if (event === WebKit2.LoadEvent.FINISHED) {

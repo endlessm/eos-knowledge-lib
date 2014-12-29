@@ -246,7 +246,9 @@ const ArticlePresenter = new GObject.Class({
     },
 
     _get_webview_for_uri: function (uri) {
-        let webview = new EknWebview.EknWebview();
+        let webview = new EknWebview.EknWebview({
+            engine: this.engine,
+        });
 
         webview.inject_js_from_resource('resource:///com/endlessm/knowledge/scroll_manager.js');
         if (this.template_type === 'A')

@@ -20,8 +20,13 @@ const MockEngine = new Lang.Class({
 
     ping: function () {},
     get_object_by_id: function () {},
-    get_ekn_id: function () {},
+    get_ekn_uri: function () {
+        return {
+            to_string: function () {return 'http://localhost:3003/domain/id'}
+        }
+    },
     get_objects_by_query: function () {},
+    get_ekn_resource_stream: function () {},
 });
 
 const MockView = new Lang.Class({

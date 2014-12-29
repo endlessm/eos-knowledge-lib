@@ -204,6 +204,42 @@ const Engine = Lang.Class({
     },
 
     /**
+     * Function: get_ekn_resource_stream
+     * Creates a GStream to the knowledge engine for the URI matching the *domain*
+     * and *id* specified.
+     *
+     * Parameters:
+     *
+     *   domain - The Knowledge Engine domain for the desired URI
+     *   id - The Knowledge Engine id for the desired URI.
+     *   callback - A function which will be called once the stream has
+     *             been established. The function should take two parameters:
+     *             *error* and *stream*, where *error* will only be defined
+     *             if there was an error, and *stream* is a GStream object
+     *             corresponding to the desired resource.
+     */
+    get_ekn_resource_stream: function (domain, id, callback) {
+        if (typeof domain === 'undefined' || typeof id === 'undefined') {
+            throw new Error('Domain or id not defined!');
+        }
+
+        let new_uri = this.get_ekn_uri(domain, id);
+        let request = new Soup.Message({
+            method: 'GET',
+            uri: new Soup.URI(new_uri),
+        });
+        let http_session = new Soup.Session();
+        http_session.send_async(request, null, function (session, result) {
+            try {
+                let stream = http_session.send_finish(result);
+                callback(undefined, stream);
+            } catch (err) {
+                callback(err, undefined);
+            }
+        });
+    },
+
+    /**
      * Function: get_ekn_uri
      * Constructs a URI to the knowledge engine matching the *domain*, *id*,
      * and *query* specified.

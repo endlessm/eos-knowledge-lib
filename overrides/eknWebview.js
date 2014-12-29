@@ -1,11 +1,15 @@
 const Gdk = imports.gi.Gdk;
 const GLib = imports.gi.GLib;
 const Gio = imports.gi.Gio;
+const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const WebKit2 = imports.gi.WebKit2;
 
 const Config = imports.config;
+const EosKnowledgeSearch = imports.EosKnowledgeSearch;
+
+GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 
 /**
  * Class: EknWebview
@@ -26,9 +30,29 @@ const EknWebview = new Lang.Class({
     GTypeName: 'EknWebview',
     Extends: WebKit2.WebView,
 
-    _init: function (params) {
+    Properties: {
+        /**
+         * Property: engine
+         * Handle to EOS knowledge engine
+         *
+         * Pass an instance of <Engine> to this property.
+         * This is a property for purposes of dependency injection during
+         * testing.
+         *
+         * Flags:
+         *   Construct only
+         */
+        'engine': GObject.ParamSpec.object('engine', 'Engine',
+            'Handle to EOS knowledge engine',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            GObject.Object.$gtype),
+    },
+
+    _init: function (props) {
+        props = props || {};
         this._injection_handlers = [];
-        this.parent(params);
+        props.engine = props.engine || new EosKnowledgeSearch.Engine();
+        this.parent(props);
 
         let settings = this.get_settings();
         settings.enable_developer_extras = Config.inspector_enabled;
@@ -36,6 +60,27 @@ const EknWebview = new Lang.Class({
 
         this.connect('context-menu', this._load_context_menu.bind(this));
         this.connect('decide-policy', this._onNavigation.bind(this));
+        this.web_context.register_uri_scheme('ekn', this._ekn_scheme_handler.bind(this));
+    },
+
+    // This handles images embedded in the webview. They
+    // will be registered with ekn:// scheme. This handles
+    // links with that scheme and instead redirects them to
+    // an http request on the correct host and port. Note,
+    // article links also have ekn:// scheme, but they are handled
+    // by the 'decide-policy' callback function (_onNavigation),
+    // and so will not be caught by this function.
+    _ekn_scheme_handler: function (req) {
+        let [domain, id] = req.get_uri().split('/').slice(-2);
+        this.engine.get_ekn_resource_stream(domain, id, function (err, stream) {
+            if (err !== undefined) {
+                printerr(err);
+                printerr(err.stack);
+                req.finish_error(err);
+            } else {
+                req.finish(stream, -1, 'image/*');
+            }
+        });
     },
 
     _load_context_menu: function (webview, context_menu, event) {
@@ -128,13 +173,21 @@ const EknWebview = new Lang.Class({
     _onNavigation: function (webview, decision, decision_type) {
         if (decision_type === WebKit2.PolicyDecisionType.NAVIGATION_ACTION) {
             let uri = decision.request.uri;
-            if (GLib.uri_parse_scheme(uri).startsWith('browser-')) {
+            let uri_scheme = GLib.uri_parse_scheme(uri);
+            if (uri_scheme.startsWith('browser-')) {
                 // Open everything that starts with 'browser-' in the system
                 // browser
                 let realURI = uri.slice('browser-'.length);
                 Gtk.show_uri(null, realURI, Gdk.CURRENT_TIME);
                 decision.ignore();
                 return true; // handled
+            } else if (uri_scheme.startsWith('ekn')) {
+                // If it starts with 'ekn', convert to a proper http
+                // uri and reload with that uri.
+                let [domain, id] = uri.split('/').slice(-2);
+                let new_uri = this.engine.get_ekn_uri(domain, id);
+                this.load_uri(new_uri.to_string(false));
+                return true;
             }
         }
         return false; // not handled, default behavior
