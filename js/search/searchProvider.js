@@ -211,7 +211,8 @@ const SearchProvider = Lang.Class({
                 };
 
                 if (typeof obj.synopsis !== 'undefined') {
-                    result.description = new GLib.Variant('s', obj.synopsis);
+                    let displayDesc = GLib.markup_escape_text(obj.synopsis, -1);
+                    result.description = new GLib.Variant('s', displayDesc);
                 }
                 result_gvariants.push(result);
             }
