@@ -252,8 +252,8 @@ const Presenter = new Lang.Class({
 
     _fetch_content_recursive: function (err, results, get_more_results_func) {
         if (err !== undefined) {
-            printerr(error);
-            printerr(error.stack);
+            printerr(err);
+            printerr(err.stack);
         } else {
             this._create_pages_from_models(results);
             // If there are more results to get, then fetch more content
