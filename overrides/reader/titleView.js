@@ -50,7 +50,7 @@ const TitleView = new Lang.Class({
             halign: Gtk.Align.FILL,
             ellipsize: Pango.EllipsizeMode.END,
             wrap_mode: Pango.WrapMode.WORD_CHAR,
-            lines: 3,
+            lines: 5,
             xalign: 0,
             use_markup: true,
             margin_bottom: _TITLE_LABEL_BOTTOM_MARGIN_PX,
