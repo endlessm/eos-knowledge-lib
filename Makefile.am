@@ -93,7 +93,7 @@ include $(top_srcdir)/docs/reference/eosknowledge-js/Makefile.am.inc
 
 -include $(INTROSPECTION_MAKEFILE)
 INTROSPECTION_GIRS =
-INTROSPECTION_SCANNER_ARGS = --add-include-path=$(srcdir) --warn-all
+INTROSPECTION_SCANNER_ARGS = --add-include-path=$(srcdir) --warn-all $(EOS_KNOWLEDGE_CFLAGS)
 INTROSPECTION_COMPILER_ARGS = --includedir=$(srcdir)
 
 if HAVE_INTROSPECTION
@@ -109,6 +109,7 @@ EosKnowledge_@EKN_API_VERSION@_gir_INCLUDES = \
 	Gio-2.0 \
 	GLib-2.0 \
 	GObject-2.0 \
+	WebKit2-3.0 \
 	Gtk-3.0 \
 	$(NULL)
 EosKnowledge_@EKN_API_VERSION@_gir_SCANNERFLAGS = \
