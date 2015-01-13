@@ -33,3 +33,23 @@ ekn_private_new_input_output_window (GtkWidget *widget)
   return gdk_window_new (gtk_widget_get_parent_window (widget),
                          &attributes, attributes_mask);
 }
+
+/**
+ * ekn_private_register_global_uri_scheme:
+ * @scheme: the network scheme to register
+ * @callback: (scope async): a #WebKitURISchemeRequestCallback.
+ *
+ * Workaround for https://bugzilla.gnome.org/show_bug.cgi?id=729611
+ * 
+ * Registers a URI scheme handler with the (global) default context. Does not
+ * pass a GDestroyNotifyFunc, which GJS would normally use to shim a destructor
+ * for @callback, causing a segmentation fault on process shutdown.
+ *
+ */
+void
+ekn_private_register_global_uri_scheme (const gchar                 *scheme,
+                                        WebKitURISchemeRequestCallback  callback)
+{
+    WebKitWebContext *context = webkit_web_context_get_default();
+    webkit_web_context_register_uri_scheme (context, scheme, callback, NULL, NULL);
+}

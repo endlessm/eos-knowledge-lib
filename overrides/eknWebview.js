@@ -7,6 +7,7 @@ const Lang = imports.lang;
 const WebKit2 = imports.gi.WebKit2;
 
 const Config = imports.config;
+const EosKnowledge = imports.gi.EosKnowledge;
 const EosKnowledgeSearch = imports.EosKnowledgeSearch;
 
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
@@ -60,7 +61,8 @@ const EknWebview = new Lang.Class({
 
         this.connect('context-menu', this._load_context_menu.bind(this));
         this.connect('decide-policy', this._onNavigation.bind(this));
-        this.web_context.register_uri_scheme('ekn', this._ekn_scheme_handler.bind(this));
+
+        EosKnowledge.private_register_global_uri_scheme('ekn', this._ekn_scheme_handler.bind(this));
     },
 
     // This handles images embedded in the webview. They
