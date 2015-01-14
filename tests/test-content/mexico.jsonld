@@ -1,5 +1,5 @@
 {
-    "@context": "http://localhost:3003/_context/ArticleObject",
+    "@context": "ekn:///_context/ArticleObject",
     "@id": "file:///mexico.html",
     "@type": "ekv:ArticleObject",
     "lastModifiedDate": "2014-09-28T22:42:55",
@@ -704,8 +704,8 @@
         "M\u00e9xico"
     ],
     "thumbnail": {
-        "@context": "http://localhost:3003/_context/ImageObject",
-        "@id": "http://localhost:3003/api/general-es/0b314c5cc68c5997",
+        "@context": "ekn:///_context/ImageObject",
+        "@id": "ekn:///api/general-es/0b314c5cc68c5997",
         "@type": "ekv:ImageObject",
         "contentURL": "file:///endless/share/ekn/data/general-es/media/0b314c5cc68c5997.jpeg",
         "encodingFormat": "image/jpeg",

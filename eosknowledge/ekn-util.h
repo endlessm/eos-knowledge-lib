@@ -12,11 +12,16 @@
 #include "ekn-types.h"
 
 #include <gtk/gtk.h>
+#include <webkit2/webkit2.h>
 
 G_BEGIN_DECLS
 
 EKN_AVAILABLE_IN_0_0
 GdkWindow *ekn_private_new_input_output_window (GtkWidget *widget);
+
+EKN_AVAILABLE_IN_0_0
+void ekn_private_register_global_uri_scheme (const gchar                 *scheme,
+                                             WebKitURISchemeRequestCallback  callback);
 
 G_END_DECLS
 
