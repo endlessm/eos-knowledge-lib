@@ -269,7 +269,7 @@ describe('Knowledge Engine Module', function () {
             });
         });
 
-        it ("constructs a list of of objects based on @type", function (done) {
+        it ("constructs a list of content objects based on @type", function (done) {
             mock_engine_request(undefined, MOCK_CONTENT_RESULTS);
             engine.get_objects_by_query('mock-content-query', {}, function (err, results) {
                 // All results in MOCK_CONTENT_OBJECT_RESULTS are of @type ContentObject,
@@ -279,7 +279,9 @@ describe('Knowledge Engine Module', function () {
                 }
                 done();
             });
+        });
 
+        it ("constructs a list of article objects based on @type", function (done) {
             mock_engine_request(undefined, MOCK_ARTICLE_RESULTS);
             engine.get_objects_by_query('mock-article-query', {}, function (err, results) {
                 // All results in MOCK_ARTICLE_OBJECT_RESULTS are of @type ArticleObject,
@@ -289,7 +291,9 @@ describe('Knowledge Engine Module', function () {
                 }
                 done();
             });
+        });
 
+        it ("constructs a list of media objects based on @type", function (done) {
             mock_engine_request(undefined, MOCK_MEDIA_RESULTS);
             engine.get_objects_by_query('mock-media-query', {}, function (err, results) {
                 // All results in MOCK_MEDIA_OBJECT_RESULTS are of @type MediaObject,
