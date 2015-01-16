@@ -39,7 +39,6 @@ const MockEngine = new Lang.Class({
         this.port = 3003;
     },
 
-    ping: function () {},
     get_object_by_id: function () {},
     get_ekn_id: function () {},
     get_objects_by_query: function () {},
@@ -70,7 +69,6 @@ describe('Presenter', function () {
         view = new MockView();
         engine = new MockEngine();
         article_presenter = new MockArticlePresenter();
-        spyOn(engine, 'ping');
         presenter = new EosKnowledge.Presenter(data, {
             article_presenter: article_presenter,
             engine: engine,
@@ -82,10 +80,6 @@ describe('Presenter', function () {
 
     it('can set title image on view from json', function () {
         expect(presenter.view.home_page.title_image_uri).toBe(data['titleImageURI']);
-    });
-
-    it('pings the knowledge engine on construction', function () {
-         expect(engine.ping).toHaveBeenCalled();
     });
 
     it('can set cards on view from json', function () {

@@ -38,7 +38,6 @@ const MockEngine = new Lang.Class({
         this.port = 3003;
     },
 
-    ping: function () {},
     get_object_by_id: function () {},
     get_ekn_id: function () {},
     get_objects_by_query: function () {},
