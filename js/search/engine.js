@@ -10,6 +10,10 @@ const MediaObjectModel = imports.mediaObjectModel;
 
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 
+let parenthesize = function (clause) {
+    return '(' + clause + ')';
+};
+
 /**
  * Class: Engine
  *
@@ -25,7 +29,7 @@ const Engine = Lang.Class({
         /**
          * Property: host
          *
-         * The hostname of the Knowledge Engine service. You generally don't
+         * The hostname of the xapian bridge. You generally don't
          * need to set this.
          *
          * Defaults to '127.0.0.1'
@@ -36,22 +40,38 @@ const Engine = Lang.Class({
          */
         'host': GObject.ParamSpec.string('host',
             'Knowledge Engine Hostname', 'HTTP hostname for the Knowledge Engine service',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
             '127.0.0.1'),
 
         /**
          * Property: port
          *
-         * The port of the Knowledge Engine service. You generally don't need
+         * The port of the xapian bridge. You generally don't need
          * to set this.
          *
-         * Defaults to 3003
+         * Defaults to 3004
          */
         'port': GObject.ParamSpec.int('port', 'Knowledge Engine Port',
             'The port of the Knowledge Engine service',
-             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-             -1, GLib.MAXINT32, 3003),
+             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
+             -1, GLib.MAXINT32, 3004),
+
+        /**
+         * Property: content-path
+         *
+         * The path to the directory containing the database and media content.
+         * Needs to be set!
+         *
+         * e.g. /endless/share/ekn/animals-es/
+         */
+        'content-path': GObject.ParamSpec.string('content-path',
+            'Content Path', 'path to the directory containing the knowledge engine content',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
+            ''),
     },
+
+    _DB_PATH: '/db',
+    _MEDIA_PATH: '/media',
 
     _init: function (params) {
         this.parent(params);
@@ -60,16 +80,12 @@ const Engine = Lang.Class({
 
     /**
      * Function: ping
-     * Pings the knowledge engine with a dummy request. Used to wake
-     * up the knowledge engine from its slumber.
-     *
-     * Parameters:
-     *
-     *   domain - The knowledge engine domain
      */
     _DUMMY_QUERY : 'frango',
-    ping: function (domain) {
-        let req_uri = this.get_ekn_uri(domain, undefined, {q: this._DUMMY_QUERY, limit: 1});
+    ping: function () {
+        // FIXME: Now that we are just going directly is this necessary? xapian
+        // bridge is very quick to start.
+        let req_uri = this.get_xapian_uri({ q: this._DUMMY_QUERY, limit: 1 });
         this._send_json_ld_request(req_uri, function (err, json_ld) {
             if (typeof err !== 'undefined') {
                 // error occurred during request, so immediately fail with err
@@ -82,22 +98,24 @@ const Engine = Lang.Class({
 
     /**
      * Function: get_object_by_id
-     * Sends a request for a Knowledge Engine object at *domain* with ID *id*.
+     * Sends a request for to xapian-bridge for an object with ID *id*.
      * *callback* is a function which takes *err* and *result* parameters.
      *
      * Parameters:
      *
-     *   domain - The Knowledge Engine domain in which the requested object is
-     *   stored
-     *   id - The unique ID for this object. Usually a SHA1 hash
+     *   id - The unique ID for this object, of the form ekn://domain/sha
      *   callback - A function which will be called after the request finished.
      *             The function should take two parameters: *error* and *result*,
      *             *error* will only be defined if there was an error, and
      *             *result* where is an <ContentObjectModel> corresponding to
      *             the successfully retrieved object type
      */
-    get_object_by_id: function (domain, id, callback, cancellable = null) {
-        let req_uri = this.get_ekn_uri(domain, id);
+    get_object_by_id: function (id, callback, cancellable = null) {
+        var query_obj = {
+            limit: 1,
+            id: id,
+        };
+        let req_uri = this.get_xapian_uri(query_obj);
 
         this._send_json_ld_request(req_uri, function (err, json_ld) {
             if (typeof err !== 'undefined') {
@@ -110,7 +128,7 @@ const Engine = Lang.Class({
             try {
                 if (json_ld === null)
                     throw new Error("Received null object response for " + req_uri.to_string(false));
-                model = this._model_from_json_ld(json_ld);
+                model = this._model_from_json_ld(json_ld.results[0]);
             } catch (err) {
                 // Error marshalling the JSON-LD object
                 callback(err, undefined);
@@ -122,17 +140,18 @@ const Engine = Lang.Class({
 
     /**
      * Function: get_objects_by_query
-     * Sends a request for Knowledge Engine objects at *domain* matching
-     * *query*. *callback* is a function which takes *err* and *result* parameters.
-     * *query* is an object which has four possible options: q (querystring),
-     * tag (comma delimited string of tags), prefix (string matching the prefix
-     * of object titles) and limit (integer representing maximum number of
-     * results to retrieve)
+     * Sends a request for to xapian-bridge for objects matching *query*.
+     * *callback* is a function which takes *err* and *result* parameters.
+     *
+     * *query* is an object with many parameters controlling the search
+     *   - q (search query string)
+     *   - prefix (prefix search query string)
+     *   - tag (comma delimited string of tags results must match)
+     *   - offset (number of results to skip, useful for pagination)
+     *   - limit  (maximum number of results to return)
      *
      * Parameters:
      *
-     *   domain - The Knowledge Engine domain in which the requested object is
-     *            stored
      *   query - An object whose keys are query parameters, and values are
      *           strings.
      *   callback - A function which will be called after the request finished.
@@ -141,8 +160,8 @@ const Engine = Lang.Class({
      *             error, and *result* is a list of <ContentObjectModel>s
      *             corresponding to the successfully retrieved object type
      */
-    get_objects_by_query: function (domain, query_obj, callback, cancellable = null) {
-        let req_uri = this.get_ekn_uri(domain, undefined, query_obj);
+    get_objects_by_query: function (query_obj, callback, cancellable = null) {
+        let req_uri = this.get_xapian_uri(query_obj);
 
         this._send_json_ld_request(req_uri, function (err, json_ld) {
             if (typeof err !== 'undefined') {
@@ -164,7 +183,7 @@ const Engine = Lang.Class({
             let get_more_results = function (batch_size, new_callback) {
                 query_obj.offset = json_ld.numResults + json_ld.offset;
                 query_obj.limit = batch_size;
-                this.get_objects_by_query(domain, query_obj, new_callback);
+                this.get_objects_by_query(query_obj, new_callback);
             }.bind(this);
             callback(undefined, search_results, get_more_results);
         }.bind(this), cancellable);
@@ -174,20 +193,20 @@ const Engine = Lang.Class({
     // error if there is no corresponding model
     _model_from_json_ld: function (json_ld) {
         let ekn_model_by_ekv_type = {
-            'ekv:ContentObject':
+            'ekn://_vocab/ContentObject':
                 ContentObjectModel.ContentObjectModel,
-            'ekv:ArticleObject':
+            'ekn://_vocab/ArticleObject':
                 ArticleObjectModel.ArticleObjectModel,
-            'ekv:ImageObject':
+            'ekn://_vocab/ImageObject':
                 MediaObjectModel.ImageObjectModel,
-            'ekv:VideoObject':
+            'ekn://_vocab/VideoObject':
                 MediaObjectModel.VideoObjectModel,
         };
 
         let json_ld_type = json_ld['@type'];
         if (ekn_model_by_ekv_type.hasOwnProperty(json_ld_type)) {
             let Model = ekn_model_by_ekv_type[json_ld_type];
-            return Model.new_from_json_ld(json_ld);
+            return Model.new_from_json_ld(json_ld, this.content_path + this._MEDIA_PATH);
         } else {
             throw new Error('No EKN model found for json_ld type ' + json_ld_type);
         }
@@ -196,74 +215,65 @@ const Engine = Lang.Class({
     // Returns a list of marshalled ObjectModels, or throws an error if json_ld
     // is not a SearchResults object
     _results_list_from_json_ld: function (json_ld) {
-        if (json_ld['@type'] !== 'ekv:SearchResults') {
-            throw new Error('Cannot marshal search results list from data of type ' + json_ld['@type']);
-        }
-
         return json_ld.results.map(this._model_from_json_ld.bind(this));
     },
 
     /**
-     * Function: get_ekn_uri
-     * Constructs a URI to the knowledge engine matching the *domain*, *id*,
-     * and *query* specified.
+     * Function: get_xapian_uri
+     *
+     * Constructs a URI to query the xapian bridge with the given query object.
      *
      * Parameters:
-     *
-     *   domain - The Knowledge Engine domain for the desired URI
-     *   id - The Knowledge Engine id for the desired URI. (optional)
      *   query_obj - An object whose keys are query parameters, and values are
-     *           strings. (optional)
+     *             strings.
      */
-    get_ekn_uri: function (domain, id, query_obj) {
-        if (typeof domain === 'undefined') {
-            throw new Error('Domain not defined!');
-        }
-
+    get_xapian_uri: function (query_obj) {
         let host_uri = "http://" + this.host;
         let uri = new Soup.URI(host_uri);
         uri.set_port(this.port);
+        uri.set_path('/query');
 
-        if (typeof id !== 'undefined') {
-            uri.set_path('/api/' + domain + '/' + id);
-        } else {
-            uri.set_path('/api/' + domain);
+        let query_obj_out = {
+            path: this.content_path + this._DB_PATH,
+            offset: 0,
+            collapse: 0,
+        };
+
+        // FIXME: logic for building queries has to get a lot more advanced
+        for (let property in query_obj) {
+            if (typeof query_obj[property] === 'undefined')
+                throw new Error('Parameter value is undefined!');
+            if (property === 'tag') {
+                query_obj_out.q = parenthesize('tag:"' + query_obj.tag + '"');
+            } else if (property === 'q') {
+                let term = query_obj.q.split(/\s+/)[0];
+                query_obj_out.q = parenthesize(term);
+            } else if (property === 'prefix') {
+                let term = query_obj.prefix.split(/\s+/)[0];
+                query_obj_out.q = parenthesize(term);
+            } else if (property === 'id') {
+                let id_sha = query_obj.id.split('/').slice(-1)[0];
+                query_obj_out.q = parenthesize('id:' + id_sha);
+            } else {
+                query_obj_out[property] = query_obj[property];
+            }
         }
 
-        if (typeof query_obj !== 'undefined') {
-            // turns query_obj into an array of 'param=encodedVal' strings
-            let query_arr = Object.keys(query_obj).reduce(
-                function (arr, param_name) {
-                    // if this param_name has an array of values, add several
-                    // individual 'param_name=val' strings to the list
-                    // e.g. 'foo': ['bar', 'baz'] => ['foo=bar', 'foo=baz']
-                    //
-                    // otherwise just add 'param_name=val'
-                    if (typeof query_obj[param_name] === 'undefined') {
-                        throw new Error('Parameter value is undefined!');
-                    } else if (Array.isArray(query_obj[param_name])) {
-                        return arr.concat(query_obj[param_name].map(function (v) {
-                            return param_name + '=' + encodeURIComponent(v);
-                        }));
-                    } else {
-                        let v = query_obj[param_name];
-                        let arg = param_name + '=' + encodeURIComponent(v);
-                        return arr.concat([arg]);
-                    }
-                }, []);
-
-            // join those strings with '&'
-            let query_string = query_arr.join('&');
-
-            // set the uri querystring
-            uri.set_query(query_string);
-        }
+        uri.set_query(this.serialize_query(query_obj_out));
         return uri;
     },
 
-    // Queues a SoupMessage for *req_uri* to the current http session. Only
-    // accepts JSON-LD responses, and calls *callback* on any errors encountered
-    // and the parsed JSON
+    serialize_query: function (query_obj) {
+        let query_array = [];
+        var stringify_and_encode = function (v) { return encodeURIComponent(String(v)); };
+        for (let property in query_obj) {
+            query_array.push(stringify_and_encode(property) + "=" + stringify_and_encode(query_obj[property]));
+        }
+        return query_array.join("&");
+    },
+
+    // Queues a SoupMessage for *req_uri* to the current http session. Calls
+    // *callback* on any errors encountered and the parsed JSON.
     _send_json_ld_request: function (req_uri, callback, cancellable = null) {
         if (cancellable && cancellable.is_cancelled())
             return;
@@ -271,12 +281,12 @@ const Engine = Lang.Class({
             method: 'GET',
             uri: req_uri
         });
-        request.request_headers.replace('Accept', 'application/ld+json');
 
         this._http_session.queue_message(request, function(session, message) {
             let json_ld_response;
             try {
-                json_ld_response = JSON.parse(message.response_body.data);
+                let data = message.response_body.data;
+                json_ld_response = JSON.parse(data);
             } catch (err) {
                 // JSON parse error
                 callback(err, undefined);
@@ -291,3 +301,10 @@ const Engine = Lang.Class({
         }
     }
 });
+
+let the_engine = null;
+Engine.get_default = function () {
+    if (the_engine === null)
+        the_engine = new Engine();
+    return the_engine;
+};

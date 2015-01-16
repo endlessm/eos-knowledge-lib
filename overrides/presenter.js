@@ -112,7 +112,6 @@ const Presenter = new Lang.Class({
 
     _init: function (app_json, props) {
         this._template_type = app_json['templateType'];
-        this._domain = app_json['appId'].split('.').pop();
 
         let css = Gio.File.new_for_uri('resource:///com/endlessm/knowledge/endless_knowledge.css');
         Utils.add_css_provider_from_file(css, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
@@ -121,7 +120,7 @@ const Presenter = new Lang.Class({
             application: props.application,
             template_type: this._template_type,
         });
-        props.engine = props.engine || new EosKnowledgeSearch.Engine();
+        props.engine = props.engine || EosKnowledgeSearch.Engine.get_default();
         props.article_presenter = props.article_presenter || new ArticlePresenter.ArticlePresenter({
                 article_view: props.view.article_page,
                 engine: props.engine,
@@ -141,7 +140,7 @@ const Presenter = new Lang.Class({
         this.view.lightbox.content_widget = this._previewer;
 
         // Ping server to spin up knowledge engine
-        this.engine.ping(this._domain);
+        this.engine.ping();
 
         // Keeps track of the broad query that led to an individual article.
         this._latest_origin_query = '{}';
@@ -234,11 +233,11 @@ const Presenter = new Lang.Class({
                 break;
             case this._SECTION_PAGE:
                 this._target_page_title = this._history_model.current_item.title;
-                this.engine.get_objects_by_query(this._domain, article_origin_query, this._load_section_page.bind(this));
+                this.engine.get_objects_by_query(article_origin_query, this._load_section_page.bind(this));
                 break;
             case this._ARTICLE_PAGE:
                 if (this._history_model.current_item.article_origin_query !== this._latest_origin_query) {
-                    this.engine.get_objects_by_query(this._domain, article_origin_query, this._refresh_sidebar_callback.bind(this));
+                    this.engine.get_objects_by_query(article_origin_query, this._refresh_sidebar_callback.bind(this));
                 }
                 this.article_presenter.load_article(this._history_model.current_item.article_model, animation_type);
                 // For Template B, we reset the highlight to the card with the same title
@@ -327,7 +326,7 @@ const Presenter = new Lang.Class({
         }
         this._target_page_title = card.title;
         this._add_history_object_for_section_page(JSON.stringify(query));
-        this.engine.get_objects_by_query(this._domain, query, this._load_section_page.bind(this));
+        this.engine.get_objects_by_query(query, this._load_section_page.bind(this));
     },
 
     // Removes newlines and trims whitespace before and after a query string
@@ -343,14 +342,14 @@ const Presenter = new Lang.Class({
         if (query.length === 0) {
             return;
         }
+        let query_obj = {
+            q: query,
+            limit: RESULTS_SIZE,
+        };
 
         this.view.search_box.text = query;
-        this._add_history_object_for_search_page(JSON.stringify({
-            q: query
-        }));
-        this._perform_search(this.view, {
-            q: query
-        });
+        this._add_history_object_for_search_page(JSON.stringify(query_obj));
+        this._perform_search(this.view, query_obj);
     },
 
     _perform_search: function (view, query) {
@@ -364,7 +363,7 @@ const Presenter = new Lang.Class({
         // The topbar search box should also clear once an article has been chosen.
         this.view.home_page.search_box.text = '';
 
-        this.engine.get_objects_by_query(this._domain, query, this._load_section_page.bind(this));
+        this.engine.get_objects_by_query(query, this._load_section_page.bind(this));
     },
 
     _on_search_focus: function (view, focused) {
@@ -402,8 +401,9 @@ const Presenter = new Lang.Class({
         if (query.length === 0) {
             return;
         }
-        this.engine.get_objects_by_query(this._domain, {
-            'prefix': query
+        this.engine.get_objects_by_query({
+            'prefix': query,
+            'limit': RESULTS_SIZE,
         }, function (err, results) {
             if (err !== undefined) {
                 printerr(err);

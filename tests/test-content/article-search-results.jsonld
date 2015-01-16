@@ -1,39 +1,18 @@
 {
-    "@context":
-    {
-        "schema": "http://schema.org/",
-        "xsd": "http://www.w3.org/2001/XMLSchema#",
-        "ekn": "http://127.0.0.1:3003/v2/",
-        "ekv": "ekn:_vocab/",
-        "numResults": "schema:Integer",
-        "results":
-        {
-            "@container": "@list",
-            "@id": "ekv:ContentObject"
-        },
-        "queryString": "schema:Text",
-        "queryTags": 
-        {
-            "@container": "@list",
-            "@id": "schema:keyword"
-        },
-        "queryPrefix": "schema:Text",
-        "queryLimit": "schema:Integer"
-    },
-    "@type": "ekv:SearchResults",
-    "queryString": "stark",
+    "query": "stark",
     "numResults": 2,
+    "offset": 0,
     "results": [
         {
-            "@id": "ekn:asoiaf/House_Stark",
-            "@type": "ekv:ArticleObject",
+            "@id": "ekn://asoiaf/House_Stark",
+            "@type": "ekn://_vocab/ArticleObject",
             "title": "House Stark",
             "synopsis": "Winter is Coming",
             "articleBody": "Everything's coming up Stark!"
         },
         {
-            "@id": "ekn:marvel/Tony_Stark",
-            "@type": "ekv:ArticleObject",
+            "@id": "ekn://marvel/Tony_Stark",
+            "@type": "ekn://_vocab/ArticleObject",
             "title": "Tony Stark",
             "synopsis": "is actually Iron Man",
             "articleBody": "Fun fact: Iron Man was actually based on Robert Downy Jr.'s life"

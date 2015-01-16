@@ -24,6 +24,7 @@ GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.
 
 const RESULTS_SIZE = 15;
 const NUM_SNIPPETS_ON_OVERVIEW_PAGE = 3;
+const BOGUS_URI = 'bogus-uri';
 
 // 1 week in miliseconds
 const UPDATE_INTERVAL_MS = 604800000;
@@ -109,7 +110,7 @@ const Presenter = new Lang.Class({
         props.view = props.view || new Window.Window({
             application: props.application,
         });
-        props.engine = props.engine || new EosKnowledgeSearch.Engine();
+        props.engine = props.engine || EosKnowledgeSearch.Engine.get_default();
         props.settings = props.settings || new UserSettingsModel.UserSettingsModel({
             settings_file: Gio.File.new_for_path(props.application.config_dir.get_path() + '/user_settings.json'),
         });
@@ -161,6 +162,8 @@ const Presenter = new Lang.Class({
         this.settings.bind_property('bookmark-issue',
             this.view.issue_nav_buttons.back_button, 'sensitive',
             GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE);
+
+        EosKnowledge.private_register_global_uri_scheme('ekn', Utils.load_ekn_assets);
     },
 
     // Right now these functions are just stubs which we will need to flesh out
@@ -184,7 +187,7 @@ const Presenter = new Lang.Class({
     },
 
     _load_all_content: function () {
-        this.engine.get_objects_by_query(this._domain, {
+        this.engine.get_objects_by_query({
             tag: 'issueNumber' + this.settings.bookmark_issue,
             limit: RESULTS_SIZE,
             sortBy: 'articleNumber',
@@ -315,9 +318,7 @@ const Presenter = new Lang.Class({
         this._article_models = this._article_models.concat(models);
     },
 
-    _load_webview_content: function (model, ready) {
-        let uri = model.ekn_id;
-        model.fetch_all(this.engine);
+    _load_webview_content: function (article_model, ready) {
         if (ready === undefined) {
             ready = function () {};
         }
@@ -354,7 +355,8 @@ const Presenter = new Lang.Class({
             return false; // default action
         }.bind(this));
 
-        webview.load_uri(uri);
+        // FIXME: this is just to get something on screen. We need to redo all the jade templating.
+        webview.load_html(article_model.body_html, BOGUS_URI);
         return webview;
     },
 
@@ -390,7 +392,6 @@ const Presenter = new Lang.Class({
     // Retrieve all needed information from the app.json file, such as the app
     // ID and the app's headline.
     _parse_app_info: function (info) {
-        this._domain = info['appId'].split('.').pop();
         this.view.title = info['appTitle'];
         this.view.overview_page.title_image_uri = info['titleImageURI'];
         this.view.overview_page.background_image_uri = info['backgroundHomeURI'];

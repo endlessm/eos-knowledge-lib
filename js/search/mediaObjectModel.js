@@ -100,24 +100,24 @@ const MediaObjectModel = new Lang.Class({
  * Creates an MediaObjectModel from a Knowledge Engine MediaObject
  * JSON-LD document
  */
-MediaObjectModel.new_from_json_ld = function (json_ld_data) {
-    let props = MediaObjectModel._props_from_json_ld(json_ld_data);
+MediaObjectModel.new_from_json_ld = function (json_ld_data, media_path) {
+    let props = MediaObjectModel._props_from_json_ld(json_ld_data, media_path);
     let media_object_model = new MediaObjectModel(props);
 
-    MediaObjectModel._setup_from_json_ld(media_object_model, json_ld_data);
+    MediaObjectModel._setup_from_json_ld(media_object_model, json_ld_data, media_path);
     return media_object_model;
 };
 
-MediaObjectModel._setup_from_json_ld = function (model, json_ld_data) {
+MediaObjectModel._setup_from_json_ld = function (model, json_ld_data, media_path) {
     // Inherit setup from parent class
     let ParentClass = MediaObjectModel.__super__;
-    ParentClass._setup_from_json_ld(model, json_ld_data);
+    ParentClass._setup_from_json_ld(model, json_ld_data, media_path);
 };
 
-MediaObjectModel._props_from_json_ld = function (json_ld_data) {
+MediaObjectModel._props_from_json_ld = function (json_ld_data, media_path) {
     // Inherit properties marshalled from parent class
     let ParentClass = MediaObjectModel.__super__;
-    let props = ParentClass._props_from_json_ld(json_ld_data);
+    let props = ParentClass._props_from_json_ld(json_ld_data, media_path);
 
     // Marshal properties specific to MediaObjectModel
     if (json_ld_data.hasOwnProperty('caption')) {
@@ -159,15 +159,15 @@ const ImageObjectModel = Lang.Class({
  * Creates an ImageObjectModel from a Knowledge Engine ImageObject
  * JSON-LD document
  */
-ImageObjectModel.new_from_json_ld = function (json_ld_data) {
-    let props = ImageObjectModel._props_from_json_ld(json_ld_data);
+ImageObjectModel.new_from_json_ld = function (json_ld_data, media_path) {
+    let props = ImageObjectModel._props_from_json_ld(json_ld_data, media_path);
     return new ImageObjectModel(props);
 };
 
-ImageObjectModel._props_from_json_ld = function (json_ld_data) {
+ImageObjectModel._props_from_json_ld = function (json_ld_data, media_path) {
     // ImageObject inherits all its properties from its parent
     let ParentClass = ImageObjectModel.__super__;
-    return ParentClass._props_from_json_ld(json_ld_data);
+    return ParentClass._props_from_json_ld(json_ld_data, media_path);
 };
 
 /**
@@ -224,8 +224,8 @@ const VideoObjectModel = Lang.Class({
 
 });
 
-VideoObjectModel.new_from_json_ld = function (json_ld_data) {
-    let props = VideoObjectModel._props_from_json_ld(json_ld_data);
+VideoObjectModel.new_from_json_ld = function (json_ld_data, media_path) {
+    let props = VideoObjectModel._props_from_json_ld(json_ld_data, media_path);
     return new VideoObjectModel(props);
 };
 
@@ -234,9 +234,9 @@ VideoObjectModel.new_from_json_ld = function (json_ld_data) {
  * Creates an VideoObjectModel from a Knowledge Engine VideoObject
  * JSON-LD document
  */
-VideoObjectModel._props_from_json_ld = function (json_ld_data) {
+VideoObjectModel._props_from_json_ld = function (json_ld_data, media_path) {
     let ParentClass = VideoObjectModel.__super__;
-    let props = ParentClass._props_from_json_ld(json_ld_data);
+    let props = ParentClass._props_from_json_ld(json_ld_data, media_path);
 
     if (json_ld_data.hasOwnProperty('duration')) {
         props.duration = json_ld_data.duration;

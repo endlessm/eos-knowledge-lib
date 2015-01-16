@@ -1,6 +1,6 @@
 {
     "@context": [
-        "http://127.0.0.1:3003/v2/_context/ContentObject.jsonld",
+        "ekn://_context/ContentObject.jsonld",
         {
             "wordCount": "schema:Integer",
             "articleBody": "schema:mainContentText",
@@ -26,17 +26,17 @@
     "articleBody": "lame",
     "resources": [
         {
-            "@id": "ekn:squids/squid_people.jpg",
+            "@id": "ekn://squids/squid_people.jpg",
             "@type": "ekv:ImageObject",
-            "contentURL": "ekn:_media/squid_people.jpg",
+            "contentURL": "squid_people.jpg",
             "caption": "Taste like squid, talk like people",
             "contentSize": "60KB",
             "encodingFormat": "jpeg"
         },
         {
-            "@id": "ekn:jerks/Theon.jpg",
+            "@id": "ekn://jerks/Theon.jpg",
             "@type": "ekv:ImageObject",
-            "contentURL": "ekn:_media/Theon.jpg.jpg",
+            "contentURL": "Theon.jpg",
             "caption": "What a jerk",
             "contentSize": "32KB",
             "encodingFormat": "jpeg"
@@ -48,7 +48,7 @@
             "hasIndex": 0,
             "hasIndexLabel": "1",
             "hasLabel": "History",
-            "hasContent": "ekn:asoiaf/House_Greyjoy#History"
+            "hasContent": "ekn://asoiaf/House_Greyjoy#History"
         },
         {
             "@id": "_:1.a",
@@ -56,21 +56,21 @@
             "hasIndexLabel": "1.a",
             "hasLabel": "When They Used To Be Cool",
             "hasParent": "_:1",
-            "hasContent": "ekn:asoiaf/House_Greyjoy#Never"
+            "hasContent": "ekn://asoiaf/House_Greyjoy#Never"
         },
         {
             "@id": "_:2",
             "hasIndex": 1,
             "hasIndexLabel": "2",
             "hasLabel": "Sigil",
-            "hasContent": "ekn:asoiaf/House_Greyjoy#Literally_A_Squid"
+            "hasContent": "ekn://asoiaf/House_Greyjoy#Literally_A_Squid"
         },
         {
             "@id": "_:3",
             "hasIndex": 2,
             "hasIndexLabel": "3",
             "hasLabel": "Criticisms",
-            "hasContent": "ekn:asoiaf/House_Greyjoy#Seriously"
+            "hasContent": "ekn://asoiaf/House_Greyjoy#Seriously"
         } 
     ]
 }

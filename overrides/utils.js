@@ -1,4 +1,6 @@
+const EosKnowledgeSearch = imports.EosKnowledgeSearch;
 const Gdk = imports.gi.Gdk;
+const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
 
 /* Not part of public API. Changes @widget's GdkWindow to have the 'hand' cursor
@@ -45,4 +47,17 @@ function add_css_provider_from_file (file, priority) {
     provider.load_from_file(file);
     Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(),
             provider, priority);
+}
+
+function load_ekn_assets (req)  {
+    try {
+        EosKnowledgeSearch.Engine.get_default().get_object_by_id(req.get_uri(), function (err, model) {
+            let file = Gio.File.new_for_uri(model.content_uri);
+            req.finish(file.read(null), -1, null);
+        });
+    } catch (error) {
+        printerr(error);
+        printerr(error.stack);
+        req.finish_error(new Gio.IOErrorEnum({ message: error.message, code: 0 }));
+    }
 }
