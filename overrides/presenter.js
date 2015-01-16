@@ -139,9 +139,6 @@ const Presenter = new Lang.Class({
         });
         this.view.lightbox.content_widget = this._previewer;
 
-        // Ping server to spin up knowledge engine
-        this.engine.ping();
-
         // Keeps track of the broad query that led to an individual article.
         this._latest_origin_query = '{}';
         this._latest_article_card_title = '';
