@@ -56,17 +56,6 @@ const SearchProvider = Lang.Class({
     Name: 'EknSearchProvider',
     Extends: GObject.Object,
 
-    Properties: {
-        /**
-         * Property: search-domain
-         *
-         * The Knowledge Engine domain from which to provide results
-         */
-        'search-domain': GObject.ParamSpec.string('search-domain',
-            'Search Domain', 'Search Domain within knowledge engine',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT, ''),
-    },
-
     Signals: {
         /**
          * Event: load-page
@@ -109,7 +98,7 @@ const SearchProvider = Lang.Class({
         this._search_results = null;
         this._more_results_callback = null;
 
-        this._engine = new Engine.Engine();
+        this._engine = new Engine.Engine.get_default();
         this._object_cache = {};
     },
 
@@ -144,7 +133,7 @@ const SearchProvider = Lang.Class({
         if (this._cancellable)
             this._cancellable.cancel();
         this._cancellable = new Gio.Cancellable();
-        this._engine.get_objects_by_query(this.search_domain, {
+        this._engine.get_objects_by_query({
             q: search_phrase,
             limit: limit,
         }, function (err, results, more_results_callback) {
@@ -229,23 +218,17 @@ const SearchProvider = Lang.Class({
         // before the user activated a result), re-fetch it. otherwise just
         // emit the load-page signal with the cache result
         if (typeof model === 'undefined') {
-            // id is a full EKN URI, but the engine operates in domains and
-            // SHA ids (the last two components of the EKN URI path)
-            let uri_parts = id.split('/');
-            let obj_id = uri_parts.pop();
-            let domain = uri_parts.pop();
-
             let query_obj = {
                 'q': query
             };
 
             // If the cache misses, it's necessary to rerun the query to get the results set
             // before retrieving the requested article.
-            this._engine.get_objects_by_query(domain, query_obj, function (err, results, callback) {
+            this._engine.get_objects_by_query(query_obj, function (err, results, callback) {
                 this._search_results = results;
                 this._more_results_callback = callback;
 
-                this._engine.get_object_by_id(domain, obj_id, function (err, new_model) {
+                this._engine.get_object_by_id(id, function (err, new_model) {
                     if (err) {
                         throw err;
                     } else {

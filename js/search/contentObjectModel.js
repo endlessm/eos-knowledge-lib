@@ -128,7 +128,7 @@ const ContentObjectModel = new Lang.Class({
      */
     fetch_all: function (engine) {
         this.request_queue.forEach(function (request) {
-            engine.get_object_by_id(request.domain, request.id, request.callback);
+            engine.get_object_by_id(request.id, request.callback);
         });
         this.request_queue = [];
     },
@@ -143,10 +143,8 @@ const ContentObjectModel = new Lang.Class({
      *              is fetched. Should handle error case
      */
     queue_deferred_property: function (uri, callback) {
-        [domain, id] = uri.split('/').slice(-2);
         this.request_queue.push({
-            domain: domain,
-            id: id,
+            id: uri,
             callback: callback
         });
     },
@@ -268,20 +266,20 @@ const ContentObjectModel = new Lang.Class({
  * Creates an ContentObjectModel from a Knowledge Engine ContentObject
  * JSON-LD document
  */
-ContentObjectModel.new_from_json_ld = function (json_ld_data) {
-    let props = ContentObjectModel._props_from_json_ld(json_ld_data);
+ContentObjectModel.new_from_json_ld = function (json_ld_data, media_path) {
+    let props = ContentObjectModel._props_from_json_ld(json_ld_data, media_path);
     let contentObjectModel = new ContentObjectModel(props);
-    ContentObjectModel._setup_from_json_ld(contentObjectModel, json_ld_data);
+    ContentObjectModel._setup_from_json_ld(contentObjectModel, json_ld_data, media_path);
 
     return contentObjectModel;
 };
 
-ContentObjectModel._setup_from_json_ld = function (model, json_ld_data) {
+ContentObjectModel._setup_from_json_ld = function (model, json_ld_data, media_path) {
     // setup thumbnail, if it exists
     if(json_ld_data.hasOwnProperty('thumbnail')) {
         if (typeof json_ld_data.thumbnail === 'object') {
             // if the thumbnail is a JSON-LD object, marshall it now
-            model.thumbnail = EosKnowledgeSearch.ImageObjectModel.new_from_json_ld(json_ld_data.thumbnail);
+            model.thumbnail = EosKnowledgeSearch.ImageObjectModel.new_from_json_ld(json_ld_data.thumbnail, media_path);
         } else {
             // else, defer requesting the thumbnail until fetch_all is called
             model.queue_deferred_property(json_ld_data.thumbnail,
@@ -303,7 +301,7 @@ ContentObjectModel._setup_from_json_ld = function (model, json_ld_data) {
             // if the resources are already in JSON-LD form, just instantiate
             // them and alert that they're ready
             let mediaObjectModels =json_ld_data.resources.map(function (resource_json_ld) {
-                return EosKnowledgeSearch.MediaObjectModel.new_from_json_ld(resource_json_ld);
+                return EosKnowledgeSearch.MediaObjectModel.new_from_json_ld(resource_json_ld, media_path);
             });
 
             model.set_resources(mediaObjectModels);
@@ -342,7 +340,7 @@ ContentObjectModel._setup_from_json_ld = function (model, json_ld_data) {
     }
 };
 
-ContentObjectModel._props_from_json_ld = function (json_ld_data) {
+ContentObjectModel._props_from_json_ld = function (json_ld_data, media_path) {
     let props = {};
     if(json_ld_data.hasOwnProperty('@id'))
         props.ekn_id = json_ld_data['@id'];
@@ -372,7 +370,7 @@ ContentObjectModel._props_from_json_ld = function (json_ld_data) {
         props.source_uri = json_ld_data.sourceURI;
 
     if (json_ld_data.hasOwnProperty('contentURL'))
-        props.content_uri = json_ld_data.contentURL;
+        props.content_uri = 'file://' + media_path + '/' + json_ld_data.contentURL;
 
     if(json_ld_data.hasOwnProperty('synopsis'))
         props.synopsis = json_ld_data.synopsis;
