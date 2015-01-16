@@ -1,4 +1,6 @@
 const EosKnowledgeSearch = imports.EosKnowledgeSearch;
+const EosKnowledge = imports.gi.EosKnowledge;
+const GLib = imports.gi.GLib;
 const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
@@ -8,6 +10,7 @@ const WebKit2 = imports.gi.WebKit2;
 const ArticlePage = imports.articlePage;
 const EknWebview = imports.eknWebview;
 const PDFView = imports.PDFView;
+const Utils = imports.utils;
 
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 
@@ -93,6 +96,7 @@ const ArticlePresenter = new GObject.Class({
 
     // Duration of animated scroll from section to section in the page.
     _SCROLL_DURATION: 1000,
+    _BOGUS_URI: 'bogus-uri',
 
     _init: function (props) {
         this.parent(props);
@@ -104,6 +108,8 @@ const ArticlePresenter = new GObject.Class({
 
         this._connect_toc_widget();
         this.article_view.connect('new-view-transitioned', this._update_title_and_toc.bind(this));
+
+        EosKnowledge.private_register_global_uri_scheme('ekn', Utils.load_ekn_assets);
     },
 
     set article_model (v) {
@@ -141,16 +147,8 @@ const ArticlePresenter = new GObject.Class({
         // If the article model has no content_uri, assume html and load the ekn_id uri
         let uri = this._article_model.ekn_id;
         let type = 'text/html';
-        if (this._article_model.content_uri.length > 0) {
-            uri = this._article_model.content_uri;
-            let file = Gio.file_new_for_uri(uri);
-            type = file.query_info('standard::content-type',
-                                   Gio.FileQueryInfoFlags.NONE,
-                                   null).get_content_type();
-        }
-
-        if (type === 'text/html') {
-            this._webview = this._get_webview_for_uri(uri);
+        if (this._article_model.body_html.length > 0) {
+            this._webview = this._get_webview();
             this._webview_load_id = this._webview.connect('load-changed', function (view, status) {
                 if (status !== WebKit2.LoadEvent.COMMITTED)
                     return;
@@ -159,18 +157,29 @@ const ArticlePresenter = new GObject.Class({
                 this.article_view.switch_in_content_view(this._webview, animation_type);
                 ready();
             }.bind(this));
-            this._webview.load_uri(uri);
-        } else if (type === 'application/pdf') {
-            let view = this._get_pdfview_for_uri(uri);
-            view.load_uri(uri);
-            // FIXME: Remove this line once we support table of contents
-            // widget for PDFs
-            this._article_model.table_of_contents = undefined;
-            this.article_view.switch_in_content_view(view, animation_type);
-            ready();
+            // FIXME: this is just to get something on screen. We need to redo all the jade templating.
+            this._webview.load_html(this._article_model.body_html, this._BOGUS_URI);
+        } else if (this._article_model.content_uri.length > 0) {
+            uri = this._article_model.content_uri;
+            let file = Gio.file_new_for_uri(uri);
+            type = file.query_info('standard::content-type',
+                                   Gio.FileQueryInfoFlags.NONE,
+                                   null).get_content_type();
+            if (type === 'application/pdf') {
+                let view = this._get_pdfview_for_uri(uri);
+                view.load_uri(uri);
+                // FIXME: Remove this line once we support table of contents
+                // widget for PDFs
+                this._article_model.table_of_contents = undefined;
+                this.article_view.switch_in_content_view(view, animation_type);
+                ready();
+            } else {
+                throw new Error("We don't know how to display " + type + " articles!");
+            }
         } else {
-            throw new Error("We don't know how to display " + type + " articles!");
+            throw new Error("Article had no body html or content uri");
         }
+
     },
 
     // Cancels any currently loading offscreen views. Right now just the
@@ -245,7 +254,7 @@ const ArticlePresenter = new GObject.Class({
         return toplevel_elements;
     },
 
-    _get_webview_for_uri: function (uri) {
+    _get_webview: function () {
         let webview = new EknWebview.EknWebview();
 
         webview.inject_js_from_resource('resource:///com/endlessm/knowledge/scroll_manager.js');
@@ -288,12 +297,9 @@ const ArticlePresenter = new GObject.Class({
                 return model.ekn_id;
             });
 
-            // If this check is true, then the base of the requested URI
-            // was equal to that of the article model and so we should just
-            // follow it. This handles the case where we are navigating to
-            // an article for the first time from the section page, or we
-            // are navigating to a hash within the current article.
-            if (this._article_model.ekn_id.indexOf(baseURI) === 0) {
+            if (baseURI === this._BOGUS_URI) {
+                // If this check is true, then we are navigating to the current
+                // page or an anchor on the current page.
                 decision.use();
                 return false;
             } else if (resource_ekn_ids.indexOf(decision.request.uri) !== -1) {
@@ -307,12 +313,7 @@ const ArticlePresenter = new GObject.Class({
                 decision.ignore();
                 return true;
             } else {
-                // Else, the request could be either for a media object
-                // or a new article page
-                let [domain, id] = baseURI.split('/').slice(-2);
-                decision.ignore();
-
-                this.engine.get_object_by_id(domain, id, function (err, model) {
+                this.engine.get_object_by_id(baseURI, function (err, model) {
                     if (typeof err === 'undefined') {
                         if (model instanceof EosKnowledgeSearch.MediaObjectModel) {
                             this.emit('media-object-clicked', model, false);

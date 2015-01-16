@@ -21,6 +21,14 @@ const ArticleObjectModel = new Lang.Class({
     Extends: ContentObjectModel.ContentObjectModel,
     Properties: {
         /**
+         * Property: body-html
+         * Body HTML of the article.
+         */
+        'body-html': GObject.ParamSpec.string('body-html', 'Article Body HTML',
+            'The body HTML of the article, unstyled.',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
+            ''),
+        /**
          * Property: word-count
          * Integer indicating how many words are in the article
          */
@@ -134,28 +142,31 @@ const ArticleObjectModel = new Lang.Class({
  * Creates an ArticleObjectModel from a Knowledge Engine ArticleObject
  * JSON-LD document
  */
-ArticleObjectModel.new_from_json_ld = function (json_ld_data) {
-    let props = ArticleObjectModel._props_from_json_ld(json_ld_data);
+ArticleObjectModel.new_from_json_ld = function (json_ld_data, media_path) {
+    let props = ArticleObjectModel._props_from_json_ld(json_ld_data, media_path);
     let article_object_model = new ArticleObjectModel(props);
-    ArticleObjectModel._setup_from_json_ld(article_object_model, json_ld_data);
+    ArticleObjectModel._setup_from_json_ld(article_object_model, json_ld_data, media_path);
 
     return article_object_model;
 };
 
-ArticleObjectModel._setup_from_json_ld = function (model, json_ld_data) {
+ArticleObjectModel._setup_from_json_ld = function (model, json_ld_data, media_path) {
     // Inherit setup from parent class
     let ParentClass = ArticleObjectModel.__super__;
-    ParentClass._setup_from_json_ld(model, json_ld_data);
+    ParentClass._setup_from_json_ld(model, json_ld_data, media_path);
     if (json_ld_data.hasOwnProperty('authors')) {
         model.set_authors(json_ld_data.authors);
     }
 
 };
 
-ArticleObjectModel._props_from_json_ld = function (json_ld_data) {
+ArticleObjectModel._props_from_json_ld = function (json_ld_data, media_path) {
     // Inherit properties marshalled from parent class
     let ParentClass = ArticleObjectModel.__super__;
     let props = ParentClass._props_from_json_ld(json_ld_data);
+
+    if (json_ld_data.hasOwnProperty('articleBody'))
+        props.body_html = json_ld_data.articleBody;
 
     // Marshal properties specific to ArticleObjectModel
     if (json_ld_data.hasOwnProperty('wordCount')) {

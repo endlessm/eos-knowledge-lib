@@ -10,11 +10,12 @@ const MOCK_ARTICLES_PATH = Endless.getCurrentFileDir() + '/../test-content/';
 describe ('Article Object Model', function () {
     let articleObject;
     let mockArticleData = utils.parse_object_from_path(MOCK_ARTICLES_PATH + 'greyjoy-article.jsonld');
+    let mockMediaDir = '/test';
 
     beforeEach(function () {
         jasmine.addMatchers(InstanceOfMatcher.customMatchers);
 
-        articleObject = new EosKnowledgeSearch.ArticleObjectModel.new_from_json_ld(mockArticleData);
+        articleObject = new EosKnowledgeSearch.ArticleObjectModel.new_from_json_ld(mockArticleData, mockMediaDir);
     });
 
     describe ('JSON-LD marshaler', function () {
@@ -33,7 +34,7 @@ describe ('Article Object Model', function () {
                 return v.content_uri;
             });
             let expectedURIs = mockArticleData.resources.map(function (v) {
-                return v.contentURL;
+                return 'file://' + mockMediaDir + '/' + v.contentURL;
             });
             expect(articleObject.get_resources()[0]).toBeA(EosKnowledgeSearch.MediaObjectModel);
             expect(contentURIs).toEqual(expectedURIs);
@@ -48,11 +49,12 @@ describe ('Article Object Model', function () {
 describe ('Reader App Article Object', function () {
     let readerArticleObject;
     let mockReaderArticleData = utils.parse_object_from_path(MOCK_ARTICLES_PATH + 'frango-frito.jsonld');
+    let mockMediaDir = '/test';
 
     beforeEach(function () {
         jasmine.addMatchers(InstanceOfMatcher.customMatchers);
 
-        readerArticleObject = new EosKnowledgeSearch.ArticleObjectModel.new_from_json_ld(mockReaderArticleData);
+        readerArticleObject = new EosKnowledgeSearch.ArticleObjectModel.new_from_json_ld(mockReaderArticleData, mockMediaDir);
     });
 
     it ('should present the properties inherent to the Reader App', function () {
