@@ -128,7 +128,8 @@ const EknWebview = new Lang.Class({
     _onNavigation: function (webview, decision, decision_type) {
         if (decision_type === WebKit2.PolicyDecisionType.NAVIGATION_ACTION) {
             let uri = decision.request.uri;
-            if (GLib.uri_parse_scheme(uri).startsWith('browser-')) {
+            let scheme = GLib.uri_parse_scheme(uri);
+            if (scheme !== null && scheme.startsWith('browser-')) {
                 // Open everything that starts with 'browser-' in the system
                 // browser
                 let realURI = uri.slice('browser-'.length);

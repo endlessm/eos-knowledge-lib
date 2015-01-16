@@ -21,6 +21,7 @@ EKN_VERSION_PREV_STABLE
 EKN_DEFINE_ENUM_TYPE
 EKN_ENUM_VALUE
 ekn_private_new_input_output_window
+ekn_private_register_global_uri_scheme
 </SECTION>
 
 <SECTION>
