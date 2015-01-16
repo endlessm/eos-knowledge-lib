@@ -18,7 +18,6 @@ const MockEngine = new Lang.Class({
         this.port = 3003;
     },
 
-    ping: function () {},
     get_object_by_id: function () {},
     get_ekn_id: function () {},
     get_objects_by_query: function () {},
@@ -94,7 +93,7 @@ describe('Article Presenter', function () {
             expect(media_object.ekn_id).toEqual('mock_model_id');
             done();
         }.bind());
-        engine.get_object_by_id.and.callFake(function (d, i, callback) {
+        engine.get_object_by_id.and.callFake(function (i, callback) {
             callback(undefined, new EosKnowledgeSearch.MediaObjectModel({
                 ekn_id: 'mock_model_id'
             }));
@@ -108,7 +107,7 @@ describe('Article Presenter', function () {
             expect(article_object.ekn_id).toEqual('mock_model_id');
             done();
         }.bind());
-        engine.get_object_by_id.and.callFake(function (d, i, callback) {
+        engine.get_object_by_id.and.callFake(function (i, callback) {
             callback(undefined, new EosKnowledgeSearch.ArticleObjectModel({
                 ekn_id: 'mock_model_id'
             }));

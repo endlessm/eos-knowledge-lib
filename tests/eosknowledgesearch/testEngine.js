@@ -51,12 +51,13 @@ describe('Knowledge Engine Module', function () {
 
     beforeEach(function () {
         jasmine.addMatchers(InstanceOfMatcher.customMatchers);
-        engine = new EosKnowledgeSearch.Engine();
+        engine = new EosKnowledgeSearch.Engine.get_default();
+        engine.content_path = '/test';
     });
 
     describe('constructor', function () {
-        it('should default its port to 3003', function () {
-            expect(engine.port).toBe(3003);
+        it('should default its port to 3004', function () {
+            expect(engine.port).toBe(3004);
         });
 
         it('should default its hostname to 127.0.0.1', function () {
@@ -73,105 +74,139 @@ describe('Knowledge Engine Module', function () {
             spyOn(engine._http_session, 'cancel_message');
         });
 
-        it('has Accept headers set to JSON-LD', function (done) {
-            engine.get_object_by_id('foo', 'bar', function () {
-                let message = engine._http_session.queue_message.calls.mostRecent().args[0];
-                expect(message.request_headers.get('Accept'))
-                    .toBe('application/ld+json');
-                done();
-            });
-        });
-
         it('can be cancelled', function () {
             let cancellable = new Gio.Cancellable();
-            engine.get_object_by_id('sqwert', 'alert', function () {}, cancellable);
+            engine.get_object_by_id('ekn://foo/sqwert', function () {}, cancellable);
             cancellable.cancel();
             expect(engine._http_session.cancel_message).toHaveBeenCalled();
             let message = engine._http_session.cancel_message.calls.mostRecent().args[0];
             // Make sure we are canceling the right Soup Message
             expect(message).toBeA(Soup.Message);
             expect(message.uri.to_string(true)).toMatch('sqwert');
-            expect(message.uri.to_string(true)).toMatch('alert');
         });
 
         it('does not make a request if already cancelled', function () {
             let cancellable = new Gio.Cancellable();
             cancellable.cancel();
-            engine.get_object_by_id('sqwert', 'alert', function () {}, cancellable);
+            engine.get_object_by_id('ekn://foo/sqwert', function () {}, cancellable);
             expect(engine._http_session.queue_message).not.toHaveBeenCalled();
         });
     });
 
-    describe('get_ekn_uri', function () {
-        it('throws error if domain is undefined', function () {
-            expect(function(){ engine.get_ekn_uri()}).toThrow(new Error('Domain not defined!'));
-        });
-
+    describe('get_xapian_uri', function () {
         it('throws error if query values are undefined', function () {
             let bad_query_obj = {
                 q: undefined,
-                tag: ['lannister', 'badboy']
+                tag: 'lannister',
             }
-            expect(function(){ engine.get_ekn_uri('thrones', undefined, bad_query_obj)}).toThrow(new Error('Parameter value is undefined!'));
+            expect(function(){ engine.get_xapian_uri(bad_query_obj)}).toThrow(new Error('Parameter value is undefined!'));
         });
 
-        it('makes correct object URIs', function () {
-            let domain = 'thrones';
-            let id = 'tyrion';
-            let mock_uri = engine.get_ekn_uri(domain, id);
-            let correct_uri = Soup.URI.new('http://127.0.0.1:3003/api/thrones/tyrion');
-            expect(mock_uri.to_string(false)).toBe(correct_uri.to_string(false));
-
-        });
-
-        it('makes correct query URIs', function () {
-            let domain = 'thrones';
-            let id = 'tyrion';
-
+        it('sets collapse to 0', function () {
             let query_obj = {
-                q: 'kings',
-                tag: ['lannister', 'badboy']
-            }
+                q: 'tyrion',
+            };
 
-            let mock_uri = engine.get_ekn_uri(domain, id, query_obj);
+            let mock_uri = engine.get_xapian_uri(query_obj);
+            let mock_query_obj = mock_uri.get_query();
+            expect(get_query_vals_for_key(mock_query_obj, 'collapse')).toEqual('0');
+        });
+
+        it('sets path correctly', function () {
+            let path, uri, query_obj;
+            let query_obj = {
+                q: 'tyrion',
+            };
+
+            engine.content_path = '/foo';
+            uri = engine.get_xapian_uri(query_obj);
+            query_obj = uri.get_query();
+            expect(get_query_vals_for_key(query_obj, 'path')).toEqual('/foo/db');
+
+            engine.content_path = '/bar';
+            uri = engine.get_xapian_uri(query_obj);
+            query_obj = uri.get_query();
+            expect(get_query_vals_for_key(query_obj, 'path')).toEqual('/bar/db');
+        });
+
+        // FIXME: this testing coverage should get a lot more extensive when we
+        // correctly construct xapian queries.
+        it('makes correct query URIs', function () {
+            let query_obj = {
+                q: 'tyrion',
+                offset: 5,
+                limit: 2,
+            };
+            let query_parms = {
+                q: '(tyrion)',
+                offset: '5',
+                limit: '2',
+            };
+
+            let mock_uri = engine.get_xapian_uri(query_obj);
             let mock_query_obj = mock_uri.get_query();
             for (let key in query_obj) {
                 expect(get_query_vals_for_key(mock_query_obj, key))
-                    .toEqual(query_obj[key]);
+                    .toEqual(query_parms[key]);
             }
         });
     });
 
+    describe('serialize_query', function () {
+        it('correctly serializes a query string', function () {
+            let query_obj = {
+                path: '/foo',
+                q: 'bar',
+                offset: 5,
+            };
+            expect(engine.serialize_query(query_obj)).toEqual('path=%2Ffoo&q=bar&offset=5');
+
+            query_obj = {
+                slarty: 'thing@with@ats',
+                bartfast: 'this=that',
+            };
+            expect(engine.serialize_query(query_obj)).toEqual('slarty=thing%40with%40ats&bartfast=this%3Dthat');
+        });
+    });
+
+
     describe('get_object_by_id', function () {
         it('sends requests', function () {
             let request_spy = engine_request_spy();
-            let mock_domain = 'foo';
-            let mock_id = 'bar';
+            let mock_id = 'ekn://foo/bar';
 
-            engine.get_object_by_id(mock_domain, mock_id, noop);
+            engine.get_object_by_id(mock_id, noop);
             expect(request_spy).toHaveBeenCalled();
         });
 
         it('sends correct request URIs', function () {
             let request_spy = engine_request_spy();
-            let mock_domain = 'foo';
-            let mock_id = 'bar';
-            let expected_uri = Soup.URI.new('http://127.0.0.1:3003/api/foo/bar');
+            let mock_id = 'ekn://foo/bar';
+            let mock_id_query = '(id:bar)';
+            let path = '/baz';
+            engine.content_path = path;
 
-            engine.get_object_by_id(mock_domain, mock_id, noop);
+            engine.get_object_by_id(mock_id, noop);
             let last_req_args = request_spy.calls.mostRecent().args;
             let requested_uri = last_req_args[0];
-            expect(requested_uri.to_string(false))
-                .toBe(expected_uri.to_string(false));
+            let requested_query = requested_uri.get_query();
+            let requested_uri_string = requested_uri.to_string(false);
+
+            expect(requested_uri_string).toMatch(/^http:\/\/127.0.0.1:3004\/query?/);
+            expect(get_query_vals_for_key(requested_query, 'path')).toMatch(path);
+            expect(get_query_vals_for_key(requested_query, 'q')).toMatch(mock_id_query);
         });
 
         it('marshals objects based on @type', function (done) {
+            let mock_id = 'ekn://foo/bar';
             mock_engine_request(undefined, {
-                "@type": "ekv:ArticleObject",
-                "synopsis": "NOW IS THE WINTER OF OUR DISCONTENT"
+                'results': [{
+                    "@type": "ekn://_vocab/ArticleObject",
+                    "synopsis": "NOW IS THE WINTER OF OUR DISCONTENT"
+                }]
             });
 
-            engine.get_object_by_id('foo', 'bar', function (err, res) {
+            engine.get_object_by_id(mock_id, function (err, res) {
                 print(err);
                 expect(err).not.toBeDefined();
                 expect(res).toBeA(EosKnowledgeSearch.ArticleObjectModel);
@@ -180,11 +215,29 @@ describe('Knowledge Engine Module', function () {
             });
         });
 
+        it('correctly sets media path on models', function (done) {
+            let mock_id = 'ekn://foo/bar';
+            engine.content_path = '/hopeful';
+            mock_engine_request(undefined, {
+                'results': [{
+                    "@type": "ekn://_vocab/ContentObject",
+                    "contentURL": "alligator.jpg",
+                }]
+            });
+
+            engine.get_object_by_id(mock_id, function (err, res) {
+                expect(res).toBeA(EosKnowledgeSearch.ContentObjectModel);
+                expect(res.content_uri).toBe('file:///hopeful/media/alligator.jpg');
+                done();
+            });
+        });
+
         it('does not call its callback more than once', function (done) {
+            let mock_id = 'ekn://foo/bar';
             mock_engine_request(new Error('I am an error'), undefined);
 
             let callback_called = 0;
-            engine.get_object_by_id('foo', 'bar', function (err, res) {
+            engine.get_object_by_id(mock_id, function (err, res) {
                 callback_called++;
             });
             setTimeout(done, 100); // pause for a moment for any more callbacks
@@ -196,34 +249,31 @@ describe('Knowledge Engine Module', function () {
 
         it('sends requests', function () {
             let request_spy = engine_request_spy();
-            let mock_domain = 'Music';
             let mock_query = {
-                q: 'the best song in the world',
-                prefix: 'Trib',
-                tag: ['Be you angels?', 'Nay, we are but men'],
+                q: 'logorrhea',
             };
 
-            engine.get_objects_by_query(mock_domain, mock_query, noop);
+            engine.get_objects_by_query(mock_query, noop);
             expect(request_spy).toHaveBeenCalled();
         });
 
         it('requests correct URIs', function () {
             let request_spy = engine_request_spy();
-            let mock_domain = 'Music';
             let mock_query = {
-                q: 'the best song in the world',
-                prefix: 'Trib',
-                tag: ['Be you angels?', 'Nay, we are but men'],
+                q: 'logorrhea',
             };
-            engine.get_objects_by_query(mock_domain, mock_query, noop);
+            let path = '/sacchariferous';
+            engine.content_path = path;
 
+            engine.get_objects_by_query(mock_query, noop);
             let last_req_args = request_spy.calls.mostRecent().args;
             let requested_uri = last_req_args[0];
             let requested_query = requested_uri.get_query();
-            for (key in mock_query) {
-                expect(get_query_vals_for_key(requested_query, key))
-                    .toEqual(mock_query[key]);
-            }
+            let requested_uri_string = requested_uri.to_string(false);
+
+            expect(requested_uri_string).toMatch(/^http:\/\/127.0.0.1:3004\/query?/);
+            expect(get_query_vals_for_key(requested_query, 'path')).toMatch(path);
+            expect(get_query_vals_for_key(requested_query, 'q')).toMatch('(logorrhea)');
         });
 
         it ("throws an error on unsupported JSON-LD type", function (done) {
@@ -236,7 +286,7 @@ describe('Knowledge Engine Module', function () {
             };
             mock_engine_request(undefined, notSearchResults);
 
-            engine.get_objects_by_query('whatever', {}, function (err, results) {
+            engine.get_objects_by_query({}, function (err, results) {
                 expect(results).not.toBeDefined();
                 expect(err).toBeDefined();
                 done();
@@ -252,7 +302,7 @@ describe('Knowledge Engine Module', function () {
             };
 
             mock_engine_request(undefined, resultsWithBadObject);
-            engine.get_objects_by_query('whatever', {}, function (err, results) {
+            engine.get_objects_by_query({}, function (err, results) {
                 expect(results).not.toBeDefined();
                 expect(err).toBeDefined();
                 done();
@@ -260,18 +310,18 @@ describe('Knowledge Engine Module', function () {
         });
 
         it ("resolves to a list of results if jsonld is valid", function (done) {
-            mock_engine_request(undefined, MOCK_CONTENT_RESULTS);
+            mock_engine_request(undefined, MOCK_ARTICLE_RESULTS);
 
-            engine.get_objects_by_query('whatever', {}, function (err, results) {
+            engine.get_objects_by_query({}, function (err, results) {
                 expect(err).not.toBeDefined();
                 expect(results).toBeDefined();
                 done();
             });
         });
 
-        it ("constructs a list of of objects based on @type", function (done) {
+        it ("constructs a list of content objects based on @type", function (done) {
             mock_engine_request(undefined, MOCK_CONTENT_RESULTS);
-            engine.get_objects_by_query('mock-content-query', {}, function (err, results) {
+            engine.get_objects_by_query({}, function (err, results) {
                 // All results in MOCK_CONTENT_OBJECT_RESULTS are of @type ContentObject,
                 // so expect that they're constructed as such
                 for (let i in results) {
@@ -279,9 +329,11 @@ describe('Knowledge Engine Module', function () {
                 }
                 done();
             });
+        });
 
+        it ("constructs a list of article objects based on @type", function (done) {
             mock_engine_request(undefined, MOCK_ARTICLE_RESULTS);
-            engine.get_objects_by_query('mock-article-query', {}, function (err, results) {
+            engine.get_objects_by_query({}, function (err, results) {
                 // All results in MOCK_ARTICLE_OBJECT_RESULTS are of @type ArticleObject,
                 // so expect that they're constructed as such
                 for (let i in results) {
@@ -289,9 +341,11 @@ describe('Knowledge Engine Module', function () {
                 }
                 done();
             });
+        });
 
+        it ("constructs a list of media objects based on @type", function (done) {
             mock_engine_request(undefined, MOCK_MEDIA_RESULTS);
-            engine.get_objects_by_query('mock-media-query', {}, function (err, results) {
+            engine.get_objects_by_query({}, function (err, results) {
                 // All results in MOCK_MEDIA_OBJECT_RESULTS are of @type MediaObject,
                 // so expect that they're constructed as such
                 for (let i in results) {
@@ -305,7 +359,7 @@ describe('Knowledge Engine Module', function () {
             mock_engine_request(new Error('I am an error'), undefined);
 
             let callback_called = 0;
-            engine.get_objects_by_query('mock-query', {}, function (err, res) {
+            engine.get_objects_by_query({}, function (err, res) {
                 callback_called++;
             });
             setTimeout(done, 100); // pause for a moment for any more callbacks
