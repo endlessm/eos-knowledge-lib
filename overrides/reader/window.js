@@ -9,6 +9,7 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const DonePage = imports.reader.donePage;
+const Lightbox = imports.lightbox;
 const NavButtonOverlay = imports.navButtonOverlay;
 const OverviewPage = imports.reader.overviewPage;
 const ProgressLabel = imports.reader.progressLabel;
@@ -22,6 +23,8 @@ const ProgressLabel = imports.reader.progressLabel;
  * it updates the progressLabels on all of these pages according to which
  * page is being displayed.
  *
+ * Adds a lightbox above the article page, which can be used to show content
+ * above it.
  */
 const Window = new Lang.Class({
     Name: 'Window',
@@ -85,7 +88,19 @@ const Window = new Lang.Class({
             'Page number currently being displayed',
             GObject.ParamFlags.READWRITE,
             0, GLib.MAXUINT32, 0),
-        
+
+        /**
+         * Property: lightbox
+         *
+         * The <Lightbox> widget created by this widget. Read-only,
+         * modify using the <Lightbox> API. Use to show content above the <section-page>
+         * or <article-page>.
+         */
+        'lightbox': GObject.ParamSpec.object('lightbox', 'Lightbox',
+            'The lightbox of this view widget.',
+            GObject.ParamFlags.READABLE,
+            Lightbox.Lightbox),
+
         /**
          * Property: total-pages
          *
@@ -99,6 +114,24 @@ const Window = new Lang.Class({
 
     Signals: {
         'debug-hotkey-pressed': {},
+
+        /**
+         * Event: lightbox-nav-previous-clicked
+         * Emmited when the navigation button in the lightbox is clicked. Passes
+         * the media object currently displayed by the lightbox.
+         */
+        'lightbox-nav-previous-clicked': {
+            param_types: [GObject.TYPE_OBJECT],
+        },
+
+        /**
+         * Event: lightbox-nav-next-clicked
+         * Emmited when the navigation button in the lightbox is clicked. Passes
+         * the media object currently displayed by the lightbox.
+         */
+        'lightbox-nav-next-clicked': {
+            param_types: [GObject.TYPE_OBJECT],
+        },
     },
 
     _STACK_TRANSITION_TIME: 500,
@@ -125,6 +158,14 @@ const Window = new Lang.Class({
         this._issue_nav_buttons.back_button.label = 'Prev issue';
         this._issue_nav_buttons.forward_button.label = 'Next issue';
 
+        this._lightbox = new Lightbox.Lightbox();
+        this._lightbox.connect('navigation-previous-clicked', function (lightbox) {
+            this.emit('lightbox-nav-previous-clicked', lightbox);
+        }.bind(this));
+        this._lightbox.connect('navigation-next-clicked', function (lightbox) {
+            this.emit('lightbox-nav-next-clicked', lightbox);
+        }.bind(this));
+
         this._article_pages = [];
         this._current_page = 0;
         this.parent(props);
@@ -144,7 +185,8 @@ const Window = new Lang.Class({
         this._stack.add(this._overview_page);
         this._stack.add(this._done_page);
         this._nav_buttons.add(this._stack);
-        this.page_manager.add(this._nav_buttons, {
+        this._lightbox.add(this._nav_buttons);
+        this.page_manager.add(this._lightbox, {
             center_topbar_widget: this._issue_nav_buttons,
         });
         this._overview_page.show_all();
@@ -216,6 +258,10 @@ const Window = new Lang.Class({
 
     get issue_nav_buttons() {
         return this._issue_nav_buttons;
+    },
+
+    get lightbox() {
+        return this._lightbox;
     },
 
     get current_page() {

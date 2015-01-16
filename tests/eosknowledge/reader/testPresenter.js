@@ -79,6 +79,8 @@ const MockView = new Lang.Class({
     },
     Signals: {
         'debug-hotkey-pressed': {},
+        'lightbox-nav-previous-clicked': {},
+        'lightbox-nav-next-clicked': {},
     },
 
     _init: function (nav_buttons) {
@@ -107,6 +109,7 @@ const MockView = new Lang.Class({
         this.page_manager = {
             add: function () {},
         };
+        this.lightbox = {};
     },
 
     show_all: function () {},
@@ -150,6 +153,7 @@ describe('Reader presenter', function () {
                 ekn_id: 'about:blank',
                 get_authors: jasmine.createSpy('get_authors').and.returnValue(data[1]),
                 published: data[2],
+                fetch_all: function () {},
             }
         });
         article_nav_buttons = new MockNavButtons();
@@ -341,6 +345,24 @@ describe('Reader presenter', function () {
             expect(settings.bookmark_issue).toBe(1);
             expect(settings.bookmark_page).toBe(0);
             expect(settings.update_timestamp).toBeGreaterThan(current_time);
+        });
+
+        it('loads media into lightbox if and only if it is a member of article\'s resource array', function () {
+            let model = MOCK_RESULTS[0];
+            let media_object_uri = 'ekn://foo/bar';
+            let media_object = {
+                ekn_id: media_object_uri,
+            };
+            model.get_resources = function () {
+                return [media_object];
+            };
+            spyOn(presenter, '_preview_media_object');
+            let lightbox_result = presenter._lightbox_handler(model, media_object_uri);
+            expect(presenter._preview_media_object).toHaveBeenCalledWith(media_object, false, false);
+            expect(lightbox_result).toBe(true);
+
+            let no_lightbox_result = presenter._lightbox_handler(model, 'ekn://no/media');
+            expect(no_lightbox_result).toBe(false);
         });
 
         describe('Attribution format', function () {
