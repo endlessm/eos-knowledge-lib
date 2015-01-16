@@ -288,6 +288,7 @@ ContentObjectModel._setup_from_json_ld = function (model, json_ld_data) {
                 function (err, thumbnail) {
                     if (err) {
                         printerr(err);
+                        printerr(err.stack);
                     } else {
                         model.thumbnail = thumbnail;
                     }
@@ -316,6 +317,7 @@ ContentObjectModel._setup_from_json_ld = function (model, json_ld_data) {
                     function (err, res) {
                         if (err) {
                             printerr(err);
+                            printerr(err.stack);
                         } else {
                             let resources = model.get_resources();
                             let resource_ekn_ids = resources.map(function (model) {
