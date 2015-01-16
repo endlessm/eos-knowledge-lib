@@ -250,7 +250,7 @@ const Window = new Lang.Class({
     },
 
     _is_transitioning_forward: function (value) {
-        return value > this._current_page; 
+        return value > this._current_page;
     },
 
     get total_pages() {
