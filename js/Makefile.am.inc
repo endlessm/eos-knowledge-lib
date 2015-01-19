@@ -11,6 +11,7 @@ search_files = \
 	js/search/mediaObjectModel.js \
 	js/search/searchProvider.js \
 	js/search/treeNode.js \
+	js/search/xapianQuery.js \
 	$(NULL)
 searchdir = $(jsdir)/search
 dist_search_DATA = $(search_files)
