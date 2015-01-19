@@ -7,6 +7,7 @@ search_files = \
 	js/search/EosKnowledgeSearch.js \
 	js/search/articleObjectModel.js \
 	js/search/contentObjectModel.js \
+	js/search/datadir.js \
 	js/search/engine.js \
 	js/search/mediaObjectModel.js \
 	js/search/searchProvider.js \
