@@ -41,6 +41,7 @@ javascript_tests = \
 	tests/eosknowledge/reader/testWindow.js \
 	tests/eosknowledgesearch/testArticleObjectModel.js \
 	tests/eosknowledgesearch/testContentObjectModel.js \
+	tests/eosknowledgesearch/testDatadir.js \
 	tests/eosknowledgesearch/testEngine.js \
 	tests/eosknowledgesearch/testMediaObjectModels.js \
 	tests/eosknowledgesearch/testTreeNode.js \
