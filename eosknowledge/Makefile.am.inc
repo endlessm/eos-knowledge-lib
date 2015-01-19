@@ -60,6 +60,7 @@ libeosknowledge_@EKN_API_VERSION@_la_SOURCES = \
 # and turn on debug messages
 libeosknowledge_@EKN_API_VERSION@_la_CPPFLAGS = \
 	@EOS_KNOWLEDGE_CFLAGS@ \
+	@EOS_C_COVERAGE_CFLAGS@ \
 	-DG_LOG_DOMAIN=\"EosKnowledgeLibrary\" \
 	-DCOMPILING_EOS_KNOWLEDGE \
 	-DDATADIR=\""$(datadir)"\" \
@@ -67,6 +68,7 @@ libeosknowledge_@EKN_API_VERSION@_la_CPPFLAGS = \
 libeosknowledge_@EKN_API_VERSION@_la_CFLAGS = $(AM_CFLAGS)
 libeosknowledge_@EKN_API_VERSION@_la_LIBADD = @EOS_KNOWLEDGE_LIBS@
 libeosknowledge_@EKN_API_VERSION@_la_LDFLAGS = \
+	@EOS_C_COVERAGE_LDFLAGS@ \
 	-version-info @EKN_LT_VERSION_INFO@ \
 	-export-symbols-regex "^ekn_" \
 	$(NULL)

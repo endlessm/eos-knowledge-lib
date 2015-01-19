@@ -111,3 +111,8 @@ stamp*
 
 # html doc output
 /docs/reference/*/html/
+
+# Unit test / coverage reports
+*.gcda
+*.gcno
+/_coverage

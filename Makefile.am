@@ -79,8 +79,21 @@ uninstall-hook:
 	rm -f $(DESTDIR)$(overridesdir)/EosKnowledge.js
 	rm -f $(DESTDIR)$(gjsdir)/EosKnowledgeSearch.js
 
-# Tests
+# # # TESTS # # #
 include $(top_srcdir)/tests/Makefile.am.inc
+
+# # # COVERAGE # # #
+EOS_JS_COVERAGE_FILES = \
+	$(public_overrides) \
+	$(private_overrides) \
+	$(reader_overrides) \
+	$(search_files) \
+	$(NULL)
+
+@EOS_COVERAGE_RULES@
+
+AM_JS_LOG_FLAGS += @EOS_JS_COVERAGE_LOG_FLAGS@
+AM_LDFLAGS = @EOS_C_COVERAGE_LDFLAGS@
 
 # # # DOCUMENTATION # # #
 

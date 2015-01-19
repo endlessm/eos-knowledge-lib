@@ -219,6 +219,10 @@ EOS_CHECK_GJS_GIR([GtkClutter], [1.0])
 EOS_CHECK_GJS_GIR([Pango], [1.0])
 EOS_CHECK_GJS_GIR([WebKit2], [3.0])
 
+# Code Coverage
+# -------------
+EOS_COVERAGE_REPORT([c js])
+
 AC_CACHE_SAVE
 
 # Output
