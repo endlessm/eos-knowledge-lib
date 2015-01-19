@@ -108,4 +108,6 @@ TESTS_ENVIRONMENT = \
 	export GJS_PATH="$(top_builddir):$(top_srcdir):$(top_srcdir)/overrides:$(top_srcdir)/js/search:$(top_srcdir)/tests"; \
 	export GI_TYPELIB_PATH="$(top_builddir)$${GI_TYPELIB_PATH:+:$$GI_TYPELIB_PATH}"; \
 	export LD_LIBRARY_PATH="$(top_builddir)/.libs$${LD_LIBRARY_PATH:+:$$LD_LIBRARY_PATH}"; \
+	export G_TEST_SRCDIR="$(abs_srcdir)/tests"; \
+	export G_TEST_BUILDDIR="$(abs_builddir)/tests"; \
 	$(NULL)
