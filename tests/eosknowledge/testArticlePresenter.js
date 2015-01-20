@@ -90,8 +90,9 @@ describe('Article Presenter', function () {
 
     it('emits signal when webview navigates to media object', function (done) {
         let dummy_page = '<html><body><p>Frango frango frango</p></body></html>';
-        presenter.connect('media-object-clicked', function (widget, media_object) {
+        let id = presenter.connect('media-object-clicked', function (widget, media_object) {
             expect(media_object.ekn_id).toEqual('mock_model_id');
+            presenter.disconnect(id);
             done();
         }.bind());
         engine.get_object_by_id.and.callFake(function (d, i, callback) {
@@ -104,8 +105,9 @@ describe('Article Presenter', function () {
 
     it('emits signal when webview navigates to article object', function (done) {
         let dummy_page = '<html><body><p>Frango frango frango</p></body></html>';
-        presenter.connect('article-object-clicked', function (widget, article_object) {
+        let id = presenter.connect('article-object-clicked', function (widget, article_object) {
             expect(article_object.ekn_id).toEqual('mock_model_id');
+            presenter.disconnect(id);
             done();
         }.bind());
         engine.get_object_by_id.and.callFake(function (d, i, callback) {
