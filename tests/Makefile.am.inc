@@ -45,6 +45,7 @@ javascript_tests = \
 	tests/eosknowledgesearch/testEngine.js \
 	tests/eosknowledgesearch/testMediaObjectModels.js \
 	tests/eosknowledgesearch/testTreeNode.js \
+	tests/eosknowledgesearch/testXapianQuery.js \
 	$(NULL)
 test_content = \
 	tests/test-content/agot.svg \

@@ -99,7 +99,15 @@ describe('Knowledge Engine Module', function () {
                 q: undefined,
                 tag: 'lannister',
             }
-            expect(function(){ engine.get_xapian_uri(bad_query_obj)}).toThrow(new Error('Parameter value is undefined!'));
+            expect(function(){ engine.get_xapian_uri(bad_query_obj)}).toThrow(new Error('Parameter value is undefined: q'));
+        });
+
+        it('throws error if it receives unexpected query value', function () {
+            let bad_query_obj = {
+                something_unknown: 'blah',
+            };
+
+            expect(function(){ engine.get_xapian_uri(bad_query_obj)}).toThrow(new Error('Unexpected property value something_unknown'));
         });
 
         it('sets collapse to 0', function () {
@@ -112,6 +120,41 @@ describe('Knowledge Engine Module', function () {
             expect(get_query_vals_for_key(mock_query_obj, 'collapse')).toEqual('0');
         });
 
+        it('sets order field', function () {
+            let query_obj = {
+                q: 'tyrion',
+                order: 'asc',
+            };
+
+            let mock_uri = engine.get_xapian_uri(query_obj);
+            let mock_query_obj = mock_uri.get_query();
+            expect(get_query_vals_for_key(mock_query_obj, 'order')).toEqual('asc');
+        });
+
+        it('sets correct default values for cutoff, limit, offset, and order', function () {
+            let query_obj = {
+                q: 'tyrion',
+            };
+
+            let mock_uri = engine.get_xapian_uri(query_obj);
+            let mock_query_obj = mock_uri.get_query();
+            expect(get_query_vals_for_key(mock_query_obj, 'cutoff')).toEqual('20');
+            expect(get_query_vals_for_key(mock_query_obj, 'limit')).toEqual('10');
+            expect(get_query_vals_for_key(mock_query_obj, 'offset')).toEqual('0');
+            expect(get_query_vals_for_key(mock_query_obj, 'order')).toEqual('asc');
+        });
+
+        it('will not override a value of zero', function () {
+            let query_obj = {
+                q: 'tyrion',
+                limit: 0,
+            };
+
+            let mock_uri = engine.get_xapian_uri(query_obj);
+            let mock_query_obj = mock_uri.get_query();
+            expect(get_query_vals_for_key(mock_query_obj, 'limit')).toEqual('0');
+        });
+
         it('sets path correctly', function () {
             let path, uri, query_obj;
             let query_obj = {
@@ -122,33 +165,36 @@ describe('Knowledge Engine Module', function () {
             uri = engine.get_xapian_uri(query_obj);
             query_obj = uri.get_query();
             expect(get_query_vals_for_key(query_obj, 'path')).toEqual('/foo/db');
-
-            engine.content_path = '/bar';
-            uri = engine.get_xapian_uri(query_obj);
-            query_obj = uri.get_query();
-            expect(get_query_vals_for_key(query_obj, 'path')).toEqual('/bar/db');
         });
 
-        // FIXME: this testing coverage should get a lot more extensive when we
-        // correctly construct xapian queries.
-        it('makes correct query URIs', function () {
+        it('supports combinations of queries', function () {
             let query_obj = {
-                q: 'tyrion',
+                q: 'tyrion wins',
+                tag: ['lannister', 'bro'],
+                prefix: 'gam',
                 offset: 5,
                 limit: 2,
             };
-            let query_parms = {
-                q: '(tyrion)',
-                offset: '5',
-                limit: '2',
+            let mock_uri = engine.get_xapian_uri(query_obj);
+            let mock_query_obj = mock_uri.get_query();
+            let serialized_query = get_query_vals_for_key(mock_query_obj, 'q');
+            let parts = serialized_query.split(' AND ');
+            let expected_parts = ['((title:tyrion OR title:wins) OR (tyrion wins) OR (exact_title:Tyrion_Wins))', '(tag:"lannister" OR tag:"bro")', '(exact_title:gam*)'];
+            let isMatch = expected_parts.sort().join('') === parts.sort().join('');
+            expect(isMatch).toBe(true);
+        });
+
+        it('supports single ID queries', function () {
+            let query_obj = {
+                id: 'ekn://domain/someId',
+            };
+            let query_params = {
+                q: '(id:some_id)',
             };
 
             let mock_uri = engine.get_xapian_uri(query_obj);
             let mock_query_obj = mock_uri.get_query();
-            for (let key in query_obj) {
-                expect(get_query_vals_for_key(mock_query_obj, key))
-                    .toEqual(query_parms[key]);
-            }
+            expect(get_query_vals_for_key(mock_query_obj, 'q'));
         });
     });
 

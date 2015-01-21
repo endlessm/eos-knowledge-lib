@@ -7,12 +7,16 @@ const GLib = imports.gi.GLib;
 const ArticleObjectModel = imports.articleObjectModel;
 const ContentObjectModel = imports.contentObjectModel;
 const MediaObjectModel = imports.mediaObjectModel;
+const xapianQuery = imports.xapianQuery;
 
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 
-let parenthesize = function (clause) {
-    return '(' + clause + ')';
-};
+// Returns maybe if it's a number, otherwise returns fallback
+function maybeNaN(maybe, fallback) {
+    if (isNaN(maybe))
+        return fallback;
+    return maybe;
+}
 
 /**
  * Class: Engine
@@ -73,6 +77,11 @@ const Engine = Lang.Class({
     _DB_PATH: '/db',
     _MEDIA_PATH: '/media',
 
+    _DEFAULT_LIMIT : 10, // if no limit is specified, return this many objects
+    _DEFAULT_OFFSET : 0, // if no offset is specified, start from beginning
+    _DEFAULT_CUTOFF_PCT : 20, // if no cutoff is specified, cutoff at 20%
+    _DEFAULT_ORDER : 'asc', // if no order is specified, use ascending
+
     _init: function (params) {
         this.parent(params);
         this._http_session = new Soup.Session();
@@ -131,6 +140,9 @@ const Engine = Lang.Class({
      *   - tag (comma delimited string of tags results must match)
      *   - offset (number of results to skip, useful for pagination)
      *   - limit  (maximum number of results to return)
+     *   - cutoff  (number representing the minimum relevance percentage returned articles should have)
+     *   - sortBy  (Xapian value by which to sort results. Note this will override relevance ordering by xapian.)
+     *   - order  (The order in which to sort results, either ascending ('asc') or descending ('desc'))
      *
      * Parameters:
      *
@@ -215,43 +227,52 @@ const Engine = Lang.Class({
         uri.set_port(this.port);
         uri.set_path('/query');
 
-        let query_obj_out = {
-            path: this.content_path + this._DB_PATH,
-            offset: 0,
-            collapse: 0,
-        };
-
-        // FIXME: logic for building queries has to get a lot more advanced
+        let xapian_query_options = [];
         for (let property in query_obj) {
             if (typeof query_obj[property] === 'undefined')
-                throw new Error('Parameter value is undefined!');
-            if (property === 'tag') {
-                query_obj_out.q = parenthesize('tag:"' + query_obj.tag + '"');
-            } else if (property === 'q') {
-                let term = query_obj.q.split(/\s+/)[0];
-                query_obj_out.q = parenthesize(term);
-            } else if (property === 'prefix') {
-                let term = query_obj.prefix.split(/\s+/)[0];
-                query_obj_out.q = parenthesize(term);
-            } else if (property === 'id') {
-                let id_sha = query_obj.id.split('/').slice(-1)[0];
-                query_obj_out.q = parenthesize('id:' + id_sha);
-            } else {
-                query_obj_out[property] = query_obj[property];
+                throw new Error('Parameter value is undefined: ' + property);
+            switch (property) {
+                case 'tag':
+                    xapian_query_options.push(xapianQuery.xapian_tag_clause(query_obj.tag));
+                    break;
+                case 'q':
+                    xapian_query_options.push(xapianQuery.xapian_query_clause(query_obj.q));
+                    break;
+                case 'prefix':
+                    xapian_query_options.push(xapianQuery.xapian_prefix_clause(query_obj.prefix));
+                    break;
+                case 'id':
+                    xapian_query_options.push(xapianQuery.xapian_id_clause(query_obj.id));
+                    break;
+                default:
+                    if (['cutoff', 'limit', 'offset', 'order', 'sortBy'].indexOf(property) === -1)
+                        throw new Error('Unexpected property value ' + property);
             }
         }
+
+        let query_obj_out = {
+            collapse: xapianQuery.XAPIAN_SOURCE_URL_VALUE_NO,
+            cutoff: maybeNaN(query_obj['cutoff'], this._DEFAULT_CUTOFF_PCT),
+            limit: maybeNaN(query_obj['limit'], this._DEFAULT_LIMIT),
+            offset: maybeNaN(query_obj['offset'], this._DEFAULT_OFFSET),
+            order: maybeNaN(query_obj['order'], this._DEFAULT_ORDER),
+            path: this.content_path + this._DB_PATH,
+            q: xapianQuery.xapian_join_clauses(xapian_query_options),
+            sortBy: xapianQuery.xapian_string_to_value_no(query_obj['sortBy']),
+        };
 
         uri.set_query(this.serialize_query(query_obj_out));
         return uri;
     },
 
     serialize_query: function (query_obj) {
-        let query_array = [];
-        var stringify_and_encode = function (v) { return encodeURIComponent(String(v)); };
-        for (let property in query_obj) {
-            query_array.push(stringify_and_encode(property) + "=" + stringify_and_encode(query_obj[property]));
-        }
-        return query_array.join("&");
+        let stringify_and_encode = function (v) { return encodeURIComponent(String(v)); };
+
+        return Object.keys(query_obj).filter(function (property) {
+            return typeof query_obj[property] !== 'undefined';
+        }).map(function (property) {
+            return stringify_and_encode(property) + "=" + stringify_and_encode(query_obj[property]);
+        }).join('&');
     },
 
     // Queues a SoupMessage for *req_uri* to the current http session. Calls
