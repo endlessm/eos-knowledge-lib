@@ -122,11 +122,6 @@ describe('Knowledge Engine Module', function () {
             uri = engine.get_xapian_uri(query_obj);
             query_obj = uri.get_query();
             expect(get_query_vals_for_key(query_obj, 'path')).toEqual('/foo/db');
-
-            engine.content_path = '/bar';
-            uri = engine.get_xapian_uri(query_obj);
-            query_obj = uri.get_query();
-            expect(get_query_vals_for_key(query_obj, 'path')).toEqual('/bar/db');
         });
 
         // FIXME: this testing coverage should get a lot more extensive when we
