@@ -40,8 +40,9 @@ const Application = new Lang.Class({
         this.parent();
 
         var domain = this.application_id.split('.').pop();
-        // FIXME: we need to do some XDG_DATA_DIR searching for the database
-        EosKnowledgeSearch.Engine.get_default().content_path = '/endless/share/ekn/data/' + domain;
+
+        EosKnowledgeSearch.Engine.get_default().content_path =
+            EosKnowledgeSearch.get_data_dir_for_domain(domain).get_path();
 
         this._search_provider.connect('load-page', function (launcher, model, query, timestamp) {
             this._activation_timestamp = timestamp;
