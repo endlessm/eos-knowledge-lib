@@ -9,6 +9,7 @@ const ContentObjectModel = imports.contentObjectModel;
 const MediaObjectModel = imports.mediaObjectModel;
 const xapianQuery = imports.xapianQuery;
 const blacklist = imports.blacklist.blacklist;
+const utils = imports.searchUtils;
 
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 
@@ -73,6 +74,20 @@ const Engine = Lang.Class({
             'Content Path', 'path to the directory containing the knowledge engine content',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
             ''),
+
+        /**
+         * Property: language
+         *
+         * The ISO639 language code which will be used for various search
+         * features, such as term stemming and spelling correction.
+         *
+         * Defaults to empty string
+         */
+        'language': GObject.ParamSpec.string('language',
+            'Language', 'ISO639 locale code to be used in search',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
+            ''),
+
     },
 
     _DB_PATH: '/db',
@@ -268,6 +283,10 @@ const Engine = Lang.Class({
             sortBy: xapianQuery.xapian_string_to_value_no(query_obj['sortBy']),
         };
 
+        if (this.language !== null && this.language.length > 0) {
+            query_obj_out.lang = this.language;
+        }
+
         uri.set_query(this.serialize_query(query_obj_out));
         return uri;
     },
@@ -320,7 +339,12 @@ const Engine = Lang.Class({
 
 let the_engine = null;
 Engine.get_default = function () {
-    if (the_engine === null)
-        the_engine = new Engine();
+    if (the_engine === null) {
+        // try to create an engine configured with the current locale
+        var language = utils.get_current_language();
+        the_engine = new Engine({
+            language: language,
+        });
+    }
     return the_engine;
 };
