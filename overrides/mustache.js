@@ -564,6 +564,7 @@
     } else {
       return result;
     }
+    return undefined;
   };
 
   // Export the escaping function so that the user may override it.
