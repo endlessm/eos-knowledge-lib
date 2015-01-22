@@ -21,6 +21,7 @@ public_overrides = \
 	overrides/listCard.js \
 	overrides/marginButton.js \
 	overrides/mediaInfobox.js \
+	overrides/mustache.js \
 	overrides/navButtonOverlay.js \
 	overrides/noSearchResultsPage.js \
 	overrides/pdfCard.js \
