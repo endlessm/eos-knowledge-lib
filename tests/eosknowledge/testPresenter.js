@@ -37,6 +37,7 @@ const MockEngine = new Lang.Class({
         this.parent();
         this.host = 'localhost';
         this.port = 3003;
+        this.language = '';
     },
 
     get_object_by_id: function () {},
