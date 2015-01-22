@@ -257,10 +257,6 @@ const ArticlePresenter = new GObject.Class({
     _get_webview: function () {
         let webview = new EknWebview.EknWebview();
 
-        webview.inject_js_from_resource('resource:///com/endlessm/knowledge/scroll_manager.js');
-        if (this.template_type === 'A')
-            webview.inject_css_from_resource('resource:///com/endlessm/knowledge/hide_title.css');
-
         webview.connect('notify::uri', function () {
             if (webview.uri.indexOf('#') >= 0) {
                 let hash = webview.uri.split('#')[1];
