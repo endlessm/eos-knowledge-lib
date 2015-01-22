@@ -51,7 +51,7 @@ describe('Knowledge Engine Module', function () {
 
     beforeEach(function () {
         jasmine.addMatchers(InstanceOfMatcher.customMatchers);
-        engine = new EosKnowledgeSearch.Engine.get_default();
+        engine = new EosKnowledgeSearch.Engine();
         engine.content_path = '/test';
     });
 
@@ -129,6 +129,21 @@ describe('Knowledge Engine Module', function () {
             let mock_uri = engine.get_xapian_uri(query_obj);
             let mock_query_obj = mock_uri.get_query();
             expect(get_query_vals_for_key(mock_query_obj, 'order')).toEqual('asc');
+        });
+
+        it('should use the lang param iff a language is set', function () {
+            let query_obj = {
+                q: 'tyrion',
+            };
+
+            let mock_uri = engine.get_xapian_uri(query_obj);
+            let mock_query_obj = mock_uri.get_query();
+            expect(get_query_vals_for_key(mock_query_obj, 'lang')).toEqual([]);
+
+            engine.language = 'en';
+            let mock_uri = engine.get_xapian_uri(query_obj);
+            let mock_query_obj = mock_uri.get_query();
+            expect(get_query_vals_for_key(mock_query_obj, 'lang')).toEqual('en');
         });
 
         it('sets correct default values for cutoff, limit, offset, and order', function () {

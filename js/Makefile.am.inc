@@ -12,6 +12,7 @@ search_files = \
 	js/search/engine.js \
 	js/search/mediaObjectModel.js \
 	js/search/searchProvider.js \
+	js/search/searchUtils.js \
 	js/search/treeNode.js \
 	js/search/xapianQuery.js \
 	$(NULL)
