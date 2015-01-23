@@ -42,6 +42,12 @@ describe('Xapian Query Module', function () {
             expect(result).toBe('tag:"cats" OR tag:"dogs" OR tag:"turtles"');
         });
 
+        it('should support requests with NOT tags', function () {
+            let tags = ['stallman', 'sex', 'tape'];
+            let result = xq.xapian_not_tag_clause(tags);
+            expect(result).toBe('NOT tag:"stallman" AND NOT tag:"sex" AND NOT tag:"tape"');
+        });
+
         it('should support requests with querystring', function () {
             let q = 'little search';
             let result = xq.xapian_query_clause(q);

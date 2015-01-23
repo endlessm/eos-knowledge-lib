@@ -6,6 +6,7 @@ jsdir = $(pkgdatadir)/js
 search_files = \
 	js/search/EosKnowledgeSearch.js \
 	js/search/articleObjectModel.js \
+	js/search/blacklist.js \
 	js/search/contentObjectModel.js \
 	js/search/datadir.js \
 	js/search/engine.js \
