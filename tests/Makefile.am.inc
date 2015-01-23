@@ -3,6 +3,7 @@
 
 javascript_tests = \
 	tests/eosknowledge/testArticleCard.js \
+	tests/eosknowledge/testArticleHTMLRenderer.js \
 	tests/eosknowledge/testArticlePage.js \
 	tests/eosknowledge/testArticlePresenter.js \
 	tests/eosknowledge/testCard.js \

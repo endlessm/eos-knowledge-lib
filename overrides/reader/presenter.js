@@ -9,6 +9,7 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const WebKit2 = imports.gi.WebKit2;
 
+const ArticleHTMLRenderer = imports.articleHTMLRenderer;
 const ArticlePage = imports.reader.articlePage;
 const Config = imports.config;
 const EknWebview = imports.eknWebview;
@@ -117,6 +118,8 @@ const Presenter = new Lang.Class({
         this.parent(props);
 
         WebkitURIHandlers.register_webkit_uri_handlers();
+
+        this._article_renderer = new ArticleHTMLRenderer.ArticleHTMLRenderer();
 
         this._check_for_issue_update();
 
@@ -335,8 +338,7 @@ const Presenter = new Lang.Class({
             }
             ready(view, error);
         });
-        // FIXME: this is just to get something on screen. We need to redo all the jade templating.
-        webview.load_html(article_model.body_html, article_model.ekn_id);
+        webview.load_html(this._article_renderer.render(article_model, false), article_model.ekn_id);
         return webview;
     },
 

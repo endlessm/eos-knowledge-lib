@@ -8,6 +8,7 @@
     <file>pdf_icon.png</file>
     <file>reader/left-arrow.svg</file>
     <file>reader/right-arrow.svg</file>
+    <file>templates/article.mst</file>
     <file>templates/css/embedly.css</file>
     <file>templates/css/wikihow.css</file>
     <file>templates/css/wikimedia.css</file>
