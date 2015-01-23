@@ -237,6 +237,7 @@ AC_CONFIG_FILES([
     docs/reference/eosknowledgesearch/Makefile
     docs/reference/eosknowledge/version.xml
     overrides/config.js
+    config/compass.rb
     $EKN_API_NAME.pc
 ])
 AC_CONFIG_HEADERS([config.h])  dnl Header with system-dependent #defines

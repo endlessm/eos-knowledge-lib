@@ -82,7 +82,7 @@ td:empty {
 }
 
 html {
-    background: #ececec url("../img/noise.png");
+    background: #ececec image-url("noise.png");
 }
 
 .mw-body {
@@ -345,8 +345,8 @@ html {
         .magnify {
             padding-top: 5px;
             img {
-                $file: "../img/object-view.png";
-                background: url($file) no-repeat center center;
+                $file: "object-view.png";
+                background: image-url($file) no-repeat center center;
                 content: "";
                 display: none;
                 height: image-height($file);
