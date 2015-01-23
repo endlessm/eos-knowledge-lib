@@ -7,6 +7,7 @@ public_overrides = \
 	overrides/articleCard.js \
 	overrides/articlePage.js \
 	overrides/articlePresenter.js \
+	overrides/articleHTMLRenderer.js \
 	overrides/card.js \
 	overrides/cardA.js \
 	overrides/cardB.js \

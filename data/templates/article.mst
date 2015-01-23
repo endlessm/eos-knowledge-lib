@@ -1,0 +1,30 @@
+<html>
+    <head>
+        {{#css-files}}
+        <link rel="stylesheet" type="text/css" href="resource:///com/endlessm/knowledge/templates/css/{{{.}}}"/>
+        {{/css-files}}
+    </head>
+    <body>
+        <div id="copy-button">{{copy-button-text}}</div>
+        <div class="mw-body" id="bodycontents">
+            {{#title}}
+            <div class="eos-article-title">
+                <header>
+                    <h1>{{.}}</h1>
+                </header>
+            </div>
+            {{/title}}
+            <section id="inside-content" class="section">
+                <div>{{{body-html}}}</div>
+                {{#disclaimer}}
+                <div class="disclaimer">
+                    <p>{{{.}}}</p>
+                </div>
+                {{/disclaimer}}
+            </section>
+        </div>
+        {{#javascript-files}}
+        <script type="text/javascript" src="resource:///com/endlessm/knowledge/templates/js/{{{.}}}"></script>
+        {{/javascript-files}}
+    </body>
+</html>

@@ -8,6 +8,7 @@ const Lang = imports.lang;
 const WebKit2 = imports.gi.WebKit2;
 
 const ArticlePage = imports.articlePage;
+const ArticleHTMLRenderer = imports.articleHTMLRenderer;
 const EknWebview = imports.eknWebview;
 const PDFView = imports.PDFView;
 const Utils = imports.utils;
@@ -104,6 +105,7 @@ const ArticlePresenter = new GObject.Class({
         this._article_model = null;
         this._webview = null;
         this._webview_load_id = 0;
+        this._renderer = new ArticleHTMLRenderer.ArticleHTMLRenderer();
 
         this._connect_toc_widget();
         this.article_view.connect('new-view-transitioned', this._update_title_and_toc.bind(this));
@@ -154,8 +156,8 @@ const ArticlePresenter = new GObject.Class({
                 this.article_view.switch_in_content_view(this._webview, animation_type);
                 ready();
             }.bind(this));
-            // FIXME: this is just to get something on screen. We need to redo all the jade templating.
-            this._webview.load_html(this._article_model.body_html, this._article_model.ekn_id);
+            let html = this._renderer.render(this._article_model, this.template_type !== 'A');
+            this._webview.load_html(html, this._article_model.ekn_id);
         } else if (this._article_model.content_uri.length > 0) {
             uri = this._article_model.content_uri;
             let file = Gio.file_new_for_uri(uri);
