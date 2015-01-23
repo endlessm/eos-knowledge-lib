@@ -110,6 +110,14 @@ function xapian_tag_clause (tags) {
     return prefixedTagsArr.join(XAPIAN_OP_OR);
 }
 
+function xapian_not_tag_clause (tags) {
+    let prefixedTagsArr = tags
+        .map(quote)
+        .map(function (tag) { return XAPIAN_OP_NOT + XAPIAN_PREFIX_TAG + tag; });
+
+    return prefixedTagsArr.join(XAPIAN_OP_AND);
+}
+
 // The argument id here is a full uri, e.g. ekn://animals/s0m3ha5h
 // We want just the hash portion.
 function xapian_id_clause (id) {

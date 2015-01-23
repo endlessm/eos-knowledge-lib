@@ -8,6 +8,7 @@ const ArticleObjectModel = imports.articleObjectModel;
 const ContentObjectModel = imports.contentObjectModel;
 const MediaObjectModel = imports.mediaObjectModel;
 const xapianQuery = imports.xapianQuery;
+const blacklist = imports.blacklist.blacklist;
 
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 
@@ -249,6 +250,12 @@ const Engine = Lang.Class({
                         throw new Error('Unexpected property value ' + property);
             }
         }
+
+        // Add blacklist tags to every query
+        let domain = this.content_path.split('/').slice(-1);
+        let explicit_tags = blacklist[domain];
+        if (typeof explicit_tags !== 'undefined')
+            xapian_query_options.push(xapianQuery.xapian_not_tag_clause(explicit_tags));
 
         let query_obj_out = {
             collapse: xapianQuery.XAPIAN_SOURCE_URL_VALUE_NO,
