@@ -50,7 +50,7 @@ html, body {
 }
 
 body {
-    background: #ececec url("../img/noise.png");
+    background: #ececec image-url("noise.png");
 }
 
 img {
@@ -167,8 +167,8 @@ h2 + ol, h3 + ol, .steps_list_2 {
             @include box-sizing(border-box);
         }
         &:before {
-            $file: "../img/object-view.png";
-            background: url($file) no-repeat center center;
+            $file: "object-view.png";
+            background: image-url($file) no-repeat center center;
             content: "";
             display: none;
             height: image-height($file);
