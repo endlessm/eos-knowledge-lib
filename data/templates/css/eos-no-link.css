@@ -1,0 +1,18 @@
+a.eos-no-link {
+    cursor: text;
+    -webkit-user-drag: none;
+    color:#666666;
+    text-decoration: none;
+}
+
+.toc a{
+	cursor:pointer;
+}
+
+.magnify{
+	display: none;
+}
+
+.eos-no-image {
+    display: none;
+}
