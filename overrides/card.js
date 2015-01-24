@@ -57,6 +57,15 @@ const Card = new Lang.Class({
             'True if the card should fade in to being visible.',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             false),
+
+        /**
+         * Property: featured
+         * A boolean representing whether or not this card is "featured", and
+         * should be treated as preferable to sibling cards. Defaults to false.
+         */
+        'featured': GObject.ParamSpec.boolean('featured', 'Featured',
+            'Whether this card is featured',
+            GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE, false),
     },
 
     _init: function(props) {
