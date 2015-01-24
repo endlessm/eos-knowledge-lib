@@ -56,7 +56,7 @@ const MockArticlePresenter = new Lang.Class({
     connect: function () {},
 });
 
-describe('Presenter', function () {
+describe('Presenter', () => {
     let presenter;
     let data;
     let view;
@@ -64,7 +64,7 @@ describe('Presenter', function () {
     let article_presenter;
     let test_app_filename = Endless.getCurrentFileDir() + '/../test-content/app.json';
 
-    beforeEach(function () {
+    beforeEach(() => {
         data = utils.parse_object_from_path(test_app_filename);
 
         view = new MockView();
@@ -78,26 +78,26 @@ describe('Presenter', function () {
         });
     });
 
-    it('can be constructed', function () {});
+    it('can be constructed', () => {});
 
-    it('can set title image on view from json', function () {
+    it('can set title image on view from json', () => {
         expect(presenter.view.home_page.title_image_uri).toBe(data['titleImageURI']);
     });
 
-    it('pings the knowledge engine on construction', function () {
+    it('pings the knowledge engine on construction', () => {
          expect(engine.ping).toHaveBeenCalled();
     });
 
-    it('can set cards on view from json', function () {
-        expect(data['sections'].map(function (section) {
+    it('can set cards on view from json', () => {
+        expect(data['sections'].map((section) => {
             return section['title'];
-        })).toEqual(presenter.view.home_page.cards.map(function (card) {
+        })).toEqual(presenter.view.home_page.cards.map((card) => {
             return card.title;
         }));
-        
-        expect(data['sections'].map(function (section) {
+
+        expect(data['sections'].map((section) => {
             return section['thumbnailURI'];
-        })).toEqual(presenter.view.home_page.cards.map(function (card) {
+        })).toEqual(presenter.view.home_page.cards.map((card) => {
             return card.thumbnail_uri;
         }));
 

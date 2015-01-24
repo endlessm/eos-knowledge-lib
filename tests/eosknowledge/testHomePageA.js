@@ -6,7 +6,7 @@ const CssClassMatcher = imports.CssClassMatcher;
 
 const TESTDIR = Endless.getCurrentFileDir() + '/..';
 
-describe('Home page for Template A', function () {
+describe('Home page for Template A', () => {
     let home_page;
     let card_list = [
             new EosKnowledge.Card({
@@ -37,13 +37,13 @@ describe('Home page for Template A', function () {
             })
         ];
 
-    beforeEach(function () {
+    beforeEach(() => {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
 
         home_page = new EosKnowledge.HomePageA();
 
         notify = jasmine.createSpy('notify');
-        home_page.connect('notify', function (object, pspec) {
+        home_page.connect('notify', (object, pspec) => {
             // Seems properties defined in js can only be accessed through
             // object[name] with the underscore variant on the name
             notify(pspec.name, object[pspec.name.replace('-', '_')]);
@@ -51,9 +51,9 @@ describe('Home page for Template A', function () {
 
     });
 
-    it('can be constructed', function () {});
+    it('can be constructed', () => {});
 
-    it('can set cards', function () {
+    it('can set cards', () => {
         // Seems worth testing this as having a list property in javascript
         // isn't common
         home_page.cards = card_list;
@@ -67,7 +67,7 @@ describe('Home page for Template A', function () {
         expect(existing_card_list).toEqual(expected_card_list);
     });
 
-    it('orders featured cards first', function () {
+    it('orders featured cards first', () => {
         home_page.cards = card_list;
 
         expect(home_page.cards.map((card) => card.featured)).toEqual([
@@ -78,14 +78,14 @@ describe('Home page for Template A', function () {
         ]);
     });
 
-    describe('Style class of table of contents', function () {
-        it('has home_page class', function () {
+    describe('Style class of table of contents', () => {
+        it('has home_page class', () => {
             expect(home_page).toHaveCssClass(EosKnowledge.STYLE_CLASS_HOME_PAGE_A);
         });
-        it('has a descendant with search box class', function () {
+        it('has a descendant with search box class', () => {
             expect(home_page).toHaveDescendantWithCssClass(EosKnowledge.STYLE_CLASS_SEARCH_BOX);
         });
-        it('has a descendant with container class', function () {
+        it('has a descendant with container class', () => {
             expect(home_page).toHaveDescendantWithCssClass(EosKnowledge.STYLE_CLASS_CARD_CONTAINER);
         });
     });
