@@ -15,6 +15,7 @@
         {
             "title": "Kings",
             "thumbnailURI": "resource:///com/endlessm/thrones/joffrey.jpg",
+            "featured": true,
             "tags": ["hostels", "monuments"]
         },
         {

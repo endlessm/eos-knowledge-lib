@@ -100,5 +100,11 @@ describe('Presenter', function () {
         })).toEqual(presenter.view.home_page.cards.map(function (card) {
             return card.thumbnail_uri;
         }));
+
+        expect(data['sections'].map((section) => {
+            return section['featured'];
+        })).toEqual(presenter.view.home_page.cards.map((card) => {
+            return card.featured;
+        }));
     });
 });
