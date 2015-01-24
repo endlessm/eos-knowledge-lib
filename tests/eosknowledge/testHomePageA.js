@@ -12,15 +12,18 @@ describe('Home page for Template A', function () {
             new EosKnowledge.Card({
                 title: 'Synopsised Card',
                 synopsis: 'This is the Synopsis',
+                featured: false,
             }),
             new EosKnowledge.Card({
-                title: 'Picture Card',
+                title: 'Featured Picture Card',
                 thumbnail_uri: TESTDIR + '/test-content/pig1.jpg',
+                featured: true,
             }),
             new EosKnowledge.Card({
                 title: 'Everything card',
                 synopsis: 'This card has everything',
                 thumbnail_uri: TESTDIR + '/test-content/pig2.jpg',
+                featured: true,
             }),
             new EosKnowledge.LessonCard({
                 title: 'Mustard lesson',
@@ -29,7 +32,8 @@ describe('Home page for Template A', function () {
                 // http://en.wikipedia.org/wiki/File:Mu%C5%9Ftar.jpg
                 thumbnail_uri: TESTDIR + '/test-content/mustard.jpg',
                 item_index: 1,
-                complete: false
+                complete: false,
+                featured: false,
             })
         ];
 
@@ -53,7 +57,25 @@ describe('Home page for Template A', function () {
         // Seems worth testing this as having a list property in javascript
         // isn't common
         home_page.cards = card_list;
-        expect(home_page.cards).toBe(card_list);
+
+        let get_title = (card) => card.title;
+
+        // sort existing/expected lists alphabetically for comparing members
+        // independent of pack_cards implementation
+        let expected_card_list = card_list.map(get_title).sort();
+        let existing_card_list = home_page.cards.map(get_title).sort();
+        expect(existing_card_list).toEqual(expected_card_list);
+    });
+
+    it('orders featured cards first', function () {
+        home_page.cards = card_list;
+
+        expect(home_page.cards.map((card) => card.featured)).toEqual([
+            true,
+            true,
+            false,
+            false,
+        ]);
     });
 
     describe('Style class of table of contents', function () {
