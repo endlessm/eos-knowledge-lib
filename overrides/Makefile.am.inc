@@ -36,6 +36,7 @@ public_overrides = \
 	overrides/sectionPageB.js \
 	overrides/tableOfContents.js \
 	overrides/textCard.js \
+	overrides/webkitURIHandlers.js \
 	overrides/window.js \
 	$(NULL)
 private_overrides = \
