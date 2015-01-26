@@ -107,8 +107,6 @@ const ArticlePresenter = new GObject.Class({
 
         this._connect_toc_widget();
         this.article_view.connect('new-view-transitioned', this._update_title_and_toc.bind(this));
-
-        EosKnowledge.private_register_global_uri_scheme('ekn', Utils.load_ekn_assets);
     },
 
     set article_model (v) {

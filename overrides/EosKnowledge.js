@@ -39,6 +39,7 @@ const SectionPageB = imports.sectionPageB;
 const TableOfContents = imports.tableOfContents;
 const TextCard = imports.textCard;
 const TreeNode = imports.treeNode;
+const WebkitURIHandlers = imports.webkitURIHandlers;
 const Window = imports.window;
 
 const ReaderArticlePage = imports.reader.articlePage;
@@ -121,6 +122,7 @@ function _init() {
     EosKnowledge.SectionPageB = SectionPageB.SectionPageB;
     EosKnowledge.TableOfContents = TableOfContents.TableOfContents;
     EosKnowledge.TextCard = TextCard.TextCard;
+    EosKnowledge.register_webkit_uri_handlers = WebkitURIHandlers.register_webkit_uri_handlers;
     EosKnowledge.Window = Window.Window;
 
     /**

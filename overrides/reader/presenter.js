@@ -16,6 +16,7 @@ const Engine = imports.engine;
 const Previewer = imports.previewer;
 const UserSettingsModel = imports.reader.userSettingsModel;
 const Utils = imports.utils;
+const WebkitURIHandlers = imports.webkitURIHandlers;
 const Window = imports.reader.window;
 
 String.prototype.format = Format.format;
@@ -116,6 +117,8 @@ const Presenter = new Lang.Class({
 
         this.parent(props);
 
+        WebkitURIHandlers.register_webkit_uri_handlers();
+
         this._check_for_issue_update();
 
         this._parse_app_info(app_json);
@@ -161,8 +164,6 @@ const Presenter = new Lang.Class({
         this.settings.bind_property('bookmark-issue',
             this.view.issue_nav_buttons.back_button, 'sensitive',
             GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE);
-
-        EosKnowledge.private_register_global_uri_scheme('ekn', Utils.load_ekn_assets);
     },
 
     // Right now these functions are just stubs which we will need to flesh out
