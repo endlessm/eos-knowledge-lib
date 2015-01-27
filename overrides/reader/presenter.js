@@ -23,7 +23,6 @@ GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.
 
 const RESULTS_SIZE = 15;
 const NUM_SNIPPETS_ON_OVERVIEW_PAGE = 3;
-const BOGUS_URI = 'bogus-uri';
 
 // 1 week in miliseconds
 const UPDATE_INTERVAL_MS = 604800000;
@@ -336,7 +335,7 @@ const Presenter = new Lang.Class({
             ready(view, error);
         });
         // FIXME: this is just to get something on screen. We need to redo all the jade templating.
-        webview.load_html(article_model.body_html, BOGUS_URI);
+        webview.load_html(article_model.body_html, article_model.ekn_id);
         return webview;
     },
 
