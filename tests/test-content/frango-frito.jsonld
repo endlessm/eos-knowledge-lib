@@ -24,6 +24,7 @@
     ],
     "@id": "ekn:cooking_magazine/Frango_Frito",
     "@type": "ekv:ArticleObject",
+    "sourceURI": "http://eos-pantheon.herokuapp.com/articles/frango",
     "title": "Receita de frango frito",
     "synopsis": "Como fritar um frango, no estilo brasileiro",
     "issueNumber": 12,
