@@ -126,7 +126,13 @@ const HomePageA = new Lang.Class({
 
     pack_cards: function (cards) {
         this._card_container.remove_cards();
-        this._card_container.add_cards(this._cards);
+        let sorted_cards = cards.sort((a, b) => {
+            let sortVal = 0;
+            if (a.featured) sortVal--;
+            if (b.featured) sortVal++;
+            return sortVal;
+        });
+        this._card_container.add_cards(sorted_cards);
     }
 });
 

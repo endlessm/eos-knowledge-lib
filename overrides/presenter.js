@@ -268,27 +268,41 @@ const Presenter = new Lang.Class({
     },
 
     _set_sections: function(sections) {
-        if (this._template_type === 'B') {
-            this.view.home_page.cards = sections.map(function (section) {
-                let card = new CardB.CardB({
-                    title: section['title'].charAt(0).toUpperCase() + section['title'].slice(1),
-                    thumbnail_uri: section['thumbnailURI']
+        let new_card_from_section = (section) => {
+            let card;
+            let title = section['title'].charAt(0).toUpperCase() + section['title'].slice(1);
+            if (this._template_type === 'A') {
+                card = new CardA.CardA({
+                    title: title,
                 });
-                card.connect('clicked', this._on_section_card_clicked.bind(this, section['tags']));
-                return card;
-            }.bind(this));
-        } else {
+            } else {
+                card = new CardB.CardB({
+                    title: title,
+                });
+            }
+
+            if (section.hasOwnProperty('thumbnailURI')) {
+                card.thumbnail_uri = section['thumbnailURI'];
+            } else {
+                // log a warning that this category is missing its thumbnail
+                printerr("WARNING: Missing category thumbnail for " + title);
+            }
+
+            if (section.hasOwnProperty('featured')) {
+                card.featured = section['featured'];
+            }
+
+            card.connect('clicked', this._on_section_card_clicked.bind(this, section['tags']));
+            return card;
+        }
+
+        if (this._template_type === 'A') {
             for (let page of [this.view.home_page, this.view.categories_page]) {
-                let category_cards = sections.map(function (section) {
-                    let card = new CardA.CardA({
-                        title: section['title'].charAt(0).toUpperCase() + section['title'].slice(1),
-                        thumbnail_uri: section['thumbnailURI']
-                    });
-                    card.connect('clicked', this._on_section_card_clicked.bind(this, section['tags']));
-                    return card;
-                }.bind(this));
+                let category_cards = sections.map(new_card_from_section);
                 page.cards = category_cards;
             }
+        } else {
+            this.view.home_page.cards = sections.map(new_card_from_section);
         }
     },
 
