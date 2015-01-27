@@ -26,5 +26,17 @@
         {{#javascript-files}}
         <script type="text/javascript" src="resource:///com/endlessm/knowledge/templates/js/{{{.}}}"></script>
         {{/javascript-files}}
+        {{#include-mathjax}}
+        <script type="text/x-mathjax-config">
+            MathJax.Hub.Config({
+                config: ["TeX-AMS-MML_HTMLorMML.js"],
+                imageFont: null,
+                tex2jax: {
+                    skipTags: ["script", "noscript", "style", "textarea"],
+                },
+            });
+        </script>
+        <script type="text/javascript" src="file://{{{mathjax-path}}}/MathJax.js"></script>
+        {{/include-mathjax}}
     </body>
 </html>

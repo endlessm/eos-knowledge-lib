@@ -98,6 +98,8 @@ const ArticleHTMLRenderer = new Lang.Class({
             'copy-button-text': _("Copy"),
             'css-files': this._get_css_files(model),
             'javascript-files': this._get_javascript_files(model),
+            'include-mathjax': true,
+            'mathjax-path': Config.mathjax_path,
         });
     },
 });
