@@ -96,7 +96,6 @@ const ArticlePresenter = new GObject.Class({
 
     // Duration of animated scroll from section to section in the page.
     _SCROLL_DURATION: 1000,
-    _BOGUS_URI: 'bogus-uri',
 
     _init: function (props) {
         this.parent(props);
@@ -158,7 +157,7 @@ const ArticlePresenter = new GObject.Class({
                 ready();
             }.bind(this));
             // FIXME: this is just to get something on screen. We need to redo all the jade templating.
-            this._webview.load_html(this._article_model.body_html, this._BOGUS_URI);
+            this._webview.load_html(this._article_model.body_html, this._article_model.ekn_id);
         } else if (this._article_model.content_uri.length > 0) {
             uri = this._article_model.content_uri;
             let file = Gio.file_new_for_uri(uri);
@@ -293,7 +292,7 @@ const ArticlePresenter = new GObject.Class({
                 return model.ekn_id;
             });
 
-            if (baseURI === this._BOGUS_URI) {
+            if (baseURI === this._article_model.ekn_id) {
                 // If this check is true, then we are navigating to the current
                 // page or an anchor on the current page.
                 decision.use();
