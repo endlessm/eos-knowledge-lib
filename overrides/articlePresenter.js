@@ -22,8 +22,7 @@ GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.
  * and an <ArticlePage>. It connects to signals on the view's widgets and handles
  * those events accordingly.
  *
- * Its properties are an <article-model>, <article-view> and a <engine>. The engine is for
- * communication with the Knowledge Engine server.
+ * Its properties are an <article-model>, <article-view>.
  */
 const ArticlePresenter = new GObject.Class({
     Name: 'ArticlePresenter',
@@ -51,15 +50,6 @@ const ArticlePresenter = new GObject.Class({
             GObject.Object.$gtype),
 
         /**
-         * Property: engine
-         *
-         * The <Engine> widget created by this widget. Construct-only.
-         */
-        'engine': GObject.ParamSpec.object('engine', 'Engine module',
-            'The engine module to connect to EKN',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            GObject.Object.$gtype),
-        /**
          * Property: template-type
          *
          * A string for the template type the window should render as
@@ -71,28 +61,15 @@ const ArticlePresenter = new GObject.Class({
     },
     Signals: {
         /**
-         * Event: media-object-clicked
-         * Emitted when a media URI in the article page is clicked.
-         * Passes the ID of the media object that was clicked and whether it is
-         * a resource of the parent article model.
+         * Event: ekn-link-clicked
+         * Emitted when a ekn id link in the article page is clicked.
+         * Passes the ID.
          */
-        'media-object-clicked': {
+        'ekn-link-clicked': {
             param_types: [
-                GObject.TYPE_OBJECT /* MediaContentObject */,
-                GObject.TYPE_BOOLEAN /* Whether the media object is internal */
+                GObject.TYPE_STRING /* MediaContentObject */,
             ]
         },
-
-        /**
-         * Event: article-object-clicked
-         * Emitted when a URI to another article page is clicked.
-         * Passes the <ArticleObjectModel> object of that URI.
-         */
-        'article-object-clicked': {
-            param_types: [
-                EosKnowledgeSearch.ArticleObjectModel.$gtype /* ArticleObject */
-            ]
-        }
     },
 
     // Duration of animated scroll from section to section in the page.
@@ -128,7 +105,6 @@ const ArticlePresenter = new GObject.Class({
      *   ready - optional, a function to call when the view is ready for display
      */
     load_article: function (model, animation_type, ready) {
-        model.fetch_all(this.engine);
         if (ready === undefined)
             ready = function () {};
 
@@ -287,39 +263,14 @@ const ArticlePresenter = new GObject.Class({
                 return false;
 
             let [baseURI, hash] = decision.request.uri.split('#');
-            let _resources = this._article_model.get_resources();
-            let resource_ekn_ids = _resources.map(function (model) {
-                return model.ekn_id;
-            });
 
             if (baseURI === this._article_model.ekn_id) {
                 // If this check is true, then we are navigating to the current
                 // page or an anchor on the current page.
                 decision.use();
                 return false;
-            } else if (resource_ekn_ids.indexOf(decision.request.uri) !== -1) {
-                // Else, if the request corresponds to a media object in the
-                // resources array, emit the bat signal!
-                let lightbox = _resources.filter(function (resource) {
-                    return decision.request.uri === resource.ekn_id;
-                });
-                this.emit('media-object-clicked', lightbox[0], true);
-
-                decision.ignore();
-                return true;
             } else {
-                this.engine.get_object_by_id(baseURI, function (err, model) {
-                    if (typeof err === 'undefined') {
-                        if (model instanceof EosKnowledgeSearch.MediaObjectModel) {
-                            this.emit('media-object-clicked', model, false);
-                        } else {
-                            this.emit('article-object-clicked', model);
-                        }
-                    } else {
-                        printerr(err);
-                        printerr(err.stack);
-                    }
-                }.bind(this));
+                this.emit('ekn-link-clicked', baseURI);
                 return true;
             }
         }.bind(this));

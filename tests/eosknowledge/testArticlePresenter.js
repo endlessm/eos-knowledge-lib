@@ -8,22 +8,6 @@ const Lang = imports.lang;
 const TESTDIR = Endless.getCurrentFileDir() + '/..';
 const MOCK_ARTICLE_PATH = TESTDIR + '/test-content/mexico.jsonld';
 
-const MockEngine = new Lang.Class({
-    Name: 'MockEngine',
-    Extends: GObject.Object,
-
-    _init: function () {
-        this.parent();
-        this.host = 'localhost';
-        this.port = 3003;
-        this.language = '';
-    },
-
-    get_object_by_id: function () {},
-    get_ekn_id: function () {},
-    get_objects_by_query: function () {},
-});
-
 const MockView = new Lang.Class({
     Name: 'MockView',
     Extends: GObject.Object,
@@ -48,7 +32,6 @@ describe('Article Presenter', function () {
     let view;
     let mockArticleData;
     let articleObject;
-    let engine;
     let webview;
 
     beforeEach(function (done) {
@@ -62,12 +45,8 @@ describe('Article Presenter', function () {
         view = new MockView();
         view.connect_after('new-view-transitioned', done);
 
-        engine = new MockEngine();
-        spyOn(engine, 'get_object_by_id');
-
         presenter = new EosKnowledge.ArticlePresenter({
             article_view: view,
-            engine: engine
         });
         presenter.load_article(articleObject, EosKnowledge.LoadingAnimationType.NONE);
     });
@@ -86,35 +65,5 @@ describe('Article Presenter', function () {
             }
         }
         expect(view.toc.section_list).toEqual(labels);
-    });
-
-    it('emits signal when webview navigates to media object', function (done) {
-        let dummy_page = '<html><body><p>Frango frango frango</p></body></html>';
-        let id = presenter.connect('media-object-clicked', function (widget, media_object) {
-            expect(media_object.ekn_id).toEqual('mock_model_id');
-            presenter.disconnect(id);
-            done();
-        }.bind());
-        engine.get_object_by_id.and.callFake(function (i, callback) {
-            callback(undefined, new EosKnowledgeSearch.MediaObjectModel({
-                ekn_id: 'mock_model_id'
-            }));
-        });
-        presenter._webview.load_html(dummy_page, null);
-    });
-
-    it('emits signal when webview navigates to article object', function (done) {
-        let dummy_page = '<html><body><p>Frango frango frango</p></body></html>';
-        let id = presenter.connect('article-object-clicked', function (widget, article_object) {
-            expect(article_object.ekn_id).toEqual('mock_model_id');
-            presenter.disconnect(id);
-            done();
-        }.bind());
-        engine.get_object_by_id.and.callFake(function (i, callback) {
-            callback(undefined, new EosKnowledgeSearch.ArticleObjectModel({
-                ekn_id: 'mock_model_id'
-            }));
-        });
-        presenter._webview.load_html(dummy_page, null);
     });
 });

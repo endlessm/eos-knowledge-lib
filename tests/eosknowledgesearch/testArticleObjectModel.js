@@ -33,17 +33,6 @@ describe ('Article Object Model', function () {
             expect(articleObject.get_resources()).toBeDefined();
         });
 
-        it ('should marhsal its resources like a ContentObject', function () {
-            let contentURIs = articleObject.get_resources().map(function (v) {
-                return v.content_uri;
-            });
-            let expectedURIs = mockArticleData.resources.map(function (v) {
-                return 'file://' + mockMediaDir + '/' + v.contentURL;
-            });
-            expect(articleObject.get_resources()[0]).toBeA(EosKnowledgeSearch.MediaObjectModel);
-            expect(contentURIs).toEqual(expectedURIs);
-        });
-
         it ('should marshal a GtkTreeStore from JSON-LD TreeNodes', function () {
             expect(articleObject.table_of_contents).toBeA(Gtk.TreeStore);
         });
