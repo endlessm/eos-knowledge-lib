@@ -704,13 +704,6 @@
     "tags": [
         "M\u00e9xico"
     ],
-    "thumbnail": {
-        "@context": "ekn://_context/ImageObject",
-        "@id": "ekn://general-es/0b314c5cc68c5997",
-        "@type": "ekv:ImageObject",
-        "contentURL": "file:///endless/share/ekn/data/general-es/media/0b314c5cc68c5997.jpeg",
-        "encodingFormat": "image/jpeg",
-        "sourceURI": "http://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Ciudad.de.Mexico.City.Distrito.Federal.DF.Paseo.Reforma.Skyline.jpg/100px-Ciudad.de.Mexico.City.Distrito.Federal.DF.Paseo.Reforma.Skyline.jpg"
-    },
+    "thumbnail": "ekn://general-es/0b314c5cc68c5997",
     "title": "M\u00e9xico"
 }
