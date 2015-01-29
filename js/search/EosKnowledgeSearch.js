@@ -6,6 +6,7 @@ imports.searchPath.unshift(Endless.getCurrentFileDir());
 
 const ArticleObjectModel = imports.articleObjectModel.ArticleObjectModel;
 const ContentObjectModel = imports.contentObjectModel.ContentObjectModel;
+const Cache = imports.cache.Cache;
 const Engine = imports.engine.Engine;
 const get_data_dir_for_domain = imports.datadir.get_data_dir_for_domain;
 const ImageObjectModel = imports.mediaObjectModel.ImageObjectModel;
