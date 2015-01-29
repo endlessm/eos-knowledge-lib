@@ -1,3 +1,5 @@
+const Lang = imports.lang;
+const GObject = imports.gi.GObject;
 const EosKnowledgeSearch = imports.EosKnowledgeSearch;
 const Endless = imports.gi.Endless;
 const Gio = imports.gi.Gio;
@@ -9,6 +11,27 @@ const utils = imports.tests.utils;
 const MOCK_CONTENT_PATH = Endless.getCurrentFileDir() + '/../test-content/content-search-results.jsonld';
 const MOCK_ARTICLE_PATH = Endless.getCurrentFileDir() + '/../test-content/article-search-results.jsonld';
 const MOCK_MEDIA_PATH = Endless.getCurrentFileDir() + '/../test-content/media-search-results.jsonld';
+
+const MockCache = new Lang.Class({
+    Name: 'MockCache',
+    Extends: GObject.Object,
+    _init: function () {
+        this.parent();
+        this.data = {};
+        this.getSpy = jasmine.createSpy('get');
+        this.setSpy = jasmine.createSpy('set');
+    },
+    get: function (key) {
+        this.getSpy(key);
+        if (this.data.hasOwnProperty(key))
+            return this.data[key];
+        return null;
+    },
+    set: function (key, value) {
+        this.setSpy(key, value);
+        this.data[key] = value;
+    },
+});
 
 describe('Knowledge Engine Module', function () {
     let engine;
@@ -425,6 +448,57 @@ describe('Knowledge Engine Module', function () {
             });
             setTimeout(done, 100); // pause for a moment for any more callbacks
             expect(callback_called).toEqual(1);
+        });
+    });
+
+    describe('cache', function () {
+        let cache;
+        beforeEach(function () {
+            cache = new MockCache();
+            engine = new EosKnowledgeSearch.Engine({
+                cache: cache,
+            });
+            mock_engine_request(undefined, {
+                'results': [{
+                    "@type": "ekn://_vocab/ArticleObject",
+                    "@id": "ekn://foo/bar",
+                    "synopsis": "NOW IS THE WINTER OF OUR DISCONTENT"
+                }]
+            });
+        });
+
+        it('should set a cache entry after cache miss', (done) => {
+            engine.get_object_by_id('ekn://foo/bar', (err, object) => {
+                expect(cache.getSpy).toHaveBeenCalledWith('ekn://foo/bar');
+                expect(cache.setSpy).toHaveBeenCalledWith('ekn://foo/bar', object);
+                done();
+            });
+        });
+
+        it('should return cached values for get_object_by_id', function (done) {
+            cache.data = {
+                'ekn://foo/bar': 'cached value',
+            };
+            let request_spy = engine_request_spy();
+
+            engine.get_object_by_id('ekn://foo/bar', function (err, object) {
+                expect(cache.getSpy).toHaveBeenCalledWith('ekn://foo/bar');
+                expect(request_spy).not.toHaveBeenCalled();
+                expect(object).toEqual('cached value');
+                done();
+            });
+        });
+
+        it('should return cached values for get_objects_by_query', function (done) {
+            cache.data = {
+                'ekn://foo/bar': 'cached value',
+            };
+
+            engine.get_objects_by_query({}, function (err, results) {
+                expect(cache.getSpy).toHaveBeenCalledWith('ekn://foo/bar');
+                expect(results[0]).toEqual('cached value');
+                done();
+            });
         });
     });
 });
