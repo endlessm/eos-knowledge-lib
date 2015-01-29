@@ -33,7 +33,7 @@ const MockCache = new Lang.Class({
     },
 });
 
-describe('Knowledge Engine Module', function () {
+describe('Knowledge Engine Module', () => {
     let engine;
     let noop = function () {};
 
@@ -50,7 +50,7 @@ describe('Knowledge Engine Module', function () {
 
     // Setup a mocked request function which just returns the mock data
     function mock_engine_request(mock_err, mock_data) {
-        engine._send_json_ld_request = function (req, callback) {
+        engine._send_json_ld_request = (req, callback) => {
             callback(mock_err, mock_data);
         }
     }
@@ -61,9 +61,9 @@ describe('Knowledge Engine Module', function () {
     //   get_query_vals_for_key('foo=bar', 'foo') => 'bar'
     //   get_query_vals_for_key('foo=bar&foo=baz', 'foo') => ['bar', 'baz']
     function get_query_vals_for_key (querystring, key) {
-        let results = querystring.split('&').filter(function (pair) {
+        let results = querystring.split('&').filter((pair) => {
             return pair.indexOf(key + '=') === 0;
-        }).map(function (pair) {
+        }).map((pair) => {
             return decodeURIComponent(pair.split('=')[1]);
         });
 
@@ -72,34 +72,34 @@ describe('Knowledge Engine Module', function () {
         return results;
     }
 
-    beforeEach(function () {
+    beforeEach(() => {
         jasmine.addMatchers(InstanceOfMatcher.customMatchers);
         engine = new EosKnowledgeSearch.Engine();
         engine.content_path = '/test';
     });
 
-    describe('constructor', function () {
-        it('should default its port to 3004', function () {
+    describe('constructor', () => {
+        it('should default its port to 3004', () => {
             expect(engine.port).toBe(3004);
         });
 
-        it('should default its hostname to 127.0.0.1', function () {
+        it('should default its hostname to 127.0.0.1', () => {
             expect(engine.host).toBe('127.0.0.1');
         });
     });
 
-    describe('HTTP requests', function () {
-        beforeEach(function () {
+    describe('HTTP requests', () => {
+        beforeEach(() => {
             // spy on the queue_message and cancel_message methods
-            spyOn(engine._http_session, 'queue_message').and.callFake(function (req, cb) {
+            spyOn(engine._http_session, 'queue_message').and.callFake((req, cb) => {
                 cb();
             });
             spyOn(engine._http_session, 'cancel_message');
         });
 
-        it('can be cancelled', function () {
+        it('can be cancelled', () => {
             let cancellable = new Gio.Cancellable();
-            engine.get_object_by_id('ekn://foo/sqwert', function () {}, cancellable);
+            engine.get_object_by_id('ekn://foo/sqwert', () => {}, cancellable);
             cancellable.cancel();
             expect(engine._http_session.cancel_message).toHaveBeenCalled();
             let message = engine._http_session.cancel_message.calls.mostRecent().args[0];
@@ -108,32 +108,32 @@ describe('Knowledge Engine Module', function () {
             expect(message.uri.to_string(true)).toMatch('sqwert');
         });
 
-        it('does not make a request if already cancelled', function () {
+        it('does not make a request if already cancelled', () => {
             let cancellable = new Gio.Cancellable();
             cancellable.cancel();
-            engine.get_object_by_id('ekn://foo/sqwert', function () {}, cancellable);
+            engine.get_object_by_id('ekn://foo/sqwert', () => {}, cancellable);
             expect(engine._http_session.queue_message).not.toHaveBeenCalled();
         });
     });
 
-    describe('get_xapian_uri', function () {
-        it('throws error if query values are undefined', function () {
+    describe('get_xapian_uri', () => {
+        it('throws error if query values are undefined', () => {
             let bad_query_obj = {
                 q: undefined,
                 tag: 'lannister',
             }
-            expect(function(){ engine.get_xapian_uri(bad_query_obj)}).toThrow(new Error('Parameter value is undefined: q'));
+            expect(() =>{ engine.get_xapian_uri(bad_query_obj)}).toThrow(new Error('Parameter value is undefined: q'));
         });
 
-        it('throws error if it receives unexpected query value', function () {
+        it('throws error if it receives unexpected query value', () => {
             let bad_query_obj = {
                 something_unknown: 'blah',
             };
 
-            expect(function(){ engine.get_xapian_uri(bad_query_obj)}).toThrow(new Error('Unexpected property value something_unknown'));
+            expect(() =>{ engine.get_xapian_uri(bad_query_obj)}).toThrow(new Error('Unexpected property value something_unknown'));
         });
 
-        it('sets collapse to 0', function () {
+        it('sets collapse to 0', () => {
             let query_obj = {
                 q: 'tyrion',
             };
@@ -143,7 +143,7 @@ describe('Knowledge Engine Module', function () {
             expect(get_query_vals_for_key(mock_query_obj, 'collapse')).toEqual('0');
         });
 
-        it('sets order field', function () {
+        it('sets order field', () => {
             let query_obj = {
                 q: 'tyrion',
                 order: 'asc',
@@ -154,7 +154,7 @@ describe('Knowledge Engine Module', function () {
             expect(get_query_vals_for_key(mock_query_obj, 'order')).toEqual('asc');
         });
 
-        it('should use the lang param iff a language is set', function () {
+        it('should use the lang param iff a language is set', () => {
             let query_obj = {
                 q: 'tyrion',
             };
@@ -169,7 +169,7 @@ describe('Knowledge Engine Module', function () {
             expect(get_query_vals_for_key(mock_query_obj, 'lang')).toEqual('en');
         });
 
-        it('sets correct default values for cutoff, limit, offset, and order', function () {
+        it('sets correct default values for cutoff, limit, offset, and order', () => {
             let query_obj = {
                 q: 'tyrion',
             };
@@ -182,7 +182,7 @@ describe('Knowledge Engine Module', function () {
             expect(get_query_vals_for_key(mock_query_obj, 'order')).toEqual('asc');
         });
 
-        it('will not override a value of zero', function () {
+        it('will not override a value of zero', () => {
             let query_obj = {
                 q: 'tyrion',
                 limit: 0,
@@ -193,7 +193,7 @@ describe('Knowledge Engine Module', function () {
             expect(get_query_vals_for_key(mock_query_obj, 'limit')).toEqual('0');
         });
 
-        it('sets path correctly', function () {
+        it('sets path correctly', () => {
             let path, uri, query_obj;
             let query_obj = {
                 q: 'tyrion',
@@ -205,7 +205,7 @@ describe('Knowledge Engine Module', function () {
             expect(get_query_vals_for_key(query_obj, 'path')).toEqual('/foo/db');
         });
 
-        it('supports combinations of queries', function () {
+        it('supports combinations of queries', () => {
             let query_obj = {
                 q: 'tyrion wins',
                 tag: ['lannister', 'bro'],
@@ -222,7 +222,7 @@ describe('Knowledge Engine Module', function () {
             expect(isMatch).toBe(true);
         });
 
-        it('supports single ID queries', function () {
+        it('supports single ID queries', () => {
             let query_obj = {
                 id: 'ekn://domain/someId',
             };
@@ -236,8 +236,8 @@ describe('Knowledge Engine Module', function () {
         });
     });
 
-    describe('serialize_query', function () {
-        it('correctly serializes a query string', function () {
+    describe('serialize_query', () => {
+        it('correctly serializes a query string', () => {
             let query_obj = {
                 path: '/foo',
                 q: 'bar',
@@ -254,8 +254,8 @@ describe('Knowledge Engine Module', function () {
     });
 
 
-    describe('get_object_by_id', function () {
-        it('sends requests', function () {
+    describe('get_object_by_id', () => {
+        it('sends requests', () => {
             let request_spy = engine_request_spy();
             let mock_id = 'ekn://foo/bar';
 
@@ -263,7 +263,7 @@ describe('Knowledge Engine Module', function () {
             expect(request_spy).toHaveBeenCalled();
         });
 
-        it('sends correct request URIs', function () {
+        it('sends correct request URIs', () => {
             let request_spy = engine_request_spy();
             let mock_id = 'ekn://foo/bar';
             let mock_id_query = '(id:bar)';
@@ -281,7 +281,7 @@ describe('Knowledge Engine Module', function () {
             expect(get_query_vals_for_key(requested_query, 'q')).toMatch(mock_id_query);
         });
 
-        it('marshals objects based on @type', function (done) {
+        it('marshals objects based on @type', (done) => {
             let mock_id = 'ekn://foo/bar';
             mock_engine_request(undefined, {
                 'results': [{
@@ -290,7 +290,7 @@ describe('Knowledge Engine Module', function () {
                 }]
             });
 
-            engine.get_object_by_id(mock_id, function (err, res) {
+            engine.get_object_by_id(mock_id, (err, res) => {
                 print(err);
                 expect(err).not.toBeDefined();
                 expect(res).toBeA(EosKnowledgeSearch.ArticleObjectModel);
@@ -299,7 +299,7 @@ describe('Knowledge Engine Module', function () {
             });
         });
 
-        it('correctly sets media path on models', function (done) {
+        it('correctly sets media path on models', (done) => {
             let mock_id = 'ekn://foo/bar';
             engine.content_path = '/hopeful';
             mock_engine_request(undefined, {
@@ -309,19 +309,19 @@ describe('Knowledge Engine Module', function () {
                 }]
             });
 
-            engine.get_object_by_id(mock_id, function (err, res) {
+            engine.get_object_by_id(mock_id, (err, res) => {
                 expect(res).toBeA(EosKnowledgeSearch.ContentObjectModel);
                 expect(res.content_uri).toBe('file:///hopeful/media/alligator.jpg');
                 done();
             });
         });
 
-        it('does not call its callback more than once', function (done) {
+        it('does not call its callback more than once', (done) => {
             let mock_id = 'ekn://foo/bar';
             mock_engine_request(new Error('I am an error'), undefined);
 
             let callback_called = 0;
-            engine.get_object_by_id(mock_id, function (err, res) {
+            engine.get_object_by_id(mock_id, (err, res) => {
                 callback_called++;
             });
             setTimeout(done, 100); // pause for a moment for any more callbacks
@@ -329,9 +329,9 @@ describe('Knowledge Engine Module', function () {
         });
     });
 
-    describe('get_objects_by_query', function () {
+    describe('get_objects_by_query', () => {
 
-        it('sends requests', function () {
+        it('sends requests', () => {
             let request_spy = engine_request_spy();
             let mock_query = {
                 q: 'logorrhea',
@@ -341,7 +341,7 @@ describe('Knowledge Engine Module', function () {
             expect(request_spy).toHaveBeenCalled();
         });
 
-        it('requests correct URIs', function () {
+        it('requests correct URIs', () => {
             let request_spy = engine_request_spy();
             let mock_query = {
                 q: 'logorrhea',
@@ -360,7 +360,7 @@ describe('Knowledge Engine Module', function () {
             expect(get_query_vals_for_key(requested_query, 'q')).toMatch('(logorrhea)');
         });
 
-        it ("throws an error on unsupported JSON-LD type", function (done) {
+        it ("throws an error on unsupported JSON-LD type", (done) => {
             let notSearchResults = {
                 "@type": "schema:Frobinator",
                 "numResults": 1,
@@ -370,14 +370,14 @@ describe('Knowledge Engine Module', function () {
             };
             mock_engine_request(undefined, notSearchResults);
 
-            engine.get_objects_by_query({}, function (err, results) {
+            engine.get_objects_by_query({}, (err, results) => {
                 expect(results).not.toBeDefined();
                 expect(err).toBeDefined();
                 done();
             });
         });
 
-        it ("throws an error on unsupported search results", function (done) {
+        it ("throws an error on unsupported search results", (done) => {
             let badObject = { "@type": "ekv:Kitten" };
             let resultsWithBadObject = {
                 "@type": "ekv:SearchResults",
@@ -386,26 +386,26 @@ describe('Knowledge Engine Module', function () {
             };
 
             mock_engine_request(undefined, resultsWithBadObject);
-            engine.get_objects_by_query({}, function (err, results) {
+            engine.get_objects_by_query({}, (err, results) => {
                 expect(results).not.toBeDefined();
                 expect(err).toBeDefined();
                 done();
             });
         });
 
-        it ("resolves to a list of results if jsonld is valid", function (done) {
+        it ("resolves to a list of results if jsonld is valid", (done) => {
             mock_engine_request(undefined, MOCK_ARTICLE_RESULTS);
 
-            engine.get_objects_by_query({}, function (err, results) {
+            engine.get_objects_by_query({}, (err, results) => {
                 expect(err).not.toBeDefined();
                 expect(results).toBeDefined();
                 done();
             });
         });
 
-        it ("constructs a list of content objects based on @type", function (done) {
+        it ("constructs a list of content objects based on @type", (done) => {
             mock_engine_request(undefined, MOCK_CONTENT_RESULTS);
-            engine.get_objects_by_query({}, function (err, results) {
+            engine.get_objects_by_query({}, (err, results) => {
                 // All results in MOCK_CONTENT_OBJECT_RESULTS are of @type ContentObject,
                 // so expect that they're constructed as such
                 for (let i in results) {
@@ -415,9 +415,9 @@ describe('Knowledge Engine Module', function () {
             });
         });
 
-        it ("constructs a list of article objects based on @type", function (done) {
+        it ("constructs a list of article objects based on @type", (done) => {
             mock_engine_request(undefined, MOCK_ARTICLE_RESULTS);
-            engine.get_objects_by_query({}, function (err, results) {
+            engine.get_objects_by_query({}, (err, results) => {
                 // All results in MOCK_ARTICLE_OBJECT_RESULTS are of @type ArticleObject,
                 // so expect that they're constructed as such
                 for (let i in results) {
@@ -427,9 +427,9 @@ describe('Knowledge Engine Module', function () {
             });
         });
 
-        it ("constructs a list of media objects based on @type", function (done) {
+        it ("constructs a list of media objects based on @type", (done) => {
             mock_engine_request(undefined, MOCK_MEDIA_RESULTS);
-            engine.get_objects_by_query({}, function (err, results) {
+            engine.get_objects_by_query({}, (err, results) => {
                 // All results in MOCK_MEDIA_OBJECT_RESULTS are of @type MediaObject,
                 // so expect that they're constructed as such
                 for (let i in results) {
@@ -439,11 +439,11 @@ describe('Knowledge Engine Module', function () {
             });
         });
 
-        it('does not call its callback more than once', function (done) {
+        it('does not call its callback more than once', (done) => {
             mock_engine_request(new Error('I am an error'), undefined);
 
             let callback_called = 0;
-            engine.get_objects_by_query({}, function (err, res) {
+            engine.get_objects_by_query({}, (err, res) => {
                 callback_called++;
             });
             setTimeout(done, 100); // pause for a moment for any more callbacks
@@ -451,9 +451,9 @@ describe('Knowledge Engine Module', function () {
         });
     });
 
-    describe('cache', function () {
+    describe('cache', () => {
         let cache;
-        beforeEach(function () {
+        beforeEach(() => {
             cache = new MockCache();
             engine = new EosKnowledgeSearch.Engine({
                 cache: cache,
@@ -475,13 +475,13 @@ describe('Knowledge Engine Module', function () {
             });
         });
 
-        it('should return cached values for get_object_by_id', function (done) {
+        it('should return cached values for get_object_by_id', (done) => {
             cache.data = {
                 'ekn://foo/bar': 'cached value',
             };
             let request_spy = engine_request_spy();
 
-            engine.get_object_by_id('ekn://foo/bar', function (err, object) {
+            engine.get_object_by_id('ekn://foo/bar', (err, object) => {
                 expect(cache.getSpy).toHaveBeenCalledWith('ekn://foo/bar');
                 expect(request_spy).not.toHaveBeenCalled();
                 expect(object).toEqual('cached value');
@@ -489,12 +489,12 @@ describe('Knowledge Engine Module', function () {
             });
         });
 
-        it('should return cached values for get_objects_by_query', function (done) {
+        it('should return cached values for get_objects_by_query', (done) => {
             cache.data = {
                 'ekn://foo/bar': 'cached value',
             };
 
-            engine.get_objects_by_query({}, function (err, results) {
+            engine.get_objects_by_query({}, (err, results) => {
                 expect(cache.getSpy).toHaveBeenCalledWith('ekn://foo/bar');
                 expect(results[0]).toEqual('cached value');
                 done();
