@@ -124,7 +124,7 @@ const Engine = Lang.Class({
         };
         let req_uri = this.get_xapian_uri(query_obj);
 
-        this._send_json_ld_request(req_uri, function (err, json_ld) {
+        this._send_json_ld_request(req_uri, (err, json_ld) => {
             if (typeof err !== 'undefined') {
                 // error occurred during request, so immediately fail with err
                 callback(err, undefined);
@@ -142,7 +142,7 @@ const Engine = Lang.Class({
                 return;
             }
             callback(undefined, model);
-        }.bind(this), cancellable);
+        }, cancellable);
     },
 
     /**
@@ -173,7 +173,7 @@ const Engine = Lang.Class({
     get_objects_by_query: function (query_obj, callback, cancellable = null) {
         let req_uri = this.get_xapian_uri(query_obj);
 
-        this._send_json_ld_request(req_uri, function (err, json_ld) {
+        this._send_json_ld_request(req_uri, (err, json_ld) => {
             if (typeof err !== 'undefined') {
                 // error occurred during request, so immediately fail with err
                 callback(err, undefined);
@@ -190,13 +190,13 @@ const Engine = Lang.Class({
                 callback(err, undefined);
                 return;
             }
-            let get_more_results = function (batch_size, new_callback) {
+            let get_more_results = (batch_size, new_callback) => {
                 query_obj.offset = json_ld.numResults + json_ld.offset;
                 query_obj.limit = batch_size;
                 this.get_objects_by_query(query_obj, new_callback);
-            }.bind(this);
+            };
             callback(undefined, search_results, get_more_results);
-        }.bind(this), cancellable);
+        }, cancellable);
     },
 
     // Returns a marshaled ObjectModel based on json_ld's @type value, or throws
@@ -292,13 +292,14 @@ const Engine = Lang.Class({
     },
 
     serialize_query: function (query_obj) {
-        let stringify_and_encode = function (v) { return encodeURIComponent(String(v)); };
+        let stringify_and_encode = (v) => encodeURIComponent(String(v));
 
-        return Object.keys(query_obj).filter(function (property) {
-            return typeof query_obj[property] !== 'undefined';
-        }).map(function (property) {
-            return stringify_and_encode(property) + "=" + stringify_and_encode(query_obj[property]);
-        }).join('&');
+        return Object.keys(query_obj)
+        .filter((property) => typeof query_obj[property] !== 'undefined')
+        .map((property) =>
+            stringify_and_encode(property) + "=" +
+            stringify_and_encode(query_obj[property]))
+        .join('&');
     },
 
     // Queues a SoupMessage for *req_uri* to the current http session. Calls
@@ -324,9 +325,9 @@ const Engine = Lang.Class({
             callback(undefined, json_ld_response);
         });
         if (cancellable) {
-            cancellable.connect(function () {
+            cancellable.connect(() => {
                 this._http_session.cancel_message(request, Soup.Status.CANCELLED);
-            }.bind(this));
+            });
         }
     },
 
