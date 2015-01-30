@@ -22,11 +22,11 @@ const ArticleObjectModel = new Lang.Class({
     Extends: ContentObjectModel.ContentObjectModel,
     Properties: {
         /**
-         * Property: body-html
+         * Property: html
          * Body HTML of the article.
          */
-        'body-html': GObject.ParamSpec.string('body-html', 'Article Body HTML',
-            'The body HTML of the article, unstyled.',
+        'html': GObject.ParamSpec.string('html', 'Article HTML',
+            'The HTML of the article, unstyled.',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
             ''),
         /**
@@ -36,7 +36,7 @@ const ArticleObjectModel = new Lang.Class({
          * wikisource or wikibooks.
          */
         'html-source': GObject.ParamSpec.string('html-source', 'Source of the HTML',
-            'Where the body-html was retrieved from.',
+            'Where the article html was retrieved from.',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
             ''),
         /**
@@ -177,7 +177,7 @@ ArticleObjectModel._props_from_json_ld = function (json_ld_data, media_path) {
     let props = ParentClass._props_from_json_ld(json_ld_data);
 
     if (json_ld_data.hasOwnProperty('articleBody'))
-        props.body_html = json_ld_data.articleBody;
+        props.html = json_ld_data.articleBody;
 
     // FIXME: see https://github.com/endlessm/eos-sdk/issues/2520
     // This is a holdover from knowledge engine where we guess the source of

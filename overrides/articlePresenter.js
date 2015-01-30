@@ -146,7 +146,7 @@ const ArticlePresenter = new GObject.Class({
         // If the article model has no content_uri, assume html and load the ekn_id uri
         let uri = this._article_model.ekn_id;
         let type = 'text/html';
-        if (this._article_model.body_html.length > 0) {
+        if (this._article_model.html.length > 0) {
             this._webview = this._get_webview();
             this._webview_load_id = this._webview.connect('load-changed', function (view, status) {
                 if (status !== WebKit2.LoadEvent.COMMITTED)

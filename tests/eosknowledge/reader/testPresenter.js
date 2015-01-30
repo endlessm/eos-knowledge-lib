@@ -149,7 +149,7 @@ describe('Reader presenter', function () {
                 ekn_id: 'about:blank',
                 get_authors: jasmine.createSpy('get_authors').and.returnValue(data[1]),
                 published: data[2],
-                body_html: '<html>hello</html',
+                html: '<html>hello</html>',
             }
         });
         article_nav_buttons = new MockNavButtons();

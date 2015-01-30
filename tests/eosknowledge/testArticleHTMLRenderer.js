@@ -12,18 +12,18 @@ describe('Article HTML Renderer', function () {
         renderer = new EosKnowledge.ArticleHTMLRenderer();
         wikihow_model = new EosKnowledgeSearch.ArticleObjectModel({
             source_uri: 'http://www.wikihow.com/Give-Passive-Aggressive-Gifts-for-Christmas',
-            body_html: '<html><body><p>wikihow body html</p></body></html>',
+            html: '<html><body><p>wikihow html</p></body></html>',
             html_source: 'wikihow',
             title: 'Wikihow & title',
         });
         wikibooks_model = new EosKnowledgeSearch.ArticleObjectModel({
             source_uri: 'http://en.wikibooks.org/wiki/When_It_Hits_the_Fan',
-            body_html: '<html><body><p>wikibooks body html</p></body></html>',
+            html: '<html><body><p>wikibooks html</p></body></html>',
             html_source: 'wikibooks',
             title: 'Wikibooks title',
         });
         embedly_model = new EosKnowledgeSearch.ArticleObjectModel({
-            body_html: '<html><body><p>embedly body html</p></body></html>',
+            html: '<html><body><p>embedly html</p></body></html>',
             html_source: 'embedly',
             title: 'Embedly title',
         });
@@ -70,6 +70,6 @@ describe('Article HTML Renderer', function () {
 
     it('includes article html unescaped', function () {
         let html = renderer.render(wikihow_model);
-        expect(html).toMatch('<p>wikihow body html</p>');
+        expect(html).toMatch('<p>wikihow html</p>');
     });
 });
