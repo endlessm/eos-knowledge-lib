@@ -93,7 +93,7 @@ const ArticleHTMLRenderer = new Lang.Class({
     render: function (model, show_title=true) {
         return Mustache.render(this._template, {
             'title': show_title ? model.title : false,
-            'body-html': this._strip_tags(model.body_html),
+            'body-html': this._strip_tags(model.html),
             'disclaimer': this._get_disclaimer(model),
             'copy-button-text': _("Copy"),
             'css-files': this._get_css_files(model),
