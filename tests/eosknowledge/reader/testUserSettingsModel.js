@@ -20,7 +20,8 @@ describe('Reader user settings model', function () {
 
         it('correctly loads settings from file', function () {
             let data = {
-                bookmark_issue: 3,
+                start_article: 3,
+                highest_bookmark: 9,
                 bookmark_page: 8,
                 update_timestamp: current_time,
             };
@@ -28,8 +29,9 @@ describe('Reader user settings model', function () {
             let settings = new EosKnowledge.Reader.UserSettingsModel({
                 settings_file: user_settings_file,
             });
-            expect(settings.bookmark_issue).toBe(3);
+            expect(settings.start_article).toBe(3);
             expect(settings.bookmark_page).toBe(8);
+            expect(settings.highest_bookmark).toBe(9);
             expect(settings.update_timestamp).toBe(current_time);
         });
 
@@ -39,8 +41,9 @@ describe('Reader user settings model', function () {
             let settings = new EosKnowledge.Reader.UserSettingsModel({
                 settings_file: user_settings_file,
             });
-            expect(settings.bookmark_issue).toBe(0);
+            expect(settings.start_article).toBe(0);
             expect(settings.bookmark_page).toBe(0);
+            expect(settings.highest_bookmark).toBe(0);
             expect(settings.update_timestamp).toBe(0);
         });
 
@@ -48,19 +51,20 @@ describe('Reader user settings model', function () {
             let settings = new EosKnowledge.Reader.UserSettingsModel({
                 settings_file: Gio.File.new_for_path('nothing/here'),
             });
-            expect(settings.bookmark_issue).toBe(0);
+            expect(settings.start_article).toBe(0);
             expect(settings.bookmark_page).toBe(0);
+            expect(settings.highest_bookmark).toBe(0);
             expect(settings.update_timestamp).toBe(0);
         });
     });
 
     describe('object', function () {
-        it('saves settings to file when issue number changes', function () {
+        it('saves settings to file when start article number changes', function () {
             let settings = new EosKnowledge.Reader.UserSettingsModel({
                 settings_file: user_settings_file,
             });
             spyOn(settings, '_save_user_settings_to_file');
-            settings.bookmark_issue = 2;
+            settings.start_article = 2;
             expect(settings._save_user_settings_to_file).toHaveBeenCalled();
         });
 
@@ -71,6 +75,15 @@ describe('Reader user settings model', function () {
             spyOn(settings, '_save_user_settings_to_file');
             settings.bookmark_page = 9;
             expect(settings._save_user_settings_to_file).toHaveBeenCalled();
+        });
+
+        it('updates highest bookmark value when user navigates to a new highest page', function () {
+            let settings = new EosKnowledge.Reader.UserSettingsModel({
+                settings_file: user_settings_file,
+            });
+            expect(settings.highest_bookmark).not.toBe(9);
+            settings.bookmark_page = 9;
+            expect(settings.highest_bookmark).toBe(9);
         });
     });
 });
