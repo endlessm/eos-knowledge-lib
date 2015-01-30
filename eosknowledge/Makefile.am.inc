@@ -7,11 +7,11 @@ resource_files := $(shell $(GLIB_COMPILE_RESOURCES) --sourcedir=$(srcdir)/data \
 
 # Generated sources for GResource file
 eosknowledge/ekn-resource-private.h: data/eos-knowledge-library.gresource.xml $(resource_files)
-	$(AM_V_GEN) $(MKDIR_P) $(builddir)/data && \
+	$(AM_V_GEN) $(MKDIR_P) $(builddir)/data $(dir $@) && \
 	$(GLIB_COMPILE_RESOURCES) --target=$@ --sourcedir=$(srcdir)/data \
 		--generate-header --internal $<
 eosknowledge/ekn-resource.c: data/eos-knowledge-library.gresource.xml $(resource_files)
-	$(AM_V_GEN) $(MKDIR_P) $(builddir)/data && \
+	$(AM_V_GEN) $(MKDIR_P) $(builddir)/data $(dir $@) && \
 	$(GLIB_COMPILE_RESOURCES) --target=$@ --sourcedir=$(srcdir)/data \
 		--generate-source --internal $<
 
@@ -22,6 +22,9 @@ BUILT_SOURCES = \
 EXTRA_DIST += \
 	$(resource_files) \
 	data/eos-knowledge-library.gresource.xml \
+	$(NULL)
+CLEANFILES += \
+	$(BUILT_SOURCES) \
 	$(NULL)
 
 eosknowledge_public_installed_headers = eosknowledge/eosknowledge.h
@@ -42,7 +45,6 @@ eosknowledge_library_sources = \
 	eosknowledge/ekn-history-item-model.c \
 	eosknowledge/ekn-history-model.c \
 	eosknowledge/ekn-init.c eosknowledge/ekn-init-private.h \
-	eosknowledge/ekn-resource.c eosknowledge/ekn-resource-private.h \
 	eosknowledge/ekn-tree-node.c \
 	eosknowledge/ekn-loading-animation.c \
 	eosknowledge/ekn-util.c \
@@ -54,6 +56,9 @@ libeosknowledge_@EKN_API_VERSION@_la_SOURCES = \
 	$(eosknowledge_public_installed_headers) \
 	$(eosknowledge_private_installed_headers) \
 	$(eosknowledge_library_sources) \
+	$(NULL)
+nodist_libeosknowledge_@EKN_API_VERSION@_la_SOURCES = \
+	$(BUILT_SOURCES) \
 	$(NULL)
 # Defining G_LOG_DOMAIN allows you to run any program with
 # G_MESSAGES_DEBUG=EosKnowledgeLibrary ./myprogram
