@@ -101,6 +101,7 @@ const MockView = new Lang.Class({
         this.overview_page = {
             get_style_context: get_style_context,
             set_article_snippets: function () {},
+            remove_all_snippets: function () {},
         };
 
         this.total_pages = 0;
