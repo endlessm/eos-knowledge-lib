@@ -321,7 +321,7 @@ const Presenter = new Lang.Class({
         this.view.lock_ui();
 
         let query = {
-            'tag': tags,
+            'tags': tags,
             'limit': RESULTS_SIZE
         }
         this._target_page_title = card.title;
