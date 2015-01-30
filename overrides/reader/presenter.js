@@ -183,7 +183,7 @@ const Presenter = new Lang.Class({
 
     _load_all_content: function () {
         this.engine.get_objects_by_query({
-            tag: 'issueNumber' + this.settings.bookmark_issue,
+            tags: ['issueNumber' + this.settings.bookmark_issue],
             limit: RESULTS_SIZE,
             sortBy: 'articleNumber',
             order: 'asc',

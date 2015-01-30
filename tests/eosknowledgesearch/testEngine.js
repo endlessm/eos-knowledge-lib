@@ -97,7 +97,7 @@ describe('Knowledge Engine Module', function () {
         it('throws error if query values are undefined', function () {
             let bad_query_obj = {
                 q: undefined,
-                tag: 'lannister',
+                tags: ['lannister'],
             }
             expect(function(){ engine.get_xapian_uri(bad_query_obj)}).toThrow(new Error('Parameter value is undefined: q'));
         });
@@ -185,7 +185,7 @@ describe('Knowledge Engine Module', function () {
         it('supports combinations of queries', function () {
             let query_obj = {
                 q: 'tyrion wins',
-                tag: ['lannister', 'bro'],
+                tags: ['lannister', 'bro'],
                 prefix: 'gam',
                 offset: 5,
                 limit: 2,
