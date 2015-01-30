@@ -25,6 +25,7 @@ let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 
 const RESULTS_SIZE = 15;
+const TOTAL_ARTICLES = 30;
 const NUM_SNIPPETS_ON_OVERVIEW_PAGE = 3;
 
 // 1 week in miliseconds
@@ -122,8 +123,7 @@ const Presenter = new Lang.Class({
 
         this._article_renderer = new ArticleHTMLRenderer.ArticleHTMLRenderer();
 
-        this._check_for_issue_update();
-
+        this._check_for_content_update();
         this._parse_app_info(app_json);
 
         // Load all articles in this issue
@@ -152,12 +152,13 @@ const Presenter = new Lang.Class({
         this.view.connect('notify::total-pages',
             this._update_forward_button_visibility.bind(this));
         this.view.issue_nav_buttons.back_button.connect('clicked', function () {
-            this.settings.bookmark_issue--;
+            this.settings.start_article = 0;
+            this.settings.bookmark_page = 0;
         }.bind(this));
         this.view.issue_nav_buttons.forward_button.connect('clicked', function () {
-            this.settings.bookmark_issue++;
+            this._update_content();
         }.bind(this));
-        this.settings.connect('notify::bookmark-issue', this._load_all_content.bind(this));
+        this.settings.connect('notify::start-article', this._load_all_content.bind(this));
         let handler = this.view.connect('debug-hotkey-pressed', function () {
             this.view.issue_nav_buttons.show();
             this.view.disconnect(handler);  // One-shot signal handler only.
@@ -168,9 +169,6 @@ const Presenter = new Lang.Class({
         //Bind properties
         this.view.bind_property('current-page', this.view.nav_buttons,
             'back-visible', GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE);
-        this.settings.bind_property('bookmark-issue',
-            this.view.issue_nav_buttons.back_button, 'sensitive',
-            GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE);
     },
 
     // Right now these functions are just stubs which we will need to flesh out
@@ -181,24 +179,26 @@ const Presenter = new Lang.Class({
     search: function (query) {},
     activate_search_result: function (model, query) {},
 
-    _check_for_issue_update: function() {
+    _check_for_content_update: function() {
         if (Date.now() - this.settings.update_timestamp >= UPDATE_INTERVAL_MS) {
-            this._update_issue();
+            this._update_content();
         }
     },
 
-    _update_issue: function () {
+    _update_content: function () {
         this.settings.update_timestamp = Date.now();
-        this.settings.bookmark_page = 0;
-        this.settings.bookmark_issue++;
+        this.settings.start_article = this.settings.highest_bookmark;
+        this.settings.bookmark_page = this.settings.start_article;
     },
 
     _load_all_content: function () {
+        this._total_fetched = 0;
         this.engine.get_objects_by_query({
-            tags: ['issueNumber' + this.settings.bookmark_issue],
+            offset: this.settings.start_article,
             limit: RESULTS_SIZE,
             sortBy: 'articleNumber',
             order: 'asc',
+            tags: ['EknArticleObject'],
         }, function (error, results, get_more_results_func) {
             // Clear out state from any issue that was already displaying.
             this._article_models = [];
@@ -224,7 +224,7 @@ const Presenter = new Lang.Class({
                     printerr(error.stack);
                 }
                 let err_label = this._create_error_label(_("Oops!"),
-                    _("We could not find this issue of your magazine!\nPlease try again after restarting your computer."));
+                    _("We could not find this articles for this magazine!\nPlease try again after restarting your computer."));
                 this.view.page_manager.add(err_label);
                 this.view.page_manager.visible_child = err_label;
                 this.view.show_all();
@@ -236,11 +236,11 @@ const Presenter = new Lang.Class({
 
     // FIXME: We're breaking the ability to show content as soon as possible!
     // Under this implementation, you have to wait for metadata for all articles
-    // in an issue to be fetched before seeing content for the article you were on
+    // to be fetched before seeing content for the article you were on
     _initialize_first_pages: function () {
         // The article number you are on is 1 less than the bookmarked page because we have the overview page
         // in the beginning
-        let current_article = this.settings.bookmark_page - 1;
+        let current_article = this.settings.bookmark_page - this.settings.start_article - 1;
         if (current_article >= 0 && current_article < this._article_models.length) {
             this._current_page = this._load_webview_content(this._article_models[current_article], function (view, error) {
                 this._load_webview_content_callback(this.view.get_article_page(current_article), view, error);
@@ -263,7 +263,7 @@ const Presenter = new Lang.Class({
             }.bind(this));
         }
 
-        this.view.current_page = this.settings.bookmark_page;
+        this.view.current_page = this.settings.bookmark_page - this.settings.start_article;
         this._update_forward_button_visibility();
 
         this.view.show_all();
@@ -274,12 +274,13 @@ const Presenter = new Lang.Class({
             printerr(err);
             printerr(err.stack);
         } else {
+            this._total_fetched += RESULTS_SIZE;
             this._create_pages_from_models(results);
             // If there are more results to get, then fetch more content
-            if (results.length >= RESULTS_SIZE) {
+            if (results.length >= RESULTS_SIZE && this._total_fetched < TOTAL_ARTICLES) {
                 get_more_results_func(RESULTS_SIZE, this._fetch_content_recursive.bind(this));
             } else {
-                // We now have all the articles for this issue. Now we load the HTML content
+                // We now have all the articles we want to show. Now we load the HTML content
                 // for the first few pages into the webview
                 this._load_overview_snippets_from_articles();
                 this._initialize_first_pages();
