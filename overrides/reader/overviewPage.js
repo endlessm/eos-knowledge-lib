@@ -129,6 +129,10 @@ const OverviewPage = new Lang.Class({
             this._snippets_grid.add(snippet);
         }.bind(this));
     },
+
+    remove_all_snippets: function () {
+        this._snippets_grid.remove_column(0);
+    },
 });
 
 /**

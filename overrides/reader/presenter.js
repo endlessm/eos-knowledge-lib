@@ -203,6 +203,7 @@ const Presenter = new Lang.Class({
             // Clear out state from any issue that was already displaying.
             this._article_models = [];
             this.view.remove_all_article_pages();
+            this.view.overview_page.remove_all_snippets();
             // Make sure to drop all references to any webviews we are holding.
             if (this._current_page) {
                 this._current_page.destroy();
