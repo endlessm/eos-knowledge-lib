@@ -9,12 +9,14 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const WebKit2 = imports.gi.WebKit2;
 
+const ArticleHTMLRenderer = imports.articleHTMLRenderer;
 const ArticlePage = imports.reader.articlePage;
 const Config = imports.config;
 const EknWebview = imports.eknWebview;
 const Engine = imports.engine;
 const UserSettingsModel = imports.reader.userSettingsModel;
 const Utils = imports.utils;
+const WebkitURIHandlers = imports.webkitURIHandlers;
 const Window = imports.reader.window;
 
 String.prototype.format = Format.format;
@@ -23,7 +25,6 @@ GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.
 
 const RESULTS_SIZE = 15;
 const NUM_SNIPPETS_ON_OVERVIEW_PAGE = 3;
-const BOGUS_URI = 'bogus-uri';
 
 // 1 week in miliseconds
 const UPDATE_INTERVAL_MS = 604800000;
@@ -116,6 +117,10 @@ const Presenter = new Lang.Class({
 
         this.parent(props);
 
+        WebkitURIHandlers.register_webkit_uri_handlers();
+
+        this._article_renderer = new ArticleHTMLRenderer.ArticleHTMLRenderer();
+
         this._check_for_issue_update();
 
         this._parse_app_info(app_json);
@@ -154,8 +159,6 @@ const Presenter = new Lang.Class({
         this.settings.bind_property('bookmark-issue',
             this.view.issue_nav_buttons.back_button, 'sensitive',
             GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE);
-
-        EosKnowledge.private_register_global_uri_scheme('ekn', Utils.load_ekn_assets);
     },
 
     // Right now these functions are just stubs which we will need to flesh out
@@ -180,7 +183,7 @@ const Presenter = new Lang.Class({
 
     _load_all_content: function () {
         this.engine.get_objects_by_query({
-            tag: 'issueNumber' + this.settings.bookmark_issue,
+            tags: ['issueNumber' + this.settings.bookmark_issue],
             limit: RESULTS_SIZE,
             sortBy: 'articleNumber',
             order: 'asc',
@@ -335,8 +338,7 @@ const Presenter = new Lang.Class({
             }
             ready(view, error);
         });
-        // FIXME: this is just to get something on screen. We need to redo all the jade templating.
-        webview.load_html(article_model.body_html, BOGUS_URI);
+        webview.load_html(this._article_renderer.render(article_model, false), article_model.ekn_id);
         return webview;
     },
 

@@ -153,7 +153,7 @@ const Engine = Lang.Class({
      * *query* is an object with many parameters controlling the search
      *   - q (search query string)
      *   - prefix (prefix search query string)
-     *   - tag (comma delimited string of tags results must match)
+     *   - tags (list of tags the results must match)
      *   - offset (number of results to skip, useful for pagination)
      *   - limit  (maximum number of results to return)
      *   - cutoff  (number representing the minimum relevance percentage returned articles should have)
@@ -248,8 +248,8 @@ const Engine = Lang.Class({
             if (typeof query_obj[property] === 'undefined')
                 throw new Error('Parameter value is undefined: ' + property);
             switch (property) {
-                case 'tag':
-                    xapian_query_options.push(xapianQuery.xapian_tag_clause(query_obj.tag));
+                case 'tags':
+                    xapian_query_options.push(xapianQuery.xapian_tag_clause(query_obj.tags));
                     break;
                 case 'q':
                     xapian_query_options.push(xapianQuery.xapian_query_clause(query_obj.q));

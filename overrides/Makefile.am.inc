@@ -7,6 +7,7 @@ public_overrides = \
 	overrides/articleCard.js \
 	overrides/articlePage.js \
 	overrides/articlePresenter.js \
+	overrides/articleHTMLRenderer.js \
 	overrides/card.js \
 	overrides/cardA.js \
 	overrides/cardB.js \
@@ -21,6 +22,7 @@ public_overrides = \
 	overrides/listCard.js \
 	overrides/marginButton.js \
 	overrides/mediaInfobox.js \
+	overrides/mustache.js \
 	overrides/navButtonOverlay.js \
 	overrides/noSearchResultsPage.js \
 	overrides/pdfCard.js \
@@ -35,6 +37,7 @@ public_overrides = \
 	overrides/sectionPageB.js \
 	overrides/tableOfContents.js \
 	overrides/textCard.js \
+	overrides/webkitURIHandlers.js \
 	overrides/window.js \
 	$(NULL)
 private_overrides = \

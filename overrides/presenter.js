@@ -18,6 +18,7 @@ const MediaInfobox = imports.mediaInfobox;
 const PdfCard = imports.pdfCard;
 const Previewer = imports.previewer;
 const TextCard = imports.textCard;
+const WebkitURIHandlers = imports.webkitURIHandlers;
 const Window = imports.window;
 const Utils = imports.utils;
 
@@ -126,6 +127,8 @@ const Presenter = new Lang.Class({
                 template_type: this._template_type,
         });
         this.parent(props);
+
+        WebkitURIHandlers.register_webkit_uri_handlers();
 
         this.view.title = app_json['appTitle'];
         this.view.home_page.title_image_uri = app_json['titleImageURI'];
@@ -303,7 +306,7 @@ const Presenter = new Lang.Class({
         this.view.lock_ui();
 
         let query = {
-            'tag': tags,
+            'tags': tags,
             'limit': RESULTS_SIZE
         }
         this._target_page_title = card.title;

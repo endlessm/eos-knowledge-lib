@@ -8,6 +8,7 @@ const Lang = imports.lang;
 const WebKit2 = imports.gi.WebKit2;
 
 const ArticlePage = imports.articlePage;
+const ArticleHTMLRenderer = imports.articleHTMLRenderer;
 const EknWebview = imports.eknWebview;
 const PDFView = imports.PDFView;
 const Utils = imports.utils;
@@ -73,7 +74,6 @@ const ArticlePresenter = new GObject.Class({
 
     // Duration of animated scroll from section to section in the page.
     _SCROLL_DURATION: 1000,
-    _BOGUS_URI: 'bogus-uri',
 
     _init: function (props) {
         this.parent(props);
@@ -82,11 +82,10 @@ const ArticlePresenter = new GObject.Class({
         this._article_model = null;
         this._webview = null;
         this._webview_load_id = 0;
+        this._renderer = new ArticleHTMLRenderer.ArticleHTMLRenderer();
 
         this._connect_toc_widget();
         this.article_view.connect('new-view-transitioned', this._update_title_and_toc.bind(this));
-
-        EosKnowledge.private_register_global_uri_scheme('ekn', Utils.load_ekn_assets);
     },
 
     set article_model (v) {
@@ -123,7 +122,7 @@ const ArticlePresenter = new GObject.Class({
         // If the article model has no content_uri, assume html and load the ekn_id uri
         let uri = this._article_model.ekn_id;
         let type = 'text/html';
-        if (this._article_model.body_html.length > 0) {
+        if (this._article_model.html.length > 0) {
             this._webview = this._get_webview();
             this._webview_load_id = this._webview.connect('load-changed', function (view, status) {
                 if (status !== WebKit2.LoadEvent.COMMITTED)
@@ -133,8 +132,8 @@ const ArticlePresenter = new GObject.Class({
                 this.article_view.switch_in_content_view(this._webview, animation_type);
                 ready();
             }.bind(this));
-            // FIXME: this is just to get something on screen. We need to redo all the jade templating.
-            this._webview.load_html(this._article_model.body_html, this._BOGUS_URI);
+            let html = this._renderer.render(this._article_model, this.template_type !== 'A');
+            this._webview.load_html(html, this._article_model.ekn_id);
         } else if (this._article_model.content_uri.length > 0) {
             uri = this._article_model.content_uri;
             let file = Gio.file_new_for_uri(uri);
@@ -233,10 +232,6 @@ const ArticlePresenter = new GObject.Class({
     _get_webview: function () {
         let webview = new EknWebview.EknWebview();
 
-        webview.inject_js_from_resource('resource:///com/endlessm/knowledge/scroll_manager.js');
-        if (this.template_type === 'A')
-            webview.inject_css_from_resource('resource:///com/endlessm/knowledge/hide_title.css');
-
         webview.connect('notify::uri', function () {
             if (webview.uri.indexOf('#') >= 0) {
                 let hash = webview.uri.split('#')[1];
@@ -269,7 +264,7 @@ const ArticlePresenter = new GObject.Class({
 
             let [baseURI, hash] = decision.request.uri.split('#');
 
-            if (baseURI === this._BOGUS_URI) {
+            if (baseURI === this._article_model.ekn_id) {
                 // If this check is true, then we are navigating to the current
                 // page or an anchor on the current page.
                 decision.use();

@@ -23,6 +23,10 @@ describe ('Article Object Model', function () {
             expect(articleObject).toBeDefined();
         });
 
+        it ('sets its html-source property from the source uri', function () {
+            expect(articleObject.html_source).toBe('wikipedia');
+        });
+
         it ('should inherit properties set by parent class (ContentObjectModel)', function () {
             expect(articleObject.title).toBeDefined();
             expect(articleObject.synopsis).toBeDefined();
@@ -44,6 +48,10 @@ describe ('Reader App Article Object', function () {
         jasmine.addMatchers(InstanceOfMatcher.customMatchers);
 
         readerArticleObject = new EosKnowledgeSearch.ArticleObjectModel.new_from_json_ld(mockReaderArticleData, mockMediaDir);
+    });
+
+    it ('sets its html-source property from the source uri', function () {
+        expect(readerArticleObject.html_source).toBe('embedly');
     });
 
     it ('should present the properties inherent to the Reader App', function () {

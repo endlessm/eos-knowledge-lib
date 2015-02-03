@@ -201,6 +201,19 @@ AC_ARG_ENABLE([inspector], AS_HELP_STRING([--enable-inspector],
 AS_IF([test "x$enable_inspector" != "xyes"], [inspector=false], [inspector=true])
 AC_SUBST([inspector])
 
+# --with-mathjax-dir: Use mathjax from a location besides the default /usr/share
+AC_ARG_WITH([mathjax-dir], AS_HELP_STRING([--with-mathjax-dir],
+    [Use mathjax from a location besides the default /usr/share]),
+    [MATHJAXDIR=$withval],
+    [MATHJAXDIR=/usr/share/javascript/mathjax])
+AC_MSG_CHECKING([for mathjax javsacript library])
+if test -d $MATHJAXDIR; then
+    AC_MSG_RESULT([yes])
+    AC_SUBST([MATHJAXDIR])
+else
+    AC_MSG_ERROR([Cannot find mathjax package])
+fi
+
 # Required libraries
 # ------------------
 PKG_CHECK_MODULES([EOS_KNOWLEDGE], [
@@ -233,6 +246,7 @@ AC_CONFIG_FILES([
     docs/reference/eosknowledgesearch/Makefile
     docs/reference/eosknowledge/version.xml
     overrides/config.js
+    config/compass.rb
     $EKN_API_NAME.pc
 ])
 AC_CONFIG_HEADERS([config.h])  dnl Header with system-dependent #defines

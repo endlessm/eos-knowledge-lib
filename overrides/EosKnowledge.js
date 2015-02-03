@@ -10,6 +10,7 @@ let _oldSearchPath = imports.searchPath.slice(0);
 imports.searchPath.unshift(Endless.getCurrentFileDir());
 
 const ArticleCard = imports.articleCard;
+const ArticleHTMLRenderer = imports.articleHTMLRenderer;
 const ArticlePage = imports.articlePage;
 const ArticlePresenter = imports.articlePresenter;
 const Card = imports.card;
@@ -39,6 +40,7 @@ const SectionPageB = imports.sectionPageB;
 const TableOfContents = imports.tableOfContents;
 const TextCard = imports.textCard;
 const TreeNode = imports.treeNode;
+const WebkitURIHandlers = imports.webkitURIHandlers;
 const Window = imports.window;
 
 const ReaderArticlePage = imports.reader.articlePage;
@@ -90,6 +92,7 @@ function _init() {
     });
 
     EosKnowledge.ArticleCard = ArticleCard.ArticleCard;
+    EosKnowledge.ArticleHTMLRenderer = ArticleHTMLRenderer.ArticleHTMLRenderer;
     EosKnowledge.ArticlePage = ArticlePage.ArticlePage;
     EosKnowledge.ArticlePresenter = ArticlePresenter.ArticlePresenter;
     EosKnowledge.Card = Card.Card;
@@ -121,6 +124,7 @@ function _init() {
     EosKnowledge.SectionPageB = SectionPageB.SectionPageB;
     EosKnowledge.TableOfContents = TableOfContents.TableOfContents;
     EosKnowledge.TextCard = TextCard.TextCard;
+    EosKnowledge.register_webkit_uri_handlers = WebkitURIHandlers.register_webkit_uri_handlers;
     EosKnowledge.Window = Window.Window;
 
     /**

@@ -5,9 +5,20 @@
     <file>endless_knowledge.css</file>
     <file>endless_reader.css</file>
     <file>hide_title.css</file>
-    <file>scroll_manager.js</file>
     <file>pdf_icon.png</file>
     <file>reader/left-arrow.svg</file>
     <file>reader/right-arrow.svg</file>
+    <file>templates/article.mst</file>
+    <file>templates/css/embedly.css</file>
+    <file>templates/css/wikihow.css</file>
+    <file>templates/css/wikimedia.css</file>
+    <file>templates/images/noise.png</file>
+    <file>templates/images/object-view.png</file>
+    <file>templates/js/clipboard-manager.js</file>
+    <file>templates/js/content-fixes.js</file>
+    <file>templates/js/hide-broken-images.js</file>
+    <file>templates/js/jquery-min.js</file>
+    <file>templates/js/no-link-remover.js</file>
+    <file>templates/js/scroll-manager.js</file>
   </gresource>
 </gresources>

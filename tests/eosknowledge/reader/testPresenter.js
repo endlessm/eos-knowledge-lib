@@ -149,7 +149,7 @@ describe('Reader presenter', function () {
                 ekn_id: 'about:blank',
                 get_authors: jasmine.createSpy('get_authors').and.returnValue(data[1]),
                 published: data[2],
-                body_html: '<html>hello</html',
+                html: '<html>hello</html>',
             }
         });
         article_nav_buttons = new MockNavButtons();
@@ -307,7 +307,7 @@ describe('Reader presenter', function () {
             settings.bookmark_issue = 14;
             settings.notify('bookmark-issue');
             expect(engine.get_objects_by_query).toHaveBeenCalled();
-            expect(engine.get_objects_by_query.calls.argsFor(0)[0]['tag']).toBe('issueNumber14');
+            expect(engine.get_objects_by_query.calls.argsFor(0)[0]['tags']).toEqual(['issueNumber14']);
         });
 
         it('removes the old pages when loading new pages', function () {
