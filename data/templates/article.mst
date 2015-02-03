@@ -31,6 +31,15 @@
             MathJax.Hub.Config({
                 config: ["TeX-AMS-MML_HTMLorMML.js"],
                 imageFont: null,
+                TeX: {
+                    extensions: ["color.js"],
+                    Macros: {
+                        bold: ["{\\bf #1}", 1],
+                        part: "{\\partial}",
+                        infin: "{\\infty}",
+                        R: "{\\mathbb{R}}",
+                    },
+                },
                 tex2jax: {
                     skipTags: ["script", "noscript", "style", "textarea"],
                 },
