@@ -15,9 +15,11 @@ const ArticlePage = imports.reader.articlePage;
 const Config = imports.config;
 const EknWebview = imports.eknWebview;
 const Engine = imports.engine;
+const KnowledgeHistoryModel = imports.knowledgeHistoryModel;
 const Launcher = imports.launcher;
 const OverviewPage = imports.reader.overviewPage;
 const Previewer = imports.previewer;
+const ReaderCard = imports.reader.readerCard;
 const UserSettingsModel = imports.reader.userSettingsModel;
 const Utils = imports.utils;
 const WebkitURIHandlers = imports.webkitURIHandlers;
@@ -162,7 +164,16 @@ const Presenter = new Lang.Class({
         // time
         this._loading_new_lightbox = false;
 
+        this._history_model = new EosKnowledge.HistoryModel();
+
         // Connect signals
+        this.view.history_buttons.back_button.connect('clicked', this._on_topbar_back_clicked.bind(this));
+        this.view.history_buttons.forward_button.connect('clicked', this._on_topbar_forward_clicked.bind(this));
+        this._history_model.bind_property('can-go-forward', this.view.history_buttons.forward_button, 'sensitive',
+            GObject.BindingFlags.SYNC_CREATE);
+        this._history_model.bind_property('can-go-back', this.view.history_buttons.back_button, 'sensitive',
+            GObject.BindingFlags.SYNC_CREATE);
+
         this.view.nav_buttons.connect('back-clicked', function () {
             this._go_to_page(this._current_page - 1);
         }.bind(this));
@@ -172,7 +183,6 @@ const Presenter = new Lang.Class({
 
         this.view.connect('notify::total-pages',
             this._update_button_visibility.bind(this));
-
         this.view.issue_nav_buttons.back_button.connect('clicked', function () {
             this.settings.start_article = 0;
             this.settings.bookmark_page = 0;
@@ -186,14 +196,107 @@ const Presenter = new Lang.Class({
             this.view.issue_nav_buttons.show();
             this.view.disconnect(handler);  // One-shot signal handler only.
         }.bind(this));
+
         this.view.connect('lightbox-nav-previous-clicked', this._on_lightbox_previous_clicked.bind(this));
         this.view.connect('lightbox-nav-next-clicked', this._on_lightbox_next_clicked.bind(this));
 
         this.view.standalone_page.infobar.connect('response', this._open_magazine.bind(this));
+        this.view.search_box.connect('text-changed', function (search_entry) {
+            this._on_search_text_changed(search_entry);
+        }.bind(this));
+        this.view.search_box.connect('activate', function (search_entry) {
+            this.search(search_entry.text);
+        }.bind(this));
+        this.view.search_box.connect('menu-item-selected', function (search_entry, article_id) {
+            this._article_selected(article_id);
+        }.bind(this));
     },
 
     get current_page() {
         return this._current_page;
+    },
+
+    _ARTICLE_PAGE: 'article',
+    _SEARCH_PAGE: 'search',
+    _OVERVIEW_PAGE: 'overview',
+    _DONE_PAGE: 'done',
+
+    search: function (query) {
+        query = Utils.sanitize_query(query);
+        // Ignore empty queries
+        if (query.length === 0) {
+            return;
+        }
+
+        this._add_history_object_for_search_page(JSON.stringify({
+            q: query
+        }));
+
+        this._perform_search(this.view, {
+            q: query
+        });
+    },
+
+    _perform_search: function (view, query) {
+        this._search_query = query.q;
+        this.view.lock_ui();
+
+        this.engine.get_objects_by_query(this._domain, query, this._load_search_results.bind(this));
+    },
+
+    // Right now thise function is just a stub which we will need to flesh out
+    // if we ever want to register search providers for the reader apps. It will
+    // be called by ekn-app-runner if the user asks to view specific article.
+    activate_search_result: function (model, query) {
+        this._load_standalone_article(model);
+    },
+
+    _add_history_object_for_article_page: function (model) {
+        this._history_model.current_item = new KnowledgeHistoryModel.HistoryItem({
+            title: model.title,
+            page_type: this._ARTICLE_PAGE,
+            article_model: model, 
+        });
+    },
+
+    _add_history_object_for_search_page: function (query) {
+        this._history_model.current_item = new KnowledgeHistoryModel.HistoryItem({
+            page_type: this._SEARCH_PAGE,
+            query: query,
+            title: "Foo"
+        });
+    },
+
+    _add_history_object_for_overview_page: function () {
+        this._history_model.current_item = new KnowledgeHistoryModel.HistoryItem({
+            page_type: this._OVERVIEW_PAGE,
+        });
+    },
+
+    _add_history_object_for_done_page: function () {
+        this._history_model.current_item = new KnowledgeHistoryModel.HistoryItem({
+            page_type: this._DONE_PAGE,
+        });
+    },
+
+    _replicate_history_state: function (animation_type) {
+        switch (this._history_model.current_item.page_type) {
+
+            case this._SEARCH_PAGE:
+                this._perform_search(this.view, JSON.parse(this._history_model.current_item.query));
+                break;
+            case this._ARTICLE_PAGE:
+                this._go_to_page(this._history_model.current_item.article_model.article_number)
+                break;
+            case this._OVERVIEW_PAGE:
+                this._go_to_page(0)
+                break;
+            case this._DONE_PAGE:
+                this._go_to_page(this._article_models.length + 1)
+                break;
+            default:
+                this._go_to_page(0)
+        }
     },
 
     _open_magazine: function () {
@@ -309,6 +412,67 @@ const Presenter = new Lang.Class({
     _check_for_content_update: function() {
         if (Date.now() - this.settings.update_timestamp >= UPDATE_INTERVAL_MS) {
             this._update_content();
+        }
+    },
+
+    _load_search_results: function (err, results, get_more_results_func) {
+        if (err !== undefined) {
+            printerr(err);
+            printerr(err.stack);
+        } else if (results.length === 0) {
+            this.view.unlock_ui();
+            // TODO Create Reader.NoSearchResultsPage
+            // this.view.show_no_search_results_page();
+        } else {
+            let archive_results = results.filter(this._is_archived.bind(this));
+
+            let app_results = results.filter(function (model) {
+                return archive_results.indexOf(model) === -1;
+            })
+
+            this.view.search_results_page.remove_all_segments();
+
+            this.view.search_results_page.append_to_segment("On this edition", app_results.map(this._new_card_from_article_model.bind(this)));
+            this.view.search_results_page.append_to_segment("Archive", archive_results.map(this._new_card_from_article_model.bind(this)));
+
+            this._get_more_results = get_more_results_func;
+            this.view.unlock_ui();
+            this.view.show_search_results_page();
+        }
+    },
+
+    _new_card_from_article_model: function (model) {
+        let formatted_attribution = this._format_attribution_for_metadata(model.get_authors(), model.published);
+        let card = new EosKnowledge.CardA({
+            title: model.title,
+            synopsis: formatted_attribution,
+            fade_in: true,
+        });
+        card.connect('clicked', function () {
+            this._on_article_card_clicked(model);
+        }.bind(this));
+        return card;
+    },
+
+    _is_archived: function (model) {
+        // TODO make this actually check if article is archived or in current set of articles
+        return model.article_number > 10;
+    },
+    // COMBINE JUMP TO PAGE AND SHIFT PAGE
+    _go_to_page: function (index) {
+        let current_article = index - 1;
+        switch (index) {
+            case 0:
+                this._add_history_object_for_overview_page();
+                this.view.show_overview_page();
+                break;
+            case this._article_models.length + 1:
+                this._add_history_object_for_done_page();
+                this.view.show_done_page();
+                break;
+            default:
+                this._add_history_object_for_article_page(this._article_models[current_article]);
+                this.view.show_article_page(current_article, this.current_page < index);
         }
     },
 
@@ -701,5 +865,86 @@ const Presenter = new Lang.Class({
             this._format_attribution_for_metadata(model.get_authors(), model.published);
         this.view.standalone_page.article_page.get_style_context().add_class('article-page0');
         this.view.show_standalone_page();
+    /*
+     * Navigates to the previous page by moving the history model back a page and checking the
+     * history object for information to replicate that previous page's query.
+     */
+    _on_topbar_back_clicked: function () {
+        this._history_model.go_back();
+        this._replicate_history_state(EosKnowledge.LoadingAnimationType.BACKWARDS_NAVIGATION);
+    },
+
+    /*
+     * Navigates to the next page by moving the history model forward a page and checking the
+     * history object for information to replicate that next page's query.
+     */
+    _on_topbar_forward_clicked: function () {
+        this._history_model.go_forward();
+        this._replicate_history_state(EosKnowledge.LoadingAnimationType.FORWARDS_NAVIGATION);
+    },
+
+    _on_article_card_clicked: function (model) {
+        this._add_history_object_for_article_page(model);
+        if (this._is_archived(model)) {
+            this._load_standalone_article(model);
+        } else {
+            this._go_to_page(model.article_number + 1);
+        }
+    },
+
+    _on_search_text_changed: function (entry) {
+        let query = Utils.sanitize_query(entry.text);
+        this._latest_search_text = query;
+        // Ignore empty queries
+        if (query.length === 0) {
+            return;
+        }
+        this.engine.get_objects_by_query(this._domain, {
+            'prefix': query
+        }, function (err, results) {
+            if (err !== undefined) {
+                printerr(err);
+                printerr(err.stack);
+            } else {
+                entry.set_menu_items(results.map(function (obj) {
+                    return {
+                        title: this._get_prefixed_title(obj, query),
+                        id: obj.ekn_id
+                    };
+                }.bind(this)));
+                this._autocomplete_results = results;
+            }
+        }.bind(this));
+    },
+
+    _search_entered: function (search_entry_text) {
+
+    },
+
+    _article_selected: function (article_id) {
+
+    },
+
+    /*
+     * Returns either the title or origin_title of the obj, depending on which one
+     * is closer to having query as a prefix. Doesn't use a simple indexOf, because
+     * of the fact that query might not be accented, even when titles are.
+     */
+    _get_prefixed_title: function (obj, query) {
+        let title = obj.title.toLowerCase();
+        let original_title = obj.original_title.toLowerCase();
+        query = query.toLowerCase();
+
+        for (let i = 0; i < query.length; i++) {
+            if (title[i] !== original_title[i]) {
+                if (title[i] === query[i]) {
+                    return obj.title;
+                } else if (original_title[i] === query[i]) {
+                    return obj.original_title;
+                }
+            }
+        }
+
+        return obj.title;
     },
 });

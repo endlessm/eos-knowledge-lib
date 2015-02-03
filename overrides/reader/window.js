@@ -120,6 +120,18 @@ const Window = new Lang.Class({
             'Number of pages in total',
             GObject.ParamFlags.READABLE,
             0, GLib.MAXUINT32, 1),
+
+        /**
+         * Property: search-box
+         *
+         * The <SearchBox> widget created by this widget. Read-only,
+         * modify using the <SearchBox> API. Use to type search queries and to display the last
+         * query searched.
+         */
+        'search-box': GObject.ParamSpec.object('search-box', 'Search Box',
+            'The Search box of this view widget',
+            GObject.ParamFlags.READABLE,
+            Endless.SearchBox),
     },
 
     Signals: {
@@ -166,6 +178,8 @@ const Window = new Lang.Class({
         this.issue_nav_buttons = new Endless.TopbarNavButton({
             no_show_all: true,
         });
+
+        this._history_buttons = new Endless.TopbarNavButton();
         // No need for localization; this is debug only
         this.issue_nav_buttons.back_button.label = 'Reset';
         this.issue_nav_buttons.forward_button.label = 'Next week';
@@ -190,6 +204,9 @@ const Window = new Lang.Class({
             this.emit('debug-hotkey-pressed');
         }.bind(this));
 
+        this._search_box = new Endless.SearchBox();
+        this._search_box.show();
+
         this._stack = new Gtk.Stack({
             transition_duration: this._STACK_TRANSITION_TIME,
         });
@@ -199,8 +216,10 @@ const Window = new Lang.Class({
         this._stack.add(this.search_results_page);
         this.nav_buttons.add(this._stack);
         this.lightbox.add(this.nav_buttons);
-        this.page_manager.add(this.lightbox, {
-            center_topbar_widget: this.issue_nav_buttons,
+        this.page_manager.add(this._nav_buttons, {
+            left_topbar_widget: this._history_buttons,
+            right_topbar_widget: this._issue_nav_buttons,
+            center_topbar_widget: this._search_box,
         });
         this.overview_page.show_all();
         this._stack.set_visible_child(this.overview_page);
@@ -300,5 +319,17 @@ const Window = new Lang.Class({
     get total_pages() {
         // Done page and overview page account for extra incrementation.
         return this._article_pages.length + 2;
+    },
+
+    lock_ui: function () {
+        let gdk_window = this.page_manager.get_window();
+        gdk_window.cursor = Gdk.Cursor.new(Gdk.CursorType.WATCH);
+        this.page_manager.sensitive = false;
+    },
+
+    unlock_ui: function () {
+        let gdk_window = this.page_manager.get_window();
+        gdk_window.cursor = Gdk.Cursor.new(Gdk.CursorType.ARROW);
+        this.page_manager.sensitive = true;
     },
 });
