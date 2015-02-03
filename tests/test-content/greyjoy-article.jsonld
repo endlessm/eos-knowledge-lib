@@ -25,22 +25,8 @@
     "synopsis": "We Do Not Sow",
     "articleBody": "lame",
     "resources": [
-        {
-            "@id": "ekn://squids/squid_people.jpg",
-            "@type": "ekv:ImageObject",
-            "contentURL": "squid_people.jpg",
-            "caption": "Taste like squid, talk like people",
-            "contentSize": "60KB",
-            "encodingFormat": "jpeg"
-        },
-        {
-            "@id": "ekn://jerks/Theon.jpg",
-            "@type": "ekv:ImageObject",
-            "contentURL": "Theon.jpg",
-            "caption": "What a jerk",
-            "contentSize": "32KB",
-            "encodingFormat": "jpeg"
-        }
+        "ekn://squids/squid_people.jpg",
+        "ekn://jerks/Theon.jpg"
     ],
     "tableOfContents": [
         {
