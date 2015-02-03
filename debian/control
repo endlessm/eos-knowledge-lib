@@ -56,7 +56,8 @@ Description: EndlessOS Knowledge Library API documentation
 Package: gir1.2-eosknowledge-0
 Section: non-free/introspection
 Architecture: any
-Depends: ${gir:Depends},
+Depends: libjs-mathjax (>= 2.2),
+         ${gir:Depends},
          ${misc:Depends}
 Description: EndlessOS Knowledge Library introspection files
  Introspection data for the EndlessOS Knowledge Library. Install this if
