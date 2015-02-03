@@ -3,9 +3,11 @@ const Lang = imports.lang;
 const Soup = imports.gi.Soup;
 const GObject = imports.gi.GObject;
 const GLib = imports.gi.GLib;
+const Mainloop = imports.mainloop;
 
 const ArticleObjectModel = imports.articleObjectModel;
 const ContentObjectModel = imports.contentObjectModel;
+const Cache = imports.cache;
 const MediaObjectModel = imports.mediaObjectModel;
 const xapianQuery = imports.xapianQuery;
 const blacklist = imports.blacklist.blacklist;
@@ -88,6 +90,21 @@ const Engine = Lang.Class({
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
             ''),
 
+        /**
+         * Property: cache
+         *
+         * A cache which will be reached into before the Engine performs an
+         * HTTP request. Generally this property is set with a default cache,
+         * so this property only exists for dependency injection purposes in
+         * unit tests.
+         *
+         * The cache must expose the same get/set API as the Cache class in
+         * js/search/cache.js.
+         */
+        'cache': GObject.ParamSpec.object('cache', 'Cache',
+            'Cache object to store previously fetched objects',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            GObject.Object.$gtype),
     },
 
     _DB_PATH: '/db',
@@ -124,7 +141,16 @@ const Engine = Lang.Class({
         };
         let req_uri = this.get_xapian_uri(query_obj);
 
-        this._send_json_ld_request(req_uri, function (err, json_ld) {
+        // if the cache has an entry for this EKN id, return that object
+        if (this.cache) {
+            let cache_entry = this.cache.get(id);
+            if (cache_entry !== null) {
+                // Execute the callback in the next possible mainloop iteration
+                Mainloop.idle_add(() => callback(undefined, cache_entry));
+                return;
+            }
+        }
+        this._send_json_ld_request(req_uri, (err, json_ld) => {
             if (typeof err !== 'undefined') {
                 // error occurred during request, so immediately fail with err
                 callback(err, undefined);
@@ -141,8 +167,12 @@ const Engine = Lang.Class({
                 callback(err, undefined);
                 return;
             }
+            // insert the newly marshalled object into the cache
+            if (this.cache) {
+                this.cache.set(id, model);
+            }
             callback(undefined, model);
-        }.bind(this), cancellable);
+        }, cancellable);
     },
 
     /**
@@ -173,7 +203,7 @@ const Engine = Lang.Class({
     get_objects_by_query: function (query_obj, callback, cancellable = null) {
         let req_uri = this.get_xapian_uri(query_obj);
 
-        this._send_json_ld_request(req_uri, function (err, json_ld) {
+        this._send_json_ld_request(req_uri, (err, json_ld) => {
             if (typeof err !== 'undefined') {
                 // error occurred during request, so immediately fail with err
                 callback(err, undefined);
@@ -190,13 +220,13 @@ const Engine = Lang.Class({
                 callback(err, undefined);
                 return;
             }
-            let get_more_results = function (batch_size, new_callback) {
+            let get_more_results = (batch_size, new_callback) => {
                 query_obj.offset = json_ld.numResults + json_ld.offset;
                 query_obj.limit = batch_size;
                 this.get_objects_by_query(query_obj, new_callback);
-            }.bind(this);
+            };
             callback(undefined, search_results, get_more_results);
-        }.bind(this), cancellable);
+        }, cancellable);
     },
 
     // Returns a marshaled ObjectModel based on json_ld's @type value, or throws
@@ -225,7 +255,16 @@ const Engine = Lang.Class({
     // Returns a list of marshalled ObjectModels, or throws an error if json_ld
     // is not a SearchResults object
     _results_list_from_json_ld: function (json_ld) {
-        return json_ld.results.map(this._model_from_json_ld.bind(this));
+        return json_ld.results.map((result) => {
+            // if the cache has an entry for this result, return that rather
+            // than marshalling another object
+            if (this.cache) {
+                let cache_entry = this.cache.get(result['@id']);
+                if (cache_entry !== null)
+                    return cache_entry;
+            }
+            return this._model_from_json_ld(result);
+        });
     },
 
     /**
@@ -292,13 +331,14 @@ const Engine = Lang.Class({
     },
 
     serialize_query: function (query_obj) {
-        let stringify_and_encode = function (v) { return encodeURIComponent(String(v)); };
+        let stringify_and_encode = (v) => encodeURIComponent(String(v));
 
-        return Object.keys(query_obj).filter(function (property) {
-            return typeof query_obj[property] !== 'undefined';
-        }).map(function (property) {
-            return stringify_and_encode(property) + "=" + stringify_and_encode(query_obj[property]);
-        }).join('&');
+        return Object.keys(query_obj)
+        .filter((property) => typeof query_obj[property] !== 'undefined')
+        .map((property) =>
+            stringify_and_encode(property) + "=" +
+            stringify_and_encode(query_obj[property]))
+        .join('&');
     },
 
     // Queues a SoupMessage for *req_uri* to the current http session. Calls
@@ -311,7 +351,7 @@ const Engine = Lang.Class({
             uri: req_uri
         });
 
-        this._http_session.queue_message(request, function(session, message) {
+        this._http_session.queue_message(request, (session, message) => {
             let json_ld_response;
             try {
                 let data = message.response_body.data;
@@ -330,9 +370,9 @@ const Engine = Lang.Class({
             callback(undefined, json_ld_response);
         });
         if (cancellable) {
-            cancellable.connect(function () {
+            cancellable.connect(() => {
                 this._http_session.cancel_message(request, Soup.Status.CANCELLED);
-            }.bind(this));
+            });
         }
     }
 });
@@ -340,10 +380,18 @@ const Engine = Lang.Class({
 let the_engine = null;
 Engine.get_default = function () {
     if (the_engine === null) {
+        let cache = new Cache.Cache({
+            // 10,000 is sufficiently large to hold all articles in a single
+            // knowledge app, as well as a large portion of image objects
+            size: 10000,
+        });
+
         // try to create an engine configured with the current locale
         var language = utils.get_current_language();
+
         the_engine = new Engine({
             language: language,
+            cache: cache,
         });
     }
     return the_engine;
