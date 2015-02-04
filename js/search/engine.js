@@ -311,17 +311,11 @@ const Engine = Lang.Class({
             uri: req_uri
         });
 
-        this._http_session.queue_message(request, function(session, message) {
+        this._http_session.queue_message(request, (session, message) => {
             let json_ld_response;
             try {
                 let data = message.response_body.data;
-                // The following is a patch for old databases. Prior to 2.3 the databases had the
-                // old node.js knowledge engine routes hard coded. We will replace them
-                // with the new ekn uri scheme.
-                data = message.response_body.data.replace(/http:\/\/localhost:3003\/api\//g, 'ekn://');
-                data = message.response_body.data.replace(/http:\/\/localhost:3003\//g, 'ekn://');
-                // End patch
-                json_ld_response = JSON.parse(data);
+                json_ld_response = this._parse_json_ld_message(data);
             } catch (err) {
                 // JSON parse error
                 callback(err, undefined);
@@ -334,7 +328,18 @@ const Engine = Lang.Class({
                 this._http_session.cancel_message(request, Soup.Status.CANCELLED);
             }.bind(this));
         }
-    }
+    },
+
+    _parse_json_ld_message: function (message) {
+        // The following is a patch for old databases. Prior to 2.3 the databases had the
+        // old node.js knowledge engine routes hard coded. We will replace them
+        // with the new ekn uri scheme.
+        message = message.replace(/http:\/\/localhost:3003\/api\//g, 'ekn://');
+        message = message.replace(/http:\/\/localhost:3003\//g, 'ekn://');
+        // End patch
+
+        return JSON.parse(message);
+    },
 });
 
 let the_engine = null;
