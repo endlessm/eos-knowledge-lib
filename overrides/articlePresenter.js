@@ -82,7 +82,10 @@ const ArticlePresenter = new GObject.Class({
         this._article_model = null;
         this._webview = null;
         this._webview_load_id = 0;
-        this._renderer = new ArticleHTMLRenderer.ArticleHTMLRenderer();
+        this._renderer = new ArticleHTMLRenderer.ArticleHTMLRenderer({
+            show_title: this.template_type !== 'A',
+            enable_scroll_manager: this.template_type === 'A',
+        });
 
         this._connect_toc_widget();
         this.article_view.connect('new-view-transitioned', this._update_title_and_toc.bind(this));
@@ -132,7 +135,7 @@ const ArticlePresenter = new GObject.Class({
                 this.article_view.switch_in_content_view(this._webview, animation_type);
                 ready();
             }.bind(this));
-            let html = this._renderer.render(this._article_model, this.template_type !== 'A');
+            let html = this._renderer.render(this._article_model);
             this._webview.load_html(html, this._article_model.ekn_id);
         } else if (this._article_model.content_uri.length > 0) {
             uri = this._article_model.content_uri;

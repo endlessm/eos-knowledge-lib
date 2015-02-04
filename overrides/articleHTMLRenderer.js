@@ -15,8 +15,18 @@ const ArticleHTMLRenderer = new Lang.Class({
     GTypeName: 'EknArticleHTMLRenderer',
     Extends: GObject.Object,
 
-    _init: function () {
-        this.parent();
+    Properties: {
+        'show-title':  GObject.ParamSpec.boolean('show-title', 'Show Title',
+            'Whether or not rendered HTML should have a visible title',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, false),
+        'enable-scroll-manager':  GObject.ParamSpec.boolean('enable-scroll-manager',
+            'Enable Scroll Manager',
+            'Whether scroll_manager.js should monitor user scrolling',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, false),
+    },
+
+    _init: function (props) {
+        this.parent(props);
         let file = Gio.file_new_for_uri(_ARTICLE_TEMPLATE);
         let [success, string] = file.load_contents(null);
         if (success) {
@@ -82,17 +92,23 @@ const ArticleHTMLRenderer = new Lang.Class({
     },
 
     _get_javascript_files: function (model) {
-        return ['jquery-min.js',
-                'clipboard-manager.js',
-                'content-fixes.js',
-                'hide-broken-images.js',
-                'no-link-remover.js',
-                'scroll-manager.js'];
+        let javascript_files = [
+            'jquery-min.js',
+            'clipboard-manager.js',
+            'content-fixes.js',
+            'hide-broken-images.js',
+            'no-link-remover.js',
+        ];
+
+        if (this.enable_scroll_manager)
+            javascript_files.push('scroll-manager.js');
+
+        return javascript_files;
     },
 
-    render: function (model, show_title=true) {
+    render: function (model) {
         return Mustache.render(this._template, {
-            'title': show_title ? model.title : false,
+            'title': this.show_title ? model.title : false,
             'body-html': this._strip_tags(model.html),
             'disclaimer': this._get_disclaimer(model),
             'copy-button-text': _("Copy"),

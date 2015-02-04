@@ -27,7 +27,11 @@ describe('Article HTML Renderer', function () {
             html_source: 'embedly',
             title: 'Embedly title',
         });
-
+        javascripty_model = new EosKnowledgeSearch.ArticleObjectModel({
+            html: '<html>{{{#javascript-files}}}{{{.}}}{{{#javascript-files}}}</html>',
+            html_source: 'wikihow',
+            title: 'Javascripts Galore',
+        });
     });
 
     it('can render an article', function () {
@@ -41,8 +45,10 @@ describe('Article HTML Renderer', function () {
     });
 
     it('shows a title only when told to', function () {
-        let html_with_title = renderer.render(embedly_model, true);
-        let html_no_title = renderer.render(embedly_model, false);
+        renderer.show_title = true;
+        let html_with_title = renderer.render(embedly_model);
+        renderer.show_title = false;
+        let html_no_title = renderer.render(embedly_model);
         expect(html_with_title).toMatch('Embedly title');
         expect(html_no_title).not.toMatch('Embedly title');
     });
@@ -71,5 +77,15 @@ describe('Article HTML Renderer', function () {
     it('includes article html unescaped', function () {
         let html = renderer.render(wikihow_model);
         expect(html).toMatch('<p>wikihow html</p>');
+    });
+
+    it('includes scroll_manager.js only when told to', function () {
+        renderer.enable_scroll_manager = true;
+        let html_with_scroll_manager = renderer.render(embedly_model);
+        renderer.enable_scroll_manager = false;
+        let html_without_scroll_manager = renderer.render(embedly_model);
+
+        expect(html_with_scroll_manager).toMatch('scroll-manager.js');
+        expect(html_without_scroll_manager).not.toMatch('scroll-manager.js');
     });
 });
