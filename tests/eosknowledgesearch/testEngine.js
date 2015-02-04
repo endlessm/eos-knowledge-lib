@@ -93,6 +93,23 @@ describe('Knowledge Engine Module', function () {
         });
     });
 
+    describe('_parse_json_ld_message utility method', () => {
+        it('replaces old-style EKN ids', () => {
+            let json_without_api = JSON.stringify({
+                '@id': 'http://localhost:3003/foo/bar',
+            });
+            let json_with_api = JSON.stringify({
+                '@id': 'http://localhost:3003/api/foo/bar',
+            });
+
+            expect(engine._parse_json_ld_message(json_with_api)['@id'])
+            .toEqual('ekn://foo/bar');
+
+            expect(engine._parse_json_ld_message(json_without_api)['@id'])
+            .toEqual('ekn://foo/bar');
+        });
+    });
+
     describe('get_xapian_uri', function () {
         it('throws error if query values are undefined', function () {
             let bad_query_obj = {
