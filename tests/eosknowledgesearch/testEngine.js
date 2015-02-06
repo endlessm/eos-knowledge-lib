@@ -218,7 +218,7 @@ describe('Knowledge Engine Module', () => {
 
         it('supports single ID queries', () => {
             let query_obj = {
-                id: 'ekn://domain/someId',
+                ids: ['ekn://domain/someId'],
             };
             let query_params = {
                 q: '(id:some_id)',
@@ -227,6 +227,20 @@ describe('Knowledge Engine Module', () => {
             let mock_uri = engine.get_xapian_uri(query_obj);
             let mock_query_obj = mock_uri.get_query();
             expect(get_query_vals_for_key(mock_query_obj, 'q'));
+        });
+
+        it('supports multiple ID queries', () => {
+            let query_obj = {
+                ids: [
+                    'ekn://domain/someId',
+                    'ekn://domain/someOtherId',
+                ],
+            };
+            let expected_vals = '(id:someId OR id:someOtherId)';
+
+            let mock_uri = engine.get_xapian_uri(query_obj);
+            let mock_query_obj = mock_uri.get_query();
+            expect(get_query_vals_for_key(mock_query_obj, 'q')).toEqual(expected_vals);
         });
     });
 

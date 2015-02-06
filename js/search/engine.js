@@ -120,7 +120,7 @@ const Engine = Lang.Class({
     get_object_by_id: function (id, callback, cancellable = null) {
         var query_obj = {
             limit: 1,
-            id: id,
+            ids: [id],
         };
         let req_uri = this.get_xapian_uri(query_obj);
 
@@ -159,6 +159,7 @@ const Engine = Lang.Class({
      *   - cutoff  (number representing the minimum relevance percentage returned articles should have)
      *   - sortBy  (Xapian value by which to sort results. Note this will override relevance ordering by xapian.)
      *   - order  (The order in which to sort results, either ascending ('asc') or descending ('desc'))
+     *   - ids (an array of specific EKN ids to be fetched)
      *
      * Parameters:
      *
@@ -257,8 +258,8 @@ const Engine = Lang.Class({
                 case 'prefix':
                     xapian_query_options.push(xapianQuery.xapian_prefix_clause(query_obj.prefix));
                     break;
-                case 'id':
-                    xapian_query_options.push(xapianQuery.xapian_id_clause(query_obj.id));
+                case 'ids':
+                    xapian_query_options.push(xapianQuery.xapian_ids_clause(query_obj.ids));
                     break;
                 default:
                     if (['cutoff', 'limit', 'offset', 'order', 'sortBy'].indexOf(property) === -1)
