@@ -32,6 +32,12 @@ describe('Knowledge Engine Module', () => {
         }
     }
 
+    function mock_engine_request_with_multiple_values(return_values) {
+        engine._send_json_ld_request = (req, callback) => {
+            callback(undefined, return_values.shift());
+        }
+    }
+
     // where querystring is the URI component after a '?', and key is the
     // name of a query parameter, return the value(s) for that parameter
     // e.g.:
@@ -335,6 +341,28 @@ describe('Knowledge Engine Module', () => {
             setTimeout(done, 100); // pause for a moment for any more callbacks
             expect(callback_called).toEqual(1);
         });
+
+        it('performs redirect resolution', (done) => {
+            mock_engine_request_with_multiple_values([
+                {
+                    results: [{
+                        '@id': 'ekn://foo/redirect',
+                        '@type': 'ekn://_vocab/ArticleObject',
+                        redirectsTo: 'ekn://foo/real',
+                    }],
+                },
+                {
+                    results: [{
+                        '@id': 'ekn://foo/real',
+                        '@type': 'ekn://_vocab/ArticleObject',
+                    }],
+                },
+            ]);
+            engine.get_object_by_id('ekn://foo/redirect', (err, thing) => {
+                expect(thing.ekn_id).toEqual('ekn://foo/real');
+                done();
+            });
+        });
     });
 
     describe('get_objects_by_query', () => {
@@ -456,6 +484,66 @@ describe('Knowledge Engine Module', () => {
             });
             setTimeout(done, 100); // pause for a moment for any more callbacks
             expect(callback_called).toEqual(1);
+        });
+
+        it('performs redirect resolution', (done) => {
+            let get_objects_spy = spyOn(engine, 'get_objects_by_query').and.callThrough();
+            mock_engine_request_with_multiple_values([
+                {
+                    results: [
+                        {
+                            '@id': 'ekn://foo/redirect2',
+                            '@type': 'ekn://_vocab/ArticleObject',
+                            redirectsTo: 'ekn://foo/redirect3',
+                        },
+                        {
+                            '@id': 'ekn://foo/redirect',
+                            '@type': 'ekn://_vocab/ArticleObject',
+                            redirectsTo: 'ekn://foo/real2',
+                        },
+                        {
+                            '@id': 'ekn://foo/real3',
+                            '@type': 'ekn://_vocab/ArticleObject',
+                        },
+                    ],
+                },
+                {
+                    results: [
+                        {
+                            '@id': 'ekn://foo/redirect3',
+                            '@type': 'ekn://_vocab/ArticleObject',
+                            redirectsTo: 'ekn://foo/redirect4',
+                        },
+                        {
+                            '@id': 'ekn://foo/real2',
+                            '@type': 'ekn://_vocab/ArticleObject',
+                        },
+                    ],
+                },
+                {
+                    results: [
+                        {
+                            '@id': 'ekn://foo/redirect4',
+                            '@type': 'ekn://_vocab/ArticleObject',
+                            redirectsTo: 'ekn://foo/real',
+                        },
+                    ],
+                },
+                {
+                    results: [
+                        {
+                            '@id': 'ekn://foo/real',
+                            '@type': 'ekn://_vocab/ArticleObject',
+                        },
+                    ],
+                },
+            ]);
+            engine.get_objects_by_query({}, (err, things) => {
+                expect(things[0].ekn_id).toEqual('ekn://foo/real');
+                expect(things[1].ekn_id).toEqual('ekn://foo/real2');
+                expect(things[2].ekn_id).toEqual('ekn://foo/real3');
+                done();
+            });
         });
     });
 });
