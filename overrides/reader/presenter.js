@@ -130,6 +130,9 @@ const Presenter = new Lang.Class({
         this._check_for_content_update();
         this._parse_app_info(app_json);
 
+        this._webview_map = {};
+        this._article_models = [];
+
         // Load all articles in this issue
         this._load_all_content();
 
@@ -144,10 +147,10 @@ const Presenter = new Lang.Class({
 
         // Connect signals
         this.view.nav_buttons.connect('back-clicked', function () {
-            this._shift_page(-1);
+            this._go_to_page(this.view.current_page - 1);
         }.bind(this));
         this.view.nav_buttons.connect('forward-clicked', function () {
-            this._shift_page(1);
+            this._go_to_page(this.view.current_page + 1);
         }.bind(this));
         this.view.connect('notify::current-page',
             this._update_forward_button_visibility.bind(this));
@@ -181,6 +184,12 @@ const Presenter = new Lang.Class({
     search: function (query) {},
     activate_search_result: function (model, query) {},
 
+    _clear_webview_from_map: function (index) {
+        this.view.get_article_page(index).clear_content();
+        this._webview_map[index].destroy();
+        delete this._webview_map[index];
+    },
+
     _check_for_content_update: function() {
         if (Date.now() - this.settings.update_timestamp >= UPDATE_INTERVAL_MS) {
             this._update_content();
@@ -202,23 +211,14 @@ const Presenter = new Lang.Class({
             order: 'asc',
             tags: ['EknArticleObject'],
         }, function (error, results, get_more_results_func) {
+            // Make sure to drop all references to any webviews we are holding.
+            for (let article_index in this._webview_map) {
+                this._clear_webview_from_map(article_index);
+            }
             // Clear out state from any issue that was already displaying.
             this._article_models = [];
             this.view.remove_all_article_pages();
             this.view.overview_page.remove_all_snippets();
-            // Make sure to drop all references to any webviews we are holding.
-            if (this._current_page) {
-                this._current_page.destroy();
-                this._current_page = null;
-            }
-            if (this._next_page) {
-                this._next_page.destroy();
-                this._next_page = null;
-            }
-            if (this._previous_page) {
-                this._previous_page.destroy();
-                this._previous_page = null;
-            }
 
             if (error !== undefined || results.length < 1) {
                 if (error !== undefined) {
@@ -236,41 +236,6 @@ const Presenter = new Lang.Class({
         }.bind(this));
     },
 
-    // FIXME: We're breaking the ability to show content as soon as possible!
-    // Under this implementation, you have to wait for metadata for all articles
-    // to be fetched before seeing content for the article you were on
-    _initialize_first_pages: function () {
-        // The article number you are on is 1 less than the bookmarked page because we have the overview page
-        // in the beginning
-        let current_article = this.settings.bookmark_page - 1;
-        if (current_article >= 0 && current_article < this._article_models.length) {
-            this._current_page = this._load_webview_content(this._article_models[current_article], function (view, error) {
-                this._load_webview_content_callback(this.view.get_article_page(current_article), view, error);
-            }.bind(this));
-        }
-
-            // Load the next page if needed
-        if (current_article + 1 < this._article_models.length) {
-            let next_page = this.view.get_article_page(current_article + 1);
-            this._next_page = this._load_webview_content(this._article_models[current_article + 1], function (view, error) {
-                this._load_webview_content_callback(next_page, view, error);
-            }.bind(this));
-        }
-
-        // Likewise, load the previous page if needed
-        if (current_article > 0) {
-            let previous_page = this.view.get_article_page(current_article - 1);
-            this._previous_page = this._load_webview_content(this._article_models[current_article - 1], function (view, error) {
-                this._load_webview_content_callback(previous_page, view, error);
-            }.bind(this));
-        }
-
-        this.view.current_page = this.settings.bookmark_page;
-        this._update_forward_button_visibility();
-
-        this.view.show_all();
-    },
-
     _fetch_content_recursive: function (err, results, get_more_results_func) {
         if (err !== undefined) {
             printerr(err);
@@ -285,36 +250,55 @@ const Presenter = new Lang.Class({
                 // We now have all the articles we want to show. Now we load the HTML content
                 // for the first few pages into the webview
                 this._load_overview_snippets_from_articles();
-                this._initialize_first_pages();
+                this._go_to_page(this.settings.bookmark_page);
+                this.view.show_all();
             }
         }
     },
 
-    // Presenter logic to move the reader either forward or backwards one page.
-    // Current page is updated, the next page is loaded, and the previous one
-    // is deleted. This ensures we maintain the invariant that the current,
-    // previous, and next page are all loaded, but no other ones are, in order
-    // to minimize memory usage.
-    // Possible values for <delta> are +1 (to move foward) or -1 (to move backwards)
-    _shift_page: function (delta) {
-        if (delta !== -1 && delta !== 1)
-            throw new Error("Invalid input value for this function: " + delta);
-        let current_article = this.view.current_page - 1;
-        let to_delete_index = current_article - delta;
-        this.view.current_page += delta;
-        this.settings.bookmark_page = this.view.current_page;
-        let to_load_index = current_article + delta;
-        let next_model_to_load = this._article_models[to_load_index];
-        if (next_model_to_load !== undefined) {
-            let next_page_to_load = this.view.get_article_page(to_load_index);
-            this._next_page = this._load_webview_content(next_model_to_load, function (view, error) {
-                this._load_webview_content_callback(next_page_to_load, view, error);
-            }.bind(this));
+    // Takes user to the page specified by <index>
+    // Note index is with respect to all pages in the app - that is, all article
+    // pages + overview page + done page. So to go to the overview page, you
+    // would call this._go_to_page(0)
+    _go_to_page: function (index) {
+        this.view.current_page = index;
+        this.settings.bookmark_page = index;
+
+        // We want to always have ready on deck the webviews for the current
+        // article, the article preceding the current one, and the next article.
+        // These three webviews are stored in the webview_map. The key in the
+        // map is the article number (not page number in the app) which those
+        // pages correspond to. The values in the map are the EknWebview objects
+        // for those articles. E.g. if you are on page 7, you'd have a
+        // webview_map like:
+        // {6: <webview_object>, 7: <webview_object>, 8: <webview_object>}
+        let current_article = index - 1;
+
+        // The range of article numbers for which we want to store webviews (the
+        // current, the preceding, the next), excluding negative index values.
+        let article_index_range = [
+            current_article - 1,
+            current_article,
+            current_article + 1
+        ].filter((index) => index in this._article_models);
+
+        // Clear out any webviews in the map that we don't need anymore
+        for (let article_index in this._webview_map) {
+            if (article_index_range.indexOf(Number(article_index)) === -1)
+                this._clear_webview_from_map(article_index);
         }
-        let to_delete_page = this.view.get_article_page(to_delete_index);
-        if (to_delete_page !== undefined) {
-            to_delete_page.clear_content();
-        }
+
+        // Add to the map any webviews we do now need.
+        article_index_range.filter((index) => {
+            return !(index in this._webview_map);
+        }).forEach((index) => {
+            this._webview_map[index] = this._load_webview_content(this._article_models[index], (webview, error) => {
+                this._load_webview_content_callback(this.view.get_article_page(index),
+                    webview, error);
+            });
+        });
+
+        this._update_forward_button_visibility();
     },
 
     // First article data has been loaded asynchronously; now we can start
