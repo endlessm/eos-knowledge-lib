@@ -13,6 +13,7 @@ const ArticlePage = imports.reader.articlePage;
 const Config = imports.config;
 const EknWebview = imports.eknWebview;
 const Engine = imports.engine;
+const Previewer = imports.previewer;
 const UserSettingsModel = imports.reader.userSettingsModel;
 const Utils = imports.utils;
 const Window = imports.reader.window;
@@ -122,6 +123,11 @@ const Presenter = new Lang.Class({
         // Load all articles in this issue
         this._load_all_content();
 
+        this._previewer = new Previewer.Previewer({
+            visible: true,
+        });
+        this.view.lightbox.content_widget = this._previewer;
+
         // Connect signals
         this.view.nav_buttons.connect('back-clicked', function () {
             this._shift_page(-1);
@@ -146,6 +152,8 @@ const Presenter = new Lang.Class({
             this.view.issue_nav_buttons.show();
             this.view.disconnect(handler);  // One-shot signal handler only.
         }.bind(this));
+        this.view.connect('lightbox-nav-previous-clicked', this._on_lightbox_previous_clicked.bind(this));
+        this.view.connect('lightbox-nav-next-clicked', this._on_lightbox_next_clicked.bind(this));
 
         //Bind properties
         this.view.bind_property('current-page', this.view.nav_buttons,
@@ -223,7 +231,7 @@ const Presenter = new Lang.Class({
         // in the beginning
         let current_article = this.settings.bookmark_page - 1;
         if (current_article >= 0 && current_article < this._article_models.length) {
-            this._current_page = this._load_webview_content(this._article_models[current_article].ekn_id, function (view, error) {
+            this._current_page = this._load_webview_content(this._article_models[current_article], function (view, error) {
                 this._load_webview_content_callback(this.view.get_article_page(current_article), view, error);
             }.bind(this));
         }
@@ -231,7 +239,7 @@ const Presenter = new Lang.Class({
             // Load the next page if needed
         if (current_article + 1 < this._article_models.length) {
             let next_page = this.view.get_article_page(current_article + 1);
-            this._next_page = this._load_webview_content(this._article_models[current_article + 1].ekn_id, function (view, error) {
+            this._next_page = this._load_webview_content(this._article_models[current_article + 1], function (view, error) {
                 this._load_webview_content_callback(next_page, view, error);
             }.bind(this));
         }
@@ -239,7 +247,7 @@ const Presenter = new Lang.Class({
         // Likewise, load the previous page if needed
         if (current_article > 0) {
             let previous_page = this.view.get_article_page(current_article - 1);
-            this._previous_page = this._load_webview_content(this._article_models[current_article - 1].ekn_id, function (view, error) {
+            this._previous_page = this._load_webview_content(this._article_models[current_article - 1], function (view, error) {
                 this._load_webview_content_callback(previous_page, view, error);
             }.bind(this));
         }
@@ -284,7 +292,7 @@ const Presenter = new Lang.Class({
         let next_model_to_load = this._article_models[to_load_index];
         if (next_model_to_load !== undefined) {
             let next_page_to_load = this.view.get_article_page(to_load_index);
-            this._next_page = this._load_webview_content(next_model_to_load.ekn_id, function (view, error) {
+            this._next_page = this._load_webview_content(next_model_to_load, function (view, error) {
                 this._load_webview_content_callback(next_page_to_load, view, error);
             }.bind(this));
         }
@@ -307,7 +315,9 @@ const Presenter = new Lang.Class({
         this._article_models = this._article_models.concat(models);
     },
 
-    _load_webview_content: function (uri, ready) {
+    _load_webview_content: function (model, ready) {
+        let uri = model.ekn_id;
+        model.fetch_all(this.engine);
         if (ready === undefined) {
             ready = function () {};
         }
@@ -332,8 +342,33 @@ const Presenter = new Lang.Class({
             }
             ready(view, error);
         });
+
+        webview.connect('decide-policy', function (webview, decision, type) {
+            if (type !== WebKit2.PolicyDecisionType.NAVIGATION_ACTION)
+                return false; // default action
+
+            if (this._lightbox_handler(model, decision.request.uri)) {
+                decision.ignore();
+                return true; // decision made
+            }
+            return false; // default action
+        }.bind(this));
+
         webview.load_uri(uri);
         return webview;
+    },
+
+    _lightbox_handler: function (model, uri) {
+        let media_object;
+        let found = model.get_resources().some(function (model) {
+            media_object = model;
+            return (model.ekn_id === uri);
+        });
+        if (found) {
+            this._show_media_object_in_lightbox(model, media_object);
+            return true;
+        }
+        return false;
     },
 
     _load_webview_content_callback: function (page, view, error) {
@@ -426,5 +461,40 @@ const Presenter = new Lang.Class({
             };
         });
         this.view.overview_page.set_article_snippets(snippets);
+    },
+
+    _show_media_object_in_lightbox: function (model, media_object_id) {
+        let resources = model.get_resources();
+        let current_index = resources.indexOf(media_object_id);
+        // Checks whether forward/back arrows should be displayed.
+        this._preview_media_object(media_object_id, current_index > 0, current_index < resources.length - 1);
+    },
+
+    _on_lightbox_previous_clicked: function () {
+        let resources = this._article_models[this.view.current_page - 1].get_resources();
+        let current_index = resources.indexOf(this.view.lightbox.media_object);
+        if (current_index > -1) {
+            let new_index = current_index - 1;
+            // If the previous object is not the first, the back arrow should be displayed.
+            this._preview_media_object(resources[new_index], new_index > 0, true);
+        }
+    },
+
+    _on_lightbox_next_clicked: function () {
+        let resources = this._article_models[this.view.current_page - 1].get_resources();
+        let current_index = resources.indexOf(this.view.lightbox.media_object);
+        if (current_index > -1) {
+            let new_index = current_index + 1;
+            // If the next object is not the last, the forward arrow should be displayed.
+            this._preview_media_object(resources[new_index], true, new_index < resources.length - 1);
+        }
+    },
+
+    _preview_media_object: function (media_object, previous_arrow_visible, next_arrow_visible) {
+        this._previewer.file = Gio.File.new_for_uri(media_object.content_uri);
+        this.view.lightbox.media_object = media_object;
+        this.view.lightbox.reveal_overlays = true;
+        this.view.lightbox.has_back_button = previous_arrow_visible;
+        this.view.lightbox.has_forward_button = next_arrow_visible;
     },
 });

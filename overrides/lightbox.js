@@ -3,6 +3,7 @@ const Endless = imports.gi.Endless;
 const EosKnowledge = imports.gi.EosKnowledge;
 const EosKnowledgeSearch = imports.EosKnowledgeSearch;
 const Gdk = imports.gi.Gdk;
+const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
@@ -113,6 +114,8 @@ const Lightbox = new Lang.Class({
         'navigation-next-clicked': { param_types: [ GObject.TYPE_OBJECT ] }
     },
 
+    _css_has_loaded: false,
+
     _init: function (params) {
         // Property values
         this._media_object = null;
@@ -142,6 +145,12 @@ const Lightbox = new Lang.Class({
         }));
 
         this.parent(params);
+
+        if (!this._css_has_loaded) {
+            let css = Gio.File.new_for_uri('resource:///com/endlessm/knowledge/lightbox.css');
+            Utils.add_css_provider_from_file(css, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+            this._css_has_loaded = true;
+        }
 
         this._lightbox_container.connect('navigation-previous-clicked',
             Lang.bind(this, function () {
