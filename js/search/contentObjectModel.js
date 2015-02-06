@@ -97,6 +97,13 @@ const ContentObjectModel = new Lang.Class({
             'Number of resources belonging to this object',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
              0, GLib.MAXINT32, 0),
+        /**
+         * Property: redirects-to
+         * The EKN ID of the ContentObject to which this model should redirect.
+         */
+        'redirects-to': GObject.ParamSpec.string('redirects-to', 'Redirects To',
+            'EKN ID of the object to which this model should redirect',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT, ''),
     },
 
     _init: function (params) {
@@ -161,6 +168,10 @@ const ContentObjectModel = new Lang.Class({
         return this._resources_ready;
     },
 
+    get redirects_to () {
+        return this._redirects_to;
+    },
+
     set ekn_id (v) {
         this._ekn_id = v;
     },
@@ -206,6 +217,10 @@ const ContentObjectModel = new Lang.Class({
 
     set num_resources (v) {
         this._num_resources = v;
+    },
+
+    set redirects_to (v) {
+        this._redirects_to = v;
     },
 
     set_resources: function (v) {
@@ -279,6 +294,9 @@ ContentObjectModel._props_from_json_ld = function (json_ld_data, media_path) {
 
     if(json_ld_data.hasOwnProperty('thumbnail'))
         props.thumbnail_id = json_ld_data.thumbnail;
+
+    if(json_ld_data.hasOwnProperty('redirectsTo'))
+        props.redirects_to = json_ld_data.redirectsTo;
 
     return props;
 };
