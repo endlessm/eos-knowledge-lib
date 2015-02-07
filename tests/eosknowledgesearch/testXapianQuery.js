@@ -85,9 +85,17 @@ describe('Xapian Query Module', function () {
             expect(undefined_result).toBe(undefined);
         });
 
-        it('should support id queries', function () {
-            let result = xq.xapian_id_clause('ekn://domain/someId');
+        it('should support single id queries', function () {
+            let result = xq.xapian_ids_clause(['ekn://domain/someId']);
             expect(result).toBe('id:someId');
+        });
+
+        it('should support multiple id queries', () => {
+            let result = xq.xapian_ids_clause([
+                'ekn://domain/someId',
+                'ekn://domain/someOtherId',
+            ]);
+            expect(result).toBe('id:someId OR id:someOtherId');
         });
 
         it('should throw error if receives invalid ekn id', function () {
@@ -95,7 +103,7 @@ describe('Xapian Query Module', function () {
             'ekn://api/too/many/parts', 'ekn://underscore_/id'];
 
             bad_ids.forEach(function (bad_id) {
-                expect(function(){ xq.xapian_id_clause(bad_id)}).toThrow(new Error('Received invalid ekn uri ' + bad_id));
+                expect(function(){ xq.xapian_ids_clause([bad_id])}).toThrow(new Error('Received invalid ekn uri ' + bad_id));
             });
         });
     });

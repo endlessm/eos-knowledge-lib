@@ -81,5 +81,9 @@ describe ("Content Object Model", function () {
         it ("should have resources", function () {
             expect(contentObject.get_resources()).toEqual(mockContentData.resources);
         });
+
+        it ("should have redirects-to", function () {
+            expect(contentObject.redirects_to).toEqual(mockContentData.redirectsTo);
+        });
     });
 });

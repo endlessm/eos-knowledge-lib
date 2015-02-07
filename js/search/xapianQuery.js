@@ -118,15 +118,18 @@ function xapian_not_tag_clause (tags) {
     return prefixedTagsArr.join(XAPIAN_OP_AND);
 }
 
-// The argument id here is a full uri, e.g. ekn://animals/s0m3ha5h
-// We want just the hash portion.
-function xapian_id_clause (id) {
-    // Verify that ekn id is of the right form
-    let ekn_matcher = /^ekn:\/\/(api\/)?[A-Z]+-?[A-Z]*\/[A-Z0-9]+$/i
-    if (!ekn_matcher.test(id))
-        throw new Error("Received invalid ekn uri " + id)
+// Each id argument here is a full uri, e.g. ekn://animals/s0m3ha5h. We want
+// just the hash portion.
+function xapian_ids_clause (ids) {
+    let id_clauses = ids.map((id) => {
+        // Verify that ekn id is of the right form
+        let ekn_matcher = /^ekn:\/\/(api\/)?[A-Z]+-?[A-Z]*\/[A-Z0-9]+$/i
+        if (!ekn_matcher.test(id))
+            throw new Error("Received invalid ekn uri " + id)
 
-    return XAPIAN_PREFIX_ID + id.split('/').slice(-1)[0];
+        return XAPIAN_PREFIX_ID + id.split('/').slice(-1)[0];
+    });
+    return id_clauses.join(XAPIAN_OP_OR);
 }
 
 function xapian_string_to_value_no(xapian_string) {

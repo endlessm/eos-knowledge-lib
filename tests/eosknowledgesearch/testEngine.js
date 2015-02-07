@@ -32,6 +32,12 @@ describe('Knowledge Engine Module', () => {
         }
     }
 
+    function mock_engine_request_with_multiple_values(return_values) {
+        engine._send_json_ld_request = (req, callback) => {
+            callback(undefined, return_values.shift());
+        }
+    }
+
     // where querystring is the URI component after a '?', and key is the
     // name of a query parameter, return the value(s) for that parameter
     // e.g.:
@@ -218,7 +224,7 @@ describe('Knowledge Engine Module', () => {
 
         it('supports single ID queries', () => {
             let query_obj = {
-                id: 'ekn://domain/someId',
+                ids: ['ekn://domain/someId'],
             };
             let query_params = {
                 q: '(id:some_id)',
@@ -227,6 +233,20 @@ describe('Knowledge Engine Module', () => {
             let mock_uri = engine.get_xapian_uri(query_obj);
             let mock_query_obj = mock_uri.get_query();
             expect(get_query_vals_for_key(mock_query_obj, 'q'));
+        });
+
+        it('supports multiple ID queries', () => {
+            let query_obj = {
+                ids: [
+                    'ekn://domain/someId',
+                    'ekn://domain/someOtherId',
+                ],
+            };
+            let expected_vals = '(id:someId OR id:someOtherId)';
+
+            let mock_uri = engine.get_xapian_uri(query_obj);
+            let mock_query_obj = mock_uri.get_query();
+            expect(get_query_vals_for_key(mock_query_obj, 'q')).toEqual(expected_vals);
         });
     });
 
@@ -320,6 +340,48 @@ describe('Knowledge Engine Module', () => {
             });
             setTimeout(done, 100); // pause for a moment for any more callbacks
             expect(callback_called).toEqual(1);
+        });
+
+        it('performs redirect resolution', (done) => {
+            mock_engine_request_with_multiple_values([
+                {
+                    results: [{
+                        '@id': 'ekn://foo/redirect',
+                        '@type': 'ekn://_vocab/ArticleObject',
+                        redirectsTo: 'ekn://foo/real',
+                    }],
+                },
+                {
+                    results: [{
+                        '@id': 'ekn://foo/real',
+                        '@type': 'ekn://_vocab/ArticleObject',
+                    }],
+                },
+            ]);
+            engine.get_object_by_id('ekn://foo/redirect', (err, thing) => {
+                expect(thing.ekn_id).toEqual('ekn://foo/real');
+                done();
+            });
+        });
+
+        it('handles 404 when fetching redirects', (done) => {
+            mock_engine_request_with_multiple_values([
+                {
+                    results: [{
+                        '@id': 'ekn://foo/redirect',
+                        '@type': 'ekn://_vocab/ArticleObject',
+                        redirectsTo: 'ekn://foo/nope',
+                    }],
+                },
+                {
+                    results: [],
+                },
+            ]);
+            engine.get_object_by_id('ekn://foo/redirect', (err, thing) => {
+                expect(err).toBeDefined();
+                expect(thing).not.toBeDefined();
+                done();
+            });
         });
     });
 
@@ -443,5 +505,87 @@ describe('Knowledge Engine Module', () => {
             setTimeout(done, 100); // pause for a moment for any more callbacks
             expect(callback_called).toEqual(1);
         });
+
+        it('performs redirect resolution', (done) => {
+            let get_objects_spy = spyOn(engine, 'get_objects_by_query').and.callThrough();
+            mock_engine_request_with_multiple_values([
+                {
+                    results: [
+                        {
+                            '@id': 'ekn://foo/redirect2',
+                            '@type': 'ekn://_vocab/ArticleObject',
+                            redirectsTo: 'ekn://foo/redirect3',
+                        },
+                        {
+                            '@id': 'ekn://foo/redirect',
+                            '@type': 'ekn://_vocab/ArticleObject',
+                            redirectsTo: 'ekn://foo/real2',
+                        },
+                        {
+                            '@id': 'ekn://foo/real3',
+                            '@type': 'ekn://_vocab/ArticleObject',
+                        },
+                    ],
+                },
+                {
+                    results: [
+                        {
+                            '@id': 'ekn://foo/redirect3',
+                            '@type': 'ekn://_vocab/ArticleObject',
+                            redirectsTo: 'ekn://foo/redirect4',
+                        },
+                        {
+                            '@id': 'ekn://foo/real2',
+                            '@type': 'ekn://_vocab/ArticleObject',
+                        },
+                    ],
+                },
+                {
+                    results: [
+                        {
+                            '@id': 'ekn://foo/redirect4',
+                            '@type': 'ekn://_vocab/ArticleObject',
+                            redirectsTo: 'ekn://foo/real',
+                        },
+                    ],
+                },
+                {
+                    results: [
+                        {
+                            '@id': 'ekn://foo/real',
+                            '@type': 'ekn://_vocab/ArticleObject',
+                        },
+                    ],
+                },
+            ]);
+            engine.get_objects_by_query({}, (err, things) => {
+                expect(things[0].ekn_id).toEqual('ekn://foo/real');
+                expect(things[1].ekn_id).toEqual('ekn://foo/real2');
+                expect(things[2].ekn_id).toEqual('ekn://foo/real3');
+                done();
+            });
+        });
+
+        it('handles 404s when fetching redirects', (done) => {
+            mock_engine_request_with_multiple_values([
+                {
+                    results: [
+                        {
+                            '@id': 'ekn://foo/redirect',
+                            '@type': 'ekn://_vocab/ArticleObject',
+                            redirectsTo: 'ekn://foo/notathing',
+                        },
+                    ],
+                },
+                {
+                    results: [],
+                },
+            ]);
+            engine.get_objects_by_query({}, (err, things) => {
+                expect(err).toBeDefined();
+                expect(things).not.toBeDefined();
+                done();
+            });
+        })
     });
 });
