@@ -248,12 +248,24 @@ const Engine = Lang.Class({
                             return target;
                         }
                     }
+
+                    // if we didn't find this redirect object's target, replace
+                    // it with null so we can resolve with an error later
+                    return null;
                 } else {
                     // otherwise, old_result is a normal object, so just return
                     // it
                     return old_result;
                 }
             });
+
+            // if any of the redirect objects didn't get their requested target,
+            // we'll have some null entries in redirected_results. invoke the
+            // callback with an error in that case
+            if (redirected_results.indexOf(null) !== -1) {
+                callback(new Error('Could not resolve a redirect object'), undefined);
+                return;
+            }
 
             // recurse on the newly replaced result set, in case any of the
             // targets are themselves redirects

@@ -363,6 +363,26 @@ describe('Knowledge Engine Module', () => {
                 done();
             });
         });
+
+        it('handles 404 when fetching redirects', (done) => {
+            mock_engine_request_with_multiple_values([
+                {
+                    results: [{
+                        '@id': 'ekn://foo/redirect',
+                        '@type': 'ekn://_vocab/ArticleObject',
+                        redirectsTo: 'ekn://foo/nope',
+                    }],
+                },
+                {
+                    results: [],
+                },
+            ]);
+            engine.get_object_by_id('ekn://foo/redirect', (err, thing) => {
+                expect(err).toBeDefined();
+                expect(thing).not.toBeDefined();
+                done();
+            });
+        });
     });
 
     describe('get_objects_by_query', () => {
@@ -545,5 +565,27 @@ describe('Knowledge Engine Module', () => {
                 done();
             });
         });
+
+        it('handles 404s when fetching redirects', (done) => {
+            mock_engine_request_with_multiple_values([
+                {
+                    results: [
+                        {
+                            '@id': 'ekn://foo/redirect',
+                            '@type': 'ekn://_vocab/ArticleObject',
+                            redirectsTo: 'ekn://foo/notathing',
+                        },
+                    ],
+                },
+                {
+                    results: [],
+                },
+            ]);
+            engine.get_objects_by_query({}, (err, things) => {
+                expect(err).toBeDefined();
+                expect(things).not.toBeDefined();
+                done();
+            });
+        })
     });
 });
