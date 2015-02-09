@@ -153,7 +153,7 @@ const SearchProvider = Lang.Class({
                 this._more_results_callback = more_results_callback;
                 let ids = results.map(function (result) { return result.ekn_id; });
                 invocation.return_value(new GLib.Variant('(as)', [ids]));
-            } else {
+            } else if (!err.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED)) {
                 invocation.return_error_literal(this._search_provider_domain, SearchProviderErrors.RetrievalError, 'Error retrieving results: ' + err);
             }
             app.release();
@@ -173,7 +173,7 @@ const SearchProvider = Lang.Class({
                 this._more_results_callback = more_results_callback;
                 let ids = results.map(function (result) { return result.ekn_id; });
                 invocation.return_value(new GLib.Variant('(as)', [ids]));
-            } else {
+            } else if (!err.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED)) {
                 invocation.return_error_literal(this._search_provider_domain, SearchProviderErrors.RetrievalError, 'Error retrieving results: ' + err);
             }
             app.release();

@@ -2,6 +2,7 @@
 const Lang = imports.lang;
 const Soup = imports.gi.Soup;
 const GObject = imports.gi.GObject;
+const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 
 const ArticleObjectModel = imports.articleObjectModel;
@@ -402,6 +403,7 @@ const Engine = Lang.Class({
         if (cancellable) {
             cancellable.connect(() => {
                 this._http_session.cancel_message(request, Soup.Status.CANCELLED);
+                callback(Gio.IOErrorEnum({ message: 'Request cancelled', code: Gio.IO_ERROR_CANCELLED }));
             });
         }
     },
