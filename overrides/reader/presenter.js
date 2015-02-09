@@ -351,7 +351,7 @@ const Presenter = new Lang.Class({
             ready(view, error);
         });
 
-        webview.connect('decide-policy', function (webview, decision, type) {
+        webview.connect('decide-policy', function (view, decision, type) {
             if (type !== WebKit2.PolicyDecisionType.NAVIGATION_ACTION)
                 return false; // default action
 
