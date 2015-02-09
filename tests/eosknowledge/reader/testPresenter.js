@@ -353,14 +353,17 @@ describe('Reader presenter', function () {
                 ekn_id: media_object_uri,
             };
             model.get_resources = function () {
-                return [media_object];
+                return [media_object_uri];
             };
             spyOn(presenter, '_preview_media_object');
-            let lightbox_result = presenter._lightbox_handler(model, media_object_uri);
+            let lightbox_result = presenter._lightbox_handler(model, media_object);
             expect(presenter._preview_media_object).toHaveBeenCalledWith(media_object, false, false);
             expect(lightbox_result).toBe(true);
 
-            let no_lightbox_result = presenter._lightbox_handler(model, 'ekn://no/media');
+            let nonexistant_media_object = {
+                ekn_id: 'ekn://no/media',
+            };
+            let no_lightbox_result = presenter._lightbox_handler(model, nonexistant_media_object);
             expect(no_lightbox_result).toBe(false);
         });
 
