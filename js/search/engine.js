@@ -179,7 +179,7 @@ const Engine = Lang.Class({
      *             error, and *result* is a list of <ContentObjectModel>s
      *             corresponding to the successfully retrieved object type
      */
-    get_objects_by_query: function (query_obj, callback, cancellable = null, follow_redirects = true) {
+    get_objects_by_query: function (query_obj, callback, cancellable = null) {
         let req_uri = this.get_xapian_uri(query_obj);
 
         this._send_json_ld_request(req_uri, (err, json_ld) => {
@@ -205,74 +205,28 @@ const Engine = Lang.Class({
                 this.get_objects_by_query(query_obj, new_callback);
             };
 
-            if (follow_redirects) {
-                this._fetch_redirects_helper(search_results, callback,
-                    get_more_results, cancellable);
-            } else {
-                callback(undefined, search_results, get_more_results);
-            }
-        }, cancellable);
-    },
-
-    // recursively follow redirect chains, eventually invoking the original
-    // callback on a final set of non-redirecting results.
-    _fetch_redirects_helper: function (results, callback, get_more_results, cancellable) {
-        let redirects = results.filter((result) => result.redirects_to.length > 0);
-
-        // if no more redirects are found, simply invoke the callback on the
-        // current set of results
-        if (redirects.length === 0) {
-            callback(undefined, results, get_more_results);
-            return;
-        }
-
-        // fabricate a query to request that resolves all redirect_to links in
-        // the current set of results
-        let get_redirects_query = {
-            ids: redirects.map((result) => result.redirects_to),
-        };
-        this.get_objects_by_query(get_redirects_query, (err, redirect_targets) => {
-            // if an error occurred, propagate err to original callback
-            if (typeof err !== 'undefined') {
-                callback(err, undefined);
-                return;
+            let redirect_callbacks = {};
+            for (let result of search_results) {
+                if (result.redirects_to.length > 0)
+                    redirect_callbacks[result.ekn_id] = (done) => {
+                        this.get_object_by_id(result.redirects_to, done);
+                    };
             }
 
-            // replace redirecting objects in original results set with their
-            // newly fetched targets
-            let redirected_results = results.map((old_result) => {
-                // if old_result is one of the redirect objects, then find its
-                // target object and return that instead
-                if (redirects.indexOf(old_result) >= 0) {
-                    for (let target of redirect_targets) {
-                        if (old_result.redirects_to === target.ekn_id) {
-                            return target;
-                        }
-                    }
-
-                    // if we didn't find this redirect object's target, replace
-                    // it with null so we can resolve with an error later
-                    return null;
-                } else {
-                    // otherwise, old_result is a normal object, so just return
-                    // it
-                    return old_result;
+            utils.join_async(redirect_callbacks, (error, resolved) => {
+                if (typeof error !== 'undefined') {
+                    return callback(error, undefined);
                 }
+
+                search_results = search_results.map((result) => {
+                    if (resolved.hasOwnProperty(result.ekn_id))
+                        return resolved[result.ekn_id];
+                    return result;
+                });
+
+                callback(undefined, search_results);
             });
-
-            // if any of the redirect objects didn't get their requested target,
-            // we'll have some null entries in redirected_results. invoke the
-            // callback with an error in that case
-            if (redirected_results.indexOf(null) !== -1) {
-                callback(new Error('Could not resolve a redirect object'), undefined);
-                return;
-            }
-
-            // recurse on the newly replaced result set, in case any of the
-            // targets are themselves redirects
-            this._fetch_redirects_helper(redirected_results, callback,
-                get_more_results, cancellable);
-        }, cancellable, false);
+        }, cancellable);
     },
 
     // Returns a marshaled ObjectModel based on json_ld's @type value, or throws
