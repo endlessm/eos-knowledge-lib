@@ -1,10 +1,11 @@
 {
-    "@context": "http://localhost:3003/_context/ArticleObject",
+    "@context": "ekn://_context/ArticleObject",
     "@id": "file:///mexico.html",
     "@type": "ekv:ArticleObject",
     "lastModifiedDate": "2014-09-28T22:42:55",
     "license": "Creative Commons",
     "originalTitle": "M\u00e9xico",
+    "articleBody": "<html>'Mexico is noice'-joel</html>",
     "references": [
         "<li id=\"ficha_nota-2\"><a href=\"#ficha_ref-2\">&#8593;</a> Art&#237;culo 4.&#176; de la <a href=\"/wiki/Ley_General_de_Derechos_Ling%C3%BC%C3%ADsticos_de_los_Pueblos_Ind%C3%ADgenas\" title=\"Ley General de Derechos Ling&#252;&#237;sticos de los Pueblos Ind&#237;genas\">Ley General de Derechos Ling&#252;&#237;sticos de los Pueblos Ind&#237;genas</a>.<br/></li>\n",
         "<li id=\"ficha_nota-3\"><a href=\"#ficha_ref-3\">&#8593;</a> Fuente: <a href=\"/wiki/Conapo\" title=\"Conapo\" class=\"mw-redirect\">Conapo</a>  <br/></li>\n",
@@ -703,13 +704,6 @@
     "tags": [
         "M\u00e9xico"
     ],
-    "thumbnail": {
-        "@context": "http://localhost:3003/_context/ImageObject",
-        "@id": "http://localhost:3003/api/general-es/0b314c5cc68c5997",
-        "@type": "ekv:ImageObject",
-        "contentURL": "file:///endless/share/ekn/data/general-es/media/0b314c5cc68c5997.jpeg",
-        "encodingFormat": "image/jpeg",
-        "sourceURI": "http://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Ciudad.de.Mexico.City.Distrito.Federal.DF.Paseo.Reforma.Skyline.jpg/100px-Ciudad.de.Mexico.City.Distrito.Federal.DF.Paseo.Reforma.Skyline.jpg"
-    },
+    "thumbnail": "ekn://general-es/0b314c5cc68c5997",
     "title": "M\u00e9xico"
 }

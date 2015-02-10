@@ -3,6 +3,7 @@ const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
+const Soup = imports.gi.Soup;
 
 const ContentObjectModel = imports.contentObjectModel;
 const TreeNode = imports.treeNode;
@@ -20,6 +21,24 @@ const ArticleObjectModel = new Lang.Class({
     GTypeName: 'EknArticleObjectModel',
     Extends: ContentObjectModel.ContentObjectModel,
     Properties: {
+        /**
+         * Property: html
+         * Body HTML of the article.
+         */
+        'html': GObject.ParamSpec.string('html', 'Article HTML',
+            'The HTML of the article, unstyled.',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
+            ''),
+        /**
+         * Property: html-source
+         *
+         * Source of the HTML. Right now can be embedly, wikipedia, wikihow,
+         * wikisource or wikibooks.
+         */
+        'html-source': GObject.ParamSpec.string('html-source', 'Source of the HTML',
+            'Where the article html was retrieved from.',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
+            ''),
         /**
          * Property: word-count
          * Integer indicating how many words are in the article
@@ -134,28 +153,53 @@ const ArticleObjectModel = new Lang.Class({
  * Creates an ArticleObjectModel from a Knowledge Engine ArticleObject
  * JSON-LD document
  */
-ArticleObjectModel.new_from_json_ld = function (json_ld_data) {
-    let props = ArticleObjectModel._props_from_json_ld(json_ld_data);
+ArticleObjectModel.new_from_json_ld = function (json_ld_data, media_path) {
+    let props = ArticleObjectModel._props_from_json_ld(json_ld_data, media_path);
     let article_object_model = new ArticleObjectModel(props);
-    ArticleObjectModel._setup_from_json_ld(article_object_model, json_ld_data);
+    ArticleObjectModel._setup_from_json_ld(article_object_model, json_ld_data, media_path);
 
     return article_object_model;
 };
 
-ArticleObjectModel._setup_from_json_ld = function (model, json_ld_data) {
+ArticleObjectModel._setup_from_json_ld = function (model, json_ld_data, media_path) {
     // Inherit setup from parent class
     let ParentClass = ArticleObjectModel.__super__;
-    ParentClass._setup_from_json_ld(model, json_ld_data);
+    ParentClass._setup_from_json_ld(model, json_ld_data, media_path);
     if (json_ld_data.hasOwnProperty('authors')) {
         model.set_authors(json_ld_data.authors);
     }
 
 };
 
-ArticleObjectModel._props_from_json_ld = function (json_ld_data) {
+ArticleObjectModel._props_from_json_ld = function (json_ld_data, media_path) {
     // Inherit properties marshalled from parent class
     let ParentClass = ArticleObjectModel.__super__;
-    let props = ParentClass._props_from_json_ld(json_ld_data);
+    let props = ParentClass._props_from_json_ld(json_ld_data, media_path);
+
+    if (json_ld_data.hasOwnProperty('articleBody'))
+        props.html = json_ld_data.articleBody;
+
+    // FIXME: see https://github.com/endlessm/eos-sdk/issues/2520
+    // This is a holdover from knowledge engine where we guess the source of
+    // the html from the source_uri field, and if it comes from pantheon, assume
+    // embedly. This will probably need to stay as a patch for old databases,
+    // but we should put this in our database in a consistent manner.
+    if (props.source_uri) {
+        let host = Soup.URI.new(props.source_uri).get_host();
+        if (/^.*.wikipedia\.org/.test(host)) {
+            props.html_source = 'wikipedia';
+        } else if (/^.*\.wikisource\.org/.test(host)) {
+            props.html_source = 'wikisource';
+        } else if (/^.*\.wikibooks\.org/.test(host)) {
+            props.html_source = 'wikibooks';
+        } else if (/^.*wikihow\.com/.test(host)) {
+            props.html_source = 'wikihow';
+        } else if ('eos-pantheon.herokuapp.com' === host) {
+            props.html_source = 'embedly';
+        } else {
+            throw new Error('Unrecognized source uri host: ' + host);
+        }
+    }
 
     // Marshal properties specific to ArticleObjectModel
     if (json_ld_data.hasOwnProperty('wordCount')) {

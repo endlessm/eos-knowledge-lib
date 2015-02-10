@@ -79,10 +79,11 @@ GTK_REQUIREMENT="gtk+-3.0 >= 3.12"
 GTK_CLUTTER_REQUIREMENT="clutter-gtk-1.0"
 CLUTTER_GST_REQUIREMENT="clutter-gst-2.0"
 EVINCE_REQUIREMENT="evince-document-3.0"
+WEBKIT_REQUIREMENT="webkit2gtk-3.0"
 # These go into the pkg-config file as Requires: and Requires.private:
 # (Generally, use Requires.private: instead of Requires:)
 AC_SUBST([EKN_REQUIRED_MODULES], [])
-AC_SUBST([EKN_REQUIRED_MODULES_PRIVATE], ["$GLIB_REQUIREMENT $GOBJECT_REQUIREMENT $GIO_REQUIREMENT $GTK_REQUIREMENT $GTK_CLUTTER_REQUIREMENT $CLUTTER_GST_REQUIREMENT $EVINCE_REQUIREMENT"])
+AC_SUBST([EKN_REQUIRED_MODULES_PRIVATE], ["$GLIB_REQUIREMENT $GOBJECT_REQUIREMENT $GIO_REQUIREMENT $GTK_REQUIREMENT $GTK_CLUTTER_REQUIREMENT $CLUTTER_GST_REQUIREMENT $EVINCE_REQUIREMENT $WEBKIT_REQUIREMENT"])
 
 # Gettext package name
 AC_SUBST([GETTEXT_PACKAGE], ["$PACKAGE"])
@@ -200,6 +201,19 @@ AC_ARG_ENABLE([inspector], AS_HELP_STRING([--enable-inspector],
 AS_IF([test "x$enable_inspector" != "xyes"], [inspector=false], [inspector=true])
 AC_SUBST([inspector])
 
+# --with-mathjax-dir: Use mathjax from a location besides the default /usr/share
+AC_ARG_WITH([mathjax-dir], AS_HELP_STRING([--with-mathjax-dir],
+    [Use mathjax from a location besides the default /usr/share]),
+    [MATHJAXDIR=$withval],
+    [MATHJAXDIR=/usr/share/javascript/mathjax])
+AC_MSG_CHECKING([for mathjax javsacript library])
+if test -d $MATHJAXDIR; then
+    AC_MSG_RESULT([yes])
+    AC_SUBST([MATHJAXDIR])
+else
+    AC_MSG_ERROR([Cannot find mathjax package])
+fi
+
 # Required libraries
 # ------------------
 PKG_CHECK_MODULES([EOS_KNOWLEDGE], [
@@ -236,6 +250,7 @@ AC_CONFIG_FILES([
     docs/reference/eosknowledgesearch/Makefile
     docs/reference/eosknowledge/version.xml
     overrides/config.js
+    config/compass.rb
     $EKN_API_NAME.pc
 ])
 AC_CONFIG_HEADERS([config.h])  dnl Header with system-dependent #defines

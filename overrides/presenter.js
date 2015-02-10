@@ -18,6 +18,7 @@ const MediaInfobox = imports.mediaInfobox;
 const PdfCard = imports.pdfCard;
 const Previewer = imports.previewer;
 const TextCard = imports.textCard;
+const WebkitURIHandlers = imports.webkitURIHandlers;
 const Window = imports.window;
 const Utils = imports.utils;
 
@@ -112,7 +113,6 @@ const Presenter = new Lang.Class({
 
     _init: function (app_json, props) {
         this._template_type = app_json['templateType'];
-        this._domain = app_json['appId'].split('.').pop();
 
         let css = Gio.File.new_for_uri('resource:///com/endlessm/knowledge/endless_knowledge.css');
         Utils.add_css_provider_from_file(css, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
@@ -121,13 +121,14 @@ const Presenter = new Lang.Class({
             application: props.application,
             template_type: this._template_type,
         });
-        props.engine = props.engine || new EosKnowledgeSearch.Engine();
+        props.engine = props.engine || EosKnowledgeSearch.Engine.get_default();
         props.article_presenter = props.article_presenter || new ArticlePresenter.ArticlePresenter({
                 article_view: props.view.article_page,
-                engine: props.engine,
                 template_type: this._template_type,
         });
         this.parent(props);
+
+        WebkitURIHandlers.register_webkit_uri_handlers();
 
         this.view.title = app_json['appTitle'];
         this.view.home_page.title_image_uri = app_json['titleImageURI'];
@@ -139,9 +140,7 @@ const Presenter = new Lang.Class({
             visible: true
         });
         this.view.lightbox.content_widget = this._previewer;
-
-        // Ping server to spin up knowledge engine
-        this.engine.ping(this._domain);
+        this._loading_new_lightbox = false;
 
         // Keeps track of the broad query that led to an individual article.
         this._latest_origin_query = '{}';
@@ -178,8 +177,7 @@ const Presenter = new Lang.Class({
         this.view.section_page.connect('load-more-results', this._on_load_more_results.bind(this));
 
         this.view.home_page.connect('show-categories', this._on_categories_button_clicked.bind(this));
-        this.article_presenter.connect('media-object-clicked', this._on_media_object_clicked.bind(this));
-        this.article_presenter.connect('article-object-clicked', this._on_article_object_clicked.bind(this));
+        this.article_presenter.connect('ekn-link-clicked', this._on_ekn_link_clicked.bind(this));
         this.view.categories_page.connect('show-home', this._on_home_button_clicked.bind(this));
         this._original_page = this.view.home_page;
         this._search_origin_page = this.view.home_page;
@@ -234,11 +232,11 @@ const Presenter = new Lang.Class({
                 break;
             case this._SECTION_PAGE:
                 this._target_page_title = this._history_model.current_item.title;
-                this.engine.get_objects_by_query(this._domain, article_origin_query, this._load_section_page.bind(this));
+                this.engine.get_objects_by_query(article_origin_query, this._load_section_page.bind(this));
                 break;
             case this._ARTICLE_PAGE:
                 if (this._history_model.current_item.article_origin_query !== this._latest_origin_query) {
-                    this.engine.get_objects_by_query(this._domain, article_origin_query, this._refresh_sidebar_callback.bind(this));
+                    this.engine.get_objects_by_query(article_origin_query, this._refresh_sidebar_callback.bind(this));
                 }
                 this.article_presenter.load_article(this._history_model.current_item.article_model, animation_type);
                 // For Template B, we reset the highlight to the card with the same title
@@ -322,12 +320,12 @@ const Presenter = new Lang.Class({
         this.view.lock_ui();
 
         let query = {
-            'tag': tags,
+            'tags': tags,
             'limit': RESULTS_SIZE
         }
         this._target_page_title = card.title;
         this._add_history_object_for_section_page(JSON.stringify(query));
-        this.engine.get_objects_by_query(this._domain, query, this._load_section_page.bind(this));
+        this.engine.get_objects_by_query(query, this._load_section_page.bind(this));
     },
 
     // Removes newlines and trims whitespace before and after a query string
@@ -343,14 +341,14 @@ const Presenter = new Lang.Class({
         if (query.length === 0) {
             return;
         }
+        let query_obj = {
+            q: query,
+            limit: RESULTS_SIZE,
+        };
 
         this.view.search_box.text = query;
-        this._add_history_object_for_search_page(JSON.stringify({
-            q: query
-        }));
-        this._perform_search(this.view, {
-            q: query
-        });
+        this._add_history_object_for_search_page(JSON.stringify(query_obj));
+        this._perform_search(this.view, query_obj);
     },
 
     _perform_search: function (view, query) {
@@ -364,7 +362,7 @@ const Presenter = new Lang.Class({
         // The topbar search box should also clear once an article has been chosen.
         this.view.home_page.search_box.text = '';
 
-        this.engine.get_objects_by_query(this._domain, query, this._load_section_page.bind(this));
+        this.engine.get_objects_by_query(query, this._load_section_page.bind(this));
     },
 
     _on_search_focus: function (view, focused) {
@@ -402,8 +400,9 @@ const Presenter = new Lang.Class({
         if (query.length === 0) {
             return;
         }
-        this.engine.get_objects_by_query(this._domain, {
-            'prefix': query
+        this.engine.get_objects_by_query({
+            'prefix': query,
+            'limit': RESULTS_SIZE,
         }, function (err, results) {
             if (err !== undefined) {
                 printerr(err);
@@ -529,44 +528,52 @@ const Presenter = new Lang.Class({
         });
     },
 
-    _on_media_object_clicked: function (article_presenter, media_object, is_resource) {
-        if (is_resource) {
-            let resources = this.article_presenter._article_model.get_resources();
-            let current_index = resources.indexOf(media_object);
-            // Checks whether forward/back arrows should be displayed.
-            this._preview_media_object(media_object, current_index > 0, current_index < resources.length - 1);
-        } else {
-            this._preview_media_object(media_object, false, false);
-        }
-    },
+    _on_ekn_link_clicked: function (article_presenter, ekn_id) {
+        this.engine.get_object_by_id(ekn_id, function (err, model) {
+            if (typeof err === 'undefined') {
+                if (model instanceof EosKnowledgeSearch.MediaObjectModel) {
+                    let resources = this.article_presenter._article_model.get_resources();
+                    // Checks whether forward/back arrows should be displayed.
+                    let current_index = resources.indexOf(ekn_id);
+                    if (current_index > -1)
+                        this._preview_media_object(model, current_index > 0, current_index < resources.length - 1);
+                } else {
+                    this._add_history_object_for_article_page(model);
+                    this.article_presenter.load_article(model, EosKnowledge.LoadingAnimationType.FORWARDS_NAVIGATION);
 
-    _on_article_object_clicked: function (article_presenter, model) {
-        this._add_history_object_for_article_page(model);
-        this.article_presenter.load_article(model, EosKnowledge.LoadingAnimationType.FORWARDS_NAVIGATION);
-
-        if (this._template_type === 'B')
-            this.view.section_page.highlight_card_with_name(model.title, this._latest_article_card_title);
+                    if (this._template_type === 'B')
+                        this.view.section_page.highlight_card_with_name(model.title, this._latest_article_card_title);
+                }
+            } else {
+                printerr(err);
+                printerr(err.stack);
+            }
+        }.bind(this));
     },
 
     _on_lightbox_previous_clicked: function (view, lightbox) {
-        let media_object = lightbox.media_object;
-        let resources = this.article_presenter._article_model.get_resources();
-        let current_index = resources.indexOf(media_object);
-        if (current_index > -1) {
-            let new_index = current_index - 1;
-            // If the previous object is not the first, the back arrow should be displayed.
-            this._preview_media_object(resources[new_index], new_index > 0, true); 
-        }
+        this._lightbox_shift_image(lightbox, -1);
     },
 
     _on_lightbox_next_clicked: function (view, lightbox) {
-        let media_object = lightbox.media_object;
+        this._lightbox_shift_image(lightbox, 1);
+    },
+
+    _lightbox_shift_image: function (lightbox, delta) {
         let resources = this.article_presenter._article_model.get_resources();
-        let current_index = resources.indexOf(media_object);
-        if (current_index > -1) {
-            let new_index = current_index + 1;
-            // If the next object is not the last, the forward arrow should be displayed.
-            this._preview_media_object(resources[new_index], true, new_index < resources.length - 1);
+        let current_index = resources.indexOf(lightbox.media_object.ekn_id);
+        if (current_index > -1 && !this._loading_new_lightbox) {
+            this._loading_new_lightbox = true;
+            let new_index = current_index + delta;
+            this.engine.get_object_by_id(resources[new_index], (err, object) => {
+                this._loading_new_lightbox = false;
+                if (err !== undefined) {
+                    printerr(err);
+                    printerr(err.stack);
+                } else {
+                    this._preview_media_object(object, new_index > 0, new_index < resources.length - 1);
+                }
+            });
         }
     },
 

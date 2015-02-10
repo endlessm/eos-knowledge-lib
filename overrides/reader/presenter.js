@@ -9,6 +9,7 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const WebKit2 = imports.gi.WebKit2;
 
+const ArticleHTMLRenderer = imports.articleHTMLRenderer;
 const ArticlePage = imports.reader.articlePage;
 const Config = imports.config;
 const EknWebview = imports.eknWebview;
@@ -16,6 +17,7 @@ const Engine = imports.engine;
 const Previewer = imports.previewer;
 const UserSettingsModel = imports.reader.userSettingsModel;
 const Utils = imports.utils;
+const WebkitURIHandlers = imports.webkitURIHandlers;
 const Window = imports.reader.window;
 
 String.prototype.format = Format.format;
@@ -109,12 +111,16 @@ const Presenter = new Lang.Class({
         props.view = props.view || new Window.Window({
             application: props.application,
         });
-        props.engine = props.engine || new EosKnowledgeSearch.Engine();
+        props.engine = props.engine || EosKnowledgeSearch.Engine.get_default();
         props.settings = props.settings || new UserSettingsModel.UserSettingsModel({
             settings_file: Gio.File.new_for_path(props.application.config_dir.get_path() + '/user_settings.json'),
         });
 
         this.parent(props);
+
+        WebkitURIHandlers.register_webkit_uri_handlers();
+
+        this._article_renderer = new ArticleHTMLRenderer.ArticleHTMLRenderer();
 
         this._check_for_issue_update();
 
@@ -127,6 +133,10 @@ const Presenter = new Lang.Class({
             visible: true,
         });
         this.view.lightbox.content_widget = this._previewer;
+
+        // lock to ensure we're only loading one lightbox media object at a
+        // time
+        this._loading_new_lightbox = false;
 
         // Connect signals
         this.view.nav_buttons.connect('back-clicked', function () {
@@ -184,8 +194,8 @@ const Presenter = new Lang.Class({
     },
 
     _load_all_content: function () {
-        this.engine.get_objects_by_query(this._domain, {
-            tag: 'issueNumber' + this.settings.bookmark_issue,
+        this.engine.get_objects_by_query({
+            tags: ['issueNumber' + this.settings.bookmark_issue],
             limit: RESULTS_SIZE,
             sortBy: 'articleNumber',
             order: 'asc',
@@ -315,9 +325,7 @@ const Presenter = new Lang.Class({
         this._article_models = this._article_models.concat(models);
     },
 
-    _load_webview_content: function (model, ready) {
-        let uri = model.ekn_id;
-        model.fetch_all(this.engine);
+    _load_webview_content: function (article_model, ready) {
         if (ready === undefined) {
             ready = function () {};
         }
@@ -343,29 +351,58 @@ const Presenter = new Lang.Class({
             ready(view, error);
         });
 
-        webview.connect('decide-policy', function (webview, decision, type) {
+        webview.connect('decide-policy', function (view, decision, type) {
             if (type !== WebKit2.PolicyDecisionType.NAVIGATION_ACTION)
                 return false; // default action
 
-            if (this._lightbox_handler(model, decision.request.uri)) {
+            // if this request was for the article we're trying to load,
+            // proceed
+            if (decision.request.uri === article_model.ekn_id) {
+                ready(view);
+                decision.use();
+                return true;
+            // otherwise, if the request was for some other EKN object, fetch
+            // it and attempt to display it
+            } else if (decision.request.uri.indexOf('ekn://') === 0) {
+                this.engine.get_object_by_id(decision.request.uri, (err, clicked_model) => {
+                    if (typeof err !== 'undefined') {
+                        printerr('Could not open link from reader article:', err);
+                        printerr(err.stack);
+                        return;
+                    }
+                    if (clicked_model instanceof EosKnowledgeSearch.MediaObjectModel) {
+                        this._lightbox_handler(article_model, clicked_model);
+                    } else if (clicked_model instanceof EosKnowledgeSearch.ArticleObjectModel) {
+                        // FIXME: navigate to the requested article and display
+                        // the "archived" banner if it's not in the current
+                        // issue:
+                        // https://github.com/endlessm/eos-sdk/issues/2681
+                    }
+                });
+
+                // we're handling this EKN request our own way, so tell webkit
+                // to back off
                 decision.ignore();
-                return true; // decision made
+                return true;
             }
-            return false; // default action
+
+            // for all other requests (e.g. non EKN requests), handle them in
+            // the default webkit fashion
+            return false;
         }.bind(this));
 
-        webview.load_uri(uri);
+        webview.load_html(this._article_renderer.render(article_model), article_model.ekn_id);
         return webview;
     },
 
-    _lightbox_handler: function (model, uri) {
-        let media_object;
-        let found = model.get_resources().some(function (model) {
-            media_object = model;
-            return (model.ekn_id === uri);
-        });
-        if (found) {
-            this._show_media_object_in_lightbox(model, media_object);
+    _lightbox_handler: function (current_article, media_object) {
+        let resources = current_article.get_resources();
+        let resource_index = resources.indexOf(media_object.ekn_id);
+        if (resource_index !== -1) {
+            // Checks whether forward/back arrows should be displayed.
+            this._preview_media_object(media_object,
+                resource_index > 0,
+                resource_index < resources.length - 1);
             return true;
         }
         return false;
@@ -390,7 +427,6 @@ const Presenter = new Lang.Class({
     // Retrieve all needed information from the app.json file, such as the app
     // ID and the app's headline.
     _parse_app_info: function (info) {
-        this._domain = info['appId'].split('.').pop();
         this.view.title = info['appTitle'];
         this.view.overview_page.title_image_uri = info['titleImageURI'];
         this.view.overview_page.background_image_uri = info['backgroundHomeURI'];
@@ -463,31 +499,43 @@ const Presenter = new Lang.Class({
         this.view.overview_page.set_article_snippets(snippets);
     },
 
-    _show_media_object_in_lightbox: function (model, media_object_id) {
-        let resources = model.get_resources();
-        let current_index = resources.indexOf(media_object_id);
-        // Checks whether forward/back arrows should be displayed.
-        this._preview_media_object(media_object_id, current_index > 0, current_index < resources.length - 1);
-    },
-
-    _on_lightbox_previous_clicked: function () {
-        let resources = this._article_models[this.view.current_page - 1].get_resources();
-        let current_index = resources.indexOf(this.view.lightbox.media_object);
-        if (current_index > -1) {
-            let new_index = current_index - 1;
-            // If the previous object is not the first, the back arrow should be displayed.
-            this._preview_media_object(resources[new_index], new_index > 0, true);
+    _lightbox_shift_image: function (lightbox, delta) {
+        if (typeof lightbox.media_object === 'undefined' || this._loading_new_lightbox) {
+            return;
         }
-    },
 
-    _on_lightbox_next_clicked: function () {
         let resources = this._article_models[this.view.current_page - 1].get_resources();
-        let current_index = resources.indexOf(this.view.lightbox.media_object);
-        if (current_index > -1) {
-            let new_index = current_index + 1;
+        let current_index = resources.indexOf(lightbox.media_object.ekn_id);
+
+        if (current_index === -1) {
+            return;
+        }
+
+        let new_index = current_index + delta;
+        let target_object_uri = resources[new_index];
+
+        this._loading_new_lightbox = true;
+        this.engine.get_object_by_id(target_object_uri, (err, target_object) => {
+            if (err !== undefined) {
+                printerr(err);
+                printerr(err.stack);
+                return;
+            }
+
             // If the next object is not the last, the forward arrow should be displayed.
-            this._preview_media_object(resources[new_index], true, new_index < resources.length - 1);
-        }
+            this._preview_media_object(target_object,
+                new_index > 0,
+                new_index < resources.length - 1);
+            this._loading_new_lightbox = false;
+        });
+    },
+
+    _on_lightbox_previous_clicked: function (view, lightbox) {
+        this._lightbox_shift_image(lightbox, -1);
+    },
+
+    _on_lightbox_next_clicked: function (view, lightbox) {
+        this._lightbox_shift_image(lightbox, 1);
     },
 
     _preview_media_object: function (media_object, previous_arrow_visible, next_arrow_visible) {

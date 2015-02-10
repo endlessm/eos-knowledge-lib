@@ -38,7 +38,6 @@ const MockEngine = new Lang.Class({
         this.port = 3003;
     },
 
-    ping: function () {},
     get_object_by_id: function () {},
     get_ekn_id: function () {},
     get_objects_by_query: function () {},
@@ -153,7 +152,7 @@ describe('Reader presenter', function () {
                 ekn_id: 'about:blank',
                 get_authors: jasmine.createSpy('get_authors').and.returnValue(data[1]),
                 published: data[2],
-                fetch_all: function () {},
+                html: '<html>hello</html>',
             }
         });
         article_nav_buttons = new MockNavButtons();
@@ -180,7 +179,7 @@ describe('Reader presenter', function () {
 
         it('queries the articles in the initial issue', function () {
             let presenter = new EosKnowledge.Reader.Presenter(test_json, construct_props);
-            expect(engine.get_objects_by_query).toHaveBeenCalledWith(TEST_DOMAIN,
+            expect(engine.get_objects_by_query).toHaveBeenCalledWith(
                 jasmine.objectContaining({
                     limit: 15,
                     sortBy: 'articleNumber',
@@ -190,7 +189,7 @@ describe('Reader presenter', function () {
 
         it('adds the articles as pages', function () {
             spyOn(view, 'append_article_page');
-            engine.get_objects_by_query.and.callFake(function (d, q, callback) {
+            engine.get_objects_by_query.and.callFake(function (q, callback) {
                 callback(undefined, MOCK_RESULTS);
             });
             let presenter = new EosKnowledge.Reader.Presenter(test_json, construct_props);
@@ -201,7 +200,7 @@ describe('Reader presenter', function () {
         });
 
         it('gracefully handles the query failing', function () {
-            engine.get_objects_by_query.and.callFake(function (d, q, callback) {
+            engine.get_objects_by_query.and.callFake(function (q, callback) {
                 callback('error', undefined);
             });
             expect(function () {
@@ -215,7 +214,7 @@ describe('Reader presenter', function () {
         let current_time = Date.now();
 
         beforeEach(function () {
-            engine.get_objects_by_query.and.callFake(function (d, q, callback) {
+            engine.get_objects_by_query.and.callFake(function (q, callback) {
                 callback(undefined, MOCK_RESULTS);
             });
             view.total_pages = MOCK_RESULTS.length + 1;
@@ -311,12 +310,12 @@ describe('Reader presenter', function () {
             settings.bookmark_issue = 14;
             settings.notify('bookmark-issue');
             expect(engine.get_objects_by_query).toHaveBeenCalled();
-            expect(engine.get_objects_by_query.calls.argsFor(0)[1]['tag']).toBe('issueNumber14');
+            expect(engine.get_objects_by_query.calls.argsFor(0)[0]['tags']).toEqual(['issueNumber14']);
         });
 
         it('removes the old pages when loading new pages', function () {
             engine.get_objects_by_query.calls.reset();
-            engine.get_objects_by_query.and.callFake(function (d, q, callback) {
+            engine.get_objects_by_query.and.callFake(function (q, callback) {
                 callback(undefined, [MOCK_RESULTS[0]]);
             });
             spyOn(view, 'remove_all_article_pages').and.callThrough();
@@ -354,14 +353,17 @@ describe('Reader presenter', function () {
                 ekn_id: media_object_uri,
             };
             model.get_resources = function () {
-                return [media_object];
+                return [media_object_uri];
             };
             spyOn(presenter, '_preview_media_object');
-            let lightbox_result = presenter._lightbox_handler(model, media_object_uri);
+            let lightbox_result = presenter._lightbox_handler(model, media_object);
             expect(presenter._preview_media_object).toHaveBeenCalledWith(media_object, false, false);
             expect(lightbox_result).toBe(true);
 
-            let no_lightbox_result = presenter._lightbox_handler(model, 'ekn://no/media');
+            let nonexistant_media_object = {
+                ekn_id: 'ekn://no/media',
+            };
+            let no_lightbox_result = presenter._lightbox_handler(model, nonexistant_media_object);
             expect(no_lightbox_result).toBe(false);
         });
 

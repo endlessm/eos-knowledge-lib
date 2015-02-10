@@ -3,6 +3,7 @@
 
 javascript_tests = \
 	tests/eosknowledge/testArticleCard.js \
+	tests/eosknowledge/testArticleHTMLRenderer.js \
 	tests/eosknowledge/testArticlePage.js \
 	tests/eosknowledge/testArticlePresenter.js \
 	tests/eosknowledge/testCard.js \
@@ -41,9 +42,11 @@ javascript_tests = \
 	tests/eosknowledge/reader/testWindow.js \
 	tests/eosknowledgesearch/testArticleObjectModel.js \
 	tests/eosknowledgesearch/testContentObjectModel.js \
+	tests/eosknowledgesearch/testDatadir.js \
 	tests/eosknowledgesearch/testEngine.js \
 	tests/eosknowledgesearch/testMediaObjectModels.js \
 	tests/eosknowledgesearch/testTreeNode.js \
+	tests/eosknowledgesearch/testXapianQuery.js \
 	$(NULL)
 test_content = \
 	tests/test-content/agot.svg \
@@ -72,16 +75,16 @@ EXTRA_DIST += \
 	$(NULL)
 
 # Test gresource
-gresource = tests/test-content/test-content.gresource
-gresource_deps = $(shell $(GLIB_COMPILE_RESOURCES) --sourcedir=$(srcdir)/tests/test-content --generate-dependencies $(srcdir)/$(gresource).xml)
-tests/test-content/test-content.gresource: $(gresource).xml $(gresource_deps)
+test_gresource = tests/test-content/test-content.gresource
+test_gresource_deps = $(shell $(GLIB_COMPILE_RESOURCES) --sourcedir=$(srcdir)/tests/test-content --generate-dependencies $(srcdir)/$(test_gresource).xml)
+tests/test-content/test-content.gresource: $(test_gresource).xml $(test_gresource_deps)
 	$(AM_V_GEN) $(MKDIR_P) $(builddir)/tests/test-content && \
 	$(GLIB_COMPILE_RESOURCES) --target=$@ --sourcedir=$(srcdir)/tests/test-content  $<
 EXTRA_DIST += \
-	$(gresource_deps) \
-	$(gresource).xml \
+	$(test_gresource_deps) \
+	$(test_gresource).xml \
 	$(NULL)
-CLEANFILES += $(gresource)
+CLEANFILES += $(test_gresource)
 # Force gresource to get compiled as part of make
 noinst_DATA = tests/test-content/test-content.gresource
 
@@ -108,4 +111,6 @@ TESTS_ENVIRONMENT = \
 	export GJS_PATH="$(top_builddir):$(top_srcdir):$(top_srcdir)/overrides:$(top_srcdir)/js/search:$(top_srcdir)/tests"; \
 	export GI_TYPELIB_PATH="$(top_builddir)$${GI_TYPELIB_PATH:+:$$GI_TYPELIB_PATH}"; \
 	export LD_LIBRARY_PATH="$(top_builddir)/.libs$${LD_LIBRARY_PATH:+:$$LD_LIBRARY_PATH}"; \
+	export G_TEST_SRCDIR="$(abs_srcdir)/tests"; \
+	export G_TEST_BUILDDIR="$(abs_builddir)/tests"; \
 	$(NULL)

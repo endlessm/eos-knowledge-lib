@@ -1,18 +1,26 @@
 ## Copyright 2014 Endless Mobile, Inc.
 ## Included in toplevel Makefile.am
 
-# Generate dependencies for make rule from XML resource file description
-resource_files := $(shell $(GLIB_COMPILE_RESOURCES) --sourcedir=$(srcdir)/data \
-	--generate-dependencies $(srcdir)/data/eos-knowledge-library.gresource.xml)
+# Generate dependencies for make rule from XML resource file description. This
+# is a quite tricky make rule. glib-compile-resources will error if any files
+# are not found. Which means we need to build our sass before calling into it.
+# So we can't just assign a variable here, but need an actual build rule with
+# dependencies. Hence the gresourcedeps file.
+gresourcedeps: $(scss_targets) data/eos-knowledge-library.gresource.xml
+	$(AM_V_GEN) $(GLIB_COMPILE_RESOURCES) --sourcedir=$(srcdir)/data --sourcedir=$(builddir)/data --generate-dependencies \
+		$(srcdir)/data/eos-knowledge-library.gresource.xml | tr '\n' ' ' | sed 's/^/resource_files = /' > $@
+# This indirection keeps automake from including gresourcedeps and leaving it to make
+DUMMY=gresourcedeps
+include $(DUMMY)
 
 # Generated sources for GResource file
-eosknowledge/ekn-resource-private.h: data/eos-knowledge-library.gresource.xml $(resource_files)
-	$(AM_V_GEN) $(MKDIR_P) $(builddir)/data && \
-	$(GLIB_COMPILE_RESOURCES) --target=$@ --sourcedir=$(srcdir)/data \
+eosknowledge/ekn-resource-private.h: data/eos-knowledge-library.gresource.xml gresourcedeps $(resource_files)
+	$(AM_V_GEN) $(MKDIR_P) $(builddir)/data $(dir $@) && \
+	$(GLIB_COMPILE_RESOURCES) --target=$@ --sourcedir=$(srcdir)/data --sourcedir=$(builddir)/data \
 		--generate-header --internal $<
-eosknowledge/ekn-resource.c: data/eos-knowledge-library.gresource.xml $(resource_files)
-	$(AM_V_GEN) $(MKDIR_P) $(builddir)/data && \
-	$(GLIB_COMPILE_RESOURCES) --target=$@ --sourcedir=$(srcdir)/data \
+eosknowledge/ekn-resource.c: data/eos-knowledge-library.gresource.xml gresourcedeps $(resource_files)
+	$(AM_V_GEN) $(MKDIR_P) $(builddir)/data $(dir $@) && \
+	$(GLIB_COMPILE_RESOURCES) --target=$@ --sourcedir=$(srcdir)/data --sourcedir=$(builddir)/data \
 		--generate-source --internal $<
 
 BUILT_SOURCES = \
@@ -20,8 +28,12 @@ BUILT_SOURCES = \
 	eosknowledge/ekn-resource.c \
 	$(NULL)
 EXTRA_DIST += \
-	$(resource_files) \
+	$(filter-out $(scss_targets),$(resource_files)) \
 	data/eos-knowledge-library.gresource.xml \
+	$(NULL)
+CLEANFILES += \
+	gresourcedeps \
+	$(BUILT_SOURCES) \
 	$(NULL)
 
 eosknowledge_public_installed_headers = eosknowledge/eosknowledge.h
@@ -42,7 +54,6 @@ eosknowledge_library_sources = \
 	eosknowledge/ekn-history-item-model.c \
 	eosknowledge/ekn-history-model.c \
 	eosknowledge/ekn-init.c eosknowledge/ekn-init-private.h \
-	eosknowledge/ekn-resource.c eosknowledge/ekn-resource-private.h \
 	eosknowledge/ekn-tree-node.c \
 	eosknowledge/ekn-loading-animation.c \
 	eosknowledge/ekn-util.c \
@@ -54,6 +65,9 @@ libeosknowledge_@EKN_API_VERSION@_la_SOURCES = \
 	$(eosknowledge_public_installed_headers) \
 	$(eosknowledge_private_installed_headers) \
 	$(eosknowledge_library_sources) \
+	$(NULL)
+nodist_libeosknowledge_@EKN_API_VERSION@_la_SOURCES = \
+	$(BUILT_SOURCES) \
 	$(NULL)
 # Defining G_LOG_DOMAIN allows you to run any program with
 # G_MESSAGES_DEBUG=EosKnowledgeLibrary ./myprogram

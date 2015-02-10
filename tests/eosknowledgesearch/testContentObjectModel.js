@@ -11,11 +11,10 @@ describe ("Content Object Model", function () {
 
     describe ("Constructor", function () {
         it ("successfully creates new object from properties", function () {
-            let image = EosKnowledgeSearch.ImageObjectModel.new_from_json_ld(mockContentData.thumbnail);
             contentObject = new EosKnowledgeSearch.ContentObjectModel({
                 ekn_id : mockContentData["@id"],
                 title : mockContentData.title,
-                thumbnail : image,
+                thumbnail_id : mockContentData.thumbnail,
                 language : mockContentData.language,
                 copyright_holder : mockContentData.copyrightHolder,
                 source_uri : mockContentData.sourceURL,
@@ -44,7 +43,6 @@ describe ("Content Object Model", function () {
     describe ("Properties", function () {
         beforeEach (function() {
             contentObject = EosKnowledgeSearch.ContentObjectModel.new_from_json_ld(mockContentData);
-            contentObject.set_resources(mockContentData.resources);
             contentObject.set_tags(mockContentData.tags);
         });
 
@@ -76,8 +74,16 @@ describe ("Content Object Model", function () {
             expect(contentObject.license).toEqual(mockContentData["license"]);
         });
 
+        it ("should have a thumbnail-id", function () {
+            expect(contentObject.thumbnail_id).toEqual(mockContentData["thumbnail"]);
+        });
+
         it ("should have resources", function () {
             expect(contentObject.get_resources()).toEqual(mockContentData.resources);
+        });
+
+        it ("should have redirects-to", function () {
+            expect(contentObject.redirects_to).toEqual(mockContentData.redirectsTo);
         });
     });
 });

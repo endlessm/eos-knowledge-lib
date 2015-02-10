@@ -22,9 +22,7 @@ const Application = new Lang.Class({
         this.parent(props);
         this._presenter = null;
         this._activation_timestamp = null;
-        this._search_provider = new EosKnowledgeSearch.SearchProvider({
-            search_domain: this.application_id.split('.').pop(),
-        });
+        this._search_provider = new EosKnowledgeSearch.SearchProvider();
     },
 
     vfunc_dbus_register: function(connection, path) {
@@ -40,6 +38,11 @@ const Application = new Lang.Class({
 
     vfunc_startup: function() {
         this.parent();
+
+        var domain = this.application_id.split('.').pop();
+
+        EosKnowledgeSearch.Engine.get_default().content_path =
+            EosKnowledgeSearch.get_data_dir_for_domain(domain).get_path();
 
         this._search_provider.connect('load-page', function (launcher, model, query, timestamp) {
             this._activation_timestamp = timestamp;

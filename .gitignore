@@ -8,6 +8,13 @@
 /eosknowledge-0.pc
 /eosknowledge/ekn-resource*.[ch]
 /overrides/config.js
+/gresourcedeps
+
+# Sass
+.sass-cache
+# These css files are made from sass
+/data/templates/css/*.css
+/config/compass.rb
 
 # Autotools/Gettext droppings
 .deps

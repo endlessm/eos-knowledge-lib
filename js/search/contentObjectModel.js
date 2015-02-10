@@ -1,5 +1,4 @@
 // Copyright 2014 Endless Mobile, Inc.
-const EosKnowledgeSearch = imports.EosKnowledgeSearch;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
@@ -38,12 +37,12 @@ const ContentObjectModel = new Lang.Class({
         'original-title': GObject.ParamSpec.string('original-title', 'Original Title', 'The original title (wikipedia title) of a document or media object',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT, ''),
         /**
-         * Property: thumbnail
-         * A ImageObjectModel representing the thumbnail image. Must be set to type GObject, since
+         * Property: thumbnail-id
+         * The ekn id of a ImageObjectModel representing the thumbnail image. Must be set to type GObject, since
          * ImageObjectModel subclasses this class and so we cannot reference it here.
          */
-        'thumbnail': GObject.ParamSpec.object('thumbnail', 'Thumbnail', 'Image object of the thumbnail image',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT, GObject.Object),
+        'thumbnail-id': GObject.ParamSpec.string('thumbnail-id', 'Thumbnail ID', 'EKN ID of the thumbnail image',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT, ''),
         /**
          * Property: language
          * The language for this content object. Defaults to an empty string.
@@ -99,56 +98,18 @@ const ContentObjectModel = new Lang.Class({
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
              0, GLib.MAXINT32, 0),
         /**
-         * Property: resources-ready
-         * Whether or not the resources belonging to this content object have
-         * been retrieved/marshalled
+         * Property: redirects-to
+         * The EKN ID of the ContentObject to which this model should redirect.
          */
-        'resources-ready': GObject.ParamSpec.boolean('resources-ready', 'Resources ready',
-            'Whether the resources have been fetched/marshalled',
-             GObject.ParamFlags.READABLE,
-             false),
+        'redirects-to': GObject.ParamSpec.string('redirects-to', 'Redirects To',
+            'EKN ID of the object to which this model should redirect',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT, ''),
     },
 
     _init: function (params) {
-        this._resources_ready = false;
         this._num_resources = 0;
         this._resources = [];
-        this.request_queue = [];
         this.parent(params);
-    },
-
-    /**
-     * Function: fetch_all
-     * Attempts to fetch all pending requests for this object. The callback
-     * associated with the request should handle emitting signals to indicate
-     * if the request was successful
-     *
-     * Parameters:
-     *   engine - The Knowledge Engine used to handle the pending requests
-     */
-    fetch_all: function (engine) {
-        this.request_queue.forEach(function (request) {
-            engine.get_object_by_id(request.domain, request.id, request.callback);
-        });
-        this.request_queue = [];
-    },
-
-    /**
-     * Function: queue_deferred_property
-     * Queues an engine fetch until later (when fetch_all is called)
-     *
-     * Properties:
-     *   uri - the EKN URI of the property to be fetched
-     *   callback - the callback that'll be called by the engine once the property
-     *              is fetched. Should handle error case
-     */
-    queue_deferred_property: function (uri, callback) {
-        [domain, id] = uri.split('/').slice(-2);
-        this.request_queue.push({
-            domain: domain,
-            id: id,
-            callback: callback
-        });
     },
 
     get ekn_id () {
@@ -207,6 +168,10 @@ const ContentObjectModel = new Lang.Class({
         return this._resources_ready;
     },
 
+    get redirects_to () {
+        return this._redirects_to;
+    },
+
     set ekn_id (v) {
         this._ekn_id = v;
     },
@@ -254,6 +219,10 @@ const ContentObjectModel = new Lang.Class({
         this._num_resources = v;
     },
 
+    set redirects_to (v) {
+        this._redirects_to = v;
+    },
+
     set_resources: function (v) {
         this._resources = v;
     },
@@ -268,79 +237,21 @@ const ContentObjectModel = new Lang.Class({
  * Creates an ContentObjectModel from a Knowledge Engine ContentObject
  * JSON-LD document
  */
-ContentObjectModel.new_from_json_ld = function (json_ld_data) {
-    let props = ContentObjectModel._props_from_json_ld(json_ld_data);
+ContentObjectModel.new_from_json_ld = function (json_ld_data, media_path) {
+    let props = ContentObjectModel._props_from_json_ld(json_ld_data, media_path);
     let contentObjectModel = new ContentObjectModel(props);
-    ContentObjectModel._setup_from_json_ld(contentObjectModel, json_ld_data);
+    ContentObjectModel._setup_from_json_ld(contentObjectModel, json_ld_data, media_path);
 
     return contentObjectModel;
 };
 
-ContentObjectModel._setup_from_json_ld = function (model, json_ld_data) {
-    // setup thumbnail, if it exists
-    if(json_ld_data.hasOwnProperty('thumbnail')) {
-        if (typeof json_ld_data.thumbnail === 'object') {
-            // if the thumbnail is a JSON-LD object, marshall it now
-            model.thumbnail = EosKnowledgeSearch.ImageObjectModel.new_from_json_ld(json_ld_data.thumbnail);
-        } else {
-            // else, defer requesting the thumbnail until fetch_all is called
-            model.queue_deferred_property(json_ld_data.thumbnail,
-                function (err, thumbnail) {
-                    if (err) {
-                        printerr(err);
-                    } else {
-                        model.thumbnail = thumbnail;
-                    }
-                }
-            );
-        }
-    }
-
-    // setup resources, if we have any
-    if (model.num_resources > 0) {
-        if (typeof json_ld_data.resources[0] === 'object') {
-            // if the resources are already in JSON-LD form, just instantiate
-            // them and alert that they're ready
-            let mediaObjectModels =json_ld_data.resources.map(function (resource_json_ld) {
-                return EosKnowledgeSearch.MediaObjectModel.new_from_json_ld(resource_json_ld);
-            });
-
-            model.set_resources(mediaObjectModels);
-            model._resources_ready = true;
-            model.notify('resources-ready');
-        } else {
-            // if the resources list is still a list of URIs, fetch them async
-            // and when we have them all, alert that they're ready
-            json_ld_data.resources.forEach(function (uri) {
-                model.queue_deferred_property(uri,
-                    function (err, res) {
-                        if (err) {
-                            printerr(err);
-                        } else {
-                            let resources = model.get_resources();
-                            let resource_ekn_ids = resources.map(function (model) {
-                                return model.ekn_id;
-                            });
-                            // Never add duplicate resources.
-                            if (resource_ekn_ids.indexOf(res.ekn_id) === -1) {
-                                resources.push(res);
-                                model.set_resources(resources);
-                            } else {
-                                model.num_resources--;
-                            }
-                            if (resources.length === model.num_resources) {
-                                model._resources_ready = true;
-                                model.notify('resources-ready');
-                            }
-                        }
-                    }
-                );
-            });
-        }
+ContentObjectModel._setup_from_json_ld = function (model, json_ld_data, media_path) {
+    if (json_ld_data.hasOwnProperty('resources')) {
+        model.set_resources(json_ld_data.resources);
     }
 };
 
-ContentObjectModel._props_from_json_ld = function (json_ld_data) {
+ContentObjectModel._props_from_json_ld = function (json_ld_data, media_path) {
     let props = {};
     if(json_ld_data.hasOwnProperty('@id'))
         props.ekn_id = json_ld_data['@id'];
@@ -370,7 +281,7 @@ ContentObjectModel._props_from_json_ld = function (json_ld_data) {
         props.source_uri = json_ld_data.sourceURI;
 
     if (json_ld_data.hasOwnProperty('contentURL'))
-        props.content_uri = json_ld_data.contentURL;
+        props.content_uri = 'file://' + media_path + '/' + json_ld_data.contentURL;
 
     if(json_ld_data.hasOwnProperty('synopsis'))
         props.synopsis = json_ld_data.synopsis;
@@ -380,6 +291,12 @@ ContentObjectModel._props_from_json_ld = function (json_ld_data) {
 
     if(json_ld_data.hasOwnProperty('license'))
         props.license = json_ld_data.license;
+
+    if(json_ld_data.hasOwnProperty('thumbnail'))
+        props.thumbnail_id = json_ld_data.thumbnail;
+
+    if(json_ld_data.hasOwnProperty('redirectsTo'))
+        props.redirects_to = json_ld_data.redirectsTo;
 
     return props;
 };
