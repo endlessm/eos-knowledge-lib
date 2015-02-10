@@ -122,7 +122,7 @@ const Engine = Lang.Class({
             limit: 1,
             ids: [id],
         };
-        let req_uri = this.get_xapian_uri(query_obj);
+        let req_uri = this._get_xapian_uri(query_obj);
 
         this._send_json_ld_request(req_uri, (err, json_ld) => {
             if (typeof err !== 'undefined') {
@@ -179,7 +179,7 @@ const Engine = Lang.Class({
      *             corresponding to the successfully retrieved object type
      */
     get_objects_by_query: function (query_obj, callback, cancellable = null, follow_redirects = true) {
-        let req_uri = this.get_xapian_uri(query_obj);
+        let req_uri = this._get_xapian_uri(query_obj);
 
         this._send_json_ld_request(req_uri, (err, json_ld) => {
             if (typeof err !== 'undefined') {
@@ -303,16 +303,7 @@ const Engine = Lang.Class({
         return json_ld.results.map(this._model_from_json_ld.bind(this));
     },
 
-    /**
-     * Function: get_xapian_uri
-     *
-     * Constructs a URI to query the xapian bridge with the given query object.
-     *
-     * Parameters:
-     *   query_obj - An object whose keys are query parameters, and values are
-     *             strings.
-     */
-    get_xapian_uri: function (query_obj) {
+    _get_xapian_uri: function (query_obj) {
         let host_uri = "http://" + this.host;
         let uri = new Soup.URI(host_uri);
         uri.set_port(this.port);
@@ -362,11 +353,11 @@ const Engine = Lang.Class({
             query_obj_out.lang = this.language;
         }
 
-        uri.set_query(this.serialize_query(query_obj_out));
+        uri.set_query(this._serialize_query(query_obj_out));
         return uri;
     },
 
-    serialize_query: function (query_obj) {
+    _serialize_query: function (query_obj) {
         let stringify_and_encode = (v) => encodeURIComponent(String(v));
 
         return Object.keys(query_obj)

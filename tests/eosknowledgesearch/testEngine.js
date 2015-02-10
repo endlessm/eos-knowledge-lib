@@ -122,7 +122,7 @@ describe('Knowledge Engine Module', () => {
                 q: undefined,
                 tags: ['lannister'],
             }
-            expect(() =>{ engine.get_xapian_uri(bad_query_obj)}).toThrow(new Error('Parameter value is undefined: q'));
+            expect(() =>{ engine._get_xapian_uri(bad_query_obj)}).toThrow(new Error('Parameter value is undefined: q'));
         });
 
         it('throws error if it receives unexpected query value', () => {
@@ -130,7 +130,7 @@ describe('Knowledge Engine Module', () => {
                 something_unknown: 'blah',
             };
 
-            expect(() =>{ engine.get_xapian_uri(bad_query_obj)}).toThrow(new Error('Unexpected property value something_unknown'));
+            expect(() =>{ engine._get_xapian_uri(bad_query_obj)}).toThrow(new Error('Unexpected property value something_unknown'));
         });
 
         it('sets collapse to 0', () => {
@@ -138,7 +138,7 @@ describe('Knowledge Engine Module', () => {
                 q: 'tyrion',
             };
 
-            let mock_uri = engine.get_xapian_uri(query_obj);
+            let mock_uri = engine._get_xapian_uri(query_obj);
             let mock_query_obj = mock_uri.get_query();
             expect(get_query_vals_for_key(mock_query_obj, 'collapse')).toEqual('0');
         });
@@ -149,7 +149,7 @@ describe('Knowledge Engine Module', () => {
                 order: 'asc',
             };
 
-            let mock_uri = engine.get_xapian_uri(query_obj);
+            let mock_uri = engine._get_xapian_uri(query_obj);
             let mock_query_obj = mock_uri.get_query();
             expect(get_query_vals_for_key(mock_query_obj, 'order')).toEqual('asc');
         });
@@ -159,12 +159,12 @@ describe('Knowledge Engine Module', () => {
                 q: 'tyrion',
             };
 
-            let mock_uri = engine.get_xapian_uri(query_obj);
+            let mock_uri = engine._get_xapian_uri(query_obj);
             let mock_query_obj = mock_uri.get_query();
             expect(get_query_vals_for_key(mock_query_obj, 'lang')).toEqual([]);
 
             engine.language = 'en';
-            let mock_uri = engine.get_xapian_uri(query_obj);
+            let mock_uri = engine._get_xapian_uri(query_obj);
             let mock_query_obj = mock_uri.get_query();
             expect(get_query_vals_for_key(mock_query_obj, 'lang')).toEqual('en');
         });
@@ -174,7 +174,7 @@ describe('Knowledge Engine Module', () => {
                 q: 'tyrion',
             };
 
-            let mock_uri = engine.get_xapian_uri(query_obj);
+            let mock_uri = engine._get_xapian_uri(query_obj);
             let mock_query_obj = mock_uri.get_query();
             expect(get_query_vals_for_key(mock_query_obj, 'cutoff')).toEqual('20');
             expect(get_query_vals_for_key(mock_query_obj, 'limit')).toEqual('10');
@@ -188,7 +188,7 @@ describe('Knowledge Engine Module', () => {
                 limit: 0,
             };
 
-            let mock_uri = engine.get_xapian_uri(query_obj);
+            let mock_uri = engine._get_xapian_uri(query_obj);
             let mock_query_obj = mock_uri.get_query();
             expect(get_query_vals_for_key(mock_query_obj, 'limit')).toEqual('0');
         });
@@ -200,7 +200,7 @@ describe('Knowledge Engine Module', () => {
             };
 
             engine.content_path = '/foo';
-            uri = engine.get_xapian_uri(query_obj);
+            uri = engine._get_xapian_uri(query_obj);
             query_obj = uri.get_query();
             expect(get_query_vals_for_key(query_obj, 'path')).toEqual('/foo/db');
         });
@@ -213,7 +213,7 @@ describe('Knowledge Engine Module', () => {
                 offset: 5,
                 limit: 2,
             };
-            let mock_uri = engine.get_xapian_uri(query_obj);
+            let mock_uri = engine._get_xapian_uri(query_obj);
             let mock_query_obj = mock_uri.get_query();
             let serialized_query = get_query_vals_for_key(mock_query_obj, 'q');
             let parts = serialized_query.split(' AND ');
@@ -230,7 +230,7 @@ describe('Knowledge Engine Module', () => {
                 q: '(id:some_id)',
             };
 
-            let mock_uri = engine.get_xapian_uri(query_obj);
+            let mock_uri = engine._get_xapian_uri(query_obj);
             let mock_query_obj = mock_uri.get_query();
             expect(get_query_vals_for_key(mock_query_obj, 'q'));
         });
@@ -244,7 +244,7 @@ describe('Knowledge Engine Module', () => {
             };
             let expected_vals = '(id:someId OR id:someOtherId)';
 
-            let mock_uri = engine.get_xapian_uri(query_obj);
+            let mock_uri = engine._get_xapian_uri(query_obj);
             let mock_query_obj = mock_uri.get_query();
             expect(get_query_vals_for_key(mock_query_obj, 'q')).toEqual(expected_vals);
         });
@@ -257,13 +257,13 @@ describe('Knowledge Engine Module', () => {
                 q: 'bar',
                 offset: 5,
             };
-            expect(engine.serialize_query(query_obj)).toEqual('path=%2Ffoo&q=bar&offset=5');
+            expect(engine._serialize_query(query_obj)).toEqual('path=%2Ffoo&q=bar&offset=5');
 
             query_obj = {
                 slarty: 'thing@with@ats',
                 bartfast: 'this=that',
             };
-            expect(engine.serialize_query(query_obj)).toEqual('slarty=thing%40with%40ats&bartfast=this%3Dthat');
+            expect(engine._serialize_query(query_obj)).toEqual('slarty=thing%40with%40ats&bartfast=this%3Dthat');
         });
     });
 
