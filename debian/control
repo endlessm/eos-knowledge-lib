@@ -22,6 +22,8 @@ Build-Depends: autotools-dev,
                libwebkit2gtk-3.0-dev,
                naturaldocs,
                pkg-config,
+               ruby-compass,
+               ruby-sass,
                yelp-tools,
                yelp-xsl
 Standards-Version: 3.9.4
