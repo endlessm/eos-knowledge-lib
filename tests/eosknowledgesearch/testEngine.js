@@ -281,8 +281,6 @@ describe('Knowledge Engine Module', () => {
             let request_spy = engine_request_spy();
             let mock_id = 'ekn://foo/bar';
             let mock_id_query = '(id:bar)';
-            let path = '/baz';
-            engine.content_path = path;
 
             engine.get_object_by_id(mock_id, noop);
             let last_req_args = request_spy.calls.mostRecent().args;
@@ -291,7 +289,7 @@ describe('Knowledge Engine Module', () => {
             let requested_uri_string = requested_uri.to_string(false);
 
             expect(requested_uri_string).toMatch(/^http:\/\/127.0.0.1:3004\/query?/);
-            expect(get_query_vals_for_key(requested_query, 'path')).toMatch(path);
+            expect(get_query_vals_for_key(requested_query, 'path')).toMatch('/foo');
             expect(get_query_vals_for_key(requested_query, 'q')).toMatch(mock_id_query);
         });
 
@@ -299,6 +297,7 @@ describe('Knowledge Engine Module', () => {
             let mock_id = 'ekn://foo/bar';
             mock_engine_request(undefined, {
                 'results': [{
+                    "@id": mock_id,
                     "@type": "ekn://_vocab/ArticleObject",
                     "synopsis": "NOW IS THE WINTER OF OUR DISCONTENT"
                 }]
@@ -315,9 +314,9 @@ describe('Knowledge Engine Module', () => {
 
         it('correctly sets media path on models', (done) => {
             let mock_id = 'ekn://foo/bar';
-            engine.content_path = '/hopeful';
             mock_engine_request(undefined, {
                 'results': [{
+                    "@id": mock_id,
                     "@type": "ekn://_vocab/ContentObject",
                     "contentURL": "alligator.jpg",
                 }]
@@ -325,7 +324,7 @@ describe('Knowledge Engine Module', () => {
 
             engine.get_object_by_id(mock_id, (err, res) => {
                 expect(res).toBeA(EosKnowledgeSearch.ContentObjectModel);
-                expect(res.content_uri).toBe('file:///hopeful/media/alligator.jpg');
+                expect(res.content_uri).toBe('file:///foo/media/alligator.jpg');
                 done();
             });
         });

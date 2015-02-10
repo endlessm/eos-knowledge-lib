@@ -9,6 +9,7 @@ const ContentObjectModel = imports.contentObjectModel;
 const MediaObjectModel = imports.mediaObjectModel;
 const xapianQuery = imports.xapianQuery;
 const blacklist = imports.blacklist.blacklist;
+const datadir = imports.datadir;
 const utils = imports.searchUtils;
 
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
@@ -18,6 +19,14 @@ function maybeNaN(maybe, fallback) {
     if (isNaN(maybe))
         return fallback;
     return maybe;
+}
+
+function domain_from_ekn_id(ekn_id) {
+    // Chop the URI off of an ekn id: 'ekn://football-es/hash' => 'football-es/hash'
+    let stripped_ekn_id = ekn_id.slice('ekn://'.length);
+    // Grab everything before the first slash.
+    let domain = stripped_ekn_id.split('/')[0];
+    return domain;
 }
 
 /**
@@ -101,6 +110,10 @@ const Engine = Lang.Class({
     _init: function (params) {
         this.parent(params);
         this._http_session = new Soup.Session();
+
+        // Caches domain => content path so that we don't have to hit the
+        // disk on every object lookup.
+        this._content_path_cache = {};
     },
 
     /**
@@ -274,6 +287,13 @@ const Engine = Lang.Class({
         }, cancellable, false);
     },
 
+    _content_path_from_domain: function (domain) {
+        if (this._content_path_cache[domain] === undefined)
+            this._content_path_cache[domain] = datadir.get_data_dir_for_domain(domain).get_path();
+
+        return this._content_path_cache[domain];
+    },
+
     // Returns a marshaled ObjectModel based on json_ld's @type value, or throws
     // error if there is no corresponding model
     _model_from_json_ld: function (json_ld) {
@@ -291,7 +311,12 @@ const Engine = Lang.Class({
         let json_ld_type = json_ld['@type'];
         if (ekn_model_by_ekv_type.hasOwnProperty(json_ld_type)) {
             let Model = ekn_model_by_ekv_type[json_ld_type];
-            return Model.new_from_json_ld(json_ld, this.content_path + this._MEDIA_PATH);
+
+            let ekn_id = json_ld['@id'];
+            let domain = domain_from_ekn_id(ekn_id);
+            let content_path = this._content_path_from_domain(domain);
+
+            return Model.new_from_json_ld(json_ld, content_path + this._MEDIA_PATH);
         } else {
             throw new Error('No EKN model found for json_ld type ' + json_ld_type);
         }
