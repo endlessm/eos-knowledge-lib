@@ -58,6 +58,7 @@ Package: gir1.2-eosknowledge-0
 Section: non-free/introspection
 Architecture: any
 Depends: libjs-mathjax (>= 2.2),
+         xapian-bridge,
          ${gir:Depends},
          ${misc:Depends}
 Description: EndlessOS Knowledge Library introspection files
