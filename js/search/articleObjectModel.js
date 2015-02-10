@@ -174,7 +174,7 @@ ArticleObjectModel._setup_from_json_ld = function (model, json_ld_data, media_pa
 ArticleObjectModel._props_from_json_ld = function (json_ld_data, media_path) {
     // Inherit properties marshalled from parent class
     let ParentClass = ArticleObjectModel.__super__;
-    let props = ParentClass._props_from_json_ld(json_ld_data);
+    let props = ParentClass._props_from_json_ld(json_ld_data, media_path);
 
     if (json_ld_data.hasOwnProperty('articleBody'))
         props.html = json_ld_data.articleBody;
