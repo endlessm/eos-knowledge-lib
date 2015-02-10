@@ -58,7 +58,14 @@ describe('Knowledge Engine Module', () => {
     beforeEach(() => {
         jasmine.addMatchers(InstanceOfMatcher.customMatchers);
         engine = new EosKnowledgeSearch.Engine();
-        engine.content_path = '/test';
+        engine.default_domain = 'foo';
+
+        // Inject a custom content path finder so we don't hit the disk ever.
+        engine._content_path_from_domain = function(domain) {
+            // The rule for our test suite is that domain 'foo' gets
+            // the content-path /foo'.
+            return '/' + domain;
+        };
     });
 
     describe('constructor', () => {
@@ -199,7 +206,6 @@ describe('Knowledge Engine Module', () => {
                 q: 'tyrion',
             };
 
-            engine.content_path = '/foo';
             uri = engine._get_xapian_uri(query_obj);
             query_obj = uri.get_query();
             expect(get_query_vals_for_key(query_obj, 'path')).toEqual('/foo/db');
@@ -401,8 +407,6 @@ describe('Knowledge Engine Module', () => {
             let mock_query = {
                 q: 'logorrhea',
             };
-            let path = '/sacchariferous';
-            engine.content_path = path;
 
             engine.get_objects_by_query(mock_query, noop);
             let last_req_args = request_spy.calls.mostRecent().args;
@@ -411,7 +415,7 @@ describe('Knowledge Engine Module', () => {
             let requested_uri_string = requested_uri.to_string(false);
 
             expect(requested_uri_string).toMatch(/^http:\/\/127.0.0.1:3004\/query?/);
-            expect(get_query_vals_for_key(requested_query, 'path')).toMatch(path);
+            expect(get_query_vals_for_key(requested_query, 'path')).toMatch('/foo');
             expect(get_query_vals_for_key(requested_query, 'q')).toMatch('(logorrhea)');
         });
 

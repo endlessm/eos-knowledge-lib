@@ -72,15 +72,15 @@ const Engine = Lang.Class({
              -1, GLib.MAXINT32, 3004),
 
         /**
-         * Property: content-path
+         * Property: default-domain
          *
-         * The path to the directory containing the database and media content.
-         * Needs to be set!
+         * The domain to use to find content in case none is explicitly
+         * passed into the query.
          *
-         * e.g. /endless/share/ekn/animals-es/
+         * e.g. animals-es
          */
-        'content-path': GObject.ParamSpec.string('content-path',
-            'Content Path', 'path to the directory containing the knowledge engine content',
+        'default-domain': GObject.ParamSpec.string('default-domain',
+            'Default Domain', 'The default domain to use for queries',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
             ''),
 
@@ -352,13 +352,18 @@ const Engine = Lang.Class({
                     xapian_query_options.push(xapianQuery.xapian_ids_clause(query_obj.ids));
                     break;
                 default:
-                    if (['cutoff', 'limit', 'offset', 'order', 'sortBy'].indexOf(property) === -1)
+                    if (['cutoff', 'limit', 'offset', 'order', 'sortBy', 'domain'].indexOf(property) === -1)
                         throw new Error('Unexpected property value ' + property);
             }
         }
 
+        let domain = query_obj['domain'];
+        if (domain === undefined)
+            domain = this.default_domain;
+
+        let content_path = this._content_path_from_domain(domain);
+
         // Add blacklist tags to every query
-        let domain = this.content_path.split('/').slice(-1);
         let explicit_tags = blacklist[domain];
         if (typeof explicit_tags !== 'undefined')
             xapian_query_options.push(xapianQuery.xapian_not_tag_clause(explicit_tags));
@@ -369,7 +374,7 @@ const Engine = Lang.Class({
             limit: maybeNaN(query_obj['limit'], this._DEFAULT_LIMIT),
             offset: maybeNaN(query_obj['offset'], this._DEFAULT_OFFSET),
             order: maybeNaN(query_obj['order'], this._DEFAULT_ORDER),
-            path: this.content_path + this._DB_PATH,
+            path: content_path + this._DB_PATH,
             q: xapianQuery.xapian_join_clauses(xapian_query_options),
             sortBy: xapianQuery.xapian_string_to_value_no(query_obj['sortBy']),
         };
