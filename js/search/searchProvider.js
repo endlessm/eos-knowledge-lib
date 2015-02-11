@@ -120,14 +120,6 @@ const SearchProvider = Lang.Class({
         return this._object_cache[id];
     },
 
-    get_results: function () {
-        return this._search_results;
-    },
-
-    get_more_results_callback: function () {
-        return this._more_results_callback;
-    },
-
     _run_query: function (terms, limit, cb) {
         let search_phrase = terms.join(' ');
         if (this._cancellable)

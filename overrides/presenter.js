@@ -445,12 +445,12 @@ const Presenter = new Lang.Class({
         }.bind(this));
     },
 
-    activate_search_result: function (model, query, results, more_results_callback) {
+    activate_search_result: function (model, query) {
         let query_obj = {
             'q': query,
+            'limit': RESULTS_SIZE,
         };
-        this._refresh_sidebar_callback(null, results, more_results_callback);
-
+        this.engine.get_objects_by_query(query_obj, this._refresh_sidebar_callback.bind(this));
         this._latest_origin_query = JSON.stringify(query_obj);
         this._add_history_object_for_article_page(model);
         this.article_presenter.load_article(model, EosKnowledge.LoadingAnimationType.NONE,
