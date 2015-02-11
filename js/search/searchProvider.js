@@ -95,9 +95,6 @@ const SearchProvider = Lang.Class({
         this._impl = Gio.DBusExportedObject.wrapJSObject(SearchIFace, this);
         this._search_provider_domain = GLib.quark_from_string('Knowledge App Search Provider Error');
 
-        this._search_results = null;
-        this._more_results_callback = null;
-
         this._engine = new Engine.Engine.get_default();
         this._object_cache = {};
     },
@@ -118,14 +115,6 @@ const SearchProvider = Lang.Class({
 
     _get_from_cache: function (id) {
         return this._object_cache[id];
-    },
-
-    get_results: function () {
-        return this._search_results;
-    },
-
-    get_more_results_callback: function () {
-        return this._more_results_callback;
     },
 
     _run_query: function (terms, limit, cb) {
@@ -149,8 +138,6 @@ const SearchProvider = Lang.Class({
         this._run_query(terms, this.NUM_RESULTS, function (err, results, more_results_callback) {
             if (!err) {
                 this._add_results_to_cache(results);
-                this._search_results = results;
-                this._more_results_callback = more_results_callback;
                 let ids = results.map(function (result) { return result.ekn_id; });
                 invocation.return_value(new GLib.Variant('(as)', [ids]));
             } else {
@@ -169,8 +156,6 @@ const SearchProvider = Lang.Class({
         this._run_query(terms, this.NUM_RESULTS, function (err, results, more_results_callback) {
             if (!err) {
                 this._add_results_to_cache(results);
-                this._search_results = results;
-                this._more_results_callback = more_results_callback;
                 let ids = results.map(function (result) { return result.ekn_id; });
                 invocation.return_value(new GLib.Variant('(as)', [ids]));
             } else {
@@ -225,9 +210,6 @@ const SearchProvider = Lang.Class({
             // If the cache misses, it's necessary to rerun the query to get the results set
             // before retrieving the requested article.
             this._engine.get_objects_by_query(query_obj, function (err, results, callback) {
-                this._search_results = results;
-                this._more_results_callback = callback;
-
                 this._engine.get_object_by_id(id, function (err, new_model) {
                     if (err) {
                         throw err;
