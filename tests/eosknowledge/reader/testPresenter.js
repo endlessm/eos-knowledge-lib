@@ -15,7 +15,10 @@ const MockUserSettingsModel = new Lang.Class({
     Name: 'MockUserSettingsModel',
     Extends: GObject.Object,
     Properties: {
-        'bookmark-issue': GObject.ParamSpec.uint('bookmark-issue', '', '',
+        'highest-bookmark': GObject.ParamSpec.uint('highest-bookmark', '', '',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
+            0, GLib.MAXINT64, 0),
+        'start-article': GObject.ParamSpec.uint('start-article', '', '',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
             0, GLib.MAXINT64, 0),
         'bookmark-page': GObject.ParamSpec.uint('bookmark-page', '', '',
@@ -101,6 +104,7 @@ const MockView = new Lang.Class({
         this.overview_page = {
             get_style_context: get_style_context,
             set_article_snippets: function () {},
+            remove_all_snippets: function () {},
         };
 
         this.total_pages = 0;
@@ -159,8 +163,9 @@ describe('Reader presenter', function () {
         view = new MockView(article_nav_buttons);
         engine = new MockEngine();
         settings = new MockUserSettingsModel({
-            bookmark_issue: 0,
+            highest_bookmark: 0,
             bookmark_page: 0,
+            start_article: 0,
             update_timestamp: GLib.MAXINT64,
         });
         spyOn(engine, 'get_objects_by_query');
@@ -177,13 +182,15 @@ describe('Reader presenter', function () {
             let presenter = new EosKnowledge.Reader.Presenter(test_json, construct_props);
         });
 
-        it('queries the articles in the initial issue', function () {
+        it('queries the articles in the initial article set', function () {
             let presenter = new EosKnowledge.Reader.Presenter(test_json, construct_props);
             expect(engine.get_objects_by_query).toHaveBeenCalledWith(
                 jasmine.objectContaining({
                     limit: 15,
                     sortBy: 'articleNumber',
                     order: 'asc',
+                    tags: ['EknArticleObject'],
+                    offset: 0,
                 }), jasmine.any(Function));
         });
 
@@ -269,48 +276,35 @@ describe('Reader presenter', function () {
             expect(view.issue_nav_buttons.show).toHaveBeenCalled();
         });
 
-        it('loads a subsequent issue when the debug forward button is clicked', function () {
-            settings.bookmark_issue = 0;
+        it('loads jumps to next set of articles when the debug forward button is clicked', function () {
+            settings.highest_bookmark = 5;
             view.issue_nav_buttons.forward_button.emit('clicked');
-            expect(settings.bookmark_issue).toBe(1);
+            expect(settings.start_article).toBe(5);
+            expect(settings.bookmark_page).toBe(5);
         });
 
-        it('loads a previous issue when the debug back button is clicked', function () {
-            settings.bookmark_issue = 10;
+        it('resets content when debug back button is clicked', function () {
+            settings.highest_bookmark = 5;
+            settings.start_article = 3;
+            settings.bookmark_page = 4;
             view.issue_nav_buttons.back_button.emit('clicked');
-            expect(settings.bookmark_issue).toBe(9);
+            expect(settings.start_article).toBe(0);
+            expect(settings.bookmark_page).toBe(0);
         });
 
-        it('enables the debug back button when not on the first issue', function () {
-            settings.bookmark_issue = 5;
-            settings.notify('bookmark-issue');
-            expect(view.issue_nav_buttons.back_button.sensitive).toBe(true);
-        });
-
-        it('disables the debug back button when returning to the first issue', function () {
-            settings.bookmark_issue = 5;
-            settings.bookmark_issue = 0;
-            settings.notify('bookmark-issue');
-            expect(view.issue_nav_buttons.back_button.sensitive).toBe(false);
-        });
-
-        it('returns to page zero when loading a new issue', function () {
-            settings.bookmark_issue = 14;
-            expect(view.current_page).toBe(0);
-        });
-
-        it('updates the state of the paging buttons when loading a new issue', function () {
-            settings.bookmark_issue = 14;
+        it('updates the state of the paging buttons when loading a new set of articles', function () {
+            settings.start_article = 3;
+            settings.notify('start-article');
             expect(article_nav_buttons.forward_visible).toBe(true);
             expect(article_nav_buttons.back_visible).toBe(false);
         });
 
-        it('loads content from the appropriate issue', function () {
+        it('loads content from the appropriate set of articles', function () {
             engine.get_objects_by_query.calls.reset();
-            settings.bookmark_issue = 14;
-            settings.notify('bookmark-issue');
+            settings.start_article = 3;
+            settings.notify('start-article');
             expect(engine.get_objects_by_query).toHaveBeenCalled();
-            expect(engine.get_objects_by_query.calls.argsFor(0)[0]['tags']).toEqual(['issueNumber14']);
+            expect(engine.get_objects_by_query.calls.argsFor(0)[0]['offset']).toEqual(3);
         });
 
         it('removes the old pages when loading new pages', function () {
@@ -319,30 +313,31 @@ describe('Reader presenter', function () {
                 callback(undefined, [MOCK_RESULTS[0]]);
             });
             spyOn(view, 'remove_all_article_pages').and.callThrough();
-            settings.bookmark_issue = 14;
-            settings.notify('bookmark-issue');
+            settings.start_article = 3;
+            settings.notify('start-article');
             expect(view.get_article_page(0).title_view.title).toBe('Title 1');
             expect(view.remove_all_article_pages).toHaveBeenCalled();
         });
 
-        it('updates the issue after enough time has passed since the last update', function () {
+        it('updates the content after enough time has passed since the last update', function () {
             settings.update_timestamp = Date.now() - UPDATE_INTERVAL_MS - 1000;
-            spyOn(presenter, '_update_issue');
-            presenter._check_for_issue_update();
-            expect(presenter._update_issue).toHaveBeenCalled();
+            spyOn(presenter, '_update_content');
+            presenter._check_for_content_update();
+            expect(presenter._update_content).toHaveBeenCalled();
         });
 
-        it('does not update the issue if very little time has passed since the last update', function () {
+        it('does not update the content if very little time has passed since the last update', function () {
             settings.update_timestamp = Date.now() - (UPDATE_INTERVAL_MS / 2);
-            spyOn(presenter, '_update_issue');
-            presenter._check_for_issue_update();
-            expect(presenter._update_issue).not.toHaveBeenCalled();
+            spyOn(presenter, '_update_content');
+            presenter._check_for_content_update();
+            expect(presenter._update_content).not.toHaveBeenCalled();
         });
 
-        it('has correct values after issue update', function () {
-            spyOn(presenter, '_update_issue').and.callThrough();
-            expect(settings.bookmark_issue).toBe(1);
-            expect(settings.bookmark_page).toBe(0);
+        it('has correct values after content update', function () {
+            settings.highest_bookmark = 5;
+            presenter._update_content();
+            expect(settings.start_article).toBe(5);
+            expect(settings.bookmark_page).toBe(5);
             expect(settings.update_timestamp).toBeGreaterThan(current_time);
         });
 

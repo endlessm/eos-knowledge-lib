@@ -155,8 +155,8 @@ const Window = new Lang.Class({
             no_show_all: true,
         });
         // No need for localization; this is debug only
-        this._issue_nav_buttons.back_button.label = 'Prev issue';
-        this._issue_nav_buttons.forward_button.label = 'Next issue';
+        this._issue_nav_buttons.back_button.label = 'Reset';
+        this._issue_nav_buttons.forward_button.label = 'Next week';
 
         this._lightbox = new Lightbox.Lightbox();
         this._lightbox.connect('navigation-previous-clicked', function (lightbox) {

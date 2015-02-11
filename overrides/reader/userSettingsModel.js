@@ -21,25 +21,13 @@ const UserSettingsModel = new Lang.Class({
     Extends: GObject.Object,
     Properties: {
         /**
-         * Property: bookmark-issue
-         * Bookmark Issue
-         *
-         * The issue most recently read by the user.
-         * The number is zero-based, that is, 0 means the first issue.
-         *
-         * Default value:
-         *  0
-         */
-        'bookmark-issue': GObject.ParamSpec.uint('bookmark-issue', 'Bookmark Issue',
-            'The issue most recently read by the user',
-            GObject.ParamFlags.READWRITE,
-            0, GLib.MAXINT64, 0),
-        /**
          * Property: bookmark-page
          * Bookmark Article
          *
          * The article most recently read by the user.
          * The number is zero-based, that is, 0 means the first article.
+         * Note this number is absolute with respect to all articles
+         * in the database, even though only ~30 are shown to user at a time
          *
          * Default value:
          *  0
@@ -47,6 +35,21 @@ const UserSettingsModel = new Lang.Class({
         'bookmark-page': GObject.ParamSpec.uint('bookmark-page', 'Last Article Read',
             'Last article that the user read',
             GObject.ParamFlags.READWRITE,
+            0, GLib.MAXINT64, 0),
+
+        /**
+         * Property: highest-bookmark
+         * Highest Bookmark
+         *
+         * The high watermark of user's reading history.
+         * The number is zero-based, that is, 0 means the first article.
+         *
+         * Default value:
+         *  0
+         */
+        'highest-bookmark': GObject.ParamSpec.uint('highest-bookmark', 'Newest article read',
+            'The high watermark of user\'s reading history',
+            GObject.ParamFlags.READABLE,
             0, GLib.MAXINT64, 0),
 
         /**
@@ -63,6 +66,20 @@ const UserSettingsModel = new Lang.Class({
             'File in which to store user settings',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             GObject.Object.$gtype),
+
+        /**
+         * Property: start-article
+         * Start Article
+         *
+         * The first article in the current set that is being read by the user.
+         *
+         * Default value:
+         *  0
+         */
+        'start-article': GObject.ParamSpec.uint('start-article', 'Start article',
+            'The first article in the set being read in the current week',
+            GObject.ParamFlags.READWRITE,
+            0, GLib.MAXINT64, 0),
 
         /**
          * Property: update-timestamp
@@ -82,8 +99,9 @@ const UserSettingsModel = new Lang.Class({
     _init: function (props) {
         props = props || {};
         this._user_settings_file = props.settings_file || Gio.File.new_for_path(Gio.Application.get_default().config_dir.get_path() + '/user_settings.json');
-        this._bookmark_issue = 0;
         this._bookmark_page = 0;
+        this._highest_bookmark = 0;
+        this._start_article = 0;
         this._update_timestamp = 0;
         this._pending_operation = null;
 
@@ -107,8 +125,9 @@ const UserSettingsModel = new Lang.Class({
 
         try {
             let settings = JSON.parse(json_contents);
-            this._bookmark_issue = settings.bookmark_issue;
             this._bookmark_page = settings.bookmark_page;
+            this._highest_bookmark = settings.highest_bookmark;
+            this._start_article = settings.start_article;
             this._update_timestamp = settings.update_timestamp;
         } catch (e) {
             // Parse error ... get out!
@@ -126,26 +145,13 @@ const UserSettingsModel = new Lang.Class({
         this._pending_operation = GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT_IDLE, 1, function () {
             let obj = {
                 bookmark_page: this._bookmark_page,
-                bookmark_issue: this._bookmark_issue,
+                highest_bookmark: this._highest_bookmark,
+                start_article: this._start_article,
                 update_timestamp: this._update_timestamp,
             };
             Utils.save_object_to_file(obj, this._user_settings_file);
             this._pending_operation = null;
         }.bind(this));
-    },
-
-    get bookmark_issue() {
-        if (this._bookmark_issue)
-            return this._bookmark_issue;
-        return 0;
-    },
-
-    set bookmark_issue(v) {
-        if (this._bookmark_issue === v)
-            return;
-        this._bookmark_issue = v;
-        this._save_user_settings_to_file();
-        this.notify('bookmark-issue');
     },
 
     get bookmark_page() {
@@ -158,8 +164,15 @@ const UserSettingsModel = new Lang.Class({
         if (this._bookmark_page === v)
             return;
         this._bookmark_page = v;
+        this._highest_bookmark = Math.max(this._highest_bookmark, this._bookmark_page);
         this._save_user_settings_to_file();
         this.notify('bookmark-page');
+    },
+
+    get highest_bookmark() {
+        if (this._highest_bookmark)
+            return this._highest_bookmark;
+        return 0;
     },
 
     get update_timestamp() {
@@ -174,5 +187,19 @@ const UserSettingsModel = new Lang.Class({
         this._update_timestamp = v;
         this._save_user_settings_to_file();
         this.notify('update-timestamp');
+    },
+
+    get start_article() {
+        if (this._start_article)
+            return this._start_article;
+        return 0;
+    },
+
+    set start_article(v) {
+        if (this._start_article === v)
+            return;
+        this._start_article = v;
+        this._save_user_settings_to_file();
+        this.notify('start-article');
     },
 });
