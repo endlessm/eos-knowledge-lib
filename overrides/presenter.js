@@ -445,19 +445,27 @@ const Presenter = new Lang.Class({
         }.bind(this));
     },
 
-    activate_search_result: function (model, query) {
+    activate_search_result: function (ekn_id, query) {
         let query_obj = {
             'q': query,
             'limit': RESULTS_SIZE,
         };
         this.engine.get_objects_by_query(query_obj, this._refresh_sidebar_callback.bind(this));
         this._latest_origin_query = JSON.stringify(query_obj);
-        this._add_history_object_for_article_page(model);
-        this.article_presenter.load_article(model, EosKnowledge.LoadingAnimationType.NONE,
-            function () {
-                this.view.search_box.text = query;
-                this.view.show_article_page();
-            }.bind(this));
+
+        this.engine.get_object_by_id(ekn_id, function (err, model) {
+            if (err !== undefined) {
+                printerr(err);
+                printerr(err.stack);
+            } else {
+                this._add_history_object_for_article_page(model);
+                this.article_presenter.load_article(model, EosKnowledge.LoadingAnimationType.NONE,
+                                                    function () {
+                                                        this.view.search_box.text = query;
+                                                        this.view.show_article_page();
+                                                    }.bind(this));
+            }
+        }.bind(this));
     },
 
     _on_article_card_clicked: function (card, model) {
