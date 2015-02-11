@@ -60,7 +60,7 @@ eosknowledge_library_sources = \
 	$(NULL)
 
 # Endless Knowledge Apps GUI library
-lib_LTLIBRARIES = libeosknowledge-@EKN_API_VERSION@.la
+lib_LTLIBRARIES += libeosknowledge-@EKN_API_VERSION@.la
 libeosknowledge_@EKN_API_VERSION@_la_SOURCES = \
 	$(eosknowledge_public_installed_headers) \
 	$(eosknowledge_private_installed_headers) \

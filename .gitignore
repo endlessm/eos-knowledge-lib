@@ -9,6 +9,7 @@
 /eosknowledge/ekn-resource*.[ch]
 /overrides/config.js
 /gresourcedeps
+/data/com.endlessm.EknSearchProvider.service
 
 # Sass
 .sass-cache

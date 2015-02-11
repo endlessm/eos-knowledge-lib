@@ -1,5 +1,6 @@
 #!/usr/bin/env gjs
 
+const Gio = imports.gi.Gio;
 const Endless = imports.gi.Endless;
 const EosKnowledgeSearch = imports.EosKnowledgeSearch;
 const Lang = imports.lang;
@@ -13,6 +14,21 @@ if (ARGV.length < 2) {
     System.exit(1);
 }
 
+const KnowledgeSearchIface = '\
+<node> \
+  <interface name="com.endlessm.KnowledgeSearch"> \
+    <method name="LoadPage"> \
+      <arg type="s" name="EknID" direction="in" /> \
+      <arg type="s" name="Query" direction="in" /> \
+      <arg type="u" name="Timestamp" direction="in" /> \
+    </method> \
+    <method name="LoadQuery"> \
+      <arg type="s" name="Query" direction="in" /> \
+      <arg type="u" name="Timestamp" direction="in" /> \
+    </method> \
+  </interface> \
+</node>';
+
 const Application = new Lang.Class({
     Name: 'Application',
     GTypeName: 'EknApplication',
@@ -22,18 +38,32 @@ const Application = new Lang.Class({
         this.parent(props);
         this._presenter = null;
         this._activation_timestamp = null;
-        this._search_provider = new EosKnowledgeSearch.SearchProvider();
+        this._knowledge_search_impl = Gio.DBusExportedObject.wrapJSObject(KnowledgeSearchIface, this);
     },
 
     vfunc_dbus_register: function(connection, path) {
         this.parent(connection, path);
-        this._search_provider.export(connection, path);
+        this._knowledge_search_impl.export(connection, path);
         return true;
     },
 
     vfunc_dbus_unregister: function(connection, path) {
         this.parent(connection, path);
-        this._search_provider.unexport(connection, path);
+        this._knowledge_search_impl.unexport_from_connection(connection);
+    },
+
+    LoadPage: function(ekn_id, query, timestamp) {
+        this._activation_timestamp = timestamp;
+        this.activate();
+        this._activation_timestamp = null;
+        this._presenter.activate_search_result(ekn_id, query);
+    },
+
+    LoadQuery: function(query, timestamp) {
+        this._activation_timestamp = timestamp;
+        this.activate();
+        this._activation_timestamp = null;
+        this._presenter.search(query);
     },
 
     vfunc_startup: function() {
@@ -42,20 +72,6 @@ const Application = new Lang.Class({
         var domain = this.application_id.split('.').pop();
 
         EosKnowledgeSearch.Engine.get_default().default_domain = domain;
-
-        this._search_provider.connect('load-page', function (launcher, model, query, timestamp) {
-            this._activation_timestamp = timestamp;
-            this.activate();
-            this._activation_timestamp = null;
-            this._presenter.activate_search_result(model, query);
-        }.bind(this));
-
-        this._search_provider.connect('load-query', function (launcher, query, timestamp) {
-            this._activation_timestamp = timestamp;
-            this.activate();
-            this._activation_timestamp = null;
-            this._presenter.search(query);
-        }.bind(this));
     },
 
     vfunc_activate: function () {
