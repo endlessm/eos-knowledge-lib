@@ -148,7 +148,6 @@ const Window = new Lang.Class({
             back_image_uri: this._BACK_IMAGE_URI,
             forward_image_uri: this._FORWARD_IMAGE_URI,
             image_size: this._NAV_IMAGE_SIZE,
-            accommodate_scrollbar: true,
         });
 
         this._issue_nav_buttons = new Endless.TopbarNavButton({
@@ -282,13 +281,16 @@ const Window = new Lang.Class({
             this._current_page = value;
             this._overview_page.show_all();
             this._stack.set_visible_child(this._overview_page);
+            this._nav_buttons.accommodate_scrollbar = false;
         } else if (value <= this._article_pages.length && value > 0) {
             this._current_page = value;
             this._stack.set_visible_child(this._article_pages[value - 1]);
+            this._nav_buttons.accommodate_scrollbar = true;
         } else if (value === this._article_pages.length + 1) {
             this._current_page = value;
             this._done_page.show_all();
             this._stack.set_visible_child(this._done_page);
+            this._nav_buttons.accommodate_scrollbar = true;
         } else {
             throw new Error('Current page value is out of range.');
         }
