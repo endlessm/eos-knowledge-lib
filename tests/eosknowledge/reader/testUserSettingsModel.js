@@ -4,7 +4,6 @@ const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 
 describe('Reader user settings model', function () {
-    let test_content_dir_path = Endless.getCurrentFileDir() + '/../../test-content/';
     let user_settings_file;
     let current_time = Date.now();
 
