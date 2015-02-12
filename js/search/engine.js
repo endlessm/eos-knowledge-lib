@@ -324,12 +324,7 @@ const Engine = Lang.Class({
         return json_ld.results.map(this._model_from_json_ld.bind(this));
     },
 
-    _get_xapian_uri: function (query_obj) {
-        let host_uri = "http://" + this.host;
-        let uri = new Soup.URI(host_uri);
-        uri.set_port(this.port);
-        uri.set_path('/query');
-
+    _get_xapian_query: function(query_obj, domain) {
         let xapian_query_options = [];
         for (let property in query_obj) {
             if (typeof query_obj[property] === 'undefined')
@@ -353,16 +348,27 @@ const Engine = Lang.Class({
             }
         }
 
+        // Add blacklist tags to every query
+        let explicit_tags = blacklist[domain];
+        if (typeof explicit_tags !== 'undefined')
+            xapian_query_options.push(xapianQuery.xapian_not_tag_clause(explicit_tags));
+
+        return xapianQuery.xapian_join_clauses(xapian_query_options);
+    },
+
+    _get_xapian_uri: function (query_obj) {
+        let host_uri = "http://" + this.host;
+        let uri = new Soup.URI(host_uri);
+        uri.set_port(this.port);
+        uri.set_path('/query');
+
         let domain = query_obj['domain'];
         if (domain === undefined)
             domain = this.default_domain;
 
         let content_path = this._content_path_from_domain(domain);
 
-        // Add blacklist tags to every query
-        let explicit_tags = blacklist[domain];
-        if (typeof explicit_tags !== 'undefined')
-            xapian_query_options.push(xapianQuery.xapian_not_tag_clause(explicit_tags));
+        let q = this._get_xapian_query(query_obj, domain);
 
         let query_obj_out = {
             collapse: xapianQuery.XAPIAN_SOURCE_URL_VALUE_NO,
@@ -371,7 +377,7 @@ const Engine = Lang.Class({
             offset: maybeNaN(query_obj['offset'], this._DEFAULT_OFFSET),
             order: maybeNaN(query_obj['order'], this._DEFAULT_ORDER),
             path: content_path + this._DB_PATH,
-            q: xapianQuery.xapian_join_clauses(xapian_query_options),
+            q: q,
             sortBy: xapianQuery.xapian_string_to_value_no(query_obj['sortBy']),
         };
 
