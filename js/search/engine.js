@@ -1,8 +1,8 @@
 // Copyright 2014 Endless Mobile, Inc.
 const Lang = imports.lang;
-const Soup = imports.gi.Soup;
 const GObject = imports.gi.GObject;
 const GLib = imports.gi.GLib;
+const Xapian = imports.gi.Xapian;
 
 const ArticleObjectModel = imports.articleObjectModel;
 const ContentObjectModel = imports.contentObjectModel;
@@ -13,6 +13,11 @@ const datadir = imports.datadir;
 const utils = imports.searchUtils;
 
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
+
+function parseIntSane(str, fallback) {
+    let n = parseInt(str, 10);
+    return maybeNaN(n, fallback);
+}
 
 // Returns maybe if it's a number, otherwise returns fallback
 function maybeNaN(maybe, fallback) {
@@ -41,36 +46,6 @@ const Engine = Lang.Class({
     Extends: GObject.Object,
 
     Properties: {
-        /**
-         * Property: host
-         *
-         * The hostname of the xapian bridge. You generally don't
-         * need to set this.
-         *
-         * Defaults to '127.0.0.1'
-         * FIXME: the default should just be localhost, but libsoup has a bug
-         * whereby it does not resolve localhost when it is offline:
-         * https://bugzilla.gnome.org/show_bug.cgi?id=692291
-         * Once this bug is fixed, we should change this to be localhost.
-         */
-        'host': GObject.ParamSpec.string('host',
-            'Knowledge Engine Hostname', 'HTTP hostname for the Knowledge Engine service',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
-            '127.0.0.1'),
-
-        /**
-         * Property: port
-         *
-         * The port of the xapian bridge. You generally don't need
-         * to set this.
-         *
-         * Defaults to 3004
-         */
-        'port': GObject.ParamSpec.int('port', 'Knowledge Engine Port',
-            'The port of the Knowledge Engine service',
-             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
-             -1, GLib.MAXINT32, 3004),
-
         /**
          * Property: default-domain
          *
@@ -109,11 +84,16 @@ const Engine = Lang.Class({
 
     _init: function (params) {
         this.parent(params);
-        this._http_session = new Soup.Session();
 
         // Caches domain => content path so that we don't have to hit the
         // disk on every object lookup.
         this._content_path_cache = {};
+
+        // Caches domain => Xapian DB payload.
+        this._databases = {};
+
+        // Caches lang => Xapian Stemmer.
+        this._stemmers = {};
     },
 
     /**
@@ -135,23 +115,14 @@ const Engine = Lang.Class({
             limit: 1,
             ids: [id],
         };
-        this._query(query_obj, (err, json_ld) => {
+        this._query(query_obj, (err, ret) => {
             if (typeof err !== 'undefined') {
                 // error occurred during request, so immediately fail with err
                 callback(err, undefined);
                 return;
             }
 
-            let model;
-            try {
-                if (json_ld === null)
-                    throw new Error("Received null object response for " + req_uri.to_string(false));
-                model = this._model_from_json_ld(json_ld.results[0]);
-            } catch (err) {
-                // Error marshalling the JSON-LD object
-                callback(err, undefined);
-                return;
-            }
+            let model = ret.results[0];
 
             // If the requested model should redirect to another, then fetch
             // that model instead.
@@ -190,34 +161,23 @@ const Engine = Lang.Class({
      *             corresponding to the successfully retrieved object type
      */
     get_objects_by_query: function (query_obj, callback, cancellable = null, follow_redirects = true) {
-        this._query(query_obj, (err, json_ld) => {
+        this._query(query_obj, (err, ret) => {
             if (typeof err !== 'undefined') {
                 // error occurred during request, so immediately fail with err
                 callback(err, undefined);
-                return;
-            }
-
-            let search_results;
-            try {
-                if (json_ld === null)
-                    throw new Error("Received null object response for " + req_uri.to_string(false));
-                search_results = this._results_list_from_json_ld(json_ld);
-            } catch (err) {
-                // Error marshalling (at least) one of the JSON-LD results
-                callback(err, undefined);
-                return;
-            }
-            let get_more_results = (batch_size, new_callback) => {
-                query_obj.offset = json_ld.numResults + json_ld.offset;
-                query_obj.limit = batch_size;
-                this.get_objects_by_query(query_obj, new_callback);
-            };
-
-            if (follow_redirects) {
-                this._fetch_redirects_helper(search_results, callback,
-                    get_more_results, cancellable);
             } else {
-                callback(undefined, search_results, get_more_results);
+                let results = ret.results;
+                let get_more_results = (batch_size, new_callback) => {
+                    query_obj.offset = ret.results.length + ret.offset;
+                    query_obj.limit = batch_size;
+                    this.get_objects_by_query(query_obj, new_callback);
+                };
+                if (follow_redirects) {
+                    this._fetch_redirects_helper(results, callback,
+                                                 get_more_results, cancellable);
+                } else {
+                    callback(undefined, results, get_more_results);
+                }
             }
         }, cancellable);
     },
@@ -318,10 +278,49 @@ const Engine = Lang.Class({
         }
     },
 
-    // Returns a list of marshalled ObjectModels, or throws an error if json_ld
-    // is not a SearchResults object
-    _results_list_from_json_ld: function (json_ld) {
-        return json_ld.results.map(this._model_from_json_ld.bind(this));
+    _ensure_database: function (domain, cancellable) {
+        if (this._databases[domain])
+            return this._databases[domain];
+
+        let content_path = this._content_path_from_domain(domain);
+        let db_path = content_path + this._DB_PATH;
+
+        let db = new Xapian.Database({ path: db_path });
+        db.init(cancellable);
+
+        let query_parser = new Xapian.QueryParser({ database: db });
+
+        // Register prefixes
+        let prefixes_metadata = JSON.parse(db.get_metadata("XbPrefixes"));
+        prefixes_metadata['prefixes'].forEach(function(prefix) {
+            query_parser.add_prefix(prefix['field'], prefix['prefix']);
+        });
+        prefixes_metadata['booleanPrefixes'].forEach(function(prefix) {
+            query_parser.add_boolean_prefix(prefix['field'], prefix['prefix'], false);
+        });
+
+        let stopper = new Xapian.SimpleStopper();
+        query_parser.set_stopper(stopper);
+
+        let stopwords = JSON.parse(db.get_metadata("XbStopwords"));
+        stopwords.forEach(function(stopword) {
+            stopper.add(stopword);
+        });
+
+        let payload = { db: db, qp: query_parser };
+
+        this._databases[domain] = payload;
+        return payload;
+    },
+
+    _ensure_stemmer: function (lang) {
+        if (this._stemmers[lang])
+            return this._stemmers[lang];
+
+        let stemmer = new Xapian.Stem({ language: lang });
+        stemmer.init(null);
+        this._stemmers[lang] = stemmer;
+        return stemmer;
     },
 
     _get_xapian_query: function(query_obj, domain) {
@@ -356,82 +355,59 @@ const Engine = Lang.Class({
         return xapianQuery.xapian_join_clauses(xapian_query_options);
     },
 
-    _get_xapian_uri: function (query_obj) {
-        let host_uri = "http://" + this.host;
-        let uri = new Soup.URI(host_uri);
-        uri.set_port(this.port);
-        uri.set_path('/query');
-
+    _query: function(query_obj, callback, cancellable = null) {
         let domain = query_obj['domain'];
         if (domain === undefined)
             domain = this.default_domain;
 
-        let content_path = this._content_path_from_domain(domain);
+        let payload = this._ensure_database(domain, cancellable);
+
+        let lang = this.language || 'none';
+
+        let stemmer = this._ensure_stemmer(lang);
+        payload.qp.set_stemmer(stemmer);
+        payload.qp.set_stemming_strategy(Xapian.StemStrategy.STEM_SOME);
+
+        let enquire = new Xapian.Enquire({ database: payload.db });
+        enquire.init(null);
+
+        let collapse = parseIntSane(query_obj['collapse'], this._DEFAULT_LIMIT);
+        enquire.set_collapse_key(collapse);
+
+        let sort_by = query_obj['sortBy'];
+        if (sort_by) {
+            let reverse = (query_obj['order'] == 'desc');
+            enquire.set_sort_by_value(xapianQuery.xapian_string_to_value_no(sort_by), reverse);
+        } else {
+            let cutoff = parseIntSane(query_obj['cutoff'], this._DEFAULT_CUTOFF_PCT);
+            enquire.set_cutoff(cutoff);
+        }
+
+        let flags = (Xapian.QueryParserFeature.DEFAULT |
+                     Xapian.QueryParserFeature.WILDCARD |
+                     Xapian.QueryParserFeature.PURE_NOT |
+                     Xapian.QueryParserFeature.SPELLING_CORRECTION);
+
+        let offset = parseIntSane(query_obj['offset'], this._DEFAULT_OFFSET);
+        let limit = parseIntSane(query_obj['limit'], this._DEFAULT_LIMIT);
 
         let q = this._get_xapian_query(query_obj, domain);
+        let parsed_query = payload.qp.parse_query_full(q, flags, '');
+        enquire.set_query(parsed_query, parsed_query.get_length());
 
-        let query_obj_out = {
-            collapse: xapianQuery.XAPIAN_SOURCE_URL_VALUE_NO,
-            cutoff: maybeNaN(query_obj['cutoff'], this._DEFAULT_CUTOFF_PCT),
-            limit: maybeNaN(query_obj['limit'], this._DEFAULT_LIMIT),
-            offset: maybeNaN(query_obj['offset'], this._DEFAULT_OFFSET),
-            order: maybeNaN(query_obj['order'], this._DEFAULT_ORDER),
-            path: content_path + this._DB_PATH,
-            q: q,
-            sortBy: xapianQuery.xapian_string_to_value_no(query_obj['sortBy']),
-        };
+        let matches = enquire.get_mset(offset, limit);
 
-        if (this.language !== null && this.language.length > 0) {
-            query_obj_out.lang = this.language;
+        let iter = matches.get_begin();
+        let results = [];
+        while (iter.next()) {
+            let document = iter.get_document();
+            let data = this._parse_json_ld_message(document.get_data());
+            let model = this._model_from_json_ld(data);
+            results.push(model);
         }
 
-        uri.set_query(this._serialize_query(query_obj_out));
-        return uri;
-    },
-
-    _serialize_query: function (query_obj) {
-        let stringify_and_encode = (v) => encodeURIComponent(String(v));
-
-        return Object.keys(query_obj)
-        .filter((property) => typeof query_obj[property] !== 'undefined')
-        .map((property) =>
-            stringify_and_encode(property) + "=" +
-            stringify_and_encode(query_obj[property]))
-        .join('&');
-    },
-
-    _query: function(query_obj, callback, cancellable = null) {
-        let req_uri = this._get_xapian_uri(query_obj);
-        this._send_json_ld_request(req_uri, callback, cancellable);
-    },
-
-    // Queues a SoupMessage for *req_uri* to the current http session. Calls
-    // *callback* on any errors encountered and the parsed JSON.
-    _send_json_ld_request: function (req_uri, callback, cancellable = null) {
-        if (cancellable && cancellable.is_cancelled())
-            return;
-        let request = new Soup.Message({
-            method: 'GET',
-            uri: req_uri
-        });
-
-        this._http_session.queue_message(request, (session, message) => {
-            let json_ld_response;
-            try {
-                let data = message.response_body.data;
-                json_ld_response = this._parse_json_ld_message(data);
-            } catch (err) {
-                // JSON parse error
-                callback(err, undefined);
-                return;
-            }
-            callback(undefined, json_ld_response);
-        });
-        if (cancellable) {
-            cancellable.connect(() => {
-                this._http_session.cancel_message(request, Soup.Status.CANCELLED);
-            });
-        }
+        let ret = { results: results, offset: offset };
+        callback(undefined, ret);
     },
 
     _parse_json_ld_message: function (message) {
