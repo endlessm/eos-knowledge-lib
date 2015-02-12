@@ -9,6 +9,7 @@ const ContentObjectModel = imports.contentObjectModel;
 const MediaObjectModel = imports.mediaObjectModel;
 const xapianQuery = imports.xapianQuery;
 const blacklist = imports.blacklist.blacklist;
+const datadir = imports.datadir;
 const utils = imports.searchUtils;
 
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
@@ -18,6 +19,14 @@ function maybeNaN(maybe, fallback) {
     if (isNaN(maybe))
         return fallback;
     return maybe;
+}
+
+function domain_from_ekn_id(ekn_id) {
+    // Chop the URI off of an ekn id: 'ekn://football-es/hash' => 'football-es/hash'
+    let stripped_ekn_id = ekn_id.slice('ekn://'.length);
+    // Grab everything before the first slash.
+    let domain = stripped_ekn_id.split('/')[0];
+    return domain;
 }
 
 /**
@@ -63,15 +72,15 @@ const Engine = Lang.Class({
              -1, GLib.MAXINT32, 3004),
 
         /**
-         * Property: content-path
+         * Property: default-domain
          *
-         * The path to the directory containing the database and media content.
-         * Needs to be set!
+         * The domain to use to find content in case none is explicitly
+         * passed into the query.
          *
-         * e.g. /endless/share/ekn/animals-es/
+         * e.g. animals-es
          */
-        'content-path': GObject.ParamSpec.string('content-path',
-            'Content Path', 'path to the directory containing the knowledge engine content',
+        'default-domain': GObject.ParamSpec.string('default-domain',
+            'Default Domain', 'The default domain to use for queries',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
             ''),
 
@@ -101,6 +110,10 @@ const Engine = Lang.Class({
     _init: function (params) {
         this.parent(params);
         this._http_session = new Soup.Session();
+
+        // Caches domain => content path so that we don't have to hit the
+        // disk on every object lookup.
+        this._content_path_cache = {};
     },
 
     /**
@@ -122,7 +135,7 @@ const Engine = Lang.Class({
             limit: 1,
             ids: [id],
         };
-        let req_uri = this.get_xapian_uri(query_obj);
+        let req_uri = this._get_xapian_uri(query_obj);
 
         this._send_json_ld_request(req_uri, (err, json_ld) => {
             if (typeof err !== 'undefined') {
@@ -179,7 +192,7 @@ const Engine = Lang.Class({
      *             corresponding to the successfully retrieved object type
      */
     get_objects_by_query: function (query_obj, callback, cancellable = null, follow_redirects = true) {
-        let req_uri = this.get_xapian_uri(query_obj);
+        let req_uri = this._get_xapian_uri(query_obj);
 
         this._send_json_ld_request(req_uri, (err, json_ld) => {
             if (typeof err !== 'undefined') {
@@ -274,6 +287,13 @@ const Engine = Lang.Class({
         }, cancellable, false);
     },
 
+    _content_path_from_domain: function (domain) {
+        if (this._content_path_cache[domain] === undefined)
+            this._content_path_cache[domain] = datadir.get_data_dir_for_domain(domain).get_path();
+
+        return this._content_path_cache[domain];
+    },
+
     // Returns a marshaled ObjectModel based on json_ld's @type value, or throws
     // error if there is no corresponding model
     _model_from_json_ld: function (json_ld) {
@@ -291,7 +311,12 @@ const Engine = Lang.Class({
         let json_ld_type = json_ld['@type'];
         if (ekn_model_by_ekv_type.hasOwnProperty(json_ld_type)) {
             let Model = ekn_model_by_ekv_type[json_ld_type];
-            return Model.new_from_json_ld(json_ld, this.content_path + this._MEDIA_PATH);
+
+            let ekn_id = json_ld['@id'];
+            let domain = domain_from_ekn_id(ekn_id);
+            let content_path = this._content_path_from_domain(domain);
+
+            return Model.new_from_json_ld(json_ld, content_path + this._MEDIA_PATH);
         } else {
             throw new Error('No EKN model found for json_ld type ' + json_ld_type);
         }
@@ -303,16 +328,7 @@ const Engine = Lang.Class({
         return json_ld.results.map(this._model_from_json_ld.bind(this));
     },
 
-    /**
-     * Function: get_xapian_uri
-     *
-     * Constructs a URI to query the xapian bridge with the given query object.
-     *
-     * Parameters:
-     *   query_obj - An object whose keys are query parameters, and values are
-     *             strings.
-     */
-    get_xapian_uri: function (query_obj) {
+    _get_xapian_uri: function (query_obj) {
         let host_uri = "http://" + this.host;
         let uri = new Soup.URI(host_uri);
         uri.set_port(this.port);
@@ -336,13 +352,18 @@ const Engine = Lang.Class({
                     xapian_query_options.push(xapianQuery.xapian_ids_clause(query_obj.ids));
                     break;
                 default:
-                    if (['cutoff', 'limit', 'offset', 'order', 'sortBy'].indexOf(property) === -1)
+                    if (['cutoff', 'limit', 'offset', 'order', 'sortBy', 'domain'].indexOf(property) === -1)
                         throw new Error('Unexpected property value ' + property);
             }
         }
 
+        let domain = query_obj['domain'];
+        if (domain === undefined)
+            domain = this.default_domain;
+
+        let content_path = this._content_path_from_domain(domain);
+
         // Add blacklist tags to every query
-        let domain = this.content_path.split('/').slice(-1);
         let explicit_tags = blacklist[domain];
         if (typeof explicit_tags !== 'undefined')
             xapian_query_options.push(xapianQuery.xapian_not_tag_clause(explicit_tags));
@@ -353,7 +374,7 @@ const Engine = Lang.Class({
             limit: maybeNaN(query_obj['limit'], this._DEFAULT_LIMIT),
             offset: maybeNaN(query_obj['offset'], this._DEFAULT_OFFSET),
             order: maybeNaN(query_obj['order'], this._DEFAULT_ORDER),
-            path: this.content_path + this._DB_PATH,
+            path: content_path + this._DB_PATH,
             q: xapianQuery.xapian_join_clauses(xapian_query_options),
             sortBy: xapianQuery.xapian_string_to_value_no(query_obj['sortBy']),
         };
@@ -362,11 +383,11 @@ const Engine = Lang.Class({
             query_obj_out.lang = this.language;
         }
 
-        uri.set_query(this.serialize_query(query_obj_out));
+        uri.set_query(this._serialize_query(query_obj_out));
         return uri;
     },
 
-    serialize_query: function (query_obj) {
+    _serialize_query: function (query_obj) {
         let stringify_and_encode = (v) => encodeURIComponent(String(v));
 
         return Object.keys(query_obj)

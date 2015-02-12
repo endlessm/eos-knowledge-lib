@@ -1,5 +1,6 @@
 #!/usr/bin/env gjs
 
+const Gio = imports.gi.Gio;
 const Endless = imports.gi.Endless;
 const EosKnowledgeSearch = imports.EosKnowledgeSearch;
 const Lang = imports.lang;
@@ -13,6 +14,21 @@ if (ARGV.length < 2) {
     System.exit(1);
 }
 
+const KnowledgeSearchIface = '\
+<node> \
+  <interface name="com.endlessm.KnowledgeSearch"> \
+    <method name="LoadPage"> \
+      <arg type="s" name="EknID" direction="in" /> \
+      <arg type="s" name="Query" direction="in" /> \
+      <arg type="u" name="Timestamp" direction="in" /> \
+    </method> \
+    <method name="LoadQuery"> \
+      <arg type="s" name="Query" direction="in" /> \
+      <arg type="u" name="Timestamp" direction="in" /> \
+    </method> \
+  </interface> \
+</node>';
+
 const Application = new Lang.Class({
     Name: 'Application',
     GTypeName: 'EknApplication',
@@ -22,43 +38,43 @@ const Application = new Lang.Class({
         this.parent(props);
         this._presenter = null;
         this._activation_timestamp = null;
-        this._search_provider = new EosKnowledgeSearch.SearchProvider();
+        this._knowledge_search_impl = Gio.DBusExportedObject.wrapJSObject(KnowledgeSearchIface, this);
+
+        let domain = this.application_id.split('.').pop();
+        EosKnowledgeSearch.Engine.get_default().default_domain = domain;
+
+        // HACK for legacy compatibility: if the user has an old bundle with
+        // a new eos-knowledge-lib, their search-provider ini files will have
+        // the application ID rather than ekn-search-provider. Export an old
+        // search provider for them.
+        this._legacy_search_provider = new EosKnowledgeSearch.AppSearchProvider({ domain: domain });
     },
 
     vfunc_dbus_register: function(connection, path) {
         this.parent(connection, path);
-        this._search_provider.export(connection, path);
+        this._knowledge_search_impl.export(connection, path);
+        this._legacy_search_provider.skeleton.export(connection, path);
         return true;
     },
 
     vfunc_dbus_unregister: function(connection, path) {
         this.parent(connection, path);
-        this._search_provider.unexport(connection, path);
+        this._knowledge_search_impl.unexport_from_connection(connection);
+        this._legacy_search_provider.skeleton.unexport_from_connection(connection);
     },
 
-    vfunc_startup: function() {
-        this.parent();
+    LoadPage: function(ekn_id, query, timestamp) {
+        this._activation_timestamp = timestamp;
+        this.activate();
+        this._activation_timestamp = null;
+        this._presenter.activate_search_result(ekn_id, query);
+    },
 
-        var domain = this.application_id.split('.').pop();
-
-        EosKnowledgeSearch.Engine.get_default().content_path =
-            EosKnowledgeSearch.get_data_dir_for_domain(domain).get_path();
-
-        this._search_provider.connect('load-page', function (launcher, model, query, timestamp) {
-            this._activation_timestamp = timestamp;
-            this.activate();
-            this._activation_timestamp = null;
-            let results = this._search_provider.get_results();
-            let more_results_callback = this._search_provider.get_more_results_callback();
-            this._presenter.activate_search_result(model, query, results, more_results_callback);
-        }.bind(this));
-
-        this._search_provider.connect('load-query', function (launcher, query, timestamp) {
-            this._activation_timestamp = timestamp;
-            this.activate();
-            this._activation_timestamp = null;
-            this._presenter.search(query);
-        }.bind(this));
+    LoadQuery: function(query, timestamp) {
+        this._activation_timestamp = timestamp;
+        this.activate();
+        this._activation_timestamp = null;
+        this._presenter.search(query);
     },
 
     vfunc_activate: function () {

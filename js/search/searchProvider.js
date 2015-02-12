@@ -1,3 +1,5 @@
+
+const Ekns = imports.gi.EosKnowledgeSearchPrivate;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
@@ -5,7 +7,7 @@ const Lang = imports.lang;
 
 const Engine = imports.engine;
 
-const SearchIFace = '\
+const SearchIface = '\
 <node name="/" xmlns:doc="http://www.freedesktop.org/dbus/1.0/doc.dtd"> \
   <interface name="org.gnome.Shell.SearchProvider2"> \
     <method name="GetInitialResultSet"> \
@@ -32,11 +34,28 @@ const SearchIFace = '\
     </method> \
   </interface> \
 </node>';
+const SearchIfaceInfo = Gio.DBusInterfaceInfo.new_for_xml(SearchIface);
 
 // Enum for error codes
 const SearchProviderErrors = {
     RetrievalError: 0
 };
+
+const KnowledgeSearchIface = '\
+<node> \
+  <interface name="com.endlessm.KnowledgeSearch"> \
+    <method name="LoadPage"> \
+      <arg type="s" name="EknID" direction="in" /> \
+      <arg type="s" name="Query" direction="in" /> \
+      <arg type="u" name="Timestamp" direction="in" /> \
+    </method> \
+    <method name="LoadQuery"> \
+      <arg type="s" name="Query" direction="in" /> \
+      <arg type="u" name="Timestamp" direction="in" /> \
+    </method> \
+  </interface> \
+</node>';
+const KnowledgeSearchIfaceInfo = Gio.DBusInterfaceInfo.new_for_xml(KnowledgeSearchIface);
 
 /**
  * Class: SearchProvider
@@ -52,39 +71,22 @@ const SearchProviderErrors = {
  * for a particular search result to be activated. You will want to connect
  * to both of those signals.
  */
-const SearchProvider = Lang.Class({
-    Name: 'EknSearchProvider',
+const AppSearchProvider = Lang.Class({
+    Name: 'EknAppSearchProvider',
     Extends: GObject.Object,
 
-    Signals: {
+    Properties: {
         /**
-         * Event: load-page
+         * Property: domain
          *
-         * Emitted when the shell has asked to to activate the application with
-         * a specific article. Emits the <ArticleObjectModel> of the article,
-         * the query string, and the timestamp of the user action which started
-         * the activation.
+         * The domain to use to find content.
          *
-         * > search_provider.connect('load-page', function (provider, model, query, timestamp) {} );
+         * e.g. animals-es
          */
-        'load-page': { param_types: [
-            GObject.TYPE_OBJECT,
-            GObject.TYPE_STRING,
-            GObject.TYPE_UINT
-        ] },
-        /**
-         * Event: load-query
-         *
-         * Emitted when the shell has asked to to activate a query. Emits the
-         * query string, and the timestamp of the user action which started the
-         * activation.
-         *
-         * > search_provider.connect('load-query', function (provider, query, timestamp) {} );
-         */
-        'load-query': { param_types: [
-            GObject.TYPE_STRING,
-            GObject.TYPE_UINT
-        ] },
+        'domain': GObject.ParamSpec.string('domain',
+            'Domain', 'The domain to use for queries',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
+            ''),
     },
 
     NUM_RESULTS: 5,
@@ -92,22 +94,22 @@ const SearchProvider = Lang.Class({
     _init: function(args) {
         this.parent(args);
 
-        this._impl = Gio.DBusExportedObject.wrapJSObject(SearchIFace, this);
+        this.skeleton = Gio.DBusExportedObject.wrapJSObject(SearchIfaceInfo, this);
         this._search_provider_domain = GLib.quark_from_string('Knowledge App Search Provider Error');
-
-        this._search_results = null;
-        this._more_results_callback = null;
 
         this._engine = new Engine.Engine.get_default();
         this._object_cache = {};
-    },
 
-    export: function (connection, path) {
-        return this._impl.export(connection, path);
-    },
-
-    unexport: function (connection) {
-        return this._impl.unexport_from_connection(connection);
+        let appID = 'com.endlessm.' + this.domain;
+        let objectPath = '/com/endlessm/' + this.domain.replace(/\./g, '/').replace(/-/g, '_');
+        this._app = new Gio.DBusProxy({ g_bus_type: Gio.BusType.SESSION,
+                                        g_name: appID,
+                                        g_object_path: objectPath,
+                                        g_interface_info: KnowledgeSearchIfaceInfo,
+                                        g_interface_name: KnowledgeSearchIfaceInfo.name,
+                                        g_flags: (Gio.DBusProxyFlags.DO_NOT_AUTO_START_AT_CONSTRUCTION |
+                                                  Gio.DBusProxyFlags.DO_NOT_LOAD_PROPERTIES) });
+        this._app.init_async(GLib.PRIORITY_DEFAULT, null, null);
     },
 
     _add_results_to_cache: function (results) {
@@ -120,14 +122,6 @@ const SearchProvider = Lang.Class({
         return this._object_cache[id];
     },
 
-    get_results: function () {
-        return this._search_results;
-    },
-
-    get_more_results_callback: function () {
-        return this._more_results_callback;
-    },
-
     _run_query: function (terms, limit, cb) {
         let search_phrase = terms.join(' ');
         if (this._cancellable)
@@ -136,6 +130,7 @@ const SearchProvider = Lang.Class({
         this._engine.get_objects_by_query({
             q: search_phrase,
             limit: limit,
+            domain: this.domain,
         }, function (err, results, more_results_callback) {
             cb(err, results, more_results_callback);
         }.bind(this), this._cancellable);
@@ -149,8 +144,6 @@ const SearchProvider = Lang.Class({
         this._run_query(terms, this.NUM_RESULTS, function (err, results, more_results_callback) {
             if (!err) {
                 this._add_results_to_cache(results);
-                this._search_results = results;
-                this._more_results_callback = more_results_callback;
                 let ids = results.map(function (result) { return result.ekn_id; });
                 invocation.return_value(new GLib.Variant('(as)', [ids]));
             } else {
@@ -169,8 +162,6 @@ const SearchProvider = Lang.Class({
         this._run_query(terms, this.NUM_RESULTS, function (err, results, more_results_callback) {
             if (!err) {
                 this._add_results_to_cache(results);
-                this._search_results = results;
-                this._more_results_callback = more_results_callback;
                 let ids = results.map(function (result) { return result.ekn_id; });
                 invocation.return_value(new GLib.Variant('(as)', [ids]));
             } else {
@@ -212,37 +203,36 @@ const SearchProvider = Lang.Class({
 
     ActivateResult: function (id, terms, timestamp) {
         let query = terms.join(' ');
-        let model = this._get_from_cache(id);
-
-        // if there's a cache miss (because the app auto-quit after a timeout
-        // before the user activated a result), re-fetch it. otherwise just
-        // emit the load-page signal with the cache result
-        if (typeof model === 'undefined') {
-            let query_obj = {
-                'q': query
-            };
-
-            // If the cache misses, it's necessary to rerun the query to get the results set
-            // before retrieving the requested article.
-            this._engine.get_objects_by_query(query_obj, function (err, results, callback) {
-                this._search_results = results;
-                this._more_results_callback = callback;
-
-                this._engine.get_object_by_id(id, function (err, new_model) {
-                    if (err) {
-                        throw err;
-                    } else {
-                        this.emit('load-page', new_model, query, timestamp);
-                    }
-                }.bind(this));
-            }.bind(this));
-        } else {
-            this.emit('load-page', model, query, timestamp);
-        }
+        this._app.LoadPageRemote(id, query, timestamp);
     },
 
     LaunchSearch: function (terms, timestamp) {
         let query = terms.join(' ');
-        this.emit('load-query', query, timestamp);
+        this._app.LoadQueryRemote(query, timestamp);
+    },
+});
+
+const GlobalSearchProvider = new Lang.Class({
+    Name: 'EknGlobalSearchProvider',
+
+    _init: function() {
+        this._dispatcher = new Ekns.SubtreeDispatcher({ interface_info: SearchIfaceInfo });
+        this._dispatcher.connect('dispatch-subtree', Lang.bind(this, this._dispatchSubtree));
+        this._appSearchProviders = {};
+    },
+
+    register: function(connection, path) {
+        this._dispatcher.register(connection, path);
+    },
+
+    unregister: function(connection) {
+        this._dispatcher.unregister();
+    },
+
+    _dispatchSubtree: function(dispatcher, subnode) {
+        let domain = subnode.replace(/_/g, '-');
+        if (!this._appSearchProviders[domain])
+            this._appSearchProviders[domain] = new AppSearchProvider({ domain: domain });
+        return this._appSearchProviders[domain].skeleton;
     },
 });

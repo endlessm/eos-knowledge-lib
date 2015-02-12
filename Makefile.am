@@ -78,8 +78,12 @@ clean-local:
 
 # # # LIBRARY # # #
 
+lib_LTLIBRARIES =
+
 # Main library
 include $(top_srcdir)/eosknowledge/Makefile.am.inc
+
+include $(top_srcdir)/eosknowledgesearchprivate/Makefile.am.inc
 
 # Pkg-config file
 pkgconfigdir = $(libdir)/pkgconfig
@@ -118,6 +122,13 @@ EOS_JS_COVERAGE_FILES = \
 	$(reader_overrides) \
 	$(search_files) \
 	$(NULL)
+
+# # # SEARCH PROVIDER # # #
+servicedir = $(datadir)/dbus-1/services
+service_DATA = data/com.endlessm.EknSearchProvider.service
+
+data/com.endlessm.EknSearchProvider.service: data/com.endlessm.EknSearchProvider.service.in Makefile
+	$(AM_V_GEN) sed -e 's|@BINDIR@|$(bindir)|g' $< > $@
 
 @EOS_COVERAGE_RULES@
 
@@ -163,6 +174,13 @@ EosKnowledge_@EKN_API_VERSION@_gir_LIBS = libeosknowledge-@EKN_API_VERSION@.la
 EosKnowledge_@EKN_API_VERSION@_gir_FILES = $(introspection_sources)
 EosKnowledge_@EKN_API_VERSION@_gir_EXPORT_PACKAGES = @EKN_API_NAME@
 INTROSPECTION_GIRS += EosKnowledge-@EKN_API_VERSION@.gir
+
+EosKnowledgeSearchPrivate-1.0.gir: libeosknowledgesearchprivate.la
+EosKnowledgeSearchPrivate_1_0_gir_INCLUDES = Gio-2.0
+EosKnowledgeSearchPrivate_1_0_gir_SCANNERFLAGS = --warn-all --warn-error --identifier-prefix=Ekns --symbol-prefix=ekns
+EosKnowledgeSearchPrivate_1_0_gir_LIBS = libeosknowledgesearchprivate.la
+EosKnowledgeSearchPrivate_1_0_gir_FILES = $(libeosknowledgesearchprivate_la_SOURCES)
+INTROSPECTION_GIRS += EosKnowledgeSearchPrivate-1.0.gir
 
 girdir = $(datadir)/gir-1.0
 gir_DATA = $(INTROSPECTION_GIRS)

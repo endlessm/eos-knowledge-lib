@@ -39,5 +39,12 @@ function get_data_dir_for_domain(domain) {
         }
         return false;
     });
+    // The following hack is for backward compatibility with old databases. If
+    // we are running an encyclopedia app, we need to check the old general-*
+    // domain path
+    if (found_dir === null && domain.startsWith('encyclopedia')) {
+        return get_data_dir_for_domain(domain.replace(/encyclopedia-(..)/, 'general-$1'));
+    }
+    // End hack
     return found_dir;
 }
