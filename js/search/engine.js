@@ -131,13 +131,11 @@ const Engine = Lang.Class({
      *             the successfully retrieved object type
      */
     get_object_by_id: function (id, callback, cancellable = null) {
-        var query_obj = {
+        let query_obj = {
             limit: 1,
             ids: [id],
         };
-        let req_uri = this._get_xapian_uri(query_obj);
-
-        this._send_json_ld_request(req_uri, (err, json_ld) => {
+        this._query(query_obj, (err, json_ld) => {
             if (typeof err !== 'undefined') {
                 // error occurred during request, so immediately fail with err
                 callback(err, undefined);
@@ -192,9 +190,7 @@ const Engine = Lang.Class({
      *             corresponding to the successfully retrieved object type
      */
     get_objects_by_query: function (query_obj, callback, cancellable = null, follow_redirects = true) {
-        let req_uri = this._get_xapian_uri(query_obj);
-
-        this._send_json_ld_request(req_uri, (err, json_ld) => {
+        this._query(query_obj, (err, json_ld) => {
             if (typeof err !== 'undefined') {
                 // error occurred during request, so immediately fail with err
                 callback(err, undefined);
@@ -396,6 +392,11 @@ const Engine = Lang.Class({
             stringify_and_encode(property) + "=" +
             stringify_and_encode(query_obj[property]))
         .join('&');
+    },
+
+    _query: function(query_obj, callback, cancellable = null) {
+        let req_uri = this._get_xapian_uri(query_obj);
+        this._send_json_ld_request(req_uri, callback, cancellable);
     },
 
     // Queues a SoupMessage for *req_uri* to the current http session. Calls
