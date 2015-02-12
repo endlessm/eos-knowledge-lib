@@ -23,7 +23,7 @@ eosknowledge/ekn-resource.c: data/eos-knowledge-library.gresource.xml gresourced
 	$(GLIB_COMPILE_RESOURCES) --target=$@ --sourcedir=$(srcdir)/data --sourcedir=$(builddir)/data \
 		--generate-source --internal $<
 
-BUILT_SOURCES = \
+BUILT_SOURCES += \
 	eosknowledge/ekn-resource-private.h \
 	eosknowledge/ekn-resource.c \
 	$(NULL)

@@ -33,6 +33,7 @@ AM_DISTCHECK_CONFIGURE_FLAGS = \
 # Define these variables so that other Makefile snippets can add to them
 CLEANFILES =
 DISTCLEANFILES =
+BUILT_SOURCES =
 dist_noinst_DATA =
 nobase_pkgdata_DATA =
 bin_SCRIPTS =
@@ -129,6 +130,7 @@ service_DATA = data/com.endlessm.EknSearchProvider.service
 
 data/com.endlessm.EknSearchProvider.service: $(top_srcdir)/data/com.endlessm.EknSearchProvider.service.in Makefile
 	$(AM_V_GEN) sed -e 's|@BINDIR@|$(bindir)|g' $< > $@
+BUILT_SOURCES += data/com.endlessm.EknSearchProvider.service
 
 @EOS_COVERAGE_RULES@
 
