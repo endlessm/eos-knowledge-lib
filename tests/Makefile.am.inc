@@ -29,6 +29,7 @@ javascript_tests = \
 	tests/eosknowledge/testSectionArticlePageB.js \
 	tests/eosknowledge/testSectionPageA.js \
 	tests/eosknowledge/testSectionPageB.js \
+	tests/eosknowledge/testSpaceContainer.js \
 	tests/eosknowledge/testTableOfContents.js \
 	tests/eosknowledge/testTextCard.js \
 	tests/eosknowledge/testWindow.js \
