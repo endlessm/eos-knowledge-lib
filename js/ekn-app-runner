@@ -42,17 +42,25 @@ const Application = new Lang.Class({
 
         let domain = this.application_id.split('.').pop();
         EosKnowledgeSearch.Engine.get_default().default_domain = domain;
+
+        // HACK for legacy compatibility: if the user has an old bundle with
+        // a new eos-knowledge-lib, their search-provider ini files will have
+        // the application ID rather than ekn-search-provider. Export an old
+        // search provider for them.
+        this._legacy_search_provider = new EosKnowledgeSearch.AppSearchProvider({ domain: domain });
     },
 
     vfunc_dbus_register: function(connection, path) {
         this.parent(connection, path);
         this._knowledge_search_impl.export(connection, path);
+        this._legacy_search_provider.skeleton.export(connection, path);
         return true;
     },
 
     vfunc_dbus_unregister: function(connection, path) {
         this.parent(connection, path);
         this._knowledge_search_impl.unexport_from_connection(connection);
+        this._legacy_search_provider.skeleton.unexport_from_connection(connection);
     },
 
     LoadPage: function(ekn_id, query, timestamp) {
