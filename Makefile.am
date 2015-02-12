@@ -127,7 +127,7 @@ EOS_JS_COVERAGE_FILES = \
 servicedir = $(datadir)/dbus-1/services
 service_DATA = data/com.endlessm.EknSearchProvider.service
 
-data/com.endlessm.EknSearchProvider.service: data/com.endlessm.EknSearchProvider.service.in Makefile
+data/com.endlessm.EknSearchProvider.service: $(top_srcdir)/data/com.endlessm.EknSearchProvider.service.in Makefile
 	$(AM_V_GEN) sed -e 's|@BINDIR@|$(bindir)|g' $< > $@
 
 @EOS_COVERAGE_RULES@
