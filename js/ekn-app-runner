@@ -39,6 +39,9 @@ const Application = new Lang.Class({
         this._presenter = null;
         this._activation_timestamp = null;
         this._knowledge_search_impl = Gio.DBusExportedObject.wrapJSObject(KnowledgeSearchIface, this);
+
+        let domain = this.application_id.split('.').pop();
+        EosKnowledgeSearch.Engine.get_default().default_domain = domain;
     },
 
     vfunc_dbus_register: function(connection, path) {
@@ -64,14 +67,6 @@ const Application = new Lang.Class({
         this.activate();
         this._activation_timestamp = null;
         this._presenter.search(query);
-    },
-
-    vfunc_startup: function() {
-        this.parent();
-
-        var domain = this.application_id.split('.').pop();
-
-        EosKnowledgeSearch.Engine.get_default().default_domain = domain;
     },
 
     vfunc_activate: function () {
