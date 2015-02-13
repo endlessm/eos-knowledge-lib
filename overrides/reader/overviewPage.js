@@ -2,6 +2,7 @@
 
 const EosKnowledge = imports.gi.EosKnowledge;
 const Gio = imports.gi.Gio;
+const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
@@ -109,19 +110,15 @@ const OverviewPage = new Lang.Class({
 
     /*
       Sets the article snippets on the overview page. Here, a snippet
-      is a JS object with two fields, 'title' and 'synopsis'. This function
-      creates an <ArticleSnippet> widget for each snippet model and adds them
-      to the snippets grid.
+      is a JS object with two required fields, 'title' and 'synopsis', and one
+      optional field, 'style_variant'. This function creates an <ArticleSnippet>
+      widget for each snippet model and adds it to the snippets grid.
     */
     set_article_snippets: function (snippets) {
-        snippets.forEach(function (s, i) {
-            let snippet = new ArticleSnippet({
-                title: s.title,
-                synopsis: s.synopsis,
-                name: 'snippet' + i, // give each snippet a unique name so we can style it uniquely
-            })
+        snippets.forEach((props) => {
+            let snippet = new ArticleSnippet(props);
             this._snippets_grid.add(snippet);
-        }.bind(this));
+        });
     },
 
     remove_all_snippets: function () {
@@ -154,6 +151,19 @@ const ArticleSnippet = new Lang.Class({
         'synopsis': GObject.ParamSpec.string('synopsis', 'Snippet Description',
             'synopsis of the snippet',
             GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE, ''),
+        /**
+         * Property: style-variant
+         * Which style variant to use for appearance
+         *
+         * Which CSS style variant to use (default is zero.)
+         * If the variant does not exist then the snippet will have only the
+         * styles common to all variants.
+         * Use -1 as a variant that is guaranteed not to exist.
+         */
+        'style-variant': GObject.ParamSpec.int('style-variant', 'Style variant',
+            'Which CSS style variant to use for appearance',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            -1, GLib.MAXINT16, 0),
     },
 
     _init: function (props) {
@@ -181,9 +191,14 @@ const ArticleSnippet = new Lang.Class({
 
         this.parent(props);
 
-        this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_READER_ARTICLE_SNIPPET);
+        let context = this.get_style_context();
+
+        context.add_class(EosKnowledge.STYLE_CLASS_READER_ARTICLE_SNIPPET);
         this._title_label.get_style_context().add_class(EosKnowledge.STYLE_CLASS_READER_TITLE);
         this._synopsis_label.get_style_context().add_class(EosKnowledge.STYLE_CLASS_READER_SYNOPSIS);
+
+        if (this.style_variant >= 0)
+            context.add_class('snippet' + this.style_variant);
 
         this.add(this._title_label);
         this.add(this._synopsis_label);

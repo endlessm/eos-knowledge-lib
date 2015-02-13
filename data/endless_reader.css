@@ -34,15 +34,15 @@ EosWindow {
 
 /* These individual snippet stylings will be
 overridden by app specific CSS */
-#snippet0 .title {
+.snippet0 .title {
     color: #F4FA58;
 }
 
-#snippet1 .title {
+.snippet1 .title {
     color: #F781F3;
 }
 
-#snippet2 .title {
+.snippet2 .title {
     color: #00FFFF;
 }
 

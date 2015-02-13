@@ -26,7 +26,7 @@ GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.
 
 const RESULTS_SIZE = 15;
 const TOTAL_ARTICLES = 30;
-const NUM_SNIPPETS_ON_OVERVIEW_PAGE = 3;
+const NUM_SNIPPET_STYLES = 3;
 
 // 1 week in miliseconds
 const UPDATE_INTERVAL_MS = 604800000;
@@ -492,10 +492,11 @@ const Presenter = new Lang.Class({
     },
 
     _load_overview_snippets_from_articles: function () {
-        let snippets = this._article_models.slice(0, NUM_SNIPPETS_ON_OVERVIEW_PAGE).map(function (snippet) {
+        let snippets = this._article_models.map((snippet, ix) => {
             return {
-                "title": snippet.title,
-                "synopsis": snippet.synopsis
+                title: snippet.title,
+                synopsis: snippet.synopsis,
+                style_variant: ix % NUM_SNIPPET_STYLES,
             };
         });
         this.view.overview_page.set_article_snippets(snippets);
