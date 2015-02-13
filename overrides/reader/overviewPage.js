@@ -58,12 +58,7 @@ const OverviewPage = new Lang.Class({
             orientation: Gtk.Orientation.VERTICAL,
         });
 
-        let scrolled_window = new Gtk.ScrolledWindow({
-            hscrollbar_policy: Gtk.PolicyType.NEVER,
-        });
-
-        this._snippets_grid = new Gtk.Grid({
-            orientation: Gtk.Orientation.VERTICAL,
+        this._snippets_grid = new EosKnowledge.SpaceContainer({
             expand: true,
             halign: Gtk.Align.END,
             valign: Gtk.Align.FILL,
@@ -73,9 +68,8 @@ const OverviewPage = new Lang.Class({
 
         this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_READER_OVERVIEW_PAGE);
 
-        scrolled_window.add(this._snippets_grid);
         grid.attach(this._title_image, 0, 0, 1, 1);
-        grid.attach(scrolled_window, 1, 0, 1, 1);
+        grid.attach(this._snippets_grid, 1, 0, 1, 1);
 
         this.add(grid);
     },
@@ -131,7 +125,8 @@ const OverviewPage = new Lang.Class({
     },
 
     remove_all_snippets: function () {
-        this._snippets_grid.remove_column(0);
+        this._snippets_grid.get_children().forEach((child) =>
+            this._snippets_grid.remove(child));
     },
 });
 
