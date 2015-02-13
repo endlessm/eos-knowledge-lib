@@ -131,6 +131,7 @@ service_DATA = data/com.endlessm.EknSearchProvider.service
 data/com.endlessm.EknSearchProvider.service: $(top_srcdir)/data/com.endlessm.EknSearchProvider.service.in Makefile
 	$(AM_V_GEN) sed -e 's|@BINDIR@|$(bindir)|g' $< > $@
 BUILT_SOURCES += data/com.endlessm.EknSearchProvider.service
+EXTRA_DIST += data/com.endlessm.EknSearchProvider.service.in
 
 @EOS_COVERAGE_RULES@
 
