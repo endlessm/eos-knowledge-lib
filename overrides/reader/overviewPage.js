@@ -10,6 +10,8 @@ const Pango = imports.gi.Pango;
 
 const ImagePreviewer = imports.imagePreviewer;
 
+GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
+
 /**
  * Class: Reader.OverviewPage
  * Splash Page shown in the reader when the app opens
@@ -143,14 +145,14 @@ const ArticleSnippet = new Lang.Class({
          */
         'title': GObject.ParamSpec.string('title', 'Snippet Title',
             'Title of the snippet',
-            GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE, ''),
+            GObject.ParamFlags.READWRITE, ''),
         /**
          * Property: synopsis
          * A string with the synopsis of the snippet. Defaults to an empty string.
          */
         'synopsis': GObject.ParamSpec.string('synopsis', 'Snippet Description',
             'synopsis of the snippet',
-            GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE, ''),
+            GObject.ParamFlags.READWRITE, ''),
         /**
          * Property: style-variant
          * Which style variant to use for appearance
