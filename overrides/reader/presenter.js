@@ -224,7 +224,7 @@ const Presenter = new Lang.Class({
                     printerr(error.stack);
                 }
                 let err_label = this._create_error_label(_("Oops!"),
-                    _("We could not find this articles for this magazine!\nPlease try again after restarting your computer."));
+                    _("We could not find this magazine!\nPlease try again after restarting your computer."));
                 this.view.page_manager.add(err_label);
                 this.view.page_manager.visible_child = err_label;
                 this.view.show_all();
