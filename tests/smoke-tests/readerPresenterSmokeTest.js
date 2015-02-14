@@ -1,4 +1,6 @@
+const Endless = imports.gi.Endless;
 const EosKnowledge = imports.gi.EosKnowledge;
+const EosKnowledgeSearch = imports.EosKnowledgeSearch;
 const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
@@ -9,41 +11,48 @@ resource._register();
 let resource_path = Gio.File.new_for_uri('resource:///com/endlessm/thrones');
 
 // Mock out the engine so that we aren't looking for an eos-thrones database
-let mock_engine = new EosKnowledge.Engine();
-mock_engine.ping = function () {};
+let mock_engine = new EosKnowledgeSearch.Engine();
 mock_engine.get_object_by_id = function () {};
-mock_engine.get_objects_by_query = function (domain, query, callback) {
+mock_engine.get_objects_by_query = function (query, callback) {
     const OBJECTS = [
         {
             title: 'Article One',
-            metadata: {
-                author: 'Plward11',
-                date: 'September 30, 2014',
-            },
+            authors: ['Plward11'],
+            published: 'September 30, 2014',
             ekn_id: 'about:blank',
         },
         {
             title: 'Article Two',
-            metadata: {
-                author: 'Ffarfan',
-            },
+            authors: ['Ffarfan'],
             ekn_id: 'about:blank',
         },
         {
             title: 'Article Three',
-            metadata: {
-                date: 'September 30, 2014',
-            },
+            published: 'September 30, 2014',
             ekn_id: 'about:blank',
         },
+        {
+            title: 'Article Four (Cheese)',
+            published: 'February 13, 2015',
+            synopsis: 'Cheese is really expensive in Canada...',
+            authors: ['Ptomato'],
+            ekn_id: 'about:blank',
+        }
     ];
-    callback(undefined, OBJECTS.slice(0, query.limit));
+    callback(undefined, OBJECTS.slice(0, query.limit).map((props) => {
+        let authors = props.authors;
+        delete props.authors;
+        let model = new EosKnowledgeSearch.ArticleObjectModel(props);
+        if (authors)
+            model.set_authors(authors);
+        return model;
+    }));
 };
-mock_engine.get_ekn_uri = function () {};
+mock_engine.get_xapian_uri = function () {};
 
 const TestApplication = new Lang.Class({
     Name: 'TestApplication',
-    Extends: EosKnowledge.Application,
+    Extends: Endless.Application,
 
     _init: function (props) {
         this.parent(props);
@@ -51,22 +60,19 @@ const TestApplication = new Lang.Class({
 
     vfunc_startup: function () {
         this.parent();
-        let view = new EosKnowledge.Reader.Window({
+
+        let [success, app_json, len, etag] = resource_path.get_child('app.json')
+            .load_contents(null);
+
+        let presenter = new EosKnowledge.Reader.Presenter(JSON.parse(app_json), {
+            engine: mock_engine,
             application: this,
         });
-        let presenter = new EosKnowledge.Reader.Presenter({
-            app_file: resource_path.get_child('app.json'),
-            engine: mock_engine,
-            view: view,
-        });
-        view.show_all();
     },
 });
 
 let app = new TestApplication({
     application_id: 'com.endlessm.knowledge.readerPresenterSmokeTest',
     flags: Gio.ApplicationFlags.FLAGS_NONE,
-    resource_file: resource_path,
-    css_file: Gio.File.new_for_uri('resource:///com/endlessm/knowledge/endless_reader.css'),
 });
 app.run(ARGV);
