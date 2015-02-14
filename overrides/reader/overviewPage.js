@@ -184,9 +184,9 @@ const ArticleSnippet = new Lang.Class({
         });
         this._synopsis_label = new Gtk.Label({
             hexpand: true,
+            halign: Gtk.Align.START,
             ellipsize: Pango.EllipsizeMode.END,
             lines: 2,
-            max_width_chars: 10,
             wrap_mode: Pango.WrapMode.WORD_CHAR,
             wrap: true,
         });
