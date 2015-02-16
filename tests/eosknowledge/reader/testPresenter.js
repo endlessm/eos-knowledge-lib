@@ -103,7 +103,7 @@ const MockView = new Lang.Class({
         };
         this.overview_page = {
             get_style_context: get_style_context,
-            set_article_snippets: function () {},
+            set_article_snippets: jasmine.createSpy('set_article_snippets'),
             remove_all_snippets: function () {},
         };
 
@@ -149,7 +149,12 @@ describe('Reader presenter', function () {
                 [],
                 '2014/11/13 08:00',
             ],
-        ]
+            [
+                'Title 4',
+                [],
+                '',
+            ],
+        ];
         MOCK_RESULTS = MOCK_DATA.map(function (data) {
             return {
                 title: data[0],
@@ -394,6 +399,15 @@ describe('Reader presenter', function () {
                 let format = presenter._format_attribution_for_metadata([], date_str);
                 expect(format).toBe(localized_date_str);
             });
+        });
+
+        it('sets the correct style classes on overview page snippets', function () {
+            expect(presenter.view.overview_page.set_article_snippets).toHaveBeenCalledWith([
+                jasmine.objectContaining({style_variant: 0}),
+                jasmine.objectContaining({style_variant: 1}),
+                jasmine.objectContaining({style_variant: 2}),
+                jasmine.objectContaining({style_variant: 0}),
+            ]);
         });
     });
 });

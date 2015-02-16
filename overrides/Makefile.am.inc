@@ -35,6 +35,7 @@ public_overrides = \
 	overrides/sectionPage.js \
 	overrides/sectionPageA.js \
 	overrides/sectionPageB.js \
+	overrides/spaceContainer.js \
 	overrides/tableOfContents.js \
 	overrides/textCard.js \
 	overrides/webkitURIHandlers.js \
