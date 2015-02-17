@@ -211,15 +211,17 @@ const ArticleSnippet = new Lang.Class({
     },
 
     set title (v) {
-        if (this._title_label.label === v) return;
-        this._title_label.label = v;
+        if (this._title_label_text === v)
+            return;
+        this._title_label_text = v;
+        this._title_label.label = this._title_label_text.toUpperCase();
         this._title_label.visible = (v && v.length !== 0);
         this.notify('title');
     },
 
     get title () {
-        if (this._title_label)
-            return this._title_label.label;
+        if (this._title_label_text)
+            return this._title_label_text;
         return '';
     },
 
