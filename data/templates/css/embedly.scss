@@ -28,26 +28,26 @@ html {
     h4 {
         color: #333333;
         font-family: Lato;
-        font-weight: 900;
+        font-weight: 800; /* black */
         font-size: 24px;
     }
     h5 {
         color: #93A917;
         font-family: Lato;
-        font-weight: 300;
+        font-weight: 300; /* light (300 instead of 200 for Lato) */
         font-style: italic;
         font-size: 22px;
     }
     h6 {
         color: #333333;
         font-family: Lato;
-        font-weight: 900;
+        font-weight: 800; /* black */
         font-size: 18px;
     }
     p, li {
         color: #666666;
         font-family: Lato;
-        font-weight: 300;
+        font-weight: 300; /* light (300 instead of 200 for Lato) */
         font-size: 15px;
     }
     p {
@@ -61,8 +61,12 @@ html {
         font-family: Lato;
         font-weight: 900;
         font-size: 15px;
+        &:hover {
+            text-decoration: underline;
+            cursor: pointer;
+        }
     }
-    q {
+    blockquote {
         color: #000000;
         font-family: Roboto;
         font-style: italic;
