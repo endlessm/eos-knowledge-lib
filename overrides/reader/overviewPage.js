@@ -176,15 +176,17 @@ const ArticleSnippet = new Lang.Class({
         this._title_label = new Gtk.Label({
             hexpand: true,
             halign: Gtk.Align.START,
+            xalign: 0,
             ellipsize: Pango.EllipsizeMode.END,
             lines: 2,
-            max_width_chars: 20,
+            max_width_chars: 40,
             wrap_mode: Pango.WrapMode.WORD_CHAR,
             wrap: true,
         });
         this._synopsis_label = new Gtk.Label({
             hexpand: true,
             halign: Gtk.Align.START,
+            xalign: 0,
             ellipsize: Pango.EllipsizeMode.END,
             lines: 2,
             wrap_mode: Pango.WrapMode.WORD_CHAR,

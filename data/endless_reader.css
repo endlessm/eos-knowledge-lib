@@ -18,8 +18,6 @@ EosWindow {
 
 .article-snippet .title, .article-snippet .synopsis {
     font-family: Roboto;
-    font-style: italic;
-    font-weight: bold;
 }
 
 .article-snippet .title {
@@ -28,22 +26,32 @@ EosWindow {
 
 .article-snippet .synopsis {
     padding-top: 10px;
-    color: white;
-    font-size: 0.8em;
+    color: #f2f2f2;
+    font-size: 1em; /* 16px / 12px/em * 72/96 */
+    font-weight: 200; /* light */
 }
 
 /* These individual snippet stylings will be
 overridden by app specific CSS */
 .snippet0 .title {
-    color: #F4FA58;
+    font-style: italic;
+    font-weight: bold;
+    color: #e5ff51;
+    font-size: 2.56em;  /* 41px / 12px/em * 72/96 */
 }
 
 .snippet1 .title {
-    color: #F781F3;
+    font-family: Fjalla One;
+    color: #bd348e;
+    font-size: 2.19em; /* 35px / 12px/em * 72/96 */
 }
 
 .snippet2 .title {
-    color: #00FFFF;
+    font-family: Lato;
+    font-weight: 800; /* black */
+    font-style: italic;
+    color: #12e1da;
+    font-size: 1.56em; /* 25px / 12px/em * 72/96 */
 }
 
 .overview-page, .done-page {
@@ -82,7 +90,7 @@ overridden by app specific CSS */
 
 .article-page-title {
     font-family: Roboto;
-    font-size: 5em;
+    font-size: 4.18em;
     font-style: italic;
     color: white;
 }

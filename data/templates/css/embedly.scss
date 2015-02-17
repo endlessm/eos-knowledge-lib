@@ -61,6 +61,10 @@ html {
         font-family: Lato;
         font-weight: 900;
         font-size: 15px;
+        &:hover {
+            text-decoration: underline;
+            cursor: pointer;
+        }
     }
     blockquote {
         color: #000000;
