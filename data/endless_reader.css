@@ -89,7 +89,7 @@ overridden by app specific CSS */
 
 .article-page-attribution {
     font-family: Roboto;
-    font-weight: 900; /* Black */
+    font-weight: 800; /* Black */
     font-size: 0.75em; /* 12px, 72 DPI */
     color: #94a723;
 }
