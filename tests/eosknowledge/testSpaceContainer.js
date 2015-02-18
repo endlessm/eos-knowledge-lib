@@ -69,7 +69,9 @@ describe('Space container', function () {
         beforeEach(function () {
             // Use the suite's "this" object so that the container is available
             // in the addTests... function's scope.
-            this.container = new EosKnowledge.SpaceContainer();
+            this.container = new EosKnowledge.SpaceContainer({
+                orientation: Gtk.Orientation.VERTICAL,
+            });
             this.add_box = (box) => {
                 box.show_all();
                 this.container.add(box);
@@ -80,6 +82,23 @@ describe('Space container', function () {
         });
 
         addTestsForOrientation('height', 'width');
+    });
+
+    describe('horizontally oriented', function () {
+        beforeEach(function () {
+            this.container = new EosKnowledge.SpaceContainer({
+                orientation: Gtk.Orientation.HORIZONTAL,
+            });
+            this.add_box = (box) => {
+                box.show_all();
+                this.container.add(box);
+                return box;
+            };
+            win.add(this.container);
+            win.show_all();
+        });
+
+        addTestsForOrientation('width', 'height');
     });
 });
 
@@ -149,6 +168,7 @@ function addTestsForOrientation(primary, secondary) {
     it('shares out extra space beyond the natural size to expandable visible children', function () {
         let boxes = [50, 50].map((size) => this.add_box(new CompressibleBox(size)));
         boxes[0].expand = true;
+        boxes[0].halign = Gtk.Align.FILL;
         boxes[0].valign = Gtk.Align.FILL;
         update_gui();
 

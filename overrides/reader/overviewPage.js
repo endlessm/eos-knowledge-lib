@@ -62,6 +62,7 @@ const OverviewPage = new Lang.Class({
         });
 
         this._snippets_grid = new EosKnowledge.SpaceContainer({
+            orientation: Gtk.Orientation.VERTICAL,
             expand: true,
             halign: Gtk.Align.END,
             valign: Gtk.Align.FILL,

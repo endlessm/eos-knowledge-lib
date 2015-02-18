@@ -14,7 +14,7 @@ const CompressibleBox = new Lang.Class({
     _init: function (props={}) {
         this.parent(props);
 
-        this._width = GLib.random_int_range(50, 300);
+        this._width = GLib.random_int_range(50, 200);
         this._height = GLib.random_int_range(50, 200);
 
         let label = new Gtk.Label({
@@ -41,10 +41,12 @@ const CompressibleBox = new Lang.Class({
 });
 
 let win = new Gtk.Window({
-    default_width: 300,
-    default_height: 600,
+    default_width: 600,
+    default_height: 300,
 });
-let container = new EosKnowledge.SpaceContainer();
+let container = new EosKnowledge.SpaceContainer({
+    orientation: Gtk.Orientation.HORIZONTAL,
+});
 let add_new = new Gtk.Button({
     label: 'Add new box',
 });
