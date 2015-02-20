@@ -29,12 +29,20 @@ const EknWebview = new Lang.Class({
     _init: function (params) {
         this.parent(params);
 
-        let settings = this.get_settings();
-        settings.enable_developer_extras = Config.inspector_enabled;
-        settings.javascript_can_access_clipboard = true;
+        this._webKitSettings = this.get_settings();
+        this._webKitSettings.enable_developer_extras = Config.inspector_enabled;
+        this._webKitSettings.javascript_can_access_clipboard = true;
+
+        this._defaultFontSize = this._webKitSettings.default_font_size;
+        this._defaultMonospaceFontSize = this._webKitSettings.default_monospace_font_size;
+
+        let screen = Gdk.Screen.get_default()
+        this._gtkSettings = Gtk.Settings.get_for_screen(screen)
+        this._baseXftDPI = this._gtkSettings.gtk_xft_dpi / 1024;
 
         this.connect('context-menu', this._load_context_menu.bind(this));
         this.connect('decide-policy', this._onNavigation.bind(this));
+        this._gtkSettings.connect('notify::gtk-xft-dpi', this._onXftDPIChanged.bind(this));
     },
 
     _load_context_menu: function (webview, context_menu, event) {
@@ -60,5 +68,15 @@ const EknWebview = new Lang.Class({
             }
         }
         return false; // not handled, default behavior
+    },
+
+    _onXftDPIChanged: function (settings) {
+        let newDPI = settings.gtk_xft_dpi / 1024;
+        this._webKitSettings.default_font_size = this._normalizeFontSize(this._defaultFontSize, newDPI)
+        this._webKitSettings.default_monospace_font_size = this._normalizeFontSize(this._defaultMonospaceFontSize, newDPI);
+    },
+
+    _normalizeFontSize: function (size, dpi) {
+        return size * dpi / this._baseXftDPI;
     }
 });
