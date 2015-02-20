@@ -56,7 +56,10 @@ const Previewer = new Lang.Class({
     _init: function (props) {
         this._file = null;
         this._animating = false;
-        this._image_previewer = new ImagePreviewer.ImagePreviewer();
+        this._image_previewer = new ImagePreviewer.ImagePreviewer({
+            enforce_minimum_size: true,
+            minimum_size: 500,
+        });
         this._video_previewer = new VideoPreviewer.VideoPreviewer();
         this.parent(props);
 

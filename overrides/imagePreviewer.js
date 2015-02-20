@@ -35,7 +35,29 @@ const ImagePreviewer = Lang.Class({
         'aspect': GObject.ParamSpec.float('aspect', 'Aspect',
             'Aspect ratio of previewer content',
             GObject.ParamFlags.READABLE,
-            false)
+            false),
+
+        /**
+         * Property: enforce-minimum-size
+         *
+         * Whether this previewer should enforce a minimum size on its images.
+         */
+        'enforce-minimum-size': GObject.ParamSpec.boolean('enforce-minimum-size',
+            'Enforce Minimum Size', 'Whether the image should always be at least a minimum size',
+            GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            false),
+
+        /**
+         * Property: minimum-size
+         *
+         * The height/width of a "minimum image size" square. If the file being
+         * previewed fits inside this box, the image will be scaled up until
+         * its largest dimension is exactly equal to this minimum size.
+         */
+        'minimum-size': GObject.ParamSpec.int('minimum-size',
+            'Minimum Size', 'The minimum dimension of the image',
+            GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            0, GLib.MAXINT32, 0),
     },
 
     _init: function (props) {
@@ -88,6 +110,23 @@ const ImagePreviewer = Lang.Class({
             this._natural_width = this._animation.get_width();
             this._natural_height = this._animation.get_height();
             this._aspect = this._natural_width / this._natural_height;
+
+            // Scale the image if it's smaller than a
+            // MINIMUM_IMAGE_DIMENSION x MINIMUM_IMAGE_DIMENSION box.
+            if (this.enforce_minimum_size
+                && this._natural_width < this.minimum_size
+                && this._natural_height < this.minimum_size) {
+
+                // Only scale up the largest dimension, so the resulting image
+                // fits exactly inside our minimum box
+                if (this._natural_height >= this._natural_width) {
+                    this._natural_height = this.minimum_size;
+                    this._natural_width = this._aspect * this._natural_height;
+                } else {
+                    this._natural_width = this.minimum_size;
+                    this._natural_height = this._natural_width / this._aspect;
+                }
+            }
         }
 
         this.queue_draw();
