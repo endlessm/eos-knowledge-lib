@@ -17,50 +17,50 @@ html {
     h2 {
         color: #666666;
         font-family: Fjalla One;
-        font-size: 36px;
+        font-size: 2.25em; /* 36px / 12px/em * 72/96 */
     }
     h3 {
         color: #6C2253;
         font-family: Lato;
         font-weight: bold;
-        font-size: 30px;
+        font-size: 1.875em; /* 30px / 12px/em * 72/96 */
     }
     h4 {
         color: #333333;
         font-family: Lato;
         font-weight: 800; /* black */
-        font-size: 24px;
+        font-size: 1.5em; /* 24px / 12px/em * 72/96 */
     }
     h5 {
         color: #93A917;
         font-family: Lato;
         font-weight: 300; /* light (300 instead of 200 for Lato) */
         font-style: italic;
-        font-size: 22px;
+        font-size: 1.375em; /* 22px / 12px/em * 72/96 */
     }
     h6 {
         color: #333333;
         font-family: Lato;
         font-weight: 800; /* black */
-        font-size: 18px;
+        font-size: 1.125em; /* 18px / 12px/em * 72/96 */
     }
     p, li {
         color: #666666;
         font-family: Lato;
         font-weight: 300; /* light (300 instead of 200 for Lato) */
-        font-size: 15px;
+        font-size: 0.9375em; /* 15px / 12px/em * 72/96 */
     }
     p {
-        line-height: 20px;
+        line-height: 1.25em; /* 20px / 12px/em * 72/96 */
     }
     li {
-        line-height: 30px;
+        line-height: 1.875em; /* 30px / 12px/em * 72/96 */
     }
     a {
         color: #00BCB5;
         font-family: Lato;
         font-weight: 900;
-        font-size: 15px;
+        font-size: 0.9375em; /* 15px / 12px/em * 72/96 */
         &:hover {
             text-decoration: underline;
             cursor: pointer;
@@ -70,8 +70,8 @@ html {
         color: #000000;
         font-family: Roboto;
         font-style: italic;
-        font-size: 16px;
-        line-height: 21px;
+        font-size: 1em; /* 16px / 12px/em * 72/96 */
+        line-height: 1.3125em; /* 21px / 12px/em * 72/96 */
     }
     img {
         clear: right;

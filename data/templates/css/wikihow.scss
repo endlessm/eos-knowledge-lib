@@ -97,7 +97,7 @@ $rhythm: 22px;
     $in-cols: 100% / (36 - 2 * 2);
     padding: 20px $in-cols * 2;
     color: $gray;
-    font: 13px $font1;
+    font: 0.8125em $font1; /* 13px / 12px/em * 72/96 */
     line-height: $rhythm;
     img {
         height: auto;
@@ -105,14 +105,14 @@ $rhythm: 22px;
     }
     .eos-article-title {
         color: $gray-dark;
-        font: 30px $font1;
-        line-height: 22px;
+        font: 1.875em $font1; /* 30px / 12px/em * 72/96 */
+        line-height: 1.375em; /* 22px / 12px/em * 72/96 */
         margin-bottom: 36px;
         margin-top: 22px;
     }
     h2, h3, .firstHeading, h4 {
         color: $gray-dark;
-        font: 900 14px $font2;
+        font: 900 0.875em $font2; /* 14px / 12px/em * 72/96 */
         line-height: $rhythm - 5;
         margin-bottom: $rhythm;
         // text-transform: uppercase
@@ -124,7 +124,7 @@ $rhythm: 22px;
         text-transform: none;
     }
     sup {
-        font-size: 10px;
+        font-size: 0.625em; /* 10px / 12px/em * 72/96 */
         margin-left: 3px;
         vertical-align: super;
     }
@@ -230,7 +230,7 @@ h2 + ol, h3 + ol, .steps_list_2 {
         $cols: 100% / 56;
         .firstHeading {
             color: #fff;
-            font: 700 18px / 24px $font2;
+            font: 700 1.125em / 1.5em $font2; /* (18px, 24px) / 12px/em * 72/96 */
             left: $cols * 3;
             margin-bottom: 0;
             position: fixed;
@@ -244,7 +244,7 @@ h2 + ol, h3 + ol, .steps_list_2 {
         h2, h3 {
             padding-top: 5px;
             &:before {
-                font-size: 24px;
+                font-size: 1.5em; /* 24px / 12px/em * 72/96 */
             }
         }
     }
@@ -261,13 +261,13 @@ h2 + ol, h3 + ol, .steps_list_2 {
 @media (min-width: $xga) {
     #bodycontents {
         .firstHeading {
-            font: 700 32px / 40px $font2;
+            font: 700 2em / 2.5em $font2; /* (32px, 40px) / 12px/em * 72/96 */
             top: 60px;
         }
         h2, h3 {
             padding-top: 9px;
             &:before {
-                font-size: 36px;
+                font-size: 2.25em; /* 36px / 12px/em * 72/96 */
             }
         }
     }
