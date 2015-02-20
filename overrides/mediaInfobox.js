@@ -1,4 +1,5 @@
 const Gtk = imports.gi.Gtk;
+const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
 const EosKnowledge = imports.gi.EosKnowledge;
 const Lang = imports.lang;
@@ -6,6 +7,7 @@ const Pango = imports.gi.Pango;
 
 const CompositeButton = imports.compositeButton;
 const Config = imports.config;
+const Utils = imports.utils;
 
 /** Class: MediaInfobox
  *
@@ -60,6 +62,8 @@ const MediaInfobox = new Lang.Class({
 
     _MAX_CAPTION_LINES: 5,
 
+    _css_has_loaded: false,
+
     _init: function (props) {
         props = props || {};
         props.orientation = Gtk.Orientation.VERTICAL;
@@ -94,6 +98,12 @@ const MediaInfobox = new Lang.Class({
         this._attribution_composite.setSensitiveChildren([this._attribution_label]);
 
         this.parent(props);
+
+        if (!this._css_has_loaded) {
+            let css = Gio.File.new_for_uri('resource:///com/endlessm/knowledge/infobox.css');
+            Utils.add_css_provider_from_file(css, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+            this._css_has_loaded = true;
+        }
 
         this.add(this._caption_label);
         this.add(this._separator);
