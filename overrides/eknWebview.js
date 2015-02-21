@@ -36,8 +36,8 @@ const EknWebview = new Lang.Class({
         this._defaultFontSize = this._webKitSettings.default_font_size;
         this._defaultMonospaceFontSize = this._webKitSettings.default_monospace_font_size;
 
-        let screen = Gdk.Screen.get_default()
-        this._gtkSettings = Gtk.Settings.get_for_screen(screen)
+        let screen = Gdk.Screen.get_default();
+        this._gtkSettings = Gtk.Settings.get_for_screen(screen);
         this._updateFontSizeFromGtkSettings(this._gtkSettings);
 
         this.connect('context-menu', this._load_context_menu.bind(this));
