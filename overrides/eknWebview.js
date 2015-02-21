@@ -38,7 +38,6 @@ const EknWebview = new Lang.Class({
 
         let screen = Gdk.Screen.get_default()
         this._gtkSettings = Gtk.Settings.get_for_screen(screen)
-        this._baseXftDPI = this._gtkSettings.gtk_xft_dpi / 1024;
 
         this.connect('context-menu', this._load_context_menu.bind(this));
         this.connect('decide-policy', this._onNavigation.bind(this));
@@ -77,6 +76,7 @@ const EknWebview = new Lang.Class({
     },
 
     _normalizeFontSize: function (size, dpi) {
-        return size * dpi / this._baseXftDPI;
+        // 96 is the base DPI when no font scaling is applied.
+        return size * dpi / 96;
     }
 });
