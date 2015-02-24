@@ -90,9 +90,7 @@ const TitleView = new Lang.Class({
         if (this._title_text === value)
             return;
         this._title_text = value;
-        this._title_label.label = ('<span background="black"> ' +
-            this._title_text.toLocaleUpperCase() +
-            ' </span>');
+        this._title_label.label = this._title_text.toLocaleUpperCase();
         this.notify('title');
     },
 
