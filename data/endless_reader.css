@@ -88,18 +88,47 @@ overridden by app specific CSS */
     color: black;
 }
 
-.article-page-title {
-    font-family: Roboto;
-    font-size: 4.18em;
-    font-style: italic;
-    color: white;
+.article-page0 .article-page-title {
+    color: #666666;
+    font-family: Fjalla One;
+    font-size: 4.06em; /* 65px / 12px/em * 72/96 */
 }
 
-.article-page-attribution {
+.article-page0 .article-page-attribution {
+    color: #00bcb5;
     font-family: Roboto;
-    font-weight: 800; /* Black */
-    font-size: 0.75em; /* 12px, 72 DPI */
+    font-size: 0.88em; /* 14px / 12px/em * 72/96 */
+    font-style: italic;
+}
+
+.article-page1 .article-page-title {
+    background: black;
+    font-family: Roboto;
+    font-size: 4.19em; /* 67px / 12px/em * 72/96 */
+    font-style: italic;
+    font-weight: 500; /* medium */
+}
+
+.article-page1 .article-page-attribution {
     color: #94a723;
+    font-family: Roboto;
+    font-size: 0.75em; /* 12px / 12px/em * 72/96 */
+    font-weight: 800; /* black */
+}
+
+.article-page2 .article-page-title {
+    color: #6e2153;
+    font-family: Lato;
+    font-size: 3.38em; /* 54px / 12px/em * 72/96 */
+    font-style: italic;
+    font-weight: 800; /* black */
+}
+
+.article-page2 .article-page-attribution {
+    color: #ff82d4;
+    font-family: Roboto;
+    font-size: 0.81em; /* 13px / 12px/em * 72/96 */
+    font-style: italic;
 }
 
 .article-page-ornament {

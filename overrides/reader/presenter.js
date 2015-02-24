@@ -105,6 +105,8 @@ const Presenter = new Lang.Class({
             GObject.Object.$gtype),
     },
 
+    _NUM_ARTICLE_PAGE_STYLES: 3,
+
     _init: function (app_json, props) {
         let css = Gio.File.new_for_uri('resource:///com/endlessm/knowledge/endless_reader.css');
         Utils.add_css_provider_from_file(css, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
@@ -116,6 +118,8 @@ const Presenter = new Lang.Class({
         props.settings = props.settings || new UserSettingsModel.UserSettingsModel({
             settings_file: Gio.File.new_for_path(props.application.config_dir.get_path() + '/user_settings.json'),
         });
+
+        this._current_page_style_variant = 0;
 
         this.parent(props);
 
@@ -473,7 +477,16 @@ const Presenter = new Lang.Class({
         let article_page = new ArticlePage.ArticlePage();
         article_page.title_view.title = model.title;
         article_page.title_view.attribution = formatted_attribution;
+        this._assign_style_to_page(article_page);
         return article_page;
+    },
+
+    // Assigns a style to article pages, so that we can handle alternating design
+    // for title assets.
+    _assign_style_to_page: function (page) {
+        let style_variant = this._current_page_style_variant % this._NUM_ARTICLE_PAGE_STYLES;
+        this._current_page_style_variant++;
+        page.get_style_context().add_class('article-page' + style_variant);
     },
 
     // Show a friendlier error message when the engine is not working; suggest
