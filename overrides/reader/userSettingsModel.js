@@ -35,7 +35,7 @@ const UserSettingsModel = new Lang.Class({
         'bookmark-page': GObject.ParamSpec.uint('bookmark-page', 'Last Article Read',
             'Last article that the user read',
             GObject.ParamFlags.READWRITE,
-            0, GLib.MAXINT64, 0),
+            0, GLib.MAXUINT32, 0),
 
         /**
          * Property: highest-article-read
@@ -52,7 +52,7 @@ const UserSettingsModel = new Lang.Class({
         'highest-article-read': GObject.ParamSpec.uint('highest-article-read', 'Highest article read',
             'The high watermark of user\'s reading history',
             GObject.ParamFlags.READABLE,
-            0, GLib.MAXINT64, 0),
+            0, GLib.MAXUINT32, 0),
 
         /**
          * Property: settings-file
@@ -81,7 +81,7 @@ const UserSettingsModel = new Lang.Class({
         'start-article': GObject.ParamSpec.uint('start-article', 'Start article',
             'The first article in the set being read in the current week',
             GObject.ParamFlags.READWRITE,
-            0, GLib.MAXINT64, 0),
+            0, GLib.MAXUINT32, 0),
 
         /**
          * Property: update-timestamp
@@ -92,7 +92,7 @@ const UserSettingsModel = new Lang.Class({
          * Default value:
          *  0
          */
-        'update-timestamp': GObject.ParamSpec.uint('update-timestamp', 'Last Update Time',
+        'update-timestamp': GObject.ParamSpec.uint64('update-timestamp', 'Last Update Time',
             'Last time content was updated',
             GObject.ParamFlags.READWRITE,
             0, GLib.MAXINT64, 0),

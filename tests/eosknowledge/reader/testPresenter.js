@@ -17,14 +17,14 @@ const MockUserSettingsModel = new Lang.Class({
     Properties: {
         'highest-article-read': GObject.ParamSpec.uint('highest-article-read', '', '',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
-            0, GLib.MAXINT64, 0),
+            0, GLib.MAXUINT32, 0),
         'start-article': GObject.ParamSpec.uint('start-article', '', '',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
-            0, GLib.MAXINT64, 0),
+            0, GLib.MAXUINT32, 0),
         'bookmark-page': GObject.ParamSpec.uint('bookmark-page', '', '',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
-            0, GLib.MAXINT64, 0),
-        'update-timestamp': GObject.ParamSpec.uint('update-timestamp', 'Last Update Time',
+            0, GLib.MAXUINT32, 0),
+        'update-timestamp': GObject.ParamSpec.uint64('update-timestamp', 'Last Update Time',
             'Last time content was updated',
             GObject.ParamFlags.READWRITE,
             0, GLib.MAXINT64, 0),
@@ -171,8 +171,10 @@ describe('Reader presenter', function () {
             highest_article_read: 0,
             bookmark_page: 0,
             start_article: 0,
-            update_timestamp: GLib.MAXINT64,
         });
+        // 64-bit int construct properties don't work in GJS; they have to be
+        // set after construction.
+        settings.update_timestamp = GLib.MAXINT64;
         spyOn(engine, 'get_objects_by_query');
         construct_props = {
             engine: engine,

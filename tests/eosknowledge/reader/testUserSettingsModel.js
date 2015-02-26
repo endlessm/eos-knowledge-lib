@@ -84,5 +84,10 @@ describe('Reader user settings model', function () {
             settings.bookmark_page = 9;
             expect(settings.highest_article_read).toBe(9);
         });
+
+        it('has enough bits to correctly store timestamps in milliseconds', function () {
+            settings.update_timestamp = 1424989289681;
+            expect(settings.update_timestamp).toEqual(1424989289681);
+        });
     });
 });
