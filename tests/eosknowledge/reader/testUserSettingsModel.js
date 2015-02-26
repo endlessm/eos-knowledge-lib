@@ -59,28 +59,27 @@ describe('Reader user settings model', function () {
     });
 
     describe('object', function () {
-        it('saves settings to file when start article number changes', function () {
-            let settings = new EosKnowledge.Reader.UserSettingsModel({
+        let settings;
+
+        beforeEach(function () {
+            settings = new EosKnowledge.Reader.UserSettingsModel({
                 settings_file: user_settings_file,
             });
+        });
+
+        it('saves settings to file when start article number changes', function () {
             spyOn(settings, '_save_user_settings_to_file');
             settings.start_article = 2;
             expect(settings._save_user_settings_to_file).toHaveBeenCalled();
         });
 
         it('saves settings to file when article number changes', function () {
-            let settings = new EosKnowledge.Reader.UserSettingsModel({
-                settings_file: user_settings_file,
-            });
             spyOn(settings, '_save_user_settings_to_file');
             settings.bookmark_page = 9;
             expect(settings._save_user_settings_to_file).toHaveBeenCalled();
         });
 
         it('updates highest bookmark value when user navigates to a new highest page', function () {
-            let settings = new EosKnowledge.Reader.UserSettingsModel({
-                settings_file: user_settings_file,
-            });
             expect(settings.highest_article_read).not.toBe(9);
             settings.bookmark_page = 9;
             expect(settings.highest_article_read).toBe(9);
