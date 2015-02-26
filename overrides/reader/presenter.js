@@ -145,11 +145,9 @@ const Presenter = new Lang.Class({
         // Connect signals
         this.view.nav_buttons.connect('back-clicked', function () {
             this._shift_page(-1);
-            this.settings.bookmark_page--;
         }.bind(this));
         this.view.nav_buttons.connect('forward-clicked', function () {
             this._shift_page(1);
-            this.settings.bookmark_page++;
         }.bind(this));
         this.view.connect('notify::current-page',
             this._update_forward_button_visibility.bind(this));
@@ -192,7 +190,7 @@ const Presenter = new Lang.Class({
     _update_content: function () {
         this.settings.update_timestamp = Date.now();
         this.settings.start_article = this.settings.highest_article_read;
-        this.settings.bookmark_page = this.settings.start_article;
+        this.settings.bookmark_page = 0;
     },
 
     _load_all_content: function () {
@@ -244,7 +242,7 @@ const Presenter = new Lang.Class({
     _initialize_first_pages: function () {
         // The article number you are on is 1 less than the bookmarked page because we have the overview page
         // in the beginning
-        let current_article = this.settings.bookmark_page - this.settings.start_article - 1;
+        let current_article = this.settings.bookmark_page - 1;
         if (current_article >= 0 && current_article < this._article_models.length) {
             this._current_page = this._load_webview_content(this._article_models[current_article], function (view, error) {
                 this._load_webview_content_callback(this.view.get_article_page(current_article), view, error);
@@ -267,7 +265,7 @@ const Presenter = new Lang.Class({
             }.bind(this));
         }
 
-        this.view.current_page = this.settings.bookmark_page - this.settings.start_article;
+        this.view.current_page = this.settings.bookmark_page;
         this._update_forward_button_visibility();
 
         this.view.show_all();
@@ -304,6 +302,7 @@ const Presenter = new Lang.Class({
         let current_article = this.view.current_page - 1;
         let to_delete_index = current_article - delta;
         this.view.current_page += delta;
+        this.settings.bookmark_page = this.view.current_page;
         let to_load_index = current_article + delta;
         let next_model_to_load = this._article_models[to_load_index];
         if (next_model_to_load !== undefined) {

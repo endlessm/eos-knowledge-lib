@@ -287,7 +287,7 @@ describe('Reader presenter', function () {
             settings.highest_article_read = 5;
             view.issue_nav_buttons.forward_button.emit('clicked');
             expect(settings.start_article).toBe(5);
-            expect(settings.bookmark_page).toBe(5);
+            expect(settings.bookmark_page).toBe(0);
         });
 
         it('resets content when debug back button is clicked', function () {
@@ -344,7 +344,7 @@ describe('Reader presenter', function () {
             settings.highest_article_read = 5;
             presenter._update_content();
             expect(settings.start_article).toBe(5);
-            expect(settings.bookmark_page).toBe(5);
+            expect(settings.bookmark_page).toBe(0);
             expect(settings.update_timestamp).toBeGreaterThan(current_time);
         });
 

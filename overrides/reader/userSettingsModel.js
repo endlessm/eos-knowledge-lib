@@ -24,16 +24,17 @@ const UserSettingsModel = new Lang.Class({
          * Property: bookmark-page
          * Bookmark Article
          *
-         * The article most recently read by the user.
-         * The number is zero-based, that is, 0 means the first article.
-         * Note this number is absolute with respect to all articles
-         * in the database, even though only ~30 are shown to user at a time
+         * The page most recently read by the user.
+         * Page 0 means the overview page; 1 means the first article.
+         * Note this number is referring to the page within the app,
+         * NOT the database article number. To get the article number
+         * from the page you would do start_article + bookmark_page - 1
          *
          * Default value:
          *  0
          */
         'bookmark-page': GObject.ParamSpec.uint('bookmark-page', 'Last Article Read',
-            'Last article that the user read',
+            'Last used page in the app',
             GObject.ParamFlags.READWRITE,
             0, GLib.MAXUINT32, 0),
 
