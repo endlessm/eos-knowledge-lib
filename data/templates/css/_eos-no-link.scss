@@ -16,3 +16,11 @@ a.eos-no-link {
 .eos-no-image {
     display: none;
 }
+
+object > embed {
+	display:none;
+}
+
+#Video {
+	display:none;
+}
