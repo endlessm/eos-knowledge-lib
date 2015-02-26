@@ -21,7 +21,7 @@ describe('Reader user settings model', function () {
         it('correctly loads settings from file', function () {
             let data = {
                 start_article: 3,
-                highest_bookmark: 9,
+                highest_article_read: 9,
                 bookmark_page: 8,
                 update_timestamp: current_time,
             };
@@ -31,7 +31,7 @@ describe('Reader user settings model', function () {
             });
             expect(settings.start_article).toBe(3);
             expect(settings.bookmark_page).toBe(8);
-            expect(settings.highest_bookmark).toBe(9);
+            expect(settings.highest_article_read).toBe(9);
             expect(settings.update_timestamp).toBe(current_time);
         });
 
@@ -43,7 +43,7 @@ describe('Reader user settings model', function () {
             });
             expect(settings.start_article).toBe(0);
             expect(settings.bookmark_page).toBe(0);
-            expect(settings.highest_bookmark).toBe(0);
+            expect(settings.highest_article_read).toBe(0);
             expect(settings.update_timestamp).toBe(0);
         });
 
@@ -53,7 +53,7 @@ describe('Reader user settings model', function () {
             });
             expect(settings.start_article).toBe(0);
             expect(settings.bookmark_page).toBe(0);
-            expect(settings.highest_bookmark).toBe(0);
+            expect(settings.highest_article_read).toBe(0);
             expect(settings.update_timestamp).toBe(0);
         });
     });
@@ -81,9 +81,9 @@ describe('Reader user settings model', function () {
             let settings = new EosKnowledge.Reader.UserSettingsModel({
                 settings_file: user_settings_file,
             });
-            expect(settings.highest_bookmark).not.toBe(9);
+            expect(settings.highest_article_read).not.toBe(9);
             settings.bookmark_page = 9;
-            expect(settings.highest_bookmark).toBe(9);
+            expect(settings.highest_article_read).toBe(9);
         });
     });
 });

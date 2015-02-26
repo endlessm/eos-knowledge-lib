@@ -15,7 +15,7 @@ const MockUserSettingsModel = new Lang.Class({
     Name: 'MockUserSettingsModel',
     Extends: GObject.Object,
     Properties: {
-        'highest-bookmark': GObject.ParamSpec.uint('highest-bookmark', '', '',
+        'highest-article-read': GObject.ParamSpec.uint('highest-article-read', '', '',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
             0, GLib.MAXINT64, 0),
         'start-article': GObject.ParamSpec.uint('start-article', '', '',
@@ -168,7 +168,7 @@ describe('Reader presenter', function () {
         view = new MockView(article_nav_buttons);
         engine = new MockEngine();
         settings = new MockUserSettingsModel({
-            highest_bookmark: 0,
+            highest_article_read: 0,
             bookmark_page: 0,
             start_article: 0,
             update_timestamp: GLib.MAXINT64,
@@ -282,14 +282,14 @@ describe('Reader presenter', function () {
         });
 
         it('loads jumps to next set of articles when the debug forward button is clicked', function () {
-            settings.highest_bookmark = 5;
+            settings.highest_article_read = 5;
             view.issue_nav_buttons.forward_button.emit('clicked');
             expect(settings.start_article).toBe(5);
             expect(settings.bookmark_page).toBe(5);
         });
 
         it('resets content when debug back button is clicked', function () {
-            settings.highest_bookmark = 5;
+            settings.highest_article_read = 5;
             settings.start_article = 3;
             settings.bookmark_page = 4;
             view.issue_nav_buttons.back_button.emit('clicked');
@@ -339,7 +339,7 @@ describe('Reader presenter', function () {
         });
 
         it('has correct values after content update', function () {
-            settings.highest_bookmark = 5;
+            settings.highest_article_read = 5;
             presenter._update_content();
             expect(settings.start_article).toBe(5);
             expect(settings.bookmark_page).toBe(5);

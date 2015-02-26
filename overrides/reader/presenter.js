@@ -191,7 +191,7 @@ const Presenter = new Lang.Class({
 
     _update_content: function () {
         this.settings.update_timestamp = Date.now();
-        this.settings.start_article = this.settings.highest_bookmark;
+        this.settings.start_article = this.settings.highest_article_read;
         this.settings.bookmark_page = this.settings.start_article;
     },
 
