@@ -75,21 +75,6 @@ const Window = new Lang.Class({
             Endless.TopbarNavButton.$gtype),
 
         /**
-         * Property: current-page
-         *
-         * The current page number.
-         *
-         * Changing this property sets the current page to the specified index.
-         * When the last article page is reached, the current page
-         * is set to the done page.
-         *
-         */
-        'current-page': GObject.ParamSpec.uint('current-page', 'Current page',
-            'Page number currently being displayed',
-            GObject.ParamFlags.READWRITE,
-            0, GLib.MAXUINT32, 0),
-
-        /**
          * Property: lightbox
          *
          * The <Lightbox> widget created by this widget. Read-only,
@@ -166,7 +151,6 @@ const Window = new Lang.Class({
         }.bind(this));
 
         this._article_pages = [];
-        this._current_page = 0;
         this.parent(props);
 
         this._debug_hotkey_action = new Gio.SimpleAction({
@@ -243,6 +227,35 @@ const Window = new Lang.Class({
         pages.forEach(this.remove_article_page, this);
     },
 
+    show_article_page: function (index, transition_forward) {
+        this._nav_buttons.accommodate_scrollbar = true;
+        if (transition_forward) {
+            this._stack.set_transition_type(Gtk.StackTransitionType.SLIDE_LEFT);
+        } else {
+            this._stack.set_transition_type(Gtk.StackTransitionType.SLIDE_RIGHT);
+        }
+        let page = this._article_pages[index];
+        page.show();
+        this._stack.set_visible_child(page);
+    },
+
+    show_overview_page: function () {
+        this._nav_buttons.accommodate_scrollbar = false;
+        this._stack.set_transition_type(Gtk.StackTransitionType.SLIDE_RIGHT);
+        this._overview_page.show();
+        this._stack.set_visible_child(this._overview_page);
+    },
+
+    show_done_page: function () {
+        this._stack.set_transition_type(Gtk.StackTransitionType.SLIDE_LEFT);
+        this._done_page.show();
+        this._stack.set_visible_child(this._done_page);
+    },
+
+    get lightbox() {
+        return this._lightbox;
+    },
+
     get overview_page() {
         return this._overview_page;
     },
@@ -259,51 +272,8 @@ const Window = new Lang.Class({
         return this._issue_nav_buttons;
     },
 
-    get lightbox() {
-        return this._lightbox;
-    },
-
-    get current_page() {
-        return this._current_page;
-    },
-
-    set current_page(value) {
-        if (value === this._current_page)
-            return;
-
-        if (this._is_transitioning_forward(value)) {
-            this._stack.set_transition_type(Gtk.StackTransitionType.SLIDE_LEFT);
-        } else {
-            this._stack.set_transition_type(Gtk.StackTransitionType.SLIDE_RIGHT);
-        }
-
-        if (value === 0) {
-            this._current_page = value;
-            this._overview_page.show_all();
-            this._stack.set_visible_child(this._overview_page);
-            this._nav_buttons.accommodate_scrollbar = false;
-        } else if (value <= this._article_pages.length && value > 0) {
-            this._current_page = value;
-            this._stack.set_visible_child(this._article_pages[value - 1]);
-            this._nav_buttons.accommodate_scrollbar = true;
-        } else if (value === this._article_pages.length + 1) {
-            this._current_page = value;
-            this._done_page.show_all();
-            this._stack.set_visible_child(this._done_page);
-            this._nav_buttons.accommodate_scrollbar = true;
-        } else {
-            throw new Error('Current page value is out of range.');
-        }
-        this.notify('current-page');
-    },
-
-    _is_transitioning_forward: function (value) {
-        return value > this._current_page;
-    },
-
     get total_pages() {
         // Done page and overview page account for extra incrementation.
         return this._article_pages.length + 2;
     },
-
 });

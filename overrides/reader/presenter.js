@@ -103,6 +103,22 @@ const Presenter = new Lang.Class({
             'Reader app view',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             GObject.Object.$gtype),
+        /**
+         * Property: current-page
+         *
+         * The current article page number.
+         *
+         * If a standalone page is displaying, then this value is not relevant.
+         * A value of 0 represents the overview page, and a value of one beyond
+         * the last page represents the done page.
+         *
+         * Flags:
+         *   Read only
+         */
+        'current-page': GObject.ParamSpec.uint('current-page', 'Current page',
+            'Page number currently being displayed',
+            GObject.ParamFlags.READABLE,
+            0, GLib.MAXUINT32, 0),
     },
 
     _NUM_ARTICLE_PAGE_STYLES: 3,
@@ -147,15 +163,15 @@ const Presenter = new Lang.Class({
 
         // Connect signals
         this.view.nav_buttons.connect('back-clicked', function () {
-            this._go_to_page(this.view.current_page - 1);
+            this._go_to_page(this._current_page - 1);
         }.bind(this));
         this.view.nav_buttons.connect('forward-clicked', function () {
-            this._go_to_page(this.view.current_page + 1);
+            this._go_to_page(this._current_page + 1);
         }.bind(this));
-        this.view.connect('notify::current-page',
-            this._update_forward_button_visibility.bind(this));
+
         this.view.connect('notify::total-pages',
-            this._update_forward_button_visibility.bind(this));
+            this._update_button_visibility.bind(this));
+
         this.view.issue_nav_buttons.back_button.connect('clicked', function () {
             this.settings.start_article = 0;
             this.settings.bookmark_page = 0;
@@ -170,10 +186,10 @@ const Presenter = new Lang.Class({
         }.bind(this));
         this.view.connect('lightbox-nav-previous-clicked', this._on_lightbox_previous_clicked.bind(this));
         this.view.connect('lightbox-nav-next-clicked', this._on_lightbox_next_clicked.bind(this));
+    },
 
-        //Bind properties
-        this.view.bind_property('current-page', this.view.nav_buttons,
-            'back-visible', GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE);
+    get current_page() {
+        return this._current_page;
     },
 
     // Right now these functions are just stubs which we will need to flesh out
@@ -261,8 +277,16 @@ const Presenter = new Lang.Class({
     // pages + overview page + done page. So to go to the overview page, you
     // would call this._go_to_page(0)
     _go_to_page: function (index) {
-        this.view.current_page = index;
-        this.settings.bookmark_page = index;
+        if (this._current_page === index)
+            return;
+
+        let current_article = index - 1;
+        if (index === 0)
+            this.view.show_overview_page();
+        else if (index === this.view.total_pages - 1)
+            this.view.show_done_page();
+        else
+            this.view.show_article_page(current_article, this._current_page < index);
 
         // We want to always have ready on deck the webviews for the current
         // article, the article preceding the current one, and the next article.
@@ -272,7 +296,6 @@ const Presenter = new Lang.Class({
         // for those articles. E.g. if you are on page 7, you'd have a
         // webview_map like:
         // {6: <webview_object>, 7: <webview_object>, 8: <webview_object>}
-        let current_article = index - 1;
 
         // The range of article numbers for which we want to store webviews (the
         // current, the preceding, the next), excluding negative index values.
@@ -298,7 +321,12 @@ const Presenter = new Lang.Class({
             });
         });
 
-        this._update_forward_button_visibility();
+        this._current_page = index;
+        this.notify('current-page');
+        // Guaranteed to have changed; we returned early if not changed.
+
+        this.settings.bookmark_page = index;
+        this._update_button_visibility();
     },
 
     // First article data has been loaded asynchronously; now we can start
@@ -309,7 +337,7 @@ const Presenter = new Lang.Class({
         models.forEach(function (model) {
             let page = this._create_article_page_from_article_model(model);
             this.view.append_article_page(page);
-            this._update_forward_button_visibility();
+            this._update_button_visibility();
         }, this);
         this._article_models = this._article_models.concat(models);
     },
@@ -409,8 +437,9 @@ const Presenter = new Lang.Class({
         }
     },
 
-    _update_forward_button_visibility: function () {
-        this.view.nav_buttons.forward_visible = (this.view.current_page !== this.view.total_pages - 1);
+    _update_button_visibility: function () {
+        this.view.nav_buttons.forward_visible = (this._current_page !== this.view.total_pages - 1);
+        this.view.nav_buttons.back_visible = (this._current_page > 0);
     },
 
     // Retrieve all needed information from the app.json file, such as the app

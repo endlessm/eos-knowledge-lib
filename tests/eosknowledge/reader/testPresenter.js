@@ -74,11 +74,6 @@ const MockButton = new Lang.Class({
 const MockView = new Lang.Class({
     Name: 'MockView',
     Extends: GObject.Object,
-    Properties: {
-        'current-page': GObject.ParamSpec.uint('current-page', '', '',
-            GObject.ParamFlags.READWRITE,
-            0, GLib.MAXUINT32, 0),
-    },
     Signals: {
         'debug-hotkey-pressed': {},
         'lightbox-nav-previous-clicked': {},
@@ -116,6 +111,9 @@ const MockView = new Lang.Class({
     },
 
     show_all: function () {},
+    show_article_page: function () {},
+    show_overview_page: function () {},
+    show_done_page: function () {},
     append_article_page: function (page) {
         this._article_pages.push(page);
     },
@@ -242,7 +240,7 @@ describe('Reader presenter', function () {
         });
 
         it('starts on the first page', function () {
-            expect(view.current_page).toBe(0);
+            expect(presenter.current_page).toBe(0);
         });
 
         it('disables the back button on the first page', function () {
@@ -254,28 +252,52 @@ describe('Reader presenter', function () {
         });
 
         it('enables the back button when not on the first page', function () {
-            view.current_page = view.total_pages - 1;
-            view.notify('current-page');
+            presenter._go_to_page(view.total_pages - 1);
             expect(article_nav_buttons.back_visible).toBe(true);
         });
 
         it('disables the forward button on the last page', function () {
-            view.current_page = view.total_pages - 1;
-            view.notify('current-page');
+            presenter._go_to_page(view.total_pages - 1);
             expect(article_nav_buttons.forward_visible).toBe(false);
         });
 
         it('increments the current page when clicking the forward button', function () {
             article_nav_buttons.emit('forward-clicked');
-            expect(view.current_page).toBe(1);
+            expect(presenter.current_page).toBe(1);
             expect(settings.bookmark_page).toBe(1);
         });
 
         it('decrements the current page when clicking the back button', function () {
             article_nav_buttons.emit('forward-clicked');
             article_nav_buttons.emit('back-clicked');
-            expect(view.current_page).toBe(0);
+            expect(presenter.current_page).toBe(0);
             expect(settings.bookmark_page).toBe(0);
+        });
+
+        it('tells the view to go to the overview page', function () {
+            presenter._go_to_page(5);
+            spyOn(view, 'show_overview_page');
+            presenter._go_to_page(0);
+            expect(view.show_overview_page).toHaveBeenCalled();
+        });
+
+        it('tells the view to go to the done page', function () {
+            spyOn(view, 'show_done_page');
+            presenter._go_to_page(view.total_pages - 1);
+            expect(view.show_done_page).toHaveBeenCalled();
+        });
+
+        it('tells the view to animate forward when going to a later page', function () {
+            spyOn(view, 'show_article_page');
+            presenter._go_to_page(1);
+            expect(view.show_article_page).toHaveBeenCalledWith(0, true);
+        });
+
+        it('tells the view to animate backward when going to an earlier page', function () {
+            presenter._go_to_page(3);
+            spyOn(view, 'show_article_page');
+            presenter._go_to_page(1);
+            expect(view.show_article_page).toHaveBeenCalledWith(0, false);
         });
 
         it('shows the debug buttons when told to', function () {
