@@ -232,6 +232,12 @@ const SpaceContainer = new Lang.Class({
             info.child.size_allocate(rect);
         });
     },
+
+    vfunc_remove: function (child) {
+        this.parent(child);
+        if (child.visible)
+            this.queue_resize();
+    },
 });
 
 function _sum(array) {
