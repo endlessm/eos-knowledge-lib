@@ -1,5 +1,6 @@
 const EosKnowledge = imports.gi.EosKnowledge;
 const GLib = imports.gi.GLib;
+const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
@@ -65,12 +66,22 @@ let clear = new Gtk.Button({
 clear.connect('clicked', function () {
     container.get_children().forEach(container.remove, container);
 });
+let spacing = new Gtk.SpinButton({
+    adjustment: new Gtk.Adjustment({
+        lower: 0,
+        upper: 1000,
+        step_increment: 1,
+    }),
+});
+spacing.bind_property('value', container, 'spacing',
+    GObject.BindingFlags.DEFAULT);
 let grid = new Gtk.Grid({
     orientation: Gtk.Orientation.VERTICAL,
 });
-grid.add(add_new);
-grid.add(clear);
-grid.add(container);
+grid.attach(add_new, 0, 0, 1, 1);
+grid.attach(clear, 1, 0, 1, 1);
+grid.attach(spacing, 2, 0, 1, 1);
+grid.attach(container, 0, 1, 3, 1);
 win.add(grid);
 win.show_all();
 win.connect('destroy', Gtk.main_quit);

@@ -1,5 +1,6 @@
 const Cairo = imports.gi.cairo;  // note GI module, not native module
 const Endless = imports.gi.Endless;
+const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
@@ -31,11 +32,35 @@ const SpaceContainer = new Lang.Class({
         'orientation': GObject.ParamSpec.enum('orientation', 'override', 'override',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
             Gtk.Orientation.$gtype, Gtk.Orientation.VERTICAL),
+        /**
+         * Property: spacing
+         * The amount of space between children
+         *
+         * Default:
+         *   0
+         */
+        'spacing': GObject.ParamSpec.uint('spacing', 'Spacing',
+            'The amount of space between children',
+            GObject.ParamFlags.READWRITE,
+            0, GLib.MAXUINT16, 0),
     },
 
     _init: function (props={}) {
         props.vexpand = true;
+        this._spacing = 0;
         this.parent(props);
+    },
+
+    get spacing() {
+        return this._spacing;
+    },
+
+    set spacing(value) {
+        if (this._spacing === value)
+            return;
+        this._spacing = value;
+        this.notify('spacing');
+        this.queue_resize();
     },
 
     _get_visible_children: function () {
@@ -70,7 +95,7 @@ const SpaceContainer = new Lang.Class({
         let [min, nat] = children[0][primary_getter]();
         nat += children.slice(1).reduce((accum, child) => {
             let [child_min, child_nat] = child[primary_getter]();
-            return accum + child_nat;
+            return accum + child_nat + this._spacing;
         }, 0);
         return [min, nat];
     },
@@ -80,9 +105,11 @@ const SpaceContainer = new Lang.Class({
         let shown_children_info = [];
         let ran_out_of_space = false;
         // Determine how many children will fit in the available space.
-        children.forEach((child) => {
+        children.forEach((child, ix) => {
             let [child_min, child_nat] = child['get_preferred_' + primary]();
             cum_min_size += child_min;
+            if (ix > 0)
+                cum_min_size += this._spacing;
             if (!ran_out_of_space && cum_min_size <= available_space) {
                 shown_children_info.push({
                     minimum: child_min,
@@ -102,7 +129,9 @@ const SpaceContainer = new Lang.Class({
     _allocate_primary_space: function (shown_children_info, available_space) {
         // Start by giving each visible child its minimum height.
         let allocated_sizes = shown_children_info.map((info) => info.minimum);
-        let extra_space = available_space - _sum(allocated_sizes);
+        let extra_space = available_space -
+            (shown_children_info.length - 1) * this._spacing -
+            _sum(allocated_sizes);
 
         // If there is extra space, give each visible child more height up to
         // its natural height.
@@ -186,9 +215,14 @@ const SpaceContainer = new Lang.Class({
         let allocated_primary_sizes = this._allocate_primary_space(shown_children_info,
             allocation[primary]);
 
-        let cum_primary_sizes = _cumsum(allocated_primary_sizes);
+        // Calculate the positions of the widgets, taking into account the
+        // spacing; one widget begins where the previous widget ends, plus the
+        // spacing.
+        let cum_primary_sizes = _cumsum(allocated_primary_sizes.map((size) =>
+            size + this._spacing));
         let cum_rel_positions = cum_primary_sizes.slice();
         cum_rel_positions.unshift(0);
+
         shown_children_info.forEach((info, ix) => {
             let props = {};
             props[primary] = allocated_primary_sizes[ix];

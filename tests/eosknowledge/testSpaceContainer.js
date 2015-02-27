@@ -217,4 +217,22 @@ function addTestsForOrientation(primary, secondary) {
 
         expect(boxes[2].get_child_visible()).toBe(false);
     });
+
+    it('includes the spacing in its size request', function () {
+        let boxes = [50, 50].map((size) => this.add_box(new IncompressibleBox(size)));
+        this.container.spacing = 50;
+        update_gui();
+
+        let [minimum, natural] = this.container['get_preferred_' + primary]();
+        expect(natural).toBe(150);
+    });
+
+    it('can push its children off the end with spacing', function () {
+        let boxes = [50, 50].map((size) => this.add_box(new IncompressibleBox(size)));
+        this.container.spacing = 250;
+        update_gui();
+
+        expect(boxes[0].get_child_visible()).toBe(true);
+        expect(boxes[1].get_child_visible()).toBe(false);
+    });
 }
