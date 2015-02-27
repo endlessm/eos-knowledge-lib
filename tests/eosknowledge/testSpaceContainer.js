@@ -81,7 +81,7 @@ describe('Space container', function () {
             win.show_all();
         });
 
-        addTestsForOrientation('height', 'width');
+        addTestsForOrientation('height', 'width', 'y', 'valign');
     });
 
     describe('horizontally oriented', function () {
@@ -98,11 +98,11 @@ describe('Space container', function () {
             win.show_all();
         });
 
-        addTestsForOrientation('width', 'height');
+        addTestsForOrientation('width', 'height', 'x', 'halign');
     });
 });
 
-function addTestsForOrientation(primary, secondary) {
+function addTestsForOrientation(primary, secondary, primary_pos, primary_align) {
     // NOTE: These tests use get_child_visible() to test whether the container
     // determined there was enough space to show the child. That is an
     // implementation detail, unfortunately.
@@ -272,5 +272,37 @@ function addTestsForOrientation(primary, secondary) {
         });
         this.container.remove(boxes[1]);
         update_gui();
+    });
+
+    it('allocates leftover space to the end for Align.START', function () {
+        this.container[primary_align] = Gtk.Align.START;
+        let boxes = [200, 200].map((size) => this.add_box(new IncompressibleBox(size)));
+        update_gui();
+
+        expect(boxes[0].get_allocation()[primary_pos]).toBe(0);
+    });
+
+    it('allocates leftover space to both ends for Align.CENTER', function () {
+        this.container[primary_align] = Gtk.Align.CENTER;
+        let boxes = [200, 200].map((size) => this.add_box(new IncompressibleBox(size)));
+        update_gui();
+
+        expect(boxes[0].get_allocation()[primary_pos]).toBe(50);
+    });
+
+    it('allocates leftover space to both ends for Align.FILL', function () {
+        this.container[primary_align] = Gtk.Align.FILL;
+        let boxes = [200, 200].map((size) => this.add_box(new IncompressibleBox(size)));
+        update_gui();
+
+        expect(boxes[0].get_allocation()[primary_pos]).toBe(50);
+    });
+
+    it('allocates leftover space to the beginning for Align.END', function () {
+        this.container[primary_align] = Gtk.Align.END;
+        let boxes = [200, 200].map((size) => this.add_box(new IncompressibleBox(size)));
+        update_gui();
+
+        expect(boxes[0].get_allocation()[primary_pos]).toBe(100);
     });
 }

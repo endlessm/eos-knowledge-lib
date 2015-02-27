@@ -189,9 +189,10 @@ const SpaceContainer = new Lang.Class({
                 });
             }
         }
-        // If any extra space after that, just don't use it.
+        // If any extra space after that, just don't use it; pass it back to the
+        // caller since they know what side of the widget to pad.
 
-        return allocated_sizes;
+        return [allocated_sizes, extra_space];
     },
 
     vfunc_get_preferred_width: function () {
@@ -213,17 +214,19 @@ const SpaceContainer = new Lang.Class({
         if (children.length === 0)
             return;
 
-        let primary, secondary, primary_pos, secondary_pos;
+        let primary, secondary, primary_pos, secondary_pos, primary_align;
         if (this.orientation === Gtk.Orientation.VERTICAL) {
             primary = 'height';
             secondary = 'width';
             primary_pos = 'y';
             secondary_pos = 'x';
+            primary_align = 'valign';
         } else {
             primary = 'width';
             secondary = 'height';
             primary_pos = 'x';
             secondary_pos = 'y';
+            primary_align = 'halign';
         }
 
         let shown_children_info = this._get_shown_children_info(children,
@@ -231,8 +234,8 @@ const SpaceContainer = new Lang.Class({
         if (shown_children_info.length === 0)
             return;  // No widgets fit, nothing to do.
 
-        let allocated_primary_sizes = this._allocate_primary_space(shown_children_info,
-            allocation[primary]);
+        let [allocated_primary_sizes, extra_space] =
+            this._allocate_primary_space(shown_children_info, allocation[primary]);
 
         // Calculate the positions of the widgets, taking into account the
         // spacing; one widget begins where the previous widget ends, plus the
@@ -242,11 +245,25 @@ const SpaceContainer = new Lang.Class({
         let cum_rel_positions = cum_primary_sizes.slice();
         cum_rel_positions.unshift(0);
 
+        // Also take into account the primary align property if we received more
+        // space than we requested.
+        let pad_start = 0;
+        if (extra_space > 0) {
+            switch (this[primary_align]) {
+            case Gtk.Align.END:
+                pad_start = extra_space;
+                break;
+            case Gtk.Align.CENTER:
+            case Gtk.Align.FILL:
+                pad_start = Math.round(extra_space / 2);
+            }
+        }
+
         shown_children_info.forEach((info, ix) => {
             let props = {};
             props[primary] = allocated_primary_sizes[ix];
             props[secondary] = allocation[secondary];
-            props[primary_pos] = allocation[primary_pos] + cum_rel_positions[ix];
+            props[primary_pos] = allocation[primary_pos] + pad_start + cum_rel_positions[ix];
             props[secondary_pos] = allocation[secondary_pos];
             let rect = new Cairo.RectangleInt(props);
             info.child.size_allocate(rect);
