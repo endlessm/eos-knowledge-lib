@@ -235,4 +235,42 @@ function addTestsForOrientation(primary, secondary) {
         expect(boxes[0].get_child_visible()).toBe(true);
         expect(boxes[1].get_child_visible()).toBe(false);
     });
+
+    it('tells that all children are visible', function () {
+        let boxes = [100, 100].map((size) => this.add_box(new IncompressibleBox(size)));
+        update_gui();
+
+        expect(this.container.all_visible).toBeTruthy();
+    });
+
+    it('tells that not all children are visible', function () {
+        let boxes = [200, 200].map((size) => this.add_box(new IncompressibleBox(size)));
+        update_gui();
+
+        expect(this.container.all_visible).toBeFalsy();
+    });
+
+    it('notifies when not all children are visible anymore', function (done) {
+        let boxes = [150, 150].map((size) => this.add_box(new IncompressibleBox(size)));
+        update_gui();
+
+        this.container.connect('notify::all-visible', () => {
+            expect(this.container.all_visible).toBeFalsy();
+            done();
+        });
+        this.add_box(new IncompressibleBox(150));
+        update_gui();
+    });
+
+    it('notifies when all children become visible', function (done) {
+        let boxes = [200, 200].map((size) => this.add_box(new IncompressibleBox(size)));
+        update_gui();
+
+        this.container.connect('notify::all-visible', () => {
+            expect(this.container.all_visible).toBeTruthy();
+            done();
+        });
+        this.container.remove(boxes[1]);
+        update_gui();
+    });
 }

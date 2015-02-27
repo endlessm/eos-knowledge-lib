@@ -43,9 +43,21 @@ const SpaceContainer = new Lang.Class({
             'The amount of space between children',
             GObject.ParamFlags.READWRITE,
             0, GLib.MAXUINT16, 0),
+        /**
+         * Property: all-visible
+         * Whether all children are visible or some were cut off
+         *
+         * Flags:
+         *   read-only
+         */
+        'all-visible': GObject.ParamSpec.boolean('all-visible', 'All visible',
+            'All children visible',
+            GObject.ParamFlags.READABLE,
+            true),
     },
 
     _init: function (props={}) {
+        this._all_fit = true;
         this._spacing = 0;
         this.parent(props);
     },
@@ -60,6 +72,10 @@ const SpaceContainer = new Lang.Class({
         this._spacing = value;
         this.notify('spacing');
         this.queue_resize();
+    },
+
+    get all_visible() {
+        return this._all_fit;
     },
 
     _get_visible_children: function () {
@@ -122,6 +138,10 @@ const SpaceContainer = new Lang.Class({
                 ran_out_of_space = true;
             }
         });
+        if (ran_out_of_space === this._all_fit) {
+            this._all_fit = !ran_out_of_space;
+            this.notify('all-visible');
+        }
         return shown_children_info;
     },
 
