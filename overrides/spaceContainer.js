@@ -46,7 +46,6 @@ const SpaceContainer = new Lang.Class({
     },
 
     _init: function (props={}) {
-        props.vexpand = true;
         this._spacing = 0;
         this.parent(props);
     },
