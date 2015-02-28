@@ -46,6 +46,14 @@ describe('Window widget', function () {
         expect(view.done_page).toBeA(Gtk.Widget);
     });
 
+    it('has an overview-page widget', function () {
+        expect(view.overview_page).toBeA(Gtk.Widget);
+    });
+
+    it('has a standalone-page widget', function () {
+        expect(view.standalone_page).toBeA(Gtk.Widget);
+    });
+
     it('has a nav-buttons widget', function () {
         expect(view.nav_buttons).toBeA(Gtk.Widget);
     });

@@ -8,6 +8,7 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
+const ArticlePage = imports.reader.articlePage;
 const DonePage = imports.reader.donePage;
 const Lightbox = imports.lightbox;
 const NavButtonOverlay = imports.navButtonOverlay;
@@ -61,6 +62,18 @@ const Window = new Lang.Class({
             'The done page at the end of the app.',
             GObject.ParamFlags.READABLE,
             DonePage.DonePage.$gtype),
+
+        /**
+         * Property: standalone-page
+         *
+         * The <Reader.ArticlePage> widget created by this widget in order to
+         * show a standalone search result from the archive.
+         * Read-only.
+         */
+        'standalone-page': GObject.ParamSpec.object('standalone-page',
+            'Standalone page', 'The page that shows a single article',
+            GObject.ParamFlags.READABLE,
+            ArticlePage.ArticlePage.$gtype),
 
         /**
          * Property: issue-nav-buttons
@@ -129,6 +142,8 @@ const Window = new Lang.Class({
 
         this._overview_page = new OverviewPage.OverviewPage();
         this._done_page = new DonePage.DonePage();
+        this._standalone_page = new ArticlePage.ArticlePage();
+        this._standalone_page.progress_label.no_show_all = true;
         this._nav_buttons = new NavButtonOverlay.NavButtonOverlay({
             back_image_uri: this._BACK_IMAGE_URI,
             forward_image_uri: this._FORWARD_IMAGE_URI,
@@ -167,6 +182,7 @@ const Window = new Lang.Class({
         });
         this._stack.add(this._overview_page);
         this._stack.add(this._done_page);
+        this._stack.add(this._standalone_page);
         this._nav_buttons.add(this._stack);
         this._lightbox.add(this._nav_buttons);
         this.page_manager.add(this._lightbox, {
@@ -227,6 +243,15 @@ const Window = new Lang.Class({
         pages.forEach(this.remove_article_page, this);
     },
 
+    show_standalone_page: function () {
+        this._standalone_page.show();
+        this._standalone_page.progress_label.hide();
+        this._stack.set_transition_type(Gtk.StackTransitionType.SLIDE_UP);
+        this._stack.set_visible_child(this._standalone_page);
+        this._nav_buttons.back_visible = false;
+        this._nav_buttons.forward_visible = false;
+    },
+
     show_article_page: function (index, transition_forward) {
         this._nav_buttons.accommodate_scrollbar = true;
         if (transition_forward) {
@@ -262,6 +287,10 @@ const Window = new Lang.Class({
 
     get done_page() {
         return this._done_page;
+    },
+
+    get standalone_page() {
+        return this._standalone_page;
     },
 
     get nav_buttons() {
