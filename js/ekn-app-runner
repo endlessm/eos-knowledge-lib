@@ -1,5 +1,6 @@
 #!/usr/bin/env gjs
 
+const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
 const Endless = imports.gi.Endless;
 const EosKnowledgeSearch = imports.EosKnowledgeSearch;
@@ -37,7 +38,6 @@ const Application = new Lang.Class({
     _init: function (props) {
         this.parent(props);
         this._presenter = null;
-        this._activation_timestamp = null;
         this._knowledge_search_impl = Gio.DBusExportedObject.wrapJSObject(KnowledgeSearchIface, this);
 
         let domain = this.application_id.split('.').pop();
@@ -64,33 +64,19 @@ const Application = new Lang.Class({
     },
 
     LoadPage: function(ekn_id, query, timestamp) {
-        this._activation_timestamp = timestamp;
-        this.activate();
-        this._activation_timestamp = null;
-        this._presenter.activate_search_result(ekn_id, query);
+        this._ensure_presenter();
+        this._presenter.activate_search_result(timestamp, ekn_id, query);
     },
 
     LoadQuery: function(query, timestamp) {
-        this._activation_timestamp = timestamp;
-        this.activate();
-        this._activation_timestamp = null;
-        this._presenter.search(query);
+        this._ensure_presenter();
+        this._presenter.search(timestamp, query);
     },
 
     vfunc_activate: function () {
         this.parent();
-
-        if (EosKnowledge === null)
-            EosKnowledge = imports.gi.EosKnowledge;
-
-        if (this._presenter === null)
-            this._presenter = EosKnowledge.get_presenter_for_resource(this, ARGV[1]);
-
-        if (this._activation_timestamp !== null) {
-            this._presenter.view.present_with_time(this._activation_timestamp);
-        } else {
-            this._presenter.view.present();
-        }
+        this._ensure_presenter();
+        this._presenter.desktop_launch(Gdk.CURRENT_TIME);
     },
 
     vfunc_window_removed: function(win) {
@@ -98,6 +84,14 @@ const Application = new Lang.Class({
             this._presenter = null;
         }
         this.parent(win);
+    },
+
+    _ensure_presenter: function () {
+        if (EosKnowledge === null)
+            EosKnowledge = imports.gi.EosKnowledge;
+
+        if (this._presenter === null)
+            this._presenter = EosKnowledge.get_presenter_for_resource(this, ARGV[1]);
     },
 });
 

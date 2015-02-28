@@ -14,6 +14,7 @@ const ArticlePage = imports.reader.articlePage;
 const Config = imports.config;
 const EknWebview = imports.eknWebview;
 const Engine = imports.engine;
+const Launcher = imports.launcher;
 const Previewer = imports.previewer;
 const UserSettingsModel = imports.reader.userSettingsModel;
 const Utils = imports.utils;
@@ -42,7 +43,7 @@ const UPDATE_INTERVAL_MS = 604800000;
 const Presenter = new Lang.Class({
     Name: 'Presenter',
     GTypeName: 'EknReaderPresenter',
-    Extends: GObject.Object,
+    Extends: Launcher.Launcher,
     Properties: {
         /**
          * Property: application
@@ -192,13 +193,10 @@ const Presenter = new Lang.Class({
         return this._current_page;
     },
 
-    // Right now these functions are just stubs which we will need to flesh out
-    // if we ever want to register search providers for the reader apps. The
-    // former will be called by ekn-app-runner if the user asks to view a search
-    // query within an application, and the latter if the user asks to view a
-    // specific article.
-    search: function (query) {},
-    activate_search_result: function (model, query) {},
+    // EosKnowledge.Launcher override
+    desktop_launch: function (timestamp) {
+        this.view.present_with_time(timestamp);
+    },
 
     _clear_webview_from_map: function (index) {
         this.view.get_article_page(index).clear_content();
