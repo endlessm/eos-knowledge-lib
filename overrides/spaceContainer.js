@@ -1,5 +1,7 @@
 const Cairo = imports.gi.cairo;  // note GI module, not native module
 const Endless = imports.gi.Endless;
+const GLib = imports.gi.GLib;
+const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
@@ -21,10 +23,59 @@ const SpaceContainer = new Lang.Class({
     Name: 'SpaceContainer',
     GTypeName: 'EknSpaceContainer',
     Extends: Endless.CustomContainer,
+    Implements: [Gtk.Orientable],
+    Properties: {
+        /**
+         * Property: orientation
+         * Implemented from **Gtk.Orientable**
+         */
+        'orientation': GObject.ParamSpec.enum('orientation', 'override', 'override',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
+            Gtk.Orientation.$gtype, Gtk.Orientation.VERTICAL),
+        /**
+         * Property: spacing
+         * The amount of space between children
+         *
+         * Default:
+         *   0
+         */
+        'spacing': GObject.ParamSpec.uint('spacing', 'Spacing',
+            'The amount of space between children',
+            GObject.ParamFlags.READWRITE,
+            0, GLib.MAXUINT16, 0),
+        /**
+         * Property: all-visible
+         * Whether all children are visible or some were cut off
+         *
+         * Flags:
+         *   read-only
+         */
+        'all-visible': GObject.ParamSpec.boolean('all-visible', 'All visible',
+            'All children visible',
+            GObject.ParamFlags.READABLE,
+            true),
+    },
 
     _init: function (props={}) {
-        props.vexpand = true;
+        this._all_fit = true;
+        this._spacing = 0;
         this.parent(props);
+    },
+
+    get spacing() {
+        return this._spacing;
+    },
+
+    set spacing(value) {
+        if (this._spacing === value)
+            return;
+        this._spacing = value;
+        this.notify('spacing');
+        this.queue_resize();
+    },
+
+    get all_visible() {
+        return this._all_fit;
     },
 
     _get_visible_children: function () {
@@ -32,48 +83,49 @@ const SpaceContainer = new Lang.Class({
         return this.get_children().reverse().filter((child) => child.visible);
     },
 
-    // Widths are the maximum minimal and natural widths of any one child, even
+    // The secondary dimension (i.e., width if orientation == VERTICAL) is the
+    // maximum minimal and natural secondary dimensions of any one child, even
     // including ones that are not shown.
-    vfunc_get_preferred_width: function () {
+    _get_preferred_secondary: function (secondary) {
         let children = this.get_children();
         if (children.length === 0)
             return [0, 0];
         return children.reduce((accum, child) => {
             let [min, nat] = accum;
-            let [child_min, child_nat] = child.get_preferred_width();
+            let [child_min, child_nat] = child['get_preferred_' + secondary]();
             return [Math.max(child_min, min), Math.max(child_nat, nat)];
         }, [0, 0]);
     },
 
-    // Preferred minimal height is the minimal height of the first child, since
-    // the widget can shrink down to one child; preferred natural height is the
-    // combined natural height of all children, since given enough space we
-    // would display all of them.
-    vfunc_get_preferred_height: function () {
+    // The primary dimension is height if orientation == VERTICAL, for example.
+    // Preferred minimal primary dimension is the minimal primary dimension of
+    // the first child, since the widget can shrink down to one child; preferred
+    // natural primary dimension is the combined natural primary dimension of
+    // all children, since given enough space we would display all of them.
+    _get_preferred_primary: function (primary) {
         let children = this._get_visible_children();
         if (children.length === 0)
             return [0, 0];
-        let [min, nat] = children[0].get_preferred_height();
+        let primary_getter = 'get_preferred_' + primary;
+        let [min, nat] = children[0][primary_getter]();
         nat += children.slice(1).reduce((accum, child) => {
-            let [child_min, child_nat] = child.get_preferred_height();
-            return accum + child_nat;
+            let [child_min, child_nat] = child[primary_getter]();
+            return accum + child_nat + this._spacing;
         }, 0);
         return [min, nat];
     },
 
-    vfunc_size_allocate: function (allocation) {
-        let children = this._get_visible_children();
-        if (children.length === 0)
-            return;
-
-        let cum_min_height = 0;
+    _get_shown_children_info: function (children, primary, available_space) {
+        let cum_min_size = 0;
         let shown_children_info = [];
         let ran_out_of_space = false;
         // Determine how many children will fit in the available space.
-        children.forEach((child) => {
-            let [child_min, child_nat] = child.get_preferred_height();
-            cum_min_height += child_min;
-            if (!ran_out_of_space && cum_min_height <= allocation.height) {
+        children.forEach((child, ix) => {
+            let [child_min, child_nat] = child['get_preferred_' + primary]();
+            cum_min_size += child_min;
+            if (ix > 0)
+                cum_min_size += this._spacing;
+            if (!ran_out_of_space && cum_min_size <= available_space) {
                 shown_children_info.push({
                     minimum: child_min,
                     natural: child_nat,
@@ -86,17 +138,25 @@ const SpaceContainer = new Lang.Class({
                 ran_out_of_space = true;
             }
         });
-        if (shown_children_info.length === 0)
-            return;  // No widgets fit, nothing to do.
+        if (ran_out_of_space === this._all_fit) {
+            this._all_fit = !ran_out_of_space;
+            this.notify('all-visible');
+        }
+        return shown_children_info;
+    },
 
+    _allocate_primary_space: function (shown_children_info, available_space) {
         // Start by giving each visible child its minimum height.
-        let allocated_heights = shown_children_info.map((info) => info.minimum);
-        let extra_space = allocation.height - _sum(allocated_heights);
+        let allocated_sizes = shown_children_info.map((info) => info.minimum);
+        let extra_space = available_space -
+            (shown_children_info.length - 1) * this._spacing -
+            _sum(allocated_sizes);
 
         // If there is extra space, give each visible child more height up to
         // its natural height.
         if (extra_space > 0) {
-            let requested_diff = allocated_heights.map((height, ix) => shown_children_info[ix].natural - height);
+            let requested_diff = allocated_sizes.map((size, ix) =>
+                shown_children_info[ix].natural - size);
             let space_for_all_naturals = _sum(requested_diff);
             // If possible, give every child its natural height, otherwise give
             // each child a fair proportion of its natural height.
@@ -104,7 +164,7 @@ const SpaceContainer = new Lang.Class({
                 extra_space / space_for_all_naturals;
             requested_diff.forEach((diff, ix) => {
                 let adjustment = Math.round(diff * proportion);
-                allocated_heights[ix] += adjustment;
+                allocated_sizes[ix] += adjustment;
                 extra_space -= adjustment;
             });
         }
@@ -114,7 +174,7 @@ const SpaceContainer = new Lang.Class({
         if (extra_space > 0) {
             let num_expanded = 0;
             let expanded = shown_children_info.map((info) => {
-                let expand = info.child.compute_expand(Gtk.Orientation.VERTICAL);
+                let expand = info.child.compute_expand(this.orientation);
                 if (expand)
                     num_expanded++;
                 return expand;
@@ -123,28 +183,97 @@ const SpaceContainer = new Lang.Class({
                 let extra_allotment = Math.round(extra_space / num_expanded);
                 expanded.forEach((expand, ix) => {
                     if (expand) {
-                        allocated_heights[ix] += extra_allotment;
+                        allocated_sizes[ix] += extra_allotment;
                         extra_space -= extra_allotment;
                     }
                 });
             }
         }
-        // If any extra space after that, just don't use it.
+        // If any extra space after that, just don't use it; pass it back to the
+        // caller since they know what side of the widget to pad.
 
-        let cum_heights = _cumsum(allocated_heights);
-        let cum_rel_ys = cum_heights.slice();
-        cum_rel_ys.unshift(0);
+        return [allocated_sizes, extra_space];
+    },
+
+    vfunc_get_preferred_width: function () {
+        if (this.orientation === Gtk.Orientation.VERTICAL)
+            return this._get_preferred_secondary('width');
+        return this._get_preferred_primary('width');
+    },
+
+    vfunc_get_preferred_height: function () {
+        if (this.orientation === Gtk.Orientation.VERTICAL)
+            return this._get_preferred_primary('height');
+        return this._get_preferred_secondary('height');
+    },
+
+    vfunc_size_allocate: function (allocation) {
+        this.parent(allocation);
+
+        let children = this._get_visible_children();
+        if (children.length === 0)
+            return;
+
+        let primary, secondary, primary_pos, secondary_pos, primary_align;
+        if (this.orientation === Gtk.Orientation.VERTICAL) {
+            primary = 'height';
+            secondary = 'width';
+            primary_pos = 'y';
+            secondary_pos = 'x';
+            primary_align = 'valign';
+        } else {
+            primary = 'width';
+            secondary = 'height';
+            primary_pos = 'x';
+            secondary_pos = 'y';
+            primary_align = 'halign';
+        }
+
+        let shown_children_info = this._get_shown_children_info(children,
+            primary, allocation[primary]);
+        if (shown_children_info.length === 0)
+            return;  // No widgets fit, nothing to do.
+
+        let [allocated_primary_sizes, extra_space] =
+            this._allocate_primary_space(shown_children_info, allocation[primary]);
+
+        // Calculate the positions of the widgets, taking into account the
+        // spacing; one widget begins where the previous widget ends, plus the
+        // spacing.
+        let cum_primary_sizes = _cumsum(allocated_primary_sizes.map((size) =>
+            size + this._spacing));
+        let cum_rel_positions = cum_primary_sizes.slice();
+        cum_rel_positions.unshift(0);
+
+        // Also take into account the primary align property if we received more
+        // space than we requested.
+        let pad_start = 0;
+        if (extra_space > 0) {
+            switch (this[primary_align]) {
+            case Gtk.Align.END:
+                pad_start = extra_space;
+                break;
+            case Gtk.Align.CENTER:
+            case Gtk.Align.FILL:
+                pad_start = Math.round(extra_space / 2);
+            }
+        }
+
         shown_children_info.forEach((info, ix) => {
-            let rect = new Cairo.RectangleInt({
-                x: allocation.x,
-                y: allocation.y + cum_rel_ys[ix],
-                width: allocation.width,
-                height: allocated_heights[ix],
-            });
+            let props = {};
+            props[primary] = allocated_primary_sizes[ix];
+            props[secondary] = allocation[secondary];
+            props[primary_pos] = allocation[primary_pos] + pad_start + cum_rel_positions[ix];
+            props[secondary_pos] = allocation[secondary_pos];
+            let rect = new Cairo.RectangleInt(props);
             info.child.size_allocate(rect);
         });
+    },
 
-        this.set_allocation(allocation);
+    vfunc_remove: function (child) {
+        this.parent(child);
+        if (child.visible)
+            this.queue_resize();
     },
 });
 

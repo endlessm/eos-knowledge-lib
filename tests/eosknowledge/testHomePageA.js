@@ -7,8 +7,21 @@ const CssClassMatcher = imports.CssClassMatcher;
 const TESTDIR = Endless.getCurrentFileDir() + '/..';
 
 describe('Home page for Template A', () => {
-    let home_page;
-    let card_list = [
+    let home_page, notify, card_list;
+
+    beforeEach(() => {
+        jasmine.addMatchers(CssClassMatcher.customMatchers);
+
+        home_page = new EosKnowledge.HomePageA();
+
+        notify = jasmine.createSpy('notify');
+        home_page.connect('notify', (object, pspec) => {
+            // Seems properties defined in js can only be accessed through
+            // object[name] with the underscore variant on the name
+            notify(pspec.name, object[pspec.name.replace('-', '_')]);
+        });
+
+        card_list = [
             new EosKnowledge.Card({
                 title: 'Synopsised Card',
                 synopsis: 'This is the Synopsis',
@@ -34,21 +47,8 @@ describe('Home page for Template A', () => {
                 item_index: 1,
                 complete: false,
                 featured: false,
-            })
+            }),
         ];
-
-    beforeEach(() => {
-        jasmine.addMatchers(CssClassMatcher.customMatchers);
-
-        home_page = new EosKnowledge.HomePageA();
-
-        notify = jasmine.createSpy('notify');
-        home_page.connect('notify', (object, pspec) => {
-            // Seems properties defined in js can only be accessed through
-            // object[name] with the underscore variant on the name
-            notify(pspec.name, object[pspec.name.replace('-', '_')]);
-        });
-
     });
 
     it('can be constructed', () => {});

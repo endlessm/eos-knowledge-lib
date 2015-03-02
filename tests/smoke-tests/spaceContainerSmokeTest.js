@@ -1,5 +1,6 @@
 const EosKnowledge = imports.gi.EosKnowledge;
 const GLib = imports.gi.GLib;
+const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
@@ -14,7 +15,7 @@ const CompressibleBox = new Lang.Class({
     _init: function (props={}) {
         this.parent(props);
 
-        this._width = GLib.random_int_range(50, 300);
+        this._width = GLib.random_int_range(50, 200);
         this._height = GLib.random_int_range(50, 200);
 
         let label = new Gtk.Label({
@@ -41,10 +42,12 @@ const CompressibleBox = new Lang.Class({
 });
 
 let win = new Gtk.Window({
-    default_width: 300,
-    default_height: 600,
+    default_width: 600,
+    default_height: 300,
 });
-let container = new EosKnowledge.SpaceContainer();
+let container = new EosKnowledge.SpaceContainer({
+    orientation: Gtk.Orientation.HORIZONTAL,
+});
 let add_new = new Gtk.Button({
     label: 'Add new box',
 });
@@ -63,12 +66,22 @@ let clear = new Gtk.Button({
 clear.connect('clicked', function () {
     container.get_children().forEach(container.remove, container);
 });
+let spacing = new Gtk.SpinButton({
+    adjustment: new Gtk.Adjustment({
+        lower: 0,
+        upper: 1000,
+        step_increment: 1,
+    }),
+});
+spacing.bind_property('value', container, 'spacing',
+    GObject.BindingFlags.DEFAULT);
 let grid = new Gtk.Grid({
     orientation: Gtk.Orientation.VERTICAL,
 });
-grid.add(add_new);
-grid.add(clear);
-grid.add(container);
+grid.attach(add_new, 0, 0, 1, 1);
+grid.attach(clear, 1, 0, 1, 1);
+grid.attach(spacing, 2, 0, 1, 1);
+grid.attach(container, 0, 1, 3, 1);
 win.add(grid);
 win.show_all();
 win.connect('destroy', Gtk.main_quit);
