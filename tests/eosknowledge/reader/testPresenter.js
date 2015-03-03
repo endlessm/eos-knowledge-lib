@@ -101,6 +101,10 @@ const MockView = new Lang.Class({
             set_article_snippets: jasmine.createSpy('set_article_snippets'),
             remove_all_snippets: function () {},
         };
+        this.standalone_page = {
+            get_style_context: get_style_context,
+            title_view: {},
+        };
 
         this.total_pages = 0;
         this._article_pages = [];
@@ -115,6 +119,7 @@ const MockView = new Lang.Class({
     show_article_page: function () {},
     show_overview_page: function () {},
     show_done_page: function () {},
+    show_standalone_page: function () {},
     append_article_page: function (page) {
         this._article_pages.push(page);
     },
@@ -137,13 +142,14 @@ describe('Reader presenter', function () {
         ['Title 3', [],                 '2014/11/13 08:00'],
         ['Title 4', [],                 ''],
     ];
-    const MOCK_RESULTS = MOCK_DATA.map((data) => {
+    const MOCK_RESULTS = MOCK_DATA.map((data, ix) => {
         return {
             title: data[0],
             ekn_id: 'about:blank',
             get_authors: jasmine.createSpy('get_authors').and.returnValue(data[1]),
             published: data[2],
             html: '<html>hello</html>',
+            article_number: ix,
         };
     });
 
@@ -202,6 +208,35 @@ describe('Reader presenter', function () {
             expect(function () {
                 presenter.desktop_launch();
             }).not.toThrow();
+        });
+
+        it('loads the standalone page when launched with a search result', function () {
+            const MOCK_ID = 'abc123';
+            spyOn(engine, 'get_object_by_id').and.callFake(function (id, callback) {
+                callback(undefined, {
+                    article_number: 5000,
+                    html: '<html>hello</html>',
+                    ekn_id: 'about:blank',
+                    title: 'I Write a Blog',
+                    get_authors: jasmine.createSpy().and.returnValue([]),
+                });
+            });
+            spyOn(view, 'show_standalone_page');
+            presenter.activate_search_result(0, MOCK_ID, 'fake query');
+            expect(engine.get_object_by_id).toHaveBeenCalledWith(MOCK_ID,
+                jasmine.any(Function));
+            expect(view.show_standalone_page).toHaveBeenCalled();
+        });
+
+        it('starts at the right page when search result is in this issue', function () {
+            engine.get_objects_by_query.and.callFake(function (q, callback) {
+                callback(undefined, MOCK_RESULTS, function () {});
+            });
+            spyOn(engine, 'get_object_by_id').and.callFake(function (id, callback) {
+                callback(undefined, MOCK_RESULTS[2]);
+            });
+            presenter.activate_search_result(0, 'abc2134', 'fake query');
+            expect(presenter.current_page).toBe(3);
         });
     });
 

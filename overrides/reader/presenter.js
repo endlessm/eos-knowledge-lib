@@ -211,6 +211,54 @@ const Presenter = new Lang.Class({
         }, /* progress callback */ this._append_results.bind(this));
     },
 
+    // EosKnowledge.Launcher override
+    activate_search_result: function (timestamp, id, query) {
+        // Check if we need to load an article separately from the normally
+        // scheduled content
+        this.engine.get_object_by_id(id, (error, model) => {
+            if (error) {
+                printerr(error);
+                printerr(error.stack);
+                this._show_specific_error_page();
+                this.view.show_all();
+                this.view.present_with_time(timestamp);
+                return;
+            }
+
+            if (this._is_archived(model)) {
+                this._load_standalone_article(model);
+                // FIXME Here we should load the rest of the content in the
+                // background; but as there currently isn't a way to get from
+                // the standalone page to the regular content, we don't.
+                this.view.show_all();
+                this.view.present_with_time(timestamp);
+                return;
+            }
+
+            this._load_all_content(/* callback */ (error) => {
+                if (error) {
+                    printerr(error);
+                    printerr(error.stack);
+                    this._show_general_error_page();
+                } else {
+                    this._load_overview_snippets_from_articles();
+                    // add 1 for overview page
+                    let page_number = model.article_number -
+                        this.settings.start_article + 1;
+                    this._go_to_page(page_number);
+                }
+                this.view.show_all();
+                this.view.present_with_time(timestamp);
+            }, /* progress callback */ this._append_results.bind(this));
+        });
+    },
+
+    _is_archived: function (model) {
+        let already_read = model.article_number < this.settings.start_article;
+        let not_read_yet = model.article_number >= this.settings.start_article + TOTAL_ARTICLES;
+        return already_read || not_read_yet;
+    },
+
     _clear_webview_from_map: function (index) {
         this.view.get_article_page(index).clear_content();
         this._webview_map[index].destroy();
@@ -622,5 +670,16 @@ const Presenter = new Lang.Class({
         this.view.lightbox.reveal_overlays = true;
         this.view.lightbox.has_back_button = previous_arrow_visible;
         this.view.lightbox.has_forward_button = next_arrow_visible;
+    },
+
+    _load_standalone_article: function (model) {
+        this._standalone = this._load_webview_content(model, (webview, error) => {
+            this._load_webview_content_callback(this.view.standalone_page, webview, error);
+        });
+        this.view.standalone_page.title_view.title = model.title;
+        this.view.standalone_page.title_view.attribution =
+            this._format_attribution_for_metadata(model.get_authors(), model.published);
+        this.view.standalone_page.get_style_context().add_class('article-page0');
+        this.view.show_standalone_page();
     },
 });
