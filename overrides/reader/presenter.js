@@ -199,7 +199,7 @@ const Presenter = new Lang.Class({
             if (error) {
                 printerr(error);
                 printerr(error.stack);
-                this._show_error_page();
+                this._show_general_error_page();
             } else {
                 // We now have all the articles we want to show. Now we load the
                 // HTML content for the first few pages into the webview.
@@ -241,7 +241,7 @@ const Presenter = new Lang.Class({
             if (error) {
                 printerr(error);
                 printerr(error.stack);
-                this._show_error_page();
+                this._show_general_error_page();
                 return;
             }
 
@@ -461,9 +461,7 @@ const Presenter = new Lang.Class({
         if (error !== undefined) {
             printerr(error);
             printerr(error.stack);
-            let err_page = this._create_error_label(_("Oops!"),
-                _("There was an error loading that page.\nTry another one or try again after restarting your computer."));
-            page.show_content_view(err_page);
+            this._show_specific_error_page();
         } else {
             page.show_content_view(view);
         }
@@ -548,13 +546,24 @@ const Presenter = new Lang.Class({
         return err_label;
     },
 
-    // Use _create_error_label to show a general error page, when there is no
-    // content.
-    _show_error_page: function () {
-        let err_label = this._create_error_label(_("Oops!"),
-            _("We could not find this magazine!\nPlease try again after restarting your computer."));
+    _show_error_page: function (headline, message) {
+        let err_label = this._create_error_label(headline, message);
         this.view.page_manager.add(err_label);
         this.view.page_manager.visible_child = err_label;
+    },
+
+    // Use _create_error_label to show a general error page, when there is no
+    // content.
+    _show_general_error_page: function () {
+        this._show_error_page(_("Oops!"),
+            _("We could not find this magazine!\nPlease try again after restarting your computer."));
+    },
+
+    // Use _create_error_label to show a specific error page, when a particular
+    // page couldn't be found.
+    _show_specific_error_page: function () {
+        this._show_error_page(_("Oops!"),
+            _("There was an error loading that page.\nTry another one or try again after restarting your computer."));
     },
 
     _load_overview_snippets_from_articles: function () {
