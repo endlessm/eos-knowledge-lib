@@ -110,6 +110,7 @@ const MockView = new Lang.Class({
         this.lightbox = {};
     },
 
+    present_with_time: function () {},
     show_all: function () {},
     show_article_page: function () {},
     show_overview_page: function () {},
@@ -126,8 +127,7 @@ const MockView = new Lang.Class({
 });
 
 describe('Reader presenter', function () {
-    let engine, settings, view, article_nav_buttons, construct_props, test_json,
-        MOCK_RESULTS;
+    let engine, settings, view, article_nav_buttons, presenter, MOCK_RESULTS;
     let test_app_filename = Endless.getCurrentFileDir() + '/../../test-content/app.json';
 
     beforeEach(function () {
@@ -174,21 +174,20 @@ describe('Reader presenter', function () {
         // set after construction.
         settings.update_timestamp = GLib.MAXINT64;
         spyOn(engine, 'get_objects_by_query');
-        construct_props = {
+        let test_json = utils.parse_object_from_path(test_app_filename);
+
+        presenter = new EosKnowledge.Reader.Presenter(test_json, {
             engine: engine,
             settings: settings,
             view: view,
-        };
-        test_json = utils.parse_object_from_path(test_app_filename);
+        });
     });
 
-    describe('construction process', function () {
-        it('works', function () {
-            let presenter = new EosKnowledge.Reader.Presenter(test_json, construct_props);
-        });
+    it('constructs', function () {});
 
+    describe('launch process', function () {
         it('queries the articles in the initial article set', function () {
-            let presenter = new EosKnowledge.Reader.Presenter(test_json, construct_props);
+            presenter.desktop_launch();
             expect(engine.get_objects_by_query).toHaveBeenCalledWith(
                 jasmine.objectContaining({
                     limit: 15,
@@ -204,7 +203,7 @@ describe('Reader presenter', function () {
             engine.get_objects_by_query.and.callFake(function (q, callback) {
                 callback(undefined, MOCK_RESULTS, function () {});
             });
-            let presenter = new EosKnowledge.Reader.Presenter(test_json, construct_props);
+            presenter.desktop_launch();
             expect(view.append_article_page.calls.count()).toEqual(MOCK_RESULTS.length);
             MOCK_RESULTS.forEach(function (result, index) {
                 expect(view.append_article_page.calls.argsFor(index)[0].title_view.title).toEqual(result.title);
@@ -216,13 +215,12 @@ describe('Reader presenter', function () {
                 callback('error', undefined);
             });
             expect(function () {
-                let presenter = new EosKnowledge.Reader.Presenter(test_json, construct_props);
+                presenter.desktop_launch();
             }).not.toThrow();
         });
     });
 
     describe('object', function () {
-        let presenter;
         let current_time = Date.now();
 
         beforeEach(function () {
@@ -230,7 +228,7 @@ describe('Reader presenter', function () {
                 callback(undefined, MOCK_RESULTS, function () {});
             });
             view.total_pages = MOCK_RESULTS.length + 1;
-            presenter = new EosKnowledge.Reader.Presenter(test_json, construct_props);
+            presenter.desktop_launch();
         });
 
         it('has all articles as pages', function () {

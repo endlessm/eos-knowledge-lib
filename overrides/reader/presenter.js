@@ -1,6 +1,7 @@
 const EosKnowledge = imports.gi.EosKnowledge;
 const EosKnowledgeSearch = imports.EosKnowledgeSearch;
 const Format = imports.format;
+const Gdk = imports.gi.Gdk;
 const Gettext = imports.gettext;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
@@ -150,9 +151,6 @@ const Presenter = new Lang.Class({
         this._webview_map = {};
         this._article_models = [];
 
-        // Load all articles in this issue
-        this._load_all_content();
-
         this._previewer = new Previewer.Previewer({
             visible: true,
         });
@@ -180,7 +178,8 @@ const Presenter = new Lang.Class({
         this.view.issue_nav_buttons.forward_button.connect('clicked', function () {
             this._update_content();
         }.bind(this));
-        this.settings.connect('notify::start-article', this._load_all_content.bind(this));
+        this.settings.connect('notify::start-article',
+            this._load_new_issue.bind(this));
         let handler = this.view.connect('debug-hotkey-pressed', function () {
             this.view.issue_nav_buttons.show();
             this.view.disconnect(handler);  // One-shot signal handler only.
@@ -194,14 +193,61 @@ const Presenter = new Lang.Class({
     },
 
     // EosKnowledge.Launcher override
-    desktop_launch: function (timestamp) {
-        this.view.present_with_time(timestamp);
+    desktop_launch: function (timestamp=Gdk.CURRENT_TIME) {
+        // Load all articles in this issue
+        this._load_all_content(/* callback */ (error) => {
+            if (error) {
+                printerr(error);
+                printerr(error.stack);
+                this._show_error_page();
+            } else {
+                // We now have all the articles we want to show. Now we load the
+                // HTML content for the first few pages into the webview.
+                this._load_overview_snippets_from_articles();
+                this._go_to_page(this.settings.bookmark_page);
+            }
+            this.view.show_all();
+            this.view.present_with_time(timestamp);
+        }, /* progress callback */ this._append_results.bind(this));
     },
 
     _clear_webview_from_map: function (index) {
         this.view.get_article_page(index).clear_content();
         this._webview_map[index].destroy();
         delete this._webview_map[index];
+    },
+
+    // Clear out all existing content in preparation for loading a new issue.
+    _clear_content: function () {
+        // Make sure to drop all references to webviews we are holding.
+        for (let article_index in this._webview_map) {
+            this._clear_webview_from_map(article_index);
+        }
+        // Clear out state from any issue that was already displaying.
+        this._article_models = [];
+        this.view.remove_all_article_pages();
+        this.view.overview_page.remove_all_snippets();
+    },
+
+    _append_results: function (results) {
+        this._total_fetched += RESULTS_SIZE;
+        this._create_pages_from_models(results);
+    },
+
+    _load_new_issue: function () {
+        // Load all articles in this issue
+        this._clear_content();
+        this._load_all_content(/* callback */ (error) => {
+            if (error) {
+                printerr(error);
+                printerr(error.stack);
+                this._show_error_page();
+                return;
+            }
+
+            this._load_overview_snippets_from_articles();
+            this._go_to_page(0);
+        }, /* progress callback */ this._append_results.bind(this));
     },
 
     _check_for_content_update: function() {
@@ -216,7 +262,7 @@ const Presenter = new Lang.Class({
         this.settings.bookmark_page = 0;
     },
 
-    _load_all_content: function () {
+    _load_all_content: function (callback, progress_callback) {
         this._total_fetched = 0;
         this.engine.get_objects_by_query({
             offset: this.settings.start_article,
@@ -225,47 +271,35 @@ const Presenter = new Lang.Class({
             order: 'asc',
             tags: ['EknArticleObject'],
         }, function (error, results, get_more_results_func) {
-            // Make sure to drop all references to any webviews we are holding.
-            for (let article_index in this._webview_map) {
-                this._clear_webview_from_map(article_index);
-            }
-            // Clear out state from any issue that was already displaying.
-            this._article_models = [];
-            this.view.remove_all_article_pages();
-            this.view.overview_page.remove_all_snippets();
+            if (!error && results.length < 1)
+                error = GLib.Error.new_literal(Gio.io_error_quark(),
+                    Gio.ErrorEnum.NOT_FOUND,
+                    'No content found for this magazine');
 
-            if (error !== undefined || results.length < 1) {
-                if (error !== undefined) {
-                    printerr(error);
-                    printerr(error.stack);
-                }
-                let err_label = this._create_error_label(_("Oops!"),
-                    _("We could not find this magazine!\nPlease try again after restarting your computer."));
-                this.view.page_manager.add(err_label);
-                this.view.page_manager.visible_child = err_label;
-                this.view.show_all();
+            if (error) {
+                callback(error);
             } else {
-                this._fetch_content_recursive(undefined, results, get_more_results_func);
+                this._fetch_content_recursive(undefined, results,
+                    get_more_results_func, callback, progress_callback);
             }
         }.bind(this));
     },
 
-    _fetch_content_recursive: function (err, results, get_more_results_func) {
+    _fetch_content_recursive: function (err, results, get_more_results_func, callback, progress_callback) {
+        function fetch_helper(err, results, get_more_results_func) {
+            this._fetch_content_recursive(err, results, get_more_results_func,
+                callback, progress_callback);
+        }
+
         if (err !== undefined) {
-            printerr(err);
-            printerr(err.stack);
+            callback(err);
         } else {
-            this._total_fetched += RESULTS_SIZE;
-            this._create_pages_from_models(results);
+            progress_callback(results);
             // If there are more results to get, then fetch more content
             if (results.length >= RESULTS_SIZE && this._total_fetched < TOTAL_ARTICLES) {
-                get_more_results_func(RESULTS_SIZE, this._fetch_content_recursive.bind(this));
+                get_more_results_func(RESULTS_SIZE, fetch_helper.bind(this));
             } else {
-                // We now have all the articles we want to show. Now we load the HTML content
-                // for the first few pages into the webview
-                this._load_overview_snippets_from_articles();
-                this._go_to_page(this.settings.bookmark_page);
-                this.view.show_all();
+                callback();
             }
         }
     },
@@ -512,6 +546,15 @@ const Presenter = new Lang.Class({
         err_label.get_style_context().add_class(EosKnowledge.STYLE_CLASS_READER_ERROR_PAGE);
         err_label.show();
         return err_label;
+    },
+
+    // Use _create_error_label to show a general error page, when there is no
+    // content.
+    _show_error_page: function () {
+        let err_label = this._create_error_label(_("Oops!"),
+            _("We could not find this magazine!\nPlease try again after restarting your computer."));
+        this.view.page_manager.add(err_label);
+        this.view.page_manager.visible_child = err_label;
     },
 
     _load_overview_snippets_from_articles: function () {
