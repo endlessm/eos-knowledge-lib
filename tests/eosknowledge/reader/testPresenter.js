@@ -127,41 +127,27 @@ const MockView = new Lang.Class({
 });
 
 describe('Reader presenter', function () {
-    let engine, settings, view, article_nav_buttons, presenter, MOCK_RESULTS;
-    let test_app_filename = Endless.getCurrentFileDir() + '/../../test-content/app.json';
+    let engine, settings, view, article_nav_buttons, presenter;
+
+    const TEST_APP_FILENAME = Endless.getCurrentFileDir() + '/../../test-content/app.json';
+    const TEST_JSON = utils.parse_object_from_path(TEST_APP_FILENAME);
+    const MOCK_DATA = [
+        ['Title 1', ['Kim Kardashian'], '2014/11/13 08:00'],
+        ['Title 2', ['Kim Kardashian'], ''],
+        ['Title 3', [],                 '2014/11/13 08:00'],
+        ['Title 4', [],                 ''],
+    ];
+    const MOCK_RESULTS = MOCK_DATA.map((data) => {
+        return {
+            title: data[0],
+            ekn_id: 'about:blank',
+            get_authors: jasmine.createSpy('get_authors').and.returnValue(data[1]),
+            published: data[2],
+            html: '<html>hello</html>',
+        };
+    });
 
     beforeEach(function () {
-        let MOCK_DATA = [
-            [
-               'Title 1',
-                ["Kim Kardashian"],
-                '2014/11/13 08:00',
-            ],
-            [
-                'Title 2',
-                ["Kim Kardashian"],
-                '',
-            ],
-            [
-                'Title 3',
-                [],
-                '2014/11/13 08:00',
-            ],
-            [
-                'Title 4',
-                [],
-                '',
-            ],
-        ];
-        MOCK_RESULTS = MOCK_DATA.map(function (data) {
-            return {
-                title: data[0],
-                ekn_id: 'about:blank',
-                get_authors: jasmine.createSpy('get_authors').and.returnValue(data[1]),
-                published: data[2],
-                html: '<html>hello</html>',
-            }
-        });
         article_nav_buttons = new MockNavButtons();
         view = new MockView(article_nav_buttons);
         engine = new MockEngine();
@@ -174,9 +160,8 @@ describe('Reader presenter', function () {
         // set after construction.
         settings.update_timestamp = GLib.MAXINT64;
         spyOn(engine, 'get_objects_by_query');
-        let test_json = utils.parse_object_from_path(test_app_filename);
 
-        presenter = new EosKnowledge.Reader.Presenter(test_json, {
+        presenter = new EosKnowledge.Reader.Presenter(TEST_JSON, {
             engine: engine,
             settings: settings,
             view: view,
