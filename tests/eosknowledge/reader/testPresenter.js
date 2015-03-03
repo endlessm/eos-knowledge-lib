@@ -202,7 +202,7 @@ describe('Reader presenter', function () {
         it('adds the articles as pages', function () {
             spyOn(view, 'append_article_page');
             engine.get_objects_by_query.and.callFake(function (q, callback) {
-                callback(undefined, MOCK_RESULTS);
+                callback(undefined, MOCK_RESULTS, function () {});
             });
             let presenter = new EosKnowledge.Reader.Presenter(test_json, construct_props);
             expect(view.append_article_page.calls.count()).toEqual(MOCK_RESULTS.length);
@@ -227,7 +227,7 @@ describe('Reader presenter', function () {
 
         beforeEach(function () {
             engine.get_objects_by_query.and.callFake(function (q, callback) {
-                callback(undefined, MOCK_RESULTS);
+                callback(undefined, MOCK_RESULTS, function () {});
             });
             view.total_pages = MOCK_RESULTS.length + 1;
             presenter = new EosKnowledge.Reader.Presenter(test_json, construct_props);
@@ -339,7 +339,7 @@ describe('Reader presenter', function () {
         it('removes the old pages when loading new pages', function () {
             engine.get_objects_by_query.calls.reset();
             engine.get_objects_by_query.and.callFake(function (q, callback) {
-                callback(undefined, [MOCK_RESULTS[0]]);
+                callback(undefined, [MOCK_RESULTS[0]], function () {});
             });
             spyOn(view, 'remove_all_article_pages').and.callThrough();
             settings.start_article = 3;
