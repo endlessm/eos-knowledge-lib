@@ -17,6 +17,7 @@ public_overrides = \
 	overrides/homePageA.js \
 	overrides/homePageB.js \
 	overrides/infiniteScrolledWindow.js \
+	overrides/launcher.js \
 	overrides/lessonCard.js \
 	overrides/lightbox.js \
 	overrides/listCard.js \

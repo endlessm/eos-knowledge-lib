@@ -1,6 +1,7 @@
 const EosKnowledge = imports.gi.EosKnowledge;
 const EosKnowledgeSearch = imports.EosKnowledgeSearch;
 const Format = imports.format;
+const Gdk = imports.gi.Gdk;
 const Gettext = imports.gettext;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
@@ -14,6 +15,7 @@ const ArticlePage = imports.reader.articlePage;
 const Config = imports.config;
 const EknWebview = imports.eknWebview;
 const Engine = imports.engine;
+const Launcher = imports.launcher;
 const Previewer = imports.previewer;
 const UserSettingsModel = imports.reader.userSettingsModel;
 const Utils = imports.utils;
@@ -42,7 +44,7 @@ const UPDATE_INTERVAL_MS = 604800000;
 const Presenter = new Lang.Class({
     Name: 'Presenter',
     GTypeName: 'EknReaderPresenter',
-    Extends: GObject.Object,
+    Extends: Launcher.Launcher,
     Properties: {
         /**
          * Property: application
@@ -103,6 +105,22 @@ const Presenter = new Lang.Class({
             'Reader app view',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             GObject.Object.$gtype),
+        /**
+         * Property: current-page
+         *
+         * The current article page number.
+         *
+         * If a standalone page is displaying, then this value is not relevant.
+         * A value of 0 represents the overview page, and a value of one beyond
+         * the last page represents the done page.
+         *
+         * Flags:
+         *   Read only
+         */
+        'current-page': GObject.ParamSpec.uint('current-page', 'Current page',
+            'Page number currently being displayed',
+            GObject.ParamFlags.READABLE,
+            0, GLib.MAXUINT32, 0),
     },
 
     _NUM_ARTICLE_PAGE_STYLES: 3,
@@ -130,8 +148,8 @@ const Presenter = new Lang.Class({
         this._check_for_content_update();
         this._parse_app_info(app_json);
 
-        // Load all articles in this issue
-        this._load_all_content();
+        this._webview_map = {};
+        this._article_models = [];
 
         this._previewer = new Previewer.Previewer({
             visible: true,
@@ -144,17 +162,15 @@ const Presenter = new Lang.Class({
 
         // Connect signals
         this.view.nav_buttons.connect('back-clicked', function () {
-            this._shift_page(-1);
-            this.settings.bookmark_page--;
+            this._go_to_page(this._current_page - 1);
         }.bind(this));
         this.view.nav_buttons.connect('forward-clicked', function () {
-            this._shift_page(1);
-            this.settings.bookmark_page++;
+            this._go_to_page(this._current_page + 1);
         }.bind(this));
-        this.view.connect('notify::current-page',
-            this._update_forward_button_visibility.bind(this));
+
         this.view.connect('notify::total-pages',
-            this._update_forward_button_visibility.bind(this));
+            this._update_button_visibility.bind(this));
+
         this.view.issue_nav_buttons.back_button.connect('clicked', function () {
             this.settings.start_article = 0;
             this.settings.bookmark_page = 0;
@@ -162,26 +178,125 @@ const Presenter = new Lang.Class({
         this.view.issue_nav_buttons.forward_button.connect('clicked', function () {
             this._update_content();
         }.bind(this));
-        this.settings.connect('notify::start-article', this._load_all_content.bind(this));
+        this.settings.connect('notify::start-article',
+            this._load_new_issue.bind(this));
         let handler = this.view.connect('debug-hotkey-pressed', function () {
             this.view.issue_nav_buttons.show();
             this.view.disconnect(handler);  // One-shot signal handler only.
         }.bind(this));
         this.view.connect('lightbox-nav-previous-clicked', this._on_lightbox_previous_clicked.bind(this));
         this.view.connect('lightbox-nav-next-clicked', this._on_lightbox_next_clicked.bind(this));
-
-        //Bind properties
-        this.view.bind_property('current-page', this.view.nav_buttons,
-            'back-visible', GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE);
     },
 
-    // Right now these functions are just stubs which we will need to flesh out
-    // if we ever want to register search providers for the reader apps. The
-    // former will be called by ekn-app-runner if the user asks to view a search
-    // query within an application, and the latter if the user asks to view a
-    // specific article.
-    search: function (query) {},
-    activate_search_result: function (model, query) {},
+    get current_page() {
+        return this._current_page;
+    },
+
+    // EosKnowledge.Launcher override
+    desktop_launch: function (timestamp=Gdk.CURRENT_TIME) {
+        // Load all articles in this issue
+        this._load_all_content(/* callback */ (error) => {
+            if (error) {
+                printerr(error);
+                printerr(error.stack);
+                this._show_general_error_page();
+            } else {
+                // We now have all the articles we want to show. Now we load the
+                // HTML content for the first few pages into the webview.
+                this._load_overview_snippets_from_articles();
+                this._go_to_page(this.settings.bookmark_page);
+            }
+            this.view.show_all();
+            this.view.present_with_time(timestamp);
+        }, /* progress callback */ this._append_results.bind(this));
+    },
+
+    // EosKnowledge.Launcher override
+    activate_search_result: function (timestamp, id, query) {
+        // Check if we need to load an article separately from the normally
+        // scheduled content
+        this.engine.get_object_by_id(id, (error, model) => {
+            if (error) {
+                printerr(error);
+                printerr(error.stack);
+                this._show_specific_error_page();
+                this.view.show_all();
+                this.view.present_with_time(timestamp);
+                return;
+            }
+
+            if (this._is_archived(model)) {
+                this._load_standalone_article(model);
+                // FIXME Here we should load the rest of the content in the
+                // background; but as there currently isn't a way to get from
+                // the standalone page to the regular content, we don't.
+                this.view.show_all();
+                this.view.present_with_time(timestamp);
+                return;
+            }
+
+            this._load_all_content(/* callback */ (error) => {
+                if (error) {
+                    printerr(error);
+                    printerr(error.stack);
+                    this._show_general_error_page();
+                } else {
+                    this._load_overview_snippets_from_articles();
+                    // add 1 for overview page
+                    let page_number = model.article_number -
+                        this.settings.start_article + 1;
+                    this._go_to_page(page_number);
+                }
+                this.view.show_all();
+                this.view.present_with_time(timestamp);
+            }, /* progress callback */ this._append_results.bind(this));
+        });
+    },
+
+    _is_archived: function (model) {
+        let already_read = model.article_number < this.settings.start_article;
+        let not_read_yet = model.article_number >= this.settings.start_article + TOTAL_ARTICLES;
+        return already_read || not_read_yet;
+    },
+
+    _clear_webview_from_map: function (index) {
+        this.view.get_article_page(index).clear_content();
+        this._webview_map[index].destroy();
+        delete this._webview_map[index];
+    },
+
+    // Clear out all existing content in preparation for loading a new issue.
+    _clear_content: function () {
+        // Make sure to drop all references to webviews we are holding.
+        for (let article_index in this._webview_map) {
+            this._clear_webview_from_map(article_index);
+        }
+        // Clear out state from any issue that was already displaying.
+        this._article_models = [];
+        this.view.remove_all_article_pages();
+        this.view.overview_page.remove_all_snippets();
+    },
+
+    _append_results: function (results) {
+        this._total_fetched += RESULTS_SIZE;
+        this._create_pages_from_models(results);
+    },
+
+    _load_new_issue: function () {
+        // Load all articles in this issue
+        this._clear_content();
+        this._load_all_content(/* callback */ (error) => {
+            if (error) {
+                printerr(error);
+                printerr(error.stack);
+                this._show_general_error_page();
+                return;
+            }
+
+            this._load_overview_snippets_from_articles();
+            this._go_to_page(0);
+        }, /* progress callback */ this._append_results.bind(this));
+    },
 
     _check_for_content_update: function() {
         if (Date.now() - this.settings.update_timestamp >= UPDATE_INTERVAL_MS) {
@@ -191,11 +306,11 @@ const Presenter = new Lang.Class({
 
     _update_content: function () {
         this.settings.update_timestamp = Date.now();
-        this.settings.start_article = this.settings.highest_bookmark;
-        this.settings.bookmark_page = this.settings.start_article;
+        this.settings.start_article = this.settings.highest_article_read;
+        this.settings.bookmark_page = 0;
     },
 
-    _load_all_content: function () {
+    _load_all_content: function (callback, progress_callback) {
         this._total_fetched = 0;
         this.engine.get_objects_by_query({
             offset: this.settings.start_article,
@@ -204,118 +319,94 @@ const Presenter = new Lang.Class({
             order: 'asc',
             tags: ['EknArticleObject'],
         }, function (error, results, get_more_results_func) {
-            // Clear out state from any issue that was already displaying.
-            this._article_models = [];
-            this.view.remove_all_article_pages();
-            this.view.overview_page.remove_all_snippets();
-            // Make sure to drop all references to any webviews we are holding.
-            if (this._current_page) {
-                this._current_page.destroy();
-                this._current_page = null;
-            }
-            if (this._next_page) {
-                this._next_page.destroy();
-                this._next_page = null;
-            }
-            if (this._previous_page) {
-                this._previous_page.destroy();
-                this._previous_page = null;
-            }
+            if (!error && results.length < 1)
+                error = GLib.Error.new_literal(Gio.io_error_quark(),
+                    Gio.ErrorEnum.NOT_FOUND,
+                    'No content found for this magazine');
 
-            if (error !== undefined || results.length < 1) {
-                if (error !== undefined) {
-                    printerr(error);
-                    printerr(error.stack);
-                }
-                let err_label = this._create_error_label(_("Oops!"),
-                    _("We could not find this magazine!\nPlease try again after restarting your computer."));
-                this.view.page_manager.add(err_label);
-                this.view.page_manager.visible_child = err_label;
-                this.view.show_all();
+            if (error) {
+                callback(error);
             } else {
-                this._fetch_content_recursive(undefined, results, get_more_results_func);
+                this._fetch_content_recursive(undefined, results,
+                    get_more_results_func, callback, progress_callback);
             }
         }.bind(this));
     },
 
-    // FIXME: We're breaking the ability to show content as soon as possible!
-    // Under this implementation, you have to wait for metadata for all articles
-    // to be fetched before seeing content for the article you were on
-    _initialize_first_pages: function () {
-        // The article number you are on is 1 less than the bookmarked page because we have the overview page
-        // in the beginning
-        let current_article = this.settings.bookmark_page - this.settings.start_article - 1;
-        if (current_article >= 0 && current_article < this._article_models.length) {
-            this._current_page = this._load_webview_content(this._article_models[current_article], function (view, error) {
-                this._load_webview_content_callback(this.view.get_article_page(current_article), view, error);
-            }.bind(this));
+    _fetch_content_recursive: function (err, results, get_more_results_func, callback, progress_callback) {
+        function fetch_helper(err, results, get_more_results_func) {
+            this._fetch_content_recursive(err, results, get_more_results_func,
+                callback, progress_callback);
         }
 
-            // Load the next page if needed
-        if (current_article + 1 < this._article_models.length) {
-            let next_page = this.view.get_article_page(current_article + 1);
-            this._next_page = this._load_webview_content(this._article_models[current_article + 1], function (view, error) {
-                this._load_webview_content_callback(next_page, view, error);
-            }.bind(this));
-        }
-
-        // Likewise, load the previous page if needed
-        if (current_article > 0) {
-            let previous_page = this.view.get_article_page(current_article - 1);
-            this._previous_page = this._load_webview_content(this._article_models[current_article - 1], function (view, error) {
-                this._load_webview_content_callback(previous_page, view, error);
-            }.bind(this));
-        }
-
-        this.view.current_page = this.settings.bookmark_page - this.settings.start_article;
-        this._update_forward_button_visibility();
-
-        this.view.show_all();
-    },
-
-    _fetch_content_recursive: function (err, results, get_more_results_func) {
         if (err !== undefined) {
-            printerr(err);
-            printerr(err.stack);
+            callback(err);
         } else {
-            this._total_fetched += RESULTS_SIZE;
-            this._create_pages_from_models(results);
+            progress_callback(results);
             // If there are more results to get, then fetch more content
             if (results.length >= RESULTS_SIZE && this._total_fetched < TOTAL_ARTICLES) {
-                get_more_results_func(RESULTS_SIZE, this._fetch_content_recursive.bind(this));
+                get_more_results_func(RESULTS_SIZE, fetch_helper.bind(this));
             } else {
-                // We now have all the articles we want to show. Now we load the HTML content
-                // for the first few pages into the webview
-                this._load_overview_snippets_from_articles();
-                this._initialize_first_pages();
+                callback();
             }
         }
     },
 
-    // Presenter logic to move the reader either forward or backwards one page.
-    // Current page is updated, the next page is loaded, and the previous one
-    // is deleted. This ensures we maintain the invariant that the current,
-    // previous, and next page are all loaded, but no other ones are, in order
-    // to minimize memory usage.
-    // Possible values for <delta> are +1 (to move foward) or -1 (to move backwards)
-    _shift_page: function (delta) {
-        if (delta !== -1 && delta !== 1)
-            throw new Error("Invalid input value for this function: " + delta);
-        let current_article = this.view.current_page - 1;
-        let to_delete_index = current_article - delta;
-        this.view.current_page += delta;
-        let to_load_index = current_article + delta;
-        let next_model_to_load = this._article_models[to_load_index];
-        if (next_model_to_load !== undefined) {
-            let next_page_to_load = this.view.get_article_page(to_load_index);
-            this._next_page = this._load_webview_content(next_model_to_load, function (view, error) {
-                this._load_webview_content_callback(next_page_to_load, view, error);
-            }.bind(this));
+    // Takes user to the page specified by <index>
+    // Note index is with respect to all pages in the app - that is, all article
+    // pages + overview page + done page. So to go to the overview page, you
+    // would call this._go_to_page(0)
+    _go_to_page: function (index) {
+        if (this._current_page === index)
+            return;
+
+        let current_article = index - 1;
+        if (index === 0)
+            this.view.show_overview_page();
+        else if (index === this.view.total_pages - 1)
+            this.view.show_done_page();
+        else
+            this.view.show_article_page(current_article, this._current_page < index);
+
+        // We want to always have ready on deck the webviews for the current
+        // article, the article preceding the current one, and the next article.
+        // These three webviews are stored in the webview_map. The key in the
+        // map is the article number (not page number in the app) which those
+        // pages correspond to. The values in the map are the EknWebview objects
+        // for those articles. E.g. if you are on page 7, you'd have a
+        // webview_map like:
+        // {6: <webview_object>, 7: <webview_object>, 8: <webview_object>}
+
+        // The range of article numbers for which we want to store webviews (the
+        // current, the preceding, the next), excluding negative index values.
+        let article_index_range = [
+            current_article - 1,
+            current_article,
+            current_article + 1
+        ].filter((index) => index in this._article_models);
+
+        // Clear out any webviews in the map that we don't need anymore
+        for (let article_index in this._webview_map) {
+            if (article_index_range.indexOf(Number(article_index)) === -1)
+                this._clear_webview_from_map(article_index);
         }
-        let to_delete_page = this.view.get_article_page(to_delete_index);
-        if (to_delete_page !== undefined) {
-            to_delete_page.clear_content();
-        }
+
+        // Add to the map any webviews we do now need.
+        article_index_range.filter((index) => {
+            return !(index in this._webview_map);
+        }).forEach((index) => {
+            this._webview_map[index] = this._load_webview_content(this._article_models[index], (webview, error) => {
+                this._load_webview_content_callback(this.view.get_article_page(index),
+                    webview, error);
+            });
+        });
+
+        this._current_page = index;
+        this.notify('current-page');
+        // Guaranteed to have changed; we returned early if not changed.
+
+        this.settings.bookmark_page = index;
+        this._update_button_visibility();
     },
 
     // First article data has been loaded asynchronously; now we can start
@@ -326,7 +417,7 @@ const Presenter = new Lang.Class({
         models.forEach(function (model) {
             let page = this._create_article_page_from_article_model(model);
             this.view.append_article_page(page);
-            this._update_forward_button_visibility();
+            this._update_button_visibility();
         }, this);
         this._article_models = this._article_models.concat(models);
     },
@@ -418,16 +509,15 @@ const Presenter = new Lang.Class({
         if (error !== undefined) {
             printerr(error);
             printerr(error.stack);
-            let err_page = this._create_error_label(_("Oops!"),
-                _("There was an error loading that page.\nTry another one or try again after restarting your computer."));
-            page.show_content_view(err_page);
+            this._show_specific_error_page();
         } else {
             page.show_content_view(view);
         }
     },
 
-    _update_forward_button_visibility: function () {
-        this.view.nav_buttons.forward_visible = (this.view.current_page !== this.view.total_pages - 1);
+    _update_button_visibility: function () {
+        this.view.nav_buttons.forward_visible = (this._current_page !== this.view.total_pages - 1);
+        this.view.nav_buttons.back_visible = (this._current_page > 0);
     },
 
     // Retrieve all needed information from the app.json file, such as the app
@@ -504,6 +594,26 @@ const Presenter = new Lang.Class({
         return err_label;
     },
 
+    _show_error_page: function (headline, message) {
+        let err_label = this._create_error_label(headline, message);
+        this.view.page_manager.add(err_label);
+        this.view.page_manager.visible_child = err_label;
+    },
+
+    // Use _create_error_label to show a general error page, when there is no
+    // content.
+    _show_general_error_page: function () {
+        this._show_error_page(_("Oops!"),
+            _("We could not find this magazine!\nPlease try again after restarting your computer."));
+    },
+
+    // Use _create_error_label to show a specific error page, when a particular
+    // page couldn't be found.
+    _show_specific_error_page: function () {
+        this._show_error_page(_("Oops!"),
+            _("There was an error loading that page.\nTry another one or try again after restarting your computer."));
+    },
+
     _load_overview_snippets_from_articles: function () {
         let snippets = this._article_models.map((snippet, ix) => {
             return {
@@ -560,5 +670,16 @@ const Presenter = new Lang.Class({
         this.view.lightbox.reveal_overlays = true;
         this.view.lightbox.has_back_button = previous_arrow_visible;
         this.view.lightbox.has_forward_button = next_arrow_visible;
+    },
+
+    _load_standalone_article: function (model) {
+        this._standalone = this._load_webview_content(model, (webview, error) => {
+            this._load_webview_content_callback(this.view.standalone_page, webview, error);
+        });
+        this.view.standalone_page.title_view.title = model.title;
+        this.view.standalone_page.title_view.attribution =
+            this._format_attribution_for_metadata(model.get_authors(), model.published);
+        this.view.standalone_page.get_style_context().add_class('article-page0');
+        this.view.show_standalone_page();
     },
 });

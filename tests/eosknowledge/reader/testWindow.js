@@ -6,7 +6,6 @@ const Gtk = imports.gi.Gtk;
 const CssClassMatcher = imports.CssClassMatcher;
 const InstanceOfMatcher = imports.InstanceOfMatcher;
 
-const EXPECTED_CURRENT_PAGE = 0;
 const EXPECTED_TOTAL_PAGES = 17;
 
 describe('Window widget', function () {
@@ -47,16 +46,20 @@ describe('Window widget', function () {
         expect(view.done_page).toBeA(Gtk.Widget);
     });
 
+    it('has an overview-page widget', function () {
+        expect(view.overview_page).toBeA(Gtk.Widget);
+    });
+
+    it('has a standalone-page widget', function () {
+        expect(view.standalone_page).toBeA(Gtk.Widget);
+    });
+
     it('has a nav-buttons widget', function () {
         expect(view.nav_buttons).toBeA(Gtk.Widget);
     });
 
     it('has a debug buttons widget', function () {
         expect(view.issue_nav_buttons).toBeA(Gtk.Widget);
-    });
-
-    it('starts on the zeroeth page', function () {
-        expect(view.current_page).toMatch(String(EXPECTED_CURRENT_PAGE));
     });
 
     it('contains 16 pages', function () {
@@ -70,17 +73,16 @@ describe('Window widget', function () {
 
     it('throws an error when out of bounds pages are accessed', function () {
         expect(function () {
-            view.current_page = EXPECTED_TOTAL_PAGES + 1;
+            view.show_article_page(400, true);
         }).toThrow();
         expect(function () {
-            view.current_page = EXPECTED_TOTAL_PAGES - 1;
+            view.show_article_page(2, true);
         }).not.toThrow();
     });
 
     it('sets progress labels correctly', function () {
         let a = new EosKnowledge.Reader.ArticlePage();
         view.append_article_page(a);
-        view.current_page = EXPECTED_TOTAL_PAGES;
         expect(a.progress_label.current_page).toBe(EXPECTED_TOTAL_PAGES);
     });
 });

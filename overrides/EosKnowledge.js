@@ -21,6 +21,7 @@ const EknWebview = imports.eknWebview;
 const HomePage = imports.homePage;
 const HomePageA = imports.homePageA;
 const HomePageB = imports.homePageB;
+const Launcher = imports.launcher;
 const LessonCard = imports.lessonCard;
 const Lightbox = imports.lightbox;
 const ListCard = imports.listCard;
@@ -105,6 +106,7 @@ function _init() {
     EosKnowledge.HomePage = HomePage.HomePage;
     EosKnowledge.HomePageA = HomePageA.HomePageA;
     EosKnowledge.HomePageB = HomePageB.HomePageB;
+    EosKnowledge.Launcher = Launcher.Launcher;
     EosKnowledge.LessonCard = LessonCard.LessonCard;
     EosKnowledge.Lightbox = Lightbox.Lightbox;
     EosKnowledge.ListCard = ListCard.ListCard;

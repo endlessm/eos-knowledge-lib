@@ -14,6 +14,7 @@ const CardA = imports.cardA;
 const CardB = imports.cardB;
 const Config = imports.config;
 const Engine = imports.engine;
+const Launcher = imports.launcher;
 const MediaInfobox = imports.mediaInfobox;
 const PdfCard = imports.pdfCard;
 const Previewer = imports.previewer;
@@ -41,7 +42,7 @@ const RESULTS_SIZE = 10;
 const Presenter = new Lang.Class({
     Name: 'Presenter',
     GTypeName: 'EknPresenter',
-    Extends: GObject.Object,
+    Extends: Launcher.Launcher,
     _ARTICLE_PAGE: 'article',
     _HOME_PAGE: 'home',
     _SEARCH_PAGE: 'search',
@@ -182,6 +183,11 @@ const Presenter = new Lang.Class({
         this._original_page = this.view.home_page;
         this._search_origin_page = this.view.home_page;
         this._autocomplete_results = [];
+    },
+
+    // EosKnowledge.Launcher override
+    desktop_launch: function (timestamp) {
+        this.view.present_with_time(timestamp);
     },
 
     _on_load_more_results: function () {
@@ -335,7 +341,8 @@ const Presenter = new Lang.Class({
         return query.replace(/\r?\n|\r/g, ' ').trim();
     },
 
-    search: function (query) {
+    // EosKnowledge.launcher override
+    search: function (timestamp, query) {
         query = this._sanitize_query(query);
         // Ignore empty queries
         if (query.length === 0) {
@@ -349,6 +356,7 @@ const Presenter = new Lang.Class({
         this.view.search_box.text = query;
         this._add_history_object_for_search_page(JSON.stringify(query_obj));
         this._perform_search(this.view, query_obj);
+        this.view.present_with_time(timestamp);
     },
 
     _perform_search: function (view, query) {
@@ -445,7 +453,8 @@ const Presenter = new Lang.Class({
         }.bind(this));
     },
 
-    activate_search_result: function (ekn_id, query) {
+    // EosKnowledge.Launcher override
+    activate_search_result: function (timestamp, ekn_id, query) {
         let query_obj = {
             'q': query,
             'limit': RESULTS_SIZE,
@@ -466,6 +475,7 @@ const Presenter = new Lang.Class({
                                                     }.bind(this));
             }
         }.bind(this));
+        this.view.present_with_time(timestamp);
     },
 
     _on_article_card_clicked: function (card, model) {

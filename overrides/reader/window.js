@@ -8,6 +8,7 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
+const ArticlePage = imports.reader.articlePage;
 const DonePage = imports.reader.donePage;
 const Lightbox = imports.lightbox;
 const NavButtonOverlay = imports.navButtonOverlay;
@@ -63,6 +64,18 @@ const Window = new Lang.Class({
             DonePage.DonePage.$gtype),
 
         /**
+         * Property: standalone-page
+         *
+         * The <Reader.ArticlePage> widget created by this widget in order to
+         * show a standalone search result from the archive.
+         * Read-only.
+         */
+        'standalone-page': GObject.ParamSpec.object('standalone-page',
+            'Standalone page', 'The page that shows a single article',
+            GObject.ParamFlags.READABLE,
+            ArticlePage.ArticlePage.$gtype),
+
+        /**
          * Property: issue-nav-buttons
          *
          * An <Endless.TopbarNavButton> widget created by this window.
@@ -73,21 +86,6 @@ const Window = new Lang.Class({
             'Issue nav buttons', 'Secret buttons for navigating issues',
             GObject.ParamFlags.READABLE,
             Endless.TopbarNavButton.$gtype),
-
-        /**
-         * Property: current-page
-         *
-         * The current page number.
-         *
-         * Changing this property sets the current page to the specified index.
-         * When the last article page is reached, the current page
-         * is set to the done page.
-         *
-         */
-        'current-page': GObject.ParamSpec.uint('current-page', 'Current page',
-            'Page number currently being displayed',
-            GObject.ParamFlags.READWRITE,
-            0, GLib.MAXUINT32, 0),
 
         /**
          * Property: lightbox
@@ -144,6 +142,8 @@ const Window = new Lang.Class({
 
         this._overview_page = new OverviewPage.OverviewPage();
         this._done_page = new DonePage.DonePage();
+        this._standalone_page = new ArticlePage.ArticlePage();
+        this._standalone_page.progress_label.no_show_all = true;
         this._nav_buttons = new NavButtonOverlay.NavButtonOverlay({
             back_image_uri: this._BACK_IMAGE_URI,
             forward_image_uri: this._FORWARD_IMAGE_URI,
@@ -166,7 +166,6 @@ const Window = new Lang.Class({
         }.bind(this));
 
         this._article_pages = [];
-        this._current_page = 0;
         this.parent(props);
 
         this._debug_hotkey_action = new Gio.SimpleAction({
@@ -183,6 +182,7 @@ const Window = new Lang.Class({
         });
         this._stack.add(this._overview_page);
         this._stack.add(this._done_page);
+        this._stack.add(this._standalone_page);
         this._nav_buttons.add(this._stack);
         this._lightbox.add(this._nav_buttons);
         this.page_manager.add(this._lightbox, {
@@ -243,12 +243,54 @@ const Window = new Lang.Class({
         pages.forEach(this.remove_article_page, this);
     },
 
+    show_standalone_page: function () {
+        this._standalone_page.show();
+        this._standalone_page.progress_label.hide();
+        this._stack.set_transition_type(Gtk.StackTransitionType.SLIDE_UP);
+        this._stack.set_visible_child(this._standalone_page);
+        this._nav_buttons.back_visible = false;
+        this._nav_buttons.forward_visible = false;
+    },
+
+    show_article_page: function (index, transition_forward) {
+        this._nav_buttons.accommodate_scrollbar = true;
+        if (transition_forward) {
+            this._stack.set_transition_type(Gtk.StackTransitionType.SLIDE_LEFT);
+        } else {
+            this._stack.set_transition_type(Gtk.StackTransitionType.SLIDE_RIGHT);
+        }
+        let page = this._article_pages[index];
+        page.show();
+        this._stack.set_visible_child(page);
+    },
+
+    show_overview_page: function () {
+        this._nav_buttons.accommodate_scrollbar = false;
+        this._stack.set_transition_type(Gtk.StackTransitionType.SLIDE_RIGHT);
+        this._overview_page.show();
+        this._stack.set_visible_child(this._overview_page);
+    },
+
+    show_done_page: function () {
+        this._stack.set_transition_type(Gtk.StackTransitionType.SLIDE_LEFT);
+        this._done_page.show();
+        this._stack.set_visible_child(this._done_page);
+    },
+
+    get lightbox() {
+        return this._lightbox;
+    },
+
     get overview_page() {
         return this._overview_page;
     },
 
     get done_page() {
         return this._done_page;
+    },
+
+    get standalone_page() {
+        return this._standalone_page;
     },
 
     get nav_buttons() {
@@ -259,51 +301,8 @@ const Window = new Lang.Class({
         return this._issue_nav_buttons;
     },
 
-    get lightbox() {
-        return this._lightbox;
-    },
-
-    get current_page() {
-        return this._current_page;
-    },
-
-    set current_page(value) {
-        if (value === this._current_page)
-            return;
-
-        if (this._is_transitioning_forward(value)) {
-            this._stack.set_transition_type(Gtk.StackTransitionType.SLIDE_LEFT);
-        } else {
-            this._stack.set_transition_type(Gtk.StackTransitionType.SLIDE_RIGHT);
-        }
-
-        if (value === 0) {
-            this._current_page = value;
-            this._overview_page.show_all();
-            this._stack.set_visible_child(this._overview_page);
-            this._nav_buttons.accommodate_scrollbar = false;
-        } else if (value <= this._article_pages.length && value > 0) {
-            this._current_page = value;
-            this._stack.set_visible_child(this._article_pages[value - 1]);
-            this._nav_buttons.accommodate_scrollbar = true;
-        } else if (value === this._article_pages.length + 1) {
-            this._current_page = value;
-            this._done_page.show_all();
-            this._stack.set_visible_child(this._done_page);
-            this._nav_buttons.accommodate_scrollbar = true;
-        } else {
-            throw new Error('Current page value is out of range.');
-        }
-        this.notify('current-page');
-    },
-
-    _is_transitioning_forward: function (value) {
-        return value > this._current_page;
-    },
-
     get total_pages() {
         // Done page and overview page account for extra incrementation.
         return this._article_pages.length + 2;
     },
-
 });
