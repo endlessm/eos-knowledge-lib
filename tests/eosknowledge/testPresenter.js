@@ -6,6 +6,15 @@ const Lang = imports.lang;
 
 const utils = imports.tests.utils;
 
+const MockWidget = new Lang.Class({
+    Name: 'MockWidget',
+    Extends: GObject.Object,
+    Properties: {
+        'sensitive': GObject.ParamSpec.boolean('sensitive', '', '',
+            GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE, true),
+    },
+});
+
 const MockView = new Lang.Class({
     Name: 'MockView',
     Extends: GObject.Object,
@@ -21,8 +30,8 @@ const MockView = new Lang.Class({
         this.article_page = connectable_object;
         this.lightbox = {};
         this.history_buttons = {
-            forward_button: new GObject.Object(),
-            back_button: new GObject.Object(),
+            forward_button: new MockWidget(),
+            back_button: new MockWidget(),
         };
     },
 
