@@ -179,7 +179,7 @@ const ArticleSnippet = new Lang.Class({
             halign: Gtk.Align.START,
             xalign: 0,
             ellipsize: Pango.EllipsizeMode.END,
-            lines: 2,
+            lines: 4,
             max_width_chars: 40,
             wrap_mode: Pango.WrapMode.WORD_CHAR,
             wrap: true,
