@@ -161,7 +161,7 @@ const Presenter = new Lang.Class({
         this.view.connect('search-focused', this._on_search_focus.bind(this));
         this.view.connect('search-text-changed', this._on_search_text_changed.bind(this));
         this.view.connect('search-entered', function (view, query) {
-            this.search(query);
+            this._update_ui_and_search(query);
         }.bind(this));
         this.view.connect('article-selected', this._on_article_selection.bind(this));
 
@@ -170,7 +170,7 @@ const Presenter = new Lang.Class({
         this.view.connect('lightbox-nav-next-clicked', this._on_lightbox_next_clicked.bind(this));
 
         this.view.home_page.connect('search-entered', function (view, query) {
-            this.search(query);
+            this._update_ui_and_search(query);
         }.bind(this));
         this.view.home_page.connect('search-text-changed', this._on_search_text_changed.bind(this));
         this.view.home_page.connect('article-selected', this._on_article_selection.bind(this));
@@ -343,6 +343,11 @@ const Presenter = new Lang.Class({
 
     // EosKnowledge.launcher override
     search: function (timestamp, query) {
+        this._update_ui_and_search(query);
+        this.view.present_with_time(timestamp);
+    },
+
+    _update_ui_and_search: function (query) {
         query = this._sanitize_query(query);
         // Ignore empty queries
         if (query.length === 0) {
@@ -356,7 +361,6 @@ const Presenter = new Lang.Class({
         this.view.search_box.text = query;
         this._add_history_object_for_search_page(JSON.stringify(query_obj));
         this._perform_search(this.view, query_obj);
-        this.view.present_with_time(timestamp);
     },
 
     _perform_search: function (view, query) {

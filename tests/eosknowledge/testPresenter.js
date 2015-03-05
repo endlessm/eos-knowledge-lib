@@ -3,12 +3,49 @@ const Endless = imports.gi.Endless;
 const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
+const Mainloop = imports.mainloop;
 
 const utils = imports.tests.utils;
+
+const MockWidget = new Lang.Class({
+    Name: 'MockWidget',
+    Extends: GObject.Object,
+    Properties: {
+        'sensitive': GObject.ParamSpec.boolean('sensitive', '', '',
+            GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE, true),
+    },
+});
+
+const MockHomePage = new Lang.Class({
+    Name: 'MockHomePage',
+    Extends: GObject.Object,
+    Signals: {
+        'search-entered': {
+            param_types: [GObject.TYPE_STRING],
+        },
+    },
+
+    _init: function () {
+        this.parent();
+        this.search_box = {};
+    },
+
+    connect: function (signal, handler) {
+        // Silently ignore signals that we aren't mocking
+        if (GObject.signal_lookup(signal, MockHomePage.$gtype) === 0)
+            return;
+        this.parent(signal, handler);
+    },
+});
 
 const MockView = new Lang.Class({
     Name: 'MockView',
     Extends: GObject.Object,
+    Signals: {
+        'search-entered': {
+            param_types: [GObject.TYPE_STRING],
+        },
+    },
 
     _init: function () {
         this.parent();
@@ -16,17 +53,28 @@ const MockView = new Lang.Class({
             connect: function () {},
         };
         this.section_page = connectable_object;
-        this.home_page = connectable_object;
+        this.home_page = new MockHomePage();
         this.categories_page = connectable_object;
         this.article_page = connectable_object;
         this.lightbox = {};
+        this.search_box = {};
+        this.no_search_results_page = {};
         this.history_buttons = {
-            forward_button: new GObject.Object(),
-            back_button: new GObject.Object(),
+            forward_button: new MockWidget(),
+            back_button: new MockWidget(),
         };
     },
 
-    connect: function () {},
+    connect: function (signal, handler) {
+        // Silently ignore signals that we aren't mocking
+        if (GObject.signal_lookup(signal, MockView.$gtype) === 0)
+            return;
+        this.parent(signal, handler);
+    },
+
+    show_no_search_results_page: function () {},
+    lock_ui: function () {},
+    unlock_ui: function () {},
 });
 
 const MockEngine = new Lang.Class({
@@ -101,5 +149,40 @@ describe('Presenter', () => {
         })).toEqual(presenter.view.home_page.cards.map((card) => {
             return card.featured;
         }));
+    });
+
+    describe('searching from search box', function () {
+        beforeEach(function () {
+            spyOn(view, 'show_no_search_results_page');
+            spyOn(engine, 'get_objects_by_query').and.callFake(function (query, callback) {
+                callback(undefined, [], function () {});
+            });
+        });
+
+        it('works from the title bar', function (done) {
+            view.emit('search-entered', 'query not found');
+            Mainloop.idle_add(function () {
+                expect(engine.get_objects_by_query)
+                    .toHaveBeenCalledWith(jasmine.objectContaining({
+                        q: 'query not found',
+                    }),
+                    jasmine.any(Function));
+                expect(view.show_no_search_results_page).toHaveBeenCalled();
+                done();
+            });
+        });
+
+        it('works from the home page', function (done) {
+            view.home_page.emit('search-entered', 'query not found');
+            Mainloop.idle_add(function () {
+                expect(engine.get_objects_by_query)
+                    .toHaveBeenCalledWith(jasmine.objectContaining({
+                        q: 'query not found',
+                    }),
+                    jasmine.any(Function));
+                expect(view.show_no_search_results_page).toHaveBeenCalled();
+                done();
+            });
+        });
     });
 });
