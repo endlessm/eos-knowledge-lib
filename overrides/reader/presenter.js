@@ -29,6 +29,7 @@ GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.
 const RESULTS_SIZE = 15;
 const TOTAL_ARTICLES = 30;
 const NUM_SNIPPET_STYLES = 3;
+const NUM_OVERVIEW_SNIPPETS = 3;
 
 // 1 week in miliseconds
 const UPDATE_INTERVAL_MS = 604800000;
@@ -615,7 +616,7 @@ const Presenter = new Lang.Class({
     },
 
     _load_overview_snippets_from_articles: function () {
-        let snippets = this._article_models.map((snippet, ix) => {
+        let snippets = this._article_models.slice(0, NUM_OVERVIEW_SNIPPETS).map((snippet, ix) => {
             return {
                 title: snippet.title,
                 synopsis: snippet.synopsis,
