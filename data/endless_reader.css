@@ -227,3 +227,10 @@ overridden by app specific CSS */
     font-size: 1.0em; /* 16px / 12px/em * 72/96 */
     font-weight: 300; /* Light */
 }
+
+.overview-page .subtitle {
+    font-family: Roboto;
+    font-size: 1.06em; /* 17px / 12px/em * 72/96 */
+    color: white;
+    text-shadow: 0px 2px 5px alpha(black, 0.43);
+}

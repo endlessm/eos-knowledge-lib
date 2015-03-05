@@ -268,6 +268,10 @@ describe('Reader presenter', function () {
             expect(presenter.current_page).toBe(0);
         });
 
+        it('sets the subtitle on the view from JSON', function () {
+            expect(presenter.view.overview_page.subtitle).toBe(TEST_JSON['appSubtitle']);
+        });
+
         it('disables the back button on the first page', function () {
             expect(article_nav_buttons.back_visible).toBe(false);
         });
