@@ -451,5 +451,12 @@ describe('Reader presenter', function () {
                 jasmine.objectContaining({style_variant: 0}),
             ]);
         });
+
+        it('sets the correct style variants on article titles', function () {
+            expect(view.get_article_page(0).title_view.style_variant).toBe(0);
+            expect(view.get_article_page(1).title_view.style_variant).toBe(1);
+            expect(view.get_article_page(2).title_view.style_variant).toBe(2);
+            expect(view.get_article_page(3).title_view.style_variant).toBe(0);
+        });
     });
 });

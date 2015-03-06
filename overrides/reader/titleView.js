@@ -1,6 +1,7 @@
 // Copyright 2014 Endless Mobile, Inc.
 
 const EosKnowledge = imports.gi.EosKnowledge;
+const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
@@ -42,9 +43,23 @@ const TitleView = new Lang.Class({
         'attribution': GObject.ParamSpec.string('attribution', 'Attribution',
             'Attribution of the article',
             GObject.ParamFlags.READWRITE, ''),
+        /**
+         * Property: style-variant
+         * Which style variant to use for appearance
+         *
+         * Which CSS style variant to use (default is zero.)
+         * If the variant does not exist then the snippet will have only the
+         * styles common to all variants.
+         * Use -1 as a variant that is guaranteed not to exist.
+         */
+        'style-variant': GObject.ParamSpec.int('style-variant', 'Style variant',
+            'Which CSS style variant to use for appearance',
+            GObject.ParamFlags.READWRITE,
+            -1, GLib.MAXINT16, 0),
     },
 
     _init: function (props) {
+        this._style_variant = 0;
         this._title_label = new Gtk.Label({
             wrap: true,
             halign: Gtk.Align.FILL,
@@ -104,8 +119,7 @@ const TitleView = new Lang.Class({
         if (this._attribution_text === value)
             return;
         this._attribution_text = value;
-        this._attribution_label.label = ('<span letter_spacing="1024">' +
-            this._attribution_text.toLocaleUpperCase() + '</span>');
+        this._update_attribution();
         this.notify('attribution');
     },
 
@@ -113,5 +127,39 @@ const TitleView = new Lang.Class({
         if (this._attribution_text)
             return this._attribution_text;
         return '';
+    },
+
+    get style_variant() {
+        return this._style_variant;
+    },
+
+    set style_variant(value) {
+        if (this._style_variant === value)
+            return;
+        this._style_variant = value;
+        this._update_attribution();
+        this.notify('style-variant');
+    },
+
+    _update_attribution: function () {
+        let markup_label = this._attribution_text;
+
+        // Apply styling that currently isn't possible with CSS. Ideally this
+        // should be done with the following CSS code:
+        //     .article-page1 .article-page-attribution {
+        //         text-transform: uppercase;
+        //         letter-spacing: 1.33px;
+        //     }
+        //     .article-page2 .article-page-attribution {
+        //         text-transform: uppercase;
+        //     }
+        // However, those properties are not currently supported in GTK CSS.
+        if (this.style_variant === 1 || this.style_variant === 2)
+            markup_label = markup_label.toLocaleUpperCase();
+        if (this.style_variant === 1)
+            markup_label = '<span letter_spacing="1362">' + markup_label + '</span>';
+        // 1362 = 1.33px * 1024 Pango units/px
+
+        this._attribution_label.label = markup_label;
     },
 });

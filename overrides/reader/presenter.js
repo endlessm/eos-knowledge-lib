@@ -578,6 +578,7 @@ const Presenter = new Lang.Class({
         let style_variant = this._current_page_style_variant % this._NUM_ARTICLE_PAGE_STYLES;
         this._current_page_style_variant++;
         page.get_style_context().add_class('article-page' + style_variant);
+        page.title_view.style_variant = style_variant;
     },
 
     // Show a friendlier error message when the engine is not working; suggest
