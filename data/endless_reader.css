@@ -16,42 +16,28 @@ EosWindow {
     color: alpha(black, 0.1);
 }
 
-.article-snippet .title, .article-snippet .synopsis {
-    font-family: Roboto;
-}
-
 .article-snippet .title {
-    font-size: 3.0em;
+    font-size: 2.0em; /* should be overridden */
 }
 
 .article-snippet .synopsis {
     padding-top: 10px;
     color: #f2f2f2;
     font-size: 1em; /* 16px / 12px/em * 72/96 */
-    font-weight: 200; /* light */
 }
 
 /* These individual snippet stylings will be
 overridden by app specific CSS */
 .snippet0 .title {
-    font-style: italic;
-    font-weight: bold;
-    color: #e5ff51;
-    font-size: 2.56em;  /* 41px / 12px/em * 72/96 */
+    color: #ef2929;
 }
 
 .snippet1 .title {
-    font-family: Fjalla One;
-    color: #bd348e;
-    font-size: 2.19em; /* 35px / 12px/em * 72/96 */
+    color: #8ae234;
 }
 
 .snippet2 .title {
-    font-family: Lato;
-    font-weight: 800; /* black */
-    font-style: italic;
-    color: #12e1da;
-    font-size: 1.56em; /* 25px / 12px/em * 72/96 */
+    color: #729fcf;
 }
 
 .overview-page, .done-page {
@@ -64,20 +50,15 @@ overridden by app specific CSS */
 }
 
 .done-page .headline {
-    font-family: Roboto;
-    font-weight: bold;
-    font-style: italic;
-    font-size: 2.56em; /* 41px, 72 DPI */
-    color: #e5ff51;
+    font-size: 2em;
+    color: #fce94f;
     padding-bottom: 25px;
 }
 
 .done-page .bottom-line {
     padding-top: 3px;
-    font-family: Roboto;
-    font-weight: 300; /* Light */
-    font-size: 1em; /* 16px, 72 DPI */
-    color: #f2f2f2;
+    font-size: 1em; /* 16px / 12px/em * 72/96 */
+    color: #eeeeec;
 }
 
 .done-page .progress-label {
@@ -88,47 +69,36 @@ overridden by app specific CSS */
     color: black;
 }
 
+.article-page-title {
+    font-size: 4em;
+}
+
+.article-page-attribution {
+    font-size: 0.75em;
+}
+
 .article-page0 .article-page-title {
-    color: #666666;
-    font-family: Fjalla One;
-    font-size: 4.06em; /* 65px / 12px/em * 72/96 */
+    color: #ef2929;
 }
 
 .article-page0 .article-page-attribution {
-    color: #00bcb5;
-    font-family: Roboto;
-    font-size: 0.88em; /* 14px / 12px/em * 72/96 */
-    font-style: italic;
+    color: #a40000;
 }
 
 .article-page1 .article-page-title {
-    background: black;
-    font-family: Roboto;
-    font-size: 4.19em; /* 67px / 12px/em * 72/96 */
-    font-style: italic;
-    font-weight: 500; /* medium */
+    color: #8ae234;
 }
 
 .article-page1 .article-page-attribution {
-    color: #94a723;
-    font-family: Roboto;
-    font-size: 0.75em; /* 12px / 12px/em * 72/96 */
-    font-weight: 800; /* black */
+    color: #4e9a06;
 }
 
 .article-page2 .article-page-title {
-    color: #6e2153;
-    font-family: Lato;
-    font-size: 3.38em; /* 54px / 12px/em * 72/96 */
-    font-style: italic;
-    font-weight: 800; /* black */
+    color: #729fcf;
 }
 
 .article-page2 .article-page-attribution {
-    color: #ff82d4;
-    font-family: Roboto;
-    font-size: 0.81em; /* 13px / 12px/em * 72/96 */
-    font-style: italic;
+    color: #204a87;
 }
 
 .article-page-ornament {
