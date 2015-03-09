@@ -61,19 +61,22 @@ const OverviewPage = new Lang.Class({
             orientation: Gtk.Orientation.VERTICAL,
         });
 
-        this._snippets_grid = new EosKnowledge.SpaceContainer({
+        this._snippets_grid = new Gtk.Grid({
             orientation: Gtk.Orientation.VERTICAL,
             expand: true,
             halign: Gtk.Align.END,
             valign: Gtk.Align.FILL,
         });
 
+        let scrolled_view = new Gtk.ScrolledWindow();
+        scrolled_view.add(this._snippets_grid);
+
         this.parent(props);
 
         this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_READER_OVERVIEW_PAGE);
 
         grid.attach(this._title_image, 0, 0, 1, 1);
-        grid.attach(this._snippets_grid, 1, 0, 1, 1);
+        grid.attach(scrolled_view, 1, 0, 1, 1);
 
         this.add(grid);
     },
