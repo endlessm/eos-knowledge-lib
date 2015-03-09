@@ -448,7 +448,6 @@ describe('Reader presenter', function () {
                 jasmine.objectContaining({style_variant: 0}),
                 jasmine.objectContaining({style_variant: 1}),
                 jasmine.objectContaining({style_variant: 2}),
-                jasmine.objectContaining({style_variant: 0}),
             ]);
         });
     });
