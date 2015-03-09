@@ -631,7 +631,7 @@ const Presenter = new Lang.Class({
             return;
         }
 
-        let resources = this._article_models[this.view.current_page - 1].get_resources();
+        let resources = this._article_models[this.current_page - 1].get_resources();
         let current_index = resources.indexOf(lightbox.media_object.ekn_id);
 
         if (current_index === -1) {
