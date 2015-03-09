@@ -541,6 +541,11 @@ scrollbars, style the GTK scrollbars to look slightly more like them */
     background-color: transparent;
 }
 
+.article-page WebKitWebView {
+    background-color: #ececec;
+    background-image: url('templates/images/noise.png');
+}
+
 .article-page-switcher-frame {
     padding: 20px 0px;
 }
