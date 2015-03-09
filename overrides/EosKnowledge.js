@@ -50,6 +50,7 @@ const ReaderDonePage = imports.reader.donePage;
 const ReaderOverviewPage = imports.reader.overviewPage;
 const ReaderPresenter = imports.reader.presenter;
 const ReaderProgressLabel = imports.reader.progressLabel;
+const ReaderStandalonePage = imports.reader.standalonePage;
 const ReaderTitleView = imports.reader.titleView;
 const ReaderUserSettingsModel = imports.reader.userSettingsModel;
 const ReaderWindow = imports.reader.window;
@@ -145,6 +146,7 @@ function _init() {
         OverviewPage: ReaderOverviewPage.OverviewPage,
         Presenter: ReaderPresenter.Presenter,
         ProgressLabel: ReaderProgressLabel.ProgressLabel,
+        StandalonePage: ReaderStandalonePage.StandalonePage,
         TitleView: ReaderTitleView.TitleView,
         UserSettingsModel: ReaderUserSettingsModel.UserSettingsModel,
         Window: ReaderWindow.Window,

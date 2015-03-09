@@ -187,10 +187,16 @@ const Presenter = new Lang.Class({
         }.bind(this));
         this.view.connect('lightbox-nav-previous-clicked', this._on_lightbox_previous_clicked.bind(this));
         this.view.connect('lightbox-nav-next-clicked', this._on_lightbox_next_clicked.bind(this));
+
+        this.view.standalone_page.infobar.connect('response', this._open_magazine.bind(this));
     },
 
     get current_page() {
         return this._current_page;
+    },
+
+    _open_magazine: function () {
+        this._go_to_page(0);
     },
 
     // EosKnowledge.Launcher override
@@ -528,6 +534,9 @@ const Presenter = new Lang.Class({
         this.view.overview_page.title_image_uri = info['titleImageURI'];
         this.view.overview_page.background_image_uri = info['backgroundHomeURI'];
         this.view.done_page.background_image_uri = info['backgroundSectionURI'];
+        this.view.standalone_page.infobar.app_name = info['appTitle'];
+        this.view.standalone_page.infobar.title_image_uri = info['titleImageURI'];
+        this.view.standalone_page.infobar.background_image_uri = info['backgroundHomeURI'];
     },
 
     _format_attribution_for_metadata: function (authors, date) {
@@ -676,12 +685,12 @@ const Presenter = new Lang.Class({
 
     _load_standalone_article: function (model) {
         this._standalone = this._load_webview_content(model, (webview, error) => {
-            this._load_webview_content_callback(this.view.standalone_page, webview, error);
+            this._load_webview_content_callback(this.view.standalone_page.article_page, webview, error);
         });
-        this.view.standalone_page.title_view.title = model.title;
-        this.view.standalone_page.title_view.attribution =
+        this.view.standalone_page.article_page.title_view.title = model.title;
+        this.view.standalone_page.article_page.title_view.attribution =
             this._format_attribution_for_metadata(model.get_authors(), model.published);
-        this.view.standalone_page.get_style_context().add_class('article-page0');
+        this.view.standalone_page.article_page.get_style_context().add_class('article-page0');
         this.view.show_standalone_page();
     },
 });
