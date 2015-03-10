@@ -14,41 +14,47 @@ html {
 
 #inside-content {
     margin: 15px;
-    h2 {
-        color: #666666;
-        font-family: Fjalla One;
+    h1 {
+        color: #333333;
+        font-family: Lato;
+        font-weight: 800; /* black */
         font-size: 2.25em; /* 36px / 12px/em * 72/96 */
     }
-    h3 {
-        color: #6C2253;
+    h2 {
+        color: #666666;
         font-family: Lato;
-        font-weight: bold;
-        font-size: 1.875em; /* 30px / 12px/em * 72/96 */
+        font-weight: 800; /* black */
+        font-size: 1.75em; /* 28px / 12px/em * 72/96 */
+    }
+    h3 {
+        color: #444444;
+        font-family: Lato;
+        font-weight: 800; /* black */
+        font-size: 1.56em; /* 25px / 12px/em * 72/96 */
     }
     h4 {
-        color: #333333;
+        color: #444444;
         font-family: Lato;
         font-weight: 800; /* black */
-        font-size: 1.5em; /* 24px / 12px/em * 72/96 */
-    }
-    h5 {
-        color: #93A917;
-        font-family: Lato;
-        font-weight: 300; /* light (300 instead of 200 for Lato) */
-        font-style: italic;
         font-size: 1.375em; /* 22px / 12px/em * 72/96 */
     }
-    h6 {
-        color: #333333;
+    h5 {
+        color: #666666;
         font-family: Lato;
         font-weight: 800; /* black */
-        font-size: 1.125em; /* 18px / 12px/em * 72/96 */
+        font-size: 1.25em; /* 20px / 12px/em * 72/96 */
+    }
+    h6 {
+        color: #666666;
+        font-family: Lato;
+        font-weight: 800; /* black */
+        font-size: 1.0625em; /* 17px / 12px/em * 72/96 */
     }
     p, li {
         color: #666666;
         font-family: Lato;
         font-weight: 300; /* light (300 instead of 200 for Lato) */
-        font-size: 0.9375em; /* 15px / 12px/em * 72/96 */
+        font-size: 1.25em; /* 20px / 12px/em * 72/96 */
     }
     p {
         line-height: 1.25em; /* 20px / 12px/em * 72/96 */
@@ -57,12 +63,12 @@ html {
         line-height: 1.875em; /* 30px / 12px/em * 72/96 */
     }
     a {
-        color: #00BCB5;
+        color: #666666;
         font-family: Lato;
-        font-weight: 900;
+        font-weight: bold;
         font-size: 0.9375em; /* 15px / 12px/em * 72/96 */
+        text-decoration: underline;
         &:hover {
-            text-decoration: underline;
             cursor: pointer;
         }
     }
