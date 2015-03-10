@@ -139,6 +139,7 @@ overridden by app specific CSS */
     color: white;
     background-color: black;
     opacity: 0.3;
+    padding: 16px; /* (55px (button width) - 23px (icon width)) / 2 */
     transition: padding 500ms ease-in-out;
 }
 
@@ -148,14 +149,12 @@ overridden by app specific CSS */
 
 .nav-back-button {
     border-left: 0px;
-    border-radius: 0px 4px 4px 0px;
-    padding: 17px;
+    border-radius: 0px 6px 6px 0px;
 }
 
 .nav-forward-button {
-    border-radius: 4px 0px 0px 4px;
+    border-radius: 6px 0px 0px 6px;
     border-right: 0px;
-    padding: 17px;
 }
 
 .nav-back-button:hover {
