@@ -132,8 +132,8 @@ const ContentObjectModel = new Lang.Class({
         return this._copyright_holder;
     },
 
-    get source_url () {
-        return this._source_url;
+    get source_uri() {
+        return this._source_uri;
     },
 
     get content_uri () {
@@ -195,8 +195,8 @@ const ContentObjectModel = new Lang.Class({
         this._copyright_holder = v;
     },
 
-    set source_url (v) {
-        this._source_url = v;
+    set source_uri(v) {
+        this._source_uri = v;
     },
 
     set content_uri (v) {
