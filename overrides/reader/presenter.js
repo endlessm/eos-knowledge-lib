@@ -16,6 +16,7 @@ const Config = imports.config;
 const EknWebview = imports.eknWebview;
 const Engine = imports.engine;
 const Launcher = imports.launcher;
+const OverviewPage = imports.reader.overviewPage;
 const Previewer = imports.previewer;
 const UserSettingsModel = imports.reader.userSettingsModel;
 const Utils = imports.utils;
@@ -617,12 +618,19 @@ const Presenter = new Lang.Class({
     },
 
     _load_overview_snippets_from_articles: function () {
-        let snippets = this._article_models.slice(0, NUM_OVERVIEW_SNIPPETS).map((snippet, ix) => {
-            return {
-                title: snippet.title,
-                synopsis: snippet.synopsis,
+        let snippets = this._article_models.slice(0, NUM_OVERVIEW_SNIPPETS).map((model, ix) => {
+            let snippet = new OverviewPage.ArticleSnippet({
+                title: model.title,
+                synopsis: model.synopsis,
                 style_variant: ix % NUM_SNIPPET_STYLES,
-            };
+            });
+            snippet.connect('clicked', function () {
+                // idx is the article model index so need to add one (account
+                // for overview page) to get the corresponding article page index.
+                this._go_to_page(ix + 1);
+            }.bind(this));
+            Utils.set_hand_cursor_on_widget(snippet);
+            return snippet;
         });
         this.view.overview_page.set_article_snippets(snippets);
     },

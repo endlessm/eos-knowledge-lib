@@ -141,6 +141,7 @@ function _init() {
      */
     EosKnowledge.Reader = {
         ArticlePage: ReaderArticlePage.ArticlePage,
+        ArticleSnippet: ReaderOverviewPage.ArticleSnippet,
         DonePage: ReaderDonePage.DonePage,
         OverviewPage: ReaderOverviewPage.OverviewPage,
         Presenter: ReaderPresenter.Presenter,

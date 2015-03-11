@@ -145,6 +145,7 @@ describe('Reader presenter', function () {
     const MOCK_RESULTS = MOCK_DATA.map((data, ix) => {
         return {
             title: data[0],
+            synopsis: "Some text",
             ekn_id: 'about:blank',
             get_authors: jasmine.createSpy('get_authors').and.returnValue(data[1]),
             published: data[2],
