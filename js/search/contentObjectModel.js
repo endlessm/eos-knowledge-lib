@@ -107,49 +107,16 @@ const ContentObjectModel = new Lang.Class({
     },
 
     _init: function (params) {
-        this._num_resources = 0;
         this._resources = [];
         this.parent(params);
-    },
-
-    get ekn_id () {
-        return this._ekn_id;
     },
 
     get title () {
         return this._title;
     },
 
-    get thumbnail_uri () {
-        return this._thumbnail_uri;
-    },
-
-    get language () {
-        return this._language;
-    },
-
-    get copyright_holder () {
-        return this._copyright_holder;
-    },
-
-    get source_uri() {
-        return this._source_uri;
-    },
-
-    get content_uri () {
-        return this._content_uri;
-    },
-
-    get synopsis () {
-        return this._synopsis;
-    },
-
     get last_modified_date () {
         return new Date(this._last_modified_date);
-    },
-
-    get license () {
-        return this._license;
     },
 
     get_resources: function () {
@@ -160,22 +127,6 @@ const ContentObjectModel = new Lang.Class({
         return this._tags;
     },
 
-    get num_resources () {
-        return this._num_resources;
-    },
-
-    get resources_ready () {
-        return this._resources_ready;
-    },
-
-    get redirects_to () {
-        return this._redirects_to;
-    },
-
-    set ekn_id (v) {
-        this._ekn_id = v;
-    },
-
     set title (v) {
         // TODO: Remove this line once we have reliable content
         // For now we need to programmatically capitalize titles
@@ -183,44 +134,8 @@ const ContentObjectModel = new Lang.Class({
         this._title = v;
     },
 
-    set thumbnail_uri (v) {
-        this._thumbnail_uri = v;
-    },
-
-    set language (v) {
-        this._language = v;
-    },
-
-    set copyright_holder (v) {
-        this._copyright_holder = v;
-    },
-
-    set source_uri(v) {
-        this._source_uri = v;
-    },
-
-    set content_uri (v) {
-        this._content_uri = v;
-    },
-
-    set synopsis (v) {
-        this._synopsis = v;
-    },
-
     set last_modified_date (v) {
         this._last_modified_date = v;
-    },
-
-    set license (v) {
-        this._license = v;
-    },
-
-    set num_resources (v) {
-        this._num_resources = v;
-    },
-
-    set redirects_to (v) {
-        this._redirects_to = v;
     },
 
     set_resources: function (v) {

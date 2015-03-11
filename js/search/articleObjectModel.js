@@ -99,46 +99,6 @@ const ArticleObjectModel = new Lang.Class({
         this.parent(params);
     },
 
-    get word_count () {
-        return this._word_count;
-    },
-
-    get table_of_contents () {
-        return this._table_of_contents;
-    },
-
-    get issue_number() {
-        return this._issue_number;
-    },
-
-    get article_number() {
-        return this._article_number;
-    },
-
-    set word_count (v) {
-        this._word_count = v;
-    },
-
-    set table_of_contents (v) {
-        this._table_of_contents = v;
-    },
-
-    set issue_number(v) {
-        this._issue_number = v;
-    },
-
-    set article_number(v) {
-        this._article_number = v;
-    },
-
-    set published (v) {
-        this._published = v;
-    },
-
-    get published () {
-        return this._published;
-    },
-
     set_authors: function (v) {
         this._authors = v;
     },

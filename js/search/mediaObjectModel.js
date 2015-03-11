@@ -61,38 +61,6 @@ const MediaObjectModel = new Lang.Class({
     _init: function (params) {
         this.parent(params);
     },
-
-    get caption () {
-        return this._caption;
-    },
-
-    get encoding_format () {
-        return this._encoding_format;
-    },
-
-    get width () {
-        return this._width;
-    },
-
-    get height () {
-        return this._height;
-    },
-
-    set caption (v) {
-        this._caption = v;
-    },
-
-    set encoding_format (v) {
-        this._encoding_format = v;
-    },
-
-    set width (v) {
-        this._width = v;
-    },
-
-    set height (v) {
-        this._height = v;
-    },
 });
 
 /**
@@ -205,23 +173,6 @@ const VideoObjectModel = Lang.Class({
     _init: function (props) {
         this.parent(props);
     },
-
-    get transcript () {
-        return this._transcript;
-    },
-
-    get duration () {
-        return this._duration;
-    },
-
-    set transcript (v) {
-        this._transcript = v;
-    },
-
-    set duration (v) {
-        this._duration = v;
-    },
-
 });
 
 VideoObjectModel.new_from_json_ld = function (json_ld_data, media_path) {
