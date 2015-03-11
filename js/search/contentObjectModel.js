@@ -8,10 +8,6 @@ GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.
 /**
  * Class: ContentObjectModel
  * This is the base class for all content objects in the knowledge app.
- *
- * This object can be configured with a <title>, <thumbnail>, <language>,
- * <copyright-holder>, <source-uri>, <content-uri>, <synopsis>, <resources>, <last-modified-date>,
- * <tags>, and <license> properties.
  */
 const ContentObjectModel = new Lang.Class({
     Name: 'ContentObjectModel',
