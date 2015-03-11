@@ -27,7 +27,7 @@ const MediaObjectModel = new Lang.Class({
          */
         'caption': GObject.ParamSpec.string('caption',
             'Caption', 'Displayable caption for the media',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             ''),
 
         /**
@@ -36,7 +36,7 @@ const MediaObjectModel = new Lang.Class({
          */
         'encoding-format': GObject.ParamSpec.string('encoding-format',
             'Encoding Format', 'The format in which the content is encoded',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             ''),
 
         /**
@@ -45,7 +45,7 @@ const MediaObjectModel = new Lang.Class({
          */
         'height': GObject.ParamSpec.uint('height',
             'Height', 'The height of the media in pixels',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             0, GLib.MAXUINT32, 0),
 
         /**
@@ -54,7 +54,7 @@ const MediaObjectModel = new Lang.Class({
          */
         'width': GObject.ParamSpec.uint('width',
             'Width', 'The width of the media in pixels',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             0, GLib.MAXUINT32, 0)
     },
 
@@ -156,7 +156,7 @@ const VideoObjectModel = Lang.Class({
          */
         'duration': GObject.ParamSpec.string('duration',
             'Duration', 'The duration of the video in ISO 8601 format',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             ''),
 
         /**
@@ -166,7 +166,7 @@ const VideoObjectModel = Lang.Class({
          */
         'transcript': GObject.ParamSpec.string('transcript',
             'Transcript', 'Transcript of the video',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             ''),
     },
 

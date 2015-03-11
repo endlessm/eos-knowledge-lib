@@ -23,79 +23,79 @@ const ContentObjectModel = new Lang.Class({
          * A string with the ID of the content object. This is an internal ID assigned by EKN.
          */
         'ekn-id': GObject.ParamSpec.string('ekn-id', 'Object\'s ID', 'The ID of a document or media object',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT, ''),
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
         /**
          * Property: title
          * A string with the title of the content object. Defaults to an empty string.
          */
         'title': GObject.ParamSpec.string('title', 'Title', 'The title of a document or media object',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT, ''),
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
         /**
          * Property: original-title
          * A string with the original title of the content object. Defaults to an empty string.
          */
         'original-title': GObject.ParamSpec.string('original-title', 'Original Title', 'The original title (wikipedia title) of a document or media object',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT, ''),
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
         /**
          * Property: thumbnail-id
          * The ekn id of a ImageObjectModel representing the thumbnail image. Must be set to type GObject, since
          * ImageObjectModel subclasses this class and so we cannot reference it here.
          */
         'thumbnail-id': GObject.ParamSpec.string('thumbnail-id', 'Thumbnail ID', 'EKN ID of the thumbnail image',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT, ''),
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
         /**
          * Property: language
          * The language for this content object. Defaults to an empty string.
          */
         'language': GObject.ParamSpec.string('language', 'Language', 'Language of the document or media object',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT, ''),
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
         /**
          * Property: copyright-holder
          * The copyright holder for this content object. Defaults to an empty string.
          */
         'copyright-holder': GObject.ParamSpec.string('copyright-holder', 'Copyright Holder', 'The copyright holder of the object',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT, ''),
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
         /**
          * Property: source-uri
          * A string with the URI to the source for this content object.
          * TODO Should we check to always have a value for <source-uri>?
          */
         'source-uri': GObject.ParamSpec.string('source-uri', 'Source URL', 'URI of the source page',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT, ''),
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
         /**
          * Property: content-uri
          * A string with the URI to the file content for this object.
          */
         'content-uri': GObject.ParamSpec.string('content-uri', 'Object Content URL',
             'URI of the source content file',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             ''),
         /**
          * Property: synopsis
          * The synopsis for this content object. Defaults to an empty string.
          */
         'synopsis': GObject.ParamSpec.string('synopsis', 'Synopsis', 'Synopsis of the document or media object',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT, ''),
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
         /**
          * Property: last-modified-date
          * The date of last modification for this content object. It treats dates
          * according to the ISO8601 standard.
          */
         'last-modified-date': GObject.ParamSpec.string('last_modified_date', 'Last Modified Date', 'Last Modified Date of the document or media object',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT, ''),
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
         /**
          * Property: license
          * The license for this content object. Defaults to an empty string.
          */
         'license': GObject.ParamSpec.string('license', 'License', 'License of the document or media object',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT, ''),
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
         /**
          * Property: num-resources
          * The number of resources belonging to this content object.
          */
         'num-resources': GObject.ParamSpec.int('num-resources', 'Number of resources',
             'Number of resources belonging to this object',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
              0, GLib.MAXINT32, 0),
         /**
          * Property: redirects-to
@@ -103,7 +103,7 @@ const ContentObjectModel = new Lang.Class({
          */
         'redirects-to': GObject.ParamSpec.string('redirects-to', 'Redirects To',
             'EKN ID of the object to which this model should redirect',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT, ''),
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
     },
 
     _init: function (params) {

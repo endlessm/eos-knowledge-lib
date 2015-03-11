@@ -27,7 +27,7 @@ const ArticleObjectModel = new Lang.Class({
          */
         'html': GObject.ParamSpec.string('html', 'Article HTML',
             'The HTML of the article, unstyled.',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             ''),
         /**
          * Property: html-source
@@ -37,7 +37,7 @@ const ArticleObjectModel = new Lang.Class({
          */
         'html-source': GObject.ParamSpec.string('html-source', 'Source of the HTML',
             'Where the article html was retrieved from.',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             ''),
         /**
          * Property: word-count
@@ -45,7 +45,7 @@ const ArticleObjectModel = new Lang.Class({
          */
         'word-count': GObject.ParamSpec.uint('word-count', 'Word Count',
             'Number of words contained in the article body',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             0, GLib.MAXUINT32, 0),
 
         /**
