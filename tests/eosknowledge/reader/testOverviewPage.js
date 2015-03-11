@@ -11,7 +11,7 @@ describe('Overview page widget', function () {
     beforeEach(function () {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
         jasmine.addMatchers(InstanceOfMatcher.customMatchers);
-        snippets = [
+        let snippet_data = [
             {
                 title: 'Title 1',
                 synopsis: 'Secrets on how to cook frango',
@@ -23,6 +23,10 @@ describe('Overview page widget', function () {
                 style_variant: 1,
             }
         ]
+
+        snippets = snippet_data.map((props) => {
+            return new EosKnowledge.Reader.ArticleSnippet(props);
+        });
         page = new EosKnowledge.Reader.OverviewPage();
     });
 
@@ -44,20 +48,24 @@ describe('Overview page widget', function () {
     });
 
     it('does not set a style variant class for style variant -1', function () {
-        page.set_article_snippets([{
-            title: 'Frango',
-            synopsis: 'Frango tikka masala, yum',
-            style_variant: -1,
-        }]);
+        page.set_article_snippets([
+            new EosKnowledge.Reader.ArticleSnippet ({
+                title: 'Frango',
+                synopsis: 'Frango tikka masala, yum',
+                style_variant: -1,
+            })
+        ]);
         expect(page).not.toHaveDescendantWithCssClass('snippet-1');
         expect(page).not.toHaveDescendantWithCssClass('snippet0');
     });
 
     it('uses 0 as the default style variant', function () {
-        page.set_article_snippets([{
-            title: 'Frango',
-            synopsis: 'Frango tikka masala, yum',
-        }]);
+        page.set_article_snippets([
+            new EosKnowledge.Reader.ArticleSnippet ({
+                title: 'Frango',
+                synopsis: 'Frango tikka masala, yum',
+            })
+        ]);
         expect(page).toHaveDescendantWithCssClass('snippet0');
     });
 });

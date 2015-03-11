@@ -117,9 +117,8 @@ const OverviewPage = new Lang.Class({
       optional field, 'style_variant'. This function creates an <ArticleSnippet>
       widget for each snippet model and adds it to the snippets grid.
     */
-    set_article_snippets: function (snippets) {
-        snippets.forEach((props) => {
-            let snippet = new ArticleSnippet(props);
+    set_article_snippets: function (snippets, callback) {
+        snippets.forEach((snippet) => {
             this._snippets_grid.add(snippet);
         });
     },
@@ -138,7 +137,7 @@ const OverviewPage = new Lang.Class({
 const ArticleSnippet = new Lang.Class({
     Name: 'ArticleSnippet',
     GTypeName: 'EknArticleSnippet',
-    Extends: Gtk.Grid,
+    Extends: Gtk.Button,
     Properties: {
         /**
          * Property: title
@@ -171,8 +170,6 @@ const ArticleSnippet = new Lang.Class({
 
     _init: function (props) {
         props = props || {};
-        props.orientation = Gtk.Orientation.VERTICAL;
-        props.expand = true;
 
         this._title_label = new Gtk.Label({
             hexpand: true,
@@ -205,8 +202,14 @@ const ArticleSnippet = new Lang.Class({
         if (this.style_variant >= 0)
             context.add_class('snippet' + this.style_variant);
 
-        this.add(this._title_label);
-        this.add(this._synopsis_label);
+        let grid = new Gtk.Grid({
+            orientation: Gtk.Orientation.VERTICAL,
+            expand: true,
+        });
+
+        grid.add(this._title_label);
+        grid.add(this._synopsis_label);
+        this.add(grid);
 
         this.show_all();
     },
