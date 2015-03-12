@@ -565,6 +565,17 @@ enum_type##_get_type (void) \
  */
 #define EKN_STYLE_CLASS_READER_BOTTOM_LINE "bottom-line"
 
+
+/**
+ * EKN_STYLE_CLASS_READER_OPEN_BUTTON:
+ *
+ * Matches the button to open the magazine from the standalone page.
+ *
+ * > **NOTE**
+ * > This is unstable API.
+ */
+#define EKN_STYLE_CLASS_READER_OPEN_BUTTON "open-button"
+
 /**
  * EKN_STYLE_CLASS_READER_ARTICLE_PAGE_ATTRIBUTION:
  *

@@ -103,7 +103,13 @@ const MockView = new Lang.Class({
         };
         this.standalone_page = {
             get_style_context: get_style_context,
-            title_view: {},
+            infobar: {
+                connect: function () {},
+            },
+            article_page: {
+                title_view: {},
+                get_style_context: get_style_context,
+            },
         };
 
         this.total_pages = 0;
@@ -387,6 +393,13 @@ describe('Reader presenter', function () {
             expect(settings.start_article).toBe(5);
             expect(settings.bookmark_page).toBe(0);
             expect(settings.update_timestamp).toBeGreaterThan(current_time);
+        });
+
+        it('goes to overview_page when opening magazine from standalone_page', function () {
+            spyOn(view, 'show_overview_page');
+            presenter._go_to_page(3);
+            presenter._open_magazine();
+            expect(view.show_overview_page).toHaveBeenCalled();
         });
 
         it('loads media into lightbox if and only if it is a member of article\'s resource array', function () {

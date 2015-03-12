@@ -58,6 +58,7 @@ reader_overrides = \
 	overrides/reader/overviewPage.js \
 	overrides/reader/presenter.js \
 	overrides/reader/progressLabel.js \
+	overrides/reader/standalonePage.js \
 	overrides/reader/titleView.js \
 	overrides/reader/userSettingsModel.js \
 	overrides/reader/window.js \
