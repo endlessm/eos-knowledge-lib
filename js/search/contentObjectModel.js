@@ -81,7 +81,7 @@ const ContentObjectModel = new Lang.Class({
          * The date of last modification for this content object. It treats dates
          * according to the ISO8601 standard.
          */
-        'last-modified-date': GObject.ParamSpec.string('last_modified_date', 'Last Modified Date', 'Last Modified Date of the document or media object',
+        'last-modified-date': GObject.ParamSpec.string('last-modified-date', 'Last Modified Date', 'Last Modified Date of the document or media object',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
         /**
          * Property: license
