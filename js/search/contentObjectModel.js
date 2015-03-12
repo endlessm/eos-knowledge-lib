@@ -53,10 +53,14 @@ const ContentObjectModel = new Lang.Class({
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
         /**
          * Property: source-uri
-         * A string with the URI to the source for this content object.
+         * URI where this content was downloaded from during database build
+         *
          * TODO Should we check to always have a value for <source-uri>?
+         * Don't use this property for user-visible things.
+         * It is only used internally.
          */
-        'source-uri': GObject.ParamSpec.string('source-uri', 'Source URL', 'URI of the source page',
+        'source-uri': GObject.ParamSpec.string('source-uri', 'Source URL',
+            'URI where this content was downloaded from during database build',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
         /**
          * Property: content-uri
