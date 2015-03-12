@@ -27,7 +27,7 @@ const ArticleObjectModel = new Lang.Class({
          */
         'html': GObject.ParamSpec.string('html', 'Article HTML',
             'The HTML of the article, unstyled.',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             ''),
         /**
          * Property: html-source
@@ -37,7 +37,7 @@ const ArticleObjectModel = new Lang.Class({
          */
         'html-source': GObject.ParamSpec.string('html-source', 'Source of the HTML',
             'Where the article html was retrieved from.',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             ''),
         /**
          * Property: word-count
@@ -45,7 +45,7 @@ const ArticleObjectModel = new Lang.Class({
          */
         'word-count': GObject.ParamSpec.uint('word-count', 'Word Count',
             'Number of words contained in the article body',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             0, GLib.MAXUINT32, 0),
 
         /**
@@ -97,46 +97,6 @@ const ArticleObjectModel = new Lang.Class({
     _init: function (params) {
         this._authors = [];
         this.parent(params);
-    },
-
-    get word_count () {
-        return this._word_count;
-    },
-
-    get table_of_contents () {
-        return this._table_of_contents;
-    },
-
-    get issue_number() {
-        return this._issue_number;
-    },
-
-    get article_number() {
-        return this._article_number;
-    },
-
-    set word_count (v) {
-        this._word_count = v;
-    },
-
-    set table_of_contents (v) {
-        this._table_of_contents = v;
-    },
-
-    set issue_number(v) {
-        this._issue_number = v;
-    },
-
-    set article_number(v) {
-        this._article_number = v;
-    },
-
-    set published (v) {
-        this._published = v;
-    },
-
-    get published () {
-        return this._published;
     },
 
     set_authors: function (v) {

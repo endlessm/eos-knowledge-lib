@@ -42,15 +42,12 @@ const ArticleHTMLRenderer = new Lang.Class({
     },
 
     _get_disclaimer: function (model) {
-        let to_link = function (uri, text) {
-            return '<a class="eos-show-link" href="browser-' + uri + '">' + Mustache.escape(text) + '</a>';
-        };
         switch (model.html_source) {
             case 'wikipedia':
             case 'wikibooks':
             case 'wikisource':
-                let original_link = to_link(model.source_uri, model.html_source);
-                let license_link = to_link(_("http://creativecommons.org/licenses/by-sa/3.0/"), _("CC BY-SA"));
+                let original_link = _to_link(model.source_uri, model.html_source);
+                let license_link = _to_link(_("http://creativecommons.org/licenses/by-sa/3.0/"), _("CC BY-SA"));
                 // TRANSLATORS: anything inside curly braces '{}' is going
                 // to be substituted in code. Please make sure to leave the
                 // curly braces around any words that have them and DO NOT
@@ -59,8 +56,8 @@ const ArticleHTMLRenderer = new Lang.Class({
                 .replace('{original-link}', original_link)
                 .replace('{license-link}', license_link);
             case 'wikihow':
-                let wikihow_article_link = to_link(model.source_uri, model.title);
-                let wikihow_link = to_link(_("http://wikihow.com"), _("WikiHow"));
+                let wikihow_article_link = _to_link(model.source_uri, model.title);
+                let wikihow_link = _to_link(_("http://wikihow.com"), _("WikiHow"));
                 // TRANSLATORS: anything inside curly braces '{}' is going
                 // to be substituted in code. Please make sure to leave the
                 // curly braces around any words that have them and DO NOT
@@ -119,3 +116,7 @@ const ArticleHTMLRenderer = new Lang.Class({
         });
     },
 });
+
+function _to_link(uri, text) {
+    return '<a class="eos-show-link" href="browser-' + uri + '">' + Mustache.escape(text) + '</a>';
+}

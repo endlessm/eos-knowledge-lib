@@ -27,7 +27,7 @@ const MediaObjectModel = new Lang.Class({
          */
         'caption': GObject.ParamSpec.string('caption',
             'Caption', 'Displayable caption for the media',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             ''),
 
         /**
@@ -36,7 +36,7 @@ const MediaObjectModel = new Lang.Class({
          */
         'encoding-format': GObject.ParamSpec.string('encoding-format',
             'Encoding Format', 'The format in which the content is encoded',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             ''),
 
         /**
@@ -45,7 +45,7 @@ const MediaObjectModel = new Lang.Class({
          */
         'height': GObject.ParamSpec.uint('height',
             'Height', 'The height of the media in pixels',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             0, GLib.MAXUINT32, 0),
 
         /**
@@ -54,44 +54,12 @@ const MediaObjectModel = new Lang.Class({
          */
         'width': GObject.ParamSpec.uint('width',
             'Width', 'The width of the media in pixels',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             0, GLib.MAXUINT32, 0)
     },
 
     _init: function (params) {
         this.parent(params);
-    },
-
-    get caption () {
-        return this._caption;
-    },
-
-    get encoding_format () {
-        return this._encoding_format;
-    },
-
-    get width () {
-        return this._width;
-    },
-
-    get height () {
-        return this._height;
-    },
-
-    set caption (v) {
-        this._caption = v;
-    },
-
-    set encoding_format (v) {
-        this._encoding_format = v;
-    },
-
-    set width (v) {
-        this._width = v;
-    },
-
-    set height (v) {
-        this._height = v;
     },
 });
 
@@ -188,7 +156,7 @@ const VideoObjectModel = Lang.Class({
          */
         'duration': GObject.ParamSpec.string('duration',
             'Duration', 'The duration of the video in ISO 8601 format',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             ''),
 
         /**
@@ -198,30 +166,13 @@ const VideoObjectModel = Lang.Class({
          */
         'transcript': GObject.ParamSpec.string('transcript',
             'Transcript', 'Transcript of the video',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             ''),
     },
 
     _init: function (props) {
         this.parent(props);
     },
-
-    get transcript () {
-        return this._transcript;
-    },
-
-    get duration () {
-        return this._duration;
-    },
-
-    set transcript (v) {
-        this._transcript = v;
-    },
-
-    set duration (v) {
-        this._duration = v;
-    },
-
 });
 
 VideoObjectModel.new_from_json_ld = function (json_ld_data, media_path) {
