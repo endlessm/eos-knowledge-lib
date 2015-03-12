@@ -506,6 +506,16 @@ enum_type##_get_type (void) \
 #define EKN_STYLE_CLASS_READER_ARTICLE_SNIPPET "article-snippet"
 
 /**
+ * EKN_STYLE_CLASS_READER_APP_SUBTITLE:
+ *
+ * Matches app subtitle labels across Reader apps.
+ *
+ * > **NOTE**
+ * > This is unstable API.
+ */
+#define EKN_STYLE_CLASS_READER_APP_SUBTITLE "subtitle"
+
+/**
  * EKN_STYLE_CLASS_READER_TITLE:
  *
  * Matches title labels across Reader apps.

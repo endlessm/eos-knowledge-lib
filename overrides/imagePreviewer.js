@@ -228,9 +228,15 @@ const ImagePreviewer = Lang.Class({
             this._scaled_pixbuf = this._pixbuf.scale_simple(width, height, GdkPixbuf.InterpType.BILINEAR);
         }
 
-        // Center the pixbuf in the allocation
-        let x = (allocation.width - this._scaled_pixbuf.width) / 2;
-        let y = (allocation.height - this._scaled_pixbuf.height) / 2;
+        let align_extra_space = (extra_space, align) => {
+            if (align === Gtk.Align.START)
+                return 0;
+            if (align === Gtk.Align.END)
+                return extra_space;
+            return extra_space / 2;
+        };
+        let x = align_extra_space(allocation.width - this._scaled_pixbuf.width, this.halign);
+        let y = align_extra_space(allocation.height - this._scaled_pixbuf.height, this.valign);
         Gdk.cairo_set_source_pixbuf(cr, this._scaled_pixbuf, x, y);
         cr.paint();
     },

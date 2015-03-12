@@ -533,6 +533,7 @@ const Presenter = new Lang.Class({
     _parse_app_info: function (info) {
         this.view.title = info['appTitle'];
         this.view.overview_page.title_image_uri = info['titleImageURI'];
+        this.view.overview_page.subtitle = info['appSubtitle'];
         this.view.overview_page.background_image_uri = info['backgroundHomeURI'];
         this.view.done_page.background_image_uri = info['backgroundSectionURI'];
         this.view.standalone_page.infobar.app_name = info['appTitle'];

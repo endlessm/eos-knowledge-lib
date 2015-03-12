@@ -2,6 +2,7 @@
     "titleImageURI": "resource:///com/endlessm/thrones/agot.svg",
     "appId": "com.endlessm.thrones-en",
     "appTitle": "Game of Thrones",
+    "appSubtitle": "A Song of Ice and Fire",
     "backgroundHomeURI": "resource:///com/endlessm/thrones/background.jpg",
     "backgroundSectionURI": "resource:///com/endlessm/thrones/background_blurred.jpg",
     "language": "en",

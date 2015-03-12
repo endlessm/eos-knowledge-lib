@@ -34,6 +34,15 @@ const OverviewPage = new Lang.Class({
         'title-image-uri': GObject.ParamSpec.string('title-image-uri', 'Page Title Image URI',
             'URI to the title image',
             GObject.ParamFlags.READWRITE, ''),
+
+        /**
+         * Property: subtitle
+         * A subtitle for the application. Defaults to an empty string.
+         */
+        'subtitle': GObject.ParamSpec.string('subtitle', 'App subtitle',
+            'A subtitle for the app',
+            GObject.ParamFlags.READWRITE, ''),
+
         /**
          * Property: background-image-uri
          *
@@ -50,8 +59,7 @@ const OverviewPage = new Lang.Class({
         props.hexpand = true;
 
         this._title_image = new ImagePreviewer.ImagePreviewer({
-            valign: Gtk.Align.START,
-            vexpand: true,
+            halign: Gtk.Align.START,
         });
 
         this._title_image_uri = null;
@@ -59,6 +67,13 @@ const OverviewPage = new Lang.Class({
         let grid = new Gtk.Grid({
             column_homogeneous: true,
             orientation: Gtk.Orientation.VERTICAL,
+        });
+
+        this._subtitle_label = new Gtk.Label({
+            halign: Gtk.Align.START,
+            vexpand: true,
+            valign: Gtk.Align.START,
+            use_markup: true,
         });
 
         this._snippets_grid = new EosKnowledge.SpaceContainer({
@@ -71,9 +86,11 @@ const OverviewPage = new Lang.Class({
         this.parent(props);
 
         this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_READER_OVERVIEW_PAGE);
+        this._subtitle_label.get_style_context().add_class(EosKnowledge.STYLE_CLASS_READER_APP_SUBTITLE);
 
         grid.attach(this._title_image, 0, 0, 1, 1);
-        grid.attach(this._snippets_grid, 1, 0, 1, 1);
+        grid.attach(this._subtitle_label, 0, 1, 1, 1);
+        grid.attach(this._snippets_grid, 1, 0, 1, 2);
 
         this.add(grid);
     },
@@ -108,6 +125,23 @@ const OverviewPage = new Lang.Class({
     get title_image_uri () {
         if (this._title_image_uri)
             return this._title_image_uri;
+        return '';
+    },
+
+    set subtitle (v) {
+        if (this._subtitle_label_text === v)
+            return;
+        this._subtitle_label_text = v;
+        /* 758 = 0.74 px * 1024 Pango units / px */
+        this._subtitle_label.label = ('<span letter_spacing="758">' +
+            this._subtitle_label_text.toLocaleUpperCase() + '</span>');
+        this._subtitle_label.visible = (v && v.length !== 0);
+        this.notify('subtitle');
+    },
+
+    get subtitle () {
+        if (this._subtitle_label_text)
+            return this._subtitle_label_text;
         return '';
     },
 
