@@ -3,6 +3,7 @@ overrides/articleHTMLRenderer.js
 overrides/categoriesPage.js
 overrides/homePageA.js
 overrides/lessonCard.js
+overrides/licenses.js
 overrides/noSearchResultsPage.js
 overrides/pdfCard.js
 overrides/presenter.js

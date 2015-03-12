@@ -25,6 +25,9 @@ describe('Article HTML Renderer', function () {
         embedly_model = new EosKnowledgeSearch.ArticleObjectModel({
             html: '<html><body><p>embedly html</p></body></html>',
             html_source: 'embedly',
+            original_uri: 'http://blog.ly/post/2015/03/12/rendering-an-article',
+            source_name: 'Pantheon Blog',
+            license: 'CC-BY-SA 4.0',
             title: 'Embedly title',
         });
         javascripty_model = new EosKnowledgeSearch.ArticleObjectModel({
@@ -87,5 +90,16 @@ describe('Article HTML Renderer', function () {
 
         expect(html_with_scroll_manager).toMatch('scroll-manager.js');
         expect(html_without_scroll_manager).not.toMatch('scroll-manager.js');
+    });
+
+    it('links to the original blog in embedly articles', function () {
+        let html = renderer.render(embedly_model);
+        expect(html).toMatch(/<a.*>Pantheon Blog<\/a>/);
+        expect(html).toMatch('http://blog.ly/post/2015/03/12/rendering-an-article');
+    });
+
+    it('links to the license in embedly articles', function () {
+        let html = renderer.render(embedly_model);
+        expect(html).toMatch('creativecommons.org');
     });
 });
