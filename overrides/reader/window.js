@@ -2,6 +2,7 @@
 
 const Endless = imports.gi.Endless;
 const EosKnowledge = imports.gi.EosKnowledge;
+const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
@@ -14,6 +15,7 @@ const Lightbox = imports.lightbox;
 const NavButtonOverlay = imports.navButtonOverlay;
 const OverviewPage = imports.reader.overviewPage;
 const ProgressLabel = imports.reader.progressLabel;
+const SearchResultsPage = imports.reader.searchResultsPage;
 
 /**
  * Class: Reader.Window
@@ -76,6 +78,16 @@ const Window = new Lang.Class({
             StandalonePage.StandalonePage.$gtype),
 
         /**
+         * Property: search-results-page
+         *
+         * The <Reader.SearchResultsPage> widget created by this widget. Read-only.
+         */
+        'search-results-page': GObject.ParamSpec.object('search-results-page',
+            'Search Results Page', 'The page that show the results of a search',
+            GObject.ParamFlags.READABLE,
+            SearchResultsPage.SearchResultsPage.$gtype),
+
+        /**
          * Property: issue-nav-buttons
          *
          * An <Endless.TopbarNavButton> widget created by this window.
@@ -97,7 +109,7 @@ const Window = new Lang.Class({
         'lightbox': GObject.ParamSpec.object('lightbox', 'Lightbox',
             'The lightbox of this view widget.',
             GObject.ParamFlags.READABLE,
-            Lightbox.Lightbox),
+            Lightbox.Lightbox.$gtype),
 
         /**
          * Property: total-pages
@@ -144,6 +156,7 @@ const Window = new Lang.Class({
         this._done_page = new DonePage.DonePage();
         this._standalone_page = new StandalonePage.StandalonePage();
         this._standalone_page.article_page.progress_label.no_show_all = true;
+        this.search_results_page = new SearchResultsPage.SearchResultsPage();
         this._nav_buttons = new NavButtonOverlay.NavButtonOverlay({
             back_image_uri: this._BACK_IMAGE_URI,
             forward_image_uri: this._FORWARD_IMAGE_URI,
@@ -183,6 +196,7 @@ const Window = new Lang.Class({
         this._stack.add(this._overview_page);
         this._stack.add(this._done_page);
         this._stack.add(this._standalone_page);
+        this._stack.add(this.search_results_page);
         this._nav_buttons.add(this._stack);
         this._lightbox.add(this._nav_buttons);
         this.page_manager.add(this._lightbox, {
@@ -250,6 +264,12 @@ const Window = new Lang.Class({
         this._stack.set_visible_child(this._standalone_page);
         this._nav_buttons.back_visible = false;
         this._nav_buttons.forward_visible = false;
+    },
+
+    show_search_results_page: function () {
+        this._stack.set_visible_child(this.search_results_page);
+        this.nav_buttons.back_visible = true;
+        this.nav_buttons.forward_visible = false;
     },
 
     show_article_page: function (index, transition_forward) {

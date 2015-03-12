@@ -46,10 +46,12 @@ const WebkitURIHandlers = imports.webkitURIHandlers;
 const Window = imports.window;
 
 const ReaderArticlePage = imports.reader.articlePage;
+const ReaderCard = imports.reader.card;
 const ReaderDonePage = imports.reader.donePage;
 const ReaderOverviewPage = imports.reader.overviewPage;
 const ReaderPresenter = imports.reader.presenter;
 const ReaderProgressLabel = imports.reader.progressLabel;
+const ReaderSearchResultsPage = imports.reader.searchResultsPage;
 const ReaderStandalonePage = imports.reader.standalonePage;
 const ReaderTitleView = imports.reader.titleView;
 const ReaderUserSettingsModel = imports.reader.userSettingsModel;
@@ -143,10 +145,12 @@ function _init() {
     EosKnowledge.Reader = {
         ArticlePage: ReaderArticlePage.ArticlePage,
         ArticleSnippet: ReaderOverviewPage.ArticleSnippet,
+        Card: ReaderCard.Card,
         DonePage: ReaderDonePage.DonePage,
         OverviewPage: ReaderOverviewPage.OverviewPage,
         Presenter: ReaderPresenter.Presenter,
         ProgressLabel: ReaderProgressLabel.ProgressLabel,
+        SearchResultsPage: ReaderSearchResultsPage.SearchResultsPage,
         StandalonePage: ReaderStandalonePage.StandalonePage,
         TitleView: ReaderTitleView.TitleView,
         UserSettingsModel: ReaderUserSettingsModel.UserSettingsModel,
