@@ -31,6 +31,7 @@
     "@type": "ekv:ContentObject",
     "@id": "ekn:text_editors/Emacs",
     "title": "Emacs",
+    "originalURI": "http://en.wikipedia.org/wiki/Emacs",
     "tags": ["uninstall plz", "awful", "butterflies"],
     "language": "pt-BR",
     "synopsis": "Emacs was invented by Richard Stallman after a long night of drinking.",

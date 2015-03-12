@@ -14,6 +14,7 @@ describe ("Content Object Model", function () {
             contentObject = new EosKnowledgeSearch.ContentObjectModel({
                 ekn_id : mockContentData["@id"],
                 title : mockContentData.title,
+                original_uri: mockContentData.originalURI,
                 thumbnail_id : mockContentData.thumbnail,
                 language : mockContentData.language,
                 copyright_holder : mockContentData.copyrightHolder,
@@ -52,6 +53,10 @@ describe ("Content Object Model", function () {
 
         it ("should have a title", function () {
             expect(contentObject.title).toEqual(mockContentData["title"]);
+        });
+
+        it('has an original URI', function () {
+            expect(contentObject.original_uri).toEqual(mockContentData.originalURI);
         });
 
         it ("should have a language", function () {

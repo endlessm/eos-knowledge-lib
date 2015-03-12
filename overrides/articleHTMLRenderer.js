@@ -46,6 +46,7 @@ const ArticleHTMLRenderer = new Lang.Class({
             case 'wikipedia':
             case 'wikibooks':
             case 'wikisource':
+                // FIXME: should use model.original_uri
                 let original_link = _to_link(model.source_uri, model.html_source);
                 let license_link = _to_link(_("http://creativecommons.org/licenses/by-sa/3.0/"), _("CC BY-SA"));
                 // TRANSLATORS: anything inside curly braces '{}' is going
@@ -56,6 +57,7 @@ const ArticleHTMLRenderer = new Lang.Class({
                 .replace('{original-link}', original_link)
                 .replace('{license-link}', license_link);
             case 'wikihow':
+                // FIXME: should use model.original_uri
                 let wikihow_article_link = _to_link(model.source_uri, model.title);
                 let wikihow_link = _to_link(_("http://wikihow.com"), _("WikiHow"));
                 // TRANSLATORS: anything inside curly braces '{}' is going

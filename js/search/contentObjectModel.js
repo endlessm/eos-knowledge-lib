@@ -32,6 +32,25 @@ const ContentObjectModel = new Lang.Class({
          */
         'original-title': GObject.ParamSpec.string('original-title', 'Original Title', 'The original title (wikipedia title) of a document or media object',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
+
+        /**
+         * Property: original-uri
+         * URI where the original version of this content can be downloaded
+         *
+         * This property is distinct from <source-uri>, which represents the URI
+         * where the article was downloaded from during database build.
+         *
+         * Note that this property may not be present in client databases, since
+         * it was added in 0.2.
+         *
+         * Since:
+         *   0.2
+         */
+        'original-uri': GObject.ParamSpec.string('original-uri', 'Original URI',
+            'URI where the original version of this content can be downloaded',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            ''),
+
         /**
          * Property: thumbnail-id
          * The ekn id of a ImageObjectModel representing the thumbnail image. Must be set to type GObject, since
@@ -168,6 +187,9 @@ ContentObjectModel._props_from_json_ld = function (json_ld_data, media_path) {
 
     if(json_ld_data.hasOwnProperty('originalTitle'))
         props.original_title = json_ld_data.originalTitle;
+
+    if (json_ld_data.hasOwnProperty('originalURI'))
+        props.original_uri = json_ld_data.originalURI;
 
     if(json_ld_data.hasOwnProperty('language'))
         props.language = json_ld_data.language;
