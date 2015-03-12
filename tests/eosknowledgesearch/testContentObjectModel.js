@@ -19,6 +19,7 @@ describe ("Content Object Model", function () {
                 language : mockContentData.language,
                 copyright_holder : mockContentData.copyrightHolder,
                 source_uri : mockContentData.sourceURL,
+                source_name: mockContentData.sourceName,
                 synopsis : mockContentData.synopsis,
                 last_modified_date : mockContentData.lastModifiedDate,
                 license : mockContentData.license
@@ -90,6 +91,10 @@ describe ("Content Object Model", function () {
 
         it ("should have redirects-to", function () {
             expect(contentObject.redirects_to).toEqual(mockContentData.redirectsTo);
+        });
+
+        it('has a source name', function () {
+            expect(contentObject.source_name).toEqual(mockContentData.sourceName);
         });
     });
 });

@@ -39,6 +39,7 @@
     "license": "Creative-Commons",
     "copyrightHolder": "Wikimedia Foundation",
     "sourceURL": "http://en.wikipedia.org/wiki/Emacs",
+    "sourceName": "Wikipedia",
     "redirectsTo": "http://en.wikipedia.org/wiki/Inferiority_complex",
     "thumbnail": "ekn://text_editors/Stallman.jpg",
     "resources": [
