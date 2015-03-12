@@ -115,10 +115,6 @@ const ContentObjectModel = new Lang.Class({
         return this._title;
     },
 
-    get last_modified_date () {
-        return new Date(this._last_modified_date);
-    },
-
     get_resources: function () {
         return this._resources;
     },
@@ -132,10 +128,6 @@ const ContentObjectModel = new Lang.Class({
         // For now we need to programmatically capitalize titles
         v = v.charAt(0).toUpperCase() + v.slice(1);
         this._title = v;
-    },
-
-    set last_modified_date (v) {
-        this._last_modified_date = v;
     },
 
     set_resources: function (v) {

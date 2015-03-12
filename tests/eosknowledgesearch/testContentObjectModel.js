@@ -63,7 +63,8 @@ describe ("Content Object Model", function () {
         });
 
         it ("should have a last-modified date", function () {
-            expect(contentObject.last_modified_date).toEqual(new Date(mockContentData.lastModifiedDate));
+            expect(new Date(contentObject.last_modified_date))
+                .toEqual(new Date(mockContentData.lastModifiedDate));
         });
 
         it ("should have tags", function () {
