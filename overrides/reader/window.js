@@ -2,6 +2,7 @@
 
 const Endless = imports.gi.Endless;
 const EosKnowledge = imports.gi.EosKnowledge;
+const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
@@ -14,6 +15,7 @@ const Lightbox = imports.lightbox;
 const NavButtonOverlay = imports.navButtonOverlay;
 const OverviewPage = imports.reader.overviewPage;
 const ProgressLabel = imports.reader.progressLabel;
+const SearchResultsPage = imports.reader.searchResultsPage;
 
 /**
  * Class: Reader.Window
@@ -76,6 +78,16 @@ const Window = new Lang.Class({
             StandalonePage.StandalonePage.$gtype),
 
         /**
+         * Property: search-results-page
+         *
+         * The <Reader.SearchResultsPage> widget created by this widget. Read-only.
+         */
+        'search-results-page': GObject.ParamSpec.object('search-results-page',
+            'Search Results Page', 'The page that show the results of a search',
+            GObject.ParamFlags.READABLE,
+            SearchResultsPage.SearchResultsPage.$gtype),
+
+        /**
          * Property: issue-nav-buttons
          *
          * An <Endless.TopbarNavButton> widget created by this window.
@@ -97,7 +109,7 @@ const Window = new Lang.Class({
         'lightbox': GObject.ParamSpec.object('lightbox', 'Lightbox',
             'The lightbox of this view widget.',
             GObject.ParamFlags.READABLE,
-            Lightbox.Lightbox),
+            Lightbox.Lightbox.$gtype),
 
         /**
          * Property: total-pages
@@ -140,28 +152,29 @@ const Window = new Lang.Class({
     _init: function (props) {
         props = props || {};
 
-        this._overview_page = new OverviewPage.OverviewPage();
-        this._done_page = new DonePage.DonePage();
-        this._standalone_page = new StandalonePage.StandalonePage();
-        this._standalone_page.article_page.progress_label.no_show_all = true;
-        this._nav_buttons = new NavButtonOverlay.NavButtonOverlay({
+        this.overview_page = new OverviewPage.OverviewPage();
+        this.done_page = new DonePage.DonePage();
+        this.standalone_page = new StandalonePage.StandalonePage();
+        this.standalone_page.article_page.progress_label.no_show_all = true;
+        this.search_results_page = new SearchResultsPage.SearchResultsPage();
+        this.nav_buttons = new NavButtonOverlay.NavButtonOverlay({
             back_image_uri: this._BACK_IMAGE_URI,
             forward_image_uri: this._FORWARD_IMAGE_URI,
             image_size: this._NAV_IMAGE_SIZE,
         });
 
-        this._issue_nav_buttons = new Endless.TopbarNavButton({
+        this.issue_nav_buttons = new Endless.TopbarNavButton({
             no_show_all: true,
         });
         // No need for localization; this is debug only
-        this._issue_nav_buttons.back_button.label = 'Reset';
-        this._issue_nav_buttons.forward_button.label = 'Next week';
+        this.issue_nav_buttons.back_button.label = 'Reset';
+        this.issue_nav_buttons.forward_button.label = 'Next week';
 
-        this._lightbox = new Lightbox.Lightbox();
-        this._lightbox.connect('navigation-previous-clicked', function (lightbox) {
+        this.lightbox = new Lightbox.Lightbox();
+        this.lightbox.connect('navigation-previous-clicked', function (lightbox) {
             this.emit('lightbox-nav-previous-clicked', lightbox);
         }.bind(this));
-        this._lightbox.connect('navigation-next-clicked', function (lightbox) {
+        this.lightbox.connect('navigation-next-clicked', function (lightbox) {
             this.emit('lightbox-nav-next-clicked', lightbox);
         }.bind(this));
 
@@ -180,16 +193,17 @@ const Window = new Lang.Class({
         this._stack = new Gtk.Stack({
             transition_duration: this._STACK_TRANSITION_TIME,
         });
-        this._stack.add(this._overview_page);
-        this._stack.add(this._done_page);
-        this._stack.add(this._standalone_page);
-        this._nav_buttons.add(this._stack);
-        this._lightbox.add(this._nav_buttons);
-        this.page_manager.add(this._lightbox, {
-            center_topbar_widget: this._issue_nav_buttons,
+        this._stack.add(this.overview_page);
+        this._stack.add(this.done_page);
+        this._stack.add(this.standalone_page);
+        this._stack.add(this.search_results_page);
+        this.nav_buttons.add(this._stack);
+        this.lightbox.add(this.nav_buttons);
+        this.page_manager.add(this.lightbox, {
+            center_topbar_widget: this.issue_nav_buttons,
         });
-        this._overview_page.show_all();
-        this._stack.set_visible_child(this._overview_page);
+        this.overview_page.show_all();
+        this._stack.set_visible_child(this.overview_page);
     },
 
     _update_progress_labels: function () {
@@ -198,8 +212,8 @@ const Window = new Lang.Class({
             this._article_pages[i].progress_label.current_page = i + 2;
             this._article_pages[i].progress_label.total_pages = this.total_pages;
         }
-        this._done_page.progress_label.current_page = this.total_pages;
-        this._done_page.progress_label.total_pages = this.total_pages;
+        this.done_page.progress_label.current_page = this.total_pages;
+        this.done_page.progress_label.total_pages = this.total_pages;
     },
 
     /*
@@ -244,16 +258,22 @@ const Window = new Lang.Class({
     },
 
     show_standalone_page: function () {
-        this._standalone_page.show();
-        this._standalone_page.article_page.progress_label.hide();
+        this.standalone_page.show();
+        this.standalone_page.article_page.progress_label.hide();
         this._stack.set_transition_type(Gtk.StackTransitionType.SLIDE_UP);
-        this._stack.set_visible_child(this._standalone_page);
-        this._nav_buttons.back_visible = false;
-        this._nav_buttons.forward_visible = false;
+        this._stack.set_visible_child(this.standalone_page);
+        this.nav_buttons.back_visible = false;
+        this.nav_buttons.forward_visible = false;
+    },
+
+    show_search_results_page: function () {
+        this._stack.set_visible_child(this.search_results_page);
+        this.nav_buttons.back_visible = true;
+        this.nav_buttons.forward_visible = false;
     },
 
     show_article_page: function (index, transition_forward) {
-        this._nav_buttons.accommodate_scrollbar = true;
+        this.nav_buttons.accommodate_scrollbar = true;
         if (transition_forward) {
             this._stack.set_transition_type(Gtk.StackTransitionType.SLIDE_LEFT);
         } else {
@@ -265,40 +285,16 @@ const Window = new Lang.Class({
     },
 
     show_overview_page: function () {
-        this._nav_buttons.accommodate_scrollbar = false;
+        this.nav_buttons.accommodate_scrollbar = false;
         this._stack.set_transition_type(Gtk.StackTransitionType.SLIDE_RIGHT);
-        this._overview_page.show();
-        this._stack.set_visible_child(this._overview_page);
+        this.overview_page.show();
+        this._stack.set_visible_child(this.overview_page);
     },
 
     show_done_page: function () {
         this._stack.set_transition_type(Gtk.StackTransitionType.SLIDE_LEFT);
-        this._done_page.show();
-        this._stack.set_visible_child(this._done_page);
-    },
-
-    get lightbox() {
-        return this._lightbox;
-    },
-
-    get overview_page() {
-        return this._overview_page;
-    },
-
-    get done_page() {
-        return this._done_page;
-    },
-
-    get standalone_page() {
-        return this._standalone_page;
-    },
-
-    get nav_buttons() {
-        return this._nav_buttons;
-    },
-
-    get issue_nav_buttons() {
-        return this._issue_nav_buttons;
+        this.done_page.show();
+        this._stack.set_visible_child(this.done_page);
     },
 
     get total_pages() {

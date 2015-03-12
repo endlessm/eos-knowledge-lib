@@ -34,10 +34,12 @@ javascript_tests = \
 	tests/eosknowledge/testTextCard.js \
 	tests/eosknowledge/testWindow.js \
 	tests/eosknowledge/reader/testArticlePage.js \
+	tests/eosknowledge/reader/testCard.js \
 	tests/eosknowledge/reader/testDonePage.js \
 	tests/eosknowledge/reader/testOverviewPage.js \
 	tests/eosknowledge/reader/testPresenter.js \
 	tests/eosknowledge/reader/testProgressLabel.js \
+	tests/eosknowledge/reader/testSearchResultsPage.js \
 	tests/eosknowledge/reader/testTitleView.js \
 	tests/eosknowledge/reader/testUserSettingsModel.js \
 	tests/eosknowledge/reader/testWindow.js \

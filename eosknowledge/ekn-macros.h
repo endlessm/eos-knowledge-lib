@@ -621,6 +621,45 @@ enum_type##_get_type (void) \
  */
 #define EKN_STYLE_CLASS_PDF_CARD_ICON "pdf-card-icon"
 
+/**
+ * EKN_STYLE_CLASS_READER_CARD
+ *
+ * A CSS class to match the reader card.
+ * Since: 0.2
+ */
+#define EKN_STYLE_CLASS_READER_CARD "reader-card"
+
+/**
+ * EKN_STYLE_CLASS_READER_HOVER_FRAME
+ *
+ * A CSS class to match the reader card's hover state.
+ * Since: 0.2
+ */
+#define EKN_STYLE_CLASS_READER_HOVER_FRAME "hover-frame"
+
+/**
+ * EKN_STYLE_CLASS_READER_CARD_INFO_FRAME
+ *
+ * A CSS class to match the reader card's info frame.
+ * Since: 0.2
+ */
+#define EKN_STYLE_CLASS_READER_CARD_INFO_FRAME "card-info-frame"
+
+/**
+ * EKN_STYLE_CLASS_READER_CARD_INFO_TITLE
+ *
+ * A CSS class to match the reader card's info title.
+ * Since: 0.2
+ */
+#define EKN_STYLE_CLASS_READER_CARD_INFO_TITLE "card-info-title"
+
+/**
+ *  EKN_STYLE_CLASS_READER_ATTRIBUTION
+ *
+ * A CSS class to match the attribution field of a reader card.
+ * Since: 0.2
+ */
+#define EKN_STYLE_CLASS_READER_ATTRIBUTION "reader-attribution"
 
 /**
  * EKN_STYLE_CLASS_PDF_CARD_LABEL:

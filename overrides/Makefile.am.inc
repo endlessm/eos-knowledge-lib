@@ -54,10 +54,12 @@ dist_pkgoverrides_DATA = $(public_overrides) $(private_overrides)
 
 reader_overrides = \
 	overrides/reader/articlePage.js \
+	overrides/reader/card.js \
 	overrides/reader/donePage.js \
 	overrides/reader/overviewPage.js \
 	overrides/reader/presenter.js \
 	overrides/reader/progressLabel.js \
+	overrides/reader/searchResultsPage.js \
 	overrides/reader/standalonePage.js \
 	overrides/reader/titleView.js \
 	overrides/reader/userSettingsModel.js \
