@@ -45,6 +45,10 @@ overridden by app specific CSS */
     background-position: center;
 }
 
+.overview-frame {
+    padding: 100px 100px 85px 90px;
+}
+
 .done-page .headline {
     font-size: 2em;
     color: #fce94f;

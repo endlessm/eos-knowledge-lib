@@ -495,6 +495,16 @@ enum_type##_get_type (void) \
 #define EKN_STYLE_CLASS_READER_OVERVIEW_PAGE "overview-page"
 
 /**
+ * EKN_STYLE_CLASS_READER_OVERVIEW_FRAME
+ * Matches the GtkFrame widget that contains the snippets in the OverviewPage
+ * of the Reader apps.
+ *
+ * > **NOTE**
+ * > This is unstable API.
+ */
+#define EKN_STYLE_CLASS_READER_OVERVIEW_FRAME "overview-frame"
+
+/**
  * EKN_STYLE_CLASS_READER_ARTICLE_SNIPPET
  *
  * Matches the ArticleSnippet widget used in the OverviewPage of the Reader

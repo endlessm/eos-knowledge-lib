@@ -72,6 +72,7 @@ const OverviewPage = new Lang.Class({
 
         let grid = new Gtk.Grid({
             column_homogeneous: true,
+            column_spacing: 120,
             orientation: Gtk.Orientation.VERTICAL,
         });
 
@@ -85,12 +86,20 @@ const OverviewPage = new Lang.Class({
             margin_start: _SUBTITLE_LEFT_MARGIN,
         });
 
+        let snippets_frame = new Gtk.Frame({
+            expand: true,
+            halign: Gtk.Align.FILL,
+            valign: Gtk.Align.FILL,
+        });
+        snippets_frame.get_style_context().add_class(EosKnowledge.STYLE_CLASS_READER_OVERVIEW_FRAME);
+
         this._snippets_grid = new EosKnowledge.SpaceContainer({
             orientation: Gtk.Orientation.VERTICAL,
             expand: true,
             halign: Gtk.Align.END,
             valign: Gtk.Align.FILL,
         });
+        snippets_frame.add(this._snippets_grid);
 
         this.parent(props);
 
@@ -99,7 +108,7 @@ const OverviewPage = new Lang.Class({
 
         grid.attach(this._title_image, 0, 0, 1, 1);
         grid.attach(this._subtitle_label, 0, 1, 1, 1);
-        grid.attach(this._snippets_grid, 1, 0, 1, 2);
+        grid.attach(snippets_frame, 1, 0, 1, 2);
 
         this.add(grid);
     },
