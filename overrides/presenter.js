@@ -335,13 +335,6 @@ const Presenter = new Lang.Class({
         this.engine.get_objects_by_query(query, this._load_section_page.bind(this));
     },
 
-    // Removes newlines and trims whitespace before and after a query string
-    _sanitize_query: function (query) {
-        // Crazy regex for line breaks from
-        // http://stackoverflow.com/questions/10805125/how-to-remove-all-line-breaks-from-a-string
-        return query.replace(/\r?\n|\r/g, ' ').trim();
-    },
-
     // EosKnowledge.launcher override
     search: function (timestamp, query) {
         this._update_ui_and_search(query);
@@ -349,7 +342,8 @@ const Presenter = new Lang.Class({
     },
 
     _update_ui_and_search: function (query) {
-        query = this._sanitize_query(query);
+        query = Utils.sanitize_query(query);
+
         // Ignore empty queries
         if (query.length === 0) {
             return;
@@ -407,7 +401,7 @@ const Presenter = new Lang.Class({
     },
 
     _on_search_text_changed: function (view, entry) {
-        let query = this._sanitize_query(entry.text);
+        let query = Utils.sanitize_query(entry.text);
         this._latest_search_text = query;
         // Ignore empty queries
         if (query.length === 0) {
