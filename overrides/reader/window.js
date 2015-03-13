@@ -260,7 +260,7 @@ const Window = new Lang.Class({
     show_standalone_page: function () {
         this.standalone_page.show();
         this.standalone_page.article_page.progress_label.hide();
-        this._stack.set_transition_type(Gtk.StackTransitionType.SLIDE_UP);
+        this._stack.set_transition_type(Gtk.StackTransitionType.NONE);
         this._stack.set_visible_child(this.standalone_page);
         this.nav_buttons.back_visible = false;
         this.nav_buttons.forward_visible = false;
