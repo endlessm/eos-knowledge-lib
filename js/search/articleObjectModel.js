@@ -94,8 +94,37 @@ const ArticleObjectModel = new Lang.Class({
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT, ''),
     },
 
-    _init: function (params) {
+    _init: function (params={}) {
         this._authors = [];
+
+        // FIXME: this is a backwards-compatibility patch for old databases. See
+        // documentation for ContentObjectModel:original_uri and
+        // ContentObjectModel.source_name for more information. In EOS >= 2.3
+        // these values are set in eos-knowledge-db-build.
+        if (!params.original_uri && params.source_uri &&
+            ['wikipedia', 'wikihow', 'wikisource', 'wikibooks'].indexOf(params.html_source) !== -1)
+            params.original_uri = params.source_uri;
+        if (!params.source_name) {
+            if (params.html_source === 'wikipedia')
+                params.source_name = 'Wikipedia';
+            else if (params.html_source === 'wikihow')
+                params.source_name = 'wikiHow';
+            else if (params.html_source === 'wikisource')
+                params.source_name = 'Wikisource';
+            else if (params.html_source === 'wikibooks')
+                params.source_name = 'Wikibooks';
+        }
+        // Remove invalid value of license property which exists in pre-2.3 DBs.
+        // Replace with correct license.
+        if (params.license === 'Creative Commons')
+            delete params.license;
+        if (!params.license) {
+            if (['wikipedia', 'wikisource', 'wikibooks'].indexOf(params.html_source) !== -1)
+                params.license = 'CC-BY-SA 3.0';
+            else if (params.html_source === 'wikihow')
+                params.license = 'Owner permission';
+        }
+
         this.parent(params);
     },
 
@@ -154,7 +183,7 @@ ArticleObjectModel._props_from_json_ld = function (json_ld_data, media_path) {
             props.html_source = 'wikibooks';
         } else if (/^.*wikihow\.com/.test(host)) {
             props.html_source = 'wikihow';
-        } else if ('eos-pantheon.herokuapp.com' === host) {
+        } else if ('eos-pantheon.herokuapp.com' === host || 'localhost' === host) {
             props.html_source = 'embedly';
         } else {
             throw new Error('Unrecognized source uri host: ' + host);

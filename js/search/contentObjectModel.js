@@ -32,6 +32,29 @@ const ContentObjectModel = new Lang.Class({
          */
         'original-title': GObject.ParamSpec.string('original-title', 'Original Title', 'The original title (wikipedia title) of a document or media object',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
+
+        /**
+         * Property: original-uri
+         * URI where the original version of this content can be downloaded
+         *
+         * This property is distinct from <source-uri>, which represents the URI
+         * where the article was downloaded from during database build.
+         *
+         * Note that this property may not be present in client databases, since
+         * it was added in 0.2.
+         * However, on an <ArticleObjectModel> with <html-source> equal to
+         * "wikipedia", "wikihow", "wikisource", or "wikibooks", it will be
+         * set to the value of <source-uri> if it is not present in the
+         * database, for backwards compatibility reasons.
+         *
+         * Since:
+         *   0.2
+         */
+        'original-uri': GObject.ParamSpec.string('original-uri', 'Original URI',
+            'URI where the original version of this content can be downloaded',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            ''),
+
         /**
          * Property: thumbnail-id
          * The ekn id of a ImageObjectModel representing the thumbnail image. Must be set to type GObject, since
@@ -62,6 +85,30 @@ const ContentObjectModel = new Lang.Class({
         'source-uri': GObject.ParamSpec.string('source-uri', 'Source URL',
             'URI where this content was downloaded from during database build',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
+
+        /**
+         * Property: source-name
+         * Human-readable name of the source of this article
+         *
+         * A string containing the name of this article's source.
+         * For example, "Wikipedia" or "Huffington Post" or "Cosimo's Blog".
+         *
+         * Note that this property may not be present in client databases, since
+         * it was added in 0.2.
+         * However, it will be present in all Reader app databases.
+         * Also, on an <ArticleObjectModel> with <html-source> equal to
+         * "wikipedia", "wikihow", "wikisource", or "wikibooks", it will be set
+         * to the appropriate value even if it is not present in the database,
+         * for backwards compatibility reasons.
+         *
+         * Since:
+         *   0.2
+         */
+        'source-name': GObject.ParamSpec.string('source-name', 'Source name',
+            'Human-readable name of the source of this article',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            ''),
+
         /**
          * Property: content-uri
          * A string with the URI to the file content for this object.
@@ -115,10 +162,6 @@ const ContentObjectModel = new Lang.Class({
         return this._title;
     },
 
-    get last_modified_date () {
-        return new Date(this._last_modified_date);
-    },
-
     get_resources: function () {
         return this._resources;
     },
@@ -132,10 +175,6 @@ const ContentObjectModel = new Lang.Class({
         // For now we need to programmatically capitalize titles
         v = v.charAt(0).toUpperCase() + v.slice(1);
         this._title = v;
-    },
-
-    set last_modified_date (v) {
-        this._last_modified_date = v;
     },
 
     set_resources: function (v) {
@@ -177,6 +216,9 @@ ContentObjectModel._props_from_json_ld = function (json_ld_data, media_path) {
     if(json_ld_data.hasOwnProperty('originalTitle'))
         props.original_title = json_ld_data.originalTitle;
 
+    if (json_ld_data.hasOwnProperty('originalURI'))
+        props.original_uri = json_ld_data.originalURI;
+
     if(json_ld_data.hasOwnProperty('language'))
         props.language = json_ld_data.language;
 
@@ -194,6 +236,9 @@ ContentObjectModel._props_from_json_ld = function (json_ld_data, media_path) {
 
     if(json_ld_data.hasOwnProperty('sourceURI'))
         props.source_uri = json_ld_data.sourceURI;
+
+    if (json_ld_data.hasOwnProperty('sourceName'))
+        props.source_name = json_ld_data.sourceName;
 
     if (json_ld_data.hasOwnProperty('contentURL'))
         props.content_uri = 'file://' + media_path + '/' + json_ld_data.contentURL;

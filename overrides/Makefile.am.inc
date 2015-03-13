@@ -46,6 +46,7 @@ private_overrides = \
 	overrides/compositeButton.js \
 	overrides/config.js \
 	overrides/imagePreviewer.js \
+	overrides/licenses.js \
 	overrides/tabButton.js \
 	overrides/utils.js \
 	overrides/videoPreviewer.js \

@@ -5,6 +5,7 @@ const Lang = imports.lang;
 const Mustache = imports.mustache.Mustache;
 
 const Config = imports.config;
+const Licenses = imports.licenses;
 
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
@@ -46,8 +47,9 @@ const ArticleHTMLRenderer = new Lang.Class({
             case 'wikipedia':
             case 'wikibooks':
             case 'wikisource':
-                let original_link = _to_link(model.source_uri, model.html_source);
-                let license_link = _to_link(_("http://creativecommons.org/licenses/by-sa/3.0/"), _("CC BY-SA"));
+                let original_link = _to_link(model.original_uri, model.source_name);
+                let license_link = _to_link(Licenses.LICENSE_LINKS[model.license],
+                    Licenses.LICENSE_NAMES[model.license]);
                 // TRANSLATORS: anything inside curly braces '{}' is going
                 // to be substituted in code. Please make sure to leave the
                 // curly braces around any words that have them and DO NOT
@@ -56,8 +58,10 @@ const ArticleHTMLRenderer = new Lang.Class({
                 .replace('{original-link}', original_link)
                 .replace('{license-link}', license_link);
             case 'wikihow':
-                let wikihow_article_link = _to_link(model.source_uri, model.title);
-                let wikihow_link = _to_link(_("http://wikihow.com"), _("WikiHow"));
+                let wikihow_article_link = _to_link(model.original_uri, model.title);
+                // TRANSLATORS: Replace this with a link to the homepage of
+                // wikiHow in your language.
+                let wikihow_link = _to_link(_("http://wikihow.com"), model.source_name);
                 // TRANSLATORS: anything inside curly braces '{}' is going
                 // to be substituted in code. Please make sure to leave the
                 // curly braces around any words that have them and DO NOT
@@ -65,6 +69,14 @@ const ArticleHTMLRenderer = new Lang.Class({
                 return _("See {wikihow-article-link} for more details, videos, pictures and attribution. Courtesy of {wikihow-link}, where anyone can easily learn how to do anything.")
                 .replace('{wikihow-article-link}', wikihow_article_link)
                 .replace('{wikihow-link}', wikihow_link);
+            case 'embedly':
+                let blog_link;
+                if (model.original_uri)
+                    blog_link = _to_link(model.original_uri, model.source_name);
+                else
+                    blog_link = model.source_name;
+                let message = _get_display_string_for_license(model.license);
+                return message.replace('{blog-link}', blog_link);
             default:
                 return false;
         }
@@ -119,4 +131,27 @@ const ArticleHTMLRenderer = new Lang.Class({
 
 function _to_link(uri, text) {
     return '<a class="eos-show-link" href="browser-' + uri + '">' + Mustache.escape(text) + '</a>';
+}
+
+function _get_display_string_for_license(license) {
+    let message;
+    if (license === Licenses.NO_LICENSE)
+        // TRANSLATORS: the text inside curly braces {blog-link} is going to be
+        // substituted in code. Please make sure that your translation contains
+        // {blog-link} and it is not translated.
+        return _("Content taken from {blog-link}.");
+    if (license === Licenses.OWNER_PERMISSION)
+        // TRANSLATORS: the text inside curly braces {blog-link} is going to be
+        // substituted in code. Please make sure that your translation contains
+        // {blog-link} and it is not translated.
+        return _("Content courtesy of {blog-link}. Used with kind permission.");
+
+    let license_link = _to_link(Licenses.LICENSE_LINKS[license],
+        Licenses.LICENSE_NAMES[license]);
+    // TRANSLATORS: the text inside curly braces ({blog-link}, {license-link})
+    // is going to be substituted in code. Please make sure that your
+    // translation contains both {blog-link} and {license-link} and they are not
+    // translated.
+    return _("Content courtesy of {blog-link}, licensed under {license-link}.")
+        .replace('{license-link}', license_link);
 }

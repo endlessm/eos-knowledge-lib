@@ -37,6 +37,56 @@ describe ('Article Object Model', function () {
             expect(articleObject.table_of_contents).toBeA(Gtk.TreeStore);
         });
     });
+
+    describe('being compatible with EOS 2.2', function () {
+        it('sets the original URI for wiki articles', function () {
+            ['wikipedia', 'wikihow', 'wikibooks', 'wikisource'].forEach((source) => {
+                let article = new EosKnowledgeSearch.ArticleObjectModel({
+                    source_uri: 'http://endlessm.com',
+                    html_source: source,
+                });
+                expect(article.original_uri).toEqual(article.source_uri);
+            });
+        });
+
+        it('sets the source name for wiki articles', function () {
+            let article = new EosKnowledgeSearch.ArticleObjectModel({
+                html_source: 'wikipedia',
+            });
+            expect(article.source_name).toEqual('Wikipedia');
+
+            article = new EosKnowledgeSearch.ArticleObjectModel({
+                html_source: 'wikihow',
+            });
+            expect(article.source_name).toEqual('wikiHow');
+
+            article = new EosKnowledgeSearch.ArticleObjectModel({
+                html_source: 'wikibooks',
+            });
+            expect(article.source_name).toEqual('Wikibooks');
+
+            article = new EosKnowledgeSearch.ArticleObjectModel({
+                html_source: 'wikisource',
+            });
+            expect(article.source_name).toEqual('Wikisource');
+        });
+
+        it('corrects the license for wiki articles', function () {
+            ['wikipedia', 'wikibooks', 'wikisource'].forEach((source) => {
+                let article = new EosKnowledgeSearch.ArticleObjectModel({
+                    html_source: source,
+                    license: 'Creative Commons',
+                });
+                expect(article.license).toEqual('CC-BY-SA 3.0');
+            });
+
+            let article = new EosKnowledgeSearch.ArticleObjectModel({
+                html_source: 'wikihow',
+                license: 'Creative Commons',
+            });
+            expect(article.license).toEqual('Owner permission');
+        });
+    });
 });
 
 describe ('Reader App Article Object', function () {

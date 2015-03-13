@@ -14,10 +14,12 @@ describe ("Content Object Model", function () {
             contentObject = new EosKnowledgeSearch.ContentObjectModel({
                 ekn_id : mockContentData["@id"],
                 title : mockContentData.title,
+                original_uri: mockContentData.originalURI,
                 thumbnail_id : mockContentData.thumbnail,
                 language : mockContentData.language,
                 copyright_holder : mockContentData.copyrightHolder,
                 source_uri : mockContentData.sourceURL,
+                source_name: mockContentData.sourceName,
                 synopsis : mockContentData.synopsis,
                 last_modified_date : mockContentData.lastModifiedDate,
                 license : mockContentData.license
@@ -54,6 +56,10 @@ describe ("Content Object Model", function () {
             expect(contentObject.title).toEqual(mockContentData["title"]);
         });
 
+        it('has an original URI', function () {
+            expect(contentObject.original_uri).toEqual(mockContentData.originalURI);
+        });
+
         it ("should have a language", function () {
             expect(contentObject.language).toEqual(mockContentData["language"]);
         });
@@ -63,7 +69,8 @@ describe ("Content Object Model", function () {
         });
 
         it ("should have a last-modified date", function () {
-            expect(contentObject.last_modified_date).toEqual(new Date(mockContentData.lastModifiedDate));
+            expect(new Date(contentObject.last_modified_date))
+                .toEqual(new Date(mockContentData.lastModifiedDate));
         });
 
         it ("should have tags", function () {
@@ -84,6 +91,10 @@ describe ("Content Object Model", function () {
 
         it ("should have redirects-to", function () {
             expect(contentObject.redirects_to).toEqual(mockContentData.redirectsTo);
+        });
+
+        it('has a source name', function () {
+            expect(contentObject.source_name).toEqual(mockContentData.sourceName);
         });
     });
 });
