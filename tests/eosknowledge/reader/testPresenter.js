@@ -24,10 +24,9 @@ const MockUserSettingsModel = new Lang.Class({
         'bookmark-page': GObject.ParamSpec.uint('bookmark-page', '', '',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
             0, GLib.MAXUINT32, 0),
-        'update-timestamp': GObject.ParamSpec.uint64('update-timestamp', 'Last Update Time',
+        'update-timestamp': GObject.ParamSpec.string('update-timestamp', 'Last Update Time',
             'Last time content was updated',
-            GObject.ParamFlags.READWRITE,
-            0, GLib.MAXINT64, 0),
+            GObject.ParamFlags.READWRITE, ''),
     },
 });
 
@@ -168,10 +167,8 @@ describe('Reader presenter', function () {
             highest_article_read: 0,
             bookmark_page: 0,
             start_article: 0,
+            update_timestamp: new Date().toISOString(),
         });
-        // 64-bit int construct properties don't work in GJS; they have to be
-        // set after construction.
-        settings.update_timestamp = GLib.MAXINT64;
         spyOn(engine, 'get_objects_by_query');
 
         presenter = new EosKnowledge.Reader.Presenter(TEST_JSON, {
@@ -248,7 +245,7 @@ describe('Reader presenter', function () {
     });
 
     describe('object', function () {
-        let current_time = Date.now();
+        let current_time = new Date().toISOString();
 
         beforeEach(function () {
             engine.get_objects_by_query.and.callFake(function (q, callback) {
@@ -378,14 +375,16 @@ describe('Reader presenter', function () {
         });
 
         it('updates the content after enough time has passed since the last update', function () {
-            settings.update_timestamp = Date.now() - UPDATE_INTERVAL_MS - 1000;
+            let old_date = new Date(Date.now() - UPDATE_INTERVAL_MS - 1000);
+            settings.update_timestamp = old_date.toISOString();
             spyOn(presenter, '_update_content');
             presenter._check_for_content_update();
             expect(presenter._update_content).toHaveBeenCalled();
         });
 
         it('does not update the content if very little time has passed since the last update', function () {
-            settings.update_timestamp = Date.now() - (UPDATE_INTERVAL_MS / 2);
+            let old_date = new Date(Date.now() - UPDATE_INTERVAL_MS / 2);
+            settings.update_timestamp = old_date.toISOString();
             spyOn(presenter, '_update_content');
             presenter._check_for_content_update();
             expect(presenter._update_content).not.toHaveBeenCalled();

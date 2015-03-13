@@ -307,13 +307,15 @@ const Presenter = new Lang.Class({
     },
 
     _check_for_content_update: function() {
-        if (Date.now() - this.settings.update_timestamp >= UPDATE_INTERVAL_MS) {
+        let now = new Date();
+        let last_update = new Date(this.settings.update_timestamp);
+        if (now - last_update >= UPDATE_INTERVAL_MS) {
             this._update_content();
         }
     },
 
     _update_content: function () {
-        this.settings.update_timestamp = Date.now();
+        this.settings.update_timestamp = new Date().toISOString();
         this.settings.start_article = this.settings.highest_article_read;
         this.settings.bookmark_page = 0;
     },

@@ -5,7 +5,7 @@ const GLib = imports.gi.GLib;
 
 describe('Reader user settings model', function () {
     let user_settings_file;
-    let current_time = Date.now();
+    let current_time = new Date().toISOString();
 
     beforeEach(function () {
         user_settings_file = Gio.File.new_tmp(null)[0];
@@ -44,7 +44,7 @@ describe('Reader user settings model', function () {
             expect(settings.start_article).toBe(0);
             expect(settings.bookmark_page).toBe(0);
             expect(settings.highest_article_read).toBe(0);
-            expect(settings.update_timestamp).toBe(0);
+            expect(settings.update_timestamp).toBe('');
         });
 
         it('gracefully handles case where settings file does not exist', function () {
@@ -54,7 +54,7 @@ describe('Reader user settings model', function () {
             expect(settings.start_article).toBe(0);
             expect(settings.bookmark_page).toBe(0);
             expect(settings.highest_article_read).toBe(0);
-            expect(settings.update_timestamp).toBe(0);
+            expect(settings.update_timestamp).toBe('');
         });
     });
 
@@ -83,11 +83,6 @@ describe('Reader user settings model', function () {
             expect(settings.highest_article_read).not.toBe(9);
             settings.bookmark_page = 9;
             expect(settings.highest_article_read).toBe(9);
-        });
-
-        it('has enough bits to correctly store timestamps in milliseconds', function () {
-            settings.update_timestamp = 1424989289681;
-            expect(settings.update_timestamp).toEqual(1424989289681);
         });
     });
 });
