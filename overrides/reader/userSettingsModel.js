@@ -88,15 +88,14 @@ const UserSettingsModel = new Lang.Class({
          * Property: update-timestamp
          * Update Timestamp
          *
-         * The last time that the readable content was updated, in milliseconds.
+         * The last time that the readable content was updated, in ISO date format.
          *
          * Default value:
-         *  0
+         *  ''
          */
-        'update-timestamp': GObject.ParamSpec.uint64('update-timestamp', 'Last Update Time',
+        'update-timestamp': GObject.ParamSpec.string('update-timestamp', 'Last Update Time',
             'Last time content was updated',
-            GObject.ParamFlags.READWRITE,
-            0, GLib.MAXINT64, 0),
+            GObject.ParamFlags.READWRITE, ''),
     },
 
     _init: function (props) {
@@ -105,7 +104,7 @@ const UserSettingsModel = new Lang.Class({
         this._bookmark_page = 0;
         this._highest_article_read = 0;
         this._start_article = 0;
-        this._update_timestamp = 0;
+        this._update_timestamp = '';
         this._pending_operation = null;
 
         this._load_user_settings_from_file();
@@ -181,7 +180,7 @@ const UserSettingsModel = new Lang.Class({
     get update_timestamp() {
         if (this._update_timestamp)
             return this._update_timestamp;
-        return 0;
+        return '';
     },
 
     set update_timestamp(v) {
