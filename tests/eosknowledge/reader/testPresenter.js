@@ -93,6 +93,11 @@ const MockView = new Lang.Class({
             forward_button: new MockButton(),
             show: jasmine.createSpy('show'),
         };
+        this.history_buttons = {
+            back_button: new MockButton(),
+            forward_button: new MockButton(),
+            show: jasmine.createSpy('show'),
+        };
         let get_style_context = function () {
             return {
                 add_class: function () {},

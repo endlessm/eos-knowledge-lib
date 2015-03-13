@@ -100,6 +100,18 @@ const Window = new Lang.Class({
             Endless.TopbarNavButton.$gtype),
 
         /**
+         * Property: history-buttons
+         *
+         * An <Endless.TopbarNavButton> widget created by this window.
+         * Used to go back and forward in the history model.
+         * Read-only.
+         */
+        'history-buttons': GObject.ParamSpec.object('history-buttons',
+            'History nav buttons', 'For traversing history model',
+            GObject.ParamFlags.READABLE,
+            Endless.TopbarNavButton.$gtype),
+
+        /**
          * Property: lightbox
          *
          * The <Lightbox> widget created by this widget. Read-only,
@@ -166,6 +178,8 @@ const Window = new Lang.Class({
         this.issue_nav_buttons = new Endless.TopbarNavButton({
             no_show_all: true,
         });
+
+        this.history_buttons = new Endless.TopbarNavButton();
         // No need for localization; this is debug only
         this.issue_nav_buttons.back_button.label = 'Reset';
         this.issue_nav_buttons.forward_button.label = 'Next week';
@@ -201,6 +215,7 @@ const Window = new Lang.Class({
         this.lightbox.add(this.nav_buttons);
         this.page_manager.add(this.lightbox, {
             center_topbar_widget: this.issue_nav_buttons,
+            left_topbar_widget: this.history_buttons,
         });
         this.overview_page.show_all();
         this._stack.set_visible_child(this.overview_page);

@@ -16,6 +16,7 @@ const ArticlePage = imports.reader.articlePage;
 const Config = imports.config;
 const EknWebview = imports.eknWebview;
 const Engine = imports.engine;
+const HistoryItem = imports.historyItem;
 const Launcher = imports.launcher;
 const OverviewPage = imports.reader.overviewPage;
 const Previewer = imports.previewer;
@@ -136,6 +137,21 @@ const Presenter = new Lang.Class({
             'Page number currently being displayed',
             GObject.ParamFlags.READABLE,
             0, GLib.MAXUINT32, 0),
+        /**
+         * Property: history-model
+         *
+         * The history model for this application.
+         *
+         * The history model keeps track of which pages have been visited
+         * by the user.
+         *
+         * Flags:
+         *   Read only
+         */
+        'history-model': GObject.ParamSpec.object('history-model', 'History model',
+            'The history model for this application',
+            GObject.ParamFlags.READABLE,
+            GObject.Object.$gtype),
     },
 
     _NUM_ARTICLE_PAGE_STYLES: 3,
@@ -186,11 +202,22 @@ const Presenter = new Lang.Class({
         // time
         this._loading_new_lightbox = false;
 
+        this.history_model = new EosKnowledge.HistoryModel();
+
         // Connect signals
+        this.view.history_buttons.back_button.connect('clicked', this._on_topbar_back_clicked.bind(this));
+        this.view.history_buttons.forward_button.connect('clicked', this._on_topbar_forward_clicked.bind(this));
+        this.history_model.bind_property('can-go-forward', this.view.history_buttons.forward_button, 'sensitive',
+            GObject.BindingFlags.SYNC_CREATE);
+        this.history_model.bind_property('can-go-back', this.view.history_buttons.back_button, 'sensitive',
+            GObject.BindingFlags.SYNC_CREATE);
+
         this.view.nav_buttons.connect('back-clicked', function () {
+            this._update_history_model(this._current_page - 1);
             this._go_to_page(this._current_page - 1);
         }.bind(this));
         this.view.nav_buttons.connect('forward-clicked', function () {
+            this._update_history_model(this._current_page + 1);
             this._go_to_page(this._current_page + 1);
         }.bind(this));
 
@@ -210,6 +237,7 @@ const Presenter = new Lang.Class({
             this.view.issue_nav_buttons.show();
             this.view.disconnect(handler);  // One-shot signal handler only.
         }.bind(this));
+
         this.view.connect('lightbox-nav-previous-clicked', this._on_lightbox_previous_clicked.bind(this));
         this.view.connect('lightbox-nav-next-clicked', this._on_lightbox_next_clicked.bind(this));
 
@@ -218,6 +246,60 @@ const Presenter = new Lang.Class({
 
     get current_page() {
         return this._current_page;
+    },
+
+    _ARTICLE_PAGE: 'article',
+    _OVERVIEW_PAGE: 'overview',
+    _DONE_PAGE: 'done',
+
+    _update_history_model: function (page_index) {
+        if (page_index === 0) {
+            this._add_history_object_for_overview_page();
+        } else if (page_index === this.view.total_pages) {
+            this._add_history_object_for_done_page();
+        } else {
+            this._add_history_object_for_article_page(this._article_models[page_index - 1]);
+        }
+    },
+
+    _add_history_object_for_article_page: function (model) {
+        this.history_model.current_item = new HistoryItem.HistoryItem({
+            title: model.title,
+            page_type: this._ARTICLE_PAGE,
+            article_model: model,
+        });
+    },
+
+    _add_history_object_for_overview_page: function () {
+        this.history_model.current_item = new HistoryItem.HistoryItem({
+            page_type: this._OVERVIEW_PAGE,
+        });
+    },
+
+    _add_history_object_for_done_page: function () {
+        this.history_model.current_item = new HistoryItem.HistoryItem({
+            page_type: this._DONE_PAGE,
+        });
+    },
+
+    _replicate_history_state: function (animation_type) {
+        switch (this.history_model.current_item.page_type) {
+            case this._ARTICLE_PAGE:
+                if (this._is_archived(this.history_model.current_item.article_model)) {
+                    this._load_standalone_article(this.history_model.current_item.article_model);
+                } else {
+                    this._go_to_page(this.history_model.current_item.article_model.article_number + 1);
+                }
+                break;
+            case this._OVERVIEW_PAGE:
+                this._go_to_page(0);
+                break;
+            case this._DONE_PAGE:
+                this._go_to_page(this._article_models.length + 1);
+                break;
+            default:
+                this._go_to_page(0);
+        }
     },
 
     _open_magazine: function () {
@@ -236,6 +318,7 @@ const Presenter = new Lang.Class({
                 // We now have all the articles we want to show. Now we load the
                 // HTML content for the first few pages into the webview.
                 this._load_overview_snippets_from_articles();
+                this._update_history_model(this.settings.bookmark_page);
                 this._go_to_page(this.settings.bookmark_page);
             }
             this.view.show_all();
@@ -739,6 +822,7 @@ const Presenter = new Lang.Class({
             snippet.connect('clicked', function () {
                 // idx is the article model index so need to add one (account
                 // for overview page) to get the corresponding article page index.
+                this._add_history_object_for_article_page(model);
                 this._go_to_page(ix + 1);
             }.bind(this));
             Utils.set_hand_cursor_on_widget(snippet);
@@ -804,4 +888,23 @@ const Presenter = new Lang.Class({
         this.view.standalone_page.article_page.get_style_context().add_class('article-page0');
         this.view.show_standalone_page();
     },
+
+    /*
+     * Navigates to the previous page by moving the history model back a page and checking the
+     * history object for information to replicate that previous page's query.
+     */
+    _on_topbar_back_clicked: function () {
+        this.history_model.go_back();
+        this._replicate_history_state(EosKnowledge.LoadingAnimationType.BACKWARDS_NAVIGATION);
+    },
+
+    /*
+     * Navigates to the next page by moving the history model forward a page and checking the
+     * history object for information to replicate that next page's query.
+     */
+    _on_topbar_forward_clicked: function () {
+        this.history_model.go_forward();
+        this._replicate_history_state(EosKnowledge.LoadingAnimationType.FORWARDS_NAVIGATION);
+    },
+
 });
