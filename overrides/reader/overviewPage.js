@@ -12,6 +12,10 @@ const ImagePreviewer = imports.imagePreviewer;
 
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 
+const _LOGO_TOP_MARGIN = 50;
+const _LOGO_LEFT_MARGIN = 75;
+const _SUBTITLE_LEFT_MARGIN = 125;
+
 /**
  * Class: Reader.OverviewPage
  * Splash Page shown in the reader when the app opens
@@ -60,6 +64,8 @@ const OverviewPage = new Lang.Class({
 
         this._title_image = new ImagePreviewer.ImagePreviewer({
             halign: Gtk.Align.START,
+            margin_top: _LOGO_TOP_MARGIN,
+            margin_start: _LOGO_LEFT_MARGIN,
         });
 
         this._title_image_uri = null;
@@ -74,6 +80,9 @@ const OverviewPage = new Lang.Class({
             vexpand: true,
             valign: Gtk.Align.START,
             use_markup: true,
+            // FIXME: This looks reasonable until we get better instructions
+            // from design.
+            margin_start: _SUBTITLE_LEFT_MARGIN,
         });
 
         this._snippets_grid = new EosKnowledge.SpaceContainer({

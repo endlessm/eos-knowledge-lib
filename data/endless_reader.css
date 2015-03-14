@@ -45,10 +45,6 @@ overridden by app specific CSS */
     background-position: center;
 }
 
-.overview-page {
-    padding: 100px;
-}
-
 .done-page .headline {
     font-size: 2em;
     color: #fce94f;
