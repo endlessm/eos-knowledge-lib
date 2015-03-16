@@ -470,10 +470,12 @@ const Presenter = new Lang.Class({
             printerr(err);
             printerr(err.stack);
         } else if (results.length === 0) {
-            // TODO Create Reader.NoSearchResultsPage
-            // this.view.show_no_search_results_page();
+            this.view.search_results_page.clear_search_results();
+            this.view.search_results_page.no_results_label.show();
+            this.view.show_search_results_page();
         } else {
             this.view.search_results_page.clear_search_results();
+            this.view.search_results_page.no_results_label.hide();
 
             this.view.search_results_page.append_search_results(results.map(this._new_card_from_article_model, this));
 

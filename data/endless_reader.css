@@ -247,3 +247,9 @@ overridden by app specific CSS */
     font-size: 1.0em; /* 16px / 12px/em * 72/96 */
     font-weight: bold;
 }
+
+.no-search-results-page-no-results-label {
+    color: black;
+    font-style: italic;
+    font-size: 1.5em;
+}

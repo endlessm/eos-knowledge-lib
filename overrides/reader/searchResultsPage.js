@@ -1,10 +1,15 @@
 // Copyright 2015 Endless Mobile, Inc.
 
 const EosKnowledge = imports.gi.EosKnowledge;
+const Gettext = imports.gettext;
+const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
+const Config = imports.config;
 const InfiniteScrolledWindow = imports.infiniteScrolledWindow;
+
+let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
 /**
  * Class: Reader.SearchResultsPage
@@ -14,6 +19,16 @@ const SearchResultsPage = new Lang.Class({
     Name: 'SearchResultsPage',
     GTypeName: 'EknReaderSearchResultsPage',
     Extends: Gtk.Frame,
+    Properties: {
+        /**
+         * Property: no-results-label
+         * A label showing a 'no results' message.
+         */
+        'no-results-label': GObject.ParamSpec.object('no-results-label', 'No results label',
+            'Label showing no results message',
+            GObject.ParamFlags.READABLE,
+            Gtk.Label),
+    },
 
     Signals: {
         /**
@@ -54,8 +69,17 @@ const SearchResultsPage = new Lang.Class({
             margin: this._FLOW_BOX_MARGIN,
         });
 
+        this.no_results_label = new Gtk.Label({
+            label: _("There are no results for your search"),
+            no_show_all: true,
+        });
+        this.no_results_label.get_style_context().add_class(EosKnowledge.STYLE_CLASS_NO_SEARCH_RESULTS_PAGE_NO_RESULTS_LABEL);
+
+        let overlay = new Gtk.Overlay();
+        overlay.add(scrolled_window);
+        overlay.add_overlay(this.no_results_label);
         scrolled_window.add(this._content_flow_box);
-        this.add(scrolled_window);
+        this.add(overlay);
     },
 
     append_search_results: function (results) {
