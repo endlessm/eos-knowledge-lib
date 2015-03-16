@@ -105,6 +105,7 @@ const ArticlePage = new Lang.Class({
         this._content_view = view;
         this._grid.attach(view, 2, 0, 1, 2);
         this._size_group.add_widget(view);
+        view.grab_focus();
         view.show_all();
     },
 
