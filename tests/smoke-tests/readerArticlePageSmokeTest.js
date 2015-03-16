@@ -22,10 +22,10 @@ const TestApplication = new Lang.Class({
         Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(),
             provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 
-        let page = new EosKnowledge.Reader.ArticlePage({
-            title: 'Psychology of Underwear: What Lies Beneath',
-            attribution: 'By My Cocaine on May 31, 2015',
-        });
+        let page = new EosKnowledge.Reader.ArticlePage();
+        page.title_view.title = 'Psychology of Underwear: What Lies Beneath';
+        page.title_view.attribution = 'By My Cocaine on May 31, 2015';
+        page.get_style_context().add_class('article-page0');
         let webview = new WebKit2.WebView();
         webview.load_uri('file://' +  TESTDIR + '/test-content/ipsum.html');
         page.show_content_view(webview);
