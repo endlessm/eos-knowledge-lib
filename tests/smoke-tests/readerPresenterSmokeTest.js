@@ -68,6 +68,7 @@ const TestApplication = new Lang.Class({
             engine: mock_engine,
             application: this,
         });
+        presenter.desktop_launch(0);
     },
 });
 
