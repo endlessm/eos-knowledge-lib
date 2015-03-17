@@ -90,6 +90,7 @@ const AppSearchProvider = Lang.Class({
     },
 
     NUM_RESULTS: 5,
+    MAX_DESCRIPTION_LENGTH: 200,
 
     _init: function(args) {
         this.parent(args);
@@ -191,7 +192,8 @@ const AppSearchProvider = Lang.Class({
                 };
 
                 if (typeof obj.synopsis !== 'undefined') {
-                    let displayDesc = GLib.markup_escape_text(obj.synopsis, -1);
+                    let desc = obj.synopsis.substring(0, this.MAX_DESCRIPTION_LENGTH);
+                    let displayDesc = GLib.markup_escape_text(desc, -1);
                     result.description = new GLib.Variant('s', displayDesc);
                 }
                 result_gvariants.push(result);
