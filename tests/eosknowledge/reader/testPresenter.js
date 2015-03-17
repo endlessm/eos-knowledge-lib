@@ -185,7 +185,7 @@ describe('Reader presenter', function () {
         let model = new EosKnowledgeSearch.ArticleObjectModel ({
             title: data[0],
             synopsis: "Some text",
-            ekn_id: 'about:blank',
+            ekn_id: 'ekn://' + data[0],
             published: data[2],
             html: '<html>hello</html>',
             article_number: ix,
@@ -253,6 +253,9 @@ describe('Reader presenter', function () {
 
         it('loads the standalone page when launched with a search result', function () {
             const MOCK_ID = 'abc123';
+            engine.get_objects_by_query.and.callFake(function (q, callback) {
+                callback(undefined, MOCK_RESULTS, function () {});
+            });
             let model = new EosKnowledgeSearch.ArticleObjectModel({
                 article_number: 5000,
                 html: '<html>hello</html>',
@@ -277,8 +280,8 @@ describe('Reader presenter', function () {
             spyOn(engine, 'get_object_by_id').and.callFake(function (id, callback) {
                 callback(undefined, MOCK_RESULTS[2]);
             });
-            presenter.activate_search_result(0, 'abc2134', 'fake query');
-            expect(presenter.current_page).toBe(3);
+            presenter.activate_search_result(0, MOCK_RESULTS[2].ekn_id, 'fake query');
+            expect(presenter.current_page).toBe(3); // +1 for overview page
         });
     });
 
