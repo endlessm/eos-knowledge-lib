@@ -1,5 +1,5 @@
 const blacklist = {
-    "general-es": [
+    "encyclopedia-es": [
         "Abuso sexual",
         "Abuso y maltrato infantil",
         "Actores pornográficos de Alemania",
@@ -61,7 +61,7 @@ const blacklist = {
         "Testículo",
         "Tortura"
     ],
-    "general-pt": [
+    "encyclopedia-pt": [
         "Anatomia sexual",
         "BDSM",
         "Estrelas pornográficas da Alemanha",
@@ -106,7 +106,7 @@ const blacklist = {
         "Termos sexuais do Japão",
         "Tortura"
     ],
-    "general-en": [
+    "encyclopedia-en": [
         "Alt porn",
         "American female adult models",
         "American pornographic actors",
@@ -178,7 +178,7 @@ const blacklist = {
         "Torture",
         "Vagina"
     ],
-    "general-fr": [
+    "encyclopedia-fr": [
         "Accessoire BDSM",
         "Acteur allemand de films pornographiques",
         "Acteur américain de films pornographiques",
@@ -234,7 +234,7 @@ const blacklist = {
         "Société de production de films pornographiques",
         "Torture"
     ],
-    "general-ar": [
+    "encyclopedia-ar": [
         "العنف ضد الأطفال",
         "ممثلو أفلام إباحية ألمان",
         "ممثلو أفلام إباحية كنديون",
