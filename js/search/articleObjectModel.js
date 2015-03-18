@@ -1,5 +1,6 @@
 // Copyright 2014 Endless Mobile, Inc.
 const GLib = imports.gi.GLib;
+const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
@@ -125,7 +126,26 @@ const ArticleObjectModel = new Lang.Class({
                 params.license = 'Owner permission';
         }
 
+        if (params.html) {
+            this._html = params.html;
+            delete params.html;
+        }
+
         this.parent(params);
+    },
+
+    get html() {
+        if (!this._html) {
+            if (this.content_uri) {
+                let file = Gio.File.new_for_uri(this.content_uri);
+                let [success, html, etag] = file.load_contents(null);
+                this._html = html.toString();
+            } else {
+                this._html = '';
+            }
+        }
+
+        return this._html;
     },
 
     set_authors: function (v) {
