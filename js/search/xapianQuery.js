@@ -66,6 +66,10 @@ function sanitize (query) {
     }).trim();
 }
 
+function exact_title_clause (terms) {
+    return XAPIAN_PREFIX_EXACT_TITLE + terms.map(capitalize).join('_');
+}
+
 function xapian_join_clauses (clauses) {
     return clauses.map(parenthesize).join(XAPIAN_OP_AND);
 }
@@ -73,8 +77,8 @@ function xapian_join_clauses (clauses) {
 function xapian_query_clause (q) {
     let sanitized_query = sanitize(q);
     let separateTerms = sanitized_query.split(TERM_DELIMITER_REGEX);
+    let exactTitleClause = exact_title_clause(separateTerms);
 
-    let exactTitleClause = XAPIAN_PREFIX_EXACT_TITLE + separateTerms.map(capitalize).join('_');
     let bodyClause = sanitized_query;
     let genericTitleClause = sanitized_query.split(' ').filter(function (term) {
         return term.length > 1;
@@ -90,13 +94,11 @@ function xapian_query_clause (q) {
 function xapian_prefix_clause (prefix) {
     let sanitized_query = sanitize(prefix);
     let separateTerms = sanitized_query.split(TERM_DELIMITER_REGEX);
-
-    let prefixTerm = separateTerms.join('_');
+    let exactTitleClause = exact_title_clause(separateTerms);
 
     // Don't do a wildcard search if there is only one letter. It will cripple xapian
-    return prefixTerm.length > 1 ? XAPIAN_PREFIX_EXACT_TITLE + prefixTerm + '*' : XAPIAN_PREFIX_EXACT_TITLE + prefixTerm;
+    return sanitized_query.length > 1 ? exactTitleClause + '*' : exactTitleClause;
 }
-
 
 // Tag lists should be joined as a series of
 // individual tag queries joined by ORs, so an article that has

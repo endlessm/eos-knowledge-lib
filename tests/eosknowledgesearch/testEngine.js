@@ -223,7 +223,7 @@ describe('Knowledge Engine Module', () => {
             let mock_query_obj = mock_uri.get_query();
             let serialized_query = get_query_vals_for_key(mock_query_obj, 'q');
             let parts = serialized_query.split(' AND ');
-            let expected_parts = ['((title:tyrion OR title:wins) OR (tyrion wins) OR (exact_title:Tyrion_Wins))', '(tag:"lannister" OR tag:"bro")', '(exact_title:gam*)'];
+            let expected_parts = ['((title:tyrion OR title:wins) OR (tyrion wins) OR (exact_title:Tyrion_Wins))', '(tag:"lannister" OR tag:"bro")', '(exact_title:Gam*)'];
             let isMatch = expected_parts.sort().join('') === parts.sort().join('');
             expect(isMatch).toBe(true);
         });

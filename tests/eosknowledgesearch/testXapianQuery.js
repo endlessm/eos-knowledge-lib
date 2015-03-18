@@ -15,7 +15,7 @@ describe('Xapian Query Module', function () {
             expect(q_result).toBe('(title:whoa OR title:man) OR (whoa man) OR (exact_title:Whoa_Man)');
 
             let prefix_result = xq.xapian_prefix_clause(q);
-            expect(prefix_result).toBe('exact_title:whoa_man*');
+            expect(prefix_result).toBe('exact_title:Whoa_Man*');
         });
 
         it('should lowercase xapian operator terms in general query', function () {
@@ -24,7 +24,7 @@ describe('Xapian Query Module', function () {
             expect(q_result).toBe('(title:PENN OR title:and OR title:tELLER) OR (PENN and tELLER) OR (exact_title:Penn_And_Teller)');
 
             let prefix_result = xq.xapian_prefix_clause(q);
-            expect(prefix_result).toBe('exact_title:PENN_and_tELLER*');
+            expect(prefix_result).toBe('exact_title:Penn_And_Teller*');
         });
 
         it('should remove parentheses in user terms', function () {
@@ -33,7 +33,7 @@ describe('Xapian Query Module', function () {
             expect(q_result).toBe('(title:foo OR title:bar OR title:baz) OR (foo bar baz) OR (exact_title:Foo_Bar_Baz)');
 
             let prefix_result = xq.xapian_prefix_clause(q);
-            expect(prefix_result).toBe('exact_title:foo_bar_baz*');
+            expect(prefix_result).toBe('exact_title:Foo_Bar_Baz*');
         });
 
         it('should support requests with tags', function () {
@@ -75,7 +75,7 @@ describe('Xapian Query Module', function () {
         it('should not submit a prefix query for one letter queries', function () {
             let q = 'a';
             let result = xq.xapian_prefix_clause(q);
-            expect(result).toBe('exact_title:a');
+            expect(result).toBe('exact_title:A');
         });
 
         it('should map sortBy strings to xapian values', function () {
