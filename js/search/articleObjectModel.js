@@ -27,7 +27,7 @@ const ArticleObjectModel = new Lang.Class({
          */
         'html': GObject.ParamSpec.string('html', 'Article HTML',
             'The HTML of the article, unstyled.',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            GObject.ParamFlags.READABLE | GObject.ParamFlags.CONSTRUCT_ONLY,
             ''),
         /**
          * Property: html-source
@@ -125,7 +125,25 @@ const ArticleObjectModel = new Lang.Class({
                 params.license = 'Owner permission';
         }
 
+        if (params.html) {
+            this._html = params.html;
+            delete params.html;
+        }
+
         this.parent(params);
+    },
+
+    get html() {
+        if (this._html) {
+            return this._html;
+        } else if (this.content_uri) {
+            let file = Gio.File.new_for_uri(this.content_uri);
+            let [success, html, etag] = file.load_contents(null);
+            this._html = html;
+            return this._html;
+        } else {
+            return '';
+        }
     },
 
     set_authors: function (v) {
