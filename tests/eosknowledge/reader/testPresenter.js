@@ -347,6 +347,17 @@ describe('Reader presenter', function () {
             expect(settings.bookmark_page).toBe(0);
         });
 
+        it('resets start_article counter when all content in magazine is exhausted', function () {
+            engine.get_objects_by_query.and.callFake(function (q, callback) {
+                callback(undefined, [], function () {});
+            });
+            settings.start_article = 4;
+            settings.bookmark_page = 4;
+            view.issue_nav_buttons.forward_button.emit('clicked');
+            expect(settings.start_article).toBe(0);
+            expect(settings.bookmark_page).toBe(0);
+        });
+
         it('updates the state of the paging buttons when loading a new set of articles', function () {
             settings.start_article = 3;
             settings.notify('start-article');
