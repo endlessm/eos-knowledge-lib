@@ -331,7 +331,7 @@ const Presenter = new Lang.Class({
         }, function (error, results, get_more_results_func) {
             if (!error && results.length < 1)
                 error = GLib.Error.new_literal(Gio.io_error_quark(),
-                    Gio.ErrorEnum.NOT_FOUND,
+                    Gio.IOErrorEnum.NOT_FOUND,
                     'No content found for this magazine');
 
             if (error) {
