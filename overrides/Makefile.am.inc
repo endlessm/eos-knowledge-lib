@@ -75,3 +75,5 @@ subst = $(SED) -e 's,%pkglibdir%,$(pkglibdir),g'
 overrides/config.js: overrides/config.js.in Makefile
 	$(MKDIR_P) overrides
 	$(AM_V_GEN)$(subst) $< > $@
+
+CLEANFILES += overrides/config.js
