@@ -55,6 +55,7 @@ const ReaderSearchResultsPage = imports.reader.searchResultsPage;
 const ReaderStandalonePage = imports.reader.standalonePage;
 const ReaderTitleView = imports.reader.titleView;
 const ReaderUserSettingsModel = imports.reader.userSettingsModel;
+const ReaderWebviewTooltip = imports.reader.webviewTooltip;
 const ReaderWindow = imports.reader.window;
 
 imports.searchPath = _oldSearchPath;
@@ -154,6 +155,7 @@ function _init() {
         StandalonePage: ReaderStandalonePage.StandalonePage,
         TitleView: ReaderTitleView.TitleView,
         UserSettingsModel: ReaderUserSettingsModel.UserSettingsModel,
+        WebviewTooltip: ReaderWebviewTooltip.WebviewTooltip,
         Window: ReaderWindow.Window,
     };
 }

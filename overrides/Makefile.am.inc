@@ -64,6 +64,7 @@ reader_overrides = \
 	overrides/reader/standalonePage.js \
 	overrides/reader/titleView.js \
 	overrides/reader/userSettingsModel.js \
+	overrides/reader/webviewTooltip.js \
 	overrides/reader/window.js \
 	$(NULL)
 readeroverridesdir = $(pkgoverridesdir)/reader

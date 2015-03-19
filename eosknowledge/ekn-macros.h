@@ -682,6 +682,14 @@ enum_type##_get_type (void) \
 #define EKN_STYLE_CLASS_READER_ATTRIBUTION "reader-attribution"
 
 /**
+ * EKN_STYLE_CLASS_READER_WEBVIEW_TOOLTIP
+ *
+ * A CSS class to match the webview tooltip widget.
+ * Since 0.2
+ */
+#define EKN_STYLE_CLASS_READER_WEBVIEW_TOOLTIP "webview-tooltip"
+
+/**
  * EKN_STYLE_CLASS_PDF_CARD_LABEL:
  *
  * A CSS class to match the PDF label on the pdf cards
