@@ -23,10 +23,6 @@ describe ('Article Object Model', function () {
             expect(articleObject).toBeDefined();
         });
 
-        it ('sets its html-source property from the source uri', function () {
-            expect(articleObject.html_source).toBe('wikipedia');
-        });
-
         it ('should inherit properties set by parent class (ContentObjectModel)', function () {
             expect(articleObject.title).toBeDefined();
             expect(articleObject.synopsis).toBeDefined();
@@ -40,10 +36,10 @@ describe ('Article Object Model', function () {
 
     describe('being compatible with EOS 2.2', function () {
         it('sets the original URI for wiki articles', function () {
-            ['wikipedia', 'wikihow', 'wikibooks', 'wikisource'].forEach((source) => {
+            ['wikipedia', 'wikihow', 'wikibooks', 'wikisource'].forEach((current_source) => {
                 let article = new EosKnowledgeSearch.ArticleObjectModel({
                     source_uri: 'http://endlessm.com',
-                    html_source: source,
+                    source: current_source,
                 });
                 expect(article.original_uri).toEqual(article.source_uri);
             });
@@ -51,22 +47,22 @@ describe ('Article Object Model', function () {
 
         it('sets the source name for wiki articles', function () {
             let article = new EosKnowledgeSearch.ArticleObjectModel({
-                html_source: 'wikipedia',
+                source: 'wikipedia',
             });
             expect(article.source_name).toEqual('Wikipedia');
 
             article = new EosKnowledgeSearch.ArticleObjectModel({
-                html_source: 'wikihow',
+                source: 'wikihow',
             });
             expect(article.source_name).toEqual('wikiHow');
 
             article = new EosKnowledgeSearch.ArticleObjectModel({
-                html_source: 'wikibooks',
+                source: 'wikibooks',
             });
             expect(article.source_name).toEqual('Wikibooks');
 
             article = new EosKnowledgeSearch.ArticleObjectModel({
-                html_source: 'wikisource',
+                source: 'wikisource',
             });
             expect(article.source_name).toEqual('Wikisource');
         });
@@ -74,14 +70,14 @@ describe ('Article Object Model', function () {
         it('corrects the license for wiki articles', function () {
             ['wikipedia', 'wikibooks', 'wikisource'].forEach((source) => {
                 let article = new EosKnowledgeSearch.ArticleObjectModel({
-                    html_source: source,
+                    source: source,
                     license: 'Creative Commons',
                 });
                 expect(article.license).toEqual('CC-BY-SA 3.0');
             });
 
             let article = new EosKnowledgeSearch.ArticleObjectModel({
-                html_source: 'wikihow',
+                source: 'wikihow',
                 license: 'Creative Commons',
             });
             expect(article.license).toEqual('Owner permission');
@@ -98,10 +94,6 @@ describe ('Reader App Article Object', function () {
         jasmine.addMatchers(InstanceOfMatcher.customMatchers);
 
         readerArticleObject = new EosKnowledgeSearch.ArticleObjectModel.new_from_json_ld(mockReaderArticleData, mockMediaDir);
-    });
-
-    it ('sets its html-source property from the source uri', function () {
-        expect(readerArticleObject.html_source).toBe('embedly');
     });
 
     it ('should present the properties inherent to the Reader App', function () {

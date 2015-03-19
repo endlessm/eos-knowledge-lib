@@ -30,12 +30,12 @@ const ArticleObjectModel = new Lang.Class({
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             ''),
         /**
-         * Property: html-source
+         * Property: source
          *
          * Source of the HTML. Right now can be embedly, wikipedia, wikihow,
          * wikisource or wikibooks.
          */
-        'html-source': GObject.ParamSpec.string('html-source', 'Source of the HTML',
+        'source': GObject.ParamSpec.string('source', 'Source of the HTML',
             'Where the article html was retrieved from.',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             ''),
@@ -102,16 +102,16 @@ const ArticleObjectModel = new Lang.Class({
         // ContentObjectModel.source_name for more information. In EOS >= 2.3
         // these values are set in eos-knowledge-db-build.
         if (!params.original_uri && params.source_uri &&
-            ['wikipedia', 'wikihow', 'wikisource', 'wikibooks'].indexOf(params.html_source) !== -1)
+            ['wikipedia', 'wikihow', 'wikisource', 'wikibooks'].indexOf(params.source) !== -1)
             params.original_uri = params.source_uri;
         if (!params.source_name) {
-            if (params.html_source === 'wikipedia')
+            if (params.source === 'wikipedia')
                 params.source_name = 'Wikipedia';
-            else if (params.html_source === 'wikihow')
+            else if (params.source === 'wikihow')
                 params.source_name = 'wikiHow';
-            else if (params.html_source === 'wikisource')
+            else if (params.source === 'wikisource')
                 params.source_name = 'Wikisource';
-            else if (params.html_source === 'wikibooks')
+            else if (params.source === 'wikibooks')
                 params.source_name = 'Wikibooks';
         }
         // Remove invalid value of license property which exists in pre-2.3 DBs.
@@ -119,9 +119,9 @@ const ArticleObjectModel = new Lang.Class({
         if (params.license === 'Creative Commons')
             delete params.license;
         if (!params.license) {
-            if (['wikipedia', 'wikisource', 'wikibooks'].indexOf(params.html_source) !== -1)
+            if (['wikipedia', 'wikisource', 'wikibooks'].indexOf(params.source) !== -1)
                 params.license = 'CC-BY-SA 3.0';
-            else if (params.html_source === 'wikihow')
+            else if (params.source === 'wikihow')
                 params.license = 'Owner permission';
         }
 
@@ -173,18 +173,24 @@ ArticleObjectModel._props_from_json_ld = function (json_ld_data, media_path) {
     // the html from the source_uri field, and if it comes from pantheon, assume
     // embedly. This will probably need to stay as a patch for old databases,
     // but we should put this in our database in a consistent manner.
-    if (props.source_uri) {
+    if (typeof props.source === 'undefined' && props.source_uri) {
         let host = Soup.URI.new(props.source_uri).get_host();
+
+        if (host === null) {
+            throw new Error('Null source URI hostname found for article ' +
+                'sourceURI: ' + props.source_uri);
+        }
+
         if (/^.*.wikipedia\.org/.test(host)) {
-            props.html_source = 'wikipedia';
+            props.source = 'wikipedia';
         } else if (/^.*\.wikisource\.org/.test(host)) {
-            props.html_source = 'wikisource';
+            props.source = 'wikisource';
         } else if (/^.*\.wikibooks\.org/.test(host)) {
-            props.html_source = 'wikibooks';
+            props.source = 'wikibooks';
         } else if (/^.*wikihow\.com/.test(host)) {
-            props.html_source = 'wikihow';
+            props.source = 'wikihow';
         } else if ('eos-pantheon.herokuapp.com' === host || 'localhost' === host) {
-            props.html_source = 'embedly';
+            props.source = 'embedly';
         } else {
             throw new Error('Unrecognized source uri host: ' + host);
         }
