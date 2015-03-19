@@ -15,6 +15,7 @@ const CardB = imports.cardB;
 const Config = imports.config;
 const Engine = imports.engine;
 const Launcher = imports.launcher;
+const HistoryItem = imports.historyItem;
 const MediaInfobox = imports.mediaInfobox;
 const PdfCard = imports.pdfCard;
 const Previewer = imports.previewer;
@@ -334,13 +335,6 @@ const Presenter = new Lang.Class({
         this.engine.get_objects_by_query(query, this._load_section_page.bind(this));
     },
 
-    // Removes newlines and trims whitespace before and after a query string
-    _sanitize_query: function (query) {
-        // Crazy regex for line breaks from
-        // http://stackoverflow.com/questions/10805125/how-to-remove-all-line-breaks-from-a-string
-        return query.replace(/\r?\n|\r/g, ' ').trim();
-    },
-
     // EosKnowledge.launcher override
     search: function (timestamp, query) {
         this._update_ui_and_search(query);
@@ -348,7 +342,8 @@ const Presenter = new Lang.Class({
     },
 
     _update_ui_and_search: function (query) {
-        query = this._sanitize_query(query);
+        query = Utils.sanitize_query(query);
+
         // Ignore empty queries
         if (query.length === 0) {
             return;
@@ -406,7 +401,7 @@ const Presenter = new Lang.Class({
     },
 
     _on_search_text_changed: function (view, entry) {
-        let query = this._sanitize_query(entry.text);
+        let query = Utils.sanitize_query(entry.text);
         this._latest_search_text = query;
         // Ignore empty queries
         if (query.length === 0) {
@@ -498,7 +493,7 @@ const Presenter = new Lang.Class({
     },
 
     _add_history_object_for_article_page: function (model) {
-        this._history_model.current_item = new HistoryItem({
+        this._history_model.current_item = new HistoryItem.HistoryItem({
             title: model.title,
             page_type: this._ARTICLE_PAGE,
             article_model: model, 
@@ -510,7 +505,7 @@ const Presenter = new Lang.Class({
 
     _add_history_object_for_search_page: function (query) {
         this._latest_origin_query = query;
-        this._history_model.current_item = new HistoryItem({
+        this._history_model.current_item = new HistoryItem.HistoryItem({
             title: this._target_page_title,
             page_type: this._SEARCH_PAGE,
             article_model: null, 
@@ -521,7 +516,7 @@ const Presenter = new Lang.Class({
 
     _add_history_object_for_section_page: function (query) {
         this._latest_origin_query = query;
-        this._history_model.current_item = new HistoryItem({
+        this._history_model.current_item = new HistoryItem.HistoryItem({
             title: this._target_page_title,
             page_type: this._SECTION_PAGE,
             article_model: null, 
@@ -531,7 +526,7 @@ const Presenter = new Lang.Class({
     },
 
     _add_history_object_for_home_page: function () {
-        this._history_model.current_item = new HistoryItem({
+        this._history_model.current_item = new HistoryItem.HistoryItem({
             title: '',
             page_type: this._HOME_PAGE,
             article_model: null,
@@ -541,7 +536,7 @@ const Presenter = new Lang.Class({
     },
 
     _add_history_object_for_categories_page: function () {
-        this._history_model.current_item = new HistoryItem({
+        this._history_model.current_item = new HistoryItem.HistoryItem({
             title: '',
             page_type: this._CATEGORIES_PAGE,
             article_model: null,
@@ -685,78 +680,5 @@ const Presenter = new Lang.Class({
         this.view.lightbox.reveal_overlays = true;
         this.view.lightbox.has_back_button = previous_arrow_visible;
         this.view.lightbox.has_forward_button = next_arrow_visible;
-    }
-});
-
-/**
- * Class: HistoryItem
- *
- * An object to be used by a HistoryModel in order to keep track of the pages
- * that a user visits. Each HistoryItem contains the properties necessary
- * to recreate that page. This includes query parameters in the case of search
- * and article pages.
- *
- */
-const HistoryItem = new Lang.Class({
-    Name: 'HistoryItem',
-    Extends: GObject.Object,
-    Implements: [ EosKnowledge.HistoryItemModel ],
-    Properties: {
-        /**
-         * Property: title
-         *
-         * The string used in recreating the title of a page.
-         */
-        'title': GObject.ParamSpec.string('title', 'override', 'override',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            ''),
-        /**
-         * Property: page-type
-         *
-         * A string that stores the type of page that corresponds to a history item.
-         * Supported page types are 'search', 'section', 'article', and 'home'.
-         */
-        'page-type': GObject.ParamSpec.string('page-type', 'Page Type',
-            'The type of page of the history object. Either \'search\', \'section\', \'article\', or \'home\'',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            ''),
-        /**
-         * Property: article-model
-         *
-         * An <ArticleObjectModel> that stores the information used to replicate an article
-         * on a page of type 'article'.
-         */
-        'article-model': GObject.ParamSpec.object('article-model', 'Article model',
-            'The article object model handled by this widget. Only not null for pages of type \'article\'',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, EosKnowledgeSearch.ArticleObjectModel),
-        /**
-         * Property: query
-         *
-         * A string that stores the query used in a search or section page request sent to the knowledge engine.
-         * It is used to recreate the query and thus display the appropriate information to a user that returns
-         * to this item in the history.
-         */
-        'query': GObject.ParamSpec.string('query', 'Query',
-            'A JSON string representing the query for a search or section page.',
-            GObject.ParamFlags.READWRITE, ''),
-        /**
-         * Property: article-origin-query
-         *
-         * A string used to store the search or section query that eventually led to the user reaching this
-         * history item. This query is used to replicate the list of titles that were available to a user
-         * when they first selected this history item (currently only used in Template B apps).
-         */
-        'article-origin-query': GObject.ParamSpec.string('article-origin-query', 'Article Origin Query',
-            'A JSON query that was used to generate the list of articles from which this object was chosen.',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
-        /**
-         * Property: article-origin-page
-         *
-         * A string that stores the title of the article page from which the user naviated to this
-         * page.
-         */
-        'article-origin-page': GObject.ParamSpec.string('article-origin-page', 'Article Origin Page',
-            'A string that stores the title of the article page from which the user navigated to this page',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
     }
 });

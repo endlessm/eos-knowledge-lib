@@ -100,6 +100,18 @@ const Window = new Lang.Class({
             Endless.TopbarNavButton.$gtype),
 
         /**
+         * Property: history-buttons
+         *
+         * An <Endless.TopbarNavButton> widget created by this window.
+         * Used to go back and forward in the history model.
+         * Read-only.
+         */
+        'history-buttons': GObject.ParamSpec.object('history-buttons',
+            'History nav buttons', 'For traversing history model',
+            GObject.ParamFlags.READABLE,
+            Endless.TopbarNavButton.$gtype),
+
+        /**
          * Property: lightbox
          *
          * The <Lightbox> widget created by this widget. Read-only,
@@ -120,6 +132,18 @@ const Window = new Lang.Class({
             'Number of pages in total',
             GObject.ParamFlags.READABLE,
             0, GLib.MAXUINT32, 1),
+
+        /**
+         * Property: search-box
+         *
+         * The <SearchBox> widget created by this widget. Read-only,
+         * modify using the <SearchBox> API. Use to type search queries and to display the last
+         * query searched.
+         */
+        'search-box': GObject.ParamSpec.object('search-box', 'Search Box',
+            'The Search box of this view widget',
+            GObject.ParamFlags.READABLE,
+            Endless.SearchBox),
     },
 
     Signals: {
@@ -166,6 +190,8 @@ const Window = new Lang.Class({
         this.issue_nav_buttons = new Endless.TopbarNavButton({
             no_show_all: true,
         });
+
+        this.history_buttons = new Endless.TopbarNavButton();
         // No need for localization; this is debug only
         this.issue_nav_buttons.back_button.label = 'Reset';
         this.issue_nav_buttons.forward_button.label = 'Next week';
@@ -190,6 +216,9 @@ const Window = new Lang.Class({
             this.emit('debug-hotkey-pressed');
         }.bind(this));
 
+        this.search_box = new Endless.SearchBox();
+        this.search_box.show();
+
         this._stack = new Gtk.Stack({
             transition_duration: this._STACK_TRANSITION_TIME,
         });
@@ -199,8 +228,18 @@ const Window = new Lang.Class({
         this._stack.add(this.search_results_page);
         this.nav_buttons.add(this._stack);
         this.lightbox.add(this.nav_buttons);
+
+        let box = new Gtk.Box({
+            orientation: Gtk.Orientation.HORIZONTAL,
+        });
+        box.add(this.search_box);
+        // Stick the debug nav buttons in a box with the search bar.
+        // Looks a bit ugly but only used for debugging.
+        box.add(this.issue_nav_buttons);
+
         this.page_manager.add(this.lightbox, {
-            center_topbar_widget: this.issue_nav_buttons,
+            left_topbar_widget: this.history_buttons,
+            center_topbar_widget: box,
         });
         this.overview_page.show_all();
         this._stack.set_visible_child(this.overview_page);
@@ -260,24 +299,27 @@ const Window = new Lang.Class({
     show_standalone_page: function () {
         this.standalone_page.show();
         this.standalone_page.article_page.progress_label.hide();
-        this._stack.set_transition_type(Gtk.StackTransitionType.SLIDE_UP);
+        this._stack.set_transition_type(Gtk.StackTransitionType.NONE);
         this._stack.set_visible_child(this.standalone_page);
         this.nav_buttons.back_visible = false;
         this.nav_buttons.forward_visible = false;
     },
 
     show_search_results_page: function () {
+        this._stack.set_transition_type(Gtk.StackTransitionType.CROSSFADE);
         this._stack.set_visible_child(this.search_results_page);
         this.nav_buttons.back_visible = true;
         this.nav_buttons.forward_visible = false;
     },
 
-    show_article_page: function (index, transition_forward) {
+    show_article_page: function (index, animation_type) {
         this.nav_buttons.accommodate_scrollbar = true;
-        if (transition_forward) {
+        if (animation_type === EosKnowledge.LoadingAnimationType.FORWARDS_NAVIGATION) {
             this._stack.set_transition_type(Gtk.StackTransitionType.SLIDE_LEFT);
-        } else {
+        } else if (animation_type === EosKnowledge.LoadingAnimationType.BACKWARDS_NAVIGATION) {
             this._stack.set_transition_type(Gtk.StackTransitionType.SLIDE_RIGHT);
+        } else {
+            this._stack.set_transition_type(Gtk.StackTransitionType.NONE);
         }
         let page = this._article_pages[index];
         page.show();
@@ -297,8 +339,25 @@ const Window = new Lang.Class({
         this._stack.set_visible_child(this.done_page);
     },
 
+    article_pages_visible: function () {
+        return this._stack.get_visible_child() !== this.search_results_page
+            && this._stack.get_visible_child() !== this.standalone_page;
+    },
+
     get total_pages() {
         // Done page and overview page account for extra incrementation.
         return this._article_pages.length + 2;
+    },
+
+    lock_ui: function () {
+        let gdk_window = this.page_manager.get_window();
+        gdk_window.cursor = Gdk.Cursor.new(Gdk.CursorType.WATCH);
+        this.page_manager.sensitive = false;
+    },
+
+    unlock_ui: function () {
+        let gdk_window = this.page_manager.get_window();
+        gdk_window.cursor = Gdk.Cursor.new(Gdk.CursorType.ARROW);
+        this.page_manager.sensitive = true;
     },
 });

@@ -1,9 +1,11 @@
 const Endless = imports.gi.Endless;
 const EosKnowledge = imports.gi.EosKnowledge;
+const EosKnowledgeSearch = imports.EosKnowledgeSearch;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
+const Mainloop = imports.mainloop;
 
 const utils = imports.tests.utils;
 
@@ -76,6 +78,14 @@ const MockButton = new Lang.Class({
     },
 });
 
+const MockSearchBox = new Lang.Class({
+    Name: 'MockSearchBox',
+    Extends: GObject.Object,
+    Signals: {
+        'activate': {},
+    },
+});
+
 const MockView = new Lang.Class({
     Name: 'MockView',
     Extends: GObject.Object,
@@ -88,7 +98,13 @@ const MockView = new Lang.Class({
     _init: function (nav_buttons) {
         this.parent();
         this.nav_buttons = nav_buttons;
+        this.search_box = new MockSearchBox();
         this.issue_nav_buttons = {
+            back_button: new MockButton(),
+            forward_button: new MockButton(),
+            show: jasmine.createSpy('show'),
+        };
+        this.history_buttons = {
             back_button: new MockButton(),
             forward_button: new MockButton(),
             show: jasmine.createSpy('show'),
@@ -117,6 +133,12 @@ const MockView = new Lang.Class({
             },
         };
 
+        this.search_results_page = {
+            get_style_context: get_style_context,
+            clear_search_results: function () {},
+            append_search_results: function () {},
+        };
+
         this.total_pages = 0;
         this._article_pages = [];
         this.page_manager = {
@@ -131,15 +153,21 @@ const MockView = new Lang.Class({
     show_overview_page: function () {},
     show_done_page: function () {},
     show_standalone_page: function () {},
+    show_search_results_page: function () {},
     append_article_page: function (page) {
         this._article_pages.push(page);
     },
     get_article_page: function (i) {
         return this._article_pages[i]
     },
+    article_pages_visible: function () {
+        return true;
+    },
     remove_all_article_pages: function () {
         this._article_pages = [];
     },
+    lock_ui: function () {},
+    unlock_ui: function () {},
 });
 
 describe('Reader presenter', function () {
@@ -154,15 +182,16 @@ describe('Reader presenter', function () {
         ['Title 4', [],                 ''],
     ];
     const MOCK_RESULTS = MOCK_DATA.map((data, ix) => {
-        return {
+        let model = new EosKnowledgeSearch.ArticleObjectModel ({
             title: data[0],
             synopsis: "Some text",
             ekn_id: 'about:blank',
-            get_authors: jasmine.createSpy('get_authors').and.returnValue(data[1]),
             published: data[2],
             html: '<html>hello</html>',
             article_number: ix,
-        };
+        });
+        spyOn(model, 'get_authors').and.returnValue(data[1]);
+        return model;
     });
 
     beforeEach(function () {
@@ -224,14 +253,15 @@ describe('Reader presenter', function () {
 
         it('loads the standalone page when launched with a search result', function () {
             const MOCK_ID = 'abc123';
+            let model = new EosKnowledgeSearch.ArticleObjectModel({
+                article_number: 5000,
+                html: '<html>hello</html>',
+                ekn_id: 'about:blank',
+                title: 'I Write a Blog',
+            });
+            spyOn(model, 'get_authors').and.returnValue([]);
             spyOn(engine, 'get_object_by_id').and.callFake(function (id, callback) {
-                callback(undefined, {
-                    article_number: 5000,
-                    html: '<html>hello</html>',
-                    ekn_id: 'about:blank',
-                    title: 'I Write a Blog',
-                    get_authors: jasmine.createSpy().and.returnValue([]),
-                });
+                callback(undefined, model);
             });
             spyOn(view, 'show_standalone_page');
             presenter.activate_search_result(0, MOCK_ID, 'fake query');
@@ -297,6 +327,7 @@ describe('Reader presenter', function () {
 
         it('increments the current page when clicking the forward button', function () {
             article_nav_buttons.emit('forward-clicked');
+            expect(presenter.history_model.current_item.article_model.title).toBe("Title 1");
             expect(presenter.current_page).toBe(1);
             expect(settings.bookmark_page).toBe(1);
         });
@@ -323,15 +354,15 @@ describe('Reader presenter', function () {
 
         it('tells the view to animate forward when going to a later page', function () {
             spyOn(view, 'show_article_page');
-            presenter._go_to_page(1);
-            expect(view.show_article_page).toHaveBeenCalledWith(0, true);
+            presenter._go_to_page(1, EosKnowledge.LoadingAnimationType.FORWARDS_NAVIGATION);
+            expect(view.show_article_page).toHaveBeenCalledWith(0, EosKnowledge.LoadingAnimationType.FORWARDS_NAVIGATION);
         });
 
         it('tells the view to animate backward when going to an earlier page', function () {
-            presenter._go_to_page(3);
+            presenter._go_to_page(3, EosKnowledge.LoadingAnimationType.FORWARDS_NAVIGATION);
             spyOn(view, 'show_article_page');
-            presenter._go_to_page(1);
-            expect(view.show_article_page).toHaveBeenCalledWith(0, false);
+            presenter._go_to_page(1, EosKnowledge.LoadingAnimationType.BACKWARDS_NAVIGATION);
+            expect(view.show_article_page).toHaveBeenCalledWith(0, EosKnowledge.LoadingAnimationType.BACKWARDS_NAVIGATION);
         });
 
         it('shows the debug buttons when told to', function () {
@@ -432,6 +463,37 @@ describe('Reader presenter', function () {
             };
             let no_lightbox_result = presenter._lightbox_handler(model, nonexistant_media_object);
             expect(no_lightbox_result).toBe(false);
+        });
+
+        it('issues a search query when user enters one in the search box', function (done) {
+            spyOn(view, 'show_search_results_page');
+            view.search_box.text = 'Azucar';
+            view.search_box.emit('activate');
+            Mainloop.idle_add(function () {
+                expect(engine.get_objects_by_query)
+                    .toHaveBeenCalledWith(jasmine.objectContaining({
+                        q: 'Azucar',
+                    }),
+                    jasmine.any(Function));
+                expect(view.show_search_results_page).toHaveBeenCalled();
+                expect(presenter.history_model.current_item.query).toBe(JSON.stringify({q:'Azucar', limit: 15}));
+                done();
+            });
+        });
+
+        it('issues a search query when triggered by desktop search', function (done) {
+            spyOn(view, 'show_search_results_page');
+            presenter.search('', 'Azucar');
+            Mainloop.idle_add(function () {
+                expect(engine.get_objects_by_query)
+                    .toHaveBeenCalledWith(jasmine.objectContaining({
+                        q: 'Azucar',
+                    }),
+                    jasmine.any(Function));
+                expect(view.show_search_results_page).toHaveBeenCalled();
+                expect(presenter.history_model.current_item.query).toBe(JSON.stringify({q:'Azucar', limit: 15}));
+                done();
+            });
         });
 
         describe('Attribution format', function () {

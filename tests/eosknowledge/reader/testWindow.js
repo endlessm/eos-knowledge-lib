@@ -85,4 +85,11 @@ describe('Window widget', function () {
         view.append_article_page(a);
         expect(a.progress_label.current_page).toBe(EXPECTED_TOTAL_PAGES);
     });
+
+    it('ensures visible page updates with show_*_page functions', function () {
+        view.show_article_page(1);
+        expect(view.article_pages_visible()).toBe(true);
+        view.show_standalone_page();
+        expect(view.article_pages_visible()).toBe(false);
+    });
 });

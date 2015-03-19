@@ -46,3 +46,11 @@ function add_css_provider_from_file (file, priority) {
     Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(),
             provider, priority);
 }
+
+/* Helper method to sanitize queries.
+ * Removes newlines and trims whitespace before and after a query string */
+function sanitize_query (query) {
+    // Crazy regex for line breaks from
+    // http://stackoverflow.com/questions/10805125/how-to-remove-all-line-breaks-from-a-string
+    return query.replace(/\r?\n|\r/g, ' ').trim();
+}
