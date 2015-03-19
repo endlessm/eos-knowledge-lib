@@ -80,11 +80,15 @@ clean-local:
 # # # LIBRARY # # #
 
 lib_LTLIBRARIES =
+pkglib_LTLIBRARIES =
 
 # Main library
 include $(top_srcdir)/eosknowledge/Makefile.am.inc
 
 include $(top_srcdir)/eosknowledgesearchprivate/Makefile.am.inc
+
+# Web extension
+include $(top_srcdir)/lib/Makefile.am.inc
 
 # Pkg-config file
 pkgconfigdir = $(libdir)/pkgconfig

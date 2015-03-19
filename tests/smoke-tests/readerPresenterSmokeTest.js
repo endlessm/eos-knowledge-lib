@@ -20,6 +20,7 @@ mock_engine.get_objects_by_query = function (query, callback) {
             authors: ['Plward11'],
             published: 'September 30, 2014',
             ekn_id: 'about:blank',
+            html: '<a href="http://www.google.com">Google</a>'
         },
         {
             title: 'Article Two',

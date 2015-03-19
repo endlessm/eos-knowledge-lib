@@ -219,6 +219,13 @@ fi
 PKG_CHECK_MODULES([EOS_KNOWLEDGE], [
     $EKN_REQUIRED_MODULES
     $EKN_REQUIRED_MODULES_PRIVATE])
+PKG_CHECK_MODULES([TOOLTIP_PLUGIN], [
+    glib-2.0
+    gmodule-2.0
+    gio-2.0
+    webkit2gtk-3.0
+    javascriptcoregtk-3.0
+])
 
 # Check installed GIRs for Javascript overrides
 EOS_CHECK_GJS_GIR([ClutterGst], [2.0])
