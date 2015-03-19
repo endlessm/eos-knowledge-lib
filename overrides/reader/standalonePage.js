@@ -8,8 +8,10 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const ArticlePage = imports.reader.articlePage;
+const CompositeButton = imports.compositeButton;
 const Config = imports.config;
 const ImagePreviewer = imports.imagePreviewer;
+const Utils = imports.utils;
 
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
@@ -57,6 +59,67 @@ const ArchiveLabel = new Lang.Class({
     get label () {
         if (this._archive_label_text)
             return this._archive_label_text;
+        return '';
+    },
+});
+
+const OpenButton = new Lang.Class({
+    Name: 'OpenButton',
+    GTypeName: 'EknOpenButton',
+    Extends: CompositeButton.CompositeButton,
+    Properties: {
+        /**
+         * Property: label
+         *
+         * The label on the button
+         */
+        'label': GObject.ParamSpec.string('label', 'Button label',
+            'The label on the button',
+            GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE, ''),
+    },
+
+    _OPEN_ICON: '/com/endlessm/knowledge/reader/standalone_arrow.svg',
+
+    _init: function (props={}) {
+        let image = new Gtk.Image({
+            resource: this._OPEN_ICON,
+            visible: true,
+        });
+
+        let frame = new Gtk.Frame();
+
+        this._label_text = '';
+        this._label = new Gtk.Label({
+            use_markup: true,
+        });
+
+        this.parent(props);
+
+        let grid = new Gtk.Grid({
+            orientation: Gtk.Orientation.HORIZONTAL,
+            column_spacing: 10,
+        });
+        frame.add(grid);
+        grid.add(this._label);
+        grid.add(image);
+
+        this.add(frame);
+
+        this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_READER_OPEN_BUTTON);
+    },
+
+    set label(v) {
+        if (this._label_text === v)
+            return;
+        this._label_text = v;
+        /* 1014 = 0.99 px * 1024 Pango units / px */
+        this._label.label = ('<span letter_spacing="1014">' +
+            this._label_text.toLocaleUpperCase() + '</span>');
+    },
+
+    get label() {
+        if (this._label_text)
+            return this._label_text;
         return '';
     },
 });
@@ -116,8 +179,12 @@ const Banner = new Lang.Class({
             vexpand: true,
         });
 
-        let button = this.add_button(_("OPEN THE MAGAZINE"), 1);
-        button.get_style_context().add_class(EosKnowledge.STYLE_CLASS_READER_OPEN_BUTTON);
+        let button = new OpenButton({
+            label: _("Open the magazine"),
+        });
+        Utils.set_hand_cursor_on_widget(button);
+
+        this.add_action_widget(button, 1);
         this.get_content_area().add(this._title_image);
         this.get_content_area().add(this.archive_label);
     },
