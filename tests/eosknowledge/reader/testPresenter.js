@@ -137,6 +137,10 @@ const MockView = new Lang.Class({
             get_style_context: get_style_context,
             clear_search_results: function () {},
             append_search_results: function () {},
+            no_results_label: {
+                show: function () {},
+                hide: function () {},
+            },
         };
 
         this.total_pages = 0;
