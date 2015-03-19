@@ -1,3 +1,4 @@
+const cairo = imports.gi.cairo;  // note: GI module, not native GJS module
 const EosKnowledge = imports.gi.EosKnowledge;
 const EosKnowledgeSearch = imports.EosKnowledgeSearch;
 const Format = imports.format;
@@ -21,6 +22,7 @@ const Previewer = imports.previewer;
 const UserSettingsModel = imports.reader.userSettingsModel;
 const Utils = imports.utils;
 const WebkitURIHandlers = imports.webkitURIHandlers;
+const WebviewTooltip = imports.reader.webviewTooltip;
 const Window = imports.reader.window;
 
 String.prototype.format = Format.format;
@@ -34,6 +36,17 @@ const NUM_OVERVIEW_SNIPPETS = 3;
 
 // 1 week in miliseconds
 const UPDATE_INTERVAL_MS = 604800000;
+
+const DBUS_WEBVIEW_EXPORT_PATH = '/com/endlessm/webview/';
+const DBUS_TOOLTIP_INTERFACE = '\
+    <node> \
+        <interface name="com.endlessm.Knowledge.TooltipCoordinates"> \
+            <method name="GetCoordinates"> \
+                <arg name="pointer_coordinates" type="(uu)" direction="in"/> \
+                <arg name="dom_element_rectangle" type="(uuuu)" direction="out"/> \
+            </method> \
+        </interface> \
+    </node>';
 
 /**
  * Class: Reader.Presenter
@@ -144,6 +157,17 @@ const Presenter = new Lang.Class({
         this.parent(props);
 
         WebkitURIHandlers.register_webkit_uri_handlers();
+
+        let app_id = this.application.application_id;
+        let pid = new Gio.Credentials().get_unix_pid();
+        this._dbus_name = app_id + pid;
+
+        let web_context = WebKit2.WebContext.get_default();
+        web_context.connect('initialize-web-extensions', () => {
+            web_context.set_web_extensions_directory(Config.PKGLIBDIR);
+            let well_known_name = new GLib.Variant('s', this._dbus_name);
+            web_context.set_web_extensions_initialization_user_data(well_known_name);
+        });
 
         this._article_renderer = new ArticleHTMLRenderer.ArticleHTMLRenderer();
 
@@ -432,6 +456,39 @@ const Presenter = new Lang.Class({
         this._article_models = this._article_models.concat(models);
     },
 
+    _get_mouse_coordinates: function (view) {
+        let display = Gdk.Display.get_default();
+        let device_man = display.get_device_manager();
+        let device = device_man.get_client_pointer();
+        let [win, x, y, mask] = view.window.get_device_position(device);
+        return [x, y];
+    },
+
+    _remove_link_tooltip: function () {
+        if (this._link_tooltip) {
+            this._link_tooltip.destroy();
+            this._link_tooltip = null;
+        }
+    },
+
+    _display_link_tooltip: function (view, uri, coordinates) {
+        this._remove_link_tooltip();
+        this._link_tooltip = new WebviewTooltip.WebviewTooltip({
+            title: uri,
+            relative_to: view,
+            pointing_to: new cairo.RectangleInt({
+                x: coordinates[0],
+                y: coordinates[1],
+                width: coordinates[2],
+                height: coordinates[3],
+            }),
+        });
+        this._link_tooltip.connect('leave-notify-event', () => {
+            this._remove_link_tooltip();
+        });
+        this._link_tooltip.show_all();
+    },
+
     _load_webview_content: function (article_model, ready) {
         if (ready === undefined) {
             ready = function () {};
@@ -497,6 +554,49 @@ const Presenter = new Lang.Class({
             // the default webkit fashion
             return false;
         }.bind(this));
+
+        webview.connect('mouse-target-changed', (view, hit_test, modifiers) => {
+            if (!hit_test.context_is_link()) {
+                this._remove_link_tooltip();
+                return;
+            }
+            let uri = hit_test.link_uri;
+            // This indicates that we open the link in an external viewer, but
+            // don't show it to the user.
+            if (uri.startsWith('browser-'))
+                uri = uri.slice('browser-'.length);
+            // Links to images within the database will open in a lightbox
+            // instead. This is determined in the HTML by the eos-image-link
+            // class, but we don't have access to that information here.
+            if (hit_test.context_is_image() && uri.startsWith('ekn://')) {
+                this._remove_link_tooltip();
+                return;
+            }
+            let mouse_position = this._get_mouse_coordinates(view);
+
+            // Wait for the DBus interface to appear on the bus
+            let watch_id = Gio.DBus.watch_name(Gio.BusType.SESSION,
+                this._dbus_name, Gio.BusNameWatcherFlags.NONE,
+                (connection, name, owner) => {
+                    let webview_object_path = DBUS_WEBVIEW_EXPORT_PATH +
+                        view.get_page_id();
+                    let ProxyConstructor =
+                        Gio.DBusProxy.makeProxyWrapper(DBUS_TOOLTIP_INTERFACE);
+                    let proxy = new ProxyConstructor(connection,
+                        this._dbus_name, webview_object_path);
+                    proxy.GetCoordinatesRemote(mouse_position, (coordinates, error) => {
+                        // Fall back to just popping up the tooltip at the
+                        // mouse's position if there was an error.
+                        if (error)
+                            coordinates = [[mouse_position[0],
+                                mouse_position[1], 1, 1]];
+                        this._display_link_tooltip(view, uri, coordinates[0]);
+                        Gio.DBus.unwatch_name(watch_id);
+                    });
+                },
+                null  // do nothing when name vanishes
+            );
+        });
 
         webview.load_html(this._article_renderer.render(article_model), article_model.ekn_id);
         return webview;

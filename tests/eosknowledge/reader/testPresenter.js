@@ -11,6 +11,12 @@ const TEST_DOMAIN = 'thrones-en';
 const UPDATE_INTERVAL_MS = 604800000;
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 
+const MockApplication = new Lang.Class({
+    Name: 'MockApplication',
+    Extends: GObject.Object,
+    application_id: 'com.endlessm.EosKnowledge.Reader.testPresenter',
+});
+
 const MockUserSettingsModel = new Lang.Class({
     Name: 'MockUserSettingsModel',
     Extends: GObject.Object,
@@ -160,6 +166,7 @@ describe('Reader presenter', function () {
     });
 
     beforeEach(function () {
+        let application = new MockApplication();
         article_nav_buttons = new MockNavButtons();
         view = new MockView(article_nav_buttons);
         engine = new MockEngine();
@@ -172,6 +179,7 @@ describe('Reader presenter', function () {
         spyOn(engine, 'get_objects_by_query');
 
         presenter = new EosKnowledge.Reader.Presenter(TEST_JSON, {
+            application: application,
             engine: engine,
             settings: settings,
             view: view,

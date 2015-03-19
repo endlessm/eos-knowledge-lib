@@ -64,7 +64,13 @@ reader_overrides = \
 	overrides/reader/standalonePage.js \
 	overrides/reader/titleView.js \
 	overrides/reader/userSettingsModel.js \
+	overrides/reader/webviewTooltip.js \
 	overrides/reader/window.js \
 	$(NULL)
 readeroverridesdir = $(pkgoverridesdir)/reader
 dist_readeroverrides_DATA = $(reader_overrides)
+
+subst = $(SED) -e 's,%pkglibdir%,$(pkglibdir),g'
+overrides/config.js: overrides/config.js.in Makefile
+	$(MKDIR_P) overrides
+	$(AM_V_GEN)$(subst) $< > $@
