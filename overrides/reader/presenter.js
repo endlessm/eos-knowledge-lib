@@ -514,13 +514,19 @@ const Presenter = new Lang.Class({
             order: 'asc',
             tags: ['EknArticleObject'],
         }, function (error, results, get_more_results_func) {
-            if (!error && results.length < 1)
+            if (!error && results.length < 1 && this.settings.start_article === 0) {
                 error = GLib.Error.new_literal(Gio.io_error_quark(),
-                    Gio.ErrorEnum.NOT_FOUND,
+                    Gio.IOErrorEnum.NOT_FOUND,
                     'No content found for this magazine');
+            }
 
             if (error) {
                 callback(error);
+            } else if (results.length < 1) {
+                // We have exhausted all articles in this magazine.
+                // Reset counter and start from beginning!
+                this.settings.start_article = 0;
+                this.settings.bookmark_page = 0;
             } else {
                 this._fetch_content_recursive(undefined, results,
                     get_more_results_func, callback, progress_callback);
