@@ -236,8 +236,26 @@ describe('Knowledge Engine Module', () => {
             let mock_query_obj = mock_uri.get_query();
             let serialized_query = get_query_vals_for_key(mock_query_obj, 'q');
 
-            expect(serialized_query).toMatch('tyrion');
-            expect(serialized_query).toMatch('wins');
+            expect(serialized_query).toMatch(/tyrion/i);
+            expect(serialized_query).toMatch(/wins/i);
+        });
+
+        it('throws an error for an unrecognized query type', () => {
+            let query_obj = {
+                q: 'tyrion wins',
+                type: engine.QUERY_TYPE_DELIMITED,
+            };
+            expect(() => {
+                engine._get_xapian_uri(query_obj);
+            }).not.toThrow();
+
+            let query_obj = {
+                q: 'tyrion wins',
+                type: 'crossbow',
+            };
+            expect(() => {
+                engine._get_xapian_uri(query_obj);
+            }).toThrow();
         });
 
         it('supports single ID queries', () => {
@@ -428,7 +446,7 @@ describe('Knowledge Engine Module', () => {
 
             expect(requested_uri_string).toMatch(/^http:\/\/127.0.0.1:3004\/query?/);
             expect(get_query_vals_for_key(requested_query, 'path')).toMatch('/foo');
-            expect(get_query_vals_for_key(requested_query, 'q')).toMatch('(logorrhea)');
+            expect(get_query_vals_for_key(requested_query, 'q')).toMatch(/logorrhea/i);
         });
 
         it ("throws an error on unsupported JSON-LD type", (done) => {

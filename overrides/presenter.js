@@ -350,6 +350,7 @@ const Presenter = new Lang.Class({
         }
         let query_obj = {
             q: query,
+            type: this.engine.QUERY_TYPE_DELIMITED,
             limit: RESULTS_SIZE,
         };
 
@@ -408,7 +409,7 @@ const Presenter = new Lang.Class({
             return;
         }
         this.engine.get_objects_by_query({
-            'prefix': query,
+            'q': query,
             'limit': RESULTS_SIZE,
         }, function (err, results) {
             if (err !== undefined) {
@@ -434,7 +435,7 @@ const Presenter = new Lang.Class({
         }
 
         this._latest_origin_query = JSON.stringify({
-            'prefix': this._latest_search_text
+            'q': this._latest_search_text
         });
         // If template B, we need to set the autocomplete results as the cards on the
         // section page
@@ -456,6 +457,7 @@ const Presenter = new Lang.Class({
     activate_search_result: function (timestamp, ekn_id, query) {
         let query_obj = {
             'q': query,
+            'type': this.engine.QUERY_TYPE_DELIMITED,
             'limit': RESULTS_SIZE,
         };
         this.engine.get_objects_by_query(query_obj, this._refresh_sidebar_callback.bind(this));

@@ -271,6 +271,7 @@ const Presenter = new Lang.Class({
         }
         let query_obj = {
             q: query,
+            type: this.engine.QUERY_TYPE_DELIMITED,
             limit: RESULTS_SIZE,
         };
 

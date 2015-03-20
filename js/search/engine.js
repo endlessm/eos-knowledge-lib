@@ -107,6 +107,22 @@ const Engine = Lang.Class({
     _DEFAULT_CUTOFF_PCT : 20, // if no cutoff is specified, cutoff at 20%
     _DEFAULT_ORDER : 'asc', // if no order is specified, use ascending
 
+    /**
+     * Constant: QUERY_TYPE_INCREMENTAL
+     *
+     * Default query type. Meant for showing a list of results that will update
+     * as the user types. Will match against incomplete words that are still
+     * being typed.
+     */
+    QUERY_TYPE_INCREMENTAL: 'incremental',
+    /**
+     * Constant: QUERY_TYPE_DELIMITED
+     *
+     * Expect a fully formed (complete words) query to preform a search on.
+     * Will return title and synopsis matches.
+     */
+    QUERY_TYPE_DELIMITED: 'delimited',
+
     _init: function (params) {
         this.parent(params);
         this._http_session = new Soup.Session();
@@ -172,7 +188,7 @@ const Engine = Lang.Class({
      *
      * *query* is an object with many parameters controlling the search
      *   - q (search query string)
-     *   - prefix (prefix search query string)
+     *   - type (type of query to run, defaults to <QUERY_TYPE_DELIMITED>)
      *   - tags (list of tags the results must match)
      *   - offset (number of results to skip, useful for pagination)
      *   - limit  (maximum number of results to return)
@@ -328,6 +344,17 @@ const Engine = Lang.Class({
         return json_ld.results.map(this._model_from_json_ld.bind(this));
     },
 
+    _get_xapian_uri_query_clause: function (query_obj) {
+        let type = query_obj.type || this.QUERY_TYPE_INCREMENTAL;
+        if (type === this.QUERY_TYPE_INCREMENTAL) {
+            return xapianQuery.xapian_incremental_query_clause(query_obj.q);
+        } else if (type === this.QUERY_TYPE_DELIMITED) {
+            return xapianQuery.xapian_delimited_query_clause(query_obj.q);
+        } else {
+            throw new Error('Unrecognized type query type' + type);
+        }
+    },
+
     _get_xapian_uri: function (query_obj) {
         let host_uri = "http://" + this.host;
         let uri = new Soup.URI(host_uri);
@@ -343,16 +370,13 @@ const Engine = Lang.Class({
                     xapian_query_options.push(xapianQuery.xapian_tag_clause(query_obj.tags));
                     break;
                 case 'q':
-                    xapian_query_options.push(xapianQuery.xapian_delimited_query_clause(query_obj.q));
-                    break;
-                case 'prefix':
-                    xapian_query_options.push(xapianQuery.xapian_incremental_query_clause(query_obj.prefix));
+                    xapian_query_options.push(this._get_xapian_uri_query_clause(query_obj));
                     break;
                 case 'ids':
                     xapian_query_options.push(xapianQuery.xapian_ids_clause(query_obj.ids));
                     break;
                 default:
-                    if (['cutoff', 'limit', 'offset', 'order', 'sortBy', 'domain'].indexOf(property) === -1)
+                    if (['cutoff', 'limit', 'offset', 'order', 'sortBy', 'domain', 'type'].indexOf(property) === -1)
                         throw new Error('Unexpected property value ' + property);
             }
         }
