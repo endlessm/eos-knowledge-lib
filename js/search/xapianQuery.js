@@ -32,6 +32,14 @@ function quote (clause) {
     return '"' + clause + '"';
 }
 
+function addTitlePrefix (term) {
+    return XAPIAN_PREFIX_TITLE + term;
+}
+
+function addWildcardClause (term) {
+    return parenthesize(term + XAPIAN_OP_OR + term + '*');
+}
+
 // matches any contiguous whitespace
 const WHITESPACE_REGEX = /\s+/;
 
@@ -77,27 +85,39 @@ function xapian_join_clauses (clauses) {
 function xapian_delimited_query_clause (query) {
     let sanitized_query = sanitize(query);
     let separateTerms = sanitized_query.split(TERM_DELIMITER_REGEX);
+
+    if (sanitized_query.length === 1)
+        return exact_title_clause(separateTerms);
+
+    let clauses = [];
+
     let exactTitleClause = exact_title_clause(separateTerms);
+    clauses.push(exactTitleClause);
 
-    let bodyClause = sanitized_query;
-    let genericTitleClause = sanitized_query.split(' ').filter(function (term) {
-        return term.length > 1;
-    }).map(function (term) {
-        return XAPIAN_PREFIX_TITLE + term;
-    }).join(XAPIAN_OP_OR);
+    let titleClause = separateTerms.map(addTitlePrefix).join(XAPIAN_OP_AND);
+    clauses.push(titleClause);
 
-    return [genericTitleClause, bodyClause, exactTitleClause].map(parenthesize)
-        .filter(emptyQueries)
-        .join(XAPIAN_OP_OR);
+    return clauses.map(parenthesize).join(XAPIAN_OP_OR);
 }
 
 function xapian_incremental_query_clause (query) {
     let sanitized_query = sanitize(query);
     let separateTerms = sanitized_query.split(TERM_DELIMITER_REGEX);
-    let exactTitleClause = exact_title_clause(separateTerms);
 
-    // Don't do a wildcard search if there is only one letter. It will cripple xapian
-    return sanitized_query.length > 1 ? exactTitleClause + '*' : exactTitleClause;
+    // Don't wildcard here, wildcard searches with a single character cause
+    // performance problems.
+    if (sanitized_query.length === 1)
+        return exact_title_clause(separateTerms);
+
+    let clauses = [];
+
+    let exactTitleClause = addWildcardClause(exact_title_clause(separateTerms));
+    clauses.push(exactTitleClause);
+
+    let titleClause = separateTerms.map(addTitlePrefix).map(addWildcardClause).join(XAPIAN_OP_AND);
+    clauses.push(titleClause);
+
+    return clauses.map(parenthesize).join(XAPIAN_OP_OR);
 }
 
 // Tag lists should be joined as a series of
