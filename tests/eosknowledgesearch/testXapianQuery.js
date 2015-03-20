@@ -11,28 +11,28 @@ describe('Xapian Query Module', function () {
     describe('xapian query', function () {
         it('should ignore excess whitespace (except for tags)', function () {
             let q = 'whoa      man';
-            let q_result = xq.xapian_query_clause(q);
+            let q_result = xq.xapian_delimited_query_clause(q);
             expect(q_result).toBe('(title:whoa OR title:man) OR (whoa man) OR (exact_title:Whoa_Man)');
 
-            let prefix_result = xq.xapian_prefix_clause(q);
+            let prefix_result = xq.xapian_incremental_query_clause(q);
             expect(prefix_result).toBe('exact_title:Whoa_Man*');
         });
 
-        it('should lowercase xapian operator terms in general query', function () {
+        it('should lowercase xapian operator terms', function () {
             let q = 'PENN AND tELLER';
-            let q_result = xq.xapian_query_clause(q);
+            let q_result = xq.xapian_delimited_query_clause(q);
             expect(q_result).toBe('(title:PENN OR title:and OR title:tELLER) OR (PENN and tELLER) OR (exact_title:Penn_And_Teller)');
 
-            let prefix_result = xq.xapian_prefix_clause(q);
+            let prefix_result = xq.xapian_incremental_query_clause(q);
             expect(prefix_result).toBe('exact_title:Penn_And_Teller*');
         });
 
         it('should remove parentheses in user terms', function () {
             let q = 'foo (bar) baz ((';
-            let q_result = xq.xapian_query_clause(q);
+            let q_result = xq.xapian_delimited_query_clause(q);
             expect(q_result).toBe('(title:foo OR title:bar OR title:baz) OR (foo bar baz) OR (exact_title:Foo_Bar_Baz)');
 
-            let prefix_result = xq.xapian_prefix_clause(q);
+            let prefix_result = xq.xapian_incremental_query_clause(q);
             expect(prefix_result).toBe('exact_title:Foo_Bar_Baz*');
         });
 
@@ -48,15 +48,15 @@ describe('Xapian Query Module', function () {
             expect(result).toBe('NOT tag:"stallman" AND NOT tag:"sex" AND NOT tag:"tape"');
         });
 
-        it('should support requests with querystring', function () {
+        it('should support delimited queries', function () {
             let q = 'little search';
-            let result = xq.xapian_query_clause(q);
+            let result = xq.xapian_delimited_query_clause(q);
             expect(result).toBe('(title:little OR title:search) OR (little search) OR (exact_title:Little_Search)');
         });
 
-        it('should support requests with prefix', function () {
+        it('should support incremental queries', function () {
             let q = 'Bar';
-            let result = xq.xapian_prefix_clause(q);
+            let result = xq.xapian_incremental_query_clause(q);
             expect(result).toBe('exact_title:Bar*');
         });
 
@@ -68,13 +68,13 @@ describe('Xapian Query Module', function () {
 
         it('should not add empty queries', function () {
             let q = 'a';
-            let result = xq.xapian_query_clause(q);
+            let result = xq.xapian_delimited_query_clause(q);
             expect(result).toBe('(a) OR (exact_title:A)');
         });
 
         it('should not submit a prefix query for one letter queries', function () {
             let q = 'a';
-            let result = xq.xapian_prefix_clause(q);
+            let result = xq.xapian_incremental_query_clause(q);
             expect(result).toBe('exact_title:A');
         });
 

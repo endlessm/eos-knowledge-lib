@@ -74,8 +74,8 @@ function xapian_join_clauses (clauses) {
     return clauses.map(parenthesize).join(XAPIAN_OP_AND);
 }
 
-function xapian_query_clause (q) {
-    let sanitized_query = sanitize(q);
+function xapian_delimited_query_clause (query) {
+    let sanitized_query = sanitize(query);
     let separateTerms = sanitized_query.split(TERM_DELIMITER_REGEX);
     let exactTitleClause = exact_title_clause(separateTerms);
 
@@ -91,8 +91,8 @@ function xapian_query_clause (q) {
         .join(XAPIAN_OP_OR);
 }
 
-function xapian_prefix_clause (prefix) {
-    let sanitized_query = sanitize(prefix);
+function xapian_incremental_query_clause (query) {
+    let sanitized_query = sanitize(query);
     let separateTerms = sanitized_query.split(TERM_DELIMITER_REGEX);
     let exactTitleClause = exact_title_clause(separateTerms);
 

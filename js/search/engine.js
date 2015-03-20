@@ -343,10 +343,10 @@ const Engine = Lang.Class({
                     xapian_query_options.push(xapianQuery.xapian_tag_clause(query_obj.tags));
                     break;
                 case 'q':
-                    xapian_query_options.push(xapianQuery.xapian_query_clause(query_obj.q));
+                    xapian_query_options.push(xapianQuery.xapian_delimited_query_clause(query_obj.q));
                     break;
                 case 'prefix':
-                    xapian_query_options.push(xapianQuery.xapian_prefix_clause(query_obj.prefix));
+                    xapian_query_options.push(xapianQuery.xapian_incremental_query_clause(query_obj.prefix));
                     break;
                 case 'ids':
                     xapian_query_options.push(xapianQuery.xapian_ids_clause(query_obj.ids));
