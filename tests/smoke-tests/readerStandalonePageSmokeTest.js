@@ -49,6 +49,10 @@ const TestApplication = new Lang.Class({
         page.article_page.title_view.attribution = 'By Ser Pounce on May 31, 2015';
         page.article_page.get_style_context().add_class('article-page0');
 
+        page.infobar.connect('response', () => {
+            print("Open magazine");
+        });
+
         let window = new Endless.Window({
             application: this,
         });
