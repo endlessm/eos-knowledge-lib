@@ -44,6 +44,31 @@ const CompressibleBox = new Lang.Class({
     },
 });
 
+// Box with a height-for-width or width-for-height request of a particular size squared.
+const ConstantAreaBox = new Lang.Class({
+    Name: 'ConstantAreaBox',
+    Extends: CompressibleBox,
+
+    _init: function (size, mode, props={}) {
+        this.parent(size, props);
+        this.mode = mode;
+    },
+
+    vfunc_get_request_mode: function () {
+        return this.mode;
+    },
+
+    vfunc_get_preferred_height_for_width: function (width) {
+        let height = this.size * this.size / width;
+        return [height, height];
+    },
+
+    vfunc_get_preferred_width_for_height: function (height) {
+        let width = this.size * this.size / height;
+        return [width, width];
+    }
+});
+
 function update_gui() {
     while (Gtk.events_pending())
         Gtk.main_iteration(false);
@@ -82,6 +107,9 @@ describe('Space container', function () {
         });
 
         addTestsForOrientation('height', 'width', 'y', 'valign');
+        addGeometryTestsForOrientationAndModes('height', 'width',
+            Gtk.SizeRequestMode.HEIGHT_FOR_WIDTH,
+            Gtk.SizeRequestMode.WIDTH_FOR_HEIGHT);
     });
 
     describe('horizontally oriented', function () {
@@ -99,6 +127,9 @@ describe('Space container', function () {
         });
 
         addTestsForOrientation('width', 'height', 'x', 'halign');
+        addGeometryTestsForOrientationAndModes('width', 'height',
+            Gtk.SizeRequestMode.WIDTH_FOR_HEIGHT,
+            Gtk.SizeRequestMode.HEIGHT_FOR_WIDTH);
     });
 });
 
@@ -304,5 +335,29 @@ function addTestsForOrientation(primary, secondary, primary_pos, primary_align) 
         update_gui();
 
         expect(boxes[0].get_allocation()[primary_pos]).toBe(100);
+    });
+}
+
+function addGeometryTestsForOrientationAndModes(primary, secondary, primary_for_secondary, secondary_for_primary) {
+    it('allocates ' + primary + ' for ' + secondary, function () {
+        let boxes = [100, 100, 100, 100].map((size) =>
+            this.add_box(new ConstantAreaBox(size, primary_for_secondary)));
+        update_gui();
+
+        expect(boxes[0].get_allocation()[primary]).toBe(100);
+        expect(boxes[1].get_allocation()[primary]).toBe(100);
+        expect(boxes[2].get_allocation()[primary]).toBe(100);
+        expect(boxes[3].get_child_visible()).toBe(false);
+    });
+
+    it('allocates ' + secondary + ' for ' + primary, function () {
+        let boxes = [100, 100, 100, 100].map((size) =>
+            this.add_box(new ConstantAreaBox(size, secondary_for_primary)));
+        update_gui();
+
+        expect(boxes[0].get_allocation()[primary]).toBe(75);
+        expect(boxes[1].get_allocation()[primary]).toBe(75);
+        expect(boxes[2].get_allocation()[primary]).toBe(75);
+        expect(boxes[3].get_allocation()[primary]).toBe(75);
     });
 }

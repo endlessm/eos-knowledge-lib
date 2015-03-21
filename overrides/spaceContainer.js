@@ -115,13 +115,27 @@ const SpaceContainer = new Lang.Class({
         return [min, nat];
     },
 
-    _get_shown_children_info: function (children, primary, available_space) {
+    _child_get_preferred_primary: function (child, primary, secondary_space) {
+        if (child.get_request_mode() === Gtk.SizeRequestMode.HEIGHT_FOR_WIDTH &&
+            primary === 'height') {
+            return child.get_preferred_height_for_width(secondary_space);
+        }
+        if (child.get_request_mode() === Gtk.SizeRequestMode.WIDTH_FOR_HEIGHT &&
+            primary === 'width') {
+            return child.get_preferred_width_for_height(secondary_space);
+        }
+        return child['get_preferred_' + primary]();
+    },
+
+    _get_shown_children_info: function (children, primary, available_space, secondary_space) {
         let cum_min_size = 0;
         let shown_children_info = [];
         let ran_out_of_space = false;
         // Determine how many children will fit in the available space.
         children.forEach((child, ix) => {
-            let [child_min, child_nat] = child['get_preferred_' + primary]();
+            let [child_min, child_nat] =
+                this._child_get_preferred_primary(child, primary,
+                    secondary_space);
             cum_min_size += child_min;
             if (ix > 0)
                 cum_min_size += this._spacing;
@@ -230,7 +244,7 @@ const SpaceContainer = new Lang.Class({
         }
 
         let shown_children_info = this._get_shown_children_info(children,
-            primary, allocation[primary]);
+            primary, allocation[primary], allocation[secondary]);
         if (shown_children_info.length === 0)
             return;  // No widgets fit, nothing to do.
 
