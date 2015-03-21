@@ -350,6 +350,16 @@ function addGeometryTestsForOrientationAndModes(primary, secondary, primary_for_
         expect(boxes[3].get_child_visible()).toBe(false);
     });
 
+    it('gets the ' + secondary + ' right in ' + primary + ' for ' + secondary, function () {
+        let boxes = [100, 100, 100, 100].map((size) =>
+            this.add_box(new ConstantAreaBox(size, primary_for_secondary)));
+        update_gui();
+
+        let [minimum, natural] = this.container['get_preferred_' + secondary]();
+        expect(minimum).toBe(100);
+        expect(natural).toBe(100);
+    });
+
     it('allocates ' + secondary + ' for ' + primary, function () {
         let boxes = [100, 100, 100, 100].map((size) =>
             this.add_box(new ConstantAreaBox(size, secondary_for_primary)));
@@ -359,5 +369,15 @@ function addGeometryTestsForOrientationAndModes(primary, secondary, primary_for_
         expect(boxes[1].get_allocation()[primary]).toBe(75);
         expect(boxes[2].get_allocation()[primary]).toBe(75);
         expect(boxes[3].get_allocation()[primary]).toBe(75);
+    });
+
+    it('gets the ' + secondary + ' right in ' + secondary + ' for ' + primary, function () {
+        let boxes = [100, 100, 100, 100].map((size) =>
+            this.add_box(new ConstantAreaBox(size, secondary_for_primary)));
+        update_gui();
+
+        let [minimum, natural] = this.container['get_preferred_' + secondary]();
+        expect(minimum).toBe(133);
+        expect(natural).toBe(133);
     });
 }

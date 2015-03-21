@@ -83,6 +83,30 @@ const SpaceContainer = new Lang.Class({
         return this.get_children().reverse().filter((child) => child.visible);
     },
 
+    _child_get_preferred_secondary: function (child, secondary) {
+        if (child.get_request_mode() === Gtk.SizeRequestMode.HEIGHT_FOR_WIDTH &&
+            secondary === 'height') {
+            let [min_width, nat_width] = child.get_preferred_width();
+            let min_heights = child.get_preferred_height_for_width(min_width);
+            let nat_heights = child.get_preferred_height_for_width(nat_width);
+            let heights = min_heights.concat(nat_heights);
+            return [Math.min.apply(undefined, heights),
+                Math.max.apply(undefined, heights)];
+            // Min. height for min. width, natural height for natural width
+        }
+        if (child.get_request_mode() === Gtk.SizeRequestMode.WIDTH_FOR_HEIGHT &&
+            secondary === 'width') {
+            let [min_height, nat_height] = child.get_preferred_height();
+            let min_widths = child.get_preferred_width_for_height(min_height);
+            let nat_widths = child.get_preferred_width_for_height(nat_height);
+            let widths = min_widths.concat(nat_widths);
+            // Min. width for min. height, natural width for natural height
+            return [Math.min.apply(undefined, widths),
+                Math.max.apply(undefined, widths)];
+        }
+        return child['get_preferred_' + secondary]();
+    },
+
     // The secondary dimension (i.e., width if orientation == VERTICAL) is the
     // maximum minimal and natural secondary dimensions of any one child, even
     // including ones that are not shown.
@@ -92,7 +116,8 @@ const SpaceContainer = new Lang.Class({
             return [0, 0];
         return children.reduce((accum, child) => {
             let [min, nat] = accum;
-            let [child_min, child_nat] = child['get_preferred_' + secondary]();
+            let [child_min, child_nat] =
+                this._child_get_preferred_secondary(child, secondary);
             return [Math.max(child_min, min), Math.max(child_nat, nat)];
         }, [0, 0]);
     },

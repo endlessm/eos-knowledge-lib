@@ -15,11 +15,10 @@ const CompressibleBox = new Lang.Class({
     _init: function (props={}) {
         this.parent(props);
 
-        this._width = GLib.random_int_range(50, 200);
-        this._height = GLib.random_int_range(50, 200);
+        this._size = GLib.random_int_range(50, 200);
 
         let label = new Gtk.Label({
-            label: this._width + 'x' + this._height,
+            label: this._size.toString(),
         });
         this.add(label);
 
@@ -33,12 +32,26 @@ const CompressibleBox = new Lang.Class({
     },
 
     vfunc_get_preferred_width: function () {
-        return [this._width / 2, this._width];
+        return [this._size / 2, this._size];
     },
 
     vfunc_get_preferred_height: function () {
-        return [this._height / 2, this._height];
+        return [this._size / 2, this._size];
     },
+
+    vfunc_get_request_mode: function () {
+        return Gtk.SizeRequestMode.HEIGHT_FOR_WIDTH;
+    },
+
+    vfunc_get_preferred_height_for_width: function (width) {
+        let height = this._size * this._size / width;
+        return [height, height];
+    },
+
+    vfunc_get_preferred_width_for_height: function (height) {
+        let width = this._size * this._size / height;
+        return [width, width];
+    }
 });
 
 let win = new Gtk.Window({
