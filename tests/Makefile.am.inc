@@ -73,6 +73,7 @@ test_content = \
 EXTRA_DIST += \
 	$(javascript_tests) \
 	$(test_content) \
+	tests/ContainsMatcher.js \
 	tests/CssClassMatcher.js \
 	tests/InstanceOfMatcher.js \
 	tests/utils.js \
