@@ -104,8 +104,10 @@ const Engine = Lang.Class({
 
     _DEFAULT_LIMIT : 10, // if no limit is specified, return this many objects
     _DEFAULT_OFFSET : 0, // if no offset is specified, start from beginning
-    _DEFAULT_CUTOFF_PCT : 20, // if no cutoff is specified, cutoff at 20%
     _DEFAULT_ORDER : 'asc', // if no order is specified, use ascending
+
+    _DEFAULT_CUTOFF: 10,
+    _MATCH_ALL_CUTOFF: 20,
 
     /**
      * Constant: QUERY_TYPE_INCREMENTAL
@@ -207,7 +209,6 @@ const Engine = Lang.Class({
      *   - tags (list of tags the results must match)
      *   - offset (number of results to skip, useful for pagination)
      *   - limit  (maximum number of results to return)
-     *   - cutoff  (number representing the minimum relevance percentage returned articles should have)
      *   - sortBy  (Xapian value by which to sort results. Note this will override relevance ordering by xapian.)
      *   - order  (The order in which to sort results, either ascending ('asc') or descending ('desc'))
      *   - ids (an array of specific EKN ids to be fetched)
@@ -383,6 +384,13 @@ const Engine = Lang.Class({
         return query_clause_fn(query_obj.q, do_match_all);
     },
 
+    _get_xapian_cutoff_value: function (query_obj) {
+        // We need a stricter cutoff when matching all against all indexed terms
+        if (query_obj.match === this.QUERY_MATCH_ALL)
+            return this._MATCH_ALL_CUTOFF;
+        return this._DEFAULT_CUTOFF;
+    },
+
     _get_xapian_uri: function (query_obj) {
         let host_uri = "http://" + this.host;
         let uri = new Soup.URI(host_uri);
@@ -404,7 +412,7 @@ const Engine = Lang.Class({
                     xapian_query_options.push(xapianQuery.xapian_ids_clause(query_obj.ids));
                     break;
                 default:
-                    if (['cutoff', 'limit', 'offset', 'order', 'sortBy', 'domain', 'type', 'match'].indexOf(property) === -1)
+                    if (['limit', 'offset', 'order', 'sortBy', 'domain', 'type', 'match'].indexOf(property) === -1)
                         throw new Error('Unexpected property value ' + property);
             }
         }
@@ -422,7 +430,7 @@ const Engine = Lang.Class({
 
         let query_obj_out = {
             collapse: xapianQuery.XAPIAN_SOURCE_URL_VALUE_NO,
-            cutoff: maybeNaN(query_obj['cutoff'], this._DEFAULT_CUTOFF_PCT),
+            cutoff: this._get_xapian_cutoff_value(query_obj),
             limit: maybeNaN(query_obj['limit'], this._DEFAULT_LIMIT),
             offset: maybeNaN(query_obj['offset'], this._DEFAULT_OFFSET),
             order: maybeNaN(query_obj['order'], this._DEFAULT_ORDER),

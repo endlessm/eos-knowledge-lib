@@ -183,7 +183,7 @@ describe('Knowledge Engine Module', () => {
 
             let mock_uri = engine._get_xapian_uri(query_obj);
             let mock_query_obj = mock_uri.get_query();
-            expect(get_query_vals_for_key(mock_query_obj, 'cutoff')).toEqual('20');
+            expect(get_query_vals_for_key(mock_query_obj, 'cutoff')).toEqual('10');
             expect(get_query_vals_for_key(mock_query_obj, 'limit')).toEqual('10');
             expect(get_query_vals_for_key(mock_query_obj, 'offset')).toEqual('0');
             expect(get_query_vals_for_key(mock_query_obj, 'order')).toEqual('asc');
@@ -274,6 +274,17 @@ describe('Knowledge Engine Module', () => {
             expect(() => {
                 engine._get_xapian_uri(query_obj);
             }).toThrow();
+        });
+
+        it('uses a stricter cutoff value for match type all', () => {
+            let query_obj = {
+                q: 'tyrion wins',
+                match: engine.QUERY_MATCH_ALL,
+            };
+            let mock_uri = engine._get_xapian_uri(query_obj);
+            let mock_query_obj = mock_uri.get_query();
+            let serialized_cutoff = get_query_vals_for_key(mock_query_obj, 'cutoff');
+            expect(serialized_cutoff).toBe('20');
         });
 
         it('supports single ID queries', () => {
