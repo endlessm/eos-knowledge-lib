@@ -82,7 +82,7 @@ function xapian_join_clauses (clauses) {
     return clauses.map(parenthesize).join(XAPIAN_OP_AND);
 }
 
-function xapian_delimited_query_clause (query) {
+function xapian_delimited_query_clause (query, match_all) {
     let sanitized_query = sanitize(query);
     let separateTerms = sanitized_query.split(TERM_DELIMITER_REGEX);
 
@@ -97,10 +97,15 @@ function xapian_delimited_query_clause (query) {
     let titleClause = separateTerms.map(addTitlePrefix).join(XAPIAN_OP_AND);
     clauses.push(titleClause);
 
+    if (match_all) {
+        let bodyClause = separateTerms.join(XAPIAN_OP_AND);
+        clauses.push(bodyClause);
+    }
+
     return clauses.map(parenthesize).join(XAPIAN_OP_OR);
 }
 
-function xapian_incremental_query_clause (query) {
+function xapian_incremental_query_clause (query, match_all) {
     let sanitized_query = sanitize(query);
     let separateTerms = sanitized_query.split(TERM_DELIMITER_REGEX);
 
@@ -116,6 +121,11 @@ function xapian_incremental_query_clause (query) {
 
     let titleClause = separateTerms.map(addTitlePrefix).map(addWildcardClause).join(XAPIAN_OP_AND);
     clauses.push(titleClause);
+
+    if (match_all) {
+        let bodyClause = separateTerms.map(addWildcardClause).join(XAPIAN_OP_AND);
+        clauses.push(bodyClause);
+    }
 
     return clauses.map(parenthesize).join(XAPIAN_OP_OR);
 }

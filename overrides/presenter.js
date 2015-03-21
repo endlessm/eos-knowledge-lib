@@ -351,6 +351,7 @@ const Presenter = new Lang.Class({
         let query_obj = {
             q: query,
             type: this.engine.QUERY_TYPE_DELIMITED,
+            match: this.engine.QUERY_MATCH_ALL,
             limit: RESULTS_SIZE,
         };
 
@@ -458,6 +459,7 @@ const Presenter = new Lang.Class({
         let query_obj = {
             'q': query,
             'type': this.engine.QUERY_TYPE_DELIMITED,
+            'match': this.engine.QUERY_MATCH_ALL,
             'limit': RESULTS_SIZE,
         };
         this.engine.get_objects_by_query(query_obj, this._refresh_sidebar_callback.bind(this));

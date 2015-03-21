@@ -258,6 +258,24 @@ describe('Knowledge Engine Module', () => {
             }).toThrow();
         });
 
+        it('throws an error for an unrecognized query match type', () => {
+            let query_obj = {
+                q: 'tyrion wins',
+                match: engine.QUERY_MATCH_ALL,
+            };
+            expect(() => {
+                engine._get_xapian_uri(query_obj);
+            }).not.toThrow();
+
+            let query_obj = {
+                q: 'tyrion wins',
+                match: 'tywin',
+            };
+            expect(() => {
+                engine._get_xapian_uri(query_obj);
+            }).toThrow();
+        });
+
         it('supports single ID queries', () => {
             let query_obj = {
                 ids: ['ekn://domain/someId'],

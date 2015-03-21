@@ -13,12 +13,12 @@ describe('Xapian Query Module', function () {
     describe('xapian query', function () {
         it('should ignore excess whitespace (except for tags)', function () {
             let q = 'whoa      man';
-            let delimited_result = xq.xapian_delimited_query_clause(q);
+            let delimited_result = xq.xapian_delimited_query_clause(q, false);
             expect(delimited_result).toContain('exact_title:Whoa_Man');
             expect(delimited_result).toContain('title:whoa');
             expect(delimited_result).toContain('title:man');
 
-            let incremental_result = xq.xapian_incremental_query_clause(q);
+            let incremental_result = xq.xapian_incremental_query_clause(q, false);
             expect(incremental_result).toContain('exact_title:Whoa_Man');
             expect(incremental_result).toContain('title:whoa');
             expect(incremental_result).toContain('title:man');
@@ -26,19 +26,19 @@ describe('Xapian Query Module', function () {
 
         it('should lowercase xapian operator terms', function () {
             let q = 'PENN AND tELLER';
-            let delimited_result = xq.xapian_delimited_query_clause(q);
+            let delimited_result = xq.xapian_delimited_query_clause(q, false);
             expect(delimited_result).toContain('title:and');
 
-            let incremental_result = xq.xapian_incremental_query_clause(q);
+            let incremental_result = xq.xapian_incremental_query_clause(q, false);
             expect(incremental_result).toContain('title:and');
         });
 
         it('should remove parentheses in user terms', function () {
             let q = 'foo (bar) baz ((';
-            let delimited_result = xq.xapian_delimited_query_clause(q);
+            let delimited_result = xq.xapian_delimited_query_clause(q, false);
             expect(delimited_result).toContain('exact_title:Foo_Bar_Baz');
 
-            let incremental_result = xq.xapian_incremental_query_clause(q);
+            let incremental_result = xq.xapian_incremental_query_clause(q, false);
             expect(incremental_result).toContain('exact_title:Foo_Bar_Baz');
         });
 
@@ -52,13 +52,19 @@ describe('Xapian Query Module', function () {
         describe('delimited query clauses', () => {
             it('are formed correctly', function () {
                 let q = 'little search';
-                let result = xq.xapian_delimited_query_clause(q);
+                let result = xq.xapian_delimited_query_clause(q, false);
                 expect(result).toBe('(exact_title:Little_Search) OR (title:little AND title:search)');
+            });
+
+            it('contains terms without title prefix if match all is true', function () {
+                let q = 'little search';
+                let result = xq.xapian_delimited_query_clause(q, true);
+                expect(result).toContain('little AND search');
             });
 
             it('has no term search for single character queries', function () {
                 let q = 'a';
-                let result = xq.xapian_delimited_query_clause(q);
+                let result = xq.xapian_delimited_query_clause(q, false);
                 expect(result).toBe('exact_title:A');
             });
         });
@@ -66,13 +72,19 @@ describe('Xapian Query Module', function () {
         describe('incremental query clauses', () => {
             it('are formed correctly', function () {
                 let q = 'littl searc';
-                let result = xq.xapian_incremental_query_clause(q);
+                let result = xq.xapian_incremental_query_clause(q, false);
                 expect(result).toBe('((exact_title:Littl_Searc OR exact_title:Littl_Searc*)) OR ((title:littl OR title:littl*) AND (title:searc OR title:searc*))');
+            });
+
+            it('contains terms without title prefix if match all is true', function () {
+                let q = 'littl searc';
+                let result = xq.xapian_incremental_query_clause(q, true);
+                expect(result).toContain('(littl OR littl*) AND (searc OR searc*)');
             });
 
             it('has no term search for single character queries', function () {
                 let q = 'a';
-                let result = xq.xapian_incremental_query_clause(q);
+                let result = xq.xapian_incremental_query_clause(q, false);
                 expect(result).toBe('exact_title:A');
             });
         });

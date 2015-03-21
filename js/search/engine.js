@@ -123,6 +123,20 @@ const Engine = Lang.Class({
      */
     QUERY_TYPE_DELIMITED: 'delimited',
 
+    /**
+     * Constant: QUERY_MATCH_TITLE_ONLY
+     *
+     * Default matching approach. Query will only match with words in the
+     * article title.
+     */
+    QUERY_MATCH_TITLE_ONLY: 'title-only',
+    /**
+     * Constant: QUERY_MATCH_ALL
+     *
+     * Query will match everything we index on the article.
+     */
+    QUERY_MATCH_ALL: 'all',
+
     _init: function (params) {
         this.parent(params);
         this._http_session = new Soup.Session();
@@ -189,6 +203,7 @@ const Engine = Lang.Class({
      * *query* is an object with many parameters controlling the search
      *   - q (search query string)
      *   - type (type of query to run, defaults to <QUERY_TYPE_DELIMITED>)
+     *   - match (what to match against, defaults to <QUERY_MATCH_TITLE_ONLY>)
      *   - tags (list of tags the results must match)
      *   - offset (number of results to skip, useful for pagination)
      *   - limit  (maximum number of results to return)
@@ -345,14 +360,27 @@ const Engine = Lang.Class({
     },
 
     _get_xapian_uri_query_clause: function (query_obj) {
+        let query_clause_fn, do_match_all;
+
         let type = query_obj.type || this.QUERY_TYPE_INCREMENTAL;
         if (type === this.QUERY_TYPE_INCREMENTAL) {
-            return xapianQuery.xapian_incremental_query_clause(query_obj.q);
+            query_clause_fn = xapianQuery.xapian_incremental_query_clause;
         } else if (type === this.QUERY_TYPE_DELIMITED) {
-            return xapianQuery.xapian_delimited_query_clause(query_obj.q);
+            query_clause_fn = xapianQuery.xapian_delimited_query_clause;
         } else {
             throw new Error('Unrecognized type query type' + type);
         }
+
+        let match = query_obj.match || this.QUERY_MATCH_TITLE_ONLY;
+        if (match === this.QUERY_MATCH_TITLE_ONLY) {
+            do_match_all = false;
+        } else if (match === this.QUERY_MATCH_ALL) {
+            do_match_all = true;
+        } else {
+            throw new Error('Unrecognized query match type' + match);
+        }
+
+        return query_clause_fn(query_obj.q, do_match_all);
     },
 
     _get_xapian_uri: function (query_obj) {
@@ -376,7 +404,7 @@ const Engine = Lang.Class({
                     xapian_query_options.push(xapianQuery.xapian_ids_clause(query_obj.ids));
                     break;
                 default:
-                    if (['cutoff', 'limit', 'offset', 'order', 'sortBy', 'domain', 'type'].indexOf(property) === -1)
+                    if (['cutoff', 'limit', 'offset', 'order', 'sortBy', 'domain', 'type', 'match'].indexOf(property) === -1)
                         throw new Error('Unexpected property value ' + property);
             }
         }
