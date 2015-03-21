@@ -289,7 +289,7 @@ const Presenter = new Lang.Class({
     _update_history_model: function (page_index) {
         if (page_index === 0) {
             this._add_history_object_for_overview_page();
-        } else if (page_index === this.view.total_pages) {
+        } else if (page_index === this.view.total_pages - 1) {
             this._add_history_object_for_done_page();
         } else {
             this._add_history_object_for_article_page(this._article_models[page_index - 1]);
