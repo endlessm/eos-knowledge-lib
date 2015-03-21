@@ -372,48 +372,34 @@ const Presenter = new Lang.Class({
     activate_search_result: function (timestamp, id, query) {
         // Check if we need to load an article separately from the normally
         // scheduled content
-        this.engine.get_object_by_id(id, (error, model) => {
+        this._load_all_content((error) => {
             if (error) {
                 printerr(error);
                 printerr(error.stack);
-                this._show_specific_error_page();
-                this.view.show_all();
-                this.view.present_with_time(timestamp);
-                return;
+                this._show_general_error_page();
+            } else {
+                this._load_overview_snippets_from_articles();
+                this.engine.get_object_by_id(id, (error, model) => {
+                    if (error) {
+                        printerr(error);
+                        printerr(error.stack);
+                        this._show_specific_error_page();
+                    } else {
+                        this._go_to_article(model, EosKnowledge.LoadingAnimationType.NONE);
+                    }
+                    this.view.show_all();
+                    this.view.present_with_time(timestamp);
+                });
             }
-
-            if (this._is_archived(model)) {
-                this._load_standalone_article(model);
-                // FIXME Here we should load the rest of the content in the
-                // background; but as there currently isn't a way to get from
-                // the standalone page to the regular content, we don't.
-                this.view.show_all();
-                this.view.present_with_time(timestamp);
-                return;
-            }
-
-            this._load_all_content(/* callback */ (error) => {
-                if (error) {
-                    printerr(error);
-                    printerr(error.stack);
-                    this._show_general_error_page();
-                } else {
-                    this._load_overview_snippets_from_articles();
-                    // add 1 for overview page
-                    let page_number = model.article_number -
-                        this.settings.start_article + 1;
-                    this._go_to_page(page_number, EosKnowledge.LoadingAnimationType.NONE);
-                }
-                this.view.show_all();
-                this.view.present_with_time(timestamp);
-            }, /* progress callback */ this._append_results.bind(this));
-        });
+            this.view.show_all();
+            this.view.present_with_time(timestamp);
+        }, this._append_results.bind(this));
     },
 
     _is_archived: function (model) {
-        let already_read = model.article_number < this.settings.start_article;
-        let not_read_yet = model.article_number >= this.settings.start_article + TOTAL_ARTICLES;
-        return already_read || not_read_yet;
+        return this._article_models.every((element) => {
+            return element.ekn_id !== model.ekn_id;
+        });
     },
 
     _clear_webview_from_map: function (index) {
@@ -489,7 +475,7 @@ const Presenter = new Lang.Class({
         let card = new ReaderCard.Card({
             title: model.title,
             synopsis: formatted_attribution,
-            page_number: model.article_number - this.settings.start_article + 2,
+            page_number: this._get_article_page_number(model) + 1 /* zero indexed */,
             style_variant: idx % 3,
             archived: this._is_archived(model),
         });
@@ -557,7 +543,7 @@ const Presenter = new Lang.Class({
         if (this._is_archived(model)) {
             this._load_standalone_article(model);
         } else {
-            this._go_to_page(model.article_number + 1, animation_type);
+            this._go_to_page(this._get_article_page_number(model), animation_type);
         }
     },
 
@@ -979,6 +965,20 @@ const Presenter = new Lang.Class({
             this._format_attribution_for_metadata(model.get_authors(), model.published);
         this.view.standalone_page.article_page.get_style_context().add_class('article-page0');
         this.view.show_standalone_page();
+    },
+
+    _get_article_page_number: function (model) {
+        // FIXME: We ought to be using model.article_number here
+        // but those article_numbers are not reliable because certain
+        // articles can fail during db build, leaving gaps in the
+        // article number sequence, e.g. 1, 2, 4, 5
+        let target_index = -1;
+        this._article_models.forEach((element, idx) => {
+            if (element.ekn_id === model.ekn_id) {
+                target_index = idx;
+            }
+        });
+        return target_index - this.settings.start_article + 1;
     },
 
     /*
