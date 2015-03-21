@@ -32,6 +32,14 @@ function quote (clause) {
     return '"' + clause + '"';
 }
 
+function addTitlePrefix (term) {
+    return XAPIAN_PREFIX_TITLE + term;
+}
+
+function addWildcardClause (term) {
+    return parenthesize(term + XAPIAN_OP_OR + term + '*');
+}
+
 // matches any contiguous whitespace
 const WHITESPACE_REGEX = /\s+/;
 
@@ -66,37 +74,61 @@ function sanitize (query) {
     }).trim();
 }
 
+function exact_title_clause (terms) {
+    return XAPIAN_PREFIX_EXACT_TITLE + terms.map(capitalize).join('_');
+}
+
 function xapian_join_clauses (clauses) {
     return clauses.map(parenthesize).join(XAPIAN_OP_AND);
 }
 
-function xapian_query_clause (q) {
-    let sanitized_query = sanitize(q);
+function xapian_delimited_query_clause (query, match_all) {
+    let sanitized_query = sanitize(query);
     let separateTerms = sanitized_query.split(TERM_DELIMITER_REGEX);
 
-    let exactTitleClause = XAPIAN_PREFIX_EXACT_TITLE + separateTerms.map(capitalize).join('_');
-    let bodyClause = sanitized_query;
-    let genericTitleClause = sanitized_query.split(' ').filter(function (term) {
-        return term.length > 1;
-    }).map(function (term) {
-        return XAPIAN_PREFIX_TITLE + term;
-    }).join(XAPIAN_OP_OR);
+    if (sanitized_query.length === 1)
+        return exact_title_clause(separateTerms);
 
-    return [genericTitleClause, bodyClause, exactTitleClause].map(parenthesize)
-        .filter(emptyQueries)
-        .join(XAPIAN_OP_OR);
+    let clauses = [];
+
+    let exactTitleClause = exact_title_clause(separateTerms);
+    clauses.push(exactTitleClause);
+
+    let titleClause = separateTerms.map(addTitlePrefix).join(XAPIAN_OP_AND);
+    clauses.push(titleClause);
+
+    if (match_all) {
+        let bodyClause = separateTerms.join(XAPIAN_OP_AND);
+        clauses.push(bodyClause);
+    }
+
+    return clauses.map(parenthesize).join(XAPIAN_OP_OR);
 }
 
-function xapian_prefix_clause (prefix) {
-    let sanitized_query = sanitize(prefix);
+function xapian_incremental_query_clause (query, match_all) {
+    let sanitized_query = sanitize(query);
     let separateTerms = sanitized_query.split(TERM_DELIMITER_REGEX);
 
-    let prefixTerm = separateTerms.join('_');
+    // Don't wildcard here, wildcard searches with a single character cause
+    // performance problems.
+    if (sanitized_query.length === 1)
+        return exact_title_clause(separateTerms);
 
-    // Don't do a wildcard search if there is only one letter. It will cripple xapian
-    return prefixTerm.length > 1 ? XAPIAN_PREFIX_EXACT_TITLE + prefixTerm + '*' : XAPIAN_PREFIX_EXACT_TITLE + prefixTerm;
+    let clauses = [];
+
+    let exactTitleClause = addWildcardClause(exact_title_clause(separateTerms));
+    clauses.push(exactTitleClause);
+
+    let titleClause = separateTerms.map(addTitlePrefix).map(addWildcardClause).join(XAPIAN_OP_AND);
+    clauses.push(titleClause);
+
+    if (match_all) {
+        let bodyClause = separateTerms.map(addWildcardClause).join(XAPIAN_OP_AND);
+        clauses.push(bodyClause);
+    }
+
+    return clauses.map(parenthesize).join(XAPIAN_OP_OR);
 }
-
 
 // Tag lists should be joined as a series of
 // individual tag queries joined by ORs, so an article that has

@@ -104,8 +104,40 @@ const Engine = Lang.Class({
 
     _DEFAULT_LIMIT : 10, // if no limit is specified, return this many objects
     _DEFAULT_OFFSET : 0, // if no offset is specified, start from beginning
-    _DEFAULT_CUTOFF_PCT : 20, // if no cutoff is specified, cutoff at 20%
     _DEFAULT_ORDER : 'asc', // if no order is specified, use ascending
+
+    _DEFAULT_CUTOFF: 10,
+    _MATCH_ALL_CUTOFF: 20,
+
+    /**
+     * Constant: QUERY_TYPE_INCREMENTAL
+     *
+     * Default query type. Meant for showing a list of results that will update
+     * as the user types. Will match against incomplete words that are still
+     * being typed.
+     */
+    QUERY_TYPE_INCREMENTAL: 'incremental',
+    /**
+     * Constant: QUERY_TYPE_DELIMITED
+     *
+     * Expect a fully formed (complete words) query to preform a search on.
+     * Will return title and synopsis matches.
+     */
+    QUERY_TYPE_DELIMITED: 'delimited',
+
+    /**
+     * Constant: QUERY_MATCH_TITLE_ONLY
+     *
+     * Default matching approach. Query will only match with words in the
+     * article title.
+     */
+    QUERY_MATCH_TITLE_ONLY: 'title-only',
+    /**
+     * Constant: QUERY_MATCH_ALL
+     *
+     * Query will match everything we index on the article.
+     */
+    QUERY_MATCH_ALL: 'all',
 
     _init: function (params) {
         this.parent(params);
@@ -172,11 +204,11 @@ const Engine = Lang.Class({
      *
      * *query* is an object with many parameters controlling the search
      *   - q (search query string)
-     *   - prefix (prefix search query string)
+     *   - type (type of query to run, defaults to <QUERY_TYPE_DELIMITED>)
+     *   - match (what to match against, defaults to <QUERY_MATCH_TITLE_ONLY>)
      *   - tags (list of tags the results must match)
      *   - offset (number of results to skip, useful for pagination)
      *   - limit  (maximum number of results to return)
-     *   - cutoff  (number representing the minimum relevance percentage returned articles should have)
      *   - sortBy  (Xapian value by which to sort results. Note this will override relevance ordering by xapian.)
      *   - order  (The order in which to sort results, either ascending ('asc') or descending ('desc'))
      *   - ids (an array of specific EKN ids to be fetched)
@@ -328,6 +360,37 @@ const Engine = Lang.Class({
         return json_ld.results.map(this._model_from_json_ld.bind(this));
     },
 
+    _get_xapian_uri_query_clause: function (query_obj) {
+        let query_clause_fn, do_match_all;
+
+        let type = query_obj.type || this.QUERY_TYPE_INCREMENTAL;
+        if (type === this.QUERY_TYPE_INCREMENTAL) {
+            query_clause_fn = xapianQuery.xapian_incremental_query_clause;
+        } else if (type === this.QUERY_TYPE_DELIMITED) {
+            query_clause_fn = xapianQuery.xapian_delimited_query_clause;
+        } else {
+            throw new Error('Unrecognized type query type' + type);
+        }
+
+        let match = query_obj.match || this.QUERY_MATCH_TITLE_ONLY;
+        if (match === this.QUERY_MATCH_TITLE_ONLY) {
+            do_match_all = false;
+        } else if (match === this.QUERY_MATCH_ALL) {
+            do_match_all = true;
+        } else {
+            throw new Error('Unrecognized query match type' + match);
+        }
+
+        return query_clause_fn(query_obj.q, do_match_all);
+    },
+
+    _get_xapian_cutoff_value: function (query_obj) {
+        // We need a stricter cutoff when matching all against all indexed terms
+        if (query_obj.match === this.QUERY_MATCH_ALL)
+            return this._MATCH_ALL_CUTOFF;
+        return this._DEFAULT_CUTOFF;
+    },
+
     _get_xapian_uri: function (query_obj) {
         let host_uri = "http://" + this.host;
         let uri = new Soup.URI(host_uri);
@@ -343,16 +406,13 @@ const Engine = Lang.Class({
                     xapian_query_options.push(xapianQuery.xapian_tag_clause(query_obj.tags));
                     break;
                 case 'q':
-                    xapian_query_options.push(xapianQuery.xapian_query_clause(query_obj.q));
-                    break;
-                case 'prefix':
-                    xapian_query_options.push(xapianQuery.xapian_prefix_clause(query_obj.prefix));
+                    xapian_query_options.push(this._get_xapian_uri_query_clause(query_obj));
                     break;
                 case 'ids':
                     xapian_query_options.push(xapianQuery.xapian_ids_clause(query_obj.ids));
                     break;
                 default:
-                    if (['cutoff', 'limit', 'offset', 'order', 'sortBy', 'domain'].indexOf(property) === -1)
+                    if (['limit', 'offset', 'order', 'sortBy', 'domain', 'type', 'match'].indexOf(property) === -1)
                         throw new Error('Unexpected property value ' + property);
             }
         }
@@ -370,7 +430,7 @@ const Engine = Lang.Class({
 
         let query_obj_out = {
             collapse: xapianQuery.XAPIAN_SOURCE_URL_VALUE_NO,
-            cutoff: maybeNaN(query_obj['cutoff'], this._DEFAULT_CUTOFF_PCT),
+            cutoff: this._get_xapian_cutoff_value(query_obj),
             limit: maybeNaN(query_obj['limit'], this._DEFAULT_LIMIT),
             offset: maybeNaN(query_obj['offset'], this._DEFAULT_OFFSET),
             order: maybeNaN(query_obj['order'], this._DEFAULT_ORDER),

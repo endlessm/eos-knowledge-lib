@@ -1,81 +1,45 @@
 const XapianQuery = imports.xapianQuery;
 
+const ContainsMatcher = imports.ContainsMatcher;
 
 describe('Xapian Query Module', function () {
     let xq;
 
     beforeEach(function () {
+        jasmine.addMatchers(ContainsMatcher.customMatchers);
         xq = XapianQuery;
     });
 
     describe('xapian query', function () {
         it('should ignore excess whitespace (except for tags)', function () {
             let q = 'whoa      man';
-            let q_result = xq.xapian_query_clause(q);
-            expect(q_result).toBe('(title:whoa OR title:man) OR (whoa man) OR (exact_title:Whoa_Man)');
+            let delimited_result = xq.xapian_delimited_query_clause(q, false);
+            expect(delimited_result).toContain('exact_title:Whoa_Man');
+            expect(delimited_result).toContain('title:whoa');
+            expect(delimited_result).toContain('title:man');
 
-            let prefix_result = xq.xapian_prefix_clause(q);
-            expect(prefix_result).toBe('exact_title:whoa_man*');
+            let incremental_result = xq.xapian_incremental_query_clause(q, false);
+            expect(incremental_result).toContain('exact_title:Whoa_Man');
+            expect(incremental_result).toContain('title:whoa');
+            expect(incremental_result).toContain('title:man');
         });
 
-        it('should lowercase xapian operator terms in general query', function () {
+        it('should lowercase xapian operator terms', function () {
             let q = 'PENN AND tELLER';
-            let q_result = xq.xapian_query_clause(q);
-            expect(q_result).toBe('(title:PENN OR title:and OR title:tELLER) OR (PENN and tELLER) OR (exact_title:Penn_And_Teller)');
+            let delimited_result = xq.xapian_delimited_query_clause(q, false);
+            expect(delimited_result).toContain('title:and');
 
-            let prefix_result = xq.xapian_prefix_clause(q);
-            expect(prefix_result).toBe('exact_title:PENN_and_tELLER*');
+            let incremental_result = xq.xapian_incremental_query_clause(q, false);
+            expect(incremental_result).toContain('title:and');
         });
 
         it('should remove parentheses in user terms', function () {
             let q = 'foo (bar) baz ((';
-            let q_result = xq.xapian_query_clause(q);
-            expect(q_result).toBe('(title:foo OR title:bar OR title:baz) OR (foo bar baz) OR (exact_title:Foo_Bar_Baz)');
+            let delimited_result = xq.xapian_delimited_query_clause(q, false);
+            expect(delimited_result).toContain('exact_title:Foo_Bar_Baz');
 
-            let prefix_result = xq.xapian_prefix_clause(q);
-            expect(prefix_result).toBe('exact_title:foo_bar_baz*');
-        });
-
-        it('should support requests with tags', function () {
-            let tags = ['cats', 'dogs', 'turtles'];
-            let result = xq.xapian_tag_clause(tags);
-            expect(result).toBe('tag:"cats" OR tag:"dogs" OR tag:"turtles"');
-        });
-
-        it('should support requests with NOT tags', function () {
-            let tags = ['stallman', 'sex', 'tape'];
-            let result = xq.xapian_not_tag_clause(tags);
-            expect(result).toBe('NOT tag:"stallman" AND NOT tag:"sex" AND NOT tag:"tape"');
-        });
-
-        it('should support requests with querystring', function () {
-            let q = 'little search';
-            let result = xq.xapian_query_clause(q);
-            expect(result).toBe('(title:little OR title:search) OR (little search) OR (exact_title:Little_Search)');
-        });
-
-        it('should support requests with prefix', function () {
-            let q = 'Bar';
-            let result = xq.xapian_prefix_clause(q);
-            expect(result).toBe('exact_title:Bar*');
-        });
-
-        it('should surround multiword tags in quotes', function () {
-            let tags = ['cat zombies'];
-            let result = xq.xapian_tag_clause(tags);
-            expect(result).toBe('tag:"cat zombies"');
-        });
-
-        it('should not add empty queries', function () {
-            let q = 'a';
-            let result = xq.xapian_query_clause(q);
-            expect(result).toBe('(a) OR (exact_title:A)');
-        });
-
-        it('should not submit a prefix query for one letter queries', function () {
-            let q = 'a';
-            let result = xq.xapian_prefix_clause(q);
-            expect(result).toBe('exact_title:a');
+            let incremental_result = xq.xapian_incremental_query_clause(q, false);
+            expect(incremental_result).toContain('exact_title:Foo_Bar_Baz');
         });
 
         it('should map sortBy strings to xapian values', function () {
@@ -85,25 +49,87 @@ describe('Xapian Query Module', function () {
             expect(undefined_result).toBe(undefined);
         });
 
-        it('should support single id queries', function () {
-            let result = xq.xapian_ids_clause(['ekn://domain/someId']);
-            expect(result).toBe('id:someId');
+        describe('delimited query clauses', () => {
+            it('are formed correctly', function () {
+                let q = 'little search';
+                let result = xq.xapian_delimited_query_clause(q, false);
+                expect(result).toBe('(exact_title:Little_Search) OR (title:little AND title:search)');
+            });
+
+            it('contains terms without title prefix if match all is true', function () {
+                let q = 'little search';
+                let result = xq.xapian_delimited_query_clause(q, true);
+                expect(result).toContain('little AND search');
+            });
+
+            it('has no term search for single character queries', function () {
+                let q = 'a';
+                let result = xq.xapian_delimited_query_clause(q, false);
+                expect(result).toBe('exact_title:A');
+            });
         });
 
-        it('should support multiple id queries', () => {
-            let result = xq.xapian_ids_clause([
-                'ekn://domain/someId',
-                'ekn://domain/someOtherId',
-            ]);
-            expect(result).toBe('id:someId OR id:someOtherId');
+        describe('incremental query clauses', () => {
+            it('are formed correctly', function () {
+                let q = 'littl searc';
+                let result = xq.xapian_incremental_query_clause(q, false);
+                expect(result).toBe('((exact_title:Littl_Searc OR exact_title:Littl_Searc*)) OR ((title:littl OR title:littl*) AND (title:searc OR title:searc*))');
+            });
+
+            it('contains terms without title prefix if match all is true', function () {
+                let q = 'littl searc';
+                let result = xq.xapian_incremental_query_clause(q, true);
+                expect(result).toContain('(littl OR littl*) AND (searc OR searc*)');
+            });
+
+            it('has no term search for single character queries', function () {
+                let q = 'a';
+                let result = xq.xapian_incremental_query_clause(q, false);
+                expect(result).toBe('exact_title:A');
+            });
         });
 
-        it('should throw error if receives invalid ekn id', function () {
-            let bad_ids = ['ekn://bad1/somehash', 'noEknScheme', 'ekn://noId', 'ekn://domain/badha$h',
-            'ekn://api/too/many/parts', 'ekn://underscore_/id'];
+        describe('tag clauses', () => {
+            it('or together requested tags', function () {
+                let tags = ['cats', 'dogs', 'turtles'];
+                let result = xq.xapian_tag_clause(tags);
+                expect(result).toBe('tag:"cats" OR tag:"dogs" OR tag:"turtles"');
+            });
 
-            bad_ids.forEach(function (bad_id) {
-                expect(function(){ xq.xapian_ids_clause([bad_id])}).toThrow(new Error('Received invalid ekn uri ' + bad_id));
+            it('can be negated', function () {
+                let tags = ['stallman', 'sex', 'tape'];
+                let result = xq.xapian_not_tag_clause(tags);
+                expect(result).toBe('NOT tag:"stallman" AND NOT tag:"sex" AND NOT tag:"tape"');
+            });
+
+            it('should surround multiword tags in quotes', function () {
+                let tags = ['cat zombies'];
+                let result = xq.xapian_tag_clause(tags);
+                expect(result).toBe('tag:"cat zombies"');
+            });
+        });
+
+        describe('id clauses', () => {
+            it('should support single id queries', function () {
+                let result = xq.xapian_ids_clause(['ekn://domain/someId']);
+                expect(result).toBe('id:someId');
+            });
+
+            it('should support multiple id queries', () => {
+                let result = xq.xapian_ids_clause([
+                    'ekn://domain/someId',
+                    'ekn://domain/someOtherId',
+                ]);
+                expect(result).toBe('id:someId OR id:someOtherId');
+            });
+
+            it('should throw error if receives invalid ekn id', function () {
+                let bad_ids = ['ekn://bad1/somehash', 'noEknScheme', 'ekn://noId', 'ekn://domain/badha$h',
+                'ekn://api/too/many/parts', 'ekn://underscore_/id'];
+
+                bad_ids.forEach(function (bad_id) {
+                    expect(function(){ xq.xapian_ids_clause([bad_id])}).toThrow(new Error('Received invalid ekn uri ' + bad_id));
+                });
             });
         });
     });

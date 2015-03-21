@@ -408,7 +408,7 @@ const Presenter = new Lang.Class({
             return;
         }
         this.engine.get_objects_by_query({
-            'prefix': query,
+            'q': query,
             'limit': RESULTS_SIZE,
         }, function (err, results) {
             if (err !== undefined) {
@@ -434,7 +434,7 @@ const Presenter = new Lang.Class({
         }
 
         this._latest_origin_query = JSON.stringify({
-            'prefix': this._latest_search_text
+            'q': this._latest_search_text
         });
         // If template B, we need to set the autocomplete results as the cards on the
         // section page

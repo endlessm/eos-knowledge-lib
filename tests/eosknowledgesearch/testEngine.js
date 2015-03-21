@@ -183,7 +183,7 @@ describe('Knowledge Engine Module', () => {
 
             let mock_uri = engine._get_xapian_uri(query_obj);
             let mock_query_obj = mock_uri.get_query();
-            expect(get_query_vals_for_key(mock_query_obj, 'cutoff')).toEqual('20');
+            expect(get_query_vals_for_key(mock_query_obj, 'cutoff')).toEqual('10');
             expect(get_query_vals_for_key(mock_query_obj, 'limit')).toEqual('10');
             expect(get_query_vals_for_key(mock_query_obj, 'offset')).toEqual('0');
             expect(get_query_vals_for_key(mock_query_obj, 'order')).toEqual('asc');
@@ -211,21 +211,80 @@ describe('Knowledge Engine Module', () => {
             expect(get_query_vals_for_key(query_obj, 'path')).toEqual('/foo/db');
         });
 
-        it('supports combinations of queries', () => {
+        it('sets tags correctly', () => {
             let query_obj = {
                 q: 'tyrion wins',
                 tags: ['lannister', 'bro'],
-                prefix: 'gam',
                 offset: 5,
                 limit: 2,
             };
             let mock_uri = engine._get_xapian_uri(query_obj);
             let mock_query_obj = mock_uri.get_query();
             let serialized_query = get_query_vals_for_key(mock_query_obj, 'q');
-            let parts = serialized_query.split(' AND ');
-            let expected_parts = ['((title:tyrion OR title:wins) OR (tyrion wins) OR (exact_title:Tyrion_Wins))', '(tag:"lannister" OR tag:"bro")', '(exact_title:gam*)'];
-            let isMatch = expected_parts.sort().join('') === parts.sort().join('');
-            expect(isMatch).toBe(true);
+            expect(serialized_query).toMatch('tag:"lannister"');
+            expect(serialized_query).toMatch('tag:"bro"');
+        });
+
+        it('includes query words in xapian query clause', () => {
+            let query_obj = {
+                q: 'tyrion wins',
+                tags: ['lannister', 'bro'],
+                offset: 5,
+                limit: 2,
+            };
+            let mock_uri = engine._get_xapian_uri(query_obj);
+            let mock_query_obj = mock_uri.get_query();
+            let serialized_query = get_query_vals_for_key(mock_query_obj, 'q');
+
+            expect(serialized_query).toMatch(/tyrion/i);
+            expect(serialized_query).toMatch(/wins/i);
+        });
+
+        it('throws an error for an unrecognized query type', () => {
+            let query_obj = {
+                q: 'tyrion wins',
+                type: engine.QUERY_TYPE_DELIMITED,
+            };
+            expect(() => {
+                engine._get_xapian_uri(query_obj);
+            }).not.toThrow();
+
+            let query_obj = {
+                q: 'tyrion wins',
+                type: 'crossbow',
+            };
+            expect(() => {
+                engine._get_xapian_uri(query_obj);
+            }).toThrow();
+        });
+
+        it('throws an error for an unrecognized query match type', () => {
+            let query_obj = {
+                q: 'tyrion wins',
+                match: engine.QUERY_MATCH_ALL,
+            };
+            expect(() => {
+                engine._get_xapian_uri(query_obj);
+            }).not.toThrow();
+
+            let query_obj = {
+                q: 'tyrion wins',
+                match: 'tywin',
+            };
+            expect(() => {
+                engine._get_xapian_uri(query_obj);
+            }).toThrow();
+        });
+
+        it('uses a stricter cutoff value for match type all', () => {
+            let query_obj = {
+                q: 'tyrion wins',
+                match: engine.QUERY_MATCH_ALL,
+            };
+            let mock_uri = engine._get_xapian_uri(query_obj);
+            let mock_query_obj = mock_uri.get_query();
+            let serialized_cutoff = get_query_vals_for_key(mock_query_obj, 'cutoff');
+            expect(serialized_cutoff).toBe('20');
         });
 
         it('supports single ID queries', () => {
@@ -416,7 +475,7 @@ describe('Knowledge Engine Module', () => {
 
             expect(requested_uri_string).toMatch(/^http:\/\/127.0.0.1:3004\/query?/);
             expect(get_query_vals_for_key(requested_query, 'path')).toMatch('/foo');
-            expect(get_query_vals_for_key(requested_query, 'q')).toMatch('(logorrhea)');
+            expect(get_query_vals_for_key(requested_query, 'q')).toMatch(/logorrhea/i);
         });
 
         it ("throws an error on unsupported JSON-LD type", (done) => {
