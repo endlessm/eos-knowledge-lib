@@ -293,7 +293,7 @@ describe('Reader presenter', function () {
             engine.get_objects_by_query.and.callFake(function (q, callback) {
                 callback(undefined, MOCK_RESULTS, function () {});
             });
-            view.total_pages = MOCK_RESULTS.length + 1;
+            view.total_pages = MOCK_RESULTS.length + 2;
             presenter.desktop_launch();
         });
 
@@ -353,6 +353,13 @@ describe('Reader presenter', function () {
         it('tells the view to go to the done page', function () {
             spyOn(view, 'show_done_page');
             presenter._go_to_page(view.total_pages - 1);
+            expect(view.show_done_page).toHaveBeenCalled();
+        });
+
+        it('goes to the done page when paging forward on the last article page', function () {
+            spyOn(view, 'show_done_page');
+            presenter._go_to_page(view.total_pages - 2);
+            article_nav_buttons.emit('forward-clicked');
             expect(view.show_done_page).toHaveBeenCalled();
         });
 
