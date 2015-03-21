@@ -1,3 +1,5 @@
+imports.gi.versions.WebKit2 = '3.0';
+
 const ClutterGst = imports.gi.ClutterGst;
 const Endless = imports.gi.Endless;
 const GtkClutter = imports.gi.GtkClutter;
