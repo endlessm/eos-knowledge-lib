@@ -308,7 +308,7 @@ const Window = new Lang.Class({
     show_search_results_page: function () {
         this._stack.set_transition_type(Gtk.StackTransitionType.CROSSFADE);
         this._stack.set_visible_child(this.search_results_page);
-        this.nav_buttons.back_visible = true;
+        this.nav_buttons.back_visible = false;
         this.nav_buttons.forward_visible = false;
     },
 
