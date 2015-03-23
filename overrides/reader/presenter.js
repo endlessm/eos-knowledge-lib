@@ -643,6 +643,41 @@ const Presenter = new Lang.Class({
         return [x, y];
     },
 
+    _setup_link_tooltip: function (view, uri, coordinates) {
+        let filtered_indices = [];
+        let filtered_models = this._article_models.filter((model, index) => {
+            if (model.ekn_id === uri)
+                filtered_indices.push(index);
+            return (model.ekn_id === uri);
+        });
+
+        // If a model is filtered by the uri, it means it's an in-issue article.
+        if (filtered_models.length > 0) {
+            // We expect to have one article model that matches the given uri,
+            // hence we obtain the first filtered model and first matched index.
+            // Note: The page number argument is incremented by two, to account
+            // for the 0-base index and the overview page.
+            this._display_link_tooltip(view, coordinates, WebviewTooltip.TYPE_IN_ISSUE_LINK,
+                filtered_models[0].title, filtered_indices[0] + 2);
+        } else if (GLib.uri_parse_scheme(uri) === 'ekn') {
+            // If there is no filtered model but the uri has the "ekn://" prefix,
+            // it's an archive article.
+            this.engine.get_object_by_id(uri, (err, article_model) => {
+                if (typeof err !== 'undefined') {
+                    printerr('Could not get article model:', err);
+                    printerr(err.stack);
+                    return;
+                }
+                this._display_link_tooltip(view, coordinates, WebviewTooltip.TYPE_ARCHIVE_LINK,
+                    article_model.title, 0);
+            });
+        } else {
+            // Otherwise, it's an external link. The URI is displayed as the title.
+            this._display_link_tooltip(view, coordinates, WebviewTooltip.TYPE_EXTERNAL_LINK,
+                uri, 0);
+        }
+    },
+
     _remove_link_tooltip: function () {
         if (this._link_tooltip) {
             this._link_tooltip.destroy();
@@ -650,10 +685,14 @@ const Presenter = new Lang.Class({
         }
     },
 
-    _display_link_tooltip: function (view, uri, coordinates) {
+    _display_link_tooltip: function (view, coordinates, tooltip_type, tooltip_title,
+        page_number) {
         this._remove_link_tooltip();
+
         this._link_tooltip = new WebviewTooltip.WebviewTooltip({
-            title: uri,
+            type: tooltip_type,
+            title: tooltip_title,
+            page_number: page_number,
             relative_to: view,
             pointing_to: new cairo.RectangleInt({
                 x: coordinates[0],
@@ -695,6 +734,7 @@ const Presenter = new Lang.Class({
         });
 
         webview.connect('decide-policy', function (view, decision, type) {
+            this._remove_link_tooltip();
             if (type !== WebKit2.PolicyDecisionType.NAVIGATION_ACTION)
                 return false; // default action
 
@@ -716,10 +756,8 @@ const Presenter = new Lang.Class({
                     if (clicked_model instanceof EosKnowledgeSearch.MediaObjectModel) {
                         this._lightbox_handler(article_model, clicked_model);
                     } else if (clicked_model instanceof EosKnowledgeSearch.ArticleObjectModel) {
-                        // FIXME: navigate to the requested article and display
-                        // the "archived" banner if it's not in the current
-                        // issue:
-                        // https://github.com/endlessm/eos-sdk/issues/2681
+                        this._add_history_object_for_article_page(clicked_model);
+                        this._go_to_article(clicked_model, EosKnowledge.LoadingAnimationType.NONE);
                     }
                 });
 
@@ -769,7 +807,7 @@ const Presenter = new Lang.Class({
                         if (error)
                             coordinates = [[mouse_position[0],
                                 mouse_position[1], 1, 1]];
-                        this._display_link_tooltip(view, uri, coordinates[0]);
+                        this._setup_link_tooltip(view, uri, coordinates[0]);
                         Gio.DBus.unwatch_name(watch_id);
                     });
                 },

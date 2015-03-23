@@ -262,6 +262,10 @@ overridden by app specific CSS */
     font-weight: bold;
 }
 
+.webview-tooltip .tooltip-type-label {
+    font-size: 0.625em; /* 10px / 12px/em * 72/96 */
+}
+
 .no-search-results-page-no-results-label {
     color: black;
     font-style: italic;
