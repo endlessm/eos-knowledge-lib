@@ -689,6 +689,15 @@ enum_type##_get_type (void) \
  */
 #define EKN_STYLE_CLASS_READER_WEBVIEW_TOOLTIP "webview-tooltip"
 
+
+/**
+ * EKN_STYLE_CLASS_READER_ARCHIVE_LABEL
+ *
+ * A CSS class to match the archive label.
+ * Since 0.2
+ */
+#define EKN_STYLE_CLASS_READER_ARCHIVE_LABEL "archive-label"
+
 /**
  * EKN_STYLE_CLASS_PDF_CARD_LABEL:
  *

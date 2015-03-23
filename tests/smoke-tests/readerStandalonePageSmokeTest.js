@@ -37,7 +37,7 @@ const TestApplication = new Lang.Class({
         let app_info_file = resource_path.get_child('app.json');
         let app_json = parse_object_from_path(app_info_file);
 
-        page.infobar.app_name = app_json['appTitle'];
+        page.app_name = app_json['appTitle'];
         page.infobar.title_image_uri = app_json['titleImageURI'];
         page.infobar.background_image_uri = app_json['backgroundHomeURI'];
 
@@ -54,6 +54,8 @@ const TestApplication = new Lang.Class({
         });
         window.page_manager.add(page);
         window.show_all();
+        page.infobar.show();
+        page.archive_notice.hide();
     },
 });
 
