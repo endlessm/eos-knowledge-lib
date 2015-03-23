@@ -42,7 +42,7 @@ const ContentObjectModel = new Lang.Class({
          *
          * Note that this property may not be present in client databases, since
          * it was added in 0.2.
-         * However, on an <ArticleObjectModel> with <html-source> equal to
+         * However, on an <ArticleObjectModel> with <source> equal to
          * "wikipedia", "wikihow", "wikisource", or "wikibooks", it will be
          * set to the value of <source-uri> if it is not present in the
          * database, for backwards compatibility reasons.
@@ -96,10 +96,10 @@ const ContentObjectModel = new Lang.Class({
          * Note that this property may not be present in client databases, since
          * it was added in 0.2.
          * However, it will be present in all Reader app databases.
-         * Also, on an <ArticleObjectModel> with <html-source> equal to
-         * "wikipedia", "wikihow", "wikisource", or "wikibooks", it will be set
-         * to the appropriate value even if it is not present in the database,
-         * for backwards compatibility reasons.
+         * Also, on an <ArticleObjectModel> with <source> equal to "wikipedia",
+         * "wikihow", "wikisource", or "wikibooks", it will be set to the
+         * appropriate value even if it is not present in the database, for
+         * backwards compatibility reasons.
          *
          * Since:
          *   0.2

@@ -14,7 +14,7 @@ describe('Article HTML Renderer', function () {
             source_uri: 'http://www.wikihow.com/Give-Passive-Aggressive-Gifts-for-Christmas',
             original_uri: 'http://www.wikihow.com/Give-Passive-Aggressive-Gifts-for-Christmas',
             html: '<html><body><p>wikihow html</p></body></html>',
-            html_source: 'wikihow',
+            source: 'wikihow',
             source_name: 'wikiHow',
             license: 'Owner permission',
             title: 'Wikihow & title',
@@ -23,14 +23,14 @@ describe('Article HTML Renderer', function () {
             source_uri: 'http://en.wikibooks.org/wiki/When_It_Hits_the_Fan',
             original_uri: 'http://en.wikibooks.org/wiki/When_It_Hits_the_Fan',
             html: '<html><body><p>wikibooks html</p></body></html>',
-            html_source: 'wikibooks',
+            source: 'wikibooks',
             source_name: 'Wikibooks',
             license: 'CC-BY-SA 3.0',
             title: 'Wikibooks title',
         });
         embedly_model = new EosKnowledgeSearch.ArticleObjectModel({
             html: '<html><body><p>embedly html</p></body></html>',
-            html_source: 'embedly',
+            source: 'embedly',
             original_uri: 'http://blog.ly/post/2015/03/12/rendering-an-article',
             source_name: 'Pantheon Blog',
             license: 'CC-BY-SA 4.0',
@@ -38,7 +38,7 @@ describe('Article HTML Renderer', function () {
         });
         javascripty_model = new EosKnowledgeSearch.ArticleObjectModel({
             html: '<html>{{{#javascript-files}}}{{{.}}}{{{#javascript-files}}}</html>',
-            html_source: 'wikihow',
+            source: 'wikihow',
             title: 'Javascripts Galore',
         });
     });
@@ -116,14 +116,14 @@ describe('Article HTML Renderer', function () {
         let wikihow_model_eos22 = new EosKnowledgeSearch.ArticleObjectModel({
             source_uri: 'http://www.wikihow.com/Give-Passive-Aggressive-Gifts-for-Christmas',
             html: '<html><body><p>wikihow html</p></body></html>',
-            html_source: 'wikihow',
+            source: 'wikihow',
             license: 'Creative Commons',
             title: 'Wikihow & title',
         });
         let wikibooks_model_eos22 = new EosKnowledgeSearch.ArticleObjectModel({
             source_uri: 'http://en.wikibooks.org/wiki/When_It_Hits_the_Fan',
             html: '<html><body><p>wikibooks html</p></body></html>',
-            html_source: 'wikibooks',
+            source: 'wikibooks',
             license: 'Creative Commons',
             title: 'Wikibooks title',
         });

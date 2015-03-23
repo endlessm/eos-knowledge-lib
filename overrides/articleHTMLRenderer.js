@@ -43,7 +43,7 @@ const ArticleHTMLRenderer = new Lang.Class({
     },
 
     _get_disclaimer: function (model) {
-        switch (model.html_source) {
+        switch (model.source) {
             case 'wikipedia':
             case 'wikibooks':
             case 'wikisource':
@@ -84,7 +84,7 @@ const ArticleHTMLRenderer = new Lang.Class({
 
     _get_css_files: function (model) {
         let css_files = [];
-        switch (model.html_source) {
+        switch (model.source) {
             case 'wikipedia':
             case 'wikibooks':
             case 'wikisource':
