@@ -79,6 +79,6 @@ const ProgressLabel = new Lang.Class({
         // The string below may need to be localized if it needs to be displayed
         // differently in some locales; for example, maybe a punctuation mark
         // other than 'slash' would be used.
-        this.label = '<span font_weight="heavy">%d</span> / %d'.format(this._current_page, this._total_pages);
+        this.label = '<span font_weight="heavy">%02d</span> / %d'.format(this._current_page, this._total_pages);
     },
 });
