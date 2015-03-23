@@ -2,7 +2,6 @@ const Endless = imports.gi.Endless;
 const EosKnowledge = imports.gi.EosKnowledge;
 const EosKnowledgeSearch = imports.EosKnowledgeSearch;
 const Gio = imports.gi.Gio;
-const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 // Load and register the GResource which has content for this app
