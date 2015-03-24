@@ -12,6 +12,7 @@
     <file preprocess="xml-stripblanks">reader/external-link.svg</file>
     <file preprocess="xml-stripblanks">reader/left-arrow.svg</file>
     <file preprocess="xml-stripblanks">reader/right-arrow.svg</file>
+    <file preprocess="xml-stripblanks">reader/standalone_arrow.svg</file>
     <file>templates/article.mst</file>
     <file>templates/css/embedly.css</file>
     <file>templates/css/wikihow.css</file>
