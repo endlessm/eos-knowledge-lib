@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2014-12-11 00:26+0000\n"
-"PO-Revision-Date: 2014-12-17 00:26+0000\n"
+"POT-Creation-Date: 2015-03-19 06:31+0000\n"
+"PO-Revision-Date: 2015-03-21 05:50+0000\n"
 "Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
 "Language-Team: Arabic (http://www.transifex.com/projects/p/eos-knowledge-lib/language/ar/)\n"
 "MIME-Version: 1.0\n"
@@ -21,18 +21,119 @@ msgstr ""
 msgid "Hello C world!"
 msgstr "مرحباً بـعالم C!"
 
+#. TRANSLATORS: anything inside curly braces '{}' is going
+#. to be substituted in code. Please make sure to leave the
+#. curly braces around any words that have them and DO NOT
+#. translate words inside curly braces.
+#: overrides/articleHTMLRenderer.js:57
+msgid ""
+"This page contains content from {original-link}, available under a {license-"
+"link} license."
+msgstr "تحتوي هذه الصفحة على محتوى من {original-link} \n، مُتاح في ظل ترخيص {license-link}."
+
+#. TRANSLATORS: Replace this with a link to the homepage of
+#. wikiHow in your language.
+#: overrides/articleHTMLRenderer.js:64
+msgid "http://wikihow.com"
+msgstr "http://wikihow.com"
+
+#. TRANSLATORS: anything inside curly braces '{}' is going
+#. to be substituted in code. Please make sure to leave the
+#. curly braces around any words that have them and DO NOT
+#. translate words inside curly braces.
+#: overrides/articleHTMLRenderer.js:69
+msgid ""
+"See {wikihow-article-link} for more details, videos, pictures and "
+"attribution. Courtesy of {wikihow-link}, where anyone can easily learn how "
+"to do anything."
+msgstr "اطلع على {wikihow-article-link} لمزيد من التفاصيل والفيديوهات والصور والإستنادات. بإذن \n {wikihow-link}، حيث يُمكن لاي شخص أن يتعلم بسهولة كيف يفعل أي شيء."
+
+#: overrides/articleHTMLRenderer.js:123
+msgid "Copy"
+msgstr "نسخة"
+
+#. TRANSLATORS: the text inside curly braces {blog-link} is going to be
+#. substituted in code. Please make sure that your translation contains
+#. {blog-link} and it is not translated.
+#: overrides/articleHTMLRenderer.js:142
+msgid "Content taken from {blog-link}."
+msgstr "المُحتوى مأخوذ من {blog-link}."
+
+#. TRANSLATORS: the text inside curly braces {blog-link} is going to be
+#. substituted in code. Please make sure that your translation contains
+#. {blog-link} and it is not translated.
+#: overrides/articleHTMLRenderer.js:147
+msgid "Content courtesy of {blog-link}. Used with kind permission."
+msgstr "المحتوى مهدى من {blog-link}. تم استخدامه بإذن كريم من صاحبه."
+
+#. TRANSLATORS: the text inside curly braces ({blog-link}, {license-link})
+#. is going to be substituted in code. Please make sure that your
+#. translation contains both {blog-link} and {license-link} and they are not
+#. translated.
+#: overrides/articleHTMLRenderer.js:155
+msgid "Content courtesy of {blog-link}, licensed under {license-link}."
+msgstr "المحتوى مهدى من {blog-link}، ومرخص بموجب {license-link}."
+
 #: overrides/categoriesPage.js:58
 msgid "HOME"
 msgstr "الصفحة الرئيسية"
 
-#: overrides/homePageA.js:52
+#: overrides/homePageA.js:57
 msgid "SEE ALL CATEGORIES"
 msgstr "مشاهدة جميع الفئات"
 
 #: overrides/lessonCard.js:133
-#, c-format
+#, javascript-format
 msgid "Lesson %d"
 msgstr "الدرس %d"
+
+#. TRANSLATORS: If this license page is translated into your language, you
+#. can add a link to it here. For example, Spanish would be
+#. https://creativecommons.org/licenses/by/4.0/es -- but make sure to check
+#. that that page exists! If it does not exist, leave this untranslated.
+#: overrides/licenses.js:25
+msgid "https://creativecommons.org/licenses/by/4.0/"
+msgstr "https://creativecommons.org/licenses/by/4.0/"
+
+#. TRANSLATORS: If this license page is translated into your language, you
+#. can add a link to it here. For example, Spanish would be
+#. https://creativecommons.org/licenses/by-sa/4.0/es -- but make sure to check
+#. that that page exists! If it does not exist, leave this untranslated.
+#: overrides/licenses.js:30
+msgid "https://creativecommons.org/licenses/by-sa/4.0/"
+msgstr "https://creativecommons.org/licenses/by-sa/4.0/"
+
+#. TRANSLATORS: If this license page is translated into your language, you
+#. can add a link to it here. For example, Spanish would be
+#. https://creativecommons.org/licenses/by/3.0/es -- but make sure to check
+#. that that page exists! If it does not exist, leave this untranslated.
+#: overrides/licenses.js:35
+msgid "https://creativecommons.org/licenses/by/3.0/"
+msgstr "https://creativecommons.org/licenses/by/3.0/"
+
+#. TRANSLATORS: If this license page is translated into your language, you
+#. can add a link to it here. For example, Spanish would be
+#. https://creativecommons.org/licenses/by-sa/3.0/es -- but make sure to check
+#. that that page exists! If it does not exist, leave this untranslated.
+#: overrides/licenses.js:40
+msgid "https://creativecommons.org/licenses/by-sa/3.0/"
+msgstr "https://creativecommons.org/licenses/by-sa/3.0/"
+
+#: overrides/licenses.js:45
+msgid "CC-BY 4.0"
+msgstr "رخصة المشاع الإبداعي - 4,0"
+
+#: overrides/licenses.js:46
+msgid "CC-BY-SA 4.0"
+msgstr "رخصة المشاع الإبداعي - المشاركة على قدم المساواة 4,0"
+
+#: overrides/licenses.js:47
+msgid "CC-BY 3.0"
+msgstr "رخصة المشاع الإبداعي - 3,0"
+
+#: overrides/licenses.js:48
+msgid "CC-BY-SA 3.0"
+msgstr "رخصة المشاع الإبداعي - المشاركة على قدم المساواة 3,0"
 
 #: overrides/noSearchResultsPage.js:37
 msgid "We didn't find anything."
@@ -44,17 +145,21 @@ msgstr "حاول البحث مرة أخرى باستخدام كلمات مختل
 
 #. TRANSLATORS: this appears on top of the search results page; %s will
 #. be replaced with the string that the user searched for.
-#: overrides/noSearchResultsPage.js:61 overrides/presenter.js:346
-#, c-format
+#: overrides/noSearchResultsPage.js:61 overrides/presenter.js:370
+#, javascript-format
 msgid "Results for \"%s\""
 msgstr "النتائج لـ \"%s\""
 
-#: overrides/presenter.js:200 overrides/presenter.js:607
+#: overrides/pdfCard.js:42
+msgid "PDF"
+msgstr "صيغة PDF"
+
+#: overrides/presenter.js:204 overrides/presenter.js:650
 msgid "Articles"
 msgstr "مقالات"
 
 #: overrides/progressCard.js:112
-#, c-format
+#, javascript-format
 msgid "%d of %d done"
 msgstr "تم انجاز %d من %d "
 
@@ -67,26 +172,10 @@ msgid ""
 "Don't miss next week's issue with more articles in your favorite magazine!"
 msgstr "لا تفوت مسألة الأسبوع المقبل مع المزيد من المقالات في المجلة المفضلة لديك!"
 
-#: overrides/reader/presenter.js:190 overrides/reader/presenter.js:323
-msgid "Oops!"
-msgstr "يا لهذا!"
-
-#: overrides/reader/presenter.js:191
-msgid ""
-"We could not find this issue of your magazine!\n"
-"Please try again after restarting your computer."
-msgstr "لم نستطع العثور على هذا الإصدار من مجلتك!\nيُرجى المحاولة مرة أخرى بعد إعادة تشغيل الكمبيوتر."
-
-#: overrides/reader/presenter.js:324
-msgid ""
-"There was an error loading that page.\n"
-"Try another one or try again after restarting your computer."
-msgstr "وقع خطأٌ ما أثناء تحميل تلك الصفحة.\nجرب صفحة أخرى أو حاول مرة أخرى فيما بعد بعد إعادة تشغيل الكمبيوتر."
-
 #. TRANSLATORS: This "and" is used to join together the names
 #. of authors of a blog post. For example:
 #. Jane Austen and Henry Miller and William Clifford
-#: overrides/reader/presenter.js:348
+#: overrides/reader/presenter.js:551
 msgid "and"
 msgstr "و"
 
@@ -95,7 +184,7 @@ msgstr "و"
 #. the day, and %Y represents the year. Rearrange them how you wish to
 #. match the desired locale. For example, if you wanted the date to look
 #. like "1. December 2014", then you would do: "%e. %B %Y".
-#: overrides/reader/presenter.js:354
+#: overrides/reader/presenter.js:557
 msgid "%B %e, %Y"
 msgstr "%B %e, %Y"
 
@@ -103,7 +192,7 @@ msgstr "%B %e, %Y"
 #. to be substituted in code. Please make sure to leave the
 #. curly braces around any words that have them and DO NOT
 #. translate words inside curly braces.
-#: overrides/reader/presenter.js:360
+#: overrides/reader/presenter.js:563
 msgid "by {author} on {date}"
 msgstr "بواسطة (المؤلف) بتاريخ (التاريخ)"
 
@@ -111,6 +200,22 @@ msgstr "بواسطة (المؤلف) بتاريخ (التاريخ)"
 #. to be substituted in code. Please make sure to leave the
 #. curly braces around any words that have them and DO NOT
 #. translate words inside curly braces.
-#: overrides/reader/presenter.js:367
+#: overrides/reader/presenter.js:570
 msgid "by {author}"
 msgstr "بواسطة (المؤلف)"
+
+#: overrides/reader/presenter.js:621 overrides/reader/presenter.js:628
+msgid "Oops!"
+msgstr "يا لهذا!"
+
+#: overrides/reader/presenter.js:622
+msgid ""
+"We could not find this magazine!\n"
+"Please try again after restarting your computer."
+msgstr "لم نتمكن من إيجاد هذه المجلة!\nيُرجى المحاولة مرة أُخرى بعد إعادة تشغيل جهاز الكمبيوتر الخاص بك."
+
+#: overrides/reader/presenter.js:629
+msgid ""
+"There was an error loading that page.\n"
+"Try another one or try again after restarting your computer."
+msgstr "وقع خطأٌ ما أثناء تحميل تلك الصفحة.\nجرب صفحة أخرى أو حاول مرة أخرى فيما بعد بعد إعادة تشغيل الكمبيوتر."
