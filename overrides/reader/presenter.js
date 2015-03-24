@@ -561,7 +561,21 @@ const Presenter = new Lang.Class({
             this.view.standalone_page.archive_notice.show();
             this._load_standalone_article(model);
         } else {
-            this._go_to_page(model.article_number + 1, animation_type);
+            // We need to map the "go-to" model to the correct element in
+            // the article models array.
+            // We expect to have exactly one element filtered by article_number.
+            let filtered_indices = [];
+            this._article_models.filter((article_model, index) => {
+                if (article_model.article_number === model.article_number)
+                    filtered_indices.push(index);
+                return (article_model.article_number === model.article_number);
+            });
+            if (filtered_indices.length !== 1) {
+                throw new Error(('Something went wrong while navigating to the article! ' +
+                                 'We got %d models filtered with article_number=%d!'.format(
+                                 filtered_indices.length, model.article_number)));
+            }
+            this._go_to_page(filtered_indices[0] + 1, animation_type);
         }
     },
 
