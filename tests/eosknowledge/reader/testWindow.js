@@ -89,7 +89,7 @@ describe('Window widget', function () {
     it('ensures visible page updates with show_*_page functions', function () {
         view.show_article_page(1);
         expect(view.article_pages_visible()).toBe(true);
-        view.show_standalone_page();
+        view.show_in_app_standalone_page();
         expect(view.article_pages_visible()).toBe(false);
     });
 });

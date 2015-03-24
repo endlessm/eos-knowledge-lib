@@ -296,13 +296,24 @@ const Window = new Lang.Class({
         pages.forEach(this.remove_article_page, this);
     },
 
-    show_standalone_page: function () {
+    _show_standalone_page: function () {
         this.standalone_page.show();
-        this.standalone_page.article_page.progress_label.hide();
         this._stack.set_transition_type(Gtk.StackTransitionType.NONE);
         this._stack.set_visible_child(this.standalone_page);
         this.nav_buttons.back_visible = false;
         this.nav_buttons.forward_visible = false;
+    },
+
+    show_global_search_standalone_page: function () {
+        this.standalone_page.archive_notice.hide();
+        this.standalone_page.infobar.show();
+        this._show_standalone_page();
+    },
+
+    show_in_app_standalone_page: function () {
+        this.standalone_page.archive_notice.show();
+        this.standalone_page.infobar.hide();
+        this._show_standalone_page();
     },
 
     show_search_results_page: function () {

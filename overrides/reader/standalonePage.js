@@ -234,7 +234,6 @@ const StandalonePage = new Lang.Class({
         this.add(this.archive_notice);
         this.add(this.infobar);
         this.add(this.article_page);
-        this.show_all();
     },
 
     set app_name (v) {
