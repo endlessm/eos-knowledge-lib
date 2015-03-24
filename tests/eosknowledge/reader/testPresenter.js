@@ -126,6 +126,12 @@ const MockView = new Lang.Class({
             get_style_context: get_style_context,
             infobar: {
                 connect: function () {},
+                show: function () {},
+                hide: function () {},
+            },
+            archive_notice: {
+                show: function () {},
+                hide: function () {},
             },
             article_page: {
                 title_view: {},

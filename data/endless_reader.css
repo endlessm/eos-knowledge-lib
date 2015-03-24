@@ -253,3 +253,9 @@ overridden by app specific CSS */
     font-style: italic;
     font-size: 1.5em;
 }
+
+.archive-label {
+    background-color: #D1D1D1;
+    border-radius: 5px;
+    padding: 5px;
+}
