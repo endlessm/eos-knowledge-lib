@@ -203,6 +203,7 @@ const Presenter = new Lang.Class({
         // time
         this._loading_new_lightbox = false;
 
+        this._latest_origin_query = '{}';
         this.history_model = new EosKnowledge.HistoryModel();
 
         // Connect signals
@@ -301,29 +302,40 @@ const Presenter = new Lang.Class({
             title: model.title,
             page_type: this._ARTICLE_PAGE,
             article_model: model,
+            article_origin_query: this._latest_origin_query,
         });
     },
 
     _add_history_object_for_search_page: function (query) {
+        this._latest_origin_query = query;
         this.history_model.current_item = new HistoryItem.HistoryItem({
             page_type: this._SEARCH_PAGE,
             query: query,
+            article_origin_query: this._latest_origin_query,
         });
     },
 
     _add_history_object_for_overview_page: function () {
         this.history_model.current_item = new HistoryItem.HistoryItem({
             page_type: this._OVERVIEW_PAGE,
+            article_origin_query: this._latest_origin_query,
         });
     },
 
     _add_history_object_for_done_page: function () {
         this.history_model.current_item = new HistoryItem.HistoryItem({
             page_type: this._DONE_PAGE,
+            article_origin_query: this._latest_origin_query,
         });
     },
 
     _replicate_history_state: function (animation_type) {
+        let article_origin_query = JSON.parse(this.history_model.current_item.article_origin_query);
+        if (article_origin_query.hasOwnProperty('q'))
+            this.view.search_box.text = article_origin_query.q;
+        else
+            this.view.search_box.text = '';
+
         switch (this.history_model.current_item.page_type) {
             case this._SEARCH_PAGE:
                 this._perform_search(this.view, JSON.parse(this.history_model.current_item.query));
@@ -340,6 +352,11 @@ const Presenter = new Lang.Class({
             default:
                 printerr("Unexpected page type " + this.history_model.current_item.page_type);
                 this._go_to_page(0, animation_type);
+        }
+
+        // Update latest origin query.
+        if (this.history_model.current_item.article_origin_query !== this._latest_origin_query) {
+            this._latest_origin_query = this.history_model.current_item.article_origin_query;
         }
     },
 
@@ -404,6 +421,7 @@ const Presenter = new Lang.Class({
                     // add 1 for overview page
                     let page_number = model.article_number -
                         this.settings.start_article + 1;
+                    this.view.search_box.text = query;
                     this._go_to_page(page_number, EosKnowledge.LoadingAnimationType.NONE);
                 }
                 this.view.show_all();
