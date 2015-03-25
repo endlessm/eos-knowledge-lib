@@ -400,13 +400,12 @@ const Presenter = new Lang.Class({
             }
 
             if (this._is_archived(model)) {
-                this.view.standalone_page.infobar.show();
-                this.view.standalone_page.archive_notice.hide();
-                this._load_standalone_article(model);
                 // FIXME Here we should load the rest of the content in the
                 // background; but as there currently isn't a way to get from
                 // the standalone page to the regular content, we don't.
                 this.view.show_all();
+                this._load_standalone_article(model);
+                this.view.show_global_search_standalone_page();
                 this.view.present_with_time(timestamp);
                 return;
             }
@@ -575,9 +574,8 @@ const Presenter = new Lang.Class({
 
     _go_to_article: function (model, animation_type) {
         if (this._is_archived(model)) {
-            this.view.standalone_page.infobar.hide();
-            this.view.standalone_page.archive_notice.show();
             this._load_standalone_article(model);
+            this.view.show_in_app_standalone_page();
         } else {
             // We need to map the "go-to" model to the correct element in
             // the article models array.
@@ -1052,7 +1050,6 @@ const Presenter = new Lang.Class({
         this.view.standalone_page.article_page.title_view.attribution =
             this._format_attribution_for_metadata(model.get_authors(), model.published);
         this.view.standalone_page.article_page.get_style_context().add_class('article-page0');
-        this.view.show_standalone_page();
     },
 
     /*

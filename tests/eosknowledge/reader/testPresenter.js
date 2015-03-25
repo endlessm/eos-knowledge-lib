@@ -162,7 +162,8 @@ const MockView = new Lang.Class({
     show_article_page: function () {},
     show_overview_page: function () {},
     show_done_page: function () {},
-    show_standalone_page: function () {},
+    show_global_search_standalone_page: function () {},
+    show_in_app_standalone_page: function () {},
     show_search_results_page: function () {},
     append_article_page: function (page) {
         this._article_pages.push(page);
@@ -273,11 +274,11 @@ describe('Reader presenter', function () {
             spyOn(engine, 'get_object_by_id').and.callFake(function (id, callback) {
                 callback(undefined, model);
             });
-            spyOn(view, 'show_standalone_page');
+            spyOn(view, 'show_global_search_standalone_page');
             presenter.activate_search_result(0, MOCK_ID, 'fake query');
             expect(engine.get_object_by_id).toHaveBeenCalledWith(MOCK_ID,
                 jasmine.any(Function));
-            expect(view.show_standalone_page).toHaveBeenCalled();
+            expect(view.show_global_search_standalone_page).toHaveBeenCalled();
         });
 
         it('starts at the right page when search result is in this issue', function () {
