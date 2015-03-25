@@ -699,6 +699,14 @@ enum_type##_get_type (void) \
 #define EKN_STYLE_CLASS_READER_ARCHIVE_LABEL "archive-label"
 
 /**
+ * EKN_STYLE_CLASS_READER_TOOLTIP_TYPE_LABEL
+ *
+ * A CSS class to match the tooltip type label widget in Reader apps.
+ * Since 0.2
+ */
+#define EKN_STYLE_CLASS_READER_TOOLTIP_TYPE_LABEL "tooltip-type-label"
+
+/**
  * EKN_STYLE_CLASS_PDF_CARD_LABEL:
  *
  * A CSS class to match the PDF label on the pdf cards
