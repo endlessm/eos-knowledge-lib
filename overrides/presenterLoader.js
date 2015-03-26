@@ -23,6 +23,9 @@ let get_presenter_for_resource = function (application, resource_path) {
         case 'A':
         case 'B':
             PresenterClass = Presenter.Presenter;
+            // FIXME: We currently don't have image attribution files for the
+            // template A and B knowledge apps. Override this here until we do.
+            application.image_attribution_file = null;
             break;
         case 'reader':
             PresenterClass = ReaderPresenter.Presenter;
