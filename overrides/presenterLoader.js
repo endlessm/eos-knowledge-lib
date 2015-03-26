@@ -16,6 +16,7 @@ let get_presenter_for_resource = function (application, resource_path) {
     let app_info = Utils.parse_object_from_file(app_info_file);
     let overrides_css_file = resource_file.get_child('overrides.css');
     Utils.add_css_provider_from_file(overrides_css_file, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION + 1);
+    application.image_attribution_file = resource_file.get_child('credits.json');
 
     let PresenterClass;
     switch(app_info['templateType']) {
