@@ -505,10 +505,14 @@ const Presenter = new Lang.Class({
 
     _new_card_from_article_model: function (model, idx) {
         let formatted_attribution = this._format_attribution_for_metadata(model.get_authors(), model.published);
+        // We increment the page number to account for the 0-based index.
+        // Note: _get_page_number_for_article_model will return -1 only if it's an
+        // "Archived" issue, case in which the card doesn't require a card number.
+        let article_page_number = this._get_page_number_for_article_model(model) + 1;
         let card = new ReaderCard.Card({
             title: model.title,
             synopsis: formatted_attribution,
-            page_number: model.article_number - this.settings.start_article + 2,
+            page_number: article_page_number,
             style_variant: idx % 3,
             archived: this._is_archived(model),
         });
@@ -577,21 +581,8 @@ const Presenter = new Lang.Class({
             this._load_standalone_article(model);
             this.view.show_in_app_standalone_page();
         } else {
-            // We need to map the "go-to" model to the correct element in
-            // the article models array.
-            // We expect to have exactly one element filtered by article_number.
-            let filtered_indices = [];
-            this._article_models.filter((article_model, index) => {
-                if (article_model.article_number === model.article_number)
-                    filtered_indices.push(index);
-                return (article_model.article_number === model.article_number);
-            });
-            if (filtered_indices.length !== 1) {
-                throw new Error(('Something went wrong while navigating to the article! ' +
-                                 'We got %d models filtered with article_number=%d!'.format(
-                                 filtered_indices.length, model.article_number)));
-            }
-            this._go_to_page(filtered_indices[0] + 1, animation_type);
+            let page_number = this._get_page_number_for_article_model(model);
+            this._go_to_page(page_number, animation_type);
         }
     },
 
@@ -939,6 +930,24 @@ const Presenter = new Lang.Class({
         this._current_page_style_variant++;
         page.get_style_context().add_class('article-page' + style_variant);
         page.title_view.style_variant = style_variant;
+    },
+
+    _get_page_number_for_article_model: function(model) {
+        let filtered_indices = [];
+        this._article_models.filter((article_model, index) => {
+            if (article_model.article_number === model.article_number)
+                filtered_indices.push(index);
+            return (article_model.article_number === model.article_number);
+        });
+
+        if (filtered_indices.length === 0) {
+            // Article model not found in this issue's article array!
+            return -1;
+        } else {
+            // We expect to have one filtered element, hence we return that filtered index
+            // We increment by one to account for cover page.
+            return filtered_indices[0] + 1;
+        }
     },
 
     // Show a friendlier error message when the engine is not working; suggest
