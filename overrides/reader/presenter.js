@@ -246,6 +246,8 @@ const Presenter = new Lang.Class({
         this.view.search_box.connect('activate', (search_entry) => {
             this._update_ui_and_search(search_entry.text);
         });
+        this.view.search_box.connect('text-changed', this._on_search_text_changed.bind(this));
+        this.view.search_box.connect('menu-item-selected', this._on_search_menu_item_selected.bind(this));
     },
 
     get current_page() {
@@ -1073,5 +1075,45 @@ const Presenter = new Lang.Class({
     _on_article_card_clicked: function (model) {
         this._go_to_article(model, EosKnowledge.LoadingAnimationType.NONE);
         this._add_history_object_for_article_page(model);
+    },
+
+    _on_search_text_changed: function (entry) {
+        let query = Utils.sanitize_query(this.view.search_box.text);
+        // Ignore empty queries
+        if (query.length === 0) {
+            return;
+        }
+
+        this.engine.get_objects_by_query({
+            'q': query,
+            'limit': RESULTS_SIZE,
+        }, (error, results) => {
+            if (error) {
+                printerr(error);
+                printerr(error.stack);
+                return;
+            }
+
+            this.view.search_box.set_menu_items(results.map((model) => {
+                return {
+                    title: model.title,
+                    id: model.ekn_id,
+                };
+            }));
+        });
+    },
+
+    _on_search_menu_item_selected: function (entry, id) {
+        this.engine.get_object_by_id(id, (error, model) => {
+            if (error) {
+                printerr(error);
+                printerr(error.stack);
+                this._show_specific_error_page();
+                return;
+            }
+
+            this._go_to_article(model, EosKnowledge.LoadingAnimationType.NONE);
+            this._add_history_object_for_article_page(model);
+        });
     },
 });
