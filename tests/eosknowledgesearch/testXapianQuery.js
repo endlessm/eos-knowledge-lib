@@ -131,6 +131,14 @@ describe('Xapian Query Module', function () {
                     expect(function(){ xq.xapian_ids_clause([bad_id])}).toThrow(new Error('Received invalid ekn uri ' + bad_id));
                 });
             });
+
+            it('should not throw error if receives valid ekn id', function () {
+                let good_ids = ['ekn://travel-es/foo', 'ekn://mental-health-es/bar'];
+
+                good_ids.forEach(function (good_id) {
+                    expect(function(){ xq.xapian_ids_clause([good_id])}).not.toThrow(new Error('Received invalid ekn uri ' + good_id));
+                });
+            });
         });
     });
 });
