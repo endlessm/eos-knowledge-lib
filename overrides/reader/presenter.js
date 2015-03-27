@@ -248,6 +248,7 @@ const Presenter = new Lang.Class({
         });
         this.view.search_box.connect('text-changed', this._on_search_text_changed.bind(this));
         this.view.search_box.connect('menu-item-selected', this._on_search_menu_item_selected.bind(this));
+        this.view.search_results_page.connect('load-more-results', this._on_load_more_results.bind(this));
     },
 
     get current_page() {
@@ -482,6 +483,21 @@ const Presenter = new Lang.Class({
         if (now - last_update >= UPDATE_INTERVAL_MS) {
             this._update_content();
         }
+    },
+
+    _on_load_more_results: function () {
+        this._get_more_results(RESULTS_SIZE, function (err, results, get_more_results_func) {
+            if (err !== undefined) {
+                printerr(err);
+                printerr(err.stack);
+            } else {
+                let cards = results.map(this._new_card_from_article_model, this);
+                if (cards.length > 0) {
+                    this.view.search_results_page.append_search_results(cards);
+                }
+                this._get_more_results = get_more_results_func;
+            }
+        }.bind(this));
     },
 
     _load_search_results: function (err, results, get_more_results_func) {
