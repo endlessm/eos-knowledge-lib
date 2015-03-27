@@ -155,7 +155,7 @@ function xapian_not_tag_clause (tags) {
 function xapian_ids_clause (ids) {
     let id_clauses = ids.map((id) => {
         // Verify that ekn id is of the right form
-        let ekn_matcher = /^ekn:\/\/(api\/)?[A-Z]+-?[A-Z]*\/[A-Z0-9]+$/i
+        let ekn_matcher = /^ekn:\/\/(api\/)?[A-Z-]+\/[A-Z0-9]+$/i
         if (!ekn_matcher.test(id))
             throw new Error("Received invalid ekn uri " + id)
 
