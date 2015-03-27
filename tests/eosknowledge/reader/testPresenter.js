@@ -83,7 +83,10 @@ const MockSearchBox = new Lang.Class({
     Extends: GObject.Object,
     Signals: {
         'activate': {},
+        'text-changed': {},
+        'menu-item-selected': {},
     },
+    set_menu_items: function () {},
 });
 
 const MockView = new Lang.Class({
@@ -494,7 +497,22 @@ describe('Reader presenter', function () {
             expect(no_lightbox_result).toBe(false);
         });
 
-        it('issues a search query when user enters one in the search box', function (done) {
+        it('issues search queries as the user types in the search box', function (done) {
+            spyOn(view.search_box, 'set_menu_items');
+            view.search_box.text = 'Azuc';
+            view.search_box.emit('text-changed');
+            Mainloop.idle_add(function () {
+                expect(engine.get_objects_by_query)
+                    .toHaveBeenCalledWith(jasmine.objectContaining({
+                        q: 'Azuc',
+                    }),
+                    jasmine.any(Function));
+                expect(view.search_box.set_menu_items).toHaveBeenCalled();
+                done();
+            });
+        });
+
+        it('issues a search query when user activates one in the search box', function (done) {
             spyOn(view, 'show_search_results_page');
             view.search_box.text = 'Azucar';
             view.search_box.emit('activate');
