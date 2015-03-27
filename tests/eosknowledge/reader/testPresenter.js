@@ -89,6 +89,27 @@ const MockSearchBox = new Lang.Class({
     set_menu_items: function () {},
 });
 
+let get_style_context = function () {
+    return {
+        add_class: function () {},
+    }
+};
+
+const MockSearchResultsPage = new Lang.Class({
+    Name: 'MockSearchResultsPage',
+    Extends: GObject.Object,
+    Signals: {
+        'load-more-results': {},
+    },
+    clear_search_results: function () {},
+    append_search_results: function () {},
+    no_results_label: {
+        show: function () {},
+        hide: function () {},
+    },
+    get_style_context: get_style_context,
+});
+
 const MockView = new Lang.Class({
     Name: 'MockView',
     Extends: GObject.Object,
@@ -112,11 +133,7 @@ const MockView = new Lang.Class({
             forward_button: new MockButton(),
             show: jasmine.createSpy('show'),
         };
-        let get_style_context = function () {
-            return {
-                add_class: function () {},
-            }
-        }
+
         this.done_page = {
             get_style_context: get_style_context,
         };
@@ -142,15 +159,7 @@ const MockView = new Lang.Class({
             },
         };
 
-        this.search_results_page = {
-            get_style_context: get_style_context,
-            clear_search_results: function () {},
-            append_search_results: function () {},
-            no_results_label: {
-                show: function () {},
-                hide: function () {},
-            },
-        };
+        this.search_results_page = new MockSearchResultsPage();
 
         this.total_pages = 0;
         this._article_pages = [];
@@ -541,6 +550,15 @@ describe('Reader presenter', function () {
                 expect(presenter.history_model.current_item.query).toBe(JSON.stringify({q:'Azucar', limit: 15}));
                 done();
             });
+        });
+
+        it('fetches more results when the results page asks for them', function () {
+            spyOn(view.search_results_page, 'append_search_results');
+            presenter._get_more_results = function (num, callback) {
+                callback(undefined, [MOCK_RESULTS[0]], undefined);
+            }
+            view.search_results_page.emit('load-more-results');
+            expect(view.search_results_page.append_search_results).toHaveBeenCalled();
         });
 
         describe('Attribution format', function () {

@@ -48,12 +48,12 @@ const SearchResultsPage = new Lang.Class({
     _init: function (props={}) {
         this.parent(props);
 
-        let scrolled_window = new InfiniteScrolledWindow.InfiniteScrolledWindow({
+        this._scrolled_window = new InfiniteScrolledWindow.InfiniteScrolledWindow({
             hscrollbar_policy: Gtk.PolicyType.NEVER,
             bottom_buffer: this._LOADING_BOTTOM_BUFFER,
         });
-        scrolled_window.connect('notify::need-more-content', () => {
-            if (scrolled_window.need_more_content) {
+        this._scrolled_window.connect('notify::need-more-content', () => {
+            if (this._scrolled_window.need_more_content) {
                 this.emit('load-more-results');
             }
         });
@@ -76,9 +76,9 @@ const SearchResultsPage = new Lang.Class({
         this.no_results_label.get_style_context().add_class(EosKnowledge.STYLE_CLASS_NO_SEARCH_RESULTS_PAGE_NO_RESULTS_LABEL);
 
         let overlay = new Gtk.Overlay();
-        overlay.add(scrolled_window);
+        overlay.add(this._scrolled_window);
         overlay.add_overlay(this.no_results_label);
-        scrolled_window.add(this._content_flow_box);
+        this._scrolled_window.add(this._content_flow_box);
         this.add(overlay);
     },
 
@@ -86,6 +86,7 @@ const SearchResultsPage = new Lang.Class({
         for (let result of results) {
             this._content_flow_box.add(result);
         }
+        this._scrolled_window.need_more_content = false;
     },
 
     clear_search_results: function () {
