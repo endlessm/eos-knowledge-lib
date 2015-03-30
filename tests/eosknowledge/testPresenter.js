@@ -75,6 +75,7 @@ const MockView = new Lang.Class({
     show_no_search_results_page: function () {},
     lock_ui: function () {},
     unlock_ui: function () {},
+    present_with_time: function () {},
 });
 
 const MockEngine = new Lang.Class({
@@ -118,11 +119,15 @@ describe('Presenter', () => {
         view = new MockView();
         engine = new MockEngine();
         article_presenter = new MockArticlePresenter();
+        let application = new GObject.Object();
+        application.application_id = 'foobar';
         presenter = new EosKnowledge.Presenter(data, {
+            application: application,
             article_presenter: article_presenter,
             engine: engine,
             view: view,
         });
+        spyOn(presenter, 'record_search_metric');
     });
 
     it('can be constructed', () => {});
@@ -181,6 +186,22 @@ describe('Presenter', () => {
                     }),
                     jasmine.any(Function));
                 expect(view.show_no_search_results_page).toHaveBeenCalled();
+                done();
+            });
+        });
+
+        it('records a metric when you search from the title bar', function (done) {
+            view.emit('search-entered', 'query not found');
+            Mainloop.idle_add(function () {
+                expect(presenter.record_search_metric).toHaveBeenCalled();
+                done();
+            });
+        });
+
+        it('records a metric when you search from the home page', function (done) {
+            view.home_page.emit('search-entered', 'query not found');
+            Mainloop.idle_add(function () {
+                expect(presenter.record_search_metric).toHaveBeenCalled();
                 done();
             });
         });

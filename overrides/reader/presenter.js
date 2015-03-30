@@ -1,6 +1,7 @@
 const cairo = imports.gi.cairo;  // note: GI module, not native GJS module
 const EosKnowledge = imports.gi.EosKnowledge;
 const EosKnowledgeSearch = imports.EosKnowledgeSearch;
+const EosMetrics = imports.gi.EosMetrics;
 const Format = imports.format;
 const Gdk = imports.gi.Gdk;
 const Gettext = imports.gettext;
@@ -38,7 +39,7 @@ const NUM_OVERVIEW_SNIPPETS = 3;
 
 // 1 week in miliseconds
 const UPDATE_INTERVAL_MS = 604800000;
-
+const _SEARCH_METRIC = 'a628c936-5d87-434a-a57a-015a0f223838';
 const DBUS_WEBVIEW_EXPORT_PATH = '/com/endlessm/webview/';
 const DBUS_TOOLTIP_INTERFACE = '\
     <node> \
@@ -273,6 +274,9 @@ const Presenter = new Lang.Class({
         if (query.length === 0) {
             return;
         }
+
+        this.record_search_metric(query);
+
         let query_obj = {
             q: query,
             limit: RESULTS_SIZE,
@@ -430,6 +434,13 @@ const Presenter = new Lang.Class({
                 this.view.present_with_time(timestamp);
             }, /* progress callback */ this._append_results.bind(this));
         });
+    },
+
+    // Should be mocked out during tests so that we don't actually send metrics
+    record_search_metric: function (query) {
+        let recorder = EosMetrics.EventRecorder.get_default();
+        recorder.record_event(_SEARCH_METRIC, new GLib.Variant('(ss)',
+            [query, this.application.application_id]));
     },
 
     _is_archived: function (model) {

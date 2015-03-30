@@ -236,6 +236,7 @@ describe('Reader presenter', function () {
             settings: settings,
             view: view,
         });
+        spyOn(presenter, 'record_search_metric');
     });
 
     it('constructs', function () {});
@@ -533,6 +534,15 @@ describe('Reader presenter', function () {
                     jasmine.any(Function));
                 expect(view.show_search_results_page).toHaveBeenCalled();
                 expect(presenter.history_model.current_item.query).toBe(JSON.stringify({q:'Azucar', limit: 15}));
+                done();
+            });
+        });
+
+        it('records a metric when searching from the search box', function (done) {
+            view.search_box.text = 'Azucar';
+            view.search_box.emit('activate');
+            Mainloop.idle_add(function () {
+                expect(presenter.record_search_metric).toHaveBeenCalled();
                 done();
             });
         });

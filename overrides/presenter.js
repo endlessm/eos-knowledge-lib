@@ -1,9 +1,11 @@
 const EosKnowledge = imports.gi.EosKnowledge;
 const EosKnowledgeSearch = imports.EosKnowledgeSearch;
+const EosMetrics = imports.gi.EosMetrics;
 const Endless = imports.gi.Endless;
 const Format = imports.format;
 const Gio = imports.gi.Gio;
 const Gettext = imports.gettext;
+const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
@@ -28,6 +30,7 @@ String.prototype.format = Format.format;
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
 const RESULTS_SIZE = 10;
+const _SEARCH_METRIC = 'a628c936-5d87-434a-a57a-015a0f223838';
 
 /**
  * Class: Presenter
@@ -191,6 +194,13 @@ const Presenter = new Lang.Class({
         this.view.present_with_time(timestamp);
     },
 
+    // Should be mocked out during tests so that we don't actually send metrics
+    record_search_metric: function (query) {
+        let recorder = EosMetrics.EventRecorder.get_default();
+        recorder.record_event(_SEARCH_METRIC, new GLib.Variant('(ss)',
+            [query, this.application.application_id]));
+    },
+
     _on_load_more_results: function () {
         this._get_more_results(RESULTS_SIZE, function (err, results, get_more_results_func) {
             if (err !== undefined) {
@@ -348,6 +358,9 @@ const Presenter = new Lang.Class({
         if (query.length === 0) {
             return;
         }
+
+        this.record_search_metric(query);
+
         let query_obj = {
             q: query,
             limit: RESULTS_SIZE,
