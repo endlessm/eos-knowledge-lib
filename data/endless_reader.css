@@ -188,11 +188,6 @@ overridden by app specific CSS */
     transition: padding 250ms ease-in-out;
 }
 
-.reader-card .reader-attribution {
-    font-family: Roboto;
-    font-size: 0.6em;
-}
-
 .reader-card0 .title {
     color: #ef2929;
 }
@@ -203,18 +198,6 @@ overridden by app specific CSS */
 
 .reader-card2 .title {
     color: #729fcf;
-}
-
-.reader-card0 .reader-attribution {
-    color: #a40000;
-}
-
-.reader-card1 .reader-attribution {
-    color: #4e9a06;
-}
-
-.reader-card2 .reader-attribution {
-    color: #204a87;
 }
 
 .hover-frame {

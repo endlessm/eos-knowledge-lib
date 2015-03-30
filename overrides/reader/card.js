@@ -79,21 +79,20 @@ const Card = new Lang.Class({
 
     pack_widgets: function (title_label, attribution_label, image_frame) {
         title_label.valign = Gtk.Align.START;
-        attribution_label.valign = Gtk.Align.END;
 
         title_label.get_style_context().add_class(EosKnowledge.STYLE_CLASS_READER_TITLE);
-        attribution_label.get_style_context().add_class(EosKnowledge.STYLE_CLASS_READER_ATTRIBUTION);
 
         title_label.lines = this._TITLE_LABEL_LINES;
         title_label.expand = true;
+        title_label.valign = Gtk.Align.CENTER;
 
         let grid = new Gtk.Grid({
             orientation: Gtk.Orientation.VERTICAL,
+            expand: true,
             halign: Gtk.Align.FILL,
-            valign: Gtk.Align.CENTER,
+            valign: Gtk.Align.FILL,
         });
         grid.add(title_label);
-        grid.add(attribution_label);
 
         let card_info_grid = new Gtk.Grid({
             column_spacing: this._GRID_COL_SPACING,
