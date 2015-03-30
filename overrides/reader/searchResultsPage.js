@@ -79,6 +79,8 @@ const SearchResultsPage = new Lang.Class({
         overlay.add(this._scrolled_window);
         overlay.add_overlay(this.no_results_label);
         this._scrolled_window.add(this._content_flow_box);
+
+        this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_READER_SEARCH_RESULTS_PAGE);
         this.add(overlay);
     },
 

@@ -45,6 +45,10 @@ overridden by app specific CSS */
     background-position: center;
 }
 
+.search-results-page {
+    background-color: #CCCCCC;
+}
+
 .overview-frame {
     padding: 100px 100px 85px 90px;
 }
@@ -170,10 +174,9 @@ overridden by app specific CSS */
     background-color: #f4f4f4;
     border-style: solid;
     border-width: 10px 10px 10px 10px;
-    border-image: -gtk-gradient(radial,
-               center center, 0,
-               center center, 1,
-               from(#ccc), to(alpha(white, 0.1))) 20 20 20 20 round stretch;
+    border-image: -gtk-gradient(radial, center center, 0, center center, 0.5,
+                        from(#aaa), to(#ccc))
+                  40 40 40 40 stretch;
     margin: 7px;
     transition: margin 250ms ease-in-out;
 }
