@@ -62,8 +62,8 @@ const Card = new Lang.Class({
             0, GLib.MAXUINT32, 0),
     },
 
-    _CARD_WIDTH: 157,
-    _CARD_HEIGHT: 177,
+    _CARD_WIDTH: 200,
+    _CARD_HEIGHT: 250,
     _CARD_MARGIN: 5,
     _ARCHIVE_ICON: '/com/endlessm/knowledge/reader/archive.svg',
     _GRID_COL_SPACING: 4,
