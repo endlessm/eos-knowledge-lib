@@ -213,7 +213,7 @@ describe('Reader presenter', function () {
             html: '<html>hello</html>',
             article_number: ix,
         });
-        spyOn(model, 'get_authors').and.returnValue(data[1]);
+        model.authors = data[1];
         return model;
     });
 
@@ -229,6 +229,8 @@ describe('Reader presenter', function () {
             update_timestamp: new Date().toISOString(),
         });
         spyOn(engine, 'get_objects_by_query');
+        MOCK_RESULTS.forEach((model) =>
+            spyOn(model, 'get_authors').and.returnValue(model.authors));
 
         presenter = new EosKnowledge.Reader.Presenter(TEST_JSON, {
             application: application,
