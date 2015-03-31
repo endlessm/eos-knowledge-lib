@@ -574,13 +574,6 @@ describe('Reader presenter', function () {
         });
 
         describe('Attribution format', function () {
-            let date_str = '2012-08-23T20:00:00';
-            let localized_date_str;
-            beforeEach(function () {
-                let date = new Date(date_str);
-                localized_date_str = date.toLocaleFormat("%B %e, %Y");
-            });
-
             it('is blank if there is no data', function () {
                 let format = presenter._format_attribution_for_metadata([], '');
                 expect(format).toBe('');
@@ -594,16 +587,6 @@ describe('Reader presenter', function () {
             it('formats multiple authors correctly', function () {
                 let format = presenter._format_attribution_for_metadata(['Kim Kardashian', "William Shakespeare"], '');
                 expect(format).toBe('by Kim Kardashian and William Shakespeare');
-            });
-
-            it('formats author and date correctly', function () {
-                let format = presenter._format_attribution_for_metadata(['Kim Kardashian'], date_str);
-                expect(format).toBe('by Kim Kardashian on ' + localized_date_str);
-            });
-
-            it('formats date alone correctly', function () {
-                let format = presenter._format_attribution_for_metadata([], date_str);
-                expect(format).toBe(localized_date_str);
             });
         });
 
