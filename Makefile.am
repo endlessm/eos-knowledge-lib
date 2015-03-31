@@ -70,7 +70,7 @@ $(scss_targets): $(scss_partials)
 
 # scss build rule
 .scss.css:
-	$(scss_verbose) $(MKDIR_P) $(dir $@) && scss --compass --stop-on-error --sourcemap=none $< $@
+	$(scss_verbose) $(MKDIR_P) $(dir $@) && scss --compass -E utf-8 --stop-on-error --sourcemap=none $< $@
 
 EXTRA_DIST += $(scss_toplevels) $(scss_partials)
 CLEANFILES += $(scss_targets)
