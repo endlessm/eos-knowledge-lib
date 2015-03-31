@@ -42,9 +42,9 @@ const SearchResultsPage = new Lang.Class({
     },
 
     _FLOW_BOX_CHILDREN_PER_LINE: 20,
-    _FLOW_BOX_COL_SPACING: 10,
-    _FLOW_BOX_ROW_SPACING: 10,
-    _FLOW_BOX_MARGIN: 40,
+    _FLOW_BOX_COL_SPACING: 15,
+    _FLOW_BOX_ROW_SPACING: 15,
+    _FLOW_BOX_MARGIN: 80,
     _LOADING_BOTTOM_BUFFER: 250,
 
     _init: function (props={}) {
