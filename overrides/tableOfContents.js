@@ -1,5 +1,7 @@
 // Copyright 2014 Endless Mobile, Inc.
 
+/* global private_imports */
+
 const Endless = imports.gi.Endless;
 const EosKnowledge = imports.gi.EosKnowledge;
 const GLib = imports.gi.GLib;
@@ -10,8 +12,8 @@ const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 const Pango = imports.gi.Pango;
 
-const MarginButton = imports.marginButton;
-const Utils = imports.utils;
+const MarginButton = private_imports.marginButton;
+const Utils = private_imports.utils;
 
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 

@@ -1,11 +1,13 @@
+/* global private_imports */
+
 const Gettext = imports.gettext;
 const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
-const Mustache = imports.mustache.Mustache;
 
-const Config = imports.config;
-const Licenses = imports.licenses;
+const Config = private_imports.config;
+const Mustache = private_imports.mustache.Mustache;
+const Licenses = private_imports.licenses;
 
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 

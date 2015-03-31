@@ -1,5 +1,7 @@
 // Copyright 2014 Endless Mobile, Inc.
 
+/* global private_imports */
+
 const Endless = imports.gi.Endless;
 const EosKnowledge = imports.gi.EosKnowledge;
 const GdkPixbuf = imports.gi.GdkPixbuf;
@@ -10,7 +12,7 @@ const Lang = imports.lang;
 
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 
-const ImagePreviewer = imports.imagePreviewer;
+const ImagePreviewer = private_imports.imagePreviewer;
 
 /**
  * Class: HomePage

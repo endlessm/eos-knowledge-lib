@@ -1,3 +1,5 @@
+/* global private_imports */
+
 imports.gi.versions.WebKit2 = '3.0';
 
 const ClutterGst = imports.gi.ClutterGst;
@@ -7,60 +9,60 @@ const Lang = imports.lang;
 
 let EosKnowledge;
 
-// Make a backup copy of the array
-let _oldSearchPath = imports.searchPath.slice(0);
-imports.searchPath.unshift(Endless.getCurrentFileDir());
+// Create a separate private importer so that client code can't import our
+// private modules by mistake.
+window.private_imports = imports['.'];
+private_imports.searchPath.unshift(Endless.getCurrentFileDir());
 
-const ArticleCard = imports.articleCard;
-const ArticleHTMLRenderer = imports.articleHTMLRenderer;
-const ArticlePage = imports.articlePage;
-const ArticlePresenter = imports.articlePresenter;
-const Card = imports.card;
-const CardA = imports.cardA;
-const CardB = imports.cardB;
-const CategoriesPage = imports.categoriesPage;
-const EknWebview = imports.eknWebview;
-const HomePage = imports.homePage;
-const HomePageA = imports.homePageA;
-const HomePageB = imports.homePageB;
-const Launcher = imports.launcher;
-const LessonCard = imports.lessonCard;
-const Lightbox = imports.lightbox;
-const ListCard = imports.listCard;
-const MediaInfobox = imports.mediaInfobox;
-const NavButtonOverlay = imports.navButtonOverlay;
-const NoSearchResultsPage = imports.noSearchResultsPage;
-const PdfCard = imports.pdfCard;
-const PDFView = imports.PDFView;
-const Presenter = imports.presenter;
-const PresenterLoader = imports.presenterLoader;
-const Previewer = imports.previewer;
-const ProgressCard = imports.progressCard;
-const SectionArticlePage = imports.sectionArticlePage;
-const SectionPage = imports.sectionPage;
-const SectionPageA = imports.sectionPageA;
-const SectionPageB = imports.sectionPageB;
-const SpaceContainer = imports.spaceContainer;
-const TableOfContents = imports.tableOfContents;
-const TextCard = imports.textCard;
-const TreeNode = imports.treeNode;
-const WebkitURIHandlers = imports.webkitURIHandlers;
-const Window = imports.window;
+const ArticleCard = private_imports.articleCard;
+const ArticleHTMLRenderer = private_imports.articleHTMLRenderer;
+const ArticlePage = private_imports.articlePage;
+const ArticlePresenter = private_imports.articlePresenter;
+const Card = private_imports.card;
+const CardA = private_imports.cardA;
+const CardB = private_imports.cardB;
+const CategoriesPage = private_imports.categoriesPage;
+const EknWebview = private_imports.eknWebview;
+const HomePage = private_imports.homePage;
+const HomePageA = private_imports.homePageA;
+const HomePageB = private_imports.homePageB;
+const Launcher = private_imports.launcher;
+const LessonCard = private_imports.lessonCard;
+const Lightbox = private_imports.lightbox;
+const ListCard = private_imports.listCard;
+const MediaInfobox = private_imports.mediaInfobox;
+const NavButtonOverlay = private_imports.navButtonOverlay;
+const NoSearchResultsPage = private_imports.noSearchResultsPage;
+const PdfCard = private_imports.pdfCard;
+const PDFView = private_imports.PDFView;
+const Presenter = private_imports.presenter;
+const PresenterLoader = private_imports.presenterLoader;
+const Previewer = private_imports.previewer;
+const ProgressCard = private_imports.progressCard;
+const SectionArticlePage = private_imports.sectionArticlePage;
+const SectionPage = private_imports.sectionPage;
+const SectionPageA = private_imports.sectionPageA;
+const SectionPageB = private_imports.sectionPageB;
+const SpaceContainer = private_imports.spaceContainer;
+const TableOfContents = private_imports.tableOfContents;
+const TextCard = private_imports.textCard;
+const WebkitURIHandlers = private_imports.webkitURIHandlers;
+const Window = private_imports.window;
 
-const ReaderArticlePage = imports.reader.articlePage;
-const ReaderCard = imports.reader.card;
-const ReaderDonePage = imports.reader.donePage;
-const ReaderOverviewPage = imports.reader.overviewPage;
-const ReaderPresenter = imports.reader.presenter;
-const ReaderProgressLabel = imports.reader.progressLabel;
-const ReaderSearchResultsPage = imports.reader.searchResultsPage;
-const ReaderStandalonePage = imports.reader.standalonePage;
-const ReaderTitleView = imports.reader.titleView;
-const ReaderUserSettingsModel = imports.reader.userSettingsModel;
-const ReaderWebviewTooltip = imports.reader.webviewTooltip;
-const ReaderWindow = imports.reader.window;
+const ReaderArticlePage = private_imports.reader.articlePage;
+const ReaderCard = private_imports.reader.card;
+const ReaderDonePage = private_imports.reader.donePage;
+const ReaderOverviewPage = private_imports.reader.overviewPage;
+const ReaderPresenter = private_imports.reader.presenter;
+const ReaderProgressLabel = private_imports.reader.progressLabel;
+const ReaderSearchResultsPage = private_imports.reader.searchResultsPage;
+const ReaderStandalonePage = private_imports.reader.standalonePage;
+const ReaderTitleView = private_imports.reader.titleView;
+const ReaderUserSettingsModel = private_imports.reader.userSettingsModel;
+const ReaderWebviewTooltip = private_imports.reader.webviewTooltip;
+const ReaderWindow = private_imports.reader.window;
 
-imports.searchPath = _oldSearchPath;
+delete window.private_imports;
 
 function _init() {
     // "this" is imports.gi.EosKnowledge

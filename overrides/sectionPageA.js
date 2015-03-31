@@ -1,12 +1,14 @@
 // Copyright 2014 Endless Mobile, Inc.
 
+/* global private_imports */
+
 const EosKnowledge = imports.gi.EosKnowledge;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
-const InfiniteScrolledWindow = imports.infiniteScrolledWindow;
-const SectionPage = imports.sectionPage;
+const InfiniteScrolledWindow = private_imports.infiniteScrolledWindow;
+const SectionPage = private_imports.sectionPage;
 
 /**
  * Class: SectionPageA

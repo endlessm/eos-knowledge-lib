@@ -1,13 +1,15 @@
 // Copyright 2014 Endless Mobile, Inc.
 
+/* global private_imports */
+
 const Endless = imports.gi.Endless;
 const EosKnowledge = imports.gi.EosKnowledge;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
-const HomePage = imports.homePage;
-const Config = imports.config;
+const HomePage = private_imports.homePage;
+const Config = private_imports.config;
 
 /**
  * Class: HomePageB

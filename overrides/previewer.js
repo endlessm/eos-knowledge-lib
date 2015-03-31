@@ -1,11 +1,13 @@
+/* global private_imports */
+
 const EosKnowledge = imports.gi.EosKnowledge;
 const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
-const ImagePreviewer = imports.imagePreviewer;
-const VideoPreviewer = imports.videoPreviewer;
+const ImagePreviewer = private_imports.imagePreviewer;
+const VideoPreviewer = private_imports.videoPreviewer;
 
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 

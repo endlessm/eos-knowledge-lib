@@ -1,3 +1,5 @@
+/* global private_imports */
+
 const Cairo = imports.gi.cairo;
 const Endless = imports.gi.Endless;
 const EosKnowledge = imports.gi.EosKnowledge;
@@ -9,8 +11,8 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
-const CompositeButton = imports.compositeButton;
-const Utils = imports.utils;
+const CompositeButton = private_imports.compositeButton;
+const Utils = private_imports.utils;
 
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 

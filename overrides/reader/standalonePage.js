@@ -1,5 +1,7 @@
 // Copyright 2015 Endless Mobile, Inc.
 
+/* global private_imports */
+
 const EosKnowledge = imports.gi.EosKnowledge;
 const Gettext = imports.gettext;
 const Gio = imports.gi.Gio;
@@ -7,11 +9,11 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
-const ArticlePage = imports.reader.articlePage;
-const CompositeButton = imports.compositeButton;
-const Config = imports.config;
-const ImagePreviewer = imports.imagePreviewer;
-const Utils = imports.utils;
+const ArticlePage = private_imports.reader.articlePage;
+const CompositeButton = private_imports.compositeButton;
+const Config = private_imports.config;
+const ImagePreviewer = private_imports.imagePreviewer;
+const Utils = private_imports.utils;
 
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 

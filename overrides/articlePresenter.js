@@ -1,3 +1,5 @@
+/* global private_imports */
+
 const EosKnowledgeSearch = imports.EosKnowledgeSearch;
 const EosKnowledge = imports.gi.EosKnowledge;
 const GLib = imports.gi.GLib;
@@ -7,11 +9,11 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const WebKit2 = imports.gi.WebKit2;
 
-const ArticlePage = imports.articlePage;
-const ArticleHTMLRenderer = imports.articleHTMLRenderer;
-const EknWebview = imports.eknWebview;
-const PDFView = imports.PDFView;
-const Utils = imports.utils;
+const ArticlePage = private_imports.articlePage;
+const ArticleHTMLRenderer = private_imports.articleHTMLRenderer;
+const EknWebview = private_imports.eknWebview;
+const PDFView = private_imports.PDFView;
+const Utils = private_imports.utils;
 
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 

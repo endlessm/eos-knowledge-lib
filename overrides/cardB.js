@@ -1,11 +1,12 @@
 // Copyright 2014 Endless Mobile, Inc.
 
+/* global private_imports */
+
 const EosKnowledge = imports.gi.EosKnowledge;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
-const Card = imports.card;
-
+const Card = private_imports.card;
 
 /**
  * Class: CardB

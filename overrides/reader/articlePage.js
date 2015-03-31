@@ -1,13 +1,15 @@
 // Copyright 2014 Endless Mobile, Inc.
 
+/* global private_imports */
+
 const EosKnowledge = imports.gi.EosKnowledge;
 const Gettext = imports.gettext;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
-const ProgressLabel = imports.reader.progressLabel;
-const TitleView = imports.reader.titleView;
+const ProgressLabel = private_imports.reader.progressLabel;
+const TitleView = private_imports.reader.titleView;
 
 const _TITLE_VIEW_LEFT_MARGIN_PX = 60;
 const _CONTENT_VIEW_TOP_MARGIN_PX = 40;

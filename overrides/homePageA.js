@@ -1,5 +1,7 @@
 // Copyright 2014 Endless Mobile, Inc.
 
+/* global private_imports */
+
 const Endless = imports.gi.Endless;
 const EosKnowledge = imports.gi.EosKnowledge;
 const Gettext = imports.gettext;
@@ -7,10 +9,10 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
-const Config = imports.config;
-const HomePage = imports.homePage;
-const SpaceContainer = imports.spaceContainer;
-const TabButton = imports.tabButton;
+const Config = private_imports.config;
+const HomePage = private_imports.homePage;
+const SpaceContainer = private_imports.spaceContainer;
+const TabButton = private_imports.tabButton;
 
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 

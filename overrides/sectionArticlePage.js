@@ -1,5 +1,7 @@
 // Copyright 2014 Endless Mobile, Inc.
 
+/* global private_imports */
+
 const Endless = imports.gi.Endless;
 const EosKnowledge = imports.gi.EosKnowledge;
 const GLib = imports.gi.GLib;
@@ -7,10 +9,10 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
-const NavButtonOverlay = imports.navButtonOverlay;
-const SectionPageA = imports.sectionPageA;
-const SectionPageB = imports.sectionPageB;
-const ArticlePage = imports.articlePage;
+const NavButtonOverlay = private_imports.navButtonOverlay;
+const SectionPageA = private_imports.sectionPageA;
+const SectionPageB = private_imports.sectionPageB;
+const ArticlePage = private_imports.articlePage;
 
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 
