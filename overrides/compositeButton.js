@@ -1,7 +1,9 @@
+/* global private_imports */
+
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
-const MarginButton = imports.marginButton;
+const MarginButton = private_imports.marginButton;
 
 // Class for buttons whose :hover and :active CSS pseudoclass states should be
 // inherited by some of their child widgets, since as of GTK 3.10 these flags no

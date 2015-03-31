@@ -1,13 +1,15 @@
 // Copyright 2015 Endless Mobile, Inc.
 
+/* global private_imports */
+
 const EosKnowledge = imports.gi.EosKnowledge;
 const Gettext = imports.gettext;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
-const Config = imports.config;
-const InfiniteScrolledWindow = imports.infiniteScrolledWindow;
+const Config = private_imports.config;
+const InfiniteScrolledWindow = private_imports.infiniteScrolledWindow;
 
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 

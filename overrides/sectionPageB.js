@@ -1,5 +1,7 @@
 // Copyright 2014 Endless Mobile, Inc.
 
+/* global private_imports */
+
 const Cairo = imports.gi.cairo;
 const Endless = imports.gi.Endless;
 const EosKnowledge = imports.gi.EosKnowledge;
@@ -9,8 +11,8 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const Pango = imports.gi.Pango;
 
-const InfiniteScrolledWindow = imports.infiniteScrolledWindow;
-const SectionPage = imports.sectionPage;
+const InfiniteScrolledWindow = private_imports.infiniteScrolledWindow;
+const SectionPage = private_imports.sectionPage;
 
 /**
  * Class: SectionPageB

@@ -1,8 +1,10 @@
 // Copyright 2014 Endless Mobile, Inc.
 
+/* global private_imports */
+
 const Lang = imports.lang;
 
-const CardA = imports.cardA;
+const CardA = private_imports.cardA;
 
 /**
  * Class: ListCard

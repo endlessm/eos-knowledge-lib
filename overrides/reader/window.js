@@ -1,5 +1,7 @@
 // Copyright 2014 Endless Mobile, Inc.
 
+/* global private_imports */
+
 const Endless = imports.gi.Endless;
 const EosKnowledge = imports.gi.EosKnowledge;
 const Gdk = imports.gi.Gdk;
@@ -9,13 +11,13 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
-const StandalonePage = imports.reader.standalonePage;
-const DonePage = imports.reader.donePage;
-const Lightbox = imports.lightbox;
-const NavButtonOverlay = imports.navButtonOverlay;
-const OverviewPage = imports.reader.overviewPage;
-const ProgressLabel = imports.reader.progressLabel;
-const SearchResultsPage = imports.reader.searchResultsPage;
+const StandalonePage = private_imports.reader.standalonePage;
+const DonePage = private_imports.reader.donePage;
+const Lightbox = private_imports.lightbox;
+const NavButtonOverlay = private_imports.navButtonOverlay;
+const OverviewPage = private_imports.reader.overviewPage;
+const ProgressLabel = private_imports.reader.progressLabel;
+const SearchResultsPage = private_imports.reader.searchResultsPage;
 
 /**
  * Class: Reader.Window

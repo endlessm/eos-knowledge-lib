@@ -1,5 +1,7 @@
 // Copyright 2015 Endless Mobile, Inc.
 
+/* global private_imports */
+
 const EosKnowledge = imports.gi.EosKnowledge;
 const Gettext = imports.gettext;
 const GLib = imports.gi.GLib;
@@ -8,7 +10,7 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const Pango = imports.gi.Pango;
 
-const Config = imports.config;
+const Config = private_imports.config;
 
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 

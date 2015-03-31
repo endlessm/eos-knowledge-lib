@@ -1,3 +1,5 @@
+/* global private_imports */
+
 const cairo = imports.gi.cairo;  // note: GI module, not native GJS module
 const EosKnowledge = imports.gi.EosKnowledge;
 const EosKnowledgeSearch = imports.EosKnowledgeSearch;
@@ -12,21 +14,20 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const WebKit2 = imports.gi.WebKit2;
 
-const ArticleHTMLRenderer = imports.articleHTMLRenderer;
-const ArticlePage = imports.reader.articlePage;
-const Config = imports.config;
-const EknWebview = imports.eknWebview;
-const Engine = imports.engine;
-const HistoryItem = imports.historyItem;
-const Launcher = imports.launcher;
-const OverviewPage = imports.reader.overviewPage;
-const Previewer = imports.previewer;
-const ReaderCard = imports.reader.card;
-const UserSettingsModel = imports.reader.userSettingsModel;
-const Utils = imports.utils;
-const WebkitURIHandlers = imports.webkitURIHandlers;
-const WebviewTooltip = imports.reader.webviewTooltip;
-const Window = imports.reader.window;
+const ArticleHTMLRenderer = private_imports.articleHTMLRenderer;
+const ArticlePage = private_imports.reader.articlePage;
+const Config = private_imports.config;
+const EknWebview = private_imports.eknWebview;
+const HistoryItem = private_imports.historyItem;
+const Launcher = private_imports.launcher;
+const OverviewPage = private_imports.reader.overviewPage;
+const Previewer = private_imports.previewer;
+const ReaderCard = private_imports.reader.card;
+const UserSettingsModel = private_imports.reader.userSettingsModel;
+const Utils = private_imports.utils;
+const WebkitURIHandlers = private_imports.webkitURIHandlers;
+const WebviewTooltip = private_imports.reader.webviewTooltip;
+const Window = private_imports.reader.window;
 
 String.prototype.format = Format.format;
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);

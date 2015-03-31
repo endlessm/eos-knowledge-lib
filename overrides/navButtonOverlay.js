@@ -1,5 +1,7 @@
 // Copyright 2014 Endless Mobile, Inc.
 
+/* global private_imports */
+
 const EosKnowledge = imports.gi.EosKnowledge;
 const GObject = imports.gi.GObject;
 const GLib = imports.gi.GLib;
@@ -7,7 +9,7 @@ const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
-const Utils = imports.utils;
+const Utils = private_imports.utils;
 
 const _ARROW_SIZE = 20;
 const _SCROLLBAR_MARGIN_PX = 13;  // FIXME should be dynamic

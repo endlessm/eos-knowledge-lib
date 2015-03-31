@@ -1,10 +1,12 @@
+/* global private_imports */
+
 const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
 const System = imports.system;
 
-const Presenter = imports.presenter;
-const ReaderPresenter = imports.reader.presenter;
-const Utils = imports.utils;
+const Presenter = private_imports.presenter;
+const ReaderPresenter = private_imports.reader.presenter;
+const Utils = private_imports.utils;
 
 let get_presenter_for_resource = function (application, resource_path) {
     let resource = Gio.Resource.load(resource_path);

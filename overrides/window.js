@@ -1,5 +1,7 @@
 // Copyright 2014 Endless Mobile, Inc.
 
+/* global private_imports */
+
 const Endless = imports.gi.Endless;
 const EosKnowledge = imports.gi.EosKnowledge;
 const GdkPixbuf = imports.gi.GdkPixbuf;
@@ -8,15 +10,15 @@ const Gdk = imports.gi.Gdk;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
-const ArticlePage = imports.articlePage;
-const CategoriesPage = imports.categoriesPage;
-const HomePage = imports.homePage;
-const HomePageA = imports.homePageA;
-const HomePageB = imports.homePageB;
-const Lightbox = imports.lightbox;
-const NoSearchResultsPage = imports.noSearchResultsPage;
-const SectionPage = imports.sectionPage;
-const SectionArticlePage = imports.sectionArticlePage;
+const ArticlePage = private_imports.articlePage;
+const CategoriesPage = private_imports.categoriesPage;
+const HomePage = private_imports.homePage;
+const HomePageA = private_imports.homePageA;
+const HomePageB = private_imports.homePageB;
+const Lightbox = private_imports.lightbox;
+const NoSearchResultsPage = private_imports.noSearchResultsPage;
+const SectionPage = private_imports.sectionPage;
+const SectionArticlePage = private_imports.sectionArticlePage;
 
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 

@@ -1,3 +1,5 @@
+/* global private_imports */
+
 const EosKnowledge = imports.gi.EosKnowledge;
 const EosKnowledgeSearch = imports.EosKnowledgeSearch;
 const EosMetrics = imports.gi.EosMetrics;
@@ -10,21 +12,20 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
-const ArticleCard = imports.articleCard;
-const ArticlePresenter = imports.articlePresenter;
-const CardA = imports.cardA;
-const CardB = imports.cardB;
-const Config = imports.config;
-const Engine = imports.engine;
-const Launcher = imports.launcher;
-const HistoryItem = imports.historyItem;
-const MediaInfobox = imports.mediaInfobox;
-const PdfCard = imports.pdfCard;
-const Previewer = imports.previewer;
-const TextCard = imports.textCard;
-const WebkitURIHandlers = imports.webkitURIHandlers;
-const Window = imports.window;
-const Utils = imports.utils;
+const ArticleCard = private_imports.articleCard;
+const ArticlePresenter = private_imports.articlePresenter;
+const CardA = private_imports.cardA;
+const CardB = private_imports.cardB;
+const Config = private_imports.config;
+const Launcher = private_imports.launcher;
+const HistoryItem = private_imports.historyItem;
+const MediaInfobox = private_imports.mediaInfobox;
+const PdfCard = private_imports.pdfCard;
+const Previewer = private_imports.previewer;
+const TextCard = private_imports.textCard;
+const WebkitURIHandlers = private_imports.webkitURIHandlers;
+const Window = private_imports.window;
+const Utils = private_imports.utils;
 
 String.prototype.format = Format.format;
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);

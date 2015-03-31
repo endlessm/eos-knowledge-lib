@@ -1,6 +1,8 @@
+/* global private_imports */
+
 const Gettext = imports.gettext;
 
-const Config = imports.config;
+const Config = private_imports.config;
 
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 

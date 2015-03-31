@@ -1,13 +1,15 @@
 // Copyright 2014 Endless Mobile, Inc.
 
+/* global private_imports */
+
 const EosKnowledge = imports.gi.EosKnowledge;
 const Gettext = imports.gettext;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
-const Config = imports.config;
-const ProgressLabel = imports.reader.progressLabel;
+const Config = private_imports.config;
+const ProgressLabel = private_imports.reader.progressLabel;
 
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 

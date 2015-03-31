@@ -1,3 +1,5 @@
+/* global private_imports */
+
 const Gtk = imports.gi.Gtk;
 const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
@@ -5,9 +7,9 @@ const EosKnowledge = imports.gi.EosKnowledge;
 const Lang = imports.lang;
 const Pango = imports.gi.Pango;
 
-const CompositeButton = imports.compositeButton;
-const Config = imports.config;
-const Utils = imports.utils;
+const CompositeButton = private_imports.compositeButton;
+const Config = private_imports.config;
+const Utils = private_imports.utils;
 
 /** Class: MediaInfobox
  *

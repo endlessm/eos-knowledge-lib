@@ -1,5 +1,7 @@
 // Copyright 2014 Endless Mobile, Inc.
 
+/* global private_imports */
+
 const Endless = imports.gi.Endless;
 const EosKnowledge = imports.gi.EosKnowledge;
 const GObject = imports.gi.GObject;
@@ -8,7 +10,7 @@ const Lang = imports.lang;
 const Pango = imports.gi.Pango;
 const Cairo = imports.gi.cairo;
 
-const TableOfContents = imports.tableOfContents;
+const TableOfContents = private_imports.tableOfContents;
 
 /**
  * Class: ArticlePage

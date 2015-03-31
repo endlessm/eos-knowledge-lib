@@ -1,12 +1,14 @@
 // Copyright 2014 Endless Mobile, Inc.
 
+/* global private_imports */
+
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
-const Utils = imports.utils;
+const Utils = private_imports.utils;
 
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 

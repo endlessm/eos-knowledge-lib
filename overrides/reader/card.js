@@ -1,5 +1,7 @@
 // Copyright 2015 Endless Mobile, Inc.
 
+/* global private_imports */
+
 const Endless = imports.gi.Endless;
 const EosKnowledge = imports.gi.EosKnowledge;
 const GLib = imports.gi.GLib;
@@ -10,8 +12,8 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const Pango = imports.gi.Pango;
 
-const EknCard = imports.card;
-const Config = imports.config;
+const EknCard = private_imports.card;
+const Config = private_imports.config;
 
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
