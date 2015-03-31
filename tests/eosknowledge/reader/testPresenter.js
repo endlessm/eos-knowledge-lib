@@ -213,7 +213,7 @@ describe('Reader presenter', function () {
             html: '<html>hello</html>',
             article_number: ix,
         });
-        spyOn(model, 'get_authors').and.returnValue(data[1]);
+        model.authors = data[1];
         return model;
     });
 
@@ -229,6 +229,8 @@ describe('Reader presenter', function () {
             update_timestamp: new Date().toISOString(),
         });
         spyOn(engine, 'get_objects_by_query');
+        MOCK_RESULTS.forEach((model) =>
+            spyOn(model, 'get_authors').and.returnValue(model.authors));
 
         presenter = new EosKnowledge.Reader.Presenter(TEST_JSON, {
             application: application,
@@ -236,6 +238,7 @@ describe('Reader presenter', function () {
             settings: settings,
             view: view,
         });
+        spyOn(presenter, 'record_search_metric');
     });
 
     it('constructs', function () {});
@@ -533,6 +536,15 @@ describe('Reader presenter', function () {
                     jasmine.any(Function));
                 expect(view.show_search_results_page).toHaveBeenCalled();
                 expect(presenter.history_model.current_item.query).toBe(JSON.stringify({q:'Azucar', limit: 15}));
+                done();
+            });
+        });
+
+        it('records a metric when searching from the search box', function (done) {
+            view.search_box.text = 'Azucar';
+            view.search_box.emit('activate');
+            Mainloop.idle_add(function () {
+                expect(presenter.record_search_metric).toHaveBeenCalled();
                 done();
             });
         });
