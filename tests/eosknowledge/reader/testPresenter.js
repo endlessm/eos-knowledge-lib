@@ -148,6 +148,7 @@ const MockView = new Lang.Class({
                 connect: function () {},
                 show: function () {},
                 hide: function () {},
+                get_action_area: function () { return {}; },
             },
             archive_notice: {
                 show: function () {},
