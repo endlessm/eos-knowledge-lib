@@ -685,7 +685,7 @@ enum_type##_get_type (void) \
  * EKN_STYLE_CLASS_READER_WEBVIEW_TOOLTIP
  *
  * A CSS class to match the webview tooltip widget.
- * Since 0.2
+ * Since: 0.2
  */
 #define EKN_STYLE_CLASS_READER_WEBVIEW_TOOLTIP "webview-tooltip"
 
@@ -694,7 +694,7 @@ enum_type##_get_type (void) \
  * EKN_STYLE_CLASS_READER_ARCHIVE_LABEL
  *
  * A CSS class to match the archive label.
- * Since 0.2
+ * Since: 0.2
  */
 #define EKN_STYLE_CLASS_READER_ARCHIVE_LABEL "archive-label"
 
@@ -702,7 +702,7 @@ enum_type##_get_type (void) \
  * EKN_STYLE_CLASS_READER_TOOLTIP_TYPE_LABEL
  *
  * A CSS class to match the tooltip type label widget in Reader apps.
- * Since 0.2
+ * Since: 0.2
  */
 #define EKN_STYLE_CLASS_READER_TOOLTIP_TYPE_LABEL "tooltip-type-label"
 
