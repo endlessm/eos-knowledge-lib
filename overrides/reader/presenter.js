@@ -221,8 +221,9 @@ const Presenter = new Lang.Class({
             this._go_to_page(this._current_page - 1, EosKnowledge.LoadingAnimationType.BACKWARDS_NAVIGATION);
         }.bind(this));
         this.view.nav_buttons.connect('forward-clicked', function () {
-            this._update_history_model(this._current_page + 1);
-            this._go_to_page(this._current_page + 1, EosKnowledge.LoadingAnimationType.FORWARDS_NAVIGATION);
+            let next_page = (this._current_page + 1) % this.view.total_pages;
+            this._update_history_model(next_page);
+            this._go_to_page(next_page, EosKnowledge.LoadingAnimationType.FORWARDS_NAVIGATION);
         }.bind(this));
 
         this.view.connect('notify::total-pages',
@@ -626,9 +627,9 @@ const Presenter = new Lang.Class({
 
         let current_article = index - 1;
         if (index === 0)
-            this.view.show_overview_page();
+            this.view.show_overview_page(animation_type);
         else if (index === this.view.total_pages - 1)
-            this.view.show_done_page();
+            this.view.show_done_page(animation_type);
         else
             this.view.show_article_page(current_article, animation_type);
 
@@ -894,7 +895,7 @@ const Presenter = new Lang.Class({
     },
 
     _update_button_visibility: function () {
-        this.view.nav_buttons.forward_visible = (this._current_page !== this.view.total_pages - 1);
+        this.view.nav_buttons.forward_visible = this.view.article_pages_visible();
         this.view.nav_buttons.back_visible = (this._current_page > 0);
     },
 
