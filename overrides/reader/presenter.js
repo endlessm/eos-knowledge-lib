@@ -409,32 +409,37 @@ const Presenter = new Lang.Class({
             }
 
             if (this._is_archived(model)) {
-                // FIXME Here we should load the rest of the content in the
-                // background; but as there currently isn't a way to get from
-                // the standalone page to the regular content, we don't.
                 this.view.show_all();
                 this._load_standalone_article(model);
                 this.view.show_global_search_standalone_page();
                 this.view.present_with_time(timestamp);
-                return;
             }
 
-            this._load_all_content(/* callback */ (error) => {
-                if (error) {
-                    printerr(error);
-                    printerr(error.stack);
-                    this._show_general_error_page();
-                } else {
-                    this._load_overview_snippets_from_articles();
-                    // add 1 for overview page
-                    let page_number = model.article_number -
-                        this.settings.start_article + 1;
-                    this.view.search_box.text = query;
-                    this._go_to_page(page_number, EosKnowledge.LoadingAnimationType.NONE);
+            // If content is already loaded, don't try to
+            // fetch it again.
+            if (this._article_models.length > 0) {
+                if (!this._is_archived(model)) {
+                    this._launch_in_app_article(model, timestamp, query);
                 }
-                this.view.show_all();
-                this.view.present_with_time(timestamp);
-            }, /* progress callback */ this._append_results.bind(this));
+            } else {
+                // make Open Magazine button insensitive until rest of content loads
+                this.view.standalone_page.infobar.get_action_area().sensitive = false;
+                this._load_all_content(/* callback */ (error) => {
+                    if (error) {
+                        printerr(error);
+                        printerr(error.stack);
+                        this._show_general_error_page();
+                        this.view.show_all();
+                        this.view.present_with_time(timestamp);
+                    } else {
+                        this._load_overview_snippets_from_articles();
+                        this.view.standalone_page.infobar.get_action_area().sensitive = true;
+                        if (!this._is_archived(model)) {
+                            this._launch_in_app_article(model, timestamp, query);
+                        }
+                    }
+                }, /* progress callback */ this._append_results.bind(this));
+            }
         });
     },
 
@@ -443,6 +448,16 @@ const Presenter = new Lang.Class({
         let recorder = EosMetrics.EventRecorder.get_default();
         recorder.record_event(_SEARCH_METRIC, new GLib.Variant('(ss)',
             [query, this.application.application_id]));
+    },
+
+    _launch_in_app_article: function (model, timestamp, query) {
+        // add 1 for overview page
+        let page_number = model.article_number -
+            this.settings.start_article + 1;
+        this.view.search_box.text = query;
+        this._go_to_page(page_number, EosKnowledge.LoadingAnimationType.NONE);
+        this.view.show_all();
+        this.view.present_with_time(timestamp);
     },
 
     _is_archived: function (model) {
