@@ -114,6 +114,8 @@ overridden by app specific CSS */
     background-color: alpha(black, 0.3);
     padding: 16px; /* (55px (button width) - 23px (icon width)) / 2 */
     transition: padding 500ms ease-in-out;
+    opacity: 1.0;
+    transition: opacity 400ms;
 }
 
 .nav-back-button GtkImage, .nav-forward-button GtkImage {
@@ -136,6 +138,11 @@ overridden by app specific CSS */
 
 .nav-forward-button:hover {
     padding-right: 24px;
+}
+
+.animating .nav-forward-button, .animating .nav-back-button {
+    opacity: 0;
+    transition: opacity 400ms;
 }
 
 .overview-page .scrollbar.trough {

@@ -245,6 +245,14 @@ const Window = new Lang.Class({
         });
         this.overview_page.show_all();
         this._stack.set_visible_child(this.overview_page);
+
+        this._stack.connect('notify::transition-running', () => {
+            if (this._stack.transition_running) {
+                this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_ANIMATING);
+            } else {
+                this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_ANIMATING);
+            }
+        });
     },
 
     _update_progress_labels: function () {
