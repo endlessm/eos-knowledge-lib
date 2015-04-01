@@ -62,16 +62,13 @@ const Card = new Lang.Class({
             0, GLib.MAXUINT32, 0),
     },
 
-    _CARD_WIDTH: 157,
-    _CARD_HEIGHT: 177,
-    _CARD_MARGIN: 5,
+    _CARD_WIDTH: 200,
+    _CARD_HEIGHT: 250,
     _ARCHIVE_ICON: '/com/endlessm/knowledge/reader/archive.svg',
     _GRID_COL_SPACING: 4,
-    _TITLE_LABEL_LINES: 2,
+    _TITLE_LABEL_LINES: 4,
 
     _init: function(props={}) {
-        props.margin = this._CARD_MARGIN;
-
         this.parent(props);
 
         this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_READER_CARD);
@@ -79,21 +76,23 @@ const Card = new Lang.Class({
 
     pack_widgets: function (title_label, attribution_label, image_frame) {
         title_label.valign = Gtk.Align.START;
-        attribution_label.valign = Gtk.Align.END;
 
         title_label.get_style_context().add_class(EosKnowledge.STYLE_CLASS_READER_TITLE);
-        attribution_label.get_style_context().add_class(EosKnowledge.STYLE_CLASS_READER_ATTRIBUTION);
 
         title_label.lines = this._TITLE_LABEL_LINES;
         title_label.expand = true;
+        title_label.valign = Gtk.Align.CENTER;
+        title_label.halign = Gtk.Align.START;
+        title_label.max_width_chars = 15;
+        title_label.margin = 8;
 
         let grid = new Gtk.Grid({
             orientation: Gtk.Orientation.VERTICAL,
+            expand: true,
             halign: Gtk.Align.FILL,
-            valign: Gtk.Align.CENTER,
+            valign: Gtk.Align.FILL,
         });
         grid.add(title_label);
-        grid.add(attribution_label);
 
         let card_info_grid = new Gtk.Grid({
             column_spacing: this._GRID_COL_SPACING,

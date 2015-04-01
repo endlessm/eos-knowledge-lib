@@ -23,10 +23,6 @@ describe('Reader Card widget', function () {
             expect(card).toHaveDescendantWithCssClass('title');
         });
 
-        it('has a descendant with attribution class', function () {
-            expect(card).toHaveDescendantWithCssClass('reader-attribution');
-        });
-
         it('sets style variant classes to variants [0, 2].', function () {
             let cards = [{
                 title: 'Barry Bonds',
