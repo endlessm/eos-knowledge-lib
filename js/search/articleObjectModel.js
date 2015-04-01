@@ -191,6 +191,10 @@ ArticleObjectModel._props_from_json_ld = function (json_ld_data, media_path) {
             props.source = 'wikihow';
         } else if ('eos-pantheon.herokuapp.com' === host || 'localhost' === host) {
             props.source = 'embedly';
+        } else if ('knowledge-build' === host) {
+            // This is where we used to host pdf apps pre 2.3, needed for
+            // compatibility with 2.2 era bundles
+            props.source = 'pdf';
         } else {
             throw new Error('Unrecognized source uri host: ' + host);
         }
