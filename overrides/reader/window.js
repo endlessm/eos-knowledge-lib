@@ -327,6 +327,26 @@ const Window = new Lang.Class({
 
     show_article_page: function (index, animation_type) {
         this.nav_buttons.accommodate_scrollbar = true;
+        this._set_stack_transition(animation_type);
+        let page = this._article_pages[index];
+        page.show();
+        this._stack.set_visible_child(page);
+    },
+
+    show_overview_page: function (animation_type) {
+        this.nav_buttons.accommodate_scrollbar = false;
+        this._set_stack_transition(animation_type);
+        this.overview_page.show();
+        this._stack.set_visible_child(this.overview_page);
+    },
+
+    show_done_page: function (animation_type) {
+        this._set_stack_transition(animation_type);
+        this.done_page.show();
+        this._stack.set_visible_child(this.done_page);
+    },
+
+    _set_stack_transition: function (animation_type) {
         if (animation_type === EosKnowledge.LoadingAnimationType.FORWARDS_NAVIGATION) {
             this._stack.set_transition_type(Gtk.StackTransitionType.SLIDE_LEFT);
         } else if (animation_type === EosKnowledge.LoadingAnimationType.BACKWARDS_NAVIGATION) {
@@ -334,22 +354,6 @@ const Window = new Lang.Class({
         } else {
             this._stack.set_transition_type(Gtk.StackTransitionType.NONE);
         }
-        let page = this._article_pages[index];
-        page.show();
-        this._stack.set_visible_child(page);
-    },
-
-    show_overview_page: function () {
-        this.nav_buttons.accommodate_scrollbar = false;
-        this._stack.set_transition_type(Gtk.StackTransitionType.SLIDE_RIGHT);
-        this.overview_page.show();
-        this._stack.set_visible_child(this.overview_page);
-    },
-
-    show_done_page: function () {
-        this._stack.set_transition_type(Gtk.StackTransitionType.SLIDE_LEFT);
-        this.done_page.show();
-        this._stack.set_visible_child(this.done_page);
     },
 
     article_pages_visible: function () {

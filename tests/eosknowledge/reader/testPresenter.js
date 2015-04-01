@@ -346,11 +346,6 @@ describe('Reader presenter', function () {
             expect(article_nav_buttons.back_visible).toBe(true);
         });
 
-        it('disables the forward button on the last page', function () {
-            presenter._go_to_page(view.total_pages - 1);
-            expect(article_nav_buttons.forward_visible).toBe(false);
-        });
-
         it('increments the current page when clicking the forward button', function () {
             article_nav_buttons.emit('forward-clicked');
             expect(presenter.history_model.current_item.article_model.title).toBe("Title 1");
