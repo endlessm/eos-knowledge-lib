@@ -535,7 +535,7 @@ const Presenter = new Lang.Class({
     },
 
     _new_card_from_article_model: function (model, idx) {
-        let formatted_attribution = this._format_attribution_for_metadata(model.get_authors(), model.published);
+        let formatted_attribution = this._format_attribution_for_metadata(model.get_authors());
         // We increment the page number to account for the 0-based index.
         // Note: _get_page_number_for_article_model will return -1 only if it's an
         // "Archived" issue, case in which the card doesn't require a card number.
@@ -912,41 +912,24 @@ const Presenter = new Lang.Class({
         this.view.standalone_page.infobar.background_image_uri = info['backgroundHomeURI'];
     },
 
-    _format_attribution_for_metadata: function (authors, date) {
-        let attribution_string = '';
-        // TRANSLATORS: This "and" is used to join together the names
-        // of authors of a blog post. For example:
-        // Jane Austen and Henry Miller and William Clifford
-        let authors_string = authors.join(" " + _("and") + " ");
-        // TRANSLATORS: This is a string that is going to be substituted
-        // by date values in code. The %B represents a month, the %e represents
-        // the day, and %Y represents the year. Rearrange them how you wish to
-        // match the desired locale. For example, if you wanted the date to look
-        // like "1. December 2014", then you would do: "%e. %B %Y".
-        let formatted_date = new Date(date).toLocaleFormat(_("%B %e, %Y"));
-        if (authors.length > 0 && date) {
+    _format_attribution_for_metadata: function (authors) {
+        if (authors.length > 0) {
             // TRANSLATORS: anything inside curly braces '{}' is going
             // to be substituted in code. Please make sure to leave the
             // curly braces around any words that have them and DO NOT
             // translate words inside curly braces.
-            attribution_string = _("by {author} on {date}").replace("{author}", authors_string)
-            .replace("{date}", formatted_date);
-        } else if (authors.length > 0) {
-            // TRANSLATORS: anything inside curly braces '{}' is going
-            // to be substituted in code. Please make sure to leave the
-            // curly braces around any words that have them and DO NOT
-            // translate words inside curly braces.
-            attribution_string = _("by {author}").replace("{author}", authors_string);
-        } else if (date) {
-            // FIXME: must be nicely formatted according to locale
-            attribution_string = formatted_date;
+            // Also, note: the "and" is used to join together the names
+            // of authors of a blog post. For example:
+            // Jane Austen and Henry Miller and William Clifford
+            return _("by {author}").replace("{author}", authors.join(" " + _("and") + " "));
+        } else {
+            return '';
         }
-        return attribution_string;
     },
 
     // Take an ArticleObjectModel and create a Reader.ArticlePage view.
     _create_article_page_from_article_model: function (model) {
-        let formatted_attribution = this._format_attribution_for_metadata(model.get_authors(), model.published);
+        let formatted_attribution = this._format_attribution_for_metadata(model.get_authors());
         let article_page = new ArticlePage.ArticlePage();
         article_page.title_view.title = model.title;
         article_page.title_view.attribution = formatted_attribution;
@@ -1088,7 +1071,7 @@ const Presenter = new Lang.Class({
         });
         this.view.standalone_page.article_page.title_view.title = model.title;
         this.view.standalone_page.article_page.title_view.attribution =
-            this._format_attribution_for_metadata(model.get_authors(), model.published);
+            this._format_attribution_for_metadata(model.get_authors());
         this.view.standalone_page.article_page.get_style_context().add_class('article-page0');
     },
 
