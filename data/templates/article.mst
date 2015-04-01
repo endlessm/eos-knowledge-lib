@@ -16,6 +16,7 @@
             {{/title}}
             <section id="inside-content" class="section">
                 <div>{{{body-html}}}</div>
+                <hr>
                 {{#disclaimer}}
                 <div class="disclaimer">
                     <p>{{{.}}}</p>

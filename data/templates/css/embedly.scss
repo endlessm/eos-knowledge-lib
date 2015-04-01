@@ -85,4 +85,11 @@ html {
         margin: 15px;
         max-width: 66%;
     }
+    hr {
+        border: none;
+        height: 1px;
+        background-color: rgba(0, 0, 0, 0.1);
+        margin: 50px 0px 50px 0px;
+        clear: both;
+    }
 }
