@@ -62,7 +62,7 @@ const TitleView = new Lang.Class({
         this._style_variant = 0;
         this._title_label = new Gtk.Label({
             wrap: true,
-            halign: Gtk.Align.FILL,
+            halign: Gtk.Align.START,
             ellipsize: Pango.EllipsizeMode.END,
             wrap_mode: Pango.WrapMode.WORD_CHAR,
             lines: 5,
