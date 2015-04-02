@@ -11,8 +11,8 @@ const Lang = imports.lang;
 const ProgressLabel = private_imports.reader.progressLabel;
 const TitleView = private_imports.reader.titleView;
 
-const _TITLE_VIEW_LEFT_MARGIN_PX = 80;
-const _CONTENT_VIEW_TOP_MARGIN_PX = 40;
+const _TITLE_VIEW_LEFT_MARGIN_PX = 100;
+const _CONTENT_VIEW_MARGIN_PX = 40;
 
 /**
  * Class: Reader.ArticlePage
@@ -69,6 +69,8 @@ const ArticlePage = new Lang.Class({
             vexpand: true,
             halign: Gtk.Align.CENTER,
             valign: Gtk.Align.FILL,
+            margin_bottom: _CONTENT_VIEW_MARGIN_PX,
+            margin_top: _CONTENT_VIEW_MARGIN_PX,
         });
 
         this._grid = new Gtk.Grid({
@@ -103,7 +105,7 @@ const ArticlePage = new Lang.Class({
             this._size_group.remove_widget(this._content_view);
         }
         view.expand = true;
-        view.margin_top = _CONTENT_VIEW_TOP_MARGIN_PX;
+        view.margin_top = _CONTENT_VIEW_MARGIN_PX;
         this._content_view = view;
         this._grid.attach(view, 2, 0, 1, 2);
         this._size_group.add_widget(view);

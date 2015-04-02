@@ -5,10 +5,9 @@ EosWindow {
 }
 
 .progress-label {
-    font-size: 1.2em;
+    font-size: 1em;
     color: #494949;
-    padding-top: 10px;
-    padding-bottom: 20px;
+    padding-top: 25px;
 }
 
 .separator {
