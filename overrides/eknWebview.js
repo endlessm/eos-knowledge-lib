@@ -33,6 +33,7 @@ const EknWebview = new Lang.Class({
 
         this._webKitSettings = this.get_settings();
         this._webKitSettings.enable_developer_extras = Config.inspector_enabled;
+        this._webKitSettings.enable_write_console_messages_to_stdout = true;
         this._webKitSettings.javascript_can_access_clipboard = true;
 
         this._defaultFontSize = this._webKitSettings.default_font_size;
