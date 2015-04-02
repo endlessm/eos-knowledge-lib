@@ -83,20 +83,21 @@ const TitleView = new Lang.Class({
         });
         this.parent(props);
 
-        let ornament = new Gtk.Frame({
+        this._ornament = new Gtk.Frame({
             width_request: _ORNAMENT_WIDTH_PX,
             height_request: _ORNAMENT_HEIGHT_PX,
             expand: false,
             valign: Gtk.Align.END,
             halign: Gtk.Align.CENTER,
             margin_right: _ORNAMENT_MARGIN_RIGHT_PX,
+            no_show_all: true,
         });
 
         this.attach(this._title_label, 0, 0, 2, 1);
-        this.attach(ornament, 0, 1, 1, 1);
+        this.attach(this._ornament, 0, 1, 1, 1);
         this.attach(this._attribution_label, 1, 1, 1, 1);
 
-        ornament.get_style_context().add_class(EosKnowledge.STYLE_CLASS_READER_ARTICLE_PAGE_ORNAMENT);
+        this._ornament.get_style_context().add_class(EosKnowledge.STYLE_CLASS_READER_ARTICLE_PAGE_ORNAMENT);
         this._title_label.get_style_context().add_class(EosKnowledge.STYLE_CLASS_ARTICLE_PAGE_TITLE);
         this._attribution_label.get_style_context().add_class(EosKnowledge.STYLE_CLASS_READER_ARTICLE_PAGE_ATTRIBUTION);
     },
@@ -161,5 +162,8 @@ const TitleView = new Lang.Class({
         // 1362 = 1.33px * 1024 Pango units/px
 
         this._attribution_label.label = markup_label;
+
+        // Only show the ornament if there's any text for it to decorate
+        this._ornament.visible = (typeof this._attribution_text !== 'undefined' && this._attribution_text.length > 0);
     },
 });
