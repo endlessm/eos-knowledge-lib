@@ -1,5 +1,6 @@
 <html>
     <head>
+        <meta charset="UTF-8">
         {{#css-files}}
         <link rel="stylesheet" type="text/css" href="resource:///com/endlessm/knowledge/templates/css/{{{.}}}"/>
         {{/css-files}}
@@ -25,7 +26,7 @@
             </section>
         </div>
         {{#javascript-files}}
-        <script type="text/javascript" src="resource:///com/endlessm/knowledge/templates/js/{{{.}}}"></script>
+        <script type="text/javascript" src="resource:///com/endlessm/knowledge/templates/js/{{{.}}}" charset="UTF-8"></script>
         {{/javascript-files}}
         {{#include-mathjax}}
         <script type="text/x-mathjax-config">
@@ -46,7 +47,7 @@
                 },
             });
         </script>
-        <script type="text/javascript" src="file://{{{mathjax-path}}}/MathJax.js"></script>
+        <script type="text/javascript" src="file://{{{mathjax-path}}}/MathJax.js" charset="UTF-8"></script>
         {{/include-mathjax}}
     </body>
 </html>
