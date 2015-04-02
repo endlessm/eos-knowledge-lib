@@ -349,6 +349,7 @@ const Window = new Lang.Class({
     },
 
     show_done_page: function (animation_type) {
+        this.nav_buttons.accommodate_scrollbar = false;
         this._set_stack_transition(animation_type);
         this.done_page.show();
         this._stack.set_visible_child(this.done_page);
