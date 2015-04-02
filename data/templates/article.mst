@@ -1,5 +1,6 @@
 <html>
     <head>
+        <meta charset="UTF-8">
         {{#css-files}}
         <link rel="stylesheet" type="text/css" href="resource:///com/endlessm/knowledge/templates/css/{{{.}}}"/>
         {{/css-files}}
