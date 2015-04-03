@@ -28,7 +28,7 @@ const ArchiveLabel = new Lang.Class({
          */
         'label': GObject.ParamSpec.string('label', 'Label',
             'Label',
-            GObject.ParamFlags.READABLE, ''),
+            GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE, ''),
     },
 
     _ARCHIVE_ICON: '/com/endlessm/knowledge/reader/archive.svg',
@@ -36,7 +36,6 @@ const ArchiveLabel = new Lang.Class({
     _init: function (props={}) {
         props.orientation = Gtk.Orientation.HORIZONTAL;
         props.column_spacing = 8;
-        this.parent(props);
 
         let archive_icon = new Gtk.Image({
             resource: this._ARCHIVE_ICON,
@@ -45,6 +44,7 @@ const ArchiveLabel = new Lang.Class({
 
         this._archive_label_text = '';
         this._archive_label = new Gtk.Label();
+        this.parent(props);
         this.add(archive_icon);
         this.add(this._archive_label);
     },
@@ -289,9 +289,6 @@ const StandalonePage = new Lang.Class({
 
         this.parent(props);
 
-        this.article_page = new ArticlePage.ArticlePage();
-        this.infobar = new Banner();
-
         this.archive_label = new ArchiveLabel();
         this.archive_notice = new Gtk.Frame({
             margin_top: 35,
@@ -300,7 +297,10 @@ const StandalonePage = new Lang.Class({
         });
         this.archive_notice.add(this.archive_label);
         this.archive_notice.get_style_context().add_class(EosKnowledge.STYLE_CLASS_READER_ARCHIVE_LABEL);
-        this.add(this.archive_notice);
+        this.article_page = new ArticlePage.ArticlePage({
+           progress_label: this.archive_notice,
+        });
+        this.infobar = new Banner();
         this.add(this.infobar);
         this.add(this.article_page);
     },

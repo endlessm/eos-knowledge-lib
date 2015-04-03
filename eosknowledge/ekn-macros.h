@@ -715,6 +715,14 @@ enum_type##_get_type (void) \
 #define EKN_STYLE_CLASS_READER_SEARCH_RESULTS_PAGE "search-results-page"
 
 /**
+ * EKN_STYLE_CLASS_READER_DECORATIVE_BAR
+ *
+ * A CSS class to match the decorative title bar in Reader apps.
+ * Since: 0.2
+ */
+#define EKN_STYLE_CLASS_READER_DECORATIVE_BAR "decorative-bar"
+
+/**
  * EKN_STYLE_CLASS_PDF_CARD_LABEL:
  *
  * A CSS class to match the PDF label on the pdf cards
