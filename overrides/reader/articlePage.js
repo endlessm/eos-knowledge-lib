@@ -13,6 +13,7 @@ const TitleView = private_imports.reader.titleView;
 
 const _TITLE_VIEW_LEFT_MARGIN_PX = 100;
 const _CONTENT_VIEW_MARGIN_PX = 40;
+const _DECORATIVE_BAR_HEIGHT = 19;
 
 /**
  * Class: Reader.ArticlePage
@@ -76,9 +77,26 @@ const ArticlePage = new Lang.Class({
             // Keep a minimum width, or the labels get kinda illegible
             width_request: 600,
         });
-        this._grid.attach(this._title_view, 0, 0, 1, 2);
-        this._grid.attach(this._progress_label, 1, 0, 1, 1);
-        this._grid.attach(separator, 1, 1, 1, 1);
+
+        let decorative_frame = new Gtk.Frame({
+            margin_left: _TITLE_VIEW_LEFT_MARGIN_PX,
+            halign: Gtk.Align.START,
+            height_request: _DECORATIVE_BAR_HEIGHT,
+        });
+        decorative_frame.get_style_context().add_class(EosKnowledge.STYLE_CLASS_READER_DECORATIVE_BAR);
+
+        let decorative_title_size_group = new Gtk.SizeGroup({
+            mode: Gtk.SizeGroupMode.HORIZONTAL,
+        });
+
+        decorative_title_size_group.add_widget(decorative_frame);
+        decorative_title_size_group.add_widget(this._title_view);
+
+        this._grid.attach(decorative_frame, 0, 0, 1, 1);
+        this._grid.attach(this._progress_label, 0, 1, 3, 1);
+        this._grid.attach(this._title_view, 0, 2, 1, 1);
+
+        this._grid.attach(separator, 1, 2, 1, 1);
 
         this.add(this._grid);
 
@@ -106,7 +124,7 @@ const ArticlePage = new Lang.Class({
         view.expand = true;
         view.margin_top = _CONTENT_VIEW_MARGIN_PX;
         this._content_view = view;
-        this._grid.attach(view, 2, 0, 1, 2);
+        this._grid.attach(view, 2, 2, 1, 1);
         this._size_group.add_widget(view);
         view.grab_focus();
         view.show_all();
