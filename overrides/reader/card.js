@@ -64,6 +64,8 @@ const Card = new Lang.Class({
 
     _CARD_WIDTH: 200,
     _CARD_HEIGHT: 250,
+    _CONTENT_MARGIN: 8,
+    _DECORATIVE_BAR_HEIGHT: 20,
     _ARCHIVE_ICON: '/com/endlessm/knowledge/reader/archive.svg',
     _GRID_COL_SPACING: 4,
     _TITLE_LABEL_LINES: 4,
@@ -84,7 +86,7 @@ const Card = new Lang.Class({
         title_label.valign = Gtk.Align.CENTER;
         title_label.halign = Gtk.Align.START;
         title_label.max_width_chars = 15;
-        title_label.margin = 8;
+        title_label.margin = this._CONTENT_MARGIN;
 
         let grid = new Gtk.Grid({
             orientation: Gtk.Orientation.VERTICAL,
@@ -92,6 +94,17 @@ const Card = new Lang.Class({
             halign: Gtk.Align.FILL,
             valign: Gtk.Align.FILL,
         });
+
+        let decorative_bar = new Gtk.Frame({
+            hexpand: true,
+            halign: Gtk.Align.FILL,
+            height_request: this._DECORATIVE_BAR_HEIGHT,
+            margin_left: this._CONTENT_MARGIN,
+            margin_right: this._CONTENT_MARGIN,
+        });
+        decorative_bar.get_style_context().add_class(EosKnowledge.STYLE_CLASS_READER_DECORATIVE_BAR);
+
+        grid.add(decorative_bar);
         grid.add(title_label);
 
         let card_info_grid = new Gtk.Grid({
