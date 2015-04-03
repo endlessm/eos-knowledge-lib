@@ -23,7 +23,6 @@ const MediaInfobox = private_imports.mediaInfobox;
 const PdfCard = private_imports.pdfCard;
 const Previewer = private_imports.previewer;
 const TextCard = private_imports.textCard;
-const WebkitURIHandlers = private_imports.webkitURIHandlers;
 const Window = private_imports.window;
 const Utils = private_imports.utils;
 
@@ -133,8 +132,6 @@ const Presenter = new Lang.Class({
                 template_type: this._template_type,
         });
         this.parent(props);
-
-        WebkitURIHandlers.register_webkit_uri_handlers();
 
         this.view.title = app_json['appTitle'];
         this.view.home_page.title_image_uri = app_json['titleImageURI'];

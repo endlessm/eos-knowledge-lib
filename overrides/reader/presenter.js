@@ -175,7 +175,7 @@ const Presenter = new Lang.Class({
 
         this.parent(props);
 
-        WebkitURIHandlers.register_webkit_uri_handlers();
+        WebkitURIHandlers.register_webkit_uri_handlers(this._article_render_callback.bind(this));
 
         let app_id = this.application.application_id;
         let pid = new Gio.Credentials().get_unix_pid();
@@ -882,8 +882,12 @@ const Presenter = new Lang.Class({
             );
         });
 
-        webview.load_html(this._article_renderer.render(article_model), article_model.ekn_id);
+        webview.load_uri(article_model.ekn_id);
         return webview;
+    },
+
+    _article_render_callback: function (article_model) {
+        return this._article_renderer.render(article_model);
     },
 
     _lightbox_handler: function (current_article, media_object) {
