@@ -124,9 +124,6 @@ const ArticlePresenter = new GObject.Class({
         // Make sure we aren't currently loading anything offscreen
         this._stop_loading_views();
 
-        // If the article model has no content_uri, assume html and load the ekn_id uri
-        let uri = this._article_model.ekn_id;
-        let type = 'text/html';
         if (this._article_model.html.length > 0) {
             this._webview = this._get_webview();
             this._webview_load_id = this._webview.connect('load-changed', function (view, status) {
@@ -140,9 +137,9 @@ const ArticlePresenter = new GObject.Class({
             let html = this._renderer.render(this._article_model);
             this._webview.load_html(html, this._article_model.ekn_id);
         } else if (this._article_model.content_uri.length > 0) {
-            uri = this._article_model.content_uri;
+            let uri = this._article_model.content_uri;
             let file = Gio.file_new_for_uri(uri);
-            type = file.query_info('standard::content-type',
+            let type = file.query_info('standard::content-type',
                                    Gio.FileQueryInfoFlags.NONE,
                                    null).get_content_type();
             if (type === 'application/pdf') {
