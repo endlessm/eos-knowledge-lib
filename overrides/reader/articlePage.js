@@ -69,8 +69,7 @@ const ArticlePage = new Lang.Class({
             vexpand: true,
             halign: Gtk.Align.CENTER,
             valign: Gtk.Align.FILL,
-            margin_bottom: _CONTENT_VIEW_MARGIN_PX,
-            margin_top: _CONTENT_VIEW_MARGIN_PX,
+            margin: _CONTENT_VIEW_MARGIN_PX,
         });
 
         this._grid = new Gtk.Grid({
