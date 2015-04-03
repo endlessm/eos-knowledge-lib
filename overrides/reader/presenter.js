@@ -171,8 +171,6 @@ const Presenter = new Lang.Class({
             settings_file: Gio.File.new_for_path(props.application.config_dir.get_path() + '/user_settings.json'),
         });
 
-        this._current_page_style_variant = 0;
-
         this.parent(props);
 
         WebkitURIHandlers.register_webkit_uri_handlers();
@@ -556,10 +554,10 @@ const Presenter = new Lang.Class({
         // "Archived" issue, case in which the card doesn't require a card number.
         let article_page_number = this._get_page_number_for_article_model(model) + 1;
         let card = new ReaderCard.Card({
-            title: model.title,
+            title: model.title.toUpperCase(),
             synopsis: formatted_attribution,
             page_number: article_page_number,
-            style_variant: idx % 3,
+            style_variant: model.article_number % 3,
             archived: this._is_archived(model),
         });
         card.connect('clicked', () => {
@@ -948,17 +946,9 @@ const Presenter = new Lang.Class({
         let article_page = new ArticlePage.ArticlePage();
         article_page.title_view.title = model.title;
         article_page.title_view.attribution = formatted_attribution;
-        this._assign_style_to_page(article_page);
+        article_page.get_style_context().add_class('article-page' + model.article_number % 3);
+        article_page.title_view.style_variant = model.article_number % 3;
         return article_page;
-    },
-
-    // Assigns a style to article pages, so that we can handle alternating design
-    // for title assets.
-    _assign_style_to_page: function (page) {
-        let style_variant = this._current_page_style_variant % this._NUM_ARTICLE_PAGE_STYLES;
-        this._current_page_style_variant++;
-        page.get_style_context().add_class('article-page' + style_variant);
-        page.title_view.style_variant = style_variant;
     },
 
     _get_page_number_for_article_model: function(model) {
@@ -1087,7 +1077,8 @@ const Presenter = new Lang.Class({
         this.view.standalone_page.article_page.title_view.title = model.title;
         this.view.standalone_page.article_page.title_view.attribution =
             this._format_attribution_for_metadata(model.get_authors());
-        this.view.standalone_page.article_page.get_style_context().add_class('article-page0');
+        this.view.standalone_page.article_page.get_style_context().add_class('article-page' + model.article_number % 3);
+        this.view.standalone_page.article_page.title_view.style_variant = model.article_number % 3;
     },
 
     /*
