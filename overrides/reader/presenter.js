@@ -554,7 +554,7 @@ const Presenter = new Lang.Class({
         // "Archived" issue, case in which the card doesn't require a card number.
         let article_page_number = this._get_page_number_for_article_model(model) + 1;
         let card = new ReaderCard.Card({
-            title: model.title,
+            title: model.title.toUpperCase(),
             synopsis: formatted_attribution,
             page_number: article_page_number,
             style_variant: model.article_number % 3,
