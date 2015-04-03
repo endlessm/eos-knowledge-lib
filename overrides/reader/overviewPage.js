@@ -154,7 +154,7 @@ const OverviewPage = new Lang.Class({
         this._subtitle_label_text = v;
         /* 758 = 0.74 px * 1024 Pango units / px */
         this._subtitle_label.label = ('<span letter_spacing="758">' +
-            this._subtitle_label_text.toLocaleUpperCase() + '</span>');
+            GLib.markup_escape_text(this._subtitle_label_text.toLocaleUpperCase(), -1) + '</span>');
         this._subtitle_label.visible = (v && v.length !== 0);
         this.notify('subtitle');
     },

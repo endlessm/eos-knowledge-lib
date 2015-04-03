@@ -106,7 +106,7 @@ const TitleView = new Lang.Class({
         if (this._title_text === value)
             return;
         this._title_text = value;
-        this._title_label.label = this._title_text.toLocaleUpperCase();
+        this._title_label.label = GLib.markup_escape_text(this._title_text.toLocaleUpperCase(), -1);
         this.notify('title');
     },
 
@@ -158,7 +158,7 @@ const TitleView = new Lang.Class({
         if (this.style_variant === 1 || this.style_variant === 2)
             markup_label = markup_label.toLocaleUpperCase();
         if (this.style_variant === 1)
-            markup_label = '<span letter_spacing="1362">' + markup_label + '</span>';
+            markup_label = '<span letter_spacing="1362">' + GLib.markup_escape_text(markup_label, -1) + '</span>';
         // 1362 = 1.33px * 1024 Pango units/px
 
         this._attribution_label.label = markup_label;
