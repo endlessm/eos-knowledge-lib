@@ -181,7 +181,6 @@ const Window = new Lang.Class({
         this.overview_page = new OverviewPage.OverviewPage();
         this.done_page = new DonePage.DonePage();
         this.standalone_page = new StandalonePage.StandalonePage();
-        this.standalone_page.article_page.progress_label.no_show_all = true;
         this.search_results_page = new SearchResultsPage.SearchResultsPage();
         this.nav_buttons = new NavButtonOverlay.NavButtonOverlay({
             back_image_uri: this._BACK_IMAGE_URI,

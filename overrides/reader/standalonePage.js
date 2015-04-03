@@ -289,9 +289,6 @@ const StandalonePage = new Lang.Class({
 
         this.parent(props);
 
-        this.article_page = new ArticlePage.ArticlePage();
-        this.infobar = new Banner();
-
         this.archive_label = new ArchiveLabel();
         this.archive_notice = new Gtk.Frame({
             margin_top: 35,
@@ -300,7 +297,10 @@ const StandalonePage = new Lang.Class({
         });
         this.archive_notice.add(this.archive_label);
         this.archive_notice.get_style_context().add_class(EosKnowledge.STYLE_CLASS_READER_ARCHIVE_LABEL);
-        this.add(this.archive_notice);
+        this.article_page = new ArticlePage.ArticlePage({
+           progress_label: this.archive_notice,
+        });
+        this.infobar = new Banner();
         this.add(this.infobar);
         this.add(this.article_page);
     },

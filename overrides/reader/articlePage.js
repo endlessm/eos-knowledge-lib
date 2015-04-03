@@ -40,19 +40,21 @@ const ArticlePage = new Lang.Class({
         /**
          * Property: progress-label
          *
-         * The <Reader.ProgressLabel> widget created by this widget. Read-only,
-         * modify using the progress label API.
+         * A widget showing where in the series of articles this article
+         * resides. Is either a <Reader.ProgressLabel> widget or, in the
+         * case of standalone pages a label saying that this article is
+         * in the archive.
          */
         'progress-label': GObject.ParamSpec.object('progress-label', 'Progress Label',
             'The progress indicator at the top of the page',
-            GObject.ParamFlags.READABLE,
-            ProgressLabel.ProgressLabel.$gtype),
+            GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE,
+            Gtk.Widget),
     },
 
     _init: function (props) {
         props = props || {};
 
-        this._progress_label = new ProgressLabel.ProgressLabel({
+        this.progress_label = props.progress_label || new ProgressLabel.ProgressLabel({
             vexpand: false,
             valign: Gtk.Align.CENTER,
         });
@@ -93,7 +95,7 @@ const ArticlePage = new Lang.Class({
         decorative_title_size_group.add_widget(this._title_view);
 
         this._grid.attach(decorative_frame, 0, 0, 1, 1);
-        this._grid.attach(this._progress_label, 0, 1, 3, 1);
+        this._grid.attach(this.progress_label, 0, 1, 3, 1);
         this._grid.attach(this._title_view, 0, 2, 1, 1);
 
         this._grid.attach(separator, 1, 2, 1, 1);
@@ -106,10 +108,6 @@ const ArticlePage = new Lang.Class({
         this._size_group.add_widget(this._title_view);
 
         this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_ARTICLE_PAGE);
-    },
-
-    get progress_label() {
-        return this._progress_label;
     },
 
     get title_view() {
