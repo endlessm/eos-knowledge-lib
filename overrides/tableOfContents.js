@@ -434,7 +434,7 @@ const SectionButton = new Lang.Class({
         });
         this.title_label.get_style_context().add_class(EosKnowledge.STYLE_CLASS_TOC_ENTRY_TITLE);
         this._title_bold = new Gtk.Label({
-            label: "<b>" + section_title + "</b>",
+            label: "<b>" + GLib.markup_escape_text(section_title, -1) + "</b>",
             use_markup: true,
             ellipsize: Pango.EllipsizeMode.END,
             width_chars: this._MIN_CHARS, // Demand some characters before ellipsis
