@@ -14,6 +14,7 @@ const ArticleHTMLRenderer = private_imports.articleHTMLRenderer;
 const EknWebview = private_imports.eknWebview;
 const PDFView = private_imports.PDFView;
 const Utils = private_imports.utils;
+const WebkitURIHandlers = private_imports.webkitURIHandlers;
 
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 
@@ -91,6 +92,8 @@ const ArticlePresenter = new GObject.Class({
 
         this._connect_toc_widget();
         this.article_view.connect('new-view-transitioned', this._update_title_and_toc.bind(this));
+
+        WebkitURIHandlers.register_webkit_uri_handlers(this._article_render_callback.bind(this));
     },
 
     set article_model (v) {
@@ -124,9 +127,6 @@ const ArticlePresenter = new GObject.Class({
         // Make sure we aren't currently loading anything offscreen
         this._stop_loading_views();
 
-        // If the article model has no content_uri, assume html and load the ekn_id uri
-        let uri = this._article_model.ekn_id;
-        let type = 'text/html';
         if (this._article_model.html.length > 0) {
             this._webview = this._get_webview();
             this._webview_load_id = this._webview.connect('load-changed', function (view, status) {
@@ -137,12 +137,11 @@ const ArticlePresenter = new GObject.Class({
                 this.article_view.switch_in_content_view(this._webview, animation_type);
                 ready();
             }.bind(this));
-            let html = this._renderer.render(this._article_model);
-            this._webview.load_html(html, this._article_model.ekn_id);
+            this._webview.load_uri(this._article_model.ekn_id);
         } else if (this._article_model.content_uri.length > 0) {
-            uri = this._article_model.content_uri;
+            let uri = this._article_model.content_uri;
             let file = Gio.file_new_for_uri(uri);
-            type = file.query_info('standard::content-type',
+            let type = file.query_info('standard::content-type',
                                    Gio.FileQueryInfoFlags.NONE,
                                    null).get_content_type();
             if (type === 'application/pdf') {
@@ -160,6 +159,10 @@ const ArticlePresenter = new GObject.Class({
             throw new Error("Article had no body html or content uri");
         }
 
+    },
+
+    _article_render_callback: function (article_model) {
+        return this._renderer.render(article_model);
     },
 
     // Cancels any currently loading offscreen views. Right now just the
