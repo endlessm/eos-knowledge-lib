@@ -309,7 +309,7 @@ const StandalonePage = new Lang.Class({
         if (this._app_name === v)
             return;
         this._app_name = v;
-        let message = _("This article is part of the archive of the magazine ") + this._app_name;
+        let message = _("This article is part of the archive of the magazine %s.").format(this._app_name);
         this.archive_label.label = message;
         this.infobar.archive_label.label = message;
         this.notify('app-name');
