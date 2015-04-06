@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: eos-knowledge-lib 0.1.0\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-"
 "inc\n"
-"POT-Creation-Date: 2015-04-06 20:08+0000\n"
+"POT-Creation-Date: 2015-04-06 20:39+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -164,6 +164,15 @@ msgstr ""
 msgid "%d of %d done"
 msgstr ""
 
+#: overrides/reader/card.js:132 overrides/reader/webviewTooltip.js:140
+msgid "Archive"
+msgstr ""
+
+#: overrides/reader/card.js:135
+#, javascript-format
+msgid "Page %s"
+msgstr ""
+
 #: overrides/reader/donePage.js:68
 msgid "Did you like this issue?"
 msgstr ""
@@ -202,4 +211,23 @@ msgstr ""
 msgid ""
 "There was an error loading that page.\n"
 "Try another one or try again after restarting your computer."
+msgstr ""
+
+#: overrides/reader/searchResultsPage.js:75
+msgid "There are no results for your search"
+msgstr ""
+
+#: overrides/reader/standalonePage.js:185
+msgid "Open the magazine"
+msgstr ""
+
+#: overrides/reader/standalonePage.js:312
+msgid "This article is part of the archive of the magazine "
+msgstr ""
+
+#. TRANSLATORS: This shows the page number; %d will be replaced with
+#. the page number of the article.
+#: overrides/reader/webviewTooltip.js:124
+#, javascript-format
+msgid "Page %d"
 msgstr ""
