@@ -8,5 +8,9 @@ overrides/noSearchResultsPage.js
 overrides/pdfCard.js
 overrides/presenter.js
 overrides/progressCard.js
+overrides/reader/card.js
 overrides/reader/donePage.js
 overrides/reader/presenter.js
+overrides/reader/searchResultsPage.js
+overrides/reader/standalonePage.js
+overrides/reader/webviewTooltip.js
