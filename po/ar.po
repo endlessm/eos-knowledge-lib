@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2015-03-24 01:37+0000\n"
+"POT-Creation-Date: 2015-03-31 01:45+0000\n"
 "PO-Revision-Date: 2015-03-21 05:50+0000\n"
 "Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
 "Language-Team: Arabic (http://www.transifex.com/projects/p/eos-knowledge-lib/language/ar/)\n"
@@ -175,7 +175,7 @@ msgstr "لا تفوت مسألة الأسبوع المقبل مع المزيد �
 #. TRANSLATORS: This "and" is used to join together the names
 #. of authors of a blog post. For example:
 #. Jane Austen and Henry Miller and William Clifford
-#: overrides/reader/presenter.js:830
+#: overrides/reader/presenter.js:907
 msgid "and"
 msgstr "و"
 
@@ -184,7 +184,7 @@ msgstr "و"
 #. the day, and %Y represents the year. Rearrange them how you wish to
 #. match the desired locale. For example, if you wanted the date to look
 #. like "1. December 2014", then you would do: "%e. %B %Y".
-#: overrides/reader/presenter.js:836
+#: overrides/reader/presenter.js:913
 msgid "%B %e, %Y"
 msgstr "%B %e, %Y"
 
@@ -192,7 +192,7 @@ msgstr "%B %e, %Y"
 #. to be substituted in code. Please make sure to leave the
 #. curly braces around any words that have them and DO NOT
 #. translate words inside curly braces.
-#: overrides/reader/presenter.js:842
+#: overrides/reader/presenter.js:919
 msgid "by {author} on {date}"
 msgstr "بواسطة (المؤلف) بتاريخ (التاريخ)"
 
@@ -200,21 +200,21 @@ msgstr "بواسطة (المؤلف) بتاريخ (التاريخ)"
 #. to be substituted in code. Please make sure to leave the
 #. curly braces around any words that have them and DO NOT
 #. translate words inside curly braces.
-#: overrides/reader/presenter.js:849
+#: overrides/reader/presenter.js:926
 msgid "by {author}"
 msgstr "بواسطة (المؤلف)"
 
-#: overrides/reader/presenter.js:900 overrides/reader/presenter.js:907
+#: overrides/reader/presenter.js:995 overrides/reader/presenter.js:1002
 msgid "Oops!"
 msgstr "يا لهذا!"
 
-#: overrides/reader/presenter.js:901
+#: overrides/reader/presenter.js:996
 msgid ""
 "We could not find this magazine!\n"
 "Please try again after restarting your computer."
 msgstr "لم نتمكن من إيجاد هذه المجلة!\nيُرجى المحاولة مرة أُخرى بعد إعادة تشغيل جهاز الكمبيوتر الخاص بك."
 
-#: overrides/reader/presenter.js:908
+#: overrides/reader/presenter.js:1003
 msgid ""
 "There was an error loading that page.\n"
 "Try another one or try again after restarting your computer."
