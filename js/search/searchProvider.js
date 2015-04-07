@@ -101,16 +101,22 @@ const AppSearchProvider = Lang.Class({
         this._engine = new Engine.Engine.get_default();
         this._object_cache = {};
 
+        this._app_proxy = null;
+    },
+
+    _ensure_app_proxy: function () {
+        if (this._app_proxy !== null)
+            return;
         let appID = 'com.endlessm.' + this.domain;
         let objectPath = '/com/endlessm/' + this.domain.replace(/\./g, '/').replace(/-/g, '_');
-        this._app = new Gio.DBusProxy({ g_bus_type: Gio.BusType.SESSION,
-                                        g_name: appID,
-                                        g_object_path: objectPath,
-                                        g_interface_info: KnowledgeSearchIfaceInfo,
-                                        g_interface_name: KnowledgeSearchIfaceInfo.name,
-                                        g_flags: (Gio.DBusProxyFlags.DO_NOT_AUTO_START_AT_CONSTRUCTION |
-                                                  Gio.DBusProxyFlags.DO_NOT_LOAD_PROPERTIES) });
-        this._app.init_async(GLib.PRIORITY_DEFAULT, null, null);
+        this._app_proxy = new Gio.DBusProxy({ g_bus_type: Gio.BusType.SESSION,
+                                              g_name: appID,
+                                              g_object_path: objectPath,
+                                              g_interface_info: KnowledgeSearchIfaceInfo,
+                                              g_interface_name: KnowledgeSearchIfaceInfo.name,
+                                              g_flags: (Gio.DBusProxyFlags.DO_NOT_AUTO_START_AT_CONSTRUCTION |
+                                                        Gio.DBusProxyFlags.DO_NOT_LOAD_PROPERTIES) });
+        this._app_proxy.init(null);
     },
 
     _add_results_to_cache: function (results) {
@@ -205,12 +211,14 @@ const AppSearchProvider = Lang.Class({
 
     ActivateResult: function (id, terms, timestamp) {
         let query = terms.join(' ');
-        this._app.LoadPageRemote(id, query, timestamp);
+        this._ensure_app_proxy();
+        this._app_proxy.LoadPageRemote(id, query, timestamp);
     },
 
     LaunchSearch: function (terms, timestamp) {
         let query = terms.join(' ');
-        this._app.LoadQueryRemote(query, timestamp);
+        this._ensure_app_proxy();
+        this._app_proxy.LoadQueryRemote(query, timestamp);
     },
 });
 
