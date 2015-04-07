@@ -1,3 +1,4 @@
+const ByteArray = imports.byteArray;
 const EosKnowledge = imports.gi.EosKnowledge;
 const EosKnowledgeSearch = imports.EosKnowledgeSearch;
 const Gio = imports.gi.Gio;
@@ -19,7 +20,8 @@ function _load_ekn_assets (req, article_render_callback) {
         EosKnowledgeSearch.Engine.get_default().get_object_by_id(req.get_uri(), function (err, model) {
             if (model instanceof EosKnowledgeSearch.ArticleObjectModel) {
                 let html = article_render_callback(model);
-                let stream = Gio.MemoryInputStream.new_from_data(html, -1, null);
+                let bytes = ByteArray.fromString(html).toGBytes();
+                let stream = Gio.MemoryInputStream.new_from_bytes(bytes);
                 req.finish(stream, -1, 'text/html; charset=utf-8');
             } else {
                 let file = Gio.File.new_for_uri(model.content_uri);
