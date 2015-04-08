@@ -111,16 +111,16 @@ describe('Xapian Query Module', function () {
 
         describe('id clauses', () => {
             it('should support single id queries', function () {
-                let result = xq.xapian_ids_clause(['ekn://domain/someId']);
-                expect(result).toBe('id:someId');
+                let result = xq.xapian_ids_clause(['ekn://domain/0123456789abcdef']);
+                expect(result).toBe('id:0123456789abcdef');
             });
 
             it('should support multiple id queries', () => {
                 let result = xq.xapian_ids_clause([
-                    'ekn://domain/someId',
-                    'ekn://domain/someOtherId',
+                    'ekn://domain/0123456789abcdef',
+                    'ekn://domain/fedcba9876543210',
                 ]);
-                expect(result).toBe('id:someId OR id:someOtherId');
+                expect(result).toBe('id:0123456789abcdef OR id:fedcba9876543210');
             });
 
             it('should throw error if receives invalid ekn id', function () {

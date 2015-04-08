@@ -89,19 +89,19 @@ describe('Knowledge Engine Module', () => {
 
         it('can be cancelled', () => {
             let cancellable = new Gio.Cancellable();
-            engine.get_object_by_id('ekn://foo/sqwert', noop, cancellable);
+            engine.get_object_by_id('ekn://foo/0123456789abcdef', noop, cancellable);
             cancellable.cancel();
             expect(engine._http_session.cancel_message).toHaveBeenCalled();
             let message = engine._http_session.cancel_message.calls.mostRecent().args[0];
             // Make sure we are canceling the right Soup Message
             expect(message).toBeA(Soup.Message);
-            expect(message.uri.to_string(true)).toMatch('sqwert');
+            expect(message.uri.to_string(true)).toMatch('0123456789abcdef');
         });
 
         it('does not make a request if already cancelled', () => {
             let cancellable = new Gio.Cancellable();
             cancellable.cancel();
-            engine.get_object_by_id('ekn://foo/sqwert', noop, cancellable);
+            engine.get_object_by_id('ekn://foo/0123456789abcdef', noop, cancellable);
             expect(engine._http_session.queue_message).not.toHaveBeenCalled();
         });
     });
@@ -289,10 +289,10 @@ describe('Knowledge Engine Module', () => {
 
         it('supports single ID queries', () => {
             let query_obj = {
-                ids: ['ekn://domain/someId'],
+                ids: ['ekn://domain/0123456789abcdef'],
             };
             let query_params = {
-                q: '(id:some_id)',
+                q: '(id:0123456789abcdef)',
             };
 
             let mock_uri = engine._get_xapian_uri(query_obj);
@@ -303,11 +303,11 @@ describe('Knowledge Engine Module', () => {
         it('supports multiple ID queries', () => {
             let query_obj = {
                 ids: [
-                    'ekn://domain/someId',
-                    'ekn://domain/someOtherId',
+                    'ekn://domain/0123456789abcdef',
+                    'ekn://domain/fedcba9876543210',
                 ],
             };
-            let expected_vals = '(id:someId OR id:someOtherId)';
+            let expected_vals = '(id:0123456789abcdef OR id:fedcba9876543210)';
 
             let mock_uri = engine._get_xapian_uri(query_obj);
             let mock_query_obj = mock_uri.get_query();
@@ -336,7 +336,7 @@ describe('Knowledge Engine Module', () => {
     describe('get_object_by_id', () => {
         it('sends requests', () => {
             let request_spy = engine_request_spy();
-            let mock_id = 'ekn://foo/bar';
+            let mock_id = 'ekn://foo/0123456789abcdef';
 
             engine.get_object_by_id(mock_id, noop);
             expect(request_spy).toHaveBeenCalled();
@@ -344,8 +344,8 @@ describe('Knowledge Engine Module', () => {
 
         it('sends correct request URIs', () => {
             let request_spy = engine_request_spy();
-            let mock_id = 'ekn://foo/bar';
-            let mock_id_query = '(id:bar)';
+            let mock_id = 'ekn://foo/0123456789abcdef';
+            let mock_id_query = '(id:0123456789abcdef)';
 
             engine.get_object_by_id(mock_id, noop);
             let last_req_args = request_spy.calls.mostRecent().args;
@@ -359,7 +359,7 @@ describe('Knowledge Engine Module', () => {
         });
 
         it('marshals objects based on @type', (done) => {
-            let mock_id = 'ekn://foo/bar';
+            let mock_id = 'ekn://foo/0123456789abcdef';
             mock_engine_request(undefined, {
                 'results': [{
                     "@id": mock_id,
@@ -378,7 +378,7 @@ describe('Knowledge Engine Module', () => {
         });
 
         it('correctly sets media path on models', (done) => {
-            let mock_id = 'ekn://foo/bar';
+            let mock_id = 'ekn://foo/0123456789abcdef';
             mock_engine_request(undefined, {
                 'results': [{
                     "@id": mock_id,
@@ -395,7 +395,7 @@ describe('Knowledge Engine Module', () => {
         });
 
         it('does not call its callback more than once', (done) => {
-            let mock_id = 'ekn://foo/bar';
+            let mock_id = 'ekn://foo/0123456789abcdef';
             mock_engine_request(new Error('I am an error'), undefined);
 
             let callback_called = 0;
@@ -410,20 +410,20 @@ describe('Knowledge Engine Module', () => {
             mock_engine_request_with_multiple_values([
                 {
                     results: [{
-                        '@id': 'ekn://foo/redirect',
+                        '@id': 'ekn://foo/0123456789abcdef',
                         '@type': 'ekn://_vocab/ArticleObject',
-                        redirectsTo: 'ekn://foo/real',
+                        redirectsTo: 'ekn://foo/fedcba9876543210',
                     }],
                 },
                 {
                     results: [{
-                        '@id': 'ekn://foo/real',
+                        '@id': 'ekn://foo/fedcba9876543210',
                         '@type': 'ekn://_vocab/ArticleObject',
                     }],
                 },
             ]);
-            engine.get_object_by_id('ekn://foo/redirect', (err, thing) => {
-                expect(thing.ekn_id).toEqual('ekn://foo/real');
+            engine.get_object_by_id('ekn://foo/0123456789abcdef', (err, thing) => {
+                expect(thing.ekn_id).toEqual('ekn://foo/fedcba9876543210');
                 done();
             });
         });
@@ -432,16 +432,16 @@ describe('Knowledge Engine Module', () => {
             mock_engine_request_with_multiple_values([
                 {
                     results: [{
-                        '@id': 'ekn://foo/redirect',
+                        '@id': 'ekn://foo/0123456789abcdef',
                         '@type': 'ekn://_vocab/ArticleObject',
-                        redirectsTo: 'ekn://foo/nope',
+                        redirectsTo: 'ekn://foo/0000000000000000',
                     }],
                 },
                 {
                     results: [],
                 },
             ]);
-            engine.get_object_by_id('ekn://foo/redirect', (err, thing) => {
+            engine.get_object_by_id('ekn://foo/0123456789abcdef', (err, thing) => {
                 expect(err).toBeDefined();
                 expect(thing).not.toBeDefined();
                 done();
@@ -570,34 +570,22 @@ describe('Knowledge Engine Module', () => {
 
         it('performs redirect resolution', (done) => {
             let get_objects_spy = spyOn(engine, 'get_objects_by_query').and.callThrough();
+            // "aaaabbbbccccdddX" = redirect, "000000000000000X" = real
             mock_engine_request_with_multiple_values([
                 {
                     results: [
                         {
-                            '@id': 'ekn://foo/redirect2',
+                            '@id': 'ekn://foo/aaaabbbbccccddd2',
                             '@type': 'ekn://_vocab/ArticleObject',
-                            redirectsTo: 'ekn://foo/redirect3',
+                            redirectsTo: 'ekn://foo/aaaabbbbccccddd3',
                         },
                         {
-                            '@id': 'ekn://foo/redirect',
+                            '@id': 'ekn://foo/aaaabbbbccccddd1',
                             '@type': 'ekn://_vocab/ArticleObject',
-                            redirectsTo: 'ekn://foo/real2',
+                            redirectsTo: 'ekn://foo/0000000000000002',
                         },
                         {
-                            '@id': 'ekn://foo/real3',
-                            '@type': 'ekn://_vocab/ArticleObject',
-                        },
-                    ],
-                },
-                {
-                    results: [
-                        {
-                            '@id': 'ekn://foo/redirect3',
-                            '@type': 'ekn://_vocab/ArticleObject',
-                            redirectsTo: 'ekn://foo/redirect4',
-                        },
-                        {
-                            '@id': 'ekn://foo/real2',
+                            '@id': 'ekn://foo/0000000000000003',
                             '@type': 'ekn://_vocab/ArticleObject',
                         },
                     ],
@@ -605,25 +593,38 @@ describe('Knowledge Engine Module', () => {
                 {
                     results: [
                         {
-                            '@id': 'ekn://foo/redirect4',
+                            '@id': 'ekn://foo/aaaabbbbccccddd3',
                             '@type': 'ekn://_vocab/ArticleObject',
-                            redirectsTo: 'ekn://foo/real',
+                            redirectsTo: 'ekn://foo/aaaabbbbccccddd4',
+                        },
+                        {
+                            '@id': 'ekn://foo/0000000000000002',
+                            '@type': 'ekn://_vocab/ArticleObject',
                         },
                     ],
                 },
                 {
                     results: [
                         {
-                            '@id': 'ekn://foo/real',
+                            '@id': 'ekn://foo/aaaabbbbccccddd4',
+                            '@type': 'ekn://_vocab/ArticleObject',
+                            redirectsTo: 'ekn://foo/0000000000000000',
+                        },
+                    ],
+                },
+                {
+                    results: [
+                        {
+                            '@id': 'ekn://foo/0000000000000000',
                             '@type': 'ekn://_vocab/ArticleObject',
                         },
                     ],
                 },
             ]);
             engine.get_objects_by_query({}, (err, things) => {
-                expect(things[0].ekn_id).toEqual('ekn://foo/real');
-                expect(things[1].ekn_id).toEqual('ekn://foo/real2');
-                expect(things[2].ekn_id).toEqual('ekn://foo/real3');
+                expect(things[0].ekn_id).toEqual('ekn://foo/0000000000000000');
+                expect(things[1].ekn_id).toEqual('ekn://foo/0000000000000002');
+                expect(things[2].ekn_id).toEqual('ekn://foo/0000000000000003');
                 done();
             });
         });
@@ -633,9 +634,9 @@ describe('Knowledge Engine Module', () => {
                 {
                     results: [
                         {
-                            '@id': 'ekn://foo/redirect',
+                            '@id': 'ekn://foo/0123456789abcdef',
                             '@type': 'ekn://_vocab/ArticleObject',
-                            redirectsTo: 'ekn://foo/notathing',
+                            redirectsTo: 'ekn://foo/ffffffffffffffff',
                         },
                     ],
                 },
