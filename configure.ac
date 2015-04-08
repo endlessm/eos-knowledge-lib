@@ -18,7 +18,7 @@ m4_define([_EKN_API_VERSION_MACRO], [0])
 # Minor and micro versions: increment micro version when making a release. Minor
 # version is even for a stable release and odd for a development release.
 # When making any release, if the API changes, set the interface age to 0.
-m4_define([_EKN_MINOR_VERSION_MACRO], [1])
+m4_define([_EKN_MINOR_VERSION_MACRO], [2])
 m4_define([_EKN_MICRO_VERSION_MACRO], [0])
 m4_define([_EKN_INTERFACE_AGE_MACRO], [0])
 
