@@ -111,33 +111,73 @@ describe('Xapian Query Module', function () {
 
         describe('id clauses', () => {
             it('should support single id queries', function () {
-                let result = xq.xapian_ids_clause(['ekn://domain/someId']);
-                expect(result).toBe('id:someId');
+                let result = xq.xapian_ids_clause(['ekn://domain/0123456789abcdef']);
+                expect(result).toBe('id:0123456789abcdef');
             });
 
             it('should support multiple id queries', () => {
                 let result = xq.xapian_ids_clause([
-                    'ekn://domain/someId',
-                    'ekn://domain/someOtherId',
+                    'ekn://domain/0123456789abcdef',
+                    'ekn://domain/fedcba9876543210',
                 ]);
-                expect(result).toBe('id:someId OR id:someOtherId');
+                expect(result).toBe('id:0123456789abcdef OR id:fedcba9876543210');
             });
 
             it('should throw error if receives invalid ekn id', function () {
-                let bad_ids = ['ekn://bad1/somehash', 'noEknScheme', 'ekn://noId', 'ekn://domain/badha$h',
-                'ekn://api/too/many/parts', 'ekn://underscore_/id'];
-
-                bad_ids.forEach(function (bad_id) {
-                    expect(function(){ xq.xapian_ids_clause([bad_id])}).toThrow(new Error('Received invalid ekn uri ' + bad_id));
-                });
+                let bad_id = 'ekn://bad1/somehash';
+                expect(function () {
+                    xq.xapian_ids_clause([bad_id]);
+                }).toThrow(new Error('Received invalid ekn uri ' + bad_id));
             });
 
             it('should not throw error if receives valid ekn id', function () {
-                let good_ids = ['ekn://travel-es/foo', 'ekn://mental-health-es/bar'];
+                expect(function () {
+                    xq.xapian_ids_clause([ 'ekn://travel-es/2e11617b6bce1e6d' ]);
+                }).not.toThrow();
+            });
+        });
 
-                good_ids.forEach(function (good_id) {
-                    expect(function(){ xq.xapian_ids_clause([good_id])}).not.toThrow(new Error('Received invalid ekn uri ' + good_id));
-                });
+        describe('EKN ID validator', function () {
+            it('validates a simple EKN ID', function () {
+                expect(xq.ekn_uri_is_valid('ekn://travel-es/2e11617b6bce1e6d'))
+                    .toBeTruthy();
+            });
+
+            it('validates an old style EKN ID', function () {
+                expect(xq.ekn_uri_is_valid('ekn://api/travel-es/2e11617b6bce1e6d'))
+                    .toBeTruthy();
+            });
+
+            it('validates an EKN ID with uppercase hex digits', function () {
+                expect(xq.ekn_uri_is_valid('ekn://travel-es/2E11617B6BCE1E6D'))
+                    .toBeTruthy();
+            });
+
+            it('validates an EKN ID with multiple words', function () {
+                expect(xq.ekn_uri_is_valid('ekn://mental-health-es/2e11617b6bce1e6d'))
+                    .toBeTruthy();
+            });
+
+            it('validates an EKN ID with an underscore', function () {
+                expect(xq.ekn_uri_is_valid('ekn://soccer-es_GT/2e11617b6bce1e6d'))
+                    .toBeTruthy();
+            });
+
+            it('rejects an EKN ID with an invalid hash', function () {
+                expect(xq.ekn_uri_is_valid('ekn://bad1/someha$h')).toBeFalsy();
+            });
+
+            it('rejects an EKN ID with the wrong URI scheme', function () {
+                expect(xq.ekn_uri_is_valid('no scheme')).toBeFalsy();
+            });
+
+            it('rejects an EKN ID with no hash', function () {
+                expect(xq.ekn_uri_is_valid('ekn://scuba-diving-es')).toBeFalsy();
+            });
+
+            it('rejects an EKN ID with too many parts', function () {
+                expect(xq.ekn_uri_is_valid('ekn://travel-es/2e11617b6bce1e6d/too/many/parts'))
+                    .toBeFalsy();
             });
         });
     });
