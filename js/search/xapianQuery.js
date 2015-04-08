@@ -1,3 +1,6 @@
+const Gio = imports.gi.Gio;
+const GLib = imports.gi.GLib;
+
 // Xapian prefixes used to query data
 const XAPIAN_PREFIX_EXACT_TITLE = 'exact_title:';
 const XAPIAN_PREFIX_ID = 'id:';
@@ -150,14 +153,34 @@ function xapian_not_tag_clause (tags) {
     return prefixedTagsArr.join(XAPIAN_OP_AND);
 }
 
+// Verify that ekn id is of the right form
+function ekn_uri_is_valid (uri) {
+    if (GLib.uri_parse_scheme(uri) !== 'ekn')
+        return false;
+    let path = uri.slice('ekn://'.length).split('/');
+    if (path[0] === 'api')
+        path.shift();
+
+    if (path.length !== 2)
+        return false;
+
+    // EKN domain is the last part of the app ID (without the reverse domain name)
+    if (!Gio.Application.id_is_valid('com.endlessm.' + path[0]))
+        return false;
+
+    // EKN ID is a 16-hexdigit hash
+    if (path[1].search(/^[A-Za-z0-9]{16}$/) === -1)
+        return false;
+
+    return true;
+}
+
 // Each id argument here is a full uri, e.g. ekn://animals/s0m3ha5h. We want
 // just the hash portion.
 function xapian_ids_clause (ids) {
     let id_clauses = ids.map((id) => {
-        // Verify that ekn id is of the right form
-        let ekn_matcher = /^ekn:\/\/(api\/)?[A-Z-]+\/[A-Z0-9]+$/i
-        if (!ekn_matcher.test(id))
-            throw new Error("Received invalid ekn uri " + id)
+        if (!ekn_uri_is_valid(id))
+            throw new Error('Received invalid ekn uri ' + id);
 
         return XAPIAN_PREFIX_ID + id.split('/').slice(-1)[0];
     });
