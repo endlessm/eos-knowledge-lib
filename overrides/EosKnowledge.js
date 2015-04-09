@@ -1,6 +1,6 @@
 /* global private_imports */
 
-imports.gi.versions.WebKit2 = '3.0';
+imports.gi.versions.WebKit2 = '4.0';
 
 const ClutterGst = imports.gi.ClutterGst;
 const Endless = imports.gi.Endless;

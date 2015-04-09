@@ -79,7 +79,7 @@ GTK_REQUIREMENT="gtk+-3.0 >= 3.12"
 GTK_CLUTTER_REQUIREMENT="clutter-gtk-1.0"
 CLUTTER_GST_REQUIREMENT="clutter-gst-2.0"
 EVINCE_REQUIREMENT="evince-document-3.0"
-WEBKIT_REQUIREMENT="webkit2gtk-3.0"
+WEBKIT_REQUIREMENT="webkit2gtk-4.0"
 # These go into the pkg-config file as Requires: and Requires.private:
 # (Generally, use Requires.private: instead of Requires:)
 AC_SUBST([EKN_REQUIRED_MODULES], [])
@@ -223,8 +223,8 @@ PKG_CHECK_MODULES([TOOLTIP_PLUGIN], [
     glib-2.0
     gmodule-2.0
     gio-2.0
-    webkit2gtk-3.0
-    javascriptcoregtk-3.0
+    webkit2gtk-4.0
+    javascriptcoregtk-4.0
 ])
 
 # Check installed GIRs for Javascript overrides
@@ -238,7 +238,7 @@ EOS_CHECK_GJS_GIR([GObject], [2.0])
 EOS_CHECK_GJS_GIR([Gtk], [3.0])
 EOS_CHECK_GJS_GIR([GtkClutter], [1.0])
 EOS_CHECK_GJS_GIR([Pango], [1.0])
-EOS_CHECK_GJS_GIR([WebKit2], [3.0])
+EOS_CHECK_GJS_GIR([WebKit2], [4.0])
 
 # Code Coverage
 # -------------
