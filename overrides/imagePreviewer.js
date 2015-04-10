@@ -30,12 +30,12 @@ const ImagePreviewer = Lang.Class({
         /**
          * Property: aspect
          *
-         * The aspect aspect the previewer widget should display at
+         * The aspect the previewer widget should display at
          */
-        'aspect': GObject.ParamSpec.float('aspect', 'Aspect',
+        'aspect': GObject.ParamSpec.double('aspect', 'Aspect',
             'Aspect ratio of previewer content',
             GObject.ParamFlags.READABLE,
-            false),
+            0.0, 100.0, 1.0),
 
         /**
          * Property: enforce-minimum-size
