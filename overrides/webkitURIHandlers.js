@@ -15,6 +15,15 @@ function register_webkit_uri_handlers (article_render_callback) {
     EosKnowledge.private_register_global_uri_scheme('resource', _load_gresource_assets);
 }
 
+function _error_request(req, err) {
+    printerr(err);
+    printerr(err.stack);
+    req.finish_error(new Gio.IOErrorEnum({
+        message: err.message,
+        code: 0,
+    }));
+}
+
 function _load_ekn_assets (req, article_render_callback) {
     try {
         // FIXME: If our webview is gone, just return.
@@ -27,6 +36,12 @@ function _load_ekn_assets (req, article_render_callback) {
             // Might be masking a bug in webkit here. Rushing this fix out for 2.3.
             if (!req.get_web_view() || req.get_web_view().get_uri() !== page_uri)
                 return;
+
+            if (err) {
+                _error_request(req, err);
+                return;
+            }
+
             if (model instanceof EosKnowledgeSearch.ArticleObjectModel) {
                 let html = article_render_callback(model);
                 let bytes = ByteArray.fromString(html).toGBytes();
@@ -38,9 +53,7 @@ function _load_ekn_assets (req, article_render_callback) {
             }
         });
     } catch (error) {
-        printerr(error);
-        printerr(error.stack);
-        req.finish_error(new Gio.IOErrorEnum({ message: error.message, code: 0 }));
+        _error_request(req, error);
     }
 }
 
@@ -49,8 +62,6 @@ function _load_gresource_assets (req) {
         let file = Gio.File.new_for_uri(req.get_uri());
         req.finish(file.read(null), -1, null);
     } catch (error) {
-        printerr(error);
-        printerr(error.stack);
-        req.finish_error(new Gio.IOErrorEnum({ message: error.message, code: 0 }));
+        _error_request(req, error);
     }
 }
