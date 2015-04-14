@@ -17,7 +17,16 @@ function register_webkit_uri_handlers (article_render_callback) {
 
 function _load_ekn_assets (req, article_render_callback) {
     try {
+        // FIXME: If our webview is gone, just return.
+        // Might be masking a bug in webkit here. Rushing this fix out for 2.3.
+        if (!req.get_web_view())
+            return;
+        let page_uri = req.get_web_view().get_uri();
         EosKnowledgeSearch.Engine.get_default().get_object_by_id(req.get_uri(), function (err, model) {
+            // FIXME: If our webview is gone, or it has moved on to a new page, just return.
+            // Might be masking a bug in webkit here. Rushing this fix out for 2.3.
+            if (!req.get_web_view() || req.get_web_view().get_uri() !== page_uri)
+                return;
             if (model instanceof EosKnowledgeSearch.ArticleObjectModel) {
                 let html = article_render_callback(model);
                 let bytes = ByteArray.fromString(html).toGBytes();
