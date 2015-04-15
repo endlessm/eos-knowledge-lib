@@ -1087,7 +1087,11 @@ const Presenter = new Lang.Class({
         this.view.standalone_page.article_page.title_view.title = model.title;
         this.view.standalone_page.article_page.title_view.attribution =
             this._format_attribution_for_metadata(model.get_authors());
-        this.view.standalone_page.article_page.get_style_context().add_class('article-page' + model.article_number % 3);
+        if (this._current_standalone_class) {
+            this.view.standalone_page.article_page.get_style_context().remove_class(this._current_standalone_class);
+        }
+        this._current_standalone_class = 'article-page' + model.article_number % 3;
+        this.view.standalone_page.article_page.get_style_context().add_class(this._current_standalone_class);
         this.view.standalone_page.article_page.title_view.style_variant = model.article_number % 3;
     },
 
