@@ -314,12 +314,20 @@ const Presenter = new Lang.Class({
     },
 
     _add_history_object_for_search_page: function (query) {
-        this._latest_origin_query = query;
-        this.history_model.current_item = new HistoryItem.HistoryItem({
-            page_type: this._SEARCH_PAGE,
-            query: query,
-            article_origin_query: this._latest_origin_query,
-        });
+        let is_same_search = this.history_model.current_item !== null
+            && typeof this.history_model.current_item.query !== 'undefined'
+            && this.history_model.current_item.query === query;
+
+        // If it's a request for an identical search, don't bother
+        // adding it to the history model.
+        if (!is_same_search) {
+            this._latest_origin_query = query;
+            this.history_model.current_item = new HistoryItem.HistoryItem({
+                page_type: this._SEARCH_PAGE,
+                query: query,
+                article_origin_query: this._latest_origin_query,
+            });
+        }
     },
 
     _add_history_object_for_overview_page: function () {
