@@ -304,42 +304,36 @@ const Presenter = new Lang.Class({
         }
     },
 
-    _add_item_to_history: function (item) {
-        if (this.history_model.current_item === null || item.query !== this.history_model.current_item.query) {
-            this.history_model.current_item = item;
-        }
-    },
-
     _add_history_object_for_article_page: function (model) {
-        this._add_item_to_history(new HistoryItem.HistoryItem({
+        this.history_model.current_item = new HistoryItem.HistoryItem({
             title: model.title,
             page_type: this._ARTICLE_PAGE,
             article_model: model,
             article_origin_query: this._latest_origin_query,
-        }));
+        });
     },
 
     _add_history_object_for_search_page: function (query) {
         this._latest_origin_query = query;
-        this._add_item_to_history(new HistoryItem.HistoryItem({
+        this.history_model.current_item = new HistoryItem.HistoryItem({
             page_type: this._SEARCH_PAGE,
             query: query,
             article_origin_query: this._latest_origin_query,
-        }));
+        });
     },
 
     _add_history_object_for_overview_page: function () {
-        this._add_item_to_history(new HistoryItem.HistoryItem({
+        this.history_model.current_item = new HistoryItem.HistoryItem({
             page_type: this._OVERVIEW_PAGE,
             article_origin_query: this._latest_origin_query,
-        }));
+        });
     },
 
     _add_history_object_for_done_page: function () {
-        this._add_item_to_history(new HistoryItem.HistoryItem({
+        this.history_model.current_item = new HistoryItem.HistoryItem({
             page_type: this._DONE_PAGE,
             article_origin_query: this._latest_origin_query,
-        }));
+        });
     },
 
     _replicate_history_state: function (animation_type) {
