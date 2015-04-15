@@ -163,7 +163,7 @@ introspection_sources = \
 	$(eosknowledge_private_installed_headers) \
 	$(NULL)
 
-EosKnowledge-@EKN_API_VERSION@.gir: libeosknowledge-@EKN_API_VERSION@.la
+EosKnowledge-@EKN_API_VERSION@.gir: libeosknowledge-@EKN_API_VERSION@.la Makefile
 EosKnowledge_@EKN_API_VERSION@_gir_INCLUDES = \
 	Endless-0 \
 	Gio-2.0 \
