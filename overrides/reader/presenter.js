@@ -305,7 +305,8 @@ const Presenter = new Lang.Class({
     },
 
     _add_item_to_history: function (item) {
-        if (this.history_model.current_item === null || item.query !== this.history_model.current_item.query) {
+        if (this.history_model.current_item === null || item.page_type === this._ARTICLE_PAGE
+            || item.query !== this.history_model.current_item.query) {
             this.history_model.current_item = item;
         }
     },
