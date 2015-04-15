@@ -503,63 +503,57 @@ const Presenter = new Lang.Class({
             this.view.section_page.highlight_card(card);
     },
 
-    _add_item_to_history: function (item) {
-        if (this._history_model.current_item === null || item.query !== this._history_model.current_item.query) {
-            this._history_model.current_item = item;
-        }
-    },
-
     _add_history_object_for_article_page: function (model) {
-        this._add_item_to_history(new HistoryItem.HistoryItem({
+        this._history_model.current_item = new HistoryItem.HistoryItem({
             title: model.title,
             page_type: this._ARTICLE_PAGE,
             article_model: model, 
             query: '',
             article_origin_query: this._latest_origin_query,
             article_origin_page: this._latest_article_card_title,
-        }));
+        });
     },
 
     _add_history_object_for_search_page: function (query) {
         this._latest_origin_query = query;
-        this._add_item_to_history(new HistoryItem.HistoryItem({
+        this._history_model.current_item = new HistoryItem.HistoryItem({
             title: this._target_page_title,
             page_type: this._SEARCH_PAGE,
             article_model: null, 
             query: query,
             article_origin_query: this._latest_origin_query,
-        }));
+        });
     },
 
     _add_history_object_for_section_page: function (query) {
         this._latest_origin_query = query;
-        this._add_item_to_history(new HistoryItem.HistoryItem({
+        this._history_model.current_item = new HistoryItem.HistoryItem({
             title: this._target_page_title,
             page_type: this._SECTION_PAGE,
             article_model: null, 
             query: query,
             article_origin_query: this._latest_origin_query,
-        }));
+        });
     },
 
     _add_history_object_for_home_page: function () {
-        this._add_item_to_history(new HistoryItem.HistoryItem({
+        this._history_model.current_item = new HistoryItem.HistoryItem({
             title: '',
             page_type: this._HOME_PAGE,
             article_model: null,
             query: '', 
             article_origin_query: this._latest_origin_query,
-        }));
+        });
     },
 
     _add_history_object_for_categories_page: function () {
-        this._add_item_to_history(new HistoryItem.HistoryItem({
+        this._history_model.current_item = new HistoryItem.HistoryItem({
             title: '',
             page_type: this._CATEGORIES_PAGE,
             article_model: null,
             query: '',
             article_origin_query: this._latest_origin_query,
-        }));
+        });
     },
 
     _on_ekn_link_clicked: function (article_presenter, ekn_id) {
