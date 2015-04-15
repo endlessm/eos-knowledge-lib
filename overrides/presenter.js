@@ -514,26 +514,31 @@ const Presenter = new Lang.Class({
         });
     },
 
+    _add_history_search_item: function (query, page_type) {
+        let is_same_search = this._history_model.current_item !== null
+            && typeof this._history_model.current_item.query !== 'undefined'
+            && this._history_model.current_item.query === query;
+
+        // If it's a request for an identical search, don't bother
+        // adding it to the history model.
+        if (!is_same_search) {
+            this._latest_origin_query = query;
+            this._history_model.current_item = new HistoryItem.HistoryItem({
+                title: this._target_page_title,
+                page_type: page_type,
+                article_model: null,
+                query: query,
+                article_origin_query: this._latest_origin_query,
+            });
+        }
+    },
+
     _add_history_object_for_search_page: function (query) {
-        this._latest_origin_query = query;
-        this._history_model.current_item = new HistoryItem.HistoryItem({
-            title: this._target_page_title,
-            page_type: this._SEARCH_PAGE,
-            article_model: null, 
-            query: query,
-            article_origin_query: this._latest_origin_query,
-        });
+        this._add_history_search_item(query, this._SEARCH_PAGE);
     },
 
     _add_history_object_for_section_page: function (query) {
-        this._latest_origin_query = query;
-        this._history_model.current_item = new HistoryItem.HistoryItem({
-            title: this._target_page_title,
-            page_type: this._SECTION_PAGE,
-            article_model: null, 
-            query: query,
-            article_origin_query: this._latest_origin_query,
-        });
+        this._add_history_search_item(query, this._SECTION_PAGE);
     },
 
     _add_history_object_for_home_page: function () {
