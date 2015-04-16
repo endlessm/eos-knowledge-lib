@@ -290,11 +290,7 @@ const StandalonePage = new Lang.Class({
         this.parent(props);
 
         this.archive_label = new ArchiveLabel();
-        this.archive_notice = new Gtk.Frame({
-            margin_top: 35,
-            margin_bottom: 10,
-            halign: Gtk.Align.CENTER,
-        });
+        this.archive_notice = new Gtk.Frame();
         this.archive_notice.add(this.archive_label);
         this.archive_notice.get_style_context().add_class(EosKnowledge.STYLE_CLASS_READER_ARCHIVE_LABEL);
         this.article_page = new ArticlePage.ArticlePage({

@@ -14,6 +14,7 @@ const TitleView = private_imports.reader.titleView;
 const _TITLE_VIEW_LEFT_MARGIN_PX = 100;
 const _CONTENT_VIEW_MARGIN_PX = 40;
 const _DECORATIVE_BAR_HEIGHT = 19;
+const _PROGRESS_LABEL_MARGIN = 20;
 
 /**
  * Class: Reader.ArticlePage
@@ -24,7 +25,7 @@ const _DECORATIVE_BAR_HEIGHT = 19;
 const ArticlePage = new Lang.Class({
     Name: 'ArticlePage',
     GTypeName: 'EknReaderArticlePage',
-    Extends: Gtk.Frame,
+    Extends: Gtk.Overlay,
     Properties: {
         /**
          * Property: title-view
@@ -54,10 +55,11 @@ const ArticlePage = new Lang.Class({
     _init: function (props) {
         props = props || {};
 
-        this.progress_label = props.progress_label || new ProgressLabel.ProgressLabel({
-            vexpand: false,
-            valign: Gtk.Align.CENTER,
-        });
+        this.progress_label = props.progress_label || new ProgressLabel.ProgressLabel();
+        this.progress_label.valign = Gtk.Align.START;
+        this.progress_label.halign = Gtk.Align.CENTER;
+        this.progress_label.margin_top = _PROGRESS_LABEL_MARGIN + _DECORATIVE_BAR_HEIGHT;
+
         this._title_view = new TitleView.TitleView({
             expand: true,
             valign: Gtk.Align.CENTER,
@@ -72,7 +74,10 @@ const ArticlePage = new Lang.Class({
             vexpand: true,
             halign: Gtk.Align.CENTER,
             valign: Gtk.Align.FILL,
-            margin: _CONTENT_VIEW_MARGIN_PX,
+            margin_left: _CONTENT_VIEW_MARGIN_PX,
+            margin_right: _CONTENT_VIEW_MARGIN_PX,
+            margin_bottom: _CONTENT_VIEW_MARGIN_PX,
+            margin_top: _CONTENT_VIEW_MARGIN_PX + _PROGRESS_LABEL_MARGIN,
         });
 
         this._grid = new Gtk.Grid({
@@ -95,12 +100,12 @@ const ArticlePage = new Lang.Class({
         decorative_title_size_group.add_widget(this._title_view);
 
         this._grid.attach(decorative_frame, 0, 0, 1, 1);
-        this._grid.attach(this.progress_label, 0, 1, 3, 1);
-        this._grid.attach(this._title_view, 0, 2, 1, 1);
+        this._grid.attach(this._title_view, 0, 1, 1, 1);
 
-        this._grid.attach(separator, 1, 2, 1, 1);
+        this._grid.attach(separator, 1, 1, 1, 1);
 
         this.add(this._grid);
+        this.add_overlay(this.progress_label);
 
         this._size_group = new Gtk.SizeGroup({
             mode: Gtk.SizeGroupMode.BOTH,
@@ -120,9 +125,8 @@ const ArticlePage = new Lang.Class({
             this._size_group.remove_widget(this._content_view);
         }
         view.expand = true;
-        view.margin_top = _CONTENT_VIEW_MARGIN_PX;
         this._content_view = view;
-        this._grid.attach(view, 2, 2, 1, 1);
+        this._grid.attach(view, 2, 0, 1, 2);
         this._size_group.add_widget(view);
         view.grab_focus();
         view.show_all();
