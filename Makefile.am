@@ -444,6 +444,7 @@ TESTS_ENVIRONMENT = \
 	$(NULL)
 
 # # # COVERAGE # # #
+
 EOS_JS_COVERAGE_FILES = \
 	$(public_overrides) \
 	$(private_overrides) \
@@ -452,6 +453,7 @@ EOS_JS_COVERAGE_FILES = \
 	$(NULL)
 
 # # # SEARCH PROVIDER # # #
+
 servicedir = $(datadir)/dbus-1/services
 service_DATA = data/com.endlessm.EknSearchProvider.service
 
