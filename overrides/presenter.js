@@ -421,7 +421,7 @@ const Presenter = new Lang.Class({
         this.engine.get_objects_by_query({
             'q': query,
             'limit': RESULTS_SIZE,
-        }, function (err, results) {
+        }, function (err, results, get_more_results_func) {
             if (err !== undefined) {
                 printerr(err);
                 printerr(err.stack);
@@ -433,6 +433,7 @@ const Presenter = new Lang.Class({
                     };
                 }.bind(this)));
                 this._autocomplete_results = results;
+                this._get_more_results_from_search = get_more_results_func;
             }
         }.bind(this));
     },
@@ -443,6 +444,7 @@ const Presenter = new Lang.Class({
         } else {
             this._search_origin_page = this.view.section_page;
         }
+        this._get_more_results = this._get_more_results_from_search;
 
         this._latest_origin_query = JSON.stringify({
             'q': this._latest_search_text
