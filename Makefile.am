@@ -452,6 +452,11 @@ EOS_JS_COVERAGE_FILES = \
 	$(search_files) \
 	$(NULL)
 
+@EOS_COVERAGE_RULES@
+
+AM_JS_LOG_FLAGS += @EOS_JS_COVERAGE_LOG_FLAGS@
+AM_LDFLAGS = @EOS_C_COVERAGE_LDFLAGS@
+
 # # # SEARCH PROVIDER # # #
 
 servicedir = $(datadir)/dbus-1/services
@@ -461,11 +466,6 @@ data/com.endlessm.EknSearchProvider.service: $(top_srcdir)/data/com.endlessm.Ekn
 	$(AM_V_GEN) sed -e 's|@BINDIR@|$(bindir)|g' $< > $@
 BUILT_SOURCES += data/com.endlessm.EknSearchProvider.service
 EXTRA_DIST += data/com.endlessm.EknSearchProvider.service.in
-
-@EOS_COVERAGE_RULES@
-
-AM_JS_LOG_FLAGS += @EOS_JS_COVERAGE_LOG_FLAGS@
-AM_LDFLAGS = @EOS_C_COVERAGE_LDFLAGS@
 
 # # # DOCUMENTATION # # #
 
