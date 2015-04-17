@@ -1,8 +1,3 @@
-# Include this to build naturaldocs documentation for a directory
-# The only thing that needs to be specified is the naturaldocs_input_dir
-# variable relative to the top of the build tree. It will search the src and
-# build with the relative path for files to document.
-
 if ENABLE_JS_DOC
 
 build_naturaldocs_verbose = $(build_naturaldocs_verbose_@AM_V@)
@@ -15,7 +10,11 @@ stamp_file = doc-build.stamp
 
 $(stamp_file): eos.css
 	$(build_naturaldocs_verbose)$(MKDIR_P) html && \
-	naturaldocs -i $(top_srcdir)/$(naturaldocs_input_dir) -i $(top_builddir)/$(naturaldocs_input_dir) -o HTML html -p . -s Default eos -hl All && \
+	naturaldocs -o HTML html -p . -s Default eos -hl All \
+				-i $(top_srcdir)/js/search \
+				-i $(top_builddir)/js/search \
+				-i $(top_srcdir)/overrides \
+				-i $(top_builddir)/overrides && \
 	touch $@
 
 dist_noinst_DATA = $(stamp_file)
@@ -26,7 +25,7 @@ naturaldocs_extra_clean_files = \
 	Topics.txt \
 	Languages.txt \
 	$(NULL)
-EXTRA_DIST = $(top_srcdir)/data/eos-natural-docs.css
+EXTRA_DIST = eos.css
 CLEANFILES = $(stamp_file)
 DISTCLEANFILES = \
 	$(naturaldocs_extra_clean_files) \

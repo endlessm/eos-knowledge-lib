@@ -261,19 +261,17 @@ AC_CONFIG_FILES([
     Makefile
     po/Makefile.in
     docs/reference/eosknowledge/Makefile
-    docs/reference/eosknowledge-overrides/Makefile
-    docs/reference/eosknowledgesearch/Makefile
+    docs/reference/js/Makefile
     docs/reference/eosknowledge/version.xml
     overrides/config.js.in
     config/compass.rb
     $EKN_API_NAME.pc
 ])
 AC_CONFIG_HEADERS([config.h])  dnl Header with system-dependent #defines
-# Make docs/reference/eosknowledge-overrides/eos.css available in the build tree
+# Make docs/reference/js/eos.css available in the build tree
 # as well as the source tree
 AC_CONFIG_LINKS([
-    docs/reference/eosknowledge-overrides/eos.css:data/eos-natural-docs.css
-    docs/reference/eosknowledgesearch/eos.css:data/eos-natural-docs.css
+    docs/reference/js/eos.css:docs/reference/js/eos.css
 ])
 # Do the output
 AC_OUTPUT

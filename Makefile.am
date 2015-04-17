@@ -9,7 +9,7 @@
 
 # Subdirectories where we also want to run make
 # (Make sure that the library is built before the docs)
-SUBDIRS = po . docs/reference/eosknowledge docs/reference/eosknowledge-overrides docs/reference/eosknowledgesearch
+SUBDIRS = po . docs/reference/eosknowledge docs/reference/js
 
 # Our Autoconf macros are kept in the m4/ directory
 ACLOCAL_AMFLAGS = -I m4
