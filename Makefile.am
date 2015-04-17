@@ -14,8 +14,15 @@ SUBDIRS = po . docs/reference/eosknowledge docs/reference/eosknowledge-overrides
 # Our Autoconf macros are kept in the m4/ directory
 ACLOCAL_AMFLAGS = -I m4
 
-# Extra files to distribute in the tarball
+# Forward declare variables we'll be modifying all over
+bin_SCRIPTS =
+BUILT_SOURCES =
+CLEANFILES =
+dist_noinst_DATA =
+DISTCLEANFILES =
 EXTRA_DIST = README.md
+lib_LTLIBRARIES =
+pkglib_LTLIBRARIES =
 
 # Compiler flags
 DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
@@ -29,14 +36,6 @@ AM_DISTCHECK_CONFIGURE_FLAGS = \
 	--enable-js-doc \
 	--enable-strict-flags \
 	$(NULL)
-
-# Define these variables so that other Makefile snippets can add to them
-CLEANFILES =
-DISTCLEANFILES =
-BUILT_SOURCES =
-dist_noinst_DATA =
-nobase_pkgdata_DATA =
-bin_SCRIPTS =
 
 # Make sure that 'make dist' includes documentation
 if !CAN_MAKE_DIST
@@ -78,9 +77,6 @@ clean-local:
 	rm -rf .sass-cache
 
 # # # MAIN LIBRARY # # #
-
-lib_LTLIBRARIES =
-pkglib_LTLIBRARIES =
 
 # Generate dependencies for make rule from XML resource file description. This
 # is a quite tricky make rule. glib-compile-resources will error if any files
