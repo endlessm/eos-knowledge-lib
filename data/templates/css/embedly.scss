@@ -13,6 +13,17 @@ html {
 
 #inside-content {
     margin: 15px;
+    padding-top: 80px;
+    &:before {
+        background: #efefef;
+        content: "";
+        display: block;
+        position: fixed;
+        height: 80px;
+        top: 0;
+        left: 0;
+        right: 0;
+    }
     h1 {
         color: #333333;
         font-family: Lato;
