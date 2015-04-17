@@ -1,6 +1,7 @@
 // Copyright 2014 Endless Mobile, Inc.
 
 const Endless = imports.gi.Endless;
+const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
@@ -86,6 +87,17 @@ MediaObjectModel._props_from_json_ld = function (json_ld_data, media_path, ekn_v
     // Inherit properties marshalled from parent class
     let ParentClass = MediaObjectModel.__super__;
     let props = ParentClass._props_from_json_ld(json_ld_data, media_path, ekn_version);
+
+    // legacy databases didn't store content_type information, so we have to
+    // guess based on contentURL
+    if (ekn_version === 1) {
+        if (json_ld_data.hasOwnProperty('contentURL')) {
+            // we don't really care if the guess was certain or not, since the
+            // content_type is a required parameter
+            let [guessed_mimetype, __] = Gio.content_type_guess(json_ld_data.contentURL, null);
+            props.content_type = guessed_mimetype;
+        }
+    }
 
     // Marshal properties specific to MediaObjectModel
     if (json_ld_data.hasOwnProperty('caption')) {

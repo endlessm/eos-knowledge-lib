@@ -127,7 +127,7 @@ const ArticlePresenter = new GObject.Class({
         // Make sure we aren't currently loading anything offscreen
         this._stop_loading_views();
 
-        if (this._article_model.html.length > 0) {
+        if (this._article_model.content_type === 'text/html') {
             this._webview = this._get_webview();
             this._webview_load_id = this._webview.connect('load-changed', function (view, status) {
                 if (status !== WebKit2.LoadEvent.COMMITTED)
@@ -138,7 +138,7 @@ const ArticlePresenter = new GObject.Class({
                 ready();
             }.bind(this));
             this._webview.load_uri(this._article_model.ekn_id);
-        } else if (this._article_model.content_uri.length > 0) {
+        } else if (this._article_model.content_type === 'application/pdf') {
             let uri = this._article_model.content_uri;
             let file = Gio.file_new_for_uri(uri);
             let type = file.query_info('standard::content-type',
@@ -156,7 +156,7 @@ const ArticlePresenter = new GObject.Class({
                 throw new Error("We don't know how to display " + type + " articles!");
             }
         } else {
-            throw new Error("Article had no body html or content uri");
+            throw new Error("Unknown article content type: ", this._article_model.content_type);
         }
 
     },

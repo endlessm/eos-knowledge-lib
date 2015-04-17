@@ -131,6 +131,14 @@ const ContentObjectModel = new Lang.Class({
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             ''),
         /**
+         * Property: content-type
+         * The source content's mimetype
+         */
+        'content-type': GObject.ParamSpec.string('content-type', 'Object Content Type',
+            'Mimetype of the source content',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            ''),
+        /**
          * Property: synopsis
          * The synopsis for this content object. Defaults to an empty string.
          */
@@ -229,6 +237,9 @@ ContentObjectModel._props_from_json_ld = function (json_ld_data, media_path, ekn
 
     if(json_ld_data.hasOwnProperty('title'))
         props.title = json_ld_data.title;
+
+    if (json_ld_data.hasOwnProperty('contentType'))
+        props.content_type = json_ld_data.contentType;
 
     if(json_ld_data.hasOwnProperty('originalTitle'))
         props.original_title = json_ld_data.originalTitle;

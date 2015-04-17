@@ -669,11 +669,7 @@ const Presenter = new Lang.Class({
     _new_card_from_article_model: function (model) {
         let fade_in = true;
         let card_class = ArticleCard.ArticleCard;
-        // If it has a content_uri, assume it is a PDF.
-        // This may need to change in the future but for now
-        // I think it's the simplest approach and avoids having
-        // to do a file I/O to get mime type for every card.
-        if (model.content_uri.length > 0) {
+        if (model.content_type === 'application/pdf') {
             card_class = PdfCard.PdfCard;
         } else if (this._template_type === 'B') {
             fade_in = false;
