@@ -144,17 +144,16 @@ const ArticlePresenter = new GObject.Class({
             let type = file.query_info('standard::content-type',
                                    Gio.FileQueryInfoFlags.NONE,
                                    null).get_content_type();
-            if (type === 'application/pdf') {
-                let view = this._get_pdfview_for_uri(uri);
-                view.load_uri(uri);
-                // FIXME: Remove this line once we support table of contents
-                // widget for PDFs
-                this._article_model.table_of_contents = undefined;
-                this.article_view.switch_in_content_view(view, animation_type);
-                ready();
-            } else {
+            if (type !== 'application/pdf')
                 throw new Error("We don't know how to display " + type + " articles!");
-            }
+
+            let view = this._get_pdfview_for_uri(uri);
+            view.load_uri(uri);
+            // FIXME: Remove this line once we support table of contents
+            // widget for PDFs
+            this._article_model.table_of_contents = undefined;
+            this.article_view.switch_in_content_view(view, animation_type);
+            ready();
         } else {
             throw new Error("Unknown article content type: ", this._article_model.content_type);
         }
