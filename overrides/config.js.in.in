@@ -4,3 +4,4 @@ const inspector_enabled = @inspector@;
 const mathjax_path = '@MATHJAXDIR@';
 // Substituted at make time rather than configure time
 const PKGLIBDIR = '%pkglibdir%';
+const DATADIR = '%datadir%';
