@@ -142,28 +142,28 @@ const ArticleObjectModel = new Lang.Class({
  * Creates an ArticleObjectModel from a Knowledge Engine ArticleObject
  * JSON-LD document
  */
-ArticleObjectModel.new_from_json_ld = function (json_ld_data, media_path) {
-    let props = ArticleObjectModel._props_from_json_ld(json_ld_data, media_path);
+ArticleObjectModel.new_from_json_ld = function (json_ld_data, media_path, ekn_version) {
+    let props = ArticleObjectModel._props_from_json_ld(json_ld_data, media_path, ekn_version);
     let article_object_model = new ArticleObjectModel(props);
-    ArticleObjectModel._setup_from_json_ld(article_object_model, json_ld_data, media_path);
+    ArticleObjectModel._setup_from_json_ld(article_object_model, json_ld_data, media_path, ekn_version);
 
     return article_object_model;
 };
 
-ArticleObjectModel._setup_from_json_ld = function (model, json_ld_data, media_path) {
+ArticleObjectModel._setup_from_json_ld = function (model, json_ld_data, media_path, ekn_version) {
     // Inherit setup from parent class
     let ParentClass = ArticleObjectModel.__super__;
-    ParentClass._setup_from_json_ld(model, json_ld_data, media_path);
+    ParentClass._setup_from_json_ld(model, json_ld_data, media_path, ekn_version);
     if (json_ld_data.hasOwnProperty('authors')) {
         model.set_authors(json_ld_data.authors);
     }
 
 };
 
-ArticleObjectModel._props_from_json_ld = function (json_ld_data, media_path) {
+ArticleObjectModel._props_from_json_ld = function (json_ld_data, media_path, ekn_version) {
     // Inherit properties marshalled from parent class
     let ParentClass = ArticleObjectModel.__super__;
-    let props = ParentClass._props_from_json_ld(json_ld_data, media_path);
+    let props = ParentClass._props_from_json_ld(json_ld_data, media_path, ekn_version);
 
     if (json_ld_data.hasOwnProperty('articleBody'))
         props.html = json_ld_data.articleBody;

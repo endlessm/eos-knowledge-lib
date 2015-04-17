@@ -21,6 +21,19 @@ const ContentObjectModel = new Lang.Class({
         'ekn-id': GObject.ParamSpec.string('ekn-id', 'Object\'s ID', 'The ID of a document or media object',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
         /**
+         * Property: ekn-version
+         *
+         * The version of the on-disk data format for this bundle. This value
+         * is incremented whenever we have a major change in this format, and
+         * is used to support backwards compatible changes.
+         *
+         * Defaults to 1
+         */
+        'ekn-version': GObject.ParamSpec.int('ekn-version', 'EKN Version',
+            'The version of the knowledge app.',
+             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
+             0, GLib.MAXINT32, 1),
+        /**
          * Property: title
          * A string with the title of the content object. Defaults to an empty string.
          */
@@ -191,22 +204,26 @@ const ContentObjectModel = new Lang.Class({
  * Creates an ContentObjectModel from a Knowledge Engine ContentObject
  * JSON-LD document
  */
-ContentObjectModel.new_from_json_ld = function (json_ld_data, media_path) {
-    let props = ContentObjectModel._props_from_json_ld(json_ld_data, media_path);
+ContentObjectModel.new_from_json_ld = function (json_ld_data, media_path, ekn_version) {
+    let props = ContentObjectModel._props_from_json_ld(json_ld_data, media_path, ekn_version);
     let contentObjectModel = new ContentObjectModel(props);
-    ContentObjectModel._setup_from_json_ld(contentObjectModel, json_ld_data, media_path);
+    ContentObjectModel._setup_from_json_ld(contentObjectModel, json_ld_data, media_path, ekn_version);
 
     return contentObjectModel;
 };
 
-ContentObjectModel._setup_from_json_ld = function (model, json_ld_data, media_path) {
+ContentObjectModel._setup_from_json_ld = function (model, json_ld_data, media_path, ekn_version) {
     if (json_ld_data.hasOwnProperty('resources')) {
         model.set_resources(json_ld_data.resources);
     }
 };
 
-ContentObjectModel._props_from_json_ld = function (json_ld_data, media_path) {
+ContentObjectModel._props_from_json_ld = function (json_ld_data, media_path, ekn_version) {
     let props = {};
+
+    if (typeof ekn_version === 'number')
+        props.ekn_version = ekn_version;
+
     if(json_ld_data.hasOwnProperty('@id'))
         props.ekn_id = json_ld_data['@id'];
 

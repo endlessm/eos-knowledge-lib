@@ -8,6 +8,7 @@ const ArticleObjectModel = imports.articleObjectModel.ArticleObjectModel;
 const ContentObjectModel = imports.contentObjectModel.ContentObjectModel;
 const Engine = imports.engine.Engine;
 const get_data_dir_for_domain = imports.datadir.get_data_dir_for_domain;
+const get_ekn_version_for_domain = imports.searchUtils.get_ekn_version_for_domain;
 const ImageObjectModel = imports.mediaObjectModel.ImageObjectModel;
 const MediaObjectModel = imports.mediaObjectModel.MediaObjectModel;
 const QueryObject = imports.queryObject.QueryObject;

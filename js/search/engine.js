@@ -93,6 +93,9 @@ const Engine = Lang.Class({
         // Caches domain => content path so that we don't have to hit the
         // disk on every object lookup.
         this._content_path_cache = {};
+
+        // Like _content_path_cache, but for EKN_VERSION files
+        this._ekn_version_cache = {};
     },
 
     /**
@@ -264,6 +267,13 @@ const Engine = Lang.Class({
         return this._content_path_cache[domain];
     },
 
+    _ekn_version_from_domain: function (domain) {
+        if (this._ekn_version_cache[domain] === undefined)
+            this._ekn_version_cache[domain] = utils.get_ekn_version_for_domain(domain);
+
+        return this._ekn_version_cache[domain];
+    },
+
     // Returns a marshaled ObjectModel based on json_ld's @type value, or throws
     // error if there is no corresponding model
     _model_from_json_ld: function (json_ld) {
@@ -284,9 +294,10 @@ const Engine = Lang.Class({
 
             let ekn_id = json_ld['@id'];
             let domain = utils.domain_from_ekn_id(ekn_id);
+            let ekn_version = this._ekn_version_from_domain(domain);
             let content_path = this._content_path_from_domain(domain);
 
-            return Model.new_from_json_ld(json_ld, content_path + this._MEDIA_PATH);
+            return Model.new_from_json_ld(json_ld, content_path + this._MEDIA_PATH, ekn_version);
         } else {
             throw new Error('No EKN model found for json_ld type ' + json_ld_type);
         }

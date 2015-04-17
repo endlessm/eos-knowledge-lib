@@ -1,4 +1,7 @@
+const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
+
+const Datadir = imports.datadir;
 
 /* Returns the current locale's language code, or null if one cannot be found */
 function get_current_language () {
@@ -38,3 +41,17 @@ function domain_from_ekn_id (ekn_id) {
 let parenthesize = (clause) => '(' + clause + ')';
 let capitalize = (word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
 let quote = (clause) => '"' + clause + '"';
+
+/* Returns the EKN Version of the bundle with given domain. Defaults to 1 if
+   no EKN_VERSION file is found. This function does synchronous file I/O. */
+function get_ekn_version_for_domain (domain) {
+    let dir = Datadir.get_data_dir_for_domain(domain);
+    let ekn_version_file = dir.get_child('EKN_VERSION');
+    try {
+        let [success, contents, _] = ekn_version_file.load_contents(null);
+        let version_string = contents.toString();
+        return parseInt(version_string);
+    } catch (e) {
+        return 1;
+    }
+}
