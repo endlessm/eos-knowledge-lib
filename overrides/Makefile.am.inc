@@ -71,7 +71,8 @@ reader_overrides = \
 readeroverridesdir = $(pkgoverridesdir)/reader
 dist_readeroverrides_DATA = $(reader_overrides)
 
-subst = $(SED) -e 's,%pkglibdir%,$(pkglibdir),g'
+subst = $(SED) -e 's,%pkglibdir%,$(pkglibdir),g' \
+	-e 's,%datadir%,$(datadir),g'
 overrides/config.js: overrides/config.js.in Makefile
 	$(MKDIR_P) overrides
 	$(AM_V_GEN)$(subst) $< > $@

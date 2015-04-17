@@ -64,7 +64,7 @@ describe('Article HTML Renderer', function () {
 
     it('links to creative commons license on wikimedia pages', function () {
         let html = renderer.render(wikibooks_model);
-        expect(html).toMatch('creativecommons.org');
+        expect(html).toMatch('creativecommons');
     });
 
     it('links to original wikihow articles', function () {
@@ -106,7 +106,7 @@ describe('Article HTML Renderer', function () {
 
     it('links to the license in embedly articles', function () {
         let html = renderer.render(embedly_model);
-        expect(html).toMatch('creativecommons.org');
+        expect(html).toMatch('creativecommons');
     });
 
     it('renders wikihow and wiki articles properly with EOS 2.2 DB information', function () {
