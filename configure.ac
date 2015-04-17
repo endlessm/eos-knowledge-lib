@@ -261,7 +261,6 @@ AC_CONFIG_FILES([
     Makefile
     po/Makefile.in
     docs/reference/eosknowledge/Makefile
-    docs/reference/js/Makefile
     docs/reference/eosknowledge/version.xml
     overrides/config.js.in
     config/compass.rb

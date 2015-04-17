@@ -9,7 +9,7 @@
 
 # Subdirectories where we also want to run make
 # (Make sure that the library is built before the docs)
-SUBDIRS = po . docs/reference/eosknowledge docs/reference/js
+SUBDIRS = po . docs/reference/eosknowledge
 
 # Our Autoconf macros are kept in the m4/ directory
 ACLOCAL_AMFLAGS = -I m4
@@ -489,6 +489,52 @@ dist-hook::
 	@cp -r docs/reference/eosknowledge-js/html/*.js $(distdir)/docs/reference/eosknowledge-js/html
 
 CLEANFILES += docs/reference/eosknowledge-js/*.page
+
+endif
+
+if ENABLE_JS_DOC
+
+build_naturaldocs_verbose = $(build_naturaldocs_verbose_@AM_V@)
+build_naturaldocs_verbose_ = $(build_naturaldocs_verbose_@AM_DEFAULT_V@)
+build_naturaldocs_verbose_0 = @echo '  DOC    Building naturaldocs for $(naturaldocs_input_dir)';
+
+# Stamp file is present if all the docs have been built, and carries the
+# timestamp of the last successful build.
+stamp_file = docs/reference/js/doc-build.stamp
+
+$(stamp_file): docs/reference/js/eos.css
+	$(build_naturaldocs_verbose)$(MKDIR_P) $(@D)/html && \
+	cd $(@D) && \
+	naturaldocs -o HTML html -p . -s Default eos -hl All \
+				-i $(abs_srcdir)/js/search \
+				-i $(abs_srcdir)/overrides && \
+	touch $(@F)
+
+dist_noinst_DATA += $(stamp_file)
+
+naturaldocs_extra_clean_files = \
+	docs/reference/js/Data/*.nd \
+	docs/reference/js/Menu.txt \
+	docs/reference/js/Topics.txt \
+	docs/reference/js/Languages.txt \
+	$(NULL)
+EXTRA_DIST += docs/reference/js/eos.css
+CLEANFILES += $(stamp_file)
+DISTCLEANFILES += $(naturaldocs_extra_clean_files)
+
+distclean-local::
+	@rm -rf docs/reference/js/html
+
+# Copy from $builddir first, and if that's not there (for example during
+# distcheck the docs don't get rebuilt because the stamp file is already there
+# and the source files are not newer) copy from $srcdir.
+dist-hook::
+	@mkdir -p $(distdir)/docs/reference/js/html
+	@if test -d docs/reference/js/html; then \
+		cp -r docs/reference/js/html/* $(distdir)/docs/reference/js/html; \
+	elif test -d $(srcdir)/docs/reference/js/html; then \
+		cp -r $(srcdir)/docs/reference/js/html/* $(distdir)/docs/reference/js/html; \
+	fi
 
 endif
 
