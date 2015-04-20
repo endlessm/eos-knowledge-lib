@@ -7,19 +7,13 @@ const GLib = imports.gi.GLib;
 const ArticleObjectModel = imports.articleObjectModel;
 const ContentObjectModel = imports.contentObjectModel;
 const MediaObjectModel = imports.mediaObjectModel;
+const QueryObject = imports.queryObject;
 const xapianQuery = imports.xapianQuery;
 const blacklist = imports.blacklist.blacklist;
 const datadir = imports.datadir;
 const utils = imports.searchUtils;
 
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
-
-// Returns maybe if it's a number, otherwise returns fallback
-function maybeNaN(maybe, fallback) {
-    if (isNaN(maybe))
-        return fallback;
-    return maybe;
-}
 
 function domain_from_ekn_id(ekn_id) {
     // Chop the URI off of an ekn id: 'ekn://football-es/hash' => 'football-es/hash'
@@ -102,42 +96,8 @@ const Engine = Lang.Class({
     _DB_PATH: '/db',
     _MEDIA_PATH: '/media',
 
-    _DEFAULT_LIMIT : 10, // if no limit is specified, return this many objects
-    _DEFAULT_OFFSET : 0, // if no offset is specified, start from beginning
-    _DEFAULT_ORDER : 'asc', // if no order is specified, use ascending
-
     _DEFAULT_CUTOFF: 10,
-    _MATCH_ALL_CUTOFF: 20,
-
-    /**
-     * Constant: QUERY_TYPE_INCREMENTAL
-     *
-     * Default query type. Meant for showing a list of results that will update
-     * as the user types. Will match against incomplete words that are still
-     * being typed.
-     */
-    QUERY_TYPE_INCREMENTAL: 'incremental',
-    /**
-     * Constant: QUERY_TYPE_DELIMITED
-     *
-     * Expect a fully formed (complete words) query to preform a search on.
-     * Will return title and synopsis matches.
-     */
-    QUERY_TYPE_DELIMITED: 'delimited',
-
-    /**
-     * Constant: QUERY_MATCH_TITLE_ONLY
-     *
-     * Default matching approach. Query will only match with words in the
-     * article title.
-     */
-    QUERY_MATCH_TITLE_ONLY: 'title-only',
-    /**
-     * Constant: QUERY_MATCH_ALL
-     *
-     * Query will match everything we index on the article.
-     */
-    QUERY_MATCH_ALL: 'all',
+    _MATCH_SYNOPSIS_CUTOFF: 20,
 
     _init: function (params) {
         this.parent(params);
@@ -163,10 +123,10 @@ const Engine = Lang.Class({
      *             the successfully retrieved object type
      */
     get_object_by_id: function (id, callback, cancellable = null) {
-        var query_obj = {
+        var query_obj = new QueryObject.QueryObject({
             limit: 1,
             ids: [id],
-        };
+        });
         let req_uri = this._get_xapian_uri(query_obj);
 
         this._send_json_ld_request(req_uri, (err, json_ld) => {
@@ -199,24 +159,12 @@ const Engine = Lang.Class({
 
     /**
      * Function: get_objects_by_query
-     * Sends a request for to xapian-bridge for objects matching *query*.
+     * Sends a request for to xapian-bridge for a given *query_obj*.
      * *callback* is a function which takes *err* and *result* parameters.
-     *
-     * *query* is an object with many parameters controlling the search
-     *   - q (search query string)
-     *   - type (type of query to run, defaults to <QUERY_TYPE_DELIMITED>)
-     *   - match (what to match against, defaults to <QUERY_MATCH_TITLE_ONLY>)
-     *   - tags (list of tags the results must match)
-     *   - offset (number of results to skip, useful for pagination)
-     *   - limit  (maximum number of results to return)
-     *   - sortBy  (Xapian value by which to sort results. Note this will override relevance ordering by xapian.)
-     *   - order  (The order in which to sort results, either ascending ('asc') or descending ('desc'))
-     *   - ids (an array of specific EKN ids to be fetched)
      *
      * Parameters:
      *
-     *   query - An object whose keys are query parameters, and values are
-     *           strings.
+     *   query_obj - A <QueryObject> describing the query.
      *   callback - A function which will be called after the request finished.
      *             The function should take two parameters: *error* and
      *             *result*, where *error* will only be defined if there was an
@@ -244,9 +192,11 @@ const Engine = Lang.Class({
                 return;
             }
             let get_more_results = (batch_size, new_callback) => {
-                query_obj.offset = json_ld.numResults + json_ld.offset;
-                query_obj.limit = batch_size;
-                this.get_objects_by_query(query_obj, new_callback);
+                let next_query_obj = QueryObject.QueryObject.new_from_object(query_obj, {
+                    offset: json_ld.numResults + json_ld.offset,
+                    limit: batch_size,
+                });
+                this.get_objects_by_query(next_query_obj, new_callback);
             };
 
             if (follow_redirects) {
@@ -272,9 +222,9 @@ const Engine = Lang.Class({
 
         // fabricate a query to request that resolves all redirect_to links in
         // the current set of results
-        let get_redirects_query = {
+        let get_redirects_query = new QueryObject.QueryObject({
             ids: redirects.map((result) => result.redirects_to),
-        };
+        });
         this.get_objects_by_query(get_redirects_query, (err, redirect_targets) => {
             // if an error occurred, propagate err to original callback
             if (typeof err !== 'undefined') {
@@ -363,31 +313,21 @@ const Engine = Lang.Class({
     _get_xapian_uri_query_clause: function (query_obj) {
         let query_clause_fn, do_match_all;
 
-        let type = query_obj.type || this.QUERY_TYPE_INCREMENTAL;
-        if (type === this.QUERY_TYPE_INCREMENTAL) {
+        if (query_obj.type === QueryObject.QueryObjectType.INCREMENTAL) {
             query_clause_fn = xapianQuery.xapian_incremental_query_clause;
-        } else if (type === this.QUERY_TYPE_DELIMITED) {
+        } else {
             query_clause_fn = xapianQuery.xapian_delimited_query_clause;
-        } else {
-            throw new Error('Unrecognized type query type' + type);
         }
 
-        let match = query_obj.match || this.QUERY_MATCH_TITLE_ONLY;
-        if (match === this.QUERY_MATCH_TITLE_ONLY) {
-            do_match_all = false;
-        } else if (match === this.QUERY_MATCH_ALL) {
-            do_match_all = true;
-        } else {
-            throw new Error('Unrecognized query match type' + match);
-        }
+        do_match_all = query_obj.match === QueryObject.QueryObjectMatch.TITLE_SYNOPSIS;
 
-        return query_clause_fn(query_obj.q, do_match_all);
+        return query_clause_fn(query_obj.query, do_match_all);
     },
 
     _get_xapian_cutoff_value: function (query_obj) {
         // We need a stricter cutoff when matching all against all indexed terms
-        if (query_obj.match === this.QUERY_MATCH_ALL)
-            return this._MATCH_ALL_CUTOFF;
+        if (query_obj.match === QueryObject.QueryObjectMatch.TITLE_SYNOPSIS)
+            return this._MATCH_SYNOPSIS_CUTOFF;
         return this._DEFAULT_CUTOFF;
     },
 
@@ -398,28 +338,14 @@ const Engine = Lang.Class({
         uri.set_path('/query');
 
         let xapian_query_options = [];
-        for (let property in query_obj) {
-            if (typeof query_obj[property] === 'undefined')
-                throw new Error('Parameter value is undefined: ' + property);
-            switch (property) {
-                case 'tags':
-                    xapian_query_options.push(xapianQuery.xapian_tag_clause(query_obj.tags));
-                    break;
-                case 'q':
-                    xapian_query_options.push(this._get_xapian_uri_query_clause(query_obj));
-                    break;
-                case 'ids':
-                    xapian_query_options.push(xapianQuery.xapian_ids_clause(query_obj.ids));
-                    break;
-                default:
-                    if (['limit', 'offset', 'order', 'sortBy', 'domain', 'type', 'match'].indexOf(property) === -1)
-                        throw new Error('Unexpected property value ' + property);
-            }
-        }
+        if (query_obj.query.length > 0)
+            xapian_query_options.push(this._get_xapian_uri_query_clause(query_obj));
+        if (query_obj.tags.length > 0)
+            xapian_query_options.push(xapianQuery.xapian_tag_clause(query_obj.tags));
+        if (query_obj.ids.length > 0)
+            xapian_query_options.push(xapianQuery.xapian_ids_clause(query_obj.ids));
 
-        let domain = query_obj['domain'];
-        if (domain === undefined)
-            domain = this.default_domain;
+        let domain = query_obj.domain || this.default_domain;
 
         let content_path = this._content_path_from_domain(domain);
 
@@ -428,33 +354,33 @@ const Engine = Lang.Class({
         if (typeof explicit_tags !== 'undefined')
             xapian_query_options.push(xapianQuery.xapian_not_tag_clause(explicit_tags));
 
-        let query_obj_out = {
+        let uri_query_args = {
             collapse: xapianQuery.XAPIAN_SOURCE_URL_VALUE_NO,
             cutoff: this._get_xapian_cutoff_value(query_obj),
-            limit: maybeNaN(query_obj['limit'], this._DEFAULT_LIMIT),
-            offset: maybeNaN(query_obj['offset'], this._DEFAULT_OFFSET),
-            order: maybeNaN(query_obj['order'], this._DEFAULT_ORDER),
+            limit: query_obj.limit,
+            offset: query_obj.offset,
+            order: query_obj.order === QueryObject.QueryObjectOrder.ASCENDING ? 'asc' : 'desc',
             path: content_path + this._DB_PATH,
             q: xapianQuery.xapian_join_clauses(xapian_query_options),
-            sortBy: xapianQuery.xapian_string_to_value_no(query_obj['sortBy']),
+            sortBy: xapianQuery.xapian_sort_value_no(query_obj.sort),
         };
 
         if (this.language !== null && this.language.length > 0) {
-            query_obj_out.lang = this.language;
+            uri_query_args.lang = this.language;
         }
 
-        uri.set_query(this._serialize_query(query_obj_out));
+        uri.set_query(this._serialize_query(uri_query_args));
         return uri;
     },
 
-    _serialize_query: function (query_obj) {
+    _serialize_query: function (uri_query_args) {
         let stringify_and_encode = (v) => encodeURIComponent(String(v));
 
-        return Object.keys(query_obj)
-        .filter((property) => typeof query_obj[property] !== 'undefined')
+        return Object.keys(uri_query_args)
+        .filter((property) => typeof uri_query_args[property] !== 'undefined')
         .map((property) =>
             stringify_and_encode(property) + "=" +
-            stringify_and_encode(query_obj[property]))
+            stringify_and_encode(uri_query_args[property]))
         .join('&');
     },
 

@@ -203,7 +203,7 @@ const Presenter = new Lang.Class({
         // time
         this._loading_new_lightbox = false;
 
-        this._latest_origin_query = '{}';
+        this._latest_origin_query_obj = new EosKnowledgeSearch.QueryObject();
         this.history_model = new EosKnowledge.HistoryModel();
 
         // Connect signals
@@ -277,21 +277,21 @@ const Presenter = new Lang.Class({
 
         this.record_search_metric(query);
 
-        let query_obj = {
-            q: query,
+        let query_obj = new EosKnowledgeSearch.QueryObject({
+            query: query,
             limit: RESULTS_SIZE,
-        };
+        });
 
         this.view.search_box.text = query;
-        this._add_history_object_for_search_page(JSON.stringify(query_obj));
+        this._add_history_object_for_search_page(query_obj);
         this._perform_search(this.view, query_obj);
     },
 
-    _perform_search: function (view, query) {
-        this._search_query = query.q;
+    _perform_search: function (view, query_obj) {
+        this._search_query = query_obj.query;
         this.view.lock_ui();
 
-        this.engine.get_objects_by_query(query, this._load_search_results.bind(this));
+        this.engine.get_objects_by_query(query_obj, this._load_search_results.bind(this));
     },
 
     _update_history_model: function (page_index) {
@@ -309,23 +309,23 @@ const Presenter = new Lang.Class({
             title: model.title,
             page_type: this._ARTICLE_PAGE,
             article_model: model,
-            article_origin_query: this._latest_origin_query,
+            article_origin_query_obj: this._latest_origin_query_obj,
         });
     },
 
-    _add_history_object_for_search_page: function (query) {
-        let is_same_search = this.history_model.current_item !== null
-            && typeof this.history_model.current_item.query !== 'undefined'
-            && this.history_model.current_item.query === query;
+    _add_history_object_for_search_page: function (query_obj) {
+        let is_same_search = this.history_model.current_item !== null &&
+            this.history_model.current_item.query_obj !== null &&
+            this.history_model.current_item.query_obj.query === query_obj.query;
 
         // If it's a request for an identical search, don't bother
         // adding it to the history model.
         if (!is_same_search) {
-            this._latest_origin_query = query;
+            this._latest_origin_query_obj = query_obj;
             this.history_model.current_item = new HistoryItem.HistoryItem({
                 page_type: this._SEARCH_PAGE,
-                query: query,
-                article_origin_query: this._latest_origin_query,
+                query_obj: query_obj,
+                article_origin_query_obj: this._latest_origin_query_obj,
             });
         }
     },
@@ -333,27 +333,25 @@ const Presenter = new Lang.Class({
     _add_history_object_for_overview_page: function () {
         this.history_model.current_item = new HistoryItem.HistoryItem({
             page_type: this._OVERVIEW_PAGE,
-            article_origin_query: this._latest_origin_query,
+            article_origin_query_obj: this._latest_origin_query_obj,
         });
     },
 
     _add_history_object_for_done_page: function () {
         this.history_model.current_item = new HistoryItem.HistoryItem({
             page_type: this._DONE_PAGE,
-            article_origin_query: this._latest_origin_query,
+            article_origin_query_obj: this._latest_origin_query_obj,
         });
     },
 
     _replicate_history_state: function (animation_type) {
-        let article_origin_query = JSON.parse(this.history_model.current_item.article_origin_query);
-        if (article_origin_query.hasOwnProperty('q'))
-            this.view.search_box.text = article_origin_query.q;
-        else
-            this.view.search_box.text = '';
+        let article_origin_query_obj = this.history_model.current_item.article_origin_query_obj;
+
+        this.view.search_box.text = article_origin_query_obj.query;
 
         switch (this.history_model.current_item.page_type) {
             case this._SEARCH_PAGE:
-                this._perform_search(this.view, JSON.parse(this.history_model.current_item.query));
+                this._perform_search(this.view, this.history_model.current_item.query_obj);
                 break;
             case this._ARTICLE_PAGE:
                 this._go_to_article(this.history_model.current_item.article_model, animation_type);
@@ -370,8 +368,8 @@ const Presenter = new Lang.Class({
         }
 
         // Update latest origin query.
-        if (this.history_model.current_item.article_origin_query !== this._latest_origin_query) {
-            this._latest_origin_query = this.history_model.current_item.article_origin_query;
+        if (this.history_model.current_item.article_origin_query_obj !== this._latest_origin_query_obj) {
+            this._latest_origin_query_obj = this.history_model.current_item.article_origin_query_obj;
         }
     },
 
@@ -581,13 +579,13 @@ const Presenter = new Lang.Class({
 
     _load_all_content: function (callback, progress_callback) {
         this._total_fetched = 0;
-        this.engine.get_objects_by_query({
+        let query_obj = new EosKnowledgeSearch.QueryObject({
             offset: this.settings.start_article,
             limit: RESULTS_SIZE,
-            sortBy: 'articleNumber',
-            order: 'asc',
+            sort: EosKnowledgeSearch.QueryObjectSort.ARTICLE_NUMBER,
             tags: ['EknArticleObject'],
-        }, function (error, results, get_more_results_func) {
+        });
+        this.engine.get_objects_by_query(query_obj, function (error, results, get_more_results_func) {
             if (!error && results.length < 1 && this.settings.start_article === 0) {
                 error = GLib.Error.new_literal(Gio.io_error_quark(),
                     Gio.IOErrorEnum.NOT_FOUND,
@@ -1126,10 +1124,12 @@ const Presenter = new Lang.Class({
             return;
         }
 
-        this.engine.get_objects_by_query({
-            'q': query,
-            'limit': RESULTS_SIZE,
-        }, (error, results) => {
+        let query_obj = new EosKnowledgeSearch.QueryObject({
+            query: query,
+            limit: RESULTS_SIZE,
+        });
+
+        this.engine.get_objects_by_query(query_obj, (error, results) => {
             if (error) {
                 printerr(error);
                 printerr(error.stack);

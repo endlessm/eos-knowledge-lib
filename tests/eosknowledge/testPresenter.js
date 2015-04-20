@@ -170,7 +170,7 @@ describe('Presenter', () => {
             Mainloop.idle_add(function () {
                 expect(engine.get_objects_by_query)
                     .toHaveBeenCalledWith(jasmine.objectContaining({
-                        q: 'query not found',
+                        query: 'query not found',
                     }),
                     jasmine.any(Function));
                 expect(view.show_no_search_results_page).toHaveBeenCalled();
@@ -184,7 +184,7 @@ describe('Presenter', () => {
             Mainloop.idle_add(function () {
                 expect(engine.get_objects_by_query)
                     .toHaveBeenCalledWith(jasmine.objectContaining({
-                        q: 'query not found',
+                        query: 'query not found',
                     }),
                     jasmine.any(Function));
                 expect(view.show_no_search_results_page).toHaveBeenCalled();

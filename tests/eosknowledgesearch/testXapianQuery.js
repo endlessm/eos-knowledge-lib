@@ -1,3 +1,4 @@
+const EosKnowledgeSearch = imports.EosKnowledgeSearch;
 const XapianQuery = imports.xapianQuery;
 
 const ContainsMatcher = imports.ContainsMatcher;
@@ -43,9 +44,9 @@ describe('Xapian Query Module', function () {
         });
 
         it('should map sortBy strings to xapian values', function () {
-            let result = xq.xapian_string_to_value_no('rank');
+            let result = xq.xapian_sort_value_no(EosKnowledgeSearch.QueryObjectSort.RANK);
             expect(result).toBe(1);
-            let undefined_result = xq.xapian_string_to_value_no('unsupportedXapianValue');
+            let undefined_result = xq.xapian_sort_value_no('unsupportedXapianValue');
             expect(undefined_result).toBe(undefined);
         });
 

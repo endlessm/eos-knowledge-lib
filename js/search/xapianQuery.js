@@ -1,6 +1,8 @@
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 
+const QueryObject = imports.queryObject;
+
 // Xapian prefixes used to query data
 const XAPIAN_PREFIX_EXACT_TITLE = 'exact_title:';
 const XAPIAN_PREFIX_ID = 'id:';
@@ -187,11 +189,11 @@ function xapian_ids_clause (ids) {
     return id_clauses.join(XAPIAN_OP_OR);
 }
 
-function xapian_string_to_value_no(xapian_string) {
-    switch (xapian_string) {
-        case 'rank':
+function xapian_sort_value_no (sort) {
+    switch (sort) {
+        case QueryObject.QueryObjectSort.RANK:
             return XAPIAN_RANK_VALUE_NO;
-        case 'articleNumber':
+        case QueryObject.QueryObjectSort.ARTICLE_NUMBER:
             return XAPIAN_ARTICLE_NUMBER_VALUE_NO;
         default:
             return undefined;

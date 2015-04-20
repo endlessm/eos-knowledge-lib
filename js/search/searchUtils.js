@@ -19,3 +19,10 @@ function get_current_language () {
 
     return null;
 }
+
+function define_enum (values) {
+    return values.reduce((obj, val, index) => {
+        obj[val] = index;
+        return obj;
+    }, {});
+}
