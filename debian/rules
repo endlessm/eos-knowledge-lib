@@ -14,7 +14,7 @@
 
 # Build our documentation as well
 override_dh_auto_configure:
-	dh_auto_configure -- --enable-gtk-doc --enable-gir-doc --enable-js-doc
+	dh_auto_configure -- --enable-gtk-doc
 
 # Keep our tests from running when building the debian. This is because our
 # test need a valid display out for running gtk_init. In the future we should
