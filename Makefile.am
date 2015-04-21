@@ -483,7 +483,7 @@ distclean-local::
 	@rm -rf docs/reference/eosknowledge-js/html
 
 dist-hook::
-	@mkdir -p $(distdir)/docs/reference/eosknowledge-js/html
+	@$(MKDIR_P) $(distdir)/docs/reference/eosknowledge-js/html
 	@cp -r docs/reference/eosknowledge-js/html/*.html $(distdir)/docs/reference/eosknowledge-js/html
 	@cp -r docs/reference/eosknowledge-js/html/*.css $(distdir)/docs/reference/eosknowledge-js/html
 	@cp -r docs/reference/eosknowledge-js/html/*.js $(distdir)/docs/reference/eosknowledge-js/html
@@ -531,7 +531,7 @@ distclean-local::
 # distcheck the docs don't get rebuilt because the stamp file is already there
 # and the source files are not newer) copy from $srcdir.
 dist-hook::
-	@mkdir -p $(distdir)/docs/reference/js/html
+	@$(MKDIR_P) $(distdir)/docs/reference/js/html
 	@if test -d docs/reference/js/html; then \
 		cp -r docs/reference/js/html/* $(distdir)/docs/reference/js/html; \
 	elif test -d $(srcdir)/docs/reference/js/html; then \
