@@ -502,7 +502,9 @@ build_naturaldocs_verbose_0 = @echo '  DOC    Building naturaldocs for $(natural
 # timestamp of the last successful build.
 stamp_file = docs/reference/js/doc-build.stamp
 
-$(stamp_file): docs/reference/js/eos.css
+js_doc_sources = $(public_overrides) $(private_overrides) $(reader_overrides) $(search_files)
+
+$(stamp_file): docs/reference/js/eos.css $(js_doc_sources)
 	$(build_naturaldocs_verbose)$(MKDIR_P) $(@D)/html && \
 	cd $(@D) && \
 	naturaldocs -o HTML html -p . -s Default eos -hl All \
