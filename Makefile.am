@@ -507,7 +507,7 @@ js_doc_sources = $(public_overrides) $(private_overrides) $(reader_overrides) $(
 $(stamp_file): docs/reference/js/eos.css $(js_doc_sources)
 	$(build_naturaldocs_verbose)$(MKDIR_P) $(@D)/html && \
 	cd $(@D) && \
-	naturaldocs -o HTML html -p . -s Default eos -hl All \
+	$(NATURALDOCS) -o HTML html -p . -s Default eos -hl All \
 				-i $(abs_srcdir)/js/search \
 				-i $(abs_srcdir)/overrides && \
 	touch $(@F)
