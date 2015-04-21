@@ -25,9 +25,6 @@ AM_CFLAGS = $(STRICT_CFLAGS)
 # 'make distcheck'
 AM_DISTCHECK_CONFIGURE_FLAGS = \
 	--enable-gtk-doc \
-	--enable-gir-doc \
-	--enable-js-doc \
-	--enable-strict-flags \
 	$(NULL)
 
 # Define these variables so that other Makefile snippets can add to them
