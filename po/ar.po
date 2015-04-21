@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2015-04-06 20:39+0000\n"
-"PO-Revision-Date: 2015-04-06 20:39+0000\n"
+"POT-Creation-Date: 2015-04-14 01:47+0000\n"
+"PO-Revision-Date: 2015-04-14 01:47+0000\n"
 "Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
 "Language-Team: Arabic (http://www.transifex.com/projects/p/eos-knowledge-lib/language/ar/)\n"
 "MIME-Version: 1.0\n"
@@ -221,7 +221,8 @@ msgid "Open the magazine"
 msgstr ""
 
 #: overrides/reader/standalonePage.js:312
-msgid "This article is part of the archive of the magazine "
+#, javascript-format
+msgid "This article is part of the archive of the magazine %s."
 msgstr ""
 
 #. TRANSLATORS: This shows the page number; %d will be replaced with
