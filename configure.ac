@@ -40,7 +40,9 @@ AC_CONFIG_SRCDIR([eosknowledge/eosknowledge.h])
 # Unlike serial-tests, this option is accepted by Automake 1.11
 # tar-ustar is required because there may be files whose entire paths exceed
 # 99 characters.
-AM_INIT_AUTOMAKE([-Wall -Wno-portability foreign 1.11 parallel-tests tar-ustar])
+# subdir-objects is for forward compatibility with Automake 2.0 and can be
+# removed when we upgrade to that version.
+AM_INIT_AUTOMAKE([-Wall -Wno-portability foreign 1.11 parallel-tests tar-ustar subdir-objects])
 # Avoid spewing garbage over the terminal ('make V=1' to see the garbage)
 AM_SILENT_RULES([yes])
 # Initialize Libtool; don't build static libraries

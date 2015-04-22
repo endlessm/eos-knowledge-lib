@@ -21,6 +21,7 @@
 # Autotools/Gettext droppings
 .deps
 .libs
+.dirstamp
 Makefile
 Makefile.in
 stamp*
