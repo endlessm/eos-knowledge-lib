@@ -291,6 +291,18 @@ describe('Knowledge Engine Module', () => {
             expect(get_query_vals_for_key(requested_query, 'q')).toMatch(mock_id_query);
         });
 
+        it('uses correct domain for id', () => {
+            let request_spy = engine_request_spy();
+            let mock_id = 'ekn://new_domain/0123456789abcdef';
+
+            engine.get_object_by_id(mock_id, noop);
+            let last_req_args = request_spy.calls.mostRecent().args;
+            let requested_uri = last_req_args[0];
+            let requested_query = requested_uri.get_query();
+
+            expect(get_query_vals_for_key(requested_query, 'path')).toMatch('/new_domain');
+        });
+
         it('marshals objects based on @type', (done) => {
             let mock_id = 'ekn://foo/0123456789abcdef';
             mock_engine_request(undefined, {

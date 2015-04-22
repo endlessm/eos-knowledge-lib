@@ -118,6 +118,7 @@ const Engine = Lang.Class({
         var query_obj = new QueryObject.QueryObject({
             limit: 1,
             ids: [id],
+            domain: utils.domain_from_ekn_id(id),
         });
         let req_uri = this._get_xapian_uri(query_obj);
 
