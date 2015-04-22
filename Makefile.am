@@ -417,11 +417,8 @@ TESTS = $(javascript_tests)
 LOG_COMPILER = gtester
 AM_LOG_FLAGS = -k --verbose
 
-## Define required variables and include Jasmine makefile fragment
 TEST_EXTENSIONS =
 AM_JS_LOG_FLAGS =
-JASMINE_SUBMODULE_PATH = $(top_srcdir)/tests/jasmine
-include tests/jasmine/Makefile-jasmine.am.inc
 
 # Use locally built versions of EosKnowledge-0.gir, JS modules, and libraries.
 # We clobber GJS_PATH and include $(top_builddir) and $(top_srcdir) so that
