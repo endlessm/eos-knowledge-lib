@@ -9,6 +9,7 @@ GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.
 
 const MockItemModel = new Lang.Class({
     Name: 'MockItemModel',
+    GTypeName: 'testHistoryModel_MockItemModel',
     Extends: GObject.Object,
     Implements: [ EosKnowledge.HistoryItemModel ],
     Properties: {

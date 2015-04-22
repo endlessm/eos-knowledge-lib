@@ -10,6 +10,7 @@ const MOCK_ARTICLE_PATH = TESTDIR + '/test-content/mexico.jsonld';
 
 const MockView = new Lang.Class({
     Name: 'MockView',
+    GTypeName: 'testArticlePresenter_MockView',
     Extends: GObject.Object,
     Signals: {
         'new-view-transitioned': {}
