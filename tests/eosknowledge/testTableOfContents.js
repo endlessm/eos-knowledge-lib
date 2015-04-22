@@ -4,7 +4,7 @@ const Gtk = imports.gi.Gtk;
 const CssClassMatcher = imports.CssClassMatcher;
 
 describe('Table of contents widget', function () {
-    let toc;
+    let toc, notify;
     let toc_entries = ['one', 'two', 'three', 'four', 'five', 'six'];
 
     beforeEach(function () {

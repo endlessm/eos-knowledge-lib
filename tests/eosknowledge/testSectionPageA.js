@@ -49,13 +49,6 @@ describe('Section page for Template A', function () {
             title: "History of Guatemala"
         });
 
-        notify = jasmine.createSpy('notify');
-        section_page.connect('notify', function (object, pspec) {
-            // Seems properties defined in js can only be accessed through
-            // object[name] with the underscore variant on the name
-            notify(pspec.name, object[pspec.name.replace('-', '_')]);
-        });
-
     });
 
     it('can be constructed', function () {});

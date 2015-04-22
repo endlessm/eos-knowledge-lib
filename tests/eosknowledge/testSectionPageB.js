@@ -22,14 +22,6 @@ describe('Section page for Template B', function () {
             new EosKnowledge.TextCard({title: 'Text card 2'}),
             new EosKnowledge.TextCard({title: 'Text card 3'})
         ];
-
-        notify = jasmine.createSpy('notify');
-        section_page.connect('notify', function (object, pspec) {
-            // Seems properties defined in js can only be accessed through
-            // object[name] with the underscore variant on the name
-            notify(pspec.name, object[pspec.name.replace('-', '_')]);
-        });
-
     });
 
     it('can be constructed', function () {});

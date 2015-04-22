@@ -62,13 +62,6 @@ describe('Home page for Template B', function () {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
 
         home_page = new EosKnowledge.HomePageB();
-
-        notify = jasmine.createSpy('notify');
-        home_page.connect('notify', function (object, pspec) {
-            // Seems properties defined in js can only be accessed through
-            // object[name] with the underscore variant on the name
-            notify(pspec.name, object[pspec.name.replace('-', '_')]);
-        });
     });
 
     it('can be constructed', function () {});
