@@ -1,5 +1,4 @@
 const EosKnowledge = imports.gi.EosKnowledge;
-const Gtk = imports.gi.Gtk;
 
 const CssClassMatcher = imports.CssClassMatcher;
 

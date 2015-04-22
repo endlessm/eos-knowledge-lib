@@ -1,7 +1,5 @@
 const EosKnowledge = imports.gi.EosKnowledge;
 const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
-const Gtk = imports.gi.Gtk;
 
 const CssClassMatcher = imports.CssClassMatcher;
 const Utils = imports.tests.utils;

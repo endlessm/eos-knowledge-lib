@@ -1,5 +1,5 @@
 const EosKnowledgeSearch = imports.EosKnowledgeSearch;
-const Gtk = imports.gi.Gtk;
+
 const InstanceOfMatcher = imports.InstanceOfMatcher;
 
 const utils = imports.tests.utils;

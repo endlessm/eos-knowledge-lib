@@ -1,7 +1,6 @@
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const Gtk = imports.gi.Gtk;
-const Mainloop = imports.mainloop;
 const WebKit2 = imports.gi.WebKit2;
 
 const BUILDDIR = GLib.getenv('G_TEST_BUILDDIR') || GLib.get_current_dir();
