@@ -157,6 +157,7 @@ const MockView = new Lang.Class({
             article_page: {
                 title_view: {},
                 get_style_context: get_style_context,
+                show_content_view: function () {},
             },
         };
 
