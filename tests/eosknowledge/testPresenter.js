@@ -1,6 +1,7 @@
 const EosKnowledge = imports.gi.EosKnowledge;
 const Endless = imports.gi.Endless;
 const Gio = imports.gi.Gio;
+const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
@@ -174,6 +175,7 @@ describe('Presenter', () => {
                     jasmine.any(Function));
                 expect(view.show_no_search_results_page).toHaveBeenCalled();
                 done();
+                return GLib.SOURCE_REMOVE;
             });
         });
 
@@ -187,6 +189,7 @@ describe('Presenter', () => {
                     jasmine.any(Function));
                 expect(view.show_no_search_results_page).toHaveBeenCalled();
                 done();
+                return GLib.SOURCE_REMOVE;
             });
         });
 
@@ -195,6 +198,7 @@ describe('Presenter', () => {
             Mainloop.idle_add(function () {
                 expect(presenter.record_search_metric).toHaveBeenCalled();
                 done();
+                return GLib.SOURCE_REMOVE;
             });
         });
 
@@ -203,6 +207,7 @@ describe('Presenter', () => {
             Mainloop.idle_add(function () {
                 expect(presenter.record_search_metric).toHaveBeenCalled();
                 done();
+                return GLib.SOURCE_REMOVE;
             });
         });
     });

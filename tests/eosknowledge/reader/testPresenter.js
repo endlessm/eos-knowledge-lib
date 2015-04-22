@@ -518,6 +518,7 @@ describe('Reader presenter', function () {
                     jasmine.any(Function));
                 expect(view.search_box.set_menu_items).toHaveBeenCalled();
                 done();
+                return GLib.SOURCE_REMOVE;
             });
         });
 
@@ -534,6 +535,7 @@ describe('Reader presenter', function () {
                 expect(view.show_search_results_page).toHaveBeenCalled();
                 expect(presenter.history_model.current_item.query).toBe(JSON.stringify({q:'Azucar', limit: 15}));
                 done();
+                return GLib.SOURCE_REMOVE;
             });
         });
 
@@ -543,6 +545,7 @@ describe('Reader presenter', function () {
             Mainloop.idle_add(function () {
                 expect(presenter.record_search_metric).toHaveBeenCalled();
                 done();
+                return GLib.SOURCE_REMOVE;
             });
         });
 
@@ -558,6 +561,7 @@ describe('Reader presenter', function () {
                 expect(view.show_search_results_page).toHaveBeenCalled();
                 expect(presenter.history_model.current_item.query).toBe(JSON.stringify({q:'Azucar', limit: 15}));
                 done();
+                return GLib.SOURCE_REMOVE;
             });
         });
 
