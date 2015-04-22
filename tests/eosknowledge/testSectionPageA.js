@@ -7,39 +7,8 @@ const WidgetDescendantMatcher = imports.WidgetDescendantMatcher;
 
 const TESTDIR = Endless.getCurrentFileDir() + '/..';
 
-let segments = {
-
-    'Lessons': [
-        new EosKnowledge.Card({
-            title: 'Subtitled Card',
-            synopsis: 'This is the Subtitle',
-        }),
-        new EosKnowledge.Card({
-            title: 'Picture Card',
-            thumbnail_uri: TESTDIR + '/test-content/pig1.jpg',
-        })
-    ],
-
-    'Articles': [
-        new EosKnowledge.Card({
-            title: 'Everything card',
-            synopsis: 'This card has everything',
-            thumbnail_uri: TESTDIR + '/test-content/pig2.jpg',
-        }),
-        new EosKnowledge.LessonCard({
-            title: 'Mustard lesson',
-            synopsis: 'Sample, incomplete',
-            // By Bogdan29roman, CC-BY-SA
-            // http://en.wikipedia.org/wiki/File:Mu%C5%9Ftar.jpg
-            thumbnail_uri: TESTDIR + '/test-content/mustard.jpg',
-            item_index: 1,
-            complete: false
-        })
-    ]
-};
-
 describe('Section page for Template A', function () {
-    let section_page;
+    let section_page, segments;
 
     beforeEach(function () {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
@@ -49,6 +18,34 @@ describe('Section page for Template A', function () {
             title: "History of Guatemala"
         });
 
+        segments = {
+            'Lessons': [
+                new EosKnowledge.Card({
+                    title: 'Subtitled Card',
+                    synopsis: 'This is the Subtitle',
+                }),
+                new EosKnowledge.Card({
+                    title: 'Picture Card',
+                    thumbnail_uri: TESTDIR + '/test-content/pig1.jpg',
+                }),
+            ],
+            'Articles': [
+                new EosKnowledge.Card({
+                    title: 'Everything card',
+                    synopsis: 'This card has everything',
+                    thumbnail_uri: TESTDIR + '/test-content/pig2.jpg',
+                }),
+                new EosKnowledge.LessonCard({
+                    title: 'Mustard lesson',
+                    synopsis: 'Sample, incomplete',
+                    // By Bogdan29roman, CC-BY-SA
+                    // http://en.wikipedia.org/wiki/File:Mu%C5%9Ftar.jpg
+                    thumbnail_uri: TESTDIR + '/test-content/mustard.jpg',
+                    item_index: 1,
+                    complete: false
+                }),
+            ],
+        };
     });
 
     it('can be constructed', function () {});
