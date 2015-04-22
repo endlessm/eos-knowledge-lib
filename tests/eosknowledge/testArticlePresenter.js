@@ -1,12 +1,14 @@
-const Endless = imports.gi.Endless;
 const EosKnowledge = imports.gi.EosKnowledge;
 const EosKnowledgeSearch = imports.EosKnowledgeSearch;
 const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 
-const TESTDIR = Endless.getCurrentFileDir() + '/..';
-const MOCK_ARTICLE_PATH = TESTDIR + '/test-content/mexico.jsonld';
+const Utils = imports.tests.utils;
+
+const TEST_CONTENT_DIR = Utils.get_test_content_srcdir();
+const TEST_CONTENT_BUILDDIR = Utils.get_test_content_builddir();
+const MOCK_ARTICLE_PATH = TEST_CONTENT_DIR + 'mexico.jsonld';
 
 const MockView = new Lang.Class({
     Name: 'MockView',

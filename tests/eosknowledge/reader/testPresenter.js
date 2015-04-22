@@ -1,4 +1,3 @@
-const Endless = imports.gi.Endless;
 const EosKnowledge = imports.gi.EosKnowledge;
 const EosKnowledgeSearch = imports.EosKnowledgeSearch;
 const Gio = imports.gi.Gio;
@@ -9,6 +8,7 @@ const Mainloop = imports.mainloop;
 
 const utils = imports.tests.utils;
 
+const TEST_CONTENT_DIR = utils.get_test_content_srcdir();
 const TEST_DOMAIN = 'thrones-en';
 const UPDATE_INTERVAL_MS = 604800000;
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
@@ -198,7 +198,7 @@ const MockView = new Lang.Class({
 describe('Reader presenter', function () {
     let engine, settings, view, article_nav_buttons, presenter;
 
-    const TEST_APP_FILENAME = Endless.getCurrentFileDir() + '/../../test-content/app.json';
+    const TEST_APP_FILENAME = TEST_CONTENT_DIR + 'app.json';
     const TEST_JSON = utils.parse_object_from_path(TEST_APP_FILENAME);
     const MOCK_DATA = [
         ['Title 1', ['Kim Kardashian'], '2014/11/13 08:00'],

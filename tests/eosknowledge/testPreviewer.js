@@ -1,14 +1,13 @@
-const Endless = imports.gi.Endless;
 const EosKnowledge = imports.gi.EosKnowledge;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const Gtk = imports.gi.Gtk;
 
 const CssClassMatcher = imports.CssClassMatcher;
+const Utils = imports.tests.utils;
 
-const TESTDIR = Endless.getCurrentFileDir() + '/..';
-// Working directory should be top of the builddir
-const TESTBUILDDIR = GLib.get_current_dir() + '/tests';
+const TEST_CONTENT_DIR = Utils.get_test_content_srcdir();
+const TEST_CONTENT_BUILDDIR = Utils.get_test_content_builddir();
 
 describe('Previewer widget', function () {
     let previewer;
@@ -16,7 +15,7 @@ describe('Previewer widget', function () {
     beforeEach(function () {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
 
-        let resource = Gio.Resource.load(TESTBUILDDIR + '/test-content/test-content.gresource');
+        let resource = Gio.Resource.load(TEST_CONTENT_BUILDDIR + 'test-content.gresource');
         resource._register();
 
         previewer = new EosKnowledge.Previewer();
@@ -28,7 +27,7 @@ describe('Previewer widget', function () {
 
     it('can open an image file', function () {
         let fn = function () {
-            previewer.file = Gio.File.new_for_path(TESTDIR + '/test-content/joffrey.jpg');
+            previewer.file = Gio.File.new_for_path(TEST_CONTENT_DIR + 'joffrey.jpg');
         };
         expect(fn).not.toThrow();
     });
@@ -49,7 +48,7 @@ describe('Previewer widget', function () {
 
     it('can open a video file', function () {
         let fn = function () {
-            previewer.file = Gio.File.new_for_path(TESTDIR + '/test-content/sample.mp4');
+            previewer.file = Gio.File.new_for_path(TEST_CONTENT_DIR + 'sample.mp4');
         };
         expect(fn).not.toThrow();
     });
@@ -63,7 +62,7 @@ describe('Previewer widget', function () {
 
     it('cannot open a directory', function () {
         let fn = function () {
-            previewer.file = Gio.File.new_for_path(TESTDIR);
+            previewer.file = Gio.File.new_for_path(TEST_CONTENT_DIR);
         };
         expect(fn).toThrow();
     });

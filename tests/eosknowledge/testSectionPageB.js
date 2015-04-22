@@ -1,10 +1,7 @@
 const EosKnowledge = imports.gi.EosKnowledge;
-const Endless = imports.gi.Endless;
 const Gtk = imports.gi.Gtk;
 
 const CssClassMatcher = imports.CssClassMatcher;
-
-const TESTDIR = Endless.getCurrentFileDir() + '/..';
 
 describe('Section page for Template B', function () {
     let section_page;

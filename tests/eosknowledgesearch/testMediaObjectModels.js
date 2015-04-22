@@ -1,12 +1,12 @@
-const Endless = imports.gi.Endless;
 const EosKnowledgeSearch = imports.EosKnowledgeSearch;
 const Gtk = imports.gi.Gtk;
 const InstanceOfMatcher = imports.InstanceOfMatcher;
 
 const utils = imports.tests.utils;
 
-const MOCK_IMAGE_PATH = Endless.getCurrentFileDir() + '/../test-content/rick-astley-image.jsonld';
-const MOCK_VIDEO_PATH = Endless.getCurrentFileDir() + '/../test-content/never-gonna-give-you-up-video.jsonld';
+const TEST_CONTENT_DIR = utils.get_test_content_srcdir();
+const MOCK_IMAGE_PATH = TEST_CONTENT_DIR + 'rick-astley-image.jsonld';
+const MOCK_VIDEO_PATH = TEST_CONTENT_DIR + 'never-gonna-give-you-up-video.jsonld';
 
 describe ('Image Object Model', function () {
     let imageObject;

@@ -1,11 +1,11 @@
 const EosKnowledge = imports.gi.EosKnowledge;
-const Endless = imports.gi.Endless;
 const Gtk = imports.gi.Gtk;
 
 const CssClassMatcher = imports.CssClassMatcher;
+const Utils = imports.tests.utils;
 const WidgetDescendantMatcher = imports.WidgetDescendantMatcher;
 
-const TESTDIR = Endless.getCurrentFileDir() + '/..';
+const TEST_CONTENT_DIR = Utils.get_test_content_srcdir();
 
 describe('Section page for Template A', function () {
     let section_page, segments;
@@ -26,21 +26,21 @@ describe('Section page for Template A', function () {
                 }),
                 new EosKnowledge.Card({
                     title: 'Picture Card',
-                    thumbnail_uri: TESTDIR + '/test-content/pig1.jpg',
+                    thumbnail_uri: TEST_CONTENT_DIR + 'pig1.jpg',
                 }),
             ],
             'Articles': [
                 new EosKnowledge.Card({
                     title: 'Everything card',
                     synopsis: 'This card has everything',
-                    thumbnail_uri: TESTDIR + '/test-content/pig2.jpg',
+                    thumbnail_uri: TEST_CONTENT_DIR + 'pig2.jpg',
                 }),
                 new EosKnowledge.LessonCard({
                     title: 'Mustard lesson',
                     synopsis: 'Sample, incomplete',
                     // By Bogdan29roman, CC-BY-SA
                     // http://en.wikipedia.org/wiki/File:Mu%C5%9Ftar.jpg
-                    thumbnail_uri: TESTDIR + '/test-content/mustard.jpg',
+                    thumbnail_uri: TEST_CONTENT_DIR + 'mustard.jpg',
                     item_index: 1,
                     complete: false
                 }),

@@ -1,15 +1,14 @@
-const Endless = imports.gi.Endless;
 const EosKnowledgeSearch = imports.EosKnowledgeSearch;
 const Gtk = imports.gi.Gtk;
 const InstanceOfMatcher = imports.InstanceOfMatcher;
 
 const utils = imports.tests.utils;
 
-const MOCK_ARTICLES_PATH = Endless.getCurrentFileDir() + '/../test-content/';
+const TEST_CONTENT_DIR = utils.get_test_content_srcdir();
 
 describe ('Article Object Model', function () {
     let articleObject;
-    let mockArticleData = utils.parse_object_from_path(MOCK_ARTICLES_PATH + 'greyjoy-article.jsonld');
+    let mockArticleData = utils.parse_object_from_path(TEST_CONTENT_DIR + 'greyjoy-article.jsonld');
     let mockMediaDir = '/test';
 
     beforeEach(function () {
@@ -87,7 +86,7 @@ describe ('Article Object Model', function () {
 
 describe ('Reader App Article Object', function () {
     let readerArticleObject;
-    let mockReaderArticleData = utils.parse_object_from_path(MOCK_ARTICLES_PATH + 'frango-frito.jsonld');
+    let mockReaderArticleData = utils.parse_object_from_path(TEST_CONTENT_DIR + 'frango-frito.jsonld');
     let mockMediaDir = '/test';
 
     beforeEach(function () {

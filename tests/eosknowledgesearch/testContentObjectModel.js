@@ -1,9 +1,9 @@
-const Endless = imports.gi.Endless;
 const EosKnowledgeSearch = imports.EosKnowledgeSearch;
 
 const utils = imports.tests.utils;
 
-const CONTENT_OBJECT_EMACS = Endless.getCurrentFileDir() + '/../test-content/emacs.jsonld';
+const TEST_CONTENT_DIR = utils.get_test_content_srcdir();
+const CONTENT_OBJECT_EMACS = TEST_CONTENT_DIR + 'emacs.jsonld';
 
 describe ("Content Object Model", function () {
     let contentObject;

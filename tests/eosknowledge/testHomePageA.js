@@ -1,10 +1,10 @@
 const EosKnowledge = imports.gi.EosKnowledge;
-const Endless = imports.gi.Endless;
 const Gtk = imports.gi.Gtk;
 
 const CssClassMatcher = imports.CssClassMatcher;
+const Utils = imports.tests.utils;
 
-const TESTDIR = Endless.getCurrentFileDir() + '/..';
+const TEST_CONTENT_DIR = Utils.get_test_content_srcdir();
 
 describe('Home page for Template A', () => {
     let home_page, notify, card_list;
@@ -29,13 +29,13 @@ describe('Home page for Template A', () => {
             }),
             new EosKnowledge.Card({
                 title: 'Featured Picture Card',
-                thumbnail_uri: TESTDIR + '/test-content/pig1.jpg',
+                thumbnail_uri: TEST_CONTENT_DIR + 'pig1.jpg',
                 featured: true,
             }),
             new EosKnowledge.Card({
                 title: 'Everything card',
                 synopsis: 'This card has everything',
-                thumbnail_uri: TESTDIR + '/test-content/pig2.jpg',
+                thumbnail_uri: TEST_CONTENT_DIR + 'pig2.jpg',
                 featured: true,
             }),
             new EosKnowledge.LessonCard({
@@ -43,7 +43,7 @@ describe('Home page for Template A', () => {
                 synopsis: 'Sample, incomplete',
                 // By Bogdan29roman, CC-BY-SA
                 // http://en.wikipedia.org/wiki/File:Mu%C5%9Ftar.jpg
-                thumbnail_uri: TESTDIR + '/test-content/mustard.jpg',
+                thumbnail_uri: TEST_CONTENT_DIR + 'mustard.jpg',
                 item_index: 1,
                 complete: false,
                 featured: false,

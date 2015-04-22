@@ -1,14 +1,14 @@
 const EosKnowledgeSearch = imports.EosKnowledgeSearch;
-const Endless = imports.gi.Endless;
 const Gio = imports.gi.Gio;
 const Soup = imports.gi.Soup;
 
 const InstanceOfMatcher = imports.InstanceOfMatcher;
 const utils = imports.tests.utils;
 
-const MOCK_CONTENT_PATH = Endless.getCurrentFileDir() + '/../test-content/content-search-results.jsonld';
-const MOCK_ARTICLE_PATH = Endless.getCurrentFileDir() + '/../test-content/article-search-results.jsonld';
-const MOCK_MEDIA_PATH = Endless.getCurrentFileDir() + '/../test-content/media-search-results.jsonld';
+const TEST_CONTENT_DIR = utils.get_test_content_srcdir();
+const MOCK_CONTENT_PATH = TEST_CONTENT_DIR + 'content-search-results.jsonld';
+const MOCK_ARTICLE_PATH = TEST_CONTENT_DIR + 'article-search-results.jsonld';
+const MOCK_MEDIA_PATH = TEST_CONTENT_DIR + 'media-search-results.jsonld';
 
 describe('Knowledge Engine Module', () => {
     let engine;
