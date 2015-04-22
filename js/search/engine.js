@@ -15,14 +15,6 @@ const utils = imports.searchUtils;
 
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 
-function domain_from_ekn_id(ekn_id) {
-    // Chop the URI off of an ekn id: 'ekn://football-es/hash' => 'football-es/hash'
-    let stripped_ekn_id = ekn_id.slice('ekn://'.length);
-    // Grab everything before the first slash.
-    let domain = stripped_ekn_id.split('/')[0];
-    return domain;
-}
-
 /**
  * Class: Engine
  *
@@ -295,7 +287,7 @@ const Engine = Lang.Class({
             let Model = ekn_model_by_ekv_type[json_ld_type];
 
             let ekn_id = json_ld['@id'];
-            let domain = domain_from_ekn_id(ekn_id);
+            let domain = utils.domain_from_ekn_id(ekn_id);
             let content_path = this._content_path_from_domain(domain);
 
             return Model.new_from_json_ld(json_ld, content_path + this._MEDIA_PATH);
