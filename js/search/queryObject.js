@@ -1,12 +1,42 @@
 // Copyright 2015 Endless Mobile, Inc.
+const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 const Soup = imports.gi.Soup;
 
+const Blacklist = imports.blacklist;
 const Utils = imports.searchUtils;
 
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
+
+// Xapian prefixes used to query data
+const _XAPIAN_PREFIX_EXACT_TITLE = 'exact_title:';
+const _XAPIAN_PREFIX_ID = 'id:';
+const _XAPIAN_PREFIX_TAG = 'tag:';
+const _XAPIAN_PREFIX_TITLE = 'title:';
+
+// Xapian QueryParser operators
+// docs: http://xapian.org/docs/queryparser.html
+const _XAPIAN_OPERATORS = ['AND', 'OR', 'NOT', 'XOR', 'NEAR', 'ADJ'];
+const _XAPIAN_OP_AND = ' AND ';
+const _XAPIAN_OP_OR = ' OR ';
+const _XAPIAN_OP_NEAR = ' NEAR ';
+const _XAPIAN_OP_NOT = 'NOT ';
+const _XAPIAN_SYNTAX_CHARACTERS = ['(', ')', '+', '-', '\'', '"'];
+
+// The value numbers where certain info is stored in our Xapian documents
+const _XAPIAN_SOURCE_URL_VALUE_NO = 0;
+const _XAPIAN_RANK_VALUE_NO = 1;
+const _XAPIAN_ARTICLE_NUMBER_VALUE_NO = 2;
+
+const _DEFAULT_CUTOFF = 10;
+const _MATCH_SYNOPSIS_CUTOFF = 20;
+
+// Matches any contiguous whitespace
+const _WHITESPACE_REGEX = /\s+/;
+// Matches any delimiter which indicates a separate Xapian term
+const _TERM_DELIMITER_REGEX = /[\s\-]+/;
 
 /**
  * Enum: QueryObjectType
@@ -180,6 +210,142 @@ const QueryObject = Lang.Class({
         delete props.ids;
 
         this.parent(props);
+    },
+
+    _sanitized_query: function () {
+        // Remove excess white space
+        let query = this.query.split(_WHITESPACE_REGEX).join(' ').trim();
+
+        // RegExp to match xapian operators or special characters
+        let regexString = _XAPIAN_OPERATORS.concat(_XAPIAN_SYNTAX_CHARACTERS.map((chr) => {
+            return '\\' + chr;
+        })).join('|');
+        let regex = new RegExp(regexString, 'g');
+
+        // If we find a xapian operator term, lower case it.
+        // If we find a xapian syntax character, remove it.
+        // Anything else can stay as is.
+        return query.replace(regex, (match) => {
+            if (_XAPIAN_OPERATORS.indexOf(match) !== -1) {
+                return match.toLowerCase();
+            } else if (_XAPIAN_SYNTAX_CHARACTERS.indexOf(match) !== -1) {
+                return '';
+            } else {
+                return match; // Fallback case
+            }
+        }).trim();
+    },
+
+    _query_clause: function () {
+        let sanitized_query = this._sanitized_query();
+        let terms = sanitized_query.split(_TERM_DELIMITER_REGEX);
+        let exact_title_clause = _XAPIAN_PREFIX_EXACT_TITLE + terms.map(Utils.capitalize).join('_');
+
+        if (sanitized_query.length === 0)
+            return '';
+
+        // Don't add wildcard here, wildcard searches with a single character cause
+        // performance problems.
+        if (sanitized_query.length === 1)
+            return exact_title_clause;
+
+        let maybe_add_wildcard = this.type === QueryObjectType.INCREMENTAL ?
+            (term) => Utils.parenthesize(term + _XAPIAN_OP_OR + term + '*') :
+            (term) => term;
+        let add_title_prefix = (term) => _XAPIAN_PREFIX_TITLE + term;
+
+        let clauses = [];
+
+        clauses.push(maybe_add_wildcard(exact_title_clause));
+
+        let title_clause = terms.map(add_title_prefix).map(maybe_add_wildcard).join(_XAPIAN_OP_AND);
+        clauses.push(title_clause);
+
+        if (this.match === QueryObjectMatch.TITLE_SYNOPSIS) {
+            let body_clause = terms.map(maybe_add_wildcard).join(_XAPIAN_OP_AND);
+            clauses.push(body_clause);
+        }
+
+        return clauses.map(Utils.parenthesize).join(_XAPIAN_OP_OR);
+    },
+
+    _tags_clause: function () {
+        // Tag lists should be joined as a series of individual tag queries
+        // joined by ORs, so an article that has any of the tags will match
+        // e.g. [foo,bar,baz] => 'K:foo OR K:bar OR K:baz'
+        let prefixed_tags = this.tags.map(Utils.quote).map((tag) => {
+            return _XAPIAN_PREFIX_TAG + tag;
+        });
+        return prefixed_tags.join(_XAPIAN_OP_OR);
+    },
+
+    _blacklist_clause: function () {
+        let explicit_tags = Blacklist.blacklist[this.domain] || [];
+        let prefixed_tags = explicit_tags.map(Utils.quote).map((tag) => {
+            return _XAPIAN_OP_NOT + _XAPIAN_PREFIX_TAG + tag;
+        });
+        return prefixed_tags.join(_XAPIAN_OP_AND);
+    },
+
+    // Verify that ekn id is of the right form
+    _ekn_id_is_valid: function (id) {
+        if (GLib.uri_parse_scheme(id) !== 'ekn')
+            return false;
+        let path = id.slice('ekn://'.length).split('/');
+
+        if (path.length !== 2)
+            return false;
+
+        // EKN domain is the last part of the app ID (without the reverse domain name)
+        if (!Gio.Application.id_is_valid('com.endlessm.' + path[0]))
+            return false;
+
+        // EKN ID is a 16-hexdigit hash
+        if (path[1].search(/^[A-Za-z0-9]{16}$/) === -1)
+            return false;
+
+        return true;
+    },
+
+    _ids_clause: function () {
+        let id_clauses = this.ids.map((id) => {
+            if (!this._ekn_id_is_valid(id))
+                throw new Error('Received invalid ekn id ' + id);
+
+            return _XAPIAN_PREFIX_ID + id.split('/').slice(-1)[0];
+        });
+        return id_clauses.join(_XAPIAN_OP_OR);
+    },
+
+    get_query_parser_string: function () {
+        let clauses = [];
+        clauses.push(this._query_clause());
+        clauses.push(this._tags_clause());
+        clauses.push(this._blacklist_clause());
+        clauses.push(this._ids_clause());
+        return clauses.filter((c) => c).map(Utils.parenthesize).join(_XAPIAN_OP_AND);
+    },
+
+    get_cutoff: function () {
+        // We need a stricter cutoff when matching against all indexed terms
+        if (this.match === QueryObjectMatch.TITLE_SYNOPSIS)
+            return _MATCH_SYNOPSIS_CUTOFF;
+        return _DEFAULT_CUTOFF;
+    },
+
+    get_sort_value: function () {
+        switch (this.sort) {
+            case QueryObjectSort.RANK:
+                return _XAPIAN_RANK_VALUE_NO;
+            case QueryObjectSort.ARTICLE_NUMBER:
+                return _XAPIAN_ARTICLE_NUMBER_VALUE_NO;
+            default:
+                return undefined;
+        }
+    },
+
+    get_collapse_value: function () {
+        return _XAPIAN_SOURCE_URL_VALUE_NO;
     },
 });
 

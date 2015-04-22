@@ -124,16 +124,6 @@ describe('Knowledge Engine Module', () => {
     });
 
     describe('get_xapian_uri', () => {
-        it('sets collapse to 0', () => {
-            let query_obj = new EosKnowledgeSearch.QueryObject({
-                query: 'tyrion',
-            });
-
-            let mock_uri = engine._get_xapian_uri(query_obj);
-            let mock_query_obj = mock_uri.get_query();
-            expect(get_query_vals_for_key(mock_query_obj, 'collapse')).toEqual('0');
-        });
-
         it('sets order field', () => {
             let query_obj = new EosKnowledgeSearch.QueryObject({
                 query: 'tyrion',
@@ -171,80 +161,25 @@ describe('Knowledge Engine Module', () => {
             expect(get_query_vals_for_key(query_obj, 'path')).toEqual('/foo/db');
         });
 
-        it('sets tags correctly', () => {
-            let query_obj = new EosKnowledgeSearch.QueryObject({
-                query: 'tyrion wins',
-                tags: ['lannister', 'bro'],
-                offset: 5,
-                limit: 2,
-            });
-            let mock_uri = engine._get_xapian_uri(query_obj);
-            let mock_query_obj = mock_uri.get_query();
-            let serialized_query = get_query_vals_for_key(mock_query_obj, 'q');
-            expect(serialized_query).toMatch('tag:"lannister"');
-            expect(serialized_query).toMatch('tag:"bro"');
-        });
-
-        it('includes query words in xapian query clause', () => {
-            let query_obj = new EosKnowledgeSearch.QueryObject({
-                query: 'tyrion wins',
-                tags: ['lannister', 'bro'],
-                offset: 5,
-                limit: 2,
-            });
-            let mock_uri = engine._get_xapian_uri(query_obj);
-            let mock_query_obj = mock_uri.get_query();
-            let serialized_query = get_query_vals_for_key(mock_query_obj, 'q');
-
-            expect(serialized_query).toMatch(/tyrion/i);
-            expect(serialized_query).toMatch(/wins/i);
-        });
-
-        it('changes cutoff value depending on query match', () => {
-            let query_obj = new EosKnowledgeSearch.QueryObject({
-                query: 'tyrion wins',
-                match: EosKnowledgeSearch.QueryObjectMatch.TITLE_SYNOPSIS,
-            });
-            let mock_uri = engine._get_xapian_uri(query_obj);
-            let mock_query_obj = mock_uri.get_query();
-            let serialized_cutoff = get_query_vals_for_key(mock_query_obj, 'cutoff');
-            expect(serialized_cutoff).toBe('20');
-
-            query_obj = new EosKnowledgeSearch.QueryObject({
-                query: 'tyrion wins',
-                match: EosKnowledgeSearch.QueryObjectMatch.TITLE_ONLY,
-            });
-            mock_uri = engine._get_xapian_uri(query_obj);
-            mock_query_obj = mock_uri.get_query();
-            serialized_cutoff = get_query_vals_for_key(mock_query_obj, 'cutoff');
-            expect(serialized_cutoff).toBe('10');
-        });
-
-        it('supports single ID queries', () => {
-            let query_obj = new EosKnowledgeSearch.QueryObject({
-                ids: ['ekn://domain/0123456789abcdef'],
-            });
-            let query_params = {
-                query: '(id:0123456789abcdef)',
+        it('calls into QueryObject for other uri fields', () => {
+            let fakeCollapse = 5;
+            let fakeCutoff = 42;
+            let fakeSortBy = 512;
+            let fakeQ = 'not a real query string';
+            let mock_obj = {
+                get_collapse_value: () => fakeCollapse,
+                get_cutoff: () => fakeCutoff,
+                get_sort_value: () => fakeSortBy,
+                get_query_parser_string: () => fakeQ,
             };
 
-            let mock_uri = engine._get_xapian_uri(query_obj);
-            let mock_query_obj = mock_uri.get_query();
-            expect(get_query_vals_for_key(mock_query_obj, 'q'));
-        });
 
-        it('supports multiple ID queries', () => {
-            let query_obj = new EosKnowledgeSearch.QueryObject({
-                ids: [
-                    'ekn://domain/0123456789abcdef',
-                    'ekn://domain/fedcba9876543210',
-                ],
-            });
-            let expected_vals = '(id:0123456789abcdef OR id:fedcba9876543210)';
-
-            let mock_uri = engine._get_xapian_uri(query_obj);
-            let mock_query_obj = mock_uri.get_query();
-            expect(get_query_vals_for_key(mock_query_obj, 'q')).toEqual(expected_vals);
+            let uri = engine._get_xapian_uri(mock_obj);
+            mock_obj = uri.get_query();
+            expect(get_query_vals_for_key(mock_obj, 'collapse')).toEqual(String(fakeCollapse));
+            expect(get_query_vals_for_key(mock_obj, 'cutoff')).toEqual(String(fakeCutoff));
+            expect(get_query_vals_for_key(mock_obj, 'sortBy')).toEqual(String(fakeSortBy));
+            expect(get_query_vals_for_key(mock_obj, 'q')).toEqual(fakeQ);
         });
     });
 
@@ -278,7 +213,6 @@ describe('Knowledge Engine Module', () => {
         it('sends correct request URIs', () => {
             let request_spy = engine_request_spy();
             let mock_id = 'ekn://foo/0123456789abcdef';
-            let mock_id_query = '(id:0123456789abcdef)';
 
             engine.get_object_by_id(mock_id, noop);
             let last_req_args = request_spy.calls.mostRecent().args;
@@ -288,7 +222,6 @@ describe('Knowledge Engine Module', () => {
 
             expect(requested_uri_string).toMatch(/^http:\/\/127.0.0.1:3004\/query?/);
             expect(get_query_vals_for_key(requested_query, 'path')).toMatch('/foo');
-            expect(get_query_vals_for_key(requested_query, 'q')).toMatch(mock_id_query);
         });
 
         it('uses correct domain for id', () => {

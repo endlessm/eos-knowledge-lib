@@ -33,3 +33,8 @@ function domain_from_ekn_id (ekn_id) {
     // Grab everything before the first slash.
     return stripped_ekn_id.split('/')[0];
 }
+
+// String operations
+let parenthesize = (clause) => '(' + clause + ')';
+let capitalize = (word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+let quote = (clause) => '"' + clause + '"';

@@ -8,8 +8,6 @@ const ArticleObjectModel = imports.articleObjectModel;
 const ContentObjectModel = imports.contentObjectModel;
 const MediaObjectModel = imports.mediaObjectModel;
 const QueryObject = imports.queryObject;
-const xapianQuery = imports.xapianQuery;
-const blacklist = imports.blacklist.blacklist;
 const datadir = imports.datadir;
 const utils = imports.searchUtils;
 
@@ -87,9 +85,6 @@ const Engine = Lang.Class({
 
     _DB_PATH: '/db',
     _MEDIA_PATH: '/media',
-
-    _DEFAULT_CUTOFF: 10,
-    _MATCH_SYNOPSIS_CUTOFF: 20,
 
     _init: function (params) {
         this.parent(params);
@@ -303,60 +298,25 @@ const Engine = Lang.Class({
         return json_ld.results.map(this._model_from_json_ld.bind(this));
     },
 
-    _get_xapian_uri_query_clause: function (query_obj) {
-        let query_clause_fn, do_match_all;
-
-        if (query_obj.type === QueryObject.QueryObjectType.INCREMENTAL) {
-            query_clause_fn = xapianQuery.xapian_incremental_query_clause;
-        } else {
-            query_clause_fn = xapianQuery.xapian_delimited_query_clause;
-        }
-
-        do_match_all = query_obj.match === QueryObject.QueryObjectMatch.TITLE_SYNOPSIS;
-
-        return query_clause_fn(query_obj.query, do_match_all);
-    },
-
-    _get_xapian_cutoff_value: function (query_obj) {
-        // We need a stricter cutoff when matching all against all indexed terms
-        if (query_obj.match === QueryObject.QueryObjectMatch.TITLE_SYNOPSIS)
-            return this._MATCH_SYNOPSIS_CUTOFF;
-        return this._DEFAULT_CUTOFF;
-    },
-
     _get_xapian_uri: function (query_obj) {
+        if (query_obj.domain === '')
+            query_obj = QueryObject.QueryObject.new_from_object(query_obj, { domain: this.default_domain });
+
         let host_uri = "http://" + this.host;
         let uri = new Soup.URI(host_uri);
         uri.set_port(this.port);
         uri.set_path('/query');
 
-        let xapian_query_options = [];
-        if (query_obj.query.length > 0)
-            xapian_query_options.push(this._get_xapian_uri_query_clause(query_obj));
-        if (query_obj.tags.length > 0)
-            xapian_query_options.push(xapianQuery.xapian_tag_clause(query_obj.tags));
-        if (query_obj.ids.length > 0)
-            xapian_query_options.push(xapianQuery.xapian_ids_clause(query_obj.ids));
-
-        let domain = query_obj.domain || this.default_domain;
-
-        let content_path = this._content_path_from_domain(domain);
-
-        // Add blacklist tags to every query
-        let explicit_tags = blacklist[domain];
-        if (typeof explicit_tags !== 'undefined')
-            xapian_query_options.push(xapianQuery.xapian_not_tag_clause(explicit_tags));
-
         let uri_query_args = {
-            collapse: xapianQuery.XAPIAN_SOURCE_URL_VALUE_NO,
-            cutoff: this._get_xapian_cutoff_value(query_obj),
+            collapse: query_obj.get_collapse_value(),
+            cutoff: query_obj.get_cutoff(),
             lang: this.language,
             limit: query_obj.limit,
             offset: query_obj.offset,
             order: query_obj.order === QueryObject.QueryObjectOrder.ASCENDING ? 'asc' : 'desc',
-            path: content_path + this._DB_PATH,
-            q: xapianQuery.xapian_join_clauses(xapian_query_options),
-            sortBy: xapianQuery.xapian_sort_value_no(query_obj.sort),
+            path: this._content_path_from_domain(query_obj.domain) + this._DB_PATH,
+            q: query_obj.get_query_parser_string(),
+            sortBy: query_obj.get_sort_value(),
         };
 
         uri.set_query(this._serialize_query(uri_query_args));
