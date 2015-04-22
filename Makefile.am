@@ -436,6 +436,8 @@ TESTS_ENVIRONMENT = \
 	export G_TEST_BUILDDIR="$(abs_builddir)/tests"; \
 	$(NULL)
 
+EXTRA_DIST += jasmine.json
+
 # # # COVERAGE # # #
 
 EOS_JS_COVERAGE_FILES = \
