@@ -496,7 +496,7 @@ if ENABLE_JS_DOC
 
 build_naturaldocs_verbose = $(build_naturaldocs_verbose_@AM_V@)
 build_naturaldocs_verbose_ = $(build_naturaldocs_verbose_@AM_DEFAULT_V@)
-build_naturaldocs_verbose_0 = @echo '  DOC    Building naturaldocs for $(naturaldocs_input_dir)';
+build_naturaldocs_verbose_0 = @echo '  DOC    Building naturaldocs documentation';
 
 # Stamp file is present if all the docs have been built, and carries the
 # timestamp of the last successful build.
