@@ -5,7 +5,7 @@ const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 
 describe('Article HTML Renderer', function () {
-    let wikihow_model, wikibooks_model, embedly_model;
+    let wikihow_model, wikibooks_model, embedly_model, javascripty_model;
     let renderer;
 
     beforeEach(function () {
