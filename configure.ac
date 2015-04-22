@@ -116,6 +116,8 @@ GTK_DOC_CHECK([1.18], [--flavour no-tmpl])
 # GObject Introspection
 GOBJECT_INTROSPECTION_REQUIRE([1.30])
 # Various tools
+AC_PROG_AWK  # needed for TAP driver
+AC_REQUIRE_AUX_FILE([tap-driver.sh])
 AC_PATH_PROG([GIRDOCTOOL], [g-ir-doc-tool], [notfound])
 AC_ARG_VAR([GIRDOCTOOL], [Path to g-ir-doc-tool])
 AC_PATH_PROG([YELPBUILD], [yelp-build], [notfound])

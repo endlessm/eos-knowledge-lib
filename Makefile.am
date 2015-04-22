@@ -417,8 +417,11 @@ TESTS = $(javascript_tests)
 LOG_COMPILER = gtester
 AM_LOG_FLAGS = -k --verbose
 
-TEST_EXTENSIONS =
-AM_JS_LOG_FLAGS =
+TEST_EXTENSIONS = .js
+JS_LOG_DRIVER = env AM_TAP_AWK='$(AWK)' $(SHELL) $(top_srcdir)/tap-driver.sh
+JS_LOG_DRIVER_FLAGS = --comments
+JS_LOG_COMPILER = jasmine
+AM_JS_LOG_FLAGS = --tap --no-config
 
 # Use locally built versions of EosKnowledge-0.gir, JS modules, and libraries.
 # We clobber GJS_PATH and include $(top_builddir) and $(top_srcdir) so that

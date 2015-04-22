@@ -90,6 +90,7 @@ stamp*
 /po/quot.sed
 /po/remove-potcdate.sed
 /po/remove-potcdate.sin
+/tap-driver.sh
 /test-driver
 
 # Gtk-Doc droppings
