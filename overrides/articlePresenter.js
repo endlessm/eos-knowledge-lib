@@ -172,7 +172,6 @@ const ArticlePresenter = new GObject.Class({
         if (this._webview_load_id > 0) {
             this._webview.disconnect(this._webview_load_id);
             this._webview_load_id = 0;
-            this._webview.destroy();
             this._webview = null;
         }
     },
