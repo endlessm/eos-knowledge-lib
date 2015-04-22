@@ -127,7 +127,6 @@ describe('Article HTML Renderer', function () {
             license: 'Creative Commons',
             title: 'Wikibooks title',
         });
-        printerr('wikihow original uri', wikihow_model_eos22.original_uri);
 
         let wiki_html = renderer.render(wikibooks_model_eos22);
         let wikihow_html = renderer.render(wikihow_model_eos22);

@@ -369,7 +369,6 @@ describe('Knowledge Engine Module', () => {
             });
 
             engine.get_object_by_id(mock_id, (err, res) => {
-                print(err);
                 expect(err).not.toBeDefined();
                 expect(res).toBeA(EosKnowledgeSearch.ArticleObjectModel);
                 expect(res.synopsis).toBe("NOW IS THE WINTER OF OUR DISCONTENT");
