@@ -357,6 +357,7 @@ const Engine = Lang.Class({
         let uri_query_args = {
             collapse: xapianQuery.XAPIAN_SOURCE_URL_VALUE_NO,
             cutoff: this._get_xapian_cutoff_value(query_obj),
+            lang: this.language,
             limit: query_obj.limit,
             offset: query_obj.offset,
             order: query_obj.order === QueryObject.QueryObjectOrder.ASCENDING ? 'asc' : 'desc',
@@ -364,10 +365,6 @@ const Engine = Lang.Class({
             q: xapianQuery.xapian_join_clauses(xapian_query_options),
             sortBy: xapianQuery.xapian_sort_value_no(query_obj.sort),
         };
-
-        if (this.language !== null && this.language.length > 0) {
-            uri_query_args.lang = this.language;
-        }
 
         uri.set_query(this._serialize_query(uri_query_args));
         return uri;
@@ -377,7 +374,10 @@ const Engine = Lang.Class({
         let stringify_and_encode = (v) => encodeURIComponent(String(v));
 
         return Object.keys(uri_query_args)
-        .filter((property) => typeof uri_query_args[property] !== 'undefined')
+        .filter((property) =>
+            typeof uri_query_args[property] !== 'undefined' &&
+            uri_query_args[property] !== null &&
+            uri_query_args[property] !== '')
         .map((property) =>
             stringify_and_encode(property) + "=" +
             stringify_and_encode(uri_query_args[property]))
