@@ -48,7 +48,7 @@ overridden by app specific CSS */
 }
 
 .overview-frame {
-    padding: 100px 100px 85px 90px;
+    padding: 100px 0px 85px 90px;
 }
 
 .done-page .headline {

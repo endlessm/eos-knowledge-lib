@@ -17,6 +17,7 @@ GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.
 const _LOGO_TOP_MARGIN = 50;
 const _LOGO_LEFT_MARGIN = 75;
 const _SUBTITLE_LEFT_MARGIN = 125;
+const _FRAME_RIGHT_MARGIN = 100;
 
 /**
  * Class: Reader.OverviewPage
@@ -100,6 +101,7 @@ const OverviewPage = new Lang.Class({
             expand: true,
             halign: Gtk.Align.END,
             valign: Gtk.Align.FILL,
+            margin_end: _FRAME_RIGHT_MARGIN,
         });
         snippets_frame.add(this._snippets_grid);
 
