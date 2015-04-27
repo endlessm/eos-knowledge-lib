@@ -1,11 +1,10 @@
-const Endless = imports.gi.Endless;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const Gtk = imports.gi.Gtk;
-const Mainloop = imports.mainloop;
 const WebKit2 = imports.gi.WebKit2;
 
-const EXTENSION_PATH = Endless.getCurrentFileDir() + '/../../../.libs';
+const BUILDDIR = GLib.getenv('G_TEST_BUILDDIR') || GLib.get_current_dir();
+const EXTENSION_PATH = BUILDDIR + '/.libs';
 const DBUS_NAME = 'com.endlessm.testWebExtension' + new Gio.Credentials().get_unix_pid();
 const WEBVIEW_OBJECT_PATH = '/com/endlessm/test/webview';
 const DBUS_TOOLTIP_INTERFACE = '\

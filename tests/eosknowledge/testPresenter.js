@@ -1,11 +1,12 @@
 const EosKnowledge = imports.gi.EosKnowledge;
-const Endless = imports.gi.Endless;
-const Gio = imports.gi.Gio;
+const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 
 const utils = imports.tests.utils;
+
+const TEST_CONTENT_DIR = utils.get_test_content_srcdir();
 
 const MockWidget = new Lang.Class({
     Name: 'MockWidget',
@@ -111,7 +112,7 @@ describe('Presenter', () => {
     let view;
     let engine;
     let article_presenter;
-    let test_app_filename = Endless.getCurrentFileDir() + '/../test-content/app.json';
+    let test_app_filename = TEST_CONTENT_DIR + 'app.json';
 
     beforeEach(() => {
         data = utils.parse_object_from_path(test_app_filename);
@@ -174,6 +175,7 @@ describe('Presenter', () => {
                     jasmine.any(Function));
                 expect(view.show_no_search_results_page).toHaveBeenCalled();
                 done();
+                return GLib.SOURCE_REMOVE;
             });
         });
 
@@ -187,6 +189,7 @@ describe('Presenter', () => {
                     jasmine.any(Function));
                 expect(view.show_no_search_results_page).toHaveBeenCalled();
                 done();
+                return GLib.SOURCE_REMOVE;
             });
         });
 
@@ -195,6 +198,7 @@ describe('Presenter', () => {
             Mainloop.idle_add(function () {
                 expect(presenter.record_search_metric).toHaveBeenCalled();
                 done();
+                return GLib.SOURCE_REMOVE;
             });
         });
 
@@ -203,6 +207,7 @@ describe('Presenter', () => {
             Mainloop.idle_add(function () {
                 expect(presenter.record_search_metric).toHaveBeenCalled();
                 done();
+                return GLib.SOURCE_REMOVE;
             });
         });
     });

@@ -1,45 +1,13 @@
 const EosKnowledge = imports.gi.EosKnowledge;
-const Endless = imports.gi.Endless;
-const Gtk = imports.gi.Gtk;
 
 const CssClassMatcher = imports.CssClassMatcher;
+const Utils = imports.tests.utils;
 const WidgetDescendantMatcher = imports.WidgetDescendantMatcher;
 
-const TESTDIR = Endless.getCurrentFileDir() + '/..';
-
-let segments = {
-
-    'Lessons': [
-        new EosKnowledge.Card({
-            title: 'Subtitled Card',
-            synopsis: 'This is the Subtitle',
-        }),
-        new EosKnowledge.Card({
-            title: 'Picture Card',
-            thumbnail_uri: TESTDIR + '/test-content/pig1.jpg',
-        })
-    ],
-
-    'Articles': [
-        new EosKnowledge.Card({
-            title: 'Everything card',
-            synopsis: 'This card has everything',
-            thumbnail_uri: TESTDIR + '/test-content/pig2.jpg',
-        }),
-        new EosKnowledge.LessonCard({
-            title: 'Mustard lesson',
-            synopsis: 'Sample, incomplete',
-            // By Bogdan29roman, CC-BY-SA
-            // http://en.wikipedia.org/wiki/File:Mu%C5%9Ftar.jpg
-            thumbnail_uri: TESTDIR + '/test-content/mustard.jpg',
-            item_index: 1,
-            complete: false
-        })
-    ]
-};
+const TEST_CONTENT_DIR = Utils.get_test_content_srcdir();
 
 describe('Section page for Template A', function () {
-    let section_page;
+    let section_page, segments;
 
     beforeEach(function () {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
@@ -49,13 +17,34 @@ describe('Section page for Template A', function () {
             title: "History of Guatemala"
         });
 
-        notify = jasmine.createSpy('notify');
-        section_page.connect('notify', function (object, pspec) {
-            // Seems properties defined in js can only be accessed through
-            // object[name] with the underscore variant on the name
-            notify(pspec.name, object[pspec.name.replace('-', '_')]);
-        });
-
+        segments = {
+            'Lessons': [
+                new EosKnowledge.Card({
+                    title: 'Subtitled Card',
+                    synopsis: 'This is the Subtitle',
+                }),
+                new EosKnowledge.Card({
+                    title: 'Picture Card',
+                    thumbnail_uri: TEST_CONTENT_DIR + 'pig1.jpg',
+                }),
+            ],
+            'Articles': [
+                new EosKnowledge.Card({
+                    title: 'Everything card',
+                    synopsis: 'This card has everything',
+                    thumbnail_uri: TEST_CONTENT_DIR + 'pig2.jpg',
+                }),
+                new EosKnowledge.LessonCard({
+                    title: 'Mustard lesson',
+                    synopsis: 'Sample, incomplete',
+                    // By Bogdan29roman, CC-BY-SA
+                    // http://en.wikipedia.org/wiki/File:Mu%C5%9Ftar.jpg
+                    thumbnail_uri: TEST_CONTENT_DIR + 'mustard.jpg',
+                    item_index: 1,
+                    complete: false
+                }),
+            ],
+        };
     });
 
     it('can be constructed', function () {});

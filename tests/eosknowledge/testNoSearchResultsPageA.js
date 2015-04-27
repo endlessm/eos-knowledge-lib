@@ -1,11 +1,8 @@
 const EosKnowledge = imports.gi.EosKnowledge;
-const Endless = imports.gi.Endless;
 const Gtk = imports.gi.Gtk;
 
 const CssClassMatcher = imports.CssClassMatcher;
 const WidgetDescendantMatcher = imports.WidgetDescendantMatcher;
-
-const TESTDIR = Endless.getCurrentFileDir() + '/..';
 
 describe('No Search Results page for Template A', function () {
     let no_search_results_page;

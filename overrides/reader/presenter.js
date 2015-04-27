@@ -474,7 +474,6 @@ const Presenter = new Lang.Class({
 
     _clear_webview_from_map: function (index) {
         this.view.get_article_page(index).clear_content();
-        this._webview_map[index].destroy();
         delete this._webview_map[index];
     },
 

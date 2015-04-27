@@ -1,4 +1,3 @@
-const Endless = imports.gi.Endless;
 const EosKnowledge = imports.gi.EosKnowledge;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;

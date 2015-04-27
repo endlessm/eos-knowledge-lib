@@ -2,14 +2,12 @@ const Endless = imports.gi.Endless;
 const EosKnowledge = imports.gi.EosKnowledge;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
-const Gtk = imports.gi.Gtk;
 
 const InstanceOfMatcher = imports.InstanceOfMatcher;
 const CssClassMatcher = imports.CssClassMatcher;
+const Utils = imports.tests.utils;
 
-const TESTDIR = Endless.getCurrentFileDir() + '/..';
-// Working directory should be top of the builddir
-const TESTBUILDDIR = GLib.get_current_dir() + '/tests';
+const TEST_CONTENT_BUILDDIR = Utils.get_test_content_builddir();
 const BACKGROUND_URI = 'resource:///com/endlessm/thrones/kings_landing.jpg';
 
 describe('Window', function () {
@@ -20,7 +18,7 @@ describe('Window', function () {
         jasmine.addMatchers(InstanceOfMatcher.customMatchers);
 
         // Load and register the GResource which has content for this app
-        let resource = Gio.Resource.load(TESTBUILDDIR + '/test-content/test-content.gresource');
+        let resource = Gio.Resource.load(TEST_CONTENT_BUILDDIR + 'test-content.gresource');
         resource._register();
 
         // Generate a unique ID for each app instance that we test

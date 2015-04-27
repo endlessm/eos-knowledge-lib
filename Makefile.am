@@ -417,14 +417,14 @@ TESTS = $(javascript_tests)
 LOG_COMPILER = gtester
 AM_LOG_FLAGS = -k --verbose
 
-## Define required variables and include Jasmine makefile fragment
-TEST_EXTENSIONS =
-AM_JS_LOG_FLAGS =
-JASMINE_SUBMODULE_PATH = $(top_srcdir)/tests/jasmine
-include tests/jasmine/Makefile-jasmine.am.inc
+TEST_EXTENSIONS = .js
+JS_LOG_DRIVER = env AM_TAP_AWK='$(AWK)' $(SHELL) $(top_srcdir)/tap-driver.sh
+JS_LOG_DRIVER_FLAGS = --comments
+JS_LOG_COMPILER = jasmine
+AM_JS_LOG_FLAGS = --tap --no-config
 
 # Use locally built versions of EosKnowledge-0.gir, JS modules, and libraries.
-# We clobber GJS_PATH and include $(top_builddir) and $(top_srcdir) so that
+# We clobber GJS_PATH and include $(top_srcdir) so that
 # gjs will find override modules in /overrides. The override directory itself
 # is also added to the gjs path for testing private js functionality not added
 # to the EosKnowledge module. The directories in /js are added for our pure
@@ -432,12 +432,14 @@ include tests/jasmine/Makefile-jasmine.am.inc
 # local to the tests.
 # (May need to change to AM_TESTS_ENVIRONMENT in a later version of Automake)
 TESTS_ENVIRONMENT = \
-	export GJS_PATH="$(top_builddir):$(top_srcdir):$(top_srcdir)/overrides:$(top_srcdir)/js/search:$(top_srcdir)/tests"; \
+	export GJS_PATH="$(top_srcdir):$(top_srcdir)/overrides:$(top_srcdir)/js/search:$(top_srcdir)/tests"; \
 	export GI_TYPELIB_PATH="$(top_builddir)$${GI_TYPELIB_PATH:+:$$GI_TYPELIB_PATH}"; \
 	export LD_LIBRARY_PATH="$(top_builddir)/.libs$${LD_LIBRARY_PATH:+:$$LD_LIBRARY_PATH}"; \
 	export G_TEST_SRCDIR="$(abs_srcdir)/tests"; \
 	export G_TEST_BUILDDIR="$(abs_builddir)/tests"; \
 	$(NULL)
+
+EXTRA_DIST += jasmine.json
 
 # # # COVERAGE # # #
 

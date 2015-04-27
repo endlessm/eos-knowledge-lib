@@ -1,0 +1,5 @@
+{
+    "include_paths": [".", "js/search", "tests"],
+    "spec_files": ["tests/eosknowledge", "tests/eosknowledgesearch"],
+    "options": "--verbose"
+}

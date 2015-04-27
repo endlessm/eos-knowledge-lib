@@ -1,11 +1,9 @@
 const EosKnowledge = imports.gi.EosKnowledge;
-const Endless = imports.gi.Endless;
-const Gtk = imports.gi.Gtk;
 
 const CssClassMatcher = imports.CssClassMatcher;
+const Utils = imports.tests.utils;
 
-const TESTDIR = Endless.getCurrentFileDir() + '/..';
-
+const TEST_CONTENT_DIR = Utils.get_test_content_srcdir();
 const THROWING_CARD_COUNTS = [1, 3, 5, 7];
 const NO_THROWING_CARD_COUNTS = [4, 6, 8];
 
@@ -18,19 +16,19 @@ describe('Home page for Template B', function () {
             }),
             new EosKnowledge.Card({
                 title: 'Picture Card',
-                thumbnail_uri: TESTDIR + '/test-content/pig1.jpg',
+                thumbnail_uri: TEST_CONTENT_DIR + 'pig1.jpg',
             }),
             new EosKnowledge.Card({
                 title: 'Everything card',
                 synopsis: 'This card has everything',
-                thumbnail_uri: TESTDIR + '/test-content/pig2.jpg',
+                thumbnail_uri: TEST_CONTENT_DIR + 'pig2.jpg',
             }),
             new EosKnowledge.LessonCard({
                 title: 'Mustard lesson',
                 synopsis: 'Sample, incomplete',
                 // By Bogdan29roman, CC-BY-SA
                 // http://en.wikipedia.org/wiki/File:Mu%C5%9Ftar.jpg
-                thumbnail_uri: TESTDIR + '/test-content/mustard.jpg',
+                thumbnail_uri: TEST_CONTENT_DIR + 'mustard.jpg',
                 item_index: 1,
                 complete: false
             }),
@@ -40,19 +38,19 @@ describe('Home page for Template B', function () {
             }),
             new EosKnowledge.Card({
                 title: 'Picture Card',
-                thumbnail_uri: TESTDIR + '/test-content/pig1.jpg',
+                thumbnail_uri: TEST_CONTENT_DIR + 'pig1.jpg',
             }),
             new EosKnowledge.Card({
                 title: 'Everything card',
                 synopsis: 'This card has everything',
-                thumbnail_uri: TESTDIR + '/test-content/pig2.jpg',
+                thumbnail_uri: TEST_CONTENT_DIR + 'pig2.jpg',
             }),
             new EosKnowledge.LessonCard({
                 title: 'Mustard lesson',
                 synopsis: 'Sample, incomplete',
                 // By Bogdan29roman, CC-BY-SA
                 // http://en.wikipedia.org/wiki/File:Mu%C5%9Ftar.jpg
-                thumbnail_uri: TESTDIR + '/test-content/mustard.jpg',
+                thumbnail_uri: TEST_CONTENT_DIR + 'mustard.jpg',
                 item_index: 1,
                 complete: false
             })
@@ -62,13 +60,6 @@ describe('Home page for Template B', function () {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
 
         home_page = new EosKnowledge.HomePageB();
-
-        notify = jasmine.createSpy('notify');
-        home_page.connect('notify', function (object, pspec) {
-            // Seems properties defined in js can only be accessed through
-            // object[name] with the underscore variant on the name
-            notify(pspec.name, object[pspec.name.replace('-', '_')]);
-        });
     });
 
     it('can be constructed', function () {});

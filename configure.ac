@@ -40,7 +40,9 @@ AC_CONFIG_SRCDIR([eosknowledge/eosknowledge.h])
 # Unlike serial-tests, this option is accepted by Automake 1.11
 # tar-ustar is required because there may be files whose entire paths exceed
 # 99 characters.
-AM_INIT_AUTOMAKE([-Wall -Wno-portability foreign 1.11 parallel-tests tar-ustar])
+# subdir-objects is for forward compatibility with Automake 2.0 and can be
+# removed when we upgrade to that version.
+AM_INIT_AUTOMAKE([-Wall -Wno-portability foreign 1.11 parallel-tests tar-ustar subdir-objects])
 # Avoid spewing garbage over the terminal ('make V=1' to see the garbage)
 AM_SILENT_RULES([yes])
 # Initialize Libtool; don't build static libraries
@@ -114,6 +116,8 @@ GTK_DOC_CHECK([1.18], [--flavour no-tmpl])
 # GObject Introspection
 GOBJECT_INTROSPECTION_REQUIRE([1.30])
 # Various tools
+AC_PROG_AWK  # needed for TAP driver
+AC_REQUIRE_AUX_FILE([tap-driver.sh])
 AC_PATH_PROG([GIRDOCTOOL], [g-ir-doc-tool], [notfound])
 AC_ARG_VAR([GIRDOCTOOL], [Path to g-ir-doc-tool])
 AC_PATH_PROG([YELPBUILD], [yelp-build], [notfound])

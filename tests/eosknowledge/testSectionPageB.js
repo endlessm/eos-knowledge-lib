@@ -1,10 +1,6 @@
 const EosKnowledge = imports.gi.EosKnowledge;
-const Endless = imports.gi.Endless;
-const Gtk = imports.gi.Gtk;
 
 const CssClassMatcher = imports.CssClassMatcher;
-
-const TESTDIR = Endless.getCurrentFileDir() + '/..';
 
 describe('Section page for Template B', function () {
     let section_page;
@@ -22,14 +18,6 @@ describe('Section page for Template B', function () {
             new EosKnowledge.TextCard({title: 'Text card 2'}),
             new EosKnowledge.TextCard({title: 'Text card 3'})
         ];
-
-        notify = jasmine.createSpy('notify');
-        section_page.connect('notify', function (object, pspec) {
-            // Seems properties defined in js can only be accessed through
-            // object[name] with the underscore variant on the name
-            notify(pspec.name, object[pspec.name.replace('-', '_')]);
-        });
-
     });
 
     it('can be constructed', function () {});

@@ -5,7 +5,7 @@ const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 
 describe('Article HTML Renderer', function () {
-    let wikihow_model, wikibooks_model, embedly_model;
+    let wikihow_model, wikibooks_model, embedly_model, javascripty_model;
     let renderer;
 
     beforeEach(function () {
@@ -127,7 +127,6 @@ describe('Article HTML Renderer', function () {
             license: 'Creative Commons',
             title: 'Wikibooks title',
         });
-        printerr('wikihow original uri', wikihow_model_eos22.original_uri);
 
         let wiki_html = renderer.render(wikibooks_model_eos22);
         let wikihow_html = renderer.render(wikihow_model_eos22);

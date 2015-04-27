@@ -1,10 +1,6 @@
 const EosKnowledge = imports.gi.EosKnowledge;
-const Endless = imports.gi.Endless;
-const Gtk = imports.gi.Gtk;
 
 const CssClassMatcher = imports.CssClassMatcher;
-
-const TESTDIR = Endless.getCurrentFileDir() + '/..';
 
 describe('Base home page class', function () {
     let home_page;
