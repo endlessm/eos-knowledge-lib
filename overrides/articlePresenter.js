@@ -147,7 +147,7 @@ const ArticlePresenter = new GObject.Class({
             if (type !== 'application/pdf')
                 throw new Error("We don't know how to display " + type + " articles!");
 
-            let view = this._get_pdfview_for_uri(uri);
+            let view = this._create_pdfview();
             view.load_uri(uri);
             // FIXME: Remove this line once we support table of contents
             // widget for PDFs
@@ -284,7 +284,7 @@ const ArticlePresenter = new GObject.Class({
         return webview;
     },
 
-    _get_pdfview_for_uri: function (uri) {
+    _create_pdfview: function () {
         let view = new PDFView.PDFView();
         return view;
     },
