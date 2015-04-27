@@ -144,11 +144,6 @@ describe('Xapian Query Module', function () {
                     .toBeTruthy();
             });
 
-            it('validates an old style EKN ID', function () {
-                expect(xq.ekn_uri_is_valid('ekn://api/travel-es/2e11617b6bce1e6d'))
-                    .toBeTruthy();
-            });
-
             it('validates an EKN ID with uppercase hex digits', function () {
                 expect(xq.ekn_uri_is_valid('ekn://travel-es/2E11617B6BCE1E6D'))
                     .toBeTruthy();

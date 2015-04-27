@@ -160,8 +160,6 @@ function ekn_uri_is_valid (uri) {
     if (GLib.uri_parse_scheme(uri) !== 'ekn')
         return false;
     let path = uri.slice('ekn://'.length).split('/');
-    if (path[0] === 'api')
-        path.shift();
 
     if (path.length !== 2)
         return false;
