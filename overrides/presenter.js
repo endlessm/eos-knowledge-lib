@@ -270,9 +270,7 @@ const Presenter = new Lang.Class({
         }
 
         // Update latest origin query.
-        if (this._history_model.current_item.article_origin_query_obj !== this._latest_origin_query_obj) {
-            this._latest_origin_query_obj = this._history_model.current_item.article_origin_query_obj;
-        }
+        this._latest_origin_query_obj = this._history_model.current_item.article_origin_query_obj;
     },
 
     _refresh_sidebar_callback: function (err, results, get_more_results_func) {

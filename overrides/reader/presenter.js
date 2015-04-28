@@ -368,9 +368,7 @@ const Presenter = new Lang.Class({
         }
 
         // Update latest origin query.
-        if (this.history_model.current_item.article_origin_query_obj !== this._latest_origin_query_obj) {
-            this._latest_origin_query_obj = this.history_model.current_item.article_origin_query_obj;
-        }
+        this._latest_origin_query_obj = this.history_model.current_item.article_origin_query_obj;
     },
 
     _open_magazine: function () {
