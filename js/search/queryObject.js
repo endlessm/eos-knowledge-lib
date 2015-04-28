@@ -287,32 +287,26 @@ const QueryObject = Lang.Class({
         return prefixed_tags.join(_XAPIAN_OP_AND);
     },
 
-    // Verify that ekn id is of the right form
-    _ekn_id_is_valid: function (id) {
-        if (GLib.uri_parse_scheme(id) !== 'ekn')
-            return false;
-        let path = id.slice('ekn://'.length).split('/');
-
-        if (path.length !== 2)
-            return false;
-
-        // EKN domain is the last part of the app ID (without the reverse domain name)
-        if (!Gio.Application.id_is_valid('com.endlessm.' + path[0]))
-            return false;
-
-        // EKN ID is a 16-hexdigit hash
-        if (path[1].search(/^[A-Za-z0-9]{16}$/) === -1)
-            return false;
-
-        return true;
-    },
-
     _ids_clause: function () {
         let id_clauses = this.ids.map((id) => {
-            if (!this._ekn_id_is_valid(id))
-                throw new Error('Received invalid ekn id ' + id);
+            if (GLib.uri_parse_scheme(id) !== 'ekn')
+                throw new Error('EKN ID has unexpected uri scheme ' + id);
 
-            return _XAPIAN_PREFIX_ID + id.split('/').slice(-1)[0];
+            let path = id.slice('ekn://'.length).split('/');
+            if (path.length !== 2)
+                throw new Error('EKN ID has unexpected structure ' + id);
+
+            // EKN domain is the last part of the app ID (without the reverse domain name)
+            let id_domain = path[0];
+            if (this.domain !== id_domain)
+                throw new Error('EKN ID has domain ' + id_domain + ', but QueryObject has domain ' + this.domain);
+
+            // EKN ID is a 16-hexdigit hash
+            let hash = path[1];
+            if (hash.search(/^[A-Za-z0-9]{16}$/) === -1)
+                throw new Error('EKN ID has malformed hash ' + id);
+
+            return _XAPIAN_PREFIX_ID + hash;
         });
         return id_clauses.join(_XAPIAN_OP_OR);
     },

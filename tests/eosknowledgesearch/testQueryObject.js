@@ -157,6 +157,7 @@ describe('QueryObject', function () {
 
         it('contains ids from query object', function () {
             let query_obj = new EosKnowledgeSearch.QueryObject({
+                domain: 'domain',
                 ids: ['ekn://domain/0123456789abcdef',
                       'ekn://domain/fedcba9876543210'],
             });
@@ -183,6 +184,7 @@ describe('QueryObject', function () {
         describe('id checking code', function () {
             it('validates a simple EKN ID', function () {
                 let query_obj = new EosKnowledgeSearch.QueryObject({
+                    domain: 'travel-es',
                     ids: ['ekn://travel-es/2e11617b6bce1e6d'],
                 });
                 expect(function () {
@@ -192,25 +194,8 @@ describe('QueryObject', function () {
 
             it('validates an EKN ID with uppercase hex digits', function () {
                 let query_obj = new EosKnowledgeSearch.QueryObject({
+                    domain: 'travel-es',
                     ids: ['ekn://travel-es/2E11617B6BCE1E6D'],
-                });
-                expect(function () {
-                    query_obj.get_query_parser_string(query_obj);
-                }).not.toThrow();
-            });
-
-            it('validates an EKN ID multiple words', function () {
-                let query_obj = new EosKnowledgeSearch.QueryObject({
-                    ids: ['ekn://mental-health-es/2e11617b6bce1e6d'],
-                });
-                expect(function () {
-                    query_obj.get_query_parser_string(query_obj);
-                }).not.toThrow();
-            });
-
-            it('validates an EKN ID with an underscore', function () {
-                let query_obj = new EosKnowledgeSearch.QueryObject({
-                    ids: ['ekn://soccer-es_GT/2e11617b6bce1e6d'],
                 });
                 expect(function () {
                     query_obj.get_query_parser_string(query_obj);
@@ -219,6 +204,7 @@ describe('QueryObject', function () {
 
             it('rejects an EKN ID with an invalid hash', function () {
                 let query_obj = new EosKnowledgeSearch.QueryObject({
+                    domain: 'bad1',
                     ids: ['ekn://bad1/someha$h'],
                 });
                 expect(function () {
@@ -228,6 +214,7 @@ describe('QueryObject', function () {
 
             it('rejects an EKN ID with the wrong URI scheme', function () {
                 let query_obj = new EosKnowledgeSearch.QueryObject({
+                    domain: 'bad1',
                     ids: ['bad1/2e11617b6bce1e6d'],
                 });
                 expect(function () {
@@ -237,6 +224,7 @@ describe('QueryObject', function () {
 
             it('rejects an EKN ID with no hash', function () {
                 let query_obj = new EosKnowledgeSearch.QueryObject({
+                    domain: 'scuba-diving-es',
                     ids: ['ekn://scuba-diving-es'],
                 });
                 expect(function () {
@@ -246,7 +234,18 @@ describe('QueryObject', function () {
 
             it('rejects an EKN ID with too many parts', function () {
                 let query_obj = new EosKnowledgeSearch.QueryObject({
+                    domain: 'travel-es',
                     ids: ['ekn://travel-es/2e11617b6bce1e6d/too/many/parts'],
+                });
+                expect(function () {
+                    query_obj.get_query_parser_string(query_obj);
+                }).toThrow();
+            });
+
+            it('rejects on an EKN ID domain mismatch', function () {
+                let query_obj = new EosKnowledgeSearch.QueryObject({
+                    domain: 'travel-es',
+                    ids: ['ekn://animals-es/2e11617b6bce1e6d'],
                 });
                 expect(function () {
                     query_obj.get_query_parser_string(query_obj);
