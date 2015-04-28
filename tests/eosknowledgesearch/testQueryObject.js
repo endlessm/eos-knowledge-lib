@@ -1,4 +1,5 @@
 const EosKnowledgeSearch = imports.EosKnowledgeSearch;
+const Blacklist = imports.blacklist;
 
 const ContainsMatcher = imports.ContainsMatcher;
 
@@ -179,6 +180,17 @@ describe('QueryObject', function () {
             });
             let result = query_obj.get_query_parser_string(query_obj);
             expect(result).toContain('tag:"cat zombies"');
+        });
+
+        it('contains blacklist clause when available', function () {
+            Blacklist.blacklist['fake-blacklist-domain'] = ['foo', 'bar'];
+            let query_obj = new EosKnowledgeSearch.QueryObject({
+                domain: 'fake-blacklist-domain',
+                query: 'tyrion wins',
+            });
+            let result = query_obj.get_query_parser_string(query_obj);
+            expect(result).toContain('NOT tag:"foo"');
+            expect(result).toContain('NOT tag:"bar"');
         });
 
         describe('id checking code', function () {
