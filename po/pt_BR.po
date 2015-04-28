@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2015-04-14 01:47+0000\n"
+"POT-Creation-Date: 2015-04-21 01:48+0000\n"
 "PO-Revision-Date: 2015-04-14 01:47+0000\n"
 "Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
 "Language-Team: Portuguese (http://www.transifex.com/projects/p/eos-knowledge-lib/language/pt/)\n"
@@ -157,7 +157,7 @@ msgstr "Resultados para \"%s\""
 msgid "PDF"
 msgstr "PDF"
 
-#: overrides/presenter.js:213 overrides/presenter.js:656
+#: overrides/presenter.js:213 overrides/presenter.js:663
 msgid "Articles"
 msgstr "Artigos"
 
@@ -191,25 +191,25 @@ msgstr "Não perca a edição da próxima semana com mais artigos em sua revista
 #. Also, note: the "and" is used to join together the names
 #. of authors of a blog post. For example:
 #. Jane Austen and Henry Miller and William Clifford
-#: overrides/reader/presenter.js:941
+#: overrides/reader/presenter.js:949
 msgid "by {author}"
 msgstr "Por {author}"
 
-#: overrides/reader/presenter.js:941
+#: overrides/reader/presenter.js:949
 msgid "and"
 msgstr "e"
 
-#: overrides/reader/presenter.js:1000 overrides/reader/presenter.js:1007
+#: overrides/reader/presenter.js:1008 overrides/reader/presenter.js:1015
 msgid "Oops!"
 msgstr "Oops!"
 
-#: overrides/reader/presenter.js:1001
+#: overrides/reader/presenter.js:1009
 msgid ""
 "We could not find this magazine!\n"
 "Please try again after restarting your computer."
 msgstr "Não conseguimos encontrar essa revista!\nPor favor, tente novamente após reiniciar seu computador. "
 
-#: overrides/reader/presenter.js:1008
+#: overrides/reader/presenter.js:1016
 msgid ""
 "There was an error loading that page.\n"
 "Try another one or try again after restarting your computer."
@@ -223,7 +223,7 @@ msgstr ""
 msgid "Open the magazine"
 msgstr ""
 
-#: overrides/reader/standalonePage.js:312
+#: overrides/reader/standalonePage.js:308
 #, javascript-format
 msgid "This article is part of the archive of the magazine %s."
 msgstr ""

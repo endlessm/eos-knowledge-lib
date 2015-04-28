@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: eos-knowledge-lib 0.2.0\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-"
 "inc\n"
-"POT-Creation-Date: 2015-04-21 01:48+0000\n"
+"POT-Creation-Date: 2015-04-28 01:46+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -189,25 +189,25 @@ msgstr ""
 #. Also, note: the "and" is used to join together the names
 #. of authors of a blog post. For example:
 #. Jane Austen and Henry Miller and William Clifford
-#: overrides/reader/presenter.js:949
+#: overrides/reader/presenter.js:948
 msgid "by {author}"
 msgstr ""
 
-#: overrides/reader/presenter.js:949
+#: overrides/reader/presenter.js:948
 msgid "and"
 msgstr ""
 
-#: overrides/reader/presenter.js:1008 overrides/reader/presenter.js:1015
+#: overrides/reader/presenter.js:1007 overrides/reader/presenter.js:1014
 msgid "Oops!"
 msgstr ""
 
-#: overrides/reader/presenter.js:1009
+#: overrides/reader/presenter.js:1008
 msgid ""
 "We could not find this magazine!\n"
 "Please try again after restarting your computer."
 msgstr ""
 
-#: overrides/reader/presenter.js:1016
+#: overrides/reader/presenter.js:1015
 msgid ""
 "There was an error loading that page.\n"
 "Try another one or try again after restarting your computer."
