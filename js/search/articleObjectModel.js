@@ -5,6 +5,7 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const Soup = imports.gi.Soup;
 
+const Utils = imports.searchUtils;
 const ContentObjectModel = imports.contentObjectModel;
 const TreeNode = imports.treeNode;
 
@@ -129,6 +130,21 @@ const ArticleObjectModel = new Lang.Class({
         }
 
         this.parent(params);
+    },
+
+    // Returns the HTML corresponding to this article, if it has any. In the
+    // case of a v.2 bundle, performs synchronous file IO to the epak
+    get_html: function () {
+        if (this.content_type !== 'text/html')
+            return undefined;
+
+        if (this.ekn_version >= 2) {
+            let stream = this.get_content_stream();
+            return Utils.read_stream(stream);
+        } else {
+            // legacy bundles stored the html as a property
+            return this.html;
+        }
     },
 
     set_authors: function (v) {
