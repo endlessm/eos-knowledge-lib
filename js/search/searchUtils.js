@@ -30,11 +30,12 @@ function define_enum (values) {
     }, {});
 }
 
-function domain_from_ekn_id (ekn_id) {
+function components_from_ekn_id (ekn_id) {
     // Chop the URI off of an ekn id: 'ekn://football-es/hash' => 'football-es/hash'
     let stripped_ekn_id = ekn_id.slice('ekn://'.length);
-    // Grab everything before the first slash.
-    return stripped_ekn_id.split('/')[0];
+
+    // return an array like [domain, hash]
+    return stripped_ekn_id.split('/');
 }
 
 // String operations

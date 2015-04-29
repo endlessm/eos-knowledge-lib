@@ -293,7 +293,7 @@ const Engine = Lang.Class({
             let Model = ekn_model_by_ekv_type[json_ld_type];
 
             let ekn_id = json_ld['@id'];
-            let domain = utils.domain_from_ekn_id(ekn_id);
+            let [domain, __] = utils.components_from_ekn_id(ekn_id);
             let ekn_version = this._ekn_version_from_domain(domain);
             let content_path = this._content_path_from_domain(domain);
 
