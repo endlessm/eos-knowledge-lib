@@ -56,3 +56,48 @@ function get_ekn_version_for_domain (domain) {
         return 1;
     }
 }
+
+// number of bytes to read from the stream at a time (chosen rather arbitrarily
+// to be 8KB)
+const CHUNK_SIZE = 1024 * 8;
+
+// asynchronously read an entire GInputStream
+function read_stream_async (stream, callback, cancellable = null) {
+    let total_read = '';
+
+    let handle_byte_response = (stream, res) => {
+        try {
+            let bytes = stream.read_bytes_finish(res);
+            total_read += bytes.get_data().toString();
+
+            if (bytes.get_size() === CHUNK_SIZE) {
+                stream.read_bytes_async(CHUNK_SIZE, 0, cancellable, handle_byte_response);
+            } else {
+                callback(undefined, total_read);
+            }
+        } catch (e) {
+            callback(e, undefined);
+        }
+    };
+
+    stream.read_bytes_async(CHUNK_SIZE, 0, cancellable, handle_byte_response);
+}
+
+// synchronously read an entire GInputStream
+function read_stream (stream, cancellable = null) {
+    try {
+        let total_read = '';
+
+        let buffer = stream.read_bytes(CHUNK_SIZE, cancellable);
+        while (buffer.get_size() === CHUNK_SIZE) {
+            total_read += buffer.get_data().toString();
+            buffer = stream.read_bytes(CHUNK_SIZE, cancellable);
+        }
+        total_read += buffer.get_data().toString();
+
+        return total_read;
+    } catch (err) {
+        printerr('Error reading ' + path + ': ' + err);
+        return undefined;
+    }
+}
