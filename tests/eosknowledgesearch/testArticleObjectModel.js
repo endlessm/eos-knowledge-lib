@@ -3,6 +3,7 @@ const Gtk = imports.gi.Gtk;
 const InstanceOfMatcher = imports.InstanceOfMatcher;
 
 const utils = imports.tests.utils;
+const searchUtils = imports.searchUtils;
 
 const TEST_CONTENT_DIR = utils.get_test_content_srcdir();
 
@@ -80,6 +81,45 @@ describe ('Article Object Model', function () {
                 license: 'Creative Commons',
             });
             expect(article.license).toEqual('Owner permission');
+        });
+    });
+
+    describe('being compatible with EOS 2.4', () => {
+        it('should infer ekn-version on legacy articles', () => {
+            let article = new EosKnowledgeSearch.ArticleObjectModel();
+            expect(article.ekn_version).toBe(1);
+        });
+
+        it('should infer content-type on legacy articles', () => {
+            let pdfArticle = EosKnowledgeSearch.ArticleObjectModel.new_from_json_ld({
+                contentURL: 'blah.pdf',
+            }, undefined, 1);
+            let htmlArticle = EosKnowledgeSearch.ArticleObjectModel.new_from_json_ld({
+                articleBody: '<html>Toy Story 2 was okay.</html>',
+            }, undefined, 1);
+
+            expect(pdfArticle.content_type).toBe('application/pdf');
+            expect(htmlArticle.content_type).toBe('text/html');
+        });
+
+        describe('get_html', () => {
+            it('should return undefined for PDF articles', () => {
+                let htmlArticle = new EosKnowledgeSearch.ArticleObjectModel({
+                    content_type: 'application/pdf',
+                });
+
+                expect(htmlArticle.get_html()).not.toBeDefined();
+            });
+
+            it('should just return the html property for legacy bundles', () => {
+                let htmlArticle = new EosKnowledgeSearch.ArticleObjectModel({
+                    html: '<html>Toy Story 2 was okay.</html>',
+                    content_type: 'text/html',
+                    ekn_version: 1,
+                });
+
+                expect(htmlArticle.get_html()).toBe(htmlArticle.html);
+            });
         });
     });
 });

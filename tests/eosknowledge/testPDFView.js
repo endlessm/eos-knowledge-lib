@@ -21,8 +21,8 @@ describe('PDF view', function () {
     it('constructs', function () {});
 
     it('opens pdfs in Evince', function () {
-        let uri = Gio.File.new_for_path(TEST_CONTENT_DIR + 'pdf-sample1.pdf').get_uri();
-        view.load_uri(uri);
+        let stream = Gio.File.new_for_path(TEST_CONTENT_DIR + 'pdf-sample1.pdf').read(null);
+        view.load_stream(stream, 'application/pdf');
         expect(view).toHaveDescendantWithClass(EvinceView.View);
     });
 

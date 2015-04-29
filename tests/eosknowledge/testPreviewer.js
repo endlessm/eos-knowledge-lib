@@ -25,30 +25,18 @@ describe('Previewer widget', function () {
 
     it('can open an image file', function () {
         let fn = function () {
-            previewer.file = Gio.File.new_for_path(TEST_CONTENT_DIR + 'joffrey.jpg');
-        };
-        expect(fn).not.toThrow();
-    });
-
-    it('can open an image file from a resource', function () {
-        let fn = function () {
-            previewer.file = Gio.File.new_for_uri('resource://com/endlessm/thrones/joffrey.jpg');
+            let stream = Gio.File.new_for_path(TEST_CONTENT_DIR + 'joffrey.jpg').read(null);
+            previewer.set_content(stream, 'image/jpeg');
         };
         expect(fn).not.toThrow();
     });
 
     it('can open a gif', function () {
         let fn = function () {
-            previewer.file = Gio.File.new_for_uri('resource://com/endlessm/thrones/dog.gif');
+            let stream = Gio.File.new_for_uri('resource://com/endlessm/thrones/dog.gif').read(null);
+            previewer.set_content(stream, 'image/gif');
         };
         expect(fn).not.toThrow();
-    });
-
-    it('cannot open a directory', function () {
-        let fn = function () {
-            previewer.file = Gio.File.new_for_path(TEST_CONTENT_DIR);
-        };
-        expect(fn).toThrow();
     });
 
     describe('CSS style context', function () {

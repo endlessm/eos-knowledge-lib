@@ -46,7 +46,7 @@ describe('Article Presenter', function () {
         let [success, data] = file.load_contents(null);
         mockArticleData = JSON.parse(data);
 
-        articleObject = new EosKnowledgeSearch.ArticleObjectModel.new_from_json_ld(mockArticleData);
+        articleObject = new EosKnowledgeSearch.ArticleObjectModel.new_from_json_ld(mockArticleData, undefined, 1);
 
         view = new MockView();
         view.connect_after('new-view-transitioned', done);
