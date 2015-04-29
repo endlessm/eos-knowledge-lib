@@ -1070,7 +1070,7 @@ const Presenter = new Lang.Class({
     },
 
     _preview_media_object: function (media_object, previous_arrow_visible, next_arrow_visible) {
-        this._previewer.file = Gio.File.new_for_uri(media_object.content_uri);
+        this._previewer.set_content(media_object.get_content_stream(), media_object.content_type);
         this.view.lightbox.media_object = media_object;
         this.view.lightbox.reveal_overlays = true;
         this.view.lightbox.has_back_button = previous_arrow_visible;

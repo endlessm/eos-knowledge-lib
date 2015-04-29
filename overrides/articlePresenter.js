@@ -139,16 +139,10 @@ const ArticlePresenter = new GObject.Class({
             }.bind(this));
             this._webview.load_uri(this._article_model.ekn_id);
         } else if (this._article_model.content_type === 'application/pdf') {
-            let uri = this._article_model.content_uri;
-            let file = Gio.file_new_for_uri(uri);
-            let type = file.query_info('standard::content-type',
-                                   Gio.FileQueryInfoFlags.NONE,
-                                   null).get_content_type();
-            if (type !== 'application/pdf')
-                throw new Error("We don't know how to display " + type + " articles!");
-
+            let stream = this._article_model.get_content_stream();
+            let content_type = this._article_model.content_type;
             let view = this._create_pdfview();
-            view.load_uri(uri);
+            view.load_stream(stream, content_type);
             // FIXME: Remove this line once we support table of contents
             // widget for PDFs
             this._article_model.table_of_contents = undefined;
