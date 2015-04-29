@@ -207,6 +207,33 @@ const Engine = Lang.Class({
         }, cancellable);
     },
 
+    // Returns a GInputStream for the given EKN object's content. Only supports
+    // v2+ app bundles.
+    get_content_by_id: function (ekn_id) {
+        let [domain, __] = utils.components_from_ekn_id(ekn_id);
+        let ekn_version = this._ekn_version_from_domain(domain);
+        if (ekn_version >= 2) {
+           return this._read_content_from_disk(ekn_id);
+        } else {
+            throw new Error('Engine.get_content_by_id is not supported for legacy bundles');
+        }
+    },
+
+    _read_content_from_disk: function (ekn_id) {
+        let [domain, hash] = utils.components_from_ekn_id(ekn_id);
+        let pak = this._epak_from_domain(domain);
+        let record = pak.find_record_by_hex_name(hash);
+
+        if (record === null) {
+            throw new Error('Could not find epak record for ' + ekn_id);
+        }
+
+        let stream = record.data.get_stream();
+        let content_type = record.data.get_content_type();
+
+        return [stream, content_type];
+    },
+
     /**
      * Function: get_objects_by_query
      * Sends a request for to xapian-bridge for a given *query_obj*.

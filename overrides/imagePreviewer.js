@@ -133,10 +133,6 @@ const ImagePreviewer = Lang.Class({
         this.notify('file');
     },
 
-    get file () {
-        return this._file;
-    },
-
     get aspect () {
         return this._aspect;
     },

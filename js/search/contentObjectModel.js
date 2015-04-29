@@ -1,7 +1,10 @@
 // Copyright 2014 Endless Mobile, Inc.
+const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
+
+const EosKnowledgeSearch = imports.EosKnowledgeSearch;
 
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 
@@ -124,7 +127,11 @@ const ContentObjectModel = new Lang.Class({
 
         /**
          * Property: content-uri
-         * A string with the URI to the file content for this object.
+         * (DEPRECATED) A string with the URI to the file content for this
+         * object.
+         *
+         * No longer used in ekn bundles. Content is now stored in an Epak file
+         * which is indexed by ekn-id, and is accessed by get_content_stream()
          */
         'content-uri': GObject.ParamSpec.string('content-uri', 'Object Content URL',
             'URI of the source content file',
@@ -189,6 +196,24 @@ const ContentObjectModel = new Lang.Class({
 
     get_tags: function () {
         return this._tags;
+    },
+
+    get_content_stream: function () {
+        if (this.ekn_version >= 2) {
+            let engine = EosKnowledgeSearch.Engine.get_default();
+            let [stream, content_type] = engine.get_content_by_id(this.ekn_id);
+            return stream;
+        } else {
+            if (this.content_type === 'text/html') {
+                let bytes = ByteArray.fromString(this.html).toGBytes();
+                let stream = Gio.MemoryInputStream.new_from_bytes(bytes);
+                return stream;
+            } else {
+                let file = Gio.File.new_for_uri(this.content_uri);
+                let stream = file.read(null);
+                return stream;
+            }
+        }
     },
 
     set title (v) {
