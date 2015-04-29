@@ -44,20 +44,6 @@ describe('Previewer widget', function () {
         expect(fn).not.toThrow();
     });
 
-    it('can open a video file', function () {
-        let fn = function () {
-            previewer.file = Gio.File.new_for_path(TEST_CONTENT_DIR + 'sample.mp4');
-        };
-        expect(fn).not.toThrow();
-    });
-
-    it('can open a video file from a resource', function () {
-        let fn = function () {
-            previewer.file = Gio.File.new_for_uri('resource://com/endlessm/thrones/sample.mp4');
-        };
-        expect(fn).not.toThrow();
-    });
-
     it('cannot open a directory', function () {
         let fn = function () {
             previewer.file = Gio.File.new_for_path(TEST_CONTENT_DIR);

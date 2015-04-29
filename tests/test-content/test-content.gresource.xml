@@ -2,7 +2,6 @@
 <gresources>
     <gresource prefix="/com/endlessm/thrones">
         <file>pig1.jpg</file>
-        <file>sample.mp4</file>
         <file compressed="true">app.json</file>
         <file compressed="true">db.json</file>
         <file compressed="true">joffrey.jpg</file>
