@@ -290,10 +290,10 @@ search_files = \
 	js/search/datadir.js \
 	js/search/engine.js \
 	js/search/mediaObjectModel.js \
+	js/search/queryObject.js \
 	js/search/searchProvider.js \
 	js/search/searchUtils.js \
 	js/search/treeNode.js \
-	js/search/xapianQuery.js \
 	$(NULL)
 searchdir = $(jsdir)/search
 dist_search_DATA = $(search_files)
@@ -368,8 +368,8 @@ javascript_tests = \
 	tests/eosknowledgesearch/testDatadir.js \
 	tests/eosknowledgesearch/testEngine.js \
 	tests/eosknowledgesearch/testMediaObjectModels.js \
+	tests/eosknowledgesearch/testQueryObject.js \
 	tests/eosknowledgesearch/testTreeNode.js \
-	tests/eosknowledgesearch/testXapianQuery.js \
 	$(NULL)
 test_content = \
 	tests/test-content/agot.svg \

@@ -19,3 +19,22 @@ function get_current_language () {
 
     return null;
 }
+
+function define_enum (values) {
+    return values.reduce((obj, val, index) => {
+        obj[val] = index;
+        return obj;
+    }, {});
+}
+
+function domain_from_ekn_id (ekn_id) {
+    // Chop the URI off of an ekn id: 'ekn://football-es/hash' => 'football-es/hash'
+    let stripped_ekn_id = ekn_id.slice('ekn://'.length);
+    // Grab everything before the first slash.
+    return stripped_ekn_id.split('/')[0];
+}
+
+// String operations
+let parenthesize = (clause) => '(' + clause + ')';
+let capitalize = (word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+let quote = (clause) => '"' + clause + '"';

@@ -45,25 +45,25 @@ const HistoryItem = new Lang.Class({
             'The article object model handled by this widget. Only not null for pages of type \'article\'',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, EosKnowledgeSearch.ArticleObjectModel),
         /**
-         * Property: query
+         * Property: query-obj
          *
-         * A string that stores the query used in a search or section page request sent to the knowledge engine.
+         * A <QueryObject> of a search or section page request sent to the knowledge engine.
          * It is used to recreate the query and thus display the appropriate information to a user that returns
          * to this item in the history.
          */
-        'query': GObject.ParamSpec.string('query', 'Query',
-            'A JSON string representing the query for a search or section page.',
-            GObject.ParamFlags.READWRITE, ''),
+        'query-obj': GObject.ParamSpec.object('query-obj', 'Query Object',
+            'The QueryObject of the query used in this history item',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, EosKnowledgeSearch.QueryObject),
         /**
          * Property: article-origin-query
          *
-         * A string used to store the search or section query that eventually led to the user reaching this
+         * A <QueryObject> of the search or section query that eventually led to the user reaching this
          * history item. This query is used to replicate the list of titles that were available to a user
          * when they first selected this history item (currently only used in Template B apps).
          */
-        'article-origin-query': GObject.ParamSpec.string('article-origin-query', 'Article Origin Query',
-            'A JSON query that was used to generate the list of articles from which this object was chosen.',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
+        'article-origin-query-obj': GObject.ParamSpec.object('article-origin-query-obj', 'Article Origin Query Object',
+            'The QueryObject that was used to generate the list of articles from which this object was chosen.',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, EosKnowledgeSearch.QueryObject),
         /**
          * Property: article-origin-page
          *

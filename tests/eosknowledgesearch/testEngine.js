@@ -124,37 +124,11 @@ describe('Knowledge Engine Module', () => {
     });
 
     describe('get_xapian_uri', () => {
-        it('throws error if query values are undefined', () => {
-            let bad_query_obj = {
-                q: undefined,
-                tags: ['lannister'],
-            }
-            expect(() =>{ engine._get_xapian_uri(bad_query_obj)}).toThrow(new Error('Parameter value is undefined: q'));
-        });
-
-        it('throws error if it receives unexpected query value', () => {
-            let bad_query_obj = {
-                something_unknown: 'blah',
-            };
-
-            expect(() =>{ engine._get_xapian_uri(bad_query_obj)}).toThrow(new Error('Unexpected property value something_unknown'));
-        });
-
-        it('sets collapse to 0', () => {
-            let query_obj = {
-                q: 'tyrion',
-            };
-
-            let mock_uri = engine._get_xapian_uri(query_obj);
-            let mock_query_obj = mock_uri.get_query();
-            expect(get_query_vals_for_key(mock_query_obj, 'collapse')).toEqual('0');
-        });
-
         it('sets order field', () => {
-            let query_obj = {
-                q: 'tyrion',
-                order: 'asc',
-            };
+            let query_obj = new EosKnowledgeSearch.QueryObject({
+                query: 'tyrion',
+                order: EosKnowledgeSearch.QueryObjectOrder.ASCENDING,
+            });
 
             let mock_uri = engine._get_xapian_uri(query_obj);
             let mock_query_obj = mock_uri.get_query();
@@ -162,9 +136,9 @@ describe('Knowledge Engine Module', () => {
         });
 
         it('should use the lang param iff a language is set', () => {
-            let query_obj = {
-                q: 'tyrion',
-            };
+            let query_obj = new EosKnowledgeSearch.QueryObject({
+                query: 'tyrion',
+            });
 
             let mock_uri = engine._get_xapian_uri(query_obj);
             let mock_query_obj = mock_uri.get_query();
@@ -176,159 +150,53 @@ describe('Knowledge Engine Module', () => {
             expect(get_query_vals_for_key(mock_query_obj, 'lang')).toEqual('en');
         });
 
-        it('sets correct default values for cutoff, limit, offset, and order', () => {
-            let query_obj = {
-                q: 'tyrion',
-            };
-
-            let mock_uri = engine._get_xapian_uri(query_obj);
-            let mock_query_obj = mock_uri.get_query();
-            expect(get_query_vals_for_key(mock_query_obj, 'cutoff')).toEqual('10');
-            expect(get_query_vals_for_key(mock_query_obj, 'limit')).toEqual('10');
-            expect(get_query_vals_for_key(mock_query_obj, 'offset')).toEqual('0');
-            expect(get_query_vals_for_key(mock_query_obj, 'order')).toEqual('asc');
-        });
-
-        it('will not override a value of zero', () => {
-            let query_obj = {
-                q: 'tyrion',
-                limit: 0,
-            };
-
-            let mock_uri = engine._get_xapian_uri(query_obj);
-            let mock_query_obj = mock_uri.get_query();
-            expect(get_query_vals_for_key(mock_query_obj, 'limit')).toEqual('0');
-        });
-
         it('sets path correctly', () => {
             let path, uri, query_obj;
-            let query_obj = {
-                q: 'tyrion',
-            };
+            let query_obj = new EosKnowledgeSearch.QueryObject({
+                query: 'tyrion',
+            });
 
             uri = engine._get_xapian_uri(query_obj);
             query_obj = uri.get_query();
             expect(get_query_vals_for_key(query_obj, 'path')).toEqual('/foo/db');
         });
 
-        it('sets tags correctly', () => {
-            let query_obj = {
-                q: 'tyrion wins',
-                tags: ['lannister', 'bro'],
-                offset: 5,
-                limit: 2,
-            };
-            let mock_uri = engine._get_xapian_uri(query_obj);
-            let mock_query_obj = mock_uri.get_query();
-            let serialized_query = get_query_vals_for_key(mock_query_obj, 'q');
-            expect(serialized_query).toMatch('tag:"lannister"');
-            expect(serialized_query).toMatch('tag:"bro"');
-        });
-
-        it('includes query words in xapian query clause', () => {
-            let query_obj = {
-                q: 'tyrion wins',
-                tags: ['lannister', 'bro'],
-                offset: 5,
-                limit: 2,
-            };
-            let mock_uri = engine._get_xapian_uri(query_obj);
-            let mock_query_obj = mock_uri.get_query();
-            let serialized_query = get_query_vals_for_key(mock_query_obj, 'q');
-
-            expect(serialized_query).toMatch(/tyrion/i);
-            expect(serialized_query).toMatch(/wins/i);
-        });
-
-        it('throws an error for an unrecognized query type', () => {
-            let query_obj = {
-                q: 'tyrion wins',
-                type: engine.QUERY_TYPE_DELIMITED,
-            };
-            expect(() => {
-                engine._get_xapian_uri(query_obj);
-            }).not.toThrow();
-
-            let query_obj = {
-                q: 'tyrion wins',
-                type: 'crossbow',
-            };
-            expect(() => {
-                engine._get_xapian_uri(query_obj);
-            }).toThrow();
-        });
-
-        it('throws an error for an unrecognized query match type', () => {
-            let query_obj = {
-                q: 'tyrion wins',
-                match: engine.QUERY_MATCH_ALL,
-            };
-            expect(() => {
-                engine._get_xapian_uri(query_obj);
-            }).not.toThrow();
-
-            let query_obj = {
-                q: 'tyrion wins',
-                match: 'tywin',
-            };
-            expect(() => {
-                engine._get_xapian_uri(query_obj);
-            }).toThrow();
-        });
-
-        it('uses a stricter cutoff value for match type all', () => {
-            let query_obj = {
-                q: 'tyrion wins',
-                match: engine.QUERY_MATCH_ALL,
-            };
-            let mock_uri = engine._get_xapian_uri(query_obj);
-            let mock_query_obj = mock_uri.get_query();
-            let serialized_cutoff = get_query_vals_for_key(mock_query_obj, 'cutoff');
-            expect(serialized_cutoff).toBe('20');
-        });
-
-        it('supports single ID queries', () => {
-            let query_obj = {
-                ids: ['ekn://domain/0123456789abcdef'],
-            };
-            let query_params = {
-                q: '(id:0123456789abcdef)',
+        it('calls into QueryObject for other uri fields', () => {
+            let fakeCollapse = 5;
+            let fakeCutoff = 42;
+            let fakeSortBy = 512;
+            let fakeQ = 'not a real query string';
+            let mock_obj = {
+                get_collapse_value: () => fakeCollapse,
+                get_cutoff: () => fakeCutoff,
+                get_sort_value: () => fakeSortBy,
+                get_query_parser_string: () => fakeQ,
             };
 
-            let mock_uri = engine._get_xapian_uri(query_obj);
-            let mock_query_obj = mock_uri.get_query();
-            expect(get_query_vals_for_key(mock_query_obj, 'q'));
-        });
 
-        it('supports multiple ID queries', () => {
-            let query_obj = {
-                ids: [
-                    'ekn://domain/0123456789abcdef',
-                    'ekn://domain/fedcba9876543210',
-                ],
-            };
-            let expected_vals = '(id:0123456789abcdef OR id:fedcba9876543210)';
-
-            let mock_uri = engine._get_xapian_uri(query_obj);
-            let mock_query_obj = mock_uri.get_query();
-            expect(get_query_vals_for_key(mock_query_obj, 'q')).toEqual(expected_vals);
+            let uri = engine._get_xapian_uri(mock_obj);
+            mock_obj = uri.get_query();
+            expect(get_query_vals_for_key(mock_obj, 'collapse')).toEqual(String(fakeCollapse));
+            expect(get_query_vals_for_key(mock_obj, 'cutoff')).toEqual(String(fakeCutoff));
+            expect(get_query_vals_for_key(mock_obj, 'sortBy')).toEqual(String(fakeSortBy));
+            expect(get_query_vals_for_key(mock_obj, 'q')).toEqual(fakeQ);
         });
     });
 
     describe('serialize_query', () => {
-        it('correctly serializes a query string', () => {
-            let query_obj = {
+        it('correctly serializes query args', () => {
+            let query_args = {
                 path: '/foo',
-                q: 'bar',
+                query: 'bar',
                 offset: 5,
             };
-            expect(engine._serialize_query(query_obj)).toEqual('path=%2Ffoo&q=bar&offset=5');
+            expect(engine._serialize_query(query_args)).toEqual('path=%2Ffoo&query=bar&offset=5');
 
-            query_obj = {
+            query_args = {
                 slarty: 'thing@with@ats',
                 bartfast: 'this=that',
             };
-            expect(engine._serialize_query(query_obj)).toEqual('slarty=thing%40with%40ats&bartfast=this%3Dthat');
+            expect(engine._serialize_query(query_args)).toEqual('slarty=thing%40with%40ats&bartfast=this%3Dthat');
         });
     });
 
@@ -345,7 +213,6 @@ describe('Knowledge Engine Module', () => {
         it('sends correct request URIs', () => {
             let request_spy = engine_request_spy();
             let mock_id = 'ekn://foo/0123456789abcdef';
-            let mock_id_query = '(id:0123456789abcdef)';
 
             engine.get_object_by_id(mock_id, noop);
             let last_req_args = request_spy.calls.mostRecent().args;
@@ -355,7 +222,18 @@ describe('Knowledge Engine Module', () => {
 
             expect(requested_uri_string).toMatch(/^http:\/\/127.0.0.1:3004\/query?/);
             expect(get_query_vals_for_key(requested_query, 'path')).toMatch('/foo');
-            expect(get_query_vals_for_key(requested_query, 'q')).toMatch(mock_id_query);
+        });
+
+        it('uses correct domain for id', () => {
+            let request_spy = engine_request_spy();
+            let mock_id = 'ekn://new_domain/0123456789abcdef';
+
+            engine.get_object_by_id(mock_id, noop);
+            let last_req_args = request_spy.calls.mostRecent().args;
+            let requested_uri = last_req_args[0];
+            let requested_query = requested_uri.get_query();
+
+            expect(get_query_vals_for_key(requested_query, 'path')).toMatch('/new_domain');
         });
 
         it('marshals objects based on @type', (done) => {
@@ -452,9 +330,9 @@ describe('Knowledge Engine Module', () => {
 
         it('sends requests', () => {
             let request_spy = engine_request_spy();
-            let mock_query = {
-                q: 'logorrhea',
-            };
+            let mock_query = new EosKnowledgeSearch.QueryObject({
+                query: 'logorrhea',
+            });
 
             engine.get_objects_by_query(mock_query, noop);
             expect(request_spy).toHaveBeenCalled();
@@ -462,9 +340,9 @@ describe('Knowledge Engine Module', () => {
 
         it('requests correct URIs', () => {
             let request_spy = engine_request_spy();
-            let mock_query = {
-                q: 'logorrhea',
-            };
+            let mock_query = new EosKnowledgeSearch.QueryObject({
+                query: 'logorrhea',
+            });
 
             engine.get_objects_by_query(mock_query, noop);
             let last_req_args = request_spy.calls.mostRecent().args;
@@ -487,7 +365,7 @@ describe('Knowledge Engine Module', () => {
             };
             mock_engine_request(undefined, notSearchResults);
 
-            engine.get_objects_by_query({}, (err, results) => {
+            engine.get_objects_by_query(new EosKnowledgeSearch.QueryObject(), (err, results) => {
                 expect(results).not.toBeDefined();
                 expect(err).toBeDefined();
                 done();
@@ -503,7 +381,7 @@ describe('Knowledge Engine Module', () => {
             };
 
             mock_engine_request(undefined, resultsWithBadObject);
-            engine.get_objects_by_query({}, (err, results) => {
+            engine.get_objects_by_query(new EosKnowledgeSearch.QueryObject(), (err, results) => {
                 expect(results).not.toBeDefined();
                 expect(err).toBeDefined();
                 done();
@@ -513,7 +391,7 @@ describe('Knowledge Engine Module', () => {
         it ("resolves to a list of results if jsonld is valid", (done) => {
             mock_engine_request(undefined, MOCK_ARTICLE_RESULTS);
 
-            engine.get_objects_by_query({}, (err, results) => {
+            engine.get_objects_by_query(new EosKnowledgeSearch.QueryObject(), (err, results) => {
                 expect(err).not.toBeDefined();
                 expect(results).toBeDefined();
                 done();
@@ -522,7 +400,7 @@ describe('Knowledge Engine Module', () => {
 
         it ("constructs a list of content objects based on @type", (done) => {
             mock_engine_request(undefined, MOCK_CONTENT_RESULTS);
-            engine.get_objects_by_query({}, (err, results) => {
+            engine.get_objects_by_query(new EosKnowledgeSearch.QueryObject(), (err, results) => {
                 // All results in MOCK_CONTENT_OBJECT_RESULTS are of @type ContentObject,
                 // so expect that they're constructed as such
                 for (let i in results) {
@@ -534,7 +412,7 @@ describe('Knowledge Engine Module', () => {
 
         it ("constructs a list of article objects based on @type", (done) => {
             mock_engine_request(undefined, MOCK_ARTICLE_RESULTS);
-            engine.get_objects_by_query({}, (err, results) => {
+            engine.get_objects_by_query(new EosKnowledgeSearch.QueryObject(), (err, results) => {
                 // All results in MOCK_ARTICLE_OBJECT_RESULTS are of @type ArticleObject,
                 // so expect that they're constructed as such
                 for (let i in results) {
@@ -546,7 +424,7 @@ describe('Knowledge Engine Module', () => {
 
         it ("constructs a list of media objects based on @type", (done) => {
             mock_engine_request(undefined, MOCK_MEDIA_RESULTS);
-            engine.get_objects_by_query({}, (err, results) => {
+            engine.get_objects_by_query(new EosKnowledgeSearch.QueryObject(), (err, results) => {
                 // All results in MOCK_MEDIA_OBJECT_RESULTS are of @type MediaObject,
                 // so expect that they're constructed as such
                 for (let i in results) {
@@ -560,7 +438,7 @@ describe('Knowledge Engine Module', () => {
             mock_engine_request(new Error('I am an error'), undefined);
 
             let callback_called = 0;
-            engine.get_objects_by_query({}, (err, res) => {
+            engine.get_objects_by_query(new EosKnowledgeSearch.QueryObject(), (err, res) => {
                 callback_called++;
             });
             setTimeout(done, 100); // pause for a moment for any more callbacks
@@ -620,7 +498,7 @@ describe('Knowledge Engine Module', () => {
                     ],
                 },
             ]);
-            engine.get_objects_by_query({}, (err, things) => {
+            engine.get_objects_by_query(new EosKnowledgeSearch.QueryObject(), (err, things) => {
                 expect(things[0].ekn_id).toEqual('ekn://foo/0000000000000000');
                 expect(things[1].ekn_id).toEqual('ekn://foo/0000000000000002');
                 expect(things[2].ekn_id).toEqual('ekn://foo/0000000000000003');
@@ -643,7 +521,7 @@ describe('Knowledge Engine Module', () => {
                     results: [],
                 },
             ]);
-            engine.get_objects_by_query({}, (err, things) => {
+            engine.get_objects_by_query(new EosKnowledgeSearch.QueryObject(), (err, things) => {
                 expect(err).toBeDefined();
                 expect(things).not.toBeDefined();
                 done();

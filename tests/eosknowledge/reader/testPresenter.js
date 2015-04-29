@@ -251,8 +251,8 @@ describe('Reader presenter', function () {
             expect(engine.get_objects_by_query).toHaveBeenCalledWith(
                 jasmine.objectContaining({
                     limit: 15,
-                    sortBy: 'articleNumber',
-                    order: 'asc',
+                    sort: EosKnowledgeSearch.QueryObjectSort.ARTICLE_NUMBER,
+                    order: EosKnowledgeSearch.QueryObjectOrder.ASCENDING,
                     tags: ['EknArticleObject'],
                     offset: 0,
                 }), jasmine.any(Function));
@@ -513,7 +513,7 @@ describe('Reader presenter', function () {
             Mainloop.idle_add(function () {
                 expect(engine.get_objects_by_query)
                     .toHaveBeenCalledWith(jasmine.objectContaining({
-                        q: 'Azuc',
+                        query: 'Azuc',
                     }),
                     jasmine.any(Function));
                 expect(view.search_box.set_menu_items).toHaveBeenCalled();
@@ -529,11 +529,11 @@ describe('Reader presenter', function () {
             Mainloop.idle_add(function () {
                 expect(engine.get_objects_by_query)
                     .toHaveBeenCalledWith(jasmine.objectContaining({
-                        q: 'Azucar',
+                        query: 'Azucar',
                     }),
                     jasmine.any(Function));
                 expect(view.show_search_results_page).toHaveBeenCalled();
-                expect(presenter.history_model.current_item.query).toBe(JSON.stringify({q:'Azucar', limit: 15}));
+                expect(presenter.history_model.current_item.query_obj.query).toBe('Azucar');
                 done();
                 return GLib.SOURCE_REMOVE;
             });
@@ -555,11 +555,11 @@ describe('Reader presenter', function () {
             Mainloop.idle_add(function () {
                 expect(engine.get_objects_by_query)
                     .toHaveBeenCalledWith(jasmine.objectContaining({
-                        q: 'Azucar',
+                        query: 'Azucar',
                     }),
                     jasmine.any(Function));
                 expect(view.show_search_results_page).toHaveBeenCalled();
-                expect(presenter.history_model.current_item.query).toBe(JSON.stringify({q:'Azucar', limit: 15}));
+                expect(presenter.history_model.current_item.query_obj.query).toBe('Azucar');
                 done();
                 return GLib.SOURCE_REMOVE;
             });
