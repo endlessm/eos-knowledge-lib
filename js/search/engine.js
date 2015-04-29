@@ -5,12 +5,12 @@ const Soup = imports.gi.Soup;
 const GObject = imports.gi.GObject;
 const GLib = imports.gi.GLib;
 
-const ArticleObjectModel = imports.articleObjectModel;
-const ContentObjectModel = imports.contentObjectModel;
-const MediaObjectModel = imports.mediaObjectModel;
-const QueryObject = imports.queryObject;
-const datadir = imports.datadir;
-const utils = imports.searchUtils;
+const ArticleObjectModel = imports.search.articleObjectModel;
+const ContentObjectModel = imports.search.contentObjectModel;
+const MediaObjectModel = imports.search.mediaObjectModel;
+const QueryObject = imports.search.queryObject;
+const datadir = imports.search.datadir;
+const utils = imports.search.searchUtils;
 
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 

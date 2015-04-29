@@ -204,89 +204,67 @@ libtooltipplugin_la_LDFLAGS = -module -avoid-version -no-undefined
 
 # # # JAVASCRIPT # # #
 
-pkgoverridesdir = $(pkgdatadir)/overrides
-public_overrides = \
-	overrides/EosKnowledge.js \
-	overrides/articleCard.js \
-	overrides/articlePage.js \
-	overrides/articlePresenter.js \
-	overrides/articleHTMLRenderer.js \
-	overrides/card.js \
-	overrides/cardA.js \
-	overrides/cardB.js \
-	overrides/categoriesPage.js \
-	overrides/eknWebview.js \
-	overrides/historyItem.js \
-	overrides/historyPresenter.js \
-	overrides/homePage.js \
-	overrides/homePageA.js \
-	overrides/homePageB.js \
-	overrides/infiniteScrolledWindow.js \
-	overrides/launcher.js \
-	overrides/lessonCard.js \
-	overrides/lightbox.js \
-	overrides/lightboxPresenter.js \
-	overrides/listCard.js \
-	overrides/marginButton.js \
-	overrides/mediaInfobox.js \
-	overrides/mustache.js \
-	overrides/navButtonOverlay.js \
-	overrides/noSearchResultsPage.js \
-	overrides/pdfCard.js \
-	overrides/PDFView.js \
-	overrides/presenter.js \
-	overrides/presenterLoader.js \
-	overrides/progressCard.js \
-	overrides/previewer.js \
-	overrides/sectionArticlePage.js \
-	overrides/sectionPage.js \
-	overrides/sectionPageA.js \
-	overrides/sectionPageB.js \
-	overrides/spaceContainer.js \
-	overrides/tableOfContents.js \
-	overrides/textCard.js \
-	overrides/webkitURIHandlers.js \
-	overrides/window.js \
-	$(NULL)
-private_overrides = \
-	overrides/compositeButton.js \
-	overrides/config.js \
-	overrides/imagePreviewer.js \
-	overrides/licenses.js \
-	overrides/tabButton.js \
-	overrides/utils.js \
-	$(NULL)
-dist_pkgoverrides_DATA = $(public_overrides) $(private_overrides)
-
-reader_overrides = \
-	overrides/reader/articlePage.js \
-	overrides/reader/card.js \
-	overrides/reader/donePage.js \
-	overrides/reader/overviewPage.js \
-	overrides/reader/presenter.js \
-	overrides/reader/progressLabel.js \
-	overrides/reader/searchResultsPage.js \
-	overrides/reader/standalonePage.js \
-	overrides/reader/titleView.js \
-	overrides/reader/userSettingsModel.js \
-	overrides/reader/webviewTooltip.js \
-	overrides/reader/window.js \
-	$(NULL)
-readeroverridesdir = $(pkgoverridesdir)/reader
-dist_readeroverrides_DATA = $(reader_overrides)
-
-subst = $(SED) -e 's,%pkglibdir%,$(pkglibdir),g' \
-	-e 's,%datadir%,$(datadir),g'
-overrides/config.js: overrides/config.js.in Makefile
-	$(MKDIR_P) overrides
-	$(AM_V_GEN)$(subst) $< > $@
-
-CLEANFILES += overrides/config.js
-
-jsdir = $(pkgdatadir)/js
-
-search_files = \
-	js/search/EosKnowledgeSearch.js \
+js_files = \
+	js/app/application.js \
+	js/app/articleCard.js \
+	js/app/articleHTMLRenderer.js \
+	js/app/articlePage.js \
+	js/app/articlePresenter.js \
+	js/app/card.js \
+	js/app/cardA.js \
+	js/app/cardB.js \
+	js/app/categoriesPage.js \
+	js/app/compositeButton.js \
+	js/app/config.js \
+	js/app/eknWebview.js \
+	js/app/historyItem.js \
+	js/app/historyPresenter.js \
+	js/app/lightboxPresenter.js \
+	js/app/homePage.js \
+	js/app/homePageA.js \
+	js/app/homePageB.js \
+	js/app/imagePreviewer.js \
+	js/app/infiniteScrolledWindow.js \
+	js/app/launcher.js \
+	js/app/lessonCard.js \
+	js/app/licenses.js \
+	js/app/lightbox.js \
+	js/app/listCard.js \
+	js/app/marginButton.js \
+	js/app/mediaInfobox.js \
+	js/app/mustache.js \
+	js/app/navButtonOverlay.js \
+	js/app/noSearchResultsPage.js \
+	js/app/pdfCard.js \
+	js/app/PDFView.js \
+	js/app/presenter.js \
+	js/app/presenterLoader.js \
+	js/app/previewer.js \
+	js/app/progressCard.js \
+	js/app/reader/articlePage.js \
+	js/app/reader/card.js \
+	js/app/reader/donePage.js \
+	js/app/reader/overviewPage.js \
+	js/app/reader/presenter.js \
+	js/app/reader/progressLabel.js \
+	js/app/reader/searchResultsPage.js \
+	js/app/reader/standalonePage.js \
+	js/app/reader/titleView.js \
+	js/app/reader/userSettingsModel.js \
+	js/app/reader/webviewTooltip.js \
+	js/app/reader/window.js \
+	js/app/sectionArticlePage.js \
+	js/app/sectionPage.js \
+	js/app/sectionPageA.js \
+	js/app/sectionPageB.js \
+	js/app/spaceContainer.js \
+	js/app/tabButton.js \
+	js/app/tableOfContents.js \
+	js/app/textCard.js \
+	js/app/utils.js \
+	js/app/webkitURIHandlers.js \
+	js/app/window.js \
+	js/search/application.js \
 	js/search/articleObjectModel.js \
 	js/search/blacklist.js \
 	js/search/contentObjectModel.js \
@@ -298,83 +276,99 @@ search_files = \
 	js/search/searchUtils.js \
 	js/search/treeNode.js \
 	$(NULL)
-searchdir = $(jsdir)/search
-dist_search_DATA = $(search_files)
 
-EXTRA_DIST += js/ekn-app-runner js/ekn-search-provider
-bin_SCRIPTS += js/ekn-app-runner js/ekn-search-provider
+jsdir = $(pkgdatadir)/js
+# We want nobase to preserve directory structure, but that will include the js
+# directory in the path, so we need to install to pkgdatadir instead of jsdir here.
+nobase_dist_pkgdata_DATA = $(js_files)
 
-# Link our libraries to the system gjs directory
+# Overrides for the C library
 gjsdir = $(datadir)/gjs-1.0
 overridesdir = $(gjsdir)/overrides
-install-data-hook:
-	$(MKDIR_P) $(DESTDIR)$(overridesdir)
-	rm -f $(DESTDIR)$(overridesdir)/EosKnowledge.js
-	ln -s $(pkgoverridesdir)/EosKnowledge.js \
-		$(DESTDIR)$(overridesdir)/EosKnowledge.js
-	rm -f $(DESTDIR)$(gjsdir)/EosKnowledgeSearch.js
-	ln -s $(searchdir)/EosKnowledgeSearch.js \
-		$(DESTDIR)$(gjsdir)/EosKnowledgeSearch.js
+dist_overrides_DATA = overrides/EosKnowledge.js
 
-uninstall-hook:
-	rm -f $(DESTDIR)$(overridesdir)/EosKnowledge.js
-	rm -f $(DESTDIR)$(gjsdir)/EosKnowledgeSearch.js
+# # # SUBSTITUTED FILES # # #
+# These files need to be filled in with make variables
+
+subst = $(SED) \
+	-e 's,%datadir%,$(datadir),g' \
+	-e 's,%jsdir%,$(jsdir),g' \
+	-e 's,%pkglibdir%,$(pkglibdir),g' \
+	$(NULL)
+
+subst_files = \
+	js/app/config.js \
+	ekn-search-provider \
+	ekn-app-runner \
+	$(NULL)
+
+$(subst_files): %: %.in Makefile
+	$(MKDIR_P) $(@D)
+	$(AM_V_GEN)$(subst) $< > $@
+
+CLEANFILES += $(subst_files)
+EXTRA_DIST += $(patsubst %,%.in,$(subst_files))
+
+bin_SCRIPTS += \
+	ekn-search-provider \
+	ekn-app-runner \
+	$(NULL)
 
 # # # TESTS # # #
 
 javascript_tests = \
-	tests/eosknowledge/testArticleCard.js \
-	tests/eosknowledge/testArticleHTMLRenderer.js \
-	tests/eosknowledge/testArticlePage.js \
-	tests/eosknowledge/testArticlePresenter.js \
-	tests/eosknowledge/testCard.js \
-	tests/eosknowledge/testCardA.js \
-	tests/eosknowledge/testCardB.js \
 	tests/eosknowledge/testHello.js \
 	tests/eosknowledge/testHistoryItemModel.js \
 	tests/eosknowledge/testHistoryModel.js \
-	tests/eosknowledge/testHistoryPresenter.js \
-	tests/eosknowledge/testHomePage.js \
-	tests/eosknowledge/testHomePageA.js \
-	tests/eosknowledge/testHomePageB.js \
-	tests/eosknowledge/testLessonCard.js \
-	tests/eosknowledge/testLightbox.js \
-	tests/eosknowledge/testLightboxPresenter.js \
-	tests/eosknowledge/testListCard.js \
-	tests/eosknowledge/testMediaInfobox.js \
-	tests/eosknowledge/testNoSearchResultsPageA.js \
-	tests/eosknowledge/testNoSearchResultsPageB.js \
-	tests/eosknowledge/testPDFView.js \
-	tests/eosknowledge/testPresenter.js \
-	tests/eosknowledge/testPreviewer.js \
-	tests/eosknowledge/testProgressCard.js \
-	tests/eosknowledge/testSectionArticlePageA.js \
-	tests/eosknowledge/testSectionArticlePageB.js \
-	tests/eosknowledge/testSectionPageA.js \
-	tests/eosknowledge/testSectionPageB.js \
-	tests/eosknowledge/testSpaceContainer.js \
-	tests/eosknowledge/testTableOfContents.js \
-	tests/eosknowledge/testTextCard.js \
-	tests/eosknowledge/testWindow.js \
-	tests/eosknowledge/reader/testArticlePage.js \
-	tests/eosknowledge/reader/testCard.js \
-	tests/eosknowledge/reader/testDonePage.js \
-	tests/eosknowledge/reader/testOverviewPage.js \
-	tests/eosknowledge/reader/testPresenter.js \
-	tests/eosknowledge/reader/testProgressLabel.js \
-	tests/eosknowledge/reader/testSearchResultsPage.js \
-	tests/eosknowledge/reader/testTitleView.js \
-	tests/eosknowledge/reader/testUserSettingsModel.js \
-	tests/eosknowledge/reader/testWebExtension.js \
-	tests/eosknowledge/reader/testWebviewTooltip.js \
-	tests/eosknowledge/reader/testWindow.js \
-	tests/eosknowledgesearch/testArticleObjectModel.js \
-	tests/eosknowledgesearch/testContentObjectModel.js \
-	tests/eosknowledgesearch/testDatadir.js \
-	tests/eosknowledgesearch/testEngine.js \
-	tests/eosknowledgesearch/testMediaObjectModels.js \
-	tests/eosknowledgesearch/testQueryObject.js \
-	tests/eosknowledgesearch/testTreeNode.js \
+	tests/js/app/reader/testArticlePage.js \
+	tests/js/app/reader/testCard.js \
+	tests/js/app/reader/testDonePage.js \
+	tests/js/app/reader/testOverviewPage.js \
+	tests/js/app/reader/testPresenter.js \
+	tests/js/app/reader/testProgressLabel.js \
+	tests/js/app/reader/testSearchResultsPage.js \
+	tests/js/app/reader/testTitleView.js \
+	tests/js/app/reader/testUserSettingsModel.js \
+	tests/js/app/reader/testWebExtension.js \
+	tests/js/app/reader/testWebviewTooltip.js \
+	tests/js/app/reader/testWindow.js \
+	tests/js/app/testArticleCard.js \
+	tests/js/app/testArticleHTMLRenderer.js \
+	tests/js/app/testArticlePage.js \
+	tests/js/app/testArticlePresenter.js \
+	tests/js/app/testCard.js \
+	tests/js/app/testCardA.js \
+	tests/js/app/testCardB.js \
+	tests/js/app/testHistoryPresenter.js \
+	tests/js/app/testHomePage.js \
+	tests/js/app/testHomePageA.js \
+	tests/js/app/testHomePageB.js \
+	tests/js/app/testLessonCard.js \
+	tests/js/app/testLightbox.js \
+	tests/js/app/testLightboxPresenter.js \
+	tests/js/app/testListCard.js \
+	tests/js/app/testMediaInfobox.js \
+	tests/js/app/testNoSearchResultsPageA.js \
+	tests/js/app/testNoSearchResultsPageB.js \
+	tests/js/app/testPDFView.js \
+	tests/js/app/testPresenter.js \
+	tests/js/app/testPreviewer.js \
+	tests/js/app/testProgressCard.js \
+	tests/js/app/testSectionArticlePageA.js \
+	tests/js/app/testSectionArticlePageB.js \
+	tests/js/app/testSectionPageA.js \
+	tests/js/app/testSectionPageB.js \
+	tests/js/app/testSpaceContainer.js \
+	tests/js/app/testTableOfContents.js \
+	tests/js/app/testTextCard.js \
+	tests/js/app/testWindow.js \
+	tests/js/search/testArticleObjectModel.js \
+	tests/js/search/testContentObjectModel.js \
+	tests/js/search/testDatadir.js \
+	tests/js/search/testEngine.js \
+	tests/js/search/testMediaObjectModels.js \
+	tests/js/search/testQueryObject.js \
+	tests/js/search/testTreeNode.js \
 	$(NULL)
 test_content = \
 	tests/test-content/agot.svg \
@@ -428,15 +422,11 @@ JS_LOG_COMPILER = jasmine
 AM_JS_LOG_FLAGS = --tap --no-config
 
 # Use locally built versions of EosKnowledge-0.gir, JS modules, and libraries.
-# We clobber GJS_PATH and include $(top_srcdir) so that
-# gjs will find override modules in /overrides. The override directory itself
-# is also added to the gjs path for testing private js functionality not added
-# to the EosKnowledge module. The directories in /js are added for our pure
-# javascript libraries. Lastly the tests directory is added for utility modules
-# local to the tests.
+# We clobber GJS_PATH and include the js directory and the $(top_srcdir) for
+# including test helper files.
 # (May need to change to AM_TESTS_ENVIRONMENT in a later version of Automake)
 TESTS_ENVIRONMENT = \
-	export GJS_PATH="$(top_srcdir):$(top_srcdir)/overrides:$(top_srcdir)/js/search:$(top_srcdir)/tests"; \
+	export GJS_PATH="$(top_srcdir):$(top_srcdir)/js"; \
 	export GI_TYPELIB_PATH="$(top_builddir)$${GI_TYPELIB_PATH:+:$$GI_TYPELIB_PATH}"; \
 	export LD_LIBRARY_PATH="$(top_builddir)/.libs$${LD_LIBRARY_PATH:+:$$LD_LIBRARY_PATH}"; \
 	export G_TEST_SRCDIR="$(abs_srcdir)/tests"; \
@@ -448,10 +438,7 @@ EXTRA_DIST += jasmine.json
 # # # COVERAGE # # #
 
 EOS_JS_COVERAGE_FILES = \
-	$(public_overrides) \
-	$(private_overrides) \
-	$(reader_overrides) \
-	$(search_files) \
+	$(js_files) \
 	$(NULL)
 
 @EOS_COVERAGE_RULES@
@@ -508,14 +495,10 @@ build_naturaldocs_verbose_0 = @echo '  DOC    Building naturaldocs documentation
 # timestamp of the last successful build.
 stamp_file = docs/reference/js/doc-build.stamp
 
-js_doc_sources = $(public_overrides) $(private_overrides) $(reader_overrides) $(search_files)
-
-$(stamp_file): docs/reference/js/eos.css $(js_doc_sources)
+$(stamp_file): docs/reference/js/eos.css $(js_files)
 	$(build_naturaldocs_verbose)$(MKDIR_P) $(@D)/html && \
 	cd $(@D) && \
-	$(NATURALDOCS) -o HTML html -p . -s Default eos -hl All \
-				-i $(abs_srcdir)/js/search \
-				-i $(abs_srcdir)/overrides && \
+	$(NATURALDOCS) -o HTML html -p . -s Default eos -hl All -i $(abs_srcdir)/js && \
 	touch $(@F)
 
 dist_noinst_DATA += $(stamp_file)

@@ -7,8 +7,10 @@
 /docs/reference/eosknowledge/version.xml
 /eosknowledge-0.pc
 /eosknowledge/ekn-resource*.[ch]
-/overrides/config.js
-/overrides/config.js.in
+/js/app/config.js
+/js/app/config.js.in
+/ekn-app-runner
+/ekn-search-provider
 /gresourcedeps
 /data/com.endlessm.EknSearchProvider.service
 

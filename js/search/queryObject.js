@@ -5,8 +5,8 @@ const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 const Soup = imports.gi.Soup;
 
-const Blacklist = imports.blacklist;
-const Utils = imports.searchUtils;
+const Blacklist = imports.search.blacklist;
+const Utils = imports.search.searchUtils;
 
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 

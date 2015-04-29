@@ -5,9 +5,9 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const Soup = imports.gi.Soup;
 
-const Utils = imports.searchUtils;
-const ContentObjectModel = imports.contentObjectModel;
-const TreeNode = imports.treeNode;
+const Utils = imports.search.searchUtils;
+const ContentObjectModel = imports.search.contentObjectModel;
+const TreeNode = imports.search.treeNode;
 
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 

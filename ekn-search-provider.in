@@ -1,0 +1,18 @@
+#!/bin/bash
+
+export GJS_PATH="%jsdir%${GJS_PATH:+:$GJS_PATH}"
+
+if [ "$GJS_DEBUG_OUTPUT" == "" ]; then
+    export GJS_DEBUG_OUTPUT=stderr
+fi
+
+if [ "$GJS_DEBUG_TOPICS" == "" ]; then
+    export GJS_DEBUG_TOPICS="JS ERROR;JS LOG"
+fi
+
+DEBUG_COMMAND=""
+if [ "$RUN_DEBUG" != "" ]; then
+    DEBUG_COMMAND="gdb --args"
+fi
+
+exec $DEBUG_COMMAND gjs %jsdir%/search/application.js $@

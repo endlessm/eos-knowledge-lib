@@ -1,7 +1,7 @@
 const Gtk = imports.gi.Gtk;
 
 // To use:
-// const CssClassMatcher = imports.CssClassMatcher;
+// const CssClassMatcher = imports.tests.CssClassMatcher;
 // in beforeEach():
 // jasmine.addMatchers(CssClassMatcher.customMatchers)
 

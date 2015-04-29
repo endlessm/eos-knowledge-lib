@@ -5,8 +5,8 @@ const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 
-const Engine = imports.engine;
-const QueryObject = imports.queryObject;
+const Engine = imports.search.engine;
+const QueryObject = imports.search.queryObject;
 
 const SearchIface = '\
 <node name="/" xmlns:doc="http://www.freedesktop.org/dbus/1.0/doc.dtd"> \

@@ -1,7 +1,7 @@
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 
-const Datadir = imports.datadir;
+const Datadir = imports.search.datadir;
 
 /* Returns the current locale's language code, or null if one cannot be found */
 function get_current_language () {

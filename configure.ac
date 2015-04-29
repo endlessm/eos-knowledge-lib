@@ -263,7 +263,7 @@ AC_CONFIG_FILES([
     po/Makefile.in
     docs/reference/eosknowledge/Makefile
     docs/reference/eosknowledge/version.xml
-    overrides/config.js.in
+    js/app/config.js.in
     config/compass.rb
     $EKN_API_NAME.pc
 ])
