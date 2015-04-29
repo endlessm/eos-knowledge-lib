@@ -252,7 +252,6 @@ private_overrides = \
 	overrides/licenses.js \
 	overrides/tabButton.js \
 	overrides/utils.js \
-	overrides/videoPreviewer.js \
 	$(NULL)
 dist_pkgoverrides_DATA = $(public_overrides) $(private_overrides)
 

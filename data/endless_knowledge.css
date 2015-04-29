@@ -594,30 +594,6 @@ scrollbars, style the GTK scrollbars to look slightly more like them */
     padding-right: 15px;
 }
 
-.animating-video-frame {
-    background-color: black;
-}
-
-.video-player-scale {
-    -GtkRange-slider-width: 18px;
-    -GtkRange-trough-border: 2px;
-    -GtkScale-slider-length: 18px;
-}
-
-.video-player-scale.slider {
-    border-color: black;
-    border-style: solid;
-    border-radius: 50%;
-    border-width: 2px;
-    background-color: white;
-}
-
-.video-player-scale.trough {
-    border-radius: 3px;
-    margin: 8px 0;
-    background-color: white;
-}
-
 .pdf-view {
     background-image: url("assets/pdf-background.png");
 }
