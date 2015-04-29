@@ -1,4 +1,5 @@
 // Copyright 2014 Endless Mobile, Inc.
+const Epak = imports.gi.Epak;
 const Lang = imports.lang;
 const Soup = imports.gi.Soup;
 const GObject = imports.gi.GObject;
@@ -96,12 +97,14 @@ const Engine = Lang.Class({
 
         // Like _content_path_cache, but for EKN_VERSION files
         this._ekn_version_cache = {};
+
+        this._epak_cache = {};
     },
 
     /**
      * Function: get_object_by_id
-     * Sends a request for to xapian-bridge for an object with ID *id*.
-     * *callback* is a function which takes *err* and *result* parameters.
+     * Fetches an object with ID *id*. *callback* is a function which takes
+     * *err* and *result* parameters.
      *
      * Parameters:
      *
@@ -113,14 +116,7 @@ const Engine = Lang.Class({
      *             the successfully retrieved object type
      */
     get_object_by_id: function (id, callback, cancellable = null) {
-        var query_obj = new QueryObject.QueryObject({
-            limit: 1,
-            ids: [id],
-            domain: utils.domain_from_ekn_id(id),
-        });
-        let req_uri = this._get_xapian_uri(query_obj);
-
-        this._send_json_ld_request(req_uri, (err, json_ld) => {
+        let handle_result = (err, result) => {
             if (typeof err !== 'undefined') {
                 // error occurred during request, so immediately fail with err
                 callback(err, undefined);
@@ -129,9 +125,7 @@ const Engine = Lang.Class({
 
             let model;
             try {
-                if (json_ld === null)
-                    throw new Error("Received null object response for " + req_uri.to_string(false));
-                model = this._model_from_json_ld(json_ld.results[0]);
+                model = this._model_from_json_ld(result);
             } catch (err) {
                 // Error marshalling the JSON-LD object
                 callback(err, undefined);
@@ -144,6 +138,71 @@ const Engine = Lang.Class({
                 this.get_object_by_id(model.redirects_to, callback, cancellable);
             } else {
                 callback(undefined, model);
+            }
+        };
+
+        let [domain, __] = utils.components_from_ekn_id(id);
+        let ekn_version = this._ekn_version_from_domain(domain);
+
+        // Bundles with version >= 2 store all json-ld on disk instead of in the
+        // Xapian DB itself, and hence require no HTTP request to xapian-bridge
+        // when fetching an object
+        if (ekn_version >= 2) {
+            this._read_jsonld_from_disk(id, handle_result);
+        } else {
+            // Older bundles require an HTTP request for every object request
+            var query_obj = new QueryObject.QueryObject({
+                limit: 1,
+                ids: [id],
+                domain: domain,
+            });
+            let req_uri = this._get_xapian_uri(query_obj);
+
+            this._send_json_ld_request(req_uri, (err, json_ld) => {
+                if (typeof err !== 'undefined') {
+                    callback(err, undefined);
+                    return;
+                }
+
+                if (json_ld === null || typeof json_ld === "undefined"
+                    || !json_ld.hasOwnProperty('results')) {
+                    let err = new Error("Invalid xapian bridge response for " + req_uri.to_string(false));
+                    callback(err, undefined);
+                    return;
+                }
+                try {
+                    let parsed_results = json_ld.results.map(JSON.parse);
+                    handle_result(undefined, parsed_results[0]);
+                } catch (err) {
+                    handle_result(err, undefined);
+                }
+            }, cancellable);
+        }
+    },
+
+    _read_jsonld_from_disk: function (ekn_id, callback, cancellable = null) {
+        let [domain, hash] = utils.components_from_ekn_id(ekn_id);
+        let pak = this._epak_from_domain(domain);
+        let record = pak.find_record_by_hex_name(hash);
+
+        if (record === null) {
+            callback(new Error('Could not find epak record for ' + ekn_id), undefined);
+            return;
+        }
+
+        let metadata_stream = record.metadata.get_stream();
+        utils.read_stream_async(metadata_stream, (err, data) => {
+            if (typeof err !== 'undefined') {
+                callback(err, undefined);
+                return;
+            }
+
+            try {
+                let jsonld = JSON.parse(data);
+                callback(undefined, jsonld);
+            } catch (err) {
+                // error parsing the JSON-LD from disk
+                callback(err, undefined);
             }
         }, cancellable);
     },
@@ -172,35 +231,80 @@ const Engine = Lang.Class({
                 return;
             }
 
-            let search_results;
+            let search_results = [];
             try {
                 if (json_ld === null)
                     throw new Error("Received null object response for " + req_uri.to_string(false));
-                search_results = this._results_list_from_json_ld(json_ld);
+
+                let get_more_results = (batch_size, new_callback) => {
+                    let next_query_obj = QueryObject.QueryObject.new_from_object(query_obj, {
+                        offset: json_ld.numResults + json_ld.offset,
+                        limit: batch_size,
+                    });
+                    this.get_objects_by_query(next_query_obj, new_callback);
+                };
+
+                if (json_ld.results.length === 0) {
+                    callback(undefined, [], get_more_results);
+                    return;
+                }
+
+                // For knowledge bundles version >= 2, we only get an array of
+                // EKN IDs back from xapian-bridge, so simply map
+                // get_object_by_id over the ids and callback once we've got
+                // them all
+                let domain = query_obj.domain !== '' ? query_obj.domain : this.default_domain;
+                let ekn_version = this._ekn_version_from_domain(domain);
+                if (ekn_version >= 2) {
+                    json_ld.results.forEach((ekn_id) => {
+                        this.get_object_by_id(ekn_id, (err, model) => {
+                            if (err) {
+                                // On error, we want to callback with the err
+                                // value and then set callback to be a noop,
+                                // so that we don't repeatedly call the real
+                                // callback more than once.
+                                callback(err, undefined);
+                                callback = () => {};
+                                return;
+                            }
+
+                            search_results.push(model);
+                            if (search_results.length === json_ld.numResults) {
+                                callback(undefined, search_results, get_more_results);
+                            }
+                        }, cancellable);
+                    });
+                } else {
+                    // we have a legacy bundle, so proceed assuming
+                    // xapian-bridge gave us JSON-LD
+                    try {
+                        search_results = this._results_list_from_json_ld(json_ld);
+                    } catch (err) {
+                        // Error marshalling (at least) one of the JSON-LD results
+                        callback(err, undefined);
+                        return;
+                    }
+                    // For older bundles, we get JSON-LD in the xapian-bridge
+                    // payload, and so can callback immediately; however, first
+                    // we need to ensure no duplicates exist.
+                    if (follow_redirects) {
+                        this._fetch_redirects_helper(search_results, callback,
+                            get_more_results, cancellable);
+                    } else {
+                        callback(undefined, search_results, get_more_results);
+                    }
+                }
             } catch (err) {
                 // Error marshalling (at least) one of the JSON-LD results
                 callback(err, undefined);
                 return;
             }
-            let get_more_results = (batch_size, new_callback) => {
-                let next_query_obj = QueryObject.QueryObject.new_from_object(query_obj, {
-                    offset: json_ld.numResults + json_ld.offset,
-                    limit: batch_size,
-                });
-                this.get_objects_by_query(next_query_obj, new_callback);
-            };
-
-            if (follow_redirects) {
-                this._fetch_redirects_helper(search_results, callback,
-                    get_more_results, cancellable);
-            } else {
-                callback(undefined, search_results, get_more_results);
-            }
         }, cancellable);
     },
 
     // recursively follow redirect chains, eventually invoking the original
-    // callback on a final set of non-redirecting results.
+    // callback on a final set of non-redirecting results. Only needed for
+    // legacy (v1) bundles
     _fetch_redirects_helper: function (results, callback, get_more_results, cancellable) {
         let redirects = results.filter((result) => result.redirects_to.length > 0);
 
@@ -274,6 +378,26 @@ const Engine = Lang.Class({
         return this._ekn_version_cache[domain];
     },
 
+    _epak_path_from_domain: function (domain) {
+        let content_path = this._content_path_from_domain(domain);
+
+        let path_components = [content_path, 'media.epak'];
+        let filename = GLib.build_filenamev(path_components);
+        return filename;
+    },
+
+    _epak_from_domain: function (domain) {
+        if (this._epak_cache[domain] === undefined) {
+            let pak = new Epak.Pak({
+                path: this._epak_path_from_domain(domain),
+            });
+            pak.init(null);
+            this._epak_cache[domain] = pak;
+        }
+
+        return this._epak_cache[domain];
+    },
+
     // Returns a marshaled ObjectModel based on json_ld's @type value, or throws
     // error if there is no corresponding model
     _model_from_json_ld: function (json_ld) {
@@ -306,7 +430,8 @@ const Engine = Lang.Class({
     // Returns a list of marshalled ObjectModels, or throws an error if json_ld
     // is not a SearchResults object
     _results_list_from_json_ld: function (json_ld) {
-        return json_ld.results.map(this._model_from_json_ld.bind(this));
+        let parsed_results = json_ld.results.map(JSON.parse);
+        return parsed_results.map(this._model_from_json_ld.bind(this));
     },
 
     _get_xapian_uri: function (query_obj) {
