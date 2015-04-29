@@ -20,6 +20,7 @@ const _SUBTITLE_LEFT_MARGIN = 125;
 const _FRAME_RIGHT_MARGIN = 100;
 const _PAGE_WIDTH_THRESHOLD = 1366;
 const _EXTRA_MARGIN = 50;
+const _MAX_FRAME_WIDTH = 576;
 
 /**
  * Class: Reader.OverviewPage
@@ -91,10 +92,10 @@ const OverviewPage = new Lang.Class({
             margin_start: _SUBTITLE_LEFT_MARGIN,
         });
 
-        let snippets_frame = new Gtk.Frame({
-            expand: true,
-            halign: Gtk.Align.FILL,
+        let snippets_frame = new MaxWidthFrame({
+            halign: Gtk.Align.END,
             valign: Gtk.Align.FILL,
+            max_width: _MAX_FRAME_WIDTH,
         });
         snippets_frame.get_style_context().add_class(EosKnowledge.STYLE_CLASS_READER_OVERVIEW_FRAME);
 
@@ -122,10 +123,10 @@ const OverviewPage = new Lang.Class({
         });
         margin_container.set_margin_start_children([
             this._title_image,
-            this._subtitle_label
+            this._subtitle_label,
         ]);
         margin_container.set_margin_end_children([
-            this._snippets_grid
+            this._snippets_grid,
         ]);
         margin_container.add(grid);
         this.add(margin_container);
@@ -368,5 +369,35 @@ const FlexMarginContainer = new Lang.Class({
         }
 
         this.parent(allocation);
+    },
+});
+
+/**
+ * Class: MaxWidthFrame
+ *
+ * A custom frame container that has a hard constraint on its width
+ */
+const MaxWidthFrame = new Lang.Class({
+    Name: 'MaxWidthFrame',
+    GTypeName: 'EknMaxWidthFrame',
+    Extends: Gtk.Frame,
+    Properties: {
+        'max-width': GObject.ParamSpec.uint('max-width', 'Maximum Width',
+            'Maximum width of the container widget.',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            0, GLib.MAXUINT32, 0),
+    },
+
+    _init: function (props={}) {
+        this.parent(props);
+    },
+
+    vfunc_get_request_mode: function () {
+        return Gtk.SizeRequestMode.HEIGHT_FOR_WIDTH;
+    },
+
+    vfunc_get_preferred_width: function () {
+        let [min, nat] = this.parent();
+        return [Math.min(min, this.max_width), Math.min(nat, this.max_width)];
     },
 });
