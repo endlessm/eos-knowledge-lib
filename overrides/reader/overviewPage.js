@@ -17,6 +17,10 @@ GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.
 const _LOGO_TOP_MARGIN = 50;
 const _LOGO_LEFT_MARGIN = 75;
 const _SUBTITLE_LEFT_MARGIN = 125;
+const _FRAME_RIGHT_MARGIN = 100;
+const _PAGE_WIDTH_THRESHOLD = 1366;
+const _EXTRA_MARGIN = 50;
+const _MAX_FRAME_WIDTH = 576;
 
 /**
  * Class: Reader.OverviewPage
@@ -88,10 +92,10 @@ const OverviewPage = new Lang.Class({
             margin_start: _SUBTITLE_LEFT_MARGIN,
         });
 
-        let snippets_frame = new Gtk.Frame({
-            expand: true,
-            halign: Gtk.Align.FILL,
+        let snippets_frame = new MaxWidthFrame({
+            halign: Gtk.Align.END,
             valign: Gtk.Align.FILL,
+            max_width: _MAX_FRAME_WIDTH,
         });
         snippets_frame.get_style_context().add_class(EosKnowledge.STYLE_CLASS_READER_OVERVIEW_FRAME);
 
@@ -100,6 +104,7 @@ const OverviewPage = new Lang.Class({
             expand: true,
             halign: Gtk.Align.END,
             valign: Gtk.Align.FILL,
+            margin_end: _FRAME_RIGHT_MARGIN,
         });
         snippets_frame.add(this._snippets_grid);
 
@@ -112,7 +117,19 @@ const OverviewPage = new Lang.Class({
         grid.attach(this._subtitle_label, 0, 1, 1, 1);
         grid.attach(snippets_frame, 1, 0, 1, 2);
 
-        this.add(grid);
+        let margin_container = new FlexMarginContainer({
+            width_threshold: _PAGE_WIDTH_THRESHOLD,
+            extra_margin: _EXTRA_MARGIN,
+        });
+        margin_container.set_margin_start_children([
+            this._title_image,
+            this._subtitle_label,
+        ]);
+        margin_container.set_margin_end_children([
+            this._snippets_grid,
+        ]);
+        margin_container.add(grid);
+        this.add(margin_container);
     },
 
     get background_image_uri () {
@@ -294,5 +311,93 @@ const ArticleSnippet = new Lang.Class({
         if (this._synopsis_label)
             return this._synopsis_label.label;
         return '';
+    },
+});
+
+/**
+ * Class: FlexMarginContainer
+ *
+ * A custom container that adjusts the horizontal margin of its identified
+ * children when the width threshold is crossed.
+ */
+const FlexMarginContainer = new Lang.Class({
+    Name: 'FlexMarginContainer',
+    GTypeName: 'EknFlexMarginContainer',
+    Extends: Gtk.Bin,
+    Properties: {
+        'width-threshold': GObject.ParamSpec.uint('width-threshold', 'Width Threshold',
+            'Threshold at which the container\'s width should switch from natural margin to minimum margin',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            0, GLib.MAXUINT32, GLib.MAXUINT32),
+        'extra-margin': GObject.ParamSpec.uint('extra-margin', 'Extra margin',
+            'Additional margin to alter identified children when width threshold is crossed',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            0, GLib.MAXUINT32, 0),
+    },
+
+    _init: function (props={}) {
+        this.parent(props);
+
+        this._width_crossed_threshold = false;
+    },
+
+    set_margin_start_children: function (children) {
+        this._margin_start_children = children;
+    },
+
+    set_margin_end_children: function (children) {
+        this._margin_end_children = children;
+    },
+
+    _adjust_margins: function (factor) {
+        this._margin_start_children.forEach((child) => {
+            child.margin_start += factor;
+        });
+
+        this._margin_end_children.forEach((child) => {
+            child.margin_end += factor;
+        });
+    },
+
+    vfunc_size_allocate: function (allocation) {
+        if (allocation.width < this.width_threshold && !this._width_crossed_threshold) {
+            this._width_crossed_threshold = true;
+            this._adjust_margins(-1 * this.extra_margin);
+        } else if (allocation.width >= this.width_threshold && this._width_crossed_threshold) {
+            this._width_crossed_threshold = false;
+            this._adjust_margins(this.extra_margin);
+        }
+
+        this.parent(allocation);
+    },
+});
+
+/**
+ * Class: MaxWidthFrame
+ *
+ * A custom frame container that has a hard constraint on its width
+ */
+const MaxWidthFrame = new Lang.Class({
+    Name: 'MaxWidthFrame',
+    GTypeName: 'EknMaxWidthFrame',
+    Extends: Gtk.Frame,
+    Properties: {
+        'max-width': GObject.ParamSpec.uint('max-width', 'Maximum Width',
+            'Maximum width of the container widget.',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            0, GLib.MAXUINT32, 0),
+    },
+
+    _init: function (props={}) {
+        this.parent(props);
+    },
+
+    vfunc_get_request_mode: function () {
+        return Gtk.SizeRequestMode.HEIGHT_FOR_WIDTH;
+    },
+
+    vfunc_get_preferred_width: function () {
+        let [min, nat] = this.parent();
+        return [Math.min(min, this.max_width), Math.min(nat, this.max_width)];
     },
 });
