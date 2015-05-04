@@ -209,6 +209,13 @@ PKG_CHECK_MODULES([TOOLTIP_PLUGIN], [
     webkit2gtk-4.0
     javascriptcoregtk-4.0
 ])
+PKG_CHECK_MODULES([ENCYCLOPEDIA_PLUGIN], [
+    glib-2.0
+    gmodule-2.0
+    gio-2.0 >= 2.32
+    webkit2gtk-4.0
+    javascriptcoregtk-4.0
+])
 
 # Check installed GIRs for Javascript overrides
 EOS_CHECK_GJS_GIR([Endless], [0])

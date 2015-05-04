@@ -190,6 +190,17 @@ libtooltipplugin_la_CPPFLAGS = \
 libtooltipplugin_la_LIBADD = $(TOOLTIP_PLUGIN_LIBS)
 libtooltipplugin_la_LDFLAGS = -module -avoid-version -no-undefined
 
+# WebKit web extension for translating with webkit side javascript
+webextension_LTLIBRARIES += libencyclopediaplugin.la
+libencyclopediaplugin_la_SOURCES = lib/encyclopediaplugin.c
+libencyclopediaplugin_la_CFLAGS = $(ENCYCLOPEDIA_PLUGIN_CFLAGS)
+libencyclopediaplugin_la_CPPFLAGS = \
+	-DPKGDATADIR=\""$(pkgdatadir)"\" \
+	-DLOCALEDIR=\""$(datadir)/locale"\" \
+	$(NULL)
+libencyclopediaplugin_la_LIBADD = $(ENCYCLOPEDIA_PLUGIN_LIBS)
+libencyclopediaplugin_la_LDFLAGS = -module -avoid-version -no-undefined
+
 # # # JAVASCRIPT # # #
 
 js_files = \
@@ -205,6 +216,17 @@ js_files = \
 	js/app/compositeButton.js \
 	js/app/config.js \
 	js/app/eknWebview.js \
+	js/app/encyclopedia/application.js \
+	js/app/encyclopedia/contentPage.js \
+	js/app/encyclopedia/disclaimerIcon.js \
+	js/app/encyclopedia/fixedTextView.js \
+	js/app/encyclopedia/historyItem.js \
+	js/app/encyclopedia/homePage.js \
+	js/app/encyclopedia/layoutPage.js \
+	js/app/encyclopedia/model.js \
+	js/app/encyclopedia/popupWindow.js \
+	js/app/encyclopedia/presenter.js \
+	js/app/encyclopedia/view.js \
 	js/app/historyItem.js \
 	js/app/historyPresenter.js \
 	js/app/lightboxPresenter.js \
@@ -289,6 +311,7 @@ subst_files = \
 	js/app/config.js \
 	ekn-search-provider \
 	ekn-app-runner \
+	eos-encyclopedia \
 	$(NULL)
 
 $(subst_files): %: %.in Makefile
@@ -301,6 +324,7 @@ EXTRA_DIST += $(patsubst %,%.in,$(subst_files))
 bin_SCRIPTS += \
 	ekn-search-provider \
 	ekn-app-runner \
+	eos-encyclopedia \
 	$(NULL)
 
 # # # TESTS # # #
