@@ -23,7 +23,6 @@ const TestApplication = new Lang.Class({
                                                  Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
         this._files = {
             image: Gio.File.new_for_path(TESTDIR + '/test-content/pig1.jpg'),
-            video: Gio.File.new_for_path(TESTDIR + '/test-content/sample.mp4'),
             copyrighted: Gio.File.new_for_path(TESTDIR + '/test-content/ketchup.jpg'),
             tallimage: Gio.File.new_for_path(TESTDIR + '/test-content/tall.jpg'),
             wideimage: Gio.File.new_for_path(TESTDIR + '/test-content/wide.jpg'),
@@ -35,12 +34,6 @@ const TestApplication = new Lang.Class({
                 media_title: 'pig1.jpg',
                 license_text: 'Some license',
                 creator_text: 'Some creator'
-            }),
-            video: new EosKnowledge.MediaInfobox({
-                caption: 'Some kinda rabbit man',
-                media_title: 'sample.mp4',
-                license_text: 'Here\'s your license, pal!',
-                creator_text: 'Me'
             }),
             copyrighted: new EosKnowledge.MediaInfobox({
                 caption: 'Ruínas maias em Tikal. Em Tikal, nas terras baixas do norte da Guatemala, muitas ruínas maias do III e IV séculos foram escavadas. ' +
@@ -69,15 +62,6 @@ const TestApplication = new Lang.Class({
             this._previewer.file = this._files.image;
             this._lightbox.reveal_overlays = true;
             this._lightbox.infobox_widget = this._infoboxes.image;
-        }.bind(this)));
-
-        let video_card = new EosKnowledge.CardA({
-            title: 'Open video in lightbox'
-        });
-        video_card.connect('clicked', Lang.bind(this, function () {
-            this._previewer.file = this._files.video;
-            this._lightbox.reveal_overlays = true;
-            this._lightbox.infobox_widget = this._infoboxes.video;
         }.bind(this)));
 
         let copyrighted_card = new EosKnowledge.CardA({
@@ -109,7 +93,6 @@ const TestApplication = new Lang.Class({
 
         let grid = new Gtk.Grid();
         grid.add(image_card);
-        grid.add(video_card);
         grid.add(copyrighted_card);
         grid.add(tallimage_card);
         grid.add(wideimage_card);

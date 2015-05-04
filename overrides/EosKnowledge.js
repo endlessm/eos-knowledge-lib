@@ -2,9 +2,7 @@
 
 imports.gi.versions.WebKit2 = '4.0';
 
-const ClutterGst = imports.gi.ClutterGst;
 const Endless = imports.gi.Endless;
-const GtkClutter = imports.gi.GtkClutter;
 const Lang = imports.lang;
 
 let EosKnowledge;

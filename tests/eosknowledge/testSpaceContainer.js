@@ -5,6 +5,8 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
+Gtk.init(null);
+
 const TEST_WINDOW_SIZE = 300;
 
 // Colored box with a fixed size request of a particular size.

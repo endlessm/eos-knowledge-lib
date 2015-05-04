@@ -252,7 +252,6 @@ private_overrides = \
 	overrides/licenses.js \
 	overrides/tabButton.js \
 	overrides/utils.js \
-	overrides/videoPreviewer.js \
 	$(NULL)
 dist_pkgoverrides_DATA = $(public_overrides) $(private_overrides)
 
@@ -386,7 +385,6 @@ test_content = \
 	tests/test-content/overrides.css \
 	tests/test-content/pdf-sample1.pdf \
 	tests/test-content/rick-astley-image.jsonld \
-	tests/test-content/sample.mp4 \
 	$(NULL)
 EXTRA_DIST += \
 	$(javascript_tests) \

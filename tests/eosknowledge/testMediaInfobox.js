@@ -3,6 +3,8 @@ const EosKnowledgeSearch = imports.EosKnowledgeSearch;
 const Gtk = imports.gi.Gtk;
 const InstanceOfMatcher = imports.InstanceOfMatcher;
 
+Gtk.init(null);
+
 const utils = imports.tests.utils;
 
 const TEST_CONTENT_DIR = utils.get_test_content_srcdir();
