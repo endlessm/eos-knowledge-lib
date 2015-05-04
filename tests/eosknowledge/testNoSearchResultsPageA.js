@@ -1,6 +1,8 @@
 const EosKnowledge = imports.gi.EosKnowledge;
 const Gtk = imports.gi.Gtk;
 
+Gtk.init(null);
+
 const CssClassMatcher = imports.CssClassMatcher;
 const WidgetDescendantMatcher = imports.WidgetDescendantMatcher;
 
