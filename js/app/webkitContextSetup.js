@@ -5,6 +5,7 @@ const GLib = imports.gi.GLib;
 const WebKit2 = imports.gi.WebKit2;
 
 const ArticleObjectModel = imports.search.articleObjectModel;
+const Config = imports.app.config;
 const Engine = imports.search.engine;
 
 function register_webkit_uri_handlers (article_render_callback) {
@@ -66,4 +67,17 @@ function _load_gresource_assets (req) {
     } catch (error) {
         _error_request(req, error);
     }
+}
+
+function register_webkit_extensions (app_id) {
+    let pid = new Gio.Credentials().get_unix_pid();
+    let dbus_name = app_id + pid;
+
+    let web_context = WebKit2.WebContext.get_default();
+    web_context.connect('initialize-web-extensions', () => {
+        web_context.set_web_extensions_directory(Config.WEB_EXTENSION_DIR);
+        let well_known_name = new GLib.Variant('s', dbus_name);
+        web_context.set_web_extensions_initialization_user_data(well_known_name);
+    });
+    return dbus_name;
 }

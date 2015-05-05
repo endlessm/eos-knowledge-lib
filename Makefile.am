@@ -250,7 +250,7 @@ js_files = \
 	js/app/tableOfContents.js \
 	js/app/textCard.js \
 	js/app/utils.js \
-	js/app/webkitURIHandlers.js \
+	js/app/webkitContextSetup.js \
 	js/app/window.js \
 	js/search/application.js \
 	js/search/articleObjectModel.js \

@@ -10,7 +10,7 @@ const ArticleHTMLRenderer = imports.app.articleHTMLRenderer;
 const EknWebview = imports.app.eknWebview;
 const PDFView = imports.app.PDFView;
 const TreeNode = imports.search.treeNode;
-const WebkitURIHandlers = imports.app.webkitURIHandlers;
+const WebkitContextSetup = imports.app.webkitContextSetup;
 
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 
@@ -89,7 +89,7 @@ const ArticlePresenter = new GObject.Class({
         this._connect_toc_widget();
         this.article_view.connect('new-view-transitioned', this._update_title_and_toc.bind(this));
 
-        WebkitURIHandlers.register_webkit_uri_handlers(this._article_render_callback.bind(this));
+        WebkitContextSetup.register_webkit_uri_handlers(this._article_render_callback.bind(this));
     },
 
     set article_model (v) {

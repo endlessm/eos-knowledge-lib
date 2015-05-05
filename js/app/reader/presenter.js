@@ -28,7 +28,7 @@ const QueryObject = imports.search.queryObject;
 const ReaderCard = imports.app.reader.card;
 const UserSettingsModel = imports.app.reader.userSettingsModel;
 const Utils = imports.app.utils;
-const WebkitURIHandlers = imports.app.webkitURIHandlers;
+const WebkitContextSetup = imports.app.webkitContextSetup;
 const WebviewTooltip = imports.app.reader.webviewTooltip;
 const Window = imports.app.reader.window;
 
@@ -183,18 +183,8 @@ const Presenter = new Lang.Class({
             display_infobox: false,
         });
 
-        WebkitURIHandlers.register_webkit_uri_handlers(this._article_render_callback.bind(this));
-
-        let app_id = this.application.application_id;
-        let pid = new Gio.Credentials().get_unix_pid();
-        this._dbus_name = app_id + pid;
-
-        let web_context = WebKit2.WebContext.get_default();
-        web_context.connect('initialize-web-extensions', () => {
-            web_context.set_web_extensions_directory(Config.WEB_EXTENSION_DIR);
-            let well_known_name = new GLib.Variant('s', this._dbus_name);
-            web_context.set_web_extensions_initialization_user_data(well_known_name);
-        });
+        WebkitContextSetup.register_webkit_uri_handlers(this._article_render_callback.bind(this));
+        this._dbus_name = WebkitContextSetup.register_webkit_extensions(this.application.application_id);
 
         this._article_renderer = new ArticleHTMLRenderer.ArticleHTMLRenderer();
 
