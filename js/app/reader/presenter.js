@@ -191,7 +191,7 @@ const Presenter = new Lang.Class({
 
         let web_context = WebKit2.WebContext.get_default();
         web_context.connect('initialize-web-extensions', () => {
-            web_context.set_web_extensions_directory(Config.PKGLIBDIR);
+            web_context.set_web_extensions_directory(Config.WEB_EXTENSION_DIR);
             let well_known_name = new GLib.Variant('s', this._dbus_name);
             web_context.set_web_extensions_initialization_user_data(well_known_name);
         });

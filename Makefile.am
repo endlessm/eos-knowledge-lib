@@ -191,8 +191,11 @@ libeosknowledgesearchprivate_la_LIBADD = @EOS_KNOWLEDGE_LIBS@
 
 # # # WEBKIT EXTENSION LIBRARIES # # #
 
+webextensiondir = $(pkglibdir)/web-extensions
+webextension_LTLIBRARIES =
+
 # WebKit web extension for determining DOM element coordinates for tooltips
-pkglib_LTLIBRARIES += libtooltipplugin.la
+webextension_LTLIBRARIES += libtooltipplugin.la
 libtooltipplugin_la_SOURCES = lib/tooltipplugin.c
 libtooltipplugin_la_CFLAGS = $(TOOLTIP_PLUGIN_CFLAGS)
 libtooltipplugin_la_CPPFLAGS = \
@@ -294,6 +297,7 @@ subst = $(SED) \
 	-e 's,%datadir%,$(datadir),g' \
 	-e 's,%jsdir%,$(jsdir),g' \
 	-e 's,%pkglibdir%,$(pkglibdir),g' \
+	-e 's,%webextensiondir%,$(webextensiondir),g' \
 	$(NULL)
 
 subst_files = \
