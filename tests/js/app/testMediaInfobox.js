@@ -1,4 +1,3 @@
-const EosKnowledge = imports.gi.EosKnowledge;
 const Gtk = imports.gi.Gtk;
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
 

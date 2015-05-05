@@ -1,4 +1,4 @@
-const EosKnowledge = imports.gi.EosKnowledge;
+const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const EvinceView = imports.gi.EvinceView;
 const Gio = imports.gi.Gio;
 
@@ -29,7 +29,7 @@ describe('PDF view', function () {
 
     describe('CSS style context', function () {
         it('has a pdf view class', function () {
-            expect(view).toHaveCssClass(EosKnowledge.STYLE_CLASS_PDF_VIEW);
+            expect(view).toHaveCssClass(EosKnowledgePrivate.STYLE_CLASS_PDF_VIEW);
         });
     });
 });

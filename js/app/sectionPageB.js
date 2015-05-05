@@ -2,7 +2,7 @@
 
 const Cairo = imports.gi.cairo;
 const Endless = imports.gi.Endless;
-const EosKnowledge = imports.gi.EosKnowledge;
+const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
@@ -67,7 +67,7 @@ const SectionPageB = new Lang.Class({
 
         this.parent(props);
 
-        this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_SECTION_PAGE_B);
+        this.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_SECTION_PAGE_B);
     },
 
     highlight_card: function (card) {
@@ -77,7 +77,7 @@ const SectionPageB = new Lang.Class({
         this.clear_highlighted_cards();
 
         this._highlighted_card = card;
-        this._highlighted_card.get_style_context().add_class(EosKnowledge.STYLE_CLASS_HIGHLIGHTED);
+        this._highlighted_card.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_HIGHLIGHTED);
     },
 
     highlight_card_with_name: function (card_name, fallback_card_name) {
@@ -97,8 +97,8 @@ const SectionPageB = new Lang.Class({
             return;
 
         this._shaded_card = card;
-        this._shaded_card.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_HIGHLIGHTED);
-        this._shaded_card.get_style_context().add_class(EosKnowledge.STYLE_CLASS_SHADED);
+        this._shaded_card.get_style_context().remove_class(EosKnowledgePrivate.STYLE_CLASS_HIGHLIGHTED);
+        this._shaded_card.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_SHADED);
     },
 
     /*
@@ -106,11 +106,11 @@ const SectionPageB = new Lang.Class({
      */
     clear_highlighted_cards: function () {
         if (this._highlighted_card !== null && typeof this._highlighted_card !== 'undefined') {
-            this._highlighted_card.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_HIGHLIGHTED);
+            this._highlighted_card.get_style_context().remove_class(EosKnowledgePrivate.STYLE_CLASS_HIGHLIGHTED);
             this._highlighted_card = null;
         }
         if (this._shaded_card !== null && typeof this._shaded_card !== 'undefined') {
-            this._shaded_card.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_SHADED);
+            this._shaded_card.get_style_context().remove_class(EosKnowledgePrivate.STYLE_CLASS_SHADED);
             this._shaded_card = null;
         }
     },
@@ -130,7 +130,7 @@ const SectionPageB = new Lang.Class({
         this._title_label_revealer.add(title_label);
 
         let title_frame = new Gtk.Frame();
-        title_frame.get_style_context().add_class(EosKnowledge.STYLE_CLASS_SECTION_PAGE_B_TITLE_FRAME);
+        title_frame.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_SECTION_PAGE_B_TITLE_FRAME);
         title_frame.add(this._title_label_revealer);
 
         this.bind_property('transition-duration', this._title_label_revealer,

@@ -1,5 +1,5 @@
 const ByteArray = imports.byteArray;
-const EosKnowledge = imports.gi.EosKnowledge;
+const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const WebKit2 = imports.gi.WebKit2;
@@ -10,11 +10,11 @@ const Engine = imports.search.engine;
 function register_webkit_uri_handlers (article_render_callback) {
     let security_manager = WebKit2.WebContext.get_default().get_security_manager();
     security_manager.register_uri_scheme_as_local('ekn');
-    EosKnowledge.private_register_global_uri_scheme('ekn', (req) => {
+    EosKnowledgePrivate.private_register_global_uri_scheme('ekn', (req) => {
         _load_ekn_assets(req, article_render_callback);
     });
     security_manager.register_uri_scheme_as_local('resource');
-    EosKnowledge.private_register_global_uri_scheme('resource', _load_gresource_assets);
+    EosKnowledgePrivate.private_register_global_uri_scheme('resource', _load_gresource_assets);
 }
 
 function _error_request(req, err) {

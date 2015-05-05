@@ -1,6 +1,6 @@
 // Copyright 2014 Endless Mobile, Inc.
 
-const EosKnowledge = imports.gi.EosKnowledge;
+const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
@@ -49,7 +49,7 @@ const SectionPage = new Lang.Class({
 
         this.parent(props);
 
-        this._title_label.get_style_context().add_class(EosKnowledge.STYLE_CLASS_SECTION_PAGE_TITLE);
+        this._title_label.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_SECTION_PAGE_TITLE);
         this.pack_title_label(this._title_label);
         this.show_all();
     },

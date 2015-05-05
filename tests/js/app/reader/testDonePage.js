@@ -1,4 +1,4 @@
-const EosKnowledge = imports.gi.EosKnowledge;
+const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Gtk = imports.gi.Gtk;
 
 const DonePage = imports.app.reader.donePage;
@@ -24,14 +24,14 @@ describe('Done page widget', function () {
     });
 
     it('has the done-page CSS class', function () {
-        expect(page).toHaveCssClass(EosKnowledge.STYLE_CLASS_READER_DONE_PAGE);
+        expect(page).toHaveCssClass(EosKnowledgePrivate.STYLE_CLASS_READER_DONE_PAGE);
     });
 
     it('has a child widget with headline CSS class', function () {
-        expect(page).toHaveDescendantWithCssClass(EosKnowledge.STYLE_CLASS_READER_HEADLINE);
+        expect(page).toHaveDescendantWithCssClass(EosKnowledgePrivate.STYLE_CLASS_READER_HEADLINE);
     });
 
     it('has a child widget with bottom-line CSS class', function () {
-        expect(page).toHaveDescendantWithCssClass(EosKnowledge.STYLE_CLASS_READER_BOTTOM_LINE);
+        expect(page).toHaveDescendantWithCssClass(EosKnowledgePrivate.STYLE_CLASS_READER_BOTTOM_LINE);
     });
 });

@@ -1,7 +1,7 @@
 // Copyright 2014 Endless Mobile, Inc.
 
 const Endless = imports.gi.Endless;
-const EosKnowledge = imports.gi.EosKnowledge;
+const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
@@ -104,9 +104,9 @@ const SectionArticlePageA = new Lang.Class({
         });
         this._section_article_stack.connect('notify::transition-running', function () {
             if (this._section_article_stack.transition_running) {
-                this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_ANIMATING);
+                this.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_ANIMATING);
             } else {
-                this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_ANIMATING);
+                this.get_style_context().remove_class(EosKnowledgePrivate.STYLE_CLASS_ANIMATING);
             }
         }.bind(this));
         this._section_article_stack.add(this._section_page);

@@ -1,4 +1,4 @@
-const EosKnowledge = imports.gi.EosKnowledge;
+const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Gtk = imports.gi.Gtk;
 
 const ArticlePage = imports.app.articlePage;
@@ -31,9 +31,9 @@ describe('Article Page A', function () {
     });
 
     it('transitions in new content views', function () {
-        page.switch_in_content_view(article_a, EosKnowledge.LoadingAnimation.NONE);
+        page.switch_in_content_view(article_a, EosKnowledgePrivate.LoadingAnimation.NONE);
         expect(page).toHaveDescendant(article_a);
-        page.switch_in_content_view(article_b, EosKnowledge.LoadingAnimation.NONE);
+        page.switch_in_content_view(article_b, EosKnowledgePrivate.LoadingAnimation.NONE);
         expect(page).toHaveDescendant(article_b);
     });
 
@@ -42,33 +42,33 @@ describe('Article Page A', function () {
         page.connect('new-view-transitioned', function () {
             new_view();
         });
-        page.switch_in_content_view(article_a, EosKnowledge.LoadingAnimation.NONE);
+        page.switch_in_content_view(article_a, EosKnowledgePrivate.LoadingAnimation.NONE);
         expect(new_view).toHaveBeenCalled();
     });
 
     describe('Style class of article page A', function () {
         it('has article page class', function () {
-            expect(page).toHaveCssClass(EosKnowledge.STYLE_CLASS_ARTICLE_PAGE);
+            expect(page).toHaveCssClass(EosKnowledgePrivate.STYLE_CLASS_ARTICLE_PAGE);
         });
         it('has a descendant with title class', function () {
-            expect(page).toHaveDescendantWithCssClass(EosKnowledge.STYLE_CLASS_ARTICLE_PAGE_TITLE);
+            expect(page).toHaveDescendantWithCssClass(EosKnowledgePrivate.STYLE_CLASS_ARTICLE_PAGE_TITLE);
         });
         it('has a descendant with toolbar frame class', function () {
-            expect(page).toHaveDescendantWithCssClass(EosKnowledge.STYLE_CLASS_ARTICLE_PAGE_TOOLBAR_FRAME);
+            expect(page).toHaveDescendantWithCssClass(EosKnowledgePrivate.STYLE_CLASS_ARTICLE_PAGE_TOOLBAR_FRAME);
         });
         it('has a descendant with switcher frame class', function () {
-            expect(page).toHaveDescendantWithCssClass(EosKnowledge.STYLE_CLASS_ARTICLE_PAGE_SWITCHER_FRAME);
+            expect(page).toHaveDescendantWithCssClass(EosKnowledgePrivate.STYLE_CLASS_ARTICLE_PAGE_SWITCHER_FRAME);
         });
         it('has a table of contents with collapsed class when narrow', function () {
             let alloc = page.get_allocation();
             alloc.width = 1;
             alloc.height = 9999;
             page.size_allocate(alloc);
-            expect(page.toc).toHaveCssClass(EosKnowledge.STYLE_CLASS_COLLAPSED);
+            expect(page.toc).toHaveCssClass(EosKnowledgePrivate.STYLE_CLASS_COLLAPSED);
             alloc.width = 9999;
             alloc.height = 9999;
             page.size_allocate(alloc);
-            expect(page.toc).not.toHaveCssClass(EosKnowledge.STYLE_CLASS_COLLAPSED);
+            expect(page.toc).not.toHaveCssClass(EosKnowledgePrivate.STYLE_CLASS_COLLAPSED);
         });
     });
 });

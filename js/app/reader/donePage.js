@@ -1,6 +1,6 @@
 // Copyright 2014 Endless Mobile, Inc.
 
-const EosKnowledge = imports.gi.EosKnowledge;
+const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Gettext = imports.gettext;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
@@ -84,9 +84,9 @@ const DonePage = new Lang.Class({
 
         this.add(this._done_overlay);
 
-        headline.get_style_context().add_class(EosKnowledge.STYLE_CLASS_READER_HEADLINE);
-        bottom_line.get_style_context().add_class(EosKnowledge.STYLE_CLASS_READER_BOTTOM_LINE);
-        this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_READER_DONE_PAGE);
+        headline.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_READER_HEADLINE);
+        bottom_line.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_READER_BOTTOM_LINE);
+        this.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_READER_DONE_PAGE);
     },
 
     get progress_label() {

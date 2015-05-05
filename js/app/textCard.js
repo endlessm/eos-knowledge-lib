@@ -1,6 +1,6 @@
 // Copyright 2014 Endless Mobile, Inc.
 
-const EosKnowledge = imports.gi.EosKnowledge;
+const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Gtk = imports.gi.Gtk;
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
@@ -32,7 +32,7 @@ const TextCard = new Lang.Class({
         params.hexpand = true;
         this.parent(params);
 
-        this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_TEXT_CARD);
+        this.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_TEXT_CARD);
     },
 
     pack_widgets: function (title_label, synopsis_label, image_frame) {

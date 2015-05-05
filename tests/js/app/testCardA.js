@@ -1,4 +1,4 @@
-const EosKnowledge = imports.gi.EosKnowledge;
+const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Gtk = imports.gi.Gtk;
 
 const CardA = imports.app.cardA;
@@ -17,7 +17,7 @@ describe('Card widget', function () {
 
     describe('Style class of card', function () {
         it('has card class', function () {
-            expect(card).toHaveCssClass(EosKnowledge.STYLE_CLASS_CARD_A);
+            expect(card).toHaveCssClass(EosKnowledgePrivate.STYLE_CLASS_CARD_A);
         });
     });
 });

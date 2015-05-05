@@ -1,6 +1,6 @@
 // Copyright 2014 Endless Mobile, Inc.
 
-const EosKnowledge = imports.gi.EosKnowledge;
+const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Format = imports.format;
 const Gettext = imports.gettext;
 const GLib = imports.gi.GLib;
@@ -120,9 +120,9 @@ const LessonCard = new Lang.Class({
     set complete(value) {
         this._complete = value;
         if (this._complete)
-            this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_COMPLETE);
+            this.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_COMPLETE);
         else
-            this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_COMPLETE);
+            this.get_style_context().remove_class(EosKnowledgePrivate.STYLE_CLASS_COMPLETE);
         this._update_banner();
     },
 

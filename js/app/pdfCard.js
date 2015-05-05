@@ -1,6 +1,6 @@
 // Copyright 2014 Endless Mobile, Inc.
 
-const EosKnowledge = imports.gi.EosKnowledge;
+const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Gettext = imports.gettext;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
@@ -43,8 +43,8 @@ const PdfCard = new Lang.Class({
             hexpand: true,
             xalign: 0,
         });
-        pdf_icon.get_style_context().add_class(EosKnowledge.STYLE_CLASS_PDF_CARD_ICON);
-        pdf_label.get_style_context().add_class(EosKnowledge.STYLE_CLASS_PDF_CARD_LABEL);
+        pdf_icon.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_PDF_CARD_ICON);
+        pdf_label.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_PDF_CARD_LABEL);
 
         let grid = new Gtk.Grid();
         grid.attach(title_label, 0, 0, 2, 1);

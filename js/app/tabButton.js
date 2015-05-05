@@ -2,7 +2,7 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
-const EosKnowledge = imports.gi.EosKnowledge;
+const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 
@@ -30,7 +30,7 @@ const TabButton = new Lang.Class({
         props.halign = Gtk.Align.CENTER;
         this.parent(props);
 
-        this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_TAB_BUTTON);
+        this.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_TAB_BUTTON);
     },
 
     set position (v) {

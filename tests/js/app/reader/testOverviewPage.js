@@ -1,4 +1,4 @@
-const EosKnowledge = imports.gi.EosKnowledge;
+const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Gtk = imports.gi.Gtk;
 
 const CssClassMatcher = imports.tests.CssClassMatcher;
@@ -35,11 +35,11 @@ describe('Overview page widget', function () {
 
     it('can set article snippets', function () {
         page.set_article_snippets(snippets);
-        expect(page).toHaveDescendantWithCssClass(EosKnowledge.STYLE_CLASS_READER_ARTICLE_SNIPPET);
+        expect(page).toHaveDescendantWithCssClass(EosKnowledgePrivate.STYLE_CLASS_READER_ARTICLE_SNIPPET);
     });
 
     it('has the overview-page CSS class', function () {
-        expect(page).toHaveCssClass(EosKnowledge.STYLE_CLASS_READER_OVERVIEW_PAGE);
+        expect(page).toHaveCssClass(EosKnowledgePrivate.STYLE_CLASS_READER_OVERVIEW_PAGE);
     });
 
     it('sets the style variant class on article snippets', function () {

@@ -1,6 +1,6 @@
 // Copyright 2014 Endless Mobile, Inc.
 
-const EosKnowledge = imports.gi.EosKnowledge;
+const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
@@ -96,7 +96,7 @@ const OverviewPage = new Lang.Class({
             valign: Gtk.Align.FILL,
             max_width: _MAX_FRAME_WIDTH,
         });
-        snippets_frame.get_style_context().add_class(EosKnowledge.STYLE_CLASS_READER_OVERVIEW_FRAME);
+        snippets_frame.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_READER_OVERVIEW_FRAME);
 
         this._snippets_grid = new SpaceContainer.SpaceContainer({
             orientation: Gtk.Orientation.VERTICAL,
@@ -109,8 +109,8 @@ const OverviewPage = new Lang.Class({
 
         this.parent(props);
 
-        this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_READER_OVERVIEW_PAGE);
-        this._subtitle_label.get_style_context().add_class(EosKnowledge.STYLE_CLASS_READER_APP_SUBTITLE);
+        this.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_READER_OVERVIEW_PAGE);
+        this._subtitle_label.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_READER_APP_SUBTITLE);
 
         grid.attach(this._title_image, 0, 0, 1, 1);
         grid.attach(this._subtitle_label, 0, 1, 1, 1);
@@ -265,9 +265,9 @@ const ArticleSnippet = new Lang.Class({
 
         let context = this.get_style_context();
 
-        context.add_class(EosKnowledge.STYLE_CLASS_READER_ARTICLE_SNIPPET);
-        this._title_label.get_style_context().add_class(EosKnowledge.STYLE_CLASS_READER_TITLE);
-        this._synopsis_label.get_style_context().add_class(EosKnowledge.STYLE_CLASS_READER_SYNOPSIS);
+        context.add_class(EosKnowledgePrivate.STYLE_CLASS_READER_ARTICLE_SNIPPET);
+        this._title_label.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_READER_TITLE);
+        this._synopsis_label.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_READER_SYNOPSIS);
 
         if (this.style_variant >= 0)
             context.add_class('snippet' + this.style_variant);

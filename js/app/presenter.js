@@ -1,4 +1,4 @@
-const EosKnowledge = imports.gi.EosKnowledge;
+const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const EosMetrics = imports.gi.EosMetrics;
 const Endless = imports.gi.Endless;
 const Format = imports.format;
@@ -149,7 +149,7 @@ const Presenter = new Lang.Class({
         this._latest_search_text = '';
         this._target_page_title = '';
         this._history_presenter = new HistoryPresenter.HistoryPresenter({
-            history_model: new EosKnowledge.HistoryModel(),
+            history_model: new EosKnowledgePrivate.HistoryModel(),
             view: this.view,
         });
         this._add_history_object_for_home_page();
@@ -217,13 +217,13 @@ const Presenter = new Lang.Class({
     _on_topbar_back_clicked: function () {
         this._lightbox_presenter.hide_lightbox();
         this._history_presenter.go_back();
-        this._replicate_history_state(EosKnowledge.LoadingAnimationType.BACKWARDS_NAVIGATION);
+        this._replicate_history_state(EosKnowledgePrivate.LoadingAnimationType.BACKWARDS_NAVIGATION);
     },
 
     _on_topbar_forward_clicked: function () {
         this._lightbox_presenter.hide_lightbox();
         this._history_presenter.go_forward();
-        this._replicate_history_state(EosKnowledge.LoadingAnimationType.FORWARDS_NAVIGATION);
+        this._replicate_history_state(EosKnowledgePrivate.LoadingAnimationType.FORWARDS_NAVIGATION);
     },
 
     _replicate_history_state: function (animation_type) {
@@ -448,7 +448,7 @@ const Presenter = new Lang.Class({
             return element.ekn_id === id;
         }, id)[0];
         this._add_history_object_for_article_page(selected_model);
-        this.article_presenter.load_article(selected_model, EosKnowledge.LoadingAnimationType.NONE, function () {
+        this.article_presenter.load_article(selected_model, EosKnowledgePrivate.LoadingAnimationType.NONE, function () {
             this.view.show_article_page();
         }.bind(this));
     },
@@ -468,7 +468,7 @@ const Presenter = new Lang.Class({
                 printerr(err.stack);
             } else {
                 this._add_history_object_for_article_page(model);
-                this.article_presenter.load_article(model, EosKnowledge.LoadingAnimationType.NONE,
+                this.article_presenter.load_article(model, EosKnowledgePrivate.LoadingAnimationType.NONE,
                                                     function () {
                                                         this.view.search_box.text = query;
                                                         this.view.show_article_page();
@@ -479,7 +479,7 @@ const Presenter = new Lang.Class({
     },
 
     _on_article_card_clicked: function (card, model) {
-        let animation_type = this.view.get_visible_page() !== this.view.article_page ? EosKnowledge.LoadingAnimationType.NONE : EosKnowledge.LoadingAnimationType.FORWARDS_NAVIGATION;
+        let animation_type = this.view.get_visible_page() !== this.view.article_page ? EosKnowledgePrivate.LoadingAnimationType.NONE : EosKnowledgePrivate.LoadingAnimationType.FORWARDS_NAVIGATION;
 
         // Grab the title of the latest article card clicked.
         // All subsequent navigations from this article page need to add a visual cue to this card.
@@ -551,7 +551,7 @@ const Presenter = new Lang.Class({
                     this._lightbox_presenter.show_media_object(article_presenter.article_model, model);
                 } else {
                     this._add_history_object_for_article_page(model);
-                    this.article_presenter.load_article(model, EosKnowledge.LoadingAnimationType.FORWARDS_NAVIGATION);
+                    this.article_presenter.load_article(model, EosKnowledgePrivate.LoadingAnimationType.FORWARDS_NAVIGATION);
 
                     if (this._template_type === 'B')
                         this.view.section_page.highlight_card_with_name(model.title, this._latest_article_card_title);

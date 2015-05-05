@@ -1,5 +1,5 @@
 const cairo = imports.gi.cairo;  // note: GI module, not native GJS module
-const EosKnowledge = imports.gi.EosKnowledge;
+const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const EosMetrics = imports.gi.EosMetrics;
 const Format = imports.format;
 const Gdk = imports.gi.Gdk;
@@ -205,7 +205,7 @@ const Presenter = new Lang.Class({
         this._article_models = [];
 
         this._latest_origin_query_obj = new QueryObject.QueryObject();
-        this.history_model = new EosKnowledge.HistoryModel();
+        this.history_model = new EosKnowledgePrivate.HistoryModel();
         this._history_presenter = new HistoryPresenter.HistoryPresenter({
             history_model: this.history_model,
             view: this.view,
@@ -217,12 +217,12 @@ const Presenter = new Lang.Class({
 
         this.view.nav_buttons.connect('back-clicked', function () {
             this._update_history_object(this._current_page - 1);
-            this._go_to_page(this._current_page - 1, EosKnowledge.LoadingAnimationType.BACKWARDS_NAVIGATION);
+            this._go_to_page(this._current_page - 1, EosKnowledgePrivate.LoadingAnimationType.BACKWARDS_NAVIGATION);
         }.bind(this));
         this.view.nav_buttons.connect('forward-clicked', function () {
             let next_page = (this._current_page + 1) % this.view.total_pages;
             this._update_history_object(next_page);
-            this._go_to_page(next_page, EosKnowledge.LoadingAnimationType.FORWARDS_NAVIGATION);
+            this._go_to_page(next_page, EosKnowledgePrivate.LoadingAnimationType.FORWARDS_NAVIGATION);
         }.bind(this));
 
         this.view.connect('notify::total-pages',
@@ -372,7 +372,7 @@ const Presenter = new Lang.Class({
     },
 
     _open_magazine: function () {
-        this._go_to_page(0, EosKnowledge.LoadingAnimationType.NONE);
+        this._go_to_page(0, EosKnowledgePrivate.LoadingAnimationType.NONE);
         this._add_history_object_for_overview_page();
     },
 
@@ -389,7 +389,7 @@ const Presenter = new Lang.Class({
                 // HTML content for the first few pages into the webview.
                 this._load_overview_snippets_from_articles();
                 this._update_history_object(this.settings.bookmark_page);
-                this._go_to_page(this.settings.bookmark_page, EosKnowledge.LoadingAnimationType.NONE);
+                this._go_to_page(this.settings.bookmark_page, EosKnowledgePrivate.LoadingAnimationType.NONE);
             }
             this.view.show_all();
             this.view.present_with_time(timestamp);
@@ -457,7 +457,7 @@ const Presenter = new Lang.Class({
         let page_number = model.article_number -
             this.settings.start_article + 1;
         this.view.search_box.text = query;
-        this._go_to_page(page_number, EosKnowledge.LoadingAnimationType.NONE);
+        this._go_to_page(page_number, EosKnowledgePrivate.LoadingAnimationType.NONE);
         this.view.show_all();
         this.view.present_with_time(timestamp);
     },
@@ -502,7 +502,7 @@ const Presenter = new Lang.Class({
             }
 
             this._load_overview_snippets_from_articles();
-            this._go_to_page(0, EosKnowledge.LoadingAnimationType.NONE);
+            this._go_to_page(0, EosKnowledgePrivate.LoadingAnimationType.NONE);
         }, /* progress callback */ this._append_results.bind(this));
     },
 
@@ -825,7 +825,7 @@ const Presenter = new Lang.Class({
                         this._lightbox_presenter.show_media_object(article_model, clicked_model);
                     } else if (clicked_model instanceof ArticleObjectModel.ArticleObjectModel) {
                         this._add_history_object_for_article_page(clicked_model);
-                        this._go_to_article(clicked_model, EosKnowledge.LoadingAnimationType.NONE);
+                        this._go_to_article(clicked_model, EosKnowledgePrivate.LoadingAnimationType.NONE);
                     }
                 });
 
@@ -973,7 +973,7 @@ const Presenter = new Lang.Class({
             justify: Gtk.Justification.CENTER,
             use_markup: true,
         });
-        err_label.get_style_context().add_class(EosKnowledge.STYLE_CLASS_READER_ERROR_PAGE);
+        err_label.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_READER_ERROR_PAGE);
         err_label.show();
         return err_label;
     },
@@ -1009,7 +1009,7 @@ const Presenter = new Lang.Class({
                 // idx is the article model index so need to add one (account
                 // for overview page) to get the corresponding article page index.
                 this._add_history_object_for_article_page(model);
-                this._go_to_page(ix + 1, EosKnowledge.LoadingAnimationType.FORWARDS_NAVIGATION);
+                this._go_to_page(ix + 1, EosKnowledgePrivate.LoadingAnimationType.FORWARDS_NAVIGATION);
             }.bind(this));
             Utils.set_hand_cursor_on_widget(snippet);
             return snippet;
@@ -1038,7 +1038,7 @@ const Presenter = new Lang.Class({
      */
     _on_topbar_back_clicked: function () {
         this._history_presenter.go_back();
-        this._replicate_history_state(EosKnowledge.LoadingAnimationType.BACKWARDS_NAVIGATION);
+        this._replicate_history_state(EosKnowledgePrivate.LoadingAnimationType.BACKWARDS_NAVIGATION);
     },
 
     /*
@@ -1047,11 +1047,11 @@ const Presenter = new Lang.Class({
      */
     _on_topbar_forward_clicked: function () {
         this._history_presenter.go_forward();
-        this._replicate_history_state(EosKnowledge.LoadingAnimationType.FORWARDS_NAVIGATION);
+        this._replicate_history_state(EosKnowledgePrivate.LoadingAnimationType.FORWARDS_NAVIGATION);
     },
 
     _on_article_card_clicked: function (model) {
-        this._go_to_article(model, EosKnowledge.LoadingAnimationType.NONE);
+        this._go_to_article(model, EosKnowledgePrivate.LoadingAnimationType.NONE);
         this._add_history_object_for_article_page(model);
     },
 
@@ -1092,7 +1092,7 @@ const Presenter = new Lang.Class({
                 return;
             }
 
-            this._go_to_article(model, EosKnowledge.LoadingAnimationType.NONE);
+            this._go_to_article(model, EosKnowledgePrivate.LoadingAnimationType.NONE);
             this._add_history_object_for_article_page(model);
         });
     },

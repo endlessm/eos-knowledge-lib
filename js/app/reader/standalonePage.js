@@ -1,6 +1,6 @@
 // Copyright 2015 Endless Mobile, Inc.
 
-const EosKnowledge = imports.gi.EosKnowledge;
+const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Gettext = imports.gettext;
 const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
@@ -105,7 +105,7 @@ const OpenButton = new Lang.Class({
 
         this.add(frame);
 
-        this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_READER_OPEN_BUTTON);
+        this.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_READER_OPEN_BUTTON);
     },
 
     set label(v) {
@@ -290,7 +290,7 @@ const StandalonePage = new Lang.Class({
         this.archive_label = new ArchiveLabel();
         this.archive_notice = new Gtk.Frame();
         this.archive_notice.add(this.archive_label);
-        this.archive_notice.get_style_context().add_class(EosKnowledge.STYLE_CLASS_READER_ARCHIVE_LABEL);
+        this.archive_notice.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_READER_ARCHIVE_LABEL);
         this.article_page = new ArticlePage.ArticlePage({
            progress_label: this.archive_notice,
         });

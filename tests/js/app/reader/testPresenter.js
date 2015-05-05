@@ -1,4 +1,4 @@
-const EosKnowledge = imports.gi.EosKnowledge;
+const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
@@ -21,7 +21,7 @@ GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.
 const MockApplication = new Lang.Class({
     Name: 'MockApplication',
     Extends: GObject.Object,
-    application_id: 'com.endlessm.EosKnowledge.Reader.testPresenter',
+    application_id: 'com.endlessm.EosKnowledgePrivate.Reader.testPresenter',
 });
 
 const MockUserSettingsModel = new Lang.Class({
@@ -389,15 +389,15 @@ describe('Reader presenter', function () {
 
         it('tells the view to animate forward when going to a later page', function () {
             spyOn(view, 'show_article_page');
-            presenter._go_to_page(1, EosKnowledge.LoadingAnimationType.FORWARDS_NAVIGATION);
-            expect(view.show_article_page).toHaveBeenCalledWith(0, EosKnowledge.LoadingAnimationType.FORWARDS_NAVIGATION);
+            presenter._go_to_page(1, EosKnowledgePrivate.LoadingAnimationType.FORWARDS_NAVIGATION);
+            expect(view.show_article_page).toHaveBeenCalledWith(0, EosKnowledgePrivate.LoadingAnimationType.FORWARDS_NAVIGATION);
         });
 
         it('tells the view to animate backward when going to an earlier page', function () {
-            presenter._go_to_page(3, EosKnowledge.LoadingAnimationType.FORWARDS_NAVIGATION);
+            presenter._go_to_page(3, EosKnowledgePrivate.LoadingAnimationType.FORWARDS_NAVIGATION);
             spyOn(view, 'show_article_page');
-            presenter._go_to_page(1, EosKnowledge.LoadingAnimationType.BACKWARDS_NAVIGATION);
-            expect(view.show_article_page).toHaveBeenCalledWith(0, EosKnowledge.LoadingAnimationType.BACKWARDS_NAVIGATION);
+            presenter._go_to_page(1, EosKnowledgePrivate.LoadingAnimationType.BACKWARDS_NAVIGATION);
+            expect(view.show_article_page).toHaveBeenCalledWith(0, EosKnowledgePrivate.LoadingAnimationType.BACKWARDS_NAVIGATION);
         });
 
         it('shows the debug buttons when told to', function () {

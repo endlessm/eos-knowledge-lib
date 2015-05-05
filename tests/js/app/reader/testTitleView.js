@@ -1,4 +1,4 @@
-const EosKnowledge = imports.gi.EosKnowledge;
+const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 
 const TitleView = imports.app.reader.titleView;
 const CssClassMatcher = imports.tests.CssClassMatcher;
@@ -13,14 +13,14 @@ describe('Title view', function () {
     it('constructs', function () {});
 
     it('has a child with the article-page-title CSS class', function () {
-        expect(view).toHaveDescendantWithCssClass(EosKnowledge.STYLE_CLASS_ARTICLE_PAGE_TITLE);
+        expect(view).toHaveDescendantWithCssClass(EosKnowledgePrivate.STYLE_CLASS_ARTICLE_PAGE_TITLE);
     });
 
     it('has a child with the article-page-attribution CSS class', function () {
-        expect(view).toHaveDescendantWithCssClass(EosKnowledge.STYLE_CLASS_READER_ARTICLE_PAGE_ATTRIBUTION);
+        expect(view).toHaveDescendantWithCssClass(EosKnowledgePrivate.STYLE_CLASS_READER_ARTICLE_PAGE_ATTRIBUTION);
     });
 
     it('has a child with the article-page-ornament CSS class', function () {
-        expect(view).toHaveDescendantWithCssClass(EosKnowledge.STYLE_CLASS_READER_ARTICLE_PAGE_ORNAMENT);
+        expect(view).toHaveDescendantWithCssClass(EosKnowledgePrivate.STYLE_CLASS_READER_ARTICLE_PAGE_ORNAMENT);
     });
 });

@@ -1,4 +1,4 @@
-const EosKnowledge = imports.gi.EosKnowledge;
+const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Gtk = imports.gi.Gtk;
 
 const CssClassMatcher = imports.tests.CssClassMatcher;
@@ -29,11 +29,11 @@ describe('No Search Results page for Template A', function () {
 
     describe('Style class of section page', function () {
         it('has no-search-results-page-a class', function () {
-            expect(no_search_results_page).toHaveCssClass(EosKnowledge.STYLE_CLASS_NO_SEARCH_RESULTS_PAGE_A);
+            expect(no_search_results_page).toHaveCssClass(EosKnowledgePrivate.STYLE_CLASS_NO_SEARCH_RESULTS_PAGE_A);
         });
 
         it('has a descendant with title class', function () {
-            expect(no_search_results_page).toHaveDescendantWithCssClass(EosKnowledge.STYLE_CLASS_NO_SEARCH_RESULTS_PAGE_TITLE);
+            expect(no_search_results_page).toHaveDescendantWithCssClass(EosKnowledgePrivate.STYLE_CLASS_NO_SEARCH_RESULTS_PAGE_TITLE);
         });
     });
 });

@@ -1,4 +1,4 @@
-const EosKnowledge = imports.gi.EosKnowledge;
+const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 
 const WebviewTooltip = imports.app.reader.webviewTooltip;
 const CssClassMatcher = imports.tests.CssClassMatcher;
@@ -14,6 +14,6 @@ describe('Webview tooltip', function () {
     it('constructs', function () {});
 
     it('has the correct CSS class', function () {
-        expect(tooltip).toHaveCssClass(EosKnowledge.STYLE_CLASS_READER_WEBVIEW_TOOLTIP);
+        expect(tooltip).toHaveCssClass(EosKnowledgePrivate.STYLE_CLASS_READER_WEBVIEW_TOOLTIP);
     });
 });

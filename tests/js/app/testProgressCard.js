@@ -1,4 +1,4 @@
-const EosKnowledge = imports.gi.EosKnowledge;
+const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Gtk = imports.gi.Gtk;
 
 const CssClassMatcher = imports.tests.CssClassMatcher;
@@ -25,18 +25,18 @@ describe('Progress card widget', function () {
     describe('CSS style class', function () {
         it('has complete class when completed', function () {
             card.completed_items = 5;
-            expect(card).toHaveCssClass(EosKnowledge.STYLE_CLASS_COMPLETE);
+            expect(card).toHaveCssClass(EosKnowledgePrivate.STYLE_CLASS_COMPLETE);
         });
 
         it('does not have complete class when not completed', function () {
             card.completed_items = 4;
-            expect(card).not.toHaveCssClass(EosKnowledge.STYLE_CLASS_COMPLETE);
+            expect(card).not.toHaveCssClass(EosKnowledgePrivate.STYLE_CLASS_COMPLETE);
         });
 
         it('does not have complete class when there are no items', function () {
             card.completed_items = 5;
             card.total_items = 0;
-            expect(card).not.toHaveCssClass(EosKnowledge.STYLE_CLASS_COMPLETE);
+            expect(card).not.toHaveCssClass(EosKnowledgePrivate.STYLE_CLASS_COMPLETE);
         });
     });
 });

@@ -1,4 +1,4 @@
-const EosKnowledge = imports.gi.EosKnowledge;
+const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Gio = imports.gi.Gio;
 
 const CssClassMatcher = imports.tests.CssClassMatcher;
@@ -42,7 +42,7 @@ describe('Previewer widget', function () {
 
     describe('CSS style context', function () {
         it('has previewer class', function () {
-            expect(previewer).toHaveCssClass(EosKnowledge.STYLE_CLASS_PREVIEWER);
+            expect(previewer).toHaveCssClass(EosKnowledgePrivate.STYLE_CLASS_PREVIEWER);
         });
     });
 });

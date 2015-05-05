@@ -1,7 +1,7 @@
 // Copyright 2014 Endless Mobile, Inc.
 
 const Endless = imports.gi.Endless;
-const EosKnowledge = imports.gi.EosKnowledge;
+const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const GdkPixbuf = imports.gi.GdkPixbuf;
 const GObject = imports.gi.GObject;
 const Gdk = imports.gi.Gdk;
@@ -294,11 +294,11 @@ const Window = new Lang.Class({
         this.page_manager.connect('notify::transition-running', function () {
             let context = this._no_search_results_page.get_style_context();
             if (this.page_manager.transition_running)
-                context.add_class(EosKnowledge.STYLE_CLASS_ANIMATING);
+                context.add_class(EosKnowledgePrivate.STYLE_CLASS_ANIMATING);
             else
-                context.remove_class(EosKnowledge.STYLE_CLASS_ANIMATING);
+                context.remove_class(EosKnowledgePrivate.STYLE_CLASS_ANIMATING);
         }.bind(this));
-        this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_SHOW_HOME_PAGE);
+        this.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_SHOW_HOME_PAGE);
         this.connect('size-allocate', Lang.bind(this, function(widget, allocation) {
             let win_width = allocation.width;
             let win_height = allocation.height;
@@ -418,11 +418,11 @@ const Window = new Lang.Class({
         }
         this.page_manager.visible_child = this._home_page;
 
-        this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_SHOW_CATEGORIES_PAGE);
-        this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_SHOW_SECTION_PAGE);
-        this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_SHOW_ARTICLE_PAGE);
-        this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_SHOW_NO_SEARCH_RESULTS_PAGE);
-        this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_SHOW_HOME_PAGE);
+        this.get_style_context().remove_class(EosKnowledgePrivate.STYLE_CLASS_SHOW_CATEGORIES_PAGE);
+        this.get_style_context().remove_class(EosKnowledgePrivate.STYLE_CLASS_SHOW_SECTION_PAGE);
+        this.get_style_context().remove_class(EosKnowledgePrivate.STYLE_CLASS_SHOW_ARTICLE_PAGE);
+        this.get_style_context().remove_class(EosKnowledgePrivate.STYLE_CLASS_SHOW_NO_SEARCH_RESULTS_PAGE);
+        this.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_SHOW_HOME_PAGE);
     },
 
     /**
@@ -439,11 +439,11 @@ const Window = new Lang.Class({
         }
         this.page_manager.visible_child = this._categories_page;
 
-        this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_SHOW_HOME_PAGE);
-        this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_SHOW_SECTION_PAGE);
-        this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_SHOW_ARTICLE_PAGE);
-        this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_SHOW_NO_SEARCH_RESULTS_PAGE);
-        this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_SHOW_CATEGORIES_PAGE);
+        this.get_style_context().remove_class(EosKnowledgePrivate.STYLE_CLASS_SHOW_HOME_PAGE);
+        this.get_style_context().remove_class(EosKnowledgePrivate.STYLE_CLASS_SHOW_SECTION_PAGE);
+        this.get_style_context().remove_class(EosKnowledgePrivate.STYLE_CLASS_SHOW_ARTICLE_PAGE);
+        this.get_style_context().remove_class(EosKnowledgePrivate.STYLE_CLASS_SHOW_NO_SEARCH_RESULTS_PAGE);
+        this.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_SHOW_CATEGORIES_PAGE);
     },
 
     /**
@@ -461,11 +461,11 @@ const Window = new Lang.Class({
         this._section_article_page.show_article = false;
         this.page_manager.visible_child = this._lightbox;
 
-        this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_SHOW_HOME_PAGE);
-        this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_SHOW_CATEGORIES_PAGE);
-        this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_SHOW_ARTICLE_PAGE);
-        this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_SHOW_NO_SEARCH_RESULTS_PAGE);
-        this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_SHOW_SECTION_PAGE);
+        this.get_style_context().remove_class(EosKnowledgePrivate.STYLE_CLASS_SHOW_HOME_PAGE);
+        this.get_style_context().remove_class(EosKnowledgePrivate.STYLE_CLASS_SHOW_CATEGORIES_PAGE);
+        this.get_style_context().remove_class(EosKnowledgePrivate.STYLE_CLASS_SHOW_ARTICLE_PAGE);
+        this.get_style_context().remove_class(EosKnowledgePrivate.STYLE_CLASS_SHOW_NO_SEARCH_RESULTS_PAGE);
+        this.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_SHOW_SECTION_PAGE);
     },
 
     /**
@@ -478,11 +478,11 @@ const Window = new Lang.Class({
         this._section_article_page.show_article = true;
         this.page_manager.visible_child = this._lightbox;
 
-        this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_SHOW_HOME_PAGE);
-        this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_SHOW_CATEGORIES_PAGE);
-        this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_SHOW_SECTION_PAGE);
-        this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_SHOW_NO_SEARCH_RESULTS_PAGE);
-        this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_SHOW_ARTICLE_PAGE);
+        this.get_style_context().remove_class(EosKnowledgePrivate.STYLE_CLASS_SHOW_HOME_PAGE);
+        this.get_style_context().remove_class(EosKnowledgePrivate.STYLE_CLASS_SHOW_CATEGORIES_PAGE);
+        this.get_style_context().remove_class(EosKnowledgePrivate.STYLE_CLASS_SHOW_SECTION_PAGE);
+        this.get_style_context().remove_class(EosKnowledgePrivate.STYLE_CLASS_SHOW_NO_SEARCH_RESULTS_PAGE);
+        this.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_SHOW_ARTICLE_PAGE);
     },
 
     /**
@@ -502,11 +502,11 @@ const Window = new Lang.Class({
         this._section_article_page.show_article = false;
         this.page_manager.visible_child = this._no_search_results_page;
 
-        this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_SHOW_HOME_PAGE);
-        this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_SHOW_CATEGORIES_PAGE);
-        this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_SHOW_ARTICLE_PAGE);
-        this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_SHOW_SECTION_PAGE);
-        this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_SHOW_NO_SEARCH_RESULTS_PAGE);
+        this.get_style_context().remove_class(EosKnowledgePrivate.STYLE_CLASS_SHOW_HOME_PAGE);
+        this.get_style_context().remove_class(EosKnowledgePrivate.STYLE_CLASS_SHOW_CATEGORIES_PAGE);
+        this.get_style_context().remove_class(EosKnowledgePrivate.STYLE_CLASS_SHOW_ARTICLE_PAGE);
+        this.get_style_context().remove_class(EosKnowledgePrivate.STYLE_CLASS_SHOW_SECTION_PAGE);
+        this.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_SHOW_NO_SEARCH_RESULTS_PAGE);
     },
 
     /**

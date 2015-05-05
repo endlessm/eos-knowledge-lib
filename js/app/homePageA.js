@@ -1,7 +1,7 @@
 // Copyright 2014 Endless Mobile, Inc.
 
 const Endless = imports.gi.Endless;
-const EosKnowledge = imports.gi.EosKnowledge;
+const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Gettext = imports.gettext;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
@@ -44,7 +44,7 @@ const HomePageA = new Lang.Class({
             orientation: Gtk.Orientation.HORIZONTAL,
             spacing: CARD_EXTRA_MARGIN,
         });
-        this._card_container.get_style_context().add_class(EosKnowledge.STYLE_CLASS_CARD_CONTAINER);
+        this._card_container.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_CARD_CONTAINER);
 
         this._button_stack = new Gtk.Stack({
             transition_duration: BUTTON_TRANSITION_DURATION
@@ -75,7 +75,7 @@ const HomePageA = new Lang.Class({
 
         this.parent(props);
 
-        this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_HOME_PAGE_A);
+        this.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_HOME_PAGE_A);
     },
 
     get animating () {

@@ -1,4 +1,3 @@
-const EosKnowledge = imports.gi.EosKnowledge;
 const GLib = imports.gi.GLib;
 const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
@@ -110,7 +109,7 @@ const ArticlePresenter = new GObject.Class({
      * Loads an <ArticleObjectModel> and adds it to the viewing history
      * Parameters:
      *   model - the <ArticleObjectModel> to be loaded
-     *   animation_type - the type of <EosKnowledge.LoadingAnimation> to use
+     *   animation_type - the type of <EosKnowledgePrivate.LoadingAnimation> to use
      *   ready - optional, a function to call when the view is ready for display
      */
     load_article: function (model, animation_type, ready) {

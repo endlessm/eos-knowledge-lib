@@ -1,7 +1,7 @@
 // Copyright 2014 Endless Mobile, Inc.
 
 const Endless = imports.gi.Endless;
-const EosKnowledge = imports.gi.EosKnowledge;
+const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
@@ -30,7 +30,7 @@ const HomePageB = new Lang.Class({
 
         this.parent(props);
 
-        this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_HOME_PAGE_B);
+        this.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_HOME_PAGE_B);
     },
 
     _SEARCH_BOX_WIDTH: 350,
@@ -41,7 +41,7 @@ const HomePageB = new Lang.Class({
         search_box.width_request = this._SEARCH_BOX_WIDTH;
 
         let card_container_frame = new Gtk.Frame();
-        card_container_frame.get_style_context().add_class(EosKnowledge.STYLE_CLASS_CARD_CONTAINER);
+        card_container_frame.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_CARD_CONTAINER);
         card_container_frame.add(this._card_container);
 
         this.row_homogeneous = true;

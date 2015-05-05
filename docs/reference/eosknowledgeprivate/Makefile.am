@@ -1,7 +1,7 @@
 ## Process this file with automake to produce Makefile.in
 
 # The name of the module, e.g. 'glib'.
-DOC_MODULE=eosknowledge
+DOC_MODULE=eosknowledgeprivate
 
 # Uncomment for versioned docs and specify the version of the module, e.g. '2'.
 DOC_MODULE_VERSION=@EKN_API_VERSION@
@@ -13,7 +13,7 @@ DOC_MAIN_SGML_FILE=$(DOC_MODULE)-docs.xml
 # gtk-doc will search all .c and .h files beneath these paths
 # for inline comments documenting functions and macros.
 # e.g. DOC_SOURCE_DIR=$(top_srcdir)/gtk $(top_srcdir)/gdk
-DOC_SOURCE_DIR=$(top_srcdir)/eosknowledge
+DOC_SOURCE_DIR=$(top_srcdir)/eosknowledgeprivate
 
 # Extra options to pass to gtkdoc-scangobj. Not normally needed.
 SCANGOBJ_OPTIONS=
@@ -39,8 +39,8 @@ FIXXREF_OPTIONS=
 
 # Used for dependencies. The docs will be rebuilt if any of these change.
 BUILT_HFILES=
-HFILE_GLOB=$(top_srcdir)/eosknowledge/*.h
-CFILE_GLOB=$(top_srcdir)/eosknowledge/*.c
+HFILE_GLOB=$(top_srcdir)/eosknowledgeprivate/*.h
+CFILE_GLOB=$(top_srcdir)/eosknowledgeprivate/*.c
 
 # Extra header to include when scanning, which are not under DOC_SOURCE_DIR
 # e.g. EXTRA_HFILES=$(top_srcdir)/contrib/extra.h
@@ -70,7 +70,7 @@ expand_content_files=
 # Only needed if you are using gtkdoc-scangobj to dynamically query widget
 # signals and properties.
 GTKDOC_CFLAGS=-I$(top_srcdir) -I$(top_builddir) $(EOS_KNOWLEDGE_CFLAGS)
-GTKDOC_LIBS=$(top_builddir)/libeosknowledge-@EKN_API_VERSION@.la $(EOS_KNOWLEDGE_LIBS)
+GTKDOC_LIBS=$(top_builddir)/libeosknowledgeprivate-@EKN_API_VERSION@.la $(EOS_KNOWLEDGE_LIBS)
 
 # This includes the standard gtk-doc make rules, copied by gtkdocize.
 include $(top_srcdir)/gtk-doc.make

@@ -1,4 +1,4 @@
-const EosKnowledge = imports.gi.EosKnowledge;
+const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
@@ -42,7 +42,7 @@ const Previewer = new Lang.Class({
         });
         this.parent(props);
 
-        this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_PREVIEWER);
+        this.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_PREVIEWER);
     },
 
     set_content: function (stream, content_type) {

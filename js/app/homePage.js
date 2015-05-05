@@ -1,7 +1,7 @@
 // Copyright 2014 Endless Mobile, Inc.
 
 const Endless = imports.gi.Endless;
-const EosKnowledge = imports.gi.EosKnowledge;
+const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const GdkPixbuf = imports.gi.GdkPixbuf;
 const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
@@ -112,9 +112,9 @@ const HomePage = new Lang.Class({
 
         this.parent(props);
 
-        this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_HOME_PAGE);
-        this._title_image.get_style_context().add_class(EosKnowledge.STYLE_CLASS_HOME_PAGE_TITLE_IMAGE);
-        this._search_box.get_style_context().add_class(EosKnowledge.STYLE_CLASS_SEARCH_BOX);
+        this.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_HOME_PAGE);
+        this._title_image.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_HOME_PAGE_TITLE_IMAGE);
+        this._search_box.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_SEARCH_BOX);
 
         this.pack_widgets(this._title_image, this._search_box);
         this.show_all();

@@ -1,5 +1,4 @@
 const Cairo = imports.gi.cairo;  // note GI module, not native module
-const EosKnowledge = imports.gi.EosKnowledge;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;

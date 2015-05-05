@@ -1,7 +1,7 @@
 // Copyright 2014 Endless Mobile, Inc.
 
 const Endless = imports.gi.Endless;
-const EosKnowledge = imports.gi.EosKnowledge;
+const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
@@ -23,8 +23,8 @@ const TableOfContents = imports.app.tableOfContents;
  * This widget will handle toggling the <TableOfContents.collapsed> parameter
  * of the table of contents depending on available space. It provides two
  * internal frames with style classes
- * EosKnowledge.STYLE_CLASS_ARTICLE_PAGE_TOOLBAR_FRAME and
- * EosKnowledge.STYLE_CLASS_ARTICLE_PAGE_SWITCHER_FRAME for theming purposes.
+ * EosKnowledgePrivate.STYLE_CLASS_ARTICLE_PAGE_TOOLBAR_FRAME and
+ * EosKnowledgePrivate.STYLE_CLASS_ARTICLE_PAGE_SWITCHER_FRAME for theming purposes.
  * The toolbar frame surrounds the <title> and <toc> on the right. The
  * switcher frame surrounds the <switcher> on the left.
  */
@@ -171,13 +171,13 @@ const ArticlePage = new Lang.Class({
         this.add(this._switcher_frame);
 
         this.show_all();
-        this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_ARTICLE_PAGE);
-        this._title_label.get_style_context().add_class(EosKnowledge.STYLE_CLASS_ARTICLE_PAGE_TITLE);
+        this.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_ARTICLE_PAGE);
+        this._title_label.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_ARTICLE_PAGE_TITLE);
         let top_label_context = this._top_title_label.get_style_context();
-        top_label_context.add_class(EosKnowledge.STYLE_CLASS_ARTICLE_PAGE_TITLE);
-        top_label_context.add_class(EosKnowledge.STYLE_CLASS_COLLAPSED);
-        this._toolbar_frame.get_style_context().add_class(EosKnowledge.STYLE_CLASS_ARTICLE_PAGE_TOOLBAR_FRAME);
-        this._switcher_frame.get_style_context().add_class(EosKnowledge.STYLE_CLASS_ARTICLE_PAGE_SWITCHER_FRAME);
+        top_label_context.add_class(EosKnowledgePrivate.STYLE_CLASS_ARTICLE_PAGE_TITLE);
+        top_label_context.add_class(EosKnowledgePrivate.STYLE_CLASS_COLLAPSED);
+        this._toolbar_frame.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_ARTICLE_PAGE_TOOLBAR_FRAME);
+        this._switcher_frame.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_ARTICLE_PAGE_SWITCHER_FRAME);
     },
 
     set title (v) {
@@ -200,11 +200,11 @@ const ArticlePage = new Lang.Class({
         if (this._has_margins === v)
             return;
         if (v) {
-            this._switcher_frame.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_NO_MARGINS);
-            this._toolbar_frame.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_NO_MARGINS);
+            this._switcher_frame.get_style_context().remove_class(EosKnowledgePrivate.STYLE_CLASS_NO_MARGINS);
+            this._toolbar_frame.get_style_context().remove_class(EosKnowledgePrivate.STYLE_CLASS_NO_MARGINS);
         } else {
-            this._switcher_frame.get_style_context().add_class(EosKnowledge.STYLE_CLASS_NO_MARGINS);
-            this._toolbar_frame.get_style_context().add_class(EosKnowledge.STYLE_CLASS_NO_MARGINS);
+            this._switcher_frame.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_NO_MARGINS);
+            this._toolbar_frame.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_NO_MARGINS);
         }
         this._has_margins = v;
         this.notify('has-margins');
@@ -217,14 +217,14 @@ const ArticlePage = new Lang.Class({
     /**
      * Method: switch_in_content_view
      *
-     * Takes a view widget and a <EosKnowledge.LoadingAnimation>. Will
+     * Takes a view widget and a <EosKnowledgePrivate.LoadingAnimation>. Will
      * animate in the new content view according to the type of loading
      * animation specified.
      */
     switch_in_content_view: function (view, animation_type) {
-        if (animation_type === EosKnowledge.LoadingAnimation.FORWARDS_NAVIGATION) {
+        if (animation_type === EosKnowledgePrivate.LoadingAnimation.FORWARDS_NAVIGATION) {
             this._switcher.transition_type = Gtk.StackTransitionType.OVER_LEFT;
-        } else if (animation_type === EosKnowledge.LoadingAnimation.BACKWARDS_NAVIGATION) {
+        } else if (animation_type === EosKnowledgePrivate.LoadingAnimation.BACKWARDS_NAVIGATION) {
             this._switcher.transition_type = Gtk.StackTransitionType.UNDER_RIGHT;
         } else {
             this._switcher.transition_type = Gtk.StackTransitionType.NONE;
@@ -278,13 +278,13 @@ const ArticlePage = new Lang.Class({
         // Decide if toolbar should be collapsed
         if (alloc.width < this.COLLAPSE_TOOLBAR_WIDTH) {
             if (!this._toc.collapsed) {
-                this._toolbar_frame.get_style_context().add_class(EosKnowledge.STYLE_CLASS_COLLAPSED);
+                this._toolbar_frame.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_COLLAPSED);
                 this._toc.collapsed = true;
                 this._title_label.visible = false;
             }
         } else {
             if (this._toc.collapsed) {
-                this._toolbar_frame.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_COLLAPSED);
+                this._toolbar_frame.get_style_context().remove_class(EosKnowledgePrivate.STYLE_CLASS_COLLAPSED);
                 this._toc.collapsed = false;
             }
             // Needs to be outside the if block because title_label could have been made invisible by

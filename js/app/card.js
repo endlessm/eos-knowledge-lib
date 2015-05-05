@@ -1,6 +1,6 @@
 // Copyright 2014 Endless Mobile, Inc.
 
-const EosKnowledge = imports.gi.EosKnowledge;
+const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Gtk = imports.gi.Gtk;
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
@@ -98,10 +98,10 @@ const Card = new Lang.Class({
 
         this.setSensitiveChildren([this._title_label, this._synopsis_label, this._image_frame]);
 
-        this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_CARD);
-        this._title_label.get_style_context().add_class(EosKnowledge.STYLE_CLASS_CARD_TITLE);
-        this._synopsis_label.get_style_context().add_class(EosKnowledge.STYLE_CLASS_CARD_SYNOPSIS);
-        this._image_frame.get_style_context().add_class(EosKnowledge.STYLE_CLASS_THUMBNAIL);
+        this.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_CARD);
+        this._title_label.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_CARD_TITLE);
+        this._synopsis_label.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_CARD_SYNOPSIS);
+        this._image_frame.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_THUMBNAIL);
         if (this.fade_in) {
             // FIXME: for some reason even if initial opacity = 0 in css, the
             // opacity will start at 1. Triggering a 'notify' on opacity seems

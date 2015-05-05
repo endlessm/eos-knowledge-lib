@@ -1,4 +1,4 @@
-const EosKnowledge = imports.gi.EosKnowledge;
+const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 
@@ -37,7 +37,7 @@ describe('History Presenter', function () {
 
     beforeEach(function () {
         view = new MockView();
-        history_model = new EosKnowledge.HistoryModel();
+        history_model = new EosKnowledgePrivate.HistoryModel();
 
         history_presenter = new HistoryPresenter.HistoryPresenter({
             history_model: history_model,

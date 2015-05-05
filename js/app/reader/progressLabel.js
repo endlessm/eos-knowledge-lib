@@ -1,6 +1,6 @@
 // Copyright 2014 Endless Mobile, Inc.
 
-const EosKnowledge = imports.gi.EosKnowledge;
+const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Format = imports.format;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
@@ -54,7 +54,7 @@ const ProgressLabel = new Lang.Class({
         props.use_markup = true;
         this.parent(props);
 
-        this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_READER_PROGRESS_LABEL);
+        this.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_READER_PROGRESS_LABEL);
     },
 
     get current_page() {

@@ -33,7 +33,7 @@ m4_define([_EKN_VERSION_MACRO],
 AC_INIT([Endless OS Knowledge GUI Library], [_EKN_VERSION_MACRO],
     [], [eos-knowledge-lib], [http://endlessm.com])
 # Verify that the source directory can be found
-AC_CONFIG_SRCDIR([eosknowledge/eosknowledge.h])
+AC_CONFIG_SRCDIR([eosknowledgeprivate/eosknowledge.h])
 # Initialize Automake: enable all warnings and do not insist on GNU standards
 # no-portability suppresses warnings about syntax specific to GNU make
 # parallel-tests specifies that we use the new parallel-running test harness.
@@ -226,7 +226,7 @@ fi
 
 # Required libraries
 # ------------------
-PKG_CHECK_MODULES([EOS_KNOWLEDGE], [
+PKG_CHECK_MODULES([EOS_KNOWLEDGE_PRIVATE], [
     $EKN_REQUIRED_MODULES
     $EKN_REQUIRED_MODULES_PRIVATE])
 PKG_CHECK_MODULES([TOOLTIP_PLUGIN], [
@@ -261,8 +261,8 @@ dnl List files here that the configure script should output
 AC_CONFIG_FILES([
     Makefile
     po/Makefile.in
-    docs/reference/eosknowledge/Makefile
-    docs/reference/eosknowledge/version.xml
+    docs/reference/eosknowledgeprivate/Makefile
+    docs/reference/eosknowledgeprivate/version.xml
     js/app/config.js.in
     config/compass.rb
     $EKN_API_NAME.pc

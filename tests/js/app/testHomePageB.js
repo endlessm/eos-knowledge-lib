@@ -1,4 +1,4 @@
-const EosKnowledge = imports.gi.EosKnowledge;
+const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 
 const Card = imports.app.card;
 const CssClassMatcher = imports.tests.CssClassMatcher;
@@ -98,10 +98,10 @@ describe('Home page for Template B', function () {
 
     describe('CSS style context', function () {
         it('has home page B class', function () {
-            expect(home_page).toHaveCssClass(EosKnowledge.STYLE_CLASS_HOME_PAGE_B);
+            expect(home_page).toHaveCssClass(EosKnowledgePrivate.STYLE_CLASS_HOME_PAGE_B);
         });
         it('has a descendant with container class', function () {
-            expect(home_page).toHaveDescendantWithCssClass(EosKnowledge.STYLE_CLASS_CARD_CONTAINER);
+            expect(home_page).toHaveDescendantWithCssClass(EosKnowledgePrivate.STYLE_CLASS_CARD_CONTAINER);
         });
     });
 });

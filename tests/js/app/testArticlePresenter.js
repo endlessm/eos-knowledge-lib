@@ -1,4 +1,4 @@
-const EosKnowledge = imports.gi.EosKnowledge;
+const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
@@ -55,7 +55,7 @@ describe('Article Presenter', function () {
         presenter = new ArticlePresenter.ArticlePresenter({
             article_view: view,
         });
-        presenter.load_article(articleObject, EosKnowledge.LoadingAnimationType.NONE);
+        presenter.load_article(articleObject, EosKnowledgePrivate.LoadingAnimationType.NONE);
     });
 
     it('can be constructed', function () {});

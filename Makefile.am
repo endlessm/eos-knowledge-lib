@@ -9,7 +9,7 @@
 
 # Subdirectories where we also want to run make
 # (Make sure that the library is built before the docs)
-SUBDIRS = po . docs/reference/eosknowledge
+SUBDIRS = po . docs/reference/eosknowledgeprivate
 
 # Our Autoconf macros are kept in the m4/ directory
 ACLOCAL_AMFLAGS = -I m4
@@ -21,7 +21,6 @@ CLEANFILES =
 dist_noinst_DATA =
 DISTCLEANFILES =
 EXTRA_DIST = README.md
-lib_LTLIBRARIES =
 pkglib_LTLIBRARIES =
 
 # Compiler flags
@@ -92,18 +91,18 @@ DUMMY=gresourcedeps
 include $(DUMMY)
 
 # Generated sources for GResource file
-eosknowledge/ekn-resource-private.h: data/eos-knowledge-library.gresource.xml gresourcedeps $(resource_files)
+eosknowledgeprivate/ekn-resource-private.h: data/eos-knowledge-library.gresource.xml gresourcedeps $(resource_files)
 	$(AM_V_GEN) $(MKDIR_P) $(builddir)/data $(dir $@) && \
 	$(GLIB_COMPILE_RESOURCES) --target=$@ --sourcedir=$(srcdir)/data --sourcedir=$(builddir)/data \
 		--generate-header --internal $<
-eosknowledge/ekn-resource.c: data/eos-knowledge-library.gresource.xml gresourcedeps $(resource_files)
+eosknowledgeprivate/ekn-resource.c: data/eos-knowledge-library.gresource.xml gresourcedeps $(resource_files)
 	$(AM_V_GEN) $(MKDIR_P) $(builddir)/data $(dir $@) && \
 	$(GLIB_COMPILE_RESOURCES) --target=$@ --sourcedir=$(srcdir)/data --sourcedir=$(builddir)/data \
 		--generate-source --internal $<
 
 BUILT_SOURCES += \
-	eosknowledge/ekn-resource-private.h \
-	eosknowledge/ekn-resource.c \
+	eosknowledgeprivate/ekn-resource-private.h \
+	eosknowledgeprivate/ekn-resource.c \
 	$(NULL)
 EXTRA_DIST += \
 	$(filter-out $(scss_targets),$(resource_files)) \
@@ -114,62 +113,54 @@ CLEANFILES += \
 	$(BUILT_SOURCES) \
 	$(NULL)
 
-eosknowledge_public_installed_headers = eosknowledge/eosknowledge.h
-
-eosknowledge_private_installed_headers = \
-	eosknowledge/ekn-enums.h \
-	eosknowledge/ekn-hello.h \
-	eosknowledge/ekn-history-item-model.h \
-	eosknowledge/ekn-history-model.h \
-	eosknowledge/ekn-macros.h \
-	eosknowledge/ekn-types.h \
-	eosknowledge/ekn-util.h \
-	eosknowledge/ekn-version.h \
+eosknowledgeprivate_headers = \
+	eosknowledgeprivate/eosknowledge.h \
+	eosknowledgeprivate/ekn-enums.h \
+	eosknowledgeprivate/ekn-hello.h \
+	eosknowledgeprivate/ekn-history-item-model.h \
+	eosknowledgeprivate/ekn-history-model.h \
+	eosknowledgeprivate/ekn-macros.h \
+	eosknowledgeprivate/ekn-types.h \
+	eosknowledgeprivate/ekn-util.h \
+	eosknowledgeprivate/ekn-version.h \
 	$(NULL)
 
-eosknowledge_library_sources = \
-	eosknowledge/ekn-hello.c \
-	eosknowledge/ekn-history-item-model.c \
-	eosknowledge/ekn-history-model.c \
-	eosknowledge/ekn-init.c eosknowledge/ekn-init-private.h \
-	eosknowledge/ekn-tree-node.c \
-	eosknowledge/ekn-loading-animation.c \
-	eosknowledge/ekn-util.c \
+eosknowledgeprivate_sources = \
+	eosknowledgeprivate/ekn-hello.c \
+	eosknowledgeprivate/ekn-history-item-model.c \
+	eosknowledgeprivate/ekn-history-model.c \
+	eosknowledgeprivate/ekn-init.c eosknowledgeprivate/ekn-init-private.h \
+	eosknowledgeprivate/ekn-tree-node.c \
+	eosknowledgeprivate/ekn-loading-animation.c \
+	eosknowledgeprivate/ekn-util.c \
 	$(NULL)
 
 # Endless Knowledge Apps GUI library
-lib_LTLIBRARIES += libeosknowledge-@EKN_API_VERSION@.la
-libeosknowledge_@EKN_API_VERSION@_la_SOURCES = \
-	$(eosknowledge_public_installed_headers) \
-	$(eosknowledge_private_installed_headers) \
-	$(eosknowledge_library_sources) \
+pkglib_LTLIBRARIES += libeosknowledgeprivate-@EKN_API_VERSION@.la
+libeosknowledgeprivate_@EKN_API_VERSION@_la_SOURCES = \
+	$(eosknowledgeprivate_headers) \
+	$(eosknowledgeprivate_sources) \
 	$(NULL)
-nodist_libeosknowledge_@EKN_API_VERSION@_la_SOURCES = \
+nodist_libeosknowledgeprivate_@EKN_API_VERSION@_la_SOURCES = \
 	$(BUILT_SOURCES) \
 	$(NULL)
 # Defining G_LOG_DOMAIN allows you to run any program with
 # G_MESSAGES_DEBUG=EosKnowledgeLibrary ./myprogram
 # and turn on debug messages
-libeosknowledge_@EKN_API_VERSION@_la_CPPFLAGS = \
-	@EOS_KNOWLEDGE_CFLAGS@ \
+libeosknowledgeprivate_@EKN_API_VERSION@_la_CPPFLAGS = \
+	@EOS_KNOWLEDGE_PRIVATE_CFLAGS@ \
 	@EOS_C_COVERAGE_CFLAGS@ \
 	-DG_LOG_DOMAIN=\"EosKnowledgeLibrary\" \
 	-DCOMPILING_EOS_KNOWLEDGE \
 	-DDATADIR=\""$(datadir)"\" \
 	$(NULL)
-libeosknowledge_@EKN_API_VERSION@_la_CFLAGS = $(AM_CFLAGS)
-libeosknowledge_@EKN_API_VERSION@_la_LIBADD = @EOS_KNOWLEDGE_LIBS@
-libeosknowledge_@EKN_API_VERSION@_la_LDFLAGS = \
+libeosknowledgeprivate_@EKN_API_VERSION@_la_CFLAGS = $(AM_CFLAGS)
+libeosknowledgeprivate_@EKN_API_VERSION@_la_LIBADD = @EOS_KNOWLEDGE_PRIVATE_LIBS@
+libeosknowledgeprivate_@EKN_API_VERSION@_la_LDFLAGS = \
 	@EOS_C_COVERAGE_LDFLAGS@ \
 	-version-info @EKN_LT_VERSION_INFO@ \
 	-export-symbols-regex "^ekn_" \
-	$(NULL)
-
-# Public header files
-publicincludedir = $(includedir)/@EKN_API_NAME@
-nobase_publicinclude_HEADERS = \
-	$(eosknowledge_public_installed_headers) \
-	$(eosknowledge_private_installed_headers) \
+	-avoid-version \
 	$(NULL)
 
 # Pkg-config file
@@ -180,14 +171,15 @@ EXTRA_DIST += @EKN_API_NAME@.pc.in
 
 # # # SEARCH LIBRARY # # #
 
-lib_LTLIBRARIES += libeosknowledgesearchprivate.la
+pkglib_LTLIBRARIES += libeosknowledgesearchprivate.la
 libeosknowledgesearchprivate_la_SOURCES = \
         eosknowledgesearchprivate/ekns-subtree-dispatcher.c \
         eosknowledgesearchprivate/ekns-subtree-dispatcher.h
 
-libeosknowledgesearchprivate_la_CPPFLAGS = @EOS_KNOWLEDGE_CFLAGS@
+libeosknowledgesearchprivate_la_CPPFLAGS = @EOS_KNOWLEDGE_PRIVATE_CFLAGS@
 libeosknowledgesearchprivate_la_CFLAGS = $(AM_CFLAGS)
-libeosknowledgesearchprivate_la_LIBADD = @EOS_KNOWLEDGE_LIBS@
+libeosknowledgesearchprivate_la_LIBADD = @EOS_KNOWLEDGE_PRIVATE_LIBS@
+libeosknowledgesearchprivate_la_LDFLAGS = -avoid-version
 
 # # # WEBKIT EXTENSION LIBRARIES # # #
 
@@ -286,9 +278,8 @@ jsdir = $(pkgdatadir)/js
 nobase_dist_pkgdata_DATA = $(js_files)
 
 # Overrides for the C library
-gjsdir = $(datadir)/gjs-1.0
-overridesdir = $(gjsdir)/overrides
-dist_overrides_DATA = overrides/EosKnowledge.js
+overridesdir = $(jsdir)/overrides
+dist_overrides_DATA = overrides/EosKnowledgePrivate.js
 
 # # # SUBSTITUTED FILES # # #
 # These files need to be filled in with make variables
@@ -297,6 +288,7 @@ subst = $(SED) \
 	-e 's,%datadir%,$(datadir),g' \
 	-e 's,%jsdir%,$(jsdir),g' \
 	-e 's,%pkglibdir%,$(pkglibdir),g' \
+	-e 's,%typelibdir%,$(typelibdir),g' \
 	-e 's,%webextensiondir%,$(webextensiondir),g' \
 	$(NULL)
 
@@ -321,9 +313,9 @@ bin_SCRIPTS += \
 # # # TESTS # # #
 
 javascript_tests = \
-	tests/eosknowledge/testHello.js \
-	tests/eosknowledge/testHistoryItemModel.js \
-	tests/eosknowledge/testHistoryModel.js \
+	tests/eosknowledgeprivate/testHello.js \
+	tests/eosknowledgeprivate/testHistoryItemModel.js \
+	tests/eosknowledgeprivate/testHistoryModel.js \
 	tests/js/app/reader/testArticlePage.js \
 	tests/js/app/reader/testCard.js \
 	tests/js/app/reader/testDonePage.js \
@@ -466,26 +458,26 @@ EXTRA_DIST += data/com.endlessm.EknSearchProvider.service.in
 
 if ENABLE_GIR_DOC
 
-docs/reference/eosknowledge-js/index.page: $(INTROSPECTION_GIRS)
+docs/reference/eosknowledgeprivate-js/index.page: $(INTROSPECTION_GIRS)
 	$(MKDIR_P) $(@D)
 	$(GIRDOCTOOL) -o $(@D) -l gjs $<
 
-docs/reference/eosknowledge-js/html/index.html: docs/reference/eosknowledge-js/index.page
+docs/reference/eosknowledgeprivate-js/html/index.html: docs/reference/eosknowledgeprivate-js/index.page
 	$(MKDIR_P) $(@D)
 	$(YELPBUILD) html -o $(@D) $(<D)
 
-dist_noinst_DATA += docs/reference/eosknowledge-js/html/index.html
+dist_noinst_DATA += docs/reference/eosknowledgeprivate-js/html/index.html
 
 distclean-local::
-	@rm -rf docs/reference/eosknowledge-js/html
+	@rm -rf docs/reference/eosknowledgeprivate-js/html
 
 dist-hook::
-	@$(MKDIR_P) $(distdir)/docs/reference/eosknowledge-js/html
-	@cp -r docs/reference/eosknowledge-js/html/*.html $(distdir)/docs/reference/eosknowledge-js/html
-	@cp -r docs/reference/eosknowledge-js/html/*.css $(distdir)/docs/reference/eosknowledge-js/html
-	@cp -r docs/reference/eosknowledge-js/html/*.js $(distdir)/docs/reference/eosknowledge-js/html
+	@$(MKDIR_P) $(distdir)/docs/reference/eosknowledgeprivate-js/html
+	@cp -r docs/reference/eosknowledgeprivate-js/html/*.html $(distdir)/docs/reference/eosknowledgeprivate-js/html
+	@cp -r docs/reference/eosknowledgeprivate-js/html/*.css $(distdir)/docs/reference/eosknowledgeprivate-js/html
+	@cp -r docs/reference/eosknowledgeprivate-js/html/*.js $(distdir)/docs/reference/eosknowledgeprivate-js/html
 
-CLEANFILES += docs/reference/eosknowledge-js/*.page
+CLEANFILES += docs/reference/eosknowledgeprivate-js/*.page
 
 endif
 
@@ -537,18 +529,17 @@ endif
 
 -include $(INTROSPECTION_MAKEFILE)
 INTROSPECTION_GIRS =
-INTROSPECTION_SCANNER_ARGS = --add-include-path=$(srcdir) --warn-all $(EOS_KNOWLEDGE_CFLAGS)
+INTROSPECTION_SCANNER_ARGS = --add-include-path=$(srcdir) --warn-all $(EOS_KNOWLEDGE_PRIVATE_CFLAGS)
 INTROSPECTION_COMPILER_ARGS = --includedir=$(srcdir)
 
 if HAVE_INTROSPECTION
 introspection_sources = \
-	$(filter-out %-private.h, $(eosknowledge_library_sources)) \
-	$(eosknowledge_public_installed_headers) \
-	$(eosknowledge_private_installed_headers) \
+	$(filter-out %-private.h, $(eosknowledgeprivate_sources)) \
+	$(eosknowledgeprivate_headers) \
 	$(NULL)
 
-EosKnowledge-@EKN_API_VERSION@.gir: libeosknowledge-@EKN_API_VERSION@.la Makefile
-EosKnowledge_@EKN_API_VERSION@_gir_INCLUDES = \
+EosKnowledgePrivate-@EKN_API_VERSION@.gir: libeosknowledgeprivate-@EKN_API_VERSION@.la Makefile
+EosKnowledgePrivate_@EKN_API_VERSION@_gir_INCLUDES = \
 	Endless-0 \
 	Gio-2.0 \
 	GLib-2.0 \
@@ -556,15 +547,15 @@ EosKnowledge_@EKN_API_VERSION@_gir_INCLUDES = \
 	WebKit2-4.0 \
 	Gtk-3.0 \
 	$(NULL)
-EosKnowledge_@EKN_API_VERSION@_gir_SCANNERFLAGS = \
+EosKnowledgePrivate_@EKN_API_VERSION@_gir_SCANNERFLAGS = \
 	--identifier-prefix=Ekn \
 	--symbol-prefix=ekn \
 	-DCOMPILING_EOS_KNOWLEDGE \
 	$(NULL)
-EosKnowledge_@EKN_API_VERSION@_gir_LIBS = libeosknowledge-@EKN_API_VERSION@.la
-EosKnowledge_@EKN_API_VERSION@_gir_FILES = $(introspection_sources)
-EosKnowledge_@EKN_API_VERSION@_gir_EXPORT_PACKAGES = @EKN_API_NAME@
-INTROSPECTION_GIRS += EosKnowledge-@EKN_API_VERSION@.gir
+EosKnowledgePrivate_@EKN_API_VERSION@_gir_LIBS = libeosknowledgeprivate-@EKN_API_VERSION@.la
+EosKnowledgePrivate_@EKN_API_VERSION@_gir_FILES = $(introspection_sources)
+EosKnowledgePrivate_@EKN_API_VERSION@_gir_EXPORT_PACKAGES = @EKN_API_NAME@
+INTROSPECTION_GIRS += EosKnowledgePrivate-@EKN_API_VERSION@.gir
 
 EosKnowledgeSearchPrivate-1.0.gir: libeosknowledgesearchprivate.la
 EosKnowledgeSearchPrivate_1_0_gir_INCLUDES = Gio-2.0
@@ -573,10 +564,10 @@ EosKnowledgeSearchPrivate_1_0_gir_LIBS = libeosknowledgesearchprivate.la
 EosKnowledgeSearchPrivate_1_0_gir_FILES = $(libeosknowledgesearchprivate_la_SOURCES)
 INTROSPECTION_GIRS += EosKnowledgeSearchPrivate-1.0.gir
 
-girdir = $(datadir)/gir-1.0
+girdir = $(pkgdatadir)/gir-1.0
 gir_DATA = $(INTROSPECTION_GIRS)
 
-typelibdir = $(libdir)/girepository-1.0
+typelibdir = $(pkglibdir)/girepository-1.0
 typelib_DATA = $(INTROSPECTION_GIRS:.gir=.typelib)
 
 CLEANFILES += $(gir_DATA) $(typelib_DATA)

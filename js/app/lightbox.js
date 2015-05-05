@@ -1,6 +1,6 @@
 const Cairo = imports.gi.cairo;
 const Endless = imports.gi.Endless;
-const EosKnowledge = imports.gi.EosKnowledge;
+const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
@@ -17,7 +17,7 @@ GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.
  * Class: Lightbox
  * Show widget in a lightbox above other content
  *
- * EosKnowledge.Lightbox is a container which allows displaying a
+ * EosKnowledgePrivate.Lightbox is a container which allows displaying a
  * <content-widget> above some other base content. The base content
  * should be added with lightbox.add().
  *
@@ -160,7 +160,7 @@ const Lightbox = new Lang.Class({
                 this.emit('navigation-next-clicked', this._media_object);
         }));
 
-        this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_LIGHTBOX);
+        this.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_LIGHTBOX);
         this.bind_property('transition-duration',
                            this._revealer, 'transition-duration',
                            GObject.BindingFlags.SYNC_CREATE);
@@ -222,7 +222,7 @@ const Lightbox = new Lang.Class({
             this._lightbox_container.remove_info_widget(this._infobox_widget);
         this._infobox_widget = v;
         if (this._infobox_widget !== null) {
-            this._infobox_widget.get_style_context().add_class(EosKnowledge.STYLE_CLASS_INFOBOX);
+            this._infobox_widget.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_INFOBOX);
             this._lightbox_container.add_info_widget(this._infobox_widget);
         }
         this.notify('infobox-widget');
@@ -347,7 +347,7 @@ const LightboxContainer = new Lang.Class({
         this._previous_button.connect('clicked', function () {
             this.emit('navigation-previous-clicked');
         }.bind(this));
-        this._previous_button.get_style_context().add_class(EosKnowledge.STYLE_CLASS_LIGHTBOX_NAVIGATION_BUTTON);
+        this._previous_button.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_LIGHTBOX_NAVIGATION_BUTTON);
 
         /**
          * Navigate next button
@@ -365,7 +365,7 @@ const LightboxContainer = new Lang.Class({
         this._next_button.connect('clicked', function () {
             this.emit('navigation-next-clicked');
         }.bind(this));
-        this._next_button.get_style_context().add_class(EosKnowledge.STYLE_CLASS_LIGHTBOX_NAVIGATION_BUTTON);
+        this._next_button.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_LIGHTBOX_NAVIGATION_BUTTON);
 
         this.add(this._close_button);
         this.add(this._next_button);
@@ -408,7 +408,7 @@ const LightboxContainer = new Lang.Class({
         // let window = Gdk.Window.new(this.get_parent_window(),
         //                             attributes,
         //                             attributes_mask);
-        let window = EosKnowledge.private_new_input_output_window(this);
+        let window = EosKnowledgePrivate.private_new_input_output_window(this);
         this.set_window(window);
         this.register_window(window);
     },
@@ -417,7 +417,7 @@ const LightboxContainer = new Lang.Class({
         let context = this.get_style_context();
 
         context.save();
-        context.add_class(EosKnowledge.STYLE_CLASS_LIGHTBOX_SHADOW);
+        context.add_class(EosKnowledgePrivate.STYLE_CLASS_LIGHTBOX_SHADOW);
         let width = this.get_allocated_width();
         let height = this.get_allocated_height();
         Gtk.render_background(context, cr, 0, 0, width, height);
@@ -425,7 +425,7 @@ const LightboxContainer = new Lang.Class({
         context.restore();
 
         context.save();
-        context.add_class(EosKnowledge.STYLE_CLASS_LIGHTBOX_CONTAINER);
+        context.add_class(EosKnowledgePrivate.STYLE_CLASS_LIGHTBOX_CONTAINER);
         Gtk.render_background(context, cr, this._frame_allocation.x, this._frame_allocation.y,
                               this._frame_allocation.width, this._frame_allocation.height);
         Gtk.render_frame(context, cr, this._frame_allocation.x, this._frame_allocation.y,
@@ -471,7 +471,7 @@ const LightboxContainer = new Lang.Class({
         }
 
         this.get_style_context().save();
-        this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_LIGHTBOX_CONTAINER);
+        this.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_LIGHTBOX_CONTAINER);
         let padding = this.get_style_context().get_padding(this.get_state_flags());
         this.get_style_context().restore();
 

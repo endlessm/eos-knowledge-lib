@@ -1,11 +1,11 @@
-const EosKnowledge = imports.gi.EosKnowledge;
+const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Gtk = imports.gi.Gtk;
-
-Gtk.init(null);
 
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const SectionPageB = imports.app.sectionPageB;
 const TextCard = imports.app.textCard;
+
+Gtk.init(null);
 
 describe('Section page for Template B', function () {
     let section_page;
@@ -39,11 +39,11 @@ describe('Section page for Template B', function () {
 
     describe('Style class of section page', function () {
         it('has section-page-b class', function () {
-            expect(section_page).toHaveCssClass(EosKnowledge.STYLE_CLASS_SECTION_PAGE_B);
+            expect(section_page).toHaveCssClass(EosKnowledgePrivate.STYLE_CLASS_SECTION_PAGE_B);
         });
 
         it('has a descendant with title class', function () {
-            expect(section_page).toHaveDescendantWithCssClass(EosKnowledge.STYLE_CLASS_SECTION_PAGE_TITLE);
+            expect(section_page).toHaveDescendantWithCssClass(EosKnowledgePrivate.STYLE_CLASS_SECTION_PAGE_TITLE);
         });
     });
 });

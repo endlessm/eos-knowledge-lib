@@ -1,7 +1,7 @@
 // Copyright 2014 Endless Mobile, Inc.
 
 const Endless = imports.gi.Endless;
-const EosKnowledge = imports.gi.EosKnowledge;
+const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
@@ -244,9 +244,9 @@ const Window = new Lang.Class({
 
         this._stack.connect('notify::transition-running', () => {
             if (this._stack.transition_running) {
-                this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_ANIMATING);
+                this.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_ANIMATING);
             } else {
-                this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_ANIMATING);
+                this.get_style_context().remove_class(EosKnowledgePrivate.STYLE_CLASS_ANIMATING);
             }
         });
     },
@@ -352,9 +352,9 @@ const Window = new Lang.Class({
     },
 
     _set_stack_transition: function (animation_type) {
-        if (animation_type === EosKnowledge.LoadingAnimationType.FORWARDS_NAVIGATION) {
+        if (animation_type === EosKnowledgePrivate.LoadingAnimationType.FORWARDS_NAVIGATION) {
             this._stack.set_transition_type(Gtk.StackTransitionType.SLIDE_LEFT);
-        } else if (animation_type === EosKnowledge.LoadingAnimationType.BACKWARDS_NAVIGATION) {
+        } else if (animation_type === EosKnowledgePrivate.LoadingAnimationType.BACKWARDS_NAVIGATION) {
             this._stack.set_transition_type(Gtk.StackTransitionType.SLIDE_RIGHT);
         } else {
             this._stack.set_transition_type(Gtk.StackTransitionType.NONE);

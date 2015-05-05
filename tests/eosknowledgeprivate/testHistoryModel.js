@@ -3,7 +3,7 @@
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 
-const EosKnowledge = imports.gi.EosKnowledge;
+const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 
@@ -11,7 +11,7 @@ const MockItemModel = new Lang.Class({
     Name: 'MockItemModel',
     GTypeName: 'testHistoryModel_MockItemModel',
     Extends: GObject.Object,
-    Implements: [ EosKnowledge.HistoryItemModel ],
+    Implements: [ EosKnowledgePrivate.HistoryItemModel ],
     Properties: {
         // FIXME this property should not be here, but it is required because
         // you cannot override interface-defined properties in GJS (yet).
@@ -39,7 +39,7 @@ describe('History model', function () {
     let ANY = jasmine.any(Object);
 
     beforeEach(function () {
-        model = new EosKnowledge.HistoryModel();
+        model = new EosKnowledgePrivate.HistoryModel();
 
         notify = jasmine.createSpy('notify');
         model.connect('notify', function (object, pspec) {

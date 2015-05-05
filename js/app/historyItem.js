@@ -1,4 +1,4 @@
-const EosKnowledge = imports.gi.EosKnowledge;
+const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 
@@ -17,7 +17,7 @@ const QueryObject = imports.search.queryObject;
 const HistoryItem = new Lang.Class({
     Name: 'HistoryItem',
     Extends: GObject.Object,
-    Implements: [ EosKnowledge.HistoryItemModel ],
+    Implements: [ EosKnowledgePrivate.HistoryItemModel ],
     Properties: {
         /**
          * Property: title
