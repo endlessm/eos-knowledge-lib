@@ -113,6 +113,6 @@ const EncyclopediaView = new Lang.Class({
     },
 
     _onArticleBackClicked: function (button) {
-        this._content_page.go_back()
+        this._content_page.go_back();
     }
 });

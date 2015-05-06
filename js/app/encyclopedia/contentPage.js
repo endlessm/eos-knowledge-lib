@@ -16,7 +16,6 @@ const ARTICLE_SEARCH_MAX_RESULTS = 200;
 const _SEARCH_RESULTS_PAGE_URI = 'resource:///com/endlessm/knowledge/html/search_results.html';
 const _NO_RESULTS_PAGE_URI = 'resource:///com/endlessm/knowledge/html/no_results.html';
 const _ERROR_PAGE_URI = 'resource:///com/endlessm/knowledge/html/error_page.html';
-const _NO_IMAGE_LINKS_URI = 'resource:///com/endlessm/knowledge/no_image_links.css';
 
 const ArticleSearch = new Lang.Class({
     Name: 'ArticleSearch',
