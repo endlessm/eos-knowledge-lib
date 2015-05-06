@@ -6,6 +6,7 @@ const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 
 const Engine = imports.engine;
+const QueryObject = imports.queryObject;
 
 const SearchIface = '\
 <node name="/" xmlns:doc="http://www.freedesktop.org/dbus/1.0/doc.dtd"> \
@@ -130,15 +131,15 @@ const AppSearchProvider = Lang.Class({
     },
 
     _run_query: function (terms, limit, cb) {
-        let search_phrase = terms.join(' ');
         if (this._cancellable)
             this._cancellable.cancel();
         this._cancellable = new Gio.Cancellable();
-        this._engine.get_objects_by_query({
-            q: search_phrase,
+        let query_obj = new QueryObject.QueryObject({
+            query: terms.join(' '),
             limit: limit,
             domain: this.domain,
-        }, function (err, results, more_results_callback) {
+        });
+        this._engine.get_objects_by_query(query_obj, function (err, results, more_results_callback) {
             cb(err, results, more_results_callback);
         }.bind(this), this._cancellable);
     },
