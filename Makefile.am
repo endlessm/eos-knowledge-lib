@@ -580,11 +580,8 @@ EosKnowledgeSearchPrivate_1_0_gir_LIBS = libeosknowledgesearchprivate.la
 EosKnowledgeSearchPrivate_1_0_gir_FILES = $(libeosknowledgesearchprivate_la_SOURCES)
 INTROSPECTION_GIRS += EosKnowledgeSearchPrivate-1.0.gir
 
-girdir = $(pkgdatadir)/gir-1.0
-gir_DATA = $(INTROSPECTION_GIRS)
-
 typelibdir = $(pkglibdir)/girepository-1.0
 typelib_DATA = $(INTROSPECTION_GIRS:.gir=.typelib)
 
-CLEANFILES += $(gir_DATA) $(typelib_DATA)
+CLEANFILES += $(INTROSPECTION_GIRS) $(typelib_DATA)
 endif
