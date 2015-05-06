@@ -885,7 +885,7 @@ const Presenter = new Lang.Class({
     },
 
     _article_render_callback: function (article_model) {
-        return this._article_renderer.render(article_model);
+        return this._article_renderer.render(article_model, ['reader.css']);
     },
 
     _load_webview_content_callback: function (page, view, error) {

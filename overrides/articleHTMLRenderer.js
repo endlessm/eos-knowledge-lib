@@ -117,14 +117,16 @@ const ArticleHTMLRenderer = new Lang.Class({
         return javascript_files;
     },
 
-    render: function (model) {
+    render: function (model, custom_css_files=[], custom_js_files=[]) {
+        let css_files = this._get_css_files(model).concat(custom_css_files);
+        let js_files = this._get_javascript_files(model).concat(custom_js_files);
         return Mustache.render(this._template, {
             'title': this.show_title ? model.title : false,
             'body-html': this._strip_tags(model.get_html()),
             'disclaimer': this._get_disclaimer(model),
             'copy-button-text': _("Copy"),
-            'css-files': this._get_css_files(model),
-            'javascript-files': this._get_javascript_files(model),
+            'css-files': css_files,
+            'javascript-files': js_files,
             'include-mathjax': true,
             'mathjax-path': Config.mathjax_path,
         });
