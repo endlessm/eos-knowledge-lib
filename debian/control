@@ -61,6 +61,16 @@ Conflicts: libeosknowledge-0-0,
 Description: EndlessOS Knowledge Library
  The app runtime for all knowledge app bundles in EndlessOS.
 
+Package: eos-knowledge-0-dbg
+Section: debug
+Priority: extra
+Architecture: any
+Depends: eos-knowledge-0 (= ${binary:Version}),
+         ${misc:Depends}
+Description: EndlessOS Knowledge Library Debug package
+ Debug symbols for the various C libraries used in eos-knowledge-lib.
+ Install if you want to debug in gdb.
+
 Package: eos-knowledge-0-doc
 Section: non-free/doc
 Architecture: all
