@@ -223,6 +223,7 @@ public_overrides = \
 	overrides/launcher.js \
 	overrides/lessonCard.js \
 	overrides/lightbox.js \
+	overrides/lightboxPresenter.js \
 	overrides/listCard.js \
 	overrides/marginButton.js \
 	overrides/mediaInfobox.js \
@@ -335,6 +336,7 @@ javascript_tests = \
 	tests/eosknowledge/testHomePageB.js \
 	tests/eosknowledge/testLessonCard.js \
 	tests/eosknowledge/testLightbox.js \
+	tests/eosknowledge/testLightboxPresenter.js \
 	tests/eosknowledge/testListCard.js \
 	tests/eosknowledge/testMediaInfobox.js \
 	tests/eosknowledge/testNoSearchResultsPageA.js \

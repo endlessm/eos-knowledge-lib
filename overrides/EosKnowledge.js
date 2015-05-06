@@ -27,6 +27,7 @@ const HomePageB = private_imports.homePageB;
 const Launcher = private_imports.launcher;
 const LessonCard = private_imports.lessonCard;
 const Lightbox = private_imports.lightbox;
+const LightboxPresenter = private_imports.lightboxPresenter;
 const ListCard = private_imports.listCard;
 const MediaInfobox = private_imports.mediaInfobox;
 const NavButtonOverlay = private_imports.navButtonOverlay;
@@ -115,6 +116,7 @@ function _init() {
     EosKnowledge.Launcher = Launcher.Launcher;
     EosKnowledge.LessonCard = LessonCard.LessonCard;
     EosKnowledge.Lightbox = Lightbox.Lightbox;
+    EosKnowledge.LightboxPresenter = LightboxPresenter.LightboxPresenter;
     EosKnowledge.ListCard = ListCard.ListCard;
     EosKnowledge.MediaInfobox = MediaInfobox.MediaInfobox;
     EosKnowledge.NavButtonOverlay = NavButtonOverlay.NavButtonOverlay;

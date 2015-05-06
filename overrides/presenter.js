@@ -19,9 +19,8 @@ const CardB = private_imports.cardB;
 const Config = private_imports.config;
 const Launcher = private_imports.launcher;
 const HistoryItem = private_imports.historyItem;
-const MediaInfobox = private_imports.mediaInfobox;
+const LightboxPresenter = private_imports.lightboxPresenter;
 const PdfCard = private_imports.pdfCard;
-const Previewer = private_imports.previewer;
 const TextCard = private_imports.textCard;
 const Window = private_imports.window;
 const Utils = private_imports.utils;
@@ -139,11 +138,10 @@ const Presenter = new Lang.Class({
         this.view.blur_background_image_uri = app_json['backgroundSectionURI'];
         this._set_sections(app_json['sections']);
 
-        this._previewer = new Previewer.Previewer({
-            visible: true
+        this._lightbox_presenter = new LightboxPresenter.LightboxPresenter({
+            engine: this.engine,
+            view: this.view,
         });
-        this.view.lightbox.content_widget = this._previewer;
-        this._loading_new_lightbox = false;
 
         // Keeps track of the broad query that led to an individual article.
         this._latest_origin_query_obj = new EosKnowledgeSearch.QueryObject();
@@ -168,8 +166,6 @@ const Presenter = new Lang.Class({
         this.view.connect('article-selected', this._on_article_selection.bind(this));
 
         this.view.connect('sidebar-back-clicked', this._on_back.bind(this));
-        this.view.connect('lightbox-nav-previous-clicked', this._on_lightbox_previous_clicked.bind(this));
-        this.view.connect('lightbox-nav-next-clicked', this._on_lightbox_next_clicked.bind(this));
 
         this.view.home_page.connect('search-entered', function (view, query) {
             this._update_ui_and_search(query);
@@ -224,8 +220,8 @@ const Presenter = new Lang.Class({
      * history object for information to replicate that previous page's query.
      */
     _on_topbar_back_clicked: function () {
-        this.view.lightbox.reveal_overlays = false;
         this._history_model.go_back();
+        this._lightbox_presenter.hide_lightbox();
         this._replicate_history_state(EosKnowledge.LoadingAnimationType.BACKWARDS_NAVIGATION);
     },
 
@@ -234,8 +230,8 @@ const Presenter = new Lang.Class({
      * history object for information to replicate that next page's query.
      */
     _on_topbar_forward_clicked: function () {
-        this.view.lightbox.reveal_overlays = false;
         this._history_model.go_forward();
+        this._lightbox_presenter.hide_lightbox();
         this._replicate_history_state(EosKnowledge.LoadingAnimationType.FORWARDS_NAVIGATION);
     },
 
@@ -383,7 +379,7 @@ const Presenter = new Lang.Class({
 
     _on_search_focus: function (view, focused) {
         // If the user focused the search box, ensure that the lightbox is hidden
-        this.view.lightbox.reveal_overlays = false;
+        this._lightbox_presenter.hide_lightbox();
     },
 
     /*
@@ -567,11 +563,7 @@ const Presenter = new Lang.Class({
         this.engine.get_object_by_id(ekn_id, function (err, model) {
             if (typeof err === 'undefined') {
                 if (model instanceof EosKnowledgeSearch.MediaObjectModel) {
-                    let resources = this.article_presenter._article_model.get_resources();
-                    // Checks whether forward/back arrows should be displayed.
-                    let current_index = resources.indexOf(ekn_id);
-                    if (current_index > -1)
-                        this._preview_media_object(model, current_index > 0, current_index < resources.length - 1);
+                    this._lightbox_presenter.show_media_object(article_presenter.article_model, model);
                 } else {
                     this._add_history_object_for_article_page(model);
                     this.article_presenter.load_article(model, EosKnowledge.LoadingAnimationType.FORWARDS_NAVIGATION);
@@ -584,32 +576,6 @@ const Presenter = new Lang.Class({
                 printerr(err.stack);
             }
         }.bind(this));
-    },
-
-    _on_lightbox_previous_clicked: function (view, lightbox) {
-        this._lightbox_shift_image(lightbox, -1);
-    },
-
-    _on_lightbox_next_clicked: function (view, lightbox) {
-        this._lightbox_shift_image(lightbox, 1);
-    },
-
-    _lightbox_shift_image: function (lightbox, delta) {
-        let resources = this.article_presenter._article_model.get_resources();
-        let current_index = resources.indexOf(lightbox.media_object.ekn_id);
-        if (current_index > -1 && !this._loading_new_lightbox) {
-            this._loading_new_lightbox = true;
-            let new_index = current_index + delta;
-            this.engine.get_object_by_id(resources[new_index], (err, object) => {
-                this._loading_new_lightbox = false;
-                if (err !== undefined) {
-                    printerr(err);
-                    printerr(err.stack);
-                } else {
-                    this._preview_media_object(object, new_index > 0, new_index < resources.length - 1);
-                }
-            });
-        }
     },
 
     _on_back: function () {
@@ -685,14 +651,4 @@ const Presenter = new Lang.Class({
         }.bind(this));
         return card;
     },
-
-    _preview_media_object: function (media_object, previous_arrow_visible, next_arrow_visible) {
-        let infobox = MediaInfobox.MediaInfobox.new_from_ekn_model(media_object);
-        this._previewer.set_content(media_object.get_content_stream(), media_object.content_type);
-        this.view.lightbox.media_object = media_object;
-        this.view.lightbox.infobox_widget = infobox;
-        this.view.lightbox.reveal_overlays = true;
-        this.view.lightbox.has_back_button = previous_arrow_visible;
-        this.view.lightbox.has_forward_button = next_arrow_visible;
-    }
 });
