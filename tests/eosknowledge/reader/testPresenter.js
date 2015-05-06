@@ -353,7 +353,7 @@ describe('Reader presenter', function () {
 
         it('increments the current page when clicking the forward button', function () {
             article_nav_buttons.emit('forward-clicked');
-            expect(presenter.history_model.current_item.article_model.title).toBe("Title 1");
+            expect(presenter.history_model.current_item.article_model.title).toBe('Title 1');
             expect(presenter.current_page).toBe(1);
             expect(settings.bookmark_page).toBe(1);
         });

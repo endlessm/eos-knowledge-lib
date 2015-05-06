@@ -216,6 +216,7 @@ public_overrides = \
 	overrides/categoriesPage.js \
 	overrides/eknWebview.js \
 	overrides/historyItem.js \
+	overrides/historyPresenter.js \
 	overrides/homePage.js \
 	overrides/homePageA.js \
 	overrides/homePageB.js \
@@ -331,6 +332,7 @@ javascript_tests = \
 	tests/eosknowledge/testHello.js \
 	tests/eosknowledge/testHistoryItemModel.js \
 	tests/eosknowledge/testHistoryModel.js \
+	tests/eosknowledge/testHistoryPresenter.js \
 	tests/eosknowledge/testHomePage.js \
 	tests/eosknowledge/testHomePageA.js \
 	tests/eosknowledge/testHomePageB.js \

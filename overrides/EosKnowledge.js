@@ -21,6 +21,7 @@ const CardA = private_imports.cardA;
 const CardB = private_imports.cardB;
 const CategoriesPage = private_imports.categoriesPage;
 const EknWebview = private_imports.eknWebview;
+const HistoryPresenter = private_imports.historyPresenter;
 const HomePage = private_imports.homePage;
 const HomePageA = private_imports.homePageA;
 const HomePageB = private_imports.homePageB;
@@ -110,6 +111,7 @@ function _init() {
     EosKnowledge.CategoriesPage = CategoriesPage.CategoriesPage;
     EosKnowledge.EknWebview = EknWebview.EknWebview;
     EosKnowledge.get_presenter_for_resource = PresenterLoader.get_presenter_for_resource;
+    EosKnowledge.HistoryPresenter = HistoryPresenter.HistoryPresenter;
     EosKnowledge.HomePage = HomePage.HomePage;
     EosKnowledge.HomePageA = HomePageA.HomePageA;
     EosKnowledge.HomePageB = HomePageB.HomePageB;

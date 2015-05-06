@@ -17,8 +17,8 @@ const ArticlePresenter = private_imports.articlePresenter;
 const CardA = private_imports.cardA;
 const CardB = private_imports.cardB;
 const Config = private_imports.config;
+const HistoryPresenter = private_imports.historyPresenter;
 const Launcher = private_imports.launcher;
-const HistoryItem = private_imports.historyItem;
 const LightboxPresenter = private_imports.lightboxPresenter;
 const PdfCard = private_imports.pdfCard;
 const TextCard = private_imports.textCard;
@@ -148,16 +148,15 @@ const Presenter = new Lang.Class({
         this._latest_article_card_title = '';
         this._latest_search_text = '';
         this._target_page_title = '';
-        this._history_model = new EosKnowledge.HistoryModel();
+        this._history_presenter = new HistoryPresenter.HistoryPresenter({
+            history_model: new EosKnowledge.HistoryModel(),
+            view: this.view,
+        });
         this._add_history_object_for_home_page();
 
         // Connect signals
         this.view.connect('back-clicked', this._on_topbar_back_clicked.bind(this));
         this.view.connect('forward-clicked', this._on_topbar_forward_clicked.bind(this));
-        this._history_model.bind_property('can-go-forward', this.view.history_buttons.forward_button, 'sensitive',
-            GObject.BindingFlags.SYNC_CREATE);
-        this._history_model.bind_property('can-go-back', this.view.history_buttons.back_button, 'sensitive',
-            GObject.BindingFlags.SYNC_CREATE);
         this.view.connect('search-focused', this._on_search_focus.bind(this));
         this.view.connect('search-text-changed', this._on_search_text_changed.bind(this));
         this.view.connect('search-entered', function (view, query) {
@@ -215,46 +214,39 @@ const Presenter = new Lang.Class({
         }.bind(this));
     },
 
-    /*
-     * Navigates to the previous page by moving the history model back a page and checking the
-     * history object for information to replicate that previous page's query.
-     */
     _on_topbar_back_clicked: function () {
-        this._history_model.go_back();
         this._lightbox_presenter.hide_lightbox();
+        this._history_presenter.go_back();
         this._replicate_history_state(EosKnowledge.LoadingAnimationType.BACKWARDS_NAVIGATION);
     },
 
-    /*
-     * Navigates to the next page by moving the history model forward a page and checking the
-     * history object for information to replicate that next page's query.
-     */
     _on_topbar_forward_clicked: function () {
-        this._history_model.go_forward();
         this._lightbox_presenter.hide_lightbox();
+        this._history_presenter.go_forward();
         this._replicate_history_state(EosKnowledge.LoadingAnimationType.FORWARDS_NAVIGATION);
     },
 
     _replicate_history_state: function (animation_type) {
-        let article_origin_query_obj = this._history_model.current_item.article_origin_query_obj;
-        switch (this._history_model.current_item.page_type) {
+        let current_item = this._history_presenter.history_model.current_item;
+        let article_origin_query_obj = current_item.article_origin_query_obj;
+        switch (current_item.page_type) {
             case this._SEARCH_PAGE:
-                this._perform_search(this.view, this._history_model.current_item.query_obj);
+                this._perform_search(this.view, current_item.query_obj);
                 break;
             case this._SECTION_PAGE:
-                this._target_page_title = this._history_model.current_item.title;
+                this._target_page_title = current_item.title;
                 this.engine.get_objects_by_query(article_origin_query_obj, this._load_section_page.bind(this));
                 break;
             case this._ARTICLE_PAGE:
-                if (this._history_model.current_item.article_origin_query_obj.query !== this._latest_origin_query_obj.query) {
+                if (current_item.article_origin_query_obj.query !== this._latest_origin_query_obj.query) {
                     this.engine.get_objects_by_query(article_origin_query_obj, this._refresh_sidebar_callback.bind(this));
                 }
-                this.article_presenter.load_article(this._history_model.current_item.article_model, animation_type);
+                this.article_presenter.load_article(current_item.article_model, animation_type);
                 // For Template B, we reset the highlight to the card with the same title
                 if (this._template_type === 'B')
                     this.view.section_page.highlight_card_with_name(
-                        this._history_model.current_item.title,
-                        this._history_model.current_item.article_origin_page
+                        current_item.title,
+                        current_item.article_origin_page
                     );
                 this.view.show_article_page();
                 break;
@@ -266,7 +258,7 @@ const Presenter = new Lang.Class({
         }
 
         // Update latest origin query.
-        this._latest_origin_query_obj = this._history_model.current_item.article_origin_query_obj;
+        this._latest_origin_query_obj = current_item.article_origin_query_obj;
     },
 
     _refresh_sidebar_callback: function (err, results, get_more_results_func) {
@@ -502,61 +494,54 @@ const Presenter = new Lang.Class({
     },
 
     _add_history_object_for_article_page: function (model) {
-        this._history_model.current_item = new HistoryItem.HistoryItem({
-            title: model.title,
-            page_type: this._ARTICLE_PAGE,
-            article_model: model, 
-            query_obj: null,
-            article_origin_query_obj: this._latest_origin_query_obj,
-            article_origin_page: this._latest_article_card_title,
-        });
-    },
-
-    _add_history_search_item: function (query_obj, page_type) {
-        let is_same_search = this._history_model.current_item !== null &&
-            this._history_model.current_item.query_obj !== null &&
-            this._history_model.current_item.query_obj.query === query_obj.query;
-
-        // If it's a request for an identical search, don't bother
-        // adding it to the history model.
-        if (!is_same_search) {
-            this._latest_origin_query_obj = query_obj;
-            this._history_model.current_item = new HistoryItem.HistoryItem({
-                title: this._target_page_title,
-                page_type: page_type,
-                article_model: null,
-                query_obj: query_obj,
-                article_origin_query_obj: this._latest_origin_query_obj,
-            });
-        }
+        this._history_presenter.set_current_item(
+            model.title, // title
+            this._ARTICLE_PAGE, // page_type
+            model, // article_model
+            null, // query_obj
+            this._latest_origin_query_obj, // article_origin_query_obj
+            this._latest_article_card_title // article_origin_page
+        );
     },
 
     _add_history_object_for_search_page: function (query_obj) {
-        this._add_history_search_item(query_obj, this._SEARCH_PAGE);
+        this._history_presenter.set_current_item(
+            this._target_page_title, // title
+            this._SEARCH_PAGE, // page_type
+            null, // article_model
+            query_obj, // query_obj
+            this._latest_origin_query_obj // article_origin_query_obj
+        );
     },
 
     _add_history_object_for_section_page: function (query_obj) {
-        this._add_history_search_item(query_obj, this._SECTION_PAGE);
+        this._history_presenter.set_current_item(
+            this._target_page_title, // title
+            this._SECTION_PAGE, // page_type
+            null, // article_model
+            query_obj, // query_obj
+            this._latest_origin_query_obj // article_origin_query_obj
+        );
     },
 
     _add_history_object_for_home_page: function () {
-        this._history_model.current_item = new HistoryItem.HistoryItem({
-            title: '',
-            page_type: this._HOME_PAGE,
-            article_model: null,
-            query_obj: null,
-            article_origin_query_obj: this._latest_origin_query_obj,
-        });
+        this._history_presenter.set_current_item(
+            '', // title
+            this._HOME_PAGE, // page_type
+            null, // article_model
+            null, // query_obj
+            this._latest_origin_query_obj // article_origin_query_obj
+        );
     },
 
     _add_history_object_for_categories_page: function () {
-        this._history_model.current_item = new HistoryItem.HistoryItem({
-            title: '',
-            page_type: this._CATEGORIES_PAGE,
-            article_model: null,
-            query_obj: null,
-            article_origin_query_obj: this._latest_origin_query_obj,
-        });
+        this._history_presenter.set_current_item(
+            '', // title
+            this._CATEGORIES_PAGE, // page_type
+            null, // article_model
+            null, // query_obj
+            this._latest_origin_query_obj // article_origin_query_obj
+        );
     },
 
     _on_ekn_link_clicked: function (article_presenter, ekn_id) {

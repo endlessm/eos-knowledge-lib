@@ -18,7 +18,7 @@ const ArticleHTMLRenderer = private_imports.articleHTMLRenderer;
 const ArticlePage = private_imports.reader.articlePage;
 const Config = private_imports.config;
 const EknWebview = private_imports.eknWebview;
-const HistoryItem = private_imports.historyItem;
+const HistoryPresenter = private_imports.historyPresenter;
 const Launcher = private_imports.launcher;
 const LightboxPresenter = private_imports.lightboxPresenter;
 const OverviewPage = private_imports.reader.overviewPage;
@@ -203,22 +203,22 @@ const Presenter = new Lang.Class({
 
         this._latest_origin_query_obj = new EosKnowledgeSearch.QueryObject();
         this.history_model = new EosKnowledge.HistoryModel();
+        this._history_presenter = new HistoryPresenter.HistoryPresenter({
+            history_model: this.history_model,
+            view: this.view,
+        });
 
         // Connect signals
         this.view.history_buttons.back_button.connect('clicked', this._on_topbar_back_clicked.bind(this));
         this.view.history_buttons.forward_button.connect('clicked', this._on_topbar_forward_clicked.bind(this));
-        this.history_model.bind_property('can-go-forward', this.view.history_buttons.forward_button, 'sensitive',
-            GObject.BindingFlags.SYNC_CREATE);
-        this.history_model.bind_property('can-go-back', this.view.history_buttons.back_button, 'sensitive',
-            GObject.BindingFlags.SYNC_CREATE);
 
         this.view.nav_buttons.connect('back-clicked', function () {
-            this._update_history_model(this._current_page - 1);
+            this._update_history_object(this._current_page - 1);
             this._go_to_page(this._current_page - 1, EosKnowledge.LoadingAnimationType.BACKWARDS_NAVIGATION);
         }.bind(this));
         this.view.nav_buttons.connect('forward-clicked', function () {
             let next_page = (this._current_page + 1) % this.view.total_pages;
-            this._update_history_model(next_page);
+            this._update_history_object(next_page);
             this._go_to_page(next_page, EosKnowledge.LoadingAnimationType.FORWARDS_NAVIGATION);
         }.bind(this));
 
@@ -290,7 +290,7 @@ const Presenter = new Lang.Class({
         this.engine.get_objects_by_query(query_obj, this._load_search_results.bind(this));
     },
 
-    _update_history_model: function (page_index) {
+    _update_history_object: function (page_index) {
         if (page_index === 0) {
             this._add_history_object_for_overview_page();
         } else if (page_index === this.view.total_pages - 1) {
@@ -301,56 +301,57 @@ const Presenter = new Lang.Class({
     },
 
     _add_history_object_for_article_page: function (model) {
-        this.history_model.current_item = new HistoryItem.HistoryItem({
-            title: model.title,
-            page_type: this._ARTICLE_PAGE,
-            article_model: model,
-            article_origin_query_obj: this._latest_origin_query_obj,
-        });
+        this._history_presenter.set_current_item(
+            model.title, // title
+            this._ARTICLE_PAGE, // page_type
+            model, // article_model
+            null, // query_obj
+            this._latest_origin_query_obj // article_origin_query_obj
+        );
     },
 
     _add_history_object_for_search_page: function (query_obj) {
-        let is_same_search = this.history_model.current_item !== null &&
-            this.history_model.current_item.query_obj !== null &&
-            this.history_model.current_item.query_obj.query === query_obj.query;
-
-        // If it's a request for an identical search, don't bother
-        // adding it to the history model.
-        if (!is_same_search) {
-            this._latest_origin_query_obj = query_obj;
-            this.history_model.current_item = new HistoryItem.HistoryItem({
-                page_type: this._SEARCH_PAGE,
-                query_obj: query_obj,
-                article_origin_query_obj: this._latest_origin_query_obj,
-            });
-        }
+        this._history_presenter.set_current_item(
+            '', // title
+            this._SEARCH_PAGE, // page_type
+            null, // article_model
+            query_obj, // query_obj
+            this._latest_origin_query_obj // article_origin_query
+        );
     },
 
     _add_history_object_for_overview_page: function () {
-        this.history_model.current_item = new HistoryItem.HistoryItem({
-            page_type: this._OVERVIEW_PAGE,
-            article_origin_query_obj: this._latest_origin_query_obj,
-        });
+        this._history_presenter.set_current_item(
+            '', // title
+            this._OVERVIEW_PAGE, // page_type
+            null, // article_model
+            null, // query_obj
+            this._latest_origin_query_obj // article_origin_query_obj
+        );
     },
 
     _add_history_object_for_done_page: function () {
-        this.history_model.current_item = new HistoryItem.HistoryItem({
-            page_type: this._DONE_PAGE,
-            article_origin_query_obj: this._latest_origin_query_obj,
-        });
+        this._history_presenter.set_current_item(
+            '', // title
+            this._DONE_PAGE, // page_type
+            null, // article_model
+            null, // query_obj
+            this._latest_origin_query_obj // article_origin_query_obj
+        );
     },
 
     _replicate_history_state: function (animation_type) {
-        let article_origin_query_obj = this.history_model.current_item.article_origin_query_obj;
+        let current_item = this._history_presenter.history_model.current_item;
+        let article_origin_query_obj = current_item.article_origin_query_obj;
 
         this.view.search_box.text = article_origin_query_obj.query;
 
-        switch (this.history_model.current_item.page_type) {
+        switch (current_item.page_type) {
             case this._SEARCH_PAGE:
-                this._perform_search(this.view, this.history_model.current_item.query_obj);
+                this._perform_search(this.view, current_item.query_obj);
                 break;
             case this._ARTICLE_PAGE:
-                this._go_to_article(this.history_model.current_item.article_model, animation_type);
+                this._go_to_article(current_item.article_model, animation_type);
                 break;
             case this._OVERVIEW_PAGE:
                 this._go_to_page(0, animation_type);
@@ -359,12 +360,12 @@ const Presenter = new Lang.Class({
                 this._go_to_page(this._article_models.length + 1, animation_type);
                 break;
             default:
-                printerr("Unexpected page type " + this.history_model.current_item.page_type);
+                printerr("Unexpected page type " + current_item.page_type);
                 this._go_to_page(0, animation_type);
         }
 
         // Update latest origin query.
-        this._latest_origin_query_obj = this.history_model.current_item.article_origin_query_obj;
+        this._latest_origin_query_obj = current_item.article_origin_query_obj;
     },
 
     _open_magazine: function () {
@@ -384,7 +385,7 @@ const Presenter = new Lang.Class({
                 // We now have all the articles we want to show. Now we load the
                 // HTML content for the first few pages into the webview.
                 this._load_overview_snippets_from_articles();
-                this._update_history_model(this.settings.bookmark_page);
+                this._update_history_object(this.settings.bookmark_page);
                 this._go_to_page(this.settings.bookmark_page, EosKnowledge.LoadingAnimationType.NONE);
             }
             this.view.show_all();
@@ -1033,7 +1034,7 @@ const Presenter = new Lang.Class({
      * history object for information to replicate that previous page's query.
      */
     _on_topbar_back_clicked: function () {
-        this.history_model.go_back();
+        this._history_presenter.go_back();
         this._replicate_history_state(EosKnowledge.LoadingAnimationType.BACKWARDS_NAVIGATION);
     },
 
@@ -1042,7 +1043,7 @@ const Presenter = new Lang.Class({
      * history object for information to replicate that next page's query.
      */
     _on_topbar_forward_clicked: function () {
-        this.history_model.go_forward();
+        this._history_presenter.go_forward();
         this._replicate_history_state(EosKnowledge.LoadingAnimationType.FORWARDS_NAVIGATION);
     },
 
