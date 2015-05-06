@@ -52,39 +52,6 @@ AC_CONFIG_MACRO_DIR([m4])
 
 AC_CACHE_SAVE
 
-# Variables to define
-# -------------------
-# Version numbers and macros
-AC_SUBST([EKN_API_VERSION], _EKN_API_VERSION_MACRO)
-AC_DEFINE([EKN_MAJOR_VERSION], [_EKN_API_VERSION_MACRO], [Major (API) version])
-AC_SUBST([EKN_API_NAME], ["eosknowledge-$EKN_API_VERSION"])
-EKN_MINOR_VERSION=_EKN_MINOR_VERSION_MACRO
-EKN_MICRO_VERSION=_EKN_MICRO_VERSION_MACRO
-EKN_INTERFACE_AGE=_EKN_INTERFACE_AGE_MACRO
-AC_DEFINE([EKN_MINOR_VERSION], [_EKN_MINOR_VERSION_MACRO], [Minor version])
-AC_DEFINE([EKN_MICRO_VERSION], [_EKN_MICRO_VERSION_MACRO], [Micro version])
-AC_DEFINE([EKN_VERSION], [_EKN_VERSION_MACRO], [Full version number])
-
-# Shared library versioning; calculated automatically.
-# See http://www.gnu.org/software/libtool/manual/html_node/Updating-version-info.html
-EKN_LT_CURRENT=m4_eval(100 * _EKN_MINOR_VERSION_MACRO + _EKN_MICRO_VERSION_MACRO - _EKN_INTERFACE_AGE_MACRO)
-EKN_LT_REVISION=$EKN_INTERFACE_AGE
-EKN_LT_AGE=$EKN_LT_CURRENT
-AC_SUBST([EKN_LT_VERSION_INFO], ["$EKN_LT_CURRENT:$EKN_LT_REVISION:$EKN_LT_AGE"])
-
-# Required versions of libraries
-# Update these whenever you use a function that requires a certain API version
-GLIB_REQUIREMENT="glib-2.0"
-GOBJECT_REQUIREMENT="gobject-2.0"
-GIO_REQUIREMENT="gio-2.0"
-GTK_REQUIREMENT="gtk+-3.0 >= 3.12"
-EVINCE_REQUIREMENT="evince-document-3.0"
-WEBKIT_REQUIREMENT="webkit2gtk-4.0"
-# These go into the pkg-config file as Requires: and Requires.private:
-# (Generally, use Requires.private: instead of Requires:)
-AC_SUBST([EKN_REQUIRED_MODULES], [])
-AC_SUBST([EKN_REQUIRED_MODULES_PRIVATE], ["$GLIB_REQUIREMENT $GOBJECT_REQUIREMENT $GIO_REQUIREMENT $GTK_REQUIREMENT $EVINCE_REQUIREMENT $WEBKIT_REQUIREMENT"])
-
 # Gettext package name
 AC_SUBST([GETTEXT_PACKAGE], ["$PACKAGE"])
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE, ["$GETTEXT_PACKAGE"],
@@ -226,9 +193,15 @@ fi
 
 # Required libraries
 # ------------------
+# Update these whenever you use a function that requires a certain API version
 PKG_CHECK_MODULES([EOS_KNOWLEDGE_PRIVATE], [
-    $EKN_REQUIRED_MODULES
-    $EKN_REQUIRED_MODULES_PRIVATE])
+    glib-2.0
+    gobject-2.0
+    gio-2.0
+    gtk+-3.0 >= 3.12
+    evince-document-3.0
+    webkit2gtk-4.0
+])
 PKG_CHECK_MODULES([TOOLTIP_PLUGIN], [
     glib-2.0
     gmodule-2.0
@@ -262,10 +235,8 @@ AC_CONFIG_FILES([
     Makefile
     po/Makefile.in
     docs/reference/eosknowledgeprivate/Makefile
-    docs/reference/eosknowledgeprivate/version.xml
     js/app/config.js.in
     config/compass.rb
-    $EKN_API_NAME.pc
 ])
 AC_CONFIG_HEADERS([config.h])  dnl Header with system-dependent #defines
 # Make docs/reference/js/eos.css available in the build tree

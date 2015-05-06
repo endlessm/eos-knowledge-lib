@@ -4,8 +4,6 @@
 *.gir
 *.typelib
 *.gresource
-/docs/reference/eosknowledgeprivate/version.xml
-/eosknowledge-0.pc
 /eosknowledgeprivate/ekn-resource*.[ch]
 /js/app/config.js
 /js/app/config.js.in

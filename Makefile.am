@@ -136,38 +136,31 @@ eosknowledgeprivate_sources = \
 	$(NULL)
 
 # Endless Knowledge Apps GUI library
-pkglib_LTLIBRARIES += libeosknowledgeprivate-@EKN_API_VERSION@.la
-libeosknowledgeprivate_@EKN_API_VERSION@_la_SOURCES = \
+pkglib_LTLIBRARIES += libeosknowledgeprivate.la
+libeosknowledgeprivate_la_SOURCES = \
 	$(eosknowledgeprivate_headers) \
 	$(eosknowledgeprivate_sources) \
 	$(NULL)
-nodist_libeosknowledgeprivate_@EKN_API_VERSION@_la_SOURCES = \
+nodist_libeosknowledgeprivate_la_SOURCES = \
 	$(BUILT_SOURCES) \
 	$(NULL)
 # Defining G_LOG_DOMAIN allows you to run any program with
 # G_MESSAGES_DEBUG=EosKnowledgeLibrary ./myprogram
 # and turn on debug messages
-libeosknowledgeprivate_@EKN_API_VERSION@_la_CPPFLAGS = \
+libeosknowledgeprivate_la_CPPFLAGS = \
 	@EOS_KNOWLEDGE_PRIVATE_CFLAGS@ \
 	@EOS_C_COVERAGE_CFLAGS@ \
 	-DG_LOG_DOMAIN=\"EosKnowledgeLibrary\" \
 	-DCOMPILING_EOS_KNOWLEDGE \
 	-DDATADIR=\""$(datadir)"\" \
 	$(NULL)
-libeosknowledgeprivate_@EKN_API_VERSION@_la_CFLAGS = $(AM_CFLAGS)
-libeosknowledgeprivate_@EKN_API_VERSION@_la_LIBADD = @EOS_KNOWLEDGE_PRIVATE_LIBS@
-libeosknowledgeprivate_@EKN_API_VERSION@_la_LDFLAGS = \
+libeosknowledgeprivate_la_CFLAGS = $(AM_CFLAGS)
+libeosknowledgeprivate_la_LIBADD = @EOS_KNOWLEDGE_PRIVATE_LIBS@
+libeosknowledgeprivate_la_LDFLAGS = \
 	@EOS_C_COVERAGE_LDFLAGS@ \
-	-version-info @EKN_LT_VERSION_INFO@ \
 	-export-symbols-regex "^ekn_" \
 	-avoid-version \
 	$(NULL)
-
-# Pkg-config file
-pkgconfigdir = $(libdir)/pkgconfig
-pkgconfig_DATA = @EKN_API_NAME@.pc
-DISTCLEANFILES += @EKN_API_NAME@.pc
-EXTRA_DIST += @EKN_API_NAME@.pc.in
 
 # # # SEARCH LIBRARY # # #
 
@@ -417,9 +410,9 @@ JS_LOG_DRIVER_FLAGS = --comments
 JS_LOG_COMPILER = jasmine
 AM_JS_LOG_FLAGS = --tap --no-config
 
-# Use locally built versions of EosKnowledge-0.gir, JS modules, and libraries.
-# We clobber GJS_PATH and include the js directory and the $(top_srcdir) for
-# including test helper files.
+# Use locally built versions of EosKnowledgePrivate-1.0.gir, JS modules, and
+# libraries. We clobber GJS_PATH and include the js directory and the
+# $(top_srcdir) for including test helper files.
 # (May need to change to AM_TESTS_ENVIRONMENT in a later version of Automake)
 TESTS_ENVIRONMENT = \
 	export GJS_PATH="$(top_srcdir):$(top_srcdir)/js"; \
@@ -538,8 +531,8 @@ introspection_sources = \
 	$(eosknowledgeprivate_headers) \
 	$(NULL)
 
-EosKnowledgePrivate-@EKN_API_VERSION@.gir: libeosknowledgeprivate-@EKN_API_VERSION@.la Makefile
-EosKnowledgePrivate_@EKN_API_VERSION@_gir_INCLUDES = \
+EosKnowledgePrivate-1.0.gir: libeosknowledgeprivate.la Makefile
+EosKnowledgePrivate_1_0_gir_INCLUDES = \
 	Endless-0 \
 	Gio-2.0 \
 	GLib-2.0 \
@@ -547,15 +540,14 @@ EosKnowledgePrivate_@EKN_API_VERSION@_gir_INCLUDES = \
 	WebKit2-4.0 \
 	Gtk-3.0 \
 	$(NULL)
-EosKnowledgePrivate_@EKN_API_VERSION@_gir_SCANNERFLAGS = \
+EosKnowledgePrivate_1_0_gir_SCANNERFLAGS = \
 	--identifier-prefix=Ekn \
 	--symbol-prefix=ekn \
 	-DCOMPILING_EOS_KNOWLEDGE \
 	$(NULL)
-EosKnowledgePrivate_@EKN_API_VERSION@_gir_LIBS = libeosknowledgeprivate-@EKN_API_VERSION@.la
-EosKnowledgePrivate_@EKN_API_VERSION@_gir_FILES = $(introspection_sources)
-EosKnowledgePrivate_@EKN_API_VERSION@_gir_EXPORT_PACKAGES = @EKN_API_NAME@
-INTROSPECTION_GIRS += EosKnowledgePrivate-@EKN_API_VERSION@.gir
+EosKnowledgePrivate_1_0_gir_LIBS = libeosknowledgeprivate.la
+EosKnowledgePrivate_1_0_gir_FILES = $(introspection_sources)
+INTROSPECTION_GIRS += EosKnowledgePrivate-1.0.gir
 
 EosKnowledgeSearchPrivate-1.0.gir: libeosknowledgesearchprivate.la
 EosKnowledgeSearchPrivate_1_0_gir_INCLUDES = Gio-2.0

@@ -4,7 +4,7 @@
 DOC_MODULE=eosknowledgeprivate
 
 # Uncomment for versioned docs and specify the version of the module, e.g. '2'.
-DOC_MODULE_VERSION=@EKN_API_VERSION@
+# DOC_MODULE_VERSION=1
 
 # The top-level SGML file. You can change this if you want to.
 DOC_MAIN_SGML_FILE=$(DOC_MODULE)-docs.xml
@@ -70,7 +70,7 @@ expand_content_files=
 # Only needed if you are using gtkdoc-scangobj to dynamically query widget
 # signals and properties.
 GTKDOC_CFLAGS=-I$(top_srcdir) -I$(top_builddir) $(EOS_KNOWLEDGE_CFLAGS)
-GTKDOC_LIBS=$(top_builddir)/libeosknowledgeprivate-@EKN_API_VERSION@.la $(EOS_KNOWLEDGE_LIBS)
+GTKDOC_LIBS=$(top_builddir)/libeosknowledgeprivate.la $(EOS_KNOWLEDGE_LIBS)
 
 # This includes the standard gtk-doc make rules, copied by gtkdocize.
 include $(top_srcdir)/gtk-doc.make
