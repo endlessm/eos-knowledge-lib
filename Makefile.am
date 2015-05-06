@@ -557,8 +557,6 @@ introspection_sources = \
 
 EosKnowledgePrivate-1.0.gir: libeosknowledgeprivate.la Makefile
 EosKnowledgePrivate_1_0_gir_INCLUDES = \
-	Endless-0 \
-	Gio-2.0 \
 	GLib-2.0 \
 	GObject-2.0 \
 	WebKit2-4.0 \
