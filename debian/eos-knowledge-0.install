@@ -1,0 +1,5 @@
+usr/bin/*
+usr/lib/eos-knowledge/*
+usr/share/dbus-1/*
+usr/share/eos-knowledge/*
+usr/share/locale/*

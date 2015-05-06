@@ -1,4 +1,0 @@
-usr/include/eosknowledge*/*
-usr/lib/libeosknowledge*.so
-usr/lib/pkgconfig/eosknowledge*.pc
-usr/share/gir-1.0/EosKnowledge*.gir

@@ -1,3 +1,9 @@
+eos-knowledge-lib (0.0.1) eos; urgency=low
+
+  * Make C libs private, consolidate into main and doc package
+
+ -- Matt Watson <watson@endlessm.com>  Tue, 05 May 2015 18:53:03 -0700
+
 eos-knowledge-lib (0.0.0) eos; urgency=low
 
   * Initial release
