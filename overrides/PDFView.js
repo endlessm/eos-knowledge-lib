@@ -31,13 +31,13 @@ const PDFView = new Lang.Class({
     },
 
     /**
-     *  Method: load_uri
+     *  Method: load_stream
      *
-     *  Loads the given uri of a PDF in the view.
+     *  Loads the given stream of a PDF in the view.
      */
-    load_uri: function (uri) {
-        let evince_document = EvinceDocument.Document.factory_get_document(
-            uri, EvinceDocument.DocumentLoadFlags.NONE, null);
+    load_stream: function (stream, content_type) {
+        let evince_document = EvinceDocument.Document.factory_get_document_for_stream(
+            stream, content_type, EvinceDocument.DocumentLoadFlags.NONE, null);
         let document_model = new EvinceView.DocumentModel({
             document: evince_document,
         });

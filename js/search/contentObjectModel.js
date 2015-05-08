@@ -1,7 +1,10 @@
 // Copyright 2014 Endless Mobile, Inc.
+const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
+
+const EosKnowledgeSearch = imports.EosKnowledgeSearch;
 
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 
@@ -20,6 +23,19 @@ const ContentObjectModel = new Lang.Class({
          */
         'ekn-id': GObject.ParamSpec.string('ekn-id', 'Object\'s ID', 'The ID of a document or media object',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
+        /**
+         * Property: ekn-version
+         *
+         * The version of the on-disk data format for this bundle. This value
+         * is incremented whenever we have a major change in this format, and
+         * is used to support backwards compatible changes.
+         *
+         * Defaults to 1
+         */
+        'ekn-version': GObject.ParamSpec.int('ekn-version', 'EKN Version',
+            'The version of the knowledge app.',
+             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
+             0, GLib.MAXINT32, 1),
         /**
          * Property: title
          * A string with the title of the content object. Defaults to an empty string.
@@ -111,10 +127,22 @@ const ContentObjectModel = new Lang.Class({
 
         /**
          * Property: content-uri
-         * A string with the URI to the file content for this object.
+         * (DEPRECATED) A string with the URI to the file content for this
+         * object.
+         *
+         * No longer used in ekn bundles. Content is now stored in an Epak file
+         * which is indexed by ekn-id, and is accessed by get_content_stream()
          */
         'content-uri': GObject.ParamSpec.string('content-uri', 'Object Content URL',
             'URI of the source content file',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            ''),
+        /**
+         * Property: content-type
+         * The source content's mimetype
+         */
+        'content-type': GObject.ParamSpec.string('content-type', 'Object Content Type',
+            'Mimetype of the source content',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             ''),
         /**
@@ -170,6 +198,24 @@ const ContentObjectModel = new Lang.Class({
         return this._tags;
     },
 
+    get_content_stream: function () {
+        if (this.ekn_version >= 2) {
+            let engine = EosKnowledgeSearch.Engine.get_default();
+            let [stream, content_type] = engine.get_content_by_id(this.ekn_id);
+            return stream;
+        } else {
+            if (this.content_type === 'text/html') {
+                let bytes = ByteArray.fromString(this.html).toGBytes();
+                let stream = Gio.MemoryInputStream.new_from_bytes(bytes);
+                return stream;
+            } else {
+                let file = Gio.File.new_for_uri(this.content_uri);
+                let stream = file.read(null);
+                return stream;
+            }
+        }
+    },
+
     set title (v) {
         // TODO: Remove this line once we have reliable content
         // For now we need to programmatically capitalize titles
@@ -191,27 +237,34 @@ const ContentObjectModel = new Lang.Class({
  * Creates an ContentObjectModel from a Knowledge Engine ContentObject
  * JSON-LD document
  */
-ContentObjectModel.new_from_json_ld = function (json_ld_data, media_path) {
-    let props = ContentObjectModel._props_from_json_ld(json_ld_data, media_path);
+ContentObjectModel.new_from_json_ld = function (json_ld_data, media_path, ekn_version) {
+    let props = ContentObjectModel._props_from_json_ld(json_ld_data, media_path, ekn_version);
     let contentObjectModel = new ContentObjectModel(props);
-    ContentObjectModel._setup_from_json_ld(contentObjectModel, json_ld_data, media_path);
+    ContentObjectModel._setup_from_json_ld(contentObjectModel, json_ld_data, media_path, ekn_version);
 
     return contentObjectModel;
 };
 
-ContentObjectModel._setup_from_json_ld = function (model, json_ld_data, media_path) {
+ContentObjectModel._setup_from_json_ld = function (model, json_ld_data, media_path, ekn_version) {
     if (json_ld_data.hasOwnProperty('resources')) {
         model.set_resources(json_ld_data.resources);
     }
 };
 
-ContentObjectModel._props_from_json_ld = function (json_ld_data, media_path) {
+ContentObjectModel._props_from_json_ld = function (json_ld_data, media_path, ekn_version) {
     let props = {};
+
+    if (typeof ekn_version === 'number')
+        props.ekn_version = ekn_version;
+
     if(json_ld_data.hasOwnProperty('@id'))
         props.ekn_id = json_ld_data['@id'];
 
     if(json_ld_data.hasOwnProperty('title'))
         props.title = json_ld_data.title;
+
+    if (json_ld_data.hasOwnProperty('contentType'))
+        props.content_type = json_ld_data.contentType;
 
     if(json_ld_data.hasOwnProperty('originalTitle'))
         props.original_title = json_ld_data.originalTitle;

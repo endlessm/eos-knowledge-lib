@@ -5,6 +5,7 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const Soup = imports.gi.Soup;
 
+const Utils = imports.searchUtils;
 const ContentObjectModel = imports.contentObjectModel;
 const TreeNode = imports.treeNode;
 
@@ -23,7 +24,10 @@ const ArticleObjectModel = new Lang.Class({
     Properties: {
         /**
          * Property: html
-         * Body HTML of the article.
+         * (DEPRECATED) Body HTML of the article.
+         *
+         * No longer used in ekn bundles. Instead, read the compressed HTML at
+         * content_uri in newer bundles.
          */
         'html': GObject.ParamSpec.string('html', 'Article HTML',
             'The HTML of the article, unstyled.',
@@ -128,6 +132,21 @@ const ArticleObjectModel = new Lang.Class({
         this.parent(params);
     },
 
+    // Returns the HTML corresponding to this article, if it has any. In the
+    // case of a v.2 bundle, performs synchronous file IO to the epak
+    get_html: function () {
+        if (this.content_type !== 'text/html')
+            return undefined;
+
+        if (this.ekn_version >= 2) {
+            let stream = this.get_content_stream();
+            return Utils.read_stream(stream);
+        } else {
+            // legacy bundles stored the html as a property
+            return this.html;
+        }
+    },
+
     set_authors: function (v) {
         this._authors = v;
     },
@@ -142,31 +161,40 @@ const ArticleObjectModel = new Lang.Class({
  * Creates an ArticleObjectModel from a Knowledge Engine ArticleObject
  * JSON-LD document
  */
-ArticleObjectModel.new_from_json_ld = function (json_ld_data, media_path) {
-    let props = ArticleObjectModel._props_from_json_ld(json_ld_data, media_path);
+ArticleObjectModel.new_from_json_ld = function (json_ld_data, media_path, ekn_version) {
+    let props = ArticleObjectModel._props_from_json_ld(json_ld_data, media_path, ekn_version);
     let article_object_model = new ArticleObjectModel(props);
-    ArticleObjectModel._setup_from_json_ld(article_object_model, json_ld_data, media_path);
+    ArticleObjectModel._setup_from_json_ld(article_object_model, json_ld_data, media_path, ekn_version);
 
     return article_object_model;
 };
 
-ArticleObjectModel._setup_from_json_ld = function (model, json_ld_data, media_path) {
+ArticleObjectModel._setup_from_json_ld = function (model, json_ld_data, media_path, ekn_version) {
     // Inherit setup from parent class
     let ParentClass = ArticleObjectModel.__super__;
-    ParentClass._setup_from_json_ld(model, json_ld_data, media_path);
+    ParentClass._setup_from_json_ld(model, json_ld_data, media_path, ekn_version);
     if (json_ld_data.hasOwnProperty('authors')) {
         model.set_authors(json_ld_data.authors);
     }
 
 };
 
-ArticleObjectModel._props_from_json_ld = function (json_ld_data, media_path) {
+ArticleObjectModel._props_from_json_ld = function (json_ld_data, media_path, ekn_version) {
     // Inherit properties marshalled from parent class
     let ParentClass = ArticleObjectModel.__super__;
-    let props = ParentClass._props_from_json_ld(json_ld_data, media_path);
+    let props = ParentClass._props_from_json_ld(json_ld_data, media_path, ekn_version);
 
-    if (json_ld_data.hasOwnProperty('articleBody'))
-        props.html = json_ld_data.articleBody;
+    if (ekn_version === 1) {
+        // This is to support legacy databases, which store their HTML within
+        // the xapian databases themselves (as opposed to using a contentURL to
+        // point to content on disk) and don't store a contentType property
+        if (json_ld_data.hasOwnProperty('articleBody')) {
+            props.html = json_ld_data.articleBody;
+            props.content_type = 'text/html';
+        } else if (props.content_uri) {
+            props.content_type = 'application/pdf';
+        }
+    }
 
     // FIXME: see https://github.com/endlessm/eos-sdk/issues/2520
     // This is a holdover from knowledge engine where we guess the source of

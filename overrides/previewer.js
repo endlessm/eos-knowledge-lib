@@ -24,15 +24,6 @@ const Previewer = new Lang.Class({
     Extends: Gtk.Bin,
     Properties: {
         /**
-         * Property: file
-         *
-         * The only public API for this widget. A GFile of the file you would
-         * like previewed in this widget
-         */
-        'file': GObject.ParamSpec.object('file', 'File', 'File to preview',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
-            GObject.Object),
-        /**
          * Property: aspect
          *
          * The aspect aspect the previewer widget should display at
@@ -44,7 +35,8 @@ const Previewer = new Lang.Class({
     },
 
     _init: function (props) {
-        this._file = null;
+        this._stream = null;
+        this._content_type = null;
         this._animating = false;
         this._image_previewer = new ImagePreviewer.ImagePreviewer({
             enforce_minimum_size: true,
@@ -55,31 +47,23 @@ const Previewer = new Lang.Class({
         this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_PREVIEWER);
     },
 
-    set file (v) {
-        if (v === this._file) return;
+    set_content: function (stream, content_type) {
+        if (stream === this._stream) return;
 
         if (this.get_child() !== null) {
             this.remove(this.get_child());
         }
-        this._image_previewer.file = null;
-        this._file = v;
-        if (this._file === null) return;
+        this._image_previewer.clear_content();
 
-        let type = this._file.query_info('standard::content-type',
-                                         Gio.FileQueryInfoFlags.NONE,
-                                         null).get_content_type();
-        if (this._image_previewer.supports_type(type)) {
-            this._image_previewer.file = v;
+        this._stream = stream;
+        if (this._stream === null) return;
+
+        if (this._image_previewer.supports_type(content_type)) {
+            this._image_previewer.set_content(stream, content_type);
             this.add(this._image_previewer);
         } else {
-            throw new Error('Previewer does not support type ' + type);
+            throw new Error('Previewer does not support type ' + content_type);
         }
-
-        this.notify('file');
-    },
-
-    get file () {
-        return this._file;
     },
 
     get aspect () {

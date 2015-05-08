@@ -127,7 +127,7 @@ const ArticlePresenter = new GObject.Class({
         // Make sure we aren't currently loading anything offscreen
         this._stop_loading_views();
 
-        if (this._article_model.html.length > 0) {
+        if (this._article_model.content_type === 'text/html') {
             this._webview = this._get_webview();
             this._webview_load_id = this._webview.connect('load-changed', function (view, status) {
                 if (status !== WebKit2.LoadEvent.COMMITTED)
@@ -138,25 +138,18 @@ const ArticlePresenter = new GObject.Class({
                 ready();
             }.bind(this));
             this._webview.load_uri(this._article_model.ekn_id);
-        } else if (this._article_model.content_uri.length > 0) {
-            let uri = this._article_model.content_uri;
-            let file = Gio.file_new_for_uri(uri);
-            let type = file.query_info('standard::content-type',
-                                   Gio.FileQueryInfoFlags.NONE,
-                                   null).get_content_type();
-            if (type === 'application/pdf') {
-                let view = this._get_pdfview_for_uri(uri);
-                view.load_uri(uri);
-                // FIXME: Remove this line once we support table of contents
-                // widget for PDFs
-                this._article_model.table_of_contents = undefined;
-                this.article_view.switch_in_content_view(view, animation_type);
-                ready();
-            } else {
-                throw new Error("We don't know how to display " + type + " articles!");
-            }
+        } else if (this._article_model.content_type === 'application/pdf') {
+            let stream = this._article_model.get_content_stream();
+            let content_type = this._article_model.content_type;
+            let view = this._create_pdfview();
+            view.load_stream(stream, content_type);
+            // FIXME: Remove this line once we support table of contents
+            // widget for PDFs
+            this._article_model.table_of_contents = undefined;
+            this.article_view.switch_in_content_view(view, animation_type);
+            ready();
         } else {
-            throw new Error("Article had no body html or content uri");
+            throw new Error("Unknown article content type: ", this._article_model.content_type);
         }
 
     },
@@ -285,7 +278,7 @@ const ArticlePresenter = new GObject.Class({
         return webview;
     },
 
-    _get_pdfview_for_uri: function (uri) {
+    _create_pdfview: function () {
         let view = new PDFView.PDFView();
         return view;
     },

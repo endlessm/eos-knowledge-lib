@@ -669,11 +669,7 @@ const Presenter = new Lang.Class({
     _new_card_from_article_model: function (model) {
         let fade_in = true;
         let card_class = ArticleCard.ArticleCard;
-        // If it has a content_uri, assume it is a PDF.
-        // This may need to change in the future but for now
-        // I think it's the simplest approach and avoids having
-        // to do a file I/O to get mime type for every card.
-        if (model.content_uri.length > 0) {
+        if (model.content_type === 'application/pdf') {
             card_class = PdfCard.PdfCard;
         } else if (this._template_type === 'B') {
             fade_in = false;
@@ -692,7 +688,7 @@ const Presenter = new Lang.Class({
 
     _preview_media_object: function (media_object, previous_arrow_visible, next_arrow_visible) {
         let infobox = MediaInfobox.MediaInfobox.new_from_ekn_model(media_object);
-        this._previewer.file = Gio.File.new_for_uri(media_object.content_uri);
+        this._previewer.set_content(media_object.get_content_stream(), media_object.content_type);
         this.view.lightbox.media_object = media_object;
         this.view.lightbox.infobox_widget = infobox;
         this.view.lightbox.reveal_overlays = true;

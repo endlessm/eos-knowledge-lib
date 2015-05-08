@@ -19,15 +19,6 @@ const ImagePreviewer = Lang.Class({
     Extends: Gtk.Widget,
     Properties: {
         /**
-         * Property: file
-         *
-         * Just like file on the Previewer widget it self. Sets the GFile to
-         * be previewed.
-         */
-        'file': GObject.ParamSpec.object('file', 'File', 'File to preview',
-            GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE | GObject.ParamFlags.CONSTRUCT,
-            GObject.Object),
-        /**
          * Property: aspect
          *
          * The aspect the previewer widget should display at
@@ -66,7 +57,8 @@ const ImagePreviewer = Lang.Class({
         this.parent(props);
         this.set_has_window(false);
 
-        this._file = null;
+        this._stream = null;
+        this._content_type = null;
         this._animation = null;
         this._animation_iter = null;
         this._animation_callback_source = 0;
@@ -95,14 +87,15 @@ const ImagePreviewer = Lang.Class({
         return this._supported_types.indexOf(type) != -1;
     },
 
-    set file (v) {
-        if (v === this._file)
+    set_content: function (stream, content_type) {
+        if (stream === this._stream)
             return;
-        this._file = v;
-        if (this._file === null)
+        this._stream = stream;
+        if (this._stream === null)
             return;
 
-        this._animation = this._load_animation();
+
+        this._animation = GdkPixbuf.PixbufAnimation.new_from_stream(this._stream, null);
         if (this._animation !== null) {
             if (this._animation.is_static_image()) {
                 this._pixbuf = this._animation.get_static_image();
@@ -130,11 +123,11 @@ const ImagePreviewer = Lang.Class({
         }
 
         this.queue_draw();
-        this.notify('file');
     },
 
-    get file () {
-        return this._file;
+    clear_content: function () {
+        this._stream = null;
+        this._animation = null;
     },
 
     get aspect () {
@@ -173,19 +166,6 @@ const ImagePreviewer = Lang.Class({
 
     vfunc_get_preferred_height: function () {
         return [this._min_percentage * this._natural_height, this._max_percentage * this._natural_height];
-    },
-
-    _load_animation: function () {
-        // GdkPixbuf.Pixbuf has not from_uri methods so we are stuck checking
-        // the scheme ourselves
-        let scheme = this._file.get_uri_scheme();
-        if (scheme === "file") {
-            return GdkPixbuf.PixbufAnimation.new_from_file(this._file.get_path());
-        } else if (scheme === "resource") {
-            let resource = this._file.get_uri().split("resource://")[1];
-            return GdkPixbuf.PixbufAnimation.new_from_resource(resource);
-        }
-        return null;
     },
 
     _animation_timeout: function () {

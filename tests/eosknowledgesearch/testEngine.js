@@ -25,8 +25,14 @@ describe('Knowledge Engine Module', () => {
         return mock_request;
     }
 
-    // Setup a mocked request function which just returns the mock data
+    // Setup a mocked request function which just returns the mock data.
+    // From EOS 2.4 onward, xapian-bridge will return string results instead of
+    // JSON, so we stringify all mock_data to emulate this.
     function mock_engine_request(mock_err, mock_data) {
+        if (typeof mock_data !== 'undefined') {
+            let stringified_results = mock_data.results.map(JSON.stringify);
+            mock_data.results = stringified_results;
+        }
         engine._send_json_ld_request = (req, callback) => {
             callback(mock_err, mock_data);
         }
@@ -34,8 +40,19 @@ describe('Knowledge Engine Module', () => {
 
     function mock_engine_request_with_multiple_values(return_values) {
         engine._send_json_ld_request = (req, callback) => {
-            callback(undefined, return_values.shift());
+            let next_result = return_values.shift();
+            let stringified_results = next_result.results.map(JSON.stringify);
+            next_result.results = stringified_results;
+            callback(undefined, next_result);
         }
+    }
+
+    function mock_ekn_version (engine, version) {
+        engine._ekn_version_from_domain = function(domain) {
+            // The rule for our test suite is that domain 'foo' gets
+            // the content-path /foo'.
+            return version;
+        };
     }
 
     // where querystring is the URI component after a '?', and key is the
@@ -66,6 +83,10 @@ describe('Knowledge Engine Module', () => {
             // the content-path /foo'.
             return '/' + domain;
         };
+
+        // by default, test the newest code paths. Various unit tests can
+        // override this by calling mock_ekn_version(engine, 1)
+        mock_ekn_version(engine, 2);
     });
 
     describe('constructor', () => {
@@ -78,8 +99,9 @@ describe('Knowledge Engine Module', () => {
         });
     });
 
-    describe('HTTP requests', () => {
+    describe('HTTP requests (EKN v1)', () => {
         beforeEach(() => {
+            mock_ekn_version(engine, 1);
             // spy on the queue_message and cancel_message methods
             spyOn(engine._http_session, 'queue_message').and.callFake((req, cb) => {
                 cb();
@@ -201,7 +223,10 @@ describe('Knowledge Engine Module', () => {
     });
 
 
-    describe('get_object_by_id', () => {
+    describe('get_object_by_id (EKN v1)', () => {
+        beforeEach(() => {
+            mock_ekn_version(engine, 1);
+        });
         it('sends requests', () => {
             let request_spy = engine_request_spy();
             let mock_id = 'ekn://foo/0123456789abcdef';
@@ -326,7 +351,10 @@ describe('Knowledge Engine Module', () => {
         });
     });
 
-    describe('get_objects_by_query', () => {
+    describe('get_objects_by_query (EKN v1)', () => {
+        beforeEach(() => {
+            mock_ekn_version(engine, 1);
+        });
 
         it('sends requests', () => {
             let request_spy = engine_request_spy();

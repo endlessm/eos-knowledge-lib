@@ -171,7 +171,7 @@ const Lightbox = new Lang.Class({
     },
 
     set media_object (v) {
-        if (this._media_object !== null && this._media_object.content_uri === v.content_uri)
+        if (this._media_object !== null && this._media_object.ekn_id === v.ekn_id)
             return;
         this._media_object = v;
     },
