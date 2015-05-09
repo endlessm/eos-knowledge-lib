@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
   <gresource prefix="/com/endlessm/test">
+    <file compressed="true">app.json</file>
     <file compressed="true">hello.ui.xml</file>
   </gresource>
 </gresources>

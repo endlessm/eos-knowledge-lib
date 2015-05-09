@@ -1,0 +1,18 @@
+{
+    "id": "com.endlessm.scuba-diving-en",
+    "title": "Scuba Diving",
+    "interaction": {
+        "type": "mesh"
+    },
+    "pages": {
+        "home": {
+            "template": {
+                "type": "ebi_home"
+            },
+            "modules": {
+                "app_banner": {},
+                "in_app_search": {}
+            }
+        }
+    }
+}
