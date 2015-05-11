@@ -216,6 +216,7 @@ public_overrides = \
 	overrides/categoriesPage.js \
 	overrides/eknWebview.js \
 	overrides/historyItem.js \
+	overrides/historyPresenter.js \
 	overrides/homePage.js \
 	overrides/homePageA.js \
 	overrides/homePageB.js \
@@ -223,6 +224,7 @@ public_overrides = \
 	overrides/launcher.js \
 	overrides/lessonCard.js \
 	overrides/lightbox.js \
+	overrides/lightboxPresenter.js \
 	overrides/listCard.js \
 	overrides/marginButton.js \
 	overrides/mediaInfobox.js \
@@ -330,11 +332,13 @@ javascript_tests = \
 	tests/eosknowledge/testHello.js \
 	tests/eosknowledge/testHistoryItemModel.js \
 	tests/eosknowledge/testHistoryModel.js \
+	tests/eosknowledge/testHistoryPresenter.js \
 	tests/eosknowledge/testHomePage.js \
 	tests/eosknowledge/testHomePageA.js \
 	tests/eosknowledge/testHomePageB.js \
 	tests/eosknowledge/testLessonCard.js \
 	tests/eosknowledge/testLightbox.js \
+	tests/eosknowledge/testLightboxPresenter.js \
 	tests/eosknowledge/testListCard.js \
 	tests/eosknowledge/testMediaInfobox.js \
 	tests/eosknowledge/testNoSearchResultsPageA.js \

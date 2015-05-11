@@ -18,10 +18,10 @@ const ArticleHTMLRenderer = private_imports.articleHTMLRenderer;
 const ArticlePage = private_imports.reader.articlePage;
 const Config = private_imports.config;
 const EknWebview = private_imports.eknWebview;
-const HistoryItem = private_imports.historyItem;
+const HistoryPresenter = private_imports.historyPresenter;
 const Launcher = private_imports.launcher;
+const LightboxPresenter = private_imports.lightboxPresenter;
 const OverviewPage = private_imports.reader.overviewPage;
-const Previewer = private_imports.previewer;
 const ReaderCard = private_imports.reader.card;
 const UserSettingsModel = private_imports.reader.userSettingsModel;
 const Utils = private_imports.utils;
@@ -173,6 +173,13 @@ const Presenter = new Lang.Class({
 
         this.parent(props);
 
+        // Currently, Reader apps lightboxes don't show an infobox.
+        this._lightbox_presenter = new LightboxPresenter.LightboxPresenter({
+            engine: this.engine,
+            view: this.view,
+            display_infobox: false,
+        });
+
         WebkitURIHandlers.register_webkit_uri_handlers(this._article_render_callback.bind(this));
 
         let app_id = this.application.application_id;
@@ -194,33 +201,24 @@ const Presenter = new Lang.Class({
         this._webview_map = {};
         this._article_models = [];
 
-        this._previewer = new Previewer.Previewer({
-            visible: true,
-        });
-        this.view.lightbox.content_widget = this._previewer;
-
-        // lock to ensure we're only loading one lightbox media object at a
-        // time
-        this._loading_new_lightbox = false;
-
         this._latest_origin_query_obj = new EosKnowledgeSearch.QueryObject();
         this.history_model = new EosKnowledge.HistoryModel();
+        this._history_presenter = new HistoryPresenter.HistoryPresenter({
+            history_model: this.history_model,
+            view: this.view,
+        });
 
         // Connect signals
         this.view.history_buttons.back_button.connect('clicked', this._on_topbar_back_clicked.bind(this));
         this.view.history_buttons.forward_button.connect('clicked', this._on_topbar_forward_clicked.bind(this));
-        this.history_model.bind_property('can-go-forward', this.view.history_buttons.forward_button, 'sensitive',
-            GObject.BindingFlags.SYNC_CREATE);
-        this.history_model.bind_property('can-go-back', this.view.history_buttons.back_button, 'sensitive',
-            GObject.BindingFlags.SYNC_CREATE);
 
         this.view.nav_buttons.connect('back-clicked', function () {
-            this._update_history_model(this._current_page - 1);
+            this._update_history_object(this._current_page - 1);
             this._go_to_page(this._current_page - 1, EosKnowledge.LoadingAnimationType.BACKWARDS_NAVIGATION);
         }.bind(this));
         this.view.nav_buttons.connect('forward-clicked', function () {
             let next_page = (this._current_page + 1) % this.view.total_pages;
-            this._update_history_model(next_page);
+            this._update_history_object(next_page);
             this._go_to_page(next_page, EosKnowledge.LoadingAnimationType.FORWARDS_NAVIGATION);
         }.bind(this));
 
@@ -240,8 +238,6 @@ const Presenter = new Lang.Class({
             this.view.issue_nav_buttons.show();
             this.view.disconnect(handler);  // One-shot signal handler only.
         }.bind(this));
-        this.view.connect('lightbox-nav-previous-clicked', this._on_lightbox_previous_clicked.bind(this));
-        this.view.connect('lightbox-nav-next-clicked', this._on_lightbox_next_clicked.bind(this));
 
         this.view.standalone_page.infobar.connect('response', this._open_magazine.bind(this));
         this.view.search_box.connect('activate', (search_entry) => {
@@ -294,7 +290,7 @@ const Presenter = new Lang.Class({
         this.engine.get_objects_by_query(query_obj, this._load_search_results.bind(this));
     },
 
-    _update_history_model: function (page_index) {
+    _update_history_object: function (page_index) {
         if (page_index === 0) {
             this._add_history_object_for_overview_page();
         } else if (page_index === this.view.total_pages - 1) {
@@ -305,56 +301,57 @@ const Presenter = new Lang.Class({
     },
 
     _add_history_object_for_article_page: function (model) {
-        this.history_model.current_item = new HistoryItem.HistoryItem({
-            title: model.title,
-            page_type: this._ARTICLE_PAGE,
-            article_model: model,
-            article_origin_query_obj: this._latest_origin_query_obj,
-        });
+        this._history_presenter.set_current_item(
+            model.title, // title
+            this._ARTICLE_PAGE, // page_type
+            model, // article_model
+            null, // query_obj
+            this._latest_origin_query_obj // article_origin_query_obj
+        );
     },
 
     _add_history_object_for_search_page: function (query_obj) {
-        let is_same_search = this.history_model.current_item !== null &&
-            this.history_model.current_item.query_obj !== null &&
-            this.history_model.current_item.query_obj.query === query_obj.query;
-
-        // If it's a request for an identical search, don't bother
-        // adding it to the history model.
-        if (!is_same_search) {
-            this._latest_origin_query_obj = query_obj;
-            this.history_model.current_item = new HistoryItem.HistoryItem({
-                page_type: this._SEARCH_PAGE,
-                query_obj: query_obj,
-                article_origin_query_obj: this._latest_origin_query_obj,
-            });
-        }
+        this._history_presenter.set_current_item(
+            '', // title
+            this._SEARCH_PAGE, // page_type
+            null, // article_model
+            query_obj, // query_obj
+            this._latest_origin_query_obj // article_origin_query
+        );
     },
 
     _add_history_object_for_overview_page: function () {
-        this.history_model.current_item = new HistoryItem.HistoryItem({
-            page_type: this._OVERVIEW_PAGE,
-            article_origin_query_obj: this._latest_origin_query_obj,
-        });
+        this._history_presenter.set_current_item(
+            '', // title
+            this._OVERVIEW_PAGE, // page_type
+            null, // article_model
+            null, // query_obj
+            this._latest_origin_query_obj // article_origin_query_obj
+        );
     },
 
     _add_history_object_for_done_page: function () {
-        this.history_model.current_item = new HistoryItem.HistoryItem({
-            page_type: this._DONE_PAGE,
-            article_origin_query_obj: this._latest_origin_query_obj,
-        });
+        this._history_presenter.set_current_item(
+            '', // title
+            this._DONE_PAGE, // page_type
+            null, // article_model
+            null, // query_obj
+            this._latest_origin_query_obj // article_origin_query_obj
+        );
     },
 
     _replicate_history_state: function (animation_type) {
-        let article_origin_query_obj = this.history_model.current_item.article_origin_query_obj;
+        let current_item = this._history_presenter.history_model.current_item;
+        let article_origin_query_obj = current_item.article_origin_query_obj;
 
         this.view.search_box.text = article_origin_query_obj.query;
 
-        switch (this.history_model.current_item.page_type) {
+        switch (current_item.page_type) {
             case this._SEARCH_PAGE:
-                this._perform_search(this.view, this.history_model.current_item.query_obj);
+                this._perform_search(this.view, current_item.query_obj);
                 break;
             case this._ARTICLE_PAGE:
-                this._go_to_article(this.history_model.current_item.article_model, animation_type);
+                this._go_to_article(current_item.article_model, animation_type);
                 break;
             case this._OVERVIEW_PAGE:
                 this._go_to_page(0, animation_type);
@@ -363,12 +360,12 @@ const Presenter = new Lang.Class({
                 this._go_to_page(this._article_models.length + 1, animation_type);
                 break;
             default:
-                printerr("Unexpected page type " + this.history_model.current_item.page_type);
+                printerr("Unexpected page type " + current_item.page_type);
                 this._go_to_page(0, animation_type);
         }
 
         // Update latest origin query.
-        this._latest_origin_query_obj = this.history_model.current_item.article_origin_query_obj;
+        this._latest_origin_query_obj = current_item.article_origin_query_obj;
     },
 
     _open_magazine: function () {
@@ -388,7 +385,7 @@ const Presenter = new Lang.Class({
                 // We now have all the articles we want to show. Now we load the
                 // HTML content for the first few pages into the webview.
                 this._load_overview_snippets_from_articles();
-                this._update_history_model(this.settings.bookmark_page);
+                this._update_history_object(this.settings.bookmark_page);
                 this._go_to_page(this.settings.bookmark_page, EosKnowledge.LoadingAnimationType.NONE);
             }
             this.view.show_all();
@@ -822,7 +819,7 @@ const Presenter = new Lang.Class({
                         return;
                     }
                     if (clicked_model instanceof EosKnowledgeSearch.MediaObjectModel) {
-                        this._lightbox_handler(article_model, clicked_model);
+                        this._lightbox_presenter.show_media_object(article_model, clicked_model);
                     } else if (clicked_model instanceof EosKnowledgeSearch.ArticleObjectModel) {
                         this._add_history_object_for_article_page(clicked_model);
                         this._go_to_article(clicked_model, EosKnowledge.LoadingAnimationType.NONE);
@@ -889,19 +886,6 @@ const Presenter = new Lang.Class({
 
     _article_render_callback: function (article_model) {
         return this._article_renderer.render(article_model);
-    },
-
-    _lightbox_handler: function (current_article, media_object) {
-        let resources = current_article.get_resources();
-        let resource_index = resources.indexOf(media_object.ekn_id);
-        if (resource_index !== -1) {
-            // Checks whether forward/back arrows should be displayed.
-            this._preview_media_object(media_object,
-                resource_index > 0,
-                resource_index < resources.length - 1);
-            return true;
-        }
-        return false;
     },
 
     _load_webview_content_callback: function (page, view, error) {
@@ -1030,53 +1014,6 @@ const Presenter = new Lang.Class({
         this.view.overview_page.set_article_snippets(snippets);
     },
 
-    _lightbox_shift_image: function (lightbox, delta) {
-        if (typeof lightbox.media_object === 'undefined' || this._loading_new_lightbox) {
-            return;
-        }
-
-        let resources = this._article_models[this.current_page - 1].get_resources();
-        let current_index = resources.indexOf(lightbox.media_object.ekn_id);
-
-        if (current_index === -1) {
-            return;
-        }
-
-        let new_index = current_index + delta;
-        let target_object_uri = resources[new_index];
-
-        this._loading_new_lightbox = true;
-        this.engine.get_object_by_id(target_object_uri, (err, target_object) => {
-            if (err !== undefined) {
-                printerr(err);
-                printerr(err.stack);
-                return;
-            }
-
-            // If the next object is not the last, the forward arrow should be displayed.
-            this._preview_media_object(target_object,
-                new_index > 0,
-                new_index < resources.length - 1);
-            this._loading_new_lightbox = false;
-        });
-    },
-
-    _on_lightbox_previous_clicked: function (view, lightbox) {
-        this._lightbox_shift_image(lightbox, -1);
-    },
-
-    _on_lightbox_next_clicked: function (view, lightbox) {
-        this._lightbox_shift_image(lightbox, 1);
-    },
-
-    _preview_media_object: function (media_object, previous_arrow_visible, next_arrow_visible) {
-        this._previewer.set_content(media_object.get_content_stream(), media_object.content_type);
-        this.view.lightbox.media_object = media_object;
-        this.view.lightbox.reveal_overlays = true;
-        this.view.lightbox.has_back_button = previous_arrow_visible;
-        this.view.lightbox.has_forward_button = next_arrow_visible;
-    },
-
     _load_standalone_article: function (model) {
         this._standalone = this._load_webview_content(model, (webview, error) => {
             this._load_webview_content_callback(this.view.standalone_page.article_page, webview, error);
@@ -1097,7 +1034,7 @@ const Presenter = new Lang.Class({
      * history object for information to replicate that previous page's query.
      */
     _on_topbar_back_clicked: function () {
-        this.history_model.go_back();
+        this._history_presenter.go_back();
         this._replicate_history_state(EosKnowledge.LoadingAnimationType.BACKWARDS_NAVIGATION);
     },
 
@@ -1106,7 +1043,7 @@ const Presenter = new Lang.Class({
      * history object for information to replicate that next page's query.
      */
     _on_topbar_forward_clicked: function () {
-        this.history_model.go_forward();
+        this._history_presenter.go_forward();
         this._replicate_history_state(EosKnowledge.LoadingAnimationType.FORWARDS_NAVIGATION);
     },
 

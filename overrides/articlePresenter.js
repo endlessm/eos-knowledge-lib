@@ -104,6 +104,10 @@ const ArticlePresenter = new GObject.Class({
         this.notify('article-model');
     },
 
+    get article_model() {
+        return this._article_model;
+    },
+
     /**
      * Function: load_article
      * Loads an <ArticleObjectModel> and adds it to the viewing history

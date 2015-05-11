@@ -171,7 +171,7 @@ const MockView = new Lang.Class({
         this.page_manager = {
             add: function () {},
         };
-        this.lightbox = {};
+        this.lightbox = new GObject.Object();
     },
 
     present_with_time: function () {},
@@ -353,7 +353,7 @@ describe('Reader presenter', function () {
 
         it('increments the current page when clicking the forward button', function () {
             article_nav_buttons.emit('forward-clicked');
-            expect(presenter.history_model.current_item.article_model.title).toBe("Title 1");
+            expect(presenter.history_model.current_item.article_model.title).toBe('Title 1');
             expect(presenter.current_page).toBe(1);
             expect(settings.bookmark_page).toBe(1);
         });
@@ -486,27 +486,6 @@ describe('Reader presenter', function () {
             presenter._go_to_page(3);
             presenter._open_magazine();
             expect(view.show_overview_page).toHaveBeenCalled();
-        });
-
-        it('loads media into lightbox if and only if it is a member of article\'s resource array', function () {
-            let model = MOCK_RESULTS[0];
-            let media_object_uri = 'ekn://foo/bar';
-            let media_object = {
-                ekn_id: media_object_uri,
-            };
-            model.get_resources = function () {
-                return [media_object_uri];
-            };
-            spyOn(presenter, '_preview_media_object');
-            let lightbox_result = presenter._lightbox_handler(model, media_object);
-            expect(presenter._preview_media_object).toHaveBeenCalledWith(media_object, false, false);
-            expect(lightbox_result).toBe(true);
-
-            let nonexistant_media_object = {
-                ekn_id: 'ekn://no/media',
-            };
-            let no_lightbox_result = presenter._lightbox_handler(model, nonexistant_media_object);
-            expect(no_lightbox_result).toBe(false);
         });
 
         it('issues search queries as the user types in the search box', function (done) {
