@@ -89,7 +89,7 @@ function read_stream (stream, cancellable = null) {
         let total_read = '';
 
         let buffer = stream.read_bytes(CHUNK_SIZE, cancellable);
-        while (buffer.get_size() === CHUNK_SIZE) {
+        while (buffer.get_size() !== 0) {
             total_read += buffer.get_data().toString();
             buffer = stream.read_bytes(CHUNK_SIZE, cancellable);
         }
