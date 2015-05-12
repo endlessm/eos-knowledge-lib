@@ -74,7 +74,7 @@ const CategoriesPage = new Lang.Class({
 
         this._card_grid = new Gtk.FlowBox({
             valign: Gtk.Align.START,
-            halign: Gtk.Align.START,
+            halign: Gtk.Align.CENTER,
             homogeneous: true,
             expand: true,
             max_children_per_line: 10000,
