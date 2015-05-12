@@ -12,6 +12,10 @@
 %:
 	dh $@  --with autotools-dev --with gir
 
+override_dh_install:
+	find debian/tmp/usr/lib -name '*.la' -delete
+	dh_install
+
 # Build our documentation as well
 override_dh_auto_configure:
 	dh_auto_configure -- --enable-gtk-doc --enable-gir-doc --enable-js-doc
