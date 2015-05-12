@@ -1,9 +1,12 @@
 /* Copyright 2015 Endless Mobile, Inc. */
 
-const EosKnowledge = imports.gi.EosKnowledge;
+const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
+
+const Card = imports.app.reader.card;
+const SearchResultsPage = imports.app.reader.searchResultsPage;
 
 /* We add some reset css code since GtkWindow does not load eos-sdk' reset CSS */
 const RESET_CSS = [
@@ -46,10 +49,10 @@ let cards = [{
 }].map((props) => {
     props.expand = false;
     props.halign = Gtk.Align.START;
-    return new EosKnowledge.Reader.Card(props);
+    return new Card.Card(props);
 });
 
-let search_results_page = new EosKnowledge.Reader.SearchResultsPage();
+let search_results_page = new SearchResultsPage.SearchResultsPage();
 search_results_page.append_search_results(cards);
 
 let win = new Gtk.Window({

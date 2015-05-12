@@ -1,14 +1,16 @@
 const Endless = imports.gi.Endless;
-const EosKnowledge = imports.gi.EosKnowledge;
+const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
-const Gtk = imports.gi.Gtk;
 const GLib = imports.gi.GLib;
+const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
+
+const CardB = imports.app.cardB;
+const HomePageB = imports.app.homePageB;
 
 const TEST_APPLICATION_ID = 'com.endlessm.knowledge.pages';
 const TESTDIR = Endless.getCurrentFileDir() + '/..';
-const TESTBUILDDIR = GLib.get_current_dir() + '/tests';
 const BACKGROUND_CSS = "EosWindow { \
     background-image: url('" + TESTDIR + "/test-content/background.jpg'); \
     background-size: 100% 100%; \
@@ -22,7 +24,7 @@ const TestApplication = new Lang.Class ({
         this.parent();
 
         // Load and register the GResource which has content for this app
-        let resource = Gio.Resource.load(TESTBUILDDIR + '/test-content/test-content.gresource');
+        let resource = Gio.Resource.load(TESTDIR + '/test-content/test-content.gresource');
         resource._register();
 
         let provider = new Gtk.CssProvider();
@@ -38,51 +40,51 @@ const TestApplication = new Lang.Class ({
                                                  Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 
         let cards = [
-            new EosKnowledge.CardB({
+            new CardB.CardB({
                 title: 'Card 1',
                 synopsis: 'The First Card',
                 thumbnail_uri: TESTDIR + '/test-content/relish.jpg',
             }),
-            new EosKnowledge.CardB({
+            new CardB.CardB({
                 title: 'Card 2',
                 synopsis: 'The Second Card',
                 thumbnail_uri: TESTDIR + '/test-content/pig1.jpg',
             }),
-            new EosKnowledge.CardB({
+            new CardB.CardB({
                 title: 'Card 3',
                 synopsis: 'The Third Card',
                 thumbnail_uri: TESTDIR + '/test-content/pig2.jpg',
             }),
-            new EosKnowledge.CardB({
+            new CardB.CardB({
                 title: 'Card 4',
                 synopsis: 'The Fourth Card',
                 thumbnail_uri: TESTDIR + '/test-content/pig1.jpg',
             }),
-            new EosKnowledge.CardB({
+            new CardB.CardB({
                 title: 'Card 5',
                 synopsis: 'The Fifth Card',
                 thumbnail_uri: TESTDIR + '/test-content/pig2.jpg',
             }),
-            new EosKnowledge.CardB({
+            new CardB.CardB({
                 title: 'Card 6',
                 synopsis: 'The Sixth Card',
                 // By Bogdan29roman, CC-BY-SA
                 // http://en.wikipedia.org/wiki/File:Mu%C5%9Ftar.jpg
                 thumbnail_uri: TESTDIR + '/test-content/mustard.jpg'
             }),
-            new EosKnowledge.CardB({
+            new CardB.CardB({
                 title: 'Card 7',
                 synopsis: 'The Seventh Card',
                 thumbnail_uri: TESTDIR + '/test-content/pig2.jpg',
             }),
-            new EosKnowledge.CardB({
+            new CardB.CardB({
                 title: 'Card 8',
                 synopsis: 'The Eighth Card',
                 thumbnail_uri: TESTDIR + '/test-content/pig1.jpg',
             })
         ];
 
-        let home_page = new EosKnowledge.HomePageB({
+        let home_page = new HomePageB.HomePageB({
             title_image_uri: 'resource:///com/endlessm/thrones/agot.svg'
         });
         home_page.cards = cards;

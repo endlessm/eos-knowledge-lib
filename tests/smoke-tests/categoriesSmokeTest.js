@@ -1,9 +1,13 @@
-const Gtk = imports.gi.Gtk;
+const Endless = imports.gi.Endless;
+const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
-const Endless = imports.gi.Endless;
-const EosKnowledge = imports.gi.EosKnowledge;
+const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
+
+const CardA = imports.app.cardA;
+const LessonCard = imports.app.lessonCard;
+const CategoriesPage = imports.app.categoriesPage;
 
 const TEST_APPLICATION_ID = 'com.endlessm.knowledge.categories-page';
 const TESTDIR = Endless.getCurrentFileDir() + '/..';
@@ -23,40 +27,40 @@ const TestApplication = new Lang.Class ({
                                                  Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 
         let cards = [
-            new EosKnowledge.CardA({
+            new CardA.CardA({
                 title: 'Synopsis Card',
                 synopsis: 'This is the synopsis',
             }),
-            new EosKnowledge.CardA({
+            new CardA.CardA({
                 title: 'Picture Card',
                 thumbnail_uri: TESTDIR + '/test-content/pig1.jpg',
             }),
-            new EosKnowledge.CardA({
+            new CardA.CardA({
                 title: 'Picture Card',
                 thumbnail_uri: TESTDIR + '/test-content/pig1.jpg',
             }),
-            new EosKnowledge.CardA({
+            new CardA.CardA({
                 title: 'Picture Card',
                 thumbnail_uri: TESTDIR + '/test-content/pig1.jpg',
             }),
-            new EosKnowledge.CardA({
+            new CardA.CardA({
                 title: 'Picture Card',
                 thumbnail_uri: TESTDIR + '/test-content/pig1.jpg',
             }),
-            new EosKnowledge.CardA({
+            new CardA.CardA({
                 title: 'Picture Card',
                 thumbnail_uri: TESTDIR + '/test-content/pig1.jpg',
             }),
-            new EosKnowledge.CardA({
+            new CardA.CardA({
                 title: 'Picture Card',
                 thumbnail_uri: TESTDIR + '/test-content/pig1.jpg',
             }),
-            new EosKnowledge.CardA({
+            new CardA.CardA({
                 title: 'Everything card',
                 synopsis: 'This card has everything',
                 thumbnail_uri: TESTDIR + '/test-content/pig2.jpg',
             }),
-            new EosKnowledge.LessonCard({
+            new LessonCard.LessonCard({
                 title: 'Mustard lesson',
                 synopsis: 'Sample, incomplete',
                 // By Bogdan29roman, CC-BY-SA
@@ -67,7 +71,7 @@ const TestApplication = new Lang.Class ({
             })
         ];
 
-        let categories_page = new EosKnowledge.CategoriesPage();
+        let categories_page = new CategoriesPage.CategoriesPage();
         categories_page.cards = cards;
 
         let window = new Endless.Window({

@@ -1,14 +1,17 @@
 const Endless = imports.gi.Endless;
-const EosKnowledge = imports.gi.EosKnowledge;
+const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
+const CardA = imports.app.cardA;
+const HomePageA = imports.app.homePageA;
+const LessonCard = imports.app.lessonCard;
+
 const TEST_APPLICATION_ID = 'com.endlessm.knowledge.pages';
 const TESTDIR = Endless.getCurrentFileDir() + '/..';
-const TESTBUILDDIR = GLib.get_current_dir() + '/tests';
 
 const TestApplication = new Lang.Class ({
     Name: 'TestApplication',
@@ -18,7 +21,7 @@ const TestApplication = new Lang.Class ({
         this.parent();
 
         // Load and register the GResource which has content for this app
-        let resource = Gio.Resource.load(TESTBUILDDIR + '/test-content/test-content.gresource');
+        let resource = Gio.Resource.load(TESTDIR + '/test-content/test-content.gresource');
         resource._register();
 
         let provider = new Gtk.CssProvider();
@@ -29,20 +32,20 @@ const TestApplication = new Lang.Class ({
                                                  Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 
         let cards = [
-            new EosKnowledge.CardA({
+            new CardA.CardA({
                 title: 'Subtitled Card',
                 synopsis: 'This is the Subtitle',
             }),
-            new EosKnowledge.CardA({
+            new CardA.CardA({
                 title: 'Picture Card',
                 thumbnail_uri: TESTDIR + '/test-content/pig1.jpg',
             }),
-            new EosKnowledge.CardA({
+            new CardA.CardA({
                 title: 'Everything card',
                 synopsis: 'This card has everything',
                 thumbnail_uri: TESTDIR + '/test-content/pig2.jpg',
             }),
-            new EosKnowledge.LessonCard({
+            new LessonCard.LessonCard({
                 title: 'Mustard lesson',
                 synopsis: 'Sample, incomplete',
                 // By Bogdan29roman, CC-BY-SA
@@ -53,7 +56,7 @@ const TestApplication = new Lang.Class ({
             })
         ];
 
-        let home_page = new EosKnowledge.HomePageA({
+        let home_page = new HomePageA.HomePageA({
             title_image_uri: 'resource:///com/endlessm/thrones/agot.svg'
         });
         home_page.cards = cards;

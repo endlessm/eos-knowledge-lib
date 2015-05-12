@@ -1,10 +1,12 @@
 const Endless = imports.gi.Endless;
-const EosKnowledge = imports.gi.EosKnowledge;
+const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
+
+const ArticlePage = imports.app.articlePage;
 
 const TEST_APPLICATION_ID = 'com.endlessm.knowledge.test.article-page';
 const TESTDIR = Endless.getCurrentFileDir() + '/..';
@@ -23,7 +25,7 @@ const TestApplication = new Lang.Class({
                                                  provider,
                                                  Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 
-        let article_page = new EosKnowledge.ArticlePage({
+        let article_page = new ArticlePage.ArticlePage({
             title: 'Big Old Title Thinger That Should Wrap',
             visible: true
         });

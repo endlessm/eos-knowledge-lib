@@ -1,10 +1,13 @@
 const Endless = imports.gi.Endless;
-const EosKnowledge = imports.gi.EosKnowledge;
+const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
+
+const ArticlePage = imports.app.reader.articlePage;
+const Window = imports.app.reader.window;
 
 const TEST_APPLICATION_ID = 'com.endlessm.knowledge.test.reader-window';
 const TESTDIR = Endless.getCurrentFileDir() + '/..';
@@ -23,12 +26,12 @@ const TestApplication = new Lang.Class({
                                                  provider,
                                                  Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 
-        let window = new EosKnowledge.Reader.Window({
+        let window = new Window.Window({
             application: this,
         });
 
         for (let i = 0; i < 15; i++) {
-            let a = new EosKnowledge.Reader.ArticlePage({ title : 'Example page #' + (i + 1) });
+            let a = new ArticlePage.ArticlePage({ title : 'Example page #' + (i + 1) });
             window.append_article_page(a);
         }
 

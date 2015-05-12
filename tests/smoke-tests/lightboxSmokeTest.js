@@ -1,9 +1,14 @@
 const Endless = imports.gi.Endless;
-const EosKnowledge = imports.gi.EosKnowledge;
+const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
+
+const CardA = imports.app.cardA;
+const Lightbox = imports.app.lightbox;
+const MediaInfobox = imports.app.mediaInfobox;
+const Previewer = imports.app.previewer;
 
 const TEST_APPLICATION_ID = 'com.endlessm.knowledge.test.lightbox';
 const TESTDIR = Endless.getCurrentFileDir() + '/..';
@@ -29,13 +34,13 @@ const TestApplication = new Lang.Class({
         };
 
         this._infoboxes = {
-            image: new EosKnowledge.MediaInfobox({
+            image: new MediaInfobox.MediaInfobox({
                 caption: 'Ruínas maias em Tikal, abandonadas por razões desconhecidas no século X.',
                 media_title: 'pig1.jpg',
                 license_text: 'Some license',
                 creator_text: 'Some creator'
             }),
-            copyrighted: new EosKnowledge.MediaInfobox({
+            copyrighted: new MediaInfobox.MediaInfobox({
                 caption: 'Ruínas maias em Tikal. Em Tikal, nas terras baixas do norte da Guatemala, muitas ruínas maias do III e IV séculos foram escavadas. ' +
                          'e estudadas. Acredita-se que a área, um dos maiores centros religiosos maia, teve uma população de 50.000 habitantes durante seu ' +
                          'apogeu, até que foi abandonada por razões desconhecidas no século X.\n' +
@@ -46,7 +51,7 @@ const TestApplication = new Lang.Class({
                 license_text: 'NSA Creative Commons Spy Alike',
                 creator_text: 'Yo momma'
             }),
-            tallimage: new EosKnowledge.MediaInfobox({
+            tallimage: new MediaInfobox.MediaInfobox({
                 caption: 'This image be super tall.',
                 media_title: 'tall.jpg',
                 license_text: 'blar',
@@ -55,7 +60,7 @@ const TestApplication = new Lang.Class({
             wideimage: null
         };
 
-        let image_card = new EosKnowledge.CardA({
+        let image_card = new CardA.CardA({
             title: 'Open image in lightbox'
         });
         image_card.connect('clicked', Lang.bind(this, function () {
@@ -64,7 +69,7 @@ const TestApplication = new Lang.Class({
             this._lightbox.infobox_widget = this._infoboxes.image;
         }.bind(this)));
 
-        let copyrighted_card = new EosKnowledge.CardA({
+        let copyrighted_card = new CardA.CardA({
             title: 'Open secret sauce in lightbox'
         });
         copyrighted_card.connect('clicked', Lang.bind(this, function () {
@@ -73,7 +78,7 @@ const TestApplication = new Lang.Class({
             this._lightbox.infobox_widget = this._infoboxes.copyrighted;
         }.bind(this)));
 
-        let tallimage_card = new EosKnowledge.CardA({
+        let tallimage_card = new CardA.CardA({
             title: 'Open tall image in lightbox'
         });
         tallimage_card.connect('clicked', Lang.bind(this, function () {
@@ -82,7 +87,7 @@ const TestApplication = new Lang.Class({
             this._lightbox.infobox_widget = this._infoboxes.tallimage;
         }.bind(this)));
 
-        let wideimage_card = new EosKnowledge.CardA({
+        let wideimage_card = new CardA.CardA({
             title: 'Open wide image in lightbox'
         });
         wideimage_card.connect('clicked', Lang.bind(this, function () {
@@ -97,11 +102,11 @@ const TestApplication = new Lang.Class({
         grid.add(tallimage_card);
         grid.add(wideimage_card);
 
-        this._previewer = new EosKnowledge.Previewer({
+        this._previewer = new Previewer.Previewer({
             visible: true
         });
 
-        this._lightbox = new EosKnowledge.Lightbox({
+        this._lightbox = new Lightbox.Lightbox({
             content_widget: this._previewer,
         });
         this._lightbox.add(grid);

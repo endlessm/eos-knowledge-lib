@@ -1,9 +1,12 @@
 const Endless = imports.gi.Endless;
-const EosKnowledge = imports.gi.EosKnowledge;
+const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
+
+const CardA = imports.app.cardA;
+const SectionArticlePage = imports.app.sectionArticlePage;
 
 const TEST_APPLICATION_ID = 'com.endlessm.knowledge.sectionArticlePageSmokeTest';
 const TESTDIR = Endless.getCurrentFileDir() + '/..';
@@ -21,12 +24,12 @@ const TestApplication = new Lang.Class ({
         Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(),
             provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 
-        let the_section_article_page = new EosKnowledge.SectionArticlePageA({
+        let the_section_article_page = new SectionArticlePage.SectionArticlePageA({
             show_article: false
         });
 
         the_section_article_page.section_page.title = 'The Section';
-        let card = new EosKnowledge.CardA({
+        let card = new CardA.CardA({
             title: 'Picture Card',
             thumbnail_uri: TESTDIR + '/test-content/pig1.jpg',
         });
