@@ -43,6 +43,7 @@ const PDFView = new Lang.Class({
         });
         let view = new EvinceView.View();
         view.set_model(document_model);
+        view.show_all();
 
         let child = this.get_child();
         if (child !== null)
