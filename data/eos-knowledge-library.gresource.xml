@@ -15,6 +15,7 @@
     <file preprocess="xml-stripblanks">reader/standalone_arrow.svg</file>
     <file>templates/article.mst</file>
     <file>templates/css/embedly.css</file>
+    <file>templates/css/reader.css</file>
     <file>templates/css/wikihow.css</file>
     <file>templates/css/wikimedia.css</file>
     <file>templates/images/noise.png</file>
