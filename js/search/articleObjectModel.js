@@ -5,7 +5,7 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const Soup = imports.gi.Soup;
 
-const Utils = imports.search.searchUtils;
+const Utils = imports.search.utils;
 const ContentObjectModel = imports.search.contentObjectModel;
 const TreeNode = imports.search.treeNode;
 

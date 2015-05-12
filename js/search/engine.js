@@ -10,7 +10,7 @@ const ContentObjectModel = imports.search.contentObjectModel;
 const MediaObjectModel = imports.search.mediaObjectModel;
 const QueryObject = imports.search.queryObject;
 const datadir = imports.search.datadir;
-const utils = imports.search.searchUtils;
+const Utils = imports.search.utils;
 
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 
@@ -141,7 +141,7 @@ const Engine = Lang.Class({
             }
         };
 
-        let [domain, __] = utils.components_from_ekn_id(id);
+        let [domain, __] = Utils.components_from_ekn_id(id);
         let ekn_version = this._ekn_version_from_domain(domain);
 
         // Bundles with version >= 2 store all json-ld on disk instead of in the
@@ -181,7 +181,7 @@ const Engine = Lang.Class({
     },
 
     _read_jsonld_from_disk: function (ekn_id, callback, cancellable = null) {
-        let [domain, hash] = utils.components_from_ekn_id(ekn_id);
+        let [domain, hash] = Utils.components_from_ekn_id(ekn_id);
         let pak = this._epak_from_domain(domain);
         let record = pak.find_record_by_hex_name(hash);
 
@@ -191,7 +191,7 @@ const Engine = Lang.Class({
         }
 
         let metadata_stream = record.metadata.get_stream();
-        utils.read_stream_async(metadata_stream, (err, data) => {
+        Utils.read_stream_async(metadata_stream, (err, data) => {
             if (typeof err !== 'undefined') {
                 callback(err, undefined);
                 return;
@@ -210,7 +210,7 @@ const Engine = Lang.Class({
     // Returns a GInputStream for the given EKN object's content. Only supports
     // v2+ app bundles.
     get_content_by_id: function (ekn_id) {
-        let [domain, __] = utils.components_from_ekn_id(ekn_id);
+        let [domain, __] = Utils.components_from_ekn_id(ekn_id);
         let ekn_version = this._ekn_version_from_domain(domain);
         if (ekn_version >= 2) {
            return this._read_content_from_disk(ekn_id);
@@ -220,7 +220,7 @@ const Engine = Lang.Class({
     },
 
     _read_content_from_disk: function (ekn_id) {
-        let [domain, hash] = utils.components_from_ekn_id(ekn_id);
+        let [domain, hash] = Utils.components_from_ekn_id(ekn_id);
         let pak = this._epak_from_domain(domain);
         let record = pak.find_record_by_hex_name(hash);
 
@@ -400,7 +400,7 @@ const Engine = Lang.Class({
 
     _ekn_version_from_domain: function (domain) {
         if (this._ekn_version_cache[domain] === undefined)
-            this._ekn_version_cache[domain] = utils.get_ekn_version_for_domain(domain);
+            this._ekn_version_cache[domain] = Utils.get_ekn_version_for_domain(domain);
 
         return this._ekn_version_cache[domain];
     },
@@ -444,7 +444,7 @@ const Engine = Lang.Class({
             let Model = ekn_model_by_ekv_type[json_ld_type];
 
             let ekn_id = json_ld['@id'];
-            let [domain, __] = utils.components_from_ekn_id(ekn_id);
+            let [domain, __] = Utils.components_from_ekn_id(ekn_id);
             let ekn_version = this._ekn_version_from_domain(domain);
             let content_path = this._content_path_from_domain(domain);
 
@@ -545,7 +545,7 @@ let the_engine = null;
 Engine.get_default = function () {
     if (the_engine === null) {
         // try to create an engine configured with the current locale
-        var language = utils.get_current_language();
+        var language = Utils.get_current_language();
         the_engine = new Engine({
             language: language,
         });

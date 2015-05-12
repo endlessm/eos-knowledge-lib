@@ -6,7 +6,7 @@ const Lang = imports.lang;
 const Soup = imports.gi.Soup;
 
 const Blacklist = imports.search.blacklist;
-const Utils = imports.search.searchUtils;
+const Utils = imports.search.utils;
 
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 

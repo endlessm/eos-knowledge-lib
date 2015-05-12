@@ -283,8 +283,8 @@ js_files = \
 	js/search/mediaObjectModel.js \
 	js/search/queryObject.js \
 	js/search/searchProvider.js \
-	js/search/searchUtils.js \
 	js/search/treeNode.js \
+	js/search/utils.js \
 	$(NULL)
 
 jsdir = $(pkgdatadir)/js
