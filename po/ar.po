@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2015-04-28 01:46+0000\n"
+"POT-Creation-Date: 2015-05-05 01:47+0000\n"
 "PO-Revision-Date: 2015-04-14 01:47+0000\n"
 "Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
 "Language-Team: Arabic (http://www.transifex.com/projects/p/eos-knowledge-lib/language/ar/)\n"
@@ -145,7 +145,7 @@ msgstr "حاول البحث مرة أخرى باستخدام كلمات مختل
 
 #. TRANSLATORS: this appears on top of the search results page; %s will
 #. be replaced with the string that the user searched for.
-#: overrides/noSearchResultsPage.js:63 overrides/presenter.js:376
+#: overrides/noSearchResultsPage.js:63 overrides/presenter.js:374
 #, javascript-format
 msgid "Results for \"%s\""
 msgstr "النتائج لـ \"%s\""
@@ -188,25 +188,25 @@ msgstr "لا تفوت مسألة الأسبوع المقبل مع المزيد �
 #. Also, note: the "and" is used to join together the names
 #. of authors of a blog post. For example:
 #. Jane Austen and Henry Miller and William Clifford
-#: overrides/reader/presenter.js:948
+#: overrides/reader/presenter.js:944
 msgid "by {author}"
 msgstr "بواسطة (المؤلف)"
 
-#: overrides/reader/presenter.js:948
+#: overrides/reader/presenter.js:944
 msgid "and"
 msgstr "و"
 
-#: overrides/reader/presenter.js:1007 overrides/reader/presenter.js:1014
+#: overrides/reader/presenter.js:1003 overrides/reader/presenter.js:1010
 msgid "Oops!"
 msgstr "يا لهذا!"
 
-#: overrides/reader/presenter.js:1008
+#: overrides/reader/presenter.js:1004
 msgid ""
 "We could not find this magazine!\n"
 "Please try again after restarting your computer."
 msgstr "لم نتمكن من إيجاد هذه المجلة!\nيُرجى المحاولة مرة أُخرى بعد إعادة تشغيل جهاز الكمبيوتر الخاص بك."
 
-#: overrides/reader/presenter.js:1015
+#: overrides/reader/presenter.js:1011
 msgid ""
 "There was an error loading that page.\n"
 "Try another one or try again after restarting your computer."

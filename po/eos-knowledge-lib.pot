@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: eos-knowledge-lib 0.2.0\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-"
 "inc\n"
-"POT-Creation-Date: 2015-05-05 01:47+0000\n"
+"POT-Creation-Date: 2015-05-12 02:02+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -88,51 +88,19 @@ msgstr ""
 msgid "Lesson %d"
 msgstr ""
 
-#. TRANSLATORS: If this license page is translated into your language, you
-#. can add a link to it here. For example, Spanish would be
-#. https://creativecommons.org/licenses/by/4.0/es -- but make sure to check
-#. that that page exists! If it does not exist, leave this untranslated.
-#: overrides/licenses.js:27
-msgid "https://creativecommons.org/licenses/by/4.0/"
-msgstr ""
-
-#. TRANSLATORS: If this license page is translated into your language, you
-#. can add a link to it here. For example, Spanish would be
-#. https://creativecommons.org/licenses/by-sa/4.0/es -- but make sure to check
-#. that that page exists! If it does not exist, leave this untranslated.
-#: overrides/licenses.js:32
-msgid "https://creativecommons.org/licenses/by-sa/4.0/"
-msgstr ""
-
-#. TRANSLATORS: If this license page is translated into your language, you
-#. can add a link to it here. For example, Spanish would be
-#. https://creativecommons.org/licenses/by/3.0/es -- but make sure to check
-#. that that page exists! If it does not exist, leave this untranslated.
-#: overrides/licenses.js:37
-msgid "https://creativecommons.org/licenses/by/3.0/"
-msgstr ""
-
-#. TRANSLATORS: If this license page is translated into your language, you
-#. can add a link to it here. For example, Spanish would be
-#. https://creativecommons.org/licenses/by-sa/3.0/es -- but make sure to check
-#. that that page exists! If it does not exist, leave this untranslated.
-#: overrides/licenses.js:42
-msgid "https://creativecommons.org/licenses/by-sa/3.0/"
-msgstr ""
-
-#: overrides/licenses.js:47
+#: overrides/licenses.js:35
 msgid "CC-BY 4.0"
 msgstr ""
 
-#: overrides/licenses.js:48
+#: overrides/licenses.js:36
 msgid "CC-BY-SA 4.0"
 msgstr ""
 
-#: overrides/licenses.js:49
+#: overrides/licenses.js:37
 msgid "CC-BY 3.0"
 msgstr ""
 
-#: overrides/licenses.js:50
+#: overrides/licenses.js:38
 msgid "CC-BY-SA 3.0"
 msgstr ""
 
@@ -146,7 +114,7 @@ msgstr ""
 
 #. TRANSLATORS: this appears on top of the search results page; %s will
 #. be replaced with the string that the user searched for.
-#: overrides/noSearchResultsPage.js:63 overrides/presenter.js:374
+#: overrides/noSearchResultsPage.js:63 overrides/presenter.js:362
 #, javascript-format
 msgid "Results for \"%s\""
 msgstr ""
@@ -155,7 +123,7 @@ msgstr ""
 msgid "PDF"
 msgstr ""
 
-#: overrides/presenter.js:213 overrides/presenter.js:663
+#: overrides/presenter.js:208 overrides/presenter.js:614
 msgid "Articles"
 msgstr ""
 
@@ -189,25 +157,25 @@ msgstr ""
 #. Also, note: the "and" is used to join together the names
 #. of authors of a blog post. For example:
 #. Jane Austen and Henry Miller and William Clifford
-#: overrides/reader/presenter.js:944
+#: overrides/reader/presenter.js:928
 msgid "by {author}"
 msgstr ""
 
-#: overrides/reader/presenter.js:944
+#: overrides/reader/presenter.js:928
 msgid "and"
 msgstr ""
 
-#: overrides/reader/presenter.js:1003 overrides/reader/presenter.js:1010
+#: overrides/reader/presenter.js:987 overrides/reader/presenter.js:994
 msgid "Oops!"
 msgstr ""
 
-#: overrides/reader/presenter.js:1004
+#: overrides/reader/presenter.js:988
 msgid ""
 "We could not find this magazine!\n"
 "Please try again after restarting your computer."
 msgstr ""
 
-#: overrides/reader/presenter.js:1011
+#: overrides/reader/presenter.js:995
 msgid ""
 "There was an error loading that page.\n"
 "Try another one or try again after restarting your computer."
