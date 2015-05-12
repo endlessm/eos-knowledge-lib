@@ -28,7 +28,7 @@ const ArticleHTMLRenderer = new Lang.Class({
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, false),
     },
 
-    _init: function (props) {
+    _init: function (props={}) {
         this.parent(props);
         let file = Gio.file_new_for_uri(_ARTICLE_TEMPLATE);
         let [success, string] = file.load_contents(null);
