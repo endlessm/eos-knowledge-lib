@@ -58,7 +58,6 @@ const ImagePreviewer = Lang.Class({
         this.set_has_window(false);
 
         this._stream = null;
-        this._content_type = null;
         this._animation = null;
         this._animation_iter = null;
         this._animation_callback_source = 0;
@@ -87,7 +86,7 @@ const ImagePreviewer = Lang.Class({
         return this._supported_types.indexOf(type) != -1;
     },
 
-    set_content: function (stream, content_type) {
+    set_content: function (stream) {
         if (stream === this._stream)
             return;
         this._stream = stream;

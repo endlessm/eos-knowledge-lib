@@ -59,7 +59,7 @@ const Previewer = new Lang.Class({
         if (this._stream === null) return;
 
         if (this._image_previewer.supports_type(content_type)) {
-            this._image_previewer.set_content(stream, content_type);
+            this._image_previewer.set_content(stream);
             this.add(this._image_previewer);
         } else {
             throw new Error('Previewer does not support type ' + content_type);
