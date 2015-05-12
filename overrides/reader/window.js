@@ -250,6 +250,11 @@ const Window = new Lang.Class({
                 this.get_style_context().add_class(EosKnowledge.STYLE_CLASS_ANIMATING);
             } else {
                 this.get_style_context().remove_class(EosKnowledge.STYLE_CLASS_ANIMATING);
+                let current_page = this._stack.get_visible_child();
+                let script = 'document.body.style.overflow = "auto";';
+                if (current_page._content_view) {
+                    current_page._content_view.run_javascript(script, null, null);
+                }
             }
         });
     },
@@ -337,7 +342,31 @@ const Window = new Lang.Class({
         this._set_stack_transition(animation_type);
         let page = this._article_pages[index];
         page.show();
-        this._stack.set_visible_child(page);
+        let script = 'document.body.style.overflow = "hidden";';
+        if (animation_type === EosKnowledge.LoadingAnimationType.FORWARDS_NAVIGATION) {
+            // hide current page scrollbars
+            let current_page = this._stack.get_visible_child();
+            if (current_page._content_view) {
+                print("hiding scrollbars on current page")
+                current_page._content_view.run_javascript(script, null, (a, b) => {
+                    print("now transitioning")
+                    this._stack.set_visible_child(page);
+                });
+            } else {
+                this._stack.set_visible_child(page);
+            }
+        } else if (animation_type === EosKnowledge.LoadingAnimationType.BACKWARDS_NAVIGATION) {
+            // hide next page scrollbars
+            if (page._content_view) {
+                print("hiding scrollbars on next page")
+                page._content_view.run_javascript(script, null, (a, b) => {
+                    print("now transitioning")
+                    this._stack.set_visible_child(page);
+                });
+            } else {
+                this._stack.set_visible_child(page);
+            }
+        }
     },
 
     show_overview_page: function (animation_type) {
