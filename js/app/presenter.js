@@ -238,7 +238,7 @@ const Presenter = new Lang.Class({
                 this.engine.get_objects_by_query(article_origin_query_obj, this._load_section_page.bind(this));
                 break;
             case this._ARTICLE_PAGE:
-                if (current_item.article_origin_query_obj.query !== this._latest_origin_query_obj.query) {
+                if (article_origin_query_obj.query !== this._latest_origin_query_obj.query) {
                     this.engine.get_objects_by_query(article_origin_query_obj, this._refresh_sidebar_callback.bind(this));
                 }
                 this.article_presenter.load_article(current_item.article_model, animation_type);
