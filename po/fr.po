@@ -1,39 +1,88 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR Endless Mobile, Inc.
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge\n"
-"Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2015-05-05 01:47+0000\n"
+"Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-"
+"inc\n"
+"POT-Creation-Date: 2015-05-12 15:16-0700\n"
 "PO-Revision-Date: 2015-04-14 01:47+0000\n"
 "Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
-"Language-Team: French (http://www.transifex.com/projects/p/eos-knowledge/language/fr/)\n"
+"Language-Team: French (http://www.transifex.com/projects/p/eos-knowledge/"
+"language/fr/)\n"
+"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: fr\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: eosknowledge/ekn-hello.c:36
+#: eosknowledgeprivate/ekn-hello.c:36
 msgid "Hello C world!"
 msgstr "Bonjour monde C !"
+
+#: data/js/error_page.js:4 data/js/no_results.js:4
+msgid "OOPS!"
+msgstr "OUPS !"
+
+#: data/js/error_page.js:6
+msgid "There was an error during your search."
+msgstr "Il y a eu une erreur pendant votre recherche."
+
+#: data/js/error_page.js:8
+msgid "Try searching again, and if that doesn't work restart your computer."
+msgstr ""
+"Essayez à nouveau la recherche, et si cela ne fonctionne pas redémarrez "
+"votre ordinateur."
+
+#: data/js/no_results.js:6
+msgid "Try repeating your search with other words."
+msgstr "Essayez de recommencer votre recherche avec d'autres mots."
+
+#. TRANSLATORS: This message is displayed when the encyclopedia app did
+#. not find any results for a search. The {query} will be replaced with the
+#. term that the user searched for. Note, in English, it is surrounded by
+#. Unicode left and right double quotes (U+201C and U+201D). Make sure to
+#. use whatever quote marks are appropriate for your language.
+#: data/js/no_results.js:16
+msgid "We did not find any results for “{query}”."
+msgstr "Nous n'avons pas trouver de résultats pour « {query} »."
+
+#. TRANSLATORS: This message is displayed while the encyclopedia app is
+#. searching for results. The {search} will be replaced with the term that
+#. the user searched for. Note, in English, it is surrounded by Unicode
+#. left and right double quotes (U+201C and U+201D). Make sure to use
+#. whatever quote marks are appropriate for your language.
+#: data/js/search_results.js:18
+msgid "Searching for “{search}”"
+msgstr "Recherche de « {search} »"
+
+#. TRANSLATORS: This message is displayed when the encyclopedia app is
+#. done searching for results. The {search} will be replaced with the term
+#. that the user searched for. Note, in English, it is surrounded by
+#. Unicode left and right double quotes (U+201C and U+201D). Make sure to
+#. use whatever quote marks are appropriate for your language.
+#: data/js/search_results.js:29
+msgid "Search results for “{search}”"
+msgstr "Chercher les résultats pour « {search} »"
 
 #. TRANSLATORS: anything inside curly braces '{}' is going
 #. to be substituted in code. Please make sure to leave the
 #. curly braces around any words that have them and DO NOT
 #. translate words inside curly braces.
-#: overrides/articleHTMLRenderer.js:59
+#: js/app/articleHTMLRenderer.js:57
 msgid ""
 "This page contains content from {original-link}, available under a {license-"
 "link} license."
-msgstr "Cette page contient des contenus de {original-link}, disponible sous une {license-link} licence. "
+msgstr ""
+"Cette page contient des contenus de {original-link}, disponible sous une "
+"{license-link} licence. "
 
 #. TRANSLATORS: Replace this with a link to the homepage of
 #. wikiHow in your language.
-#: overrides/articleHTMLRenderer.js:66
+#: js/app/articleHTMLRenderer.js:64
 msgid "http://wikihow.com"
 msgstr "http://wikihow.com"
 
@@ -41,145 +90,147 @@ msgstr "http://wikihow.com"
 #. to be substituted in code. Please make sure to leave the
 #. curly braces around any words that have them and DO NOT
 #. translate words inside curly braces.
-#: overrides/articleHTMLRenderer.js:71
+#: js/app/articleHTMLRenderer.js:69
 msgid ""
 "See {wikihow-article-link} for more details, videos, pictures and "
 "attribution. Courtesy of {wikihow-link}, where anyone can easily learn how "
 "to do anything."
-msgstr "Consultez {wikihow-article-link} pour plus de détails, des vidéos, des images et des attributions. Avec la permission de {wikihow-link}, où tout un chacun peut facilement apprendre à tout faire."
+msgstr ""
+"Consultez {wikihow-article-link} pour plus de détails, des vidéos, des "
+"images et des attributions. Avec la permission de {wikihow-link}, où tout un "
+"chacun peut facilement apprendre à tout faire."
 
-#: overrides/articleHTMLRenderer.js:125
+#: js/app/articleHTMLRenderer.js:125
 msgid "Copy"
 msgstr "Copier"
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
-#: overrides/articleHTMLRenderer.js:144
+#: js/app/articleHTMLRenderer.js:144
 msgid "Content taken from {blog-link}."
 msgstr "Contenu issu de {blog-link}."
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
-#: overrides/articleHTMLRenderer.js:149
+#: js/app/articleHTMLRenderer.js:149
 msgid "Content courtesy of {blog-link}. Used with kind permission."
-msgstr "Permission de contenu de {blog-link}. Utilisé grâce à une aimable permission."
+msgstr ""
+"Permission de contenu de {blog-link}. Utilisé grâce à une aimable permission."
 
 #. TRANSLATORS: the text inside curly braces ({blog-link}, {license-link})
 #. is going to be substituted in code. Please make sure that your
 #. translation contains both {blog-link} and {license-link} and they are not
 #. translated.
-#: overrides/articleHTMLRenderer.js:157
+#: js/app/articleHTMLRenderer.js:157
 msgid "Content courtesy of {blog-link}, licensed under {license-link}."
 msgstr "Permission de contenu de {blog-link}, sous licence {license-link}."
 
-#: overrides/categoriesPage.js:60
+#: js/app/categoriesPage.js:58
 msgid "HOME"
 msgstr "PAGE D'ACCUEIL "
 
-#: overrides/homePageA.js:59
+#. TRANSLATORS: This is the title of the search results page. %s
+#. will be replaced by the text that the user searched for. Make
+#. sure that %s is in your translation as well.
+#: js/app/encyclopedia/presenter.js:273
+#, javascript-format
+msgid "Results for %s"
+msgstr "Résultats pour %s"
+
+#: js/app/encyclopedia/layoutPage.js:24
+msgid "Search the world's information!"
+msgstr "Recherchez des information dans monde !"
+
+#: js/app/encyclopedia/view.js:49
+msgid "Encyclopedia"
+msgstr "Encyclopédie"
+
+#: js/app/encyclopedia/popupWindow.js:13
+msgid ""
+"Wikipedia and its associated marks are official trademarks of the Wikimedia "
+"Foundation in the United States and other countries. These marks are being "
+"used under license by the Wikimedia Foundation. Endless is not endorsed by "
+"or affiliated with the Wikimedia Foundation."
+msgstr ""
+"Wikipedia et ses marques associées sont des marques déposées de la Wikimedia "
+"Foundation aux États-Unis et dans d'autres pays. Ces marques sont utilisées "
+"sous licence par la Wikimedia Foundation. Endless n'est pas approuvé par ni "
+"n'est affiliée à la Wikimedia Foundation."
+
+#: js/app/homePageA.js:57
 msgid "SEE ALL CATEGORIES"
 msgstr "VOIR TOUTES LES CATÉGORIES"
 
-#: overrides/lessonCard.js:135
+#: js/app/lessonCard.js:133
 #, javascript-format
 msgid "Lesson %d"
 msgstr "Leçon %d"
 
-#. TRANSLATORS: If this license page is translated into your language, you
-#. can add a link to it here. For example, Spanish would be
-#. https://creativecommons.org/licenses/by/4.0/es -- but make sure to check
-#. that that page exists! If it does not exist, leave this untranslated.
-#: overrides/licenses.js:27
-msgid "https://creativecommons.org/licenses/by/4.0/"
-msgstr "https://creativecommons.org/licenses/by/4.0/"
-
-#. TRANSLATORS: If this license page is translated into your language, you
-#. can add a link to it here. For example, Spanish would be
-#. https://creativecommons.org/licenses/by-sa/4.0/es -- but make sure to check
-#. that that page exists! If it does not exist, leave this untranslated.
-#: overrides/licenses.js:32
-msgid "https://creativecommons.org/licenses/by-sa/4.0/"
-msgstr "https://creativecommons.org/licenses/by-sa/4.0/"
-
-#. TRANSLATORS: If this license page is translated into your language, you
-#. can add a link to it here. For example, Spanish would be
-#. https://creativecommons.org/licenses/by/3.0/es -- but make sure to check
-#. that that page exists! If it does not exist, leave this untranslated.
-#: overrides/licenses.js:37
-msgid "https://creativecommons.org/licenses/by/3.0/"
-msgstr "https://creativecommons.org/licenses/by/3.0/"
-
-#. TRANSLATORS: If this license page is translated into your language, you
-#. can add a link to it here. For example, Spanish would be
-#. https://creativecommons.org/licenses/by-sa/3.0/es -- but make sure to check
-#. that that page exists! If it does not exist, leave this untranslated.
-#: overrides/licenses.js:42
-msgid "https://creativecommons.org/licenses/by-sa/3.0/"
-msgstr "https://creativecommons.org/licenses/by-sa/3.0/"
-
-#: overrides/licenses.js:47
+#: js/app/licenses.js:33
 msgid "CC-BY 4.0"
 msgstr "CC-BY 4.0"
 
-#: overrides/licenses.js:48
+#: js/app/licenses.js:34
 msgid "CC-BY-SA 4.0"
 msgstr "CC-BY-SA 4.0"
 
-#: overrides/licenses.js:49
+#: js/app/licenses.js:35
 msgid "CC-BY 3.0"
 msgstr "CC-BY 3.0"
 
-#: overrides/licenses.js:50
+#: js/app/licenses.js:36
 msgid "CC-BY-SA 3.0"
 msgstr "CC-BY-SA 3.0"
 
-#: overrides/noSearchResultsPage.js:39
+#: js/app/noSearchResultsPage.js:37
 msgid "We didn't find anything."
 msgstr "Nous n'avons rien trouvé."
 
-#: overrides/noSearchResultsPage.js:40
+#: js/app/noSearchResultsPage.js:38
 msgid "Try seaching again with different words."
 msgstr "Réessayez la recherche avec des mots différents"
 
 #. TRANSLATORS: this appears on top of the search results page; %s will
 #. be replaced with the string that the user searched for.
-#: overrides/noSearchResultsPage.js:63 overrides/presenter.js:374
+#: js/app/noSearchResultsPage.js:61 js/app/presenter.js:362
 #, javascript-format
 msgid "Results for \"%s\""
 msgstr "Résultats pour \"%s\""
 
-#: overrides/pdfCard.js:44
+#: js/app/pdfCard.js:42
 msgid "PDF"
 msgstr "PDF"
 
-#: overrides/presenter.js:213 overrides/presenter.js:663
+#: js/app/presenter.js:208 js/app/presenter.js:614
 msgid "Articles"
 msgstr "Articles"
 
-#: overrides/progressCard.js:114
+#: js/app/progressCard.js:112
 #, javascript-format
 msgid "%d of %d done"
 msgstr "%d de %d fait(s)"
 
-#: overrides/reader/card.js:132 overrides/reader/webviewTooltip.js:140
+#: js/app/reader/card.js:130 js/app/reader/webviewTooltip.js:138
 msgid "Archive"
 msgstr ""
 
-#: overrides/reader/card.js:135
+#: js/app/reader/card.js:133
 #, javascript-format
 msgid "Page %s"
 msgstr ""
 
-#: overrides/reader/donePage.js:68
+#: js/app/reader/donePage.js:66
 msgid "Did you like this issue?"
 msgstr "Avez-vous aimé cet aboutissement ?"
 
-#: overrides/reader/donePage.js:74
+#: js/app/reader/donePage.js:72
 msgid ""
 "Don't miss next week's issue with more articles in your favorite magazine!"
-msgstr "Ne ratez pas l'édition de la semaine prochaine avec d'autres articles dans votre journal préféré !"
+msgstr ""
+"Ne ratez pas l'édition de la semaine prochaine avec d'autres articles dans "
+"votre journal préféré !"
 
 #. TRANSLATORS: anything inside curly braces '{}' is going
 #. to be substituted in code. Please make sure to leave the
@@ -188,46 +239,62 @@ msgstr "Ne ratez pas l'édition de la semaine prochaine avec d'autres articles d
 #. Also, note: the "and" is used to join together the names
 #. of authors of a blog post. For example:
 #. Jane Austen and Henry Miller and William Clifford
-#: overrides/reader/presenter.js:944
+#: js/app/reader/presenter.js:921
 msgid "by {author}"
 msgstr "par {author}"
 
-#: overrides/reader/presenter.js:944
+#: js/app/reader/presenter.js:921
 msgid "and"
 msgstr "et"
 
-#: overrides/reader/presenter.js:1003 overrides/reader/presenter.js:1010
+#: js/app/reader/presenter.js:980 js/app/reader/presenter.js:987
 msgid "Oops!"
 msgstr "Oups !"
 
-#: overrides/reader/presenter.js:1004
+#: js/app/reader/presenter.js:981
 msgid ""
 "We could not find this magazine!\n"
 "Please try again after restarting your computer."
-msgstr "Nous n'avons pas trouvé ce magazine !\nEssayez de nouveau après avoir redémarré votre ordinateur."
+msgstr ""
+"Nous n'avons pas trouvé ce magazine !\n"
+"Essayez de nouveau après avoir redémarré votre ordinateur."
 
-#: overrides/reader/presenter.js:1011
+#: js/app/reader/presenter.js:988
 msgid ""
 "There was an error loading that page.\n"
 "Try another one or try again after restarting your computer."
-msgstr "Il y a eu une erreur pendant le chargement de cette page.\nEssayez-en une autre ou réessayez après avoir redémarré votre ordinateur."
+msgstr ""
+"Il y a eu une erreur pendant le chargement de cette page.\n"
+"Essayez-en une autre ou réessayez après avoir redémarré votre ordinateur."
 
-#: overrides/reader/searchResultsPage.js:75
+#: js/app/reader/searchResultsPage.js:73
 msgid "There are no results for your search"
 msgstr ""
 
-#: overrides/reader/standalonePage.js:185
+#: js/app/reader/standalonePage.js:183
 msgid "Open the magazine"
 msgstr ""
 
-#: overrides/reader/standalonePage.js:308
+#: js/app/reader/standalonePage.js:306
 #, javascript-format
 msgid "This article is part of the archive of the magazine %s."
 msgstr ""
 
 #. TRANSLATORS: This shows the page number; %d will be replaced with
 #. the page number of the article.
-#: overrides/reader/webviewTooltip.js:124
+#: js/app/reader/webviewTooltip.js:122
 #, javascript-format
 msgid "Page %d"
 msgstr ""
+
+#~ msgid "https://creativecommons.org/licenses/by/4.0/"
+#~ msgstr "https://creativecommons.org/licenses/by/4.0/"
+
+#~ msgid "https://creativecommons.org/licenses/by-sa/4.0/"
+#~ msgstr "https://creativecommons.org/licenses/by-sa/4.0/"
+
+#~ msgid "https://creativecommons.org/licenses/by/3.0/"
+#~ msgstr "https://creativecommons.org/licenses/by/3.0/"
+
+#~ msgid "https://creativecommons.org/licenses/by-sa/3.0/"
+#~ msgstr "https://creativecommons.org/licenses/by-sa/3.0/"
