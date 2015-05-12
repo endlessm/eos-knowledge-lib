@@ -31,7 +31,7 @@ m4_define([_EKN_VERSION_MACRO],
 # Initialize Autoconf: package name, version, bug report address, tarball name,
 # website
 AC_INIT([Endless OS Knowledge GUI Library], [_EKN_VERSION_MACRO],
-    [], [eos-knowledge-lib], [http://endlessm.com])
+    [], [eos-knowledge], [http://endlessm.com])
 # Verify that the source directory can be found
 AC_CONFIG_SRCDIR([eosknowledgeprivate/eosknowledge.h])
 # Initialize Automake: enable all warnings and do not insist on GNU standards

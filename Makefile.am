@@ -150,7 +150,7 @@ nodist_libeosknowledgeprivate_la_SOURCES = \
 libeosknowledgeprivate_la_CPPFLAGS = \
 	@EOS_KNOWLEDGE_PRIVATE_CFLAGS@ \
 	@EOS_C_COVERAGE_CFLAGS@ \
-	-DG_LOG_DOMAIN=\"EosKnowledgeLibrary\" \
+	-DG_LOG_DOMAIN=\"EosKnowledge\" \
 	-DCOMPILING_EOS_KNOWLEDGE \
 	-DDATADIR=\""$(datadir)"\" \
 	$(NULL)

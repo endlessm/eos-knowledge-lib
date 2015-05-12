@@ -3,7 +3,7 @@ host = https://www.transifex.com
 
 [eos-knowledge-lib.library]
 file_filter = po/<lang>.po
-source_file = po/eos-knowledge-lib.pot
+source_file = po/eos-knowledge.pot
 source_lang = en
 trans.pt = po/pt_BR.po
 type = PO
