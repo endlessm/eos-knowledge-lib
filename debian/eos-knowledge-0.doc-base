@@ -1,0 +1,10 @@
+Document: eos-knowledge-0
+Title: EndlessOS Knowledge Private Library reference (C API)
+Author: Endless Mobile, Inc.
+Abstract: API documentation for the EndlessOS Knowledge Private Library,
+          API version 0
+Section: Programming/C
+
+Format: HTML
+Index: /usr/share/gtk-doc/html/eosknowledgeprivate/index.html
+Files: /usr/share/gtk-doc/html/eosknowledgeprivate/*.html

@@ -1,7 +1,0 @@
-usr/bin/ekn-app-runner
-usr/bin/ekn-search-provider
-usr/lib/girepository-1.0/EosKnowledge*.typelib
-usr/share/dbus-1/services/com.endlessm.EknSearchProvider.service
-usr/share/gjs-1.0/*
-usr/share/eos-knowledge-lib/overrides/*
-usr/share/eos-knowledge-lib/js/*
