@@ -16,16 +16,6 @@ const ArticleHTMLRenderer = new Lang.Class({
     GTypeName: 'EknArticleHTMLRenderer',
     Extends: GObject.Object,
 
-    Properties: {
-        'show-title':  GObject.ParamSpec.boolean('show-title', 'Show Title',
-            'Whether or not rendered HTML should have a visible title',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, false),
-        'enable-scroll-manager':  GObject.ParamSpec.boolean('enable-scroll-manager',
-            'Enable Scroll Manager',
-            'Whether scroll_manager.js should monitor user scrolling',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, false),
-    },
-
     _init: function (props={}) {
         this.parent(props);
         let file = Gio.file_new_for_uri(_ARTICLE_TEMPLATE);
@@ -100,7 +90,7 @@ const ArticleHTMLRenderer = new Lang.Class({
         return css_files;
     },
 
-    _get_javascript_files: function (model) {
+    _get_javascript_files: function (model, enable_scroll_manager) {
         let javascript_files = [
             'jquery-min.js',
             'clipboard-manager.js',
@@ -109,17 +99,36 @@ const ArticleHTMLRenderer = new Lang.Class({
             'no-link-remover.js',
         ];
 
-        if (this.enable_scroll_manager)
+        if (enable_scroll_manager)
             javascript_files.push('scroll-manager.js');
 
         return javascript_files;
     },
 
-    render: function (model, custom_css_files=[], custom_js_files=[]) {
-        let css_files = this._get_css_files(model).concat(custom_css_files);
-        let js_files = this._get_javascript_files(model).concat(custom_js_files);
+    /*
+        The render method is called with an article model :model
+        and a dictionary of options :opts specifying how to render
+        the webpage.
+        :opts should be a dictionary with the following optional
+        keys.
+        custom_css_files: an array of strings, specifying extra CSS files to include
+        custom_js_files: an array of strings, specifying extra JS files to include
+        show_title: a boolean specifying whether or not to show the article title in an <h1> tag
+        enable_scroll_manager: a boolean specifying whether or not to enable javascript for smooth scrolling
+    */
+    render: function (model, opts={}) {
+        let css_files = this._get_css_files(model);
+        if (opts.hasOwnProperty('custom_css_files')) {
+            css_files = css_files.concat(opts.custom_css_files);
+        }
+
+        let js_files = this._get_javascript_files(model, opts.enable_scroll_manager);
+        if (opts.hasOwnProperty('custom_js_files')) {
+            js_files = js_files.concat(opts.custom_js_files);
+        }
+
         return Mustache.render(this._template, {
-            'title': this.show_title ? model.title : false,
+            'title': opts.show_title ? model.title : false,
             'body-html': this._strip_tags(model.get_html()),
             'disclaimer': this._get_disclaimer(model),
             'copy-button-text': _("Copy"),

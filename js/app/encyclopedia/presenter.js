@@ -36,10 +36,7 @@ const EncyclopediaPresenter = new Lang.Class({
         WebkitContextSetup.register_webkit_uri_handlers(this._article_render_callback.bind(this));
         this._engine = Engine.Engine.get_default();
 
-        this._renderer = new ArticleHTMLRenderer.ArticleHTMLRenderer({
-            enable_scroll_manager: false,
-            show_title: true,
-        });
+        this._renderer = new ArticleHTMLRenderer.ArticleHTMLRenderer();
 
         for (let page of [this._view.home_page, this._view.content_page]) {
             page.search_box.connect('activate',
@@ -191,7 +188,9 @@ const EncyclopediaPresenter = new Lang.Class({
     },
 
     _article_render_callback: function (article) {
-        return this._renderer.render(article);
+        return this._renderer.render(article, {
+            show_title: true,
+        });
     },
 
     _on_article_selected: function (search_entry, ekn_id) {
