@@ -36,6 +36,7 @@ because this test app has no articles.</property>
         <property name="valign">center</property>
         <property name="image">back_button_image</property>
         <property name="always_show_image">True</property>
+        <signal name="clicked" handler="on_back_button_clicked" swapped="no"/>
         <style>
           <class name="nav-back-button"/>
         </style>

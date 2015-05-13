@@ -32,6 +32,8 @@ const EbiHome = new Lang.Class({
                 break;
             case 'in_app_search':
                 this._grid.attach(widget, 0, 1, 1, 1);
+                widget.connect('search-activated', (module, text) =>
+                    this.emit('search-activated', text));
                 break;
         }
     }
