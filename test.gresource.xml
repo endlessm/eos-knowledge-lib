@@ -3,5 +3,6 @@
   <gresource prefix="/com/endlessm/test">
     <file compressed="true">app.json</file>
     <file compressed="true">hello.ui.xml</file>
+    <file compressed="true">data/ebi_home.ui.xml</file>
   </gresource>
 </gresources>
