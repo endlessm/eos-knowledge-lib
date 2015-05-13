@@ -1,7 +1,7 @@
 const Gtk = imports.gi.Gtk;
 
 // To use:
-// const WidgetDescendantMatcher = imports.WidgetDescendantMatcher;
+// const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 // in beforeEach():
 // jasmine.addMatchers(WidgetDescendantMatcher.customMatchers)
 

@@ -4,8 +4,6 @@ const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 
-const EosKnowledgeSearch = imports.EosKnowledgeSearch;
-
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 
 /**
@@ -200,7 +198,9 @@ const ContentObjectModel = new Lang.Class({
 
     get_content_stream: function () {
         if (this.ekn_version >= 2) {
-            let engine = EosKnowledgeSearch.Engine.get_default();
+            // FIXME: We need to do this import here in the method to avoid a
+            // circular dependency of imports
+            let engine = imports.search.engine.Engine.get_default();
             let [stream, content_type] = engine.get_content_by_id(this.ekn_id);
             return stream;
         } else {

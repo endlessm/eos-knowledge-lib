@@ -1,8 +1,10 @@
 const Endless = imports.gi.Endless;
-const EosKnowledge = imports.gi.EosKnowledge;
-const EosKnowledgeSearch = imports.EosKnowledgeSearch;
 const Gio = imports.gi.Gio;
 const Lang = imports.lang;
+
+const ArticleObjectModel = imports.search.articleObjectModel;
+const Engine = imports.search.engine;
+const Presenter = imports.app.reader.presenter;
 
 const ARTICLE_MODELS = [
     {
@@ -51,7 +53,7 @@ resource._register();
 let resource_path = Gio.File.new_for_uri('resource:///com/endlessm/thrones');
 
 // Mock out the engine so that we aren't looking for an eos-thrones database
-let mock_engine = new EosKnowledgeSearch.Engine.get_default();
+let mock_engine = new Engine.Engine.get_default();
 mock_engine.get_object_by_id = function (ekn_id, callback) {
     let props = ARTICLE_MODELS.filter((obj) => {
         return obj.ekn_id === ekn_id;
@@ -62,7 +64,7 @@ mock_engine.get_object_by_id = function (ekn_id, callback) {
         authors = props.authors;
         delete props.authors;
     }
-    let article = new EosKnowledgeSearch.ArticleObjectModel(props);
+    let article = new ArticleObjectModel.ArticleObjectModel(props);
     if (authors)
         article.set_authors(authors);
     callback(undefined, article);
@@ -72,7 +74,7 @@ mock_engine.get_objects_by_query = function (query, callback) {
     callback(undefined, ARTICLE_MODELS.slice(0, 3).map((props) => {
         let authors = props.authors;
         delete props.authors;
-        let model = new EosKnowledgeSearch.ArticleObjectModel(props);
+        let model = new ArticleObjectModel.ArticleObjectModel(props);
         if (authors)
             model.set_authors(authors);
         return model;
@@ -94,7 +96,7 @@ const TestApplication = new Lang.Class({
         let [success, app_json, len, etag] = resource_path.get_child('app.json')
             .load_contents(null);
 
-        let presenter = new EosKnowledge.Reader.Presenter(JSON.parse(app_json), {
+        let presenter = new Presenter.Presenter(JSON.parse(app_json), {
             engine: mock_engine,
             application: this,
         });

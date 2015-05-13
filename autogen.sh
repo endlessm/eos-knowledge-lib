@@ -2,7 +2,7 @@
 # Bootstrap script for Endless OS Knowledge Apps
 # Run this script on a clean source checkout to get ready for building.
 
-POT_FILE=po/eos-knowledge-lib.pot
+POT_FILE=po/eos-knowledge.pot
 
 test -n "$srcdir" || srcdir=`dirname "$0"`
 test -n "$srcdir" || srcdir=.

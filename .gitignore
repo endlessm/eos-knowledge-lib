@@ -4,11 +4,12 @@
 *.gir
 *.typelib
 *.gresource
-/docs/reference/eosknowledge/version.xml
-/eosknowledge-0.pc
-/eosknowledge/ekn-resource*.[ch]
-/overrides/config.js
-/overrides/config.js.in
+/eosknowledgeprivate/ekn-resource*.[ch]
+/js/app/config.js
+/js/app/config.js.in
+/ekn-app-runner
+/ekn-search-provider
+/eos-encyclopedia
 /gresourcedeps
 /data/com.endlessm.EknSearchProvider.service
 
@@ -94,24 +95,24 @@ stamp*
 /test-driver
 
 # Gtk-Doc droppings
-/docs/reference/eosknowledge/*.bak
-/docs/reference/eosknowledge/eosknowledge-decl-list.txt
-/docs/reference/eosknowledge/eosknowledge-decl.txt
-/docs/reference/eosknowledge/eosknowledge-overrides.txt
-/docs/reference/eosknowledge/eosknowledge-undeclared.txt
-/docs/reference/eosknowledge/eosknowledge-undocumented.txt
-/docs/reference/eosknowledge/eosknowledge-unused.txt
-/docs/reference/eosknowledge/eosknowledge.args
-/docs/reference/eosknowledge/eosknowledge.hierarchy
-/docs/reference/eosknowledge/eosknowledge.interfaces
-/docs/reference/eosknowledge/eosknowledge.prerequisites
-/docs/reference/eosknowledge/eosknowledge.signals
-/docs/reference/eosknowledge/eosknowledge.types
-/docs/reference/eosknowledge/gtkdoc-check.test
-/docs/reference/eosknowledge/xml/
+/docs/reference/eosknowledgeprivate/*.bak
+/docs/reference/eosknowledgeprivate/eosknowledgeprivate-decl-list.txt
+/docs/reference/eosknowledgeprivate/eosknowledgeprivate-decl.txt
+/docs/reference/eosknowledgeprivate/eosknowledgeprivate-overrides.txt
+/docs/reference/eosknowledgeprivate/eosknowledgeprivate-undeclared.txt
+/docs/reference/eosknowledgeprivate/eosknowledgeprivate-undocumented.txt
+/docs/reference/eosknowledgeprivate/eosknowledgeprivate-unused.txt
+/docs/reference/eosknowledgeprivate/eosknowledgeprivate.args
+/docs/reference/eosknowledgeprivate/eosknowledgeprivate.hierarchy
+/docs/reference/eosknowledgeprivate/eosknowledgeprivate.interfaces
+/docs/reference/eosknowledgeprivate/eosknowledgeprivate.prerequisites
+/docs/reference/eosknowledgeprivate/eosknowledgeprivate.signals
+/docs/reference/eosknowledgeprivate/eosknowledgeprivate.types
+/docs/reference/eosknowledgeprivate/gtkdoc-check.test
+/docs/reference/eosknowledgeprivate/xml/
 
 # GIR Doc droppings
-/docs/reference/eosknowledge-js/*.page
+/docs/reference/eosknowledgeprivate-js/*.page
 
 # NaturalDocs droppings
 /docs/reference/*/Data/

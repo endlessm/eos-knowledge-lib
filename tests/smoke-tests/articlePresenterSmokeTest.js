@@ -1,9 +1,14 @@
 const Endless = imports.gi.Endless;
-const EosKnowledge = imports.gi.EosKnowledge;
+const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
+
+const ArticleObjectModel = imports.search.articleObjectModel;
+const ArticlePage = imports.app.articlePage;
+const ArticlePresenter = imports.app.articlePresenter;
+const Engine = imports.search.engine;
 
 const TEST_APPLICATION_ID = 'com.endlessm.knowledge.article_presenter';
 const TESTDIR = Endless.getCurrentFileDir() + '/..';
@@ -28,22 +33,22 @@ const TestApplication = new Lang.Class ({
         let [success, data] = file.load_contents(null);
         let mockArticleData = JSON.parse(data);
 
-        let articleObject = new EosKnowledge.ArticleObjectModel.new_from_json_ld(mockArticleData);
+        let articleObject = new ArticleObjectModel.ArticleObjectModel.new_from_json_ld(mockArticleData);
 
-        let view = new EosKnowledge.ArticlePage();
+        let view = new ArticlePage.ArticlePage();
         let window = new Endless.Window({
             application: this
         });
         window.get_page_manager().add(view);
 
-        let engine = new EosKnowledge.Engine();
+        let engine = new Engine.Engine();
 
-        let presenter = new EosKnowledge.ArticlePresenter({
+        let presenter = new ArticlePresenter.ArticlePresenter({
             article_view: view,
             engine: engine
         });
         articleObject.ekn_id = "file://" + TESTDIR + "/test-content/Brazil.html";
-        presenter.load_article(articleObject, EosKnowledge.LoadingAnimationType.NONE);
+        presenter.load_article(articleObject, EosKnowledgePrivate.LoadingAnimationType.NONE);
         window.show_all();
 
     }

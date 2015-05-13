@@ -1,9 +1,11 @@
 const Endless = imports.gi.Endless;
-const EosKnowledge = imports.gi.EosKnowledge;
+const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
+
+const TableOfContents = imports.app.tableOfContents;
 
 const TEST_APPLICATION_ID = 'com.endlessm.knowledge.test.toc';
 const TESTDIR = Endless.getCurrentFileDir() + '/..';
@@ -23,7 +25,7 @@ const TestApplication = new Lang.Class({
                                                  Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 
 
-        let toc = new EosKnowledge.TableOfContents({
+        let toc = new TableOfContents.TableOfContents({
             halign: Gtk.Align.START,
             valign: Gtk.Align.CENTER
         });

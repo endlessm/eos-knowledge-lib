@@ -1,0 +1,58 @@
+* {
+    font-family: Lato; /* Default text */
+}
+
+Gjs_SearchBox{
+    padding-top: 20px;
+}
+
+#content_page_logo{
+    padding: 15px 0 15px 30px;
+}
+
+.entry {
+    background: rgba(0,0,0,0.2);
+    padding: 0.5em .3em 0.5em .3em;
+    font-size: 10px;
+    color: #fff;
+
+    -GtkWidget-focus-line-width: 0;
+    border-style: solid;
+    border-radius: 50px;
+
+    border-width: 3px;
+    border-top-color: rgba(0, 0, 0, 0.49);
+    border-left-color: rgba(0, 0, 0, 0.49);
+    border-right-color: rgba(0, 0, 0, 0.49);
+
+    border-bottom-color: rgba(255, 255, 255, 0.14);
+}
+
+PopupWindow {
+    background-color: alpha(black, 0.6);
+    font-size: 13px;
+    color: #686868;
+}
+
+PopupWindow .frame {
+    background-color: white;
+    border-radius: 15px;
+}
+
+PopupWindow .button {
+    color: #888;
+}
+
+PopupWindow .button:hover {
+    color: white;
+}
+
+GtkEntry:selected {
+    background-color: gray;
+}
+
+/* WebKit creates GTK tooltips internally, so style them here */
+.tooltip {
+    border-radius: 5px;
+    background-color: alpha(#212526, 0.90);
+}

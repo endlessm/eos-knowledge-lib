@@ -1,8 +1,9 @@
-const EosKnowledge = imports.gi.EosKnowledge;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
+
+const SpaceContainer = imports.app.spaceContainer;
 
 Gtk.init(null);
 
@@ -45,7 +46,7 @@ let win = new Gtk.Window({
     default_width: 600,
     default_height: 300,
 });
-let container = new EosKnowledge.SpaceContainer({
+let container = new SpaceContainer.SpaceContainer({
     orientation: Gtk.Orientation.HORIZONTAL,
 });
 let add_new = new Gtk.Button({

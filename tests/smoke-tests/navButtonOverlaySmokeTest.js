@@ -1,9 +1,11 @@
 /* Copyright 2014 Endless Mobile, Inc. */
 
-const EosKnowledge = imports.gi.EosKnowledge;
+const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
+
+const NavButtonOverlay = imports.app.navButtonOverlay;
 
 let win = new Gtk.Window({
     default_width : 300,
@@ -18,7 +20,7 @@ for (let i = 0; i < 3; i++) {
     stack.add(labels[i]);
 }
 
-let buttons = new EosKnowledge.NavButtonOverlay({});
+let buttons = new NavButtonOverlay.NavButtonOverlay({});
 buttons.add(stack);
 win.add(buttons);
 

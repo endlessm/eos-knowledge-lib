@@ -1,8 +1,8 @@
 const Endless = imports.gi.Endless;
-const EosKnowledge = imports.gi.EosKnowledge;
-const Gtk = imports.gi.Gtk;
 const Gio = imports.gi.Gio;
 const Lang = imports.lang;
+
+const EknWebview = imports.app.eknWebview;
 
 const TEST_APPLICATION_ID = 'com.endlessm.knowledge.test.article-page';
 const TESTDIR = Endless.getCurrentFileDir() + '/..';
@@ -19,7 +19,7 @@ const TestApplication = new Lang.Class({
         let resource = Gio.Resource.load(TESTDIR + '/test-content/test-content.gresource');
         resource._register();
 
-        let webview = new EosKnowledge.EknWebview({
+        let webview = new EknWebview.EknWebview({
             expand: true
         });
         let window = new Endless.Window({

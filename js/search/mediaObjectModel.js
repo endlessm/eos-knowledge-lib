@@ -6,7 +6,7 @@ const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 
-const ContentObjectModel = imports.contentObjectModel;
+const ContentObjectModel = imports.search.contentObjectModel;
 
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 
@@ -69,11 +69,11 @@ const MediaObjectModel = new Lang.Class({
  * Creates an MediaObjectModel from a Knowledge Engine MediaObject
  * JSON-LD document
  */
-MediaObjectModel.new_from_json_ld = function (json_ld_data, media_path) {
-    let props = MediaObjectModel._props_from_json_ld(json_ld_data, media_path);
+MediaObjectModel.new_from_json_ld = function (json_ld_data, media_path, ekn_version) {
+    let props = MediaObjectModel._props_from_json_ld(json_ld_data, media_path, ekn_version);
     let media_object_model = new MediaObjectModel(props);
 
-    MediaObjectModel._setup_from_json_ld(media_object_model, json_ld_data, media_path);
+    MediaObjectModel._setup_from_json_ld(media_object_model, json_ld_data, media_path, ekn_version);
     return media_object_model;
 };
 

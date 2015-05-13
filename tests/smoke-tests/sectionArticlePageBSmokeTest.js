@@ -1,9 +1,12 @@
-const Gtk = imports.gi.Gtk;
+const Endless = imports.gi.Endless;
+const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
-const Endless = imports.gi.Endless;
-const EosKnowledge = imports.gi.EosKnowledge;
+const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
+
+const TextCard = imports.app.textCard;
+const SectionArticlePage = imports.app.sectionArticlePage;
 
 const TEST_APPLICATION_ID = 'com.endlessm.knowledge.section-page';
 const TESTDIR = Endless.getCurrentFileDir() + '/..';
@@ -23,35 +26,35 @@ const TestApplication = new Lang.Class ({
                                                  Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 
         let cards = [
-            new EosKnowledge.TextCard({title: 'The Mayan Culture'}),
-            new EosKnowledge.TextCard({title: 'Colapse of the Mayans'}),
-            new EosKnowledge.TextCard({title: 'Arrival of the Spaniards'}),
-            new EosKnowledge.TextCard({title: 'The Colonial Era'}),
-            new EosKnowledge.TextCard({title: 'Independence'}),
-            new EosKnowledge.TextCard({title: 'The Republic'}),
-            new EosKnowledge.TextCard({title: 'Military Dictatorships'}),
-            new EosKnowledge.TextCard({title: 'Civil War'}),
-            new EosKnowledge.TextCard({title: 'The Democratic Transition'}),
-            new EosKnowledge.TextCard({title: 'Independence'}),
-            new EosKnowledge.TextCard({title: 'The Republic'}),
-            new EosKnowledge.TextCard({title: 'Military Dictatorships'}),
-            new EosKnowledge.TextCard({title: 'Civil War'}),
-            new EosKnowledge.TextCard({title: 'The Democratic Transition'}),
-            new EosKnowledge.TextCard({title: 'Independence'}),
-            new EosKnowledge.TextCard({title: 'The Republic'}),
-            new EosKnowledge.TextCard({title: 'Military Dictatorships'}),
-            new EosKnowledge.TextCard({title: 'Civil War'}),
-            new EosKnowledge.TextCard({title: 'The Democratic Transition'}),
-            new EosKnowledge.TextCard({title: 'Independence'}),
-            new EosKnowledge.TextCard({title: 'The Republic'}),
-            new EosKnowledge.TextCard({title: 'Military Dictatorships'}),
-            new EosKnowledge.TextCard({title: 'Civil War'}),
-            new EosKnowledge.TextCard({title: 'The Democratic Transition'}),
-            new EosKnowledge.TextCard({title: 'Independence'}),
-            new EosKnowledge.TextCard({title: 'The Republic'}),
-            new EosKnowledge.TextCard({title: 'Military Dictatorships'}),
-            new EosKnowledge.TextCard({title: 'Civil War'}),
-            new EosKnowledge.TextCard({title: 'The Democratic Transition'}),
+            new TextCard.TextCard({title: 'The Mayan Culture'}),
+            new TextCard.TextCard({title: 'Colapse of the Mayans'}),
+            new TextCard.TextCard({title: 'Arrival of the Spaniards'}),
+            new TextCard.TextCard({title: 'The Colonial Era'}),
+            new TextCard.TextCard({title: 'Independence'}),
+            new TextCard.TextCard({title: 'The Republic'}),
+            new TextCard.TextCard({title: 'Military Dictatorships'}),
+            new TextCard.TextCard({title: 'Civil War'}),
+            new TextCard.TextCard({title: 'The Democratic Transition'}),
+            new TextCard.TextCard({title: 'Independence'}),
+            new TextCard.TextCard({title: 'The Republic'}),
+            new TextCard.TextCard({title: 'Military Dictatorships'}),
+            new TextCard.TextCard({title: 'Civil War'}),
+            new TextCard.TextCard({title: 'The Democratic Transition'}),
+            new TextCard.TextCard({title: 'Independence'}),
+            new TextCard.TextCard({title: 'The Republic'}),
+            new TextCard.TextCard({title: 'Military Dictatorships'}),
+            new TextCard.TextCard({title: 'Civil War'}),
+            new TextCard.TextCard({title: 'The Democratic Transition'}),
+            new TextCard.TextCard({title: 'Independence'}),
+            new TextCard.TextCard({title: 'The Republic'}),
+            new TextCard.TextCard({title: 'Military Dictatorships'}),
+            new TextCard.TextCard({title: 'Civil War'}),
+            new TextCard.TextCard({title: 'The Democratic Transition'}),
+            new TextCard.TextCard({title: 'Independence'}),
+            new TextCard.TextCard({title: 'The Republic'}),
+            new TextCard.TextCard({title: 'Military Dictatorships'}),
+            new TextCard.TextCard({title: 'Civil War'}),
+            new TextCard.TextCard({title: 'The Democratic Transition'}),
         ];
         for (let card of cards) {
             card.connect('clicked', function () {
@@ -59,10 +62,10 @@ const TestApplication = new Lang.Class ({
             });
         }
 
-        let section_article_page = new EosKnowledge.SectionArticlePageB();
+        let section_article_page = new SectionArticlePage.SectionArticlePageB();
         section_article_page.section_page.title = 'History of Guatemala';
         section_article_page.section_page.cards = cards;
-        section_article_page.article_page.switcher.load_uri('https://google.com', EosKnowledge.LoadingAnimationType.NONE);
+        section_article_page.article_page.switcher.load_uri('https://google.com', EosKnowledgePrivate.LoadingAnimationType.NONE);
         section_article_page.connect('back-clicked', function () {
             section_article_page.show_article = false;
         });

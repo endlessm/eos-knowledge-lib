@@ -1,8 +1,10 @@
-const EosKnowledge = imports.gi.EosKnowledge;
 const EvinceDocument = imports.gi.EvinceDocument;
 const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
 const WebKit2 = imports.gi.WebKit2;
+
+const EvinceWebviewAdapter = imports.app.evinceWebviewAdapter;
+const WebviewSwitcherView = imports.app.webviewSwitcherView;
 
 // Create objects
 let win = new Gtk.Window({
@@ -30,7 +32,7 @@ combo.append_text('No animation');
 combo.append_text('Forwards');
 combo.append_text('Backwards');
 combo.active = 0;
-let page = new EosKnowledge.WebviewSwitcherView({
+let page = new WebviewSwitcherView.WebviewSwitcherView({
     transition_duration: 500,
     expand: true
 });
@@ -58,7 +60,7 @@ page.connect('create-view-for-file', function (page, file) {
         false /* don't use fast MIME type detection */);
     if (mime_type === 'text/html')
         return new WebKit2.WebView();
-    return new EosKnowledge.EvinceWebviewAdapter();
+    return new EvinceWebviewAdapter.EvinceWebviewAdapter();
 });
 button1.connect('clicked', button_clicked.bind(undefined, file1));
 button2.connect('clicked', button_clicked.bind(undefined, file2));

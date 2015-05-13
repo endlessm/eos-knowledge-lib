@@ -1,0 +1,20 @@
+/* Copyright 2014 Endless Mobile, Inc. */
+
+body {
+    font-family: Lato;
+    color: #464646;
+    background-color: #e9e4de;
+    text-align: center;
+}
+
+h1 {
+    font-size: 3.94em;  /* 63pt at 72 DPI 768px */
+    /*font-weight: 300;*/ /* FIXME: Lato Light displays as Hairline in Webkit */
+    margin-top: 20%; /* I wonder why this is not 40%? */
+    margin-bottom: 10px;
+}
+
+p {
+    margin: 0;
+    font-size: 0.94em;  /* 15pt at 72 DPI 768px */
+}
