@@ -29,6 +29,10 @@ const InAppSearch = new Lang.Class({
         if (icon_pos === Gtk.EntryIconPosition.PRIMARY)
             this.emit('search-activated', this._search_box.text);
     },
+
+    clear_search_box: function () {
+        this._search_box.text = '';
+    },
 });
 Builder.bind_template(InAppSearch.prototype);
 

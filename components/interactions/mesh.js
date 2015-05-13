@@ -19,6 +19,7 @@ const Mesh = new Lang.Class({
         switch (type) {
             case 'home':
                 widget.connect('search-activated', (page, search) => {
+                    page.clear_search_box();
                     this.page_manager.transition_type = Gtk.StackTransitionType.OVER_LEFT;
                     this.page_manager.visible_child = this._pages['search_result'];
                 });

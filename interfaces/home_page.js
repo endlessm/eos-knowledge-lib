@@ -18,4 +18,10 @@ const HomePage = new Lang.Class({
     _init: function (props) {
         this.parent(props);
     },
+
+    clear_search_box: function () {
+        if (!('in_app_search' in this._modules))
+            return;
+        this._modules['in_app_search'].clear_search_box();
+    },
 });
