@@ -60,6 +60,20 @@ const Factory = new Lang.Class({
         });
     },
 
+    create_module: function (page_name, name) {
+        let Module = imports.components.modules[name];
+        return Module.create_me();
+    },
+
+    create_modules: function (page_name) {
+        let retval = {};
+        let modules_description = this._description['pages'][page_name]['modules'];
+        Object.keys(modules_description).forEach((name) => {
+            retval[name] = this.create_module(page_name, name);
+        });
+        return retval;
+    },
+
     create_page: function (name) {
         let Template = imports.components.templates[this._description['pages'][name]['template']['type']];
         return Template.create_me();

@@ -14,4 +14,15 @@ const Template = new Lang.Class({
         this.parent(props);
         this._modules = {};
     },
+
+    add_module: function (type, widget) {
+        if (this.MODULE_TYPES.indexOf(type) === -1)
+            throw new Error("This template doesn't support that type of module: " + type);
+
+        if (type in this._modules)
+            this.remove(this._modules[type]);
+        this._modules[type] = widget;
+
+        // To be overridden; widget is actually packed in template's override
+    },
 });

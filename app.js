@@ -46,6 +46,10 @@ const App = new Lang.Class({
         let pages = this.factory.create_pages();
         Object.keys(pages).forEach((key) => {
             this._interaction.add_page(key, pages[key]);
+            let modules = this.factory.create_modules(key);
+            Object.keys(modules).forEach((module_key) => {
+                pages[key].add_module(module_key, modules[module_key]);
+            });
         });
     },
 
