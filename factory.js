@@ -62,7 +62,14 @@ const Factory = new Lang.Class({
 
     create_module: function (page_name, name) {
         let Module = imports.components.modules[name];
-        return Module.create_me();
+        let props = {};
+
+        // Better way to specify that some modules need input from the app.json?
+        if (name === 'app_banner')
+            props['app_logo_resource'] =
+                this._description['titleImageURI'].slice('resource://'.length);
+
+        return Module.create_me(props);
     },
 
     create_modules: function (page_name) {

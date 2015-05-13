@@ -15,6 +15,26 @@ const EbiHome = new Lang.Class({
         this.init_template();
         this.add(this._grid);
     },
+
+    add_module: function (type, widget) {
+        this.parent(type, widget);
+
+        // Is this the best place to set these properties? The template controls
+        // how the modules are arranged within the page.
+        widget.hexpand = true;
+        widget.valign = Gtk.Align.CENTER;
+        widget.halign = Gtk.Align.CENTER;
+        widget.margin_top = 30;
+
+        switch (type) {
+            case 'app_banner':
+                this._grid.attach(widget, 0, 0, 1, 1);
+                break;
+            case 'in_app_search':
+                this._grid.attach(widget, 0, 1, 1, 1);
+                break;
+        }
+    }
 });
 Builder.bind_template(EbiHome.prototype);
 
