@@ -293,7 +293,7 @@ const Presenter = new Lang.Class({
 
             card.connect('clicked', this._on_section_card_clicked.bind(this, section['tags']));
             return card;
-        }
+        };
 
         if (this._template_type === 'A') {
             for (let page of [this.view.home_page, this.view.categories_page]) {
@@ -394,7 +394,7 @@ const Presenter = new Lang.Class({
             }
         }
 
-        return obj.title
+        return obj.title;
     },
 
     _on_search_text_changed: function (view, entry) {
