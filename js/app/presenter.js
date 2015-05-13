@@ -505,6 +505,7 @@ const Presenter = new Lang.Class({
     },
 
     _add_history_object_for_search_page: function (query_obj) {
+        this._latest_origin_query_obj = query_obj;
         this._history_presenter.set_current_item(
             this._target_page_title, // title
             this._SEARCH_PAGE, // page_type
@@ -515,6 +516,7 @@ const Presenter = new Lang.Class({
     },
 
     _add_history_object_for_section_page: function (query_obj) {
+        this._latest_origin_query_obj = query_obj;
         this._history_presenter.set_current_item(
             this._target_page_title, // title
             this._SECTION_PAGE, // page_type
