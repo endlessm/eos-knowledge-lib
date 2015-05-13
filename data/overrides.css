@@ -1,0 +1,68 @@
+EosWindow {
+    background-color: #888888;
+}
+
+.search-entry {
+    box-shadow: inset 0em 0.16em 0.16em alpha(black, 0.14);
+    background-image: linear-gradient(-179deg, alpha(black, 0.17) 0%,
+                                               alpha(white, 0.13) 79%),
+                      linear-gradient(to bottom, white, white);
+    background-clip: padding-box;
+    padding: 0.75em 0.55em 0.75em 0.55em;
+    color: #2e3436;
+    font-size: 1em;
+
+    -GtkWidget-focus-line-width: 0;
+    border-style: solid;
+    border-radius: 10em;
+
+    border-width: .33em;
+    border-color: alpha(black, 0.19);
+}
+
+.search-entry:selected {
+    background-color: lighter(#2e3436);
+    color: #eeeeec;
+}
+
+.search-entry:focus {
+    box-shadow: inset 0px 0px 3px 2px #5097D1;
+}
+
+.search-entry.image {
+    color: #919191;
+}
+
+.nav-back-button, .nav-forward-button {
+    color: white;
+    background-color: alpha(black, 0.2);
+    border: 1px solid alpha(white, 0.4);
+    box-shadow: inset 0px 1px 1px 0px alpha(black, 0.5),
+        inset 0px 1px 4px 0px alpha(black, 0.4);
+    transition: padding 500ms ease-in-out;
+}
+
+.nav-back-button GtkImage, .nav-forward-button GtkImage {
+    color: white;
+    box-shadow: 0px 1px alpha(black, 0.8); /* FIXME: box-shadow outset doesn't currently work in GTK */
+}
+
+.nav-back-button, .nav-forward-button.rtl {
+    border-left: 0px;
+    border-radius: 0px 27px 27px 0px;
+    padding: 15px 15px 15px 0px;
+}
+
+.nav-forward-button, .nav-back-button.rtl {
+    border-radius: 27px 0px 0px 27px;
+    border-right: 0px;
+    padding: 15px 0px 15px 15px;
+}
+
+.nav-back-button:hover, .nav-forward-button.rtl:hover {
+    padding-left: 15px;
+}
+
+.nav-forward-button:hover, .nav-back-button.rtl:hover {
+    padding-right: 15px;
+}

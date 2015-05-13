@@ -1,5 +1,7 @@
 const Endless = imports.gi.Endless;
+const Gdk = imports.gi.Gdk;
 const GObject = imports.gi.GObject;
+const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const Factory = imports.factory;
@@ -12,6 +14,10 @@ const App = new Lang.Class({
     Name: 'App',
     Extends: Endless.Application,
     Properties: {
+        'css-file': GObject.ParamSpec.object('css-file', 'CSS file',
+            'File handle to the app-wide CSS',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            GObject.Object.$gtype),  // FIXME: should be Gio.File.$gtype
         // The app needs access to the factory (even though it is created by the
         // factory) because it needs to create more components during "startup".
         // An alternative would be for the factory to connect to the app's
@@ -37,6 +43,11 @@ const App = new Lang.Class({
             application: this,
             title: this.factory.title,
         });
+
+        let provider = new Gtk.CssProvider();
+        provider.load_from_file(this.css_file);
+        Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(),
+            provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 
         this._interaction =
             this.factory.create_interaction(this.window.page_manager);

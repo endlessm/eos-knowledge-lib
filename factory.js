@@ -1,3 +1,4 @@
+const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 
@@ -48,6 +49,7 @@ const Factory = new Lang.Class({
         const App = imports.app;
         return new App.App({
             application_id: this.application_id,
+            css_file: Gio.File.new_for_uri(this._description['css']),
             factory: this,
         });
     },

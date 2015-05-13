@@ -7,6 +7,7 @@
     <file compressed="true">data/ebi_home.ui.xml</file>
     <file compressed="true">data/in_app_search.ui.xml</file>
     <file compressed="true">data/logo.svg</file>
+    <file compressed="true">data/overrides.css</file>
     <file compressed="true">data/unagi_search_results.ui.xml</file>
   </gresource>
 </gresources>

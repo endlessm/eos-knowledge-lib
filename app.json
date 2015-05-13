@@ -2,6 +2,7 @@
     "id": "com.endlessm.scuba-diving-en",
     "title": "Scuba Diving",
     "titleImageURI": "resource:///com/endlessm/test/data/logo.svg",
+    "css": "resource:///com/endlessm/test/data/overrides.css",
     "interaction": {
         "type": "mesh"
     },
