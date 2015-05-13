@@ -1,15 +1,15 @@
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
+const Template = imports.interfaces.template;
+
 const HomePage = new Lang.Class({
     Name: 'HomePage',
-    Extends: Gtk.Frame, // This is an interface so it shouldn't extend anything
+    Extends: Template.Template, // This is an interface so it shouldn't extend anything
+
+    MODULE_TYPES: ['app_banner', 'in_app_search', 'bag_o_cards'],
 
     _init: function (props) {
         this.parent(props);
-        let label = new Gtk.Label({
-            label: "I'm the home page",
-        });
-        this.add(label);
     },
 });

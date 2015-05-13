@@ -60,18 +60,15 @@ const Factory = new Lang.Class({
         });
     },
 
-    create_page: function (name, options) {
-        // Import this here because it's temporary
-        const Gtk = imports.gi.Gtk;
-        return new Gtk.Label({
-            label: 'I am the ' + name + ' page!',
-        });
+    create_page: function (name) {
+        let Template = imports.components.templates[this._description['pages'][name]['template']['type']];
+        return Template.create_me();
     },
 
     create_pages: function () {
         let retval = {};
         Object.keys(this._description['pages']).forEach((name) => {
-            retval[name] = this.create_page(name, this._description['pages'][name]);
+            retval[name] = this.create_page(name);
         });
         return retval;
     },
