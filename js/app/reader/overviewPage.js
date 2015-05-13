@@ -152,7 +152,8 @@ const OverviewPage = new Lang.Class({
     set title_image_uri (v) {
         if (this._title_image_uri === v) return;
 
-        this._title_image.file = Gio.File.new_for_uri(v);
+        let stream = Gio.File.new_for_uri(v).read(null);
+        this._title_image.set_content(stream);
 
         // only actually set the image URI if we successfully set the image
         this._title_image_uri = v;
