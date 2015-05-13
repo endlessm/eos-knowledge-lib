@@ -26,6 +26,7 @@ const OverviewPage = imports.app.reader.overviewPage;
 const Previewer = imports.app.previewer;
 const QueryObject = imports.search.queryObject;
 const ReaderCard = imports.app.reader.card;
+const StyleClasses = imports.app.styleClasses;
 const UserSettingsModel = imports.app.reader.userSettingsModel;
 const Utils = imports.app.utils;
 const WebkitContextSetup = imports.app.webkitContextSetup;
@@ -963,7 +964,7 @@ const Presenter = new Lang.Class({
             justify: Gtk.Justification.CENTER,
             use_markup: true,
         });
-        err_label.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_READER_ERROR_PAGE);
+        err_label.get_style_context().add_class(StyleClasses.READER_ERROR_PAGE);
         err_label.show();
         return err_label;
     },

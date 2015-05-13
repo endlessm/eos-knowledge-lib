@@ -1,12 +1,12 @@
 // Copyright 2014 Endless Mobile, Inc.
 
-const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const InfiniteScrolledWindow = imports.app.infiniteScrolledWindow;
 const SectionPage = imports.app.sectionPage;
+const StyleClasses = imports.app.styleClasses;
 
 /**
  * Class: SectionPageA
@@ -40,7 +40,7 @@ const SectionPageA = new Lang.Class({
             mode: Gtk.SizeGroupMode.HORIZONTAL
         });
 
-        this.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_SECTION_PAGE_A);
+        this.get_style_context().add_class(StyleClasses.SECTION_PAGE_A);
     },
 
     pack_title_label: function (title_label) {
@@ -155,7 +155,7 @@ const CardsSegment = new Lang.Class({
         this.attach(this.title_label, 0, 1, 1, 1);
         this.attach(this._flow_box, 1, 1, 1, 1);
 
-        this.title_label.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_SECTION_PAGE_A_SEGMENT_TITLE);
+        this.title_label.get_style_context().add_class(StyleClasses.SECTION_PAGE_A_SEGMENT_TITLE);
 
     },
 

@@ -1,10 +1,11 @@
 // Copyright 2015 Endless Mobile, Inc.
 
-const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Gettext = imports.gettext;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
+
+const StyleClasses = imports.app.styleClasses;
 
 const Config = imports.app.config;
 const InfiniteScrolledWindow = imports.app.infiniteScrolledWindow;
@@ -73,14 +74,14 @@ const SearchResultsPage = new Lang.Class({
             label: _("There are no results for your search"),
             no_show_all: true,
         });
-        this.no_results_label.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_NO_SEARCH_RESULTS_PAGE_NO_RESULTS_LABEL);
+        this.no_results_label.get_style_context().add_class(StyleClasses.NO_SEARCH_RESULTS_PAGE_NO_RESULTS_LABEL);
 
         let overlay = new Gtk.Overlay();
         overlay.add(this._scrolled_window);
         overlay.add_overlay(this.no_results_label);
         this._scrolled_window.add(this._content_flow_box);
 
-        this.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_READER_SEARCH_RESULTS_PAGE);
+        this.get_style_context().add_class(StyleClasses.READER_SEARCH_RESULTS_PAGE);
         this.add(overlay);
     },
 

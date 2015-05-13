@@ -1,8 +1,8 @@
-const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Gtk = imports.gi.Gtk;
 
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const SectionArticlePage = imports.app.sectionArticlePage;
+const StyleClasses = imports.app.styleClasses;
 
 Gtk.init(null);
 
@@ -21,6 +21,6 @@ describe ('Section Article Page B', function () {
     });
 
     it ('has a back button with the correct CSS class', function () {
-        expect(the_section_article_page).toHaveDescendantWithCssClass(EosKnowledgePrivate.STYLE_CLASS_NAV_BACK_BUTTON);
+        expect(the_section_article_page).toHaveDescendantWithCssClass(StyleClasses.NAV_BACK_BUTTON);
     });
 });

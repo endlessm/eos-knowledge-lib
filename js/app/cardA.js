@@ -1,10 +1,10 @@
 // Copyright 2014 Endless Mobile, Inc.
 
-const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const Card = imports.app.card;
+const StyleClasses = imports.app.styleClasses;
 
 /**
  * Class: CardA
@@ -27,7 +27,7 @@ const CardA = new Lang.Class({
 
         this.parent(props);
 
-        this.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_CARD_A);
+        this.get_style_context().add_class(StyleClasses.CARD_A);
         // Our button size changes via css state selectors on hover, and for
         // some reason Gtk isn't handling this queue resize for us
         this.connect('state-flags-changed', function () {

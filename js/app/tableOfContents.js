@@ -1,7 +1,6 @@
 // Copyright 2014 Endless Mobile, Inc.
 
 const Endless = imports.gi.Endless;
-const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const GLib = imports.gi.GLib;
 const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
@@ -11,6 +10,7 @@ const Mainloop = imports.mainloop;
 const Pango = imports.gi.Pango;
 
 const MarginButton = imports.app.marginButton;
+const StyleClasses = imports.app.styleClasses;
 const Utils = imports.app.utils;
 
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
@@ -182,7 +182,7 @@ const TableOfContents = new Lang.Class({
 
         this.add(this._up_arrow_align);
         this.add(this._down_arrow_align);
-        this.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_TOC);
+        this.get_style_context().add_class(StyleClasses.TOC);
         this.get_style_context().add_class(Gtk.STYLE_CLASS_VIEW);
     },
 
@@ -245,9 +245,9 @@ const TableOfContents = new Lang.Class({
             return;
         this._collapsed = v;
         if (this._collapsed) {
-            this.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_COLLAPSED);
+            this.get_style_context().add_class(StyleClasses.COLLAPSED);
         } else {
-            this.get_style_context().remove_class(EosKnowledgePrivate.STYLE_CLASS_COLLAPSED);
+            this.get_style_context().remove_class(StyleClasses.COLLAPSED);
         }
         this._collapse_sections();
         this.notify('collapsed');
@@ -330,7 +330,7 @@ const TableOfContents = new Lang.Class({
             image: image,
             halign: Gtk.Align.CENTER
         });
-        arrow.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_TOC_ARROW);
+        arrow.get_style_context().add_class(StyleClasses.TOC_ARROW);
         return arrow;
     },
 
@@ -419,7 +419,7 @@ const SectionButton = new Lang.Class({
 
     _init: function (section_title, section_index, params) {
         this.parent(params);
-        this.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_TOC_ENTRY);
+        this.get_style_context().add_class(StyleClasses.TOC_ENTRY);
         section_title = section_title.toUpperCase();
         this.index = section_index;
 
@@ -430,7 +430,7 @@ const SectionButton = new Lang.Class({
             xalign: 0,
             no_show_all: true
         });
-        this.title_label.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_TOC_ENTRY_TITLE);
+        this.title_label.get_style_context().add_class(StyleClasses.TOC_ENTRY_TITLE);
         this._title_bold = new Gtk.Label({
             label: "<b>" + GLib.markup_escape_text(section_title, -1) + "</b>",
             use_markup: true,
@@ -448,7 +448,7 @@ const SectionButton = new Lang.Class({
         this.index_label = new Gtk.Label({
             label: (section_index + 1).toString()
         });
-        this.index_label.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_TOC_ENTRY_INDEX);
+        this.index_label.get_style_context().add_class(StyleClasses.TOC_ENTRY_INDEX);
 
         let box = new Gtk.Box({
             orientation: Gtk.Orientation.HORIZONTAL

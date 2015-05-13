@@ -1,11 +1,12 @@
 // Copyright 2014 Endless Mobile, Inc.
 
-const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const Pango = imports.gi.Pango;
+
+const StyleClasses = imports.app.styleClasses;
 
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 
@@ -97,9 +98,9 @@ const TitleView = new Lang.Class({
         this.attach(this._ornament, 0, 1, 1, 1);
         this.attach(this._attribution_label, 1, 1, 1, 1);
 
-        this._ornament.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_READER_ARTICLE_PAGE_ORNAMENT);
-        this._title_label.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_ARTICLE_PAGE_TITLE);
-        this._attribution_label.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_READER_ARTICLE_PAGE_ATTRIBUTION);
+        this._ornament.get_style_context().add_class(StyleClasses.READER_ARTICLE_PAGE_ORNAMENT);
+        this._title_label.get_style_context().add_class(StyleClasses.ARTICLE_PAGE_TITLE);
+        this._attribution_label.get_style_context().add_class(StyleClasses.READER_ARTICLE_PAGE_ATTRIBUTION);
     },
 
     set title(value) {

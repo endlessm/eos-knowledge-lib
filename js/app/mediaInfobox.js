@@ -1,11 +1,11 @@
 const Gtk = imports.gi.Gtk;
 const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
-const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Lang = imports.lang;
 const Pango = imports.gi.Pango;
 
 const CompositeButton = imports.app.compositeButton;
+const StyleClasses = imports.app.styleClasses;
 const Utils = imports.app.utils;
 
 /** Class: MediaInfobox
@@ -79,7 +79,7 @@ const MediaInfobox = new Lang.Class({
             ellipsize: Pango.EllipsizeMode.END,
             lines: this._MAX_CAPTION_LINES
         });
-        this._caption_label.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_INFOBOX_CAPTION);
+        this._caption_label.get_style_context().add_class(StyleClasses.INFOBOX_CAPTION);
 
         this._separator = new Gtk.Separator({
             expand: true,
@@ -92,7 +92,7 @@ const MediaInfobox = new Lang.Class({
             wrap: true,
             wrap_mode: Pango.WrapMode.WORD_CHAR
         });
-        this._attribution_composite.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_INFOBOX_ATTRIBUTION_TEXT);
+        this._attribution_composite.get_style_context().add_class(StyleClasses.INFOBOX_ATTRIBUTION_TEXT);
         this._attribution_composite.add(this._attribution_label);
         this._attribution_composite.setSensitiveChildren([this._attribution_label]);
 

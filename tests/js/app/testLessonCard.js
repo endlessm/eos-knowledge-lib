@@ -1,8 +1,8 @@
-const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Gtk = imports.gi.Gtk;
 
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const LessonCard = imports.app.lessonCard;
+const StyleClasses = imports.app.styleClasses;
 
 describe('Lesson card widget', function () {
     let card;
@@ -16,12 +16,12 @@ describe('Lesson card widget', function () {
     describe('CSS style class', function () {
         it('has complete class when completed', function () {
             card.complete = true;
-            expect(card).toHaveCssClass(EosKnowledgePrivate.STYLE_CLASS_COMPLETE);
+            expect(card).toHaveCssClass(StyleClasses.COMPLETE);
         });
 
         it('does not have complete class when not completed', function () {
             card.complete = false;
-            expect(card).not.toHaveCssClass(EosKnowledgePrivate.STYLE_CLASS_COMPLETE);
+            expect(card).not.toHaveCssClass(StyleClasses.COMPLETE);
         });
     });
 });

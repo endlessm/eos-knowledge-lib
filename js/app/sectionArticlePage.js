@@ -1,16 +1,16 @@
 // Copyright 2014 Endless Mobile, Inc.
 
 const Endless = imports.gi.Endless;
-const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
+const ArticlePage = imports.app.articlePage;
 const NavButtonOverlay = imports.app.navButtonOverlay;
 const SectionPageA = imports.app.sectionPageA;
 const SectionPageB = imports.app.sectionPageB;
-const ArticlePage = imports.app.articlePage;
+const StyleClasses = imports.app.styleClasses;
 
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 
@@ -104,9 +104,9 @@ const SectionArticlePageA = new Lang.Class({
         });
         this._section_article_stack.connect('notify::transition-running', function () {
             if (this._section_article_stack.transition_running) {
-                this.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_ANIMATING);
+                this.get_style_context().add_class(StyleClasses.ANIMATING);
             } else {
-                this.get_style_context().remove_class(EosKnowledgePrivate.STYLE_CLASS_ANIMATING);
+                this.get_style_context().remove_class(StyleClasses.ANIMATING);
             }
         }.bind(this));
         this._section_article_stack.add(this._section_page);

@@ -1,7 +1,6 @@
-const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
-
 const ProgressLabel = imports.app.reader.progressLabel;
 const CssClassMatcher = imports.tests.CssClassMatcher;
+const StyleClasses = imports.app.styleClasses;
 
 const EXPECTED_CURRENT_PAGE = 6;
 const EXPECTED_TOTAL_PAGES = 15;
@@ -19,7 +18,7 @@ describe('Progress label', function () {
     it('constructs', function () {});
 
     it('has the progress-label CSS class', function () {
-        expect(label).toHaveCssClass(EosKnowledgePrivate.STYLE_CLASS_READER_PROGRESS_LABEL);
+        expect(label).toHaveCssClass(StyleClasses.READER_PROGRESS_LABEL);
     });
 
     it('contains the current page in its label', function () {

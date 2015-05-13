@@ -1,10 +1,10 @@
-const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Gtk = imports.gi.Gtk;
 
 const ArticlePage = imports.app.reader.articlePage;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
 const ProgressLabel = imports.app.reader.progressLabel;
+const StyleClasses = imports.app.styleClasses;
 
 describe('Article page widget', function () {
     let page;
@@ -25,13 +25,13 @@ describe('Article page widget', function () {
 
     describe('CSS style context', function () {
         it('has a article page class', function () {
-            expect(page).toHaveCssClass(EosKnowledgePrivate.STYLE_CLASS_ARTICLE_PAGE);
+            expect(page).toHaveCssClass(StyleClasses.ARTICLE_PAGE);
         });
         it('has a descendant with title class', function () {
-            expect(page).toHaveDescendantWithCssClass(EosKnowledgePrivate.STYLE_CLASS_ARTICLE_PAGE_TITLE);
+            expect(page).toHaveDescendantWithCssClass(StyleClasses.ARTICLE_PAGE_TITLE);
         });
         it('has a descendant with attribution class', function () {
-            expect(page).toHaveDescendantWithCssClass(EosKnowledgePrivate.STYLE_CLASS_READER_ARTICLE_PAGE_ATTRIBUTION);
+            expect(page).toHaveDescendantWithCssClass(StyleClasses.READER_ARTICLE_PAGE_ATTRIBUTION);
         });
     });
 });

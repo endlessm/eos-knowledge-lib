@@ -1,6 +1,5 @@
 // Copyright 2014 Endless Mobile, Inc.
 
-const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Format = imports.format;
 const Gettext = imports.gettext;
 const GLib = imports.gi.GLib;
@@ -10,6 +9,7 @@ const Lang = imports.lang;
 
 const ListCard = imports.app.listCard;
 const Config = imports.app.config;
+const StyleClasses = imports.app.styleClasses;
 
 String.prototype.format = Format.format;
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
@@ -105,9 +105,9 @@ const ProgressCard = new Lang.Class({
 
     _update_bar: function () {
         if (this._total > 0 && this._complete === this._total)
-            this.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_COMPLETE);
+            this.get_style_context().add_class(StyleClasses.COMPLETE);
         else
-            this.get_style_context().remove_class(EosKnowledgePrivate.STYLE_CLASS_COMPLETE);
+            this.get_style_context().remove_class(StyleClasses.COMPLETE);
 
         this._progress.text = _("%d of %d done").format(this._complete,
             this._total);

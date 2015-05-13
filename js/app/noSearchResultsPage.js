@@ -1,6 +1,5 @@
 // Copyright 2014 Endless Mobile, Inc.
 
-const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Gettext = imports.gettext;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
@@ -9,6 +8,7 @@ const Pango = imports.gi.Pango;
 
 const Config = imports.app.config;
 const NavButtonOverlay = imports.app.navButtonOverlay;
+const StyleClasses = imports.app.styleClasses;
 
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
@@ -49,7 +49,7 @@ const NoSearchResultsPage = new Lang.Class({
 
         this.parent(props);
 
-        this.title_label.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_NO_SEARCH_RESULTS_PAGE_TITLE);
+        this.title_label.get_style_context().add_class(StyleClasses.NO_SEARCH_RESULTS_PAGE_TITLE);
     },
 
     set query (v) {
@@ -84,7 +84,7 @@ const NoSearchResultsPageA = new Lang.Class({
     _init: function (props) {
         this.parent(props);
 
-        this.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_NO_SEARCH_RESULTS_PAGE_A);
+        this.get_style_context().add_class(StyleClasses.NO_SEARCH_RESULTS_PAGE_A);
 
         let content_grid = new Gtk.Grid({
             orientation: Gtk.Orientation.VERTICAL,
@@ -109,8 +109,8 @@ const NoSearchResultsPageA = new Lang.Class({
             valign: Gtk.Align.START,
             expand: true
         });
-        this._label_no_results.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_NO_SEARCH_RESULTS_PAGE_NO_RESULTS_LABEL);
-        this._label_try_again.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_NO_SEARCH_RESULTS_PAGE_TRY_AGAIN_LABEL);
+        this._label_no_results.get_style_context().add_class(StyleClasses.NO_SEARCH_RESULTS_PAGE_NO_RESULTS_LABEL);
+        this._label_try_again.get_style_context().add_class(StyleClasses.NO_SEARCH_RESULTS_PAGE_TRY_AGAIN_LABEL);
 
         content_grid.add(this.title_label);
         content_grid.add(separator);
@@ -140,7 +140,7 @@ const NoSearchResultsPageB = new Lang.Class({
         props.valign = Gtk.Align.BASELINE;
         this.parent(props);
 
-        this.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_NO_SEARCH_RESULTS_PAGE_B);
+        this.get_style_context().add_class(StyleClasses.NO_SEARCH_RESULTS_PAGE_B);
 
         let content_grid = new Gtk.Grid({
             orientation: Gtk.Orientation.HORIZONTAL,
@@ -160,7 +160,7 @@ const NoSearchResultsPageB = new Lang.Class({
             expand: true,
             wrap: true
         });
-        this._label_no_results.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_NO_SEARCH_RESULTS_PAGE_NO_RESULTS_LABEL);
+        this._label_no_results.get_style_context().add_class(StyleClasses.NO_SEARCH_RESULTS_PAGE_NO_RESULTS_LABEL);
 
         let label_grid = new Gtk.Grid({
             orientation: Gtk.Orientation.VERTICAL,
