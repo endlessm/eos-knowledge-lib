@@ -1,10 +1,10 @@
 // Copyright 2014 Endless Mobile, Inc.
 
-const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const Card = imports.app.card;
+const StyleClasses = imports.app.styleClasses;
 
 /**
  * Class: CardB
@@ -22,7 +22,7 @@ const CardB = new Lang.Class({
         props.expand = true;
         this.parent(props);
 
-        this.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_CARD_B);
+        this.get_style_context().add_class(StyleClasses.CARD_B);
     },
 
     pack_widgets: function (title_label, synopsis_label, image_frame) {

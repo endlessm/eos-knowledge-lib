@@ -1,10 +1,11 @@
 // Copyright 2014 Endless Mobile, Inc.
 
-const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Gettext = imports.gettext;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
+
+const StyleClasses = imports.app.styleClasses;
 
 const ProgressLabel = imports.app.reader.progressLabel;
 const TitleView = imports.app.reader.titleView;
@@ -88,7 +89,7 @@ const ArticlePage = new Lang.Class({
             halign: Gtk.Align.START,
             height_request: _DECORATIVE_BAR_HEIGHT,
         });
-        decorative_frame.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_READER_DECORATIVE_BAR);
+        decorative_frame.get_style_context().add_class(StyleClasses.READER_DECORATIVE_BAR);
 
         let decorative_title_size_group = new Gtk.SizeGroup({
             mode: Gtk.SizeGroupMode.HORIZONTAL,
@@ -110,7 +111,7 @@ const ArticlePage = new Lang.Class({
         });
         this._size_group.add_widget(this._title_view);
 
-        this.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_ARTICLE_PAGE);
+        this.get_style_context().add_class(StyleClasses.ARTICLE_PAGE);
     },
 
     get title_view() {

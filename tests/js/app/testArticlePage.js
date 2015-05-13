@@ -4,6 +4,7 @@ const Gtk = imports.gi.Gtk;
 const ArticlePage = imports.app.articlePage;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
+const StyleClasses = imports.app.styleClasses;
 const TableOfContents = imports.app.tableOfContents;
 const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 
@@ -48,27 +49,27 @@ describe('Article Page A', function () {
 
     describe('Style class of article page A', function () {
         it('has article page class', function () {
-            expect(page).toHaveCssClass(EosKnowledgePrivate.STYLE_CLASS_ARTICLE_PAGE);
+            expect(page).toHaveCssClass(StyleClasses.ARTICLE_PAGE);
         });
         it('has a descendant with title class', function () {
-            expect(page).toHaveDescendantWithCssClass(EosKnowledgePrivate.STYLE_CLASS_ARTICLE_PAGE_TITLE);
+            expect(page).toHaveDescendantWithCssClass(StyleClasses.ARTICLE_PAGE_TITLE);
         });
         it('has a descendant with toolbar frame class', function () {
-            expect(page).toHaveDescendantWithCssClass(EosKnowledgePrivate.STYLE_CLASS_ARTICLE_PAGE_TOOLBAR_FRAME);
+            expect(page).toHaveDescendantWithCssClass(StyleClasses.ARTICLE_PAGE_TOOLBAR_FRAME);
         });
         it('has a descendant with switcher frame class', function () {
-            expect(page).toHaveDescendantWithCssClass(EosKnowledgePrivate.STYLE_CLASS_ARTICLE_PAGE_SWITCHER_FRAME);
+            expect(page).toHaveDescendantWithCssClass(StyleClasses.ARTICLE_PAGE_SWITCHER_FRAME);
         });
         it('has a table of contents with collapsed class when narrow', function () {
             let alloc = page.get_allocation();
             alloc.width = 1;
             alloc.height = 9999;
             page.size_allocate(alloc);
-            expect(page.toc).toHaveCssClass(EosKnowledgePrivate.STYLE_CLASS_COLLAPSED);
+            expect(page.toc).toHaveCssClass(StyleClasses.COLLAPSED);
             alloc.width = 9999;
             alloc.height = 9999;
             page.size_allocate(alloc);
-            expect(page.toc).not.toHaveCssClass(EosKnowledgePrivate.STYLE_CLASS_COLLAPSED);
+            expect(page.toc).not.toHaveCssClass(StyleClasses.COLLAPSED);
         });
     });
 });

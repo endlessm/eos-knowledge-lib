@@ -1,10 +1,10 @@
-const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const ImagePreviewer = imports.app.imagePreviewer;
+const StyleClasses = imports.app.styleClasses;
 
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 
@@ -42,7 +42,7 @@ const Previewer = new Lang.Class({
         });
         this.parent(props);
 
-        this.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_PREVIEWER);
+        this.get_style_context().add_class(StyleClasses.PREVIEWER);
     },
 
     set_content: function (stream, content_type) {

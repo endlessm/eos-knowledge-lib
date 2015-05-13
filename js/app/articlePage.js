@@ -8,6 +8,8 @@ const Lang = imports.lang;
 const Pango = imports.gi.Pango;
 const Cairo = imports.gi.cairo;
 
+const StyleClasses = imports.app.styleClasses;
+
 const TableOfContents = imports.app.tableOfContents;
 
 /**
@@ -23,8 +25,8 @@ const TableOfContents = imports.app.tableOfContents;
  * This widget will handle toggling the <TableOfContents.collapsed> parameter
  * of the table of contents depending on available space. It provides two
  * internal frames with style classes
- * EosKnowledgePrivate.STYLE_CLASS_ARTICLE_PAGE_TOOLBAR_FRAME and
- * EosKnowledgePrivate.STYLE_CLASS_ARTICLE_PAGE_SWITCHER_FRAME for theming purposes.
+ * StyleClasses.ARTICLE_PAGE_TOOLBAR_FRAME and
+ * StyleClasses.ARTICLE_PAGE_SWITCHER_FRAME for theming purposes.
  * The toolbar frame surrounds the <title> and <toc> on the right. The
  * switcher frame surrounds the <switcher> on the left.
  */
@@ -171,13 +173,13 @@ const ArticlePage = new Lang.Class({
         this.add(this._switcher_frame);
 
         this.show_all();
-        this.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_ARTICLE_PAGE);
-        this._title_label.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_ARTICLE_PAGE_TITLE);
+        this.get_style_context().add_class(StyleClasses.ARTICLE_PAGE);
+        this._title_label.get_style_context().add_class(StyleClasses.ARTICLE_PAGE_TITLE);
         let top_label_context = this._top_title_label.get_style_context();
-        top_label_context.add_class(EosKnowledgePrivate.STYLE_CLASS_ARTICLE_PAGE_TITLE);
-        top_label_context.add_class(EosKnowledgePrivate.STYLE_CLASS_COLLAPSED);
-        this._toolbar_frame.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_ARTICLE_PAGE_TOOLBAR_FRAME);
-        this._switcher_frame.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_ARTICLE_PAGE_SWITCHER_FRAME);
+        top_label_context.add_class(StyleClasses.ARTICLE_PAGE_TITLE);
+        top_label_context.add_class(StyleClasses.COLLAPSED);
+        this._toolbar_frame.get_style_context().add_class(StyleClasses.ARTICLE_PAGE_TOOLBAR_FRAME);
+        this._switcher_frame.get_style_context().add_class(StyleClasses.ARTICLE_PAGE_SWITCHER_FRAME);
     },
 
     set title (v) {
@@ -200,11 +202,11 @@ const ArticlePage = new Lang.Class({
         if (this._has_margins === v)
             return;
         if (v) {
-            this._switcher_frame.get_style_context().remove_class(EosKnowledgePrivate.STYLE_CLASS_NO_MARGINS);
-            this._toolbar_frame.get_style_context().remove_class(EosKnowledgePrivate.STYLE_CLASS_NO_MARGINS);
+            this._switcher_frame.get_style_context().remove_class(StyleClasses.NO_MARGINS);
+            this._toolbar_frame.get_style_context().remove_class(StyleClasses.NO_MARGINS);
         } else {
-            this._switcher_frame.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_NO_MARGINS);
-            this._toolbar_frame.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_NO_MARGINS);
+            this._switcher_frame.get_style_context().add_class(StyleClasses.NO_MARGINS);
+            this._toolbar_frame.get_style_context().add_class(StyleClasses.NO_MARGINS);
         }
         this._has_margins = v;
         this.notify('has-margins');
@@ -278,13 +280,13 @@ const ArticlePage = new Lang.Class({
         // Decide if toolbar should be collapsed
         if (alloc.width < this.COLLAPSE_TOOLBAR_WIDTH) {
             if (!this._toc.collapsed) {
-                this._toolbar_frame.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_COLLAPSED);
+                this._toolbar_frame.get_style_context().add_class(StyleClasses.COLLAPSED);
                 this._toc.collapsed = true;
                 this._title_label.visible = false;
             }
         } else {
             if (this._toc.collapsed) {
-                this._toolbar_frame.get_style_context().remove_class(EosKnowledgePrivate.STYLE_CLASS_COLLAPSED);
+                this._toolbar_frame.get_style_context().remove_class(StyleClasses.COLLAPSED);
                 this._toc.collapsed = false;
             }
             // Needs to be outside the if block because title_label could have been made invisible by

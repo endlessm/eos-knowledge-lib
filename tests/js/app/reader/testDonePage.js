@@ -1,10 +1,10 @@
-const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Gtk = imports.gi.Gtk;
 
 const DonePage = imports.app.reader.donePage;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
 const ProgressLabel = imports.app.reader.progressLabel;
+const StyleClasses = imports.app.styleClasses;
 
 describe('Done page widget', function () {
     let page;
@@ -24,14 +24,14 @@ describe('Done page widget', function () {
     });
 
     it('has the done-page CSS class', function () {
-        expect(page).toHaveCssClass(EosKnowledgePrivate.STYLE_CLASS_READER_DONE_PAGE);
+        expect(page).toHaveCssClass(StyleClasses.READER_DONE_PAGE);
     });
 
     it('has a child widget with headline CSS class', function () {
-        expect(page).toHaveDescendantWithCssClass(EosKnowledgePrivate.STYLE_CLASS_READER_HEADLINE);
+        expect(page).toHaveDescendantWithCssClass(StyleClasses.READER_HEADLINE);
     });
 
     it('has a child widget with bottom-line CSS class', function () {
-        expect(page).toHaveDescendantWithCssClass(EosKnowledgePrivate.STYLE_CLASS_READER_BOTTOM_LINE);
+        expect(page).toHaveDescendantWithCssClass(StyleClasses.READER_BOTTOM_LINE);
     });
 });

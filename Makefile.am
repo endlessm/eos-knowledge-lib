@@ -267,6 +267,7 @@ js_files = \
 	js/app/sectionPage.js \
 	js/app/sectionPageA.js \
 	js/app/sectionPageB.js \
+	js/app/styleClasses.js \
 	js/app/spaceContainer.js \
 	js/app/tabButton.js \
 	js/app/tableOfContents.js \

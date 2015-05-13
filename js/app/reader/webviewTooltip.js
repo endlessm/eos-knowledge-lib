@@ -1,6 +1,5 @@
 // Copyright 2015 Endless Mobile, Inc.
 
-const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Gettext = imports.gettext;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
@@ -9,6 +8,7 @@ const Lang = imports.lang;
 const Pango = imports.gi.Pango;
 
 const Config = imports.app.config;
+const StyleClasses = imports.app.styleClasses;
 
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 
@@ -79,7 +79,7 @@ const WebviewTooltip = new Lang.Class({
             max_width_chars: 40,
         });
 
-        this.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_READER_WEBVIEW_TOOLTIP);
+        this.get_style_context().add_class(StyleClasses.READER_WEBVIEW_TOOLTIP);
 
         switch (this.type) {
             case TYPE_EXTERNAL_LINK:
@@ -121,7 +121,7 @@ const WebviewTooltip = new Lang.Class({
             the page number of the article. */
             label: _("Page %d").format(this.page_number).toLocaleUpperCase(),
         });
-        page_number_label.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_READER_TOOLTIP_TYPE_LABEL);
+        page_number_label.get_style_context().add_class(StyleClasses.READER_TOOLTIP_TYPE_LABEL);
 
         grid.add(page_number_label);
         grid.add(this._title_label);
@@ -137,7 +137,7 @@ const WebviewTooltip = new Lang.Class({
         let archive_type_label = new Gtk.Label({
             label: _("Archive").toLocaleUpperCase(),
         });
-        archive_type_label.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_READER_TOOLTIP_TYPE_LABEL);
+        archive_type_label.get_style_context().add_class(StyleClasses.READER_TOOLTIP_TYPE_LABEL);
 
         let archive_frame = new Gtk.Frame({
             expand: true,

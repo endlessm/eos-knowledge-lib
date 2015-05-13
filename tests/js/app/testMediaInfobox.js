@@ -1,4 +1,5 @@
 const Gtk = imports.gi.Gtk;
+const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
 
 const MediaObjectModel = imports.search.mediaObjectModel;

@@ -1,12 +1,12 @@
 /* Copyright 2014 Endless Mobile, Inc. */
 
-const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 
 const ProgressLabel = imports.app.reader.progressLabel;
+const StyleClasses = imports.app.styleClasses;
 
 let win = new Gtk.Window();
 let grid = new Gtk.Grid();
@@ -28,9 +28,9 @@ spinner1.bind_property('value', label, 'current-page', flags);
 spinner2.bind_property('value', label, 'total-pages', flags);
 label.connect('notify', function () {
     if (label.current_page === label.total_pages)
-        grid.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_READER_DONE_PAGE);
+        grid.get_style_context().add_class(StyleClasses.READER_DONE_PAGE);
     else
-        grid.get_style_context().remove_class(EosKnowledgePrivate.STYLE_CLASS_READER_DONE_PAGE);
+        grid.get_style_context().remove_class(StyleClasses.READER_DONE_PAGE);
 });
 win.connect('destroy', Gtk.main_quit);
 

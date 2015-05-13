@@ -15,6 +15,7 @@ const Lightbox = imports.app.lightbox;
 const NavButtonOverlay = imports.app.navButtonOverlay;
 const OverviewPage = imports.app.reader.overviewPage;
 const SearchResultsPage = imports.app.reader.searchResultsPage;
+const StyleClasses = imports.app.styleClasses;
 
 /**
  * Class: Reader.Window
@@ -244,9 +245,9 @@ const Window = new Lang.Class({
 
         this._stack.connect('notify::transition-running', () => {
             if (this._stack.transition_running) {
-                this.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_ANIMATING);
+                this.get_style_context().add_class(StyleClasses.ANIMATING);
             } else {
-                this.get_style_context().remove_class(EosKnowledgePrivate.STYLE_CLASS_ANIMATING);
+                this.get_style_context().remove_class(StyleClasses.ANIMATING);
             }
         });
     },

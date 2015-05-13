@@ -1,12 +1,12 @@
 // Copyright 2014 Endless Mobile, Inc.
 
-const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const GObject = imports.gi.GObject;
 const GLib = imports.gi.GLib;
 const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
+const StyleClasses = imports.app.styleClasses;
 const Utils = imports.app.utils;
 
 const _ARROW_SIZE = 20;
@@ -107,7 +107,7 @@ const NavButtonOverlay = new Lang.Class({
         this._back_button.connect('clicked', function () {
             this.emit('back-clicked');
         }.bind(this));
-        this._back_button.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_NAV_BACK_BUTTON);
+        this._back_button.get_style_context().add_class(StyleClasses.NAV_BACK_BUTTON);
         this._back_button.show_all();
         // Our button size changes via css state selectors on hover, and for
         // some reason Gtk isn't handling this queue resize for us
@@ -127,7 +127,7 @@ const NavButtonOverlay = new Lang.Class({
         this._forward_button.connect('clicked', function () {
             this.emit('forward-clicked');
         }.bind(this));
-        this._forward_button.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_NAV_FORWARD_BUTTON);
+        this._forward_button.get_style_context().add_class(StyleClasses.NAV_FORWARD_BUTTON);
         this._forward_button.show_all();
         this._forward_button.connect('state-flags-changed', function (button) {
             button.queue_resize();
@@ -191,7 +191,7 @@ const NavButtonOverlay = new Lang.Class({
     _style_nav_button: function (button, image_uri, fallback_icon_name, fallback_rtl_icon_name) {
         if (this.get_default_direction() === Gtk.TextDirection.RTL) {
             button.image = this._create_new_image(image_uri, fallback_rtl_icon_name);
-            button.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_RTL);
+            button.get_style_context().add_class(StyleClasses.RTL);
         } else {
             button.image = this._create_new_image(image_uri, fallback_icon_name);
         }

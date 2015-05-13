@@ -1,7 +1,6 @@
 // Copyright 2015 Endless Mobile, Inc.
 
 const Endless = imports.gi.Endless;
-const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gettext = imports.gettext;
@@ -9,6 +8,8 @@ const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const Pango = imports.gi.Pango;
+
+const StyleClasses = imports.app.styleClasses;
 
 const EknCard = imports.app.card;
 const Config = imports.app.config;
@@ -71,13 +72,13 @@ const Card = new Lang.Class({
     _init: function(props={}) {
         this.parent(props);
 
-        this.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_READER_CARD);
+        this.get_style_context().add_class(StyleClasses.READER_CARD);
     },
 
     pack_widgets: function (title_label, attribution_label, image_frame) {
         title_label.valign = Gtk.Align.START;
 
-        title_label.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_READER_TITLE);
+        title_label.get_style_context().add_class(StyleClasses.READER_TITLE);
 
         title_label.lines = this._TITLE_LABEL_LINES;
         title_label.expand = true;
@@ -100,7 +101,7 @@ const Card = new Lang.Class({
             margin_left: this._CONTENT_MARGIN,
             margin_right: this._CONTENT_MARGIN,
         });
-        decorative_bar.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_READER_DECORATIVE_BAR);
+        decorative_bar.get_style_context().add_class(StyleClasses.READER_DECORATIVE_BAR);
 
         grid.add(decorative_bar);
         grid.add(title_label);
@@ -119,7 +120,7 @@ const Card = new Lang.Class({
             use_markup: true,
             visible: true,
         });
-        card_info_label.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_READER_CARD_INFO_TITLE);
+        card_info_label.get_style_context().add_class(StyleClasses.READER_CARD_INFO_TITLE);
 
         if (this.archived) {
             let archive_icon = new Gtk.Image({
@@ -139,7 +140,7 @@ const Card = new Lang.Class({
             valign: Gtk.Align.CENTER,
             visible: true,
         });
-        card_info_frame.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_READER_CARD_INFO_FRAME);
+        card_info_frame.get_style_context().add_class(StyleClasses.READER_CARD_INFO_FRAME);
 
         card_info_frame.add(card_info_grid);
 
@@ -150,7 +151,7 @@ const Card = new Lang.Class({
             no_show_all: true,
             visible: false,
         });
-        hover_frame.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_READER_HOVER_FRAME);
+        hover_frame.get_style_context().add_class(StyleClasses.READER_HOVER_FRAME);
 
         this.connect('enter-notify-event', () => {
             hover_frame.show();

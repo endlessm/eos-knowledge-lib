@@ -1,7 +1,7 @@
-const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Gtk = imports.gi.Gtk;
 
 const CssClassMatcher = imports.tests.CssClassMatcher;
+const StyleClasses = imports.app.styleClasses;
 const TextCard = imports.app.textCard;
 
 Gtk.init(null);
@@ -16,6 +16,6 @@ describe('Text card widget', function () {
     });
 
     it('has text card class', function () {
-        expect(card).toHaveDescendantWithCssClass(EosKnowledgePrivate.STYLE_CLASS_TEXT_CARD);
+        expect(card).toHaveDescendantWithCssClass(StyleClasses.TEXT_CARD);
     });
 });

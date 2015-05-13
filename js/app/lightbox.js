@@ -9,6 +9,7 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const MediaObjectModel = imports.search.mediaObjectModel;
+const StyleClasses = imports.app.styleClasses;
 const Utils = imports.app.utils;
 
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
@@ -160,7 +161,7 @@ const Lightbox = new Lang.Class({
                 this.emit('navigation-next-clicked', this._media_object);
         }));
 
-        this.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_LIGHTBOX);
+        this.get_style_context().add_class(StyleClasses.LIGHTBOX);
         this.bind_property('transition-duration',
                            this._revealer, 'transition-duration',
                            GObject.BindingFlags.SYNC_CREATE);
@@ -222,7 +223,7 @@ const Lightbox = new Lang.Class({
             this._lightbox_container.remove_info_widget(this._infobox_widget);
         this._infobox_widget = v;
         if (this._infobox_widget !== null) {
-            this._infobox_widget.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_INFOBOX);
+            this._infobox_widget.get_style_context().add_class(StyleClasses.INFOBOX);
             this._lightbox_container.add_info_widget(this._infobox_widget);
         }
         this.notify('infobox-widget');
@@ -347,7 +348,7 @@ const LightboxContainer = new Lang.Class({
         this._previous_button.connect('clicked', function () {
             this.emit('navigation-previous-clicked');
         }.bind(this));
-        this._previous_button.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_LIGHTBOX_NAVIGATION_BUTTON);
+        this._previous_button.get_style_context().add_class(StyleClasses.LIGHTBOX_NAVIGATION_BUTTON);
 
         /**
          * Navigate next button
@@ -365,7 +366,7 @@ const LightboxContainer = new Lang.Class({
         this._next_button.connect('clicked', function () {
             this.emit('navigation-next-clicked');
         }.bind(this));
-        this._next_button.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_LIGHTBOX_NAVIGATION_BUTTON);
+        this._next_button.get_style_context().add_class(StyleClasses.LIGHTBOX_NAVIGATION_BUTTON);
 
         this.add(this._close_button);
         this.add(this._next_button);
@@ -417,7 +418,7 @@ const LightboxContainer = new Lang.Class({
         let context = this.get_style_context();
 
         context.save();
-        context.add_class(EosKnowledgePrivate.STYLE_CLASS_LIGHTBOX_SHADOW);
+        context.add_class(StyleClasses.LIGHTBOX_SHADOW);
         let width = this.get_allocated_width();
         let height = this.get_allocated_height();
         Gtk.render_background(context, cr, 0, 0, width, height);
@@ -425,7 +426,7 @@ const LightboxContainer = new Lang.Class({
         context.restore();
 
         context.save();
-        context.add_class(EosKnowledgePrivate.STYLE_CLASS_LIGHTBOX_CONTAINER);
+        context.add_class(StyleClasses.LIGHTBOX_CONTAINER);
         Gtk.render_background(context, cr, this._frame_allocation.x, this._frame_allocation.y,
                               this._frame_allocation.width, this._frame_allocation.height);
         Gtk.render_frame(context, cr, this._frame_allocation.x, this._frame_allocation.y,
@@ -471,7 +472,7 @@ const LightboxContainer = new Lang.Class({
         }
 
         this.get_style_context().save();
-        this.get_style_context().add_class(EosKnowledgePrivate.STYLE_CLASS_LIGHTBOX_CONTAINER);
+        this.get_style_context().add_class(StyleClasses.LIGHTBOX_CONTAINER);
         let padding = this.get_style_context().get_padding(this.get_state_flags());
         this.get_style_context().restore();
 

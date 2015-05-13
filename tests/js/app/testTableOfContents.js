@@ -1,7 +1,7 @@
-const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Gtk = imports.gi.Gtk;
 
 const CssClassMatcher = imports.tests.CssClassMatcher;
+const StyleClasses = imports.app.styleClasses;
 const TableOfContents = imports.app.tableOfContents;
 
 Gtk.init(null);
@@ -56,19 +56,19 @@ describe('Table of contents widget', function () {
 
     describe('Style class of table of contents', function () {
         it('has toc class', function () {
-            expect(toc).toHaveCssClass(EosKnowledgePrivate.STYLE_CLASS_TOC);
+            expect(toc).toHaveCssClass(StyleClasses.TOC);
         });
         it('has gtk view class', function () {
             expect(toc).toHaveCssClass(Gtk.STYLE_CLASS_VIEW);
         });
         it('has collapsed class when collapsed property true', function () {
             toc.collapsed = true;
-            expect(toc).toHaveCssClass(EosKnowledgePrivate.STYLE_CLASS_COLLAPSED);
+            expect(toc).toHaveCssClass(StyleClasses.COLLAPSED);
             toc.collapsed = false;
-            expect(toc).not.toHaveCssClass(EosKnowledgePrivate.STYLE_CLASS_COLLAPSED);
+            expect(toc).not.toHaveCssClass(StyleClasses.COLLAPSED);
         });
         it('has a descendant with toc entry class', function () {
-            expect(toc).toHaveDescendantWithCssClass(EosKnowledgePrivate.STYLE_CLASS_TOC_ENTRY);
+            expect(toc).toHaveDescendantWithCssClass(StyleClasses.TOC_ENTRY);
         });
     });
 });
