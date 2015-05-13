@@ -12,6 +12,11 @@ const App = new Lang.Class({
     Name: 'App',
     Extends: Endless.Application,
     Properties: {
+        // The app needs access to the factory (even though it is created by the
+        // factory) because it needs to create more components during "startup".
+        // An alternative would be for the factory to connect to the app's
+        // "startup" signal and do that work there; so the code would remain
+        // inside the factory.
         'factory': GObject.ParamSpec.object('factory', 'Factory', 'Factory',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             Factory.Factory),
