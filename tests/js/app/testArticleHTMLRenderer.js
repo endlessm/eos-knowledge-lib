@@ -5,12 +5,15 @@ const Lang = imports.lang;
 
 const ArticleHTMLRenderer = imports.app.articleHTMLRenderer;
 const ArticleObjectModel = imports.search.articleObjectModel;
+const Utils = imports.tests.utils;
 
 describe('Article HTML Renderer', function () {
     let wikihow_model, wikibooks_model, embedly_model, javascripty_model;
     let renderer;
 
     beforeEach(function () {
+        Utils.register_gresource();
+
         renderer = new ArticleHTMLRenderer.ArticleHTMLRenderer();
         wikihow_model = new ArticleObjectModel.ArticleObjectModel({
             source_uri: 'http://www.wikihow.com/Give-Passive-Aggressive-Gifts-for-Christmas',

@@ -16,11 +16,11 @@ ACLOCAL_AMFLAGS = -I m4
 
 # Forward declare variables we'll be modifying all over
 bin_SCRIPTS =
-BUILT_SOURCES =
 CLEANFILES =
 dist_noinst_DATA =
 DISTCLEANFILES =
 EXTRA_DIST = README.md
+pkgdata_DATA =
 pkglib_LTLIBRARIES =
 
 # Compiler flags
@@ -46,7 +46,7 @@ distdir:
 	@false
 endif
 
-# # # SASS # # #
+# # # GRESOURCES # # #
 
 scss_verbose = $(scss_verbose_@AM_V@)
 scss_verbose_ = $(scss_verbose_@AM_DEFAULT_V@)
@@ -76,42 +76,36 @@ CLEANFILES += $(scss_targets)
 clean-local:
 	rm -rf .sass-cache
 
-# # # MAIN LIBRARY # # #
-
 # Generate dependencies for make rule from XML resource file description. This
 # is a quite tricky make rule. glib-compile-resources will error if any files
 # are not found. Which means we need to build our sass before calling into it.
 # So we can't just assign a variable here, but need an actual build rule with
 # dependencies. Hence the gresourcedeps file.
-gresourcedeps: $(scss_targets) data/eos-knowledge-library.gresource.xml
+gresourcedeps: $(scss_targets) data/eos-knowledge.gresource.xml
 	$(AM_V_GEN) $(GLIB_COMPILE_RESOURCES) --sourcedir=$(srcdir)/data --sourcedir=$(builddir)/data --generate-dependencies \
-		$(srcdir)/data/eos-knowledge-library.gresource.xml | tr '\n' ' ' | sed 's/^/resource_files = /' > $@
+		$(srcdir)/data/eos-knowledge.gresource.xml | tr '\n' ' ' | sed 's/^/resource_files = /' > $@
 # This indirection keeps automake from including gresourcedeps and leaving it to make
 DUMMY=gresourcedeps
 include $(DUMMY)
 
 # Generated sources for GResource file
-eosknowledgeprivate/ekn-resource-private.h: data/eos-knowledge-library.gresource.xml gresourcedeps $(resource_files)
-	$(AM_V_GEN) $(MKDIR_P) $(builddir)/data $(dir $@) && \
-	$(GLIB_COMPILE_RESOURCES) --target=$@ --sourcedir=$(srcdir)/data --sourcedir=$(builddir)/data \
-		--generate-header --internal $<
-eosknowledgeprivate/ekn-resource.c: data/eos-knowledge-library.gresource.xml gresourcedeps $(resource_files)
-	$(AM_V_GEN) $(MKDIR_P) $(builddir)/data $(dir $@) && \
-	$(GLIB_COMPILE_RESOURCES) --target=$@ --sourcedir=$(srcdir)/data --sourcedir=$(builddir)/data \
-		--generate-source --internal $<
+data/eos-knowledge.gresource: data/eos-knowledge.gresource.xml gresourcedeps $(resource_files)
+	$(AM_V_GEN) $(MKDIR_P) $(dir $@) && \
+	$(GLIB_COMPILE_RESOURCES) --target=$@ --sourcedir=$(srcdir)/data \
+		--sourcedir=$(builddir)/data $<
 
-BUILT_SOURCES += \
-	eosknowledgeprivate/ekn-resource-private.h \
-	eosknowledgeprivate/ekn-resource.c \
-	$(NULL)
+pkgdata_DATA += data/eos-knowledge.gresource
+
 EXTRA_DIST += \
 	$(filter-out $(scss_targets),$(resource_files)) \
 	data/eos-knowledge-library.gresource.xml \
 	$(NULL)
 CLEANFILES += \
+	data/eos-knowledge.gresource \
 	gresourcedeps \
-	$(BUILT_SOURCES) \
 	$(NULL)
+
+# # # MAIN LIBRARY # # #
 
 eosknowledgeprivate_headers = \
 	eosknowledgeprivate/eosknowledge.h \
@@ -140,9 +134,6 @@ pkglib_LTLIBRARIES += libeosknowledgeprivate.la
 libeosknowledgeprivate_la_SOURCES = \
 	$(eosknowledgeprivate_headers) \
 	$(eosknowledgeprivate_sources) \
-	$(NULL)
-nodist_libeosknowledgeprivate_la_SOURCES = \
-	$(BUILT_SOURCES) \
 	$(NULL)
 # Defining G_LOG_DOMAIN allows you to run any program with
 # G_MESSAGES_DEBUG=EosKnowledge ./myprogram
@@ -300,6 +291,7 @@ dist_overrides_DATA = overrides/EosKnowledgePrivate.js
 subst = $(SED) \
 	-e 's,%datadir%,$(datadir),g' \
 	-e 's,%jsdir%,$(jsdir),g' \
+	-e 's,%pkgdatadir%,$(pkgdatadir),g' \
 	-e 's,%pkglibdir%,$(pkglibdir),g' \
 	-e 's,%typelibdir%,$(typelibdir),g' \
 	-e 's,%webextensiondir%,$(webextensiondir),g' \
@@ -464,7 +456,7 @@ service_DATA = data/com.endlessm.EknSearchProvider.service
 
 data/com.endlessm.EknSearchProvider.service: $(top_srcdir)/data/com.endlessm.EknSearchProvider.service.in Makefile
 	$(AM_V_GEN) sed -e 's|@BINDIR@|$(bindir)|g' $< > $@
-BUILT_SOURCES += data/com.endlessm.EknSearchProvider.service
+CLEANFILES += data/com.endlessm.EknSearchProvider.service
 EXTRA_DIST += data/com.endlessm.EknSearchProvider.service.in
 
 # # # DOCUMENTATION # # #

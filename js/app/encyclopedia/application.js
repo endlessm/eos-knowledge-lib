@@ -4,6 +4,7 @@ const Endless = imports.gi.Endless;
 const Gio = imports.gi.Gio;
 const Lang = imports.lang;
 
+const Config = imports.app.config;
 const Engine = imports.search.engine;
 const SearchProvider = imports.search.searchProvider;
 
@@ -85,6 +86,10 @@ const EndlessEncyclopedia = new Lang.Class({
 
             // Load web extensions for translating
             WebkitContextSetup.register_webkit_extensions(this.application_id);
+
+            // Register resource
+            let resource = Gio.Resource.load(Config.PKGDATADIR + '/eos-knowledge.gresource');
+            resource._register();
 
             this._model = new EncyclopediaModel.EncyclopediaModel();
             this._view = new EncyclopediaView.EncyclopediaView({

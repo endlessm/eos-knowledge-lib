@@ -5,11 +5,11 @@ const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 
 const Presenter = imports.app.presenter;
-const utils = imports.tests.utils;
+const Utils = imports.tests.utils;
 
 Gtk.init(null);
 
-const TEST_CONTENT_DIR = utils.get_test_content_srcdir();
+const TEST_CONTENT_DIR = Utils.get_test_content_srcdir();
 
 const MockWidget = new Lang.Class({
     Name: 'MockWidget',
@@ -118,7 +118,9 @@ describe('Presenter', () => {
     let test_app_filename = TEST_CONTENT_DIR + 'app.json';
 
     beforeEach(() => {
-        data = utils.parse_object_from_path(test_app_filename);
+        Utils.register_gresource();
+
+        data = Utils.parse_object_from_path(test_app_filename);
 
         view = new MockView();
         engine = new MockEngine();
