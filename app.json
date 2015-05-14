@@ -1,0 +1,26 @@
+{
+    "id": "com.endlessm.scuba-diving-en",
+    "title": "Scuba Diving",
+    "titleImageURI": "resource:///com/endlessm/test/data/logo.svg",
+    "css": "resource:///com/endlessm/test/data/overrides.css",
+    "interaction": {
+        "type": "mesh"
+    },
+    "pages": {
+        "home": {
+            "template": {
+                "type": "ebi_home"
+            },
+            "modules": {
+                "app_banner": {},
+                "in_app_search": {}
+            }
+        },
+        "search_result": {
+            "template": {
+                "type": "unagi_search_results"
+            },
+            "modules": {}
+        }
+    }
+}

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.18.3 -->
+<interface>
+  <requires lib="gtk+" version="3.12"/>
+  <object class="GtkImage" id="back_button_image">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixel_size">50</property>
+    <property name="icon_name">go-previous-symbolic</property>
+    <property name="icon_size">6</property>
+  </object>
+  <object class="GtkOverlay" id="frame">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="hexpand">True</property>
+    <property name="vexpand">True</property>
+    <child>
+      <object class="GtkLabel" id="message">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="hexpand">True</property>
+        <property name="vexpand">True</property>
+        <property name="label" translatable="yes">&lt;span size="xx-large"&gt;&lt;b&gt;OOPS!&lt;/b&gt;&lt;/span&gt;
+We couldn't find any results
+because this test app has no articles.</property>
+        <property name="use_markup">True</property>
+        <property name="justify">center</property>
+      </object>
+    </child>
+    <child type="overlay">
+      <object class="GtkButton" id="back_button">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="receives_default">False</property>
+        <property name="halign">start</property>
+        <property name="valign">center</property>
+        <property name="image">back_button_image</property>
+        <property name="always_show_image">True</property>
+        <signal name="clicked" handler="on_back_button_clicked" swapped="no"/>
+        <style>
+          <class name="nav-back-button"/>
+        </style>
+      </object>
+    </child>
+  </object>
+</interface>
