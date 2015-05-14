@@ -13,10 +13,6 @@ const LOGO_FILE = 'logo.png';
 
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
-// These should come from SDK at some point
-const PopupWindow = imports.app.encyclopedia.popupWindow;
-const DisclaimerIcon = imports.app.encyclopedia.disclaimerIcon;
-
 const EncyclopediaLayoutPage = new Lang.Class({
     Name: 'EncyclopediaLayoutPage',
     Extends: Gtk.Overlay,
@@ -33,11 +29,6 @@ const EncyclopediaLayoutPage = new Lang.Class({
     _init: function(props) {
         this._logo_resource = this._getLocalizedResource(ASSETS_PATH,
                                                          LOGO_FILE);
-
-        this._disclaimer_icon = new DisclaimerIcon.DisclaimerIcon({});
-
-        this._disclaimer_icon.connect('clicked',
-                                      this._disclaimer_clicked.bind(this));
 
         this.parent(props);
     },
@@ -60,13 +51,4 @@ const EncyclopediaLayoutPage = new Lang.Class({
         }
         return location;
     },
-
-    _disclaimer_clicked: function() {
-        let popupWindow = new PopupWindow.PopupWindow();
-        this.add_overlay(popupWindow);
-        popupWindow.connect('close-me', function () {
-            this.remove(popupWindow);
-        }.bind(this));
-        popupWindow.show_all();
-    }
 });

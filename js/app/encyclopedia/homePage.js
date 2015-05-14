@@ -37,7 +37,6 @@ const HomePage = new Lang.Class({
         let alignment = new Gtk.Alignment();
         alignment.add(this._box);
         this.add(alignment);
-        this.add_overlay(this._disclaimer_icon);
         this.search_box.grab_focus();
     }
 });

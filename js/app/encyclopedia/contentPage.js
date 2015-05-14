@@ -161,7 +161,6 @@ const ContentPage = new Lang.Class({
         this._alignment.set(0.5, 0.5, this.HORIZONTAL_SPACE_FILL_RATIO, 1.0);
         this._alignment.add(this._box);
         this.add(this._alignment);
-        this.add_overlay(this._disclaimer_icon);
 
         let mainWindow = this.get_toplevel();
         mainWindow.connect('key-press-event', this._on_key_press_event.bind(this));
