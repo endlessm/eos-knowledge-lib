@@ -8,7 +8,6 @@ const Lang = imports.lang;
 const WebKit2 = imports.gi.WebKit2;
 
 const EknWebview = imports.app.eknWebview;
-const Layout = imports.app.encyclopedia.layoutPage;
 
 const ARTICLE_SEARCH_BUTTONS_SPACING = 10;
 const ARTICLE_SEARCH_MAX_RESULTS = 200;
@@ -105,14 +104,35 @@ const ArticleSearch = new Lang.Class({
 
 const ContentPage = new Lang.Class({
     Name: 'ContentPage',
-    Extends: Layout.EncyclopediaLayoutPage,
+    Extends: Gtk.Alignment,
+    Properties: {
+        /**
+         * Property: logo-uri
+         * A string with the URI of the logo image. An empty string means
+         * no logo should be visible. Defaults to an empty string.
+         */
+        'logo-uri': GObject.ParamSpec.string('logo-uri', 'Logo URI',
+            'URI of the app logo',
+            GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE, ''),
+
+        /**
+         * Property: search-box
+         *
+         * The <SearchBox> widget created by this widget. Read-only,
+         * modify using the <SearchBox> API. Use to type search queries and to display the last
+         * query searched.
+         */
+        'search-box': GObject.ParamSpec.object('search-box', 'Search Box',
+            'The seach box for this view.',
+            GObject.ParamFlags.READABLE,
+            Endless.SearchBox),
+    },
     Signals: {
         'display-ready': {},
         'link-clicked': {
             param_types: [ GObject.TYPE_STRING ],
         },
     },
-
     // Amount of free horizontal space the webkit content will gobble up
     HORIZONTAL_SPACE_FILL_RATIO: 0.4,
 
@@ -123,7 +143,7 @@ const ContentPage = new Lang.Class({
 
         this._should_emit_link_clicked = true;
         this._wiki_web_view = new EknWebview.EknWebview({
-            expand: true
+            expand: true,
         });
         this._wiki_web_view.connect("notify::has-focus", this._on_focus.bind(this));
         this._wiki_web_view.connect('decide-policy', this._on_decide_policy.bind(this));
@@ -137,30 +157,20 @@ const ContentPage = new Lang.Class({
             this._on_fullscreen_change.bind(this, false));
 
         this._logo = new Gtk.Image({
-            pixbuf: GdkPixbuf.Pixbuf.new_from_resource_at_scale(
-                                                         this._logo_resource,
-                                                         150, 150, true),
-            halign: Gtk.Align.START
+            halign: Gtk.Align.START,
         });
         this._logo.name = 'content_page_logo';
 
-        this._box = new Gtk.Grid({
-            orientation: Gtk.Orientation.HORIZONTAL,
-            column_spacing: 150
-        });
-
         this.search_box = new Endless.SearchBox();
-        this.search_box.placeholder_text = this.SEARCH_BOX_PLACEHOLDER_TEXT;
 
-        this._box.attach(this._logo, 0, 0, 1, 1);
-        this._box.attach(this.search_box, 1, 0, 1, 1);
-        this._box.attach(this._wiki_web_view, 0, 1, 2, 1);
-
-        // The aligment allows Gtk.Overlay to take the whole window allocation
-        this._alignment = new Gtk.Alignment();
-        this._alignment.set(0.5, 0.5, this.HORIZONTAL_SPACE_FILL_RATIO, 1.0);
-        this._alignment.add(this._box);
-        this.add(this._alignment);
+        let grid = new Gtk.Grid({
+            column_spacing: 150,
+        });
+        grid.attach(this._logo, 0, 0, 1, 1);
+        grid.attach(this.search_box, 1, 0, 1, 1);
+        grid.attach(this._wiki_web_view, 0, 1, 2, 1);
+        this.add(grid);
+        this.set(0.5, 0.5, this.HORIZONTAL_SPACE_FILL_RATIO, 1.0);
 
         let mainWindow = this.get_toplevel();
         mainWindow.connect('key-press-event', this._on_key_press_event.bind(this));
@@ -267,5 +277,20 @@ const ContentPage = new Lang.Class({
         this.emit('link-clicked', decision.request.uri);
         decision.ignore();
         return true;  // decision handled
+    },
+
+    set logo_uri (v) {
+        if (this._logo_uri === v) return;
+        this._logo_uri = v;
+        if (this._logo_uri) {
+            this._logo.pixbuf = GdkPixbuf.Pixbuf.new_from_resource_at_scale(this._logo_uri, 150, 150, true)
+        }
+        this.notify('logo-uri');
+    },
+
+    get logo_uri () {
+        if (this._logo_uri)
+            return this._logo_uri;
+        return '';
     },
 });

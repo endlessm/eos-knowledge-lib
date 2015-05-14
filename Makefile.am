@@ -221,7 +221,6 @@ js_files = \
 	js/app/encyclopedia/fixedTextView.js \
 	js/app/encyclopedia/historyItem.js \
 	js/app/encyclopedia/homePage.js \
-	js/app/encyclopedia/layoutPage.js \
 	js/app/encyclopedia/model.js \
 	js/app/encyclopedia/presenter.js \
 	js/app/encyclopedia/view.js \
