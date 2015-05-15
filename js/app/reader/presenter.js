@@ -17,13 +17,11 @@ const ArticlePage = imports.app.reader.articlePage;
 const Config = imports.app.config;
 const EknWebview = imports.app.eknWebview;
 const Engine = imports.search.engine;
-const HistoryItem = imports.app.historyItem;
 const HistoryPresenter = imports.app.historyPresenter;
 const Launcher = imports.app.launcher;
 const LightboxPresenter = imports.app.lightboxPresenter;
 const MediaObjectModel = imports.search.mediaObjectModel;
 const OverviewPage = imports.app.reader.overviewPage;
-const Previewer = imports.app.previewer;
 const QueryObject = imports.search.queryObject;
 const ReaderCard = imports.app.reader.card;
 const StyleClasses = imports.app.styleClasses;
@@ -305,6 +303,7 @@ const Presenter = new Lang.Class({
     },
 
     _add_history_object_for_search_page: function (query_obj) {
+        this._latest_origin_query_obj = query_obj;
         this._history_presenter.set_current_item(
             '', // title
             this._SEARCH_PAGE, // page_type

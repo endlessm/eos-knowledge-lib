@@ -238,7 +238,7 @@ const Presenter = new Lang.Class({
                 this.engine.get_objects_by_query(article_origin_query_obj, this._load_section_page.bind(this));
                 break;
             case this._ARTICLE_PAGE:
-                if (current_item.article_origin_query_obj.query !== this._latest_origin_query_obj.query) {
+                if (article_origin_query_obj.query !== this._latest_origin_query_obj.query) {
                     this.engine.get_objects_by_query(article_origin_query_obj, this._refresh_sidebar_callback.bind(this));
                 }
                 this.article_presenter.load_article(current_item.article_model, animation_type);
@@ -293,7 +293,7 @@ const Presenter = new Lang.Class({
 
             card.connect('clicked', this._on_section_card_clicked.bind(this, section['tags']));
             return card;
-        }
+        };
 
         if (this._template_type === 'A') {
             for (let page of [this.view.home_page, this.view.categories_page]) {
@@ -394,7 +394,7 @@ const Presenter = new Lang.Class({
             }
         }
 
-        return obj.title
+        return obj.title;
     },
 
     _on_search_text_changed: function (view, entry) {
@@ -505,6 +505,7 @@ const Presenter = new Lang.Class({
     },
 
     _add_history_object_for_search_page: function (query_obj) {
+        this._latest_origin_query_obj = query_obj;
         this._history_presenter.set_current_item(
             this._target_page_title, // title
             this._SEARCH_PAGE, // page_type
@@ -515,6 +516,7 @@ const Presenter = new Lang.Class({
     },
 
     _add_history_object_for_section_page: function (query_obj) {
+        this._latest_origin_query_obj = query_obj;
         this._history_presenter.set_current_item(
             this._target_page_title, // title
             this._SECTION_PAGE, // page_type
