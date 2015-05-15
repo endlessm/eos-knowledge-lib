@@ -218,13 +218,10 @@ js_files = \
 	js/app/eknWebview.js \
 	js/app/encyclopedia/application.js \
 	js/app/encyclopedia/contentPage.js \
-	js/app/encyclopedia/disclaimerIcon.js \
 	js/app/encyclopedia/fixedTextView.js \
 	js/app/encyclopedia/historyItem.js \
 	js/app/encyclopedia/homePage.js \
-	js/app/encyclopedia/layoutPage.js \
 	js/app/encyclopedia/model.js \
-	js/app/encyclopedia/popupWindow.js \
 	js/app/encyclopedia/presenter.js \
 	js/app/encyclopedia/view.js \
 	js/app/historyItem.js \

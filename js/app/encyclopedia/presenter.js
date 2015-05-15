@@ -2,6 +2,7 @@ const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Format = imports.format;
 const Gettext = imports.gettext;
 const Gio = imports.gi.Gio;
+const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
@@ -21,10 +22,14 @@ String.prototype.format = Format.format;
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
 const AUTOCOMPLETE_DELAY = 500; // ms
+const ASSETS_PATH = '/com/endlessm/knowledge/assets/';
+const LOGO_FILE = 'logo.png';
 
 const EncyclopediaPresenter = new Lang.Class({
     Name: 'EncyclopediaPresenter',
     Extends: GObject.Object,
+
+    SEARCH_BOX_PLACEHOLDER_TEXT: _("Search the world's information!"),
 
     _init: function(view, model, props) {
         this.parent(props);
@@ -49,6 +54,13 @@ const EncyclopediaPresenter = new Lang.Class({
             page.search_box.connect('menu-item-selected',
                 this._on_article_selected.bind(this));
         }
+
+        let logo_resource = this._getLocalizedResource(ASSETS_PATH, LOGO_FILE);
+        this._view.home_page.logo_uri = logo_resource;
+        this._view.content_page.logo_uri = logo_resource;
+
+        this._view.home_page.search_box.placeholder_text = this.SEARCH_BOX_PLACEHOLDER_TEXT;
+        this._view.content_page.search_box.placeholder_text = this.SEARCH_BOX_PLACEHOLDER_TEXT;
 
         this._previewer = new Previewer.Previewer({
             visible: true,
@@ -84,6 +96,24 @@ const EncyclopediaPresenter = new Lang.Class({
         this._view.lightbox.connect('navigation-previous-clicked', () => {
             this._lightbox_shift_image(-1);
         });
+    },
+
+
+    _getLocalizedResource: function(resource_path, filename) {
+        let languages = GLib.get_language_names();
+        let directories = Gio.resources_enumerate_children(resource_path,
+                                                       Gio.ResourceLookupFlags.NONE);
+        let location = '';
+        // Finds the resource appropriate for the current langauge
+        // If can't find language, will return file in C/
+        for (let i = 0; i < languages.length; i++) {
+            let lang_code = languages[i] + '/';
+            if (directories.indexOf(lang_code) !== -1) {
+                location = resource_path + lang_code + filename;
+                break;
+            }
+        }
+        return location;
     },
 
     _lightbox_shift_image: function (delta) {
