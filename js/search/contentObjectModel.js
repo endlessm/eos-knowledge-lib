@@ -1,4 +1,5 @@
 // Copyright 2014 Endless Mobile, Inc.
+const ByteArray = imports.byteArray;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
