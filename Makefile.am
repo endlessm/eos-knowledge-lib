@@ -550,7 +550,6 @@ INTROSPECTION_GIRS =
 INTROSPECTION_SCANNER_ARGS = --add-include-path=$(srcdir) --warn-all $(EOS_KNOWLEDGE_PRIVATE_CFLAGS)
 INTROSPECTION_COMPILER_ARGS = --includedir=$(srcdir)
 
-if HAVE_INTROSPECTION
 introspection_sources = \
 	$(filter-out %-private.h, $(eosknowledgeprivate_sources)) \
 	$(eosknowledgeprivate_headers) \
@@ -583,4 +582,3 @@ typelibdir = $(pkglibdir)/girepository-1.0
 typelib_DATA = $(INTROSPECTION_GIRS:.gir=.typelib)
 
 CLEANFILES += $(INTROSPECTION_GIRS) $(typelib_DATA)
-endif
