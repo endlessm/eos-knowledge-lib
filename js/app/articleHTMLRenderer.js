@@ -1,3 +1,4 @@
+const Endless = imports.gi.Endless;
 const Gettext = imports.gettext;
 const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
@@ -5,7 +6,6 @@ const Lang = imports.lang;
 
 const Config = imports.app.config;
 const Mustache = imports.app.mustache.Mustache;
-const Licenses = imports.app.licenses;
 
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
@@ -38,8 +38,8 @@ const ArticleHTMLRenderer = new Lang.Class({
             case 'wikibooks':
             case 'wikisource':
                 let original_link = _to_link(model.original_uri, model.source_name);
-                let license_link = _to_link(Licenses.LICENSE_LINKS[model.license],
-                    Licenses.LICENSE_NAMES[model.license]);
+                let license_link = _to_link(Endless.get_license_file(model.license).get_uri(),
+                    Endless.get_license_display_name(model.license));
                 // TRANSLATORS: anything inside curly braces '{}' is going
                 // to be substituted in code. Please make sure to leave the
                 // curly braces around any words that have them and DO NOT
@@ -146,19 +146,19 @@ function _to_link(uri, text) {
 
 function _get_display_string_for_license(license) {
     let message;
-    if (license === Licenses.NO_LICENSE)
+    if (license === Endless.LICENSE_NO_LICENSE)
         // TRANSLATORS: the text inside curly braces {blog-link} is going to be
         // substituted in code. Please make sure that your translation contains
         // {blog-link} and it is not translated.
         return _("Content taken from {blog-link}.");
-    if (license === Licenses.OWNER_PERMISSION)
+    if (license === Endless.LICENSE_OWNER_PERMISSION)
         // TRANSLATORS: the text inside curly braces {blog-link} is going to be
         // substituted in code. Please make sure that your translation contains
         // {blog-link} and it is not translated.
         return _("Content courtesy of {blog-link}. Used with kind permission.");
 
-    let license_link = _to_link(Licenses.LICENSE_LINKS[license],
-        Licenses.LICENSE_NAMES[license]);
+    let license_link = _to_link(Endless.get_license_file(license).get_uri(),
+        Endless.get_license_display_name(license));
     // TRANSLATORS: the text inside curly braces ({blog-link}, {license-link})
     // is going to be substituted in code. Please make sure that your
     // translation contains both {blog-link} and {license-link} and they are not
