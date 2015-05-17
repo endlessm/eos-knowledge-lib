@@ -1,3 +1,4 @@
+const Endless = imports.gi.Endless;
 const Gettext = imports.gettext;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
@@ -22,10 +23,10 @@ const OWNER_PERMISSION = 'Owner permission';
 // These are the links to the full text files belonging to each
 // license and installed in EOS shared directory.
 const LICENSE_LINKS = {
-    'CC-BY 4.0': _get_cc_license_path('CC-BY-4.0.html'),
-    'CC-BY 3.0': _get_cc_license_path('CC-BY-3.0.html'),
-    'CC-BY-SA 4.0': _get_cc_license_path('CC-BY-SA-4.0.html'),
-    'CC-BY-SA 3.0': _get_cc_license_path('CC-BY-SA-3.0.html'),
+    'CC-BY 4.0': Endless.get_license_file('CC-BY-4.0.html'),
+    'CC-BY 3.0': Endless.get_license_file('CC-BY-3.0.html'),
+    'CC-BY-SA 4.0': Endless.get_license_file('CC-BY-SA-4.0.html'),
+    'CC-BY-SA 3.0': Endless.get_license_file('CC-BY-SA-3.0.html'),
 };
 
 // These are the human-readable versions of the license names.
