@@ -201,6 +201,12 @@ PKG_CHECK_MODULES([EOS_KNOWLEDGE_PRIVATE], [
     gtk+-3.0 >= 3.12
     webkit2gtk-4.0
 ])
+PKG_CHECK_MODULES([GRESOURCE_PLUGIN], [
+    gio-2.0
+    glib-2.0
+    gmodule-2.0
+    webkit2gtk-4.0
+])
 PKG_CHECK_MODULES([TOOLTIP_PLUGIN], [
     glib-2.0
     gmodule-2.0

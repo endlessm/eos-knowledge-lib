@@ -170,6 +170,15 @@ libeosknowledgesearchprivate_la_LDFLAGS = -avoid-version
 webextensiondir = $(pkglibdir)/web-extensions
 webextension_LTLIBRARIES =
 
+webextension_LTLIBRARIES += libgresourceplugin.la
+libgresourceplugin_la_SOURCES = lib/gresourceplugin.c
+libgresourceplugin_la_CFLAGS = $(GRESOURCE_PLUGIN_CFLAGS)
+libgresourceplugin_la_CPPFLAGS = \
+	-DPKGDATADIR=\""$(pkgdatadir)"\" \
+	$(NULL)
+libgresourceplugin_la_LIBADD = $(GRESOURCE_PLUGIN_LIBS)
+libgresourceplugin_la_LDFLAGS = -module -avoid-version -no-undefined
+
 # WebKit web extension for determining DOM element coordinates for tooltips
 webextension_LTLIBRARIES += libtooltipplugin.la
 libtooltipplugin_la_SOURCES = lib/tooltipplugin.c

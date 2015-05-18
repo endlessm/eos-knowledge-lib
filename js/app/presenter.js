@@ -23,6 +23,7 @@ const PdfCard = imports.app.pdfCard;
 const QueryObject = imports.search.queryObject;
 const TextCard = imports.app.textCard;
 const Utils = imports.app.utils;
+const WebkitContextSetup = imports.app.webkitContextSetup;
 const Window = imports.app.window;
 
 String.prototype.format = Format.format;
@@ -120,6 +121,9 @@ const Presenter = new Lang.Class({
 
         let css = Gio.File.new_for_uri('resource:///com/endlessm/knowledge/endless_knowledge.css');
         Utils.add_css_provider_from_file(css, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+
+        // Needs to happen before before any webviews are created
+        WebkitContextSetup.register_webkit_extensions(props.application.application_id);
 
         props.view = props.view || new Window.Window({
             application: props.application,

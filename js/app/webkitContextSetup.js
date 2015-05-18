@@ -14,8 +14,6 @@ function register_webkit_uri_handlers (article_render_callback) {
     EosKnowledgePrivate.private_register_global_uri_scheme('ekn', (req) => {
         _load_ekn_assets(req, article_render_callback);
     });
-    security_manager.register_uri_scheme_as_local('resource');
-    EosKnowledgePrivate.private_register_global_uri_scheme('resource', _load_gresource_assets);
 }
 
 function _error_request(req, err) {
@@ -55,15 +53,6 @@ function _load_ekn_assets (req, article_render_callback) {
                 req.finish(stream, -1, null);
             }
         });
-    } catch (error) {
-        _error_request(req, error);
-    }
-}
-
-function _load_gresource_assets (req) {
-    try {
-        let file = Gio.File.new_for_uri(req.get_uri());
-        req.finish(file.read(null), -1, null);
     } catch (error) {
         _error_request(req, error);
     }
