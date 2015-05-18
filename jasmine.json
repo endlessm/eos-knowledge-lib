@@ -1,5 +1,9 @@
 {
     "include_paths": [".", "js"],
     "spec_files": ["tests/eosknowledgeprivate", "tests/js"],
-    "options": "--verbose"
+    "options": "--verbose",
+    "environment": {
+        "GI_TYPELIB_PATH": ".",
+        "LD_LIBRARY_PATH": ".libs"
+    }
 }
