@@ -145,7 +145,7 @@ nodist_libeosknowledgeprivate_la_SOURCES = \
 	$(BUILT_SOURCES) \
 	$(NULL)
 # Defining G_LOG_DOMAIN allows you to run any program with
-# G_MESSAGES_DEBUG=EosKnowledgeLibrary ./myprogram
+# G_MESSAGES_DEBUG=EosKnowledge ./myprogram
 # and turn on debug messages
 libeosknowledgeprivate_la_CPPFLAGS = \
 	@EOS_KNOWLEDGE_PRIVATE_CFLAGS@ \
@@ -547,7 +547,6 @@ INTROSPECTION_GIRS =
 INTROSPECTION_SCANNER_ARGS = --add-include-path=$(srcdir) --warn-all $(EOS_KNOWLEDGE_PRIVATE_CFLAGS)
 INTROSPECTION_COMPILER_ARGS = --includedir=$(srcdir)
 
-if HAVE_INTROSPECTION
 introspection_sources = \
 	$(filter-out %-private.h, $(eosknowledgeprivate_sources)) \
 	$(eosknowledgeprivate_headers) \
@@ -580,4 +579,3 @@ typelibdir = $(pkglibdir)/girepository-1.0
 typelib_DATA = $(INTROSPECTION_GIRS:.gir=.typelib)
 
 CLEANFILES += $(INTROSPECTION_GIRS) $(typelib_DATA)
-endif
