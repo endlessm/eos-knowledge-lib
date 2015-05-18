@@ -8,6 +8,7 @@ const Lang = imports.lang;
 
 const CardB = imports.app.cardB;
 const HomePageB = imports.app.homePageB;
+const Utils = imports.tests.utils;
 
 const TEST_APPLICATION_ID = 'com.endlessm.knowledge.pages';
 const TESTDIR = Endless.getCurrentFileDir() + '/..';
@@ -27,6 +28,7 @@ const TestApplication = new Lang.Class ({
         let resource = Gio.Resource.load(TESTDIR + '/test-content/test-content.gresource');
         resource._register();
 
+        Utils.register_gresource();
         let provider = new Gtk.CssProvider();
         let css_file = Gio.File.new_for_uri('resource:///com/endlessm/knowledge/endless_knowledge.css');
         provider.load_from_file(css_file);

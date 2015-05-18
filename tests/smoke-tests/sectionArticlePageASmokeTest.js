@@ -7,6 +7,7 @@ const Lang = imports.lang;
 
 const CardA = imports.app.cardA;
 const SectionArticlePage = imports.app.sectionArticlePage;
+const Utils = imports.tests.utils;
 
 const TEST_APPLICATION_ID = 'com.endlessm.knowledge.sectionArticlePageSmokeTest';
 const TESTDIR = Endless.getCurrentFileDir() + '/..';
@@ -18,6 +19,7 @@ const TestApplication = new Lang.Class ({
     vfunc_startup: function() {
         this.parent();
 
+        Utils.register_gresource();
         let provider = new Gtk.CssProvider();
         let css_file = Gio.File.new_for_uri('resource:///com/endlessm/knowledge/endless_knowledge.css');
         provider.load_from_file(css_file);

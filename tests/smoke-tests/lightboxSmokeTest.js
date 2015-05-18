@@ -9,6 +9,7 @@ const CardA = imports.app.cardA;
 const Lightbox = imports.app.lightbox;
 const MediaInfobox = imports.app.mediaInfobox;
 const Previewer = imports.app.previewer;
+const Utils = imports.tests.utils;
 
 const TEST_APPLICATION_ID = 'com.endlessm.knowledge.test.lightbox';
 const TESTDIR = Endless.getCurrentFileDir() + '/..';
@@ -20,6 +21,7 @@ const TestApplication = new Lang.Class({
     vfunc_startup: function () {
         this.parent();
 
+        Utils.register_gresource();
         let provider = new Gtk.CssProvider();
         let css_file = Gio.File.new_for_uri('resource:///com/endlessm/knowledge/endless_knowledge.css');
         provider.load_from_file(css_file);

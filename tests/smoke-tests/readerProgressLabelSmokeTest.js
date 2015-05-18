@@ -7,6 +7,7 @@ const Gtk = imports.gi.Gtk;
 
 const ProgressLabel = imports.app.reader.progressLabel;
 const StyleClasses = imports.app.styleClasses;
+const Utils = imports.tests.utils;
 
 let win = new Gtk.Window();
 let grid = new Gtk.Grid();
@@ -34,6 +35,7 @@ label.connect('notify', function () {
 });
 win.connect('destroy', Gtk.main_quit);
 
+Utils.register_gresource();
 let provider = new Gtk.CssProvider();
 let css_file = Gio.File.new_for_uri('resource:///com/endlessm/knowledge/endless_reader.css');
 provider.load_from_file(css_file);

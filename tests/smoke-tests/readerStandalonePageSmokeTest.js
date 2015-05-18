@@ -7,6 +7,7 @@ const Lang = imports.lang;
 const WebKit2 = imports.gi.WebKit2;
 
 const StandalonePage = imports.app.reader.standalonePage;
+const Utils = imports.tests.utils;
 
 function parse_object_from_path (path) {
     let [success, data] = path.load_contents(null);
@@ -28,6 +29,7 @@ const TestApplication = new Lang.Class({
     vfunc_startup: function () {
         this.parent();
 
+        Utils.register_gresource();
         let provider = new Gtk.CssProvider();
         let css_file = Gio.File.new_for_uri('resource:///com/endlessm/knowledge/endless_reader.css');
         provider.load_from_file(css_file);

@@ -6,6 +6,7 @@ top_srcdir=$(git rev-parse --show-toplevel)
 export GJS_PATH="${top_srcdir}:${top_srcdir}/js${GJS_PATH:+:$GJS_PATH}"
 export GI_TYPELIB_PATH="${top_srcdir}${GI_TYPELIB_PATH:+:$GI_TYPELIB_PATH}"
 export LD_LIBRARY_PATH="${top_srcdir}/.libs${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+export G_TEST_BUILDDIR="${top_srcdir}/tests"
 
 if [ "$GJS_DEBUG_OUTPUT" == "" ]; then
     export GJS_DEBUG_OUTPUT=stderr

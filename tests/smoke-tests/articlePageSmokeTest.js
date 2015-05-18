@@ -7,6 +7,7 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const ArticlePage = imports.app.articlePage;
+const Utils = imports.tests.utils;
 
 const TEST_APPLICATION_ID = 'com.endlessm.knowledge.test.article-page';
 const TESTDIR = Endless.getCurrentFileDir() + '/..';
@@ -18,6 +19,7 @@ const TestApplication = new Lang.Class({
     vfunc_startup: function () {
         this.parent();
 
+        Utils.register_gresource();
         let provider = new Gtk.CssProvider();
         let css_file = Gio.File.new_for_uri('resource:///com/endlessm/knowledge/endless_knowledge.css');
         provider.load_from_file(css_file);
