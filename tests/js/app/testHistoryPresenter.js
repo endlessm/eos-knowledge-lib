@@ -6,6 +6,7 @@ const HistoryPresenter = imports.app.historyPresenter;
 
 const MockButton = new Lang.Class({
     Name: 'MockButton',
+    GTypeName: 'MockButton_TestHistoryPresenter',
     Extends: GObject.Object,
     Properties: {
         'sensitive': GObject.ParamSpec.boolean('sensitive', '', '',
@@ -18,6 +19,7 @@ const MockButton = new Lang.Class({
 
 const MockView = new Lang.Class({
     Name: 'MockView',
+    GTypeName: 'MockView_TestHistoryPresenter',
     Extends: GObject.Object,
 
     _init: function () {

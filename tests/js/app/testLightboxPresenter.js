@@ -7,6 +7,7 @@ const LightboxPresenter = imports.app.lightboxPresenter;
 
 const MockEngine = new Lang.Class({
     Name: 'MockEngine',
+    GTypeName: 'MockEngine_TestLightboxPresenter',
     Extends: GObject.Object,
 
     _init: function () {
@@ -23,6 +24,7 @@ const MockEngine = new Lang.Class({
 
 const MockView = new Lang.Class({
     Name: 'MockView',
+    GTypeName: 'MockView_TestLightboxPresenter',
     Extends: GObject.Object,
     Signals: {
         'lightbox-nav-previous-clicked': {},
