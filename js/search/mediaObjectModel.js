@@ -1,6 +1,5 @@
 // Copyright 2014 Endless Mobile, Inc.
 
-const Endless = imports.gi.Endless;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;

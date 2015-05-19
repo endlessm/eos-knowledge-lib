@@ -1,6 +1,5 @@
 /* Copyright 2015 Endless Mobile, Inc. */
 
-const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;

@@ -1,7 +1,5 @@
 // Copyright 2014 Endless Mobile, Inc.
 
-const Gtk = imports.gi.Gtk;
-const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 
 const Card = imports.app.card;

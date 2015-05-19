@@ -1,12 +1,9 @@
 // Copyright 2014 Endless Mobile, Inc.
 
-const Cairo = imports.gi.cairo;
-const Endless = imports.gi.Endless;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
-const Pango = imports.gi.Pango;
 
 const InfiniteScrolledWindow = imports.app.infiniteScrolledWindow;
 const SectionPage = imports.app.sectionPage;

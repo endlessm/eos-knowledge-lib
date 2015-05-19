@@ -3,7 +3,6 @@
 const Gettext = imports.gettext;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
-const Pango = imports.gi.Pango;
 
 const Config = imports.app.config;
 const CardA = imports.app.cardA;

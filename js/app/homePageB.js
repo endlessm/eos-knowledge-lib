@@ -1,7 +1,5 @@
 // Copyright 2014 Endless Mobile, Inc.
 
-const Endless = imports.gi.Endless;
-const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 

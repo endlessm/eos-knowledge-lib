@@ -1,6 +1,5 @@
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const EosMetrics = imports.gi.EosMetrics;
-const Endless = imports.gi.Endless;
 const Format = imports.format;
 const Gio = imports.gi.Gio;
 const Gettext = imports.gettext;

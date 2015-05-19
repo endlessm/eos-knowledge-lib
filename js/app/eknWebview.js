@@ -1,6 +1,5 @@
 const Gdk = imports.gi.Gdk;
 const GLib = imports.gi.GLib;
-const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const WebKit2 = imports.gi.WebKit2;

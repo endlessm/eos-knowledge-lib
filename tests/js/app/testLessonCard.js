@@ -1,5 +1,3 @@
-const Gtk = imports.gi.Gtk;
-
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const LessonCard = imports.app.lessonCard;
 const StyleClasses = imports.app.styleClasses;

@@ -1,5 +1,3 @@
-const Gtk = imports.gi.Gtk;
-
 const ArticlePage = imports.app.reader.articlePage;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;

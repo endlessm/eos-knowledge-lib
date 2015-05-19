@@ -1,13 +1,10 @@
 // Copyright 2015 Endless Mobile, Inc.
 
-const Endless = imports.gi.Endless;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gettext = imports.gettext;
-const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
-const Pango = imports.gi.Pango;
 
 const StyleClasses = imports.app.styleClasses;
 

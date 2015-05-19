@@ -1,4 +1,3 @@
-const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const EvinceDocument = imports.gi.EvinceDocument;
 const EvinceView = imports.gi.EvinceView;
 const Gtk = imports.gi.Gtk;
