@@ -2,6 +2,7 @@ const Gtk = imports.gi.Gtk;
 
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const Lightbox = imports.app.lightbox;
+const Utils = imports.tests.utils;
 
 Gtk.init(null);
 
@@ -10,6 +11,7 @@ describe('Lightbox widget', function () {
 
     beforeEach(function () {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
+        Utils.register_gresource();
 
         content_widget = new Gtk.Label();
         content_widget.show();

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+  <gresource prefix="/com/endlessm/knowledge">
+    <file>credits.json</file>
+    <file compressed="true">css/endless_encyclopedia.css</file>
+    <file compressed="true">css/endless_knowledge.css</file>
+    <file compressed="true">css/endless_reader.css</file>
+    <file compressed="true">css/hide_title.css</file>
+    <file compressed="true">css/infobox.css</file>
+    <file compressed="true">css/lightbox.css</file>
+    <file compressed="true">css/no_image_links.css</file>
+    <file compressed="true">css/no_results.css</file>
+    <file compressed="true">css/search_results.css</file>
+    <file compressed="true">html/error_page.html</file>
+    <file compressed="true">html/no_results.html</file>
+    <file compressed="true">html/search_results.html</file>
+    <file>images/background-home.jpg</file>
+    <file>images/background-result.jpg</file>
+    <file>images/C/logo.png</file>
+    <file>images/es/logo.png</file>
+    <file>images/pdf-background.png</file>
+    <file>images/pdf_icon.png</file>
+    <file>images/pt/logo.png</file>
+    <file preprocess="xml-stripblanks">images/reader/archive.svg</file>
+    <file preprocess="xml-stripblanks">images/reader/external-link.svg</file>
+    <file preprocess="xml-stripblanks">images/reader/left-arrow.svg</file>
+    <file preprocess="xml-stripblanks">images/reader/right-arrow.svg</file>
+    <file preprocess="xml-stripblanks">images/reader/standalone_arrow.svg</file>
+    <file>images/separator.png</file>
+    <file compressed="true">js/error_page.js</file>
+    <file compressed="true">js/no_results.js</file>
+    <file compressed="true">js/search_results.js</file>
+    <file compressed="true">templates/article.mst</file>
+    <file compressed="true">templates/css/embedly.css</file>
+    <file compressed="true">templates/css/reader.css</file>
+    <file compressed="true">templates/css/wikihow.css</file>
+    <file compressed="true">templates/css/wikimedia.css</file>
+    <file>templates/images/noise.png</file>
+    <file>templates/images/object-view.png</file>
+    <file compressed="true">templates/js/clipboard-manager.js</file>
+    <file compressed="true">templates/js/content-fixes.js</file>
+    <file compressed="true">templates/js/hide-broken-images.js</file>
+    <file compressed="true">templates/js/jquery-min.js</file>
+    <file compressed="true">templates/js/no-link-remover.js</file>
+    <file compressed="true">templates/js/scroll-manager.js</file>
+  </gresource>
+</gresources>

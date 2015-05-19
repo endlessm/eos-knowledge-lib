@@ -3,5 +3,6 @@ const GETTEXT_PACKAGE = '@GETTEXT_PACKAGE@';
 const inspector_enabled = @inspector@;
 const mathjax_path = '@MATHJAXDIR@';
 // Substituted at make time rather than configure time
+const PKGDATADIR = '%pkgdatadir%';
 const DATADIR = '%datadir%';
 const WEB_EXTENSION_DIR = '%webextensiondir%';

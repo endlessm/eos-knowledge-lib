@@ -16,3 +16,9 @@ function get_test_content_builddir() {
     const BUILDDIR = GLib.getenv('G_TEST_BUILDDIR') || GLib.get_current_dir() + '/tests';
     return BUILDDIR + '/test-content/';
 }
+
+function register_gresource() {
+    const BUILDDIR = GLib.getenv('G_TEST_BUILDDIR') || GLib.get_current_dir() + '/tests';
+    let resource = Gio.Resource.load(BUILDDIR + '/../data/eos-knowledge.gresource');
+    resource._register();
+}

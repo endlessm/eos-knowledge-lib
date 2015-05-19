@@ -42,6 +42,8 @@ describe('Article Presenter', function () {
     let webview;
 
     beforeEach(function (done) {
+        Utils.register_gresource();
+
         let file = Gio.file_new_for_path(MOCK_ARTICLE_PATH);
 
         let [success, data] = file.load_contents(null);

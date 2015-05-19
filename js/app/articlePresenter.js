@@ -1,11 +1,6 @@
-const GLib = imports.gi.GLib;
-const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
-const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 const WebKit2 = imports.gi.WebKit2;
 
-const ArticlePage = imports.app.articlePage;
 const ArticleHTMLRenderer = imports.app.articleHTMLRenderer;
 const EknWebview = imports.app.eknWebview;
 const PDFView = imports.app.PDFView;

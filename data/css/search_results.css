@@ -22,7 +22,7 @@ h1 {
 
 .separator {
     height: 10px;
-    background-image: url('assets/separator.png');
+    background-image: url('../images/separator.png');
     background-repeat: no-repeat;
     background-size: 100% 100%;
     margin-bottom: 35px;

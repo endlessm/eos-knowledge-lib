@@ -1,5 +1,4 @@
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
-const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
@@ -9,11 +8,11 @@ const Mainloop = imports.mainloop;
 const ArticleObjectModel = imports.search.articleObjectModel;
 const Presenter = imports.app.reader.presenter;
 const QueryObject = imports.search.queryObject;
-const utils = imports.tests.utils;
+const Utils = imports.tests.utils;
 
 Gtk.init(null);
 
-const TEST_CONTENT_DIR = utils.get_test_content_srcdir();
+const TEST_CONTENT_DIR = Utils.get_test_content_srcdir();
 const TEST_DOMAIN = 'thrones-en';
 const UPDATE_INTERVAL_MS = 604800000;
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
@@ -204,7 +203,7 @@ describe('Reader presenter', function () {
     let engine, settings, view, article_nav_buttons, presenter;
 
     const TEST_APP_FILENAME = TEST_CONTENT_DIR + 'app.json';
-    const TEST_JSON = utils.parse_object_from_path(TEST_APP_FILENAME);
+    const TEST_JSON = Utils.parse_object_from_path(TEST_APP_FILENAME);
     const MOCK_DATA = [
         ['Title 1', ['Kim Kardashian'], '2014/11/13 08:00'],
         ['Title 2', ['Kim Kardashian'], ''],
@@ -225,6 +224,8 @@ describe('Reader presenter', function () {
     });
 
     beforeEach(function () {
+        Utils.register_gresource();
+
         let application = new MockApplication();
         article_nav_buttons = new MockNavButtons();
         view = new MockView(article_nav_buttons);
@@ -238,6 +239,7 @@ describe('Reader presenter', function () {
         spyOn(engine, 'get_objects_by_query');
         MOCK_RESULTS.forEach((model) =>
             spyOn(model, 'get_authors').and.returnValue(model.authors));
+        Utils.register_gresource();
 
         presenter = new Presenter.Presenter(TEST_JSON, {
             application: application,

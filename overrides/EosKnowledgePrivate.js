@@ -4,11 +4,6 @@ function _init() {
     // "this" is imports.gi.EosKnowledgePrivate
     EosKnowledgePrivate = this;
 
-    // Hackzors. We need to load the gresource from javascript before any C
-    // calls are made (to load the CSS). By referencing one of our C functions
-    // here we force the C lib to be initialized along with it its gresource
-    this.hello_c;
-
     // More hackzors. Work around bug where GList-type properties aren't
     // converted properly into JS values.
     // https://bugzilla.gnome.org/show_bug.cgi?id=727787

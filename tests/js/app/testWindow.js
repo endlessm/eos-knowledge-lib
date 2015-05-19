@@ -20,6 +20,7 @@ describe('Window', function () {
     beforeEach(function (done) {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
         jasmine.addMatchers(InstanceOfMatcher.customMatchers);
+        Utils.register_gresource();
 
         // Load and register the GResource which has content for this app
         let resource = Gio.Resource.load(TEST_CONTENT_BUILDDIR + 'test-content.gresource');

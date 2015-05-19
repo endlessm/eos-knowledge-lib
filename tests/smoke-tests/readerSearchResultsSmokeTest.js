@@ -1,12 +1,12 @@
 /* Copyright 2015 Endless Mobile, Inc. */
 
-const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
 
 const Card = imports.app.reader.card;
 const SearchResultsPage = imports.app.reader.searchResultsPage;
+const Utils = imports.tests.utils;
 
 /* We add some reset css code since GtkWindow does not load eos-sdk' reset CSS */
 const RESET_CSS = [
@@ -21,6 +21,7 @@ reset_css_provider.load_from_data(RESET_CSS);
 Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(),
     reset_css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 
+Utils.register_gresource();
 let provider = new Gtk.CssProvider();
 let css_file = Gio.File.new_for_uri('resource:///com/endlessm/knowledge/endless_reader.css');
 provider.load_from_file(css_file);

@@ -1,6 +1,5 @@
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const EosMetrics = imports.gi.EosMetrics;
-const Endless = imports.gi.Endless;
 const Format = imports.format;
 const Gio = imports.gi.Gio;
 const Gettext = imports.gettext;
@@ -23,6 +22,7 @@ const PdfCard = imports.app.pdfCard;
 const QueryObject = imports.search.queryObject;
 const TextCard = imports.app.textCard;
 const Utils = imports.app.utils;
+const WebkitContextSetup = imports.app.webkitContextSetup;
 const Window = imports.app.window;
 
 String.prototype.format = Format.format;
@@ -118,8 +118,11 @@ const Presenter = new Lang.Class({
     _init: function (app_json, props) {
         this._template_type = app_json['templateType'];
 
-        let css = Gio.File.new_for_uri('resource:///com/endlessm/knowledge/endless_knowledge.css');
+        let css = Gio.File.new_for_uri('resource:///com/endlessm/knowledge/css/endless_knowledge.css');
         Utils.add_css_provider_from_file(css, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+
+        // Needs to happen before before any webviews are created
+        WebkitContextSetup.register_webkit_extensions(props.application.application_id);
 
         props.view = props.view || new Window.Window({
             application: props.application,

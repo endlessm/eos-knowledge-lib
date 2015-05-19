@@ -1,5 +1,4 @@
 const Endless = imports.gi.Endless;
-const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
@@ -10,6 +9,7 @@ const CardB = imports.app.cardB;
 const LessonCard = imports.app.lessonCard;
 const TextCard = imports.app.textCard;
 const Window = imports.app.window;
+const Utils = imports.tests.utils;
 
 const TEST_APPLICATION_ID = 'com.endlessm.knowledge.test.window';
 const TESTDIR = Endless.getCurrentFileDir() + '/..';
@@ -25,6 +25,7 @@ const TestApplication = new Lang.Class({
         let resource = Gio.Resource.load(TESTDIR + '/test-content/test-content.gresource');
         resource._register();
 
+        Utils.register_gresource();
         let provider = new Gtk.CssProvider();
         let css_file = Gio.File.new_for_uri('resource:///com/endlessm/knowledge/endless_knowledge.css');
         provider.load_from_file(css_file);

@@ -1,3 +1,4 @@
+const EvinceDocument = imports.gi.EvinceDocument;
 const EvinceView = imports.gi.EvinceView;
 const Gio = imports.gi.Gio;
 
@@ -8,6 +9,8 @@ const Utils = imports.tests.utils;
 const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 
 const TEST_CONTENT_DIR = Utils.get_test_content_srcdir();
+
+EvinceDocument.init();
 
 describe('PDF view', function () {
     let view;

@@ -1,13 +1,12 @@
 const Endless = imports.gi.Endless;
-const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const ArticlePage = imports.app.reader.articlePage;
 const Window = imports.app.reader.window;
+const Utils = imports.tests.utils;
 
 const TEST_APPLICATION_ID = 'com.endlessm.knowledge.test.reader-window';
 const TESTDIR = Endless.getCurrentFileDir() + '/..';
@@ -19,6 +18,7 @@ const TestApplication = new Lang.Class({
     vfunc_startup: function () {
         this.parent();
 
+        Utils.register_gresource();
         let provider = new Gtk.CssProvider();
         let css_file = Gio.File.new_for_uri('resource:///com/endlessm/knowledge/endless_reader.css');
         provider.load_from_file(css_file);

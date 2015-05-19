@@ -199,7 +199,12 @@ PKG_CHECK_MODULES([EOS_KNOWLEDGE_PRIVATE], [
     gobject-2.0
     gio-2.0
     gtk+-3.0 >= 3.12
-    evince-document-3.0
+    webkit2gtk-4.0
+])
+PKG_CHECK_MODULES([GRESOURCE_PLUGIN], [
+    gio-2.0
+    glib-2.0
+    gmodule-2.0
     webkit2gtk-4.0
 ])
 PKG_CHECK_MODULES([TOOLTIP_PLUGIN], [

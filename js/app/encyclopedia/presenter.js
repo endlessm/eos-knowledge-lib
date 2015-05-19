@@ -22,7 +22,7 @@ String.prototype.format = Format.format;
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
 const AUTOCOMPLETE_DELAY = 500; // ms
-const ASSETS_PATH = '/com/endlessm/knowledge/assets/';
+const ASSETS_PATH = '/com/endlessm/knowledge/images/';
 const LOGO_FILE = 'logo.png';
 
 const EncyclopediaPresenter = new Lang.Class({

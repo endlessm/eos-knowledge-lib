@@ -1,22 +1,23 @@
 const Gtk = imports.gi.Gtk;
-const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
 
 const MediaObjectModel = imports.search.mediaObjectModel;
 const MediaInfobox = imports.app.mediaInfobox;
-const utils = imports.tests.utils;
+const Utils = imports.tests.utils;
 
 Gtk.init(null);
 
-const TEST_CONTENT_DIR = utils.get_test_content_srcdir();
+const TEST_CONTENT_DIR = Utils.get_test_content_srcdir();
 const MOCK_IMAGE_PATH = TEST_CONTENT_DIR + 'rick-astley-image.jsonld';
 
 describe ('Media Infobox', function () {
     let imageObject;
-    let mockImageData = utils.parse_object_from_path(MOCK_IMAGE_PATH);
+    let mockImageData = Utils.parse_object_from_path(MOCK_IMAGE_PATH);
 
     beforeEach(function () {
         jasmine.addMatchers(InstanceOfMatcher.customMatchers);
+        Utils.register_gresource();
+
         imageObject = new MediaObjectModel.ImageObjectModel.new_from_json_ld(mockImageData);
     });
 

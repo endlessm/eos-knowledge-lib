@@ -147,7 +147,7 @@ const Lightbox = new Lang.Class({
         this.parent(params);
 
         if (!this._css_has_loaded) {
-            let css = Gio.File.new_for_uri('resource:///com/endlessm/knowledge/lightbox.css');
+            let css = Gio.File.new_for_uri('resource:///com/endlessm/knowledge/css/lightbox.css');
             Utils.add_css_provider_from_file(css, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
             this._css_has_loaded = true;
         }

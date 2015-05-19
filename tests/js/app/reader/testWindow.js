@@ -6,6 +6,7 @@ const Window = imports.app.reader.window;
 const ArticlePage = imports.app.reader.articlePage;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
+const Utils = imports.tests.utils;
 
 const EXPECTED_TOTAL_PAGES = 17;
 
@@ -15,6 +16,7 @@ describe('Window widget', function () {
     beforeEach(function (done) {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
         jasmine.addMatchers(InstanceOfMatcher.customMatchers);
+        Utils.register_gresource();
 
         // Generate a unique ID for each app instance that we test
         let fake_pid = GLib.random_int();
