@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: eos-knowledge 0.2.0\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-"
 "inc\n"
-"POT-Creation-Date: 2015-05-12 15:16-0700\n"
+"POT-Creation-Date: 2015-05-19 01:50+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -122,28 +122,20 @@ msgstr ""
 msgid "HOME"
 msgstr ""
 
+#: js/app/encyclopedia/presenter.js:32
+msgid "Search the world's information!"
+msgstr ""
+
 #. TRANSLATORS: This is the title of the search results page. %s
 #. will be replaced by the text that the user searched for. Make
 #. sure that %s is in your translation as well.
-#: js/app/encyclopedia/presenter.js:273
+#: js/app/encyclopedia/presenter.js:303
 #, javascript-format
 msgid "Results for %s"
 msgstr ""
 
-#: js/app/encyclopedia/layoutPage.js:24
-msgid "Search the world's information!"
-msgstr ""
-
 #: js/app/encyclopedia/view.js:49
 msgid "Encyclopedia"
-msgstr ""
-
-#: js/app/encyclopedia/popupWindow.js:13
-msgid ""
-"Wikipedia and its associated marks are official trademarks of the Wikimedia "
-"Foundation in the United States and other countries. These marks are being "
-"used under license by the Wikimedia Foundation. Endless is not endorsed by "
-"or affiliated with the Wikimedia Foundation."
 msgstr ""
 
 #: js/app/homePageA.js:57
@@ -190,7 +182,7 @@ msgstr ""
 msgid "PDF"
 msgstr ""
 
-#: js/app/presenter.js:208 js/app/presenter.js:614
+#: js/app/presenter.js:208 js/app/presenter.js:616
 msgid "Articles"
 msgstr ""
 
@@ -199,20 +191,20 @@ msgstr ""
 msgid "%d of %d done"
 msgstr ""
 
-#: js/app/reader/card.js:130 js/app/reader/webviewTooltip.js:138
+#: js/app/reader/card.js:131 js/app/reader/webviewTooltip.js:138
 msgid "Archive"
 msgstr ""
 
-#: js/app/reader/card.js:133
+#: js/app/reader/card.js:134
 #, javascript-format
 msgid "Page %s"
 msgstr ""
 
-#: js/app/reader/donePage.js:66
+#: js/app/reader/donePage.js:67
 msgid "Did you like this issue?"
 msgstr ""
 
-#: js/app/reader/donePage.js:72
+#: js/app/reader/donePage.js:73
 msgid ""
 "Don't miss next week's issue with more articles in your favorite magazine!"
 msgstr ""
@@ -248,7 +240,7 @@ msgid ""
 "Try another one or try again after restarting your computer."
 msgstr ""
 
-#: js/app/reader/searchResultsPage.js:73
+#: js/app/reader/searchResultsPage.js:74
 msgid "There are no results for your search"
 msgstr ""
 
@@ -256,7 +248,7 @@ msgstr ""
 msgid "Open the magazine"
 msgstr ""
 
-#: js/app/reader/standalonePage.js:306
+#: js/app/reader/standalonePage.js:307
 #, javascript-format
 msgid "This article is part of the archive of the magazine %s."
 msgstr ""
