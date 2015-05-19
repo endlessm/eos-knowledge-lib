@@ -118,7 +118,7 @@ const Presenter = new Lang.Class({
     _init: function (app_json, props) {
         this._template_type = app_json['templateType'];
 
-        let css = Gio.File.new_for_uri('resource:///com/endlessm/knowledge/endless_knowledge.css');
+        let css = Gio.File.new_for_uri('resource:///com/endlessm/knowledge/css/endless_knowledge.css');
         Utils.add_css_provider_from_file(css, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 
         // Needs to happen before before any webviews are created

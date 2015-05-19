@@ -169,8 +169,8 @@ const Window = new Lang.Class({
     },
 
     _STACK_TRANSITION_TIME: 500,
-    _BACK_IMAGE_URI: 'resource:///com/endlessm/knowledge/reader/left-arrow.svg',
-    _FORWARD_IMAGE_URI: 'resource:///com/endlessm/knowledge/reader/right-arrow.svg',
+    _BACK_IMAGE_URI: 'resource:///com/endlessm/knowledge/images/reader/left-arrow.svg',
+    _FORWARD_IMAGE_URI: 'resource:///com/endlessm/knowledge/images/reader/right-arrow.svg',
     _NAV_IMAGE_SIZE: 23,
 
     _init: function (props) {

@@ -29,7 +29,7 @@ const ArchiveLabel = new Lang.Class({
             GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE, ''),
     },
 
-    _ARCHIVE_ICON: '/com/endlessm/knowledge/reader/archive.svg',
+    _ARCHIVE_ICON: '/com/endlessm/knowledge/images/reader/archive.svg',
 
     _init: function (props={}) {
         props.orientation = Gtk.Orientation.HORIZONTAL;
@@ -78,7 +78,7 @@ const OpenButton = new Lang.Class({
             GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE, ''),
     },
 
-    _OPEN_ICON: '/com/endlessm/knowledge/reader/standalone_arrow.svg',
+    _OPEN_ICON: '/com/endlessm/knowledge/images/reader/standalone_arrow.svg',
 
     _init: function (props={}) {
         let image = new Gtk.Image({

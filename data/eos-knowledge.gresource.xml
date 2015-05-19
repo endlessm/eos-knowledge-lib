@@ -1,47 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
   <gresource prefix="/com/endlessm/knowledge">
-    <file>assets/background-home.jpg</file>
-    <file>assets/background-result.jpg</file>
-    <file>assets/C/logo.png</file>
-    <file>assets/es/logo.png</file>
-    <file>assets/pdf-background.png</file>
-    <file>assets/pt/logo.png</file>
-    <file>assets/separator.png</file>
-    <file compressed="true">credits.json</file>
-    <file>endless_encyclopedia.css</file>
-    <file>endless_knowledge.css</file>
-    <file>endless_reader.css</file>
-    <file>hide_title.css</file>
+    <file>credits.json</file>
+    <file compressed="true">css/endless_encyclopedia.css</file>
+    <file compressed="true">css/endless_knowledge.css</file>
+    <file compressed="true">css/endless_reader.css</file>
+    <file compressed="true">css/hide_title.css</file>
+    <file compressed="true">css/infobox.css</file>
+    <file compressed="true">css/lightbox.css</file>
+    <file compressed="true">css/no_image_links.css</file>
+    <file compressed="true">css/no_results.css</file>
+    <file compressed="true">css/search_results.css</file>
     <file compressed="true">html/error_page.html</file>
     <file compressed="true">html/no_results.html</file>
     <file compressed="true">html/search_results.html</file>
-    <file>infobox.css</file>
+    <file>images/background-home.jpg</file>
+    <file>images/background-result.jpg</file>
+    <file>images/C/logo.png</file>
+    <file>images/es/logo.png</file>
+    <file>images/pdf-background.png</file>
+    <file>images/pdf_icon.png</file>
+    <file>images/pt/logo.png</file>
+    <file preprocess="xml-stripblanks">images/reader/archive.svg</file>
+    <file preprocess="xml-stripblanks">images/reader/external-link.svg</file>
+    <file preprocess="xml-stripblanks">images/reader/left-arrow.svg</file>
+    <file preprocess="xml-stripblanks">images/reader/right-arrow.svg</file>
+    <file preprocess="xml-stripblanks">images/reader/standalone_arrow.svg</file>
+    <file>images/separator.png</file>
     <file compressed="true">js/error_page.js</file>
     <file compressed="true">js/no_results.js</file>
     <file compressed="true">js/search_results.js</file>
-    <file compressed="true">no_image_links.css</file>
-    <file compressed="true">no_results.css</file>
-    <file>lightbox.css</file>
-    <file>pdf_icon.png</file>
-    <file preprocess="xml-stripblanks">reader/archive.svg</file>
-    <file preprocess="xml-stripblanks">reader/external-link.svg</file>
-    <file preprocess="xml-stripblanks">reader/left-arrow.svg</file>
-    <file preprocess="xml-stripblanks">reader/right-arrow.svg</file>
-    <file preprocess="xml-stripblanks">reader/standalone_arrow.svg</file>
-    <file compressed="true">search_results.css</file>
-    <file>templates/article.mst</file>
-    <file>templates/css/embedly.css</file>
-    <file>templates/css/reader.css</file>
-    <file>templates/css/wikihow.css</file>
-    <file>templates/css/wikimedia.css</file>
+    <file compressed="true">templates/article.mst</file>
+    <file compressed="true">templates/css/embedly.css</file>
+    <file compressed="true">templates/css/reader.css</file>
+    <file compressed="true">templates/css/wikihow.css</file>
+    <file compressed="true">templates/css/wikimedia.css</file>
     <file>templates/images/noise.png</file>
     <file>templates/images/object-view.png</file>
-    <file>templates/js/clipboard-manager.js</file>
-    <file>templates/js/content-fixes.js</file>
-    <file>templates/js/hide-broken-images.js</file>
-    <file>templates/js/jquery-min.js</file>
-    <file>templates/js/no-link-remover.js</file>
-    <file>templates/js/scroll-manager.js</file>
+    <file compressed="true">templates/js/clipboard-manager.js</file>
+    <file compressed="true">templates/js/content-fixes.js</file>
+    <file compressed="true">templates/js/hide-broken-images.js</file>
+    <file compressed="true">templates/js/jquery-min.js</file>
+    <file compressed="true">templates/js/no-link-remover.js</file>
+    <file compressed="true">templates/js/scroll-manager.js</file>
   </gresource>
 </gresources>

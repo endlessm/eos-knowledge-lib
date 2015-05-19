@@ -62,7 +62,7 @@ const EncyclopediaView = new Lang.Class({
 
         this.page_manager.add(this._home_page, {
             name: HOME_PAGE_NAME,
-            background_uri: 'resource:///com/endlessm/knowledge/assets/background-home.jpg',
+            background_uri: 'resource:///com/endlessm/knowledge/images/background-home.jpg',
             background_repeats: false,
             background_size: 'cover',
             background_position: 'center center'
@@ -74,7 +74,7 @@ const EncyclopediaView = new Lang.Class({
         this.page_manager.add(this._lightbox, {
             name: CONTENT_PAGE_NAME,
             left_topbar_widget: this.history_buttons,
-            background_uri: 'resource:///com/endlessm/knowledge/assets/background-result.jpg',
+            background_uri: 'resource:///com/endlessm/knowledge/images/background-result.jpg',
             background_repeats: false,
             background_size: 'cover',
             background_position: 'top center'

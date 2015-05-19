@@ -62,7 +62,7 @@ const Card = new Lang.Class({
     _CARD_HEIGHT: 250,
     _CONTENT_MARGIN: 8,
     _DECORATIVE_BAR_HEIGHT: 20,
-    _ARCHIVE_ICON: '/com/endlessm/knowledge/reader/archive.svg',
+    _ARCHIVE_ICON: '/com/endlessm/knowledge/images/reader/archive.svg',
     _GRID_COL_SPACING: 4,
     _TITLE_LABEL_LINES: 4,
 

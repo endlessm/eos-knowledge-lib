@@ -162,7 +162,7 @@ const Presenter = new Lang.Class({
     _NUM_ARTICLE_PAGE_STYLES: 3,
 
     _init: function (app_json, props) {
-        let css = Gio.File.new_for_uri('resource:///com/endlessm/knowledge/endless_reader.css');
+        let css = Gio.File.new_for_uri('resource:///com/endlessm/knowledge/css/endless_reader.css');
         Utils.add_css_provider_from_file(css, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 
         props.view = props.view || new Window.Window({

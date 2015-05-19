@@ -98,7 +98,7 @@ const EndlessEncyclopedia = new Lang.Class({
             this._presenter = new EncyclopediaPresenter.EncyclopediaPresenter(this._view, this._model);
 
             let provider = new Gtk.CssProvider();
-            let css_file = Gio.File.new_for_uri('resource:///com/endlessm/knowledge/endless_encyclopedia.css');
+            let css_file = Gio.File.new_for_uri('resource:///com/endlessm/knowledge/css/endless_encyclopedia.css');
             provider.load_from_file(css_file);
             Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(), provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
         }
