@@ -133,7 +133,7 @@ const ArticleObjectModel = new Lang.Class({
     },
 
     // Returns the HTML corresponding to this article, if it has any. In the
-    // case of a v.2 bundle, performs synchronous file IO to the epak
+    // case of a v.2 bundle, performs synchronous file IO to the shard file
     get_html: function () {
         if (this.content_type !== 'text/html')
             return undefined;

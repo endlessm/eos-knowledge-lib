@@ -1,5 +1,5 @@
 // Copyright 2014 Endless Mobile, Inc.
-const Epak = imports.gi.Epak;
+const EosShard = imports.gi.EosShard;
 const Lang = imports.lang;
 const Soup = imports.gi.Soup;
 const GObject = imports.gi.GObject;
@@ -98,7 +98,7 @@ const Engine = Lang.Class({
         // Like _content_path_cache, but for EKN_VERSION files
         this._ekn_version_cache = {};
 
-        this._epak_cache = {};
+        this._shard_file_cache = {};
     },
 
     /**
@@ -186,11 +186,11 @@ const Engine = Lang.Class({
 
     _read_jsonld_from_disk: function (ekn_id, callback, cancellable = null) {
         let [domain, hash] = Utils.components_from_ekn_id(ekn_id);
-        let pak = this._epak_from_domain(domain);
-        let record = pak.find_record_by_hex_name(hash);
+        let shard_file = this._shard_file_from_domain(domain);
+        let record = shard_file.find_record_by_hex_name(hash);
 
         if (record === null) {
-            callback(new Error('Could not find epak record for ' + ekn_id), undefined);
+            callback(new Error('Could not find shard record for ' + ekn_id), undefined);
             return;
         }
 
@@ -225,11 +225,11 @@ const Engine = Lang.Class({
 
     _read_content_from_disk: function (ekn_id) {
         let [domain, hash] = Utils.components_from_ekn_id(ekn_id);
-        let pak = this._epak_from_domain(domain);
-        let record = pak.find_record_by_hex_name(hash);
+        let shard_file = this._shard_file_from_domain(domain);
+        let record = shard_file.find_record_by_hex_name(hash);
 
         if (record === null) {
-            throw new Error('Could not find epak record for ' + ekn_id);
+            throw new Error('Could not find shard record for ' + ekn_id);
         }
 
         let stream = record.data.get_stream();
@@ -409,24 +409,24 @@ const Engine = Lang.Class({
         return this._ekn_version_cache[domain];
     },
 
-    _epak_path_from_domain: function (domain) {
+    _shard_path_from_domain: function (domain) {
         let content_path = this._content_path_from_domain(domain);
 
-        let path_components = [content_path, 'media.epak'];
+        let path_components = [content_path, 'media.shard'];
         let filename = GLib.build_filenamev(path_components);
         return filename;
     },
 
-    _epak_from_domain: function (domain) {
-        if (this._epak_cache[domain] === undefined) {
-            let pak = new Epak.Pak({
-                path: this._epak_path_from_domain(domain),
+    _shard_file_from_domain: function (domain) {
+        if (this._shard_file_cache[domain] === undefined) {
+            let shard_file = new EosShard.ShardFile({
+                path: this._shard_path_from_domain(domain),
             });
-            pak.init(null);
-            this._epak_cache[domain] = pak;
+            shard_file.init(null);
+            this._shard_file_cache[domain] = shard_file;
         }
 
-        return this._epak_cache[domain];
+        return this._shard_file_cache[domain];
     },
 
     // Returns a marshaled ObjectModel based on json_ld's @type value, or throws

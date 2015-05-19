@@ -129,7 +129,7 @@ const ContentObjectModel = new Lang.Class({
          * (DEPRECATED) A string with the URI to the file content for this
          * object.
          *
-         * No longer used in ekn bundles. Content is now stored in an Epak file
+         * No longer used in ekn bundles. Content is now stored in a shard file
          * which is indexed by ekn-id, and is accessed by get_content_stream()
          */
         'content-uri': GObject.ParamSpec.string('content-uri', 'Object Content URL',

@@ -224,7 +224,7 @@ PKG_CHECK_MODULES([ENCYCLOPEDIA_PLUGIN], [
 
 # Check installed GIRs for Javascript overrides
 EOS_CHECK_GJS_GIR([Endless], [0])
-EOS_CHECK_GJS_GIR([Epak], [0])
+EOS_CHECK_GJS_GIR([EosShard], [0])
 EOS_CHECK_GJS_GIR([EvinceDocument], [3.0])
 EOS_CHECK_GJS_GIR([EvinceView], [3.0])
 EOS_CHECK_GJS_GIR([Gdk], [3.0])
