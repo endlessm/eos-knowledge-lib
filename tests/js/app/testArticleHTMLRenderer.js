@@ -60,9 +60,9 @@ describe('Article HTML Renderer', function () {
     });
 
     it('shows a title only when told to', function () {
-        renderer.show_title = true;
-        let html_with_title = renderer.render(embedly_model);
-        renderer.show_title = false;
+        let html_with_title = renderer.render(embedly_model, {
+            show_title: true,
+        });
         let html_no_title = renderer.render(embedly_model);
         expect(html_with_title).toMatch('Embedly title');
         expect(html_no_title).not.toMatch('Embedly title');
@@ -84,6 +84,15 @@ describe('Article HTML Renderer', function () {
         expect(renderer.render(embedly_model)).toMatch('embedly.css');
     });
 
+    it('links to the custom css only when told to', function () {
+        let html = renderer.render(embedly_model, {
+            custom_css_files: ['reader.css'],
+        });
+        expect(html).toMatch('reader.css');
+        let no_reader_html = renderer.render(embedly_model);
+        expect(no_reader_html).not.toMatch('reader.css');
+    });
+
     it('escapes html special characters in title', function () {
         let html = renderer.render(wikihow_model);
         expect(html).toMatch('Wikihow &amp; title');
@@ -95,9 +104,9 @@ describe('Article HTML Renderer', function () {
     });
 
     it('includes scroll_manager.js only when told to', function () {
-        renderer.enable_scroll_manager = true;
-        let html_with_scroll_manager = renderer.render(embedly_model);
-        renderer.enable_scroll_manager = false;
+        let html_with_scroll_manager = renderer.render(embedly_model, {
+            enable_scroll_manager: true,
+        });
         let html_without_scroll_manager = renderer.render(embedly_model);
 
         expect(html_with_scroll_manager).toMatch('scroll-manager.js');
