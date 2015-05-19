@@ -148,7 +148,11 @@ const Engine = Lang.Class({
         // Xapian DB itself, and hence require no HTTP request to xapian-bridge
         // when fetching an object
         if (ekn_version >= 2) {
-            this._read_jsonld_from_disk(id, handle_result);
+            try {
+                this._read_jsonld_from_disk(id, handle_result);
+            } catch (err) {
+                handle_result(err, undefined);
+            }
         } else {
             // Older bundles require an HTTP request for every object request
             var query_obj = new QueryObject.QueryObject({
