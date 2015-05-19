@@ -5,7 +5,6 @@
 #include <config.h>
 #include <glib.h>
 #include <glib/gi18n-lib.h>
-#include <evince-document.h>
 
 #include "ekn-init-private.h"
 
@@ -40,9 +39,6 @@ _ekn_init (void)
       bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
       bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
 
-      if (!ev_init ())
-        g_critical ("Evince did not find any backends! No PDF support.");
-
       _ekn_initialized = TRUE;
     }
 }
@@ -56,17 +52,4 @@ gboolean
 ekn_is_inited (void)
 {
   return _ekn_initialized;
-}
-
-/*
- * _ekn_fini:
- *
- * This function deinitializes the library. It is needed for calling
- * ev_shutdown() when the library is unloaded.
- */
-_EKN_DESTRUCTOR(_ekn_fini);
-static void
-_ekn_fini (void)
-{
-  ev_shutdown ();
 }

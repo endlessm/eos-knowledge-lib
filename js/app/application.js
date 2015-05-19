@@ -87,7 +87,7 @@ const Application = new Lang.Class({
 
     _ensure_presenter: function () {
         if (this._presenter === null)
-            this._presenter = imports.app.presenterLoader.get_presenter_for_resource(this, ARGV[1]);
+            this._presenter = imports.app.presenterLoader.setup_presenter_for_resource(this, ARGV[1]);
     },
 });
 

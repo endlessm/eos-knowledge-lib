@@ -6,6 +6,8 @@ const WebKit2 = imports.gi.WebKit2;
 const EvinceWebviewAdapter = imports.app.evinceWebviewAdapter;
 const WebviewSwitcherView = imports.app.webviewSwitcherView;
 
+EvinceDocument.init();
+
 // Create objects
 let win = new Gtk.Window({
     default_width: 500,

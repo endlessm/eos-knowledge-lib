@@ -1,3 +1,4 @@
+const EvinceDocument = imports.gi.EvinceDocument;
 const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
 const System = imports.system;
@@ -6,7 +7,10 @@ const Presenter = imports.app.presenter;
 const ReaderPresenter = imports.app.reader.presenter;
 const Utils = imports.app.utils;
 
-let get_presenter_for_resource = function (application, resource_path) {
+let setup_presenter_for_resource = function (application, resource_path) {
+    // Initialize libraries
+    EvinceDocument.init();
+
     let resource = Gio.Resource.load(resource_path);
     resource._register();
 
