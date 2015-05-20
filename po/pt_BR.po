@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2015-05-12 02:02+0000\n"
-"PO-Revision-Date: 2015-05-12 02:03+0000\n"
+"POT-Creation-Date: 2015-05-19 01:50+0000\n"
+"PO-Revision-Date: 2015-05-19 01:51+0000\n"
 "Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
 "Language-Team: Portuguese (http://www.transifex.com/projects/p/eos-knowledge-lib/language/pt/)\n"
 "MIME-Version: 1.0\n"
@@ -20,15 +20,58 @@ msgstr ""
 "Language: pt\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: eosknowledge/ekn-hello.c:36
+#: eosknowledgeprivate/ekn-hello.c:36
 msgid "Hello C world!"
 msgstr "Olá mundo C!"
+
+#: data/js/error_page.js:4 data/js/no_results.js:4
+msgid "OOPS!"
+msgstr ""
+
+#: data/js/error_page.js:6
+msgid "There was an error during your search."
+msgstr ""
+
+#: data/js/error_page.js:8
+msgid "Try searching again, and if that doesn't work restart your computer."
+msgstr ""
+
+#: data/js/no_results.js:6
+msgid "Try repeating your search with other words."
+msgstr ""
+
+#. TRANSLATORS: This message is displayed when the encyclopedia app did
+#. not find any results for a search. The {query} will be replaced with the
+#. term that the user searched for. Note, in English, it is surrounded by
+#. Unicode left and right double quotes (U+201C and U+201D). Make sure to
+#. use whatever quote marks are appropriate for your language.
+#: data/js/no_results.js:16
+msgid "We did not find any results for “{query}”."
+msgstr ""
+
+#. TRANSLATORS: This message is displayed while the encyclopedia app is
+#. searching for results. The {search} will be replaced with the term that
+#. the user searched for. Note, in English, it is surrounded by Unicode
+#. left and right double quotes (U+201C and U+201D). Make sure to use
+#. whatever quote marks are appropriate for your language.
+#: data/js/search_results.js:18
+msgid "Searching for “{search}”"
+msgstr ""
+
+#. TRANSLATORS: This message is displayed when the encyclopedia app is
+#. done searching for results. The {search} will be replaced with the term
+#. that the user searched for. Note, in English, it is surrounded by
+#. Unicode left and right double quotes (U+201C and U+201D). Make sure to
+#. use whatever quote marks are appropriate for your language.
+#: data/js/search_results.js:29
+msgid "Search results for “{search}”"
+msgstr ""
 
 #. TRANSLATORS: anything inside curly braces '{}' is going
 #. to be substituted in code. Please make sure to leave the
 #. curly braces around any words that have them and DO NOT
 #. translate words inside curly braces.
-#: overrides/articleHTMLRenderer.js:59
+#: js/app/articleHTMLRenderer.js:57
 msgid ""
 "This page contains content from {original-link}, available under a {license-"
 "link} license."
@@ -36,7 +79,7 @@ msgstr "Esta página contém conteúdo de {original-link}, disponível mediante 
 
 #. TRANSLATORS: Replace this with a link to the homepage of
 #. wikiHow in your language.
-#: overrides/articleHTMLRenderer.js:66
+#: js/app/articleHTMLRenderer.js:64
 msgid "http://wikihow.com"
 msgstr "http://wikihow.com.br"
 
@@ -44,28 +87,28 @@ msgstr "http://wikihow.com.br"
 #. to be substituted in code. Please make sure to leave the
 #. curly braces around any words that have them and DO NOT
 #. translate words inside curly braces.
-#: overrides/articleHTMLRenderer.js:71
+#: js/app/articleHTMLRenderer.js:69
 msgid ""
 "See {wikihow-article-link} for more details, videos, pictures and "
 "attribution. Courtesy of {wikihow-link}, where anyone can easily learn how "
 "to do anything."
 msgstr "Veja {wikihow-article-link} para mais detalhes, videos, imagens e atribuições. Cortesia de {wikihow-link}, onde qualquer pessoa pode facilmente aprender como fazer qualquer coisa. "
 
-#: overrides/articleHTMLRenderer.js:125
+#: js/app/articleHTMLRenderer.js:125
 msgid "Copy"
 msgstr ""
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
-#: overrides/articleHTMLRenderer.js:144
+#: js/app/articleHTMLRenderer.js:144
 msgid "Content taken from {blog-link}."
 msgstr "Conteúdo retirado de {blog-link}."
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
-#: overrides/articleHTMLRenderer.js:149
+#: js/app/articleHTMLRenderer.js:149
 msgid "Content courtesy of {blog-link}. Used with kind permission."
 msgstr "Cortesia de conteúdo de {blog-link}.  Utilizado com permissão."
 
@@ -73,81 +116,97 @@ msgstr "Cortesia de conteúdo de {blog-link}.  Utilizado com permissão."
 #. is going to be substituted in code. Please make sure that your
 #. translation contains both {blog-link} and {license-link} and they are not
 #. translated.
-#: overrides/articleHTMLRenderer.js:157
+#: js/app/articleHTMLRenderer.js:157
 msgid "Content courtesy of {blog-link}, licensed under {license-link}."
 msgstr "Cortesia de conteúdo de {blog-link}, licenciado sob {license-link}."
 
-#: overrides/categoriesPage.js:60
+#: js/app/categoriesPage.js:58
 msgid "HOME"
 msgstr "PÁGINA PRINCIPAL"
 
-#: overrides/homePageA.js:59
+#: js/app/encyclopedia/presenter.js:32
+msgid "Search the world's information!"
+msgstr ""
+
+#. TRANSLATORS: This is the title of the search results page. %s
+#. will be replaced by the text that the user searched for. Make
+#. sure that %s is in your translation as well.
+#: js/app/encyclopedia/presenter.js:303
+#, javascript-format
+msgid "Results for %s"
+msgstr ""
+
+#: js/app/encyclopedia/view.js:49
+msgid "Encyclopedia"
+msgstr ""
+
+#: js/app/homePageA.js:57
 msgid "SEE ALL CATEGORIES"
 msgstr "Ver todas as categorias"
 
-#: overrides/lessonCard.js:135
+#: js/app/lessonCard.js:133
 #, javascript-format
 msgid "Lesson %d"
 msgstr "Aula %d"
 
-#: overrides/licenses.js:35
+#: js/app/licenses.js:33
 msgid "CC-BY 4.0"
 msgstr ""
 
-#: overrides/licenses.js:36
+#: js/app/licenses.js:34
 msgid "CC-BY-SA 4.0"
 msgstr ""
 
-#: overrides/licenses.js:37
+#: js/app/licenses.js:35
 msgid "CC-BY 3.0"
 msgstr ""
 
-#: overrides/licenses.js:38
+#: js/app/licenses.js:36
 msgid "CC-BY-SA 3.0"
 msgstr ""
 
-#: overrides/noSearchResultsPage.js:39
+#: js/app/noSearchResultsPage.js:37
 msgid "We didn't find anything."
 msgstr "Nós não encontramos nada."
 
-#: overrides/noSearchResultsPage.js:40
+#: js/app/noSearchResultsPage.js:38
 msgid "Try seaching again with different words."
 msgstr "Tente pesquisar novamente com palavras diferentes."
 
 #. TRANSLATORS: this appears on top of the search results page; %s will
 #. be replaced with the string that the user searched for.
-#: overrides/noSearchResultsPage.js:63 overrides/presenter.js:362
+#: js/app/noSearchResultsPage.js:61 js/app/presenter.js:362
 #, javascript-format
 msgid "Results for \"%s\""
 msgstr "Resultados para \"%s\""
 
-#: overrides/pdfCard.js:44
+#: js/app/pdfCard.js:42
 msgid "PDF"
 msgstr "PDF"
 
-#: overrides/presenter.js:208 overrides/presenter.js:614
+#: js/app/presenter.js:208 js/app/presenter.js:616
 msgid "Articles"
 msgstr "Artigos"
 
-#: overrides/progressCard.js:114
+#: js/app/progressCard.js:112
 #, javascript-format
 msgid "%d of %d done"
 msgstr "%d de %de realizado"
 
-#: overrides/reader/card.js:132 overrides/reader/webviewTooltip.js:140
+#: js/app/reader/card.js:131 js/app/reader/webviewTooltip.js:138
 msgid "Archive"
 msgstr ""
 
-#: overrides/reader/card.js:135
+#: js/app/reader/card.js:134
 #, javascript-format
 msgid "Page %s"
 msgstr ""
 
-#: overrides/reader/donePage.js:68
+#: js/app/reader/donePage.js:67
 msgid "Did you like this issue?"
 msgstr "Você gostou dessa edição?"
 
-#: overrides/reader/donePage.js:74
+#: js/app/reader/donePage.js:73
 msgid ""
 "Don't miss next week's issue with more articles in your favorite magazine!"
 msgstr "Não perca a edição da próxima semana com mais artigos em sua revista favorita!"
@@ -159,46 +218,46 @@ msgstr "Não perca a edição da próxima semana com mais artigos em sua revista
 #. Also, note: the "and" is used to join together the names
 #. of authors of a blog post. For example:
 #. Jane Austen and Henry Miller and William Clifford
-#: overrides/reader/presenter.js:928
+#: js/app/reader/presenter.js:921
 msgid "by {author}"
 msgstr "Por {author}"
 
-#: overrides/reader/presenter.js:928
+#: js/app/reader/presenter.js:921
 msgid "and"
 msgstr "e"
 
-#: overrides/reader/presenter.js:987 overrides/reader/presenter.js:994
+#: js/app/reader/presenter.js:980 js/app/reader/presenter.js:987
 msgid "Oops!"
 msgstr "Oops!"
 
-#: overrides/reader/presenter.js:988
+#: js/app/reader/presenter.js:981
 msgid ""
 "We could not find this magazine!\n"
 "Please try again after restarting your computer."
 msgstr "Não conseguimos encontrar essa revista!\nPor favor, tente novamente após reiniciar seu computador. "
 
-#: overrides/reader/presenter.js:995
+#: js/app/reader/presenter.js:988
 msgid ""
 "There was an error loading that page.\n"
 "Try another one or try again after restarting your computer."
 msgstr "Ocorreu um erro no carregamento da página. \nTente outro ou tente novamente após reiniciar seu computador. "
 
-#: overrides/reader/searchResultsPage.js:75
+#: js/app/reader/searchResultsPage.js:74
 msgid "There are no results for your search"
 msgstr ""
 
-#: overrides/reader/standalonePage.js:185
+#: js/app/reader/standalonePage.js:183
 msgid "Open the magazine"
 msgstr ""
 
-#: overrides/reader/standalonePage.js:308
+#: js/app/reader/standalonePage.js:307
 #, javascript-format
 msgid "This article is part of the archive of the magazine %s."
 msgstr ""
 
 #. TRANSLATORS: This shows the page number; %d will be replaced with
 #. the page number of the article.
-#: overrides/reader/webviewTooltip.js:124
+#: js/app/reader/webviewTooltip.js:122
 #, javascript-format
 msgid "Page %d"
 msgstr ""
