@@ -1,6 +1,10 @@
+const Gtk = imports.gi.Gtk;
+
 const TitleView = imports.app.reader.titleView;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const StyleClasses = imports.app.styleClasses;
+
+Gtk.init(null);
 
 describe('Title view', function () {
     let view;

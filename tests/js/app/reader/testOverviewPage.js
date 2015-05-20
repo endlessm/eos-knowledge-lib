@@ -1,7 +1,11 @@
+const Gtk = imports.gi.Gtk;
+
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
 const OverviewPage = imports.app.reader.overviewPage;
 const StyleClasses = imports.app.styleClasses;
+
+Gtk.init(null);
 
 describe('Overview page widget', function () {
     let page;

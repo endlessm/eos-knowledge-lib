@@ -1,8 +1,12 @@
+const Gtk = imports.gi.Gtk;
+
 const ArticlePage = imports.app.reader.articlePage;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
 const ProgressLabel = imports.app.reader.progressLabel;
 const StyleClasses = imports.app.styleClasses;
+
+Gtk.init(null);
 
 describe('Article page widget', function () {
     let page;

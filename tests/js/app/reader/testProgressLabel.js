@@ -1,9 +1,13 @@
+const Gtk = imports.gi.Gtk;
+
 const ProgressLabel = imports.app.reader.progressLabel;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const StyleClasses = imports.app.styleClasses;
 
 const EXPECTED_CURRENT_PAGE = 6;
 const EXPECTED_TOTAL_PAGES = 15;
+
+Gtk.init(null);
 
 describe('Progress label', function () {
     let label;

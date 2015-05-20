@@ -1,6 +1,10 @@
+const Gtk = imports.gi.Gtk;
+
 const WebviewTooltip = imports.app.reader.webviewTooltip;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const StyleClasses = imports.app.styleClasses;
+
+Gtk.init(null);
 
 describe('Webview tooltip', function () {
     let tooltip;

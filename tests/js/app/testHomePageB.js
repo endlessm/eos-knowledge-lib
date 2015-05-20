@@ -1,3 +1,5 @@
+const Gtk = imports.gi.Gtk;
+
 const Card = imports.app.card;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const HomePageB = imports.app.homePageB;
@@ -8,6 +10,8 @@ const Utils = imports.tests.utils;
 const TEST_CONTENT_DIR = Utils.get_test_content_srcdir();
 const THROWING_CARD_COUNTS = [1, 3, 5, 7];
 const NO_THROWING_CARD_COUNTS = [4, 6, 8];
+
+Gtk.init(null);
 
 describe('Home page for Template B', function () {
     let home_page;

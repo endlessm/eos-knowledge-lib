@@ -1,6 +1,7 @@
 const EvinceDocument = imports.gi.EvinceDocument;
 const EvinceView = imports.gi.EvinceView;
 const Gio = imports.gi.Gio;
+const Gtk = imports.gi.Gtk;
 
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const PDFView = imports.app.PDFView;
@@ -10,6 +11,7 @@ const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 
 const TEST_CONTENT_DIR = Utils.get_test_content_srcdir();
 
+Gtk.init(null);
 EvinceDocument.init();
 
 describe('PDF view', function () {

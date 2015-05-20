@@ -1,6 +1,10 @@
+const Gtk = imports.gi.Gtk;
+
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const HomePage = imports.app.homePage;
 const StyleClasses = imports.app.styleClasses;
+
+Gtk.init(null);
 
 describe('Base home page class', function () {
     let home_page;

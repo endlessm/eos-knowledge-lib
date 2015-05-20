@@ -1,5 +1,9 @@
+const Gtk = imports.gi.Gtk;
+
 const Card = imports.app.reader.card;
 const CssClassMatcher = imports.tests.CssClassMatcher;
+
+Gtk.init(null);
 
 describe('Reader Card widget', function () {
     let card;

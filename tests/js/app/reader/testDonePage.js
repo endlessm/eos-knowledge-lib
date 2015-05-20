@@ -1,8 +1,12 @@
+const Gtk = imports.gi.Gtk;
+
 const DonePage = imports.app.reader.donePage;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
 const ProgressLabel = imports.app.reader.progressLabel;
 const StyleClasses = imports.app.styleClasses;
+
+Gtk.init(null);
 
 describe('Done page widget', function () {
     let page;

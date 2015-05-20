@@ -1,4 +1,5 @@
 const Gio = imports.gi.Gio;
+const Gtk = imports.gi.Gtk;
 
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const Previewer = imports.app.previewer;
@@ -7,6 +8,8 @@ const Utils = imports.tests.utils;
 
 const TEST_CONTENT_DIR = Utils.get_test_content_srcdir();
 const TEST_CONTENT_BUILDDIR = Utils.get_test_content_builddir();
+
+Gtk.init(null);
 
 describe('Previewer widget', function () {
     let previewer;

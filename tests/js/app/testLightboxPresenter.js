@@ -1,4 +1,5 @@
 const GObject = imports.gi.GObject;
+const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const ArticleObjectModel = imports.search.articleObjectModel;
@@ -35,6 +36,8 @@ const MockView = new Lang.Class({
         this.lightbox = new GObject.Object();
     },
 });
+
+Gtk.init(null);
 
 describe('Lightbox Presenter', function () {
     let lightbox_presenter;

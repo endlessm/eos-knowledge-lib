@@ -1,3 +1,5 @@
+const Gtk = imports.gi.Gtk;
+
 const Card = imports.app.card;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const HomePageA = imports.app.homePageA;
@@ -6,6 +8,8 @@ const StyleClasses = imports.app.styleClasses;
 const Utils = imports.tests.utils;
 
 const TEST_CONTENT_DIR = Utils.get_test_content_srcdir();
+
+Gtk.init(null);
 
 describe('Home page for Template A', () => {
     let home_page, notify, card_list;
