@@ -437,9 +437,6 @@ const Presenter = new Lang.Class({
         }
         this._get_more_results = this._get_more_results_from_search;
 
-        this._latest_origin_query_obj = new QueryObject.QueryObject({
-            query: this._latest_search_text,
-        });
         // If template B, we need to set the autocomplete results as the cards on the
         // section page
         if (this._template_type === 'B') {
