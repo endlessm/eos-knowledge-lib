@@ -5,6 +5,5 @@ host = https://www.transifex.com
 file_filter = po/<lang>.po
 source_file = po/eos-knowledge.pot
 source_lang = en
-trans.pt = po/pt_BR.po
 type = PO
 
