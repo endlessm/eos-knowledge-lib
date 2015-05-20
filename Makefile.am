@@ -98,7 +98,7 @@ pkgdata_DATA += data/eos-knowledge.gresource
 
 EXTRA_DIST += \
 	$(filter-out $(scss_targets),$(resource_files)) \
-	data/eos-knowledge-library.gresource.xml \
+	data/eos-knowledge.gresource.xml \
 	$(NULL)
 CLEANFILES += \
 	data/eos-knowledge.gresource \
