@@ -431,7 +431,7 @@ TEST_EXTENSIONS = .js
 JS_LOG_DRIVER = env AM_TAP_AWK='$(AWK)' $(SHELL) $(top_srcdir)/tap-driver.sh
 JS_LOG_DRIVER_FLAGS = --comments
 JS_LOG_COMPILER = jasmine
-AM_JS_LOG_FLAGS = --tap --no-config
+AM_JS_LOG_FLAGS = --tap --no-config @JASMINE_REPORT_ARGUMENT@
 
 # Use locally built versions of EosKnowledgePrivate-1.0.gir, JS modules, and
 # libraries. We clobber GJS_PATH and include the js directory and the

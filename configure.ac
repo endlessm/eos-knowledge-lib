@@ -191,6 +191,16 @@ else
     AC_MSG_ERROR([Cannot find mathjax package])
 fi
 
+# JASMINE_JUNIT_REPORTS_DIR: Where to put test reports
+AC_MSG_CHECKING([where to put test reports])
+AC_ARG_VAR([JASMINE_JUNIT_REPORTS_DIR], [Where to put test reports])
+AS_IF([test -n "$JASMINE_JUNIT_REPORTS_DIR"],
+    [JASMINE_REPORT_ARGUMENT="--junit $JASMINE_JUNIT_REPORTS_DIR/\$\${log/%.log/.js.xml}"
+    AC_MSG_RESULT([in $JASMINE_JUNIT_REPORTS_DIR])],
+    [JASMINE_REPORT_ARGUMENT=
+    AC_MSG_RESULT([nowhere])])
+AC_SUBST([JASMINE_REPORT_ARGUMENT])
+
 # Required libraries
 # ------------------
 # Update these whenever you use a function that requires a certain API version
