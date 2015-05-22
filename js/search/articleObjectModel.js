@@ -140,7 +140,7 @@ const ArticleObjectModel = new Lang.Class({
 
         if (this.ekn_version >= 2) {
             let stream = this.get_content_stream();
-            return Utils.read_stream(stream);
+            return Utils.read_stream_sync(stream);
         } else {
             // legacy bundles stored the html as a property
             return this.html;

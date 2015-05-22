@@ -53,8 +53,9 @@ const MockEngine = new Lang.Class({
     },
 
     get_object_by_id: function () {},
-    get_ekn_id: function () {},
+    get_object_by_id_finish: function () {},
     get_objects_by_query: function () {},
+    get_objects_by_query_finish: function () {},
 });
 
 const MockNavButtons = new Lang.Class({
@@ -236,7 +237,21 @@ describe('Reader presenter', function () {
             start_article: 0,
             update_timestamp: new Date().toISOString(),
         });
-        spyOn(engine, 'get_objects_by_query');
+        // FIXME: we are launch into the callbacks synchronously because all
+        // these tests expect it currently. Would be good to rewrite these tests
+        // to tolerate a mock object that was actually async.
+        spyOn(engine, 'get_objects_by_query').and.callFake((query,
+                                                            cancellable,
+                                                            callback) => {
+            callback(engine, null);
+        });
+        spyOn(engine, 'get_objects_by_query_finish').and.returnValue([[], null]);
+        spyOn(engine, 'get_object_by_id').and.callFake((query,
+                                                        cancellable,
+                                                        callback) => {
+            callback(engine, null);
+        });
+        spyOn(engine, 'get_object_by_id_finish').and.returnValue(null);
         MOCK_RESULTS.forEach((model) =>
             spyOn(model, 'get_authors').and.returnValue(model.authors));
         Utils.register_gresource();
@@ -262,14 +277,14 @@ describe('Reader presenter', function () {
                     order: QueryObject.QueryObjectOrder.ASCENDING,
                     tags: ['EknArticleObject'],
                     offset: 0,
-                }), jasmine.any(Function));
+                }),
+                jasmine.any(Object),
+                jasmine.any(Function));
         });
 
         it('adds the articles as pages', function () {
             spyOn(view, 'append_article_page');
-            engine.get_objects_by_query.and.callFake(function (q, callback) {
-                callback(undefined, MOCK_RESULTS, function () {});
-            });
+            engine.get_objects_by_query_finish.and.returnValue([MOCK_RESULTS, null]);
             presenter.desktop_launch();
             expect(view.append_article_page.calls.count()).toEqual(MOCK_RESULTS.length);
             MOCK_RESULTS.forEach(function (result, index) {
@@ -278,8 +293,8 @@ describe('Reader presenter', function () {
         });
 
         it('gracefully handles the query failing', function () {
-            engine.get_objects_by_query.and.callFake(function (q, callback) {
-                callback('error', undefined);
+            engine.get_objects_by_query_finish.and.callFake(function () {
+                throw new Error();
             });
             expect(function () {
                 presenter.desktop_launch();
@@ -295,23 +310,18 @@ describe('Reader presenter', function () {
                 title: 'I Write a Blog',
             });
             spyOn(model, 'get_authors').and.returnValue([]);
-            spyOn(engine, 'get_object_by_id').and.callFake(function (id, callback) {
-                callback(undefined, model);
-            });
+            engine.get_object_by_id_finish.and.returnValue(model);
             spyOn(view, 'show_global_search_standalone_page');
             presenter.activate_search_result(0, MOCK_ID, 'fake query');
             expect(engine.get_object_by_id).toHaveBeenCalledWith(MOCK_ID,
-                jasmine.any(Function));
+                                                                 jasmine.any(Object),
+                                                                 jasmine.any(Function));
             expect(view.show_global_search_standalone_page).toHaveBeenCalled();
         });
 
         it('starts at the right page when search result is in this issue', function () {
-            engine.get_objects_by_query.and.callFake(function (q, callback) {
-                callback(undefined, MOCK_RESULTS, function () {});
-            });
-            spyOn(engine, 'get_object_by_id').and.callFake(function (id, callback) {
-                callback(undefined, MOCK_RESULTS[2]);
-            });
+            engine.get_objects_by_query_finish.and.returnValue([MOCK_RESULTS, null]);
+            engine.get_object_by_id_finish.and.returnValue(MOCK_RESULTS[2]);
             presenter.activate_search_result(0, 'abc2134', 'fake query');
             expect(presenter.current_page).toBe(3);
         });
@@ -321,9 +331,7 @@ describe('Reader presenter', function () {
         let current_time = new Date().toISOString();
 
         beforeEach(function () {
-            engine.get_objects_by_query.and.callFake(function (q, callback) {
-                callback(undefined, MOCK_RESULTS, function () {});
-            });
+            engine.get_objects_by_query_finish.and.returnValue([MOCK_RESULTS, null]);
             view.total_pages = MOCK_RESULTS.length + 2;
             presenter.desktop_launch();
         });
@@ -424,9 +432,7 @@ describe('Reader presenter', function () {
         });
 
         it('resets start_article counter when all content in magazine is exhausted', function () {
-            engine.get_objects_by_query.and.callFake(function (q, callback) {
-                callback(undefined, [], function () {});
-            });
+            engine.get_objects_by_query_finish.and.returnValue([[], null]);
             settings.start_article = 4;
             settings.bookmark_page = 4;
             view.issue_nav_buttons.forward_button.emit('clicked');
@@ -450,10 +456,7 @@ describe('Reader presenter', function () {
         });
 
         it('removes the old pages when loading new pages', function () {
-            engine.get_objects_by_query.calls.reset();
-            engine.get_objects_by_query.and.callFake(function (q, callback) {
-                callback(undefined, [MOCK_RESULTS[0]], function () {});
-            });
+            engine.get_objects_by_query_finish.and.returnValue([[MOCK_RESULTS[0]], null]);
             spyOn(view, 'remove_all_article_pages').and.callThrough();
             settings.start_article = 3;
             settings.notify('start-article');
@@ -501,6 +504,7 @@ describe('Reader presenter', function () {
                     .toHaveBeenCalledWith(jasmine.objectContaining({
                         query: 'Azuc',
                     }),
+                    jasmine.any(Object),
                     jasmine.any(Function));
                 expect(view.search_box.set_menu_items).toHaveBeenCalled();
                 done();
@@ -517,6 +521,7 @@ describe('Reader presenter', function () {
                     .toHaveBeenCalledWith(jasmine.objectContaining({
                         query: 'Azucar',
                     }),
+                    jasmine.any(Object),
                     jasmine.any(Function));
                 expect(view.show_search_results_page).toHaveBeenCalled();
                 expect(presenter.history_model.current_item.query_obj.query).toBe('Azucar');
@@ -543,6 +548,7 @@ describe('Reader presenter', function () {
                     .toHaveBeenCalledWith(jasmine.objectContaining({
                         query: 'Azucar',
                     }),
+                    jasmine.any(Object),
                     jasmine.any(Function));
                 expect(view.show_search_results_page).toHaveBeenCalled();
                 expect(presenter.history_model.current_item.query_obj.query).toBe('Azucar');

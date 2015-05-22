@@ -198,23 +198,31 @@ const Presenter = new Lang.Class({
     },
 
     _on_load_more_results: function () {
-        this._get_more_results(RESULTS_SIZE, function (err, results, get_more_results_func) {
-            if (err !== undefined) {
-                printerr(err);
-                printerr(err.stack);
-            } else {
-                let cards = results.map(this._new_card_from_article_model.bind(this));
-                if (cards.length > 0) {
-                    if (this._template_type === 'B') {
-                        this.view.section_page.cards = this.view.section_page.cards.concat(cards);
-                    } else {
-                        let article_segment_title = _("Articles");
-                        this.view.section_page.append_to_segment(article_segment_title, cards);
-                    }
-                }
-                this._get_more_results = get_more_results_func;
+        if (!this._get_more_results_query)
+            return;
+        this.engine.get_objects_by_query(this._get_more_results_query,
+                                         null,
+                                         (engine, task) => {
+            let results, get_more_results_query;
+            try {
+                [results, get_more_results_query] = engine.get_objects_by_query_finish(task);
+            } catch (error) {
+                printerr(error);
+                printerr(error.stack);
+                return;
             }
-        }.bind(this));
+
+            let cards = results.map(this._new_card_from_article_model.bind(this));
+            if (cards.length > 0) {
+                if (this._template_type === 'B') {
+                    this.view.section_page.cards = this.view.section_page.cards.concat(cards);
+                } else {
+                    let article_segment_title = _("Articles");
+                    this.view.section_page.append_to_segment(article_segment_title, cards);
+                }
+            }
+            this._get_more_results_query = get_more_results_query;
+        });
     },
 
     _on_topbar_back_clicked: function () {
@@ -238,11 +246,15 @@ const Presenter = new Lang.Class({
                 break;
             case this._SECTION_PAGE:
                 this._target_page_title = current_item.title;
-                this.engine.get_objects_by_query(article_origin_query_obj, this._load_section_page.bind(this));
+                this.engine.get_objects_by_query(article_origin_query_obj,
+                                                 null,
+                                                 this._load_section_page.bind(this));
                 break;
             case this._ARTICLE_PAGE:
                 if (article_origin_query_obj.query !== this._latest_origin_query_obj.query) {
-                    this.engine.get_objects_by_query(article_origin_query_obj, this._refresh_sidebar_callback.bind(this));
+                    this.engine.get_objects_by_query(article_origin_query_obj,
+                                                     null,
+                                                     this._refresh_sidebar_callback.bind(this));
                 }
                 this.article_presenter.load_article(current_item.article_model, animation_type);
                 // For Template B, we reset the highlight to the card with the same title
@@ -264,9 +276,19 @@ const Presenter = new Lang.Class({
         this._latest_origin_query_obj = current_item.article_origin_query_obj;
     },
 
-    _refresh_sidebar_callback: function (err, results, get_more_results_func) {
+    _refresh_sidebar_callback: function (engine, task) {
+        let results;
+        let get_more_results_query;
+        try {
+            [results, get_more_results_query] = engine.get_objects_by_query_finish(task);
+        } catch (error) {
+            printerr(error);
+            printerr(error.stack);
+            return;
+        }
+
         this._set_section_page_content(results);
-        this._get_more_results = get_more_results_func;
+        this._get_more_results_query = get_more_results_query;
     },
 
     _set_sections: function(sections) {
@@ -329,7 +351,9 @@ const Presenter = new Lang.Class({
         });
         this._target_page_title = card.title;
         this._add_history_object_for_section_page(query_obj);
-        this.engine.get_objects_by_query(query_obj, this._load_section_page.bind(this));
+        this.engine.get_objects_by_query(query_obj,
+                                         null,
+                                         this._load_section_page.bind(this));
     },
 
     // Launcher override
@@ -369,7 +393,9 @@ const Presenter = new Lang.Class({
         // The topbar search box should also clear once an article has been chosen.
         this.view.home_page.search_box.text = '';
 
-        this.engine.get_objects_by_query(query_obj, this._load_section_page.bind(this));
+        this.engine.get_objects_by_query(query_obj,
+                                         null,
+                                         this._load_section_page.bind(this));
     },
 
     _on_search_focus: function (view, focused) {
@@ -412,21 +438,28 @@ const Presenter = new Lang.Class({
             query: query,
             limit: RESULTS_SIZE,
         });
-        this.engine.get_objects_by_query(query_obj, function (err, results, get_more_results_func) {
-            if (err !== undefined) {
-                printerr(err);
-                printerr(err.stack);
-            } else {
-                entry.set_menu_items(results.map(function (obj) {
-                    return {
-                        title: this._get_prefixed_title(obj, query),
-                        id: obj.ekn_id
-                    };
-                }.bind(this)));
-                this._autocomplete_results = results;
-                this._get_more_results_from_search = get_more_results_func;
+        this.engine.get_objects_by_query(query_obj,
+                                         null,
+                                         (engine, task) => {
+            let results;
+            let get_more_results_query;
+            try {
+                [results, get_more_results_query] = engine.get_objects_by_query_finish(task);
+            } catch (error) {
+                printerr(error);
+                printerr(error.stack);
+                return;
             }
-        }.bind(this));
+
+            entry.set_menu_items(results.map((obj) => {
+                return {
+                    title: this._get_prefixed_title(obj, query),
+                    id: obj.ekn_id,
+                };
+            }));
+            this._autocomplete_results = results;
+            this._get_more_results_from_search_query = get_more_results_query;
+        });
     },
 
     _on_article_selection: function (view, id) {
@@ -435,7 +468,7 @@ const Presenter = new Lang.Class({
         } else {
             this._search_origin_page = this.view.section_page;
         }
-        this._get_more_results = this._get_more_results_from_search;
+        this._get_more_results_query = this._get_more_results_from_search_query;
 
         // If template B, we need to set the autocomplete results as the cards on the
         // section page
@@ -459,22 +492,25 @@ const Presenter = new Lang.Class({
             query: query,
             limit: RESULTS_SIZE,
         });
-        this.engine.get_objects_by_query(query_obj, this._refresh_sidebar_callback.bind(this));
+        this.engine.get_objects_by_query(query_obj,
+                                         null,
+                                         this._refresh_sidebar_callback.bind(this));
         this._latest_origin_query_obj = query_obj;
 
-        this.engine.get_object_by_id(ekn_id, function (err, model) {
-            if (err !== undefined) {
-                printerr(err);
-                printerr(err.stack);
-            } else {
+        this.engine.get_object_by_id(ekn_id, null, (engine, task) => {
+            try {
+                let model = engine.get_object_by_id_finish(task);
                 this._add_history_object_for_article_page(model);
                 this.article_presenter.load_article(model, EosKnowledgePrivate.LoadingAnimationType.NONE,
-                                                    function () {
+                                                    () => {
                                                         this.view.search_box.text = query;
                                                         this.view.show_article_page();
-                                                    }.bind(this));
+                                                    });
+            } catch (error) {
+                printerr(error);
+                printerr(error.stack);
             }
-        }.bind(this));
+        });
         this.view.present_with_time(timestamp);
     },
 
@@ -547,22 +583,28 @@ const Presenter = new Lang.Class({
     },
 
     _on_ekn_link_clicked: function (article_presenter, ekn_id) {
-        this.engine.get_object_by_id(ekn_id, function (err, model) {
-            if (typeof err === 'undefined') {
-                if (model instanceof MediaObjectModel.MediaObjectModel) {
-                    this._lightbox_presenter.show_media_object(article_presenter.article_model, model);
-                } else {
-                    this._add_history_object_for_article_page(model);
-                    this.article_presenter.load_article(model, EosKnowledgePrivate.LoadingAnimationType.FORWARDS_NAVIGATION);
-
-                    if (this._template_type === 'B')
-                        this.view.section_page.highlight_card_with_name(model.title, this._latest_article_card_title);
-                }
-            } else {
-                printerr(err);
-                printerr(err.stack);
+        this.engine.get_object_by_id(ekn_id,
+                                     null,
+                                     (engine, task) => {
+            let model;
+            try {
+                model = engine.get_object_by_id_finish(task);
+            } catch (error) {
+                printerr(error);
+                printerr(error.stack);
+                return;
             }
-        }.bind(this));
+
+            if (model instanceof MediaObjectModel.MediaObjectModel) {
+                this._lightbox_presenter.show_media_object(article_presenter.article_model, model);
+            } else {
+                this._add_history_object_for_article_page(model);
+                this.article_presenter.load_article(model, EosKnowledgePrivate.LoadingAnimationType.FORWARDS_NAVIGATION);
+
+                if (this._template_type === 'B')
+                    this.view.section_page.highlight_card_with_name(model.title, this._latest_article_card_title);
+            }
+        });
     },
 
     _on_back: function () {
@@ -589,11 +631,17 @@ const Presenter = new Lang.Class({
         }
     },
 
-    _load_section_page: function (err, results, get_more_results_func) {
-        if (err !== undefined) {
-            printerr(err);
-            printerr(err.stack);
-        } else if (results.length === 0) {
+    _load_section_page: function (engine, task) {
+        let results, get_more_results_query;
+        try {
+            [results, get_more_results_query] = engine.get_objects_by_query_finish(task);
+        } catch (error) {
+            printerr(error);
+            printerr(error.stack);
+            return;
+        }
+
+        if (results.length === 0) {
             this.view.no_search_results_page.query = this._search_query;
             this._search_origin_page = this.view.section_page;
             this.view.unlock_ui();
@@ -601,7 +649,7 @@ const Presenter = new Lang.Class({
         } else {
             this.view.section_page.title = this._target_page_title;
             this._set_section_page_content(results);
-            this._get_more_results = get_more_results_func;
+            this._get_more_results_query = get_more_results_query;
             this._search_origin_page = this.view.section_page;
             this.view.unlock_ui();
             this.view.show_section_page();

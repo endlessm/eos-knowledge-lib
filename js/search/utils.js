@@ -1,5 +1,6 @@
 const GLib = imports.gi.GLib;
 
+const AsyncTask = imports.search.asyncTask;
 const Datadir = imports.search.datadir;
 
 /* Returns the current locale's language code, or null if one cannot be found */
@@ -61,29 +62,30 @@ function get_ekn_version_for_domain (domain) {
 const CHUNK_SIZE = 1024 * 8;
 
 // asynchronously read an entire GInputStream
-function read_stream_async (stream, callback, cancellable = null) {
-    let total_read = '';
-
-    let handle_byte_response = (stream, res) => {
-        try {
+function read_stream (stream, cancellable, callback) {
+    let task = new AsyncTask.AsyncTask(stream, cancellable, callback);
+    task.catch_errors(() => {
+        let total_read = '';
+        let handle_byte_response = task.catch_callback_errors((stream, res) => {
             let bytes = stream.read_bytes_finish(res);
             total_read += bytes.get_data().toString();
 
             if (bytes.get_size() === CHUNK_SIZE) {
                 stream.read_bytes_async(CHUNK_SIZE, 0, cancellable, handle_byte_response);
             } else {
-                callback(undefined, total_read);
+                task.return_value(total_read);
             }
-        } catch (e) {
-            callback(e, undefined);
-        }
-    };
+        });
+        stream.read_bytes_async(CHUNK_SIZE, 0, cancellable, handle_byte_response);
+    });
+}
 
-    stream.read_bytes_async(CHUNK_SIZE, 0, cancellable, handle_byte_response);
+function read_stream_finish (task) {
+    return task.finish();
 }
 
 // synchronously read an entire GInputStream
-function read_stream (stream, cancellable = null) {
+function read_stream_sync (stream, cancellable = null) {
     try {
         let total_read = '';
 

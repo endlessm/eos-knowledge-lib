@@ -122,11 +122,14 @@ const LightboxPresenter = new GObject.Class({
         this._loading_new_lightbox = true;
         let new_index = current_index + delta;
         let resource_id = resources[new_index];
-        this.engine.get_object_by_id(resource_id, (err, media_object) => {
+        this.engine.get_object_by_id(resource_id, null, (engine, task) => {
             this._loading_new_lightbox = false;
-            if (typeof err !== 'undefined') {
-                printerr(err);
-                printerr(err.stack);
+            let media_object;
+            try {
+                media_object = engine.get_object_by_id_finish(task);
+            } catch (error) {
+                printerr(error);
+                printerr(error.stack);
                 return;
             }
 

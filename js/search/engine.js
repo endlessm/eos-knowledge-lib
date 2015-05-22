@@ -6,6 +6,7 @@ const GObject = imports.gi.GObject;
 const GLib = imports.gi.GLib;
 
 const ArticleObjectModel = imports.search.articleObjectModel;
+const AsyncTask = imports.search.asyncTask;
 const ContentObjectModel = imports.search.contentObjectModel;
 const MediaObjectModel = imports.search.mediaObjectModel;
 const QueryObject = imports.search.queryObject;
@@ -103,112 +104,81 @@ const Engine = Lang.Class({
 
     /**
      * Function: get_object_by_id
-     * Fetches an object with ID *id*. *callback* is a function which takes
-     * *err* and *result* parameters.
+     *
+     * Asynchronously fetches an object with ID.
      *
      * Parameters:
-     *
      *   id - The unique ID for this object, of the form ekn://domain/sha
+     *   cancellable - A Gio.Cancellable to cancel the async request.
      *   callback - A function which will be called after the request finished.
-     *             The function should take two parameters: *error* and *result*,
-     *             *error* will only be defined if there was an error, and
-     *             *result* where is an <ContentObjectModel> corresponding to
-     *             the successfully retrieved object type
+     *              The function will be called with the engine and a task object,
+     *              as parameters. The task object can be used with
+     *              <get_object_by_id_finish> to retrieve the result.
      */
-    get_object_by_id: function (id, callback, cancellable = null) {
-        let handle_result = (err, result) => {
-            if (typeof err !== 'undefined') {
-                // error occurred during request, so immediately fail with err
-                callback(err, undefined);
-                return;
-            }
+    get_object_by_id: function (id, cancellable, callback) {
+        let task = new AsyncTask.AsyncTask(this, cancellable, callback);
+        task.catch_errors(() => {
+            let handle_redirect = (result) => {
+                let model = this._model_from_json_ld(result);
 
-            let model;
-            try {
-                model = this._model_from_json_ld(result);
-            } catch (err) {
-                // Error marshalling the JSON-LD object
-                callback(err, undefined);
-                return;
-            }
+                // If the requested model should redirect to another, then fetch
+                // that model instead.
+                if (model.redirects_to.length > 0) {
+                    this.get_object_by_id(model.redirects_to, cancellable, task.catch_callback_errors((engine, redirect_task) => {
+                        task.return_value(this.get_object_by_id_finish(redirect_task));
+                    }));
+                } else {
+                    task.return_value(model);
+                }
+            };
 
-            // If the requested model should redirect to another, then fetch
-            // that model instead.
-            if (model.redirects_to.length > 0) {
-                this.get_object_by_id(model.redirects_to, callback, cancellable);
+            let [domain, __] = Utils.components_from_ekn_id(id);
+            let ekn_version = this._ekn_version_from_domain(domain);
+
+            // Bundles with version >= 2 store all json-ld on disk instead of in the
+            // Xapian DB itself, and hence require no HTTP request to xapian-bridge
+            // when fetching an object
+            if (ekn_version >= 2) {
+                let [domain, hash] = Utils.components_from_ekn_id(id);
+                let shard_file = this._shard_file_from_domain(domain);
+                let record = shard_file.find_record_by_hex_name(hash);
+                if (!record)
+                    throw new Error('Could not find epak record for ' + id);
+
+                let metadata_stream = record.metadata.get_stream();
+                Utils.read_stream(metadata_stream, cancellable, task.catch_callback_errors((stream, stream_task) => {
+                    let data = Utils.read_stream_finish(stream_task);
+                    handle_redirect(JSON.parse(data));
+                }));
             } else {
-                callback(undefined, model);
+                // Older bundles require an HTTP request for every object request
+                let query_obj = new QueryObject.QueryObject({
+                    limit: 1,
+                    ids: [id],
+                    domain: domain,
+                });
+                let req_uri = this._get_xapian_uri(query_obj);
+
+                this._send_json_ld_request(req_uri, cancellable, task.catch_callback_errors((engine, json_task) => {
+                    let json_ld = this._send_json_ld_request_finish(json_task);
+                    handle_redirect(json_ld.results.map(JSON.parse)[0]);
+                }));
             }
-        };
-
-        let [domain, __] = Utils.components_from_ekn_id(id);
-        let ekn_version = this._ekn_version_from_domain(domain);
-
-        // Bundles with version >= 2 store all json-ld on disk instead of in the
-        // Xapian DB itself, and hence require no HTTP request to xapian-bridge
-        // when fetching an object
-        if (ekn_version >= 2) {
-            try {
-                this._read_jsonld_from_disk(id, handle_result);
-            } catch (err) {
-                handle_result(err, undefined);
-            }
-        } else {
-            // Older bundles require an HTTP request for every object request
-            var query_obj = new QueryObject.QueryObject({
-                limit: 1,
-                ids: [id],
-                domain: domain,
-            });
-            let req_uri = this._get_xapian_uri(query_obj);
-
-            this._send_json_ld_request(req_uri, (err, json_ld) => {
-                if (typeof err !== 'undefined') {
-                    callback(err, undefined);
-                    return;
-                }
-
-                if (json_ld === null || typeof json_ld === "undefined"
-                    || !json_ld.hasOwnProperty('results')) {
-                    let err = new Error("Invalid xapian bridge response for " + req_uri.to_string(false));
-                    callback(err, undefined);
-                    return;
-                }
-                try {
-                    let parsed_results = json_ld.results.map(JSON.parse);
-                    handle_result(undefined, parsed_results[0]);
-                } catch (err) {
-                    handle_result(err, undefined);
-                }
-            }, cancellable);
-        }
+        });
+        return task;
     },
 
-    _read_jsonld_from_disk: function (ekn_id, callback, cancellable = null) {
-        let [domain, hash] = Utils.components_from_ekn_id(ekn_id);
-        let shard_file = this._shard_file_from_domain(domain);
-        let record = shard_file.find_record_by_hex_name(hash);
-
-        if (record === null) {
-            callback(new Error('Could not find shard record for ' + ekn_id), undefined);
-            return;
-        }
-
-        let metadata_stream = record.metadata.get_stream();
-        Utils.read_stream_async(metadata_stream, (err, data) => {
-            if (typeof err !== 'undefined') {
-                callback(err, undefined);
-                return;
-            }
-
-            try {
-                let jsonld = JSON.parse(data);
-                callback(undefined, jsonld);
-            } catch (err) {
-                // error parsing the JSON-LD from disk
-                callback(err, undefined);
-            }
-        }, cancellable);
+    /**
+     * Function: get_object_by_id_finish
+     *
+     * Finishes a call to <get_object_by_id>. Returns the <ContentObjectModel>
+     * associated with the id requested, or throws an error if one occurred.
+     *
+     * Parameters:
+     *   task - The task returned by <get_object_by_id>
+     */
+    get_object_by_id_finish: function (task) {
+        return task.finish();
     },
 
     // Returns a GInputStream for the given EKN object's content. Only supports
@@ -240,159 +210,88 @@ const Engine = Lang.Class({
 
     /**
      * Function: get_objects_by_query
-     * Sends a request for to xapian-bridge for a given *query_obj*.
-     * *callback* is a function which takes *err* and *result* parameters.
+     *
+     * Asynchronously sends a request for to xapian-bridge for a given
+     * *query_obj*, and return a list of matching models.
      *
      * Parameters:
-     *
      *   query_obj - A <QueryObject> describing the query.
+     *   cancellable - A Gio.Cancellable to cancel the async request.
      *   callback - A function which will be called after the request finished.
-     *             The function should take two parameters: *error* and
-     *             *result*, where *error* will only be defined if there was an
-     *             error, and *result* is a list of <ContentObjectModel>s
-     *             corresponding to the successfully retrieved object type
+     *              The function will be called with the engine and a task object,
+     *              as parameters. The task object can be used with
+     *              <get_objects_by_query_finish> to retrieve the result.
      */
-    get_objects_by_query: function (query_obj, callback, cancellable = null, follow_redirects = true) {
-        let req_uri = this._get_xapian_uri(query_obj);
+    get_objects_by_query: function (query_obj, cancellable, callback) {
+        let task = new AsyncTask.AsyncTask(this, cancellable, callback);
+        task.catch_errors(() => {
+            if (query_obj.domain === '')
+                query_obj = QueryObject.QueryObject.new_from_object(query_obj, { domain: this.default_domain });
+            let req_uri = this._get_xapian_uri(query_obj);
 
-        this._send_json_ld_request(req_uri, (err, json_ld) => {
-            if (typeof err !== 'undefined') {
-                // error occurred during request, so immediately fail with err
-                callback(err, undefined);
-                return;
-            }
-
-            let search_results = [];
-            try {
-                if (json_ld === null)
-                    throw new Error("Received null object response for " + req_uri.to_string(false));
-
-                let get_more_results = (batch_size, new_callback) => {
-                    let next_query_obj = QueryObject.QueryObject.new_from_object(query_obj, {
-                        offset: json_ld.numResults + json_ld.offset,
-                        limit: batch_size,
-                    });
-                    this.get_objects_by_query(next_query_obj, new_callback);
-                };
+            this._send_json_ld_request(req_uri, cancellable, task.catch_callback_errors((engine, json_task) => {
+                let json_ld = this._send_json_ld_request_finish(json_task);
 
                 if (json_ld.results.length === 0) {
-                    callback(undefined, [], get_more_results);
+                    task.return_value([[], null]);
                     return;
                 }
 
-                // For knowledge bundles version >= 2, we only get an array of
-                // EKN IDs back from xapian-bridge, so simply map
-                // get_object_by_id over the ids and callback once we've got
-                // them all
-                let domain = query_obj.domain !== '' ? query_obj.domain : this.default_domain;
-                let ekn_version = this._ekn_version_from_domain(domain);
-                if (ekn_version >= 2) {
-                    json_ld.results.forEach((ekn_id) => {
-                        this.get_object_by_id(ekn_id, (err, model) => {
-                            if (err) {
-                                // On error, we want to callback with the err
-                                // value and then set callback to be a noop,
-                                // so that we don't repeatedly call the real
-                                // callback more than once.
-                                callback(err, undefined);
-                                callback = () => {};
-                                return;
-                            }
+                let more_results_query = QueryObject.QueryObject.new_from_object(query_obj, {
+                    offset: json_ld.numResults + json_ld.offset,
+                });
 
-                            search_results.push(model);
-                            if (search_results.length === json_ld.numResults) {
-                                callback(undefined, search_results, get_more_results);
-                            }
-                        }, cancellable);
-                    });
-                } else {
-                    // we have a legacy bundle, so proceed assuming
-                    // xapian-bridge gave us JSON-LD
-                    try {
-                        search_results = this._results_list_from_json_ld(json_ld);
-                    } catch (err) {
-                        // Error marshalling (at least) one of the JSON-LD results
-                        callback(err, undefined);
-                        return;
-                    }
-                    // For older bundles, we get JSON-LD in the xapian-bridge
-                    // payload, and so can callback immediately; however, first
-                    // we need to ensure no duplicates exist.
-                    if (follow_redirects) {
-                        this._fetch_redirects_helper(search_results, callback,
-                            get_more_results, cancellable);
+                // We need to instantiate models for our results asynchronously.
+                // We'll set up a function here to resolve a result, which
+                // triggers our callback when the last article resolves.
+                let resolved = 0;
+                let results = new Array(json_ld.results.length);
+                let resolve = (index, model) => {
+                    results[index] = model;
+                    resolved++;
+                    if (resolved === results.length)
+                        task.return_value([results, more_results_query]);
+                };
+
+                json_ld.results.forEach((result, index) => {
+                    let id;
+                    let ekn_version = this._ekn_version_from_domain(query_obj.domain);
+                    if (ekn_version >= 2) {
+                        id = result;
                     } else {
-                        callback(undefined, search_results, get_more_results);
-                    }
-                }
-            } catch (err) {
-                // Error marshalling (at least) one of the JSON-LD results
-                callback(err, undefined);
-                return;
-            }
-        }, cancellable);
-    },
-
-    // recursively follow redirect chains, eventually invoking the original
-    // callback on a final set of non-redirecting results. Only needed for
-    // legacy (v1) bundles
-    _fetch_redirects_helper: function (results, callback, get_more_results, cancellable) {
-        let redirects = results.filter((result) => result.redirects_to.length > 0);
-
-        // if no more redirects are found, simply invoke the callback on the
-        // current set of results
-        if (redirects.length === 0) {
-            callback(undefined, results, get_more_results);
-            return;
-        }
-
-        // fabricate a query to request that resolves all redirect_to links in
-        // the current set of results
-        let get_redirects_query = new QueryObject.QueryObject({
-            ids: redirects.map((result) => result.redirects_to),
-        });
-        this.get_objects_by_query(get_redirects_query, (err, redirect_targets) => {
-            // if an error occurred, propagate err to original callback
-            if (typeof err !== 'undefined') {
-                callback(err, undefined);
-                return;
-            }
-
-            // replace redirecting objects in original results set with their
-            // newly fetched targets
-            let redirected_results = results.map((old_result) => {
-                // if old_result is one of the redirect objects, then find its
-                // target object and return that instead
-                if (redirects.indexOf(old_result) >= 0) {
-                    for (let target of redirect_targets) {
-                        if (old_result.redirects_to === target.ekn_id) {
-                            return target;
+                        // Old bundles contain all the jsonld in xapian, and
+                        // serve it in the results. If its a redirect we need to
+                        // resolve it, otherwise we can resolve immediately.
+                        let model = this._model_from_json_ld(JSON.parse(result));
+                        if (model.redirects_to.length > 0) {
+                            id = model.redirects_to;
+                        } else {
+                            resolve(index, model);
+                            return;
                         }
                     }
+                    this.get_object_by_id(id, cancellable, task.catch_callback_errors((engine, id_task) => {
+                        let model = this.get_object_by_id_finish(id_task);
+                        resolve(index, model);
+                    }));
+                });
+            }));
+        });
+        return task;
+    },
 
-                    // if we didn't find this redirect object's target, replace
-                    // it with null so we can resolve with an error later
-                    return null;
-                } else {
-                    // otherwise, old_result is a normal object, so just return
-                    // it
-                    return old_result;
-                }
-            });
-
-            // if any of the redirect objects didn't get their requested target,
-            // we'll have some null entries in redirected_results. invoke the
-            // callback with an error in that case
-            if (redirected_results.indexOf(null) !== -1) {
-                callback(new Error('Could not resolve a redirect object'), undefined);
-                return;
-            }
-
-            // recurse on the newly replaced result set, in case any of the
-            // targets are themselves redirects
-            this._fetch_redirects_helper(redirected_results, callback,
-                get_more_results, cancellable);
-        }, cancellable, false);
+    /**
+     * Function: get_objects_by_query_finish
+     *
+     * Finishes a call to <get_objects_by_query>. Returns both a list of
+     * <ContentObjectModels> and <QueryObject> which can be used to get more
+     * results for the same query. Throws an error if one occurred.
+     *
+     * Parameters:
+     *   task - The task returned by <get_objects_by_query>
+     */
+    get_objects_by_query_finish: function (task) {
+        return task.finish();
     },
 
     _content_path_from_domain: function (domain) {
@@ -458,17 +357,7 @@ const Engine = Lang.Class({
         }
     },
 
-    // Returns a list of marshalled ObjectModels, or throws an error if json_ld
-    // is not a SearchResults object
-    _results_list_from_json_ld: function (json_ld) {
-        let parsed_results = json_ld.results.map(JSON.parse);
-        return parsed_results.map(this._model_from_json_ld.bind(this));
-    },
-
     _get_xapian_uri: function (query_obj) {
-        if (query_obj.domain === '')
-            query_obj = QueryObject.QueryObject.new_from_object(query_obj, { domain: this.default_domain });
-
         let host_uri = "http://" + this.host;
         let uri = new Soup.URI(host_uri);
         uri.set_port(this.port);
@@ -504,33 +393,31 @@ const Engine = Lang.Class({
         .join('&');
     },
 
-    // Queues a SoupMessage for *req_uri* to the current http session. Calls
+    // Queues a SoupMessage for *uri* to the current http session. Calls
     // *callback* on any errors encountered and the parsed JSON.
-    _send_json_ld_request: function (req_uri, callback, cancellable = null) {
-        if (cancellable && cancellable.is_cancelled())
-            return;
-        let request = new Soup.Message({
-            method: 'GET',
-            uri: req_uri
-        });
-
-        this._http_session.queue_message(request, (session, message) => {
-            let json_ld_response;
-            try {
-                let data = message.response_body.data;
-                json_ld_response = this._parse_json_ld_message(data);
-            } catch (err) {
-                // JSON parse error
-                callback(err, undefined);
-                return;
-            }
-            callback(undefined, json_ld_response);
-        });
-        if (cancellable) {
-            cancellable.connect(() => {
-                this._http_session.cancel_message(request, Soup.Status.CANCELLED);
+    _send_json_ld_request: function (uri, cancellable, callback) {
+        let task = new AsyncTask.AsyncTask(this, cancellable, callback);
+        task.catch_errors(() => {
+            let request = new Soup.Message({
+                method: 'GET',
+                uri: uri,
             });
-        }
+            this._http_session.queue_message(request, task.catch_callback_errors((session, message) => {
+                let data = message.response_body.data;
+                task.return_value(this._parse_json_ld_message(data));
+            }));
+
+            if (cancellable) {
+                cancellable.connect(() => {
+                    this._http_session.cancel_message(request, Soup.Status.CANCELLED);
+                });
+            }
+        });
+        return task;
+    },
+
+    _send_json_ld_request_finish: function (task) {
+        return task.finish();
     },
 
     _parse_json_ld_message: function (message) {

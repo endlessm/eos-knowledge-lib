@@ -279,7 +279,9 @@ const Presenter = new Lang.Class({
         this._search_query = query_obj.query;
         this.view.lock_ui();
 
-        this.engine.get_objects_by_query(query_obj, this._load_search_results.bind(this));
+        this.engine.get_objects_by_query(query_obj,
+                                         null,
+                                         this._load_search_results.bind(this));
     },
 
     _update_history_object: function (page_index) {
@@ -390,8 +392,13 @@ const Presenter = new Lang.Class({
     activate_search_result: function (timestamp, id, query) {
         // Check if we need to load an article separately from the normally
         // scheduled content
-        this.engine.get_object_by_id(id, (error, model) => {
-            if (error) {
+        this.engine.get_object_by_id(id,
+                                     null,
+                                     (engine, task) => {
+            let model;
+            try {
+                model = engine.get_object_by_id_finish(task);
+            } catch (error) {
                 printerr(error);
                 printerr(error.stack);
                 this._show_specific_error_page();
@@ -505,27 +512,37 @@ const Presenter = new Lang.Class({
     },
 
     _on_load_more_results: function () {
-        this._get_more_results(RESULTS_SIZE, function (err, results, get_more_results_func) {
-            if (err !== undefined) {
-                printerr(err);
-                printerr(err.stack);
-            } else {
-                let cards = results.map(this._new_card_from_article_model, this);
-                if (cards.length > 0) {
-                    this.view.search_results_page.append_search_results(cards);
-                }
-                this._get_more_results = get_more_results_func;
+        this.engine.get_objects_by_query(this._get_more_results_query,
+                                         null,
+                                         (engine, task) => {
+            let results, get_more_results_query;
+            try {
+                [results, get_more_results_query] = engine.get_objects_by_query_finish(task);
+            } catch (error) {
+                printerr(error);
+                printerr(error.stack);
+                return;
             }
-        }.bind(this));
+
+            let cards = results.map(this._new_card_from_article_model, this);
+            if (cards.length > 0)
+                this.view.search_results_page.append_search_results(cards);
+            this._get_more_results_query = get_more_results_query;
+        });
     },
 
-    _load_search_results: function (err, results, get_more_results_func) {
+    _load_search_results: function (engine, task) {
         this.view.unlock_ui();
+        let results, get_more_results_query;
+        try {
+            [results, get_more_results_query] = engine.get_objects_by_query_finish(task);
+        } catch (error) {
+            printerr(error);
+            printerr(error.stack);
+            return;
+        }
 
-        if (err !== undefined) {
-            printerr(err);
-            printerr(err.stack);
-        } else if (results.length === 0) {
+        if (results.length === 0) {
             this.view.search_results_page.clear_search_results();
             this.view.search_results_page.no_results_label.show();
             this.view.show_search_results_page();
@@ -535,7 +552,7 @@ const Presenter = new Lang.Class({
 
             this.view.search_results_page.append_search_results(results.map(this._new_card_from_article_model, this));
 
-            this._get_more_results = get_more_results_func;
+            this._get_more_results_query = get_more_results_query;
             this.view.show_search_results_page();
         }
     },
@@ -573,7 +590,17 @@ const Presenter = new Lang.Class({
             sort: QueryObject.QueryObjectSort.ARTICLE_NUMBER,
             tags: ['EknArticleObject'],
         });
-        this.engine.get_objects_by_query(query_obj, function (error, results, get_more_results_func) {
+        this.engine.get_objects_by_query(query_obj,
+                                         null,
+                                         (engine, task) => {
+            let results, get_more_results_query;
+            let error;
+            try {
+                [results, get_more_results_query] = engine.get_objects_by_query_finish(task);
+            } catch (e) {
+                error = e;
+            }
+
             if (!error && results.length < 1 && this.settings.start_article === 0) {
                 error = GLib.Error.new_literal(Gio.io_error_quark(),
                     Gio.IOErrorEnum.NOT_FOUND,
@@ -588,29 +615,29 @@ const Presenter = new Lang.Class({
                 this.settings.start_article = 0;
                 this.settings.bookmark_page = 0;
             } else {
-                this._fetch_content_recursive(undefined, results,
-                    get_more_results_func, callback, progress_callback);
+                this._fetch_content_recursive(results, get_more_results_query, callback, progress_callback);
             }
-        }.bind(this));
+        });
     },
 
-    _fetch_content_recursive: function (err, results, get_more_results_func, callback, progress_callback) {
-        function fetch_helper(err, results, get_more_results_func) {
-            this._fetch_content_recursive(err, results, get_more_results_func,
-                callback, progress_callback);
+    _fetch_content_recursive: function (results, get_more_results_query, callback, progress_callback) {
+        progress_callback(results);
+        if (results.length < RESULTS_SIZE || this._total_fetched >= TOTAL_ARTICLES) {
+            callback();
+            return;
         }
 
-        if (err !== undefined) {
-            callback(err);
-        } else {
-            progress_callback(results);
-            // If there are more results to get, then fetch more content
-            if (results.length >= RESULTS_SIZE && this._total_fetched < TOTAL_ARTICLES) {
-                get_more_results_func(RESULTS_SIZE, fetch_helper.bind(this));
-            } else {
-                callback();
+        this.engine.get_objects_by_query(get_more_results_query,
+                                         null,
+                                         (engine, task) => {
+            try {
+                [results, get_more_results_query] = engine.get_objects_by_query_finish(task);
+            } catch (error) {
+                callback(error);
             }
-        }
+
+            this._fetch_content_recursive(results, get_more_results_query, callback, progress_callback);
+        });
     },
 
     _go_to_article: function (model, animation_type) {
@@ -720,10 +747,15 @@ const Presenter = new Lang.Class({
         } else if (GLib.uri_parse_scheme(uri) === 'ekn') {
             // If there is no filtered model but the uri has the "ekn://" prefix,
             // it's an archive article.
-            this.engine.get_object_by_id(uri, (err, article_model) => {
-                if (typeof err !== 'undefined') {
-                    printerr('Could not get article model:', err);
-                    printerr(err.stack);
+            this.engine.get_object_by_id(uri,
+                                         null,
+                                         (engine, task) => {
+                let article_model;
+                try {
+                    article_model = engine.get_object_by_id_finish(task);
+                } catch (error) {
+                    printerr('Could not get article model:', error);
+                    printerr(error.stack);
                     return;
                 }
                 this._display_link_tooltip(view, coordinates, WebviewTooltip.TYPE_ARCHIVE_LINK,
@@ -805,12 +837,18 @@ const Presenter = new Lang.Class({
             // otherwise, if the request was for some other EKN object, fetch
             // it and attempt to display it
             } else if (decision.request.uri.indexOf('ekn://') === 0) {
-                this.engine.get_object_by_id(decision.request.uri, (err, clicked_model) => {
-                    if (typeof err !== 'undefined') {
-                        printerr('Could not open link from reader article:', err);
-                        printerr(err.stack);
+                this.engine.get_object_by_id(decision.request.uri,
+                                             null,
+                                             (engine, task) => {
+                    let clicked_model;
+                    try {
+                        clicked_model = engine.get_object_by_id_finish(task);
+                    } catch (error) {
+                        printerr('Could not open link from reader article:', error);
+                        printerr(error.stack);
                         return;
                     }
+
                     if (clicked_model instanceof MediaObjectModel.MediaObjectModel) {
                         this._lightbox_presenter.show_media_object(article_model, clicked_model);
                     } else if (clicked_model instanceof ArticleObjectModel.ArticleObjectModel) {
@@ -1059,8 +1097,13 @@ const Presenter = new Lang.Class({
             limit: RESULTS_SIZE,
         });
 
-        this.engine.get_objects_by_query(query_obj, (error, results) => {
-            if (error) {
+        this.engine.get_objects_by_query(query_obj,
+                                         null,
+                                         (engine, task) => {
+            let results, get_more_results_query;
+            try {
+                [results, get_more_results_query] = engine.get_objects_by_query_finish(task);
+            } catch (error) {
                 printerr(error);
                 printerr(error.stack);
                 return;
@@ -1076,8 +1119,13 @@ const Presenter = new Lang.Class({
     },
 
     _on_search_menu_item_selected: function (entry, id) {
-        this.engine.get_object_by_id(id, (error, model) => {
-            if (error) {
+        this.engine.get_object_by_id(id,
+                                     null,
+                                     (engine, task) => {
+            let model;
+            try {
+                model = engine.get_object_by_id_finish(task);
+            } catch (error) {
                 printerr(error);
                 printerr(error.stack);
                 this._show_specific_error_page();

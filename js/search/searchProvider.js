@@ -143,16 +143,23 @@ const AppSearchProvider = Lang.Class({
             limit: this.NUM_RESULTS,
             domain: this.domain,
         });
-        this._engine.get_objects_by_query(query_obj, function (err, results, more_results_callback) {
-            if (!err) {
+        this._engine.get_objects_by_query(query_obj,
+                                          this._cancellable,
+                                          (engine, query_task) => {
+            try {
+                let results = engine.get_objects_by_query_finish(query_task);
                 this._add_results_to_cache(results);
                 let ids = results.map(function (result) { return result.ekn_id; });
                 invocation.return_value(new GLib.Variant('(as)', [ids]));
-            } else {
+            } catch (error) {
+                if (!error.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED)) {
+                    printerr(error);
+                    printerr(error.stack);
+                }
                 invocation.return_error_literal(this._search_provider_domain, SearchProviderErrors.RetrievalError, 'Error retrieving results: ' + err);
             }
             app.release();
-        }.bind(this), this._cancellable);
+        });
     },
 
     GetInitialResultSetAsync: function (params, invocation) {

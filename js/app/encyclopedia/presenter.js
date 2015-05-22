@@ -109,16 +109,23 @@ const EncyclopediaPresenter = new Lang.Class({
         return location;
     },
 
-    _autocompleteCallback: function(search_box, error, results) {
-        if (typeof error === 'undefined') {
-            let titles = results.map((result) => {
-                return {
-                    title: result.title,
-                    id: result.ekn_id,
-                };
-            });
-            search_box.set_menu_items(titles);
+    _autocompleteCallback: function (search_box, engine, task) {
+        let results, get_more_results_query;
+        try {
+            [results, get_more_results_query] = engine.get_objects_by_query_finish(task);
+        } catch (error) {
+            printerr(error);
+            printerr(error.stack);
+            return;
         }
+
+        let titles = results.map((result) => {
+            return {
+                title: result.title,
+                id: result.ekn_id,
+            };
+        });
+        search_box.set_menu_items(titles);
     },
 
     _on_prefix_entered: function (search_entry) {
@@ -131,7 +138,9 @@ const EncyclopediaPresenter = new Lang.Class({
             let query_obj = new QueryObject.QueryObject({
                 query: prefix_query,
             });
-            this._engine.get_objects_by_query(query_obj, this._autocompleteCallback.bind(this, search_entry));
+            this._engine.get_objects_by_query(query_obj,
+                                              null,
+                                              this._autocompleteCallback.bind(this, search_entry));
             return false;
         };
 
@@ -160,15 +169,24 @@ const EncyclopediaPresenter = new Lang.Class({
             let query_obj = new QueryObject.QueryObject({
                 query: query,
             });
-            this._engine.get_objects_by_query(query_obj, (error, results) => {
-                if (error) {
+            this._engine.get_objects_by_query(query_obj,
+                                              null,
+                                              (engine, task) => {
+                let results, get_more_results_query;
+                try {
+                    [results, get_more_results_query] = engine.get_objects_by_query_finish(task);
+                } catch (error) {
+                    printerr(error);
+                    printerr(error.stack);
                     page.load_error_page();
                     return;
                 }
+
                 if (results.length === 0) {
                     page.load_no_results_page(query);
                     return;
                 }
+
                 page.set_search_result_page_complete(query, results.map((item) => {
                     return {
                         title: item.title.charAt(0).toUpperCase() + item.title.slice(1),
@@ -212,11 +230,16 @@ const EncyclopediaPresenter = new Lang.Class({
     // PUBLIC METHODS
 
     load_uri: function (uri) {
-        this._engine.get_object_by_id(uri, (error, model) => {
-            if (typeof error !== 'undefined') {
-                this._view.content_page.load_error_page();
+        this._engine.get_object_by_id(uri,
+                                      null,
+                                      (engine, task) => {
+            let model;
+            try {
+                model = engine.get_object_by_id_finish(task);
+            } catch (error) {
                 printerr(error);
                 printerr(error.stack);
+                this._view.content_page.load_error_page();
                 return;
             }
 
