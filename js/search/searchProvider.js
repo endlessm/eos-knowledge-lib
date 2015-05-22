@@ -130,53 +130,37 @@ const AppSearchProvider = Lang.Class({
         return this._object_cache[id];
     },
 
-    _run_query: function (terms, limit, cb) {
+    _get_results: function (terms, invocation) {
         if (this._cancellable)
             this._cancellable.cancel();
         this._cancellable = new Gio.Cancellable();
+
+        let app = Gio.Application.get_default();
+        app.hold();
+
         let query_obj = new QueryObject.QueryObject({
             query: terms.join(' '),
-            limit: limit,
+            limit: this.NUM_RESULTS,
             domain: this.domain,
         });
         this._engine.get_objects_by_query(query_obj, function (err, results, more_results_callback) {
-            cb(err, results, more_results_callback);
+            if (!err) {
+                this._add_results_to_cache(results);
+                let ids = results.map(function (result) { return result.ekn_id; });
+                invocation.return_value(new GLib.Variant('(as)', [ids]));
+            } else {
+                invocation.return_error_literal(this._search_provider_domain, SearchProviderErrors.RetrievalError, 'Error retrieving results: ' + err);
+            }
+            app.release();
         }.bind(this), this._cancellable);
     },
 
     GetInitialResultSetAsync: function (params, invocation) {
-        let app = Gio.Application.get_default();
-        app.hold();
-
-        let terms = params[0];
-        this._run_query(terms, this.NUM_RESULTS, function (err, results, more_results_callback) {
-            if (!err) {
-                this._add_results_to_cache(results);
-                let ids = results.map(function (result) { return result.ekn_id; });
-                invocation.return_value(new GLib.Variant('(as)', [ids]));
-            } else {
-                invocation.return_error_literal(this._search_provider_domain, SearchProviderErrors.RetrievalError, 'Error retrieving results: ' + err);
-            }
-            app.release();
-        }.bind(this));
+        this._get_results(params[0], invocation);
     },
 
     GetSubsearchResultSetAsync: function (params, invocation) {
-        let app = Gio.Application.get_default();
-        app.hold();
-
-        let previous = params[0];
-        let terms = params[1];
-        this._run_query(terms, this.NUM_RESULTS, function (err, results, more_results_callback) {
-            if (!err) {
-                this._add_results_to_cache(results);
-                let ids = results.map(function (result) { return result.ekn_id; });
-                invocation.return_value(new GLib.Variant('(as)', [ids]));
-            } else {
-                invocation.return_error_literal(this._search_provider_domain, SearchProviderErrors.RetrievalError, 'Error retrieving results: ' + err);
-            }
-            app.release();
-        }.bind(this));
+        this._get_results(params[1], invocation);
     },
 
     GetResultMetas: function (params) {
