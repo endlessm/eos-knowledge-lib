@@ -81,6 +81,6 @@ const HistoryItem = new Lang.Class({
          */
         'empty': GObject.ParamSpec.boolean('empty', 'Empty',
             'A boolean value that stores whether or not a history item contains a query that returns 0 results',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, false),
+            GObject.ParamFlags.READWRITE, false),
     }
 });
