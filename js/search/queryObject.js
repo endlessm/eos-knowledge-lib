@@ -34,7 +34,7 @@ const _MATCH_SYNOPSIS_CUTOFF = 20;
 // Matches any contiguous whitespace
 const _WHITESPACE_REGEX = /\s+/;
 // Matches any delimiter which indicates a separate Xapian term
-const _TERM_DELIMITER_REGEX = /[\s\-]+/;
+const _TERM_DELIMITER_REGEX = /[\s\-;]+/;
 
 /**
  * Enum: QueryObjectType

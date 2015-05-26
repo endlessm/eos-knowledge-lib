@@ -139,6 +139,16 @@ describe('QueryObject', function () {
             expect(result).toContain('title:man');
         });
 
+        it('should treat semi colons as whitespace', function () {
+            let query_obj = new QueryObject.QueryObject({
+                query: 'whoa;man',
+            });
+            let result = query_obj.get_query_parser_string(query_obj);
+            expect(result).toContain('exact_title:Whoa_Man');
+            expect(result).toContain('title:whoa');
+            expect(result).toContain('title:man');
+        });
+
         it('should lowercase xapian operator terms', function () {
             let query_obj = new QueryObject.QueryObject({
                 query: 'PENN AND tELLER',
