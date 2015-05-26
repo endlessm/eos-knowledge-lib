@@ -537,6 +537,7 @@ const Presenter = new Lang.Class({
         }
 
         if (results.length === 0) {
+            this._history_presenter.history_model.current_item.empty = true;
             this.view.search_results_page.clear_search_results();
             this.view.search_results_page.no_results_label.show();
             this.view.show_search_results_page();
@@ -1058,7 +1059,11 @@ const Presenter = new Lang.Class({
      * history object for information to replicate that previous page's query.
      */
     _on_topbar_back_clicked: function () {
-        this._history_presenter.go_back();
+        // Skip over history items with no results.
+        let model = this._history_presenter.history_model;
+        do {
+            this._history_presenter.go_back();
+        } while (model.current_item.empty && model.can_go_back);
         this._replicate_history_state(EosKnowledgePrivate.LoadingAnimationType.BACKWARDS_NAVIGATION);
     },
 
@@ -1067,7 +1072,11 @@ const Presenter = new Lang.Class({
      * history object for information to replicate that next page's query.
      */
     _on_topbar_forward_clicked: function () {
-        this._history_presenter.go_forward();
+        // Skip over history items with no results.
+        let model = this._history_presenter.history_model;
+        do {
+            this._history_presenter.go_forward();
+        } while (model.current_item.empty && model.can_go_forward);
         this._replicate_history_state(EosKnowledgePrivate.LoadingAnimationType.FORWARDS_NAVIGATION);
     },
 

@@ -226,13 +226,21 @@ const Presenter = new Lang.Class({
 
     _on_topbar_back_clicked: function () {
         this._lightbox_presenter.hide_lightbox();
-        this._history_presenter.go_back();
+        // Skip over history items with no results.
+        let model = this._history_presenter.history_model;
+        do {
+            this._history_presenter.go_back();
+        } while (model.current_item.empty && model.can_go_back);
         this._replicate_history_state(EosKnowledgePrivate.LoadingAnimationType.BACKWARDS_NAVIGATION);
     },
 
     _on_topbar_forward_clicked: function () {
         this._lightbox_presenter.hide_lightbox();
-        this._history_presenter.go_forward();
+        // Skip over history items with no results.
+        let model = this._history_presenter.history_model;
+        do {
+            this._history_presenter.go_forward();
+        } while (model.current_item.empty && model.can_go_forward);
         this._replicate_history_state(EosKnowledgePrivate.LoadingAnimationType.FORWARDS_NAVIGATION);
     },
 
@@ -636,6 +644,7 @@ const Presenter = new Lang.Class({
         }
 
         if (results.length === 0) {
+            this._history_presenter.history_model.current_item.empty = true;
             this.view.no_search_results_page.query = this._search_query;
             this._search_origin_page = this.view.section_page;
             this.view.unlock_ui();
