@@ -7,20 +7,67 @@ const Engine = imports.search.engine;
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
 const MediaObjectModel = imports.search.mediaObjectModel;
 const QueryObject = imports.search.queryObject;
-const utils = imports.tests.utils;
 
-const TEST_CONTENT_DIR = utils.get_test_content_srcdir();
-const MOCK_CONTENT_PATH = TEST_CONTENT_DIR + 'content-search-results.jsonld';
-const MOCK_ARTICLE_PATH = TEST_CONTENT_DIR + 'article-search-results.jsonld';
-const MOCK_MEDIA_PATH = TEST_CONTENT_DIR + 'media-search-results.jsonld';
+const MOCK_CONTENT_RESULTS = [
+    {
+        "@id": "ekn://asoiaf/House_Stark",
+        "@type": "ekn://_vocab/ContentObject",
+        "title": "House Stark",
+        "synopsis": "Winter is Coming",
+    },
+    {
+        "@id": "ekn://marvel/Tony_Stark",
+        "@type": "ekn://_vocab/ContentObject",
+        "title": "Tony Stark",
+        "synopsis": "is actually Iron Man",
+    },
+];
+const MOCK_ARTICLE_RESULTS = [
+    {
+        "@id": "ekn://asoiaf/House_Stark",
+        "@type": "ekn://_vocab/ArticleObject",
+        "title": "House Stark",
+        "synopsis": "Winter is Coming",
+        "articleBody": "Everything's coming up Stark!",
+    },
+    {
+        "@id": "ekn://marvel/Tony_Stark",
+        "@type": "ekn://_vocab/ArticleObject",
+        "title": "Tony Stark",
+        "synopsis": "is actually Iron Man",
+        "articleBody": "Fun fact: Iron Man was actually based on Robert Downy Jr.'s life",
+    },
+];
+const MOCK_MEDIA_RESULTS = [
+    {
+        "@context": "ekn://_context/ImageObject",
+        "@type": "ekn://_vocab/ImageObject",
+        "@id": "http://img1.wikia.nocookie.net/__cb20130318151721/epicrapbattlesofhistory/images/6/6d/Rick-astley.jpg",
+        "title": "Rick Astley: The Man, The Myth, The Legend",
+        "tags": ["inspiring", "beautiful"],
+        "caption": "Great musician, or greatest?",
+        "encodingFormat": "jpg",
+        "height": "666",
+        "width": "666",
+    },
+    {
+        "@context": "ekn://_context/VideoObject",
+        "@type": "ekn://_vocab/VideoObject",
+        "@id": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+        "title": "Never Gonna Give You Up (Never Gonna Let You Down)",
+        "transcript": "We're no strangers to love, etc etc etc",
+        "tags": ["inspiring", "beautiful"],
+        "caption": "If this song was sushi, it would be a Rick Roll",
+        "encodingFormat": "mov",
+        "duration": "P666S",
+        "height": "666",
+        "width": "666",
+    },
+];
 
 describe('Knowledge Engine Module', () => {
     let engine;
     let noop = function () {};
-
-    const MOCK_CONTENT_RESULTS = utils.parse_object_from_path(MOCK_CONTENT_PATH);
-    const MOCK_ARTICLE_RESULTS = utils.parse_object_from_path(MOCK_ARTICLE_PATH);
-    const MOCK_MEDIA_RESULTS = utils.parse_object_from_path(MOCK_MEDIA_PATH);
 
     // Setup a spy in place of the Soup-based request function
     function engine_request_spy() {
@@ -32,11 +79,10 @@ describe('Knowledge Engine Module', () => {
     // Setup a mocked request function which just returns the mock data.
     // From EOS 2.4 onward, xapian-bridge will return string results instead of
     // JSON, so we stringify all mock_data to emulate this.
-    function mock_engine_request(mock_err, mock_data) {
-        if (typeof mock_data !== 'undefined') {
-            let stringified_results = mock_data.results.map(JSON.stringify);
-            mock_data.results = stringified_results;
-        }
+    function mock_engine_request(mock_err, mock_results) {
+        let mock_data;
+        if (mock_results)
+            mock_data = { results: mock_results.map(JSON.stringify) };
         engine._send_json_ld_request = (req, callback) => {
             callback(mock_err, mock_data);
         }
@@ -267,13 +313,11 @@ describe('Knowledge Engine Module', () => {
 
         it('marshals objects based on @type', (done) => {
             let mock_id = 'ekn://foo/0123456789abcdef';
-            mock_engine_request(undefined, {
-                'results': [{
-                    "@id": mock_id,
-                    "@type": "ekn://_vocab/ArticleObject",
-                    "synopsis": "NOW IS THE WINTER OF OUR DISCONTENT"
-                }]
-            });
+            mock_engine_request(undefined, [{
+                "@id": mock_id,
+                "@type": "ekn://_vocab/ArticleObject",
+                "synopsis": "NOW IS THE WINTER OF OUR DISCONTENT",
+            }]);
 
             engine.get_object_by_id(mock_id, (err, res) => {
                 expect(err).not.toBeDefined();
@@ -285,13 +329,11 @@ describe('Knowledge Engine Module', () => {
 
         it('correctly sets media path on models', (done) => {
             let mock_id = 'ekn://foo/0123456789abcdef';
-            mock_engine_request(undefined, {
-                'results': [{
-                    "@id": mock_id,
-                    "@type": "ekn://_vocab/ContentObject",
-                    "contentURL": "alligator.jpg",
-                }]
-            });
+            mock_engine_request(undefined, [{
+                "@id": mock_id,
+                "@type": "ekn://_vocab/ContentObject",
+                "contentURL": "alligator.jpg",
+            }]);
 
             engine.get_object_by_id(mock_id, (err, res) => {
                 expect(res).toBeA(ContentObjectModel.ContentObjectModel);
@@ -388,13 +430,9 @@ describe('Knowledge Engine Module', () => {
         });
 
         it ("throws an error on unsupported JSON-LD type", (done) => {
-            let notSearchResults = {
-                "@type": "schema:Frobinator",
-                "numResults": 1,
-                "results": [
-                    { "@type": "ekv:ArticleObject", "synopsis": "dolla dolla bill y'all" }
-                ]
-            };
+            let notSearchResults = [
+                { "@type": "ekv:ArticleObject", "synopsis": "dolla dolla bill y'all" }
+            ];
             mock_engine_request(undefined, notSearchResults);
 
             engine.get_objects_by_query(new QueryObject.QueryObject(), (err, results) => {
@@ -405,14 +443,8 @@ describe('Knowledge Engine Module', () => {
         });
 
         it ("throws an error on unsupported search results", (done) => {
-            let badObject = { "@type": "ekv:Kitten" };
-            let resultsWithBadObject = {
-                "@type": "ekv:SearchResults",
-                "numResults": 1,
-                "results": [ badObject ]
-            };
-
-            mock_engine_request(undefined, resultsWithBadObject);
+            let badObjectResults = [{ "@type": "ekv:Kitten" }];
+            mock_engine_request(undefined, badObjectResults);
             engine.get_objects_by_query(new QueryObject.QueryObject(), (err, results) => {
                 expect(results).not.toBeDefined();
                 expect(err).toBeDefined();
