@@ -73,5 +73,14 @@ const HistoryItem = new Lang.Class({
         'article-origin-page': GObject.ParamSpec.string('article-origin-page', 'Article Origin Page',
             'A string that stores the title of the article page from which the user navigated to this page',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
+
+        /**
+         * Property: empty
+         *
+         * A boolean value that stores whether or not a history item contains a query that returns 0 results.
+         */
+        'empty': GObject.ParamSpec.boolean('empty', 'Empty',
+            'A boolean value that stores whether or not a history item contains a query that returns 0 results',
+            GObject.ParamFlags.READWRITE, false),
     }
 });
