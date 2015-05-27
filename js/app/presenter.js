@@ -226,21 +226,13 @@ const Presenter = new Lang.Class({
 
     _on_topbar_back_clicked: function () {
         this._lightbox_presenter.hide_lightbox();
-        // Skip over history items with no results.
-        let model = this._history_presenter.history_model;
-        do {
-            this._history_presenter.go_back();
-        } while (model.current_item.empty && model.can_go_back);
+        this._history_presenter.go_back();
         this._replicate_history_state(EosKnowledgePrivate.LoadingAnimationType.BACKWARDS_NAVIGATION);
     },
 
     _on_topbar_forward_clicked: function () {
         this._lightbox_presenter.hide_lightbox();
-        // Skip over history items with no results.
-        let model = this._history_presenter.history_model;
-        do {
-            this._history_presenter.go_forward();
-        } while (model.current_item.empty && model.can_go_forward);
+        this._history_presenter.go_forward();
         this._replicate_history_state(EosKnowledgePrivate.LoadingAnimationType.FORWARDS_NAVIGATION);
     },
 
@@ -534,56 +526,47 @@ const Presenter = new Lang.Class({
     },
 
     _add_history_object_for_article_page: function (model) {
-        this._history_presenter.set_current_item(
-            model.title, // title
-            this._ARTICLE_PAGE, // page_type
-            model, // article_model
-            null, // query_obj
-            this._latest_origin_query_obj, // article_origin_query_obj
-            this._latest_article_card_title // article_origin_page
-        );
+        this._history_presenter.set_current_item({
+            title: model.title,
+            page_type: this._ARTICLE_PAGE,
+            article_model: model,
+            article_origin_query_obj: this._latest_origin_query_obj,
+            article_origin_page: this._latest_article_card_title,
+        });
     },
 
     _add_history_object_for_search_page: function (query_obj) {
         this._latest_origin_query_obj = query_obj;
-        this._history_presenter.set_current_item(
-            this._target_page_title, // title
-            this._SEARCH_PAGE, // page_type
-            null, // article_model
-            query_obj, // query_obj
-            this._latest_origin_query_obj // article_origin_query_obj
-        );
+        this._history_presenter.set_current_item({
+            title: this._target_page_title,
+            page_type: this._SEARCH_PAGE,
+            query_obj: query_obj,
+            article_origin_query_obj: this._latest_origin_query_obj,
+        });
     },
 
     _add_history_object_for_section_page: function (query_obj) {
         this._latest_origin_query_obj = query_obj;
-        this._history_presenter.set_current_item(
-            this._target_page_title, // title
-            this._SECTION_PAGE, // page_type
-            null, // article_model
-            query_obj, // query_obj
-            this._latest_origin_query_obj // article_origin_query_obj
-        );
+        this._history_presenter.set_current_item({
+            title: this._target_page_title,
+            page_type: this._SECTION_PAGE,
+            query_obj: query_obj,
+            article_origin_query_obj: this._latest_origin_query_obj,
+        });
     },
 
     _add_history_object_for_home_page: function () {
-        this._history_presenter.set_current_item(
-            '', // title
-            this._HOME_PAGE, // page_type
-            null, // article_model
-            null, // query_obj
-            this._latest_origin_query_obj // article_origin_query_obj
-        );
+        this._history_presenter.set_current_item({
+            page_type: this._HOME_PAGE,
+            article_origin_query_obj: this._latest_origin_query_obj,
+        });
     },
 
     _add_history_object_for_categories_page: function () {
-        this._history_presenter.set_current_item(
-            '', // title
-            this._CATEGORIES_PAGE, // page_type
-            null, // article_model
-            null, // query_obj
-            this._latest_origin_query_obj // article_origin_query_obj
-        );
+        this._history_presenter.set_current_item({
+            page_type: this._CATEGORIES_PAGE,
+            article_origin_query_obj: this._latest_origin_query_obj,
+        });
     },
 
     _on_ekn_link_clicked: function (article_presenter, ekn_id) {

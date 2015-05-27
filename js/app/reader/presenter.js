@@ -295,44 +295,35 @@ const Presenter = new Lang.Class({
     },
 
     _add_history_object_for_article_page: function (model) {
-        this._history_presenter.set_current_item(
-            model.title, // title
-            this._ARTICLE_PAGE, // page_type
-            model, // article_model
-            null, // query_obj
-            this._latest_origin_query_obj // article_origin_query_obj
-        );
+        this._history_presenter.set_current_item({
+            title: model.title,
+            page_type: this._ARTICLE_PAGE,
+            article_model: model,
+            article_origin_query_obj: this._latest_origin_query_obj,
+        });
     },
 
     _add_history_object_for_search_page: function (query_obj) {
         this._latest_origin_query_obj = query_obj;
-        this._history_presenter.set_current_item(
-            '', // title
-            this._SEARCH_PAGE, // page_type
-            null, // article_model
-            query_obj, // query_obj
-            this._latest_origin_query_obj // article_origin_query
-        );
+        this._history_presenter.set_current_item({
+            page_type: this._SEARCH_PAGE,
+            query_obj: query_obj,
+            article_origin_query_obj: this._latest_origin_query_obj,
+        });
     },
 
     _add_history_object_for_overview_page: function () {
-        this._history_presenter.set_current_item(
-            '', // title
-            this._OVERVIEW_PAGE, // page_type
-            null, // article_model
-            null, // query_obj
-            this._latest_origin_query_obj // article_origin_query_obj
-        );
+        this._history_presenter.set_current_item({
+            page_type: this._OVERVIEW_PAGE,
+            article_origin_query_obj: this._latest_origin_query_obj,
+        });
     },
 
     _add_history_object_for_done_page: function () {
-        this._history_presenter.set_current_item(
-            '', // title
-            this._DONE_PAGE, // page_type
-            null, // article_model
-            null, // query_obj
-            this._latest_origin_query_obj // article_origin_query_obj
-        );
+        this._history_presenter.set_current_item({
+            page_type: this._DONE_PAGE,
+            article_origin_query_obj: this._latest_origin_query_obj,
+        });
     },
 
     _replicate_history_state: function (animation_type) {
@@ -1059,11 +1050,7 @@ const Presenter = new Lang.Class({
      * history object for information to replicate that previous page's query.
      */
     _on_topbar_back_clicked: function () {
-        // Skip over history items with no results.
-        let model = this._history_presenter.history_model;
-        do {
-            this._history_presenter.go_back();
-        } while (model.current_item.empty && model.can_go_back);
+        this._history_presenter.go_back();
         this._replicate_history_state(EosKnowledgePrivate.LoadingAnimationType.BACKWARDS_NAVIGATION);
     },
 
@@ -1072,11 +1059,7 @@ const Presenter = new Lang.Class({
      * history object for information to replicate that next page's query.
      */
     _on_topbar_forward_clicked: function () {
-        // Skip over history items with no results.
-        let model = this._history_presenter.history_model;
-        do {
-            this._history_presenter.go_forward();
-        } while (model.current_item.empty && model.can_go_forward);
+        this._history_presenter.go_forward();
         this._replicate_history_state(EosKnowledgePrivate.LoadingAnimationType.FORWARDS_NAVIGATION);
     },
 
