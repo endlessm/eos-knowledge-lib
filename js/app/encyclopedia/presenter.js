@@ -11,8 +11,8 @@ const ArticleHTMLRenderer = imports.app.articleHTMLRenderer;
 const ArticleObjectModel = imports.search.articleObjectModel;
 const Config = imports.app.config;
 const Engine = imports.search.engine;
-const MediaInfobox = imports.app.mediaInfobox;
 const HistoryPresenter = imports.app.historyPresenter;
+const LightboxPresenter = imports.app.lightboxPresenter;
 const MediaObjectModel = imports.search.mediaObjectModel;
 const Previewer = imports.app.previewer;
 const QueryObject = imports.search.queryObject;
@@ -86,14 +86,11 @@ const EncyclopediaPresenter = new Lang.Class({
         this._view.content_page.connect('link-clicked', (page, uri) => {
             this.load_uri(uri);
         });
-        this._view.lightbox.connect('navigation-next-clicked', () => {
-            this._lightbox_shift_image(1);
-        });
-        this._view.lightbox.connect('navigation-previous-clicked', () => {
-            this._lightbox_shift_image(-1);
+        this._lightbox_presenter = new LightboxPresenter.LightboxPresenter({
+            engine: this.engine,
+            view: this._view,
         });
     },
-
 
     _getLocalizedResource: function(resource_path, filename) {
         let languages = GLib.get_language_names();
@@ -110,33 +107,6 @@ const EncyclopediaPresenter = new Lang.Class({
             }
         }
         return location;
-    },
-
-    _lightbox_shift_image: function (delta) {
-        let resources = this._current_article.get_resources();
-        let current_index = resources.indexOf(this._view.lightbox.media_object.ekn_id);
-
-        if (current_index === -1) {
-            return;
-        }
-
-        // if there's a pending load, cancel it
-        if (this._cancel_lightbox_load !== null) {
-            this._cancel_lightbox_load.cancel();
-        }
-
-        // setup a new cancellable for the new image
-        this._cancel_lightbox_load = new Gio.Cancellable();
-        let new_index = current_index + delta;
-        this._engine.get_object_by_id(resources[new_index], (err, object) => {
-            this._cancel_lightbox_load = null;
-            if (typeof err !== 'undefined') {
-                printerr(err);
-                printerr(err.stack);
-            } else {
-                this._preview_media_object(object);
-            }
-        }, this._cancel_lightbox_load);
     },
 
     _autocompleteCallback: function(search_box, error, results) {
@@ -233,28 +203,10 @@ const EncyclopediaPresenter = new Lang.Class({
             this._current_article = item.article_model;
             this._load_article_in_view(item.article_model);
             return;
-        }
-    },
-
-    _preview_media_object: function (media_object) {
-        let resources = this._current_article.get_resources();
-        let index = resources.indexOf(media_object.ekn_id);
-
-        // don't show images which aren't one of the current article's resources
-        if (index === -1) {
         case SEARCH_RESULTS_PAGE:
             this._do_search_in_view(item.query_obj.query);
             return;
         }
-
-        let infobox = MediaInfobox.MediaInfobox.new_from_ekn_model(media_object);
-        this._previewer.set_content(media_object.get_content_stream(), media_object.content_type);
-        this._view.lightbox.media_object = media_object;
-        this._view.lightbox.infobox_widget = infobox;
-        this._view.lightbox.reveal_overlays = true;
-
-        this._view.lightbox.has_back_button = (index > 0);
-        this._view.lightbox.has_forward_button = (index < resources.length - 1);
     },
 
     // PUBLIC METHODS
@@ -276,7 +228,7 @@ const EncyclopediaPresenter = new Lang.Class({
                     null // query_obj
                 );
             } else if (model instanceof MediaObjectModel.MediaObjectModel) {
-                this._preview_media_object(model);
+                this._lightbox_presenter.show_media_object(this._current_article, model);
             }
         });
     },
