@@ -24,12 +24,11 @@ let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 const AUTOCOMPLETE_DELAY = 500; // ms
 const ASSETS_PATH = '/com/endlessm/knowledge/images/';
 const LOGO_FILE = 'logo.png';
+const SEARCH_BOX_PLACEHOLDER_TEXT = _("Search the world's information!");
 
 const EncyclopediaPresenter = new Lang.Class({
     Name: 'EncyclopediaPresenter',
     Extends: GObject.Object,
-
-    SEARCH_BOX_PLACEHOLDER_TEXT: _("Search the world's information!"),
 
     _init: function(view, model, props) {
         this.parent(props);
@@ -56,8 +55,8 @@ const EncyclopediaPresenter = new Lang.Class({
         this._view.home_page.logo_uri = logo_resource;
         this._view.content_page.logo_uri = logo_resource;
 
-        this._view.home_page.search_box.placeholder_text = this.SEARCH_BOX_PLACEHOLDER_TEXT;
-        this._view.content_page.search_box.placeholder_text = this.SEARCH_BOX_PLACEHOLDER_TEXT;
+        this._view.home_page.search_box.placeholder_text = SEARCH_BOX_PLACEHOLDER_TEXT;
+        this._view.content_page.search_box.placeholder_text = SEARCH_BOX_PLACEHOLDER_TEXT;
 
         this._previewer = new Previewer.Previewer({
             visible: true,
