@@ -18,23 +18,34 @@ const OWNER_PERMISSION = 'Owner permission';
 
 // NOTE: The keys in these hashes are machine readable keys and should not be
 // internationalized. Keep the keys in sync with
-// eos-pantheon-tools/api/models/Feed.js for the database representation.
+// eos-pantheon-tools/api/models/Feed.js for the database representation and with
+// eos-sdk/endless/eoslicense.c for actual file serving.
 
 // These are the links to the full text files belonging to each
 // license and installed in EOS shared directory.
 const LICENSE_LINKS = {
-    'CC-BY 4.0': Endless.get_license_file('CC-BY-4.0.html'),
-    'CC-BY 3.0': Endless.get_license_file('CC-BY-3.0.html'),
-    'CC-BY-SA 4.0': Endless.get_license_file('CC-BY-SA-4.0.html'),
-    'CC-BY-SA 3.0': Endless.get_license_file('CC-BY-SA-3.0.html'),
+    'CC-BY 2.0': Endless.get_license_file('CC-BY 2.0').get_uri(),
+    'CC-BY 3.0': Endless.get_license_file('CC-BY 3.0').get_uri(),
+    'CC-BY 4.0': Endless.get_license_file('CC-BY 4.0').get_uri(),
+    'CC-BY-NC 2.0': Endless.get_license_file('CC-BY-NC 2.0').get_uri(),
+    'CC-BY-NC 3.0': Endless.get_license_file('CC-BY-NC 3.0').get_uri(),
+    'CC-BY-SA 3.0': Endless.get_license_file('CC-BY-SA 3.0').get_uri(),
+    'CC-BY-SA 4.0': Endless.get_license_file('CC-BY-SA 4.0').get_uri(),
+    'CC-BY-ND 2.0': Endless.get_license_file('CC-BY-ND 2.0').get_uri(),
+    'CC-BY-ND 3.0': Endless.get_license_file('CC-BY-ND 3.0').get_uri(),
 };
 
 // These are the human-readable versions of the license names.
 const LICENSE_NAMES = {
-    'CC-BY 4.0': _("CC-BY 4.0"),
-    'CC-BY-SA 4.0': _("CC-BY-SA 4.0"),
-    'CC-BY 3.0': _("CC-BY 3.0"),
-    'CC-BY-SA 3.0': _("CC-BY-SA 3.0"),
+    'CC-BY 2.0': _("Creative Commons BY 2.0"),
+    'CC-BY 3.0': _("Creative Commons BY 3.0"),
+    'CC-BY 4.0': _("Creative Commons BY 4.0"),
+    'CC-BY-NC 2.0': _("Creative Commons BY-NC 2.0"),
+    'CC-BY-NC 3.0': _("Creative Commons BY-NC 3.0"),
+    'CC-BY-SA 3.0': _("Creative Commons BY-SA 3.0"),
+    'CC-BY-SA 4.0': _("Creative Commons BY-SA 4.0"),
+    'CC-BY-ND 2.0': _("Creative Commons BY-ND 2.0"),
+    'CC-BY-ND 3.0': _("Creative Commons BY-ND 3.0"),
 };
 
 function _get_locale() {
