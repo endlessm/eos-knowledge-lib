@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2015-05-19 01:50+0000\n"
+"POT-Creation-Date: 2015-05-26 01:51+0000\n"
 "PO-Revision-Date: 2015-05-20 05:52+0000\n"
 "Last-Translator: Roddy Shuler <roddy@endlessm.com>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/projects/p/eos-knowledge-lib/language/pt_BR/)\n"
@@ -70,7 +70,7 @@ msgstr ""
 #. to be substituted in code. Please make sure to leave the
 #. curly braces around any words that have them and DO NOT
 #. translate words inside curly braces.
-#: js/app/articleHTMLRenderer.js:57
+#: js/app/articleHTMLRenderer.js:47
 msgid ""
 "This page contains content from {original-link}, available under a {license-"
 "link} license."
@@ -78,7 +78,7 @@ msgstr "Esta página contém conteúdo de {original-link}, disponível mediante 
 
 #. TRANSLATORS: Replace this with a link to the homepage of
 #. wikiHow in your language.
-#: js/app/articleHTMLRenderer.js:64
+#: js/app/articleHTMLRenderer.js:54
 msgid "http://wikihow.com"
 msgstr "http://wikihow.com.br"
 
@@ -86,28 +86,28 @@ msgstr "http://wikihow.com.br"
 #. to be substituted in code. Please make sure to leave the
 #. curly braces around any words that have them and DO NOT
 #. translate words inside curly braces.
-#: js/app/articleHTMLRenderer.js:69
+#: js/app/articleHTMLRenderer.js:59
 msgid ""
 "See {wikihow-article-link} for more details, videos, pictures and "
 "attribution. Courtesy of {wikihow-link}, where anyone can easily learn how "
 "to do anything."
 msgstr "Veja {wikihow-article-link} para mais detalhes, videos, imagens e atribuições. Cortesia de {wikihow-link}, onde qualquer pessoa pode facilmente aprender como fazer qualquer coisa. "
 
-#: js/app/articleHTMLRenderer.js:125
+#: js/app/articleHTMLRenderer.js:134
 msgid "Copy"
 msgstr ""
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
-#: js/app/articleHTMLRenderer.js:144
+#: js/app/articleHTMLRenderer.js:153
 msgid "Content taken from {blog-link}."
 msgstr "Conteúdo retirado de {blog-link}."
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
-#: js/app/articleHTMLRenderer.js:149
+#: js/app/articleHTMLRenderer.js:158
 msgid "Content courtesy of {blog-link}. Used with kind permission."
 msgstr "Cortesia de conteúdo de {blog-link}.  Utilizado com permissão."
 
@@ -115,11 +115,11 @@ msgstr "Cortesia de conteúdo de {blog-link}.  Utilizado com permissão."
 #. is going to be substituted in code. Please make sure that your
 #. translation contains both {blog-link} and {license-link} and they are not
 #. translated.
-#: js/app/articleHTMLRenderer.js:157
+#: js/app/articleHTMLRenderer.js:166
 msgid "Content courtesy of {blog-link}, licensed under {license-link}."
 msgstr "Cortesia de conteúdo de {blog-link}, licenciado sob {license-link}."
 
-#: js/app/categoriesPage.js:58
+#: js/app/categoriesPage.js:57
 msgid "HOME"
 msgstr "PÁGINA PRINCIPAL"
 
@@ -130,7 +130,7 @@ msgstr ""
 #. TRANSLATORS: This is the title of the search results page. %s
 #. will be replaced by the text that the user searched for. Make
 #. sure that %s is in your translation as well.
-#: js/app/encyclopedia/presenter.js:303
+#: js/app/encyclopedia/presenter.js:302
 #, javascript-format
 msgid "Results for %s"
 msgstr ""
@@ -139,7 +139,7 @@ msgstr ""
 msgid "Encyclopedia"
 msgstr ""
 
-#: js/app/homePageA.js:57
+#: js/app/homePageA.js:56
 msgid "SEE ALL CATEGORIES"
 msgstr "Ver todas as categorias"
 
@@ -174,16 +174,16 @@ msgstr "Tente pesquisar novamente com palavras diferentes."
 
 #. TRANSLATORS: this appears on top of the search results page; %s will
 #. be replaced with the string that the user searched for.
-#: js/app/noSearchResultsPage.js:61 js/app/presenter.js:362
+#: js/app/noSearchResultsPage.js:61 js/app/presenter.js:365
 #, javascript-format
 msgid "Results for \"%s\""
 msgstr "Resultados para \"%s\""
 
-#: js/app/pdfCard.js:42
+#: js/app/pdfCard.js:41
 msgid "PDF"
 msgstr "PDF"
 
-#: js/app/presenter.js:208 js/app/presenter.js:616
+#: js/app/presenter.js:211 js/app/presenter.js:616
 msgid "Articles"
 msgstr "Artigos"
 
@@ -192,11 +192,11 @@ msgstr "Artigos"
 msgid "%d of %d done"
 msgstr "%d de %de realizado"
 
-#: js/app/reader/card.js:131 js/app/reader/webviewTooltip.js:138
+#: js/app/reader/card.js:128 js/app/reader/webviewTooltip.js:138
 msgid "Archive"
 msgstr ""
 
-#: js/app/reader/card.js:134
+#: js/app/reader/card.js:131
 #, javascript-format
 msgid "Page %s"
 msgstr ""
@@ -217,25 +217,25 @@ msgstr "Não perca a edição da próxima semana com mais artigos em sua revista
 #. Also, note: the "and" is used to join together the names
 #. of authors of a blog post. For example:
 #. Jane Austen and Henry Miller and William Clifford
-#: js/app/reader/presenter.js:921
+#: js/app/reader/presenter.js:923
 msgid "by {author}"
 msgstr "Por {author}"
 
-#: js/app/reader/presenter.js:921
+#: js/app/reader/presenter.js:923
 msgid "and"
 msgstr "e"
 
-#: js/app/reader/presenter.js:980 js/app/reader/presenter.js:987
+#: js/app/reader/presenter.js:982 js/app/reader/presenter.js:989
 msgid "Oops!"
 msgstr "Oops!"
 
-#: js/app/reader/presenter.js:981
+#: js/app/reader/presenter.js:983
 msgid ""
 "We could not find this magazine!\n"
 "Please try again after restarting your computer."
 msgstr "Não conseguimos encontrar essa revista!\nPor favor, tente novamente após reiniciar seu computador. "
 
-#: js/app/reader/presenter.js:988
+#: js/app/reader/presenter.js:990
 msgid ""
 "There was an error loading that page.\n"
 "Try another one or try again after restarting your computer."
