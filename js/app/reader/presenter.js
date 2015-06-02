@@ -373,8 +373,7 @@ const Presenter = new Lang.Class({
         // Load all articles in this issue
         this._load_all_content(/* callback */ (error) => {
             if (error) {
-                printerr(error);
-                printerr(error.stack);
+                logError(error);
                 this._show_general_error_page();
             } else {
                 // We now have all the articles we want to show. Now we load the
@@ -399,8 +398,7 @@ const Presenter = new Lang.Class({
             try {
                 model = engine.get_object_by_id_finish(task);
             } catch (error) {
-                printerr(error);
-                printerr(error.stack);
+                logError(error);
                 this._show_specific_error_page();
                 this.view.show_all();
                 this.view.present_with_time(timestamp);
@@ -425,8 +423,7 @@ const Presenter = new Lang.Class({
                 this.view.standalone_page.infobar.get_action_area().sensitive = false;
                 this._load_all_content(/* callback */ (error) => {
                     if (error) {
-                        printerr(error);
-                        printerr(error.stack);
+                        logError(error);
                         this._show_general_error_page();
                         this.view.show_all();
                         this.view.present_with_time(timestamp);
@@ -492,8 +489,7 @@ const Presenter = new Lang.Class({
         this._clear_content();
         this._load_all_content(/* callback */ (error) => {
             if (error) {
-                printerr(error);
-                printerr(error.stack);
+                logError(error);
                 this._show_general_error_page();
                 return;
             }
@@ -519,8 +515,7 @@ const Presenter = new Lang.Class({
             try {
                 [results, get_more_results_query] = engine.get_objects_by_query_finish(task);
             } catch (error) {
-                printerr(error);
-                printerr(error.stack);
+                logError(error);
                 return;
             }
 
@@ -537,8 +532,7 @@ const Presenter = new Lang.Class({
         try {
             [results, get_more_results_query] = engine.get_objects_by_query_finish(task);
         } catch (error) {
-            printerr(error);
-            printerr(error.stack);
+            logError(error);
             return;
         }
 
@@ -754,8 +748,7 @@ const Presenter = new Lang.Class({
                 try {
                     article_model = engine.get_object_by_id_finish(task);
                 } catch (error) {
-                    printerr('Could not get article model:', error);
-                    printerr(error.stack);
+                    logError(error, 'Could not get article model');
                     return;
                 }
                 this._display_link_tooltip(view, coordinates, WebviewTooltip.TYPE_ARCHIVE_LINK,
@@ -844,8 +837,7 @@ const Presenter = new Lang.Class({
                     try {
                         clicked_model = engine.get_object_by_id_finish(task);
                     } catch (error) {
-                        printerr('Could not open link from reader article:', error);
-                        printerr(error.stack);
+                        logError(error, 'Could not open link from reader article');
                         return;
                     }
 
@@ -923,8 +915,7 @@ const Presenter = new Lang.Class({
 
     _load_webview_content_callback: function (page, view, error) {
         if (error !== undefined) {
-            printerr(error);
-            printerr(error.stack);
+            logError(error);
             this._show_specific_error_page();
         } else {
             page.show_content_view(view);
@@ -1104,8 +1095,7 @@ const Presenter = new Lang.Class({
             try {
                 [results, get_more_results_query] = engine.get_objects_by_query_finish(task);
             } catch (error) {
-                printerr(error);
-                printerr(error.stack);
+                logError(error);
                 return;
             }
 
@@ -1126,8 +1116,7 @@ const Presenter = new Lang.Class({
             try {
                 model = engine.get_object_by_id_finish(task);
             } catch (error) {
-                printerr(error);
-                printerr(error.stack);
+                logError(error);
                 this._show_specific_error_page();
                 return;
             }

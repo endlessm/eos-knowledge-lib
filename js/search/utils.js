@@ -97,8 +97,8 @@ function read_stream_sync (stream, cancellable = null) {
         total_read += buffer.get_data().toString();
 
         return total_read;
-    } catch (err) {
-        printerr('Error reading ' + path + ': ' + err);
+    } catch (error) {
+        logError(error, 'Error reading ' + path);
         return undefined;
     }
 }

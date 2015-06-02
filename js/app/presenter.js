@@ -207,8 +207,7 @@ const Presenter = new Lang.Class({
             try {
                 [results, get_more_results_query] = engine.get_objects_by_query_finish(task);
             } catch (error) {
-                printerr(error);
-                printerr(error.stack);
+                logError(error);
                 return;
             }
 
@@ -282,8 +281,7 @@ const Presenter = new Lang.Class({
         try {
             [results, get_more_results_query] = engine.get_objects_by_query_finish(task);
         } catch (error) {
-            printerr(error);
-            printerr(error.stack);
+            logError(error);
             return;
         }
 
@@ -446,8 +444,7 @@ const Presenter = new Lang.Class({
             try {
                 [results, get_more_results_query] = engine.get_objects_by_query_finish(task);
             } catch (error) {
-                printerr(error);
-                printerr(error.stack);
+                logError(error);
                 return;
             }
 
@@ -507,8 +504,7 @@ const Presenter = new Lang.Class({
                                                         this.view.show_article_page();
                                                     });
             } catch (error) {
-                printerr(error);
-                printerr(error.stack);
+                logError(error);
             }
         });
         this.view.present_with_time(timestamp);
@@ -590,8 +586,7 @@ const Presenter = new Lang.Class({
             try {
                 model = engine.get_object_by_id_finish(task);
             } catch (error) {
-                printerr(error);
-                printerr(error.stack);
+                logError(error);
                 return;
             }
 
@@ -636,8 +631,7 @@ const Presenter = new Lang.Class({
         try {
             [results, get_more_results_query] = engine.get_objects_by_query_finish(task);
         } catch (error) {
-            printerr(error);
-            printerr(error.stack);
+            logError(error);
             return;
         }
 

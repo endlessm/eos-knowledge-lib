@@ -17,8 +17,7 @@ function register_webkit_uri_handlers (article_render_callback) {
 }
 
 function _error_request(req, err) {
-    printerr(err);
-    printerr(err.stack);
+    logError(err);
     req.finish_error(new Gio.IOErrorEnum({
         message: err.message,
         code: 0,

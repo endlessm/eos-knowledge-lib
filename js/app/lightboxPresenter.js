@@ -128,8 +128,7 @@ const LightboxPresenter = new GObject.Class({
             try {
                 media_object = engine.get_object_by_id_finish(task);
             } catch (error) {
-                printerr(error);
-                printerr(error.stack);
+                logError(error);
                 return;
             }
 

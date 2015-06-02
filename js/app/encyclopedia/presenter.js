@@ -114,8 +114,7 @@ const EncyclopediaPresenter = new Lang.Class({
         try {
             [results, get_more_results_query] = engine.get_objects_by_query_finish(task);
         } catch (error) {
-            printerr(error);
-            printerr(error.stack);
+            logError(error);
             return;
         }
 
@@ -176,8 +175,7 @@ const EncyclopediaPresenter = new Lang.Class({
                 try {
                     [results, get_more_results_query] = engine.get_objects_by_query_finish(task);
                 } catch (error) {
-                    printerr(error);
-                    printerr(error.stack);
+                    logError(error);
                     page.load_error_page();
                     return;
                 }
@@ -237,8 +235,7 @@ const EncyclopediaPresenter = new Lang.Class({
             try {
                 model = engine.get_object_by_id_finish(task);
             } catch (error) {
-                printerr(error);
-                printerr(error.stack);
+                logError(error);
                 this._view.content_page.load_error_page();
                 return;
             }

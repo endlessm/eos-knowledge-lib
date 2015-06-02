@@ -153,8 +153,7 @@ const AppSearchProvider = Lang.Class({
                 invocation.return_value(new GLib.Variant('(as)', [ids]));
             } catch (error) {
                 if (!error.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED)) {
-                    printerr(error);
-                    printerr(error.stack);
+                    logError(error);
                 }
                 invocation.return_error_literal(this._search_provider_domain, SearchProviderErrors.RetrievalError, 'Error retrieving results: ' + err);
             }
