@@ -43,6 +43,30 @@ const ArticleObjectModel = new Lang.Class({
             'Where the article html was retrieved from.',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             ''),
+
+        /**
+         * Property: source-name
+         * Human-readable name of the source of this article
+         *
+         * A string containing the name of this article's source.
+         * For example, "Wikipedia" or "Huffington Post" or "Cosimo's Blog".
+         *
+         * Note that this property may not be present in client databases, since
+         * it was added in 0.2.
+         * However, it will be present in all Reader app databases.
+         * Also, on an <ArticleObjectModel> with <source> equal to "wikipedia",
+         * "wikihow", "wikisource", or "wikibooks", it will be set to the
+         * appropriate value even if it is not present in the database, for
+         * backwards compatibility reasons.
+         *
+         * Since:
+         *   0.2
+         */
+        'source-name': GObject.ParamSpec.string('source-name', 'Source name',
+            'Human-readable name of the source of this article',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            ''),
+
         /**
          * Property: word-count
          * Integer indicating how many words are in the article
@@ -226,6 +250,10 @@ ArticleObjectModel._props_from_json_ld = function (json_ld_data, media_path, ekn
 
     if (json_ld_data.hasOwnProperty('wordCount')) {
         props.word_count = parseInt(json_ld_data.wordCount);
+    }
+
+    if (json_ld_data.hasOwnProperty('sourceName')) {
+        props.source_name = json_ld_data.sourceName;
     }
 
     if (json_ld_data.hasOwnProperty('tableOfContents')) {
