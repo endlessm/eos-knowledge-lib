@@ -295,44 +295,35 @@ const Presenter = new Lang.Class({
     },
 
     _add_history_object_for_article_page: function (model) {
-        this._history_presenter.set_current_item(
-            model.title, // title
-            this._ARTICLE_PAGE, // page_type
-            model, // article_model
-            null, // query_obj
-            this._latest_origin_query_obj // article_origin_query_obj
-        );
+        this._history_presenter.set_current_item({
+            title: model.title,
+            page_type: this._ARTICLE_PAGE,
+            article_model: model,
+            article_origin_query_obj: this._latest_origin_query_obj,
+        });
     },
 
     _add_history_object_for_search_page: function (query_obj) {
         this._latest_origin_query_obj = query_obj;
-        this._history_presenter.set_current_item(
-            '', // title
-            this._SEARCH_PAGE, // page_type
-            null, // article_model
-            query_obj, // query_obj
-            this._latest_origin_query_obj // article_origin_query
-        );
+        this._history_presenter.set_current_item({
+            page_type: this._SEARCH_PAGE,
+            query_obj: query_obj,
+            article_origin_query_obj: this._latest_origin_query_obj,
+        });
     },
 
     _add_history_object_for_overview_page: function () {
-        this._history_presenter.set_current_item(
-            '', // title
-            this._OVERVIEW_PAGE, // page_type
-            null, // article_model
-            null, // query_obj
-            this._latest_origin_query_obj // article_origin_query_obj
-        );
+        this._history_presenter.set_current_item({
+            page_type: this._OVERVIEW_PAGE,
+            article_origin_query_obj: this._latest_origin_query_obj,
+        });
     },
 
     _add_history_object_for_done_page: function () {
-        this._history_presenter.set_current_item(
-            '', // title
-            this._DONE_PAGE, // page_type
-            null, // article_model
-            null, // query_obj
-            this._latest_origin_query_obj // article_origin_query_obj
-        );
+        this._history_presenter.set_current_item({
+            page_type: this._DONE_PAGE,
+            article_origin_query_obj: this._latest_origin_query_obj,
+        });
     },
 
     _replicate_history_state: function (animation_type) {
@@ -537,6 +528,7 @@ const Presenter = new Lang.Class({
         }
 
         if (results.length === 0) {
+            this._history_presenter.history_model.current_item.empty = true;
             this.view.search_results_page.clear_search_results();
             this.view.search_results_page.no_results_label.show();
             this.view.show_search_results_page();

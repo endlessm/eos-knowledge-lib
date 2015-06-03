@@ -62,32 +62,37 @@ const HistoryPresenter = new GObject.Class({
             GObject.BindingFlags.SYNC_CREATE);
     },
 
-    set_current_item: function (title, page_type, article_model=null, query_obj=null,
-        article_origin_query_obj=null, article_origin_page=null) {
-        let is_same_search = query_obj !== null &&
+    set_current_item: function (props) {
+        if (!props.hasOwnProperty('page_type'))
+            throw new Error('Current history item has no page_type property.');
+        let is_same_search = props.hasOwnProperty('query_obj') &&
             this.history_model.current_item !== null &&
+            this.history_model.current_item.hasOwnProperty('query_obj') &&
             this.history_model.current_item.query_obj !== null &&
-            this.history_model.current_item.query_obj.query === query_obj.query;
+            this.history_model.current_item.query_obj.query === props.query_obj.query;
 
         // If it's a request for an identical search, don't bother
         // adding it to the history model.
         if (!is_same_search) {
-            this.history_model.current_item = new HistoryItem.HistoryItem({
-                title: title,
-                page_type: page_type,
-                article_model: article_model,
-                query_obj: query_obj,
-                article_origin_query_obj: article_origin_query_obj,
-                article_origin_page: article_origin_page,
-            });
+            this.history_model.current_item = new HistoryItem.HistoryItem(props);
         }
     },
 
     go_forward: function () {
-        this.history_model.go_forward();
+        let model = this.history_model;
+
+        // Skip over history items with no results.
+        do {
+            model.go_forward();
+        } while (model.current_item.empty && model.can_go_forward);
     },
 
     go_back: function () {
-        this.history_model.go_back();
+        let model = this.history_model;
+
+        // Skip over history items with no results.
+        do {
+            model.go_back();
+        } while (model.current_item.empty && model.can_go_back);
     },
 });
