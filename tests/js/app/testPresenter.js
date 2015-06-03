@@ -94,8 +94,9 @@ const MockEngine = new Lang.Class({
     },
 
     get_object_by_id: function () {},
-    get_ekn_id: function () {},
+    get_object_by_id_finish: function () {},
     get_objects_by_query: function () {},
+    get_objects_by_query_finish: function () {},
 });
 
 const MockArticlePresenter = new Lang.Class({
@@ -165,9 +166,13 @@ describe('Presenter', () => {
     describe('searching from search box', function () {
         beforeEach(function () {
             spyOn(view, 'show_no_search_results_page');
-            spyOn(engine, 'get_objects_by_query').and.callFake(function (query, callback) {
-                callback(undefined, [], function () {});
+            spyOn(engine, 'get_objects_by_query').and.callFake(function (query, cancellable, callback) {
+                callback(engine, null);
             });
+            spyOn(engine, 'get_objects_by_query_finish').and.callFake(function (task) {
+                return [[], null];
+            });
+
         });
 
         it('works from the title bar', function (done) {
@@ -177,6 +182,7 @@ describe('Presenter', () => {
                     .toHaveBeenCalledWith(jasmine.objectContaining({
                         query: 'query not found',
                     }),
+                    jasmine.any(Object),
                     jasmine.any(Function));
                 expect(view.show_no_search_results_page).toHaveBeenCalled();
                 done();
@@ -191,6 +197,7 @@ describe('Presenter', () => {
                     .toHaveBeenCalledWith(jasmine.objectContaining({
                         query: 'query not found',
                     }),
+                    jasmine.any(Object),
                     jasmine.any(Function));
                 expect(view.show_no_search_results_page).toHaveBeenCalled();
                 done();

@@ -272,6 +272,7 @@ js_files = \
 	js/app/webkitContextSetup.js \
 	js/app/window.js \
 	js/search/application.js \
+	js/search/asyncTask.js \
 	js/search/articleObjectModel.js \
 	js/search/blacklist.js \
 	js/search/contentObjectModel.js \
@@ -373,6 +374,7 @@ javascript_tests = \
 	tests/js/app/testTableOfContents.js \
 	tests/js/app/testTextCard.js \
 	tests/js/app/testWindow.js \
+	tests/js/search/testAsyncTask.js \
 	tests/js/search/testArticleObjectModel.js \
 	tests/js/search/testContentObjectModel.js \
 	tests/js/search/testDatadir.js \
@@ -384,12 +386,9 @@ javascript_tests = \
 test_content = \
 	tests/test-content/agot.svg \
 	tests/test-content/app.json \
-	tests/test-content/article-search-results.jsonld \
-	tests/test-content/content-search-results.jsonld \
 	tests/test-content/emacs.jsonld \
 	tests/test-content/frango-frito.jsonld \
 	tests/test-content/greyjoy-article.jsonld \
-	tests/test-content/media-search-results.jsonld \
 	tests/test-content/mexico.html \
 	tests/test-content/mexico.jsonld \
 	tests/test-content/never-gonna-give-you-up-video.jsonld \

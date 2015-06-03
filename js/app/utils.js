@@ -23,8 +23,7 @@ function parse_object_from_file (file) {
         let [success, data] = file.load_contents(null);
         return JSON.parse(data);
     } catch(e) {
-        printerr(e);
-        printerr(e.stack);
+        logError(e);
     }
     return null;
 }
