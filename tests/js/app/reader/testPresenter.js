@@ -293,6 +293,7 @@ describe('Reader presenter', function () {
         });
 
         it('gracefully handles the query failing', function () {
+            spyOn(window, 'logError');
             engine.get_objects_by_query_finish.and.callFake(function () {
                 throw new Error();
             });
