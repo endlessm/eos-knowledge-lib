@@ -164,14 +164,6 @@ const ContentObjectModel = new Lang.Class({
         'license': GObject.ParamSpec.string('license', 'License', 'License of the document or media object',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
         /**
-         * Property: num-resources
-         * The number of resources belonging to this content object.
-         */
-        'num-resources': GObject.ParamSpec.int('num-resources', 'Number of resources',
-            'Number of resources belonging to this object',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-             0, GLib.MAXINT32, 0),
-        /**
          * Property: redirects-to
          * The EKN ID of the ContentObject to which this model should redirect.
          */
@@ -275,9 +267,6 @@ ContentObjectModel._props_from_json_ld = function (json_ld_data, media_path, ekn
 
     if(json_ld_data.hasOwnProperty('language'))
         props.language = json_ld_data.language;
-
-    if(json_ld_data.hasOwnProperty('resources'))
-        props.num_resources = json_ld_data.resources.length;
 
     if(json_ld_data.hasOwnProperty('copyrightHolder'))
         props.copyright_holder = json_ld_data.copyrightHolder;
