@@ -132,14 +132,13 @@ const Engine = Lang.Class({
                 }
             };
 
-            let [domain, __] = Utils.components_from_ekn_id(id);
+            let [domain, hash] = Utils.components_from_ekn_id(id);
             let ekn_version = this._ekn_version_from_domain(domain);
 
             // Bundles with version >= 2 store all json-ld on disk instead of in the
             // Xapian DB itself, and hence require no HTTP request to xapian-bridge
             // when fetching an object
             if (ekn_version >= 2) {
-                let [domain, hash] = Utils.components_from_ekn_id(id);
                 let shard_file = this._shard_file_from_domain(domain);
                 let record = shard_file.find_record_by_hex_name(hash);
                 if (!record)
