@@ -233,7 +233,6 @@ js_files = \
 	js/app/infiniteScrolledWindow.js \
 	js/app/launcher.js \
 	js/app/lessonCard.js \
-	js/app/licenses.js \
 	js/app/lightbox.js \
 	js/app/listCard.js \
 	js/app/marginButton.js \
