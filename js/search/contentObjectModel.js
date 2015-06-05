@@ -242,6 +242,10 @@ ContentObjectModel._setup_from_json_ld = function (model, json_ld_data, media_pa
     if (json_ld_data.hasOwnProperty('resources')) {
         model.set_resources(json_ld_data.resources);
     }
+
+    if (json_ld_data.hasOwnProperty('tags')) {
+        model.set_resources(json_ld_data.tags);
+    }
 };
 
 ContentObjectModel._props_from_json_ld = function (json_ld_data, media_path, ekn_version) {
