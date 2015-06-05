@@ -1,9 +1,11 @@
 // Copyright 2014 Endless Mobile, Inc.
+const ByteArray = imports.byteArray;
 const EosShard = imports.gi.EosShard;
+const Gio = imports.gi.Gio;
+const GLib = imports.gi.GLib;
+const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 const Soup = imports.gi.Soup;
-const GObject = imports.gi.GObject;
-const GLib = imports.gi.GLib;
 
 const ArticleObjectModel = imports.search.articleObjectModel;
 const AsyncTask = imports.search.asyncTask;
@@ -180,33 +182,6 @@ const Engine = Lang.Class({
         return task.finish();
     },
 
-    // Returns a GInputStream for the given EKN object's content. Only supports
-    // v2+ app bundles.
-    get_content_by_id: function (ekn_id) {
-        let [domain, __] = Utils.components_from_ekn_id(ekn_id);
-        let ekn_version = this._ekn_version_from_domain(domain);
-        if (ekn_version >= 2) {
-           return this._read_content_from_disk(ekn_id);
-        } else {
-            throw new Error('Engine.get_content_by_id is not supported for legacy bundles');
-        }
-    },
-
-    _read_content_from_disk: function (ekn_id) {
-        let [domain, hash] = Utils.components_from_ekn_id(ekn_id);
-        let shard_file = this._shard_file_from_domain(domain);
-        let record = shard_file.find_record_by_hex_name(hash);
-
-        if (record === null) {
-            throw new Error('Could not find shard record for ' + ekn_id);
-        }
-
-        let stream = record.data.get_stream();
-        let content_type = record.data.get_content_type();
-
-        return [stream, content_type];
-    },
-
     /**
      * Function: get_objects_by_query
      *
@@ -342,18 +317,49 @@ const Engine = Lang.Class({
         };
 
         let json_ld_type = json_ld['@type'];
-        if (ekn_model_by_ekv_type.hasOwnProperty(json_ld_type)) {
-            let Model = ekn_model_by_ekv_type[json_ld_type];
-
-            let ekn_id = json_ld['@id'];
-            let [domain, __] = Utils.components_from_ekn_id(ekn_id);
-            let ekn_version = this._ekn_version_from_domain(domain);
-            let content_path = this._content_path_from_domain(domain);
-
-            return Model.new_from_json_ld(json_ld, content_path + this._MEDIA_PATH, ekn_version);
-        } else {
+        if (!ekn_model_by_ekv_type.hasOwnProperty(json_ld_type))
             throw new Error('No EKN model found for json_ld type ' + json_ld_type);
+
+        let Model = ekn_model_by_ekv_type[json_ld_type];
+        let props = {};
+
+        let ekn_id = json_ld['@id'];
+        let [domain, hash] = Utils.components_from_ekn_id(ekn_id);
+        props.ekn_version = this._ekn_version_from_domain(domain);
+
+        if (props.ekn_version >= 2) {
+            props.get_content_stream = () => {
+                let shard_file = this._shard_file_from_domain(domain);
+                let record = shard_file.find_record_by_hex_name(hash);
+
+                if (record === null)
+                    throw new Error('Could not find shard record for ' + ekn_id);
+
+                return record.data.get_stream();
+            };
+        } else {
+            if (json_ld.hasOwnProperty('articleBody')) {
+                // Legacy databases store their HTML within the xapian databases
+                // themselves and don't store a contentType property
+                props.content_type = 'text/html';
+                props.get_content_stream = () => {
+                    return Utils.string_to_stream(json_ld.articleBody);
+                };
+            } else if (json_ld.hasOwnProperty('contentURL')) {
+                let content_path = this._content_path_from_domain(domain);
+                let uri = 'file://' + content_path + this._MEDIA_PATH + '/' + json_ld.contentURL;
+                // We don't care if the guess was certain or not, since the
+                // content_type is a required parameter
+                let [guessed_mimetype, __] = Gio.content_type_guess(uri, null);
+                props.content_type = guessed_mimetype;
+                props.get_content_stream = () => {
+                    let file = Gio.File.new_for_uri(uri);
+                    return file.read(null);
+                };
+            }
         }
+
+        return new Model(props, json_ld);
     },
 
     _get_xapian_uri: function (query_obj) {

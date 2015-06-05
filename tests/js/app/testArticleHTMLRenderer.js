@@ -2,6 +2,7 @@
 const ArticleHTMLRenderer = imports.app.articleHTMLRenderer;
 const ArticleObjectModel = imports.search.articleObjectModel;
 const Utils = imports.tests.utils;
+const SearchUtils = imports.search.utils;
 
 describe('Article HTML Renderer', function () {
     let wikihow_model, wikibooks_model, embedly_model, javascripty_model;
@@ -14,7 +15,7 @@ describe('Article HTML Renderer', function () {
         wikihow_model = new ArticleObjectModel.ArticleObjectModel({
             source_uri: 'http://www.wikihow.com/Give-Passive-Aggressive-Gifts-for-Christmas',
             original_uri: 'http://www.wikihow.com/Give-Passive-Aggressive-Gifts-for-Christmas',
-            html: '<html><body><p>wikihow html</p></body></html>',
+            get_content_stream: () => { return SearchUtils.string_to_stream('<html><body><p>wikihow html</p></body></html>'); },
             content_type: 'text/html',
             source: 'wikihow',
             source_name: 'wikiHow',
@@ -24,7 +25,7 @@ describe('Article HTML Renderer', function () {
         wikibooks_model = new ArticleObjectModel.ArticleObjectModel({
             source_uri: 'http://en.wikibooks.org/wiki/When_It_Hits_the_Fan',
             original_uri: 'http://en.wikibooks.org/wiki/When_It_Hits_the_Fan',
-            html: '<html><body><p>wikibooks html</p></body></html>',
+            get_content_stream: () => { return SearchUtils.string_to_stream('<html><body><p>wikibooks html</p></body></html>'); },
             content_type: 'text/html',
             source: 'wikibooks',
             source_name: 'Wikibooks',
@@ -32,7 +33,7 @@ describe('Article HTML Renderer', function () {
             title: 'Wikibooks title',
         });
         embedly_model = new ArticleObjectModel.ArticleObjectModel({
-            html: '<html><body><p>embedly html</p></body></html>',
+            get_content_stream: () => { return SearchUtils.string_to_stream('<html><body><p>embedly html</p></body></html>'); },
             content_type: 'text/html',
             source: 'embedly',
             original_uri: 'http://blog.ly/post/2015/03/12/rendering-an-article',
@@ -41,7 +42,7 @@ describe('Article HTML Renderer', function () {
             title: 'Embedly title',
         });
         javascripty_model = new ArticleObjectModel.ArticleObjectModel({
-            html: '<html>{{{#javascript-files}}}{{{.}}}{{{#javascript-files}}}</html>',
+            get_content_stream: () => { return SearchUtils.string_to_stream('<html>{{{#javascript-files}}}{{{.}}}{{{#javascript-files}}}</html>'); },
             content_type: 'text/html',
             source: 'wikihow',
             title: 'Javascripts Galore',
@@ -130,7 +131,7 @@ describe('Article HTML Renderer', function () {
         let wikihow_model_eos22 = new ArticleObjectModel.ArticleObjectModel({
             source_uri: 'http://www.wikihow.com/Give-Passive-Aggressive-Gifts-for-Christmas',
             content_type: 'text/html',
-            html: '<html><body><p>wikihow html</p></body></html>',
+            get_content_stream: () => { return SearchUtils.string_to_stream('<html><body><p>wikihow html</p></body></html>'); },
             source: 'wikihow',
             license: 'Creative Commons',
             title: 'Wikihow & title',
@@ -138,7 +139,7 @@ describe('Article HTML Renderer', function () {
         let wikibooks_model_eos22 = new ArticleObjectModel.ArticleObjectModel({
             source_uri: 'http://en.wikibooks.org/wiki/When_It_Hits_the_Fan',
             content_type: 'text/html',
-            html: '<html><body><p>wikibooks html</p></body></html>',
+            get_content_stream: () => { return SearchUtils.string_to_stream('<html><body><p>wikibooks html</p></body></html>'); },
             source: 'wikibooks',
             license: 'Creative Commons',
             title: 'Wikibooks title',

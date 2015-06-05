@@ -217,7 +217,6 @@ describe('Reader presenter', function () {
             synopsis: "Some text",
             ekn_id: 'about:blank',
             published: data[2],
-            html: '<html>hello</html>',
             article_number: ix,
         });
         model.authors = data[1];
@@ -304,7 +303,6 @@ describe('Reader presenter', function () {
             const MOCK_ID = 'abc123';
             let model = new ArticleObjectModel.ArticleObjectModel({
                 article_number: 5000,
-                html: '<html>hello</html>',
                 ekn_id: 'about:blank',
                 title: 'I Write a Blog',
             });

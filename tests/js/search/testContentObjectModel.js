@@ -26,7 +26,7 @@ describe ("Content Object Model", function () {
         });
 
         it ("successfully creates new object from JSON-LD data", function () {
-            contentObject = ContentObjectModel.ContentObjectModel.new_from_json_ld(mockContentData);
+            contentObject = new ContentObjectModel.ContentObjectModel({}, mockContentData);
             expect(contentObject.title).toEqual(mockContentData.title);
         });
 
@@ -35,14 +35,18 @@ describe ("Content Object Model", function () {
                 "@id": mockContentData["@id"],
                 "title": mockContentData["title"]
             };
-            contentObject = ContentObjectModel.ContentObjectModel.new_from_json_ld(just_a_title_json_ld);
+            contentObject = new ContentObjectModel.ContentObjectModel({}, just_a_title_json_ld);
             expect(contentObject.title).toEqual(mockContentData.title);
         });
     });
 
     describe ("Properties", function () {
         beforeEach (function() {
-            contentObject = ContentObjectModel.ContentObjectModel.new_from_json_ld(mockContentData);
+            contentObject = new ContentObjectModel.ContentObjectModel({}, mockContentData);
+        });
+
+        it ('ekn_version defaults to 1', function () {
+            expect(contentObject.ekn_version).toEqual(1);
         });
 
         it ("should have an ID", function () {

@@ -6,6 +6,7 @@ const Lang = imports.lang;
 
 const Config = imports.app.config;
 const Mustache = imports.app.mustache.Mustache;
+const SearchUtils = imports.search.utils;
 
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
@@ -127,9 +128,11 @@ const ArticleHTMLRenderer = new Lang.Class({
             js_files = js_files.concat(opts.custom_js_files);
         }
 
+        let stream = model.get_content_stream();
+        let html = SearchUtils.read_stream_sync(stream);
         return Mustache.render(this._template, {
             'title': opts.show_title ? model.title : false,
-            'body-html': this._strip_tags(model.get_html()),
+            'body-html': this._strip_tags(html),
             'disclaimer': this._get_disclaimer(model),
             'copy-button-text': _("Copy"),
             'css-files': css_files,

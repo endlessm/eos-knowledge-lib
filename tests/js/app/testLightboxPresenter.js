@@ -66,7 +66,6 @@ describe('Lightbox Presenter', function () {
             synopsis: 'Some text',
             ekn_id: 'about:blank',
             published: '2014/11/13 08:00',
-            html: '<html>hello</html>',
             resources: [media_object_uri],
         });
         spyOn(lightbox_presenter, '_preview_media_object');

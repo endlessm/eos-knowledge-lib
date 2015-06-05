@@ -12,7 +12,7 @@ describe ('Image Object Model', function () {
 
     beforeEach(function () {
         jasmine.addMatchers(InstanceOfMatcher.customMatchers);
-        imageObject = new MediaObjectModel.ImageObjectModel.new_from_json_ld(mockImageData);
+        imageObject = new MediaObjectModel.ImageObjectModel({}, mockImageData);
     });
 
     describe ('type', function () {
@@ -33,7 +33,7 @@ describe ('Image Object Model', function () {
         it ('should inherit properties set by parent class (MediaObjectModel)', function () {
             expect(imageObject.caption).toBeDefined();
             expect(imageObject.width).toBeDefined();
-            expect(imageObject.content_uri).toBeDefined();
+            expect(imageObject.title).toBeDefined();
             expect(imageObject.height).toBeDefined();
         });
     });
@@ -45,7 +45,7 @@ describe ('Video Object Model', function () {
 
     beforeEach(function () {
         jasmine.addMatchers(InstanceOfMatcher.customMatchers);
-        videoObject = new MediaObjectModel.VideoObjectModel.new_from_json_ld(mockVideoData);
+        videoObject = new MediaObjectModel.VideoObjectModel({}, mockVideoData);
     });
 
     describe ('type', function () {

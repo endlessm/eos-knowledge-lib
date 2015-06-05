@@ -7,18 +7,18 @@ const Utils = imports.tests.utils;
 
 Gtk.init(null);
 
-const TEST_CONTENT_DIR = Utils.get_test_content_srcdir();
-const MOCK_IMAGE_PATH = TEST_CONTENT_DIR + 'rick-astley-image.jsonld';
-
 describe ('Media Infobox', function () {
     let imageObject;
-    let mockImageData = Utils.parse_object_from_path(MOCK_IMAGE_PATH);
 
     beforeEach(function () {
         jasmine.addMatchers(InstanceOfMatcher.customMatchers);
         Utils.register_gresource();
 
-        imageObject = new MediaObjectModel.ImageObjectModel.new_from_json_ld(mockImageData);
+        imageObject = new MediaObjectModel.ImageObjectModel({
+            caption: "foo",
+            license: "bar",
+            copyright_holder: "baz",
+        });
     });
 
     it ('should be constructable from a MediaObjectModel', function () {

@@ -1,6 +1,5 @@
 // Copyright 2014 Endless Mobile, Inc.
 
-const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
@@ -58,58 +57,28 @@ const MediaObjectModel = new Lang.Class({
             0, GLib.MAXUINT32, 0)
     },
 
-    _init: function (params) {
-        this.parent(params);
+    _init: function (props={}, json_ld=null) {
+        if (json_ld)
+            this._media_props_from_json_ld(props, json_ld);
+
+        this.parent(props, json_ld);
     },
+
+    _media_props_from_json_ld: function (props, json_ld) {
+        // Marshal properties specific to MediaObjectModel
+        if (json_ld.hasOwnProperty('caption'))
+            props.caption = json_ld.caption;
+
+        if (json_ld.hasOwnProperty('encodingFormat'))
+            props.encoding_format = json_ld.encodingFormat;
+
+        if (json_ld.hasOwnProperty('height'))
+            props.height = parseInt(json_ld.height);
+
+        if (json_ld.hasOwnProperty('width'))
+            props.width = parseInt(json_ld.width);
+    }
 });
-
-/**
- * Constructor: new_from_json_ld
- * Creates an MediaObjectModel from a Knowledge Engine MediaObject
- * JSON-LD document
- */
-MediaObjectModel.new_from_json_ld = function (json_ld_data, media_path, ekn_version) {
-    let props = MediaObjectModel._props_from_json_ld(json_ld_data, media_path, ekn_version);
-    let media_object_model = new MediaObjectModel(props);
-
-    return media_object_model;
-};
-
-MediaObjectModel._props_from_json_ld = function (json_ld_data, media_path, ekn_version) {
-    // Inherit properties marshalled from parent class
-    let ParentClass = MediaObjectModel.__super__;
-    let props = ParentClass._props_from_json_ld(json_ld_data, media_path, ekn_version);
-
-    // legacy databases didn't store content_type information, so we have to
-    // guess based on contentURL
-    if (ekn_version === 1) {
-        if (json_ld_data.hasOwnProperty('contentURL')) {
-            // we don't really care if the guess was certain or not, since the
-            // content_type is a required parameter
-            let [guessed_mimetype, __] = Gio.content_type_guess(json_ld_data.contentURL, null);
-            props.content_type = guessed_mimetype;
-        }
-    }
-
-    // Marshal properties specific to MediaObjectModel
-    if (json_ld_data.hasOwnProperty('caption')) {
-        props.caption = json_ld_data.caption;
-    }
-
-    if (json_ld_data.hasOwnProperty('encodingFormat')) {
-        props.encoding_format = json_ld_data.encodingFormat;
-    }
-
-    if (json_ld_data.hasOwnProperty('height')) {
-        props.height = parseInt(json_ld_data.height);
-    }
-
-    if (json_ld_data.hasOwnProperty('width')) {
-        props.width = parseInt(json_ld_data.width);
-    }
-
-    return props;
-};
 
 /**
  * Class: ImageObjectModel
@@ -121,26 +90,10 @@ const ImageObjectModel = Lang.Class({
     GTypeName: 'EknImageObjectModel',
     Extends: MediaObjectModel,
 
-    _init: function (props) {
-        this.parent(props);
-    }
+    _init: function (props={}, json_ld=null) {
+        this.parent(props, json_ld);
+    },
 });
-
-/**
- * Constructor: new_from_json_ld
- * Creates an ImageObjectModel from a Knowledge Engine ImageObject
- * JSON-LD document
- */
-ImageObjectModel.new_from_json_ld = function (json_ld_data, media_path, ekn_version) {
-    let props = ImageObjectModel._props_from_json_ld(json_ld_data, media_path, ekn_version);
-    return new ImageObjectModel(props);
-};
-
-ImageObjectModel._props_from_json_ld = function (json_ld_data, media_path, ekn_version) {
-    // ImageObject inherits all its properties from its parent
-    let ParentClass = ImageObjectModel.__super__;
-    return ParentClass._props_from_json_ld(json_ld_data, media_path, ekn_version);
-};
 
 /**
  * Class: VideoObjectModel
@@ -174,32 +127,18 @@ const VideoObjectModel = Lang.Class({
             ''),
     },
 
-    _init: function (props) {
-        this.parent(props);
+    _init: function (props={}, json_ld=null) {
+        if (json_ld)
+            this._video_props_from_json_ld(props, json_ld);
+
+        this.parent(props, json_ld);
+    },
+
+    _video_props_from_json_ld: function (props, json_ld) {
+        if (json_ld.hasOwnProperty('duration'))
+            props.duration = json_ld.duration;
+
+        if (json_ld.hasOwnProperty('transcript'))
+            props.transcript = json_ld.transcript;
     },
 });
-
-VideoObjectModel.new_from_json_ld = function (json_ld_data, media_path, ekn_version) {
-    let props = VideoObjectModel._props_from_json_ld(json_ld_data, media_path, ekn_version);
-    return new VideoObjectModel(props);
-};
-
-/**
- * Constructor: new_from_json_ld
- * Creates an VideoObjectModel from a Knowledge Engine VideoObject
- * JSON-LD document
- */
-VideoObjectModel._props_from_json_ld = function (json_ld_data, media_path, ekn_version) {
-    let ParentClass = VideoObjectModel.__super__;
-    let props = ParentClass._props_from_json_ld(json_ld_data, media_path, ekn_version);
-
-    if (json_ld_data.hasOwnProperty('duration')) {
-        props.duration = json_ld_data.duration;
-    }
-
-    if (json_ld_data.hasOwnProperty('transcript')) {
-        props.transcript = json_ld_data.transcript;
-    }
-
-    return props;
-};

@@ -6,13 +6,11 @@ const Lang = imports.lang;
 
 const ArticleObjectModel = imports.search.articleObjectModel;
 const ArticlePresenter = imports.app.articlePresenter;
+const TreeNode = imports.search.treeNode;
 const Utils = imports.tests.utils;
+const SearchUtils = imports.search.utils;
 
 Gtk.init(null);
-
-const TEST_CONTENT_DIR = Utils.get_test_content_srcdir();
-const TEST_CONTENT_BUILDDIR = Utils.get_test_content_builddir();
-const MOCK_ARTICLE_PATH = TEST_CONTENT_DIR + 'mexico.jsonld';
 
 const MockView = new Lang.Class({
     Name: 'MockView',
@@ -37,19 +35,23 @@ const MockView = new Lang.Class({
 describe('Article Presenter', function () {
     let presenter;
     let view;
-    let mockArticleData;
+    let toc_json = { "tableOfContents":
+        [{"hasIndex": 0, "hasIndexLabel": 1, "hasLabel": "Foo", "hasContent": "#Foo"},
+         {"hasIndex": 1, "hasIndexLabel": 2, "hasLabel": "Bar", "hasContent": "#Bar"},
+         {"hasIndex": 2, "hasIndexLabel": 3, "hasLabel": "Baz", "hasContent": "#Baz"}]};
     let articleObject;
-    let webview;
 
     beforeEach(function (done) {
         Utils.register_gresource();
 
-        let file = Gio.file_new_for_path(MOCK_ARTICLE_PATH);
-
-        let [success, data] = file.load_contents(null);
-        mockArticleData = JSON.parse(data);
-
-        articleObject = new ArticleObjectModel.ArticleObjectModel.new_from_json_ld(mockArticleData, undefined, 1);
+        let toc = TreeNode.tree_model_from_tree_node(toc_json);
+        articleObject = new ArticleObjectModel.ArticleObjectModel({
+            ekn_id: 'ekn:///foo/bar',
+            content_type: 'text/html',
+            get_content_stream: () => { return SearchUtils.string_to_stream('<html><body><p>hi</p></body></html>'); },
+            title: 'Wikihow & title',
+            table_of_contents: toc,
+        });
 
         view = new MockView();
         view.connect_after('new-view-transitioned', done);
@@ -68,7 +70,7 @@ describe('Article Presenter', function () {
 
     it('can set toc section list', function () {
         let labels = [];
-        for (let obj of mockArticleData['tableOfContents']) {
+        for (let obj of toc_json['tableOfContents']) {
             if (!('hasParent' in obj)) {
                 labels.push(obj['hasLabel']);
             }

@@ -330,31 +330,36 @@ describe('Knowledge Engine Module', () => {
         it('marshals objects based on @type', (done) => {
             let mock_id = 'ekn://foo/0123456789abcdef';
             mock_engine_request(undefined, [{
-                "@id": mock_id,
-                "@type": "ekn://_vocab/ArticleObject",
-                "synopsis": "NOW IS THE WINTER OF OUR DISCONTENT",
+                '@id': mock_id,
+                '@type': 'ekn://_vocab/ArticleObject',
+                'synopsis': 'NOW IS THE WINTER OF OUR DISCONTENT',
             }]);
 
             engine.get_object_by_id(mock_id, null, (engine, task) => {
                 let result = engine.get_object_by_id_finish(task);
                 expect(result).toBeA(ArticleObjectModel.ArticleObjectModel);
-                expect(result.synopsis).toBe("NOW IS THE WINTER OF OUR DISCONTENT");
+                expect(result.synopsis).toBe('NOW IS THE WINTER OF OUR DISCONTENT');
                 done();
             });
         });
 
-        it('correctly sets media path on models', (done) => {
+        it('sets up content stream and content type for html articles', (done) => {
             let mock_id = 'ekn://foo/0123456789abcdef';
+            let mock_content = '<html>foo</html>';
             mock_engine_request(undefined, [{
-                "@id": mock_id,
-                "@type": "ekn://_vocab/ContentObject",
-                "contentURL": "alligator.jpg",
+                '@id': mock_id,
+                '@type': 'ekn://_vocab/ArticleObject',
+                'articleBody': mock_content,
             }]);
 
             engine.get_object_by_id(mock_id, null, (engine, task) => {
                 let result = engine.get_object_by_id_finish(task);
-                expect(result).toBeA(ContentObjectModel.ContentObjectModel);
-                expect(result.content_uri).toBe('file:///foo/media/alligator.jpg');
+                expect(result).toBeA(ArticleObjectModel.ArticleObjectModel);
+                expect(result.content_type).toBe('text/html');
+                let stream = result.get_content_stream();
+                expect(stream).toBeA(Gio.InputStream);
+                let html = stream.read_bytes(16, null).get_data().toString();
+                expect(html).toBe(mock_content);
                 done();
             });
         });

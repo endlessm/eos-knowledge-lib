@@ -1,3 +1,5 @@
+const ByteArray = imports.byteArray;
+const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 
 const AsyncTask = imports.search.asyncTask;
@@ -101,4 +103,9 @@ function read_stream_sync (stream, cancellable = null) {
         logError(error, 'Error reading ' + path);
         return undefined;
     }
+}
+
+function string_to_stream(string) {
+    let bytes = ByteArray.fromString(string).toGBytes();
+    return Gio.MemoryInputStream.new_from_bytes(bytes);
 }
