@@ -241,12 +241,10 @@ const EncyclopediaPresenter = new Lang.Class({
             }
 
             if (model instanceof ArticleObjectModel.ArticleObjectModel) {
-                this._history_presenter.set_current_item(
-                    '', // title
-                    ARTICLE_PAGE,
-                    model,
-                    null // query_obj
-                );
+                this._history_presenter.set_current_item({
+                    page_type: ARTICLE_PAGE,
+                    article_model: model,
+                });
             } else if (model instanceof MediaObjectModel.MediaObjectModel) {
                 this._lightbox_presenter.show_media_object(this._current_article, model);
             }
@@ -265,11 +263,10 @@ const EncyclopediaPresenter = new Lang.Class({
         let query_obj = new QueryObject.QueryObject({
             query: query,
         });
-        this._history_presenter.set_current_item(
-            search_title,
-            SEARCH_RESULTS_PAGE,
-            null, // article_model
-            query_obj
-        );
+        this._history_presenter.set_current_item({
+            title: search_title,
+            page_type: SEARCH_RESULTS_PAGE,
+            query_obj: query_obj,
+        });
     },
 });
