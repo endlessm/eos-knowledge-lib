@@ -9,7 +9,6 @@ js/app/encyclopedia/presenter.js
 js/app/encyclopedia/view.js
 js/app/homePageA.js
 js/app/lessonCard.js
-js/app/licenses.js
 js/app/noSearchResultsPage.js
 js/app/pdfCard.js
 js/app/presenter.js
