@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2015-05-26 01:51+0000\n"
+"POT-Creation-Date: 2015-06-02 01:49+0000\n"
 "PO-Revision-Date: 2015-05-20 05:52+0000\n"
 "Last-Translator: Roddy Shuler <roddy@endlessm.com>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/projects/p/eos-knowledge-lib/language/pt_BR/)\n"
@@ -123,19 +123,19 @@ msgstr "Cortesia de conteúdo de {blog-link}, licenciado sob {license-link}."
 msgid "HOME"
 msgstr "PÁGINA PRINCIPAL"
 
-#: js/app/encyclopedia/presenter.js:32
+#: js/app/encyclopedia/presenter.js:27
 msgid "Search the world's information!"
 msgstr ""
 
 #. TRANSLATORS: This is the title of the search results page. %s
 #. will be replaced by the text that the user searched for. Make
 #. sure that %s is in your translation as well.
-#: js/app/encyclopedia/presenter.js:302
+#: js/app/encyclopedia/presenter.js:243
 #, javascript-format
 msgid "Results for %s"
 msgstr ""
 
-#: js/app/encyclopedia/view.js:49
+#: js/app/encyclopedia/view.js:69
 msgid "Encyclopedia"
 msgstr ""
 
