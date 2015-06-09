@@ -99,7 +99,18 @@ const ArticleObjectModel = new Lang.Class({
     },
 
     _init: function (params={}) {
-        this._authors = [];
+        // FIXME: When we have support for list GObject properties in gjs.
+        Object.defineProperties(this, {
+            /**
+             * Property: authors
+             * A list of authors of the article being read.
+             */
+            'authors': {
+                value: params.authors ? params.authors.slice(0) : [],
+                writable: false,
+            },
+        });
+        delete params.authors;
 
         // FIXME: this is a backwards-compatibility patch for old databases. See
         // documentation for ContentObjectModel:original_uri and
@@ -146,14 +157,6 @@ const ArticleObjectModel = new Lang.Class({
             return this.html;
         }
     },
-
-    set_authors: function (v) {
-        this._authors = v;
-    },
-
-    get_authors: function () {
-        return this._authors;
-    },
 });
 
 /**
@@ -164,19 +167,8 @@ const ArticleObjectModel = new Lang.Class({
 ArticleObjectModel.new_from_json_ld = function (json_ld_data, media_path, ekn_version) {
     let props = ArticleObjectModel._props_from_json_ld(json_ld_data, media_path, ekn_version);
     let article_object_model = new ArticleObjectModel(props);
-    ArticleObjectModel._setup_from_json_ld(article_object_model, json_ld_data, media_path, ekn_version);
 
     return article_object_model;
-};
-
-ArticleObjectModel._setup_from_json_ld = function (model, json_ld_data, media_path, ekn_version) {
-    // Inherit setup from parent class
-    let ParentClass = ArticleObjectModel.__super__;
-    ParentClass._setup_from_json_ld(model, json_ld_data, media_path, ekn_version);
-    if (json_ld_data.hasOwnProperty('authors')) {
-        model.set_authors(json_ld_data.authors);
-    }
-
 };
 
 ArticleObjectModel._props_from_json_ld = function (json_ld_data, media_path, ekn_version) {
@@ -229,6 +221,9 @@ ArticleObjectModel._props_from_json_ld = function (json_ld_data, media_path, ekn
     }
 
     // Marshal properties specific to ArticleObjectModel
+    if (json_ld_data.hasOwnProperty('authors'))
+        props.authors = json_ld_data.authors;
+
     if (json_ld_data.hasOwnProperty('wordCount')) {
         props.word_count = parseInt(json_ld_data.wordCount);
     }

@@ -44,7 +44,6 @@ describe ("Content Object Model", function () {
     describe ("Properties", function () {
         beforeEach (function() {
             contentObject = ContentObjectModel.ContentObjectModel.new_from_json_ld(mockContentData);
-            contentObject.set_tags(mockContentData.tags);
         });
 
         it ("should have an ID", function () {
@@ -73,7 +72,7 @@ describe ("Content Object Model", function () {
         });
 
         it ("should have tags", function () {
-            expect(contentObject.get_tags()).toEqual(mockContentData["tags"]);
+            expect(contentObject.tags).toEqual(mockContentData["tags"]);
         });
 
         it ("should have a license", function () {
@@ -85,7 +84,7 @@ describe ("Content Object Model", function () {
         });
 
         it ("should have resources", function () {
-            expect(contentObject.get_resources()).toEqual(mockContentData.resources);
+            expect(contentObject.resources).toEqual(mockContentData.resources);
         });
 
         it ("should have redirects-to", function () {

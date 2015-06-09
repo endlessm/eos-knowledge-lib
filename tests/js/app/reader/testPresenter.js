@@ -252,8 +252,6 @@ describe('Reader presenter', function () {
             callback(engine, null);
         });
         spyOn(engine, 'get_object_by_id_finish').and.returnValue(null);
-        MOCK_RESULTS.forEach((model) =>
-            spyOn(model, 'get_authors').and.returnValue(model.authors));
         Utils.register_gresource();
 
         presenter = new Presenter.Presenter(TEST_JSON, {
@@ -310,7 +308,6 @@ describe('Reader presenter', function () {
                 ekn_id: 'about:blank',
                 title: 'I Write a Blog',
             });
-            spyOn(model, 'get_authors').and.returnValue([]);
             engine.get_object_by_id_finish.and.returnValue(model);
             spyOn(view, 'show_global_search_standalone_page');
             presenter.activate_search_result(0, MOCK_ID, 'fake query');

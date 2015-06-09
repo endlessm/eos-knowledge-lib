@@ -72,14 +72,7 @@ MediaObjectModel.new_from_json_ld = function (json_ld_data, media_path, ekn_vers
     let props = MediaObjectModel._props_from_json_ld(json_ld_data, media_path, ekn_version);
     let media_object_model = new MediaObjectModel(props);
 
-    MediaObjectModel._setup_from_json_ld(media_object_model, json_ld_data, media_path, ekn_version);
     return media_object_model;
-};
-
-MediaObjectModel._setup_from_json_ld = function (model, json_ld_data, media_path, ekn_version) {
-    // Inherit setup from parent class
-    let ParentClass = MediaObjectModel.__super__;
-    ParentClass._setup_from_json_ld(model, json_ld_data, media_path, ekn_version);
 };
 
 MediaObjectModel._props_from_json_ld = function (json_ld_data, media_path, ekn_version) {

@@ -84,7 +84,7 @@ const LightboxPresenter = new GObject.Class({
 
     show_media_object: function (article_model, media_object) {
         this._article_model = article_model;
-        let resources = this._article_model.get_resources();
+        let resources = this._article_model.resources;
         let resource_index = resources.indexOf(media_object.ekn_id);
         if (resource_index !== -1) {
             // Checks whether forward/back arrows should be displayed.
@@ -113,7 +113,7 @@ const LightboxPresenter = new GObject.Class({
             return;
         }
 
-        let resources = this._article_model.get_resources();
+        let resources = this._article_model.resources;
         let current_index = resources.indexOf(this.view.lightbox.media_object.ekn_id);
         if (current_index === -1) {
             return;

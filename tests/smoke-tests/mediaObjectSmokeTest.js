@@ -41,7 +41,7 @@ const TestApplication = new Lang.Class ({
 
         this._model = new ArticleObjectModel.ArticleObjectModel.new_from_json_ld(this._get_mock_article_data());
         this._model.ekn_id = 'file://' + TESTDIR + '/test-content/emacs.html';
-        this._model.set_resources(this._get_mock_media_objects());
+        this._model.resources = this._get_mock_media_objects();
 
         this._view = new ArticlePage.ArticlePage();
 
@@ -70,7 +70,7 @@ const TestApplication = new Lang.Class ({
         this._lightbox.add(this._view);
 
         this._lightbox.connect('navigation-previous-clicked', Lang.bind(this, function (lightbox, media_object) {
-            let resources = this._model.get_resources();
+            let resources = this._model.resources;
             let current_index = this._get_position_in_resources(media_object.ekn_id, resources);
             if (current_index > 0) {
                 let new_object = resources[current_index - 1];
@@ -82,7 +82,7 @@ const TestApplication = new Lang.Class ({
             }
         }));
         this._lightbox.connect('navigation-next-clicked', Lang.bind(this, function (lightbox, media_object) {
-            let resources = this._model.get_resources();
+            let resources = this._model.resources;
             let current_index = this._get_position_in_resources(media_object.ekn_id, resources);
             if (current_index < resources.length - 1) {
                 let new_object = resources[current_index + 1];

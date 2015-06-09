@@ -173,20 +173,34 @@ const ContentObjectModel = new Lang.Class({
     },
 
     _init: function (params) {
-        this._resources = [];
+        // FIXME: We can't have lists as GObject properties at the moment, so
+        // handle them before chaining with this.parent().
+        Object.defineProperties(this, {
+            /**
+             * Property: tags
+             * A list of tags of the article being read.
+             */
+            'tags': {
+                value: params.tags ? params.tags.slice(0) : [],
+                writable: false,
+            },
+            /**
+             * Property: resources
+             * A list of resources associated with this content object.
+             */
+            'resources': {
+                value: params.resources ? params.resources.slice(0) : [],
+                writable: false,
+            },
+        });
+        delete params.tags;
+        delete params.resources;
+
         this.parent(params);
     },
 
     get title () {
         return this._title;
-    },
-
-    get_resources: function () {
-        return this._resources;
-    },
-
-    get_tags: function () {
-        return this._tags;
     },
 
     get_content_stream: function () {
@@ -215,14 +229,6 @@ const ContentObjectModel = new Lang.Class({
         v = v.charAt(0).toUpperCase() + v.slice(1);
         this._title = v;
     },
-
-    set_resources: function (v) {
-        this._resources = v;
-    },
-
-    set_tags: function (v) {
-        this._tags = v;
-    }
 });
 
 /**
@@ -233,19 +239,8 @@ const ContentObjectModel = new Lang.Class({
 ContentObjectModel.new_from_json_ld = function (json_ld_data, media_path, ekn_version) {
     let props = ContentObjectModel._props_from_json_ld(json_ld_data, media_path, ekn_version);
     let contentObjectModel = new ContentObjectModel(props);
-    ContentObjectModel._setup_from_json_ld(contentObjectModel, json_ld_data, media_path, ekn_version);
 
     return contentObjectModel;
-};
-
-ContentObjectModel._setup_from_json_ld = function (model, json_ld_data, media_path, ekn_version) {
-    if (json_ld_data.hasOwnProperty('resources')) {
-        model.set_resources(json_ld_data.resources);
-    }
-
-    if (json_ld_data.hasOwnProperty('tags')) {
-        model.set_resources(json_ld_data.tags);
-    }
 };
 
 ContentObjectModel._props_from_json_ld = function (json_ld_data, media_path, ekn_version) {
@@ -271,6 +266,12 @@ ContentObjectModel._props_from_json_ld = function (json_ld_data, media_path, ekn
 
     if(json_ld_data.hasOwnProperty('language'))
         props.language = json_ld_data.language;
+
+    if(json_ld_data.hasOwnProperty('resources'))
+        props.resources = json_ld_data.resources;
+
+    if(json_ld_data.hasOwnProperty('tags'))
+        props.tags = json_ld_data.tags;
 
     if(json_ld_data.hasOwnProperty('copyrightHolder'))
         props.copyright_holder = json_ld_data.copyrightHolder;
