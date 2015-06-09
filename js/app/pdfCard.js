@@ -10,7 +10,7 @@ const StyleClasses = imports.app.styleClasses;
 
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
-const PDF_ICON = '/com/endlessm/knowledge/pdf_icon.png';
+const PDF_ICON = '/com/endlessm/knowledge/images/pdf_icon.png';
 
 /**
  * Class: pdfCard
