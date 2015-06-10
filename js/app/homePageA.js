@@ -74,6 +74,8 @@ const HomePageA = new Lang.Class({
 
         this.parent(props);
 
+        this._got_extra_cards = false;
+
         this.get_style_context().add_class(StyleClasses.HOME_PAGE_A);
     },
 
@@ -90,7 +92,7 @@ const HomePageA = new Lang.Class({
     },
 
     _update_button_visibility: function () {
-        if (!this._card_container.all_visible && !this._animating && this.get_mapped()) {
+        if (this._got_extra_cards || (!this._card_container.all_visible && !this._animating && this.get_mapped())) {
             this._show_button();
         } else {
             this._hide_button();
@@ -138,7 +140,11 @@ const HomePageA = new Lang.Class({
             if (b.featured) sortVal++;
             return sortVal;
         });
+        if (sorted_cards.length > MAX_CARDS) {
+            this._got_extra_cards = true;
+        }
         sorted_cards.slice(0, MAX_CARDS).forEach((card) =>
             this._card_container.add(card));
+        this._update_button_visibility();
     }
 });
