@@ -189,7 +189,7 @@ const NavButtonOverlay = new Lang.Class({
     },
 
     _style_nav_button: function (button, image_uri, fallback_icon_name, fallback_rtl_icon_name) {
-        if (this.get_default_direction() === Gtk.TextDirection.RTL) {
+        if (Gtk.Widget.get_default_direction() === Gtk.TextDirection.RTL) {
             button.image = this._create_new_image(image_uri, fallback_rtl_icon_name);
             button.get_style_context().add_class(StyleClasses.RTL);
         } else {
