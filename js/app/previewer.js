@@ -28,7 +28,7 @@ const Previewer = new Lang.Class({
         'aspect': GObject.ParamSpec.float('aspect', 'Aspect',
             'Aspect ratio of previewer content',
             GObject.ParamFlags.READABLE,
-            false)
+            0.00001, 10000.0, 1.0)
     },
 
     _init: function (props) {
