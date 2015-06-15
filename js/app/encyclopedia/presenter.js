@@ -22,8 +22,8 @@ String.prototype.format = Format.format;
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
 const AUTOCOMPLETE_DELAY = 500; // ms
-const ASSETS_PATH = '/com/endlessm/knowledge/images/';
-const LOGO_FILE = 'logo.png';
+const ASSETS_PATH = 'resource:///com/endlessm/knowledge/images/';
+const LOGO_FILE = 'logo.svg';
 const SEARCH_BOX_PLACEHOLDER_TEXT = _("Search the world's information!");
 const ARTICLE_PAGE = 'article';
 const SEARCH_RESULTS_PAGE = 'search-results';
@@ -94,7 +94,7 @@ const EncyclopediaPresenter = new Lang.Class({
 
     _getLocalizedResource: function(resource_path, filename) {
         let languages = GLib.get_language_names();
-        let directories = Gio.resources_enumerate_children(resource_path,
+        let directories = Gio.resources_enumerate_children(resource_path.split('resource://')[1],
                                                        Gio.ResourceLookupFlags.NONE);
         let location = '';
         // Finds the resource appropriate for the current langauge
