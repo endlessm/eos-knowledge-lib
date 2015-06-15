@@ -1,6 +1,5 @@
 const Endless = imports.gi.Endless;
 const Gdk = imports.gi.Gdk;
-const GdkPixbuf = imports.gi.GdkPixbuf;
 const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
@@ -8,6 +7,7 @@ const Lang = imports.lang;
 const WebKit2 = imports.gi.WebKit2;
 
 const EknWebview = imports.app.eknWebview;
+const ImagePreviewer = imports.app.imagePreviewer;
 
 const ARTICLE_SEARCH_BUTTONS_SPACING = 10;
 const ARTICLE_SEARCH_MAX_RESULTS = 200;
@@ -156,9 +156,13 @@ const ContentPage = new Lang.Class({
         this._wiki_web_view.connect('leave-fullscreen',
             this._on_fullscreen_change.bind(this, false));
 
-        this._logo = new Gtk.Image({
+        this._logo = new ImagePreviewer.ImagePreviewer({
             halign: Gtk.Align.START,
+            margin_top: 10,
+            margin_bottom: 10,
         });
+        this._logo.set_max_percentage(0.2);
+
         this._logo.name = 'content_page_logo';
 
         this.search_box = new Endless.SearchBox();
@@ -283,7 +287,8 @@ const ContentPage = new Lang.Class({
         if (this._logo_uri === v) return;
         this._logo_uri = v;
         if (this._logo_uri) {
-            this._logo.pixbuf = GdkPixbuf.Pixbuf.new_from_resource_at_scale(this._logo_uri, 150, 150, true)
+            let stream = Gio.File.new_for_uri(v).read(null);
+            this._logo.set_content(stream);
         }
         this.notify('logo-uri');
     },

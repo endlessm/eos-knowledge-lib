@@ -16,11 +16,12 @@
     <file compressed="true">html/search_results.html</file>
     <file>images/background-home.jpg</file>
     <file>images/background-result.jpg</file>
-    <file>images/C/logo.png</file>
-    <file>images/es/logo.png</file>
+    <file>images/C/logo.svg</file>
+    <file>images/es/logo.svg</file>
+    <file>images/fr/logo.svg</file>
     <file>images/pdf-background.png</file>
     <file>images/pdf_icon.png</file>
-    <file>images/pt/logo.png</file>
+    <file>images/pt/logo.svg</file>
     <file preprocess="xml-stripblanks">images/reader/archive.svg</file>
     <file preprocess="xml-stripblanks">images/reader/external-link.svg</file>
     <file preprocess="xml-stripblanks">images/reader/left-arrow.svg</file>

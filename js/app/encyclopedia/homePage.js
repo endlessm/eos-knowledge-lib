@@ -1,7 +1,10 @@
 const Endless = imports.gi.Endless;
+const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
+
+const ImagePreviewer = imports.app.imagePreviewer;
 
 const HomePage = new Lang.Class({
     Name: 'HomePage',
@@ -39,9 +42,10 @@ const HomePage = new Lang.Class({
 
         this._logo_uri = null;
 
-        this._logo = new Gtk.Image({
+        this._logo = new ImagePreviewer.ImagePreviewer({
             margin_bottom: 42,
         });
+        this._logo.set_max_percentage(0.5);
 
         this.search_box = new Endless.SearchBox({
             max_width_chars: 52 // set width as per design
@@ -58,7 +62,8 @@ const HomePage = new Lang.Class({
         if (this._logo_uri === v) return;
         this._logo_uri = v;
         if (this._logo_uri) {
-            this._logo.resource = this.logo_uri;
+            let stream = Gio.File.new_for_uri(v).read(null);
+            this._logo.set_content(stream);
         }
         this.notify('logo-uri');
     },
