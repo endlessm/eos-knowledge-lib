@@ -2,18 +2,35 @@ const Gtk = imports.gi.Gtk;
 
 const ArticleObjectModel = imports.search.articleObjectModel;
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
-const utils = imports.tests.utils;
 
-const TEST_CONTENT_DIR = utils.get_test_content_srcdir();
+const MOCK_ARTICLE_DATA = {
+    '@id': 'ekn:asoiaf/House_Greyjoy',
+    'title': 'House Greyjoy',
+    'synopsis': 'We Do Not Sow',
+    'tableOfContents': [
+        {
+            '@id': '_:1',
+            'hasIndex': 0,
+            'hasIndexLabel': '1',
+            'hasLabel': 'History',
+            'hasContent': 'ekn://asoiaf/House_Greyjoy#History'
+        },
+    ],
+};
+const MOCK_READER_ARTICLE_DATA = {
+    '@id': 'ekn:cooking_magazine/Frango_Frito',
+    'title': 'Receita de frango frito',
+    'issueNumber': 12,
+    'articleNumber': 25,
+};
 
 describe ('Article Object Model', function () {
     let articleObject;
-    let mockArticleData = utils.parse_object_from_path(TEST_CONTENT_DIR + 'greyjoy-article.jsonld');
 
     beforeEach(function () {
         jasmine.addMatchers(InstanceOfMatcher.customMatchers);
 
-        articleObject = new ArticleObjectModel.ArticleObjectModel({}, mockArticleData);
+        articleObject = new ArticleObjectModel.ArticleObjectModel({}, MOCK_ARTICLE_DATA);
     });
 
     describe ('JSON-LD marshaler', function () {
@@ -87,12 +104,11 @@ describe ('Article Object Model', function () {
 
 describe ('Reader App Article Object', function () {
     let readerArticleObject;
-    let mockReaderArticleData = utils.parse_object_from_path(TEST_CONTENT_DIR + 'frango-frito.jsonld');
 
     beforeEach(function () {
         jasmine.addMatchers(InstanceOfMatcher.customMatchers);
 
-        readerArticleObject = new ArticleObjectModel.ArticleObjectModel({}, mockReaderArticleData);
+        readerArticleObject = new ArticleObjectModel.ArticleObjectModel({}, MOCK_READER_ARTICLE_DATA);
     });
 
     it ('should present the properties inherent to the Reader App', function () {

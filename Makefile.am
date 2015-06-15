@@ -385,15 +385,10 @@ javascript_tests = \
 test_content = \
 	tests/test-content/agot.svg \
 	tests/test-content/app.json \
-	tests/test-content/emacs.jsonld \
-	tests/test-content/frango-frito.jsonld \
-	tests/test-content/greyjoy-article.jsonld \
 	tests/test-content/mexico.html \
 	tests/test-content/mexico.jsonld \
-	tests/test-content/never-gonna-give-you-up-video.jsonld \
 	tests/test-content/overrides.css \
 	tests/test-content/pdf-sample1.pdf \
-	tests/test-content/rick-astley-image.jsonld \
 	$(NULL)
 EXTRA_DIST += \
 	$(javascript_tests) \

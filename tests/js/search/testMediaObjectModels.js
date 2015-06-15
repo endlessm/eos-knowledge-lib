@@ -1,18 +1,29 @@
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
 const MediaObjectModel = imports.search.mediaObjectModel;
-const utils = imports.tests.utils;
 
-const TEST_CONTENT_DIR = utils.get_test_content_srcdir();
-const MOCK_IMAGE_PATH = TEST_CONTENT_DIR + 'rick-astley-image.jsonld';
-const MOCK_VIDEO_PATH = TEST_CONTENT_DIR + 'never-gonna-give-you-up-video.jsonld';
+const MOCK_IMAGE_DATA = {
+    '@id': 'ekn://rick/astley',
+    'title': 'Rick Astley: The Man, The Myth, The Legend',
+    'caption': 'Great musician, or greatest?',
+    'height': '666',
+    'width': '666',
+};
+const MOCK_VIDEO_DATA = {
+    '@id': 'ekn://rick/never',
+    'title': 'Never Gonna Give You Up (Never Gonna Let You Down)',
+    'caption': 'If this song was sushi, it would be a Rick Roll',
+    'transcript': 'We\'re no strangers to love, etc etc etc',
+    'duration': 'P666S',
+    'height': '666',
+    'width': '666',
+};
 
 describe ('Image Object Model', function () {
     let imageObject;
-    let mockImageData = utils.parse_object_from_path(MOCK_IMAGE_PATH);
 
     beforeEach(function () {
         jasmine.addMatchers(InstanceOfMatcher.customMatchers);
-        imageObject = new MediaObjectModel.ImageObjectModel({}, mockImageData);
+        imageObject = new MediaObjectModel.ImageObjectModel({}, MOCK_IMAGE_DATA);
     });
 
     describe ('type', function () {
@@ -41,11 +52,10 @@ describe ('Image Object Model', function () {
 
 describe ('Video Object Model', function () {
     let videoObject;
-    let mockVideoData = utils.parse_object_from_path(MOCK_VIDEO_PATH);
 
     beforeEach(function () {
         jasmine.addMatchers(InstanceOfMatcher.customMatchers);
-        videoObject = new MediaObjectModel.VideoObjectModel({}, mockVideoData);
+        videoObject = new MediaObjectModel.VideoObjectModel({}, MOCK_VIDEO_DATA);
     });
 
     describe ('type', function () {
