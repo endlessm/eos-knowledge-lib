@@ -1,99 +1,96 @@
 const ContentObjectModel = imports.search.contentObjectModel;
-const utils = imports.tests.utils;
 
-const TEST_CONTENT_DIR = utils.get_test_content_srcdir();
-const CONTENT_OBJECT_EMACS = TEST_CONTENT_DIR + 'emacs.jsonld';
+const MOCK_CONTENT_DATA = {
+    '@id': 'ekn:text_editors/Emacs',
+    'title': 'Emacs',
+    'originalURI': 'http://en.wikipedia.org/wiki/Emacs',
+    'language': 'pt-BR',
+    'synopsis': 'Emacs was invented by Richard Stallman after a long night of drinking.',
+    'lastModifiedDate': '2013-05-09T04:12:44',
+    'tags': ['uninstall plz', 'awful', 'butterflies'],
+    'license': 'Creative-Commons',
+    'thumbnail': 'ekn://text_editors/Stallman.jpg',
+    'resources': ['ekn://text_editors/stallman_the_bard', 'ekn://text_editors/emacs_screenshot'],
+    'redirectsTo': 'http://en.wikipedia.org/wiki/Inferiority_complex',
+};
 
-describe ("Content Object Model", function () {
+describe ('Content Object Model', function () {
     let contentObject;
-    let mockContentData = utils.parse_object_from_path(CONTENT_OBJECT_EMACS);
 
-    describe ("Constructor", function () {
-        it ("successfully creates new object from properties", function () {
-            contentObject = new ContentObjectModel.ContentObjectModel({
-                ekn_id : mockContentData["@id"],
-                title : mockContentData.title,
-                original_uri: mockContentData.originalURI,
-                thumbnail_id : mockContentData.thumbnail,
-                language : mockContentData.language,
-                copyright_holder : mockContentData.copyrightHolder,
-                source_uri : mockContentData.sourceURL,
-                source_name: mockContentData.sourceName,
-                synopsis : mockContentData.synopsis,
-                last_modified_date : mockContentData.lastModifiedDate,
-                license : mockContentData.license
-            });
-            expect(contentObject.title).toEqual(mockContentData.title);
+    it ('successfully creates new object from properties', function () {
+        contentObject = new ContentObjectModel.ContentObjectModel({
+            ekn_id : 'ekn:text_editors/Emacs',
+            title : 'Emacs',
         });
-
-        it ("successfully creates new object from JSON-LD data", function () {
-            contentObject = ContentObjectModel.ContentObjectModel.new_from_json_ld(mockContentData);
-            expect(contentObject.title).toEqual(mockContentData.title);
-        });
-
-        it ("successfully creates new object from JSON-LD with missing properties", function () {
-            let just_a_title_json_ld = {
-                "@id": mockContentData["@id"],
-                "title": mockContentData["title"]
-            };
-            contentObject = ContentObjectModel.ContentObjectModel.new_from_json_ld(just_a_title_json_ld);
-            expect(contentObject.title).toEqual(mockContentData.title);
-        });
+        expect(contentObject.title).toEqual('Emacs');
     });
 
-    describe ("Properties", function () {
+    it ('successfully creates new object from JSON-LD data', function () {
+        contentObject = new ContentObjectModel.ContentObjectModel({}, MOCK_CONTENT_DATA);
+        expect(contentObject.title).toEqual(MOCK_CONTENT_DATA.title);
+    });
+
+    it ('successfully creates new object from JSON-LD with missing properties', function () {
+        let just_a_title_json_ld = {
+            '@id': MOCK_CONTENT_DATA['@id'],
+            'title': MOCK_CONTENT_DATA['title']
+        };
+        contentObject = new ContentObjectModel.ContentObjectModel({}, just_a_title_json_ld);
+        expect(contentObject.title).toEqual(MOCK_CONTENT_DATA.title);
+    });
+
+    describe ('properties', function () {
         beforeEach (function() {
-            contentObject = ContentObjectModel.ContentObjectModel.new_from_json_ld(mockContentData);
-            contentObject.set_tags(mockContentData.tags);
+            contentObject = new ContentObjectModel.ContentObjectModel({}, MOCK_CONTENT_DATA);
         });
 
-        it ("should have an ID", function () {
-            expect(contentObject.ekn_id).toEqual(mockContentData["@id"]);
+        it ('ekn_version defaults to 1', function () {
+            expect(contentObject.ekn_version).toEqual(1);
         });
 
-        it ("should have a title", function () {
-            expect(contentObject.title).toEqual(mockContentData["title"]);
+        it ('should have an ID', function () {
+            expect(contentObject.ekn_id).toEqual(MOCK_CONTENT_DATA['@id']);
+        });
+
+        it ('should have a title', function () {
+            expect(contentObject.title).toEqual(MOCK_CONTENT_DATA['title']);
         });
 
         it('has an original URI', function () {
-            expect(contentObject.original_uri).toEqual(mockContentData.originalURI);
+            expect(contentObject.original_uri).toEqual(MOCK_CONTENT_DATA.originalURI);
         });
 
-        it ("should have a language", function () {
-            expect(contentObject.language).toEqual(mockContentData["language"]);
+        it ('should have a language', function () {
+            expect(contentObject.language).toEqual(MOCK_CONTENT_DATA['language']);
         });
 
-        it ("should have a synopsis", function () {
-            expect(contentObject.synopsis).toEqual(mockContentData["synopsis"]);
+        it ('should have a synopsis', function () {
+            expect(contentObject.synopsis).toEqual(MOCK_CONTENT_DATA['synopsis']);
         });
 
-        it ("should have a last-modified date", function () {
+        it ('should have a last-modified date', function () {
             expect(new Date(contentObject.last_modified_date))
-                .toEqual(new Date(mockContentData.lastModifiedDate));
+                .toEqual(new Date(MOCK_CONTENT_DATA.lastModifiedDate));
         });
 
-        it ("should have tags", function () {
-            expect(contentObject.get_tags()).toEqual(mockContentData["tags"]);
+        it ('should have tags', function () {
+            expect(contentObject.tags).toEqual(MOCK_CONTENT_DATA['tags']);
         });
 
-        it ("should have a license", function () {
-            expect(contentObject.license).toEqual(mockContentData["license"]);
+        it ('should have a license', function () {
+            expect(contentObject.license).toEqual(MOCK_CONTENT_DATA['license']);
         });
 
-        it ("should have a thumbnail-id", function () {
-            expect(contentObject.thumbnail_id).toEqual(mockContentData["thumbnail"]);
+        it ('should have a thumbnail-id', function () {
+            expect(contentObject.thumbnail_id).toEqual(MOCK_CONTENT_DATA['thumbnail']);
         });
 
-        it ("should have resources", function () {
-            expect(contentObject.get_resources()).toEqual(mockContentData.resources);
+        it ('should have resources', function () {
+            expect(contentObject.resources).toEqual(MOCK_CONTENT_DATA.resources);
         });
 
-        it ("should have redirects-to", function () {
-            expect(contentObject.redirects_to).toEqual(mockContentData.redirectsTo);
-        });
-
-        it('has a source name', function () {
-            expect(contentObject.source_name).toEqual(mockContentData.sourceName);
+        it ('should have redirects-to', function () {
+            expect(contentObject.redirects_to).toEqual(MOCK_CONTENT_DATA.redirectsTo);
         });
     });
 });

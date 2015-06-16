@@ -544,7 +544,7 @@ const Presenter = new Lang.Class({
     },
 
     _new_card_from_article_model: function (model, idx) {
-        let formatted_attribution = this._format_attribution_for_metadata(model.get_authors());
+        let formatted_attribution = this._format_attribution_for_metadata(model.authors);
         // We increment the page number to account for the 0-based index.
         // Note: _get_page_number_for_article_model will return -1 only if it's an
         // "Archived" issue, case in which the card doesn't require a card number.
@@ -949,7 +949,7 @@ const Presenter = new Lang.Class({
 
     // Take an ArticleObjectModel and create a Reader.ArticlePage view.
     _create_article_page_from_article_model: function (model) {
-        let formatted_attribution = this._format_attribution_for_metadata(model.get_authors());
+        let formatted_attribution = this._format_attribution_for_metadata(model.authors);
         let article_page = new ArticlePage.ArticlePage();
         article_page.title_view.title = model.title;
         article_page.title_view.attribution = formatted_attribution;
@@ -1036,7 +1036,7 @@ const Presenter = new Lang.Class({
         });
         this.view.standalone_page.article_page.title_view.title = model.title;
         this.view.standalone_page.article_page.title_view.attribution =
-            this._format_attribution_for_metadata(model.get_authors());
+            this._format_attribution_for_metadata(model.authors);
         if (this._current_standalone_class) {
             this.view.standalone_page.article_page.get_style_context().remove_class(this._current_standalone_class);
         }
