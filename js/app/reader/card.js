@@ -158,17 +158,12 @@ const Card = new Lang.Class({
             hover_frame.hide();
         });
 
-        // TODO: We should figure out another way to achieve this.
-        hover_frame.connect_after('realize', function (widget) {
-            let gdk_window = widget.get_window();
-            gdk_window.set_child_input_shapes();
-        });
-
         hover_frame.add(card_info_frame);
 
         let overlay = new Gtk.Overlay();
         overlay.add(grid);
         overlay.add_overlay(hover_frame);
+        overlay.set_overlay_pass_through(hover_frame, true);
         this.add(overlay);
     },
 

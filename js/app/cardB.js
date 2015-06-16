@@ -28,11 +28,6 @@ const CardB = new Lang.Class({
     pack_widgets: function (title_label, synopsis_label, image_frame) {
         title_label.lines = 1;
         title_label.valign = Gtk.Align.END;
-        // Make title label "transparent" to mouse events
-        title_label.connect_after('realize', function (widget) {
-            let gdk_window = widget.get_window();
-            gdk_window.set_child_input_shapes();
-        });
 
         // I think we need to ref the size group somehow, so its lifetime is
         // attached to this widget, hence the "this."
@@ -45,6 +40,7 @@ const CardB = new Lang.Class({
         let overlay = new Gtk.Overlay();
         overlay.add(image_frame);
         overlay.add_overlay(title_label);
+        overlay.set_overlay_pass_through(title_label, true);
 
         this.add(overlay);
     }
