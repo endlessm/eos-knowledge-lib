@@ -87,8 +87,8 @@ const Engine = Lang.Class({
 
     },
 
-    _DB_PATH: '/db',
-    _MEDIA_PATH: '/media',
+    _DB_DIR: 'db',
+    _MEDIA_DIR: 'media',
 
     _init: function (params) {
         this.parent(params);
@@ -347,13 +347,13 @@ const Engine = Lang.Class({
                 };
             } else if (json_ld.hasOwnProperty('contentURL')) {
                 let content_path = this._content_path_from_domain(domain);
-                let uri = 'file://' + content_path + this._MEDIA_PATH + '/' + json_ld.contentURL;
+                let model_path = GLib.build_filenamev([content_path, this._MEDIA_DIR, json_ld.contentURL]);
                 // We don't care if the guess was certain or not, since the
                 // content_type is a required parameter
-                let [guessed_mimetype, __] = Gio.content_type_guess(uri, null);
+                let [guessed_mimetype, __] = Gio.content_type_guess(model_path, null);
                 props.content_type = guessed_mimetype;
                 props.get_content_stream = () => {
-                    let file = Gio.File.new_for_uri(uri);
+                    let file = Gio.File.new_for_path(model_path);
                     return file.read(null);
                 };
             }
@@ -375,7 +375,7 @@ const Engine = Lang.Class({
             limit: query_obj.limit,
             offset: query_obj.offset,
             order: query_obj.order === QueryObject.QueryObjectOrder.ASCENDING ? 'asc' : 'desc',
-            path: this._content_path_from_domain(query_obj.domain) + this._DB_PATH,
+            path: GLib.build_filenamev([this._content_path_from_domain(query_obj.domain), this._DB_DIR]),
             q: query_obj.get_query_parser_string(),
             sortBy: query_obj.get_sort_value(),
         };
