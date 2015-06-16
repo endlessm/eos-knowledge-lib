@@ -306,10 +306,13 @@ _eos_coverage_outputs += $(_eos_js_coverage_data_output_file)
         # The pseudocode for this line looks something like this:
         # paths = []
         # foreach (p in EOS_JS_COVERAGE_FILES) {
-        #     if (path.replace(':', ' ').split(' ')[0] == 'resource') {
-        #         paths.push(p) # resource:// style path, unmodified
-        #     } else {
-        #         paths.push(absolute_path_to(p)) # Absolute path
+        #     if (path not in EOS_COVERAGE_BLACKLIST_PATTERNS and
+        #         path not in [p.withoutprefix("*/") for p in EOS_BLACKLIST_PATTERNS]) {
+        #         if (path.replace(':', ' ').split(' ')[0] == 'resource') {
+        #             paths.push(p) # resource:// style path, unmodified
+        #         } else {
+        #             paths.push(absolute_path_to(p)) # Absolute path
+        #         }
         #     }
         # }
         #
@@ -333,7 +336,7 @@ _eos_coverage_outputs += $(_eos_js_coverage_data_output_file)
         # cond evalutes to a non-empty string. The documentation on this
         # point suggests that conditional operators can be used. This is
         # misleading.
-        EOS_JS_COVERAGE_LOG_FLAGS='$(addprefix --coverage-prefix=,$(foreach p,$(EOS_JS_COVERAGE_FILES),$(if $(filter resource,$(firstword $(subst :, ,$(p)))),$(p),$(abspath $(p))))) --coverage-output=$(_eos_js_coverage_trace_path)'
+        EOS_JS_COVERAGE_LOG_FLAGS='$(addprefix --coverage-prefix=,$(foreach p,$(filter-out $(subst */,,$(EOS_COVERAGE_BLACKLIST_PATTERNS)),$(filter-out $(subst *,%,$(EOS_COVERAGE_BLACKLIST_PATTERNS)),$(EOS_JS_COVERAGE_FILES))),$(if $(filter resource,$(firstword $(subst :, ,$(p)))),$(p),$(abspath $(p))))) --coverage-output=$(_eos_js_coverage_trace_path)'
 ], [
         EOS_JS_COVERAGE_RULES=''
 ])
