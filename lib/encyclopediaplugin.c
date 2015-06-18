@@ -22,7 +22,7 @@ underscore_gettext_callback (JSContextRef     ctx,
         JSStringCreateWithUTF8CString ("Wrong number of arguments to _(), "
                                        "should be one.");
       *exception = JSValueMakeString (ctx, error_message); /* takes ownership */
-      return;
+      return NULL;
     }
 
   JSStringRef message_js = JSValueToStringCopy (ctx, arguments[0], exception);
