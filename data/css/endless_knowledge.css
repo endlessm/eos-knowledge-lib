@@ -452,8 +452,8 @@ EknWindow.show-no-search-results-page {
     color: white;
 }
 
-.section-page-b GtkScrolledWindow {
-    background-color: alpha(black, 0.5);
+.section-page-b GtkScrolledWindow:not(.overshoot):not(.undershoot) {
+    background-color: alpha(black, 0.75);
 }
 
 .section-page-b .scrollbar.trough {
