@@ -6,6 +6,7 @@ const Lang = imports.lang;
 const Pango = imports.gi.Pango;
 
 const StyleClasses = imports.app.styleClasses;
+const Utils = imports.app.utils;
 
 /**
  * Class: SectionPage
@@ -27,7 +28,15 @@ const SectionPage = new Lang.Class({
          */
         'title': GObject.ParamSpec.string('title', 'Page Title',
             'Title of the page',
-            GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE, '')
+            GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE, ''),
+
+        /**
+         * Property: css
+         * A string of css to be applied to this widget. Defaults to an empty string.
+         */
+        'css': GObject.ParamSpec.string('css', 'CSS rules',
+            'CSS rules to be applied to this widget',
+            GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE, ''),
     },
 
     Signals: {
@@ -70,5 +79,22 @@ const SectionPage = new Lang.Class({
         if (this._title)
             return this._title;
         return '';
-    }
+    },
+
+    set css (v) {
+        if (this._css === v) {
+            return;
+        }
+        this._css = v;
+        if (this._css) {
+            Utils.apply_css_to_widget(this._css, this._title_label);
+        }
+        this.notify('css');
+    },
+
+    get css () {
+        if (this._css)
+            return this._css;
+        return '';
+    },
 });

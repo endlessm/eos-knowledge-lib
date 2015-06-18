@@ -70,3 +70,10 @@ function format_authors(authors) {
     // example: "Jane Austen and Henry Miller and William Clifford"
     return _("by {author}").replace("{author}", authors.join(" " + _("and") + " "));
 }
+
+function apply_css_to_widget (css_string, widget) {
+    let provider = new Gtk.CssProvider();
+    provider.load_from_data(css_string);
+    let context = widget.get_style_context();
+    context.add_provider(provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+}

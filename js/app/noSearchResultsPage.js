@@ -9,6 +9,7 @@ const Pango = imports.gi.Pango;
 const Config = imports.app.config;
 const NavButtonOverlay = imports.app.navButtonOverlay;
 const StyleClasses = imports.app.styleClasses;
+const Utils = imports.app.utils;
 
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
@@ -31,7 +32,15 @@ const NoSearchResultsPage = new Lang.Class({
          */
         'query': GObject.ParamSpec.string('query', 'Search query',
             'Query that was searched for',
-            GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE, '')
+            GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE, ''),
+
+        /**
+         * Property: css
+         * A string of css to be applied to this widget. Defaults to an empty string.
+         */
+        'css': GObject.ParamSpec.string('css', 'CSS rules',
+            'CSS rules to be applied to this widget',
+            GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE, ''),
     },
 
     MSG_WE_DIDNT_FIND_ANYTHING: _("We didn't find anything."),
@@ -66,7 +75,23 @@ const NoSearchResultsPage = new Lang.Class({
         if (this._query)
             return this._query;
         return '';
-    }
+    },
+
+    set css (v) {
+        if (this._css === v)
+            return;
+        this._css = v;
+        if (this._css) {
+            Utils.apply_css_to_widget(this._css, this);
+        }
+        this.notify('css');
+    },
+
+    get css () {
+        if (this._css)
+            return this._css;
+        return '';
+    },
 });
 
 /**
