@@ -58,6 +58,7 @@ const MockView = new Lang.Class({
         };
         this.section_page = connectable_object;
         this.home_page = new MockHomePage();
+        this.home_page.tab_button = {};
         this.categories_page = connectable_object;
         this.article_page = connectable_object;
         this.lightbox = new GObject.Object();

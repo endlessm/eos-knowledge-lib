@@ -33,6 +33,16 @@ const HomePageA = new Lang.Class({
         'animating': GObject.ParamSpec.boolean('animating',
             'Animating', 'Set true if this page is animating and should hide its show all button',
             GObject.ParamFlags.READWRITE, false),
+        /**
+         * Property: tab-button
+         *
+         * The <TabButton> widget created by this widget. Read-only,
+         * modify using the <TabButton> API.
+         */
+        'tab-button': GObject.ParamSpec.object('tab-button', 'Tab button',
+            'The button to show all categories on this page.',
+            GObject.ParamFlags.READABLE,
+            TabButton.TabButton),
     },
 
     _init: function (props) {
@@ -51,16 +61,16 @@ const HomePageA = new Lang.Class({
 
         this._invisible_frame = new Gtk.Frame();
 
-        this._all_categories_button = new TabButton.TabButton({
+        this.tab_button = new TabButton.TabButton({
             position: Gtk.PositionType.BOTTOM,
             label: _("SEE ALL CATEGORIES")
         });
 
         this._animating = false;
-        this._all_categories_button.connect('clicked', function () {
+        this.tab_button.connect('clicked', function () {
             this._hide_button();
             let id = this._button_stack.connect('notify::transition-running', function () {
-                if (!this._button_stack.transition_running && this._button_stack.visible_child != this._all_categories_button) {
+                if (!this._button_stack.transition_running && this._button_stack.visible_child != this.tab_button) {
                     this.emit('show-categories');
                 }
                 this._button_stack.disconnect(id);
@@ -70,7 +80,7 @@ const HomePageA = new Lang.Class({
             this._update_button_visibility.bind(this));
 
         this._button_stack.add(this._invisible_frame);
-        this._button_stack.add(this._all_categories_button);
+        this._button_stack.add(this.tab_button);
 
         this.parent(props);
 
@@ -106,7 +116,7 @@ const HomePageA = new Lang.Class({
 
     _show_button: function () {
         this._button_stack.transition_type = Gtk.StackTransitionType.SLIDE_UP;
-        this._button_stack.visible_child = this._all_categories_button;
+        this._button_stack.visible_child = this.tab_button;
     },
 
     _SEARCH_BOX_WIDTH: 400,
