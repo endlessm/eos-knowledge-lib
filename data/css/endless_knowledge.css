@@ -585,6 +585,6 @@ scrollbars, style the GTK scrollbars to look slightly more like them */
     padding-right: 15px;
 }
 
-.pdf-view {
+.pdf-view:not(.overshoot):not(.undershoot) {
     background-image: url("../images/pdf-background.png");
 }
