@@ -63,8 +63,6 @@ EknWindow.show-no-search-results-page {
     background-color: white;
     /* FIXME: background-image: need "noise" asset at 2% opacity */
     transition: margin 250ms ease-in-out;
-    /* FIXME: box-shadow outset doesn't currently work in GTK */
-    box-shadow: 0px 0px 10px 0px alpha(black, 0.3);
 }
 
 .card-a:hover {
