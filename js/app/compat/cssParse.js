@@ -132,7 +132,7 @@ function parse (css, options) {
 
   function match(re) {
     var m = re.exec(css);
-    if (!m) return;
+    if (!m) return undefined;
     var str = m[0];
     updatePosition(str);
     css = css.slice(str.length);
@@ -168,7 +168,7 @@ function parse (css, options) {
 
   function comment() {
     var pos = position();
-    if ('/' != css.charAt(0) || '*' != css.charAt(1)) return;
+    if ('/' != css.charAt(0) || '*' != css.charAt(1)) return undefined;
 
     var i = 2;
     while ("" != css.charAt(i) && ('*' != css.charAt(i) || '/' != css.charAt(i + 1))) ++i;
@@ -196,7 +196,7 @@ function parse (css, options) {
 
   function selector() {
     var m = match(/^([^{]+)/);
-    if (!m) return;
+    if (!m) return undefined;
     /* @fix Remove all comments from selectors
      * http://ostermiller.org/findcomment.html */
     return trim(m[0])
@@ -219,7 +219,7 @@ function parse (css, options) {
 
     // prop
     var prop = match(/^(\*?[-#\/\*\\\w]+(\[[0-9a-z_-]+\])?)\s*/);
-    if (!prop) return;
+    if (!prop) return undefined;
     prop = trim(prop[0]);
 
     // :
