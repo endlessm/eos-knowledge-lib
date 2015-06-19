@@ -2,7 +2,7 @@
 // https://github.com/visionmedia/css-parse/pull/49#issuecomment-30088027
 var commentre = /\/\*[^*]*\*+([^/*][^*]*\*+)*\//g
 
-module.exports = function(css, options){
+function parse (css, options) {
   options = options || {};
 
   /**
