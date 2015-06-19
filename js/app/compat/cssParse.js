@@ -1,5 +1,8 @@
-// http://www.w3.org/TR/CSS21/grammar.html
-// https://github.com/visionmedia/css-parse/pull/49#issuecomment-30088027
+/*
+  The code here has been adapted from the npm css module, the source code for
+  which is available at http://github.com/reworkcss/css.
+  It is available under an MIT license.
+*/
 var commentre = /\/\*[^*]*\*+([^/*][^*]*\*+)*\//g
 
 function parse (css, options) {
