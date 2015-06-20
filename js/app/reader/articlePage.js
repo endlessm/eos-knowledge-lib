@@ -61,7 +61,7 @@ const ArticlePage = new Lang.Class({
         this._title_view = new TitleView.TitleView({
             expand: true,
             valign: Gtk.Align.CENTER,
-            margin_left: _TITLE_VIEW_LEFT_MARGIN_PX,
+            margin_start: _TITLE_VIEW_LEFT_MARGIN_PX,
         });
         this._content_view = null;
         this.parent(props);
@@ -72,8 +72,8 @@ const ArticlePage = new Lang.Class({
             vexpand: true,
             halign: Gtk.Align.CENTER,
             valign: Gtk.Align.FILL,
-            margin_left: _CONTENT_VIEW_MARGIN_PX,
-            margin_right: _CONTENT_VIEW_MARGIN_PX,
+            margin_start: _CONTENT_VIEW_MARGIN_PX,
+            margin_end: _CONTENT_VIEW_MARGIN_PX,
             margin_bottom: _CONTENT_VIEW_MARGIN_PX,
             margin_top: _CONTENT_VIEW_MARGIN_PX + _PROGRESS_LABEL_MARGIN,
         });
@@ -84,7 +84,7 @@ const ArticlePage = new Lang.Class({
         });
 
         let decorative_frame = new Gtk.Frame({
-            margin_left: _TITLE_VIEW_LEFT_MARGIN_PX,
+            margin_start: _TITLE_VIEW_LEFT_MARGIN_PX,
             halign: Gtk.Align.START,
             height_request: _DECORATIVE_BAR_HEIGHT,
         });

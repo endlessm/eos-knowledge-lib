@@ -90,7 +90,7 @@ const TitleView = new Lang.Class({
             expand: false,
             valign: Gtk.Align.END,
             halign: Gtk.Align.CENTER,
-            margin_right: _ORNAMENT_MARGIN_RIGHT_PX,
+            margin_end: _ORNAMENT_MARGIN_RIGHT_PX,
             no_show_all: true,
         });
 

@@ -59,8 +59,8 @@ const SectionPageA = new Lang.Class({
             expand: true,
             valign: Gtk.Align.START,
             row_spacing: 20,
-            margin_left: 100,
-            margin_right: 100
+            margin_start: 100,
+            margin_end: 100
         });
         this._content_grid.add(title_label);
         this._scrolled_window.add(this._content_grid);

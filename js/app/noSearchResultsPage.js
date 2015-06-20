@@ -90,8 +90,8 @@ const NoSearchResultsPageA = new Lang.Class({
             orientation: Gtk.Orientation.VERTICAL,
             expand: true,
             valign: Gtk.Align.FILL,
-            margin_left: 100,
-            margin_right: 100
+            margin_start: 100,
+            margin_end: 100
         });
 
         let separator = new Gtk.Separator({

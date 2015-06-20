@@ -95,8 +95,8 @@ const Card = new Lang.Class({
             hexpand: true,
             halign: Gtk.Align.FILL,
             height_request: this._DECORATIVE_BAR_HEIGHT,
-            margin_left: this._CONTENT_MARGIN,
-            margin_right: this._CONTENT_MARGIN,
+            margin_start: this._CONTENT_MARGIN,
+            margin_end: this._CONTENT_MARGIN,
         });
         decorative_bar.get_style_context().add_class(StyleClasses.READER_DECORATIVE_BAR);
 

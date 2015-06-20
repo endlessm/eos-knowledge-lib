@@ -122,7 +122,7 @@ const SectionPageB = new Lang.Class({
             reveal_child: true,
             expand: true,
             transition_type: Gtk.RevealerTransitionType.SLIDE_RIGHT,
-            margin_right: 80,
+            margin_end: 80,
         });
         this._title_label_revealer.add(title_label);
 

@@ -64,7 +64,7 @@ const LessonCard = new Lang.Class({
             valign: Gtk.Align.START,
             no_show_all: true,
             margin_top: 10,  // FIXME arbitrary value, waiting on design
-            margin_left: 10
+            margin_start: 10
         });
         let banner_grid = new Gtk.Grid({
             orientation: Gtk.Orientation.HORIZONTAL,
