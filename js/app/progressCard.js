@@ -78,9 +78,6 @@ const ProgressCard = new Lang.Class({
         grid.add(title_label);
         grid.add(synopsis_label);
         this.add(grid);
-
-        this.setSensitiveChildren([title_label, synopsis_label,
-            this._progress]);
     },
 
     get total_items() {

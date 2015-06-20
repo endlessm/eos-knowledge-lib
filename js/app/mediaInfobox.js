@@ -4,7 +4,6 @@ const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 const Pango = imports.gi.Pango;
 
-const CompositeButton = imports.app.compositeButton;
 const StyleClasses = imports.app.styleClasses;
 const Utils = imports.app.utils;
 
@@ -86,15 +85,14 @@ const MediaInfobox = new Lang.Class({
             halign: Gtk.Align.FILL
         });
 
-        this._attribution_composite = new CompositeButton.CompositeButton();
+        this._attribution_button = new Gtk.Button();
         this._attribution_label = new Gtk.Label({
             xalign: 0,
             wrap: true,
             wrap_mode: Pango.WrapMode.WORD_CHAR
         });
-        this._attribution_composite.get_style_context().add_class(StyleClasses.INFOBOX_ATTRIBUTION_TEXT);
-        this._attribution_composite.add(this._attribution_label);
-        this._attribution_composite.setSensitiveChildren([this._attribution_label]);
+        this._attribution_button.get_style_context().add_class(StyleClasses.INFOBOX_ATTRIBUTION_TEXT);
+        this._attribution_button.add(this._attribution_label);
 
         this.parent(props);
 
@@ -106,7 +104,7 @@ const MediaInfobox = new Lang.Class({
 
         this.add(this._caption_label);
         this.add(this._separator);
-        this.add(this._attribution_composite);
+        this.add(this._attribution_button);
         this.show_all();
     },
 

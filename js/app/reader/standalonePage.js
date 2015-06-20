@@ -7,7 +7,6 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const ArticlePage = imports.app.reader.articlePage;
-const CompositeButton = imports.app.compositeButton;
 const Config = imports.app.config;
 const ImagePreviewer = imports.app.imagePreviewer;
 const StyleClasses = imports.app.styleClasses;
@@ -66,7 +65,7 @@ const ArchiveLabel = new Lang.Class({
 const OpenButton = new Lang.Class({
     Name: 'OpenButton',
     GTypeName: 'EknOpenButton',
-    Extends: CompositeButton.CompositeButton,
+    Extends: Gtk.Button,
     Properties: {
         /**
          * Property: label

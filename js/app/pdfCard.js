@@ -50,7 +50,5 @@ const PdfCard = new Lang.Class({
         grid.attach(pdf_icon, 0, 1, 1, 1);
         grid.attach(pdf_label, 1, 1, 1, 1);
         this.add(grid);
-
-        this.setSensitiveChildren([title_label, pdf_icon, pdf_label]);
     },
 });

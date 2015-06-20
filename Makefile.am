@@ -213,7 +213,6 @@ js_files = \
 	js/app/cardA.js \
 	js/app/cardB.js \
 	js/app/categoriesPage.js \
-	js/app/compositeButton.js \
 	js/app/config.js \
 	js/app/eknWebview.js \
 	js/app/encyclopedia/application.js \
