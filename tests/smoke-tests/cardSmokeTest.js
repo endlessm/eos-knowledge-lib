@@ -5,8 +5,6 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const CardA = imports.app.cardA;
-const LessonCard = imports.app.lessonCard;
-const ProgressCard = imports.app.progressCard;
 const Utils = imports.tests.utils;
 
 const TEST_APPLICATION_ID = 'com.endlessm.knowledge.card';
@@ -41,49 +39,6 @@ const TestApplication = new Lang.Class ({
                 synopsis: 'This card has everything',
                 thumbnail_uri: TESTDIR + '/test-content/pig2.jpg',
             }),
-            new LessonCard.LessonCard({
-                title: 'Ketchup lesson',
-                synopsis: 'No index',
-                // By Rachel Tayse, CC-BY
-                // http://en.wikipedia.org/wiki/File:Homemade_ketchup_canned_(4156502791).jpg
-                thumbnail_uri: TESTDIR + '/test-content/ketchup.jpg',
-                item_index: 0
-            }),
-            new LessonCard.LessonCard({
-                title: 'Mustard lesson',
-                synopsis: 'Sample, incomplete',
-                // By Bogdan29roman, CC-BY-SA
-                // http://en.wikipedia.org/wiki/File:Mu%C5%9Ftar.jpg
-                thumbnail_uri: TESTDIR + '/test-content/mustard.jpg',
-                item_index: 1,
-                complete: false
-            }),
-            new LessonCard.LessonCard({
-                title: 'Relish lesson',
-                synopsis: 'Sample, completed',
-                // Public domain image
-                thumbnail_uri: TESTDIR + '/test-content/relish.jpg',
-                item_index: 2,
-                complete: true
-            }),
-            new LessonCard.LessonCard({
-                title: 'Onion lessson',
-                synopsis: 'No index, completed',
-                // By Asb at the German language Wikipedia, CC-BY-SA
-                // http://en.wikipedia.org/wiki/File:Rote_Zwiebeln_aufgeschnitten_asb_2004_PICT4222.JPG
-                thumbnail_uri: TESTDIR + '/test-content/onion.jpg',
-                item_index: 0,
-                complete: true
-            }),
-            new ProgressCard.ProgressCard({
-                title: 'Doing nothing',
-                synopsis: 'No items'
-            }),
-            new ProgressCard.ProgressCard({
-                title: 'Click me',
-                synopsis: 'To progress',
-                total_items: 5
-            })
         ];
         let grid = new Gtk.Grid({
             orientation: Gtk.Orientation.HORIZONTAL

@@ -163,52 +163,6 @@ EknWindow.show-no-search-results-page {
     transition: padding 250ms ease-in-out;
 }
 
-.card-a .FIXME-private-banner,
-.card-a .FIXME-private-progress.trough {
-    color: white;
-    border: solid 1px shade(#2e3436, 0.8);
-    border-radius: 4px;
-    background-image: linear-gradient(to bottom,
-        shade(#2e3436, 0.9),
-        shade(#2e3436, 1.1));
-}
-
-.card-a .FIXME-private-index {
-    padding: 0 5px;
-}
-
-.card-a .FIXME-private-checkmark {
-    padding-right: 5px;
-}
-
-.card-a:hover .FIXME-private-banner,
-.card-a:hover .FIXME-private-progress.trough {
-    border-color: shade(darker(orange), 0.8);
-    background-image: linear-gradient(to bottom,
-        shade(darker(orange), 0.9),
-        shade(darker(orange), 1.1));
-}
-
-.card-a.complete .FIXME-private-index {
-    color: #d3d7cf;
-}
-
-.card-a .FIXME-private-progress {
-    color: #ce5c00;
-    border: solid 1px shade(orange, 0.8);
-    border-radius: 4px;
-    background-image: linear-gradient(to bottom,
-        shade(orange, 1.1),
-        shade(orange, 0.9));
-}
-
-.card-a:hover .FIXME-private-progress {
-    border-color: shade(lighter(orange), 0.8);
-    background-image: linear-gradient(to bottom,
-        shade(lighter(orange), 1.1),
-        shade(lighter(orange), 0.9));
-}
-
 .pdf-card-icon {
     padding-top: 10px;
     transition: padding 250ms ease-in-out;

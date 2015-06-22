@@ -54,16 +54,6 @@ const HIGHLIGHTED = 'highlighted';
 const SHADED = 'shaded';
 
 /**
- * Constant: COMPLETE
- *
- * Matches #EknLessonCard widgets that have been marked as
- * completed.
- * It is present on the card widget itself when #EknLessonCard:complete is set
- * to %TRUE.
- */
-const COMPLETE = 'complete';
-
-/**
  * Constant: CARD_SYNOPSIS
  *
  * Matches the synopsis on a card.

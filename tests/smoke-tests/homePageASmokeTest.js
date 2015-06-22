@@ -6,7 +6,6 @@ const Lang = imports.lang;
 
 const CardA = imports.app.cardA;
 const HomePageA = imports.app.homePageA;
-const LessonCard = imports.app.lessonCard;
 const Utils = imports.tests.utils;
 
 const TEST_APPLICATION_ID = 'com.endlessm.knowledge.pages';
@@ -45,15 +44,6 @@ const TestApplication = new Lang.Class ({
                 synopsis: 'This card has everything',
                 thumbnail_uri: TESTDIR + '/test-content/pig2.jpg',
             }),
-            new LessonCard.LessonCard({
-                title: 'Mustard lesson',
-                synopsis: 'Sample, incomplete',
-                // By Bogdan29roman, CC-BY-SA
-                // http://en.wikipedia.org/wiki/File:Mu%C5%9Ftar.jpg
-                thumbnail_uri: TESTDIR + '/test-content/mustard.jpg',
-                item_index: 1,
-                complete: false
-            })
         ];
 
         let home_page = new HomePageA.HomePageA({

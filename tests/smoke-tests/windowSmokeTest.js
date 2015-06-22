@@ -6,7 +6,6 @@ const Lang = imports.lang;
 
 const CardA = imports.app.cardA;
 const CardB = imports.app.cardB;
-const LessonCard = imports.app.lessonCard;
 const TextCard = imports.app.textCard;
 const Window = imports.app.window;
 const Utils = imports.tests.utils;
@@ -152,64 +151,18 @@ const TestApplication = new Lang.Class({
                         title: 'Everything card',
                         thumbnail_uri: TESTDIR + '/test-content/pig2.jpg',
                     }),
-                    new LessonCard.LessonCard({
-                        title: 'Mustard lesson',
-                        // By Bogdan29roman, CC-BY-SA
-                        // http://en.wikipedia.org/wiki/File:Mu%C5%9Ftar.jpg
-                        thumbnail_uri: TESTDIR + '/test-content/mustard.jpg',
-                        item_index: 1,
-                        complete: false
-                    }),
-                    new LessonCard.LessonCard({
-                        title: 'Ketchup lesson',
-                        // By Rachel Tayse, CC-BY
-                        // http://en.wikipedia.org/wiki/File:Homemade_ketchup_canned_(4156502791).jpg
-                        thumbnail_uri: TESTDIR + '/test-content/ketchup.jpg',
-                        item_index: 0
-                    })
                 ],
                 'Devon and Higgins': [
                     new CardA.CardA({
                         title: 'Everything card',
                         thumbnail_uri: TESTDIR + '/test-content/pig2.jpg',
                     }),
-                    new LessonCard.LessonCard({
-                        title: 'Mustard lesson',
-                        // By Bogdan29roman, CC-BY-SA
-                        // http://en.wikipedia.org/wiki/File:Mu%C5%9Ftar.jpg
-                        thumbnail_uri: TESTDIR + '/test-content/mustard.jpg',
-                        item_index: 1,
-                        complete: false
-                    })
                 ],
                 'Fernando and Frango': [
                     new CardA.CardA({
                         title: 'Everything card',
                         thumbnail_uri: TESTDIR + '/test-content/pig2.jpg',
                     }),
-                    new LessonCard.LessonCard({
-                        title: 'Mustard lesson',
-                        // By Bogdan29roman, CC-BY-SA
-                        // http://en.wikipedia.org/wiki/File:Mu%C5%9Ftar.jpg
-                        thumbnail_uri: TESTDIR + '/test-content/mustard.jpg',
-                        item_index: 1,
-                        complete: false
-                    }),
-                    new LessonCard.LessonCard({
-                        title: 'Ketchup lesson',
-                        // By Rachel Tayse, CC-BY
-                        // http://en.wikipedia.org/wiki/File:Homemade_ketchup_canned_(4156502791).jpg
-                        thumbnail_uri: TESTDIR + '/test-content/ketchup.jpg',
-                        item_index: 0
-                    }),
-                    new LessonCard.LessonCard({
-                        title: 'Onion lessson',
-                        // By Asb at the German language Wikipedia, CC-BY-SA
-                        // http://en.wikipedia.org/wiki/File:Rote_Zwiebeln_aufgeschnitten_asb_2004_PICT4222.JPG
-                        thumbnail_uri: TESTDIR + '/test-content/onion.jpg',
-                        item_index: 0,
-                        complete: true
-                    })
                 ]
             };
             for (let segment in view.section_page.segments) {

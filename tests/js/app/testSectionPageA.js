@@ -2,7 +2,6 @@ const Gtk = imports.gi.Gtk;
 
 const Card = imports.app.card;
 const CssClassMatcher = imports.tests.CssClassMatcher;
-const LessonCard = imports.app.lessonCard;
 const SectionPageA = imports.app.sectionPageA;
 const StyleClasses = imports.app.styleClasses;
 const Utils = imports.tests.utils;
@@ -39,15 +38,6 @@ describe('Section page for Template A', function () {
                     title: 'Everything card',
                     synopsis: 'This card has everything',
                     thumbnail_uri: TEST_CONTENT_DIR + 'pig2.jpg',
-                }),
-                new LessonCard.LessonCard({
-                    title: 'Mustard lesson',
-                    synopsis: 'Sample, incomplete',
-                    // By Bogdan29roman, CC-BY-SA
-                    // http://en.wikipedia.org/wiki/File:Mu%C5%9Ftar.jpg
-                    thumbnail_uri: TEST_CONTENT_DIR + 'mustard.jpg',
-                    item_index: 1,
-                    complete: false
                 }),
             ],
         };

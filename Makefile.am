@@ -232,9 +232,7 @@ js_files = \
 	js/app/imagePreviewer.js \
 	js/app/infiniteScrolledWindow.js \
 	js/app/launcher.js \
-	js/app/lessonCard.js \
 	js/app/lightbox.js \
-	js/app/listCard.js \
 	js/app/marginButton.js \
 	js/app/mediaInfobox.js \
 	js/app/mustache.js \
@@ -245,7 +243,6 @@ js_files = \
 	js/app/presenter.js \
 	js/app/presenterLoader.js \
 	js/app/previewer.js \
-	js/app/progressCard.js \
 	js/app/reader/articlePage.js \
 	js/app/reader/card.js \
 	js/app/reader/donePage.js \
@@ -354,17 +351,14 @@ javascript_tests = \
 	tests/js/app/testHomePage.js \
 	tests/js/app/testHomePageA.js \
 	tests/js/app/testHomePageB.js \
-	tests/js/app/testLessonCard.js \
 	tests/js/app/testLightbox.js \
 	tests/js/app/testLightboxPresenter.js \
-	tests/js/app/testListCard.js \
 	tests/js/app/testMediaInfobox.js \
 	tests/js/app/testNoSearchResultsPageA.js \
 	tests/js/app/testNoSearchResultsPageB.js \
 	tests/js/app/testPDFView.js \
 	tests/js/app/testPresenter.js \
 	tests/js/app/testPreviewer.js \
-	tests/js/app/testProgressCard.js \
 	tests/js/app/testSectionArticlePageA.js \
 	tests/js/app/testSectionArticlePageB.js \
 	tests/js/app/testSectionPageA.js \

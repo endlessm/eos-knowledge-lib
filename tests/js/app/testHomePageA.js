@@ -3,7 +3,6 @@ const Gtk = imports.gi.Gtk;
 const Card = imports.app.card;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const HomePageA = imports.app.homePageA;
-const LessonCard = imports.app.lessonCard;
 const StyleClasses = imports.app.styleClasses;
 const Utils = imports.tests.utils;
 
@@ -43,16 +42,6 @@ describe('Home page for Template A', () => {
                 thumbnail_uri: TEST_CONTENT_DIR + 'pig2.jpg',
                 featured: true,
             }),
-            new LessonCard.LessonCard({
-                title: 'Mustard lesson',
-                synopsis: 'Sample, incomplete',
-                // By Bogdan29roman, CC-BY-SA
-                // http://en.wikipedia.org/wiki/File:Mu%C5%9Ftar.jpg
-                thumbnail_uri: TEST_CONTENT_DIR + 'mustard.jpg',
-                item_index: 1,
-                complete: false,
-                featured: false,
-            }),
         ];
     });
 
@@ -78,7 +67,6 @@ describe('Home page for Template A', () => {
         expect(home_page.cards.map((card) => card.featured)).toEqual([
             true,
             true,
-            false,
             false,
         ]);
     });

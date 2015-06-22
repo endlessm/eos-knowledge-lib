@@ -3,7 +3,6 @@ const Gtk = imports.gi.Gtk;
 const Card = imports.app.card;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const HomePageB = imports.app.homePageB;
-const LessonCard = imports.app.lessonCard;
 const StyleClasses = imports.app.styleClasses;
 const Utils = imports.tests.utils;
 
@@ -29,15 +28,6 @@ describe('Home page for Template B', function () {
                 synopsis: 'This card has everything',
                 thumbnail_uri: TEST_CONTENT_DIR + 'pig2.jpg',
             }),
-            new LessonCard.LessonCard({
-                title: 'Mustard lesson',
-                synopsis: 'Sample, incomplete',
-                // By Bogdan29roman, CC-BY-SA
-                // http://en.wikipedia.org/wiki/File:Mu%C5%9Ftar.jpg
-                thumbnail_uri: TEST_CONTENT_DIR + 'mustard.jpg',
-                item_index: 1,
-                complete: false
-            }),
             new Card.Card({
                 title: 'Subtitled Card',
                 synopsis: 'This is the Synopsis',
@@ -51,15 +41,6 @@ describe('Home page for Template B', function () {
                 synopsis: 'This card has everything',
                 thumbnail_uri: TEST_CONTENT_DIR + 'pig2.jpg',
             }),
-            new LessonCard.LessonCard({
-                title: 'Mustard lesson',
-                synopsis: 'Sample, incomplete',
-                // By Bogdan29roman, CC-BY-SA
-                // http://en.wikipedia.org/wiki/File:Mu%C5%9Ftar.jpg
-                thumbnail_uri: TEST_CONTENT_DIR + 'mustard.jpg',
-                item_index: 1,
-                complete: false
-            })
         ];
 
     beforeEach(function () {
