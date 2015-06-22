@@ -98,10 +98,6 @@ const LessonCard = new Lang.Class({
         overlay.add(grid);
         overlay.add_overlay(this._banner);
         this.add(overlay);
-
-        this.setSensitiveChildren([title_label, synopsis_label,
-            image_frame, this._banner, this._index_label,
-            this._checkmark_label]);
     },
 
     get item_index() {

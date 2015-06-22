@@ -8,7 +8,7 @@ const Pango = imports.gi.Pango;
 
 const StyleClasses = imports.app.styleClasses;
 
-const CompositeButton = imports.app.compositeButton;
+const MarginButton = imports.app.marginButton;
 const Utils = imports.app.utils;
 
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
@@ -30,7 +30,7 @@ GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.
 const Card = new Lang.Class({
     Name: 'Card',
     GTypeName: 'EknCard',
-    Extends: CompositeButton.CompositeButton,
+    Extends: MarginButton.MarginButton,
     Properties: {
         /**
          * Property: title
@@ -96,8 +96,6 @@ const Card = new Lang.Class({
         this._thumbnail_uri = null;
 
         this.parent(props);
-
-        this.setSensitiveChildren([this._title_label, this._synopsis_label, this._image_frame]);
 
         this.get_style_context().add_class(StyleClasses.CARD);
         this._title_label.get_style_context().add_class(StyleClasses.CARD_TITLE);

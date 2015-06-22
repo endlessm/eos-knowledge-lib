@@ -74,7 +74,7 @@ EknWindow.show-no-search-results-page {
     padding-top: 133px; /* Height of our assets from design */
 }
 
-.card-a .thumbnail:hover {
+.card-a:hover .thumbnail {
     /* Width grows from 163 to 171 right now. 133 * 171 / 163 = 139. This should
      * preserve aspect ratio, while growing. */
     padding-top: 139px;
@@ -146,8 +146,8 @@ EknWindow.show-no-search-results-page {
     background: alpha(white, 0.20);
 }
 
-.card-a .card-title:hover,
-.card-a .card-synopsis:hover {
+.card-a:hover .card-title,
+.card-a:hover .card-synopsis {
     /* Add as much padding here as we take out of the card margin, so we don't make
      * more space for the label. Having more letters pop in is distracting. */
     padding-left: 4px;
@@ -181,8 +181,8 @@ EknWindow.show-no-search-results-page {
     padding-right: 5px;
 }
 
-.card-a .FIXME-private-banner:hover,
-.card-a .FIXME-private-progress.trough:hover {
+.card-a:hover .FIXME-private-banner,
+.card-a:hover .FIXME-private-progress.trough {
     border-color: shade(darker(orange), 0.8);
     background-image: linear-gradient(to bottom,
         shade(darker(orange), 0.9),
@@ -202,7 +202,7 @@ EknWindow.show-no-search-results-page {
         shade(orange, 0.9));
 }
 
-.card-a .FIXME-private-progress:hover {
+.card-a:hover .FIXME-private-progress {
     border-color: shade(lighter(orange), 0.8);
     background-image: linear-gradient(to bottom,
         shade(lighter(orange), 1.1),
@@ -258,7 +258,7 @@ EknWindow.show-no-search-results-page {
                 text-shadow 250ms;
 }
 
-.card-b .card-title:hover {
+.card-b:hover .card-title {
     color: @template-b-text-color-hover;
     text-shadow: 0px 1px 0px white;
     background-color: @card-b-border-color-hover;
