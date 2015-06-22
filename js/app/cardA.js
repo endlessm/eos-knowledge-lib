@@ -28,11 +28,6 @@ const CardA = new Lang.Class({
         this.parent(props);
 
         this.get_style_context().add_class(StyleClasses.CARD_A);
-        // Our button size changes via css state selectors on hover, and for
-        // some reason Gtk isn't handling this queue resize for us
-        this.connect('state-flags-changed', function () {
-            this.queue_resize();
-        }.bind(this));
     },
 
     pack_widgets: function (title_label, synopsis_label, image_frame) {

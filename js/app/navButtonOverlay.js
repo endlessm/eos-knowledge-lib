@@ -109,11 +109,6 @@ const NavButtonOverlay = new Lang.Class({
         }.bind(this));
         this._back_button.get_style_context().add_class(StyleClasses.NAV_BACK_BUTTON);
         this._back_button.show_all();
-        // Our button size changes via css state selectors on hover, and for
-        // some reason Gtk isn't handling this queue resize for us
-        this._back_button.connect('state-flags-changed', function (button) {
-            button.queue_resize();
-        });
 
         /*
          * Forward button
@@ -129,9 +124,6 @@ const NavButtonOverlay = new Lang.Class({
         }.bind(this));
         this._forward_button.get_style_context().add_class(StyleClasses.NAV_FORWARD_BUTTON);
         this._forward_button.show_all();
-        this._forward_button.connect('state-flags-changed', function (button) {
-            button.queue_resize();
-        });
 
         this.parent(props);
 
