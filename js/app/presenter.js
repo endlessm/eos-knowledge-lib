@@ -303,6 +303,12 @@ const Presenter = new Lang.Class({
                 });
             }
 
+            let override_css = '* {color: blue;}';
+            let next_provider = new Gtk.CssProvider();
+            next_provider.load_from_data(override_css);
+            let context = card.get_style_context();
+            context.add_provider(next_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+
             if (section.hasOwnProperty('thumbnailURI')) {
                 card.thumbnail_uri = section['thumbnailURI'];
             } else {
