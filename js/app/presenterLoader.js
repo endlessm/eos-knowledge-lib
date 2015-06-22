@@ -4,8 +4,6 @@ const Gtk = imports.gi.Gtk;
 const System = imports.system;
 
 const Config = imports.app.config;
-const Presenter = imports.app.presenter;
-const ReaderPresenter = imports.app.reader.presenter;
 const Utils = imports.app.utils;
 
 let setup_presenter_for_resource = function (application, resource_path) {
@@ -30,11 +28,15 @@ let setup_presenter_for_resource = function (application, resource_path) {
     let PresenterClass;
     switch(app_info['templateType']) {
         case 'A':
-        case 'B':
+        case 'B': {
+            const Presenter = imports.app.presenter;
             PresenterClass = Presenter.Presenter;
+        }
             break;
-        case 'reader':
+        case 'reader': {
+            const ReaderPresenter = imports.app.reader.presenter;
             PresenterClass = ReaderPresenter.Presenter;
+        }
             break;
         default:
             printerr('Unknown template type', app_info['templateType']);

@@ -5,10 +5,12 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 
+const Utils = imports.tests.utils;
+Utils.register_gresource();
+
 const ArticleObjectModel = imports.search.articleObjectModel;
 const Presenter = imports.app.reader.presenter;
 const QueryObject = imports.search.queryObject;
-const Utils = imports.tests.utils;
 
 Gtk.init(null);
 
@@ -226,8 +228,6 @@ describe('Reader presenter', function () {
     });
 
     beforeEach(function () {
-        Utils.register_gresource();
-
         let application = new MockApplication();
         article_nav_buttons = new MockNavButtons();
         view = new MockView(article_nav_buttons);
