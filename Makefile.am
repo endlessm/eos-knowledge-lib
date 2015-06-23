@@ -366,6 +366,7 @@ javascript_tests = \
 	tests/js/app/testSpaceContainer.js \
 	tests/js/app/testTableOfContents.js \
 	tests/js/app/testTextCard.js \
+	tests/js/app/testUtils.js \
 	tests/js/app/testWindow.js \
 	tests/js/search/testAsyncTask.js \
 	tests/js/search/testArticleObjectModel.js \

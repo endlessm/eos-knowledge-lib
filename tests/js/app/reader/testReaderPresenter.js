@@ -564,23 +564,6 @@ describe('Reader presenter', function () {
             expect(view.search_results_page.append_search_results).toHaveBeenCalled();
         });
 
-        describe('Attribution format', function () {
-            it('is blank if there is no data', function () {
-                let format = presenter._format_attribution_for_metadata([], '');
-                expect(format).toBe('');
-            });
-
-            it('formats one author correctly', function () {
-                let format = presenter._format_attribution_for_metadata(['Kim Kardashian'], '');
-                expect(format).toBe('by Kim Kardashian');
-            });
-
-            it('formats multiple authors correctly', function () {
-                let format = presenter._format_attribution_for_metadata(['Kim Kardashian', "William Shakespeare"], '');
-                expect(format).toBe('by Kim Kardashian and William Shakespeare');
-            });
-        });
-
         it('sets the correct style classes on overview page snippets', function () {
             expect(presenter.view.overview_page.set_article_snippets).toHaveBeenCalledWith([
                 jasmine.objectContaining({style_variant: 0}),

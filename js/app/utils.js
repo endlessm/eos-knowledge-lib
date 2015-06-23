@@ -1,5 +1,10 @@
 const Gdk = imports.gi.Gdk;
+const Gettext = imports.gettext;
 const Gtk = imports.gi.Gtk;
+
+const Config = imports.app.config;
+
+let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
 /* Not part of public API. Changes @widget's GdkWindow to have the 'hand' cursor
 indicating a clickable UI element. */
@@ -52,4 +57,16 @@ function sanitize_query (query) {
     // Crazy regex for line breaks from
     // http://stackoverflow.com/questions/10805125/how-to-remove-all-line-breaks-from-a-string
     return query.replace(/\r?\n|\r/g, ' ').trim();
+}
+
+function format_authors(authors) {
+    if (authors.length === 0)
+        return '';
+
+    // TRANSLATORS: anything inside curly braces '{}' is going to be substituted
+    // in code. Please make sure to leave the curly braces around any words that
+    // have them and DO NOT translate words inside curly braces. Also, note: the
+    // "and" is used to join together the names of authors of a blog post. For
+    // example: "Jane Austen and Henry Miller and William Clifford"
+    return _("by {author}").replace("{author}", authors.join(" " + _("and") + " "));
 }
