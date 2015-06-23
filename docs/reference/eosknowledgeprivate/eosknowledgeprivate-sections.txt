@@ -67,17 +67,12 @@ ekn_history_item_model_get_type
 </SECTION>
 
 <SECTION>
-<FILE>tree-node</FILE>
+<FILE>enums</FILE>
+EknLoadingAnimation
 EknTreeNodeColumn
 <SUBSECTION Standard>
-EKN_TYPE_TREE_NODE_COLUMN
-ekn_tree_node_column_get_type
-</SECTION>
-
-<SECTION>
-<FILE>webview-switcher</FILE>
-EknLoadingAnimation
-<SUBSECTION Standard>
 EKN_TYPE_LOADING_ANIMATION
+EKN_TYPE_TREE_NODE_COLUMN
 ekn_loading_animation_get_type
+ekn_tree_node_column_get_type
 </SECTION>

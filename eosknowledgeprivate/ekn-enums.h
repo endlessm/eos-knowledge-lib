@@ -33,6 +33,11 @@ G_BEGIN_DECLS
  * ekn_tree_model_from_tree_node().
  * All columns are #G_TYPE_STRING columns, even though the 'content' parameter
  * refers to a document.
+ *
+ * This API deals with loading an RDF TreeNode document and turning it into a
+ * #GtkTreeModel.
+ * Most of the API is in a Javascript override; see the Javascript overrides
+ * documentation.
  */
 typedef enum
 {

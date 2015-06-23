@@ -120,12 +120,11 @@ eosknowledgeprivate_headers = \
 	$(NULL)
 
 eosknowledgeprivate_sources = \
+	eosknowledgeprivate/ekn-enums.c \
 	eosknowledgeprivate/ekn-hello.c \
 	eosknowledgeprivate/ekn-history-item-model.c \
 	eosknowledgeprivate/ekn-history-model.c \
 	eosknowledgeprivate/ekn-init.c eosknowledgeprivate/ekn-init-private.h \
-	eosknowledgeprivate/ekn-tree-node.c \
-	eosknowledgeprivate/ekn-loading-animation.c \
 	eosknowledgeprivate/ekn-util.c \
 	$(NULL)
 
