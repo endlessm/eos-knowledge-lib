@@ -17,6 +17,13 @@ EKN_DEFINE_ENUM_TYPE (EknLoadingAnimationType, ekn_loading_animation,
                       EKN_ENUM_VALUE (EKN_LOADING_ANIMATION_TYPE_FORWARDS_NAVIGATION, forwards-navigation)
                       EKN_ENUM_VALUE (EKN_LOADING_ANIMATION_TYPE_BACKWARDS_NAVIGATION, backwards-navigation))
 
+EKN_DEFINE_ENUM_TYPE (EknTextTransformType, ekn_text_transform,
+                      EKN_ENUM_VALUE (EKN_TEXT_TRANSFORM_NONE, none)
+                      EKN_ENUM_VALUE (EKN_TEXT_TRANSFORM_CAPITALIZE, capitalize)
+                      EKN_ENUM_VALUE (EKN_TEXT_TRANSFORM_UPPERCASE, uppercase)
+                      EKN_ENUM_VALUE (EKN_TEXT_TRANSFORM_LOWERCASE, lowercase)
+                      EKN_ENUM_VALUE (EKN_TEXT_TRANSFORM_FULL_WIDTH, full-width))
+
 EKN_DEFINE_ENUM_TYPE (EknTreeNodeColumn, ekn_tree_node_column,
                       EKN_ENUM_VALUE (EKN_TREE_NODE_COLUMN_LABEL, label)
                       EKN_ENUM_VALUE (EKN_TREE_NODE_COLUMN_INDEX_LABEL, index-label)

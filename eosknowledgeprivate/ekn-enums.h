@@ -19,6 +19,7 @@ G_BEGIN_DECLS
 
 #define EKN_TYPE_TREE_NODE_COLUMN   (ekn_tree_node_column_get_type ())
 #define EKN_TYPE_LOADING_ANIMATION   (ekn_loading_animation_get_type ())
+#define EKN_TYPE_TEXT_TRANSFORM     (ekn_text_transform_get_type ())
 
 /**
  * EknTreeNodeColumn:
@@ -62,11 +63,38 @@ typedef enum
   EKN_LOADING_ANIMATION_TYPE_BACKWARDS_NAVIGATION
 } EknLoadingAnimation;
 
+/**
+ * EknTextTransform:
+ * @EKN_TEXT_TRANSFORM_NONE: no formatting change
+ * @EKN_TEXT_TRANSFORM_CAPITALIZE: capitalize the first letter of each word
+ * @EKN_TEXT_TRANSFORM_UPPERCASE: capitalize every letter
+ * @EKN_TEXT_TRANSFORM_LOWERCASE: force every letter to be lowercase
+ * @EKN_TEXT_TRANSFORM_FULL_WIDTH: force every letter to be written inside a
+ * full-width square, allowing them to be aligned with East Asian scripts (not
+ * supported)
+ *
+ * Constants referring to different capitalization operations, modeled after the
+ * `text-transform` CSS property.
+ *
+ * Since: 0.4
+ */
+typedef enum
+{
+  EKN_TEXT_TRANSFORM_NONE,
+  EKN_TEXT_TRANSFORM_CAPITALIZE,
+  EKN_TEXT_TRANSFORM_UPPERCASE,
+  EKN_TEXT_TRANSFORM_LOWERCASE,
+  EKN_TEXT_TRANSFORM_FULL_WIDTH,
+} EknTextTransform;
+
 EKN_AVAILABLE_IN_0_0
 GType ekn_tree_node_column_get_type  (void) G_GNUC_CONST;
 
 EKN_AVAILABLE_IN_0_0
 GType ekn_loading_animation_get_type (void) G_GNUC_CONST;
+
+EKN_AVAILABLE_IN_0_4
+GType ekn_text_transform_get_type    (void) G_GNUC_CONST;
 
 G_END_DECLS
 
