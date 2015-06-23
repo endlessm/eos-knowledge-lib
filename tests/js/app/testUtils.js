@@ -23,4 +23,16 @@ describe('Utilities:', function () {
             ])).toEqual('by Jane Austen and Henry Miller and William Clifford');
         });
     });
+
+    describe('Formatting capitals', function () {
+        it('yields the same for NONE', function () {
+            expect(Utils.format_capitals('fOoBaR',
+                EosKnowledgePrivate.TextTransform.NONE)).toEqual('fOoBaR');
+        });
+
+        it('capitalizes', function () {
+            expect(Utils.format_capitals('fOoBaR',
+                EosKnowledgePrivate.TextTransform.UPPERCASE)).toEqual('FOOBAR');
+        });
+    });
 });
