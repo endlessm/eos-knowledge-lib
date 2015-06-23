@@ -44,6 +44,7 @@ const MockUserSettingsModel = new Lang.Class({
 
 const MockEngine = new Lang.Class({
     Name: 'MockEngine',
+    GTypeName: 'MockEngine_TestReaderPresenter',
     Extends: GObject.Object,
 
     _init: function () {
@@ -117,6 +118,7 @@ const MockSearchResultsPage = new Lang.Class({
 
 const MockView = new Lang.Class({
     Name: 'MockView',
+    GTypeName: 'MockView_TestReaderPresenter',
     Extends: GObject.Object,
     Signals: {
         'debug-hotkey-pressed': {},

@@ -331,18 +331,18 @@ javascript_tests = \
 	tests/eosknowledgeprivate/testHello.js \
 	tests/eosknowledgeprivate/testHistoryItemModel.js \
 	tests/eosknowledgeprivate/testHistoryModel.js \
-	tests/js/app/reader/testArticlePage.js \
-	tests/js/app/reader/testCard.js \
 	tests/js/app/reader/testDonePage.js \
 	tests/js/app/reader/testOverviewPage.js \
-	tests/js/app/reader/testPresenter.js \
 	tests/js/app/reader/testProgressLabel.js \
+	tests/js/app/reader/testReaderArticlePage.js \
+	tests/js/app/reader/testReaderCard.js \
+	tests/js/app/reader/testReaderPresenter.js \
+	tests/js/app/reader/testReaderWindow.js \
 	tests/js/app/reader/testSearchResultsPage.js \
 	tests/js/app/reader/testTitleView.js \
 	tests/js/app/reader/testUserSettingsModel.js \
 	tests/js/app/reader/testWebExtension.js \
 	tests/js/app/reader/testWebviewTooltip.js \
-	tests/js/app/reader/testWindow.js \
 	tests/js/app/testArticleCard.js \
 	tests/js/app/testArticleHTMLRenderer.js \
 	tests/js/app/testArticlePage.js \
