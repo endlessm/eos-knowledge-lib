@@ -19,7 +19,7 @@ const Utils = imports.app.utils;
  */
 const Card = new Lang.Interface({
     Name: 'Card',
-    GTypeName: 'EknCardIface',  // FIXME should be EknCard
+    GTypeName: 'EknCard',
     Requires: [ Gtk.Widget ],
 
     Properties: {

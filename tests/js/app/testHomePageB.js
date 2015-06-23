@@ -1,8 +1,8 @@
 const Gtk = imports.gi.Gtk;
 
-const Card = imports.app.card;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const HomePageB = imports.app.homePageB;
+const MinimalCard = imports.tests.minimalCard;
 const StyleClasses = imports.app.styleClasses;
 const Utils = imports.tests.utils;
 
@@ -13,39 +13,12 @@ const NO_THROWING_CARD_COUNTS = [4, 6, 8];
 Gtk.init(null);
 
 describe('Home page for Template B', function () {
-    let home_page;
-    let card_list = [
-            new Card.Card({
-                title: 'Subtitled Card',
-                synopsis: 'This is the Synopsis',
-            }),
-            new Card.Card({
-                title: 'Picture Card',
-                thumbnail_uri: TEST_CONTENT_DIR + 'pig1.jpg',
-            }),
-            new Card.Card({
-                title: 'Everything card',
-                synopsis: 'This card has everything',
-                thumbnail_uri: TEST_CONTENT_DIR + 'pig2.jpg',
-            }),
-            new Card.Card({
-                title: 'Subtitled Card',
-                synopsis: 'This is the Synopsis',
-            }),
-            new Card.Card({
-                title: 'Picture Card',
-                thumbnail_uri: TEST_CONTENT_DIR + 'pig1.jpg',
-            }),
-            new Card.Card({
-                title: 'Everything card',
-                synopsis: 'This card has everything',
-                thumbnail_uri: TEST_CONTENT_DIR + 'pig2.jpg',
-            }),
-        ];
+    let home_page, card_list;
 
     beforeEach(function () {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
 
+        card_list = [0, 1, 2, 3, 4, 5].map(() => new MinimalCard.MinimalCard());
         home_page = new HomePageB.HomePageB();
     });
 

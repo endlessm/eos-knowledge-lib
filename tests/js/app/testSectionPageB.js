@@ -1,9 +1,9 @@
 const Gtk = imports.gi.Gtk;
 
 const CssClassMatcher = imports.tests.CssClassMatcher;
+const MinimalCard = imports.tests.minimalCard;
 const SectionPageB = imports.app.sectionPageB;
 const StyleClasses = imports.app.styleClasses;
-const TextCard = imports.app.textCard;
 
 Gtk.init(null);
 
@@ -18,11 +18,7 @@ describe('Section page for Template B', function () {
             title: "History of Guatemala"
         });
 
-        card_list = [
-            new TextCard.TextCard({title: 'Text card 1'}),
-            new TextCard.TextCard({title: 'Text card 2'}),
-            new TextCard.TextCard({title: 'Text card 3'})
-        ];
+        card_list = [0, 1, 2].map(() => new MinimalCard.MinimalCard());
     });
 
     it('can be constructed', function () {});

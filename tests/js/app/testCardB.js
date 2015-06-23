@@ -1,5 +1,8 @@
 const Gtk = imports.gi.Gtk;
 
+const Utils = imports.tests.utils;
+Utils.register_gresource();
+
 const CardB = imports.app.cardB;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const StyleClasses = imports.app.styleClasses;

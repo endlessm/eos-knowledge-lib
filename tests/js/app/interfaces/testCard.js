@@ -12,6 +12,7 @@ Utils.register_gresource();
 const Card = imports.app.interfaces.card;
 const ArticleObjectModel = imports.search.articleObjectModel;
 const CssClassMatcher = imports.tests.CssClassMatcher;
+const MinimalCard = imports.tests.minimalCard;
 
 Gtk.init(null);
 
@@ -151,24 +152,6 @@ describe('Card interface', function () {
     });
 
     it('can also not display any of that stuff', function () {
-        const MinimalCard = new Lang.Class({
-            Name: 'MinimalCard',
-            Extends: Gtk.Label,
-            Implements: [ Card.Card ],
-
-            Properties: {
-                'css': GObject.ParamSpec.override('css', Card.Card),
-                'fade-in': GObject.ParamSpec.override('fade-in', Card.Card),
-                'model': GObject.ParamSpec.override('model', Card.Card),
-                'title-capitalization': GObject.ParamSpec.override('title-capitalization',
-                    Card.Card),
-            },
-
-            _init: function (props={}) {
-                this.parent(props);
-                this.populate_from_model();
-            },
-        });
-        card = new MinimalCard();  // should not complain
+        card = new MinimalCard.MinimalCard();  // should not complain
     });
 });

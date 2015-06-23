@@ -148,19 +148,19 @@ describe('Presenter', () => {
         expect(data['sections'].map((section) => {
             return section['title'];
         })).toEqual(presenter.view.home_page.cards.map((card) => {
-            return card.title;
+            return card.model.title;
         }));
 
         expect(data['sections'].map((section) => {
             return section['thumbnailURI'];
         })).toEqual(presenter.view.home_page.cards.map((card) => {
-            return card.thumbnail_uri;
+            return card.model.thumbnail_uri;
         }));
 
         expect(data['sections'].map((section) => {
-            return section['featured'];
+            return !!section['featured'];
         })).toEqual(presenter.view.home_page.cards.map((card) => {
-            return card.featured;
+            return card.model.featured;
         }));
     });
 

@@ -146,8 +146,10 @@ const HomePageA = new Lang.Class({
             this._card_container.remove(card));
         let sorted_cards = cards.sort((a, b) => {
             let sortVal = 0;
-            if (a.featured) sortVal--;
-            if (b.featured) sortVal++;
+            if (a.model.featured)
+                sortVal--;
+            if (b.model.featured)
+                sortVal++;
             return sortVal;
         });
         if (sorted_cards.length > MAX_CARDS) {

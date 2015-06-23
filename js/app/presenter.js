@@ -13,6 +13,7 @@ const ArticlePresenter = imports.app.articlePresenter;
 const CardA = imports.app.cardA;
 const CardB = imports.app.cardB;
 const Config = imports.app.config;
+const ContentObjectModel = imports.search.contentObjectModel;
 const Engine = imports.search.engine;
 const HistoryPresenter = imports.app.historyPresenter;
 const Launcher = imports.app.launcher;
@@ -291,30 +292,31 @@ const Presenter = new Lang.Class({
 
     _set_sections: function(sections) {
         let new_card_from_section = (section) => {
+            // Since sets aren't yet backed by records in the database, we
+            // temporarily create a model for this section set.
+            let sectionModel = new ContentObjectModel.ContentObjectModel({
+                title: section.title,
+                featured: !!section.featured,
+            });
+            if (section.hasOwnProperty('thumbnailURI')) {
+                sectionModel.thumbnail_uri = section['thumbnailURI'];
+            } else {
+                log("WARNING: Missing category thumbnail for " + section.title);
+            }
+
             let card;
-            let title = section['title'].charAt(0).toUpperCase() + section['title'].slice(1);
             if (this._template_type === 'A') {
                 card = new CardA.CardA({
-                    title: title,
+                    model: sectionModel,
                 });
             } else {
                 card = new CardB.CardB({
-                    title: title,
+                    model: sectionModel,
                 });
             }
 
-            if (section.hasOwnProperty('thumbnailURI')) {
-                card.thumbnail_uri = section['thumbnailURI'];
-            } else {
-                // log a warning that this category is missing its thumbnail
-                printerr("WARNING: Missing category thumbnail for " + title);
-            }
-
-            if (section.hasOwnProperty('featured')) {
-                card.featured = section['featured'];
-            }
-
             card.connect('clicked', this._on_section_card_clicked.bind(this, section['tags']));
+            card.show_all();
             return card;
         };
 
@@ -347,7 +349,7 @@ const Presenter = new Lang.Class({
             'tags': tags,
             'limit': RESULTS_SIZE,
         });
-        this._target_page_title = card.title;
+        this._target_page_title = card.model.title;
         this._add_history_object_for_section_page(query_obj);
         this.engine.get_objects_by_query(query_obj,
                                          null,
@@ -663,13 +665,13 @@ const Presenter = new Lang.Class({
             card_class = TextCard.TextCard;
         }
         let card = new card_class({
-            title: model.title,
-            synopsis: model.synopsis,
+            model: model,
             fade_in: fade_in,
         });
         card.connect('clicked', function () {
             this._on_article_card_clicked(card, model);
         }.bind(this));
+        card.show_all();
         return card;
     },
 });

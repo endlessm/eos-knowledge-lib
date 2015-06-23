@@ -127,6 +127,14 @@ const ContentObjectModel = new Lang.Class({
         'redirects-to': GObject.ParamSpec.string('redirects-to', 'Redirects To',
             'EKN ID of the object to which this model should redirect',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
+        /**
+         * Property: featured
+         * Whether this content should be given priority in the UI
+         */
+        'featured': GObject.ParamSpec.boolean('featured', 'Featured',
+            'Whether this content should be given priority in the UI',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            false),
     },
 
     _init: function (props={}, json_ld=null) {

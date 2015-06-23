@@ -208,7 +208,6 @@ js_files = \
 	js/app/articleHTMLRenderer.js \
 	js/app/articlePage.js \
 	js/app/articlePresenter.js \
-	js/app/card.js \
 	js/app/cardA.js \
 	js/app/cardB.js \
 	js/app/categoriesPage.js \
@@ -345,7 +344,6 @@ javascript_tests = \
 	tests/js/app/testArticleHTMLRenderer.js \
 	tests/js/app/testArticlePage.js \
 	tests/js/app/testArticlePresenter.js \
-	tests/js/app/testCard.js \
 	tests/js/app/testCardA.js \
 	tests/js/app/testCardB.js \
 	tests/js/app/testHistoryPresenter.js \
@@ -392,6 +390,7 @@ EXTRA_DIST += \
 	tests/ContainsMatcher.js \
 	tests/CssClassMatcher.js \
 	tests/InstanceOfMatcher.js \
+	tests/minimalCard.js \
 	tests/utils.js \
 	tests/WidgetDescendantMatcher.js \
 	$(NULL)

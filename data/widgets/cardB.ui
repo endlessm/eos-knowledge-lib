@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.18.3 -->
+<interface>
+  <requires lib="gtk+" version="3.12"/>
+  <template class="EknCardB" parent="GtkButton">
+    <property name="hexpand">True</property>
+    <property name="vexpand">True</property>
+    <child>
+      <object class="GtkOverlay" id="overlay">
+        <child>
+          <object class="GtkFrame" id="image-frame">
+            <property name="no_show_all">True</property>
+            <property name="hexpand">True</property>
+            <property name="vexpand">True</property>
+            <style>
+              <class name="thumbnail"/>
+            </style>
+          </object>
+          <packing>
+            <property name="index">-1</property>
+          </packing>
+        </child>
+        <child type="overlay">
+          <object class="GtkLabel" id="title-label">
+            <property name="no_show_all">True</property>
+            <property name="valign">end</property>
+            <property name="hexpand">True</property>
+            <property name="wrap">True</property>
+            <property name="wrap_mode">word-char</property>
+            <property name="ellipsize">end</property>
+            <property name="max_width_chars">1</property>
+            <property name="lines">1</property>
+            <style>
+              <class name="card-title"/>
+            </style>
+          </object>
+          <packing>
+            <property name="pass_through">True</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+    <style>
+      <class name="card-b"/>
+      <class name="card"/>
+    </style>
+  </template>
+  <object class="GtkSizeGroup" id="size-group">
+    <property name="mode">both</property>
+    <widgets>
+      <widget name="image-frame"/>
+      <widget name="title-label"/>
+    </widgets>
+  </object>
+</interface>

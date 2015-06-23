@@ -1,7 +1,7 @@
 const Gtk = imports.gi.Gtk;
 
-const Card = imports.app.card;
 const CssClassMatcher = imports.tests.CssClassMatcher;
+const MinimalCard = imports.tests.minimalCard;
 const SectionPageA = imports.app.sectionPageA;
 const StyleClasses = imports.app.styleClasses;
 const Utils = imports.tests.utils;
@@ -24,21 +24,11 @@ describe('Section page for Template A', function () {
 
         segments = {
             'Lessons': [
-                new Card.Card({
-                    title: 'Subtitled Card',
-                    synopsis: 'This is the Subtitle',
-                }),
-                new Card.Card({
-                    title: 'Picture Card',
-                    thumbnail_uri: TEST_CONTENT_DIR + 'pig1.jpg',
-                }),
+                new MinimalCard.MinimalCard(),
+                new MinimalCard.MinimalCard(),
             ],
             'Articles': [
-                new Card.Card({
-                    title: 'Everything card',
-                    synopsis: 'This card has everything',
-                    thumbnail_uri: TEST_CONTENT_DIR + 'pig2.jpg',
-                }),
+                new MinimalCard.MinimalCard(),
             ],
         };
     });

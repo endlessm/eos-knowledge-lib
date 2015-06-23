@@ -544,14 +544,13 @@ const Presenter = new Lang.Class({
     },
 
     _new_card_from_article_model: function (model, idx) {
-        let formatted_attribution = Utils.format_authors(model.authors);
         // We increment the page number to account for the 0-based index.
         // Note: _get_page_number_for_article_model will return -1 only if it's an
         // "Archived" issue, case in which the card doesn't require a card number.
         let article_page_number = this._get_page_number_for_article_model(model) + 1;
         let card = new ReaderCard.Card({
-            title: model.title.toUpperCase(),
-            synopsis: formatted_attribution,
+            model: model,
+            title_capitalization: EosKnowledgePrivate.TextTransform.UPPERCASE,
             page_number: article_page_number,
             style_variant: model.article_number % 3,
             archived: this._is_archived(model),
@@ -559,6 +558,7 @@ const Presenter = new Lang.Class({
         card.connect('clicked', () => {
             this._on_article_card_clicked(model);
         });
+        card.show_all();
         return card;
     },
 
