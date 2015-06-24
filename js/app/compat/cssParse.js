@@ -117,7 +117,7 @@ function parse (css, options) {
     var rules = [];
     whitespace();
     comments(rules);
-    while (css.length && css.charAt(0) != '}' && (node = rule())) {
+    while (css.length && css.charAt(0) != '}' && ((node = rule()))) {
       if (node !== false) {
         rules.push(node);
         comments(rules);
@@ -154,7 +154,7 @@ function parse (css, options) {
   function comments(rules) {
     var c;
     rules = rules || [];
-    while (c = comment()) {
+    while ((c = comment())) {
       if (c !== false) {
         rules.push(c);
       }
@@ -252,7 +252,7 @@ function parse (css, options) {
 
     // declarations
     var decl;
-    while (decl = declaration()) {
+    while ((decl = declaration())) {
       if (decl !== false) {
         decls.push(decl);
         comments(decls);
