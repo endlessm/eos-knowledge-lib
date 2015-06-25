@@ -215,12 +215,12 @@ js_files = \
 	js/app/compat/cssParse.js \
 	js/app/config.js \
 	js/app/eknWebview.js \
-	js/app/encyclopedia/application.js \
 	js/app/encyclopedia/contentPage.js \
 	js/app/encyclopedia/fixedTextView.js \
 	js/app/encyclopedia/homePage.js \
 	js/app/encyclopedia/model.js \
 	js/app/encyclopedia/presenter.js \
+	js/app/encyclopedia/runner.js \
 	js/app/encyclopedia/view.js \
 	js/app/historyItem.js \
 	js/app/historyPresenter.js \
@@ -254,6 +254,7 @@ js_files = \
 	js/app/reader/userSettingsModel.js \
 	js/app/reader/webviewTooltip.js \
 	js/app/reader/window.js \
+	js/app/runner.js \
 	js/app/sectionArticlePage.js \
 	js/app/sectionPage.js \
 	js/app/sectionPageA.js \
