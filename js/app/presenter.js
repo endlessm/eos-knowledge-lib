@@ -45,7 +45,9 @@ const _SEARCH_METRIC = 'a628c936-5d87-434a-a57a-015a0f223838';
 const Presenter = new Lang.Class({
     Name: 'Presenter',
     GTypeName: 'EknPresenter',
-    Extends: Launcher.Launcher,
+    Extends: GObject.Object,
+    Implements: [ Launcher.Launcher ],
+
     _ARTICLE_PAGE: 'article',
     _HOME_PAGE: 'home',
     _SEARCH_PAGE: 'search',

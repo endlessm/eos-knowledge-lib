@@ -65,7 +65,9 @@ const DBUS_TOOLTIP_INTERFACE = '\
 const Presenter = new Lang.Class({
     Name: 'Presenter',
     GTypeName: 'EknReaderPresenter',
-    Extends: Launcher.Launcher,
+    Extends: GObject.Object,
+    Implements: [ Launcher.Launcher ],
+
     Properties: {
         /**
          * Property: application

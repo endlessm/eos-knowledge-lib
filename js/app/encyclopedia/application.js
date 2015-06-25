@@ -37,7 +37,6 @@ const EndlessEncyclopedia = new Lang.Class({
 
     _init: function(props) {
         this.parent(props);
-        this._activation_timestamp = null;
         this._presenter = null;
         this._knowledge_search_impl = Gio.DBusExportedObject.wrapJSObject(KnowledgeSearchIface, this);
 
@@ -66,27 +65,19 @@ const EndlessEncyclopedia = new Lang.Class({
     },
 
     LoadPage: function(ekn_id, query, timestamp) {
-        this._activation_timestamp = timestamp;
-        this.activate();
-        this._activation_timestamp = null;
-        this._presenter.load_uri(ekn_id);
+        this._ensure_presenter();
+        this._presenter.activate_search_result(timestamp, ekn_id, query);
     },
 
     LoadQuery: function(query, timestamp) {
-        this._activation_timestamp = timestamp;
-        this.activate();
-        this._activation_timestamp = null;
-        this._presenter.do_search(query);
+        this._ensure_presenter();
+        this._presenter.search(timestamp, query);
     },
 
     vfunc_activate: function () {
         this.parent();
         this._ensure_presenter();
-        if (this._activation_timestamp !== null) {
-            this._view.present_with_time(this._activation_timestamp);
-        } else {
-            this._view.present();
-        }
+        this._presenter.desktop_launch(Gdk.CURRENT_TIME);
     },
 
     vfunc_window_removed: function(win) {
