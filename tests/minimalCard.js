@@ -1,24 +1,13 @@
-// Copyright 2014 Endless Mobile, Inc.
-
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const Card = imports.app.interfaces.card;
-const Utils = imports.app.utils;
 
-/**
- * Class: CardB
- *
- * A card implementation with sizing and styling specific to template B.
- * Will only show a title and image.
- */
-const CardB = new Lang.Class({
-    Name: 'CardB',
-    GTypeName: 'EknCardB',
-    Extends: Gtk.Button,
+const MinimalCard = new Lang.Class({
+    Name: 'MinimalCard',
+    Extends: Gtk.Label,
     Implements: [ Card.Card ],
-
     Properties: {
         'css': GObject.ParamSpec.override('css', Card.Card),
         'fade-in': GObject.ParamSpec.override('fade-in', Card.Card),
@@ -27,12 +16,8 @@ const CardB = new Lang.Class({
             Card.Card),
     },
 
-    Template: 'resource:///com/endlessm/knowledge/widgets/cardB.ui',
-    Children: [ 'image-frame', 'title-label' ],
-
     _init: function (props={}) {
         this.parent(props);
         this.populate_from_model();
-        Utils.set_hand_cursor_on_widget(this);
     }
 });

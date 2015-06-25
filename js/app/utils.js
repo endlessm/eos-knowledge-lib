@@ -1,3 +1,4 @@
+const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Gdk = imports.gi.Gdk;
 const Gettext = imports.gettext;
 const Gtk = imports.gi.Gtk;
@@ -76,4 +77,14 @@ function apply_css_to_widget (css_string, widget) {
     provider.load_from_data(css_string);
     let context = widget.get_style_context();
     context.add_provider(provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+}
+
+function format_capitals (string, text_transform) {
+    switch (text_transform) {
+    case EosKnowledgePrivate.TextTransform.NONE:
+        return string;
+    case EosKnowledgePrivate.TextTransform.UPPERCASE:
+        return string.toUpperCase();
+    }
+    throw new RangeError('Not a supported value of TextTransform');
 }

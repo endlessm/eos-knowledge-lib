@@ -81,8 +81,8 @@ describe ('Content Object Model', function () {
             expect(contentObject.license).toEqual(MOCK_CONTENT_DATA['license']);
         });
 
-        it ('should have a thumbnail-id', function () {
-            expect(contentObject.thumbnail_id).toEqual(MOCK_CONTENT_DATA['thumbnail']);
+        it ('should have a thumbnail-uri', function () {
+            expect(contentObject.thumbnail_uri).toEqual(MOCK_CONTENT_DATA['thumbnail']);
         });
 
         it ('should have resources', function () {

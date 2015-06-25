@@ -4,8 +4,10 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 
-const Presenter = imports.app.presenter;
 const Utils = imports.tests.utils;
+Utils.register_gresource();
+
+const Presenter = imports.app.presenter;
 
 Gtk.init(null);
 
@@ -120,8 +122,6 @@ describe('Presenter', () => {
     let test_app_filename = TEST_CONTENT_DIR + 'app.json';
 
     beforeEach(() => {
-        Utils.register_gresource();
-
         data = Utils.parse_object_from_path(test_app_filename);
 
         view = new MockView();
@@ -148,19 +148,19 @@ describe('Presenter', () => {
         expect(data['sections'].map((section) => {
             return section['title'];
         })).toEqual(presenter.view.home_page.cards.map((card) => {
-            return card.title;
+            return card.model.title;
         }));
 
         expect(data['sections'].map((section) => {
             return section['thumbnailURI'];
         })).toEqual(presenter.view.home_page.cards.map((card) => {
-            return card.thumbnail_uri;
+            return card.model.thumbnail_uri;
         }));
 
         expect(data['sections'].map((section) => {
-            return section['featured'];
+            return !!section['featured'];
         })).toEqual(presenter.view.home_page.cards.map((card) => {
-            return card.featured;
+            return card.model.featured;
         }));
     });
 

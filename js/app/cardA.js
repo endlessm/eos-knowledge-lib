@@ -1,41 +1,43 @@
 // Copyright 2014 Endless Mobile, Inc.
 
+const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
-const Card = imports.app.card;
-const StyleClasses = imports.app.styleClasses;
+const Card = imports.app.interfaces.card;
+const MarginButton = imports.app.marginButton;
+const Utils = imports.app.utils;
 
 /**
  * Class: CardA
  *
- * A card subclass with sizing and styling specific to template A
+ * A card implementation with sizing and styling specific to template A
  */
 const CardA = new Lang.Class({
     Name: 'CardA',
     GTypeName: 'EknCardA',
-    Extends: Card.Card,
+    Extends: MarginButton.MarginButton,
+    Implements: [ Card.Card ],
+
+    Properties: {
+        'css': GObject.ParamSpec.override('css', Card.Card),
+        'fade-in': GObject.ParamSpec.override('fade-in', Card.Card),
+        'model': GObject.ParamSpec.override('model', Card.Card),
+        'title-capitalization': GObject.ParamSpec.override('title-capitalization',
+            Card.Card),
+    },
+
+    Template: 'resource:///com/endlessm/knowledge/widgets/cardA.ui',
+    Children: [ 'image-frame', 'title-label', 'synopsis-label' ],
 
     CARD_WIDTH: 183,
     CARD_HEIGHT: 209,
     CARD_MARGIN: 7,
 
-    _init: function(props) {
-        props = props || {};
-        props.expand = false;
-        props.halign = Gtk.Align.START;
-
+    _init: function (props={}) {
         this.parent(props);
-
-        this.get_style_context().add_class(StyleClasses.CARD_A);
-    },
-
-    pack_widgets: function (title_label, synopsis_label, image_frame) {
-        title_label.lines = 2;
-        title_label.expand = true;
-        image_frame.hexpand = true;
-        image_frame.vexpand = false;
-        this.parent(title_label, synopsis_label, image_frame);
+        this.populate_from_model();
+        Utils.set_hand_cursor_on_widget(this);
     },
 
     // TODO: we do want all cards to be the same size, but we may want to make

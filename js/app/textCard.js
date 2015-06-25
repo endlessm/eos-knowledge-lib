@@ -1,9 +1,11 @@
 // Copyright 2014 Endless Mobile, Inc.
 
+const GObject = imports.gi.GObject;
+const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
-const Card = imports.app.card;
-const StyleClasses = imports.app.styleClasses;
+const Card = imports.app.interfaces.card;
+const Utils = imports.app.utils;
 
 /**
  * Class: TextCard
@@ -14,28 +16,26 @@ const StyleClasses = imports.app.styleClasses;
  * Connect to the <clicked> signal to perform an action
  * when the user clicks on the card.
  */
-
-/**
- * Event: clicked
- * Signal generated when user clicked the card.
- * > card.connect("clicked", function (widget) { print("Clicked!"); });
- */
 const TextCard = new Lang.Class({
     Name: 'TextCard',
     GTypeName: 'EknTextCard',
-    Extends: Card.Card,
+    Extends: Gtk.Button,
+    Implements: [ Card.Card ],
 
-    _init: function(params) {
-        params = params || {};
-        params.hexpand = true;
-        this.parent(params);
-
-        this.get_style_context().add_class(StyleClasses.TEXT_CARD);
+    Properties: {
+        'css': GObject.ParamSpec.override('css', Card.Card),
+        'fade-in': GObject.ParamSpec.override('fade-in', Card.Card),
+        'model': GObject.ParamSpec.override('model', Card.Card),
+        'title-capitalization': GObject.ParamSpec.override('title-capitalization',
+            Card.Card),
     },
 
-    pack_widgets: function (title_label, synopsis_label, image_frame) {
-        title_label.lines = 1;
-        title_label.xalign = 0.0;
-        this.add(title_label);
-    }
+    Template: 'resource:///com/endlessm/knowledge/widgets/textCard.ui',
+    Children: [ 'title-label' ],
+
+    _init: function (params={}) {
+        this.parent(params);
+        this.populate_from_model(this.model);
+        Utils.set_hand_cursor_on_widget(this);
+    },
 });

@@ -208,7 +208,6 @@ js_files = \
 	js/app/articleHTMLRenderer.js \
 	js/app/articlePage.js \
 	js/app/articlePresenter.js \
-	js/app/card.js \
 	js/app/cardA.js \
 	js/app/cardB.js \
 	js/app/categoriesPage.js \
@@ -230,6 +229,7 @@ js_files = \
 	js/app/homePageB.js \
 	js/app/imagePreviewer.js \
 	js/app/infiniteScrolledWindow.js \
+	js/app/interfaces/card.js \
 	js/app/launcher.js \
 	js/app/lightbox.js \
 	js/app/marginButton.js \
@@ -327,6 +327,7 @@ javascript_tests = \
 	tests/eosknowledgeprivate/testHello.js \
 	tests/eosknowledgeprivate/testHistoryItemModel.js \
 	tests/eosknowledgeprivate/testHistoryModel.js \
+	tests/js/app/interfaces/testCard.js \
 	tests/js/app/reader/testDonePage.js \
 	tests/js/app/reader/testOverviewPage.js \
 	tests/js/app/reader/testProgressLabel.js \
@@ -343,7 +344,6 @@ javascript_tests = \
 	tests/js/app/testArticleHTMLRenderer.js \
 	tests/js/app/testArticlePage.js \
 	tests/js/app/testArticlePresenter.js \
-	tests/js/app/testCard.js \
 	tests/js/app/testCardA.js \
 	tests/js/app/testCardB.js \
 	tests/js/app/testHistoryPresenter.js \
@@ -390,6 +390,7 @@ EXTRA_DIST += \
 	tests/ContainsMatcher.js \
 	tests/CssClassMatcher.js \
 	tests/InstanceOfMatcher.js \
+	tests/minimalCard.js \
 	tests/utils.js \
 	tests/WidgetDescendantMatcher.js \
 	$(NULL)

@@ -1,8 +1,9 @@
 const Gtk = imports.gi.Gtk;
 
-const Card = imports.app.card;
+const ContentObjectModel = imports.search.contentObjectModel;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const HomePageA = imports.app.homePageA;
+const MinimalCard = imports.tests.minimalCard;
 const StyleClasses = imports.app.styleClasses;
 const Utils = imports.tests.utils;
 
@@ -25,24 +26,26 @@ describe('Home page for Template A', () => {
             notify(pspec.name, object[pspec.name.replace('-', '_')]);
         });
 
-        card_list = [
-            new Card.Card({
+        let model_list = [
+            new ContentObjectModel.ContentObjectModel({
                 title: 'Synopsised Card',
                 synopsis: 'This is the Synopsis',
                 featured: false,
             }),
-            new Card.Card({
+            new ContentObjectModel.ContentObjectModel({
                 title: 'Featured Picture Card',
                 thumbnail_uri: TEST_CONTENT_DIR + 'pig1.jpg',
                 featured: true,
             }),
-            new Card.Card({
+            new ContentObjectModel.ContentObjectModel({
                 title: 'Everything card',
                 synopsis: 'This card has everything',
                 thumbnail_uri: TEST_CONTENT_DIR + 'pig2.jpg',
                 featured: true,
             }),
         ];
+        card_list = model_list.map((model) =>
+            new MinimalCard.MinimalCard({ model: model }));
     });
 
     it('can be constructed', () => {});
@@ -52,7 +55,7 @@ describe('Home page for Template A', () => {
         // isn't common
         home_page.cards = card_list;
 
-        let get_title = (card) => card.title;
+        let get_title = (card) => card.model.title;
 
         // sort existing/expected lists alphabetically for comparing members
         // independent of pack_cards implementation
@@ -64,7 +67,7 @@ describe('Home page for Template A', () => {
     it('orders featured cards first', () => {
         home_page.cards = card_list;
 
-        expect(home_page.cards.map((card) => card.featured)).toEqual([
+        expect(home_page.cards.map((card) => card.model.featured)).toEqual([
             true,
             true,
             false,

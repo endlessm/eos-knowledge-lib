@@ -1,5 +1,6 @@
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
+const Gtk = imports.gi.Gtk;
 
 function parse_object_from_path (path) {
     let file = Gio.file_new_for_path(path);
@@ -21,4 +22,9 @@ function register_gresource() {
     const BUILDDIR = GLib.getenv('G_TEST_BUILDDIR') || GLib.get_current_dir() + '/tests';
     let resource = Gio.Resource.load(BUILDDIR + '/../data/eos-knowledge.gresource');
     resource._register();
+}
+
+function update_gui () {
+    while (Gtk.events_pending())
+        Gtk.main_iteration(false);
 }

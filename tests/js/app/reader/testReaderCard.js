@@ -1,6 +1,10 @@
 const Gtk = imports.gi.Gtk;
 
+const Utils = imports.tests.utils;
+Utils.register_gresource();
+
 const Card = imports.app.reader.card;
+const ContentObjectModel = imports.search.contentObjectModel;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 
 Gtk.init(null);
@@ -27,18 +31,24 @@ describe('Reader Card widget', function () {
 
         it('sets style variant classes to variants [0, 2].', function () {
             let cards = [{
-                title: 'Barry Bonds',
-                synopsis: 'Homerun king',
+                model: new ContentObjectModel.ContentObjectModel({
+                    title: 'Barry Bonds',
+                    synopsis: 'Homerun king',
+                }),
                 style_variant: 0,
                 page_number: 25,
             }, {
-                title: 'Hank Aaron',
-                synopsis: 'Hammering Hank',
+                model: new ContentObjectModel.ContentObjectModel({
+                    title: 'Hank Aaron',
+                    synopsis: 'Hammering Hank',
+                }),
                 style_variant: 1,
                 page_number: 44,
             }, {
-                title: 'Babe Ruth',
-                synopsis: 'The Bambino',
+                model: new ContentObjectModel.ContentObjectModel({
+                    title: 'Babe Ruth',
+                    synopsis: 'The Bambino',
+                }),
                 style_variant: 2,
                 page_number: 3,
             }].map((props) => {
