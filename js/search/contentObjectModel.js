@@ -62,11 +62,13 @@ const ContentObjectModel = new Lang.Class({
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             ''),
         /**
-         * Property: thumbnail-id
-         * The ekn id of a ImageObjectModel representing the thumbnail image. Must be set to type GObject, since
-         * ImageObjectModel subclasses this class and so we cannot reference it here.
+         * Property: thumbnail-uri
+         * URI of the the thumbnail image
+         *
+         * Usually the EKN ID of an <ImageObjectModel>.
          */
-        'thumbnail-id': GObject.ParamSpec.string('thumbnail-id', 'Thumbnail ID', 'EKN ID of the thumbnail image',
+        'thumbnail-uri': GObject.ParamSpec.string('thumbnail-uri',
+            'Thumbnail URI', 'URI of the thumbnail image',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
         /**
          * Property: language
@@ -211,7 +213,7 @@ const ContentObjectModel = new Lang.Class({
             props.license = json_ld.license;
 
         if (json_ld.hasOwnProperty('thumbnail'))
-            props.thumbnail_id = json_ld.thumbnail;
+            props.thumbnail_uri = json_ld.thumbnail;
 
         if (json_ld.hasOwnProperty('redirectsTo'))
             props.redirects_to = json_ld.redirectsTo;
