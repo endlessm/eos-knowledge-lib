@@ -1,4 +1,3 @@
-const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 
 /**
@@ -10,15 +9,11 @@ const Lang = imports.lang;
  * Whatever launches your app should implement <Launcher> in order to
  * distinguish between these three.
  *
- * This is conceptually an interface, but is a base class for technical reasons.
- *
  * Since:
  *   0.2
  */
-const Launcher = new Lang.Class({
+const Launcher = new Lang.Interface({
     Name: 'Launcher',
-    GTypeName: 'EknLauncher',
-    Extends: GObject.Object,
 
     /**
      * Method: desktop_launch
@@ -26,7 +21,7 @@ const Launcher = new Lang.Class({
      *
      * The launch is the result of opening an app from the desktop or starting
      * it from the command line.
-     * This method _must_ be implemented in a subclass.
+     * This method _must_ be overridden by any class implementing Launcher.
      *
      * You can pass @timestamp to Gtk.Window.present_with_time() in your
      * implementation of this method, to show your main window.
@@ -34,10 +29,7 @@ const Launcher = new Lang.Class({
      * Parameters:
      *   timestamp - the time the interaction was requested at
      */
-    desktop_launch: function (timestamp) {
-        throw new Error('desktop_launch() must be implemented in a subclass ' +
-            'of Launcher.');
-    },
+    desktop_launch: Lang.Interface.UNIMPLEMENTED,
 
     /**
      * Method: search

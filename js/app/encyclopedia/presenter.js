@@ -12,6 +12,7 @@ const ArticleObjectModel = imports.search.articleObjectModel;
 const Config = imports.app.config;
 const Engine = imports.search.engine;
 const HistoryPresenter = imports.app.historyPresenter;
+const Launcher = imports.app.launcher;
 const LightboxPresenter = imports.app.lightboxPresenter;
 const MediaObjectModel = imports.search.mediaObjectModel;
 const Previewer = imports.app.previewer;
@@ -31,6 +32,7 @@ const SEARCH_RESULTS_PAGE = 'search-results';
 const EncyclopediaPresenter = new Lang.Class({
     Name: 'EncyclopediaPresenter',
     Extends: GObject.Object,
+    Implements: [ Launcher.Launcher ],
 
     _init: function(view, model, props) {
         this.parent(props);
@@ -90,6 +92,26 @@ const EncyclopediaPresenter = new Lang.Class({
             engine: this.engine,
             view: this._view,
         });
+    },
+
+    // Launcher override
+    desktop_launch: function (timestamp) {
+        if (timestamp)
+            this._view.present_with_time(timestamp);
+        else
+            this._view.present();
+    },
+
+    // Launcher override
+    search: function (timestamp, query) {
+        this.do_search(query);
+        this.desktop_launch(timestamp);
+    },
+
+    // Launcher override
+    activate_search_result: function (timestamp, id, query) {
+        this.load_uri(id);
+        this.desktop_launch(timestamp);
     },
 
     _getLocalizedResource: function(resource_path, filename) {
