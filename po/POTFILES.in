@@ -6,7 +6,6 @@ data/widgets/pdfCard.ui
 data/widgets/readerCard.ui
 js/app/articleHTMLRenderer.js
 js/app/categoriesPage.js
-js/app/encyclopedia/application.js
 js/app/encyclopedia/presenter.js
 js/app/encyclopedia/view.js
 js/app/homePageA.js
