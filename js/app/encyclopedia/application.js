@@ -1,12 +1,18 @@
 imports.gi.versions.WebKit2 = '4.0';
 
 const Endless = imports.gi.Endless;
+const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
+const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const Config = imports.app.config;
+const EncyclopediaModel = imports.app.encyclopedia.model;
+const EncyclopediaPresenter = imports.app.encyclopedia.presenter;
+const EncyclopediaView = imports.app.encyclopedia.view;
 const Engine = imports.search.engine;
-const SearchProvider = imports.search.searchProvider;
+const LegacySearchProvider = imports.search.searchProvider;
+const WebkitContextSetup = imports.app.webkitContextSetup;
 
 const ENCYCLOPEDIA_APP_ID = 'com.endlessm.encyclopedia-en';
 
@@ -32,6 +38,7 @@ const EndlessEncyclopedia = new Lang.Class({
     _init: function(props) {
         this.parent(props);
         this._activation_timestamp = null;
+        this._presenter = null;
         this._knowledge_search_impl = Gio.DBusExportedObject.wrapJSObject(KnowledgeSearchIface, this);
 
         let domain = this.application_id.split('.').pop();
@@ -41,7 +48,8 @@ const EndlessEncyclopedia = new Lang.Class({
         // a new eos-knowledge-lib, their search-provider ini files will have
         // the application ID rather than ekn-search-provider. Export an old
         // search provider for them.
-        this._legacy_search_provider = new SearchProvider.AppSearchProvider({ domain: domain });
+        this._legacy_search_provider =
+            new LegacySearchProvider.AppSearchProvider({ domain: domain });
     },
 
     vfunc_dbus_register: function(connection, path) {
@@ -72,37 +80,8 @@ const EndlessEncyclopedia = new Lang.Class({
     },
 
     vfunc_activate: function () {
-        if (!this._presenter) {
-            // Keep all imports local to activate if possible. We want the
-            // application to start up wicked fast when we are only activating
-            // the search provider and have no need for the frontend of the app
-            // yet
-            const Gdk = imports.gi.Gdk;
-            const Gtk = imports.gi.Gtk;
-            const EncyclopediaView = imports.app.encyclopedia.view;
-            const EncyclopediaPresenter = imports.app.encyclopedia.presenter;
-            const EncyclopediaModel = imports.app.encyclopedia.model;
-            const WebkitContextSetup = imports.app.webkitContextSetup;
-
-            // Load web extensions for translating
-            WebkitContextSetup.register_webkit_extensions(this.application_id);
-
-            // Register resource
-            let resource = Gio.Resource.load(Config.PKGDATADIR + '/eos-knowledge.gresource');
-            resource._register();
-
-            this._model = new EncyclopediaModel.EncyclopediaModel();
-            this._view = new EncyclopediaView.EncyclopediaView({
-                application: this,
-            });
-            this._presenter = new EncyclopediaPresenter.EncyclopediaPresenter(this._view, this._model);
-
-            let provider = new Gtk.CssProvider();
-            let css_file = Gio.File.new_for_uri('resource:///com/endlessm/knowledge/css/endless_encyclopedia.css');
-            provider.load_from_file(css_file);
-            Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(), provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
-        }
-
+        this.parent();
+        this._ensure_presenter();
         if (this._activation_timestamp !== null) {
             this._view.present_with_time(this._activation_timestamp);
         } else {
@@ -116,6 +95,31 @@ const EndlessEncyclopedia = new Lang.Class({
             this._presenter = null;
         }
         this.parent(win);
+    },
+
+    _ensure_presenter: function () {
+        if (this._presenter !== null)
+            return;
+
+        // Load web extensions for translating
+        WebkitContextSetup.register_webkit_extensions(this.application_id);
+
+        // Register resource
+        let resource = Gio.Resource.load(Config.PKGDATADIR + '/eos-knowledge.gresource');
+        resource._register();
+
+        this._model = new EncyclopediaModel.EncyclopediaModel();
+        this._view = new EncyclopediaView.EncyclopediaView({
+            application: this,
+        });
+        this._presenter =
+            new EncyclopediaPresenter.EncyclopediaPresenter(this._view, this._model);
+
+        let provider = new Gtk.CssProvider();
+        let css_file = Gio.File.new_for_uri('resource:///com/endlessm/knowledge/css/endless_encyclopedia.css');
+        provider.load_from_file(css_file);
+        Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(),
+            provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
     },
 });
 

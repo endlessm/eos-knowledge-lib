@@ -6,8 +6,9 @@ const System = imports.system;
 
 imports.gi.versions.WebKit2 = '4.0';
 
-let Engine = imports.search.engine;
-let SearchProvider = imports.search.searchProvider;
+const Engine = imports.search.engine;
+const PresenterLoader = imports.app.presenterLoader;
+const LegacySearchProvider = imports.search.searchProvider;
 
 if (ARGV.length < 2) {
     printerr("Run this script by passing it an app ID and a gresource file");
@@ -46,7 +47,8 @@ const Application = new Lang.Class({
         // a new eos-knowledge-lib, their search-provider ini files will have
         // the application ID rather than ekn-search-provider. Export an old
         // search provider for them.
-        this._legacy_search_provider = new SearchProvider.AppSearchProvider({ domain: domain });
+        this._legacy_search_provider =
+            new LegacySearchProvider.AppSearchProvider({ domain: domain });
     },
 
     vfunc_dbus_register: function(connection, path) {
@@ -87,7 +89,7 @@ const Application = new Lang.Class({
 
     _ensure_presenter: function () {
         if (this._presenter === null)
-            this._presenter = imports.app.presenterLoader.setup_presenter_for_resource(this, ARGV[1]);
+            this._presenter = PresenterLoader.setup_presenter_for_resource(this, ARGV[1]);
     },
 });
 
