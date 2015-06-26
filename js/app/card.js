@@ -67,14 +67,6 @@ const Card = new Lang.Class({
         'featured': GObject.ParamSpec.boolean('featured', 'Featured',
             'Whether this card is featured',
             GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE, false),
-
-        /**
-         * Property: css
-         * A string of css to be applied to this widget. Defaults to an empty string.
-         */
-        'css': GObject.ParamSpec.string('css', 'CSS rules',
-            'CSS rules to be applied to this widget',
-            GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE, ''),
     },
 
     _init: function(props) {
@@ -195,22 +187,6 @@ const Card = new Lang.Class({
     get thumbnail_uri () {
         if (this._thumbnail_uri)
             return this._thumbnail_uri;
-        return '';
-    },
-
-    set css (v) {
-        if (this._css === v)
-            return;
-        this._css = v;
-        if (this._css) {
-            Utils.apply_css_to_widget(this._css, this);
-        }
-        this.notify('css');
-    },
-
-    get css () {
-        if (this._css)
-            return this._css;
         return '';
     },
 });

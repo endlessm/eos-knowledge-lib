@@ -22,13 +22,6 @@ const TabButton = new Lang.Class({
             'The position of this button on the page',
             GObject.ParamFlags.READWRITE,
             Gtk.PositionType, Gtk.PositionType.TOP),
-        /**
-         * Property: css
-         * A string of css to be applied to this widget. Defaults to an empty string.
-         */
-        'css': GObject.ParamSpec.string('css', 'CSS rules',
-            'CSS rules to be applied to this widget',
-            GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE, ''),
     },
 
     _init: function (props) {
@@ -53,21 +46,5 @@ const TabButton = new Lang.Class({
                 icon_name: 'go-down-symbolic'
             });
         }
-    },
-
-    set css (v) {
-        if (this._css === v)
-            return;
-        this._css = v;
-        if (this._css) {
-            Utils.apply_css_to_widget(this._css, this);
-        }
-        this.notify('css');
-    },
-
-    get css () {
-        if (this._css)
-            return this._css;
-        return '';
     },
 });
