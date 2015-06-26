@@ -28,6 +28,16 @@ const CategoriesPage = new Lang.Class({
         'animating': GObject.ParamSpec.boolean('animating',
             'Animating', 'Set true if this page is animating and should hide its show all button',
             GObject.ParamFlags.READWRITE, false),
+        /**
+         * Property: tab-button
+         *
+         * The <TabButton> widget created by this widget. Read-only,
+         * modify using the <TabButton> API.
+         */
+        'tab-button': GObject.ParamSpec.object('tab-button', 'Tab button',
+            'The button to show home page.',
+            GObject.ParamFlags.READABLE,
+            TabButton.TabButton),
     },
 
     Signals: {
@@ -52,22 +62,22 @@ const CategoriesPage = new Lang.Class({
 
         this._invisible_frame = new Gtk.Frame();
 
-        this._home_button = new TabButton.TabButton({
+        this.tab_button = new TabButton.TabButton({
             position: Gtk.PositionType.TOP,
-            label: _("HOME")
+            label: _("HOME"),
         });
 
         this._animating = false;
         this._button_stack.connect('notify::transition-running', Lang.bind(this, function (running) {
-            let home_page_request = !this._button_stack.transition_running && this._button_stack.visible_child != this._home_button;
+            let home_page_request = !this._button_stack.transition_running && this._button_stack.visible_child != this.tab_button;
             if (home_page_request) {
                 this.emit('show-home');
             }
         }));
 
         this._button_stack.add(this._invisible_frame);
-        this._button_stack.add(this._home_button);
-        this._home_button.connect('clicked', this._hide_button.bind(this));
+        this._button_stack.add(this.tab_button);
+        this.tab_button.connect('clicked', this._hide_button.bind(this));
 
         this._card_grid = new Gtk.FlowBox({
             valign: Gtk.Align.START,
@@ -129,6 +139,6 @@ const CategoriesPage = new Lang.Class({
 
     _show_button: function () {
         this._button_stack.transition_type = Gtk.StackTransitionType.SLIDE_DOWN;
-        this._button_stack.visible_child = this._home_button;
+        this._button_stack.visible_child = this.tab_button;
     }
 });
