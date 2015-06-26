@@ -1,0 +1,24 @@
+@define-color template-b-text-color #98B8FF;
+@define-color template-b-text-color-hover #4573D9;
+
+.home-page .card-title {
+    font-size: 2.2em;
+    /* The animals font is a strange beast with a huge line height, so we need
+     * custom padding to get everything looking right*/
+    padding: .7em 0em;
+    font-family: 'Amatic SC';
+    font-weight: bold;
+}
+
+.section-page-title {
+    font-size: 9.0em; /* 144pt * 1/12 * 0.75 DPI correction factor */
+    padding: 0.5em 0.0em 0.5em 0.7em;
+    font-family: 'Amatic SC';
+    font-weight: bold;
+}
+
+.no-search-results-page-title {
+    font-size: 10.72em;  /* 122pt at 72 DPI 768px */
+    font-family: 'Amatic SC';
+    font-weight: bold;
+}
