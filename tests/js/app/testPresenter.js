@@ -124,7 +124,7 @@ describe('Presenter', () => {
 
     beforeEach(() => {
         data = Utils.parse_object_from_path(test_app_filename);
-
+        data['styles'] = {};
         view = new MockView();
         engine = new MockEngine();
         article_presenter = new MockArticlePresenter();

@@ -138,6 +138,7 @@ const Presenter = new Lang.Class({
         });
         this.parent(props);
 
+        this._style_knobs = app_json['styles'];
         this.view.title = app_json['appTitle'];
         this.view.home_page.title_image_uri = app_json['titleImageURI'];
         this.view.background_image_uri = app_json['backgroundHomeURI'];

@@ -211,6 +211,7 @@ js_files = \
 	js/app/cardA.js \
 	js/app/cardB.js \
 	js/app/categoriesPage.js \
+	js/app/compat/styleKnobGenerator.js \
 	js/app/compat/cssParse.js \
 	js/app/config.js \
 	js/app/eknWebview.js \
@@ -365,6 +366,7 @@ javascript_tests = \
 	tests/js/app/testSectionPageA.js \
 	tests/js/app/testSectionPageB.js \
 	tests/js/app/testSpaceContainer.js \
+	tests/js/app/testStyleKnobGenerator.js \
 	tests/js/app/testTableOfContents.js \
 	tests/js/app/testTextCard.js \
 	tests/js/app/testUtils.js \

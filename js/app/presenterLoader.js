@@ -4,6 +4,7 @@ const Gtk = imports.gi.Gtk;
 const System = imports.system;
 
 const Config = imports.app.config;
+const StyleKnobGenerator = imports.app.compat.styleKnobGenerator;
 const Utils = imports.app.utils;
 
 let setup_presenter_for_resource = function (application, resource_path) {
@@ -22,7 +23,11 @@ let setup_presenter_for_resource = function (application, resource_path) {
     let app_info_file = resource_file.get_child('app.json');
     let app_info = Utils.parse_object_from_file(app_info_file);
     let overrides_css_file = resource_file.get_child('overrides.css');
+
+    let [success, data] = overrides_css_file.load_contents(null);
+    app_info['styles'] = StyleKnobGenerator.get_knobs_from_css(data.toString(), app_info['templateType']);
     Utils.add_css_provider_from_file(overrides_css_file, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION + 1);
+
     application.image_attribution_file = resource_file.get_child('credits.json');
 
     let PresenterClass;
