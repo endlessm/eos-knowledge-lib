@@ -552,6 +552,8 @@ const Presenter = new Lang.Class({
     },
 
     _on_load_more_results: function () {
+        if (!this._get_more_results_query)
+            return;
         this.engine.get_objects_by_query(this._get_more_results_query,
                                          null,
                                          (engine, task) => {
