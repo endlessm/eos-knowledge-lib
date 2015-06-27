@@ -9,10 +9,11 @@ const Mainloop = imports.mainloop;
 const Utils = imports.tests.utils;
 Utils.register_gresource();
 
-const Card = imports.app.interfaces.card;
 const ArticleObjectModel = imports.search.articleObjectModel;
+const Card = imports.app.interfaces.card;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const MinimalCard = imports.tests.minimalCard;
+const StyleClasses = imports.app.styleClasses;
 
 Gtk.init(null);
 
@@ -23,7 +24,6 @@ const TestCard = new Lang.Class({
 
     Properties: {
         'css': GObject.ParamSpec.override('css', Card.Card),
-        'fade-in': GObject.ParamSpec.override('fade-in', Card.Card),
         'model': GObject.ParamSpec.override('model', Card.Card),
         'title-capitalization': GObject.ParamSpec.override('title-capitalization',
             Card.Card),
@@ -69,45 +69,36 @@ describe('Card interface', function () {
         });
     });
 
-    it('reimplements Gtk.Widget.show_all() correctly', function () {
-        card.show_all();
+    it('adds the "invisible" and "fade-in" style classes while fading', function (done) {
+        card.FADE_IN_TIME_MS = 20;
+        Mainloop.timeout_add(10, () => {
+            expect(card).toHaveCssClass(StyleClasses.INVISIBLE);
+            expect(card).toHaveCssClass(StyleClasses.FADE_IN);
+            return GLib.SOURCE_REMOVE;
+        });
+        Mainloop.timeout_add(25, () => {
+            expect(card).not.toHaveCssClass(StyleClasses.INVISIBLE);
+            expect(card).not.toHaveCssClass(StyleClasses.FADE_IN);
+            done();
+            return GLib.SOURCE_REMOVE;
+        });
+        card.fade_in();
         Utils.update_gui();
-        expect(card.visible).toBeTruthy();
-        expect(card.label_child.visible).toBeTruthy();
-        expect(card.no_show_all_child.visible).toBeFalsy();
     });
 
-    it('adds the "visible" style class when showing without fading in', function () {
-        card.show_all();
+    it('is insensitive while fading', function (done) {
+        card.FADE_IN_TIME_MS = 20;
+        Mainloop.timeout_add(10, () => {
+            expect(card.sensitive).toBeFalsy();
+            return GLib.SOURCE_REMOVE;
+        });
+        Mainloop.timeout_add(25, () => {
+            expect(card.sensitive).toBeTruthy();
+            done();
+            return GLib.SOURCE_REMOVE;
+        });
+        card.fade_in();
         Utils.update_gui();
-        expect(card).toHaveCssClass('visible');
-    });
-
-    describe('when fading in', function () {
-        beforeEach(function () {
-            card = new TestCard({ fade_in: true });
-        });
-
-        it('adds the "fade-in" style class', function () {
-            card.show_all();
-            Utils.update_gui();
-            expect(card).toHaveCssClass('fade-in');
-        });
-
-        it('is insensitive while fading', function (done) {
-            card.FADE_IN_TIME_MS = 20;
-            Mainloop.timeout_add(10, () => {
-                expect(card.sensitive).toBeFalsy();
-                return GLib.SOURCE_REMOVE;
-            });
-            Mainloop.timeout_add(25, () => {
-                expect(card.sensitive).toBeTruthy();
-                done();
-                return GLib.SOURCE_REMOVE;
-            });
-            card.show_all();
-            Utils.update_gui();
-        });
     });
 
     it('displays the record authors in the authors label', function () {

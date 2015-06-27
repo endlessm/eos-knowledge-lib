@@ -24,7 +24,6 @@ const TextCard = new Lang.Class({
 
     Properties: {
         'css': GObject.ParamSpec.override('css', Card.Card),
-        'fade-in': GObject.ParamSpec.override('fade-in', Card.Card),
         'model': GObject.ParamSpec.override('model', Card.Card),
         'title-capitalization': GObject.ParamSpec.override('title-capitalization',
             Card.Card),

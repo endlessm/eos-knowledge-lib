@@ -10,7 +10,6 @@ const MinimalCard = new Lang.Class({
     Implements: [ Card.Card ],
     Properties: {
         'css': GObject.ParamSpec.override('css', Card.Card),
-        'fade-in': GObject.ParamSpec.override('fade-in', Card.Card),
         'model': GObject.ParamSpec.override('model', Card.Card),
         'title-capitalization': GObject.ParamSpec.override('title-capitalization',
             Card.Card),
