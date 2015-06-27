@@ -243,6 +243,7 @@ js_files = \
 	js/app/presenterLoader.js \
 	js/app/previewer.js \
 	js/app/reader/articlePage.js \
+	js/app/reader/articleSnippet.js \
 	js/app/reader/card.js \
 	js/app/reader/donePage.js \
 	js/app/reader/overviewPage.js \

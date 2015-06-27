@@ -1,5 +1,6 @@
 const Gtk = imports.gi.Gtk;
 
+const ArticleSnippet = imports.app.reader.articleSnippet;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
 const OverviewPage = imports.app.reader.overviewPage;
@@ -27,9 +28,8 @@ describe('Overview page widget', function () {
             }
         ]
 
-        snippets = snippet_data.map((props) => {
-            return new OverviewPage.ArticleSnippet(props);
-        });
+        snippets = snippet_data.map((props) =>
+            new ArticleSnippet.ArticleSnippet(props));
         page = new OverviewPage.OverviewPage();
     });
 
@@ -52,7 +52,7 @@ describe('Overview page widget', function () {
 
     it('does not set a style variant class for style variant -1', function () {
         page.set_article_snippets([
-            new OverviewPage.ArticleSnippet({
+            new ArticleSnippet.ArticleSnippet({
                 title: 'Frango',
                 synopsis: 'Frango tikka masala, yum',
                 style_variant: -1,
@@ -64,7 +64,7 @@ describe('Overview page widget', function () {
 
     it('uses 0 as the default style variant', function () {
         page.set_article_snippets([
-            new OverviewPage.ArticleSnippet({
+            new ArticleSnippet.ArticleSnippet({
                 title: 'Frango',
                 synopsis: 'Frango tikka masala, yum',
             })

@@ -14,6 +14,7 @@ const WebKit2 = imports.gi.WebKit2;
 const ArticleHTMLRenderer = imports.app.articleHTMLRenderer;
 const ArticleObjectModel = imports.search.articleObjectModel;
 const ArticlePage = imports.app.reader.articlePage;
+const ArticleSnippet = imports.app.reader.articleSnippet;
 const Config = imports.app.config;
 const EknWebview = imports.app.eknWebview;
 const Engine = imports.search.engine;
@@ -1000,7 +1001,7 @@ const Presenter = new Lang.Class({
 
     _load_overview_snippets_from_articles: function () {
         let snippets = this._article_models.slice(0, NUM_OVERVIEW_SNIPPETS).map((model, ix) => {
-            let snippet = new OverviewPage.ArticleSnippet({
+            let snippet = new ArticleSnippet.ArticleSnippet({
                 title: model.title,
                 synopsis: model.synopsis,
                 style_variant: ix % NUM_SNIPPET_STYLES,
