@@ -6,32 +6,30 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const Pango = imports.gi.Pango;
 
+const Card = imports.app.interfaces.card;
 const StyleClasses = imports.app.styleClasses;
 const Utils = imports.app.utils;
 
 /**
  * Class: Reader.ArticleSnippet
  * Widget to display an article snippet in the <OverviewPage>
+ *
+ * CSS classes:
+ *   article-snippet - on the widget itself
+ *   title - on the <Card.title_label>
+ *   synopsis - on the <Card.synopsis_label>
  */
 const ArticleSnippet = new Lang.Class({
     Name: 'ArticleSnippet',
     GTypeName: 'EknArticleSnippet',
     Extends: Gtk.Button,
+    Implements: [ Card.Card ],
+
     Properties: {
-        /**
-         * Property: title
-         * A string with the title of the snippet. Defaults to an empty string.
-         */
-        'title': GObject.ParamSpec.string('title', 'Snippet Title',
-            'Title of the snippet',
-            GObject.ParamFlags.READWRITE, ''),
-        /**
-         * Property: synopsis
-         * A string with the synopsis of the snippet. Defaults to an empty string.
-         */
-        'synopsis': GObject.ParamSpec.string('synopsis', 'Snippet Description',
-            'synopsis of the snippet',
-            GObject.ParamFlags.READWRITE, ''),
+        'css': GObject.ParamSpec.override('css', Card.Card),
+        'model': GObject.ParamSpec.override('model', Card.Card),
+        'title-capitalization': GObject.ParamSpec.override('title-capitalization',
+            Card.Card),
         /**
          * Property: style-variant
          * Which style variant to use for appearance
@@ -47,78 +45,16 @@ const ArticleSnippet = new Lang.Class({
             -1, GLib.MAXINT16, 0),
     },
 
-    _init: function (props) {
-        props = props || {};
+    Template: 'resource:///com/endlessm/knowledge/widgets/articleSnippet.ui',
+    Children: [ 'title-label', 'synopsis-label' ],
 
-        this._title_label = new Gtk.Label({
-            hexpand: true,
-            halign: Gtk.Align.START,
-            xalign: 0,
-            ellipsize: Pango.EllipsizeMode.END,
-            lines: 4,
-            max_width_chars: 40,
-            wrap_mode: Pango.WrapMode.WORD_CHAR,
-            wrap: true,
-        });
-        this._synopsis_label = new Gtk.Label({
-            hexpand: true,
-            halign: Gtk.Align.START,
-            xalign: 0,
-            ellipsize: Pango.EllipsizeMode.END,
-            lines: 2,
-            wrap_mode: Pango.WrapMode.WORD_CHAR,
-            wrap: true,
-        });
-
+    _init: function (props={}) {
         this.parent(props);
-
-        let context = this.get_style_context();
-
-        context.add_class(StyleClasses.READER_ARTICLE_SNIPPET);
-        this._title_label.get_style_context().add_class(StyleClasses.READER_TITLE);
-        this._synopsis_label.get_style_context().add_class(StyleClasses.READER_SYNOPSIS);
+        this.populate_from_model();
+        Utils.set_hand_cursor_on_widget(this);
 
         if (this.style_variant >= 0)
-            context.add_class('snippet' + this.style_variant);
-
-        let grid = new Gtk.Grid({
-            orientation: Gtk.Orientation.VERTICAL,
-            expand: true,
-        });
-
-        grid.add(this._title_label);
-        grid.add(this._synopsis_label);
-        this.add(grid);
-
-        this.show_all();
-    },
-
-    set title (v) {
-        if (this._title_label_text === v)
-            return;
-        this._title_label_text = v;
-        this._title_label.label = this._title_label_text.toUpperCase();
-        this._title_label.visible = (v && v.length !== 0);
-        this.notify('title');
-    },
-
-    get title () {
-        if (this._title_label_text)
-            return this._title_label_text;
-        return '';
-    },
-
-    set synopsis (v) {
-        if (this._synopsis_label.label === v) return;
-        this._synopsis_label.label = v;
-        this._synopsis_label.visible = (v && v.length !== 0);
-        this.notify('synopsis');
-    },
-
-    get synopsis () {
-        if (this._synopsis_label)
-            return this._synopsis_label.label;
-        return '';
+            this.get_style_context().add_class('snippet' + this.style_variant);
     },
 });
 

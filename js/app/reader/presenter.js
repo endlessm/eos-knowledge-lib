@@ -1053,8 +1053,7 @@ const Presenter = new Lang.Class({
     _load_overview_snippets_from_articles: function () {
         let snippets = this._article_models.slice(0, NUM_OVERVIEW_SNIPPETS).map((model, ix) => {
             let snippet = new ArticleSnippet.ArticleSnippet({
-                title: model.title,
-                synopsis: model.synopsis,
+                model: model,
                 style_variant: ix % NUM_SNIPPET_STYLES,
             });
             snippet.connect('clicked', function () {
@@ -1063,7 +1062,6 @@ const Presenter = new Lang.Class({
                 this._add_history_object_for_article_page(model);
                 this._go_to_page(ix + 1, EosKnowledgePrivate.LoadingAnimationType.FORWARDS_NAVIGATION);
             }.bind(this));
-            Utils.set_hand_cursor_on_widget(snippet);
             return snippet;
         });
         this.view.overview_page.set_article_snippets(snippets);
