@@ -27,7 +27,7 @@ const CardB = new Lang.Class({
     },
 
     Template: 'resource:///com/endlessm/knowledge/widgets/cardB.ui',
-    Children: [ 'image-frame', 'title-label' ],
+    Children: [ 'thumbnail-frame', 'title-label' ],
 
     _init: function (props={}) {
         this.parent(props);

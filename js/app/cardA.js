@@ -27,7 +27,7 @@ const CardA = new Lang.Class({
     },
 
     Template: 'resource:///com/endlessm/knowledge/widgets/cardA.ui',
-    Children: [ 'image-frame', 'title-label', 'synopsis-label' ],
+    Children: [ 'thumbnail-frame', 'title-label', 'synopsis-label' ],
 
     _init: function (props={}) {
         // TODO: we do want all cards to be the same size, but we may want to

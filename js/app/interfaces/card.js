@@ -85,7 +85,7 @@ const Card = new Lang.Interface({
      */
 
     /**
-     * Property: image_frame
+     * Property: thumbnail_frame
      * Optional *Gtk.Frame* displaying the <ContentObjectModel.thumbnail-uri> as
      * an image
      */
@@ -126,19 +126,19 @@ const Card = new Lang.Interface({
             this.authors_label.visible = !!this.model.authors;
         }
 
-        if (this.image_frame) {
-            this.image_frame.no_show_all = true;
+        if (this.thumbnail_frame) {
+            this.thumbnail_frame.no_show_all = true;
             if (this.model.thumbnail_uri) {
                 let frame_css = '* { background-image: url("' + this.model.thumbnail_uri + '"); }';
                 if (!this._background_provider) {
                     this._background_provider = new Gtk.CssProvider();
-                    let context = this.image_frame.get_style_context();
+                    let context = this.thumbnail_frame.get_style_context();
                     context.add_provider(this._background_provider,
                         Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
                 }
                 this._background_provider.load_from_data(frame_css);
             }
-            this.image_frame.visible = !!this.model.thumbnail_uri;
+            this.thumbnail_frame.visible = !!this.model.thumbnail_uri;
         }
 
         if (this.synopsis_label) {
