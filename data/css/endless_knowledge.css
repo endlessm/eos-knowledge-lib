@@ -80,25 +80,25 @@ EknWindow.show-no-search-results-page {
     padding-top: 139px;
 }
 
-.card-a .card-title {
+.card-a .title {
     padding: 4px 0px 4px 0px;
     color: #d16550;
     font-family: 'Montserrat', sans-serif;
     font-size: 0.9em;
     font-weight: bold;
-    text-shadow: 0px 1px 0px white;
     transition: padding 250ms ease-in-out;
 }
 
-.home-page-a .card-a .card-title {
+.section-page-a .card-a .title {
+    font-size: 0.9em;
+    text-shadow: 0px 1px 0px white;
+}
+
+.home-page-a .card-a .title {
     padding: 9px 0px 9px 0px;
 }
 
-.text-card {
-    font-family: Lato;
-    font-size: 1.125em; /* 18pt * 1/12 * 0.75 DPI correction factor */
-    font-weight: normal;
-    color: @template-b-text-color;
+.section-page-b .text-card {
     padding: 6px;
     border: 2px solid alpha(white, 0);
     background-color: alpha(white, 0);
@@ -109,13 +109,17 @@ EknWindow.show-no-search-results-page {
                 border 250ms;
 }
 
-.text-card .card-title {
-    padding-left: 1.5em;
+.section-page-b .text-card .title {
+    padding: 0em 0em 0em 1.5em;
+    font-family: Lato;
+    font-size: 1.125em; /* 18pt * 1/12 * 0.75 DPI correction factor */
+    font-weight: normal;
+    color: @template-b-text-color;
 }
 
-.text-card:hover,
-.text-card.highlighted:hover,
-.text-card.shaded:hover {
+.section-page-b .text-card:hover,
+.section-page-b .text-card.highlighted:hover,
+.section-page-b .text-card.shaded:hover {
     text-shadow: 0px 1px 0px white;
     border: 2px solid white;
     background-color: alpha(white, 0.9);
@@ -125,28 +129,28 @@ EknWindow.show-no-search-results-page {
     box-shadow: 0px 0px 20px 0px black;
 }
 
-.text-card:hover,
-.text-card.shaded:hover {
+.section-page-b .text-card:hover .title,
+.section-page-b .text-card.shaded:hover .title {
     color: @template-b-text-color-hover;
 }
 
-.text-card.highlighted {
+.section-page-b .text-card.highlighted {
     background: alpha(white, 0.8);
     text-shadow: 0px 1px 0px white;
     font-weight: bold;
     transition-property: none;
 }
 
-.text-card.highlighted,
-.text-card.highlighted:hover {
+.section-page-b .text-card.highlighted .title,
+.section-page-b .text-card.highlighted:hover .title {
     color: @template-b-text-color-highlighted;
 }
 
-.text-card.shaded {
+.section-page-b .text-card.shaded {
     background: alpha(white, 0.20);
 }
 
-.card-a:hover .card-title,
+.card-a:hover .title,
 .card-a:hover .card-synopsis {
     /* Add as much padding here as we take out of the card margin, so we don't make
      * more space for the label. Having more letters pop in is distracting. */
@@ -200,7 +204,7 @@ EknWindow.show-no-search-results-page {
     background-size: cover;
 }
 
-.card-b .card-title {
+.card-b .title {
     color: @template-b-text-color;
     font-size: 1.8em;
     padding: .9em 0em;
@@ -212,7 +216,7 @@ EknWindow.show-no-search-results-page {
                 text-shadow 250ms;
 }
 
-.card-b:hover .card-title {
+.card-b:hover .title {
     color: @template-b-text-color-hover;
     text-shadow: 0px 1px 0px white;
     background-color: @card-b-border-color-hover;
@@ -375,22 +379,25 @@ EknWindow.show-no-search-results-page {
     background-color: black;
 }
 
-.section-page-title, .no-search-results-page-title {
+.section-page-a .title,
+.section-page-b .title,
+.no-search-results-page-a .title,
+.no-search-results-page-b .title {
     font-family: Montserrat;
     font-weight: bold;
 }
 
-.section-page-a .section-page-title,
-.no-search-results-page-a .no-search-results-page-title {
+.section-page-a .title,
+.no-search-results-page-a .title {
     padding-top: 1.0em;
     padding-bottom: 0.48em;
 }
 
-.section-page-a .section-page-title {
+.section-page-a .title {
     font-size: 2.25em; /* 36pt * 1/12 * 0.75 DPI correction factor */
 }
 
-.no-search-results-page-a .no-search-results-page-title {
+.no-search-results-page-a .title {
     font-size: 1.91em; /* 85% of .section-page-title font size */
 }
 
@@ -398,7 +405,7 @@ EknWindow.show-no-search-results-page {
     color: rgba(255, 255, 255, 0.3);
 }
 
-.section-page-b .section-page-title {
+.section-page-b .title {
     font-size: 4.5em; /* 72pt * 1/12 * 0.75 DPI correction factor */
     padding: 0.9em 0em 0.9em 1.2em;
     color: white;
@@ -462,7 +469,7 @@ EknWindow.show-no-search-results-page {
     padding-bottom: 100px;
 }
 
-.no-search-results-page-b .no-search-results-page-title {
+.no-search-results-page-b .title {
     font-size: 4.5em; /* 85% of .section-page-title font size */
     color: white;
     text-shadow: 0px 1px 10px alpha(black, 0.30);
@@ -499,7 +506,7 @@ scrollbars, style the GTK scrollbars to look slightly more like them */
     padding: 0px;
 }
 
-.article-page-title {
+.article-page .title {
     font-family: Montserrat;
     font-size: 2.25em; /* 36pt * 1/12 * 0.75 DPI correction factor */
     font-weight: bold;

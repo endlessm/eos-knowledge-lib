@@ -31,7 +31,7 @@
             <property name="max_width_chars">1</property>
             <property name="lines">1</property>
             <style>
-              <class name="card-title"/>
+              <class name="title"/>
             </style>
           </object>
           <packing>

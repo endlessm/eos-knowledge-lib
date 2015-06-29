@@ -18,7 +18,7 @@
             <property name="lines">2</property>
             <property name="xalign">0</property>
             <style>
-              <class name="card-title"/>
+              <class name="title"/>
             </style>
           </object>
           <packing>
