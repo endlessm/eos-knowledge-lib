@@ -1,6 +1,7 @@
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const EosMetrics = imports.gi.EosMetrics;
 const Format = imports.format;
+const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
 const Gettext = imports.gettext;
 const GLib = imports.gi.GLib;
@@ -21,6 +22,7 @@ const LightboxPresenter = imports.app.lightboxPresenter;
 const MediaObjectModel = imports.search.mediaObjectModel;
 const PdfCard = imports.app.pdfCard;
 const QueryObject = imports.search.queryObject;
+const TabButton = imports.app.tabButton;
 const TextCard = imports.app.textCard;
 const Utils = imports.app.utils;
 const WebkitContextSetup = imports.app.webkitContextSetup;
@@ -31,6 +33,7 @@ let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
 const RESULTS_SIZE = 10;
 const _SEARCH_METRIC = 'a628c936-5d87-434a-a57a-015a0f223838';
+const DATA_RESOURCE_PATH = 'resource:///com/endlessm/knowledge/';
 
 /**
  * Class: Presenter
@@ -121,9 +124,6 @@ const Presenter = new Lang.Class({
     _init: function (app_json, props) {
         this._template_type = app_json['templateType'];
 
-        let css = Gio.File.new_for_uri('resource:///com/endlessm/knowledge/css/endless_knowledge.css');
-        Utils.add_css_provider_from_file(css, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
-
         // Needs to happen before before any webviews are created
         WebkitContextSetup.register_webkit_extensions(props.application.application_id);
 
@@ -139,6 +139,7 @@ const Presenter = new Lang.Class({
         this.parent(props);
 
         this._style_knobs = app_json['styles'];
+        this.load_theme();
         this.view.title = app_json['appTitle'];
         this.view.home_page.title_image_uri = app_json['titleImageURI'];
         this.view.background_image_uri = app_json['backgroundHomeURI'];
@@ -187,6 +188,68 @@ const Presenter = new Lang.Class({
         this._original_page = this.view.home_page;
         this._search_origin_page = this.view.home_page;
         this._autocomplete_results = [];
+    },
+
+    STYLE_MAP: {
+        A: {
+            section_card: '.card-a',
+            article_card: '.article-card',
+            section_page: '.section-page-a',
+            no_search_results_page: '.no-search-results-page-a'
+        },
+        B: {
+            section_card: '.card-b',
+            article_card: '.text-card',
+            section_page: '.section-page-b',
+            no_search_results_page: '.no-search-results-page-b'
+        },
+    },
+
+    _get_knob_css: function (css_data) {
+        let str = '';
+        for (let key in css_data) {
+            let module_styles = css_data[key];
+            let title_data = Utils.get_css_for_submodule('title', module_styles);
+            let module_data = Utils.get_css_for_submodule('module', module_styles);
+
+            // For now, only TextCard and TabButton have bespoke CSS
+            // structure, since they need to use the @define syntax
+            if (key === 'article_card' && this._template_type === 'B') {
+                str += TextCard.get_css_for_module(module_styles);
+            } else if (key === 'tab_button' && this._template_type === 'A') {
+                str += TabButton.get_css_for_module(module_styles);
+            } else {
+                // All other modules can just convert their knobs to CSS strings
+                // directly using the STYLE_MAP
+                str += Utils.object_to_css_string(title_data, this.STYLE_MAP[this._template_type][key] + ' .title') + '\n';
+                str += Utils.object_to_css_string(module_data, this.STYLE_MAP[this._template_type][key]) + '\n';
+            }
+        }
+        return str;
+    },
+
+    /*
+     * FIXME: This function will change once we have finalized the structure
+     * of the app.json. Load both the base library css styles and the theme specific
+     * styles. Make sure to apply the theme styling second, so that
+     * it gets priority.
+     */
+    load_theme: function () {
+        let css_path = Gio.File.new_for_uri(DATA_RESOURCE_PATH).get_child('css');
+        let css_files = [css_path.get_child('endless_knowledge.css')];
+        // FIXME: Get theme from app.json once we have finalized that
+        let theme = 'jungle';
+        if (typeof theme !== 'undefined') {
+            //css_files.push(css_path.get_child('themes').get_child(theme + '.css'));
+        }
+        let all_css = css_files.reduce((str, css_file) => {
+            return str + css_file.load_contents(null)[1];
+        }, '');
+        all_css += this._get_knob_css(this._style_knobs);
+        let provider = new Gtk.CssProvider();
+        provider.load_from_data(all_css);
+        Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(),
+            provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
     },
 
     // Launcher override

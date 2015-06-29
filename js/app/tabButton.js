@@ -48,3 +48,7 @@ const TabButton = new Lang.Class({
         }
     },
 });
+
+function get_css_for_module (css_data) {
+    return '@define-color tab-button-background ' + css_data['module-background-color'] + ';\n';
+}

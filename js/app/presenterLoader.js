@@ -26,7 +26,6 @@ let setup_presenter_for_resource = function (application, resource_path) {
 
     let [success, data] = overrides_css_file.load_contents(null);
     app_info['styles'] = StyleKnobGenerator.get_knobs_from_css(data.toString(), app_info['templateType']);
-    Utils.add_css_provider_from_file(overrides_css_file, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION + 1);
 
     application.image_attribution_file = resource_file.get_child('credits.json');
 

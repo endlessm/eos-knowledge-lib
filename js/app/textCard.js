@@ -39,3 +39,9 @@ const TextCard = new Lang.Class({
         Utils.set_hand_cursor_on_widget(this);
     },
 });
+
+function get_css_for_module (css_data) {
+    let str = '@define-color template-b-text-color ' + css_data['title-color'] + ';\n';
+    str += '@define-color template-b-text-color-hover ' + css_data['hover-color'] + ';\n';
+    return str;
+}

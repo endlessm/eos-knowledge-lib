@@ -88,3 +88,23 @@ function format_capitals (string, text_transform) {
     }
     throw new RangeError('Not a supported value of TextTransform');
 }
+
+function get_css_for_submodule (name, css_data) {
+    let props = Object.keys(css_data).filter((key) => key.startsWith(name));
+    return props.reduce((data, prop) => {
+        data[prop.slice((name + '-').length)] = css_data[prop];
+        return data;
+    }, {});
+}
+
+function object_to_css_string (obj, selector="*") {
+    if (Object.keys(obj).length === 0)
+        return "";
+
+    let css_string = selector + "{\n";
+    for (let prop in obj) {
+        css_string += '\t' + (prop + ": " + obj[prop] + ";\n");
+    }
+    css_string += "}\n";
+    return css_string;
+}
