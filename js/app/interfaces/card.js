@@ -164,6 +164,11 @@ const Card = new Lang.Interface({
      */
     show_all: function () {
         if (this.fade_in) {
+            // FIXME: for some reason even if initial opacity = 0 in css, the
+            // opacity will start at 1. Triggering a 'notify' on opacity seems
+            // to get the actual initial opacity value in css to be respected
+            this.opacity = 0;
+            this.opacity = 1;
             this.get_style_context().add_class('fade-in');
             // Cards not sensitive till fully faded in
             this.sensitive = false;
