@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2015-06-09 01:51+0000\n"
+"POT-Creation-Date: 2015-06-23 01:51+0000\n"
 "PO-Revision-Date: 2015-06-12 18:30+0000\n"
 "Last-Translator: c.sanchez <cassandra@endlessm.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/projects/p/eos-knowledge-lib/language/es/)\n"
@@ -72,7 +72,7 @@ msgstr "Resultados de la búsqueda \"{search}\""
 #. to be substituted in code. Please make sure to leave the
 #. curly braces around any words that have them and DO NOT
 #. translate words inside curly braces.
-#: js/app/articleHTMLRenderer.js:47
+#: js/app/articleHTMLRenderer.js:48
 msgid ""
 "This page contains content from {original-link}, available under a {license-"
 "link} license."
@@ -80,7 +80,7 @@ msgstr "Esta página contiene contenido de {original-link}, disponible bajo una 
 
 #. TRANSLATORS: Replace this with a link to the homepage of
 #. wikiHow in your language.
-#: js/app/articleHTMLRenderer.js:54
+#: js/app/articleHTMLRenderer.js:55
 msgid "http://wikihow.com"
 msgstr "http://es.wikihow.com"
 
@@ -88,28 +88,28 @@ msgstr "http://es.wikihow.com"
 #. to be substituted in code. Please make sure to leave the
 #. curly braces around any words that have them and DO NOT
 #. translate words inside curly braces.
-#: js/app/articleHTMLRenderer.js:59
+#: js/app/articleHTMLRenderer.js:60
 msgid ""
 "See {wikihow-article-link} for more details, videos, pictures and "
 "attribution. Courtesy of {wikihow-link}, where anyone can easily learn how "
 "to do anything."
 msgstr "Ve {wikihow-article-link} para más detalles, videos, fotos y atribuciones. Por cortesía de {wikihow-link}, donde cualquier persona puede fácilmente aprender cómo hacer cualquier cosa."
 
-#: js/app/articleHTMLRenderer.js:134
+#: js/app/articleHTMLRenderer.js:137
 msgid "Copy"
 msgstr "Copiar"
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
-#: js/app/articleHTMLRenderer.js:153
+#: js/app/articleHTMLRenderer.js:156
 msgid "Content taken from {blog-link}."
 msgstr "Contenido tomado de {blog-link}."
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
-#: js/app/articleHTMLRenderer.js:158
+#: js/app/articleHTMLRenderer.js:161
 msgid "Content courtesy of {blog-link}. Used with kind permission."
 msgstr "Contenido por cortesía de {blog-link}. Usado con permiso generoso."
 
@@ -117,7 +117,7 @@ msgstr "Contenido por cortesía de {blog-link}. Usado con permiso generoso."
 #. is going to be substituted in code. Please make sure that your
 #. translation contains both {blog-link} and {license-link} and they are not
 #. translated.
-#: js/app/articleHTMLRenderer.js:166
+#: js/app/articleHTMLRenderer.js:169
 msgid "Content courtesy of {blog-link}, licensed under {license-link}."
 msgstr "Contenido por cortesía de {blog-link}, bajo la licencia {license-link}."
 
@@ -145,7 +145,7 @@ msgstr "Enciclopedia"
 msgid "SEE ALL CATEGORIES"
 msgstr "VER TODAS LAS CATEGORÍAS"
 
-#: js/app/lessonCard.js:133
+#: js/app/lessonCard.js:129
 #, javascript-format
 msgid "Lesson %d"
 msgstr "Lección %d"
@@ -173,7 +173,7 @@ msgstr "PDF"
 msgid "Articles"
 msgstr "Artículos"
 
-#: js/app/progressCard.js:112
+#: js/app/progressCard.js:109
 #, javascript-format
 msgid "%d of %d done"
 msgstr "%d de %d terminado"
@@ -231,11 +231,11 @@ msgstr "Hubo un error al cargar esa página.\nPor favor intenta con otra o inten
 msgid "There are no results for your search"
 msgstr "No existen resultados para tu búsqueda"
 
-#: js/app/reader/standalonePage.js:183
+#: js/app/reader/standalonePage.js:182
 msgid "Open the magazine"
 msgstr "Abre la revista"
 
-#: js/app/reader/standalonePage.js:307
+#: js/app/reader/standalonePage.js:306
 #, javascript-format
 msgid "This article is part of the archive of the magazine %s."
 msgstr "Este artículo es parte del archivo de la revista %s."

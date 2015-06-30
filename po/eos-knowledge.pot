@@ -6,10 +6,10 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: eos-knowledge 0.2.0\n"
+"Project-Id-Version: eos-knowledge 0.3.0\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-"
 "inc\n"
-"POT-Creation-Date: 2015-06-23 01:51+0000\n"
+"POT-Creation-Date: 2015-06-30 01:50+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -63,6 +63,14 @@ msgstr ""
 #. use whatever quote marks are appropriate for your language.
 #: data/js/search_results.js:29
 msgid "Search results for “{search}”"
+msgstr ""
+
+#: data/widgets/pdfCard.ui:46
+msgid "PDF"
+msgstr ""
+
+#: data/widgets/readerCard.ui:91 js/app/reader/webviewTooltip.js:138
+msgid "Archive"
 msgstr ""
 
 #. TRANSLATORS: anything inside curly braces '{}' is going
@@ -122,14 +130,14 @@ msgstr ""
 msgid "HOME"
 msgstr ""
 
-#: js/app/encyclopedia/presenter.js:27
+#: js/app/encyclopedia/presenter.js:28
 msgid "Search the world's information!"
 msgstr ""
 
 #. TRANSLATORS: This is the title of the search results page. %s
 #. will be replaced by the text that the user searched for. Make
 #. sure that %s is in your translation as well.
-#: js/app/encyclopedia/presenter.js:261
+#: js/app/encyclopedia/presenter.js:283
 #, javascript-format
 msgid "Results for %s"
 msgstr ""
@@ -138,48 +146,30 @@ msgstr ""
 msgid "Encyclopedia"
 msgstr ""
 
-#: js/app/homePageA.js:56
+#: js/app/homePageA.js:66
 msgid "SEE ALL CATEGORIES"
 msgstr ""
 
-#: js/app/lessonCard.js:129
-#, javascript-format
-msgid "Lesson %d"
-msgstr ""
-
-#: js/app/noSearchResultsPage.js:37
+#: js/app/noSearchResultsPage.js:46
 msgid "We didn't find anything."
 msgstr ""
 
-#: js/app/noSearchResultsPage.js:38
+#: js/app/noSearchResultsPage.js:47
 msgid "Try seaching again with different words."
 msgstr ""
 
 #. TRANSLATORS: this appears on top of the search results page; %s will
 #. be replaced with the string that the user searched for.
-#: js/app/noSearchResultsPage.js:61 js/app/presenter.js:387
+#: js/app/noSearchResultsPage.js:70 js/app/presenter.js:391
 #, javascript-format
 msgid "Results for \"%s\""
 msgstr ""
 
-#: js/app/pdfCard.js:41
-msgid "PDF"
-msgstr ""
-
-#: js/app/presenter.js:219 js/app/presenter.js:650
+#: js/app/presenter.js:222 js/app/presenter.js:654
 msgid "Articles"
 msgstr ""
 
-#: js/app/progressCard.js:109
-#, javascript-format
-msgid "%d of %d done"
-msgstr ""
-
-#: js/app/reader/card.js:128 js/app/reader/webviewTooltip.js:138
-msgid "Archive"
-msgstr ""
-
-#: js/app/reader/card.js:131
+#: js/app/reader/card.js:79
 #, javascript-format
 msgid "Page %s"
 msgstr ""
@@ -193,32 +183,17 @@ msgid ""
 "Don't miss next week's issue with more articles in your favorite magazine!"
 msgstr ""
 
-#. TRANSLATORS: anything inside curly braces '{}' is going
-#. to be substituted in code. Please make sure to leave the
-#. curly braces around any words that have them and DO NOT
-#. translate words inside curly braces.
-#. Also, note: the "and" is used to join together the names
-#. of authors of a blog post. For example:
-#. Jane Austen and Henry Miller and William Clifford
-#: js/app/reader/presenter.js:944
-msgid "by {author}"
-msgstr ""
-
-#: js/app/reader/presenter.js:944
-msgid "and"
-msgstr ""
-
-#: js/app/reader/presenter.js:1003 js/app/reader/presenter.js:1010
+#: js/app/reader/presenter.js:991 js/app/reader/presenter.js:998
 msgid "Oops!"
 msgstr ""
 
-#: js/app/reader/presenter.js:1004
+#: js/app/reader/presenter.js:992
 msgid ""
 "We could not find this magazine!\n"
 "Please try again after restarting your computer."
 msgstr ""
 
-#: js/app/reader/presenter.js:1011
+#: js/app/reader/presenter.js:999
 msgid ""
 "There was an error loading that page.\n"
 "Try another one or try again after restarting your computer."
@@ -242,4 +217,17 @@ msgstr ""
 #: js/app/reader/webviewTooltip.js:122
 #, javascript-format
 msgid "Page %d"
+msgstr ""
+
+#. TRANSLATORS: anything inside curly braces '{}' is going to be substituted
+#. in code. Please make sure to leave the curly braces around any words that
+#. have them and DO NOT translate words inside curly braces. Also, note: the
+#. "and" is used to join together the names of authors of a blog post. For
+#. example: "Jane Austen and Henry Miller and William Clifford"
+#: js/app/utils.js:72
+msgid "by {author}"
+msgstr ""
+
+#: js/app/utils.js:72
+msgid "and"
 msgstr ""
