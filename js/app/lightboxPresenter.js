@@ -108,7 +108,9 @@ const LightboxPresenter = new GObject.Class({
         if (this._current_index === -1)
             return false;
 
-        let media_card = MediaCard.MediaCard.new_from_ekn_model(media_object);
+        let media_card = new MediaCard.MediaCard({
+            model: media_object
+        });
         this.view.lightbox.lightbox_widget = media_card;
         this.view.lightbox.reveal_overlays = true;
         this.view.lightbox.has_back_button = this._current_index > 0;

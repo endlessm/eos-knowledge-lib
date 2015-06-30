@@ -1,9 +1,11 @@
 const Gtk = imports.gi.Gtk;
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
 
+const Utils = imports.tests.utils;
+Utils.register_gresource();
+
 const MediaObjectModel = imports.search.mediaObjectModel;
 const MediaCard = imports.app.mediaCard;
-const Utils = imports.tests.utils;
 
 Gtk.init(null);
 
@@ -23,13 +25,6 @@ describe ('Media Infobox', function () {
         });
     });
 
-    it ('should be constructable from a MediaObjectModel', function () {
-        let media_card = MediaCard.MediaCard.new_from_ekn_model(imageObject);
-        expect(media_card.caption).toBe(imageObject.caption);
-        expect(media_card.license_text).toBe(imageObject.license);
-        expect(media_card.creator_text).toBe(imageObject.copyright_holder);
-    });
-
     it ('hides separator when caption or attribution not visible', function () {
         let noCaption = new MediaObjectModel.ImageObjectModel({
             license: "bar",
@@ -44,11 +39,17 @@ describe ('Media Infobox', function () {
             content_type: 'image/jpeg',
         });
 
-        let media_card = MediaCard.MediaCard.new_from_ekn_model(imageObject);
+        let media_card = new MediaCard.MediaCard({
+            model: imageObject,
+        });
         expect(media_card._separator.visible).toBe(true);
-        media_card = MediaCard.MediaCard.new_from_ekn_model(noCaption);
+        media_card = new MediaCard.MediaCard({
+            model: noCaption,
+        });
         expect(media_card._separator.visible).toBe(false);
-        media_card = MediaCard.MediaCard.new_from_ekn_model(noAttribution);
+        media_card = new MediaCard.MediaCard({
+            model: noAttribution,
+        });
         expect(media_card._separator.visible).toBe(false);
     });
 });

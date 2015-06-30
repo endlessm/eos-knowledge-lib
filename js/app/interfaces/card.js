@@ -153,6 +153,32 @@ const Card = new Lang.Interface({
                 this.title_capitalization);
             this.title_label.visible = !!this.model.title;
         }
+
+        if (this.caption_label) {
+            this.caption_label.no_show_all = true;
+            this.caption_label.label = this.model.caption.split('\n').join(' ');
+            this.caption_label.visible = !!this.model.caption;
+        }
+
+        if (this.attribution_label) {
+            this.attribution_label.no_show_all = true;
+            let attributions = [];
+            if (this.model.license)
+                attributions.push(this.model.license);
+            if (this.model.copyright_holder)
+                attributions.push(this.model.copyright_holder);
+            this.attribution_label.label = attributions.map((s) => {
+                return s.split('\n')[0];
+            }).join(' - ').toUpperCase();
+            this.attribution_label.visible = !!this.attribution_label.label;
+        }
+
+        if (this.previewer) {
+            this.previewer.no_show_all = true;
+            this.previewer.visible = true;
+            this.previewer.set_content(this.model.get_content_stream(),
+                                       this.model.content_type);
+        }
     },
 
     /**
