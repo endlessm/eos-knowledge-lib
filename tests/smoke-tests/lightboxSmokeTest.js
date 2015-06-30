@@ -6,7 +6,7 @@ const Lang = imports.lang;
 
 const CardA = imports.app.cardA;
 const Lightbox = imports.app.lightbox;
-const MediaInfobox = imports.app.mediaInfobox;
+const MediaCard = imports.app.mediaCard;
 const Previewer = imports.app.previewer;
 const Utils = imports.tests.utils;
 
@@ -35,13 +35,13 @@ const TestApplication = new Lang.Class({
         };
 
         this._infoboxes = {
-            image: new MediaInfobox.MediaInfobox({
+            image: new MediaCard.MediaCard({
                 caption: 'Ruínas maias em Tikal, abandonadas por razões desconhecidas no século X.',
                 media_title: 'pig1.jpg',
                 license_text: 'Some license',
                 creator_text: 'Some creator'
             }),
-            copyrighted: new MediaInfobox.MediaInfobox({
+            copyrighted: new MediaCard.MediaCard({
                 caption: 'Ruínas maias em Tikal. Em Tikal, nas terras baixas do norte da Guatemala, muitas ruínas maias do III e IV séculos foram escavadas. ' +
                          'e estudadas. Acredita-se que a área, um dos maiores centros religiosos maia, teve uma população de 50.000 habitantes durante seu ' +
                          'apogeu, até que foi abandonada por razões desconhecidas no século X.\n' +
@@ -52,7 +52,7 @@ const TestApplication = new Lang.Class({
                 license_text: 'NSA Creative Commons Spy Alike',
                 creator_text: 'Yo momma'
             }),
-            tallimage: new MediaInfobox.MediaInfobox({
+            tallimage: new MediaCard.MediaCard({
                 caption: 'This image be super tall.',
                 media_title: 'tall.jpg',
                 license_text: 'blar',

@@ -11,11 +11,6 @@
     background-color: alpha(#888a85, 0.8);
 }
 
-.lightbox-container {
-    background-color: white;
-    padding: 10px;
-}
-
 .lightbox-shadow {
     background-color: alpha(black, 0.9);
 }

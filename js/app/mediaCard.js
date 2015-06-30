@@ -4,19 +4,21 @@ const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 const Pango = imports.gi.Pango;
 
+const Previewer = imports.app.previewer;
 const StyleClasses = imports.app.styleClasses;
 const Utils = imports.app.utils;
 
-/** Class: MediaInfobox
+/**
+ * Class: MediaCard
  *
- * A widget to be used as a #EknLightbox infobox for a #EknMediaObjectModel. It
- * has labels set by <caption>, <license-text>, and <creator-text>.
+ * A widget to display a MediaObjectModel, showing an <previewer> widget along
+ * with labels displaying <caption>, <license-text>, and <creator-text>.
  */
-const MediaInfobox = new Lang.Class({
-    Name: 'MediaInfobox',
-    GTypeName: 'EknMediaInfobox',
-    Extends: Gtk.Grid,
-    
+const MediaCard = new Lang.Class({
+    Name: 'MediaCard',
+    GTypeName: 'EknMediaCard',
+    Extends: Gtk.Frame,
+
     Properties: {
         /**
          * Property: caption
@@ -55,54 +57,94 @@ const MediaInfobox = new Lang.Class({
         'creator-text': GObject.ParamSpec.string('creator-text', 'Creator text',
             'A name denoting the attributable content creator',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
-            '')
+            ''),
+
+        /**
+         * Property: previewer
+         */
+        'previewer': GObject.ParamSpec.string('previewer', 'Previewer',
+            'Previewer', GObject.ParamFlags.READABLE, '')
     },
 
     _MAX_CAPTION_LINES: 5,
+    _MIN_WIDTH: 200,
 
     _css_has_loaded: false,
 
-    _init: function (props) {
-        props = props || {};
-        props.orientation = Gtk.Orientation.VERTICAL;
+    _init: function (props={}) {
+        props.visible = true;
 
         this._caption_label = new Gtk.Label({
+            visible: true,
             xalign: 0,
             wrap: true,
             wrap_mode: Pango.WrapMode.WORD_CHAR,
             ellipsize: Pango.EllipsizeMode.END,
-            lines: this._MAX_CAPTION_LINES
+            lines: this._MAX_CAPTION_LINES,
         });
-        this._caption_label.get_style_context().add_class(StyleClasses.INFOBOX_CAPTION);
+        this._caption_label.get_style_context().add_class(StyleClasses.MEDIA_CARD_CAPTION);
 
         this._separator = new Gtk.Separator({
+            visible: true,
             expand: true,
-            halign: Gtk.Align.FILL
+            halign: Gtk.Align.FILL,
         });
 
-        this._attribution_button = new Gtk.Button();
+        this._attribution_button = new Gtk.Button({
+            visible: true,
+        });
         this._attribution_label = new Gtk.Label({
+            visible: true,
             xalign: 0,
             wrap: true,
-            wrap_mode: Pango.WrapMode.WORD_CHAR
+            wrap_mode: Pango.WrapMode.WORD_CHAR,
         });
-        this._attribution_button.get_style_context().add_class(StyleClasses.INFOBOX_ATTRIBUTION_TEXT);
+        this._attribution_button.get_style_context().add_class(StyleClasses.MEDIA_CARD_ATTRIBUTION_TEXT);
         this._attribution_button.add(this._attribution_label);
 
         this.parent(props);
 
+        this._caption_label.connect('notify::visible',
+                                    this._update_visibility.bind(this));
+        this._attribution_label.connect('notify::visible',
+                                        this._update_visibility.bind(this));
+        this._update_visibility();
+
+        this.get_style_context().add_class(StyleClasses.MEDIA_CARD);
+
         if (!this._css_has_loaded) {
-            let css = Gio.File.new_for_uri('resource:///com/endlessm/knowledge/css/infobox.css');
+            let css = Gio.File.new_for_uri('resource:///com/endlessm/knowledge/css/mediaCard.css');
             Utils.add_css_provider_from_file(css, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
             this._css_has_loaded = true;
         }
 
-        this.add(this._caption_label);
-        this.add(this._separator);
-        this.add(this._attribution_button);
-        this.show_all();
+        this.previewer = new Previewer.Previewer({
+            visible: true,
+        });
+
+        let grid = new Gtk.Grid({
+            visible: true,
+            orientation: Gtk.Orientation.VERTICAL,
+            row_spacing: 8,
+        });
+        grid.add(this.previewer);
+        grid.add(this._caption_label);
+        grid.add(this._separator);
+        grid.add(this._attribution_button);
+        this.add(grid);
     },
 
+    _update_visibility: function () {
+        this._attribution_button.visible = this._attribution_label.visible;
+        this._separator.visible = this._attribution_label.visible &&
+                                  this._caption_label.visible;
+    },
+
+    vfunc_get_preferred_width: function () {
+        let padding = this.get_style_context().get_padding(this.get_state_flags());
+        return this.previewer.get_preferred_width().map((v) =>
+            Math.max(this._MIN_WIDTH, v) + padding.right + padding.left);
+    },
 
     _refresh_attribution_label: function () {
         let attributions = [];
@@ -115,22 +157,20 @@ const MediaInfobox = new Lang.Class({
         this._attribution_label.label = attributions.map(function (s) {
             return s.split('\n')[0];
         }).join(' - ').toUpperCase();
+        this._attribution_label.visible = !!this._attribution_label.label;
     },
 
     set caption (v) {
-        if (this._caption === v) return;
-        if (v.length > 0) {
-            // FIXME: We may want to stick this text content in a scroll
-            // area of some sort, and keep newlines. But for now we remove
-            // newlines so the label ellipsizing will work
-            this._caption_label.label = v.split('\n').join(' ');
-            this._caption_label.show();
-        } else {
-            this._caption_label.hide();
-        }
+        if (this._caption === v)
+            return;
+        // FIXME: We may want to stick this text content in a scroll
+        // area of some sort, and keep newlines. But for now we remove
+        // newlines so the label ellipsizing will work
+        this._caption_label.label = v.split('\n').join(' ');
+        this._caption_label.visible = !!this._caption_label.label;
         this._caption = v;
     },
-    
+
     get caption () {
         if (this._caption === null)
             return '';
@@ -143,7 +183,7 @@ const MediaInfobox = new Lang.Class({
         this._license_text = v;
         this._refresh_attribution_label();
     },
-    
+
     get license_text () {
         if (this._license_text === null)
             return '';
@@ -156,7 +196,7 @@ const MediaInfobox = new Lang.Class({
         this._creator_text = v;
         this._refresh_attribution_label();
     },
-    
+
     get creator_text () {
         if (this._creator_text === null)
             return '';
@@ -180,11 +220,11 @@ const MediaInfobox = new Lang.Class({
 
 /**
  * Constructor: new_from_ekn_model
- * Returns a new #MediaInfobox from a #ContentObjectModel with the relevant
+ * Returns a new #MediaCard from a #ContentObjectModel with the relevant
  * properties set.
  */
 
-MediaInfobox.new_from_ekn_model = function (model) {
+MediaCard.new_from_ekn_model = function (model) {
     let props = {};
 
     if (typeof model.caption !== 'undefined') {
@@ -199,5 +239,7 @@ MediaInfobox.new_from_ekn_model = function (model) {
         props.creator_text = model.copyright_holder;
     }
 
-    return new MediaInfobox(props);
+    let card = new MediaCard(props);
+    card.previewer.set_content(model.get_content_stream(), model.content_type);
+    return card;
 };

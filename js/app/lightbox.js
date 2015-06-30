@@ -18,18 +18,18 @@ GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.
  * Show widget in a lightbox above other content
  *
  * EosKnowledgePrivate.Lightbox is a container which allows displaying a
- * <content-widget> above some other base content. The base content
+ * <lightbox-widget> above some other base content. The base content
  * should be added with lightbox.add().
  *
  * An optional <infobox-widget> can also be added, in a infobox panel
- * underneath the <content-widget> widget.
+ * underneath the <lightbox-widget> widget.
  *
  * To show or hide both of these widgets above the main content, set the
  * <reveal-overlays> property. The lightbox will animate the content visible
  * and invisible and update the <overlays-revealed> property when the
  * animation is complete.
  *
- * You need to call show() on both the <content-widget> and <infobox-widget>
+ * You need to call show() on both the <lightbox-widget> and <infobox-widget>
  * before adding them to the lightbox. To respect the <reveal-overlays>
  * property show_all() will not work on the widget overlays.
  */
@@ -39,26 +39,18 @@ const Lightbox = new Lang.Class({
     Extends: Gtk.Overlay,
     Properties: {
         /**
-         * Property: content-widget
+         * Property: lightbox-widget
          * The widget to display centered in the lightbox above the base content
          */
-        'content-widget': GObject.ParamSpec.object('content-widget', 'Lightbox Widget',
+        'lightbox-widget': GObject.ParamSpec.object('lightbox-widget', 'Lightbox Widget',
             'The widget in the lightbox',
             GObject.ParamFlags.READWRITE, Gtk.Widget),
         /**
-         * Property: infobox-widget
-         * An optional widget to appear at the bottom of the lightbox with
-         * information about the widget being previewed
-         */
-        'infobox-widget': GObject.ParamSpec.object('infobox-widget', 'Infobox Widget',
-            'Optional widget to appear to appear at the bottom of the lightbox',
-            GObject.ParamFlags.READWRITE, Gtk.Widget),
-        /**
          * Property: reveal-overlays
-         * True if lightbox and infobox should be visible above main content
+         * True if lightbox widget should be visible above main widget
          */
         'reveal-overlays': GObject.ParamSpec.boolean('reveal-overlays', 'Reveal Overlays',
-            'True if lightbox and infobox should be visible above main content',
+            'True if lightbox widget should be visible above main widget',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
             false),
         /**
@@ -110,8 +102,7 @@ const Lightbox = new Lang.Class({
 
     _init: function (params) {
         // Property values
-        this._content_widget = null;
-        this._infobox_widget = null;
+        this._lightbox_widget = null;
         this._reveal_overlays = false;
         this._transition_duration = 0;
         this._has_close_button = true;
@@ -178,36 +169,19 @@ const Lightbox = new Lang.Class({
         return this._revealer !== undefined && this._revealer.child_revealed;
     },
 
-    set content_widget (v) {
-        if (this._content_widget === v)
+    set lightbox_widget (v) {
+        if (this._lightbox_widget === v)
             return;
-        if (this._content_widget !== null)
-            this._lightbox_container.remove_content_widget(this._content_widget);
-        this._content_widget = v;
-        if (this._content_widget !== null)
-            this._lightbox_container.add_content_widget(this._content_widget);
-        this.notify('content-widget');
+        if (this._lightbox_widget !== null)
+            this._lightbox_container.remove_lightbox_widget(this._lightbox_widget);
+        this._lightbox_widget = v;
+        if (this._lightbox_widget !== null)
+            this._lightbox_container.add_lightbox_widget(this._lightbox_widget);
+        this.notify('lightbox-widget');
     },
 
-    get content_widget () {
-        return this._content_widget;
-    },
-
-    set infobox_widget (v) {
-        if (this._infobox_widget === v)
-            return;
-        if (this._infobox_widget !== null)
-            this._lightbox_container.remove_info_widget(this._infobox_widget);
-        this._infobox_widget = v;
-        if (this._infobox_widget !== null) {
-            this._infobox_widget.get_style_context().add_class(StyleClasses.INFOBOX);
-            this._lightbox_container.add_info_widget(this._infobox_widget);
-        }
-        this.notify('infobox-widget');
-    },
-
-    get infobox_widget () {
-        return this._infobox_widget;
+    get lightbox_widget () {
+        return this._lightbox_widget;
     },
 
     set transition_duration (v) {
@@ -270,10 +244,6 @@ const LightboxContainer = new Lang.Class({
 
     _ICON_SIZE: 24,
     _ICON_MARGIN: 10,
-    _INFO_RESERVED_WIDTH: 200,
-    _INFO_RESERVED_HEIGHT: 100,
-    _CONTENT_MIN_WIDTH: 200,
-    _CONTENT_MIN_HEIGHT: 200,
     _MIN_BORDER: 20,
 
     _init: function (params) {
@@ -284,8 +254,7 @@ const LightboxContainer = new Lang.Class({
         this.close_visible = true;
         this.forward_arrow_visible = true;
         this.back_arrow_visible = true;
-        this._content_widget = null;
-        this._info_widget = null;
+        this._lightbox_widget = null;
 
         this.set_events(Gdk.EventMask.BUTTON_PRESS_MASK | Gdk.EventMask.BUTTON_RELEASE_MASK | Gdk.EventMask.KEY_PRESS_MASK);
         this.set_has_window(true);
@@ -402,14 +371,6 @@ const LightboxContainer = new Lang.Class({
         Gtk.render_frame(context, cr, 0, 0, width, height);
         context.restore();
 
-        context.save();
-        context.add_class(StyleClasses.LIGHTBOX_CONTAINER);
-        Gtk.render_background(context, cr, this._frame_allocation.x, this._frame_allocation.y,
-                              this._frame_allocation.width, this._frame_allocation.height);
-        Gtk.render_frame(context, cr, this._frame_allocation.x, this._frame_allocation.y,
-                         this._frame_allocation.width, this._frame_allocation.height);
-        context.restore();
-
         let ret = this.parent(cr);
         cr.$dispose();
         return ret;
@@ -422,17 +383,11 @@ const LightboxContainer = new Lang.Class({
             this.get_window().move_resize(alloc.x, alloc.y,
                                           alloc.width, alloc.height);
 
-        if (this._content_widget === null)
+        if (this._lightbox_widget === null)
             return;
 
-        let content_width = this._content_widget.get_preferred_width()[1];
-        let content_height = this._content_widget.get_preferred_height()[1];
-        let info_width = 0;
-        let info_height = 0;
-        if (this._info_widget !== null) {
-            info_width = this._INFO_RESERVED_WIDTH;
-            info_height = this._INFO_RESERVED_HEIGHT;
-        }
+        let content_width = this._lightbox_widget.get_preferred_width()[1];
+        let content_height = this._lightbox_widget.get_preferred_height()[1];
         let close_width = this._MIN_BORDER;
         let close_height = this._MIN_BORDER;
         if (this.close_visible) {
@@ -448,38 +403,17 @@ const LightboxContainer = new Lang.Class({
                                    this._next_button.get_preferred_width()[1]);
         }
 
-        this.get_style_context().save();
-        this.get_style_context().add_class(StyleClasses.LIGHTBOX_CONTAINER);
-        let padding = this.get_style_context().get_padding(this.get_state_flags());
-        this.get_style_context().restore();
-
-        let available_inner_width = alloc.width - 2 * close_width - padding.left - padding.right;
-        let available_inner_height = alloc.height - 2 * arrow_width - padding.top - padding.bottom;
-        content_width = Math.max(Math.min(available_inner_width, content_width), this._CONTENT_MIN_WIDTH);
-        content_height = Math.max(Math.min(available_inner_height - info_height, content_height), this._CONTENT_MIN_HEIGHT);
-        let aspect = this._content_widget.aspect;
-        if (aspect !== undefined) {
-            if (content_width / content_height > aspect) {
-                content_width = content_height * aspect;
-            } else {
-                content_height = content_width / aspect;
-            }
-        }
-
-        if (this._info_widget !== null) {
-            info_width = Math.max(info_width, content_width, this._info_widget.get_preferred_width()[0]);
-            info_height = Math.max(info_height, this._info_widget.get_preferred_height_for_width(info_width)[0]);
-            // Always give the attribution the height it needs, the media itself
-            // can hopefully stretch.
-            content_height = Math.max(Math.min(content_height, available_inner_height - info_height), this._CONTENT_MIN_HEIGHT);
-        }
+        let available_inner_width = alloc.width - 2 * close_width;
+        let available_inner_height = alloc.height - 2 * arrow_width;
+        content_width = Math.min(available_inner_width, content_width);
+        content_height = Math.min(available_inner_height, content_height);
 
         // Frame allocation is what all other allocation will be based on, it
         // is the allocation of the white box, containing the info and content
         // widgets
         this._frame_allocation = new Cairo.RectangleInt({
-            width: Math.max(content_width, info_width) + padding.left + padding.right,
-            height: content_height + info_height + padding.top + padding.bottom
+            width: content_width,
+            height: content_height,
         });
         this._frame_allocation.x = alloc.x + (alloc.width - this._frame_allocation.width) / 2;
         this._frame_allocation.y = alloc.y + (alloc.height - this._frame_allocation.height) / 2;
@@ -487,23 +421,11 @@ const LightboxContainer = new Lang.Class({
         // Content widget should be centered in the top of the frame.
         let content_alloc = new Cairo.RectangleInt({
             x: this._frame_allocation.x + (this._frame_allocation.width - content_width) / 2,
-            y: this._frame_allocation.y + padding.top,
+            y: this._frame_allocation.y,
             width: content_width,
-            height: content_height
+            height: content_height,
         });
-        this._content_widget.size_allocate(content_alloc);
-
-        if (this._info_widget !== null) {
-            // Info widget should get the full horizontal allocation at the bottom
-            // of the frame
-            let info_alloc = new Cairo.RectangleInt({
-                x: this._frame_allocation.x + padding.left,
-                y: this._frame_allocation.y + this._frame_allocation.height - padding.bottom - info_height,
-                width: info_width,
-                height: info_height
-            });
-            this._info_widget.size_allocate(info_alloc);
-        }
+        this._lightbox_widget.size_allocate(content_alloc);
 
         if (this.close_visible) {
             this._close_button.set_child_visible(true);
@@ -535,24 +457,14 @@ const LightboxContainer = new Lang.Class({
         this._previous_button.set_child_visible(this.back_arrow_visible);
     },
 
-    add_content_widget: function (widget) {
-        this._content_widget = widget;
-        this.add(this._content_widget);
+    add_lightbox_widget: function (widget) {
+        this._lightbox_widget = widget;
+        this.add(this._lightbox_widget);
     },
 
-    remove_content_widget: function (widget) {
-        this.remove(this._content_widget);
-        this._content_widget = null;
-    },
-
-    add_info_widget: function (widget) {
-        this._info_widget = widget;
-        this.add(widget);
-    },
-
-    remove_info_widget: function (widget) {
-        this.remove(this._info_widget);
-        this._info_widget = null;
+    remove_lightbox_widget: function () {
+        this.remove(this._lightbox_widget);
+        this._lightbox_widget = null;
     },
 
     _button_release: function (widget, event) {
@@ -568,7 +480,7 @@ const LightboxContainer = new Lang.Class({
         if (button !== 1)
             return;
         // If the event was generated on our child widgets GdkWindows, don't
-        // emit a clicked signal (the user clicked on the content-widget).
+        // emit a clicked signal (the user clicked on the lightbox-widget).
         if (event.get_window() !== this.get_window())
             return;
         // Not all child widgets will have their own GdkWindows capturing

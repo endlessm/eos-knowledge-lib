@@ -83,13 +83,6 @@ const THUMBNAIL = 'thumbnail';
 const LIGHTBOX = 'lightbox';
 
 /**
- * Constant: LIGHTBOX_CONTAINER
- *
- * Matches a #GtkGrid widget serving as lightbox container.
- */
-const LIGHTBOX_CONTAINER = 'lightbox-container';
-
-/**
  * Constant: LIGHTBOX_SHADOW
  *
  * Matches the overlay shadow of #EknLightbox widgets.
@@ -104,25 +97,25 @@ const LIGHTBOX_SHADOW = 'lightbox-shadow';
 const LIGHTBOX_NAVIGATION_BUTTON = 'lightbox-navigation-button';
 
 /**
- * Constant: INFOBOX
+ * Constant: MEDIA_CARD
  *
- * Matches the infobox in #EknLightbox widgets.
+ * Matches the media card in #EknLightbox widgets.
  */
-const INFOBOX = 'infobox';
+const MEDIA_CARD = 'media-card';
 
 /**
- * Constant: INFOBOX_CAPTION
+ * Constant: MEDIA_CARD_CAPTION
  *
- * Matches the caption label in the infobox of #EknLightbox widgets.
+ * Matches the caption label in the media card of #EknLightbox widgets.
  */
-const INFOBOX_CAPTION = 'infobox-caption';
+const MEDIA_CARD_CAPTION = 'media-card-caption';
 
 /**
- * Constant: INFOBOX_ATTRIBUTION_TEXT
+ * Constant: MEDIA_CARD_ATTRIBUTION_TEXT
  *
- * Matches the attribution label in the infobox of #EknLightbox widgets.
+ * Matches the attribution label in the media card of #EknLightbox widgets.
  */
-const INFOBOX_ATTRIBUTION_TEXT = 'infobox-attribution-text';
+const MEDIA_CARD_ATTRIBUTION_TEXT = 'media-card-attribution-text';
 
 /**
  * Constant: TOC

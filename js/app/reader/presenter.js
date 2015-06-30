@@ -185,7 +185,6 @@ const Presenter = new Lang.Class({
         this._lightbox_presenter = new LightboxPresenter.LightboxPresenter({
             engine: this.engine,
             view: this.view,
-            display_infobox: false,
         });
 
         WebkitContextSetup.register_webkit_uri_handlers(this._article_render_callback.bind(this));

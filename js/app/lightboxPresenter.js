@@ -1,8 +1,7 @@
 const GObject = imports.gi.GObject;
 
 const Engine = imports.search.engine;
-const MediaInfobox = imports.app.mediaInfobox;
-const Previewer = imports.app.previewer;
+const MediaCard = imports.app.mediaCard;
 
 /**
  * Class: LightboxPresenter
@@ -34,7 +33,6 @@ const LightboxPresenter = new GObject.Class({
             'Handle to EOS knowledge engine',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             GObject.Object.$gtype),
-
         /**
          * Property: view
          * View that contains the lightbox
@@ -49,31 +47,12 @@ const LightboxPresenter = new GObject.Class({
             'The Window object that contains the Lightbox that is being handled.',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             GObject.Object.$gtype),
-
-        /**
-         * Property: display-infobox
-         * Whether the lightbox' infobox should be displayed
-         *
-         * The <Lightbox> widget provides an infobox area that can display a caption
-         * and image credits. This flag toggles its display.
-         *
-         * Flags:
-         *   Construct only
-         */
-        'display-infobox': GObject.ParamSpec.boolean('display-infobox', 'Display Infobox',
-            'Whether the Lightbox needs to display an Infobox when shown. Defaults to "true"',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, true),
     },
 
     _init: function (props={}) {
         props.engine = props.engine || Engine.Engine.get_default();
 
         this.parent(props);
-
-        this._previewer = new Previewer.Previewer({
-            visible: true,
-        });
-        this.view.lightbox.content_widget = this._previewer;
 
         // Lock to ensure we're only loading one lightbox media object at a time
         this._loading_new_lightbox = false;
@@ -129,12 +108,8 @@ const LightboxPresenter = new GObject.Class({
         if (this._current_index === -1)
             return false;
 
-        if (this.display_infobox) {
-            let infobox = MediaInfobox.MediaInfobox.new_from_ekn_model(media_object);
-            this.view.lightbox.infobox_widget = infobox;
-        }
-
-        this._previewer.set_content(media_object.get_content_stream(), media_object.content_type);
+        let media_card = MediaCard.MediaCard.new_from_ekn_model(media_object);
+        this.view.lightbox.lightbox_widget = media_card;
         this.view.lightbox.reveal_overlays = true;
         this.view.lightbox.has_back_button = this._current_index > 0;
         this.view.lightbox.has_forward_button = this._current_index < resources.length - 1;
