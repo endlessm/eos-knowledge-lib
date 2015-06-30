@@ -77,6 +77,7 @@ const LightboxPresenter = new GObject.Class({
 
         // Lock to ensure we're only loading one lightbox media object at a time
         this._loading_new_lightbox = false;
+        this._current_index = -1;
 
         this.view.connect('lightbox-nav-previous-clicked', () => this._on_previous_clicked());
         this.view.connect('lightbox-nav-next-clicked', () => this._on_next_clicked());
@@ -84,16 +85,7 @@ const LightboxPresenter = new GObject.Class({
 
     show_media_object: function (article_model, media_object) {
         this._article_model = article_model;
-        let resources = this._article_model.resources;
-        let resource_index = resources.indexOf(media_object.ekn_id);
-        if (resource_index !== -1) {
-            // Checks whether forward/back arrows should be displayed.
-            this._preview_media_object(media_object,
-                resource_index > 0,
-                resource_index < resources.length - 1);
-            return true;
-        }
-        return false;
+        return this._preview_media_object(media_object);
     },
 
     hide_lightbox: function () {
@@ -109,19 +101,12 @@ const LightboxPresenter = new GObject.Class({
     },
 
     _lightbox_shift_image: function (delta) {
-        if (typeof this.view.lightbox.media_object === 'undefined' || this._loading_new_lightbox) {
+        if (this._loading_new_lightbox)
             return;
-        }
-
-        let resources = this._article_model.resources;
-        let current_index = resources.indexOf(this.view.lightbox.media_object.ekn_id);
-        if (current_index === -1) {
-            return;
-        }
 
         this._loading_new_lightbox = true;
-        let new_index = current_index + delta;
-        let resource_id = resources[new_index];
+        let new_index = this._current_index + delta;
+        let resource_id = this._article_model.resources[new_index];
         this.engine.get_object_by_id(resource_id, null, (engine, task) => {
             this._loading_new_lightbox = false;
             let media_object;
@@ -133,23 +118,26 @@ const LightboxPresenter = new GObject.Class({
             }
 
             // If the next object is not the last, the forward arrow should be displayed.
-            this._preview_media_object(media_object,
-                new_index > 0,
-                new_index < resources.length - 1);
+            this._preview_media_object(media_object);
             this._loading_new_lightbox = false;
         });
     },
 
-    _preview_media_object: function (media_object, previous_arrow_visible, next_arrow_visible) {
+    _preview_media_object: function (media_object) {
+        let resources = this._article_model.resources;
+        this._current_index = resources.indexOf(media_object.ekn_id);
+        if (this._current_index === -1)
+            return false;
+
         if (this.display_infobox) {
             let infobox = MediaInfobox.MediaInfobox.new_from_ekn_model(media_object);
             this.view.lightbox.infobox_widget = infobox;
         }
 
         this._previewer.set_content(media_object.get_content_stream(), media_object.content_type);
-        this.view.lightbox.media_object = media_object;
         this.view.lightbox.reveal_overlays = true;
-        this.view.lightbox.has_back_button = previous_arrow_visible;
-        this.view.lightbox.has_forward_button = next_arrow_visible;
+        this.view.lightbox.has_back_button = this._current_index > 0;
+        this.view.lightbox.has_forward_button = this._current_index < resources.length - 1;
+        return true;
     },
 });

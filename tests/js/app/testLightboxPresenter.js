@@ -2,6 +2,9 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
+const Utils = imports.tests.utils;
+Utils.register_gresource();
+
 const ArticleObjectModel = imports.search.articleObjectModel;
 const LightboxPresenter = imports.app.lightboxPresenter;
 
@@ -60,6 +63,8 @@ describe('Lightbox Presenter', function () {
         let media_object_uri = 'ekn://foo/bar';
         let media_object = {
             ekn_id: media_object_uri,
+            get_content_stream: () => null,
+            content_type: 'image/jpeg',
         };
         let article_model = new ArticleObjectModel.ArticleObjectModel({
             title: 'Title 1',
@@ -68,9 +73,7 @@ describe('Lightbox Presenter', function () {
             published: '2014/11/13 08:00',
             resources: [media_object_uri],
         });
-        spyOn(lightbox_presenter, '_preview_media_object');
         let lightbox_result = lightbox_presenter.show_media_object(article_model, media_object);
-        expect(lightbox_presenter._preview_media_object).toHaveBeenCalledWith(media_object, false, false);
         expect(lightbox_result).toBe(true);
 
         let nonexistant_media_object = {
