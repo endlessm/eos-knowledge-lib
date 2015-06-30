@@ -7,6 +7,7 @@ const Lang = imports.lang;
 const Pango = imports.gi.Pango;
 
 const StyleClasses = imports.app.styleClasses;
+const Utils = imports.app.utils;
 
 /**
  * Class: Reader.ArticleSnippet
@@ -120,3 +121,11 @@ const ArticleSnippet = new Lang.Class({
         return '';
     },
 });
+
+function get_css_for_module (css_data, num) {
+    let title_data = Utils.get_css_for_submodule('title', css_data);
+    let str = Utils.object_to_css_string(title_data, '.snippet' + num + ' .title');
+    let module_data = Utils.get_css_for_submodule('module', css_data);
+    str += Utils.object_to_css_string(module_data, '.snippet' + num + ' .synopsis');
+    return str;
+}

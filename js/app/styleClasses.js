@@ -466,7 +466,7 @@ const READER_DONE_PAGE = 'done-page';
  *
  * Matches the headline text on the reader's 'done' page.
  */
-const READER_HEADLINE = 'headline';
+const READER_HEADLINE = 'title';
 
 /**
  * Constant: READER_BOTTOM_LINE
@@ -488,7 +488,7 @@ const READER_OPEN_BUTTON = 'open-button';
  *
  * Matches the attribution on the reader's ArticlePage.
  */
-const READER_ARTICLE_PAGE_ATTRIBUTION = 'article-page-attribution';
+const READER_ARTICLE_PAGE_ATTRIBUTION = 'attribution';
 
 /**
  * Constant: READER_ARTICLE_PAGE_ORNAMENT

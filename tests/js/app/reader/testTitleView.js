@@ -15,11 +15,11 @@ describe('Title view', function () {
 
     it('constructs', function () {});
 
-    it('has a child with the article-page-title CSS class', function () {
+    it('has a child with the title CSS class', function () {
         expect(view).toHaveDescendantWithCssClass(StyleClasses.ARTICLE_PAGE_TITLE);
     });
 
-    it('has a child with the article-page-attribution CSS class', function () {
+    it('has a child with the attribution CSS class', function () {
         expect(view).toHaveDescendantWithCssClass(StyleClasses.READER_ARTICLE_PAGE_ATTRIBUTION);
     });
 

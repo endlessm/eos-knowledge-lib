@@ -8,6 +8,7 @@ const StyleClasses = imports.app.styleClasses;
 
 const ProgressLabel = imports.app.reader.progressLabel;
 const TitleView = imports.app.reader.titleView;
+const Utils = imports.app.utils;
 
 const _TITLE_VIEW_LEFT_MARGIN_PX = 100;
 const _CONTENT_VIEW_MARGIN_PX = 40;
@@ -137,3 +138,17 @@ const ArticlePage = new Lang.Class({
         }
     },
 });
+
+function get_css_for_module (css_data, num) {
+    let str = "";
+    let background_color = css_data['title-background-color'];
+    if (typeof background_color !== 'undefined') {
+        str += Utils.object_to_css_string({'background-color': background_color}, '.article-page' + num + ' .decorative-bar');
+        delete css_data['title-background-color'];
+    }
+    let title_data = Utils.get_css_for_submodule('title', css_data);
+    str += Utils.object_to_css_string(title_data, '.article-page' + num + ' .title');
+    let module_data = Utils.get_css_for_submodule('module', css_data);
+    str += Utils.object_to_css_string(module_data, '.article-page' + num + ' .attribution');
+    return str;
+}

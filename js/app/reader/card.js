@@ -8,6 +8,7 @@ const Lang = imports.lang;
 
 const CardIface = imports.app.interfaces.card;  // FIXME name
 const Config = imports.app.config;
+const Utils = imports.app.utils;
 
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
@@ -20,7 +21,7 @@ let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
  *    card, reader-card - on the card itself
  *    card-info-frame - card info frame
  *    card-info-title - card info title
- *    card-title, title - card's label
+ *    title - card's label
  *    decorative-bar - ornament on the top of the card
  *    hover-frame - hover frame
  *    reader-card0 - Style variant #0
@@ -121,3 +122,17 @@ const Card = new Lang.Class({
         return [this._CARD_HEIGHT, this._CARD_HEIGHT];
     },
 });
+
+function get_css_for_module (css_data, num) {
+    let str = "";
+    let background_color = css_data['title-background-color'];
+    if (typeof background_color !== 'undefined') {
+        str += Utils.object_to_css_string({'background-color': background_color}, '.reader-card' + num + ' .decorative-bar');
+        delete css_data['title-background-color'];
+    }
+    let title_data = Utils.get_css_for_submodule('title', css_data);
+    let str = Utils.object_to_css_string(title_data, '.reader-card' + num + ' .title');
+    let module_data = Utils.get_css_for_submodule('module', css_data);
+    str += Utils.object_to_css_string(module_data, '.reader-card' + num + ' .attribution');
+    return str;
+}

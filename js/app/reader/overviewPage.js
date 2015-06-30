@@ -10,6 +10,7 @@ const ArticleSnippet = imports.app.reader.articleSnippet;
 const ImagePreviewer = imports.app.imagePreviewer;
 const SpaceContainer = imports.app.spaceContainer;
 const StyleClasses = imports.app.styleClasses;
+const Utils = imports.app.utils;
 
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 
@@ -199,6 +200,12 @@ const OverviewPage = new Lang.Class({
             this._snippets_grid.remove(child));
     },
 });
+
+
+function get_css_for_module (css_data) {
+    let module_data = Utils.get_css_for_submodule('module', css_data);
+    return Utils.object_to_css_string(module_data, '.overview-frame');
+}
 
 /**
  * Class: FlexMarginContainer

@@ -45,7 +45,6 @@
                 <property name="max_width_chars">15</property>
                 <property name="lines">4</property>
                 <style>
-                  <class name="card-title"/>
                   <class name="title"/>
                 </style>
               </object>
