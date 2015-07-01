@@ -152,6 +152,7 @@ let style_knobs_reader = {
 describe('StyleKnobGenerator', function () {
     let css_overrides_a;
     let css_overrides_b;
+    let css_overrides_reader;
 
     beforeEach(function () {
         let file_a = Gio.File.new_for_path(TEST_CONTENT_DIR + 'overrides-a.css');
