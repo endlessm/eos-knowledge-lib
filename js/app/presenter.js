@@ -318,7 +318,6 @@ const Presenter = new Lang.Class({
             }
 
             card.connect('clicked', this._on_section_card_clicked.bind(this, section['tags']));
-            card.show_all();
             return card;
         };
 
@@ -671,9 +670,7 @@ const Presenter = new Lang.Class({
             this._on_article_card_clicked(card, model);
         }.bind(this));
 
-        if (this._template_type === 'B')
-            card.show_all();
-        else
+        if (this._template_type !== 'B')
             card.fade_in();
 
         return card;

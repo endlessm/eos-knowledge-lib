@@ -561,7 +561,6 @@ const Presenter = new Lang.Class({
         card.connect('clicked', () => {
             this._on_article_card_clicked(model);
         });
-        card.show_all();
         return card;
     },
 

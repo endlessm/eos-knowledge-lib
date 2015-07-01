@@ -157,7 +157,7 @@ const Card = new Lang.Interface({
 
     /**
      * Method: fade_in
-     * Use instead of *Gtk.Widget.show_all()*.
+     * Use instead of *Gtk.Widget.show()* or *Gtk.Widget.show_all()*.
      */
     fade_in: function () {
         let context = this.get_style_context();
@@ -175,7 +175,7 @@ const Card = new Lang.Interface({
             context.remove_class(StyleClasses.FADE_IN);
             return GLib.SOURCE_REMOVE;
         });
-        this.show_all();
+        this.show();
         context.add_class(StyleClasses.FADE_IN);
     },
 });
