@@ -23,7 +23,6 @@ const TestCard = new Lang.Class({
     Implements: [ Card.Card ],
 
     Properties: {
-        'css': GObject.ParamSpec.override('css', Card.Card),
         'model': GObject.ParamSpec.override('model', Card.Card),
         'title-capitalization': GObject.ParamSpec.override('title-capitalization',
             Card.Card),
