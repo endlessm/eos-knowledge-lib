@@ -36,7 +36,6 @@ const Card = new Lang.Class({
 
     Properties: {
         'css': GObject.ParamSpec.override('css', CardIface.Card),
-        'fade-in': GObject.ParamSpec.override('fade-in', CardIface.Card),
         'model': GObject.ParamSpec.override('model', CardIface.Card),
         'title-capitalization': GObject.ParamSpec.override('title-capitalization',
             CardIface.Card),

@@ -8,6 +8,7 @@ const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 
 const ContentObjectModel = imports.search.contentObjectModel;
+const StyleClasses = imports.app.styleClasses;
 const Utils = imports.app.utils;
 
 /**
@@ -26,10 +27,6 @@ const Card = new Lang.Interface({
         'css': GObject.ParamSpec.string('css', 'CSS rules',
             'CSS rules to be applied to this widget',
             GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE, ''),
-        'fade-in': GObject.ParamSpec.boolean('fade-in', 'Fade in',
-            'Whether the card should fade in to being visible.',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            false),
         /**
          * Property: model
          * Record backing this card
@@ -159,26 +156,26 @@ const Card = new Lang.Interface({
     },
 
     /**
-     * Method: show_all
-     * Overrides *Gtk.Widget.show_all()*.
+     * Method: fade_in
+     * Use instead of *Gtk.Widget.show()* or *Gtk.Widget.show_all()*.
      */
-    show_all: function () {
-        if (this.fade_in) {
-            // FIXME: for some reason even if initial opacity = 0 in css, the
-            // opacity will start at 1. Triggering a 'notify' on opacity seems
-            // to get the actual initial opacity value in css to be respected
-            this.opacity = 0;
-            this.opacity = 1;
-            this.get_style_context().add_class('fade-in');
-            // Cards not sensitive till fully faded in
-            this.sensitive = false;
-            Mainloop.timeout_add(this.FADE_IN_TIME_MS, () => {
-                this.sensitive = true;
-                return GLib.SOURCE_REMOVE;
-            });
-        } else {
-            this.get_style_context().add_class('visible');
-        }
-        Gtk.Widget.prototype.show_all.call(this);
+    fade_in: function () {
+        let context = this.get_style_context();
+        context.add_class(StyleClasses.INVISIBLE);
+        // FIXME: for some reason even if initial opacity = 0 in css, the
+        // opacity will start at 1. Triggering a 'notify' on opacity seems to
+        // get the actual initial opacity value in css to be respected
+        this.opacity = 0;
+        this.opacity = 1;
+        // Cards not sensitive till fully faded in
+        this.sensitive = false;
+        Mainloop.timeout_add(this.FADE_IN_TIME_MS, () => {
+            this.sensitive = true;
+            context.remove_class(StyleClasses.INVISIBLE);
+            context.remove_class(StyleClasses.FADE_IN);
+            return GLib.SOURCE_REMOVE;
+        });
+        this.show();
+        context.add_class(StyleClasses.FADE_IN);
     },
 });

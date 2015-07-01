@@ -382,7 +382,6 @@ const Presenter = new Lang.Class({
             }
 
             card.connect('clicked', this._on_section_card_clicked.bind(this, section['tags']));
-            card.show_all();
             return card;
         };
 
@@ -722,22 +721,22 @@ const Presenter = new Lang.Class({
     },
 
     _new_card_from_article_model: function (model) {
-        let fade_in = true;
         let card_class = ArticleCard.ArticleCard;
         if (model.content_type === 'application/pdf') {
             card_class = PdfCard.PdfCard;
         } else if (this._template_type === 'B') {
-            fade_in = false;
             card_class = TextCard.TextCard;
         }
         let card = new card_class({
             model: model,
-            fade_in: fade_in,
         });
         card.connect('clicked', function () {
             this._on_article_card_clicked(card, model);
         }.bind(this));
-        card.show_all();
+
+        if (this._template_type !== 'B')
+            card.fade_in();
+
         return card;
     },
 });

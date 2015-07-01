@@ -594,3 +594,15 @@ const READER_DECORATIVE_BAR = 'decorative-bar';
  * Matches the PDF label on the pdf cards
  */
 const PDF_CARD_LABEL = 'pdf-card-label';
+
+/**
+ * Constant: INVISIBLE
+ * Added to widgets that should be styled invisible by CSS
+ */
+const INVISIBLE = 'invisible';
+
+/**
+ * Constant: FADE_IN
+ * Added to widgets that should be faded in using CSS
+ */
+const FADE_IN = 'fade-in';

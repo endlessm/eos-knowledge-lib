@@ -3,14 +3,19 @@
 <interface>
   <requires lib="gtk+" version="3.12"/>
   <template class="EknPdfCard" parent="EknCardA">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="receives_default">False</property>
     <property name="halign">start</property>
     <property name="hexpand">False</property>
     <property name="vexpand">False</property>
     <child>
       <object class="GtkGrid" id="grid">
+        <property name="visible">True</property>
         <property name="can_focus">False</property>
         <child>
           <object class="GtkLabel" id="title-label">
+            <property name="can_focus">False</property>
             <property name="no_show_all">True</property>
             <property name="hexpand">True</property>
             <property name="wrap_mode">word-char</property>
@@ -30,6 +35,8 @@
         </child>
         <child>
           <object class="GtkImage" id="pdf-icon">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="resource">/com/endlessm/knowledge/images/pdf_icon.png</property>
             <style>
               <class name="pdf-card-icon"/>
@@ -42,6 +49,8 @@
         </child>
         <child>
           <object class="GtkLabel" id="pdf-label">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="hexpand">True</property>
             <property name="label" translatable="yes">PDF</property>
             <property name="xalign">0</property>
