@@ -29,27 +29,13 @@ const CardA = new Lang.Class({
     Template: 'resource:///com/endlessm/knowledge/widgets/cardA.ui',
     Children: [ 'image-frame', 'title-label', 'synopsis-label' ],
 
-    CARD_WIDTH: 183,
-    CARD_HEIGHT: 209,
-    CARD_MARGIN: 7,
-
     _init: function (props={}) {
+        // TODO: we do want all cards to be the same size, but we may want to
+        // make this size scale with resolution down the road
+        props.width_request = 197;  // 183px width + 2 * 7px margin
+        props.height_request = 223;  // 209px height + 2 * 7px margin
         this.parent(props);
         this.populate_from_model();
         Utils.set_hand_cursor_on_widget(this);
     },
-
-    // TODO: we do want all cards to be the same size, but we may want to make
-    // this size scale with resolution down the road
-    vfunc_get_preferred_width: function () {
-        return [this.CARD_WIDTH + 2 * this.CARD_MARGIN, this.CARD_WIDTH + 2 * this.CARD_MARGIN];
-    },
-
-    vfunc_get_preferred_height: function () {
-        return [this.CARD_HEIGHT + 2 * this.CARD_MARGIN, this.CARD_HEIGHT + 2 * this.CARD_MARGIN];
-    },
-
-    vfunc_get_request_mode: function () {
-        return Gtk.SizeRequestMode.CONSTANT_SIZE;
-    }
 });
