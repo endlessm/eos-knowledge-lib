@@ -16,6 +16,7 @@ const ArticleObjectModel = imports.search.articleObjectModel;
 const ArticlePage = imports.app.reader.articlePage;
 const ArticleSnippet = imports.app.reader.articleSnippet;
 const Config = imports.app.config;
+const DonePage = imports.app.reader.donePage;
 const EknWebview = imports.app.eknWebview;
 const Engine = imports.search.engine;
 const HistoryPresenter = imports.app.historyPresenter;
@@ -40,6 +41,8 @@ const RESULTS_SIZE = 15;
 const TOTAL_ARTICLES = 30;
 const NUM_SNIPPET_STYLES = 3;
 const NUM_OVERVIEW_SNIPPETS = 3;
+
+const DATA_RESOURCE_PATH = 'resource:///com/endlessm/knowledge/';
 
 // 1 week in miliseconds
 const UPDATE_INTERVAL_MS = 604800000;
@@ -203,6 +206,9 @@ const Presenter = new Lang.Class({
             view: this.view,
         });
 
+        this._style_knobs = app_json['styles'];
+        this.load_theme();
+
         // Connect signals
         this.view.history_buttons.back_button.connect('clicked', this._on_topbar_back_clicked.bind(this));
         this.view.history_buttons.forward_button.connect('clicked', this._on_topbar_forward_clicked.bind(this));
@@ -245,6 +251,50 @@ const Presenter = new Lang.Class({
 
     get current_page() {
         return this._current_page;
+    },
+
+
+    _get_knob_css: function (css_data) {
+        let str = '';
+        for (let key in css_data) {
+            let num = (key.match(/\d+/) || [])[0];
+            if (/snippet[0-2]/.test(key)) {
+                str += ArticleSnippet.get_css_for_module(css_data[key], num);
+            } else if (/article_page[0-2]/.test(key)) {
+                str += ArticlePage.get_css_for_module(css_data[key], num);
+            } else if (/reader_card[0-2]/.test(key)) {
+                str += ReaderCard.get_css_for_module(css_data[key], num);
+            } else if (key === 'done_page') {
+                str += DonePage.get_css_for_module(css_data[key]);
+            } else if (key === 'overview_page') {
+                str += OverviewPage.get_css_for_module(css_data[key]);
+            }
+        }
+        return str;
+    },
+
+    /*
+     * FIXME: This function will change once we have finalized the structure
+     * of the app.json. Load both the base library css styles and the theme specific
+     * styles. Make sure to apply the theme styling second, so that
+     * it gets priority.
+     */
+    load_theme: function () {
+        let css_path = Gio.File.new_for_uri(DATA_RESOURCE_PATH).get_child('css');
+        let css_files = [css_path.get_child('endless_reader.css')];
+        // FIXME: Get theme from app.json once we have finalized that
+        let theme = 'jungle';
+        if (typeof theme !== 'undefined') {
+            //css_files.push(css_path.get_child('themes').get_child(theme + '.css'));
+        }
+        let all_css = css_files.reduce((str, css_file) => {
+            return str + css_file.load_contents(null)[1];
+        }, '');
+        all_css += this._get_knob_css(this._style_knobs);
+        let provider = new Gtk.CssProvider();
+        provider.load_from_data(all_css);
+        Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(),
+            provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
     },
 
     _ARTICLE_PAGE: 'article',

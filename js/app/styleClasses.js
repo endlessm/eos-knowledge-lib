@@ -65,7 +65,7 @@ const CARD_SYNOPSIS = 'card-synopsis';
  *
  * Matches the title on a card
  */
-const CARD_TITLE = 'card-title';
+const CARD_TITLE = 'title';
 
 /**
  * Constant: THUMBNAIL
@@ -206,7 +206,7 @@ const ARTICLE_PAGE = 'article-page';
  *
  * Matches the title on the ArticlePage.
  */
-const ARTICLE_PAGE_TITLE = 'article-page-title';
+const ARTICLE_PAGE_TITLE = 'title';
 
 /**
  * Constant: ARTICLE_PAGE_TOOLBAR_FRAME
@@ -270,7 +270,7 @@ const RTL = 'rtl';
  *
  * Matches the title on the SectionPage of the knowledge apps.
  */
-const SECTION_PAGE_TITLE = 'section-page-title';
+const SECTION_PAGE_TITLE = 'title';
 
 /**
  * Constant: SECTION_PAGE_A
@@ -381,7 +381,7 @@ const NO_SEARCH_RESULTS_PAGE_NO_RESULTS_LABEL = 'no-search-results-page-no-resul
  *
  * Matches the title of the Template A's NoSearchResultsPage of the knowledge apps.
  */
-const NO_SEARCH_RESULTS_PAGE_TITLE = 'no-search-results-page-title';
+const NO_SEARCH_RESULTS_PAGE_TITLE = 'title';
 
 /**
  * Constant: NO_SEARCH_RESULTS_PAGE_TRY_AGAIN_LABEL
@@ -466,7 +466,7 @@ const READER_DONE_PAGE = 'done-page';
  *
  * Matches the headline text on the reader's 'done' page.
  */
-const READER_HEADLINE = 'headline';
+const READER_HEADLINE = 'title';
 
 /**
  * Constant: READER_BOTTOM_LINE
@@ -488,7 +488,7 @@ const READER_OPEN_BUTTON = 'open-button';
  *
  * Matches the attribution on the reader's ArticlePage.
  */
-const READER_ARTICLE_PAGE_ATTRIBUTION = 'article-page-attribution';
+const READER_ARTICLE_PAGE_ATTRIBUTION = 'attribution';
 
 /**
  * Constant: READER_ARTICLE_PAGE_ORNAMENT

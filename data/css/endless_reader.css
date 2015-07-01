@@ -71,35 +71,35 @@ overridden by app specific CSS */
     color: black;
 }
 
-.article-page-title {
+.article-page .title {
     font-size: 4em;
 }
 
-.article-page-attribution {
+.article-page .attribution {
     font-size: 0.75em;
 }
 
-.article-page0 .article-page-title {
+.article-page0 .title {
     color: #ef2929;
 }
 
-.article-page0 .article-page-attribution {
+.article-page0 .attribution {
     color: #a40000;
 }
 
-.article-page1 .article-page-title {
+.article-page1 .title {
     color: #8ae234;
 }
 
-.article-page1 .article-page-attribution {
+.article-page1 .attribution {
     color: #4e9a06;
 }
 
-.article-page2 .article-page-title {
+.article-page2 .title {
     color: #729fcf;
 }
 
-.article-page2 .article-page-attribution {
+.article-page2 .attribution {
     color: #204a87;
 }
 

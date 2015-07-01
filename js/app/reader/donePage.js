@@ -9,6 +9,7 @@ const StyleClasses = imports.app.styleClasses;
 
 const Config = imports.app.config;
 const ProgressLabel = imports.app.reader.progressLabel;
+const Utils = imports.app.utils;
 
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
@@ -21,7 +22,7 @@ let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
  *
  * CSS classes:
  *   done-page - on the page itself
- *   headline - on the first line of the message
+ *   title - on the first line of the message
  *   bottom-line - one the second line of the message
  */
 const DonePage = new Lang.Class({
@@ -112,3 +113,11 @@ const DonePage = new Lang.Class({
         }
     },
 });
+
+function get_css_for_module (css_data) {
+    let title_data = Utils.get_css_for_submodule('title', css_data);
+    let str = Utils.object_to_css_string(title_data, '.done-page .title');
+    let module_data = Utils.get_css_for_submodule('module', css_data);
+    str += Utils.object_to_css_string(module_data, '.done-page .bottom-line');
+    return str;
+}

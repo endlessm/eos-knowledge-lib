@@ -62,6 +62,7 @@ const MockView = new Lang.Class({
         this.home_page = new MockHomePage();
         this.home_page.tab_button = {};
         this.categories_page = connectable_object;
+        this.categories_page.tab_button = {};
         this.article_page = connectable_object;
         this.lightbox = new GObject.Object();
         this.search_box = {};
@@ -123,7 +124,7 @@ describe('Presenter', () => {
 
     beforeEach(() => {
         data = Utils.parse_object_from_path(test_app_filename);
-
+        data['styles'] = {};
         view = new MockView();
         engine = new MockEngine();
         article_presenter = new MockArticlePresenter();

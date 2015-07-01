@@ -1,0 +1,110 @@
+/* Copyright 2015 Endless Mobile, Inc. */
+
+.overview-frame {
+    background: rgba(51, 51, 51, 0.30);
+    background-image: linear-gradient(-180deg, rgba(176, 176, 176, 0.20) 1%, alpha(black, 0.30) 100%);
+}
+
+.article-snippet .synopsis, .done-page .bottom-line {
+    font-family: ABeeZee;
+    font-size: 1em; /* 16px / 12px/em * 72/96 */
+    color: #F2F2F2;
+}
+
+.snippet0 .title, .done-page .headline {
+    font-family: Abel;
+    color: #E05430;
+    font-size: 2.125em;  /* 34px / 12px/em * 72/96 */
+}
+
+.snippet1 .title {
+    font-family: Roboto;
+    color: #FA770F;
+    font-size: 2em; /* 32px / 12px/em * 72/96 */
+}
+
+.snippet2 .title {
+    font-family: Dosis;
+    color: #F7C449;
+    font-size: 2.25em; /* 36px / 12px/em * 72/96 */
+}
+
+.article-page0 .article-page-title {
+    color: #D95430;
+    font-family: Abel;
+    font-size: 3em; /* 48px / 12px/em * 72/96 */
+}
+
+.article-page0 .article-page-attribution {
+    color: #8E421A;
+    font-family: Roboto;
+    font-size: 0.88em; /* 14px / 12px/em * 72/96 */
+    font-style: italic;
+}
+
+.article-page1 .article-page-title {
+    color: #CD6E34;
+    font-family: Lato;
+    font-size: 3em; /* 48px / 12px/em * 72/96 */
+}
+
+.article-page1 .article-page-attribution {
+    color: #924C22;
+    font-family: Roboto;
+    font-size: 0.75em; /* 12px / 12px/em * 72/96 */
+    font-weight: 800; /* black */
+}
+
+.article-page2 .article-page-title {
+    color: #DFAA29;
+    font-family: Dosis;
+    font-size: 3.38em; /* 54px / 12px/em * 72/96 */
+    font-weight: 200; /* light */
+    border-left: 2px solid #F7C464;
+    padding-left: 20px;
+}
+
+.article-page2 .article-page-attribution {
+    color: #B9922F;
+    font-family: Roboto;
+    font-size: 0.81em; /* 13px / 12px/em * 72/96 */
+    font-style: italic;
+}
+
+.reader-card0 .title {
+    color: #d95430;
+    font-family: Abel;
+}
+
+.reader-card0 .reader-attribution {
+    color: #8e421a;
+    font-family: Roboto;
+    font-style: italic;
+}
+
+.reader-card1 .title {
+    color: #cd6e34;
+    font-family: Lato;
+}
+
+.reader-card1 .reader-attribution {
+    color: #924c22;
+    font-family: Roboto;
+    font-weight: 800; /* black */
+}
+
+.reader-card2 .title {
+    color: #dfaa29;
+    font-family: Dosis;
+    font-weight: 200; /* light */
+}
+
+.reader-card2 .reader-attribution {
+    color: #b9922f;
+    font-family: Roboto;
+    font-style: italic;
+}
+
+.article-page0 .decorative-bar, .reader-card0 .decorative-bar {
+    background-color: #D95420;
+}

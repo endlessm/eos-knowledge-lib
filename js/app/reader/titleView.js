@@ -148,11 +148,11 @@ const TitleView = new Lang.Class({
 
         // Apply styling that currently isn't possible with CSS. Ideally this
         // should be done with the following CSS code:
-        //     .article-page1 .article-page-attribution {
+        //     .article-page1 .attribution {
         //         text-transform: uppercase;
         //         letter-spacing: 1.33px;
         //     }
-        //     .article-page2 .article-page-attribution {
+        //     .article-page2 .attribution {
         //         text-transform: uppercase;
         //     }
         // However, those properties are not currently supported in GTK CSS.
