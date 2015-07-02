@@ -231,10 +231,12 @@ js_files = \
 	js/app/imagePreviewer.js \
 	js/app/infiniteScrolledWindow.js \
 	js/app/interfaces/card.js \
+	js/app/interfaces/module.js \
 	js/app/launcher.js \
 	js/app/lightbox.js \
 	js/app/marginButton.js \
 	js/app/mediaInfobox.js \
+	js/app/moduleFactory.js \
 	js/app/mustache.js \
 	js/app/navButtonOverlay.js \
 	js/app/noSearchResultsPage.js \
@@ -267,6 +269,7 @@ js_files = \
 	js/app/tableOfContents.js \
 	js/app/textCard.js \
 	js/app/utils.js \
+	js/app/warehouse.js \
 	js/app/webkitContextSetup.js \
 	js/app/window.js \
 	js/search/application.js \
@@ -331,6 +334,7 @@ javascript_tests = \
 	tests/eosknowledgeprivate/testHistoryItemModel.js \
 	tests/eosknowledgeprivate/testHistoryModel.js \
 	tests/js/app/interfaces/testCard.js \
+	tests/js/app/interfaces/testModule.js \
 	tests/js/app/reader/testDonePage.js \
 	tests/js/app/reader/testOverviewPage.js \
 	tests/js/app/reader/testProgressLabel.js \
@@ -356,6 +360,7 @@ javascript_tests = \
 	tests/js/app/testLightbox.js \
 	tests/js/app/testLightboxPresenter.js \
 	tests/js/app/testMediaInfobox.js \
+	tests/js/app/testModuleFactory.js \
 	tests/js/app/testNoSearchResultsPageA.js \
 	tests/js/app/testNoSearchResultsPageB.js \
 	tests/js/app/testPDFView.js \
@@ -395,6 +400,7 @@ EXTRA_DIST += \
 	tests/CssClassMatcher.js \
 	tests/InstanceOfMatcher.js \
 	tests/minimalCard.js \
+	tests/minimalModule.js \
 	tests/utils.js \
 	tests/WidgetDescendantMatcher.js \
 	$(NULL)
