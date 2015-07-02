@@ -8,6 +8,7 @@ const Lang = imports.lang;
 
 const CardIface = imports.app.interfaces.card;  // FIXME name
 const Config = imports.app.config;
+const Themeable = imports.app.interfaces.themeable;
 const Utils = imports.app.utils;
 
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
@@ -32,10 +33,10 @@ const Card = new Lang.Class({
     Name: 'Card',
     GTypeName: 'EknReaderCard',
     Extends: Gtk.Button,
-    Implements: [ CardIface.Card ],
+    Implements: [ CardIface.Card, Themeable.Themeable ],
 
     Properties: {
-        'css': GObject.ParamSpec.override('css', CardIface.Card),
+        'css': GObject.ParamSpec.override('css', Themeable.Themeable),
         'model': GObject.ParamSpec.override('model', CardIface.Card),
         'title-capitalization': GObject.ParamSpec.override('title-capitalization',
             CardIface.Card),

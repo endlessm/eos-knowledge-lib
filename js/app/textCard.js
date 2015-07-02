@@ -5,6 +5,7 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const Card = imports.app.interfaces.card;
+const Themeable = imports.app.interfaces.themeable;
 const Utils = imports.app.utils;
 
 /**
@@ -20,10 +21,10 @@ const TextCard = new Lang.Class({
     Name: 'TextCard',
     GTypeName: 'EknTextCard',
     Extends: Gtk.Button,
-    Implements: [ Card.Card ],
+    Implements: [ Card.Card, Themeable.Themeable ],
 
     Properties: {
-        'css': GObject.ParamSpec.override('css', Card.Card),
+        'css': GObject.ParamSpec.override('css', Themeable.Themeable),
         'model': GObject.ParamSpec.override('model', Card.Card),
         'title-capitalization': GObject.ParamSpec.override('title-capitalization',
             Card.Card),

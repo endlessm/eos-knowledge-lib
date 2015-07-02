@@ -231,6 +231,7 @@ js_files = \
 	js/app/infiniteScrolledWindow.js \
 	js/app/interfaces/card.js \
 	js/app/interfaces/module.js \
+	js/app/interfaces/themeable.js \
 	js/app/launcher.js \
 	js/app/lightbox.js \
 	js/app/marginButton.js \
@@ -334,6 +335,7 @@ javascript_tests = \
 	tests/eosknowledgeprivate/testHistoryModel.js \
 	tests/js/app/interfaces/testCard.js \
 	tests/js/app/interfaces/testModule.js \
+	tests/js/app/interfaces/testThemeable.js \
 	tests/js/app/reader/testDonePage.js \
 	tests/js/app/reader/testOverviewPage.js \
 	tests/js/app/reader/testProgressLabel.js \
