@@ -5,6 +5,7 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const Card = imports.app.interfaces.card;
+const Module = imports.app.interfaces.module;
 const Utils = imports.app.utils;
 
 /**
@@ -17,9 +18,10 @@ const CardB = new Lang.Class({
     Name: 'CardB',
     GTypeName: 'EknCardB',
     Extends: Gtk.Button,
-    Implements: [ Card.Card ],
+    Implements: [ Module.Module, Card.Card ],
 
     Properties: {
+        'factory': GObject.ParamSpec.override('factory', Module.Module),
         'model': GObject.ParamSpec.override('model', Card.Card),
         'title-capitalization': GObject.ParamSpec.override('title-capitalization',
             Card.Card),

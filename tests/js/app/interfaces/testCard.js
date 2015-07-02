@@ -13,6 +13,7 @@ const ArticleObjectModel = imports.search.articleObjectModel;
 const Card = imports.app.interfaces.card;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const MinimalCard = imports.tests.minimalCard;
+const Module = imports.app.interfaces.module;
 const StyleClasses = imports.app.styleClasses;
 
 Gtk.init(null);
@@ -20,9 +21,10 @@ Gtk.init(null);
 const TestCard = new Lang.Class({
     Name: 'TestCard',
     Extends: Gtk.Grid,
-    Implements: [ Card.Card ],
+    Implements: [ Module.Module, Card.Card ],
 
     Properties: {
+        'factory': GObject.ParamSpec.override('factory', Module.Module),
         'model': GObject.ParamSpec.override('model', Card.Card),
         'title-capitalization': GObject.ParamSpec.override('title-capitalization',
             Card.Card),

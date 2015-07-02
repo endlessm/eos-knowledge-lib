@@ -5,6 +5,7 @@ const Lang = imports.lang;
 
 const Utils = imports.app.utils;
 const Card = imports.app.interfaces.card;
+const Module = imports.app.interfaces.module;
 const Previewer = imports.app.previewer;
 
 /**
@@ -17,9 +18,10 @@ const MediaCard = new Lang.Class({
     Name: 'MediaCard',
     GTypeName: 'EknMediaCard',
     Extends: Gtk.Frame,
-    Implements: [ Card.Card ],
+    Implements: [ Module.Module, Card.Card ],
 
     Properties: {
+        'factory': GObject.ParamSpec.override('factory', Module.Module),
         'model': GObject.ParamSpec.override('model', Card.Card),
         'title-capitalization': GObject.ParamSpec.override('title-capitalization',
             Card.Card),

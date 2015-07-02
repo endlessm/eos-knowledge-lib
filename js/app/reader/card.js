@@ -7,6 +7,7 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const CardIface = imports.app.interfaces.card;  // FIXME name
+const Module = imports.app.interfaces.module;
 const Config = imports.app.config;
 const Utils = imports.app.utils;
 
@@ -32,9 +33,10 @@ const Card = new Lang.Class({
     Name: 'Card',
     GTypeName: 'EknReaderCard',
     Extends: Gtk.Button,
-    Implements: [ CardIface.Card ],
+    Implements: [ Module.Module, CardIface.Card ],
 
     Properties: {
+        'factory': GObject.ParamSpec.override('factory', Module.Module),
         'model': GObject.ParamSpec.override('model', CardIface.Card),
         'title-capitalization': GObject.ParamSpec.override('title-capitalization',
             CardIface.Card),

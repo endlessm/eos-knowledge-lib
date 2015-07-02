@@ -6,6 +6,7 @@ const Lang = imports.lang;
 
 const Card = imports.app.interfaces.card;
 const MarginButton = imports.app.marginButton;
+const Module = imports.app.interfaces.module;
 const Utils = imports.app.utils;
 
 /**
@@ -17,9 +18,10 @@ const CardA = new Lang.Class({
     Name: 'CardA',
     GTypeName: 'EknCardA',
     Extends: MarginButton.MarginButton,
-    Implements: [ Card.Card ],
+    Implements: [ Module.Module, Card.Card ],
 
     Properties: {
+        'factory': GObject.ParamSpec.override('factory', Module.Module),
         'model': GObject.ParamSpec.override('model', Card.Card),
         'title-capitalization': GObject.ParamSpec.override('title-capitalization',
             Card.Card),

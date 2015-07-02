@@ -8,6 +8,7 @@ const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 
 const ContentObjectModel = imports.search.contentObjectModel;
+const Module = imports.app.interfaces.module;
 const StyleClasses = imports.app.styleClasses;
 const Utils = imports.app.utils;
 
@@ -21,7 +22,7 @@ const Utils = imports.app.utils;
 const Card = new Lang.Interface({
     Name: 'Card',
     GTypeName: 'EknCard',
-    Requires: [ Gtk.Widget ],
+    Requires: [ Gtk.Widget, Module.Module ],
 
     Properties: {
         /**
