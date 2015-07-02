@@ -258,6 +258,7 @@ js_files = \
 	js/app/reader/webviewTooltip.js \
 	js/app/reader/window.js \
 	js/app/runner.js \
+	js/app/searchBox.js \
 	js/app/sectionArticlePage.js \
 	js/app/sectionPage.js \
 	js/app/sectionPageA.js \

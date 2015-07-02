@@ -1,10 +1,10 @@
-const Endless = imports.gi.Endless;
 const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const ImagePreviewer = imports.app.imagePreviewer;
+const SearchBox = imports.app.searchBox;
 
 const HomePage = new Lang.Class({
     Name: 'HomePage',
@@ -29,7 +29,7 @@ const HomePage = new Lang.Class({
         'search-box': GObject.ParamSpec.object('search-box', 'Search Box',
             'The seach box for this view.',
             GObject.ParamFlags.READABLE,
-            Endless.SearchBox),
+            SearchBox.SearchBox),
     },
 
     _init: function(props) {
@@ -47,7 +47,7 @@ const HomePage = new Lang.Class({
         });
         this._logo.set_max_percentage(0.5);
 
-        this.search_box = new Endless.SearchBox({
+        this.search_box = new SearchBox.SearchBox({
             max_width_chars: 52 // set width as per design
         });
         this.search_box.name = 'home-page-search-box';

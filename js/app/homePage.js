@@ -11,6 +11,7 @@ const StyleClasses = imports.app.styleClasses;
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 
 const ImagePreviewer = imports.app.imagePreviewer;
+const SearchBox = imports.app.searchBox;
 
 /**
  * Class: HomePage
@@ -96,17 +97,17 @@ const HomePage = new Lang.Class({
 
         // Not using a SearchEntry since that comes with
         // the 'x' as secondary icon, which we don't want
-        this._search_box = new Endless.SearchBox();
+        this.search_box = new SearchBox.SearchBox();
 
-        this._search_box.connect('text-changed', Lang.bind(this, function (search_entry) {
+        this.search_box.connect('text-changed', Lang.bind(this, function (search_entry) {
             this.emit('search-text-changed', search_entry);
         }));
 
-        this._search_box.connect('activate', Lang.bind(this, function (search_entry) {
+        this.search_box.connect('activate', Lang.bind(this, function (search_entry) {
             this.emit('search-entered', search_entry.text);
         }));
 
-        this._search_box.connect('menu-item-selected', Lang.bind(this, function (search_entry, article_id) {
+        this.search_box.connect('menu-item-selected', Lang.bind(this, function (search_entry, article_id) {
             this.emit('article-selected', article_id);
         }));
 
@@ -114,9 +115,9 @@ const HomePage = new Lang.Class({
 
         this.get_style_context().add_class(StyleClasses.HOME_PAGE);
         this._title_image.get_style_context().add_class(StyleClasses.HOME_PAGE_TITLE_IMAGE);
-        this._search_box.get_style_context().add_class(StyleClasses.SEARCH_BOX);
+        this.search_box.get_style_context().add_class(StyleClasses.SEARCH_BOX);
 
-        this.pack_widgets(this._title_image, this._search_box);
+        this.pack_widgets(this._title_image, this.search_box);
         this.show_all();
     },
 
@@ -177,10 +178,6 @@ const HomePage = new Lang.Class({
 
     get cards () {
         return this._cards;
-    },
-
-    get search_box () {
-        return this._search_box;
     },
 
     _on_search_entered: function (widget) {
