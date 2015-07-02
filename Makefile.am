@@ -216,7 +216,6 @@ js_files = \
 	js/app/config.js \
 	js/app/eknWebview.js \
 	js/app/encyclopedia/contentPage.js \
-	js/app/encyclopedia/fixedTextView.js \
 	js/app/encyclopedia/homePage.js \
 	js/app/encyclopedia/model.js \
 	js/app/encyclopedia/presenter.js \

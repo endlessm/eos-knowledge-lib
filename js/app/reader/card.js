@@ -68,10 +68,11 @@ const Card = new Lang.Class({
     InternalChildren: [ 'archive-icon', 'card-info-grid', 'card-info-label',
         'hover-frame' ],
 
-    _CARD_WIDTH: 200,
-    _CARD_HEIGHT: 250,
-
     _init: function(props={}) {
+        // TODO: we do want all cards to be the same size, but we may want to
+        // make this size scale with resolution down the road
+        props.width_request = 200;
+        props.height_request = 250;
         this.parent(props);
         this.populate_from_model();
 
@@ -109,16 +110,6 @@ const Card = new Lang.Class({
         this.get_style_context().add_class('reader-card' + v);
         this._style_variant = v;
         this.notify('style-variant');
-    },
-
-    // TODO: we do want all cards to be the same size, but we may want to make
-    // this size scale with resolution down the road
-    vfunc_get_preferred_width: function () {
-        return [this._CARD_WIDTH, this._CARD_WIDTH];
-    },
-
-    vfunc_get_preferred_height: function () {
-        return [this._CARD_HEIGHT, this._CARD_HEIGHT];
     },
 });
 
