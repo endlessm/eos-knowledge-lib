@@ -9,6 +9,7 @@ const Mainloop = imports.mainloop;
 
 const ContentObjectModel = imports.search.contentObjectModel;
 const StyleClasses = imports.app.styleClasses;
+const Themeable = imports.app.interfaces.themeable;
 const Utils = imports.app.utils;
 
 /**
@@ -22,11 +23,9 @@ const Card = new Lang.Interface({
     Name: 'Card',
     GTypeName: 'EknCard',
     Requires: [ Gtk.Widget ],
+    Implements: [ Themeable.Themeable ],
 
     Properties: {
-        'css': GObject.ParamSpec.string('css', 'CSS rules',
-            'CSS rules to be applied to this widget',
-            GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE, ''),
         /**
          * Property: model
          * Record backing this card
@@ -57,22 +56,6 @@ const Card = new Lang.Interface({
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             EosKnowledgePrivate.TextTransformType,
             EosKnowledgePrivate.TextTransform.NONE),
-    },
-
-    set css (v) {
-        if (this._css === v)
-            return;
-        this._css = v;
-        if (this._css) {
-            Utils.apply_css_to_widget(this._css, this);
-        }
-        this.notify('css');
-    },
-
-    get css () {
-        if (this._css)
-            return this._css;
-        return '';
     },
 
     // Overridable in tests; otherwise keep synchronized with the CSS

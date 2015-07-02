@@ -14,6 +14,7 @@ const Card = imports.app.interfaces.card;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const MinimalCard = imports.tests.minimalCard;
 const StyleClasses = imports.app.styleClasses;
+const Themeable = imports.app.interfaces.themeable;
 
 Gtk.init(null);
 
@@ -23,7 +24,7 @@ const TestCard = new Lang.Class({
     Implements: [ Card.Card ],
 
     Properties: {
-        'css': GObject.ParamSpec.override('css', Card.Card),
+        'css': GObject.ParamSpec.override('css', Themeable.Themeable),
         'model': GObject.ParamSpec.override('model', Card.Card),
         'title-capitalization': GObject.ParamSpec.override('title-capitalization',
             Card.Card),
