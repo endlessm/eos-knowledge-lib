@@ -25,7 +25,7 @@ const MediaInfobox = new Lang.Class({
          */
         'caption': GObject.ParamSpec.string('caption', 'Caption',
             'Caption to be displayed for the media',
-            GObject.ParamFlags.READWRITE,
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
             ''),
 
         /**
@@ -33,7 +33,7 @@ const MediaInfobox = new Lang.Class({
          */
         'media-title': GObject.ParamSpec.string('media-title', 'Media Title',
             'Title of the media being displayed',
-            GObject.ParamFlags.READWRITE,
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
             ''),
 
         /**
@@ -44,7 +44,7 @@ const MediaInfobox = new Lang.Class({
          */
         'license-text': GObject.ParamSpec.string('license-text', 'License text',
             'The name of the license to be displayed',
-            GObject.ParamFlags.READWRITE,
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
             ''),
 
         /**
@@ -54,7 +54,7 @@ const MediaInfobox = new Lang.Class({
          */
         'creator-text': GObject.ParamSpec.string('creator-text', 'Creator text',
             'A name denoting the attributable content creator',
-            GObject.ParamFlags.READWRITE,
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
             '')
     },
 
@@ -65,11 +65,6 @@ const MediaInfobox = new Lang.Class({
     _init: function (props) {
         props = props || {};
         props.orientation = Gtk.Orientation.VERTICAL;
-
-        this._caption = null;
-        this._media_title = null;
-        this._license_text = null;
-        this._creator_text = null;
 
         this._caption_label = new Gtk.Label({
             xalign: 0,
@@ -111,11 +106,11 @@ const MediaInfobox = new Lang.Class({
 
     _refresh_attribution_label: function () {
         let attributions = [];
-        if (this._media_title !== null)
+        if (this._media_title)
             attributions.push(this._media_title);
-        if (this._license_text !== null)
+        if (this._license_text)
             attributions.push(this._license_text);
-        if (this._creator_text !== null)
+        if (this._creator_text)
             attributions.push(this._creator_text);
         this._attribution_label.label = attributions.map(function (s) {
             return s.split('\n')[0];
