@@ -204,6 +204,7 @@ libencyclopediaplugin_la_LDFLAGS = -module -avoid-version -no-undefined
 
 js_files = \
 	js/app/application.js \
+	js/app/appBanner.js \
 	js/app/articleCard.js \
 	js/app/articleHTMLRenderer.js \
 	js/app/articlePage.js \
@@ -346,6 +347,7 @@ javascript_tests = \
 	tests/js/app/reader/testUserSettingsModel.js \
 	tests/js/app/reader/testWebExtension.js \
 	tests/js/app/reader/testWebviewTooltip.js \
+	tests/js/app/testAppBanner.js \
 	tests/js/app/testArticleCard.js \
 	tests/js/app/testArticleHTMLRenderer.js \
 	tests/js/app/testArticlePage.js \

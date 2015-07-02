@@ -141,7 +141,7 @@ const Presenter = new Lang.Class({
         this._style_knobs = app_json['styles'];
         this.load_theme();
         this.view.title = app_json['appTitle'];
-        this.view.home_page.title_image_uri = app_json['titleImageURI'];
+        this.view.home_page.app_banner.image_uri = app_json['titleImageURI'];
         this.view.background_image_uri = app_json['backgroundHomeURI'];
         this.view.blur_background_image_uri = app_json['backgroundSectionURI'];
         this._set_sections(app_json['sections']);

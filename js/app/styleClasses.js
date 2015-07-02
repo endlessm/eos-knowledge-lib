@@ -174,11 +174,11 @@ const COLLAPSED = 'collapsed';
 const HOME_PAGE = 'home-page';
 
 /**
- * Constant: HOME_PAGE_TITLE_IMAGE
+ * Constant: APP_BANNER
  *
- * Matches the title image on the Template A's HomePage.
+ * Matches the title image.
  */
-const HOME_PAGE_TITLE_IMAGE = 'home-page-title-image';
+const APP_BANNER = 'app-banner';
 
 /**
  * Constant: HOME_PAGE_A

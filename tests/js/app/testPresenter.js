@@ -34,6 +34,7 @@ const MockHomePage = new Lang.Class({
     _init: function () {
         this.parent();
         this.search_box = {};
+        this.app_banner = {};
     },
 
     connect: function (signal, handler) {
@@ -142,7 +143,7 @@ describe('Presenter', () => {
     it('can be constructed', () => {});
 
     it('can set title image on view from json', () => {
-        expect(presenter.view.home_page.title_image_uri).toBe(data['titleImageURI']);
+        expect(presenter.view.home_page.app_banner.image_uri).toBe(data['titleImageURI']);
     });
 
     it('can set cards on view from json', () => {
