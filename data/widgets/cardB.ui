@@ -13,7 +13,7 @@
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <child>
-          <object class="GtkFrame" id="image-frame">
+          <object class="GtkFrame" id="thumbnail-frame">
             <property name="can_focus">False</property>
             <property name="no_show_all">True</property>
             <property name="hexpand">True</property>
@@ -56,7 +56,7 @@
   <object class="GtkSizeGroup" id="size-group">
     <property name="mode">both</property>
     <widgets>
-      <widget name="image-frame"/>
+      <widget name="thumbnail-frame"/>
       <widget name="title-label"/>
     </widgets>
   </object>

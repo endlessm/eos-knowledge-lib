@@ -6,7 +6,7 @@
     <file compressed="true">css/endless_knowledge.css</file>
     <file compressed="true">css/endless_reader.css</file>
     <file compressed="true">css/hide_title.css</file>
-    <file compressed="true">css/infobox.css</file>
+    <file compressed="true">css/mediaCard.css</file>
     <file compressed="true">css/lightbox.css</file>
     <file compressed="true">css/no_image_links.css</file>
     <file compressed="true">css/no_results.css</file>
@@ -48,6 +48,7 @@
     <file compressed="true" preprocess="xml-stripblanks">widgets/articleCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">widgets/cardA.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">widgets/cardB.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">widgets/mediaCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">widgets/pdfCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">widgets/readerCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">widgets/textCard.ui</file>

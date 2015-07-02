@@ -1,10 +1,9 @@
-.infobox {
-    padding: 10px 50px 0px 50px;
+.media-card {
+    padding: 10px;
     background-color: white;
-    transition: background-color, padding 250ms ease-in-out;
 }
 
-.infobox GtkSeparator {
+.media-card GtkSeparator {
     border-style: solid;
     border-width: 4px;
     border-color: #d6d6d6;
@@ -12,22 +11,20 @@
     -GtkWidget-separator-height: 1;
 }
 
-.infobox-caption {
+.media-card-caption {
     font-size: .81em;  /* 13pt * 1/12 * 0.75 DPI correction factor */
     font-family: Lato;
     color: #666666;
-    padding: 8px 0px 8px 0px;
 }
 
-.infobox-attribution-text {
+.media-card-attribution-text {
     font-weight: bold;
     font-size: .62em;  /* 10pt * 1/12 * 0.75 DPI correction factor */
     font-family: Lato;
     color: #b2b2b2;
-    padding: 8px 0px 0px 0px;
     transition: color 250ms ease-in-out;
 }
 
-.infobox-attribution-text:hover {
+.media-card-attribution-text:hover {
     color: #ff6900;
 }

@@ -7,19 +7,16 @@ const Utils = imports.tests.utils;
 Gtk.init(null);
 
 describe('Lightbox widget', function () {
-    let lightbox, content_widget, infobox_widget, notify;
+    let lightbox, lightbox_widget, notify;
 
     beforeEach(function () {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
         Utils.register_gresource();
 
-        content_widget = new Gtk.Label();
-        content_widget.show();
-        infobox_widget = new Gtk.Label();
-        infobox_widget.show();
+        lightbox_widget = new Gtk.Label();
+        lightbox_widget.show();
         lightbox = new Lightbox.Lightbox({
-            content_widget: content_widget,
-            infobox_widget: infobox_widget,
+            lightbox_widget: lightbox_widget,
             transition_duration: 0
         });
         lightbox.show();
@@ -51,10 +48,10 @@ describe('Lightbox widget', function () {
         // pass
         lightbox.reveal_overlays = true;
         expect(lightbox.overlays_revealed).toBe(true);
-        expect(content_widget.is_visible()).toBe(true);
+        expect(lightbox_widget.is_visible()).toBe(true);
         lightbox.reveal_overlays = false;
         expect(lightbox.overlays_revealed).toBe(false);
-        expect(content_widget.is_visible()).toBe(false);
+        expect(lightbox_widget.is_visible()).toBe(false);
     });
 
     describe('Style class of Lightbox', function () {
@@ -65,9 +62,6 @@ describe('Lightbox widget', function () {
         // in size allocate and draw, we can't test like this anymore
         xit('has a descendant with lightbox-shadow class', function () {
             expect(lightbox).toHaveDescendantWithCssClass('lightbox-shadow');
-        });
-        it('has a descendant with infobox class', function () {
-            expect(lightbox).toHaveDescendantWithCssClass('infobox');
         });
     });
 

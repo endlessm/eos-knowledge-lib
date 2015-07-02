@@ -37,14 +37,14 @@ const TestCard = new Lang.Class({
             no_show_all: true,
         });
         this.authors_label = new Gtk.Label();
-        this.image_frame = new Gtk.Frame();
+        this.thumbnail_frame = new Gtk.Frame();
         this.synopsis_label = new Gtk.Label();
         this.title_label = new Gtk.Label();
 
         this.add(this.label_child);
         this.add(this.no_show_all_child);
         this.add(this.authors_label);
-        this.add(this.image_frame);
+        this.add(this.thumbnail_frame);
         this.add(this.synopsis_label);
         this.add(this.title_label);
 
@@ -117,7 +117,7 @@ describe('Card interface', function () {
     it('shows the image frame if the record has an image', function () {
         card.show_all();
         Utils.update_gui();
-        expect(card.image_frame.visible).toBeTruthy();
+        expect(card.thumbnail_frame.visible).toBeTruthy();
     });
 
     it('displays the record synopsis in the synopsis label', function () {

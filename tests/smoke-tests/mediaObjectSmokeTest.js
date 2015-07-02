@@ -10,7 +10,7 @@ const ArticlePage = imports.app.articlePage;
 const ArticlePresenter = imports.app.articlePresenter;
 const Engine = imports.search.engine;
 const Lightbox = imports.app.lightbox;
-const MediaInfobox = imports.app.mediaInfobox;
+const MediaCard = imports.app.mediaCard;
 const MediaObjectModel = imports.search.mediaObjectModel;
 const Previewer = imports.app.previewer;
 const Utils = imports.tests.utils;
@@ -53,7 +53,7 @@ const TestApplication = new Lang.Class ({
         });
         this._presenter.load_article(this._model, EosKnowledgePrivate.LoadingAnimationType.NONE);
         this._presenter.connect('media-object-clicked', function (obj, media_object, is_resource) {
-            let infobox = MediaInfobox.MediaInfobox.new_from_ekn_model(media_object);
+            let infobox = MediaCard.MediaCard.new_from_ekn_model(media_object);
             this._previewer.file = Gio.File.new_for_uri(media_object.content_uri);
             this._lightbox.infobox_widget = infobox;
             this._lightbox.media_object = media_object;
@@ -74,7 +74,7 @@ const TestApplication = new Lang.Class ({
             let current_index = this._get_position_in_resources(media_object.ekn_id, resources);
             if (current_index > 0) {
                 let new_object = resources[current_index - 1];
-                let infobox = MediaInfobox.MediaInfobox.new_from_ekn_model(new_object);
+                let infobox = MediaCard.MediaCard.new_from_ekn_model(new_object);
                 this._previewer.file = Gio.File.new_for_uri(new_object.content_uri);
                 this._lightbox.media_object = new_object;
                 this._lightbox.infobox_widget = infobox;
@@ -86,7 +86,7 @@ const TestApplication = new Lang.Class ({
             let current_index = this._get_position_in_resources(media_object.ekn_id, resources);
             if (current_index < resources.length - 1) {
                 let new_object = resources[current_index + 1];
-                let infobox = MediaInfobox.MediaInfobox.new_from_ekn_model(new_object);
+                let infobox = MediaCard.MediaCard.new_from_ekn_model(new_object);
                 this._previewer.file = Gio.File.new_for_uri(new_object.content_uri);
                 this._lightbox.media_object = new_object;
                 this._lightbox.infobox_widget = infobox;

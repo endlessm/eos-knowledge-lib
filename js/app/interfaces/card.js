@@ -85,7 +85,7 @@ const Card = new Lang.Interface({
      */
 
     /**
-     * Property: image_frame
+     * Property: thumbnail_frame
      * Optional *Gtk.Frame* displaying the <ContentObjectModel.thumbnail-uri> as
      * an image
      */
@@ -126,19 +126,19 @@ const Card = new Lang.Interface({
             this.authors_label.visible = !!this.model.authors;
         }
 
-        if (this.image_frame) {
-            this.image_frame.no_show_all = true;
+        if (this.thumbnail_frame) {
+            this.thumbnail_frame.no_show_all = true;
             if (this.model.thumbnail_uri) {
                 let frame_css = '* { background-image: url("' + this.model.thumbnail_uri + '"); }';
                 if (!this._background_provider) {
                     this._background_provider = new Gtk.CssProvider();
-                    let context = this.image_frame.get_style_context();
+                    let context = this.thumbnail_frame.get_style_context();
                     context.add_provider(this._background_provider,
                         Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
                 }
                 this._background_provider.load_from_data(frame_css);
             }
-            this.image_frame.visible = !!this.model.thumbnail_uri;
+            this.thumbnail_frame.visible = !!this.model.thumbnail_uri;
         }
 
         if (this.synopsis_label) {
@@ -152,6 +152,32 @@ const Card = new Lang.Interface({
             this.title_label.label = Utils.format_capitals(this.model.title,
                 this.title_capitalization);
             this.title_label.visible = !!this.model.title;
+        }
+
+        if (this.caption_label) {
+            this.caption_label.no_show_all = true;
+            this.caption_label.label = this.model.caption.split('\n').join(' ');
+            this.caption_label.visible = !!this.model.caption;
+        }
+
+        if (this.attribution_label) {
+            this.attribution_label.no_show_all = true;
+            let attributions = [];
+            if (this.model.license)
+                attributions.push(this.model.license);
+            if (this.model.copyright_holder)
+                attributions.push(this.model.copyright_holder);
+            this.attribution_label.label = attributions.map((s) => {
+                return s.split('\n')[0];
+            }).join(' - ').toUpperCase();
+            this.attribution_label.visible = !!this.attribution_label.label;
+        }
+
+        if (this.previewer) {
+            this.previewer.no_show_all = true;
+            this.previewer.visible = true;
+            this.previewer.set_content(this.model.get_content_stream(),
+                                       this.model.content_type);
         }
     },
 
