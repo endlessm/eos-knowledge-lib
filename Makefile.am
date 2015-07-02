@@ -390,6 +390,9 @@ test_content = \
 	tests/test-content/mexico.html \
 	tests/test-content/mexico.jsonld \
 	tests/test-content/overrides.css \
+	tests/test-content/overrides-a.css \
+	tests/test-content/overrides-b.css \
+	tests/test-content/overrides-reader.css \
 	tests/test-content/pdf-sample1.pdf \
 	$(NULL)
 EXTRA_DIST += \

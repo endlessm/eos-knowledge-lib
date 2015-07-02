@@ -175,7 +175,6 @@ describe('StyleKnobGenerator', function () {
 
     it('handles reader app overrides', function () {
         let style_knobs = StyleKnobGenerator.get_knobs_from_css(css_overrides_reader, 'reader');
-        print(JSON.stringify(style_knobs, null, 2));
         expect(style_knobs).toEqual(style_knobs_reader);
     });
 });
