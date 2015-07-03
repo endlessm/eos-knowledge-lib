@@ -212,8 +212,8 @@ js_files = \
 	js/app/cardA.js \
 	js/app/cardB.js \
 	js/app/categoriesPage.js \
-	js/app/compat/styleKnobGenerator.js \
 	js/app/compat/cssParse.js \
+	js/app/compat/styleKnobGenerator.js \
 	js/app/config.js \
 	js/app/eknWebview.js \
 	js/app/encyclopedia/contentPage.js \
@@ -224,7 +224,6 @@ js_files = \
 	js/app/encyclopedia/view.js \
 	js/app/historyItem.js \
 	js/app/historyPresenter.js \
-	js/app/lightboxPresenter.js \
 	js/app/homePage.js \
 	js/app/homePageA.js \
 	js/app/homePageB.js \
@@ -234,6 +233,7 @@ js_files = \
 	js/app/interfaces/module.js \
 	js/app/launcher.js \
 	js/app/lightbox.js \
+	js/app/lightboxPresenter.js \
 	js/app/marginButton.js \
 	js/app/mediaCard.js \
 	js/app/moduleFactory.js \
@@ -264,8 +264,8 @@ js_files = \
 	js/app/sectionPage.js \
 	js/app/sectionPageA.js \
 	js/app/sectionPageB.js \
-	js/app/styleClasses.js \
 	js/app/spaceContainer.js \
+	js/app/styleClasses.js \
 	js/app/tabButton.js \
 	js/app/tableOfContents.js \
 	js/app/textCard.js \
@@ -274,8 +274,8 @@ js_files = \
 	js/app/webkitContextSetup.js \
 	js/app/window.js \
 	js/search/application.js \
-	js/search/asyncTask.js \
 	js/search/articleObjectModel.js \
+	js/search/asyncTask.js \
 	js/search/blacklist.js \
 	js/search/contentObjectModel.js \
 	js/search/datadir.js \
@@ -379,8 +379,8 @@ javascript_tests = \
 	tests/js/app/testTextCard.js \
 	tests/js/app/testUtils.js \
 	tests/js/app/testWindow.js \
-	tests/js/search/testAsyncTask.js \
 	tests/js/search/testArticleObjectModel.js \
+	tests/js/search/testAsyncTask.js \
 	tests/js/search/testContentObjectModel.js \
 	tests/js/search/testDatadir.js \
 	tests/js/search/testEngine.js \
