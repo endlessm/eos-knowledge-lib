@@ -204,13 +204,9 @@ libencyclopediaplugin_la_LDFLAGS = -module -avoid-version -no-undefined
 
 js_files = \
 	js/app/application.js \
-	js/app/appBanner.js \
-	js/app/articleCard.js \
 	js/app/articleHTMLRenderer.js \
 	js/app/articlePage.js \
 	js/app/articlePresenter.js \
-	js/app/cardA.js \
-	js/app/cardB.js \
 	js/app/categoriesPage.js \
 	js/app/compat/cssParse.js \
 	js/app/compat/styleKnobGenerator.js \
@@ -235,23 +231,29 @@ js_files = \
 	js/app/lightbox.js \
 	js/app/lightboxPresenter.js \
 	js/app/marginButton.js \
-	js/app/mediaCard.js \
 	js/app/moduleFactory.js \
+	js/app/modules/appBanner.js \
+	js/app/modules/articleCard.js \
+	js/app/modules/articleSnippetCard.js \
+	js/app/modules/cardA.js \
+	js/app/modules/cardB.js \
+	js/app/modules/mediaCard.js \
+	js/app/modules/pdfCard.js \
+	js/app/modules/readerCard.js \
+	js/app/modules/setBannerCard.js \
+	js/app/modules/textCard.js \
 	js/app/mustache.js \
 	js/app/navButtonOverlay.js \
 	js/app/noSearchResultsPage.js \
-	js/app/pdfCard.js \
 	js/app/PDFView.js \
 	js/app/presenter.js \
 	js/app/presenterLoader.js \
 	js/app/previewer.js \
 	js/app/reader/articlePage.js \
-	js/app/reader/articleSnippetCard.js \
 	js/app/reader/donePage.js \
 	js/app/reader/overviewPage.js \
 	js/app/reader/presenter.js \
 	js/app/reader/progressLabel.js \
-	js/app/reader/readerCard.js \
 	js/app/reader/searchResultsPage.js \
 	js/app/reader/standalonePage.js \
 	js/app/reader/titleView.js \
@@ -264,12 +266,10 @@ js_files = \
 	js/app/sectionPage.js \
 	js/app/sectionPageA.js \
 	js/app/sectionPageB.js \
-	js/app/setBannerCard.js \
 	js/app/spaceContainer.js \
 	js/app/styleClasses.js \
 	js/app/tabButton.js \
 	js/app/tableOfContents.js \
-	js/app/textCard.js \
 	js/app/utils.js \
 	js/app/warehouse.js \
 	js/app/webkitContextSetup.js \
@@ -337,12 +337,19 @@ javascript_tests = \
 	tests/eosknowledgeprivate/testHistoryModel.js \
 	tests/js/app/interfaces/testCard.js \
 	tests/js/app/interfaces/testModule.js \
-	tests/js/app/reader/testArticleSnippetCard.js \
+	tests/js/app/modules/testAppBanner.js \
+	tests/js/app/modules/testArticleCard.js \
+	tests/js/app/modules/testArticleSnippetCard.js \
+	tests/js/app/modules/testCardA.js \
+	tests/js/app/modules/testCardB.js \
+	tests/js/app/modules/testMediaCard.js \
+	tests/js/app/modules/testReaderCard.js \
+	tests/js/app/modules/testSetBannerCard.js \
+	tests/js/app/modules/testTextCard.js \
 	tests/js/app/reader/testDonePage.js \
 	tests/js/app/reader/testOverviewPage.js \
 	tests/js/app/reader/testProgressLabel.js \
 	tests/js/app/reader/testReaderArticlePage.js \
-	tests/js/app/reader/testReaderCard.js \
 	tests/js/app/reader/testReaderPresenter.js \
 	tests/js/app/reader/testReaderWindow.js \
 	tests/js/app/reader/testSearchResultsPage.js \
@@ -350,20 +357,15 @@ javascript_tests = \
 	tests/js/app/reader/testUserSettingsModel.js \
 	tests/js/app/reader/testWebExtension.js \
 	tests/js/app/reader/testWebviewTooltip.js \
-	tests/js/app/testAppBanner.js \
-	tests/js/app/testArticleCard.js \
 	tests/js/app/testArticleHTMLRenderer.js \
 	tests/js/app/testArticlePage.js \
 	tests/js/app/testArticlePresenter.js \
-	tests/js/app/testCardA.js \
-	tests/js/app/testCardB.js \
 	tests/js/app/testHistoryPresenter.js \
 	tests/js/app/testHomePage.js \
 	tests/js/app/testHomePageA.js \
 	tests/js/app/testHomePageB.js \
 	tests/js/app/testLightbox.js \
 	tests/js/app/testLightboxPresenter.js \
-	tests/js/app/testMediaCard.js \
 	tests/js/app/testModuleFactory.js \
 	tests/js/app/testNoSearchResultsPageA.js \
 	tests/js/app/testNoSearchResultsPageB.js \
@@ -374,11 +376,9 @@ javascript_tests = \
 	tests/js/app/testSectionArticlePageB.js \
 	tests/js/app/testSectionPageA.js \
 	tests/js/app/testSectionPageB.js \
-	tests/js/app/testSetBannerCard.js \
 	tests/js/app/testSpaceContainer.js \
 	tests/js/app/testStyleKnobGenerator.js \
 	tests/js/app/testTableOfContents.js \
-	tests/js/app/testTextCard.js \
 	tests/js/app/testUtils.js \
 	tests/js/app/testWindow.js \
 	tests/js/search/testArticleObjectModel.js \

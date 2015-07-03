@@ -4,7 +4,7 @@ const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
 
-const ReaderCard = imports.app.reader.readerCard;
+const ReaderCard = imports.app.modules.readerCard;
 const SearchResultsPage = imports.app.reader.searchResultsPage;
 const Utils = imports.tests.utils;
 

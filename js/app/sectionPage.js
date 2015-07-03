@@ -6,7 +6,7 @@ const Lang = imports.lang;
 const Pango = imports.gi.Pango;
 
 const ContentObjectModel = imports.search.contentObjectModel;
-const SetBannerCard = imports.app.setBannerCard;
+const SetBannerCard = imports.app.modules.setBannerCard;
 const StyleClasses = imports.app.styleClasses;
 const Utils = imports.app.utils;
 

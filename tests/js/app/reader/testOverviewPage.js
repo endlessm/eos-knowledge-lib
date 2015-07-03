@@ -3,7 +3,7 @@ const Gtk = imports.gi.Gtk;
 const Utils = imports.tests.utils;
 Utils.register_gresource();
 
-const ArticleSnippetCard = imports.app.reader.articleSnippetCard;
+const ArticleSnippetCard = imports.app.modules.articleSnippetCard;
 const ContentObjectModel = imports.search.contentObjectModel;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;

@@ -5,7 +5,7 @@ Utils.register_gresource();
 
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const StyleClasses = imports.app.styleClasses;
-const TextCard = imports.app.textCard;
+const TextCard = imports.app.modules.textCard;
 
 Gtk.init(null);
 

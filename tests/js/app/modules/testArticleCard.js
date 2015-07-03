@@ -1,6 +1,6 @@
 const Gtk = imports.gi.Gtk;
 
-const ArticleCard = imports.app.articleCard;
+const ArticleCard = imports.app.modules.articleCard;
 
 Gtk.init(null);
 

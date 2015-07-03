@@ -2,7 +2,7 @@
 
 const Lang = imports.lang;
 
-const CardA = imports.app.cardA;
+const CardA = imports.app.modules.cardA;
 
 /**
  * Class: PdfCard

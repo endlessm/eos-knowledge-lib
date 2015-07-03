@@ -5,7 +5,7 @@ const Utils = imports.tests.utils;
 Utils.register_gresource();
 
 const MediaObjectModel = imports.search.mediaObjectModel;
-const MediaCard = imports.app.mediaCard;
+const MediaCard = imports.app.modules.mediaCard;
 
 Gtk.init(null);
 

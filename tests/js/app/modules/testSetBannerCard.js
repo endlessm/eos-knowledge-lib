@@ -3,7 +3,7 @@ const Gtk = imports.gi.Gtk;
 const Utils = imports.tests.utils;
 Utils.register_gresource();
 
-const SetBannerCard = imports.app.setBannerCard;
+const SetBannerCard = imports.app.modules.setBannerCard;
 
 Gtk.init(null);
 

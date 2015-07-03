@@ -5,8 +5,7 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
-const AppBanner = imports.app.appBanner;
-const ArticleSnippetCard = imports.app.reader.articleSnippetCard;
+const AppBanner = imports.app.modules.appBanner;
 const SpaceContainer = imports.app.spaceContainer;
 const StyleClasses = imports.app.styleClasses;
 const Utils = imports.app.utils;

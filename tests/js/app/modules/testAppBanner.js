@@ -4,7 +4,7 @@ const Gtk = imports.gi.Gtk;
 const Utils = imports.tests.utils;
 Utils.register_gresource();
 
-const AppBanner = imports.app.appBanner;
+const AppBanner = imports.app.modules.appBanner;
 
 Gtk.init(null);
 

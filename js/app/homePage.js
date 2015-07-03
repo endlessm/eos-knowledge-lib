@@ -9,7 +9,7 @@ const StyleClasses = imports.app.styleClasses;
 
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 
-const AppBanner = imports.app.appBanner;
+const AppBanner = imports.app.modules.appBanner;
 const ImagePreviewer = imports.app.imagePreviewer;
 const SearchBox = imports.app.searchBox;
 

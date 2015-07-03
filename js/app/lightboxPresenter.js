@@ -1,7 +1,7 @@
 const GObject = imports.gi.GObject;
 
 const Engine = imports.search.engine;
-const MediaCard = imports.app.mediaCard;
+const MediaCard = imports.app.modules.mediaCard;
 
 /**
  * Class: LightboxPresenter
