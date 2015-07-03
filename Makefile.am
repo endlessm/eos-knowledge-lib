@@ -247,11 +247,11 @@ js_files = \
 	js/app/previewer.js \
 	js/app/reader/articlePage.js \
 	js/app/reader/articleSnippetCard.js \
-	js/app/reader/card.js \
 	js/app/reader/donePage.js \
 	js/app/reader/overviewPage.js \
 	js/app/reader/presenter.js \
 	js/app/reader/progressLabel.js \
+	js/app/reader/readerCard.js \
 	js/app/reader/searchResultsPage.js \
 	js/app/reader/standalonePage.js \
 	js/app/reader/titleView.js \

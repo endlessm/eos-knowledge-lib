@@ -25,7 +25,7 @@ const LightboxPresenter = imports.app.lightboxPresenter;
 const MediaObjectModel = imports.search.mediaObjectModel;
 const OverviewPage = imports.app.reader.overviewPage;
 const QueryObject = imports.search.queryObject;
-const ReaderCard = imports.app.reader.card;
+const ReaderCard = imports.app.reader.readerCard;
 const StyleClasses = imports.app.styleClasses;
 const UserSettingsModel = imports.app.reader.userSettingsModel;
 const Utils = imports.app.utils;
@@ -602,7 +602,7 @@ const Presenter = new Lang.Class({
         // Note: _get_page_number_for_article_model will return -1 only if it's an
         // "Archived" issue, case in which the card doesn't require a card number.
         let article_page_number = this._get_page_number_for_article_model(model) + 1;
-        let card = new ReaderCard.Card({
+        let card = new ReaderCard.ReaderCard({
             model: model,
             title_capitalization: EosKnowledgePrivate.TextTransform.UPPERCASE,
             page_number: article_page_number,

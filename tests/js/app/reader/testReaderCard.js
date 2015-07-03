@@ -3,7 +3,7 @@ const Gtk = imports.gi.Gtk;
 const Utils = imports.tests.utils;
 Utils.register_gresource();
 
-const Card = imports.app.reader.card;
+const ReaderCard = imports.app.reader.readerCard;
 const ContentObjectModel = imports.search.contentObjectModel;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 
@@ -15,7 +15,7 @@ describe('Reader Card widget', function () {
     beforeEach(function () {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
 
-        card = new Card.Card();
+        card = new ReaderCard.ReaderCard();
     });
 
     it('constructs', function () {});
@@ -52,7 +52,7 @@ describe('Reader Card widget', function () {
                 style_variant: 2,
                 page_number: 3,
             }].map((props) => {
-                return new Card.Card(props);
+                return new ReaderCard.ReaderCard(props);
             });
 
             cards.map(function (card, index) {
@@ -62,12 +62,12 @@ describe('Reader Card widget', function () {
     });
 
     it('has a fixed size', function () {
-        let card1 = new Card.Card({
+        let card1 = new ReaderCard.ReaderCard({
             model: new ContentObjectModel.ContentObjectModel({
                 title: 'short',
             }),
         });
-        let card2 = new Card.Card({
+        let card2 = new ReaderCard.ReaderCard({
             model: new ContentObjectModel.ContentObjectModel({
                 title: 'Really really really really really really really ' +
                     'really really really really really really really really ' +

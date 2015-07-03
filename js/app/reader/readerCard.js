@@ -6,7 +6,7 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
-const CardIface = imports.app.interfaces.card;  // FIXME name
+const Card = imports.app.interfaces.card;
 const Module = imports.app.interfaces.module;
 const Config = imports.app.config;
 const Utils = imports.app.utils;
@@ -29,17 +29,17 @@ let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
  *    reader-card1 - Style variant #1
  *    reader-card2 - Style variant #2
  */
-const Card = new Lang.Class({
-    Name: 'Card',
+const ReaderCard = new Lang.Class({
+    Name: 'ReaderCard',
     GTypeName: 'EknReaderCard',
     Extends: Gtk.Button,
-    Implements: [ Module.Module, CardIface.Card ],
+    Implements: [ Module.Module, Card.Card ],
 
     Properties: {
         'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'model': GObject.ParamSpec.override('model', CardIface.Card),
+        'model': GObject.ParamSpec.override('model', Card.Card),
         'title-capitalization': GObject.ParamSpec.override('title-capitalization',
-            CardIface.Card),
+            Card.Card),
         /**
          * Property: archived
          */
