@@ -9,7 +9,6 @@ const MinimalCard = new Lang.Class({
     Extends: Gtk.Label,
     Implements: [ Card.Card ],
     Properties: {
-        'css': GObject.ParamSpec.override('css', Card.Card),
         'model': GObject.ParamSpec.override('model', Card.Card),
         'title-capitalization': GObject.ParamSpec.override('title-capitalization',
             Card.Card),

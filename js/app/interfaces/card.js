@@ -24,9 +24,6 @@ const Card = new Lang.Interface({
     Requires: [ Gtk.Widget ],
 
     Properties: {
-        'css': GObject.ParamSpec.string('css', 'CSS rules',
-            'CSS rules to be applied to this widget',
-            GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE, ''),
         /**
          * Property: model
          * Record backing this card

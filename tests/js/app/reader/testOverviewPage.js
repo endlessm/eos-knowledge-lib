@@ -1,6 +1,10 @@
 const Gtk = imports.gi.Gtk;
 
+const Utils = imports.tests.utils;
+Utils.register_gresource();
+
 const ArticleSnippet = imports.app.reader.articleSnippet;
+const ContentObjectModel = imports.search.contentObjectModel;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
 const OverviewPage = imports.app.reader.overviewPage;
@@ -15,21 +19,22 @@ describe('Overview page widget', function () {
     beforeEach(function () {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
         jasmine.addMatchers(InstanceOfMatcher.customMatchers);
-        let snippet_data = [
+        snippets = [
             {
                 title: 'Title 1',
                 synopsis: 'Secrets on how to cook frango',
-                style_variant: 0,
             },
             {
                 title: 'Title 2',
                 synopsis: 'Tricks to learning to speak portuguese',
-                style_variant: 1,
             }
         ]
-
-        snippets = snippet_data.map((props) =>
-            new ArticleSnippet.ArticleSnippet(props));
+        .map((props) => new ContentObjectModel.ContentObjectModel(props))
+        .map((model, ix) =>
+            new ArticleSnippet.ArticleSnippet({
+                model: model,
+                style_variant: ix % 3,
+            }));
         page = new OverviewPage.OverviewPage();
     });
 
@@ -53,8 +58,10 @@ describe('Overview page widget', function () {
     it('does not set a style variant class for style variant -1', function () {
         page.set_article_snippets([
             new ArticleSnippet.ArticleSnippet({
-                title: 'Frango',
-                synopsis: 'Frango tikka masala, yum',
+                model: new ContentObjectModel.ContentObjectModel({
+                    title: 'Frango',
+                    synopsis: 'Frango tikka masala, yum',
+                }),
                 style_variant: -1,
             })
         ]);
@@ -65,8 +72,10 @@ describe('Overview page widget', function () {
     it('uses 0 as the default style variant', function () {
         page.set_article_snippets([
             new ArticleSnippet.ArticleSnippet({
-                title: 'Frango',
-                synopsis: 'Frango tikka masala, yum',
+                model: new ContentObjectModel.ContentObjectModel({
+                    title: 'Frango',
+                    synopsis: 'Frango tikka masala, yum',
+                }),
             })
         ]);
         expect(page).toHaveDescendantWithCssClass('snippet0');

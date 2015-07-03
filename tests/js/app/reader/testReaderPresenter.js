@@ -557,9 +557,7 @@ describe('Reader presenter', function () {
 
         it('fetches more results when the results page asks for them', function () {
             spyOn(view.search_results_page, 'append_search_results');
-            presenter._get_more_results = function (num, callback) {
-                callback(undefined, [MOCK_RESULTS[0]], undefined);
-            }
+            presenter._get_more_results_query = new QueryObject.QueryObject();
             view.search_results_page.emit('load-more-results');
             expect(view.search_results_page.append_search_results).toHaveBeenCalled();
         });
