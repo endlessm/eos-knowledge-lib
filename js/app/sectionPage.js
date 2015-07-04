@@ -5,6 +5,8 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const Pango = imports.gi.Pango;
 
+const ContentObjectModel = imports.search.contentObjectModel;
+const SetBanner = imports.app.setBanner;
 const StyleClasses = imports.app.styleClasses;
 const Utils = imports.app.utils;
 
@@ -41,29 +43,22 @@ const SectionPage = new Lang.Class({
     },
 
     _init: function (props) {
-        this._title_label = new Gtk.Label({
-            wrap_mode: Pango.WrapMode.WORD_CHAR,
-            ellipsize: Pango.EllipsizeMode.END,
-            max_width_chars: 1,
-        });
-
         this._title = null;
 
         this.parent(props);
-
-        this._title_label.get_style_context().add_class(StyleClasses.SECTION_PAGE_TITLE);
-        this.pack_title_label(this._title_label);
-        this.show_all();
     },
 
-    pack_title_label: function (title_label) {
-        this.add(title_label);
+    pack_title_banner: function (title_banner) {
+        this.add(title_banner);
     },
 
     set title (v) {
-        if (this._title === v) return;
+        if (this._title === v)
+            return;
         this._title = v;
-        this._title_label.label = this._title;
+        this._title_banner = this._create_title_banner();
+        this.pack_title_banner(this._title_banner);
+        this.show_all();
         this.notify('title');
     },
 
@@ -71,5 +66,16 @@ const SectionPage = new Lang.Class({
         if (this._title)
             return this._title;
         return '';
+    },
+
+    _create_title_banner: function () {
+        let section_model = new ContentObjectModel.ContentObjectModel({
+            title: this._title,
+            featured: false,
+        });
+        let banner = new SetBanner.SetBanner({
+            model: section_model,
+        });
+        return banner;
     },
 });

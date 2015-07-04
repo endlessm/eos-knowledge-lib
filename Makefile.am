@@ -264,6 +264,7 @@ js_files = \
 	js/app/sectionPage.js \
 	js/app/sectionPageA.js \
 	js/app/sectionPageB.js \
+	js/app/setBanner.js \
 	js/app/spaceContainer.js \
 	js/app/styleClasses.js \
 	js/app/tabButton.js \
@@ -373,6 +374,7 @@ javascript_tests = \
 	tests/js/app/testSectionArticlePageB.js \
 	tests/js/app/testSectionPageA.js \
 	tests/js/app/testSectionPageB.js \
+	tests/js/app/testSetBanner.js \
 	tests/js/app/testSpaceContainer.js \
 	tests/js/app/testStyleKnobGenerator.js \
 	tests/js/app/testTableOfContents.js \
