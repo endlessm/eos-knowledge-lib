@@ -14,6 +14,7 @@ const HomePageA = imports.app.homePageA;
 const HomePageB = imports.app.homePageB;
 const Lightbox = imports.app.lightbox;
 const NoSearchResultsPage = imports.app.noSearchResultsPage;
+const SearchBox = imports.app.searchBox;
 const SectionPage = imports.app.sectionPage;
 const SectionArticlePage = imports.app.sectionArticlePage;
 const StyleClasses = imports.app.styleClasses;
@@ -265,28 +266,28 @@ const Window = new Lang.Class({
         this.page_manager.add(this._categories_page, {
             left_topbar_widget: this.history_buttons
         });
-        this._search_box = new Endless.SearchBox();
-        this._search_box.connect('notify::has-focus', function () {
-            this.emit('search-focused', this._search_box.has_focus);
+        this.search_box = new SearchBox.SearchBox();
+        this.search_box.connect('notify::has-focus', function () {
+            this.emit('search-focused', this.search_box.has_focus);
         }.bind(this));
-        this._search_box.connect('text-changed', function (search_entry) {
+        this.search_box.connect('text-changed', function (search_entry) {
             this.emit('search-text-changed', search_entry);
         }.bind(this));
-        this._search_box.connect('activate', function (search_entry) {
+        this.search_box.connect('activate', function (search_entry) {
             this.emit('search-entered', search_entry.text);
         }.bind(this));
-        this._search_box.connect('menu-item-selected', function (search_entry, article_id) {
+        this.search_box.connect('menu-item-selected', function (search_entry, article_id) {
             this.emit('article-selected', article_id);
         }.bind(this));
-        this._search_box.show();
+        this.search_box.show();
 
         this.page_manager.add(this._no_search_results_page, {
             left_topbar_widget: this.history_buttons,
-            center_topbar_widget: this._search_box
+            center_topbar_widget: this.search_box,
         });
         this.page_manager.add(this._lightbox, {
             left_topbar_widget: this.history_buttons,
-            center_topbar_widget: this._search_box
+            center_topbar_widget: this.search_box,
         });
         this.page_manager.transition_duration = this.TRANSITION_DURATION;
         this.page_manager.bind_property('transition-duration', this._section_article_page,
@@ -346,10 +347,6 @@ const Window = new Lang.Class({
 
     get lightbox () {
         return this._lightbox;
-    },
-
-    get search_box () {
-        return this._search_box;
     },
 
     get background_image_uri () {
