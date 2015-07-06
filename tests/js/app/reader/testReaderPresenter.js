@@ -150,6 +150,7 @@ const MockView = new Lang.Class({
             get_style_context: get_style_context,
             set_article_snippets: jasmine.createSpy('set_article_snippets'),
             remove_all_snippets: function () {},
+            app_banner: {},
         };
         this.standalone_page = {
             get_style_context: get_style_context,

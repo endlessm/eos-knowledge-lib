@@ -1,7 +1,6 @@
 // Copyright 2014 Endless Mobile, Inc.
 
 const Endless = imports.gi.Endless;
-const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
@@ -10,7 +9,7 @@ const StyleClasses = imports.app.styleClasses;
 
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 
-const ImagePreviewer = imports.app.imagePreviewer;
+const AppBanner = imports.app.appBanner;
 
 /**
  * Class: HomePage
@@ -27,12 +26,13 @@ const HomePage = new Lang.Class({
     Extends: Gtk.Grid,
     Properties: {
         /**
-         * Property: title-image-uri
-         * A URI to the title image. Defaults to an empty string.
+         * Property: app-banner
+         * A logo for the application. Read-only.
          */
-        'title-image-uri': GObject.ParamSpec.string('title-image-uri', 'Page Title Image URI',
-            'URI to the title image',
-            GObject.ParamFlags.READWRITE, ''),
+        'app-banner': GObject.ParamSpec.object('app-banner', 'App Banner',
+            'The logo for this application',
+            GObject.ParamFlags.READABLE,
+            AppBanner.AppBanner),
         /**
          * Property: search-box
          *
@@ -87,12 +87,11 @@ const HomePage = new Lang.Class({
 
     _init: function (props) {
         props = props || {};
-        this._title_image = new ImagePreviewer.ImagePreviewer();
-        this._title_image.set_min_percentage(0.4);
-        this._title_image.set_max_percentage(0.7);
+        this.app_banner = new AppBanner.AppBanner();
+        this.app_banner.set_min_percentage(0.4);
+        this.app_banner.set_max_percentage(0.7);
 
         this._cards = null;
-        this._title_image_uri = null;
 
         // Not using a SearchEntry since that comes with
         // the 'x' as secondary icon, which we don't want
@@ -113,10 +112,9 @@ const HomePage = new Lang.Class({
         this.parent(props);
 
         this.get_style_context().add_class(StyleClasses.HOME_PAGE);
-        this._title_image.get_style_context().add_class(StyleClasses.HOME_PAGE_TITLE_IMAGE);
         this._search_box.get_style_context().add_class(StyleClasses.SEARCH_BOX);
 
-        this.pack_widgets(this._title_image, this._search_box);
+        this.pack_widgets(this.app_banner, this._search_box);
         this.show_all();
     },
 
@@ -145,23 +143,6 @@ const HomePage = new Lang.Class({
      */
     pack_cards: function (cards) {
         // no-op
-    },
-
-    set title_image_uri (v) {
-        if (this._title_image_uri === v) return;
-
-        let stream = Gio.File.new_for_uri(v).read(null);
-        this._title_image.set_content(stream);
-
-        // only actually set the image URI if we successfully set the image
-        this._title_image_uri = v;
-        this.notify('title-image-uri');
-    },
-
-    get title_image_uri () {
-        if (this._title_image_uri)
-            return this._title_image_uri;
-        return '';
     },
 
     set cards (v) {

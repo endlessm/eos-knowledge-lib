@@ -1,13 +1,12 @@
 // Copyright 2014 Endless Mobile, Inc.
 
-const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
+const AppBanner = imports.app.appBanner;
 const ArticleSnippet = imports.app.reader.articleSnippet;
-const ImagePreviewer = imports.app.imagePreviewer;
 const SpaceContainer = imports.app.spaceContainer;
 const StyleClasses = imports.app.styleClasses;
 const Utils = imports.app.utils;
@@ -38,12 +37,13 @@ const OverviewPage = new Lang.Class({
     Extends: Gtk.Frame,
     Properties: {
         /**
-         * Property: title-image-uri
-         * A URI to the title image. Defaults to an empty string.
+         * Property: app-banner
+         * A logo for the application. Read-only.
          */
-        'title-image-uri': GObject.ParamSpec.string('title-image-uri', 'Page Title Image URI',
-            'URI to the title image',
-            GObject.ParamFlags.READWRITE, ''),
+        'app-banner': GObject.ParamSpec.object('app-banner', 'App Banner',
+            'The logo for this application',
+            GObject.ParamFlags.READABLE,
+            AppBanner.AppBanner),
 
         /**
          * Property: subtitle
@@ -68,13 +68,11 @@ const OverviewPage = new Lang.Class({
         props = props || {};
         props.hexpand = true;
 
-        this._title_image = new ImagePreviewer.ImagePreviewer({
+        this.app_banner = new AppBanner.AppBanner({
             halign: Gtk.Align.START,
             margin_top: _LOGO_TOP_MARGIN,
             margin_start: _LOGO_LEFT_MARGIN,
         });
-
-        this._title_image_uri = null;
 
         let grid = new Gtk.Grid({
             column_homogeneous: true,
@@ -113,7 +111,7 @@ const OverviewPage = new Lang.Class({
         this.get_style_context().add_class(StyleClasses.READER_OVERVIEW_PAGE);
         this._subtitle_label.get_style_context().add_class(StyleClasses.READER_APP_SUBTITLE);
 
-        grid.attach(this._title_image, 0, 0, 1, 1);
+        grid.attach(this.app_banner, 0, 0, 1, 1);
         grid.attach(this._subtitle_label, 0, 1, 1, 1);
         grid.attach(snippets_frame, 1, 0, 1, 2);
 
@@ -122,7 +120,7 @@ const OverviewPage = new Lang.Class({
             extra_margin: _EXTRA_MARGIN,
         });
         margin_container.set_margin_start_children([
-            this._title_image,
+            this.app_banner,
             this._subtitle_label,
         ]);
         margin_container.set_margin_end_children([
@@ -147,23 +145,6 @@ const OverviewPage = new Lang.Class({
             let context = this.get_style_context();
             context.add_provider(provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
         }
-    },
-
-    set title_image_uri (v) {
-        if (this._title_image_uri === v) return;
-
-        let stream = Gio.File.new_for_uri(v).read(null);
-        this._title_image.set_content(stream);
-
-        // only actually set the image URI if we successfully set the image
-        this._title_image_uri = v;
-        this.notify('title-image-uri');
-    },
-
-    get title_image_uri () {
-        if (this._title_image_uri)
-            return this._title_image_uri;
-        return '';
     },
 
     set subtitle (v) {
