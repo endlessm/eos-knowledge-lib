@@ -6,7 +6,7 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const AppBanner = imports.app.appBanner;
-const ArticleSnippet = imports.app.reader.articleSnippet;
+const ArticleSnippetCard = imports.app.reader.articleSnippetCard;
 const SpaceContainer = imports.app.spaceContainer;
 const StyleClasses = imports.app.styleClasses;
 const Utils = imports.app.utils;
@@ -167,7 +167,7 @@ const OverviewPage = new Lang.Class({
     /*
       Sets the article snippets on the overview page. Here, a snippet
       is a JS object with two required fields, 'title' and 'synopsis', and one
-      optional field, 'style_variant'. This function creates an <ArticleSnippet>
+      optional field, 'style_variant'. This function creates an <ArticleSnippetCard>
       widget for each snippet model and adds it to the snippets grid.
     */
     set_article_snippets: function (snippets, callback) {

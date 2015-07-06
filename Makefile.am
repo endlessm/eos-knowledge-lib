@@ -246,7 +246,7 @@ js_files = \
 	js/app/presenterLoader.js \
 	js/app/previewer.js \
 	js/app/reader/articlePage.js \
-	js/app/reader/articleSnippet.js \
+	js/app/reader/articleSnippetCard.js \
 	js/app/reader/card.js \
 	js/app/reader/donePage.js \
 	js/app/reader/overviewPage.js \
@@ -336,7 +336,7 @@ javascript_tests = \
 	tests/eosknowledgeprivate/testHistoryModel.js \
 	tests/js/app/interfaces/testCard.js \
 	tests/js/app/interfaces/testModule.js \
-	tests/js/app/reader/testArticleSnippet.js \
+	tests/js/app/reader/testArticleSnippetCard.js \
 	tests/js/app/reader/testDonePage.js \
 	tests/js/app/reader/testOverviewPage.js \
 	tests/js/app/reader/testProgressLabel.js \

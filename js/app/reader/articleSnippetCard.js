@@ -12,7 +12,7 @@ const StyleClasses = imports.app.styleClasses;
 const Utils = imports.app.utils;
 
 /**
- * Class: Reader.ArticleSnippet
+ * Class: Reader.ArticleSnippetCard
  * Widget to display an article snippet in the <OverviewPage>
  *
  * CSS classes:
@@ -20,9 +20,9 @@ const Utils = imports.app.utils;
  *   title - on the <Card.title_label>
  *   synopsis - on the <Card.synopsis_label>
  */
-const ArticleSnippet = new Lang.Class({
-    Name: 'ArticleSnippet',
-    GTypeName: 'EknArticleSnippet',
+const ArticleSnippetCard = new Lang.Class({
+    Name: 'ArticleSnippetCard',
+    GTypeName: 'EknArticleSnippetCard',
     Extends: Gtk.Button,
     Implements: [ Module.Module, Card.Card ],
 
@@ -46,7 +46,7 @@ const ArticleSnippet = new Lang.Class({
             -1, GLib.MAXINT16, 0),
     },
 
-    Template: 'resource:///com/endlessm/knowledge/widgets/articleSnippet.ui',
+    Template: 'resource:///com/endlessm/knowledge/widgets/articleSnippetCard.ui',
     Children: [ 'title-label', 'synopsis-label' ],
 
     _init: function (props={}) {

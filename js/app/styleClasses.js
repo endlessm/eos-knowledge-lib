@@ -414,7 +414,7 @@ const READER_OVERVIEW_FRAME = 'overview-frame';
 /**
  * Constant: READER_ARTICLE_SNIPPET
  *
- * Matches the ArticleSnippet widget used in the OverviewPage of the Reader
+ * Matches the ArticleSnippetCard widget used in the OverviewPage of the Reader
  * apps.
  */
 const READER_ARTICLE_SNIPPET = 'article-snippet';

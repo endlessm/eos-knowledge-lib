@@ -14,7 +14,7 @@ const WebKit2 = imports.gi.WebKit2;
 const ArticleHTMLRenderer = imports.app.articleHTMLRenderer;
 const ArticleObjectModel = imports.search.articleObjectModel;
 const ArticlePage = imports.app.reader.articlePage;
-const ArticleSnippet = imports.app.reader.articleSnippet;
+const ArticleSnippetCard = imports.app.reader.articleSnippetCard;
 const Config = imports.app.config;
 const DonePage = imports.app.reader.donePage;
 const EknWebview = imports.app.eknWebview;
@@ -258,7 +258,7 @@ const Presenter = new Lang.Class({
         for (let key in css_data) {
             let num = (key.match(/\d+/) || [])[0];
             if (/snippet[0-2]/.test(key)) {
-                str += ArticleSnippet.get_css_for_module(css_data[key], num);
+                str += ArticleSnippetCard.get_css_for_module(css_data[key], num);
             } else if (/article_page[0-2]/.test(key)) {
                 str += ArticlePage.get_css_for_module(css_data[key], num);
             } else if (/reader_card[0-2]/.test(key)) {
@@ -1051,7 +1051,7 @@ const Presenter = new Lang.Class({
 
     _load_overview_snippets_from_articles: function () {
         let snippets = this._article_models.slice(0, NUM_OVERVIEW_SNIPPETS).map((model, ix) => {
-            let snippet = new ArticleSnippet.ArticleSnippet({
+            let snippet = new ArticleSnippetCard.ArticleSnippetCard({
                 model: model,
                 style_variant: ix % NUM_SNIPPET_STYLES,
             });

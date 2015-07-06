@@ -3,7 +3,7 @@ const Gtk = imports.gi.Gtk;
 const Utils = imports.tests.utils;
 Utils.register_gresource();
 
-const ArticleSnippet = imports.app.reader.articleSnippet;
+const ArticleSnippetCard = imports.app.reader.articleSnippetCard;
 const ContentObjectModel = imports.search.contentObjectModel;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const StyleClasses = imports.app.styleClasses;
@@ -16,7 +16,7 @@ describe('Article snippet', function () {
     beforeEach(function () {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
 
-        snippet = new ArticleSnippet.ArticleSnippet();
+        snippet = new ArticleSnippetCard.ArticleSnippetCard();
     });
 
     it('constructs', function () {});
@@ -29,7 +29,7 @@ describe('Article snippet', function () {
 
     it('sets style variant classes to variants [0, 2]', function () {
         let cards = [0, 1, 2].map((variant) => {
-            snippet = new ArticleSnippet.ArticleSnippet({
+            snippet = new ArticleSnippetCard.ArticleSnippetCard({
                 model: new ContentObjectModel.ContentObjectModel(),
                 style_variant: variant,
             });

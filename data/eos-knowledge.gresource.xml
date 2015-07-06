@@ -47,7 +47,7 @@
     <file compressed="true">templates/js/scroll-manager.js</file>
     <file compressed="true" preprocess="xml-stripblanks">widgets/appBanner.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">widgets/articleCard.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">widgets/articleSnippet.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">widgets/articleSnippetCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">widgets/cardA.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">widgets/cardB.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">widgets/mediaCard.ui</file>

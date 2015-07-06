@@ -3,7 +3,7 @@ const Gtk = imports.gi.Gtk;
 const Utils = imports.tests.utils;
 Utils.register_gresource();
 
-const ArticleSnippet = imports.app.reader.articleSnippet;
+const ArticleSnippetCard = imports.app.reader.articleSnippetCard;
 const ContentObjectModel = imports.search.contentObjectModel;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
@@ -31,7 +31,7 @@ describe('Overview page widget', function () {
         ]
         .map((props) => new ContentObjectModel.ContentObjectModel(props))
         .map((model, ix) =>
-            new ArticleSnippet.ArticleSnippet({
+            new ArticleSnippetCard.ArticleSnippetCard({
                 model: model,
                 style_variant: ix % 3,
             }));
@@ -57,7 +57,7 @@ describe('Overview page widget', function () {
 
     it('does not set a style variant class for style variant -1', function () {
         page.set_article_snippets([
-            new ArticleSnippet.ArticleSnippet({
+            new ArticleSnippetCard.ArticleSnippetCard({
                 model: new ContentObjectModel.ContentObjectModel({
                     title: 'Frango',
                     synopsis: 'Frango tikka masala, yum',
@@ -71,7 +71,7 @@ describe('Overview page widget', function () {
 
     it('uses 0 as the default style variant', function () {
         page.set_article_snippets([
-            new ArticleSnippet.ArticleSnippet({
+            new ArticleSnippetCard.ArticleSnippetCard({
                 model: new ContentObjectModel.ContentObjectModel({
                     title: 'Frango',
                     synopsis: 'Frango tikka masala, yum',
