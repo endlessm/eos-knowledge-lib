@@ -6,7 +6,7 @@ const Lang = imports.lang;
 const Pango = imports.gi.Pango;
 
 const ContentObjectModel = imports.search.contentObjectModel;
-const SetBanner = imports.app.setBanner;
+const SetBannerCard = imports.app.setBannerCard;
 const StyleClasses = imports.app.styleClasses;
 const Utils = imports.app.utils;
 
@@ -73,7 +73,7 @@ const SectionPage = new Lang.Class({
             title: this._title,
             featured: false,
         });
-        let banner = new SetBanner.SetBanner({
+        let banner = new SetBannerCard.SetBannerCard({
             model: section_model,
         });
         return banner;

@@ -8,15 +8,12 @@ const Card = imports.app.interfaces.card;
 const Module = imports.app.interfaces.module;
 
 /**
- * Class: SetBanner
+ * Class: SetBannerCard
  * Widget to display a section banner in any of the app's pages.
- *
- * CSS classes:
- *   set-banner - on the widget itself.
  */
-const SetBanner = new Lang.Class({
-    Name: 'SetBanner',
-    GTypeName: 'EknSetBanner',
+const SetBannerCard = new Lang.Class({
+    Name: 'SetBannerCard',
+    GTypeName: 'EknSetBannerCard',
     Extends: Gtk.Button,
     Implements: [ Module.Module, Card.Card ],
 
@@ -27,7 +24,7 @@ const SetBanner = new Lang.Class({
             Card.Card),
     },
 
-    Template: 'resource:///com/endlessm/knowledge/widgets/setBanner.ui',
+    Template: 'resource:///com/endlessm/knowledge/widgets/setBannerCard.ui',
     Children: [ 'title-label' ],
 
     _init: function (props={}) {
