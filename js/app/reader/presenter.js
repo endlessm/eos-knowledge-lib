@@ -89,6 +89,13 @@ const Presenter = new Lang.Class({
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             GObject.Object.$gtype),
         /**
+         * Property: factory
+         * Factory to create modules
+         */
+        'factory': GObject.ParamSpec.object('factory', 'Factory', 'Factory',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            GObject.Object.$gtype),
+        /**
          * Property: engine
          * Handle to EOS knowledge engine
          *
@@ -185,6 +192,7 @@ const Presenter = new Lang.Class({
         this._lightbox_presenter = new LightboxPresenter.LightboxPresenter({
             engine: this.engine,
             view: this.view,
+            factory: this.factory,
         });
 
         WebkitContextSetup.register_webkit_uri_handlers(this._article_render_callback.bind(this));
@@ -251,7 +259,6 @@ const Presenter = new Lang.Class({
     get current_page() {
         return this._current_page;
     },
-
 
     _get_knob_css: function (css_data) {
         let str = '';
@@ -597,14 +604,15 @@ const Presenter = new Lang.Class({
         }
     },
 
-    _new_card_from_article_model: function (model, idx) {
+    _new_card_from_article_model: function (model) {
         // We increment the page number to account for the 0-based index.
         // Note: _get_page_number_for_article_model will return -1 only if it's an
         // "Archived" issue, case in which the card doesn't require a card number.
         let article_page_number = this._get_page_number_for_article_model(model) + 1;
-        let card = new ReaderCard.ReaderCard({
+        let card = this.factory.create_named_module('results-card', {
             model: model,
             title_capitalization: EosKnowledgePrivate.TextTransform.UPPERCASE,
+            // FIXME: these won't be properties on all cards
             page_number: article_page_number,
             style_variant: model.article_number % 3,
             archived: this._is_archived(model),
@@ -1051,8 +1059,9 @@ const Presenter = new Lang.Class({
 
     _load_overview_snippets_from_articles: function () {
         let snippets = this._article_models.slice(0, NUM_OVERVIEW_SNIPPETS).map((model, ix) => {
-            let snippet = new ArticleSnippetCard.ArticleSnippetCard({
+            let snippet = this.factory.create_named_module('home-card', {
                 model: model,
+                // FIXME: won't be on all cards
                 style_variant: ix % NUM_SNIPPET_STYLES,
             });
             snippet.connect('clicked', function () {

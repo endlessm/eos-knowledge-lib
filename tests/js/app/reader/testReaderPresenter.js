@@ -9,6 +9,7 @@ const Utils = imports.tests.utils;
 Utils.register_gresource();
 
 const ArticleObjectModel = imports.search.articleObjectModel;
+const MockFactory = imports.tests.mockFactory;
 const Presenter = imports.app.reader.presenter;
 const QueryObject = imports.search.queryObject;
 
@@ -18,6 +19,21 @@ const TEST_CONTENT_DIR = Utils.get_test_content_srcdir();
 const TEST_DOMAIN = 'thrones-en';
 const UPDATE_INTERVAL_MS = 604800000;
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
+
+const MockReaderCard = new Lang.Class({
+    Name: 'MockReaderCard',
+    GTypeName: 'MockReaderCard',
+    Extends: GObject.Object,
+    Signals: {
+        'clicked': {},
+    },
+
+    _init: function (props) {
+        this.model = props.model;
+        this.style_variant = props.style_variant;
+        this.parent(); // We don't care about other props
+    },
+});
 
 const MockApplication = new Lang.Class({
     Name: 'MockApplication',
@@ -229,6 +245,10 @@ describe('Reader presenter', function () {
     });
 
     beforeEach(function () {
+        let factory = new MockFactory.MockFactory();
+        factory.add_named_mock('home-card', MockReaderCard);
+        factory.add_named_mock('results-card', MockReaderCard);
+
         let application = new MockApplication();
         article_nav_buttons = new MockNavButtons();
         view = new MockView(article_nav_buttons);
@@ -261,6 +281,7 @@ describe('Reader presenter', function () {
             engine: engine,
             settings: settings,
             view: view,
+            factory: factory,
         });
         spyOn(presenter, 'record_search_metric');
     });

@@ -208,6 +208,7 @@ js_files = \
 	js/app/articlePage.js \
 	js/app/articlePresenter.js \
 	js/app/categoriesPage.js \
+	js/app/compat/compat.js \
 	js/app/compat/cssParse.js \
 	js/app/compat/styleKnobGenerator.js \
 	js/app/config.js \
@@ -409,6 +410,7 @@ EXTRA_DIST += \
 	tests/InstanceOfMatcher.js \
 	tests/minimalCard.js \
 	tests/minimalModule.js \
+	tests/mockFactory.js \
 	tests/utils.js \
 	tests/WidgetDescendantMatcher.js \
 	$(NULL)

@@ -9,10 +9,7 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
-const ArticleCard = imports.app.modules.articleCard;
 const ArticlePresenter = imports.app.articlePresenter;
-const CardA = imports.app.modules.cardA;
-const CardB = imports.app.modules.cardB;
 const Config = imports.app.config;
 const ContentObjectModel = imports.search.contentObjectModel;
 const Engine = imports.search.engine;
@@ -20,7 +17,6 @@ const HistoryPresenter = imports.app.historyPresenter;
 const Launcher = imports.app.launcher;
 const LightboxPresenter = imports.app.lightboxPresenter;
 const MediaObjectModel = imports.search.mediaObjectModel;
-const PdfCard = imports.app.modules.pdfCard;
 const QueryObject = imports.search.queryObject;
 const TabButton = imports.app.tabButton;
 const TextCard = imports.app.modules.textCard;
@@ -72,6 +68,13 @@ const Presenter = new Lang.Class({
          */
         'application': GObject.ParamSpec.object('application', 'Application',
             'Presenter for article page',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            GObject.Object.$gtype),
+        /**
+         * Property: factory
+         * Factory to create modules
+         */
+        'factory': GObject.ParamSpec.object('factory', 'Factory', 'Factory',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             GObject.Object.$gtype),
         /**
@@ -149,6 +152,7 @@ const Presenter = new Lang.Class({
         this._lightbox_presenter = new LightboxPresenter.LightboxPresenter({
             engine: this.engine,
             view: this.view,
+            factory: this.factory,
         });
 
         // Keeps track of the broad query that led to an individual article.
@@ -370,17 +374,9 @@ const Presenter = new Lang.Class({
                 log("WARNING: Missing category thumbnail for " + section.title);
             }
 
-            let card;
-            if (this._template_type === 'A') {
-                card = new CardA.CardA({
-                    model: sectionModel,
-                });
-            } else {
-                card = new CardB.CardB({
-                    model: sectionModel,
-                });
-            }
-
+            let card = this.factory.create_named_module('home-card', {
+                model: sectionModel,
+            });
             card.connect('clicked', this._on_section_card_clicked.bind(this, section['tags']));
             return card;
         };
@@ -721,13 +717,11 @@ const Presenter = new Lang.Class({
     },
 
     _new_card_from_article_model: function (model) {
-        let card_class = ArticleCard.ArticleCard;
+        let module_name = 'results-card';
         if (model.content_type === 'application/pdf') {
-            card_class = PdfCard.PdfCard;
-        } else if (this._template_type === 'B') {
-            card_class = TextCard.TextCard;
+            module_name = 'pdf-card';
         }
-        let card = new card_class({
+        let card = this.factory.create_named_module(module_name, {
             model: model,
         });
         card.connect('clicked', function () {

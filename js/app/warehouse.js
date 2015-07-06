@@ -6,7 +6,7 @@ const Warehouse = new Lang.Class({
     Extends: GObject.Object,
 
     _init: function (props={}) {
-        this.parent();
+        this.parent(props);
     },
 
     type_to_class: function (module_name) {
