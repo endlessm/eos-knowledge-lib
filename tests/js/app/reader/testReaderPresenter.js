@@ -268,6 +268,10 @@ describe('Reader presenter', function () {
     it('constructs', function () {});
 
     describe('launch process', function () {
+        beforeEach(function () {
+            engine.get_objects_by_query_finish.and.returnValue([MOCK_RESULTS, null]);
+        });
+
         it('queries the articles in the initial article set', function () {
             presenter.desktop_launch();
             expect(engine.get_objects_by_query).toHaveBeenCalledWith(
@@ -283,8 +287,7 @@ describe('Reader presenter', function () {
         });
 
         it('adds the articles as pages', function () {
-            spyOn(view, 'append_article_page');
-            engine.get_objects_by_query_finish.and.returnValue([MOCK_RESULTS, null]);
+            spyOn(view, 'append_article_page').and.callThrough();
             presenter.desktop_launch();
             expect(view.append_article_page.calls.count()).toEqual(MOCK_RESULTS.length);
             MOCK_RESULTS.forEach(function (result, index) {
@@ -319,7 +322,6 @@ describe('Reader presenter', function () {
         });
 
         it('starts at the right page when search result is in this issue', function () {
-            engine.get_objects_by_query_finish.and.returnValue([MOCK_RESULTS, null]);
             engine.get_object_by_id_finish.and.returnValue(MOCK_RESULTS[2]);
             presenter.activate_search_result(0, 'abc2134', 'fake query');
             expect(presenter.current_page).toBe(3);
