@@ -11,12 +11,12 @@ const StyleClasses = imports.app.styleClasses;
 /**
  * Class: SectionPageA
  *
- * This class extends <SectionPage> and represents the section page for 
+ * This class extends <SectionPage> and represents the section page for
  * template A of the knowledge apps.
  * It will also be used as the search results page.
- * In addition to the 'title' property published by <SectionPage>, it has 
- * a set of articles to show. Articles are represented by cards. Cards are 
- * grouped into sections call 'Segments'. A segment has a title, which is the 
+ * In addition to the 'title' property published by <SectionPage>, it has
+ * a set of articles to show. Articles are represented by cards. Cards are
+ * grouped into sections call 'Segments'. A segment has a title, which is the
  * type of cards in its section, and a list of cards to display.
  *
  */
@@ -31,7 +31,6 @@ const SectionPageA = new Lang.Class({
         this.parent(props);
 
         this._segments = {};
-
 
         // We need the segment titles of all be right aligned with each other.
         // This gets tricky as they aren't all in the same container, so we
@@ -49,11 +48,11 @@ const SectionPageA = new Lang.Class({
             hscrollbar_policy: Gtk.PolicyType.NEVER,
             bottom_buffer: this.LOADING_BOTTOM_BUFFER,
         });
-        this._scrolled_window.connect('notify::need-more-content', Lang.bind(this, function () {
+        this._scrolled_window.connect('notify::need-more-content', () => {
             if (this._scrolled_window.need_more_content) {
                 this.emit('load-more-results');
             }
-        }));
+        });
 
         this._content_grid = new Gtk.Grid({
             orientation: Gtk.Orientation.VERTICAL,
