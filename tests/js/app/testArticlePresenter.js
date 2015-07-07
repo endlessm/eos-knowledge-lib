@@ -6,6 +6,7 @@ const Lang = imports.lang;
 
 const ArticleObjectModel = imports.search.articleObjectModel;
 const ArticlePresenter = imports.app.articlePresenter;
+const Engine = imports.search.engine;
 const TreeNode = imports.search.treeNode;
 const Utils = imports.tests.utils;
 const SearchUtils = imports.search.utils;
@@ -52,6 +53,11 @@ describe('Article Presenter', function () {
             title: 'Wikihow & title',
             table_of_contents: toc,
         });
+        let engine = Engine.Engine.get_default();
+        spyOn(engine, 'get_object_by_id').and.callFake(function (id, cancellable, callback) {
+            callback(engine);
+        });
+        spyOn(engine, 'get_object_by_id_finish').and.returnValue(articleObject);
 
         view = new MockView();
         view.connect_after('new-view-transitioned', done);

@@ -62,7 +62,7 @@ describe('Article Page A', function () {
         });
         it('has a table of contents with collapsed class when narrow', function () {
             let alloc = page.get_allocation();
-            alloc.width = 1;
+            alloc.width = 40;
             alloc.height = 9999;
             page.size_allocate(alloc);
             expect(page.toc).toHaveCssClass(StyleClasses.COLLAPSED);

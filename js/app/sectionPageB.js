@@ -62,14 +62,14 @@ const SectionPageB = new Lang.Class({
 
         this._collapsed = false;
 
-        this.parent(props);
-
         this._title_label_revealer = new Gtk.Revealer({
             reveal_child: true,
             expand: true,
             transition_type: Gtk.RevealerTransitionType.SLIDE_RIGHT,
             margin_end: 80,
         });
+
+        this.parent(props);
 
         let title_frame = new Gtk.Frame();
         title_frame.get_style_context().add_class(StyleClasses.SECTION_PAGE_B_TITLE_FRAME);
