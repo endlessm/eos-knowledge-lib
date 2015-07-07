@@ -163,10 +163,6 @@ describe('Presenter', () => {
 
     it('can be constructed', () => {});
 
-    it('can set title image on view from json', () => {
-        expect(presenter.view.home_page.app_banner.image_uri).toBe(data['titleImageURI']);
-    });
-
     it('can set cards on view from json', () => {
         expect(data['sections'].map((section) => {
             return section['title'];

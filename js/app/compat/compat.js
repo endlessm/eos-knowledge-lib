@@ -1,8 +1,17 @@
 function transform_v1_description(json) {
     let modules = {};
 
+    modules['app-banner'] = {
+        type: 'AppBanner',
+        properties: {
+            'image-uri': json['titleImageURI'],
+        },
+    };
+
     switch (json.templateType) {
     case 'A':
+        modules['app-banner'].properties['min-fraction'] = 0.4;
+        modules['app-banner'].properties['max-fraction'] = 0.7;
         modules['home-card'] = {
             type: 'CardA',
         };

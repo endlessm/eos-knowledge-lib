@@ -36,6 +36,13 @@ const Window = new Lang.Class({
     Extends: Endless.Window,
     Properties: {
         /**
+         * Property: factory
+         * Factory to create modules
+         */
+        'factory': GObject.ParamSpec.object('factory', 'Factory', 'Factory',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            GObject.Object.$gtype),
+        /**
          * Property: nav-buttons
          *
          * The <NavButtonOverlay> widget created by the window. This property
@@ -176,8 +183,11 @@ const Window = new Lang.Class({
 
     _init: function (props) {
         props = props || {};
+        this.parent(props);
 
-        this.overview_page = new OverviewPage.OverviewPage();
+        this.overview_page = new OverviewPage.OverviewPage({
+            factory: this.factory,
+        });
         this.done_page = new DonePage.DonePage();
         this.standalone_page = new StandalonePage.StandalonePage();
         this.search_results_page = new SearchResultsPage.SearchResultsPage();
@@ -205,7 +215,6 @@ const Window = new Lang.Class({
         }.bind(this));
 
         this._article_pages = [];
-        this.parent(props);
 
         this._debug_hotkey_action = new Gio.SimpleAction({
             name: 'debug-mode',

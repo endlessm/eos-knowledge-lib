@@ -7,6 +7,7 @@ const ArticleSnippetCard = imports.app.modules.articleSnippetCard;
 const ContentObjectModel = imports.search.contentObjectModel;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
+const MockFactory = imports.tests.mockFactory;
 const OverviewPage = imports.app.reader.overviewPage;
 const StyleClasses = imports.app.styleClasses;
 
@@ -35,7 +36,9 @@ describe('Overview page widget', function () {
                 model: model,
                 style_variant: ix % 3,
             }));
-        page = new OverviewPage.OverviewPage();
+        page = new OverviewPage.OverviewPage({
+            factory: new MockFactory.MockFactory(),
+        });
     });
 
     it('constructs', function () {});

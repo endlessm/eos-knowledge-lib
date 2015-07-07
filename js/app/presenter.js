@@ -133,6 +133,7 @@ const Presenter = new Lang.Class({
         props.view = props.view || new Window.Window({
             application: props.application,
             template_type: this._template_type,
+            factory: props.factory,
         });
         props.engine = props.engine || Engine.Engine.get_default();
         props.article_presenter = props.article_presenter || new ArticlePresenter.ArticlePresenter({
@@ -144,7 +145,6 @@ const Presenter = new Lang.Class({
         this._style_knobs = app_json['styles'];
         this.load_theme();
         this.view.title = app_json['appTitle'];
-        this.view.home_page.app_banner.image_uri = app_json['titleImageURI'];
         this.view.background_image_uri = app_json['backgroundHomeURI'];
         this.view.blur_background_image_uri = app_json['backgroundSectionURI'];
         this._set_sections(app_json['sections']);

@@ -180,6 +180,7 @@ const Presenter = new Lang.Class({
 
         props.view = props.view || new Window.Window({
             application: props.application,
+            factory: props.factory,
         });
         props.engine = props.engine || Engine.Engine.get_default();
         props.settings = props.settings || new UserSettingsModel.UserSettingsModel({
@@ -984,7 +985,6 @@ const Presenter = new Lang.Class({
     // ID and the app's headline.
     _parse_app_info: function (info) {
         this.view.title = info['appTitle'];
-        this.view.overview_page.app_banner.image_uri = info['titleImageURI'];
         this.view.overview_page.subtitle = info['appSubtitle'];
         this.view.overview_page.background_image_uri = info['backgroundHomeURI'];
         this.view.done_page.background_image_uri = info['backgroundSectionURI'];

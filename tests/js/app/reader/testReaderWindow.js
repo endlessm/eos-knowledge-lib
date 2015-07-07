@@ -6,6 +6,7 @@ const Window = imports.app.reader.window;
 const ArticlePage = imports.app.reader.articlePage;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
+const MockFactory = imports.tests.mockFactory;
 const Utils = imports.tests.utils;
 
 const EXPECTED_TOTAL_PAGES = 17;
@@ -25,9 +26,11 @@ describe('Window widget', function () {
             application_id: id_string,
             flags: 0,
         });
+        let factory = new MockFactory.MockFactory();
         app.connect('startup', function () {
             view = new Window.Window({
                 application: app,
+                factory: factory,
             });
             for (let i = 0; i < 15; i++) {
                 let a = new ArticlePage.ArticlePage();

@@ -4,6 +4,7 @@ const ContentObjectModel = imports.search.contentObjectModel;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const HomePageA = imports.app.homePageA;
 const MinimalCard = imports.tests.minimalCard;
+const MockFactory = imports.tests.mockFactory;
 const StyleClasses = imports.app.styleClasses;
 const Utils = imports.tests.utils;
 
@@ -17,7 +18,9 @@ describe('Home page for Template A', () => {
     beforeEach(() => {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
 
-        home_page = new HomePageA.HomePageA();
+        home_page = new HomePageA.HomePageA({
+            factory: new MockFactory.MockFactory(),
+        });
 
         notify = jasmine.createSpy('notify');
         home_page.connect('notify', (object, pspec) => {
