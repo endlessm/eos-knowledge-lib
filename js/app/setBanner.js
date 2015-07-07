@@ -5,6 +5,7 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 
 const Card = imports.app.interfaces.card;
+const Module = imports.app.interfaces.module;
 
 /**
  * Class: SetBanner
@@ -17,9 +18,10 @@ const SetBanner = new Lang.Class({
     Name: 'SetBanner',
     GTypeName: 'EknSetBanner',
     Extends: Gtk.Button,
-    Implements: [ Card.Card ],
+    Implements: [ Module.Module, Card.Card ],
 
     Properties: {
+        'factory': GObject.ParamSpec.override('factory', Module.Module),
         'model': GObject.ParamSpec.override('model', Card.Card),
         'title-capitalization': GObject.ParamSpec.override('title-capitalization',
             Card.Card),
