@@ -50,6 +50,7 @@
     <file compressed="true" preprocess="xml-stripblanks">widgets/articleSnippet.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">widgets/cardA.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">widgets/cardB.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">widgets/documentCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">widgets/mediaCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">widgets/pdfCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">widgets/readerCard.ui</file>

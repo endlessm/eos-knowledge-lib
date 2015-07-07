@@ -2,6 +2,7 @@ const GObject = imports.gi.GObject;
 const WebKit2 = imports.gi.WebKit2;
 
 const ArticleHTMLRenderer = imports.app.articleHTMLRenderer;
+const DocumentCard = imports.app.documentCard;
 const EknWebview = imports.app.eknWebview;
 const PDFView = imports.app.PDFView;
 const TreeNode = imports.search.treeNode;
@@ -120,6 +121,16 @@ const ArticlePresenter = new GObject.Class({
         this._stop_loading_views();
 
         if (this._article_model.content_type === 'text/html') {
+            let documentCard = new DocumentCard.DocumentCard({
+                model: model,
+            });
+            
+            this._connect_toc_widget(documentCard.toc);
+
+            documentCard.connect('content-ready', (widget) => {
+                this.article_view.switch_in_document_card(documentCard, animation_type);
+            });
+
             this._webview = this._get_webview();
             this._webview_load_id = this._webview.connect('load-changed', function (view, status) {
                 if (status !== WebKit2.LoadEvent.COMMITTED)

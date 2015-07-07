@@ -215,6 +215,7 @@ js_files = \
 	js/app/compat/styleKnobGenerator.js \
 	js/app/compat/cssParse.js \
 	js/app/config.js \
+	js/app/documentCard.js \
 	js/app/eknWebview.js \
 	js/app/encyclopedia/contentPage.js \
 	js/app/encyclopedia/homePage.js \
