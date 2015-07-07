@@ -223,8 +223,8 @@ describe('Reader presenter', function () {
             ekn_id: 'about:blank',
             published: data[2],
             article_number: ix,
+            authors: data[1],
         });
-        model.authors = data[1];
         return model;
     });
 
