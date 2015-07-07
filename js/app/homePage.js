@@ -89,9 +89,10 @@ const HomePage = new Lang.Class({
 
     _init: function (props) {
         props = props || {};
-        this.app_banner = new AppBanner.AppBanner();
-        this.app_banner.set_min_percentage(0.4);
-        this.app_banner.set_max_percentage(0.7);
+        this.app_banner = new AppBanner.AppBanner({
+            min_fraction: 0.4,
+            max_fraction: 0.7,
+        });
 
         this._cards = null;
 
