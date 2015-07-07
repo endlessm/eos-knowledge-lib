@@ -37,9 +37,5 @@ describe('Section page for Template B', function () {
         it('has section-page-b class', function () {
             expect(section_page).toHaveCssClass(StyleClasses.SECTION_PAGE_B);
         });
-
-        it('has a descendant with title class', function () {
-            expect(section_page).toHaveDescendantWithCssClass(StyleClasses.SECTION_PAGE_TITLE);
-        });
     });
 });

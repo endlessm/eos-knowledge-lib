@@ -11,12 +11,12 @@ const StyleClasses = imports.app.styleClasses;
 /**
  * Class: SectionPageA
  *
- * This class extends <SectionPage> and represents the section page for 
+ * This class extends <SectionPage> and represents the section page for
  * template A of the knowledge apps.
  * It will also be used as the search results page.
- * In addition to the 'title' property published by <SectionPage>, it has 
- * a set of articles to show. Articles are represented by cards. Cards are 
- * grouped into sections call 'Segments'. A segment has a title, which is the 
+ * In addition to the 'title' property published by <SectionPage>, it has
+ * a set of articles to show. Articles are represented by cards. Cards are
+ * grouped into sections call 'Segments'. A segment has a title, which is the
  * type of cards in its section, and a list of cards to display.
  *
  */
@@ -32,7 +32,6 @@ const SectionPageA = new Lang.Class({
 
         this._segments = {};
 
-
         // We need the segment titles of all be right aligned with each other.
         // This gets tricky as they aren't all in the same container, so we
         // will keep them in a size group.
@@ -43,16 +42,17 @@ const SectionPageA = new Lang.Class({
         this.get_style_context().add_class(StyleClasses.SECTION_PAGE_A);
     },
 
-    pack_title_label: function (title_label) {
+    pack_title_banner: function (title_banner) {
+        title_banner.halign = Gtk.Align.CENTER;
         this._scrolled_window = new InfiniteScrolledWindow.InfiniteScrolledWindow({
             hscrollbar_policy: Gtk.PolicyType.NEVER,
             bottom_buffer: this.LOADING_BOTTOM_BUFFER,
         });
-        this._scrolled_window.connect('notify::need-more-content', Lang.bind(this, function () {
+        this._scrolled_window.connect('notify::need-more-content', () => {
             if (this._scrolled_window.need_more_content) {
                 this.emit('load-more-results');
             }
-        }));
+        });
 
         this._content_grid = new Gtk.Grid({
             orientation: Gtk.Orientation.VERTICAL,
@@ -62,7 +62,7 @@ const SectionPageA = new Lang.Class({
             margin_start: 100,
             margin_end: 100
         });
-        this._content_grid.add(title_label);
+        this._content_grid.add(title_banner);
         this._scrolled_window.add(this._content_grid);
         this.add(this._scrolled_window);
     },

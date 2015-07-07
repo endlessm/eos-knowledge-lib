@@ -64,6 +64,33 @@ const SectionPageB = new Lang.Class({
 
         this.parent(props);
 
+        this._title_label_revealer = new Gtk.Revealer({
+            reveal_child: true,
+            expand: true,
+            transition_type: Gtk.RevealerTransitionType.SLIDE_RIGHT,
+            margin_end: 80,
+        });
+
+        let title_frame = new Gtk.Frame();
+        title_frame.get_style_context().add_class(StyleClasses.SECTION_PAGE_B_TITLE_FRAME);
+        title_frame.add(this._title_label_revealer);
+
+        this.bind_property('transition-duration', this._title_label_revealer,
+            'transition-duration', GObject.BindingFlags.SYNC_CREATE);
+
+        this.orientation = Gtk.Orientation.HORIZONTAL;
+        this.expand = true;
+        this.add(title_frame);
+
+        this._scrolled_window = new SectionPageBScrolledWindow();
+        this._scrolled_window.connect('notify::need-more-content', () => {
+            if (this._scrolled_window.need_more_content) {
+                this.emit('load-more-results');
+            }
+        });
+        this._scrolled_window.add(this._card_list_box);
+        this.add(this._scrolled_window);
+
         this.get_style_context().add_class(StyleClasses.SECTION_PAGE_B);
     },
 
@@ -112,39 +139,13 @@ const SectionPageB = new Lang.Class({
         }
     },
 
-    pack_title_label: function (title_label) {
-        title_label.xalign = 0;
-        title_label.yalign = 1;
-        title_label.expand = true;
-        title_label.lines = 2;
+    pack_title_banner: function (title_banner) {
+        title_banner.valign = Gtk.Align.END;
 
-        this._title_label_revealer = new Gtk.Revealer({
-            reveal_child: true,
-            expand: true,
-            transition_type: Gtk.RevealerTransitionType.SLIDE_RIGHT,
-            margin_end: 80,
-        });
-        this._title_label_revealer.add(title_label);
-
-        let title_frame = new Gtk.Frame();
-        title_frame.get_style_context().add_class(StyleClasses.SECTION_PAGE_B_TITLE_FRAME);
-        title_frame.add(this._title_label_revealer);
-
-        this.bind_property('transition-duration', this._title_label_revealer,
-            'transition-duration', GObject.BindingFlags.SYNC_CREATE);
-
-        this.orientation = Gtk.Orientation.HORIZONTAL;
-        this.expand = true;
-        this.add(title_frame);
-
-        this._scrolled_window = new SectionPageBScrolledWindow();
-        this._scrolled_window.connect('notify::need-more-content', Lang.bind(this, function () {
-            if (this._scrolled_window.need_more_content) {
-                this.emit('load-more-results');
-            }
-        }));
-        this._scrolled_window.add(this._card_list_box);
-        this.add(this._scrolled_window);
+        let child = this._title_label_revealer.get_child();
+        if (typeof child !== 'undefined' && child !== null)
+            this._title_label_revealer.remove(child);
+        this._title_label_revealer.add(title_banner);
     },
 
     _filter_card_with_name: function (card_name) {

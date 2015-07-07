@@ -54,10 +54,6 @@ describe('Section page for Template A', function () {
             expect(section_page).toHaveCssClass(StyleClasses.SECTION_PAGE_A);
         });
 
-        it('has a descendant with title class', function () {
-            expect(section_page).toHaveDescendantWithCssClass(StyleClasses.SECTION_PAGE_TITLE);
-        });
-
         it('has a descendant with segment_title class', function () {
             for (let segment_title in segments) {
                 section_page.append_to_segment(segment_title, segments[segment_title]);
