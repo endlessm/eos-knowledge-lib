@@ -97,7 +97,6 @@ const ArticleHTMLRenderer = new Lang.Class({
             'clipboard-manager.js',
             'content-fixes.js',
             'hide-broken-images.js',
-            'no-link-remover.js',
         ];
 
         if (enable_scroll_manager)

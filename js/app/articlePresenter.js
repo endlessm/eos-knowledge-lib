@@ -67,20 +67,13 @@ const ArticlePresenter = new GObject.Class({
         },
     },
 
-    // Duration of animated scroll from section to section in the page.
-    _SCROLL_DURATION: 1000,
-
     _init: function (props) {
         this.parent(props);
 
-        this.article_view.toc.transition_duration = this._SCROLL_DURATION;
         this._article_model = null;
         this._webview = null;
         this._webview_load_id = 0;
         this._renderer = new ArticleHTMLRenderer.ArticleHTMLRenderer();
-
-        this._connect_toc_widget();
-        this.article_view.connect('new-view-transitioned', this._update_title_and_toc.bind(this));
 
         WebkitContextSetup.register_webkit_uri_handlers(this._article_render_callback.bind(this));
     },
@@ -122,25 +115,19 @@ const ArticlePresenter = new GObject.Class({
 
         if (this._article_model.content_type === 'text/html') {
             let documentCard = new DocumentCard.DocumentCard({
-                model: model,
+                model: this._article_model,
             });
             
             this._connect_toc_widget(documentCard.toc);
+            documentCard.connect('ekn-link-clicked', (card, ekn_id) => {
+                this.emit('ekn-link-clicked', ekn_id);
+            })
 
             documentCard.connect('content-ready', (widget) => {
                 this.article_view.switch_in_document_card(documentCard, animation_type);
+                ready();
             });
 
-            this._webview = this._get_webview();
-            this._webview_load_id = this._webview.connect('load-changed', function (view, status) {
-                if (status !== WebKit2.LoadEvent.COMMITTED)
-                    return;
-                this._webview.disconnect(this._webview_load_id);
-                this._webview_load_id = 0;
-                this.article_view.switch_in_content_view(this._webview, animation_type);
-                ready();
-            }.bind(this));
-            this._webview.load_uri(this._article_model.ekn_id);
         } else if (this._article_model.content_type === 'application/pdf') {
             let stream = this._article_model.get_content_stream();
             let content_type = this._article_model.content_type;
@@ -149,7 +136,7 @@ const ArticlePresenter = new GObject.Class({
             // FIXME: Remove this line once we support table of contents
             // widget for PDFs
             this._article_model.table_of_contents = undefined;
-            this.article_view.switch_in_content_view(view, animation_type);
+            this.article_view.switch_in_document_card(view, animation_type);
             ready();
         } else {
             throw new Error("Unknown article content type: ", this._article_model.content_type);
@@ -175,113 +162,28 @@ const ArticlePresenter = new GObject.Class({
         }
     },
 
-    _update_title_and_toc: function () {
-        this.article_view.title = this._article_model.title;
-
-        let _toc_visible = false;
-        if (this.template_type !== 'B' && this._article_model.table_of_contents !== undefined) {
-            this._mainArticleSections = this._get_toplevel_toc_elements(this._article_model.table_of_contents);
-            if (this._mainArticleSections.length > 1) {
-                this.article_view.toc.section_list = this._mainArticleSections.map(function (section) {
-                    return section.label;
-                });
-                _toc_visible = true;
-            }
-        }
-        this.article_view.toc.visible = _toc_visible;
-    },
-
-    _connect_toc_widget: function () {
-        this.article_view.toc.connect('up-clicked', function () {
-            this._scroll_to_section(this.article_view.toc.target_section - 1);
+    _connect_toc_widget: function (toc_widget) {
+        toc_widget.connect('up-clicked', function () {
+            this._scroll_to_section(toc_widget, toc_widget.target_section - 1);
         }.bind(this));
 
-        this.article_view.toc.connect('down-clicked', function () {
-            this._scroll_to_section(this.article_view.toc.target_section + 1);
+        toc_widget.connect('down-clicked', function () {
+            this._scroll_to_section(toc_widget, toc_widget.target_section + 1);
         }.bind(this));
 
-        this.article_view.toc.connect('section-clicked', function (widget, index) {
-            this._scroll_to_section(index);
+        toc_widget.connect('section-clicked', function (widget, index) {
+            this._scroll_to_section(toc_widget, index);
         }.bind(this));
     },
 
-    _scroll_to_section: function (index) {
+    _scroll_to_section: function (toc_widget, index) {
         if (this._webview.is_loading)
             return;
         // tells the webkit webview directly to scroll to a ToC entry
         let location = this._mainArticleSections[index].content;
         let script = 'scrollTo(' + location.toSource() + ', ' + this._SCROLL_DURATION + ');';
-        this.article_view.toc.target_section = index;
+        toc_widget.target_section = index;
         this._webview.run_javascript(script, null, null);
-    },
-
-    _get_toplevel_toc_elements: function (tree) {
-        // ToC is flat, so just get the toplevel table of contents entries
-        let [success, child_iter] = tree.get_iter_first();
-        let toplevel_elements = [];
-        while (success) {
-            let label = tree.get_value(child_iter, TreeNode.TreeNodeColumn.LABEL);
-            let indexLabel = tree.get_value(child_iter, TreeNode.TreeNodeColumn.INDEX_LABEL);
-            let content = tree.get_value(child_iter, TreeNode.TreeNodeColumn.CONTENT);
-            toplevel_elements.push({
-                'label': label,
-                'indexLabel': indexLabel,
-                'content': content
-            });
-
-            success = tree.iter_next(child_iter);
-        }
-
-        return toplevel_elements;
-    },
-
-    _get_webview: function () {
-        let webview = new EknWebview.EknWebview();
-
-        webview.connect('notify::uri', function () {
-            if (webview.uri.indexOf('#') >= 0) {
-                let hash = webview.uri.split('#')[1];
-
-                // if we scrolled past something, update the ToC
-                if(hash.indexOf('scrolled-past-') === 0) {
-
-                    let sectionName = hash.split('scrolled-past-')[1];
-                    let sectionIndex = -1;
-                    // Find the index corresponding to this section
-                    for (let index in this._mainArticleSections) {
-                        let thisName = this._mainArticleSections[index].content.split("#")[1];
-                        if (thisName === sectionName)
-                            sectionIndex = index;
-                    }
-
-                    if (sectionIndex !== -1 &&
-                        this.article_view.toc.target_section === this.article_view.toc.selected_section) {
-                        this.article_view.toc.transition_duration = 0;
-                        this.article_view.toc.target_section = sectionIndex;
-                        this.article_view.toc.transition_duration = this._SCROLL_DURATION;
-                    }
-                }
-            }
-        }.bind(this));
-
-        webview.connect('decide-policy', function (webview, decision, type) {
-            if (type !== WebKit2.PolicyDecisionType.NAVIGATION_ACTION)
-                return false;
-
-            let [baseURI, hash] = decision.request.uri.split('#');
-
-            if (baseURI === this._article_model.ekn_id) {
-                // If this check is true, then we are navigating to the current
-                // page or an anchor on the current page.
-                decision.use();
-                return false;
-            } else {
-                this.emit('ekn-link-clicked', baseURI);
-                return true;
-            }
-        }.bind(this));
-
-        return webview;
     },
 
     _create_pdfview: function () {
