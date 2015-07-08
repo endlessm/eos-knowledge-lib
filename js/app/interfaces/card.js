@@ -1,6 +1,7 @@
 // Copyright 2015 Endless Mobile, Inc.
 
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
+const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
@@ -126,17 +127,23 @@ const Card = new Lang.Interface({
 
         if (this.thumbnail_frame) {
             this.thumbnail_frame.no_show_all = true;
+            this.thumbnail_frame.visible = false;
             if (this.model.thumbnail_uri) {
-                let frame_css = '* { background-image: url("' + this.model.thumbnail_uri + '"); }';
-                if (!this._background_provider) {
-                    this._background_provider = new Gtk.CssProvider();
-                    let context = this.thumbnail_frame.get_style_context();
-                    context.add_provider(this._background_provider,
-                        Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+                let scheme = Gio.File.new_for_uri(this.model.thumbnail_uri).get_uri_scheme();
+                // FIXME: to actually support ekn uris here, we'd need a gvfs
+                // extension of something like that
+                if (scheme !== 'ekn') {
+                    let frame_css = '* { background-image: url("' + this.model.thumbnail_uri + '"); }';
+                    if (!this._background_provider) {
+                        this._background_provider = new Gtk.CssProvider();
+                        let context = this.thumbnail_frame.get_style_context();
+                        context.add_provider(this._background_provider,
+                            Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+                    }
+                    this._background_provider.load_from_data(frame_css);
+                    this.thumbnail_frame.visible = true;
                 }
-                this._background_provider.load_from_data(frame_css);
             }
-            this.thumbnail_frame.visible = !!this.model.thumbnail_uri;
         }
 
         if (this.synopsis_label) {

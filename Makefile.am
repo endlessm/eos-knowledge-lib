@@ -235,13 +235,11 @@ js_files = \
 	js/app/marginButton.js \
 	js/app/moduleFactory.js \
 	js/app/modules/appBanner.js \
-	js/app/modules/articleCard.js \
 	js/app/modules/articleSnippetCard.js \
 	js/app/modules/cardA.js \
 	js/app/modules/cardB.js \
 	js/app/modules/documentCard.js \
 	js/app/modules/mediaCard.js \
-	js/app/modules/pdfCard.js \
 	js/app/modules/readerCard.js \
 	js/app/modules/searchBox.js \
 	js/app/modules/setBannerCard.js \
@@ -346,7 +344,6 @@ javascript_tests = \
 	tests/js/app/interfaces/testCard.js \
 	tests/js/app/interfaces/testModule.js \
 	tests/js/app/modules/testAppBanner.js \
-	tests/js/app/modules/testArticleCard.js \
 	tests/js/app/modules/testArticleSnippetCard.js \
 	tests/js/app/modules/testCardA.js \
 	tests/js/app/modules/testCardB.js \

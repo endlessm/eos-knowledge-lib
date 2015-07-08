@@ -1,7 +1,6 @@
 // Copyright 2014 Endless Mobile, Inc.
 
 const GObject = imports.gi.GObject;
-const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const Card = imports.app.interfaces.card;
@@ -28,7 +27,7 @@ const CardA = new Lang.Class({
     },
 
     Template: 'resource:///com/endlessm/knowledge/widgets/cardA.ui',
-    Children: [ 'thumbnail-frame', 'title-label', 'synopsis-label' ],
+    Children: [ 'thumbnail-frame', 'title-label', 'synopsis-label', 'pdf-icon', 'pdf-label' ],
 
     _init: function (props={}) {
         // TODO: we do want all cards to be the same size, but we may want to
@@ -37,6 +36,17 @@ const CardA = new Lang.Class({
         props.height_request = 223;  // 209px height + 2 * 7px margin
         this.parent(props);
         this.populate_from_model();
+
+        if (!this.thumbnail_frame.visible) {
+            this.title_label.xalign = 0;
+            this.title_label.vexpand = false;
+
+            let is_pdf = (this.model.content_type === 'application/pdf');
+            this.pdf_icon.visible = is_pdf;
+            this.pdf_label.visible = is_pdf;
+            this.synopsis_label.visible = this.synopsis_label.visible && !is_pdf;
+        }
+
         Utils.set_hand_cursor_on_widget(this);
     },
 });

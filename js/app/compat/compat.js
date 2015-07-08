@@ -29,10 +29,7 @@ function transform_v1_description(json) {
             type: 'SetBannerCard',
         };
         modules['results-card'] = {
-            type: 'ArticleCard',
-        };
-        modules['pdf-card'] = {
-            type: 'PdfCard',
+            type: 'CardA',
         };
         modules['lightbox-card'] = {
             type: 'MediaCard',

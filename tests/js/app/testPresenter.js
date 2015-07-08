@@ -102,7 +102,6 @@ describe('Presenter', () => {
         factory = new MockFactory.MockFactory();
         factory.add_named_mock('home-card', MinimalCard.MinimalCard);
         factory.add_named_mock('results-card', MinimalCard.MinimalCard);
-        factory.add_named_mock('pdf-card', MinimalCard.MinimalCard);
 
         // FIXME: this is a v1 app.json
         data = Utils.parse_object_from_path(test_app_filename);

@@ -30,6 +30,7 @@
           <packing>
             <property name="left_attach">0</property>
             <property name="top_attach">0</property>
+            <property name="width">2</property>
           </packing>
         </child>
         <child>
@@ -38,7 +39,6 @@
             <property name="no_show_all">True</property>
             <property name="hexpand">True</property>
             <property name="vexpand">True</property>
-            <property name="wrap">True</property>
             <property name="wrap_mode">word-char</property>
             <property name="ellipsize">end</property>
             <property name="max_width_chars">1</property>
@@ -50,6 +50,7 @@
           <packing>
             <property name="left_attach">0</property>
             <property name="top_attach">1</property>
+            <property name="width">2</property>
           </packing>
         </child>
         <child>
@@ -57,12 +58,14 @@
             <property name="can_focus">False</property>
             <property name="no_show_all">True</property>
             <property name="hexpand">True</property>
+            <property name="use_markup">True</property>
             <property name="wrap">True</property>
             <property name="wrap_mode">word-char</property>
             <property name="ellipsize">end</property>
             <property name="max_width_chars">1</property>
             <property name="lines">8</property>
-            <property name="use_markup">True</property>
+            <property name="xalign">0</property>
+            <property name="yalign">0</property>
             <style>
               <class name="card-synopsis"/>
             </style>
@@ -70,6 +73,37 @@
           <packing>
             <property name="left_attach">0</property>
             <property name="top_attach">2</property>
+            <property name="width">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkImage" id="pdf-icon">
+            <property name="can_focus">False</property>
+            <property name="no_show_all">True</property>
+            <property name="resource">/com/endlessm/knowledge/images/pdf_icon.png</property>
+            <style>
+              <class name="pdf-card-icon"/>
+            </style>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">3</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="pdf-label">
+            <property name="can_focus">False</property>
+            <property name="no_show_all">True</property>
+            <property name="hexpand">True</property>
+            <property name="label" translatable="yes">PDF</property>
+            <property name="xalign">0</property>
+            <style>
+              <class name="pdf-card-label"/>
+            </style>
+          </object>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="top_attach">3</property>
           </packing>
         </child>
       </object>
