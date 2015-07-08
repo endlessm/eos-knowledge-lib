@@ -7,6 +7,7 @@ Utils.register_gresource();
 
 const ArticleObjectModel = imports.search.articleObjectModel;
 const MediaObjectModel = imports.search.mediaObjectModel;
+const MockFactory = imports.tests.mockFactory;
 const LightboxPresenter = imports.app.lightboxPresenter;
 
 const MockEngine = new Lang.Class({
@@ -47,14 +48,17 @@ describe('Lightbox Presenter', function () {
     let lightbox_presenter;
     let engine;
     let view;
+    let factory;
 
     beforeEach(function () {
         engine = new MockEngine();
         view = new MockView();
+        factory = new MockFactory.MockFactory();
 
         lightbox_presenter = new LightboxPresenter.LightboxPresenter({
             engine: engine,
             view: view,
+            factory: factory,
         });
     });
 

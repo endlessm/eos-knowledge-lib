@@ -4,7 +4,7 @@ const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
-const CardB = imports.app.cardB;
+const CardB = imports.app.modules.cardB;
 const HomePageB = imports.app.homePageB;
 const Utils = imports.tests.utils;
 

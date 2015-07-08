@@ -1,6 +1,7 @@
 const Gtk = imports.gi.Gtk;
 
 const CssClassMatcher = imports.tests.CssClassMatcher;
+const MockFactory = imports.tests.mockFactory;
 const SectionArticlePage = imports.app.sectionArticlePage;
 const StyleClasses = imports.app.styleClasses;
 
@@ -12,7 +13,9 @@ describe ('Section Article Page B', function () {
     beforeEach (function () {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
 
-        the_section_article_page = new SectionArticlePage.SectionArticlePageB();
+        the_section_article_page = new SectionArticlePage.SectionArticlePageB({
+            factory: new MockFactory.MockFactory(),
+        });
         the_section_article_page.show_all();
     });
 

@@ -4,7 +4,7 @@ const Gtk = imports.gi.Gtk;
 const Utils = imports.tests.utils;
 Utils.register_gresource();
 
-const AppBanner = imports.app.appBanner;
+const AppBanner = imports.app.modules.appBanner;
 
 Gtk.init(null);
 
@@ -21,11 +21,4 @@ describe('App banner module', function () {
     });
 
     it('can be constructed', function () {});
-
-    it('only changes image-uri property if it receives a valid uri', function () {
-        expect(function () {
-            app_banner.image_uri = 'not_a_uri';
-        }).toThrow();
-        expect(app_banner.image_uri).toBe(pig_uri);
-    });
 });

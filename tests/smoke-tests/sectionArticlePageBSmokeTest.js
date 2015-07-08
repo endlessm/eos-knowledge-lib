@@ -5,7 +5,7 @@ const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
-const TextCard = imports.app.textCard;
+const TextCard = imports.app.modules.textCard;
 const SectionArticlePage = imports.app.sectionArticlePage;
 const Utils = imports.tests.utils;
 

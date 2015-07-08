@@ -1,7 +1,6 @@
 const GObject = imports.gi.GObject;
 
 const Engine = imports.search.engine;
-const MediaCard = imports.app.mediaCard;
 
 /**
  * Class: LightboxPresenter
@@ -45,6 +44,13 @@ const LightboxPresenter = new GObject.Class({
          */
         'view': GObject.ParamSpec.object('view', 'View',
             'The Window object that contains the Lightbox that is being handled.',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            GObject.Object.$gtype),
+        /**
+         * Property: factory
+         * Factory to create modules
+         */
+        'factory': GObject.ParamSpec.object('factory', 'Factory', 'Factory',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             GObject.Object.$gtype),
     },
@@ -108,10 +114,10 @@ const LightboxPresenter = new GObject.Class({
         if (this._current_index === -1)
             return false;
 
-        let media_card = new MediaCard.MediaCard({
+        let card = this.factory.create_named_module('lightbox-card', {
             model: media_object
         });
-        this.view.lightbox.lightbox_widget = media_card;
+        this.view.lightbox.lightbox_widget = card;
         this.view.lightbox.reveal_overlays = true;
         this.view.lightbox.has_back_button = this._current_index > 0;
         this.view.lightbox.has_forward_button = this._current_index < resources.length - 1;

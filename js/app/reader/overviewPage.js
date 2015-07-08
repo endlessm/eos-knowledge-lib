@@ -5,8 +5,6 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
-const AppBanner = imports.app.appBanner;
-const ArticleSnippetCard = imports.app.reader.articleSnippetCard;
 const SpaceContainer = imports.app.spaceContainer;
 const StyleClasses = imports.app.styleClasses;
 const Utils = imports.app.utils;
@@ -37,13 +35,12 @@ const OverviewPage = new Lang.Class({
     Extends: Gtk.Frame,
     Properties: {
         /**
-         * Property: app-banner
-         * A logo for the application. Read-only.
+         * Property: factory
+         * Factory to create modules
          */
-        'app-banner': GObject.ParamSpec.object('app-banner', 'App Banner',
-            'The logo for this application',
-            GObject.ParamFlags.READABLE,
-            AppBanner.AppBanner),
+        'factory': GObject.ParamSpec.object('factory', 'Factory', 'Factory',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            GObject.Object.$gtype),
 
         /**
          * Property: subtitle
@@ -67,8 +64,9 @@ const OverviewPage = new Lang.Class({
     _init: function (props) {
         props = props || {};
         props.hexpand = true;
+        this.parent(props);
 
-        this.app_banner = new AppBanner.AppBanner({
+        this._app_banner = this.factory.create_named_module('app-banner', {
             halign: Gtk.Align.START,
             margin_top: _LOGO_TOP_MARGIN,
             margin_start: _LOGO_LEFT_MARGIN,
@@ -106,12 +104,10 @@ const OverviewPage = new Lang.Class({
         });
         snippets_frame.add(this._snippets_grid);
 
-        this.parent(props);
-
         this.get_style_context().add_class(StyleClasses.READER_OVERVIEW_PAGE);
         this._subtitle_label.get_style_context().add_class(StyleClasses.READER_APP_SUBTITLE);
 
-        grid.attach(this.app_banner, 0, 0, 1, 1);
+        grid.attach(this._app_banner, 0, 0, 1, 1);
         grid.attach(this._subtitle_label, 0, 1, 1, 1);
         grid.attach(snippets_frame, 1, 0, 1, 2);
 
@@ -120,7 +116,7 @@ const OverviewPage = new Lang.Class({
             extra_margin: _EXTRA_MARGIN,
         });
         margin_container.set_margin_start_children([
-            this.app_banner,
+            this._app_banner,
             this._subtitle_label,
         ]);
         margin_container.set_margin_end_children([

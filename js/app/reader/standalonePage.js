@@ -176,6 +176,7 @@ const Banner = new Lang.Class({
         this._title_image = new ImagePreviewer.ImagePreviewer({
             valign: Gtk.Align.START,
             vexpand: true,
+            max_fraction: 0.5,
         });
 
         let button = new OpenButton({
@@ -195,8 +196,6 @@ const Banner = new Lang.Class({
         let stream = Gio.File.new_for_uri(v).read(null);
         this._title_image.set_content(stream);
 
-        // only actually set the image URI if we successfully set the image
-        this._title_image.set_max_percentage(0.5);
         this._title_image_uri = v;
         this.notify('title-image-uri');
     },

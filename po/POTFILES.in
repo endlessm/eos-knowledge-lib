@@ -11,7 +11,7 @@ js/app/encyclopedia/view.js
 js/app/homePageA.js
 js/app/noSearchResultsPage.js
 js/app/presenter.js
-js/app/reader/card.js
+js/app/modules/readerCard.js
 js/app/reader/donePage.js
 js/app/reader/presenter.js
 js/app/reader/searchResultsPage.js

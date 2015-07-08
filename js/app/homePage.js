@@ -9,7 +9,6 @@ const StyleClasses = imports.app.styleClasses;
 
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 
-const AppBanner = imports.app.appBanner;
 const ImagePreviewer = imports.app.imagePreviewer;
 const SearchBox = imports.app.searchBox;
 
@@ -28,13 +27,12 @@ const HomePage = new Lang.Class({
     Extends: Gtk.Grid,
     Properties: {
         /**
-         * Property: app-banner
-         * A logo for the application. Read-only.
+         * Property: factory
+         * Factory to create modules
          */
-        'app-banner': GObject.ParamSpec.object('app-banner', 'App Banner',
-            'The logo for this application',
-            GObject.ParamFlags.READABLE,
-            AppBanner.AppBanner),
+        'factory': GObject.ParamSpec.object('factory', 'Factory', 'Factory',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            GObject.Object.$gtype),
         /**
          * Property: search-box
          *
@@ -87,12 +85,7 @@ const HomePage = new Lang.Class({
         'show-categories': {}
     },
 
-    _init: function (props) {
-        props = props || {};
-        this.app_banner = new AppBanner.AppBanner();
-        this.app_banner.set_min_percentage(0.4);
-        this.app_banner.set_max_percentage(0.7);
-
+    _init: function (props={}) {
         this._cards = null;
 
         // Not using a SearchEntry since that comes with
@@ -111,12 +104,14 @@ const HomePage = new Lang.Class({
             this.emit('article-selected', article_id);
         }));
 
+        this._app_banner = props.factory.create_named_module('app-banner');
+
         this.parent(props);
 
         this.get_style_context().add_class(StyleClasses.HOME_PAGE);
         this.search_box.get_style_context().add_class(StyleClasses.SEARCH_BOX);
 
-        this.pack_widgets(this.app_banner, this.search_box);
+        this.pack_widgets(this._app_banner, this.search_box);
         this.show_all();
     },
 

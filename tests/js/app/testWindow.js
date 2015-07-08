@@ -7,6 +7,7 @@ const CssClassMatcher = imports.tests.CssClassMatcher;
 const HomePageA = imports.app.homePageA;
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
 const Lightbox = imports.app.lightbox;
+const MockFactory = imports.tests.mockFactory;
 const SectionPageA = imports.app.sectionPageA;
 const Utils = imports.tests.utils;
 const Window = imports.app.window;
@@ -34,9 +35,11 @@ describe('Window', function () {
             application_id: id_string,
             flags: 0
         });
+
         app.connect('startup', function () {
             view = new Window.Window({
-                application: app
+                application: app,
+                factory: new MockFactory.MockFactory(),
             });
             done();
         });

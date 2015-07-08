@@ -3,6 +3,7 @@ const Gtk = imports.gi.Gtk;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const HomePageB = imports.app.homePageB;
 const MinimalCard = imports.tests.minimalCard;
+const MockFactory = imports.tests.mockFactory;
 const StyleClasses = imports.app.styleClasses;
 const Utils = imports.tests.utils;
 
@@ -19,7 +20,10 @@ describe('Home page for Template B', function () {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
 
         card_list = [0, 1, 2, 3, 4, 5].map(() => new MinimalCard.MinimalCard());
-        home_page = new HomePageB.HomePageB();
+
+        home_page = new HomePageB.HomePageB({
+            factory: new MockFactory.MockFactory(),
+        });
     });
 
     it('can be constructed', function () {});

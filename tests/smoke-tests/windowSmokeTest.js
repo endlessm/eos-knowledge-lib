@@ -4,9 +4,9 @@ const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
-const CardA = imports.app.cardA;
-const CardB = imports.app.cardB;
-const TextCard = imports.app.textCard;
+const CardA = imports.app.modules.cardA;
+const CardB = imports.app.modules.cardB;
+const TextCard = imports.app.modules.textCard;
 const Window = imports.app.window;
 const Utils = imports.tests.utils;
 

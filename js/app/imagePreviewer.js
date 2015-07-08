@@ -23,10 +23,28 @@ const ImagePreviewer = Lang.Class({
          *
          * The aspect the previewer widget should display at
          */
-        'aspect': GObject.ParamSpec.double('aspect', 'Aspect',
+        'aspect': GObject.ParamSpec.float('aspect', 'Aspect',
             'Aspect ratio of previewer content',
             GObject.ParamFlags.READABLE,
             0.0, 100.0, 1.0),
+
+        /**
+         * Property: min-fraction
+         * The smallest fraction of the widget's natural size to display at.
+         */
+        'min-fraction': GObject.ParamSpec.float('min-fraction', 'Min Fraction',
+            'Min fraction of size to display at',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
+            0.0, 1.0, 0.0),
+
+        /**
+         * Property: max-fraction
+         * The largest fraction of the widget's natural size to display at.
+         */
+        'max-fraction': GObject.ParamSpec.float('max-fraction', 'Max Fraction',
+            'Max fraction of size to display at',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
+            0.0, 1.0, 1.0),
 
         /**
          * Property: enforce-minimum-size
@@ -66,8 +84,6 @@ const ImagePreviewer = Lang.Class({
         this._aspect = 1.0;
         this._natural_width = 0;
         this._natural_height = 0;
-        this._min_percentage = 0.0;
-        this._max_percentage = 1.0;
 
         let formats = GdkPixbuf.Pixbuf.get_formats();
         this._supported_types = formats.reduce(function(type_list, format) {
@@ -133,38 +149,16 @@ const ImagePreviewer = Lang.Class({
         return this._aspect;
     },
 
-    /**
-     * Method: set_min_percentage
-     *
-     * Sets the minimum percentage of the natural image width the image
-     * previewer should scale down to. A range from 0 to 1. Defaults to 0, or
-     * allowing the image to size down to zero size.
-     */
-    set_min_percentage: function (min_percentage) {
-        this._min_percentage = min_percentage;
-    },
-
-    /**
-     * Method: set_max_percentage
-     *
-     * Sets the maximum percentage of the natural image width the image
-     * previewer should scale down to. A range from 0 to 1. Defaults to 0, or
-     * allowing the image to size down to zero size.
-     */
-    set_max_percentage: function (max_percentage) {
-        this._max_percentage = max_percentage;
-    },
-
     vfunc_get_request_mode: function () {
         return Gtk.SizeRequestMode.CONSTANT_SIZE;
     },
 
     vfunc_get_preferred_width: function () {
-        return [this._min_percentage * this._natural_width, this._max_percentage * this._natural_width];
+        return [this.min_fraction * this._natural_width, this.max_fraction * this._natural_width];
     },
 
     vfunc_get_preferred_height: function () {
-        return [this._min_percentage * this._natural_height, this._max_percentage * this._natural_height];
+        return [this.min_fraction * this._natural_height, this.max_fraction * this._natural_height];
     },
 
     _animation_timeout: function () {
@@ -196,8 +190,8 @@ const ImagePreviewer = Lang.Class({
         if (this._pixbuf !== this._last_pixbuf || allocation !== this._last_allocation) {
             this._last_pixbuf = this._pixbuf;
             this._last_allocation = allocation;
-            let width = Math.min(allocation.width, this._max_percentage * this._natural_width);
-            let height = Math.min(allocation.height, this._max_percentage * this._natural_height);
+            let width = Math.min(allocation.width, this.max_fraction * this._natural_width);
+            let height = Math.min(allocation.height, this.max_fraction * this._natural_height);
 
             if (height * this._aspect < width) {
                 width = height * this._aspect;

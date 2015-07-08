@@ -3,7 +3,7 @@
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 
-const CardA = imports.app.cardA;
+const CardA = imports.app.modules.cardA;
 
 /**
  * Class: ArticleCard

@@ -43,6 +43,13 @@ const Window = new Lang.Class({
     Extends: Endless.Window,
     Properties: {
         /**
+         * Property: factory
+         * Factory to create modules
+         */
+        'factory': GObject.ParamSpec.object('factory', 'Factory', 'Factory',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            GObject.Object.$gtype),
+        /**
          * Property: home-page
          *
          * The <HomePageA> widget created by this widget. Read-only,
@@ -220,12 +227,20 @@ const Window = new Lang.Class({
 
         this._categories_page = new CategoriesPage.CategoriesPage();
         if (this.template_type === 'B') {
-            this._home_page = new HomePageB.HomePageB();
-            this._section_article_page = new SectionArticlePage.SectionArticlePageB();
+            this._home_page = new HomePageB.HomePageB({
+                factory: this.factory,
+            });
+            this._section_article_page = new SectionArticlePage.SectionArticlePageB({
+                factory: this.factory,
+            });
             this._no_search_results_page = new NoSearchResultsPage.NoSearchResultsPageB();
         } else {
-            this._home_page = new HomePageA.HomePageA();
-            this._section_article_page = new SectionArticlePage.SectionArticlePageA();
+            this._home_page = new HomePageA.HomePageA({
+                factory: this.factory,
+            });
+            this._section_article_page = new SectionArticlePage.SectionArticlePageA({
+                factory: this.factory,
+            });
             this._no_search_results_page = new NoSearchResultsPage.NoSearchResultsPageA();
             // Connection so that tab buttons are revealed after page transition
             this.page_manager.connect('notify::transition-running', Lang.bind(this, function () {

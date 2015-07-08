@@ -6,7 +6,7 @@ const Lang = imports.lang;
 const Pango = imports.gi.Pango;
 
 const ContentObjectModel = imports.search.contentObjectModel;
-const SetBanner = imports.app.setBanner;
+const SetBannerCard = imports.app.modules.setBannerCard;
 const StyleClasses = imports.app.styleClasses;
 const Utils = imports.app.utils;
 
@@ -24,6 +24,13 @@ const SectionPage = new Lang.Class({
     GTypeName: 'EknSectionPage',
     Extends: Gtk.Grid,
     Properties: {
+        /**
+         * Property: factory
+         * Factory to create modules
+         */
+        'factory': GObject.ParamSpec.object('factory', 'Factory', 'Factory',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            GObject.Object.$gtype),
         /**
          * Property: title
          * A string with the title of the section page. Defaults to an empty string.
@@ -73,9 +80,8 @@ const SectionPage = new Lang.Class({
             title: this._title,
             featured: false,
         });
-        let banner = new SetBanner.SetBanner({
+        return this.factory.create_named_module('results-title-card', {
             model: section_model,
         });
-        return banner;
     },
 });

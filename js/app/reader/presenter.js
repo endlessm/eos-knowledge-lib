@@ -14,7 +14,7 @@ const WebKit2 = imports.gi.WebKit2;
 const ArticleHTMLRenderer = imports.app.articleHTMLRenderer;
 const ArticleObjectModel = imports.search.articleObjectModel;
 const ArticlePage = imports.app.reader.articlePage;
-const ArticleSnippetCard = imports.app.reader.articleSnippetCard;
+const ArticleSnippetCard = imports.app.modules.articleSnippetCard;
 const Config = imports.app.config;
 const DonePage = imports.app.reader.donePage;
 const EknWebview = imports.app.eknWebview;
@@ -25,7 +25,7 @@ const LightboxPresenter = imports.app.lightboxPresenter;
 const MediaObjectModel = imports.search.mediaObjectModel;
 const OverviewPage = imports.app.reader.overviewPage;
 const QueryObject = imports.search.queryObject;
-const ReaderCard = imports.app.reader.card;
+const ReaderCard = imports.app.modules.readerCard;
 const StyleClasses = imports.app.styleClasses;
 const UserSettingsModel = imports.app.reader.userSettingsModel;
 const Utils = imports.app.utils;
@@ -86,6 +86,13 @@ const Presenter = new Lang.Class({
          */
         'application': GObject.ParamSpec.object('application', 'Application',
             'Presenter for article page',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            GObject.Object.$gtype),
+        /**
+         * Property: factory
+         * Factory to create modules
+         */
+        'factory': GObject.ParamSpec.object('factory', 'Factory', 'Factory',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             GObject.Object.$gtype),
         /**
@@ -173,6 +180,7 @@ const Presenter = new Lang.Class({
 
         props.view = props.view || new Window.Window({
             application: props.application,
+            factory: props.factory,
         });
         props.engine = props.engine || Engine.Engine.get_default();
         props.settings = props.settings || new UserSettingsModel.UserSettingsModel({
@@ -185,6 +193,7 @@ const Presenter = new Lang.Class({
         this._lightbox_presenter = new LightboxPresenter.LightboxPresenter({
             engine: this.engine,
             view: this.view,
+            factory: this.factory,
         });
 
         WebkitContextSetup.register_webkit_uri_handlers(this._article_render_callback.bind(this));
@@ -251,7 +260,6 @@ const Presenter = new Lang.Class({
     get current_page() {
         return this._current_page;
     },
-
 
     _get_knob_css: function (css_data) {
         let str = '';
@@ -597,14 +605,15 @@ const Presenter = new Lang.Class({
         }
     },
 
-    _new_card_from_article_model: function (model, idx) {
+    _new_card_from_article_model: function (model) {
         // We increment the page number to account for the 0-based index.
         // Note: _get_page_number_for_article_model will return -1 only if it's an
         // "Archived" issue, case in which the card doesn't require a card number.
         let article_page_number = this._get_page_number_for_article_model(model) + 1;
-        let card = new ReaderCard.Card({
+        let card = this.factory.create_named_module('results-card', {
             model: model,
             title_capitalization: EosKnowledgePrivate.TextTransform.UPPERCASE,
+            // FIXME: these won't be properties on all cards
             page_number: article_page_number,
             style_variant: model.article_number % 3,
             archived: this._is_archived(model),
@@ -976,7 +985,6 @@ const Presenter = new Lang.Class({
     // ID and the app's headline.
     _parse_app_info: function (info) {
         this.view.title = info['appTitle'];
-        this.view.overview_page.app_banner.image_uri = info['titleImageURI'];
         this.view.overview_page.subtitle = info['appSubtitle'];
         this.view.overview_page.background_image_uri = info['backgroundHomeURI'];
         this.view.done_page.background_image_uri = info['backgroundSectionURI'];
@@ -1051,8 +1059,9 @@ const Presenter = new Lang.Class({
 
     _load_overview_snippets_from_articles: function () {
         let snippets = this._article_models.slice(0, NUM_OVERVIEW_SNIPPETS).map((model, ix) => {
-            let snippet = new ArticleSnippetCard.ArticleSnippetCard({
+            let snippet = this.factory.create_named_module('home-card', {
                 model: model,
+                // FIXME: won't be on all cards
                 style_variant: ix % NUM_SNIPPET_STYLES,
             });
             snippet.connect('clicked', function () {

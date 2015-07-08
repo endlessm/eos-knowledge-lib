@@ -1,6 +1,9 @@
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 
+const Compat = imports.app.compat.compat;
+const Warehouse = imports.app.warehouse;
+
 const ModuleFactory = new Lang.Class({
     Name: 'ModuleFactory',
     Extends: GObject.Object,
@@ -28,11 +31,17 @@ const ModuleFactory = new Lang.Class({
                 writable: true,
             },
         });
-
         delete props['app_json'];
         delete props['app-json'];
         delete props['appJson'];
+
+        props.warehouse = props.warehouse || new Warehouse.Warehouse();
+
         this.parent(props);
+
+        if (!this.app_json.hasOwnProperty('version'))
+            this.app_json = Compat.transform_v1_description(this.app_json);
+        // After this point, the app.json must be the current version!
     },
 
     create_named_module: function (name, extra_props={}) {

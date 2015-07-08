@@ -28,30 +28,17 @@ const AppBanner = new Lang.Class({
          */
         'image-uri': GObject.ParamSpec.string('image-uri', 'Page Title Image URI',
             'URI to the title image',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT, ''),
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
     },
 
     Template: 'resource:///com/endlessm/knowledge/widgets/appBanner.ui',
 
     _init: function (props={}) {
         this.parent(props);
-    },
 
-    set image_uri (v) {
-        if (this._image_uri === v)
-            return;
-
-        if (v) {
-            let stream = Gio.File.new_for_uri(v).read(null);
+        if (this.image_uri) {
+            let stream = Gio.File.new_for_uri(this.image_uri).read(null);
             this.set_content(stream);
         }
-
-        // only actually set the image URI if we successfully set the image
-        this._image_uri = v;
-        this.notify('image-uri');
-    },
-
-    get image_uri () {
-        return this._image_uri;
     },
 });

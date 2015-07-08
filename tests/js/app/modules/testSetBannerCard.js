@@ -3,15 +3,15 @@ const Gtk = imports.gi.Gtk;
 const Utils = imports.tests.utils;
 Utils.register_gresource();
 
-const SetBanner = imports.app.setBanner;
+const SetBannerCard = imports.app.modules.setBannerCard;
 
 Gtk.init(null);
 
 describe('Set banner widget', function () {
-    let setBanner;
+    let setBannerCard;
 
     beforeEach(function () {
-        setBanner = new SetBanner.SetBanner();
+        setBannerCard = new SetBannerCard.SetBannerCard();
     });
 
     it('constructs', function () {});
