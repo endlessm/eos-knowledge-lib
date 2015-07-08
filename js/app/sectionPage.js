@@ -25,6 +25,13 @@ const SectionPage = new Lang.Class({
     Extends: Gtk.Grid,
     Properties: {
         /**
+         * Property: factory
+         * Factory to create modules
+         */
+        'factory': GObject.ParamSpec.object('factory', 'Factory', 'Factory',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            GObject.Object.$gtype),
+        /**
          * Property: title
          * A string with the title of the section page. Defaults to an empty string.
          */
@@ -73,9 +80,8 @@ const SectionPage = new Lang.Class({
             title: this._title,
             featured: false,
         });
-        let banner = new SetBannerCard.SetBannerCard({
+        return this.factory.create_named_module('results-title-card', {
             model: section_model,
         });
-        return banner;
     },
 });

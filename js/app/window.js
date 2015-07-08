@@ -230,13 +230,17 @@ const Window = new Lang.Class({
             this._home_page = new HomePageB.HomePageB({
                 factory: this.factory,
             });
-            this._section_article_page = new SectionArticlePage.SectionArticlePageB();
+            this._section_article_page = new SectionArticlePage.SectionArticlePageB({
+                factory: this.factory,
+            });
             this._no_search_results_page = new NoSearchResultsPage.NoSearchResultsPageB();
         } else {
             this._home_page = new HomePageA.HomePageA({
                 factory: this.factory,
             });
-            this._section_article_page = new SectionArticlePage.SectionArticlePageA();
+            this._section_article_page = new SectionArticlePage.SectionArticlePageA({
+                factory: this.factory,
+            });
             this._no_search_results_page = new NoSearchResultsPage.NoSearchResultsPageA();
             // Connection so that tab buttons are revealed after page transition
             this.page_manager.connect('notify::transition-running', Lang.bind(this, function () {

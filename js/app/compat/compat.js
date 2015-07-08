@@ -15,6 +15,9 @@ function transform_v1_description(json) {
         modules['home-card'] = {
             type: 'CardA',
         };
+        modules['results-title-card'] = {
+            type: 'SetBannerCard',
+        };
         modules['results-card'] = {
             type: 'ArticleCard',
         };

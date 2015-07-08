@@ -24,6 +24,13 @@ const SectionArticlePage = new Lang.Class({
     Extends: NavButtonOverlay.NavButtonOverlay,
     Properties: {
         /**
+         * Property: factory
+         * Factory to create modules
+         */
+        'factory': GObject.ParamSpec.object('factory', 'Factory', 'Factory',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            GObject.Object.$gtype),
+        /**
          * Property: section-page
          * The section page to be displayed by the page manager.
          */
@@ -86,11 +93,13 @@ const SectionArticlePageA = new Lang.Class({
     GTypeName: 'EknSectionArticlePageA',
     Extends: SectionArticlePage,
 
-    _init: function (props) {
-        props = props || {};
+    _init: function (props={}) {
         props.forward_visible = false;
+        this.parent(props);
 
-        this._section_page = new SectionPageA.SectionPageA();
+        this._section_page = new SectionPageA.SectionPageA({
+            factory: this.factory,
+        });
         this._article_page = new ArticlePage.ArticlePage();
         this._transition_duration = 0;
 
@@ -110,7 +119,6 @@ const SectionArticlePageA = new Lang.Class({
         }.bind(this));
         this._section_article_stack.add(this._section_page);
         this._section_article_stack.add(this._article_page);
-        this.parent(props);
 
         this.bind_property('transition-duration', this._section_article_stack,
             'transition-duration', GObject.BindingFlags.SYNC_CREATE);
@@ -153,10 +161,13 @@ const SectionArticlePageB = new Lang.Class({
     GTypeName: 'EknSectionArticlePageB',
     Extends: SectionArticlePage,
 
-    _init: function (props) {
-        props = props || {};
+    _init: function (props={}) {
+        this.parent(props);
+
         props.forward_visible = false;
-        this._section_page = new SectionPageB.SectionPageB();
+        this._section_page = new SectionPageB.SectionPageB({
+            factory: this.factory,
+        });
         this._article_page = new ArticlePage.ArticlePage({
             show_top_title: false
         });
@@ -170,9 +181,6 @@ const SectionArticlePageB = new Lang.Class({
             expand: false
         });
         this._article_page_revealer.add(this._article_page);
-
-        this.parent(props);
-
 
         let grid = new Gtk.Grid({
             orientation: Gtk.Orientation.HORIZONTAL

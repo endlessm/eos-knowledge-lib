@@ -2,6 +2,7 @@ const Gtk = imports.gi.Gtk;
 
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const MinimalCard = imports.tests.minimalCard;
+const MockFactory = imports.tests.mockFactory;
 const SectionPageB = imports.app.sectionPageB;
 const StyleClasses = imports.app.styleClasses;
 
@@ -15,7 +16,8 @@ describe('Section page for Template B', function () {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
 
         section_page = new SectionPageB.SectionPageB({
-            title: "History of Guatemala"
+            title: "History of Guatemala",
+            factory: new MockFactory.MockFactory(),
         });
 
         card_list = [0, 1, 2].map(() => new MinimalCard.MinimalCard());
