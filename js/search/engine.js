@@ -102,6 +102,7 @@ const Engine = Lang.Class({
         this._ekn_version_cache = {};
 
         this._shard_file_cache = {};
+        this._runtime_objects = new Map();
     },
 
     /**
@@ -120,6 +121,11 @@ const Engine = Lang.Class({
     get_object_by_id: function (id, cancellable, callback) {
         let task = new AsyncTask.AsyncTask(this, cancellable, callback);
         task.catch_errors(() => {
+            if (this._runtime_objects.has(id)) {
+                task.return_value(this._runtime_objects.get(id));
+                return;
+            }
+
             let handle_redirect = (result) => {
                 let model = this._model_from_json_ld(result);
 
@@ -266,6 +272,26 @@ const Engine = Lang.Class({
      */
     get_objects_by_query_finish: function (task) {
         return task.finish();
+    },
+
+    /**
+     * Method: add_runtime_object
+     * Add an object not stored in the database
+     *
+     * Creates an object with a particular ID, which is not stored in the
+     * database but behaves like it is.
+     * Effectively this allows modifying the database at runtime.
+     * This is necessary for compatibility reasons.
+     *
+     * Note that a runtime object with the same ID as an object stored in the
+     * database will override the stored object.
+     *
+     * Parameters:
+     *   id - EKN ID, of the form ekn://domain/sha
+     *   model - a <ContentObjectModel>
+     */
+    add_runtime_object: function (id, model) {
+        this._runtime_objects.set(id, model);
     },
 
     _content_path_from_domain: function (domain) {

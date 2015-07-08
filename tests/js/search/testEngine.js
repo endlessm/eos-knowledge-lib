@@ -582,4 +582,44 @@ describe('Knowledge Engine Module', () => {
             });
         });
     });
+
+    describe('runtime objects', function () {
+        let model;
+
+        beforeEach(function () {
+            model = new ContentObjectModel.ContentObjectModel();
+            engine.add_runtime_object('ekn://foo/1234567890abcdef', model);
+        });
+
+        it('can be added', function (done) {
+            engine.get_object_by_id('ekn://foo/1234567890abcdef', null, (engine, res) => {
+                let retrieved_model = engine.get_object_by_id_finish(res);
+                expect(retrieved_model).toBe(model);
+                done();
+            });
+        });
+
+        // https://github.com/endlessm/eos-sdk/issues/3147
+
+        xit('do not hit the database', function (done) {
+            spyOn(engine, 'FIXME_v2_method_for_retrieving_data_from_shard');
+            engine.get_object_by_id('ekn://foo/1234567890abcdef', null, (engine, res) => {
+                engine.get_object_by_id_finish(res);
+                expect(engine.FIXME_v2_method_for_retrieving_data_from_shard).not.toHaveBeenCalled();
+                done();
+            });
+        });
+
+        xit('mask existing objects with the same ID', function (done) {
+            FIXME_mock_engine_request_v2(undefined, [{
+                '@id': 'ekn://foo/1234567890abcdef',
+                '@type': 'ekn://_vocab/ArticleObject',
+            }]);
+            engine.get_object_by_id('ekn://foo/1234567890abcdef', null, (engine, res) => {
+                let retrieved_model = engine.get_object_by_id_finish(res);
+                expect(retrieved_model).toBe(model);
+                done();
+            });
+        });
+    });
 });
