@@ -202,19 +202,26 @@ const ARTICLE_PAGE = 'article-page';
 const ARTICLE_PAGE_TITLE = 'title';
 
 /**
- * Constant: ARTICLE_PAGE_TOOLBAR_FRAME
+ * Constant: DOCUMENT_CARD
  *
- * Matches a frame around the right side toolbar on the
- * ArticlePage.
+ * Matches the DocumentCard.
  */
-const ARTICLE_PAGE_TOOLBAR_FRAME = 'article-page-toolbar-frame';
+const DOCUMENT_CARD = 'document-card';
 
 /**
- * Constant: ARTICLE_PAGE_SWITCHER_FRAME
+ * Constant: DOCUMENT_CARD_TOOLBAR_FRAME
  *
- * Matches a frame around the switcher on the ArticlePage.
+ * Matches a frame around the right side toolbar on the
+ * DocumentCard.
  */
-const ARTICLE_PAGE_SWITCHER_FRAME = 'article-page-switcher-frame';
+const DOCUMENT_CARD_TOOLBAR_FRAME = 'document-card-toolbar-frame';
+
+/**
+ * Constant: DOCUMENT_CARD_CONTENT_FRAME
+ *
+ * Matches a frame around the switcher on the DocumentCard.
+ */
+const DOCUMENT_CARD_CONTENT_FRAME = 'document-card-content-frame';
 
 /**
  * Constant: SEARCH_BOX

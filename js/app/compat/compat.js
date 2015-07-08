@@ -32,6 +32,9 @@ function transform_v1_description(json) {
         modules['lightbox-card'] = {
             type: 'MediaCard',
         };
+        modules['document-card'] = {
+            type: 'DocumentCard',
+        };
         break;
     case 'B':
         modules['app-banner'] = {
@@ -59,6 +62,9 @@ function transform_v1_description(json) {
         };
         modules['lightbox-card'] = {
             type: 'MediaCard',
+        };
+        modules['document-card'] = {
+            type: 'DocumentCard',
         };
         break;
     case 'encyclopedia':

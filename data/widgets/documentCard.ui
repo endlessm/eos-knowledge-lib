@@ -32,7 +32,7 @@
           </object>
         </child>
         <style>
-          <class name="article-page-toolbar-frame"/>
+          <class name="document-card-toolbar-frame"/>
         </style>
       </object>
     </child>
@@ -69,14 +69,14 @@
           </object>
         </child>
         <style>
-          <class name="article-page-content-frame"/>
+          <class name="document-card-content-frame"/>
         </style>
       </object>
     </child>
 
     <style>
       <class name="card"/>
-      <class name="article-page"/>
+      <class name="document-card"/>
     </style>
   </template>
 </interface>

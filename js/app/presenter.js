@@ -139,6 +139,7 @@ const Presenter = new Lang.Class({
         props.article_presenter = props.article_presenter || new ArticlePresenter.ArticlePresenter({
                 article_view: props.view.article_page,
                 template_type: this._template_type,
+                factory: props.factory,
         });
         this.parent(props);
 
