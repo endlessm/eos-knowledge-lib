@@ -40,10 +40,7 @@ const SectionPageA = new Lang.Class({
         });
 
         this.get_style_context().add_class(StyleClasses.SECTION_PAGE_A);
-    },
 
-    pack_title_banner: function (title_banner) {
-        title_banner.halign = Gtk.Align.CENTER;
         this._scrolled_window = new InfiniteScrolledWindow.InfiniteScrolledWindow({
             hscrollbar_policy: Gtk.PolicyType.NEVER,
             bottom_buffer: this.LOADING_BOTTOM_BUFFER,
@@ -62,9 +59,17 @@ const SectionPageA = new Lang.Class({
             margin_start: 100,
             margin_end: 100
         });
-        this._content_grid.add(title_banner);
         this._scrolled_window.add(this._content_grid);
         this.add(this._scrolled_window);
+    },
+
+    pack_title_banner: function (title_banner) {
+        title_banner.halign = Gtk.Align.CENTER;
+
+        let old_banner = this._content_grid.get_child_at(0, 0);
+        if (old_banner)
+            this._content_grid.remove(old_banner);
+        this._content_grid.add(title_banner);
     },
 
     /*
