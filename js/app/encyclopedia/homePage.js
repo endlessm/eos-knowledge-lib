@@ -44,8 +44,8 @@ const HomePage = new Lang.Class({
 
         this._logo = new ImagePreviewer.ImagePreviewer({
             margin_bottom: 42,
+            max_fraction: 0.5,
         });
-        this._logo.set_max_percentage(0.5);
 
         this.search_box = new SearchBox.SearchBox({
             max_width_chars: 52 // set width as per design

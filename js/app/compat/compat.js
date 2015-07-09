@@ -32,6 +32,9 @@ function transform_v1_description(json) {
         modules['home-card'] = {
             type: 'CardB',
         };
+        modules['results-title-card'] = {
+            type: 'SetBannerCard',
+        };
         modules['results-card'] = {
             type: 'TextCard',
         };

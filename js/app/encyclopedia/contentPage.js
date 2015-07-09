@@ -160,8 +160,8 @@ const ContentPage = new Lang.Class({
             halign: Gtk.Align.START,
             margin_top: 10,
             margin_bottom: 10,
+            max_fraction: 0.2,
         });
-        this._logo.set_max_percentage(0.2);
 
         this._logo.name = 'content_page_logo';
 
