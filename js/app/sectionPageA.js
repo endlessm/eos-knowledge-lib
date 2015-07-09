@@ -28,6 +28,15 @@ const SectionPageA = new Lang.Class({
     LOADING_BOTTOM_BUFFER: 250,
 
     _init: function (props) {
+        this._content_grid = new Gtk.Grid({
+            orientation: Gtk.Orientation.VERTICAL,
+            expand: true,
+            valign: Gtk.Align.START,
+            row_spacing: 20,
+            margin_start: 100,
+            margin_end: 100
+        });
+
         this.parent(props);
 
         this._segments = {};
@@ -51,14 +60,6 @@ const SectionPageA = new Lang.Class({
             }
         });
 
-        this._content_grid = new Gtk.Grid({
-            orientation: Gtk.Orientation.VERTICAL,
-            expand: true,
-            valign: Gtk.Align.START,
-            row_spacing: 20,
-            margin_start: 100,
-            margin_end: 100
-        });
         this._scrolled_window.add(this._content_grid);
         this.add(this._scrolled_window);
     },
