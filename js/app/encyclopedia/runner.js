@@ -5,8 +5,12 @@ const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
-const Application = imports.app.application;
 const Config = imports.app.config;
+// Register resource
+let resource = Gio.Resource.load(Config.PKGDATADIR + '/eos-knowledge.gresource');
+resource._register();
+
+const Application = imports.app.application;
 const EncyclopediaModel = imports.app.encyclopedia.model;
 const EncyclopediaPresenter = imports.app.encyclopedia.presenter;
 const EncyclopediaView = imports.app.encyclopedia.view;
@@ -36,10 +40,6 @@ const EndlessEncyclopedia = new Lang.Class({
 
         // Load web extensions for translating
         WebkitContextSetup.register_webkit_extensions(this.application_id);
-
-        // Register resource
-        let resource = Gio.Resource.load(Config.PKGDATADIR + '/eos-knowledge.gresource');
-        resource._register();
 
         this._model = new EncyclopediaModel.EncyclopediaModel();
         this._view = new EncyclopediaView.EncyclopediaView({
