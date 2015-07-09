@@ -70,7 +70,7 @@ const SectionPageA = new Lang.Class({
         let old_banner = this._content_grid.get_child_at(0, 0);
         if (old_banner)
             this._content_grid.remove(old_banner);
-        this._content_grid.add(title_banner);
+        this._content_grid.attach(title_banner, 0, 0, 1, 1);
     },
 
     /*
