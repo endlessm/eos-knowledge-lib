@@ -39,7 +39,7 @@ const ModuleFactory = new Lang.Class({
 
         this.parent(props);
 
-        if (!this.app_json.hasOwnProperty('version'))
+        if (!this.app_json.hasOwnProperty('version') || this.app_json.version < 2)
             this.app_json = Compat.transform_v1_description(this.app_json);
         // After this point, the app.json must be the current version!
     },

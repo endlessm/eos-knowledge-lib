@@ -14,6 +14,7 @@ const Application = imports.app.application;
 const EncyclopediaModel = imports.app.encyclopedia.model;
 const EncyclopediaPresenter = imports.app.encyclopedia.presenter;
 const EncyclopediaView = imports.app.encyclopedia.view;
+const ModuleFactory = imports.app.moduleFactory;
 const WebkitContextSetup = imports.app.webkitContextSetup;
 
 const ENCYCLOPEDIA_APP_ID = 'com.endlessm.encyclopedia-en';
@@ -41,12 +42,23 @@ const EndlessEncyclopedia = new Lang.Class({
         // Load web extensions for translating
         WebkitContextSetup.register_webkit_extensions(this.application_id);
 
+        // Old encyclopedias had no app.json, so we make a fake legacy json with
+        // templateType 'encyclopedia', which is handled in our compat layer.
+        let factory = new ModuleFactory.ModuleFactory({
+            app_json: {
+                version: 1,
+                templateType: 'encyclopedia',
+            },
+        });
+
         this._model = new EncyclopediaModel.EncyclopediaModel();
         this._view = new EncyclopediaView.EncyclopediaView({
             application: this,
         });
         this._presenter =
-            new EncyclopediaPresenter.EncyclopediaPresenter(this._view, this._model);
+            new EncyclopediaPresenter.EncyclopediaPresenter(this._view, this._model, {
+                factory: factory,
+            });
 
         let provider = new Gtk.CssProvider();
         let css_file = Gio.File.new_for_uri('resource:///com/endlessm/knowledge/css/endless_encyclopedia.css');

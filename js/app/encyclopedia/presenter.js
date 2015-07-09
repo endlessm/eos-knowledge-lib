@@ -34,6 +34,16 @@ const EncyclopediaPresenter = new Lang.Class({
     Extends: GObject.Object,
     Implements: [ Launcher.Launcher ],
 
+    Properties: {
+        /**
+         * Property: factory
+         * Factory to create modules
+         */
+        'factory': GObject.ParamSpec.object('factory', 'Factory', 'Factory',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            GObject.Object.$gtype),
+    },
+
     _init: function(view, model, props) {
         this.parent(props);
         this._model = model;
@@ -91,6 +101,7 @@ const EncyclopediaPresenter = new Lang.Class({
         this._lightbox_presenter = new LightboxPresenter.LightboxPresenter({
             engine: this._engine,
             view: this._view,
+            factory: this.factory,
         });
     },
 

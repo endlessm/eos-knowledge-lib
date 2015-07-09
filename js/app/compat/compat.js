@@ -42,6 +42,11 @@ function transform_v1_description(json) {
             type: 'MediaCard',
         };
         break;
+    case 'encyclopedia':
+        modules['lightbox-card'] = {
+            type: 'MediaCard',
+        };
+        break;
     case 'reader':
         modules['home-card'] = {
             type: 'ArticleSnippetCard',
