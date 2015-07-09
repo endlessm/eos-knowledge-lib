@@ -89,7 +89,7 @@ const EncyclopediaPresenter = new Lang.Class({
             this.load_uri(uri);
         });
         this._lightbox_presenter = new LightboxPresenter.LightboxPresenter({
-            engine: this.engine,
+            engine: this._engine,
             view: this._view,
         });
     },
