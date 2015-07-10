@@ -5,6 +5,7 @@ const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 
 const Module = imports.app.interfaces.module;
+const StyleClasses = imports.app.styleClasses;
 
 /**
  * Class: SearchBox
@@ -22,6 +23,9 @@ const SearchBox = new Lang.Class({
     },
 
     _init: function (props={}) {
+        if (props.visible === undefined)
+            props.visible = true;
         this.parent(props);
+        this.get_style_context().add_class(StyleClasses.SEARCH_BOX);
     },
 });

@@ -5,6 +5,7 @@ const CssClassMatcher = imports.tests.CssClassMatcher;
 const HomePageA = imports.app.homePageA;
 const MinimalCard = imports.tests.minimalCard;
 const MockFactory = imports.tests.mockFactory;
+const MockSearchBox = imports.tests.mockSearchBox;
 const StyleClasses = imports.app.styleClasses;
 const Utils = imports.tests.utils;
 
@@ -18,8 +19,10 @@ describe('Home page for Template A', () => {
     beforeEach(() => {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
 
+        let factory = new MockFactory.MockFactory();
+        factory.add_named_mock('home-search', MockSearchBox.MockSearchBox);
         home_page = new HomePageA.HomePageA({
-            factory: new MockFactory.MockFactory(),
+            factory: factory,
         });
 
         notify = jasmine.createSpy('notify');
@@ -80,9 +83,6 @@ describe('Home page for Template A', () => {
     describe('Style class of table of contents', () => {
         it('has home_page class', () => {
             expect(home_page).toHaveCssClass(StyleClasses.HOME_PAGE_A);
-        });
-        it('has a descendant with search box class', () => {
-            expect(home_page).toHaveDescendantWithCssClass(StyleClasses.SEARCH_BOX);
         });
         it('has a descendant with container class', () => {
             expect(home_page).toHaveDescendantWithCssClass(StyleClasses.CARD_CONTAINER);

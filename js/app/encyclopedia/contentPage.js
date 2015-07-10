@@ -7,7 +7,6 @@ const Lang = imports.lang;
 const WebKit2 = imports.gi.WebKit2;
 
 const EknWebview = imports.app.eknWebview;
-const ImagePreviewer = imports.app.imagePreviewer;
 
 const ARTICLE_SEARCH_BUTTONS_SPACING = 10;
 const ARTICLE_SEARCH_MAX_RESULTS = 200;
@@ -107,13 +106,12 @@ const ContentPage = new Lang.Class({
     Extends: Gtk.Alignment,
     Properties: {
         /**
-         * Property: logo-uri
-         * A string with the URI of the logo image. An empty string means
-         * no logo should be visible. Defaults to an empty string.
+         * Property: factory
+         * Factory to create modules
          */
-        'logo-uri': GObject.ParamSpec.string('logo-uri', 'Logo URI',
-            'URI of the app logo',
-            GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE, ''),
+        'factory': GObject.ParamSpec.object('factory', 'Factory', 'Factory',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            GObject.Object.$gtype),
 
         /**
          * Property: search-box
@@ -156,12 +154,8 @@ const ContentPage = new Lang.Class({
         this._wiki_web_view.connect('leave-fullscreen',
             this._on_fullscreen_change.bind(this, false));
 
-        this._logo = new ImagePreviewer.ImagePreviewer({
+        this._logo = this.factory.create_named_module('article-app-banner', {
             halign: Gtk.Align.START,
-            margin_top: 10,
-            margin_bottom: 10,
-            min_fraction: 0.2,
-            max_fraction: 0.2,
         });
 
         this._logo.name = 'content_page_logo';
@@ -282,21 +276,5 @@ const ContentPage = new Lang.Class({
         this.emit('link-clicked', decision.request.uri);
         decision.ignore();
         return true;  // decision handled
-    },
-
-    set logo_uri (v) {
-        if (this._logo_uri === v) return;
-        this._logo_uri = v;
-        if (this._logo_uri) {
-            let stream = Gio.File.new_for_uri(v).read(null);
-            this._logo.set_content(stream);
-        }
-        this.notify('logo-uri');
-    },
-
-    get logo_uri () {
-        if (this._logo_uri)
-            return this._logo_uri;
-        return '';
     },
 });

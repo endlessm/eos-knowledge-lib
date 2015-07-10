@@ -8,6 +8,7 @@ const HomePageA = imports.app.homePageA;
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
 const Lightbox = imports.app.lightbox;
 const MockFactory = imports.tests.mockFactory;
+const MockSearchBox = imports.tests.mockSearchBox;
 const SectionPageA = imports.app.sectionPageA;
 const Utils = imports.tests.utils;
 const Window = imports.app.window;
@@ -35,11 +36,13 @@ describe('Window', function () {
             application_id: id_string,
             flags: 0
         });
-
+        let factory = new MockFactory.MockFactory();
+        factory.add_named_mock('top-bar-search', MockSearchBox.MockSearchBox);
+        factory.add_named_mock('home-search', MockSearchBox.MockSearchBox);
         app.connect('startup', function () {
             view = new Window.Window({
                 application: app,
-                factory: new MockFactory.MockFactory(),
+                factory: factory,
             });
             done();
         });

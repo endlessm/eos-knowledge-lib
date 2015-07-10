@@ -1,17 +1,22 @@
 function transform_v1_description(json) {
     let modules = {};
 
-    modules['app-banner'] = {
-        type: 'AppBanner',
-        properties: {
-            'image-uri': json['titleImageURI'],
-        },
-    };
-
     switch (json.templateType) {
     case 'A':
-        modules['app-banner'].properties['min-fraction'] = 0.4;
-        modules['app-banner'].properties['max-fraction'] = 0.7;
+        modules['app-banner'] = {
+            type: 'AppBanner',
+            properties: {
+                'image-uri': json['titleImageURI'],
+                'min-fraction': 0.4,
+                'max-fraction': 0.7,
+            },
+        };
+        modules['top-bar-search'] = {
+            type: 'SearchBox',
+        };
+        modules['home-search'] = {
+            type: 'SearchBox',
+        };
         modules['home-card'] = {
             type: 'CardA',
         };
@@ -29,6 +34,20 @@ function transform_v1_description(json) {
         };
         break;
     case 'B':
+        modules['app-banner'] = {
+            type: 'AppBanner',
+            properties: {
+                'image-uri': json['titleImageURI'],
+                'min-fraction': 0.4,
+                'max-fraction': 0.7,
+            },
+        };
+        modules['top-bar-search'] = {
+            type: 'SearchBox',
+        };
+        modules['home-search'] = {
+            type: 'SearchBox',
+        };
         modules['home-card'] = {
             type: 'CardB',
         };
@@ -43,11 +62,45 @@ function transform_v1_description(json) {
         };
         break;
     case 'encyclopedia':
+        modules['app-banner'] = {
+            type: 'AppBanner',
+            properties: {
+                'image-uri': json['titleImageURI'],
+                'min-fraction': 0.5,
+                'max-fraction': 0.5,
+                'margin-bottom': 42,
+            },
+        };
+        modules['home-search'] = {
+            type: 'SearchBox',
+            properties: {
+                'max-width-chars': 52,
+            }
+        };
+        modules['article-app-banner'] = {
+            type: 'AppBanner',
+            properties: {
+                'image-uri': json['titleImageURI'],
+                'min-fraction': 0.2,
+                'max-fraction': 0.2,
+                'margin-top': 10,
+                'margin-bottom': 10,
+            },
+        };
         modules['lightbox-card'] = {
             type: 'MediaCard',
         };
         break;
     case 'reader':
+        modules['app-banner'] = {
+            type: 'AppBanner',
+            properties: {
+                'image-uri': json['titleImageURI'],
+            },
+        };
+        modules['top-bar-search'] = {
+            type: 'SearchBox',
+        };
         modules['home-card'] = {
             type: 'ArticleSnippetCard',
         };

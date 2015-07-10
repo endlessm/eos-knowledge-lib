@@ -9,9 +9,6 @@ const StyleClasses = imports.app.styleClasses;
 
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 
-const ImagePreviewer = imports.app.imagePreviewer;
-const SearchBox = imports.app.searchBox;
-
 /**
  * Class: HomePage
  *
@@ -88,9 +85,10 @@ const HomePage = new Lang.Class({
     _init: function (props={}) {
         this._cards = null;
 
-        // Not using a SearchEntry since that comes with
-        // the 'x' as secondary icon, which we don't want
-        this.search_box = new SearchBox.SearchBox();
+        this.parent(props);
+
+        this.search_box = this.factory.create_named_module('home-search');
+        this._app_banner = this.factory.create_named_module('app-banner');
 
         this.search_box.connect('text-changed', Lang.bind(this, function (search_entry) {
             this.emit('search-text-changed', search_entry);
@@ -104,12 +102,7 @@ const HomePage = new Lang.Class({
             this.emit('article-selected', article_id);
         }));
 
-        this._app_banner = props.factory.create_named_module('app-banner');
-
-        this.parent(props);
-
         this.get_style_context().add_class(StyleClasses.HOME_PAGE);
-        this.search_box.get_style_context().add_class(StyleClasses.SEARCH_BOX);
 
         this.pack_widgets(this._app_banner, this.search_box);
         this.show_all();
