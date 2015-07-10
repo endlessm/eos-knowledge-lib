@@ -328,6 +328,7 @@ bin_SCRIPTS += \
 	ekn-search-provider \
 	ekn-app-runner \
 	eos-encyclopedia \
+	tools/kermit \
 	$(NULL)
 
 # # # TESTS # # #
