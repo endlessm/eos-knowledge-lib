@@ -44,6 +44,7 @@ const HomePage = new Lang.Class({
 
         this._logo = new ImagePreviewer.ImagePreviewer({
             margin_bottom: 42,
+            min_fraction: 0.5,
             max_fraction: 0.5,
         });
 
