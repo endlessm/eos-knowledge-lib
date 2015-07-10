@@ -29,21 +29,9 @@ const ArticleSnippetCard = new Lang.Class({
     Properties: {
         'factory': GObject.ParamSpec.override('factory', Module.Module),
         'model': GObject.ParamSpec.override('model', Card.Card),
+        'page-number': GObject.ParamSpec.override('page-number', Card.Card),
         'title-capitalization': GObject.ParamSpec.override('title-capitalization',
             Card.Card),
-        /**
-         * Property: style-variant
-         * Which style variant to use for appearance
-         *
-         * Which CSS style variant to use (default is zero.)
-         * If the variant does not exist then the snippet will have only the
-         * styles common to all variants.
-         * Use -1 as a variant that is guaranteed not to exist.
-         */
-        'style-variant': GObject.ParamSpec.int('style-variant', 'Style variant',
-            'Which CSS style variant to use for appearance',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            -1, GLib.MAXINT16, 0),
     },
 
     Template: 'resource:///com/endlessm/knowledge/widgets/articleSnippetCard.ui',
@@ -54,8 +42,10 @@ const ArticleSnippetCard = new Lang.Class({
         this.populate_from_model();
         Utils.set_hand_cursor_on_widget(this);
 
-        if (this.style_variant >= 0)
-            this.get_style_context().add_class('snippet' + this.style_variant);
+        if (this.model.article_number !== undefined) {
+            let style = this.model.article_number % 3;
+            this.get_style_context().add_class('snippet' + style);
+        }
     },
 });
 

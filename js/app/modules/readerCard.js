@@ -38,30 +38,9 @@ const ReaderCard = new Lang.Class({
     Properties: {
         'factory': GObject.ParamSpec.override('factory', Module.Module),
         'model': GObject.ParamSpec.override('model', Card.Card),
+        'page-number': GObject.ParamSpec.override('page-number', Card.Card),
         'title-capitalization': GObject.ParamSpec.override('title-capitalization',
             Card.Card),
-        /**
-         * Property: archived
-         */
-        'archived': GObject.ParamSpec.boolean('archived', 'Archived',
-            'Whether the Reader Card represents an archived article. Defaults to "false"',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, false),
-
-        /**
-         * Property: page-number
-         */
-        'page-number': GObject.ParamSpec.uint('page-number', 'Page Number',
-            'Page Number of the article within the current set of articles. Only applies when the card\'s "archived" property is set to "false".',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            0, GLib.MAXUINT32, 0),
-
-        /**
-         * Property: style-variant
-         */
-        'style-variant': GObject.ParamSpec.uint('style-variant', 'Style Variant',
-            'Reader card style variant. Default value is 0.',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            0, GLib.MAXUINT32, 0),
     },
 
     Template: 'resource:///com/endlessm/knowledge/widgets/readerCard.ui',
@@ -77,7 +56,8 @@ const ReaderCard = new Lang.Class({
         this.parent(props);
         this.populate_from_model();
 
-        if (!this.archived) {
+        // page_number of 0 means an archived article
+        if (this.page_number) {
             this._card_info_label.label = (_("Page %s").format('<b>' + this.page_number + '</b>'));
             this._card_info_grid.remove(this._archive_icon);
         }
@@ -89,28 +69,11 @@ const ReaderCard = new Lang.Class({
         this.connect('leave-notify-event', () => {
             this._hover_frame.hide();
         });
-    },
 
-    get style_variant () {
-        return this._style_variant;
-    },
-
-    set style_variant (v) {
-        if (this._style_variant === v) return;
-
-        // Remove style variant classes.
-        let style_variants = [
-            'reader-card0',
-            'reader-card1',
-            'reader-card2',
-        ];
-        style_variants.map((style_variant_class) => {
-            this.get_style_context().remove_class(style_variant_class);
-        });
-
-        this.get_style_context().add_class('reader-card' + v);
-        this._style_variant = v;
-        this.notify('style-variant');
+        if (this.model.article_number !== undefined) {
+            let style = this.model.article_number % 3;
+            this.get_style_context().add_class('reader-card' + style);
+        }
     },
 });
 
