@@ -18,6 +18,13 @@ const EncyclopediaView = new Lang.Class({
     Name: 'EncyclopediaView',
     Extends: Endless.Window,
     Properties: {
+        /**
+         * Property: factory
+         * Factory to create modules
+         */
+        'factory': GObject.ParamSpec.object('factory', 'Factory', 'Factory',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            GObject.Object.$gtype),
         'home-page': GObject.ParamSpec.object('home-page', 'home page',
             'The home page of this view widget.',
             GObject.ParamFlags.READABLE,
@@ -73,8 +80,12 @@ const EncyclopediaView = new Lang.Class({
         let context = this.get_style_context();
         context.add_class(HOME_PAGE_NAME);
 
-        this._home_page = new HomePage.HomePage();
-        this._content_page = new ContentPage.ContentPage();
+        this._home_page = new HomePage.HomePage({
+            factory: this.factory,
+        });
+        this._content_page = new ContentPage.ContentPage({
+            factory: this.factory,
+        });
         this.history_buttons = new Endless.TopbarNavButton();
         this.history_buttons.show_all();
 

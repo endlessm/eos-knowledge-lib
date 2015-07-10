@@ -50,6 +50,25 @@ function transform_v1_description(json) {
         };
         break;
     case 'encyclopedia':
+        modules['app-banner'] = {
+            type: 'AppBanner',
+            properties: {
+                'image-uri': json['titleImageURI'],
+                'min-fraction': 0.5,
+                'max-fraction': 0.5,
+                'margin-bottom': 42,
+            },
+        };
+        modules['article-app-banner'] = {
+            type: 'AppBanner',
+            properties: {
+                'image-uri': json['titleImageURI'],
+                'min-fraction': 0.2,
+                'max-fraction': 0.2,
+                'margin-top': 10,
+                'margin-bottom': 10,
+            },
+        };
         modules['lightbox-card'] = {
             type: 'MediaCard',
         };
