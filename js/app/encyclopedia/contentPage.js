@@ -160,6 +160,7 @@ const ContentPage = new Lang.Class({
             halign: Gtk.Align.START,
             margin_top: 10,
             margin_bottom: 10,
+            min_fraction: 0.2,
             max_fraction: 0.2,
         });
 
