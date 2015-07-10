@@ -15,7 +15,7 @@ const Lightbox = imports.app.lightbox;
 const NavButtonOverlay = imports.app.navButtonOverlay;
 const OverviewPage = imports.app.reader.overviewPage;
 const SearchResultsPage = imports.app.reader.searchResultsPage;
-const SearchBox = imports.app.searchBox;
+const SearchBox = imports.app.modules.searchBox;
 const StyleClasses = imports.app.styleClasses;
 
 /**

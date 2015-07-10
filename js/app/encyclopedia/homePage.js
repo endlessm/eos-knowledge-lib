@@ -3,7 +3,7 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
-const SearchBox = imports.app.searchBox;
+const SearchBox = imports.app.modules.searchBox;
 
 const HomePage = new Lang.Class({
     Name: 'HomePage',

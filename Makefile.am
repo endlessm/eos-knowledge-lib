@@ -241,6 +241,7 @@ js_files = \
 	js/app/modules/mediaCard.js \
 	js/app/modules/pdfCard.js \
 	js/app/modules/readerCard.js \
+	js/app/modules/searchBox.js \
 	js/app/modules/setBannerCard.js \
 	js/app/modules/textCard.js \
 	js/app/mustache.js \
@@ -262,7 +263,6 @@ js_files = \
 	js/app/reader/webviewTooltip.js \
 	js/app/reader/window.js \
 	js/app/runner.js \
-	js/app/searchBox.js \
 	js/app/sectionArticlePage.js \
 	js/app/sectionPage.js \
 	js/app/sectionPageA.js \

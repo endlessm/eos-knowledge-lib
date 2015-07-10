@@ -10,7 +10,7 @@ const StyleClasses = imports.app.styleClasses;
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 
 const ImagePreviewer = imports.app.imagePreviewer;
-const SearchBox = imports.app.searchBox;
+const SearchBox = imports.app.modules.searchBox;
 
 /**
  * Class: HomePage
