@@ -4,6 +4,7 @@ const CssClassMatcher = imports.tests.CssClassMatcher;
 const HomePageB = imports.app.homePageB;
 const MinimalCard = imports.tests.minimalCard;
 const MockFactory = imports.tests.mockFactory;
+const MockSearchBox = imports.tests.mockSearchBox;
 const StyleClasses = imports.app.styleClasses;
 const Utils = imports.tests.utils;
 
@@ -21,8 +22,10 @@ describe('Home page for Template B', function () {
 
         card_list = [0, 1, 2, 3, 4, 5].map(() => new MinimalCard.MinimalCard());
 
+        let factory = new MockFactory.MockFactory();
+        factory.add_named_mock('home-search', MockSearchBox.MockSearchBox);
         home_page = new HomePageB.HomePageB({
-            factory: new MockFactory.MockFactory(),
+            factory: factory,
         });
     });
 

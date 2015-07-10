@@ -6,6 +6,7 @@ Utils.register_gresource();
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const HomePage = imports.app.homePage;
 const MockFactory = imports.tests.mockFactory;
+const MockSearchBox = imports.tests.mockSearchBox;
 const StyleClasses = imports.app.styleClasses;
 
 Gtk.init(null);
@@ -16,8 +17,10 @@ describe('Base home page class', function () {
     beforeEach(function () {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
 
+        let factory = new MockFactory.MockFactory();
+        factory.add_named_mock('home-search', MockSearchBox.MockSearchBox);
         home_page = new HomePage.HomePage({
-            factory: new MockFactory.MockFactory(),
+            factory: factory,
         });
     });
 

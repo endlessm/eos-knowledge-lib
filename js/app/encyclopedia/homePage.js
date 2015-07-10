@@ -1,4 +1,3 @@
-const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
@@ -41,10 +40,7 @@ const HomePage = new Lang.Class({
         this._logo_uri = null;
 
         this._logo = this.factory.create_named_module('app-banner');
-
-        this.search_box = new SearchBox.SearchBox({
-            max_width_chars: 52 // set width as per design
-        });
+        this.search_box = this.factory.create_named_module('home-search');
         this.search_box.name = 'home-page-search-box';
 
         this.add(this._logo);

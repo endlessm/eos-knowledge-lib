@@ -11,6 +11,12 @@ function transform_v1_description(json) {
                 'max-fraction': 0.7,
             },
         };
+        modules['top-bar-search'] = {
+            type: 'SearchBox',
+        };
+        modules['home-search'] = {
+            type: 'SearchBox',
+        };
         modules['home-card'] = {
             type: 'CardA',
         };
@@ -36,6 +42,12 @@ function transform_v1_description(json) {
                 'max-fraction': 0.7,
             },
         };
+        modules['top-bar-search'] = {
+            type: 'SearchBox',
+        };
+        modules['home-search'] = {
+            type: 'SearchBox',
+        };
         modules['home-card'] = {
             type: 'CardB',
         };
@@ -59,6 +71,12 @@ function transform_v1_description(json) {
                 'margin-bottom': 42,
             },
         };
+        modules['home-search'] = {
+            type: 'SearchBox',
+            properties: {
+                'max-width-chars': 52,
+            }
+        };
         modules['article-app-banner'] = {
             type: 'AppBanner',
             properties: {
@@ -79,6 +97,9 @@ function transform_v1_description(json) {
             properties: {
                 'image-uri': json['titleImageURI'],
             },
+        };
+        modules['top-bar-search'] = {
+            type: 'SearchBox',
         };
         modules['home-card'] = {
             type: 'ArticleSnippetCard',

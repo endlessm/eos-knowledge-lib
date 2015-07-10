@@ -15,7 +15,6 @@ const Lightbox = imports.app.lightbox;
 const NavButtonOverlay = imports.app.navButtonOverlay;
 const OverviewPage = imports.app.reader.overviewPage;
 const SearchResultsPage = imports.app.reader.searchResultsPage;
-const SearchBox = imports.app.modules.searchBox;
 const StyleClasses = imports.app.styleClasses;
 
 /**
@@ -225,7 +224,7 @@ const Window = new Lang.Class({
             this.emit('debug-hotkey-pressed');
         }.bind(this));
 
-        this.search_box = new SearchBox.SearchBox();
+        this.search_box = this.factory.create_named_module('top-bar-search');
         this.search_box.show();
 
         this._stack = new Gtk.Stack({
