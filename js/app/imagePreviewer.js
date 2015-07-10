@@ -153,12 +153,22 @@ const ImagePreviewer = Lang.Class({
         return Gtk.SizeRequestMode.CONSTANT_SIZE;
     },
 
+    _get_preferred_size: function (orientation) {
+        let nat_size = orientation === Gtk.Orientation.HORIZONTAL ?
+            this._natural_width : this._natural_height;
+        // gdk_pixbuf_scale_simple infinite loops as size 1 for some reason, so
+        // our minimum is 2
+        let min = Math.max(this.min_fraction * nat_size, 2);
+        let max = Math.max(this.max_fraction * nat_size, min);
+        return [min, max];
+    },
+
     vfunc_get_preferred_width: function () {
-        return [this.min_fraction * this._natural_width, this.max_fraction * this._natural_width];
+        return this._get_preferred_size(Gtk.Orientation.HORIZONTAL);
     },
 
     vfunc_get_preferred_height: function () {
-        return [this.min_fraction * this._natural_height, this.max_fraction * this._natural_height];
+        return this._get_preferred_size(Gtk.Orientation.VERTICAL);
     },
 
     _animation_timeout: function () {
