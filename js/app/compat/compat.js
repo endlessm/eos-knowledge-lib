@@ -32,6 +32,8 @@ function transform_v1_description(json) {
             type: 'AppBanner',
             properties: {
                 'image-uri': json['titleImageURI'],
+                'min-fraction': 0.4,
+                'max-fraction': 0.7,
             },
         };
         modules['home-card'] = {
