@@ -84,9 +84,6 @@ describe('Home page for Template A', () => {
         it('has home_page class', () => {
             expect(home_page).toHaveCssClass(StyleClasses.HOME_PAGE_A);
         });
-        it('has a descendant with search box class', () => {
-            expect(home_page).toHaveDescendantWithCssClass(StyleClasses.SEARCH_BOX);
-        });
         it('has a descendant with container class', () => {
             expect(home_page).toHaveDescendantWithCssClass(StyleClasses.CARD_CONTAINER);
         });

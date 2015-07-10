@@ -103,7 +103,6 @@ const HomePage = new Lang.Class({
         }));
 
         this.get_style_context().add_class(StyleClasses.HOME_PAGE);
-        this.search_box.get_style_context().add_class(StyleClasses.SEARCH_BOX);
 
         this.pack_widgets(this._app_banner, this.search_box);
         this.show_all();

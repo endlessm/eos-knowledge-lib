@@ -293,7 +293,6 @@ const Window = new Lang.Class({
         this.search_box.connect('menu-item-selected', function (search_entry, article_id) {
             this.emit('article-selected', article_id);
         }.bind(this));
-        this.search_box.show();
 
         this.page_manager.add(this._no_search_results_page, {
             left_topbar_widget: this.history_buttons,

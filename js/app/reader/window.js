@@ -225,7 +225,6 @@ const Window = new Lang.Class({
         }.bind(this));
 
         this.search_box = this.factory.create_named_module('top-bar-search');
-        this.search_box.show();
 
         this._stack = new Gtk.Stack({
             transition_duration: this._STACK_TRANSITION_TIME,

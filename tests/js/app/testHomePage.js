@@ -30,8 +30,5 @@ describe('Base home page class', function () {
         it('has home page class', function () {
             expect(home_page).toHaveCssClass(StyleClasses.HOME_PAGE);
         });
-        it('has a descendant with search box class', function () {
-            expect(home_page).toHaveDescendantWithCssClass(StyleClasses.SEARCH_BOX);
-        });
     });
 });
