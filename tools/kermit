@@ -1,0 +1,112 @@
+#!/usr/bin/gjs
+const Gio = imports.gi.Gio;
+const EosShard = imports.gi.EosShard;
+const System = imports.system;
+
+const USAGE = [
+    'usage: kermit grep <shard path> <pattern>',
+    '       kermit dump <shard path> <ekn id> [data|metadata]',
+    '',
+    'kermit is a shard inspection utility for Knowledge Apps.',
+].join('\n');
+
+// For those interested in kermit's etymology, it goes roughly like this:
+// EosShard -> Dark Shard -> Dark Crystal -> Jim Hensen -> Kermit
+
+switch (ARGV[0]) {
+case 'grep':
+    if (ARGV.length === 3) {
+        grep(ARGV[1], ARGV[2]);
+        break;
+    }
+case 'dump':
+    if (ARGV.length === 4) {
+        dump(ARGV[1], ARGV[2], ARGV[3]);
+        break;
+    }
+default:
+    fail_with_message(USAGE);
+}
+
+function grep (path, pattern) {
+    let shard = get_shard_for_path(path);
+    let regex = new RegExp(pattern);
+    let records = shard.list_records();
+    let output = records
+    .map(get_record_data(regex))
+    .filter(did_record_match)
+    .map(summarize_record)
+    .join('\n');
+
+    if (output.length > 0)
+        print(output);
+}
+
+function dump (path, id, data_or_meta) {
+    if (['data', 'metadata'].indexOf(data_or_meta) === -1)
+        fail_with_message(USAGE);
+
+    let shard = get_shard_for_path(path);
+    let record = shard.find_record_by_hex_name(id);
+    if (record === null) {
+        fail_with_message('Could not find shard entry for id', id);
+    }
+
+    let stdout = Gio.UnixOutputStream.new(1, false);
+    let source = data_or_meta === 'data' ? record.data : record.metadata;
+    stdout.splice(source.get_stream(), Gio.OutputStreamSpliceFlags.NONE, null);
+}
+
+function did_record_match (result) {
+    return result.does_match;
+}
+
+function summarize_record (result) {
+    let record_json = JSON.parse(result.metadata_text);
+    let output_arr = [
+        result.record.get_hex_name(),
+        result.record.data.get_content_type(),
+        // use JSON.stringify to escape title and wrap in quotes
+        JSON.stringify(record_json.title),
+    ];
+    return output_arr.join(' - ');
+}
+
+function get_record_data (regex) {
+    return function (record) {
+        let metadata_text = record.metadata.load_contents().get_data().toString();
+        let does_match = (metadata_text.match(regex) !== null);
+
+        // if the record is HTML, also search its data blob
+        if (record.data.get_content_type() === 'text/html') {
+            let data_text = record.data.load_contents().get_data().toString();
+            does_match |= (data_text.match(regex) !== null);
+        }
+
+        return {
+            record: record,
+            metadata_text: metadata_text,
+            does_match: does_match,
+        };
+    };
+}
+
+function get_shard_for_path (path) {
+    let shard;
+    try {
+        shard = new EosShard.ShardFile({
+            path: path,
+        });
+        shard.init(null);
+    } catch (e) {
+        fail_with_message('Could not open shard at path', path, '-', e);
+    }
+    return shard;
+}
+
+function fail_with_message () {
+    // join args with space, a la print/console.log
+    var args = Array.prototype.slice.call(arguments);
+    printerr(args.join(' '));
+    System.exit(1);
+}
