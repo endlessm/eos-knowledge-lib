@@ -16,6 +16,7 @@ ACLOCAL_AMFLAGS = -I m4
 
 # Forward declare variables we'll be modifying all over
 bin_SCRIPTS =
+dist_bin_SCRIPTS =
 CLEANFILES =
 dist_noinst_DATA =
 DISTCLEANFILES =
@@ -324,11 +325,14 @@ $(subst_files): %: %.in Makefile
 CLEANFILES += $(subst_files)
 EXTRA_DIST += $(patsubst %,%.in,$(subst_files))
 
+dist_bin_SCRIPTS += \
+	tools/kermit \
+	$(NULL)
+
 bin_SCRIPTS += \
 	ekn-search-provider \
 	ekn-app-runner \
 	eos-encyclopedia \
-	tools/kermit \
 	$(NULL)
 
 # # # TESTS # # #
