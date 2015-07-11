@@ -26,10 +26,11 @@ const SetBannerCard = new Lang.Class({
     },
 
     Template: 'resource:///com/endlessm/knowledge/widgets/setBannerCard.ui',
-    Children: [ 'title-label' ],
+    InternalChildren: [ 'title-label' ],
 
     _init: function (props={}) {
         this.parent(props);
-        this.populate_from_model();
+
+        this.set_title_label_from_model(this._title_label);
     },
 });

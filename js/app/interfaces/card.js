@@ -89,112 +89,68 @@ const Card = new Lang.Interface({
     FADE_IN_TIME_MS: 1000,
 
     /**
-     * Property: authors_label
-     * Optional *Gtk.Label* displaying the <ArticleObjectModel.authors> as a
-     * formatted string
-     */
-
-    /**
-     * Property: thumbnail_frame
-     * Optional *Gtk.Frame* displaying the <ContentObjectModel.thumbnail-uri> as
-     * an image
-     */
-
-    /**
-     * Property: title_label
-     * Optional *Gtk.Label* displaying the <ContentObjectModel.title>
-     */
-
-    /**
-     * Property: synopsis_label
-     * Optional *Gtk.Label* displaying the <ContentObjectModel.synopsis>
-     */
-
-    /**
-     * Method: populate_from_model
-     * Construct the card's UI based on its <Card.model>
+     * Method: set_label_or_hide
      *
-     * A card displays widgets based on what fields are available in its record.
-     * This method should be called in the card's constructor to render the UI
-     * based on the record that is passed to the <Card.model> construct
-     * property.
-     *
-     * This method accesses certain widgets that may or may not be present on
-     * any particular card.
-     * For example, if the record has a "title" field, then this method will
-     * look for a <Card.title_label> property.
-     * If this card class does not have one, then the record's title will not be
-     * displayed and the <Card.title_label> widget will be set to invisible.
+     * Sets a label contents and hides if contents is empty.
      */
-    populate_from_model: function () {
-        if (!this.model)
+    set_label_or_hide: function (label, text) {
+        label.label = text;
+        label.visible = !!text;
+    },
+
+    /**
+     * Method: set_thumbnail_frame_from_model
+     *
+     * Sets up a frame to show the model's thumbnail uri.
+     */
+    set_thumbnail_frame_from_model: function (frame) {
+        frame.visible = false;
+        if (!this.model.thumbnail_uri)
             return;
 
-        if (this.authors_label) {
-            this.authors_label.no_show_all = true;
-            this.authors_label.label = Utils.format_authors(this.model.authors);
-            this.authors_label.visible = !!this.model.authors;
-        }
+        let scheme = Gio.File.new_for_uri(this.model.thumbnail_uri).get_uri_scheme();
+        // FIXME: to actually support ekn uris here, we'd need a gvfs
+        // extension or something like that
+        if (scheme === 'ekn')
+            return;
 
-        if (this.thumbnail_frame) {
-            this.thumbnail_frame.no_show_all = true;
-            this.thumbnail_frame.visible = false;
-            if (this.model.thumbnail_uri) {
-                let scheme = Gio.File.new_for_uri(this.model.thumbnail_uri).get_uri_scheme();
-                // FIXME: to actually support ekn uris here, we'd need a gvfs
-                // extension of something like that
-                if (scheme !== 'ekn') {
-                    let frame_css = '* { background-image: url("' + this.model.thumbnail_uri + '"); }';
-                    if (!this._background_provider) {
-                        this._background_provider = new Gtk.CssProvider();
-                        let context = this.thumbnail_frame.get_style_context();
-                        context.add_provider(this._background_provider,
-                            Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
-                    }
-                    this._background_provider.load_from_data(frame_css);
-                    this.thumbnail_frame.visible = true;
-                }
-            }
+        let frame_css = '* { background-image: url("' + this.model.thumbnail_uri + '"); }';
+        if (!this._background_provider) {
+            this._background_provider = new Gtk.CssProvider();
+            let context = frame.get_style_context();
+            context.add_provider(this._background_provider,
+                Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
         }
+        this._background_provider.load_from_data(frame_css);
+        frame.visible = true;
+    },
 
-        if (this.synopsis_label) {
-            this.title_label.no_show_all = true;
-            this.synopsis_label.label = GLib.markup_escape_text(this.model.synopsis, -1);
-            this.synopsis_label.visible = !!this.model.synopsis;
-        }
+    /**
+     * Method: set_title_label_from_model
+     *
+     * Sets up a label to show the model's title.
+     */
+    set_title_label_from_model: function (label) {
+        this.set_label_or_hide(label,
+            Utils.format_capitals(this.model.title, this.title_capitalization));
+    },
 
-        if (this.title_label) {
-            this.title_label.no_show_all = true;
-            this.title_label.label = Utils.format_capitals(this.model.title,
-                this.title_capitalization);
-            this.title_label.visible = !!this.model.title;
-        }
+    /**
+     * Method: set_author_label_from_model
+     *
+     * Sets up a label to show the model's authors.
+     */
+    set_author_label_from_model: function (label) {
+        this.set_label_or_hide(label, Utils.format_authors(this.model.authors));
+    },
 
-        if (this.caption_label) {
-            this.caption_label.no_show_all = true;
-            this.caption_label.label = this.model.caption.split('\n').join(' ');
-            this.caption_label.visible = !!this.model.caption;
-        }
-
-        if (this.attribution_label) {
-            this.attribution_label.no_show_all = true;
-            let attributions = [];
-            if (this.model.license)
-                attributions.push(this.model.license);
-            if (this.model.copyright_holder)
-                attributions.push(this.model.copyright_holder);
-            this.attribution_label.label = attributions.map((s) => {
-                return s.split('\n')[0];
-            }).join(' - ').toUpperCase();
-            this.attribution_label.visible = !!this.attribution_label.label;
-        }
-
-        if (this.previewer) {
-            this.previewer.no_show_all = true;
-            this.previewer.visible = true;
-            this.previewer.set_content(this.model.get_content_stream(),
-                                       this.model.content_type);
-        }
+    /**
+     * Method: set_synopsis_label_from_model
+     * Sets up a label to show an article's synopsis
+     */
+    set_synopsis_label_from_model: function (label) {
+        this.set_label_or_hide(label,
+            GLib.markup_escape_text(this.model.synopsis, -1));
     },
 
     /**

@@ -35,12 +35,15 @@ const ArticleSnippetCard = new Lang.Class({
     },
 
     Template: 'resource:///com/endlessm/knowledge/widgets/articleSnippetCard.ui',
-    Children: [ 'title-label', 'synopsis-label' ],
+    InternalChildren: [ 'title-label', 'synopsis-label' ],
 
     _init: function (props={}) {
         this.parent(props);
-        this.populate_from_model();
+
         Utils.set_hand_cursor_on_widget(this);
+
+        this.set_title_label_from_model(this._title_label);
+        this.set_synopsis_label_from_model(this._synopsis_label);
 
         if (this.model.article_number !== undefined) {
             let style = this.model.article_number % 3;

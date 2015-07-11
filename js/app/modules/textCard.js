@@ -32,12 +32,13 @@ const TextCard = new Lang.Class({
     },
 
     Template: 'resource:///com/endlessm/knowledge/widgets/textCard.ui',
-    Children: [ 'title-label' ],
+    InternalChildren: [ 'title-label' ],
 
     _init: function (params={}) {
         this.parent(params);
-        this.populate_from_model(this.model);
+
         Utils.set_hand_cursor_on_widget(this);
+        this.set_title_label_from_model(this._title_label);
     },
 });
 

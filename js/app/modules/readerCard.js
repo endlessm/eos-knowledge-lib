@@ -44,9 +44,8 @@ const ReaderCard = new Lang.Class({
     },
 
     Template: 'resource:///com/endlessm/knowledge/widgets/readerCard.ui',
-    Children: [ 'title-label' ],
-    InternalChildren: [ 'archive-icon', 'card-info-grid', 'card-info-label',
-        'hover-frame' ],
+    InternalChildren: [  'title-label', 'archive-icon', 'card-info-grid',
+        'card-info-label', 'hover-frame' ],
 
     _init: function(props={}) {
         // TODO: we do want all cards to be the same size, but we may want to
@@ -54,7 +53,8 @@ const ReaderCard = new Lang.Class({
         props.width_request = 200;
         props.height_request = 250;
         this.parent(props);
-        this.populate_from_model();
+
+        this.set_title_label_from_model(this._title_label);
 
         // page_number of 0 means an archived article
         if (this.page_number) {

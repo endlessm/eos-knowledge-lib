@@ -20,6 +20,5 @@ const MinimalCard = new Lang.Class({
 
     _init: function (props={}) {
         this.parent(props);
-        this.populate_from_model();
     }
 });

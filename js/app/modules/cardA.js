@@ -28,7 +28,8 @@ const CardA = new Lang.Class({
     },
 
     Template: 'resource:///com/endlessm/knowledge/widgets/cardA.ui',
-    Children: [ 'thumbnail-frame', 'title-label', 'synopsis-label', 'pdf-icon', 'pdf-label' ],
+    InternalChildren: [ 'thumbnail-frame', 'title-label', 'synopsis-label',
+        'pdf-icon', 'pdf-label' ],
 
     _init: function (props={}) {
         // TODO: we do want all cards to be the same size, but we may want to
@@ -36,16 +37,20 @@ const CardA = new Lang.Class({
         props.width_request = 197;  // 183px width + 2 * 7px margin
         props.height_request = 223;  // 209px height + 2 * 7px margin
         this.parent(props);
-        this.populate_from_model();
 
-        if (!this.thumbnail_frame.visible) {
-            this.title_label.xalign = 0;
-            this.title_label.vexpand = false;
+        this.set_title_label_from_model(this._title_label);
+        this.set_thumbnail_frame_from_model(this._thumbnail_frame);
+
+        if (!this._thumbnail_frame.visible) {
+            this._title_label.xalign = 0;
+            this._title_label.vexpand = false;
 
             let is_pdf = (this.model.content_type === 'application/pdf');
-            this.pdf_icon.visible = is_pdf;
-            this.pdf_label.visible = is_pdf;
-            this.synopsis_label.visible = this.synopsis_label.visible && !is_pdf;
+            this._pdf_icon.visible = is_pdf;
+            this._pdf_label.visible = is_pdf;
+
+            this.set_synopsis_label_from_model(this._synopsis_label);
+            this._synopsis_label.visible = this._synopsis_label.visible && !is_pdf;
         }
 
         Utils.set_hand_cursor_on_widget(this);

@@ -29,11 +29,13 @@ const CardB = new Lang.Class({
     },
 
     Template: 'resource:///com/endlessm/knowledge/widgets/cardB.ui',
-    Children: [ 'thumbnail-frame', 'title-label' ],
+    InternalChildren: [ 'thumbnail-frame', 'title-label' ],
 
     _init: function (props={}) {
         this.parent(props);
-        this.populate_from_model();
         Utils.set_hand_cursor_on_widget(this);
+
+        this.set_title_label_from_model(this._title_label);
+        this.set_thumbnail_frame_from_model(this._thumbnail_frame);
     }
 });

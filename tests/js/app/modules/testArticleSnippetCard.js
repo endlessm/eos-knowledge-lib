@@ -26,8 +26,8 @@ describe('Article snippet', function () {
 
     it('has the correct style classes', function () {
         expect(snippet).toHaveCssClass(StyleClasses.READER_ARTICLE_SNIPPET);
-        expect(snippet.title_label).toHaveCssClass(StyleClasses.READER_TITLE);
-        expect(snippet.synopsis_label).toHaveCssClass(StyleClasses.READER_SYNOPSIS);
+        expect(snippet).toHaveDescendantWithCssClass(StyleClasses.READER_TITLE);
+        expect(snippet).toHaveDescendantWithCssClass(StyleClasses.READER_SYNOPSIS);
     });
 
     it('sets style variant classes to variants [0, 2]', function () {
