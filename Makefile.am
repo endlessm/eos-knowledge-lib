@@ -240,6 +240,7 @@ js_files = \
 	js/app/modules/cardA.js \
 	js/app/modules/cardB.js \
 	js/app/modules/documentCard.js \
+	js/app/modules/homePage.js \
 	js/app/modules/mediaCard.js \
 	js/app/modules/pdfCard.js \
 	js/app/modules/readerCard.js \
