@@ -45,9 +45,7 @@ const ModuleFactory = new Lang.Class({
     },
 
     create_named_module: function (name, extra_props={}) {
-        let description = this.app_json['modules'][name];
-        if (!description)
-            throw new Error('No description found in app.json for ' + name);
+        let description = this.get_module_description_by_name(name);
 
         let module_class = this.warehouse.type_to_class(description['type']);
         let module_props = {
@@ -59,5 +57,33 @@ const ModuleFactory = new Lang.Class({
         Lang.copyProperties(extra_props, module_props);
 
         return new module_class(module_props);
+    },
+
+    /**
+     * Method: get_module_description_by_name
+     * Returns JSON description of module.
+     *
+     * Searches the 'modules' property in the app.json for the {name} key
+     * and returns the resulting JSON object.
+     */
+    get_module_description_by_name: function (name) {
+        let description = this.app_json['modules'][name];
+        if (!description)
+            throw new Error('No description found in app.json for ' + name);
+
+        return description;
+    },
+
+    /**
+     * Method: class_name_to_module_name
+     * Converts a ClassName to a module-name.
+     *
+     * Module names are used as the keys in the app.json and so are required to
+     * get a class's JSON description from the factory.
+     */
+    class_name_to_module_name: function (klass) {
+        return klass[0].toLowerCase() + klass.slice(1).replace(/[A-Z]/g, (letter) => {
+            return "-" + letter.toLowerCase();
+        });
     },
 });

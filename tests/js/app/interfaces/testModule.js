@@ -19,4 +19,8 @@ describe('Module interface', function () {
     });
 
     it ('Constructs', function () {});
+
+    it ('returns default value for get_slot_names method', function () {
+        expect(module.get_slot_names()).toEqual([]);
+    });
 });
