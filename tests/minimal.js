@@ -8,6 +8,7 @@ const Lang = imports.lang;
 
 const Arrangement = imports.app.interfaces.arrangement;
 const Card = imports.app.interfaces.card;
+const HomePage = imports.app.homePage;
 const Module = imports.app.interfaces.module;
 
 const MinimalArrangement = new Lang.Class({

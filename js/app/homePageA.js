@@ -7,6 +7,7 @@ const Lang = imports.lang;
 
 const Config = imports.app.config;
 const HomePage = imports.app.homePage;
+const Module = imports.app.interfaces.module;
 const SpaceContainer = imports.app.spaceContainer;
 const StyleClasses = imports.app.styleClasses;
 const TabButton = imports.app.tabButton;
@@ -27,7 +28,10 @@ const CARD_EXTRA_MARGIN = 8;
 const HomePageA = new Lang.Class({
     Name: 'HomePageA',
     GTypeName: 'EknHomePageA',
-    Extends: HomePage.HomePage,
+    Extends: Gtk.Grid,
+    // FIXME: HomePageA isn't a Module yet, but needs to implement it in order
+    // to implement HomePage
+    Implements: [ Module.Module, HomePage.HomePage ],
 
     Properties: {
         'factory': GObject.ParamSpec.override('factory', Module.Module),
@@ -86,7 +90,19 @@ const HomePageA = new Lang.Class({
         this._button_stack.add(this._invisible_frame);
         this._button_stack.add(this.tab_button);
 
+        this._cards = null;
+
         this.parent(props);
+
+        this.search_box = this.factory.create_named_module('home-search');
+        this._app_banner = this.factory.create_named_module('app-banner');
+
+        this.get_style_context().add_class(StyleClasses.HOME_PAGE);
+
+        this.connect_signals();
+
+        this.pack_widgets(this._app_banner, this.search_box);
+        this.show_all();
 
         this._got_extra_cards = false;
 
