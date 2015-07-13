@@ -10,6 +10,7 @@ Utils.register_gresource();
 
 const ArticleObjectModel = imports.search.articleObjectModel;
 const MockFactory = imports.tests.mockFactory;
+const MockSearchBox = imports.tests.mockSearchBox;
 const Presenter = imports.app.reader.presenter;
 const QueryObject = imports.search.queryObject;
 
@@ -102,17 +103,6 @@ const MockButton = new Lang.Class({
     },
 });
 
-const MockSearchBox = new Lang.Class({
-    Name: 'MockSearchBox',
-    Extends: GObject.Object,
-    Signals: {
-        'activate': {},
-        'text-changed': {},
-        'menu-item-selected': {},
-    },
-    set_menu_items: function () {},
-});
-
 let get_style_context = function () {
     return {
         add_class: function () {},
@@ -147,7 +137,7 @@ const MockView = new Lang.Class({
     _init: function (nav_buttons) {
         this.parent();
         this.nav_buttons = nav_buttons;
-        this.search_box = new MockSearchBox();
+        this.search_box = new MockSearchBox.MockSearchBox();
         this.issue_nav_buttons = {
             back_button: new MockButton(),
             forward_button: new MockButton(),
