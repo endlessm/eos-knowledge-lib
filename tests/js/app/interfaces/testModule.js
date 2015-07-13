@@ -19,4 +19,8 @@ describe('Module interface', function () {
     });
 
     it ('Constructs', function () {});
+
+    it('reports having no slots by default', function () {
+        expect(module.get_slot_names()).toEqual([]);
+    });
 });

@@ -10,6 +10,7 @@ const MockFactory = new Lang.Class({
         this.parent(props);
         this._mock_classes = {};
         this._created_mocks = {};
+        this._class_descriptions = {};
     },
 
     create_named_module: function (name, props) {
@@ -24,11 +25,21 @@ const MockFactory = new Lang.Class({
         return retval;
     },
 
+    add_named_description: function (name, description) {
+        this._class_descriptions[name] = description;
+    },
+
     add_named_mock: function (name, klass) {
         this._mock_classes[name] = klass;
     },
 
     get_created_named_mocks: function (name) {
         return this._created_mocks[name] || [];
+    },
+
+    create_module_for_slot: function (parent_name, slot) {
+        let module_name = this._mock_slots[parent_name][slot];
+
+        return this.create_named_module(submodule_name, {});
     },
 });

@@ -30,6 +30,10 @@ const HomePageA = new Lang.Class({
     Extends: HomePage.HomePage,
 
     Properties: {
+        'factory': GObject.ParamSpec.override('factory', Module.Module),
+        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
+        'search-box': GObject.ParamSpec.override('search-box',
+            HomePage.HomePage),
         'animating': GObject.ParamSpec.boolean('animating',
             'Animating', 'Set true if this page is animating and should hide its show all button',
             GObject.ParamFlags.READWRITE, false),
