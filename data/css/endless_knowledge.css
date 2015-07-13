@@ -491,7 +491,7 @@ scrollbars, style the GTK scrollbars to look slightly more like them */
 
 .article-page WebKitWebView {
     background-color: #ececec;
-    background-image: url('../templates/images/noise.png');
+    background-image: url('resource:///com/endlessm/knowledge/templates/images/noise.png');
 }
 
 .article-page-switcher-frame {
@@ -543,5 +543,5 @@ scrollbars, style the GTK scrollbars to look slightly more like them */
 }
 
 .pdf-view:not(.overshoot):not(.undershoot) {
-    background-image: url("../images/pdf-background.png");
+    background-image: url('resource:///com/endlessm/knowledge/images/pdf-background.png');
 }
