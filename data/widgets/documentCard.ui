@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.18.3 -->
+<interface>
+  <requires lib="gtk+" version="3.12"/>
+  <template class="EknDocumentCard" parent="EosCustomContainer">
+
+    <child>
+      <object class="GtkFrame" id="toolbar-frame">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <child>
+          <object class="GtkGrid" id="toolbar-grid">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="orientation">vertical</property>
+            <child>
+              <object class="GtkLabel" id="title-label">
+                <property name="can_focus">False</property>
+                <property name="no_show_all">True</property>
+                <property name="wrap">True</property>
+                <property name="wrap_mode">word-char</property>
+                <property name="ellipsize">end</property>
+                <property name="lines">5</property>
+                <property name="xalign">0</property>
+                <property name="expand">True</property>
+                <property name="visible">True</property>
+                <style>
+                  <class name="title"/>
+                </style>
+              </object>
+            </child>
+          </object>
+        </child>
+        <style>
+          <class name="document-card-toolbar-frame"/>
+        </style>
+      </object>
+    </child>
+
+    <child>
+      <object class="GtkFrame" id="content-frame">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="expand">True</property>
+        <child>
+          <object class="GtkGrid" id="content-grid">
+            <property name="expand">True</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="orientation">vertical</property>
+
+            <child>
+              <object class="GtkLabel" id="top-title-label">
+                <property name="can_focus">False</property>
+                <property name="no_show_all">True</property>
+                <property name="hexpand">True</property>
+                <property name="halign">fill</property>
+                <property name="wrap_mode">word-char</property>
+                <property name="ellipsize">end</property>
+                <property name="max_width_chars">1</property>
+                <property name="visible">True</property>
+                <property name="margin_bottom">10</property>
+                <style>
+                  <class name="title"/>
+                  <class name="collapsed"/>
+                </style>
+              </object>
+            </child>
+          </object>
+        </child>
+        <style>
+          <class name="document-card-content-frame"/>
+        </style>
+      </object>
+    </child>
+
+    <style>
+      <class name="card"/>
+      <class name="document-card"/>
+    </style>
+  </template>
+</interface>

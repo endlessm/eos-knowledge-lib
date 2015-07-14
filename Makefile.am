@@ -239,6 +239,7 @@ js_files = \
 	js/app/modules/articleSnippetCard.js \
 	js/app/modules/cardA.js \
 	js/app/modules/cardB.js \
+	js/app/modules/documentCard.js \
 	js/app/modules/mediaCard.js \
 	js/app/modules/pdfCard.js \
 	js/app/modules/readerCard.js \
@@ -348,6 +349,7 @@ javascript_tests = \
 	tests/js/app/modules/testArticleSnippetCard.js \
 	tests/js/app/modules/testCardA.js \
 	tests/js/app/modules/testCardB.js \
+	tests/js/app/modules/testDocumentCard.js \
 	tests/js/app/modules/testMediaCard.js \
 	tests/js/app/modules/testReaderCard.js \
 	tests/js/app/modules/testSetBannerCard.js \

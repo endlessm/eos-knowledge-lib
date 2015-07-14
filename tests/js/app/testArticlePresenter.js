@@ -1,15 +1,16 @@
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
-const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
+const Utils = imports.tests.utils;
+Utils.register_gresource();
+
 const ArticleObjectModel = imports.search.articleObjectModel;
 const ArticlePresenter = imports.app.articlePresenter;
-const Engine = imports.search.engine;
-const TreeNode = imports.search.treeNode;
-const Utils = imports.tests.utils;
 const SearchUtils = imports.search.utils;
+const MockFactory = imports.tests.mockFactory;
+
 
 Gtk.init(null);
 
@@ -28,59 +29,53 @@ const MockView = new Lang.Class({
         }
     },
 
-    switch_in_content_view: function (view, animation_type) {
+    switch_in_document_card: function (view, animation_type) {
         this.emit('new-view-transitioned');
+    },
+});
+
+const MockCard = new Lang.Class({
+    Name: 'MockCard',
+    Extends: GObject.Object,
+    Signals: {
+        'ekn-link-clicked': {},
+    },
+
+    _init: function (props) {
+        let connectable_object = {
+            connect: function () {},
+        };
+        this.model = props.model;
+        this.parent(); // We don't care about other props
+        this.toc = connectable_object;
     },
 });
 
 describe('Article Presenter', function () {
     let presenter;
     let view;
-    let toc_json = { "tableOfContents":
-        [{"hasIndex": 0, "hasIndexLabel": 1, "hasLabel": "Foo", "hasContent": "#Foo"},
-         {"hasIndex": 1, "hasIndexLabel": 2, "hasLabel": "Bar", "hasContent": "#Bar"},
-         {"hasIndex": 2, "hasIndexLabel": 3, "hasLabel": "Baz", "hasContent": "#Baz"}]};
     let articleObject;
+    let factory;
 
-    beforeEach(function (done) {
-        Utils.register_gresource();
+    beforeEach(function () {
+        factory = new MockFactory.MockFactory();
+        factory.add_named_mock('document-card', MockCard);
 
-        let toc = TreeNode.tree_model_from_tree_node(toc_json);
         articleObject = new ArticleObjectModel.ArticleObjectModel({
             ekn_id: 'ekn:///foo/bar',
             content_type: 'text/html',
             get_content_stream: () => { return SearchUtils.string_to_stream('<html><body><p>hi</p></body></html>'); },
             title: 'Wikihow & title',
-            table_of_contents: toc,
         });
-        let engine = Engine.Engine.get_default();
-        spyOn(engine, 'get_object_by_id').and.callFake(function (id, cancellable, callback) {
-            callback(engine);
-        });
-        spyOn(engine, 'get_object_by_id_finish').and.returnValue(articleObject);
 
         view = new MockView();
-        view.connect_after('new-view-transitioned', done);
 
         presenter = new ArticlePresenter.ArticlePresenter({
             article_view: view,
+            factory: factory,
         });
         presenter.load_article(articleObject, EosKnowledgePrivate.LoadingAnimationType.NONE);
     });
 
     it('can be constructed', function () {});
-
-    it('can set title and subtitle on view', function () {
-        expect(view.title).toBe(articleObject.title);
-    });
-
-    it('can set toc section list', function () {
-        let labels = [];
-        for (let obj of toc_json['tableOfContents']) {
-            if (!('hasParent' in obj)) {
-                labels.push(obj['hasLabel']);
-            }
-        }
-        expect(view.toc.section_list).toEqual(labels);
-    });
 });
