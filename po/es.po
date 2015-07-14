@@ -11,10 +11,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2015-06-30 01:50+0000\n"
+"POT-Creation-Date: 2015-07-07 01:52+0000\n"
 "PO-Revision-Date: 2015-06-30 01:51+0000\n"
 "Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
-"Language-Team: Spanish (http://www.transifex.com/projects/p/eos-knowledge-lib/language/es/)\n"
+"Language-Team: Spanish (http://www.transifex.com/p/eos-knowledge-lib/language/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -68,11 +68,11 @@ msgstr "Buscando \"{search}\""
 msgid "Search results for “{search}”"
 msgstr "Resultados de la búsqueda \"{search}\""
 
-#: data/widgets/pdfCard.ui:46
+#: data/widgets/pdfCard.ui:55
 msgid "PDF"
 msgstr "PDF"
 
-#: data/widgets/readerCard.ui:91 js/app/reader/webviewTooltip.js:138
+#: data/widgets/readerCard.ui:111 js/app/reader/webviewTooltip.js:138
 msgid "Archive"
 msgstr "Archivo"
 
@@ -129,7 +129,7 @@ msgstr "Contenido por cortesía de {blog-link}. Usado con permiso generoso."
 msgid "Content courtesy of {blog-link}, licensed under {license-link}."
 msgstr "Contenido por cortesía de {blog-link}, bajo la licencia {license-link}."
 
-#: js/app/categoriesPage.js:57
+#: js/app/categoriesPage.js:67
 msgid "HOME"
 msgstr "INICIO"
 
@@ -153,22 +153,22 @@ msgstr "Enciclopedia"
 msgid "SEE ALL CATEGORIES"
 msgstr "VER TODAS LAS CATEGORÍAS"
 
-#: js/app/noSearchResultsPage.js:46
+#: js/app/noSearchResultsPage.js:38
 msgid "We didn't find anything."
 msgstr "No encontramos nada."
 
-#: js/app/noSearchResultsPage.js:47
+#: js/app/noSearchResultsPage.js:39
 msgid "Try seaching again with different words."
 msgstr "Trata una nueva búsqueda con palabras diferentes."
 
 #. TRANSLATORS: this appears on top of the search results page; %s will
 #. be replaced with the string that the user searched for.
-#: js/app/noSearchResultsPage.js:70 js/app/presenter.js:391
+#: js/app/noSearchResultsPage.js:62 js/app/presenter.js:454
 #, javascript-format
 msgid "Results for \"%s\""
 msgstr "Resultados para \"%s\""
 
-#: js/app/presenter.js:222 js/app/presenter.js:654
+#: js/app/presenter.js:286 js/app/presenter.js:717
 msgid "Articles"
 msgstr "Artículos"
 
@@ -177,26 +177,26 @@ msgstr "Artículos"
 msgid "Page %s"
 msgstr "Página %s"
 
-#: js/app/reader/donePage.js:67
+#: js/app/reader/donePage.js:68
 msgid "Did you like this issue?"
 msgstr "¿Te gustó esta edición?"
 
-#: js/app/reader/donePage.js:73
+#: js/app/reader/donePage.js:74
 msgid ""
 "Don't miss next week's issue with more articles in your favorite magazine!"
 msgstr "¡No te pierdas la edición de la próxima semana que tendrá más artículos en tu revista favorita!"
 
-#: js/app/reader/presenter.js:991 js/app/reader/presenter.js:998
+#: js/app/reader/presenter.js:1041 js/app/reader/presenter.js:1048
 msgid "Oops!"
 msgstr "¡Uy!"
 
-#: js/app/reader/presenter.js:992
+#: js/app/reader/presenter.js:1042
 msgid ""
 "We could not find this magazine!\n"
 "Please try again after restarting your computer."
 msgstr "¡No pudimos encontrar esta revista!\nPor favor intenta de nuevo después de reiniciar tu computadora."
 
-#: js/app/reader/presenter.js:999
+#: js/app/reader/presenter.js:1049
 msgid ""
 "There was an error loading that page.\n"
 "Try another one or try again after restarting your computer."
