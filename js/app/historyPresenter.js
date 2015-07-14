@@ -2,7 +2,6 @@ const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const GObject = imports.gi.GObject;
 
 const HistoryItem = imports.app.historyItem;
-const Window = imports.app.window;
 
 /**
  * Class: HistoryPresenter
@@ -50,9 +49,6 @@ const HistoryPresenter = new GObject.Class({
 
     _init: function (props={}) {
         props.history_model = props.history_model || new EosKnowledgePrivate.HistoryModel();
-        props.view = props.view || new Window.Window({
-            application: props.application,
-        });
 
         this.parent(props);
 
