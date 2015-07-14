@@ -15,7 +15,11 @@ const QueryObject = imports.search.queryObject;
 const datadir = imports.search.datadir;
 const Utils = imports.search.utils;
 
-GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
+/**
+ * Constant: HOME_PAGE_TAG
+ * Special tag value indicating content for the app's home page
+ */
+const HOME_PAGE_TAG = 'home page';
 
 /**
  * Class: Engine
@@ -205,6 +209,17 @@ const Engine = Lang.Class({
     get_objects_by_query: function (query_obj, cancellable, callback) {
         let task = new AsyncTask.AsyncTask(this, cancellable, callback);
         task.catch_errors(() => {
+            // Currently, only objects with HOME_PAGE_TAG are overlaid at
+            // runtime. We cut a corner here and only check the runtime objects
+            // in that case, which saves us from having to check every single
+            // query against the set of overlaid runtime objects, which would be
+            // a speed-reducing backwards-compatibility nightmare.
+            if (this._runtime_objects.size > 0 && query_obj.tags.length === 1 &&
+                query_obj.tags[0] == HOME_PAGE_TAG) {
+                task.return_value([[...this._runtime_objects.values()], null]);
+                return;
+            }
+
             if (query_obj.domain === '')
                 query_obj = QueryObject.QueryObject.new_from_object(query_obj, { domain: this.default_domain });
             let req_uri = this._get_xapian_uri(query_obj);

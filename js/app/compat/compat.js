@@ -1,3 +1,8 @@
+const GLib = imports.gi.GLib;
+
+const ContentObjectModel = imports.search.contentObjectModel;
+const Engine = imports.search.engine;
+
 function transform_v1_description(json) {
     let modules = {};
 
@@ -119,4 +124,32 @@ function transform_v1_description(json) {
     }
 
     return { 'modules': modules };
+}
+
+function create_v1_set_models(json, engine) {
+    if (!json.hasOwnProperty('sections'))
+        return;
+
+    let sections = json['sections'];
+    delete json['sections'];
+    sections.forEach((section) => {
+        if (!section.hasOwnProperty('thumbnailURI'))
+            log("WARNING: Missing category thumbnail for " + section['title']);
+
+        let domain = engine.default_domain;
+        let sha = GLib.compute_checksum_for_string(GLib.ChecksumType.SHA1,
+            'category' + domain + section['title'], -1);
+        let id = 'ekn://' + domain + '/' + sha;
+        let tags = section['tags'].slice();
+        tags.push(Engine.HOME_PAGE_TAG);
+
+        let model = new ContentObjectModel.ContentObjectModel({
+            ekn_id: id,
+            title: section['title'],
+            thumbnail_uri: section['thumbnailURI'],
+            featured: !!section['featured'],
+            tags: tags,
+        });
+        engine.add_runtime_object(id, model);
+    });
 }

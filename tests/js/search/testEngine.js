@@ -587,7 +587,9 @@ describe('Knowledge Engine Module', () => {
         let model;
 
         beforeEach(function () {
-            model = new ContentObjectModel.ContentObjectModel();
+            model = new ContentObjectModel.ContentObjectModel({
+                title: 'a',
+            });
             engine.add_runtime_object('ekn://foo/1234567890abcdef', model);
         });
 
@@ -595,6 +597,24 @@ describe('Knowledge Engine Module', () => {
             engine.get_object_by_id('ekn://foo/1234567890abcdef', null, (engine, res) => {
                 let retrieved_model = engine.get_object_by_id_finish(res);
                 expect(retrieved_model).toBe(model);
+                done();
+            });
+        });
+
+        it('are all returned when querying the "home page" tag', function (done) {
+            let model2 = new ContentObjectModel.ContentObjectModel({
+                title: 'b',
+            });
+            engine.add_runtime_object('ekn://foo/fedcba0987654321', model2);
+            let query = new QueryObject.QueryObject({
+                tags: [ Engine.HOME_PAGE_TAG ],
+            });
+            engine.get_objects_by_query(query, null, (engine, res) => {
+                let [models, get_more] = engine.get_objects_by_query_finish(res);
+                expect(models).toContain(model);
+                expect(models).toContain(model2);
+                expect(models.length).toBe(2);
+                expect(get_more).toBeNull();
                 done();
             });
         });

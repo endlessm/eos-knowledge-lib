@@ -2,6 +2,7 @@ const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 
 const Compat = imports.app.compat.compat;
+const Engine = imports.search.engine;
 const Warehouse = imports.app.warehouse;
 
 const ModuleFactory = new Lang.Class({
@@ -39,8 +40,13 @@ const ModuleFactory = new Lang.Class({
 
         this.parent(props);
 
-        if (!this.app_json.hasOwnProperty('version') || this.app_json.version < 2)
+        if (!this.app_json.hasOwnProperty('version') || this.app_json.version < 2) {
+            // For v1 app.jsons, the categories are stored in the app.json
+            // rather than in the database. We create fake objects for them.
+            Compat.create_v1_set_models(this.app_json,
+                Engine.Engine.get_default());
             this.app_json = Compat.transform_v1_description(this.app_json);
+        }
         // After this point, the app.json must be the current version!
     },
 
