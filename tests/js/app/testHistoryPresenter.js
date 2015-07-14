@@ -3,47 +3,18 @@ const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 
 const HistoryPresenter = imports.app.historyPresenter;
-
-const MockButton = new Lang.Class({
-    Name: 'MockButton',
-    GTypeName: 'MockButton_TestHistoryPresenter',
-    Extends: GObject.Object,
-    Properties: {
-        'sensitive': GObject.ParamSpec.boolean('sensitive', '', '',
-            GObject.ParamFlags.READWRITE, true),
-    },
-    Signals: {
-        'clicked': {},
-    },
-});
-
-const MockView = new Lang.Class({
-    Name: 'MockView',
-    GTypeName: 'MockView_TestHistoryPresenter',
-    Extends: GObject.Object,
-
-    _init: function () {
-        this.parent();
-
-        this.history_buttons = {
-            back_button: new MockButton(),
-            forward_button: new MockButton(),
-        };
-    },
-});
+const MockWidgets = imports.tests.mockWidgets;
 
 describe('History Presenter', function () {
     let history_presenter;
     let history_model;
-    let view;
 
     beforeEach(function () {
-        view = new MockView();
         history_model = new EosKnowledgePrivate.HistoryModel();
 
         history_presenter = new HistoryPresenter.HistoryPresenter({
             history_model: history_model,
-            view: view,
+            history_buttons: new MockWidgets.MockHistoryButtons(),
         });
     });
 

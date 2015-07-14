@@ -211,7 +211,7 @@ const Presenter = new Lang.Class({
         this.history_model = new EosKnowledgePrivate.HistoryModel();
         this._history_presenter = new HistoryPresenter.HistoryPresenter({
             history_model: this.history_model,
-            view: this.view,
+            history_buttons: this.view.history_buttons,
         });
 
         this._style_knobs = app_json['styles'];
