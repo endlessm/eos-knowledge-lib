@@ -48,11 +48,26 @@ function transform_v1_description(json) {
                 'max-fraction': 0.7,
             },
         };
+        modules['home-page-template'] = {
+            type: 'HomePageBTemplate',
+            submodules: {
+                top_left: "app-banner",
+                top_right: "home-search",
+            }
+        };
         modules['top-bar-search'] = {
             type: 'SearchBox',
         };
         modules['home-search'] = {
             type: 'SearchBox',
+            properties: {
+                'width_request': 350,
+                'visible': true,
+                'can_focus': false,
+                'shadow_type': Gtk.ShadowType.NONE,
+                'halign': Gtk.Align.CENTER,
+                'valign': Gtk.Align.CENTER,
+            }
         };
         modules['home-card'] = {
             type: 'CardB',

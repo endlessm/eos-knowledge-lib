@@ -213,7 +213,6 @@ js_files = \
 	js/app/historyPresenter.js \
 	js/app/homePage.js \
 	js/app/homePageA.js \
-	js/app/homePageB.js \
 	js/app/imagePreviewer.js \
 	js/app/infiniteScrolledWindow.js \
 	js/app/interfaces/arrangement.js \
@@ -230,7 +229,7 @@ js_files = \
 	js/app/modules/cardB.js \
 	js/app/modules/documentCard.js \
 	js/app/modules/listArrangement.js \
-	js/app/modules/homePage.js \
+	js/app/modules/homePageBTemplate.js \
 	js/app/modules/mediaCard.js \
 	js/app/modules/readerCard.js \
 	js/app/modules/searchBox.js \
@@ -343,6 +342,7 @@ javascript_tests = \
 	tests/js/app/modules/testCardB.js \
 	tests/js/app/modules/testDocumentCard.js \
 	tests/js/app/modules/testListArrangement.js \
+	tests/js/app/modules/testHomePageBTemplate.js \
 	tests/js/app/modules/testMediaCard.js \
 	tests/js/app/modules/testReaderCard.js \
 	tests/js/app/modules/testSearchModule.js \
@@ -365,7 +365,6 @@ javascript_tests = \
 	tests/js/app/testHistoryPresenter.js \
 	tests/js/app/testHomePage.js \
 	tests/js/app/testHomePageA.js \
-	tests/js/app/testHomePageB.js \
 	tests/js/app/testLightbox.js \
 	tests/js/app/testLightboxPresenter.js \
 	tests/js/app/testModuleFactory.js \
@@ -410,6 +409,7 @@ EXTRA_DIST += \
 	tests/CssClassMatcher.js \
 	tests/InstanceOfMatcher.js \
 	tests/minimal.js \
+	tests/mockCardContainer.js \
 	tests/mockEngine.js \
 	tests/mockFactory.js \
 	tests/mockSearchBox.js \

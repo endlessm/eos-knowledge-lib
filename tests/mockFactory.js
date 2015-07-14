@@ -10,12 +10,14 @@ const MockFactory = new Lang.Class({
         this.parent(props);
         this._mock_classes = {};
         this._created_mocks = {};
-        this._class_descriptions = {};
+        this._mock_slots = {};
+        this._mock_props = {};
     },
 
     create_named_module: function (name, props) {
         this._created_mocks[name] = this._created_mocks[name] || [];
         if (this._mock_classes.hasOwnProperty(name)) {
+            Lang.copyProperties(this._mock_props[name], props);
             let retval = new this._mock_classes[name](props);
             this._created_mocks[name].push(retval);
             return retval;
@@ -25,12 +27,10 @@ const MockFactory = new Lang.Class({
         return retval;
     },
 
-    add_named_description: function (name, description) {
-        this._class_descriptions[name] = description;
-    },
-
-    add_named_mock: function (name, klass) {
+    add_named_mock: function (name, klass, slots={}, props={}) {
         this._mock_classes[name] = klass;
+        this._mock_slots[name] = slots;
+        this._mock_props[name] = props;
     },
 
     get_created_named_mocks: function (name) {

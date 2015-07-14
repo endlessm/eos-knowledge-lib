@@ -333,7 +333,7 @@ EknWindow.show-no-search-results-page {
     border-bottom-right-radius: 1.7em;
 }
 
-.home-page-a .search-box, .home-page-b .search-box {
+.home-page-a .search-box, .home-page-b-template .search-box {
     box-shadow: inset 0em 0.16em 0.16em alpha(black, 0.14);
     background-image: linear-gradient(-179deg, alpha(black, 0.17) 0%,
                                                alpha(white, 0.13) 79%),
@@ -351,16 +351,16 @@ EknWindow.show-no-search-results-page {
     border-color: alpha(black, 0.19);
 }
 
-.home-page-a .search-box:selected, .home-page-b .search-box:selected {
+.home-page-a .search-box:selected, .home-page-b-template .search-box:selected {
     background-color: lighter(#2e3436);
     color: #eeeeec;
 }
 
-.home-page-a .search-box:focus, .home-page-b .search-box:focus {
+.home-page-a .search-box:focus, .home-page-b-template .search-box:focus {
     box-shadow: inset 0px 0px 3px 2px #5097D1;
 }
 
-.home-page-a .search-box.image, .home-page-b .search-box.image {
+.home-page-a .search-box.image, .home-page-b-template .search-box.image {
     color: #919191;
 }
 
@@ -371,7 +371,7 @@ EknWindow.show-no-search-results-page {
     -GtkWidget-separator-height: 3;
 }
 
-.home-page-b .card-container {
+.home-page-b-template .card-container {
     background-color: black;
 }
 
