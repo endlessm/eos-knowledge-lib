@@ -45,11 +45,21 @@ function transform_v1_description(json) {
                 'max-fraction': 0.7,
             },
         };
+        modules['home-page-b'] = {
+            type: 'HomePageB',
+            submodules: {
+                top_left: "app-banner",
+                top_right: "home-search",
+            }
+        };
         modules['top-bar-search'] = {
             type: 'SearchBox',
         };
         modules['home-search'] = {
             type: 'SearchBox',
+            properties: {
+                width_request: 350,
+            }
         };
         modules['home-card'] = {
             type: 'CardB',
