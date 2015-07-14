@@ -67,4 +67,13 @@ const Module = new Lang.Interface({
     get_slot_names: function () {
         return [];
     },
+
+    get_submodule: function (klass) {
+        let retval = null;
+        this.get_slot_names().forEach((slot) => {
+             if (this['_' + slot] instanceof klass)
+                retval = this['_' + slot];
+        });
+        return retval;
+    },
 });

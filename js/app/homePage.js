@@ -107,15 +107,6 @@ const HomePage = new Lang.Interface({
         this.attach(search_box, 0, 1, 3, 1);
     },
 
-    /**
-     * Method: pack_cards
-     *
-     * A virtual function to be overridden in subclasses. This will be called,
-     * whenever the card list changes with a new list of cards to be packed in
-     * the widget
-     */
-    pack_cards: Lang.Interface.UNIMPLEMENTED,
-
     set cards (v) {
         if (this._cards === v)
             return;

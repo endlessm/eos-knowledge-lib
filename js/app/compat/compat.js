@@ -1,4 +1,5 @@
 const GLib = imports.gi.GLib;
+const Gtk = imports.gi.Gtk;
 
 const ContentObjectModel = imports.search.contentObjectModel;
 const Engine = imports.search.engine;
@@ -46,6 +47,16 @@ function transform_v1_description(json) {
                 'image-uri': json['titleImageURI'],
                 'min-fraction': 0.4,
                 'max-fraction': 0.7,
+                'visible': true,
+                'can-focus': false,
+            },
+        };
+        modules['card-container'] = {
+            type: 'CardContainer',
+            properties: {
+                'expand': true,
+                'halign': Gtk.Align.FILL,
+                'valign': Gtk.Align.FILL,
             },
         };
         modules['home-page-template'] = {
@@ -53,6 +64,7 @@ function transform_v1_description(json) {
             submodules: {
                 top_left: "app-banner",
                 top_right: "home-search",
+                bottom: "card-container",
             }
         };
         modules['top-bar-search'] = {

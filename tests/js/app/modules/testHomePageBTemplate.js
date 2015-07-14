@@ -60,8 +60,9 @@ describe('HomePageBTemplate module', function () {
     })
 
     it('can set cards', function () {
-        home_page.cards = card_list;
-        expect(home_page.cards).toBe(card_list);
+        let card_container = home_page.get_submodule(MockCardContainer.MockCardContainer);
+        card_container.cards = card_list;
+        expect(card_container.cards).toBe(card_list);
     });
 
     describe('CSS style context', function () {
