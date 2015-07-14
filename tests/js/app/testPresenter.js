@@ -7,6 +7,7 @@ const Mainloop = imports.mainloop;
 const Utils = imports.tests.utils;
 Utils.register_gresource();
 
+const MockEngine = imports.tests.mockEngine;
 const MockFactory = imports.tests.mockFactory;
 const Presenter = imports.app.presenter;
 
@@ -101,23 +102,6 @@ const MockView = new Lang.Class({
     present_with_time: function () {},
 });
 
-const MockEngine = new Lang.Class({
-    Name: 'MockEngine',
-    Extends: GObject.Object,
-
-    _init: function () {
-        this.parent();
-        this.host = 'localhost';
-        this.port = 3003;
-        this.language = '';
-    },
-
-    get_object_by_id: function () {},
-    get_object_by_id_finish: function () {},
-    get_objects_by_query: function () {},
-    get_objects_by_query_finish: function () {},
-});
-
 const MockArticlePresenter = new Lang.Class({
     Name: 'MockArticlePresenter',
     Extends: GObject.Object,
@@ -147,7 +131,7 @@ describe('Presenter', () => {
         data = Utils.parse_object_from_path(test_app_filename);
         data['styles'] = {};
         view = new MockView();
-        engine = new MockEngine();
+        engine = new MockEngine.MockEngine();
         article_presenter = new MockArticlePresenter();
         let application = new GObject.Object();
         application.application_id = 'foobar';
@@ -186,13 +170,7 @@ describe('Presenter', () => {
     describe('searching from search box', function () {
         beforeEach(function () {
             spyOn(view, 'show_no_search_results_page');
-            spyOn(engine, 'get_objects_by_query').and.callFake(function (query, cancellable, callback) {
-                callback(engine, null);
-            });
-            spyOn(engine, 'get_objects_by_query_finish').and.callFake(function (task) {
-                return [[], null];
-            });
-
+            engine.get_objects_by_query_finish.and.returnValue([[], null]);
         });
 
         it('works from the title bar', function (done) {

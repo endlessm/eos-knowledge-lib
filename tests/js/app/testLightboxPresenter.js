@@ -7,25 +7,9 @@ Utils.register_gresource();
 
 const ArticleObjectModel = imports.search.articleObjectModel;
 const MediaObjectModel = imports.search.mediaObjectModel;
+const MockEngine = imports.tests.mockEngine;
 const MockFactory = imports.tests.mockFactory;
 const LightboxPresenter = imports.app.lightboxPresenter;
-
-const MockEngine = new Lang.Class({
-    Name: 'MockEngine',
-    GTypeName: 'MockEngine_TestLightboxPresenter',
-    Extends: GObject.Object,
-
-    _init: function () {
-        this.parent();
-        this.host = 'localhost';
-        this.port = 3003;
-        this.language = '';
-    },
-
-    get_object_by_id: function () {},
-    get_ekn_id: function () {},
-    get_objects_by_query: function () {},
-});
 
 const MockView = new Lang.Class({
     Name: 'MockView',
@@ -51,7 +35,7 @@ describe('Lightbox Presenter', function () {
     let factory;
 
     beforeEach(function () {
-        engine = new MockEngine();
+        engine = new MockEngine.MockEngine();
         view = new MockView();
         factory = new MockFactory.MockFactory();
 
