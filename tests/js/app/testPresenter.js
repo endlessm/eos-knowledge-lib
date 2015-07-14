@@ -7,6 +7,7 @@ const Mainloop = imports.mainloop;
 const Utils = imports.tests.utils;
 Utils.register_gresource();
 
+const MinimalCard = imports.tests.minimalCard;
 const MockEngine = imports.tests.mockEngine;
 const MockFactory = imports.tests.mockFactory;
 const Presenter = imports.app.presenter;
@@ -14,19 +15,6 @@ const Presenter = imports.app.presenter;
 Gtk.init(null);
 
 const TEST_CONTENT_DIR = Utils.get_test_content_srcdir();
-
-const MockCard = new Lang.Class({
-    Name: 'MockCard',
-    Extends: GObject.Object,
-    Signals: {
-        'clicked': {},
-    },
-
-    _init: function (props) {
-        this.model = props.model;
-        this.parent(); // We don't care about other props
-    },
-});
 
 const MockWidget = new Lang.Class({
     Name: 'MockWidget',
@@ -124,9 +112,9 @@ describe('Presenter', () => {
 
     beforeEach(() => {
         factory = new MockFactory.MockFactory();
-        factory.add_named_mock('home-card', MockCard);
-        factory.add_named_mock('results-card', MockCard);
-        factory.add_named_mock('pdf-card', MockCard);
+        factory.add_named_mock('home-card', MinimalCard.MinimalCard);
+        factory.add_named_mock('results-card', MinimalCard.MinimalCard);
+        factory.add_named_mock('pdf-card', MinimalCard.MinimalCard);
 
         data = Utils.parse_object_from_path(test_app_filename);
         data['styles'] = {};

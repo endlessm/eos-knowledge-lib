@@ -7,7 +7,7 @@ const Module = imports.app.interfaces.module;
 
 const MinimalCard = new Lang.Class({
     Name: 'MinimalCard',
-    Extends: Gtk.Label,
+    Extends: Gtk.Button,
     Implements: [ Module.Module, Card.Card ],
 
     Properties: {
