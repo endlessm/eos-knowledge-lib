@@ -141,7 +141,7 @@ const Card = new Lang.Interface({
 
         if (this.synopsis_label) {
             this.title_label.no_show_all = true;
-            this.synopsis_label.label = this.model.synopsis;
+            this.synopsis_label.label = GLib.markup_escape_text(this.model.synopsis, -1);
             this.synopsis_label.visible = !!this.model.synopsis;
         }
 
