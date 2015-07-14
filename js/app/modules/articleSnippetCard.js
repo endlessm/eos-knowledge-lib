@@ -44,18 +44,16 @@ const ArticleSnippetCard = new Lang.Class({
 
         this.set_title_label_from_model(this._title_label);
         this.set_synopsis_label_from_model(this._synopsis_label);
-
-        if (this.model.article_number !== undefined) {
-            let style = this.model.article_number % 3;
-            this.get_style_context().add_class('snippet' + style);
-        }
+        this.set_style_variant_from_model();
     },
 });
 
 function get_css_for_module (css_data, num) {
     let title_data = Utils.get_css_for_submodule('title', css_data);
-    let str = Utils.object_to_css_string(title_data, '.snippet' + num + ' .title');
+    let str = Utils.object_to_css_string(title_data,
+        '.article-snippet.variant' + num + ' .title');
     let module_data = Utils.get_css_for_submodule('module', css_data);
-    str += Utils.object_to_css_string(module_data, '.snippet' + num + ' .synopsis');
+    str += Utils.object_to_css_string(module_data, '.article-snippet.variant' +
+        num + ' .synopsis');
     return str;
 }

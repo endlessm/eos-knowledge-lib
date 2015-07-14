@@ -13,6 +13,8 @@ const Module = imports.app.interfaces.module;
 const StyleClasses = imports.app.styleClasses;
 const Utils = imports.app.utils;
 
+const NUM_STYLE_VARIANTS = 3;
+
 /**
  * Interface: Card
  * Interface for card modules
@@ -151,6 +153,21 @@ const Card = new Lang.Interface({
     set_synopsis_label_from_model: function (label) {
         this.set_label_or_hide(label,
             GLib.markup_escape_text(this.model.synopsis, -1));
+    },
+
+    /**
+     * Method: set_style_variant_from_model
+     * Uses the article number to set a style variant CSS class
+     *
+     * Adds one of the CSS classes 'variant0', 'variant1', or 'variant2' to the
+     * card, depending on the <ArticleObjectModel.article_number> property if it
+     * is present.
+     */
+    set_style_variant_from_model: function () {
+        if (this.model.article_number !== undefined) {
+            let style = this.model.article_number % NUM_STYLE_VARIANTS;
+            this.get_style_context().add_class('variant' + style);
+        }
     },
 
     /**

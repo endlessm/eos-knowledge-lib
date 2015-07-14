@@ -37,7 +37,7 @@ describe('Article snippet', function () {
                     article_number: variant,
                 }),
             });
-            expect(snippet).toHaveCssClass('snippet' + variant);
+            expect(snippet).toHaveCssClass('variant' + variant);
         });
     });
 });

@@ -56,7 +56,7 @@ describe('Reader Card widget', function () {
             });
 
             cards.map(function (card, index) {
-                expect(card).toHaveCssClass('reader-card' + (index));
+                expect(card).toHaveCssClass('variant' + (index));
             });
         });
     });

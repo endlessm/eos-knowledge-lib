@@ -25,9 +25,6 @@ let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
  *    title - card's label
  *    decorative-bar - ornament on the top of the card
  *    hover-frame - hover frame
- *    reader-card0 - Style variant #0
- *    reader-card1 - Style variant #1
- *    reader-card2 - Style variant #2
  */
 const ReaderCard = new Lang.Class({
     Name: 'ReaderCard',
@@ -55,6 +52,7 @@ const ReaderCard = new Lang.Class({
         this.parent(props);
 
         this.set_title_label_from_model(this._title_label);
+        this.set_style_variant_from_model();
 
         // page_number of 0 means an archived article
         if (this.page_number) {
@@ -69,11 +67,6 @@ const ReaderCard = new Lang.Class({
         this.connect('leave-notify-event', () => {
             this._hover_frame.hide();
         });
-
-        if (this.model.article_number !== undefined) {
-            let style = this.model.article_number % 3;
-            this.get_style_context().add_class('reader-card' + style);
-        }
     },
 });
 
@@ -81,12 +74,15 @@ function get_css_for_module (css_data, num) {
     let str = "";
     let background_color = css_data['title-background-color'];
     if (typeof background_color !== 'undefined') {
-        str += Utils.object_to_css_string({'background-color': background_color}, '.reader-card' + num + ' .decorative-bar');
+        str += Utils.object_to_css_string({'background-color': background_color},
+            '.reader-card.variant' + num + ' .decorative-bar');
         delete css_data['title-background-color'];
     }
     let title_data = Utils.get_css_for_submodule('title', css_data);
-    let str = Utils.object_to_css_string(title_data, '.reader-card' + num + ' .title');
+    str += Utils.object_to_css_string(title_data, '.reader-card.variant' +
+        num + ' .title');
     let module_data = Utils.get_css_for_submodule('module', css_data);
-    str += Utils.object_to_css_string(module_data, '.reader-card' + num + ' .attribution');
+    str += Utils.object_to_css_string(module_data, '.reader-card.variant' +
+        num + ' .attribution');
     return str;
 }

@@ -27,6 +27,7 @@ describe('Card interface', function () {
             thumbnail_uri: 'about:blank',
             authors: ['record author'],
             synopsis: 'record synopsis',
+            article_number: 0,
         });
         card = new MinimalCard.MinimalCard({
             model: model,
@@ -87,6 +88,17 @@ describe('Card interface', function () {
         let label = new Gtk.Label();
         card.set_synopsis_label_from_model(label);
         expect(label.visible).toBeTruthy();
+    });
+
+    it('adds a style variant if the model has an article number', function () {
+        card.set_style_variant_from_model();
+        expect(card).toHaveCssClass('variant0');
+    });
+
+    it('only has three different style variants', function () {
+        card.model.article_number = 5;
+        card.set_style_variant_from_model();
+        expect(card).toHaveCssClass('variant2');
     });
 
     // FIXME: no way to verify this.
