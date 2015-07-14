@@ -52,22 +52,4 @@ describe('Overview page widget', function () {
     it('has the overview-page CSS class', function () {
         expect(page).toHaveCssClass(StyleClasses.READER_OVERVIEW_PAGE);
     });
-
-    it('sets the style variant class on article snippets', function () {
-        page.set_article_snippets(snippets);
-        expect(page).toHaveDescendantWithCssClass('snippet0');
-        expect(page).toHaveDescendantWithCssClass('snippet1');
-    });
-
-    it('uses 0 as the default style variant', function () {
-        page.set_article_snippets([
-            new ArticleSnippetCard.ArticleSnippetCard({
-                model: new ArticleObjectModel.ArticleObjectModel({
-                    title: 'Frango',
-                    synopsis: 'Frango tikka masala, yum',
-                }),
-            })
-        ]);
-        expect(page).toHaveDescendantWithCssClass('snippet0');
-    });
 });

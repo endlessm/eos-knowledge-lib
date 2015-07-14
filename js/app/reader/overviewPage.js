@@ -160,13 +160,7 @@ const OverviewPage = new Lang.Class({
         return '';
     },
 
-    /*
-      Sets the article snippets on the overview page. Here, a snippet
-      is a JS object with two required fields, 'title' and 'synopsis', and one
-      optional field, 'style_variant'. This function creates an <ArticleSnippetCard>
-      widget for each snippet model and adds it to the snippets grid.
-    */
-    set_article_snippets: function (snippets, callback) {
+    set_article_snippets: function (snippets) {
         snippets.forEach((snippet) => {
             this._snippets_grid.add(snippet);
         });
