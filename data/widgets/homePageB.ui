@@ -57,13 +57,12 @@
       </packing>
     </child>
     <child>
-      <object class="GtkGrid" id="bottom">
-        <style>
-          <class name="card-container"/>
-        </style>
-        <property name="hexpand">true</property>
-        <property name="column_homogeneous">true</property>
-        <property name="row_homogeneous">true</property>
+      <object class="GtkFrame" id="bottom">
+        <property name="can_focus">False</property>
+        <property name="halign">center</property>
+        <property name="label_xalign">0</property>
+        <property name="shadow_type">none</property>
+        <property name="valign">center</property>
         <property name="visible">True</property>
         <child>
           <placeholder/>

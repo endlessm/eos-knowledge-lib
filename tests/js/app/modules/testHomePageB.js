@@ -9,6 +9,7 @@ const Utils = imports.tests.utils;
 Utils.register_gresource();
 
 const AppBanner = imports.app.modules.appBanner;
+const CardContainer = imports.app.modules.cardContainer;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const HomePageB = imports.app.modules.homePageB;
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
@@ -28,11 +29,14 @@ const TEST_JSON = {
             "submodules": {
                 "top_left": "app-banner",
                 "top_right": "search",
-                // FIXME: Should have a bottom slot with a card_container module.
+                "bottom": "card-container",
             }
         },
         "search": {
             "type": "SearchBox"
+        },
+        "card-container": {
+            "type": "CardContainer"
         },
         "app-banner": {
             "type": "AppBanner",
@@ -69,7 +73,7 @@ describe('HomePageB module', function () {
     it('packs all its children', function() {
         expect(home_page._top_left.get_child()).toBeA(AppBanner.AppBanner);
         expect(home_page._top_right.get_child()).toBeA(SearchBox.SearchBox);
-        expect(home_page._bottom).toBeA(Gtk.Grid);
+        expect(home_page._bottom.get_child()).toBeA(CardContainer.CardContainer);
     })
 
     it('can set cards', function () {

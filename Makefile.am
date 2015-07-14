@@ -239,6 +239,7 @@ js_files = \
 	js/app/modules/articleSnippetCard.js \
 	js/app/modules/cardA.js \
 	js/app/modules/cardB.js \
+	js/app/modules/cardContainer.js \
 	js/app/modules/documentCard.js \
 	js/app/modules/homePage.js \
 	js/app/modules/homePageB.js \

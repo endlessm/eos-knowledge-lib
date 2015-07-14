@@ -33,7 +33,7 @@ const HomePageB = new Lang.Class({
         if (_allowed_card_numbers.indexOf(cards.length) < 0)
             printerr('Should only set 4, 6 or 8 cards in template B. ' + cards.length);
 
-        this._card_container = this._bottom;
+        this._card_container = this._bottom.get_child();
 
         for (let card of this._card_container.get_children()) {
             this._card_container.remove(card);
