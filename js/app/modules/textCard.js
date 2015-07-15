@@ -16,6 +16,10 @@ const Utils = imports.app.utils;
  * This widget displays a clickable topic to the user.
  * Connect to the <clicked> signal to perform an action
  * when the user clicks on the card.
+ *
+ * Style classes:
+ *   card, text-card - on the widget itself
+ *   title - on the title label
  */
 const TextCard = new Lang.Class({
     Name: 'TextCard',
