@@ -12,6 +12,7 @@ const ArticleObjectModel = imports.search.articleObjectModel;
 const MockEngine = imports.tests.mockEngine;
 const MockFactory = imports.tests.mockFactory;
 const MockSearchBox = imports.tests.mockSearchBox;
+const MockWidgets = imports.tests.mockWidgets;
 const Presenter = imports.app.reader.presenter;
 const QueryObject = imports.search.queryObject;
 
@@ -75,18 +76,6 @@ const MockNavButtons = new Lang.Class({
     },
 });
 
-const MockButton = new Lang.Class({
-    Name: 'MockButton',
-    Extends: GObject.Object,
-    Properties: {
-        'sensitive': GObject.ParamSpec.boolean('sensitive', '', '',
-            GObject.ParamFlags.READWRITE, true),
-    },
-    Signals: {
-        'clicked': {},
-    },
-});
-
 let get_style_context = function () {
     return {
         add_class: function () {},
@@ -123,15 +112,11 @@ const MockView = new Lang.Class({
         this.nav_buttons = nav_buttons;
         this.search_box = new MockSearchBox.MockSearchBox();
         this.issue_nav_buttons = {
-            back_button: new MockButton(),
-            forward_button: new MockButton(),
+            back_button: new MockWidgets.MockButton(),
+            forward_button: new MockWidgets.MockButton(),
             show: jasmine.createSpy('show'),
         };
-        this.history_buttons = {
-            back_button: new MockButton(),
-            forward_button: new MockButton(),
-            show: jasmine.createSpy('show'),
-        };
+        this.history_buttons = new MockWidgets.MockHistoryButtons();
 
         this.done_page = {
             get_style_context: get_style_context,

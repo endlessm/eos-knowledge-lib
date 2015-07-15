@@ -11,20 +11,12 @@ const ContentObjectModel = imports.search.contentObjectModel;
 const MinimalCard = imports.tests.minimalCard;
 const MockEngine = imports.tests.mockEngine;
 const MockFactory = imports.tests.mockFactory;
+const MockWidgets = imports.tests.mockWidgets;
 const Presenter = imports.app.presenter;
 
 Gtk.init(null);
 
 const TEST_CONTENT_DIR = Utils.get_test_content_srcdir();
-
-const MockWidget = new Lang.Class({
-    Name: 'MockWidget',
-    Extends: GObject.Object,
-    Properties: {
-        'sensitive': GObject.ParamSpec.boolean('sensitive', '', '',
-            GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE, true),
-    },
-});
 
 const MockHomePage = new Lang.Class({
     Name: 'MockHomePage',
@@ -74,10 +66,7 @@ const MockView = new Lang.Class({
         this.lightbox = new GObject.Object();
         this.search_box = {};
         this.no_search_results_page = {};
-        this.history_buttons = {
-            forward_button: new MockWidget(),
-            back_button: new MockWidget(),
-        };
+        this.history_buttons = new MockWidgets.MockHistoryButtons();
     },
 
     connect: function (signal, handler) {

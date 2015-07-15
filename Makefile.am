@@ -421,6 +421,7 @@ EXTRA_DIST += \
 	tests/mockEngine.js \
 	tests/mockFactory.js \
 	tests/mockSearchBox.js \
+	tests/mockWidgets.js \
 	tests/utils.js \
 	tests/WidgetDescendantMatcher.js \
 	$(NULL)

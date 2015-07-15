@@ -1,8 +1,8 @@
+const Endless = imports.gi.Endless;
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const GObject = imports.gi.GObject;
 
 const HistoryItem = imports.app.historyItem;
-const Window = imports.app.window;
 
 /**
  * Class: HistoryPresenter
@@ -32,33 +32,31 @@ const HistoryPresenter = new GObject.Class({
             GObject.Object.$gtype),
 
         /**
-         * Property: view
-         * Knowledge app view
+         * Property: history_buttons
+         * History buttons that operate this presenter
          *
-         * Pass an instance of <Window> to this property.
-         * In particular, this view holds the history buttons that controls
-         * the history navigation.
+         * Pass an instance of <Endless.TopbarNavButton> to this property.
          *
          * Flags:
          *   Construct only
          */
-        'view': GObject.ParamSpec.object('view', 'View',
-            'Knowledge app view',
+        'history-buttons': GObject.ParamSpec.object('history-buttons',
+            'History buttons', 'History buttons in the view',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             GObject.Object.$gtype),
     },
 
     _init: function (props={}) {
         props.history_model = props.history_model || new EosKnowledgePrivate.HistoryModel();
-        props.view = props.view || new Window.Window({
-            application: props.application,
-        });
+        props.history_buttons = props.history_buttons || new Endless.TopbarNavButton();
 
         this.parent(props);
 
-        this.history_model.bind_property('can-go-forward', this.view.history_buttons.forward_button, 'sensitive',
+        this.history_model.bind_property('can-go-forward',
+            this.history_buttons.forward_button, 'sensitive',
             GObject.BindingFlags.SYNC_CREATE);
-        this.history_model.bind_property('can-go-back', this.view.history_buttons.back_button, 'sensitive',
+        this.history_model.bind_property('can-go-back',
+            this.history_buttons.back_button, 'sensitive',
             GObject.BindingFlags.SYNC_CREATE);
     },
 
