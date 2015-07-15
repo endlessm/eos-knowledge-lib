@@ -77,7 +77,7 @@ const EncyclopediaPresenter = new Lang.Class({
         this._history = new EosKnowledgePrivate.HistoryModel();
         this._history_presenter = new HistoryPresenter.HistoryPresenter({
             history_model: this._history,
-            view: this._view,
+            history_buttons: this._view.history_buttons,
         });
 
         this._history.connect('notify::current-item',
