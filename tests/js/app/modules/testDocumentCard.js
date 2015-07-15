@@ -89,9 +89,6 @@ describe('Document Card', function () {
         it('has a descendant with toolbar frame class', function () {
             expect(card).toHaveDescendantWithCssClass(StyleClasses.DOCUMENT_CARD_TOOLBAR_FRAME);
         });
-        it('has a descendant with switcher frame class', function () {
-            expect(card).toHaveDescendantWithCssClass(StyleClasses.DOCUMENT_CARD_CONTENT_FRAME);
-        });
         it('has an expanded table of contents by default', function () {
             expect(card.toc).not.toHaveCssClass(StyleClasses.COLLAPSED);
         });
