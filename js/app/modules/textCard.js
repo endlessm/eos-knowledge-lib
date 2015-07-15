@@ -1,5 +1,6 @@
 // Copyright 2014 Endless Mobile, Inc.
 
+const Gdk = imports.gi.Gdk;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
@@ -33,6 +34,15 @@ const TextCard = new Lang.Class({
         'page-number': GObject.ParamSpec.override('page-number', Card.Card),
         'title-capitalization': GObject.ParamSpec.override('title-capitalization',
             Card.Card),
+
+        /**
+         * Property: underline-on-hover
+         * Whether to underline the link on hover
+         */
+        'underline-on-hover': GObject.ParamSpec.boolean('underline-on-hover',
+            'Underline on hover', 'Whether to underline the link on hover',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            false),
     },
 
     Template: 'resource:///com/endlessm/knowledge/widgets/textCard.ui',
@@ -43,6 +53,19 @@ const TextCard = new Lang.Class({
 
         Utils.set_hand_cursor_on_widget(this);
         this.set_title_label_from_model(this._title_label);
+        this._title_label_text = this._title_label.label;
+
+        // FIXME: this should be in CSS, but "text-decoration" isn't supported
+        if (this.underline_on_hover) {
+            this.connect('enter-notify-event', () => {
+                this._title_label.label = '<u>' + this._title_label_text + '</u>';
+                return Gdk.EVENT_PROPAGATE;
+            });
+            this.connect('leave-notify-event', () => {
+                this._title_label.label = this._title_label_text;
+                return Gdk.EVENT_PROPAGATE;
+            });
+        }
     },
 });
 
