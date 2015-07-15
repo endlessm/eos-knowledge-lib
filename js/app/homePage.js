@@ -6,6 +6,7 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const StyleClasses = imports.app.styleClasses;
+const Module = imports.app.interfaces.module;
 
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 
@@ -18,18 +19,14 @@ GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.
  * To work properly, subclasses will want to implement the 'pack_widgets'
  * and 'pack_cards' methods.
  */
-const HomePage = new Lang.Class({
+// FIXME: This shouldn't be an interface, but it is temporarily so that we can
+// have HomePageB be a module and HomePageA not yet be one.
+const HomePage = new Lang.Interface({
     Name: 'HomePage',
-    GTypeName: 'EknHomePage',
-    Extends: Gtk.Grid,
+    GTypeName: 'EknHomePageTempInterface',
+    Requires: [ GObject.Object, Module.Module ],
+
     Properties: {
-        /**
-         * Property: factory
-         * Factory to create modules
-         */
-        'factory': GObject.ParamSpec.object('factory', 'Factory', 'Factory',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            GObject.Object.$gtype),
         /**
          * Property: search-box
          *
@@ -82,14 +79,7 @@ const HomePage = new Lang.Class({
         'show-categories': {}
     },
 
-    _init: function (props={}) {
-        this._cards = null;
-
-        this.parent(props);
-
-        this.search_box = this.factory.create_named_module('home-search');
-        this._app_banner = this.factory.create_named_module('app-banner');
-
+    connect_signals: function () {
         this.search_box.connect('text-changed', Lang.bind(this, function (search_entry) {
             this.emit('search-text-changed', search_entry);
         }));
@@ -101,11 +91,6 @@ const HomePage = new Lang.Class({
         this.search_box.connect('menu-item-selected', Lang.bind(this, function (search_entry, article_id) {
             this.emit('article-selected', article_id);
         }));
-
-        this.get_style_context().add_class(StyleClasses.HOME_PAGE);
-
-        this.pack_widgets(this._app_banner, this.search_box);
-        this.show_all();
     },
 
     /**
@@ -131,9 +116,7 @@ const HomePage = new Lang.Class({
      * whenever the card list changes with a new list of cards to be packed in
      * the widget
      */
-    pack_cards: function (cards) {
-        // no-op
-    },
+    pack_cards: Lang.Interface.UNIMPLEMENTED,
 
     set cards (v) {
         if (this._cards === v)

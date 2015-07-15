@@ -2,26 +2,49 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
-const HomePage = imports.app.modules.homePage;
+const HomePage = imports.app.homePage;
 const Module = imports.app.interfaces.module;
 const StyleClasses = imports.app.styleClasses;
 
 const HomePageB = new Lang.Class({
     Name: 'HomePageB',
     GTypeName: 'EknHomePageB',
-    Extends: HomePage.HomePage,
-    Implements: [ Module.Module ],
+    Extends: Gtk.Grid,
+    Implements: [ Module.Module, HomePage.HomePage ],
 
     Properties: {
         'factory': GObject.ParamSpec.override('factory', Module.Module),
+        'search-box': GObject.ParamSpec.override('search-box',
+            HomePage.HomePage),
     },
 
     Template: 'resource:///com/endlessm/knowledge/widgets/homePageB.ui',
     InternalChildren: ['top_left', 'top_right', 'bottom' ],
 
     _init: function (props={}) {
+        this._cards = null;
+        // FIXME: this should be replaced by a card container module and packed
+        // in the app.json
+        this._card_container = new Gtk.Grid({
+            column_homogeneous: true,
+            row_homogeneous: true,
+            expand: true,
+            halign: Gtk.Align.FILL,
+            valign: Gtk.Align.FILL,
+        });
+
         this.parent(props);
         this.pack_module();
+        this._bottom.add(this._card_container);
+
+        // FIXME: we should be able to get the search box out of the factory,
+        // rather than reaching into our internal structure
+        this.search_box = this._top_right.get_child();
+
+        // FIXME: this should be replaced by the dispatcher
+        this.connect_signals();
+
+        this.get_style_context().add_class(StyleClasses.HOME_PAGE);
     },
 
     get_slot_names: function () {
@@ -33,7 +56,7 @@ const HomePageB = new Lang.Class({
         if (_allowed_card_numbers.indexOf(cards.length) < 0)
             printerr('Should only set 4, 6 or 8 cards in template B. ' + cards.length);
 
-        this._card_container = this._bottom.get_child();
+        // this._card_container = this._bottom.get_child();
 
         for (let card of this._card_container.get_children()) {
             this._card_container.remove(card);

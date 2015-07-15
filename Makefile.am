@@ -224,7 +224,6 @@ js_files = \
 	js/app/historyPresenter.js \
 	js/app/homePage.js \
 	js/app/homePageA.js \
-	js/app/homePageB.js \
 	js/app/imagePreviewer.js \
 	js/app/infiniteScrolledWindow.js \
 	js/app/interfaces/card.js \
@@ -241,7 +240,6 @@ js_files = \
 	js/app/modules/cardB.js \
 	js/app/modules/cardContainer.js \
 	js/app/modules/documentCard.js \
-	js/app/modules/homePage.js \
 	js/app/modules/homePageB.js \
 	js/app/modules/mediaCard.js \
 	js/app/modules/pdfCard.js \
