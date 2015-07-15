@@ -69,22 +69,6 @@ describe('Document Card', function () {
         expect(dummy.ready).toHaveBeenCalled();
     });
 
-    it('adds a no margins class when needed', function () {
-        let docCard = new DocumentCard.DocumentCard({
-            has_margins: false,
-            model: articleObject,
-        });
-        expect(docCard).toHaveDescendantWithCssClass(StyleClasses.NO_MARGINS);
-    });
-
-    it('removes a no margins class when needed', function () {
-        let docCard = new DocumentCard.DocumentCard({
-            has_margins: true,
-            model: articleObject,
-        });
-        expect(docCard).not.toHaveDescendantWithCssClass(StyleClasses.NO_MARGINS);
-    });
-
     it('can set toc section list', function () {
         let labels = [];
         for (let obj of toc_json['tableOfContents']) {

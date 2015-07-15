@@ -494,14 +494,6 @@ scrollbars, style the GTK scrollbars to look slightly more like them */
     background-image: url('resource:///com/endlessm/knowledge/templates/images/noise.png');
 }
 
-.document-card-content-frame {
-    padding: 20px 0px;
-}
-
-.document-card-content-frame.no-margins {
-    padding: 0px;
-}
-
 .document-card .title {
     font-family: Montserrat;
     font-size: 2.25em; /* 36pt * 1/12 * 0.75 DPI correction factor */
