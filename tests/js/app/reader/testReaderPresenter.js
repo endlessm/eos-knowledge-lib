@@ -9,7 +9,9 @@ const Utils = imports.tests.utils;
 Utils.register_gresource();
 
 const ArticleObjectModel = imports.search.articleObjectModel;
+const MockEngine = imports.tests.mockEngine;
 const MockFactory = imports.tests.mockFactory;
+const MockSearchBox = imports.tests.mockSearchBox;
 const Presenter = imports.app.reader.presenter;
 const QueryObject = imports.search.queryObject;
 
@@ -60,23 +62,6 @@ const MockUserSettingsModel = new Lang.Class({
     },
 });
 
-const MockEngine = new Lang.Class({
-    Name: 'MockEngine',
-    GTypeName: 'MockEngine_TestReaderPresenter',
-    Extends: GObject.Object,
-
-    _init: function () {
-        this.parent();
-        this.host = 'localhost';
-        this.port = 3003;
-    },
-
-    get_object_by_id: function () {},
-    get_object_by_id_finish: function () {},
-    get_objects_by_query: function () {},
-    get_objects_by_query_finish: function () {},
-});
-
 const MockNavButtons = new Lang.Class({
     Name: 'MockNavButtons',
     Extends: GObject.Object,
@@ -100,17 +85,6 @@ const MockButton = new Lang.Class({
     Signals: {
         'clicked': {},
     },
-});
-
-const MockSearchBox = new Lang.Class({
-    Name: 'MockSearchBox',
-    Extends: GObject.Object,
-    Signals: {
-        'activate': {},
-        'text-changed': {},
-        'menu-item-selected': {},
-    },
-    set_menu_items: function () {},
 });
 
 let get_style_context = function () {
@@ -147,7 +121,7 @@ const MockView = new Lang.Class({
     _init: function (nav_buttons) {
         this.parent();
         this.nav_buttons = nav_buttons;
-        this.search_box = new MockSearchBox();
+        this.search_box = new MockSearchBox.MockSearchBox();
         this.issue_nav_buttons = {
             back_button: new MockButton(),
             forward_button: new MockButton(),
@@ -252,28 +226,15 @@ describe('Reader presenter', function () {
         let application = new MockApplication();
         article_nav_buttons = new MockNavButtons();
         view = new MockView(article_nav_buttons);
-        engine = new MockEngine();
+        engine = new MockEngine.MockEngine();
         settings = new MockUserSettingsModel({
             highest_article_read: 0,
             bookmark_page: 0,
             start_article: 0,
             update_timestamp: new Date().toISOString(),
         });
-        // FIXME: we are launch into the callbacks synchronously because all
-        // these tests expect it currently. Would be good to rewrite these tests
-        // to tolerate a mock object that was actually async.
-        spyOn(engine, 'get_objects_by_query').and.callFake((query,
-                                                            cancellable,
-                                                            callback) => {
-            callback(engine, null);
-        });
-        spyOn(engine, 'get_objects_by_query_finish').and.returnValue([[], null]);
-        spyOn(engine, 'get_object_by_id').and.callFake((query,
-                                                        cancellable,
-                                                        callback) => {
-            callback(engine, null);
-        });
-        spyOn(engine, 'get_object_by_id_finish').and.returnValue(null);
+        engine.get_objects_by_query_finish.and.returnValue([[], null]);
+        engine.get_object_by_id_finish.and.returnValue(null);
         Utils.register_gresource();
 
         presenter = new Presenter.Presenter(TEST_JSON, {

@@ -582,4 +582,64 @@ describe('Knowledge Engine Module', () => {
             });
         });
     });
+
+    describe('runtime objects', function () {
+        let model;
+
+        beforeEach(function () {
+            model = new ContentObjectModel.ContentObjectModel({
+                title: 'a',
+            });
+            engine.add_runtime_object('ekn://foo/1234567890abcdef', model);
+        });
+
+        it('can be added', function (done) {
+            engine.get_object_by_id('ekn://foo/1234567890abcdef', null, (engine, res) => {
+                let retrieved_model = engine.get_object_by_id_finish(res);
+                expect(retrieved_model).toBe(model);
+                done();
+            });
+        });
+
+        it('are all returned when querying the "home page" tag', function (done) {
+            let model2 = new ContentObjectModel.ContentObjectModel({
+                title: 'b',
+            });
+            engine.add_runtime_object('ekn://foo/fedcba0987654321', model2);
+            let query = new QueryObject.QueryObject({
+                tags: [ Engine.HOME_PAGE_TAG ],
+            });
+            engine.get_objects_by_query(query, null, (engine, res) => {
+                let [models, get_more] = engine.get_objects_by_query_finish(res);
+                expect(models).toContain(model);
+                expect(models).toContain(model2);
+                expect(models.length).toBe(2);
+                expect(get_more).toBeNull();
+                done();
+            });
+        });
+
+        // https://github.com/endlessm/eos-sdk/issues/3147
+
+        xit('do not hit the database', function (done) {
+            spyOn(engine, 'FIXME_v2_method_for_retrieving_data_from_shard');
+            engine.get_object_by_id('ekn://foo/1234567890abcdef', null, (engine, res) => {
+                engine.get_object_by_id_finish(res);
+                expect(engine.FIXME_v2_method_for_retrieving_data_from_shard).not.toHaveBeenCalled();
+                done();
+            });
+        });
+
+        xit('mask existing objects with the same ID', function (done) {
+            FIXME_mock_engine_request_v2(undefined, [{
+                '@id': 'ekn://foo/1234567890abcdef',
+                '@type': 'ekn://_vocab/ArticleObject',
+            }]);
+            engine.get_object_by_id('ekn://foo/1234567890abcdef', null, (engine, res) => {
+                let retrieved_model = engine.get_object_by_id_finish(res);
+                expect(retrieved_model).toBe(model);
+                done();
+            });
+        });
+    });
 });

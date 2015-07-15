@@ -7,25 +7,15 @@ const Mainloop = imports.mainloop;
 const Utils = imports.tests.utils;
 Utils.register_gresource();
 
+const ContentObjectModel = imports.search.contentObjectModel;
+const MinimalCard = imports.tests.minimalCard;
+const MockEngine = imports.tests.mockEngine;
 const MockFactory = imports.tests.mockFactory;
 const Presenter = imports.app.presenter;
 
 Gtk.init(null);
 
 const TEST_CONTENT_DIR = Utils.get_test_content_srcdir();
-
-const MockCard = new Lang.Class({
-    Name: 'MockCard',
-    Extends: GObject.Object,
-    Signals: {
-        'clicked': {},
-    },
-
-    _init: function (props) {
-        this.model = props.model;
-        this.parent(); // We don't care about other props
-    },
-});
 
 const MockWidget = new Lang.Class({
     Name: 'MockWidget',
@@ -74,6 +64,8 @@ const MockView = new Lang.Class({
             connect: function () {},
         };
         this.section_page = connectable_object;
+        this.section_page.remove_all_segments = function () {};
+        this.section_page.append_to_segment = function () {};
         this.home_page = new MockHomePage();
         this.home_page.tab_button = {};
         this.categories_page = connectable_object;
@@ -96,26 +88,10 @@ const MockView = new Lang.Class({
     },
 
     show_no_search_results_page: function () {},
+    show_section_page: function () {},
     lock_ui: function () {},
     unlock_ui: function () {},
     present_with_time: function () {},
-});
-
-const MockEngine = new Lang.Class({
-    Name: 'MockEngine',
-    Extends: GObject.Object,
-
-    _init: function () {
-        this.parent();
-        this.host = 'localhost';
-        this.port = 3003;
-        this.language = '';
-    },
-
-    get_object_by_id: function () {},
-    get_object_by_id_finish: function () {},
-    get_objects_by_query: function () {},
-    get_objects_by_query_finish: function () {},
 });
 
 const MockArticlePresenter = new Lang.Class({
@@ -130,24 +106,42 @@ const MockArticlePresenter = new Lang.Class({
 });
 
 describe('Presenter', () => {
-    let presenter;
-    let data;
-    let view;
-    let engine;
-    let article_presenter;
-    let factory;
+    let presenter, data, view, engine, article_presenter, factory, sections;
     let test_app_filename = TEST_CONTENT_DIR + 'app.json';
 
     beforeEach(() => {
         factory = new MockFactory.MockFactory();
-        factory.add_named_mock('home-card', MockCard);
-        factory.add_named_mock('results-card', MockCard);
-        factory.add_named_mock('pdf-card', MockCard);
+        factory.add_named_mock('home-card', MinimalCard.MinimalCard);
+        factory.add_named_mock('results-card', MinimalCard.MinimalCard);
+        factory.add_named_mock('pdf-card', MinimalCard.MinimalCard);
 
+        // FIXME: this is a v1 app.json
         data = Utils.parse_object_from_path(test_app_filename);
         data['styles'] = {};
+
+        sections = [
+            {
+                title: 'Whitewalkers',
+                thumbnail_uri: 'resource:///com/endlessm/thrones/whitewalker.jpg',
+                tags: ['home page', 'asia', 'latin america'],
+            },
+            {
+                title: 'Kings',
+                thumbnail_uri: 'resource:///com/endlessm/thrones/joffrey.jpg',
+                featured: true,
+                tags: ['hostels', 'monuments'],
+            },
+            {
+                title: 'Weddings',
+                thumbnail_uri: 'resource:///com/endlessm/thrones/red_wedding.jpg',
+                tags: ['countries', 'monuments', 'mountains'],
+            },
+        ];
+
         view = new MockView();
-        engine = new MockEngine();
+        engine = new MockEngine.MockEngine();
+        engine.get_objects_by_query_finish.and.returnValue([sections.map((section) =>
+            new ContentObjectModel.ContentObjectModel(section)), null]);
         article_presenter = new MockArticlePresenter();
         let application = new GObject.Object();
         application.application_id = 'foobar';
@@ -163,36 +157,33 @@ describe('Presenter', () => {
 
     it('can be constructed', () => {});
 
-    it('can set cards on view from json', () => {
-        expect(data['sections'].map((section) => {
-            return section['title'];
-        })).toEqual(presenter.view.home_page.cards.map((card) => {
-            return card.model.title;
-        }));
+    it('puts the correct cards on the home page', () => {
+        expect(sections.map((section) => section['title']))
+            .toEqual(view.home_page.cards.map((card) => card.model.title));
 
-        expect(data['sections'].map((section) => {
-            return section['thumbnailURI'];
-        })).toEqual(presenter.view.home_page.cards.map((card) => {
-            return card.model.thumbnail_uri;
-        }));
+        expect(sections.map((section) => section['thumbnail_uri']))
+            .toEqual(view.home_page.cards.map((card) => card.model.thumbnail_uri));
 
-        expect(data['sections'].map((section) => {
-            return !!section['featured'];
-        })).toEqual(presenter.view.home_page.cards.map((card) => {
-            return card.model.featured;
-        }));
+        expect(sections.map((section) => !!section['featured']))
+            .toEqual(view.home_page.cards.map((card) => card.model.featured));
+    });
+
+    it('switches to the correct section page when clicking a card on the home page', function () {
+        spyOn(view, 'show_section_page');
+        engine.get_objects_by_query_finish.and.returnValue([[
+            new ContentObjectModel.ContentObjectModel({
+                title: 'An article in a section',
+            }),
+        ], null]);
+        view.home_page.cards[0].emit('clicked');
+        Utils.update_gui();
+        expect(view.show_section_page).toHaveBeenCalled();
     });
 
     describe('searching from search box', function () {
         beforeEach(function () {
             spyOn(view, 'show_no_search_results_page');
-            spyOn(engine, 'get_objects_by_query').and.callFake(function (query, cancellable, callback) {
-                callback(engine, null);
-            });
-            spyOn(engine, 'get_objects_by_query_finish').and.callFake(function (task) {
-                return [[], null];
-            });
-
+            engine.get_objects_by_query_finish.and.returnValue([[], null]);
         });
 
         it('works from the title bar', function (done) {

@@ -15,7 +15,11 @@ const QueryObject = imports.search.queryObject;
 const datadir = imports.search.datadir;
 const Utils = imports.search.utils;
 
-GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
+/**
+ * Constant: HOME_PAGE_TAG
+ * Special tag value indicating content for the app's home page
+ */
+const HOME_PAGE_TAG = 'home page';
 
 /**
  * Class: Engine
@@ -102,6 +106,7 @@ const Engine = Lang.Class({
         this._ekn_version_cache = {};
 
         this._shard_file_cache = {};
+        this._runtime_objects = new Map();
     },
 
     /**
@@ -120,6 +125,11 @@ const Engine = Lang.Class({
     get_object_by_id: function (id, cancellable, callback) {
         let task = new AsyncTask.AsyncTask(this, cancellable, callback);
         task.catch_errors(() => {
+            if (this._runtime_objects.has(id)) {
+                task.return_value(this._runtime_objects.get(id));
+                return;
+            }
+
             let handle_redirect = (result) => {
                 let model = this._model_from_json_ld(result);
 
@@ -199,6 +209,17 @@ const Engine = Lang.Class({
     get_objects_by_query: function (query_obj, cancellable, callback) {
         let task = new AsyncTask.AsyncTask(this, cancellable, callback);
         task.catch_errors(() => {
+            // Currently, only objects with HOME_PAGE_TAG are overlaid at
+            // runtime. We cut a corner here and only check the runtime objects
+            // in that case, which saves us from having to check every single
+            // query against the set of overlaid runtime objects, which would be
+            // a speed-reducing backwards-compatibility nightmare.
+            if (this._runtime_objects.size > 0 && query_obj.tags.length === 1 &&
+                query_obj.tags[0] == HOME_PAGE_TAG) {
+                task.return_value([[...this._runtime_objects.values()], null]);
+                return;
+            }
+
             if (query_obj.domain === '')
                 query_obj = QueryObject.QueryObject.new_from_object(query_obj, { domain: this.default_domain });
             let req_uri = this._get_xapian_uri(query_obj);
@@ -266,6 +287,26 @@ const Engine = Lang.Class({
      */
     get_objects_by_query_finish: function (task) {
         return task.finish();
+    },
+
+    /**
+     * Method: add_runtime_object
+     * Add an object not stored in the database
+     *
+     * Creates an object with a particular ID, which is not stored in the
+     * database but behaves like it is.
+     * Effectively this allows modifying the database at runtime.
+     * This is necessary for compatibility reasons.
+     *
+     * Note that a runtime object with the same ID as an object stored in the
+     * database will override the stored object.
+     *
+     * Parameters:
+     *   id - EKN ID, of the form ekn://domain/sha
+     *   model - a <ContentObjectModel>
+     */
+    add_runtime_object: function (id, model) {
+        this._runtime_objects.set(id, model);
     },
 
     _content_path_from_domain: function (domain) {

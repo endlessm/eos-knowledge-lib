@@ -11,7 +11,6 @@ const Lang = imports.lang;
 
 const ArticlePresenter = imports.app.articlePresenter;
 const Config = imports.app.config;
-const ContentObjectModel = imports.search.contentObjectModel;
 const Engine = imports.search.engine;
 const HistoryPresenter = imports.app.historyPresenter;
 const Launcher = imports.app.launcher;
@@ -148,7 +147,15 @@ const Presenter = new Lang.Class({
         this.view.title = app_json['appTitle'];
         this.view.background_image_uri = app_json['backgroundHomeURI'];
         this.view.blur_background_image_uri = app_json['backgroundSectionURI'];
-        this._set_sections(app_json['sections']);
+
+        let query = new QueryObject.QueryObject({
+            limit: 100,  // FIXME arbitrary, can we say "no limit"?
+            tags: [ Engine.HOME_PAGE_TAG ],
+        });
+        this.engine.get_objects_by_query(query, null, (engine, res) => {
+            let [sections, get_more] = engine.get_objects_by_query_finish(res);
+            this._set_sections(sections);
+        });
 
         this._lightbox_presenter = new LightboxPresenter.LightboxPresenter({
             engine: this.engine,
@@ -363,22 +370,10 @@ const Presenter = new Lang.Class({
 
     _set_sections: function(sections) {
         let new_card_from_section = (section) => {
-            // Since sets aren't yet backed by records in the database, we
-            // temporarily create a model for this section set.
-            let sectionModel = new ContentObjectModel.ContentObjectModel({
-                title: section.title,
-                featured: !!section.featured,
-            });
-            if (section.hasOwnProperty('thumbnailURI')) {
-                sectionModel.thumbnail_uri = section['thumbnailURI'];
-            } else {
-                log("WARNING: Missing category thumbnail for " + section.title);
-            }
-
             let card = this.factory.create_named_module('home-card', {
-                model: sectionModel,
+                model: section,
             });
-            card.connect('clicked', this._on_section_card_clicked.bind(this, section['tags']));
+            card.connect('clicked', this._on_section_card_clicked.bind(this));
             return card;
         };
 
@@ -404,8 +399,13 @@ const Presenter = new Lang.Class({
         this.view.show_home_page();
     },
 
-    _on_section_card_clicked: function (tags, card) {
+    _on_section_card_clicked: function (card) {
         this.view.lock_ui();
+
+        let tags = card.model.tags.slice();
+        let home_page_tag_index = tags.indexOf(Engine.HOME_PAGE_TAG);
+        if (home_page_tag_index !== -1)
+            tags.splice(home_page_tag_index, 1);
 
         let query_obj = new QueryObject.QueryObject({
             'tags': tags,

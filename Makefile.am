@@ -342,6 +342,7 @@ javascript_tests = \
 	tests/eosknowledgeprivate/testHello.js \
 	tests/eosknowledgeprivate/testHistoryItemModel.js \
 	tests/eosknowledgeprivate/testHistoryModel.js \
+	tests/js/app/compat/testCompat.js \
 	tests/js/app/interfaces/testCard.js \
 	tests/js/app/interfaces/testModule.js \
 	tests/js/app/modules/testAppBanner.js \
@@ -417,6 +418,7 @@ EXTRA_DIST += \
 	tests/InstanceOfMatcher.js \
 	tests/minimalCard.js \
 	tests/minimalModule.js \
+	tests/mockEngine.js \
 	tests/mockFactory.js \
 	tests/mockSearchBox.js \
 	tests/utils.js \

@@ -13,4 +13,6 @@ const MockSearchBox = new Lang.Class({
     _init: function (props={}) {
         this.parent(props);
     },
+
+    set_menu_items: function () {},
 });
