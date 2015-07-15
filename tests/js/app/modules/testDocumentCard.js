@@ -69,22 +69,6 @@ describe('Document Card', function () {
         expect(dummy.ready).toHaveBeenCalled();
     });
 
-    it('adds a no margins class when needed', function () {
-        let docCard = new DocumentCard.DocumentCard({
-            has_margins: false,
-            model: articleObject,
-        });
-        expect(docCard).toHaveDescendantWithCssClass(StyleClasses.NO_MARGINS);
-    });
-
-    it('removes a no margins class when needed', function () {
-        let docCard = new DocumentCard.DocumentCard({
-            has_margins: true,
-            model: articleObject,
-        });
-        expect(docCard).not.toHaveDescendantWithCssClass(StyleClasses.NO_MARGINS);
-    });
-
     it('can set toc section list', function () {
         let labels = [];
         for (let obj of toc_json['tableOfContents']) {
@@ -104,9 +88,6 @@ describe('Document Card', function () {
         });
         it('has a descendant with toolbar frame class', function () {
             expect(card).toHaveDescendantWithCssClass(StyleClasses.DOCUMENT_CARD_TOOLBAR_FRAME);
-        });
-        it('has a descendant with switcher frame class', function () {
-            expect(card).toHaveDescendantWithCssClass(StyleClasses.DOCUMENT_CARD_CONTENT_FRAME);
         });
         it('has an expanded table of contents by default', function () {
             expect(card.toc).not.toHaveCssClass(StyleClasses.COLLAPSED);

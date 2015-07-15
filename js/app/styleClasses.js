@@ -217,13 +217,6 @@ const DOCUMENT_CARD = 'document-card';
 const DOCUMENT_CARD_TOOLBAR_FRAME = 'document-card-toolbar-frame';
 
 /**
- * Constant: DOCUMENT_CARD_CONTENT_FRAME
- *
- * Matches a frame around the switcher on the DocumentCard.
- */
-const DOCUMENT_CARD_CONTENT_FRAME = 'document-card-content-frame';
-
-/**
  * Constant: SEARCH_BOX
  *
  * Matches the search box.

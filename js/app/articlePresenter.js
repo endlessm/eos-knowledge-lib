@@ -116,7 +116,6 @@ const ArticlePresenter = new GObject.Class({
 
         let documentCard = this.factory.create_named_module('document-card', {
             model: this._article_model,
-            has_margins: this.template_type === 'A',
             show_top_title: this.template_type === 'A',
             show_toc: this.template_type === 'A',
             content_ready_callback: (card) => {

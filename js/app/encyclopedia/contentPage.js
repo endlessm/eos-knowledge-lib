@@ -162,13 +162,13 @@ const ContentPage = new Lang.Class({
 
         this.search_box = new Endless.SearchBox();
 
-        let grid = new Gtk.Grid({
+        this._grid = new Gtk.Grid({
             column_spacing: 150,
         });
-        grid.attach(this._logo, 0, 0, 1, 1);
-        grid.attach(this.search_box, 1, 0, 1, 1);
-        grid.attach(this._wiki_web_view, 0, 1, 2, 1);
-        this.add(grid);
+        this._grid.attach(this._logo, 0, 0, 1, 1);
+        this._grid.attach(this.search_box, 1, 0, 1, 1);
+        this._grid.attach(this._wiki_web_view, 0, 1, 2, 1);
+        this.add(this._grid);
         this.set(0.5, 0.5, this.HORIZONTAL_SPACE_FILL_RATIO, 1.0);
 
         let mainWindow = this.get_toplevel();
@@ -176,18 +176,32 @@ const ContentPage = new Lang.Class({
     },
 
     _load_static_html: function (uri) {
+        if (this._wiki_web_view.get_parent() !== this._grid) {
+            this._grid.remove(this._document_card);
+            this._grid.attach(this._wiki_web_view, 0, 1, 2, 1);
+        }
         let [success, contents] = Gio.File.new_for_uri(uri).load_contents(null);
         this._should_emit_link_clicked = false;
         this._wiki_web_view.load_html(contents.toString(), uri);
     },
 
-    load_ekn_content: function (uri) {
+    load_ekn_content: function (article_model) {
         if (this._search_bar !== undefined) {
             this._search_bar.close();
         }
-        this._should_emit_link_clicked = false;
-        this._wiki_web_view.load_uri(uri);
-        this._wiki_web_view.has_focus = true;
+        this._document_card = this.factory.create_named_module('document-card', {
+            model: article_model,
+            show_toc: false,
+            show_top_title: false,
+        });
+        this._document_card.connect('ekn-link-clicked', this._on_link_clicked.bind(this));
+        if (this._document_card.get_parent() !== this._grid) {
+            this._grid.remove(this._wiki_web_view);
+            this._grid.attach(this._document_card, 0, 1, 2, 1);
+        }
+        this._should_emit_link_clicked = true;
+        this._document_card.show_all();
+        this._document_card.content_view.grab_focus();
     },
 
     _on_focus: function () {
@@ -255,9 +269,10 @@ const ContentPage = new Lang.Class({
             }
         } else if (((state & Gdk.ModifierType.CONTROL_MASK) !== 0) &&
                     keyval === Gdk.KEY_f) {
-            if (this._search_bar === undefined) {
-                this._search_bar = new ArticleSearch(this._wiki_web_view);
-                this._box.attach(this._search_bar, 0, 2, 2, 1);
+            if (this._search_bar === undefined &&
+                this._document_card !== undefined) {
+                this._search_bar = new ArticleSearch(this._document_card.content_view);
+                this._grid.attach(this._search_bar, 0, 2, 2, 1);
             }
 
             this._search_bar.open();
@@ -276,5 +291,15 @@ const ContentPage = new Lang.Class({
         this.emit('link-clicked', decision.request.uri);
         decision.ignore();
         return true;  // decision handled
+    },
+
+    _on_link_clicked: function (card, uri) {
+        // Don't emit link-clicked if this was due to a programmatic action
+        if (!this._should_emit_link_clicked) {
+            this._should_emit_link_clicked = true;
+            return; // decision not handled, use default action
+        }
+
+        this.emit('link-clicked', uri);
     },
 });

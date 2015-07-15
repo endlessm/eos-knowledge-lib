@@ -79,15 +79,6 @@ const DocumentCard = new Lang.Class({
             'The webview used to show article content.',
             GObject.ParamFlags.READABLE,
             EknWebview.EknWebview.$gtype),
-        /**
-         * Property: has-margins
-         *
-         * Set false if the article page should zero all margins and pack
-         * everything together as closely as possible. Defaults to true.
-         */
-        'has-margins': GObject.ParamSpec.boolean('has-margins', 'No margins',
-            'Set false if the article page should zero all margins.',
-            GObject.ParamFlags.READWRITE, true),
     },
 
     Signals: {
@@ -131,24 +122,10 @@ const DocumentCard = new Lang.Class({
     _SCROLL_DURATION: 1000,
 
     _init: function (props={}) {
-        // FIXME: The properties get initialized by GObject _before_ the
-        // template file gets parsed and the internal children get
-        // created. Since we need to refer to the internal children in
-        // the setter of has_margins, we have to do this setter as a
-        // separate function, rather than as a normal GObject setter.
-        let has_margins = true;
-        if (typeof props.has_margins !== 'undefined')
-            has_margins = props.has_margins;
-        delete props.has_margins;
-
         let content_ready_callback = props.content_ready_callback || function () {};
         delete props.content_ready_callback;
 
         this.parent(props);
-
-        // Now we know the internal children have been created, we can
-        // set the has_margins property.
-        this.set_has_margins(has_margins);
 
         // We can't make gjs types through templates right now, so table of
         // contents and webview must be constructed in code
@@ -297,28 +274,12 @@ const DocumentCard = new Lang.Class({
         return webview;
     },
 
-    set_has_margins: function (v) {
-        if (this._has_margins === v)
-            return;
-        if (v) {
-            this._content_frame.get_style_context().remove_class(StyleClasses.NO_MARGINS);
-            this._toolbar_frame.get_style_context().remove_class(StyleClasses.NO_MARGINS);
-        } else {
-            this._content_frame.get_style_context().add_class(StyleClasses.NO_MARGINS);
-            this._toolbar_frame.get_style_context().add_class(StyleClasses.NO_MARGINS);
-        }
-        this._has_margins = v;
-        this.notify('has-margins');
-    },
-
-    get has_margins () {
-        return this._has_margins;
-    },
-
     vfunc_size_allocate: function (alloc) {
         this.parent(alloc);
+        let border_style = this._content_frame.get_style_context().get_padding(Gtk.StateFlags.NORMAL);
+        let has_margins = border_style.top > 0 && border_style.bottom > 0;
         if (!this.toc.visible) {
-            let margin = this._has_margins ? this.EXPANDED_LAYOUT.right_margin_pct * alloc.width : 0;
+            let margin = has_margins ? this.EXPANDED_LAYOUT.right_margin_pct * alloc.width : 0;
             let switcher_alloc = new Cairo.RectangleInt({
                 x: alloc.x + margin,
                 y: alloc.y,
@@ -357,7 +318,7 @@ const DocumentCard = new Lang.Class({
         let left_margin = layout.left_margin_pct * alloc.width;
         let toolbar_right_margin = layout.toolbar_right_margin_pct * alloc.width;
         let right_margin = layout.right_margin_pct * alloc.width;
-        if (!this._has_margins) {
+        if (!has_margins) {
             left_margin = 0;
             toolbar_right_margin = 0;
             right_margin = 0;
