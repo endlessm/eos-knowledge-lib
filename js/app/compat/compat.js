@@ -101,6 +101,12 @@ function transform_v1_description(json) {
         modules['lightbox-card'] = {
             type: 'MediaCard',
         };
+        modules['document-card'] = {
+            type: 'DocumentCard',
+            properties: {
+                'expand': true,
+            },
+        };
         break;
     case 'reader':
         modules['app-banner'] = {
