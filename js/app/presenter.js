@@ -718,11 +718,7 @@ const Presenter = new Lang.Class({
     },
 
     _new_card_from_article_model: function (model) {
-        let module_name = 'results-card';
-        if (model.content_type === 'application/pdf') {
-            module_name = 'pdf-card';
-        }
-        let card = this.factory.create_named_module(module_name, {
+        let card = this.factory.create_named_module('results-card', {
             model: model,
         });
         card.connect('clicked', function () {

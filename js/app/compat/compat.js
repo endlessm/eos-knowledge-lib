@@ -2,6 +2,7 @@ const GLib = imports.gi.GLib;
 
 const ContentObjectModel = imports.search.contentObjectModel;
 const Engine = imports.search.engine;
+const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 
 function transform_v1_description(json) {
     let modules = {};
@@ -29,10 +30,7 @@ function transform_v1_description(json) {
             type: 'SetBannerCard',
         };
         modules['results-card'] = {
-            type: 'ArticleCard',
-        };
-        modules['pdf-card'] = {
-            type: 'PdfCard',
+            type: 'CardA',
         };
         modules['lightbox-card'] = {
             type: 'MediaCard',
@@ -117,6 +115,9 @@ function transform_v1_description(json) {
         };
         modules['results-card'] = {
             type: 'ReaderCard',
+            properties: {
+                'title-capitalization': EosKnowledgePrivate.TextTransform.UPPERCASE,
+            },
         };
         break;
     default:

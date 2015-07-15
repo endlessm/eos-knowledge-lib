@@ -38,6 +38,7 @@ const DocumentCard = new Lang.Class({
     Properties: {
         'factory': GObject.ParamSpec.override('factory', Module.Module),
         'model': GObject.ParamSpec.override('model', Card.Card),
+        'page-number': GObject.ParamSpec.override('page-number', Card.Card),
         'title-capitalization': GObject.ParamSpec.override('title-capitalization',
             Card.Card),
 
@@ -103,8 +104,8 @@ const DocumentCard = new Lang.Class({
     },
 
     Template: 'resource:///com/endlessm/knowledge/widgets/documentCard.ui',
-    Children: [ 'title-label' ],
-    InternalChildren: [ 'top-title-label', 'toolbar-frame', 'toolbar-grid', 'content-frame', 'content-grid' ],
+    InternalChildren: [ 'title-label', 'top-title-label', 'toolbar-frame',
+        'toolbar-grid', 'content-frame', 'content-grid' ],
 
 
     COLLAPSE_TOOLBAR_WIDTH: 800,
@@ -158,7 +159,20 @@ const DocumentCard = new Lang.Class({
             no_show_all: true,
         });
 
-        this.populate_from_model();
+        this.set_title_label_from_model(this._title_label);
+        this.set_title_label_from_model(this._top_title_label);
+
+        let _toc_visible = false;
+        if (this.model.table_of_contents !== undefined) {
+            this._mainArticleSections = this._get_toplevel_toc_elements(this.model.table_of_contents);
+            if (this._mainArticleSections.length > 1) {
+                this.toc.section_list = this._mainArticleSections.map(function (section) {
+                    return section.label;
+                });
+                _toc_visible = true;
+            }
+        }
+        this.toc.visible = this.show_toc && _toc_visible;
 
         if (this.model.content_type === 'text/html') {
 
@@ -195,28 +209,9 @@ const DocumentCard = new Lang.Class({
 
         this._toolbar_grid.add(this.toc);
 
-
-        this.title_label.bind_property('label',
-            this._top_title_label, 'label', GObject.BindingFlags.SYNC_CREATE);
-        this.title_label.bind_property('visible',
+        this._title_label.bind_property('visible',
             this._top_title_label, 'visible',
             GObject.BindingFlags.SYNC_CREATE | GObject.BindingFlags.INVERT_BOOLEAN | GObject.BindingFlags.BIDIRECTIONAL);
-    },
-
-    populate_from_model: function () {
-        Card.Card.populate_from_model(this);
-
-        let _toc_visible = false;
-        if (this.model.table_of_contents !== undefined) {
-            this._mainArticleSections = this._get_toplevel_toc_elements(this.model.table_of_contents);
-            if (this._mainArticleSections.length > 1) {
-                this.toc.section_list = this._mainArticleSections.map(function (section) {
-                    return section.label;
-                });
-                _toc_visible = true;
-            }
-        }
-        this.toc.visible = this.show_toc && _toc_visible;
     },
 
     _get_toplevel_toc_elements: function (tree) {
@@ -344,17 +339,17 @@ const DocumentCard = new Lang.Class({
             if (!this.toc.collapsed) {
                 this._toolbar_frame.get_style_context().add_class(StyleClasses.COLLAPSED);
                 this.toc.collapsed = true;
-                this.title_label.visible = false;
+                this._title_label.visible = false;
             }
         } else {
             if (this.toc.collapsed) {
                 this._toolbar_frame.get_style_context().remove_class(StyleClasses.COLLAPSED);
                 this.toc.collapsed = false;
             }
-            // Needs to be outside the if block because title_label could have been made invisible by
+            // Needs to be outside the if block because _title_label could have been made invisible by
             // an article that had no toc, in which case on the next article, toc will NOT be collapsed
-            // but we still need to tell title_label to become visible
-            this.title_label.visible = true;
+            // but we still need to tell _title_label to become visible
+            this._title_label.visible = true;
         }
 
         // Allocate toolbar and article frames

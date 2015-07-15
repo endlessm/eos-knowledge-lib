@@ -39,7 +39,6 @@ GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.
 
 const RESULTS_SIZE = 15;
 const TOTAL_ARTICLES = 30;
-const NUM_SNIPPET_STYLES = 3;
 const NUM_OVERVIEW_SNIPPETS = 3;
 
 const DATA_RESOURCE_PATH = 'resource:///com/endlessm/knowledge/';
@@ -612,11 +611,7 @@ const Presenter = new Lang.Class({
         let article_page_number = this._get_page_number_for_article_model(model) + 1;
         let card = this.factory.create_named_module('results-card', {
             model: model,
-            title_capitalization: EosKnowledgePrivate.TextTransform.UPPERCASE,
-            // FIXME: these won't be properties on all cards
             page_number: article_page_number,
-            style_variant: model.article_number % 3,
-            archived: this._is_archived(model),
         });
         card.connect('clicked', () => {
             this._on_article_card_clicked(model);
@@ -1061,8 +1056,6 @@ const Presenter = new Lang.Class({
         let snippets = this._article_models.slice(0, NUM_OVERVIEW_SNIPPETS).map((model, ix) => {
             let snippet = this.factory.create_named_module('home-card', {
                 model: model,
-                // FIXME: won't be on all cards
-                style_variant: ix % NUM_SNIPPET_STYLES,
             });
             snippet.connect('clicked', function () {
                 // idx is the article model index so need to add one (account

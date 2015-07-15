@@ -33,7 +33,6 @@ const MockReaderCard = new Lang.Class({
 
     _init: function (props) {
         this.model = props.model;
-        this.style_variant = props.style_variant;
         this.parent(); // We don't care about other props
     },
 });
@@ -530,14 +529,6 @@ describe('Reader presenter', function () {
             presenter._get_more_results_query = new QueryObject.QueryObject();
             view.search_results_page.emit('load-more-results');
             expect(view.search_results_page.append_search_results).toHaveBeenCalled();
-        });
-
-        it('sets the correct style classes on overview page snippets', function () {
-            expect(presenter.view.overview_page.set_article_snippets).toHaveBeenCalledWith([
-                jasmine.objectContaining({style_variant: 0}),
-                jasmine.objectContaining({style_variant: 1}),
-                jasmine.objectContaining({style_variant: 2}),
-            ]);
         });
 
         it('sets the correct style variants on article titles', function () {

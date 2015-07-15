@@ -20,15 +20,17 @@ const SetBannerCard = new Lang.Class({
     Properties: {
         'factory': GObject.ParamSpec.override('factory', Module.Module),
         'model': GObject.ParamSpec.override('model', Card.Card),
+        'page-number': GObject.ParamSpec.override('page-number', Card.Card),
         'title-capitalization': GObject.ParamSpec.override('title-capitalization',
             Card.Card),
     },
 
     Template: 'resource:///com/endlessm/knowledge/widgets/setBannerCard.ui',
-    Children: [ 'title-label' ],
+    InternalChildren: [ 'title-label' ],
 
     _init: function (props={}) {
         this.parent(props);
-        this.populate_from_model();
+
+        this.set_title_label_from_model(this._title_label);
     },
 });

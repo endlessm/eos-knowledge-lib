@@ -23,13 +23,14 @@ const MediaCard = new Lang.Class({
     Properties: {
         'factory': GObject.ParamSpec.override('factory', Module.Module),
         'model': GObject.ParamSpec.override('model', Card.Card),
+        'page-number': GObject.ParamSpec.override('page-number', Card.Card),
         'title-capitalization': GObject.ParamSpec.override('title-capitalization',
             Card.Card),
     },
 
     Template: 'resource:///com/endlessm/knowledge/widgets/mediaCard.ui',
-    Children: [ 'caption-label', 'attribution-label' ],
-    InternalChildren: [ 'grid', 'attribution-button', 'separator' ],
+    InternalChildren: [ 'caption-label', 'attribution-label', 'grid',
+        'attribution-button', 'separator' ],
 
     _MIN_WIDTH: 200,
     _css_has_loaded: false,
@@ -45,22 +46,34 @@ const MediaCard = new Lang.Class({
 
         // We can't make gjs types through templates right now, so previewer
         // must be constructed in code
-        this.previewer = new Previewer.Previewer({
+        this._previewer = new Previewer.Previewer({
             visible: true,
         });
+        this._previewer.set_content(this.model.get_content_stream(),
+                                   this.model.content_type);
         this._grid.insert_row(0);
-        this._grid.attach(this.previewer, 0, 0, 1, 1);
+        this._grid.attach(this._previewer, 0, 0, 1, 1);
 
-        this.populate_from_model();
+        this.set_label_or_hide(this._caption_label,
+                               this.model.caption.split('\n').join(' '));
 
-        this._attribution_button.visible = this.attribution_label.visible;
-        this._separator.visible = this.attribution_label.visible &&
-                                  this.caption_label.visible;
+        let attributions = [];
+        if (this.model.license)
+            attributions.push(this.model.license);
+        if (this.model.copyright_holder)
+            attributions.push(this.model.copyright_holder);
+        this.set_label_or_hide(this._attribution_label, attributions.map((s) => {
+            return s.split('\n')[0];
+        }).join(' - ').toUpperCase());
+        this._attribution_button.visible = this._attribution_label.visible;
+
+        this._separator.visible = this._attribution_label.visible &&
+                                  this._caption_label.visible;
     },
 
     vfunc_get_preferred_width: function () {
         let padding = this.get_style_context().get_padding(this.get_state_flags());
-        return this.previewer.get_preferred_width().map((v) =>
+        return this._previewer.get_preferred_width().map((v) =>
             Math.max(this._MIN_WIDTH, v) + padding.right + padding.left);
     },
 });

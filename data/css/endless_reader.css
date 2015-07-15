@@ -26,15 +26,15 @@ EosWindow {
 
 /* These individual snippet stylings will be
 overridden by app specific CSS */
-.snippet0 .title {
+.article-snippet.variant0 .title {
     color: #ef2929;
 }
 
-.snippet1 .title {
+.article-snippet.variant1 .title {
     color: #8ae234;
 }
 
-.snippet2 .title {
+.article-snippet.variant2 .title {
     color: #729fcf;
 }
 
@@ -189,15 +189,15 @@ overridden by app specific CSS */
     text-shadow: 0px 1px 0px white;
 }
 
-.reader-card0 .title {
+.reader-card.variant0 .title {
     color: #ef2929;
 }
 
-.reader-card1 .title {
+.reader-card.variant1 .title {
     color: #8ae234;
 }
 
-.reader-card2 .title {
+.reader-card.variant2 .title {
     color: #729fcf;
 }
 

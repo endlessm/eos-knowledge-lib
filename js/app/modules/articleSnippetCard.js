@@ -29,40 +29,31 @@ const ArticleSnippetCard = new Lang.Class({
     Properties: {
         'factory': GObject.ParamSpec.override('factory', Module.Module),
         'model': GObject.ParamSpec.override('model', Card.Card),
+        'page-number': GObject.ParamSpec.override('page-number', Card.Card),
         'title-capitalization': GObject.ParamSpec.override('title-capitalization',
             Card.Card),
-        /**
-         * Property: style-variant
-         * Which style variant to use for appearance
-         *
-         * Which CSS style variant to use (default is zero.)
-         * If the variant does not exist then the snippet will have only the
-         * styles common to all variants.
-         * Use -1 as a variant that is guaranteed not to exist.
-         */
-        'style-variant': GObject.ParamSpec.int('style-variant', 'Style variant',
-            'Which CSS style variant to use for appearance',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            -1, GLib.MAXINT16, 0),
     },
 
     Template: 'resource:///com/endlessm/knowledge/widgets/articleSnippetCard.ui',
-    Children: [ 'title-label', 'synopsis-label' ],
+    InternalChildren: [ 'title-label', 'synopsis-label' ],
 
     _init: function (props={}) {
         this.parent(props);
-        this.populate_from_model();
+
         Utils.set_hand_cursor_on_widget(this);
 
-        if (this.style_variant >= 0)
-            this.get_style_context().add_class('snippet' + this.style_variant);
+        this.set_title_label_from_model(this._title_label);
+        this.set_synopsis_label_from_model(this._synopsis_label);
+        this.set_style_variant_from_model();
     },
 });
 
 function get_css_for_module (css_data, num) {
     let title_data = Utils.get_css_for_submodule('title', css_data);
-    let str = Utils.object_to_css_string(title_data, '.snippet' + num + ' .title');
+    let str = Utils.object_to_css_string(title_data,
+        '.article-snippet.variant' + num + ' .title');
     let module_data = Utils.get_css_for_submodule('module', css_data);
-    str += Utils.object_to_css_string(module_data, '.snippet' + num + ' .synopsis');
+    str += Utils.object_to_css_string(module_data, '.article-snippet.variant' +
+        num + ' .synopsis');
     return str;
 }

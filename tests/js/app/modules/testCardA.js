@@ -16,7 +16,9 @@ describe('Card widget', function () {
     });
 
     it('has the correct style class', function () {
-        let card = new CardA.CardA();
+        let card = new CardA.CardA({
+            model: new ContentObjectModel.ContentObjectModel(),
+        });
         expect(card).toHaveCssClass(StyleClasses.CARD_A);
     });
 

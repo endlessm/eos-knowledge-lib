@@ -25,9 +25,6 @@ let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
  *    title - card's label
  *    decorative-bar - ornament on the top of the card
  *    hover-frame - hover frame
- *    reader-card0 - Style variant #0
- *    reader-card1 - Style variant #1
- *    reader-card2 - Style variant #2
  */
 const ReaderCard = new Lang.Class({
     Name: 'ReaderCard',
@@ -38,36 +35,14 @@ const ReaderCard = new Lang.Class({
     Properties: {
         'factory': GObject.ParamSpec.override('factory', Module.Module),
         'model': GObject.ParamSpec.override('model', Card.Card),
+        'page-number': GObject.ParamSpec.override('page-number', Card.Card),
         'title-capitalization': GObject.ParamSpec.override('title-capitalization',
             Card.Card),
-        /**
-         * Property: archived
-         */
-        'archived': GObject.ParamSpec.boolean('archived', 'Archived',
-            'Whether the Reader Card represents an archived article. Defaults to "false"',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, false),
-
-        /**
-         * Property: page-number
-         */
-        'page-number': GObject.ParamSpec.uint('page-number', 'Page Number',
-            'Page Number of the article within the current set of articles. Only applies when the card\'s "archived" property is set to "false".',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            0, GLib.MAXUINT32, 0),
-
-        /**
-         * Property: style-variant
-         */
-        'style-variant': GObject.ParamSpec.uint('style-variant', 'Style Variant',
-            'Reader card style variant. Default value is 0.',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            0, GLib.MAXUINT32, 0),
     },
 
     Template: 'resource:///com/endlessm/knowledge/widgets/readerCard.ui',
-    Children: [ 'title-label' ],
-    InternalChildren: [ 'archive-icon', 'card-info-grid', 'card-info-label',
-        'hover-frame' ],
+    InternalChildren: [  'title-label', 'archive-icon', 'card-info-grid',
+        'card-info-label', 'hover-frame' ],
 
     _init: function(props={}) {
         // TODO: we do want all cards to be the same size, but we may want to
@@ -75,9 +50,12 @@ const ReaderCard = new Lang.Class({
         props.width_request = 200;
         props.height_request = 250;
         this.parent(props);
-        this.populate_from_model();
 
-        if (!this.archived) {
+        this.set_title_label_from_model(this._title_label);
+        this.set_style_variant_from_model();
+
+        // page_number of 0 means an archived article
+        if (this.page_number) {
             this._card_info_label.label = (_("Page %s").format('<b>' + this.page_number + '</b>'));
             this._card_info_grid.remove(this._archive_icon);
         }
@@ -90,40 +68,21 @@ const ReaderCard = new Lang.Class({
             this._hover_frame.hide();
         });
     },
-
-    get style_variant () {
-        return this._style_variant;
-    },
-
-    set style_variant (v) {
-        if (this._style_variant === v) return;
-
-        // Remove style variant classes.
-        let style_variants = [
-            'reader-card0',
-            'reader-card1',
-            'reader-card2',
-        ];
-        style_variants.map((style_variant_class) => {
-            this.get_style_context().remove_class(style_variant_class);
-        });
-
-        this.get_style_context().add_class('reader-card' + v);
-        this._style_variant = v;
-        this.notify('style-variant');
-    },
 });
 
 function get_css_for_module (css_data, num) {
     let str = "";
     let background_color = css_data['title-background-color'];
     if (typeof background_color !== 'undefined') {
-        str += Utils.object_to_css_string({'background-color': background_color}, '.reader-card' + num + ' .decorative-bar');
+        str += Utils.object_to_css_string({'background-color': background_color},
+            '.reader-card.variant' + num + ' .decorative-bar');
         delete css_data['title-background-color'];
     }
     let title_data = Utils.get_css_for_submodule('title', css_data);
-    let str = Utils.object_to_css_string(title_data, '.reader-card' + num + ' .title');
+    str += Utils.object_to_css_string(title_data, '.reader-card.variant' +
+        num + ' .title');
     let module_data = Utils.get_css_for_submodule('module', css_data);
-    str += Utils.object_to_css_string(module_data, '.reader-card' + num + ' .attribution');
+    str += Utils.object_to_css_string(module_data, '.reader-card.variant' +
+        num + ' .attribution');
     return str;
 }

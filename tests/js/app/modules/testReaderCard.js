@@ -3,6 +3,7 @@ const Gtk = imports.gi.Gtk;
 const Utils = imports.tests.utils;
 Utils.register_gresource();
 
+const ArticleObjectModel = imports.search.articleObjectModel;
 const ReaderCard = imports.app.modules.readerCard;
 const ContentObjectModel = imports.search.contentObjectModel;
 const CssClassMatcher = imports.tests.CssClassMatcher;
@@ -15,7 +16,9 @@ describe('Reader Card widget', function () {
     beforeEach(function () {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
 
-        card = new ReaderCard.ReaderCard();
+        card = new ReaderCard.ReaderCard({
+            model: new ContentObjectModel.ContentObjectModel(),
+        });
     });
 
     it('constructs', function () {});
@@ -31,32 +34,29 @@ describe('Reader Card widget', function () {
 
         it('sets style variant classes to variants [0, 2].', function () {
             let cards = [{
-                model: new ContentObjectModel.ContentObjectModel({
+                model: new ArticleObjectModel.ArticleObjectModel({
                     title: 'Barry Bonds',
                     synopsis: 'Homerun king',
+                    article_number: 0,
                 }),
-                style_variant: 0,
-                page_number: 25,
             }, {
-                model: new ContentObjectModel.ContentObjectModel({
+                model: new ArticleObjectModel.ArticleObjectModel({
                     title: 'Hank Aaron',
                     synopsis: 'Hammering Hank',
+                    article_number: 1,
                 }),
-                style_variant: 1,
-                page_number: 44,
             }, {
-                model: new ContentObjectModel.ContentObjectModel({
+                model: new ArticleObjectModel.ArticleObjectModel({
                     title: 'Babe Ruth',
                     synopsis: 'The Bambino',
+                    article_number: 2,
                 }),
-                style_variant: 2,
-                page_number: 3,
             }].map((props) => {
                 return new ReaderCard.ReaderCard(props);
             });
 
             cards.map(function (card, index) {
-                expect(card).toHaveCssClass('reader-card' + (index));
+                expect(card).toHaveCssClass('variant' + (index));
             });
         });
     });
