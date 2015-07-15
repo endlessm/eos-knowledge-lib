@@ -11,7 +11,6 @@ const ArticlePage = imports.app.articlePage;
 const CategoriesPage = imports.app.categoriesPage;
 const HomePage = imports.app.homePage;
 const HomePageA = imports.app.homePageA;
-const HomePageB = imports.app.homePageB;
 const Lightbox = imports.app.lightbox;
 const NoSearchResultsPage = imports.app.noSearchResultsPage;
 const SectionPage = imports.app.sectionPage;
@@ -57,7 +56,7 @@ const Window = new Lang.Class({
         'home-page': GObject.ParamSpec.object('home-page', 'Home page',
             'The home page of this view widget.',
             GObject.ParamFlags.READABLE,
-            HomePage.HomePage),
+            GObject.Object.$gtype),
         /**
          * Property: categories-page
          *
@@ -226,9 +225,7 @@ const Window = new Lang.Class({
 
         this._categories_page = new CategoriesPage.CategoriesPage();
         if (this.template_type === 'B') {
-            this._home_page = new HomePageB.HomePageB({
-                factory: this.factory,
-            });
+            this._home_page = this.factory.create_named_module('home-page-b');
             this._section_article_page = new SectionArticlePage.SectionArticlePageB({
                 factory: this.factory,
             });
