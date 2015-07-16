@@ -1,9 +1,7 @@
 eosknowledgeprivate/ekn-hello.c
-data/js/error_page.js
-data/js/no_results.js
-data/js/search_results.js
 data/widgets/cardA.ui
 data/widgets/readerCard.ui
+data/widgets/searchModule.ui
 js/app/articleHTMLRenderer.js
 js/app/categoriesPage.js
 js/app/encyclopedia/presenter.js
@@ -12,6 +10,7 @@ js/app/homePageA.js
 js/app/noSearchResultsPage.js
 js/app/presenter.js
 js/app/modules/readerCard.js
+js/app/modules/searchModule.js
 js/app/reader/donePage.js
 js/app/reader/presenter.js
 js/app/reader/searchResultsPage.js

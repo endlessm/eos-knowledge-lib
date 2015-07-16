@@ -105,6 +105,16 @@ function transform_v1_description(json) {
                 'expand': true,
             },
         };
+        modules['search-results'] = {
+            type: 'SearchModule',
+        };
+        modules['results-card'] = {
+            type: 'TextCard',
+            properties: {
+                'underline-on-hover': true,
+                'decoration': true,
+            },
+        };
         break;
     case 'reader':
         modules['app-banner'] = {

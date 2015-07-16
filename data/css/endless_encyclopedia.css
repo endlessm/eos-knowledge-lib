@@ -56,3 +56,45 @@ GtkEntry:selected {
     border-radius: 5px;
     background-color: alpha(#212526, 0.90);
 }
+
+.search-results {
+    color: #464646;
+    background-color: #e9e4de;
+}
+
+.search-results .headline {
+    font-weight: 300;
+    font-size: 2em; /* 24px / 12px/em */
+    color: #7e7e7e;
+    padding-left: 7px;
+}
+
+.search-results .separator {
+    padding-bottom: 35px;
+}
+
+/* FIXME: move oops block up to 1/3 of the vertical! */
+
+.search-results .oops {
+    font-size: 5.25em;  /* 63px / 12px/em */
+    font-weight: 300;
+}
+
+.search-results .error-message {
+    font-size: 1.25em;  /* 15px / 12px/em */
+    font-weight: normal;
+}
+
+.search-results .card {
+    padding-bottom: 2em; /* (39px line height - 15px text height) / 12px/em */
+}
+
+.search-results .card .title {
+    font-size: 1.25em;  /* 15px / 12px/em */
+    color: #277090;
+}
+
+.search-results .card .decoration {
+    color: rgba(145, 145, 145, 0.5);
+    padding-right: 0.8em;
+}
