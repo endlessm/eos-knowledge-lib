@@ -216,6 +216,7 @@ js_files = \
 	js/app/homePageB.js \
 	js/app/imagePreviewer.js \
 	js/app/infiniteScrolledWindow.js \
+	js/app/interfaces/arrangement.js \
 	js/app/interfaces/card.js \
 	js/app/interfaces/module.js \
 	js/app/launcher.js \
@@ -331,6 +332,7 @@ javascript_tests = \
 	tests/eosknowledgeprivate/testHistoryItemModel.js \
 	tests/eosknowledgeprivate/testHistoryModel.js \
 	tests/js/app/compat/testCompat.js \
+	tests/js/app/interfaces/testArrangement.js \
 	tests/js/app/interfaces/testCard.js \
 	tests/js/app/interfaces/testModule.js \
 	tests/js/app/modules/testAppBanner.js \
