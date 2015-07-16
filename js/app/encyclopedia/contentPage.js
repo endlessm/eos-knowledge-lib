@@ -187,37 +187,46 @@ const ContentPage = new Lang.Class({
             model: article_model,
             show_toc: false,
             show_top_title: false,
+            content_ready_callback: (card) => {
+                this._stack.visible_child = card;
+                card.content_view.grab_focus();
+                if (old_document_card)
+                    this._stack.remove(old_document_card);
+            },
         });
         this._document_card.connect('ekn-link-clicked', (card, uri) =>
             this.emit('link-clicked', uri));
         this._document_card.show_all();
         this._stack.add(this._document_card);
-        this._stack.visible_child = this._document_card;
-        this._document_card.content_view.grab_focus();
-        if (old_document_card)
-            this._stack.remove(old_document_card);
+
+        let webview = this._document_card.content_view;
+        webview.connect('notify::has-focus', this._on_focus.bind(this));
+        webview.connect('enter-fullscreen',
+            this._on_fullscreen_change.bind(this, true));
+        webview.connect('leave-fullscreen',
+            this._on_fullscreen_change.bind(this, false));
     },
 
-    _on_focus: function () {
-        let script = "webview_focus = " + this._wiki_web_view.has_focus + ";";
-        this._run_js_on_loaded_page(script);
+    _on_focus: function (webview) {
+        let script = "webview_focus = " + webview.has_focus + ";";
+        this._run_js_on_loaded_page(webview, script);
     },
 
     _on_fullscreen_change: function (should_be_fullscreen) {
         this._logo.visible = !should_be_fullscreen;
         this.search_box.visible = !should_be_fullscreen;
-        this._alignment.xscale = should_be_fullscreen ? 1.0 : this.HORIZONTAL_SPACE_FILL_RATIO;
+        this.xscale = should_be_fullscreen ? 1.0 : this.HORIZONTAL_SPACE_FILL_RATIO;
     },
 
     // first, if the webview isn't loading something, attempt to run the
     // javascript on the page. Also attach a handler to run the javascript
     // whenever the webview's load-changed indicates it's finished loading
     // something
-    _run_js_on_loaded_page: function (script) {
-        if (this._wiki_web_view.uri !== null && !this._wiki_web_view.is_loading) {
-            this._wiki_web_view.run_javascript(script, null, null);
+    _run_js_on_loaded_page: function (webview, script) {
+        if (webview.uri !== null && !webview.is_loading) {
+            webview.run_javascript(script, null, null);
         }
-        let handler = this._wiki_web_view.connect('load-changed', (webview, status) => {
+        let handler = webview.connect('load-changed', (webview, status) => {
             if (status === WebKit2.LoadEvent.FINISHED) {
                 webview.run_javascript(script, null, null);
                 webview.disconnect(handler);
