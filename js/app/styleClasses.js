@@ -492,8 +492,7 @@ const READER_ARTICLE_PAGE_ORNAMENT = 'article-page-ornament';
 
 /**
  * Constant: READER_ERROR_PAGE
- *
- * Matches the error message page in the reader.
+ * Matches an error message page
  */
 const READER_ERROR_PAGE = 'error-page';
 
@@ -599,3 +598,35 @@ const INVISIBLE = 'invisible';
  * Added to widgets that should be faded in using CSS
  */
 const FADE_IN = 'fade-in';
+
+/**
+ * Constant: DECORATION
+ * Added to decorative elements
+ */
+const DECORATION = 'decoration';
+
+/**
+ * Constant: SEARCH_RESULTS
+ * On the <SearchModule> module
+ */
+const SEARCH_RESULTS = 'search-results';
+
+/**
+ * Constant: HEADLINE
+ * Matches headline text in various widgets
+ */
+const HEADLINE = 'headline';
+
+/**
+ * Constant: OOPS
+ * Matches large OOPS! error messages
+ */
+const OOPS = 'oops';
+
+/**
+ * Constant: ERROR_MESSAGE
+ * Matches error messages
+ *
+ * Commonly found under <StyleClasses.OOPS>-styled labels.
+ */
+const ERROR_MESSAGE = 'error-message';

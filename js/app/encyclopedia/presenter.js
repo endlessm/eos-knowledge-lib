@@ -88,6 +88,9 @@ const EncyclopediaPresenter = new Lang.Class({
         this._view.history_buttons.forward_button.connect('clicked', () => {
             this._history_presenter.go_forward();
         });
+        this._view.content_page.search_module.connect('article-selected', (module, model) => {
+            this.load_model(model);
+        });
         this._view.content_page.connect('link-clicked', (page, uri) => {
             this.load_uri(uri);
         });
@@ -168,41 +171,27 @@ const EncyclopediaPresenter = new Lang.Class({
     },
 
     _do_search_in_view: function (query) {
-        let ready_id = this._view.content_page.connect('display-ready', () => {
-            let page = this._view.content_page;
-            page.set_search_result_page_searching(query);
-            if (this._view.get_visible_page() === this._view.home_page)
-                this._view.show_content_page();
-            this._view.content_page.disconnect(ready_id);
-            let query_obj = new QueryObject.QueryObject({
-                query: query,
-            });
-            this._engine.get_objects_by_query(query_obj,
-                                              null,
-                                              (engine, task) => {
-                let results, get_more_results_query;
-                try {
-                    [results, get_more_results_query] = engine.get_objects_by_query_finish(task);
-                } catch (error) {
-                    logError(error);
-                    page.load_error_page();
-                    return;
-                }
-
-                if (results.length === 0) {
-                    page.load_no_results_page(query);
-                    return;
-                }
-
-                page.set_search_result_page_complete(query, results.map((item) => {
-                    return {
-                        title: item.title.charAt(0).toUpperCase() + item.title.slice(1),
-                        uri: item.ekn_id,
-                    };
-                }));
-            });
+        let search = this._view.content_page.search_module;
+        search.start_search(query);
+        if (this._view.get_visible_page() === this._view.home_page)
+            this._view.show_content_page();
+        this._view.content_page.show_search();
+        this._view.set_focus_child(null);
+        let query_obj = new QueryObject.QueryObject({
+            query: query,
         });
-        this._view.content_page.load_search_result_page();
+        this._engine.get_objects_by_query(query_obj, null, (engine, task) => {
+            search.searching = false;
+            let results, get_more_results_query;
+            try {
+                [results, get_more_results_query] = engine.get_objects_by_query_finish(task);
+            } catch (error) {
+                logError(error);
+                search.finish_search_with_error(error);
+                return;
+            }
+            search.finish_search(results);
+        });
     },
 
     _load_article_in_view: function (article) {
@@ -245,19 +234,24 @@ const EncyclopediaPresenter = new Lang.Class({
                 model = engine.get_object_by_id_finish(task);
             } catch (error) {
                 logError(error);
-                this._view.content_page.load_error_page();
+                this._view.content_page.search_module.finish_search_with_error();
+                this._view.content_page.show_search();
                 return;
             }
 
-            if (model instanceof ArticleObjectModel.ArticleObjectModel) {
-                this._history_presenter.set_current_item({
-                    page_type: ARTICLE_PAGE,
-                    article_model: model,
-                });
-            } else if (model instanceof MediaObjectModel.MediaObjectModel) {
-                this._lightbox_presenter.show_media_object(this._current_article, model);
-            }
+            this.load_model(model);
         });
+    },
+
+    load_model: function (model) {
+        if (model instanceof ArticleObjectModel.ArticleObjectModel) {
+            this._history_presenter.set_current_item({
+                page_type: ARTICLE_PAGE,
+                article_model: model,
+            });
+        } else if (model instanceof MediaObjectModel.MediaObjectModel) {
+            this._lightbox_presenter.show_media_object(this._current_article, model);
+        }
     },
 
     do_search: function (query) {

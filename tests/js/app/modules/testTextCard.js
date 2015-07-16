@@ -21,7 +21,16 @@ describe('Text card widget', function () {
         });
     });
 
-    it('has text card class', function () {
-        expect(card).toHaveDescendantWithCssClass(StyleClasses.TEXT_CARD);
+    it('has card and text-card class', function () {
+        expect(card).toHaveCssClass(StyleClasses.CARD);
+        expect(card).toHaveCssClass(StyleClasses.TEXT_CARD);
+    });
+
+    it('has a label with title class', function () {
+        expect(card).toHaveDescendantWithCssClass(StyleClasses.CARD_TITLE);
+    });
+
+    it('has a decoration widget with decoration class', function () {
+        expect(card).toHaveDescendantWithCssClass(StyleClasses.DECORATION);
     });
 });

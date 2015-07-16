@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.18.3 -->
+<interface>
+  <requires lib="gtk+" version="3.12"/>
+  <template class="EknSearchModule" parent="GtkStack">
+    <property name="visible">True</property>
+    <property name="can_focus">True</property>
+    <child>
+      <object class="GtkGrid" id="grid1">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="halign">center</property>
+        <property name="margin_start">50</property>
+        <property name="margin_end">50</property>
+        <property name="margin_top">45</property>
+        <property name="hexpand">False</property>
+        <property name="orientation">vertical</property>
+        <property name="row_spacing">22</property>
+        <child>
+          <object class="GtkLabel" id="headline">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="halign">start</property>
+            <property name="hexpand">False</property>
+            <property name="label" comments="This is a placeholder. This string will be translated in code instead.">Search results for</property>
+            <property name="use_markup">True</property>
+            <style>
+              <class name="headline"/>
+            </style>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkImage" id="image1">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="resource">/com/endlessm/knowledge/images/separator.png</property>
+            <style>
+              <class name="separator"/>
+            </style>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkStack" id="results-stack">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <child>
+              <object class="GtkListBox" id="results-box">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="valign">start</property>
+                <property name="vexpand">True</property>
+              </object>
+              <packing>
+                <property name="name">results</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkSpinner" id="spinner">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="halign">center</property>
+                <property name="valign">center</property>
+                <property name="vexpand">True</property>
+                <property name="active">True</property>
+              </object>
+              <packing>
+                <property name="position">1</property>
+                <property name="name">spinner</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">2</property>
+          </packing>
+        </child>
+      </object>
+      <packing>
+        <property name="name">results</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkGrid" id="alignmentgrid1">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="halign">center</property>
+        <property name="margin_start">50</property>
+        <property name="margin_end">50</property>
+        <property name="margin_top">45</property>
+        <property name="orientation">vertical</property>
+        <property name="row_homogeneous">True</property>
+        <child>
+          <object class="GtkGrid" id="grid2">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="halign">center</property>
+            <property name="valign">center</property>
+            <property name="vexpand">True</property>
+            <property name="orientation">vertical</property>
+            <child>
+              <object class="GtkLabel" id="label1">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">OOPS!</property>
+                <style>
+                  <class name="oops"/>
+                </style>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="query-message">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" comments="This is a placeholder. The string will be translated in code.">We did not find any results for</property>
+                <style>
+                  <class name="error-message"/>
+                </style>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="label3">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Try repeating your search with other words.</property>
+                <style>
+                  <class name="error-message"/>
+                </style>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">2</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">0</property>
+            <property name="height">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="dummy1">
+            <property name="can_focus">False</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">2</property>
+          </packing>
+        </child>
+      </object>
+      <packing>
+        <property name="position">1</property>
+        <property name="name">no-results</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkGrid" id="alignmentgrid2">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="halign">center</property>
+        <property name="margin_start">50</property>
+        <property name="margin_end">50</property>
+        <property name="margin_top">45</property>
+        <property name="orientation">vertical</property>
+        <property name="row_homogeneous">True</property>
+        <child>
+          <object class="GtkGrid" id="grid3">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="halign">center</property>
+            <property name="valign">center</property>
+            <property name="vexpand">True</property>
+            <property name="orientation">vertical</property>
+            <child>
+              <object class="GtkLabel" id="label2">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">OOPS!</property>
+                <style>
+                  <class name="oops"/>
+                </style>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="label4">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">There was an error during your search.
+    Try searching again, and if that doesn't work restart your computer.</property>
+                <property name="justify">center</property>
+                <style>
+                  <class name="error-message"/>
+                </style>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">0</property>
+            <property name="height">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="dummy2">
+            <property name="can_focus">False</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">2</property>
+          </packing>
+        </child>
+        <style>
+          <class name="error-page"/>
+        </style>
+      </object>
+      <packing>
+        <property name="position">2</property>
+        <property name="name">error</property>
+      </packing>
+    </child>
+    <style>
+      <class name="search-results"/>
+    </style>
+  </template>
+</interface>

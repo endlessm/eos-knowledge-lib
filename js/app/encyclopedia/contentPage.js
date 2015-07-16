@@ -11,10 +11,6 @@ const EknWebview = imports.app.eknWebview;
 const ARTICLE_SEARCH_BUTTONS_SPACING = 10;
 const ARTICLE_SEARCH_MAX_RESULTS = 200;
 
-const _SEARCH_RESULTS_PAGE_URI = 'resource:///com/endlessm/knowledge/html/search_results.html';
-const _NO_RESULTS_PAGE_URI = 'resource:///com/endlessm/knowledge/html/no_results.html';
-const _ERROR_PAGE_URI = 'resource:///com/endlessm/knowledge/html/error_page.html';
-
 const ArticleSearch = new Lang.Class({
     Name: 'ArticleSearch',
     Extends: Gtk.Grid,
@@ -124,9 +120,18 @@ const ContentPage = new Lang.Class({
             'The seach box for this view.',
             GObject.ParamFlags.READABLE,
             Endless.SearchBox),
+
+        /**
+         * Property: search-module
+         * <SearchModule> created by this widget
+         *
+         * FIXME: The dispatcher will make this property unnecessary.
+         */
+        'search-module': GObject.ParamSpec.object('search-module',
+            'Search module', 'Search module for this view',
+            GObject.ParamFlags.READABLE, GObject.Object.$gtype),
     },
     Signals: {
-        'display-ready': {},
         'link-clicked': {
             param_types: [ GObject.TYPE_STRING ],
         },
@@ -139,20 +144,7 @@ const ContentPage = new Lang.Class({
         props.name = 'ContentPage';
         this.parent(props);
 
-        this._should_emit_link_clicked = true;
-        this._wiki_web_view = new EknWebview.EknWebview({
-            expand: true,
-        });
-        this._wiki_web_view.connect("notify::has-focus", this._on_focus.bind(this));
-        this._wiki_web_view.connect('decide-policy', this._on_decide_policy.bind(this));
-        this._wiki_web_view.connect('load-changed', (view, event) => {
-            if (event === WebKit2.LoadEvent.COMMITTED)
-                this.emit('display-ready');
-        });
-        this._wiki_web_view.connect('enter-fullscreen',
-            this._on_fullscreen_change.bind(this, true));
-        this._wiki_web_view.connect('leave-fullscreen',
-            this._on_fullscreen_change.bind(this, false));
+        this._search_module = this.factory.create_named_module('search-results');
 
         this._logo = this.factory.create_named_module('article-app-banner', {
             halign: Gtk.Align.START,
@@ -162,68 +154,79 @@ const ContentPage = new Lang.Class({
 
         this.search_box = new Endless.SearchBox();
 
-        this._grid = new Gtk.Grid({
+        // FIXME: this should be on a separate page, instead of all stuffed
+        // into a ContentPage
+        this._stack = new Gtk.Stack();
+        this._stack.add(this._search_module);
+
+        let grid = new Gtk.Grid({
+            halign: Gtk.Align.CENTER,
             column_spacing: 150,
         });
-        this._grid.attach(this._logo, 0, 0, 1, 1);
-        this._grid.attach(this.search_box, 1, 0, 1, 1);
-        this._grid.attach(this._wiki_web_view, 0, 1, 2, 1);
-        this.add(this._grid);
+        grid.attach(this._logo, 0, 0, 1, 1);
+        grid.attach(this.search_box, 1, 0, 1, 1);
+        grid.attach(this._stack, 0, 1, 2, 1);
+        this.add(grid);
         this.set(0.5, 0.5, this.HORIZONTAL_SPACE_FILL_RATIO, 1.0);
 
         let mainWindow = this.get_toplevel();
         mainWindow.connect('key-press-event', this._on_key_press_event.bind(this));
     },
 
-    _load_static_html: function (uri) {
-        if (this._wiki_web_view.get_parent() !== this._grid) {
-            this._grid.remove(this._document_card);
-            this._grid.attach(this._wiki_web_view, 0, 1, 2, 1);
-        }
-        let [success, contents] = Gio.File.new_for_uri(uri).load_contents(null);
-        this._should_emit_link_clicked = false;
-        this._wiki_web_view.load_html(contents.toString(), uri);
+    get search_module() {
+        return this._search_module;
     },
 
     load_ekn_content: function (article_model) {
         if (this._search_bar !== undefined) {
             this._search_bar.close();
         }
+
+        let old_document_card = this._document_card;
         this._document_card = this.factory.create_named_module('document-card', {
             model: article_model,
             show_toc: false,
             show_top_title: false,
+            content_ready_callback: (card) => {
+                this._stack.visible_child = card;
+                card.content_view.grab_focus();
+                if (old_document_card)
+                    this._stack.remove(old_document_card);
+            },
         });
-        this._document_card.connect('ekn-link-clicked', this._on_link_clicked.bind(this));
-        if (this._document_card.get_parent() !== this._grid) {
-            this._grid.remove(this._wiki_web_view);
-            this._grid.attach(this._document_card, 0, 1, 2, 1);
-        }
-        this._should_emit_link_clicked = true;
+        this._document_card.connect('ekn-link-clicked', (card, uri) =>
+            this.emit('link-clicked', uri));
         this._document_card.show_all();
-        this._document_card.content_view.grab_focus();
+        this._stack.add(this._document_card);
+
+        let webview = this._document_card.content_view;
+        webview.connect('notify::has-focus', this._on_focus.bind(this));
+        webview.connect('enter-fullscreen',
+            this._on_fullscreen_change.bind(this, true));
+        webview.connect('leave-fullscreen',
+            this._on_fullscreen_change.bind(this, false));
     },
 
-    _on_focus: function () {
-        let script = "webview_focus = " + this._wiki_web_view.has_focus + ";";
-        this._run_js_on_loaded_page(script);
+    _on_focus: function (webview) {
+        let script = "webview_focus = " + webview.has_focus + ";";
+        this._run_js_on_loaded_page(webview, script);
     },
 
     _on_fullscreen_change: function (should_be_fullscreen) {
         this._logo.visible = !should_be_fullscreen;
         this.search_box.visible = !should_be_fullscreen;
-        this._alignment.xscale = should_be_fullscreen ? 1.0 : this.HORIZONTAL_SPACE_FILL_RATIO;
+        this.xscale = should_be_fullscreen ? 1.0 : this.HORIZONTAL_SPACE_FILL_RATIO;
     },
 
     // first, if the webview isn't loading something, attempt to run the
     // javascript on the page. Also attach a handler to run the javascript
     // whenever the webview's load-changed indicates it's finished loading
     // something
-    _run_js_on_loaded_page: function (script) {
-        if (this._wiki_web_view.uri !== null && !this._wiki_web_view.is_loading) {
-            this._wiki_web_view.run_javascript(script, null, null);
+    _run_js_on_loaded_page: function (webview, script) {
+        if (webview.uri !== null && !webview.is_loading) {
+            webview.run_javascript(script, null, null);
         }
-        let handler = this._wiki_web_view.connect('load-changed', (webview, status) => {
+        let handler = webview.connect('load-changed', (webview, status) => {
             if (status === WebKit2.LoadEvent.FINISHED) {
                 webview.run_javascript(script, null, null);
                 webview.disconnect(handler);
@@ -231,32 +234,8 @@ const ContentPage = new Lang.Class({
         });
     },
 
-    load_search_result_page: function () {
-        this._load_static_html(_SEARCH_RESULTS_PAGE_URI);
-        this._wiki_web_view.grab_focus();
-    },
-
-    set_search_result_page_searching: function (query) {
-        this._run_js_on_loaded_page('setSearchInProgress(' + query.toSource() +
-            ');', null, null);
-    },
-
-    set_search_result_page_complete: function (query, results) {
-        this._wiki_web_view.run_javascript('hideSpinner(); setSearchDone(' +
-            query.toSource() + '); clearSearchResults(); ' +
-            'appendSearchResults(' + results.toSource() + ');', null, null);
-    },
-
-    load_no_results_page: function (query) {
-        this._load_static_html(_NO_RESULTS_PAGE_URI);
-        this._run_js_on_loaded_page('setQueryString(' + query.toSource() + ');',
-            null, null);
-        this._wiki_web_view.grab_focus();
-    },
-
-    load_error_page: function () {
-        this._load_static_html(_ERROR_PAGE_URI);
-        this._wiki_web_view.grab_focus();
+    show_search: function () {
+        this._stack.visible_child = this._search_module;
     },
 
     _on_key_press_event: function(widget, event) {
@@ -277,29 +256,5 @@ const ContentPage = new Lang.Class({
 
             this._search_bar.open();
         }
-    },
-
-    _on_decide_policy: function (webview, decision, type) {
-        if (type !== WebKit2.PolicyDecisionType.NAVIGATION_ACTION)
-            return false;
-        // Don't emit link-clicked if this was due to a programmatic action
-        if (!this._should_emit_link_clicked) {
-            this._should_emit_link_clicked = true;
-            return false; // decision not handled, use default action
-        }
-
-        this.emit('link-clicked', decision.request.uri);
-        decision.ignore();
-        return true;  // decision handled
-    },
-
-    _on_link_clicked: function (card, uri) {
-        // Don't emit link-clicked if this was due to a programmatic action
-        if (!this._should_emit_link_clicked) {
-            this._should_emit_link_clicked = true;
-            return; // decision not handled, use default action
-        }
-
-        this.emit('link-clicked', uri);
     },
 });

@@ -9,13 +9,8 @@
     <file compressed="true">css/mediaCard.css</file>
     <file compressed="true">css/lightbox.css</file>
     <file compressed="true">css/no_image_links.css</file>
-    <file compressed="true">css/no_results.css</file>
-    <file compressed="true">css/search_results.css</file>
     <file compressed="true">css/themes/jungle.css</file>
     <file compressed="true">css/themes/templateA.css</file>
-    <file compressed="true">html/error_page.html</file>
-    <file compressed="true">html/no_results.html</file>
-    <file compressed="true">html/search_results.html</file>
     <file>images/background-home.jpg</file>
     <file>images/background-result.jpg</file>
     <file>images/C/logo.svg</file>
@@ -30,9 +25,6 @@
     <file preprocess="xml-stripblanks">images/reader/right-arrow.svg</file>
     <file preprocess="xml-stripblanks">images/reader/standalone_arrow.svg</file>
     <file>images/separator.png</file>
-    <file compressed="true">js/error_page.js</file>
-    <file compressed="true">js/no_results.js</file>
-    <file compressed="true">js/search_results.js</file>
     <file compressed="true">templates/article.mst</file>
     <file compressed="true">templates/css/embedly.css</file>
     <file compressed="true">templates/css/reader.css</file>
@@ -53,6 +45,7 @@
     <file compressed="true" preprocess="xml-stripblanks">widgets/documentCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">widgets/mediaCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">widgets/readerCard.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">widgets/searchModule.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">widgets/setBannerCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">widgets/textCard.ui</file>
   </gresource>

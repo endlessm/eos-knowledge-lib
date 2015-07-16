@@ -17,9 +17,11 @@ function set_hand_cursor_on_widget(widget) {
         let cursor = Gdk.Cursor.new_for_display(Gdk.Display.get_default(),
             Gdk.CursorType.HAND1);
         widget.window.set_cursor(cursor);
+        return Gdk.EVENT_PROPAGATE;
     });
     widget.connect('leave-notify-event', function (widget) {
         widget.window.set_cursor(null);
+        return Gdk.EVENT_PROPAGATE;
     });
 }
 

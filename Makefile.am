@@ -190,17 +190,6 @@ libtooltipplugin_la_CPPFLAGS = \
 libtooltipplugin_la_LIBADD = $(TOOLTIP_PLUGIN_LIBS)
 libtooltipplugin_la_LDFLAGS = -module -avoid-version -no-undefined
 
-# WebKit web extension for translating with webkit side javascript
-webextension_LTLIBRARIES += libencyclopediaplugin.la
-libencyclopediaplugin_la_SOURCES = lib/encyclopediaplugin.c
-libencyclopediaplugin_la_CFLAGS = $(ENCYCLOPEDIA_PLUGIN_CFLAGS)
-libencyclopediaplugin_la_CPPFLAGS = \
-	-DPKGDATADIR=\""$(pkgdatadir)"\" \
-	-DLOCALEDIR=\""$(datadir)/locale"\" \
-	$(NULL)
-libencyclopediaplugin_la_LIBADD = $(ENCYCLOPEDIA_PLUGIN_LIBS)
-libencyclopediaplugin_la_LDFLAGS = -module -avoid-version -no-undefined
-
 # # # JAVASCRIPT # # #
 
 js_files = \
@@ -242,6 +231,7 @@ js_files = \
 	js/app/modules/mediaCard.js \
 	js/app/modules/readerCard.js \
 	js/app/modules/searchBox.js \
+	js/app/modules/searchModule.js \
 	js/app/modules/setBannerCard.js \
 	js/app/modules/textCard.js \
 	js/app/mustache.js \
@@ -350,6 +340,7 @@ javascript_tests = \
 	tests/js/app/modules/testDocumentCard.js \
 	tests/js/app/modules/testMediaCard.js \
 	tests/js/app/modules/testReaderCard.js \
+	tests/js/app/modules/testSearchModule.js \
 	tests/js/app/modules/testSetBannerCard.js \
 	tests/js/app/modules/testTextCard.js \
 	tests/js/app/reader/testDonePage.js \
