@@ -9,7 +9,6 @@ const Lang = imports.lang;
 const Config = imports.app.config;
 const ContentObjectModel = imports.search.contentObjectModel;
 const Module = imports.app.interfaces.module;
-const QueryObject = imports.search.queryObject;
 
 String.prototype.format = Format.format;
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
@@ -63,13 +62,13 @@ const SearchModule = new Lang.Class({
     },
 
     Template: 'resource:///com/endlessm/knowledge/widgets/searchModule.ui',
-    Children: [ 'results-box' ],
-    // results-box is public because it should be an Arrangement module created
-    // through the factory
     InternalChildren: [ 'headline', 'query-message', 'results-stack', 'spinner' ],
 
     _init: function (props={}) {
         this.parent(props);
+
+        this._arrangement = this.factory.create_named_module('results-arrangement');
+        this._results_stack.add_named(this._arrangement, RESULTS_PAGE_NAME);
     },
 
     /**
@@ -107,8 +106,7 @@ const SearchModule = new Lang.Class({
      *   results - an array of <ContentObjectModel>s
      */
     finish_search: function (results) {
-        let children = this.results_box.get_children();
-        children.forEach((child) => this.results_box.remove(child));
+        this._arrangement.clear();
 
         results.forEach((result) => {
             let card = this.factory.create_named_module('results-card', {
@@ -117,7 +115,7 @@ const SearchModule = new Lang.Class({
             card.connect('clicked', (card) => {
                 this.emit('article-selected', card.model);
             });
-            this.results_box.insert(card, -1);
+            this._arrangement.add_card(card);
         });
 
         this._results_stack.visible_child_name = RESULTS_PAGE_NAME;
@@ -152,6 +150,7 @@ const SearchModule = new Lang.Class({
      *     error message
      */
     finish_search_with_error: function (error) {
+        this._arrangement.clear();
         this.visible_child_name = ERROR_PAGE_NAME;
     },
 });

@@ -52,17 +52,6 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <child>
-              <object class="GtkListBox" id="results-box">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="valign">start</property>
-                <property name="vexpand">True</property>
-              </object>
-              <packing>
-                <property name="name">results</property>
-              </packing>
-            </child>
-            <child>
               <object class="GtkSpinner" id="spinner">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>

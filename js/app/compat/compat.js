@@ -115,6 +115,11 @@ function transform_v1_description(json) {
                 'decoration': true,
             },
         };
+        // FIXME: this should be a submodule of search-results, in the
+        // "arrangement" slot, when we get submodules implemented in the factory
+        modules['results-arrangement'] = {
+            type: 'ListArrangement',
+        };
         break;
     case 'reader':
         modules['app-banner'] = {

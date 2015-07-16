@@ -15,16 +15,19 @@ const StyleClasses = imports.app.styleClasses;
 Gtk.init(null);
 
 describe('Search module', function () {
-    let search_module;
+    let search_module, arrangement;
 
     beforeEach(function () {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
 
         let factory = new MockFactory.MockFactory();
         factory.add_named_mock('results-card', Minimal.MinimalCard);
+        factory.add_named_mock('results-arrangement',
+            Minimal.MinimalArrangement);
         search_module = new SearchModule.SearchModule({
             factory: factory,
         });
+        arrangement = factory.get_created_named_mocks('results-arrangement')[0];
     });
 
     it('constructs', function () {});
@@ -88,7 +91,7 @@ describe('Search module', function () {
             new ContentObjectModel.ContentObjectModel(),
         ]);
         Utils.update_gui();
-        expect(search_module.results_box.get_children().length).toBe(1);
+        expect(arrangement.count).toBe(1);
     });
 
     it('removes old results from the card container when adding new ones', function () {
@@ -97,7 +100,8 @@ describe('Search module', function () {
         ]);
         Utils.update_gui();
         search_module.finish_search([]);
-        expect(search_module.results_box.get_children().length).toBe(0);
+        Utils.update_gui();
+        expect(arrangement.count).toBe(0);
     });
 
     it('displays the query string somewhere in the UI', function () {
