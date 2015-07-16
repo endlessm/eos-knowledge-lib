@@ -144,7 +144,6 @@ const ContentPage = new Lang.Class({
         props.name = 'ContentPage';
         this.parent(props);
 
-        this._should_emit_link_clicked = true;
         this._search_module = this.factory.create_named_module('search-results');
 
         this._logo = this.factory.create_named_module('article-app-banner', {
@@ -189,8 +188,8 @@ const ContentPage = new Lang.Class({
             show_toc: false,
             show_top_title: false,
         });
-        this._document_card.connect('ekn-link-clicked', this._on_link_clicked.bind(this));
-        this._should_emit_link_clicked = true;
+        this._document_card.connect('ekn-link-clicked', (card, uri) =>
+            this.emit('link-clicked', uri));
         this._document_card.show_all();
         this._stack.add(this._document_card);
         this._stack.visible_child = this._document_card;
@@ -248,29 +247,5 @@ const ContentPage = new Lang.Class({
 
             this._search_bar.open();
         }
-    },
-
-    _on_decide_policy: function (webview, decision, type) {
-        if (type !== WebKit2.PolicyDecisionType.NAVIGATION_ACTION)
-            return false;
-        // Don't emit link-clicked if this was due to a programmatic action
-        if (!this._should_emit_link_clicked) {
-            this._should_emit_link_clicked = true;
-            return false; // decision not handled, use default action
-        }
-
-        this.emit('link-clicked', decision.request.uri);
-        decision.ignore();
-        return true;  // decision handled
-    },
-
-    _on_link_clicked: function (card, uri) {
-        // Don't emit link-clicked if this was due to a programmatic action
-        if (!this._should_emit_link_clicked) {
-            this._should_emit_link_clicked = true;
-            return; // decision not handled, use default action
-        }
-
-        this.emit('link-clicked', uri);
     },
 });
