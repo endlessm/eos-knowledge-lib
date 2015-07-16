@@ -21,6 +21,7 @@ const Utils = imports.app.utils;
  * Style classes:
  *   card, text-card - on the widget itself
  *   title - on the title label
+ *   decoration - on the decorative bullet label
  */
 const TextCard = new Lang.Class({
     Name: 'TextCard',
@@ -43,10 +44,19 @@ const TextCard = new Lang.Class({
             'Underline on hover', 'Whether to underline the link on hover',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             false),
+
+        /**
+         * Property: decoration
+         * Whether to add a decorative bullet to the label
+         */
+        'decoration': GObject.ParamSpec.boolean('decoration', 'Decoration',
+            'Whether to add a decorative bullet to the label',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            false),
     },
 
     Template: 'resource:///com/endlessm/knowledge/widgets/textCard.ui',
-    InternalChildren: [ 'title-label' ],
+    InternalChildren: [ 'decoration-label', 'title-label' ],
 
     _init: function (params={}) {
         this.parent(params);
@@ -65,6 +75,11 @@ const TextCard = new Lang.Class({
                 this._title_label.label = this._title_label_text;
                 return Gdk.EVENT_PROPAGATE;
             });
+        }
+
+        if (this.decoration) {
+            this._decoration_label.no_show_all = false;
+            this._decoration_label.show();
         }
     },
 });

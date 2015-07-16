@@ -8,20 +8,45 @@
     <property name="receives_default">False</property>
     <property name="hexpand">True</property>
     <child>
-      <object class="GtkLabel" id="title-label">
+      <object class="GtkGrid" id="grid1">
+        <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="no_show_all">True</property>
-        <property name="hexpand">True</property>
-        <property name="use_markup">True</property>
-        <property name="wrap">True</property>
-        <property name="wrap_mode">word-char</property>
-        <property name="ellipsize">end</property>
-        <property name="max_width_chars">1</property>
-        <property name="lines">1</property>
-        <property name="xalign">0</property>
-        <style>
-          <class name="title"/>
-        </style>
+        <child>
+          <object class="GtkLabel" id="title-label">
+            <property name="can_focus">False</property>
+            <property name="no_show_all">True</property>
+            <property name="hexpand">True</property>
+            <property name="use_markup">True</property>
+            <property name="wrap">True</property>
+            <property name="wrap_mode">word-char</property>
+            <property name="ellipsize">end</property>
+            <property name="max_width_chars">1</property>
+            <property name="lines">1</property>
+            <property name="xalign">0</property>
+            <style>
+              <class name="title"/>
+            </style>
+          </object>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="top_attach">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="decoration-label">
+            <property name="can_focus">False</property>
+            <property name="no_show_all">True</property>
+            <property name="label">•</property>
+            <property name="single_line_mode">True</property>
+            <style>
+              <class name="decoration"/>
+            </style>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">0</property>
+          </packing>
+        </child>
       </object>
     </child>
     <style>

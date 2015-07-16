@@ -599,3 +599,9 @@ const INVISIBLE = 'invisible';
  * Added to widgets that should be faded in using CSS
  */
 const FADE_IN = 'fade-in';
+
+/**
+ * Constant: DECORATION
+ * Added to decorative elements
+ */
+const DECORATION = 'decoration';
