@@ -1,7 +1,7 @@
 const Gtk = imports.gi.Gtk;
 
 const CssClassMatcher = imports.tests.CssClassMatcher;
-const MinimalCard = imports.tests.minimalCard;
+const Minimal = imports.tests.minimal;
 const MockFactory = imports.tests.mockFactory;
 const SectionPageB = imports.app.sectionPageB;
 const StyleClasses = imports.app.styleClasses;
@@ -20,7 +20,7 @@ describe('Section page for Template B', function () {
             factory: new MockFactory.MockFactory(),
         });
 
-        card_list = [0, 1, 2].map(() => new MinimalCard.MinimalCard());
+        card_list = [0, 1, 2].map(() => new Minimal.MinimalCard());
     });
 
     it('can be constructed', function () {});

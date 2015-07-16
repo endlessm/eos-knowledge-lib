@@ -4,7 +4,7 @@ const Lang = imports.lang;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 
-const MinimalModule = imports.tests.minimalModule;
+const Minimal = imports.tests.minimal;
 const MockFactory = imports.tests.mockFactory;
 
 describe('Module interface', function () {
@@ -13,7 +13,7 @@ describe('Module interface', function () {
     beforeEach(function () {
         let mock_factory = new MockFactory.MockFactory();
 
-        module = new MinimalModule.MinimalModule({
+        module = new Minimal.MinimalModule({
             factory: mock_factory,
         });
     });

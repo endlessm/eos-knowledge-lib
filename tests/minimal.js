@@ -1,3 +1,7 @@
+// Copyright 2015 Endless Mobile, Inc.
+
+/* exported MinimalCard, MinimalModule */
+
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
@@ -21,4 +25,18 @@ const MinimalCard = new Lang.Class({
     _init: function (props={}) {
         this.parent(props);
     }
+});
+
+const MinimalModule = new Lang.Class({
+    Name: 'MinimalModule',
+    Extends: GObject.Object,
+    Implements: [ Module.Module ],
+
+    Properties: {
+        'factory': GObject.ParamSpec.override('factory', Module.Module),
+    },
+
+    _init: function (props={}) {
+        this.parent(props);
+    },
 });

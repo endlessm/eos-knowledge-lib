@@ -8,7 +8,7 @@ const Utils = imports.tests.utils;
 Utils.register_gresource();
 
 const ContentObjectModel = imports.search.contentObjectModel;
-const MinimalCard = imports.tests.minimalCard;
+const Minimal = imports.tests.minimal;
 const MockEngine = imports.tests.mockEngine;
 const MockFactory = imports.tests.mockFactory;
 const MockWidgets = imports.tests.mockWidgets;
@@ -100,8 +100,8 @@ describe('Presenter', () => {
 
     beforeEach(() => {
         factory = new MockFactory.MockFactory();
-        factory.add_named_mock('home-card', MinimalCard.MinimalCard);
-        factory.add_named_mock('results-card', MinimalCard.MinimalCard);
+        factory.add_named_mock('home-card', Minimal.MinimalCard);
+        factory.add_named_mock('results-card', Minimal.MinimalCard);
 
         // FIXME: this is a v1 app.json
         data = Utils.parse_object_from_path(test_app_filename);

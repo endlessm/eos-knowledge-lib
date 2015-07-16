@@ -7,7 +7,7 @@ Utils.register_gresource();
 
 const ContentObjectModel = imports.search.contentObjectModel;
 const CssClassMatcher = imports.tests.CssClassMatcher;
-const MinimalCard = imports.tests.minimalCard;
+const Minimal = imports.tests.minimal;
 const MockFactory = imports.tests.mockFactory;
 const SearchModule = imports.app.modules.searchModule;
 const StyleClasses = imports.app.styleClasses;
@@ -21,7 +21,7 @@ describe('Search module', function () {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
 
         let factory = new MockFactory.MockFactory();
-        factory.add_named_mock('results-card', MinimalCard.MinimalCard);
+        factory.add_named_mock('results-card', Minimal.MinimalCard);
         search_module = new SearchModule.SearchModule({
             factory: factory,
         });
