@@ -129,6 +129,9 @@ function transform_v1_description(json) {
         modules['home-card'] = {
             type: 'ArticleSnippetCard',
         };
+        modules['lightbox-card'] = {
+            type: 'MediaCard',
+        };
         modules['results-card'] = {
             type: 'ReaderCard',
             properties: {
