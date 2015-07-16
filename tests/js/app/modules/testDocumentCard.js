@@ -79,7 +79,7 @@ describe('Document Card', function () {
         expect(card.toc.section_list).toEqual(labels);
     });
 
-    describe('Style class of article card A', function () {
+    describe('Style class of document card', function () {
         it('has article card class', function () {
             expect(card).toHaveCssClass(StyleClasses.CARD);
         });
