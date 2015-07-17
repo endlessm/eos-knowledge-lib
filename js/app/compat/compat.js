@@ -204,6 +204,9 @@ function transform_v1_description(json) {
         modules['home-card'] = {
             type: 'ArticleSnippetCard',
         };
+        modules['document-card'] = {
+            type: 'ReaderDocumentCard',
+        };
         modules['lightbox-card'] = {
             type: 'MediaCard',
         };

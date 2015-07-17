@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.18.3 -->
+<interface>
+  <requires lib="gtk+" version="3.12"/>
+  <template class="EknReaderDocumentCard" parent="GtkOverlay">
+    <child>
+      <object class="GtkGrid" id="content-grid">
+        <property name="width_request">600</property>
+        <child>
+          <object class="GtkGrid" id="title-view">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="expand">True</property>
+            <property name="valign">center</property>
+            <property name="margin_start">100</property>
+            <child>
+              <object class="GtkLabel" id="title-label">
+                <property name="can_focus">False</property>
+                <property name="no_show_all">True</property>
+                <property name="wrap">True</property>
+                <property name="wrap_mode">word-char</property>
+                <property name="ellipsize">end</property>
+                <property name="lines">5</property>
+                <property name="xalign">0</property>
+                <property name="visible">True</property>
+                <property name="halign">start</property>
+                <property name="use_markup">True</property>
+                <property name="margin_bottom">50</property>
+                <style>
+                  <class name="title"/>
+                </style>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkFrame" id="ornament-frame">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="expand">False</property>
+                <property name="width_request">34</property>
+                <property name="height_request">2</property>
+                <property name="valign">end</property>
+                <property name="halign">start</property>
+                <property name="margin_end">22</property>
+                <property name="no_show_all">True</property>
+                <style>
+                  <class name="decoration"/>
+                </style>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="attribution-label">
+                <property name="can_focus">False</property>
+                <property name="no_show_all">True</property>
+                <property name="visible">True</property>
+                <property name="wrap">True</property>
+                <property name="wrap_mode">word-char</property>
+                <property name="ellipsize">end</property>
+                <property name="lines">2</property>
+                <property name="xalign">0</property>
+                <property name="expand">True</property>
+                <property name="halign">start</property>
+                <property name="valign">baseline</property>
+                <property name="use_markup">True</property>
+                <style>
+                  <class name="attribution"/>
+                </style>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="top_attach">1</property>
+              </packing>
+            </child>
+            <style>
+              <class name="title-view"/>
+            </style>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkFrame" id="decorative-frame">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="height_request">19</property>
+            <property name="halign">start</property>
+            <property name="margin_start">100</property>
+            <property name="no_show_all">True</property>
+            <style>
+              <class name="decorative-bar"/>
+            </style>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkSeparator" id="separator">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="orientation">vertical</property>
+            <property name="hexpand">False</property>
+            <property name="vexpand">True</property>
+            <property name="halign">center</property>
+            <property name="valign">fill</property>
+            <property name="margin_start">40</property>
+            <property name="margin_end">40</property>
+            <property name="margin_bottom">40</property>
+            <property name="margin_top">60</property>
+          </object>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="top_attach">1</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+    <style>
+      <class name="card"/>
+      <class name="document-card"/>
+    </style>
+  </template>
+</interface>

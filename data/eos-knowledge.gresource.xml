@@ -32,6 +32,7 @@
     <file compressed="true">templates/js/no-link-remover.js</file>
     <file compressed="true">templates/js/scroll-manager.js</file>
     <file compressed="true" preprocess="xml-stripblanks">widgets/appBanner.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">widgets/archiveNotice.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">widgets/articleSnippetCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">widgets/cardA.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">widgets/cardB.ui</file>
@@ -41,6 +42,7 @@
     <file compressed="true" preprocess="xml-stripblanks">widgets/homePageBTemplate.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">widgets/mediaCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">widgets/readerCard.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">widgets/readerDocumentCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">widgets/searchBanner.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">widgets/searchModule.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">widgets/setBannerCard.ui</file>

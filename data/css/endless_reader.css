@@ -71,39 +71,39 @@ overridden by app specific CSS */
     color: black;
 }
 
-.article-page .title {
+.document-card .title {
     font-size: 4em;
 }
 
-.article-page .attribution {
+.document-card .attribution {
     font-size: 0.75em;
 }
 
-.article-page0 .title {
+.document-card.variant0 .title {
     color: #ef2929;
 }
 
-.article-page0 .attribution {
+.document-card.variant0 .attribution {
     color: #a40000;
 }
 
-.article-page1 .title {
+.document-card.variant1 .title {
     color: #8ae234;
 }
 
-.article-page1 .attribution {
+.document-card.variant1 .attribution {
     color: #4e9a06;
 }
 
-.article-page2 .title {
+.document-card.variant2 .title {
     color: #729fcf;
 }
 
-.article-page2 .attribution {
+.document-card.variant2 .attribution {
     color: #204a87;
 }
 
-.article-page-ornament {
+.document-card .decoration {
     background-color: #e3e3e3;
 }
 
@@ -248,7 +248,7 @@ overridden by app specific CSS */
     font-size: 1.5em;
 }
 
-.archive-label {
+.archive-notice-frame {
     background-color: #D1D1D1;
     border-radius: 5px;
     padding: 5px;

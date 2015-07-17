@@ -9,6 +9,7 @@ const Utils = imports.tests.utils;
 Utils.register_gresource();
 
 const ArticleObjectModel = imports.search.articleObjectModel;
+const Minimal = imports.tests.minimal;
 const MockEngine = imports.tests.mockEngine;
 const MockFactory = imports.tests.mockFactory;
 const MockSearchBox = imports.tests.mockSearchBox;
@@ -23,19 +24,6 @@ const TEST_DOMAIN = 'thrones-en';
 const UPDATE_INTERVAL_MS = 604800000;
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 
-const MockReaderCard = new Lang.Class({
-    Name: 'MockReaderCard',
-    GTypeName: 'MockReaderCard',
-    Extends: GObject.Object,
-    Signals: {
-        'clicked': {},
-    },
-
-    _init: function (props) {
-        this.model = props.model;
-        this.parent(); // We don't care about other props
-    },
-});
 
 const MockApplication = new Lang.Class({
     Name: 'MockApplication',
@@ -129,14 +117,13 @@ const MockView = new Lang.Class({
         this.standalone_page = {
             get_style_context: get_style_context,
             infobar: {
+                archive_notice: {
+                    label: 'My title',
+                },
                 connect: function () {},
                 show: function () {},
                 hide: function () {},
                 get_action_area: function () { return {}; },
-            },
-            archive_notice: {
-                show: function () {},
-                hide: function () {},
             },
             article_page: {
                 title_view: {},
@@ -204,8 +191,9 @@ describe('Reader presenter', function () {
 
     beforeEach(function () {
         let factory = new MockFactory.MockFactory();
-        factory.add_named_mock('home-card', MockReaderCard);
-        factory.add_named_mock('results-card', MockReaderCard);
+        factory.add_named_mock('home-card', Minimal.MinimalCard);
+        factory.add_named_mock('results-card', Minimal.MinimalCard);
+        factory.add_named_mock('document-card', Minimal.MinimalDocumentCard);
 
         let application = new MockApplication();
         article_nav_buttons = new MockNavButtons();
@@ -256,9 +244,6 @@ describe('Reader presenter', function () {
             spyOn(view, 'append_article_page').and.callThrough();
             presenter.desktop_launch();
             expect(view.append_article_page.calls.count()).toEqual(MOCK_RESULTS.length);
-            MOCK_RESULTS.forEach(function (result, index) {
-                expect(view.append_article_page.calls.argsFor(index)[0].title_view.title).toEqual(result.title);
-            });
         });
 
         it('gracefully handles the query failing', function () {
@@ -301,12 +286,6 @@ describe('Reader presenter', function () {
             engine.get_objects_by_query_finish.and.returnValue([MOCK_RESULTS, null]);
             view.total_pages = MOCK_RESULTS.length + 2;
             presenter.desktop_launch();
-        });
-
-        it('has all articles as pages', function () {
-            MOCK_RESULTS.forEach(function (result, i) {
-                expect(view.get_article_page(i).title_view.title).toBe(result.title);
-            });
         });
 
         it('starts on the first page', function () {
@@ -423,7 +402,6 @@ describe('Reader presenter', function () {
             spyOn(view, 'remove_all_article_pages').and.callThrough();
             settings.start_article = 3;
             settings.notify('start-article');
-            expect(view.get_article_page(0).title_view.title).toBe('Title 1');
             expect(view.remove_all_article_pages).toHaveBeenCalled();
         });
 
@@ -525,13 +503,6 @@ describe('Reader presenter', function () {
             presenter._get_more_results_query = new QueryObject.QueryObject();
             view.search_results_page.emit('load-more-results');
             expect(view.search_results_page.append_search_results).toHaveBeenCalled();
-        });
-
-        it('sets the correct style variants on article titles', function () {
-            expect(view.get_article_page(0).title_view.style_variant).toBe(0);
-            expect(view.get_article_page(1).title_view.style_variant).toBe(1);
-            expect(view.get_article_page(2).title_view.style_variant).toBe(2);
-            expect(view.get_article_page(3).title_view.style_variant).toBe(0);
         });
     });
 });

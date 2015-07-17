@@ -188,13 +188,6 @@ const HOME_PAGE_A = 'home-page-a';
 const HOME_PAGE_B_TEMPLATE = 'home-page-b-template';
 
 /**
- * Constant: ARTICLE_PAGE
- *
- * Matches the ArticlePage.
- */
-const ARTICLE_PAGE = 'article-page';
-
-/**
  * Constant: ARTICLE_PAGE_TITLE
  *
  * Matches the title on the ArticlePage.
@@ -484,13 +477,6 @@ const READER_OPEN_BUTTON = 'open-button';
 const READER_ARTICLE_PAGE_ATTRIBUTION = 'attribution';
 
 /**
- * Constant: READER_ARTICLE_PAGE_ORNAMENT
- *
- * Matches the ornament on the reader's ArticlePage.
- */
-const READER_ARTICLE_PAGE_ORNAMENT = 'article-page-ornament';
-
-/**
  * Constant: READER_ERROR_PAGE
  * Matches an error message page
  */
@@ -553,11 +539,11 @@ const READER_ATTRIBUTION = 'reader-attribution';
 const READER_WEBVIEW_TOOLTIP = 'webview-tooltip';
 
 /**
- * Constant: READER_ARCHIVE_LABEL
+ * Constant: READER_ARCHIVE_NOTICE_FRAME
  *
- * Matches the archive label.
+ * Matches the frame around the archive label.
  */
-const READER_ARCHIVE_LABEL = 'archive-label';
+const READER_ARCHIVE_NOTICE_FRAME = 'archive-notice-frame';
 
 /**
  * Constant: READER_TOOLTIP_TYPE_LABEL

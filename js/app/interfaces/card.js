@@ -13,8 +13,6 @@ const Module = imports.app.interfaces.module;
 const StyleClasses = imports.app.styleClasses;
 const Utils = imports.app.utils;
 
-const NUM_STYLE_VARIANTS = 3;
-
 /**
  * Interface: Card
  * Interface for card modules
@@ -89,6 +87,7 @@ const Card = new Lang.Interface({
 
     // Overridable in tests; otherwise keep synchronized with the CSS
     FADE_IN_TIME_MS: 1000,
+    NUM_STYLE_VARIANTS: 3,
 
     /**
      * Method: set_label_or_hide
@@ -165,7 +164,7 @@ const Card = new Lang.Interface({
      */
     set_style_variant_from_model: function () {
         if (this.model.article_number !== undefined) {
-            let style = this.model.article_number % NUM_STYLE_VARIANTS;
+            let style = this.model.article_number % this.NUM_STYLE_VARIANTS;
             this.get_style_context().add_class('variant' + style);
         }
     },

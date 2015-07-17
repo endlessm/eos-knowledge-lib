@@ -122,5 +122,12 @@ const MinimalDocumentCard = new Lang.Class({
         this.toc = {
             connect: function () {},
         };
+        this.content_view = {
+            connect: function () {},
+        };
     },
+
+    load_content: function () {},
+    load_content_finish: function () {},
+    clear_content: function () {},
 });
