@@ -164,10 +164,10 @@ const Presenter = new Lang.Class({
         });
 
         // Keeps track of the broad query that led to an individual article.
+        this._latest_section_model = null;
         this._latest_origin_query_obj = new QueryObject.QueryObject();
         this._latest_article_card_title = '';
         this._latest_search_text = '';
-        this._target_page_title = '';
         this._history_presenter = new HistoryPresenter.HistoryPresenter({
             history_model: new EosKnowledgePrivate.HistoryModel(),
             history_buttons: this.view.history_buttons,
@@ -323,10 +323,8 @@ const Presenter = new Lang.Class({
                 this._perform_search(this.view, current_item.query_obj);
                 break;
             case this._SECTION_PAGE:
-                this._target_page_title = current_item.title;
-                this.engine.get_objects_by_query(article_origin_query_obj,
-                                                 null,
-                                                 this._load_section_page.bind(this));
+                this.engine.get_objects_by_query(article_origin_query_obj, null,
+                    this._load_section_page.bind(this, current_item.model));
                 break;
             case this._ARTICLE_PAGE:
                 if (article_origin_query_obj.query !== this._latest_origin_query_obj.query) {
@@ -334,7 +332,7 @@ const Presenter = new Lang.Class({
                                                      null,
                                                      this._refresh_sidebar_callback.bind(this));
                 }
-                this.article_presenter.load_article(current_item.article_model, animation_type);
+                this.article_presenter.load_article(current_item.model, animation_type);
                 // For Template B, we reset the highlight to the card with the same title
                 if (this._template_type === 'B')
                     this.view.section_page.highlight_card_with_name(
@@ -411,11 +409,9 @@ const Presenter = new Lang.Class({
             'tags': tags,
             'limit': RESULTS_SIZE,
         });
-        this._target_page_title = card.model.title;
-        this._add_history_object_for_section_page(query_obj);
-        this.engine.get_objects_by_query(query_obj,
-                                         null,
-                                         this._load_section_page.bind(this));
+        this._add_history_object_for_section_page(card.model, query_obj);
+        this.engine.get_objects_by_query(query_obj, null,
+            this._load_section_page.bind(this, card.model));
     },
 
     // Launcher override
@@ -445,19 +441,14 @@ const Presenter = new Lang.Class({
     },
 
     _perform_search: function (view, query_obj) {
-        this._search_query = query_obj.query;
-        /* TRANSLATORS: this appears on top of the search results page; %s will
-        be replaced with the string that the user searched for. */
-        this._target_page_title = _("Results for \"%s\"").format(query_obj.query);
         this.view.lock_ui();
 
         // We clear the search box in the home page after each search.
         // The topbar search box should also clear once an article has been chosen.
         this.view.home_page.search_box.text = '';
 
-        this.engine.get_objects_by_query(query_obj,
-                                         null,
-                                         this._load_section_page.bind(this));
+        this.engine.get_objects_by_query(query_obj, null,
+            this._load_query_page.bind(this, query_obj));
     },
 
     _on_search_focus: function (view, focused) {
@@ -593,7 +584,7 @@ const Presenter = new Lang.Class({
         this._history_presenter.set_current_item({
             title: model.title,
             page_type: this._ARTICLE_PAGE,
-            article_model: model,
+            model: model,
             article_origin_query_obj: this._latest_origin_query_obj,
             article_origin_page: this._latest_article_card_title,
         });
@@ -602,18 +593,19 @@ const Presenter = new Lang.Class({
     _add_history_object_for_search_page: function (query_obj) {
         this._latest_origin_query_obj = query_obj;
         this._history_presenter.set_current_item({
-            title: this._target_page_title,
+            title: Utils.page_title_from_query_object(query_obj),
             page_type: this._SEARCH_PAGE,
             query_obj: query_obj,
             article_origin_query_obj: this._latest_origin_query_obj,
         });
     },
 
-    _add_history_object_for_section_page: function (query_obj) {
+    _add_history_object_for_section_page: function (model, query_obj) {
         this._latest_origin_query_obj = query_obj;
         this._history_presenter.set_current_item({
-            title: this._target_page_title,
+            title: model.title,
             page_type: this._SECTION_PAGE,
+            model: model,
             query_obj: query_obj,
             article_origin_query_obj: this._latest_origin_query_obj,
         });
@@ -664,7 +656,12 @@ const Presenter = new Lang.Class({
                 this._add_history_object_for_home_page();
                 this.view.show_home_page();
             } else {
-                this._add_history_object_for_section_page(this._latest_origin_query_obj);
+                if (this._latest_section_model) {
+                    this._add_history_object_for_section_page(this._latest_section_model,
+                        this._latest_origin_query_obj);
+                } else {
+                    this._add_history_object_for_search_page(this._latest_origin_query_obj);
+                }
                 this.view.show_section_page();
             }
             if (this._template_type === 'B')
@@ -681,7 +678,26 @@ const Presenter = new Lang.Class({
         }
     },
 
-    _load_section_page: function (engine, task) {
+    _load_section_page: function (model, engine, task) {
+        let results, get_more_results_query;
+        try {
+            [results, get_more_results_query] = engine.get_objects_by_query_finish(task);
+        } catch (error) {
+            logError(error);
+            return;
+        }
+
+        this.view.section_page.model = model;
+        this._latest_section_model = model;
+        this._latest_origin_query_obj = null;
+        this._set_section_page_content(results);
+        this._get_more_results_query = get_more_results_query;
+        this._search_origin_page = this.view.section_page;
+        this.view.unlock_ui();
+        this.view.show_section_page();
+    },
+
+    _load_query_page: function (query, engine, task) {
         let results, get_more_results_query;
         try {
             [results, get_more_results_query] = engine.get_objects_by_query_finish(task);
@@ -691,13 +707,16 @@ const Presenter = new Lang.Class({
         }
 
         if (results.length === 0) {
+            this._latest_section_model = null;
             this._history_presenter.history_model.current_item.empty = true;
-            this.view.no_search_results_page.query = this._search_query;
+            this.view.no_search_results_page.query = query.query;
             this._search_origin_page = this.view.section_page;
             this.view.unlock_ui();
             this.view.show_no_search_results_page();
         } else {
-            this.view.section_page.title = this._target_page_title;
+            this.view.section_page.query = query;
+            this._latest_origin_query_obj = query;
+            this._latest_section_model = null;
             this._set_section_page_content(results);
             this._get_more_results_query = get_more_results_query;
             this._search_origin_page = this.view.section_page;

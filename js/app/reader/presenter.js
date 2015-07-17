@@ -357,7 +357,7 @@ const Presenter = new Lang.Class({
         this._history_presenter.set_current_item({
             title: model.title,
             page_type: this._ARTICLE_PAGE,
-            article_model: model,
+            model: model,
             article_origin_query_obj: this._latest_origin_query_obj,
         });
     },
@@ -396,7 +396,7 @@ const Presenter = new Lang.Class({
                 this._perform_search(this.view, current_item.query_obj);
                 break;
             case this._ARTICLE_PAGE:
-                this._go_to_article(current_item.article_model, animation_type);
+                this._go_to_article(current_item.model, animation_type);
                 break;
             case this._OVERVIEW_PAGE:
                 this._go_to_page(0, animation_type);

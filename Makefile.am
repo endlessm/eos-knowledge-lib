@@ -232,6 +232,7 @@ js_files = \
 	js/app/modules/listArrangement.js \
 	js/app/modules/mediaCard.js \
 	js/app/modules/readerCard.js \
+	js/app/modules/searchBanner.js \
 	js/app/modules/searchBox.js \
 	js/app/modules/searchModule.js \
 	js/app/modules/setBannerCard.js \
@@ -344,6 +345,7 @@ javascript_tests = \
 	tests/js/app/modules/testListArrangement.js \
 	tests/js/app/modules/testMediaCard.js \
 	tests/js/app/modules/testReaderCard.js \
+	tests/js/app/modules/testSearchBanner.js \
 	tests/js/app/modules/testSearchModule.js \
 	tests/js/app/modules/testSetBannerCard.js \
 	tests/js/app/modules/testTextCard.js \

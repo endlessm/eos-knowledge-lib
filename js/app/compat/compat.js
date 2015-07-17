@@ -29,6 +29,9 @@ function transform_v1_description(json) {
         modules['results-title-card'] = {
             type: 'SetBannerCard',
         };
+        modules['results-search-banner'] = {
+            type: 'SearchBanner',
+        };
         modules['results-card'] = {
             type: 'CardA',
         };
@@ -59,6 +62,9 @@ function transform_v1_description(json) {
         };
         modules['results-title-card'] = {
             type: 'SetBannerCard',
+        };
+        modules['results-search-banner'] = {
+            type: 'SearchBanner',
         };
         modules['results-card'] = {
             type: 'TextCard',

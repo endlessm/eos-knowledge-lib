@@ -1,10 +1,12 @@
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
+const Format = imports.format;
 const Gdk = imports.gi.Gdk;
 const Gettext = imports.gettext;
 const Gtk = imports.gi.Gtk;
 
 const Config = imports.app.config;
 
+String.prototype.format = Format.format;
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
 /* Not part of public API. Changes @widget's GdkWindow to have the 'hand' cursor
@@ -109,4 +111,10 @@ function object_to_css_string (obj, selector="*") {
     }
     css_string += "}\n";
     return css_string;
+}
+
+function page_title_from_query_object(query) {
+    /* TRANSLATORS: this appears on top of the search results page; %s will be
+    replaced with the string that the user searched for. */
+    return _("Results for \"%s\"").format(query);
 }
