@@ -66,6 +66,9 @@ function transform_v1_description(json) {
         modules['results-search-banner'] = {
             type: 'SearchBanner',
         };
+        modules['results-arrangement'] = {
+            type: 'ListArrangement',
+        };
         modules['results-card'] = {
             type: 'TextCard',
         };

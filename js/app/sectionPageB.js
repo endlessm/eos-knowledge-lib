@@ -5,7 +5,6 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
-const InfiniteScrolledWindow = imports.app.infiniteScrolledWindow;
 const SectionPage = imports.app.sectionPage;
 const StyleClasses = imports.app.styleClasses;
 
@@ -52,11 +51,6 @@ const SectionPageB = new Lang.Class({
     },
 
     _init: function (props) {
-        this._card_list_box = new Gtk.Grid({
-            orientation: Gtk.Orientation.VERTICAL,
-            valign: Gtk.Align.START
-        });
-
         this._cards = null;
         this._transition_duration = 0;
 
@@ -82,20 +76,16 @@ const SectionPageB = new Lang.Class({
         this.expand = true;
         this.add(title_frame);
 
-        this._scrolled_window = new InfiniteScrolledWindow.InfiniteScrolledWindow({
+        this._arrangement = this.factory.create_named_module('results-arrangement', {
             preferred_width: 400,
-            hscrollbar_policy: Gtk.PolicyType.NEVER,
-            vexpand: true,
             hexpand: false,
-            valign: Gtk.Align.FILL,
         });
-        this._scrolled_window.connect('notify::need-more-content', () => {
-            if (this._scrolled_window.need_more_content) {
+        this._arrangement.connect('notify::need-more-content', () => {
+            if (this._arrangement.need_more_content) {
                 this.emit('load-more-results');
             }
         });
-        this._scrolled_window.add(this._card_list_box);
-        this.add(this._scrolled_window);
+        this.add(this._arrangement);
 
         this.get_style_context().add_class(StyleClasses.SECTION_PAGE_B);
     },
@@ -167,22 +157,21 @@ const SectionPageB = new Lang.Class({
     set cards (v) {
         if (this._cards === v)
             return;
-        if (this._cards !== null) {
-            for (let card of this._cards) {
-                this._card_list_box.remove(card);
-            }
-        }
+        if (this._cards)
+            this._arrangement.clear();
         this._cards = v;
-        if (this._cards !== null) {
-            for (let card of this._cards) {
-                this._card_list_box.add(card);
-            }
-        }
-        this._scrolled_window.need_more_content = false;
+        if (this._cards)
+            this._cards.forEach(this._arrangement.add_card, this._arrangement);
+        this._arrangement.need_more_content = false;
     },
 
     get cards () {
         return this._cards;
+    },
+
+    append_cards: function (cards) {
+        this._cards.push.apply(this._cards, cards);
+        cards.forEach(this._arrangement.add_card, this._arrangement);
     },
 
     set collapsed (v) {
