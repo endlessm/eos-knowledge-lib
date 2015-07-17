@@ -11,6 +11,16 @@ const InfiniteScrolledWindow = new Lang.Class({
     Extends: Gtk.ScrolledWindow,
     Properties: {
         /**
+         * Property: preferred-width
+         * Preferred natural width for widget
+         *
+         * Set to -1 to use normal size allocation behaviour.
+         */
+        'preferred-width': GObject.ParamSpec.int('preferred-width',
+            'Preferred width', 'Preferred natural width for widget',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            -1, GLib.MAXINT32, -1),
+        /**
          * Property: need-more-content
          * A property specifying if this scrolled window page needs more content to fill it up.
          * This is true either if there is not enough content to even warrant a scroll bar, or
@@ -34,6 +44,8 @@ const InfiniteScrolledWindow = new Lang.Class({
             'The pixel size of the bottom buffer',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT, 0, GLib.MAXINT32, 0),
     },
+
+    _MINIMAL_WIDTH: 200,
 
     _init: function(props) {
         this._need_more_content = false;
@@ -96,5 +108,11 @@ const InfiniteScrolledWindow = new Lang.Class({
         } else {
             this.need_more_content = false;
         }
-    }
+    },
+
+    vfunc_get_preferred_width: function () {
+        if (this.preferred_width > -1)
+            return [this._MINIMAL_WIDTH, this.preferred_width];
+        return this.parent();
+    },
 });

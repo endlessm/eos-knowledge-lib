@@ -82,7 +82,13 @@ const SectionPageB = new Lang.Class({
         this.expand = true;
         this.add(title_frame);
 
-        this._scrolled_window = new SectionPageBScrolledWindow();
+        this._scrolled_window = new InfiniteScrolledWindow.InfiniteScrolledWindow({
+            preferred_width: 400,
+            hscrollbar_policy: Gtk.PolicyType.NEVER,
+            vexpand: true,
+            hexpand: false,
+            valign: Gtk.Align.FILL,
+        });
         this._scrolled_window.connect('notify::need-more-content', () => {
             if (this._scrolled_window.need_more_content) {
                 this.emit('load-more-results');
@@ -207,26 +213,4 @@ const SectionPageB = new Lang.Class({
     get transition_duration () {
         return this._transition_duration;
     },
-});
-
-const SectionPageBScrolledWindow = new Lang.Class({
-    Name: 'SectionPageBScrolledWindow',
-    GTypeName: 'EknSectionPageBScrolledWindow',
-    Extends: InfiniteScrolledWindow.InfiniteScrolledWindow,
-
-    _NATURAL_WIDTH: 400,
-    _MINIMAL_WIDTH: 200,
-
-    _init: function (props) {
-        props = props || {};
-        props.hscrollbar_policy = Gtk.PolicyType.NEVER;
-        props.vexpand = true;
-        props.hexpand = false;
-        props.valign = Gtk.Align.FILL;
-        this.parent(props);
-    },
-
-    vfunc_get_preferred_width: function () {
-        return [this._MINIMAL_WIDTH, this._NATURAL_WIDTH];
-    }
 });
