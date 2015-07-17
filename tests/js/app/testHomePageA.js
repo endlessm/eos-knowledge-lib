@@ -3,7 +3,7 @@ const Gtk = imports.gi.Gtk;
 const ContentObjectModel = imports.search.contentObjectModel;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const HomePageA = imports.app.homePageA;
-const MinimalCard = imports.tests.minimalCard;
+const Minimal = imports.tests.minimal;
 const MockFactory = imports.tests.mockFactory;
 const MockSearchBox = imports.tests.mockSearchBox;
 const StyleClasses = imports.app.styleClasses;
@@ -51,7 +51,7 @@ describe('Home page for Template A', () => {
             }),
         ];
         card_list = model_list.map((model) =>
-            new MinimalCard.MinimalCard({ model: model }));
+            new Minimal.MinimalCard({ model: model }));
     });
 
     it('can be constructed', () => {});

@@ -11,7 +11,7 @@ Utils.register_gresource();
 
 const ArticleObjectModel = imports.search.articleObjectModel;
 const CssClassMatcher = imports.tests.CssClassMatcher;
-const MinimalCard = imports.tests.minimalCard;
+const Minimal = imports.tests.minimal;
 const StyleClasses = imports.app.styleClasses;
 
 Gtk.init(null);
@@ -29,7 +29,7 @@ describe('Card interface', function () {
             synopsis: 'record synopsis',
             article_number: 0,
         });
-        card = new MinimalCard.MinimalCard({
+        card = new Minimal.MinimalCard({
             model: model,
         });
     });

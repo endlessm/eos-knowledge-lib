@@ -1,7 +1,7 @@
 const Gtk = imports.gi.Gtk;
 
 const CssClassMatcher = imports.tests.CssClassMatcher;
-const MinimalCard = imports.tests.minimalCard;
+const Minimal = imports.tests.minimal;
 const MockFactory = imports.tests.mockFactory;
 const SectionPageA = imports.app.sectionPageA;
 const StyleClasses = imports.app.styleClasses;
@@ -26,11 +26,11 @@ describe('Section page for Template A', function () {
 
         segments = {
             'Lessons': [
-                new MinimalCard.MinimalCard(),
-                new MinimalCard.MinimalCard(),
+                new Minimal.MinimalCard(),
+                new Minimal.MinimalCard(),
             ],
             'Articles': [
-                new MinimalCard.MinimalCard(),
+                new Minimal.MinimalCard(),
             ],
         };
     });
