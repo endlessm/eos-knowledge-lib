@@ -241,8 +241,8 @@ js_files = \
 	js/app/modules/cardA.js \
 	js/app/modules/cardB.js \
 	js/app/modules/cardContainer.js \
-	js/app/modules/documentCard.js \
 	js/app/modules/encyclopediaWindow.js \
+	js/app/modules/knowledgeDocumentCard.js \
 	js/app/modules/listArrangement.js \
 	js/app/modules/homePageBTemplate.js \
 	js/app/modules/mediaCard.js \
@@ -357,7 +357,7 @@ javascript_tests = \
 	tests/js/app/modules/testArticleSnippetCard.js \
 	tests/js/app/modules/testCardA.js \
 	tests/js/app/modules/testCardB.js \
-	tests/js/app/modules/testDocumentCard.js \
+	tests/js/app/modules/testKnowledgeDocumentCard.js \
 	tests/js/app/modules/testListArrangement.js \
 	tests/js/app/modules/testHomePageBTemplate.js \
 	tests/js/app/modules/testMediaCard.js \
@@ -412,6 +412,7 @@ javascript_tests = \
 test_content = \
 	tests/test-content/agot.svg \
 	tests/test-content/app.json \
+	tests/test-content/emacs.html \
 	tests/test-content/mexico.html \
 	tests/test-content/mexico.jsonld \
 	tests/test-content/overrides.css \

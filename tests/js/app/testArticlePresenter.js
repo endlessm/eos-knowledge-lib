@@ -10,6 +10,7 @@ const ArticleObjectModel = imports.search.articleObjectModel;
 const ArticlePresenter = imports.app.articlePresenter;
 const SearchUtils = imports.search.utils;
 const MockFactory = imports.tests.mockFactory;
+const Minimal = imports.tests.minimal;
 
 
 Gtk.init(null);
@@ -34,23 +35,6 @@ const MockView = new Lang.Class({
     },
 });
 
-const MockCard = new Lang.Class({
-    Name: 'MockCard',
-    Extends: GObject.Object,
-    Signals: {
-        'ekn-link-clicked': {},
-    },
-
-    _init: function (props) {
-        let connectable_object = {
-            connect: function () {},
-        };
-        this.model = props.model;
-        this.parent(); // We don't care about other props
-        this.toc = connectable_object;
-    },
-});
-
 describe('Article Presenter', function () {
     let presenter;
     let view;
@@ -59,7 +43,7 @@ describe('Article Presenter', function () {
 
     beforeEach(function () {
         factory = new MockFactory.MockFactory();
-        factory.add_named_mock('document-card', MockCard);
+        factory.add_named_mock('document-card', Minimal.MinimalDocumentCard);
 
         articleObject = new ArticleObjectModel.ArticleObjectModel({
             ekn_id: 'ekn:///foo/bar',

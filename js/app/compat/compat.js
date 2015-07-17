@@ -48,7 +48,7 @@ function transform_v1_description(json) {
             type: 'MediaCard',
         };
         modules['document-card'] = {
-            type: 'DocumentCard',
+            type: 'KnowledgeDocumentCard',
         };
         break;
     case 'B':
@@ -119,7 +119,7 @@ function transform_v1_description(json) {
             type: 'MediaCard',
         };
         modules['document-card'] = {
-            type: 'DocumentCard',
+            type: 'KnowledgeDocumentCard',
         };
         break;
     case 'encyclopedia':
@@ -160,7 +160,7 @@ function transform_v1_description(json) {
             type: 'MediaCard',
         };
         modules['document-card'] = {
-            type: 'DocumentCard',
+            type: 'KnowledgeDocumentCard',
             properties: {
                 'expand': true,
             },

@@ -188,12 +188,17 @@ const ContentPage = new Lang.Class({
             model: article_model,
             show_toc: false,
             show_top_title: false,
-            content_ready_callback: (card) => {
+        });
+        this._document_card.load_content(null, (card, task) => {
+            try {
+                card.load_content_finish(task);
                 this._stack.visible_child = card;
                 card.content_view.grab_focus();
                 if (old_document_card)
                     this._stack.remove(old_document_card);
-            },
+            } catch (error) {
+                logError(error);
+            }
         });
         this._document_card.connect('ekn-link-clicked', (card, uri) =>
             this.emit('link-clicked', uri));

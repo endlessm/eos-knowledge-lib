@@ -99,12 +99,13 @@ const MinimalDocumentCard = new Lang.Class({
 
     Properties: {
         'factory': GObject.ParamSpec.override('factory', Module.Module),
+        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
         'model': GObject.ParamSpec.override('model', Card.Card),
         'page-number': GObject.ParamSpec.override('page-number', Card.Card),
         'title-capitalization': GObject.ParamSpec.override('title-capitalization',
             Card.Card),
         'content-view': GObject.ParamSpec.override('content-view', DocumentCard.DocumentCard),
-        'progress-label': GObject.ParamSpec.object('progress-label', 'Progress Label',
+        'info-notice': GObject.ParamSpec.object('info-notice', 'Info notice',
             '', GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE,
             Gtk.Widget),
         'show-toc': GObject.ParamSpec.boolean('show-toc', '', '',
@@ -116,7 +117,7 @@ const MinimalDocumentCard = new Lang.Class({
     },
 
     _init: function (props={}) {
-        props.progress_label = props.progress_label || new Gtk.Label();
+        props.info_notice = props.info_notice || new Gtk.Label();
         this.parent(props);
         this.toc = {
             connect: function () {},
