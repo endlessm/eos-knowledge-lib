@@ -3,12 +3,9 @@
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
-const Pango = imports.gi.Pango;
 
 const ContentObjectModel = imports.search.contentObjectModel;
-const SetBannerCard = imports.app.modules.setBannerCard;
-const StyleClasses = imports.app.styleClasses;
-const Utils = imports.app.utils;
+const QueryObject = imports.search.queryObject;
 
 /**
  * Class: SectionPage
@@ -32,12 +29,24 @@ const SectionPage = new Lang.Class({
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             GObject.Object.$gtype),
         /**
-         * Property: title
-         * A string with the title of the section page. Defaults to an empty string.
+         * Property: model
+         * Model object for the section
+         *
+         * A <ContentObjectModel> representing the section displayed on this
+         * page.
          */
-        'title': GObject.ParamSpec.string('title', 'Page Title',
-            'Title of the page',
-            GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE, ''),
+        'model': GObject.ParamSpec.object('model', 'Model', 'Section model',
+            GObject.ParamFlags.READWRITE,
+            ContentObjectModel.ContentObjectModel),
+        /**
+         * Property: query
+         * Query object for this page's results
+         *
+         * FIXME: This property is temporary; in the new system, the search
+         * results page will be a different page than the section page.
+         */
+        'query': GObject.ParamSpec.object('query', 'Query', 'Search query',
+            GObject.ParamFlags.READWRITE, QueryObject.QueryObject),
     },
 
     Signals: {
@@ -50,7 +59,8 @@ const SectionPage = new Lang.Class({
     },
 
     _init: function (props) {
-        this._title = null;
+        this._model = null;
+        this._query = null;
 
         this.parent(props);
     },
@@ -59,29 +69,49 @@ const SectionPage = new Lang.Class({
         this.add(title_banner);
     },
 
-    set title (v) {
-        if (this._title === v)
-            return;
-        this._title = v;
-        this._title_banner = this._create_title_banner();
-        this.pack_title_banner(this._title_banner);
-        this.show_all();
-        this.notify('title');
+    get model() {
+        return this._model;
     },
 
-    get title () {
-        if (this._title)
-            return this._title;
-        return '';
+    set model(value) {
+        if (this._model === value)
+            return;
+        this._model = value;
+        this._query = null;
+        this._update_banner();
+    },
+
+    get query() {
+        return this._query;
+    },
+
+    set query(value) {
+        if (this._query === value)
+            return;
+        this._query = value;
+        this._model = null;
+        this._update_banner();
+    },
+
+    _update_banner: function () {
+        this._title_banner = this._create_title_banner();
+        this.pack_title_banner(this._title_banner);
+        this._title_banner.show_all();
+        this.notify('model');
+        this.notify('query');
     },
 
     _create_title_banner: function () {
-        let section_model = new ContentObjectModel.ContentObjectModel({
-            title: this._title,
-            featured: false,
-        });
-        return this.factory.create_named_module('results-title-card', {
-            model: section_model,
-        });
+        if (this._model) {
+            return this.factory.create_named_module('results-title-card', {
+                model: this._model,
+            });
+        }
+        if (this._query) {
+            return this.factory.create_named_module('results-search-banner', {
+                query: this._query.query,
+            });
+        }
+        throw new Error("Assert not reached");
     },
 });

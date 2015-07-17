@@ -16,7 +16,6 @@ describe('Section page for Template B', function () {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
 
         section_page = new SectionPageB.SectionPageB({
-            title: "History of Guatemala",
             factory: new MockFactory.MockFactory(),
         });
 
@@ -24,11 +23,6 @@ describe('Section page for Template B', function () {
     });
 
     it('can be constructed', function () {});
-
-    it('can set title', function () {
-        section_page.title = "Brazil";
-        expect(section_page.title).toBe("Brazil");
-    });
 
     it('can set cards', function () {
         section_page.cards = card_list;

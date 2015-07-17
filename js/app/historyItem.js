@@ -2,7 +2,7 @@ const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 
-const ArticleObjectModel = imports.search.articleObjectModel;
+const ContentObjectModel = imports.search.contentObjectModel;
 const QueryObject = imports.search.queryObject;
 
 /**
@@ -38,14 +38,18 @@ const HistoryItem = new Lang.Class({
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             ''),
         /**
-         * Property: article-model
+         * Property: model
+         * Content object model representing this page
          *
-         * An <ArticleObjectModel> that stores the information used to replicate an article
-         * on a page of type 'article'.
+         * A <ContentObjectModel> that stores the information used to replicate
+         * an article on a page of type 'article'.
+         * Contains an object for pages of type 'article' and 'section',
+         * otherwise null.
          */
-        'article-model': GObject.ParamSpec.object('article-model', 'Article model',
-            'The article object model handled by this widget. Only not null for pages of type \'article\'',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ArticleObjectModel.ArticleObjectModel),
+        'model': GObject.ParamSpec.object('model', 'Model',
+            'Content object model representing this page',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            ContentObjectModel.ContentObjectModel),
         /**
          * Property: query-obj
          *
