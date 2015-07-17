@@ -1,5 +1,4 @@
 const GObject = imports.gi.GObject;
-const WebKit2 = imports.gi.WebKit2;
 
 const ArticleHTMLRenderer = imports.app.articleHTMLRenderer;
 const WebkitContextSetup = imports.app.webkitContextSetup;

@@ -1,12 +1,9 @@
 const Endless = imports.gi.Endless;
 const Gdk = imports.gi.Gdk;
-const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const WebKit2 = imports.gi.WebKit2;
-
-const EknWebview = imports.app.eknWebview;
 
 const ARTICLE_SEARCH_BUTTONS_SPACING = 10;
 const ARTICLE_SEARCH_MAX_RESULTS = 200;
