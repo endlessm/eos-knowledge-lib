@@ -61,7 +61,7 @@ function transform_v1_description(json) {
         };
         modules['home-page-template'] = {
             type: 'HomePageBTemplate',
-            submodules: {
+            slots: {
                 top_left: "app-banner",
                 top_right: "home-search",
                 bottom: "card-container",

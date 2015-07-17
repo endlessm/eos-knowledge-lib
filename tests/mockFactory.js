@@ -40,6 +40,6 @@ const MockFactory = new Lang.Class({
     create_module_for_slot: function (parent_name, slot) {
         let module_name = this._mock_slots[parent_name][slot];
 
-        return this.create_named_module(submodule_name, {});
+        return this.create_named_module(module_name, {});
     },
 });
