@@ -229,6 +229,7 @@ js_files = \
 	js/app/infiniteScrolledWindow.js \
 	js/app/interfaces/arrangement.js \
 	js/app/interfaces/card.js \
+	js/app/interfaces/documentCard.js \
 	js/app/interfaces/module.js \
 	js/app/launcher.js \
 	js/app/lightbox.js \

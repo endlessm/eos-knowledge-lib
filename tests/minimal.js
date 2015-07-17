@@ -1,6 +1,6 @@
 // Copyright 2015 Endless Mobile, Inc.
 
-/* exported MinimalArrangement, MinimalCard, MinimalModule */
+/* exported MinimalArrangement, MinimalCard, MinimalModule, MinimalDocumentCard */
 
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
@@ -8,6 +8,7 @@ const Lang = imports.lang;
 
 const Arrangement = imports.app.interfaces.arrangement;
 const Card = imports.app.interfaces.card;
+const DocumentCard = imports.app.interfaces.documentCard;
 const HomePage = imports.app.homePage;
 const Module = imports.app.interfaces.module;
 
@@ -88,5 +89,37 @@ const MinimalModule = new Lang.Class({
 
     _init: function (props={}) {
         this.parent(props);
+    },
+});
+
+const MinimalDocumentCard = new Lang.Class({
+    Name: 'MinimalDocumentCard',
+    Extends: Gtk.Widget,
+    Implements: [ Module.Module, Card.Card, DocumentCard.DocumentCard ],
+
+    Properties: {
+        'factory': GObject.ParamSpec.override('factory', Module.Module),
+        'model': GObject.ParamSpec.override('model', Card.Card),
+        'page-number': GObject.ParamSpec.override('page-number', Card.Card),
+        'title-capitalization': GObject.ParamSpec.override('title-capitalization',
+            Card.Card),
+        'content-view': GObject.ParamSpec.override('content-view', DocumentCard.DocumentCard),
+        'progress-label': GObject.ParamSpec.object('progress-label', 'Progress Label',
+            '', GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE,
+            Gtk.Widget),
+        'show-toc': GObject.ParamSpec.boolean('show-toc', '', '',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
+            true),
+        'show-top-title': GObject.ParamSpec.boolean('show-top-title', '', '',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
+            true),
+    },
+
+    _init: function (props={}) {
+        props.progress_label = props.progress_label || new Gtk.Label();
+        this.parent(props);
+        this.toc = {
+            connect: function () {},
+        };
     },
 });
