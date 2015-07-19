@@ -1,30 +1,24 @@
 const Endless = imports.gi.Endless;
-const Gettext = imports.gettext;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
-const Config = imports.app.config;
 const ContentPage = imports.app.encyclopedia.contentPage;
 const HomePage = imports.app.encyclopedia.homePage;
 const Lightbox = imports.app.lightbox;
-
-let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
+const Module = imports.app.interfaces.module;
 
 const HOME_PAGE_NAME = 'home';
 const CONTENT_PAGE_NAME = 'content';
 
-const EncyclopediaView = new Lang.Class({
-    Name: 'EncyclopediaView',
+const EncyclopediaWindow = new Lang.Class({
+    Name: 'EncyclopediaWindow',
     Extends: Endless.Window,
+    Implements: [ Module.Module ],
+
     Properties: {
-        /**
-         * Property: factory
-         * Factory to create modules
-         */
-        'factory': GObject.ParamSpec.object('factory', 'Factory', 'Factory',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            GObject.Object.$gtype),
+        'factory': GObject.ParamSpec.override('factory', Module.Module),
+        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
         'home-page': GObject.ParamSpec.object('home-page', 'home page',
             'The home page of this view widget.',
             GObject.ParamFlags.READABLE,
@@ -49,6 +43,20 @@ const EncyclopediaView = new Lang.Class({
             'The lightbox of this view widget.',
             GObject.ParamFlags.READABLE,
             Lightbox.Lightbox),
+        /**
+         * Property: home-background-uri
+         * URI of the home page background
+         */
+        'home-background-uri': GObject.ParamSpec.string('home-background-uri',
+            'Home Background URI', 'Home Background URI',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
+        /**
+         * Property: results-background-uri
+         * URI of the results page background
+         */
+        'results-background-uri': GObject.ParamSpec.string('results-background-uri',
+            'Results Background URI', 'Results Background URI',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
     },
 
     Signals: {
@@ -73,7 +81,6 @@ const EncyclopediaView = new Lang.Class({
 
     _init: function (props) {
         props = props || {};
-        props.title = _("Encyclopedia");
         props.font_scaling_active = true;
         this.parent(props);
 
@@ -93,7 +100,7 @@ const EncyclopediaView = new Lang.Class({
 
         this.page_manager.add(this._home_page, {
             name: HOME_PAGE_NAME,
-            background_uri: 'resource:///com/endlessm/knowledge/images/background-home.jpg',
+            background_uri: this.home_background_uri,
             background_repeats: false,
             background_size: 'cover',
             background_position: 'center center'
@@ -109,7 +116,7 @@ const EncyclopediaView = new Lang.Class({
         this.page_manager.add(this._lightbox, {
             name: CONTENT_PAGE_NAME,
             left_topbar_widget: this.history_buttons,
-            background_uri: 'resource:///com/endlessm/knowledge/images/background-result.jpg',
+            background_uri: this.results_background_uri,
             background_repeats: false,
             background_size: 'cover',
             background_position: 'top center'

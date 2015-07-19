@@ -1,6 +1,7 @@
 imports.gi.versions.WebKit2 = '4.0';
 
 const Gdk = imports.gi.Gdk;
+const Gettext = imports.gettext;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const Gtk = imports.gi.Gtk;
@@ -14,9 +15,10 @@ resource._register();
 const Application = imports.app.application;
 const EncyclopediaModel = imports.app.encyclopedia.model;
 const EncyclopediaPresenter = imports.app.encyclopedia.presenter;
-const EncyclopediaView = imports.app.encyclopedia.view;
 const ModuleFactory = imports.app.moduleFactory;
 const WebkitContextSetup = imports.app.webkitContextSetup;
+
+let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
 const ENCYCLOPEDIA_APP_ID = 'com.endlessm.encyclopedia-en';
 const ASSETS_PATH = 'resource:///com/endlessm/knowledge/images/';
@@ -68,14 +70,16 @@ const EndlessEncyclopedia = new Lang.Class({
             app_json: {
                 version: 1,
                 templateType: 'encyclopedia',
+                appTitle: _("Encyclopedia"),
                 titleImageURI: this._getLocalizedResource(ASSETS_PATH, LOGO_FILE),
+                backgroundHomeURI: 'resource:///com/endlessm/knowledge/images/background-home.jpg',
+                backgroundSectionURI: 'resource:///com/endlessm/knowledge/images/background-result.jpg',
             },
         });
 
         this._model = new EncyclopediaModel.EncyclopediaModel();
-        this._view = new EncyclopediaView.EncyclopediaView({
+        this._view = factory.create_named_module('window', {
             application: this,
-            factory: factory,
         });
         this._presenter =
             new EncyclopediaPresenter.EncyclopediaPresenter(this._view, this._model, {

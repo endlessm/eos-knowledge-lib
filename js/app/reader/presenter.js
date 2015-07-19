@@ -31,7 +31,6 @@ const UserSettingsModel = imports.app.reader.userSettingsModel;
 const Utils = imports.app.utils;
 const WebkitContextSetup = imports.app.webkitContextSetup;
 const WebviewTooltip = imports.app.reader.webviewTooltip;
-const Window = imports.app.reader.window;
 
 String.prototype.format = Format.format;
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
@@ -177,9 +176,8 @@ const Presenter = new Lang.Class({
         let css = Gio.File.new_for_uri('resource:///com/endlessm/knowledge/css/endless_reader.css');
         Utils.add_css_provider_from_file(css, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 
-        props.view = props.view || new Window.Window({
+        props.view = props.view || props.factory.create_named_module('window', {
             application: props.application,
-            factory: props.factory,
         });
         props.engine = props.engine || Engine.Engine.get_default();
         props.settings = props.settings || new UserSettingsModel.UserSettingsModel({
@@ -201,7 +199,6 @@ const Presenter = new Lang.Class({
         this._article_renderer = new ArticleHTMLRenderer.ArticleHTMLRenderer();
 
         this._check_for_content_update();
-        this._parse_app_info(app_json);
 
         this._webview_map = {};
         this._article_models = [];
@@ -974,18 +971,6 @@ const Presenter = new Lang.Class({
     _update_button_visibility: function () {
         this.view.nav_buttons.forward_visible = this.view.article_pages_visible();
         this.view.nav_buttons.back_visible = (this._current_page > 0);
-    },
-
-    // Retrieve all needed information from the app.json file, such as the app
-    // ID and the app's headline.
-    _parse_app_info: function (info) {
-        this.view.title = info['appTitle'];
-        this.view.overview_page.subtitle = info['appSubtitle'];
-        this.view.overview_page.background_image_uri = info['backgroundHomeURI'];
-        this.view.done_page.background_image_uri = info['backgroundSectionURI'];
-        this.view.standalone_page.app_name = info['appTitle'];
-        this.view.standalone_page.infobar.title_image_uri = info['titleImageURI'];
-        this.view.standalone_page.infobar.background_image_uri = info['backgroundHomeURI'];
     },
 
     // Take an ArticleObjectModel and create a Reader.ArticlePage view.

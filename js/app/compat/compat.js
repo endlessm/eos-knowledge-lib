@@ -10,6 +10,14 @@ function transform_v1_description(json) {
 
     switch (json.templateType) {
     case 'A':
+        modules['window'] = {
+            type: 'Window',
+            properties: {
+                'title': json['appTitle'],
+                'background-image-uri': json['backgroundHomeURI'],
+                'blur-background-image-uri': json['backgroundSectionURI'],
+            },
+        };
         modules['app-banner'] = {
             type: 'AppBanner',
             properties: {
@@ -44,6 +52,14 @@ function transform_v1_description(json) {
         };
         break;
     case 'B':
+        modules['window'] = {
+            type: 'Window',
+            properties: {
+                'title': json['appTitle'],
+                'background-image-uri': json['backgroundHomeURI'],
+                'blur-background-image-uri': json['backgroundSectionURI'],
+            },
+        };
         modules['app-banner'] = {
             type: 'AppBanner',
             properties: {
@@ -107,6 +123,14 @@ function transform_v1_description(json) {
         };
         break;
     case 'encyclopedia':
+        modules['window'] = {
+            type: 'EncyclopediaWindow',
+            properties: {
+                'title': json['appTitle'],
+                'home-background-uri': json['backgroundHomeURI'],
+                'results-background-uri': json['backgroundSectionURI'],
+            },
+        };
         modules['app-banner'] = {
             type: 'AppBanner',
             properties: {
@@ -158,6 +182,16 @@ function transform_v1_description(json) {
         };
         break;
     case 'reader':
+        modules['window'] = {
+            type: 'ReaderWindow',
+            properties: {
+                'title': json['appTitle'],
+                'subtitle': json['appSubtitle'],
+                'title-image-uri': json['backgroundHomeURI'],
+                'home-background-uri': json['backgroundHomeURI'],
+                'done-background-uri': json['backgroundSectionURI'],
+            },
+        };
         modules['app-banner'] = {
             type: 'AppBanner',
             properties: {

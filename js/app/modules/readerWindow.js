@@ -12,6 +12,7 @@ const Lang = imports.lang;
 const StandalonePage = imports.app.reader.standalonePage;
 const DonePage = imports.app.reader.donePage;
 const Lightbox = imports.app.lightbox;
+const Module = imports.app.interfaces.module;
 const NavButtonOverlay = imports.app.navButtonOverlay;
 const OverviewPage = imports.app.reader.overviewPage;
 const SearchResultsPage = imports.app.reader.searchResultsPage;
@@ -29,18 +30,15 @@ const StyleClasses = imports.app.styleClasses;
  * Adds a lightbox above the article page, which can be used to show content
  * above it.
  */
-const Window = new Lang.Class({
-    Name: 'Window',
+const ReaderWindow = new Lang.Class({
+    Name: 'ReaderWindow',
     GTypeName: 'EknReaderWindow',
     Extends: Endless.Window,
+    Implements: [ Module.Module ],
+
     Properties: {
-        /**
-         * Property: factory
-         * Factory to create modules
-         */
-        'factory': GObject.ParamSpec.object('factory', 'Factory', 'Factory',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            GObject.Object.$gtype),
+        'factory': GObject.ParamSpec.override('factory', Module.Module),
+        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
         /**
          * Property: nav-buttons
          *
@@ -151,6 +149,35 @@ const Window = new Lang.Class({
             'The Search box of this view widget',
             GObject.ParamFlags.READABLE,
             Endless.SearchBox),
+        /**
+         * Property: subtitle
+         * A subtitle for the application. Defaults to an empty string.
+         */
+        'subtitle': GObject.ParamSpec.string('subtitle', 'App subtitle',
+            'A subtitle for the app',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
+        /**
+         * Property: home-background-uri
+         * URI of the home page background
+         */
+        'home-background-uri': GObject.ParamSpec.string('home-background-uri',
+            'Home Background URI', 'Home Background URI',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
+        /**
+         * Property: done-background-uri
+         * URI of the done page background
+         */
+        'done-background-uri': GObject.ParamSpec.string('done-background-uri',
+            'Done Background URI', 'Done Background URI',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
+        /**
+         * Property: title-image-uri
+         *
+         * FIXME: when the infobar is a proper module this can go away.
+         */
+        'title-image-uri': GObject.ParamSpec.string('title-image-uri',
+            'Title Image URI', 'Title Image URI',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
     },
 
     Signals: {
@@ -186,9 +213,17 @@ const Window = new Lang.Class({
 
         this.overview_page = new OverviewPage.OverviewPage({
             factory: this.factory,
+            subtitle: this.subtitle,
+            background_image_uri: this.home_background_uri,
         });
-        this.done_page = new DonePage.DonePage();
-        this.standalone_page = new StandalonePage.StandalonePage();
+        this.done_page = new DonePage.DonePage({
+            background_image_uri: this.done_background_uri,
+        });
+        this.standalone_page = new StandalonePage.StandalonePage({
+            app_name: this.title,
+        });
+        this.standalone_page.infobar.title_image_uri = this.title_image_uri;
+        this.standalone_page.infobar.background_image_uri = this.home_background_uri;
         this.search_results_page = new SearchResultsPage.SearchResultsPage();
         this.nav_buttons = new NavButtonOverlay.NavButtonOverlay({
             back_image_uri: this._BACK_IMAGE_URI,

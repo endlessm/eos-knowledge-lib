@@ -22,7 +22,6 @@ const TabButton = imports.app.tabButton;
 const TextCard = imports.app.modules.textCard;
 const Utils = imports.app.utils;
 const WebkitContextSetup = imports.app.webkitContextSetup;
-const Window = imports.app.window;
 
 String.prototype.format = Format.format;
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
@@ -130,10 +129,9 @@ const Presenter = new Lang.Class({
         // Needs to happen before before any webviews are created
         WebkitContextSetup.register_webkit_extensions(props.application.application_id);
 
-        props.view = props.view || new Window.Window({
+        props.view = props.view || props.factory.create_named_module('window', {
             application: props.application,
             template_type: this._template_type,
-            factory: props.factory,
         });
         props.engine = props.engine || Engine.Engine.get_default();
         props.article_presenter = props.article_presenter || new ArticlePresenter.ArticlePresenter({
@@ -145,9 +143,6 @@ const Presenter = new Lang.Class({
 
         this._style_knobs = app_json['styles'];
         this.load_theme();
-        this.view.title = app_json['appTitle'];
-        this.view.background_image_uri = app_json['backgroundHomeURI'];
-        this.view.blur_background_image_uri = app_json['backgroundSectionURI'];
 
         let query = new QueryObject.QueryObject({
             limit: 100,  // FIXME arbitrary, can we say "no limit"?

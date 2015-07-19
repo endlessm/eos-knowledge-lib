@@ -208,7 +208,6 @@ js_files = \
 	js/app/encyclopedia/model.js \
 	js/app/encyclopedia/presenter.js \
 	js/app/encyclopedia/runner.js \
-	js/app/encyclopedia/view.js \
 	js/app/historyItem.js \
 	js/app/historyPresenter.js \
 	js/app/homePage.js \
@@ -229,15 +228,18 @@ js_files = \
 	js/app/modules/cardB.js \
 	js/app/modules/cardContainer.js \
 	js/app/modules/documentCard.js \
+	js/app/modules/encyclopediaWindow.js \
 	js/app/modules/listArrangement.js \
 	js/app/modules/homePageBTemplate.js \
 	js/app/modules/mediaCard.js \
 	js/app/modules/readerCard.js \
+	js/app/modules/readerWindow.js \
 	js/app/modules/searchBanner.js \
 	js/app/modules/searchBox.js \
 	js/app/modules/searchModule.js \
 	js/app/modules/setBannerCard.js \
 	js/app/modules/textCard.js \
+	js/app/modules/window.js \
 	js/app/mustache.js \
 	js/app/navButtonOverlay.js \
 	js/app/noSearchResultsPage.js \
@@ -255,7 +257,6 @@ js_files = \
 	js/app/reader/titleView.js \
 	js/app/reader/userSettingsModel.js \
 	js/app/reader/webviewTooltip.js \
-	js/app/reader/window.js \
 	js/app/runner.js \
 	js/app/sectionArticlePage.js \
 	js/app/sectionPage.js \
@@ -268,7 +269,6 @@ js_files = \
 	js/app/utils.js \
 	js/app/warehouse.js \
 	js/app/webkitContextSetup.js \
-	js/app/window.js \
 	js/search/application.js \
 	js/search/articleObjectModel.js \
 	js/search/asyncTask.js \
@@ -347,16 +347,17 @@ javascript_tests = \
 	tests/js/app/modules/testHomePageBTemplate.js \
 	tests/js/app/modules/testMediaCard.js \
 	tests/js/app/modules/testReaderCard.js \
+	tests/js/app/modules/testReaderWindow.js \
 	tests/js/app/modules/testSearchBanner.js \
 	tests/js/app/modules/testSearchModule.js \
 	tests/js/app/modules/testSetBannerCard.js \
 	tests/js/app/modules/testTextCard.js \
+	tests/js/app/modules/testWindow.js \
 	tests/js/app/reader/testDonePage.js \
 	tests/js/app/reader/testOverviewPage.js \
 	tests/js/app/reader/testProgressLabel.js \
 	tests/js/app/reader/testReaderArticlePage.js \
 	tests/js/app/reader/testReaderPresenter.js \
-	tests/js/app/reader/testReaderWindow.js \
 	tests/js/app/reader/testSearchResultsPage.js \
 	tests/js/app/reader/testTitleView.js \
 	tests/js/app/reader/testUserSettingsModel.js \
@@ -384,7 +385,6 @@ javascript_tests = \
 	tests/js/app/testStyleKnobGenerator.js \
 	tests/js/app/testTableOfContents.js \
 	tests/js/app/testUtils.js \
-	tests/js/app/testWindow.js \
 	tests/js/search/testArticleObjectModel.js \
 	tests/js/search/testAsyncTask.js \
 	tests/js/search/testContentObjectModel.js \
