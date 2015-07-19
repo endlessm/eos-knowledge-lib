@@ -1,0 +1,7 @@
+{
+    "templateType": "encyclopedia",
+    "appTitle": "الموسوعة",
+    "titleImageURI": "resource:///com/endlessm/encyclopedia-ar/assets/title-image.svg",
+    "backgroundHomeURI": "resource:///com/endlessm/encyclopedia-ar/assets/background-home.jpg",
+    "backgroundSectionURI": "resource:///com/endlessm/encyclopedia-ar/assets/background-results.jpg"
+}

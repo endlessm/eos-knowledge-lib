@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
   <gresource prefix="/com/endlessm/knowledge">
-    <file>credits.json</file>
     <file compressed="true">css/endless_encyclopedia.css</file>
     <file compressed="true">css/endless_knowledge.css</file>
     <file compressed="true">css/endless_reader.css</file>
@@ -11,14 +10,8 @@
     <file compressed="true">css/no_image_links.css</file>
     <file compressed="true">css/themes/jungle.css</file>
     <file compressed="true">css/themes/templateA.css</file>
-    <file>images/background-home.jpg</file>
-    <file>images/background-result.jpg</file>
-    <file>images/C/logo.svg</file>
-    <file>images/es/logo.svg</file>
-    <file>images/fr/logo.svg</file>
     <file>images/pdf-background.png</file>
     <file>images/pdf_icon.png</file>
-    <file>images/pt/logo.svg</file>
     <file preprocess="xml-stripblanks">images/reader/archive.svg</file>
     <file preprocess="xml-stripblanks">images/reader/external-link.svg</file>
     <file preprocess="xml-stripblanks">images/reader/left-arrow.svg</file>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<gresources>
+    <gresource prefix="/com/endlessm/encyclopedia-fr">
+        <file compressed="true">app.json</file>
+        <file compressed="true">credits.json</file>
+        <file>assets/background-home.jpg</file>
+        <file>assets/background-results.jpg</file>
+        <file>assets/title-image.svg</file>
+    </gresource>
+</gresources>

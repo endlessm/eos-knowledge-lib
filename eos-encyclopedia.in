@@ -17,4 +17,6 @@ if [ "$RUN_DEBUG" != "" ]; then
     DEBUG_COMMAND="gdb --args"
 fi
 
-exec $DEBUG_COMMAND gjs %jsdir%/app/encyclopedia/runner.js $@
+APP_ID="$1"
+shift
+exec $DEBUG_COMMAND gjs %jsdir%/app/encyclopedia/runner.js $APP_ID "%compatdatadir%/${APP_ID}.gresource" $@

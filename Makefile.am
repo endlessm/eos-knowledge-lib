@@ -110,6 +110,16 @@ data/eos-knowledge.gresource.deps: $(scss_targets)
 pkgdata_DATA += data/eos-knowledge.gresource
 gresources += data/eos-knowledge.gresource
 
+compatdatadir = $(pkgdatadir)/compat
+compatdata_DATA = \
+	data/compat/encyclopedia-ar/com.endlessm.encyclopedia-ar.gresource \
+	data/compat/encyclopedia-en/com.endlessm.encyclopedia-en.gresource \
+	data/compat/encyclopedia-es/com.endlessm.encyclopedia-es.gresource \
+	data/compat/encyclopedia-fr/com.endlessm.encyclopedia-fr.gresource \
+	data/compat/encyclopedia-pt/com.endlessm.encyclopedia-pt.gresource \
+	$(NULL)
+gresources += $(compatdata_DATA)
+
 # # # MAIN LIBRARY # # #
 
 eosknowledgeprivate_headers = \
@@ -300,6 +310,7 @@ dist_overrides_DATA = overrides/EosKnowledgePrivate.js
 # These files need to be filled in with make variables
 
 subst = $(SED) \
+	-e 's,%compatdatadir%,$(compatdatadir),g' \
 	-e 's,%datadir%,$(datadir),g' \
 	-e 's,%jsdir%,$(jsdir),g' \
 	-e 's,%pkgdatadir%,$(pkgdatadir),g' \

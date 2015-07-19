@@ -1,9 +1,7 @@
 imports.gi.versions.WebKit2 = '4.0';
 
 const Gdk = imports.gi.Gdk;
-const Gettext = imports.gettext;
 const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
@@ -17,12 +15,7 @@ const EncyclopediaModel = imports.app.encyclopedia.model;
 const EncyclopediaPresenter = imports.app.encyclopedia.presenter;
 const ModuleFactory = imports.app.moduleFactory;
 const WebkitContextSetup = imports.app.webkitContextSetup;
-
-let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
-
-const ENCYCLOPEDIA_APP_ID = 'com.endlessm.encyclopedia-en';
-const ASSETS_PATH = 'resource:///com/endlessm/knowledge/images/';
-const LOGO_FILE = 'logo.svg';
+const Utils = imports.app.utils;
 
 const EndlessEncyclopedia = new Lang.Class({
     Name:'EndlessEncyclopedia',
@@ -40,23 +33,6 @@ const EndlessEncyclopedia = new Lang.Class({
         this.parent(win);
     },
 
-    _getLocalizedResource: function(resource_path, filename) {
-        let languages = GLib.get_language_names();
-        let directories = Gio.resources_enumerate_children(resource_path.split('resource://')[1],
-                                                       Gio.ResourceLookupFlags.NONE);
-        let location = '';
-        // Finds the resource appropriate for the current langauge
-        // If can't find language, will return file in C/
-        for (let i = 0; i < languages.length; i++) {
-            let lang_code = languages[i] + '/';
-            if (directories.indexOf(lang_code) !== -1) {
-                location = resource_path + lang_code + filename;
-                break;
-            }
-        }
-        return location;
-    },
-
     ensure_presenter: function () {
         if (this._presenter !== null)
             return;
@@ -64,17 +40,17 @@ const EndlessEncyclopedia = new Lang.Class({
         // Load web extensions for translating
         WebkitContextSetup.register_webkit_extensions(this.application_id);
 
-        // Old encyclopedias had no app.json, so we make a fake legacy json with
-        // templateType 'encyclopedia', which is handled in our compat layer.
+        let app_resource = Gio.Resource.load(ARGV[1]);
+        app_resource._register();
+        let appname = app_resource.enumerate_children('/com/endlessm', Gio.FileQueryInfoFlags.NONE, null)[0];
+        let resource_file = Gio.File.new_for_uri('resource:///com/endlessm/' + appname);
+        let app_json_file = resource_file.get_child('app.json');
+        let app_json = Utils.parse_object_from_file(app_json_file);
+
+        this.image_attribution_file = resource_file.get_child('credits.json');
+
         let factory = new ModuleFactory.ModuleFactory({
-            app_json: {
-                version: 1,
-                templateType: 'encyclopedia',
-                appTitle: _("Encyclopedia"),
-                titleImageURI: this._getLocalizedResource(ASSETS_PATH, LOGO_FILE),
-                backgroundHomeURI: 'resource:///com/endlessm/knowledge/images/background-home.jpg',
-                backgroundSectionURI: 'resource:///com/endlessm/knowledge/images/background-result.jpg',
-            },
+            app_json: app_json,
         });
 
         this._model = new EncyclopediaModel.EncyclopediaModel();
@@ -95,9 +71,8 @@ const EndlessEncyclopedia = new Lang.Class({
 });
 
 let app = new EndlessEncyclopedia({
-    application_id: ARGV[0] ? ARGV[0] : ENCYCLOPEDIA_APP_ID,
+    application_id: ARGV[0],
     inactivity_timeout: 12000,
-    image_attribution_file: Gio.File.new_for_uri('resource:///com/endlessm/knowledge/credits.json'),
 });
 
-app.run(ARGV);
+app.run([]);
