@@ -77,34 +77,38 @@ CLEANFILES += $(scss_targets)
 clean-local:
 	rm -rf .sass-cache
 
-# Generate dependencies for make rule from XML resource file description. This
-# is a quite tricky make rule. glib-compile-resources will error if any files
-# are not found. Which means we need to build our sass before calling into it.
-# So we can't just assign a variable here, but need an actual build rule with
-# dependencies. Hence the gresourcedeps file.
-gresourcedeps: $(scss_targets) data/eos-knowledge.gresource.xml
-	$(AM_V_GEN) $(GLIB_COMPILE_RESOURCES) --sourcedir=$(srcdir)/data --sourcedir=$(builddir)/data --generate-dependencies \
-		$(srcdir)/data/eos-knowledge.gresource.xml | tr '\n' ' ' | sed 's/^/resource_files = /' > $@
-# This indirection keeps automake from including gresourcedeps and leaving it to make
-DUMMY=gresourcedeps
-include $(DUMMY)
+resource_deps_verbose = $(resource_deps_verbose_@AM_V@)
+resource_deps_verbose_ = $(resource_deps_verbose_@AM_DEFAULT_V@)
+resource_deps_verbose_0 = @echo "  RESDEPS  $@";
 
-# Generated sources for GResource file
-data/eos-knowledge.gresource: data/eos-knowledge.gresource.xml gresourcedeps $(resource_files)
-	$(AM_V_GEN) $(MKDIR_P) $(dir $@) && \
-	$(GLIB_COMPILE_RESOURCES) --target=$@ --sourcedir=$(srcdir)/data \
-		--sourcedir=$(builddir)/data $<
+resource_verbose = $(resource_verbose_@AM_V@)
+resource_verbose_ = $(resource_verbose_@AM_DEFAULT_V@)
+resource_verbose_0 = @echo "  RES      $@";
 
+%.gresource.deps: %.gresource.xml
+	$(resource_deps_verbose) $(MKDIR_P) $(dir $@) && \
+	$(GLIB_COMPILE_RESOURCES) --generate-dependencies \
+		--sourcedir=$(srcdir)/$(*D) --sourcedir=$(builddir)/$(*D) $< > $@.tmp && \
+	DEPENDENCIES=$$(tr '\n' ' ' < $@.tmp) && rm $@.tmp && \
+	echo "$*.gresource: $$DEPENDENCIES" > $@ && \
+	echo "gresource_depedencies += $$DEPENDENCIES" >> $@
+
+%.gresource: %.gresource.xml %.gresource.deps
+	$(resource_verbose) $(MKDIR_P) $(dir $@) && \
+	$(GLIB_COMPILE_RESOURCES) --target=$@ \
+		--sourcedir=$(srcdir)/$(*D) --sourcedir=$(builddir)/$(*D) $<
+
+gresources =
+gresource_depedencies =
+-include $(gresources:.gresource=.gresource.deps)
+CLEANFILES += $(gresources:.gresource=.gresource.deps) $(gresources)
+EXTRA_DIST += $(gresources:.gresource=.gresource.xml) $(gresource_depedencies)
+
+# glib-compile-resources --generate-dependencies can't be run until all
+# dependencies are present, so we need to build the scss first
+data/eos-knowledge.gresource.deps: $(scss_targets)
 pkgdata_DATA += data/eos-knowledge.gresource
-
-EXTRA_DIST += \
-	$(filter-out $(scss_targets),$(resource_files)) \
-	data/eos-knowledge.gresource.xml \
-	$(NULL)
-CLEANFILES += \
-	data/eos-knowledge.gresource \
-	gresourcedeps \
-	$(NULL)
+gresources += data/eos-knowledge.gresource
 
 # # # MAIN LIBRARY # # #
 
