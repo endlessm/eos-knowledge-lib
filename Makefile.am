@@ -51,7 +51,7 @@ endif
 
 scss_verbose = $(scss_verbose_@AM_V@)
 scss_verbose_ = $(scss_verbose_@AM_DEFAULT_V@)
-scss_verbose_0 = @echo "  SCSS $@";
+scss_verbose_0 = @echo "  SCSS     $@";
 
 scss_toplevels = \
 	$(srcdir)/data/templates/css/embedly.scss \
