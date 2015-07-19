@@ -214,8 +214,8 @@ const EncyclopediaPresenter = new Lang.Class({
         let item = this._history_presenter.history_model.current_item;
         switch (item.page_type) {
         case ARTICLE_PAGE:
-            this._current_article = item.article_model;
-            this._load_article_in_view(item.article_model);
+            this._current_article = item.model;
+            this._load_article_in_view(item.model);
             return;
         case SEARCH_RESULTS_PAGE:
             this._do_search_in_view(item.query_obj.query);
@@ -247,7 +247,7 @@ const EncyclopediaPresenter = new Lang.Class({
         if (model instanceof ArticleObjectModel.ArticleObjectModel) {
             this._history_presenter.set_current_item({
                 page_type: ARTICLE_PAGE,
-                article_model: model,
+                model: model,
             });
         } else if (model instanceof MediaObjectModel.MediaObjectModel) {
             this._lightbox_presenter.show_media_object(this._current_article, model);
