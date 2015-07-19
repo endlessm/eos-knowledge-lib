@@ -80,11 +80,8 @@ const SectionPageB = new Lang.Class({
             preferred_width: 400,
             hexpand: false,
         });
-        this._arrangement.connect('notify::need-more-content', () => {
-            if (this._arrangement.need_more_content) {
-                this.emit('load-more-results');
-            }
-        });
+        this._arrangement.connect('need-more-content', () =>
+            this.emit('load-more-results'));
         this.add(this._arrangement);
 
         this.get_style_context().add_class(StyleClasses.SECTION_PAGE_B);
@@ -162,7 +159,6 @@ const SectionPageB = new Lang.Class({
         this._cards = v;
         if (this._cards)
             this._cards.forEach(this._arrangement.add_card, this._arrangement);
-        this._arrangement.need_more_content = false;
     },
 
     get cards () {

@@ -1,23 +1,13 @@
-const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const Minimal = imports.tests.minimal;
 const MockFactory = imports.tests.mockFactory;
+const MockWidgets = imports.tests.mockWidgets;
 const SectionPageB = imports.app.sectionPageB;
 const StyleClasses = imports.app.styleClasses;
 
 Gtk.init(null);
-
-const ArrangementWithWidth = new Lang.Class({
-    Name: 'ArrangementWithWidth',
-    Extends: Minimal.MinimalArrangement,
-    Properties: {
-        'preferred-width': GObject.ParamSpec.int('preferred-width', '', '',
-            GObject.ParamFlags.READWRITE, -1, 9999, -1),
-    },
-});
 
 describe('Section page for Template B', function () {
     let section_page, card_list, arrangement;
@@ -27,7 +17,7 @@ describe('Section page for Template B', function () {
 
         let factory = new MockFactory.MockFactory();
         factory.add_named_mock('results-arrangement',
-            ArrangementWithWidth);
+            MockWidgets.MockScrolledArrangement);
 
         section_page = new SectionPageB.SectionPageB({
             factory: factory,

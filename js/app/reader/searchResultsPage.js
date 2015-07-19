@@ -53,11 +53,8 @@ const SearchResultsPage = new Lang.Class({
             hscrollbar_policy: Gtk.PolicyType.NEVER,
             bottom_buffer: this._LOADING_BOTTOM_BUFFER,
         });
-        this._scrolled_window.connect('notify::need-more-content', () => {
-            if (this._scrolled_window.need_more_content) {
-                this.emit('load-more-results');
-            }
-        });
+        this._scrolled_window.connect('need-more-content', () =>
+            this.emit('load-more-results'));
 
         this._content_flow_box = new Gtk.FlowBox({
             valign: Gtk.Align.START,
@@ -89,7 +86,6 @@ const SearchResultsPage = new Lang.Class({
         for (let result of results) {
             this._content_flow_box.add(result);
         }
-        this._scrolled_window.need_more_content = false;
     },
 
     clear_search_results: function () {
