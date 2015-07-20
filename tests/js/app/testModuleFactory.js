@@ -22,6 +22,7 @@ const TestModule = new Lang.Class({
 
     Properties: {
         'factory': GObject.ParamSpec.override('factory', Module.Module),
+        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
     },
 
     _init: function (props={}) {

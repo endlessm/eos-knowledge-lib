@@ -8,6 +8,7 @@ const Lang = imports.lang;
 
 const Arrangement = imports.app.interfaces.arrangement;
 const Card = imports.app.interfaces.card;
+const HomePage = imports.app.homePage;
 const Module = imports.app.interfaces.module;
 
 const MinimalArrangement = new Lang.Class({
@@ -18,6 +19,7 @@ const MinimalArrangement = new Lang.Class({
     Properties: {
         'count': GObject.ParamSpec.override('count', Arrangement.Arrangement),
         'factory': GObject.ParamSpec.override('factory', Module.Module),
+        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
     },
 
     _init: function (props={}) {
@@ -45,6 +47,7 @@ const MinimalCard = new Lang.Class({
 
     Properties: {
         'factory': GObject.ParamSpec.override('factory', Module.Module),
+        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
         'model': GObject.ParamSpec.override('model', Card.Card),
         'page-number': GObject.ParamSpec.override('page-number', Card.Card),
         'title-capitalization': GObject.ParamSpec.override('title-capitalization',
@@ -56,6 +59,23 @@ const MinimalCard = new Lang.Class({
     }
 });
 
+const MinimalHomePage = new Lang.Class({
+    Name: 'MinimalHomePage',
+    Extends: GObject.Object,
+    Implements: [ Module.Module ],
+
+    Properties: {
+        'factory': GObject.ParamSpec.override('factory', Module.Module),
+        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
+        'search-box': GObject.ParamSpec.override('search-box',
+            HomePage.HomePage),
+    },
+
+    _init: function (props={}) {
+        this.parent(props);
+    },
+});
+
 const MinimalModule = new Lang.Class({
     Name: 'MinimalModule',
     Extends: GObject.Object,
@@ -63,6 +83,7 @@ const MinimalModule = new Lang.Class({
 
     Properties: {
         'factory': GObject.ParamSpec.override('factory', Module.Module),
+        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
     },
 
     _init: function (props={}) {

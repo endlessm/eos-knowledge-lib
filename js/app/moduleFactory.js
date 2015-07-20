@@ -51,13 +51,12 @@ const ModuleFactory = new Lang.Class({
     },
 
     create_named_module: function (name, extra_props={}) {
-        let description = this.app_json['modules'][name];
-        if (!description)
-            throw new Error('No description found in app.json for ' + name);
+        let description = this._get_module_description_by_name(name);
 
         let module_class = this.warehouse.type_to_class(description['type']);
         let module_props = {
             factory: this,
+            factory_name: name,
         };
 
         if (description.hasOwnProperty('properties'))
@@ -65,5 +64,33 @@ const ModuleFactory = new Lang.Class({
         Lang.copyProperties(extra_props, module_props);
 
         return new module_class(module_props);
+    },
+
+    /**
+     * Method: create_module_for_slot
+     * Returns module specified in app.json for a slot
+     *
+     * Searches the app.json for the module meant to fill the slot
+     * {slot} of module {parent_name}. Creates and returns this module.
+     */
+    create_module_for_slot: function (parent_name, slot) {
+        let factory_name = this._get_module_description_by_name(parent_name)['slots'][slot];
+
+        return this.create_named_module(factory_name);
+    },
+
+    /**
+     * Method: _get_module_description_by_name
+     * Returns JSON description of module
+     *
+     * Searches the 'modules' property in the app.json for the {name} key
+     * and returns the resulting JSON object.
+     */
+    _get_module_description_by_name: function (name) {
+        let description = this.app_json['modules'][name];
+        if (!description)
+            throw new Error('No description found in app.json for ' + name);
+
+        return description;
     },
 });

@@ -10,6 +10,7 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const ArticlePresenter = imports.app.articlePresenter;
+const CardContainer = imports.app.modules.cardContainer;
 const Config = imports.app.config;
 const Engine = imports.search.engine;
 const HistoryPresenter = imports.app.historyPresenter;
@@ -381,7 +382,9 @@ const Presenter = new Lang.Class({
                 page.cards = category_cards;
             }
         } else {
-            this.view.home_page.cards = sections.map(new_card_from_section);
+            // FIXME: Temporarily handles passing of cards until we have dispatcher/alternative method.
+            let card_container = this.view.home_page.get_submodule(CardContainer.CardContainer);
+            card_container.cards = sections.map(new_card_from_section);
         }
     },
 

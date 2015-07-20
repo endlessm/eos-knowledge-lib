@@ -181,11 +181,11 @@ const APP_BANNER = 'app-banner';
 const HOME_PAGE_A = 'home-page-a';
 
 /**
- * Constant: HOME_PAGE_B
+ * Constant: HOME_PAGE_B_TEMPLATE
  *
  * Matches the Template B's HomePage.
  */
-const HOME_PAGE_B = 'home-page-b';
+const HOME_PAGE_B_TEMPLATE = 'home-page-b-template';
 
 /**
  * Constant: ARTICLE_PAGE

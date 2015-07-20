@@ -1,4 +1,5 @@
 const GLib = imports.gi.GLib;
+const Gtk = imports.gi.Gtk;
 
 const ContentObjectModel = imports.search.contentObjectModel;
 const Engine = imports.search.engine;
@@ -49,13 +50,39 @@ function transform_v1_description(json) {
                 'image-uri': json['titleImageURI'],
                 'min-fraction': 0.4,
                 'max-fraction': 0.7,
+                'visible': true,
+                'can-focus': false,
             },
+        };
+        modules['card-container'] = {
+            type: 'CardContainer',
+            properties: {
+                'expand': true,
+                'halign': Gtk.Align.FILL,
+                'valign': Gtk.Align.FILL,
+            },
+        };
+        modules['home-page-template'] = {
+            type: 'HomePageBTemplate',
+            slots: {
+                top_left: "app-banner",
+                top_right: "home-search",
+                bottom: "card-container",
+            }
         };
         modules['top-bar-search'] = {
             type: 'SearchBox',
         };
         modules['home-search'] = {
             type: 'SearchBox',
+            properties: {
+                'width_request': 350,
+                'visible': true,
+                'can_focus': false,
+                'shadow_type': Gtk.ShadowType.NONE,
+                'halign': Gtk.Align.CENTER,
+                'valign': Gtk.Align.CENTER,
+            }
         };
         modules['home-card'] = {
             type: 'CardB',

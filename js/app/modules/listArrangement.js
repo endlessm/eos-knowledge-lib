@@ -19,6 +19,7 @@ const ListArrangement = new Lang.Class({
     Properties: {
         'count': GObject.ParamSpec.override('count', Arrangement.Arrangement),
         'factory': GObject.ParamSpec.override('factory', Module.Module),
+        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
     },
 
     Template: 'resource:///com/endlessm/knowledge/widgets/listArrangement.ui',
