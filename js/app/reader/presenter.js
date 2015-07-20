@@ -13,6 +13,7 @@ const ArchiveNotice = imports.app.reader.archiveNotice;
 const ArticleHTMLRenderer = imports.app.articleHTMLRenderer;
 const ArticleObjectModel = imports.search.articleObjectModel;
 const ArticleSnippetCard = imports.app.modules.articleSnippetCard;
+const Compat = imports.app.compat;
 const Config = imports.app.config;
 const DonePage = imports.app.reader.donePage;
 const Engine = imports.search.engine;
@@ -705,11 +706,7 @@ const Presenter = new Lang.Class({
                 this._remove_link_tooltip();
                 return;
             }
-            let uri = hit_test.link_uri;
-            // This indicates that we open the link in an external viewer, but
-            // don't show it to the user.
-            if (uri.startsWith('browser-'))
-                uri = uri.slice('browser-'.length);
+            let uri = Compat.normalize_old_browser_urls(hit_test.link_uri);
             // Links to images within the database will open in a lightbox
             // instead. This is determined in the HTML by the eos-image-link
             // class, but we don't have access to that information here.
