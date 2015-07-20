@@ -160,7 +160,8 @@ const ContentPage = new Lang.Class({
         this._stack.add(this._search_module);
 
         let grid = new Gtk.Grid({
-            halign: Gtk.Align.CENTER,
+            halign: Gtk.Align.FILL,
+            hexpand: true,
             column_spacing: 150,
         });
         grid.attach(this._logo, 0, 0, 1, 1);
