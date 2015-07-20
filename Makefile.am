@@ -413,6 +413,7 @@ EXTRA_DIST += \
 	tests/mockCardContainer.js \
 	tests/mockEngine.js \
 	tests/mockFactory.js \
+	tests/mockPlaceholder.js \
 	tests/mockSearchBox.js \
 	tests/mockWidgets.js \
 	tests/utils.js \
