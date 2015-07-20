@@ -54,11 +54,8 @@ const SectionPageA = new Lang.Class({
             hscrollbar_policy: Gtk.PolicyType.NEVER,
             bottom_buffer: this.LOADING_BOTTOM_BUFFER,
         });
-        this._scrolled_window.connect('notify::need-more-content', () => {
-            if (this._scrolled_window.need_more_content) {
-                this.emit('load-more-results');
-            }
-        });
+        this._scrolled_window.connect('need-more-content', () =>
+            this.emit('load-more-results'));
 
         this._scrolled_window.add(this._content_grid);
         this.add(this._scrolled_window);
@@ -93,7 +90,6 @@ const SectionPageA = new Lang.Class({
             segment.append_cards(cards);
             this._segments[segment_title] = segment;
         }
-        this._scrolled_window.need_more_content = false;
     },
 
     /*

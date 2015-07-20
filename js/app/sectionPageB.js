@@ -5,7 +5,6 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
-const InfiniteScrolledWindow = imports.app.infiniteScrolledWindow;
 const SectionPage = imports.app.sectionPage;
 const StyleClasses = imports.app.styleClasses;
 
@@ -52,11 +51,6 @@ const SectionPageB = new Lang.Class({
     },
 
     _init: function (props) {
-        this._card_list_box = new Gtk.Grid({
-            orientation: Gtk.Orientation.VERTICAL,
-            valign: Gtk.Align.START
-        });
-
         this._cards = null;
         this._transition_duration = 0;
 
@@ -82,14 +76,13 @@ const SectionPageB = new Lang.Class({
         this.expand = true;
         this.add(title_frame);
 
-        this._scrolled_window = new SectionPageBScrolledWindow();
-        this._scrolled_window.connect('notify::need-more-content', () => {
-            if (this._scrolled_window.need_more_content) {
-                this.emit('load-more-results');
-            }
+        this._arrangement = this.factory.create_named_module('results-arrangement', {
+            preferred_width: 400,
+            hexpand: false,
         });
-        this._scrolled_window.add(this._card_list_box);
-        this.add(this._scrolled_window);
+        this._arrangement.connect('need-more-content', () =>
+            this.emit('load-more-results'));
+        this.add(this._arrangement);
 
         this.get_style_context().add_class(StyleClasses.SECTION_PAGE_B);
     },
@@ -161,22 +154,20 @@ const SectionPageB = new Lang.Class({
     set cards (v) {
         if (this._cards === v)
             return;
-        if (this._cards !== null) {
-            for (let card of this._cards) {
-                this._card_list_box.remove(card);
-            }
-        }
+        if (this._cards)
+            this._arrangement.clear();
         this._cards = v;
-        if (this._cards !== null) {
-            for (let card of this._cards) {
-                this._card_list_box.add(card);
-            }
-        }
-        this._scrolled_window.need_more_content = false;
+        if (this._cards)
+            this._cards.forEach(this._arrangement.add_card, this._arrangement);
     },
 
     get cards () {
         return this._cards;
+    },
+
+    append_cards: function (cards) {
+        this._cards.push.apply(this._cards, cards);
+        cards.forEach(this._arrangement.add_card, this._arrangement);
     },
 
     set collapsed (v) {
@@ -207,26 +198,4 @@ const SectionPageB = new Lang.Class({
     get transition_duration () {
         return this._transition_duration;
     },
-});
-
-const SectionPageBScrolledWindow = new Lang.Class({
-    Name: 'SectionPageBScrolledWindow',
-    GTypeName: 'EknSectionPageBScrolledWindow',
-    Extends: InfiniteScrolledWindow.InfiniteScrolledWindow,
-
-    _NATURAL_WIDTH: 400,
-    _MINIMAL_WIDTH: 200,
-
-    _init: function (props) {
-        props = props || {};
-        props.hscrollbar_policy = Gtk.PolicyType.NEVER;
-        props.vexpand = true;
-        props.hexpand = false;
-        props.valign = Gtk.Align.FILL;
-        this.parent(props);
-    },
-
-    vfunc_get_preferred_width: function () {
-        return [this._MINIMAL_WIDTH, this._NATURAL_WIDTH];
-    }
 });

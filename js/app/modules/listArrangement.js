@@ -7,12 +7,13 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const Arrangement = imports.app.interfaces.arrangement;
+const InfiniteScrolledWindow = imports.app.infiniteScrolledWindow;
 const Module = imports.app.interfaces.module;
 
 const ListArrangement = new Lang.Class({
     Name: 'ListArrangement',
     GTypeName: 'EknListArrangement',
-    Extends: Gtk.ScrolledWindow,
+    Extends: InfiniteScrolledWindow.InfiniteScrolledWindow,
     Implements: [ Module.Module, Arrangement.Arrangement ],
 
     Properties: {
