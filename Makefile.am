@@ -221,7 +221,6 @@ js_files = \
 	js/app/encyclopedia/homePage.js \
 	js/app/encyclopedia/model.js \
 	js/app/encyclopedia/presenter.js \
-	js/app/encyclopedia/runner.js \
 	js/app/historyItem.js \
 	js/app/historyPresenter.js \
 	js/app/homePage.js \

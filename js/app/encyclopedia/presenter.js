@@ -1,14 +1,17 @@
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Format = imports.format;
 const Gettext = imports.gettext;
+const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
+const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 
 const ArticleHTMLRenderer = imports.app.articleHTMLRenderer;
 const ArticleObjectModel = imports.search.articleObjectModel;
 const Config = imports.app.config;
+const EncyclopediaModel = imports.app.encyclopedia.model;
 const Engine = imports.search.engine;
 const HistoryPresenter = imports.app.historyPresenter;
 const Launcher = imports.app.launcher;
@@ -33,6 +36,14 @@ const EncyclopediaPresenter = new Lang.Class({
 
     Properties: {
         /**
+         * Property: application
+         * The GApplication for the knowledge app
+         */
+        'application': GObject.ParamSpec.object('application', 'Application',
+            'Presenter for article page',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            GObject.Object.$gtype),
+        /**
          * Property: factory
          * Factory to create modules
          */
@@ -41,10 +52,21 @@ const EncyclopediaPresenter = new Lang.Class({
             GObject.Object.$gtype),
     },
 
-    _init: function(view, model, props) {
+    _init: function(app_json, props) {
         this.parent(props);
-        this._model = model;
-        this._view = view;
+
+        let provider = new Gtk.CssProvider();
+        let css_file = Gio.File.new_for_uri('resource:///com/endlessm/knowledge/css/endless_encyclopedia.css');
+        provider.load_from_file(css_file);
+        Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(),
+            provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+
+        WebkitContextSetup.register_webkit_extensions(this.application.application_id);
+
+        this._model = new EncyclopediaModel.EncyclopediaModel();
+        this._view = this.factory.create_named_module('window', {
+            application: this.application,
+        });
 
         this._current_article = null;
 
