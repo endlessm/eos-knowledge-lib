@@ -216,6 +216,7 @@ js_files = \
 	js/app/compat/cssParse.js \
 	js/app/compat/styleKnobGenerator.js \
 	js/app/config.js \
+	js/app/dispatcher.js \
 	js/app/encyclopedia/contentPage.js \
 	js/app/encyclopedia/homePage.js \
 	js/app/encyclopedia/model.js \
@@ -380,6 +381,7 @@ javascript_tests = \
 	tests/js/app/testArticleHTMLRenderer.js \
 	tests/js/app/testArticlePage.js \
 	tests/js/app/testArticlePresenter.js \
+	tests/js/app/testDispatcher.js \
 	tests/js/app/testHistoryItem.js \
 	tests/js/app/testHistoryPresenter.js \
 	tests/js/app/testHomePage.js \
