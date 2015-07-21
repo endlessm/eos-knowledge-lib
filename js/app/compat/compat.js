@@ -187,7 +187,7 @@ function transform_v1_description(json) {
             properties: {
                 'title': json['appTitle'],
                 'subtitle': json['appSubtitle'],
-                'title-image-uri': json['backgroundHomeURI'],
+                'title-image-uri': json['titleImageURI'],
                 'home-background-uri': json['backgroundHomeURI'],
                 'done-background-uri': json['backgroundSectionURI'],
             },
