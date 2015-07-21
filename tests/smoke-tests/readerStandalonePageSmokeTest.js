@@ -5,8 +5,12 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const WebKit2 = imports.gi.WebKit2;
 
-const StandalonePage = imports.app.reader.standalonePage;
+const ArticleObjectModel = imports.search.articleObjectModel;
+
 const Utils = imports.tests.utils;
+Utils.register_gresource();
+const ReaderDocumentCard = imports.app.modules.readerDocumentCard;
+const StandalonePage = imports.app.reader.standalonePage;
 
 function parse_object_from_path (path) {
     let [success, data] = path.load_contents(null);
@@ -15,6 +19,7 @@ function parse_object_from_path (path) {
 
 const TEST_APPLICATION_ID = 'com.endlessm.knowledge.reader.standalone-page';
 const TESTDIR = Endless.getCurrentFileDir() + '/..';
+const TEST_CONTENT_DIR = Utils.get_test_content_srcdir();
 
 // Load and register the GResource which has content for this app
 let resource = Gio.Resource.load('tests/test-content/test-content.gresource');
@@ -28,29 +33,35 @@ const TestApplication = new Lang.Class({
     vfunc_startup: function () {
         this.parent();
 
-        Utils.register_gresource();
         let provider = new Gtk.CssProvider();
-        let css_file = Gio.File.new_for_uri('resource:///com/endlessm/knowledge/endless_reader.css');
+        let css_file = Gio.File.new_for_path('data/css/endless_reader.css');
         provider.load_from_file(css_file);
         Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(),
             provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+        let dummy_content = Gio.File.new_for_path(TEST_CONTENT_DIR + 'emacs.html');
 
+        let article_object = new ArticleObjectModel.ArticleObjectModel({
+            ekn_id: dummy_content.get_uri(),
+            content_type: 'text/html',
+            title: 'The Illuminati of Westeros: Who really controls the Iron Bank?',
+        });
+
+        let document_card = new ReaderDocumentCard.ReaderDocumentCard({
+            model: article_object,
+        });
+        document_card.load_content(null, (card, task) => {
+            card.load_content_finish(task);
+        });
         let page = new StandalonePage.StandalonePage();
+        page.document_card = document_card;
 
         let app_info_file = resource_path.get_child('app.json');
         let app_json = parse_object_from_path(app_info_file);
 
         page.app_name = app_json['appTitle'];
+        page.infobar.archive_notice.label = "This article is part of the archive of the magazine Thrones.";
         page.infobar.title_image_uri = app_json['titleImageURI'];
         page.infobar.background_image_uri = app_json['backgroundHomeURI'];
-
-        let webview = new WebKit2.WebView();
-        webview.load_uri('file://' +  TESTDIR + '/test-content/ipsum.html');
-        page.article_page.show_content_view(webview);
-
-        page.article_page.title_view.title = 'The Illuminati of Westeros: Who really controls the Iron Bank?';
-        page.article_page.title_view.attribution = 'By Ser Pounce on May 31, 2015';
-        page.article_page.get_style_context().add_class('article-page0');
 
         page.infobar.connect('response', () => {
             print("Open magazine");
@@ -62,7 +73,7 @@ const TestApplication = new Lang.Class({
         window.page_manager.add(page);
         window.show_all();
         page.infobar.show();
-        page.archive_notice.hide();
+        document_card.info_notice.hide();
     },
 });
 
