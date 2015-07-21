@@ -44,6 +44,7 @@ const Window = new Lang.Class({
 
     Properties: {
         'factory': GObject.ParamSpec.override('factory', Module.Module),
+        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
         /**
          * Property: home-page
          *
