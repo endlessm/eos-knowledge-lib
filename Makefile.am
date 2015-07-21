@@ -254,6 +254,7 @@ js_files = \
 	js/app/modules/searchModule.js \
 	js/app/modules/setBannerCard.js \
 	js/app/modules/textCard.js \
+	js/app/modules/tiledGridArrangement.js \
 	js/app/modules/window.js \
 	js/app/mustache.js \
 	js/app/navButtonOverlay.js \
