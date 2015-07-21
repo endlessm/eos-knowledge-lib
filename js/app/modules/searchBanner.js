@@ -13,6 +13,7 @@ const SearchBanner = new Lang.Class({
 
     Properties: {
         'factory': GObject.ParamSpec.override('factory', Module.Module),
+        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
         'query': GObject.ParamSpec.string('query', 'Query', 'Search query',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT, ''),
     },
