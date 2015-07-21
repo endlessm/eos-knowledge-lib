@@ -73,6 +73,12 @@ GtkEntry:selected {
     padding-bottom: 35px;
 }
 
+.separator {
+    background-image: url('resource:///com/endlessm/knowledge/images/separator.png');
+    background-size: 100%;
+    background-repeat: no-repeat;
+}
+
 /* FIXME: move oops block up to 1/3 of the vertical! */
 
 .search-results .oops {
