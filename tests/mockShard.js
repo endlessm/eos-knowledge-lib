@@ -1,0 +1,37 @@
+const GObject = imports.gi.GObject;
+const Lang = imports.lang;
+
+const MockShardFile = new Lang.Class({
+    Name: 'MockShard',
+    Extends: GObject.Object,
+
+    _init: function (props={}) {
+        this.parent(props);
+
+        spyOn(this, 'find_record_by_hex_name');
+    },
+
+    find_record_by_hex_name: function () {},
+});
+
+const MockShardRecord = new Lang.Class({
+    Name: 'MockShardRecord',
+    Extends: GObject.Object,
+
+    _init: function (props={}) {
+        this.parent(props);
+    },
+});
+
+const MockShardBlob = new Lang.Class({
+    Name: 'MockShardBlob',
+    Extends: GObject.Object,
+
+    _init: function (props={}) {
+        this.parent(props);
+
+        spyOn(this, 'get_stream');
+    },
+
+    get_stream: function () {},
+});
