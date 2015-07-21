@@ -12,6 +12,7 @@ const CategoriesPage = imports.app.categoriesPage;
 const HomePage = imports.app.homePage;
 const HomePageA = imports.app.homePageA;
 const Lightbox = imports.app.lightbox;
+const Module = imports.app.interfaces.module;
 const NoSearchResultsPage = imports.app.noSearchResultsPage;
 const SectionPage = imports.app.sectionPage;
 const SectionArticlePage = imports.app.sectionArticlePage;
@@ -39,14 +40,10 @@ const Window = new Lang.Class({
     Name: 'Window',
     GTypeName: 'EknWindow',
     Extends: Endless.Window,
+    Implements: [ Module.Module ],
+
     Properties: {
-        /**
-         * Property: factory
-         * Factory to create modules
-         */
-        'factory': GObject.ParamSpec.object('factory', 'Factory', 'Factory',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            GObject.Object.$gtype),
+        'factory': GObject.ParamSpec.override('factory', Module.Module),
         /**
          * Property: home-page
          *

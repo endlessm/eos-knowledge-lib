@@ -64,6 +64,17 @@ const OverviewPage = new Lang.Class({
     _init: function (props) {
         props = props || {};
         props.hexpand = true;
+
+        this._subtitle_label = new Gtk.Label({
+            halign: Gtk.Align.START,
+            vexpand: true,
+            valign: Gtk.Align.START,
+            use_markup: true,
+            // FIXME: This looks reasonable until we get better instructions
+            // from design.
+            margin_start: _SUBTITLE_LEFT_MARGIN,
+        });
+
         this.parent(props);
 
         this._app_banner = this.factory.create_named_module('app-banner', {
@@ -76,16 +87,6 @@ const OverviewPage = new Lang.Class({
             column_homogeneous: true,
             column_spacing: 120,
             orientation: Gtk.Orientation.VERTICAL,
-        });
-
-        this._subtitle_label = new Gtk.Label({
-            halign: Gtk.Align.START,
-            vexpand: true,
-            valign: Gtk.Align.START,
-            use_markup: true,
-            // FIXME: This looks reasonable until we get better instructions
-            // from design.
-            margin_start: _SUBTITLE_LEFT_MARGIN,
         });
 
         let snippets_frame = new MaxWidthFrame({

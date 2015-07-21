@@ -2,7 +2,7 @@ const Endless = imports.gi.Endless;
 const GLib = imports.gi.GLib;
 const Gtk = imports.gi.Gtk;
 
-const Window = imports.app.reader.window;
+const ReaderWindow = imports.app.modules.readerWindow;
 const ArticlePage = imports.app.reader.articlePage;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
@@ -28,7 +28,7 @@ describe('Window widget', function () {
         });
         let factory = new MockFactory.MockFactory();
         app.connect('startup', function () {
-            view = new Window.Window({
+            view = new ReaderWindow.ReaderWindow({
                 application: app,
                 factory: factory,
             });

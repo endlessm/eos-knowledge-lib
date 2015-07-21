@@ -1,0 +1,7 @@
+{
+    "templateType": "encyclopedia",
+    "appTitle": "Enciclopédia",
+    "titleImageURI": "resource:///com/endlessm/encyclopedia-pt/assets/title-image.svg",
+    "backgroundHomeURI": "resource:///com/endlessm/encyclopedia-pt/assets/background-home.jpg",
+    "backgroundSectionURI": "resource:///com/endlessm/encyclopedia-pt/assets/background-results.jpg"
+}

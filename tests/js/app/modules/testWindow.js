@@ -11,7 +11,7 @@ const MockFactory = imports.tests.mockFactory;
 const MockSearchBox = imports.tests.mockSearchBox;
 const SectionPageA = imports.app.sectionPageA;
 const Utils = imports.tests.utils;
-const Window = imports.app.window;
+const Window = imports.app.modules.window;
 
 const TEST_CONTENT_BUILDDIR = Utils.get_test_content_builddir();
 const BACKGROUND_URI = 'resource:///com/endlessm/thrones/kings_landing.jpg';

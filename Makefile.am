@@ -51,7 +51,7 @@ endif
 
 scss_verbose = $(scss_verbose_@AM_V@)
 scss_verbose_ = $(scss_verbose_@AM_DEFAULT_V@)
-scss_verbose_0 = @echo "  SCSS $@";
+scss_verbose_0 = @echo "  SCSS     $@";
 
 scss_toplevels = \
 	$(srcdir)/data/templates/css/embedly.scss \
@@ -77,34 +77,48 @@ CLEANFILES += $(scss_targets)
 clean-local:
 	rm -rf .sass-cache
 
-# Generate dependencies for make rule from XML resource file description. This
-# is a quite tricky make rule. glib-compile-resources will error if any files
-# are not found. Which means we need to build our sass before calling into it.
-# So we can't just assign a variable here, but need an actual build rule with
-# dependencies. Hence the gresourcedeps file.
-gresourcedeps: $(scss_targets) data/eos-knowledge.gresource.xml
-	$(AM_V_GEN) $(GLIB_COMPILE_RESOURCES) --sourcedir=$(srcdir)/data --sourcedir=$(builddir)/data --generate-dependencies \
-		$(srcdir)/data/eos-knowledge.gresource.xml | tr '\n' ' ' | sed 's/^/resource_files = /' > $@
-# This indirection keeps automake from including gresourcedeps and leaving it to make
-DUMMY=gresourcedeps
-include $(DUMMY)
+resource_deps_verbose = $(resource_deps_verbose_@AM_V@)
+resource_deps_verbose_ = $(resource_deps_verbose_@AM_DEFAULT_V@)
+resource_deps_verbose_0 = @echo "  RESDEPS  $@";
 
-# Generated sources for GResource file
-data/eos-knowledge.gresource: data/eos-knowledge.gresource.xml gresourcedeps $(resource_files)
-	$(AM_V_GEN) $(MKDIR_P) $(dir $@) && \
-	$(GLIB_COMPILE_RESOURCES) --target=$@ --sourcedir=$(srcdir)/data \
-		--sourcedir=$(builddir)/data $<
+resource_verbose = $(resource_verbose_@AM_V@)
+resource_verbose_ = $(resource_verbose_@AM_DEFAULT_V@)
+resource_verbose_0 = @echo "  RES      $@";
 
+%.gresource.deps: %.gresource.xml
+	$(resource_deps_verbose) $(MKDIR_P) $(dir $@) && \
+	$(GLIB_COMPILE_RESOURCES) --generate-dependencies \
+		--sourcedir=$(srcdir)/$(*D) --sourcedir=$(builddir)/$(*D) $< > $@.tmp && \
+	DEPENDENCIES=$$(tr '\n' ' ' < $@.tmp) && rm $@.tmp && \
+	echo "$*.gresource: $$DEPENDENCIES" > $@ && \
+	echo "gresource_depedencies += $$DEPENDENCIES" >> $@
+
+%.gresource: %.gresource.xml %.gresource.deps
+	$(resource_verbose) $(MKDIR_P) $(dir $@) && \
+	$(GLIB_COMPILE_RESOURCES) --target=$@ \
+		--sourcedir=$(srcdir)/$(*D) --sourcedir=$(builddir)/$(*D) $<
+
+gresources =
+gresource_depedencies =
+-include $(gresources:.gresource=.gresource.deps)
+CLEANFILES += $(gresources:.gresource=.gresource.deps) $(gresources)
+EXTRA_DIST += $(gresources:.gresource=.gresource.xml) $(gresource_depedencies)
+
+# glib-compile-resources --generate-dependencies can't be run until all
+# dependencies are present, so we need to build the scss first
+data/eos-knowledge.gresource.deps: $(scss_targets)
 pkgdata_DATA += data/eos-knowledge.gresource
+gresources += data/eos-knowledge.gresource
 
-EXTRA_DIST += \
-	$(filter-out $(scss_targets),$(resource_files)) \
-	data/eos-knowledge.gresource.xml \
+compatdatadir = $(pkgdatadir)/compat
+compatdata_DATA = \
+	data/compat/encyclopedia-ar/com.endlessm.encyclopedia-ar.gresource \
+	data/compat/encyclopedia-en/com.endlessm.encyclopedia-en.gresource \
+	data/compat/encyclopedia-es/com.endlessm.encyclopedia-es.gresource \
+	data/compat/encyclopedia-fr/com.endlessm.encyclopedia-fr.gresource \
+	data/compat/encyclopedia-pt/com.endlessm.encyclopedia-pt.gresource \
 	$(NULL)
-CLEANFILES += \
-	data/eos-knowledge.gresource \
-	gresourcedeps \
-	$(NULL)
+gresources += $(compatdata_DATA)
 
 # # # MAIN LIBRARY # # #
 
@@ -207,8 +221,6 @@ js_files = \
 	js/app/encyclopedia/homePage.js \
 	js/app/encyclopedia/model.js \
 	js/app/encyclopedia/presenter.js \
-	js/app/encyclopedia/runner.js \
-	js/app/encyclopedia/view.js \
 	js/app/historyItem.js \
 	js/app/historyPresenter.js \
 	js/app/homePage.js \
@@ -229,15 +241,18 @@ js_files = \
 	js/app/modules/cardB.js \
 	js/app/modules/cardContainer.js \
 	js/app/modules/documentCard.js \
+	js/app/modules/encyclopediaWindow.js \
 	js/app/modules/listArrangement.js \
 	js/app/modules/homePageBTemplate.js \
 	js/app/modules/mediaCard.js \
 	js/app/modules/readerCard.js \
+	js/app/modules/readerWindow.js \
 	js/app/modules/searchBanner.js \
 	js/app/modules/searchBox.js \
 	js/app/modules/searchModule.js \
 	js/app/modules/setBannerCard.js \
 	js/app/modules/textCard.js \
+	js/app/modules/window.js \
 	js/app/mustache.js \
 	js/app/navButtonOverlay.js \
 	js/app/noSearchResultsPage.js \
@@ -255,7 +270,6 @@ js_files = \
 	js/app/reader/titleView.js \
 	js/app/reader/userSettingsModel.js \
 	js/app/reader/webviewTooltip.js \
-	js/app/reader/window.js \
 	js/app/runner.js \
 	js/app/sectionArticlePage.js \
 	js/app/sectionPage.js \
@@ -268,7 +282,6 @@ js_files = \
 	js/app/utils.js \
 	js/app/warehouse.js \
 	js/app/webkitContextSetup.js \
-	js/app/window.js \
 	js/search/application.js \
 	js/search/articleObjectModel.js \
 	js/search/asyncTask.js \
@@ -296,6 +309,7 @@ dist_overrides_DATA = overrides/EosKnowledgePrivate.js
 # These files need to be filled in with make variables
 
 subst = $(SED) \
+	-e 's,%compatdatadir%,$(compatdatadir),g' \
 	-e 's,%datadir%,$(datadir),g' \
 	-e 's,%jsdir%,$(jsdir),g' \
 	-e 's,%pkgdatadir%,$(pkgdatadir),g' \
@@ -347,16 +361,17 @@ javascript_tests = \
 	tests/js/app/modules/testHomePageBTemplate.js \
 	tests/js/app/modules/testMediaCard.js \
 	tests/js/app/modules/testReaderCard.js \
+	tests/js/app/modules/testReaderWindow.js \
 	tests/js/app/modules/testSearchBanner.js \
 	tests/js/app/modules/testSearchModule.js \
 	tests/js/app/modules/testSetBannerCard.js \
 	tests/js/app/modules/testTextCard.js \
+	tests/js/app/modules/testWindow.js \
 	tests/js/app/reader/testDonePage.js \
 	tests/js/app/reader/testOverviewPage.js \
 	tests/js/app/reader/testProgressLabel.js \
 	tests/js/app/reader/testReaderArticlePage.js \
 	tests/js/app/reader/testReaderPresenter.js \
-	tests/js/app/reader/testReaderWindow.js \
 	tests/js/app/reader/testSearchResultsPage.js \
 	tests/js/app/reader/testTitleView.js \
 	tests/js/app/reader/testUserSettingsModel.js \
@@ -384,7 +399,6 @@ javascript_tests = \
 	tests/js/app/testStyleKnobGenerator.js \
 	tests/js/app/testTableOfContents.js \
 	tests/js/app/testUtils.js \
-	tests/js/app/testWindow.js \
 	tests/js/search/testArticleObjectModel.js \
 	tests/js/search/testAsyncTask.js \
 	tests/js/search/testContentObjectModel.js \

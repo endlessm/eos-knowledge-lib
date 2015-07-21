@@ -190,7 +190,7 @@ const Banner = new Lang.Class({
     },
 
     set title_image_uri (v) {
-        if (this._title_image_uri === v)
+        if (this._title_image_uri === v || v.length === 0)
             return;
 
         let stream = Gio.File.new_for_uri(v).read(null);
@@ -277,23 +277,24 @@ const StandalonePage = new Lang.Class({
          */
         'app-name': GObject.ParamSpec.string('app-name', 'Application name',
             'The name of this reader application',
-            GObject.ParamFlags.READABLE, ''),
+            GObject.ParamFlags.READWRITE, ''),
     },
 
     _init: function (props) {
         props = props || {};
         props.orientation = Gtk.Orientation.VERTICAL;
 
+        this.archive_label = new ArchiveLabel();
+        this.infobar = new Banner();
+
         this.parent(props);
 
-        this.archive_label = new ArchiveLabel();
         this.archive_notice = new Gtk.Frame();
         this.archive_notice.add(this.archive_label);
         this.archive_notice.get_style_context().add_class(StyleClasses.READER_ARCHIVE_LABEL);
         this.article_page = new ArticlePage.ArticlePage({
            progress_label: this.archive_notice,
         });
-        this.infobar = new Banner();
         this.add(this.infobar);
         this.add(this.article_page);
     },

@@ -4,12 +4,12 @@
 *.gir
 *.typelib
 *.gresource
+*.gresource.deps
 /js/app/config.js
 /js/app/config.js.in
 /ekn-app-runner
 /ekn-search-provider
 /eos-encyclopedia
-/gresourcedeps
 /data/com.endlessm.EknSearchProvider.service
 
 # Sass

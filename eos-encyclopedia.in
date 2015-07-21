@@ -1,20 +1,12 @@
 #!/bin/bash
+# For legacy purposes only. New encyclopedia apps ship bin script in the bundle
+# and call ekn-app-runner.
 
-export GJS_PATH="%jsdir%${GJS_PATH:+:$GJS_PATH}"
-export GI_TYPELIB_PATH="%typelibdir%${GI_TYPELIB_PATH:+:$GI_TYPELIB_PATH}"
-export LD_LIBRARY_PATH="%pkglibdir%${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
-
-if [ "$GJS_DEBUG_OUTPUT" == "" ]; then
-    export GJS_DEBUG_OUTPUT=stderr
+if [ $# -lt 1 ]; then
+    echo "This script if for legacy encyclopedia bundles only, and needs an app id."
+    exit 1
 fi
 
-if [ "$GJS_DEBUG_TOPICS" == "" ]; then
-    export GJS_DEBUG_TOPICS="JS ERROR;JS LOG"
-fi
-
-DEBUG_COMMAND=""
-if [ "$RUN_DEBUG" != "" ]; then
-    DEBUG_COMMAND="gdb --args"
-fi
-
-exec $DEBUG_COMMAND gjs %jsdir%/app/encyclopedia/runner.js $@
+APP_ID="$1"
+shift
+ekn-app-runner $APP_ID %compatdatadir%/${APP_ID}.gresource $@

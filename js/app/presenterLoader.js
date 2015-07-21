@@ -29,8 +29,12 @@ let setup_presenter_for_resource = function (application, resource_path) {
         app_json: app_json,
     });
 
-    let [success, data] = overrides_css_file.load_contents(null);
-    app_json['styles'] = StyleKnobGenerator.get_knobs_from_css(data.toString(), app_json['templateType']);
+    if (overrides_css_file.query_exists(null)) {
+        let [success, data] = overrides_css_file.load_contents(null);
+        app_json['styles'] = StyleKnobGenerator.get_knobs_from_css(data.toString(), app_json['templateType']);
+    } else {
+        app_json['styles'] = {};
+    }
 
     application.image_attribution_file = resource_file.get_child('credits.json');
 
@@ -45,6 +49,11 @@ let setup_presenter_for_resource = function (application, resource_path) {
         case 'reader': {
             const ReaderPresenter = imports.app.reader.presenter;
             PresenterClass = ReaderPresenter.Presenter;
+        }
+            break;
+        case 'encyclopedia': {
+            const EncyclopediaPresenter = imports.app.encyclopedia.presenter;
+            PresenterClass = EncyclopediaPresenter.EncyclopediaPresenter;
         }
             break;
         default:
