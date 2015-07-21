@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2015-07-07 01:52+0000\n"
+"POT-Creation-Date: 2015-07-14 01:46+0000\n"
 "PO-Revision-Date: 2015-06-30 01:51+0000\n"
 "Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
 "Language-Team: French (http://www.transifex.com/p/eos-knowledge-lib/language/fr/)\n"
@@ -130,19 +130,19 @@ msgstr "Permission de contenu de {blog-link}, sous licence {license-link}."
 msgid "HOME"
 msgstr "PAGE D'ACCUEIL "
 
-#: js/app/encyclopedia/presenter.js:28
+#: js/app/encyclopedia/presenter.js:25
 msgid "Search the world's information!"
 msgstr ""
 
 #. TRANSLATORS: This is the title of the search results page. %s
 #. will be replaced by the text that the user searched for. Make
 #. sure that %s is in your translation as well.
-#: js/app/encyclopedia/presenter.js:283
+#: js/app/encyclopedia/presenter.js:270
 #, javascript-format
 msgid "Results for %s"
 msgstr ""
 
-#: js/app/encyclopedia/view.js:69
+#: js/app/encyclopedia/view.js:76
 msgid "Encyclopedia"
 msgstr ""
 
@@ -160,16 +160,16 @@ msgstr "Réessayez la recherche avec des mots différents"
 
 #. TRANSLATORS: this appears on top of the search results page; %s will
 #. be replaced with the string that the user searched for.
-#: js/app/noSearchResultsPage.js:62 js/app/presenter.js:454
+#: js/app/noSearchResultsPage.js:62 js/app/presenter.js:451
 #, javascript-format
 msgid "Results for \"%s\""
 msgstr "Résultats pour \"%s\""
 
-#: js/app/presenter.js:286 js/app/presenter.js:717
+#: js/app/presenter.js:291 js/app/presenter.js:714
 msgid "Articles"
 msgstr "Articles"
 
-#: js/app/reader/card.js:79
+#: js/app/modules/readerCard.js:81
 #, javascript-format
 msgid "Page %s"
 msgstr ""
@@ -183,17 +183,17 @@ msgid ""
 "Don't miss next week's issue with more articles in your favorite magazine!"
 msgstr "Ne ratez pas l'édition de la semaine prochaine avec d'autres articles dans votre journal préféré !"
 
-#: js/app/reader/presenter.js:1041 js/app/reader/presenter.js:1048
+#: js/app/reader/presenter.js:1049 js/app/reader/presenter.js:1056
 msgid "Oops!"
 msgstr "Oups !"
 
-#: js/app/reader/presenter.js:1042
+#: js/app/reader/presenter.js:1050
 msgid ""
 "We could not find this magazine!\n"
 "Please try again after restarting your computer."
 msgstr "Nous n'avons pas trouvé ce magazine !\nEssayez de nouveau après avoir redémarré votre ordinateur."
 
-#: js/app/reader/presenter.js:1049
+#: js/app/reader/presenter.js:1057
 msgid ""
 "There was an error loading that page.\n"
 "Try another one or try again after restarting your computer."
@@ -203,11 +203,11 @@ msgstr "Il y a eu une erreur pendant le chargement de cette page.\nEssayez-en un
 msgid "There are no results for your search"
 msgstr ""
 
-#: js/app/reader/standalonePage.js:182
+#: js/app/reader/standalonePage.js:183
 msgid "Open the magazine"
 msgstr ""
 
-#: js/app/reader/standalonePage.js:306
+#: js/app/reader/standalonePage.js:305
 #, javascript-format
 msgid "This article is part of the archive of the magazine %s."
 msgstr ""
