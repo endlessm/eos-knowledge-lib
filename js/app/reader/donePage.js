@@ -8,7 +8,7 @@ const Lang = imports.lang;
 const StyleClasses = imports.app.styleClasses;
 
 const Config = imports.app.config;
-const ProgressLabel = imports.app.reader.progressLabel;
+const ProgressLabel = imports.app.widgets.progressLabel;
 const Utils = imports.app.utils;
 
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);

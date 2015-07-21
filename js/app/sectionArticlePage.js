@@ -6,7 +6,7 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const ArticlePage = imports.app.articlePage;
-const NavButtonOverlay = imports.app.navButtonOverlay;
+const NavButtonOverlay = imports.app.widgets.navButtonOverlay;
 const SectionPageA = imports.app.sectionPageA;
 const SectionPageB = imports.app.sectionPageB;
 const StyleClasses = imports.app.styleClasses;

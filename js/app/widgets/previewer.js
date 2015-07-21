@@ -2,7 +2,7 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
-const ImagePreviewer = imports.app.imagePreviewer;
+const ImagePreviewer = imports.app.widgets.imagePreviewer;
 const StyleClasses = imports.app.styleClasses;
 
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;

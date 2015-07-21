@@ -4,7 +4,7 @@ const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 
 const Card = imports.app.interfaces.card;
-const MarginButton = imports.app.marginButton;
+const MarginButton = imports.app.widgets.marginButton;
 const Module = imports.app.interfaces.module;
 const Utils = imports.app.utils;
 

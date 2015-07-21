@@ -9,11 +9,11 @@ const Lang = imports.lang;
 const AsyncTask = imports.search.asyncTask;
 const Card = imports.app.interfaces.card;
 const DocumentCard = imports.app.interfaces.documentCard;
-const EknWebview = imports.app.eknWebview;
+const EknWebview = imports.app.widgets.eknWebview;
 const Module = imports.app.interfaces.module;
-const PDFView = imports.app.PDFView;
+const PDFView = imports.app.widgets.PDFView;
 const StyleClasses = imports.app.styleClasses;
-const TableOfContents = imports.app.tableOfContents;
+const TableOfContents = imports.app.widgets.tableOfContents;
 const TreeNode = imports.search.treeNode;
 const WebKit2 = imports.gi.WebKit2;
 

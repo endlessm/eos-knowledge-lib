@@ -5,7 +5,7 @@ const Lang = imports.lang;
 
 const ContentPage = imports.app.encyclopedia.contentPage;
 const HomePage = imports.app.encyclopedia.homePage;
-const Lightbox = imports.app.lightbox;
+const Lightbox = imports.app.widgets.lightbox;
 const Module = imports.app.interfaces.module;
 
 const HOME_PAGE_NAME = 'home';

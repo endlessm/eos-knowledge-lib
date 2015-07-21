@@ -4,7 +4,7 @@ const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
 
 const CssClassMatcher = imports.tests.CssClassMatcher;
-const PDFView = imports.app.PDFView;
+const PDFView = imports.app.widgets.PDFView;
 const StyleClasses = imports.app.styleClasses;
 const Utils = imports.tests.utils;
 const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;

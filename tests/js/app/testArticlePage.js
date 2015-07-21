@@ -5,7 +5,7 @@ const ArticlePage = imports.app.articlePage;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
 const StyleClasses = imports.app.styleClasses;
-const TableOfContents = imports.app.tableOfContents;
+const TableOfContents = imports.app.widgets.tableOfContents;
 const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 
 Gtk.init(null);

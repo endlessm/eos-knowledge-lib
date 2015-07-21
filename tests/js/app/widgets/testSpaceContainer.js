@@ -1,7 +1,7 @@
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
-const SpaceContainer = imports.app.spaceContainer;
+const SpaceContainer = imports.app.widgets.spaceContainer;
 
 Gtk.init(null);
 

@@ -4,7 +4,7 @@ const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
-const TableOfContents = imports.app.tableOfContents;
+const TableOfContents = imports.app.widgets.tableOfContents;
 const Utils = imports.tests.utils;
 
 const TEST_APPLICATION_ID = 'com.endlessm.knowledge.test.toc';

@@ -13,9 +13,9 @@ const Lang = imports.lang;
 
 const Config = imports.app.config;
 const DonePage = imports.app.reader.donePage;
-const Lightbox = imports.app.lightbox;
+const Lightbox = imports.app.widgets.lightbox;
 const Module = imports.app.interfaces.module;
-const NavButtonOverlay = imports.app.navButtonOverlay;
+const NavButtonOverlay = imports.app.widgets.navButtonOverlay;
 const OverviewPage = imports.app.reader.overviewPage;
 const SearchResultsPage = imports.app.reader.searchResultsPage;
 const StandalonePage = imports.app.reader.standalonePage;

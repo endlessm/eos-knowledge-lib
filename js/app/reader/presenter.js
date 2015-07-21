@@ -9,7 +9,7 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
-const ArchiveNotice = imports.app.reader.archiveNotice;
+const ArchiveNotice = imports.app.widgets.archiveNotice;
 const ArticleHTMLRenderer = imports.app.articleHTMLRenderer;
 const ArticleObjectModel = imports.search.articleObjectModel;
 const ArticleSnippetCard = imports.app.modules.articleSnippetCard;
@@ -29,7 +29,7 @@ const StyleClasses = imports.app.styleClasses;
 const UserSettingsModel = imports.app.reader.userSettingsModel;
 const Utils = imports.app.utils;
 const WebkitContextSetup = imports.app.webkitContextSetup;
-const WebviewTooltip = imports.app.reader.webviewTooltip;
+const WebviewTooltip = imports.app.widgets.webviewTooltip;
 
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;

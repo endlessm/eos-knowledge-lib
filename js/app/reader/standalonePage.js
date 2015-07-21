@@ -6,9 +6,9 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
-const ArchiveNotice = imports.app.reader.archiveNotice;
+const ArchiveNotice = imports.app.widgets.archiveNotice;
 const Config = imports.app.config;
-const ImagePreviewer = imports.app.imagePreviewer;
+const ImagePreviewer = imports.app.widgets.imagePreviewer;
 const ReaderDocumentCard = imports.app.modules.readerDocumentCard;
 const StyleClasses = imports.app.styleClasses;
 const Utils = imports.app.utils;

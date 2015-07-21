@@ -7,7 +7,7 @@ const Lang = imports.lang;
 const Pango = imports.gi.Pango;
 
 const Config = imports.app.config;
-const NavButtonOverlay = imports.app.navButtonOverlay;
+const NavButtonOverlay = imports.app.widgets.navButtonOverlay;
 const StyleClasses = imports.app.styleClasses;
 const Utils = imports.app.utils;
 

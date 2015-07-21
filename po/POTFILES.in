@@ -16,5 +16,5 @@ js/app/reader/donePage.js
 js/app/reader/presenter.js
 js/app/reader/searchResultsPage.js
 js/app/reader/standalonePage.js
-js/app/reader/webviewTooltip.js
 js/app/utils.js
+js/app/widgets/webviewTooltip.js

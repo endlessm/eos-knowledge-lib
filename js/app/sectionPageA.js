@@ -4,7 +4,7 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
-const InfiniteScrolledWindow = imports.app.infiniteScrolledWindow;
+const InfiniteScrolledWindow = imports.app.widgets.infiniteScrolledWindow;
 const SectionPage = imports.app.sectionPage;
 const StyleClasses = imports.app.styleClasses;
 

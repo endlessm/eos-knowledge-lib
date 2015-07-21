@@ -1,7 +1,7 @@
 const Gtk = imports.gi.Gtk;
 
 const CssClassMatcher = imports.tests.CssClassMatcher;
-const Lightbox = imports.app.lightbox;
+const Lightbox = imports.app.widgets.lightbox;
 const Utils = imports.tests.utils;
 
 Gtk.init(null);
