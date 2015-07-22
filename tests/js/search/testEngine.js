@@ -296,7 +296,6 @@ describe('Knowledge Engine Module', () => {
 
     describe('get_object_by_id (EKN v2)', () => {
         let mock_shard_file, mock_shard_record, mock_data, mock_metadata;
-        let mock_id;
         beforeEach(() => {
             mock_shard_file = new MockShard.MockShardFile();
             mock_shard_record = new MockShard.MockShardRecord();
@@ -358,7 +357,7 @@ describe('Knowledge Engine Module', () => {
 
         it('does not call its callback more than once', (done) => {
             let callback_called = 0;
-            engine.get_object_by_id(mock_id, null, (engine, task) => {
+            engine.get_object_by_id('whatever', null, (engine, task) => {
                 callback_called++;
             });
             setTimeout(() => {
@@ -480,7 +479,7 @@ describe('Knowledge Engine Module', () => {
             setTimeout(() => {
                 expect(callback_called).toEqual(1);
                 done();
-            }, 100); // pause for a moment for any more callbacks
+            }, 25); // pause for a moment for any more callbacks
         });
 
         it('performs redirect resolution', (done) => {
@@ -623,9 +622,9 @@ describe('Knowledge Engine Module', () => {
             let requested_query = requested_uri.get_query();
             let requested_uri_string = requested_uri.to_string(false);
 
-            expect(requested_uri_string).toMatch(/^http:\/\/127.0.0.1:3004\/query?/);
-            expect(get_query_vals_for_key(requested_query, 'path')).toMatch('/foo');
-            expect(get_query_vals_for_key(requested_query, 'q')).toMatch(/logorrhea/i);
+            expect(requested_uri_string).toContain('http://127.0.0.1:3004/query?');
+            expect(get_query_vals_for_key(requested_query, 'path')).toContain('/foo');
+            expect(get_query_vals_for_key(requested_query, 'q')).toContain('logorrhea');
         });
 
         it ("throws an error on unsupported JSON-LD type", (done) => {
@@ -708,7 +707,7 @@ describe('Knowledge Engine Module', () => {
             setTimeout(() => {
                 expect(callback_called).toEqual(1);
                 done();
-            }, 100); // pause for a moment for any more callbacks
+            }, 25); // pause for a moment for any more callbacks
         });
 
         it('performs redirect resolution', (done) => {
