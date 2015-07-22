@@ -432,6 +432,7 @@ EXTRA_DIST += \
 	tests/InstanceOfMatcher.js \
 	tests/minimal.js \
 	tests/mockCardContainer.js \
+	tests/mockDispatcher.js \
 	tests/mockEngine.js \
 	tests/mockFactory.js \
 	tests/mockPlaceholder.js \
