@@ -61,26 +61,6 @@ const EncyclopediaWindow = new Lang.Class({
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
     },
 
-    Signals: {
-        /**
-         * Event: lightbox-nav-previous-clicked
-         * Emmited when the navigation button in the lightbox is clicked. Passes
-         * the media object currently displayed by the lightbox.
-         */
-        'lightbox-nav-previous-clicked': {
-            param_types: [GObject.TYPE_OBJECT],
-        },
-
-        /**
-         * Event: lightbox-nav-next-clicked
-         * Emmited when the navigation button in the lightbox is clicked. Passes
-         * the media object currently displayed by the lightbox.
-         */
-        'lightbox-nav-next-clicked': {
-            param_types: [GObject.TYPE_OBJECT],
-        },
-    },
-
     _init: function (props) {
         props = props || {};
         props.font_scaling_active = true;
@@ -116,10 +96,6 @@ const EncyclopediaWindow = new Lang.Class({
         });
 
         this._lightbox = new Lightbox.Lightbox();
-        this._lightbox.connect('navigation-previous-clicked', (lightbox) =>
-            this.emit('lightbox-nav-previous-clicked', lightbox));
-        this._lightbox.connect('navigation-next-clicked', (lightbox) =>
-            this.emit('lightbox-nav-next-clicked', lightbox));
         this._lightbox.add(this._content_page);
 
         this.page_manager.add(this._lightbox, {

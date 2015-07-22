@@ -182,22 +182,6 @@ const Window = new Lang.Class({
         'search-text-changed': {
             param_types: [GObject.TYPE_OBJECT]
         },
-        /**
-         * Event: lightbox-nav-previous-clicked
-         * Emmited when the navigation button in the lightbox is clicked. Passes
-         * the media object currently displayed by the lightbox.
-         */
-        'lightbox-nav-previous-clicked': {
-            param_types: [GObject.TYPE_OBJECT]
-        },
-        /**
-         * Event: lightbox-nav-next-clicked
-         * Emmited when the navigation button in the lightbox is clicked. Passes
-         * the media object currently displayed by the lightbox.
-         */
-        'lightbox-nav-next-clicked': {
-            param_types: [GObject.TYPE_OBJECT]
-        }
     },
 
     TRANSITION_DURATION: 500,
@@ -237,12 +221,6 @@ const Window = new Lang.Class({
             dispatcher.dispatch({ action_type: Actions.NAV_BACK_CLICKED });
         });
         this._lightbox = new Lightbox.Lightbox();
-        this._lightbox.connect('navigation-previous-clicked', function (media_object) {
-            this.emit('lightbox-nav-previous-clicked', media_object);
-        }.bind(this));
-        this._lightbox.connect('navigation-next-clicked', function (media_object) {
-            this.emit('lightbox-nav-next-clicked', media_object);
-        }.bind(this));
 
         this.history_buttons = new Endless.TopbarNavButton();
 

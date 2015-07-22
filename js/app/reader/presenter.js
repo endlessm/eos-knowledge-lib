@@ -189,7 +189,7 @@ const Presenter = new Lang.Class({
         // Currently, Reader apps lightboxes don't show an infobox.
         this._lightbox_presenter = new LightboxPresenter.LightboxPresenter({
             engine: this.engine,
-            view: this.view,
+            lightbox: this.view.lightbox,
             factory: this.factory,
         });
 

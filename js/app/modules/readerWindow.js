@@ -190,24 +190,6 @@ const ReaderWindow = new Lang.Class({
 
     Signals: {
         'debug-hotkey-pressed': {},
-
-        /**
-         * Event: lightbox-nav-previous-clicked
-         * Emmited when the navigation button in the lightbox is clicked. Passes
-         * the media object currently displayed by the lightbox.
-         */
-        'lightbox-nav-previous-clicked': {
-            param_types: [GObject.TYPE_OBJECT],
-        },
-
-        /**
-         * Event: lightbox-nav-next-clicked
-         * Emmited when the navigation button in the lightbox is clicked. Passes
-         * the media object currently displayed by the lightbox.
-         */
-        'lightbox-nav-next-clicked': {
-            param_types: [GObject.TYPE_OBJECT],
-        },
     },
 
     _STACK_TRANSITION_TIME: 500,
@@ -263,12 +245,6 @@ const ReaderWindow = new Lang.Class({
         this.issue_nav_buttons.forward_button.label = 'Next week';
 
         this.lightbox = new Lightbox.Lightbox();
-        this.lightbox.connect('navigation-previous-clicked', function (lightbox) {
-            this.emit('lightbox-nav-previous-clicked', lightbox);
-        }.bind(this));
-        this.lightbox.connect('navigation-next-clicked', function (lightbox) {
-            this.emit('lightbox-nav-next-clicked', lightbox);
-        }.bind(this));
 
         this._article_pages = [];
 

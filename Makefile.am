@@ -436,6 +436,7 @@ EXTRA_DIST += \
 	tests/mockDispatcher.js \
 	tests/mockEngine.js \
 	tests/mockFactory.js \
+	tests/mockLightbox.js \
 	tests/mockPlaceholder.js \
 	tests/mockShard.js \
 	tests/mockWidgets.js \

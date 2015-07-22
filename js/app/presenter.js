@@ -158,7 +158,7 @@ const Presenter = new Lang.Class({
 
         this._lightbox_presenter = new LightboxPresenter.LightboxPresenter({
             engine: this.engine,
-            view: this.view,
+            lightbox: this.view.lightbox,
             factory: this.factory,
         });
 
