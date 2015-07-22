@@ -2,6 +2,9 @@ const Endless = imports.gi.Endless;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 
+const Utils = imports.tests.utils;
+Utils.register_gresource();
+
 const ArticlePage = imports.app.articlePage;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const HomePageA = imports.app.homePageA;
@@ -10,11 +13,14 @@ const Lightbox = imports.app.lightbox;
 const MockFactory = imports.tests.mockFactory;
 const MockSearchBox = imports.tests.mockSearchBox;
 const SectionPageA = imports.app.sectionPageA;
-const Utils = imports.tests.utils;
 const Window = imports.app.modules.window;
 
 const TEST_CONTENT_BUILDDIR = Utils.get_test_content_builddir();
 const BACKGROUND_URI = 'resource:///com/endlessm/thrones/kings_landing.jpg';
+
+// Load and register the GResource which has content for this app
+let resource = Gio.Resource.load(TEST_CONTENT_BUILDDIR + 'test-content.gresource');
+resource._register();
 
 describe('Window', function () {
     let view;
@@ -22,11 +28,6 @@ describe('Window', function () {
     beforeEach(function (done) {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
         jasmine.addMatchers(InstanceOfMatcher.customMatchers);
-        Utils.register_gresource();
-
-        // Load and register the GResource which has content for this app
-        let resource = Gio.Resource.load(TEST_CONTENT_BUILDDIR + 'test-content.gresource');
-        resource._register();
 
         // Generate a unique ID for each app instance that we test
         let fake_pid = GLib.random_int();
