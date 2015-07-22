@@ -759,12 +759,20 @@ describe('Knowledge Engine Module', () => {
 
     describe('runtime objects', function () {
         let model;
+        let mock_shard_file, mock_shard_record, mock_metadata;
 
         beforeEach(function () {
             model = new ContentObjectModel.ContentObjectModel({
                 title: 'a',
             });
             engine.add_runtime_object('ekn://foo/1234567890abcdef', model);
+            mock_shard_file = new MockShard.MockShardFile();
+            mock_shard_record = new MockShard.MockShardRecord();
+
+            mock_metadata = new MockShard.MockShardBlob();
+            mock_shard_record.metadata = mock_metadata;
+
+            mock_ekn_shard(mock_shard_file);
         });
 
         it('can be added', function (done) {
@@ -793,22 +801,21 @@ describe('Knowledge Engine Module', () => {
             });
         });
 
-        // https://github.com/endlessm/eos-sdk/issues/3147
-
-        xit('do not hit the database', function (done) {
-            spyOn(engine, 'FIXME_v2_method_for_retrieving_data_from_shard');
+        it('do not hit the database', function (done) {
             engine.get_object_by_id('ekn://foo/1234567890abcdef', null, (engine, res) => {
                 engine.get_object_by_id_finish(res);
-                expect(engine.FIXME_v2_method_for_retrieving_data_from_shard).not.toHaveBeenCalled();
+                expect(mock_shard_file.find_record_by_hex_name).not.toHaveBeenCalled();
                 done();
             });
         });
 
-        xit('mask existing objects with the same ID', function (done) {
-            FIXME_mock_engine_request_v2(undefined, [{
+        it('mask existing objects with the same ID', function (done) {
+            let json_stream = Utils.string_to_stream(JSON.stringify({
                 '@id': 'ekn://foo/1234567890abcdef',
                 '@type': 'ekn://_vocab/ArticleObject',
-            }]);
+            }));
+            mock_metadata.get_stream.and.returnValue(json_stream);
+            mock_shard_file.find_record_by_hex_name.and.returnValue(mock_shard_record);
             engine.get_object_by_id('ekn://foo/1234567890abcdef', null, (engine, res) => {
                 let retrieved_model = engine.get_object_by_id_finish(res);
                 expect(retrieved_model).toBe(model);
