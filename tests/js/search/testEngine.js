@@ -155,8 +155,7 @@ describe('Knowledge Engine Module', () => {
             return '/' + domain;
         };
 
-        // by default, test the newest code paths. Various unit tests can
-        // override this by calling mock_ekn_version(engine, 1)
+        // Test the newest code paths.
         mock_ekn_version(engine, 2);
     });
 
@@ -167,35 +166,6 @@ describe('Knowledge Engine Module', () => {
 
         it('should default its hostname to 127.0.0.1', () => {
             expect(engine.host).toBe('127.0.0.1');
-        });
-    });
-
-    describe('HTTP requests (EKN v1)', () => {
-        beforeEach(() => {
-            mock_ekn_version(engine, 1);
-            // spy on the queue_message and cancel_message methods
-            spyOn(engine._http_session, 'queue_message').and.callFake((req, cb) => {
-                cb();
-            });
-            spyOn(engine._http_session, 'cancel_message');
-        });
-
-        it('can be cancelled', () => {
-            let cancellable = new Gio.Cancellable();
-            engine.get_object_by_id('ekn://foo/0123456789abcdef', cancellable, noop);
-            cancellable.cancel();
-            expect(engine._http_session.cancel_message).toHaveBeenCalled();
-            let message = engine._http_session.cancel_message.calls.mostRecent().args[0];
-            // Make sure we are canceling the right Soup Message
-            expect(message).toBeA(Soup.Message);
-            expect(message.uri.to_string(true)).toMatch('0123456789abcdef');
-        });
-
-        it('does not make a request if already cancelled', () => {
-            let cancellable = new Gio.Cancellable();
-            cancellable.cancel();
-            engine.get_object_by_id('ekn://foo/0123456789abcdef', cancellable, noop);
-            expect(engine._http_session.queue_message).not.toHaveBeenCalled();
         });
     });
 
@@ -393,138 +363,6 @@ describe('Knowledge Engine Module', () => {
         });
     });
 
-    describe('get_object_by_id (EKN v1)', () => {
-        beforeEach(() => {
-            mock_ekn_version(engine, 1);
-        });
-        it('sends requests', () => {
-            let request_spy = engine_request_spy();
-            let mock_id = 'ekn://foo/0123456789abcdef';
-
-            engine.get_object_by_id(mock_id, null, noop);
-            expect(request_spy).toHaveBeenCalled();
-        });
-
-        it('sends correct request URIs', () => {
-            let request_spy = engine_request_spy();
-            let mock_id = 'ekn://foo/0123456789abcdef';
-
-            engine.get_object_by_id(mock_id, null, noop);
-            let last_req_args = request_spy.calls.mostRecent().args;
-            let requested_uri = last_req_args[0];
-            let requested_query = requested_uri.get_query();
-            let requested_uri_string = requested_uri.to_string(false);
-
-            expect(requested_uri_string).toMatch(/^http:\/\/127.0.0.1:3004\/query?/);
-            expect(get_query_vals_for_key(requested_query, 'path')).toMatch('/foo');
-        });
-
-        it('uses correct domain for id', () => {
-            let request_spy = engine_request_spy();
-            let mock_id = 'ekn://new_domain/0123456789abcdef';
-
-            engine.get_object_by_id(mock_id, null, noop);
-            let last_req_args = request_spy.calls.mostRecent().args;
-            let requested_uri = last_req_args[0];
-            let requested_query = requested_uri.get_query();
-
-            expect(get_query_vals_for_key(requested_query, 'path')).toMatch('/new_domain');
-        });
-
-        it('marshals objects based on @type', (done) => {
-            let mock_id = 'ekn://foo/0123456789abcdef';
-            mock_engine_request(undefined, [{
-                '@id': mock_id,
-                '@type': 'ekn://_vocab/ArticleObject',
-                'synopsis': 'NOW IS THE WINTER OF OUR DISCONTENT',
-            }]);
-
-            engine.get_object_by_id(mock_id, null, (engine, task) => {
-                let result = engine.get_object_by_id_finish(task);
-                expect(result).toBeA(ArticleObjectModel.ArticleObjectModel);
-                expect(result.synopsis).toBe('NOW IS THE WINTER OF OUR DISCONTENT');
-                done();
-            });
-        });
-
-        it('sets up content stream and content type for html articles', (done) => {
-            let mock_id = 'ekn://foo/0123456789abcdef';
-            let mock_content = '<html>foo</html>';
-            mock_engine_request(undefined, [{
-                '@id': mock_id,
-                '@type': 'ekn://_vocab/ArticleObject',
-                'articleBody': mock_content,
-            }]);
-
-            engine.get_object_by_id(mock_id, null, (engine, task) => {
-                let result = engine.get_object_by_id_finish(task);
-                expect(result).toBeA(ArticleObjectModel.ArticleObjectModel);
-                expect(result.content_type).toBe('text/html');
-                let stream = result.get_content_stream();
-                expect(stream).toBeA(Gio.InputStream);
-                let html = stream.read_bytes(16, null).get_data().toString();
-                expect(html).toBe(mock_content);
-                done();
-            });
-        });
-
-        it('does not call its callback more than once', (done) => {
-            let mock_id = 'ekn://foo/0123456789abcdef';
-            mock_engine_request(new Error('I am an error'), undefined);
-
-            let callback_called = 0;
-            engine.get_object_by_id(mock_id, null, (engine, task) => {
-                callback_called++;
-            });
-            setTimeout(() => {
-                expect(callback_called).toEqual(1);
-                done();
-            }, 25); // pause for a moment for any more callbacks
-        });
-
-        it('performs redirect resolution', (done) => {
-            mock_engine_request_with_multiple_values([
-                {
-                    results: [{
-                        '@id': 'ekn://foo/0123456789abcdef',
-                        '@type': 'ekn://_vocab/ArticleObject',
-                        redirectsTo: 'ekn://foo/fedcba9876543210',
-                    }],
-                },
-                {
-                    results: [{
-                        '@id': 'ekn://foo/fedcba9876543210',
-                        '@type': 'ekn://_vocab/ArticleObject',
-                    }],
-                },
-            ]);
-            engine.get_object_by_id('ekn://foo/0123456789abcdef', null, (engine, task) => {
-                let result = engine.get_object_by_id_finish(task);
-                expect(result.ekn_id).toEqual('ekn://foo/fedcba9876543210');
-                done();
-            });
-        });
-
-        it('handles 404 when fetching redirects', (done) => {
-            mock_engine_request_with_multiple_values([
-                {
-                    results: [{
-                        '@id': 'ekn://foo/0123456789abcdef',
-                        '@type': 'ekn://_vocab/ArticleObject',
-                        redirectsTo: 'ekn://foo/0000000000000000',
-                    }],
-                },
-                {
-                    results: [],
-                },
-            ]);
-            engine.get_object_by_id('ekn://foo/0123456789abcdef', null, (engine, task) => {
-                expect(() => { engine.get_object_by_id_finish(task); }).toThrow();
-                done();
-            });
-        });
-    });
-
     describe('get_objects_by_query (EKN v2)', () => {
         beforeEach(() => {
             spyOn(engine, 'get_object_by_id');
@@ -595,168 +433,6 @@ describe('Knowledge Engine Module', () => {
         });
     });
 
-    describe('get_objects_by_query (EKN v1)', () => {
-        beforeEach(() => {
-            mock_ekn_version(engine, 1);
-        });
-
-        it('sends requests', () => {
-            let request_spy = engine_request_spy();
-            let mock_query = new QueryObject.QueryObject({
-                query: 'logorrhea',
-            });
-
-            engine.get_objects_by_query(mock_query, null, noop);
-            expect(request_spy).toHaveBeenCalled();
-        });
-
-        it('requests correct URIs', () => {
-            let request_spy = engine_request_spy();
-            let mock_query = new QueryObject.QueryObject({
-                query: 'logorrhea',
-            });
-
-            engine.get_objects_by_query(mock_query, null, noop);
-            let last_req_args = request_spy.calls.mostRecent().args;
-            let requested_uri = last_req_args[0];
-            let requested_query = requested_uri.get_query();
-            let requested_uri_string = requested_uri.to_string(false);
-
-            expect(requested_uri_string).toContain('http://127.0.0.1:3004/query?');
-            expect(get_query_vals_for_key(requested_query, 'path')).toContain('/foo');
-            expect(get_query_vals_for_key(requested_query, 'q')).toContain('logorrhea');
-        });
-
-        it ("throws an error on unsupported JSON-LD type", (done) => {
-            let notSearchResults = [
-                { "@type": "ekv:ArticleObject", "synopsis": "dolla dolla bill y'all" }
-            ];
-            mock_engine_request(undefined, notSearchResults);
-
-            engine.get_objects_by_query(new QueryObject.QueryObject(), null, (engine, task) => {
-                expect(() => { engine.get_objects_by_query_finish(task); }).toThrow();
-                done();
-            });
-        });
-
-        it ("throws an error on unsupported search results", (done) => {
-            let badObjectResults = [{ "@type": "ekv:Kitten" }];
-            mock_engine_request(undefined, badObjectResults);
-            engine.get_objects_by_query(new QueryObject.QueryObject(), null, (engine, task) => {
-                expect(() => { engine.get_objects_by_query_finish(task); }).toThrow();
-                done();
-            });
-        });
-
-        it ("resolves to a list of results if jsonld is valid", (done) => {
-            mock_engine_request(undefined, MOCK_ARTICLE_RESULTS);
-
-            engine.get_objects_by_query(new QueryObject.QueryObject(), null, (engine, task) => {
-                let [results, get_more_results_query] = engine.get_objects_by_query_finish(task);
-                expect(results).toBeDefined();
-                done();
-            });
-        });
-
-        it ("constructs a list of content objects based on @type", (done) => {
-            mock_engine_request(undefined, MOCK_CONTENT_RESULTS);
-            engine.get_objects_by_query(new QueryObject.QueryObject(), null, (engine, task) => {
-                let [results, get_more_results_query] = engine.get_objects_by_query_finish(task);
-                // All results in MOCK_CONTENT_OBJECT_RESULTS are of @type ContentObject,
-                // so expect that they're constructed as such
-                for (let i in results) {
-                    expect(results[i]).toBeA(ContentObjectModel.ContentObjectModel);
-                }
-                done();
-            });
-        });
-
-        it ("constructs a list of article objects based on @type", (done) => {
-            mock_engine_request(undefined, MOCK_ARTICLE_RESULTS);
-            engine.get_objects_by_query(new QueryObject.QueryObject(), null, (engine, task) => {
-                let [results, get_more_results_query] = engine.get_objects_by_query_finish(task);
-                // All results in MOCK_ARTICLE_OBJECT_RESULTS are of @type ArticleObject,
-                // so expect that they're constructed as such
-                for (let i in results) {
-                    expect(results[i]).toBeA(ArticleObjectModel.ArticleObjectModel);
-                }
-                done();
-            });
-        });
-
-        it ("constructs a list of media objects based on @type", (done) => {
-            mock_engine_request(undefined, MOCK_MEDIA_RESULTS);
-            engine.get_objects_by_query(new QueryObject.QueryObject(), null, (engine, task) => {
-                let [results, get_more_results_query] = engine.get_objects_by_query_finish(task);
-                // All results in MOCK_MEDIA_OBJECT_RESULTS are of @type MediaObject,
-                // so expect that they're constructed as such
-                for (let i in results) {
-                    expect(results[i]).toBeA(MediaObjectModel.MediaObjectModel);
-                }
-                done();
-            });
-        });
-
-        it('does not call its callback more than once', (done) => {
-            mock_engine_request(new Error('I am an error'), undefined);
-
-            let callback_called = 0;
-            engine.get_objects_by_query(new QueryObject.QueryObject(), null, (engine, task) => {
-                callback_called++;
-            });
-            setTimeout(() => {
-                expect(callback_called).toEqual(1);
-                done();
-            }, 25); // pause for a moment for any more callbacks
-        });
-
-        it('performs redirect resolution', (done) => {
-            mock_engine_request(undefined, [
-                {
-                    '@id': 'ekn://foo/aaaabbbbccccddd2',
-                    '@type': 'ekn://_vocab/ArticleObject',
-                    redirectsTo: 'ekn://foo/aaaabbbbccccddd3',
-                },
-                {
-                    '@id': 'ekn://foo/0000000000000003',
-                    '@type': 'ekn://_vocab/ArticleObject',
-                },
-            ]);
-            let redirect = new ArticleObjectModel.ArticleObjectModel();
-            spyOn(engine, 'get_object_by_id').and.callFake((id, cancellable, callback) => {
-                callback(engine, null);
-            });
-            spyOn(engine, 'get_object_by_id_finish').and.returnValue(redirect);
-            engine.get_objects_by_query(new QueryObject.QueryObject(), null, (engine, task) => {
-                let [results, get_more_results_query] = engine.get_objects_by_query_finish(task);
-                expect(results[0]).toBe(redirect);
-                expect(results[1].ekn_id).toBe('ekn://foo/0000000000000003');
-                expect(engine.get_object_by_id).toHaveBeenCalledWith('ekn://foo/aaaabbbbccccddd3',
-                                                                     jasmine.any(Object),
-                                                                     jasmine.any(Function));
-                done();
-            });
-        });
-
-        it('handles 404s when fetching redirects', (done) => {
-            mock_engine_request(undefined, [
-                {
-                    '@id': 'ekn://foo/aaaabbbbccccddd2',
-                    '@type': 'ekn://_vocab/ArticleObject',
-                    redirectsTo: 'ekn://foo/aaaabbbbccccddd3',
-                },
-            ]);
-            spyOn(engine, 'get_object_by_id').and.callFake((id, cancellable, callback) => {
-                callback(engine, null);
-            });
-            spyOn(engine, 'get_object_by_id_finish').and.throwError();
-            engine.get_objects_by_query(new QueryObject.QueryObject(), null, (engine, task) => {
-                expect(() => { engine.get_objects_by_query_finish(task); }).toThrow();
-                done();
-            });
-        });
-    });
-
     describe('runtime objects', function () {
         let model;
         let mock_shard_file, mock_shard_record, mock_metadata;
@@ -820,6 +496,327 @@ describe('Knowledge Engine Module', () => {
                 let retrieved_model = engine.get_object_by_id_finish(res);
                 expect(retrieved_model).toBe(model);
                 done();
+            });
+        });
+    });
+
+    describe('v1 compatibility', () => {
+        beforeEach(() => {
+            mock_ekn_version(engine, 1);
+        });
+
+        describe('get_objects_by_query', () => {
+            it('sends requests', () => {
+                let request_spy = engine_request_spy();
+                let mock_query = new QueryObject.QueryObject({
+                    query: 'logorrhea',
+                });
+
+                engine.get_objects_by_query(mock_query, null, noop);
+                expect(request_spy).toHaveBeenCalled();
+            });
+
+            it('requests correct URIs', () => {
+                let request_spy = engine_request_spy();
+                let mock_query = new QueryObject.QueryObject({
+                    query: 'logorrhea',
+                });
+
+                engine.get_objects_by_query(mock_query, null, noop);
+                let last_req_args = request_spy.calls.mostRecent().args;
+                let requested_uri = last_req_args[0];
+                let requested_query = requested_uri.get_query();
+                let requested_uri_string = requested_uri.to_string(false);
+
+                expect(requested_uri_string).toContain('http://127.0.0.1:3004/query?');
+                expect(get_query_vals_for_key(requested_query, 'path')).toContain('/foo');
+                expect(get_query_vals_for_key(requested_query, 'q')).toContain('logorrhea');
+            });
+
+            it ("throws an error on unsupported JSON-LD type", (done) => {
+                let notSearchResults = [
+                    { "@type": "ekv:ArticleObject", "synopsis": "dolla dolla bill y'all" }
+                ];
+                mock_engine_request(undefined, notSearchResults);
+
+                engine.get_objects_by_query(new QueryObject.QueryObject(), null, (engine, task) => {
+                    expect(() => { engine.get_objects_by_query_finish(task); }).toThrow();
+                    done();
+                });
+            });
+
+            it ("throws an error on unsupported search results", (done) => {
+                let badObjectResults = [{ "@type": "ekv:Kitten" }];
+                mock_engine_request(undefined, badObjectResults);
+                engine.get_objects_by_query(new QueryObject.QueryObject(), null, (engine, task) => {
+                    expect(() => { engine.get_objects_by_query_finish(task); }).toThrow();
+                    done();
+                });
+            });
+
+            it ("resolves to a list of results if jsonld is valid", (done) => {
+                mock_engine_request(undefined, MOCK_ARTICLE_RESULTS);
+
+                engine.get_objects_by_query(new QueryObject.QueryObject(), null, (engine, task) => {
+                    let [results, get_more_results_query] = engine.get_objects_by_query_finish(task);
+                    expect(results).toBeDefined();
+                    done();
+                });
+            });
+
+            it ("constructs a list of content objects based on @type", (done) => {
+                mock_engine_request(undefined, MOCK_CONTENT_RESULTS);
+                engine.get_objects_by_query(new QueryObject.QueryObject(), null, (engine, task) => {
+                    let [results, get_more_results_query] = engine.get_objects_by_query_finish(task);
+                    // All results in MOCK_CONTENT_OBJECT_RESULTS are of @type ContentObject,
+                    // so expect that they're constructed as such
+                    for (let i in results) {
+                        expect(results[i]).toBeA(ContentObjectModel.ContentObjectModel);
+                    }
+                    done();
+                });
+            });
+
+            it ("constructs a list of article objects based on @type", (done) => {
+                mock_engine_request(undefined, MOCK_ARTICLE_RESULTS);
+                engine.get_objects_by_query(new QueryObject.QueryObject(), null, (engine, task) => {
+                    let [results, get_more_results_query] = engine.get_objects_by_query_finish(task);
+                    // All results in MOCK_ARTICLE_OBJECT_RESULTS are of @type ArticleObject,
+                    // so expect that they're constructed as such
+                    for (let i in results) {
+                        expect(results[i]).toBeA(ArticleObjectModel.ArticleObjectModel);
+                    }
+                    done();
+                });
+            });
+
+            it ("constructs a list of media objects based on @type", (done) => {
+                mock_engine_request(undefined, MOCK_MEDIA_RESULTS);
+                engine.get_objects_by_query(new QueryObject.QueryObject(), null, (engine, task) => {
+                    let [results, get_more_results_query] = engine.get_objects_by_query_finish(task);
+                    // All results in MOCK_MEDIA_OBJECT_RESULTS are of @type MediaObject,
+                    // so expect that they're constructed as such
+                    for (let i in results) {
+                        expect(results[i]).toBeA(MediaObjectModel.MediaObjectModel);
+                    }
+                    done();
+                });
+            });
+
+            it('does not call its callback more than once', (done) => {
+                mock_engine_request(new Error('I am an error'), undefined);
+
+                let callback_called = 0;
+                engine.get_objects_by_query(new QueryObject.QueryObject(), null, (engine, task) => {
+                    callback_called++;
+                });
+                setTimeout(() => {
+                    expect(callback_called).toEqual(1);
+                    done();
+                }, 25); // pause for a moment for any more callbacks
+            });
+
+            it('performs redirect resolution', (done) => {
+                mock_engine_request(undefined, [
+                    {
+                        '@id': 'ekn://foo/aaaabbbbccccddd2',
+                        '@type': 'ekn://_vocab/ArticleObject',
+                        redirectsTo: 'ekn://foo/aaaabbbbccccddd3',
+                    },
+                    {
+                        '@id': 'ekn://foo/0000000000000003',
+                        '@type': 'ekn://_vocab/ArticleObject',
+                    },
+                ]);
+                let redirect = new ArticleObjectModel.ArticleObjectModel();
+                spyOn(engine, 'get_object_by_id').and.callFake((id, cancellable, callback) => {
+                    callback(engine, null);
+                });
+                spyOn(engine, 'get_object_by_id_finish').and.returnValue(redirect);
+                engine.get_objects_by_query(new QueryObject.QueryObject(), null, (engine, task) => {
+                    let [results, get_more_results_query] = engine.get_objects_by_query_finish(task);
+                    expect(results[0]).toBe(redirect);
+                    expect(results[1].ekn_id).toBe('ekn://foo/0000000000000003');
+                    expect(engine.get_object_by_id).toHaveBeenCalledWith('ekn://foo/aaaabbbbccccddd3',
+                                                                         jasmine.any(Object),
+                                                                         jasmine.any(Function));
+                    done();
+                });
+            });
+
+            it('handles 404s when fetching redirects', (done) => {
+                mock_engine_request(undefined, [
+                    {
+                        '@id': 'ekn://foo/aaaabbbbccccddd2',
+                        '@type': 'ekn://_vocab/ArticleObject',
+                        redirectsTo: 'ekn://foo/aaaabbbbccccddd3',
+                    },
+                ]);
+                spyOn(engine, 'get_object_by_id').and.callFake((id, cancellable, callback) => {
+                    callback(engine, null);
+                });
+                spyOn(engine, 'get_object_by_id_finish').and.throwError();
+                engine.get_objects_by_query(new QueryObject.QueryObject(), null, (engine, task) => {
+                    expect(() => { engine.get_objects_by_query_finish(task); }).toThrow();
+                    done();
+                });
+            });
+        });
+
+        describe('HTTP requests', () => {
+            beforeEach(() => {
+                // spy on the queue_message and cancel_message methods
+                spyOn(engine._http_session, 'queue_message').and.callFake((req, cb) => {
+                    cb();
+                });
+                spyOn(engine._http_session, 'cancel_message');
+            });
+
+            it('can be cancelled', () => {
+                let cancellable = new Gio.Cancellable();
+                engine.get_object_by_id('ekn://foo/0123456789abcdef', cancellable, noop);
+                cancellable.cancel();
+                expect(engine._http_session.cancel_message).toHaveBeenCalled();
+                let message = engine._http_session.cancel_message.calls.mostRecent().args[0];
+                // Make sure we are canceling the right Soup Message
+                expect(message).toBeA(Soup.Message);
+                expect(message.uri.to_string(true)).toMatch('0123456789abcdef');
+            });
+
+            it('does not make a request if already cancelled', () => {
+                let cancellable = new Gio.Cancellable();
+                cancellable.cancel();
+                engine.get_object_by_id('ekn://foo/0123456789abcdef', cancellable, noop);
+                expect(engine._http_session.queue_message).not.toHaveBeenCalled();
+            });
+        });
+
+        describe('get_object_by_id', () => {
+            it('sends requests', () => {
+                let request_spy = engine_request_spy();
+                let mock_id = 'ekn://foo/0123456789abcdef';
+
+                engine.get_object_by_id(mock_id, null, noop);
+                expect(request_spy).toHaveBeenCalled();
+            });
+
+            it('sends correct request URIs', () => {
+                let request_spy = engine_request_spy();
+                let mock_id = 'ekn://foo/0123456789abcdef';
+
+                engine.get_object_by_id(mock_id, null, noop);
+                let last_req_args = request_spy.calls.mostRecent().args;
+                let requested_uri = last_req_args[0];
+                let requested_query = requested_uri.get_query();
+                let requested_uri_string = requested_uri.to_string(false);
+
+                expect(requested_uri_string).toMatch(/^http:\/\/127.0.0.1:3004\/query?/);
+                expect(get_query_vals_for_key(requested_query, 'path')).toMatch('/foo');
+            });
+
+            it('uses correct domain for id', () => {
+                let request_spy = engine_request_spy();
+                let mock_id = 'ekn://new_domain/0123456789abcdef';
+
+                engine.get_object_by_id(mock_id, null, noop);
+                let last_req_args = request_spy.calls.mostRecent().args;
+                let requested_uri = last_req_args[0];
+                let requested_query = requested_uri.get_query();
+
+                expect(get_query_vals_for_key(requested_query, 'path')).toMatch('/new_domain');
+            });
+
+            it('marshals objects based on @type', (done) => {
+                let mock_id = 'ekn://foo/0123456789abcdef';
+                mock_engine_request(undefined, [{
+                    '@id': mock_id,
+                    '@type': 'ekn://_vocab/ArticleObject',
+                    'synopsis': 'NOW IS THE WINTER OF OUR DISCONTENT',
+                }]);
+
+                engine.get_object_by_id(mock_id, null, (engine, task) => {
+                    let result = engine.get_object_by_id_finish(task);
+                    expect(result).toBeA(ArticleObjectModel.ArticleObjectModel);
+                    expect(result.synopsis).toBe('NOW IS THE WINTER OF OUR DISCONTENT');
+                    done();
+                });
+            });
+
+            it('sets up content stream and content type for html articles', (done) => {
+                let mock_id = 'ekn://foo/0123456789abcdef';
+                let mock_content = '<html>foo</html>';
+                mock_engine_request(undefined, [{
+                    '@id': mock_id,
+                    '@type': 'ekn://_vocab/ArticleObject',
+                    'articleBody': mock_content,
+                }]);
+
+                engine.get_object_by_id(mock_id, null, (engine, task) => {
+                    let result = engine.get_object_by_id_finish(task);
+                    expect(result).toBeA(ArticleObjectModel.ArticleObjectModel);
+                    expect(result.content_type).toBe('text/html');
+                    let stream = result.get_content_stream();
+                    expect(stream).toBeA(Gio.InputStream);
+                    let html = stream.read_bytes(16, null).get_data().toString();
+                    expect(html).toBe(mock_content);
+                    done();
+                });
+            });
+
+            it('does not call its callback more than once', (done) => {
+                let mock_id = 'ekn://foo/0123456789abcdef';
+                mock_engine_request(new Error('I am an error'), undefined);
+
+                let callback_called = 0;
+                engine.get_object_by_id(mock_id, null, (engine, task) => {
+                    callback_called++;
+                });
+                setTimeout(() => {
+                    expect(callback_called).toEqual(1);
+                    done();
+                }, 25); // pause for a moment for any more callbacks
+            });
+
+            it('performs redirect resolution', (done) => {
+                mock_engine_request_with_multiple_values([
+                    {
+                        results: [{
+                            '@id': 'ekn://foo/0123456789abcdef',
+                            '@type': 'ekn://_vocab/ArticleObject',
+                            redirectsTo: 'ekn://foo/fedcba9876543210',
+                        }],
+                    },
+                    {
+                        results: [{
+                            '@id': 'ekn://foo/fedcba9876543210',
+                            '@type': 'ekn://_vocab/ArticleObject',
+                        }],
+                    },
+                ]);
+                engine.get_object_by_id('ekn://foo/0123456789abcdef', null, (engine, task) => {
+                    let result = engine.get_object_by_id_finish(task);
+                    expect(result.ekn_id).toEqual('ekn://foo/fedcba9876543210');
+                    done();
+                });
+            });
+
+            it('handles 404 when fetching redirects', (done) => {
+                mock_engine_request_with_multiple_values([
+                    {
+                        results: [{
+                            '@id': 'ekn://foo/0123456789abcdef',
+                            '@type': 'ekn://_vocab/ArticleObject',
+                            redirectsTo: 'ekn://foo/0000000000000000',
+                        }],
+                    },
+                    {
+                        results: [],
+                    },
+                ]);
+                engine.get_object_by_id('ekn://foo/0123456789abcdef', null, (engine, task) => {
+                    expect(() => { engine.get_object_by_id_finish(task); }).toThrow();
+                    done();
+                });
             });
         });
     });
