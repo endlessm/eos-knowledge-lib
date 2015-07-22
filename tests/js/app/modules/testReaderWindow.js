@@ -14,35 +14,39 @@ const ReaderWindow = imports.app.modules.readerWindow;
 const EXPECTED_TOTAL_PAGES = 17;
 
 describe('Window widget', function () {
-    let view;
-    let factory;
+    let view, app, factory;
 
-    beforeEach(function (done) {
-        jasmine.addMatchers(CssClassMatcher.customMatchers);
-        jasmine.addMatchers(InstanceOfMatcher.customMatchers);
-
+    beforeAll(function (done) {
         // Generate a unique ID for each app instance that we test
         let fake_pid = GLib.random_int();
         let id_string = 'com.endlessm.knowledge.test.dummy' + GLib.get_real_time() + fake_pid;
-        let app = new Endless.Application({
+        app = new Endless.Application({
             application_id: id_string,
             flags: 0,
         });
+        app.connect('startup', done);
+        app.hold();
+        app.run([]);
+    });
+
+    afterAll(function () {
+        app.release();
+    });
+
+    beforeEach(function () {
+        jasmine.addMatchers(CssClassMatcher.customMatchers);
+        jasmine.addMatchers(InstanceOfMatcher.customMatchers);
+
         factory = new MockFactory.MockFactory();
         factory.add_named_mock('document-card', Minimal.MinimalDocumentCard);
-        app.connect('startup', function () {
-            view = new ReaderWindow.ReaderWindow({
-                application: app,
-                factory: factory,
-            });
-            for (let i = 0; i < 15; i++) {
-                let a = factory.create_named_module('document-card');
-                view.append_article_page(a);
-            }
-            done();
+        view = new ReaderWindow.ReaderWindow({
+            application: app,
+            factory: factory,
         });
-
-        app.run([]);
+        for (let i = 0; i < 15; i++) {
+            let a = factory.create_named_module('document-card');
+            view.append_article_page(a);
+        }
     });
 
     afterEach(function () {
