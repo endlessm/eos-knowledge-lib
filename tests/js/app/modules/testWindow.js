@@ -23,32 +23,37 @@ let resource = Gio.Resource.load(TEST_CONTENT_BUILDDIR + 'test-content.gresource
 resource._register();
 
 describe('Window', function () {
-    let view;
+    let app, view;
 
-    beforeEach(function (done) {
-        jasmine.addMatchers(CssClassMatcher.customMatchers);
-        jasmine.addMatchers(InstanceOfMatcher.customMatchers);
-
+    beforeAll(function (done) {
         // Generate a unique ID for each app instance that we test
         let fake_pid = GLib.random_int();
         // FIXME In this version of GJS there is no Posix module, so fake the PID
         let id_string = 'com.endlessm.knowledge.test.dummy' + GLib.get_real_time() + fake_pid;
-        let app = new Endless.Application({
+        app = new Endless.Application({
             application_id: id_string,
             flags: 0
         });
+        app.connect('startup', done);
+        app.hold();
+        app.run([]);
+    });
+
+    afterAll(function () {
+        app.release();
+    });
+
+    beforeEach(function () {
+        jasmine.addMatchers(CssClassMatcher.customMatchers);
+        jasmine.addMatchers(InstanceOfMatcher.customMatchers);
+
         let factory = new MockFactory.MockFactory();
         factory.add_named_mock('top-bar-search', MockSearchBox.MockSearchBox);
         factory.add_named_mock('home-search', MockSearchBox.MockSearchBox);
-        app.connect('startup', function () {
-            view = new Window.Window({
-                application: app,
-                factory: factory,
-            });
-            done();
+        view = new Window.Window({
+            application: app,
+            factory: factory,
         });
-
-        app.run([]);
     });
 
     afterEach(function () {
