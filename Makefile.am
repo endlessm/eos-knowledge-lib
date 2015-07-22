@@ -229,6 +229,7 @@ js_files = \
 	js/app/infiniteScrolledWindow.js \
 	js/app/interfaces/arrangement.js \
 	js/app/interfaces/card.js \
+	js/app/interfaces/documentCard.js \
 	js/app/interfaces/module.js \
 	js/app/launcher.js \
 	js/app/lightbox.js \
@@ -240,12 +241,13 @@ js_files = \
 	js/app/modules/cardA.js \
 	js/app/modules/cardB.js \
 	js/app/modules/cardContainer.js \
-	js/app/modules/documentCard.js \
 	js/app/modules/encyclopediaWindow.js \
+	js/app/modules/knowledgeDocumentCard.js \
 	js/app/modules/listArrangement.js \
 	js/app/modules/homePageBTemplate.js \
 	js/app/modules/mediaCard.js \
 	js/app/modules/readerCard.js \
+	js/app/modules/readerDocumentCard.js \
 	js/app/modules/readerWindow.js \
 	js/app/modules/searchBanner.js \
 	js/app/modules/searchBox.js \
@@ -260,14 +262,13 @@ js_files = \
 	js/app/presenter.js \
 	js/app/presenterLoader.js \
 	js/app/previewer.js \
-	js/app/reader/articlePage.js \
+	js/app/reader/archiveNotice.js \
 	js/app/reader/donePage.js \
 	js/app/reader/overviewPage.js \
 	js/app/reader/presenter.js \
 	js/app/reader/progressLabel.js \
 	js/app/reader/searchResultsPage.js \
 	js/app/reader/standalonePage.js \
-	js/app/reader/titleView.js \
 	js/app/reader/userSettingsModel.js \
 	js/app/reader/webviewTooltip.js \
 	js/app/runner.js \
@@ -356,11 +357,12 @@ javascript_tests = \
 	tests/js/app/modules/testArticleSnippetCard.js \
 	tests/js/app/modules/testCardA.js \
 	tests/js/app/modules/testCardB.js \
-	tests/js/app/modules/testDocumentCard.js \
+	tests/js/app/modules/testKnowledgeDocumentCard.js \
 	tests/js/app/modules/testListArrangement.js \
 	tests/js/app/modules/testHomePageBTemplate.js \
 	tests/js/app/modules/testMediaCard.js \
 	tests/js/app/modules/testReaderCard.js \
+	tests/js/app/modules/testReaderDocumentCard.js \
 	tests/js/app/modules/testReaderWindow.js \
 	tests/js/app/modules/testSearchBanner.js \
 	tests/js/app/modules/testSearchModule.js \
@@ -370,10 +372,8 @@ javascript_tests = \
 	tests/js/app/reader/testDonePage.js \
 	tests/js/app/reader/testOverviewPage.js \
 	tests/js/app/reader/testProgressLabel.js \
-	tests/js/app/reader/testReaderArticlePage.js \
 	tests/js/app/reader/testReaderPresenter.js \
 	tests/js/app/reader/testSearchResultsPage.js \
-	tests/js/app/reader/testTitleView.js \
 	tests/js/app/reader/testUserSettingsModel.js \
 	tests/js/app/reader/testWebExtension.js \
 	tests/js/app/reader/testWebviewTooltip.js \
@@ -411,6 +411,7 @@ javascript_tests = \
 test_content = \
 	tests/test-content/agot.svg \
 	tests/test-content/app.json \
+	tests/test-content/emacs.html \
 	tests/test-content/mexico.html \
 	tests/test-content/mexico.jsonld \
 	tests/test-content/overrides.css \

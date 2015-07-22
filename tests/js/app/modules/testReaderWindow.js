@@ -2,22 +2,24 @@ const Endless = imports.gi.Endless;
 const GLib = imports.gi.GLib;
 const Gtk = imports.gi.Gtk;
 
-const ReaderWindow = imports.app.modules.readerWindow;
-const ArticlePage = imports.app.reader.articlePage;
+const Utils = imports.tests.utils;
+Utils.register_gresource();
+
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
+const Minimal = imports.tests.minimal;
 const MockFactory = imports.tests.mockFactory;
-const Utils = imports.tests.utils;
+const ReaderWindow = imports.app.modules.readerWindow;
 
 const EXPECTED_TOTAL_PAGES = 17;
 
 describe('Window widget', function () {
     let view;
+    let factory;
 
     beforeEach(function (done) {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
         jasmine.addMatchers(InstanceOfMatcher.customMatchers);
-        Utils.register_gresource();
 
         // Generate a unique ID for each app instance that we test
         let fake_pid = GLib.random_int();
@@ -26,14 +28,15 @@ describe('Window widget', function () {
             application_id: id_string,
             flags: 0,
         });
-        let factory = new MockFactory.MockFactory();
+        factory = new MockFactory.MockFactory();
+        factory.add_named_mock('document-card', Minimal.MinimalDocumentCard);
         app.connect('startup', function () {
             view = new ReaderWindow.ReaderWindow({
                 application: app,
                 factory: factory,
             });
             for (let i = 0; i < 15; i++) {
-                let a = new ArticlePage.ArticlePage();
+                let a = factory.create_named_module('document-card');
                 view.append_article_page(a);
             }
             done();
@@ -87,9 +90,9 @@ describe('Window widget', function () {
     });
 
     it('sets progress labels correctly', function () {
-        let a = new ArticlePage.ArticlePage();
+        let a = factory.create_named_module('document-card');
         view.append_article_page(a);
-        expect(a.progress_label.current_page).toBe(EXPECTED_TOTAL_PAGES);
+        expect(a.info_notice.current_page).toBe(EXPECTED_TOTAL_PAGES);
     });
 
     it('ensures visible page updates with show_*_page functions', function () {

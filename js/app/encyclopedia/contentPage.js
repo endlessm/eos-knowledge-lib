@@ -1,12 +1,9 @@
 const Endless = imports.gi.Endless;
 const Gdk = imports.gi.Gdk;
-const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const WebKit2 = imports.gi.WebKit2;
-
-const EknWebview = imports.app.eknWebview;
 
 const ARTICLE_SEARCH_BUTTONS_SPACING = 10;
 const ARTICLE_SEARCH_MAX_RESULTS = 200;
@@ -188,12 +185,17 @@ const ContentPage = new Lang.Class({
             model: article_model,
             show_toc: false,
             show_top_title: false,
-            content_ready_callback: (card) => {
+        });
+        this._document_card.load_content(null, (card, task) => {
+            try {
+                card.load_content_finish(task);
                 this._stack.visible_child = card;
                 card.content_view.grab_focus();
                 if (old_document_card)
                     this._stack.remove(old_document_card);
-            },
+            } catch (error) {
+                logError(error);
+            }
         });
         this._document_card.connect('ekn-link-clicked', (card, uri) =>
             this.emit('link-clicked', uri));

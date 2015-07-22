@@ -6,61 +6,14 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
-const ArticlePage = imports.app.reader.articlePage;
+const ArchiveNotice = imports.app.reader.archiveNotice;
 const Config = imports.app.config;
 const ImagePreviewer = imports.app.imagePreviewer;
+const ReaderDocumentCard = imports.app.modules.readerDocumentCard;
 const StyleClasses = imports.app.styleClasses;
 const Utils = imports.app.utils;
 
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
-
-const ArchiveLabel = new Lang.Class({
-    Name: 'ArchiveLabel',
-    GTypeName: 'EknArchiveLabel',
-    Extends: Gtk.Grid,
-    Properties: {
-        /**
-         * Property: label
-         *
-         */
-        'label': GObject.ParamSpec.string('label', 'Label',
-            'Label',
-            GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE, ''),
-    },
-
-    _ARCHIVE_ICON: '/com/endlessm/knowledge/images/reader/archive.svg',
-
-    _init: function (props={}) {
-        props.orientation = Gtk.Orientation.HORIZONTAL;
-        props.column_spacing = 8;
-
-        let archive_icon = new Gtk.Image({
-            resource: this._ARCHIVE_ICON,
-            visible: true,
-        });
-
-        this._archive_label_text = '';
-        this._archive_label = new Gtk.Label();
-        this.parent(props);
-        this.add(archive_icon);
-        this.add(this._archive_label);
-    },
-
-    set label (v) {
-        if (this._archive_label_text === v)
-            return;
-
-        this._archive_label_text = v;
-        this._archive_label.label = this._archive_label_text;
-        this.notify('label');
-    },
-
-    get label () {
-        if (this._archive_label_text)
-            return this._archive_label_text;
-        return '';
-    },
-});
 
 const OpenButton = new Lang.Class({
     Name: 'OpenButton',
@@ -167,7 +120,7 @@ const Banner = new Lang.Class({
 
         this.parent(props);
 
-        this.archive_label = new ArchiveLabel({
+        this.archive_notice = new ArchiveNotice.ArchiveNotice({
             expand: true,
             halign: Gtk.Align.CENTER,
             valign: Gtk.Align.CENTER,
@@ -186,7 +139,7 @@ const Banner = new Lang.Class({
 
         this.add_action_widget(button, 1);
         this.get_content_area().add(this._title_image);
-        this.get_content_area().add(this.archive_label);
+        this.get_content_area().add(this.archive_notice);
     },
 
     set title_image_uri (v) {
@@ -237,16 +190,16 @@ const StandalonePage = new Lang.Class({
     Extends: Gtk.Grid,
     Properties: {
         /**
-         * Property: article-page
+         * Property: document-card
          *
-         * The <Reader.ArticlePage> widget created by this widget in order to
+         * The <Reader.ReaderDocumentCard> widget created by this widget in order to
          * show a standalone search result from the archive.
          * Read-only.
          */
-        'article-page': GObject.ParamSpec.object('article-page',
-            'Standalone page', 'The page that shows a single article',
-            GObject.ParamFlags.READABLE,
-            ArticlePage.ArticlePage.$gtype),
+        'document-card': GObject.ParamSpec.object('document-card',
+            'Document card', 'The document card that shows a single article',
+            GObject.ParamFlags.READWRITE,
+            ReaderDocumentCard.ReaderDocumentCard.$gtype),
 
         /**
          * Property: infobar
@@ -258,60 +211,36 @@ const StandalonePage = new Lang.Class({
             'Infobar', 'The widget to show that this is an archived article during global search',
             GObject.ParamFlags.READABLE,
             Gtk.Widget),
-
-        /**
-         * Property: archive-notice
-         *
-         * The widget used to provide a button back to main app.
-         * Read-only.
-         */
-        'archive-notice': GObject.ParamSpec.object('archive-notice',
-            'Archive notice', 'The widget to show that this is an archived article in in-app use',
-            GObject.ParamFlags.READABLE,
-            Gtk.Widget),
-
-        /**
-         * Property: app-name
-         *
-         * The name/title of the application. Shown in the banner.
-         */
-        'app-name': GObject.ParamSpec.string('app-name', 'Application name',
-            'The name of this reader application',
-            GObject.ParamFlags.READWRITE, ''),
     },
 
     _init: function (props) {
         props = props || {};
         props.orientation = Gtk.Orientation.VERTICAL;
 
-        this.archive_label = new ArchiveLabel();
         this.infobar = new Banner();
 
         this.parent(props);
+        this._document_card = null;
 
-        this.archive_notice = new Gtk.Frame();
-        this.archive_notice.add(this.archive_label);
-        this.archive_notice.get_style_context().add_class(StyleClasses.READER_ARCHIVE_LABEL);
-        this.article_page = new ArticlePage.ArticlePage({
-           progress_label: this.archive_notice,
-        });
         this.add(this.infobar);
-        this.add(this.article_page);
     },
 
-    set app_name (v) {
-        if (this._app_name === v)
+    set document_card (v) {
+        if (v === this._document_card)
             return;
-        this._app_name = v;
-        let message = _("This article is part of the archive of the magazine %s.").format(this._app_name);
-        this.archive_label.label = message;
-        this.infobar.archive_label.label = message;
-        this.notify('app-name');
+        if (this._document_card) {
+            this.remove(this._document_card);
+            this._document_card = null;
+        }
+        this._document_card = v;
+        if (this._document_card) {
+            this.add(this._document_card);
+            this.show_all();
+        }
+        this.notify('document-card');
     },
 
-    get app_name () {
-        if (this._app_name)
-            return this._app_name;
-        return '';
+    get document_card () {
+        return this._document_card;
     },
 });

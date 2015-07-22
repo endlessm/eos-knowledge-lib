@@ -2,6 +2,8 @@
 
 const Endless = imports.gi.Endless;
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
+const Format = imports.format;
+const Gettext = imports.gettext;
 const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
@@ -9,14 +11,18 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
-const StandalonePage = imports.app.reader.standalonePage;
+const Config = imports.app.config;
 const DonePage = imports.app.reader.donePage;
 const Lightbox = imports.app.lightbox;
 const Module = imports.app.interfaces.module;
 const NavButtonOverlay = imports.app.navButtonOverlay;
 const OverviewPage = imports.app.reader.overviewPage;
 const SearchResultsPage = imports.app.reader.searchResultsPage;
+const StandalonePage = imports.app.reader.standalonePage;
 const StyleClasses = imports.app.styleClasses;
+
+String.prototype.format = Format.format;
+let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
 /**
  * Class: Reader.Window
@@ -219,9 +225,8 @@ const ReaderWindow = new Lang.Class({
         this.done_page = new DonePage.DonePage({
             background_image_uri: this.done_background_uri,
         });
-        this.standalone_page = new StandalonePage.StandalonePage({
-            app_name: this.title,
-        });
+        this.standalone_page = new StandalonePage.StandalonePage();
+        this.standalone_page.infobar.archive_notice.label = _("This article is part of the archive of the magazine %s.").format(this.title);
         this.standalone_page.infobar.title_image_uri = this.title_image_uri;
         this.standalone_page.infobar.background_image_uri = this.home_background_uri;
         this.search_results_page = new SearchResultsPage.SearchResultsPage();
@@ -298,8 +303,9 @@ const ReaderWindow = new Lang.Class({
     _update_progress_labels: function () {
         for (let i = 0; i < this._article_pages.length; i++) {
             // Account for overview and done pages
-            this._article_pages[i].progress_label.current_page = i + 2;
-            this._article_pages[i].progress_label.total_pages = this.total_pages;
+            let progress_label = this._article_pages[i].info_notice;
+            progress_label.current_page = i + 2;
+            progress_label.total_pages = this.total_pages;
         }
         this.done_page.progress_label.current_page = this.total_pages;
         this.done_page.progress_label.total_pages = this.total_pages;
@@ -355,13 +361,12 @@ const ReaderWindow = new Lang.Class({
     },
 
     show_global_search_standalone_page: function () {
-        this.standalone_page.archive_notice.hide();
         this.standalone_page.infobar.show();
+        this.standalone_page.document_card.info_notice.hide();
         this._show_standalone_page();
     },
 
     show_in_app_standalone_page: function () {
-        this.standalone_page.archive_notice.show();
         this.standalone_page.infobar.hide();
         this._show_standalone_page();
     },

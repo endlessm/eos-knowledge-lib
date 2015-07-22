@@ -1,7 +1,6 @@
 const cairo = imports.gi.cairo;  // note: GI module, not native GJS module
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const EosMetrics = imports.gi.EosMetrics;
-const Format = imports.format;
 const Gdk = imports.gi.Gdk;
 const Gettext = imports.gettext;
 const Gio = imports.gi.Gio;
@@ -9,15 +8,13 @@ const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
-const WebKit2 = imports.gi.WebKit2;
 
+const ArchiveNotice = imports.app.reader.archiveNotice;
 const ArticleHTMLRenderer = imports.app.articleHTMLRenderer;
 const ArticleObjectModel = imports.search.articleObjectModel;
-const ArticlePage = imports.app.reader.articlePage;
 const ArticleSnippetCard = imports.app.modules.articleSnippetCard;
 const Config = imports.app.config;
 const DonePage = imports.app.reader.donePage;
-const EknWebview = imports.app.eknWebview;
 const Engine = imports.search.engine;
 const HistoryPresenter = imports.app.historyPresenter;
 const Launcher = imports.app.launcher;
@@ -26,13 +23,13 @@ const MediaObjectModel = imports.search.mediaObjectModel;
 const OverviewPage = imports.app.reader.overviewPage;
 const QueryObject = imports.search.queryObject;
 const ReaderCard = imports.app.modules.readerCard;
+const ReaderDocumentCard = imports.app.modules.readerDocumentCard;
 const StyleClasses = imports.app.styleClasses;
 const UserSettingsModel = imports.app.reader.userSettingsModel;
 const Utils = imports.app.utils;
 const WebkitContextSetup = imports.app.webkitContextSetup;
 const WebviewTooltip = imports.app.reader.webviewTooltip;
 
-String.prototype.format = Format.format;
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 
@@ -264,7 +261,7 @@ const Presenter = new Lang.Class({
             if (/snippet[0-2]/.test(key)) {
                 str += ArticleSnippetCard.get_css_for_module(css_data[key], num);
             } else if (/article_page[0-2]/.test(key)) {
-                str += ArticlePage.get_css_for_module(css_data[key], num);
+                str += ReaderDocumentCard.get_css_for_module(css_data[key], num);
             } else if (/reader_card[0-2]/.test(key)) {
                 str += ReaderCard.get_css_for_module(css_data[key], num);
             } else if (key === 'done_page') {
@@ -733,10 +730,17 @@ const Presenter = new Lang.Class({
         article_index_range.filter((index) => {
             return !(index in this._webview_map);
         }).forEach((index) => {
-            this._webview_map[index] = this._load_webview_content(this._article_models[index], (webview, error) => {
-                this._load_webview_content_callback(this.view.get_article_page(index),
-                    webview, error);
+            let document_card = this.view.get_article_page(index);
+            document_card.load_content(null, (card, task) => {
+                try {
+                    card.load_content_finish(task);
+                } catch (error) {
+                    logError(error);
+                    this._show_specific_error_page();
+                }
             });
+            this._connect_card(document_card);
+            this._webview_map[index] = document_card;
         });
 
         this._current_page = index;
@@ -745,6 +749,51 @@ const Presenter = new Lang.Class({
 
         this.settings.bookmark_page = index;
         this._update_button_visibility();
+    },
+
+    _connect_card: function (document_card) {
+        document_card.content_view.connect('mouse-target-changed', (view, hit_test, modifiers) => {
+            if (!hit_test.context_is_link()) {
+                this._remove_link_tooltip();
+                return;
+            }
+            let uri = hit_test.link_uri;
+            // This indicates that we open the link in an external viewer, but
+            // don't show it to the user.
+            if (uri.startsWith('browser-'))
+                uri = uri.slice('browser-'.length);
+            // Links to images within the database will open in a lightbox
+            // instead. This is determined in the HTML by the eos-image-link
+            // class, but we don't have access to that information here.
+            if (hit_test.context_is_image() && uri.startsWith('ekn://')) {
+                this._remove_link_tooltip();
+                return;
+            }
+            let mouse_position = this._get_mouse_coordinates(view);
+
+            // Wait for the DBus interface to appear on the bus
+            let watch_id = Gio.DBus.watch_name(Gio.BusType.SESSION,
+                this._dbus_name, Gio.BusNameWatcherFlags.NONE,
+                (connection, name, owner) => {
+                    let webview_object_path = DBUS_WEBVIEW_EXPORT_PATH +
+                        view.get_page_id();
+                    let ProxyConstructor =
+                        Gio.DBusProxy.makeProxyWrapper(DBUS_TOOLTIP_INTERFACE);
+                    let proxy = new ProxyConstructor(connection,
+                        this._dbus_name, webview_object_path);
+                    proxy.GetCoordinatesRemote(mouse_position, (coordinates, error) => {
+                        // Fall back to just popping up the tooltip at the
+                        // mouse's position if there was an error.
+                        if (error)
+                            coordinates = [[mouse_position[0],
+                                mouse_position[1], 1, 1]];
+                        this._setup_link_tooltip(view, uri, coordinates[0]);
+                        Gio.DBus.unwatch_name(watch_id);
+                    });
+                },
+                null  // do nothing when name vanishes
+            );
+        });
     },
 
     // First article data has been loaded asynchronously; now we can start
@@ -836,136 +885,10 @@ const Presenter = new Lang.Class({
         this._link_tooltip.show_all();
     },
 
-    _load_webview_content: function (article_model, ready) {
-        if (ready === undefined) {
-            ready = function () {};
-        }
-        let webview = new EknWebview.EknWebview();
-        let load_id = webview.connect('load-changed', function (view, event) {
-            // failsafe: disconnect on load finished even if there was an error
-            if (event === WebKit2.LoadEvent.FINISHED) {
-                view.disconnect(load_id);
-                return;
-            }
-            if (event === WebKit2.LoadEvent.COMMITTED) {
-                ready(view);
-                view.disconnect(load_id);
-                return;
-            }
-        });
-        let fail_id = webview.connect('load-failed', function (view, event, failed_uri, error) {
-            // <error> is undefined under some instances. For example, if you try to load
-            // a bogus uri: http://www.sdfsdfjskkm.com
-            if (error === undefined) {
-                error = new Error("WebKit failed to load this uri");
-            }
-            ready(view, error);
-        });
-
-        webview.connect('decide-policy', function (view, decision, type) {
-            this._remove_link_tooltip();
-            if (type !== WebKit2.PolicyDecisionType.NAVIGATION_ACTION)
-                return false; // default action
-
-            // if this request was for the article we're trying to load,
-            // proceed
-            if (decision.request.uri === article_model.ekn_id) {
-                ready(view);
-                decision.use();
-                return true;
-            // otherwise, if the request was for some other EKN object, fetch
-            // it and attempt to display it
-            } else if (decision.request.uri.indexOf('ekn://') === 0) {
-                this.engine.get_object_by_id(decision.request.uri,
-                                             null,
-                                             (engine, task) => {
-                    let clicked_model;
-                    try {
-                        clicked_model = engine.get_object_by_id_finish(task);
-                    } catch (error) {
-                        logError(error, 'Could not open link from reader article');
-                        return;
-                    }
-
-                    if (clicked_model instanceof MediaObjectModel.MediaObjectModel) {
-                        this._lightbox_presenter.show_media_object(article_model, clicked_model);
-                    } else if (clicked_model instanceof ArticleObjectModel.ArticleObjectModel) {
-                        this._add_history_object_for_article_page(clicked_model);
-                        this._go_to_article(clicked_model, EosKnowledgePrivate.LoadingAnimationType.NONE);
-                    }
-                });
-
-                // we're handling this EKN request our own way, so tell webkit
-                // to back off
-                decision.ignore();
-                return true;
-            }
-
-            // for all other requests (e.g. non EKN requests), handle them in
-            // the default webkit fashion
-            return false;
-        }.bind(this));
-
-        webview.connect('mouse-target-changed', (view, hit_test, modifiers) => {
-            if (!hit_test.context_is_link()) {
-                this._remove_link_tooltip();
-                return;
-            }
-            let uri = hit_test.link_uri;
-            // This indicates that we open the link in an external viewer, but
-            // don't show it to the user.
-            if (uri.startsWith('browser-'))
-                uri = uri.slice('browser-'.length);
-            // Links to images within the database will open in a lightbox
-            // instead. This is determined in the HTML by the eos-image-link
-            // class, but we don't have access to that information here.
-            if (hit_test.context_is_image() && uri.startsWith('ekn://')) {
-                this._remove_link_tooltip();
-                return;
-            }
-            let mouse_position = this._get_mouse_coordinates(view);
-
-            // Wait for the DBus interface to appear on the bus
-            let watch_id = Gio.DBus.watch_name(Gio.BusType.SESSION,
-                this._dbus_name, Gio.BusNameWatcherFlags.NONE,
-                (connection, name, owner) => {
-                    let webview_object_path = DBUS_WEBVIEW_EXPORT_PATH +
-                        view.get_page_id();
-                    let ProxyConstructor =
-                        Gio.DBusProxy.makeProxyWrapper(DBUS_TOOLTIP_INTERFACE);
-                    let proxy = new ProxyConstructor(connection,
-                        this._dbus_name, webview_object_path);
-                    proxy.GetCoordinatesRemote(mouse_position, (coordinates, error) => {
-                        // Fall back to just popping up the tooltip at the
-                        // mouse's position if there was an error.
-                        if (error)
-                            coordinates = [[mouse_position[0],
-                                mouse_position[1], 1, 1]];
-                        this._setup_link_tooltip(view, uri, coordinates[0]);
-                        Gio.DBus.unwatch_name(watch_id);
-                    });
-                },
-                null  // do nothing when name vanishes
-            );
-        });
-
-        webview.load_uri(article_model.ekn_id);
-        return webview;
-    },
-
     _article_render_callback: function (article_model) {
         return this._article_renderer.render(article_model, {
             custom_css_files: ['reader.css'],
         });
-    },
-
-    _load_webview_content_callback: function (page, view, error) {
-        if (error !== undefined) {
-            logError(error);
-            this._show_specific_error_page();
-        } else {
-            page.show_content_view(view);
-        }
     },
 
     _update_button_visibility: function () {
@@ -973,15 +896,37 @@ const Presenter = new Lang.Class({
         this.view.nav_buttons.back_visible = (this._current_page > 0);
     },
 
-    // Take an ArticleObjectModel and create a Reader.ArticlePage view.
+    // Take an ArticleObjectModel and create a ReaderDocumentCard view.
     _create_article_page_from_article_model: function (model) {
-        let formatted_attribution = Utils.format_authors(model.authors);
-        let article_page = new ArticlePage.ArticlePage();
-        article_page.title_view.title = model.title;
-        article_page.title_view.attribution = formatted_attribution;
-        article_page.get_style_context().add_class('article-page' + model.article_number % 3);
-        article_page.title_view.style_variant = model.article_number % 3;
-        return article_page;
+        let document_card = this.factory.create_named_module('document-card', {
+            model: model,
+            page_number: model.article_number,
+        });
+        document_card.connect('ekn-link-clicked', (card, uri) => {
+            this._remove_link_tooltip();
+            let scheme = GLib.uri_parse_scheme(uri);
+            if (scheme !== 'ekn')
+                return;
+
+            this.engine.get_object_by_id(uri, null, (engine, task) => {
+                let clicked_model;
+                try {
+                    clicked_model = engine.get_object_by_id_finish(task);
+                } catch (error) {
+                    logError(error, 'Could not open link from reader article');
+                    return;
+                }
+
+                if (clicked_model instanceof MediaObjectModel.MediaObjectModel) {
+                    this._lightbox_presenter.show_media_object(card.model, clicked_model);
+                } else if (clicked_model instanceof ArticleObjectModel.ArticleObjectModel) {
+                    this._add_history_object_for_article_page(clicked_model);
+                    this._go_to_article(clicked_model, EosKnowledgePrivate.LoadingAnimationType.NONE);
+                }
+            });
+        });
+
+        return document_card;
     },
 
     _get_page_number_for_article_model: function(model) {
@@ -1054,18 +999,26 @@ const Presenter = new Lang.Class({
     },
 
     _load_standalone_article: function (model) {
-        this._standalone = this._load_webview_content(model, (webview, error) => {
-            this._load_webview_content_callback(this.view.standalone_page.article_page, webview, error);
+        let frame = new Gtk.Frame();
+        // Ensures that the archive notice on the in app standalone page
+        // matches that of the standalone page you reach via global search
+        frame.add(new ArchiveNotice.ArchiveNotice({
+            label: this.view.standalone_page.infobar.archive_notice.label,
+        }));
+        frame.get_style_context().add_class(StyleClasses.READER_ARCHIVE_NOTICE_FRAME);
+        let document_card = this.factory.create_named_module('document-card', {
+            model: model,
+            info_notice: frame,
         });
-        this.view.standalone_page.article_page.title_view.title = model.title;
-        this.view.standalone_page.article_page.title_view.attribution =
-            Utils.format_authors(model.authors);
-        if (this._current_standalone_class) {
-            this.view.standalone_page.article_page.get_style_context().remove_class(this._current_standalone_class);
-        }
-        this._current_standalone_class = 'article-page' + model.article_number % 3;
-        this.view.standalone_page.article_page.get_style_context().add_class(this._current_standalone_class);
-        this.view.standalone_page.article_page.title_view.style_variant = model.article_number % 3;
+        document_card.load_content(null, (card, task) => {
+            try {
+                card.load_content_finish(task);
+            } catch (error) {
+                logError(error);
+                this._show_error_page();
+            }
+        });
+        this.view.standalone_page.document_card = document_card;
     },
 
     /*

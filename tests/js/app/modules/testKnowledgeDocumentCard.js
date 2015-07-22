@@ -6,7 +6,7 @@ const Utils = imports.tests.utils;
 Utils.register_gresource();
 
 const ArticleObjectModel = imports.search.articleObjectModel;
-const DocumentCard = imports.app.modules.documentCard;
+const KnowledgeDocumentCard = imports.app.modules.knowledgeDocumentCard;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
 const StyleClasses = imports.app.styleClasses;
@@ -37,14 +37,14 @@ describe('Document Card', function () {
         articleObject = new ArticleObjectModel.ArticleObjectModel({
             ekn_id: 'ekn:///foo/bar',
             content_type: 'application/pdf',
-            get_content_stream: () => {  
+            get_content_stream: () => {
                 let file = Gio.File.new_for_path(TEST_CONTENT_DIR + 'pdf-sample1.pdf');
                 return file.read(null);
             },
             title: 'Wikihow & title',
             table_of_contents: toc,
         });
-        card = new DocumentCard.DocumentCard({
+        card = new KnowledgeDocumentCard.KnowledgeDocumentCard({
             model: articleObject,
         });
     });
@@ -55,18 +55,6 @@ describe('Document Card', function () {
 
     it('instantiates a table of contents widget', function () {
         expect(card.toc).toBeA(TableOfContents.TableOfContents);
-    });
-
-    it('calls content ready after initialization', function () {
-        let dummy = {
-            ready: function () {},
-        };
-        spyOn(dummy, 'ready');
-        let docCard = new DocumentCard.DocumentCard({
-            model: articleObject,
-            content_ready_callback: dummy.ready,
-        });
-        expect(dummy.ready).toHaveBeenCalled();
     });
 
     it('can set toc section list', function () {

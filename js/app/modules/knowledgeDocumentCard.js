@@ -6,18 +6,19 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
+const AsyncTask = imports.search.asyncTask;
 const Card = imports.app.interfaces.card;
+const DocumentCard = imports.app.interfaces.documentCard;
 const EknWebview = imports.app.eknWebview;
 const Module = imports.app.interfaces.module;
 const PDFView = imports.app.PDFView;
 const StyleClasses = imports.app.styleClasses;
 const TableOfContents = imports.app.tableOfContents;
 const TreeNode = imports.search.treeNode;
-const Utils = imports.app.utils;
 const WebKit2 = imports.gi.WebKit2;
 
 /**
- * Class: DocumentCard
+ * Class: KnowledgeDocumentCard
  *
  * A card implementation for showing entire documents of content.
  *
@@ -29,11 +30,11 @@ const WebKit2 = imports.gi.WebKit2;
  * The toolbar frame surrounds the <title> and <toc> on the right. The
  * content frame surrounds the <webview> on the left.
  */
-const DocumentCard = new Lang.Class({
-    Name: 'DocumentCard',
-    GTypeName: 'EknDocumentCard',
+const KnowledgeDocumentCard = new Lang.Class({
+    Name: 'KnowledgeDocumentCard',
+    GTypeName: 'EknKnowledgeDocumentCard',
     Extends: Endless.CustomContainer,
-    Implements: [ Module.Module, Card.Card ],
+    Implements: [ Module.Module, Card.Card, DocumentCard.DocumentCard ],
 
     Properties: {
         'factory': GObject.ParamSpec.override('factory', Module.Module),
@@ -42,6 +43,7 @@ const DocumentCard = new Lang.Class({
         'page-number': GObject.ParamSpec.override('page-number', Card.Card),
         'title-capitalization': GObject.ParamSpec.override('title-capitalization',
             Card.Card),
+        'content-view': GObject.ParamSpec.override('content-view', DocumentCard.DocumentCard),
 
         /**
          * Property: show-top-title
@@ -70,32 +72,9 @@ const DocumentCard = new Lang.Class({
             'The table of contents widget to the left of the article page.',
             GObject.ParamFlags.READABLE,
             TableOfContents.TableOfContents.$gtype),
-        /**
-         * Property: content-view
-         *
-         * The widget created by this widget to display article content.
-         * Read-only
-         */
-        'content-view': GObject.ParamSpec.object('content-view', 'Ekn Webview',
-            'The webview used to show article content.',
-            GObject.ParamFlags.READABLE,
-            EknWebview.EknWebview.$gtype),
     },
 
-    Signals: {
-        /**
-         * Event: ekn-link-clicked
-         * Emitted when a ekn id link in the article page is clicked.
-         * Passes the ID.
-         */
-        'ekn-link-clicked': {
-            param_types: [
-                GObject.TYPE_STRING /* MediaContentObject */,
-            ]
-        },
-    },
-
-    Template: 'resource:///com/endlessm/knowledge/widgets/documentCard.ui',
+    Template: 'resource:///com/endlessm/knowledge/widgets/knowledgeDocumentCard.ui',
     InternalChildren: [ 'title-label', 'top-title-label', 'toolbar-frame',
         'toolbar-grid', 'content-frame', 'content-grid' ],
 
@@ -123,11 +102,19 @@ const DocumentCard = new Lang.Class({
     _SCROLL_DURATION: 1000,
 
     _init: function (props={}) {
-        let content_ready_callback = props.content_ready_callback || function () {};
-        delete props.content_ready_callback;
-
         this.parent(props);
 
+        this.set_title_label_from_model(this._title_label);
+        this.set_title_label_from_model(this._top_title_label);
+
+        this._setup_toc();
+
+        this._title_label.bind_property('visible',
+            this._top_title_label, 'visible',
+            GObject.BindingFlags.SYNC_CREATE | GObject.BindingFlags.INVERT_BOOLEAN | GObject.BindingFlags.BIDIRECTIONAL);
+    },
+
+    _setup_toc: function () {
         // We can't make gjs types through templates right now, so table of
         // contents and webview must be constructed in code
         this.toc = new TableOfContents.TableOfContents({
@@ -136,9 +123,6 @@ const DocumentCard = new Lang.Class({
             valign: Gtk.Align.CENTER,
             no_show_all: true,
         });
-
-        this.set_title_label_from_model(this._title_label);
-        this.set_title_label_from_model(this._top_title_label);
 
         let _toc_visible = false;
         if (this.model.table_of_contents !== undefined) {
@@ -152,44 +136,58 @@ const DocumentCard = new Lang.Class({
         }
         this.toc.visible = this.show_toc && _toc_visible;
 
-        if (this.model.content_type === 'text/html') {
-
-            this.content_view = this._get_webview();
-            this._content_grid.add(this.content_view);
-
-            this._webview_load_id = this.content_view.connect('load-changed', (view, status) => {
-                if (status !== WebKit2.LoadEvent.COMMITTED)
-                    return;
-                this.content_view.disconnect(this._webview_load_id);
-                this._webview_load_id = 0;
-                content_ready_callback(this);
-            });
-            this.content_view.load_uri(this.model.ekn_id);
-        } else if (this.model.content_type === 'application/pdf') {
-            // FIXME: Remove this line once we support table of contents
-            // widget for PDFs
-            this.model.table_of_contents = undefined;
-            let stream = this.model.get_content_stream();
-            let content_type = this.model.content_type;
-            this.content_view = new PDFView.PDFView({
-                expand: true,
-                width_request: this.MIN_CONTENT_WIDTH,
-                height_request: this.MIN_CONTENT_HEIGHT,
-            });
-            this.content_view.load_stream(stream, content_type);
-            this._content_grid.add(this.content_view);
-            content_ready_callback(this);
-        } else {
-            throw new Error("Unknown article content type: ", this.model.content_type);
-        }
-
         this.toc.transition_duration = this._SCROLL_DURATION;
 
         this._toolbar_grid.add(this.toc);
+    },
 
-        this._title_label.bind_property('visible',
-            this._top_title_label, 'visible',
-            GObject.BindingFlags.SYNC_CREATE | GObject.BindingFlags.INVERT_BOOLEAN | GObject.BindingFlags.BIDIRECTIONAL);
+    load_content: function (cancellable, callback) {
+        let task = new AsyncTask.AsyncTask(this, cancellable, callback);
+        task.catch_errors(() => {
+            if (this.model.content_type === 'text/html') {
+
+                this.content_view = this._get_webview();
+                this._content_grid.add(this.content_view);
+
+                this._webview_load_id = this.content_view.connect('load-changed', (view, status) => {
+                    if (status !== WebKit2.LoadEvent.COMMITTED)
+                        return;
+                    this.content_view.disconnect(this._webview_load_id);
+                    this._webview_load_id = 0;
+                    task.return_value();
+                });
+
+                // FIXME: Consider eventually connecting to load-failed and showing
+                // an error page in the view.
+
+                this.content_view.load_uri(this.model.ekn_id);
+            } else if (this.model.content_type === 'application/pdf') {
+                // FIXME: Remove this line once we support table of contents
+                // widget for PDFs
+                this.model.table_of_contents = undefined;
+                let stream = this.model.get_content_stream();
+                let content_type = this.model.content_type;
+                this.content_view = new PDFView.PDFView({
+                    expand: true,
+                    width_request: this.MIN_CONTENT_WIDTH,
+                    height_request: this.MIN_CONTENT_HEIGHT,
+                });
+                this.content_view.load_stream(stream, content_type);
+                this._content_grid.add(this.content_view);
+                task.return_value();
+            } else {
+                throw new Error("Unknown article content type: ", this.model.content_type);
+            }
+        });
+    },
+
+    load_content_finish: function (task) {
+        return task.finish();
+    },
+
+    clear_content: function () {
+        this.content_view.destroy();
+        this.content_view = null;
     },
 
     _get_toplevel_toc_elements: function (tree) {
@@ -255,7 +253,7 @@ const DocumentCard = new Lang.Class({
             }
         }.bind(this));
 
-        webview.connect('decide-policy', function (webview, decision, type) {
+        webview.connect('decide-policy', (webview, decision, type) => {
             if (type !== WebKit2.PolicyDecisionType.NAVIGATION_ACTION)
                 return false;
 
@@ -265,12 +263,12 @@ const DocumentCard = new Lang.Class({
                 // If this check is true, then we are navigating to the current
                 // page or an anchor on the current page.
                 decision.use();
-                return false;
+                return true;
             } else {
                 this.emit('ekn-link-clicked', baseURI);
                 return true;
             }
-        }.bind(this));
+        });
 
         return webview;
     },

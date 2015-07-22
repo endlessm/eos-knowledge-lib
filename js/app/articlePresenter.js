@@ -1,5 +1,4 @@
 const GObject = imports.gi.GObject;
-const WebKit2 = imports.gi.WebKit2;
 
 const ArticleHTMLRenderer = imports.app.articleHTMLRenderer;
 const WebkitContextSetup = imports.app.webkitContextSetup;
@@ -114,20 +113,24 @@ const ArticlePresenter = new GObject.Class({
         }
         this._article_model = model;
 
-        let documentCard = this.factory.create_named_module('document-card', {
+        let document_card = this.factory.create_named_module('document-card', {
             model: this._article_model,
             show_top_title: this.template_type === 'A',
             show_toc: this.template_type === 'A',
-            content_ready_callback: (card) => {
-                this.article_view.switch_in_document_card(card, animation_type);
-                ready();
-            },
         });
-        this._connect_toc_widget(documentCard);
-
-        documentCard.connect('ekn-link-clicked', (card, ekn_id) => {
-            this.emit('ekn-link-clicked', ekn_id);
+        this._connect_toc_widget(document_card);
+        document_card.load_content(null, (card, task) => {
+            try {
+                card.load_content_finish(task);
+                this.article_view.switch_in_document_card(document_card, animation_type);
+                ready();
+            } catch (error) {
+                logError(error);
+            }
         })
+        document_card.connect('ekn-link-clicked', (card, ekn_id) => {
+            this.emit('ekn-link-clicked', ekn_id);
+        });
     },
 
     _article_render_callback: function (article_model) {
@@ -137,17 +140,17 @@ const ArticlePresenter = new GObject.Class({
         });
     },
 
-    _connect_toc_widget: function (documentCard) {
-        documentCard.toc.connect('up-clicked', function () {
-            documentCard.scroll_to_section(documentCard.toc.target_section - 1);
+    _connect_toc_widget: function (document_card) {
+        document_card.toc.connect('up-clicked', function () {
+            document_card.scroll_to_section(document_card.toc.target_section - 1);
         }.bind(this));
 
-        documentCard.toc.connect('down-clicked', function () {
-            documentCard.scroll_to_section(documentCard.toc.target_section + 1);
+        document_card.toc.connect('down-clicked', function () {
+            document_card.scroll_to_section(document_card.toc.target_section + 1);
         }.bind(this));
 
-        documentCard.toc.connect('section-clicked', function (widget, index) {
-            documentCard.scroll_to_section(index);
+        document_card.toc.connect('section-clicked', function (widget, index) {
+            document_card.scroll_to_section(index);
         }.bind(this));
     },
 });

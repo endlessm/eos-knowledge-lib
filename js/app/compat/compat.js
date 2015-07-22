@@ -48,7 +48,7 @@ function transform_v1_description(json) {
             type: 'MediaCard',
         };
         modules['document-card'] = {
-            type: 'DocumentCard',
+            type: 'KnowledgeDocumentCard',
         };
         break;
     case 'B':
@@ -119,7 +119,7 @@ function transform_v1_description(json) {
             type: 'MediaCard',
         };
         modules['document-card'] = {
-            type: 'DocumentCard',
+            type: 'KnowledgeDocumentCard',
         };
         break;
     case 'encyclopedia':
@@ -160,7 +160,7 @@ function transform_v1_description(json) {
             type: 'MediaCard',
         };
         modules['document-card'] = {
-            type: 'DocumentCard',
+            type: 'KnowledgeDocumentCard',
             properties: {
                 'expand': true,
             },
@@ -187,7 +187,7 @@ function transform_v1_description(json) {
             properties: {
                 'title': json['appTitle'],
                 'subtitle': json['appSubtitle'],
-                'title-image-uri': json['backgroundHomeURI'],
+                'title-image-uri': json['titleImageURI'],
                 'home-background-uri': json['backgroundHomeURI'],
                 'done-background-uri': json['backgroundSectionURI'],
             },
@@ -203,6 +203,9 @@ function transform_v1_description(json) {
         };
         modules['home-card'] = {
             type: 'ArticleSnippetCard',
+        };
+        modules['document-card'] = {
+            type: 'ReaderDocumentCard',
         };
         modules['lightbox-card'] = {
             type: 'MediaCard',
