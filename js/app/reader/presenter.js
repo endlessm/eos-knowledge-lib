@@ -904,25 +904,26 @@ const Presenter = new Lang.Class({
         });
         document_card.connect('ekn-link-clicked', (card, uri) => {
             this._remove_link_tooltip();
-            if (decision.request.uri.indexOf('ekn://') === 0) {
+            let scheme = GLib.uri_parse_scheme(uri);
+            if (scheme !== 'ekn')
+                return;
 
-                this.engine.get_object_by_id(decision.request.uri, null, (engine, task) => {
-                    let clicked_model;
-                    try {
-                        clicked_model = engine.get_object_by_id_finish(task);
-                    } catch (error) {
-                        logError(error, 'Could not open link from reader article');
-                        return;
-                    }
+            this.engine.get_object_by_id(uri, null, (engine, task) => {
+                let clicked_model;
+                try {
+                    clicked_model = engine.get_object_by_id_finish(task);
+                } catch (error) {
+                    logError(error, 'Could not open link from reader article');
+                    return;
+                }
 
-                    if (clicked_model instanceof MediaObjectModel.MediaObjectModel) {
-                        this._lightbox_presenter.show_media_object(article_model, clicked_model);
-                    } else if (clicked_model instanceof ArticleObjectModel.ArticleObjectModel) {
-                        this._add_history_object_for_article_page(clicked_model);
-                        this._go_to_article(clicked_model, EosKnowledgePrivate.LoadingAnimationType.NONE);
-                    }
-                });
-            }
+                if (clicked_model instanceof MediaObjectModel.MediaObjectModel) {
+                    this._lightbox_presenter.show_media_object(card.model, clicked_model);
+                } else if (clicked_model instanceof ArticleObjectModel.ArticleObjectModel) {
+                    this._add_history_object_for_article_page(clicked_model);
+                    this._go_to_article(clicked_model, EosKnowledgePrivate.LoadingAnimationType.NONE);
+                }
+            });
         });
 
         return document_card;
