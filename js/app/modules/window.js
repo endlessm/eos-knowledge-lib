@@ -222,24 +222,35 @@ const Window = new Lang.Class({
         });
         this._lightbox = new Lightbox.Lightbox();
 
-        this.history_buttons = new Endless.TopbarNavButton();
+        this._history_buttons = new Endless.TopbarNavButton();
 
-        this.history_buttons.back_button.connect('clicked', () => {
+        this._history_buttons.back_button.connect('clicked', () => {
             dispatcher.dispatch({ action_type: Actions.HISTORY_BACK_CLICKED });
         });
-        this.history_buttons.forward_button.connect('clicked', () => {
+        this._history_buttons.forward_button.connect('clicked', () => {
             dispatcher.dispatch({ action_type: Actions.HISTORY_FORWARD_CLICKED });
         });
 
-        this.history_buttons.get_style_context().add_class(Gtk.STYLE_CLASS_LINKED);
-        this.history_buttons.show_all();
+        dispatcher.register((payload) => {
+            switch(payload.action_type) {
+                case Actions.HISTORY_BACK_ENABLED_CHANGED:
+                    this._history_buttons.back_button.sensitive = payload.enabled;
+                    break;
+                case Actions.HISTORY_FORWARD_ENABLED_CHANGED:
+                    this._history_buttons.forward_button.sensitive = payload.enabled;
+                    break;
+            }
+        });
+
+        this._history_buttons.get_style_context().add_class(Gtk.STYLE_CLASS_LINKED);
+        this._history_buttons.show_all();
 
         this._lightbox.add(this._section_article_page);
         this.page_manager.add(this._home_page, {
-            left_topbar_widget: this.history_buttons
+            left_topbar_widget: this._history_buttons
         });
         this.page_manager.add(this._categories_page, {
-            left_topbar_widget: this.history_buttons
+            left_topbar_widget: this._history_buttons
         });
         this.search_box = this.factory.create_named_module('top-bar-search');
         this.search_box.connect('notify::has-focus', function () {
@@ -256,11 +267,11 @@ const Window = new Lang.Class({
         }.bind(this));
 
         this.page_manager.add(this._no_search_results_page, {
-            left_topbar_widget: this.history_buttons,
+            left_topbar_widget: this._history_buttons,
             center_topbar_widget: this.search_box,
         });
         this.page_manager.add(this._lightbox, {
-            left_topbar_widget: this.history_buttons,
+            left_topbar_widget: this._history_buttons,
             center_topbar_widget: this.search_box,
         });
         this.page_manager.transition_duration = this.TRANSITION_DURATION;

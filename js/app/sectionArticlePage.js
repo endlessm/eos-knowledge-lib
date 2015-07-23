@@ -61,6 +61,11 @@ const SectionArticlePage = new Lang.Class({
 
     },
 
+    _init: function (props={}) {
+        props.forward_visible = false;
+        this.parent(props);
+    },
+
     get section_page () {
         return this._section_page;
     },

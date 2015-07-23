@@ -99,7 +99,6 @@ const MockView = new Lang.Class({
             forward_button: new MockWidgets.MockButton(),
             show: jasmine.createSpy('show'),
         };
-        this.history_buttons = new MockWidgets.MockHistoryButtons();
 
         this.done_page = {
             get_style_context: get_style_context,

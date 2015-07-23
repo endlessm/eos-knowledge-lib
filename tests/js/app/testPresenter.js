@@ -75,13 +75,6 @@ const MockView = new Lang.Class({
         this.lightbox = new MockLightbox.MockLightbox();
         this.search_box = new MockWidgets.MockSearchBox();
         this.no_search_results_page = {};
-        this.history_buttons = new MockWidgets.MockHistoryButtons();
-        this.history_buttons.back_button.connect('clicked', function () {
-            this.emit('back-clicked');
-        }.bind(this));
-        this.history_buttons.forward_button.connect('clicked', function () {
-            this.emit('forward-clicked');
-        }.bind(this));
     },
 
     connect: function (signal, handler) {

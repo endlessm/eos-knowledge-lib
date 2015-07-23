@@ -164,7 +164,6 @@ const Presenter = new Lang.Class({
 
         this._history_presenter = new HistoryPresenter.HistoryPresenter({
             history_model: new EosKnowledgePrivate.HistoryModel(),
-            history_buttons: this.view.history_buttons,
         });
         this._history_presenter.set_current_item_from_props({
             page_type: this._HOME_PAGE,

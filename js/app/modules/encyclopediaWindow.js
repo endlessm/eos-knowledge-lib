@@ -29,11 +29,6 @@ const EncyclopediaWindow = new Lang.Class({
             'The content page of this view widget.',
             GObject.ParamFlags.READABLE,
             ContentPage.ContentPage),
-        'history-buttons': GObject.ParamSpec.object('history-buttons',
-            'History buttons',
-            'The back/forward navigation buttons on the title bar',
-            GObject.ParamFlags.READABLE,
-            Endless.TopbarNavButton.$gtype),
         /**
          * Property: lightbox
          *
@@ -75,14 +70,25 @@ const EncyclopediaWindow = new Lang.Class({
         this._content_page = new ContentPage.ContentPage({
             factory: this.factory,
         });
-        this.history_buttons = new Endless.TopbarNavButton();
-        this.history_buttons.show_all();
+        this._history_buttons = new Endless.TopbarNavButton();
+        this._history_buttons.show_all();
         let dispatcher = Dispatcher.get_default();
-        this.history_buttons.back_button.connect('clicked', () => {
+        this._history_buttons.back_button.connect('clicked', () => {
             dispatcher.dispatch({ action_type: Actions.HISTORY_BACK_CLICKED });
         });
-        this.history_buttons.forward_button.connect('clicked', () => {
+        this._history_buttons.forward_button.connect('clicked', () => {
             dispatcher.dispatch({ action_type: Actions.HISTORY_FORWARD_CLICKED });
+        });
+
+        dispatcher.register((payload) => {
+            switch(payload.action_type) {
+                case Actions.HISTORY_BACK_ENABLED_CHANGED:
+                    this._history_buttons.back_button.sensitive = payload.enabled;
+                    break;
+                case Actions.HISTORY_FORWARD_ENABLED_CHANGED:
+                    this._history_buttons.forward_button.sensitive = payload.enabled;
+                    break;
+            }
         });
 
         this.page_manager.transition_duration = 200;  // ms
@@ -100,7 +106,7 @@ const EncyclopediaWindow = new Lang.Class({
 
         this.page_manager.add(this._lightbox, {
             name: CONTENT_PAGE_NAME,
-            left_topbar_widget: this.history_buttons,
+            left_topbar_widget: this._history_buttons,
             background_uri: this.results_background_uri,
             background_repeats: false,
             background_size: 'cover',

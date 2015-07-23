@@ -3,22 +3,18 @@ const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Actions = imports.app.actions;
 const HistoryPresenter = imports.app.historyPresenter;
 const MockDispatcher = imports.tests.mockDispatcher;
-const MockWidgets = imports.tests.mockWidgets;
 
 describe('History Presenter', function () {
     let history_presenter;
     let history_model;
-    let history_buttons;
     let dispatcher;
 
     beforeEach(function () {
         history_model = new EosKnowledgePrivate.HistoryModel();
-        history_buttons = new MockWidgets.MockHistoryButtons();
         dispatcher = MockDispatcher.mock_default();
 
         history_presenter = new HistoryPresenter.HistoryPresenter({
             history_model: history_model,
-            history_buttons: history_buttons,
         });
     });
 

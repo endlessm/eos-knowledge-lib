@@ -21,17 +21,6 @@ const MockButton = new Lang.Class({
     },
 });
 
-const MockHistoryButtons = new Lang.Class({
-    Name: 'MockHistoryButtons',
-    Extends: GObject.Object,
-
-    _init: function () {
-        this.parent();
-        this.back_button = new MockButton();
-        this.forward_button = new MockButton();
-    },
-});
-
 const MockScrolledArrangement = new Lang.Class({
     Name: 'MockScrolledArrangement',
     Extends: Minimal.MinimalArrangement,

@@ -103,7 +103,6 @@ const EncyclopediaPresenter = new Lang.Class({
         this._history = new EosKnowledgePrivate.HistoryModel();
         this._history_presenter = new HistoryPresenter.HistoryPresenter({
             history_model: this._history,
-            history_buttons: this.view.history_buttons,
         });
         this._history_presenter.connect('history-item-changed', this._on_history_item_change.bind(this));
 

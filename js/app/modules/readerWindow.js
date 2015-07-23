@@ -113,18 +113,6 @@ const ReaderWindow = new Lang.Class({
             Endless.TopbarNavButton.$gtype),
 
         /**
-         * Property: history-buttons
-         *
-         * An <Endless.TopbarNavButton> widget created by this window.
-         * Used to go back and forward in the history model.
-         * Read-only.
-         */
-        'history-buttons': GObject.ParamSpec.object('history-buttons',
-            'History nav buttons', 'For traversing history model',
-            GObject.ParamFlags.READABLE,
-            Endless.TopbarNavButton.$gtype),
-
-        /**
          * Property: lightbox
          *
          * The <Lightbox> widget created by this widget. Read-only,
@@ -232,12 +220,23 @@ const ReaderWindow = new Lang.Class({
             no_show_all: true,
         });
 
-        this.history_buttons = new Endless.TopbarNavButton();
-        this.history_buttons.back_button.connect('clicked', () => {
+        this._history_buttons = new Endless.TopbarNavButton();
+        this._history_buttons.back_button.connect('clicked', () => {
             dispatcher.dispatch({ action_type: Actions.HISTORY_BACK_CLICKED });
         });
-        this.history_buttons.forward_button.connect('clicked', () => {
+        this._history_buttons.forward_button.connect('clicked', () => {
             dispatcher.dispatch({ action_type: Actions.HISTORY_FORWARD_CLICKED });
+        });
+
+        dispatcher.register((payload) => {
+            switch(payload.action_type) {
+                case Actions.HISTORY_BACK_ENABLED_CHANGED:
+                    this._history_buttons.back_button.sensitive = payload.enabled;
+                    break;
+                case Actions.HISTORY_FORWARD_ENABLED_CHANGED:
+                    this._history_buttons.forward_button.sensitive = payload.enabled;
+                    break;
+            }
         });
 
         // No need for localization; this is debug only
@@ -279,7 +278,7 @@ const ReaderWindow = new Lang.Class({
         box.add(this.issue_nav_buttons);
 
         this.page_manager.add(this.lightbox, {
-            left_topbar_widget: this.history_buttons,
+            left_topbar_widget: this._history_buttons,
             center_topbar_widget: box,
         });
         this.overview_page.show_all();
