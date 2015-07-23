@@ -291,6 +291,7 @@ const LightboxContainer = new Lang.Class({
             margin: this._ICON_MARGIN,
             image: img_prev
         });
+        Utils.set_hand_cursor_on_widget(this._previous_button);
         this._previous_button.connect('clicked', function () {
             this.emit('navigation-previous-clicked');
         }.bind(this));
@@ -309,6 +310,7 @@ const LightboxContainer = new Lang.Class({
             margin: this._ICON_MARGIN,
             image: img_next
         });
+        Utils.set_hand_cursor_on_widget(this._next_button);
         this._next_button.connect('clicked', function () {
             this.emit('navigation-next-clicked');
         }.bind(this));
