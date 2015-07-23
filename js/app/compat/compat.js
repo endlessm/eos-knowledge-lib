@@ -94,7 +94,6 @@ function transform_v1_description(json) {
             properties: {
                 'width_request': 350,
                 'visible': true,
-                'can_focus': false,
                 'shadow_type': Gtk.ShadowType.NONE,
                 'halign': Gtk.Align.CENTER,
                 'valign': Gtk.Align.CENTER,
