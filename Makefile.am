@@ -207,6 +207,7 @@ libtooltipplugin_la_LDFLAGS = -module -avoid-version -no-undefined
 # # # JAVASCRIPT # # #
 
 js_files = \
+	js/app/actions.js \
 	js/app/application.js \
 	js/app/articleHTMLRenderer.js \
 	js/app/articlePage.js \

@@ -3,7 +3,9 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
+const Actions = imports.app.actions;
 const ContentPage = imports.app.encyclopedia.contentPage;
+const Dispatcher = imports.app.dispatcher;
 const HomePage = imports.app.encyclopedia.homePage;
 const Lightbox = imports.app.widgets.lightbox;
 const Module = imports.app.interfaces.module;
@@ -95,6 +97,13 @@ const EncyclopediaWindow = new Lang.Class({
         });
         this.history_buttons = new Endless.TopbarNavButton();
         this.history_buttons.show_all();
+        let dispatcher = Dispatcher.get_default();
+        this.history_buttons.back_button.connect('clicked', () => {
+            dispatcher.dispatch({ action_type: Actions.HISTORY_BACK_CLICKED });
+        });
+        this.history_buttons.forward_button.connect('clicked', () => {
+            dispatcher.dispatch({ action_type: Actions.HISTORY_FORWARD_CLICKED });
+        });
 
         this.page_manager.transition_duration = 200;  // ms
 

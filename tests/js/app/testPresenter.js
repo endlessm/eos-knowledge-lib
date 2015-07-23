@@ -7,8 +7,10 @@ const Mainloop = imports.mainloop;
 const Utils = imports.tests.utils;
 Utils.register_gresource();
 
+const Actions = imports.app.actions;
 const ContentObjectModel = imports.search.contentObjectModel;
 const Minimal = imports.tests.minimal;
+const MockDispatcher = imports.tests.mockDispatcher;
 const MockEngine = imports.tests.mockEngine;
 const MockFactory = imports.tests.mockFactory;
 const MockWidgets = imports.tests.mockWidgets;
@@ -109,10 +111,12 @@ const MockArticlePresenter = new Lang.Class({
 });
 
 describe('Presenter', () => {
-    let presenter, data, view, engine, article_presenter, factory, sections;
+    let presenter, data, view, engine, article_presenter, factory, sections, dispatcher;
     let test_app_filename = TEST_CONTENT_DIR + 'app.json';
 
     beforeEach(() => {
+        dispatcher = MockDispatcher.mock_default();
+
         factory = new MockFactory.MockFactory();
         factory.add_named_mock('home-card', Minimal.MinimalCard);
         factory.add_named_mock('results-card', Minimal.MinimalCard);
@@ -237,7 +241,7 @@ describe('Presenter', () => {
         });
     });
 
-    describe('history buttons', function () {
+    describe('history', function () {
         beforeEach(function () {
             engine.get_objects_by_query_finish.and.returnValue([[
                 new ContentObjectModel.ContentObjectModel({
@@ -248,26 +252,26 @@ describe('Presenter', () => {
             Utils.update_gui();
         });
 
-        it('lead back to the home page', function () {
+        it('leads back to the home page', function () {
             spyOn(view, 'show_home_page');
-            view.history_buttons.back_button.emit('clicked');
+            dispatcher.dispatch({ action_type: Actions.HISTORY_BACK_CLICKED });
             Utils.update_gui();
             expect(view.show_home_page).toHaveBeenCalled();
         });
 
-        it('lead back to the section page', function () {
+        it('leads back to the section page', function () {
             view.emit('search-entered', 'query not found');
             spyOn(view, 'show_section_page');
-            view.history_buttons.back_button.emit('clicked');
+            dispatcher.dispatch({ action_type: Actions.HISTORY_BACK_CLICKED });
             Utils.update_gui();
             expect(view.show_section_page).toHaveBeenCalled();
         });
 
-        it('lead forward to the section page', function () {
-            view.history_buttons.back_button.emit('clicked');
+        it('leads forward to the section page', function () {
+            dispatcher.dispatch({ action_type: Actions.HISTORY_BACK_CLICKED });
             Utils.update_gui();
             spyOn(view, 'show_section_page');
-            view.history_buttons.forward_button.emit('clicked');
+            dispatcher.dispatch({ action_type: Actions.HISTORY_FORWARD_CLICKED });
             Utils.update_gui();
             expect(view.show_section_page).toHaveBeenCalled();
         });

@@ -9,12 +9,14 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
+const Actions = imports.app.actions;
 const ArchiveNotice = imports.app.widgets.archiveNotice;
 const ArticleHTMLRenderer = imports.app.articleHTMLRenderer;
 const ArticleObjectModel = imports.search.articleObjectModel;
 const ArticleSnippetCard = imports.app.modules.articleSnippetCard;
 const Compat = imports.app.compat.compat;
 const Config = imports.app.config;
+const Dispatcher = imports.app.dispatcher;
 const DonePage = imports.app.reader.donePage;
 const Engine = imports.search.engine;
 const HistoryPresenter = imports.app.historyPresenter;
@@ -213,13 +215,17 @@ const Presenter = new Lang.Class({
         this._pending_present_timestamp = null;
 
         // Connect signals
-        this.view.nav_buttons.connect('back-clicked', function () {
-            this._add_history_item_for_page(this._current_page - 1);
-        }.bind(this));
-        this.view.nav_buttons.connect('forward-clicked', function () {
-            let next_page = (this._current_page + 1) % this.view.total_pages;
-            this._add_history_item_for_page(next_page);
-        }.bind(this));
+        Dispatcher.get_default().register((payload) => {
+            switch(payload.action_type) {
+                case Actions.NAV_BACK_CLICKED:
+                    this._add_history_item_for_page(this._current_page - 1);
+                    break;
+                case Actions.NAV_FORWARD_CLICKED:
+                    let next_page = (this._current_page + 1) % this.view.total_pages;
+                    this._add_history_item_for_page(next_page);
+                    break;
+            }
+        });
 
         this.view.connect('notify::total-pages',
             this._update_button_visibility.bind(this));

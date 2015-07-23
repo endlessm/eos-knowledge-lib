@@ -11,7 +11,9 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
+const Actions = imports.app.actions;
 const Config = imports.app.config;
+const Dispatcher = imports.app.dispatcher;
 const DonePage = imports.app.reader.donePage;
 const Lightbox = imports.app.widgets.lightbox;
 const Module = imports.app.interfaces.module;
@@ -230,10 +232,18 @@ const ReaderWindow = new Lang.Class({
         this.standalone_page.infobar.title_image_uri = this.title_image_uri;
         this.standalone_page.infobar.background_image_uri = this.home_background_uri;
         this.search_results_page = new SearchResultsPage.SearchResultsPage();
+
+        let dispatcher = Dispatcher.get_default();
         this.nav_buttons = new NavButtonOverlay.NavButtonOverlay({
             back_image_uri: this._BACK_IMAGE_URI,
             forward_image_uri: this._FORWARD_IMAGE_URI,
             image_size: this._NAV_IMAGE_SIZE,
+        });
+        this.nav_buttons.connect('back-clicked', () => {
+            dispatcher.dispatch({ action_type: Actions.NAV_BACK_CLICKED });
+        });
+        this.nav_buttons.connect('forward-clicked', () => {
+            dispatcher.dispatch({ action_type: Actions.NAV_FORWARD_CLICKED });
         });
 
         this.issue_nav_buttons = new Endless.TopbarNavButton({
@@ -241,6 +251,13 @@ const ReaderWindow = new Lang.Class({
         });
 
         this.history_buttons = new Endless.TopbarNavButton();
+        this.history_buttons.back_button.connect('clicked', () => {
+            dispatcher.dispatch({ action_type: Actions.HISTORY_BACK_CLICKED });
+        });
+        this.history_buttons.forward_button.connect('clicked', () => {
+            dispatcher.dispatch({ action_type: Actions.HISTORY_FORWARD_CLICKED });
+        });
+
         // No need for localization; this is debug only
         this.issue_nav_buttons.back_button.label = 'Reset';
         this.issue_nav_buttons.forward_button.label = 'Next week';

@@ -7,8 +7,10 @@ const Gdk = imports.gi.Gdk;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
+const Actions = imports.app.actions;
 const ArticlePage = imports.app.articlePage;
 const CategoriesPage = imports.app.categoriesPage;
+const Dispatcher = imports.app.dispatcher;
 const HomePage = imports.app.homePage;
 const HomePageA = imports.app.homePageA;
 const Lightbox = imports.app.widgets.lightbox;
@@ -149,12 +151,6 @@ const Window = new Lang.Class({
     },
     Signals: {
         /**
-         * Event: sidebar-back-clicked
-         * Emitted when the back button on the side of the section or article
-         * page is clicked.
-         */
-        'sidebar-back-clicked': {},
-        /**
          * Event: article-selected
          *
          * This event is triggered when an article is selected from the autocomplete menu.
@@ -232,12 +228,14 @@ const Window = new Lang.Class({
                 this.categories_page.animating = this.page_manager.transition_running;
             }));
         }
-        this._section_article_page.connect('back-clicked', function () {
-            this.emit('sidebar-back-clicked');
-        }.bind(this));
-        this._no_search_results_page.connect('back-clicked', function () {
-            this.emit('sidebar-back-clicked');
-        }.bind(this));
+
+        let dispatcher = Dispatcher.get_default();
+        this._section_article_page.connect('back-clicked', () => {
+            dispatcher.dispatch({ action_type: Actions.NAV_BACK_CLICKED });
+        });
+        this._no_search_results_page.connect('back-clicked', () => {
+            dispatcher.dispatch({ action_type: Actions.NAV_BACK_CLICKED });
+        });
         this._lightbox = new Lightbox.Lightbox();
         this._lightbox.connect('navigation-previous-clicked', function (media_object) {
             this.emit('lightbox-nav-previous-clicked', media_object);
@@ -247,6 +245,14 @@ const Window = new Lang.Class({
         }.bind(this));
 
         this.history_buttons = new Endless.TopbarNavButton();
+
+        this.history_buttons.back_button.connect('clicked', () => {
+            dispatcher.dispatch({ action_type: Actions.HISTORY_BACK_CLICKED });
+        });
+        this.history_buttons.forward_button.connect('clicked', () => {
+            dispatcher.dispatch({ action_type: Actions.HISTORY_FORWARD_CLICKED });
+        });
+
         this.history_buttons.get_style_context().add_class(Gtk.STYLE_CLASS_LINKED);
         this.history_buttons.show_all();
 

@@ -1,16 +1,20 @@
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 
+const Actions = imports.app.actions;
 const HistoryPresenter = imports.app.historyPresenter;
+const MockDispatcher = imports.tests.mockDispatcher;
 const MockWidgets = imports.tests.mockWidgets;
 
 describe('History Presenter', function () {
     let history_presenter;
     let history_model;
     let history_buttons;
+    let dispatcher;
 
     beforeEach(function () {
         history_model = new EosKnowledgePrivate.HistoryModel();
         history_buttons = new MockWidgets.MockHistoryButtons();
+        dispatcher = MockDispatcher.mock_default();
 
         history_presenter = new HistoryPresenter.HistoryPresenter({
             history_model: history_model,
@@ -50,7 +54,7 @@ describe('History Presenter', function () {
             title: 'second',
             page_type: 'search',
         });
-        history_buttons.back_button.emit('clicked');
+        dispatcher.dispatch({ action_type: Actions.HISTORY_BACK_CLICKED });
         let current_item = history_presenter.history_model.current_item;
         expect(current_item.title).toBe('first');
     });
@@ -73,7 +77,7 @@ describe('History Presenter', function () {
         let model = history_presenter.history_model;
         expect(model.current_item.title).toBe('third');
 
-        history_buttons.back_button.emit('clicked');
+        dispatcher.dispatch({ action_type: Actions.HISTORY_BACK_CLICKED });
         expect(model.current_item.title).toBe('first');
     });
 
@@ -86,11 +90,11 @@ describe('History Presenter', function () {
             title: 'second',
             page_type: 'search',
         });
-        history_buttons.back_button.emit('clicked');
+        dispatcher.dispatch({ action_type: Actions.HISTORY_BACK_CLICKED });
         let model = history_presenter.history_model;
         expect(model.current_item.title).toBe('first');
 
-        history_buttons.forward_button.emit('clicked');
+        dispatcher.dispatch({ action_type: Actions.HISTORY_FORWARD_CLICKED });
         expect(model.current_item.title).toBe('second');
     });
 
@@ -111,8 +115,8 @@ describe('History Presenter', function () {
         let model = history_presenter.history_model;
         expect(model.current_item.title).toBe('third');
 
-        history_buttons.back_button.emit('clicked');
-        history_buttons.forward_button.emit('clicked');
+        dispatcher.dispatch({ action_type: Actions.HISTORY_BACK_CLICKED });
+        dispatcher.dispatch({ action_type: Actions.HISTORY_FORWARD_CLICKED });
         expect(model.current_item.title).toBe('third');
     });
 });

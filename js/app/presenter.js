@@ -9,8 +9,10 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
+const Actions = imports.app.actions;
 const ArticlePresenter = imports.app.articlePresenter;
 const Config = imports.app.config;
+const Dispatcher = imports.app.dispatcher;
 const Engine = imports.search.engine;
 const HistoryItem = imports.app.historyItem;
 const HistoryPresenter = imports.app.historyPresenter;
@@ -172,7 +174,6 @@ const Presenter = new Lang.Class({
         this._connect_search_signals(this.view);
         this._connect_search_signals(this.view.home_page);
         this.view.connect('search-focused', this._on_search_focus.bind(this));
-        this.view.connect('sidebar-back-clicked', this._on_back.bind(this));
 
         let group = this.view.home_page.get_submodule(ItemGroup.ItemGroup);
         // FIXME: the if statement is because only Template B homepage has an
@@ -185,6 +186,13 @@ const Presenter = new Lang.Class({
                 });
             });
         }
+        Dispatcher.get_default().register((payload) => {
+            switch(payload.action_type) {
+                case Actions.NAV_BACK_CLICKED:
+                    this._on_back();
+                    break;
+            }
+        });
 
         this.view.section_page.connect('load-more-results', this._on_load_more_results.bind(this));
         this.view.home_page.connect('show-categories', this._on_categories_button_clicked.bind(this));

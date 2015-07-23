@@ -1,5 +1,7 @@
 const GObject = imports.gi.GObject;
 
+const Actions = imports.app.actions;
+const Dispatcher = imports.app.dispatcher;
 const HistoryItem = imports.app.historyItem;
 
 /**
@@ -70,8 +72,18 @@ const HistoryPresenter = new GObject.Class({
             this.history_buttons.back_button, 'sensitive',
             GObject.BindingFlags.SYNC_CREATE);
 
-        this.history_buttons.back_button.connect('clicked', () => this.history_model.go_back());
-        this.history_buttons.forward_button.connect('clicked', () => this.history_model.go_forward());
+
+        Dispatcher.get_default().register((payload) => {
+            switch(payload.action_type) {
+                case Actions.HISTORY_BACK_CLICKED:
+                    this.history_model.go_back();
+                    break;
+                case Actions.HISTORY_FORWARD_CLICKED:
+                    this.history_model.go_forward();
+                    break;
+            }
+        });
+
         this.history_model.connect('notify::current-item', this._notify_item.bind(this));
         this._last_item = null;
     },
