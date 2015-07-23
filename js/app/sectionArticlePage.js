@@ -94,7 +94,6 @@ const SectionArticlePageA = new Lang.Class({
     Extends: SectionArticlePage,
 
     _init: function (props={}) {
-        props.forward_visible = false;
         this.parent(props);
 
         this._section_page = new SectionPageA.SectionPageA({
@@ -164,7 +163,6 @@ const SectionArticlePageB = new Lang.Class({
     _init: function (props={}) {
         this.parent(props);
 
-        props.forward_visible = false;
         this._section_page = new SectionPageB.SectionPageB({
             factory: this.factory,
         });
