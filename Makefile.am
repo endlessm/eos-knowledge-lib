@@ -365,6 +365,7 @@ javascript_tests = \
 	tests/js/app/modules/testReaderDocumentCard.js \
 	tests/js/app/modules/testReaderWindow.js \
 	tests/js/app/modules/testSearchBanner.js \
+	tests/js/app/modules/testSearchBox.js \
 	tests/js/app/modules/testSearchModule.js \
 	tests/js/app/modules/testSetBannerCard.js \
 	tests/js/app/modules/testTextCard.js \
