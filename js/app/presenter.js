@@ -297,6 +297,10 @@ const Presenter = new Lang.Class({
             }
             this._get_more_results_query = get_more_results_query;
         });
+        // Null the query we just sent to the engine, when results come back
+        // we'll have a new more results query. But this keeps us from double
+        // loading this query.
+        this._get_more_results_query = null;
     },
 
     _on_topbar_back_clicked: function () {
