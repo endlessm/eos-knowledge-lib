@@ -493,6 +493,7 @@ const Presenter = new Lang.Class({
             query: query,
             limit: RESULTS_SIZE,
         });
+        this._latest_origin_query_obj = query_obj;
         this.engine.get_objects_by_query(query_obj,
                                          null,
                                          (engine, task) => {
@@ -691,7 +692,6 @@ const Presenter = new Lang.Class({
 
         this.view.section_page.model = model;
         this._latest_section_model = model;
-        this._latest_origin_query_obj = null;
         this._set_section_page_content(results);
         this._get_more_results_query = get_more_results_query;
         this._search_origin_page = this.view.section_page;

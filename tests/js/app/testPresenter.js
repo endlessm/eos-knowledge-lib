@@ -45,6 +45,8 @@ const MockView = new Lang.Class({
     Name: 'MockView',
     Extends: GObject.Object,
     Signals: {
+        'back-clicked': {},
+        'forward-clicked': {},
         'search-entered': {
             param_types: [GObject.TYPE_STRING],
         },
@@ -67,6 +69,12 @@ const MockView = new Lang.Class({
         this.search_box = {};
         this.no_search_results_page = {};
         this.history_buttons = new MockWidgets.MockHistoryButtons();
+        this.history_buttons.back_button.connect('clicked', function () {
+            this.emit('back-clicked');
+        }.bind(this));
+        this.history_buttons.forward_button.connect('clicked', function () {
+            this.emit('forward-clicked');
+        }.bind(this));
     },
 
     connect: function (signal, handler) {
@@ -76,8 +84,10 @@ const MockView = new Lang.Class({
         this.parent(signal, handler);
     },
 
+    show_article_page: function () {},
     show_no_search_results_page: function () {},
     show_section_page: function () {},
+    show_home_page: function () {},
     lock_ui: function () {},
     unlock_ui: function () {},
     present_with_time: function () {},
@@ -220,6 +230,42 @@ describe('Presenter', () => {
                 done();
                 return GLib.SOURCE_REMOVE;
             });
+        });
+    });
+
+    describe('history buttons', function () {
+        beforeEach(function () {
+            engine.get_objects_by_query_finish.and.returnValue([[
+                new ContentObjectModel.ContentObjectModel({
+                    title: 'An article in a section',
+                }),
+            ], null]);
+            view.home_page.cards[0].emit('clicked');
+            Utils.update_gui();
+        });
+
+        it('lead back to the home page', function () {
+            spyOn(view, 'show_home_page');
+            view.history_buttons.back_button.emit('clicked');
+            Utils.update_gui();
+            expect(view.show_home_page).toHaveBeenCalled();
+        });
+
+        it('lead back to the section page', function () {
+            view.emit('search-entered', 'query not found');
+            spyOn(view, 'show_section_page');
+            view.history_buttons.back_button.emit('clicked');
+            Utils.update_gui();
+            expect(view.show_section_page).toHaveBeenCalled();
+        });
+
+        it('lead forward to the section page', function () {
+            view.history_buttons.back_button.emit('clicked');
+            Utils.update_gui();
+            spyOn(view, 'show_section_page');
+            view.history_buttons.forward_button.emit('clicked');
+            Utils.update_gui();
+            expect(view.show_section_page).toHaveBeenCalled();
         });
     });
 });
