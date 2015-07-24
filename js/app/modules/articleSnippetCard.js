@@ -44,7 +44,7 @@ const ArticleSnippetCard = new Lang.Class({
         Utils.set_hand_cursor_on_widget(this);
 
         this.set_title_label_from_model(this._title_label);
-        this.set_synopsis_label_from_model(this._synopsis_label);
+        this.set_label_or_hide(this._synopsis_label, this.model.synopsis);
         this.set_style_variant_from_model();
     },
 });

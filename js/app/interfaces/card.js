@@ -146,14 +146,6 @@ const Card = new Lang.Interface({
     },
 
     /**
-     * Method: set_synopsis_label_from_model
-     * Sets up a label to show an article's synopsis
-     */
-    set_synopsis_label_from_model: function (label) {
-        this.set_label_or_hide(label, this.model.synopsis);
-    },
-
-    /**
      * Method: set_style_variant_from_model
      * Uses the article number to set a style variant CSS class
      *

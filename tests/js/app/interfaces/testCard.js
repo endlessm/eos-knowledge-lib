@@ -26,7 +26,6 @@ describe('Card interface', function () {
             title: 'record title &',
             thumbnail_uri: 'about:blank',
             authors: ['record author &'],
-            synopsis: 'record synopsis &',
             article_number: 0,
         });
         card = new Minimal.MinimalCard({
@@ -94,18 +93,6 @@ describe('Card interface', function () {
         let frame = new Gtk.Frame();
         card.set_thumbnail_frame_from_model(frame);
         expect(frame.visible).toBeTruthy();
-    });
-
-    it('sets a synopsis label visible if model has a synopsis', function () {
-        let label = new Gtk.Label();
-        card.set_synopsis_label_from_model(label);
-        expect(label.visible).toBeTruthy();
-    });
-
-    it('markup-escapes the synopsis', function () {
-        let label = new Gtk.Label();
-        card.set_synopsis_label_from_model(label);
-        expect(label.label).toContain('&amp;');
     });
 
     it('adds a style variant if the model has an article number', function () {
