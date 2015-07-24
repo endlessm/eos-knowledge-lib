@@ -80,4 +80,13 @@ describe('Reader Card widget', function () {
         expect(width[0]).toEqual(width[1]);
         expect(width[0]).toBeGreaterThan(1);
     });
+
+    it('has labels that understand Pango markup', function () {
+        let card = new ReaderCard.ReaderCard({
+            model: new ContentObjectModel.ContentObjectModel({
+                title: '!!!',
+            }),
+        });
+        expect(Gtk.test_find_label(card, '*!!!*').use_markup).toBeTruthy();
+    });
 });

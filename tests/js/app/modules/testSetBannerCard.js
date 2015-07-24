@@ -18,4 +18,13 @@ describe('Set banner widget', function () {
     });
 
     it('constructs', function () {});
+
+    it('has labels that understand Pango markup', function () {
+        let card = new SetBannerCard.SetBannerCard({
+            model: new ContentObjectModel.ContentObjectModel({
+                title: '!!!',
+            }),
+        });
+        expect(Gtk.test_find_label(card, '*!!!*').use_markup).toBeTruthy();
+    });
 });

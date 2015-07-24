@@ -33,4 +33,13 @@ describe('Text card widget', function () {
     it('has a decoration widget with decoration class', function () {
         expect(card).toHaveDescendantWithCssClass(StyleClasses.DECORATION);
     });
+
+    it('has labels that understand Pango markup', function () {
+        let card = new TextCard.TextCard({
+            model: new ContentObjectModel.ContentObjectModel({
+                title: '!!!',
+            }),
+        });
+        expect(Gtk.test_find_label(card, '*!!!*').use_markup).toBeTruthy();
+    });
 });

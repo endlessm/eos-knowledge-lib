@@ -26,4 +26,13 @@ describe('Card widget', function () {
             expect(card).toHaveCssClass(StyleClasses.CARD_B);
         });
     });
+
+    it('has labels that understand Pango markup', function () {
+        let card = new CardB.CardB({
+            model: new ContentObjectModel.ContentObjectModel({
+                title: '!!!',
+            }),
+        });
+        expect(Gtk.test_find_label(card, '*!!!*').use_markup).toBeTruthy();
+    });
 });

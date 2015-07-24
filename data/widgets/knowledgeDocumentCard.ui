@@ -3,11 +3,12 @@
 <interface>
   <requires lib="gtk+" version="3.12"/>
   <template class="EknKnowledgeDocumentCard" parent="EosCustomContainer">
-
+    <property name="can_focus">False</property>
     <child>
       <object class="GtkFrame" id="toolbar-frame">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
+        <property name="label_xalign">0</property>
         <child>
           <object class="GtkGrid" id="toolbar-grid">
             <property name="visible">True</property>
@@ -15,19 +16,25 @@
             <property name="orientation">vertical</property>
             <child>
               <object class="GtkLabel" id="title-label">
+                <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="no_show_all">True</property>
+                <property name="hexpand">True</property>
+                <property name="vexpand">True</property>
+                <property name="use_markup">True</property>
                 <property name="wrap">True</property>
                 <property name="wrap_mode">word-char</property>
                 <property name="ellipsize">end</property>
                 <property name="lines">5</property>
                 <property name="xalign">0</property>
-                <property name="expand">True</property>
-                <property name="visible">True</property>
                 <style>
                   <class name="title"/>
                 </style>
               </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">0</property>
+              </packing>
             </child>
           </object>
         </child>
@@ -36,35 +43,40 @@
         </style>
       </object>
     </child>
-
     <child>
       <object class="GtkFrame" id="content-frame">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="expand">True</property>
+        <property name="hexpand">True</property>
+        <property name="vexpand">True</property>
+        <property name="label_xalign">0</property>
         <child>
           <object class="GtkGrid" id="content-grid">
-            <property name="expand">True</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="hexpand">True</property>
+            <property name="vexpand">True</property>
             <property name="orientation">vertical</property>
-
             <child>
               <object class="GtkLabel" id="top-title-label">
+                <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="no_show_all">True</property>
+                <property name="margin_bottom">10</property>
                 <property name="hexpand">True</property>
-                <property name="halign">fill</property>
+                <property name="use_markup">True</property>
                 <property name="wrap_mode">word-char</property>
                 <property name="ellipsize">end</property>
                 <property name="max_width_chars">1</property>
-                <property name="visible">True</property>
-                <property name="margin_bottom">10</property>
                 <style>
                   <class name="title"/>
                   <class name="collapsed"/>
                 </style>
               </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">0</property>
+              </packing>
             </child>
           </object>
         </child>
@@ -73,7 +85,6 @@
         </style>
       </object>
     </child>
-
     <style>
       <class name="card"/>
       <class name="document-card"/>

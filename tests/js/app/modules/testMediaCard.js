@@ -52,4 +52,16 @@ describe ('Media Infobox', function () {
         });
         expect(media_card._separator.visible).toBe(false);
     });
+
+    it('has labels that understand Pango markup', function () {
+        let card = new MediaCard.MediaCard({
+            model: new MediaObjectModel.ImageObjectModel({
+                copyright_holder: '!!!',
+                caption: '@@@',
+                get_content_stream: () => null,
+            }),
+        });
+        expect(Gtk.test_find_label(card, '*!!!*').use_markup).toBeTruthy();
+        expect(Gtk.test_find_label(card, '*@@@*').use_markup).toBeTruthy();
+    });
 });
