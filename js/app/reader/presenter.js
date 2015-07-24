@@ -849,6 +849,11 @@ const Presenter = new Lang.Class({
                 this._display_link_tooltip(view, coordinates, WebviewTooltip.TYPE_ARCHIVE_LINK,
                     article_model.title, 0);
             });
+        } else if (GLib.uri_parse_scheme(uri) === 'file' && uri.indexOf('/licenses/') > -1) {
+            // If the uri has the "file://" scheme and it includes a segments for "licenses",
+            // it corresponds to a license file, and we should display it as an external link.
+            this._display_link_tooltip(view, coordinates, WebviewTooltip.TYPE_EXTERNAL_LINK,
+                _("View the license in your browser"), 0);
         } else {
             // Otherwise, it's an external link. The URI is displayed as the title.
             this._display_link_tooltip(view, coordinates, WebviewTooltip.TYPE_EXTERNAL_LINK,
