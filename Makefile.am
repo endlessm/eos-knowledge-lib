@@ -74,7 +74,7 @@ $(scss_targets): $(scss_partials)
 
 EXTRA_DIST += $(scss_toplevels) $(scss_partials)
 CLEANFILES += $(scss_targets)
-clean-local:
+clean-local::
 	rm -rf .sass-cache
 
 resource_deps_verbose = $(resource_deps_verbose_@AM_V@)
@@ -454,11 +454,13 @@ CLEANFILES += $(test_gresource)
 noinst_DATA = tests/test-content/test-content.gresource
 
 # Run tests when running 'make check'
-TESTS = $(javascript_tests)
+TESTS = $(javascript_tests) \
+	run_coverage.coverage \
+	$(NULL)
 LOG_COMPILER = gtester
 AM_LOG_FLAGS = -k --verbose
 
-TEST_EXTENSIONS = .js
+TEST_EXTENSIONS = .js .coverage
 JS_LOG_DRIVER = env AM_TAP_AWK='$(AWK)' $(SHELL) $(top_srcdir)/tap-driver.sh
 JS_LOG_DRIVER_FLAGS = --comments
 JS_LOG_COMPILER = jasmine
@@ -611,3 +613,5 @@ typelibdir = $(pkglibdir)/girepository-1.0
 typelib_DATA = $(INTROSPECTION_GIRS:.gir=.typelib)
 
 CLEANFILES += $(INTROSPECTION_GIRS) $(typelib_DATA)
+
+clean-local:: clean-coverage
