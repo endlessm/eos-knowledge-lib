@@ -81,4 +81,15 @@ describe('Document Card', function () {
             expect(card.toc).not.toHaveCssClass(StyleClasses.COLLAPSED);
         });
     });
+
+    it('has labels that understand Pango markup', function () {
+        let card = new KnowledgeDocumentCard.KnowledgeDocumentCard({
+            model: new ArticleObjectModel.ArticleObjectModel({
+                title: '!!!',
+            }),
+        });
+        expect(Gtk.test_find_label(card, '*!!!*').use_markup).toBeTruthy();
+        // FIXME: the above line will find either title_label or top_title_label
+        // but not both
+    });
 });

@@ -83,4 +83,15 @@ describe('Document Card', function () {
             expect(card).toHaveDescendantWithCssClass(StyleClasses.READER_DECORATIVE_BAR);
         });
     });
+
+    it('has labels that understand Pango markup', function () {
+        let card = new ReaderDocumentCard.ReaderDocumentCard({
+            model: new ArticleObjectModel.ArticleObjectModel({
+                title: '!!!',
+                authors: ['@@@'],
+            }),
+        });
+        expect(Gtk.test_find_label(card, '*!!!*').use_markup).toBeTruthy();
+        expect(Gtk.test_find_label(card, '*@@@*').use_markup).toBeTruthy();
+    });
 });

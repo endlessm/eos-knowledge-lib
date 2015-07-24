@@ -41,4 +41,15 @@ describe('Card widget', function () {
         expect(width[0]).toEqual(width[1]);
         expect(width[0]).toBeGreaterThan(1);
     });
+
+    it('has labels that understand Pango markup', function () {
+        let card = new CardA.CardA({
+            model: new ContentObjectModel.ContentObjectModel({
+                title: '!!!',
+                synopsis: '@@@',
+            }),
+        });
+        expect(Gtk.test_find_label(card, '*!!!*').use_markup).toBeTruthy();
+        expect(Gtk.test_find_label(card, '*@@@*').use_markup).toBeTruthy();
+    });
 });

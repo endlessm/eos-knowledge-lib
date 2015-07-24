@@ -51,6 +51,7 @@
                 <property name="margin_bottom">8</property>
                 <property name="hexpand">True</property>
                 <property name="vexpand">True</property>
+                <property name="use_markup">True</property>
                 <property name="wrap_mode">word-char</property>
                 <property name="ellipsize">end</property>
                 <property name="max_width_chars">15</property>
@@ -109,7 +110,6 @@
                         <property name="hexpand">False</property>
                         <property name="vexpand">False</property>
                         <property name="label" translatable="yes">Archive</property>
-                        <property name="use_markup">True</property>
                         <style>
                           <class name="card-info-title"/>
                         </style>

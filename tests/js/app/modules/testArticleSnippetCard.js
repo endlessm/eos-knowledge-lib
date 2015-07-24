@@ -40,4 +40,15 @@ describe('Article snippet', function () {
             expect(snippet).toHaveCssClass('variant' + variant);
         });
     });
+
+    it('has labels that understand Pango markup', function () {
+        let card = new ArticleSnippetCard.ArticleSnippetCard({
+            model: new ContentObjectModel.ContentObjectModel({
+                title: '!!!',
+                synopsis: '@@@',
+            })
+        });
+        expect(Gtk.test_find_label(card, '*!!!*').use_markup).toBeTruthy();
+        expect(Gtk.test_find_label(card, '*@@@*').use_markup).toBeTruthy();
+    });
 });

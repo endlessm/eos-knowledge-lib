@@ -95,7 +95,7 @@ const Card = new Lang.Interface({
      * Sets a label contents and hides if contents is empty.
      */
     set_label_or_hide: function (label, text) {
-        label.label = text;
+        label.label = GLib.markup_escape_text(text, -1);
         label.visible = !!text;
     },
 
@@ -143,15 +143,6 @@ const Card = new Lang.Interface({
      */
     set_author_label_from_model: function (label) {
         this.set_label_or_hide(label, Utils.format_authors(this.model.authors));
-    },
-
-    /**
-     * Method: set_synopsis_label_from_model
-     * Sets up a label to show an article's synopsis
-     */
-    set_synopsis_label_from_model: function (label) {
-        this.set_label_or_hide(label,
-            GLib.markup_escape_text(this.model.synopsis, -1));
     },
 
     /**

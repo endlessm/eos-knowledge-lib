@@ -23,10 +23,9 @@ describe('Card interface', function () {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
 
         model = new ArticleObjectModel.ArticleObjectModel({
-            title: 'record title',
+            title: 'record title &',
             thumbnail_uri: 'about:blank',
-            authors: ['record author'],
-            synopsis: 'record synopsis',
+            authors: ['record author &'],
             article_number: 0,
         });
         card = new Minimal.MinimalCard({
@@ -72,22 +71,28 @@ describe('Card interface', function () {
         expect(label.visible).toBeTruthy();
     });
 
+    it('markup-escapes the title', function () {
+        let label = new Gtk.Label();
+        card.set_title_label_from_model(label);
+        expect(label.label).toContain('&amp;');
+    });
+
     it('sets a author label visible if model has authors', function () {
         let label = new Gtk.Label();
         card.set_author_label_from_model(label);
         expect(label.visible).toBeTruthy();
     });
 
+    it('markup-escapes the authors', function () {
+        let label = new Gtk.Label();
+        card.set_author_label_from_model(label);
+        expect(label.label).toContain('&amp;');
+    });
+
     it('sets a thumbnail frame visible if model has a thumbnail uri', function () {
         let frame = new Gtk.Frame();
         card.set_thumbnail_frame_from_model(frame);
         expect(frame.visible).toBeTruthy();
-    });
-
-    it('sets a synopsis label visible if model has a synopsis', function () {
-        let label = new Gtk.Label();
-        card.set_synopsis_label_from_model(label);
-        expect(label.visible).toBeTruthy();
     });
 
     it('adds a style variant if the model has an article number', function () {

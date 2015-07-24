@@ -50,7 +50,7 @@ const CardA = new Lang.Class({
             this._pdf_icon.visible = is_pdf;
             this._pdf_label.visible = is_pdf;
 
-            this.set_synopsis_label_from_model(this._synopsis_label);
+            this.set_label_or_hide(this._synopsis_label, this.model.synopsis);
             this._synopsis_label.visible = this._synopsis_label.visible && !is_pdf;
         }
 
