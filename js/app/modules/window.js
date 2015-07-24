@@ -226,6 +226,7 @@ const Window = new Lang.Class({
             this._home_page = this.factory.create_named_module('home-page-template');
             this._section_article_page = new SectionArticlePage.SectionArticlePageB({
                 factory: this.factory,
+                forward_visible: false,
             });
             this._no_search_results_page = new NoSearchResultsPage.NoSearchResultsPageB();
         } else {
@@ -234,6 +235,7 @@ const Window = new Lang.Class({
             });
             this._section_article_page = new SectionArticlePage.SectionArticlePageA({
                 factory: this.factory,
+                forward_visible: false,
             });
             this._no_search_results_page = new NoSearchResultsPage.NoSearchResultsPageA();
             // Connection so that tab buttons are revealed after page transition
