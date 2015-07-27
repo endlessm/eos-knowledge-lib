@@ -135,6 +135,16 @@ const SectionPageB = new Lang.Class({
     pack_title_banner: function (title_banner) {
         title_banner.valign = Gtk.Align.END;
 
+        // FIXME: Temporary hack to adapt the ellipses in Templates A & B. Without this,
+        // Ellipses in Template B are broken.
+        // This method is used for both the SetBanner and the SearchBanner, so
+        // we need to probe which one we are dealing with to alter its prop.
+        if (typeof title_banner._title_label !== 'undefined') {
+            title_banner._title_label.max_width_chars = 0;
+        } else {
+            title_banner.max_width_chars = 0;
+        }
+
         let child = this._title_label_revealer.get_child();
         if (typeof child !== 'undefined' && child !== null)
             this._title_label_revealer.remove(child);
