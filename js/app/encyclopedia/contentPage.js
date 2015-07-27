@@ -151,10 +151,16 @@ const ContentPage = new Lang.Class({
 
         this.search_box = new Endless.SearchBox();
 
+        this._document_card = this.factory.create_named_module('document-card', {
+            show_toc: false,
+            show_top_title: false,
+        });
+
         // FIXME: this should be on a separate page, instead of all stuffed
         // into a ContentPage
         this._stack = new Gtk.Stack();
         this._stack.add(this._search_module);
+        this._stack.add(this._document_card);
 
         let grid = new Gtk.Grid({
             halign: Gtk.Align.FILL,
@@ -180,34 +186,28 @@ const ContentPage = new Lang.Class({
             this._search_bar.close();
         }
 
-        let old_document_card = this._document_card;
-        this._document_card = this.factory.create_named_module('document-card', {
-            model: article_model,
-            show_toc: false,
-            show_top_title: false,
-        });
+        this._document_card.model = article_model;
         this._document_card.load_content(null, (card, task) => {
             try {
                 card.load_content_finish(task);
-                this._stack.visible_child = card;
-                card.content_view.grab_focus();
-                if (old_document_card)
-                    this._stack.remove(old_document_card);
+                this._stack.visible_child = this._document_card;
+                this._document_card.content_view.grab_focus();
             } catch (error) {
                 logError(error);
             }
         });
         this._document_card.connect('ekn-link-clicked', (card, uri) =>
             this.emit('link-clicked', uri));
-        this._document_card.show_all();
-        this._stack.add(this._document_card);
 
-        let webview = this._document_card.content_view;
-        webview.connect('notify::has-focus', this._on_focus.bind(this));
-        webview.connect('enter-fullscreen',
-            this._on_fullscreen_change.bind(this, true));
-        webview.connect('leave-fullscreen',
-            this._on_fullscreen_change.bind(this, false));
+        if (!this._webview_connected) {
+            let webview = this._document_card.content_view;
+            webview.connect('notify::has-focus', this._on_focus.bind(this));
+            webview.connect('enter-fullscreen',
+                this._on_fullscreen_change.bind(this, true));
+            webview.connect('leave-fullscreen',
+                this._on_fullscreen_change.bind(this, false));
+            this._webview_connected = true;
+        }
     },
 
     _on_focus: function (webview) {

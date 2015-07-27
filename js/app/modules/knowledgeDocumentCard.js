@@ -76,7 +76,7 @@ const KnowledgeDocumentCard = new Lang.Class({
 
     Template: 'resource:///com/endlessm/knowledge/widgets/knowledgeDocumentCard.ui',
     InternalChildren: [ 'title-label', 'top-title-label', 'toolbar-frame',
-        'toolbar-grid', 'content-frame', 'content-grid' ],
+        'toolbar-grid', 'content-frame', 'content-grid', 'content-stack' ],
 
 
     COLLAPSE_TOOLBAR_WIDTH: 800,
@@ -104,17 +104,10 @@ const KnowledgeDocumentCard = new Lang.Class({
     _init: function (props={}) {
         this.parent(props);
 
-        this.set_title_label_from_model(this._title_label);
-        this.set_title_label_from_model(this._top_title_label);
-
-        this._setup_toc();
-
         this._title_label.bind_property('visible',
             this._top_title_label, 'visible',
             GObject.BindingFlags.SYNC_CREATE | GObject.BindingFlags.INVERT_BOOLEAN | GObject.BindingFlags.BIDIRECTIONAL);
-    },
 
-    _setup_toc: function () {
         // We can't make gjs types through templates right now, so table of
         // contents and webview must be constructed in code
         this.toc = new TableOfContents.TableOfContents({
@@ -123,7 +116,26 @@ const KnowledgeDocumentCard = new Lang.Class({
             valign: Gtk.Align.CENTER,
             no_show_all: true,
         });
+        this._toolbar_grid.add(this.toc);
+        this.toc.transition_duration = this._SCROLL_DURATION;
+    },
 
+    set model (v) {
+        this._model = v;
+        if (!this._model)
+            return;
+
+        this.set_title_label_from_model(this._title_label);
+        this.set_title_label_from_model(this._top_title_label);
+
+        this._setup_toc();
+    },
+
+    get model () {
+        return this._model;
+    },
+
+    _setup_toc: function () {
         let _toc_visible = false;
         if (this.model.table_of_contents !== undefined) {
             this._mainArticleSections = this._get_toplevel_toc_elements(this.model.table_of_contents);
@@ -135,24 +147,20 @@ const KnowledgeDocumentCard = new Lang.Class({
             }
         }
         this.toc.visible = this.show_toc && _toc_visible;
-
-        this.toc.transition_duration = this._SCROLL_DURATION;
-
-        this._toolbar_grid.add(this.toc);
     },
 
     load_content: function (cancellable, callback) {
         let task = new AsyncTask.AsyncTask(this, cancellable, callback);
         task.catch_errors(() => {
             if (this.model.content_type === 'text/html') {
+                this._ensure_webview();
+                this._content_stack.visible_child = this._webview;
+                this.content_view = this._webview;
 
-                this.content_view = this._get_webview();
-                this._content_grid.add(this.content_view);
-
-                this._webview_load_id = this.content_view.connect('load-changed', (view, status) => {
+                this._webview_load_id = this._webview.connect('load-changed', (view, status) => {
                     if (status !== WebKit2.LoadEvent.COMMITTED)
                         return;
-                    this.content_view.disconnect(this._webview_load_id);
+                    this._webview.disconnect(this._webview_load_id);
                     this._webview_load_id = 0;
                     task.return_value();
                 });
@@ -160,20 +168,18 @@ const KnowledgeDocumentCard = new Lang.Class({
                 // FIXME: Consider eventually connecting to load-failed and showing
                 // an error page in the view.
 
-                this.content_view.load_uri(this.model.ekn_id);
+                this._webview.load_uri(this.model.ekn_id);
             } else if (this.model.content_type === 'application/pdf') {
+                this._ensure_pdfview();
+                this._content_stack.visible_child = this._pdfview;
+                this.content_view = this._pdfview;
+
                 // FIXME: Remove this line once we support table of contents
                 // widget for PDFs
                 this.model.table_of_contents = undefined;
                 let stream = this.model.get_content_stream();
                 let content_type = this.model.content_type;
-                this.content_view = new PDFView.PDFView({
-                    expand: true,
-                    width_request: this.MIN_CONTENT_WIDTH,
-                    height_request: this.MIN_CONTENT_HEIGHT,
-                });
-                this.content_view.load_stream(stream, content_type);
-                this._content_grid.add(this.content_view);
+                this._pdfview.load_stream(stream, content_type);
                 task.return_value();
             } else {
                 throw new Error("Unknown article content type: ", this.model.content_type);
@@ -220,16 +226,21 @@ const KnowledgeDocumentCard = new Lang.Class({
         this.content_view.run_javascript(script, null, null);
     },
 
-    _get_webview: function () {
-        let webview = new EknWebview.EknWebview({
+    _ensure_webview: function () {
+        if (this._webview)
+            return;
+
+        this._webview = new EknWebview.EknWebview({
+            visible: true,
             expand: true,
             width_request: this.MIN_CONTENT_WIDTH,
             height_request: this.MIN_CONTENT_HEIGHT,
         });
+        this._content_stack.add(this._webview);
 
-        webview.connect('notify::uri', function () {
-            if (webview.uri.indexOf('#') >= 0) {
-                let hash = webview.uri.split('#')[1];
+        this._webview.connect('notify::uri', function () {
+            if (this._webview.uri.indexOf('#') >= 0) {
+                let hash = this._webview.uri.split('#')[1];
 
                 // if we scrolled past something, update the ToC
                 if (hash.indexOf('scrolled-past-') === 0) {
@@ -253,7 +264,7 @@ const KnowledgeDocumentCard = new Lang.Class({
             }
         }.bind(this));
 
-        webview.connect('decide-policy', (webview, decision, type) => {
+        this._webview.connect('decide-policy', (webview, decision, type) => {
             if (type !== WebKit2.PolicyDecisionType.NAVIGATION_ACTION)
                 return false;
 
@@ -269,8 +280,19 @@ const KnowledgeDocumentCard = new Lang.Class({
                 return true;
             }
         });
+    },
 
-        return webview;
+    _ensure_pdfview: function () {
+        if (this._pdfview)
+            return;
+
+        this._pdfview = new PDFView.PDFView({
+            visible: true,
+            expand: true,
+            width_request: this.MIN_CONTENT_WIDTH,
+            height_request: this.MIN_CONTENT_HEIGHT,
+        });
+        this._content_stack.add(this._pdfview);
     },
 
     vfunc_size_allocate: function (alloc) {
