@@ -154,6 +154,7 @@ const ContentPage = new Lang.Class({
         // FIXME: this should be on a separate page, instead of all stuffed
         // into a ContentPage
         this._stack = new Gtk.Stack();
+        this._stack.get_style_context().add_class('content-stack');
         this._stack.add(this._search_module);
 
         let grid = new Gtk.Grid({

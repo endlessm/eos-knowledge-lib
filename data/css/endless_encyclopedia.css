@@ -10,6 +10,10 @@ Gjs_SearchBox{
     padding: 15px 0 15px 30px;
 }
 
+.content-stack {
+    background-color: #e9e4de;
+}
+
 .entry {
     background: rgba(0,0,0,0.2);
     padding: 0.5em .3em 0.5em .3em;
@@ -59,7 +63,6 @@ GtkEntry:selected {
 
 .search-results {
     color: #464646;
-    background-color: #e9e4de;
 }
 
 .search-results .headline {
