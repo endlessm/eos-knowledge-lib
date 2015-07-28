@@ -6,10 +6,10 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: eos-knowledge 0.3.0\n"
+"Project-Id-Version: eos-knowledge 0.4.0\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-"
 "inc\n"
-"POT-Creation-Date: 2015-07-21 02:08+0000\n"
+"POT-Creation-Date: 2015-07-28 02:20+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,11 +22,11 @@ msgstr ""
 msgid "Hello C world!"
 msgstr ""
 
-#: data/widgets/cardA.ui:98
+#: data/widgets/cardA.ui:99
 msgid "PDF"
 msgstr ""
 
-#: data/widgets/readerCard.ui:111 js/app/reader/webviewTooltip.js:138
+#: data/widgets/readerCard.ui:113 js/app/reader/webviewTooltip.js:138
 msgid "Archive"
 msgstr ""
 
@@ -101,20 +101,16 @@ msgstr ""
 msgid "HOME"
 msgstr ""
 
-#: js/app/encyclopedia/presenter.js:25
+#: js/app/encyclopedia/presenter.js:28
 msgid "Search the world's information!"
 msgstr ""
 
 #. TRANSLATORS: This is the title of the search results page. %s
 #. will be replaced by the text that the user searched for. Make
 #. sure that %s is in your translation as well.
-#: js/app/encyclopedia/presenter.js:264
+#: js/app/encyclopedia/presenter.js:286
 #, javascript-format
 msgid "Results for %s"
-msgstr ""
-
-#: js/app/encyclopedia/view.js:76
-msgid "Encyclopedia"
 msgstr ""
 
 #: js/app/homePageA.js:74
@@ -138,7 +134,7 @@ msgstr ""
 msgid "Results for \"%s\""
 msgstr ""
 
-#: js/app/presenter.js:299 js/app/presenter.js:736
+#: js/app/presenter.js:294 js/app/presenter.js:735
 msgid "Articles"
 msgstr ""
 
@@ -189,17 +185,21 @@ msgid ""
 "Don't miss next week's issue with more articles in your favorite magazine!"
 msgstr ""
 
-#: js/app/reader/presenter.js:1044 js/app/reader/presenter.js:1051
+#: js/app/reader/presenter.js:856
+msgid "View the license in your browser"
+msgstr ""
+
+#: js/app/reader/presenter.js:979 js/app/reader/presenter.js:986
 msgid "Oops!"
 msgstr ""
 
-#: js/app/reader/presenter.js:1045
+#: js/app/reader/presenter.js:980
 msgid ""
 "We could not find this magazine!\n"
 "Please try again after restarting your computer."
 msgstr ""
 
-#: js/app/reader/presenter.js:1052
+#: js/app/reader/presenter.js:987
 msgid ""
 "There was an error loading that page.\n"
 "Try another one or try again after restarting your computer."
@@ -209,13 +209,8 @@ msgstr ""
 msgid "There are no results for your search"
 msgstr ""
 
-#: js/app/reader/standalonePage.js:183
+#: js/app/reader/standalonePage.js:136
 msgid "Open the magazine"
-msgstr ""
-
-#: js/app/reader/standalonePage.js:305
-#, javascript-format
-msgid "This article is part of the archive of the magazine %s."
 msgstr ""
 
 #. TRANSLATORS: This shows the page number; %d will be replaced with
