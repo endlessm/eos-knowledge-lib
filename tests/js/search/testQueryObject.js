@@ -1,12 +1,7 @@
 const Blacklist = imports.search.blacklist;
-const ContainsMatcher = imports.tests.ContainsMatcher;
 const QueryObject = imports.search.queryObject;
 
 describe('QueryObject', function () {
-    beforeEach(function () {
-        jasmine.addMatchers(ContainsMatcher.customMatchers);
-    });
-
     it('sets tags and ids objects properly', function () {
         let ids = ['ekn://busters-es/0123456789012345',
                    'ekn://busters-es/fabaffacabacbafa'];
@@ -85,10 +80,10 @@ describe('QueryObject', function () {
                 query: 'foo bar baz',
             });
             let result = query_obj.get_query_parser_string(query_obj);
-            expect(result).toContain('exact_title:Foo_Bar_Baz');
-            expect(result).toContain('title:foo');
-            expect(result).toContain('title:bar');
-            expect(result).toContain('title:baz');
+            expect(result).toMatch('exact_title:Foo_Bar_Baz');
+            expect(result).toMatch('title:foo');
+            expect(result).toMatch('title:bar');
+            expect(result).toMatch('title:baz');
         });
 
         it('adds wildcard terms only for incremental search', function () {
@@ -97,16 +92,16 @@ describe('QueryObject', function () {
                 type: QueryObject.QueryObjectType.INCREMENTAL,
             });
             let result = query_obj.get_query_parser_string(query_obj);
-            expect(result).toContain('exact_title:Foo*');
-            expect(result).toContain('title:foo*');
+            expect(result).toMatch('exact_title:Foo\\*');
+            expect(result).toMatch('title:foo\\*');
 
             query_obj = new QueryObject.QueryObject({
                 query: 'foo',
                 type: QueryObject.QueryObjectType.DELIMITED,
             });
             result = query_obj.get_query_parser_string(query_obj);
-            expect(result).not.toContain('exact_title:Foo*');
-            expect(result).not.toContain('title:foo*');
+            expect(result).not.toMatch('exact_title:Foo\\*');
+            expect(result).not.toMatch('title:foo\\*');
         });
 
         it('contains terms without title prefix if matching synopsis', function () {
@@ -115,7 +110,7 @@ describe('QueryObject', function () {
                 match: QueryObject.QueryObjectMatch.TITLE_SYNOPSIS,
             });
             let result = query_obj.get_query_parser_string(query_obj);
-            expect(result).toContain('(littl OR littl*) AND (searc OR searc*)');
+            expect(result).toMatch(/\(littl OR littl\*\) AND \(searc OR searc\*\)/);
         });
 
         it('only uses exact title search for single character queries', function () {
@@ -124,9 +119,9 @@ describe('QueryObject', function () {
                 type: QueryObject.QueryObjectType.INCREMENTAL,
             });
             let result = query_obj.get_query_parser_string(query_obj);
-            expect(result).toContain('exact_title:A');
-            expect(result).not.toContain('a*');
-            expect(result).not.toContain('title:a');
+            expect(result).toMatch('exact_title:A');
+            expect(result).not.toMatch('a\\*');
+            expect(result).not.toMatch('title:a');
         });
 
         it('should ignore excess whitespace (except for tags)', function () {
@@ -134,9 +129,9 @@ describe('QueryObject', function () {
                 query: 'whoa      man',
             });
             let result = query_obj.get_query_parser_string(query_obj);
-            expect(result).toContain('exact_title:Whoa_Man');
-            expect(result).toContain('title:whoa');
-            expect(result).toContain('title:man');
+            expect(result).toMatch('exact_title:Whoa_Man');
+            expect(result).toMatch('title:whoa');
+            expect(result).toMatch('title:man');
         });
 
         it('should treat semi colons as whitespace', function () {
@@ -144,9 +139,9 @@ describe('QueryObject', function () {
                 query: 'whoa;man',
             });
             let result = query_obj.get_query_parser_string(query_obj);
-            expect(result).toContain('exact_title:Whoa_Man');
-            expect(result).toContain('title:whoa');
-            expect(result).toContain('title:man');
+            expect(result).toMatch('exact_title:Whoa_Man');
+            expect(result).toMatch('title:whoa');
+            expect(result).toMatch('title:man');
         });
 
         it('should lowercase xapian operator terms', function () {
@@ -154,7 +149,7 @@ describe('QueryObject', function () {
                 query: 'PENN AND tELLER',
             });
             let result = query_obj.get_query_parser_string(query_obj);
-            expect(result).toContain('title:and');
+            expect(result).toMatch('title:and');
         });
 
         it('should remove parentheses in user terms', function () {
@@ -162,7 +157,7 @@ describe('QueryObject', function () {
                 query: 'foo (bar) baz ((',
             });
             let result = query_obj.get_query_parser_string(query_obj);
-            expect(result).toContain('exact_title:Foo_Bar_Baz');
+            expect(result).toMatch('exact_title:Foo_Bar_Baz');
         });
 
         it('contains ids from query object', function () {
@@ -172,7 +167,7 @@ describe('QueryObject', function () {
                       'ekn://domain/fedcba9876543210'],
             });
             let result = query_obj.get_query_parser_string(query_obj);
-            expect(result).toContain('id:0123456789abcdef OR id:fedcba9876543210');
+            expect(result).toMatch('id:0123456789abcdef OR id:fedcba9876543210');
         });
 
         it('contains tags from query object', function () {
@@ -180,7 +175,7 @@ describe('QueryObject', function () {
                 tags: ['cats', 'dogs', 'turtles'],
             });
             let result = query_obj.get_query_parser_string(query_obj);
-            expect(result).toContain('tag:"cats" OR tag:"dogs" OR tag:"turtles"');
+            expect(result).toMatch('tag:"cats" OR tag:"dogs" OR tag:"turtles"');
         });
 
         it('should surround multiword tags in quotes', function () {
@@ -188,7 +183,7 @@ describe('QueryObject', function () {
                 tags: ['cat zombies'],
             });
             let result = query_obj.get_query_parser_string(query_obj);
-            expect(result).toContain('tag:"cat zombies"');
+            expect(result).toMatch('tag:"cat zombies"');
         });
 
         it('contains blacklist clause when available', function () {
@@ -198,8 +193,8 @@ describe('QueryObject', function () {
                 query: 'tyrion wins',
             });
             let result = query_obj.get_query_parser_string(query_obj);
-            expect(result).toContain('NOT tag:"foo"');
-            expect(result).toContain('NOT tag:"bar"');
+            expect(result).toMatch('NOT tag:"foo"');
+            expect(result).toMatch('NOT tag:"bar"');
         });
 
         describe('id checking code', function () {
