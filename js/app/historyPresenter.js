@@ -1,5 +1,3 @@
-const Endless = imports.gi.Endless;
-const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const GObject = imports.gi.GObject;
 
 const HistoryItem = imports.app.historyItem;
@@ -47,9 +45,6 @@ const HistoryPresenter = new GObject.Class({
     },
 
     _init: function (props={}) {
-        props.history_model = props.history_model || new EosKnowledgePrivate.HistoryModel();
-        props.history_buttons = props.history_buttons || new Endless.TopbarNavButton();
-
         this.parent(props);
 
         this.history_model.bind_property('can-go-forward',
