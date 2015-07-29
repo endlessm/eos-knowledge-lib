@@ -171,22 +171,13 @@ const Presenter = new Lang.Class({
         this._add_history_object_for_home_page();
 
         // Connect signals
+        this._connect_search_signals(this.view);
+        this._connect_search_signals(this.view.home_page);
         this.view.connect('back-clicked', this._on_topbar_back_clicked.bind(this));
         this.view.connect('forward-clicked', this._on_topbar_forward_clicked.bind(this));
         this.view.connect('search-focused', this._on_search_focus.bind(this));
-        this.view.connect('search-text-changed', this._on_search_text_changed.bind(this));
-        this.view.connect('search-entered', function (view, query) {
-            this._update_ui_and_search(query);
-        }.bind(this));
-        this.view.connect('article-selected', this._on_article_selection.bind(this));
 
         this.view.connect('sidebar-back-clicked', this._on_back.bind(this));
-
-        this.view.home_page.connect('search-entered', function (view, query) {
-            this._update_ui_and_search(query);
-        }.bind(this));
-        this.view.home_page.connect('search-text-changed', this._on_search_text_changed.bind(this));
-        this.view.home_page.connect('article-selected', this._on_article_selection.bind(this));
 
         this.view.section_page.connect('load-more-results', this._on_load_more_results.bind(this));
 
@@ -420,6 +411,12 @@ const Presenter = new Lang.Class({
     search: function (timestamp, query) {
         this._update_ui_and_search(query);
         this.view.present_with_time(timestamp);
+    },
+
+    _connect_search_signals: function (view) {
+        view.connect('search-text-changed', this._on_search_text_changed.bind(this));
+        view.connect('search-entered', (view, query) => this._update_ui_and_search(query));
+        view.connect('article-selected', this._on_article_selection.bind(this));
     },
 
     _update_ui_and_search: function (query) {
