@@ -5,15 +5,16 @@
 # Translators:
 # Fernando Farfan <fernando@endlessm.com>, 2015
 # Ivan G. Gonçalves <i@endlessm.com>, 2015
+# Philip Chimento <philip.chimento@gmail.com>, 2015
 # Renato Peixoto Pinto <renato@endlessm.com>, 2014
 # Richard Vignais, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2015-07-21 02:08+0000\n"
-"PO-Revision-Date: 2015-07-21 02:09+0000\n"
-"Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
+"POT-Creation-Date: 2015-07-28 18:27-0700\n"
+"PO-Revision-Date: 2015-07-29 01:30+0000\n"
+"Last-Translator: Philip Chimento <philip.chimento@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/projects/p/eos-knowledge-lib/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -25,11 +26,11 @@ msgstr ""
 msgid "Hello C world!"
 msgstr "Olá mundo C!"
 
-#: data/widgets/cardA.ui:98
+#: data/widgets/cardA.ui:99
 msgid "PDF"
 msgstr "PDF"
 
-#: data/widgets/readerCard.ui:111 js/app/reader/webviewTooltip.js:138
+#: data/widgets/readerCard.ui:113 js/app/reader/webviewTooltip.js:138
 msgid "Archive"
 msgstr "Arquivo"
 
@@ -45,7 +46,7 @@ msgstr "Tente repetir a sua busca com outras palavras ou termos."
 msgid ""
 "There was an error during your search.\n"
 "    Try searching again, and if that doesn't work restart your computer."
-msgstr ""
+msgstr "Houve um erro durante a sua pesquisa.\nTente buscar novamente, e caso não funcione reinicie o seu computador."
 
 #. TRANSLATORS: anything inside curly braces '{}' is going
 #. to be substituted in code. Please make sure to leave the
@@ -104,21 +105,17 @@ msgstr "Cortesia de conteúdo de {blog-link}, licenciado sob {license-link}."
 msgid "HOME"
 msgstr "PÁGINA PRINCIPAL"
 
-#: js/app/encyclopedia/presenter.js:25
+#: js/app/encyclopedia/presenter.js:28
 msgid "Search the world's information!"
 msgstr "Pesquisa a informação do mundo inteiro!"
 
 #. TRANSLATORS: This is the title of the search results page. %s
 #. will be replaced by the text that the user searched for. Make
 #. sure that %s is in your translation as well.
-#: js/app/encyclopedia/presenter.js:264
+#: js/app/encyclopedia/presenter.js:286
 #, javascript-format
 msgid "Results for %s"
 msgstr "Resultados para %s"
-
-#: js/app/encyclopedia/view.js:76
-msgid "Encyclopedia"
-msgstr "Enciclopédia"
 
 #: js/app/homePageA.js:74
 msgid "SEE ALL CATEGORIES"
@@ -141,7 +138,7 @@ msgstr "Tente pesquisar novamente com palavras diferentes."
 msgid "Results for \"%s\""
 msgstr "Resultados para \"%s\""
 
-#: js/app/presenter.js:299 js/app/presenter.js:736
+#: js/app/presenter.js:294 js/app/presenter.js:735
 msgid "Articles"
 msgstr "Artigos"
 
@@ -149,6 +146,11 @@ msgstr "Artigos"
 #, javascript-format
 msgid "Page %s"
 msgstr "Página %s"
+
+#: js/app/modules/readerWindow.js:229
+#, javascript-format
+msgid "This article is part of the archive of the magazine %s."
+msgstr "Este artigo é parte do acervo da revista %s."
 
 #. TRANSLATORS: This message is displayed while the encyclopedia app is
 #. searching for results. The %s will be replaced with the term that the
@@ -159,7 +161,7 @@ msgstr "Página %s"
 #: js/app/modules/searchModule.js:90
 #, javascript-format
 msgid "Searching for “%s”"
-msgstr ""
+msgstr "Pesquisando por “%s”"
 
 #. TRANSLATORS: This message is displayed when the encyclopedia app
 #. is done searching for results. The %s will be replaced with the term
@@ -170,7 +172,7 @@ msgstr ""
 #: js/app/modules/searchModule.js:132
 #, javascript-format
 msgid "Search results for “%s”"
-msgstr ""
+msgstr "Resultados da pesquisa por “%s”"
 
 #. TRANSLATORS: This message is displayed when the encyclopedia app did
 #. not find any results for a search. The %s will be replaced with the term
@@ -181,7 +183,7 @@ msgstr ""
 #: js/app/modules/searchModule.js:140
 #, javascript-format
 msgid "We did not find any results for “%s”."
-msgstr ""
+msgstr "Não encontramos nenhum resultado de “%s”."
 
 #: js/app/reader/donePage.js:68
 msgid "Did you like this issue?"
@@ -192,17 +194,21 @@ msgid ""
 "Don't miss next week's issue with more articles in your favorite magazine!"
 msgstr "Não perca a edição da próxima semana com mais artigos em sua revista favorita!"
 
-#: js/app/reader/presenter.js:1044 js/app/reader/presenter.js:1051
+#: js/app/reader/presenter.js:856
+msgid "View the license in your browser"
+msgstr ""
+
+#: js/app/reader/presenter.js:979 js/app/reader/presenter.js:986
 msgid "Oops!"
 msgstr "Oops!"
 
-#: js/app/reader/presenter.js:1045
+#: js/app/reader/presenter.js:980
 msgid ""
 "We could not find this magazine!\n"
 "Please try again after restarting your computer."
 msgstr "Não conseguimos encontrar essa revista!\nPor favor, tente novamente após reiniciar seu computador. "
 
-#: js/app/reader/presenter.js:1052
+#: js/app/reader/presenter.js:987
 msgid ""
 "There was an error loading that page.\n"
 "Try another one or try again after restarting your computer."
@@ -212,14 +218,9 @@ msgstr "Ocorreu um erro no carregamento da página. \nTente outro ou tente novam
 msgid "There are no results for your search"
 msgstr "Não existem resultados para a sua pesquisa"
 
-#: js/app/reader/standalonePage.js:183
+#: js/app/reader/standalonePage.js:136
 msgid "Open the magazine"
 msgstr "Abra a revista"
-
-#: js/app/reader/standalonePage.js:305
-#, javascript-format
-msgid "This article is part of the archive of the magazine %s."
-msgstr "Este artigo é parte do acervo da revista %s."
 
 #. TRANSLATORS: This shows the page number; %d will be replaced with
 #. the page number of the article.
