@@ -240,8 +240,8 @@ js_files = \
 	js/app/modules/articleSnippetCard.js \
 	js/app/modules/cardA.js \
 	js/app/modules/cardB.js \
-	js/app/modules/cardContainer.js \
 	js/app/modules/encyclopediaWindow.js \
+	js/app/modules/itemGroup.js \
 	js/app/modules/knowledgeDocumentCard.js \
 	js/app/modules/listArrangement.js \
 	js/app/modules/homePageBTemplate.js \
