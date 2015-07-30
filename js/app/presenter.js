@@ -326,10 +326,7 @@ const Presenter = new Lang.Class({
                 this.article_presenter.load_article(current_item.model, animation_type);
                 // For Template B, we reset the highlight to the card with the same title
                 if (this._template_type === 'B')
-                    this.view.section_page.highlight_card_with_name(
-                        current_item.title,
-                        current_item.article_origin_page
-                    );
+                    this.view.section_page.highlight_card(current_item.model);
                 this.view.show_article_page();
                 break;
             case this._CATEGORIES_PAGE:
@@ -577,7 +574,7 @@ const Presenter = new Lang.Class({
             this.view.show_article_page();
         }.bind(this));
         if (this._template_type === 'B')
-            this.view.section_page.highlight_card(card);
+            this.view.section_page.highlight_card(model);
     },
 
     _add_history_object_for_article_page: function (model) {
@@ -644,7 +641,7 @@ const Presenter = new Lang.Class({
                 this.article_presenter.load_article(model, EosKnowledgePrivate.LoadingAnimationType.FORWARDS_NAVIGATION);
 
                 if (this._template_type === 'B')
-                    this.view.section_page.highlight_card_with_name(model.title, this._latest_article_card_title);
+                    this.view.section_page.highlight_card(model);
             }
         });
     },

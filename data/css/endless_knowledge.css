@@ -114,8 +114,7 @@ EknWindow.show-no-search-results-page {
 }
 
 .section-page-b .text-card:hover,
-.section-page-b .text-card.highlighted:hover,
-.section-page-b .text-card.shaded:hover {
+.section-page-b .text-card.highlighted:hover {
     text-shadow: 0px 1px 0px white;
     border: 2px solid white;
     background-color: alpha(white, 0.9);
@@ -125,8 +124,7 @@ EknWindow.show-no-search-results-page {
     box-shadow: 0px 0px 20px 0px black;
 }
 
-.section-page-b .text-card:hover .title,
-.section-page-b .text-card.shaded:hover .title {
+.section-page-b .text-card:hover .title {
     color: @template-b-text-color-hover;
 }
 
@@ -140,10 +138,6 @@ EknWindow.show-no-search-results-page {
 .section-page-b .text-card.highlighted .title,
 .section-page-b .text-card.highlighted:hover .title {
     color: @template-b-text-color-highlighted;
-}
-
-.section-page-b .text-card.shaded {
-    background: alpha(white, 0.20);
 }
 
 .card-a:hover .title,
