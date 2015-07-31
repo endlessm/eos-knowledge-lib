@@ -64,7 +64,7 @@ const EncyclopediaPresenter = new Lang.Class({
         WebkitContextSetup.register_webkit_extensions(this.application.application_id);
 
         this._model = new EncyclopediaModel.EncyclopediaModel();
-        this._view = this.factory.create_named_module('window', {
+        this.view = this.factory.create_named_module('window', {
             application: this.application,
         });
 
@@ -75,7 +75,7 @@ const EncyclopediaPresenter = new Lang.Class({
 
         this._renderer = new ArticleHTMLRenderer.ArticleHTMLRenderer();
 
-        for (let page of [this._view.home_page, this._view.content_page]) {
+        for (let page of [this.view.home_page, this.view.content_page]) {
             page.search_box.connect('activate',
                 this._on_search_entered.bind(this));
             page.search_box.connect('text-changed',
@@ -84,13 +84,13 @@ const EncyclopediaPresenter = new Lang.Class({
                 this._on_article_selected.bind(this));
         }
 
-        this._view.home_page.search_box.placeholder_text = SEARCH_BOX_PLACEHOLDER_TEXT;
-        this._view.content_page.search_box.placeholder_text = SEARCH_BOX_PLACEHOLDER_TEXT;
+        this.view.home_page.search_box.placeholder_text = SEARCH_BOX_PLACEHOLDER_TEXT;
+        this.view.content_page.search_box.placeholder_text = SEARCH_BOX_PLACEHOLDER_TEXT;
 
         this._previewer = new Previewer.Previewer({
             visible: true,
         });
-        this._view.lightbox.content_widget = this._previewer;
+        this.view.lightbox.content_widget = this._previewer;
 
         // Whenever there's a pending lightbox load, its cancellable will be
         // stored here
@@ -99,26 +99,26 @@ const EncyclopediaPresenter = new Lang.Class({
         this._history = new EosKnowledgePrivate.HistoryModel();
         this._history_presenter = new HistoryPresenter.HistoryPresenter({
             history_model: this._history,
-            history_buttons: this._view.history_buttons,
+            history_buttons: this.view.history_buttons,
         });
 
         this._history.connect('notify::current-item',
             this._on_navigate.bind(this));
-        this._view.history_buttons.back_button.connect('clicked', () => {
+        this.view.history_buttons.back_button.connect('clicked', () => {
             this._history_presenter.go_back();
         });
-        this._view.history_buttons.forward_button.connect('clicked', () => {
+        this.view.history_buttons.forward_button.connect('clicked', () => {
             this._history_presenter.go_forward();
         });
-        this._view.content_page.search_module.connect('article-selected', (module, model) => {
+        this.view.content_page.search_module.connect('article-selected', (module, model) => {
             this.load_model(model);
         });
-        this._view.content_page.connect('link-clicked', (page, uri) => {
+        this.view.content_page.connect('link-clicked', (page, uri) => {
             this.load_uri(uri);
         });
         this._lightbox_presenter = new LightboxPresenter.LightboxPresenter({
             engine: this._engine,
-            view: this._view,
+            view: this.view,
             factory: this.factory,
         });
     },
@@ -126,9 +126,9 @@ const EncyclopediaPresenter = new Lang.Class({
     // Launcher override
     desktop_launch: function (timestamp) {
         if (timestamp)
-            this._view.present_with_time(timestamp);
+            this.view.present_with_time(timestamp);
         else
-            this._view.present();
+            this.view.present();
     },
 
     // Launcher override
@@ -193,12 +193,12 @@ const EncyclopediaPresenter = new Lang.Class({
     },
 
     _do_search_in_view: function (query) {
-        let search = this._view.content_page.search_module;
+        let search = this.view.content_page.search_module;
         search.start_search(query);
-        if (this._view.get_visible_page() === this._view.home_page)
-            this._view.show_content_page();
-        this._view.content_page.show_search();
-        this._view.set_focus_child(null);
+        if (this.view.get_visible_page() === this.view.home_page)
+            this.view.show_content_page();
+        this.view.content_page.show_search();
+        this.view.set_focus_child(null);
         let query_obj = new QueryObject.QueryObject({
             query: query,
         });
@@ -217,9 +217,9 @@ const EncyclopediaPresenter = new Lang.Class({
     },
 
     _load_article_in_view: function (article) {
-        this._view.content_page.load_ekn_content(article);
-        if (this._view.get_visible_page() === this._view.home_page)
-            this._view.show_content_page();
+        this.view.content_page.load_ekn_content(article);
+        if (this.view.get_visible_page() === this.view.home_page)
+            this.view.show_content_page();
     },
 
     _article_render_callback: function (article) {
@@ -256,8 +256,8 @@ const EncyclopediaPresenter = new Lang.Class({
                 model = engine.get_object_by_id_finish(task);
             } catch (error) {
                 logError(error);
-                this._view.content_page.search_module.finish_search_with_error();
-                this._view.content_page.show_search();
+                this.view.content_page.search_module.finish_search_with_error();
+                this.view.content_page.show_search();
                 return;
             }
 
