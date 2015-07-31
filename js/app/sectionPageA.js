@@ -85,10 +85,10 @@ const SectionPageA = new Lang.Class({
                 title: segment_title
             });
             this._right_column_size_group.add_widget(segment.title_label);
-            this._content_grid.add(segment);
             segment.show_all();
             segment.append_cards(cards);
             this._segments[segment_title] = segment;
+            this._content_grid.attach(segment, 0, Object.keys(this._segments).length, 1, 1);
         }
     },
 
