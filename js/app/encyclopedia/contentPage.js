@@ -157,15 +157,15 @@ const ContentPage = new Lang.Class({
         this._stack.get_style_context().add_class('content-stack');
         this._stack.add(this._search_module);
 
-        let grid = new Gtk.Grid({
+        this._grid = new Gtk.Grid({
             halign: Gtk.Align.FILL,
             hexpand: true,
             column_spacing: 150,
         });
-        grid.attach(this._logo, 0, 0, 1, 1);
-        grid.attach(this.search_box, 1, 0, 1, 1);
-        grid.attach(this._stack, 0, 1, 2, 1);
-        this.add(grid);
+        this._grid.attach(this._logo, 0, 0, 1, 1);
+        this._grid.attach(this.search_box, 1, 0, 1, 1);
+        this._grid.attach(this._stack, 0, 1, 2, 1);
+        this.add(this._grid);
         this.set(0.5, 0.5, this.HORIZONTAL_SPACE_FILL_RATIO, 1.0);
 
         let mainWindow = this.get_toplevel();
