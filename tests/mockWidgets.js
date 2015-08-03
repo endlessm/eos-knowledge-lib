@@ -57,4 +57,6 @@ const MockSearchBox = new Lang.Class({
     },
 
     set_menu_items: function () {},
+
+    set_text_programmatically: function () {},
 });

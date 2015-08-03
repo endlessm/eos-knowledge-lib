@@ -352,7 +352,7 @@ const Presenter = new Lang.Class({
     },
 
     _on_history_item_change: function (presenter, item) {
-        this.view.search_box.text = item.query;
+        this.view.search_box.set_text_programmatically(item.query);
         switch (item.page_type) {
             case this._SEARCH_PAGE:
                 this._perform_search(item.query);

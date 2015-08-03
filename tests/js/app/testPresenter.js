@@ -29,7 +29,7 @@ const MockHomePage = new Lang.Class({
 
     _init: function () {
         this.parent();
-        this.search_box = {};
+        this.search_box = new MockWidgets.MockSearchBox();
         this.app_banner = {};
     },
 
@@ -66,7 +66,7 @@ const MockView = new Lang.Class({
         this.categories_page.tab_button = {};
         this.article_page = connectable_object;
         this.lightbox = new GObject.Object();
-        this.search_box = {};
+        this.search_box = new MockWidgets.MockSearchBox();
         this.no_search_results_page = {};
         this.history_buttons = new MockWidgets.MockHistoryButtons();
         this.history_buttons.back_button.connect('clicked', function () {

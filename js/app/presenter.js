@@ -294,8 +294,8 @@ const Presenter = new Lang.Class({
 
     _on_history_item_change: function (presenter, item, is_going_back) {
         this._lightbox_presenter.hide_lightbox();
-        this.view.home_page.search_box.text = '';
-        this.view.search_box.text = '';
+        this.view.home_page.search_box.set_text_programmatically('');
+        this.view.search_box.set_text_programmatically('');
         if (this._template_type === 'B')
             this.view.section_page.clear_highlighted_cards();
         switch (item.page_type) {
@@ -309,7 +309,7 @@ const Presenter = new Lang.Class({
                         this.view.show_section_page();
                     }
                 });
-                this.view.search_box.text = item.query;
+                this.view.search_box.set_text_programmatically(item.query);
                 break;
             case this._SECTION_PAGE:
                 this._refresh_article_results(() => {
@@ -325,7 +325,7 @@ const Presenter = new Lang.Class({
                     let query_item = this._history_presenter.search_backwards(0, (query_item) => {
                         return query_item.page_type === this._SECTION_PAGE || query_item.query;
                     });
-                    this.view.search_box.text = query_item.query;
+                    this.view.search_box.set_text_programmatically(query_item.query);
                 }
                 let animation_type = EosKnowledgePrivate.LoadingAnimationType.FORWARDS_NAVIGATION;
                 if (this.view.get_visible_page() !== this.article_page) {
