@@ -463,7 +463,7 @@ const Window = new Lang.Class({
         if (visible_page === this.home_page || visible_page === this.categories_page) {
             this.page_manager.transition_type = Gtk.StackTransitionType.SLIDE_LEFT;
         } else {
-            this.page_manager.transition_type = Gtk.StackTransitionType.SLIDE_RIGHT;
+            this.page_manager.transition_type = Gtk.StackTransitionType.CROSSFADE;
         }
         this._section_article_page.show_article = false;
         this.page_manager.visible_child = this._lightbox;
@@ -499,7 +499,7 @@ const Window = new Lang.Class({
      */
     show_no_search_results_page: function () {
         let visible_page = this.get_visible_page();
-        if (visible_page === this.home_page) {
+        if (visible_page === this.home_page || visible_page === this.categories_page) {
             this.page_manager.transition_type = Gtk.StackTransitionType.SLIDE_LEFT;
         } else if (visible_page === this.section_page) {
             this.page_manager.transition_type = Gtk.StackTransitionType.CROSSFADE;
