@@ -12,7 +12,6 @@ const ArticleObjectModel = imports.search.articleObjectModel;
 const Minimal = imports.tests.minimal;
 const MockEngine = imports.tests.mockEngine;
 const MockFactory = imports.tests.mockFactory;
-const MockSearchBox = imports.tests.mockSearchBox;
 const MockWidgets = imports.tests.mockWidgets;
 const Presenter = imports.app.reader.presenter;
 const QueryObject = imports.search.queryObject;
@@ -97,7 +96,7 @@ const MockView = new Lang.Class({
     _init: function (nav_buttons) {
         this.parent();
         this.nav_buttons = nav_buttons;
-        this.search_box = new MockSearchBox.MockSearchBox();
+        this.search_box = new MockWidgets.MockSearchBox();
         this.issue_nav_buttons = {
             back_button: new MockWidgets.MockButton(),
             forward_button: new MockWidgets.MockButton(),

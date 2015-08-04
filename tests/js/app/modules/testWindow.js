@@ -11,7 +11,7 @@ const HomePageA = imports.app.homePageA;
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
 const Lightbox = imports.app.lightbox;
 const MockFactory = imports.tests.mockFactory;
-const MockSearchBox = imports.tests.mockSearchBox;
+const MockWidgets = imports.tests.mockWidgets;
 const SectionPageA = imports.app.sectionPageA;
 const Window = imports.app.modules.window;
 
@@ -48,8 +48,8 @@ describe('Window', function () {
         jasmine.addMatchers(InstanceOfMatcher.customMatchers);
 
         let factory = new MockFactory.MockFactory();
-        factory.add_named_mock('top-bar-search', MockSearchBox.MockSearchBox);
-        factory.add_named_mock('home-search', MockSearchBox.MockSearchBox);
+        factory.add_named_mock('top-bar-search', MockWidgets.MockSearchBox);
+        factory.add_named_mock('home-search', MockWidgets.MockSearchBox);
         view = new Window.Window({
             application: app,
             factory: factory,
