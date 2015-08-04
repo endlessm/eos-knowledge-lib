@@ -354,7 +354,7 @@ const ReaderWindow = new Lang.Class({
 
     _show_standalone_page: function () {
         this.standalone_page.show();
-        this._stack.set_transition_type(Gtk.StackTransitionType.NONE);
+        this._stack.set_transition_type(Gtk.StackTransitionType.CROSSFADE);
         this._stack.set_visible_child(this.standalone_page);
         this.nav_buttons.back_visible = false;
         this.nav_buttons.forward_visible = false;
@@ -406,7 +406,7 @@ const ReaderWindow = new Lang.Class({
         } else if (animation_type === EosKnowledgePrivate.LoadingAnimationType.BACKWARDS_NAVIGATION) {
             this._stack.set_transition_type(Gtk.StackTransitionType.SLIDE_RIGHT);
         } else {
-            this._stack.set_transition_type(Gtk.StackTransitionType.NONE);
+            this._stack.set_transition_type(Gtk.StackTransitionType.CROSSFADE);
         }
     },
 
