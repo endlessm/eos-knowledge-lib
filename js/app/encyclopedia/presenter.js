@@ -228,6 +228,7 @@ const EncyclopediaPresenter = new Lang.Class({
     },
 
     _on_history_item_change: function (presenter, item) {
+        this.view.content_page.search_box.set_text_programmatically(item.query);
         switch (item.page_type) {
         case ARTICLE_PAGE:
             this._current_article = item.model;
