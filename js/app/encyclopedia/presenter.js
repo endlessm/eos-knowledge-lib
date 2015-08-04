@@ -185,15 +185,15 @@ const EncyclopediaPresenter = new Lang.Class({
         this.do_search(search_entry.text);
     },
 
-    _do_search_in_view: function (query) {
+    _do_search_in_view: function (item) {
         let search = this.view.content_page.search_module;
-        search.start_search(query);
+        search.start_search(item.query);
         if (this.view.get_visible_page() === this.view.home_page)
             this.view.show_content_page();
         this.view.content_page.show_search();
         this.view.set_focus_child(null);
         let query_obj = new QueryObject.QueryObject({
-            query: query,
+            query: item.query,
         });
         this._engine.get_objects_by_query(query_obj, null, (engine, task) => {
             search.searching = false;
@@ -205,6 +205,8 @@ const EncyclopediaPresenter = new Lang.Class({
                 search.finish_search_with_error(error);
                 return;
             }
+            if (results.length === 0)
+                item.empty = true;
             search.finish_search(results);
         });
     },
@@ -232,7 +234,7 @@ const EncyclopediaPresenter = new Lang.Class({
             this._load_article_in_view(item.model);
             return;
         case SEARCH_RESULTS_PAGE:
-            this._do_search_in_view(item.query);
+            this._do_search_in_view(item);
             return;
         }
     },
