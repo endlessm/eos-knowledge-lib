@@ -347,8 +347,8 @@ describe('Reader presenter', function () {
         it('tells the view to animate backward when going to an earlier page', function () {
             presenter._go_to_page(3, EosKnowledgePrivate.LoadingAnimationType.FORWARDS_NAVIGATION);
             spyOn(view, 'show_article_page');
-            presenter._go_to_page(1, EosKnowledgePrivate.LoadingAnimationType.BACKWARDS_NAVIGATION);
-            expect(view.show_article_page).toHaveBeenCalledWith(0, EosKnowledgePrivate.LoadingAnimationType.BACKWARDS_NAVIGATION);
+            presenter._go_to_page(2, EosKnowledgePrivate.LoadingAnimationType.BACKWARDS_NAVIGATION);
+            expect(view.show_article_page).toHaveBeenCalledWith(1, EosKnowledgePrivate.LoadingAnimationType.BACKWARDS_NAVIGATION);
         });
 
         it('shows the debug buttons when told to', function () {
@@ -430,7 +430,7 @@ describe('Reader presenter', function () {
 
         it('goes to overview_page when opening magazine from standalone_page', function () {
             spyOn(view, 'show_overview_page');
-            presenter._go_to_page(3);
+            presenter._add_history_item_for_page(3);
             presenter._open_magazine();
             expect(view.show_overview_page).toHaveBeenCalled();
         });
@@ -464,7 +464,7 @@ describe('Reader presenter', function () {
                     jasmine.any(Object),
                     jasmine.any(Function));
                 expect(view.show_search_results_page).toHaveBeenCalled();
-                expect(presenter.history_model.current_item.query_obj.query).toBe('Azucar');
+                expect(presenter.history_model.current_item.query).toBe('Azucar');
                 done();
                 return GLib.SOURCE_REMOVE;
             });
@@ -491,7 +491,7 @@ describe('Reader presenter', function () {
                     jasmine.any(Object),
                     jasmine.any(Function));
                 expect(view.show_search_results_page).toHaveBeenCalled();
-                expect(presenter.history_model.current_item.query_obj.query).toBe('Azucar');
+                expect(presenter.history_model.current_item.query).toBe('Azucar');
                 done();
                 return GLib.SOURCE_REMOVE;
             });

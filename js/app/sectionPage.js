@@ -109,7 +109,7 @@ const SectionPage = new Lang.Class({
         }
         if (this._query) {
             return this.factory.create_named_module('results-search-banner', {
-                query: this._query.query,
+                query: this._query,
             });
         }
         throw new Error("Assert not reached");

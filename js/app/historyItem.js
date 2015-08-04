@@ -3,7 +3,6 @@ const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 
 const ContentObjectModel = imports.search.contentObjectModel;
-const QueryObject = imports.search.queryObject;
 
 /**
  * Class: HistoryItem
@@ -22,7 +21,7 @@ const HistoryItem = new Lang.Class({
         /**
          * Property: title
          *
-         * The string used in recreating the title of a page.
+         * FIXME: maybe remove from interface? never actually used.
          */
         'title': GObject.ParamSpec.string('title', 'override', 'override',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
@@ -41,52 +40,62 @@ const HistoryItem = new Lang.Class({
          * Property: model
          * Content object model representing this page
          *
-         * A <ContentObjectModel> that stores the information used to replicate
-         * an article on a page of type 'article'.
-         * Contains an object for pages of type 'article' and 'section',
-         * otherwise null.
+         * For 'article' pages, a <ArticleObjectModel> of the currently
+         * displayed article. For 'section' pages, a <ContentObjectModel> of the
+         * currently displayed set. Null for other pages.
          */
         'model': GObject.ParamSpec.object('model', 'Model',
             'Content object model representing this page',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             ContentObjectModel.ContentObjectModel),
         /**
-         * Property: query-obj
+         * Property: query
          *
-         * A <QueryObject> of a search or section page request sent to the knowledge engine.
-         * It is used to recreate the query and thus display the appropriate information to a user that returns
-         * to this item in the history.
+         * A query string entered by the user causing navigation to this history
+         * item.
          */
-        'query-obj': GObject.ParamSpec.object('query-obj', 'Query Object',
-            'The QueryObject of the query used in this history item',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, QueryObject.QueryObject),
-        /**
-         * Property: article-origin-query
-         *
-         * A <QueryObject> of the search or section query that eventually led to the user reaching this
-         * history item. This query is used to replicate the list of titles that were available to a user
-         * when they first selected this history item (currently only used in Template B apps).
-         */
-        'article-origin-query-obj': GObject.ParamSpec.object('article-origin-query-obj', 'Article Origin Query Object',
-            'The QueryObject that was used to generate the list of articles from which this object was chosen.',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, QueryObject.QueryObject),
-        /**
-         * Property: article-origin-page
-         *
-         * A string that stores the title of the article page from which the user naviated to this
-         * page.
-         */
-        'article-origin-page': GObject.ParamSpec.string('article-origin-page', 'Article Origin Page',
-            'A string that stores the title of the article page from which the user navigated to this page',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
-
+        'query': GObject.ParamSpec.string('query', 'Query',
+            'The search string entered when navigating to this page',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            ''),
         /**
          * Property: empty
          *
-         * A boolean value that stores whether or not a history item contains a query that returns 0 results.
+         * A boolean value that stores whether or not a history item contains a
+         * query that returns 0 results.
          */
         'empty': GObject.ParamSpec.boolean('empty', 'Empty',
-            'A boolean value that stores whether or not a history item contains a query that returns 0 results',
-            GObject.ParamFlags.READWRITE, false),
-    }
+            'True iff the query returned 0 results',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT, false),
+        /**
+         * Property: from-global-search
+         *
+         * True if this history object was activated from global search,
+         * currently only used for reader app standalone page, which shows a
+         * different banner in that case.
+         */
+        'from-global-search': GObject.ParamSpec.boolean('from-global-search',
+            'From Global Search', 'From Global Search',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT, false),
+    },
+
+    equals: function (item) {
+        return this.title === item.title &&
+            this.page_type === item.page_type &&
+            (this.model === null && item.model === null || this.model.ekn_id === item.model.ekn_id) &&
+            this.query === item.query &&
+            this.from_global_search === item.from_global_search;
+    },
 });
+
+/**
+ * Function: new_from_object
+ */
+HistoryItem.new_from_object = function (source) {
+    let props = {};
+    for (let prop in source) {
+        if (source.hasOwnProperty(prop) && prop.substring(0, 1) !== '_')
+            props[prop] = source[prop];
+    }
+    return new HistoryItem(props);
+};

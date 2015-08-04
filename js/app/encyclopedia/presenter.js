@@ -101,15 +101,8 @@ const EncyclopediaPresenter = new Lang.Class({
             history_model: this._history,
             history_buttons: this.view.history_buttons,
         });
+        this._history_presenter.connect('history-item-changed', this._on_history_item_change.bind(this));
 
-        this._history.connect('notify::current-item',
-            this._on_navigate.bind(this));
-        this.view.history_buttons.back_button.connect('clicked', () => {
-            this._history_presenter.go_back();
-        });
-        this.view.history_buttons.forward_button.connect('clicked', () => {
-            this._history_presenter.go_forward();
-        });
         this.view.content_page.search_module.connect('article-selected', (module, model) => {
             this.load_model(model);
         });
@@ -232,15 +225,14 @@ const EncyclopediaPresenter = new Lang.Class({
         this.load_uri(ekn_id);
     },
 
-    _on_navigate: function () {
-        let item = this._history_presenter.history_model.current_item;
+    _on_history_item_change: function (presenter, item) {
         switch (item.page_type) {
         case ARTICLE_PAGE:
             this._current_article = item.model;
             this._load_article_in_view(item.model);
             return;
         case SEARCH_RESULTS_PAGE:
-            this._do_search_in_view(item.query_obj.query);
+            this._do_search_in_view(item.query);
             return;
         }
     },
@@ -267,7 +259,7 @@ const EncyclopediaPresenter = new Lang.Class({
 
     load_model: function (model) {
         if (model instanceof ArticleObjectModel.ArticleObjectModel) {
-            this._history_presenter.set_current_item({
+            this._history_presenter.set_current_item_from_props({
                 page_type: ARTICLE_PAGE,
                 model: model,
             });
@@ -280,18 +272,10 @@ const EncyclopediaPresenter = new Lang.Class({
         query = query.trim();
         if (query.length === 0)
             return;
-        // TRANSLATORS: This is the title of the search results page. %s
-        // will be replaced by the text that the user searched for. Make
-        // sure that %s is in your translation as well.
-        let search_title = _("Results for %s").format(query);
 
-        let query_obj = new QueryObject.QueryObject({
-            query: query,
-        });
-        this._history_presenter.set_current_item({
-            title: search_title,
+        this._history_presenter.set_current_item_from_props({
             page_type: SEARCH_RESULTS_PAGE,
-            query_obj: query_obj,
+            query: query,
         });
     },
 });

@@ -15,7 +15,9 @@
 EKN_DEFINE_ENUM_TYPE (EknLoadingAnimationType, ekn_loading_animation,
                       EKN_ENUM_VALUE (EKN_LOADING_ANIMATION_TYPE_NONE, none)
                       EKN_ENUM_VALUE (EKN_LOADING_ANIMATION_TYPE_FORWARDS_NAVIGATION, forwards-navigation)
-                      EKN_ENUM_VALUE (EKN_LOADING_ANIMATION_TYPE_BACKWARDS_NAVIGATION, backwards-navigation))
+                      EKN_ENUM_VALUE (EKN_LOADING_ANIMATION_TYPE_BACKWARDS_NAVIGATION, backwards-navigation)
+                      EKN_ENUM_VALUE (EKN_LOADING_ANIMATION_TYPE_MULTI_FORWARDS_NAVIGATION, multi-forwards-navigation)
+                      EKN_ENUM_VALUE (EKN_LOADING_ANIMATION_TYPE_MULTI_BACKWARDS_NAVIGATION, multi-backwards-navigation))
 
 EKN_DEFINE_ENUM_TYPE (EknTextTransformType, ekn_text_transform,
                       EKN_ENUM_VALUE (EKN_TEXT_TRANSFORM_NONE, none)

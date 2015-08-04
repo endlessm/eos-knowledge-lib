@@ -44,6 +44,22 @@ const HistoryPresenter = new GObject.Class({
             GObject.Object.$gtype),
     },
 
+    Signals: {
+        /**
+         * Event: history-item-changed
+         *
+         * Emitted when the history item changes, but ignores empty items (e.g.
+         * searches with no results) when appropriate.
+         *
+         * Parameters:
+         *   item - the history item
+         *   backwards - true if we are currently navigating backwards
+         */
+        'history-item-changed': {
+            param_types: [HistoryItem.HistoryItem, GObject.TYPE_BOOLEAN],
+        },
+    },
+
     _init: function (props={}) {
         this.parent(props);
 
@@ -53,39 +69,51 @@ const HistoryPresenter = new GObject.Class({
         this.history_model.bind_property('can-go-back',
             this.history_buttons.back_button, 'sensitive',
             GObject.BindingFlags.SYNC_CREATE);
+
+        this.history_buttons.back_button.connect('clicked', () => this.history_model.go_back());
+        this.history_buttons.forward_button.connect('clicked', () => this.history_model.go_forward());
+        this.history_model.connect('notify::current-item', this._notify_item.bind(this));
+        this._last_item = null;
     },
 
-    set_current_item: function (props) {
-        if (!props.hasOwnProperty('page_type'))
-            throw new Error('Current history item has no page_type property.');
-        let is_same_search = props.hasOwnProperty('query_obj') &&
-            this.history_model.current_item !== null &&
-            this.history_model.current_item.hasOwnProperty('query_obj') &&
-            this.history_model.current_item.query_obj !== null &&
-            this.history_model.current_item.query_obj.query === props.query_obj.query;
-
-        // If it's a request for an identical search, don't bother
-        // adding it to the history model.
-        if (!is_same_search) {
-            this.history_model.current_item = new HistoryItem.HistoryItem(props);
+    _notify_item: function () {
+        let is_going_back = this.history_model.get_item(1) === this._last_item;
+        let item = this.history_model.current_item;
+        this._last_item = this.history_model.current_item;
+        if (item.empty) {
+            if (is_going_back && this.history_model.can_go_back) {
+                this.history_model.go_back();
+                return;
+            }
+            if (!is_going_back && this.history_model.can_go_forward) {
+                this.history_model.go_forward();
+                return;
+            }
         }
+        this.emit('history-item-changed', item, is_going_back);
     },
 
-    go_forward: function () {
-        let model = this.history_model;
-
-        // Skip over history items with no results.
-        do {
-            model.go_forward();
-        } while (model.current_item.empty && model.can_go_forward);
+    set_current_item: function (item) {
+        if (this.history_model.current_item === null || !this.history_model.current_item.equals(item))
+            this.history_model.current_item = item;
     },
 
-    go_back: function () {
-        let model = this.history_model;
+    set_current_item_from_props: function (props) {
+        this.set_current_item(new HistoryItem.HistoryItem(props));
+    },
 
-        // Skip over history items with no results.
+    /**
+     * Method: search_backwards
+     *
+     * Helper to search backwards in the history for an item. Takes a starting
+     * index and a match function, which should return true of a match, false
+     * otherwise. Returns the matching item or null.
+     */
+    search_backwards: function (index, match_fn) {
+        let item;
         do {
-            model.go_back();
-        } while (model.current_item.empty && model.can_go_back);
+            item = this.history_model.get_item(index--);
+        } while (item !== null && (item.empty || !match_fn(item)));
+        return item;
     },
 });

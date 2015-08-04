@@ -381,6 +381,7 @@ javascript_tests = \
 	tests/js/app/testArticleHTMLRenderer.js \
 	tests/js/app/testArticlePage.js \
 	tests/js/app/testArticlePresenter.js \
+	tests/js/app/testHistoryItem.js \
 	tests/js/app/testHistoryPresenter.js \
 	tests/js/app/testHomePage.js \
 	tests/js/app/testHomePageA.js \
