@@ -422,13 +422,15 @@ const ReaderWindow = new Lang.Class({
 
     lock_ui: function () {
         let gdk_window = this.page_manager.get_window();
-        gdk_window.cursor = Gdk.Cursor.new(Gdk.CursorType.WATCH);
+        if (gdk_window)
+            gdk_window.cursor = Gdk.Cursor.new(Gdk.CursorType.WATCH);
         this.page_manager.sensitive = false;
     },
 
     unlock_ui: function () {
         let gdk_window = this.page_manager.get_window();
-        gdk_window.cursor = Gdk.Cursor.new(Gdk.CursorType.ARROW);
+        if (gdk_window)
+            gdk_window.cursor = Gdk.Cursor.new(Gdk.CursorType.ARROW);
         this.page_manager.sensitive = true;
     },
 });
