@@ -31,7 +31,7 @@ default:
 function grep (path, pattern) {
     let shard = get_shard_for_path(path);
     let records = shard.list_records();
-    records.forEach(function (record) {
+    records.forEach(function (record, i) {
         let regex = new RegExp(pattern);
         let metadata_text = record.metadata.load_contents().get_data().toString();
 
@@ -45,6 +45,12 @@ function grep (path, pattern) {
             ].join(' - ');
             print(output);
         }
+
+        // Unfortunately, Spidermonkey isn't able to effectively track the
+        // memory footprint of native objects like GBytes very well, so we
+        // have to nudge it in the right direction every now and then.
+        if (i%1000 === 0)
+            imports.system.gc();
     });
 }
 
