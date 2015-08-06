@@ -273,6 +273,7 @@ const ReaderWindow = new Lang.Class({
         this._stack.add(this.done_page);
         this._stack.add(this.standalone_page);
         this._stack.add(this.search_results_page);
+        this._stack.show_all();
         this.nav_buttons.add(this._stack);
         this.lightbox.add(this.nav_buttons);
 
