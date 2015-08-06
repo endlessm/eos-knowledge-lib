@@ -50,17 +50,21 @@ typedef enum
 
 /**
  * EknLoadingAnimation:
- * @EKN_LOADING_ANIMATION_TYPE_NONE: no animation for webpage
- * @EKN_LOADING_ANIMATION_TYPE_FORWARDS_NAVIGATION: animation for a forwards navigation of webpage
- * @EKN_LOADING_ANIMATION_TYPE_BACKWARDS_NAVIGATION: animation for a backwards navigation of webpage
+ * @EKN_LOADING_ANIMATION_TYPE_NONE: no animation for page
+ * @EKN_LOADING_ANIMATION_TYPE_FORWARDS_NAVIGATION: animation for a forwards navigation of page
+ * @EKN_LOADING_ANIMATION_TYPE_BACKWARDS_NAVIGATION: animation for a backwards navigation of page
+ * @EKN_LOADING_ANIMATION_TYPE_MULTI_FORWARDS_NAVIGATION: animation for skipping multiple items forward
+ * @EKN_LOADING_ANIMATION_TYPE_MULTI_BACKWARDS_NAVIGATION: animation for skipping multiple items backwards
  *
- * Constants referring to different types of animation for loading a new webpage
+ * Constants referring to different types of animation for loading a new page
  */
 typedef enum
 {
   EKN_LOADING_ANIMATION_TYPE_NONE,
   EKN_LOADING_ANIMATION_TYPE_FORWARDS_NAVIGATION,
-  EKN_LOADING_ANIMATION_TYPE_BACKWARDS_NAVIGATION
+  EKN_LOADING_ANIMATION_TYPE_BACKWARDS_NAVIGATION,
+  EKN_LOADING_ANIMATION_TYPE_MULTI_FORWARDS_NAVIGATION,
+  EKN_LOADING_ANIMATION_TYPE_MULTI_BACKWARDS_NAVIGATION
 } EknLoadingAnimation;
 
 /**

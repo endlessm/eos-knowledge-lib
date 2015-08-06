@@ -149,18 +149,6 @@ const Window = new Lang.Class({
     },
     Signals: {
         /**
-         * Event: back-clicked
-         *
-         * This event is triggered when the back button on the top bar is clicked.
-         */
-        'back-clicked': {},
-        /**
-         * Event: forward-clicked
-         *
-         * This event is triggered when the forward button on the top bar is clicked.
-         */
-        'forward-clicked': {},
-        /**
          * Event: sidebar-back-clicked
          * Emitted when the back button on the side of the section or article
          * page is clicked.
@@ -259,14 +247,6 @@ const Window = new Lang.Class({
         }.bind(this));
 
         this.history_buttons = new Endless.TopbarNavButton();
-
-        this.history_buttons.back_button.connect('clicked', function () {
-            this.emit('back-clicked');
-        }.bind(this));
-        this.history_buttons.forward_button.connect('clicked', function () {
-            this.emit('forward-clicked');
-        }.bind(this));
-
         this.history_buttons.get_style_context().add_class(Gtk.STYLE_CLASS_LINKED);
         this.history_buttons.show_all();
 

@@ -51,7 +51,7 @@ const SectionPageB = new Lang.Class({
     },
 
     _init: function (props) {
-        this._cards = null;
+        this._cards = [];
         this._transition_duration = 0;
 
         this._collapsed = false;
@@ -87,48 +87,22 @@ const SectionPageB = new Lang.Class({
         this.get_style_context().add_class(StyleClasses.SECTION_PAGE_B);
     },
 
-    highlight_card: function (card) {
-        if (this._highlighted_card === card)
-            return;
-
+    highlight_card: function (model) {
         this.clear_highlighted_cards();
-
-        this._highlighted_card = card;
-        this._highlighted_card.get_style_context().add_class(StyleClasses.HIGHLIGHTED);
-    },
-
-    highlight_card_with_name: function (card_name, fallback_card_name) {
-        this.clear_highlighted_cards();
-        let filtered_card = this._filter_card_with_name(card_name);
-        if (filtered_card) {
-            this.highlight_card(filtered_card);
-        } else {
-            filtered_card = this._filter_card_with_name(fallback_card_name);
-            if (filtered_card)
-                this.shade_card(filtered_card);
+        for (let card of this._cards) {
+            if (card.model.ekn_id === model.ekn_id) {
+                card.get_style_context().add_class(StyleClasses.HIGHLIGHTED);
+                return;
+            }
         }
-    },
-
-    shade_card: function (card) {
-        if (this._shaded_card === card)
-            return;
-
-        this._shaded_card = card;
-        this._shaded_card.get_style_context().remove_class(StyleClasses.HIGHLIGHTED);
-        this._shaded_card.get_style_context().add_class(StyleClasses.SHADED);
     },
 
     /*
-     * This method clears both the highlighted and shaded cards, if present.
+     * This method clears both the highlighted card, if present.
      */
     clear_highlighted_cards: function () {
-        if (this._highlighted_card !== null && typeof this._highlighted_card !== 'undefined') {
-            this._highlighted_card.get_style_context().remove_class(StyleClasses.HIGHLIGHTED);
-            this._highlighted_card = null;
-        }
-        if (this._shaded_card !== null && typeof this._shaded_card !== 'undefined') {
-            this._shaded_card.get_style_context().remove_class(StyleClasses.SHADED);
-            this._shaded_card = null;
+        for (let card of this._cards) {
+            card.get_style_context().remove_class(StyleClasses.HIGHLIGHTED);
         }
     },
 
@@ -149,16 +123,6 @@ const SectionPageB = new Lang.Class({
         if (typeof child !== 'undefined' && child !== null)
             this._title_label_revealer.remove(child);
         this._title_label_revealer.add(title_banner);
-    },
-
-    _filter_card_with_name: function (card_name) {
-        let filtered_cards = this._cards.filter(function (c) {
-            return c.title === card_name;
-        });
-        if (filtered_cards.length >= 1)
-            return filtered_cards[0];
-        else
-            return null;
     },
 
     set cards (v) {

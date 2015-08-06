@@ -45,14 +45,6 @@ const TEXT_CARD = 'text-card';
  */
 const HIGHLIGHTED = 'highlighted';
 
- /**
-  * Constant: SHADED
-  *
-  * Matches widgets when they are shaded
-  *
-   */
-const SHADED = 'shaded';
-
 /**
  * Constant: CARD_SYNOPSIS
  *
