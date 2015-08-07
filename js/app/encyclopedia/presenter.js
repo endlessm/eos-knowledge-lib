@@ -20,6 +20,7 @@ const MediaObjectModel = imports.search.mediaObjectModel;
 const Previewer = imports.app.previewer;
 const QueryObject = imports.search.queryObject;
 const WebkitContextSetup = imports.app.webkitContextSetup;
+const Utils = imports.app.utils;
 
 String.prototype.format = Format.format;
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
@@ -272,13 +273,13 @@ const EncyclopediaPresenter = new Lang.Class({
     },
 
     do_search: function (query) {
-        query = query.trim();
-        if (query.length === 0)
+        let sanitized_query = Utils.sanitize_query(query);
+        if (sanitized_query.length === 0)
             return;
 
         this._history_presenter.set_current_item_from_props({
             page_type: SEARCH_RESULTS_PAGE,
-            query: query,
+            query: sanitized_query,
         });
     },
 });
