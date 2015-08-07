@@ -1,8 +1,10 @@
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
+const EosMetrics = imports.gi.EosMetrics;
 const Format = imports.format;
 const Gettext = imports.gettext;
 const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
+const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
@@ -29,6 +31,7 @@ const AUTOCOMPLETE_DELAY = 500; // ms
 const SEARCH_BOX_PLACEHOLDER_TEXT = _("Search the world's information!");
 const ARTICLE_PAGE = 'article';
 const SEARCH_RESULTS_PAGE = 'search-results';
+const SEARCH_METRIC = 'a628c936-5d87-434a-a57a-015a0f223838';
 
 const EncyclopediaPresenter = new Lang.Class({
     Name: 'EncyclopediaPresenter',
@@ -272,11 +275,19 @@ const EncyclopediaPresenter = new Lang.Class({
         }
     },
 
+    // Should be mocked out during tests so that we don't actually send metrics
+    record_search_metric: function (query) {
+        let recorder = EosMetrics.EventRecorder.get_default();
+        recorder.record_event(SEARCH_METRIC, new GLib.Variant('(ss)',
+            [query, this.application.application_id]));
+    },
+
     do_search: function (query) {
         let sanitized_query = Utils.sanitize_query(query);
         if (sanitized_query.length === 0)
             return;
 
+        this.record_search_metric(query);
         this._history_presenter.set_current_item_from_props({
             page_type: SEARCH_RESULTS_PAGE,
             query: sanitized_query,
