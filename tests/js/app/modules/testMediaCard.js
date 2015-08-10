@@ -1,6 +1,8 @@
+const Endless = imports.gi.Endless;
 const Gtk = imports.gi.Gtk;
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
 
+const CssClassMatcher = imports.tests.CssClassMatcher;
 const Utils = imports.tests.utils;
 Utils.register_gresource();
 
@@ -13,6 +15,7 @@ describe ('Media Infobox', function () {
     let imageObject;
 
     beforeEach(function () {
+        jasmine.addMatchers(CssClassMatcher.customMatchers);
         jasmine.addMatchers(InstanceOfMatcher.customMatchers);
         Utils.register_gresource();
 
@@ -63,5 +66,46 @@ describe ('Media Infobox', function () {
         });
         expect(Gtk.test_find_label(card, '*!!!*').use_markup).toBeTruthy();
         expect(Gtk.test_find_label(card, '*@@@*').use_markup).toBeTruthy();
+    });
+
+    describe ('Attribution button', function () {
+        let card;
+        let license_shortname;
+        let copyright_holder = 'Bruce Lee';
+        let attribution;
+        let attribution_button;
+
+        it ('displays license file when license is known', function () {
+            license_shortname = 'CC BY 4.0';
+            let license_description = Endless.get_license_display_name(license_shortname);
+
+            card = new MediaCard.MediaCard({
+                model: new MediaObjectModel.ImageObjectModel({
+                    license: license_shortname,
+                    copyright_holder: copyright_holder,
+                    get_content_stream: () => null,
+                }),
+            });
+
+            attribution = (license_description + ' - ' + copyright_holder).toUpperCase();
+            attribution_button = Gtk.test_find_label(card, attribution).get_parent();
+            expect(attribution_button.sensitive).toBe(true);
+        });
+
+        it ('does not display license file when license is unknown', function () {
+            license_shortname = 'Bogus License';
+
+            card = new MediaCard.MediaCard({
+                model: new MediaObjectModel.ImageObjectModel({
+                    license: license_shortname,
+                    copyright_holder: copyright_holder,
+                    get_content_stream: () => null,
+                }),
+            });
+
+            attribution = ('Bruce Lee').toUpperCase();
+            attribution_button = Gtk.test_find_label(card, attribution).get_parent();
+            expect(attribution_button.sensitive).toBe(false);
+        });
     });
 });
