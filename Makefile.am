@@ -16,7 +16,6 @@ ACLOCAL_AMFLAGS = -I m4
 
 # Forward declare variables we'll be modifying all over
 bin_SCRIPTS =
-dist_bin_SCRIPTS =
 CLEANFILES =
 dist_noinst_DATA =
 DISTCLEANFILES =
@@ -295,6 +294,7 @@ js_files = \
 	js/search/searchProvider.js \
 	js/search/treeNode.js \
 	js/search/utils.js \
+	js/tools/kermit.js \
 	$(NULL)
 
 jsdir = $(pkgdatadir)/js
@@ -323,6 +323,7 @@ subst_files = \
 	js/app/config.js \
 	ekn-search-provider \
 	ekn-app-runner \
+	kermit \
 	eos-encyclopedia \
 	$(NULL)
 
@@ -333,13 +334,10 @@ $(subst_files): %: %.in Makefile
 CLEANFILES += $(subst_files)
 EXTRA_DIST += $(patsubst %,%.in,$(subst_files))
 
-dist_bin_SCRIPTS += \
-	tools/kermit \
-	$(NULL)
-
 bin_SCRIPTS += \
 	ekn-search-provider \
 	ekn-app-runner \
+	kermit \
 	eos-encyclopedia \
 	$(NULL)
 
