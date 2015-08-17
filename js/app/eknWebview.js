@@ -4,6 +4,7 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const WebKit2 = imports.gi.WebKit2;
 
+const Compat = imports.app.compat;
 const Config = imports.app.config;
 
 /**
@@ -24,6 +25,13 @@ const EknWebview = new Lang.Class({
     Name: 'EknWebview',
     GTypeName: 'EknWebview',
     Extends: WebKit2.WebView,
+
+    // List of the URL schemes we defer to other applications (e.g. a browser).
+    EXTERNALLY_HANDLED_SCHEMES = [
+        'http',
+        'https',
+        'file',
+    ],
 
     _init: function (params) {
         this.parent(params);
@@ -56,13 +64,10 @@ const EknWebview = new Lang.Class({
 
     _onNavigation: function (webview, decision, decision_type) {
         if (decision_type === WebKit2.PolicyDecisionType.NAVIGATION_ACTION) {
-            let uri = decision.request.uri;
+            let uri = Compat.normalize_old_browser_urls(decision.request.uri);
             let scheme = GLib.uri_parse_scheme(uri);
-            if (scheme !== null && scheme.startsWith('browser-')) {
-                // Open everything that starts with 'browser-' in the system
-                // browser
-                let realURI = uri.slice('browser-'.length);
-                Gtk.show_uri(null, realURI, Gdk.CURRENT_TIME);
+            if (scheme !== null && this.EXTERNALLY_HANDLED_SCHEMES.indexOf(scheme) !== -1) {
+                Gtk.show_uri(null, uri, Gdk.CURRENT_TIME);
                 decision.ignore();
                 return true; // handled
             }
