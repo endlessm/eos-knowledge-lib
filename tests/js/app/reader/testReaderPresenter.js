@@ -100,7 +100,7 @@ const MockView = new Lang.Class({
             show: jasmine.createSpy('show'),
         };
 
-        this.done_page = {
+        this.back_cover = {
             get_style_context: get_style_context,
         };
         this.overview_page = {
@@ -141,7 +141,7 @@ const MockView = new Lang.Class({
     show_all: function () {},
     show_article_page: function () {},
     show_overview_page: function () {},
-    show_done_page: function () {},
+    show_back_cover: function () {},
     show_global_search_standalone_page: function () {},
     show_in_app_standalone_page: function () {},
     show_search_results_page: function () {},
@@ -324,16 +324,16 @@ describe('Reader presenter', function () {
         });
 
         it('tells the view to go to the done page', function () {
-            spyOn(view, 'show_done_page');
+            spyOn(view, 'show_back_cover');
             presenter._go_to_page(view.total_pages - 1);
-            expect(view.show_done_page).toHaveBeenCalled();
+            expect(view.show_back_cover).toHaveBeenCalled();
         });
 
         it('goes to the done page when paging forward on the last article page', function () {
-            spyOn(view, 'show_done_page');
+            spyOn(view, 'show_back_cover');
             presenter._go_to_page(view.total_pages - 2);
             dispatcher.dispatch({ action_type: Actions.NAV_FORWARD_CLICKED });
-            expect(view.show_done_page).toHaveBeenCalled();
+            expect(view.show_back_cover).toHaveBeenCalled();
         });
 
         it('tells the view to animate forward when going to a later page', function () {

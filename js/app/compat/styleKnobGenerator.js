@@ -111,10 +111,10 @@ function selector_to_knob_reader (knobs, props, selector) {
                 }
                 break;
             case '.done-page .bottom-line':
-                knobs['done_page'] = merge_object_properties(knobs['done_page'], prefix_keys_with(props, 'module-'));
+                knobs['back_cover'] = merge_object_properties(knobs['back_cover'], prefix_keys_with(props, 'module-'));
                 break;
             case '.done-page .headline':
-                knobs['done_page'] = merge_object_properties(knobs['done_page'], prefix_keys_with(props, 'title-'));
+                knobs['back_cover'] = merge_object_properties(knobs['back_cover'], prefix_keys_with(props, 'title-'));
                 break;
         }
     }

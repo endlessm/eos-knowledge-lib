@@ -85,7 +85,7 @@ let style_knobs_reader = {
     'title-color': '#F7C449',
     'title-font-size': '2.25em',
   },
-  'done_page': {
+  'back_cover': {
     'module-font-family': 'ABeeZee',
     'module-font-size': '1em',
     'module-color': '#F2F2F2',

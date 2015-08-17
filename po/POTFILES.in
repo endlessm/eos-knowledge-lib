@@ -1,4 +1,5 @@
 eosknowledgeprivate/ekn-hello.c
+data/widgets/backCover.ui
 data/widgets/cardA.ui
 data/widgets/readerCard.ui
 data/widgets/searchModule.ui
@@ -12,7 +13,6 @@ js/app/modules/encyclopediaWindow.js
 js/app/modules/readerCard.js
 js/app/modules/readerWindow.js
 js/app/modules/searchModule.js
-js/app/reader/donePage.js
 js/app/reader/presenter.js
 js/app/reader/searchResultsPage.js
 js/app/reader/standalonePage.js

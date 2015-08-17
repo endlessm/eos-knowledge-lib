@@ -38,7 +38,7 @@ overridden by app specific CSS */
     color: #729fcf;
 }
 
-.overview-page, .done-page {
+.overview-page, .back-cover {
     background-size: cover;
     background-position: center;
 }
@@ -51,19 +51,19 @@ overridden by app specific CSS */
     padding: 100px 0px 85px 90px;
 }
 
-.done-page .headline {
+.back-cover .title {
     font-size: 2em;
     color: #fce94f;
-    padding-bottom: 25px;
+    padding-bottom: 5px;
 }
 
-.done-page .bottom-line {
+.back-cover .subtitle {
     padding-top: 3px;
     font-size: 1em; /* 16px / 12px/em * 72/96 */
     color: #eeeeec;
 }
 
-.done-page .progress-label {
+.back-cover .progress-label {
     color: white;
 }
 
