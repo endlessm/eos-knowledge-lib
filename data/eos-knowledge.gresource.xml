@@ -41,6 +41,7 @@
     <file compressed="true" preprocess="xml-stripblanks">widgets/listArrangement.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">widgets/homePageBTemplate.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">widgets/mediaCard.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">widgets/readerBackCover.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">widgets/readerCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">widgets/readerDocumentCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">widgets/searchBanner.ui</file>

@@ -1,6 +1,9 @@
 const Gtk = imports.gi.Gtk;
 
-const DonePage = imports.app.reader.donePage;
+const Utils = imports.tests.utils;
+Utils.register_gresource();
+
+const ReaderBackCover = imports.app.modules.readerBackCover;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
 const ProgressLabel = imports.app.reader.progressLabel;
@@ -14,7 +17,7 @@ describe('Done page widget', function () {
     beforeEach(function () {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
         jasmine.addMatchers(InstanceOfMatcher.customMatchers);
-        page = new DonePage.DonePage();
+        page = new ReaderBackCover.ReaderBackCover();
     });
 
     it('constructs', function () {});

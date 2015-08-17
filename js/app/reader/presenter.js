@@ -15,7 +15,6 @@ const ArticleObjectModel = imports.search.articleObjectModel;
 const ArticleSnippetCard = imports.app.modules.articleSnippetCard;
 const Compat = imports.app.compat.compat;
 const Config = imports.app.config;
-const DonePage = imports.app.reader.donePage;
 const Engine = imports.search.engine;
 const HistoryPresenter = imports.app.historyPresenter;
 const Launcher = imports.app.launcher;
@@ -23,6 +22,7 @@ const LightboxPresenter = imports.app.lightboxPresenter;
 const MediaObjectModel = imports.search.mediaObjectModel;
 const OverviewPage = imports.app.reader.overviewPage;
 const QueryObject = imports.search.queryObject;
+const ReaderBackCover = imports.app.modules.readerBackCover;
 const ReaderCard = imports.app.modules.readerCard;
 const ReaderDocumentCard = imports.app.modules.readerDocumentCard;
 const StyleClasses = imports.app.styleClasses;
@@ -263,7 +263,7 @@ const Presenter = new Lang.Class({
             } else if (/reader_card[0-2]/.test(key)) {
                 str += ReaderCard.get_css_for_module(css_data[key], num);
             } else if (key === 'done_page') {
-                str += DonePage.get_css_for_module(css_data[key]);
+                str += ReaderBackCover.get_css_for_module(css_data[key]);
             } else if (key === 'overview_page') {
                 str += OverviewPage.get_css_for_module(css_data[key]);
             }

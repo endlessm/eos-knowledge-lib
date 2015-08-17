@@ -39,6 +39,7 @@ describe('Window widget', function () {
 
         factory = new MockFactory.MockFactory();
         factory.add_named_mock('document-card', Minimal.MinimalDocumentCard);
+        factory.add_named_mock('done-page', Minimal.MinimalDonePage);
         view = new ReaderWindow.ReaderWindow({
             application: app,
             factory: factory,
