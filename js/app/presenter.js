@@ -10,11 +10,11 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const ArticlePresenter = imports.app.articlePresenter;
-const CardContainer = imports.app.modules.cardContainer;
 const Config = imports.app.config;
 const Engine = imports.search.engine;
 const HistoryItem = imports.app.historyItem;
 const HistoryPresenter = imports.app.historyPresenter;
+const ItemGroup = imports.app.modules.itemGroup;
 const Launcher = imports.app.launcher;
 const LightboxPresenter = imports.app.lightboxPresenter;
 const MediaObjectModel = imports.search.mediaObjectModel;
@@ -173,6 +173,19 @@ const Presenter = new Lang.Class({
         this._connect_search_signals(this.view.home_page);
         this.view.connect('search-focused', this._on_search_focus.bind(this));
         this.view.connect('sidebar-back-clicked', this._on_back.bind(this));
+
+        let group = this.view.home_page.get_submodule(ItemGroup.ItemGroup);
+        // FIXME: the if statement is because only Template B homepage has an
+        // item group. This will be made obsolete by the dispatcher anyway.
+        if (group) {
+            group.connect('article-selected', (group, model) => {
+                this._history_presenter.set_current_item_from_props({
+                    page_type: this._SECTION_PAGE,
+                    model: model,
+                });
+            });
+        }
+
         this.view.section_page.connect('load-more-results', this._on_load_more_results.bind(this));
         this.view.home_page.connect('show-categories', this._on_categories_button_clicked.bind(this));
         this.view.categories_page.connect('show-home', this._on_home_button_clicked.bind(this));
@@ -345,28 +358,28 @@ const Presenter = new Lang.Class({
     },
 
     _set_sections: function(sections) {
-        let new_card_from_section = (section) => {
-            let card = this.factory.create_named_module('home-card', {
-                model: section,
+        let _on_section_card_clicked = (card) => {
+            this._history_presenter.set_current_item_from_props({
+                page_type: this._SECTION_PAGE,
+                model: card.model,
             });
-            card.connect('clicked', () => {
-                this._history_presenter.set_current_item_from_props({
-                    page_type: this._SECTION_PAGE,
-                    model: card.model,
-                });
-            });
-            return card;
         };
 
         if (this._template_type === 'A') {
             for (let page of [this.view.home_page, this.view.categories_page]) {
-                let category_cards = sections.map(new_card_from_section);
+                let category_cards = sections.map((section) => {
+                    let card = this.factory.create_named_module('home-card', {
+                        model: section,
+                    });
+                    card.connect('clicked', _on_section_card_clicked.bind(this));
+                    return card;
+                });
                 page.cards = category_cards;
             }
         } else {
             // FIXME: Temporarily handles passing of cards until we have dispatcher/alternative method.
-            let card_container = this.view.home_page.get_submodule(CardContainer.CardContainer);
-            card_container.cards = sections.map(new_card_from_section);
+            let group = this.view.home_page.get_submodule(ItemGroup.ItemGroup);
+            group.set_cards(sections);
         }
     },
 

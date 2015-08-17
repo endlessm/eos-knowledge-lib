@@ -9,12 +9,10 @@ const Utils = imports.tests.utils;
 Utils.register_gresource();
 
 const AppBanner = imports.app.modules.appBanner;
-const CardContainer = imports.app.modules.cardContainer;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const HomePageBTemplate = imports.app.modules.homePageBTemplate;
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
 const Minimal = imports.tests.minimal;
-const MockCardContainer = imports.tests.mockCardContainer;
 const MockFactory = imports.tests.mockFactory;
 const MockPlaceholder = imports.tests.mockPlaceholder;
 const StyleClasses = imports.app.styleClasses;
@@ -35,12 +33,12 @@ describe('HomePageBTemplate module', function () {
         let factory = new MockFactory.MockFactory();
         factory.add_named_mock('Placeholder1', MockPlaceholder.MockPlaceholder, {}, { 'name': 'top-left-placeholder' });
         factory.add_named_mock('Placeholder2', MockPlaceholder.MockPlaceholder, {}, { 'name': 'top-right-placeholder' });
-        factory.add_named_mock('card-container', MockCardContainer.MockCardContainer, {}, { 'name': 'bottom-placeholder' });
+        factory.add_named_mock('Placeholder3', MockPlaceholder.MockPlaceholder, {}, { 'name': 'bottom-placeholder' });
         factory.add_named_mock('home-page-template', HomePageBTemplate.HomePageBTemplate,
         {
             'top_left': 'Placeholder1',
             'top_right': 'Placeholder2',
-            'bottom': 'card-container',
+            'bottom': 'Placeholder3',
         });
 
         card_list = [0, 1, 2, 3, 4, 5].map(() => new Minimal.MinimalCard());
@@ -60,7 +58,7 @@ describe('HomePageBTemplate module', function () {
     })
 
     it('can set cards', function () {
-        let card_container = home_page.get_submodule(MockCardContainer.MockCardContainer);
+        let card_container = home_page.get_submodule(MockPlaceholder.MockPlaceholder);
         card_container.cards = card_list;
         expect(card_container.cards).toBe(card_list);
     });
@@ -72,10 +70,6 @@ describe('HomePageBTemplate module', function () {
 
         it('has home page class', function () {
             expect(home_page).toHaveCssClass(StyleClasses.HOME_PAGE);
-        });
-
-        it('has a descendant with container class', function () {
-            expect(home_page).toHaveDescendantWithCssClass(StyleClasses.CARD_CONTAINER);
         });
     });
 });

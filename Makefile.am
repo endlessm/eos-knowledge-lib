@@ -240,8 +240,8 @@ js_files = \
 	js/app/modules/articleSnippetCard.js \
 	js/app/modules/cardA.js \
 	js/app/modules/cardB.js \
-	js/app/modules/cardContainer.js \
 	js/app/modules/encyclopediaWindow.js \
+	js/app/modules/itemGroup.js \
 	js/app/modules/knowledgeDocumentCard.js \
 	js/app/modules/listArrangement.js \
 	js/app/modules/homePageBTemplate.js \
@@ -254,6 +254,7 @@ js_files = \
 	js/app/modules/searchModule.js \
 	js/app/modules/setBannerCard.js \
 	js/app/modules/textCard.js \
+	js/app/modules/tiledGridArrangement.js \
 	js/app/modules/window.js \
 	js/app/mustache.js \
 	js/app/navButtonOverlay.js \
@@ -425,7 +426,6 @@ test_content = \
 EXTRA_DIST += \
 	$(javascript_tests) \
 	$(test_content) \
-	tests/ContainsMatcher.js \
 	tests/CssClassMatcher.js \
 	tests/InstanceOfMatcher.js \
 	tests/minimal.js \

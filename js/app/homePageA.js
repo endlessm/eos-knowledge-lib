@@ -121,6 +121,21 @@ const HomePageA = new Lang.Class({
         this.notify('animating');
     },
 
+    get cards() {
+        return this._cards;
+    },
+
+    set cards(v) {
+        if (this._cards === v)
+            return;
+        this._cards = v;
+        if (this._cards === null) {
+            this.pack_cards([]);
+        } else {
+            this.pack_cards(this._cards);
+        }
+    },
+
     _update_button_visibility: function () {
         if (this._got_extra_cards || (!this._card_container.all_visible && !this._animating && this.get_mapped())) {
             this._show_button();

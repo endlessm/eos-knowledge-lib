@@ -3,8 +3,8 @@
 const Lang = imports.lang;
 const GObject = imports.gi.GObject;
 
+const Minimal = imports.tests.minimal;
 const ModuleFactory = imports.app.moduleFactory;
-const Module = imports.app.interfaces.module;
 
 const MOCK_APP_JSON = {
     version: 2,
@@ -15,21 +15,6 @@ const MOCK_APP_JSON = {
     },
 };
 
-const TestModule = new Lang.Class({
-    Name: 'TestModule',
-    Extends: GObject.Object,
-    Implements: [ Module.Module ],
-
-    Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-    },
-
-    _init: function (props={}) {
-        this.parent(props);
-    },
-});
-
 const MockWarehouse = new Lang.Class({
     Name: 'MockWarehouse',
     Extends: GObject.Object,
@@ -39,7 +24,7 @@ const MockWarehouse = new Lang.Class({
     },
 
     type_to_class: function (module_name) {
-        return TestModule;
+        return Minimal.MinimalModule;
     },
 });
 

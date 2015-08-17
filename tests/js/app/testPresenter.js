@@ -33,6 +33,10 @@ const MockHomePage = new Lang.Class({
         this.app_banner = {};
     },
 
+    get_submodule: function () {
+        return new MockWidgets.MockItemGroup();
+    },
+
     connect: function (signal, handler) {
         // Silently ignore signals that we aren't mocking
         if (GObject.signal_lookup(signal, MockHomePage.$gtype) === 0)

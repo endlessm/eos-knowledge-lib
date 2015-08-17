@@ -1,6 +1,7 @@
 // Copyright 2015 Endless Mobile, Inc.
 
-/* exported MockButton, MockHistoryButtons, MockScrolledArrangement, MockSearchBox */
+/* exported MockButton, MockHistoryButtons, MockItemGroup,
+MockScrolledArrangement, MockSearchBox */
 
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
@@ -59,4 +60,12 @@ const MockSearchBox = new Lang.Class({
     set_menu_items: function () {},
 
     set_text_programmatically: function () {},
+});
+
+const MockItemGroup = new Lang.Class({
+    Name: 'MockItemGroup',
+    Extends: Minimal.MinimalModule,
+    Signals: {
+        'article-selected': {},
+    },
 });

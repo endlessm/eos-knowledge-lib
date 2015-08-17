@@ -70,12 +70,15 @@ function transform_v1_description(json) {
                 'can-focus': false,
             },
         };
-        modules['card-container'] = {
-            type: 'CardContainer',
+        modules['home-page-item-group'] = {
+            type: 'ItemGroup',
             properties: {
                 'expand': true,
                 'halign': Gtk.Align.FILL,
                 'valign': Gtk.Align.FILL,
+            },
+            slots: {
+                arrangement: 'home-page-arrangement',
             },
         };
         modules['home-page-template'] = {
@@ -83,8 +86,11 @@ function transform_v1_description(json) {
             slots: {
                 top_left: "app-banner",
                 top_right: "home-search",
-                bottom: "card-container",
+                bottom: "home-page-item-group",
             }
+        };
+        modules['home-page-arrangement'] = {
+            type: 'TiledGridArrangement',
         };
         modules['top-bar-search'] = {
             type: 'SearchBox',

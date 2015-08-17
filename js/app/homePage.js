@@ -107,21 +107,6 @@ const HomePage = new Lang.Interface({
         this.attach(search_box, 0, 1, 3, 1);
     },
 
-    set cards (v) {
-        if (this._cards === v)
-            return;
-        this._cards = v;
-        if (this._cards === null) {
-            this.pack_cards([]);
-        } else {
-            this.pack_cards(this._cards);
-        }
-    },
-
-    get cards () {
-        return this._cards;
-    },
-
     _on_search_entered: function (widget) {
         this.emit('search-entered', widget.text);
     },

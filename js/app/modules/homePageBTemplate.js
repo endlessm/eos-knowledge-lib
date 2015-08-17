@@ -55,31 +55,6 @@ const HomePageBTemplate = new Lang.Class({
         return [ 'top_left', 'top_right', 'bottom' ];
     },
 
-    pack_cards: function (cards) {
-        let _allowed_card_numbers = [4, 6, 8];
-        if (_allowed_card_numbers.indexOf(cards.length) < 0)
-            printerr('Should only set 4, 6 or 8 cards in template B. ' + cards.length);
-
-        // FIXME: Card container functionality should be moved entirely to card container
-        // module.
-        this._card_container = this._bottom.grid;
-
-        for (let card of this._card_container.get_children()) {
-            this._card_container.remove(card);
-        }
-        // FIXME: For now we're always showing two rows of cards.
-        // An alternative would be to show 1 row for 4 cards, and 2 rows otherwise
-        // let columns = this._cards.length === 6 ? 3 : 4;
-        let columns = cards.length / 2;
-        let i = 0;
-        for (let card of cards) {
-            let col = i % columns;
-            let row = Math.floor(i / columns);
-            this._card_container.attach(card, col, row, 1, 1);
-            i++;
-        }
-    },
-
     pack_module_for_slot: function(slot) {
         this.attach.bind(this, this['_' + slot]).apply(this, this._packing_args[slot]);
     },
