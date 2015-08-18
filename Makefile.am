@@ -246,6 +246,7 @@ js_files = \
 	js/app/modules/listArrangement.js \
 	js/app/modules/homePageBTemplate.js \
 	js/app/modules/mediaCard.js \
+	js/app/modules/readerBackCover.js \
 	js/app/modules/readerCard.js \
 	js/app/modules/readerDocumentCard.js \
 	js/app/modules/readerWindow.js \
@@ -264,7 +265,6 @@ js_files = \
 	js/app/presenterLoader.js \
 	js/app/previewer.js \
 	js/app/reader/archiveNotice.js \
-	js/app/reader/donePage.js \
 	js/app/reader/overviewPage.js \
 	js/app/reader/presenter.js \
 	js/app/reader/progressLabel.js \
@@ -362,6 +362,7 @@ javascript_tests = \
 	tests/js/app/modules/testListArrangement.js \
 	tests/js/app/modules/testHomePageBTemplate.js \
 	tests/js/app/modules/testMediaCard.js \
+	tests/js/app/modules/testReaderBackCover.js \
 	tests/js/app/modules/testReaderCard.js \
 	tests/js/app/modules/testReaderDocumentCard.js \
 	tests/js/app/modules/testReaderWindow.js \
@@ -371,7 +372,6 @@ javascript_tests = \
 	tests/js/app/modules/testSetBannerCard.js \
 	tests/js/app/modules/testTextCard.js \
 	tests/js/app/modules/testWindow.js \
-	tests/js/app/reader/testDonePage.js \
 	tests/js/app/reader/testOverviewPage.js \
 	tests/js/app/reader/testProgressLabel.js \
 	tests/js/app/reader/testReaderPresenter.js \

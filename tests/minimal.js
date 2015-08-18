@@ -77,6 +77,25 @@ const MinimalHomePage = new Lang.Class({
     },
 });
 
+const MinimalDonePage = new Lang.Class({
+    Name: 'MinimalDonePage',
+    Extends: Gtk.Widget,
+    Implements: [ Module.Module ],
+
+    Properties: {
+        'factory': GObject.ParamSpec.override('factory', Module.Module),
+        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
+        'progress-label': GObject.ParamSpec.object('progress-label', 'Progress label',
+            '', GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE,
+            Gtk.Widget),
+    },
+
+    _init: function (props={}) {
+        props.progress_label = props.progress_label || new Gtk.Label();
+        this.parent(props);
+    },
+});
+
 const MinimalModule = new Lang.Class({
     Name: 'MinimalModule',
     Extends: GObject.Object,

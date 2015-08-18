@@ -194,13 +194,18 @@ function transform_v1_description(json) {
                 'subtitle': json['appSubtitle'],
                 'title-image-uri': json['titleImageURI'],
                 'home-background-uri': json['backgroundHomeURI'],
-                'done-background-uri': json['backgroundSectionURI'],
             },
         };
         modules['app-banner'] = {
             type: 'AppBanner',
             properties: {
                 'image-uri': json['titleImageURI'],
+            },
+        };
+        modules['done-page'] = {
+            type: 'ReaderBackCover',
+            properties: {
+                'background-image-uri': json['backgroundSectionURI'],
             },
         };
         modules['top-bar-search'] = {

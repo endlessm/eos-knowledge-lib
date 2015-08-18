@@ -437,7 +437,7 @@ const READER_PROGRESS_LABEL = 'progress-label';
  *
  * Matches the #EknReaderDonePage itself.
  */
-const READER_DONE_PAGE = 'done-page';
+const READER_DONE_PAGE = 'back-cover';
 
 /**
  * Constant: READER_HEADLINE
