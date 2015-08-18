@@ -27,7 +27,7 @@ const EknWebview = new Lang.Class({
     Extends: WebKit2.WebView,
 
     // List of the URL schemes we defer to other applications (e.g. a browser).
-    EXTERNALLY_HANDLED_SCHEMES = [
+    EXTERNALLY_HANDLED_SCHEMES: [
         'http',
         'https',
         'file',
