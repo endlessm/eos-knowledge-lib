@@ -258,7 +258,7 @@ function create_v1_set_models(json, engine) {
 }
 
 // External links used to be prepended with 'browser-', this strips them off.
-function normalize_old_browser_urls (url) {
+function normalize_old_browser_urls (uri) {
     let scheme = GLib.uri_parse_scheme(uri);
     if (scheme !== null && scheme.startsWith('browser-'))
         uri = uri.slice('browser-'.length);

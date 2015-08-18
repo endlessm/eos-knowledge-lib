@@ -4,7 +4,7 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const WebKit2 = imports.gi.WebKit2;
 
-const Compat = imports.app.compat;
+const Compat = imports.app.compat.compat;
 const Config = imports.app.config;
 
 /**
@@ -27,7 +27,7 @@ const EknWebview = new Lang.Class({
     Extends: WebKit2.WebView,
 
     // List of the URL schemes we defer to other applications (e.g. a browser).
-    EXTERNALLY_HANDLED_SCHEMES = [
+    EXTERNALLY_HANDLED_SCHEMES: [
         'http',
         'https',
         'file',

@@ -1,5 +1,8 @@
+const ByteArray = imports.byteArray;
+const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
+const WebKit2 = imports.gi.WebKit2;
 
 const Utils = imports.tests.utils;
 Utils.register_gresource();
@@ -14,17 +17,29 @@ Gtk.init(null);
 
 const TEST_CONTENT_DIR = Utils.get_test_content_srcdir();
 
+function register_webkit_uri_handlers () {
+    let security_manager = WebKit2.WebContext.get_default().get_security_manager();
+    security_manager.register_uri_scheme_as_local('ekn');
+    EosKnowledgePrivate.private_register_global_uri_scheme('ekn', (req) => {
+        let html = '<html><div>some text</div></html>';
+        let bytes = ByteArray.fromString(html).toGBytes();
+        let stream = Gio.MemoryInputStream.new_from_bytes(bytes);
+        req.finish(stream, -1, 'text/html; charset=utf-8');
+    });
+}
+
 describe('Document Card', function () {
     let card;
     let article_object;
 
     beforeEach(function () {
+        register_webkit_uri_handlers();
         let dummy_content = Gio.File.new_for_path(TEST_CONTENT_DIR + 'emacs.html');
         jasmine.addMatchers(CssClassMatcher.customMatchers);
         jasmine.addMatchers(WidgetDescendantMatcher.customMatchers);
 
         article_object = new ArticleObjectModel.ArticleObjectModel({
-            ekn_id: dummy_content.get_uri(),
+            ekn_id: 'ekn://astronomy-en/foo',
             content_type: 'text/html',
             title: 'Reader article',
         });
@@ -46,7 +61,7 @@ describe('Document Card', function () {
 
     it('emits content error signal after loading bad content', function (done) {
         let article_object = new ArticleObjectModel.ArticleObjectModel({
-            ekn_id: 'ekn:///bad_uri',
+            ekn_id: 'file:///bad_uri',
             content_type: 'text/html',
             title: 'Reader article',
         });
