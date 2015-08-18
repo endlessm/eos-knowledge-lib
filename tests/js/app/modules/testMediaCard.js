@@ -20,9 +20,9 @@ describe ('Media Infobox', function () {
         Utils.register_gresource();
 
         imageObject = new MediaObjectModel.ImageObjectModel({
-            caption: "foo",
-            license: "bar",
-            copyright_holder: "baz",
+            caption: 'foo',
+            license: 'bar',
+            copyright_holder: 'baz',
             get_content_stream: () => null,
             content_type: 'image/jpeg',
         });
@@ -30,14 +30,14 @@ describe ('Media Infobox', function () {
 
     it ('hides separator when caption or attribution not visible', function () {
         let noCaption = new MediaObjectModel.ImageObjectModel({
-            license: "bar",
-            copyright_holder: "baz",
+            license: 'bar',
+            copyright_holder: 'baz',
             get_content_stream: () => null,
             content_type: 'image/jpeg',
         });
 
         let noAttribution = new MediaObjectModel.ImageObjectModel({
-            caption: "foo",
+            caption: 'foo',
             get_content_stream: () => null,
             content_type: 'image/jpeg',
         });
