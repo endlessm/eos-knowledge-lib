@@ -10,7 +10,13 @@ const MOCK_APP_JSON = {
     version: 2,
     modules: {
         'test': {
-            type: 'TestModule'
+            type: 'TestModule',
+            slots: {
+                'test_slot': 'test_submodule',
+            },
+        },
+        'test_submodule': {
+            type: 'TestModule',
         },
     },
 };
@@ -47,5 +53,16 @@ describe('Module factory', function () {
         module_factory.create_named_module('test');
 
         expect(warehouse.type_to_class).toHaveBeenCalledWith('TestModule');
+    });
+
+    it('supports extra construct properties when creating modules for slots', function () {
+        let test_constructor = jasmine.createSpy('TestModuleConstructor');
+        spyOn(warehouse, 'type_to_class').and.returnValue(test_constructor);
+        module_factory.create_module_for_slot('test', 'test_slot', {
+            foo: 'bar',
+        });
+        expect(test_constructor).toHaveBeenCalledWith(jasmine.objectContaining({
+            foo: 'bar',
+        }));
     });
 });
