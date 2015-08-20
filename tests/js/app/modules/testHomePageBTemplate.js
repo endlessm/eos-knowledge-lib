@@ -7,7 +7,6 @@ Utils.register_gresource();
 
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const HomePageBTemplate = imports.app.modules.homePageBTemplate;
-const Minimal = imports.tests.minimal;
 const MockFactory = imports.tests.mockFactory;
 const MockPlaceholder = imports.tests.mockPlaceholder;
 const StyleClasses = imports.app.styleClasses;
@@ -18,7 +17,6 @@ Gtk.init(null);
 describe('HomePageBTemplate module', function () {
     let home_page;
     let factory;
-    let card_list;
 
     beforeEach(function () {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
@@ -35,8 +33,6 @@ describe('HomePageBTemplate module', function () {
             'bottom': 'Placeholder3',
         });
 
-        card_list = [0, 1, 2, 3, 4, 5].map(() => new Minimal.MinimalCard());
-
         home_page = new HomePageBTemplate.HomePageBTemplate({
             factory: factory,
             factory_name: 'home-page-template',
@@ -52,12 +48,6 @@ describe('HomePageBTemplate module', function () {
         expect(home_page).toHaveDescendant(top_right);
         let bottom = factory.get_created_named_mocks('Placeholder3')[0];
         expect(home_page).toHaveDescendant(bottom);
-    });
-
-    it('can set cards', function () {
-        let card_container = home_page.get_submodule(MockPlaceholder.MockPlaceholder);
-        card_container.cards = card_list;
-        expect(card_container.cards).toBe(card_list);
     });
 
     describe('CSS style context', function () {

@@ -97,13 +97,4 @@ const Module = new Lang.Interface({
         return this.factory.create_module_for_slot(this.factory_name, slot,
             extra_props);
     },
-
-    get_submodule: function (klass) {
-        let retval = null;
-        this.get_slot_names().forEach((slot) => {
-             if (this['_' + slot] instanceof klass)
-                retval = this['_' + slot];
-        });
-        return retval;
-    },
 });
