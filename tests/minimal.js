@@ -15,7 +15,7 @@ const Module = imports.app.interfaces.module;
 
 const MinimalArrangement = new Lang.Class({
     Name: 'MinimalArrangement',
-    Extends: Gtk.Widget,
+    Extends: Gtk.Grid,
     Implements: [ Module.Module, Arrangement.Arrangement ],
 
     Properties: {

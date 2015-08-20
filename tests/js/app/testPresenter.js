@@ -62,8 +62,8 @@ const MockView = new Lang.Class({
             connect: function () {},
         };
         this.section_page = connectable_object;
-        this.section_page.remove_all_segments = function () {};
-        this.section_page.append_to_segment = function () {};
+        this.section_page.remove_all_cards = function () {};
+        this.section_page.append_cards = function () {};
         this.home_page = new MockHomePage();
         this.home_page.tab_button = {};
         this.categories_page = connectable_object;

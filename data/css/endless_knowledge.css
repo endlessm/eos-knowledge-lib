@@ -442,17 +442,6 @@ EknWindow.show-no-search-results-page {
     background-image: linear-gradient(-180deg, rgba(0,0,0,0.0) 65%, rgba(0,0,0,0.30) 85%, rgba(0,0,0,0.70) 100%);
 }
 
-.section-page-a-segment-title {
-    padding-top: 0.2em;
-    color: white;
-    font-size: 1.25em;  /* 20pt * 1/12 * 0.75 DPI correction factor */
-    padding-left: 4em;
-    /* TODO: light font weight matches the specs, but looks way to thin in practice.
-       Think there's some difference between how lato renders in web vs gtk or
-       something. */
-    /*font-weight: 300;*/
-}
-
 .no-search-results-page-a .no-search-results-page-no-results-label,
 .no-search-results-page-a .no-search-results-page-try-again-label {
     font-family: Lato;

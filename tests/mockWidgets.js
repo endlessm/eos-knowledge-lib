@@ -27,6 +27,8 @@ const MockScrolledArrangement = new Lang.Class({
     Properties: {
         'preferred-width': GObject.ParamSpec.int('preferred-width', '', '',
             GObject.ParamFlags.READWRITE, -1, 9999, -1),
+        'bottom-buffer': GObject.ParamSpec.int('bottom-buffer', '', '',
+            GObject.ParamFlags.READWRITE, -1, 9999, -1),
     },
     Signals: {
         'need-more-content': {},  // needed for several arrangements

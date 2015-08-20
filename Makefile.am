@@ -240,6 +240,7 @@ js_files = \
 	js/app/modules/cardB.js \
 	js/app/modules/encyclopediaCoverTemplate.js \
 	js/app/modules/encyclopediaWindow.js \
+	js/app/modules/gridArrangement.js \
 	js/app/modules/itemGroup.js \
 	js/app/modules/knowledgeDocumentCard.js \
 	js/app/modules/homePageBTemplate.js \

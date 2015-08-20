@@ -2,6 +2,7 @@ const Gtk = imports.gi.Gtk;
 
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const MockFactory = imports.tests.mockFactory;
+const MockWidgets = imports.tests.mockWidgets;
 const SectionArticlePage = imports.app.sectionArticlePage;
 const StyleClasses = imports.app.styleClasses;
 
@@ -17,8 +18,12 @@ describe ('Section -  Article Page', function () {
     beforeEach (function () {
         jasmine.addMatchers (CssClassMatcher.customMatchers);
 
+        let factory = new MockFactory.MockFactory();
+        factory.add_named_mock('results-arrangement',
+            MockWidgets.MockScrolledArrangement);
+
         the_section_article_page = new SectionArticlePage.SectionArticlePageA({
-            factory: new MockFactory.MockFactory(),
+            factory: factory,
         });
         the_section_article_page.show_all();
     });
