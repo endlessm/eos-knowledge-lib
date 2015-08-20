@@ -18,7 +18,8 @@ describe('Item group module', function () {
         factory.add_named_mock('test-arrangement', Minimal.MinimalArrangement);
         factory.add_named_mock('home-card', Minimal.MinimalCard);
         factory.add_named_mock('item-group', ItemGroup.ItemGroup, {
-            'arrangement': 'test-arrangement',
+            arrangement: 'test-arrangement',
+            card_type: 'home-card',
         });
         group = new ItemGroup.ItemGroup({
             factory: factory,
@@ -33,6 +34,11 @@ describe('Item group module', function () {
 
     it('creates and packs an arrangement widget', function () {
         expect(group).toHaveDescendant(arrangement);
+    });
+
+    it('does not create a card widget at construct time', function () {
+        let cards = factory.get_created_named_mocks('home-card');
+        expect(cards.length).toEqual(0);
     });
 
     it('adds cards when given a list of models', function () {

@@ -79,6 +79,7 @@ function transform_v1_description(json) {
             },
             slots: {
                 arrangement: 'home-page-arrangement',
+                card_type: 'home-card',
             },
         };
         modules['home-page-template'] = {
@@ -172,6 +173,10 @@ function transform_v1_description(json) {
         };
         modules['search-results'] = {
             type: 'SearchModule',
+            slots: {
+                arrangement: 'results-arrangement',
+                card_type: 'results-card',
+            },
         };
         modules['results-card'] = {
             type: 'TextCard',
@@ -180,8 +185,8 @@ function transform_v1_description(json) {
                 'decoration': true,
             },
         };
-        // FIXME: this should be a submodule of search-results, in the
-        // "arrangement" slot, when we get submodules implemented in the factory
+        // FIXME: this should be inlined into search-results, when we get
+        // submodules implemented in the factory
         modules['results-arrangement'] = {
             type: 'ListArrangement',
         };
