@@ -405,11 +405,11 @@ const READER_OVERVIEW_FRAME = 'overview-frame';
 const READER_ARTICLE_SNIPPET = 'article-snippet';
 
 /**
- * Constant: READER_APP_SUBTITLE
+ * Constant: READER_SUBTITLE
  *
  * Matches app subtitle labels across Reader apps.
  */
-const READER_APP_SUBTITLE = 'subtitle';
+const READER_SUBTITLE = 'subtitle';
 
 /**
  * Constant: READER_TITLE
