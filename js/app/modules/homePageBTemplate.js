@@ -56,6 +56,7 @@ const HomePageBTemplate = new Lang.Class({
     },
 
     pack_module_for_slot: function(slot) {
+        this['_' + slot] = this.factory.create_module_for_slot(this.factory_name, slot);
         this.attach.bind(this, this['_' + slot]).apply(this, this._packing_args[slot]);
     },
 });

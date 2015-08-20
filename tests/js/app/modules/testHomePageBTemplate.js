@@ -11,6 +11,7 @@ const Minimal = imports.tests.minimal;
 const MockFactory = imports.tests.mockFactory;
 const MockPlaceholder = imports.tests.mockPlaceholder;
 const StyleClasses = imports.app.styleClasses;
+const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 
 Gtk.init(null);
 
@@ -21,11 +22,12 @@ describe('HomePageBTemplate module', function () {
 
     beforeEach(function () {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
+        jasmine.addMatchers(WidgetDescendantMatcher.customMatchers);
 
         factory = new MockFactory.MockFactory();
-        factory.add_named_mock('Placeholder1', MockPlaceholder.MockPlaceholder, {}, { 'name': 'top-left-placeholder' });
-        factory.add_named_mock('Placeholder2', MockPlaceholder.MockPlaceholder, {}, { 'name': 'top-right-placeholder' });
-        factory.add_named_mock('Placeholder3', MockPlaceholder.MockPlaceholder, {}, { 'name': 'bottom-placeholder' });
+        factory.add_named_mock('Placeholder1', MockPlaceholder.MockPlaceholder);
+        factory.add_named_mock('Placeholder2', MockPlaceholder.MockPlaceholder);
+        factory.add_named_mock('Placeholder3', MockPlaceholder.MockPlaceholder);
         factory.add_named_mock('home-page-template', HomePageBTemplate.HomePageBTemplate,
         {
             'top_left': 'Placeholder1',
@@ -44,9 +46,12 @@ describe('HomePageBTemplate module', function () {
     it('constructs', function () {});
 
     it('packs all its children', function () {
-        expect(home_page._top_left.name).toBe('top-left-placeholder');
-        expect(home_page._top_right.name).toBe('top-right-placeholder');
-        expect(home_page._bottom.name).toBe('bottom-placeholder');
+        let top_left = factory.get_created_named_mocks('Placeholder1')[0];
+        expect(home_page).toHaveDescendant(top_left);
+        let top_right = factory.get_created_named_mocks('Placeholder2')[0];
+        expect(home_page).toHaveDescendant(top_right);
+        let bottom = factory.get_created_named_mocks('Placeholder3')[0];
+        expect(home_page).toHaveDescendant(bottom);
     });
 
     it('can set cards', function () {

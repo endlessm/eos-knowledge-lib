@@ -37,12 +37,16 @@ const Module = new Lang.Interface({
      * Uses factory and app_json to create all the submodules specified in
      * the module's description. It then packs those submodules into their
      * corresponding slots.
+     *
+     * If you don't want all slots to be filled at construct time (for example,
+     * because the slot is a card type that should be created on demand) then
+     * you should override <Module.pack_module_for_slot()> in your
+     * implementation.
      */
     pack_module: function() {
         let slots = this.get_slot_names();
 
         slots.forEach((slot) => {
-            this['_' + slot] = this.factory.create_module_for_slot(this.factory_name, slot);
             this.pack_module_for_slot(slot);
         });
     },
@@ -52,8 +56,17 @@ const Module = new Lang.Interface({
      * Attach a submodule to its correct position
      *
      * Can be overridden in class implementations.
+     * The default is to add the submodule as a property to the module, whose
+     * name consists of the slot name prefixed with an underscore, and pack the
+     * submodule into the module using **Gtk.Container.add()**.
+     * You should override this function if you don't want that to happen on
+     * construction, or if the submodule needs to be packed another way.
+     *
+     * Parameters:
+     *   slot - the slot for which to create and pack the module (string)
      */
     pack_module_for_slot: function(slot) {
+        this['_' + slot] = this.factory.create_module_for_slot(this.factory_name, slot);
         this.add(this['_' + slot]);
     },
 
