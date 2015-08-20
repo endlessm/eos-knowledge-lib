@@ -66,7 +66,7 @@ const Module = new Lang.Interface({
      *   slot - the slot for which to create and pack the module (string)
      */
     pack_module_for_slot: function(slot) {
-        this['_' + slot] = this.factory.create_module_for_slot(this.factory_name, slot);
+        this['_' + slot] = this.create_submodule(slot);
         this.add(this['_' + slot]);
     },
 
@@ -79,6 +79,23 @@ const Module = new Lang.Interface({
      */
     get_slot_names: function () {
         return [];
+    },
+
+    /**
+     * Method: create_submodule
+     * Create a new instance of a submodule
+     *
+     * Creates an instance of a submodule through the factory, optionally adding
+     * some construct properties.
+     * This doesn't pack the submodule anywhere, just returns it.
+     *
+     * Properties:
+     *   slot - the slot for which to create the module (string)
+     *   extra_props - dictionary of construct properties
+     */
+    create_submodule: function (slot, extra_props={}) {
+        return this.factory.create_module_for_slot(this.factory_name, slot,
+            extra_props);
     },
 
     get_submodule: function (klass) {
