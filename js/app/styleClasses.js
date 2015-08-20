@@ -405,11 +405,11 @@ const READER_OVERVIEW_FRAME = 'overview-frame';
 const READER_ARTICLE_SNIPPET = 'article-snippet';
 
 /**
- * Constant: READER_APP_SUBTITLE
+ * Constant: READER_SUBTITLE
  *
  * Matches app subtitle labels across Reader apps.
  */
-const READER_APP_SUBTITLE = 'subtitle';
+const READER_SUBTITLE = 'subtitle';
 
 /**
  * Constant: READER_TITLE
@@ -433,26 +433,11 @@ const READER_SYNOPSIS = 'synopsis';
 const READER_PROGRESS_LABEL = 'progress-label';
 
 /**
- * Constant: READER_DONE_PAGE
+ * Constant: READER_BACK_COVER
  *
- * Matches the #EknReaderDonePage itself.
+ * Matches the #EknReaderBackCover itself.
  */
-const READER_DONE_PAGE = 'done-page';
-
-/**
- * Constant: READER_HEADLINE
- *
- * Matches the headline text on the reader's 'done' page.
- */
-const READER_HEADLINE = 'title';
-
-/**
- * Constant: READER_BOTTOM_LINE
- *
- * Matches the non-headline text on the reader's 'done' page.
- */
-const READER_BOTTOM_LINE = 'bottom-line';
-
+const READER_BACK_COVER = 'back-cover';
 
 /**
  * Constant: READER_OPEN_BUTTON

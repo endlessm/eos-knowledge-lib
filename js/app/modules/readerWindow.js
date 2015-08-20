@@ -14,7 +14,6 @@ const Lang = imports.lang;
 const Actions = imports.app.actions;
 const Config = imports.app.config;
 const Dispatcher = imports.app.dispatcher;
-const DonePage = imports.app.reader.donePage;
 const Lightbox = imports.app.widgets.lightbox;
 const Module = imports.app.interfaces.module;
 const NavButtonOverlay = imports.app.widgets.navButtonOverlay;
@@ -69,14 +68,14 @@ const ReaderWindow = new Lang.Class({
             OverviewPage.OverviewPage.$gtype),
 
         /**
-         * Property: done-page
+         * Property: back-cover
          *
-         * The <Reader.DonePage> widget created by this widget. Read-only.
+         * The <BackCover> widget created by this widget. Read-only.
          */
-        'done-page': GObject.ParamSpec.object('done-page', 'Done Page',
-            'The done page at the end of the app.',
+        'back-cover': GObject.ParamSpec.object('back-cover', 'Back cover',
+            'The back cover at the end of the app.',
             GObject.ParamFlags.READABLE,
-            DonePage.DonePage.$gtype),
+            Gtk.Widget),
 
         /**
          * Property: standalone-page
@@ -160,13 +159,6 @@ const ReaderWindow = new Lang.Class({
             'Home Background URI', 'Home Background URI',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
         /**
-         * Property: done-background-uri
-         * URI of the done page background
-         */
-        'done-background-uri': GObject.ParamSpec.string('done-background-uri',
-            'Done Background URI', 'Done Background URI',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
-        /**
          * Property: title-image-uri
          *
          * FIXME: when the infobar is a proper module this can go away.
@@ -194,9 +186,7 @@ const ReaderWindow = new Lang.Class({
             subtitle: this.subtitle,
             background_image_uri: this.home_background_uri,
         });
-        this.done_page = new DonePage.DonePage({
-            background_image_uri: this.done_background_uri,
-        });
+        this.back_cover = this.factory.create_named_module('back-cover');
         this.standalone_page = new StandalonePage.StandalonePage();
         this.standalone_page.infobar.archive_notice.label = _("This article is part of the archive of the magazine %s.").format(this.title);
         this.standalone_page.infobar.title_image_uri = this.title_image_uri;
@@ -262,7 +252,7 @@ const ReaderWindow = new Lang.Class({
             transition_duration: this._STACK_TRANSITION_TIME,
         });
         this._stack.add(this.overview_page);
-        this._stack.add(this.done_page);
+        this._stack.add(this.back_cover);
         this._stack.add(this.standalone_page);
         this._stack.add(this.search_results_page);
         this._stack.show_all();
@@ -300,8 +290,8 @@ const ReaderWindow = new Lang.Class({
             progress_label.current_page = i + 2;
             progress_label.total_pages = this.total_pages;
         }
-        this.done_page.progress_label.current_page = this.total_pages;
-        this.done_page.progress_label.total_pages = this.total_pages;
+        this.back_cover.progress_label.current_page = this.total_pages;
+        this.back_cover.progress_label.total_pages = this.total_pages;
     },
 
     /*
@@ -386,11 +376,11 @@ const ReaderWindow = new Lang.Class({
         this._stack.set_visible_child(this.overview_page);
     },
 
-    show_done_page: function (animation_type) {
+    show_back_cover: function (animation_type) {
         this.nav_buttons.accommodate_scrollbar = false;
         this._set_stack_transition(animation_type);
-        this.done_page.show();
-        this._stack.set_visible_child(this.done_page);
+        this.back_cover.show();
+        this._stack.set_visible_child(this.back_cover);
     },
 
     _set_stack_transition: function (animation_type) {

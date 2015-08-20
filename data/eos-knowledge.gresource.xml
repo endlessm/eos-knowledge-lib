@@ -34,6 +34,7 @@
     <file compressed="true" preprocess="xml-stripblanks">widgets/appBanner.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">widgets/archiveNotice.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">widgets/articleSnippetCard.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">widgets/backCover.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">widgets/cardA.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">widgets/cardB.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">widgets/cardContainer.ui</file>

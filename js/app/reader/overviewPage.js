@@ -106,7 +106,7 @@ const OverviewPage = new Lang.Class({
         snippets_frame.add(this._snippets_grid);
 
         this.get_style_context().add_class(StyleClasses.READER_OVERVIEW_PAGE);
-        this._subtitle_label.get_style_context().add_class(StyleClasses.READER_APP_SUBTITLE);
+        this._subtitle_label.get_style_context().add_class(StyleClasses.READER_SUBTITLE);
 
         grid.connect('size-allocate', (grid, alloc) => {
             if (alloc.width >= _PAGE_WIDTH_THRESHOLD) {

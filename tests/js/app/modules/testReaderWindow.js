@@ -39,6 +39,7 @@ describe('Window widget', function () {
 
         factory = new MockFactory.MockFactory();
         factory.add_named_mock('document-card', Minimal.MinimalDocumentCard);
+        factory.add_named_mock('back-cover', Minimal.MinimalBackCover);
         view = new ReaderWindow.ReaderWindow({
             application: app,
             factory: factory,
@@ -55,8 +56,8 @@ describe('Window widget', function () {
 
     it('constructs', function () {});
 
-    it('has a done-page widget', function () {
-        expect(view.done_page).toBeA(Gtk.Widget);
+    it('has a back-cover widget', function () {
+        expect(view.back_cover).toBeA(Gtk.Widget);
     });
 
     it('has an overview-page widget', function () {
@@ -81,7 +82,7 @@ describe('Window widget', function () {
 
     it('can remove all pages but the done page', function () {
         view.remove_all_article_pages();
-        expect(view.total_pages).toBe(2);  // done-page and overview page remain
+        expect(view.total_pages).toBe(2);  // back-cover and overview page remain
     });
 
     it('throws an error when out of bounds pages are accessed', function () {
