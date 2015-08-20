@@ -7,7 +7,7 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const Arrangement = imports.app.interfaces.arrangement;
-const InfiniteScrolledWindow = imports.app.infiniteScrolledWindow;
+const InfiniteScrolledWindow = imports.app.widgets.infiniteScrolledWindow;
 const Module = imports.app.interfaces.module;
 
 const ListArrangement = new Lang.Class({

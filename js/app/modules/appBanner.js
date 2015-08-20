@@ -5,7 +5,7 @@ const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 
 const Module = imports.app.interfaces.module;
-const ImagePreviewer = imports.app.imagePreviewer;
+const ImagePreviewer = imports.app.widgets.imagePreviewer;
 
 /**
  * Class: AppBanner

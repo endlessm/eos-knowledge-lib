@@ -9,10 +9,10 @@ const ArticleObjectModel = imports.search.articleObjectModel;
 const ArticlePage = imports.app.articlePage;
 const ArticlePresenter = imports.app.articlePresenter;
 const Engine = imports.search.engine;
-const Lightbox = imports.app.lightbox;
+const Lightbox = imports.app.widgets.lightbox;
 const MediaCard = imports.app.modules.mediaCard;
 const MediaObjectModel = imports.search.mediaObjectModel;
-const Previewer = imports.app.previewer;
+const Previewer = imports.app.widgets.previewer;
 const Utils = imports.tests.utils;
 
 const TEST_APPLICATION_ID = 'com.endlessm.knowledge.mediaobject';

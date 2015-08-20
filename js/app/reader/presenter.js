@@ -9,12 +9,14 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
-const ArchiveNotice = imports.app.reader.archiveNotice;
+const Actions = imports.app.actions;
+const ArchiveNotice = imports.app.widgets.archiveNotice;
 const ArticleHTMLRenderer = imports.app.articleHTMLRenderer;
 const ArticleObjectModel = imports.search.articleObjectModel;
 const ArticleSnippetCard = imports.app.modules.articleSnippetCard;
 const Compat = imports.app.compat.compat;
 const Config = imports.app.config;
+const Dispatcher = imports.app.dispatcher;
 const DonePage = imports.app.reader.donePage;
 const Engine = imports.search.engine;
 const HistoryPresenter = imports.app.historyPresenter;
@@ -29,7 +31,7 @@ const StyleClasses = imports.app.styleClasses;
 const UserSettingsModel = imports.app.reader.userSettingsModel;
 const Utils = imports.app.utils;
 const WebkitContextSetup = imports.app.webkitContextSetup;
-const WebviewTooltip = imports.app.reader.webviewTooltip;
+const WebviewTooltip = imports.app.widgets.webviewTooltip;
 
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
@@ -187,7 +189,7 @@ const Presenter = new Lang.Class({
         // Currently, Reader apps lightboxes don't show an infobox.
         this._lightbox_presenter = new LightboxPresenter.LightboxPresenter({
             engine: this.engine,
-            view: this.view,
+            lightbox: this.view.lightbox,
             factory: this.factory,
         });
 
@@ -204,7 +206,6 @@ const Presenter = new Lang.Class({
         this.history_model = new EosKnowledgePrivate.HistoryModel();
         this._history_presenter = new HistoryPresenter.HistoryPresenter({
             history_model: this.history_model,
-            history_buttons: this.view.history_buttons,
         });
 
         this._style_knobs = app_json['styles'];
@@ -213,13 +214,17 @@ const Presenter = new Lang.Class({
         this._pending_present_timestamp = null;
 
         // Connect signals
-        this.view.nav_buttons.connect('back-clicked', function () {
-            this._add_history_item_for_page(this._current_page - 1);
-        }.bind(this));
-        this.view.nav_buttons.connect('forward-clicked', function () {
-            let next_page = (this._current_page + 1) % this.view.total_pages;
-            this._add_history_item_for_page(next_page);
-        }.bind(this));
+        Dispatcher.get_default().register((payload) => {
+            switch(payload.action_type) {
+                case Actions.NAV_BACK_CLICKED:
+                    this._add_history_item_for_page(this._current_page - 1);
+                    break;
+                case Actions.NAV_FORWARD_CLICKED:
+                    let next_page = (this._current_page + 1) % this.view.total_pages;
+                    this._add_history_item_for_page(next_page);
+                    break;
+            }
+        });
 
         this.view.connect('notify::total-pages',
             this._update_button_visibility.bind(this));

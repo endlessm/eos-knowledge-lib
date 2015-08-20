@@ -2,7 +2,7 @@ const Gtk = imports.gi.Gtk;
 
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const StyleClasses = imports.app.styleClasses;
-const TableOfContents = imports.app.tableOfContents;
+const TableOfContents = imports.app.widgets.tableOfContents;
 
 Gtk.init(null);
 

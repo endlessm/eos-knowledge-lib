@@ -33,17 +33,13 @@ const LightboxPresenter = new GObject.Class({
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             GObject.Object.$gtype),
         /**
-         * Property: view
-         * View that contains the lightbox
-         *
-         * The <Window> object that contains the <Lightbox> that is being handled
-         * by this presenter.
+         * Property: lightbox
+         * The lightbox widget for this presenter
          *
          * Flags:
          *   Construct only
          */
-        'view': GObject.ParamSpec.object('view', 'View',
-            'The Window object that contains the Lightbox that is being handled.',
+        'lightbox': GObject.ParamSpec.object('lightbox', 'Lightbox', 'Lightbox',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             GObject.Object.$gtype),
         /**
@@ -64,8 +60,8 @@ const LightboxPresenter = new GObject.Class({
         this._loading_new_lightbox = false;
         this._current_index = -1;
 
-        this.view.connect('lightbox-nav-previous-clicked', () => this._on_previous_clicked());
-        this.view.connect('lightbox-nav-next-clicked', () => this._on_next_clicked());
+        this.lightbox.connect('navigation-previous-clicked', () => this._on_previous_clicked());
+        this.lightbox.connect('navigation-next-clicked', () => this._on_next_clicked());
     },
 
     show_media_object: function (article_model, media_object) {
@@ -74,7 +70,7 @@ const LightboxPresenter = new GObject.Class({
     },
 
     hide_lightbox: function () {
-        this.view.lightbox.reveal_overlays = false;
+        this.lightbox.reveal_overlays = false;
     },
 
     _on_previous_clicked: function () {
@@ -117,10 +113,10 @@ const LightboxPresenter = new GObject.Class({
         let card = this.factory.create_named_module('lightbox-card', {
             model: media_object
         });
-        this.view.lightbox.lightbox_widget = card;
-        this.view.lightbox.reveal_overlays = true;
-        this.view.lightbox.has_back_button = this._current_index > 0;
-        this.view.lightbox.has_forward_button = this._current_index < resources.length - 1;
+        this.lightbox.lightbox_widget = card;
+        this.lightbox.reveal_overlays = true;
+        this.lightbox.has_back_button = this._current_index > 0;
+        this.lightbox.has_forward_button = this._current_index < resources.length - 1;
         return true;
     },
 });

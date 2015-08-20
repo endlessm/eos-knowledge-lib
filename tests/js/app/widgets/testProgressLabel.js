@@ -1,6 +1,6 @@
 const Gtk = imports.gi.Gtk;
 
-const ProgressLabel = imports.app.reader.progressLabel;
+const ProgressLabel = imports.app.widgets.progressLabel;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const StyleClasses = imports.app.styleClasses;
 

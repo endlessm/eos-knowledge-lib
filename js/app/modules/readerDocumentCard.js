@@ -8,9 +8,9 @@ const Lang = imports.lang;
 const AsyncTask = imports.search.asyncTask;
 const Card = imports.app.interfaces.card;
 const DocumentCard = imports.app.interfaces.documentCard;
-const EknWebview = imports.app.eknWebview;
+const EknWebview = imports.app.widgets.eknWebview;
 const Module = imports.app.interfaces.module;
-const ProgressLabel = imports.app.reader.progressLabel;
+const ProgressLabel = imports.app.widgets.progressLabel;
 const Utils = imports.app.utils;
 const WebKit2 = imports.gi.WebKit2;
 

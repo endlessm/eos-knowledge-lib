@@ -3,9 +3,11 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
+const Actions = imports.app.actions;
 const ContentPage = imports.app.encyclopedia.contentPage;
+const Dispatcher = imports.app.dispatcher;
 const HomePage = imports.app.encyclopedia.homePage;
-const Lightbox = imports.app.lightbox;
+const Lightbox = imports.app.widgets.lightbox;
 const Module = imports.app.interfaces.module;
 
 const HOME_PAGE_NAME = 'home';
@@ -27,11 +29,6 @@ const EncyclopediaWindow = new Lang.Class({
             'The content page of this view widget.',
             GObject.ParamFlags.READABLE,
             ContentPage.ContentPage),
-        'history-buttons': GObject.ParamSpec.object('history-buttons',
-            'History buttons',
-            'The back/forward navigation buttons on the title bar',
-            GObject.ParamFlags.READABLE,
-            Endless.TopbarNavButton.$gtype),
         /**
          * Property: lightbox
          *
@@ -59,26 +56,6 @@ const EncyclopediaWindow = new Lang.Class({
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
     },
 
-    Signals: {
-        /**
-         * Event: lightbox-nav-previous-clicked
-         * Emmited when the navigation button in the lightbox is clicked. Passes
-         * the media object currently displayed by the lightbox.
-         */
-        'lightbox-nav-previous-clicked': {
-            param_types: [GObject.TYPE_OBJECT],
-        },
-
-        /**
-         * Event: lightbox-nav-next-clicked
-         * Emmited when the navigation button in the lightbox is clicked. Passes
-         * the media object currently displayed by the lightbox.
-         */
-        'lightbox-nav-next-clicked': {
-            param_types: [GObject.TYPE_OBJECT],
-        },
-    },
-
     _init: function (props) {
         props = props || {};
         props.font_scaling_active = true;
@@ -93,8 +70,26 @@ const EncyclopediaWindow = new Lang.Class({
         this._content_page = new ContentPage.ContentPage({
             factory: this.factory,
         });
-        this.history_buttons = new Endless.TopbarNavButton();
-        this.history_buttons.show_all();
+        this._history_buttons = new Endless.TopbarNavButton();
+        this._history_buttons.show_all();
+        let dispatcher = Dispatcher.get_default();
+        this._history_buttons.back_button.connect('clicked', () => {
+            dispatcher.dispatch({ action_type: Actions.HISTORY_BACK_CLICKED });
+        });
+        this._history_buttons.forward_button.connect('clicked', () => {
+            dispatcher.dispatch({ action_type: Actions.HISTORY_FORWARD_CLICKED });
+        });
+
+        dispatcher.register((payload) => {
+            switch(payload.action_type) {
+                case Actions.HISTORY_BACK_ENABLED_CHANGED:
+                    this._history_buttons.back_button.sensitive = payload.enabled;
+                    break;
+                case Actions.HISTORY_FORWARD_ENABLED_CHANGED:
+                    this._history_buttons.forward_button.sensitive = payload.enabled;
+                    break;
+            }
+        });
 
         this.page_manager.transition_duration = 200;  // ms
 
@@ -107,15 +102,11 @@ const EncyclopediaWindow = new Lang.Class({
         });
 
         this._lightbox = new Lightbox.Lightbox();
-        this._lightbox.connect('navigation-previous-clicked', (lightbox) =>
-            this.emit('lightbox-nav-previous-clicked', lightbox));
-        this._lightbox.connect('navigation-next-clicked', (lightbox) =>
-            this.emit('lightbox-nav-next-clicked', lightbox));
         this._lightbox.add(this._content_page);
 
         this.page_manager.add(this._lightbox, {
             name: CONTENT_PAGE_NAME,
-            left_topbar_widget: this.history_buttons,
+            left_topbar_widget: this._history_buttons,
             background_uri: this.results_background_uri,
             background_repeats: false,
             background_size: 'cover',

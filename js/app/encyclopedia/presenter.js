@@ -19,7 +19,7 @@ const HistoryPresenter = imports.app.historyPresenter;
 const Launcher = imports.app.launcher;
 const LightboxPresenter = imports.app.lightboxPresenter;
 const MediaObjectModel = imports.search.mediaObjectModel;
-const Previewer = imports.app.previewer;
+const Previewer = imports.app.widgets.previewer;
 const QueryObject = imports.search.queryObject;
 const WebkitContextSetup = imports.app.webkitContextSetup;
 const Utils = imports.app.utils;
@@ -103,7 +103,6 @@ const EncyclopediaPresenter = new Lang.Class({
         this._history = new EosKnowledgePrivate.HistoryModel();
         this._history_presenter = new HistoryPresenter.HistoryPresenter({
             history_model: this._history,
-            history_buttons: this.view.history_buttons,
         });
         this._history_presenter.connect('history-item-changed', this._on_history_item_change.bind(this));
 
@@ -115,7 +114,7 @@ const EncyclopediaPresenter = new Lang.Class({
         });
         this._lightbox_presenter = new LightboxPresenter.LightboxPresenter({
             engine: this._engine,
-            view: this.view,
+            lightbox: this.view.lightbox,
             factory: this.factory,
         });
     },

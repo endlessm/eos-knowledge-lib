@@ -8,7 +8,7 @@ const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 const Pango = imports.gi.Pango;
 
-const MarginButton = imports.app.marginButton;
+const MarginButton = imports.app.widgets.marginButton;
 const StyleClasses = imports.app.styleClasses;
 const Utils = imports.app.utils;
 

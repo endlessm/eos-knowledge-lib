@@ -2,7 +2,7 @@ const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
 
 const CssClassMatcher = imports.tests.CssClassMatcher;
-const Previewer = imports.app.previewer;
+const Previewer = imports.app.widgets.previewer;
 const StyleClasses = imports.app.styleClasses;
 const Utils = imports.tests.utils;
 

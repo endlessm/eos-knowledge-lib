@@ -5,9 +5,9 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const CardA = imports.app.modules.cardA;
-const Lightbox = imports.app.lightbox;
+const Lightbox = imports.app.widgets.lightbox;
 const MediaCard = imports.app.modules.mediaCard;
-const Previewer = imports.app.previewer;
+const Previewer = imports.app.widgets.previewer;
 const Utils = imports.tests.utils;
 
 const TEST_APPLICATION_ID = 'com.endlessm.knowledge.test.lightbox';

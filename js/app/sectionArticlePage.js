@@ -6,7 +6,7 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const ArticlePage = imports.app.articlePage;
-const NavButtonOverlay = imports.app.navButtonOverlay;
+const NavButtonOverlay = imports.app.widgets.navButtonOverlay;
 const SectionPageA = imports.app.sectionPageA;
 const SectionPageB = imports.app.sectionPageB;
 const StyleClasses = imports.app.styleClasses;
@@ -59,6 +59,11 @@ const SectionArticlePage = new Lang.Class({
             'Specifies (in ms) the duration of the transition between pages.',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT, 0, GLib.MAXUINT32, 200)
 
+    },
+
+    _init: function (props={}) {
+        props.forward_visible = false;
+        this.parent(props);
     },
 
     get section_page () {

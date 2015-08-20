@@ -2,7 +2,7 @@ const Endless = imports.gi.Endless;
 const Gio = imports.gi.Gio;
 const Lang = imports.lang;
 
-const EknWebview = imports.app.eknWebview;
+const EknWebview = imports.app.widgets.eknWebview;
 
 const TEST_APPLICATION_ID = 'com.endlessm.knowledge.test.article-page';
 const TESTDIR = Endless.getCurrentFileDir() + '/..';

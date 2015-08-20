@@ -206,6 +206,7 @@ libtooltipplugin_la_LDFLAGS = -module -avoid-version -no-undefined
 # # # JAVASCRIPT # # #
 
 js_files = \
+	js/app/actions.js \
 	js/app/application.js \
 	js/app/articleHTMLRenderer.js \
 	js/app/articlePage.js \
@@ -215,7 +216,7 @@ js_files = \
 	js/app/compat/cssParse.js \
 	js/app/compat/styleKnobGenerator.js \
 	js/app/config.js \
-	js/app/eknWebview.js \
+	js/app/dispatcher.js \
 	js/app/encyclopedia/contentPage.js \
 	js/app/encyclopedia/homePage.js \
 	js/app/encyclopedia/model.js \
@@ -224,16 +225,12 @@ js_files = \
 	js/app/historyPresenter.js \
 	js/app/homePage.js \
 	js/app/homePageA.js \
-	js/app/imagePreviewer.js \
-	js/app/infiniteScrolledWindow.js \
 	js/app/interfaces/arrangement.js \
 	js/app/interfaces/card.js \
 	js/app/interfaces/documentCard.js \
 	js/app/interfaces/module.js \
 	js/app/launcher.js \
-	js/app/lightbox.js \
 	js/app/lightboxPresenter.js \
-	js/app/marginButton.js \
 	js/app/moduleFactory.js \
 	js/app/modules/appBanner.js \
 	js/app/modules/articleSnippetCard.js \
@@ -242,8 +239,8 @@ js_files = \
 	js/app/modules/encyclopediaWindow.js \
 	js/app/modules/itemGroup.js \
 	js/app/modules/knowledgeDocumentCard.js \
-	js/app/modules/listArrangement.js \
 	js/app/modules/homePageBTemplate.js \
+	js/app/modules/listArrangement.js \
 	js/app/modules/mediaCard.js \
 	js/app/modules/readerCard.js \
 	js/app/modules/readerDocumentCard.js \
@@ -256,33 +253,38 @@ js_files = \
 	js/app/modules/tiledGridArrangement.js \
 	js/app/modules/window.js \
 	js/app/mustache.js \
-	js/app/navButtonOverlay.js \
 	js/app/noSearchResultsPage.js \
-	js/app/PDFView.js \
 	js/app/presenter.js \
 	js/app/presenterLoader.js \
-	js/app/previewer.js \
-	js/app/reader/archiveNotice.js \
 	js/app/reader/donePage.js \
 	js/app/reader/overviewPage.js \
 	js/app/reader/presenter.js \
-	js/app/reader/progressLabel.js \
 	js/app/reader/searchResultsPage.js \
 	js/app/reader/standalonePage.js \
 	js/app/reader/userSettingsModel.js \
-	js/app/reader/webviewTooltip.js \
 	js/app/runner.js \
 	js/app/sectionArticlePage.js \
 	js/app/sectionPage.js \
 	js/app/sectionPageA.js \
 	js/app/sectionPageB.js \
-	js/app/spaceContainer.js \
 	js/app/styleClasses.js \
-	js/app/tabButton.js \
-	js/app/tableOfContents.js \
 	js/app/utils.js \
 	js/app/warehouse.js \
 	js/app/webkitContextSetup.js \
+	js/app/widgets/archiveNotice.js \
+	js/app/widgets/eknWebview.js \
+	js/app/widgets/imagePreviewer.js \
+	js/app/widgets/infiniteScrolledWindow.js \
+	js/app/widgets/lightbox.js \
+	js/app/widgets/marginButton.js \
+	js/app/widgets/navButtonOverlay.js \
+	js/app/widgets/PDFView.js \
+	js/app/widgets/previewer.js \
+	js/app/widgets/progressLabel.js \
+	js/app/widgets/spaceContainer.js \
+	js/app/widgets/tabButton.js \
+	js/app/widgets/tableOfContents.js \
+	js/app/widgets/webviewTooltip.js \
 	js/search/application.js \
 	js/search/articleObjectModel.js \
 	js/search/asyncTask.js \
@@ -357,8 +359,8 @@ javascript_tests = \
 	tests/js/app/modules/testCardA.js \
 	tests/js/app/modules/testCardB.js \
 	tests/js/app/modules/testKnowledgeDocumentCard.js \
-	tests/js/app/modules/testListArrangement.js \
 	tests/js/app/modules/testHomePageBTemplate.js \
+	tests/js/app/modules/testListArrangement.js \
 	tests/js/app/modules/testMediaCard.js \
 	tests/js/app/modules/testReaderCard.js \
 	tests/js/app/modules/testReaderDocumentCard.js \
@@ -371,35 +373,36 @@ javascript_tests = \
 	tests/js/app/modules/testWindow.js \
 	tests/js/app/reader/testDonePage.js \
 	tests/js/app/reader/testOverviewPage.js \
-	tests/js/app/reader/testProgressLabel.js \
 	tests/js/app/reader/testReaderPresenter.js \
 	tests/js/app/reader/testSearchResultsPage.js \
 	tests/js/app/reader/testUserSettingsModel.js \
 	tests/js/app/reader/testWebExtension.js \
-	tests/js/app/reader/testWebviewTooltip.js \
 	tests/js/app/testArticleHTMLRenderer.js \
 	tests/js/app/testArticlePage.js \
 	tests/js/app/testArticlePresenter.js \
+	tests/js/app/testDispatcher.js \
 	tests/js/app/testHistoryItem.js \
 	tests/js/app/testHistoryPresenter.js \
 	tests/js/app/testHomePage.js \
 	tests/js/app/testHomePageA.js \
-	tests/js/app/testLightbox.js \
 	tests/js/app/testLightboxPresenter.js \
 	tests/js/app/testModuleFactory.js \
 	tests/js/app/testNoSearchResultsPageA.js \
 	tests/js/app/testNoSearchResultsPageB.js \
-	tests/js/app/testPDFView.js \
 	tests/js/app/testPresenter.js \
-	tests/js/app/testPreviewer.js \
 	tests/js/app/testSectionArticlePageA.js \
 	tests/js/app/testSectionArticlePageB.js \
 	tests/js/app/testSectionPageA.js \
 	tests/js/app/testSectionPageB.js \
-	tests/js/app/testSpaceContainer.js \
 	tests/js/app/testStyleKnobGenerator.js \
-	tests/js/app/testTableOfContents.js \
 	tests/js/app/testUtils.js \
+	tests/js/app/widgets/testLightbox.js \
+	tests/js/app/widgets/testPDFView.js \
+	tests/js/app/widgets/testPreviewer.js \
+	tests/js/app/widgets/testProgressLabel.js \
+	tests/js/app/widgets/testSpaceContainer.js \
+	tests/js/app/widgets/testTableOfContents.js \
+	tests/js/app/widgets/testWebviewTooltip.js \
 	tests/js/search/testArticleObjectModel.js \
 	tests/js/search/testAsyncTask.js \
 	tests/js/search/testContentObjectModel.js \
@@ -428,8 +431,10 @@ EXTRA_DIST += \
 	tests/InstanceOfMatcher.js \
 	tests/minimal.js \
 	tests/mockCardContainer.js \
+	tests/mockDispatcher.js \
 	tests/mockEngine.js \
 	tests/mockFactory.js \
+	tests/mockLightbox.js \
 	tests/mockPlaceholder.js \
 	tests/mockShard.js \
 	tests/mockWidgets.js \

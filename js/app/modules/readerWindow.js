@@ -11,11 +11,13 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
+const Actions = imports.app.actions;
 const Config = imports.app.config;
+const Dispatcher = imports.app.dispatcher;
 const DonePage = imports.app.reader.donePage;
-const Lightbox = imports.app.lightbox;
+const Lightbox = imports.app.widgets.lightbox;
 const Module = imports.app.interfaces.module;
-const NavButtonOverlay = imports.app.navButtonOverlay;
+const NavButtonOverlay = imports.app.widgets.navButtonOverlay;
 const OverviewPage = imports.app.reader.overviewPage;
 const SearchResultsPage = imports.app.reader.searchResultsPage;
 const StandalonePage = imports.app.reader.standalonePage;
@@ -111,18 +113,6 @@ const ReaderWindow = new Lang.Class({
             Endless.TopbarNavButton.$gtype),
 
         /**
-         * Property: history-buttons
-         *
-         * An <Endless.TopbarNavButton> widget created by this window.
-         * Used to go back and forward in the history model.
-         * Read-only.
-         */
-        'history-buttons': GObject.ParamSpec.object('history-buttons',
-            'History nav buttons', 'For traversing history model',
-            GObject.ParamFlags.READABLE,
-            Endless.TopbarNavButton.$gtype),
-
-        /**
          * Property: lightbox
          *
          * The <Lightbox> widget created by this widget. Read-only,
@@ -188,24 +178,6 @@ const ReaderWindow = new Lang.Class({
 
     Signals: {
         'debug-hotkey-pressed': {},
-
-        /**
-         * Event: lightbox-nav-previous-clicked
-         * Emmited when the navigation button in the lightbox is clicked. Passes
-         * the media object currently displayed by the lightbox.
-         */
-        'lightbox-nav-previous-clicked': {
-            param_types: [GObject.TYPE_OBJECT],
-        },
-
-        /**
-         * Event: lightbox-nav-next-clicked
-         * Emmited when the navigation button in the lightbox is clicked. Passes
-         * the media object currently displayed by the lightbox.
-         */
-        'lightbox-nav-next-clicked': {
-            param_types: [GObject.TYPE_OBJECT],
-        },
     },
 
     _STACK_TRANSITION_TIME: 500,
@@ -230,28 +202,48 @@ const ReaderWindow = new Lang.Class({
         this.standalone_page.infobar.title_image_uri = this.title_image_uri;
         this.standalone_page.infobar.background_image_uri = this.home_background_uri;
         this.search_results_page = new SearchResultsPage.SearchResultsPage();
+
+        let dispatcher = Dispatcher.get_default();
         this.nav_buttons = new NavButtonOverlay.NavButtonOverlay({
             back_image_uri: this._BACK_IMAGE_URI,
             forward_image_uri: this._FORWARD_IMAGE_URI,
             image_size: this._NAV_IMAGE_SIZE,
+        });
+        this.nav_buttons.connect('back-clicked', () => {
+            dispatcher.dispatch({ action_type: Actions.NAV_BACK_CLICKED });
+        });
+        this.nav_buttons.connect('forward-clicked', () => {
+            dispatcher.dispatch({ action_type: Actions.NAV_FORWARD_CLICKED });
         });
 
         this.issue_nav_buttons = new Endless.TopbarNavButton({
             no_show_all: true,
         });
 
-        this.history_buttons = new Endless.TopbarNavButton();
+        this._history_buttons = new Endless.TopbarNavButton();
+        this._history_buttons.back_button.connect('clicked', () => {
+            dispatcher.dispatch({ action_type: Actions.HISTORY_BACK_CLICKED });
+        });
+        this._history_buttons.forward_button.connect('clicked', () => {
+            dispatcher.dispatch({ action_type: Actions.HISTORY_FORWARD_CLICKED });
+        });
+
+        dispatcher.register((payload) => {
+            switch(payload.action_type) {
+                case Actions.HISTORY_BACK_ENABLED_CHANGED:
+                    this._history_buttons.back_button.sensitive = payload.enabled;
+                    break;
+                case Actions.HISTORY_FORWARD_ENABLED_CHANGED:
+                    this._history_buttons.forward_button.sensitive = payload.enabled;
+                    break;
+            }
+        });
+
         // No need for localization; this is debug only
         this.issue_nav_buttons.back_button.label = 'Reset';
         this.issue_nav_buttons.forward_button.label = 'Next week';
 
         this.lightbox = new Lightbox.Lightbox();
-        this.lightbox.connect('navigation-previous-clicked', function (lightbox) {
-            this.emit('lightbox-nav-previous-clicked', lightbox);
-        }.bind(this));
-        this.lightbox.connect('navigation-next-clicked', function (lightbox) {
-            this.emit('lightbox-nav-next-clicked', lightbox);
-        }.bind(this));
 
         this._article_pages = [];
 
@@ -286,7 +278,7 @@ const ReaderWindow = new Lang.Class({
         box.add(this.issue_nav_buttons);
 
         this.page_manager.add(this.lightbox, {
-            left_topbar_widget: this.history_buttons,
+            left_topbar_widget: this._history_buttons,
             center_topbar_widget: box,
         });
         this.overview_page.show_all();

@@ -8,10 +8,13 @@ const Mainloop = imports.mainloop;
 const Utils = imports.tests.utils;
 Utils.register_gresource();
 
+const Actions = imports.app.actions;
 const ArticleObjectModel = imports.search.articleObjectModel;
+const MockDispatcher = imports.tests.mockDispatcher;
 const Minimal = imports.tests.minimal;
 const MockEngine = imports.tests.mockEngine;
 const MockFactory = imports.tests.mockFactory;
+const MockLightbox = imports.tests.mockLightbox;
 const MockWidgets = imports.tests.mockWidgets;
 const Presenter = imports.app.reader.presenter;
 const QueryObject = imports.search.queryObject;
@@ -56,10 +59,6 @@ const MockNavButtons = new Lang.Class({
         'back-visible': GObject.ParamSpec.boolean('back-visible', '', '',
             GObject.ParamFlags.READWRITE, true),
     },
-    Signals: {
-        'back-clicked': {},
-        'forward-clicked': {},
-    },
 });
 
 let get_style_context = function () {
@@ -89,8 +88,6 @@ const MockView = new Lang.Class({
     Extends: GObject.Object,
     Signals: {
         'debug-hotkey-pressed': {},
-        'lightbox-nav-previous-clicked': {},
-        'lightbox-nav-next-clicked': {},
     },
 
     _init: function (nav_buttons) {
@@ -102,7 +99,6 @@ const MockView = new Lang.Class({
             forward_button: new MockWidgets.MockButton(),
             show: jasmine.createSpy('show'),
         };
-        this.history_buttons = new MockWidgets.MockHistoryButtons();
 
         this.done_page = {
             get_style_context: get_style_context,
@@ -138,7 +134,7 @@ const MockView = new Lang.Class({
         this.page_manager = {
             add: function () {},
         };
-        this.lightbox = new GObject.Object();
+        this.lightbox = new MockLightbox.MockLightbox();
     },
 
     present_with_time: function () {},
@@ -166,7 +162,7 @@ const MockView = new Lang.Class({
 });
 
 describe('Reader presenter', function () {
-    let engine, settings, view, article_nav_buttons, presenter;
+    let engine, settings, view, article_nav_buttons, presenter, dispatcher;
 
     const TEST_APP_FILENAME = TEST_CONTENT_DIR + 'app.json';
     const TEST_JSON = Utils.parse_object_from_path(TEST_APP_FILENAME);
@@ -189,6 +185,8 @@ describe('Reader presenter', function () {
     });
 
     beforeEach(function () {
+        dispatcher = MockDispatcher.mock_default();
+
         let factory = new MockFactory.MockFactory();
         factory.add_named_mock('home-card', Minimal.MinimalCard);
         factory.add_named_mock('results-card', Minimal.MinimalCard);
@@ -305,15 +303,15 @@ describe('Reader presenter', function () {
         });
 
         it('increments the current page when clicking the forward button', function () {
-            article_nav_buttons.emit('forward-clicked');
+            dispatcher.dispatch({ action_type: Actions.NAV_FORWARD_CLICKED });
             expect(presenter.history_model.current_item.model.title).toBe('Title 1');
             expect(presenter.current_page).toBe(1);
             expect(settings.bookmark_page).toBe(1);
         });
 
         it('decrements the current page when clicking the back button', function () {
-            article_nav_buttons.emit('forward-clicked');
-            article_nav_buttons.emit('back-clicked');
+            dispatcher.dispatch({ action_type: Actions.NAV_FORWARD_CLICKED });
+            dispatcher.dispatch({ action_type: Actions.NAV_BACK_CLICKED });
             expect(presenter.current_page).toBe(0);
             expect(settings.bookmark_page).toBe(0);
         });
@@ -334,7 +332,7 @@ describe('Reader presenter', function () {
         it('goes to the done page when paging forward on the last article page', function () {
             spyOn(view, 'show_done_page');
             presenter._go_to_page(view.total_pages - 2);
-            article_nav_buttons.emit('forward-clicked');
+            dispatcher.dispatch({ action_type: Actions.NAV_FORWARD_CLICKED });
             expect(view.show_done_page).toHaveBeenCalled();
         });
 

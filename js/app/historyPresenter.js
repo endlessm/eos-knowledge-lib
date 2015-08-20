@@ -1,5 +1,7 @@
 const GObject = imports.gi.GObject;
 
+const Actions = imports.app.actions;
+const Dispatcher = imports.app.dispatcher;
 const HistoryItem = imports.app.historyItem;
 
 /**
@@ -28,20 +30,6 @@ const HistoryPresenter = new GObject.Class({
             'Handle to EOS knowledge History Model',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             GObject.Object.$gtype),
-
-        /**
-         * Property: history_buttons
-         * History buttons that operate this presenter
-         *
-         * Pass an instance of <Endless.TopbarNavButton> to this property.
-         *
-         * Flags:
-         *   Construct only
-         */
-        'history-buttons': GObject.ParamSpec.object('history-buttons',
-            'History buttons', 'History buttons in the view',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            GObject.Object.$gtype),
     },
 
     Signals: {
@@ -63,17 +51,36 @@ const HistoryPresenter = new GObject.Class({
     _init: function (props={}) {
         this.parent(props);
 
-        this.history_model.bind_property('can-go-forward',
-            this.history_buttons.forward_button, 'sensitive',
-            GObject.BindingFlags.SYNC_CREATE);
-        this.history_model.bind_property('can-go-back',
-            this.history_buttons.back_button, 'sensitive',
-            GObject.BindingFlags.SYNC_CREATE);
+        Dispatcher.get_default().register((payload) => {
+            switch(payload.action_type) {
+                case Actions.HISTORY_BACK_CLICKED:
+                    this.history_model.go_back();
+                    break;
+                case Actions.HISTORY_FORWARD_CLICKED:
+                    this.history_model.go_forward();
+                    break;
+            }
+        });
 
-        this.history_buttons.back_button.connect('clicked', () => this.history_model.go_back());
-        this.history_buttons.forward_button.connect('clicked', () => this.history_model.go_forward());
+        this.history_model.connect('notify::can-go-back',
+                                   () => this._dispatch_history_enabled());
+        this.history_model.connect('notify::can-go-forward',
+                                   () => this._dispatch_history_enabled());
+        this._dispatch_history_enabled();
         this.history_model.connect('notify::current-item', this._notify_item.bind(this));
         this._last_item = null;
+    },
+
+    _dispatch_history_enabled: function () {
+        let dispatcher = Dispatcher.get_default();
+        dispatcher.dispatch({
+            action_type: Actions.HISTORY_BACK_ENABLED_CHANGED,
+            enabled: this.history_model.can_go_back,
+        });
+        dispatcher.dispatch({
+            action_type: Actions.HISTORY_FORWARD_ENABLED_CHANGED,
+            enabled: this.history_model.can_go_forward,
+        });
     },
 
     _notify_item: function () {

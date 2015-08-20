@@ -8,7 +8,7 @@ const Lang = imports.lang;
 const Utils = imports.app.utils;
 const Card = imports.app.interfaces.card;
 const Module = imports.app.interfaces.module;
-const Previewer = imports.app.previewer;
+const Previewer = imports.app.widgets.previewer;
 
 /**
  * Class: MediaCard

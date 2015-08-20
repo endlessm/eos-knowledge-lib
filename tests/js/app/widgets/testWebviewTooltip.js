@@ -1,6 +1,6 @@
 const Gtk = imports.gi.Gtk;
 
-const WebviewTooltip = imports.app.reader.webviewTooltip;
+const WebviewTooltip = imports.app.widgets.webviewTooltip;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const StyleClasses = imports.app.styleClasses;
 

@@ -8,7 +8,7 @@ const Lang = imports.lang;
 const StyleClasses = imports.app.styleClasses;
 
 const Config = imports.app.config;
-const InfiniteScrolledWindow = imports.app.infiniteScrolledWindow;
+const InfiniteScrolledWindow = imports.app.widgets.infiniteScrolledWindow;
 
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 

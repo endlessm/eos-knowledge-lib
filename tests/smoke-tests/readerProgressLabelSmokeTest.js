@@ -5,7 +5,7 @@ const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 
-const ProgressLabel = imports.app.reader.progressLabel;
+const ProgressLabel = imports.app.widgets.progressLabel;
 const StyleClasses = imports.app.styleClasses;
 const Utils = imports.tests.utils;
 

@@ -3,6 +3,7 @@ const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
 const Lang = imports.lang;
 
+const Dispatcher = imports.app.dispatcher;
 const Engine = imports.search.engine;
 const LegacySearchProvider = imports.search.searchProvider;
 const PresenterLoader = imports.app.presenterLoader;
@@ -81,7 +82,14 @@ const Application = new Lang.Class({
 
     // To be overridden in subclass
     ensure_presenter: function () {
-        if (this._presenter === null)
+        if (this._presenter === null) {
+            Dispatcher.get_default().start();
             this._presenter = PresenterLoader.setup_presenter_for_resource(this, ARGV[1]);
+        }
+    },
+
+    vfunc_shutdown: function () {
+        Dispatcher.get_default().quit();
+        this.parent();
     },
 });

@@ -8,9 +8,9 @@ const Lang = imports.lang;
 const Config = imports.app.config;
 const HomePage = imports.app.homePage;
 const Module = imports.app.interfaces.module;
-const SpaceContainer = imports.app.spaceContainer;
+const SpaceContainer = imports.app.widgets.spaceContainer;
 const StyleClasses = imports.app.styleClasses;
-const TabButton = imports.app.tabButton;
+const TabButton = imports.app.widgets.tabButton;
 
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 

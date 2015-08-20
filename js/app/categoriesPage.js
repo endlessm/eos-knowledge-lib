@@ -6,7 +6,7 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const Config = imports.app.config;
-const TabButton = imports.app.tabButton;
+const TabButton = imports.app.widgets.tabButton;
 
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 

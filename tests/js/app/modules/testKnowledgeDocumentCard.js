@@ -10,7 +10,7 @@ const KnowledgeDocumentCard = imports.app.modules.knowledgeDocumentCard;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
 const StyleClasses = imports.app.styleClasses;
-const TableOfContents = imports.app.tableOfContents;
+const TableOfContents = imports.app.widgets.tableOfContents;
 const TreeNode = imports.search.treeNode;
 const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 

@@ -7,11 +7,13 @@ const Gdk = imports.gi.Gdk;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
+const Actions = imports.app.actions;
 const ArticlePage = imports.app.articlePage;
 const CategoriesPage = imports.app.categoriesPage;
+const Dispatcher = imports.app.dispatcher;
 const HomePage = imports.app.homePage;
 const HomePageA = imports.app.homePageA;
-const Lightbox = imports.app.lightbox;
+const Lightbox = imports.app.widgets.lightbox;
 const Module = imports.app.interfaces.module;
 const NoSearchResultsPage = imports.app.noSearchResultsPage;
 const SectionPage = imports.app.sectionPage;
@@ -149,12 +151,6 @@ const Window = new Lang.Class({
     },
     Signals: {
         /**
-         * Event: sidebar-back-clicked
-         * Emitted when the back button on the side of the section or article
-         * page is clicked.
-         */
-        'sidebar-back-clicked': {},
-        /**
          * Event: article-selected
          *
          * This event is triggered when an article is selected from the autocomplete menu.
@@ -186,22 +182,6 @@ const Window = new Lang.Class({
         'search-text-changed': {
             param_types: [GObject.TYPE_OBJECT]
         },
-        /**
-         * Event: lightbox-nav-previous-clicked
-         * Emmited when the navigation button in the lightbox is clicked. Passes
-         * the media object currently displayed by the lightbox.
-         */
-        'lightbox-nav-previous-clicked': {
-            param_types: [GObject.TYPE_OBJECT]
-        },
-        /**
-         * Event: lightbox-nav-next-clicked
-         * Emmited when the navigation button in the lightbox is clicked. Passes
-         * the media object currently displayed by the lightbox.
-         */
-        'lightbox-nav-next-clicked': {
-            param_types: [GObject.TYPE_OBJECT]
-        }
     },
 
     TRANSITION_DURATION: 500,
@@ -232,30 +212,45 @@ const Window = new Lang.Class({
                 this.categories_page.animating = this.page_manager.transition_running;
             }));
         }
-        this._section_article_page.connect('back-clicked', function () {
-            this.emit('sidebar-back-clicked');
-        }.bind(this));
-        this._no_search_results_page.connect('back-clicked', function () {
-            this.emit('sidebar-back-clicked');
-        }.bind(this));
-        this._lightbox = new Lightbox.Lightbox();
-        this._lightbox.connect('navigation-previous-clicked', function (media_object) {
-            this.emit('lightbox-nav-previous-clicked', media_object);
-        }.bind(this));
-        this._lightbox.connect('navigation-next-clicked', function (media_object) {
-            this.emit('lightbox-nav-next-clicked', media_object);
-        }.bind(this));
 
-        this.history_buttons = new Endless.TopbarNavButton();
-        this.history_buttons.get_style_context().add_class(Gtk.STYLE_CLASS_LINKED);
-        this.history_buttons.show_all();
+        let dispatcher = Dispatcher.get_default();
+        this._section_article_page.connect('back-clicked', () => {
+            dispatcher.dispatch({ action_type: Actions.NAV_BACK_CLICKED });
+        });
+        this._no_search_results_page.connect('back-clicked', () => {
+            dispatcher.dispatch({ action_type: Actions.NAV_BACK_CLICKED });
+        });
+        this._lightbox = new Lightbox.Lightbox();
+
+        this._history_buttons = new Endless.TopbarNavButton();
+
+        this._history_buttons.back_button.connect('clicked', () => {
+            dispatcher.dispatch({ action_type: Actions.HISTORY_BACK_CLICKED });
+        });
+        this._history_buttons.forward_button.connect('clicked', () => {
+            dispatcher.dispatch({ action_type: Actions.HISTORY_FORWARD_CLICKED });
+        });
+
+        dispatcher.register((payload) => {
+            switch(payload.action_type) {
+                case Actions.HISTORY_BACK_ENABLED_CHANGED:
+                    this._history_buttons.back_button.sensitive = payload.enabled;
+                    break;
+                case Actions.HISTORY_FORWARD_ENABLED_CHANGED:
+                    this._history_buttons.forward_button.sensitive = payload.enabled;
+                    break;
+            }
+        });
+
+        this._history_buttons.get_style_context().add_class(Gtk.STYLE_CLASS_LINKED);
+        this._history_buttons.show_all();
 
         this._lightbox.add(this._section_article_page);
         this.page_manager.add(this._home_page, {
-            left_topbar_widget: this.history_buttons
+            left_topbar_widget: this._history_buttons
         });
         this.page_manager.add(this._categories_page, {
-            left_topbar_widget: this.history_buttons
+            left_topbar_widget: this._history_buttons
         });
         this.search_box = this.factory.create_named_module('top-bar-search');
         this.search_box.connect('notify::has-focus', function () {
@@ -272,11 +267,11 @@ const Window = new Lang.Class({
         }.bind(this));
 
         this.page_manager.add(this._no_search_results_page, {
-            left_topbar_widget: this.history_buttons,
+            left_topbar_widget: this._history_buttons,
             center_topbar_widget: this.search_box,
         });
         this.page_manager.add(this._lightbox, {
-            left_topbar_widget: this.history_buttons,
+            left_topbar_widget: this._history_buttons,
             center_topbar_widget: this.search_box,
         });
         this.page_manager.transition_duration = this.TRANSITION_DURATION;
