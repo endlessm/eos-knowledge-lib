@@ -65,6 +65,7 @@ overridden by app specific CSS */
 
 .back-cover .progress-label {
     color: white;
+    padding-top: 20px;
 }
 
 .error-page {
