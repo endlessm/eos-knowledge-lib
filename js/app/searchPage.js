@@ -7,7 +7,6 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
-const CardsSegment = imports.app.cardsSegment;
 const InfiniteScrolledWindow = imports.app.widgets.infiniteScrolledWindow;
 const QueryObject = imports.search.queryObject;
 const StyleClasses = imports.app.styleClasses;
@@ -75,10 +74,7 @@ const SearchPageA = new Lang.Class({
         this._content_grid = new Gtk.Grid({
             orientation: Gtk.Orientation.VERTICAL,
             expand: true,
-            valign: Gtk.Align.START,
-            row_spacing: 20,
-            margin_start: 100,
-            margin_end: 100,
+            valign: Gtk.Align.FILL,
         });
 
         this.parent(props);
@@ -87,19 +83,15 @@ const SearchPageA = new Lang.Class({
 
         this.get_style_context().add_class(StyleClasses.SEARCH_PAGE_A);
 
-        this._right_column_size_group = new Gtk.SizeGroup({
-            mode: Gtk.SizeGroupMode.HORIZONTAL
-        });
-
-        this._scrolled_window = new InfiniteScrolledWindow.InfiniteScrolledWindow({
-            hscrollbar_policy: Gtk.PolicyType.NEVER,
+        this._arrangement = this.factory.create_named_module('results-arrangement', {
             bottom_buffer: this.LOADING_BOTTOM_BUFFER,
         });
-        this._scrolled_window.connect('need-more-content', () =>
+
+        this._arrangement.connect('need-more-content', () =>
             this.emit('load-more-results'));
 
-        this._scrolled_window.add(this._content_grid);
-        this.add(this._scrolled_window);
+        this._content_grid.attach(this._arrangement, 0, 2, 1, 1);
+        this.add(this._content_grid);
     },
 
     pack_title_banner: function (title_banner) {
@@ -111,33 +103,19 @@ const SearchPageA = new Lang.Class({
         this._content_grid.attach(title_banner, 0, 0, 1, 1);
     },
 
-    append_to_segment: function (segment_title, cards) {
-        if (segment_title in this._segments) {
-            this._segments[segment_title].append_cards(cards);
-        } else {
-            let segment = new CardsSegment.CardsSegment({
-                title: segment_title
-            });
-            this._right_column_size_group.add_widget(segment.title_label);
-            segment.show_all();
-            segment.append_cards(cards);
-            this._segments[segment_title] = segment;
-            this._content_grid.attach(segment, 0, Object.keys(this._segments).length, 1, 1);
-        }
+    append_cards: function (cards) {
+        this._cards.push.apply(this._cards, cards);
+        cards.forEach(this._arrangement.add_card, this._arrangement);
     },
 
-    remove_segment: function (segment_title) {
-        let segment = this._segments[segment_title];
-        this._content_grid.remove(segment);
-        this._right_column_size_group.remove_widget(segment.title_label);
-        delete this._segments[segment_title];
+    get_cards: function () {
+        return this._cards;
     },
 
-    remove_all_segments: function () {
-        for (let segment_title in this._segments) {
-            this.remove_segment(segment_title);
-        }
-    }
+    remove_all_cards: function () {
+        this._arrangement.clear();
+        this._cards = [];
+    },
 });
 
 const SearchPageB = new Lang.Class({

@@ -213,7 +213,6 @@ js_files = \
 	js/app/application.js \
 	js/app/articleHTMLRenderer.js \
 	js/app/articlePage.js \
-	js/app/cardsSegment.js \
 	js/app/categoriesPage.js \
 	js/app/compat/compat.js \
 	js/app/compat/cssParse.js \
@@ -242,6 +241,7 @@ js_files = \
 	js/app/modules/cardB.js \
 	js/app/modules/encyclopediaCoverTemplate.js \
 	js/app/modules/encyclopediaWindow.js \
+	js/app/modules/gridArrangement.js \
 	js/app/modules/itemGroup.js \
 	js/app/modules/knowledgeDocumentCard.js \
 	js/app/modules/homePageBTemplate.js \

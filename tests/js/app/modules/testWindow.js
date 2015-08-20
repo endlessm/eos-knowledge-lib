@@ -51,6 +51,8 @@ describe('Window', function () {
         let factory = new MockFactory.MockFactory();
         factory.add_named_mock('top-bar-search', MockWidgets.MockSearchBox);
         factory.add_named_mock('home-search', MockWidgets.MockSearchBox);
+        factory.add_named_mock('results-arrangement',
+            MockWidgets.MockScrolledArrangement);
         view = new Window.Window({
             application: app,
             factory: factory,
