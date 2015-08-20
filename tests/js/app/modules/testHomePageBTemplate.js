@@ -1,23 +1,16 @@
 // Copyright 2015 Endless Mobile, Inc.
 
-const Lang = imports.lang;
-const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Gio = imports.gi.Gio;
 
 const Utils = imports.tests.utils;
 Utils.register_gresource();
 
-const AppBanner = imports.app.modules.appBanner;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const HomePageBTemplate = imports.app.modules.homePageBTemplate;
-const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
 const Minimal = imports.tests.minimal;
 const MockFactory = imports.tests.mockFactory;
 const MockPlaceholder = imports.tests.mockPlaceholder;
 const StyleClasses = imports.app.styleClasses;
-
-const TEST_CONTENT_DIR = Utils.get_test_content_srcdir();
 
 Gtk.init(null);
 
@@ -28,9 +21,8 @@ describe('HomePageBTemplate module', function () {
 
     beforeEach(function () {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
-        jasmine.addMatchers(InstanceOfMatcher.customMatchers);
 
-        let factory = new MockFactory.MockFactory();
+        factory = new MockFactory.MockFactory();
         factory.add_named_mock('Placeholder1', MockPlaceholder.MockPlaceholder, {}, { 'name': 'top-left-placeholder' });
         factory.add_named_mock('Placeholder2', MockPlaceholder.MockPlaceholder, {}, { 'name': 'top-right-placeholder' });
         factory.add_named_mock('Placeholder3', MockPlaceholder.MockPlaceholder, {}, { 'name': 'bottom-placeholder' });
@@ -51,11 +43,11 @@ describe('HomePageBTemplate module', function () {
 
     it('constructs', function () {});
 
-    it('packs all its children', function() {
+    it('packs all its children', function () {
         expect(home_page._top_left.name).toBe('top-left-placeholder');
         expect(home_page._top_right.name).toBe('top-right-placeholder');
         expect(home_page._bottom.name).toBe('bottom-placeholder');
-    })
+    });
 
     it('can set cards', function () {
         let card_container = home_page.get_submodule(MockPlaceholder.MockPlaceholder);
