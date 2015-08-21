@@ -39,7 +39,7 @@ const HomePageBTemplate = new Lang.Class({
     _init: function (props={}) {
         this._cards = null;
         this.parent(props);
-        this.pack_module();
+        this.get_slot_names().forEach(this.pack_module_for_slot, this);
 
         // FIXME: we should be able to get the search box out of the factory,
         // rather than reaching into our internal structure

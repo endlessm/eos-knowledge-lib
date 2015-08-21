@@ -67,21 +67,13 @@ const SearchModule = new Lang.Class({
 
     _init: function (props={}) {
         this.parent(props);
-        this.pack_module();
+        this._arrangement = this.create_submodule('arrangement');
+        this._results_stack.add_named(this._arrangement, RESULTS_PAGE_NAME);
     },
 
     // Module override
     get_slot_names: function () {
         return ['arrangement', 'card_type'];
-    },
-
-    // Module override
-    pack_module_for_slot: function (slot) {
-        if (slot !== 'arrangement')
-            return;
-
-        this._arrangement = this.create_submodule('arrangement');
-        this._results_stack.add_named(this._arrangement, RESULTS_PAGE_NAME);
     },
 
     /**

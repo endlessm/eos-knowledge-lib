@@ -45,19 +45,12 @@ const ItemGroup = new Lang.Class({
 
     _init: function (props={}) {
         this.parent(props);
-        this.pack_module();
+        this.pack_module_for_slot('arrangement');
     },
 
     // Module override
     get_slot_names: function () {
         return ['arrangement', 'card_type'];
-    },
-
-    // Module override
-    pack_module_for_slot: function (slot) {
-        if (slot !== 'card_type')
-            Module.Module.pack_module_for_slot(this, slot);
-        // card_type isn't packed, but created dynamically later on
     },
 
     /**
