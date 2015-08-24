@@ -90,6 +90,12 @@ const SearchPageA = new Lang.Class({
         this._arrangement.connect('need-more-content', () =>
             this.emit('load-more-results'));
 
+        this._separator = new Gtk.Separator({
+            margin_start: 20,
+            margin_end: 20,
+        });
+        this._content_grid.attach(this._separator, 0, 1, 1, 1);
+
         this._content_grid.attach(this._arrangement, 0, 2, 1, 1);
         this.add(this._content_grid);
     },
