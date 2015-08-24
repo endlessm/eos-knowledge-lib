@@ -606,10 +606,10 @@ const Presenter = new Lang.Class({
                 } else {
 
                     if (item.page_type === this._SEARCH_PAGE) {
-                        this.view.search_page.remove_all_segments();
+                        this.view.search_page.remove_all_cards();
                         this.view.search_page.append_cards(cards);
                     } else {
-                        this.view.section_page.remove_all_segments();
+                        this.view.section_page.remove_all_cards();
                         this.view.section_page.append_cards(cards);
                     }
                 }
