@@ -269,7 +269,6 @@ js_files = \
 	js/app/reader/userSettingsModel.js \
 	js/app/runner.js \
 	js/app/searchPage.js \
-	js/app/sectionArticlePage.js \
 	js/app/sectionPage.js \
 	js/app/sectionPageA.js \
 	js/app/sectionPageB.js \
@@ -397,8 +396,6 @@ javascript_tests = \
 	tests/js/app/testNoSearchResultsPageB.js \
 	tests/js/app/testPresenter.js \
 	tests/js/app/testSearchPage.js \
-	tests/js/app/testSectionArticlePageA.js \
-	tests/js/app/testSectionArticlePageB.js \
 	tests/js/app/testSectionPageA.js \
 	tests/js/app/testSectionPageB.js \
 	tests/js/app/testStyleKnobGenerator.js \

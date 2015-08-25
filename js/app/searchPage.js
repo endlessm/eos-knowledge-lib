@@ -9,7 +9,6 @@ const Lang = imports.lang;
 
 const CardsSegment = imports.app.cardsSegment;
 const InfiniteScrolledWindow = imports.app.widgets.infiniteScrolledWindow;
-const NavButtonOverlay = imports.app.widgets.navButtonOverlay;
 const QueryObject = imports.search.queryObject;
 const StyleClasses = imports.app.styleClasses;
 
@@ -24,7 +23,7 @@ const StyleClasses = imports.app.styleClasses;
 const SearchPage = new Lang.Class({
     Name: 'SearchPage',
     GTypeName: 'EknSearchPage',
-    Extends: NavButtonOverlay.NavButtonOverlay,
+    Extends: Gtk.Frame,
     Properties: {
         'factory': GObject.ParamSpec.object('factory', 'Factory', 'Factory',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,

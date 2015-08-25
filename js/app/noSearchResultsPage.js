@@ -7,7 +7,6 @@ const Lang = imports.lang;
 const Pango = imports.gi.Pango;
 
 const Config = imports.app.config;
-const NavButtonOverlay = imports.app.widgets.navButtonOverlay;
 const StyleClasses = imports.app.styleClasses;
 const Utils = imports.app.utils;
 
@@ -24,7 +23,7 @@ let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 const NoSearchResultsPage = new Lang.Class({
     Name: 'NoSearchResultsPage',
     GTypeName: 'EknNoSearchResultsPage',
-    Extends: NavButtonOverlay.NavButtonOverlay,
+    Extends: Gtk.Frame,
     Properties: {
         /**
          * Property: query
@@ -38,9 +37,7 @@ const NoSearchResultsPage = new Lang.Class({
     MSG_WE_DIDNT_FIND_ANYTHING: _("We didn't find anything."),
     MSG_TRY_AGAIN_DIFF_WORDS: _("Try seaching again with different words."),
 
-    _init: function (props) {
-        props = props || {};
-        props.forward_visible = false;
+    _init: function (props={}) {
         this.title_label = new Gtk.Label({
             wrap_mode: Pango.WrapMode.WORD_CHAR,
             ellipsize: Pango.EllipsizeMode.END
