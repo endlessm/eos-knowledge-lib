@@ -213,7 +213,6 @@ js_files = \
 	js/app/application.js \
 	js/app/articleHTMLRenderer.js \
 	js/app/articlePage.js \
-	js/app/articlePresenter.js \
 	js/app/cardsSegment.js \
 	js/app/categoriesPage.js \
 	js/app/compat/compat.js \
@@ -387,7 +386,6 @@ javascript_tests = \
 	tests/js/app/reader/testWebExtension.js \
 	tests/js/app/testArticleHTMLRenderer.js \
 	tests/js/app/testArticlePage.js \
-	tests/js/app/testArticlePresenter.js \
 	tests/js/app/testDispatcher.js \
 	tests/js/app/testHistoryItem.js \
 	tests/js/app/testHistoryPresenter.js \

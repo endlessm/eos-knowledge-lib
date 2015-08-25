@@ -92,19 +92,8 @@ const MockView = new Lang.Class({
     present_with_time: function () {},
 });
 
-const MockArticlePresenter = new Lang.Class({
-    Name: 'MockArticlePresenter',
-    Extends: GObject.Object,
-
-    _init: function () {
-        this.parent();
-    },
-
-    connect: function () {},
-});
-
 describe('Presenter', () => {
-    let presenter, data, view, engine, article_presenter, factory, sections, dispatcher;
+    let presenter, data, view, engine, factory, sections, dispatcher;
     let test_app_filename = TEST_CONTENT_DIR + 'app.json';
 
     beforeEach(() => {
@@ -141,13 +130,11 @@ describe('Presenter', () => {
         engine = new MockEngine.MockEngine();
         engine.get_objects_by_query_finish.and.returnValue([sections.map((section) =>
             new ContentObjectModel.ContentObjectModel(section)), null]);
-        article_presenter = new MockArticlePresenter();
         let application = new GObject.Object();
         application.application_id = 'foobar';
         presenter = new Presenter.Presenter(data, {
             application: application,
             factory: factory,
-            article_presenter: article_presenter,
             engine: engine,
             view: view,
         });

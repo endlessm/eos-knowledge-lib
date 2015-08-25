@@ -49,6 +49,10 @@ function transform_v1_description(json) {
         };
         modules['document-card'] = {
             type: 'KnowledgeDocumentCard',
+            properties: {
+                show_top_title: true,
+                show_toc: true,
+            },
         };
         break;
     case 'B':
