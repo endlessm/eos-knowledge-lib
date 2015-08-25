@@ -242,6 +242,7 @@ js_files = \
 	js/app/modules/knowledgeDocumentCard.js \
 	js/app/modules/homePageBTemplate.js \
 	js/app/modules/listArrangement.js \
+	js/app/modules/carouselArrangement.js \
 	js/app/modules/mediaCard.js \
 	js/app/modules/readerCard.js \
 	js/app/modules/readerDocumentCard.js \
@@ -359,6 +360,7 @@ javascript_tests = \
 	tests/js/app/modules/testBackCover.js \
 	tests/js/app/modules/testCardA.js \
 	tests/js/app/modules/testCardB.js \
+	tests/js/app/modules/testCarouselArrangement.js \
 	tests/js/app/modules/testKnowledgeDocumentCard.js \
 	tests/js/app/modules/testHomePageBTemplate.js \
 	tests/js/app/modules/testListArrangement.js \

@@ -2,6 +2,7 @@
 
 /* exported MinimalArrangement, MinimalCard, MinimalModule, MinimalDocumentCard */
 
+const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
@@ -21,6 +22,9 @@ const MinimalArrangement = new Lang.Class({
         'count': GObject.ParamSpec.override('count', Arrangement.Arrangement),
         'factory': GObject.ParamSpec.override('factory', Module.Module),
         'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
+        'transition-duration': GObject.ParamSpec.uint('transition-duration', '', '',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
+            0, GLib.MAXUINT32, 1),
     },
 
     _init: function (props={}) {
@@ -38,6 +42,22 @@ const MinimalArrangement = new Lang.Class({
 
     clear: function () {
         this._count = 0;
+    },
+
+    set_transition_type: function (type) {
+        this._type = type;
+    },
+
+    get_transition_type: function () {
+        return this._type;
+    },
+
+    set_visible_child: function (child) {
+        this._child = child;
+    },
+
+    get_visible_child: function () {
+        return this._child;
     },
 });
 
