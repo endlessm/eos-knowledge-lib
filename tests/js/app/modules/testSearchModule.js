@@ -11,26 +11,42 @@ const Minimal = imports.tests.minimal;
 const MockFactory = imports.tests.mockFactory;
 const SearchModule = imports.app.modules.searchModule;
 const StyleClasses = imports.app.styleClasses;
+const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 
 Gtk.init(null);
 
 describe('Search module', function () {
-    let search_module, arrangement;
+    let factory, search_module, arrangement;
 
     beforeEach(function () {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
+        jasmine.addMatchers(WidgetDescendantMatcher.customMatchers);
 
-        let factory = new MockFactory.MockFactory();
+        factory = new MockFactory.MockFactory();
         factory.add_named_mock('results-card', Minimal.MinimalCard);
         factory.add_named_mock('results-arrangement',
             Minimal.MinimalArrangement);
+        factory.add_named_mock('search-module', SearchModule.SearchModule, {
+            arrangement: 'results-arrangement',
+            card_type: 'results-card',
+        });
         search_module = new SearchModule.SearchModule({
             factory: factory,
+            factory_name: 'search-module',
         });
         arrangement = factory.get_created_named_mocks('results-arrangement')[0];
     });
 
     it('constructs', function () {});
+
+    it('creates and packs an arrangement widget', function () {
+        expect(search_module).toHaveDescendant(arrangement);
+    });
+
+    it('does not create a card widget at construct time', function () {
+        let cards = factory.get_created_named_mocks('results-card');
+        expect(cards.length).toEqual(0);
+    });
 
     it('has the correct CSS class', function () {
         expect(search_module).toHaveCssClass(StyleClasses.SEARCH_RESULTS);

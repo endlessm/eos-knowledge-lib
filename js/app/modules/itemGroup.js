@@ -45,12 +45,13 @@ const ItemGroup = new Lang.Class({
 
     _init: function (props={}) {
         this.parent(props);
-        this.pack_module();
+        this._arrangement = this.create_submodule('arrangement');
+        this.add(this._arrangement);
     },
 
     // Module override
     get_slot_names: function () {
-        return ['arrangement'];
+        return ['arrangement', 'card_type'];
     },
 
     /**
@@ -77,9 +78,7 @@ const ItemGroup = new Lang.Class({
      */
     append_cards: function (cards) {
         cards.forEach((model) => {
-            // FIXME: this should use the 'card_type' slot, but needs
-            // https://github.com/endlessm/eos-sdk/issues/3433
-            let card = this.factory.create_named_module('home-card', {
+            let card = this.create_submodule('card_type', {
                 model: model,
             });
             card.connect('clicked', (card) => {

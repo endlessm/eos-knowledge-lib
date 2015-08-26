@@ -31,33 +31,6 @@ const Module = new Lang.Interface({
     },
 
     /**
-     * Method: pack_module
-     * Create and add submodules to module slots
-     *
-     * Uses factory and app_json to create all the submodules specified in
-     * the module's description. It then packs those submodules into their
-     * corresponding slots.
-     */
-    pack_module: function() {
-        let slots = this.get_slot_names();
-
-        slots.forEach((slot) => {
-            this['_' + slot] = this.factory.create_module_for_slot(this.factory_name, slot);
-            this.pack_module_for_slot(slot);
-        });
-    },
-
-    /**
-     * Method: pack_module_for_slot
-     * Attach a submodule to its correct position
-     *
-     * Can be overridden in class implementations.
-     */
-    pack_module_for_slot: function(slot) {
-        this.add(this['_' + slot]);
-    },
-
-    /**
      * Method: get_slot_names
      * List names for slots
      *
@@ -68,12 +41,20 @@ const Module = new Lang.Interface({
         return [];
     },
 
-    get_submodule: function (klass) {
-        let retval = null;
-        this.get_slot_names().forEach((slot) => {
-             if (this['_' + slot] instanceof klass)
-                retval = this['_' + slot];
-        });
-        return retval;
+    /**
+     * Method: create_submodule
+     * Create a new instance of a submodule
+     *
+     * Creates an instance of a submodule through the factory, optionally adding
+     * some construct properties.
+     * This doesn't pack the submodule anywhere, just returns it.
+     *
+     * Properties:
+     *   slot - the slot for which to create the module (string)
+     *   extra_props - dictionary of construct properties
+     */
+    create_submodule: function (slot, extra_props={}) {
+        return this.factory.create_module_for_slot(this.factory_name, slot,
+            extra_props);
     },
 });

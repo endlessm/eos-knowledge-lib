@@ -174,7 +174,7 @@ const Presenter = new Lang.Class({
         this._connect_search_signals(this.view.home_page);
         this.view.connect('search-focused', this._on_search_focus.bind(this));
 
-        let group = this.view.home_page.get_submodule(ItemGroup.ItemGroup);
+        let group = this.view.home_page._bottom;
         // FIXME: the if statement is because only Template B homepage has an
         // item group. This will be made obsolete by the dispatcher anyway.
         if (group) {
@@ -385,7 +385,7 @@ const Presenter = new Lang.Class({
             }
         } else {
             // FIXME: Temporarily handles passing of cards until we have dispatcher/alternative method.
-            let group = this.view.home_page.get_submodule(ItemGroup.ItemGroup);
+            let group = this.view.home_page._bottom;
             group.set_cards(sections);
         }
     },

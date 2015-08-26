@@ -30,22 +30,23 @@ const HomePageBTemplate = new Lang.Class({
 
     Template: 'resource:///com/endlessm/knowledge/widgets/homePageBTemplate.ui',
 
-    _packing_args: {
-        'top_left': [0, 0, 1, 1],
-        'top_right': [1, 0, 1, 1],
-        'bottom': [0, 1, 2, 2],
-    },
-
     _init: function (props={}) {
         this._cards = null;
         this.parent(props);
-        this.pack_module();
 
-        // FIXME: we should be able to get the search box out of the factory,
-        // rather than reaching into our internal structure
+        const PACKING_ARGS = {
+            'top_left': [0, 0, 1, 1],
+            'top_right': [1, 0, 1, 1],
+            'bottom': [0, 1, 2, 2],
+        };
+        this.get_slot_names().forEach((slot) => {
+            let submodule = this.create_submodule(slot);
+            this.attach.bind(this, submodule).apply(this, PACKING_ARGS[slot]);
+            this['_' + slot] = submodule;
+        });
+
+        // FIXME: these lines should be replaced by the dispatcher
         this.search_box = this._top_right;
-
-        // FIXME: this should be replaced by the dispatcher
         this.connect_signals();
 
         this.get_style_context().add_class(StyleClasses.HOME_PAGE);
@@ -53,9 +54,5 @@ const HomePageBTemplate = new Lang.Class({
 
     get_slot_names: function () {
         return [ 'top_left', 'top_right', 'bottom' ];
-    },
-
-    pack_module_for_slot: function(slot) {
-        this.attach.bind(this, this['_' + slot]).apply(this, this._packing_args[slot]);
     },
 });

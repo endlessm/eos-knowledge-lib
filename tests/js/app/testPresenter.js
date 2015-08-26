@@ -34,10 +34,7 @@ const MockHomePage = new Lang.Class({
         this.parent();
         this.search_box = new MockWidgets.MockSearchBox();
         this.app_banner = {};
-    },
-
-    get_submodule: function () {
-        return new MockWidgets.MockItemGroup();
+        this._bottom = new MockWidgets.MockItemGroup();
     },
 
     connect: function (signal, handler) {
