@@ -12,6 +12,7 @@ const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
 const Lightbox = imports.app.widgets.lightbox;
 const MockFactory = imports.tests.mockFactory;
 const MockWidgets = imports.tests.mockWidgets;
+const SearchPage = imports.app.searchPage;
 const SectionPageA = imports.app.sectionPageA;
 const Window = imports.app.modules.window;
 
@@ -72,6 +73,10 @@ describe('Window', function () {
         expect(view.section_page).toBeA(SectionPageA.SectionPageA);
     });
 
+    it ('instantiates a search page A', function () {
+        expect(view.search_page).toBeA(SearchPage.SearchPageA);
+    });
+
     it('instantiates an article page A', function () {
         expect(view.article_page).toBeA(ArticlePage.ArticlePage);
     });
@@ -90,6 +95,8 @@ describe('Window', function () {
         expect(view.get_visible_page()).toBe(view.article_page);
         view.show_section_page();
         expect(view.get_visible_page()).toBe(view.section_page);
+        view.show_search_page();
+        expect(view.get_visible_page()).toBe(view.search_page);
         view.show_home_page();
         expect(view.get_visible_page()).toBe(view.home_page);
     });

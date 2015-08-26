@@ -5,7 +5,6 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const ContentObjectModel = imports.search.contentObjectModel;
-const QueryObject = imports.search.queryObject;
 
 /**
  * Class: SectionPage
@@ -38,15 +37,6 @@ const SectionPage = new Lang.Class({
         'model': GObject.ParamSpec.object('model', 'Model', 'Section model',
             GObject.ParamFlags.READWRITE,
             ContentObjectModel.ContentObjectModel),
-        /**
-         * Property: query
-         * Query object for this page's results
-         *
-         * FIXME: This property is temporary; in the new system, the search
-         * results page will be a different page than the section page.
-         */
-        'query': GObject.ParamSpec.object('query', 'Query', 'Search query',
-            GObject.ParamFlags.READWRITE, QueryObject.QueryObject),
     },
 
     Signals: {
@@ -60,7 +50,6 @@ const SectionPage = new Lang.Class({
 
     _init: function (props) {
         this._model = null;
-        this._query = null;
 
         this.parent(props);
     },
@@ -77,41 +66,15 @@ const SectionPage = new Lang.Class({
         if (this._model === value)
             return;
         this._model = value;
-        this._query = null;
-        this._update_banner();
-    },
-
-    get query() {
-        return this._query;
-    },
-
-    set query(value) {
-        if (this._query === value)
-            return;
-        this._query = value;
-        this._model = null;
         this._update_banner();
     },
 
     _update_banner: function () {
-        this._title_banner = this._create_title_banner();
+        this._title_banner = this.factory.create_named_module('results-title-card', {
+            model: this._model,
+        });
         this.pack_title_banner(this._title_banner);
         this._title_banner.show_all();
         this.notify('model');
-        this.notify('query');
-    },
-
-    _create_title_banner: function () {
-        if (this._model) {
-            return this.factory.create_named_module('results-title-card', {
-                model: this._model,
-            });
-        }
-        if (this._query) {
-            return this.factory.create_named_module('results-search-banner', {
-                query: this._query,
-            });
-        }
-        throw new Error("Assert not reached");
     },
 });

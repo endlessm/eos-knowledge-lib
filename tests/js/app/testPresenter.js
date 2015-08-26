@@ -73,6 +73,7 @@ const MockView = new Lang.Class({
         this.categories_page.tab_button = {};
         this.article_page = connectable_object;
         this.lightbox = new MockLightbox.MockLightbox();
+        this.search_page = connectable_object;
         this.search_box = new MockWidgets.MockSearchBox();
         this.no_search_results_page = {};
     },
@@ -86,6 +87,7 @@ const MockView = new Lang.Class({
 
     show_article_page: function () {},
     show_no_search_results_page: function () {},
+    show_search_page: function () {},
     show_section_page: function () {},
     show_home_page: function () {},
     lock_ui: function () {},

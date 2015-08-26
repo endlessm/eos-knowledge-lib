@@ -41,7 +41,8 @@ EknWindow.show-categories-page {
     background-position: 0% 50%;
 }
 
-EknWindow.show-section-page {
+EknWindow.show-section-page,
+EknWindow.show-search-page {
     background-position: 50% 50%;
 }
 
@@ -85,7 +86,8 @@ EknWindow.show-no-search-results-page {
     transition: padding 250ms ease-in-out;
 }
 
-.section-page-a .card-a .title {
+.section-page-a .card-a .title,
+.search-page-a .card-a .title {
     font-size: 0.9em;
     text-shadow: 0px 1px 0px white;
 }
@@ -94,7 +96,8 @@ EknWindow.show-no-search-results-page {
     padding: 9px 0px 9px 0px;
 }
 
-.section-page-b .text-card {
+.section-page-b .text-card,
+.search-page-b .text-card {
     padding: 6px;
     border: 2px solid alpha(white, 0);
     background-color: alpha(white, 0);
@@ -105,7 +108,8 @@ EknWindow.show-no-search-results-page {
                 border 250ms;
 }
 
-.section-page-b .text-card .title {
+.section-page-b .text-card .title,
+.search-page-b .text-card .title {
     padding: 0em 0em 0em 1.5em;
     font-family: Lato;
     font-size: 1.125em; /* 18pt * 1/12 * 0.75 DPI correction factor */
@@ -114,7 +118,9 @@ EknWindow.show-no-search-results-page {
 }
 
 .section-page-b .text-card:hover,
-.section-page-b .text-card.highlighted:hover {
+.section-page-b .text-card.highlighted:hover,
+.search-page-b .text-card:hover,
+.search-page-b .text-card.highlighted:hover {
     text-shadow: 0px 1px 0px white;
     border: 2px solid white;
     background-color: alpha(white, 0.9);
@@ -124,11 +130,13 @@ EknWindow.show-no-search-results-page {
     box-shadow: 0px 0px 20px 0px black;
 }
 
-.section-page-b .text-card:hover .title {
+.section-page-b .text-card:hover .title,
+.search-page-b .text-card:hover .title {
     color: @template-b-text-color-hover;
 }
 
-.section-page-b .text-card.highlighted {
+.section-page-b .text-card.highlighted,
+.search-page-b .text-card.highlighted {
     background: alpha(white, 0.8);
     text-shadow: 0px 1px 0px white;
     font-weight: bold;
@@ -136,7 +144,9 @@ EknWindow.show-no-search-results-page {
 }
 
 .section-page-b .text-card.highlighted .title,
-.section-page-b .text-card.highlighted:hover .title {
+.section-page-b .text-card.highlighted:hover .title,
+.search-page-b .text-card.highlighted .title,
+.search-page-b .text-card.highlighted:hover .title {
     color: @template-b-text-color-highlighted;
 }
 
@@ -371,6 +381,8 @@ EknWindow.show-no-search-results-page {
 
 .section-page-a .title,
 .section-page-b .title,
+.search-page-a .title,
+.search-page-b .title,
 .no-search-results-page-a .title,
 .no-search-results-page-b .title {
     font-family: Montserrat;
@@ -378,12 +390,14 @@ EknWindow.show-no-search-results-page {
 }
 
 .section-page-a .title,
+.search-page-a .title,
 .no-search-results-page-a .title {
     padding-top: 1.0em;
     padding-bottom: 0.48em;
 }
 
-.section-page-a .title {
+.section-page-a .title,
+.search-page-a .title {
     font-size: 2.25em; /* 36pt * 1/12 * 0.75 DPI correction factor */
 }
 
@@ -391,21 +405,26 @@ EknWindow.show-no-search-results-page {
     font-size: 1.91em; /* 85% of .section-page-title font size */
 }
 
-.section-page-a GtkSeparator, .no-search-results-page-a GtkSeparator {
+.section-page-a GtkSeparator,
+.search-page-a GtkSeparator,
+.no-search-results-page-a GtkSeparator {
     color: rgba(255, 255, 255, 0.3);
 }
 
-.section-page-b .title {
+.section-page-b .title,
+.search-page-b .title {
     font-size: 4.5em; /* 72pt * 1/12 * 0.75 DPI correction factor */
     padding: 0.9em 0em 0.9em 1.2em;
     color: white;
 }
 
-.section-page-b GtkScrolledWindow:not(.overshoot):not(.undershoot) {
+.section-page-b GtkScrolledWindow:not(.overshoot):not(.undershoot),
+.search-page-b GtkScrolledWindow:not(.overshoot):not(.undershoot) {
     background-color: alpha(black, 0.75);
 }
 
-.section-page-b .scrollbar.trough {
+.section-page-b .scrollbar.trough,
+.search-page-b .scrollbar.trough {
     background-color: alpha(black, 0.5);
     background-image: linear-gradient(89deg,
                                       alpha(white, 0.1) 0%,
@@ -413,11 +432,13 @@ EknWindow.show-no-search-results-page {
     box-shadow: inset 1px 0px 0px 0px alpha(black, 0.15);
 }
 
-.section-page-b .scrollbar.slider {
+.section-page-b .scrollbar.slider,
+.search-page-b .scrollbar.slider {
     background-color: #888888;
 }
 
-.section-page-b-title-frame {
+.section-page-b-title-frame,
+.search-page-b-title-frame {
     background-image: linear-gradient(-180deg, rgba(0,0,0,0.0) 65%, rgba(0,0,0,0.30) 85%, rgba(0,0,0,0.70) 100%);
 }
 

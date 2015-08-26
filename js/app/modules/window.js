@@ -16,6 +16,7 @@ const HomePageA = imports.app.homePageA;
 const Lightbox = imports.app.widgets.lightbox;
 const Module = imports.app.interfaces.module;
 const NoSearchResultsPage = imports.app.noSearchResultsPage;
+const SearchPage = imports.app.searchPage;
 const SectionPage = imports.app.sectionPage;
 const SectionArticlePage = imports.app.sectionArticlePage;
 const StyleClasses = imports.app.styleClasses;
@@ -87,6 +88,16 @@ const Window = new Lang.Class({
             'The article page of this view widget.',
             GObject.ParamFlags.READABLE,
             ArticlePage.ArticlePage),
+        /**
+         * Property: search-page
+         *
+         * The <SearchPage> widget created by this widget. Read-only,
+         * modify using the <SearchPage> API.
+         */
+        'search-page': GObject.ParamSpec.object('search-page', 'Search page',
+            'The search page of this view widget.',
+            GObject.ParamFlags.READABLE,
+            SearchPage.SearchPage),
         /**
          * Property: no-search-results-page
          *
@@ -196,12 +207,20 @@ const Window = new Lang.Class({
                 factory: this.factory,
                 forward_visible: false,
             });
+            this._search_page = new SearchPage.SearchPageB({
+                factory: this.factory,
+                forward_visible: false,
+            });
             this._no_search_results_page = new NoSearchResultsPage.NoSearchResultsPageB();
         } else {
             this._home_page = new HomePageA.HomePageA({
                 factory: this.factory,
             });
             this._section_article_page = new SectionArticlePage.SectionArticlePageA({
+                factory: this.factory,
+                forward_visible: false,
+            });
+            this._search_page = new SearchPage.SearchPageA({
                 factory: this.factory,
                 forward_visible: false,
             });
@@ -215,6 +234,9 @@ const Window = new Lang.Class({
 
         let dispatcher = Dispatcher.get_default();
         this._section_article_page.connect('back-clicked', () => {
+            dispatcher.dispatch({ action_type: Actions.NAV_BACK_CLICKED });
+        });
+        this._search_page.connect('back-clicked', () => {
             dispatcher.dispatch({ action_type: Actions.NAV_BACK_CLICKED });
         });
         this._no_search_results_page.connect('back-clicked', () => {
@@ -266,6 +288,10 @@ const Window = new Lang.Class({
             this.emit('article-selected', article_id);
         }.bind(this));
 
+        this.page_manager.add(this._search_page, {
+            left_topbar_widget: this._history_buttons,
+            center_topbar_widget: this.search_box,
+        });
         this.page_manager.add(this._no_search_results_page, {
             left_topbar_widget: this._history_buttons,
             center_topbar_widget: this.search_box,
@@ -326,6 +352,10 @@ const Window = new Lang.Class({
         return this._section_article_page.article_page;
     },
 
+    get search_page () {
+        return this._search_page;
+    },
+
     get no_search_results_page () {
         return this._no_search_results_page;
     },
@@ -378,7 +408,7 @@ const Window = new Lang.Class({
         }
         this._blur_background_image_uri = v;
         if (this._blur_background_image_uri !== null) {
-            let frame_css = 'EknWindow.show-section-page, EknWindow.show-article-page, EknWindow.show-no-search-results-page { background-image: url("' + this._blur_background_image_uri + '");}';
+            let frame_css = 'EknWindow.show-section-page, EknWindow.show-article-page, EknWindow.show-search-page, EknWindow.show-no-search-results-page { background-image: url("' + this._blur_background_image_uri + '");}';
             let provider = new Gtk.CssProvider();
             provider.load_from_data(frame_css);
             let context = this.get_style_context();
@@ -403,6 +433,7 @@ const Window = new Lang.Class({
         this.get_style_context().remove_class(StyleClasses.SHOW_CATEGORIES_PAGE);
         this.get_style_context().remove_class(StyleClasses.SHOW_SECTION_PAGE);
         this.get_style_context().remove_class(StyleClasses.SHOW_ARTICLE_PAGE);
+        this.get_style_context().remove_class(StyleClasses.SHOW_SEARCH_PAGE);
         this.get_style_context().remove_class(StyleClasses.SHOW_NO_SEARCH_RESULTS_PAGE);
         this.get_style_context().add_class(StyleClasses.SHOW_HOME_PAGE);
     },
@@ -424,6 +455,7 @@ const Window = new Lang.Class({
         this.get_style_context().remove_class(StyleClasses.SHOW_HOME_PAGE);
         this.get_style_context().remove_class(StyleClasses.SHOW_SECTION_PAGE);
         this.get_style_context().remove_class(StyleClasses.SHOW_ARTICLE_PAGE);
+        this.get_style_context().remove_class(StyleClasses.SHOW_SEARCH_PAGE);
         this.get_style_context().remove_class(StyleClasses.SHOW_NO_SEARCH_RESULTS_PAGE);
         this.get_style_context().add_class(StyleClasses.SHOW_CATEGORIES_PAGE);
     },
@@ -446,6 +478,7 @@ const Window = new Lang.Class({
         this.get_style_context().remove_class(StyleClasses.SHOW_HOME_PAGE);
         this.get_style_context().remove_class(StyleClasses.SHOW_CATEGORIES_PAGE);
         this.get_style_context().remove_class(StyleClasses.SHOW_ARTICLE_PAGE);
+        this.get_style_context().remove_class(StyleClasses.SHOW_SEARCH_PAGE);
         this.get_style_context().remove_class(StyleClasses.SHOW_NO_SEARCH_RESULTS_PAGE);
         this.get_style_context().add_class(StyleClasses.SHOW_SECTION_PAGE);
     },
@@ -463,8 +496,34 @@ const Window = new Lang.Class({
         this.get_style_context().remove_class(StyleClasses.SHOW_HOME_PAGE);
         this.get_style_context().remove_class(StyleClasses.SHOW_CATEGORIES_PAGE);
         this.get_style_context().remove_class(StyleClasses.SHOW_SECTION_PAGE);
+        this.get_style_context().remove_class(StyleClasses.SHOW_SEARCH_PAGE);
         this.get_style_context().remove_class(StyleClasses.SHOW_NO_SEARCH_RESULTS_PAGE);
         this.get_style_context().add_class(StyleClasses.SHOW_ARTICLE_PAGE);
+    },
+
+    /**
+     * Method: show_search_page
+     *
+     * This method causes the window to animate to the search page.
+     */
+    show_search_page: function () {
+        let visible_page = this.get_visible_page();
+        if (visible_page === this.home_page || visible_page === this.categories_page) {
+            this.page_manager.transition_type = Gtk.StackTransitionType.SLIDE_LEFT;
+        } else if (visible_page === this.article_page) {
+            this.page_manager.transition_type = Gtk.StackTransitionType.SLIDE_RIGHT;
+        } else {
+            this.page_manager.transition_type = Gtk.StackTransitionType.CROSSFADE;
+        }
+        this._section_article_page.show_article = false;
+        this.page_manager.visible_child = this._search_page;
+
+        this.get_style_context().remove_class(StyleClasses.SHOW_HOME_PAGE);
+        this.get_style_context().remove_class(StyleClasses.SHOW_SECTION_PAGE);
+        this.get_style_context().remove_class(StyleClasses.SHOW_CATEGORIES_PAGE);
+        this.get_style_context().remove_class(StyleClasses.SHOW_ARTICLE_PAGE);
+        this.get_style_context().remove_class(StyleClasses.SHOW_NO_SEARCH_RESULTS_PAGE);
+        this.get_style_context().add_class(StyleClasses.SHOW_SEARCH_PAGE);
     },
 
     /**
@@ -488,6 +547,7 @@ const Window = new Lang.Class({
         this.get_style_context().remove_class(StyleClasses.SHOW_CATEGORIES_PAGE);
         this.get_style_context().remove_class(StyleClasses.SHOW_ARTICLE_PAGE);
         this.get_style_context().remove_class(StyleClasses.SHOW_SECTION_PAGE);
+        this.get_style_context().remove_class(StyleClasses.SHOW_SEARCH_PAGE);
         this.get_style_context().add_class(StyleClasses.SHOW_NO_SEARCH_RESULTS_PAGE);
     },
 

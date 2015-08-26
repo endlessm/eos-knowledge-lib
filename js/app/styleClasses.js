@@ -272,6 +272,26 @@ const SECTION_PAGE_A_SEGMENT_TITLE = 'section-page-a-segment-title';
 const SECTION_PAGE_B = 'section-page-b';
 
 /**
+ * Constant: SEARCH_PAGE_A
+ *
+ * Matches the SearchPageA of the knowledge apps.
+ */
+const SEARCH_PAGE_A = 'search-page-a';
+
+/**
+ * Constant: SEARCH_PAGE_B
+ *
+ * Matches the SearchPageB of the knowledge apps.
+ */
+const SEARCH_PAGE_B = 'search-page-b';
+
+/**
+ * Constant: SEARCH_PAGE_B_TITLE_FRAME
+ *
+ * Matches the title frame of the SearchPageB widget.
+ */
+const SEARCH_PAGE_B_TITLE_FRAME = 'search-page-b-title-frame';
+/**
  * Constant: PREVIEWER
  *
  * Matches the previewer widget.
@@ -316,6 +336,14 @@ const SHOW_SECTION_PAGE = 'show-section-page';
  * as part of the parallax effect when switching pages.
  */
 const SHOW_ARTICLE_PAGE = 'show-article-page';
+
+/**
+ * Constant: SHOW_SEARCH_PAGE
+ *
+ * A CSS class to set the background image position on the search-page,
+ * as part of the parallax effect when switching pages.
+ */
+const SHOW_SEARCH_PAGE = 'show-search-page';
 
 /**
  * Constant: SHOW_NO_SEARCH_RESULTS_PAGE
