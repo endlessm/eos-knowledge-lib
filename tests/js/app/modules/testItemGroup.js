@@ -41,41 +41,22 @@ describe('Item group module', function () {
         expect(cards.length).toEqual(0);
     });
 
-    it('adds cards when given a list of models', function () {
-        group.set_cards([
-            new ContentObjectModel.ContentObjectModel(),
-            new ContentObjectModel.ContentObjectModel(),
-            new ContentObjectModel.ContentObjectModel(),
-        ]);
+    it('creates cards from models and adds them to the arrangement', function () {
+        group.add_card(new ContentObjectModel.ContentObjectModel());
+        group.add_card(new ContentObjectModel.ContentObjectModel());
+        group.add_card(new ContentObjectModel.ContentObjectModel());
         expect(arrangement.count).toBe(3);
         expect(factory.get_created_named_mocks('home-card').length).toBe(3);
     });
 
-    it('clears the existing cards when given a new list', function () {
-        group.set_cards([
-            new ContentObjectModel.ContentObjectModel(),
-            new ContentObjectModel.ContentObjectModel(),
-            new ContentObjectModel.ContentObjectModel(),
-        ]);
-        group.set_cards([
-            new ContentObjectModel.ContentObjectModel(),
-            new ContentObjectModel.ContentObjectModel(),
-        ]);
+    it('clears the existing cards when clear called', function () {
+        group.add_card(new ContentObjectModel.ContentObjectModel());
+        group.add_card(new ContentObjectModel.ContentObjectModel());
+        group.add_card(new ContentObjectModel.ContentObjectModel());
+        group.clear();
+        group.add_card(new ContentObjectModel.ContentObjectModel());
+        group.add_card(new ContentObjectModel.ContentObjectModel());
         expect(arrangement.count).toBe(2);
-        expect(factory.get_created_named_mocks('home-card').length).toBe(5);
-    });
-
-    it('appends cards from a list of models to the existing cards', function () {
-        group.set_cards([
-            new ContentObjectModel.ContentObjectModel(),
-            new ContentObjectModel.ContentObjectModel(),
-            new ContentObjectModel.ContentObjectModel(),
-        ]);
-        group.append_cards([
-            new ContentObjectModel.ContentObjectModel(),
-            new ContentObjectModel.ContentObjectModel(),
-        ]);
-        expect(arrangement.count).toBe(5);
         expect(factory.get_created_named_mocks('home-card').length).toBe(5);
     });
 });

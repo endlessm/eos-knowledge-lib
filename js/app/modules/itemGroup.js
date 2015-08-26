@@ -2,6 +2,7 @@
 
 /* exported ItemGroup */
 
+const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
@@ -55,36 +56,27 @@ const ItemGroup = new Lang.Class({
     },
 
     /**
-     * Method: set_cards
-     * Display some cards
-     *
-     * Parameters:
-     *   cards - an array of <ContentObjectModels>
+     * Method: clear
+     * Remove all cards from the arrangement
      */
-    set_cards: function (cards) {
+    clear: function () {
         this._arrangement.clear();
-        this.append_cards(cards);
     },
 
     /**
-     * Method: append_cards
-     * Add some cards to the already existing cards
-     *
-     * Like <ItemGroup.set_cards>, but will add the cards without removing the
-     * existing ones and thereby disturbing the UI.
+     * Method: add_card
+     * Add a card to the arrangement
      *
      * Parameters:
-     *   cards - an array of <ContentObjectModels>
+     *   card - a <Card> implementation
      */
-    append_cards: function (cards) {
-        cards.forEach((model) => {
-            let card = this.create_submodule('card_type', {
-                model: model,
-            });
-            card.connect('clicked', (card) => {
-                this.emit('article-selected', card.model);
-            });
-            this._arrangement.add_card(card);
+    add_card: function (model) {
+        let card = this.create_submodule('card_type', {
+            model: model,
         });
+        card.connect('clicked', (card) => {
+            this.emit('article-selected', card.model);
+        });
+        this._arrangement.add_card(card);
     },
 });

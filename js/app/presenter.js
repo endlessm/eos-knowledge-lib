@@ -412,7 +412,7 @@ const Presenter = new Lang.Class({
         } else {
             // FIXME: Temporarily handles passing of cards until we have dispatcher/alternative method.
             let group = this.view.home_page._bottom;
-            group.set_cards(sections);
+            sections.forEach((section) => group.add_card(section));
         }
     },
 
