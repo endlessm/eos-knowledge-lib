@@ -31,25 +31,6 @@ const Module = new Lang.Interface({
     },
 
     /**
-     * Method: pack_module_for_slot
-     * Attach a submodule to its correct position
-     *
-     * Can be overridden in class implementations.
-     * The default is to add the submodule as a property to the module, whose
-     * name consists of the slot name prefixed with an underscore, and pack the
-     * submodule into the module using **Gtk.Container.add()**.
-     * You should override this function if the submodule needs to be packed
-     * another way.
-     *
-     * Parameters:
-     *   slot - the slot for which to create and pack the module (string)
-     */
-    pack_module_for_slot: function(slot) {
-        this['_' + slot] = this.create_submodule(slot);
-        this.add(this['_' + slot]);
-    },
-
-    /**
      * Method: get_slot_names
      * List names for slots
      *

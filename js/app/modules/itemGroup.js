@@ -45,7 +45,8 @@ const ItemGroup = new Lang.Class({
 
     _init: function (props={}) {
         this.parent(props);
-        this.pack_module_for_slot('arrangement');
+        this._arrangement = this.create_submodule('arrangement');
+        this.add(this._arrangement);
     },
 
     // Module override
