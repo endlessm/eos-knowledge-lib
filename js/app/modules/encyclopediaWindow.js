@@ -6,7 +6,6 @@ const Lang = imports.lang;
 const Actions = imports.app.actions;
 const ContentPage = imports.app.encyclopedia.contentPage;
 const Dispatcher = imports.app.dispatcher;
-const HomePage = imports.app.encyclopedia.homePage;
 const Lightbox = imports.app.widgets.lightbox;
 const Module = imports.app.interfaces.module;
 
@@ -24,7 +23,7 @@ const EncyclopediaWindow = new Lang.Class({
         'home-page': GObject.ParamSpec.object('home-page', 'home page',
             'The home page of this view widget.',
             GObject.ParamFlags.READABLE,
-            HomePage.HomePage),
+            Gtk.Widget),
         'content-page': GObject.ParamSpec.object('content-page', 'Content page',
             'The content page of this view widget.',
             GObject.ParamFlags.READABLE,
@@ -64,9 +63,8 @@ const EncyclopediaWindow = new Lang.Class({
         let context = this.get_style_context();
         context.add_class(HOME_PAGE_NAME);
 
-        this._home_page = new HomePage.HomePage({
-            factory: this.factory,
-        });
+        this._home_page = this.factory.create_named_module('home-page-template');
+
         this._content_page = new ContentPage.ContentPage({
             factory: this.factory,
         });

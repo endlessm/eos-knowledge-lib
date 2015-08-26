@@ -137,6 +137,13 @@ function transform_v1_description(json) {
                 'results-background-uri': json['backgroundSectionURI'],
             },
         };
+        modules['home-page-template'] = {
+            type: 'EncyclopediaCoverTemplate',
+            slots: {
+                top: "app-banner",
+                bottom: "home-search",
+            },
+        };
         modules['app-banner'] = {
             type: 'AppBanner',
             properties: {
