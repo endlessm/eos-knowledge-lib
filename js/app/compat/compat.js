@@ -88,7 +88,7 @@ function transform_v1_description(json) {
                 top_left: "app-banner",
                 top_right: "home-search",
                 bottom: "home-page-item-group",
-            }
+            },
         };
         modules['home-page-arrangement'] = {
             type: 'TiledGridArrangement',
@@ -104,7 +104,7 @@ function transform_v1_description(json) {
                 'shadow_type': Gtk.ShadowType.NONE,
                 'halign': Gtk.Align.CENTER,
                 'valign': Gtk.Align.CENTER,
-            }
+            },
         };
         modules['home-card'] = {
             type: 'CardB',
@@ -150,7 +150,7 @@ function transform_v1_description(json) {
             type: 'SearchBox',
             properties: {
                 'max-width-chars': 52,
-            }
+            },
         };
         modules['article-app-banner'] = {
             type: 'AppBanner',
