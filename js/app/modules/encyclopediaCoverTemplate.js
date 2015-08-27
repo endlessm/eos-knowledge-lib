@@ -2,8 +2,8 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
-const HomePage = imports.app.encyclopedia.homePage;
 const Module = imports.app.interfaces.module;
+const SearchBox = imports.app.modules.searchBox;
 
 /**
  * Class: EncyclopediaCoverTemplate
@@ -18,13 +18,22 @@ const EncyclopediaCoverTemplate = new Lang.Class({
     Name: 'EncyclopediaCoverTemplate',
     GTypeName: 'EknEncyclopediaCoverTemplate',
     Extends: Gtk.Grid,
-    Implements: [ Module.Module, HomePage.HomePage ],
+    Implements: [ Module.Module ],
 
     Properties: {
         'factory': GObject.ParamSpec.override('factory', Module.Module),
         'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-        'search-box': GObject.ParamSpec.override('search-box',
-            HomePage.HomePage),
+        /**
+         * Property: search-box
+         *
+         * The <SearchBox> widget created by this widget. Read-only,
+         * modify using the <SearchBox> API. Use to type search queries and to display the last
+         * query searched.
+         */
+        'search-box': GObject.ParamSpec.object('search-box', 'Search Box',
+            'The seach box for this view.',
+            GObject.ParamFlags.READABLE,
+            SearchBox.SearchBox),
     },
 
     Template: 'resource:///com/endlessm/knowledge/widgets/encyclopediaCoverTemplate.ui',

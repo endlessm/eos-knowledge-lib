@@ -220,7 +220,6 @@ js_files = \
 	js/app/config.js \
 	js/app/dispatcher.js \
 	js/app/encyclopedia/contentPage.js \
-	js/app/encyclopedia/homePage.js \
 	js/app/encyclopedia/model.js \
 	js/app/encyclopedia/presenter.js \
 	js/app/historyItem.js \
