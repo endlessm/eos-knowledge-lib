@@ -302,7 +302,6 @@ const Window = new Lang.Class({
             else
                 context.remove_class(StyleClasses.ANIMATING);
         }.bind(this));
-        this.get_style_context().add_class(StyleClasses.SHOW_HOME_PAGE);
         this.connect('size-allocate', Lang.bind(this, function(widget, allocation) {
             let win_width = allocation.width;
             let win_height = allocation.height;
@@ -326,6 +325,7 @@ const Window = new Lang.Class({
         }));
 
         this.show_all();
+        this.show_home_page();
     },
 
     get home_page () {
@@ -366,7 +366,7 @@ const Window = new Lang.Class({
         }
         this._background_image_uri = v;
         if (this._background_image_uri !== null) {
-            let frame_css = 'EknWindow.show-home-page, EknWindow.show-categories-page { background-image: url("' + this._background_image_uri + '");}';
+            let frame_css = 'EknWindow.background-left { background-image: url("' + this._background_image_uri + '");}';
             let provider = new Gtk.CssProvider();
             provider.load_from_data(frame_css);
             let context = this.get_style_context();
@@ -400,12 +400,19 @@ const Window = new Lang.Class({
         }
         this._blur_background_image_uri = v;
         if (this._blur_background_image_uri !== null) {
-            let frame_css = 'EknWindow.show-section-page, EknWindow.show-article-page, EknWindow.show-search-page, EknWindow.show-no-search-results-page { background-image: url("' + this._blur_background_image_uri + '");}';
+            let frame_css = 'EknWindow.background-center, EknWindow.background-right { background-image: url("' + this._blur_background_image_uri + '");}';
             let provider = new Gtk.CssProvider();
             provider.load_from_data(frame_css);
             let context = this.get_style_context();
             context.add_provider(provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
         }
+    },
+
+    _set_background_position_style: function (klass) {
+        this.get_style_context().remove_class(StyleClasses.BACKGROUND_LEFT);
+        this.get_style_context().remove_class(StyleClasses.BACKGROUND_CENTER);
+        this.get_style_context().remove_class(StyleClasses.BACKGROUND_RIGHT);
+        this.get_style_context().add_class(klass);
     },
 
     /**
@@ -423,13 +430,7 @@ const Window = new Lang.Class({
         this._stack.visible_child = this._home_page;
         this._nav_buttons.back_visible = false;
         this.search_box.visible = false;
-
-        this.get_style_context().remove_class(StyleClasses.SHOW_CATEGORIES_PAGE);
-        this.get_style_context().remove_class(StyleClasses.SHOW_SECTION_PAGE);
-        this.get_style_context().remove_class(StyleClasses.SHOW_ARTICLE_PAGE);
-        this.get_style_context().remove_class(StyleClasses.SHOW_SEARCH_PAGE);
-        this.get_style_context().remove_class(StyleClasses.SHOW_NO_SEARCH_RESULTS_PAGE);
-        this.get_style_context().add_class(StyleClasses.SHOW_HOME_PAGE);
+        this._set_background_position_style(StyleClasses.BACKGROUND_LEFT);
     },
 
     /**
@@ -447,13 +448,7 @@ const Window = new Lang.Class({
         this._stack.visible_child = this._categories_page;
         this._nav_buttons.back_visible = true;
         this.search_box.visible = false;
-
-        this.get_style_context().remove_class(StyleClasses.SHOW_HOME_PAGE);
-        this.get_style_context().remove_class(StyleClasses.SHOW_SECTION_PAGE);
-        this.get_style_context().remove_class(StyleClasses.SHOW_ARTICLE_PAGE);
-        this.get_style_context().remove_class(StyleClasses.SHOW_SEARCH_PAGE);
-        this.get_style_context().remove_class(StyleClasses.SHOW_NO_SEARCH_RESULTS_PAGE);
-        this.get_style_context().add_class(StyleClasses.SHOW_CATEGORIES_PAGE);
+        this._set_background_position_style(StyleClasses.BACKGROUND_LEFT);
     },
 
     /**
@@ -473,13 +468,7 @@ const Window = new Lang.Class({
         this._stack.visible_child = this._section_page;
         this._nav_buttons.back_visible = true;
         this.search_box.visible = true;
-
-        this.get_style_context().remove_class(StyleClasses.SHOW_HOME_PAGE);
-        this.get_style_context().remove_class(StyleClasses.SHOW_CATEGORIES_PAGE);
-        this.get_style_context().remove_class(StyleClasses.SHOW_ARTICLE_PAGE);
-        this.get_style_context().remove_class(StyleClasses.SHOW_SEARCH_PAGE);
-        this.get_style_context().remove_class(StyleClasses.SHOW_NO_SEARCH_RESULTS_PAGE);
-        this.get_style_context().add_class(StyleClasses.SHOW_SECTION_PAGE);
+        this._set_background_position_style(StyleClasses.BACKGROUND_CENTER);
     },
 
     /**
@@ -492,13 +481,7 @@ const Window = new Lang.Class({
         this._stack.visible_child = this.article_page;
         this._nav_buttons.back_visible = true;
         this.search_box.visible = true;
-
-        this.get_style_context().remove_class(StyleClasses.SHOW_HOME_PAGE);
-        this.get_style_context().remove_class(StyleClasses.SHOW_CATEGORIES_PAGE);
-        this.get_style_context().remove_class(StyleClasses.SHOW_SECTION_PAGE);
-        this.get_style_context().remove_class(StyleClasses.SHOW_SEARCH_PAGE);
-        this.get_style_context().remove_class(StyleClasses.SHOW_NO_SEARCH_RESULTS_PAGE);
-        this.get_style_context().add_class(StyleClasses.SHOW_ARTICLE_PAGE);
+        this._set_background_position_style(StyleClasses.BACKGROUND_RIGHT);
     },
 
     /**
@@ -518,13 +501,7 @@ const Window = new Lang.Class({
         this._stack.visible_child = this._search_page;
         this._nav_buttons.back_visible = true;
         this.search_box.visible = true;
-
-        this.get_style_context().remove_class(StyleClasses.SHOW_HOME_PAGE);
-        this.get_style_context().remove_class(StyleClasses.SHOW_SECTION_PAGE);
-        this.get_style_context().remove_class(StyleClasses.SHOW_CATEGORIES_PAGE);
-        this.get_style_context().remove_class(StyleClasses.SHOW_ARTICLE_PAGE);
-        this.get_style_context().remove_class(StyleClasses.SHOW_NO_SEARCH_RESULTS_PAGE);
-        this.get_style_context().add_class(StyleClasses.SHOW_SEARCH_PAGE);
+        this._set_background_position_style(StyleClasses.BACKGROUND_CENTER);
     },
 
     /**
@@ -544,13 +521,7 @@ const Window = new Lang.Class({
         this._stack.visible_child = this._no_search_results_page;
         this._nav_buttons.back_visible = true;
         this.search_box.visible = true;
-
-        this.get_style_context().remove_class(StyleClasses.SHOW_HOME_PAGE);
-        this.get_style_context().remove_class(StyleClasses.SHOW_CATEGORIES_PAGE);
-        this.get_style_context().remove_class(StyleClasses.SHOW_ARTICLE_PAGE);
-        this.get_style_context().remove_class(StyleClasses.SHOW_SECTION_PAGE);
-        this.get_style_context().remove_class(StyleClasses.SHOW_SEARCH_PAGE);
-        this.get_style_context().add_class(StyleClasses.SHOW_NO_SEARCH_RESULTS_PAGE);
+        this._set_background_position_style(StyleClasses.BACKGROUND_CENTER);
     },
 
     /**

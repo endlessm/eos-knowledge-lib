@@ -33,25 +33,16 @@ EknWindow {
     transition: background-position 0.5s ease;
 }
 
-EknWindow.show-home-page {
+EknWindow.background-left {
     background-position: 0% 50%;
 }
 
-EknWindow.show-categories-page {
-    background-position: 0% 50%;
-}
-
-EknWindow.show-section-page,
-EknWindow.show-search-page {
+EknWindow.background-center {
     background-position: 50% 50%;
 }
 
-EknWindow.show-article-page {
+EknWindow.background-right {
     background-position: 100% 50%;
-}
-
-EknWindow.show-no-search-results-page {
-    background-position: 50% 50%;
 }
 
 .card-a {
