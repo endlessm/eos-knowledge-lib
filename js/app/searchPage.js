@@ -156,7 +156,6 @@ const SearchPageB = new Lang.Class({
         this._title_frame = new Gtk.Frame();
         this._title_frame.get_style_context().add_class(StyleClasses.SEARCH_PAGE_B_TITLE_FRAME);
 
-        this.orientation = Gtk.Orientation.HORIZONTAL;
         this._content_grid.add(this._title_frame);
 
         this._arrangement = this.factory.create_named_module('results-arrangement', {
