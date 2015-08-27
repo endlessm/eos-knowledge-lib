@@ -7,8 +7,7 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
-const Actions = imports.app.actions;
-const Dispatcher = imports.app.dispatcher;
+const ContentObjectModel = imports.search.contentObjectModel;
 const InfiniteScrolledWindow = imports.app.widgets.infiniteScrolledWindow;
 const QueryObject = imports.search.queryObject;
 const StyleClasses = imports.app.styleClasses;
@@ -34,6 +33,9 @@ const SearchPage = new Lang.Class({
     },
 
     Signals: {
+        'article-selected': {
+            param_types: [ ContentObjectModel.ContentObjectModel ],
+        },
         'load-more-results': {},
     },
 
@@ -70,8 +72,6 @@ const SearchPageA = new Lang.Class({
     GTypeName: 'EknSearchPageA',
     Extends: SearchPage,
 
-    LOADING_BOTTOM_BUFFER: 250,
-
     _init: function (props={}) {
         this._content_grid = new Gtk.Grid({
             orientation: Gtk.Orientation.VERTICAL,
@@ -85,20 +85,18 @@ const SearchPageA = new Lang.Class({
 
         this.get_style_context().add_class(StyleClasses.SEARCH_PAGE_A);
 
-        this._arrangement = this.factory.create_named_module('results-arrangement', {
-            bottom_buffer: this.LOADING_BOTTOM_BUFFER,
-        });
-
-        this._arrangement.connect('need-more-content', () =>
+        this._search_results = this.factory.create_named_module('search-results');
+        this._search_results.connect('need-more-content', () =>
             this.emit('load-more-results'));
+        this._search_results.connect('article-selected', (group, article) =>
+            this.emit('article-selected', article));
 
         this._separator = new Gtk.Separator({
             margin_start: 20,
             margin_end: 20,
         });
         this._content_grid.attach(this._separator, 0, 1, 1, 1);
-
-        this._content_grid.attach(this._arrangement, 0, 2, 1, 1);
+        this._content_grid.attach(this._search_results, 0, 2, 1, 1);
         this.add(this._content_grid);
     },
 
@@ -113,7 +111,7 @@ const SearchPageA = new Lang.Class({
 
     append_cards: function (cards) {
         this._cards.push.apply(this._cards, cards);
-        cards.forEach(this._arrangement.add_card, this._arrangement);
+        cards.forEach(this._search_results.add_card, this._search_results);
     },
 
     get_cards: function () {
@@ -121,7 +119,7 @@ const SearchPageA = new Lang.Class({
     },
 
     remove_all_cards: function () {
-        this._arrangement.clear();
+        this._search_results.clear();
         this._cards = [];
     },
 });
@@ -144,28 +142,17 @@ const SearchPageB = new Lang.Class({
 
         this._content_grid.add(this._title_frame);
 
-        this._arrangement = this.factory.create_named_module('results-arrangement', {
-            preferred_width: 400,
-            hexpand: false,
-        });
-        this._arrangement.connect('need-more-content', () =>
+        this._search_results = this.factory.create_named_module('search-results');
+        this._search_results.connect('need-more-content', () =>
             this.emit('load-more-results'));
-        this._content_grid.add(this._arrangement);
+        this._search_results.connect('article-selected', (group, article) =>
+            this.emit('article-selected', article));
+
+        this._content_grid.add(this._search_results);
 
         this.add(this._content_grid);
 
         this.get_style_context().add_class(StyleClasses.SEARCH_PAGE_B);
-
-        Dispatcher.get_default().register((payload) => {
-            switch(payload.action_type) {
-                case Actions.HIGHLIGHT_ITEM:
-                    this._arrangement.highlight(payload.model);
-                    break;
-                case Actions.CLEAR_HIGHLIGHTED_ITEM:
-                    this._arrangement.clear_highlight();
-                    break;
-            }
-        });
     },
 
     pack_title_banner: function (title_banner) {
@@ -180,17 +167,17 @@ const SearchPageB = new Lang.Class({
 
     append_cards: function (cards) {
         this._cards.push.apply(this._cards, cards);
-        cards.forEach(this._arrangement.add_card, this._arrangement);
+        cards.forEach(this._search_results.add_card, this._search_results);
     },
 
     set cards (v) {
         if (this._cards === v)
             return;
         if (this._cards)
-            this._arrangement.clear();
+            this._search_results.clear();
         this._cards = v;
         if (this._cards)
-            this._cards.forEach(this._arrangement.add_card, this._arrangement);
+            this._cards.forEach(this._search_results.add_card, this._search_results);
     },
 
     get cards () {

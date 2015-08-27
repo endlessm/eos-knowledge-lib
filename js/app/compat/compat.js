@@ -37,6 +37,23 @@ function transform_v1_description(json) {
         };
         modules['results-arrangement'] = {
             type: 'GridArrangement',
+            properties: {
+                'bottom-buffer': 250,
+            },
+        };
+        modules['item-group'] = {
+            type: 'ItemGroup',
+            slots: {
+                arrangement: 'results-arrangement',
+                card_type: 'results-card',
+            },
+        };
+        modules['search-results'] = {
+            type: 'ItemGroup',
+            slots: {
+                arrangement: 'results-arrangement',
+                card_type: 'results-card',
+            },
         };
         modules['results-title-card'] = {
             type: 'SetBannerCard',
@@ -124,9 +141,27 @@ function transform_v1_description(json) {
         };
         modules['results-arrangement'] = {
             type: 'ListArrangement',
+            properties: {
+                'preferred-width': 400,
+                'hexpand': false,
+            },
         };
         modules['results-card'] = {
             type: 'TextCard',
+        };
+        modules['item-group'] = {
+            type: 'ItemGroup',
+            slots: {
+                arrangement: 'results-arrangement',
+                card_type: 'results-card',
+            },
+        };
+        modules['search-results'] = {
+            type: 'ItemGroup',
+            slots: {
+                arrangement: 'results-arrangement',
+                card_type: 'results-card',
+            },
         };
         modules['lightbox-card'] = {
             type: 'MediaCard',

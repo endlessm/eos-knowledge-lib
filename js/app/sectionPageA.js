@@ -22,8 +22,6 @@ const SectionPageA = new Lang.Class({
     GTypeName: 'EknSectionPageA',
     Extends: SectionPage.SectionPage,
 
-    LOADING_BOTTOM_BUFFER: 250,
-
     _init: function (props) {
         props.orientation = Gtk.Orientation.VERTICAL;
         props.expand = true;
@@ -35,12 +33,11 @@ const SectionPageA = new Lang.Class({
 
         this.get_style_context().add_class(StyleClasses.SECTION_PAGE_A);
 
-        this._arrangement = this.factory.create_named_module('results-arrangement', {
-            bottom_buffer: this.LOADING_BOTTOM_BUFFER,
-        });
-
-        this._arrangement.connect('need-more-content', () =>
+        this._item_group = this.factory.create_named_module('item-group');
+        this._item_group.connect('need-more-content', () =>
             this.emit('load-more-results'));
+        this._item_group.connect('article-selected', (group, article) =>
+            this.emit('article-selected', article));
 
         this._separator = new Gtk.Separator({
             margin_start: 20,
@@ -48,7 +45,7 @@ const SectionPageA = new Lang.Class({
         });
         this.attach(this._separator, 0, 1, 1, 1);
 
-        this.attach(this._arrangement, 0, 2, 1, 1);
+        this.attach(this._item_group, 0, 2, 1, 1);
     },
 
     pack_title_banner: function (title_banner) {
@@ -62,7 +59,7 @@ const SectionPageA = new Lang.Class({
 
     append_cards: function (cards) {
         this._cards.push.apply(this._cards, cards);
-        cards.forEach(this._arrangement.add_card, this._arrangement);
+        cards.forEach(this._item_group.add_card, this._item_group);
     },
 
     get_cards: function () {
@@ -70,7 +67,7 @@ const SectionPageA = new Lang.Class({
     },
 
     remove_all_cards: function () {
-        this._arrangement.clear();
+        this._item_group.clear();
         this._cards = [];
     },
 });

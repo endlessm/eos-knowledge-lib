@@ -7,7 +7,10 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
+const Actions = imports.app.actions;
 const ContentObjectModel = imports.search.contentObjectModel;
+const Dispatcher = imports.app.dispatcher;
+const InfiniteScrolledWindow = imports.app.widgets.infiniteScrolledWindow;
 const Module = imports.app.interfaces.module;
 
 /**
@@ -42,12 +45,33 @@ const ItemGroup = new Lang.Class({
         'article-selected': {
             param_types: [ ContentObjectModel.ContentObjectModel ],
         },
+        /**
+         * Event: need-more-content
+         * This scrolled window needs more content to fill it up
+         *
+         * FIXME: This signal is temporary, and the dispatcher will make it
+         * unnecessary.
+         */
+        'need-more-content': {},
     },
 
     _init: function (props={}) {
         this.parent(props);
         this._arrangement = this.create_submodule('arrangement');
         this.add(this._arrangement);
+        if (this._arrangement instanceof InfiniteScrolledWindow.InfiniteScrolledWindow)
+            this._arrangement.connect('need-more-content', () => this.emit('need-more-content'));
+
+        Dispatcher.get_default().register((payload) => {
+            switch(payload.action_type) {
+                case Actions.HIGHLIGHT_ITEM:
+                    this._arrangement.highlight(payload.model);
+                    break;
+                case Actions.CLEAR_HIGHLIGHTED_ITEM:
+                    this._arrangement.clear_highlight();
+                    break;
+            }
+        });
     },
 
     // Module override

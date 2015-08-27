@@ -40,12 +40,15 @@ const SectionPage = new Lang.Class({
     },
 
     Signals: {
+        'article-selected': {
+            param_types: [ ContentObjectModel.ContentObjectModel ],
+        },
         /**
          * Event: load-more-results
          * This event is triggered when the scrollbar reaches the bottom or
          * when the scrollbar does not exist.
          */
-        'load-more-results': {}
+        'load-more-results': {},
     },
 
     _init: function (props) {

@@ -44,28 +44,17 @@ const SectionPageB = new Lang.Class({
 
         this._content_grid.add(this._title_frame);
 
-        this._arrangement = this.factory.create_named_module('results-arrangement', {
-            preferred_width: 400,
-            hexpand: false,
-        });
-        this._arrangement.connect('need-more-content', () =>
+        this._item_group = this.factory.create_named_module('item-group');
+        this._item_group.connect('need-more-content', () =>
             this.emit('load-more-results'));
-        this._content_grid.add(this._arrangement);
+        this._item_group.connect('article-selected', (group, article) =>
+            this.emit('article-selected', article));
+
+        this._content_grid.add(this._item_group);
 
         this.add(this._content_grid);
 
         this.get_style_context().add_class(StyleClasses.SECTION_PAGE_B);
-
-        Dispatcher.get_default().register((payload) => {
-            switch(payload.action_type) {
-                case Actions.HIGHLIGHT_ITEM:
-                    this._arrangement.highlight(payload.model);
-                    break;
-                case Actions.CLEAR_HIGHLIGHTED_ITEM:
-                    this._arrangement.clear_highlight();
-                    break;
-            }
-        });
     },
 
     pack_title_banner: function (title_banner) {
@@ -82,10 +71,10 @@ const SectionPageB = new Lang.Class({
         if (this._cards === v)
             return;
         if (this._cards)
-            this._arrangement.clear();
+            this._item_group.clear();
         this._cards = v;
         if (this._cards)
-            this._cards.forEach(this._arrangement.add_card, this._arrangement);
+            this._cards.forEach(this._item_group.add_card, this._item_group);
     },
 
     get cards () {
@@ -94,6 +83,6 @@ const SectionPageB = new Lang.Class({
 
     append_cards: function (cards) {
         this._cards.push.apply(this._cards, cards);
-        cards.forEach(this._arrangement.add_card, this._arrangement);
+        cards.forEach(this._item_group.add_card, this._item_group);
     },
 });

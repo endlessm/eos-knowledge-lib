@@ -51,8 +51,8 @@ describe('Window', function () {
         let factory = new MockFactory.MockFactory();
         factory.add_named_mock('top-bar-search', MockWidgets.MockSearchBox);
         factory.add_named_mock('home-search', MockWidgets.MockSearchBox);
-        factory.add_named_mock('results-arrangement',
-            MockWidgets.MockScrolledArrangement);
+        factory.add_named_mock('item-group', MockWidgets.MockItemGroup);
+        factory.add_named_mock('search-results', MockWidgets.MockItemGroup);
         view = new Window.Window({
             application: app,
             factory: factory,
@@ -95,10 +95,6 @@ describe('Window', function () {
     it('updates visible page with show_page', function () {
         view.show_page(view.article_page);
         expect(view.get_visible_page()).toBe(view.article_page);
-        view.show_page(view.section_page);
-        expect(view.get_visible_page()).toBe(view.section_page);
-        view.show_page(view.search_page);
-        expect(view.get_visible_page()).toBe(view.search_page);
         view.show_page(view.home_page);
         expect(view.get_visible_page()).toBe(view.home_page);
     });

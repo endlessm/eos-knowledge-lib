@@ -170,6 +170,18 @@ const Presenter = new Lang.Class({
             }
         });
 
+        this.view.section_page.connect('article-selected', (view, model) => {
+            this._history_presenter.set_current_item_from_props({
+                page_type: this._ARTICLE_PAGE,
+                model: model,
+            });
+        });
+        this.view.search_page.connect('article-selected', (view, model) => {
+            this._history_presenter.set_current_item_from_props({
+                page_type: this._ARTICLE_PAGE,
+                model: model,
+            });
+        });
         this.view.section_page.connect('load-more-results', () => {
             this._load_more_results(this.view.section_page);
         });
@@ -275,8 +287,7 @@ const Presenter = new Lang.Class({
                 return;
             }
 
-            let cards = results.map(this._new_card_from_article_model.bind(this));
-            if (cards.length > 0) {
+            if (results.length > 0) {
                 let item = this._history_presenter.history_model.current_item;
                 if (item.page_type === this._ARTICLE_PAGE) {
                     Dispatcher.get_default().dispatch({
@@ -284,7 +295,7 @@ const Presenter = new Lang.Class({
                         model: item.model,
                     });
                 }
-                view.append_cards(cards);
+                view.append_cards(results);
             }
             this._get_more_results_query = get_more_results_query;
         });
@@ -592,40 +603,16 @@ const Presenter = new Lang.Class({
             if (results.length === 0) {
                 item.empty = true;
             } else {
-                let cards = results.map(this._new_card_from_article_model.bind(this));
+                let page = item.page_type === this._SEARCH_PAGE ? this.view.search_page : this.view.section_page;
                 if (this._template_type === 'B') {
-                    this.view.section_page.cards = cards;
-                    // FIXME: This duplicates the search result cards for template B
-                    // on both the search_page and the section_page
-                    if (item.page_type === this._SEARCH_PAGE) {
-                        let search_cards = results.map(this._new_card_from_article_model.bind(this));
-                        this.view.search_page.cards = search_cards;
-                    }
+                    page.cards = results;
                 } else {
-                    let page = item.page_type === this._SEARCH_PAGE ? this.view.search_page : this.view.section_page
                     page.remove_all_cards();
-                    page.append_cards(cards);
+                    page.append_cards(results);
                 }
             }
             callback();
         });
-    },
-
-    _new_card_from_article_model: function (model) {
-        let card = this.factory.create_named_module('results-card', {
-            model: model,
-        });
-        card.connect('clicked', () => {
-            this._history_presenter.set_current_item_from_props({
-                page_type: this._ARTICLE_PAGE,
-                model: model,
-            });
-        });
-
-        if (this._template_type !== 'B')
-            card.fade_in();
-
-        return card;
     },
 
     _article_render_callback: function (article_model) {

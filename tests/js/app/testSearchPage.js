@@ -26,8 +26,7 @@ describe('Search page', function () {
 
     it('has the appropriate style class', function () {
         let factory = new MockFactory.MockFactory();
-        factory.add_named_mock('results-arrangement',
-            MockWidgets.MockScrolledArrangement);
+        factory.add_named_mock('search-results', MockWidgets.MockItemGroup);
 
         let search_page_a = new SearchPage.SearchPageA({
             factory: factory,

@@ -8,6 +8,7 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const Minimal = imports.tests.minimal;
+const Module = imports.app.interfaces.module;
 
 const MockButton = new Lang.Class({
     Name: 'MockButton',
@@ -55,8 +56,17 @@ const MockSearchBox = new Lang.Class({
 
 const MockItemGroup = new Lang.Class({
     Name: 'MockItemGroup',
-    Extends: Minimal.MinimalModule,
+    Extends: Gtk.Widget,
+    Implements: [ Module.Module ],
+
+    Properties: {
+        'factory': GObject.ParamSpec.override('factory', Module.Module),
+        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
+    },
     Signals: {
         'article-selected': {},
+        'need-more-content': {},
     },
+
+    add_card: function () {},
 });
