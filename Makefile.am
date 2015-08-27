@@ -238,6 +238,7 @@ js_files = \
 	js/app/modules/backCover.js \
 	js/app/modules/cardA.js \
 	js/app/modules/cardB.js \
+	js/app/modules/encyclopediaCoverTemplate.js \
 	js/app/modules/encyclopediaWindow.js \
 	js/app/modules/itemGroup.js \
 	js/app/modules/knowledgeDocumentCard.js \
