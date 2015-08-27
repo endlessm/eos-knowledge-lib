@@ -13,7 +13,6 @@ const Dispatcher = imports.app.dispatcher;
 const Engine = imports.search.engine;
 const HistoryItem = imports.app.historyItem;
 const HistoryPresenter = imports.app.historyPresenter;
-const ItemGroup = imports.app.modules.itemGroup;
 const Launcher = imports.app.launcher;
 const LightboxPresenter = imports.app.lightboxPresenter;
 const MediaObjectModel = imports.search.mediaObjectModel;

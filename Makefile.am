@@ -240,7 +240,7 @@ js_files = \
 	js/app/modules/encyclopediaCoverTemplate.js \
 	js/app/modules/encyclopediaWindow.js \
 	js/app/modules/gridArrangement.js \
-	js/app/modules/itemGroup.js \
+	js/app/modules/itemGroupModule.js \
 	js/app/modules/knowledgeDocumentCard.js \
 	js/app/modules/homePageBTemplate.js \
 	js/app/modules/listArrangement.js \
@@ -249,10 +249,12 @@ js_files = \
 	js/app/modules/readerCard.js \
 	js/app/modules/readerDocumentCard.js \
 	js/app/modules/readerWindow.js \
+	js/app/modules/searchABModule.js \
 	js/app/modules/searchBanner.js \
 	js/app/modules/searchBox.js \
 	js/app/modules/searchModule.js \
 	js/app/modules/setBannerCard.js \
+	js/app/modules/setGroupModule.js \
 	js/app/modules/textCard.js \
 	js/app/modules/tiledGridArrangement.js \
 	js/app/modules/window.js \
@@ -365,6 +367,7 @@ javascript_tests = \
 	tests/js/app/modules/testCarouselArrangement.js \
 	tests/js/app/modules/testKnowledgeDocumentCard.js \
 	tests/js/app/modules/testHomePageBTemplate.js \
+	tests/js/app/modules/testItemGroupModule.js \
 	tests/js/app/modules/testListArrangement.js \
 	tests/js/app/modules/testMediaCard.js \
 	tests/js/app/modules/testReaderCard.js \
@@ -374,6 +377,7 @@ javascript_tests = \
 	tests/js/app/modules/testSearchBox.js \
 	tests/js/app/modules/testSearchModule.js \
 	tests/js/app/modules/testSetBannerCard.js \
+	tests/js/app/modules/testSetGroupModule.js \
 	tests/js/app/modules/testTextCard.js \
 	tests/js/app/modules/testWindow.js \
 	tests/js/app/reader/testOverviewPage.js \

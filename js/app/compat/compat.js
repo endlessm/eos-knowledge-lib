@@ -42,14 +42,14 @@ function transform_v1_description(json) {
             },
         };
         modules['item-group'] = {
-            type: 'ItemGroup',
+            type: 'ItemGroupModule',
             slots: {
                 arrangement: 'results-arrangement',
                 card_type: 'results-card',
             },
         };
         modules['search-results'] = {
-            type: 'ItemGroup',
+            type: 'SearchABModule',
             slots: {
                 arrangement: 'results-arrangement',
                 card_type: 'results-card',
@@ -94,8 +94,8 @@ function transform_v1_description(json) {
                 'can-focus': false,
             },
         };
-        modules['home-page-item-group'] = {
-            type: 'ItemGroup',
+        modules['home-page-set-group'] = {
+            type: 'SetGroupModule',
             properties: {
                 'expand': true,
                 'halign': Gtk.Align.FILL,
@@ -111,7 +111,7 @@ function transform_v1_description(json) {
             slots: {
                 top_left: "app-banner",
                 top_right: "home-search",
-                bottom: "home-page-item-group",
+                bottom: "home-page-set-group",
             },
         };
         modules['home-page-arrangement'] = {
@@ -150,14 +150,14 @@ function transform_v1_description(json) {
             type: 'TextCard',
         };
         modules['item-group'] = {
-            type: 'ItemGroup',
+            type: 'ItemGroupModule',
             slots: {
                 arrangement: 'results-arrangement',
                 card_type: 'results-card',
             },
         };
         modules['search-results'] = {
-            type: 'ItemGroup',
+            type: 'SearchABModule',
             slots: {
                 arrangement: 'results-arrangement',
                 card_type: 'results-card',

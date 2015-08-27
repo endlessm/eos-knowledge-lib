@@ -1,6 +1,6 @@
 // Copyright 2015 Endless Mobile, Inc.
 
-/* exported ItemGroup */
+/* exported ItemGroupModule */
 
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
@@ -14,16 +14,16 @@ const InfiniteScrolledWindow = imports.app.widgets.infiniteScrolledWindow;
 const Module = imports.app.interfaces.module;
 
 /**
- * Class: ItemGroup
- * Acts as a grid which contains other cards
+ * Class: ItemGroupModule
+ * A module will displays all items in a set as cards in an arrangement.
  *
  * Slots:
  *   arrangement
  *   card_type
  */
-const ItemGroup = new Lang.Class({
-    Name: 'ItemGroup',
-    GTypeName: 'EknItemGroup',
+const ItemGroupModule = new Lang.Class({
+    Name: 'ItemGroupModule',
+    GTypeName: 'EknItemGroupModule',
     Extends: Gtk.Frame,
     Implements: [ Module.Module ],
 

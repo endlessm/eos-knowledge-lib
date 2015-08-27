@@ -3,7 +3,7 @@ const Gtk = imports.gi.Gtk;
 Gtk.init(null);
 
 const ContentObjectModel = imports.search.contentObjectModel;
-const ItemGroup = imports.app.modules.itemGroup;
+const ItemGroupModule = imports.app.modules.itemGroupModule;
 const Minimal = imports.tests.minimal;
 const MockFactory = imports.tests.mockFactory;
 const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
@@ -17,11 +17,11 @@ describe('Item group module', function () {
         factory = new MockFactory.MockFactory();
         factory.add_named_mock('test-arrangement', Minimal.MinimalArrangement);
         factory.add_named_mock('home-card', Minimal.MinimalCard);
-        factory.add_named_mock('item-group', ItemGroup.ItemGroup, {
+        factory.add_named_mock('item-group', ItemGroupModule.ItemGroupModule, {
             arrangement: 'test-arrangement',
             card_type: 'home-card',
         });
-        group = new ItemGroup.ItemGroup({
+        group = new ItemGroupModule.ItemGroupModule({
             factory: factory,
             factory_name: 'item-group',
         });

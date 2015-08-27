@@ -51,8 +51,8 @@ describe('Window', function () {
         let factory = new MockFactory.MockFactory();
         factory.add_named_mock('top-bar-search', MockWidgets.MockSearchBox);
         factory.add_named_mock('home-search', MockWidgets.MockSearchBox);
-        factory.add_named_mock('item-group', MockWidgets.MockItemGroup);
-        factory.add_named_mock('search-results', MockWidgets.MockItemGroup);
+        factory.add_named_mock('item-group', MockWidgets.MockItemGroupModule);
+        factory.add_named_mock('search-results', MockWidgets.MockItemGroupModule);
         view = new Window.Window({
             application: app,
             factory: factory,

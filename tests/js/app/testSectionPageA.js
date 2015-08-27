@@ -21,7 +21,7 @@ describe('Section page for Template A', function () {
         jasmine.addMatchers(WidgetDescendantMatcher.customMatchers);
 
         let factory = new MockFactory.MockFactory();
-        factory.add_named_mock('item-group', MockWidgets.MockItemGroup);
+        factory.add_named_mock('item-group', MockWidgets.MockItemGroupModule);
 
         section_page = new SectionPageA.SectionPageA({
             factory: factory,

@@ -1,6 +1,6 @@
 // Copyright 2015 Endless Mobile, Inc.
 
-/* exported MockButton, MockHistoryButtons, MockItemGroup,
+/* exported MockButton, MockHistoryButtons, MockItemGroupModule,
 MockScrolledArrangement, MockSearchBox */
 
 const GObject = imports.gi.GObject;
@@ -54,8 +54,8 @@ const MockSearchBox = new Lang.Class({
     set_text_programmatically: function () {},
 });
 
-const MockItemGroup = new Lang.Class({
-    Name: 'MockItemGroup',
+const MockItemGroupModule = new Lang.Class({
+    Name: 'MockItemGroupModule',
     Extends: Gtk.Widget,
     Implements: [ Module.Module ],
 
