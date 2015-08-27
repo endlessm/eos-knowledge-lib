@@ -90,14 +90,14 @@ describe('Window', function () {
         expect(view.background_image_uri).toBe(BACKGROUND_URI);
     });
 
-    it('visible page updates with show_*_page functions', function () {
-        view.show_article_page();
+    it('updates visible page with show_page', function () {
+        view.show_page(view.article_page);
         expect(view.get_visible_page()).toBe(view.article_page);
-        view.show_section_page();
+        view.show_page(view.section_page);
         expect(view.get_visible_page()).toBe(view.section_page);
-        view.show_search_page();
+        view.show_page(view.search_page);
         expect(view.get_visible_page()).toBe(view.search_page);
-        view.show_home_page();
+        view.show_page(view.home_page);
         expect(view.get_visible_page()).toBe(view.home_page);
     });
 

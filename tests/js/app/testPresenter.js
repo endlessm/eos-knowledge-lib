@@ -82,11 +82,7 @@ const MockView = new Lang.Class({
         this.parent(signal, handler);
     },
 
-    show_article_page: function () {},
-    show_no_search_results_page: function () {},
-    show_search_page: function () {},
-    show_section_page: function () {},
-    show_home_page: function () {},
+    show_page: function (page) {},
     lock_ui: function () {},
     unlock_ui: function () {},
     present_with_time: function () {},
@@ -127,6 +123,7 @@ describe('Presenter', () => {
         ];
 
         view = new MockView();
+        spyOn(view, 'show_page');
         engine = new MockEngine.MockEngine();
         engine.get_objects_by_query_finish.and.returnValue([sections.map((section) =>
             new ContentObjectModel.ContentObjectModel(section)), null]);
@@ -155,7 +152,6 @@ describe('Presenter', () => {
     });
 
     it('switches to the correct section page when clicking a card on the home page', function () {
-        spyOn(view, 'show_section_page');
         engine.get_objects_by_query_finish.and.returnValue([[
             new ContentObjectModel.ContentObjectModel({
                 title: 'An article in a section',
@@ -163,12 +159,11 @@ describe('Presenter', () => {
         ], null]);
         view.home_page.cards[0].emit('clicked');
         Utils.update_gui();
-        expect(view.show_section_page).toHaveBeenCalled();
+        expect(view.show_page).toHaveBeenCalledWith(view.section_page);
     });
 
     describe('searching from search box', function () {
         beforeEach(function () {
-            spyOn(view, 'show_no_search_results_page');
             engine.get_objects_by_query_finish.and.returnValue([[], null]);
         });
 
@@ -181,7 +176,7 @@ describe('Presenter', () => {
                     }),
                     jasmine.any(Object),
                     jasmine.any(Function));
-                expect(view.show_no_search_results_page).toHaveBeenCalled();
+                expect(view.show_page).toHaveBeenCalledWith(view.no_search_results_page);
                 done();
                 return GLib.SOURCE_REMOVE;
             });
@@ -196,7 +191,7 @@ describe('Presenter', () => {
                     }),
                     jasmine.any(Object),
                     jasmine.any(Function));
-                expect(view.show_no_search_results_page).toHaveBeenCalled();
+                expect(view.show_page).toHaveBeenCalledWith(view.no_search_results_page);
                 done();
                 return GLib.SOURCE_REMOVE;
             });
@@ -233,27 +228,24 @@ describe('Presenter', () => {
         });
 
         it('leads back to the home page', function () {
-            spyOn(view, 'show_home_page');
             dispatcher.dispatch({ action_type: Actions.HISTORY_BACK_CLICKED });
             Utils.update_gui();
-            expect(view.show_home_page).toHaveBeenCalled();
+            expect(view.show_page).toHaveBeenCalledWith(view.home_page);
         });
 
         it('leads back to the section page', function () {
             view.emit('search-entered', 'query not found');
-            spyOn(view, 'show_section_page');
             dispatcher.dispatch({ action_type: Actions.HISTORY_BACK_CLICKED });
             Utils.update_gui();
-            expect(view.show_section_page).toHaveBeenCalled();
+            expect(view.show_page).toHaveBeenCalledWith(view.section_page);
         });
 
         it('leads forward to the section page', function () {
             dispatcher.dispatch({ action_type: Actions.HISTORY_BACK_CLICKED });
             Utils.update_gui();
-            spyOn(view, 'show_section_page');
             dispatcher.dispatch({ action_type: Actions.HISTORY_FORWARD_CLICKED });
             Utils.update_gui();
-            expect(view.show_section_page).toHaveBeenCalled();
+            expect(view.show_page).toHaveBeenCalledWith(view.section_page);
         });
     });
 });

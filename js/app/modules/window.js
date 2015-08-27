@@ -325,7 +325,7 @@ const Window = new Lang.Class({
         }));
 
         this.show_all();
-        this.show_home_page();
+        this._set_background_position_style(StyleClasses.BACKGROUND_LEFT);
     },
 
     get home_page () {
@@ -416,112 +416,44 @@ const Window = new Lang.Class({
     },
 
     /**
-     * Method: show_home_page
-     *
-     * This method causes the window to animate to the home page.
+     * Method: show_page
      */
-    show_home_page: function () {
-        let visible_page = this.get_visible_page();
-        if (visible_page === this.categories_page) {
-            this._stack.transition_type = Gtk.StackTransitionType.SLIDE_DOWN;
-        } else {
-            this._stack.transition_type = Gtk.StackTransitionType.SLIDE_RIGHT;
-        }
-        this._stack.visible_child = this._home_page;
-        this._nav_buttons.back_visible = false;
-        this.search_box.visible = false;
-        this._set_background_position_style(StyleClasses.BACKGROUND_LEFT);
-    },
+    show_page: function (new_page) {
+        let old_page = this.get_visible_page();
+        if (old_page === new_page)
+            return;
 
-    /**
-     * Method: show_categories_page
-     *
-     * This method causes the window to animate to the home page.
-     */
-    show_categories_page: function () {
-        let visible_page = this.get_visible_page();
-        if (visible_page === this.home_page) {
-            this._stack.transition_type = Gtk.StackTransitionType.SLIDE_UP;
+        let is_on_left = (page) => page === this.home_page || page === this.categories_page;
+        let is_on_center = (page) => page === this.section_page || page === this.search_page || page === this.no_search_results_page;
+        if (is_on_left(new_page)) {
+            if (old_page === this.home_page) {
+                this._stack.transition_type = Gtk.StackTransitionType.SLIDE_UP;
+            } else if (old_page === this.categories_page) {
+                this._stack.transition_type = Gtk.StackTransitionType.SLIDE_DOWN;
+            } else {
+                this._stack.transition_type = Gtk.StackTransitionType.SLIDE_RIGHT;
+            }
+            this._nav_buttons.back_visible = false;
+            this.search_box.visible = false;
+            this._set_background_position_style(StyleClasses.BACKGROUND_LEFT);
+        } else if (is_on_center(new_page)) {
+            if (is_on_left(old_page)) {
+                this._stack.transition_type = Gtk.StackTransitionType.SLIDE_LEFT;
+            } else if (is_on_center(old_page)) {
+                this._stack.transition_type = Gtk.StackTransitionType.CROSSFADE;
+            } else {
+                this._stack.transition_type = Gtk.StackTransitionType.SLIDE_RIGHT;
+            }
+            this._nav_buttons.back_visible = true;
+            this.search_box.visible = true;
+            this._set_background_position_style(StyleClasses.BACKGROUND_CENTER);
         } else {
-            this._stack.transition_type = Gtk.StackTransitionType.SLIDE_RIGHT;
-        }
-        this._stack.visible_child = this._categories_page;
-        this._nav_buttons.back_visible = true;
-        this.search_box.visible = false;
-        this._set_background_position_style(StyleClasses.BACKGROUND_LEFT);
-    },
-
-    /**
-     * Method: show_section_page
-     *
-     * This method causes the window to animate to the section page.
-     */
-    show_section_page: function () {
-        let visible_page = this.get_visible_page();
-        if (visible_page === this.home_page || visible_page === this.categories_page) {
             this._stack.transition_type = Gtk.StackTransitionType.SLIDE_LEFT;
-        } else if (visible_page === this.article_page) {
-            this._stack.transition_type = Gtk.StackTransitionType.SLIDE_RIGHT;
-        } else {
-            this._stack.transition_type = Gtk.StackTransitionType.CROSSFADE;
+            this._nav_buttons.back_visible = true;
+            this.search_box.visible = true;
+            this._set_background_position_style(StyleClasses.BACKGROUND_RIGHT);
         }
-        this._stack.visible_child = this._section_page;
-        this._nav_buttons.back_visible = true;
-        this.search_box.visible = true;
-        this._set_background_position_style(StyleClasses.BACKGROUND_CENTER);
-    },
-
-    /**
-     * Method: show_article_page
-     *
-     * This method causes the window to animate to the article page.
-     */
-    show_article_page: function () {
-        this._stack.transition_type = Gtk.StackTransitionType.SLIDE_LEFT;
-        this._stack.visible_child = this.article_page;
-        this._nav_buttons.back_visible = true;
-        this.search_box.visible = true;
-        this._set_background_position_style(StyleClasses.BACKGROUND_RIGHT);
-    },
-
-    /**
-     * Method: show_search_page
-     *
-     * This method causes the window to animate to the search page.
-     */
-    show_search_page: function () {
-        let visible_page = this.get_visible_page();
-        if (visible_page === this.home_page || visible_page === this.categories_page) {
-            this._stack.transition_type = Gtk.StackTransitionType.SLIDE_LEFT;
-        } else if (visible_page === this.article_page) {
-            this._stack.transition_type = Gtk.StackTransitionType.SLIDE_RIGHT;
-        } else {
-            this._stack.transition_type = Gtk.StackTransitionType.CROSSFADE;
-        }
-        this._stack.visible_child = this._search_page;
-        this._nav_buttons.back_visible = true;
-        this.search_box.visible = true;
-        this._set_background_position_style(StyleClasses.BACKGROUND_CENTER);
-    },
-
-    /**
-     * Method: show_no_search_results_page
-     *
-     * This method causes the window to animate to the no-search-results page
-     */
-    show_no_search_results_page: function () {
-        let visible_page = this.get_visible_page();
-        if (visible_page === this.home_page || visible_page === this.categories_page) {
-            this._stack.transition_type = Gtk.StackTransitionType.SLIDE_LEFT;
-        } else if (visible_page === this.section_page || visible_page === this.search_page) {
-            this._stack.transition_type = Gtk.StackTransitionType.CROSSFADE;
-        } else {
-            this._stack.transition_type = Gtk.StackTransitionType.SLIDE_RIGHT;
-        }
-        this._stack.visible_child = this._no_search_results_page;
-        this._nav_buttons.back_visible = true;
-        this.search_box.visible = true;
-        this._set_background_position_style(StyleClasses.BACKGROUND_CENTER);
+        this._stack.visible_child = new_page;
     },
 
     /**

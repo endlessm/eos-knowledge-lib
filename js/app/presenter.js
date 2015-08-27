@@ -314,10 +314,10 @@ const Presenter = new Lang.Class({
                 this._refresh_article_results(() => {
                     if (item.empty) {
                         this.view.no_search_results_page.query = item.query;
-                        this.view.show_no_search_results_page();
+                        this.view.show_page(this.view.no_search_results_page);
                     } else {
                         this.view.search_page.query = item.query;
-                        this.view.show_search_page();
+                        this.view.show_page(this.view.search_page);
                     }
                 });
                 this.view.search_box.set_text_programmatically(item.query);
@@ -325,7 +325,7 @@ const Presenter = new Lang.Class({
             case this._SECTION_PAGE:
                 this._refresh_article_results(() => {
                     this.view.section_page.model = item.model;
-                    this.view.show_section_page();
+                    this.view.show_page(this.view.section_page);
                 });
                 break;
             case this._ARTICLE_PAGE:
@@ -341,10 +341,10 @@ const Presenter = new Lang.Class({
                 this._load_document_card_in_view(item, is_going_back);
                 break;
             case this._CATEGORIES_PAGE:
-                this.view.show_categories_page();
+                this.view.show_page(this.view.categories_page);
                 break;
             case this._HOME_PAGE:
-                this.view.show_home_page();
+                this.view.show_page(this.view.home_page);
         }
     },
 
@@ -352,7 +352,7 @@ const Presenter = new Lang.Class({
         let animation_type = EosKnowledgePrivate.LoadingAnimationType.FORWARDS_NAVIGATION;
         if (this.view.get_visible_page() !== this.article_page) {
             animation_type = EosKnowledgePrivate.LoadingAnimationType.NONE;
-            this.view.show_article_page();
+            this.view.show_page(this.view.article_page);
         } else if (is_going_back) {
             animation_type = EosKnowledgePrivate.LoadingAnimationType.BACKWARDS_NAVIGATION;
         }
