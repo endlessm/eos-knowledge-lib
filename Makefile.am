@@ -211,6 +211,7 @@ js_files = \
 	js/app/articleHTMLRenderer.js \
 	js/app/articlePage.js \
 	js/app/articlePresenter.js \
+	js/app/cardsSegment.js \
 	js/app/categoriesPage.js \
 	js/app/compat/compat.js \
 	js/app/compat/cssParse.js \
@@ -264,6 +265,7 @@ js_files = \
 	js/app/reader/standalonePage.js \
 	js/app/reader/userSettingsModel.js \
 	js/app/runner.js \
+	js/app/searchPage.js \
 	js/app/sectionArticlePage.js \
 	js/app/sectionPage.js \
 	js/app/sectionPageA.js \
@@ -392,6 +394,7 @@ javascript_tests = \
 	tests/js/app/testNoSearchResultsPageA.js \
 	tests/js/app/testNoSearchResultsPageB.js \
 	tests/js/app/testPresenter.js \
+	tests/js/app/testSearchPage.js \
 	tests/js/app/testSectionArticlePageA.js \
 	tests/js/app/testSectionArticlePageB.js \
 	tests/js/app/testSectionPageA.js \

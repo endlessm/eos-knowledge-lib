@@ -11,9 +11,8 @@ const StyleClasses = imports.app.styleClasses;
 /**
  * Class: SectionPageB
  *
- * This class extends <SectionPage> and represents the section page for 
+ * This class extends <SectionPage> and represents the section page for
  * template B of the knowledge apps.
- * It will also be used as the search results page for template B.
  * It has a title and a set of articles to show. Articles are represented
  * by text cards.
  *
@@ -109,15 +108,8 @@ const SectionPageB = new Lang.Class({
     pack_title_banner: function (title_banner) {
         title_banner.valign = Gtk.Align.END;
 
-        // FIXME: Temporary hack to adapt the ellipses in Templates A & B. Without this,
-        // Ellipses in Template B are broken.
-        // This method is used for both the SetBanner and the SearchBanner, so
-        // we need to probe which one we are dealing with to alter its prop.
-        if (typeof title_banner._title_label !== 'undefined') {
-            title_banner._title_label.max_width_chars = 0;
-        } else {
-            title_banner.max_width_chars = 0;
-        }
+        // FIXME: Temporary hack. Without this, ellipses in Template B are broken.
+        title_banner._title_label.max_width_chars = 0;
 
         let child = this._title_label_revealer.get_child();
         if (typeof child !== 'undefined' && child !== null)

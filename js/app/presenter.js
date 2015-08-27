@@ -193,7 +193,12 @@ const Presenter = new Lang.Class({
             }
         });
 
-        this.view.section_page.connect('load-more-results', this._on_load_more_results.bind(this));
+        this.view.section_page.connect('load-more-results', () => {
+            this._load_more_results(this.view.section_page);
+        });
+        this.view.search_page.connect('load-more-results', () => {
+            this._load_more_results(this.view.search_page);
+        });
         this.view.home_page.connect('show-categories', this._on_categories_button_clicked.bind(this));
         this.view.categories_page.connect('show-home', this._on_home_button_clicked.bind(this));
         this.article_presenter.connect('ekn-link-clicked', this._on_ekn_link_clicked.bind(this));
@@ -209,12 +214,14 @@ const Presenter = new Lang.Class({
             section_card: '.card-a',
             article_card: '.article-card',
             section_page: '.section-page-a',
+            search_page: '.search-page-a',
             no_search_results_page: '.no-search-results-page-a'
         },
         B: {
             section_card: '.card-b',
             article_card: '.text-card',
             section_page: '.section-page-b',
+            search_page: '.search-page-b',
             no_search_results_page: '.no-search-results-page-b'
         },
     },
@@ -278,7 +285,7 @@ const Presenter = new Lang.Class({
             [query, this.application.application_id]));
     },
 
-    _on_load_more_results: function () {
+    _load_more_results: function (view) {
         if (!this._get_more_results_query)
             return;
         this.engine.get_objects_by_query(this._get_more_results_query,
@@ -295,13 +302,13 @@ const Presenter = new Lang.Class({
             let cards = results.map(this._new_card_from_article_model.bind(this));
             if (cards.length > 0) {
                 if (this._template_type === 'B') {
-                    this.view.section_page.append_cards(cards);
+                    view.append_cards(cards);
                     let item = this._history_presenter.history_model.current_item;
                     if (item.page_type === this._ARTICLE_PAGE)
-                        this.view.section_page.highlight_card(item.model);
+                        view.highlight_card(item.model);
                 } else {
                     let article_segment_title = _("Articles");
-                    this.view.section_page.append_to_segment(article_segment_title, cards);
+                    view.append_to_segment(article_segment_title, cards);
                 }
             }
             this._get_more_results_query = get_more_results_query;
@@ -316,8 +323,10 @@ const Presenter = new Lang.Class({
         this._lightbox_presenter.hide_lightbox();
         this.view.home_page.search_box.set_text_programmatically('');
         this.view.search_box.set_text_programmatically('');
-        if (this._template_type === 'B')
+        if (this._template_type === 'B') {
             this.view.section_page.clear_highlighted_cards();
+            this.view.search_page.clear_highlighted_cards();
+        }
         switch (item.page_type) {
             case this._SEARCH_PAGE:
                 this._refresh_article_results(() => {
@@ -325,8 +334,8 @@ const Presenter = new Lang.Class({
                         this.view.no_search_results_page.query = item.query;
                         this.view.show_no_search_results_page();
                     } else {
-                        this.view.section_page.query = item.query;
-                        this.view.show_section_page();
+                        this.view.search_page.query = item.query;
+                        this.view.show_search_page();
                     }
                 });
                 this.view.search_box.set_text_programmatically(item.query);
@@ -595,10 +604,21 @@ const Presenter = new Lang.Class({
                 let cards = results.map(this._new_card_from_article_model.bind(this));
                 if (this._template_type === 'B') {
                     this.view.section_page.cards = cards;
+                    // FIXME: This duplicates the search result cards for template B
+                    // on both the search_page and the section_page
+                    if (item.page_type === this._SEARCH_PAGE) {
+                        let search_cards = results.map(this._new_card_from_article_model.bind(this));
+                        this.view.search_page.cards = search_cards;
+                    }
                 } else {
                     let article_segment_title = _("Articles");
-                    this.view.section_page.remove_all_segments();
-                    this.view.section_page.append_to_segment(article_segment_title, cards);
+                    if (item.page_type === this._SEARCH_PAGE) {
+                        this.view.search_page.remove_all_segments();
+                        this.view.search_page.append_to_segment(article_segment_title, cards);
+                    } else {
+                        this.view.section_page.remove_all_segments();
+                        this.view.section_page.append_to_segment(article_segment_title, cards);
+                    }
                 }
             }
             callback();

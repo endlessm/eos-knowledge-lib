@@ -1,9 +1,9 @@
 // Copyright 2014 Endless Mobile, Inc.
 
-const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
+const CardsSegment = imports.app.cardsSegment;
 const InfiniteScrolledWindow = imports.app.widgets.infiniteScrolledWindow;
 const SectionPage = imports.app.sectionPage;
 const StyleClasses = imports.app.styleClasses;
@@ -13,7 +13,6 @@ const StyleClasses = imports.app.styleClasses;
  *
  * This class extends <SectionPage> and represents the section page for
  * template A of the knowledge apps.
- * It will also be used as the search results page.
  * In addition to the 'title' property published by <SectionPage>, it has
  * a set of articles to show. Articles are represented by cards. Cards are
  * grouped into sections call 'Segments'. A segment has a title, which is the
@@ -81,7 +80,7 @@ const SectionPageA = new Lang.Class({
         if (segment_title in this._segments) {
             this._segments[segment_title].append_cards(cards);
         } else {
-            let segment = new CardsSegment({
+            let segment = new CardsSegment.CardsSegment({
                 title: segment_title
             });
             this._right_column_size_group.add_widget(segment.title_label);
@@ -107,76 +106,6 @@ const SectionPageA = new Lang.Class({
     remove_all_segments: function () {
         for (let segment_title in this._segments) {
             this.remove_segment(segment_title);
-        }
-    }
-});
-
-const CardsSegment = new Lang.Class({
-    Name: 'CardsSegment',
-    GTypeName: 'EknCardsSegment',
-    Extends: Gtk.Grid,
-
-    Properties: {
-        // title property
-        // A string with the title of the segment. Defaults to an empty string.
-        'title': GObject.ParamSpec.string('title', 'Segment Title',
-            'Title of the segment',
-            GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE, '')
-
-    },
-
-    _init: function (props) {
-        props = props || {};
-        props.column_spacing = 20;
-        props.row_spacing = 20;
-        props.expand = true;
-
-        this.title_label = new Gtk.Label({
-            xalign: 1,
-            valign: Gtk.Align.START,
-            wrap: true,
-            justify: Gtk.Justification.RIGHT,
-            max_width_chars: 8 // TODO: change this after clarifying with design how resizing should work
-        });
-        let separator = new Gtk.Separator({
-            expand: true,
-            halign: Gtk.Align.FILL
-        });
-
-        this._flow_box = new Gtk.FlowBox({
-            expand: true,
-            halign: Gtk.Align.START,
-            homogeneous: true
-        });
-
-        this._cards = null;
-
-        this.parent(props);
-
-        this.attach(separator, 0, 0, 2, 1);
-        this.attach(this.title_label, 0, 1, 1, 1);
-        this.attach(this._flow_box, 1, 1, 1, 1);
-
-        this.title_label.get_style_context().add_class(StyleClasses.SECTION_PAGE_A_SEGMENT_TITLE);
-
-    },
-
-    get title () {
-        if (this._title)
-            return this._title;
-        return '';
-    },
-
-    set title (v) {
-        if (this._title === v) return;
-        this._title = v;
-        this.title_label.label = this._title.toUpperCase();
-        this.notify('title');
-    },
-
-    append_cards: function (cards) {
-        for (let card of cards) {
-            this._flow_box.add(card);
         }
     }
 });

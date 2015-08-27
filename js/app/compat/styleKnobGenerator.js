@@ -126,6 +126,9 @@ function selector_to_knob_ka (knobs, props, selector) {
         case '.section-page-title':
             knobs['section_page'] = merge_object_properties(knobs['section_page'], prefix_keys_with(props, 'title-'));
             break;
+        case '.search-page-title':
+            knobs['search_page'] = merge_object_properties(knobs['search_page'], prefix_keys_with(props, 'title-'));
+            break;
         case '.no-search-results-page-title':
             knobs['no_search_results_page'] = merge_object_properties(knobs['no_search_results_page'], prefix_keys_with(props, 'title-'));
             break;
