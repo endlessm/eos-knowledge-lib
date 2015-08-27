@@ -13,7 +13,6 @@ const Mainloop = imports.mainloop;
 const ArticleHTMLRenderer = imports.app.articleHTMLRenderer;
 const ArticleObjectModel = imports.search.articleObjectModel;
 const Config = imports.app.config;
-const EncyclopediaModel = imports.app.encyclopedia.model;
 const Engine = imports.search.engine;
 const HistoryPresenter = imports.app.historyPresenter;
 const Launcher = imports.app.launcher;
@@ -67,7 +66,6 @@ const EncyclopediaPresenter = new Lang.Class({
 
         WebkitContextSetup.register_webkit_extensions(this.application.application_id);
 
-        this._model = new EncyclopediaModel.EncyclopediaModel();
         this.view = this.factory.create_named_module('window', {
             application: this.application,
         });
