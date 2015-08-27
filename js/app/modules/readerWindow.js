@@ -251,10 +251,14 @@ const ReaderWindow = new Lang.Class({
         this._stack = new Gtk.Stack({
             transition_duration: this._STACK_TRANSITION_TIME,
         });
+        this._arrangement = this.factory.create_named_module('document-arrangement', {
+            transition_duration: this._STACK_TRANSITION_TIME,
+        });
         this._stack.add(this.overview_page);
         this._stack.add(this.back_cover);
         this._stack.add(this.standalone_page);
         this._stack.add(this.search_results_page);
+        this._stack.add(this._arrangement);
         this._stack.show_all();
         this.nav_buttons.add(this._stack);
         this.lightbox.add(this.nav_buttons);
@@ -299,26 +303,12 @@ const ReaderWindow = new Lang.Class({
      *
      *  Appends an article page to the widget's array of article pages.
      */
-    append_article_page: function (article_page) {
-        article_page.show_all();
-        if (!(article_page in this._article_pages)) {
-            this._article_pages.push(article_page);
+    append_article_page: function (document_card) {
+        document_card.show_all();
+        if (!(document_card in this._article_pages)) {
+            this._article_pages.push(document_card);
         }
-        this._stack.add(article_page);
-        this._update_progress_labels();
-    },
-
-    /*
-     *  Method: remove_article_page
-     *
-     *  Removes the specified article from widget's array of article pages.
-     */
-    remove_article_page: function (article_page) {
-        let index = this._article_pages.indexOf(article_page);
-        if (index > -1) {
-            this._article_pages.splice(index, 1);
-            this._stack.remove(article_page);
-        }
+        this._arrangement.add_card(document_card);
         this._update_progress_labels();
     },
 
@@ -331,8 +321,9 @@ const ReaderWindow = new Lang.Class({
      * Clear the view entirely of articles
      */
     remove_all_article_pages: function () {
-        let pages = this._article_pages.slice();
-        pages.forEach(this.remove_article_page, this);
+        this._arrangement.clear();
+        this._article_pages = [];
+        this._update_progress_labels();
     },
 
     _show_standalone_page: function () {
@@ -363,10 +354,11 @@ const ReaderWindow = new Lang.Class({
 
     show_article_page: function (index, animation_type) {
         this.nav_buttons.accommodate_scrollbar = true;
-        this._set_stack_transition(animation_type);
+        this._set_stack_transition(animation_type, true);
         let page = this._article_pages[index];
         page.show();
-        this._stack.set_visible_child(page);
+        this._stack.set_visible_child(this._arrangement);
+        this._arrangement.set_visible_child(page);
     },
 
     show_overview_page: function (animation_type) {
@@ -383,13 +375,32 @@ const ReaderWindow = new Lang.Class({
         this._stack.set_visible_child(this.back_cover);
     },
 
-    _set_stack_transition: function (animation_type) {
+    // Converts from our LoadingAnimationType enum to a GtkStackTransitionType
+    _apply_animation_to_stack: function (animation_type, stack) {
         if (animation_type === EosKnowledgePrivate.LoadingAnimationType.FORWARDS_NAVIGATION) {
-            this._stack.set_transition_type(Gtk.StackTransitionType.SLIDE_LEFT);
+            stack.set_transition_type(Gtk.StackTransitionType.SLIDE_LEFT);
         } else if (animation_type === EosKnowledgePrivate.LoadingAnimationType.BACKWARDS_NAVIGATION) {
-            this._stack.set_transition_type(Gtk.StackTransitionType.SLIDE_RIGHT);
+            stack.set_transition_type(Gtk.StackTransitionType.SLIDE_RIGHT);
         } else {
-            this._stack.set_transition_type(Gtk.StackTransitionType.CROSSFADE);
+            stack.set_transition_type(Gtk.StackTransitionType.CROSSFADE);
+        }
+    },
+
+    // Sets up the appropriate stack transtions for both the general stack
+    // and the stack containing all the article pages (also known as the arrangement)
+    _set_stack_transition: function (animation_type, moving_to_article_page=false) {
+        let on_article_page = (this._stack.get_visible_child() === this._arrangement);
+        // If we are moving just between article pages, then the desired animation type
+        // needs to be set on the 'arrangement' stack - that is, the stack of document cards.
+        // Otherwise, the arrangement needs to be set on the general view stack (and in this
+        // case the arrangement stack should get no animation)
+        let intra_arrangement_transition = (on_article_page && moving_to_article_page);
+        if (intra_arrangement_transition) {
+            this._apply_animation_to_stack(animation_type, this._arrangement);
+            this._stack.set_transition_type(Gtk.StackTransitionType.NONE);
+        } else {
+            this._apply_animation_to_stack(animation_type, this._stack);
+            this._arrangement.set_transition_type(Gtk.StackTransitionType.NONE);
         }
     },
 

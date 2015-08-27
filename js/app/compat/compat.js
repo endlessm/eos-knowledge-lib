@@ -216,6 +216,9 @@ function transform_v1_description(json) {
         modules['top-bar-search'] = {
             type: 'SearchBox',
         };
+        modules['document-arrangement'] = {
+            type: 'CarouselArrangement',
+        };
         modules['home-card'] = {
             type: 'ArticleSnippetCard',
         };
