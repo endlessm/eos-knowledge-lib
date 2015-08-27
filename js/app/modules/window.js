@@ -202,38 +202,38 @@ const Window = new Lang.Class({
     _init: function (props) {
         this.parent(props);
 
-        this._categories_page = new CategoriesPage.CategoriesPage();
+        this.categories_page = new CategoriesPage.CategoriesPage();
         if (this.template_type === 'B') {
-            this._home_page = this.factory.create_named_module('home-page-template');
-            this._section_page = new SectionPageB.SectionPageB({
+            this.home_page = this.factory.create_named_module('home-page-template');
+            this.section_page = new SectionPageB.SectionPageB({
                 factory: this.factory,
             });
-            this._search_page = new SearchPage.SearchPageB({
+            this.search_page = new SearchPage.SearchPageB({
                 factory: this.factory,
             });
-            this._article_page = new ArticlePage.ArticlePage();
-            this._no_search_results_page = new NoSearchResultsPage.NoSearchResultsPageB();
+            this.article_page = new ArticlePage.ArticlePage();
+            this.no_search_results_page = new NoSearchResultsPage.NoSearchResultsPageB();
         } else {
-            this._home_page = new HomePageA.HomePageA({
+            this.home_page = new HomePageA.HomePageA({
                 factory: this.factory,
             });
-            this._section_page = new SectionPageA.SectionPageA({
+            this.section_page = new SectionPageA.SectionPageA({
                 factory: this.factory,
             });
-            this._search_page = new SearchPage.SearchPageA({
+            this.search_page = new SearchPage.SearchPageA({
                 factory: this.factory,
             });
-            this._article_page = new ArticlePage.ArticlePage();
-            this._no_search_results_page = new NoSearchResultsPage.NoSearchResultsPageA();
+            this.article_page = new ArticlePage.ArticlePage();
+            this.no_search_results_page = new NoSearchResultsPage.NoSearchResultsPageA();
         }
 
         this._stack = new Gtk.Stack();
-        this._stack.add(this._home_page);
-        this._stack.add(this._categories_page);
-        this._stack.add(this._section_page);
-        this._stack.add(this._search_page);
-        this._stack.add(this._no_search_results_page);
-        this._stack.add(this._article_page);
+        this._stack.add(this.home_page);
+        this._stack.add(this.categories_page);
+        this._stack.add(this.section_page);
+        this._stack.add(this.search_page);
+        this._stack.add(this.no_search_results_page);
+        this._stack.add(this.article_page);
 
         this._nav_buttons = new NavButtonOverlay.NavButtonOverlay({
             back_visible: false,
@@ -241,15 +241,15 @@ const Window = new Lang.Class({
         });
         this._nav_buttons.add(this._stack);
 
-        this._lightbox = new Lightbox.Lightbox();
-        this._lightbox.add(this._nav_buttons);
+        this.lightbox = new Lightbox.Lightbox();
+        this.lightbox.add(this._nav_buttons);
 
         this._history_buttons = new Endless.TopbarNavButton();
         this.search_box = this.factory.create_named_module('top-bar-search', {
             no_show_all: true,
             visible: false,
         });
-        this.page_manager.add(this._lightbox, {
+        this.page_manager.add(this.lightbox, {
             left_topbar_widget: this._history_buttons,
             center_topbar_widget: this.search_box,
         });
@@ -326,34 +326,6 @@ const Window = new Lang.Class({
 
         this.show_all();
         this._set_background_position_style(StyleClasses.BACKGROUND_LEFT);
-    },
-
-    get home_page () {
-        return this._home_page;
-    },
-
-    get categories_page () {
-        return this._categories_page;
-    },
-
-    get section_page () {
-        return this._section_page;
-    },
-
-    get article_page () {
-        return this._article_page;
-    },
-
-    get search_page () {
-        return this._search_page;
-    },
-
-    get no_search_results_page () {
-        return this._no_search_results_page;
-    },
-
-    get lightbox () {
-        return this._lightbox;
     },
 
     get background_image_uri () {
