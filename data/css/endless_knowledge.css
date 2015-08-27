@@ -393,12 +393,16 @@ EknWindow.show-no-search-results-page {
 .search-page-a .title,
 .no-search-results-page-a .title {
     padding-top: 1.0em;
-    padding-bottom: 0.48em;
+    padding-bottom: 1.28em;
 }
 
 .section-page-a .title,
 .search-page-a .title {
     font-size: 2.25em; /* 36pt * 1/12 * 0.75 DPI correction factor */
+}
+
+.section-page-a .grid-arrangement {
+    padding-top: 2.0em;
 }
 
 .no-search-results-page-a .title {
