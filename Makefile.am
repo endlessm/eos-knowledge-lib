@@ -35,6 +35,9 @@ AM_DISTCHECK_CONFIGURE_FLAGS = \
 	--enable-js-doc \
 	--enable-strict-flags \
 	$(NULL)
+if EOS_ENABLE_COVERAGE
+AM_DISTCHECK_CONFIGURE_FLAGS += --enable-coverage --with-coverage-dir=@EOS_COVERAGE_DIR@
+endif EOS_ENABLE_COVERAGE
 
 # Make sure that 'make dist' includes documentation
 if !CAN_MAKE_DIST
