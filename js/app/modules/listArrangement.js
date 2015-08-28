@@ -17,7 +17,6 @@ const ListArrangement = new Lang.Class({
     Implements: [ Module.Module, Arrangement.Arrangement ],
 
     Properties: {
-        'count': GObject.ParamSpec.override('count', Arrangement.Arrangement),
         'factory': GObject.ParamSpec.override('factory', Module.Module),
         'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
     },
@@ -29,12 +28,12 @@ const ListArrangement = new Lang.Class({
         this.parent(props);
     },
 
-    get count() {
-        return this._list_box.get_children().length;
-    },
-
     add_card: function (widget) {
         this._list_box.add(widget);
+    },
+
+    get_cards: function () {
+        return this._list_box.get_children().map((list_child) => list_child.get_child());
     },
 
     clear: function () {

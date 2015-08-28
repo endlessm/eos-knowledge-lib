@@ -166,19 +166,11 @@ const SearchPageB = new Lang.Class({
     },
 
     highlight_card: function (model) {
-        this.clear_highlighted_cards();
-        for (let card of this._cards) {
-            if (card.model.ekn_id === model.ekn_id) {
-                card.get_style_context().add_class(StyleClasses.HIGHLIGHTED);
-                return;
-            }
-        }
+        this._arrangement.highlight(model);
     },
 
     clear_highlighted_cards: function () {
-        for (let card of this._cards) {
-            card.get_style_context().remove_class(StyleClasses.HIGHLIGHTED);
-        }
+        this._arrangement.clear_highlight();
     },
 
     append_cards: function (cards) {

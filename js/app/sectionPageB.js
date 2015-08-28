@@ -56,22 +56,11 @@ const SectionPageB = new Lang.Class({
     },
 
     highlight_card: function (model) {
-        this.clear_highlighted_cards();
-        for (let card of this._cards) {
-            if (card.model.ekn_id === model.ekn_id) {
-                card.get_style_context().add_class(StyleClasses.HIGHLIGHTED);
-                return;
-            }
-        }
+        this._arrangement.highlight(model);
     },
 
-    /*
-     * This method clears both the highlighted card, if present.
-     */
     clear_highlighted_cards: function () {
-        for (let card of this._cards) {
-            card.get_style_context().remove_class(StyleClasses.HIGHLIGHTED);
-        }
+        this._arrangement.clear_highlight();
     },
 
     pack_title_banner: function (title_banner) {

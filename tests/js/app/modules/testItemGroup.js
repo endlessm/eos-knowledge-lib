@@ -45,7 +45,7 @@ describe('Item group module', function () {
         group.add_card(new ContentObjectModel.ContentObjectModel());
         group.add_card(new ContentObjectModel.ContentObjectModel());
         group.add_card(new ContentObjectModel.ContentObjectModel());
-        expect(arrangement.count).toBe(3);
+        expect(arrangement.get_cards().length).toBe(3);
         expect(factory.get_created_named_mocks('home-card').length).toBe(3);
     });
 
@@ -56,7 +56,7 @@ describe('Item group module', function () {
         group.clear();
         group.add_card(new ContentObjectModel.ContentObjectModel());
         group.add_card(new ContentObjectModel.ContentObjectModel());
-        expect(arrangement.count).toBe(2);
+        expect(arrangement.get_cards().length).toBe(2);
         expect(factory.get_created_named_mocks('home-card').length).toBe(5);
     });
 });

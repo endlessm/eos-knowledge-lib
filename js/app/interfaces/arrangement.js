@@ -2,12 +2,11 @@
 
 /* exported Arrangement */
 
-const GLib = imports.gi.GLib;
-const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const Module = imports.app.interfaces.module;
+const StyleClasses = imports.app.styleClasses;
 
 /**
  * Interface: Arrangement
@@ -21,13 +20,6 @@ const Arrangement = new Lang.Interface({
     GTypeName: 'EknArrangement',
     Requires: [ Gtk.Widget, Module.Module ],
 
-    Properties: {
-        'count': GObject.ParamSpec.uint('count', 'Count',
-            'Number of cards in the arrangement',
-            GObject.ParamFlags.READABLE,
-            0, GLib.MAXINT32, 0),
-    },
-
     /**
      * Method: add_card
      * Add a card to the arrangement
@@ -38,8 +30,30 @@ const Arrangement = new Lang.Interface({
     add_card: Lang.Interface.UNIMPLEMENTED,
 
     /**
+     * Method: get_cards
+     * Get all cards in the arrangement
+     */
+    get_cards: Lang.Interface.UNIMPLEMENTED,
+
+    /**
      * Method: clear
      * Remove all cards from the arrangement
      */
     clear: Lang.Interface.UNIMPLEMENTED,
+
+    highlight: function (model) {
+        this.clear_highlight();
+        for (let card of this.get_cards()) {
+            if (card.model.ekn_id === model.ekn_id) {
+                card.get_style_context().add_class(StyleClasses.HIGHLIGHTED);
+                return;
+            }
+        }
+    },
+
+    clear_highlight: function() {
+        for (let card of this.get_cards()) {
+            card.get_style_context().remove_class(StyleClasses.HIGHLIGHTED);
+        }
+    },
 });

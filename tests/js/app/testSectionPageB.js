@@ -32,14 +32,14 @@ describe('Section page for Template B', function () {
     it('can set cards', function () {
         section_page.cards = card_list;
         expect(section_page.cards).toBe(card_list);
-        expect(arrangement.count).toBe(3);
+        expect(arrangement.get_cards().length).toBe(3);
     });
 
     it('can append cards', function () {
         section_page.cards = card_list;
-        expect(arrangement.count).toBe(3);
+        expect(arrangement.get_cards().length).toBe(3);
         section_page.append_cards([new Minimal.MinimalCard()]);
-        expect(arrangement.count).toBe(4);
+        expect(arrangement.get_cards().length).toBe(4);
     });
 
     describe('Style class of section page', function () {

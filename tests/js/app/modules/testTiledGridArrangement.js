@@ -34,7 +34,7 @@ describe('Tiled grid arrangement', function () {
     it('adds cards to the list', function () {
         add_cards(3);
         cards.forEach((card) => expect(arrangement).toHaveDescendant(card));
-        expect(arrangement.count).toBe(3);
+        expect(arrangement.get_cards().length).toBe(3);
     });
 
     it('removes cards from the list', function () {
@@ -43,7 +43,7 @@ describe('Tiled grid arrangement', function () {
         Utils.update_gui();
 
         cards.forEach((card) => expect(arrangement).not.toHaveDescendant(card));
-        expect(arrangement.count).toBe(0);
+        expect(arrangement.get_cards().length).toBe(0);
     });
 
     function check_card_placement(card, left, top, width, height) {

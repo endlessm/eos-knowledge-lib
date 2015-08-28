@@ -16,7 +16,6 @@ const GridArrangement = new Lang.Class({
     Implements: [ Module.Module, Arrangement.Arrangement ],
 
     Properties: {
-        'count': GObject.ParamSpec.override('count', Arrangement.Arrangement),
         'factory': GObject.ParamSpec.override('factory', Module.Module),
         'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
     },
@@ -28,12 +27,12 @@ const GridArrangement = new Lang.Class({
         this.parent(props);
     },
 
-    get count() {
-        return this._flow_box.get_children().length;
-    },
-
     add_card: function (widget) {
         this._flow_box.add(widget);
+    },
+
+    get_cards: function () {
+        return this._flow_box.get_children().map((flow_child) => flow_child.get_child());
     },
 
     clear: function () {
