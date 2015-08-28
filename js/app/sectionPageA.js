@@ -21,34 +21,26 @@ const SectionPageA = new Lang.Class({
     GTypeName: 'EknSectionPageA',
     Extends: SectionPage.SectionPage,
 
-    _init: function (props) {
+    _init: function (props={}) {
         props.orientation = Gtk.Orientation.VERTICAL;
         props.expand = true;
         props.valign = Gtk.Align.FILL;
 
         this.parent(props);
 
-        this._cards = [];
-
         this.get_style_context().add_class(StyleClasses.SECTION_PAGE_A);
 
+        this._banner_module = this.factory.create_named_module('set-banner-module', {
+            halign: Gtk.Align.CENTER,
+        });
         this._item_group = this.factory.create_named_module('item-group');
-
         this._separator = new Gtk.Separator({
             margin_start: 20,
             margin_end: 20,
         });
-        this.attach(this._separator, 0, 1, 1, 1);
 
-        this.attach(this._item_group, 0, 2, 1, 1);
-    },
-
-    pack_title_banner: function (title_banner) {
-        title_banner.halign = Gtk.Align.CENTER;
-
-        let old_banner = this.get_child_at(0, 0);
-        if (old_banner)
-            this.remove(old_banner);
-        this.attach(title_banner, 0, 0, 1, 1);
+        this.add(this._banner_module);
+        this.add(this._separator);
+        this.add(this._item_group);
     },
 });

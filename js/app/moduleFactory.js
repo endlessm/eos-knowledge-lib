@@ -80,7 +80,6 @@ const ModuleFactory = new Lang.Class({
      */
     create_module_for_slot: function (parent_name, slot, extra_props={}) {
         let factory_name = this._get_module_description_by_name(parent_name)['slots'][slot];
-
         return this.create_named_module(factory_name, extra_props);
     },
 

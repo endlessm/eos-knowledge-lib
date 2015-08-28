@@ -55,8 +55,14 @@ function transform_v1_description(json) {
                 card_type: 'results-card',
             },
         };
-        modules['results-title-card'] = {
+        modules['set-banner-card'] = {
             type: 'SetBannerCard',
+        };
+        modules['set-banner-module'] = {
+            type: 'SetBannerModule',
+            slots: {
+                card_type: 'set-banner-card',
+            },
         };
         modules['results-search-banner'] = {
             type: 'SearchBannerModule',
@@ -133,8 +139,14 @@ function transform_v1_description(json) {
         modules['home-card'] = {
             type: 'CardB',
         };
-        modules['results-title-card'] = {
+        modules['set-banner-card'] = {
             type: 'SetBannerCard',
+        };
+        modules['set-banner-module'] = {
+            type: 'SetBannerModule',
+            slots: {
+                card_type: 'set-banner-card',
+            },
         };
         modules['results-search-banner'] = {
             type: 'SearchBannerModule',

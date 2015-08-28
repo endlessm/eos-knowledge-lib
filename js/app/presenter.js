@@ -328,7 +328,6 @@ const Presenter = new Lang.Class({
                 break;
             case this._SECTION_PAGE:
                 this._refresh_article_results(() => {
-                    this.view.section_page.model = item.model;
                     this.view.show_page(this.view.section_page);
                 });
                 break;

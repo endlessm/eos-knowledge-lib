@@ -44,28 +44,4 @@ const SectionPage = new Lang.Class({
 
         this.parent(props);
     },
-
-    pack_title_banner: function (title_banner) {
-        this.add(title_banner);
-    },
-
-    get model() {
-        return this._model;
-    },
-
-    set model(value) {
-        if (this._model === value)
-            return;
-        this._model = value;
-        this._update_banner();
-    },
-
-    _update_banner: function () {
-        this._title_banner = this.factory.create_named_module('results-title-card', {
-            model: this._model,
-        });
-        this.pack_title_banner(this._title_banner);
-        this._title_banner.show_all();
-        this.notify('model');
-    },
 });
