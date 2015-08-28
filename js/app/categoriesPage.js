@@ -5,7 +5,9 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
+const Actions = imports.app.actions;
 const Config = imports.app.config;
+const Dispatcher = imports.app.dispatcher;
 const TabButton = imports.app.widgets.tabButton;
 
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
@@ -25,6 +27,13 @@ const CategoriesPage = new Lang.Class({
     Extends: Gtk.ScrolledWindow,
 
     Properties: {
+        /**
+         * Property: factory
+         * Factory to create modules
+         */
+        'factory': GObject.ParamSpec.object('factory', 'Factory', 'Factory',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            GObject.Object.$gtype),
         'animating': GObject.ParamSpec.boolean('animating',
             'Animating', 'Set true if this page is animating and should hide its show all button',
             GObject.ParamFlags.READWRITE, false),
@@ -92,7 +101,31 @@ const CategoriesPage = new Lang.Class({
         this._grid.add(this._button_stack);
         this._grid.add(this._card_grid);
 
-        this._cards = null;
+        let dispatcher = Dispatcher.get_default();
+        dispatcher.register((payload) => {
+            switch(payload.action_type) {
+                case Actions.CLEAR_SETS:
+                    for (let card of this._card_grid.get_children()) {
+                        this._card_grid.remove(card);
+                    }
+                    break;
+                case Actions.APPEND_SETS:
+                    for (let model of payload.models) {
+                        let card = this.factory.create_named_module('home-card', {
+                            model: model,
+                        });
+                        card.connect('clicked', () => {
+                            dispatcher.dispatch({
+                                action_type: Actions.SET_SELECTED,
+                                model: model,
+                            });
+                        });
+                        this._card_grid.add(card);
+                    }
+                    break;
+            }
+        });
+
 
         this.parent(props);
         this.add(this._grid);
@@ -110,26 +143,6 @@ const CategoriesPage = new Lang.Class({
         if (!this._animating && this.get_mapped()) {
             this._show_button();
         }
-    },
-
-    set cards (v) {
-        if (this._cards === v)
-            return;
-        if (this._cards !== null) {
-            for (let card of this._cards) {
-               this._card_grid.remove(card);
-            }
-        }
-        this._cards = v;
-        if (this._cards !== null) {
-            for (let card of this._cards) {
-                this._card_grid.add(card);
-            }
-        }
-    },
-
-    get cards () {
-        return this._cards;
     },
 
     _hide_button: function () {

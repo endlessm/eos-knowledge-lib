@@ -2,17 +2,20 @@ const Gtk = imports.gi.Gtk;
 
 Gtk.init(null);
 
+const Actions = imports.app.actions;
 const ContentObjectModel = imports.search.contentObjectModel;
 const ItemGroupModule = imports.app.modules.itemGroupModule;
 const Minimal = imports.tests.minimal;
+const MockDispatcher = imports.tests.mockDispatcher;
 const MockFactory = imports.tests.mockFactory;
 const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 
 describe('Item group module', function () {
-    let group, arrangement, factory;
+    let group, arrangement, factory, dispatcher;
 
     beforeEach(function () {
         jasmine.addMatchers(WidgetDescendantMatcher.customMatchers);
+        dispatcher = MockDispatcher.mock_default();
 
         factory = new MockFactory.MockFactory();
         factory.add_named_mock('test-arrangement', Minimal.MinimalArrangement);
@@ -41,22 +44,39 @@ describe('Item group module', function () {
         expect(cards.length).toEqual(0);
     });
 
-    it('creates cards from models and adds them to the arrangement', function () {
-        group.add_card(new ContentObjectModel.ContentObjectModel());
-        group.add_card(new ContentObjectModel.ContentObjectModel());
-        group.add_card(new ContentObjectModel.ContentObjectModel());
+    it('adds dispatched cards to the arrangement', function () {
+        let models = [
+            new ContentObjectModel.ContentObjectModel(),
+            new ContentObjectModel.ContentObjectModel(),
+            new ContentObjectModel.ContentObjectModel(),
+        ];
+        dispatcher.dispatch({
+            action_type: Actions.APPEND_ITEMS,
+            models: models,
+        });
         expect(arrangement.get_cards().length).toBe(3);
         expect(factory.get_created_named_mocks('home-card').length).toBe(3);
     });
 
     it('clears the existing cards when clear called', function () {
-        group.add_card(new ContentObjectModel.ContentObjectModel());
-        group.add_card(new ContentObjectModel.ContentObjectModel());
-        group.add_card(new ContentObjectModel.ContentObjectModel());
-        group.clear();
-        group.add_card(new ContentObjectModel.ContentObjectModel());
-        group.add_card(new ContentObjectModel.ContentObjectModel());
-        expect(arrangement.get_cards().length).toBe(2);
-        expect(factory.get_created_named_mocks('home-card').length).toBe(5);
+        let models = [
+            new ContentObjectModel.ContentObjectModel(),
+            new ContentObjectModel.ContentObjectModel(),
+            new ContentObjectModel.ContentObjectModel(),
+        ];
+        dispatcher.dispatch({
+            action_type: Actions.APPEND_ITEMS,
+            models: models,
+        });
+        dispatcher.dispatch({
+            action_type: Actions.CLEAR_ITEMS,
+            models: models,
+        });
+        dispatcher.dispatch({
+            action_type: Actions.APPEND_ITEMS,
+            models: models,
+        });
+        expect(arrangement.get_cards().length).toBe(3);
+        expect(factory.get_created_named_mocks('home-card').length).toBe(6);
     });
 });

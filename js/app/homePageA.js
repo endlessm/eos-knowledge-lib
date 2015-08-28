@@ -5,7 +5,9 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
+const Actions = imports.app.actions;
 const Config = imports.app.config;
+const Dispatcher = imports.app.dispatcher;
 const HomePage = imports.app.homePage;
 const Module = imports.app.interfaces.module;
 const SpaceContainer = imports.app.widgets.spaceContainer;
@@ -90,12 +92,37 @@ const HomePageA = new Lang.Class({
         this._button_stack.add(this._invisible_frame);
         this._button_stack.add(this.tab_button);
 
-        this._cards = null;
-
         this.parent(props);
 
         this.search_box = this.factory.create_named_module('home-search');
         this._app_banner = this.factory.create_named_module('app-banner');
+        this._cards = [];
+
+        let dispatcher = Dispatcher.get_default();
+        dispatcher.register((payload) => {
+            switch(payload.action_type) {
+                case Actions.CLEAR_SETS:
+                    this._cards = [];
+                    this.pack_cards();
+                    break;
+                case Actions.APPEND_SETS:
+                    let cards = payload.models.map((model) => {
+                        let card = this.factory.create_named_module('home-card', {
+                            model: model,
+                        });
+                        card.connect('clicked', () => {
+                            dispatcher.dispatch({
+                                action_type: Actions.SET_SELECTED,
+                                model: model,
+                            });
+                        });
+                        return card;
+                    });
+                    this._cards.push.apply(this._cards, cards);
+                    this.pack_cards();
+                    break;
+            }
+        });
 
         this.get_style_context().add_class(StyleClasses.HOME_PAGE);
 
@@ -119,21 +146,6 @@ const HomePageA = new Lang.Class({
         this._animating = v;
         this._update_button_visibility();
         this.notify('animating');
-    },
-
-    get cards() {
-        return this._cards;
-    },
-
-    set cards(v) {
-        if (this._cards === v)
-            return;
-        this._cards = v;
-        if (this._cards === null) {
-            this.pack_cards([]);
-        } else {
-            this.pack_cards(this._cards);
-        }
     },
 
     _update_button_visibility: function () {
@@ -176,10 +188,14 @@ const HomePageA = new Lang.Class({
         this.add(this._button_stack);
     },
 
-    pack_cards: function (cards) {
+    get cards () {
+        return this._cards;
+    },
+
+    pack_cards: function () {
         this._card_container.get_children().forEach((card) =>
             this._card_container.remove(card));
-        let sorted_cards = cards.sort((a, b) => {
+        this._cards = this._cards.sort((a, b) => {
             let sortVal = 0;
             if (a.model.featured)
                 sortVal--;
@@ -187,10 +203,10 @@ const HomePageA = new Lang.Class({
                 sortVal++;
             return sortVal;
         });
-        if (sorted_cards.length > MAX_CARDS) {
+        if (this._cards.length > MAX_CARDS) {
             this._got_extra_cards = true;
         }
-        sorted_cards.slice(0, MAX_CARDS).forEach((card) =>
+        this._cards.slice(0, MAX_CARDS).forEach((card) =>
             this._card_container.add(card));
         this._update_button_visibility();
     }

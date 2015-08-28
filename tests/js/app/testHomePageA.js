@@ -1,9 +1,11 @@
 const Gtk = imports.gi.Gtk;
 
+const Actions = imports.app.actions;
 const ContentObjectModel = imports.search.contentObjectModel;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const HomePageA = imports.app.homePageA;
 const Minimal = imports.tests.minimal;
+const MockDispatcher = imports.tests.mockDispatcher;
 const MockFactory = imports.tests.mockFactory;
 const MockWidgets = imports.tests.mockWidgets;
 const StyleClasses = imports.app.styleClasses;
@@ -14,13 +16,16 @@ const TEST_CONTENT_DIR = Utils.get_test_content_srcdir();
 Gtk.init(null);
 
 describe('Home page for Template A', () => {
-    let home_page, notify, card_list;
+    let home_page, notify, dispatcher, model_list;
 
     beforeEach(() => {
+        dispatcher = MockDispatcher.mock_default();
+
         jasmine.addMatchers(CssClassMatcher.customMatchers);
 
         let factory = new MockFactory.MockFactory();
         factory.add_named_mock('home-search', MockWidgets.MockSearchBox);
+        factory.add_named_mock('home-card', Minimal.MinimalCard);
         home_page = new HomePageA.HomePageA({
             factory: factory,
         });
@@ -32,7 +37,7 @@ describe('Home page for Template A', () => {
             notify(pspec.name, object[pspec.name.replace('-', '_')]);
         });
 
-        let model_list = [
+        model_list = [
             new ContentObjectModel.ContentObjectModel({
                 title: 'Synopsised Card',
                 synopsis: 'This is the Synopsis',
@@ -50,29 +55,21 @@ describe('Home page for Template A', () => {
                 featured: true,
             }),
         ];
-        card_list = model_list.map((model) =>
-            new Minimal.MinimalCard({ model: model }));
+        dispatcher.dispatch({
+            action_type: Actions.APPEND_SETS,
+            models: model_list,
+        });
     });
 
     it('can be constructed', () => {});
 
-    it('can set cards', () => {
-        // Seems worth testing this as having a list property in javascript
-        // isn't common
-        home_page.cards = card_list;
-
-        let get_title = (card) => card.model.title;
-
-        // sort existing/expected lists alphabetically for comparing members
-        // independent of pack_cards implementation
-        let expected_card_list = card_list.map(get_title).sort();
-        let existing_card_list = home_page.cards.map(get_title).sort();
-        expect(existing_card_list).toEqual(expected_card_list);
+    it('sets cards from dispatcher', () => {
+        let card_title_list = home_page.cards.map((card) => card.model.title).sort();
+        let dispatched_title_list = model_list.map((model) => model.title).sort();
+        expect(card_title_list).toEqual(dispatched_title_list);
     });
 
     it('orders featured cards first', () => {
-        home_page.cards = card_list;
-
         expect(home_page.cards.map((card) => card.model.featured)).toEqual([
             true,
             true,

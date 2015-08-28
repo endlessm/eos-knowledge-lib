@@ -118,6 +118,7 @@ const Presenter = new Lang.Class({
         props.engine = props.engine || Engine.Engine.get_default();
         this.parent(props);
 
+        let dispatcher = Dispatcher.get_default();
         this._style_knobs = app_json['styles'];
         this.load_theme();
 
@@ -126,8 +127,11 @@ const Presenter = new Lang.Class({
             tags: [ Engine.HOME_PAGE_TAG ],
         });
         this.engine.get_objects_by_query(query, null, (engine, res) => {
-            let [sections, get_more] = engine.get_objects_by_query_finish(res);
-            this._set_sections(sections);
+            let [models, get_more] = engine.get_objects_by_query_finish(res);
+            dispatcher.dispatch({
+                action_type: Actions.APPEND_SETS,
+                models: models,
+            });
         });
 
         this._lightbox_presenter = new LightboxPresenter.LightboxPresenter({
@@ -150,43 +154,33 @@ const Presenter = new Lang.Class({
         this._connect_search_signals(this.view.home_page);
         this.view.connect('search-focused', this._on_search_focus.bind(this));
 
-        let group = this.view.home_page._bottom;
-        // FIXME: the if statement is because only Template B homepage has an
-        // item group. This will be made obsolete by the dispatcher anyway.
-        if (group) {
-            group.connect('article-selected', (group, model) => {
-                this._history_presenter.set_current_item_from_props({
-                    page_type: this._SECTION_PAGE,
-                    model: model,
-                });
-            });
-        }
-        Dispatcher.get_default().register((payload) => {
+        dispatcher.register((payload) => {
             switch(payload.action_type) {
                 case Actions.NAV_BACK_CLICKED:
                     this._on_back();
                     break;
+                case Actions.SET_SELECTED:
+                    this._history_presenter.set_current_item_from_props({
+                        page_type: this._SECTION_PAGE,
+                        model: payload.model,
+                    });
+                    break;
+                case Actions.ITEM_SELECTED:
+                case Actions.SEARCH_SELECTED:
+                    this._history_presenter.set_current_item_from_props({
+                        page_type: this._ARTICLE_PAGE,
+                        model: payload.model,
+                    });
+                    break;
+                case Actions.NEED_MORE_ITEMS:
+                    this._load_more_results(Actions.APPEND_ITEMS);
+                    break;
+                case Actions.NEED_MORE_SEARCH:
+                    this._load_more_results(Actions.APPEND_SEARCH);
+                    break;
             }
         });
 
-        this.view.section_page.connect('article-selected', (view, model) => {
-            this._history_presenter.set_current_item_from_props({
-                page_type: this._ARTICLE_PAGE,
-                model: model,
-            });
-        });
-        this.view.search_page.connect('article-selected', (view, model) => {
-            this._history_presenter.set_current_item_from_props({
-                page_type: this._ARTICLE_PAGE,
-                model: model,
-            });
-        });
-        this.view.section_page.connect('load-more-results', () => {
-            this._load_more_results(this.view.section_page);
-        });
-        this.view.search_page.connect('load-more-results', () => {
-            this._load_more_results(this.view.search_page);
-        });
         this.view.home_page.connect('show-categories', this._on_categories_button_clicked.bind(this));
         this.view.categories_page.connect('show-home', this._on_home_button_clicked.bind(this));
         this._history_presenter.connect('history-item-changed', this._on_history_item_change.bind(this));
@@ -272,7 +266,7 @@ const Presenter = new Lang.Class({
             [query, this.application.application_id]));
     },
 
-    _load_more_results: function (view) {
+    _load_more_results: function (action_type) {
         if (!this._get_more_results_query)
             return;
         this.engine.get_objects_by_query(this._get_more_results_query,
@@ -287,14 +281,18 @@ const Presenter = new Lang.Class({
             }
 
             if (results.length > 0) {
+                let dispatcher = Dispatcher.get_default();
                 let item = this._history_presenter.history_model.current_item;
                 if (item.page_type === this._ARTICLE_PAGE) {
-                    Dispatcher.get_default().dispatch({
+                    dispatcher.dispatch({
                         action_type: Actions.HIGHLIGHT_ITEM,
                         model: item.model,
                     });
                 }
-                view.append_cards(results);
+                dispatcher.dispatch({
+                    action_type: action_type,
+                    models: results,
+                });
             }
             this._get_more_results_query = get_more_results_query;
         });
@@ -395,32 +393,6 @@ const Presenter = new Lang.Class({
                 }
             });
         });
-    },
-
-    _set_sections: function(sections) {
-        let _on_section_card_clicked = (card) => {
-            this._history_presenter.set_current_item_from_props({
-                page_type: this._SECTION_PAGE,
-                model: card.model,
-            });
-        };
-
-        if (this._template_type === 'A') {
-            for (let page of [this.view.home_page, this.view.categories_page]) {
-                let category_cards = sections.map((section) => {
-                    let card = this.factory.create_named_module('home-card', {
-                        model: section,
-                    });
-                    card.connect('clicked', _on_section_card_clicked.bind(this));
-                    return card;
-                });
-                page.cards = category_cards;
-            }
-        } else {
-            // FIXME: Temporarily handles passing of cards until we have dispatcher/alternative method.
-            let group = this.view.home_page._bottom;
-            sections.forEach((section) => group.add_card(section));
-        }
     },
 
     _on_categories_button_clicked: function (button) {
@@ -602,12 +574,23 @@ const Presenter = new Lang.Class({
             if (results.length === 0) {
                 item.empty = true;
             } else {
-                let page = item.page_type === this._SEARCH_PAGE ? this.view.search_page : this.view.section_page;
-                if (this._template_type === 'B') {
-                    page.cards = results;
+                let dispatcher = Dispatcher.get_default();
+                if (item.page_type === this._SEARCH_PAGE) {
+                    dispatcher.dispatch({
+                        action_type: Actions.CLEAR_SEARCH,
+                    });
+                    dispatcher.dispatch({
+                        action_type: Actions.APPEND_SEARCH,
+                        models: results,
+                    });
                 } else {
-                    page.remove_all_cards();
-                    page.append_cards(results);
+                    dispatcher.dispatch({
+                        action_type: Actions.CLEAR_ITEMS,
+                    });
+                    dispatcher.dispatch({
+                        action_type: Actions.APPEND_ITEMS,
+                        models: results,
+                    });
                 }
             }
             callback();

@@ -140,24 +140,24 @@ describe('Presenter', () => {
 
     it('can be constructed', () => {});
 
-    it('puts the correct cards on the home page', () => {
+    it('dispatches category models for home page', () => {
+        let payloads = dispatcher.dispatched_payloads.filter((payload) => {
+            return payload.action_type === Actions.APPEND_SETS;
+        });
+        expect(payloads.length).toBe(1);
         expect(sections.map((section) => section['title']))
-            .toEqual(view.home_page.cards.map((card) => card.model.title));
-
-        expect(sections.map((section) => section['thumbnail_uri']))
-            .toEqual(view.home_page.cards.map((card) => card.model.thumbnail_uri));
-
-        expect(sections.map((section) => !!section['featured']))
-            .toEqual(view.home_page.cards.map((card) => card.model.featured));
+            .toEqual(payloads[0].models.map((model) => model.title));
     });
 
     it('switches to the correct section page when clicking a card on the home page', function () {
-        engine.get_objects_by_query_finish.and.returnValue([[
-            new ContentObjectModel.ContentObjectModel({
-                title: 'An article in a section',
-            }),
-        ], null]);
-        view.home_page.cards[0].emit('clicked');
+        let model = new ContentObjectModel.ContentObjectModel({
+            title: 'An article in a section',
+        });
+        engine.get_objects_by_query_finish.and.returnValue([[ model ], null]);
+        dispatcher.dispatch({
+            action_type: Actions.SET_SELECTED,
+            model: new ContentObjectModel.ContentObjectModel(),
+        });
         Utils.update_gui();
         expect(view.show_page).toHaveBeenCalledWith(view.section_page);
     });
@@ -223,7 +223,10 @@ describe('Presenter', () => {
                     title: 'An article in a section',
                 }),
             ], null]);
-            view.home_page.cards[0].emit('clicked');
+            dispatcher.dispatch({
+                action_type: Actions.SET_SELECTED,
+                model: new ContentObjectModel.ContentObjectModel(),
+            });
             Utils.update_gui();
         });
 

@@ -2,13 +2,11 @@
 
 /* exported ItemGroupModule */
 
-const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const Actions = imports.app.actions;
-const ContentObjectModel = imports.search.contentObjectModel;
 const Dispatcher = imports.app.dispatcher;
 const InfiniteScrolledWindow = imports.app.widgets.infiniteScrolledWindow;
 const Module = imports.app.interfaces.module;
@@ -31,39 +29,27 @@ const ItemGroupModule = new Lang.Class({
         'factory': GObject.ParamSpec.override('factory', Module.Module),
         'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
     },
-    Signals: {
-        /**
-         * Event: article-selected
-         * Indicates that a card was clicked in the search results
-         *
-         * FIXME: This signal is temporary, and the dispatcher will make it
-         * unnecessary.
-         *
-         * Parameters:
-         *   <ContentObjectModel> - the model of the card that was clicked
-         */
-        'article-selected': {
-            param_types: [ ContentObjectModel.ContentObjectModel ],
-        },
-        /**
-         * Event: need-more-content
-         * This scrolled window needs more content to fill it up
-         *
-         * FIXME: This signal is temporary, and the dispatcher will make it
-         * unnecessary.
-         */
-        'need-more-content': {},
-    },
 
     _init: function (props={}) {
         this.parent(props);
         this._arrangement = this.create_submodule('arrangement');
         this.add(this._arrangement);
-        if (this._arrangement instanceof InfiniteScrolledWindow.InfiniteScrolledWindow)
-            this._arrangement.connect('need-more-content', () => this.emit('need-more-content'));
 
-        Dispatcher.get_default().register((payload) => {
+        let dispatcher = Dispatcher.get_default();
+        if (this._arrangement instanceof InfiniteScrolledWindow.InfiniteScrolledWindow) {
+            this._arrangement.connect('need-more-content', () => dispatcher.dispatch({
+                action_type: Actions.NEED_MORE_ITEMS,
+            }));
+        }
+        dispatcher.register((payload) => {
             switch(payload.action_type) {
+                case Actions.CLEAR_ITEMS:
+                    this._arrangement.clear();
+                    this._cards = [];
+                    break;
+                case Actions.APPEND_ITEMS:
+                    payload.models.forEach(this._add_card, this);
+                    break;
                 case Actions.HIGHLIGHT_ITEM:
                     this._arrangement.highlight(payload.model);
                     break;
@@ -79,27 +65,15 @@ const ItemGroupModule = new Lang.Class({
         return ['arrangement', 'card_type'];
     },
 
-    /**
-     * Method: clear
-     * Remove all cards from the arrangement
-     */
-    clear: function () {
-        this._arrangement.clear();
-    },
-
-    /**
-     * Method: add_card
-     * Add a card to the arrangement
-     *
-     * Parameters:
-     *   card - a <Card> implementation
-     */
-    add_card: function (model) {
+    _add_card: function (model) {
         let card = this.create_submodule('card_type', {
             model: model,
         });
-        card.connect('clicked', (card) => {
-            this.emit('article-selected', card.model);
+        card.connect('clicked', () => {
+            Dispatcher.get_default().dispatch({
+                action_type: Actions.ITEM_SELECTED,
+                model: model,
+            });
         });
         this._arrangement.add_card(card);
     },

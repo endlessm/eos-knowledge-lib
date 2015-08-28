@@ -36,11 +36,6 @@ describe('Section page for Template A', function () {
 
     it('can be constructed', function () {});
 
-    it('can set cards', function () {
-        section_page.append_cards(cards);
-        expect(section_page.get_cards()).toEqual(cards);
-    });
-
     it('can set title', function () {
         section_page.title = "Brazil";
         expect(section_page.title).toBe("Brazil");

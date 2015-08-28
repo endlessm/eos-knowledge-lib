@@ -202,7 +202,9 @@ const Window = new Lang.Class({
     _init: function (props) {
         this.parent(props);
 
-        this.categories_page = new CategoriesPage.CategoriesPage();
+        this.categories_page = new CategoriesPage.CategoriesPage({
+            factory: this.factory,
+        });
         if (this.template_type === 'B') {
             this.home_page = this.factory.create_named_module('home-page-template');
             this.section_page = new SectionPageB.SectionPageB({

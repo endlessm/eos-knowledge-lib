@@ -19,6 +19,8 @@ const MockDispatcher = new Lang.Class({
         this._listeners = {};
         this._listener_counter = 0;
         this._processing = false;
+        // For testing
+        this.dispatched_payloads = [];
     },
 
     _process_queue: function () {
@@ -28,6 +30,7 @@ const MockDispatcher = new Lang.Class({
             for (let id in this._listeners)
                 this._listeners[id](payload);
             this._process_queue();
+            this.dispatched_payloads.push(payload);
         }
         this._processing = false;
     },

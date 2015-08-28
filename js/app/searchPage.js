@@ -2,13 +2,10 @@
 
 /* exported SearchPageA, SearchPageB */
 
-const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
-const ContentObjectModel = imports.search.contentObjectModel;
-const InfiniteScrolledWindow = imports.app.widgets.infiniteScrolledWindow;
 const QueryObject = imports.search.queryObject;
 const StyleClasses = imports.app.styleClasses;
 
@@ -30,13 +27,6 @@ const SearchPage = new Lang.Class({
             GObject.Object.$gtype),
         'query': GObject.ParamSpec.object('query', 'Query', 'Search query',
             GObject.ParamFlags.READWRITE, QueryObject.QueryObject),
-    },
-
-    Signals: {
-        'article-selected': {
-            param_types: [ ContentObjectModel.ContentObjectModel ],
-        },
-        'load-more-results': {},
     },
 
     _init: function (props) {
@@ -86,10 +76,6 @@ const SearchPageA = new Lang.Class({
         this.get_style_context().add_class(StyleClasses.SEARCH_PAGE_A);
 
         this._search_results = this.factory.create_named_module('search-results');
-        this._search_results.connect('need-more-content', () =>
-            this.emit('load-more-results'));
-        this._search_results.connect('article-selected', (group, article) =>
-            this.emit('article-selected', article));
 
         this._separator = new Gtk.Separator({
             margin_start: 20,
@@ -107,20 +93,6 @@ const SearchPageA = new Lang.Class({
         if (old_banner)
             this._content_grid.remove(old_banner);
         this._content_grid.attach(title_banner, 0, 0, 1, 1);
-    },
-
-    append_cards: function (cards) {
-        this._cards.push.apply(this._cards, cards);
-        cards.forEach(this._search_results.add_card, this._search_results);
-    },
-
-    get_cards: function () {
-        return this._cards;
-    },
-
-    remove_all_cards: function () {
-        this._search_results.clear();
-        this._cards = [];
     },
 });
 
@@ -143,11 +115,6 @@ const SearchPageB = new Lang.Class({
         this._content_grid.add(this._title_frame);
 
         this._search_results = this.factory.create_named_module('search-results');
-        this._search_results.connect('need-more-content', () =>
-            this.emit('load-more-results'));
-        this._search_results.connect('article-selected', (group, article) =>
-            this.emit('article-selected', article));
-
         this._content_grid.add(this._search_results);
 
         this.add(this._content_grid);
@@ -163,24 +130,5 @@ const SearchPageB = new Lang.Class({
         if (child !== null)
             this._title_frame.remove(child);
         this._title_frame.add(title_banner);
-    },
-
-    append_cards: function (cards) {
-        this._cards.push.apply(this._cards, cards);
-        cards.forEach(this._search_results.add_card, this._search_results);
-    },
-
-    set cards (v) {
-        if (this._cards === v)
-            return;
-        if (this._cards)
-            this._search_results.clear();
-        this._cards = v;
-        if (this._cards)
-            this._cards.forEach(this._search_results.add_card, this._search_results);
-    },
-
-    get cards () {
-        return this._cards;
     },
 });
