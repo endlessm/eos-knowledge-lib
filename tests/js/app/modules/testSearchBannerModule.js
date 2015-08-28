@@ -3,18 +3,15 @@ const Gtk = imports.gi.Gtk;
 const Utils = imports.tests.utils;
 Utils.register_gresource();
 
-const ContentObjectModel = imports.search.contentObjectModel;
-const SearchBanner = imports.app.modules.searchBanner;
+const SearchBannerModule = imports.app.modules.searchBannerModule;
 
 Gtk.init(null);
 
 describe('Search banner widget', function () {
-    let searchBanner;
+    let searchBannerModule;
 
     beforeEach(function () {
-        searchBanner = new SearchBanner.SearchBanner({
-            query: 'Query',
-        });
+        searchBannerModule = new SearchBannerModule.SearchBannerModule();
     });
 
     it('constructs', function () {});

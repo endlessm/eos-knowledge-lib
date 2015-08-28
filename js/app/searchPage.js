@@ -30,30 +30,7 @@ const SearchPage = new Lang.Class({
     },
 
     _init: function (props) {
-        this._query = null;
-
         this.parent(props);
-    },
-
-    pack_title_banner: function (title_banner) {
-        this.add(title_banner);
-    },
-
-    get query() {
-        return this._query;
-    },
-
-    set query(value) {
-        if (this._query === value)
-            return;
-        this._query = value;
-
-        this._title_banner = this.factory.create_named_module('results-search-banner', {
-            query: this._query,
-        });
-        this.pack_title_banner(this._title_banner);
-        this._title_banner.show_all();
-        this.notify('query');
     },
 });
 
@@ -75,24 +52,19 @@ const SearchPageA = new Lang.Class({
 
         this.get_style_context().add_class(StyleClasses.SEARCH_PAGE_A);
 
+        this._title_banner = this.factory.create_named_module('results-search-banner', {
+            halign: Gtk.Align.CENTER
+        });
         this._search_results = this.factory.create_named_module('search-results');
 
         this._separator = new Gtk.Separator({
             margin_start: 20,
             margin_end: 20,
         });
-        this._content_grid.attach(this._separator, 0, 1, 1, 1);
-        this._content_grid.attach(this._search_results, 0, 2, 1, 1);
+        this._content_grid.add(this._title_banner);
+        this._content_grid.add(this._separator);
+        this._content_grid.add(this._search_results);
         this.add(this._content_grid);
-    },
-
-    pack_title_banner: function (title_banner) {
-        title_banner.halign = Gtk.Align.CENTER;
-
-        let old_banner = this._content_grid.get_child_at(0, 0);
-        if (old_banner)
-            this._content_grid.remove(old_banner);
-        this._content_grid.attach(title_banner, 0, 0, 1, 1);
     },
 });
 
@@ -112,23 +84,17 @@ const SearchPageB = new Lang.Class({
         this._title_frame = new Gtk.Frame();
         this._title_frame.get_style_context().add_class(StyleClasses.SEARCH_PAGE_B_TITLE_FRAME);
 
-        this._content_grid.add(this._title_frame);
-
+        this._title_banner = this.factory.create_named_module('results-search-banner', {
+            valign: Gtk.Align.END,
+            max_width_chars: 0,
+        });
         this._search_results = this.factory.create_named_module('search-results');
-        this._content_grid.add(this._search_results);
 
+        this._title_frame.add(this._title_banner);
+        this._content_grid.add(this._title_frame);
+        this._content_grid.add(this._search_results);
         this.add(this._content_grid);
 
         this.get_style_context().add_class(StyleClasses.SEARCH_PAGE_B);
-    },
-
-    pack_title_banner: function (title_banner) {
-        title_banner.valign = Gtk.Align.END;
-        title_banner.max_width_chars = 0;
-
-        let child = this._title_frame.get_child();
-        if (child !== null)
-            this._title_frame.remove(child);
-        this._title_frame.add(title_banner);
     },
 });

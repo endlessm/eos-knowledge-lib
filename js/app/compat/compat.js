@@ -59,7 +59,7 @@ function transform_v1_description(json) {
             type: 'SetBannerCard',
         };
         modules['results-search-banner'] = {
-            type: 'SearchBanner',
+            type: 'SearchBannerModule',
         };
         modules['results-card'] = {
             type: 'CardA',
@@ -137,7 +137,7 @@ function transform_v1_description(json) {
             type: 'SetBannerCard',
         };
         modules['results-search-banner'] = {
-            type: 'SearchBanner',
+            type: 'SearchBannerModule',
         };
         modules['results-arrangement'] = {
             type: 'ListArrangement',

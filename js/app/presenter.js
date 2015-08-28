@@ -314,11 +314,13 @@ const Presenter = new Lang.Class({
         switch (item.page_type) {
             case this._SEARCH_PAGE:
                 this._refresh_article_results(() => {
+                    dispatcher.dispatch({
+                        action_type: Actions.SEARCH_STARTING,
+                        query: item.query,
+                    });
                     if (item.empty) {
-                        this.view.no_search_results_page.query = item.query;
                         this.view.show_page(this.view.no_search_results_page);
                     } else {
-                        this.view.search_page.query = item.query;
                         this.view.show_page(this.view.search_page);
                     }
                 });
