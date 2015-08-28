@@ -3,6 +3,8 @@
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
+const Actions = imports.app.actions;
+const Dispatcher = imports.app.dispatcher;
 const SectionPage = imports.app.sectionPage;
 const StyleClasses = imports.app.styleClasses;
 
@@ -53,14 +55,17 @@ const SectionPageB = new Lang.Class({
         this.add(this._content_grid);
 
         this.get_style_context().add_class(StyleClasses.SECTION_PAGE_B);
-    },
 
-    highlight_card: function (model) {
-        this._arrangement.highlight(model);
-    },
-
-    clear_highlighted_cards: function () {
-        this._arrangement.clear_highlight();
+        Dispatcher.get_default().register((payload) => {
+            switch(payload.action_type) {
+                case Actions.HIGHLIGHT_ITEM:
+                    this._arrangement.highlight(payload.model);
+                    break;
+                case Actions.CLEAR_HIGHLIGHTED_ITEM:
+                    this._arrangement.clear_highlight();
+                    break;
+            }
+        });
     },
 
     pack_title_banner: function (title_banner) {

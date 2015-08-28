@@ -7,6 +7,8 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
+const Actions = imports.app.actions;
+const Dispatcher = imports.app.dispatcher;
 const InfiniteScrolledWindow = imports.app.widgets.infiniteScrolledWindow;
 const QueryObject = imports.search.queryObject;
 const StyleClasses = imports.app.styleClasses;
@@ -153,6 +155,17 @@ const SearchPageB = new Lang.Class({
         this.add(this._content_grid);
 
         this.get_style_context().add_class(StyleClasses.SEARCH_PAGE_B);
+
+        Dispatcher.get_default().register((payload) => {
+            switch(payload.action_type) {
+                case Actions.HIGHLIGHT_ITEM:
+                    this._arrangement.highlight(payload.model);
+                    break;
+                case Actions.CLEAR_HIGHLIGHTED_ITEM:
+                    this._arrangement.clear_highlight();
+                    break;
+            }
+        });
     },
 
     pack_title_banner: function (title_banner) {
@@ -163,14 +176,6 @@ const SearchPageB = new Lang.Class({
         if (child !== null)
             this._title_frame.remove(child);
         this._title_frame.add(title_banner);
-    },
-
-    highlight_card: function (model) {
-        this._arrangement.highlight(model);
-    },
-
-    clear_highlighted_cards: function () {
-        this._arrangement.clear_highlight();
     },
 
     append_cards: function (cards) {

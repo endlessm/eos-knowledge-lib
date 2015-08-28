@@ -277,14 +277,14 @@ const Presenter = new Lang.Class({
 
             let cards = results.map(this._new_card_from_article_model.bind(this));
             if (cards.length > 0) {
-                if (this._template_type === 'B') {
-                    view.append_cards(cards);
-                    let item = this._history_presenter.history_model.current_item;
-                    if (item.page_type === this._ARTICLE_PAGE)
-                        view.highlight_card(item.model);
-                } else {
-                    view.append_cards(cards);
+                let item = this._history_presenter.history_model.current_item;
+                if (item.page_type === this._ARTICLE_PAGE) {
+                    Dispatcher.get_default().dispatch({
+                        action_type: Actions.HIGHLIGHT_ITEM,
+                        model: item.model,
+                    });
                 }
+                view.append_cards(cards);
             }
             this._get_more_results_query = get_more_results_query;
         });
@@ -298,10 +298,11 @@ const Presenter = new Lang.Class({
         this._lightbox_presenter.hide_lightbox();
         this.view.home_page.search_box.set_text_programmatically('');
         this.view.search_box.set_text_programmatically('');
-        if (this._template_type === 'B') {
-            this.view.section_page.clear_highlighted_cards();
-            this.view.search_page.clear_highlighted_cards();
-        }
+        let dispatcher = Dispatcher.get_default();
+        dispatcher.dispatch({
+            action_type: Actions.CLEAR_HIGHLIGHTED_ITEM,
+            model: item.model,
+        });
         switch (item.page_type) {
             case this._SEARCH_PAGE:
                 this._refresh_article_results(() => {
@@ -324,7 +325,10 @@ const Presenter = new Lang.Class({
             case this._ARTICLE_PAGE:
                 if (this._template_type === 'B') {
                     this._refresh_article_results(() => {
-                        this.view.section_page.highlight_card(item.model);
+                        dispatcher.dispatch({
+                            action_type: Actions.HIGHLIGHT_ITEM,
+                            model: item.model,
+                        });
                     });
                     let query_item = this._history_presenter.search_backwards(0, (query_item) => {
                         return query_item.page_type === this._SECTION_PAGE || query_item.query;
