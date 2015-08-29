@@ -279,11 +279,12 @@ const SEARCH_PAGE_A = 'search-page-a';
 const SEARCH_PAGE_B = 'search-page-b';
 
 /**
- * Constant: SEARCH_PAGE_B_TITLE_FRAME
+ * Constant: SIDEBAR_TEMPLATE_CONTENT_FRAME
  *
- * Matches the title frame of the SearchPageB widget.
+ * Matches the content area of the sidebar template.
  */
-const SEARCH_PAGE_B_TITLE_FRAME = 'search-page-b-title-frame';
+const SIDEBAR_TEMPLATE_CONTENT_FRAME = 'sidebar-template-content-frame';
+
 /**
  * Constant: PREVIEWER
  *

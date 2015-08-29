@@ -162,19 +162,6 @@ function transform_v1_description(json) {
                 card_type: 'set-banner-card',
             },
         };
-        modules['results-search-banner'] = {
-            type: 'SearchBannerModule',
-        };
-        modules['results-arrangement'] = {
-            type: 'ListArrangement',
-            properties: {
-                'preferred-width': 400,
-                'hexpand': false,
-            },
-        };
-        modules['results-card'] = {
-            type: 'TextCard',
-        };
         modules['item-group'] = {
             type: 'ItemGroupModule',
             slots: {
@@ -182,11 +169,34 @@ function transform_v1_description(json) {
                 card_type: 'results-card',
             },
         };
+        modules['section-page-template'] = {
+            type: 'SidebarTemplate',
+            slots: {
+                content: 'set-banner-module',
+                sidebar: 'item-group',
+            },
+        };
+        modules['results-arrangement'] = {
+            type: 'ListArrangement',
+        };
+        modules['results-card'] = {
+            type: 'TextCard',
+        };
         modules['search-results'] = {
             type: 'SearchABModule',
             slots: {
                 arrangement: 'results-arrangement',
                 card_type: 'results-card',
+            },
+        };
+        modules['results-search-banner'] = {
+            type: 'SearchBannerModule',
+        };
+        modules['search-page-template'] = {
+            type: 'SidebarTemplate',
+            slots: {
+                content: "results-search-banner",
+                sidebar: "search-results",
             },
         };
         modules['lightbox-card'] = {

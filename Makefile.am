@@ -257,6 +257,7 @@ js_files = \
 	js/app/modules/setBannerCard.js \
 	js/app/modules/setGroupModule.js \
 	js/app/modules/setBannerModule.js \
+	js/app/modules/sidebarTemplate.js \
 	js/app/modules/textCard.js \
 	js/app/modules/tiledGridArrangement.js \
 	js/app/modules/window.js \
@@ -270,9 +271,6 @@ js_files = \
 	js/app/reader/standalonePage.js \
 	js/app/reader/userSettingsModel.js \
 	js/app/runner.js \
-	js/app/searchPage.js \
-	js/app/sectionPage.js \
-	js/app/sectionPageB.js \
 	js/app/styleClasses.js \
 	js/app/utils.js \
 	js/app/warehouse.js \
@@ -381,6 +379,7 @@ javascript_tests = \
 	tests/js/app/modules/testSetBannerCard.js \
 	tests/js/app/modules/testSetGroupModule.js \
 	tests/js/app/modules/testSetBannerModule.js \
+	tests/js/app/modules/testSidebarTemplate.js \
 	tests/js/app/modules/testTextCard.js \
 	tests/js/app/modules/testWindow.js \
 	tests/js/app/reader/testOverviewPage.js \
@@ -400,8 +399,6 @@ javascript_tests = \
 	tests/js/app/testNoSearchResultsPageA.js \
 	tests/js/app/testNoSearchResultsPageB.js \
 	tests/js/app/testPresenter.js \
-	tests/js/app/testSearchPage.js \
-	tests/js/app/testSectionPageB.js \
 	tests/js/app/testStyleKnobGenerator.js \
 	tests/js/app/testUtils.js \
 	tests/js/app/widgets/testLightbox.js \

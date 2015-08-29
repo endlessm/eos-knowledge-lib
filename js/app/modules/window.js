@@ -17,9 +17,6 @@ const Lightbox = imports.app.widgets.lightbox;
 const Module = imports.app.interfaces.module;
 const NavButtonOverlay = imports.app.widgets.navButtonOverlay;
 const NoSearchResultsPage = imports.app.noSearchResultsPage;
-const SearchPage = imports.app.searchPage;
-const SectionPage = imports.app.sectionPage;
-const SectionPageB = imports.app.sectionPageB;
 const StyleClasses = imports.app.styleClasses;
 
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
@@ -202,22 +199,19 @@ const Window = new Lang.Class({
         this.categories_page = new CategoriesPage.CategoriesPage({
             factory: this.factory,
         });
+        this.section_page = this.factory.create_named_module('section-page-template');
+        this.search_page = this.factory.create_named_module('search-page-template');
         if (this.template_type === 'B') {
             this.home_page = this.factory.create_named_module('home-page-template');
-            this.section_page = new SectionPageB.SectionPageB({
-                factory: this.factory,
-            });
-            this.search_page = new SearchPage.SearchPageB({
-                factory: this.factory,
-            });
             this.article_page = new ArticlePage.ArticlePage();
             this.no_search_results_page = new NoSearchResultsPage.NoSearchResultsPageB();
+
+            this.section_page.get_style_context().add_class(StyleClasses.SECTION_PAGE_B);
+            this.search_page.get_style_context().add_class(StyleClasses.SEARCH_PAGE_B);
         } else {
             this.home_page = new HomePageA.HomePageA({
                 factory: this.factory,
             });
-            this.section_page = this.factory.create_named_module('section-page-template');
-            this.search_page = this.factory.create_named_module('search-page-template');
             this.article_page = new ArticlePage.ArticlePage();
             this.no_search_results_page = new NoSearchResultsPage.NoSearchResultsPageA();
 

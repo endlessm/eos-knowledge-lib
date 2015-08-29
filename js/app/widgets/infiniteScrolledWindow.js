@@ -11,16 +11,6 @@ const InfiniteScrolledWindow = new Lang.Class({
     Extends: Gtk.ScrolledWindow,
     Properties: {
         /**
-         * Property: preferred-width
-         * Preferred natural width for widget
-         *
-         * Set to -1 to use normal size allocation behaviour.
-         */
-        'preferred-width': GObject.ParamSpec.int('preferred-width',
-            'Preferred width', 'Preferred natural width for widget',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            -1, GLib.MAXINT32, -1),
-        /**
          * Property: bottom-buffer
          *
          * A integer value for the number of pixels of buffer the InfiniteScrolledWindow will still

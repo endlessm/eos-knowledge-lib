@@ -26,8 +26,6 @@ const MockScrolledArrangement = new Lang.Class({
     Name: 'MockScrolledArrangement',
     Extends: Minimal.MinimalArrangement,
     Properties: {
-        'preferred-width': GObject.ParamSpec.int('preferred-width', '', '',
-            GObject.ParamFlags.READWRITE, -1, 9999, -1),
         'bottom-buffer': GObject.ParamSpec.int('bottom-buffer', '', '',
             GObject.ParamFlags.READWRITE, -1, 9999, -1),
     },
