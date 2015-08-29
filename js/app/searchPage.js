@@ -34,40 +34,6 @@ const SearchPage = new Lang.Class({
     },
 });
 
-const SearchPageA = new Lang.Class({
-    Name: 'SearchPageA',
-    GTypeName: 'EknSearchPageA',
-    Extends: SearchPage,
-
-    _init: function (props={}) {
-        this._content_grid = new Gtk.Grid({
-            orientation: Gtk.Orientation.VERTICAL,
-            expand: true,
-            valign: Gtk.Align.FILL,
-        });
-
-        this.parent(props);
-
-        this._segments = {};
-
-        this.get_style_context().add_class(StyleClasses.SEARCH_PAGE_A);
-
-        this._title_banner = this.factory.create_named_module('results-search-banner', {
-            halign: Gtk.Align.CENTER
-        });
-        this._search_results = this.factory.create_named_module('search-results');
-
-        this._separator = new Gtk.Separator({
-            margin_start: 20,
-            margin_end: 20,
-        });
-        this._content_grid.add(this._title_banner);
-        this._content_grid.add(this._separator);
-        this._content_grid.add(this._search_results);
-        this.add(this._content_grid);
-    },
-});
-
 const SearchPageB = new Lang.Class({
     Name: 'SearchPageB',
     GTypeName: 'EknSearchPageB',

@@ -235,6 +235,7 @@ js_files = \
 	js/app/modules/appBanner.js \
 	js/app/modules/articleSnippetCard.js \
 	js/app/modules/backCover.js \
+	js/app/modules/bannerTemplate.js \
 	js/app/modules/cardA.js \
 	js/app/modules/cardB.js \
 	js/app/modules/encyclopediaCoverTemplate.js \
@@ -271,7 +272,6 @@ js_files = \
 	js/app/runner.js \
 	js/app/searchPage.js \
 	js/app/sectionPage.js \
-	js/app/sectionPageA.js \
 	js/app/sectionPageB.js \
 	js/app/styleClasses.js \
 	js/app/utils.js \
@@ -363,6 +363,7 @@ javascript_tests = \
 	tests/js/app/modules/testAppBanner.js \
 	tests/js/app/modules/testArticleSnippetCard.js \
 	tests/js/app/modules/testBackCover.js \
+	tests/js/app/modules/testBannerTemplate.js \
 	tests/js/app/modules/testCardA.js \
 	tests/js/app/modules/testCardB.js \
 	tests/js/app/modules/testCarouselArrangement.js \
@@ -400,7 +401,6 @@ javascript_tests = \
 	tests/js/app/testNoSearchResultsPageB.js \
 	tests/js/app/testPresenter.js \
 	tests/js/app/testSearchPage.js \
-	tests/js/app/testSectionPageA.js \
 	tests/js/app/testSectionPageB.js \
 	tests/js/app/testStyleKnobGenerator.js \
 	tests/js/app/testUtils.js \

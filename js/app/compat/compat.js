@@ -41,20 +41,6 @@ function transform_v1_description(json) {
                 'bottom-buffer': 250,
             },
         };
-        modules['item-group'] = {
-            type: 'ItemGroupModule',
-            slots: {
-                arrangement: 'results-arrangement',
-                card_type: 'results-card',
-            },
-        };
-        modules['search-results'] = {
-            type: 'SearchABModule',
-            slots: {
-                arrangement: 'results-arrangement',
-                card_type: 'results-card',
-            },
-        };
         modules['set-banner-card'] = {
             type: 'SetBannerCard',
         };
@@ -64,11 +50,39 @@ function transform_v1_description(json) {
                 card_type: 'set-banner-card',
             },
         };
-        modules['results-search-banner'] = {
-            type: 'SearchBannerModule',
+        modules['item-group'] = {
+            type: 'ItemGroupModule',
+            slots: {
+                arrangement: 'results-arrangement',
+                card_type: 'results-card',
+            },
+        };
+        modules['section-page-template'] = {
+            type: 'BannerTemplate',
+            slots: {
+                banner: "set-banner-module",
+                content: "item-group",
+            },
         };
         modules['results-card'] = {
             type: 'CardA',
+        };
+        modules['search-results'] = {
+            type: 'SearchABModule',
+            slots: {
+                arrangement: 'results-arrangement',
+                card_type: 'results-card',
+            },
+        };
+        modules['results-search-banner'] = {
+            type: 'SearchBannerModule',
+        };
+        modules['search-page-template'] = {
+            type: 'BannerTemplate',
+            slots: {
+                banner: 'results-search-banner',
+                content: 'search-results',
+            },
         };
         modules['lightbox-card'] = {
             type: 'MediaCard',

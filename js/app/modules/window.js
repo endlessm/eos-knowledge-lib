@@ -19,7 +19,6 @@ const NavButtonOverlay = imports.app.widgets.navButtonOverlay;
 const NoSearchResultsPage = imports.app.noSearchResultsPage;
 const SearchPage = imports.app.searchPage;
 const SectionPage = imports.app.sectionPage;
-const SectionPageA = imports.app.sectionPageA;
 const SectionPageB = imports.app.sectionPageB;
 const StyleClasses = imports.app.styleClasses;
 
@@ -73,13 +72,12 @@ const Window = new Lang.Class({
         /**
          * Property: section-page
          *
-         * The <SectionPageA> widget created by this widget. Read-only,
-         * modify using the <SectionPageA> API.
+         * The section page template.
          */
         'section-page': GObject.ParamSpec.object('section-page', 'Section page',
             'The section page of this view widget.',
             GObject.ParamFlags.READABLE,
-            SectionPage.SectionPage),
+            Gtk.Widget),
         /**
          * Property: article-page
          *
@@ -93,13 +91,12 @@ const Window = new Lang.Class({
         /**
          * Property: search-page
          *
-         * The <SearchPage> widget created by this widget. Read-only,
-         * modify using the <SearchPage> API.
+         * The search page template.
          */
         'search-page': GObject.ParamSpec.object('search-page', 'Search page',
             'The search page of this view widget.',
             GObject.ParamFlags.READABLE,
-            SearchPage.SearchPage),
+            Gtk.Widget),
         /**
          * Property: no-search-results-page
          *
@@ -219,14 +216,13 @@ const Window = new Lang.Class({
             this.home_page = new HomePageA.HomePageA({
                 factory: this.factory,
             });
-            this.section_page = new SectionPageA.SectionPageA({
-                factory: this.factory,
-            });
-            this.search_page = new SearchPage.SearchPageA({
-                factory: this.factory,
-            });
+            this.section_page = this.factory.create_named_module('section-page-template');
+            this.search_page = this.factory.create_named_module('search-page-template');
             this.article_page = new ArticlePage.ArticlePage();
             this.no_search_results_page = new NoSearchResultsPage.NoSearchResultsPageA();
+
+            this.section_page.get_style_context().add_class(StyleClasses.SECTION_PAGE_A);
+            this.search_page.get_style_context().add_class(StyleClasses.SEARCH_PAGE_A);
         }
 
         this._stack = new Gtk.Stack();
