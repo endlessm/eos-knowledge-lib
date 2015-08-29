@@ -35,8 +35,8 @@ const BannerTemplate = new Lang.Class({
         });
         let content = this.create_submodule('content');
         let separator = new Gtk.Separator({
-            margin_start: 20,
-            margin_end: 20,
+            margin_start: 100,
+            margin_end: 100,
         });
 
         this.add(banner);

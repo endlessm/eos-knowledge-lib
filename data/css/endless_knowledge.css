@@ -384,7 +384,7 @@ EknWindow.background-right {
 .search-page-a .title,
 .no-search-results-page-a .title {
     padding-top: 1.0em;
-    padding-bottom: 0.48em;
+    padding-bottom: 1.0em;
 }
 
 .section-page-a .title,
