@@ -3,6 +3,7 @@ const Gtk = imports.gi.Gtk;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const Minimal = imports.tests.minimal;
 const MockFactory = imports.tests.mockFactory;
+const MockWidgets = imports.tests.mockWidgets;
 const SectionPageA = imports.app.sectionPageA;
 const StyleClasses = imports.app.styleClasses;
 const Utils = imports.tests.utils;
@@ -13,36 +14,32 @@ Gtk.init(null);
 const TEST_CONTENT_DIR = Utils.get_test_content_srcdir();
 
 describe('Section page for Template A', function () {
-    let section_page, segments;
+    let section_page, cards;
 
     beforeEach(function () {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
         jasmine.addMatchers(WidgetDescendantMatcher.customMatchers);
 
+        let factory = new MockFactory.MockFactory();
+        factory.add_named_mock('results-arrangement',
+            MockWidgets.MockScrolledArrangement);
+
         section_page = new SectionPageA.SectionPageA({
-            factory: new MockFactory.MockFactory(),
+            factory: factory,
         });
 
-        segments = {
-            'Lessons': [
-                new Minimal.MinimalCard(),
-                new Minimal.MinimalCard(),
-            ],
-            'Articles': [
-                new Minimal.MinimalCard(),
-            ],
-        };
+        cards = [
+            new Minimal.MinimalCard(),
+            new Minimal.MinimalCard(),
+            new Minimal.MinimalCard(),
+        ];
     });
 
     it('can be constructed', function () {});
 
     it('can set cards', function () {
-        for (let segment_title in segments) {
-            section_page.append_to_segment(segment_title, segments[segment_title]);
-            for (let card of segments[segment_title]) {
-                expect(section_page).toHaveDescendant(card);
-            }
-        }
+        section_page.append_cards(cards);
+        expect(section_page.get_cards()).toEqual(cards);
     });
 
     it('can set title', function () {
@@ -54,13 +51,5 @@ describe('Section page for Template A', function () {
         it('has section-page-a class', function () {
             expect(section_page).toHaveCssClass(StyleClasses.SECTION_PAGE_A);
         });
-
-        it('has a descendant with segment_title class', function () {
-            for (let segment_title in segments) {
-                section_page.append_to_segment(segment_title, segments[segment_title]);
-            }
-            expect(section_page).toHaveDescendantWithCssClass(StyleClasses.SECTION_PAGE_A_SEGMENT_TITLE);
-        });
-
     });
 });

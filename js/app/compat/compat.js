@@ -35,6 +35,9 @@ function transform_v1_description(json) {
         modules['home-card'] = {
             type: 'CardA',
         };
+        modules['results-arrangement'] = {
+            type: 'GridArrangement',
+        };
         modules['results-title-card'] = {
             type: 'SetBannerCard',
         };

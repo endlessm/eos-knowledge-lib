@@ -39,6 +39,7 @@
     <file compressed="true" preprocess="xml-stripblanks">widgets/cardB.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">widgets/cardContainer.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">widgets/encyclopediaCoverTemplate.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">widgets/gridArrangement.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">widgets/knowledgeDocumentCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">widgets/listArrangement.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">widgets/homePageBTemplate.ui</file>

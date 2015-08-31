@@ -8,7 +8,6 @@ js/app/categoriesPage.js
 js/app/encyclopedia/presenter.js
 js/app/homePageA.js
 js/app/noSearchResultsPage.js
-js/app/presenter.js
 js/app/modules/encyclopediaWindow.js
 js/app/modules/readerCard.js
 js/app/modules/readerWindow.js

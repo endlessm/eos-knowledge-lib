@@ -258,13 +258,6 @@ const SECTION_PAGE_TITLE = 'title';
 const SECTION_PAGE_A = 'section-page-a';
 
 /**
- * Constant: SECTION_PAGE_A_SEGMENT_TITLE
- *
- * Matches the title on a segment of the SectionPage of the knowledge apps.
- */
-const SECTION_PAGE_A_SEGMENT_TITLE = 'section-page-a-segment-title';
-
-/**
  * Constant: SECTION_PAGE_B
  *
  * Matches the Template B' SectionPage of the knowledge apps.

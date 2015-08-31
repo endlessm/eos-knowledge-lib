@@ -1,9 +1,7 @@
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const EosMetrics = imports.gi.EosMetrics;
-const Format = imports.format;
 const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
-const Gettext = imports.gettext;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
@@ -11,7 +9,6 @@ const Lang = imports.lang;
 
 const Actions = imports.app.actions;
 const ArticlePresenter = imports.app.articlePresenter;
-const Config = imports.app.config;
 const Dispatcher = imports.app.dispatcher;
 const Engine = imports.search.engine;
 const HistoryItem = imports.app.historyItem;
@@ -25,9 +22,6 @@ const TabButton = imports.app.widgets.tabButton;
 const TextCard = imports.app.modules.textCard;
 const Utils = imports.app.utils;
 const WebkitContextSetup = imports.app.webkitContextSetup;
-
-String.prototype.format = Format.format;
-let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
 const RESULTS_SIZE = 10;
 const _SEARCH_METRIC = 'a628c936-5d87-434a-a57a-015a0f223838';
@@ -307,8 +301,7 @@ const Presenter = new Lang.Class({
                     if (item.page_type === this._ARTICLE_PAGE)
                         view.highlight_card(item.model);
                 } else {
-                    let article_segment_title = _("Articles");
-                    view.append_to_segment(article_segment_title, cards);
+                    this.view.section_page.append_cards(cards);
                 }
             }
             this._get_more_results_query = get_more_results_query;
@@ -611,13 +604,13 @@ const Presenter = new Lang.Class({
                         this.view.search_page.cards = search_cards;
                     }
                 } else {
-                    let article_segment_title = _("Articles");
+
                     if (item.page_type === this._SEARCH_PAGE) {
-                        this.view.search_page.remove_all_segments();
-                        this.view.search_page.append_to_segment(article_segment_title, cards);
+                        this.view.search_page.remove_all_cards();
+                        this.view.search_page.append_cards(cards);
                     } else {
-                        this.view.section_page.remove_all_segments();
-                        this.view.section_page.append_to_segment(article_segment_title, cards);
+                        this.view.section_page.remove_all_cards();
+                        this.view.section_page.append_cards(cards);
                     }
                 }
             }
