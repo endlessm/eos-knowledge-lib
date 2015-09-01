@@ -1,3 +1,5 @@
+// Copyright 2015 Endless Mobile, Inc.
+
 const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
 
