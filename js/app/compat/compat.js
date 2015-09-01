@@ -60,8 +60,8 @@ function transform_v1_description(json) {
         modules['section-page-template'] = {
             type: 'BannerTemplate',
             slots: {
-                banner: "set-banner-module",
-                content: "item-group",
+                banner: 'set-banner-module',
+                content: 'item-group',
             },
         };
         modules['results-card'] = {
@@ -129,9 +129,9 @@ function transform_v1_description(json) {
         modules['home-page-template'] = {
             type: 'HomePageBTemplate',
             slots: {
-                top_left: "app-banner",
-                top_right: "home-search",
-                bottom: "home-page-set-group",
+                top_left: 'app-banner',
+                top_right: 'home-search',
+                bottom: 'home-page-set-group',
             },
         };
         modules['home-page-arrangement'] = {
@@ -195,8 +195,8 @@ function transform_v1_description(json) {
         modules['search-page-template'] = {
             type: 'SidebarTemplate',
             slots: {
-                content: "results-search-banner",
-                sidebar: "search-results",
+                content: 'results-search-banner',
+                sidebar: 'search-results',
             },
         };
         modules['lightbox-card'] = {
@@ -218,8 +218,8 @@ function transform_v1_description(json) {
         modules['home-page-template'] = {
             type: 'EncyclopediaCoverTemplate',
             slots: {
-                top: "app-banner",
-                bottom: "home-search",
+                top: 'app-banner',
+                bottom: 'home-search',
             },
         };
         modules['app-banner'] = {
