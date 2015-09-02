@@ -142,8 +142,4 @@ const EncyclopediaWindow = new Lang.Class({
         this.page_manager.transition_type = Gtk.StackTransitionType.SLIDE_DOWN;
         this.page_manager.visible_child_name = HOME_PAGE_NAME;
     },
-
-    _onArticleBackClicked: function (button) {
-        this._content_page.go_back();
-    }
 });
