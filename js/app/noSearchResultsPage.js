@@ -6,10 +6,10 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const Pango = imports.gi.Pango;
 
+const Actions = imports.app.actions;
+const Dispatcher = imports.app.dispatcher;
 const Config = imports.app.config;
-const NavButtonOverlay = imports.app.widgets.navButtonOverlay;
 const StyleClasses = imports.app.styleClasses;
-const Utils = imports.app.utils;
 
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
@@ -24,7 +24,7 @@ let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 const NoSearchResultsPage = new Lang.Class({
     Name: 'NoSearchResultsPage',
     GTypeName: 'EknNoSearchResultsPage',
-    Extends: NavButtonOverlay.NavButtonOverlay,
+    Extends: Gtk.Frame,
     Properties: {
         /**
          * Property: query
@@ -38,9 +38,7 @@ const NoSearchResultsPage = new Lang.Class({
     MSG_WE_DIDNT_FIND_ANYTHING: _("We didn't find anything."),
     MSG_TRY_AGAIN_DIFF_WORDS: _("Try seaching again with different words."),
 
-    _init: function (props) {
-        props = props || {};
-        props.forward_visible = false;
+    _init: function (props={}) {
         this.title_label = new Gtk.Label({
             wrap_mode: Pango.WrapMode.WORD_CHAR,
             ellipsize: Pango.EllipsizeMode.END
@@ -51,22 +49,14 @@ const NoSearchResultsPage = new Lang.Class({
         this.parent(props);
 
         this.title_label.get_style_context().add_class(StyleClasses.NO_SEARCH_RESULTS_PAGE_TITLE);
-    },
 
-    set query (v) {
-        if (this._query === v)
-            return;
-        this._query = v;
-        /* TRANSLATORS: this appears on top of the search results page; %s will
-        be replaced with the string that the user searched for. */
-        this.title_label.label = _("Results for \"%s\"").format(this._query);
-        this.notify('query');
-    },
-
-    get query () {
-        if (this._query)
-            return this._query;
-        return '';
+        Dispatcher.get_default().register((payload) => {
+            switch(payload.action_type) {
+                case Actions.SEARCH_STARTING:
+                    this.title_label.label = _("Results for \"%s\"").format(payload.query);
+                    break;
+            }
+        });
     },
 });
 

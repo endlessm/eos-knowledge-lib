@@ -7,6 +7,8 @@ const Gtk = imports.gi.Gtk;
 const Minimal = imports.tests.minimal;
 const MockFactory = imports.tests.mockFactory;
 
+Gtk.init(null);
+
 describe('Module interface', function () {
     let module;
 

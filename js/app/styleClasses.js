@@ -258,13 +258,6 @@ const SECTION_PAGE_TITLE = 'title';
 const SECTION_PAGE_A = 'section-page-a';
 
 /**
- * Constant: SECTION_PAGE_A_SEGMENT_TITLE
- *
- * Matches the title on a segment of the SectionPage of the knowledge apps.
- */
-const SECTION_PAGE_A_SEGMENT_TITLE = 'section-page-a-segment-title';
-
-/**
  * Constant: SECTION_PAGE_B
  *
  * Matches the Template B' SectionPage of the knowledge apps.
@@ -286,11 +279,12 @@ const SEARCH_PAGE_A = 'search-page-a';
 const SEARCH_PAGE_B = 'search-page-b';
 
 /**
- * Constant: SEARCH_PAGE_B_TITLE_FRAME
+ * Constant: SIDEBAR_TEMPLATE_CONTENT_FRAME
  *
- * Matches the title frame of the SearchPageB widget.
+ * Matches the content area of the sidebar template.
  */
-const SEARCH_PAGE_B_TITLE_FRAME = 'search-page-b-title-frame';
+const SIDEBAR_TEMPLATE_CONTENT_FRAME = 'sidebar-template-content-frame';
+
 /**
  * Constant: PREVIEWER
  *
@@ -306,53 +300,28 @@ const PREVIEWER = 'previewer';
 const TAB_BUTTON = 'tab-button';
 
 /**
- * Constant: SHOW_HOME_PAGE
+ * Constant: BACKGROUND_LEFT
  *
- * A CSS class to set the background image position on the home page,
- * as part of the parallax effect when switching pages.
+ * Used for window background parallax, to denote the background should be in
+ * the left position.
  */
-const SHOW_HOME_PAGE = 'show-home-page';
+const BACKGROUND_LEFT = 'background-left';
 
 /**
- * Constant: SHOW_CATEGORIES_PAGE
+ * Constant: BACKGROUND_CENTER
  *
- * A CSS class to set the background image position on the categories page,
- * as part of the parallax effect when switching pages.
+ * Used for window background parallax, to denote the background should be in
+ * the center position.
  */
-const SHOW_CATEGORIES_PAGE = 'show-categories-page';
+const BACKGROUND_CENTER = 'background-center';
 
 /**
- * Constant: SHOW_SECTION_PAGE
+ * Constant: BACKGROUND_RIGHT
  *
- * A CSS class to set the background image position on the section page,
- * as part of the parallax effect when switching pages.
+ * Used for window background parallax, to denote the background should be in
+ * the right position.
  */
-const SHOW_SECTION_PAGE = 'show-section-page';
-
-/**
- * Constant: SHOW_ARTICLE_PAGE
- *
- * A CSS class to set the background image position on the article page,
- * as part of the parallax effect when switching pages.
- */
-const SHOW_ARTICLE_PAGE = 'show-article-page';
-
-/**
- * Constant: SHOW_SEARCH_PAGE
- *
- * A CSS class to set the background image position on the search-page,
- * as part of the parallax effect when switching pages.
- */
-const SHOW_SEARCH_PAGE = 'show-search-page';
-
-/**
- * Constant: SHOW_NO_SEARCH_RESULTS_PAGE
- *
- * A CSS class to set the background image position on the no-search-results page,
- * as part of the parallax effect when switching pages.
- */
-const SHOW_NO_SEARCH_RESULTS_PAGE = 'show-no-search-results-page';
-
+const BACKGROUND_RIGHT = 'background-right';
 
 /**
  * Constant: NO_MARGINS

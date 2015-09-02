@@ -15,11 +15,10 @@ const Module = imports.app.interfaces.module;
 
 const MinimalArrangement = new Lang.Class({
     Name: 'MinimalArrangement',
-    Extends: Gtk.Widget,
+    Extends: Gtk.Grid,
     Implements: [ Module.Module, Arrangement.Arrangement ],
 
     Properties: {
-        'count': GObject.ParamSpec.override('count', Arrangement.Arrangement),
         'factory': GObject.ParamSpec.override('factory', Module.Module),
         'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
         'transition-duration': GObject.ParamSpec.uint('transition-duration', '', '',
@@ -29,19 +28,19 @@ const MinimalArrangement = new Lang.Class({
 
     _init: function (props={}) {
         this.parent(props);
-        this._count = 0;
+        this._cards = [];
     },
 
-    get count() {
-        return this._count;
+    get_cards: function () {
+        return this._cards;
     },
 
-    add_card: function () {
-        this._count++;
+    add_card: function (card) {
+        this._cards.push(card);
     },
 
     clear: function () {
-        this._count = 0;
+        this._cards= [];
     },
 
     set_transition_type: function (type) {

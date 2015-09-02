@@ -33,25 +33,16 @@ EknWindow {
     transition: background-position 0.5s ease;
 }
 
-EknWindow.show-home-page {
+EknWindow.background-left {
     background-position: 0% 50%;
 }
 
-EknWindow.show-categories-page {
-    background-position: 0% 50%;
-}
-
-EknWindow.show-section-page,
-EknWindow.show-search-page {
+EknWindow.background-center {
     background-position: 50% 50%;
 }
 
-EknWindow.show-article-page {
+EknWindow.background-right {
     background-position: 100% 50%;
-}
-
-EknWindow.show-no-search-results-page {
-    background-position: 50% 50%;
 }
 
 .card-a {
@@ -393,7 +384,7 @@ EknWindow.show-no-search-results-page {
 .search-page-a .title,
 .no-search-results-page-a .title {
     padding-top: 1.0em;
-    padding-bottom: 0.48em;
+    padding-bottom: 1.0em;
 }
 
 .section-page-a .title,
@@ -437,20 +428,8 @@ EknWindow.show-no-search-results-page {
     background-color: #888888;
 }
 
-.section-page-b-title-frame,
-.search-page-b-title-frame {
+.sidebar-template-content-frame {
     background-image: linear-gradient(-180deg, rgba(0,0,0,0.0) 65%, rgba(0,0,0,0.30) 85%, rgba(0,0,0,0.70) 100%);
-}
-
-.section-page-a-segment-title {
-    padding-top: 0.2em;
-    color: white;
-    font-size: 1.25em;  /* 20pt * 1/12 * 0.75 DPI correction factor */
-    padding-left: 4em;
-    /* TODO: light font weight matches the specs, but looks way to thin in practice.
-       Think there's some difference between how lato renders in web vs gtk or
-       something. */
-    /*font-weight: 300;*/
 }
 
 .no-search-results-page-a .no-search-results-page-no-results-label,

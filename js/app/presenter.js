@@ -1,22 +1,18 @@
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const EosMetrics = imports.gi.EosMetrics;
-const Format = imports.format;
 const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
-const Gettext = imports.gettext;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
+const ArticleHTMLRenderer = imports.app.articleHTMLRenderer;
 const Actions = imports.app.actions;
-const ArticlePresenter = imports.app.articlePresenter;
-const Config = imports.app.config;
 const Dispatcher = imports.app.dispatcher;
 const Engine = imports.search.engine;
 const HistoryItem = imports.app.historyItem;
 const HistoryPresenter = imports.app.historyPresenter;
-const ItemGroup = imports.app.modules.itemGroup;
 const Launcher = imports.app.launcher;
 const LightboxPresenter = imports.app.lightboxPresenter;
 const MediaObjectModel = imports.search.mediaObjectModel;
@@ -25,9 +21,6 @@ const TabButton = imports.app.widgets.tabButton;
 const TextCard = imports.app.modules.textCard;
 const Utils = imports.app.utils;
 const WebkitContextSetup = imports.app.webkitContextSetup;
-
-String.prototype.format = Format.format;
-let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
 const RESULTS_SIZE = 10;
 const _SEARCH_METRIC = 'a628c936-5d87-434a-a57a-015a0f223838';
@@ -80,21 +73,6 @@ const Presenter = new Lang.Class({
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             GObject.Object.$gtype),
         /**
-         * Property: article-presenter
-         * Presenter for article page
-         *
-         * Pass an instance of <ArticlePresenter> to this property.
-         * This is a property for purposes of dependency injection during
-         * testing.
-         *
-         * Flags:
-         *   Construct only
-         */
-        'article-presenter': GObject.ParamSpec.object('article-presenter', 'Article Presenter',
-            'Presenter for article page',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            GObject.Object.$gtype),
-        /**
          * Property: engine
          * Handle to EOS knowledge engine
          *
@@ -131,19 +109,16 @@ const Presenter = new Lang.Class({
 
         // Needs to happen before before any webviews are created
         WebkitContextSetup.register_webkit_extensions(props.application.application_id);
+        WebkitContextSetup.register_webkit_uri_handlers(this._article_render_callback.bind(this));
 
         props.view = props.view || props.factory.create_named_module('window', {
             application: props.application,
             template_type: this._template_type,
         });
         props.engine = props.engine || Engine.Engine.get_default();
-        props.article_presenter = props.article_presenter || new ArticlePresenter.ArticlePresenter({
-                article_view: props.view.article_page,
-                template_type: this._template_type,
-                factory: props.factory,
-        });
         this.parent(props);
 
+        let dispatcher = Dispatcher.get_default();
         this._style_knobs = app_json['styles'];
         this.load_theme();
 
@@ -152,8 +127,11 @@ const Presenter = new Lang.Class({
             tags: [ Engine.HOME_PAGE_TAG ],
         });
         this.engine.get_objects_by_query(query, null, (engine, res) => {
-            let [sections, get_more] = engine.get_objects_by_query_finish(res);
-            this._set_sections(sections);
+            let [models, get_more] = engine.get_objects_by_query_finish(res);
+            dispatcher.dispatch({
+                action_type: Actions.APPEND_SETS,
+                models: models,
+            });
         });
 
         this._lightbox_presenter = new LightboxPresenter.LightboxPresenter({
@@ -161,6 +139,8 @@ const Presenter = new Lang.Class({
             lightbox: this.view.lightbox,
             factory: this.factory,
         });
+
+        this._renderer = new ArticleHTMLRenderer.ArticleHTMLRenderer();
 
         this._history_presenter = new HistoryPresenter.HistoryPresenter({
             history_model: new EosKnowledgePrivate.HistoryModel(),
@@ -174,34 +154,35 @@ const Presenter = new Lang.Class({
         this._connect_search_signals(this.view.home_page);
         this.view.connect('search-focused', this._on_search_focus.bind(this));
 
-        let group = this.view.home_page._bottom;
-        // FIXME: the if statement is because only Template B homepage has an
-        // item group. This will be made obsolete by the dispatcher anyway.
-        if (group) {
-            group.connect('article-selected', (group, model) => {
-                this._history_presenter.set_current_item_from_props({
-                    page_type: this._SECTION_PAGE,
-                    model: model,
-                });
-            });
-        }
-        Dispatcher.get_default().register((payload) => {
+        dispatcher.register((payload) => {
             switch(payload.action_type) {
                 case Actions.NAV_BACK_CLICKED:
                     this._on_back();
                     break;
+                case Actions.SET_SELECTED:
+                    this._history_presenter.set_current_item_from_props({
+                        page_type: this._SECTION_PAGE,
+                        model: payload.model,
+                    });
+                    break;
+                case Actions.ITEM_SELECTED:
+                case Actions.SEARCH_SELECTED:
+                    this._history_presenter.set_current_item_from_props({
+                        page_type: this._ARTICLE_PAGE,
+                        model: payload.model,
+                    });
+                    break;
+                case Actions.NEED_MORE_ITEMS:
+                    this._load_more_results(Actions.APPEND_ITEMS);
+                    break;
+                case Actions.NEED_MORE_SEARCH:
+                    this._load_more_results(Actions.APPEND_SEARCH);
+                    break;
             }
         });
 
-        this.view.section_page.connect('load-more-results', () => {
-            this._load_more_results(this.view.section_page);
-        });
-        this.view.search_page.connect('load-more-results', () => {
-            this._load_more_results(this.view.search_page);
-        });
         this.view.home_page.connect('show-categories', this._on_categories_button_clicked.bind(this));
         this.view.categories_page.connect('show-home', this._on_home_button_clicked.bind(this));
-        this.article_presenter.connect('ekn-link-clicked', this._on_ekn_link_clicked.bind(this));
         this._history_presenter.connect('history-item-changed', this._on_history_item_change.bind(this));
 
         this._autocomplete_text = '';
@@ -285,7 +266,7 @@ const Presenter = new Lang.Class({
             [query, this.application.application_id]));
     },
 
-    _load_more_results: function (view) {
+    _load_more_results: function (action_type) {
         if (!this._get_more_results_query)
             return;
         this.engine.get_objects_by_query(this._get_more_results_query,
@@ -299,17 +280,19 @@ const Presenter = new Lang.Class({
                 return;
             }
 
-            let cards = results.map(this._new_card_from_article_model.bind(this));
-            if (cards.length > 0) {
-                if (this._template_type === 'B') {
-                    view.append_cards(cards);
-                    let item = this._history_presenter.history_model.current_item;
-                    if (item.page_type === this._ARTICLE_PAGE)
-                        view.highlight_card(item.model);
-                } else {
-                    let article_segment_title = _("Articles");
-                    view.append_to_segment(article_segment_title, cards);
+            if (results.length > 0) {
+                let dispatcher = Dispatcher.get_default();
+                let item = this._history_presenter.history_model.current_item;
+                if (item.page_type === this._ARTICLE_PAGE) {
+                    dispatcher.dispatch({
+                        action_type: Actions.HIGHLIGHT_ITEM,
+                        model: item.model,
+                    });
                 }
+                dispatcher.dispatch({
+                    action_type: action_type,
+                    models: results,
+                });
             }
             this._get_more_results_query = get_more_results_query;
         });
@@ -323,80 +306,94 @@ const Presenter = new Lang.Class({
         this._lightbox_presenter.hide_lightbox();
         this.view.home_page.search_box.set_text_programmatically('');
         this.view.search_box.set_text_programmatically('');
-        if (this._template_type === 'B') {
-            this.view.section_page.clear_highlighted_cards();
-            this.view.search_page.clear_highlighted_cards();
-        }
+        let dispatcher = Dispatcher.get_default();
+        dispatcher.dispatch({
+            action_type: Actions.CLEAR_HIGHLIGHTED_ITEM,
+            model: item.model,
+        });
         switch (item.page_type) {
             case this._SEARCH_PAGE:
                 this._refresh_article_results(() => {
+                    dispatcher.dispatch({
+                        action_type: Actions.SEARCH_STARTING,
+                        query: item.query,
+                    });
                     if (item.empty) {
-                        this.view.no_search_results_page.query = item.query;
-                        this.view.show_no_search_results_page();
+                        this.view.show_page(this.view.no_search_results_page);
                     } else {
-                        this.view.search_page.query = item.query;
-                        this.view.show_search_page();
+                        this.view.show_page(this.view.search_page);
                     }
                 });
                 this.view.search_box.set_text_programmatically(item.query);
                 break;
             case this._SECTION_PAGE:
                 this._refresh_article_results(() => {
-                    this.view.section_page.model = item.model;
-                    this.view.show_section_page();
+                    this.view.show_page(this.view.section_page);
                 });
                 break;
             case this._ARTICLE_PAGE:
                 if (this._template_type === 'B') {
                     this._refresh_article_results(() => {
-                        this.view.section_page.highlight_card(item.model);
+                        dispatcher.dispatch({
+                            action_type: Actions.HIGHLIGHT_ITEM,
+                            model: item.model,
+                        });
                     });
                     let query_item = this._history_presenter.search_backwards(0, (query_item) => {
                         return query_item.page_type === this._SECTION_PAGE || query_item.query;
                     });
                     this.view.search_box.set_text_programmatically(query_item.query);
                 }
-                let animation_type = EosKnowledgePrivate.LoadingAnimationType.FORWARDS_NAVIGATION;
-                if (this.view.get_visible_page() !== this.article_page) {
-                    animation_type = EosKnowledgePrivate.LoadingAnimationType.NONE;
-                    this.view.show_article_page();
-                } else if (is_going_back) {
-                    animation_type = EosKnowledgePrivate.LoadingAnimationType.BACKWARDS_NAVIGATION;
-                }
-                this.article_presenter.load_article(item.model, animation_type);
+                this._load_document_card_in_view(item, is_going_back);
                 break;
             case this._CATEGORIES_PAGE:
-                this.view.show_categories_page();
+                this.view.show_page(this.view.categories_page);
                 break;
             case this._HOME_PAGE:
-                this.view.show_home_page();
+                this.view.show_page(this.view.home_page);
         }
     },
 
-    _set_sections: function(sections) {
-        let _on_section_card_clicked = (card) => {
-            this._history_presenter.set_current_item_from_props({
-                page_type: this._SECTION_PAGE,
-                model: card.model,
-            });
-        };
-
-        if (this._template_type === 'A') {
-            for (let page of [this.view.home_page, this.view.categories_page]) {
-                let category_cards = sections.map((section) => {
-                    let card = this.factory.create_named_module('home-card', {
-                        model: section,
-                    });
-                    card.connect('clicked', _on_section_card_clicked.bind(this));
-                    return card;
-                });
-                page.cards = category_cards;
-            }
-        } else {
-            // FIXME: Temporarily handles passing of cards until we have dispatcher/alternative method.
-            let group = this.view.home_page._bottom;
-            group.set_cards(sections);
+    _load_document_card_in_view: function (item, is_going_back) {
+        let animation_type = EosKnowledgePrivate.LoadingAnimationType.FORWARDS_NAVIGATION;
+        if (this.view.get_visible_page() !== this.article_page) {
+            animation_type = EosKnowledgePrivate.LoadingAnimationType.NONE;
+            this.view.show_page(this.view.article_page);
+        } else if (is_going_back) {
+            animation_type = EosKnowledgePrivate.LoadingAnimationType.BACKWARDS_NAVIGATION;
         }
+        let document_card = this.factory.create_named_module('document-card', {
+            model: item.model,
+        });
+        document_card.load_content(null, (card, task) => {
+            try {
+                card.load_content_finish(task);
+                this.view.article_page.switch_in_document_card(document_card, animation_type);
+            } catch (error) {
+                logError(error);
+            }
+        });
+
+        document_card.connect('ekn-link-clicked', (card, ekn_id) => {
+            this.engine.get_object_by_id(ekn_id, null, (engine, task) => {
+                let model;
+                try {
+                    model = engine.get_object_by_id_finish(task);
+                } catch (error) {
+                    logError(error);
+                    return;
+                }
+
+                if (model instanceof MediaObjectModel.MediaObjectModel) {
+                    this._lightbox_presenter.show_media_object(item.model, model);
+                } else {
+                    this._history_presenter.set_current_item_from_props({
+                        page_type: this._ARTICLE_PAGE,
+                        model: model,
+                    });
+                }
+            });
+        });
     },
 
     _on_categories_button_clicked: function (button) {
@@ -525,29 +522,6 @@ const Presenter = new Lang.Class({
         this.view.present_with_time(timestamp);
     },
 
-    _on_ekn_link_clicked: function (article_presenter, ekn_id) {
-        this.engine.get_object_by_id(ekn_id,
-                                     null,
-                                     (engine, task) => {
-            let model;
-            try {
-                model = engine.get_object_by_id_finish(task);
-            } catch (error) {
-                logError(error);
-                return;
-            }
-
-            if (model instanceof MediaObjectModel.MediaObjectModel) {
-                this._lightbox_presenter.show_media_object(article_presenter.article_model, model);
-            } else {
-                this._history_presenter.set_current_item_from_props({
-                    page_type: this._ARTICLE_PAGE,
-                    model: model,
-                });
-            }
-        });
-    },
-
     _on_back: function () {
         let types = this.view.get_visible_page() === this.view.article_page ?
             [this._HOME_PAGE, this._SECTION_PAGE, this._SEARCH_PAGE] : [this._HOME_PAGE];
@@ -601,44 +575,33 @@ const Presenter = new Lang.Class({
             if (results.length === 0) {
                 item.empty = true;
             } else {
-                let cards = results.map(this._new_card_from_article_model.bind(this));
-                if (this._template_type === 'B') {
-                    this.view.section_page.cards = cards;
-                    // FIXME: This duplicates the search result cards for template B
-                    // on both the search_page and the section_page
-                    if (item.page_type === this._SEARCH_PAGE) {
-                        let search_cards = results.map(this._new_card_from_article_model.bind(this));
-                        this.view.search_page.cards = search_cards;
-                    }
+                let dispatcher = Dispatcher.get_default();
+                if (item.page_type === this._SEARCH_PAGE) {
+                    dispatcher.dispatch({
+                        action_type: Actions.CLEAR_SEARCH,
+                    });
+                    dispatcher.dispatch({
+                        action_type: Actions.APPEND_SEARCH,
+                        models: results,
+                    });
                 } else {
-                    let article_segment_title = _("Articles");
-                    if (item.page_type === this._SEARCH_PAGE) {
-                        this.view.search_page.remove_all_segments();
-                        this.view.search_page.append_to_segment(article_segment_title, cards);
-                    } else {
-                        this.view.section_page.remove_all_segments();
-                        this.view.section_page.append_to_segment(article_segment_title, cards);
-                    }
+                    dispatcher.dispatch({
+                        action_type: Actions.CLEAR_ITEMS,
+                    });
+                    dispatcher.dispatch({
+                        action_type: Actions.APPEND_ITEMS,
+                        models: results,
+                    });
                 }
             }
             callback();
         });
     },
 
-    _new_card_from_article_model: function (model) {
-        let card = this.factory.create_named_module('results-card', {
-            model: model,
+    _article_render_callback: function (article_model) {
+        return this._renderer.render(article_model, {
+            enable_scroll_manager: this._template_type === 'A',
+            show_title: this._template_type !== 'A',
         });
-        card.connect('clicked', () => {
-            this._history_presenter.set_current_item_from_props({
-                page_type: this._ARTICLE_PAGE,
-                model: model,
-            });
-        });
-
-        if (this._template_type !== 'B')
-            card.fade_in();
-
-        return card;
     },
 });

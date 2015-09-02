@@ -16,7 +16,6 @@ const TiledGridArrangement = new Lang.Class({
     Implements: [ Module.Module, Arrangement.Arrangement ],
 
     Properties: {
-        'count': GObject.ParamSpec.override('count', Arrangement.Arrangement),
         'factory': GObject.ParamSpec.override('factory', Module.Module),
         'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
     },
@@ -24,10 +23,6 @@ const TiledGridArrangement = new Lang.Class({
     _init: function (props={}) {
         this._cards = [];
         this.parent(props);
-    },
-
-    get count() {
-        return this._cards.length;
     },
 
     add_card: function (widget) {
@@ -44,6 +39,10 @@ const TiledGridArrangement = new Lang.Class({
             this.attach(card, col, row, 1, 1);
             i++;
         }
+    },
+
+    get_cards: function () {
+        return this._cards;
     },
 
     clear: function () {

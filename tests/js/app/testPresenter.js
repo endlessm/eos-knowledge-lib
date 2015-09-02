@@ -34,7 +34,7 @@ const MockHomePage = new Lang.Class({
         this.parent();
         this.search_box = new MockWidgets.MockSearchBox();
         this.app_banner = {};
-        this._bottom = new MockWidgets.MockItemGroup();
+        this._bottom = new MockWidgets.MockItemGroupModule();
     },
 
     connect: function (signal, handler) {
@@ -62,8 +62,8 @@ const MockView = new Lang.Class({
             connect: function () {},
         };
         this.section_page = connectable_object;
-        this.section_page.remove_all_segments = function () {};
-        this.section_page.append_to_segment = function () {};
+        this.section_page.remove_all_cards = function () {};
+        this.section_page.append_cards = function () {};
         this.home_page = new MockHomePage();
         this.home_page.tab_button = {};
         this.categories_page = connectable_object;
@@ -82,29 +82,14 @@ const MockView = new Lang.Class({
         this.parent(signal, handler);
     },
 
-    show_article_page: function () {},
-    show_no_search_results_page: function () {},
-    show_search_page: function () {},
-    show_section_page: function () {},
-    show_home_page: function () {},
+    show_page: function (page) {},
     lock_ui: function () {},
     unlock_ui: function () {},
     present_with_time: function () {},
 });
 
-const MockArticlePresenter = new Lang.Class({
-    Name: 'MockArticlePresenter',
-    Extends: GObject.Object,
-
-    _init: function () {
-        this.parent();
-    },
-
-    connect: function () {},
-});
-
 describe('Presenter', () => {
-    let presenter, data, view, engine, article_presenter, factory, sections, dispatcher;
+    let presenter, data, view, engine, factory, sections, dispatcher;
     let test_app_filename = TEST_CONTENT_DIR + 'app.json';
 
     beforeEach(() => {
@@ -138,16 +123,15 @@ describe('Presenter', () => {
         ];
 
         view = new MockView();
+        spyOn(view, 'show_page');
         engine = new MockEngine.MockEngine();
         engine.get_objects_by_query_finish.and.returnValue([sections.map((section) =>
             new ContentObjectModel.ContentObjectModel(section)), null]);
-        article_presenter = new MockArticlePresenter();
         let application = new GObject.Object();
         application.application_id = 'foobar';
         presenter = new Presenter.Presenter(data, {
             application: application,
             factory: factory,
-            article_presenter: article_presenter,
             engine: engine,
             view: view,
         });
@@ -156,32 +140,30 @@ describe('Presenter', () => {
 
     it('can be constructed', () => {});
 
-    it('puts the correct cards on the home page', () => {
+    it('dispatches category models for home page', () => {
+        let payloads = dispatcher.dispatched_payloads.filter((payload) => {
+            return payload.action_type === Actions.APPEND_SETS;
+        });
+        expect(payloads.length).toBe(1);
         expect(sections.map((section) => section['title']))
-            .toEqual(view.home_page.cards.map((card) => card.model.title));
-
-        expect(sections.map((section) => section['thumbnail_uri']))
-            .toEqual(view.home_page.cards.map((card) => card.model.thumbnail_uri));
-
-        expect(sections.map((section) => !!section['featured']))
-            .toEqual(view.home_page.cards.map((card) => card.model.featured));
+            .toEqual(payloads[0].models.map((model) => model.title));
     });
 
     it('switches to the correct section page when clicking a card on the home page', function () {
-        spyOn(view, 'show_section_page');
-        engine.get_objects_by_query_finish.and.returnValue([[
-            new ContentObjectModel.ContentObjectModel({
-                title: 'An article in a section',
-            }),
-        ], null]);
-        view.home_page.cards[0].emit('clicked');
+        let model = new ContentObjectModel.ContentObjectModel({
+            title: 'An article in a section',
+        });
+        engine.get_objects_by_query_finish.and.returnValue([[ model ], null]);
+        dispatcher.dispatch({
+            action_type: Actions.SET_SELECTED,
+            model: new ContentObjectModel.ContentObjectModel(),
+        });
         Utils.update_gui();
-        expect(view.show_section_page).toHaveBeenCalled();
+        expect(view.show_page).toHaveBeenCalledWith(view.section_page);
     });
 
     describe('searching from search box', function () {
         beforeEach(function () {
-            spyOn(view, 'show_no_search_results_page');
             engine.get_objects_by_query_finish.and.returnValue([[], null]);
         });
 
@@ -194,7 +176,7 @@ describe('Presenter', () => {
                     }),
                     jasmine.any(Object),
                     jasmine.any(Function));
-                expect(view.show_no_search_results_page).toHaveBeenCalled();
+                expect(view.show_page).toHaveBeenCalledWith(view.no_search_results_page);
                 done();
                 return GLib.SOURCE_REMOVE;
             });
@@ -209,7 +191,7 @@ describe('Presenter', () => {
                     }),
                     jasmine.any(Object),
                     jasmine.any(Function));
-                expect(view.show_no_search_results_page).toHaveBeenCalled();
+                expect(view.show_page).toHaveBeenCalledWith(view.no_search_results_page);
                 done();
                 return GLib.SOURCE_REMOVE;
             });
@@ -241,32 +223,32 @@ describe('Presenter', () => {
                     title: 'An article in a section',
                 }),
             ], null]);
-            view.home_page.cards[0].emit('clicked');
+            dispatcher.dispatch({
+                action_type: Actions.SET_SELECTED,
+                model: new ContentObjectModel.ContentObjectModel(),
+            });
             Utils.update_gui();
         });
 
         it('leads back to the home page', function () {
-            spyOn(view, 'show_home_page');
             dispatcher.dispatch({ action_type: Actions.HISTORY_BACK_CLICKED });
             Utils.update_gui();
-            expect(view.show_home_page).toHaveBeenCalled();
+            expect(view.show_page).toHaveBeenCalledWith(view.home_page);
         });
 
         it('leads back to the section page', function () {
             view.emit('search-entered', 'query not found');
-            spyOn(view, 'show_section_page');
             dispatcher.dispatch({ action_type: Actions.HISTORY_BACK_CLICKED });
             Utils.update_gui();
-            expect(view.show_section_page).toHaveBeenCalled();
+            expect(view.show_page).toHaveBeenCalledWith(view.section_page);
         });
 
         it('leads forward to the section page', function () {
             dispatcher.dispatch({ action_type: Actions.HISTORY_BACK_CLICKED });
             Utils.update_gui();
-            spyOn(view, 'show_section_page');
             dispatcher.dispatch({ action_type: Actions.HISTORY_FORWARD_CLICKED });
             Utils.update_gui();
-            expect(view.show_section_page).toHaveBeenCalled();
+            expect(view.show_page).toHaveBeenCalledWith(view.section_page);
         });
     });
 });

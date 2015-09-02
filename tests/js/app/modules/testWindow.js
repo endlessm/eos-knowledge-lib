@@ -12,8 +12,6 @@ const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
 const Lightbox = imports.app.widgets.lightbox;
 const MockFactory = imports.tests.mockFactory;
 const MockWidgets = imports.tests.mockWidgets;
-const SearchPage = imports.app.searchPage;
-const SectionPageA = imports.app.sectionPageA;
 const Window = imports.app.modules.window;
 
 const TEST_CONTENT_BUILDDIR = Utils.get_test_content_builddir();
@@ -51,6 +49,8 @@ describe('Window', function () {
         let factory = new MockFactory.MockFactory();
         factory.add_named_mock('top-bar-search', MockWidgets.MockSearchBox);
         factory.add_named_mock('home-search', MockWidgets.MockSearchBox);
+        factory.add_named_mock('item-group', MockWidgets.MockItemGroupModule);
+        factory.add_named_mock('search-results', MockWidgets.MockItemGroupModule);
         view = new Window.Window({
             application: app,
             factory: factory,
@@ -70,11 +70,11 @@ describe('Window', function () {
     });
 
     it('instantiates a section page A', function () {
-        expect(view.section_page).toBeA(SectionPageA.SectionPageA);
+        expect(view.section_page).toBeDefined();
     });
 
     it ('instantiates a search page A', function () {
-        expect(view.search_page).toBeA(SearchPage.SearchPageA);
+        expect(view.search_page).toBeDefined();
     });
 
     it('instantiates an article page A', function () {
@@ -90,14 +90,10 @@ describe('Window', function () {
         expect(view.background_image_uri).toBe(BACKGROUND_URI);
     });
 
-    it('visible page updates with show_*_page functions', function () {
-        view.show_article_page();
+    it('updates visible page with show_page', function () {
+        view.show_page(view.article_page);
         expect(view.get_visible_page()).toBe(view.article_page);
-        view.show_section_page();
-        expect(view.get_visible_page()).toBe(view.section_page);
-        view.show_search_page();
-        expect(view.get_visible_page()).toBe(view.search_page);
-        view.show_home_page();
+        view.show_page(view.home_page);
         expect(view.get_visible_page()).toBe(view.home_page);
     });
 

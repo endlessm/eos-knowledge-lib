@@ -15,10 +15,8 @@ const HomePage = imports.app.homePage;
 const HomePageA = imports.app.homePageA;
 const Lightbox = imports.app.widgets.lightbox;
 const Module = imports.app.interfaces.module;
+const NavButtonOverlay = imports.app.widgets.navButtonOverlay;
 const NoSearchResultsPage = imports.app.noSearchResultsPage;
-const SearchPage = imports.app.searchPage;
-const SectionPage = imports.app.sectionPage;
-const SectionArticlePage = imports.app.sectionArticlePage;
 const StyleClasses = imports.app.styleClasses;
 
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
@@ -71,13 +69,12 @@ const Window = new Lang.Class({
         /**
          * Property: section-page
          *
-         * The <SectionPageA> widget created by this widget. Read-only,
-         * modify using the <SectionPageA> API.
+         * The section page template.
          */
         'section-page': GObject.ParamSpec.object('section-page', 'Section page',
             'The section page of this view widget.',
             GObject.ParamFlags.READABLE,
-            SectionPage.SectionPage),
+            Gtk.Widget),
         /**
          * Property: article-page
          *
@@ -91,13 +88,12 @@ const Window = new Lang.Class({
         /**
          * Property: search-page
          *
-         * The <SearchPage> widget created by this widget. Read-only,
-         * modify using the <SearchPage> API.
+         * The search page template.
          */
         'search-page': GObject.ParamSpec.object('search-page', 'Search page',
             'The search page of this view widget.',
             GObject.ParamFlags.READABLE,
-            SearchPage.SearchPage),
+            Gtk.Widget),
         /**
          * Property: no-search-results-page
          *
@@ -200,52 +196,60 @@ const Window = new Lang.Class({
     _init: function (props) {
         this.parent(props);
 
-        this._categories_page = new CategoriesPage.CategoriesPage();
+        this.categories_page = new CategoriesPage.CategoriesPage({
+            factory: this.factory,
+        });
+        this.section_page = this.factory.create_named_module('section-page-template');
+        this.search_page = this.factory.create_named_module('search-page-template');
         if (this.template_type === 'B') {
-            this._home_page = this.factory.create_named_module('home-page-template');
-            this._section_article_page = new SectionArticlePage.SectionArticlePageB({
-                factory: this.factory,
-                forward_visible: false,
-            });
-            this._search_page = new SearchPage.SearchPageB({
-                factory: this.factory,
-                forward_visible: false,
-            });
-            this._no_search_results_page = new NoSearchResultsPage.NoSearchResultsPageB();
+            this.home_page = this.factory.create_named_module('home-page-template');
+            this.article_page = new ArticlePage.ArticlePage();
+            this.no_search_results_page = new NoSearchResultsPage.NoSearchResultsPageB();
+
+            this.section_page.get_style_context().add_class(StyleClasses.SECTION_PAGE_B);
+            this.search_page.get_style_context().add_class(StyleClasses.SEARCH_PAGE_B);
         } else {
-            this._home_page = new HomePageA.HomePageA({
+            this.home_page = new HomePageA.HomePageA({
                 factory: this.factory,
             });
-            this._section_article_page = new SectionArticlePage.SectionArticlePageA({
-                factory: this.factory,
-                forward_visible: false,
-            });
-            this._search_page = new SearchPage.SearchPageA({
-                factory: this.factory,
-                forward_visible: false,
-            });
-            this._no_search_results_page = new NoSearchResultsPage.NoSearchResultsPageA();
-            // Connection so that tab buttons are revealed after page transition
-            this.page_manager.connect('notify::transition-running', Lang.bind(this, function () {
-                this.home_page.animating = this.page_manager.transition_running;
-                this.categories_page.animating = this.page_manager.transition_running;
-            }));
+            this.article_page = new ArticlePage.ArticlePage();
+            this.no_search_results_page = new NoSearchResultsPage.NoSearchResultsPageA();
+
+            this.section_page.get_style_context().add_class(StyleClasses.SECTION_PAGE_A);
+            this.search_page.get_style_context().add_class(StyleClasses.SEARCH_PAGE_A);
         }
 
-        let dispatcher = Dispatcher.get_default();
-        this._section_article_page.connect('back-clicked', () => {
-            dispatcher.dispatch({ action_type: Actions.NAV_BACK_CLICKED });
+        this._stack = new Gtk.Stack();
+        this._stack.add(this.home_page);
+        this._stack.add(this.categories_page);
+        this._stack.add(this.section_page);
+        this._stack.add(this.search_page);
+        this._stack.add(this.no_search_results_page);
+        this._stack.add(this.article_page);
+
+        this._nav_buttons = new NavButtonOverlay.NavButtonOverlay({
+            back_visible: false,
+            forward_visible: false,
         });
-        this._search_page.connect('back-clicked', () => {
-            dispatcher.dispatch({ action_type: Actions.NAV_BACK_CLICKED });
-        });
-        this._no_search_results_page.connect('back-clicked', () => {
-            dispatcher.dispatch({ action_type: Actions.NAV_BACK_CLICKED });
-        });
-        this._lightbox = new Lightbox.Lightbox();
+        this._nav_buttons.add(this._stack);
+
+        this.lightbox = new Lightbox.Lightbox();
+        this.lightbox.add(this._nav_buttons);
 
         this._history_buttons = new Endless.TopbarNavButton();
+        this.search_box = this.factory.create_named_module('top-bar-search', {
+            no_show_all: true,
+            visible: false,
+        });
+        this.page_manager.add(this.lightbox, {
+            left_topbar_widget: this._history_buttons,
+            center_topbar_widget: this.search_box,
+        });
 
+        let dispatcher = Dispatcher.get_default();
+        this._nav_buttons.connect('back-clicked', () => {
+            dispatcher.dispatch({ action_type: Actions.NAV_BACK_CLICKED });
+        });
         this._history_buttons.back_button.connect('clicked', () => {
             dispatcher.dispatch({ action_type: Actions.HISTORY_BACK_CLICKED });
         });
@@ -267,14 +271,6 @@ const Window = new Lang.Class({
         this._history_buttons.get_style_context().add_class(Gtk.STYLE_CLASS_LINKED);
         this._history_buttons.show_all();
 
-        this._lightbox.add(this._section_article_page);
-        this.page_manager.add(this._home_page, {
-            left_topbar_widget: this._history_buttons
-        });
-        this.page_manager.add(this._categories_page, {
-            left_topbar_widget: this._history_buttons
-        });
-        this.search_box = this.factory.create_named_module('top-bar-search');
         this.search_box.connect('notify::has-focus', function () {
             this.emit('search-focused', this.search_box.has_focus);
         }.bind(this));
@@ -288,29 +284,16 @@ const Window = new Lang.Class({
             this.emit('article-selected', article_id);
         }.bind(this));
 
-        this.page_manager.add(this._search_page, {
-            left_topbar_widget: this._history_buttons,
-            center_topbar_widget: this.search_box,
-        });
-        this.page_manager.add(this._no_search_results_page, {
-            left_topbar_widget: this._history_buttons,
-            center_topbar_widget: this.search_box,
-        });
-        this.page_manager.add(this._lightbox, {
-            left_topbar_widget: this._history_buttons,
-            center_topbar_widget: this.search_box,
-        });
-        this.page_manager.transition_duration = this.TRANSITION_DURATION;
-        this.page_manager.bind_property('transition-duration', this._section_article_page,
-            'transition-duration', GObject.BindingFlags.SYNC_CREATE);
-        this.page_manager.connect('notify::transition-running', function () {
-            let context = this._no_search_results_page.get_style_context();
-            if (this.page_manager.transition_running)
+        this._stack.transition_duration = this.TRANSITION_DURATION;
+        this._stack.connect('notify::transition-running', function () {
+            this.home_page.animating = this._stack.transition_running;
+            this.categories_page.animating = this._stack.transition_running;
+            let context = this.get_style_context();
+            if (this._stack.transition_running)
                 context.add_class(StyleClasses.ANIMATING);
             else
                 context.remove_class(StyleClasses.ANIMATING);
         }.bind(this));
-        this.get_style_context().add_class(StyleClasses.SHOW_HOME_PAGE);
         this.connect('size-allocate', Lang.bind(this, function(widget, allocation) {
             let win_width = allocation.width;
             let win_height = allocation.height;
@@ -334,34 +317,7 @@ const Window = new Lang.Class({
         }));
 
         this.show_all();
-    },
-
-    get home_page () {
-        return this._home_page;
-    },
-
-    get categories_page () {
-        return this._categories_page;
-    },
-
-    get section_page () {
-        return this._section_article_page.section_page;
-    },
-
-    get article_page () {
-        return this._section_article_page.article_page;
-    },
-
-    get search_page () {
-        return this._search_page;
-    },
-
-    get no_search_results_page () {
-        return this._no_search_results_page;
-    },
-
-    get lightbox () {
-        return this._lightbox;
+        this._set_background_position_style(StyleClasses.BACKGROUND_LEFT);
     },
 
     get background_image_uri () {
@@ -374,7 +330,7 @@ const Window = new Lang.Class({
         }
         this._background_image_uri = v;
         if (this._background_image_uri !== null) {
-            let frame_css = 'EknWindow.show-home-page, EknWindow.show-categories-page { background-image: url("' + this._background_image_uri + '");}';
+            let frame_css = 'EknWindow.background-left { background-image: url("' + this._background_image_uri + '");}';
             let provider = new Gtk.CssProvider();
             provider.load_from_data(frame_css);
             let context = this.get_style_context();
@@ -408,7 +364,7 @@ const Window = new Lang.Class({
         }
         this._blur_background_image_uri = v;
         if (this._blur_background_image_uri !== null) {
-            let frame_css = 'EknWindow.show-section-page, EknWindow.show-article-page, EknWindow.show-search-page, EknWindow.show-no-search-results-page { background-image: url("' + this._blur_background_image_uri + '");}';
+            let frame_css = 'EknWindow.background-center, EknWindow.background-right { background-image: url("' + this._blur_background_image_uri + '");}';
             let provider = new Gtk.CssProvider();
             provider.load_from_data(frame_css);
             let context = this.get_style_context();
@@ -416,139 +372,52 @@ const Window = new Lang.Class({
         }
     },
 
-    /**
-     * Method: show_home_page
-     *
-     * This method causes the window to animate to the home page.
-     */
-    show_home_page: function () {
-        let visible_page = this.get_visible_page();
-        if (visible_page === this.categories_page) {
-            this.page_manager.transition_type = Gtk.StackTransitionType.SLIDE_DOWN;
-        } else {
-            this.page_manager.transition_type = Gtk.StackTransitionType.SLIDE_RIGHT;
-        }
-        this.page_manager.visible_child = this._home_page;
-
-        this.get_style_context().remove_class(StyleClasses.SHOW_CATEGORIES_PAGE);
-        this.get_style_context().remove_class(StyleClasses.SHOW_SECTION_PAGE);
-        this.get_style_context().remove_class(StyleClasses.SHOW_ARTICLE_PAGE);
-        this.get_style_context().remove_class(StyleClasses.SHOW_SEARCH_PAGE);
-        this.get_style_context().remove_class(StyleClasses.SHOW_NO_SEARCH_RESULTS_PAGE);
-        this.get_style_context().add_class(StyleClasses.SHOW_HOME_PAGE);
+    _set_background_position_style: function (klass) {
+        this.get_style_context().remove_class(StyleClasses.BACKGROUND_LEFT);
+        this.get_style_context().remove_class(StyleClasses.BACKGROUND_CENTER);
+        this.get_style_context().remove_class(StyleClasses.BACKGROUND_RIGHT);
+        this.get_style_context().add_class(klass);
     },
 
     /**
-     * Method: show_categories_page
-     *
-     * This method causes the window to animate to the home page.
+     * Method: show_page
      */
-    show_categories_page: function () {
-        let visible_page = this.get_visible_page();
-        if (visible_page === this.home_page) {
-            this.page_manager.transition_type = Gtk.StackTransitionType.SLIDE_UP;
+    show_page: function (new_page) {
+        let old_page = this.get_visible_page();
+        if (old_page === new_page)
+            return;
+
+        let is_on_left = (page) => page === this.home_page || page === this.categories_page;
+        let is_on_center = (page) => page === this.section_page || page === this.search_page || page === this.no_search_results_page;
+        if (is_on_left(new_page)) {
+            if (old_page === this.home_page) {
+                this._stack.transition_type = Gtk.StackTransitionType.SLIDE_UP;
+            } else if (old_page === this.categories_page) {
+                this._stack.transition_type = Gtk.StackTransitionType.SLIDE_DOWN;
+            } else {
+                this._stack.transition_type = Gtk.StackTransitionType.SLIDE_RIGHT;
+            }
+            this._nav_buttons.back_visible = false;
+            this.search_box.visible = false;
+            this._set_background_position_style(StyleClasses.BACKGROUND_LEFT);
+        } else if (is_on_center(new_page)) {
+            if (is_on_left(old_page)) {
+                this._stack.transition_type = Gtk.StackTransitionType.SLIDE_LEFT;
+            } else if (is_on_center(old_page)) {
+                this._stack.transition_type = Gtk.StackTransitionType.CROSSFADE;
+            } else {
+                this._stack.transition_type = Gtk.StackTransitionType.SLIDE_RIGHT;
+            }
+            this._nav_buttons.back_visible = true;
+            this.search_box.visible = true;
+            this._set_background_position_style(StyleClasses.BACKGROUND_CENTER);
         } else {
-            this.page_manager.transition_type = Gtk.StackTransitionType.SLIDE_RIGHT;
+            this._stack.transition_type = Gtk.StackTransitionType.SLIDE_LEFT;
+            this._nav_buttons.back_visible = true;
+            this.search_box.visible = true;
+            this._set_background_position_style(StyleClasses.BACKGROUND_RIGHT);
         }
-        this.page_manager.visible_child = this._categories_page;
-
-        this.get_style_context().remove_class(StyleClasses.SHOW_HOME_PAGE);
-        this.get_style_context().remove_class(StyleClasses.SHOW_SECTION_PAGE);
-        this.get_style_context().remove_class(StyleClasses.SHOW_ARTICLE_PAGE);
-        this.get_style_context().remove_class(StyleClasses.SHOW_SEARCH_PAGE);
-        this.get_style_context().remove_class(StyleClasses.SHOW_NO_SEARCH_RESULTS_PAGE);
-        this.get_style_context().add_class(StyleClasses.SHOW_CATEGORIES_PAGE);
-    },
-
-    /**
-     * Method: show_section_page
-     *
-     * This method causes the window to animate to the section page.
-     */
-    show_section_page: function () {
-        let visible_page = this.get_visible_page();
-        if (visible_page === this.home_page || visible_page === this.categories_page) {
-            this.page_manager.transition_type = Gtk.StackTransitionType.SLIDE_LEFT;
-        } else {
-            this.page_manager.transition_type = Gtk.StackTransitionType.CROSSFADE;
-        }
-        this._section_article_page.show_article = false;
-        this.page_manager.visible_child = this._lightbox;
-
-        this.get_style_context().remove_class(StyleClasses.SHOW_HOME_PAGE);
-        this.get_style_context().remove_class(StyleClasses.SHOW_CATEGORIES_PAGE);
-        this.get_style_context().remove_class(StyleClasses.SHOW_ARTICLE_PAGE);
-        this.get_style_context().remove_class(StyleClasses.SHOW_SEARCH_PAGE);
-        this.get_style_context().remove_class(StyleClasses.SHOW_NO_SEARCH_RESULTS_PAGE);
-        this.get_style_context().add_class(StyleClasses.SHOW_SECTION_PAGE);
-    },
-
-    /**
-     * Method: show_article_page
-     *
-     * This method causes the window to animate to the article page.
-     */
-    show_article_page: function () {
-        this.page_manager.transition_type = Gtk.StackTransitionType.SLIDE_LEFT;
-        this._section_article_page.show_article = true;
-        this.page_manager.visible_child = this._lightbox;
-
-        this.get_style_context().remove_class(StyleClasses.SHOW_HOME_PAGE);
-        this.get_style_context().remove_class(StyleClasses.SHOW_CATEGORIES_PAGE);
-        this.get_style_context().remove_class(StyleClasses.SHOW_SECTION_PAGE);
-        this.get_style_context().remove_class(StyleClasses.SHOW_SEARCH_PAGE);
-        this.get_style_context().remove_class(StyleClasses.SHOW_NO_SEARCH_RESULTS_PAGE);
-        this.get_style_context().add_class(StyleClasses.SHOW_ARTICLE_PAGE);
-    },
-
-    /**
-     * Method: show_search_page
-     *
-     * This method causes the window to animate to the search page.
-     */
-    show_search_page: function () {
-        let visible_page = this.get_visible_page();
-        if (visible_page === this.home_page || visible_page === this.categories_page) {
-            this.page_manager.transition_type = Gtk.StackTransitionType.SLIDE_LEFT;
-        } else if (visible_page === this.article_page) {
-            this.page_manager.transition_type = Gtk.StackTransitionType.SLIDE_RIGHT;
-        } else {
-            this.page_manager.transition_type = Gtk.StackTransitionType.CROSSFADE;
-        }
-        this._section_article_page.show_article = false;
-        this.page_manager.visible_child = this._search_page;
-
-        this.get_style_context().remove_class(StyleClasses.SHOW_HOME_PAGE);
-        this.get_style_context().remove_class(StyleClasses.SHOW_SECTION_PAGE);
-        this.get_style_context().remove_class(StyleClasses.SHOW_CATEGORIES_PAGE);
-        this.get_style_context().remove_class(StyleClasses.SHOW_ARTICLE_PAGE);
-        this.get_style_context().remove_class(StyleClasses.SHOW_NO_SEARCH_RESULTS_PAGE);
-        this.get_style_context().add_class(StyleClasses.SHOW_SEARCH_PAGE);
-    },
-
-    /**
-     * Method: show_no_search_results_page
-     *
-     * This method causes the window to animate to the no-search-results page
-     */
-    show_no_search_results_page: function () {
-        let visible_page = this.get_visible_page();
-        if (visible_page === this.home_page || visible_page === this.categories_page) {
-            this.page_manager.transition_type = Gtk.StackTransitionType.SLIDE_LEFT;
-        } else if (visible_page === this.section_page) {
-            this.page_manager.transition_type = Gtk.StackTransitionType.CROSSFADE;
-        } else {
-            this.page_manager.transition_type = Gtk.StackTransitionType.SLIDE_RIGHT;
-        }
-        this._section_article_page.show_article = false;
-        this.page_manager.visible_child = this._no_search_results_page;
-
-        this.get_style_context().remove_class(StyleClasses.SHOW_HOME_PAGE);
-        this.get_style_context().remove_class(StyleClasses.SHOW_CATEGORIES_PAGE);
-        this.get_style_context().remove_class(StyleClasses.SHOW_ARTICLE_PAGE);
-        this.get_style_context().remove_class(StyleClasses.SHOW_SECTION_PAGE);
-        this.get_style_context().remove_class(StyleClasses.SHOW_SEARCH_PAGE);
-        this.get_style_context().add_class(StyleClasses.SHOW_NO_SEARCH_RESULTS_PAGE);
+        this._stack.visible_child = new_page;
     },
 
     /**
@@ -557,15 +426,7 @@ const Window = new Lang.Class({
      * Returns the currently visible page, either the home, section or article page.
      */
     get_visible_page: function () {
-        let visible_page = this.page_manager.visible_child;
-        if (visible_page === this._lightbox) {
-            if (this._section_article_page.show_article)
-                return this._section_article_page.article_page;
-            else
-                return this._section_article_page.section_page;
-        } else {
-            return visible_page;
-        }
+        return this._stack.visible_child;
     },
 
     lock_ui: function () {

@@ -1,6 +1,6 @@
 // Copyright 2015 Endless Mobile, Inc.
 
-/* exported MockButton, MockHistoryButtons, MockItemGroup,
+/* exported MockButton, MockHistoryButtons, MockItemGroupModule,
 MockScrolledArrangement, MockSearchBox */
 
 const GObject = imports.gi.GObject;
@@ -8,6 +8,7 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const Minimal = imports.tests.minimal;
+const Module = imports.app.interfaces.module;
 
 const MockButton = new Lang.Class({
     Name: 'MockButton',
@@ -25,7 +26,7 @@ const MockScrolledArrangement = new Lang.Class({
     Name: 'MockScrolledArrangement',
     Extends: Minimal.MinimalArrangement,
     Properties: {
-        'preferred-width': GObject.ParamSpec.int('preferred-width', '', '',
+        'bottom-buffer': GObject.ParamSpec.int('bottom-buffer', '', '',
             GObject.ParamFlags.READWRITE, -1, 9999, -1),
     },
     Signals: {
@@ -51,10 +52,19 @@ const MockSearchBox = new Lang.Class({
     set_text_programmatically: function () {},
 });
 
-const MockItemGroup = new Lang.Class({
-    Name: 'MockItemGroup',
-    Extends: Minimal.MinimalModule,
+const MockItemGroupModule = new Lang.Class({
+    Name: 'MockItemGroupModule',
+    Extends: Gtk.Widget,
+    Implements: [ Module.Module ],
+
+    Properties: {
+        'factory': GObject.ParamSpec.override('factory', Module.Module),
+        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
+    },
     Signals: {
         'article-selected': {},
+        'need-more-content': {},
     },
+
+    add_card: function () {},
 });

@@ -107,7 +107,7 @@ describe('Search module', function () {
             new ContentObjectModel.ContentObjectModel(),
         ]);
         Utils.update_gui();
-        expect(arrangement.count).toBe(1);
+        expect(arrangement.get_cards().length).toBe(1);
     });
 
     it('removes old results from the card container when adding new ones', function () {
@@ -117,7 +117,7 @@ describe('Search module', function () {
         Utils.update_gui();
         search_module.finish_search([]);
         Utils.update_gui();
-        expect(arrangement.count).toBe(0);
+        expect(arrangement.get_cards().length).toBe(0);
     });
 
     it('displays the query string somewhere in the UI', function () {

@@ -213,8 +213,6 @@ js_files = \
 	js/app/application.js \
 	js/app/articleHTMLRenderer.js \
 	js/app/articlePage.js \
-	js/app/articlePresenter.js \
-	js/app/cardsSegment.js \
 	js/app/categoriesPage.js \
 	js/app/compat/compat.js \
 	js/app/compat/cssParse.js \
@@ -222,8 +220,6 @@ js_files = \
 	js/app/config.js \
 	js/app/dispatcher.js \
 	js/app/encyclopedia/contentPage.js \
-	js/app/encyclopedia/homePage.js \
-	js/app/encyclopedia/model.js \
 	js/app/encyclopedia/presenter.js \
 	js/app/historyItem.js \
 	js/app/historyPresenter.js \
@@ -239,11 +235,13 @@ js_files = \
 	js/app/modules/appBanner.js \
 	js/app/modules/articleSnippetCard.js \
 	js/app/modules/backCover.js \
+	js/app/modules/bannerTemplate.js \
 	js/app/modules/cardA.js \
 	js/app/modules/cardB.js \
 	js/app/modules/encyclopediaCoverTemplate.js \
 	js/app/modules/encyclopediaWindow.js \
-	js/app/modules/itemGroup.js \
+	js/app/modules/gridArrangement.js \
+	js/app/modules/itemGroupModule.js \
 	js/app/modules/knowledgeDocumentCard.js \
 	js/app/modules/homePageBTemplate.js \
 	js/app/modules/listArrangement.js \
@@ -252,10 +250,14 @@ js_files = \
 	js/app/modules/readerCard.js \
 	js/app/modules/readerDocumentCard.js \
 	js/app/modules/readerWindow.js \
-	js/app/modules/searchBanner.js \
+	js/app/modules/searchABModule.js \
+	js/app/modules/searchBannerModule.js \
 	js/app/modules/searchBox.js \
 	js/app/modules/searchModule.js \
 	js/app/modules/setBannerCard.js \
+	js/app/modules/setGroupModule.js \
+	js/app/modules/setBannerModule.js \
+	js/app/modules/sidebarTemplate.js \
 	js/app/modules/textCard.js \
 	js/app/modules/tiledGridArrangement.js \
 	js/app/modules/window.js \
@@ -269,11 +271,6 @@ js_files = \
 	js/app/reader/standalonePage.js \
 	js/app/reader/userSettingsModel.js \
 	js/app/runner.js \
-	js/app/searchPage.js \
-	js/app/sectionArticlePage.js \
-	js/app/sectionPage.js \
-	js/app/sectionPageA.js \
-	js/app/sectionPageB.js \
 	js/app/styleClasses.js \
 	js/app/utils.js \
 	js/app/warehouse.js \
@@ -364,20 +361,25 @@ javascript_tests = \
 	tests/js/app/modules/testAppBanner.js \
 	tests/js/app/modules/testArticleSnippetCard.js \
 	tests/js/app/modules/testBackCover.js \
+	tests/js/app/modules/testBannerTemplate.js \
 	tests/js/app/modules/testCardA.js \
 	tests/js/app/modules/testCardB.js \
 	tests/js/app/modules/testCarouselArrangement.js \
 	tests/js/app/modules/testKnowledgeDocumentCard.js \
 	tests/js/app/modules/testHomePageBTemplate.js \
+	tests/js/app/modules/testItemGroupModule.js \
 	tests/js/app/modules/testListArrangement.js \
 	tests/js/app/modules/testMediaCard.js \
 	tests/js/app/modules/testReaderCard.js \
 	tests/js/app/modules/testReaderDocumentCard.js \
 	tests/js/app/modules/testReaderWindow.js \
-	tests/js/app/modules/testSearchBanner.js \
+	tests/js/app/modules/testSearchBannerModule.js \
 	tests/js/app/modules/testSearchBox.js \
 	tests/js/app/modules/testSearchModule.js \
 	tests/js/app/modules/testSetBannerCard.js \
+	tests/js/app/modules/testSetGroupModule.js \
+	tests/js/app/modules/testSetBannerModule.js \
+	tests/js/app/modules/testSidebarTemplate.js \
 	tests/js/app/modules/testTextCard.js \
 	tests/js/app/modules/testWindow.js \
 	tests/js/app/reader/testOverviewPage.js \
@@ -387,7 +389,6 @@ javascript_tests = \
 	tests/js/app/reader/testWebExtension.js \
 	tests/js/app/testArticleHTMLRenderer.js \
 	tests/js/app/testArticlePage.js \
-	tests/js/app/testArticlePresenter.js \
 	tests/js/app/testDispatcher.js \
 	tests/js/app/testHistoryItem.js \
 	tests/js/app/testHistoryPresenter.js \
@@ -398,11 +399,6 @@ javascript_tests = \
 	tests/js/app/testNoSearchResultsPageA.js \
 	tests/js/app/testNoSearchResultsPageB.js \
 	tests/js/app/testPresenter.js \
-	tests/js/app/testSearchPage.js \
-	tests/js/app/testSectionArticlePageA.js \
-	tests/js/app/testSectionArticlePageB.js \
-	tests/js/app/testSectionPageA.js \
-	tests/js/app/testSectionPageB.js \
 	tests/js/app/testStyleKnobGenerator.js \
 	tests/js/app/testUtils.js \
 	tests/js/app/widgets/testLightbox.js \

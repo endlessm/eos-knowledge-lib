@@ -53,7 +53,7 @@ const KnowledgeDocumentCard = new Lang.Class({
          */
         'show-top-title':  GObject.ParamSpec.boolean('show-top-title', 'Show Top Title',
             'Whether to show the top title label when toc is collapsed/hidden',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, true),
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, false),
         /**
          * Property: show-toc
          *
@@ -61,7 +61,7 @@ const KnowledgeDocumentCard = new Lang.Class({
          */
         'show-toc':  GObject.ParamSpec.boolean('show-toc', 'Show Table of Contents',
             'Whether to show the toc',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, true),
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, false),
         /**
          * Property: toc
          *
@@ -123,6 +123,7 @@ const KnowledgeDocumentCard = new Lang.Class({
             valign: Gtk.Align.CENTER,
             no_show_all: true,
         });
+        this._toolbar_grid.add(this.toc);
 
         let _toc_visible = false;
         if (this.model.table_of_contents !== undefined) {
@@ -138,7 +139,18 @@ const KnowledgeDocumentCard = new Lang.Class({
 
         this.toc.transition_duration = this._SCROLL_DURATION;
 
-        this._toolbar_grid.add(this.toc);
+        this.toc.connect('up-clicked', function () {
+            this._scroll_to_section(this.toc.target_section - 1);
+        }.bind(this));
+
+        this.toc.connect('down-clicked', function () {
+            this._scroll_to_section(this.toc.target_section + 1);
+        }.bind(this));
+
+        this.toc.connect('section-clicked', function (widget, index) {
+            this._scroll_to_section(index);
+        }.bind(this));
+
     },
 
     load_content: function (cancellable, callback) {
@@ -210,7 +222,7 @@ const KnowledgeDocumentCard = new Lang.Class({
         return toplevel_elements;
     },
 
-    scroll_to_section: function (index) {
+    _scroll_to_section: function (index) {
         if (this.content_view.is_loading)
             return;
         // tells the webkit webview directly to scroll to a ToC entry
