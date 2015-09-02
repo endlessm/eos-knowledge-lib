@@ -75,9 +75,13 @@ describe ('Media Infobox', function () {
         let attribution;
         let attribution_button;
 
+        function get_attribution_string (license_shortname, copyright_holder) {
+            let license_description = Endless.get_license_display_name(license_shortname);
+            return (license_description + ' - ' + copyright_holder).toUpperCase();
+        }
+
         it ('displays license file when license is known', function () {
             license_shortname = 'CC BY 4.0';
-            let license_description = Endless.get_license_display_name(license_shortname);
 
             card = new MediaCard.MediaCard({
                 model: new MediaObjectModel.ImageObjectModel({
@@ -87,7 +91,7 @@ describe ('Media Infobox', function () {
                 }),
             });
 
-            attribution = (license_description + ' - ' + copyright_holder).toUpperCase();
+            attribution = get_attribution_string(license_shortname, copyright_holder);
             attribution_button = Gtk.test_find_label(card, attribution).get_parent();
             expect(attribution_button.sensitive).toBe(true);
         });
@@ -103,7 +107,7 @@ describe ('Media Infobox', function () {
                 }),
             });
 
-            attribution = ('Bruce Lee').toUpperCase();
+            attribution = get_attribution_string(license_shortname, copyright_holder);
             attribution_button = Gtk.test_find_label(card, attribution).get_parent();
             expect(attribution_button.sensitive).toBe(false);
         });
