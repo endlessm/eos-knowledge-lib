@@ -234,16 +234,16 @@ js_files = \
 	js/app/modules/bannerTemplate.js \
 	js/app/modules/cardA.js \
 	js/app/modules/cardB.js \
+	js/app/modules/carouselArrangement.js \
 	js/app/modules/dividedBannerTemplate.js \
 	js/app/modules/encyclopediaCoverTemplate.js \
 	js/app/modules/encyclopediaWindow.js \
 	js/app/modules/gridArrangement.js \
+	js/app/modules/homePageATemplate.js \
 	js/app/modules/itemGroupModule.js \
 	js/app/modules/knowledgeDocumentCard.js \
-	js/app/modules/homePageATemplate.js \
 	js/app/modules/lightboxModule.js \
 	js/app/modules/listArrangement.js \
-	js/app/modules/carouselArrangement.js \
 	js/app/modules/mediaCard.js \
 	js/app/modules/navigationModule.js \
 	js/app/modules/paperTemplate.js \
@@ -253,8 +253,8 @@ js_files = \
 	js/app/modules/searchBannerModule.js \
 	js/app/modules/searchBox.js \
 	js/app/modules/searchModule.js \
-	js/app/modules/setGroupModule.js \
 	js/app/modules/setBannerModule.js \
+	js/app/modules/setGroupModule.js \
 	js/app/modules/sidebarTemplate.js \
 	js/app/modules/overflowArrangement.js \
 	js/app/modules/textCard.js \
@@ -365,9 +365,9 @@ javascript_tests = \
 	tests/js/app/modules/testCardB.js \
 	tests/js/app/modules/testCarouselArrangement.js \
 	tests/js/app/modules/testDividedBannerTemplate.js \
-	tests/js/app/modules/testKnowledgeDocumentCard.js \
 	tests/js/app/modules/testHomePageATemplate.js \
 	tests/js/app/modules/testItemGroupModule.js \
+	tests/js/app/modules/testKnowledgeDocumentCard.js \
 	tests/js/app/modules/testLightboxModule.js \
 	tests/js/app/modules/testListArrangement.js \
 	tests/js/app/modules/testMediaCard.js \
@@ -379,8 +379,8 @@ javascript_tests = \
 	tests/js/app/modules/testSearchBannerModule.js \
 	tests/js/app/modules/testSearchBox.js \
 	tests/js/app/modules/testSearchModule.js \
-	tests/js/app/modules/testSetGroupModule.js \
 	tests/js/app/modules/testSetBannerModule.js \
+	tests/js/app/modules/testSetGroupModule.js \
 	tests/js/app/modules/testSidebarTemplate.js \
 	tests/js/app/modules/testTextCard.js \
 	tests/js/app/modules/testWindow.js \
