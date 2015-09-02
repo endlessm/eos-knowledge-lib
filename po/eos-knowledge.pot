@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: eos-knowledge 0.4.0\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-"
 "inc\n"
-"POT-Creation-Date: 2015-07-28 18:27-0700\n"
+"POT-Creation-Date: 2015-09-02 19:19+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,11 +22,20 @@ msgstr ""
 msgid "Hello C world!"
 msgstr ""
 
+#: data/widgets/backCover.ui:21
+msgid "Did you like this issue?"
+msgstr ""
+
+#: data/widgets/backCover.ui:34
+msgid ""
+"Don't miss next week's issue with more articles in your favorite magazine!"
+msgstr ""
+
 #: data/widgets/cardA.ui:99
 msgid "PDF"
 msgstr ""
 
-#: data/widgets/readerCard.ui:113 js/app/reader/webviewTooltip.js:138
+#: data/widgets/readerCard.ui:113 js/app/widgets/webviewTooltip.js:138
 msgid "Archive"
 msgstr ""
 
@@ -101,16 +110,8 @@ msgstr ""
 msgid "HOME"
 msgstr ""
 
-#: js/app/encyclopedia/presenter.js:28
+#: js/app/encyclopedia/presenter.js:31
 msgid "Search the world's information!"
-msgstr ""
-
-#. TRANSLATORS: This is the title of the search results page. %s
-#. will be replaced by the text that the user searched for. Make
-#. sure that %s is in your translation as well.
-#: js/app/encyclopedia/presenter.js:286
-#, javascript-format
-msgid "Results for %s"
 msgstr ""
 
 #: js/app/homePageA.js:74
@@ -134,7 +135,7 @@ msgstr ""
 msgid "Results for \"%s\""
 msgstr ""
 
-#: js/app/presenter.js:294 js/app/presenter.js:735
+#: js/app/presenter.js:310 js/app/presenter.js:614
 msgid "Articles"
 msgstr ""
 
@@ -143,7 +144,7 @@ msgstr ""
 msgid "Page %s"
 msgstr ""
 
-#: js/app/modules/readerWindow.js:229
+#: js/app/modules/readerWindow.js:191
 #, javascript-format
 msgid "This article is part of the archive of the magazine %s."
 msgstr ""
@@ -154,7 +155,7 @@ msgstr ""
 #. and right double quotes (U+201C and U+201D). Make sure to include %s in
 #. your translation and use whatever quote marks are appropriate for your
 #. language.
-#: js/app/modules/searchModule.js:90
+#: js/app/modules/searchModule.js:94
 #, javascript-format
 msgid "Searching for “%s”"
 msgstr ""
@@ -165,7 +166,7 @@ msgstr ""
 #. Unicode left and right double quotes (U+201C and U+201D). Make sure
 #. to include %s in your translation and use whatever quote marks are
 #. appropriate for your language.
-#: js/app/modules/searchModule.js:132
+#: js/app/modules/searchModule.js:136
 #, javascript-format
 msgid "Search results for “%s”"
 msgstr ""
@@ -176,35 +177,26 @@ msgstr ""
 #. Unicode left and right double quotes (U+201C and U+201D). Make sure to
 #. include %s in your translation and use whatever quote marks are
 #. appropriate for your language.
-#: js/app/modules/searchModule.js:140
+#: js/app/modules/searchModule.js:144
 #, javascript-format
 msgid "We did not find any results for “%s”."
 msgstr ""
 
-#: js/app/reader/donePage.js:68
-msgid "Did you like this issue?"
-msgstr ""
-
-#: js/app/reader/donePage.js:74
-msgid ""
-"Don't miss next week's issue with more articles in your favorite magazine!"
-msgstr ""
-
-#: js/app/reader/presenter.js:856
+#: js/app/reader/presenter.js:806
 msgid "View the license in your browser"
 msgstr ""
 
-#: js/app/reader/presenter.js:979 js/app/reader/presenter.js:986
+#: js/app/reader/presenter.js:931 js/app/reader/presenter.js:938
 msgid "Oops!"
 msgstr ""
 
-#: js/app/reader/presenter.js:980
+#: js/app/reader/presenter.js:932
 msgid ""
 "We could not find this magazine!\n"
 "Please try again after restarting your computer."
 msgstr ""
 
-#: js/app/reader/presenter.js:987
+#: js/app/reader/presenter.js:939
 msgid ""
 "There was an error loading that page.\n"
 "Try another one or try again after restarting your computer."
@@ -218,13 +210,6 @@ msgstr ""
 msgid "Open the magazine"
 msgstr ""
 
-#. TRANSLATORS: This shows the page number; %d will be replaced with
-#. the page number of the article.
-#: js/app/reader/webviewTooltip.js:122
-#, javascript-format
-msgid "Page %d"
-msgstr ""
-
 #. TRANSLATORS: anything inside curly braces '{}' is going to be substituted
 #. in code. Please make sure to leave the curly braces around any words that
 #. have them and DO NOT translate words inside curly braces. Also, note: the
@@ -236,4 +221,11 @@ msgstr ""
 
 #: js/app/utils.js:76
 msgid "and"
+msgstr ""
+
+#. TRANSLATORS: This shows the page number; %d will be replaced with
+#. the page number of the article.
+#: js/app/widgets/webviewTooltip.js:122
+#, javascript-format
+msgid "Page %d"
 msgstr ""
