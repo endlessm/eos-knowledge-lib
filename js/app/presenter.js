@@ -16,6 +16,7 @@ const HistoryPresenter = imports.app.historyPresenter;
 const Launcher = imports.app.launcher;
 const MediaObjectModel = imports.search.mediaObjectModel;
 const QueryObject = imports.search.queryObject;
+const StyleKnobGenerator = imports.app.compat.styleKnobGenerator;
 const TabButton = imports.app.widgets.tabButton;
 const TextCard = imports.app.modules.textCard;
 const Utils = imports.app.utils;
@@ -101,24 +102,38 @@ const Presenter = new Lang.Class({
             'Knowledge app view',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             GObject.Object.$gtype),
+        /**
+         * Property: template-type
+         * FIXME: This is a temporary step towards the development of interactions.
+         *   Scheduled for destruction.
+         */
+        'template-type': GObject.ParamSpec.string('template-type', 'template-type',
+            'Template type of the Knowledge app',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
+        /**
+         * Property: css
+         * FIXME: This is a temporary step towards the development of interactions.
+         *   Scheduled for destruction.
+         */
+        'css': GObject.ParamSpec.string('css', 'css',
+            'Template type of the Knowledge app',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
     },
 
-    _init: function (app_json, props) {
-        this._template_type = app_json['templateType'];
-
+    _init: function (props) {
         // Needs to happen before before any webviews are created
         WebkitContextSetup.register_webkit_extensions(props.application.application_id);
         WebkitContextSetup.register_webkit_uri_handlers(this._article_render_callback.bind(this));
 
         props.view = props.view || props.factory.create_named_module('window', {
             application: props.application,
-            template_type: this._template_type,
+            template_type: props.template_type,
         });
         props.engine = props.engine || Engine.Engine.get_default();
         this.parent(props);
 
         let dispatcher = Dispatcher.get_default();
-        this._style_knobs = app_json['styles'];
+        this._style_knobs = StyleKnobGenerator.get_knobs_from_css(this.css, this.template_type);
         this.load_theme();
 
         let query = new QueryObject.QueryObject({
@@ -228,15 +243,15 @@ const Presenter = new Lang.Class({
 
             // For now, only TextCard and TabButton have bespoke CSS
             // structure, since they need to use the @define syntax
-            if (key === 'article_card' && this._template_type === 'B') {
+            if (key === 'article_card' && this.template_type === 'B') {
                 str += TextCard.get_css_for_module(module_styles);
-            } else if (key === 'tab_button' && this._template_type === 'A') {
+            } else if (key === 'tab_button' && this.template_type === 'A') {
                 str += TabButton.get_css_for_module(module_styles);
             } else {
                 // All other modules can just convert their knobs to CSS strings
                 // directly using the STYLE_MAP
-                str += Utils.object_to_css_string(title_data, this.STYLE_MAP[this._template_type][key] + ' .title') + '\n';
-                str += Utils.object_to_css_string(module_data, this.STYLE_MAP[this._template_type][key]) + '\n';
+                str += Utils.object_to_css_string(title_data, this.STYLE_MAP[this.template_type][key] + ' .title') + '\n';
+                str += Utils.object_to_css_string(module_data, this.STYLE_MAP[this.template_type][key]) + '\n';
             }
         }
         return str;
@@ -252,7 +267,7 @@ const Presenter = new Lang.Class({
         let css_path = Gio.File.new_for_uri(DATA_RESOURCE_PATH).get_child('css');
         let css_files = [css_path.get_child('endless_knowledge.css')];
         // FIXME: Get theme from app.json once we have finalized that
-        let theme = this._template_type === 'A' ? 'templateA' : undefined;
+        let theme = this.template_type === 'A' ? 'templateA' : undefined;
         if (typeof theme !== 'undefined') {
             css_files.push(css_path.get_child('themes').get_child(theme + '.css'));
         }
@@ -362,7 +377,7 @@ const Presenter = new Lang.Class({
                 });
                 break;
             case this._ARTICLE_PAGE:
-                if (this._template_type === 'B') {
+                if (this.template_type === 'B') {
                     this._refresh_article_results(() => {
                         dispatcher.dispatch({
                             action_type: Actions.HIGHLIGHT_ITEM,
@@ -546,8 +561,8 @@ const Presenter = new Lang.Class({
 
     _article_render_callback: function (article_model) {
         return this._renderer.render(article_model, {
-            enable_scroll_manager: this._template_type === 'A',
-            show_title: this._template_type !== 'A',
+            enable_scroll_manager: this.template_type === 'A',
+            show_title: this.template_type !== 'A',
         });
     },
 });

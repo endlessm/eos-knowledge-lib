@@ -49,9 +49,25 @@ const EncyclopediaPresenter = new Lang.Class({
         'factory': GObject.ParamSpec.object('factory', 'Factory', 'Factory',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             GObject.Object.$gtype),
+        /**
+         * Property: template-type
+         * FIXME: This is a temporary step towards the development of interactions.
+         *   Scheduled for destruction.
+         */
+        'template-type': GObject.ParamSpec.string('template-type', 'template-type',
+            'Template type of the Knowledge app',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
+        /**
+         * Property: css
+         * FIXME: This is a temporary step towards the development of interactions.
+         *   Scheduled for destruction.
+         */
+        'css': GObject.ParamSpec.string('css', 'css',
+            'Template type of the Knowledge app',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
     },
 
-    _init: function(app_json, props) {
+    _init: function(props) {
         this.parent(props);
 
         let provider = new Gtk.CssProvider();

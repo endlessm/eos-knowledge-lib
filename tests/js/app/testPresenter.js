@@ -1,8 +1,6 @@
-const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
-const Mainloop = imports.mainloop;
 
 const Utils = imports.tests.utils;
 Utils.register_gresource();
@@ -17,8 +15,6 @@ const MockWidgets = imports.tests.mockWidgets;
 const Presenter = imports.app.presenter;
 
 Gtk.init(null);
-
-const TEST_CONTENT_DIR = Utils.get_test_content_srcdir();
 
 const MockHomePage = new Lang.Class({
     Name: 'MockHomePage',
@@ -83,8 +79,7 @@ const MockView = new Lang.Class({
 });
 
 describe('Presenter', () => {
-    let presenter, data, view, engine, factory, sections, dispatcher;
-    let test_app_filename = TEST_CONTENT_DIR + 'app.json';
+    let presenter, view, engine, factory, sections, dispatcher;
 
     beforeEach(() => {
         dispatcher = MockDispatcher.mock_default();
@@ -92,10 +87,6 @@ describe('Presenter', () => {
         factory = new MockFactory.MockFactory();
         factory.add_named_mock('home-card', Minimal.MinimalCard);
         factory.add_named_mock('results-card', Minimal.MinimalCard);
-
-        // FIXME: this is a v1 app.json
-        data = Utils.parse_object_from_path(test_app_filename);
-        data['styles'] = {};
 
         // The presenter is going to sort these by featured boolean
         // so make sure they are ordered with featured ones first otherwise
@@ -126,7 +117,7 @@ describe('Presenter', () => {
             new ContentObjectModel.ContentObjectModel(section)), null]);
         let application = new GObject.Object();
         application.application_id = 'foobar';
-        presenter = new Presenter.Presenter(data, {
+        presenter = new Presenter.Presenter({
             application: application,
             factory: factory,
             engine: engine,

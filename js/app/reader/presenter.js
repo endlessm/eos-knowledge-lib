@@ -27,6 +27,7 @@ const ReaderCard = imports.app.modules.readerCard;
 const ReaderDocumentCard = imports.app.modules.readerDocumentCard;
 const SidebarTemplate = imports.app.modules.sidebarTemplate;
 const StyleClasses = imports.app.styleClasses;
+const StyleKnobGenerator = imports.app.compat.styleKnobGenerator;
 const UserSettingsModel = imports.app.reader.userSettingsModel;
 const Utils = imports.app.utils;
 const WebkitContextSetup = imports.app.webkitContextSetup;
@@ -167,11 +168,27 @@ const Presenter = new Lang.Class({
             'The history model for this application',
             GObject.ParamFlags.READABLE,
             GObject.Object.$gtype),
+        /**
+         * Property: template-type
+         * FIXME: This is a temporary step towards the development of interactions.
+         *   Scheduled for destruction.
+         */
+        'template-type': GObject.ParamSpec.string('template-type', 'template-type',
+            'Template type of the Knowledge app',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
+        /**
+         * Property: css
+         * FIXME: This is a temporary step towards the development of interactions.
+         *   Scheduled for destruction.
+         */
+        'css': GObject.ParamSpec.string('css', 'css',
+            'Template type of the Knowledge app',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
     },
 
     _NUM_ARTICLE_PAGE_STYLES: 3,
 
-    _init: function (app_json, props) {
+    _init: function (props) {
         let css = Gio.File.new_for_uri('resource:///com/endlessm/knowledge/css/endless_reader.css');
         Utils.add_css_provider_from_file(css, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 
@@ -200,7 +217,7 @@ const Presenter = new Lang.Class({
             history_model: this.history_model,
         });
 
-        this._style_knobs = app_json['styles'];
+        this._style_knobs = StyleKnobGenerator.get_knobs_from_css(this.css, this.template_type);
         this.load_theme();
 
         this._pending_present_timestamp = null;

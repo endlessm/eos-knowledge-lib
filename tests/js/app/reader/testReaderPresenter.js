@@ -20,8 +20,6 @@ const QueryObject = imports.search.queryObject;
 
 Gtk.init(null);
 
-const TEST_CONTENT_DIR = Utils.get_test_content_srcdir();
-const TEST_DOMAIN = 'thrones-en';
 const UPDATE_INTERVAL_MS = 604800000;
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 
@@ -63,7 +61,7 @@ const MockNavButtons = new Lang.Class({
 let get_style_context = function () {
     return {
         add_class: function () {},
-    }
+    };
 };
 
 const MockView = new Lang.Class({
@@ -127,7 +125,7 @@ const MockView = new Lang.Class({
         this._article_pages.push(page);
     },
     get_article_page: function (i) {
-        return this._article_pages[i]
+        return this._article_pages[i];
     },
     article_pages_visible: function () {
         return true;
@@ -140,8 +138,6 @@ const MockView = new Lang.Class({
 describe('Reader presenter', function () {
     let engine, settings, view, article_nav_buttons, presenter, dispatcher;
 
-    const TEST_APP_FILENAME = TEST_CONTENT_DIR + 'app.json';
-    const TEST_JSON = Utils.parse_object_from_path(TEST_APP_FILENAME);
     const MOCK_DATA = [
         ['Title 1', ['Kim Kardashian'], '2014/11/13 08:00'],
         ['Title 2', ['Kim Kardashian'], ''],
@@ -182,7 +178,7 @@ describe('Reader presenter', function () {
         engine.get_object_by_id_finish.and.returnValue(null);
         Utils.register_gresource();
 
-        presenter = new Presenter.Presenter(TEST_JSON, {
+        presenter = new Presenter.Presenter({
             application: application,
             engine: engine,
             settings: settings,
