@@ -281,7 +281,6 @@ function transform_v1_description(json) {
             type: 'ReaderWindow',
             properties: {
                 'title': json['appTitle'],
-                'subtitle': json['appSubtitle'],
                 'title-image-uri': json['titleImageURI'],
                 'home-background-uri': json['backgroundHomeURI'],
             },
@@ -290,6 +289,8 @@ function transform_v1_description(json) {
             type: 'AppBanner',
             properties: {
                 'image-uri': json['titleImageURI'],
+                'subtitle': json['appSubtitle'],
+                'subtitle-capitalization': EosKnowledgePrivate.TextTransform.UPPERCASE,
             },
         };
         modules['back-cover'] = {

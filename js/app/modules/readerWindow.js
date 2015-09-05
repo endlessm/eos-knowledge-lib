@@ -145,13 +145,6 @@ const ReaderWindow = new Lang.Class({
             GObject.ParamFlags.READABLE,
             Endless.SearchBox),
         /**
-         * Property: subtitle
-         * A subtitle for the application. Defaults to an empty string.
-         */
-        'subtitle': GObject.ParamSpec.string('subtitle', 'App subtitle',
-            'A subtitle for the app',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
-        /**
          * Property: home-background-uri
          * URI of the home page background
          */
@@ -183,7 +176,6 @@ const ReaderWindow = new Lang.Class({
 
         this.overview_page = new OverviewPage.OverviewPage({
             factory: this.factory,
-            subtitle: this.subtitle,
             background_image_uri: this.home_background_uri,
         });
         this.back_cover = this.factory.create_named_module('back-cover');
