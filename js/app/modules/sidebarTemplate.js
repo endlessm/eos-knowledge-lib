@@ -1,5 +1,7 @@
 // Copyright 2015 Endless Mobile, Inc.
 
+/* exported SidebarTemplate */
+
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
@@ -7,6 +9,16 @@ const Lang = imports.lang;
 
 const Module = imports.app.interfaces.module;
 const StyleClasses = imports.app.styleClasses;
+
+const _FixedWidthFrame = new Lang.Class({
+    Name: 'FixedWidthFrame',
+    GTypeName: 'EknFixedWidthFrame',
+    Extends: Gtk.Frame,
+
+    vfunc_get_preferred_width: function () {
+        return [this.width, this.width];
+    },
+});
 
 /**
  * Class: SidebarTemplate
@@ -48,7 +60,7 @@ const SidebarTemplate = new Lang.Class({
         let content_frame = new Gtk.Frame({
             expand: true,
         });
-        let fixed_width_frame = new FixedWidthFrame({
+        let fixed_width_frame = new _FixedWidthFrame({
             expand: false,
         });
         fixed_width_frame.width = this.sidebar_width;
@@ -70,15 +82,5 @@ const SidebarTemplate = new Lang.Class({
 
     get_slot_names: function () {
         return [ 'sidebar', 'content' ];
-    },
-});
-
-const FixedWidthFrame = new Lang.Class({
-    Name: 'FixedWidthFrame',
-    GTypeName: 'EknFixedWidthFrame',
-    Extends: Gtk.Frame,
-
-    vfunc_get_preferred_width: function () {
-        return [this.width, this.width];
     },
 });
