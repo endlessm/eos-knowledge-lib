@@ -8,6 +8,7 @@ const ArticleSnippetCard = imports.app.modules.articleSnippetCard;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
 const MockFactory = imports.tests.mockFactory;
+const MockWidgets = imports.tests.mockWidgets;
 const OverviewPage = imports.app.reader.overviewPage;
 const StyleClasses = imports.app.styleClasses;
 
@@ -37,8 +38,11 @@ describe('Overview page widget', function () {
             new ArticleSnippetCard.ArticleSnippetCard({
                 model: model,
             }));
+
+        let factory = new MockFactory.MockFactory();
+        factory.add_named_mock('front-cover', MockWidgets.MockSidebarTemplate);
         page = new OverviewPage.OverviewPage({
-            factory: new MockFactory.MockFactory(),
+            factory: factory,
         });
     });
 

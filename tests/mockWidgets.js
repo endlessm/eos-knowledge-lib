@@ -1,7 +1,7 @@
 // Copyright 2015 Endless Mobile, Inc.
 
 /* exported MockButton, MockHistoryButtons, MockItemGroupModule,
-MockScrolledArrangement, MockSearchBox */
+MockScrolledArrangement, MockSearchBox, MockSidebarTemplate */
 
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
@@ -67,4 +67,18 @@ const MockItemGroupModule = new Lang.Class({
     },
 
     add_card: function () {},
+});
+
+const MockSidebarTemplate = new Lang.Class({
+    Name: 'MockSidebarTemplate',
+    Extends: Gtk.Grid,
+    _init: function (props={}) {
+        Lang.copyProperties(props, this);
+        this.parent({});
+        this.content_frame = new Gtk.Grid();
+        this.sidebar_frame = new Gtk.Grid();
+        this.add(this.content_frame);
+        this.add(this.sidebar_frame);
+    },
+    connect: function () {},
 });

@@ -1,13 +1,11 @@
 // Copyright 2014 Endless Mobile, Inc.
 
-const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const SpaceContainer = imports.app.widgets.spaceContainer;
 const StyleClasses = imports.app.styleClasses;
-const Utils = imports.app.utils;
 
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 
@@ -16,7 +14,6 @@ const _LOGO_LEFT_MARGIN = 75;
 const _FRAME_RIGHT_MARGIN = 100;
 const _PAGE_WIDTH_THRESHOLD = 1366;
 const _MARGIN_DIFF = 50;
-const _MAX_FRAME_WIDTH = 576;
 
 /**
  * Class: Reader.OverviewPage
@@ -64,18 +61,11 @@ const OverviewPage = new Lang.Class({
             margin_start: _LOGO_LEFT_MARGIN,
         });
 
-        let grid = new Gtk.Grid({
+        this._template = this.factory.create_named_module('front-cover', {
             column_homogeneous: true,
             column_spacing: 120,
-            orientation: Gtk.Orientation.VERTICAL,
         });
-
-        let snippets_frame = new MaxWidthFrame({
-            halign: Gtk.Align.END,
-            valign: Gtk.Align.FILL,
-            max_width: _MAX_FRAME_WIDTH,
-        });
-        snippets_frame.get_style_context().add_class(StyleClasses.READER_OVERVIEW_FRAME);
+        this._template.content_frame.add(this._app_banner);
 
         this._snippets_grid = new SpaceContainer.SpaceContainer({
             orientation: Gtk.Orientation.VERTICAL,
@@ -84,11 +74,11 @@ const OverviewPage = new Lang.Class({
             valign: Gtk.Align.FILL,
             margin_end: _FRAME_RIGHT_MARGIN,
         });
-        snippets_frame.add(this._snippets_grid);
+        this._template.sidebar_frame.add(this._snippets_grid);
 
         this.get_style_context().add_class(StyleClasses.READER_OVERVIEW_PAGE);
 
-        grid.connect('size-allocate', (grid, alloc) => {
+        this._template.connect('size-allocate', (grid, alloc) => {
             if (alloc.width >= _PAGE_WIDTH_THRESHOLD) {
                 this._app_banner.margin_start = _LOGO_LEFT_MARGIN;
                 this._snippets_grid.margin_end = _FRAME_RIGHT_MARGIN;
@@ -98,10 +88,7 @@ const OverviewPage = new Lang.Class({
             }
         });
 
-        grid.attach(this._app_banner, 0, 0, 1, 1);
-        grid.attach(snippets_frame, 1, 0, 1, 1);
-
-        this.add(grid);
+        this.add(this._template);
     },
 
     get background_image_uri () {
@@ -130,41 +117,5 @@ const OverviewPage = new Lang.Class({
     remove_all_snippets: function () {
         this._snippets_grid.get_children().forEach((child) =>
             this._snippets_grid.remove(child));
-    },
-});
-
-
-function get_css_for_module (css_data) {
-    let module_data = Utils.get_css_for_submodule('module', css_data);
-    return Utils.object_to_css_string(module_data, '.overview-frame');
-}
-
-/**
- * Class: MaxWidthFrame
- *
- * A custom frame container that has a hard constraint on its width
- */
-const MaxWidthFrame = new Lang.Class({
-    Name: 'MaxWidthFrame',
-    GTypeName: 'EknMaxWidthFrame',
-    Extends: Gtk.Frame,
-    Properties: {
-        'max-width': GObject.ParamSpec.uint('max-width', 'Maximum Width',
-            'Maximum width of the container widget.',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            0, GLib.MAXUINT32, 0),
-    },
-
-    _init: function (props={}) {
-        this.parent(props);
-    },
-
-    vfunc_get_request_mode: function () {
-        return Gtk.SizeRequestMode.HEIGHT_FOR_WIDTH;
-    },
-
-    vfunc_get_preferred_width: function () {
-        let [min, nat] = this.parent();
-        return [Math.min(min, this.max_width), Math.min(nat, this.max_width)];
     },
 });

@@ -394,13 +394,6 @@ const NO_SEARCH_RESULTS_PAGE_B = 'no-search-results-page-b';
 const READER_OVERVIEW_PAGE = 'overview-page';
 
 /**
- * Constant: READER_OVERVIEW_FRAME
- * Matches the GtkFrame widget that contains the snippets in the OverviewPage
- * of the Reader apps.
- */
-const READER_OVERVIEW_FRAME = 'overview-frame';
-
-/**
  * Constant: READER_ARTICLE_SNIPPET
  *
  * Matches the ArticleSnippetCard widget used in the OverviewPage of the Reader
