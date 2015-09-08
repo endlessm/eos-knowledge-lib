@@ -71,7 +71,8 @@ const ModuleFactory = new Lang.Class({
      * Returns module specified in app.json for a slot
      *
      * Searches the app.json for the module meant to fill the slot
-     * {slot} of module {parent_name}. Creates and returns this module.
+     * {slot} of module {parent_name}. Creates and returns this module, or null
+     * if the slot was not filled.
      *
      * Parameters:
      *   parent_name - Name of module for which to create submodule
@@ -80,6 +81,8 @@ const ModuleFactory = new Lang.Class({
      */
     create_module_for_slot: function (parent_name, slot, extra_props={}) {
         let factory_name = this._get_module_description_by_name(parent_name)['slots'][slot];
+        if (factory_name === null)
+            return null;
         return this.create_named_module(factory_name, extra_props);
     },
 

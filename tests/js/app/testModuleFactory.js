@@ -13,6 +13,7 @@ const MOCK_APP_JSON = {
             type: 'TestModule',
             slots: {
                 'test_slot': 'test_submodule',
+                'optional_slot': null,
             },
         },
         'test_submodule': {
@@ -64,5 +65,11 @@ describe('Module factory', function () {
         expect(test_constructor).toHaveBeenCalledWith(jasmine.objectContaining({
             foo: 'bar',
         }));
+    });
+
+    it('allows null as a value to indicate a slot is not filled', function () {
+        let submodule = module_factory.create_module_for_slot('test',
+            'optional_slot');
+        expect(submodule).toBeNull();
     });
 });
