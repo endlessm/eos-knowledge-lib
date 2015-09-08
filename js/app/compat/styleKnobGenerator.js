@@ -102,6 +102,7 @@ function selector_to_knob_reader (knobs, props, selector) {
         knobs['reader_card' + num] = merge_object_properties(knobs['reader_card' + num], prefix_keys_with(props, 'title-'));
     } else {
         switch (selector) {
+            // .overview-frame is defunct, but still present in <2.5 overrides
             case '.overview-frame':
                 knobs['overview_page'] = merge_object_properties(knobs['overview_page'], prefix_keys_with(props, 'module-'));
                 break;

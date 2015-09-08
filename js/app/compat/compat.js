@@ -301,6 +301,17 @@ function transform_v1_description(json) {
                 'halign': Gtk.Align.START,
             },
         };
+        modules['front-cover'] = {
+            type: 'SidebarTemplate',
+            slots: {
+                content: null,
+                sidebar: null,
+            },
+            properties: {
+                sidebar_width: 576,
+                fixed: false,
+            },
+        };
         modules['back-cover'] = {
             type: 'BackCover',
             properties: {

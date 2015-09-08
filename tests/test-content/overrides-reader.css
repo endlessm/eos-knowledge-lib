@@ -1,5 +1,6 @@
 /* Copyright 2015 Endless Mobile, Inc. */
 
+/* .overview-frame is defunct, but still present in <2.5 overrides */
 .overview-frame {
     background: rgba(51, 51, 51, 0.30);
     background-image: linear-gradient(-180deg, rgba(176, 176, 176, 0.20) 1%, alpha(black, 0.30) 100%);

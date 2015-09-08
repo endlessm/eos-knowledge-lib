@@ -22,11 +22,11 @@ const HistoryPresenter = imports.app.historyPresenter;
 const Launcher = imports.app.launcher;
 const LightboxPresenter = imports.app.lightboxPresenter;
 const MediaObjectModel = imports.search.mediaObjectModel;
-const OverviewPage = imports.app.reader.overviewPage;
 const QueryObject = imports.search.queryObject;
 const BackCover = imports.app.modules.backCover;
 const ReaderCard = imports.app.modules.readerCard;
 const ReaderDocumentCard = imports.app.modules.readerDocumentCard;
+const SidebarTemplate = imports.app.modules.sidebarTemplate;
 const StyleClasses = imports.app.styleClasses;
 const UserSettingsModel = imports.app.reader.userSettingsModel;
 const Utils = imports.app.utils;
@@ -274,7 +274,7 @@ const Presenter = new Lang.Class({
             } else if (key === 'back_cover') {
                 str += BackCover.get_css_for_module(css_data[key]);
             } else if (key === 'overview_page') {
-                str += OverviewPage.get_css_for_module(css_data[key]);
+                str += SidebarTemplate.get_css_for_module(css_data[key]);
             }
         }
         return str;
