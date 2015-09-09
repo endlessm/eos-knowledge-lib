@@ -49,8 +49,8 @@ const Window = new Lang.Class({
         /**
          * Property: home-page
          *
-         * The <HomePageA> widget created by this widget. Read-only,
-         * modify using the <HomePageA> API.
+         * The <HomePage> widget created by this widget. Read-only,
+         * modify using the <HomePage> API.
          */
         'home-page': GObject.ParamSpec.object('home-page', 'Home page',
             'The home page of this view widget.',
