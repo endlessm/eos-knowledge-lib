@@ -58,6 +58,29 @@ const AppBanner = new Lang.Class({
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             EosKnowledgePrivate.TextTransformType,
             EosKnowledgePrivate.TextTransform.NONE),
+        /**
+         * Property: min-fraction
+         * Delegates to <ImagePreviewer.min-fraction>
+         *
+         * Allows setting this property on the logo widget from the app.json.
+         * It's construct only for simplicity.
+         */
+        'min-fraction': GObject.ParamSpec.float('min-fraction', 'Min fraction',
+            'Min fraction of size to display the logo at',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            0.0, 1.0, 0.0),
+
+        /**
+         * Property: max-fraction
+         * Delegates to <ImagePreviewer.max-fraction>
+         *
+         * Allows setting this property on the logo widget from the app.json.
+         * It's construct only for simplicity.
+         */
+        'max-fraction': GObject.ParamSpec.float('max-fraction', 'Max fraction',
+            'Max fraction of size to display the logo at',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            0.0, 1.0, 1.0),
     },
 
     // Note: The 50-px margin-start on the subtitle looks reasonable until we
@@ -70,6 +93,8 @@ const AppBanner = new Lang.Class({
 
         this._logo = new ImagePreviewer.ImagePreviewer({
             visible: true,
+            min_fraction: this.min_fraction,
+            max_fraction: this.max_fraction,
         });
         this.attach(this._logo, 0, 0, 1, 1);
 
