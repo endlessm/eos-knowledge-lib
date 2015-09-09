@@ -10,7 +10,6 @@ const Lang = imports.lang;
 const Arrangement = imports.app.interfaces.arrangement;
 const Card = imports.app.interfaces.card;
 const DocumentCard = imports.app.interfaces.documentCard;
-const HomePage = imports.app.homePage;
 const Module = imports.app.interfaces.module;
 
 const MinimalArrangement = new Lang.Class({
@@ -81,7 +80,7 @@ const MinimalCard = new Lang.Class({
 
 const MinimalHomePage = new Lang.Class({
     Name: 'MinimalHomePage',
-    Extends: GObject.Object,
+    Extends: Gtk.Grid,
     Implements: [ Module.Module ],
 
     Properties: {
@@ -91,6 +90,7 @@ const MinimalHomePage = new Lang.Class({
 
     _init: function (props={}) {
         this.parent(props);
+        this.show_all();
     },
 });
 

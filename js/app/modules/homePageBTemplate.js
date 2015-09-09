@@ -2,7 +2,6 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
-const HomePage = imports.app.homePage;
 const Module = imports.app.interfaces.module;
 const StyleClasses = imports.app.styleClasses;
 
@@ -19,7 +18,7 @@ const HomePageBTemplate = new Lang.Class({
     Name: 'HomePageBTemplate',
     GTypeName: 'EknHomePageBTemplate',
     Extends: Gtk.Grid,
-    Implements: [ Module.Module, HomePage.HomePage ],
+    Implements: [ Module.Module ],
 
     Properties: {
         'factory': GObject.ParamSpec.override('factory', Module.Module),

@@ -101,17 +101,20 @@ describe('Presenter', () => {
         data = Utils.parse_object_from_path(test_app_filename);
         data['styles'] = {};
 
+        // The presenter is going to sort these by featured boolean
+        // so make sure they are ordered with featured ones first otherwise
+        // test will fail.
         sections = [
-            {
-                title: 'Whitewalkers',
-                thumbnail_uri: 'resource:///com/endlessm/thrones/whitewalker.jpg',
-                tags: ['home page', 'asia', 'latin america'],
-            },
             {
                 title: 'Kings',
                 thumbnail_uri: 'resource:///com/endlessm/thrones/joffrey.jpg',
                 featured: true,
                 tags: ['hostels', 'monuments'],
+            },
+            {
+                title: 'Whitewalkers',
+                thumbnail_uri: 'resource:///com/endlessm/thrones/whitewalker.jpg',
+                tags: ['home page', 'asia', 'latin america'],
             },
             {
                 title: 'Weddings',
