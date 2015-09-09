@@ -4,7 +4,6 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
-const SpaceContainer = imports.app.widgets.spaceContainer;
 const StyleClasses = imports.app.styleClasses;
 
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
@@ -67,24 +66,23 @@ const OverviewPage = new Lang.Class({
         });
         this._template.content_frame.add(this._app_banner);
 
-        this._snippets_grid = new SpaceContainer.SpaceContainer({
-            orientation: Gtk.Orientation.VERTICAL,
+        this._snippets_group = this.factory.create_named_module('snippets-group', {
             expand: true,
             halign: Gtk.Align.END,
             valign: Gtk.Align.FILL,
             margin_end: _FRAME_RIGHT_MARGIN,
         });
-        this._template.sidebar_frame.add(this._snippets_grid);
+        this._template.sidebar_frame.add(this._snippets_group);
 
         this.get_style_context().add_class(StyleClasses.READER_OVERVIEW_PAGE);
 
         this._template.connect('size-allocate', (grid, alloc) => {
             if (alloc.width >= _PAGE_WIDTH_THRESHOLD) {
                 this._app_banner.margin_start = _LOGO_LEFT_MARGIN;
-                this._snippets_grid.margin_end = _FRAME_RIGHT_MARGIN;
+                this._snippets_group.margin_end = _FRAME_RIGHT_MARGIN;
             } else {
                 this._app_banner.margin_start = _LOGO_LEFT_MARGIN - _MARGIN_DIFF;
-                this._snippets_grid.margin_end = _FRAME_RIGHT_MARGIN - _MARGIN_DIFF;
+                this._snippets_group.margin_end = _FRAME_RIGHT_MARGIN - _MARGIN_DIFF;
             }
         });
 
@@ -106,16 +104,5 @@ const OverviewPage = new Lang.Class({
             let context = this.get_style_context();
             context.add_provider(provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
         }
-    },
-
-    set_article_snippets: function (snippets) {
-        snippets.forEach((snippet) => {
-            this._snippets_grid.add(snippet);
-        });
-    },
-
-    remove_all_snippets: function () {
-        this._snippets_grid.get_children().forEach((child) =>
-            this._snippets_grid.remove(child));
     },
 });

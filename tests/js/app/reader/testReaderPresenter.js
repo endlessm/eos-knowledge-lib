@@ -103,8 +103,6 @@ const MockView = new Lang.Class({
         };
         this.overview_page = {
             get_style_context: get_style_context,
-            set_article_snippets: jasmine.createSpy('set_article_snippets'),
-            remove_all_snippets: function () {},
             app_banner: {},
         };
         this.standalone_page = {
@@ -238,6 +236,17 @@ describe('Reader presenter', function () {
             spyOn(view, 'append_article_page').and.callThrough();
             presenter.desktop_launch();
             expect(view.append_article_page.calls.count()).toEqual(MOCK_RESULTS.length);
+        });
+
+        it('shows the snippets on the front cover when loading content', function () {
+            presenter.desktop_launch();
+            expect(dispatcher.dispatched_payloads).toContain({
+                action_type: Actions.CLEAR_ITEMS,
+            });
+            expect(dispatcher.dispatched_payloads).toContain({
+                action_type: Actions.APPEND_ITEMS,
+                models: jasmine.any(Array),
+            });
         });
 
         it('gracefully handles the query failing', function () {
