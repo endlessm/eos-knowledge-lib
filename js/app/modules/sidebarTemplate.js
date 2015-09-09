@@ -42,6 +42,7 @@ const _MaxWidthFrame = new Lang.Class({
  *
  * The <sidebar-width> property controls the width of the sidebar slot, and the
  * <fixed> property controls whether this is a fixed or a maximum width.
+ * This template can also set a background image in code.
  *
  * Slots:
  *   sidebar
@@ -83,6 +84,18 @@ const SidebarTemplate = new Lang.Class({
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             true),
 
+        /**
+         * Property: background-image-uri
+         * The background image URI for this template.
+         *
+         * Generally set to a resource:// URI and generally takes up the whole
+         * page.
+         */
+        'background-image-uri': GObject.ParamSpec.string('background-image-uri',
+            'Background image URI', 'URI for background image of this widget',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            ''),
+
         'factory': GObject.ParamSpec.override('factory', Module.Module),
         'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
     },
@@ -91,6 +104,14 @@ const SidebarTemplate = new Lang.Class({
         props.orientation = Gtk.Orientation.HORIZONTAL;
         props.expand = true;
         this.parent(props);
+
+        if (this.background_image_uri) {
+            let frame_css = '* { background-image: url("' + this.background_image_uri + '");}';
+            let provider = new Gtk.CssProvider();
+            provider.load_from_data(frame_css);
+            let context = this.get_style_context();
+            context.add_provider(provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+        }
 
         let content_frame = new Gtk.Frame({
             expand: true,

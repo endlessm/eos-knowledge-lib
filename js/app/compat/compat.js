@@ -268,6 +268,9 @@ function transform_v1_description(json) {
                 "content": "results-search-banner",
                 "sidebar": "search-results",
             },
+            "properties": {
+                "background-image-uri": json['backgroundSectionURI'],
+            },
         };
         modules["lightbox-card"] = {
             "type": "MediaCard",
@@ -446,6 +449,7 @@ function transform_v1_description(json) {
             "properties": {
                 "sidebar-width": 576,
                 "fixed": false,
+                "background-image-uri": json["backgroundHomeURI"],
             },
         };
         modules["back-cover"] = {
