@@ -248,6 +248,7 @@ js_files = \
 	js/app/modules/listArrangement.js \
 	js/app/modules/carouselArrangement.js \
 	js/app/modules/mediaCard.js \
+	js/app/modules/overflowArrangement.js \
 	js/app/modules/readerCard.js \
 	js/app/modules/readerDocumentCard.js \
 	js/app/modules/readerWindow.js \
@@ -370,6 +371,7 @@ javascript_tests = \
 	tests/js/app/modules/testItemGroupModule.js \
 	tests/js/app/modules/testListArrangement.js \
 	tests/js/app/modules/testMediaCard.js \
+	tests/js/app/modules/testOverflowArrangement.js \
 	tests/js/app/modules/testReaderCard.js \
 	tests/js/app/modules/testReaderDocumentCard.js \
 	tests/js/app/modules/testReaderWindow.js \

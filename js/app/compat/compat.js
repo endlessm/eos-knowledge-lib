@@ -318,6 +318,19 @@ function transform_v1_description(json) {
                 'background-image-uri': json['backgroundSectionURI'],
             },
         };
+        modules['snippets-group'] = {
+            type: 'ItemGroupModule',
+            slots: {
+                card_type: 'home-card',
+                arrangement: 'snippets-arrangement',
+            },
+        };
+        modules['snippets-arrangement'] = {
+            type: 'OverflowArrangement',
+            properties: {
+                orientation: Gtk.Orientation.VERTICAL,
+            },
+        };
         modules['top-bar-search'] = {
             type: 'SearchBox',
         };
