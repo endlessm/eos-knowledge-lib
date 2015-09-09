@@ -36,16 +36,6 @@ const OverviewPage = new Lang.Class({
         'factory': GObject.ParamSpec.object('factory', 'Factory', 'Factory',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             GObject.Object.$gtype),
-
-        /**
-         * Property: background-image-uri
-         *
-         * The background image uri for this page.
-         * Gets set by the presenter.
-         */
-        'background-image-uri': GObject.ParamSpec.string('background-image-uri',
-            'Background image URI', 'The background image of this page.',
-            GObject.ParamFlags.READWRITE, ''),
     },
 
     _init: function (props) {
@@ -87,22 +77,5 @@ const OverviewPage = new Lang.Class({
         });
 
         this.add(this._template);
-    },
-
-    get background_image_uri () {
-        return this._background_image_uri;
-    },
-
-    set background_image_uri (v) {
-        if (this._background_image_uri === v) return;
-
-        this._background_image_uri = v;
-        if (this._background_image_uri !== null) {
-            let frame_css = '* { background-image: url("' + this._background_image_uri + '");}';
-            let provider = new Gtk.CssProvider();
-            provider.load_from_data(frame_css);
-            let context = this.get_style_context();
-            context.add_provider(provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
-        }
     },
 });

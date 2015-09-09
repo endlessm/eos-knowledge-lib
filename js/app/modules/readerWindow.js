@@ -164,7 +164,6 @@ const ReaderWindow = new Lang.Class({
 
         this.overview_page = new OverviewPage.OverviewPage({
             factory: this.factory,
-            background_image_uri: this.home_background_uri,
         });
         this.back_cover = this.factory.create_named_module('back-cover');
         this.standalone_page = new StandalonePage.StandalonePage();

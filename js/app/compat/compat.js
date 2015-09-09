@@ -199,6 +199,9 @@ function transform_v1_description(json) {
                 content: 'results-search-banner',
                 sidebar: 'search-results',
             },
+            properties: {
+                background_image_uri: json['backgroundSectionURI'],
+            },
         };
         modules['lightbox-card'] = {
             type: 'MediaCard',
@@ -310,6 +313,7 @@ function transform_v1_description(json) {
             properties: {
                 sidebar_width: 576,
                 fixed: false,
+                background_image_uri: json['backgroundHomeURI'],
             },
         };
         modules['back-cover'] = {
