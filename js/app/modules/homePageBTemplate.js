@@ -42,8 +42,6 @@ const HomePageBTemplate = new Lang.Class({
             this.attach.bind(this, submodule).apply(this, PACKING_ARGS[slot]);
             this['_' + slot] = submodule;
         });
-
-        this.get_style_context().add_class(StyleClasses.HOME_PAGE);
     },
 
     get_slot_names: function () {

@@ -54,9 +54,5 @@ describe('HomePageBTemplate module', function () {
         it('has home page B template class', function () {
             expect(home_page).toHaveCssClass(StyleClasses.HOME_PAGE_B_TEMPLATE);
         });
-
-        it('has home page class', function () {
-            expect(home_page).toHaveCssClass(StyleClasses.HOME_PAGE);
-        });
     });
 });
