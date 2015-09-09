@@ -110,8 +110,8 @@ function transform_v1_description(json) {
                 'image-uri': json['titleImageURI'],
                 'min-fraction': 0.4,
                 'max-fraction': 0.7,
-                'visible': true,
-                'can-focus': false,
+                'valign': Gtk.Align.CENTER,
+                'halign': Gtk.Align.CENTER,
             },
         };
         modules['home-page-set-group'] = {
@@ -245,6 +245,8 @@ function transform_v1_description(json) {
                 'max-fraction': 0.2,
                 'margin-top': 10,
                 'margin-bottom': 10,
+                'valign': Gtk.Align.START,
+                'vexpand': false,
             },
         };
         modules['lightbox-card'] = {
@@ -291,6 +293,8 @@ function transform_v1_description(json) {
                 'image-uri': json['titleImageURI'],
                 'subtitle': json['appSubtitle'],
                 'subtitle-capitalization': EosKnowledgePrivate.TextTransform.UPPERCASE,
+                'valign': Gtk.Align.START,
+                'halign': Gtk.Align.START,
             },
         };
         modules['back-cover'] = {
