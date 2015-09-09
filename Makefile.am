@@ -260,6 +260,7 @@ js_files = \
 	js/app/modules/sidebarTemplate.js \
 	js/app/modules/textCard.js \
 	js/app/modules/tiledGridArrangement.js \
+	js/app/modules/twoVerticalTemplate.js \
 	js/app/modules/window.js \
 	js/app/mustache.js \
 	js/app/noSearchResultsPage.js \
