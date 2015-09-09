@@ -13,7 +13,6 @@ GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.
 
 const _LOGO_TOP_MARGIN = 50;
 const _LOGO_LEFT_MARGIN = 75;
-const _SUBTITLE_LEFT_MARGIN = 125;
 const _FRAME_RIGHT_MARGIN = 100;
 const _PAGE_WIDTH_THRESHOLD = 1366;
 const _MARGIN_DIFF = 50;
@@ -43,14 +42,6 @@ const OverviewPage = new Lang.Class({
             GObject.Object.$gtype),
 
         /**
-         * Property: subtitle
-         * A subtitle for the application. Defaults to an empty string.
-         */
-        'subtitle': GObject.ParamSpec.string('subtitle', 'App subtitle',
-            'A subtitle for the app',
-            GObject.ParamFlags.READWRITE, ''),
-
-        /**
          * Property: background-image-uri
          *
          * The background image uri for this page.
@@ -64,16 +55,6 @@ const OverviewPage = new Lang.Class({
     _init: function (props) {
         props = props || {};
         props.hexpand = true;
-
-        this._subtitle_label = new Gtk.Label({
-            halign: Gtk.Align.START,
-            vexpand: true,
-            valign: Gtk.Align.START,
-            use_markup: true,
-            // FIXME: This looks reasonable until we get better instructions
-            // from design.
-            margin_start: _SUBTITLE_LEFT_MARGIN,
-        });
 
         this.parent(props);
 
@@ -106,23 +87,19 @@ const OverviewPage = new Lang.Class({
         snippets_frame.add(this._snippets_grid);
 
         this.get_style_context().add_class(StyleClasses.READER_OVERVIEW_PAGE);
-        this._subtitle_label.get_style_context().add_class(StyleClasses.READER_SUBTITLE);
 
         grid.connect('size-allocate', (grid, alloc) => {
             if (alloc.width >= _PAGE_WIDTH_THRESHOLD) {
                 this._app_banner.margin_start = _LOGO_LEFT_MARGIN;
-                this._subtitle_label.margin_start = _SUBTITLE_LEFT_MARGIN;
                 this._snippets_grid.margin_end = _FRAME_RIGHT_MARGIN;
             } else {
                 this._app_banner.margin_start = _LOGO_LEFT_MARGIN - _MARGIN_DIFF;
-                this._subtitle_label.margin_start = _SUBTITLE_LEFT_MARGIN - _MARGIN_DIFF;
                 this._snippets_grid.margin_end = _FRAME_RIGHT_MARGIN - _MARGIN_DIFF;
             }
         });
 
         grid.attach(this._app_banner, 0, 0, 1, 1);
-        grid.attach(this._subtitle_label, 0, 1, 1, 1);
-        grid.attach(snippets_frame, 1, 0, 1, 2);
+        grid.attach(snippets_frame, 1, 0, 1, 1);
 
         this.add(grid);
     },
@@ -142,23 +119,6 @@ const OverviewPage = new Lang.Class({
             let context = this.get_style_context();
             context.add_provider(provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
         }
-    },
-
-    set subtitle (v) {
-        if (this._subtitle_label_text === v)
-            return;
-        this._subtitle_label_text = v;
-        /* 758 = 0.74 px * 1024 Pango units / px */
-        this._subtitle_label.label = ('<span letter_spacing="758">' +
-            GLib.markup_escape_text(this._subtitle_label_text.toLocaleUpperCase(), -1) + '</span>');
-        this._subtitle_label.visible = (v && v.length !== 0);
-        this.notify('subtitle');
-    },
-
-    get subtitle () {
-        if (this._subtitle_label_text)
-            return this._subtitle_label_text;
-        return '';
     },
 
     set_article_snippets: function (snippets) {

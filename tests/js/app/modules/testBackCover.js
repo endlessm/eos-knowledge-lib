@@ -37,6 +37,6 @@ describe('Back cover widget', function () {
     });
 
     it('has a child widget with subtitle CSS class', function () {
-        expect(page).toHaveDescendantWithCssClass(StyleClasses.READER_SUBTITLE);
+        expect(page).toHaveDescendantWithCssClass(StyleClasses.SUBTITLE);
     });
 });

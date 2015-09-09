@@ -1,22 +1,29 @@
 // Copyright 2014 Endless Mobile, Inc.
 
+const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Gio = imports.gi.Gio;
+const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
+const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const Module = imports.app.interfaces.module;
 const ImagePreviewer = imports.app.widgets.imagePreviewer;
+const Utils = imports.app.utils;
 
 /**
  * Class: AppBanner
  *
  * A module for the application's logo.
- * It will have the 'app-banner' CSS class applied to it.
+ *
+ * CSS classes:
+ *   app-banner - on the module itself
+ *   subtitle - on the label displaying the app's subtitle
  */
 const AppBanner = new Lang.Class({
     Name: 'AppBanner',
     GTypeName: 'EknAppBanner',
-    Extends: ImagePreviewer.ImagePreviewer,
+    Extends: Gtk.Grid,
     Implements: [ Module.Module ],
 
     Properties: {
@@ -30,16 +37,64 @@ const AppBanner = new Lang.Class({
         'image-uri': GObject.ParamSpec.string('image-uri', 'Page Title Image URI',
             'URI to the title image',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
+        /**
+         * Property: subtitle
+         * A subtitle for the application. Defaults to an empty string.
+         */
+        'subtitle': GObject.ParamSpec.string('subtitle', 'App subtitle',
+            'A subtitle for the app',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            ''),
+        /**
+         * Property: subtitle-capitalization
+         * Manner in which the app's subtitle is formatted
+         *
+         * This property is a temporary stand-in for achieving this via the CSS
+         * *text-transform* property.
+         */
+        'subtitle-capitalization': GObject.ParamSpec.enum('subtitle-capitalization',
+            'Subtitle capitalization',
+            'Manner in which the subtitle is formatted',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            EosKnowledgePrivate.TextTransformType,
+            EosKnowledgePrivate.TextTransform.NONE),
     },
 
+    // Note: The 50-px margin-start on the subtitle looks reasonable until we
+    // get better instructions from design.
     Template: 'resource:///com/endlessm/knowledge/widgets/appBanner.ui',
+    InternalChildren: [ 'subtitle-label' ],
 
     _init: function (props={}) {
         this.parent(props);
 
+        this._logo = new ImagePreviewer.ImagePreviewer({
+            visible: true,
+        });
+        this.attach(this._logo, 0, 0, 1, 1);
+
         if (this.image_uri) {
             let stream = Gio.File.new_for_uri(this.image_uri).read(null);
-            this.set_content(stream);
+            this._logo.set_content(stream);
         }
+
+        let subtitle = Utils.format_capitals(this.subtitle,
+            this.subtitle_capitalization);
+        // 758 = 0.74 px * 1024 Pango units / px
+        // FIXME: Should be achievable through CSS when we fix GTK
+        this._subtitle_label.label = ('<span letter_spacing="758">' +
+            GLib.markup_escape_text(subtitle, -1) + '</span>');
+        this._subtitle_label.visible = !!this.subtitle;
+    },
+
+    set subtitle(value) {
+        if (this._subtitle === value)
+            return;
+        this._subtitle = value;
+        this.notify('subtitle');
+    },
+
+    get subtitle() {
+        return this._subtitle || '';
     },
 });
