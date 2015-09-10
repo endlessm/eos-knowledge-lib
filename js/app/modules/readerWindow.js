@@ -16,7 +16,6 @@ const Config = imports.app.config;
 const Dispatcher = imports.app.dispatcher;
 const Module = imports.app.interfaces.module;
 const NavButtonOverlay = imports.app.widgets.navButtonOverlay;
-const OverviewPage = imports.app.reader.overviewPage;
 const SearchResultsPage = imports.app.reader.searchResultsPage;
 const StandalonePage = imports.app.reader.standalonePage;
 const StyleClasses = imports.app.styleClasses;
@@ -59,12 +58,11 @@ const ReaderWindow = new Lang.Class({
         /**
          * Property: overview-page
          *
-         * The <Reader.OverviewPage> widget created by this widget. Read-only.
+         * The overview page widget created by this widget. Read-only.
          */
         'overview-page': GObject.ParamSpec.object('overview-page', 'Overview Page',
             'The splash page that appears when the app starts.',
-            GObject.ParamFlags.READABLE,
-            OverviewPage.OverviewPage.$gtype),
+            GObject.ParamFlags.READABLE, Gtk.Widget.$gtype),
 
         /**
          * Property: back-cover
@@ -149,9 +147,7 @@ const ReaderWindow = new Lang.Class({
         props = props || {};
         this.parent(props);
 
-        this.overview_page = new OverviewPage.OverviewPage({
-            factory: this.factory,
-        });
+        this.overview_page = this.factory.create_named_module('front-cover');
         this.back_cover = this.factory.create_named_module('back-cover');
         this.standalone_page = new StandalonePage.StandalonePage();
         this.standalone_page.infobar.archive_notice.label = _("This article is part of the archive of the magazine %s.").format(this.title);

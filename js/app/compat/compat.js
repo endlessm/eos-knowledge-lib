@@ -438,18 +438,22 @@ function transform_v1_description(json) {
                 "subtitle-capitalization": EosKnowledgePrivate.TextTransform.UPPERCASE,
                 "valign": Gtk.Align.START,
                 "halign": Gtk.Align.START,
+                "margin-top": 50,
+                "margin-start": 75,
             },
         };
         modules["front-cover"] = {
             "type": "SidebarTemplate",
             "slots": {
-                "content": null,
-                "sidebar": null,
+                "content": "app-banner",
+                "sidebar": "snippets-group",
             },
             "properties": {
                 "sidebar-width": 576,
                 "fixed": false,
                 "background-image-uri": json["backgroundHomeURI"],
+                "column-homogeneous": true,
+                "column-spacing": 120,
             },
         };
         modules["back-cover"] = {
@@ -463,6 +467,12 @@ function transform_v1_description(json) {
             "slots": {
                 "card_type": "home-card",
                 "arrangement": "snippets-arrangement",
+            },
+            "properties": {
+                "expand": true,
+                "halign": Gtk.Align.END,
+                "valign": Gtk.Align.FILL,
+                "margin-end": 100,
             },
         };
         modules["snippets-arrangement"] = {

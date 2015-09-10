@@ -387,17 +387,8 @@ const NO_SEARCH_RESULTS_PAGE_A = 'no-search-results-page-a';
 const NO_SEARCH_RESULTS_PAGE_B = 'no-search-results-page-b';
 
 /**
- * Constant: READER_OVERVIEW_PAGE
- *
- * Use to indicate the overview page of a reader magazine issue.
- */
-const READER_OVERVIEW_PAGE = 'overview-page';
-
-/**
  * Constant: READER_ARTICLE_SNIPPET
- *
- * Matches the ArticleSnippetCard widget used in the OverviewPage of the Reader
- * apps.
+ * Matches the ArticleSnippetCard widget used in the Reader apps.
  */
 const READER_ARTICLE_SNIPPET = 'article-snippet';
 
