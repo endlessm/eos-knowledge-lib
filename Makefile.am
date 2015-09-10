@@ -266,7 +266,6 @@ js_files = \
 	js/app/noSearchResultsPage.js \
 	js/app/presenter.js \
 	js/app/presenterLoader.js \
-	js/app/reader/overviewPage.js \
 	js/app/reader/presenter.js \
 	js/app/reader/searchResultsPage.js \
 	js/app/reader/standalonePage.js \
@@ -383,7 +382,6 @@ javascript_tests = \
 	tests/js/app/modules/testSidebarTemplate.js \
 	tests/js/app/modules/testTextCard.js \
 	tests/js/app/modules/testWindow.js \
-	tests/js/app/reader/testOverviewPage.js \
 	tests/js/app/reader/testReaderPresenter.js \
 	tests/js/app/reader/testSearchResultsPage.js \
 	tests/js/app/reader/testUserSettingsModel.js \

@@ -38,7 +38,8 @@ overridden by app specific CSS */
     color: #729fcf;
 }
 
-.overview-page, .back-cover {
+.sidebar-template,
+.back-cover {
     background-size: cover;
     background-position: center;
 }
@@ -144,14 +145,6 @@ overridden by app specific CSS */
     transition: opacity 400ms;
 }
 
-.overview-page .scrollbar.trough {
-    background-color: alpha(black, 0.5);
-}
-
-.overview-page .scrollbar.slider {
-    background-color: #888888;
-}
-
 .open-button {
     border: 5px solid alpha(black, 0.35);
     border-radius: 35px;
@@ -219,7 +212,7 @@ overridden by app specific CSS */
     font-weight: 300; /* Light */
 }
 
-.overview-page .subtitle {
+.sidebar-template .subtitle {
     font-family: Roboto;
     font-size: 1.06em; /* 17px / 12px/em * 72/96 */
     color: white;

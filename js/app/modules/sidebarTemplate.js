@@ -120,26 +120,16 @@ const SidebarTemplate = new Lang.Class({
         sidebar_frame.width = this.sidebar_width;
 
         let sidebar = this.create_submodule('sidebar');
-        let content = this.create_submodule('content', {
-            valign: Gtk.Align.END,
-        });
+        let content = this.create_submodule('content');
 
-        // FIXME: These should not be optional for now
-        if (content)
-            content_frame.add(content);
-        if (sidebar)
-            sidebar_frame.add(sidebar);
+        content_frame.add(content);
+        sidebar_frame.add(sidebar);
         this.add(content_frame);
         this.add(sidebar_frame);
 
         this.get_style_context().add_class(StyleClasses.SIDEBAR_TEMPLATE);
         content_frame.get_style_context().add_class(StyleClasses.CONTENT);
         sidebar_frame.get_style_context().add_class(StyleClasses.SIDEBAR);
-
-        // FIXME: These should be private, but for now OverviewPage still needs
-        // to reach in here.
-        this.content_frame = content_frame;
-        this.sidebar_frame = sidebar_frame;
     },
 
     get_slot_names: function () {
