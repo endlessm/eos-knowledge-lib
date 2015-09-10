@@ -112,6 +112,7 @@ function transform_v1_description(json) {
                 'max-fraction': 0.7,
                 'valign': Gtk.Align.CENTER,
                 'halign': Gtk.Align.CENTER,
+                'expand': false,
             },
         };
         modules['home-page-set-group'] = {

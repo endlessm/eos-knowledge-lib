@@ -95,6 +95,7 @@ const AppBanner = new Lang.Class({
             visible: true,
             min_fraction: this.min_fraction,
             max_fraction: this.max_fraction,
+            expand: true,
         });
         this.attach(this._logo, 0, 0, 1, 1);
 
