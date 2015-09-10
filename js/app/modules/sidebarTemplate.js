@@ -12,9 +12,14 @@ const StyleClasses = imports.app.styleClasses;
  * Class: SidebarTemplate
  * This template has a fixed width sidebar and content area.
  *
- * Slots
+ * Slots:
  *   sidebar
  *   content
+ *
+ * CSS Styles:
+ *   sidebar-template - on the template
+ *   sidebar - a frame containing the sidebar module
+ *   content - a frame containing the content module
  */
 const SidebarTemplate = new Lang.Class({
     Name: 'SidebarTemplate',
@@ -43,7 +48,6 @@ const SidebarTemplate = new Lang.Class({
         let content_frame = new Gtk.Frame({
             expand: true,
         });
-        content_frame.get_style_context().add_class(StyleClasses.SIDEBAR_TEMPLATE_CONTENT_FRAME);
         let fixed_width_frame = new FixedWidthFrame({
             expand: false,
         });
@@ -58,6 +62,10 @@ const SidebarTemplate = new Lang.Class({
         fixed_width_frame.add(sidebar);
         this.add(content_frame);
         this.add(fixed_width_frame);
+
+        this.get_style_context().add_class(StyleClasses.SIDEBAR_TEMPLATE);
+        content_frame.get_style_context().add_class(StyleClasses.CONTENT);
+        fixed_width_frame.get_style_context().add_class(StyleClasses.SIDEBAR);
     },
 
     get_slot_names: function () {

@@ -279,11 +279,25 @@ const SEARCH_PAGE_A = 'search-page-a';
 const SEARCH_PAGE_B = 'search-page-b';
 
 /**
- * Constant: SIDEBAR_TEMPLATE_CONTENT_FRAME
+ * Constant: SIDEBAR_TEMPLATE
  *
- * Matches the content area of the sidebar template.
+ * Matches the sidebar template's toplevel widget.
  */
-const SIDEBAR_TEMPLATE_CONTENT_FRAME = 'sidebar-template-content-frame';
+const SIDEBAR_TEMPLATE = 'sidebar-template';
+
+/**
+ * Constant: SIDEBAR
+ *
+ * Matches the sidebar area of modules.
+ */
+const SIDEBAR = 'sidebar';
+
+/**
+ * Constant: CONTENT
+ *
+ * Matches the main content area of modules.
+ */
+const CONTENT = 'content';
 
 /**
  * Constant: PREVIEWER
