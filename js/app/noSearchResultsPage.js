@@ -52,7 +52,7 @@ const NoSearchResultsPage = new Lang.Class({
 
         Dispatcher.get_default().register((payload) => {
             switch(payload.action_type) {
-                case Actions.SEARCH_STARTING:
+                case Actions.SEARCH_READY:
                     this.title_label.label = _("Results for \"%s\"").format(payload.query);
                     break;
             }

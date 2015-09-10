@@ -20,4 +20,4 @@ const CLEAR_SEARCH = 'clear-search';
 const SET_SELECTED = 'set-selected';
 const ITEM_SELECTED = 'item-selected';
 const SEARCH_SELECTED = 'search-selected';
-const SEARCH_STARTING = 'search-starting';
+const SEARCH_READY = 'search-ready';

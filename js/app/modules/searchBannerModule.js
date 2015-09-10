@@ -26,7 +26,7 @@ const SearchBannerModule = new Lang.Class({
         this.parent(props);
         Dispatcher.get_default().register((payload) => {
             switch(payload.action_type) {
-                case Actions.SEARCH_STARTING:
+                case Actions.SEARCH_READY:
                     this.label = Utils.page_title_from_query_object(payload.query);
                     break;
             }

@@ -315,7 +315,7 @@ const Presenter = new Lang.Class({
             case this._SEARCH_PAGE:
                 this._refresh_article_results(() => {
                     dispatcher.dispatch({
-                        action_type: Actions.SEARCH_STARTING,
+                        action_type: Actions.SEARCH_READY,
                         query: item.query,
                     });
                     if (item.empty) {
