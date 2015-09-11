@@ -27,7 +27,6 @@ String.prototype.format = Format.format;
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
 const AUTOCOMPLETE_DELAY = 500; // ms
-const SEARCH_BOX_PLACEHOLDER_TEXT = _("Search the world's information!");
 const ARTICLE_PAGE = 'article';
 const SEARCH_RESULTS_PAGE = 'search-results';
 const SEARCH_METRIC = 'a628c936-5d87-434a-a57a-015a0f223838';
@@ -85,9 +84,6 @@ const EncyclopediaPresenter = new Lang.Class({
             page.search_box.connect('menu-item-selected',
                 this._on_article_selected.bind(this));
         }
-
-        this.view.home_page.search_box.placeholder_text = SEARCH_BOX_PLACEHOLDER_TEXT;
-        this.view.content_page.search_box.placeholder_text = SEARCH_BOX_PLACEHOLDER_TEXT;
 
         this._previewer = new Previewer.Previewer({
             visible: true,
