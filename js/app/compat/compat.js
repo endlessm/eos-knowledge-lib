@@ -220,7 +220,7 @@ function transform_v1_description(json) {
             type: 'EncyclopediaCoverTemplate',
             slots: {
                 top: 'app-banner',
-                bottom: 'home-search',
+                bottom: 'home-search-box',
             },
         };
         modules['app-banner'] = {
@@ -232,11 +232,14 @@ function transform_v1_description(json) {
                 'margin-bottom': 42,
             },
         };
-        modules['home-search'] = {
+        modules['home-search-box'] = {
             type: 'SearchBox',
             properties: {
                 'max-width-chars': 52,
             },
+        };
+        modules['article-search-box'] = {
+            type: 'SearchBox',
         };
         modules['article-app-banner'] = {
             type: 'AppBanner',

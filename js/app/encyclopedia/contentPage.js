@@ -62,7 +62,7 @@ const ContentPage = new Lang.Class({
 
         this._logo.name = 'content_page_logo';
 
-        this.search_box = new Endless.SearchBox();
+        this.search_box = this.factory.create_named_module('article-search-box');
 
         // FIXME: this should be on a separate page, instead of all stuffed
         // into a ContentPage
