@@ -433,27 +433,12 @@ describe('Reader presenter', function () {
             expect(view.show_overview_page).toHaveBeenCalled();
         });
 
-        it('issues search queries as the user types in the search box', function (done) {
-            spyOn(view.search_box, 'set_menu_items');
-            view.search_box.text = 'Azuc';
-            view.search_box.emit('text-changed');
-            Mainloop.idle_add(function () {
-                expect(engine.get_objects_by_query)
-                    .toHaveBeenCalledWith(jasmine.objectContaining({
-                        query: 'Azuc',
-                    }),
-                    jasmine.any(Object),
-                    jasmine.any(Function));
-                expect(view.search_box.set_menu_items).toHaveBeenCalled();
-                done();
-                return GLib.SOURCE_REMOVE;
-            });
-        });
-
-        it('issues a search query when user activates one in the search box', function (done) {
+        it('issues a search query after search-entered is dispatched', function (done) {
             spyOn(view, 'show_search_results_page');
-            view.search_box.text = 'Azucar';
-            view.search_box.emit('activate');
+            dispatcher.dispatch({
+                action_type: Actions.SEARCH_TEXT_ENTERED,
+                text: 'Azucar',
+            });
             Mainloop.idle_add(function () {
                 expect(engine.get_objects_by_query)
                     .toHaveBeenCalledWith(jasmine.objectContaining({
@@ -468,9 +453,11 @@ describe('Reader presenter', function () {
             });
         });
 
-        it('records a metric when searching from the search box', function (done) {
-            view.search_box.text = 'Azucar';
-            view.search_box.emit('activate');
+        it('records a metric when search-entered is dispatched', function (done) {
+            dispatcher.dispatch({
+                action_type: Actions.SEARCH_TEXT_ENTERED,
+                text: 'Azucar',
+            });
             Mainloop.idle_add(function () {
                 expect(presenter.record_search_metric).toHaveBeenCalled();
                 done();

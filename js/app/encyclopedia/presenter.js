@@ -10,9 +10,11 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 
+const Actions = imports.app.actions;
 const ArticleHTMLRenderer = imports.app.articleHTMLRenderer;
 const ArticleObjectModel = imports.search.articleObjectModel;
 const Config = imports.app.config;
+const Dispatcher = imports.app.dispatcher;
 const Engine = imports.search.engine;
 const HistoryPresenter = imports.app.historyPresenter;
 const Launcher = imports.app.launcher;
@@ -26,7 +28,6 @@ const Utils = imports.app.utils;
 String.prototype.format = Format.format;
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
-const AUTOCOMPLETE_DELAY = 500; // ms
 const ARTICLE_PAGE = 'article';
 const SEARCH_RESULTS_PAGE = 'search-results';
 const SEARCH_METRIC = 'a628c936-5d87-434a-a57a-015a0f223838';
@@ -76,14 +77,16 @@ const EncyclopediaPresenter = new Lang.Class({
 
         this._renderer = new ArticleHTMLRenderer.ArticleHTMLRenderer();
 
-        for (let page of [this.view.home_page, this.view.content_page]) {
-            page.search_box.connect('activate',
-                this._on_search_entered.bind(this));
-            page.search_box.connect('text-changed',
-                this._on_prefix_entered.bind(this));
-            page.search_box.connect('menu-item-selected',
-                this._on_article_selected.bind(this));
-        }
+        Dispatcher.get_default().register((payload) => {
+            switch(payload.action_type) {
+                case Actions.SEARCH_TEXT_ENTERED:
+                    this.do_search(payload.text);
+                    break;
+                case Actions.AUTOCOMPLETE_SELECTED:
+                    this.load_uri(payload.model.ekn_id);
+                    break;
+            }
+        });
 
         this._previewer = new Previewer.Previewer({
             visible: true,
@@ -133,55 +136,6 @@ const EncyclopediaPresenter = new Lang.Class({
         this.desktop_launch(timestamp);
     },
 
-    _autocompleteCallback: function (search_box, engine, task) {
-        let results, get_more_results_query;
-        try {
-            [results, get_more_results_query] = engine.get_objects_by_query_finish(task);
-        } catch (error) {
-            logError(error);
-            return;
-        }
-
-        let titles = results.map((result) => {
-            return {
-                title: result.title,
-                id: result.ekn_id,
-            };
-        });
-        search_box.set_menu_items(titles);
-    },
-
-    _on_prefix_entered: function (search_entry) {
-        let prefix_query = search_entry.text;
-
-        // This function will be called when the timeout
-        // expires. It will send request to get autocomplete results
-        let auto_complete_closure = function(){
-            this._timeoutId = 0;
-            let query_obj = new QueryObject.QueryObject({
-                query: prefix_query,
-            });
-            this._engine.get_objects_by_query(query_obj,
-                                              null,
-                                              this._autocompleteCallback.bind(this, search_entry));
-            return false;
-        };
-
-        // If there is already a queued request, (there is a timeout ID)
-        // and another key is pressed, then we have to remove that queued
-        // request before setting another one
-        if (this._timeoutId > 0) {
-            Mainloop.source_remove(this._timeoutId);
-            this._timeoutId = 0;
-        }
-        this._timeoutId = Mainloop.timeout_add(AUTOCOMPLETE_DELAY,
-            auto_complete_closure.bind(this));
-    },
-
-    _on_search_entered: function (search_entry) {
-        this.do_search(search_entry.text);
-    },
-
     _do_search_in_view: function (item) {
         let search = this.view.content_page.search_module;
         search.start_search(item.query);
@@ -220,12 +174,11 @@ const EncyclopediaPresenter = new Lang.Class({
         });
     },
 
-    _on_article_selected: function (search_entry, ekn_id) {
-        this.load_uri(ekn_id);
-    },
-
     _on_history_item_change: function (presenter, item) {
-        this.view.content_page.search_box.set_text_programmatically(item.query);
+        Dispatcher.get_default().dispatch({
+            action_type: Actions.SET_SEARCH_TEXT,
+            text: item.query,
+        });
         switch (item.page_type) {
         case ARTICLE_PAGE:
             this._current_article = item.model;

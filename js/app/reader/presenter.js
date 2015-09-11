@@ -223,6 +223,15 @@ const Presenter = new Lang.Class({
                     let next_page = (this._current_page + 1) % this.view.total_pages;
                     this._add_history_item_for_page(next_page);
                     break;
+                case Actions.SEARCH_TEXT_ENTERED:
+                    this._on_search(payload.text);
+                    break;
+                case Actions.AUTOCOMPLETE_SELECTED:
+                    this._history_presenter.set_current_item_from_props({
+                        page_type: this._ARTICLE_PAGE,
+                        model: payload.model,
+                    });
+                    break;
             }
         });
 
@@ -244,11 +253,6 @@ const Presenter = new Lang.Class({
         }.bind(this));
 
         this.view.standalone_page.infobar.connect('response', this._open_magazine.bind(this));
-        this.view.search_box.connect('activate', (search_entry) => {
-            this._on_search(search_entry.text);
-        });
-        this.view.search_box.connect('text-changed', this._on_search_text_changed.bind(this));
-        this.view.search_box.connect('menu-item-selected', this._on_search_menu_item_selected.bind(this));
         this.view.search_results_page.connect('load-more-results', this._on_load_more_results.bind(this));
         this._history_presenter.connect('history-item-changed', this._on_history_item_change.bind(this));
     },
@@ -358,7 +362,10 @@ const Presenter = new Lang.Class({
     },
 
     _on_history_item_change: function (presenter, item) {
-        this.view.search_box.set_text_programmatically(item.query);
+        Dispatcher.get_default().dispatch({
+            action_type: Actions.SET_SEARCH_TEXT,
+            text: item.query,
+        });
         switch (item.page_type) {
             case this._SEARCH_PAGE:
                 this._perform_search(item.query);
@@ -982,58 +989,6 @@ const Presenter = new Lang.Class({
         this._history_presenter.set_current_item_from_props({
             page_type: this._ARTICLE_PAGE,
             model: model,
-        });
-    },
-
-    _on_search_text_changed: function (entry) {
-        let query = Utils.sanitize_query(this.view.search_box.text);
-        // Ignore empty queries
-        if (query.length === 0) {
-            return;
-        }
-
-        let query_obj = new QueryObject.QueryObject({
-            query: query,
-            limit: RESULTS_SIZE,
-        });
-
-        this.engine.get_objects_by_query(query_obj,
-                                         null,
-                                         (engine, task) => {
-            let results, get_more_results_query;
-            try {
-                [results, get_more_results_query] = engine.get_objects_by_query_finish(task);
-            } catch (error) {
-                logError(error);
-                return;
-            }
-
-            this.view.search_box.set_menu_items(results.map((model) => {
-                return {
-                    title: model.title,
-                    id: model.ekn_id,
-                };
-            }));
-        });
-    },
-
-    _on_search_menu_item_selected: function (entry, id) {
-        this.engine.get_object_by_id(id,
-                                     null,
-                                     (engine, task) => {
-            let model;
-            try {
-                model = engine.get_object_by_id_finish(task);
-            } catch (error) {
-                logError(error);
-                this._show_specific_error_page();
-                return;
-            }
-
-            this._history_presenter.set_current_item_from_props({
-                page_type: this._ARTICLE_PAGE,
-                model: model,
-            });
         });
     },
 });
