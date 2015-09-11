@@ -12,6 +12,10 @@ let style_knobs_a = {
         'title-font-family': "'Marcellus SC'",
         'title-font-weight': 'bold',
     },
+    'search_page': {
+        'title-font-family': "'Marcellus SC'",
+        'title-font-weight': 'bold',
+    },
     'no_search_results_page': {
         'title-font-family': "'Marcellus SC'",
         'title-font-weight': 'bold',
@@ -44,6 +48,12 @@ let style_knobs_b = {
         'hover-color': '#4573D9',
     },
     'section_page': {
+        'title-font-size': '9.0em',
+        'title-padding': '0.5em 0.0em 0.5em 0.7em',
+        'title-font-family': "'Amatic SC'",
+        'title-font-weight': 'bold',
+    },
+    'search_page': {
         'title-font-size': '9.0em',
         'title-padding': '0.5em 0.0em 0.5em 0.7em',
         'title-font-family': "'Amatic SC'",
