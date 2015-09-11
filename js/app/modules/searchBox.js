@@ -1,6 +1,7 @@
 // Copyright 2014 Endless Mobile, Inc.
 
 const Endless = imports.gi.Endless;
+const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 
@@ -44,6 +45,7 @@ const SearchBox = new Lang.Class({
         props.engine = props.engine || Engine.Engine.get_default();
         this.parent(props);
         this._autocomplete_models = {};
+        this._cancellable = null;
         this.get_style_context().add_class(StyleClasses.SEARCH_BOX);
 
         let dispatcher = Dispatcher.get_default();
@@ -75,6 +77,10 @@ const SearchBox = new Lang.Class({
     },
 
     _on_text_changed: function () {
+        if (this._cancellable)
+            this._cancellable.cancel();
+        this._cancellable = new Gio.Cancellable();
+
         let query = Utils.sanitize_query(this.text);
         // Ignore empty queries
         if (query.length === 0)
@@ -85,8 +91,9 @@ const SearchBox = new Lang.Class({
             limit: RESULTS_SIZE,
         });
         this.engine.get_objects_by_query(query_obj,
-                                         null,
+                                         this._cancellable,
                                          (engine, task) => {
+            this._cancellable = null;
             if (query !== Utils.sanitize_query(this.text))
                 return;
 
