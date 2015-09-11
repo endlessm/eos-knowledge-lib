@@ -255,7 +255,6 @@ js_files = \
 	js/app/modules/searchBannerModule.js \
 	js/app/modules/searchBox.js \
 	js/app/modules/searchModule.js \
-	js/app/modules/setBannerCard.js \
 	js/app/modules/setGroupModule.js \
 	js/app/modules/setBannerModule.js \
 	js/app/modules/sidebarTemplate.js \
@@ -377,7 +376,6 @@ javascript_tests = \
 	tests/js/app/modules/testSearchBannerModule.js \
 	tests/js/app/modules/testSearchBox.js \
 	tests/js/app/modules/testSearchModule.js \
-	tests/js/app/modules/testSetBannerCard.js \
 	tests/js/app/modules/testSetGroupModule.js \
 	tests/js/app/modules/testSetBannerModule.js \
 	tests/js/app/modules/testSidebarTemplate.js \

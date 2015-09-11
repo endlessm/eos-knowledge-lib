@@ -87,8 +87,7 @@ EknWindow.background-right {
     padding: 9px 0px 9px 0px;
 }
 
-.section-page-b .text-card,
-.search-page-b .text-card {
+.sidebar-template .sidebar .text-card {
     padding: 6px;
     border: 2px solid alpha(white, 0);
     background-color: alpha(white, 0);
@@ -99,8 +98,7 @@ EknWindow.background-right {
                 border 250ms;
 }
 
-.section-page-b .text-card .title,
-.search-page-b .text-card .title {
+.sidebar-template .sidebar .text-card .title {
     padding: 0em 0em 0em 1.5em;
     font-family: Lato;
     font-size: 1.125em; /* 18pt * 1/12 * 0.75 DPI correction factor */
@@ -108,10 +106,8 @@ EknWindow.background-right {
     color: @template-b-text-color;
 }
 
-.section-page-b .text-card:hover,
-.section-page-b .text-card.highlighted:hover,
-.search-page-b .text-card:hover,
-.search-page-b .text-card.highlighted:hover {
+.sidebar-template .sidebar .text-card:hover,
+.sidebar-template .sidebar .text-card.highlighted:hover {
     text-shadow: 0px 1px 0px white;
     border: 2px solid white;
     background-color: alpha(white, 0.9);
@@ -121,23 +117,19 @@ EknWindow.background-right {
     box-shadow: 0px 0px 20px 0px black;
 }
 
-.section-page-b .text-card:hover .title,
-.search-page-b .text-card:hover .title {
+.sidebar-template .sidebar .text-card:hover .title {
     color: @template-b-text-color-hover;
 }
 
-.section-page-b .text-card.highlighted,
-.search-page-b .text-card.highlighted {
+.sidebar-template .sidebar .text-card.highlighted {
     background: alpha(white, 0.8);
     text-shadow: 0px 1px 0px white;
     font-weight: bold;
     transition-property: none;
 }
 
-.section-page-b .text-card.highlighted .title,
-.section-page-b .text-card.highlighted:hover .title,
-.search-page-b .text-card.highlighted .title,
-.search-page-b .text-card.highlighted:hover .title {
+.sidebar-template .sidebar .text-card.highlighted .title,
+.sidebar-template .sidebar .text-card.highlighted:hover .title {
     color: @template-b-text-color-highlighted;
 }
 
@@ -428,7 +420,7 @@ EknWindow.background-right {
     background-color: #888888;
 }
 
-.sidebar-template-content-frame {
+.sidebar-template .content {
     background-image: linear-gradient(-180deg, rgba(0,0,0,0.0) 65%, rgba(0,0,0,0.30) 85%, rgba(0,0,0,0.70) 100%);
 }
 

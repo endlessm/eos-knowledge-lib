@@ -42,7 +42,7 @@ function transform_v1_description(json) {
             },
         };
         modules['set-banner-card'] = {
-            type: 'SetBannerCard',
+            type: 'TextCard',
         };
         modules['set-banner-module'] = {
             type: 'SetBannerModule',
@@ -155,7 +155,7 @@ function transform_v1_description(json) {
             type: 'CardB',
         };
         modules['set-banner-card'] = {
-            type: 'SetBannerCard',
+            type: 'TextCard',
         };
         modules['set-banner-module'] = {
             type: 'SetBannerModule',
