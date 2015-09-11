@@ -116,17 +116,6 @@ const Window = new Lang.Class({
             GObject.ParamFlags.READABLE,
             Lightbox.Lightbox),
         /**
-         * Property: search-box
-         *
-         * The <SearchBox> widget created by this widget. Read-only,
-         * modify using the <SearchBox> API. Use to type search queries and to display the last
-         * query searched.
-         */
-        'search-box': GObject.ParamSpec.object('search-box', 'Search Box',
-            'The Search box of this view widget',
-            GObject.ParamFlags.READABLE,
-            Endless.SearchBox),
-        /**
          * Property: background-image-uri
          *
          * The background image uri for this window.
@@ -158,36 +147,12 @@ const Window = new Lang.Class({
     },
     Signals: {
         /**
-         * Event: article-selected
-         *
-         * This event is triggered when an article is selected from the autocomplete menu.
-         */
-        'article-selected': {
-            param_types: [GObject.TYPE_STRING]
-        },
-        /**
-         * Event: search-entered
-         *
-         * This event is triggered when the user activates a search.
-         */
-        'search-entered': {
-            param_types: [GObject.TYPE_STRING]
-        },
-        /**
          * Event: search-focused
          *
          * This event is triggered when the user focuses the search bar.
          */
         'search-focused': {
             param_types: [GObject.TYPE_BOOLEAN]
-        },
-        /**
-         * Event: search-text-changed
-         *
-         * This event is triggered when the text in the top bar search box changed.
-         */
-        'search-text-changed': {
-            param_types: [GObject.TYPE_OBJECT]
         },
     },
 
@@ -237,13 +202,13 @@ const Window = new Lang.Class({
         this.lightbox.add(this._nav_buttons);
 
         this._history_buttons = new Endless.TopbarNavButton();
-        this.search_box = this.factory.create_named_module('top-bar-search', {
+        this._search_box = this.factory.create_named_module('top-bar-search', {
             no_show_all: true,
             visible: false,
         });
         this.page_manager.add(this.lightbox, {
             left_topbar_widget: this._history_buttons,
-            center_topbar_widget: this.search_box,
+            center_topbar_widget: this._search_box,
         });
 
         let dispatcher = Dispatcher.get_default();
@@ -270,19 +235,6 @@ const Window = new Lang.Class({
 
         this._history_buttons.get_style_context().add_class(Gtk.STYLE_CLASS_LINKED);
         this._history_buttons.show_all();
-
-        this.search_box.connect('notify::has-focus', function () {
-            this.emit('search-focused', this.search_box.has_focus);
-        }.bind(this));
-        this.search_box.connect('text-changed', function (search_entry) {
-            this.emit('search-text-changed', search_entry);
-        }.bind(this));
-        this.search_box.connect('activate', function (search_entry) {
-            this.emit('search-entered', search_entry.text);
-        }.bind(this));
-        this.search_box.connect('menu-item-selected', function (search_entry, article_id) {
-            this.emit('article-selected', article_id);
-        }.bind(this));
 
         this._stack.transition_duration = this.TRANSITION_DURATION;
         this._stack.connect('notify::transition-running', function () {
@@ -398,7 +350,7 @@ const Window = new Lang.Class({
                 this._stack.transition_type = Gtk.StackTransitionType.SLIDE_RIGHT;
             }
             this._nav_buttons.back_visible = false;
-            this.search_box.visible = false;
+            this._search_box.visible = false;
             this._set_background_position_style(StyleClasses.BACKGROUND_LEFT);
         } else if (is_on_center(new_page)) {
             if (is_on_left(old_page)) {
@@ -409,12 +361,12 @@ const Window = new Lang.Class({
                 this._stack.transition_type = Gtk.StackTransitionType.SLIDE_RIGHT;
             }
             this._nav_buttons.back_visible = true;
-            this.search_box.visible = true;
+            this._search_box.visible = true;
             this._set_background_position_style(StyleClasses.BACKGROUND_CENTER);
         } else {
             this._stack.transition_type = Gtk.StackTransitionType.SLIDE_LEFT;
             this._nav_buttons.back_visible = true;
-            this.search_box.visible = true;
+            this._search_box.visible = true;
             this._set_background_position_style(StyleClasses.BACKGROUND_RIGHT);
         }
         this._stack.visible_child = new_page;

@@ -93,7 +93,6 @@ const MockView = new Lang.Class({
     _init: function (nav_buttons) {
         this.parent();
         this.nav_buttons = nav_buttons;
-        this.search_box = new MockWidgets.MockSearchBox();
         this.issue_nav_buttons = {
             back_button: new MockWidgets.MockButton(),
             forward_button: new MockWidgets.MockButton(),

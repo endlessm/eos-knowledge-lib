@@ -7,7 +7,6 @@ const HomePageA = imports.app.homePageA;
 const Minimal = imports.tests.minimal;
 const MockDispatcher = imports.tests.mockDispatcher;
 const MockFactory = imports.tests.mockFactory;
-const MockWidgets = imports.tests.mockWidgets;
 const StyleClasses = imports.app.styleClasses;
 const Utils = imports.tests.utils;
 
@@ -24,7 +23,6 @@ describe('Home page for Template A', () => {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
 
         let factory = new MockFactory.MockFactory();
-        factory.add_named_mock('home-search', MockWidgets.MockSearchBox);
         factory.add_named_mock('home-card', Minimal.MinimalCard);
         home_page = new HomePageA.HomePageA({
             factory: factory,

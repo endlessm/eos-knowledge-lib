@@ -32,7 +32,6 @@ const MockHomePage = new Lang.Class({
 
     _init: function () {
         this.parent();
-        this.search_box = new MockWidgets.MockSearchBox();
         this.app_banner = {};
         this._bottom = new MockWidgets.MockItemGroupModule();
     },
@@ -71,7 +70,6 @@ const MockView = new Lang.Class({
         this.article_page = connectable_object;
         this.lightbox = new MockLightbox.MockLightbox();
         this.search_page = connectable_object;
-        this.search_box = new MockWidgets.MockSearchBox();
         this.no_search_results_page = {};
     },
 
