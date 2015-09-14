@@ -26,17 +26,6 @@ const HomePage = new Lang.Interface({
 
     Properties: {
         /**
-         * Property: search-box
-         *
-         * The <SearchBox> widget created by this widget. Read-only,
-         * modify using the <SearchBox> API. Use to type search queries and to display the last
-         * query searched.
-         */
-        'search-box': GObject.ParamSpec.object('search-box', 'Search Box',
-            'The Search box of this view widget',
-            GObject.ParamFlags.READABLE,
-            Endless.SearchBox),
-        /**
          * Property: cards
          * A list of Card objects representing the cards to be displayed on this page.
          * It is set as a normal javascript object since GJS does not support setting
@@ -46,49 +35,10 @@ const HomePage = new Lang.Interface({
 
     Signals: {
         /**
-         * Event: article-selected
-         *
-         * This event is triggered when an article is selected from the autocomplete menu.
-         */
-        'article-selected': {
-            param_types: [GObject.TYPE_STRING]
-        },
-        /**
-         * Event: search-entered
-         * This event is triggered when the search box is activated. The parameter
-         * is the search query.
-         */
-        'search-entered': {
-            param_types: [GObject.TYPE_STRING]
-        },
-
-        /**
-         * Event: search-text-changed
-         * This event is triggered when the text in the search box is changed. The parameter
-         * is the search box.
-         */
-        'search-text-changed': {
-            param_types: [GObject.TYPE_OBJECT]
-        },
-        /**
          * Event: show-categories
          * This event is triggered when the categories button is clicked.
          */
         'show-categories': {}
-    },
-
-    connect_signals: function () {
-        this.search_box.connect('text-changed', Lang.bind(this, function (search_entry) {
-            this.emit('search-text-changed', search_entry);
-        }));
-
-        this.search_box.connect('activate', Lang.bind(this, function (search_entry) {
-            this.emit('search-entered', search_entry.text);
-        }));
-
-        this.search_box.connect('menu-item-selected', Lang.bind(this, function (search_entry, article_id) {
-            this.emit('article-selected', article_id);
-        }));
     },
 
     /**
@@ -105,9 +55,5 @@ const HomePage = new Lang.Interface({
     pack_widgets: function (title_image, search_box) {
         this.attach(title_image, 0, 0, 3, 1);
         this.attach(search_box, 0, 1, 3, 1);
-    },
-
-    _on_search_entered: function (widget) {
-        this.emit('search-entered', widget.text);
     },
 });

@@ -23,17 +23,6 @@ const EncyclopediaCoverTemplate = new Lang.Class({
     Properties: {
         'factory': GObject.ParamSpec.override('factory', Module.Module),
         'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-        /**
-         * Property: search-box
-         *
-         * The <SearchBox> widget created by this widget. Read-only,
-         * modify using the <SearchBox> API. Use to type search queries and to display the last
-         * query searched.
-         */
-        'search-box': GObject.ParamSpec.object('search-box', 'Search Box',
-            'The seach box for this view.',
-            GObject.ParamFlags.READABLE,
-            SearchBox.SearchBox),
     },
 
     Template: 'resource:///com/endlessm/knowledge/widgets/encyclopediaCoverTemplate.ui',
@@ -50,9 +39,6 @@ const EncyclopediaCoverTemplate = new Lang.Class({
             this.attach.bind(this, submodule).apply(this, PACKING_ARGS[slot]);
             this['_' + slot] = submodule;
         });
-
-        // FIXME: this lines should be replaced by the dispatcher
-        this.search_box = this._bottom;
     },
 
     get_slot_names: function () {

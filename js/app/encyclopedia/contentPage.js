@@ -20,18 +20,6 @@ const ContentPage = new Lang.Class({
             GObject.Object.$gtype),
 
         /**
-         * Property: search-box
-         *
-         * The <SearchBox> widget created by this widget. Read-only,
-         * modify using the <SearchBox> API. Use to type search queries and to display the last
-         * query searched.
-         */
-        'search-box': GObject.ParamSpec.object('search-box', 'Search Box',
-            'The seach box for this view.',
-            GObject.ParamFlags.READABLE,
-            Endless.SearchBox),
-
-        /**
          * Property: search-module
          * <SearchModule> created by this widget
          *
@@ -62,7 +50,7 @@ const ContentPage = new Lang.Class({
 
         this._logo.name = 'content_page_logo';
 
-        this.search_box = new Endless.SearchBox();
+        this._search_box = this.factory.create_named_module('article-search-box');
 
         // FIXME: this should be on a separate page, instead of all stuffed
         // into a ContentPage
@@ -76,7 +64,7 @@ const ContentPage = new Lang.Class({
             column_spacing: 150,
         });
         this._grid.attach(this._logo, 0, 0, 1, 1);
-        this._grid.attach(this.search_box, 1, 0, 1, 1);
+        this._grid.attach(this._search_box, 1, 0, 1, 1);
         this._grid.attach(this._stack, 0, 1, 2, 1);
         this.add(this._grid);
         this.set(0.5, 0.5, this.HORIZONTAL_SPACE_FILL_RATIO, 1.0);
@@ -131,7 +119,7 @@ const ContentPage = new Lang.Class({
 
     _on_fullscreen_change: function (should_be_fullscreen) {
         this._logo.visible = !should_be_fullscreen;
-        this.search_box.visible = !should_be_fullscreen;
+        this._search_box.visible = !should_be_fullscreen;
         this.xscale = should_be_fullscreen ? 1.0 : this.HORIZONTAL_SPACE_FILL_RATIO;
     },
 

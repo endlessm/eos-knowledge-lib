@@ -32,7 +32,6 @@ const MockHomePage = new Lang.Class({
 
     _init: function () {
         this.parent();
-        this.search_box = new MockWidgets.MockSearchBox();
         this.app_banner = {};
         this._bottom = new MockWidgets.MockItemGroupModule();
     },
@@ -71,7 +70,6 @@ const MockView = new Lang.Class({
         this.article_page = connectable_object;
         this.lightbox = new MockLightbox.MockLightbox();
         this.search_page = connectable_object;
-        this.search_box = new MockWidgets.MockSearchBox();
         this.no_search_results_page = {};
     },
 
@@ -162,57 +160,31 @@ describe('Presenter', () => {
         expect(view.show_page).toHaveBeenCalledWith(view.section_page);
     });
 
-    describe('searching from search box', function () {
+    describe('search', function () {
         beforeEach(function () {
             engine.get_objects_by_query_finish.and.returnValue([[], null]);
         });
 
-        it('works from the title bar', function (done) {
-            view.emit('search-entered', 'query not found');
-            Mainloop.idle_add(function () {
-                expect(engine.get_objects_by_query)
-                    .toHaveBeenCalledWith(jasmine.objectContaining({
-                        query: 'query not found',
-                    }),
-                    jasmine.any(Object),
-                    jasmine.any(Function));
-                expect(view.show_page).toHaveBeenCalledWith(view.no_search_results_page);
-                done();
-                return GLib.SOURCE_REMOVE;
+        it('occurs after search-entered is dispatched', function () {
+            dispatcher.dispatch({
+                action_type: Actions.SEARCH_TEXT_ENTERED,
+                text: 'query not found',
             });
+            expect(engine.get_objects_by_query)
+                .toHaveBeenCalledWith(jasmine.objectContaining({
+                    query: 'query not found',
+                }),
+                jasmine.any(Object),
+                jasmine.any(Function));
+            expect(view.show_page).toHaveBeenCalledWith(view.no_search_results_page);
         });
 
-        it('works from the home page', function (done) {
-            view.home_page.emit('search-entered', 'query not found');
-            Mainloop.idle_add(function () {
-                expect(engine.get_objects_by_query)
-                    .toHaveBeenCalledWith(jasmine.objectContaining({
-                        query: 'query not found',
-                    }),
-                    jasmine.any(Object),
-                    jasmine.any(Function));
-                expect(view.show_page).toHaveBeenCalledWith(view.no_search_results_page);
-                done();
-                return GLib.SOURCE_REMOVE;
+        it('records a metric', function () {
+            dispatcher.dispatch({
+                action_type: Actions.SEARCH_TEXT_ENTERED,
+                text: 'query not found',
             });
-        });
-
-        it('records a metric when you search from the title bar', function (done) {
-            view.emit('search-entered', 'query not found');
-            Mainloop.idle_add(function () {
-                expect(presenter.record_search_metric).toHaveBeenCalled();
-                done();
-                return GLib.SOURCE_REMOVE;
-            });
-        });
-
-        it('records a metric when you search from the home page', function (done) {
-            view.home_page.emit('search-entered', 'query not found');
-            Mainloop.idle_add(function () {
-                expect(presenter.record_search_metric).toHaveBeenCalled();
-                done();
-                return GLib.SOURCE_REMOVE;
-            });
+            expect(presenter.record_search_metric).toHaveBeenCalled();
         });
     });
 

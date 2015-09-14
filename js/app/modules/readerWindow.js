@@ -132,18 +132,6 @@ const ReaderWindow = new Lang.Class({
             'Number of pages in total',
             GObject.ParamFlags.READABLE,
             0, GLib.MAXUINT32, 1),
-
-        /**
-         * Property: search-box
-         *
-         * The <SearchBox> widget created by this widget. Read-only,
-         * modify using the <SearchBox> API. Use to type search queries and to display the last
-         * query searched.
-         */
-        'search-box': GObject.ParamSpec.object('search-box', 'Search Box',
-            'The Search box of this view widget',
-            GObject.ParamFlags.READABLE,
-            Endless.SearchBox),
         /**
          * Property: home-background-uri
          * URI of the home page background
@@ -238,7 +226,7 @@ const ReaderWindow = new Lang.Class({
             this.emit('debug-hotkey-pressed');
         }.bind(this));
 
-        this.search_box = this.factory.create_named_module('top-bar-search');
+        this._search_box = this.factory.create_named_module('top-bar-search');
 
         this._stack = new Gtk.Stack({
             transition_duration: this._STACK_TRANSITION_TIME,
@@ -258,7 +246,7 @@ const ReaderWindow = new Lang.Class({
         let box = new Gtk.Box({
             orientation: Gtk.Orientation.HORIZONTAL,
         });
-        box.add(this.search_box);
+        box.add(this._search_box);
         // Stick the debug nav buttons in a box with the search bar.
         // Looks a bit ugly but only used for debugging.
         box.add(this.issue_nav_buttons);

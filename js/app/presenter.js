@@ -150,8 +150,6 @@ const Presenter = new Lang.Class({
         });
 
         // Connect signals
-        this._connect_search_signals(this.view);
-        this._connect_search_signals(this.view.home_page);
         this.view.connect('search-focused', this._on_search_focus.bind(this));
 
         dispatcher.register((payload) => {
@@ -178,6 +176,16 @@ const Presenter = new Lang.Class({
                 case Actions.NEED_MORE_SEARCH:
                     this._load_more_results(Actions.APPEND_SEARCH);
                     break;
+                case Actions.SEARCH_TEXT_ENTERED:
+                    this._on_search_text_entered(payload.text);
+                    break;
+                case Actions.AUTOCOMPLETE_SELECTED:
+                    this._history_presenter.set_current_item_from_props({
+                        page_type: this._ARTICLE_PAGE,
+                        model: payload.model,
+                        query: payload.text,
+                    });
+                    break;
             }
         });
 
@@ -185,8 +193,6 @@ const Presenter = new Lang.Class({
         this.view.categories_page.connect('show-home', this._on_home_button_clicked.bind(this));
         this._history_presenter.connect('history-item-changed', this._on_history_item_change.bind(this));
 
-        this._autocomplete_text = '';
-        this._autocomplete_results = [];
         this._current_article_results_item = null;
     },
 
@@ -304,18 +310,17 @@ const Presenter = new Lang.Class({
 
     _on_history_item_change: function (presenter, item, is_going_back) {
         this._lightbox_presenter.hide_lightbox();
-        this.view.home_page.search_box.set_text_programmatically('');
-        this.view.search_box.set_text_programmatically('');
         let dispatcher = Dispatcher.get_default();
         dispatcher.dispatch({
             action_type: Actions.CLEAR_HIGHLIGHTED_ITEM,
             model: item.model,
         });
+        let search_text = '';
         switch (item.page_type) {
             case this._SEARCH_PAGE:
                 this._refresh_article_results(() => {
                     dispatcher.dispatch({
-                        action_type: Actions.SEARCH_STARTING,
+                        action_type: Actions.SEARCH_READY,
                         query: item.query,
                     });
                     if (item.empty) {
@@ -324,7 +329,7 @@ const Presenter = new Lang.Class({
                         this.view.show_page(this.view.search_page);
                     }
                 });
-                this.view.search_box.set_text_programmatically(item.query);
+                search_text = item.query;
                 break;
             case this._SECTION_PAGE:
                 this._refresh_article_results(() => {
@@ -342,7 +347,7 @@ const Presenter = new Lang.Class({
                     let query_item = this._history_presenter.search_backwards(0, (query_item) => {
                         return query_item.page_type === this._SECTION_PAGE || query_item.query;
                     });
-                    this.view.search_box.set_text_programmatically(query_item.query);
+                    search_text = query_item.query;
                 }
                 this._load_document_card_in_view(item, is_going_back);
                 break;
@@ -352,6 +357,10 @@ const Presenter = new Lang.Class({
             case this._HOME_PAGE:
                 this.view.show_page(this.view.home_page);
         }
+        dispatcher.dispatch({
+            action_type: Actions.SET_SEARCH_TEXT,
+            text: search_text,
+        });
     },
 
     _load_document_card_in_view: function (item, is_going_back) {
@@ -414,94 +423,20 @@ const Presenter = new Lang.Class({
         this.view.present_with_time(timestamp);
     },
 
-    _connect_search_signals: function (view) {
-        view.connect('search-text-changed', this._on_search_text_changed.bind(this));
-        view.connect('search-entered', this._on_search_entered.bind(this));
-        view.connect('article-selected', this._on_article_selection.bind(this));
-    },
-
     _on_search_focus: function (view, focused) {
         // If the user focused the search box, ensure that the lightbox is hidden
         this._lightbox_presenter.hide_lightbox();
     },
 
-    /*
-     * Returns either the title or origin_title of the obj, depending on which one
-     * is closer to having query as a prefix. Doesn't use a simple indexOf, because
-     * of the fact that query might not be accented, even when titles are.
-     */
-    _get_prefixed_title: function (obj, query) {
-        let title = obj.title.toLowerCase();
-        let original_title = obj.original_title.toLowerCase();
-        query = query.toLowerCase();
-
-        for (let i = 0; i < query.length; i++) {
-            if (title[i] !== original_title[i]) {
-                if (title[i] === query[i]) {
-                    return obj.title;
-                } else if (original_title[i] === query[i]) {
-                    return obj.original_title;
-                }
-            }
-        }
-
-        return obj.title;
-    },
-
-    _on_search_text_changed: function (view, entry) {
-        let query = Utils.sanitize_query(entry.text);
+    _on_search_text_entered: function (text) {
+        let query = Utils.sanitize_query(text);
         // Ignore empty queries
-        if (query.length === 0) {
+        if (query.length === 0)
             return;
-        }
-
-        let query_obj = new QueryObject.QueryObject({
-            query: query,
-            limit: RESULTS_SIZE,
-        });
-        this.engine.get_objects_by_query(query_obj,
-                                         null,
-                                         (engine, task) => {
-            let results;
-            let get_more_results_query;
-            try {
-                [results, get_more_results_query] = engine.get_objects_by_query_finish(task);
-            } catch (error) {
-                logError(error);
-                return;
-            }
-
-            entry.set_menu_items(results.map((obj) => {
-                return {
-                    title: this._get_prefixed_title(obj, query),
-                    id: obj.ekn_id,
-                };
-            }));
-            this._autocomplete_text = query;
-            this._autocomplete_results = results;
-        });
-    },
-
-    _on_search_entered: function (view, query) {
-        let sanitized_query = Utils.sanitize_query(query);
-        // Ignore empty queries
-        if (sanitized_query.length === 0)
-            return;
-        this.record_search_metric(query);
+        this.record_search_metric(text);
         this._history_presenter.set_current_item_from_props({
             page_type: this._SEARCH_PAGE,
-            query: sanitized_query,
-        });
-    },
-
-    _on_article_selection: function (view, id) {
-        let selected_model = this._autocomplete_results.filter(function (element) {
-            return element.ekn_id === id;
-        }, id)[0];
-        this._history_presenter.set_current_item_from_props({
-            page_type: this._ARTICLE_PAGE,
-            model: selected_model,
-            query: this._autocomplete_text,
+            query: query,
         });
     },
 

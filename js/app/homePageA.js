@@ -38,8 +38,6 @@ const HomePageA = new Lang.Class({
     Properties: {
         'factory': GObject.ParamSpec.override('factory', Module.Module),
         'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-        'search-box': GObject.ParamSpec.override('search-box',
-            HomePage.HomePage),
         'animating': GObject.ParamSpec.boolean('animating',
             'Animating', 'Set true if this page is animating and should hide its show all button',
             GObject.ParamFlags.READWRITE, false),
@@ -125,8 +123,6 @@ const HomePageA = new Lang.Class({
         });
 
         this.get_style_context().add_class(StyleClasses.HOME_PAGE);
-
-        this.connect_signals();
 
         this.pack_widgets(this._app_banner, this.search_box);
         this.show_all();

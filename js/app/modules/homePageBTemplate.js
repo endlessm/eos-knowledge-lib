@@ -13,7 +13,7 @@ const StyleClasses = imports.app.styleClasses;
  *
  * CSS Styles:
  *      home-page-b-template - on the template
- *      
+ *
  */
 const HomePageBTemplate = new Lang.Class({
     Name: 'HomePageBTemplate',
@@ -24,8 +24,6 @@ const HomePageBTemplate = new Lang.Class({
     Properties: {
         'factory': GObject.ParamSpec.override('factory', Module.Module),
         'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-        'search-box': GObject.ParamSpec.override('search-box',
-            HomePage.HomePage),
     },
 
     Template: 'resource:///com/endlessm/knowledge/widgets/homePageBTemplate.ui',
@@ -44,10 +42,6 @@ const HomePageBTemplate = new Lang.Class({
             this.attach.bind(this, submodule).apply(this, PACKING_ARGS[slot]);
             this['_' + slot] = submodule;
         });
-
-        // FIXME: these lines should be replaced by the dispatcher
-        this.search_box = this._top_right;
-        this.connect_signals();
 
         this.get_style_context().add_class(StyleClasses.HOME_PAGE);
     },

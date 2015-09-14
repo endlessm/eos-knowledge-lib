@@ -1,11 +1,19 @@
 // Copyright 2014 Endless Mobile, Inc.
 
 const Endless = imports.gi.Endless;
+const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 
+const Actions = imports.app.actions;
+const Dispatcher = imports.app.dispatcher;
+const Engine = imports.search.engine;
 const Module = imports.app.interfaces.module;
+const QueryObject = imports.search.queryObject;
 const StyleClasses = imports.app.styleClasses;
+const Utils = imports.app.utils;
+
+const RESULTS_SIZE = 10;
 
 /**
  * Class: SearchBox
@@ -21,12 +29,112 @@ const SearchBox = new Lang.Class({
     Properties: {
         'factory': GObject.ParamSpec.override('factory', Module.Module),
         'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
+        /**
+         * Property: engine
+         * Handle to EOS knowledge engine. For testing only.
+         */
+        'engine': GObject.ParamSpec.object('engine', 'Engine',
+            'Handle to EOS knowledge engine',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            GObject.Object.$gtype),
     },
 
     _init: function (props={}) {
         if (props.visible === undefined)
             props.visible = true;
+        props.engine = props.engine || Engine.Engine.get_default();
         this.parent(props);
+        this._autocomplete_models = {};
+        this._cancellable = null;
         this.get_style_context().add_class(StyleClasses.SEARCH_BOX);
+
+        let dispatcher = Dispatcher.get_default();
+        dispatcher.register((payload) => {
+            switch(payload.action_type) {
+                case Actions.SET_SEARCH_TEXT:
+                    this.set_text_programmatically(payload.text);
+                    break;
+            }
+        });
+
+        this.connect('text-changed', () => {
+            this._on_text_changed();
+        });
+        this.connect('activate', () => {
+            dispatcher.dispatch({
+                action_type: Actions.SEARCH_TEXT_ENTERED,
+                text: this.text,
+            });
+        });
+        this.connect('menu-item-selected', (entry, ekn_id) => {
+            let model = this._autocomplete_models.filter((model) => model.ekn_id === ekn_id)[0];
+            dispatcher.dispatch({
+                action_type: Actions.AUTOCOMPLETE_SELECTED,
+                text: this.text,
+                model: model,
+            });
+        });
+    },
+
+    _on_text_changed: function () {
+        if (this._cancellable)
+            this._cancellable.cancel();
+        this._cancellable = new Gio.Cancellable();
+
+        let query = Utils.sanitize_query(this.text);
+        // Ignore empty queries
+        if (query.length === 0)
+            return;
+
+        let query_obj = new QueryObject.QueryObject({
+            query: query,
+            limit: RESULTS_SIZE,
+        });
+        this.engine.get_objects_by_query(query_obj,
+                                         this._cancellable,
+                                         (engine, task) => {
+            this._cancellable = null;
+            if (query !== Utils.sanitize_query(this.text))
+                return;
+
+            let get_more_results_query;
+            try {
+                [this._autocomplete_models, get_more_results_query] = engine.get_objects_by_query_finish(task);
+            } catch (error) {
+                logError(error);
+                return;
+            }
+
+            this.set_menu_items(this._autocomplete_models.map((model) => {
+                return {
+                    title: this._get_prefixed_title(model, this.text),
+                    id: model.ekn_id,
+                };
+            }));
+        });
+    },
+
+    /*
+     * Returns either the title or origin_title of the obj, depending on which
+     * one is closer to having query as a prefix. Doesn't use a simple indexOf,
+     * because of the fact that query might not be accented, even when titles
+     * are.
+     */
+    _get_prefixed_title: function (model, query) {
+        let title = model.title.toLowerCase();
+        let original_title = model.original_title.toLowerCase();
+        query = query.toLowerCase();
+
+        for (let i = 0; i < query.length; i++) {
+            if (title[i] !== original_title[i]) {
+                if (title[i] === query[i]) {
+                    return model.title;
+                } else if (original_title[i] === query[i]) {
+                    return model.original_title;
+                }
+            }
+        }
+
+        return model.title;
     },
 });

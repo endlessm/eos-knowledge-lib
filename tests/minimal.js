@@ -87,8 +87,6 @@ const MinimalHomePage = new Lang.Class({
     Properties: {
         'factory': GObject.ParamSpec.override('factory', Module.Module),
         'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-        'search-box': GObject.ParamSpec.override('search-box',
-            HomePage.HomePage),
     },
 
     _init: function (props={}) {
