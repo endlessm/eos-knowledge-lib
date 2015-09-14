@@ -85,7 +85,7 @@ const InArticleSearch = new Lang.Class({
         let keyval = event.get_keyval()[1];
         let state = event.get_state()[1];
 
-        if ((state & Gdk.ModifierType.SHIFT_MASK != 0) &&
+        if ((state & Gdk.ModifierType.SHIFT_MASK !== 0) &&
              keyval === Gdk.KEY_Return) {
             this.search_previous();
         } else if (keyval === Gdk.KEY_Return) {
