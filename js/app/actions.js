@@ -24,3 +24,4 @@ const AUTOCOMPLETE_SELECTED = 'autocomplete-selected';
 const SEARCH_READY = 'search-ready';
 const SEARCH_TEXT_ENTERED = 'search-entered';
 const SET_SEARCH_TEXT = 'set-search-text';
+const SHOW_ARTICLE = 'show-article';

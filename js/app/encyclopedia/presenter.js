@@ -161,7 +161,10 @@ const EncyclopediaPresenter = new Lang.Class({
     },
 
     _load_article_in_view: function (article) {
-        this.view.content_page.load_ekn_content(article);
+        Dispatcher.get_default().dispatch({
+            action_type: Actions.SHOW_ARTICLE,
+            model: article,
+        });
         if (this.view.get_visible_page() === this.view.home_page)
             this.view.show_content_page();
     },
