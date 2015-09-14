@@ -6,6 +6,8 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const WebKit2 = imports.gi.WebKit2;
 
+const Actions = imports.app.actions;
+const Dispatcher = imports.app.dispatcher;
 const InArticleSearch = imports.app.encyclopedia.inArticleSearch;
 
 const ContentPage = new Lang.Class({
@@ -70,6 +72,14 @@ const ContentPage = new Lang.Class({
         this.add(this._grid);
         this.set(0.5, 0.5, this.HORIZONTAL_SPACE_FILL_RATIO, 1.0);
 
+        Dispatcher.get_default().register((payload) => {
+            switch(payload.action_type) {
+                case Actions.SHOW_ARTICLE:
+                    this._load_ekn_content(payload.model);
+                    break;
+            }
+        });
+
         let mainWindow = this.get_toplevel();
         mainWindow.connect('key-press-event', this._on_key_press_event.bind(this));
     },
@@ -78,7 +88,7 @@ const ContentPage = new Lang.Class({
         return this._search_module;
     },
 
-    load_ekn_content: function (article_model) {
+    _load_ekn_content: function (article_model) {
         if (this._search_bar !== undefined) {
             this._search_bar.close();
         }
