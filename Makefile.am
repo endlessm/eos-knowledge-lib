@@ -218,7 +218,6 @@ js_files = \
 	js/app/compat/styleKnobGenerator.js \
 	js/app/config.js \
 	js/app/dispatcher.js \
-	js/app/encyclopedia/contentPage.js \
 	js/app/encyclopedia/inArticleSearch.js \
 	js/app/encyclopedia/presenter.js \
 	js/app/historyItem.js \
@@ -238,6 +237,7 @@ js_files = \
 	js/app/modules/cardA.js \
 	js/app/modules/cardB.js \
 	js/app/modules/encyclopediaCoverTemplate.js \
+	js/app/modules/encyclopediaContentTemplate.js \
 	js/app/modules/encyclopediaWindow.js \
 	js/app/modules/gridArrangement.js \
 	js/app/modules/itemGroupModule.js \

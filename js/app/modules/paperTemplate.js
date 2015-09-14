@@ -1,5 +1,6 @@
 // Copyright 2015 Endless Mobile, Inc.
 
+const Cairo = imports.gi.cairo;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
@@ -21,7 +22,7 @@ const StyleClasses = imports.app.styleClasses;
 const PaperTemplate = new Lang.Class({
     Name: 'PaperTemplate',
     GTypeName: 'EknPaperTemplate',
-    Extends: Gtk.Alignment,
+    Extends: Gtk.Frame,
     Implements: [ Module.Module ],
 
     Properties: {
@@ -51,5 +52,17 @@ const PaperTemplate = new Lang.Class({
     // becomes dispatchified!
     get content () {
         return this._content;
+    },
+
+    vfunc_size_allocate: function (alloc) {
+        this.parent(alloc);
+        let margin = alloc.width / 5;
+        let content_alloc = new Cairo.RectangleInt({
+            x: alloc.x + margin,
+            y: alloc.y,
+            width: alloc.width - (2 * margin),
+            height: alloc.height,
+        });
+        this._content_frame.size_allocate(content_alloc);
     },
 });

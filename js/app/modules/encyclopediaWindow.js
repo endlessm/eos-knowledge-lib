@@ -4,13 +4,13 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const Actions = imports.app.actions;
-const ContentPage = imports.app.encyclopedia.contentPage;
 const Dispatcher = imports.app.dispatcher;
 const Lightbox = imports.app.widgets.lightbox;
 const Module = imports.app.interfaces.module;
 
 const HOME_PAGE_NAME = 'home';
-const CONTENT_PAGE_NAME = 'content';
+const ARTICLE_PAGE_NAME = 'article';
+const SEARCH_PAGE_NAME = 'search';
 
 const EncyclopediaWindow = new Lang.Class({
     Name: 'EncyclopediaWindow',
@@ -24,10 +24,14 @@ const EncyclopediaWindow = new Lang.Class({
             'The home page of this view widget.',
             GObject.ParamFlags.READABLE,
             Gtk.Widget),
-        'content-page': GObject.ParamSpec.object('content-page', 'Content page',
-            'The content page of this view widget.',
+        'article-page': GObject.ParamSpec.object('article-page', 'Article page',
+            'The article page of this view widget.',
             GObject.ParamFlags.READABLE,
-            ContentPage.ContentPage),
+            Gtk.Widget),
+        'search-results-page': GObject.ParamSpec.object('search-results-page', 'Search results page',
+            'The search results page of this view widget.',
+            GObject.ParamFlags.READABLE,
+            Gtk.Widget),
         /**
          * Property: lightbox
          *
@@ -65,9 +69,12 @@ const EncyclopediaWindow = new Lang.Class({
 
         this._home_page = this.factory.create_named_module('home-page-template');
 
-        this._content_page = new ContentPage.ContentPage({
-            factory: this.factory,
-        });
+        this._search_results_page = this.factory.create_named_module('search-page-template');
+        // the content slot does not get packed by default so we have to do it explicitly here
+        this._search_results_page.content_module.pack_content_slot();
+
+        this._article_page = this.factory.create_named_module('article-page-template');
+
         this._history_buttons = new Endless.TopbarNavButton();
         this._history_buttons.show_all();
         let dispatcher = Dispatcher.get_default();
@@ -99,11 +106,19 @@ const EncyclopediaWindow = new Lang.Class({
             background_position: 'center center'
         });
 
+        this.page_manager.add(this._search_results_page, {
+            name: SEARCH_PAGE_NAME,
+            background_uri: this.results_background_uri,
+            background_repeats: false,
+            background_size: 'cover',
+            background_position: 'top center',
+        });
+
         this._lightbox = new Lightbox.Lightbox();
-        this._lightbox.add(this._content_page);
+        this._lightbox.add(this._article_page);
 
         this.page_manager.add(this._lightbox, {
-            name: CONTENT_PAGE_NAME,
+            name: ARTICLE_PAGE_NAME,
             left_topbar_widget: this._history_buttons,
             background_uri: this.results_background_uri,
             background_repeats: false,
@@ -117,25 +132,34 @@ const EncyclopediaWindow = new Lang.Class({
         return this._home_page;
     },
 
-    get content_page () {
-        return this._content_page;
+    get article_page () {
+        return this._article_page;
     },
 
-    get_visible_page: function () {
-        if (this.page_manager.visible_child_name === CONTENT_PAGE_NAME) {
-            return this._lightbox;
-        } else {
-            return this._home_page;
-        }
+    get search_results_page () {
+        return this._search_results_page;
     },
 
     get lightbox () {
         return this._lightbox;
     },
 
-    show_content_page: function () {
-        this.page_manager.transition_type = Gtk.StackTransitionType.SLIDE_UP;
-        this.page_manager.visible_child_name = CONTENT_PAGE_NAME;
+    get_visible_page: function () {
+        return this.page_manager.visible_child;
+    },
+
+    show_search_results_page: function () {
+        if (this.get_visible_page() === this._home_page) {
+            this.page_manager.transition_type = Gtk.StackTransitionType.SLIDE_UP;
+        } else {
+            this.page_manager.transition_type = Gtk.StackTransitionType.NONE;
+        }
+        this.page_manager.visible_child_name = SEARCH_PAGE_NAME;
+    },
+
+    show_article_page: function () {
+        this.page_manager.transition_type = Gtk.StackTransitionType.NONE;
+        this.page_manager.visible_child_name = ARTICLE_PAGE_NAME;
     },
 
     show_home_page: function () {

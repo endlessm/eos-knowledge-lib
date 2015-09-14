@@ -27,6 +27,7 @@ const TwoVerticalTemplate = new Lang.Class({
     _init: function (props={}) {
         props.orientation = Gtk.Orientation.VERTICAL;
         props.expand = true;
+        props.halign = Gtk.Align.FILL;
         this.parent(props);
 
         this._top = this.create_submodule('top');

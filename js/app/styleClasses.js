@@ -584,12 +584,6 @@ const SEARCH_RESULTS = 'search-results';
 const HEADLINE = 'headline';
 
 /**
- * Constant: OOPS
- * Matches large OOPS! error messages
- */
-const OOPS = 'oops';
-
-/**
  * Constant: ERROR_MESSAGE
  * Matches error messages
  *

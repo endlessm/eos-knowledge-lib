@@ -280,6 +280,41 @@ function transform_v1_description(json) {
                 bottom: 'home-search-box',
             },
         };
+        modules['search-page-template'] = {
+            type: 'EncyclopediaContentTemplate',
+            slots: {
+                top_left: 'article-app-banner',
+                top_right: 'article-search-box',
+                bottom: 'search-results-paper-template',
+            },
+        };
+        modules['search-results-paper-template'] = {
+            type: 'PaperTemplate',
+            slots: {
+                content: 'search-results-two-vertical-template',
+            },
+        };
+        modules['search-results-two-vertical-template'] = {
+            type: 'TwoVerticalTemplate',
+            slots: {
+                top: 'results-search-banner',
+                bottom: 'search-results',
+            },
+        };
+        modules['article-page-template'] = {
+            type: 'EncyclopediaContentTemplate',
+            slots: {
+                top_left: 'article-app-banner',
+                top_right: 'article-search-box',
+                bottom: 'article-paper-template',
+            },
+        };
+        modules['article-paper-template'] = {
+            type: 'PaperTemplate',
+            slots: {
+                content: 'document-card',
+            },
+        };
         modules['app-banner'] = {
             type: 'AppBanner',
             properties: {
@@ -289,14 +324,18 @@ function transform_v1_description(json) {
                 'margin-bottom': 42,
             },
         };
+        modules['article-search-box'] = {
+            type: 'SearchBox',
+            properties: {
+                'halign': Gtk.Align.CENTER,
+                'hexpand': true,
+            },
+        };
         modules['home-search-box'] = {
             type: 'SearchBox',
             properties: {
                 'max-width-chars': 52,
             },
-        };
-        modules['article-search-box'] = {
-            type: 'SearchBox',
         };
         modules['article-app-banner'] = {
             type: 'AppBanner',
@@ -308,6 +347,7 @@ function transform_v1_description(json) {
                 'margin-bottom': 10,
                 'valign': Gtk.Align.START,
                 'vexpand': false,
+                'halign': Gtk.Align.CENTER,
             },
         };
         modules['lightbox-card'] = {
@@ -315,8 +355,13 @@ function transform_v1_description(json) {
         };
         modules['document-card'] = {
             type: 'KnowledgeDocumentCard',
+        };
+        modules['results-search-banner'] = {
+            type: 'SearchBannerModule',
             properties: {
-                'expand': true,
+                'margin-start': 40,
+                'margin-top': 40,
+                'margin-bottom': 40,
             },
         };
         modules['search-results'] = {
@@ -337,6 +382,10 @@ function transform_v1_description(json) {
         // submodules implemented in the factory
         modules['results-arrangement'] = {
             type: 'ListArrangement',
+            'properties': {
+                hexpand: true,
+                halign: Gtk.Align.FILL,
+            }
         };
         break;
     case 'reader':

@@ -28,6 +28,7 @@ const MinimalArrangement = new Lang.Class({
     _init: function (props={}) {
         this.parent(props);
         this._cards = [];
+        this.show_all();
     },
 
     get_cards: function () {
