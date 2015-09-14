@@ -3,19 +3,16 @@
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const EosMetrics = imports.gi.EosMetrics;
 const Format = imports.format;
-const Gettext = imports.gettext;
 const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
-const Mainloop = imports.mainloop;
 
 const Actions = imports.app.actions;
 const ArticleHTMLRenderer = imports.app.articleHTMLRenderer;
 const ArticleObjectModel = imports.search.articleObjectModel;
-const Config = imports.app.config;
 const Dispatcher = imports.app.dispatcher;
 const Engine = imports.search.engine;
 const HistoryPresenter = imports.app.historyPresenter;
@@ -28,7 +25,6 @@ const WebkitContextSetup = imports.app.webkitContextSetup;
 const Utils = imports.app.utils;
 
 String.prototype.format = Format.format;
-let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
 const ARTICLE_PAGE = 'article';
 const SEARCH_RESULTS_PAGE = 'search-results';
