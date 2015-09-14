@@ -71,7 +71,7 @@ const InArticleSearch = new Lang.Class({
         this.hide();
 
         this._web_view.grab_focus();
-        this._search_entry.set_text("");
+        this._search_entry.set_text('');
         this._findController.search_finish();
     },
 
