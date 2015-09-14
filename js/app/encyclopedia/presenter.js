@@ -1,3 +1,5 @@
+// Copyright 2015 Endless Mobile, Inc.
+
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const EosMetrics = imports.gi.EosMetrics;
 const Format = imports.format;
