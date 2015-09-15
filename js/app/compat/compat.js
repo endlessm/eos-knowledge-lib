@@ -13,425 +13,425 @@ function transform_v1_description(json) {
     let modules = {};
 
     switch (json.templateType) {
-    case 'A':
-        modules['window'] = {
-            type: 'Window',
-            properties: {
-                'title': json['appTitle'],
-                'background-image-uri': json['backgroundHomeURI'],
-                'blur-background-image-uri': json['backgroundSectionURI'],
+    case "A":
+        modules["window"] = {
+            "type": "Window",
+            "properties": {
+                "title": json["appTitle"],
+                "background-image-uri": json["backgroundHomeURI"],
+                "blur-background-image-uri": json["backgroundSectionURI"],
             },
         };
-        modules['app-banner'] = {
-            type: 'AppBanner',
-            properties: {
-                'image-uri': json['titleImageURI'],
-                'min-fraction': 0.4,
-                'max-fraction': 0.7,
+        modules["app-banner"] = {
+            "type": "AppBanner",
+            "properties": {
+                "image-uri": json["titleImageURI"],
+                "min-fraction": 0.4,
+                "max-fraction": 0.7,
             },
         };
-        modules['top-bar-search'] = {
-            type: 'SearchBox',
+        modules["top-bar-search"] = {
+            "type": "SearchBox",
         };
-        modules['home-search'] = {
-            type: 'SearchBox',
-            properties: {
-                'width-request': 400,
-                'halign': Gtk.Align.CENTER,
+        modules["home-search"] = {
+            "type": "SearchBox",
+            "properties": {
+                "width-request": 400,
+                "halign": Gtk.Align.CENTER,
             }
         };
-        modules['home-card'] = {
-            type: 'CardA',
-            properties: {
-                hexpand: true,
-                halign: Gtk.Align.CENTER,
+        modules["home-card"] = {
+            "type": "CardA",
+            "properties": {
+                "hexpand": true,
+                "halign": Gtk.Align.CENTER,
             }
         };
-        modules['results-arrangement'] = {
-            type: 'GridArrangement',
-            properties: {
-                'bottom-buffer': 250,
+        modules["results-arrangement"] = {
+            "type": "GridArrangement",
+            "properties": {
+                "bottom-buffer": 250,
             },
         };
-        modules['set-banner-card'] = {
-            type: 'TextCard',
+        modules["set-banner-card"] = {
+            "type": "TextCard",
         };
-        modules['set-banner-module'] = {
-            type: 'SetBannerModule',
-            slots: {
-                card_type: 'set-banner-card',
+        modules["set-banner-module"] = {
+            "type": "SetBannerModule",
+            "slots": {
+                "card_type": "set-banner-card",
             },
         };
-        modules['item-group'] = {
-            type: 'ItemGroupModule',
-            slots: {
-                arrangement: 'results-arrangement',
-                card_type: 'results-card',
+        modules["item-group"] = {
+            "type": "ItemGroupModule",
+            "slots": {
+                "arrangement": "results-arrangement",
+                "card_type": "results-card",
             },
         };
-        modules['section-page-template'] = {
-            type: 'BannerTemplate',
-            slots: {
-                banner: 'set-banner-module',
-                content: 'item-group',
+        modules["section-page-template"] = {
+            "type": "BannerTemplate",
+            "slots": {
+                "banner": "set-banner-module",
+                "content": "item-group",
             },
         };
-        modules['home-page-template'] = {
-            type: 'HomePageATemplate',
-            slots: {
-                top: 'app-banner',
-                middle: 'home-search',
-                bottom: 'home-page-set-group',
-                basement: 'home-page-basement-set-group',
+        modules["home-page-template"] = {
+            "type": "HomePageATemplate",
+            "slots": {
+                "top": "app-banner",
+                "middle": "home-search",
+                "bottom": "home-page-set-group",
+                "basement": "home-page-basement-set-group",
             },
-            properties: {
-                'upper-button-label': _("SEE ALL CATEGORIES"),
-                'basement-button-label': _("HOME"),
-            },
-        };
-        modules['results-card'] = {
-            type: 'CardA',
-        };
-        modules['search-results'] = {
-            type: 'SearchABModule',
-            slots: {
-                arrangement: 'results-arrangement',
-                card_type: 'results-card',
+            "properties": {
+                "upper-button-label": _("SEE ALL CATEGORIES"),
+                "basement-button-label": _("HOME"),
             },
         };
-        modules['home-page-arrangement'] = {
-            type: 'OverflowArrangement',
-            properties: {
-                orientation: Gtk.Orientation.HORIZONTAL,
+        modules["results-card"] = {
+            "type": "CardA",
+        };
+        modules["search-results"] = {
+            "type": "SearchABModule",
+            "slots": {
+                "arrangement": "results-arrangement",
+                "card_type": "results-card",
             },
         };
-        modules['home-card'] = {
-            type: 'CardA',
-        };
-        modules['home-page-set-group'] = {
-            type: 'SetGroupModule',
-            properties: {
-                'expand': true,
-                'halign': Gtk.Align.CENTER,
-                'valign': Gtk.Align.CENTER,
-                'max-children': 6,
-            },
-            slots: {
-                arrangement: 'home-page-arrangement',
-                card_type: 'home-card',
+        modules["home-page-arrangement"] = {
+            "type": "OverflowArrangement",
+            "properties": {
+                "orientation": Gtk.Orientation.HORIZONTAL,
             },
         };
-        modules['home-page-basement-set-group'] = {
-            type: 'SetGroupModule',
-            properties: {
-                'expand': true,
-            },
-            slots: {
-                arrangement: 'results-arrangement',
-                card_type: 'home-card',
-            },
+        modules["home-card"] = {
+            "type": "CardA",
         };
-        modules['results-search-banner'] = {
-            type: 'SearchBannerModule',
-        };
-        modules['search-page-template'] = {
-            type: 'BannerTemplate',
-            slots: {
-                banner: 'results-search-banner',
-                content: 'search-results',
+        modules["home-page-set-group"] = {
+            "type": "SetGroupModule",
+            "properties": {
+                "expand": true,
+                "halign": Gtk.Align.CENTER,
+                "valign": Gtk.Align.CENTER,
+                "max-children": 6,
+            },
+            "slots": {
+                "arrangement": "home-page-arrangement",
+                "card_type": "home-card",
             },
         };
-        modules['lightbox-card'] = {
-            type: 'MediaCard',
+        modules["home-page-basement-set-group"] = {
+            "type": "SetGroupModule",
+            "properties": {
+                "expand": true,
+            },
+            "slots": {
+                "arrangement": "results-arrangement",
+                "card_type": "home-card",
+            },
         };
-        modules['document-card'] = {
-            type: 'KnowledgeDocumentCard',
-            properties: {
-                show_top_title: true,
-                show_toc: true,
+        modules["results-search-banner"] = {
+            "type": "SearchBannerModule",
+        };
+        modules["search-page-template"] = {
+            "type": "BannerTemplate",
+            "slots": {
+                "banner": "results-search-banner",
+                "content": "search-results",
+            },
+        };
+        modules["lightbox-card"] = {
+            "type": "MediaCard",
+        };
+        modules["document-card"] = {
+            "type": "KnowledgeDocumentCard",
+            "properties": {
+                "show_top_title": true,
+                "show_toc": true,
             },
         };
         break;
-    case 'B':
-        modules['window'] = {
-            type: 'Window',
-            properties: {
-                'title': json['appTitle'],
-                'background-image-uri': json['backgroundHomeURI'],
-                'blur-background-image-uri': json['backgroundSectionURI'],
+    case "B":
+        modules["window"] = {
+            "type": "Window",
+            "properties": {
+                "title": json["appTitle"],
+                "background-image-uri": json["backgroundHomeURI"],
+                "blur-background-image-uri": json["backgroundSectionURI"],
             },
         };
-        modules['app-banner'] = {
-            type: 'AppBanner',
-            properties: {
-                'image-uri': json['titleImageURI'],
-                'min-fraction': 0.4,
-                'max-fraction': 0.7,
-                'valign': Gtk.Align.CENTER,
-                'halign': Gtk.Align.CENTER,
-                'expand': false,
+        modules["app-banner"] = {
+            "type": "AppBanner",
+            "properties": {
+                "image-uri": json["titleImageURI"],
+                "min-fraction": 0.4,
+                "max-fraction": 0.7,
+                "valign": Gtk.Align.CENTER,
+                "halign": Gtk.Align.CENTER,
+                "expand": false,
             },
         };
-        modules['home-page-set-group'] = {
-            type: 'SetGroupModule',
-            properties: {
-                'expand': true,
-                'halign': Gtk.Align.FILL,
-                'valign': Gtk.Align.FILL,
+        modules["home-page-set-group"] = {
+            "type": "SetGroupModule",
+            "properties": {
+                "expand": true,
+                "halign": Gtk.Align.FILL,
+                "valign": Gtk.Align.FILL,
             },
-            slots: {
-                arrangement: 'home-page-arrangement',
-                card_type: 'home-card',
-            },
-        };
-        modules['home-page-template'] = {
-            type: 'HomePageBTemplate',
-            slots: {
-                top_left: 'app-banner',
-                top_right: 'home-search',
-                bottom: 'home-page-set-group',
+            "slots": {
+                "arrangement": "home-page-arrangement",
+                "card_type": "home-card",
             },
         };
-        modules['home-page-arrangement'] = {
-            type: 'TiledGridArrangement',
-        };
-        modules['top-bar-search'] = {
-            type: 'SearchBox',
-        };
-        modules['home-search'] = {
-            type: 'SearchBox',
-            properties: {
-                'width-request': 350,
-                'visible': true,
-                'shadow-type': Gtk.ShadowType.NONE,
-                'halign': Gtk.Align.CENTER,
-                'valign': Gtk.Align.CENTER,
+        modules["home-page-template"] = {
+            "type": "HomePageBTemplate",
+            "slots": {
+                "top_left": "app-banner",
+                "top_right": "home-search",
+                "bottom": "home-page-set-group",
             },
         };
-        modules['home-card'] = {
-            type: 'CardB',
+        modules["home-page-arrangement"] = {
+            "type": "TiledGridArrangement",
         };
-        modules['set-banner-card'] = {
-            type: 'TextCard',
+        modules["top-bar-search"] = {
+            "type": "SearchBox",
         };
-        modules['set-banner-module'] = {
-            type: 'SetBannerModule',
-            slots: {
-                card_type: 'set-banner-card',
+        modules["home-search"] = {
+            "type": "SearchBox",
+            "properties": {
+                "width-request": 350,
+                "visible": true,
+                "shadow-type": Gtk.ShadowType.NONE,
+                "halign": Gtk.Align.CENTER,
+                "valign": Gtk.Align.CENTER,
             },
         };
-        modules['item-group'] = {
-            type: 'ItemGroupModule',
-            slots: {
-                arrangement: 'results-arrangement',
-                card_type: 'results-card',
+        modules["home-card"] = {
+            "type": "CardB",
+        };
+        modules["set-banner-card"] = {
+            "type": "TextCard",
+        };
+        modules["set-banner-module"] = {
+            "type": "SetBannerModule",
+            "slots": {
+                "card_type": "set-banner-card",
             },
         };
-        modules['section-page-template'] = {
-            type: 'SidebarTemplate',
-            slots: {
-                content: 'set-banner-module',
-                sidebar: 'item-group',
+        modules["item-group"] = {
+            "type": "ItemGroupModule",
+            "slots": {
+                "arrangement": "results-arrangement",
+                "card_type": "results-card",
             },
         };
-        modules['results-arrangement'] = {
-            type: 'ListArrangement',
-        };
-        modules['results-card'] = {
-            type: 'TextCard',
-        };
-        modules['search-results'] = {
-            type: 'SearchABModule',
-            slots: {
-                arrangement: 'results-arrangement',
-                card_type: 'results-card',
+        modules["section-page-template"] = {
+            "type": "SidebarTemplate",
+            "slots": {
+                "content": "set-banner-module",
+                "sidebar": "item-group",
             },
         };
-        modules['results-search-banner'] = {
-            type: 'SearchBannerModule',
+        modules["results-arrangement"] = {
+            "type": "ListArrangement",
         };
-        modules['search-page-template'] = {
-            type: 'SidebarTemplate',
-            slots: {
-                content: 'results-search-banner',
-                sidebar: 'search-results',
+        modules["results-card"] = {
+            "type": "TextCard",
+        };
+        modules["search-results"] = {
+            "type": "SearchABModule",
+            "slots": {
+                "arrangement": "results-arrangement",
+                "card_type": "results-card",
             },
         };
-        modules['lightbox-card'] = {
-            type: 'MediaCard',
+        modules["results-search-banner"] = {
+            "type": "SearchBannerModule",
         };
-        modules['document-card'] = {
-            type: 'KnowledgeDocumentCard',
+        modules["search-page-template"] = {
+            "type": "SidebarTemplate",
+            "slots": {
+                "content": "results-search-banner",
+                "sidebar": "search-results",
+            },
+        };
+        modules["lightbox-card"] = {
+            "type": "MediaCard",
+        };
+        modules["document-card"] = {
+            "type": "KnowledgeDocumentCard",
         };
         break;
-    case 'encyclopedia':
-        modules['window'] = {
-            type: 'EncyclopediaWindow',
+    case "encyclopedia":
+        modules["window"] = {
+            "type": "EncyclopediaWindow",
+            "properties": {
+                "title": json["appTitle"],
+                "home-background-uri": json["backgroundHomeURI"],
+                "results-background-uri": json["backgroundSectionURI"],
+            },
+        };
+        modules["home-page-template"] = {
+            "type": "EncyclopediaCoverTemplate",
+            "slots": {
+                "top": "app-banner",
+                "bottom": "home-search-box",
+            },
+        };
+        modules["search-page-template"] = {
+            "type": "EncyclopediaContentTemplate",
+            "slots": {
+                "top_left": "article-app-banner",
+                "top_right": "article-search-box",
+                "bottom": "search-results-paper-template",
+            },
+        };
+        modules["search-results-paper-template"] = {
+            "type": "PaperTemplate",
+            "slots": {
+                "content": "search-results-two-vertical-template",
+            },
+        };
+        modules["search-results-two-vertical-template"] = {
+            "type": "TwoVerticalTemplate",
+            "slots": {
+                "top": "results-search-banner",
+                "bottom": "search-results",
+            },
+        };
+        modules["article-page-template"] = {
+            "type": "EncyclopediaContentTemplate",
+            "slots": {
+                "top_left": "article-app-banner",
+                "top_right": "article-search-box",
+                "bottom": "article-paper-template",
+            },
+        };
+        modules["article-paper-template"] = {
+            "type": "PaperTemplate",
+            "slots": {
+                "content": "document-card",
+            },
+        };
+        modules["app-banner"] = {
+            "type": "AppBanner",
+            "properties": {
+                "image-uri": json["titleImageURI"],
+                "min-fraction": 0.5,
+                "max-fraction": 0.5,
+                "margin-bottom": 42,
+            },
+        };
+        modules["article-search-box"] = {
+            "type": "SearchBox",
+            "properties": {
+                "halign": Gtk.Align.CENTER,
+                "hexpand": true,
+            },
+        };
+        modules["home-search-box"] = {
+            "type": "SearchBox",
+            "properties": {
+                "max-width-chars": 52,
+            },
+        };
+        modules["article-app-banner"] = {
+            "type": "AppBanner",
+            "properties": {
+                "image-uri": json["titleImageURI"],
+                "min-fraction": 0.2,
+                "max-fraction": 0.2,
+                "margin-top": 10,
+                "margin-bottom": 10,
+                "valign": Gtk.Align.START,
+                "vexpand": false,
+                "halign": Gtk.Align.CENTER,
+            },
+        };
+        modules["lightbox-card"] = {
+            "type": "MediaCard",
+        };
+        modules["document-card"] = {
+            "type": "KnowledgeDocumentCard",
+        };
+        modules["results-search-banner"] = {
+            type: "SearchBannerModule",
             properties: {
-                'title': json['appTitle'],
-                'home-background-uri': json['backgroundHomeURI'],
-                'results-background-uri': json['backgroundSectionURI'],
+                "margin-start": 40,
+                "margin-top": 40,
+                "margin-bottom": 40,
             },
         };
-        modules['home-page-template'] = {
-            type: 'EncyclopediaCoverTemplate',
-            slots: {
-                top: 'app-banner',
-                bottom: 'home-search-box',
+        modules["search-results"] = {
+            "type": "SearchModule",
+            "slots": {
+                "arrangement": "results-arrangement",
+                "card_type": "results-card",
             },
         };
-        modules['search-page-template'] = {
-            type: 'EncyclopediaContentTemplate',
-            slots: {
-                top_left: 'article-app-banner',
-                top_right: 'article-search-box',
-                bottom: 'search-results-paper-template',
-            },
-        };
-        modules['search-results-paper-template'] = {
-            type: 'PaperTemplate',
-            slots: {
-                content: 'search-results-two-vertical-template',
-            },
-        };
-        modules['search-results-two-vertical-template'] = {
-            type: 'TwoVerticalTemplate',
-            slots: {
-                top: 'results-search-banner',
-                bottom: 'search-results',
-            },
-        };
-        modules['article-page-template'] = {
-            type: 'EncyclopediaContentTemplate',
-            slots: {
-                top_left: 'article-app-banner',
-                top_right: 'article-search-box',
-                bottom: 'article-paper-template',
-            },
-        };
-        modules['article-paper-template'] = {
-            type: 'PaperTemplate',
-            slots: {
-                content: 'document-card',
-            },
-        };
-        modules['app-banner'] = {
-            type: 'AppBanner',
-            properties: {
-                'image-uri': json['titleImageURI'],
-                'min-fraction': 0.5,
-                'max-fraction': 0.5,
-                'margin-bottom': 42,
-            },
-        };
-        modules['article-search-box'] = {
-            type: 'SearchBox',
-            properties: {
-                'halign': Gtk.Align.CENTER,
-                'hexpand': true,
-            },
-        };
-        modules['home-search-box'] = {
-            type: 'SearchBox',
-            properties: {
-                'max-width-chars': 52,
-            },
-        };
-        modules['article-app-banner'] = {
-            type: 'AppBanner',
-            properties: {
-                'image-uri': json['titleImageURI'],
-                'min-fraction': 0.2,
-                'max-fraction': 0.2,
-                'margin-top': 10,
-                'margin-bottom': 10,
-                'valign': Gtk.Align.START,
-                'vexpand': false,
-                'halign': Gtk.Align.CENTER,
-            },
-        };
-        modules['lightbox-card'] = {
-            type: 'MediaCard',
-        };
-        modules['document-card'] = {
-            type: 'KnowledgeDocumentCard',
-        };
-        modules['results-search-banner'] = {
-            type: 'SearchBannerModule',
-            properties: {
-                'margin-start': 40,
-                'margin-top': 40,
-                'margin-bottom': 40,
-            },
-        };
-        modules['search-results'] = {
-            type: 'SearchModule',
-            slots: {
-                arrangement: 'results-arrangement',
-                card_type: 'results-card',
-            },
-        };
-        modules['results-card'] = {
-            type: 'TextCard',
-            properties: {
-                'underline-on-hover': true,
-                'decoration': true,
+        modules["results-card"] = {
+            "type": "TextCard",
+            "properties": {
+                "underline-on-hover": true,
+                "decoration": true,
             },
         };
         // FIXME: this should be inlined into search-results, when we get
         // submodules implemented in the factory
-        modules['results-arrangement'] = {
-            type: 'ListArrangement',
-            'properties': {
-                hexpand: true,
-                halign: Gtk.Align.FILL,
+        modules["results-arrangement"] = {
+            type: "ListArrangement",
+            "properties": {
+                "hexpand": true,
+                "halign": Gtk.Align.FILL,
             }
         };
         break;
-    case 'reader':
-        modules['window'] = {
-            type: 'ReaderWindow',
-            properties: {
-                'title': json['appTitle'],
-                'title-image-uri': json['titleImageURI'],
-                'home-background-uri': json['backgroundHomeURI'],
+    case "reader":
+        modules["window"] = {
+            "type": "ReaderWindow",
+            "properties": {
+                "title": json["appTitle"],
+                "title-image-uri": json["titleImageURI"],
+                "home-background-uri": json["backgroundHomeURI"],
             },
         };
-        modules['app-banner'] = {
-            type: 'AppBanner',
-            properties: {
-                'image-uri': json['titleImageURI'],
-                'subtitle': json['appSubtitle'],
-                'subtitle-capitalization': EosKnowledgePrivate.TextTransform.UPPERCASE,
-                'valign': Gtk.Align.START,
-                'halign': Gtk.Align.START,
+        modules["app-banner"] = {
+            "type": "AppBanner",
+            "properties": {
+                "image-uri": json["titleImageURI"],
+                "subtitle": json["appSubtitle"],
+                "subtitle-capitalization": EosKnowledgePrivate.TextTransform.UPPERCASE,
+                "valign": Gtk.Align.START,
+                "halign": Gtk.Align.START,
             },
         };
-        modules['back-cover'] = {
-            type: 'BackCover',
-            properties: {
-                'background-image-uri': json['backgroundSectionURI'],
+        modules["back-cover"] = {
+            "type": "BackCover",
+            "properties": {
+                "background-image-uri": json["backgroundSectionURI"],
             },
         };
-        modules['top-bar-search'] = {
-            type: 'SearchBox',
+        modules["top-bar-search"] = {
+            "type": "SearchBox",
         };
-        modules['document-arrangement'] = {
-            type: 'CarouselArrangement',
+        modules["document-arrangement"] = {
+            "type": "CarouselArrangement",
         };
-        modules['home-card'] = {
-            type: 'ArticleSnippetCard',
+        modules["home-card"] = {
+            "type": "ArticleSnippetCard",
         };
-        modules['document-card'] = {
-            type: 'ReaderDocumentCard',
+        modules["document-card"] = {
+            "type": "ReaderDocumentCard",
         };
-        modules['lightbox-card'] = {
-            type: 'MediaCard',
+        modules["lightbox-card"] = {
+            "type": "MediaCard",
         };
-        modules['results-card'] = {
-            type: 'ReaderCard',
-            properties: {
-                'title-capitalization': EosKnowledgePrivate.TextTransform.UPPERCASE,
+        modules["results-card"] = {
+            "type": "ReaderCard",
+            "properties": {
+                "title-capitalization": EosKnowledgePrivate.TextTransform.UPPERCASE,
             },
         };
         break;
