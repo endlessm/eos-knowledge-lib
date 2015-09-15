@@ -367,6 +367,9 @@ const Presenter = new Lang.Class({
             action_type: Actions.SET_SEARCH_TEXT,
             text: item.query,
         });
+        dispatcher.dispatch({
+            action_type: Actions.HIDE_MEDIA,
+        });
         switch (item.page_type) {
             case this._SEARCH_PAGE:
                 this._perform_search(item.query);
