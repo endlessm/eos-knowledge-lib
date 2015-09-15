@@ -160,14 +160,14 @@ const Presenter = new Lang.Class({
                 case Actions.NAV_BACK_CLICKED:
                     this._on_back();
                     break;
-                case Actions.SET_SELECTED:
+                case Actions.SET_CLICKED:
                     this._history_presenter.set_current_item_from_props({
                         page_type: this._SECTION_PAGE,
                         model: payload.model,
                     });
                     break;
-                case Actions.ITEM_SELECTED:
-                case Actions.SEARCH_SELECTED:
+                case Actions.ITEM_CLICKED:
+                case Actions.SEARCH_CLICKED:
                     this._history_presenter.set_current_item_from_props({
                         page_type: this._ARTICLE_PAGE,
                         model: payload.model,
@@ -182,7 +182,7 @@ const Presenter = new Lang.Class({
                 case Actions.SEARCH_TEXT_ENTERED:
                     this._on_search_text_entered(payload.text);
                     break;
-                case Actions.AUTOCOMPLETE_SELECTED:
+                case Actions.AUTOCOMPLETE_CLICKED:
                     this._history_presenter.set_current_item_from_props({
                         page_type: this._ARTICLE_PAGE,
                         model: payload.model,

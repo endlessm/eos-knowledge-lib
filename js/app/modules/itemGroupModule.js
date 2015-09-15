@@ -71,7 +71,7 @@ const ItemGroupModule = new Lang.Class({
         });
         card.connect('clicked', () => {
             Dispatcher.get_default().dispatch({
-                action_type: Actions.ITEM_SELECTED,
+                action_type: Actions.ITEM_CLICKED,
                 model: model,
             });
         });

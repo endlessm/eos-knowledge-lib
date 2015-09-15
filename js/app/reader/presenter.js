@@ -218,7 +218,7 @@ const Presenter = new Lang.Class({
                 case Actions.SEARCH_TEXT_ENTERED:
                     this._on_search(payload.text);
                     break;
-                case Actions.AUTOCOMPLETE_SELECTED:
+                case Actions.AUTOCOMPLETE_CLICKED:
                     this._history_presenter.set_current_item_from_props({
                         page_type: this._ARTICLE_PAGE,
                         model: payload.model,

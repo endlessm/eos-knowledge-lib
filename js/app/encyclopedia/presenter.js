@@ -80,7 +80,7 @@ const EncyclopediaPresenter = new Lang.Class({
                 case Actions.SEARCH_TEXT_ENTERED:
                     this.do_search(payload.text);
                     break;
-                case Actions.AUTOCOMPLETE_SELECTED:
+                case Actions.AUTOCOMPLETE_CLICKED:
                     this.load_uri(payload.model.ekn_id);
                     break;
             }

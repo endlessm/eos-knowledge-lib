@@ -63,7 +63,7 @@ describe('Search box module', function () {
         box.text = 'foo';
         box.emit('menu-item-selected', 'ekn://aaaabbbbccccdddd');
         let payload = dispatcher.dispatched_payloads[0];
-        expect(payload.action_type).toBe(Actions.AUTOCOMPLETE_SELECTED);
+        expect(payload.action_type).toBe(Actions.AUTOCOMPLETE_CLICKED);
         expect(payload.model).toBe(model);
     });
 });

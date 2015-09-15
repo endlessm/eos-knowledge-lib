@@ -154,7 +154,7 @@ describe('Presenter', () => {
         });
         engine.get_objects_by_query_finish.and.returnValue([[ model ], null]);
         dispatcher.dispatch({
-            action_type: Actions.SET_SELECTED,
+            action_type: Actions.SET_CLICKED,
             model: new ContentObjectModel.ContentObjectModel(),
         });
         Utils.update_gui();
@@ -197,7 +197,7 @@ describe('Presenter', () => {
                 }),
             ], null]);
             dispatcher.dispatch({
-                action_type: Actions.SET_SELECTED,
+                action_type: Actions.SET_CLICKED,
                 model: new ContentObjectModel.ContentObjectModel(),
             });
             Utils.update_gui();
