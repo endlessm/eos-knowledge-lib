@@ -767,7 +767,7 @@ const Presenter = new Lang.Class({
     // pages, asynchronously.
     _create_pages_from_models: function (models) {
         models.forEach(function (model) {
-            let page = this._create_article_page_from_article_model(model);
+            let page = this._create_article_page_from_article_model(model, false);
             this.view.append_article_page(page);
             this._update_button_visibility();
         }, this);
@@ -867,11 +867,24 @@ const Presenter = new Lang.Class({
     },
 
     // Take an ArticleObjectModel and create a ReaderDocumentCard view.
-    _create_article_page_from_article_model: function (model) {
-        let document_card = this.factory.create_named_module('document-card', {
+    _create_article_page_from_article_model: function (model, archived) {
+        let card_props = {
             model: model,
-            page_number: model.article_number,
-        });
+        };
+        if (archived) {
+            let frame = new Gtk.Frame();
+            // Ensures that the archive notice on the in app standalone page
+            // matches that of the standalone page you reach via global search
+            frame.add(new ArchiveNotice.ArchiveNotice({
+                label: this.view.standalone_page.infobar.archive_notice.label,
+            }));
+            frame.get_style_context().add_class(StyleClasses.READER_ARCHIVE_NOTICE_FRAME);
+            card_props.info_notice = frame;
+        } else {
+            card_props.page_number = model.article_number;
+        }
+
+        let document_card = this.factory.create_named_module('document-card', card_props);
         document_card.connect('ekn-link-clicked', (card, uri) => {
             this._remove_link_tooltip();
             let scheme = GLib.uri_parse_scheme(uri);
@@ -974,17 +987,7 @@ const Presenter = new Lang.Class({
     },
 
     _load_standalone_article: function (model) {
-        let frame = new Gtk.Frame();
-        // Ensures that the archive notice on the in app standalone page
-        // matches that of the standalone page you reach via global search
-        frame.add(new ArchiveNotice.ArchiveNotice({
-            label: this.view.standalone_page.infobar.archive_notice.label,
-        }));
-        frame.get_style_context().add_class(StyleClasses.READER_ARCHIVE_NOTICE_FRAME);
-        let document_card = this.factory.create_named_module('document-card', {
-            model: model,
-            info_notice: frame,
-        });
+        let document_card = this._create_article_page_from_article_model(model, true);
         document_card.load_content(null, (card, task) => {
             try {
                 card.load_content_finish(task);
