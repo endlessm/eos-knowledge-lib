@@ -144,6 +144,12 @@ function transform_v1_description(json) {
         modules["lightbox-card"] = {
             "type": "MediaCard",
         };
+        modules["lightbox"] = {
+            "type": "LightboxModule",
+            "slots": {
+                "card-type": "lightbox-card",
+            },
+        };
         modules["document-card"] = {
             "type": "KnowledgeDocumentCard",
             "properties": {
@@ -266,6 +272,12 @@ function transform_v1_description(json) {
         modules["lightbox-card"] = {
             "type": "MediaCard",
         };
+        modules["lightbox"] = {
+            "type": "LightboxModule",
+            "slots": {
+                "card-type": "lightbox-card",
+            },
+        };
         modules["document-card"] = {
             "type": "KnowledgeDocumentCard",
         };
@@ -365,6 +377,12 @@ function transform_v1_description(json) {
         modules["lightbox-card"] = {
             "type": "MediaCard",
         };
+        modules["lightbox"] = {
+            "type": "LightboxModule",
+            "slots": {
+                "card-type": "lightbox-card",
+            },
+        };
         modules["document-card"] = {
             "type": "KnowledgeDocumentCard",
         };
@@ -439,6 +457,12 @@ function transform_v1_description(json) {
         };
         modules["lightbox-card"] = {
             "type": "MediaCard",
+        };
+        modules["lightbox"] = {
+            "type": "LightboxModule",
+            "slots": {
+                "card-type": "lightbox-card",
+            },
         };
         modules["results-card"] = {
             "type": "ReaderCard",

@@ -168,3 +168,18 @@ const MinimalDocumentCard = new Lang.Class({
     load_content_finish: function () {},
     clear_content: function () {},
 });
+
+const MinimalLightbox = new Lang.Class({
+    Name: 'MinimalLightbox',
+    Extends: Gtk.Frame,
+    Implements: [ Module.Module ],
+
+    Properties: {
+        'factory': GObject.ParamSpec.override('factory', Module.Module),
+        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
+    },
+
+    _init: function (props={}) {
+        this.parent(props);
+    },
+});

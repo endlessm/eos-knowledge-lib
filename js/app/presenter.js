@@ -14,7 +14,6 @@ const Engine = imports.search.engine;
 const HistoryItem = imports.app.historyItem;
 const HistoryPresenter = imports.app.historyPresenter;
 const Launcher = imports.app.launcher;
-const LightboxPresenter = imports.app.lightboxPresenter;
 const MediaObjectModel = imports.search.mediaObjectModel;
 const QueryObject = imports.search.queryObject;
 const TabButton = imports.app.widgets.tabButton;
@@ -142,12 +141,6 @@ const Presenter = new Lang.Class({
                 action_type: Actions.APPEND_SETS,
                 models: sorted_models,
             });
-        });
-
-        this._lightbox_presenter = new LightboxPresenter.LightboxPresenter({
-            engine: this.engine,
-            lightbox: this.view.lightbox,
-            factory: this.factory,
         });
 
         this._renderer = new ArticleHTMLRenderer.ArticleHTMLRenderer();

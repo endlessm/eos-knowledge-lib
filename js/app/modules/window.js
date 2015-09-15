@@ -9,7 +9,6 @@ const Lang = imports.lang;
 
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
-const Lightbox = imports.app.widgets.lightbox;
 const Module = imports.app.interfaces.module;
 const NavButtonOverlay = imports.app.widgets.navButtonOverlay;
 const NoSearchResultsPage = imports.app.noSearchResultsPage;
@@ -89,17 +88,6 @@ const Window = new Lang.Class({
             GObject.ParamFlags.READABLE,
             NoSearchResultsPage.NoSearchResultsPage),
         /**
-         * Property: lightbox
-         *
-         * The <Lightbox> widget created by this widget. Read-only,
-         * modify using the <Lightbox> API. Use to show content above the <section-page>
-         * or <article-page>.
-         */
-        'lightbox': GObject.ParamSpec.object('lightbox', 'Lightbox',
-            'The lightbox of this view widget.',
-            GObject.ParamFlags.READABLE,
-            Lightbox.Lightbox),
-        /**
          * Property: background-image-uri
          *
          * The background image uri for this window.
@@ -174,15 +162,15 @@ const Window = new Lang.Class({
         });
         this._nav_buttons.add(this._stack);
 
-        this.lightbox = new Lightbox.Lightbox();
-        this.lightbox.add(this._nav_buttons);
+        let lightbox = this.factory.create_named_module('lightbox');
+        lightbox.add(this._nav_buttons);
 
         this._history_buttons = new Endless.TopbarNavButton();
         this._search_box = this.factory.create_named_module('top-bar-search', {
             no_show_all: true,
             visible: false,
         });
-        this.page_manager.add(this.lightbox, {
+        this.page_manager.add(lightbox, {
             left_topbar_widget: this._history_buttons,
             center_topbar_widget: this._search_box,
         });

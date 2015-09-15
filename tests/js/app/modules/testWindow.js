@@ -50,6 +50,7 @@ describe('Window', function () {
         factory.add_named_mock('item-group', MockWidgets.MockItemGroupModule);
         factory.add_named_mock('search-results', MockWidgets.MockItemGroupModule);
         factory.add_named_mock('home-page-template', Minimal.MinimalHomePage);
+        factory.add_named_mock('lightbox', Minimal.MinimalLightbox);
         view = new Window.Window({
             application: app,
             factory: factory,
@@ -78,10 +79,6 @@ describe('Window', function () {
 
     it('instantiates an article page A', function () {
         expect(view.article_page).toBeDefined();
-    });
-
-    it('instantiates a lightbox', function () {
-        expect(view.lightbox).toBeA(Lightbox.Lightbox);
     });
 
     it('correctly sets background image', function () {

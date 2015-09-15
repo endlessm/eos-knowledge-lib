@@ -18,9 +18,7 @@ const Engine = imports.search.engine;
 const HistoryPresenter = imports.app.historyPresenter;
 const InArticleSearch = imports.app.encyclopedia.inArticleSearch;
 const Launcher = imports.app.launcher;
-const LightboxPresenter = imports.app.lightboxPresenter;
 const MediaObjectModel = imports.search.mediaObjectModel;
-const Previewer = imports.app.widgets.previewer;
 const QueryObject = imports.search.queryObject;
 const WebKit2 = imports.gi.WebKit2;
 const WebkitContextSetup = imports.app.webkitContextSetup;
@@ -88,15 +86,6 @@ const EncyclopediaPresenter = new Lang.Class({
             }
         });
 
-        this._previewer = new Previewer.Previewer({
-            visible: true,
-        });
-        this.view.lightbox.content_widget = this._previewer;
-
-        // Whenever there's a pending lightbox load, its cancellable will be
-        // stored here
-        this._cancel_lightbox_load = null;
-
         this._history = new EosKnowledgePrivate.HistoryModel();
         this._history_presenter = new HistoryPresenter.HistoryPresenter({
             history_model: this._history,
@@ -107,11 +96,6 @@ const EncyclopediaPresenter = new Lang.Class({
             this.load_model(model);
         });
 
-        this._lightbox_presenter = new LightboxPresenter.LightboxPresenter({
-            engine: this._engine,
-            lightbox: this.view.lightbox,
-            factory: this.factory,
-        });
         this.view.connect('key-press-event', this._on_key_press_event.bind(this));
     },
 

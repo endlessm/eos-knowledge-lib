@@ -20,7 +20,6 @@ const Dispatcher = imports.app.dispatcher;
 const Engine = imports.search.engine;
 const HistoryPresenter = imports.app.historyPresenter;
 const Launcher = imports.app.launcher;
-const LightboxPresenter = imports.app.lightboxPresenter;
 const MediaObjectModel = imports.search.mediaObjectModel;
 const OverviewPage = imports.app.reader.overviewPage;
 const QueryObject = imports.search.queryObject;
@@ -185,13 +184,6 @@ const Presenter = new Lang.Class({
         });
 
         this.parent(props);
-
-        // Currently, Reader apps lightboxes don't show an infobox.
-        this._lightbox_presenter = new LightboxPresenter.LightboxPresenter({
-            engine: this.engine,
-            lightbox: this.view.lightbox,
-            factory: this.factory,
-        });
 
         WebkitContextSetup.register_webkit_uri_handlers(this._article_render_callback.bind(this));
         this._dbus_name = WebkitContextSetup.register_webkit_extensions(this.application.application_id);
