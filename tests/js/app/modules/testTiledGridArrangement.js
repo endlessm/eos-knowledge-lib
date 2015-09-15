@@ -6,21 +6,23 @@ const ContentObjectModel = imports.search.contentObjectModel;
 const Minimal = imports.tests.minimal;
 const TiledGridArrangement = imports.app.modules.tiledGridArrangement;
 const Utils = imports.tests.utils;
-const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 
 describe('Tiled grid arrangement', function () {
     let arrangement, cards;
 
     beforeEach(function () {
-        jasmine.addMatchers(WidgetDescendantMatcher.customMatchers);
-
         arrangement = new TiledGridArrangement.TiledGridArrangement();
+        // Use the test suite's provided "this" object so that arrangement can
+        // be in scope in the compliance tests in minimal.js.
+        this.arrangement = arrangement;
         cards = [];
     });
 
     it('constructs', function () {
         expect(arrangement).toBeDefined();
     });
+
+    Minimal.test_arrangement_compliance();
 
     function add_cards(ncards) {
         for (let ix = 0; ix < ncards; ix++)
@@ -30,21 +32,6 @@ describe('Tiled grid arrangement', function () {
         cards.forEach(arrangement.add_card, arrangement);
         Utils.update_gui();
     }
-
-    it('adds cards to the list', function () {
-        add_cards(3);
-        cards.forEach((card) => expect(arrangement).toHaveDescendant(card));
-        expect(arrangement.get_cards().length).toBe(3);
-    });
-
-    it('removes cards from the list', function () {
-        add_cards(3);
-        arrangement.clear();
-        Utils.update_gui();
-
-        cards.forEach((card) => expect(arrangement).not.toHaveDescendant(card));
-        expect(arrangement.get_cards().length).toBe(0);
-    });
 
     function check_card_placement(card, left, top, width, height) {
         expect(arrangement.get_child_at(left, top)).toBe(card);

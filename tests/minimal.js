@@ -1,6 +1,8 @@
 // Copyright 2015 Endless Mobile, Inc.
 
-/* exported MinimalArrangement, MinimalCard, MinimalModule, MinimalDocumentCard */
+/* exported MinimalArrangement, MinimalBackCover, MinimalCard,
+MinimalDocumentCard, MinimalHomePage, MinimalLightbox, MinimalModule,
+test_arrangement_compliance */
 
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
@@ -9,8 +11,11 @@ const Lang = imports.lang;
 
 const Arrangement = imports.app.interfaces.arrangement;
 const Card = imports.app.interfaces.card;
+const ContentObjectModel = imports.search.contentObjectModel;
 const DocumentCard = imports.app.interfaces.documentCard;
 const Module = imports.app.interfaces.module;
+const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
+const Utils = imports.tests.utils;
 
 const MinimalArrangement = new Lang.Class({
     Name: 'MinimalArrangement',
@@ -183,3 +188,41 @@ const MinimalLightbox = new Lang.Class({
         this.parent(props);
     },
 });
+
+function test_arrangement_compliance() {
+    describe('implements Arrangement correctly', function () {
+        let cards;
+
+        beforeEach(function () {
+            jasmine.addMatchers(WidgetDescendantMatcher.customMatchers);
+            cards = [];
+        });
+
+        function add_cards(arrangement, ncards) {
+            for (let ix = 0; ix < ncards; ix++) {
+                cards.push(new MinimalCard({
+                    model: new ContentObjectModel.ContentObjectModel(),
+                }));
+            }
+            cards.forEach(arrangement.add_card, arrangement);
+            Utils.update_gui();
+        }
+
+        it('by adding cards to the list', function () {
+            add_cards(this.arrangement, 3);
+            cards.forEach((card) =>
+                expect(this.arrangement).toHaveDescendant(card));
+            expect(this.arrangement.get_cards().length).toBe(3);
+        });
+
+        it('by removing cards from the list', function () {
+            add_cards(this.arrangement, 3);
+            this.arrangement.clear();
+            Utils.update_gui();
+
+            cards.forEach((card) =>
+                expect(this.arrangement).not.toHaveDescendant(card));
+            expect(this.arrangement.get_cards().length).toBe(0);
+        });
+    });
+}
