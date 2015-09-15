@@ -343,6 +343,10 @@ const Presenter = new Lang.Class({
                 search_text = item.query;
                 break;
             case this._SECTION_PAGE:
+                dispatcher.dispatch({
+                    action_type: Actions.SHOW_SET,
+                    model: item.model,
+                });
                 this._refresh_article_results(() => {
                     this.view.show_page(this.view.section_page);
                 });

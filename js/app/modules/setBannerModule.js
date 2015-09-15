@@ -32,7 +32,7 @@ const SetBannerModule = new Lang.Class({
         this.parent(props);
         Dispatcher.get_default().register((payload) => {
             switch(payload.action_type) {
-                case Actions.SET_SELECTED:
+                case Actions.SHOW_SET:
                     let card = this.create_submodule('card_type', {
                         model: payload.model,
                     });
