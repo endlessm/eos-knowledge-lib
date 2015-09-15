@@ -18,6 +18,7 @@ const Compat = imports.app.compat.compat;
 const Config = imports.app.config;
 const Dispatcher = imports.app.dispatcher;
 const Engine = imports.search.engine;
+const HistoryItem = imports.app.historyItem;
 const HistoryPresenter = imports.app.historyPresenter;
 const Launcher = imports.app.launcher;
 const LightboxPresenter = imports.app.lightboxPresenter;
@@ -226,14 +227,6 @@ const Presenter = new Lang.Class({
                 case Actions.SEARCH_TEXT_ENTERED:
                     this._on_search(payload.text);
                     break;
-                case Actions.AUTOCOMPLETE_SELECTED:
-                // FIXME: This looks like it should be handled in the history presenter
-                case Actions.ITEM_SELECTED:
-                    this._history_presenter.set_current_item_from_props({
-                        page_type: this._ARTICLE_PAGE,
-                        model: payload.model,
-                    });
-                    break;
             }
         });
 
@@ -306,11 +299,6 @@ const Presenter = new Lang.Class({
             provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
     },
 
-    _ARTICLE_PAGE: 'article',
-    _SEARCH_PAGE: 'search',
-    _OVERVIEW_PAGE: 'overview',
-    _BACK_COVER: 'done',
-
     // Launcher override
     search: function (timestamp, query) {
         this._pending_present_timestamp = timestamp;
@@ -327,7 +315,7 @@ const Presenter = new Lang.Class({
         this.record_search_metric(query);
 
         this._history_presenter.set_current_item_from_props({
-            page_type: this._SEARCH_PAGE,
+            page_type: HistoryItem.SEARCH_PAGE,
             query: sanitized_query,
         });
     },
@@ -349,15 +337,15 @@ const Presenter = new Lang.Class({
     _add_history_item_for_page: function (page_index) {
         if (page_index === 0) {
             this._history_presenter.set_current_item_from_props({
-                page_type: this._OVERVIEW_PAGE,
+                page_type: HistoryItem.OVERVIEW_PAGE,
             });
         } else if (page_index === this.view.total_pages - 1) {
             this._history_presenter.set_current_item_from_props({
-                page_type: this._BACK_COVER,
+                page_type: HistoryItem.BACK_COVER,
             });
         } else {
             this._history_presenter.set_current_item_from_props({
-                page_type: this._ARTICLE_PAGE,
+                page_type: HistoryItem.ARTICLE_PAGE,
                 model: this._article_models[page_index - 1],
             });
         }
@@ -369,16 +357,16 @@ const Presenter = new Lang.Class({
             text: item.query,
         });
         switch (item.page_type) {
-            case this._SEARCH_PAGE:
+            case HistoryItem.SEARCH_PAGE:
                 this._perform_search(item.query);
                 break;
-            case this._ARTICLE_PAGE:
+            case HistoryItem.ARTICLE_PAGE:
                 this._go_to_article(item.model, item.from_global_search);
                 break;
-            case this._OVERVIEW_PAGE:
+            case HistoryItem.OVERVIEW_PAGE:
                 this._go_to_page(0);
                 break;
-            case this._BACK_COVER:
+            case HistoryItem.BACK_COVER:
                 this._go_to_page(this._article_models.length + 1);
                 break;
             default:
@@ -408,7 +396,7 @@ const Presenter = new Lang.Class({
                 try {
                     model = engine.get_object_by_id_finish(task);
                     this._history_presenter.set_current_item_from_props({
-                        page_type: this._ARTICLE_PAGE,
+                        page_type: HistoryItem.ARTICLE_PAGE,
                         model: model,
                         query: query,
                         from_global_search: true,
@@ -887,7 +875,7 @@ const Presenter = new Lang.Class({
                     this._lightbox_presenter.show_media_object(card.model, clicked_model);
                 } else if (clicked_model instanceof ArticleObjectModel.ArticleObjectModel) {
                     this._history_presenter.set_current_item_from_props({
-                        page_type: this._ARTICLE_PAGE,
+                        page_type: HistoryItem.ARTICLE_PAGE,
                         model: clicked_model,
                     });
                 }
@@ -987,7 +975,7 @@ const Presenter = new Lang.Class({
 
     _on_article_card_clicked: function (model) {
         this._history_presenter.set_current_item_from_props({
-            page_type: this._ARTICLE_PAGE,
+            page_type: HistoryItem.ARTICLE_PAGE,
             model: model,
         });
     },

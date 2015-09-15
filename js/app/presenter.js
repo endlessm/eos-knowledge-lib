@@ -43,12 +43,6 @@ const Presenter = new Lang.Class({
     Extends: GObject.Object,
     Implements: [ Launcher.Launcher ],
 
-    _ARTICLE_PAGE: 'article',
-    _HOME_PAGE: 'home',
-    _SEARCH_PAGE: 'search',
-    _SECTION_PAGE: 'section',
-    _CATEGORIES_PAGE: 'categories',
-
     Properties: {
         /**
          * Property: application
@@ -146,7 +140,7 @@ const Presenter = new Lang.Class({
             history_model: new EosKnowledgePrivate.HistoryModel(),
         });
         this._history_presenter.set_current_item_from_props({
-            page_type: this._HOME_PAGE,
+            page_type: HistoryItem.HOME_PAGE,
         });
 
         // Connect signals
@@ -157,19 +151,6 @@ const Presenter = new Lang.Class({
                 case Actions.NAV_BACK_CLICKED:
                     this._on_back();
                     break;
-                case Actions.SET_SELECTED:
-                    this._history_presenter.set_current_item_from_props({
-                        page_type: this._SECTION_PAGE,
-                        model: payload.model,
-                    });
-                    break;
-                case Actions.ITEM_SELECTED:
-                case Actions.SEARCH_SELECTED:
-                    this._history_presenter.set_current_item_from_props({
-                        page_type: this._ARTICLE_PAGE,
-                        model: payload.model,
-                    });
-                    break;
                 case Actions.NEED_MORE_ITEMS:
                     this._load_more_results(Actions.APPEND_ITEMS);
                     break;
@@ -178,13 +159,6 @@ const Presenter = new Lang.Class({
                     break;
                 case Actions.SEARCH_TEXT_ENTERED:
                     this._on_search_text_entered(payload.text);
-                    break;
-                case Actions.AUTOCOMPLETE_SELECTED:
-                    this._history_presenter.set_current_item_from_props({
-                        page_type: this._ARTICLE_PAGE,
-                        model: payload.model,
-                        query: payload.text,
-                    });
                     break;
             }
         });
@@ -289,7 +263,7 @@ const Presenter = new Lang.Class({
             if (results.length > 0) {
                 let dispatcher = Dispatcher.get_default();
                 let item = this._history_presenter.history_model.current_item;
-                if (item.page_type === this._ARTICLE_PAGE) {
+                if (item.page_type === HistoryItem.ARTICLE_PAGE) {
                     dispatcher.dispatch({
                         action_type: Actions.HIGHLIGHT_ITEM,
                         model: item.model,
@@ -317,7 +291,7 @@ const Presenter = new Lang.Class({
         });
         let search_text = '';
         switch (item.page_type) {
-            case this._SEARCH_PAGE:
+            case HistoryItem.SEARCH_PAGE:
                 this._refresh_article_results(() => {
                     dispatcher.dispatch({
                         action_type: Actions.SEARCH_READY,
@@ -331,12 +305,12 @@ const Presenter = new Lang.Class({
                 });
                 search_text = item.query;
                 break;
-            case this._SECTION_PAGE:
+            case HistoryItem.SECTION_PAGE:
                 this._refresh_article_results(() => {
                     this.view.show_page(this.view.section_page);
                 });
                 break;
-            case this._ARTICLE_PAGE:
+            case HistoryItem.ARTICLE_PAGE:
                 if (this._template_type === 'B') {
                     this._refresh_article_results(() => {
                         dispatcher.dispatch({
@@ -345,16 +319,16 @@ const Presenter = new Lang.Class({
                         });
                     });
                     let query_item = this._history_presenter.search_backwards(0, (query_item) => {
-                        return query_item.page_type === this._SECTION_PAGE || query_item.query;
+                        return query_item.page_type === HistoryItem.SECTION_PAGE || query_item.query;
                     });
                     search_text = query_item.query;
                 }
                 this._load_document_card_in_view(item, is_going_back);
                 break;
-            case this._CATEGORIES_PAGE:
+            case HistoryItem.CATEGORIES_PAGE:
                 this.view.show_page(this.view.categories_page);
                 break;
-            case this._HOME_PAGE:
+            case HistoryItem.HOME_PAGE:
                 this.view.show_page(this.view.home_page);
         }
         dispatcher.dispatch({
@@ -397,7 +371,7 @@ const Presenter = new Lang.Class({
                     this._lightbox_presenter.show_media_object(item.model, model);
                 } else {
                     this._history_presenter.set_current_item_from_props({
-                        page_type: this._ARTICLE_PAGE,
+                        page_type: HistoryItem.ARTICLE_PAGE,
                         model: model,
                     });
                 }
@@ -407,13 +381,13 @@ const Presenter = new Lang.Class({
 
     _on_categories_button_clicked: function (button) {
         this._history_presenter.set_current_item_from_props({
-            page_type: this._CATEGORIES_PAGE,
+            page_type: HistoryItem.CATEGORIES_PAGE,
         });
     },
 
     _on_home_button_clicked: function (button) {
         this._history_presenter.set_current_item_from_props({
-            page_type: this._HOME_PAGE,
+            page_type: HistoryItem.HOME_PAGE,
         });
     },
 
@@ -435,7 +409,7 @@ const Presenter = new Lang.Class({
             return;
         this.record_search_metric(text);
         this._history_presenter.set_current_item_from_props({
-            page_type: this._SEARCH_PAGE,
+            page_type: HistoryItem.SEARCH_PAGE,
             query: query,
         });
     },
@@ -446,7 +420,7 @@ const Presenter = new Lang.Class({
             try {
                 let model = engine.get_object_by_id_finish(task);
                 this._history_presenter.set_current_item_from_props({
-                    page_type: this._ARTICLE_PAGE,
+                    page_type: HistoryItem.ARTICLE_PAGE,
                     model: model,
                     query: query,
                 });
@@ -459,7 +433,8 @@ const Presenter = new Lang.Class({
 
     _on_back: function () {
         let types = this.view.get_visible_page() === this.view.article_page ?
-            [this._HOME_PAGE, this._SECTION_PAGE, this._SEARCH_PAGE] : [this._HOME_PAGE];
+            [HistoryItem.HOME_PAGE, HistoryItem.SECTION_PAGE, HistoryItem.SEARCH_PAGE] :
+            [HistoryItem.HOME_PAGE];
         let item = this._history_presenter.search_backwards(-1,
             (item) => types.indexOf(item.page_type) >= 0);
         this._history_presenter.set_current_item(HistoryItem.HistoryItem.new_from_object(item));
@@ -468,7 +443,7 @@ const Presenter = new Lang.Class({
     _refresh_article_results: function (callback) {
         let query_obj;
         let item = this._history_presenter.search_backwards(0, (item) => {
-            if (item.page_type === this._SECTION_PAGE) {
+            if (item.page_type === HistoryItem.SECTION_PAGE) {
                 let tags = item.model.tags.slice();
                 let home_page_tag_index = tags.indexOf(Engine.HOME_PAGE_TAG);
                 if (home_page_tag_index !== -1)
@@ -511,7 +486,7 @@ const Presenter = new Lang.Class({
                 item.empty = true;
             } else {
                 let dispatcher = Dispatcher.get_default();
-                if (item.page_type === this._SEARCH_PAGE) {
+                if (item.page_type === HistoryItem.SEARCH_PAGE) {
                     dispatcher.dispatch({
                         action_type: Actions.CLEAR_SEARCH,
                     });

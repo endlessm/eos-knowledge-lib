@@ -59,6 +59,26 @@ const HistoryPresenter = new GObject.Class({
                 case Actions.HISTORY_FORWARD_CLICKED:
                     this.history_model.go_forward();
                     break;
+                case Actions.SET_SELECTED:
+                    this.set_current_item_from_props({
+                        page_type: HistoryItem.SECTION_PAGE,
+                        model: payload.model,
+                    });
+                    break;
+                case Actions.SEARCH_SELECTED:
+                case Actions.ITEM_SELECTED:
+                    this.set_current_item_from_props({
+                        page_type: HistoryItem.ARTICLE_PAGE,
+                        model: payload.model,
+                    });
+                    break;
+                case Actions.AUTOCOMPLETE_SELECTED:
+                    this.set_current_item_from_props({
+                        page_type: HistoryItem.ARTICLE_PAGE,
+                        model: payload.model,
+                        query: payload.text,
+                    });
+                    break;
             }
         });
 

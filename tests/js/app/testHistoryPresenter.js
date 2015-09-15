@@ -1,6 +1,7 @@
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 
 const Actions = imports.app.actions;
+const ContentObjectModel = imports.search.contentObjectModel;
 const HistoryPresenter = imports.app.historyPresenter;
 const MockDispatcher = imports.tests.mockDispatcher;
 
@@ -111,5 +112,15 @@ describe('History Presenter', function () {
         dispatcher.dispatch({ action_type: Actions.HISTORY_BACK_CLICKED });
         dispatcher.dispatch({ action_type: Actions.HISTORY_FORWARD_CLICKED });
         expect(history_model.current_item.title).toBe('third');
+    });
+
+    it('switches to a new article page item when the user selects an item', function () {
+        let content_model = new ContentObjectModel.ContentObjectModel();
+        dispatcher.dispatch({
+            action_type: Actions.ITEM_SELECTED,
+            model: content_model,
+        });
+        expect(history_model.current_item.model).toBe(content_model);
+        expect(history_model.current_item.page_type).toBe('article');
     });
 });

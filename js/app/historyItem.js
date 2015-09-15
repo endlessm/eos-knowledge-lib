@@ -1,8 +1,28 @@
+/* exported HistoryItem, ARTICLE_PAGE, BACK_COVER, CATEGORIES_PAGE, HOME_PAGE,
+OVERVIEW_PAGE, SEARCH_PAGE, SECTION_PAGE */
+
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 
 const ContentObjectModel = imports.search.contentObjectModel;
+
+/**
+ * Constant: ARTICLE_PAGE
+ * Value for <HistoryItem.page-type>
+ */
+const ARTICLE_PAGE = 'article';
+/**
+ * Constant: BACK_COVER
+ * Value for <HistoryItem.page-type>
+ */
+const BACK_COVER = 'done';
+// etc.
+const CATEGORIES_PAGE = 'categories';
+const HOME_PAGE = 'home';
+const OVERVIEW_PAGE = 'overview';
+const SEARCH_PAGE = 'search';
+const SECTION_PAGE = 'section';
 
 /**
  * Class: HistoryItem
@@ -28,21 +48,24 @@ const HistoryItem = new Lang.Class({
             ''),
         /**
          * Property: page-type
+         * Type of page that corresponds to a history item
          *
-         * A string that stores the type of page that corresponds to a history item.
-         * Supported page types are 'search', 'section', 'article', and 'home'.
+         * The suggested page types are constants: <ARTICLE_PAGE>, <BACK_COVER>,
+         * etc.
          */
         'page-type': GObject.ParamSpec.string('page-type', 'Page Type',
-            'The type of page of the history object. Either \'search\', \'section\', \'article\', or \'home\'',
+            'The type of page of the history item',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             ''),
         /**
          * Property: model
          * Content object model representing this page
          *
-         * For 'article' pages, a <ArticleObjectModel> of the currently
-         * displayed article. For 'section' pages, a <ContentObjectModel> of the
-         * currently displayed set. Null for other pages.
+         * For <ARTICLE_PAGE> pages, a <ArticleObjectModel> of the currently
+         * displayed article.
+         * For <SECTION_PAGE> pages, a <ContentObjectModel>
+         * of the currently displayed set.
+         * Null for other pages.
          */
         'model': GObject.ParamSpec.object('model', 'Model',
             'Content object model representing this page',
