@@ -2,6 +2,7 @@
 
 /* exported GridArrangement */
 
+const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 
@@ -18,6 +19,16 @@ const GridArrangement = new Lang.Class({
     Properties: {
         'factory': GObject.ParamSpec.override('factory', Module.Module),
         'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
+        /**
+         * Property: max-children-per-line
+         *
+         * The maximum amount of children to request space for consecutively
+         * in the given orientation.
+         */
+        'max-children-per-line':  GObject.ParamSpec.int('max-children-per-line', 'Max children per line',
+            'The number of children to show in each line of the flow box',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            0, GLib.MAXINT32, 7),
     },
 
     Template: 'resource:///com/endlessm/knowledge/widgets/gridArrangement.ui',
@@ -25,6 +36,9 @@ const GridArrangement = new Lang.Class({
 
     _init: function (props={}) {
         this.parent(props);
+        this.bind_property('max-children-per-line',
+                           this._flow_box, 'max-children-per-line',
+                           GObject.BindingFlags.SYNC_CREATE);
     },
 
     add_card: function (widget) {

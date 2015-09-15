@@ -22,6 +22,7 @@ const TextCard = imports.app.modules.textCard;
 const Utils = imports.app.utils;
 const WebkitContextSetup = imports.app.webkitContextSetup;
 
+const HOME_PAGE_A_MAX_CARDS = 6;
 const RESULTS_SIZE = 10;
 const _SEARCH_METRIC = 'a628c936-5d87-434a-a57a-015a0f223838';
 const DATA_RESOURCE_PATH = 'resource:///com/endlessm/knowledge/';
@@ -47,7 +48,6 @@ const Presenter = new Lang.Class({
     _HOME_PAGE: 'home',
     _SEARCH_PAGE: 'search',
     _SECTION_PAGE: 'section',
-    _CATEGORIES_PAGE: 'categories',
 
     Properties: {
         /**
@@ -128,9 +128,19 @@ const Presenter = new Lang.Class({
         });
         this.engine.get_objects_by_query(query, null, (engine, res) => {
             let [models, get_more] = engine.get_objects_by_query_finish(res);
+            // FIXME: This sorting should ideally happen in the arrangement
+            // once it has a sort-by API.
+            let sorted_models = models.sort((a, b) => {
+                let sortVal = 0;
+                if (a.featured)
+                    sortVal--;
+                if (b.featured)
+                    sortVal++;
+                return sortVal;
+            });
             dispatcher.dispatch({
                 action_type: Actions.APPEND_SETS,
-                models: models,
+                models: sorted_models,
             });
         });
 
@@ -189,8 +199,6 @@ const Presenter = new Lang.Class({
             }
         });
 
-        this.view.home_page.connect('show-categories', this._on_categories_button_clicked.bind(this));
-        this.view.categories_page.connect('show-home', this._on_home_button_clicked.bind(this));
         this._history_presenter.connect('history-item-changed', this._on_history_item_change.bind(this));
 
         this._current_article_results_item = null;
@@ -351,9 +359,6 @@ const Presenter = new Lang.Class({
                 }
                 this._load_document_card_in_view(item, is_going_back);
                 break;
-            case this._CATEGORIES_PAGE:
-                this.view.show_page(this.view.categories_page);
-                break;
             case this._HOME_PAGE:
                 this.view.show_page(this.view.home_page);
         }
@@ -402,12 +407,6 @@ const Presenter = new Lang.Class({
                     });
                 }
             });
-        });
-    },
-
-    _on_categories_button_clicked: function (button) {
-        this._history_presenter.set_current_item_from_props({
-            page_type: this._CATEGORIES_PAGE,
         });
     },
 

@@ -9,10 +9,7 @@ const Lang = imports.lang;
 
 const Actions = imports.app.actions;
 const ArticlePage = imports.app.articlePage;
-const CategoriesPage = imports.app.categoriesPage;
 const Dispatcher = imports.app.dispatcher;
-const HomePage = imports.app.homePage;
-const HomePageA = imports.app.homePageA;
 const Lightbox = imports.app.widgets.lightbox;
 const Module = imports.app.interfaces.module;
 const NavButtonOverlay = imports.app.widgets.navButtonOverlay;
@@ -49,23 +46,12 @@ const Window = new Lang.Class({
         /**
          * Property: home-page
          *
-         * The <HomePageA> widget created by this widget. Read-only,
-         * modify using the <HomePageA> API.
+         * The page created by this widget to represent the HomePage of the app. Read-only.
          */
         'home-page': GObject.ParamSpec.object('home-page', 'Home page',
             'The home page of this view widget.',
             GObject.ParamFlags.READABLE,
-            HomePage.HomePage),
-        /**
-         * Property: categories-page
-         *
-         * The <CategoriesPage> widget created by this widget. Read-only,
-         * modify using the <CategoriesPage> API.
-         */
-        'categories-page': GObject.ParamSpec.object('categories-page', 'Categories page',
-            'The categories page of this view widget.',
-            GObject.ParamFlags.READABLE,
-            CategoriesPage.CategoriesPage),
+            Gtk.Widget),
         /**
          * Property: section-page
          *
@@ -161,9 +147,6 @@ const Window = new Lang.Class({
     _init: function (props) {
         this.parent(props);
 
-        this.categories_page = new CategoriesPage.CategoriesPage({
-            factory: this.factory,
-        });
         this.section_page = this.factory.create_named_module('section-page-template');
         this.search_page = this.factory.create_named_module('search-page-template');
         if (this.template_type === 'B') {
@@ -174,9 +157,7 @@ const Window = new Lang.Class({
             this.section_page.get_style_context().add_class(StyleClasses.SECTION_PAGE_B);
             this.search_page.get_style_context().add_class(StyleClasses.SEARCH_PAGE_B);
         } else {
-            this.home_page = new HomePageA.HomePageA({
-                factory: this.factory,
-            });
+            this.home_page = this.factory.create_named_module('home-page-template');
             this.article_page = new ArticlePage.ArticlePage();
             this.no_search_results_page = new NoSearchResultsPage.NoSearchResultsPageA();
 
@@ -186,7 +167,6 @@ const Window = new Lang.Class({
 
         this._stack = new Gtk.Stack();
         this._stack.add(this.home_page);
-        this._stack.add(this.categories_page);
         this._stack.add(this.section_page);
         this._stack.add(this.search_page);
         this._stack.add(this.no_search_results_page);
@@ -239,7 +219,6 @@ const Window = new Lang.Class({
         this._stack.transition_duration = this.TRANSITION_DURATION;
         this._stack.connect('notify::transition-running', function () {
             this.home_page.animating = this._stack.transition_running;
-            this.categories_page.animating = this._stack.transition_running;
             let context = this.get_style_context();
             if (this._stack.transition_running)
                 context.add_class(StyleClasses.ANIMATING);
@@ -339,16 +318,10 @@ const Window = new Lang.Class({
         if (old_page === new_page)
             return;
 
-        let is_on_left = (page) => page === this.home_page || page === this.categories_page;
+        let is_on_left = (page) => page === this.home_page;
         let is_on_center = (page) => page === this.section_page || page === this.search_page || page === this.no_search_results_page;
         if (is_on_left(new_page)) {
-            if (old_page === this.home_page) {
-                this._stack.transition_type = Gtk.StackTransitionType.SLIDE_UP;
-            } else if (old_page === this.categories_page) {
-                this._stack.transition_type = Gtk.StackTransitionType.SLIDE_DOWN;
-            } else {
-                this._stack.transition_type = Gtk.StackTransitionType.SLIDE_RIGHT;
-            }
+            this._stack.transition_type = Gtk.StackTransitionType.SLIDE_RIGHT;
             this._nav_buttons.back_visible = false;
             this._search_box.visible = false;
             this._set_background_position_style(StyleClasses.BACKGROUND_LEFT);

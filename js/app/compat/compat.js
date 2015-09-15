@@ -1,9 +1,13 @@
+const Gettext = imports.gettext;
 const GLib = imports.gi.GLib;
 const Gtk = imports.gi.Gtk;
 
+const Config = imports.app.config;
 const ContentObjectModel = imports.search.contentObjectModel;
 const Engine = imports.search.engine;
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
+
+let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
 function transform_v1_description(json) {
     let modules = {};
@@ -31,9 +35,17 @@ function transform_v1_description(json) {
         };
         modules['home-search'] = {
             type: 'SearchBox',
+            properties: {
+                'width-request': 400,
+                'halign': Gtk.Align.CENTER,
+            }
         };
         modules['home-card'] = {
             type: 'CardA',
+            properties: {
+                hexpand: true,
+                halign: Gtk.Align.CENTER,
+            }
         };
         modules['results-arrangement'] = {
             type: 'GridArrangement',
@@ -64,6 +76,19 @@ function transform_v1_description(json) {
                 content: 'item-group',
             },
         };
+        modules['home-page-template'] = {
+            type: 'HomePageATemplate',
+            slots: {
+                top: 'app-banner',
+                middle: 'home-search',
+                bottom: 'home-page-set-group',
+                basement: 'home-page-basement-set-group',
+            },
+            properties: {
+                'upper-button-label': _("SEE ALL CATEGORIES"),
+                'basement-button-label': _("HOME"),
+            },
+        };
         modules['results-card'] = {
             type: 'CardA',
         };
@@ -72,6 +97,38 @@ function transform_v1_description(json) {
             slots: {
                 arrangement: 'results-arrangement',
                 card_type: 'results-card',
+            },
+        };
+        modules['home-page-arrangement'] = {
+            type: 'OverflowArrangement',
+            properties: {
+                orientation: Gtk.Orientation.HORIZONTAL,
+            },
+        };
+        modules['home-card'] = {
+            type: 'CardA',
+        };
+        modules['home-page-set-group'] = {
+            type: 'SetGroupModule',
+            properties: {
+                'expand': true,
+                'halign': Gtk.Align.CENTER,
+                'valign': Gtk.Align.CENTER,
+                'max-children': 6,
+            },
+            slots: {
+                arrangement: 'home-page-arrangement',
+                card_type: 'home-card',
+            },
+        };
+        modules['home-page-basement-set-group'] = {
+            type: 'SetGroupModule',
+            properties: {
+                'expand': true,
+            },
+            slots: {
+                arrangement: 'results-arrangement',
+                card_type: 'home-card',
             },
         };
         modules['results-search-banner'] = {
@@ -144,9 +201,9 @@ function transform_v1_description(json) {
         modules['home-search'] = {
             type: 'SearchBox',
             properties: {
-                'width_request': 350,
+                'width-request': 350,
                 'visible': true,
-                'shadow_type': Gtk.ShadowType.NONE,
+                'shadow-type': Gtk.ShadowType.NONE,
                 'halign': Gtk.Align.CENTER,
                 'valign': Gtk.Align.CENTER,
             },

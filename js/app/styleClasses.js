@@ -152,13 +152,6 @@ const TOC_ARROW = 'toc-arrow';
 const COLLAPSED = 'collapsed';
 
 /**
- * Constant: HOME_PAGE
- *
- * Matches the Template A's HomePage.
- */
-const HOME_PAGE = 'home-page';
-
-/**
  * Constant: APP_BANNER
  *
  * Matches the title image.
@@ -166,11 +159,11 @@ const HOME_PAGE = 'home-page';
 const APP_BANNER = 'app-banner';
 
 /**
- * Constant: HOME_PAGE_A
+ * Constant: HOME_PAGE_A_TEMPLATE
  *
  * Matches the Template A's HomePage.
  */
-const HOME_PAGE_A = 'home-page-a';
+const HOME_PAGE_A_TEMPLATE = 'home-page-a-template';
 
 /**
  * Constant: HOME_PAGE_B_TEMPLATE

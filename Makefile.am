@@ -213,7 +213,6 @@ js_files = \
 	js/app/application.js \
 	js/app/articleHTMLRenderer.js \
 	js/app/articlePage.js \
-	js/app/categoriesPage.js \
 	js/app/compat/compat.js \
 	js/app/compat/cssParse.js \
 	js/app/compat/styleKnobGenerator.js \
@@ -224,11 +223,10 @@ js_files = \
 	js/app/encyclopedia/presenter.js \
 	js/app/historyItem.js \
 	js/app/historyPresenter.js \
-	js/app/homePage.js \
-	js/app/homePageA.js \
 	js/app/interfaces/arrangement.js \
 	js/app/interfaces/card.js \
 	js/app/interfaces/documentCard.js \
+	js/app/interfaces/expandable.js \
 	js/app/interfaces/module.js \
 	js/app/launcher.js \
 	js/app/lightboxPresenter.js \
@@ -244,6 +242,7 @@ js_files = \
 	js/app/modules/gridArrangement.js \
 	js/app/modules/itemGroupModule.js \
 	js/app/modules/knowledgeDocumentCard.js \
+	js/app/modules/homePageATemplate.js \
 	js/app/modules/homePageBTemplate.js \
 	js/app/modules/listArrangement.js \
 	js/app/modules/carouselArrangement.js \
@@ -258,6 +257,7 @@ js_files = \
 	js/app/modules/setGroupModule.js \
 	js/app/modules/setBannerModule.js \
 	js/app/modules/sidebarTemplate.js \
+	js/app/modules/overflowArrangement.js \
 	js/app/modules/textCard.js \
 	js/app/modules/tiledGridArrangement.js \
 	js/app/modules/twoVerticalTemplate.js \
@@ -367,10 +367,12 @@ javascript_tests = \
 	tests/js/app/modules/testCardB.js \
 	tests/js/app/modules/testCarouselArrangement.js \
 	tests/js/app/modules/testKnowledgeDocumentCard.js \
+	tests/js/app/modules/testHomePageATemplate.js \
 	tests/js/app/modules/testHomePageBTemplate.js \
 	tests/js/app/modules/testItemGroupModule.js \
 	tests/js/app/modules/testListArrangement.js \
 	tests/js/app/modules/testMediaCard.js \
+	tests/js/app/modules/testOverflowArrangement.js \
 	tests/js/app/modules/testReaderCard.js \
 	tests/js/app/modules/testReaderDocumentCard.js \
 	tests/js/app/modules/testReaderWindow.js \
@@ -392,8 +394,6 @@ javascript_tests = \
 	tests/js/app/testDispatcher.js \
 	tests/js/app/testHistoryItem.js \
 	tests/js/app/testHistoryPresenter.js \
-	tests/js/app/testHomePage.js \
-	tests/js/app/testHomePageA.js \
 	tests/js/app/testLightboxPresenter.js \
 	tests/js/app/testModuleFactory.js \
 	tests/js/app/testNoSearchResultsPageA.js \

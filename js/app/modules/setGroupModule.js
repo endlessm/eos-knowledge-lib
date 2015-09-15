@@ -2,12 +2,14 @@
 
 /* exported SetGroupModule */
 
+const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
+const Expandable = imports.app.interfaces.expandable;
 const InfiniteScrolledWindow = imports.app.widgets.infiniteScrolledWindow;
 const Module = imports.app.interfaces.module;
 
@@ -23,15 +25,27 @@ const SetGroupModule = new Lang.Class({
     Name: 'SetGroupModule',
     GTypeName: 'EknSetGroupModule',
     Extends: Gtk.Frame,
-    Implements: [ Module.Module ],
+    Implements: [ Module.Module, Expandable.Expandable ],
 
     Properties: {
         'factory': GObject.ParamSpec.override('factory', Module.Module),
         'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
+        'has-more-content': GObject.ParamSpec.override('has-more-content', Expandable.Expandable),
+        /**
+         * Property: max-children
+         *
+         * The maximum amount of child widgets to show
+         */
+        'max-children':  GObject.ParamSpec.int('max-children', 'Max children',
+            'The number of children to show in this container',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            0, GLib.MAXINT32, 1000),
     },
 
     _init: function (props={}) {
         this.parent(props);
+        this._cards = [];
+        this.has_more_content = false;
         this._arrangement = this.create_submodule('arrangement');
         this.add(this._arrangement);
 
@@ -75,6 +89,11 @@ const SetGroupModule = new Lang.Class({
                 model: model,
             });
         });
-        this._arrangement.add_card(card);
+        this._cards.push(card);
+        if (this._cards.length <= this.max_children) {
+            this._arrangement.add_card(card);
+        }
+        this.has_more_content = this._cards.length > this.max_children;
+        this.notify('has-more-content')
     },
 });

@@ -7,9 +7,9 @@ Utils.register_gresource();
 
 const ArticlePage = imports.app.articlePage;
 const CssClassMatcher = imports.tests.CssClassMatcher;
-const HomePageA = imports.app.homePageA;
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
 const Lightbox = imports.app.widgets.lightbox;
+const Minimal = imports.tests.minimal;
 const MockFactory = imports.tests.mockFactory;
 const MockWidgets = imports.tests.mockWidgets;
 const Window = imports.app.modules.window;
@@ -50,6 +50,7 @@ describe('Window', function () {
         factory.add_named_mock('top-bar-search', MockWidgets.MockSearchBox);
         factory.add_named_mock('item-group', MockWidgets.MockItemGroupModule);
         factory.add_named_mock('search-results', MockWidgets.MockItemGroupModule);
+        factory.add_named_mock('home-page-template', Minimal.MinimalHomePage);
         view = new Window.Window({
             application: app,
             factory: factory,
@@ -65,7 +66,7 @@ describe('Window', function () {
     });
 
     it('instantiates a home page A', function () {
-        expect(view.home_page).toBeA(HomePageA.HomePageA);
+        expect(view.home_page).toBeDefined();
     });
 
     it('instantiates a section page A', function () {
