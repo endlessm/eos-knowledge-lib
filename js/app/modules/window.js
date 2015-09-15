@@ -8,7 +8,6 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const Actions = imports.app.actions;
-const ArticlePage = imports.app.articlePage;
 const Dispatcher = imports.app.dispatcher;
 const Lightbox = imports.app.widgets.lightbox;
 const Module = imports.app.interfaces.module;
@@ -64,13 +63,12 @@ const Window = new Lang.Class({
         /**
          * Property: article-page
          *
-         * The <ArticlePage> widget created by this widget. Read-only,
-         * modify using the <ArticlePage> API.
+         * The article page template.
          */
         'article-page': GObject.ParamSpec.object('article-page', 'Article page',
             'The article page of this view widget.',
             GObject.ParamFlags.READABLE,
-            ArticlePage.ArticlePage),
+            Gtk.Widget),
         /**
          * Property: search-page
          *
@@ -147,18 +145,16 @@ const Window = new Lang.Class({
     _init: function (props) {
         this.parent(props);
 
+        this.home_page = this.factory.create_named_module('home-page-template');
         this.section_page = this.factory.create_named_module('section-page-template');
         this.search_page = this.factory.create_named_module('search-page-template');
+        this.article_page = this.factory.create_named_module('article-page-template');
         if (this.template_type === 'B') {
-            this.home_page = this.factory.create_named_module('home-page-template');
-            this.article_page = new ArticlePage.ArticlePage();
             this.no_search_results_page = new NoSearchResultsPage.NoSearchResultsPageB();
 
             this.section_page.get_style_context().add_class(StyleClasses.SECTION_PAGE_B);
             this.search_page.get_style_context().add_class(StyleClasses.SEARCH_PAGE_B);
         } else {
-            this.home_page = this.factory.create_named_module('home-page-template');
-            this.article_page = new ArticlePage.ArticlePage();
             this.no_search_results_page = new NoSearchResultsPage.NoSearchResultsPageA();
 
             this.section_page.get_style_context().add_class(StyleClasses.SECTION_PAGE_A);

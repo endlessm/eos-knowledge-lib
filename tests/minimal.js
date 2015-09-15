@@ -164,7 +164,7 @@ const MinimalDocumentCard = new Lang.Class({
         };
     },
 
-    load_content: function () {},
+    load_content: function (cancellable, callback) { callback(this); },
     load_content_finish: function () {},
     clear_content: function () {},
 });

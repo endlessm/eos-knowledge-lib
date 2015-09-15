@@ -151,6 +151,12 @@ function transform_v1_description(json) {
                 "show_toc": true,
             },
         };
+        modules["article-page-template"] = {
+            "type": "ArticleStackModule",
+            "slots": {
+                "card-type": "document-card",
+            },
+        };
         break;
     case "B":
         modules["window"] = {
@@ -262,6 +268,12 @@ function transform_v1_description(json) {
         };
         modules["document-card"] = {
             "type": "KnowledgeDocumentCard",
+        };
+        modules["article-page-template"] = {
+            "type": "ArticleStackModule",
+            "slots": {
+                "card-type": "document-card",
+            },
         };
         break;
     case "encyclopedia":

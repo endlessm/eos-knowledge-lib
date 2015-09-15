@@ -5,7 +5,6 @@ const GLib = imports.gi.GLib;
 const Utils = imports.tests.utils;
 Utils.register_gresource();
 
-const ArticlePage = imports.app.articlePage;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
 const Lightbox = imports.app.widgets.lightbox;
@@ -78,7 +77,7 @@ describe('Window', function () {
     });
 
     it('instantiates an article page A', function () {
-        expect(view.article_page).toBeA(ArticlePage.ArticlePage);
+        expect(view.article_page).toBeDefined();
     });
 
     it('instantiates a lightbox', function () {

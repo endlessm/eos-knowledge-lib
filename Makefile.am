@@ -212,7 +212,6 @@ js_files = \
 	js/app/actions.js \
 	js/app/application.js \
 	js/app/articleHTMLRenderer.js \
-	js/app/articlePage.js \
 	js/app/compat/compat.js \
 	js/app/compat/cssParse.js \
 	js/app/compat/styleKnobGenerator.js \
@@ -232,6 +231,7 @@ js_files = \
 	js/app/moduleFactory.js \
 	js/app/modules/appBanner.js \
 	js/app/modules/articleSnippetCard.js \
+	js/app/modules/articleStackModule.js \
 	js/app/modules/backCover.js \
 	js/app/modules/bannerTemplate.js \
 	js/app/modules/cardA.js \
@@ -362,6 +362,7 @@ javascript_tests = \
 	tests/js/app/interfaces/testModule.js \
 	tests/js/app/modules/testAppBanner.js \
 	tests/js/app/modules/testArticleSnippetCard.js \
+	tests/js/app/modules/testArticleStackModule.js \
 	tests/js/app/modules/testBackCover.js \
 	tests/js/app/modules/testBannerTemplate.js \
 	tests/js/app/modules/testCardA.js \
@@ -392,7 +393,6 @@ javascript_tests = \
 	tests/js/app/reader/testUserSettingsModel.js \
 	tests/js/app/reader/testWebExtension.js \
 	tests/js/app/testArticleHTMLRenderer.js \
-	tests/js/app/testArticlePage.js \
 	tests/js/app/testDispatcher.js \
 	tests/js/app/testHistoryItem.js \
 	tests/js/app/testHistoryPresenter.js \

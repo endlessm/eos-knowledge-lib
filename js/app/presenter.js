@@ -196,6 +196,9 @@ const Presenter = new Lang.Class({
                         query: payload.text,
                     });
                     break;
+                case Actions.ARTICLE_LINK_CLICKED:
+                    this._on_link_clicked(payload.ekn_id);
+                    break;
             }
         });
 
@@ -376,37 +379,31 @@ const Presenter = new Lang.Class({
         } else if (is_going_back) {
             animation_type = EosKnowledgePrivate.LoadingAnimationType.BACKWARDS_NAVIGATION;
         }
-        let document_card = this.factory.create_named_module('document-card', {
+        Dispatcher.get_default().dispatch({
+            action_type: Actions.SHOW_ARTICLE,
             model: item.model,
+            animation_type: animation_type,
         });
-        document_card.load_content(null, (card, task) => {
+    },
+
+    _on_link_clicked: function (ekn_id) {
+        this.engine.get_object_by_id(ekn_id, null, (engine, task) => {
+            let model;
             try {
-                card.load_content_finish(task);
-                this.view.article_page.switch_in_document_card(document_card, animation_type);
+                model = engine.get_object_by_id_finish(task);
             } catch (error) {
                 logError(error);
+                return;
             }
-        });
 
-        document_card.connect('ekn-link-clicked', (card, ekn_id) => {
-            this.engine.get_object_by_id(ekn_id, null, (engine, task) => {
-                let model;
-                try {
-                    model = engine.get_object_by_id_finish(task);
-                } catch (error) {
-                    logError(error);
-                    return;
-                }
-
-                if (model instanceof MediaObjectModel.MediaObjectModel) {
-                    this._lightbox_presenter.show_media_object(item.model, model);
-                } else {
-                    this._history_presenter.set_current_item_from_props({
-                        page_type: this._ARTICLE_PAGE,
-                        model: model,
-                    });
-                }
-            });
+            if (model instanceof MediaObjectModel.MediaObjectModel) {
+                this._lightbox_presenter.show_media_object(this._history_presenter.history_model.current_item.model, model);
+            } else {
+                this._history_presenter.set_current_item_from_props({
+                    page_type: this._ARTICLE_PAGE,
+                    model: model,
+                });
+            }
         });
     },
 
