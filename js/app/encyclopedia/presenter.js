@@ -256,6 +256,9 @@ const EncyclopediaPresenter = new Lang.Class({
             action_type: Actions.SET_SEARCH_TEXT,
             text: item.query,
         });
+        dispatcher.dispatch({
+            action_type: Actions.HIDE_MEDIA,
+        });
         switch (item.page_type) {
         case ARTICLE_PAGE:
             this._current_article = item.model;
