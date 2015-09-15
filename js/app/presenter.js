@@ -370,7 +370,7 @@ const Presenter = new Lang.Class({
 
     _load_document_card_in_view: function (item, is_going_back) {
         let animation_type = EosKnowledgePrivate.LoadingAnimationType.FORWARDS_NAVIGATION;
-        if (this.view.get_visible_page() !== this.article_page) {
+        if (this.view.get_visible_page() !== this.view.article_page) {
             animation_type = EosKnowledgePrivate.LoadingAnimationType.NONE;
             this.view.show_page(this.view.article_page);
         } else if (is_going_back) {
