@@ -401,7 +401,10 @@ const Presenter = new Lang.Class({
             }
 
             if (model instanceof MediaObjectModel.MediaObjectModel) {
-                this._lightbox_presenter.show_media_object(model);
+                Dispatcher.get_default().dispatch({
+                    action_type: Actions.SHOW_MEDIA,
+                    model: model,
+                });
             } else {
                 this._history_presenter.set_current_item_from_props({
                     page_type: this._ARTICLE_PAGE,

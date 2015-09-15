@@ -8,6 +8,7 @@ Utils.register_gresource();
 const Actions = imports.app.actions;
 const ArticleObjectModel = imports.search.articleObjectModel;
 const MediaObjectModel = imports.search.mediaObjectModel;
+const Minimal = imports.tests.minimal;
 const MockDispatcher = imports.tests.mockDispatcher;
 const MockEngine = imports.tests.mockEngine;
 const MockFactory = imports.tests.mockFactory;
@@ -31,6 +32,7 @@ describe('Lightbox Presenter', function () {
             lightbox: lightbox,
             factory: factory,
         });
+        factory.add_named_mock('lightbox-card', Minimal.MinimalCard);
     });
 
     it('can be constructed', function () {});
@@ -39,27 +41,27 @@ describe('Lightbox Presenter', function () {
         let media_object_uri = 'ekn://foo/bar';
         let media_object = new MediaObjectModel.MediaObjectModel({
             ekn_id: media_object_uri,
-            get_content_stream: () => null,
-            content_type: 'image/jpeg',
         });
         let article_model = new ArticleObjectModel.ArticleObjectModel({
-            title: 'Title 1',
-            synopsis: 'Some text',
-            ekn_id: 'about:blank',
-            published: '2014/11/13 08:00',
             resources: [media_object_uri],
         });
         dispatcher.dispatch({
             action_type: Actions.SHOW_ARTICLE,
             model: article_model,
         });
-        let lightbox_result = lightbox_presenter.show_media_object(media_object);
-        expect(lightbox_result).toBe(true);
+        dispatcher.dispatch({
+            action_type: Actions.SHOW_MEDIA,
+            model: media_object,
+        });
+        expect(factory.get_created_named_mocks('lightbox-card').length).toBe(1);
 
         let nonexistant_media_object = new MediaObjectModel.MediaObjectModel({
             ekn_id: 'ekn://no/media',
         });
-        let no_lightbox_result = lightbox_presenter.show_media_object(nonexistant_media_object);
-        expect(no_lightbox_result).toBe(false);
+        dispatcher.dispatch({
+            action_type: Actions.SHOW_MEDIA,
+            model: nonexistant_media_object,
+        });
+        expect(factory.get_created_named_mocks('lightbox-card').length).toBe(1);
     });
 });

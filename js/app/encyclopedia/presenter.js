@@ -296,7 +296,10 @@ const EncyclopediaPresenter = new Lang.Class({
                 model: model,
             });
         } else if (model instanceof MediaObjectModel.MediaObjectModel) {
-            this._lightbox_presenter.show_media_object(model);
+            Dispatcher.get_default().dispatch({
+                action_type: Actions.SHOW_MEDIA,
+                model: model,
+            });
         }
     },
 

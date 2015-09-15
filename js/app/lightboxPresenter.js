@@ -67,15 +67,14 @@ const LightboxPresenter = new GObject.Class({
                 case Actions.SHOW_ARTICLE:
                     this._article_model = payload.model;
                     break;
+                case Actions.SHOW_MEDIA:
+                    this._preview_media_object(payload.model);
+                    break;
             }
         });
 
         this.lightbox.connect('navigation-previous-clicked', () => this._on_previous_clicked());
         this.lightbox.connect('navigation-next-clicked', () => this._on_next_clicked());
-    },
-
-    show_media_object: function (media_object) {
-        return this._preview_media_object(media_object);
     },
 
     hide_lightbox: function () {
