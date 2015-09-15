@@ -320,8 +320,10 @@ const Presenter = new Lang.Class({
     },
 
     _on_history_item_change: function (presenter, item, is_going_back) {
-        this._lightbox_presenter.hide_lightbox();
         let dispatcher = Dispatcher.get_default();
+        Dispatcher.get_default().dispatch({
+            action_type: Actions.HIDE_MEDIA,
+        });
         dispatcher.dispatch({
             action_type: Actions.CLEAR_HIGHLIGHTED_ITEM,
             model: item.model,
@@ -428,7 +430,9 @@ const Presenter = new Lang.Class({
 
     _on_search_focus: function (view, focused) {
         // If the user focused the search box, ensure that the lightbox is hidden
-        this._lightbox_presenter.hide_lightbox();
+        Dispatcher.get_default().dispatch({
+            action_type: Actions.HIDE_MEDIA,
+        });
     },
 
     _on_search_text_entered: function (text) {

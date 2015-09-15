@@ -27,4 +27,5 @@ const SET_SEARCH_TEXT = 'set-search-text';
 const SHOW_SET = 'show-set';
 const SHOW_ARTICLE = 'show-article';
 const SHOW_MEDIA = 'show-media';
+const HIDE_MEDIA = 'hide-media';
 const ARTICLE_LINK_CLICKED = 'article-link-clicked';

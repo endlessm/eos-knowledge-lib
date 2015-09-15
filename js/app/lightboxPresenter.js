@@ -70,15 +70,14 @@ const LightboxPresenter = new GObject.Class({
                 case Actions.SHOW_MEDIA:
                     this._preview_media_object(payload.model);
                     break;
+                case Actions.HIDE_MEDIA:
+                    this.lightbox.reveal_overlays = false;
+                    break;
             }
         });
 
         this.lightbox.connect('navigation-previous-clicked', () => this._on_previous_clicked());
         this.lightbox.connect('navigation-next-clicked', () => this._on_next_clicked());
-    },
-
-    hide_lightbox: function () {
-        this.lightbox.reveal_overlays = false;
     },
 
     _on_previous_clicked: function () {
