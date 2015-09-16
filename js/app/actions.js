@@ -28,6 +28,7 @@ const APPEND_SEARCH = 'append-search';
 const CLEAR_SETS = 'clear-sets';
 const CLEAR_ITEMS = 'clear-items';
 const CLEAR_SEARCH = 'clear-search';
+const SEARCH_STARTED = 'search-started';
 const SEARCH_READY = 'search-ready';
 const SET_SEARCH_TEXT = 'set-search-text';
 const SHOW_SET = 'show-set';

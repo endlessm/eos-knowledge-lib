@@ -19,7 +19,17 @@ describe('Search banner widget', function () {
 
     it('constructs', function () {});
 
-    it('displays the query string somewhere in the UI', function () {
+    it('displays the query string somewhere when the search starts', function () {
+        expect(Gtk.test_find_label(searchBannerModule, '*myfoobar*')).toBeNull();
+        dispatcher.dispatch({
+            action_type: Actions.SEARCH_STARTED,
+            query: 'myfoobar',
+        });
+        Utils.update_gui();
+        expect(Gtk.test_find_label(searchBannerModule, '*myfoobar*')).not.toBeNull();
+    });
+
+    it('displays the query string somewhere when the search is complete', function () {
         expect(Gtk.test_find_label(searchBannerModule, '*myfoobar*')).toBeNull();
         dispatcher.dispatch({
             action_type: Actions.SEARCH_READY,
