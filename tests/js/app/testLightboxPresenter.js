@@ -5,8 +5,10 @@ const Lang = imports.lang;
 const Utils = imports.tests.utils;
 Utils.register_gresource();
 
+const Actions = imports.app.actions;
 const ArticleObjectModel = imports.search.articleObjectModel;
 const MediaObjectModel = imports.search.mediaObjectModel;
+const MockDispatcher = imports.tests.mockDispatcher;
 const MockEngine = imports.tests.mockEngine;
 const MockFactory = imports.tests.mockFactory;
 const MockLightbox = imports.tests.mockLightbox;
@@ -15,9 +17,11 @@ const LightboxPresenter = imports.app.lightboxPresenter;
 Gtk.init(null);
 
 describe('Lightbox Presenter', function () {
-    let lightbox_presenter, engine, lightbox, factory;
+    let lightbox_presenter, engine, lightbox, factory, dispatcher;
 
     beforeEach(function () {
+        dispatcher = MockDispatcher.mock_default();
+
         engine = new MockEngine.MockEngine();
         lightbox = new MockLightbox.MockLightbox();
         factory = new MockFactory.MockFactory();
@@ -45,13 +49,17 @@ describe('Lightbox Presenter', function () {
             published: '2014/11/13 08:00',
             resources: [media_object_uri],
         });
-        let lightbox_result = lightbox_presenter.show_media_object(article_model, media_object);
+        dispatcher.dispatch({
+            action_type: Actions.SHOW_ARTICLE,
+            model: article_model,
+        });
+        let lightbox_result = lightbox_presenter.show_media_object(media_object);
         expect(lightbox_result).toBe(true);
 
         let nonexistant_media_object = new MediaObjectModel.MediaObjectModel({
             ekn_id: 'ekn://no/media',
         });
-        let no_lightbox_result = lightbox_presenter.show_media_object(article_model, nonexistant_media_object);
+        let no_lightbox_result = lightbox_presenter.show_media_object(nonexistant_media_object);
         expect(no_lightbox_result).toBe(false);
     });
 });

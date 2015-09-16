@@ -362,7 +362,8 @@ const Presenter = new Lang.Class({
     },
 
     _on_history_item_change: function (presenter, item) {
-        Dispatcher.get_default().dispatch({
+        let dispatcher = Dispatcher.get_default();
+        dispatcher.dispatch({
             action_type: Actions.SET_SEARCH_TEXT,
             text: item.query,
         });
@@ -372,6 +373,10 @@ const Presenter = new Lang.Class({
                 break;
             case this._ARTICLE_PAGE:
                 this._go_to_article(item.model, item.from_global_search);
+                dispatcher.dispatch({
+                    action_type: Actions.SHOW_ARTICLE,
+                    model: item.model,
+                });
                 break;
             case this._OVERVIEW_PAGE:
                 this._go_to_page(0);
@@ -880,7 +885,7 @@ const Presenter = new Lang.Class({
                 }
 
                 if (clicked_model instanceof MediaObjectModel.MediaObjectModel) {
-                    this._lightbox_presenter.show_media_object(card.model, clicked_model);
+                    this._lightbox_presenter.show_media_object(clicked_model);
                 } else if (clicked_model instanceof ArticleObjectModel.ArticleObjectModel) {
                     this._history_presenter.set_current_item_from_props({
                         page_type: this._ARTICLE_PAGE,

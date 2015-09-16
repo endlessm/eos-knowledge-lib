@@ -1,5 +1,7 @@
 const GObject = imports.gi.GObject;
 
+const Actions = imports.app.actions;
+const Dispatcher = imports.app.dispatcher;
 const Engine = imports.search.engine;
 
 /**
@@ -59,13 +61,20 @@ const LightboxPresenter = new GObject.Class({
         // Lock to ensure we're only loading one lightbox media object at a time
         this._loading_new_lightbox = false;
         this._current_index = -1;
+        this._article_model = null;
+        Dispatcher.get_default().register((payload) => {
+            switch(payload.action_type) {
+                case Actions.SHOW_ARTICLE:
+                    this._article_model = payload.model;
+                    break;
+            }
+        });
 
         this.lightbox.connect('navigation-previous-clicked', () => this._on_previous_clicked());
         this.lightbox.connect('navigation-next-clicked', () => this._on_next_clicked());
     },
 
-    show_media_object: function (article_model, media_object) {
-        this._article_model = article_model;
+    show_media_object: function (media_object) {
         return this._preview_media_object(media_object);
     },
 
@@ -82,6 +91,8 @@ const LightboxPresenter = new GObject.Class({
     },
 
     _lightbox_shift_image: function (delta) {
+        if (this._article_model === null)
+            return;
         if (this._loading_new_lightbox)
             return;
 
@@ -105,6 +116,8 @@ const LightboxPresenter = new GObject.Class({
     },
 
     _preview_media_object: function (media_object) {
+        if (this._article_model === null)
+            return false;
         let resources = this._article_model.resources;
         this._current_index = resources.indexOf(media_object.ekn_id);
         if (this._current_index === -1)

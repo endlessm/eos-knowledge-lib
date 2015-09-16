@@ -251,7 +251,8 @@ const EncyclopediaPresenter = new Lang.Class({
     },
 
     _on_history_item_change: function (presenter, item) {
-        Dispatcher.get_default().dispatch({
+        let dispatcher = Dispatcher.get_default();
+        dispatcher.dispatch({
             action_type: Actions.SET_SEARCH_TEXT,
             text: item.query,
         });
@@ -259,6 +260,10 @@ const EncyclopediaPresenter = new Lang.Class({
         case ARTICLE_PAGE:
             this._current_article = item.model;
             this._load_article_in_view(item.model);
+            dispatcher.dispatch({
+                action_type: Actions.SHOW_ARTICLE,
+                model: item.model,
+            });
             return;
         case SEARCH_RESULTS_PAGE:
             this._do_search_in_view(item);
@@ -291,7 +296,7 @@ const EncyclopediaPresenter = new Lang.Class({
                 model: model,
             });
         } else if (model instanceof MediaObjectModel.MediaObjectModel) {
-            this._lightbox_presenter.show_media_object(this._current_article, model);
+            this._lightbox_presenter.show_media_object(model);
         }
     },
 

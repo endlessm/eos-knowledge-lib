@@ -397,7 +397,7 @@ const Presenter = new Lang.Class({
             }
 
             if (model instanceof MediaObjectModel.MediaObjectModel) {
-                this._lightbox_presenter.show_media_object(this._history_presenter.history_model.current_item.model, model);
+                this._lightbox_presenter.show_media_object(model);
             } else {
                 this._history_presenter.set_current_item_from_props({
                     page_type: this._ARTICLE_PAGE,
