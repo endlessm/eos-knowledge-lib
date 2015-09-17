@@ -83,6 +83,9 @@ const EncyclopediaPresenter = new Lang.Class({
                 case Actions.AUTOCOMPLETE_CLICKED:
                     this.load_uri(payload.model.ekn_id);
                     break;
+                case Actions.SEARCH_CLICKED:
+                    this.load_model(payload.model);
+                    break;
             }
         });
 
@@ -91,11 +94,6 @@ const EncyclopediaPresenter = new Lang.Class({
             history_model: this._history,
         });
         this._history_presenter.connect('history-item-changed', this._on_history_item_change.bind(this));
-
-        this.view.search_results_page.content_module.content.bottom.connect('article-selected', (module, model) => {
-            this.load_model(model);
-        });
-
         this.view.connect('key-press-event', this._on_key_press_event.bind(this));
     },
 
@@ -120,10 +118,11 @@ const EncyclopediaPresenter = new Lang.Class({
     },
 
     _do_search_in_view: function (item) {
-        let search = this.view.search_results_page.content_module.content.bottom;
-        let search_banner = this.view.search_results_page.content_module.content.top;
-        search_banner.label = Utils.page_title_from_query_object(item.query);
-        search.start_search(item.query);
+        Dispatcher.get_default().dispatch({
+            action_type: Actions.SEARCH_STARTED,
+            query: item.query,
+        });
+
         if (this.view.get_visible_page() !== this.view.search_results_page)
             this.view.show_search_results_page();
         this.view.set_focus_child(null);
@@ -131,20 +130,36 @@ const EncyclopediaPresenter = new Lang.Class({
             query: item.query,
         });
         this._engine.get_objects_by_query(query_obj, null, (engine, task) => {
-            search.searching = false;
             let results, get_more_results_query;
+            let dispatcher = Dispatcher.get_default();
+
+            dispatcher.dispatch({
+                action_type: Actions.CLEAR_SEARCH,
+            });
+
             try {
                 [results, get_more_results_query] = engine.get_objects_by_query_finish(task);
             } catch (error) {
                 logError(error);
-                search.finish_search_with_error(error);
-                search_banner.visible = false;
+                dispatcher.dispatch({
+                    action_type: Actions.SEARCH_FAILED,
+                    query: item.query,
+                    error: error,
+                });
                 return;
             }
-            search_banner.visible = true;
+
             if (results.length === 0)
                 item.empty = true;
-            search.finish_search(results);
+
+            dispatcher.dispatch({
+                action_type: Actions.APPEND_SEARCH,
+                models: results,
+            });
+            dispatcher.dispatch({
+                action_type: Actions.SEARCH_READY,
+                query: item.query,
+            });
         });
     },
 

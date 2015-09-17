@@ -5,9 +5,11 @@ const Gtk = imports.gi.Gtk;
 const Utils = imports.tests.utils;
 Utils.register_gresource();
 
+const Actions = imports.app.actions;
 const ContentObjectModel = imports.search.contentObjectModel;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const Minimal = imports.tests.minimal;
+const MockDispatcher = imports.tests.mockDispatcher;
 const MockFactory = imports.tests.mockFactory;
 const SearchModule = imports.app.modules.searchModule;
 const StyleClasses = imports.app.styleClasses;
@@ -16,12 +18,13 @@ const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 Gtk.init(null);
 
 describe('Search module', function () {
-    let factory, search_module, arrangement;
+    let factory, search_module, arrangement, dispatcher;
 
     beforeEach(function () {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
         jasmine.addMatchers(WidgetDescendantMatcher.customMatchers);
 
+        dispatcher = MockDispatcher.mock_default();
         factory = new MockFactory.MockFactory();
         factory.add_named_mock('results-card', Minimal.MinimalCard);
         factory.add_named_mock('results-arrangement',
@@ -62,49 +65,61 @@ describe('Search module', function () {
 
     it('displays the spinner when a search is started', function () {
         search_module._results_stack.visible_child_name = 'error-message';
-        search_module.start_search('myfoobar');
-        Utils.update_gui();
+        dispatcher.dispatch({
+            action_type: Actions.SEARCH_STARTED,
+            query: 'myfoobar',
+        });
         expect(search_module._results_stack.visible_child_name).toBe('spinner');
     });
 
     it('displays the search page when there are search results', function () {
         search_module._results_stack.visible_child_name = 'error-message';
-        search_module.finish_search([
-            new ContentObjectModel.ContentObjectModel(),
-        ]);
-        Utils.update_gui();
+        dispatcher.dispatch({
+            action_type: Actions.APPEND_SEARCH,
+            models: [new ContentObjectModel.ContentObjectModel()],
+        });
+        dispatcher.dispatch({
+            action_type: Actions.SEARCH_READY,
+            query: 'myfoobar',
+        });
         expect(search_module._results_stack.visible_child_name).toBe('results');
     });
 
     it('displays the no results page when there are no results', function () {
         search_module._results_stack.visible_child_name = 'error-message';
-        search_module.finish_search([]);
-        Utils.update_gui();
+        dispatcher.dispatch({
+            action_type: Actions.SEARCH_READY,
+            query: 'myfoobar',
+        });
         expect(search_module._results_stack.visible_child_name).toBe('no-results-message');
     });
 
     it('displays the error page when told to', function () {
         search_module._results_stack.visible_child_name = 'results';
-        search_module.finish_search_with_error(new Error());
-        Utils.update_gui();
+        dispatcher.dispatch({
+            action_type: Actions.SEARCH_FAILED,
+            query: 'myfoobar',
+            error: new Error(),
+        });
         expect(search_module._results_stack.visible_child_name).toBe('error-message');
     });
 
     it('adds results to the card container', function () {
-        search_module.finish_search([
-            new ContentObjectModel.ContentObjectModel(),
-        ]);
-        Utils.update_gui();
+        dispatcher.dispatch({
+            action_type: Actions.APPEND_SEARCH,
+            models: [new ContentObjectModel.ContentObjectModel()],
+        });
         expect(arrangement.get_cards().length).toBe(1);
     });
 
     it('removes old results from the card container when adding new ones', function () {
-        search_module.finish_search([
-            new ContentObjectModel.ContentObjectModel(),
-        ]);
-        Utils.update_gui();
-        search_module.finish_search([]);
-        Utils.update_gui();
+        dispatcher.dispatch({
+            action_type: Actions.APPEND_SEARCH,
+            models: [new ContentObjectModel.ContentObjectModel()],
+        });
+        dispatcher.dispatch({
+            action_type: Actions.CLEAR_SEARCH,
+        });
         expect(arrangement.get_cards().length).toBe(0);
     });
 });

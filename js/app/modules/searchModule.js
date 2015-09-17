@@ -6,8 +6,9 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
+const Actions = imports.app.actions;
 const Config = imports.app.config;
-const ContentObjectModel = imports.search.contentObjectModel;
+const Dispatcher = imports.app.dispatcher;
 const Module = imports.app.interfaces.module;
 
 String.prototype.format = Format.format;
@@ -25,13 +26,8 @@ const SPINNER_PAGE_NAME = 'spinner';
  * Module that can display a container of cards, or a message that no
  * results were found, or a message that there was an error during the search.
  *
- * FIXME: This module does not have its final API; for that, the dispatcher is
- * necessary. In addition, the API may need to be changed when adapting it to
- * other existing knowledge apps.
- *
  * CSS classes:
  *   search-results - on the widget itself
- *   headline - on the headline labels ("Searching for ...")
  *   separator - on the separator image widgets
  *   no-results-message - on the text showing a no results message
  *   error-message - on the text showing an error
@@ -46,21 +42,6 @@ const SearchModule = new Lang.Class({
         'factory': GObject.ParamSpec.override('factory', Module.Module),
         'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
     },
-    Signals: {
-        /**
-         * Event: article-selected
-         * Indicates that a card was clicked in the search results
-         *
-         * FIXME: This signal is temporary, and the dispatcher will make it
-         * unnecessary.
-         *
-         * Parameters:
-         *   <ContentObjectModel> - the model of the card that was clicked
-         */
-        'article-selected': {
-            param_types: [ ContentObjectModel.ContentObjectModel ],
-        },
-    },
 
     Template: 'resource:///com/endlessm/knowledge/widgets/searchModule.ui',
     InternalChildren: [ 'results-stack', 'spinner', 'error-message', 'no-results-message' ],
@@ -71,6 +52,26 @@ const SearchModule = new Lang.Class({
             margin_start: 45,
         });
         this._results_stack.add_named(this._arrangement, RESULTS_PAGE_NAME);
+
+        Dispatcher.get_default().register((payload) => {
+            switch (payload.action_type) {
+            case Actions.CLEAR_SEARCH:
+                this._arrangement.clear();
+                break;
+            case Actions.APPEND_SEARCH:
+                payload.models.forEach(this._add_card, this);
+                break;
+            case Actions.SEARCH_STARTED:
+                this._results_stack.visible_child_name = SPINNER_PAGE_NAME;
+                break;
+            case Actions.SEARCH_READY:
+                this._finish_search();
+                break;
+            case Actions.SEARCH_FAILED:
+                this._finish_search_with_error(payload.error);
+                break;
+            }
+        });
     },
 
     // Module override
@@ -78,45 +79,22 @@ const SearchModule = new Lang.Class({
         return ['arrangement', 'card_type'];
     },
 
-    /**
-     * Method: start_search
-     * Make the UI display some indication that it is busy with a search
-     *
-     * Parameters:
-     *   query - search query that the user entered (string)
-     */
-    start_search: function (query) {
-        this._query = query;
-        this._results_stack.visible_child_name = SPINNER_PAGE_NAME;
+    _add_card: function (model) {
+        let card = this.create_submodule('card_type', {
+            model: model,
+        });
+        card.connect('clicked', () => {
+            Dispatcher.get_default().dispatch({
+                action_type: Actions.SEARCH_CLICKED,
+                model: model,
+            });
+        });
+        this._arrangement.add_card(card);
     },
 
-    /**
-     * Method: finish_search
-     * Make the module display search results
-     *
-     * Removes all existing search result cards and creates new cards for the
-     * supplied card models.
-     * Makes the module display either the list of search results or the message
-     * for no results, depending on whether there are results in the supplied
-     * array.
-     *
-     * Parameters:
-     *   results - an array of <ContentObjectModel>s
-     */
-    finish_search: function (results) {
-        this._arrangement.clear();
-
-        results.forEach((result) => {
-            let card = this.create_submodule('card_type', {
-                model: result,
-            });
-            card.connect('clicked', (card) => {
-                this.emit('article-selected', card.model);
-            });
-            this._arrangement.add_card(card);
-        });
-
-        if (results.length > 0) {
+    _finish_search: function () {
+        let count = this._arrangement.get_cards().length;
+        if (count > 0) {
             this._results_stack.visible_child_name = RESULTS_PAGE_NAME;
         } else {
             this._results_stack.visible_child_name = NO_RESULTS_PAGE_NAME;
@@ -124,23 +102,16 @@ const SearchModule = new Lang.Class({
 
         /* TRANSLATORS: This message is displayed when the encyclopedia app did
         not find any results for a search. */
-        this._no_results_message.label = _("There are no search results that match your search.\n" +
-                                      "Try searching for something else");
+        this._no_results_message.label =
+            _("There are no results that match your search.\nTry searching for something else.");
     },
 
-    /**
-     * Method: show_error
-     * Display the error page
-     *
-     * This will display a generic error message instead of search results.
-     *
-     * Parameters:
-     *   error - currently ignored, but can be used to display a more useful
-     *     error message
-     */
-    finish_search_with_error: function (error) {
+    // This will display a generic error message instead of search results.
+    // error parameter is currently ignored, but can be used to display a more
+    // useful error message
+    _finish_search_with_error: function (error) {
         this._arrangement.clear();
-        this._error_message.label = _("OOPS!\nThere was an error during your search.");
+        this._error_message.label = _("There was an error during your search.");
         this._results_stack.visible_child_name = ERROR_PAGE_NAME;
     },
 });

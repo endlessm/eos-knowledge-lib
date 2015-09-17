@@ -46,6 +46,9 @@ const SearchBannerModule = new Lang.Class({
                 case Actions.SEARCH_READY:
                     this.label = Utils.page_title_from_query_object(payload.query);
                     break;
+                case Actions.SEARCH_FAILED:
+                    this.label = _("OOPS!");
+                    break;
             }
         });
     },
