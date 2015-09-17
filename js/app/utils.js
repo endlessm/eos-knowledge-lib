@@ -114,7 +114,12 @@ function object_to_css_string (obj, selector="*") {
 }
 
 function page_title_from_query_object(query) {
-    /* TRANSLATORS: this appears on top of the search results page; %s will be
-    replaced with the string that the user searched for. */
-    return _("Results for \"%s\"").format(query);
+ /* TRANSLATORS: This message is displayed when an app
+    is done searching for results. The %s will be replaced with the term
+    that the user searched for. Note, in English, it is surrounded by
+    Unicode left and right double quotes (U+201C and U+201D). Make sure
+    to include %s in your translation and use whatever quote marks are
+    appropriate for your language. */
+    return _("Search results for “%s”").format('<span weight="normal" color="black">' +
+            query + '</span>');
 }

@@ -218,7 +218,6 @@ js_files = \
 	js/app/compat/styleKnobGenerator.js \
 	js/app/config.js \
 	js/app/dispatcher.js \
-	js/app/encyclopedia/contentPage.js \
 	js/app/encyclopedia/inArticleSearch.js \
 	js/app/encyclopedia/presenter.js \
 	js/app/historyItem.js \
@@ -238,6 +237,7 @@ js_files = \
 	js/app/modules/cardA.js \
 	js/app/modules/cardB.js \
 	js/app/modules/encyclopediaCoverTemplate.js \
+	js/app/modules/encyclopediaContentTemplate.js \
 	js/app/modules/encyclopediaWindow.js \
 	js/app/modules/gridArrangement.js \
 	js/app/modules/itemGroupModule.js \
@@ -247,6 +247,7 @@ js_files = \
 	js/app/modules/listArrangement.js \
 	js/app/modules/carouselArrangement.js \
 	js/app/modules/mediaCard.js \
+	js/app/modules/paperTemplate.js \
 	js/app/modules/readerCard.js \
 	js/app/modules/readerDocumentCard.js \
 	js/app/modules/readerWindow.js \
@@ -373,6 +374,7 @@ javascript_tests = \
 	tests/js/app/modules/testListArrangement.js \
 	tests/js/app/modules/testMediaCard.js \
 	tests/js/app/modules/testOverflowArrangement.js \
+	tests/js/app/modules/testPaperTemplate.js \
 	tests/js/app/modules/testReaderCard.js \
 	tests/js/app/modules/testReaderDocumentCard.js \
 	tests/js/app/modules/testReaderWindow.js \

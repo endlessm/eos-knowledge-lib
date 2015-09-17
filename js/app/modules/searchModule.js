@@ -14,8 +14,8 @@ String.prototype.format = Format.format;
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
 const RESULTS_PAGE_NAME = 'results';
-const NO_RESULTS_PAGE_NAME = 'no-results';
-const ERROR_PAGE_NAME = 'error';
+const NO_RESULTS_PAGE_NAME = 'no-results-message';
+const ERROR_PAGE_NAME = 'error-message';
 const SPINNER_PAGE_NAME = 'spinner';
 
 /**
@@ -33,13 +33,13 @@ const SPINNER_PAGE_NAME = 'spinner';
  *   search-results - on the widget itself
  *   headline - on the headline labels ("Searching for ...")
  *   separator - on the separator image widgets
- *   oops - on the large "OOPS!" labels
- *   error-message - on the text below the "OOPS!" labels
+ *   no-results-message - on the text showing a no results message
+ *   error-message - on the text showing an error
  */
 const SearchModule = new Lang.Class({
     Name: 'SearchModule',
     GTypeName: 'EknSearchModule',
-    Extends: Gtk.Stack,
+    Extends: Gtk.Grid,
     Implements: [ Module.Module ],
 
     Properties: {
@@ -63,11 +63,13 @@ const SearchModule = new Lang.Class({
     },
 
     Template: 'resource:///com/endlessm/knowledge/widgets/searchModule.ui',
-    InternalChildren: [ 'headline', 'query-message', 'results-stack', 'spinner' ],
+    InternalChildren: [ 'results-stack', 'spinner', 'error-message', 'no-results-message' ],
 
     _init: function (props={}) {
         this.parent(props);
-        this._arrangement = this.create_submodule('arrangement');
+        this._arrangement = this.create_submodule('arrangement', {
+            margin_start: 45,
+        });
         this._results_stack.add_named(this._arrangement, RESULTS_PAGE_NAME);
     },
 
@@ -85,15 +87,6 @@ const SearchModule = new Lang.Class({
      */
     start_search: function (query) {
         this._query = query;
-        /* TRANSLATORS: This message is displayed while the encyclopedia app is
-        searching for results. The %s will be replaced with the term that the
-        user searched for. Note, in English, it is surrounded by Unicode left
-        and right double quotes (U+201C and U+201D). Make sure to include %s in
-        your translation and use whatever quote marks are appropriate for your
-        language. */
-        this._headline.label = _("Searching for “%s”").format('<span weight="normal" color="black">' +
-            this._query + '</span>');
-        this.visible_child_name = RESULTS_PAGE_NAME;
         this._results_stack.visible_child_name = SPINNER_PAGE_NAME;
     },
 
@@ -123,25 +116,16 @@ const SearchModule = new Lang.Class({
             this._arrangement.add_card(card);
         });
 
-        this._results_stack.visible_child_name = RESULTS_PAGE_NAME;
-        this.visible_child_name = results.length > 0 ? RESULTS_PAGE_NAME :
-            NO_RESULTS_PAGE_NAME;
+        if (results.length > 0) {
+            this._results_stack.visible_child_name = RESULTS_PAGE_NAME;
+        } else {
+            this._results_stack.visible_child_name = NO_RESULTS_PAGE_NAME;
+        }
 
-        /* TRANSLATORS: This message is displayed when the encyclopedia app
-        is done searching for results. The %s will be replaced with the term
-        that the user searched for. Note, in English, it is surrounded by
-        Unicode left and right double quotes (U+201C and U+201D). Make sure
-        to include %s in your translation and use whatever quote marks are
-        appropriate for your language. */
-        this._headline.label = _("Search results for “%s”").format('<span weight="normal" color="black">' +
-            this._query + '</span>');
         /* TRANSLATORS: This message is displayed when the encyclopedia app did
-        not find any results for a search. The %s will be replaced with the term
-        that the user searched for. Note, in English, it is surrounded by
-        Unicode left and right double quotes (U+201C and U+201D). Make sure to
-        include %s in your translation and use whatever quote marks are
-        appropriate for your language. */
-        this._query_message.label = _("We did not find any results for “%s”.").format(this._query);
+        not find any results for a search. */
+        this._no_results_message.label = _("There are no search results that match your search.\n" +
+                                      "Try searching for something else");
     },
 
     /**
@@ -156,6 +140,7 @@ const SearchModule = new Lang.Class({
      */
     finish_search_with_error: function (error) {
         this._arrangement.clear();
-        this.visible_child_name = ERROR_PAGE_NAME;
+        this._error_message.label = _("OOPS!\nThere was an error during your search.");
+        this._results_stack.visible_child_name = ERROR_PAGE_NAME;
     },
 });
