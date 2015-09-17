@@ -30,6 +30,7 @@ const CLEAR_ITEMS = 'clear-items';
 const CLEAR_SEARCH = 'clear-search';
 const SEARCH_STARTED = 'search-started';
 const SEARCH_READY = 'search-ready';
+const SEARCH_FAILED = 'search-failed';
 const SET_SEARCH_TEXT = 'set-search-text';
 const SHOW_SET = 'show-set';
 const SHOW_ARTICLE = 'show-article';

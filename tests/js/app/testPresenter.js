@@ -187,6 +187,19 @@ describe('Presenter', () => {
             });
             expect(presenter.record_search_metric).toHaveBeenCalled();
         });
+
+        it('dispatches search-failed if the search fails', function () {
+            spyOn(window, 'logError');  // silence console output
+            engine.get_objects_by_query_finish.and.throwError(new Error('Ugh'));
+            dispatcher.dispatch({
+                action_type: Actions.SEARCH_TEXT_ENTERED,
+                text: 'query not found',
+            });
+            expect(dispatcher.dispatched_payloads).toContain(jasmine.objectContaining({
+                action_type: Actions.SEARCH_FAILED,
+                query: 'query not found',
+            }));
+        });
     });
 
     describe('history', function () {
