@@ -1,20 +1,21 @@
 const GObject = imports.gi.GObject;
 
+const Actions = imports.app.actions;
+const Dispatcher = imports.app.dispatcher;
 const Engine = imports.search.engine;
+const Lightbox = imports.app.widgets.lightbox;
+const Module = imports.app.interfaces.module;
 
 /**
- * Class: LightboxPresenter
+ * Class: LightboxModule
  *
- * A presenter for the lightbox functionality to act as a intermediary between
- * an <ArticleObjectModel> and a <Lightbox> object. It connects to signals on the
- * view's widgets and handles those events accordingly.
- *
- * Its properties are an <Engine> and the <Window> that contains the <Lightbox>
- * widget.
+ * A module which displays media content over other
  */
-const LightboxPresenter = new GObject.Class({
-    Name: 'LightboxPresenter',
-    GTypeName: 'EknLightboxPresenter',
+const LightboxModule = new GObject.Class({
+    Name: 'LightboxModule',
+    GTypeName: 'EknLightboxModule',
+    Extends: Lightbox.Lightbox,
+    Implements: [ Module.Module ],
 
     Properties: {
         /**
@@ -32,23 +33,8 @@ const LightboxPresenter = new GObject.Class({
             'Handle to EOS knowledge engine',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             GObject.Object.$gtype),
-        /**
-         * Property: lightbox
-         * The lightbox widget for this presenter
-         *
-         * Flags:
-         *   Construct only
-         */
-        'lightbox': GObject.ParamSpec.object('lightbox', 'Lightbox', 'Lightbox',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            GObject.Object.$gtype),
-        /**
-         * Property: factory
-         * Factory to create modules
-         */
-        'factory': GObject.ParamSpec.object('factory', 'Factory', 'Factory',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            GObject.Object.$gtype),
+        'factory': GObject.ParamSpec.override('factory', Module.Module),
+        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
     },
 
     _init: function (props={}) {
@@ -59,18 +45,23 @@ const LightboxPresenter = new GObject.Class({
         // Lock to ensure we're only loading one lightbox media object at a time
         this._loading_new_lightbox = false;
         this._current_index = -1;
+        this._article_model = null;
+        Dispatcher.get_default().register((payload) => {
+            switch(payload.action_type) {
+                case Actions.SHOW_ARTICLE:
+                    this._article_model = payload.model;
+                    break;
+                case Actions.SHOW_MEDIA:
+                    this._preview_media_object(payload.model);
+                    break;
+                case Actions.HIDE_MEDIA:
+                    this.reveal_overlays = false;
+                    break;
+            }
+        });
 
-        this.lightbox.connect('navigation-previous-clicked', () => this._on_previous_clicked());
-        this.lightbox.connect('navigation-next-clicked', () => this._on_next_clicked());
-    },
-
-    show_media_object: function (article_model, media_object) {
-        this._article_model = article_model;
-        return this._preview_media_object(media_object);
-    },
-
-    hide_lightbox: function () {
-        this.lightbox.reveal_overlays = false;
+        this.connect('navigation-previous-clicked', () => this._on_previous_clicked());
+        this.connect('navigation-next-clicked', () => this._on_next_clicked());
     },
 
     _on_previous_clicked: function () {
@@ -82,6 +73,8 @@ const LightboxPresenter = new GObject.Class({
     },
 
     _lightbox_shift_image: function (delta) {
+        if (this._article_model === null)
+            return;
         if (this._loading_new_lightbox)
             return;
 
@@ -105,18 +98,19 @@ const LightboxPresenter = new GObject.Class({
     },
 
     _preview_media_object: function (media_object) {
+        if (this._article_model === null)
+            return;
         let resources = this._article_model.resources;
         this._current_index = resources.indexOf(media_object.ekn_id);
         if (this._current_index === -1)
-            return false;
+            return;
 
-        let card = this.factory.create_named_module('lightbox-card', {
+        let card = this.create_submodule('card-type', {
             model: media_object
         });
-        this.lightbox.lightbox_widget = card;
-        this.lightbox.reveal_overlays = true;
-        this.lightbox.has_back_button = this._current_index > 0;
-        this.lightbox.has_forward_button = this._current_index < resources.length - 1;
-        return true;
+        this.lightbox_widget = card;
+        this.reveal_overlays = true;
+        this.has_back_button = this._current_index > 0;
+        this.has_forward_button = this._current_index < resources.length - 1;
     },
 });

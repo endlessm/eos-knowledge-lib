@@ -34,10 +34,10 @@ describe('SetBannerModule module', function () {
 
     it('constructs', function () {});
 
-    it('creates a card when set-selected is dispatched', function () {
+    it('creates a card when show-set is dispatched', function () {
         let model = new ContentObjectModel.ContentObjectModel();
         dispatcher.dispatch({
-            action_type: Actions.SET_SELECTED,
+            action_type: Actions.SHOW_SET,
             model: model,
         });
         let card = factory.get_created_named_mocks('mock-card')[0];
@@ -45,14 +45,14 @@ describe('SetBannerModule module', function () {
         expect(module).toHaveDescendant(card);
     });
 
-    it('creates a new card each set-selected', function () {
+    it('creates a new card each show-set', function () {
         let model = new ContentObjectModel.ContentObjectModel();
         dispatcher.dispatch({
-            action_type: Actions.SET_SELECTED,
+            action_type: Actions.SHOW_SET,
             model: model,
         });
         dispatcher.dispatch({
-            action_type: Actions.SET_SELECTED,
+            action_type: Actions.SHOW_SET,
             model: model,
         });
         expect(factory.get_created_named_mocks('mock-card').length).toBe(2);

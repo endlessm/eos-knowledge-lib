@@ -7,7 +7,7 @@ const Lang = imports.lang;
 const Module = imports.app.interfaces.module;
 
 /**
- * Class: SidebarTemplate
+ * Class: BannerTemplate
  * This template has a top banner area, separator, and main content area.
  *
  * Slots

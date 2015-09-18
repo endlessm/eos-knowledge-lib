@@ -69,7 +69,7 @@ const SearchBox = new Lang.Class({
         this.connect('menu-item-selected', (entry, ekn_id) => {
             let model = this._autocomplete_models.filter((model) => model.ekn_id === ekn_id)[0];
             dispatcher.dispatch({
-                action_type: Actions.AUTOCOMPLETE_SELECTED,
+                action_type: Actions.AUTOCOMPLETE_CLICKED,
                 text: this.text,
                 model: model,
             });

@@ -41,6 +41,7 @@ describe('Window widget', function () {
         factory.add_named_mock('document-card', Minimal.MinimalDocumentCard);
         factory.add_named_mock('back-cover', Minimal.MinimalBackCover);
         factory.add_named_mock('document-arrangement', Minimal.MinimalArrangement);
+        factory.add_named_mock('lightbox', Minimal.MinimalLightbox);
         view = new ReaderWindow.ReaderWindow({
             application: app,
             factory: factory,

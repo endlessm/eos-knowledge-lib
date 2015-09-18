@@ -18,9 +18,7 @@ const Engine = imports.search.engine;
 const HistoryPresenter = imports.app.historyPresenter;
 const InArticleSearch = imports.app.encyclopedia.inArticleSearch;
 const Launcher = imports.app.launcher;
-const LightboxPresenter = imports.app.lightboxPresenter;
 const MediaObjectModel = imports.search.mediaObjectModel;
-const Previewer = imports.app.widgets.previewer;
 const QueryObject = imports.search.queryObject;
 const WebKit2 = imports.gi.WebKit2;
 const WebkitContextSetup = imports.app.webkitContextSetup;
@@ -82,20 +80,11 @@ const EncyclopediaPresenter = new Lang.Class({
                 case Actions.SEARCH_TEXT_ENTERED:
                     this.do_search(payload.text);
                     break;
-                case Actions.AUTOCOMPLETE_SELECTED:
+                case Actions.AUTOCOMPLETE_CLICKED:
                     this.load_uri(payload.model.ekn_id);
                     break;
             }
         });
-
-        this._previewer = new Previewer.Previewer({
-            visible: true,
-        });
-        this.view.lightbox.content_widget = this._previewer;
-
-        // Whenever there's a pending lightbox load, its cancellable will be
-        // stored here
-        this._cancel_lightbox_load = null;
 
         this._history = new EosKnowledgePrivate.HistoryModel();
         this._history_presenter = new HistoryPresenter.HistoryPresenter({
@@ -107,11 +96,6 @@ const EncyclopediaPresenter = new Lang.Class({
             this.load_model(model);
         });
 
-        this._lightbox_presenter = new LightboxPresenter.LightboxPresenter({
-            engine: this._engine,
-            lightbox: this.view.lightbox,
-            factory: this.factory,
-        });
         this.view.connect('key-press-event', this._on_key_press_event.bind(this));
     },
 
@@ -251,14 +235,22 @@ const EncyclopediaPresenter = new Lang.Class({
     },
 
     _on_history_item_change: function (presenter, item) {
-        Dispatcher.get_default().dispatch({
+        let dispatcher = Dispatcher.get_default();
+        dispatcher.dispatch({
             action_type: Actions.SET_SEARCH_TEXT,
             text: item.query,
+        });
+        dispatcher.dispatch({
+            action_type: Actions.HIDE_MEDIA,
         });
         switch (item.page_type) {
         case ARTICLE_PAGE:
             this._current_article = item.model;
             this._load_article_in_view(item.model);
+            dispatcher.dispatch({
+                action_type: Actions.SHOW_ARTICLE,
+                model: item.model,
+            });
             return;
         case SEARCH_RESULTS_PAGE:
             this._do_search_in_view(item);
@@ -291,7 +283,10 @@ const EncyclopediaPresenter = new Lang.Class({
                 model: model,
             });
         } else if (model instanceof MediaObjectModel.MediaObjectModel) {
-            this._lightbox_presenter.show_media_object(this._current_article, model);
+            Dispatcher.get_default().dispatch({
+                action_type: Actions.SHOW_MEDIA,
+                model: model,
+            });
         }
     },
 

@@ -68,7 +68,7 @@ const SearchABModule = new Lang.Class({
         });
         card.connect('clicked', () => {
             Dispatcher.get_default().dispatch({
-                action_type: Actions.SEARCH_SELECTED,
+                action_type: Actions.SEARCH_CLICKED,
                 model: model,
             });
         });

@@ -212,7 +212,6 @@ js_files = \
 	js/app/actions.js \
 	js/app/application.js \
 	js/app/articleHTMLRenderer.js \
-	js/app/articlePage.js \
 	js/app/compat/compat.js \
 	js/app/compat/cssParse.js \
 	js/app/compat/styleKnobGenerator.js \
@@ -228,10 +227,10 @@ js_files = \
 	js/app/interfaces/expandable.js \
 	js/app/interfaces/module.js \
 	js/app/launcher.js \
-	js/app/lightboxPresenter.js \
 	js/app/moduleFactory.js \
 	js/app/modules/appBanner.js \
 	js/app/modules/articleSnippetCard.js \
+	js/app/modules/articleStackModule.js \
 	js/app/modules/backCover.js \
 	js/app/modules/bannerTemplate.js \
 	js/app/modules/cardA.js \
@@ -244,6 +243,7 @@ js_files = \
 	js/app/modules/knowledgeDocumentCard.js \
 	js/app/modules/homePageATemplate.js \
 	js/app/modules/homePageBTemplate.js \
+	js/app/modules/lightboxModule.js \
 	js/app/modules/listArrangement.js \
 	js/app/modules/carouselArrangement.js \
 	js/app/modules/mediaCard.js \
@@ -362,6 +362,7 @@ javascript_tests = \
 	tests/js/app/interfaces/testModule.js \
 	tests/js/app/modules/testAppBanner.js \
 	tests/js/app/modules/testArticleSnippetCard.js \
+	tests/js/app/modules/testArticleStackModule.js \
 	tests/js/app/modules/testBackCover.js \
 	tests/js/app/modules/testBannerTemplate.js \
 	tests/js/app/modules/testCardA.js \
@@ -371,6 +372,7 @@ javascript_tests = \
 	tests/js/app/modules/testHomePageATemplate.js \
 	tests/js/app/modules/testHomePageBTemplate.js \
 	tests/js/app/modules/testItemGroupModule.js \
+	tests/js/app/modules/testLightboxModule.js \
 	tests/js/app/modules/testListArrangement.js \
 	tests/js/app/modules/testMediaCard.js \
 	tests/js/app/modules/testOverflowArrangement.js \
@@ -392,11 +394,9 @@ javascript_tests = \
 	tests/js/app/reader/testUserSettingsModel.js \
 	tests/js/app/reader/testWebExtension.js \
 	tests/js/app/testArticleHTMLRenderer.js \
-	tests/js/app/testArticlePage.js \
 	tests/js/app/testDispatcher.js \
 	tests/js/app/testHistoryItem.js \
 	tests/js/app/testHistoryPresenter.js \
-	tests/js/app/testLightboxPresenter.js \
 	tests/js/app/testModuleFactory.js \
 	tests/js/app/testNoSearchResultsPageA.js \
 	tests/js/app/testNoSearchResultsPageB.js \
@@ -441,7 +441,6 @@ EXTRA_DIST += \
 	tests/mockDispatcher.js \
 	tests/mockEngine.js \
 	tests/mockFactory.js \
-	tests/mockLightbox.js \
 	tests/mockPlaceholder.js \
 	tests/mockShard.js \
 	tests/mockWidgets.js \

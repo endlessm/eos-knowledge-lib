@@ -5,7 +5,6 @@ const Lang = imports.lang;
 
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
-const Lightbox = imports.app.widgets.lightbox;
 const Module = imports.app.interfaces.module;
 
 const HOME_PAGE_NAME = 'home';
@@ -32,17 +31,6 @@ const EncyclopediaWindow = new Lang.Class({
             'The search results page of this view widget.',
             GObject.ParamFlags.READABLE,
             Gtk.Widget),
-        /**
-         * Property: lightbox
-         *
-         * The <Lightbox> widget created by this widget. Read-only,
-         * modify using the <Lightbox> API. Use to show content above the <section-page>
-         * or <article-page>.
-         */
-        'lightbox': GObject.ParamSpec.object('lightbox', 'Lightbox',
-            'The lightbox of this view widget.',
-            GObject.ParamFlags.READABLE,
-            Lightbox.Lightbox),
         /**
          * Property: home-background-uri
          * URI of the home page background
@@ -114,7 +102,7 @@ const EncyclopediaWindow = new Lang.Class({
             background_position: 'top center',
         });
 
-        this._lightbox = new Lightbox.Lightbox();
+        this._lightbox = this.factory.create_named_module('lightbox');
         this._lightbox.add(this._article_page);
 
         this.page_manager.add(this._lightbox, {
@@ -138,10 +126,6 @@ const EncyclopediaWindow = new Lang.Class({
 
     get search_results_page () {
         return this._search_results_page;
-    },
-
-    get lightbox () {
-        return this._lightbox;
     },
 
     get_visible_page: function () {

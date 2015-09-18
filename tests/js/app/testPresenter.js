@@ -13,7 +13,6 @@ const Minimal = imports.tests.minimal;
 const MockDispatcher = imports.tests.mockDispatcher;
 const MockEngine = imports.tests.mockEngine;
 const MockFactory = imports.tests.mockFactory;
-const MockLightbox = imports.tests.mockLightbox;
 const MockWidgets = imports.tests.mockWidgets;
 const Presenter = imports.app.presenter;
 
@@ -68,7 +67,6 @@ const MockView = new Lang.Class({
         this.categories_page = connectable_object;
         this.categories_page.tab_button = {};
         this.article_page = connectable_object;
-        this.lightbox = new MockLightbox.MockLightbox();
         this.search_page = connectable_object;
         this.no_search_results_page = {};
     },
@@ -156,7 +154,7 @@ describe('Presenter', () => {
         });
         engine.get_objects_by_query_finish.and.returnValue([[ model ], null]);
         dispatcher.dispatch({
-            action_type: Actions.SET_SELECTED,
+            action_type: Actions.SET_CLICKED,
             model: new ContentObjectModel.ContentObjectModel(),
         });
         Utils.update_gui();
@@ -199,7 +197,7 @@ describe('Presenter', () => {
                 }),
             ], null]);
             dispatcher.dispatch({
-                action_type: Actions.SET_SELECTED,
+                action_type: Actions.SET_CLICKED,
                 model: new ContentObjectModel.ContentObjectModel(),
             });
             Utils.update_gui();

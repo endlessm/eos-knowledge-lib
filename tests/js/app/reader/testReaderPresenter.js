@@ -14,7 +14,6 @@ const MockDispatcher = imports.tests.mockDispatcher;
 const Minimal = imports.tests.minimal;
 const MockEngine = imports.tests.mockEngine;
 const MockFactory = imports.tests.mockFactory;
-const MockLightbox = imports.tests.mockLightbox;
 const MockWidgets = imports.tests.mockWidgets;
 const Presenter = imports.app.reader.presenter;
 const QueryObject = imports.search.queryObject;
@@ -133,7 +132,6 @@ const MockView = new Lang.Class({
         this.page_manager = {
             add: function () {},
         };
-        this.lightbox = new MockLightbox.MockLightbox();
     },
 
     present_with_time: function () {},

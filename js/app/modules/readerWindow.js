@@ -14,7 +14,6 @@ const Lang = imports.lang;
 const Actions = imports.app.actions;
 const Config = imports.app.config;
 const Dispatcher = imports.app.dispatcher;
-const Lightbox = imports.app.widgets.lightbox;
 const Module = imports.app.interfaces.module;
 const NavButtonOverlay = imports.app.widgets.navButtonOverlay;
 const OverviewPage = imports.app.reader.overviewPage;
@@ -112,18 +111,6 @@ const ReaderWindow = new Lang.Class({
             Endless.TopbarNavButton.$gtype),
 
         /**
-         * Property: lightbox
-         *
-         * The <Lightbox> widget created by this widget. Read-only,
-         * modify using the <Lightbox> API. Use to show content above the <section-page>
-         * or <article-page>.
-         */
-        'lightbox': GObject.ParamSpec.object('lightbox', 'Lightbox',
-            'The lightbox of this view widget.',
-            GObject.ParamFlags.READABLE,
-            Lightbox.Lightbox.$gtype),
-
-        /**
          * Property: total-pages
          *
          * The total number of pages.
@@ -213,7 +200,7 @@ const ReaderWindow = new Lang.Class({
         this.issue_nav_buttons.back_button.label = 'Reset';
         this.issue_nav_buttons.forward_button.label = 'Next week';
 
-        this.lightbox = new Lightbox.Lightbox();
+        let lightbox = this.factory.create_named_module('lightbox');
 
         this._article_pages = [];
 
@@ -241,7 +228,7 @@ const ReaderWindow = new Lang.Class({
         this._stack.add(this._arrangement);
         this._stack.show_all();
         this.nav_buttons.add(this._stack);
-        this.lightbox.add(this.nav_buttons);
+        lightbox.add(this.nav_buttons);
 
         let box = new Gtk.Box({
             orientation: Gtk.Orientation.HORIZONTAL,
@@ -251,7 +238,7 @@ const ReaderWindow = new Lang.Class({
         // Looks a bit ugly but only used for debugging.
         box.add(this.issue_nav_buttons);
 
-        this.page_manager.add(this.lightbox, {
+        this.page_manager.add(lightbox, {
             left_topbar_widget: this._history_buttons,
             center_topbar_widget: box,
         });

@@ -20,7 +20,6 @@ const Dispatcher = imports.app.dispatcher;
 const Engine = imports.search.engine;
 const HistoryPresenter = imports.app.historyPresenter;
 const Launcher = imports.app.launcher;
-const LightboxPresenter = imports.app.lightboxPresenter;
 const MediaObjectModel = imports.search.mediaObjectModel;
 const OverviewPage = imports.app.reader.overviewPage;
 const QueryObject = imports.search.queryObject;
@@ -186,13 +185,6 @@ const Presenter = new Lang.Class({
 
         this.parent(props);
 
-        // Currently, Reader apps lightboxes don't show an infobox.
-        this._lightbox_presenter = new LightboxPresenter.LightboxPresenter({
-            engine: this.engine,
-            lightbox: this.view.lightbox,
-            factory: this.factory,
-        });
-
         WebkitContextSetup.register_webkit_uri_handlers(this._article_render_callback.bind(this));
         this._dbus_name = WebkitContextSetup.register_webkit_extensions(this.application.application_id);
 
@@ -226,7 +218,7 @@ const Presenter = new Lang.Class({
                 case Actions.SEARCH_TEXT_ENTERED:
                     this._on_search(payload.text);
                     break;
-                case Actions.AUTOCOMPLETE_SELECTED:
+                case Actions.AUTOCOMPLETE_CLICKED:
                     this._history_presenter.set_current_item_from_props({
                         page_type: this._ARTICLE_PAGE,
                         model: payload.model,
@@ -362,9 +354,13 @@ const Presenter = new Lang.Class({
     },
 
     _on_history_item_change: function (presenter, item) {
-        Dispatcher.get_default().dispatch({
+        let dispatcher = Dispatcher.get_default();
+        dispatcher.dispatch({
             action_type: Actions.SET_SEARCH_TEXT,
             text: item.query,
+        });
+        dispatcher.dispatch({
+            action_type: Actions.HIDE_MEDIA,
         });
         switch (item.page_type) {
             case this._SEARCH_PAGE:
@@ -372,6 +368,10 @@ const Presenter = new Lang.Class({
                 break;
             case this._ARTICLE_PAGE:
                 this._go_to_article(item.model, item.from_global_search);
+                dispatcher.dispatch({
+                    action_type: Actions.SHOW_ARTICLE,
+                    model: item.model,
+                });
                 break;
             case this._OVERVIEW_PAGE:
                 this._go_to_page(0);
@@ -759,7 +759,7 @@ const Presenter = new Lang.Class({
     // pages, asynchronously.
     _create_pages_from_models: function (models) {
         models.forEach(function (model) {
-            let page = this._create_article_page_from_article_model(model);
+            let page = this._create_article_page_from_article_model(model, false);
             this.view.append_article_page(page);
             this._update_button_visibility();
         }, this);
@@ -859,11 +859,24 @@ const Presenter = new Lang.Class({
     },
 
     // Take an ArticleObjectModel and create a ReaderDocumentCard view.
-    _create_article_page_from_article_model: function (model) {
-        let document_card = this.factory.create_named_module('document-card', {
+    _create_article_page_from_article_model: function (model, archived) {
+        let card_props = {
             model: model,
-            page_number: model.article_number,
-        });
+        };
+        if (archived) {
+            let frame = new Gtk.Frame();
+            // Ensures that the archive notice on the in app standalone page
+            // matches that of the standalone page you reach via global search
+            frame.add(new ArchiveNotice.ArchiveNotice({
+                label: this.view.standalone_page.infobar.archive_notice.label,
+            }));
+            frame.get_style_context().add_class(StyleClasses.READER_ARCHIVE_NOTICE_FRAME);
+            card_props.info_notice = frame;
+        } else {
+            card_props.page_number = model.article_number;
+        }
+
+        let document_card = this.factory.create_named_module('document-card', card_props);
         document_card.connect('ekn-link-clicked', (card, uri) => {
             this._remove_link_tooltip();
             let scheme = GLib.uri_parse_scheme(uri);
@@ -880,7 +893,10 @@ const Presenter = new Lang.Class({
                 }
 
                 if (clicked_model instanceof MediaObjectModel.MediaObjectModel) {
-                    this._lightbox_presenter.show_media_object(card.model, clicked_model);
+                    Dispatcher.get_default().dispatch({
+                        action_type: Actions.SHOW_MEDIA,
+                        model: clicked_model,
+                    });
                 } else if (clicked_model instanceof ArticleObjectModel.ArticleObjectModel) {
                     this._history_presenter.set_current_item_from_props({
                         page_type: this._ARTICLE_PAGE,
@@ -963,17 +979,7 @@ const Presenter = new Lang.Class({
     },
 
     _load_standalone_article: function (model) {
-        let frame = new Gtk.Frame();
-        // Ensures that the archive notice on the in app standalone page
-        // matches that of the standalone page you reach via global search
-        frame.add(new ArchiveNotice.ArchiveNotice({
-            label: this.view.standalone_page.infobar.archive_notice.label,
-        }));
-        frame.get_style_context().add_class(StyleClasses.READER_ARCHIVE_NOTICE_FRAME);
-        let document_card = this.factory.create_named_module('document-card', {
-            model: model,
-            info_notice: frame,
-        });
+        let document_card = this._create_article_page_from_article_model(model, true);
         document_card.load_content(null, (card, task) => {
             try {
                 card.load_content_finish(task);

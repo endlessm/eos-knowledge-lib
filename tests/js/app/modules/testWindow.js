@@ -5,7 +5,6 @@ const GLib = imports.gi.GLib;
 const Utils = imports.tests.utils;
 Utils.register_gresource();
 
-const ArticlePage = imports.app.articlePage;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
 const Lightbox = imports.app.widgets.lightbox;
@@ -51,6 +50,7 @@ describe('Window', function () {
         factory.add_named_mock('item-group', MockWidgets.MockItemGroupModule);
         factory.add_named_mock('search-results', MockWidgets.MockItemGroupModule);
         factory.add_named_mock('home-page-template', Minimal.MinimalHomePage);
+        factory.add_named_mock('lightbox', Minimal.MinimalLightbox);
         view = new Window.Window({
             application: app,
             factory: factory,
@@ -78,11 +78,7 @@ describe('Window', function () {
     });
 
     it('instantiates an article page A', function () {
-        expect(view.article_page).toBeA(ArticlePage.ArticlePage);
-    });
-
-    it('instantiates a lightbox', function () {
-        expect(view.lightbox).toBeA(Lightbox.Lightbox);
+        expect(view.article_page).toBeDefined();
     });
 
     it('correctly sets background image', function () {

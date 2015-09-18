@@ -85,7 +85,7 @@ const SetGroupModule = new Lang.Class({
         });
         card.connect('clicked', () => {
             Dispatcher.get_default().dispatch({
-                action_type: Actions.SET_SELECTED,
+                action_type: Actions.SET_CLICKED,
                 model: model,
             });
         });

@@ -14,7 +14,6 @@ const Engine = imports.search.engine;
 const HistoryItem = imports.app.historyItem;
 const HistoryPresenter = imports.app.historyPresenter;
 const Launcher = imports.app.launcher;
-const LightboxPresenter = imports.app.lightboxPresenter;
 const MediaObjectModel = imports.search.mediaObjectModel;
 const QueryObject = imports.search.queryObject;
 const TabButton = imports.app.widgets.tabButton;
@@ -144,12 +143,6 @@ const Presenter = new Lang.Class({
             });
         });
 
-        this._lightbox_presenter = new LightboxPresenter.LightboxPresenter({
-            engine: this.engine,
-            lightbox: this.view.lightbox,
-            factory: this.factory,
-        });
-
         this._renderer = new ArticleHTMLRenderer.ArticleHTMLRenderer();
 
         this._history_presenter = new HistoryPresenter.HistoryPresenter({
@@ -167,14 +160,14 @@ const Presenter = new Lang.Class({
                 case Actions.NAV_BACK_CLICKED:
                     this._on_back();
                     break;
-                case Actions.SET_SELECTED:
+                case Actions.SET_CLICKED:
                     this._history_presenter.set_current_item_from_props({
                         page_type: this._SECTION_PAGE,
                         model: payload.model,
                     });
                     break;
-                case Actions.ITEM_SELECTED:
-                case Actions.SEARCH_SELECTED:
+                case Actions.ITEM_CLICKED:
+                case Actions.SEARCH_CLICKED:
                     this._history_presenter.set_current_item_from_props({
                         page_type: this._ARTICLE_PAGE,
                         model: payload.model,
@@ -189,12 +182,15 @@ const Presenter = new Lang.Class({
                 case Actions.SEARCH_TEXT_ENTERED:
                     this._on_search_text_entered(payload.text);
                     break;
-                case Actions.AUTOCOMPLETE_SELECTED:
+                case Actions.AUTOCOMPLETE_CLICKED:
                     this._history_presenter.set_current_item_from_props({
                         page_type: this._ARTICLE_PAGE,
                         model: payload.model,
                         query: payload.text,
                     });
+                    break;
+                case Actions.ARTICLE_LINK_CLICKED:
+                    this._on_link_clicked(payload.ekn_id);
                     break;
             }
         });
@@ -317,8 +313,10 @@ const Presenter = new Lang.Class({
     },
 
     _on_history_item_change: function (presenter, item, is_going_back) {
-        this._lightbox_presenter.hide_lightbox();
         let dispatcher = Dispatcher.get_default();
+        Dispatcher.get_default().dispatch({
+            action_type: Actions.HIDE_MEDIA,
+        });
         dispatcher.dispatch({
             action_type: Actions.CLEAR_HIGHLIGHTED_ITEM,
             model: item.model,
@@ -340,6 +338,10 @@ const Presenter = new Lang.Class({
                 search_text = item.query;
                 break;
             case this._SECTION_PAGE:
+                dispatcher.dispatch({
+                    action_type: Actions.SHOW_SET,
+                    model: item.model,
+                });
                 this._refresh_article_results(() => {
                     this.view.show_page(this.view.section_page);
                 });
@@ -370,43 +372,40 @@ const Presenter = new Lang.Class({
 
     _load_document_card_in_view: function (item, is_going_back) {
         let animation_type = EosKnowledgePrivate.LoadingAnimationType.FORWARDS_NAVIGATION;
-        if (this.view.get_visible_page() !== this.article_page) {
+        if (this.view.get_visible_page() !== this.view.article_page) {
             animation_type = EosKnowledgePrivate.LoadingAnimationType.NONE;
             this.view.show_page(this.view.article_page);
         } else if (is_going_back) {
             animation_type = EosKnowledgePrivate.LoadingAnimationType.BACKWARDS_NAVIGATION;
         }
-        let document_card = this.factory.create_named_module('document-card', {
+        Dispatcher.get_default().dispatch({
+            action_type: Actions.SHOW_ARTICLE,
             model: item.model,
+            animation_type: animation_type,
         });
-        document_card.load_content(null, (card, task) => {
+    },
+
+    _on_link_clicked: function (ekn_id) {
+        this.engine.get_object_by_id(ekn_id, null, (engine, task) => {
+            let model;
             try {
-                card.load_content_finish(task);
-                this.view.article_page.switch_in_document_card(document_card, animation_type);
+                model = engine.get_object_by_id_finish(task);
             } catch (error) {
                 logError(error);
+                return;
             }
-        });
 
-        document_card.connect('ekn-link-clicked', (card, ekn_id) => {
-            this.engine.get_object_by_id(ekn_id, null, (engine, task) => {
-                let model;
-                try {
-                    model = engine.get_object_by_id_finish(task);
-                } catch (error) {
-                    logError(error);
-                    return;
-                }
-
-                if (model instanceof MediaObjectModel.MediaObjectModel) {
-                    this._lightbox_presenter.show_media_object(item.model, model);
-                } else {
-                    this._history_presenter.set_current_item_from_props({
-                        page_type: this._ARTICLE_PAGE,
-                        model: model,
-                    });
-                }
-            });
+            if (model instanceof MediaObjectModel.MediaObjectModel) {
+                Dispatcher.get_default().dispatch({
+                    action_type: Actions.SHOW_MEDIA,
+                    model: model,
+                });
+            } else {
+                this._history_presenter.set_current_item_from_props({
+                    page_type: this._ARTICLE_PAGE,
+                    model: model,
+                });
+            }
         });
     },
 
@@ -424,7 +423,9 @@ const Presenter = new Lang.Class({
 
     _on_search_focus: function (view, focused) {
         // If the user focused the search box, ensure that the lightbox is hidden
-        this._lightbox_presenter.hide_lightbox();
+        Dispatcher.get_default().dispatch({
+            action_type: Actions.HIDE_MEDIA,
+        });
     },
 
     _on_search_text_entered: function (text) {

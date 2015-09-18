@@ -144,11 +144,23 @@ function transform_v1_description(json) {
         modules["lightbox-card"] = {
             "type": "MediaCard",
         };
+        modules["lightbox"] = {
+            "type": "LightboxModule",
+            "slots": {
+                "card-type": "lightbox-card",
+            },
+        };
         modules["document-card"] = {
             "type": "KnowledgeDocumentCard",
             "properties": {
                 "show_top_title": true,
                 "show_toc": true,
+            },
+        };
+        modules["article-page-template"] = {
+            "type": "ArticleStackModule",
+            "slots": {
+                "card-type": "document-card",
             },
         };
         break;
@@ -260,8 +272,20 @@ function transform_v1_description(json) {
         modules["lightbox-card"] = {
             "type": "MediaCard",
         };
+        modules["lightbox"] = {
+            "type": "LightboxModule",
+            "slots": {
+                "card-type": "lightbox-card",
+            },
+        };
         modules["document-card"] = {
             "type": "KnowledgeDocumentCard",
+        };
+        modules["article-page-template"] = {
+            "type": "ArticleStackModule",
+            "slots": {
+                "card-type": "document-card",
+            },
         };
         break;
     case "encyclopedia":
@@ -353,6 +377,12 @@ function transform_v1_description(json) {
         modules["lightbox-card"] = {
             "type": "MediaCard",
         };
+        modules["lightbox"] = {
+            "type": "LightboxModule",
+            "slots": {
+                "card-type": "lightbox-card",
+            },
+        };
         modules["document-card"] = {
             "type": "KnowledgeDocumentCard",
         };
@@ -427,6 +457,12 @@ function transform_v1_description(json) {
         };
         modules["lightbox-card"] = {
             "type": "MediaCard",
+        };
+        modules["lightbox"] = {
+            "type": "LightboxModule",
+            "slots": {
+                "card-type": "lightbox-card",
+            },
         };
         modules["results-card"] = {
             "type": "ReaderCard",
