@@ -55,25 +55,21 @@ describe('Search module', function () {
         expect(search_module).toHaveCssClass(StyleClasses.SEARCH_RESULTS);
     });
 
-    it('has a separator with separator CSS class', function () {
-        expect(search_module).toHaveDescendantWithCssClass(Gtk.STYLE_CLASS_SEPARATOR);
-    });
-
     it('has an error label with error-message CSS class', function () {
         expect(search_module).toHaveDescendantWithCssClass(StyleClasses.ERROR_MESSAGE);
     });
 
     it('displays the spinner when a search is started', function () {
-        search_module._results_stack.visible_child_name = 'error-message';
+        search_module.visible_child_name = 'error-message';
         dispatcher.dispatch({
             action_type: Actions.SEARCH_STARTED,
             query: 'myfoobar',
         });
-        expect(search_module._results_stack.visible_child_name).toBe('spinner');
+        expect(search_module.visible_child_name).toBe('spinner');
     });
 
     it('displays the search page when there are search results', function () {
-        search_module._results_stack.visible_child_name = 'error-message';
+        search_module.visible_child_name = 'error-message';
         dispatcher.dispatch({
             action_type: Actions.APPEND_SEARCH,
             models: [new ContentObjectModel.ContentObjectModel()],
@@ -82,26 +78,26 @@ describe('Search module', function () {
             action_type: Actions.SEARCH_READY,
             query: 'myfoobar',
         });
-        expect(search_module._results_stack.visible_child_name).toBe('results');
+        expect(search_module.visible_child_name).toBe('results');
     });
 
     it('displays the no results page when there are no results', function () {
-        search_module._results_stack.visible_child_name = 'error-message';
+        search_module.visible_child_name = 'error-message';
         dispatcher.dispatch({
             action_type: Actions.SEARCH_READY,
             query: 'myfoobar',
         });
-        expect(search_module._results_stack.visible_child_name).toBe('no-results-message');
+        expect(search_module.visible_child_name).toBe('no-results-message');
     });
 
     it('displays the error page when told to', function () {
-        search_module._results_stack.visible_child_name = 'results';
+        search_module.visible_child_name = 'results';
         dispatcher.dispatch({
             action_type: Actions.SEARCH_FAILED,
             query: 'myfoobar',
             error: new Error(),
         });
-        expect(search_module._results_stack.visible_child_name).toBe('error-message');
+        expect(search_module.visible_child_name).toBe('error-message');
     });
 
     it('adds results to the card container', function () {

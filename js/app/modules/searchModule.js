@@ -28,14 +28,13 @@ const SPINNER_PAGE_NAME = 'spinner';
  *
  * CSS classes:
  *   search-results - on the widget itself
- *   separator - on the separator image widgets
  *   no-results-message - on the text showing a no results message
  *   error-message - on the text showing an error
  */
 const SearchModule = new Lang.Class({
     Name: 'SearchModule',
     GTypeName: 'EknSearchModule',
-    Extends: Gtk.Grid,
+    Extends: Gtk.Stack,
     Implements: [ Module.Module ],
 
     Properties: {
@@ -44,14 +43,14 @@ const SearchModule = new Lang.Class({
     },
 
     Template: 'resource:///com/endlessm/knowledge/widgets/searchModule.ui',
-    InternalChildren: [ 'results-stack', 'spinner', 'error-message', 'no-results-message' ],
+    InternalChildren: [ 'error-message', 'no-results-message' ],
 
     _init: function (props={}) {
         this.parent(props);
         this._arrangement = this.create_submodule('arrangement', {
             margin_start: 45,
         });
-        this._results_stack.add_named(this._arrangement, RESULTS_PAGE_NAME);
+        this.add_named(this._arrangement, RESULTS_PAGE_NAME);
 
         Dispatcher.get_default().register((payload) => {
             switch (payload.action_type) {
@@ -62,7 +61,7 @@ const SearchModule = new Lang.Class({
                 payload.models.forEach(this._add_card, this);
                 break;
             case Actions.SEARCH_STARTED:
-                this._results_stack.visible_child_name = SPINNER_PAGE_NAME;
+                this.visible_child_name = SPINNER_PAGE_NAME;
                 break;
             case Actions.SEARCH_READY:
                 this._finish_search();
@@ -95,9 +94,9 @@ const SearchModule = new Lang.Class({
     _finish_search: function () {
         let count = this._arrangement.get_cards().length;
         if (count > 0) {
-            this._results_stack.visible_child_name = RESULTS_PAGE_NAME;
+            this.visible_child_name = RESULTS_PAGE_NAME;
         } else {
-            this._results_stack.visible_child_name = NO_RESULTS_PAGE_NAME;
+            this.visible_child_name = NO_RESULTS_PAGE_NAME;
         }
 
         /* TRANSLATORS: This message is displayed when the encyclopedia app did
@@ -112,6 +111,6 @@ const SearchModule = new Lang.Class({
     _finish_search_with_error: function (error) {
         this._arrangement.clear();
         this._error_message.label = _("There was an error during your search.");
-        this._results_stack.visible_child_name = ERROR_PAGE_NAME;
+        this.visible_child_name = ERROR_PAGE_NAME;
     },
 });

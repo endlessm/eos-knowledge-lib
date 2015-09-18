@@ -2,88 +2,66 @@
 <!-- Generated with glade 3.18.3 -->
 <interface domain="eos-knowledge">
   <requires lib="gtk+" version="3.12"/>
-  <template class="EknSearchModule" parent="GtkGrid">
+  <template class="EknSearchModule" parent="GtkStack">
     <property name="visible">True</property>
     <property name="can_focus">True</property>
-    <property name="halign">fill</property>
     <property name="hexpand">True</property>
-    <property name="orientation">vertical</property>
-    <property name="row_spacing">22</property>
-      <child>
-        <object class="GtkFrame" id="separator">
-          <property name="visible">True</property>
-          <property name="can_focus">False</property>
-          <property name="hexpand">True</property>
-          <property name="vexpand">False</property>
-          <property name="margin_start">45</property>
-          <property name="margin_end">45</property>
-          <style>
-            <class name="separator"/>
-          </style>
-        </object>
-      </child>
-      <child>
-        <object class="GtkStack" id="results-stack">
-          <property name="visible">True</property>
-          <property name="can_focus">False</property>
-          <child>
-            <object class="GtkSpinner" id="spinner">
-              <property name="visible">True</property>
-              <property name="can_focus">False</property>
-              <property name="halign">center</property>
-              <property name="valign">center</property>
-              <property name="vexpand">True</property>
-              <property name="active">True</property>
-            </object>
-            <packing>
-              <property name="position">1</property>
-              <property name="name">spinner</property>
-            </packing>
-          </child>
-          <child>
-            <object class="GtkLabel" id="no-results-message">
-              <property name="visible">True</property>
-              <property name="can_focus">False</property>
-              <property name="halign">start</property>
-              <property name="valign">start</property>
-              <property name="label">Placeholder</property>
-              <property name="wrap">True</property>
-              <property name="wrap_mode">word-char</property>
-              <property name="ellipsize">end</property>
-              <property name="lines">5</property>
-              <property name="margin_start">45</property>
-              <style>
-                <class name="no-results-message"/>
-              </style>
-            </object>
-            <packing>
-              <property name="position">2</property>
-              <property name="name">no-results-message</property>
-            </packing>
-          </child>
-          <child>
-            <object class="GtkLabel" id="error-message">
-              <property name="visible">True</property>
-              <property name="can_focus">False</property>
-              <property name="halign">center</property>
-              <property name="valign">center</property>
-              <property name="label">Placeholder</property>
-              <property name="wrap">True</property>
-              <property name="wrap_mode">word-char</property>
-              <property name="ellipsize">end</property>
-              <property name="lines">5</property>
-              <property name="justify">center</property>
-              <style>
-                <class name="error-message"/>
-              </style>
-            </object>
-            <packing>
-              <property name="position">3</property>
-              <property name="name">error-message</property>
-            </packing>
-          </child>
-        </object>
-      </child>
+    <child>
+      <object class="GtkSpinner" id="spinner">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="halign">center</property>
+        <property name="valign">center</property>
+        <property name="vexpand">True</property>
+        <property name="active">True</property>
+      </object>
+      <packing>
+        <property name="position">1</property>
+        <property name="name">spinner</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkLabel" id="no-results-message">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="halign">start</property>
+        <property name="valign">start</property>
+        <property name="margin_start">45</property>
+        <property name="label">Placeholder</property>
+        <property name="wrap">True</property>
+        <property name="wrap_mode">word-char</property>
+        <property name="ellipsize">end</property>
+        <property name="lines">5</property>
+        <style>
+          <class name="no-results-message"/>
+        </style>
+      </object>
+      <packing>
+        <property name="position">2</property>
+        <property name="name">no-results-message</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkLabel" id="error-message">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="halign">center</property>
+        <property name="valign">center</property>
+        <property name="label">Placeholder</property>
+        <property name="wrap">True</property>
+        <property name="wrap_mode">word-char</property>
+        <property name="ellipsize">end</property>
+        <property name="lines">5</property>
+        <property name="justify">center</property>
+        <style>
+          <class name="error-message"/>
+        </style>
+      </object>
+      <packing>
+        <property name="position">3</property>
+        <property name="name">error-message</property>
+      </packing>
+    </child>
     <style>
       <class name="search-results"/>
     </style>

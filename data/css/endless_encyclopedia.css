@@ -61,11 +61,8 @@ GtkEntry:selected {
     padding-top: 20px;
 }
 
-.search-results .separator {
+.encyclopedia-content-template .separator {
     padding-bottom: 35px;
-}
-
-.separator {
     background-image: url('resource:///com/endlessm/knowledge/images/separator.png');
     background-size: 100%;
     background-repeat: no-repeat;

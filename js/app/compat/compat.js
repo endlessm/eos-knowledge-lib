@@ -58,6 +58,9 @@ function transform_v1_description(json) {
         };
         modules["set-banner-module"] = {
             "type": "SetBannerModule",
+            "properties": {
+                "halign": Gtk.Align.CENTER,
+            },
             "slots": {
                 "card_type": "set-banner-card",
             },
@@ -71,6 +74,9 @@ function transform_v1_description(json) {
         };
         modules["section-page-template"] = {
             "type": "BannerTemplate",
+            "properties": {
+                "separator-margin": 100,
+            },
             "slots": {
                 "banner": "set-banner-module",
                 "content": "item-group",
@@ -318,14 +324,18 @@ function transform_v1_description(json) {
         modules["search-results-paper-template"] = {
             "type": "PaperTemplate",
             "slots": {
-                "content": "search-results-two-vertical-template",
+                "content": "search-results-paper-content",
             },
         };
-        modules["search-results-two-vertical-template"] = {
-            "type": "TwoVerticalTemplate",
+        modules["search-results-paper-content"] = {
+            "type": "BannerTemplate",
+            "properties": {
+                "separator-margin": 45,
+                "image-separator": true,
+            },
             "slots": {
-                "top": "results-search-banner",
-                "bottom": "search-results",
+                "banner": "results-search-banner",
+                "content": "search-results",
             },
         };
         modules["article-page-template"] = {
@@ -395,6 +405,7 @@ function transform_v1_description(json) {
                 "margin-start": 40,
                 "margin-top": 20,
                 "margin-bottom": 20,
+                "halign": Gtk.Align.START,
             },
         };
         modules["search-results"] = {
