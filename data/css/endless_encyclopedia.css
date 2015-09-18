@@ -68,6 +68,11 @@ GtkEntry:selected {
     background-repeat: no-repeat;
 }
 
+.encyclopedia-content-template .title.query {
+    font-weight: normal;
+    color: black;
+}
+
 /* FIXME: move oops block up to 1/3 of the vertical! */
 
 .search-results .error-message {

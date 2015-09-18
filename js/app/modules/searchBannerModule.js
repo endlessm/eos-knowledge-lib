@@ -10,10 +10,19 @@ const Actions = imports.app.actions;
 const Config = imports.app.config;
 const Dispatcher = imports.app.dispatcher;
 const Module = imports.app.interfaces.module;
+const StyleClasses = imports.app.styleClasses;
 
 String.prototype.format = Format.format;
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
+/**
+ * Class: SearchBannerModule
+ * Banner with status information about search results
+ *
+ * CSS classes:
+ *   title - on the banner
+ *   query - on the portion of the banner indicating a user query string
+ */
 const SearchBannerModule = new Lang.Class({
     Name: 'SearchBannerModule',
     GTypeName: 'EknSearchBannerModule',
@@ -58,8 +67,42 @@ const SearchBannerModule = new Lang.Class({
         });
     },
 
+    // This allows styling a sub-region of the GtkLabel with an extra CSS class.
+    // For example, you can specify:
+    // .title { color: white; }
+    // .title.query { weight: bold; color: black; }
+    // It supports the CSS properties font-family, font-weight, font-style, and
+    // color.
     _format_ui_string: function (ui_string, query) {
-        return ui_string.format('<span weight="normal" color="black">' + query +
-            '</span>');
+        let context = this.get_style_context();
+        context.save();
+        context.add_class(StyleClasses.QUERY);
+        let span = _style_context_to_markup_span(context, Gtk.StateFlags.NORMAL);
+        context.restore();
+
+        return ui_string.format(span + query + '</span>');
     },
 });
+
+function _rgba_to_markup_color(rgba) {
+    // Ignore alpha, as Pango doesn't render it.
+    return '#%02x%02x%02x'.format(rgba.red * 255, rgba.green * 255,
+        rgba.blue * 255);
+}
+
+function _style_context_to_markup_span(context, state) {
+    let font = context.get_font(state);
+    let foreground = context.get_color(state);
+    const _PANGO_STYLES = ['normal', 'oblique', 'italic'];
+    // Unfortunately, ignore the font size; PangoFontDescriptions don't deal
+    // well with font sizes in ems.
+    let properties = {
+        'face': font.get_family(),
+        'style': _PANGO_STYLES[font.get_style()],
+        'weight': font.get_weight(),
+        'color': _rgba_to_markup_color(foreground),
+    };
+    let properties_string = Object.keys(properties).map((key) =>
+        key + '="' + properties[key] + '"').join(' ');
+    return '<span ' + properties_string + '>';
+}
