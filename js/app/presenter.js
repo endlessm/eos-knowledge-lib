@@ -324,11 +324,17 @@ const Presenter = new Lang.Class({
         let search_text = '';
         switch (item.page_type) {
             case this._SEARCH_PAGE:
+                dispatcher.dispatch({
+                    action_type: Actions.SEARCH_STARTED,
+                    query: item.query,
+                });
+                this.view.show_page(this.view.search_page);
                 this._refresh_article_results((success) => {
                     if (!success) {
                         dispatcher.dispatch({
                             action_type: Actions.SEARCH_FAILED,
                             query: item.query,
+                            error: new Error('Search failed for unknown reason'),
                         });
                         this.view.show_page(this.view.search_page);
                         return;
@@ -339,8 +345,6 @@ const Presenter = new Lang.Class({
                     });
                     if (item.empty) {
                         this.view.show_page(this.view.no_search_results_page);
-                    } else {
-                        this.view.show_page(this.view.search_page);
                     }
                 });
                 search_text = item.query;

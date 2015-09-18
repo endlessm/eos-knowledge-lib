@@ -99,7 +99,7 @@ function transform_v1_description(json) {
             "type": "CardA",
         };
         modules["search-results"] = {
-            "type": "SearchABModule",
+            "type": "SearchModule",
             "slots": {
                 "arrangement": "results-arrangement",
                 "card_type": "results-card",
@@ -259,7 +259,7 @@ function transform_v1_description(json) {
             "type": "TextCard",
         };
         modules["search-results"] = {
-            "type": "SearchABModule",
+            "type": "SearchModule",
             "slots": {
                 "arrangement": "results-arrangement",
                 "card_type": "results-card",

@@ -9,6 +9,7 @@ const Lang = imports.lang;
 const Actions = imports.app.actions;
 const Config = imports.app.config;
 const Dispatcher = imports.app.dispatcher;
+const InfiniteScrolledWindow = imports.app.widgets.infiniteScrolledWindow;
 const Module = imports.app.interfaces.module;
 
 String.prototype.format = Format.format;
@@ -52,7 +53,14 @@ const SearchModule = new Lang.Class({
         });
         this.add_named(this._arrangement, RESULTS_PAGE_NAME);
 
-        Dispatcher.get_default().register((payload) => {
+        let dispatcher = Dispatcher.get_default();
+        if (this._arrangement instanceof InfiniteScrolledWindow.InfiniteScrolledWindow) {
+            this._arrangement.connect('need-more-content', () => dispatcher.dispatch({
+                action_type: Actions.NEED_MORE_SEARCH,
+            }));
+        }
+
+        dispatcher.register((payload) => {
             switch (payload.action_type) {
             case Actions.CLEAR_SEARCH:
                 this._arrangement.clear();
@@ -68,6 +76,12 @@ const SearchModule = new Lang.Class({
                 break;
             case Actions.SEARCH_FAILED:
                 this._finish_search_with_error(payload.error);
+                break;
+            case Actions.HIGHLIGHT_ITEM:
+                this._arrangement.highlight(payload.model);
+                break;
+            case Actions.CLEAR_HIGHLIGHTED_ITEM:
+                this._arrangement.clear_highlight();
                 break;
             }
         });

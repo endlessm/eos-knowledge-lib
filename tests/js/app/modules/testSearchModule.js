@@ -1,15 +1,20 @@
 // Copyright 2015 Endless Mobile, Inc.
 
+const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
+const Lang = imports.lang;
 
 const Utils = imports.tests.utils;
 Utils.register_gresource();
 
 const Actions = imports.app.actions;
+const Arrangement = imports.app.interfaces.arrangement;
 const ContentObjectModel = imports.search.contentObjectModel;
 const CssClassMatcher = imports.tests.CssClassMatcher;
+const InfiniteScrolledWindow = imports.app.widgets.infiniteScrolledWindow;
 const Minimal = imports.tests.minimal;
 const MockDispatcher = imports.tests.mockDispatcher;
+const Module = imports.app.interfaces.module;
 const MockFactory = imports.tests.mockFactory;
 const SearchModule = imports.app.modules.searchModule;
 const StyleClasses = imports.app.styleClasses;
@@ -117,5 +122,61 @@ describe('Search module', function () {
             action_type: Actions.CLEAR_SEARCH,
         });
         expect(arrangement.get_cards().length).toBe(0);
+    });
+
+    it('dispatches when an infinite scrolled window arrangement reaches the end', function () {
+        const InfiniteArrangement = new Lang.Class({
+            Name: 'InfiniteArrangement',
+            Extends: InfiniteScrolledWindow.InfiniteScrolledWindow,
+            Implements: [ Module.Module, Arrangement.Arrangement ],
+            Properties: {
+                'factory': GObject.ParamSpec.override('factory', Module.Module),
+                'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
+            },
+            _init: function (props) {
+                this.parent(props);
+            },
+            add_card: function () {},
+            get_cards: function () {},
+            clear: function () {},
+        });
+
+        factory.add_named_mock('infinite-arrangement', InfiniteArrangement);
+        factory.add_named_mock('infinite-module', SearchModule.SearchModule, {
+            arrangement: 'infinite-arrangement',
+            card_type: 'results-card',
+        });
+        search_module = new SearchModule.SearchModule({
+            factory: factory,
+            factory_name: 'infinite-module',
+        });
+        arrangement = factory.get_created_named_mocks('infinite-arrangement')[0];
+
+        arrangement.emit('need-more-content');
+        expect(dispatcher.dispatched_payloads).toContain({
+            action_type: Actions.NEED_MORE_SEARCH,
+        });
+    });
+
+    it('highlights a card', function () {
+        spyOn(arrangement, 'highlight');
+        let model = new ContentObjectModel.ContentObjectModel();
+        dispatcher.dispatch({
+            action_type: Actions.APPEND_SEARCH,
+            models: [model],
+        });
+        dispatcher.dispatch({
+            action_type: Actions.HIGHLIGHT_ITEM,
+            model: model,
+        });
+        expect(arrangement.highlight).toHaveBeenCalledWith(model);
+    });
+
+    it('clears the highlight', function () {
+        spyOn(arrangement, 'clear_highlight');
+        dispatcher.dispatch({
+            action_type: Actions.CLEAR_HIGHLIGHTED_ITEM,
+        });
+        expect(arrangement.clear_highlight).toHaveBeenCalled();
     });
 });
