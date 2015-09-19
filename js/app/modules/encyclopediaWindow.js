@@ -96,6 +96,7 @@ const EncyclopediaWindow = new Lang.Class({
 
         this.page_manager.add(this._search_results_page, {
             name: SEARCH_PAGE_NAME,
+            left_topbar_widget: this._history_buttons,
             background_uri: this.results_background_uri,
             background_repeats: false,
             background_size: 'cover',

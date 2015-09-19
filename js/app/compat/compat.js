@@ -390,8 +390,8 @@ function transform_v1_description(json) {
             type: "SearchBannerModule",
             properties: {
                 "margin-start": 40,
-                "margin-top": 40,
-                "margin-bottom": 40,
+                "margin-top": 20,
+                "margin-bottom": 20,
             },
         };
         modules["search-results"] = {

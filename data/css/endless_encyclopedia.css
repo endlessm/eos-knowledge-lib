@@ -88,6 +88,7 @@ GtkEntry:selected {
 }
 
 .search-results .card .title {
+    font-weight: normal;
     font-size: 1.25em;  /* 15px / 12px/em */
     color: #277090;
     padding: 0 0 0 0;
