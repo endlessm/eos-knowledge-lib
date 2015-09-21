@@ -25,7 +25,7 @@ describe('History Presenter', function () {
             title: '',
             page_type: 'search',
         });
-        let current_item = history_presenter.history_model.current_item;
+        let current_item = history_model.current_item;
         expect(current_item.title).toBe('');
     });
 
@@ -70,11 +70,10 @@ describe('History Presenter', function () {
             page_type: 'search',
         });
 
-        let model = history_presenter.history_model;
-        expect(model.current_item.title).toBe('third');
+        expect(history_model.current_item.title).toBe('third');
 
         dispatcher.dispatch({ action_type: Actions.HISTORY_BACK_CLICKED });
-        expect(model.current_item.title).toBe('first');
+        expect(history_model.current_item.title).toBe('first');
     });
 
     it('can go forward', function () {
@@ -87,11 +86,10 @@ describe('History Presenter', function () {
             page_type: 'search',
         });
         dispatcher.dispatch({ action_type: Actions.HISTORY_BACK_CLICKED });
-        let model = history_presenter.history_model;
-        expect(model.current_item.title).toBe('first');
+        expect(history_model.current_item.title).toBe('first');
 
         dispatcher.dispatch({ action_type: Actions.HISTORY_FORWARD_CLICKED });
-        expect(model.current_item.title).toBe('second');
+        expect(history_model.current_item.title).toBe('second');
     });
 
     it('skips over empty queries when going forward', function () {
@@ -108,11 +106,10 @@ describe('History Presenter', function () {
             page_type: 'search',
         });
 
-        let model = history_presenter.history_model;
-        expect(model.current_item.title).toBe('third');
+        expect(history_model.current_item.title).toBe('third');
 
         dispatcher.dispatch({ action_type: Actions.HISTORY_BACK_CLICKED });
         dispatcher.dispatch({ action_type: Actions.HISTORY_FORWARD_CLICKED });
-        expect(model.current_item.title).toBe('third');
+        expect(history_model.current_item.title).toBe('third');
     });
 });

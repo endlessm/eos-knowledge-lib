@@ -21,11 +21,11 @@ const Engine = imports.search.engine;
 const HistoryPresenter = imports.app.historyPresenter;
 const Launcher = imports.app.launcher;
 const MediaObjectModel = imports.search.mediaObjectModel;
-const OverviewPage = imports.app.reader.overviewPage;
 const QueryObject = imports.search.queryObject;
 const BackCover = imports.app.modules.backCover;
 const ReaderCard = imports.app.modules.readerCard;
 const ReaderDocumentCard = imports.app.modules.readerDocumentCard;
+const SidebarTemplate = imports.app.modules.sidebarTemplate;
 const StyleClasses = imports.app.styleClasses;
 const UserSettingsModel = imports.app.reader.userSettingsModel;
 const Utils = imports.app.utils;
@@ -219,6 +219,7 @@ const Presenter = new Lang.Class({
                     this._on_search(payload.text);
                     break;
                 case Actions.AUTOCOMPLETE_CLICKED:
+                case Actions.ITEM_CLICKED:
                     this._history_presenter.set_current_item_from_props({
                         page_type: this._ARTICLE_PAGE,
                         model: payload.model,
@@ -266,7 +267,7 @@ const Presenter = new Lang.Class({
             } else if (key === 'back_cover') {
                 str += BackCover.get_css_for_module(css_data[key]);
             } else if (key === 'overview_page') {
-                str += OverviewPage.get_css_for_module(css_data[key]);
+                str += SidebarTemplate.get_css_for_module(css_data[key]);
             }
         }
         return str;
@@ -447,7 +448,9 @@ const Presenter = new Lang.Class({
         // Clear out state from any issue that was already displaying.
         this._article_models = [];
         this.view.remove_all_article_pages();
-        this.view.overview_page.remove_all_snippets();
+        Dispatcher.get_default().dispatch({
+            action_type: Actions.CLEAR_ITEMS,
+        });
     },
 
     _append_results: function (results) {
@@ -963,19 +966,15 @@ const Presenter = new Lang.Class({
     },
 
     _load_overview_snippets_from_articles: function () {
-        let snippets = this._article_models.slice(0, NUM_OVERVIEW_SNIPPETS).map((model) => {
-            let snippet = this.factory.create_named_module('home-card', {
-                model: model,
-            });
-            snippet.connect('clicked', function () {
-                this._history_presenter.set_current_item_from_props({
-                    page_type: this._ARTICLE_PAGE,
-                    model: model,
-                });
-            }.bind(this));
-            return snippet;
+        let snippets = this._article_models.slice(0, NUM_OVERVIEW_SNIPPETS);
+        let dispatcher = Dispatcher.get_default();
+        dispatcher.dispatch({
+            action_type: Actions.CLEAR_ITEMS,
         });
-        this.view.overview_page.set_article_snippets(snippets);
+        dispatcher.dispatch({
+            action_type: Actions.APPEND_ITEMS,
+            models: snippets,
+        });
     },
 
     _load_standalone_article: function (model) {

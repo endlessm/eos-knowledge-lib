@@ -13,7 +13,9 @@ const Utils = imports.app.utils;
 
 /**
  * Class: Reader.ArticleSnippetCard
- * Widget to display an article snippet in the <OverviewPage>
+ * Widget to display an article snippet
+ *
+ * Displays a snippet with a title and a couple of lines of synopsis.
  *
  * CSS classes:
  *   article-snippet - on the widget itself

@@ -9,6 +9,7 @@ const CssClassMatcher = imports.tests.CssClassMatcher;
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
 const Minimal = imports.tests.minimal;
 const MockFactory = imports.tests.mockFactory;
+const MockWidgets = imports.tests.mockWidgets;
 const ReaderWindow = imports.app.modules.readerWindow;
 
 const EXPECTED_TOTAL_PAGES = 17;
@@ -39,6 +40,7 @@ describe('Window widget', function () {
 
         factory = new MockFactory.MockFactory();
         factory.add_named_mock('document-card', Minimal.MinimalDocumentCard);
+        factory.add_named_mock('front-cover', MockWidgets.MockSidebarTemplate);
         factory.add_named_mock('back-cover', Minimal.MinimalBackCover);
         factory.add_named_mock('document-arrangement', Minimal.MinimalArrangement);
         factory.add_named_mock('lightbox', Minimal.MinimalLightbox);
