@@ -72,7 +72,7 @@ function read_stream (stream, cancellable, callback) {
             let bytes = stream.read_bytes_finish(res);
             total_read += bytes.get_data().toString();
 
-            if (bytes.get_size() === CHUNK_SIZE) {
+            if (bytes.get_size() !== 0) {
                 stream.read_bytes_async(CHUNK_SIZE, 0, cancellable, handle_byte_response);
             } else {
                 task.return_value(total_read);
