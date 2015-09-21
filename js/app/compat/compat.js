@@ -75,7 +75,8 @@ function transform_v1_description(json) {
         modules["section-page-template"] = {
             "type": "BannerTemplate",
             "properties": {
-                "separator-margin": 100,
+                "margin-start": 150,
+                "margin-end": 150,
             },
             "slots": {
                 "banner": "set-banner-module",
@@ -139,9 +140,16 @@ function transform_v1_description(json) {
         };
         modules["results-search-banner"] = {
             "type": "SearchBannerModule",
+            "properties": {
+                "halign": Gtk.Align.CENTER,
+            },
         };
         modules["search-page-template"] = {
             "type": "BannerTemplate",
+            "properties": {
+                "margin-start": 150,
+                "margin-end": 150,
+            },
             "slots": {
                 "banner": "results-search-banner",
                 "content": "search-results",
@@ -234,6 +242,9 @@ function transform_v1_description(json) {
         };
         modules["set-banner-module"] = {
             "type": "SetBannerModule",
+            "properties": {
+                "valign": Gtk.Align.END,
+            },
             "slots": {
                 "card_type": "set-banner-card",
             },
@@ -267,6 +278,9 @@ function transform_v1_description(json) {
         };
         modules["results-search-banner"] = {
             "type": "SearchBannerModule",
+            "properties": {
+                "valign": Gtk.Align.END,
+            },
         };
         modules["search-page-template"] = {
             "type": "SidebarTemplate",
@@ -330,8 +344,9 @@ function transform_v1_description(json) {
         modules["search-results-paper-content"] = {
             "type": "BannerTemplate",
             "properties": {
-                "separator-margin": 45,
                 "image-separator": true,
+                "margin-start": 45,
+                "margin-end": 45,
             },
             "slots": {
                 "banner": "results-search-banner",
@@ -402,14 +417,14 @@ function transform_v1_description(json) {
         modules["results-search-banner"] = {
             type: "SearchBannerModule",
             properties: {
-                "margin-start": 40,
-                "margin-top": 20,
-                "margin-bottom": 20,
                 "halign": Gtk.Align.START,
             },
         };
         modules["search-results"] = {
             "type": "SearchModule",
+            "properties": {
+                "margin-top": 20,
+            },
             "slots": {
                 "arrangement": "results-arrangement",
                 "card_type": "results-card",

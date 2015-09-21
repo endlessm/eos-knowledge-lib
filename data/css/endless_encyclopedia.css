@@ -57,8 +57,8 @@ GtkEntry:selected {
     font-weight: 300;
     font-size: 2em; /* 24px / 12px/em */
     color: #7e7e7e;
-    padding-left: 10px;
-    padding-top: 20px;
+    padding-top: 40px;
+    padding-bottom: 20px;
 }
 
 .encyclopedia-content-template .separator {
@@ -71,6 +71,14 @@ GtkEntry:selected {
 .encyclopedia-content-template .title.query {
     font-weight: normal;
     color: black;
+}
+
+.encyclopedia-content-template .title.error-message {
+    font-weight: bold;
+}
+
+.encyclopedia-content-template .separator {
+    color: #888a85;
 }
 
 .search-results .results-message,

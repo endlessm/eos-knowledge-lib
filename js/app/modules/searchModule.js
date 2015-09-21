@@ -48,9 +48,7 @@ const SearchModule = new Lang.Class({
 
     _init: function (props={}) {
         this.parent(props);
-        this._arrangement = this.create_submodule('arrangement', {
-            margin_start: 45,
-        });
+        this._arrangement = this.create_submodule('arrangement');
         this.add_named(this._arrangement, RESULTS_PAGE_NAME);
 
         let dispatcher = Dispatcher.get_default();
