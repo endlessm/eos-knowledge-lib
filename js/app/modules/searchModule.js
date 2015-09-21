@@ -11,13 +11,13 @@ const Config = imports.app.config;
 const Dispatcher = imports.app.dispatcher;
 const InfiniteScrolledWindow = imports.app.widgets.infiniteScrolledWindow;
 const Module = imports.app.interfaces.module;
+const StyleClasses = imports.app.styleClasses;
 
 String.prototype.format = Format.format;
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
 const RESULTS_PAGE_NAME = 'results';
-const NO_RESULTS_PAGE_NAME = 'no-results-message';
-const ERROR_PAGE_NAME = 'error-message';
+const MESSAGE_PAGE_NAME = 'message';
 const SPINNER_PAGE_NAME = 'spinner';
 
 /**
@@ -29,7 +29,7 @@ const SPINNER_PAGE_NAME = 'spinner';
  *
  * CSS classes:
  *   search-results - on the widget itself
- *   no-results-message - on the text showing a no results message
+ *   results-message - on the text showing a no results message
  *   error-message - on the text showing an error
  */
 const SearchModule = new Lang.Class({
@@ -44,7 +44,7 @@ const SearchModule = new Lang.Class({
     },
 
     Template: 'resource:///com/endlessm/knowledge/widgets/searchModule.ui',
-    InternalChildren: [ 'error-message', 'no-results-message' ],
+    InternalChildren: [ 'message' ],
 
     _init: function (props={}) {
         this.parent(props);
@@ -110,13 +110,13 @@ const SearchModule = new Lang.Class({
         if (count > 0) {
             this.visible_child_name = RESULTS_PAGE_NAME;
         } else {
-            this.visible_child_name = NO_RESULTS_PAGE_NAME;
+            let context = this._message.get_style_context();
+            context.remove_class(StyleClasses.ERROR_MESSAGE);
+            context.add_class(StyleClasses.RESULTS_MESSAGE);
+            this._message.label =
+                _("There are no results that match your search.\nTry searching for something else.");
+            this.visible_child_name = MESSAGE_PAGE_NAME;
         }
-
-        /* TRANSLATORS: This message is displayed when the encyclopedia app did
-        not find any results for a search. */
-        this._no_results_message.label =
-            _("There are no results that match your search.\nTry searching for something else.");
     },
 
     // This will display a generic error message instead of search results.
@@ -124,7 +124,10 @@ const SearchModule = new Lang.Class({
     // useful error message
     _finish_search_with_error: function (error) {
         this._arrangement.clear();
-        this._error_message.label = _("There was an error during your search.");
-        this.visible_child_name = ERROR_PAGE_NAME;
+        let context = this._message.get_style_context();
+        context.remove_class(StyleClasses.RESULTS_MESSAGE);
+        context.add_class(StyleClasses.ERROR_MESSAGE);
+        this._message.label = _("There was an error during your search.");
+        this.visible_child_name = MESSAGE_PAGE_NAME;
     },
 });

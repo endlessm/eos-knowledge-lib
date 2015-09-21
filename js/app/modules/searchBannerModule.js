@@ -21,6 +21,8 @@ let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
  *
  * CSS classes:
  *   title - on the banner
+ *   results-message - on the banner when displaying status about results
+ *   error-message - on the banner when displaying status about an error
  *   query - on the portion of the banner indicating a user query string
  */
 const SearchBannerModule = new Lang.Class({
@@ -39,8 +41,11 @@ const SearchBannerModule = new Lang.Class({
     _init: function (props={}) {
         this.parent(props);
         Dispatcher.get_default().register((payload) => {
+            let context = this.get_style_context();
             switch(payload.action_type) {
                 case Actions.SEARCH_STARTED:
+                    context.remove_class(StyleClasses.ERROR_MESSAGE);
+                    context.add_class(StyleClasses.RESULTS_MESSAGE);
                     /* TRANSLATORS: This message is displayed while an app is
                     searching for results. The %s will be replaced with the term
                     that the user searched for. Note, in English, it is
@@ -51,6 +56,8 @@ const SearchBannerModule = new Lang.Class({
                         payload.query);
                     break;
                 case Actions.SEARCH_READY:
+                    context.remove_class(StyleClasses.ERROR_MESSAGE);
+                    context.add_class(StyleClasses.RESULTS_MESSAGE);
                     /* TRANSLATORS: This message is displayed when an app is
                     done searching for results. The %s will be replaced with the
                     term that the user searched for. Note, in English, it is
@@ -61,6 +68,8 @@ const SearchBannerModule = new Lang.Class({
                         payload.query);
                     break;
                 case Actions.SEARCH_FAILED:
+                    context.remove_class(StyleClasses.RESULTS_MESSAGE);
+                    context.add_class(StyleClasses.ERROR_MESSAGE);
                     this.label = _("OOPS!");
                     break;
             }

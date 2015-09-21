@@ -60,10 +60,6 @@ describe('Search module', function () {
         expect(search_module).toHaveCssClass(StyleClasses.SEARCH_RESULTS);
     });
 
-    it('has an error label with error-message CSS class', function () {
-        expect(search_module).toHaveDescendantWithCssClass(StyleClasses.ERROR_MESSAGE);
-    });
-
     it('displays the spinner when a search is started', function () {
         search_module.visible_child_name = 'error-message';
         dispatcher.dispatch({
@@ -86,23 +82,25 @@ describe('Search module', function () {
         expect(search_module.visible_child_name).toBe('results');
     });
 
-    it('displays the no results page when there are no results', function () {
+    it('displays the message page with the results CSS class when there are no results', function () {
         search_module.visible_child_name = 'error-message';
         dispatcher.dispatch({
             action_type: Actions.SEARCH_READY,
             query: 'myfoobar',
         });
-        expect(search_module.visible_child_name).toBe('no-results-message');
+        expect(search_module.visible_child_name).toBe('message');
+        expect(search_module).toHaveDescendantWithCssClass(StyleClasses.RESULTS_MESSAGE);
     });
 
-    it('displays the error page when told to', function () {
+    it('displays the message page with the error CSS class when the search fails', function () {
         search_module.visible_child_name = 'results';
         dispatcher.dispatch({
             action_type: Actions.SEARCH_FAILED,
             query: 'myfoobar',
             error: new Error(),
         });
-        expect(search_module.visible_child_name).toBe('error-message');
+        expect(search_module.visible_child_name).toBe('message');
+        expect(search_module).toHaveDescendantWithCssClass(StyleClasses.ERROR_MESSAGE);
     });
 
     it('adds results to the card container', function () {

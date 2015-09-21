@@ -21,7 +21,7 @@
       </packing>
     </child>
     <child>
-      <object class="GtkLabel" id="no-results-message">
+      <object class="GtkLabel" id="message">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="halign">start</property>
@@ -33,33 +33,12 @@
         <property name="ellipsize">end</property>
         <property name="lines">5</property>
         <style>
-          <class name="no-results-message"/>
+          <class name="results-message"/>
         </style>
       </object>
       <packing>
         <property name="position">2</property>
-        <property name="name">no-results-message</property>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkLabel" id="error-message">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="halign">center</property>
-        <property name="valign">center</property>
-        <property name="label">Placeholder</property>
-        <property name="wrap">True</property>
-        <property name="wrap_mode">word-char</property>
-        <property name="ellipsize">end</property>
-        <property name="lines">5</property>
-        <property name="justify">center</property>
-        <style>
-          <class name="error-message"/>
-        </style>
-      </object>
-      <packing>
-        <property name="position">3</property>
-        <property name="name">error-message</property>
+        <property name="name">message</property>
       </packing>
     </child>
     <style>
