@@ -105,6 +105,9 @@ function transform_v1_description(json) {
                 "arrangement": "results-arrangement",
                 "card_type": "results-card",
             },
+            "properties": {
+                "halign": Gtk.Align.CENTER,
+            },
         };
         modules["home-page-arrangement"] = {
             "type": "OverflowArrangement",

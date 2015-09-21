@@ -365,16 +365,13 @@ EknWindow.background-right {
 .section-page-a .title,
 .section-page-b .title,
 .search-page-a .title,
-.search-page-b .title,
-.no-search-results-page-a .title,
-.no-search-results-page-b .title {
+.search-page-b .title {
     font-family: Montserrat;
     font-weight: bold;
 }
 
 .section-page-a .title,
-.search-page-a .title,
-.no-search-results-page-a .title {
+.search-page-a .title {
     padding-top: 1.0em;
     padding-bottom: 1.0em;
 }
@@ -384,13 +381,19 @@ EknWindow.background-right {
     font-size: 2.25em; /* 36pt * 1/12 * 0.75 DPI correction factor */
 }
 
-.no-search-results-page-a .title {
-    font-size: 1.91em; /* 85% of .section-page-title font size */
+.search-page-a .search-results .results-message,
+.search-page-a .search-results .error-message {
+    padding-top: 8.0em;
+}
+
+.search-page-b .search-results .results-message,
+.search-page-b .search-results .error-message {
+    font-size: 1.2em;
+    padding: 10px 25px;
 }
 
 .section-page-a GtkSeparator,
-.search-page-a GtkSeparator,
-.no-search-results-page-a GtkSeparator {
+.search-page-a GtkSeparator {
     color: rgba(255, 255, 255, 0.3);
 }
 
@@ -422,40 +425,6 @@ EknWindow.background-right {
 
 .sidebar-template .content {
     background-image: linear-gradient(-180deg, rgba(0,0,0,0.0) 65%, rgba(0,0,0,0.30) 85%, rgba(0,0,0,0.70) 100%);
-}
-
-.no-search-results-page-a .no-search-results-page-no-results-label,
-.no-search-results-page-a .no-search-results-page-try-again-label {
-    font-family: Lato;
-    color: white;
-    text-shadow: 0px 1px 10px alpha(black, 0.30);
-}
-
-.no-search-results-page-a .no-search-results-page-no-results-label {
-    font-size: 1.93em;  /* 22pt at 72 DPI 1080px */
-}
-
-.no-search-results-page-a .no-search-results-page-try-again-label {
-    font-size: 1.32em;  /* 15pt at 72 DPI 1080px */
-    padding-bottom: 100px;
-}
-
-.no-search-results-page-b .no-search-results-page-no-results-label,
-.no-search-results-page-b .no-search-results-page-try-again-label {
-    padding: 0.25em 1.0em 2.5em 0.25em;
-    font-family: Lato;
-    font-size: 1.58em;  /* 18pt at 72 DPI 1080px */
-    color: white;
-    text-shadow: 0px 1px 10px alpha(black, 0.30);
-    padding-left: 100px;
-    padding-bottom: 100px;
-}
-
-.no-search-results-page-b .title {
-    font-size: 4.5em; /* 85% of .section-page-title font size */
-    color: white;
-    text-shadow: 0px 1px 10px alpha(black, 0.30);
-    padding-left: 100px;
 }
 
 /* FIXME: for the time being, until we can properly customize the webkit
