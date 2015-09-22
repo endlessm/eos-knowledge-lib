@@ -9,9 +9,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2015-07-28 18:27-0700\n"
-"PO-Revision-Date: 2015-07-29 01:33+0000\n"
-"Last-Translator: Philip Chimento <philip.chimento@gmail.com>\n"
+"POT-Creation-Date: 2015-09-02 19:19+0000\n"
+"PO-Revision-Date: 2015-09-02 19:19+0000\n"
+"Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
 "Language-Team: French (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -23,11 +23,20 @@ msgstr ""
 msgid "Hello C world!"
 msgstr "Bonjour monde C !"
 
+#: data/widgets/backCover.ui:21
+msgid "Did you like this issue?"
+msgstr "Avez-vous aimé cet aboutissement ?"
+
+#: data/widgets/backCover.ui:34
+msgid ""
+"Don't miss next week's issue with more articles in your favorite magazine!"
+msgstr "Ne ratez pas l'édition de la semaine prochaine avec d'autres articles dans votre journal préféré !"
+
 #: data/widgets/cardA.ui:99
 msgid "PDF"
 msgstr "PDF"
 
-#: data/widgets/readerCard.ui:113 js/app/reader/webviewTooltip.js:138
+#: data/widgets/readerCard.ui:113 js/app/widgets/webviewTooltip.js:138
 msgid "Archive"
 msgstr ""
 
@@ -102,17 +111,9 @@ msgstr "Permission de contenu de {blog-link}, sous licence {license-link}."
 msgid "HOME"
 msgstr "PAGE D'ACCUEIL "
 
-#: js/app/encyclopedia/presenter.js:28
+#: js/app/encyclopedia/presenter.js:31
 msgid "Search the world's information!"
 msgstr "Recherchez des information dans monde !"
-
-#. TRANSLATORS: This is the title of the search results page. %s
-#. will be replaced by the text that the user searched for. Make
-#. sure that %s is in your translation as well.
-#: js/app/encyclopedia/presenter.js:286
-#, javascript-format
-msgid "Results for %s"
-msgstr "Résultats pour %s"
 
 #: js/app/homePageA.js:74
 msgid "SEE ALL CATEGORIES"
@@ -135,7 +136,7 @@ msgstr "Réessayez la recherche avec des mots différents"
 msgid "Results for \"%s\""
 msgstr "Résultats pour \"%s\""
 
-#: js/app/presenter.js:294 js/app/presenter.js:735
+#: js/app/presenter.js:310 js/app/presenter.js:614
 msgid "Articles"
 msgstr "Articles"
 
@@ -144,7 +145,7 @@ msgstr "Articles"
 msgid "Page %s"
 msgstr ""
 
-#: js/app/modules/readerWindow.js:229
+#: js/app/modules/readerWindow.js:191
 #, javascript-format
 msgid "This article is part of the archive of the magazine %s."
 msgstr ""
@@ -155,7 +156,7 @@ msgstr ""
 #. and right double quotes (U+201C and U+201D). Make sure to include %s in
 #. your translation and use whatever quote marks are appropriate for your
 #. language.
-#: js/app/modules/searchModule.js:90
+#: js/app/modules/searchModule.js:94
 #, javascript-format
 msgid "Searching for “%s”"
 msgstr "Recherche de « %s »"
@@ -166,7 +167,7 @@ msgstr "Recherche de « %s »"
 #. Unicode left and right double quotes (U+201C and U+201D). Make sure
 #. to include %s in your translation and use whatever quote marks are
 #. appropriate for your language.
-#: js/app/modules/searchModule.js:132
+#: js/app/modules/searchModule.js:136
 #, javascript-format
 msgid "Search results for “%s”"
 msgstr ""
@@ -177,35 +178,26 @@ msgstr ""
 #. Unicode left and right double quotes (U+201C and U+201D). Make sure to
 #. include %s in your translation and use whatever quote marks are
 #. appropriate for your language.
-#: js/app/modules/searchModule.js:140
+#: js/app/modules/searchModule.js:144
 #, javascript-format
 msgid "We did not find any results for “%s”."
 msgstr "Nous n'avons pas trouver de résultats pour « %s »."
 
-#: js/app/reader/donePage.js:68
-msgid "Did you like this issue?"
-msgstr "Avez-vous aimé cet aboutissement ?"
-
-#: js/app/reader/donePage.js:74
-msgid ""
-"Don't miss next week's issue with more articles in your favorite magazine!"
-msgstr "Ne ratez pas l'édition de la semaine prochaine avec d'autres articles dans votre journal préféré !"
-
-#: js/app/reader/presenter.js:856
+#: js/app/reader/presenter.js:806
 msgid "View the license in your browser"
 msgstr ""
 
-#: js/app/reader/presenter.js:979 js/app/reader/presenter.js:986
+#: js/app/reader/presenter.js:931 js/app/reader/presenter.js:938
 msgid "Oops!"
 msgstr "Oups !"
 
-#: js/app/reader/presenter.js:980
+#: js/app/reader/presenter.js:932
 msgid ""
 "We could not find this magazine!\n"
 "Please try again after restarting your computer."
 msgstr "Nous n'avons pas trouvé ce magazine !\nEssayez de nouveau après avoir redémarré votre ordinateur."
 
-#: js/app/reader/presenter.js:987
+#: js/app/reader/presenter.js:939
 msgid ""
 "There was an error loading that page.\n"
 "Try another one or try again after restarting your computer."
@@ -217,13 +209,6 @@ msgstr ""
 
 #: js/app/reader/standalonePage.js:136
 msgid "Open the magazine"
-msgstr ""
-
-#. TRANSLATORS: This shows the page number; %d will be replaced with
-#. the page number of the article.
-#: js/app/reader/webviewTooltip.js:122
-#, javascript-format
-msgid "Page %d"
 msgstr ""
 
 #. TRANSLATORS: anything inside curly braces '{}' is going to be substituted
@@ -238,3 +223,10 @@ msgstr "par {author}"
 #: js/app/utils.js:76
 msgid "and"
 msgstr "et"
+
+#. TRANSLATORS: This shows the page number; %d will be replaced with
+#. the page number of the article.
+#: js/app/widgets/webviewTooltip.js:122
+#, javascript-format
+msgid "Page %d"
+msgstr ""
