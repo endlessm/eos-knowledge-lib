@@ -41,6 +41,28 @@ const SearchModule = new Lang.Class({
     Properties: {
         'factory': GObject.ParamSpec.override('factory', Module.Module),
         'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
+        /**
+         * Property: message-justify
+         * Horizontal justification of message text
+         *
+         * Default value:
+         *   **Gtk.Justification.LEFT**
+         */
+        'message-justify': GObject.ParamSpec.enum('message-justify',
+            'Message justify', 'Horizontal justification of message text',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            Gtk.Justification.$gtype, Gtk.Justification.LEFT),
+        /**
+         * Property: message-valign
+         * Vertical alignment of message text
+         *
+         * Default value:
+         *   **Gtk.Align.START**
+         */
+        'message-valign': GObject.ParamSpec.enum('message-valign',
+            'Message valign', 'Vertical alignment of message text',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            Gtk.Align.$gtype, Gtk.Align.START),
     },
 
     Template: 'resource:///com/endlessm/knowledge/widgets/searchModule.ui',
@@ -51,12 +73,8 @@ const SearchModule = new Lang.Class({
         this._arrangement = this.create_submodule('arrangement');
         this.add_named(this._arrangement, RESULTS_PAGE_NAME);
 
-        // HACK: Not sure if this is best way to do this but we need
-        // some way to tie the justification of the error message to
-        // the alignment of the parent module.
-        if (this.halign === Gtk.Align.CENTER) {
-            this._message.justify = Gtk.Justification.CENTER;
-        }
+        this._message.justify = this.message_justify;
+        this._message.valign = this.message_valign;
 
         let dispatcher = Dispatcher.get_default();
         if (this._arrangement instanceof InfiniteScrolledWindow.InfiniteScrolledWindow) {

@@ -107,6 +107,7 @@ function transform_v1_description(json) {
             },
             "properties": {
                 "halign": Gtk.Align.CENTER,
+                "message-justify": Gtk.Justification.CENTER,
             },
         };
         modules["home-page-arrangement"] = {
