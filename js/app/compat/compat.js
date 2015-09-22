@@ -279,11 +279,14 @@ function transform_v1_description(json) {
                 "arrangement": "results-arrangement",
                 "card_type": "results-card",
             },
+            "properties": {
+                "message-valign": Gtk.Align.CENTER,
+            },
         };
         modules["results-search-banner"] = {
             "type": "SearchBannerModule",
             "properties": {
-                "valign": Gtk.Align.END,
+                "valign": Gtk.Align.CENTER,
             },
         };
         modules["search-page-template"] = {
