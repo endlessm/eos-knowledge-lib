@@ -123,7 +123,7 @@ const EncyclopediaPresenter = new Lang.Class({
         });
 
         if (this.view.get_visible_page() !== this.view.search_results_page)
-            this.view.show_search_results_page();
+            this.view.show_page(this.view.search_results_page);
         this.view.set_focus_child(null);
         let query_obj = new QueryObject.QueryObject({
             query: item.query,
@@ -201,7 +201,7 @@ const EncyclopediaPresenter = new Lang.Class({
                 model: item.model,
                 animation_type: EosKnowledgePrivate.LoadingAnimation.NONE,
             });
-            this.view.show_article_page();
+            this.view.show_page(this.view.article_page);
             return;
         case SEARCH_RESULTS_PAGE:
             this._do_search_in_view(item);
