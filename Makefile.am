@@ -224,6 +224,7 @@ js_files = \
 	js/app/interfaces/card.js \
 	js/app/interfaces/documentCard.js \
 	js/app/interfaces/expandable.js \
+	js/app/interfaces/interaction.js \
 	js/app/interfaces/module.js \
 	js/app/launcher.js \
 	js/app/moduleFactory.js \
@@ -355,6 +356,7 @@ javascript_tests = \
 	tests/js/app/compat/testCompat.js \
 	tests/js/app/interfaces/testArrangement.js \
 	tests/js/app/interfaces/testCard.js \
+	tests/js/app/interfaces/testInteraction.js \
 	tests/js/app/interfaces/testModule.js \
 	tests/js/app/modules/testAppBanner.js \
 	tests/js/app/modules/testArticleSnippetCard.js \
