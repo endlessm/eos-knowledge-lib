@@ -67,8 +67,6 @@ const EncyclopediaPresenter = new Lang.Class({
             application: this.application,
         });
 
-        this._current_article = null;
-
         WebkitContextSetup.register_webkit_uri_handlers(this._article_render_callback.bind(this));
         this._engine = Engine.Engine.get_default();
 
@@ -237,7 +235,6 @@ const EncyclopediaPresenter = new Lang.Class({
         });
         switch (item.page_type) {
         case ARTICLE_PAGE:
-            this._current_article = item.model;
             this._load_article_in_view(item.model);
             dispatcher.dispatch({
                 action_type: Actions.SHOW_ARTICLE,
