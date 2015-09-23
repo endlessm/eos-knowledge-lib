@@ -107,6 +107,7 @@ function transform_v1_description(json) {
             },
             "properties": {
                 "halign": Gtk.Align.CENTER,
+                "message-justify": Gtk.Justification.CENTER,
             },
         };
         modules["home-page-arrangement"] = {
@@ -278,11 +279,14 @@ function transform_v1_description(json) {
                 "arrangement": "results-arrangement",
                 "card_type": "results-card",
             },
+            "properties": {
+                "message-valign": Gtk.Align.CENTER,
+            },
         };
         modules["results-search-banner"] = {
             "type": "SearchBannerModule",
             "properties": {
-                "valign": Gtk.Align.END,
+                "valign": Gtk.Align.CENTER,
             },
         };
         modules["search-page-template"] = {
