@@ -217,7 +217,6 @@ js_files = \
 	js/app/compat/styleKnobGenerator.js \
 	js/app/config.js \
 	js/app/dispatcher.js \
-	js/app/encyclopedia/inArticleSearch.js \
 	js/app/encyclopedia/presenter.js \
 	js/app/historyItem.js \
 	js/app/historyPresenter.js \
@@ -277,6 +276,7 @@ js_files = \
 	js/app/widgets/archiveNotice.js \
 	js/app/widgets/eknWebview.js \
 	js/app/widgets/imagePreviewer.js \
+	js/app/widgets/inArticleSearch.js \
 	js/app/widgets/infiniteScrolledWindow.js \
 	js/app/widgets/lightbox.js \
 	js/app/widgets/marginButton.js \

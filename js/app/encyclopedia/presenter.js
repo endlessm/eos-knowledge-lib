@@ -16,7 +16,6 @@ const ArticleObjectModel = imports.search.articleObjectModel;
 const Dispatcher = imports.app.dispatcher;
 const Engine = imports.search.engine;
 const HistoryPresenter = imports.app.historyPresenter;
-const InArticleSearch = imports.app.encyclopedia.inArticleSearch;
 const Launcher = imports.app.launcher;
 const MediaObjectModel = imports.search.mediaObjectModel;
 const QueryObject = imports.search.queryObject;
@@ -202,19 +201,16 @@ const EncyclopediaPresenter = new Lang.Class({
         let keyval = event.get_keyval()[1];
         let state = event.get_state()[1];
 
+        let dispatcher = Dispatcher.get_default();
         if (keyval === Gdk.KEY_Escape) {
-            if (this._search_bar !== undefined) {
-                this._search_bar.close();
-            }
+            dispatcher.dispatch({
+                action_type: Actions.HIDE_ARTICLE_SEARCH,
+            });
         } else if (((state & Gdk.ModifierType.CONTROL_MASK) !== 0) &&
                     keyval === Gdk.KEY_f) {
-            if (this._search_bar === undefined &&
-                this.view.get_visible_page() === this.view._lightbox) {
-                this._search_bar = new InArticleSearch.InArticleSearch(this.view.article_page.content_module.content.content_view);
-                this.view.article_page.attach(this._search_bar, 0, 3, 2, 1);
-            }
-
-            this._search_bar.open();
+            dispatcher.dispatch({
+                action_type: Actions.SHOW_ARTICLE_SEARCH,
+            });
         }
     },
 

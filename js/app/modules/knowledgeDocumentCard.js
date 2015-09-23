@@ -10,6 +10,7 @@ const AsyncTask = imports.search.asyncTask;
 const Card = imports.app.interfaces.card;
 const DocumentCard = imports.app.interfaces.documentCard;
 const EknWebview = imports.app.widgets.eknWebview;
+const InArticleSearch = imports.app.widgets.inArticleSearch;
 const Module = imports.app.interfaces.module;
 const PDFView = imports.app.widgets.PDFView;
 const StyleClasses = imports.app.styleClasses;
@@ -160,6 +161,8 @@ const KnowledgeDocumentCard = new Lang.Class({
 
                 this.content_view = this._get_webview();
                 this._content_grid.add(this.content_view);
+                let article_search = new InArticleSearch.InArticleSearch(this.content_view);
+                this._content_grid.add(article_search);
 
                 this._webview_load_id = this.content_view.connect('load-changed', (view, status) => {
                     if (status !== WebKit2.LoadEvent.COMMITTED)
