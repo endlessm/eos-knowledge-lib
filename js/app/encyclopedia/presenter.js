@@ -82,6 +82,9 @@ const EncyclopediaPresenter = new Lang.Class({
                 case Actions.SEARCH_CLICKED:
                     this.load_model(payload.model);
                     break;
+                case Actions.ARTICLE_LINK_CLICKED:
+                    this.load_uri(payload.ekn_id);
+                    break;
             }
         });
 
@@ -159,44 +162,6 @@ const EncyclopediaPresenter = new Lang.Class({
         });
     },
 
-    _load_article_in_view: function (article) {
-        this.view.article_page.content_module.pack_content_slot({
-            model: article,
-            show_toc: false,
-            show_top_title: false,
-        });
-
-        let document_card = this.view.article_page.content_module.content;
-        document_card.connect('ekn-link-clicked', (page, uri) => {
-            this.load_uri(uri);
-        });
-        document_card.load_content(null, (card, task) => {
-            try {
-                card.load_content_finish(task);
-                card.content_view.grab_focus();
-            } catch (error) {
-                logError(error);
-            }
-        });
-        document_card.show_all();
-
-        let webview = document_card.content_view;
-        webview.connect('enter-fullscreen',
-            this._on_fullscreen_change.bind(this, true));
-        webview.connect('leave-fullscreen',
-            this._on_fullscreen_change.bind(this, false));
-
-        if (this.view.get_visible_page() !== this.view.lightbox)
-            this.view.show_article_page();
-    },
-
-    _on_fullscreen_change: function (should_be_fullscreen) {
-        // FIXME: Find better way to reference modules within a template
-        this.view.article_page._top_left.visible = !should_be_fullscreen;
-        this.view.article_page.search_box.visible = !should_be_fullscreen;
-        this.view.article_page.xscale = should_be_fullscreen ? 1.0 : this.HORIZONTAL_SPACE_FILL_RATIO;
-    },
-
     _on_key_press_event: function (widget, event) {
         let keyval = event.get_keyval()[1];
         let state = event.get_state()[1];
@@ -231,11 +196,12 @@ const EncyclopediaPresenter = new Lang.Class({
         });
         switch (item.page_type) {
         case ARTICLE_PAGE:
-            this._load_article_in_view(item.model);
             dispatcher.dispatch({
                 action_type: Actions.SHOW_ARTICLE,
                 model: item.model,
+                animation_type: EosKnowledgePrivate.LoadingAnimation.NONE,
             });
+            this.view.show_article_page();
             return;
         case SEARCH_RESULTS_PAGE:
             this._do_search_in_view(item);

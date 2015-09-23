@@ -58,8 +58,6 @@ const EncyclopediaWindow = new Lang.Class({
         this._home_page = this.factory.create_named_module('home-page-template');
 
         this._search_results_page = this.factory.create_named_module('search-page-template');
-        // the content slot does not get packed by default so we have to do it explicitly here
-        this._search_results_page.content_module.pack_content_slot();
 
         this._article_page = this.factory.create_named_module('article-page-template');
 

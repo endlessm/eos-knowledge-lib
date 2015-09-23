@@ -371,7 +371,13 @@ function transform_v1_description(json) {
         modules["article-paper-template"] = {
             "type": "PaperTemplate",
             "slots": {
-                "content": "document-card",
+                "content": "article-stack",
+            },
+        };
+        modules["article-stack"] = {
+            "type": "ArticleStackModule",
+            "slots": {
+                "card-type": "document-card",
             },
         };
         modules["app-banner"] = {

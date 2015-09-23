@@ -1,6 +1,5 @@
 // Copyright 2015 Endless Mobile, Inc.
 
-const Endless = imports.gi.Endless;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
@@ -29,27 +28,6 @@ const EncyclopediaContentTemplate = new Lang.Class({
     Properties: {
         'factory': GObject.ParamSpec.override('factory', Module.Module),
         'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-        /**
-         * Property: search-box
-         *
-         * The <SearchBox> widget created by this widget. Read-only,
-         * modify using the <SearchBox> API. Use to type search queries and to display the last
-         * query searched.
-         */
-        'search-box': GObject.ParamSpec.object('search-box', 'Search Box',
-            'The Search box of this view widget',
-            GObject.ParamFlags.READABLE,
-            Endless.SearchBox),
-
-        /**
-         * Property: content-module
-         * <Module> created by this widget which shows content
-         *
-         * FIXME: The dispatcher will make this property unnecessary.
-         */
-        'content-module': GObject.ParamSpec.object('content-module',
-            'Content module', 'Content module for this view',
-            GObject.ParamFlags.READABLE, GObject.Object.$gtype),
     },
 
     Template: 'resource:///com/endlessm/knowledge/widgets/encyclopediaContentTemplate.ui',
@@ -58,8 +36,6 @@ const EncyclopediaContentTemplate = new Lang.Class({
         this.parent(props);
 
         ['top_left', 'top_right', 'bottom'].forEach(this._pack_slot.bind(this));
-        // FIXME: this line should be replaced by the dispatcher
-        this.search_box = this._top_right;
     },
 
     _pack_slot: function (slot, props={}) {
@@ -78,9 +54,5 @@ const EncyclopediaContentTemplate = new Lang.Class({
             }
             this['_' + slot] = submodule;
         }
-    },
-
-    get content_module () {
-        return this._bottom;
     },
 });
