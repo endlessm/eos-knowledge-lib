@@ -29,7 +29,6 @@
         <property name="can_focus">False</property>
         <property name="halign">start</property>
         <property name="valign">start</property>
-        <property name="margin_start">45</property>
         <property name="label">Placeholder</property>
         <property name="wrap">True</property>
         <property name="wrap_mode">word-char</property>

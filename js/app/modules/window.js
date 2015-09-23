@@ -11,7 +11,6 @@ const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
 const Module = imports.app.interfaces.module;
 const NavButtonOverlay = imports.app.widgets.navButtonOverlay;
-const NoSearchResultsPage = imports.app.noSearchResultsPage;
 const StyleClasses = imports.app.styleClasses;
 
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
@@ -78,16 +77,6 @@ const Window = new Lang.Class({
             GObject.ParamFlags.READABLE,
             Gtk.Widget),
         /**
-         * Property: no-search-results-page
-         *
-         * The <NoSearchResultsPage> widget created by this widget. Read-only,
-         * modify using the <NoSearchResultsPage> API.
-         */
-        'no-search-results-page': GObject.ParamSpec.object('no-search-results-page', 'No Search Results page',
-            'A message page that is displayed when no search results are found.',
-            GObject.ParamFlags.READABLE,
-            NoSearchResultsPage.NoSearchResultsPage),
-        /**
          * Property: background-image-uri
          *
          * The background image uri for this window.
@@ -138,13 +127,9 @@ const Window = new Lang.Class({
         this.search_page = this.factory.create_named_module('search-page-template');
         this.article_page = this.factory.create_named_module('article-page-template');
         if (this.template_type === 'B') {
-            this.no_search_results_page = new NoSearchResultsPage.NoSearchResultsPageB();
-
             this.section_page.get_style_context().add_class(StyleClasses.SECTION_PAGE_B);
             this.search_page.get_style_context().add_class(StyleClasses.SEARCH_PAGE_B);
         } else {
-            this.no_search_results_page = new NoSearchResultsPage.NoSearchResultsPageA();
-
             this.section_page.get_style_context().add_class(StyleClasses.SECTION_PAGE_A);
             this.search_page.get_style_context().add_class(StyleClasses.SEARCH_PAGE_A);
         }
@@ -153,7 +138,6 @@ const Window = new Lang.Class({
         this._stack.add(this.home_page);
         this._stack.add(this.section_page);
         this._stack.add(this.search_page);
-        this._stack.add(this.no_search_results_page);
         this._stack.add(this.article_page);
 
         this._nav_buttons = new NavButtonOverlay.NavButtonOverlay({
@@ -303,7 +287,7 @@ const Window = new Lang.Class({
             return;
 
         let is_on_left = (page) => page === this.home_page;
-        let is_on_center = (page) => page === this.section_page || page === this.search_page || page === this.no_search_results_page;
+        let is_on_center = (page) => page === this.section_page || page === this.search_page;
         if (is_on_left(new_page)) {
             this._stack.transition_type = Gtk.StackTransitionType.SLIDE_RIGHT;
             this._nav_buttons.back_visible = false;

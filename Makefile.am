@@ -263,7 +263,6 @@ js_files = \
 	js/app/modules/twoVerticalTemplate.js \
 	js/app/modules/window.js \
 	js/app/mustache.js \
-	js/app/noSearchResultsPage.js \
 	js/app/presenter.js \
 	js/app/presenterLoader.js \
 	js/app/reader/presenter.js \
@@ -395,8 +394,6 @@ javascript_tests = \
 	tests/js/app/testHistoryItem.js \
 	tests/js/app/testHistoryPresenter.js \
 	tests/js/app/testModuleFactory.js \
-	tests/js/app/testNoSearchResultsPageA.js \
-	tests/js/app/testNoSearchResultsPageB.js \
 	tests/js/app/testPresenter.js \
 	tests/js/app/testStyleKnobGenerator.js \
 	tests/js/app/testUtils.js \

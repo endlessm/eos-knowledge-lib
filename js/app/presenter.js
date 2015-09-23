@@ -206,14 +206,12 @@ const Presenter = new Lang.Class({
             article_card: '.article-card',
             section_page: '.section-page-a',
             search_page: '.search-page-a',
-            no_search_results_page: '.no-search-results-page-a'
         },
         B: {
             section_card: '.card-b',
             article_card: '.text-card',
             section_page: '.section-page-b',
             search_page: '.search-page-b',
-            no_search_results_page: '.no-search-results-page-b'
         },
     },
 
@@ -343,9 +341,6 @@ const Presenter = new Lang.Class({
                         action_type: Actions.SEARCH_READY,
                         query: item.query,
                     });
-                    if (item.empty) {
-                        this.view.show_page(this.view.no_search_results_page);
-                    }
                 });
                 search_text = item.query;
                 break;
@@ -521,27 +516,23 @@ const Presenter = new Lang.Class({
             }
             this._get_more_results_query = get_more_results_query;
 
-            if (results.length === 0) {
-                item.empty = true;
+            let dispatcher = Dispatcher.get_default();
+            if (item.page_type === this._SEARCH_PAGE) {
+                dispatcher.dispatch({
+                    action_type: Actions.CLEAR_SEARCH,
+                });
+                dispatcher.dispatch({
+                    action_type: Actions.APPEND_SEARCH,
+                    models: results,
+                });
             } else {
-                let dispatcher = Dispatcher.get_default();
-                if (item.page_type === this._SEARCH_PAGE) {
-                    dispatcher.dispatch({
-                        action_type: Actions.CLEAR_SEARCH,
-                    });
-                    dispatcher.dispatch({
-                        action_type: Actions.APPEND_SEARCH,
-                        models: results,
-                    });
-                } else {
-                    dispatcher.dispatch({
-                        action_type: Actions.CLEAR_ITEMS,
-                    });
-                    dispatcher.dispatch({
-                        action_type: Actions.APPEND_ITEMS,
-                        models: results,
-                    });
-                }
+                dispatcher.dispatch({
+                    action_type: Actions.CLEAR_ITEMS,
+                });
+                dispatcher.dispatch({
+                    action_type: Actions.APPEND_ITEMS,
+                    models: results,
+                });
             }
             callback(true);
         });

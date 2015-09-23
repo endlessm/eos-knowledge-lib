@@ -177,7 +177,7 @@ describe('Presenter', () => {
                 }),
                 jasmine.any(Object),
                 jasmine.any(Function));
-            expect(view.show_page).toHaveBeenCalledWith(view.no_search_results_page);
+            expect(view.show_page).toHaveBeenCalledWith(view.search_page);
         });
 
         it('records a metric', function () {

@@ -51,6 +51,13 @@ const SearchModule = new Lang.Class({
         this._arrangement = this.create_submodule('arrangement');
         this.add_named(this._arrangement, RESULTS_PAGE_NAME);
 
+        // HACK: Not sure if this is best way to do this but we need
+        // some way to tie the justification of the error message to
+        // the alignment of the parent module.
+        if (this.halign === Gtk.Align.CENTER) {
+            this._message.justify = Gtk.Justification.CENTER;
+        }
+
         let dispatcher = Dispatcher.get_default();
         if (this._arrangement instanceof InfiniteScrolledWindow.InfiniteScrolledWindow) {
             this._arrangement.connect('need-more-content', () => dispatcher.dispatch({

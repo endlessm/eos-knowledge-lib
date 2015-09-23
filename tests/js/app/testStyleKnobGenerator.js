@@ -16,10 +16,6 @@ let style_knobs_a = {
         'title-font-family': "'Marcellus SC'",
         'title-font-weight': 'bold',
     },
-    'no_search_results_page': {
-        'title-font-family': "'Marcellus SC'",
-        'title-font-weight': 'bold',
-    },
     'section_card': {
         'module-background': '#E8E4E1',
         'title-color': '#5A8715',
@@ -56,11 +52,6 @@ let style_knobs_b = {
     'search_page': {
         'title-font-size': '9.0em',
         'title-padding': '0.5em 0.0em 0.5em 0.7em',
-        'title-font-family': "'Amatic SC'",
-        'title-font-weight': 'bold',
-    },
-    'no_search_results_page': {
-        'title-font-size': '10.72em',
         'title-font-family': "'Amatic SC'",
         'title-font-weight': 'bold',
     },

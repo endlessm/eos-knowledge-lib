@@ -354,37 +354,9 @@ const SECTION_PAGE_B_TITLE_FRAME = 'section-page-b-title-frame';
 /**
  * Constant: NO_SEARCH_RESULTS_PAGE_NO_RESULTS_LABEL
  *
- * Matches the 'no results' label of the NoSearchResultsPage of the knowledge apps.
+ * Matches the 'no results' label in the reader app.
  */
 const NO_SEARCH_RESULTS_PAGE_NO_RESULTS_LABEL = 'no-search-results-page-no-results-label';
-
-/**
- * Constant: NO_SEARCH_RESULTS_PAGE_TITLE
- *
- * Matches the title of the Template A's NoSearchResultsPage of the knowledge apps.
- */
-const NO_SEARCH_RESULTS_PAGE_TITLE = 'title';
-
-/**
- * Constant: NO_SEARCH_RESULTS_PAGE_TRY_AGAIN_LABEL
- *
- * Matches the 'try again' label of the NoSearchResultsPage of the knowledge apps.
- */
-const NO_SEARCH_RESULTS_PAGE_TRY_AGAIN_LABEL = 'no-search-results-page-try-again-label';
-
-/**
- * Constant: NO_SEARCH_RESULTS_PAGE_A
- *
- * Matches the Template A's NoSearchResultsPage of the knowledge apps.
- */
-const NO_SEARCH_RESULTS_PAGE_A = 'no-search-results-page-a';
-
-/**
- * Constant: NO_SEARCH_RESULTS_PAGE_B
- *
- * Matches the Template B's NoSearchResultsPage of the knowledge apps.
- */
-const NO_SEARCH_RESULTS_PAGE_B = 'no-search-results-page-b';
 
 /**
  * Constant: READER_ARTICLE_SNIPPET
