@@ -324,15 +324,27 @@ const Presenter = new Lang.Class({
         let search_text = '';
         switch (item.page_type) {
             case this._SEARCH_PAGE:
-                this._refresh_article_results(() => {
+                dispatcher.dispatch({
+                    action_type: Actions.SEARCH_STARTED,
+                    query: item.query,
+                });
+                this.view.show_page(this.view.search_page);
+                this._refresh_article_results((success) => {
+                    if (!success) {
+                        dispatcher.dispatch({
+                            action_type: Actions.SEARCH_FAILED,
+                            query: item.query,
+                            error: new Error('Search failed for unknown reason'),
+                        });
+                        this.view.show_page(this.view.search_page);
+                        return;
+                    }
                     dispatcher.dispatch({
                         action_type: Actions.SEARCH_READY,
                         query: item.query,
                     });
                     if (item.empty) {
                         this.view.show_page(this.view.no_search_results_page);
-                    } else {
-                        this.view.show_page(this.view.search_page);
                     }
                 });
                 search_text = item.query;
@@ -465,6 +477,8 @@ const Presenter = new Lang.Class({
         this._history_presenter.set_current_item(HistoryItem.HistoryItem.new_from_object(item));
     },
 
+    // callback is called with a boolean argument; true if the search was
+    // successful (even if no results), false if there was an error
     _refresh_article_results: function (callback) {
         let query_obj;
         let item = this._history_presenter.search_backwards(0, (item) => {
@@ -489,7 +503,7 @@ const Presenter = new Lang.Class({
             return false;
         });
         if (this._current_article_results_item === item) {
-            callback();
+            callback(true);
             return;
         }
         this._current_article_results_item = item;
@@ -502,7 +516,7 @@ const Presenter = new Lang.Class({
                 [results, get_more_results_query] = engine.get_objects_by_query_finish(task);
             } catch (error) {
                 logError(error);
-                callback();
+                callback(false);
                 return;
             }
             this._get_more_results_query = get_more_results_query;
@@ -529,7 +543,7 @@ const Presenter = new Lang.Class({
                     });
                 }
             }
-            callback();
+            callback(true);
         });
     },
 

@@ -401,8 +401,8 @@ EknWindow.background-right {
     color: white;
 }
 
-.section-page-b GtkScrolledWindow:not(.overshoot):not(.undershoot),
-.search-page-b GtkScrolledWindow:not(.overshoot):not(.undershoot) {
+.section-page-b EknItemGroupModule,
+.search-page-b .search-results {
     background-color: alpha(black, 0.75);
 }
 

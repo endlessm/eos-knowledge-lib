@@ -30,23 +30,7 @@ const TwoVerticalTemplate = new Lang.Class({
         props.halign = Gtk.Align.FILL;
         this.parent(props);
 
-        this._top = this.create_submodule('top');
-        this._bottom = this.create_submodule('bottom');
-
-        this.add(this._top);
-        this.add(this._bottom);
-    },
-
-    // FIXME: These getters allow for reaching into the internals
-    // of this template, which enables the presenter to connect
-    // to widgets lower down in the widget hierarchy, e.g. the
-    // search box. We can remove this when the encyclopedia app
-    // becomes dispatchified!
-    get bottom () {
-        return this._bottom;
-    },
-
-    get top () {
-        return this._top;
+        this.add(this.create_submodule('top'));
+        this.add(this.create_submodule('bottom'));
     },
 });

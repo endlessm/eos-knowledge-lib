@@ -1,13 +1,20 @@
 // Copyright 2015 Endless Mobile, Inc.
 
+const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
+const Lang = imports.lang;
 
 const Utils = imports.tests.utils;
 Utils.register_gresource();
 
+const Actions = imports.app.actions;
+const Arrangement = imports.app.interfaces.arrangement;
 const ContentObjectModel = imports.search.contentObjectModel;
 const CssClassMatcher = imports.tests.CssClassMatcher;
+const InfiniteScrolledWindow = imports.app.widgets.infiniteScrolledWindow;
 const Minimal = imports.tests.minimal;
+const MockDispatcher = imports.tests.mockDispatcher;
+const Module = imports.app.interfaces.module;
 const MockFactory = imports.tests.mockFactory;
 const SearchModule = imports.app.modules.searchModule;
 const StyleClasses = imports.app.styleClasses;
@@ -16,12 +23,13 @@ const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 Gtk.init(null);
 
 describe('Search module', function () {
-    let factory, search_module, arrangement;
+    let factory, search_module, arrangement, dispatcher;
 
     beforeEach(function () {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
         jasmine.addMatchers(WidgetDescendantMatcher.customMatchers);
 
+        dispatcher = MockDispatcher.mock_default();
         factory = new MockFactory.MockFactory();
         factory.add_named_mock('results-card', Minimal.MinimalCard);
         factory.add_named_mock('results-arrangement',
@@ -52,59 +60,121 @@ describe('Search module', function () {
         expect(search_module).toHaveCssClass(StyleClasses.SEARCH_RESULTS);
     });
 
-    it('has a separator with separator CSS class', function () {
-        expect(search_module).toHaveDescendantWithCssClass(Gtk.STYLE_CLASS_SEPARATOR);
-    });
-
-    it('has an error label with error-message CSS class', function () {
-        expect(search_module).toHaveDescendantWithCssClass(StyleClasses.ERROR_MESSAGE);
-    });
-
     it('displays the spinner when a search is started', function () {
-        search_module._results_stack.visible_child_name = 'error-message';
-        search_module.start_search('myfoobar');
-        Utils.update_gui();
-        expect(search_module._results_stack.visible_child_name).toBe('spinner');
+        search_module.visible_child_name = 'error-message';
+        dispatcher.dispatch({
+            action_type: Actions.SEARCH_STARTED,
+            query: 'myfoobar',
+        });
+        expect(search_module.visible_child_name).toBe('spinner');
     });
 
     it('displays the search page when there are search results', function () {
-        search_module._results_stack.visible_child_name = 'error-message';
-        search_module.finish_search([
-            new ContentObjectModel.ContentObjectModel(),
-        ]);
-        Utils.update_gui();
-        expect(search_module._results_stack.visible_child_name).toBe('results');
+        search_module.visible_child_name = 'error-message';
+        dispatcher.dispatch({
+            action_type: Actions.APPEND_SEARCH,
+            models: [new ContentObjectModel.ContentObjectModel()],
+        });
+        dispatcher.dispatch({
+            action_type: Actions.SEARCH_READY,
+            query: 'myfoobar',
+        });
+        expect(search_module.visible_child_name).toBe('results');
     });
 
-    it('displays the no results page when there are no results', function () {
-        search_module._results_stack.visible_child_name = 'error-message';
-        search_module.finish_search([]);
-        Utils.update_gui();
-        expect(search_module._results_stack.visible_child_name).toBe('no-results-message');
+    it('displays the message page with the results CSS class when there are no results', function () {
+        search_module.visible_child_name = 'error-message';
+        dispatcher.dispatch({
+            action_type: Actions.SEARCH_READY,
+            query: 'myfoobar',
+        });
+        expect(search_module.visible_child_name).toBe('message');
+        expect(search_module).toHaveDescendantWithCssClass(StyleClasses.RESULTS_MESSAGE);
     });
 
-    it('displays the error page when told to', function () {
-        search_module._results_stack.visible_child_name = 'results';
-        search_module.finish_search_with_error(new Error());
-        Utils.update_gui();
-        expect(search_module._results_stack.visible_child_name).toBe('error-message');
+    it('displays the message page with the error CSS class when the search fails', function () {
+        search_module.visible_child_name = 'results';
+        dispatcher.dispatch({
+            action_type: Actions.SEARCH_FAILED,
+            query: 'myfoobar',
+            error: new Error(),
+        });
+        expect(search_module.visible_child_name).toBe('message');
+        expect(search_module).toHaveDescendantWithCssClass(StyleClasses.ERROR_MESSAGE);
     });
 
     it('adds results to the card container', function () {
-        search_module.finish_search([
-            new ContentObjectModel.ContentObjectModel(),
-        ]);
-        Utils.update_gui();
+        dispatcher.dispatch({
+            action_type: Actions.APPEND_SEARCH,
+            models: [new ContentObjectModel.ContentObjectModel()],
+        });
         expect(arrangement.get_cards().length).toBe(1);
     });
 
     it('removes old results from the card container when adding new ones', function () {
-        search_module.finish_search([
-            new ContentObjectModel.ContentObjectModel(),
-        ]);
-        Utils.update_gui();
-        search_module.finish_search([]);
-        Utils.update_gui();
+        dispatcher.dispatch({
+            action_type: Actions.APPEND_SEARCH,
+            models: [new ContentObjectModel.ContentObjectModel()],
+        });
+        dispatcher.dispatch({
+            action_type: Actions.CLEAR_SEARCH,
+        });
         expect(arrangement.get_cards().length).toBe(0);
+    });
+
+    it('dispatches when an infinite scrolled window arrangement reaches the end', function () {
+        const InfiniteArrangement = new Lang.Class({
+            Name: 'InfiniteArrangement',
+            Extends: InfiniteScrolledWindow.InfiniteScrolledWindow,
+            Implements: [ Module.Module, Arrangement.Arrangement ],
+            Properties: {
+                'factory': GObject.ParamSpec.override('factory', Module.Module),
+                'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
+            },
+            _init: function (props) {
+                this.parent(props);
+            },
+            add_card: function () {},
+            get_cards: function () {},
+            clear: function () {},
+        });
+
+        factory.add_named_mock('infinite-arrangement', InfiniteArrangement);
+        factory.add_named_mock('infinite-module', SearchModule.SearchModule, {
+            arrangement: 'infinite-arrangement',
+            card_type: 'results-card',
+        });
+        search_module = new SearchModule.SearchModule({
+            factory: factory,
+            factory_name: 'infinite-module',
+        });
+        arrangement = factory.get_created_named_mocks('infinite-arrangement')[0];
+
+        arrangement.emit('need-more-content');
+        expect(dispatcher.dispatched_payloads).toContain({
+            action_type: Actions.NEED_MORE_SEARCH,
+        });
+    });
+
+    it('highlights a card', function () {
+        spyOn(arrangement, 'highlight');
+        let model = new ContentObjectModel.ContentObjectModel();
+        dispatcher.dispatch({
+            action_type: Actions.APPEND_SEARCH,
+            models: [model],
+        });
+        dispatcher.dispatch({
+            action_type: Actions.HIGHLIGHT_ITEM,
+            model: model,
+        });
+        expect(arrangement.highlight).toHaveBeenCalledWith(model);
+    });
+
+    it('clears the highlight', function () {
+        spyOn(arrangement, 'clear_highlight');
+        dispatcher.dispatch({
+            action_type: Actions.CLEAR_HIGHLIGHTED_ITEM,
+        });
+        expect(arrangement.clear_highlight).toHaveBeenCalled();
     });
 });

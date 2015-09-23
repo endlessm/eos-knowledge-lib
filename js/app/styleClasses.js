@@ -568,9 +568,19 @@ const SEARCH_RESULTS = 'search-results';
 const HEADLINE = 'headline';
 
 /**
+ * Constant: QUERY
+ * Matches the portion of a label that indicates a query string
+ */
+const QUERY = 'query';
+
+/**
+ * Constant: RESULTS_MESSAGE
+ * Matches search results messages, including "no results"
+ */
+const RESULTS_MESSAGE = 'results-message';
+
+/**
  * Constant: ERROR_MESSAGE
  * Matches error messages
- *
- * Commonly found under <StyleClasses.OOPS>-styled labels.
  */
 const ERROR_MESSAGE = 'error-message';

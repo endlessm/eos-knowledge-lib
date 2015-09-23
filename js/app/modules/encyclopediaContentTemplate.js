@@ -50,16 +50,6 @@ const EncyclopediaContentTemplate = new Lang.Class({
         'content-module': GObject.ParamSpec.object('content-module',
             'Content module', 'Content module for this view',
             GObject.ParamFlags.READABLE, GObject.Object.$gtype),
-
-        /**
-         * Property: search-banner
-         * <SearchBanner> created by this widget
-         *
-         * FIXME: The dispatcher will make this property unnecessary.
-         */
-        'search-banner': GObject.ParamSpec.object('search-banner',
-            'Search banner', 'Search banner for this view',
-            GObject.ParamFlags.READABLE, GObject.Object.$gtype),
     },
 
     Template: 'resource:///com/endlessm/knowledge/widgets/encyclopediaContentTemplate.ui',
@@ -68,9 +58,8 @@ const EncyclopediaContentTemplate = new Lang.Class({
         this.parent(props);
 
         ['top_left', 'top_right', 'bottom'].forEach(this._pack_slot.bind(this));
-        // FIXME: these lines should be replaced by the dispatcher
+        // FIXME: this line should be replaced by the dispatcher
         this.search_box = this._top_right;
-        this.search_banner = this._paper_top;
     },
 
     _pack_slot: function (slot, props={}) {
