@@ -20,6 +20,25 @@
     border-bottom-color: rgba(255, 255, 255, 0.14);
 }
 
+.article-search {
+    background-color: #dbdbdb;
+    padding: 3px;
+}
+
+.article-search .entry {
+    background: rgba(0,0,0,0.3);
+    border-color: rgba(0,0,0,0.25);
+}
+
+.article-search .button {
+    padding: 5px;
+    color: #7a7e7f;
+}
+
+.article-search .button:hover {
+    color: #54595a;
+}
+
 PopupWindow {
     background-color: alpha(black, 0.6);
     font-size: 13px;

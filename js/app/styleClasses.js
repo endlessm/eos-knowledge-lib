@@ -556,3 +556,9 @@ const RESULTS_MESSAGE = 'results-message';
  * Matches error messages
  */
 const ERROR_MESSAGE = 'error-message';
+
+/**
+ * Constant: ARTICLE_SEARCH
+ * Matcher the in article search widget.
+ */
+const ARTICLE_SEARCH = 'article-search';
