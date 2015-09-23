@@ -55,11 +55,11 @@ const EncyclopediaWindow = new Lang.Class({
         let context = this.get_style_context();
         context.add_class(HOME_PAGE_NAME);
 
-        this._home_page = this.factory.create_named_module('home-page-template');
+        this.home_page = this.factory.create_named_module('home-page-template');
 
-        this._search_results_page = this.factory.create_named_module('search-page-template');
+        this.search_results_page = this.factory.create_named_module('search-page-template');
 
-        this._article_page = this.factory.create_named_module('article-page-template');
+        this.article_page = this.factory.create_named_module('article-page-template');
 
         this._history_buttons = new Endless.TopbarNavButton();
         this._history_buttons.show_all();
@@ -84,7 +84,7 @@ const EncyclopediaWindow = new Lang.Class({
 
         this.page_manager.transition_duration = 200;  // ms
 
-        this.page_manager.add(this._home_page, {
+        this.page_manager.add(this.home_page, {
             name: HOME_PAGE_NAME,
             background_uri: this.home_background_uri,
             background_repeats: false,
@@ -92,7 +92,7 @@ const EncyclopediaWindow = new Lang.Class({
             background_position: 'center center'
         });
 
-        this.page_manager.add(this._search_results_page, {
+        this.page_manager.add(this.search_results_page, {
             name: SEARCH_PAGE_NAME,
             left_topbar_widget: this._history_buttons,
             background_uri: this.results_background_uri,
@@ -102,7 +102,7 @@ const EncyclopediaWindow = new Lang.Class({
         });
 
         this._lightbox = this.factory.create_named_module('lightbox');
-        this._lightbox.add(this._article_page);
+        this._lightbox.add(this.article_page);
 
         this.page_manager.add(this._lightbox, {
             name: ARTICLE_PAGE_NAME,
@@ -115,24 +115,12 @@ const EncyclopediaWindow = new Lang.Class({
         this.show_all();
     },
 
-    get home_page () {
-        return this._home_page;
-    },
-
-    get article_page () {
-        return this._article_page;
-    },
-
-    get search_results_page () {
-        return this._search_results_page;
-    },
-
     get_visible_page: function () {
         return this.page_manager.visible_child;
     },
 
     show_search_results_page: function () {
-        if (this.get_visible_page() === this._home_page) {
+        if (this.get_visible_page() === this.home_page) {
             this.page_manager.transition_type = Gtk.StackTransitionType.SLIDE_UP;
         } else {
             this.page_manager.transition_type = Gtk.StackTransitionType.NONE;
