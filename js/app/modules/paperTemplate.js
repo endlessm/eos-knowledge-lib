@@ -55,7 +55,7 @@ const PaperTemplate = new Lang.Class({
     },
 
     vfunc_size_allocate: function (alloc) {
-        this.parent(alloc);
+        this.set_allocation(alloc);
         let margin = alloc.width / 5;
         let content_alloc = new Cairo.RectangleInt({
             x: alloc.x + margin,
