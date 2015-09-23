@@ -20,7 +20,6 @@ const InArticleSearch = imports.app.encyclopedia.inArticleSearch;
 const Launcher = imports.app.launcher;
 const MediaObjectModel = imports.search.mediaObjectModel;
 const QueryObject = imports.search.queryObject;
-const WebKit2 = imports.gi.WebKit2;
 const WebkitContextSetup = imports.app.webkitContextSetup;
 const Utils = imports.app.utils;
 
@@ -185,7 +184,6 @@ const EncyclopediaPresenter = new Lang.Class({
         document_card.show_all();
 
         let webview = document_card.content_view;
-        webview.connect('notify::has-focus', this._on_focus.bind(this));
         webview.connect('enter-fullscreen',
             this._on_fullscreen_change.bind(this, true));
         webview.connect('leave-fullscreen',
@@ -193,11 +191,6 @@ const EncyclopediaPresenter = new Lang.Class({
 
         if (this.view.get_visible_page() !== this.view.lightbox)
             this.view.show_article_page();
-    },
-
-    _on_focus: function (webview) {
-        let script = "webview_focus = " + webview.has_focus + ";";
-        this._run_js_on_loaded_page(webview, script);
     },
 
     _on_fullscreen_change: function (should_be_fullscreen) {
@@ -225,22 +218,6 @@ const EncyclopediaPresenter = new Lang.Class({
 
             this._search_bar.open();
         }
-    },
-
-    // first, if the webview isn't loading something, attempt to run the
-    // javascript on the page. Also attach a handler to run the javascript
-    // whenever the webview's load-changed indicates it's finished loading
-    // something
-    _run_js_on_loaded_page: function (webview, script) {
-        if (webview.uri !== null && !webview.is_loading) {
-            webview.run_javascript(script, null, null);
-        }
-        let handler = webview.connect('load-changed', (webview, status) => {
-            if (status === WebKit2.LoadEvent.FINISHED) {
-                webview.run_javascript(script, null, null);
-                webview.disconnect(handler);
-            }
-        });
     },
 
     _article_render_callback: function (article) {
