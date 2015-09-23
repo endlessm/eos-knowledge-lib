@@ -218,8 +218,8 @@ const EncyclopediaPresenter = new Lang.Class({
         } else if (((state & Gdk.ModifierType.CONTROL_MASK) !== 0) &&
                     keyval === Gdk.KEY_f) {
             if (this._search_bar === undefined &&
-                this.view.get_visible_page() === this.view.lightbox) {
-                this._search_bar = new InArticleSearch.InArticleSearch(this.view.article_page.content_module.content_view);
+                this.view.get_visible_page() === this.view._lightbox) {
+                this._search_bar = new InArticleSearch.InArticleSearch(this.view.article_page.content_module.content.content_view);
                 this.view.article_page.attach(this._search_bar, 0, 3, 2, 1);
             }
 
