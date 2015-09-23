@@ -16,7 +16,6 @@ const Config = imports.app.config;
 const Dispatcher = imports.app.dispatcher;
 const Module = imports.app.interfaces.module;
 const NavButtonOverlay = imports.app.widgets.navButtonOverlay;
-const SearchResultsPage = imports.app.reader.searchResultsPage;
 const StandalonePage = imports.app.reader.standalonePage;
 const StyleClasses = imports.app.styleClasses;
 
@@ -87,16 +86,6 @@ const ReaderWindow = new Lang.Class({
             StandalonePage.StandalonePage.$gtype),
 
         /**
-         * Property: search-results-page
-         *
-         * The <Reader.SearchResultsPage> widget created by this widget. Read-only.
-         */
-        'search-results-page': GObject.ParamSpec.object('search-results-page',
-            'Search Results Page', 'The page that show the results of a search',
-            GObject.ParamFlags.READABLE,
-            SearchResultsPage.SearchResultsPage.$gtype),
-
-        /**
          * Property: issue-nav-buttons
          *
          * An <Endless.TopbarNavButton> widget created by this window.
@@ -153,7 +142,8 @@ const ReaderWindow = new Lang.Class({
         this.standalone_page.infobar.archive_notice.label = _("This article is part of the archive of the magazine %s.").format(this.title);
         this.standalone_page.infobar.title_image_uri = this.title_image_uri;
         this.standalone_page.infobar.background_image_uri = this.home_background_uri;
-        this.search_results_page = new SearchResultsPage.SearchResultsPage();
+        this.search_results_page = this.factory.create_named_module('search-page-template');
+        this.search_results_page.get_style_context().add_class(StyleClasses.READER_SEARCH_RESULTS_PAGE);
 
         let dispatcher = Dispatcher.get_default();
         this.nav_buttons = new NavButtonOverlay.NavButtonOverlay({

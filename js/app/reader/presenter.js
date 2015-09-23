@@ -215,6 +215,15 @@ const Presenter = new Lang.Class({
                     let next_page = (this._current_page + 1) % this.view.total_pages;
                     this._add_history_item_for_page(next_page);
                     break;
+                case Actions.SEARCH_CLICKED:
+                    this._history_presenter.set_current_item_from_props({
+                        page_type: this._ARTICLE_PAGE,
+                        model: payload.model,
+                    });
+                    break;
+                case Actions.NEED_MORE_SEARCH:
+                    this._load_more_results(Actions.APPEND_SEARCH);
+                    break;
                 case Actions.SEARCH_TEXT_ENTERED:
                     this._on_search(payload.text);
                     break;
@@ -246,7 +255,6 @@ const Presenter = new Lang.Class({
         }.bind(this));
 
         this.view.standalone_page.infobar.connect('response', this._open_magazine.bind(this));
-        this.view.search_results_page.connect('load-more-results', this._on_load_more_results.bind(this));
         this._history_presenter.connect('history-item-changed', this._on_history_item_change.bind(this));
     },
 
@@ -323,20 +331,6 @@ const Presenter = new Lang.Class({
         });
     },
 
-    _perform_search: function (query) {
-        this._search_query = query;
-        let query_obj = new QueryObject.QueryObject({
-            query: query,
-            limit: RESULTS_SIZE,
-        });
-
-        this.view.lock_ui();
-
-        this.engine.get_objects_by_query(query_obj,
-                                         null,
-                                         this._load_search_results.bind(this));
-    },
-
     _add_history_item_for_page: function (page_index) {
         if (page_index === 0) {
             this._history_presenter.set_current_item_from_props({
@@ -365,7 +359,44 @@ const Presenter = new Lang.Class({
         });
         switch (item.page_type) {
             case this._SEARCH_PAGE:
-                this._perform_search(item.query);
+                dispatcher.dispatch({
+                    action_type: Actions.SEARCH_STARTED,
+                    query: item.query,
+                });
+                this.view.show_search_results_page();
+                let query_obj = new QueryObject.QueryObject({
+                    query: item.query,
+                    limit: RESULTS_SIZE,
+                });
+
+                this.view.lock_ui();
+
+                this.engine.get_objects_by_query(query_obj, null, (engine, task) => {
+                    this.view.unlock_ui();
+                    try {
+                        [results, get_more_results_query] = engine.get_objects_by_query_finish(task);
+                    } catch (error) {
+                        dispatcher.dispatch({
+                            action_type: Actions.SEARCH_FAILED,
+                            query: item.query,
+                            error: new Error('Search failed for unknown reason'),
+                        });
+                        logError(error);
+                        return;
+                    }
+                    dispatcher.dispatch({
+                        action_type: Actions.CLEAR_SEARCH,
+                    });
+                    dispatcher.dispatch({
+                        action_type: Actions.APPEND_SEARCH,
+                        models: results,
+                    });
+                    dispatcher.dispatch({
+                        action_type: Actions.SEARCH_READY,
+                        query: item.query,
+                    });
+                    this._present_if_needed();
+                });
                 break;
             case this._ARTICLE_PAGE:
                 this._go_to_article(item.model, item.from_global_search);
@@ -475,7 +506,7 @@ const Presenter = new Lang.Class({
         }
     },
 
-    _on_load_more_results: function () {
+    _load_more_results: function (action_type) {
         if (!this._get_more_results_query)
             return;
         this.engine.get_objects_by_query(this._get_more_results_query,
@@ -489,53 +520,15 @@ const Presenter = new Lang.Class({
                 return;
             }
 
-            let cards = results.map(this._new_card_from_article_model, this);
-            if (cards.length > 0)
-                this.view.search_results_page.append_search_results(cards);
+            if (results.length > 0) {
+                let dispatcher = Dispatcher.get_default();
+                dispatcher.dispatch({
+                    action_type: action_type,
+                    models: results,
+                });
+            }
             this._get_more_results_query = get_more_results_query;
         });
-    },
-
-    _load_search_results: function (engine, task) {
-        this.view.unlock_ui();
-        let results, get_more_results_query;
-        try {
-            [results, get_more_results_query] = engine.get_objects_by_query_finish(task);
-        } catch (error) {
-            logError(error);
-            return;
-        }
-
-        if (results.length === 0) {
-            this._history_presenter.history_model.current_item.empty = true;
-            this.view.search_results_page.clear_search_results();
-            this.view.search_results_page.no_results_label.show();
-            this.view.show_search_results_page();
-        } else {
-            this.view.search_results_page.clear_search_results();
-            this.view.search_results_page.no_results_label.hide();
-
-            this.view.search_results_page.append_search_results(results.map(this._new_card_from_article_model, this));
-
-            this._get_more_results_query = get_more_results_query;
-            this.view.show_search_results_page();
-        }
-        this._present_if_needed();
-    },
-
-    _new_card_from_article_model: function (model) {
-        // We increment the page number to account for the 0-based index.
-        // Note: _get_page_number_for_article_model will return -1 only if it's an
-        // "Archived" issue, case in which the card doesn't require a card number.
-        let article_page_number = this._get_page_number_for_article_model(model) + 1;
-        let card = this.factory.create_named_module('results-card', {
-            model: model,
-            page_number: article_page_number,
-        });
-        card.connect('clicked', () => {
-            this._on_article_card_clicked(model);
-        });
-        return card;
     },
 
     _update_content: function () {

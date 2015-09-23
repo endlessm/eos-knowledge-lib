@@ -66,21 +66,6 @@ let get_style_context = function () {
     }
 };
 
-const MockSearchResultsPage = new Lang.Class({
-    Name: 'MockSearchResultsPage',
-    Extends: GObject.Object,
-    Signals: {
-        'load-more-results': {},
-    },
-    clear_search_results: function () {},
-    append_search_results: function () {},
-    no_results_label: {
-        show: function () {},
-        hide: function () {},
-    },
-    get_style_context: get_style_context,
-});
-
 const MockView = new Lang.Class({
     Name: 'MockView',
     GTypeName: 'MockView_TestReaderPresenter',
@@ -122,8 +107,6 @@ const MockView = new Lang.Class({
                 show_content_view: function () {},
             },
         };
-
-        this.search_results_page = new MockSearchResultsPage();
 
         this.total_pages = 0;
         this._article_pages = [];
@@ -452,11 +435,45 @@ describe('Reader presenter', function () {
                     }),
                     jasmine.any(Object),
                     jasmine.any(Function));
+
+                // Expect all the appropriate dispatches to be made
+                expect(dispatcher.dispatched_payloads).toContain(jasmine.objectContaining({
+                    action_type: Actions.SEARCH_STARTED,
+                    query: 'Azucar',
+                }));
+
+                expect(dispatcher.dispatched_payloads).toContain(jasmine.objectContaining({
+                    action_type: Actions.CLEAR_SEARCH,
+                }));
+
+                expect(dispatcher.dispatched_payloads).toContain(jasmine.objectContaining({
+                    action_type: Actions.APPEND_SEARCH,
+                    models: MOCK_RESULTS,
+                }));
+
+                expect(dispatcher.dispatched_payloads).toContain(jasmine.objectContaining({
+                    action_type: Actions.SEARCH_READY,
+                    query: 'Azucar',
+                }));
+
                 expect(view.show_search_results_page).toHaveBeenCalled();
                 expect(presenter.history_model.current_item.query).toBe('Azucar');
                 done();
                 return GLib.SOURCE_REMOVE;
             });
+        });
+
+        it('dispatches search-failed if the search fails', function () {
+            spyOn(window, 'logError');  // silence console output
+            engine.get_objects_by_query_finish.and.throwError(new Error('jet fuel can\'t melt dank memes'));
+            dispatcher.dispatch({
+                action_type: Actions.SEARCH_TEXT_ENTERED,
+                text: 'bad query',
+            });
+            expect(dispatcher.dispatched_payloads).toContain(jasmine.objectContaining({
+                action_type: Actions.SEARCH_FAILED,
+                query: 'bad query',
+            }));
         });
 
         it('records a metric when search-entered is dispatched', function (done) {
@@ -486,13 +503,6 @@ describe('Reader presenter', function () {
                 done();
                 return GLib.SOURCE_REMOVE;
             });
-        });
-
-        it('fetches more results when the results page asks for them', function () {
-            spyOn(view.search_results_page, 'append_search_results');
-            presenter._get_more_results_query = new QueryObject.QueryObject();
-            view.search_results_page.emit('load-more-results');
-            expect(view.search_results_page.append_search_results).toHaveBeenCalled();
         });
     });
 });

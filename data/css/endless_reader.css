@@ -44,8 +44,23 @@ overridden by app specific CSS */
     background-position: center;
 }
 
+.search-results-page .title {
+    font-family: Montserrat;
+    color: black;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    font-size: 2.25em; /* 36pt * 1/12 * 0.75 DPI correction factor */
+}
+
 .search-results-page {
     background-color: #CCCCCC;
+}
+
+.search-results .results-message, .search-results .error-message {
+    padding-top: 100px;
+    color: black;
+    font-style: italic;
+    font-size: 1.5em;
 }
 
 .sidebar {
@@ -234,12 +249,6 @@ overridden by app specific CSS */
 
 .webview-tooltip .tooltip-type-label {
     font-size: 0.625em; /* 10px / 12px/em * 72/96 */
-}
-
-.no-search-results-page-no-results-label {
-    color: black;
-    font-style: italic;
-    font-size: 1.5em;
 }
 
 .archive-notice-frame {
