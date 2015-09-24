@@ -45,8 +45,17 @@ const NavButtonOverlay = new Lang.Class({
             'Boolean property to manage whether the Forward button should be shown. Defaults to true',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT, true),
         /**
+         * Property: use-full-arrow
+         * Use an alternate arrow icon with a shaft: "->" instead of ">".
+         * FIXME: we should move this to the css theme ideally.
+         */
+        'use-full-arrow': GObject.ParamSpec.boolean('use-full-arrow',
+            'Use full arrow', 'Use full arrow',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT, false),
+        /**
          * Property: 'back-image-uri'
          * Uri of the image to be displayed in the back button
+         * FIXME: we should move this to the css theme ideally.
          */
         'back-image-uri': GObject.ParamSpec.string('back-image-uri', 'Back Image URI',
             'URI of the image to be displayed in the back button',
@@ -54,6 +63,7 @@ const NavButtonOverlay = new Lang.Class({
         /**
          * Property: 'forward-image-uri'
          * The image to be displayed in the forward button
+         * FIXME: we should move this to the css theme ideally.
          */
         'forward-image-uri': GObject.ParamSpec.string('forward-image-uri', 'Forward Image URI',
             'URI of the image to be displayed in the forward button',
@@ -61,6 +71,7 @@ const NavButtonOverlay = new Lang.Class({
         /**
          * Property: 'image-size'
          * The size of the images to be used in the navigation buttons.
+         * FIXME: we should move this to the css theme ideally.
          */
         'image-size': GObject.ParamSpec.uint('image-size', 'Image Size',
             'Size of the custom images for the navigation buttons',
@@ -80,6 +91,10 @@ const NavButtonOverlay = new Lang.Class({
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
             false),
     },
+
+    _ARROW_BACK_IMAGE_URI: 'resource:///com/endlessm/knowledge/images/reader/left-arrow.svg',
+    _ARROW_FORWARD_IMAGE_URI: 'resource:///com/endlessm/knowledge/images/reader/right-arrow.svg',
+    _ARROW_IMAGE_SIZE: 23,
 
     Signals: {
         /**
@@ -126,6 +141,11 @@ const NavButtonOverlay = new Lang.Class({
         this._forward_button.show_all();
 
         this.parent(props);
+        if (this.use_full_arrow) {
+            this.back_image_uri = this._ARROW_BACK_IMAGE_URI;
+            this.forward_image_uri = this._ARROW_FORWARD_IMAGE_URI;
+            this.image_size = this._ARROW_IMAGE_SIZE;
+        }
 
         this._style_nav_button(this._back_button, this.back_image_uri, 'go-previous-symbolic', 'go-previous-rtl-symbolic');
         this._style_nav_button(this._forward_button, this.forward_image_uri, 'go-next-symbolic', 'go-next-rtl-symbolic');
