@@ -1,31 +1,22 @@
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
-const EosMetrics = imports.gi.EosMetrics;
 const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
-const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
-const ArticleHTMLRenderer = imports.app.articleHTMLRenderer;
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
 const Engine = imports.search.engine;
 const HistoryItem = imports.app.historyItem;
-const HistoryPresenter = imports.app.historyPresenter;
 const Launcher = imports.app.launcher;
-const MediaObjectModel = imports.search.mediaObjectModel;
 const MeshInteraction = imports.app.modules.meshInteraction;
 const QueryObject = imports.search.queryObject;
 const StyleKnobGenerator = imports.app.compat.styleKnobGenerator;
 const TabButton = imports.app.widgets.tabButton;
 const TextCard = imports.app.modules.textCard;
 const Utils = imports.app.utils;
-const WebkitContextSetup = imports.app.webkitContextSetup;
 
-const HOME_PAGE_A_MAX_CARDS = 6;
 const RESULTS_SIZE = 10;
-const _SEARCH_METRIC = 'a628c936-5d87-434a-a57a-015a0f223838';
 const DATA_RESOURCE_PATH = 'resource:///com/endlessm/knowledge/';
 
 /**
@@ -45,92 +36,7 @@ const Presenter = new Lang.Class({
     Extends: MeshInteraction.MeshInteraction,
     Implements: [ Launcher.Launcher ],
 
-    _ARTICLE_PAGE: 'article',
-    _HOME_PAGE: 'home',
-    _SEARCH_PAGE: 'search',
-    _SECTION_PAGE: 'section',
-
-    Properties: {
-        /**
-         * Property: application
-         * The GApplication for the knowledge app
-         *
-         * This should always be set except for during testing. If this is not
-         * set in unit testing, make sure to mock out view object. The real
-         * Endless.Window requires a application on construction.
-         *
-         * Flags:
-         *   Construct only
-         */
-        'application': GObject.ParamSpec.object('application', 'Application',
-            'Presenter for article page',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            GObject.Object.$gtype),
-        /**
-         * Property: factory
-         * Factory to create modules
-         */
-        'factory': GObject.ParamSpec.object('factory', 'Factory', 'Factory',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            GObject.Object.$gtype),
-        /**
-         * Property: engine
-         * Handle to EOS knowledge engine
-         *
-         * Pass an instance of <Engine> to this property.
-         * This is a property for purposes of dependency injection during
-         * testing.
-         *
-         * Flags:
-         *   Construct only
-         */
-        'engine': GObject.ParamSpec.object('engine', 'Engine',
-            'Handle to EOS knowledge engine',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            GObject.Object.$gtype),
-        /**
-         * Property: view
-         * Knowledge app view
-         *
-         * Pass an instance of <Window> to this property.
-         * This is a property for purposes of dependency injection during
-         * testing.
-         *
-         * Flags:
-         *   Construct only
-         */
-        'view': GObject.ParamSpec.object('view', 'View',
-            'Knowledge app view',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            GObject.Object.$gtype),
-        /**
-         * Property: template-type
-         * FIXME: This is a temporary step towards the development of interactions.
-         *   Scheduled for destruction.
-         */
-        'template-type': GObject.ParamSpec.string('template-type', 'template-type',
-            'Template type of the Knowledge app',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
-        /**
-         * Property: css
-         * FIXME: This is a temporary step towards the development of interactions.
-         *   Scheduled for destruction.
-         */
-        'css': GObject.ParamSpec.string('css', 'css',
-            'Template type of the Knowledge app',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
-    },
-
     _init: function (props) {
-        // Needs to happen before before any webviews are created
-        WebkitContextSetup.register_webkit_extensions(props.application.application_id);
-        WebkitContextSetup.register_webkit_uri_handlers(this._article_render_callback.bind(this));
-
-        props.view = props.view || props.factory.create_named_module('window', {
-            application: props.application,
-            template_type: props.template_type,
-        });
-        props.engine = props.engine || Engine.Engine.get_default();
         this.parent(props);
 
         let dispatcher = Dispatcher.get_default();
@@ -159,13 +65,8 @@ const Presenter = new Lang.Class({
             });
         });
 
-        this._renderer = new ArticleHTMLRenderer.ArticleHTMLRenderer();
-
-        this._history_presenter = new HistoryPresenter.HistoryPresenter({
-            history_model: new EosKnowledgePrivate.HistoryModel(),
-        });
-        this._history_presenter.set_current_item_from_props({
-            page_type: this._HOME_PAGE,
+        this.history_presenter.set_current_item_from_props({
+            page_type: this.HOME_PAGE,
         });
 
         // Connect signals
@@ -177,15 +78,15 @@ const Presenter = new Lang.Class({
                     this._on_back();
                     break;
                 case Actions.SET_CLICKED:
-                    this._history_presenter.set_current_item_from_props({
-                        page_type: this._SECTION_PAGE,
+                    this.history_presenter.set_current_item_from_props({
+                        page_type: this.SECTION_PAGE,
                         model: payload.model,
                     });
                     break;
                 case Actions.ITEM_CLICKED:
                 case Actions.SEARCH_CLICKED:
-                    this._history_presenter.set_current_item_from_props({
-                        page_type: this._ARTICLE_PAGE,
+                    this.history_presenter.set_current_item_from_props({
+                        page_type: this.ARTICLE_PAGE,
                         model: payload.model,
                     });
                     break;
@@ -196,11 +97,11 @@ const Presenter = new Lang.Class({
                     this._load_more_results(Actions.APPEND_SEARCH);
                     break;
                 case Actions.SEARCH_TEXT_ENTERED:
-                    this._on_search_text_entered(payload.text);
+                    this.do_search(payload.text);
                     break;
                 case Actions.AUTOCOMPLETE_CLICKED:
-                    this._history_presenter.set_current_item_from_props({
-                        page_type: this._ARTICLE_PAGE,
+                    this.history_presenter.set_current_item_from_props({
+                        page_type: this.ARTICLE_PAGE,
                         model: payload.model,
                         query: payload.text,
                     });
@@ -215,7 +116,7 @@ const Presenter = new Lang.Class({
             action_type: Actions.FOCUS_SEARCH,
         });
 
-        this._history_presenter.connect('history-item-changed', this._on_history_item_change.bind(this));
+        this.history_presenter.connect('history-item-changed', this._on_history_item_change.bind(this));
 
         this._current_article_results_item = null;
     },
@@ -282,18 +183,6 @@ const Presenter = new Lang.Class({
             provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
     },
 
-    // Launcher override
-    desktop_launch: function (timestamp) {
-        this.view.present_with_time(timestamp);
-    },
-
-    // Should be mocked out during tests so that we don't actually send metrics
-    record_search_metric: function (query) {
-        let recorder = EosMetrics.EventRecorder.get_default();
-        recorder.record_event(_SEARCH_METRIC, new GLib.Variant('(ss)',
-            [query, this.application.application_id]));
-    },
-
     _load_more_results: function (action_type) {
         if (!this._get_more_results_query)
             return;
@@ -310,8 +199,8 @@ const Presenter = new Lang.Class({
 
             if (results.length > 0) {
                 let dispatcher = Dispatcher.get_default();
-                let item = this._history_presenter.history_model.current_item;
-                if (item.page_type === this._ARTICLE_PAGE) {
+                let item = this.history_presenter.history_model.current_item;
+                if (item.page_type === this.ARTICLE_PAGE) {
                     dispatcher.dispatch({
                         action_type: Actions.HIGHLIGHT_ITEM,
                         model: item.model,
@@ -341,7 +230,7 @@ const Presenter = new Lang.Class({
         });
         let search_text = '';
         switch (item.page_type) {
-            case this._SEARCH_PAGE:
+            case this.SEARCH_PAGE:
                 dispatcher.dispatch({
                     action_type: Actions.SEARCH_STARTED,
                     query: item.query,
@@ -364,7 +253,7 @@ const Presenter = new Lang.Class({
                 });
                 search_text = item.query;
                 break;
-            case this._SECTION_PAGE:
+            case this.SECTION_PAGE:
                 dispatcher.dispatch({
                     action_type: Actions.SHOW_SET,
                     model: item.model,
@@ -377,7 +266,7 @@ const Presenter = new Lang.Class({
                     this.view.show_page(this.view.section_page);
                 });
                 break;
-            case this._ARTICLE_PAGE:
+            case this.ARTICLE_PAGE:
                 if (this.template_type === 'B') {
                     this._refresh_article_results(() => {
                         dispatcher.dispatch({
@@ -385,14 +274,14 @@ const Presenter = new Lang.Class({
                             model: item.model,
                         });
                     });
-                    let query_item = this._history_presenter.search_backwards(0, (query_item) => {
-                        return query_item.page_type === this._SECTION_PAGE || query_item.query;
+                    let query_item = this.history_presenter.search_backwards(0, (query_item) => {
+                        return query_item.page_type === this.SECTION_PAGE || query_item.query;
                     });
                     search_text = query_item.query;
                 }
                 this._load_document_card_in_view(item, is_going_back);
                 break;
-            case this._HOME_PAGE:
+            case this.HOME_PAGE:
                 this.view.show_page(this.view.home_page);
         }
         dispatcher.dispatch({
@@ -417,39 +306,13 @@ const Presenter = new Lang.Class({
     },
 
     _on_link_clicked: function (ekn_id) {
-        this.engine.get_object_by_id(ekn_id, null, (engine, task) => {
-            let model;
-            try {
-                model = engine.get_object_by_id_finish(task);
-            } catch (error) {
-                logError(error);
-                return;
-            }
-
-            if (model instanceof MediaObjectModel.MediaObjectModel) {
-                Dispatcher.get_default().dispatch({
-                    action_type: Actions.SHOW_MEDIA,
-                    model: model,
-                });
-            } else {
-                this._history_presenter.set_current_item_from_props({
-                    page_type: this._ARTICLE_PAGE,
-                    model: model,
-                });
-            }
-        });
+        this.load_uri(ekn_id, true);
     },
 
     _on_home_button_clicked: function (button) {
-        this._history_presenter.set_current_item_from_props({
-            page_type: this._HOME_PAGE,
+        this.history_presenter.set_current_item_from_props({
+            page_type: this.HOME_PAGE,
         });
-    },
-
-    // Launcher override
-    search: function (timestamp, query) {
-        this._on_search_text_entered(query);
-        this.view.present_with_time(timestamp);
     },
 
     _on_search_focus: function (view, focused) {
@@ -459,49 +322,20 @@ const Presenter = new Lang.Class({
         });
     },
 
-    _on_search_text_entered: function (text) {
-        let query = Utils.sanitize_query(text);
-        // Ignore empty queries
-        if (query.length === 0)
-            return;
-        this.record_search_metric(text);
-        this._history_presenter.set_current_item_from_props({
-            page_type: this._SEARCH_PAGE,
-            query: query,
-        });
-    },
-
-    // Launcher override
-    activate_search_result: function (timestamp, ekn_id, query) {
-        this.engine.get_object_by_id(ekn_id, null, (engine, task) => {
-            try {
-                let model = engine.get_object_by_id_finish(task);
-                this._history_presenter.set_current_item_from_props({
-                    page_type: this._ARTICLE_PAGE,
-                    model: model,
-                    query: query,
-                });
-            } catch (error) {
-                logError(error);
-            }
-        });
-        this.view.present_with_time(timestamp);
-    },
-
     _on_back: function () {
         let types = this.view.get_visible_page() === this.view.article_page ?
-            [this._HOME_PAGE, this._SECTION_PAGE, this._SEARCH_PAGE] : [this._HOME_PAGE];
-        let item = this._history_presenter.search_backwards(-1,
+            [this.HOME_PAGE, this.SECTION_PAGE, this.SEARCH_PAGE] : [this.HOME_PAGE];
+        let item = this.history_presenter.search_backwards(-1,
             (item) => types.indexOf(item.page_type) >= 0);
-        this._history_presenter.set_current_item(HistoryItem.HistoryItem.new_from_object(item));
+        this.history_presenter.set_current_item(HistoryItem.HistoryItem.new_from_object(item));
     },
 
     // callback is called with a boolean argument; true if the search was
     // successful (even if no results), false if there was an error
     _refresh_article_results: function (callback) {
         let query_obj;
-        let item = this._history_presenter.search_backwards(0, (item) => {
-            if (item.page_type === this._SECTION_PAGE) {
+        let item = this.history_presenter.search_backwards(0, (item) => {
+            if (item.page_type === this.SECTION_PAGE) {
                 let tags = item.model.tags.slice();
                 let home_page_tag_index = tags.indexOf(Engine.HOME_PAGE_TAG);
                 if (home_page_tag_index !== -1)
@@ -539,7 +373,7 @@ const Presenter = new Lang.Class({
             this._get_more_results_query = get_more_results_query;
 
             let dispatcher = Dispatcher.get_default();
-            if (item.page_type === this._SEARCH_PAGE) {
+            if (item.page_type === this.SEARCH_PAGE) {
                 dispatcher.dispatch({
                     action_type: Actions.CLEAR_SEARCH,
                 });
@@ -557,13 +391,6 @@ const Presenter = new Lang.Class({
                 });
             }
             callback(true);
-        });
-    },
-
-    _article_render_callback: function (article_model) {
-        return this._renderer.render(article_model, {
-            enable_scroll_manager: this.template_type === 'A',
-            show_title: this.template_type !== 'A',
         });
     },
 });

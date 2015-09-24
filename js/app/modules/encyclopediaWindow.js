@@ -43,8 +43,8 @@ const EncyclopediaWindow = new Lang.Class({
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
     },
 
-    _init: function (props) {
-        props = props || {};
+    _init: function (props={}) {
+        delete props.template_type;
         props.font_scaling_active = true;
         this.parent(props);
 
