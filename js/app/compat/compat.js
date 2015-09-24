@@ -62,14 +62,14 @@ function transform_v1_description(json) {
                 "halign": Gtk.Align.CENTER,
             },
             "slots": {
-                "card_type": "set-banner-card",
+                "card-type": "set-banner-card",
             },
         };
         modules["item-group"] = {
             "type": "ItemGroupModule",
             "slots": {
                 "arrangement": "results-arrangement",
-                "card_type": "results-card",
+                "card-type": "results-card",
             },
         };
         modules["section-page-template"] = {
@@ -103,7 +103,7 @@ function transform_v1_description(json) {
             "type": "SearchModule",
             "slots": {
                 "arrangement": "results-arrangement",
-                "card_type": "results-card",
+                "card-type": "results-card",
             },
             "properties": {
                 "halign": Gtk.Align.CENTER,
@@ -129,7 +129,7 @@ function transform_v1_description(json) {
             },
             "slots": {
                 "arrangement": "home-page-arrangement",
-                "card_type": "home-card",
+                "card-type": "home-card",
             },
         };
         modules["home-page-basement-set-group"] = {
@@ -139,7 +139,7 @@ function transform_v1_description(json) {
             },
             "slots": {
                 "arrangement": "results-arrangement",
-                "card_type": "home-card",
+                "card-type": "home-card",
             },
         };
         modules["results-search-banner"] = {
@@ -211,14 +211,18 @@ function transform_v1_description(json) {
             },
             "slots": {
                 "arrangement": "home-page-arrangement",
-                "card_type": "home-card",
+                "card-type": "home-card",
             },
         };
         modules["home-page-template"] = {
-            "type": "HomePageBTemplate",
+            "type": "DividedBannerTemplate",
+            "properties": {
+                "row-spacing": 30,
+                "row-homogeneous": true,
+            },
             "slots": {
-                "top_left": "app-banner",
-                "top_right": "home-search",
+                "top-left": "app-banner",
+                "top-right": "home-search",
                 "bottom": "home-page-set-group",
             },
         };
@@ -250,14 +254,14 @@ function transform_v1_description(json) {
                 "valign": Gtk.Align.END,
             },
             "slots": {
-                "card_type": "set-banner-card",
+                "card-type": "set-banner-card",
             },
         };
         modules["item-group"] = {
             "type": "ItemGroupModule",
             "slots": {
                 "arrangement": "results-arrangement",
-                "card_type": "results-card",
+                "card-type": "results-card",
             },
         };
         modules["section-page-template"] = {
@@ -277,7 +281,7 @@ function transform_v1_description(json) {
             "type": "SearchModule",
             "slots": {
                 "arrangement": "results-arrangement",
-                "card_type": "results-card",
+                "card-type": "results-card",
             },
             "properties": {
                 "message-valign": Gtk.Align.CENTER,
@@ -335,10 +339,10 @@ function transform_v1_description(json) {
             },
         };
         modules["search-page-template"] = {
-            "type": "EncyclopediaContentTemplate",
+            "type": "DividedBannerTemplate",
             "slots": {
-                "top_left": "article-app-banner",
-                "top_right": "article-search-box",
+                "top-left": "article-app-banner",
+                "top-right": "article-search-box",
                 "bottom": "search-results-paper-template",
             },
         };
@@ -361,17 +365,23 @@ function transform_v1_description(json) {
             },
         };
         modules["article-page-template"] = {
-            "type": "EncyclopediaContentTemplate",
+            "type": "DividedBannerTemplate",
             "slots": {
-                "top_left": "article-app-banner",
-                "top_right": "article-search-box",
+                "top-left": "article-app-banner",
+                "top-right": "article-search-box",
                 "bottom": "article-paper-template",
             },
         };
         modules["article-paper-template"] = {
             "type": "PaperTemplate",
             "slots": {
-                "content": "document-card",
+                "content": "article-stack",
+            },
+        };
+        modules["article-stack"] = {
+            "type": "ArticleStackModule",
+            "slots": {
+                "card-type": "document-card",
             },
         };
         modules["app-banner"] = {
@@ -434,7 +444,7 @@ function transform_v1_description(json) {
             },
             "slots": {
                 "arrangement": "results-arrangement",
-                "card_type": "results-card",
+                "card-type": "results-card",
             },
         };
         modules["results-card"] = {
@@ -498,7 +508,7 @@ function transform_v1_description(json) {
         modules["snippets-group"] = {
             "type": "ItemGroupModule",
             "slots": {
-                "card_type": "home-card",
+                "card-type": "home-card",
                 "arrangement": "snippets-arrangement",
             },
             "properties": {

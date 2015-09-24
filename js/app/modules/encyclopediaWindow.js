@@ -7,10 +7,6 @@ const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
 const Module = imports.app.interfaces.module;
 
-const HOME_PAGE_NAME = 'home';
-const ARTICLE_PAGE_NAME = 'article';
-const SEARCH_PAGE_NAME = 'search';
-
 const EncyclopediaWindow = new Lang.Class({
     Name: 'EncyclopediaWindow',
     Extends: Endless.Window,
@@ -52,16 +48,11 @@ const EncyclopediaWindow = new Lang.Class({
         props.font_scaling_active = true;
         this.parent(props);
 
-        let context = this.get_style_context();
-        context.add_class(HOME_PAGE_NAME);
+        this.home_page = this.factory.create_named_module('home-page-template');
 
-        this._home_page = this.factory.create_named_module('home-page-template');
+        this.search_results_page = this.factory.create_named_module('search-page-template');
 
-        this._search_results_page = this.factory.create_named_module('search-page-template');
-        // the content slot does not get packed by default so we have to do it explicitly here
-        this._search_results_page.content_module.pack_content_slot();
-
-        this._article_page = this.factory.create_named_module('article-page-template');
+        this.article_page = this.factory.create_named_module('article-page-template');
 
         this._history_buttons = new Endless.TopbarNavButton();
         this._history_buttons.show_all();
@@ -84,18 +75,16 @@ const EncyclopediaWindow = new Lang.Class({
             }
         });
 
-        this.page_manager.transition_duration = 200;  // ms
+        this.page_manager.transition_duration = 500;  // ms
 
-        this.page_manager.add(this._home_page, {
-            name: HOME_PAGE_NAME,
+        this.page_manager.add(this.home_page, {
             background_uri: this.home_background_uri,
             background_repeats: false,
             background_size: 'cover',
             background_position: 'center center'
         });
 
-        this.page_manager.add(this._search_results_page, {
-            name: SEARCH_PAGE_NAME,
+        this.page_manager.add(this.search_results_page, {
             left_topbar_widget: this._history_buttons,
             background_uri: this.results_background_uri,
             background_repeats: false,
@@ -104,10 +93,9 @@ const EncyclopediaWindow = new Lang.Class({
         });
 
         this._lightbox = this.factory.create_named_module('lightbox');
-        this._lightbox.add(this._article_page);
+        this._lightbox.add(this.article_page);
 
         this.page_manager.add(this._lightbox, {
-            name: ARTICLE_PAGE_NAME,
             left_topbar_widget: this._history_buttons,
             background_uri: this.results_background_uri,
             background_repeats: false,
@@ -117,38 +105,22 @@ const EncyclopediaWindow = new Lang.Class({
         this.show_all();
     },
 
-    get home_page () {
-        return this._home_page;
-    },
-
-    get article_page () {
-        return this._article_page;
-    },
-
-    get search_results_page () {
-        return this._search_results_page;
-    },
-
     get_visible_page: function () {
         return this.page_manager.visible_child;
     },
 
-    show_search_results_page: function () {
-        if (this.get_visible_page() === this._home_page) {
+    show_page: function (page) {
+        if (this.get_visible_page() === page)
+            return;
+        if (page === this.article_page)
+            page = this._lightbox;
+        if (this.get_visible_page() === this.home_page) {
             this.page_manager.transition_type = Gtk.StackTransitionType.SLIDE_UP;
+        } else if (page === this.home_page) {
+            this.page_manager.transition_type = Gtk.StackTransitionType.SLIDE_DOWN;
         } else {
             this.page_manager.transition_type = Gtk.StackTransitionType.NONE;
         }
-        this.page_manager.visible_child_name = SEARCH_PAGE_NAME;
-    },
-
-    show_article_page: function () {
-        this.page_manager.transition_type = Gtk.StackTransitionType.NONE;
-        this.page_manager.visible_child_name = ARTICLE_PAGE_NAME;
-    },
-
-    show_home_page: function () {
-        this.page_manager.transition_type = Gtk.StackTransitionType.SLIDE_DOWN;
-        this.page_manager.visible_child_name = HOME_PAGE_NAME;
+        this.page_manager.visible_child = page;
     },
 });

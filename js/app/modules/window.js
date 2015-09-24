@@ -127,9 +127,11 @@ const Window = new Lang.Class({
         this.search_page = this.factory.create_named_module('search-page-template');
         this.article_page = this.factory.create_named_module('article-page-template');
         if (this.template_type === 'B') {
+            this.home_page.get_style_context().add_class(StyleClasses.HOME_PAGE_A);
             this.section_page.get_style_context().add_class(StyleClasses.SECTION_PAGE_B);
             this.search_page.get_style_context().add_class(StyleClasses.SEARCH_PAGE_B);
         } else {
+            this.home_page.get_style_context().add_class(StyleClasses.HOME_PAGE_B);
             this.section_page.get_style_context().add_class(StyleClasses.SECTION_PAGE_A);
             this.search_page.get_style_context().add_class(StyleClasses.SEARCH_PAGE_A);
         }

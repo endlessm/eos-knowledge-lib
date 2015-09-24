@@ -16,11 +16,9 @@ const ArticleObjectModel = imports.search.articleObjectModel;
 const Dispatcher = imports.app.dispatcher;
 const Engine = imports.search.engine;
 const HistoryPresenter = imports.app.historyPresenter;
-const InArticleSearch = imports.app.encyclopedia.inArticleSearch;
 const Launcher = imports.app.launcher;
 const MediaObjectModel = imports.search.mediaObjectModel;
 const QueryObject = imports.search.queryObject;
-const WebKit2 = imports.gi.WebKit2;
 const WebkitContextSetup = imports.app.webkitContextSetup;
 const Utils = imports.app.utils;
 
@@ -68,8 +66,6 @@ const EncyclopediaPresenter = new Lang.Class({
             application: this.application,
         });
 
-        this._current_article = null;
-
         WebkitContextSetup.register_webkit_uri_handlers(this._article_render_callback.bind(this));
         this._engine = Engine.Engine.get_default();
 
@@ -85,6 +81,9 @@ const EncyclopediaPresenter = new Lang.Class({
                     break;
                 case Actions.SEARCH_CLICKED:
                     this.load_model(payload.model);
+                    break;
+                case Actions.ARTICLE_LINK_CLICKED:
+                    this.load_uri(payload.ekn_id);
                     break;
             }
         });
@@ -124,7 +123,7 @@ const EncyclopediaPresenter = new Lang.Class({
         });
 
         if (this.view.get_visible_page() !== this.view.search_results_page)
-            this.view.show_search_results_page();
+            this.view.show_page(this.view.search_results_page);
         this.view.set_focus_child(null);
         let query_obj = new QueryObject.QueryObject({
             query: item.query,
@@ -163,84 +162,21 @@ const EncyclopediaPresenter = new Lang.Class({
         });
     },
 
-    _load_article_in_view: function (article) {
-        this.view.article_page.content_module.pack_content_slot({
-            model: article,
-            show_toc: false,
-            show_top_title: false,
-        });
-
-        let document_card = this.view.article_page.content_module.content;
-        document_card.connect('ekn-link-clicked', (page, uri) => {
-            this.load_uri(uri);
-        });
-        document_card.load_content(null, (card, task) => {
-            try {
-                card.load_content_finish(task);
-                card.content_view.grab_focus();
-            } catch (error) {
-                logError(error);
-            }
-        });
-        document_card.show_all();
-
-        let webview = document_card.content_view;
-        webview.connect('notify::has-focus', this._on_focus.bind(this));
-        webview.connect('enter-fullscreen',
-            this._on_fullscreen_change.bind(this, true));
-        webview.connect('leave-fullscreen',
-            this._on_fullscreen_change.bind(this, false));
-
-        if (this.view.get_visible_page() !== this.view.lightbox)
-            this.view.show_article_page();
-    },
-
-    _on_focus: function (webview) {
-        let script = "webview_focus = " + webview.has_focus + ";";
-        this._run_js_on_loaded_page(webview, script);
-    },
-
-    _on_fullscreen_change: function (should_be_fullscreen) {
-        // FIXME: Find better way to reference modules within a template
-        this.view.article_page._top_left.visible = !should_be_fullscreen;
-        this.view.article_page.search_box.visible = !should_be_fullscreen;
-        this.view.article_page.xscale = should_be_fullscreen ? 1.0 : this.HORIZONTAL_SPACE_FILL_RATIO;
-    },
-
     _on_key_press_event: function (widget, event) {
         let keyval = event.get_keyval()[1];
         let state = event.get_state()[1];
 
+        let dispatcher = Dispatcher.get_default();
         if (keyval === Gdk.KEY_Escape) {
-            if (this._search_bar !== undefined) {
-                this._search_bar.close();
-            }
+            dispatcher.dispatch({
+                action_type: Actions.HIDE_ARTICLE_SEARCH,
+            });
         } else if (((state & Gdk.ModifierType.CONTROL_MASK) !== 0) &&
                     keyval === Gdk.KEY_f) {
-            if (this._search_bar === undefined &&
-                this.view.get_visible_page() === this.view.lightbox) {
-                this._search_bar = new InArticleSearch.InArticleSearch(this.view.article_page.content_module.content_view);
-                this.view.article_page.attach(this._search_bar, 0, 3, 2, 1);
-            }
-
-            this._search_bar.open();
+            dispatcher.dispatch({
+                action_type: Actions.SHOW_ARTICLE_SEARCH,
+            });
         }
-    },
-
-    // first, if the webview isn't loading something, attempt to run the
-    // javascript on the page. Also attach a handler to run the javascript
-    // whenever the webview's load-changed indicates it's finished loading
-    // something
-    _run_js_on_loaded_page: function (webview, script) {
-        if (webview.uri !== null && !webview.is_loading) {
-            webview.run_javascript(script, null, null);
-        }
-        let handler = webview.connect('load-changed', (webview, status) => {
-            if (status === WebKit2.LoadEvent.FINISHED) {
-                webview.run_javascript(script, null, null);
-                webview.disconnect(handler);
-            }
-        });
     },
 
     _article_render_callback: function (article) {
@@ -260,12 +196,12 @@ const EncyclopediaPresenter = new Lang.Class({
         });
         switch (item.page_type) {
         case ARTICLE_PAGE:
-            this._current_article = item.model;
-            this._load_article_in_view(item.model);
             dispatcher.dispatch({
                 action_type: Actions.SHOW_ARTICLE,
                 model: item.model,
+                animation_type: EosKnowledgePrivate.LoadingAnimation.NONE,
             });
+            this.view.show_page(this.view.article_page);
             return;
         case SEARCH_RESULTS_PAGE:
             this._do_search_in_view(item);

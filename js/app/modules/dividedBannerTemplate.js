@@ -3,10 +3,9 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const Module = imports.app.interfaces.module;
-const StyleClasses = imports.app.styleClasses;
 
 /**
- * Class: HomePageBTemplate
+ * Class: DividedBannerTemplate
  *
  * A Home Page Template used for Template B apps.
  *
@@ -14,9 +13,9 @@ const StyleClasses = imports.app.styleClasses;
  *      home-page-b-template - on the template
  *
  */
-const HomePageBTemplate = new Lang.Class({
-    Name: 'HomePageBTemplate',
-    GTypeName: 'EknHomePageBTemplate',
+const DividedBannerTemplate = new Lang.Class({
+    Name: 'DividedBannerTemplate',
+    GTypeName: 'EknDividedBannerTemplate',
     Extends: Gtk.Grid,
     Implements: [ Module.Module ],
 
@@ -25,15 +24,15 @@ const HomePageBTemplate = new Lang.Class({
         'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
     },
 
-    Template: 'resource:///com/endlessm/knowledge/widgets/homePageBTemplate.ui',
+    Template: 'resource:///com/endlessm/knowledge/widgets/dividedBannerTemplate.ui',
 
     _init: function (props={}) {
         this._cards = null;
         this.parent(props);
 
         const PACKING_ARGS = {
-            'top_left': [0, 0, 1, 1],
-            'top_right': [1, 0, 1, 1],
+            'top-left': [0, 0, 1, 1],
+            'top-right': [1, 0, 1, 1],
             'bottom': [0, 1, 2, 2],
         };
         this.get_slot_names().forEach((slot) => {
@@ -44,6 +43,6 @@ const HomePageBTemplate = new Lang.Class({
     },
 
     get_slot_names: function () {
-        return [ 'top_left', 'top_right', 'bottom' ];
+        return [ 'top-left', 'top-right', 'bottom' ];
     },
 });

@@ -35,8 +35,8 @@ describe('Search module', function () {
         factory.add_named_mock('results-arrangement',
             Minimal.MinimalArrangement);
         factory.add_named_mock('search-module', SearchModule.SearchModule, {
-            arrangement: 'results-arrangement',
-            card_type: 'results-card',
+            'arrangement': 'results-arrangement',
+            'card-type': 'results-card',
         });
         search_module = new SearchModule.SearchModule({
             factory: factory,
@@ -141,8 +141,8 @@ describe('Search module', function () {
 
         factory.add_named_mock('infinite-arrangement', InfiniteArrangement);
         factory.add_named_mock('infinite-module', SearchModule.SearchModule, {
-            arrangement: 'infinite-arrangement',
-            card_type: 'results-card',
+            'arrangement': 'infinite-arrangement',
+            'card-type': 'results-card',
         });
         search_module = new SearchModule.SearchModule({
             factory: factory,

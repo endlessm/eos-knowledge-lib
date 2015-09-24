@@ -4,16 +4,21 @@
  *  By injecting this code into the articles, the user can select a block of text
  */
 const FADE_DURATION = 200;
-var webview_focus = true;
 
 $(document).ready(function () {
     var mouse_is_down = false;
+    var window_focus;
+    $(window).focus(function() {
+        window_focus = true;
+    }).blur(function() {
+        window_focus = false;
+    });
     // Updates the copy button to appear at the beginning of the selection. If the
     // mouse is currently down we hide the copy button until the selection
     // drag is completed.
     var update_copy_button = function() {
         var selection = window.getSelection();
-        if (selection.isCollapsed || mouse_is_down || !webview_focus) {
+        if (selection.isCollapsed || mouse_is_down || !window_focus) {
             $('#copy-button').fadeOut(FADE_DURATION);
         } else {
             var range = selection.getRangeAt(0).cloneRange();

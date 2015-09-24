@@ -20,6 +20,25 @@
     border-bottom-color: rgba(255, 255, 255, 0.14);
 }
 
+.article-search {
+    background-color: #dbdbdb;
+    padding: 3px;
+}
+
+.article-search .entry {
+    background: rgba(0,0,0,0.3);
+    border-color: rgba(0,0,0,0.25);
+}
+
+.article-search .button {
+    padding: 5px;
+    color: #7a7e7f;
+}
+
+.article-search .button:hover {
+    color: #54595a;
+}
+
 PopupWindow {
     background-color: alpha(black, 0.6);
     font-size: 13px;
@@ -53,7 +72,7 @@ GtkEntry:selected {
     color: #464646;
 }
 
-.encyclopedia-content-template .title {
+.divided-banner-template .title {
     font-weight: 300;
     font-size: 2em; /* 24px / 12px/em */
     color: #7e7e7e;
@@ -61,23 +80,23 @@ GtkEntry:selected {
     padding-bottom: 20px;
 }
 
-.encyclopedia-content-template .separator {
+.divided-banner-template .separator {
     padding-bottom: 35px;
     background-image: url('resource:///com/endlessm/knowledge/images/separator.png');
     background-size: 100%;
     background-repeat: no-repeat;
 }
 
-.encyclopedia-content-template .title.query {
+.divided-banner-template .title.query {
     font-weight: normal;
     color: black;
 }
 
-.encyclopedia-content-template .title.error-message {
+.divided-banner-template .title.error-message {
     font-weight: bold;
 }
 
-.encyclopedia-content-template .separator {
+.divided-banner-template .separator {
     color: #888a85;
 }
 

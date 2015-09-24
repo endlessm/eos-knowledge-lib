@@ -59,7 +59,7 @@ describe('HomePageATemplate module', function () {
 
     describe('CSS style context', function () {
         it('has home page A template class', function () {
-            expect(home_page).toHaveCssClass(StyleClasses.HOME_PAGE_A_TEMPLATE);
+            expect(home_page).toHaveCssClass('home-page-a-template');
         });
 
         it('has tab button class', function () {

@@ -159,18 +159,18 @@ const COLLAPSED = 'collapsed';
 const APP_BANNER = 'app-banner';
 
 /**
- * Constant: HOME_PAGE_A_TEMPLATE
+ * Constant: HOME_PAGE_A
  *
  * Matches the Template A's HomePage.
  */
-const HOME_PAGE_A_TEMPLATE = 'home-page-a-template';
+const HOME_PAGE_A = 'home-page-a';
 
 /**
- * Constant: HOME_PAGE_B_TEMPLATE
+ * Constant: HOME_PAGE_B
  *
  * Matches the Template B's HomePage.
  */
-const HOME_PAGE_B_TEMPLATE = 'home-page-b-template';
+const HOME_PAGE_B = 'home-page-b';
 
 /**
  * Constant: ARTICLE_PAGE_TITLE
@@ -556,3 +556,9 @@ const RESULTS_MESSAGE = 'results-message';
  * Matches error messages
  */
 const ERROR_MESSAGE = 'error-message';
+
+/**
+ * Constant: ARTICLE_SEARCH
+ * Matcher the in article search widget.
+ */
+const ARTICLE_SEARCH = 'article-search';

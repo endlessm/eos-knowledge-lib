@@ -35,27 +35,13 @@ const PaperTemplate = new Lang.Class({
 
     _init: function (props={}) {
         this.parent(props);
-    },
 
-    pack_content_slot: function (props={}) {
-        if (this._content) {
-            this._content_frame.remove(this._content);
-        }
-        this._content = this.create_submodule('content', props);
+        this._content = this.create_submodule('content');
         this._content_frame.add(this._content);
     },
 
-    // FIXME: These getters allow for reaching into the internals
-    // of this template, which enables the presenter to connect
-    // to widgets lower down in the widget hierarchy, e.g. the
-    // search box. We can remove this when the encyclopedia app
-    // becomes dispatchified!
-    get content () {
-        return this._content;
-    },
-
     vfunc_size_allocate: function (alloc) {
-        this.parent(alloc);
+        this.set_allocation(alloc);
         let margin = alloc.width / 5;
         let content_alloc = new Cairo.RectangleInt({
             x: alloc.x + margin,

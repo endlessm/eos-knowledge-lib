@@ -5,51 +5,70 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const WebKit2 = imports.gi.WebKit2;
 
-const ARTICLE_SEARCH_BUTTONS_SPACING = 10;
+const Actions = imports.app.actions;
+const Dispatcher = imports.app.dispatcher;
+const StyleClasses = imports.app.styleClasses;
+
 const ARTICLE_SEARCH_MAX_RESULTS = 200;
 
 const InArticleSearch = new Lang.Class({
     Name: 'ArticleSearch',
-    Extends: Gtk.Grid,
+    Extends: Gtk.Frame,
 
     _init: function(web_view) {
         this.parent({
-            column_spacing: ARTICLE_SEARCH_BUTTONS_SPACING
+            no_show_all: true,
         });
+        this.get_style_context().add_class(StyleClasses.ARTICLE_SEARCH);
 
         this._web_view = web_view;
 
         this._search_entry = new Gtk.SearchEntry({
-            hexpand: true
+            hexpand: true,
+            visible: true,
         });
         this._search_entry.connect('search-changed',
                                    this.search_changed.bind(this));
         this._search_entry.connect('key-press-event',
                                    this.on_key_press_event.bind(this));
 
-        this._next_button = new Gtk.Button({
+        let next_button = new Gtk.Button({
             image: Gtk.Image.new_from_icon_name('go-down-symbolic',
-                                                Gtk.IconSize.MENU)
+                                                Gtk.IconSize.MENU),
         });
-        this._next_button.connect('clicked', this.search_next.bind(this));
+        next_button.connect('clicked', this.search_next.bind(this));
 
-        this._previous_button = new Gtk.Button({
+        let previous_button = new Gtk.Button({
             image: Gtk.Image.new_from_icon_name('go-up-symbolic',
-                                                Gtk.IconSize.MENU)
+                                                Gtk.IconSize.MENU),
         });
-        this._previous_button.connect('clicked',
-                                      this.search_previous.bind(this));
+        previous_button.connect('clicked', this.search_previous.bind(this));
 
-        this._close_button = new Gtk.Button({
+        let close_button = new Gtk.Button({
             image: Gtk.Image.new_from_icon_name('window-close-symbolic',
-                                                Gtk.IconSize.MENU)
+                                                Gtk.IconSize.MENU),
         });
-        this._close_button.connect('clicked', this.close.bind(this));
+        close_button.connect('clicked', this.close.bind(this));
 
-        this.attach(this._search_entry, 0, 0, 1, 1);
-        this.attach(this._next_button, 1, 0, 1, 1);
-        this.attach(this._previous_button, 2, 0, 1, 1);
-        this.attach(this._close_button, 3, 0, 1, 1);
+        let grid = new Gtk.Grid();
+        grid.add(this._search_entry);
+        grid.add(previous_button);
+        grid.add(next_button);
+        grid.add(close_button);
+        grid.show_all();
+
+        this.add(grid);
+
+        Dispatcher.get_default().register((payload) => {
+            switch(payload.action_type) {
+                case Actions.SHOW_ARTICLE_SEARCH:
+                    this.open();
+                    break;
+                case Actions.HIDE_ARTICLE_SEARCH:
+                    this.close();
+                    break;
+            }
+        });
     },
 
     search_changed: function() {
@@ -68,15 +87,17 @@ const InArticleSearch = new Lang.Class({
     },
 
     close: function() {
-        this.hide();
+        if (!this.visible)
+            return;
 
+        this.hide();
         this._web_view.grab_focus();
         this._search_entry.set_text('');
         this._findController.search_finish();
     },
 
     open: function() {
-        this.show_all();
+        this.show();
         this._search_entry.grab_focus();
         this._findController = this._web_view.get_find_controller();
     },
