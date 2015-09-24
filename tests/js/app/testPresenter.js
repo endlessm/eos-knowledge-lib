@@ -140,9 +140,7 @@ describe('Presenter', () => {
     it('can be constructed', () => {});
 
     it('dispatches category models for home page', () => {
-        let payloads = dispatcher.dispatched_payloads.filter((payload) => {
-            return payload.action_type === Actions.APPEND_SETS;
-        });
+        let payloads = dispatcher.payloads_with_type(Actions.APPEND_SETS);
         expect(payloads.length).toBe(1);
         expect(sections.map((section) => section['title']))
             .toEqual(payloads[0].models.map((model) => model.title));
@@ -195,10 +193,8 @@ describe('Presenter', () => {
                 action_type: Actions.SEARCH_TEXT_ENTERED,
                 text: 'query not found',
             });
-            expect(dispatcher.dispatched_payloads).toContain(jasmine.objectContaining({
-                action_type: Actions.SEARCH_FAILED,
-                query: 'query not found',
-            }));
+            let payload = dispatcher.last_payload_with_type(Actions.SEARCH_FAILED);
+            expect(payload.query).toBe('query not found');
         });
     });
 

@@ -151,9 +151,7 @@ describe('Search module', function () {
         arrangement = factory.get_created_named_mocks('infinite-arrangement')[0];
 
         arrangement.emit('need-more-content');
-        expect(dispatcher.dispatched_payloads).toContain({
-            action_type: Actions.NEED_MORE_SEARCH,
-        });
+        expect(dispatcher.last_payload_with_type(Actions.NEED_MORE_SEARCH)).toBeDefined();
     });
 
     it('highlights a card', function () {

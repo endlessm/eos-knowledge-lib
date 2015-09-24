@@ -223,13 +223,8 @@ describe('Reader presenter', function () {
 
         it('shows the snippets on the front cover when loading content', function () {
             presenter.desktop_launch();
-            expect(dispatcher.dispatched_payloads).toContain({
-                action_type: Actions.CLEAR_ITEMS,
-            });
-            expect(dispatcher.dispatched_payloads).toContain({
-                action_type: Actions.APPEND_ITEMS,
-                models: jasmine.any(Array),
-            });
+            expect(dispatcher.last_payload_with_type(Actions.CLEAR_ITEMS)).toBeDefined();
+            expect(dispatcher.last_payload_with_type(Actions.APPEND_ITEMS).models).toEqual(jasmine.any(Array));
         });
 
         it('gracefully handles the query failing', function () {

@@ -43,8 +43,7 @@ describe('Search box module', function () {
     it('dispatches search-text-entered when text is activated', function () {
         box.set_text_programmatically('foo');
         box.emit('activate');
-        let payload = dispatcher.dispatched_payloads[0];
-        expect(payload.action_type).toBe(Actions.SEARCH_TEXT_ENTERED);
+        let payload = dispatcher.last_payload_with_type(Actions.SEARCH_TEXT_ENTERED);
         expect(payload.text).toBe('foo');
     });
 
@@ -62,8 +61,7 @@ describe('Search box module', function () {
         engine.get_objects_by_query_finish.and.returnValue([[ model ], null]);
         box.text = 'foo';
         box.emit('menu-item-selected', 'ekn://aaaabbbbccccdddd');
-        let payload = dispatcher.dispatched_payloads[0];
-        expect(payload.action_type).toBe(Actions.AUTOCOMPLETE_CLICKED);
+        let payload = dispatcher.last_payload_with_type(Actions.AUTOCOMPLETE_CLICKED);
         expect(payload.model).toBe(model);
     });
 });
