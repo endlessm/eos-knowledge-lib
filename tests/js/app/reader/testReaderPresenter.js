@@ -278,19 +278,6 @@ describe('Reader presenter', function () {
             expect(presenter.current_page).toBe(0);
         });
 
-        it('disables the back button on the first page', function () {
-            expect(article_nav_buttons.back_visible).toBe(false);
-        });
-
-        it('enables the forward button when not on the last page', function () {
-            expect(article_nav_buttons.forward_visible).toBe(true);
-        });
-
-        it('enables the back button when not on the first page', function () {
-            presenter._go_to_page(view.total_pages - 1);
-            expect(article_nav_buttons.back_visible).toBe(true);
-        });
-
         it('increments the current page when clicking the forward button', function () {
             dispatcher.dispatch({ action_type: Actions.NAV_FORWARD_CLICKED });
             expect(presenter.history_model.current_item.model.title).toBe('Title 1');
@@ -366,13 +353,6 @@ describe('Reader presenter', function () {
             view.issue_nav_buttons.forward_button.emit('clicked');
             expect(settings.start_article).toBe(0);
             expect(settings.bookmark_page).toBe(0);
-        });
-
-        it('updates the state of the paging buttons when loading a new set of articles', function () {
-            settings.start_article = 3;
-            settings.notify('start-article');
-            expect(article_nav_buttons.forward_visible).toBe(true);
-            expect(article_nav_buttons.back_visible).toBe(false);
         });
 
         it('loads content from the appropriate set of articles', function () {

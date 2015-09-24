@@ -245,6 +245,7 @@ js_files = \
 	js/app/modules/listArrangement.js \
 	js/app/modules/carouselArrangement.js \
 	js/app/modules/mediaCard.js \
+	js/app/modules/navigationModule.js \
 	js/app/modules/paperTemplate.js \
 	js/app/modules/readerCard.js \
 	js/app/modules/readerDocumentCard.js \

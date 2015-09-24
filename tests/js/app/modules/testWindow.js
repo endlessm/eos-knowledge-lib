@@ -51,6 +51,7 @@ describe('Window', function () {
         factory.add_named_mock('search-results', MockWidgets.MockItemGroupModule);
         factory.add_named_mock('home-page-template', Minimal.MinimalHomePage);
         factory.add_named_mock('lightbox', Minimal.MinimalLightbox);
+        factory.add_named_mock('navigation', Minimal.MinimalNavigation);
         view = new Window.Window({
             application: app,
             factory: factory,

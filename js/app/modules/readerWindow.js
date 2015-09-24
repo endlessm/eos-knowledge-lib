@@ -15,7 +15,6 @@ const Actions = imports.app.actions;
 const Config = imports.app.config;
 const Dispatcher = imports.app.dispatcher;
 const Module = imports.app.interfaces.module;
-const NavButtonOverlay = imports.app.widgets.navButtonOverlay;
 const StandalonePage = imports.app.reader.standalonePage;
 const StyleClasses = imports.app.styleClasses;
 
@@ -43,16 +42,6 @@ const ReaderWindow = new Lang.Class({
     Properties: {
         'factory': GObject.ParamSpec.override('factory', Module.Module),
         'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-        /**
-         * Property: nav-buttons
-         *
-         * The <NavButtonOverlay> widget created by the window. This property
-         * allows the presenter to connect to signals emitted by the buttons.
-         * Read-only.
-         */
-        'nav-buttons': GObject.ParamSpec.object('nav-buttons', 'Nav Buttons',
-            'The nav buttons of the window.',
-            GObject.ParamFlags.READABLE, NavButtonOverlay.NavButtonOverlay.$gtype),
 
         /**
          * Property: overview-page
@@ -128,9 +117,6 @@ const ReaderWindow = new Lang.Class({
     },
 
     _STACK_TRANSITION_TIME: 500,
-    _BACK_IMAGE_URI: 'resource:///com/endlessm/knowledge/images/reader/left-arrow.svg',
-    _FORWARD_IMAGE_URI: 'resource:///com/endlessm/knowledge/images/reader/right-arrow.svg',
-    _NAV_IMAGE_SIZE: 23,
 
     _init: function (props) {
         props = props || {};
@@ -146,17 +132,7 @@ const ReaderWindow = new Lang.Class({
         this.search_results_page.get_style_context().add_class(StyleClasses.READER_SEARCH_RESULTS_PAGE);
 
         let dispatcher = Dispatcher.get_default();
-        this.nav_buttons = new NavButtonOverlay.NavButtonOverlay({
-            back_image_uri: this._BACK_IMAGE_URI,
-            forward_image_uri: this._FORWARD_IMAGE_URI,
-            image_size: this._NAV_IMAGE_SIZE,
-        });
-        this.nav_buttons.connect('back-clicked', () => {
-            dispatcher.dispatch({ action_type: Actions.NAV_BACK_CLICKED });
-        });
-        this.nav_buttons.connect('forward-clicked', () => {
-            dispatcher.dispatch({ action_type: Actions.NAV_FORWARD_CLICKED });
-        });
+        let navigation = this.factory.create_named_module('navigation');
 
         this.issue_nav_buttons = new Endless.TopbarNavButton({
             no_show_all: true,
@@ -212,8 +188,8 @@ const ReaderWindow = new Lang.Class({
         this._stack.add(this.search_results_page);
         this._stack.add(this._arrangement);
         this._stack.show_all();
-        this.nav_buttons.add(this._stack);
-        lightbox.add(this.nav_buttons);
+        navigation.add(this._stack);
+        lightbox.add(navigation);
 
         let box = new Gtk.Box({
             orientation: Gtk.Orientation.HORIZONTAL,
@@ -236,6 +212,20 @@ const ReaderWindow = new Lang.Class({
             } else {
                 this.get_style_context().remove_class(StyleClasses.ANIMATING);
             }
+        });
+        this._stack.connect('notify::visible-child', () => this._update_nav_button_visibility());
+        this._update_nav_button_visibility();
+    },
+
+    _update_nav_button_visibility: function () {
+        let dispatcher = Dispatcher.get_default();
+        dispatcher.dispatch({
+            action_type: Actions.NAV_BACK_ENABLED_CHANGED,
+            enabled: this.article_pages_visible() && this._stack.visible_child !== this.overview_page,
+        });
+        dispatcher.dispatch({
+            action_type: Actions.NAV_FORWARD_ENABLED_CHANGED,
+            enabled: this.article_pages_visible(),
         });
     },
 
@@ -282,8 +272,6 @@ const ReaderWindow = new Lang.Class({
         this.standalone_page.show();
         this._stack.set_transition_type(Gtk.StackTransitionType.CROSSFADE);
         this._stack.set_visible_child(this.standalone_page);
-        this.nav_buttons.back_visible = false;
-        this.nav_buttons.forward_visible = false;
     },
 
     show_global_search_standalone_page: function () {
@@ -300,12 +288,9 @@ const ReaderWindow = new Lang.Class({
     show_search_results_page: function () {
         this._stack.set_transition_type(Gtk.StackTransitionType.CROSSFADE);
         this._stack.set_visible_child(this.search_results_page);
-        this.nav_buttons.back_visible = false;
-        this.nav_buttons.forward_visible = false;
     },
 
     show_article_page: function (index, animation_type) {
-        this.nav_buttons.accommodate_scrollbar = true;
         this._set_stack_transition(animation_type, true);
         let page = this._article_pages[index];
         page.show();
@@ -314,14 +299,12 @@ const ReaderWindow = new Lang.Class({
     },
 
     show_overview_page: function (animation_type) {
-        this.nav_buttons.accommodate_scrollbar = false;
         this._set_stack_transition(animation_type);
         this.overview_page.show();
         this._stack.set_visible_child(this.overview_page);
     },
 
     show_back_cover: function (animation_type) {
-        this.nav_buttons.accommodate_scrollbar = false;
         this._set_stack_transition(animation_type);
         this.back_cover.show();
         this._stack.set_visible_child(this.back_cover);
