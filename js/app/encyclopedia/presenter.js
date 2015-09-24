@@ -18,6 +18,7 @@ const Engine = imports.search.engine;
 const HistoryPresenter = imports.app.historyPresenter;
 const Launcher = imports.app.launcher;
 const MediaObjectModel = imports.search.mediaObjectModel;
+const MeshInteraction = imports.app.modules.meshInteraction;
 const QueryObject = imports.search.queryObject;
 const WebkitContextSetup = imports.app.webkitContextSetup;
 const Utils = imports.app.utils;
@@ -30,7 +31,7 @@ const SEARCH_METRIC = 'a628c936-5d87-434a-a57a-015a0f223838';
 
 const EncyclopediaPresenter = new Lang.Class({
     Name: 'EncyclopediaPresenter',
-    Extends: GObject.Object,
+    Extends: MeshInteraction.MeshInteraction,
     Implements: [ Launcher.Launcher ],
 
     Properties: {

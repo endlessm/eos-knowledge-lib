@@ -15,6 +15,7 @@ const HistoryItem = imports.app.historyItem;
 const HistoryPresenter = imports.app.historyPresenter;
 const Launcher = imports.app.launcher;
 const MediaObjectModel = imports.search.mediaObjectModel;
+const MeshInteraction = imports.app.modules.meshInteraction;
 const QueryObject = imports.search.queryObject;
 const StyleKnobGenerator = imports.app.compat.styleKnobGenerator;
 const TabButton = imports.app.widgets.tabButton;
@@ -41,7 +42,7 @@ const DATA_RESOURCE_PATH = 'resource:///com/endlessm/knowledge/';
 const Presenter = new Lang.Class({
     Name: 'Presenter',
     GTypeName: 'EknPresenter',
-    Extends: GObject.Object,
+    Extends: MeshInteraction.MeshInteraction,
     Implements: [ Launcher.Launcher ],
 
     _ARTICLE_PAGE: 'article',
