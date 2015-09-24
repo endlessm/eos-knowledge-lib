@@ -245,6 +245,7 @@ js_files = \
 	js/app/modules/knowledgeDocumentCard.js \
 	js/app/modules/lightboxModule.js \
 	js/app/modules/listArrangement.js \
+	js/app/modules/meshInteraction.js \
 	js/app/modules/mediaCard.js \
 	js/app/modules/navigationModule.js \
 	js/app/modules/paperTemplate.js \
@@ -372,6 +373,7 @@ javascript_tests = \
 	tests/js/app/modules/testKnowledgeDocumentCard.js \
 	tests/js/app/modules/testLightboxModule.js \
 	tests/js/app/modules/testListArrangement.js \
+	tests/js/app/modules/testMeshInteraction.js \
 	tests/js/app/modules/testMediaCard.js \
 	tests/js/app/modules/testOverflowArrangement.js \
 	tests/js/app/modules/testPaperTemplate.js \
