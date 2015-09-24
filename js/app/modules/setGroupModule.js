@@ -19,7 +19,7 @@ const Module = imports.app.interfaces.module;
  *
  * Slots:
  *   arrangement
- *   card_type
+ *   card-type
  */
 const SetGroupModule = new Lang.Class({
     Name: 'SetGroupModule',
@@ -76,11 +76,11 @@ const SetGroupModule = new Lang.Class({
 
     // Module override
     get_slot_names: function () {
-        return ['arrangement', 'card_type'];
+        return ['arrangement', 'card-type'];
     },
 
     _add_card: function (model) {
-        let card = this.create_submodule('card_type', {
+        let card = this.create_submodule('card-type', {
             model: model,
         });
         card.connect('clicked', () => {

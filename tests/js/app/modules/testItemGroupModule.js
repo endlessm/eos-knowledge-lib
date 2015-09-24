@@ -21,8 +21,8 @@ describe('Item group module', function () {
         factory.add_named_mock('test-arrangement', Minimal.MinimalArrangement);
         factory.add_named_mock('home-card', Minimal.MinimalCard);
         factory.add_named_mock('item-group', ItemGroupModule.ItemGroupModule, {
-            arrangement: 'test-arrangement',
-            card_type: 'home-card',
+            'arrangement': 'test-arrangement',
+            'card-type': 'home-card',
         });
         group = new ItemGroupModule.ItemGroupModule({
             factory: factory,

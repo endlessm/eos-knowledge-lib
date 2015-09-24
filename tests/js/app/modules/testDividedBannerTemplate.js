@@ -28,8 +28,8 @@ describe('DividedBannerTemplate module', function () {
         factory.add_named_mock('Placeholder3', MockPlaceholder.MockPlaceholder);
         factory.add_named_mock('home-page-template', DividedBannerTemplate.DividedBannerTemplate,
         {
-            'top_left': 'Placeholder1',
-            'top_right': 'Placeholder2',
+            'top-left': 'Placeholder1',
+            'top-right': 'Placeholder2',
             'bottom': 'Placeholder3',
         });
 

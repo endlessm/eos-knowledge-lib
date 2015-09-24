@@ -31,8 +31,8 @@ const DividedBannerTemplate = new Lang.Class({
         this.parent(props);
 
         const PACKING_ARGS = {
-            'top_left': [0, 0, 1, 1],
-            'top_right': [1, 0, 1, 1],
+            'top-left': [0, 0, 1, 1],
+            'top-right': [1, 0, 1, 1],
             'bottom': [0, 1, 2, 2],
         };
         this.get_slot_names().forEach((slot) => {
@@ -43,6 +43,6 @@ const DividedBannerTemplate = new Lang.Class({
     },
 
     get_slot_names: function () {
-        return [ 'top_left', 'top_right', 'bottom' ];
+        return [ 'top-left', 'top-right', 'bottom' ];
     },
 });

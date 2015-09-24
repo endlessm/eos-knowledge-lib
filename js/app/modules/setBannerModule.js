@@ -15,7 +15,7 @@ const Module = imports.app.interfaces.module;
  * creates a card for the selected model.
  *
  * Slots:
- *   card_type
+ *   card-type
  */
 const SetBannerModule = new Lang.Class({
     Name: 'SetBannerModule',
@@ -33,7 +33,7 @@ const SetBannerModule = new Lang.Class({
         Dispatcher.get_default().register((payload) => {
             switch(payload.action_type) {
                 case Actions.SHOW_SET:
-                    let card = this.create_submodule('card_type', {
+                    let card = this.create_submodule('card-type', {
                         model: payload.model,
                     });
                     if (this.get_child())
@@ -45,6 +45,6 @@ const SetBannerModule = new Lang.Class({
     },
 
     get_slot_names: function () {
-        return [ 'card_type' ];
+        return [ 'card-type' ];
     },
 });

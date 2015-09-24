@@ -23,7 +23,7 @@ describe('SetBannerModule module', function () {
         factory.add_named_mock('mock-card', Minimal.MinimalCard);
         factory.add_named_mock('set-banner-module', SetBannerModule.SetBannerModule,
         {
-            'card_type': 'mock-card',
+            'card-type': 'mock-card',
         });
 
         module = new SetBannerModule.SetBannerModule({
