@@ -6,7 +6,7 @@ const Utils = imports.tests.utils;
 Utils.register_gresource();
 
 const CssClassMatcher = imports.tests.CssClassMatcher;
-const HomePageBTemplate = imports.app.modules.homePageBTemplate;
+const DividedBannerTemplate = imports.app.modules.dividedBannerTemplate;
 const MockFactory = imports.tests.mockFactory;
 const MockPlaceholder = imports.tests.mockPlaceholder;
 const StyleClasses = imports.app.styleClasses;
@@ -14,7 +14,7 @@ const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 
 Gtk.init(null);
 
-describe('HomePageBTemplate module', function () {
+describe('DividedBannerTemplate module', function () {
     let home_page;
     let factory;
 
@@ -26,14 +26,14 @@ describe('HomePageBTemplate module', function () {
         factory.add_named_mock('Placeholder1', MockPlaceholder.MockPlaceholder);
         factory.add_named_mock('Placeholder2', MockPlaceholder.MockPlaceholder);
         factory.add_named_mock('Placeholder3', MockPlaceholder.MockPlaceholder);
-        factory.add_named_mock('home-page-template', HomePageBTemplate.HomePageBTemplate,
+        factory.add_named_mock('home-page-template', DividedBannerTemplate.DividedBannerTemplate,
         {
             'top_left': 'Placeholder1',
             'top_right': 'Placeholder2',
             'bottom': 'Placeholder3',
         });
 
-        home_page = new HomePageBTemplate.HomePageBTemplate({
+        home_page = new DividedBannerTemplate.DividedBannerTemplate({
             factory: factory,
             factory_name: 'home-page-template',
         });
@@ -51,8 +51,8 @@ describe('HomePageBTemplate module', function () {
     });
 
     describe('CSS style context', function () {
-        it('has home page B template class', function () {
-            expect(home_page).toHaveCssClass(StyleClasses.HOME_PAGE_B_TEMPLATE);
+        it('has divided banner template class', function () {
+            expect(home_page).toHaveCssClass('divided-banner-template');
         });
     });
 });

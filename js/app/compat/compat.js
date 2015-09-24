@@ -215,7 +215,11 @@ function transform_v1_description(json) {
             },
         };
         modules["home-page-template"] = {
-            "type": "HomePageBTemplate",
+            "type": "DividedBannerTemplate",
+            "properties": {
+                "row-spacing": 30,
+                "row-homogeneous": true,
+            },
             "slots": {
                 "top_left": "app-banner",
                 "top_right": "home-search",
@@ -335,7 +339,7 @@ function transform_v1_description(json) {
             },
         };
         modules["search-page-template"] = {
-            "type": "EncyclopediaContentTemplate",
+            "type": "DividedBannerTemplate",
             "slots": {
                 "top_left": "article-app-banner",
                 "top_right": "article-search-box",
@@ -361,7 +365,7 @@ function transform_v1_description(json) {
             },
         };
         modules["article-page-template"] = {
-            "type": "EncyclopediaContentTemplate",
+            "type": "DividedBannerTemplate",
             "slots": {
                 "top_left": "article-app-banner",
                 "top_right": "article-search-box",

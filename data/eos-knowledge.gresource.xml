@@ -38,13 +38,12 @@
     <file compressed="true" preprocess="xml-stripblanks">widgets/cardA.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">widgets/cardB.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">widgets/cardContainer.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">widgets/dividedBannerTemplate.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">widgets/encyclopediaCoverTemplate.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">widgets/encyclopediaContentTemplate.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">widgets/gridArrangement.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">widgets/knowledgeDocumentCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">widgets/listArrangement.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">widgets/homePageATemplate.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">widgets/homePageBTemplate.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">widgets/mediaCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">widgets/paperTemplate.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">widgets/readerCard.ui</file>
