@@ -555,3 +555,10 @@ const ERROR_MESSAGE = 'error-message';
  * Matcher the in article search widget.
  */
 const ARTICLE_SEARCH = 'article-search';
+
+/**
+ * Constant: SET_GROUP
+ *
+ * Matches a set group module.
+ */
+const SET_GROUP = 'set-group';

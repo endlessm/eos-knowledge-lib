@@ -358,7 +358,7 @@ EknWindow.background-right {
     -GtkWidget-separator-height: 3;
 }
 
-.home-page-b .card-container {
+.home-page-b .set-group {
     background-color: black;
 }
 
