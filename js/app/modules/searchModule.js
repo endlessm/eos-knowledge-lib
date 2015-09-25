@@ -63,6 +63,17 @@ const SearchModule = new Lang.Class({
             'Message valign', 'Vertical alignment of message text',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             Gtk.Align.$gtype, Gtk.Align.START),
+        /**
+         * Property: message-halign
+         * Horizontal alignment of message text
+         *
+         * Default value:
+         *   **Gtk.Align.START**
+         */
+        'message-halign': GObject.ParamSpec.enum('message-halign',
+            'Message halign', 'Horizontal alignment of message text',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            Gtk.Align.$gtype, Gtk.Align.START),
     },
 
     Template: 'resource:///com/endlessm/knowledge/widgets/searchModule.ui',
@@ -75,6 +86,7 @@ const SearchModule = new Lang.Class({
 
         this._message.justify = this.message_justify;
         this._message.valign = this.message_valign;
+        this._message.halign = this.message_halign;
 
         let dispatcher = Dispatcher.get_default();
         if (this._arrangement instanceof InfiniteScrolledWindow.InfiniteScrolledWindow) {

@@ -13,7 +13,6 @@ js/app/modules/readerWindow.js
 js/app/modules/searchBannerModule.js
 js/app/modules/searchModule.js
 js/app/reader/presenter.js
-js/app/reader/searchResultsPage.js
 js/app/reader/standalonePage.js
 js/app/utils.js
 js/app/widgets/webviewTooltip.js

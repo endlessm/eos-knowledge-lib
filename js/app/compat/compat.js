@@ -551,6 +551,41 @@ function transform_v1_description(json) {
                 "title-capitalization": EosKnowledgePrivate.TextTransform.UPPERCASE,
             },
         };
+        modules["results-search-banner"] = {
+            "type": "SearchBannerModule",
+            "properties": {
+                "halign": Gtk.Align.CENTER,
+            },
+        };
+        modules["search-page-template"] = {
+            "type": "BannerTemplate",
+            "properties": {
+                "separator-margin": 30,
+            },
+            "slots": {
+                "banner": "results-search-banner",
+                "content": "search-results",
+            },
+        };
+        modules["search-results"] = {
+            "type": "SearchModule",
+            "slots": {
+                "arrangement": "results-arrangement",
+                "card-type": "results-card",
+            },
+            "properties": {
+                "message-halign": Gtk.Align.CENTER,
+                "message-justify": Gtk.Justification.CENTER,
+            }
+        };
+        modules["results-arrangement"] = {
+            "type": "GridArrangement",
+            "properties": {
+                "margin-top": 20,
+                "bottom-buffer": 250,
+                "max-children-per-line": 9,
+            },
+        };
         break;
     default:
         throw new Error('Unrecognized v1 preset type: ' + json.templateType);
