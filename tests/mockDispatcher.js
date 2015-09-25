@@ -49,6 +49,19 @@ const MockDispatcher = new Lang.Class({
     unregister: function (id) {
         delete this._listeners[id];
     },
+
+    payloads_with_type: function (action_type) {
+        let payloads = [];
+        for (let payload of this.dispatched_payloads) {
+            if (payload.action_type === action_type)
+                payloads.push(payload);
+        }
+        return payloads;
+    },
+
+    last_payload_with_type: function (action_type) {
+        return this.payloads_with_type(action_type).pop();
+    },
 });
 
 // Creates a new MockDispatcher and sets it up as the dispatcher singleton. Use

@@ -489,6 +489,22 @@ EosWindow .scrollbar.slider {
     padding-right: 15px;
 }
 
+.nav-back-button .arrow {
+    -gtk-icon-source: -gtk-icontheme("go-previous-symbolic");
+}
+
+.nav-forward-button .arrow {
+    -gtk-icon-source: -gtk-icontheme("go-next-symbolic");
+}
+
+.nav-back-button.rtl .arrow {
+    -gtk-icon-source: -gtk-icontheme("go-previous-symbolic-rtl");
+}
+
+.nav-forward-button.rtl .arrow {
+    -gtk-icon-source: -gtk-icontheme("go-next-symbolic-rtl");
+}
+
 .pdf-view:not(.overshoot):not(.undershoot) {
     background-image: url('resource:///com/endlessm/knowledge/images/pdf-background.png');
 }

@@ -5,9 +5,11 @@ const Gtk = imports.gi.Gtk;
 const Utils = imports.tests.utils;
 Utils.register_gresource();
 
+const Actions = imports.app.actions;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
 const Minimal = imports.tests.minimal;
+const MockDispatcher = imports.tests.mockDispatcher;
 const MockFactory = imports.tests.mockFactory;
 const MockWidgets = imports.tests.mockWidgets;
 const ReaderWindow = imports.app.modules.readerWindow;
@@ -15,7 +17,7 @@ const ReaderWindow = imports.app.modules.readerWindow;
 const EXPECTED_TOTAL_PAGES = 17;
 
 describe('Window widget', function () {
-    let view, app, factory;
+    let view, app, factory, dispatcher;
 
     beforeAll(function (done) {
         // Generate a unique ID for each app instance that we test
@@ -37,6 +39,7 @@ describe('Window widget', function () {
     beforeEach(function () {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
         jasmine.addMatchers(InstanceOfMatcher.customMatchers);
+        dispatcher = MockDispatcher.mock_default();
 
         factory = new MockFactory.MockFactory();
         factory.add_named_mock('document-card', Minimal.MinimalDocumentCard);
@@ -44,6 +47,7 @@ describe('Window widget', function () {
         factory.add_named_mock('back-cover', Minimal.MinimalBackCover);
         factory.add_named_mock('document-arrangement', Minimal.MinimalArrangement);
         factory.add_named_mock('lightbox', Minimal.MinimalLightbox);
+        factory.add_named_mock('navigation', Minimal.MinimalNavigation);
         view = new ReaderWindow.ReaderWindow({
             application: app,
             factory: factory,
@@ -72,10 +76,6 @@ describe('Window widget', function () {
         expect(view.standalone_page).toBeA(Gtk.Widget);
     });
 
-    it('has a nav-buttons widget', function () {
-        expect(view.nav_buttons).toBeA(Gtk.Widget);
-    });
-
     it('has a debug buttons widget', function () {
         expect(view.issue_nav_buttons).toBeA(Gtk.Widget);
     });
@@ -96,6 +96,27 @@ describe('Window widget', function () {
         expect(function () {
             view.show_article_page(2, true);
         }).not.toThrow();
+    });
+
+    it('disables back navigation on the overview page', function () {
+        let payload = dispatcher.last_payload_with_type(Actions.NAV_BACK_ENABLED_CHANGED);
+        expect(payload.enabled).toBe(false);
+    });
+
+    it('enables navigation on an article page', function () {
+        view.show_article_page(2, true);
+        let payload = dispatcher.last_payload_with_type(Actions.NAV_BACK_ENABLED_CHANGED);
+        expect(payload.enabled).toBe(true);
+        payload = dispatcher.last_payload_with_type(Actions.NAV_FORWARD_ENABLED_CHANGED);
+        expect(payload.enabled).toBe(true);
+    });
+
+    it('disables navigation on standalone page', function () {
+        view.show_in_app_standalone_page();
+        let payload = dispatcher.last_payload_with_type(Actions.NAV_BACK_ENABLED_CHANGED);
+        expect(payload.enabled).toBe(false);
+        payload = dispatcher.last_payload_with_type(Actions.NAV_FORWARD_ENABLED_CHANGED);
+        expect(payload.enabled).toBe(false);
     });
 
     it('sets progress labels correctly', function () {

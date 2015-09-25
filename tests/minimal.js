@@ -189,6 +189,21 @@ const MinimalLightbox = new Lang.Class({
     },
 });
 
+const MinimalNavigation = new Lang.Class({
+    Name: 'MinimalNavigation',
+    Extends: Gtk.Frame,
+    Implements: [ Module.Module ],
+
+    Properties: {
+        'factory': GObject.ParamSpec.override('factory', Module.Module),
+        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
+    },
+
+    _init: function (props={}) {
+        this.parent(props);
+    },
+});
+
 function test_arrangement_compliance() {
     describe('implements Arrangement correctly', function () {
         let cards;

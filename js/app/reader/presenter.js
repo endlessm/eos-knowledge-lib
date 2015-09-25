@@ -237,9 +237,6 @@ const Presenter = new Lang.Class({
             }
         });
 
-        this.view.connect('notify::total-pages',
-            this._update_button_visibility.bind(this));
-
         this.view.issue_nav_buttons.back_button.connect('clicked', function () {
             this.settings.start_article = 0;
             this.settings.bookmark_page = 0;
@@ -704,7 +701,6 @@ const Presenter = new Lang.Class({
         // Guaranteed to have changed; we returned early if not changed.
 
         this.settings.bookmark_page = index;
-        this._update_button_visibility();
         this._present_if_needed();
     },
 
@@ -757,7 +753,6 @@ const Presenter = new Lang.Class({
         models.forEach(function (model) {
             let page = this._create_article_page_from_article_model(model, false);
             this.view.append_article_page(page);
-            this._update_button_visibility();
         }, this);
         this._article_models = this._article_models.concat(models);
     },
@@ -847,11 +842,6 @@ const Presenter = new Lang.Class({
         return this._article_renderer.render(article_model, {
             custom_css_files: ['reader.css'],
         });
-    },
-
-    _update_button_visibility: function () {
-        this.view.nav_buttons.forward_visible = this.view.article_pages_visible();
-        this.view.nav_buttons.back_visible = (this._current_page > 0);
     },
 
     // Take an ArticleObjectModel and create a ReaderDocumentCard view.

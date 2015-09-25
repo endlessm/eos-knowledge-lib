@@ -10,7 +10,6 @@ const Lang = imports.lang;
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
 const Module = imports.app.interfaces.module;
-const NavButtonOverlay = imports.app.widgets.navButtonOverlay;
 const StyleClasses = imports.app.styleClasses;
 
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
@@ -142,14 +141,11 @@ const Window = new Lang.Class({
         this._stack.add(this.search_page);
         this._stack.add(this.article_page);
 
-        this._nav_buttons = new NavButtonOverlay.NavButtonOverlay({
-            back_visible: false,
-            forward_visible: false,
-        });
-        this._nav_buttons.add(this._stack);
+        let navigation = this.factory.create_named_module('navigation');
+        navigation.add(this._stack);
 
         let lightbox = this.factory.create_named_module('lightbox');
-        lightbox.add(this._nav_buttons);
+        lightbox.add(navigation);
 
         this._history_buttons = new Endless.TopbarNavButton();
         this._search_box = this.factory.create_named_module('top-bar-search', {
@@ -162,9 +158,15 @@ const Window = new Lang.Class({
         });
 
         let dispatcher = Dispatcher.get_default();
-        this._nav_buttons.connect('back-clicked', () => {
-            dispatcher.dispatch({ action_type: Actions.NAV_BACK_CLICKED });
+        dispatcher.dispatch({
+            action_type: Actions.NAV_BACK_ENABLED_CHANGED,
+            enabled: false,
         });
+        dispatcher.dispatch({
+            action_type: Actions.NAV_FORWARD_ENABLED_CHANGED,
+            enabled: false,
+        });
+
         this._history_buttons.back_button.connect('clicked', () => {
             dispatcher.dispatch({ action_type: Actions.HISTORY_BACK_CLICKED });
         });
@@ -290,9 +292,10 @@ const Window = new Lang.Class({
 
         let is_on_left = (page) => page === this.home_page;
         let is_on_center = (page) => page === this.section_page || page === this.search_page;
+        let nav_back_visible = false;
         if (is_on_left(new_page)) {
             this._stack.transition_type = Gtk.StackTransitionType.SLIDE_RIGHT;
-            this._nav_buttons.back_visible = false;
+            nav_back_visible = false;
             this._search_box.visible = false;
             this._set_background_position_style(StyleClasses.BACKGROUND_LEFT);
         } else if (is_on_center(new_page)) {
@@ -303,15 +306,19 @@ const Window = new Lang.Class({
             } else {
                 this._stack.transition_type = Gtk.StackTransitionType.SLIDE_RIGHT;
             }
-            this._nav_buttons.back_visible = true;
+            nav_back_visible = true;
             this._search_box.visible = true;
             this._set_background_position_style(StyleClasses.BACKGROUND_CENTER);
         } else {
             this._stack.transition_type = Gtk.StackTransitionType.SLIDE_LEFT;
-            this._nav_buttons.back_visible = true;
+            nav_back_visible = true;
             this._search_box.visible = true;
             this._set_background_position_style(StyleClasses.BACKGROUND_RIGHT);
         }
+        Dispatcher.get_default().dispatch({
+            action_type: Actions.NAV_BACK_ENABLED_CHANGED,
+            enabled: nav_back_visible,
+        });
         this._stack.visible_child = new_page;
     },
 

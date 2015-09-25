@@ -22,6 +22,9 @@ function transform_v1_description(json) {
                 "blur-background-image-uri": json["backgroundSectionURI"],
             },
         };
+        modules["navigation"] = {
+            "type": "NavigationModule",
+        };
         modules["app-banner"] = {
             "type": "AppBanner",
             "properties": {
@@ -190,6 +193,9 @@ function transform_v1_description(json) {
                 "background-image-uri": json["backgroundHomeURI"],
                 "blur-background-image-uri": json["backgroundSectionURI"],
             },
+        };
+        modules["navigation"] = {
+            "type": "NavigationModule",
         };
         modules["app-banner"] = {
             "type": "AppBanner",
@@ -472,6 +478,9 @@ function transform_v1_description(json) {
                 "title-image-uri": json["titleImageURI"],
                 "home-background-uri": json["backgroundHomeURI"],
             },
+        };
+        modules["navigation"] = {
+            "type": "NavigationModule",
         };
         modules["app-banner"] = {
             "type": "AppBanner",
