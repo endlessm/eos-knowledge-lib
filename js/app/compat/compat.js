@@ -481,9 +481,6 @@ function transform_v1_description(json) {
         };
         modules["navigation"] = {
             "type": "NavigationModule",
-            "properties": {
-                "use-full-arrow": true,
-            },
         };
         modules["app-banner"] = {
             "type": "AppBanner",

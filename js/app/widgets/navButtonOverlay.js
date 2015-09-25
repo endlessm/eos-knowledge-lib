@@ -2,15 +2,29 @@
 
 const GObject = imports.gi.GObject;
 const GLib = imports.gi.GLib;
-const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const StyleClasses = imports.app.styleClasses;
 const Utils = imports.app.utils;
 
-const _ARROW_SIZE = 20;
 const _SCROLLBAR_MARGIN_PX = 13;  // FIXME should be dynamic
+
+const ArrowImage = new Lang.Class({
+    Name: 'ArrowImage',
+    GTypeName: 'EknArrowImage',
+    Extends: Gtk.Image,
+
+    _init: function (props={}) {
+        this.parent(props);
+        this.get_style_context().add_class(Gtk.STYLE_CLASS_ARROW);
+    },
+
+    vfunc_draw: function (cr) {
+        Gtk.render_activity(this.get_style_context(), cr, 0, 0, this.get_allocated_width(), this.get_allocated_height());
+        cr.$dispose();
+    },
+});
 
 /**
  * Class: NavButtonOverlay
@@ -45,39 +59,14 @@ const NavButtonOverlay = new Lang.Class({
             'Boolean property to manage whether the Forward button should be shown. Defaults to true',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT, true),
         /**
-         * Property: use-full-arrow
-         * Use an alternate arrow icon with a shaft: "->" instead of ">".
+         * Property: 'icon-size'
+         * The size of the icons to be used in the navigation buttons.
          * FIXME: we should move this to the css theme ideally.
          */
-        'use-full-arrow': GObject.ParamSpec.boolean('use-full-arrow',
-            'Use full arrow', 'Use full arrow',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT, false),
-        /**
-         * Property: 'back-image-uri'
-         * Uri of the image to be displayed in the back button
-         * FIXME: we should move this to the css theme ideally.
-         */
-        'back-image-uri': GObject.ParamSpec.string('back-image-uri', 'Back Image URI',
-            'URI of the image to be displayed in the back button',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
-        /**
-         * Property: 'forward-image-uri'
-         * The image to be displayed in the forward button
-         * FIXME: we should move this to the css theme ideally.
-         */
-        'forward-image-uri': GObject.ParamSpec.string('forward-image-uri', 'Forward Image URI',
-            'URI of the image to be displayed in the forward button',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
-        /**
-         * Property: 'image-size'
-         * The size of the images to be used in the navigation buttons.
-         * FIXME: we should move this to the css theme ideally.
-         */
-        'image-size': GObject.ParamSpec.uint('image-size', 'Image Size',
-            'Size of the custom images for the navigation buttons',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
-            0, GLib.MAXUINT32, _ARROW_SIZE),
-
+        'icon-size': GObject.ParamSpec.uint('icon-size', 'Icon Size',
+            'Size of the custom icons for the navigation buttons',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            0, GLib.MAXUINT32, 22),
         /**
          * Property: accommodate-scrollbar
          * Whether to move the rightmost button to accommodate a scrollbar.
@@ -91,10 +80,6 @@ const NavButtonOverlay = new Lang.Class({
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
             false),
     },
-
-    _ARROW_BACK_IMAGE_URI: 'resource:///com/endlessm/knowledge/images/reader/left-arrow.svg',
-    _ARROW_FORWARD_IMAGE_URI: 'resource:///com/endlessm/knowledge/images/reader/right-arrow.svg',
-    _ARROW_IMAGE_SIZE: 23,
 
     Signals: {
         /**
@@ -141,14 +126,13 @@ const NavButtonOverlay = new Lang.Class({
         this._forward_button.show_all();
 
         this.parent(props);
-        if (this.use_full_arrow) {
-            this.back_image_uri = this._ARROW_BACK_IMAGE_URI;
-            this.forward_image_uri = this._ARROW_FORWARD_IMAGE_URI;
-            this.image_size = this._ARROW_IMAGE_SIZE;
-        }
 
-        this._style_nav_button(this._back_button, this.back_image_uri, 'go-previous-symbolic', 'go-previous-rtl-symbolic');
-        this._style_nav_button(this._forward_button, this.forward_image_uri, 'go-next-symbolic', 'go-next-rtl-symbolic');
+        this._back_button.image = new ArrowImage({
+            pixel_size: this.icon_size,
+        });
+        this._forward_button.image = new ArrowImage({
+            pixel_size: this.icon_size,
+        });
 
         Utils.set_hand_cursor_on_widget(this._back_button);
         Utils.set_hand_cursor_on_widget(this._forward_button);
@@ -179,17 +163,6 @@ const NavButtonOverlay = new Lang.Class({
         return this._forward_button.visible;
     },
 
-    set image_size (v) {
-        if (this._image_size === v)
-            return;
-        this._image_size = v;
-        this.notify('image-size');
-    },
-
-    get image_size () {
-        return this._image_size;
-    },
-
     set accommodate_scrollbar(value) {
         this._accommodate_scrollbar = value;
         this._forward_button.margin_end = value ? _SCROLLBAR_MARGIN_PX : 0;
@@ -198,33 +171,5 @@ const NavButtonOverlay = new Lang.Class({
 
     get accommodate_scrollbar() {
         return this._accommodate_scrollbar;
-    },
-
-    _style_nav_button: function (button, image_uri, fallback_icon_name, fallback_rtl_icon_name) {
-        if (Gtk.Widget.get_default_direction() === Gtk.TextDirection.RTL) {
-            button.image = this._create_new_image(image_uri, fallback_rtl_icon_name);
-            button.get_style_context().add_class(StyleClasses.RTL);
-        } else {
-            button.image = this._create_new_image(image_uri, fallback_icon_name);
-        }
-    },
-
-    _create_new_image: function (image_uri, fallback_icon_name) {
-        // If the image URIs exists, create new icons for it; otherwise fallback to icon.
-        let new_image;
-        if (image_uri) {
-            let file = Gio.File.new_for_uri(image_uri);
-            let icon = new Gio.FileIcon({ file: file });
-            new_image = new Gtk.Image({
-                gicon: icon,
-                pixel_size: this._image_size,
-            });
-        } else {
-            new_image = new Gtk.Image({
-                icon_name: fallback_icon_name,
-                pixel_size: this._image_size,
-            });
-        }
-        return new_image;
     },
 });
