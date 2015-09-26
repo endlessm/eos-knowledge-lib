@@ -79,8 +79,6 @@ const MockView = new Lang.Class({
     },
 
     show_page: function (page) {},
-    lock_ui: function () {},
-    unlock_ui: function () {},
     present_with_time: function () {},
 });
 
@@ -186,15 +184,28 @@ describe('Presenter', () => {
             expect(presenter.record_search_metric).toHaveBeenCalled();
         });
 
-        it('dispatches search-failed if the search fails', function () {
+        it('dispatches a pair of search-started and search-failed if the search fails', function () {
             spyOn(window, 'logError');  // silence console output
             engine.get_objects_by_query_finish.and.throwError(new Error('Ugh'));
             dispatcher.dispatch({
                 action_type: Actions.SEARCH_TEXT_ENTERED,
                 text: 'query not found',
             });
-            let payload = dispatcher.last_payload_with_type(Actions.SEARCH_FAILED);
+            let payload = dispatcher.last_payload_with_type(Actions.SEARCH_STARTED);
             expect(payload.query).toBe('query not found');
+            payload = dispatcher.last_payload_with_type(Actions.SEARCH_FAILED);
+            expect(payload.query).toBe('query not found');
+        });
+
+        it('dispatches a pair of search-started and search-ready on search', function () {
+            dispatcher.dispatch({
+                action_type: Actions.SEARCH_TEXT_ENTERED,
+                text: 'query',
+            });
+            let payload = dispatcher.last_payload_with_type(Actions.SEARCH_STARTED);
+            expect(payload.query).toBe('query');
+            payload = dispatcher.last_payload_with_type(Actions.SEARCH_READY);
+            expect(payload.query).toBe('query');
         });
     });
 
@@ -231,6 +242,11 @@ describe('Presenter', () => {
             dispatcher.dispatch({ action_type: Actions.HISTORY_FORWARD_CLICKED });
             Utils.update_gui();
             expect(view.show_page).toHaveBeenCalledWith(view.section_page);
+        });
+
+        it('dispatches a pair of show-set and set-ready when a set is clicked', function () {
+            expect(dispatcher.last_payload_with_type(Actions.SHOW_SET)).toBeDefined();
+            expect(dispatcher.last_payload_with_type(Actions.SET_READY)).toBeDefined();
         });
     });
 });

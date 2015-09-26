@@ -135,8 +135,6 @@ const MockView = new Lang.Class({
     remove_all_article_pages: function () {
         this._article_pages = [];
     },
-    lock_ui: function () {},
-    unlock_ui: function () {},
 });
 
 describe('Reader presenter', function () {
@@ -397,7 +395,7 @@ describe('Reader presenter', function () {
             expect(view.show_overview_page).toHaveBeenCalled();
         });
 
-        it('issues a search query after search-entered is dispatched', function (done) {
+        it('dispatches a pair of search-started and search-ready on search', function (done) {
             spyOn(view, 'show_search_results_page');
             dispatcher.dispatch({
                 action_type: Actions.SEARCH_TEXT_ENTERED,
@@ -438,13 +436,17 @@ describe('Reader presenter', function () {
             });
         });
 
-        it('dispatches search-failed if the search fails', function () {
+        it('dispatches a pair of search-started and search-failed if the search fails', function () {
             spyOn(window, 'logError');  // silence console output
             engine.get_objects_by_query_finish.and.throwError(new Error('jet fuel can\'t melt dank memes'));
             dispatcher.dispatch({
                 action_type: Actions.SEARCH_TEXT_ENTERED,
                 text: 'bad query',
             });
+            expect(dispatcher.dispatched_payloads).toContain(jasmine.objectContaining({
+                action_type: Actions.SEARCH_STARTED,
+                query: 'bad query',
+            }));
             expect(dispatcher.dispatched_payloads).toContain(jasmine.objectContaining({
                 action_type: Actions.SEARCH_FAILED,
                 query: 'bad query',
