@@ -135,11 +135,17 @@ const AppSearchProvider = Lang.Class({
             this._cancellable.cancel();
         this._cancellable = new Gio.Cancellable();
 
+        let query = terms.join(' ');
+        if (query.length === 0) {
+            invocation.return_value(new GLib.Variant('(as)', [[]]));
+            return;
+        }
+
         let app = Gio.Application.get_default();
         app.hold();
 
         let query_obj = new QueryObject.QueryObject({
-            query: terms.join(' '),
+            query: query,
             limit: this.NUM_RESULTS,
             domain: this.domain,
         });
