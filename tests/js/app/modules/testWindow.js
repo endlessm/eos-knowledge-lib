@@ -5,10 +5,12 @@ const GLib = imports.gi.GLib;
 const Utils = imports.tests.utils;
 Utils.register_gresource();
 
+const Actions = imports.app.actions;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
 const Lightbox = imports.app.widgets.lightbox;
 const Minimal = imports.tests.minimal;
+const MockDispatcher = imports.tests.mockDispatcher;
 const MockFactory = imports.tests.mockFactory;
 const MockWidgets = imports.tests.mockWidgets;
 const Window = imports.app.modules.window;
@@ -21,9 +23,11 @@ let resource = Gio.Resource.load(TEST_CONTENT_BUILDDIR + 'test-content.gresource
 resource._register();
 
 describe('Window', function () {
-    let app, view;
+    let app, view, dispatcher;
 
     beforeAll(function (done) {
+        dispatcher = MockDispatcher.mock_default();
+
         // Generate a unique ID for each app instance that we test
         let fake_pid = GLib.random_int();
         // FIXME In this version of GJS there is no Posix module, so fake the PID
@@ -96,5 +100,41 @@ describe('Window', function () {
 
     it('starts on home page', function () {
         expect(view.get_visible_page()).toBe(view.home_page);
+    });
+
+    it('indicates busy during a search', function () {
+        spyOn(view, 'set_busy');
+        dispatcher.dispatch({
+            action_type: Actions.SEARCH_STARTED,
+        });
+        expect(view.set_busy).toHaveBeenCalledWith(true);
+        dispatcher.dispatch({
+            action_type: Actions.SEARCH_READY,
+        });
+        expect(view.set_busy).toHaveBeenCalledWith(false);
+    });
+
+    it('indicates busy during a failed search', function () {
+        spyOn(view, 'set_busy');
+        dispatcher.dispatch({
+            action_type: Actions.SEARCH_STARTED,
+        });
+        expect(view.set_busy).toHaveBeenCalledWith(true);
+        dispatcher.dispatch({
+            action_type: Actions.SEARCH_FAILED,
+        });
+        expect(view.set_busy).toHaveBeenCalledWith(false);
+    });
+
+    it('indicates busy while querying a set', function () {
+        spyOn(view, 'set_busy');
+        dispatcher.dispatch({
+            action_type: Actions.SHOW_SET,
+        });
+        expect(view.set_busy).toHaveBeenCalledWith(true);
+        dispatcher.dispatch({
+            action_type: Actions.SET_READY,
+        });
+        expect(view.set_busy).toHaveBeenCalledWith(false);
     });
 });

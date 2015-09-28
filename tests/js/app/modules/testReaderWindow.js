@@ -131,4 +131,30 @@ describe('Window widget', function () {
         view.show_in_app_standalone_page();
         expect(view.article_pages_visible()).toBe(false);
     });
+
+    // The following two tests are identical to those in testWindow.js.
+    // To be removed when merging ReaderWindow and Window.
+    it('indicates busy during a search', function () {
+        spyOn(view, 'set_busy');
+        dispatcher.dispatch({
+            action_type: Actions.SEARCH_STARTED,
+        });
+        expect(view.set_busy).toHaveBeenCalledWith(true);
+        dispatcher.dispatch({
+            action_type: Actions.SEARCH_READY,
+        });
+        expect(view.set_busy).toHaveBeenCalledWith(false);
+    });
+
+    it('indicates busy during a failed search', function () {
+        spyOn(view, 'set_busy');
+        dispatcher.dispatch({
+            action_type: Actions.SEARCH_STARTED,
+        });
+        expect(view.set_busy).toHaveBeenCalledWith(true);
+        dispatcher.dispatch({
+            action_type: Actions.SEARCH_FAILED,
+        });
+        expect(view.set_busy).toHaveBeenCalledWith(false);
+    });
 });

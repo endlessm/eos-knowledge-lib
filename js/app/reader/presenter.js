@@ -366,10 +366,7 @@ const Presenter = new Lang.Class({
                     limit: RESULTS_SIZE,
                 });
 
-                this.view.lock_ui();
-
                 this.engine.get_objects_by_query(query_obj, null, (engine, task) => {
-                    this.view.unlock_ui();
                     try {
                         [results, get_more_results_query] = engine.get_objects_by_query_finish(task);
                     } catch (error) {

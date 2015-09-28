@@ -350,6 +350,10 @@ const Presenter = new Lang.Class({
                     model: item.model,
                 });
                 this._refresh_article_results(() => {
+                    dispatcher.dispatch({
+                        action_type: Actions.SET_READY,
+                        model: item.model,
+                    });
                     this.view.show_page(this.view.section_page);
                 });
                 break;
@@ -503,9 +507,7 @@ const Presenter = new Lang.Class({
         }
         this._current_article_results_item = item;
 
-        this.view.lock_ui();
         this.engine.get_objects_by_query(query_obj, null, (engine, task) => {
-            this.view.unlock_ui();
             let results, get_more_results_query;
             try {
                 [results, get_more_results_query] = engine.get_objects_by_query_finish(task);

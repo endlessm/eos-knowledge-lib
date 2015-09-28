@@ -182,6 +182,15 @@ const Window = new Lang.Class({
                 case Actions.HISTORY_FORWARD_ENABLED_CHANGED:
                     this._history_buttons.forward_button.sensitive = payload.enabled;
                     break;
+                case Actions.SEARCH_STARTED:
+                case Actions.SHOW_SET:
+                    this.set_busy(true);
+                    break;
+                case Actions.SEARCH_READY:
+                case Actions.SEARCH_FAILED:
+                case Actions.SET_READY:
+                    this.set_busy(false);
+                    break;
             }
         });
 
@@ -331,15 +340,15 @@ const Window = new Lang.Class({
         return this._stack.visible_child;
     },
 
-    lock_ui: function () {
+    set_busy: function (busy) {
         let gdk_window = this.page_manager.get_window();
-        gdk_window.cursor = Gdk.Cursor.new(Gdk.CursorType.WATCH);
-        this.page_manager.sensitive = false;
-    },
+        if (!gdk_window)
+            return;
 
-    unlock_ui: function () {
-        let gdk_window = this.page_manager.get_window();
-        gdk_window.cursor = Gdk.Cursor.new(Gdk.CursorType.ARROW);
-        this.page_manager.sensitive = true;
-    }
+        let cursor = null;
+        if (busy)
+            cursor = Gdk.Cursor.new_for_display(Gdk.Display.get_default(),
+                Gdk.CursorType.WATCH);
+        gdk_window.cursor = cursor;
+    },
 });
