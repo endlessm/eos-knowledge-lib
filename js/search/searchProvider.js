@@ -227,9 +227,27 @@ const GlobalSearchProvider = new Lang.Class({
     },
 
     _dispatchSubtree: function(dispatcher, subnode) {
-        let app_id = 'com.endlessm.' + subnode.replace(/_/g, '-');
-        if (!this._appSearchProviders[app_id])
-            this._appSearchProviders[app_id] = new AppSearchProvider({ application_id: app_id });
-        return this._appSearchProviders[app_id].skeleton;
+        if (this._appSearchProviders[subnode])
+            return this._appSearchProviders[subnode].skeleton;
+
+        // We translate dashes to underscores in our app-id to form a valid
+        // object path. We now need to reverse that.
+        let parts = subnode.split('_');
+        let ids_to_try = ['com.endlessm.' + parts.join('-')];
+        // Gross, but some app-ids actually have an underscore at the end for a
+        // locale country code. We need to check for that.
+        if (parts.length > 2) {
+            let last = parts.pop();
+            ids_to_try.push('com.endlessm.' + parts.join('-') + '_' + last);
+        }
+
+        for (let app_id of ids_to_try) {
+            if (Gio.DesktopAppInfo.new(app_id + '.desktop') === null)
+                continue;
+            let provider = new AppSearchProvider({ application_id: app_id });
+            this._appSearchProviders[subnode] = provider;
+            return provider.skeleton;
+        }
+        return null;
     },
 });
