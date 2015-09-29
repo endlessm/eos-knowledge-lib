@@ -6,6 +6,7 @@ const Lang = imports.lang;
 const Engine = imports.search.engine;
 const LegacySearchProvider = imports.search.searchProvider;
 const PresenterLoader = imports.app.presenterLoader;
+const Utils = imports.search.utils;
 
 const KnowledgeSearchIface = '\
 <node> \
@@ -32,15 +33,15 @@ const Application = new Lang.Class({
         this._presenter = null;
         this._knowledge_search_impl = Gio.DBusExportedObject.wrapJSObject(KnowledgeSearchIface, this);
 
-        let domain = this.application_id.split('.').pop();
-        Engine.Engine.get_default().default_domain = domain;
+        Engine.Engine.get_default().default_domain = Utils.domain_from_app_id(this.application_id);
 
         // HACK for legacy compatibility: if the user has an old bundle with
         // a new eos-knowledge-lib, their search-provider ini files will have
         // the application ID rather than ekn-search-provider. Export an old
         // search provider for them.
-        this._legacy_search_provider =
-            new LegacySearchProvider.AppSearchProvider({ domain: domain });
+        this._legacy_search_provider = new LegacySearchProvider.AppSearchProvider({
+            application_id: this.application_id,
+        });
     },
 
     vfunc_dbus_register: function (connection, path) {

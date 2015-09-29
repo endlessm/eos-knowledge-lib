@@ -7,6 +7,7 @@ const Lang = imports.lang;
 
 const Engine = imports.search.engine;
 const QueryObject = imports.search.queryObject;
+const Utils = imports.search.utils;
 
 const SearchIface = '\
 <node name="/" xmlns:doc="http://www.freedesktop.org/dbus/1.0/doc.dtd"> \
@@ -78,15 +79,12 @@ const AppSearchProvider = Lang.Class({
 
     Properties: {
         /**
-         * Property: domain
-         *
-         * The domain to use to find content.
-         *
-         * e.g. animals-es
+         * Property: id
+         * The app id of the application this provider is for.
          */
-        'domain': GObject.ParamSpec.string('domain',
-            'Domain', 'The domain to use for queries',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
+        'application-id': GObject.ParamSpec.string('application-id',
+            'Application ID', 'Application ID',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             ''),
     },
 
@@ -108,11 +106,9 @@ const AppSearchProvider = Lang.Class({
     _ensure_app_proxy: function () {
         if (this._app_proxy !== null)
             return;
-        let appID = 'com.endlessm.' + this.domain;
-        let objectPath = '/com/endlessm/' + this.domain.replace(/\./g, '/').replace(/-/g, '_');
         this._app_proxy = new Gio.DBusProxy({ g_bus_type: Gio.BusType.SESSION,
-                                              g_name: appID,
-                                              g_object_path: objectPath,
+                                              g_name: this.application_id,
+                                              g_object_path: Utils.object_path_from_app_id(this.application_id),
                                               g_interface_info: KnowledgeSearchIfaceInfo,
                                               g_interface_name: KnowledgeSearchIfaceInfo.name,
                                               g_flags: (Gio.DBusProxyFlags.DO_NOT_AUTO_START_AT_CONSTRUCTION |
@@ -141,7 +137,7 @@ const AppSearchProvider = Lang.Class({
         let query_obj = new QueryObject.QueryObject({
             query: terms.join(' '),
             limit: this.NUM_RESULTS,
-            domain: this.domain,
+            domain: Utils.domain_from_app_id(this.application_id),
         });
         this._engine.get_objects_by_query(query_obj,
                                           this._cancellable,
@@ -231,9 +227,9 @@ const GlobalSearchProvider = new Lang.Class({
     },
 
     _dispatchSubtree: function(dispatcher, subnode) {
-        let domain = subnode.replace(/_/g, '-');
-        if (!this._appSearchProviders[domain])
-            this._appSearchProviders[domain] = new AppSearchProvider({ domain: domain });
-        return this._appSearchProviders[domain].skeleton;
+        let app_id = 'com.endlessm.' + subnode.replace(/_/g, '-');
+        if (!this._appSearchProviders[app_id])
+            this._appSearchProviders[app_id] = new AppSearchProvider({ application_id: app_id });
+        return this._appSearchProviders[app_id].skeleton;
     },
 });
