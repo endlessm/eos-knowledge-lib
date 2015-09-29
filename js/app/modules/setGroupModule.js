@@ -12,10 +12,14 @@ const Dispatcher = imports.app.dispatcher;
 const Expandable = imports.app.interfaces.expandable;
 const InfiniteScrolledWindow = imports.app.widgets.infiniteScrolledWindow;
 const Module = imports.app.interfaces.module;
+const StyleClasses = imports.app.styleClasses;
 
 /**
  * Class: SetGroupModule
  * A module that displays all application sets as cards in an arrangement.
+ *
+ * CSS Styles:
+ *      set-group - on the module
  *
  * Slots:
  *   arrangement
@@ -48,6 +52,7 @@ const SetGroupModule = new Lang.Class({
         this.has_more_content = false;
         this._arrangement = this.create_submodule('arrangement');
         this.add(this._arrangement);
+        this.get_style_context().add_class(StyleClasses.SET_GROUP);
 
         let dispatcher = Dispatcher.get_default();
         if (this._arrangement instanceof InfiniteScrolledWindow.InfiniteScrolledWindow) {
