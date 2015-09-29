@@ -428,7 +428,7 @@ const Presenter = new Lang.Class({
 
     // Launcher override
     search: function (timestamp, query) {
-        this._on_search_entered(this.view, query);
+        this._on_search_text_entered(query);
         this.view.present_with_time(timestamp);
     },
 
