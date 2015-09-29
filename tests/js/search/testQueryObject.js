@@ -197,6 +197,36 @@ describe('QueryObject', function () {
             expect(result).toMatch('NOT tag:"bar"');
         });
 
+        it('should handle large queries', function () {
+            let long_query = 'q'.repeat(300);
+            let query_obj = new QueryObject.QueryObject({
+                query: long_query,
+            });
+            let result = query_obj.get_query_parser_string(query_obj);
+            let limited_result = 'exact_title:Q' + 'q'.repeat(244);
+            expect(result).toMatch(limited_result)
+            // 245 is the term limit so adding an extra letter should not match
+            let too_big_result = limited_result + 'q';
+            expect(result).not.toMatch(too_big_result)
+        });
+
+        it('should handle large queries with non-ASCII characters', function () {
+            let long_query = 'ç'.repeat(300);
+            let query_obj = new QueryObject.QueryObject({
+                query: long_query,
+            });
+            let result = query_obj.get_query_parser_string(query_obj);
+            // Each ç is two bytes so we can only fit half as many. Then since
+            // 245 is an odd number, this will leave us with a byte sequence
+            // that does not correspond to a full character sequence so we
+            // must remove one more byte.
+            let limited_result = 'exact_title:Ç' + 'ç'.repeat((244/2) - 1);
+            expect(result).toMatch(limited_result)
+            // 245 is the term limit so adding an extra letter should not match
+            let too_big_result = limited_result + 'ç';
+            expect(result).not.toMatch(too_big_result)
+        });
+
         describe('id checking code', function () {
             it('validates a simple EKN ID', function () {
                 let query_obj = new QueryObject.QueryObject({

@@ -1,4 +1,5 @@
 // Copyright 2015 Endless Mobile, Inc.
+const ByteArray = imports.byteArray;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
@@ -210,6 +211,9 @@ const QueryObject = Lang.Class({
         this.parent(props);
     },
 
+    // Limits the length of the search query the user enters.
+    MAX_TERM_LENGTH: 245,
+
     _sanitized_query: function () {
         // Remove excess white space
         let query = this.query.split(_WHITESPACE_REGEX).join(' ').trim();
@@ -236,7 +240,29 @@ const QueryObject = Lang.Class({
 
     _query_clause: function () {
         let sanitized_query = this._sanitized_query();
-        let terms = sanitized_query.split(_TERM_DELIMITER_REGEX);
+        let truncate_bytes = (term) => {
+            let new_arr = [];
+            let arr = ByteArray.fromString(term);
+            // Create a new byte array by copying over characters from the term
+            // up to the max term length
+            for (let i = 0; i < Math.min(arr.length, this.MAX_TERM_LENGTH); i++) {
+                new_arr[i] = arr[i];
+            }
+
+            // Try to create a string out of this truncated byte array. If
+            // we get an error (because we have chopped off a byte in the
+            // middle of a unicode character) try chopping off more until we
+            // get to complete character sequence.
+            while (new_arr.length > 0) {
+                try {
+                    return ByteArray.fromArray(new_arr).toString();
+                } catch (err) {
+                    new_arr.pop();
+                }
+            }
+            return '';
+        }
+        let terms = sanitized_query.split(_TERM_DELIMITER_REGEX).map(truncate_bytes);
         let exact_title_clause = _XAPIAN_PREFIX_EXACT_TITLE + terms.map(Utils.capitalize).join('_');
 
         if (sanitized_query.length === 0)
