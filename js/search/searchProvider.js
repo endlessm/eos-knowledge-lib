@@ -7,6 +7,7 @@ const Lang = imports.lang;
 
 const Engine = imports.search.engine;
 const QueryObject = imports.search.queryObject;
+const Utils = imports.search.utils;
 
 const SearchIface = '\
 <node name="/" xmlns:doc="http://www.freedesktop.org/dbus/1.0/doc.dtd"> \
@@ -61,16 +62,13 @@ const KnowledgeSearchIfaceInfo = Gio.DBusInterfaceInfo.new_for_xml(KnowledgeSear
 /**
  * Class: SearchProvider
  *
- * Adds search provider functionality to a knowledge app, to be used through
- * dbus by the shell's global search. To use you will need to extend the
- * vfunc_dbus_register and vfunc_dbus_unregister virtual functions on a
- * GApplication and call into the export and unexport function here. This class
- * will then run queries into the <search-domain> given and return the results
- * to the shell.
+ * A search provider for a single knowledge app, to be used through dbus by the
+ * shell's global search. Requires the app id of the knowledge app it should run
+ * searches for.
  *
- * Exposes two signals <load-page> and <load-query> when the shell asks
- * for a particular search result to be activated. You will want to connect
- * to both of those signals.
+ * This search provider will activate the actual knowledge app over dbus with a
+ * result or search to display. As such, it can be used from in or outside of
+ * the actual application process.
  */
 const AppSearchProvider = Lang.Class({
     Name: 'EknAppSearchProvider',
@@ -78,15 +76,12 @@ const AppSearchProvider = Lang.Class({
 
     Properties: {
         /**
-         * Property: domain
-         *
-         * The domain to use to find content.
-         *
-         * e.g. animals-es
+         * Property: id
+         * The app id of the application this provider is for.
          */
-        'domain': GObject.ParamSpec.string('domain',
-            'Domain', 'The domain to use for queries',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
+        'application-id': GObject.ParamSpec.string('application-id',
+            'Application ID', 'Application ID',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             ''),
     },
 
@@ -108,11 +103,9 @@ const AppSearchProvider = Lang.Class({
     _ensure_app_proxy: function () {
         if (this._app_proxy !== null)
             return;
-        let appID = 'com.endlessm.' + this.domain;
-        let objectPath = '/com/endlessm/' + this.domain.replace(/\./g, '/').replace(/-/g, '_');
         this._app_proxy = new Gio.DBusProxy({ g_bus_type: Gio.BusType.SESSION,
-                                              g_name: appID,
-                                              g_object_path: objectPath,
+                                              g_name: this.application_id,
+                                              g_object_path: Utils.object_path_from_app_id(this.application_id),
                                               g_interface_info: KnowledgeSearchIfaceInfo,
                                               g_interface_name: KnowledgeSearchIfaceInfo.name,
                                               g_flags: (Gio.DBusProxyFlags.DO_NOT_AUTO_START_AT_CONSTRUCTION |
@@ -147,7 +140,7 @@ const AppSearchProvider = Lang.Class({
         let query_obj = new QueryObject.QueryObject({
             query: query,
             limit: this.NUM_RESULTS,
-            domain: this.domain,
+            domain: Utils.domain_from_app_id(this.application_id),
         });
         this._engine.get_objects_by_query(query_obj,
                                           this._cancellable,
@@ -237,9 +230,27 @@ const GlobalSearchProvider = new Lang.Class({
     },
 
     _dispatchSubtree: function(dispatcher, subnode) {
-        let domain = subnode.replace(/_/g, '-');
-        if (!this._appSearchProviders[domain])
-            this._appSearchProviders[domain] = new AppSearchProvider({ domain: domain });
-        return this._appSearchProviders[domain].skeleton;
+        if (this._appSearchProviders[subnode])
+            return this._appSearchProviders[subnode].skeleton;
+
+        // We translate dashes to underscores in our app-id to form a valid
+        // object path. We now need to reverse that.
+        let parts = subnode.split('_');
+        let ids_to_try = ['com.endlessm.' + parts.join('-')];
+        // Gross, but some app-ids actually have an underscore at the end for a
+        // locale country code. We need to check for that.
+        if (parts.length > 2) {
+            let last = parts.pop();
+            ids_to_try.push('com.endlessm.' + parts.join('-') + '_' + last);
+        }
+
+        for (let app_id of ids_to_try) {
+            if (Gio.DesktopAppInfo.new(app_id + '.desktop') === null)
+                continue;
+            let provider = new AppSearchProvider({ application_id: app_id });
+            this._appSearchProviders[subnode] = provider;
+            return provider.skeleton;
+        }
+        return null;
     },
 });

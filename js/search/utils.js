@@ -40,6 +40,14 @@ function components_from_ekn_id (ekn_id) {
     return stripped_ekn_id.split('/');
 }
 
+function domain_from_app_id (app_id) {
+    return app_id.split('.').pop();
+}
+
+function object_path_from_app_id (app_id) {
+    return '/' + app_id.replace(/\./g, '/').replace(/-/g, '_');
+}
+
 // String operations
 let parenthesize = (clause) => '(' + clause + ')';
 let capitalize = (word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
