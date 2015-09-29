@@ -62,16 +62,13 @@ const KnowledgeSearchIfaceInfo = Gio.DBusInterfaceInfo.new_for_xml(KnowledgeSear
 /**
  * Class: SearchProvider
  *
- * Adds search provider functionality to a knowledge app, to be used through
- * dbus by the shell's global search. To use you will need to extend the
- * vfunc_dbus_register and vfunc_dbus_unregister virtual functions on a
- * GApplication and call into the export and unexport function here. This class
- * will then run queries into the <search-domain> given and return the results
- * to the shell.
+ * A search provider for a single knowledge app, to be used through dbus by the
+ * shell's global search. Requires the app id of the knowledge app it should run
+ * searches for.
  *
- * Exposes two signals <load-page> and <load-query> when the shell asks
- * for a particular search result to be activated. You will want to connect
- * to both of those signals.
+ * This search provider will activate the actual knowledge app over dbus with a
+ * result or search to display. As such, it can be used from in or outside of
+ * the actual application process.
  */
 const AppSearchProvider = Lang.Class({
     Name: 'EknAppSearchProvider',
