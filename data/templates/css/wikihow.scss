@@ -96,7 +96,7 @@ $rhythm: 22px;
     padding: 20px $in-cols * 2;
     color: $gray;
     font: 0.8125em $font1; /* 13px / 12px/em * 72/96 */
-    line-height: $rhythm;
+    line-height: 1.71;
     img {
         height: auto;
         max-width: 100%;
@@ -104,14 +104,14 @@ $rhythm: 22px;
     .eos-article-title {
         color: $gray-dark;
         font: 1.875em $font1; /* 30px / 12px/em * 72/96 */
-        line-height: 1.375em; /* 22px / 12px/em * 72/96 */
+        line-height: 1.375;
         margin-bottom: 36px;
         margin-top: 22px;
     }
     h2, h3, .firstHeading, h4 {
         color: $gray-dark;
         font: 900 0.875em $font2; /* 14px / 12px/em * 72/96 */
-        line-height: $rhythm - 5;
+        line-height: 1.55;
         margin-bottom: $rhythm;
         // text-transform: uppercase
         a {
@@ -208,7 +208,7 @@ h2 + ol, h3 + ol, .steps_list_2 {
 .sd_thumb {
     border: 5px solid #fff;
     background: #fff;
-    line-height: 1.4em;
+    line-height: 1.4;
     margin-bottom: $rhythm;
     @include box-shadow(0 0 6px 0 rgba(#000, 0.3));
     @include box-sizing(border-box);

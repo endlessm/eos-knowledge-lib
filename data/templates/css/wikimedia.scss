@@ -87,7 +87,7 @@ html {
     $rhythm: 22px;
     color: $gray;
     font: 0.8125em $font1; /* 13px / 12px/em * 72/96 */
-    line-height: $rhythm;
+    line-height: 1.71;
     padding: 20px $cols * 2;
     a {
         color: #277090;
@@ -100,14 +100,14 @@ html {
     .eos-article-title {
         color: $gray-dark;
         font: 1.875em $font1; /* 30px / 12px/em * 72/96 */
-        line-height: 1.375em; /* 22px / 12px/em * 72/96 */
+        line-height: 1.375;
         margin-bottom: 36px;
         margin-top: 22px;
     }
     h2, .firstHeading {
         color: $gray-dark;
         font: 900 1.125em $font2; /* 18px / 12px/em * 72/96 */
-        line-height: $rhythm;
+        line-height: 1.47;
         margin-bottom: $rhythm;
         margin-top: $rhythm;
         // text-transform: uppercase
@@ -281,7 +281,12 @@ html {
         @include box-sizing(border-box);
     }
     .infobox, .infobox_v2 {
-        line-height: 1.4em;
+        th {
+            line-height: 1.6;
+        }
+        td {
+            line-height: 2.0;
+        }
         // &.geography
         *[style*="nowrap"] {
             white-space: normal !important;
@@ -366,7 +371,7 @@ html {
         width: 100%;
     }
     .thumbcaption {
-        line-height: 1.4em;
+        line-height: 1.4;
     }
 }
 
