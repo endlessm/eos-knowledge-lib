@@ -33,6 +33,10 @@ const PaperTemplate = new Lang.Class({
     Template: 'resource:///com/endlessm/knowledge/widgets/paperTemplate.ui',
     InternalChildren: [ 'content-frame' ],
 
+    // The fraction of extra space each margin should grab, from [0, 0.5]
+    _MARGIN_FILL_FRACTION: 0.3,
+    _NATURAL_PAPER_WIDTH: 700,
+
     _init: function (props={}) {
         this.parent(props);
 
@@ -42,7 +46,9 @@ const PaperTemplate = new Lang.Class({
 
     vfunc_size_allocate: function (alloc) {
         this.set_allocation(alloc);
-        let margin = alloc.width / 5;
+        let [min, nat] = this.get_child().get_preferred_width();
+        let extra = Math.max(alloc.width - Math.max(nat, this._NATURAL_PAPER_WIDTH), 0);
+        let margin = extra * this._MARGIN_FILL_FRACTION;
         let content_alloc = new Cairo.RectangleInt({
             x: alloc.x + margin,
             y: alloc.y,
