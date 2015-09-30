@@ -2,6 +2,7 @@ const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Format = imports.format;
 const Gdk = imports.gi.Gdk;
 const Gettext = imports.gettext;
+const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
 
 const Config = imports.app.config;
@@ -111,4 +112,12 @@ function object_to_css_string (obj, selector="*") {
     }
     css_string += "}\n";
     return css_string;
+}
+
+const DESKTOP_INTERFACE_SCHEMA = 'org.gnome.desktop.interface';
+const TEXT_SCALING_KEY = 'text-scaling-factor';
+
+function get_text_scaling_factor () {
+    let settings = new Gio.Settings({ schema: DESKTOP_INTERFACE_SCHEMA });
+    return settings.get_double(TEXT_SCALING_KEY);
 }
