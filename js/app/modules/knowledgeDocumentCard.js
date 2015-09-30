@@ -363,7 +363,7 @@ const KnowledgeDocumentCard = new Lang.Class({
         }
         let [toolbar_min, toolbar_nat] = this._toolbar_frame.get_preferred_width();
         let [switcher_min, switcher_nat] = this._content_frame.get_preferred_width();
-        return [toolbar_min + switcher_min, toolbar_nat + switcher_nat];
+        return [switcher_min, toolbar_nat + switcher_nat];
     },
 
     vfunc_get_preferred_height_for_width: function (width) {
