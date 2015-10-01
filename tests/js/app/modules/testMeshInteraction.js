@@ -119,7 +119,6 @@ describe('Mesh interaction', function () {
         engine.get_objects_by_query_finish.and.returnValue([sections.map((section) =>
             new ContentObjectModel.ContentObjectModel(section)), null]);
         view = new MockView();
-        spyOn(view, 'show_page');
 
         mesh = new MeshInteraction.MeshInteraction({
             application: application,
@@ -151,7 +150,7 @@ describe('Mesh interaction', function () {
             model: new ContentObjectModel.ContentObjectModel(),
         });
         Utils.update_gui();
-        expect(view.show_page).toHaveBeenCalledWith(view.section_page);
+        expect(dispatcher.last_payload_with_type(Actions.SHOW_SECTION_PAGE)).toBeDefined();
     });
 
     describe('search', function () {
@@ -170,7 +169,7 @@ describe('Mesh interaction', function () {
                 }),
                 jasmine.any(Object),
                 jasmine.any(Function));
-            expect(view.show_page).toHaveBeenCalledWith(view.search_page);
+                expect(dispatcher.last_payload_with_type(Actions.SHOW_SEARCH_PAGE)).toBeDefined();
         });
 
         it('records a metric', function () {
@@ -212,14 +211,14 @@ describe('Mesh interaction', function () {
         it('leads back to the home page', function () {
             dispatcher.dispatch({ action_type: Actions.HISTORY_BACK_CLICKED });
             Utils.update_gui();
-            expect(view.show_page).toHaveBeenCalledWith(view.home_page);
+            expect(dispatcher.last_payload_with_type(Actions.SHOW_HOME_PAGE)).toBeDefined();
         });
 
         it('leads back to the section page', function () {
             view.emit('search-entered', 'query not found');
             dispatcher.dispatch({ action_type: Actions.HISTORY_BACK_CLICKED });
             Utils.update_gui();
-            expect(view.show_page).toHaveBeenCalledWith(view.section_page);
+            expect(dispatcher.last_payload_with_type(Actions.SHOW_SECTION_PAGE)).toBeDefined();
         });
 
         it('leads forward to the section page', function () {
@@ -227,7 +226,7 @@ describe('Mesh interaction', function () {
             Utils.update_gui();
             dispatcher.dispatch({ action_type: Actions.HISTORY_FORWARD_CLICKED });
             Utils.update_gui();
-            expect(view.show_page).toHaveBeenCalledWith(view.section_page);
+            expect(dispatcher.last_payload_with_type(Actions.SHOW_SECTION_PAGE)).toBeDefined();
         });
     });
 });

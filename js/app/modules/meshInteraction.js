@@ -220,13 +220,17 @@ const MeshInteraction = new Lang.Class({
                         model: item.model,
                         animation_type: EosKnowledgePrivate.LoadingAnimation.NONE,
                     });
-                    this.view.show_page(this.view.article_page);
+                    dispatcher.dispatch({
+                        action_type: Actions.SHOW_ARTICLE_PAGE,
+                    });
                     return;
                 case this.SEARCH_PAGE:
                     this._do_search_in_view(item);
                     return;
                 case this.HOME_PAGE:
-                    this.view.show_home_page();
+                    dispatcher.dispatch({
+                        action_type: Actions.SHOW_HOME_PAGE,
+                    });
                     return;
             }
         } else {
@@ -241,7 +245,9 @@ const MeshInteraction = new Lang.Class({
                         action_type: Actions.SEARCH_STARTED,
                         query: item.query,
                     });
-                    this.view.show_page(this.view.search_page);
+                    dispatcher.dispatch({
+                        action_type: Actions.SHOW_SEARCH_PAGE,
+                    });
                     this._refresh_article_results((success) => {
                         if (!success) {
                             dispatcher.dispatch({
@@ -249,7 +255,9 @@ const MeshInteraction = new Lang.Class({
                                 query: item.query,
                                 error: new Error('Search failed for unknown reason'),
                             });
-                            this.view.show_page(this.view.search_page);
+                            dispatcher.dispatch({
+                                action_type: Actions.SHOW_SEARCH_PAGE,
+                            });
                             return;
                         }
                         dispatcher.dispatch({
@@ -269,7 +277,9 @@ const MeshInteraction = new Lang.Class({
                             action_type: Actions.SET_READY,
                             model: item.model,
                         });
-                        this.view.show_page(this.view.section_page);
+                        dispatcher.dispatch({
+                            action_type: Actions.SHOW_SECTION_PAGE,
+                        });
                     });
                     break;
                 case this.ARTICLE_PAGE:
@@ -288,7 +298,9 @@ const MeshInteraction = new Lang.Class({
                     this._load_document_card_in_view(item, is_going_back);
                     break;
                 case this.HOME_PAGE:
-                    this.view.show_page(this.view.home_page);
+                    dispatcher.dispatch({
+                        action_type: Actions.SHOW_HOME_PAGE,
+                    });
             }
         }
         dispatcher.dispatch({
@@ -303,8 +315,9 @@ const MeshInteraction = new Lang.Class({
             query: item.query,
         });
 
-        if (this.view.get_visible_page() !== this.view.search_results_page)
-            this.view.show_page(this.view.search_results_page);
+        Dispatcher.get_default().dispatch({
+            action_type: Actions.SHOW_SEARCH_PAGE,
+        });
         this.view.set_focus_child(null);
         let query_obj = new QueryObject.QueryObject({
             query: item.query,
@@ -422,7 +435,9 @@ const MeshInteraction = new Lang.Class({
         let animation_type = EosKnowledgePrivate.LoadingAnimationType.FORWARDS_NAVIGATION;
         if (this.view.get_visible_page() !== this.view.article_page) {
             animation_type = EosKnowledgePrivate.LoadingAnimationType.NONE;
-            this.view.show_page(this.view.article_page);
+            dispatcher.dispatch({
+                action_type: Actions.SHOW_ARTICLE_PAGE,
+            });
         } else if (is_going_back) {
             animation_type = EosKnowledgePrivate.LoadingAnimationType.BACKWARDS_NAVIGATION;
         }

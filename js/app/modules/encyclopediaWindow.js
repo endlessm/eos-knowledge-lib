@@ -72,6 +72,15 @@ const EncyclopediaWindow = new Lang.Class({
                 case Actions.HISTORY_FORWARD_ENABLED_CHANGED:
                     this._history_buttons.forward_button.sensitive = payload.enabled;
                     break;
+                case Actions.SHOW_HOME_PAGE:
+                    this.show_page(this.home_page);
+                    break;
+                case Actions.SHOW_SEARCH_PAGE:
+                    this.show_page(this.search_results_page);
+                    break;
+                case Actions.SHOW_ARTICLE_PAGE:
+                    this.show_page(this.article_page);
+                    break;
             }
         });
 
