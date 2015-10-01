@@ -97,5 +97,6 @@ const ArticleStackModule = new Lang.Class({
                 logError(error);
             }
         });
+        this.content = document_card;
     },
 });
