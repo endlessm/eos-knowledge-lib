@@ -5,7 +5,6 @@ data/widgets/readerCard.ui
 data/widgets/searchModule.ui
 js/app/articleHTMLRenderer.js
 js/app/compat/compat.js
-js/app/encyclopedia/presenter.js
 js/app/modules/encyclopediaWindow.js
 js/app/modules/homePageATemplate.js
 js/app/modules/readerCard.js

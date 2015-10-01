@@ -217,7 +217,6 @@ js_files = \
 	js/app/compat/styleKnobGenerator.js \
 	js/app/config.js \
 	js/app/dispatcher.js \
-	js/app/encyclopedia/presenter.js \
 	js/app/historyItem.js \
 	js/app/historyPresenter.js \
 	js/app/interfaces/arrangement.js \
@@ -264,7 +263,6 @@ js_files = \
 	js/app/modules/twoVerticalTemplate.js \
 	js/app/modules/window.js \
 	js/app/mustache.js \
-	js/app/presenter.js \
 	js/app/presenterLoader.js \
 	js/app/reader/presenter.js \
 	js/app/reader/standalonePage.js \
@@ -396,7 +394,6 @@ javascript_tests = \
 	tests/js/app/testHistoryItem.js \
 	tests/js/app/testHistoryPresenter.js \
 	tests/js/app/testModuleFactory.js \
-	tests/js/app/testPresenter.js \
 	tests/js/app/testStyleKnobGenerator.js \
 	tests/js/app/testUtils.js \
 	tests/js/app/widgets/testLightbox.js \

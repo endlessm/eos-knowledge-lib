@@ -39,19 +39,15 @@ let setup_presenter_for_resource = function (application, resource_path) {
     let PresenterClass;
     switch(app_json['templateType']) {
         case 'A':
-        case 'B': {
-            const Presenter = imports.app.presenter;
-            PresenterClass = Presenter.Presenter;
+        case 'B':
+        case 'encyclopedia': {
+            const MeshInteraction = imports.app.modules.meshInteraction;
+            PresenterClass = MeshInteraction.MeshInteraction;
         }
             break;
         case 'reader': {
             const ReaderPresenter = imports.app.reader.presenter;
             PresenterClass = ReaderPresenter.Presenter;
-        }
-            break;
-        case 'encyclopedia': {
-            const EncyclopediaPresenter = imports.app.encyclopedia.presenter;
-            PresenterClass = EncyclopediaPresenter.EncyclopediaPresenter;
         }
             break;
         default:
