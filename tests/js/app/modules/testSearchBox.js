@@ -32,7 +32,7 @@ describe('Search box module', function () {
         expect(box).toHaveCssClass(StyleClasses.SEARCH_BOX);
     });
 
-    it('sets search text when set-search-text is dispatcher', function () {
+    it('sets search text when set-search-text is dispatched', function () {
         dispatcher.dispatch({
             action_type: Actions.SET_SEARCH_TEXT,
             text: 'foo',
