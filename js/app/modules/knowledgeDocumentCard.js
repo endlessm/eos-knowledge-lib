@@ -388,6 +388,6 @@ const KnowledgeDocumentCard = new Lang.Class({
     },
 
     _should_collapse: function (total_width) {
-        return total_width < this.COLLAPSE_TOOLBAR_WIDTH * Utils.get_text_scaling_factor();
+        return total_width <= this.COLLAPSE_TOOLBAR_WIDTH * Utils.get_text_scaling_factor();
     },
 });
