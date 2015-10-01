@@ -105,6 +105,7 @@ const Window = new Lang.Class({
             'Which template the window should display with',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, 'A'),
     },
+
     Signals: {
         /**
          * Event: search-focused
@@ -190,6 +191,18 @@ const Window = new Lang.Class({
                 case Actions.SEARCH_FAILED:
                 case Actions.SET_READY:
                     this.set_busy(false);
+                    break;
+                case Actions.SHOW_HOME_PAGE:
+                    this.show_page(this.home_page);
+                    break;
+                case Actions.SHOW_SECTION_PAGE:
+                    this.show_page(this.section_page);
+                    break;
+                case Actions.SHOW_SEARCH_PAGE:
+                    this.show_page(this.search_page);
+                    break;
+                case Actions.SHOW_ARTICLE_PAGE:
+                    this.show_page(this.article_page);
                     break;
             }
         });
@@ -291,9 +304,6 @@ const Window = new Lang.Class({
         this.get_style_context().add_class(klass);
     },
 
-    /**
-     * Method: show_page
-     */
     show_page: function (new_page) {
         let old_page = this.get_visible_page();
         if (old_page === new_page)
