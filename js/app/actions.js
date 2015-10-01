@@ -41,3 +41,4 @@ const SHOW_MEDIA = 'show-media';
 const HIDE_MEDIA = 'hide-media';
 const SHOW_ARTICLE_SEARCH = 'show-article-search';
 const HIDE_ARTICLE_SEARCH = 'hide-article-search';
+const FOCUS_SEARCH = 'focus-search';

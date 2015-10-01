@@ -40,6 +40,17 @@ describe('Search box module', function () {
         expect(box.text).toBe('foo');
     });
 
+    it('has focus when focus-search is dispatched', function () {
+        // Search box needs to be mapped and realized before grabbing focus can
+        // take effect, so we stick it in a Gtk.Window first.
+        let win = new Gtk.OffscreenWindow();
+        win.add(box);
+        dispatcher.dispatch({
+            action_type: Actions.FOCUS_SEARCH,
+        });
+        expect(box.is_focus).toBe(true);
+    });
+
     it('dispatches search-text-entered when text is activated', function () {
         box.set_text_programmatically('foo');
         box.emit('activate');
