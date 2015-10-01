@@ -460,13 +460,8 @@ const MeshInteraction = new Lang.Class({
     _refresh_article_results: function (item, callback) {
         let query_obj = null;
         if (item.page_type === this.SECTION_PAGE) {
-            let tags = item.model.tags.slice();
-            let home_page_tag_index = tags.indexOf(Engine.HOME_PAGE_TAG);
-            if (home_page_tag_index !== -1)
-                tags.splice(home_page_tag_index, 1);
-
             query_obj = new QueryObject.QueryObject({
-                tags: tags,
+                tags: item.model.tags.filter(t => !t.startsWith('Ekn')),
                 limit: RESULTS_SIZE,
             });
         } else if (item.query) {

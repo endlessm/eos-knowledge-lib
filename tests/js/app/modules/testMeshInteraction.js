@@ -107,7 +107,7 @@ describe('Mesh interaction', function () {
             {
                 title: 'Whitewalkers',
                 thumbnail_uri: 'resource:///com/endlessm/thrones/whitewalker.jpg',
-                tags: ['home page', 'asia', 'latin america'],
+                tags: ['EknHomePageTag', 'asia', 'latin america'],
             },
             {
                 title: 'Weddings',

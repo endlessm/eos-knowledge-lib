@@ -19,7 +19,7 @@ const Utils = imports.search.utils;
  * Constant: HOME_PAGE_TAG
  * Special tag value indicating content for the app's home page
  */
-const HOME_PAGE_TAG = 'home page';
+const HOME_PAGE_TAG = 'EknHomePageTag';
 
 /**
  * Class: Engine
