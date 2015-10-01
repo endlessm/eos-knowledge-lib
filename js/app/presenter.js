@@ -195,6 +195,10 @@ const Presenter = new Lang.Class({
             }
         });
 
+        dispatcher.dispatch({
+            action_type: Actions.FOCUS_SEARCH,
+        });
+
         this._history_presenter.connect('history-item-changed', this._on_history_item_change.bind(this));
 
         this._current_article_results_item = null;

@@ -54,6 +54,11 @@ const SearchBox = new Lang.Class({
                 case Actions.SET_SEARCH_TEXT:
                     this.set_text_programmatically(payload.text);
                     break;
+                case Actions.FOCUS_SEARCH:
+                    if (this.visible) {
+                        this.grab_focus();
+                    }
+                    break;
             }
         });
 
