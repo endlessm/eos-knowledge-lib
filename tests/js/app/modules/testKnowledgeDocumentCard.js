@@ -46,6 +46,7 @@ describe('Document Card', function () {
         });
         card = new KnowledgeDocumentCard.KnowledgeDocumentCard({
             model: articleObject,
+            show_toc: true,
         });
     });
 
@@ -65,6 +66,38 @@ describe('Document Card', function () {
             }
         }
         expect(card.toc.section_list).toEqual(labels);
+    });
+
+    describe('table of contents', function () {
+        let win;
+        const TOP_BOTTOM_BAR_HEIGHT = 36 + 30;
+        beforeEach(function (done) {
+            card.load_content(null, () => {
+                win = new Gtk.OffscreenWindow();
+                win.add(card);
+                win.show_all();
+                done();
+            });
+        });
+
+        it('collapses toc at SVGA', function () {
+            win.set_size_request(800, 600 - TOP_BOTTOM_BAR_HEIGHT);
+            Utils.update_gui();
+            expect(card.toc.collapsed).toBe(true);
+        });
+
+        it('does not collapse toc at XGA', function () {
+            win.set_size_request(1024, 768 - TOP_BOTTOM_BAR_HEIGHT);
+            Utils.update_gui();
+            expect(card.toc.collapsed).toBe(false);
+        });
+
+        it('collapses in composite mode', function () {
+            spyOn(imports.app.utils, 'get_text_scaling_factor').and.returnValue(2.2);
+            win.set_size_request(1600, 1200 - TOP_BOTTOM_BAR_HEIGHT);
+            Utils.update_gui();
+            expect(card.toc.collapsed).toBe(true);
+        });
     });
 
     describe('Style class of document card', function () {

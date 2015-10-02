@@ -6,7 +6,7 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const Module = imports.app.interfaces.module;
-const StyleClasses = imports.app.styleClasses;
+const Utils = imports.app.utils;
 
 /**
  * Class: PaperTemplate
@@ -33,6 +33,10 @@ const PaperTemplate = new Lang.Class({
     Template: 'resource:///com/endlessm/knowledge/widgets/paperTemplate.ui',
     InternalChildren: [ 'content-frame' ],
 
+    // The fraction of extra space each margin should grab, from [0, 0.5]
+    _MARGIN_FILL_FRACTION: 0.3,
+    _NATURAL_PAPER_WIDTH: 700,
+
     _init: function (props={}) {
         this.parent(props);
 
@@ -42,7 +46,10 @@ const PaperTemplate = new Lang.Class({
 
     vfunc_size_allocate: function (alloc) {
         this.set_allocation(alloc);
-        let margin = alloc.width / 5;
+        let [child_min, child_nat] = this.get_child().get_preferred_width();
+        let paper_nat = Math.max(child_nat, this._NATURAL_PAPER_WIDTH * Utils.get_text_scaling_factor());
+        let extra = Math.max(alloc.width - paper_nat, 0);
+        let margin = extra * this._MARGIN_FILL_FRACTION;
         let content_alloc = new Cairo.RectangleInt({
             x: alloc.x + margin,
             y: alloc.y,

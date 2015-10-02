@@ -5,6 +5,7 @@ const Endless = imports.gi.Endless;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
+const WebKit2 = imports.gi.WebKit2;
 
 const AsyncTask = imports.search.asyncTask;
 const Card = imports.app.interfaces.card;
@@ -16,7 +17,7 @@ const PDFView = imports.app.widgets.PDFView;
 const StyleClasses = imports.app.styleClasses;
 const TableOfContents = imports.app.widgets.tableOfContents;
 const TreeNode = imports.search.treeNode;
-const WebKit2 = imports.gi.WebKit2;
+const Utils = imports.app.utils;
 
 /**
  * Class: KnowledgeDocumentCard
@@ -310,7 +311,7 @@ const KnowledgeDocumentCard = new Lang.Class({
 
         this._toolbar_frame.set_child_visible(true);
         // Decide if toolbar should be collapsed
-        if (alloc.width < this.COLLAPSE_TOOLBAR_WIDTH) {
+        if (this._should_collapse(alloc.width)) {
             if (!this.toc.collapsed) {
                 this._toolbar_frame.get_style_context().add_class(StyleClasses.COLLAPSED);
                 this.toc.collapsed = true;
@@ -381,8 +382,12 @@ const KnowledgeDocumentCard = new Lang.Class({
         // This function can be called while the window is sizing down but
         // before the toolbar collapses, so this.toc.collapsed is not a good
         // indicator of what size to request here.
-        let layout = total_width < this.COLLAPSE_TOOLBAR_WIDTH? this.COLLAPSED_LAYOUT : this.EXPANDED_LAYOUT;
+        let layout = this._should_collapse(total_width) ? this.COLLAPSED_LAYOUT : this.EXPANDED_LAYOUT;
         let toolbar_width = layout.toolbar_pct * total_width;
         return Math.max(toolbar_width, toolbar_min);
+    },
+
+    _should_collapse: function (total_width) {
+        return total_width <= this.COLLAPSE_TOOLBAR_WIDTH * Utils.get_text_scaling_factor();
     },
 });
