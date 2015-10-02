@@ -1,24 +1,22 @@
-const GLib = imports.gi.GLib;
+// Copyright 2015 Endless Mobile, Inc.
+
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
-const Mainloop = imports.mainloop;
 
 const Utils = imports.tests.utils;
 Utils.register_gresource();
 
 const Actions = imports.app.actions;
 const ContentObjectModel = imports.search.contentObjectModel;
+const MeshInteraction = imports.app.modules.meshInteraction;
 const Minimal = imports.tests.minimal;
 const MockDispatcher = imports.tests.mockDispatcher;
 const MockEngine = imports.tests.mockEngine;
 const MockFactory = imports.tests.mockFactory;
 const MockWidgets = imports.tests.mockWidgets;
-const Presenter = imports.app.presenter;
 
 Gtk.init(null);
-
-const TEST_CONTENT_DIR = Utils.get_test_content_srcdir();
 
 const MockHomePage = new Lang.Class({
     Name: 'MockHomePage',
@@ -79,25 +77,24 @@ const MockView = new Lang.Class({
     },
 
     show_page: function (page) {},
+    lock_ui: function () {},
+    unlock_ui: function () {},
     present_with_time: function () {},
 });
 
-describe('Presenter', () => {
-    let presenter, data, view, engine, factory, sections, dispatcher;
-    let test_app_filename = TEST_CONTENT_DIR + 'app.json';
+describe('Mesh interaction', function () {
+    let mesh, view, engine, factory, sections, dispatcher;
 
-    beforeEach(() => {
+    beforeEach(function () {
         dispatcher = MockDispatcher.mock_default();
 
+        let application = new GObject.Object();
+        application.application_id = 'foobar';
         factory = new MockFactory.MockFactory();
-        factory.add_named_mock('home-card', Minimal.MinimalCard);
         factory.add_named_mock('results-card', Minimal.MinimalCard);
+        factory.add_named_mock('document-card', Minimal.MinimalDocumentCard);
 
-        // FIXME: this is a v1 app.json
-        data = Utils.parse_object_from_path(test_app_filename);
-        data['styles'] = {};
-
-        // The presenter is going to sort these by featured boolean
+        // The mesh interaction is going to sort these by featured boolean
         // so make sure they are ordered with featured ones first otherwise
         // test will fail.
         sections = [
@@ -118,27 +115,26 @@ describe('Presenter', () => {
                 tags: ['countries', 'monuments', 'mountains'],
             },
         ];
-
-        view = new MockView();
-        spyOn(view, 'show_page');
         engine = new MockEngine.MockEngine();
         engine.get_objects_by_query_finish.and.returnValue([sections.map((section) =>
             new ContentObjectModel.ContentObjectModel(section)), null]);
-        let application = new GObject.Object();
-        application.application_id = 'foobar';
-        presenter = new Presenter.Presenter(data, {
+        view = new MockView();
+
+        mesh = new MeshInteraction.MeshInteraction({
             application: application,
             factory: factory,
             engine: engine,
             view: view,
         });
-        spyOn(presenter, 'record_search_metric');
+        spyOn(mesh, 'record_search_metric');
     });
 
-    it('can be constructed', () => {});
+    it('can be constructed', function () {});
 
     it('dispatches category models for home page', () => {
-        let payloads = dispatcher.payloads_with_type(Actions.APPEND_SETS);
+        let payloads = dispatcher.dispatched_payloads.filter((payload) => {
+            return payload.action_type === Actions.APPEND_SETS;
+        });
         expect(payloads.length).toBe(1);
         expect(sections.map((section) => section['title']))
             .toEqual(payloads[0].models.map((model) => model.title));
@@ -154,7 +150,7 @@ describe('Presenter', () => {
             model: new ContentObjectModel.ContentObjectModel(),
         });
         Utils.update_gui();
-        expect(view.show_page).toHaveBeenCalledWith(view.section_page);
+        expect(dispatcher.last_payload_with_type(Actions.SHOW_SECTION_PAGE)).toBeDefined();
     });
 
     describe('search', function () {
@@ -173,7 +169,7 @@ describe('Presenter', () => {
                 }),
                 jasmine.any(Object),
                 jasmine.any(Function));
-            expect(view.show_page).toHaveBeenCalledWith(view.search_page);
+                expect(dispatcher.last_payload_with_type(Actions.SHOW_SEARCH_PAGE)).toBeDefined();
         });
 
         it('records a metric', function () {
@@ -181,31 +177,20 @@ describe('Presenter', () => {
                 action_type: Actions.SEARCH_TEXT_ENTERED,
                 text: 'query not found',
             });
-            expect(presenter.record_search_metric).toHaveBeenCalled();
+            expect(mesh.record_search_metric).toHaveBeenCalled();
         });
 
-        it('dispatches a pair of search-started and search-failed if the search fails', function () {
+        it('dispatches search-failed if the search fails', function () {
             spyOn(window, 'logError');  // silence console output
             engine.get_objects_by_query_finish.and.throwError(new Error('Ugh'));
             dispatcher.dispatch({
                 action_type: Actions.SEARCH_TEXT_ENTERED,
                 text: 'query not found',
             });
-            let payload = dispatcher.last_payload_with_type(Actions.SEARCH_STARTED);
-            expect(payload.query).toBe('query not found');
-            payload = dispatcher.last_payload_with_type(Actions.SEARCH_FAILED);
-            expect(payload.query).toBe('query not found');
-        });
-
-        it('dispatches a pair of search-started and search-ready on search', function () {
-            dispatcher.dispatch({
-                action_type: Actions.SEARCH_TEXT_ENTERED,
-                text: 'query',
-            });
-            let payload = dispatcher.last_payload_with_type(Actions.SEARCH_STARTED);
-            expect(payload.query).toBe('query');
-            payload = dispatcher.last_payload_with_type(Actions.SEARCH_READY);
-            expect(payload.query).toBe('query');
+            expect(dispatcher.dispatched_payloads).toContain(jasmine.objectContaining({
+                action_type: Actions.SEARCH_FAILED,
+                query: 'query not found',
+            }));
         });
     });
 
@@ -226,14 +211,14 @@ describe('Presenter', () => {
         it('leads back to the home page', function () {
             dispatcher.dispatch({ action_type: Actions.HISTORY_BACK_CLICKED });
             Utils.update_gui();
-            expect(view.show_page).toHaveBeenCalledWith(view.home_page);
+            expect(dispatcher.last_payload_with_type(Actions.SHOW_HOME_PAGE)).toBeDefined();
         });
 
         it('leads back to the section page', function () {
             view.emit('search-entered', 'query not found');
             dispatcher.dispatch({ action_type: Actions.HISTORY_BACK_CLICKED });
             Utils.update_gui();
-            expect(view.show_page).toHaveBeenCalledWith(view.section_page);
+            expect(dispatcher.last_payload_with_type(Actions.SHOW_SECTION_PAGE)).toBeDefined();
         });
 
         it('leads forward to the section page', function () {
@@ -241,12 +226,7 @@ describe('Presenter', () => {
             Utils.update_gui();
             dispatcher.dispatch({ action_type: Actions.HISTORY_FORWARD_CLICKED });
             Utils.update_gui();
-            expect(view.show_page).toHaveBeenCalledWith(view.section_page);
-        });
-
-        it('dispatches a pair of show-set and set-ready when a set is clicked', function () {
-            expect(dispatcher.last_payload_with_type(Actions.SHOW_SET)).toBeDefined();
-            expect(dispatcher.last_payload_with_type(Actions.SET_READY)).toBeDefined();
+            expect(dispatcher.last_payload_with_type(Actions.SHOW_SECTION_PAGE)).toBeDefined();
         });
     });
 });

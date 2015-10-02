@@ -217,13 +217,13 @@ js_files = \
 	js/app/compat/styleKnobGenerator.js \
 	js/app/config.js \
 	js/app/dispatcher.js \
-	js/app/encyclopedia/presenter.js \
 	js/app/historyItem.js \
 	js/app/historyPresenter.js \
 	js/app/interfaces/arrangement.js \
 	js/app/interfaces/card.js \
 	js/app/interfaces/documentCard.js \
 	js/app/interfaces/expandable.js \
+	js/app/interfaces/interaction.js \
 	js/app/interfaces/module.js \
 	js/app/launcher.js \
 	js/app/moduleFactory.js \
@@ -234,16 +234,17 @@ js_files = \
 	js/app/modules/bannerTemplate.js \
 	js/app/modules/cardA.js \
 	js/app/modules/cardB.js \
+	js/app/modules/carouselArrangement.js \
 	js/app/modules/dividedBannerTemplate.js \
 	js/app/modules/encyclopediaCoverTemplate.js \
 	js/app/modules/encyclopediaWindow.js \
 	js/app/modules/gridArrangement.js \
+	js/app/modules/homePageATemplate.js \
 	js/app/modules/itemGroupModule.js \
 	js/app/modules/knowledgeDocumentCard.js \
-	js/app/modules/homePageATemplate.js \
 	js/app/modules/lightboxModule.js \
 	js/app/modules/listArrangement.js \
-	js/app/modules/carouselArrangement.js \
+	js/app/modules/meshInteraction.js \
 	js/app/modules/mediaCard.js \
 	js/app/modules/navigationModule.js \
 	js/app/modules/paperTemplate.js \
@@ -253,8 +254,8 @@ js_files = \
 	js/app/modules/searchBannerModule.js \
 	js/app/modules/searchBox.js \
 	js/app/modules/searchModule.js \
-	js/app/modules/setGroupModule.js \
 	js/app/modules/setBannerModule.js \
+	js/app/modules/setGroupModule.js \
 	js/app/modules/sidebarTemplate.js \
 	js/app/modules/overflowArrangement.js \
 	js/app/modules/textCard.js \
@@ -262,7 +263,6 @@ js_files = \
 	js/app/modules/twoVerticalTemplate.js \
 	js/app/modules/window.js \
 	js/app/mustache.js \
-	js/app/presenter.js \
 	js/app/presenterLoader.js \
 	js/app/reader/presenter.js \
 	js/app/reader/standalonePage.js \
@@ -355,6 +355,7 @@ javascript_tests = \
 	tests/js/app/compat/testCompat.js \
 	tests/js/app/interfaces/testArrangement.js \
 	tests/js/app/interfaces/testCard.js \
+	tests/js/app/interfaces/testInteraction.js \
 	tests/js/app/interfaces/testModule.js \
 	tests/js/app/modules/testAppBanner.js \
 	tests/js/app/modules/testArticleSnippetCard.js \
@@ -365,11 +366,12 @@ javascript_tests = \
 	tests/js/app/modules/testCardB.js \
 	tests/js/app/modules/testCarouselArrangement.js \
 	tests/js/app/modules/testDividedBannerTemplate.js \
-	tests/js/app/modules/testKnowledgeDocumentCard.js \
 	tests/js/app/modules/testHomePageATemplate.js \
 	tests/js/app/modules/testItemGroupModule.js \
+	tests/js/app/modules/testKnowledgeDocumentCard.js \
 	tests/js/app/modules/testLightboxModule.js \
 	tests/js/app/modules/testListArrangement.js \
+	tests/js/app/modules/testMeshInteraction.js \
 	tests/js/app/modules/testMediaCard.js \
 	tests/js/app/modules/testOverflowArrangement.js \
 	tests/js/app/modules/testPaperTemplate.js \
@@ -379,8 +381,8 @@ javascript_tests = \
 	tests/js/app/modules/testSearchBannerModule.js \
 	tests/js/app/modules/testSearchBox.js \
 	tests/js/app/modules/testSearchModule.js \
-	tests/js/app/modules/testSetGroupModule.js \
 	tests/js/app/modules/testSetBannerModule.js \
+	tests/js/app/modules/testSetGroupModule.js \
 	tests/js/app/modules/testSidebarTemplate.js \
 	tests/js/app/modules/testTextCard.js \
 	tests/js/app/modules/testWindow.js \
@@ -392,7 +394,6 @@ javascript_tests = \
 	tests/js/app/testHistoryItem.js \
 	tests/js/app/testHistoryPresenter.js \
 	tests/js/app/testModuleFactory.js \
-	tests/js/app/testPresenter.js \
 	tests/js/app/testStyleKnobGenerator.js \
 	tests/js/app/testUtils.js \
 	tests/js/app/widgets/testLightbox.js \

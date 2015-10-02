@@ -1,8 +1,7 @@
 // Copyright 2015 Endless Mobile, Inc.
 
 /* exported MinimalArrangement, MinimalBackCover, MinimalCard,
-MinimalDocumentCard, MinimalHomePage, MinimalLightbox, MinimalModule,
-test_arrangement_compliance */
+MinimalDocumentCard, MinimalHomePage, MinimalInteraction, MinimalLightbox, MinimalModule */
 
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
@@ -13,6 +12,8 @@ const Arrangement = imports.app.interfaces.arrangement;
 const Card = imports.app.interfaces.card;
 const ContentObjectModel = imports.search.contentObjectModel;
 const DocumentCard = imports.app.interfaces.documentCard;
+const Interaction = imports.app.interfaces.interaction;
+const Launcher = imports.app.launcher;
 const Module = imports.app.interfaces.module;
 const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 const Utils = imports.tests.utils;
@@ -82,6 +83,28 @@ const MinimalCard = new Lang.Class({
     _init: function (props={}) {
         this.parent(props);
     }
+});
+
+const MinimalInteraction = new Lang.Class({
+    Name: 'MinimalInteraction',
+    Extends: GObject.Object,
+    Implements: [ Module.Module, Launcher.Launcher, Interaction.Interaction ],
+
+    Properties: {
+        'factory': GObject.ParamSpec.override('factory', Module.Module),
+        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
+        'application': GObject.ParamSpec.override('application', Interaction.Interaction),
+        'engine': GObject.ParamSpec.override('engine', Interaction.Interaction),
+        'view': GObject.ParamSpec.override('view', Interaction.Interaction),
+        'template-type': GObject.ParamSpec.override('template-type', Interaction.Interaction),
+        'css': GObject.ParamSpec.override('css', Interaction.Interaction),
+    },
+
+    _init: function (props={}) {
+        this.parent(props);
+    },
+
+    desktop_launch: function () {},
 });
 
 const MinimalHomePage = new Lang.Class({

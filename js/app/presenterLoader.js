@@ -5,7 +5,6 @@ const System = imports.system;
 
 const Config = imports.app.config;
 const ModuleFactory = imports.app.moduleFactory;
-const StyleKnobGenerator = imports.app.compat.styleKnobGenerator;
 const Utils = imports.app.utils;
 
 let setup_presenter_for_resource = function (application, resource_path) {
@@ -29,11 +28,10 @@ let setup_presenter_for_resource = function (application, resource_path) {
         app_json: app_json,
     });
 
+    let css = '';
     if (overrides_css_file.query_exists(null)) {
         let [success, data] = overrides_css_file.load_contents(null);
-        app_json['styles'] = StyleKnobGenerator.get_knobs_from_css(data.toString(), app_json['templateType']);
-    } else {
-        app_json['styles'] = {};
+        css = data.toString();
     }
 
     application.image_attribution_file = resource_file.get_child('credits.json');
@@ -41,9 +39,10 @@ let setup_presenter_for_resource = function (application, resource_path) {
     let PresenterClass;
     switch(app_json['templateType']) {
         case 'A':
-        case 'B': {
-            const Presenter = imports.app.presenter;
-            PresenterClass = Presenter.Presenter;
+        case 'B':
+        case 'encyclopedia': {
+            const MeshInteraction = imports.app.modules.meshInteraction;
+            PresenterClass = MeshInteraction.MeshInteraction;
         }
             break;
         case 'reader': {
@@ -51,17 +50,15 @@ let setup_presenter_for_resource = function (application, resource_path) {
             PresenterClass = ReaderPresenter.Presenter;
         }
             break;
-        case 'encyclopedia': {
-            const EncyclopediaPresenter = imports.app.encyclopedia.presenter;
-            PresenterClass = EncyclopediaPresenter.EncyclopediaPresenter;
-        }
-            break;
         default:
             printerr('Unknown template type', app_json['templateType']);
             System.exit(1);
     }
 
-    return new PresenterClass(app_json, {
+    return new PresenterClass(
+    {
+        template_type: app_json['templateType'],
+        css: css,
         application: application,
         factory: factory,
     });

@@ -164,6 +164,11 @@ describe('StyleKnobGenerator', function () {
         css_overrides_reader = (file_reader.load_contents(null)[1]).toString();
     });
 
+    it('returns an empty dictionary when an empty CSS specification is passed', function () {
+        let empty_style_knobs = StyleKnobGenerator.get_knobs_from_css('', 'A');
+        expect(empty_style_knobs).toEqual({});
+    });
+
     it('handles template A overrides', function () {
         let style_knobs = StyleKnobGenerator.get_knobs_from_css(css_overrides_a, 'A');
         expect(style_knobs).toEqual(style_knobs_a);
