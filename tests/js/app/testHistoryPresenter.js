@@ -55,27 +55,6 @@ describe('History Presenter', function () {
         expect(current_item.query).toBe('first');
     });
 
-    it('skips over empty queries when going back', function () {
-        history_presenter.set_current_item_from_props({
-            query: 'first',
-            page_type: 'search',
-        });
-        history_presenter.set_current_item_from_props({
-            query: 'second',
-            page_type: 'search',
-            empty: true,
-        });
-        history_presenter.set_current_item_from_props({
-            query: 'third',
-            page_type: 'search',
-        });
-
-        expect(history_model.current_item.query).toBe('third');
-
-        dispatcher.dispatch({ action_type: Actions.HISTORY_BACK_CLICKED });
-        expect(history_model.current_item.query).toBe('first');
-    });
-
     it('can go forward', function () {
         history_presenter.set_current_item_from_props({
             query: 'first',
@@ -90,26 +69,5 @@ describe('History Presenter', function () {
 
         dispatcher.dispatch({ action_type: Actions.HISTORY_FORWARD_CLICKED });
         expect(history_model.current_item.query).toBe('second');
-    });
-
-    it('skips over empty queries when going forward', function () {
-        history_presenter.set_current_item_from_props({
-            query: 'first',
-            page_type: 'search',
-        });
-        history_presenter.set_current_item_from_props({
-            query: 'second',
-            page_type: 'search',
-        });
-        history_presenter.set_current_item_from_props({
-            query: 'third',
-            page_type: 'search',
-        });
-
-        expect(history_model.current_item.query).toBe('third');
-
-        dispatcher.dispatch({ action_type: Actions.HISTORY_BACK_CLICKED });
-        dispatcher.dispatch({ action_type: Actions.HISTORY_FORWARD_CLICKED });
-        expect(history_model.current_item.query).toBe('third');
     });
 });

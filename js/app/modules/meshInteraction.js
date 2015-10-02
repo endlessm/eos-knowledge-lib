@@ -331,9 +331,6 @@ const MeshInteraction = new Lang.Class({
                 return;
             }
 
-            if (results.length === 0)
-                item.empty = true;
-
             dispatcher.dispatch({
                 action_type: Actions.APPEND_SEARCH,
                 models: results,

@@ -59,15 +59,6 @@ const HistoryItem = new Lang.Class({
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             ''),
         /**
-         * Property: empty
-         *
-         * A boolean value that stores whether or not a history item contains a
-         * query that returns 0 results.
-         */
-        'empty': GObject.ParamSpec.boolean('empty', 'Empty',
-            'True iff the query returned 0 results',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT, false),
-        /**
          * Property: from-global-search
          *
          * True if this history object was activated from global search,
