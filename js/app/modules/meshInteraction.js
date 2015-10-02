@@ -204,7 +204,7 @@ const MeshInteraction = new Lang.Class({
         });
     },
 
-    _on_history_item_change: function (presenter, item, is_going_back) {
+    _on_history_item_change: function (presenter, item, direction) {
         let dispatcher = Dispatcher.get_default();
         dispatcher.dispatch({
             action_type: Actions.HIDE_MEDIA,
@@ -283,7 +283,7 @@ const MeshInteraction = new Lang.Class({
                     });
                     break;
                 case this.ARTICLE_PAGE:
-                    this._load_document_card_in_view(item, is_going_back);
+                    this._load_document_card_in_view(item, direction);
                     break;
                 case this.HOME_PAGE:
                     dispatcher.dispatch({
@@ -419,7 +419,7 @@ const MeshInteraction = new Lang.Class({
         this._get_more_results_query = null;
     },
 
-    _load_document_card_in_view: function (item, is_going_back) {
+    _load_document_card_in_view: function (item, direction) {
         let dispatcher = Dispatcher.get_default();
         let animation_type = EosKnowledgePrivate.LoadingAnimationType.FORWARDS_NAVIGATION;
         if (this.view.get_visible_page() !== this.view.article_page) {
@@ -427,7 +427,7 @@ const MeshInteraction = new Lang.Class({
             dispatcher.dispatch({
                 action_type: Actions.SHOW_ARTICLE_PAGE,
             });
-        } else if (is_going_back) {
+        } else if (direction === HistoryPresenter.Direction.BACKWARDS) {
             animation_type = EosKnowledgePrivate.LoadingAnimationType.BACKWARDS_NAVIGATION;
         }
         dispatcher.dispatch({
@@ -453,7 +453,7 @@ const MeshInteraction = new Lang.Class({
     _on_back: function () {
         let types = this.view.get_visible_page() === this.view.article_page ?
             [this.HOME_PAGE, this.SECTION_PAGE, this.SEARCH_PAGE] : [this.HOME_PAGE];
-        let item = this._history_presenter.search_backwards(-1,
+        let item = this._history_presenter.search(-1, HistoryPresenter.Direction.BACKWARDS,
             (item) => types.indexOf(item.page_type) >= 0);
         this._history_presenter.set_current_item(HistoryItem.HistoryItem.new_from_object(item));
     },

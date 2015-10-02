@@ -3,6 +3,15 @@ const GObject = imports.gi.GObject;
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
 const HistoryItem = imports.app.historyItem;
+const Utils = imports.search.utils;
+
+/**
+ * Enum: Direction
+ *
+ * FOWARDS - Forward in time in the history model.
+ * BACKWARDS - Backward in time in the history model.
+ */
+const Direction = Utils.define_enum(['BACKWARDS', 'FORWARDS']);
 
 /**
  * Class: HistoryPresenter
@@ -41,10 +50,10 @@ const HistoryPresenter = new GObject.Class({
          *
          * Parameters:
          *   item - the history item
-         *   backwards - true if we are currently navigating backwards
+         *   direction - the <Direction> we are navigating in.
          */
         'history-item-changed': {
-            param_types: [HistoryItem.HistoryItem, GObject.TYPE_BOOLEAN],
+            param_types: [HistoryItem.HistoryItem, GObject.TYPE_UINT],
         },
     },
 
@@ -54,55 +63,61 @@ const HistoryPresenter = new GObject.Class({
         Dispatcher.get_default().register((payload) => {
             switch(payload.action_type) {
                 case Actions.HISTORY_BACK_CLICKED:
-                    this.history_model.go_back();
+                    this._update_item(this._get_back_item(), Direction.BACKWARDS);
                     break;
                 case Actions.HISTORY_FORWARD_CLICKED:
-                    this.history_model.go_forward();
+                    this._update_item(this._get_forward_item(), Direction.FORWARDS);
                     break;
             }
         });
-
-        this.history_model.connect('notify::can-go-back',
-                                   () => this._dispatch_history_enabled());
-        this.history_model.connect('notify::can-go-forward',
-                                   () => this._dispatch_history_enabled());
         this._dispatch_history_enabled();
-        this.history_model.connect('notify::current-item', this._notify_item.bind(this));
-        this._last_item = null;
+        this.history_model.connect('notify::current-item', this._dispatch_history_enabled.bind(this));
+    },
+
+    _get_back_item: function () {
+        if (!this.history_model.can_go_back)
+            return null;
+        return this.search(-1, Direction.BACKWARDS, (item) => {
+            return !item.equals(this.history_model.current_item);
+        });
+    },
+
+    _get_forward_item: function () {
+        if (!this.history_model.can_go_forward)
+            return null;
+        let forward_item = this.search(1, Direction.FORWARDS, (item) => {
+            return !item.equals(this.history_model.current_item);
+        });
+        if (forward_item === null)
+            forward_item = this.history_model.get_forward_list().pop();
+        return forward_item;
     },
 
     _dispatch_history_enabled: function () {
         let dispatcher = Dispatcher.get_default();
         dispatcher.dispatch({
             action_type: Actions.HISTORY_BACK_ENABLED_CHANGED,
-            enabled: this.history_model.can_go_back,
+            enabled: this._get_back_item() !== null,
         });
         dispatcher.dispatch({
             action_type: Actions.HISTORY_FORWARD_ENABLED_CHANGED,
-            enabled: this.history_model.can_go_forward,
+            enabled: this._get_forward_item() !== null,
         });
     },
 
-    _notify_item: function () {
-        let is_going_back = this.history_model.get_item(1) === this._last_item;
-        let item = this.history_model.current_item;
-        this._last_item = this.history_model.current_item;
-        if (item.empty) {
-            if (is_going_back && this.history_model.can_go_back) {
-                this.history_model.go_back();
-                return;
-            }
-            if (!is_going_back && this.history_model.can_go_forward) {
-                this.history_model.go_forward();
-                return;
-            }
-        }
-        this.emit('history-item-changed', item, is_going_back);
+    _update_item: function (item, direction) {
+        if (item === null)
+            return;
+        this.history_model.current_item = item;
+        this._dispatch_history_enabled();
+        this.emit('history-item-changed', item, direction);
     },
 
     set_current_item: function (item) {
-        if (this.history_model.current_item === null || !this.history_model.current_item.equals(item))
+        if (this.history_model.current_item === null || !this.history_model.current_item.equals(item)) {
             this.history_model.current_item = item;
+            this.emit('history-item-changed', item, Direction.FORWARDS);
+        }
     },
 
     set_current_item_from_props: function (props) {
@@ -110,17 +125,21 @@ const HistoryPresenter = new GObject.Class({
     },
 
     /**
-     * Method: search_backwards
+     * Method: search
      *
-     * Helper to search backwards in the history for an item. Takes a starting
-     * index and a match function, which should return true of a match, false
-     * otherwise. Returns the matching item or null.
+     * Helper to search in the history for an item. Skips empty history items.
+     *
+     * Parameters:
+     *   index - history index to start at
+     *   direction - direction to search in
+     *   match - callback which takes in an item and returns true for a match
      */
-    search_backwards: function (index, match_fn) {
+    search: function (index, direction, match) {
         let item;
         do {
-            item = this.history_model.get_item(index--);
-        } while (item !== null && (item.empty || !match_fn(item)));
+            item = this.history_model.get_item(index);
+            index = direction === Direction.FORWARDS ? index + 1 : index - 1;
+        } while (item !== null && (item.empty || !match(item)));
         return item;
     },
 });
