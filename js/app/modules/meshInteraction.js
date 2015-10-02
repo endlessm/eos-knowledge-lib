@@ -502,6 +502,8 @@ const MeshInteraction = new Lang.Class({
 
             let dispatcher = Dispatcher.get_default();
             if (item.page_type === this.SEARCH_PAGE) {
+                if (results.length === 0)
+                    item.empty = true;
                 dispatcher.dispatch({
                     action_type: Actions.CLEAR_SEARCH,
                 });
