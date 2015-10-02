@@ -80,9 +80,11 @@ const HistoryItem = new Lang.Class({
     },
 
     equals: function (item) {
-        return this.title === item.title &&
-            this.page_type === item.page_type &&
+        if (this.model)
+            return this.page_type === item.page_type &&
             (this.model === null && item.model === null || this.model.ekn_id === item.model.ekn_id) &&
+            this.from_global_search === item.from_global_search;
+        return this.page_type === item.page_type &&
             this.query === item.query &&
             this.from_global_search === item.from_global_search;
     },
