@@ -248,7 +248,7 @@ const MeshInteraction = new Lang.Class({
                     dispatcher.dispatch({
                         action_type: Actions.SHOW_SEARCH_PAGE,
                     });
-                    this._refresh_article_results((success) => {
+                    this._refresh_article_results(item, (success) => {
                         if (!success) {
                             dispatcher.dispatch({
                                 action_type: Actions.SEARCH_FAILED,
@@ -272,7 +272,7 @@ const MeshInteraction = new Lang.Class({
                         action_type: Actions.SHOW_SET,
                         model: item.model,
                     });
-                    this._refresh_article_results(() => {
+                    this._refresh_article_results(item, () => {
                         dispatcher.dispatch({
                             action_type: Actions.SET_READY,
                             model: item.model,
@@ -283,18 +283,6 @@ const MeshInteraction = new Lang.Class({
                     });
                     break;
                 case this.ARTICLE_PAGE:
-                    if (this.template_type === 'B') {
-                        this._refresh_article_results(() => {
-                            dispatcher.dispatch({
-                                action_type: Actions.HIGHLIGHT_ITEM,
-                                model: item.model,
-                            });
-                        });
-                        let query_item = this._history_presenter.search_backwards(0, (query_item) => {
-                            return query_item.page_type === this.SECTION_PAGE || query_item.query;
-                        });
-                        search_text = query_item.query;
-                    }
                     this._load_document_card_in_view(item, is_going_back);
                     break;
                 case this.HOME_PAGE:
@@ -472,29 +460,29 @@ const MeshInteraction = new Lang.Class({
 
     // Callback is called with a boolean argument; true if the search was
     // successful (even if no results), false if there was an error
-    _refresh_article_results: function (callback) {
-        let query_obj;
-        let item = this._history_presenter.search_backwards(0, (item) => {
-            if (item.page_type === this.SECTION_PAGE) {
-                let tags = item.model.tags.slice();
-                let home_page_tag_index = tags.indexOf(Engine.HOME_PAGE_TAG);
-                if (home_page_tag_index !== -1)
-                    tags.splice(home_page_tag_index, 1);
+    _refresh_article_results: function (item, callback) {
+        let query_obj = null;
+        if (item.page_type === this.SECTION_PAGE) {
+            let tags = item.model.tags.slice();
+            let home_page_tag_index = tags.indexOf(Engine.HOME_PAGE_TAG);
+            if (home_page_tag_index !== -1)
+                tags.splice(home_page_tag_index, 1);
 
-                query_obj = new QueryObject.QueryObject({
-                    tags: tags,
-                    limit: RESULTS_SIZE,
-                });
-                return true;
-            } else if (item.query) {
-                query_obj = new QueryObject.QueryObject({
-                    query: item.query,
-                    limit: RESULTS_SIZE,
-                });
-                return true;
-            }
-            return false;
-        });
+            query_obj = new QueryObject.QueryObject({
+                tags: tags,
+                limit: RESULTS_SIZE,
+            });
+        } else if (item.query) {
+            query_obj = new QueryObject.QueryObject({
+                query: item.query,
+                limit: RESULTS_SIZE,
+            });
+        } else {
+            printerr('No way to query for this history item.');
+            callback(false);
+            return;
+        }
+
         if (this._current_article_results_item === item) {
             callback(true);
             return;
