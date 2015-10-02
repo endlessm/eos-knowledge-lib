@@ -301,6 +301,7 @@ const MeshInteraction = new Lang.Class({
                     dispatcher.dispatch({
                         action_type: Actions.SHOW_HOME_PAGE,
                     });
+                    break;
             }
         }
         dispatcher.dispatch({
