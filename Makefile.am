@@ -297,6 +297,7 @@ js_files = \
 	js/search/mediaObjectModel.js \
 	js/search/queryObject.js \
 	js/search/searchProvider.js \
+	js/search/setObjectModel.js \
 	js/search/treeNode.js \
 	js/search/utils.js \
 	js/tools/kermit.js \
@@ -410,6 +411,7 @@ javascript_tests = \
 	tests/js/search/testEngine.js \
 	tests/js/search/testMediaObjectModels.js \
 	tests/js/search/testQueryObject.js \
+	tests/js/search/testSetObjectModel.js \
 	tests/js/search/testTreeNode.js \
 	$(NULL)
 test_content = \

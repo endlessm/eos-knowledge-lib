@@ -461,7 +461,7 @@ const MeshInteraction = new Lang.Class({
         let query_obj = null;
         if (item.page_type === this.SECTION_PAGE) {
             query_obj = new QueryObject.QueryObject({
-                tags: item.model.tags.filter(t => !t.startsWith('Ekn')),
+                tags: item.model.child_tags,
                 limit: RESULTS_SIZE,
             });
         } else if (item.query) {

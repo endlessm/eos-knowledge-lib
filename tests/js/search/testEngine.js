@@ -8,6 +8,7 @@ const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
 const MediaObjectModel = imports.search.mediaObjectModel;
 const MockShard = imports.tests.mockShard;
 const QueryObject = imports.search.queryObject;
+const SetObjectModel = imports.search.setObjectModel;
 const Utils = imports.search.utils;
 
 const MOCK_CONTENT_RESULTS = [
@@ -285,7 +286,7 @@ describe('Knowledge Engine Module', () => {
             });
         });
 
-        it('marshals objects based on @type', (done) => {
+        it('marshals ArticleObjectModels based on @type', (done) => {
             let json_stream = Utils.string_to_stream(JSON.stringify({
                 '@id': 'ekn://foo/deadbeef',
                 '@type': 'ekn://_vocab/ArticleObject',
@@ -297,6 +298,22 @@ describe('Knowledge Engine Module', () => {
                 let result = engine.get_object_by_id_finish(task);
                 expect(result).toBeA(ArticleObjectModel.ArticleObjectModel);
                 expect(result.synopsis).toEqual('NOW IS THE WINTER OF OUR DISCONTENT');
+                done();
+            });
+        });
+
+        it('marshals SetObjectModels based on @type', function (done) {
+            let json_stream = Utils.string_to_stream(JSON.stringify({
+                '@id': 'ekn://foo/deadbeef',
+                '@type': 'ekn://_vocab/SetObject',
+                childTags: ['made', 'glorious', 'summer'],
+            }));
+            mock_metadata.get_stream.and.returnValue(json_stream);
+            mock_shard_file.find_record_by_hex_name.and.returnValue(mock_shard_record);
+            engine.get_object_by_id('whatever', null, function (engine, task) {
+                let result = engine.get_object_by_id_finish(task);
+                expect(result).toBeA(SetObjectModel.SetObjectModel);
+                expect(result.child_tags).toEqual(jasmine.arrayContaining(['made', 'glorious', 'summer']));
                 done();
             });
         });
@@ -726,7 +743,7 @@ describe('Knowledge Engine Module', () => {
                 expect(get_query_vals_for_key(requested_query, 'path')).toMatch('/new_domain');
             });
 
-            it('marshals objects based on @type', (done) => {
+            it('marshals ArticleObjectModels based on @type', (done) => {
                 let mock_id = 'ekn://foo/0123456789abcdef';
                 mock_engine_request(undefined, [{
                     '@id': mock_id,
@@ -738,6 +755,21 @@ describe('Knowledge Engine Module', () => {
                     let result = engine.get_object_by_id_finish(task);
                     expect(result).toBeA(ArticleObjectModel.ArticleObjectModel);
                     expect(result.synopsis).toBe('NOW IS THE WINTER OF OUR DISCONTENT');
+                    done();
+                });
+            });
+
+            it('marshals SetObjectModels based on @type', function (done) {
+                let mock_id = 'ekn://foo/0123456789abcdef';
+                mock_engine_request(undefined, [{
+                    '@id': mock_id,
+                    '@type': 'ekn://_vocab/SetObject',
+                    childTags: ['made', 'glorious', 'summer'],
+                }]);
+                engine.get_object_by_id(mock_id, null, function (engine, task) {
+                    let result = engine.get_object_by_id_finish(task);
+                    expect(result).toBeA(SetObjectModel.SetObjectModel);
+                    expect(result.child_tags).toEqual(jasmine.arrayContaining(['made', 'glorious', 'summer']));
                     done();
                 });
             });

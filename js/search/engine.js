@@ -12,6 +12,7 @@ const AsyncTask = imports.search.asyncTask;
 const ContentObjectModel = imports.search.contentObjectModel;
 const MediaObjectModel = imports.search.mediaObjectModel;
 const QueryObject = imports.search.queryObject;
+const SetObjectModel = imports.search.setObjectModel;
 const datadir = imports.search.datadir;
 const Utils = imports.search.utils;
 
@@ -355,6 +356,8 @@ const Engine = Lang.Class({
                 MediaObjectModel.ImageObjectModel,
             'ekn://_vocab/VideoObject':
                 MediaObjectModel.VideoObjectModel,
+            'ekn://_vocab/SetObject':
+                SetObjectModel.SetObjectModel,
         };
 
         let json_ld_type = json_ld['@type'];

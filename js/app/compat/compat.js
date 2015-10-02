@@ -3,9 +3,9 @@ const GLib = imports.gi.GLib;
 const Gtk = imports.gi.Gtk;
 
 const Config = imports.app.config;
-const ContentObjectModel = imports.search.contentObjectModel;
 const Engine = imports.search.engine;
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
+const SetObjectModel = imports.search.setObjectModel;
 
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
@@ -623,15 +623,17 @@ function create_v1_set_models(json, engine) {
         let sha = GLib.compute_checksum_for_string(GLib.ChecksumType.SHA1,
             'category' + domain + section['title'], -1);
         let id = 'ekn://' + domain + '/' + sha;
-        let tags = section['tags'].slice();
-        tags.push(Engine.HOME_PAGE_TAG);
 
-        let model = new ContentObjectModel.ContentObjectModel({
+        let model = new SetObjectModel.SetObjectModel({
             ekn_id: id,
             title: section['title'],
             thumbnail_uri: section['thumbnailURI'],
             featured: !!section['featured'],
-            tags: tags,
+            tags: [Engine.HOME_PAGE_TAG],
+            // In v1, categories had what we now call "child tags", and not what
+            // we now call "tags". However, "child tags" were denoted with the
+            // "tags" property in app.json.
+            child_tags: section['tags'],
         });
         engine.add_runtime_object(id, model);
     });

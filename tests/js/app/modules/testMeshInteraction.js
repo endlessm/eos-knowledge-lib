@@ -15,6 +15,7 @@ const MockDispatcher = imports.tests.mockDispatcher;
 const MockEngine = imports.tests.mockEngine;
 const MockFactory = imports.tests.mockFactory;
 const MockWidgets = imports.tests.mockWidgets;
+const SetObjectModel = imports.search.setObjectModel;
 
 Gtk.init(null);
 
@@ -102,22 +103,23 @@ describe('Mesh interaction', function () {
                 title: 'Kings',
                 thumbnail_uri: 'resource:///com/endlessm/thrones/joffrey.jpg',
                 featured: true,
-                tags: ['hostels', 'monuments'],
+                child_tags: ['hostels', 'monuments'],
             },
             {
                 title: 'Whitewalkers',
                 thumbnail_uri: 'resource:///com/endlessm/thrones/whitewalker.jpg',
-                tags: ['EknHomePageTag', 'asia', 'latin america'],
+                tags: ['EknHomePageTag'],
+                child_tags: ['asia', 'latin america'],
             },
             {
                 title: 'Weddings',
                 thumbnail_uri: 'resource:///com/endlessm/thrones/red_wedding.jpg',
-                tags: ['countries', 'monuments', 'mountains'],
+                child_tags: ['countries', 'monuments', 'mountains'],
             },
         ];
         engine = new MockEngine.MockEngine();
         engine.get_objects_by_query_finish.and.returnValue([sections.map((section) =>
-            new ContentObjectModel.ContentObjectModel(section)), null]);
+            new SetObjectModel.SetObjectModel(section)), null]);
         view = new MockView();
 
         mesh = new MeshInteraction.MeshInteraction({
@@ -147,7 +149,7 @@ describe('Mesh interaction', function () {
         engine.get_objects_by_query_finish.and.returnValue([[ model ], null]);
         dispatcher.dispatch({
             action_type: Actions.SET_CLICKED,
-            model: new ContentObjectModel.ContentObjectModel(),
+            model: new SetObjectModel.SetObjectModel(),
         });
         Utils.update_gui();
         expect(dispatcher.last_payload_with_type(Actions.SHOW_SECTION_PAGE)).toBeDefined();
@@ -203,9 +205,16 @@ describe('Mesh interaction', function () {
             ], null]);
             dispatcher.dispatch({
                 action_type: Actions.SET_CLICKED,
-                model: new ContentObjectModel.ContentObjectModel(),
+                model: new SetObjectModel.SetObjectModel({
+                    child_tags: ['some-tag'],
+                }),
             });
             Utils.update_gui();
+        });
+
+        it('puts the right articles in a set', function () {
+            let query_object = engine.get_objects_by_query.calls.mostRecent().args[0];
+            expect(query_object.tags).toEqual(['some-tag']);
         });
 
         it('leads back to the home page', function () {
