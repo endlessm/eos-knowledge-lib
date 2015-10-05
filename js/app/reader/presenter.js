@@ -203,7 +203,8 @@ const Presenter = new Lang.Class({
         this.parent(props);
 
         WebkitContextSetup.register_webkit_uri_handlers(this._article_render_callback.bind(this));
-        this._dbus_name = WebkitContextSetup.register_webkit_extensions(this.application.application_id);
+        this._dbus_name = Utils.get_web_plugin_dbus_name();
+        WebkitContextSetup.register_webkit_extensions();
 
         this._article_renderer = new ArticleHTMLRenderer.ArticleHTMLRenderer();
 

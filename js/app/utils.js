@@ -121,3 +121,9 @@ function get_text_scaling_factor () {
     let settings = new Gio.Settings({ schema: DESKTOP_INTERFACE_SCHEMA });
     return settings.get_double(TEXT_SCALING_KEY);
 }
+
+function get_web_plugin_dbus_name () {
+    let app_id = Gio.Application.get_default().application_id;
+    let pid = new Gio.Credentials().get_unix_pid();
+    return app_id + pid;
+}
