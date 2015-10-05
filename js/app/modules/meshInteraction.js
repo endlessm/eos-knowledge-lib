@@ -204,7 +204,7 @@ const MeshInteraction = new Lang.Class({
         });
     },
 
-    _on_history_item_change: function (presenter, item, is_going_back) {
+    _on_history_item_change: function (presenter, item, direction) {
         let dispatcher = Dispatcher.get_default();
         dispatcher.dispatch({
             action_type: Actions.HIDE_MEDIA,
@@ -248,7 +248,7 @@ const MeshInteraction = new Lang.Class({
                     dispatcher.dispatch({
                         action_type: Actions.SHOW_SEARCH_PAGE,
                     });
-                    this._refresh_article_results((success) => {
+                    this._refresh_article_results(item, (success) => {
                         if (!success) {
                             dispatcher.dispatch({
                                 action_type: Actions.SEARCH_FAILED,
@@ -272,7 +272,7 @@ const MeshInteraction = new Lang.Class({
                         action_type: Actions.SHOW_SET,
                         model: item.model,
                     });
-                    this._refresh_article_results(() => {
+                    this._refresh_article_results(item, () => {
                         dispatcher.dispatch({
                             action_type: Actions.SET_READY,
                             model: item.model,
@@ -283,24 +283,13 @@ const MeshInteraction = new Lang.Class({
                     });
                     break;
                 case this.ARTICLE_PAGE:
-                    if (this.template_type === 'B') {
-                        this._refresh_article_results(() => {
-                            dispatcher.dispatch({
-                                action_type: Actions.HIGHLIGHT_ITEM,
-                                model: item.model,
-                            });
-                        });
-                        let query_item = this._history_presenter.search_backwards(0, (query_item) => {
-                            return query_item.page_type === this.SECTION_PAGE || query_item.query;
-                        });
-                        search_text = query_item.query;
-                    }
-                    this._load_document_card_in_view(item, is_going_back);
+                    this._load_document_card_in_view(item, direction);
                     break;
                 case this.HOME_PAGE:
                     dispatcher.dispatch({
                         action_type: Actions.SHOW_HOME_PAGE,
                     });
+                    break;
             }
         }
         dispatcher.dispatch({
@@ -430,7 +419,7 @@ const MeshInteraction = new Lang.Class({
         this._get_more_results_query = null;
     },
 
-    _load_document_card_in_view: function (item, is_going_back) {
+    _load_document_card_in_view: function (item, direction) {
         let dispatcher = Dispatcher.get_default();
         let animation_type = EosKnowledgePrivate.LoadingAnimationType.FORWARDS_NAVIGATION;
         if (this.view.get_visible_page() !== this.view.article_page) {
@@ -438,7 +427,7 @@ const MeshInteraction = new Lang.Class({
             dispatcher.dispatch({
                 action_type: Actions.SHOW_ARTICLE_PAGE,
             });
-        } else if (is_going_back) {
+        } else if (direction === HistoryPresenter.Direction.BACKWARDS) {
             animation_type = EosKnowledgePrivate.LoadingAnimationType.BACKWARDS_NAVIGATION;
         }
         dispatcher.dispatch({
@@ -464,36 +453,36 @@ const MeshInteraction = new Lang.Class({
     _on_back: function () {
         let types = this.view.get_visible_page() === this.view.article_page ?
             [this.HOME_PAGE, this.SECTION_PAGE, this.SEARCH_PAGE] : [this.HOME_PAGE];
-        let item = this._history_presenter.search_backwards(-1,
+        let item = this._history_presenter.search(-1, HistoryPresenter.Direction.BACKWARDS,
             (item) => types.indexOf(item.page_type) >= 0);
         this._history_presenter.set_current_item(HistoryItem.HistoryItem.new_from_object(item));
     },
 
     // Callback is called with a boolean argument; true if the search was
     // successful (even if no results), false if there was an error
-    _refresh_article_results: function (callback) {
-        let query_obj;
-        let item = this._history_presenter.search_backwards(0, (item) => {
-            if (item.page_type === this.SECTION_PAGE) {
-                let tags = item.model.tags.slice();
-                let home_page_tag_index = tags.indexOf(Engine.HOME_PAGE_TAG);
-                if (home_page_tag_index !== -1)
-                    tags.splice(home_page_tag_index, 1);
+    _refresh_article_results: function (item, callback) {
+        let query_obj = null;
+        if (item.page_type === this.SECTION_PAGE) {
+            let tags = item.model.tags.slice();
+            let home_page_tag_index = tags.indexOf(Engine.HOME_PAGE_TAG);
+            if (home_page_tag_index !== -1)
+                tags.splice(home_page_tag_index, 1);
 
-                query_obj = new QueryObject.QueryObject({
-                    tags: tags,
-                    limit: RESULTS_SIZE,
-                });
-                return true;
-            } else if (item.query) {
-                query_obj = new QueryObject.QueryObject({
-                    query: item.query,
-                    limit: RESULTS_SIZE,
-                });
-                return true;
-            }
-            return false;
-        });
+            query_obj = new QueryObject.QueryObject({
+                tags: tags,
+                limit: RESULTS_SIZE,
+            });
+        } else if (item.query) {
+            query_obj = new QueryObject.QueryObject({
+                query: item.query,
+                limit: RESULTS_SIZE,
+            });
+        } else {
+            printerr('No way to query for this history item.');
+            callback(false);
+            return;
+        }
+
         if (this._current_article_results_item === item) {
             callback(true);
             return;
@@ -513,6 +502,8 @@ const MeshInteraction = new Lang.Class({
 
             let dispatcher = Dispatcher.get_default();
             if (item.page_type === this.SEARCH_PAGE) {
+                if (results.length === 0)
+                    item.empty = true;
                 dispatcher.dispatch({
                     action_type: Actions.CLEAR_SEARCH,
                 });
