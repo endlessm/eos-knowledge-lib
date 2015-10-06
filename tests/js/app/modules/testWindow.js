@@ -8,7 +8,7 @@ Utils.register_gresource();
 const Actions = imports.app.actions;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
-const Lightbox = imports.app.widgets.lightbox;
+const Launcher = imports.app.launcher;
 const Minimal = imports.tests.minimal;
 const MockDispatcher = imports.tests.mockDispatcher;
 const MockFactory = imports.tests.mockFactory;
@@ -137,5 +137,17 @@ describe('Window', function () {
             action_type: Actions.SET_READY,
         });
         expect(view.set_busy).toHaveBeenCalledWith(false);
+    });
+
+    it('presents itself when the app launches', function () {
+        spyOn(view, 'show_all');
+        spyOn(view, 'present');
+        spyOn(view, 'present_with_time');
+        dispatcher.dispatch({
+            action_type: Actions.FIRST_LAUNCH,
+            timestamp: 0,
+            launch_type: Launcher.LaunchType.DESKTOP,
+        });
+        expect(view.present.calls.any() || view.present_with_time.calls.any()).toBeTruthy();
     });
 });

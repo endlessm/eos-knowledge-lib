@@ -62,6 +62,8 @@ const MeshInteraction = new Lang.Class({
     SEARCH_METRIC: 'a628c936-5d87-434a-a57a-015a0f223838',
 
     _init: function (props) {
+        this._launched_once = false;
+
         // Needs to happen before before any webviews are created
         WebkitContextSetup.register_webkit_extensions(props.application.application_id);
         WebkitContextSetup.register_webkit_uri_handlers(this._article_render_callback.bind(this));
@@ -568,18 +570,28 @@ const MeshInteraction = new Lang.Class({
             [query, this.application.application_id]));
     },
 
+    // Helper function for the three Launcher implementation methods.
+    _dispatch_launch: function (timestamp, launch_type) {
+        if (this._launched_once)
+            return;
+        this._launched_once = true;
+
+        Dispatcher.get_default().dispatch({
+            action_type: Actions.FIRST_LAUNCH,
+            timestamp: timestamp,
+            launch_type: launch_type,
+        });
+    },
+
     // Launcher implementation
     desktop_launch: function (timestamp) {
-        if (timestamp)
-            this.view.present_with_time(timestamp);
-        else
-            this.view.present();
+        this._dispatch_launch(timestamp, Launcher.LaunchType.DESKTOP);
     },
 
     // Launcher implementation
     search: function (timestamp, query) {
         this.do_search(query);
-        this.desktop_launch(timestamp);
+        this._dispatch_launch(timestamp, Launcher.LaunchType.SEARCH);
     },
 
     // Launcher implementation
@@ -596,7 +608,7 @@ const MeshInteraction = new Lang.Class({
                 logError(error);
             }
         });
-        this.desktop_launch(timestamp);
+        this._dispatch_launch(timestamp, Launcher.LaunchType.SEARCH_RESULT);
     },
 
     load_uri: function (ekn_id) {

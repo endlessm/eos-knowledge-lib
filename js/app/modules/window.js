@@ -184,6 +184,12 @@ const Window = new Lang.Class({
                 case Actions.SET_READY:
                     this.set_busy(false);
                     break;
+                case Actions.FIRST_LAUNCH:
+                    if (payload.timestamp)
+                        this.present_with_time(payload.timestamp);
+                    else
+                        this.present();
+                    break;
                 case Actions.SHOW_HOME_PAGE:
                     this.show_page(this._home_page);
                     break;

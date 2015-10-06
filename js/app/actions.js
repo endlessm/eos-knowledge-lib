@@ -2,6 +2,7 @@
 
 // UI event actions, avoid updating other module UI from these, they will be
 // processed by the interaction model/presenters
+const FIRST_LAUNCH = 'first-launch';
 const NAV_BACK_CLICKED = 'nav-back-clicked';
 const NAV_FORWARD_CLICKED = 'nav-forward-clicked';
 const HISTORY_BACK_CLICKED = 'history-back-clicked';
