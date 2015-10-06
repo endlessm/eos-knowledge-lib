@@ -1,11 +1,18 @@
+const ByteArray = imports.byteArray;
 const Gdk = imports.gi.Gdk;
+const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
+const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const WebKit2 = imports.gi.WebKit2;
 
+const ArticleHTMLRenderer = imports.app.articleHTMLRenderer;
+const ArticleObjectModel = imports.search.articleObjectModel;
 const Compat = imports.app.compat.compat;
 const Config = imports.app.config;
+const Engine = imports.search.engine;
+const Utils = imports.app.utils;
 
 /**
  * Class: EknWebview
@@ -26,6 +33,16 @@ const EknWebview = new Lang.Class({
     GTypeName: 'EknWebview',
     Extends: WebKit2.WebView,
 
+    Properties: {
+        /**
+         * Property: renderer
+         * The <ArticleHTMLRenderer> for rendering article html from a model.
+         */
+        'renderer': GObject.ParamSpec.object('renderer',
+           'Renderer', 'Renderer', GObject.ParamFlags.READABLE,
+            ArticleHTMLRenderer.ArticleHTMLRenderer),
+    },
+
     // List of the URL schemes we defer to other applications (e.g. a browser).
     EXTERNALLY_HANDLED_SCHEMES: [
         'http',
@@ -34,7 +51,19 @@ const EknWebview = new Lang.Class({
     ],
 
     _init: function (params) {
+        let context = new WebKit2.WebContext();
+        params.web_context = context;
+        // Need to handle this signal before we make a webview
+        context.connect('initialize-web-extensions', () => {
+            context.set_web_extensions_directory(Config.WEB_EXTENSION_DIR);
+            let well_known_name = new GLib.Variant('s', Utils.get_web_plugin_dbus_name());
+            context.set_web_extensions_initialization_user_data(well_known_name);
+        });
+        context.get_security_manager().register_uri_scheme_as_local('ekn');
+        context.register_uri_scheme('ekn', this._load_ekn_uri.bind(this));
+
         this.parent(params);
+        this.renderer = new ArticleHTMLRenderer.ArticleHTMLRenderer();
 
         let web_settings = this.get_settings();
         web_settings.enable_developer_extras = Config.inspector_enabled;
@@ -62,6 +91,39 @@ const EknWebview = new Lang.Class({
                 context_menu.remove(item);
             }
         });
+    },
+
+    _load_ekn_uri: function (req) {
+        let fail_with_error = (error) => {
+            logError(error);
+            req.finish_error(new Gio.IOErrorEnum({
+                message: error.message,
+                code: 0,
+            }));
+        };
+
+        try {
+            Engine.get_default().get_object_by_id(req.get_uri(),
+                                                         null,
+                                                        (engine, task) => {
+                try {
+                    let model = engine.get_object_by_id_finish(task);
+                    if (model instanceof ArticleObjectModel.ArticleObjectModel) {
+                        let html = this.renderer.render(model);
+                        let bytes = ByteArray.fromString(html).toGBytes();
+                        let stream = Gio.MemoryInputStream.new_from_bytes(bytes);
+                        req.finish(stream, -1, 'text/html; charset=utf-8');
+                    } else {
+                        let stream = model.get_content_stream();
+                        req.finish(stream, -1, null);
+                    }
+                } catch (error) {
+                    fail_with_error(error);
+                }
+            });
+        } catch (error) {
+            fail_with_error(error);
+        }
     },
 
     _onNavigation: function (webview, decision, decision_type) {

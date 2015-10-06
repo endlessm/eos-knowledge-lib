@@ -243,6 +243,9 @@ const KnowledgeDocumentCard = new Lang.Class({
             height_request: this.MIN_CONTENT_HEIGHT,
         });
 
+        webview.renderer.enable_scroll_manager = this.show_toc;
+        webview.renderer.show_title = !this.show_toc;
+
         webview.connect('notify::uri', function () {
             if (webview.uri.indexOf('#') >= 0) {
                 let hash = webview.uri.split('#')[1];

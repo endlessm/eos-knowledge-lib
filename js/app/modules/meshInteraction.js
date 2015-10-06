@@ -25,7 +25,6 @@ const StyleKnobGenerator = imports.app.compat.styleKnobGenerator;
 const TabButton = imports.app.widgets.tabButton;
 const TextCard = imports.app.modules.textCard;
 const Utils = imports.app.utils;
-const WebkitContextSetup = imports.app.webkitContextSetup;
 
 const DATA_RESOURCE_PATH = 'resource:///com/endlessm/knowledge/data/';
 const RESULTS_SIZE = 10;
@@ -65,10 +64,6 @@ const MeshInteraction = new Lang.Class({
     _init: function (props) {
         this._launched_once = false;
 
-        // Needs to happen before before any webviews are created
-        WebkitContextSetup.register_webkit_extensions(props.application.application_id);
-        WebkitContextSetup.register_webkit_uri_handlers(this._article_render_callback.bind(this));
-
         this.parent(props);
 
         this._window = this.create_submodule('window', {
@@ -80,11 +75,6 @@ const MeshInteraction = new Lang.Class({
 
         this._history_presenter = new HistoryPresenter.HistoryPresenter({
             history_model: new EosKnowledgePrivate.HistoryModel(),
-        });
-
-        this._renderer = new ArticleHTMLRenderer.ArticleHTMLRenderer({
-            enable_scroll_manager: this.template_type === 'A',
-            show_title: this.template_type !== 'A',
         });
 
         let dispatcher = Dispatcher.get_default();
@@ -206,10 +196,6 @@ const MeshInteraction = new Lang.Class({
             search_page: '.search-page-b',
             no_search_results_page: '.no-search-results-page-b'
         },
-    },
-
-    _article_render_callback: function (article_model) {
-        return this._renderer.render(article_model);
     },
 
     _on_history_item_change: function (presenter, item, is_going_back) {
