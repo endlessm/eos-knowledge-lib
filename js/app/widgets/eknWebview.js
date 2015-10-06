@@ -56,7 +56,9 @@ const EknWebview = new Lang.Class({
     _load_context_menu: function (webview, context_menu, event) {
         context_menu.get_items().forEach(function (item) {
             // Remove all menu items except 'Copy'
-            if (item.get_stock_action() !== WebKit2.ContextMenuAction.COPY) {
+            let action = item.get_stock_action();
+            if (action !== WebKit2.ContextMenuAction.COPY &&
+                action !== WebKit2.ContextMenuAction.INSPECT_ELEMENT) {
                 context_menu.remove(item);
             }
         });
