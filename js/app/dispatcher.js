@@ -26,7 +26,7 @@ const Dispatcher = new Lang.Class({
                 this._process_queue.bind(this));
     },
 
-    quit: function () {
+    stop: function () {
         if (this._idle_id)
             GLib.source_remove(this._idle_id);
         this._idle_id = 0;
@@ -63,7 +63,7 @@ const Dispatcher = new Lang.Class({
     },
 
     reset: function () {
-        this.quit();
+        this.stop();
         this._queue = [];
         this._listeners = {};
         this._listener_counter = 0;

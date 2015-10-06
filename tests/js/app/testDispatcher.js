@@ -15,7 +15,7 @@ describe('Dispatcher', function () {
     });
 
     afterEach(function () {
-        dispatcher.quit();
+        dispatcher.stop();
     });
 
     it('get_default always returns the same dispatcher', function () {
@@ -125,7 +125,7 @@ describe('Dispatcher start and stop', function () {
         let spy = jasmine.createSpy();
         dispatcher.register(spy);
         dispatcher.start();
-        dispatcher.quit();
+        dispatcher.stop();
         dispatcher.dispatch({
             action_type: 'foo',
         });
@@ -137,10 +137,10 @@ describe('Dispatcher start and stop', function () {
         });
     });
 
-    it('does not quit twice if calling quit() twice', function () {
+    it('does not stop twice if calling stop() twice', function () {
         dispatcher.start();
-        dispatcher.quit();
-        dispatcher.quit();
+        dispatcher.stop();
+        dispatcher.stop();
         expect(GLib.source_remove.calls.count()).toEqual(1);
     });
 });
