@@ -26,8 +26,6 @@ describe('Window', function () {
     let app, view, factory, dispatcher;
 
     beforeAll(function (done) {
-        dispatcher = MockDispatcher.mock_default();
-
         // Generate a unique ID for each app instance that we test
         let fake_pid = GLib.random_int();
         // FIXME In this version of GJS there is no Posix module, so fake the PID
@@ -48,6 +46,7 @@ describe('Window', function () {
     beforeEach(function () {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
         jasmine.addMatchers(InstanceOfMatcher.customMatchers);
+        dispatcher = MockDispatcher.mock_default();
 
         factory = new MockFactory.MockFactory();
         factory.add_named_mock('top-bar-search', MockWidgets.MockSearchBox);
