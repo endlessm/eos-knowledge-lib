@@ -1,4 +1,3 @@
-const Endless = imports.gi.Endless;
 const Gtk = imports.gi.Gtk;
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
 
@@ -70,45 +69,32 @@ describe ('Media Infobox', function () {
 
     describe ('Attribution button', function () {
         let card;
-        let license_shortname;
-        let copyright_holder = 'Bruce Lee';
-        let attribution;
+        let copyright_holder = '!!!';
         let attribution_button;
 
-        function get_attribution_string (license_shortname, copyright_holder) {
-            let license_description = Endless.get_license_display_name(license_shortname);
-            return (license_description + ' - ' + copyright_holder).toUpperCase();
-        }
-
         it ('displays license file when license is known', function () {
-            license_shortname = 'CC BY 4.0';
-
             card = new MediaCard.MediaCard({
                 model: new MediaObjectModel.ImageObjectModel({
-                    license: license_shortname,
+                    license: 'CC BY 4.0',
                     copyright_holder: copyright_holder,
                     get_content_stream: () => null,
                 }),
             });
 
-            attribution = get_attribution_string(license_shortname, copyright_holder);
-            attribution_button = Gtk.test_find_label(card, attribution).get_parent();
+            attribution_button = Gtk.test_find_label(card, '*!!!*').get_parent();
             expect(attribution_button.sensitive).toBe(true);
         });
 
         it ('does not display license file when license is unknown', function () {
-            license_shortname = 'Bogus License';
-
             card = new MediaCard.MediaCard({
                 model: new MediaObjectModel.ImageObjectModel({
-                    license: license_shortname,
+                    license: 'foobar',
                     copyright_holder: copyright_holder,
                     get_content_stream: () => null,
                 }),
             });
 
-            attribution = get_attribution_string(license_shortname, copyright_holder);
-            attribution_button = Gtk.test_find_label(card, attribution).get_parent();
+            attribution_button = Gtk.test_find_label(card, '*!!!*').get_parent();
             expect(attribution_button.sensitive).toBe(false);
         });
     });
