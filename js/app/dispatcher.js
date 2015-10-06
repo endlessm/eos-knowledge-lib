@@ -61,6 +61,13 @@ const Dispatcher = new Lang.Class({
     unregister: function (id) {
         delete this._listeners[id];
     },
+
+    reset: function () {
+        this.quit();
+        this._queue = [];
+        this._listeners = {};
+        this._listener_counter = 0;
+    },
 });
 
 let get_default = (function () {

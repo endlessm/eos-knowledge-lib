@@ -76,6 +76,39 @@ describe('Dispatcher', function () {
             expect(() => dispatcher.dispatch({})).toThrow();
         });
     });
+
+    describe('resetting', function () {
+        it('unregisters all callbacks', function (done) {
+            let spy1 = jasmine.createSpy();
+            let spy2 = jasmine.createSpy();
+            dispatcher.register(spy1);
+            dispatcher.register(spy2);
+            dispatcher.reset();
+            dispatcher.start();
+            dispatcher.dispatch({
+                action_type: 'foo',
+            });
+            GLib.idle_add(GLib.PRIORITY_LOW, () => {
+                expect(spy1).not.toHaveBeenCalled();
+                expect(spy2).not.toHaveBeenCalled();
+                done();
+            });
+        });
+
+        it('clears the queue of pending actions', function (done) {
+            dispatcher.dispatch({
+                action_type: 'foo',
+            });
+            dispatcher.reset();
+            dispatcher.start();
+            let spy = jasmine.createSpy();
+            dispatcher.register(spy);
+            GLib.idle_add(GLib.PRIORITY_LOW, () => {
+                expect(spy).not.toHaveBeenCalled();
+                done();
+            });
+        });
+    });
 });
 
 // Spying on GLib.source_remove is unfortunately an implementation detail.

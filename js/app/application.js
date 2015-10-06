@@ -76,6 +76,7 @@ const Application = new Lang.Class({
 
     vfunc_window_removed: function (win) {
         if (this._presenter && this._presenter.view === win) {
+            Dispatcher.get_default().reset();
             this._presenter = null;
         }
         this.parent(win);
