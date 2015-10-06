@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2015-09-22 02:07+0000\n"
-"PO-Revision-Date: 2015-09-22 02:08+0000\n"
+"POT-Creation-Date: 2015-09-29 02:11+0000\n"
+"PO-Revision-Date: 2015-09-29 02:12+0000\n"
 "Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
@@ -96,74 +96,79 @@ msgstr "Cortesia de conteúdo de {blog-link}.  Utilizado com permissão."
 msgid "Content courtesy of {blog-link}, licensed under {license-link}."
 msgstr "Cortesia de conteúdo de {blog-link}, licenciado sob {license-link}."
 
-#: js/app/compat/compat.js:88
+#: js/app/compat/compat.js:98
 msgid "SEE ALL CATEGORIES"
 msgstr "Ver todas as categorias"
 
-#: js/app/compat/compat.js:89
+#: js/app/compat/compat.js:99
 msgid "HOME"
 msgstr "PÁGINA PRINCIPAL"
-
-#: js/app/noSearchResultsPage.js:38
-msgid "We didn't find anything."
-msgstr "Nós não encontramos nada."
-
-#: js/app/noSearchResultsPage.js:39
-msgid "Try seaching again with different words."
-msgstr "Tente pesquisar novamente com palavras diferentes."
-
-#: js/app/noSearchResultsPage.js:56
-#, javascript-format
-msgid "Results for \"%s\""
-msgstr "Resultados para \"%s\""
 
 #: js/app/modules/readerCard.js:60
 #, javascript-format
 msgid "Page %s"
 msgstr "Página %s"
 
-#: js/app/modules/readerWindow.js:153
+#: js/app/modules/readerWindow.js:128
 #, javascript-format
 msgid "This article is part of the archive of the magazine %s."
 msgstr "Este artigo é parte do acervo da revista %s."
 
-#. TRANSLATORS: This message is displayed when the encyclopedia app did
-#. not find any results for a search.
-#: js/app/modules/searchModule.js:127
-msgid ""
-"There are no search results that match your search.\n"
-"Try searching for something else"
+#. TRANSLATORS: This message is displayed while an app is
+#. searching for results. The %s will be replaced with the term
+#. that the user searched for. Note, in English, it is
+#. surrounded by Unicode left and right double quotes (U+201C
+#. and U+201D). Make sure to include %s in your translation and
+#. use whatever quote marks are appropriate for your language.
+#: js/app/modules/searchBannerModule.js:55
+#, javascript-format
+msgid "Searching for “%s”"
 msgstr ""
 
-#: js/app/modules/searchModule.js:143
-msgid ""
-"OOPS!\n"
-"There was an error during your search."
+#. TRANSLATORS: This message is displayed when an app is
+#. done searching for results. The %s will be replaced with the
+#. term that the user searched for. Note, in English, it is
+#. surrounded by Unicode left and right double quotes (U+201C
+#. and U+201D). Make sure to include %s in your translation and
+#. use whatever quote marks are appropriate for your language.
+#: js/app/modules/searchBannerModule.js:67
+#, javascript-format
+msgid "Search results for “%s”"
+msgstr "Resultados da pesquisa por “%s”"
+
+#: js/app/modules/searchBannerModule.js:73
+msgid "OOPS!"
 msgstr ""
 
-#: js/app/reader/presenter.js:816
+#: js/app/modules/searchModule.js:152
+msgid ""
+"There are no results that match your search.\n"
+"Try searching for something else."
+msgstr ""
+
+#: js/app/modules/searchModule.js:165
+msgid "There was an error during your search."
+msgstr ""
+
+#: js/app/reader/presenter.js:801
 msgid "View the license in your browser"
 msgstr "Veja a licença no seu browser"
 
-#: js/app/reader/presenter.js:957 js/app/reader/presenter.js:964
+#: js/app/reader/presenter.js:937 js/app/reader/presenter.js:944
 msgid "Oops!"
 msgstr "Oops!"
 
-#: js/app/reader/presenter.js:958
+#: js/app/reader/presenter.js:938
 msgid ""
 "We could not find this magazine!\n"
 "Please try again after restarting your computer."
 msgstr "Não conseguimos encontrar essa revista!\nPor favor, tente novamente após reiniciar seu computador. "
 
-#: js/app/reader/presenter.js:965
+#: js/app/reader/presenter.js:945
 msgid ""
 "There was an error loading that page.\n"
 "Try another one or try again after restarting your computer."
 msgstr "Ocorreu um erro no carregamento da página. \nTente outro ou tente novamente após reiniciar seu computador. "
-
-#: js/app/reader/searchResultsPage.js:71
-msgid "There are no results for your search"
-msgstr "Não existem resultados para a sua pesquisa"
 
 #: js/app/reader/standalonePage.js:136
 msgid "Open the magazine"
@@ -181,17 +186,6 @@ msgstr "Por {author}"
 #: js/app/utils.js:76
 msgid "and"
 msgstr "e"
-
-#. TRANSLATORS: This message is displayed when an app
-#. is done searching for results. The %s will be replaced with the term
-#. that the user searched for. Note, in English, it is surrounded by
-#. Unicode left and right double quotes (U+201C and U+201D). Make sure
-#. to include %s in your translation and use whatever quote marks are
-#. appropriate for your language.
-#: js/app/utils.js:123
-#, javascript-format
-msgid "Search results for “%s”"
-msgstr "Resultados da pesquisa por “%s”"
 
 #. TRANSLATORS: This shows the page number; %d will be replaced with
 #. the page number of the article.
