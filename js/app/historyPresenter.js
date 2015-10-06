@@ -36,8 +36,7 @@ const HistoryPresenter = new GObject.Class({
         /**
          * Event: history-item-changed
          *
-         * Emitted when the history item changes, but ignores empty items (e.g.
-         * searches with no results) when appropriate.
+         * Emitted when the history item changes.
          *
          * Parameters:
          *   item - the history item
@@ -55,9 +54,11 @@ const HistoryPresenter = new GObject.Class({
             switch(payload.action_type) {
                 case Actions.HISTORY_BACK_CLICKED:
                     this.history_model.go_back();
+                    this.emit('history-item-changed', this.history_model.current_item, true);
                     break;
                 case Actions.HISTORY_FORWARD_CLICKED:
                     this.history_model.go_forward();
+                    this.emit('history-item-changed', this.history_model.current_item, false);
                     break;
             }
         });
@@ -67,7 +68,6 @@ const HistoryPresenter = new GObject.Class({
         this.history_model.connect('notify::can-go-forward',
                                    () => this._dispatch_history_enabled());
         this._dispatch_history_enabled();
-        this.history_model.connect('notify::current-item', this._notify_item.bind(this));
         this._last_item = null;
     },
 
@@ -83,26 +83,11 @@ const HistoryPresenter = new GObject.Class({
         });
     },
 
-    _notify_item: function () {
-        let is_going_back = this.history_model.get_item(1) === this._last_item;
-        let item = this.history_model.current_item;
-        this._last_item = this.history_model.current_item;
-        if (item.empty) {
-            if (is_going_back && this.history_model.can_go_back) {
-                this.history_model.go_back();
-                return;
-            }
-            if (!is_going_back && this.history_model.can_go_forward) {
-                this.history_model.go_forward();
-                return;
-            }
-        }
-        this.emit('history-item-changed', item, is_going_back);
-    },
-
     set_current_item: function (item) {
-        if (this.history_model.current_item === null || !this.history_model.current_item.equals(item))
+        if (this.history_model.current_item === null || !this.history_model.current_item.equals(item)) {
             this.history_model.current_item = item;
+            this.emit('history-item-changed', this.history_model.current_item, false);
+        }
     },
 
     set_current_item_from_props: function (props) {
@@ -120,7 +105,7 @@ const HistoryPresenter = new GObject.Class({
         let item;
         do {
             item = this.history_model.get_item(index--);
-        } while (item !== null && (item.empty || !match_fn(item)));
+        } while (item !== null && !match_fn(item));
         return item;
     },
 });
