@@ -11,6 +11,18 @@ const SearchUtils = imports.search.utils;
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
 const _ARTICLE_TEMPLATE = 'resource:///com/endlessm/knowledge/data/templates/article.mst';
+let _template_contents;
+// Caches so we only load once.
+function load_article_template () {
+    if (_template_contents)
+        return _template_contents;
+    let file = Gio.file_new_for_uri(_ARTICLE_TEMPLATE);
+    let [success, string] = file.load_contents(null);
+    _template_contents = string.toString();
+    // Makes calls to Mustache.render with this template faster
+    Mustache.parse(_template_contents);
+    return _template_contents;
+}
 
 const ArticleHTMLRenderer = new Lang.Class({
     Name: "ArticleHTMLRenderer",
@@ -19,14 +31,7 @@ const ArticleHTMLRenderer = new Lang.Class({
 
     _init: function (props={}) {
         this.parent(props);
-        let file = Gio.file_new_for_uri(_ARTICLE_TEMPLATE);
-        let [success, string] = file.load_contents(null);
-        if (success) {
-            this._template = string.toString();
-            Mustache.parse(this._template);
-        } else {
-            throw new Error('Could not open article template');
-        }
+        this._template = load_article_template();
     },
 
     _strip_tags: function (html) {
@@ -148,7 +153,6 @@ function _to_link(uri, text) {
 }
 
 function _get_display_string_for_license(license) {
-    let message;
     if (license === Endless.LICENSE_NO_LICENSE)
         // TRANSLATORS: the text inside curly braces {blog-link} is going to be
         // substituted in code. Please make sure that your translation contains
