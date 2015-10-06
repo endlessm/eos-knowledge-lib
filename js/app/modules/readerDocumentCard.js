@@ -139,10 +139,15 @@ const ReaderDocumentCard = new Lang.Class({
         this.content_view = null;
     },
 
-    _get_webview: function (article_model) {
-        let webview = new EknWebview.EknWebview({
+    // Keep separate function to mock out in tests
+    _create_webview: function () {
+        return new EknWebview.EknWebview({
             expand: true,
         });
+    },
+
+    _get_webview: function (article_model) {
+        let webview = this._create_webview();
 
         webview.connect('decide-policy', (view, decision, type)  => {
             if (type !== WebKit2.PolicyDecisionType.NAVIGATION_ACTION)

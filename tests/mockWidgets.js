@@ -82,3 +82,23 @@ const MockSidebarTemplate = new Lang.Class({
     },
     connect: function () {},
 });
+
+const MockEknWebview = new Lang.Class({
+    Name: 'MockEknWebview',
+    Extends: Gtk.Widget,
+    Signals: {
+        'load-changed': {
+            param_types: [ GObject.TYPE_UINT ],
+        },
+        'load-failed': {
+            param_types: [ GObject.TYPE_UINT, GObject.TYPE_STRING ],
+        },
+        'decide-policy': {
+            param_types: [ GObject.TYPE_OBJECT, GObject.TYPE_OBJECT ],
+        },
+    },
+    _init: function (props={}) {
+        this.parent(props);
+    },
+    load_uri: function () {},
+});

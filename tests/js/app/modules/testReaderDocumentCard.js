@@ -1,6 +1,3 @@
-const ByteArray = imports.byteArray;
-const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
-const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
 const WebKit2 = imports.gi.WebKit2;
 
@@ -10,31 +7,16 @@ Utils.register_gresource();
 const ArticleObjectModel = imports.search.articleObjectModel;
 const ReaderDocumentCard = imports.app.modules.readerDocumentCard;
 const CssClassMatcher = imports.tests.CssClassMatcher;
+const MockWidgets = imports.tests.mockWidgets;
 const StyleClasses = imports.app.styleClasses;
 const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 
 Gtk.init(null);
 
-const TEST_CONTENT_DIR = Utils.get_test_content_srcdir();
-
-function register_webkit_uri_handlers () {
-    let security_manager = WebKit2.WebContext.get_default().get_security_manager();
-    security_manager.register_uri_scheme_as_local('ekn');
-    EosKnowledgePrivate.private_register_global_uri_scheme('ekn', (req) => {
-        let html = '<html><div>some text</div></html>';
-        let bytes = ByteArray.fromString(html).toGBytes();
-        let stream = Gio.MemoryInputStream.new_from_bytes(bytes);
-        req.finish(stream, -1, 'text/html; charset=utf-8');
-    });
-}
-
 describe('Document Card', function () {
-    let card;
-    let article_object;
+    let card, article_object;
 
     beforeEach(function () {
-        register_webkit_uri_handlers();
-        let dummy_content = Gio.File.new_for_path(TEST_CONTENT_DIR + 'emacs.html');
         jasmine.addMatchers(CssClassMatcher.customMatchers);
         jasmine.addMatchers(WidgetDescendantMatcher.customMatchers);
 
@@ -46,6 +28,7 @@ describe('Document Card', function () {
         card = new ReaderDocumentCard.ReaderDocumentCard({
             model: article_object,
         });
+        spyOn(card, '_create_webview').and.returnValue(new MockWidgets.MockEknWebview());
     });
 
     it('can be constructed', function () {
@@ -57,23 +40,17 @@ describe('Document Card', function () {
             card.load_content_finish(task);
             done();
         });
+        card.content_view.emit('load-changed', WebKit2.LoadEvent.FINISHED);
     });
 
     it('emits content error signal after loading bad content', function (done) {
-        let article_object = new ArticleObjectModel.ArticleObjectModel({
-            ekn_id: 'file:///bad_uri',
-            content_type: 'text/html',
-            title: 'Reader article',
-        });
-        let card = new ReaderDocumentCard.ReaderDocumentCard({
-            model: article_object,
-        });
         card.load_content(null, (card, task) => {
             expect(function () {
                 card.load_content_finish(task);
             }).toThrow();
             done();
         });
+        card.content_view.emit('load-failed', WebKit2.LoadEvent.COMMITTED, 'ekn://astronomy-en/foo');
     });
 
     it('clears content view when asked to', function () {
