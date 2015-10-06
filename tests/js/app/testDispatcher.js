@@ -1,4 +1,5 @@
 // Copyright 2015 Endless Mobile, Inc.
+const GLib = imports.gi.GLib;
 
 const Dispatcher = imports.app.dispatcher;
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
@@ -74,5 +75,39 @@ describe('Dispatcher', function () {
         it('errors if no action_type in payload', function () {
             expect(() => dispatcher.dispatch({})).toThrow();
         });
+    });
+});
+
+// Spying on GLib.source_remove is unfortunately an implementation detail.
+describe('Dispatcher start and stop', function () {
+    let dispatcher;
+
+    beforeEach(function () {
+        spyOn(GLib, 'source_remove').and.callThrough();
+        dispatcher = new Dispatcher.Dispatcher();
+    });
+
+    it('does not start twice if calling start() twice', function (done) {
+        dispatcher.start();
+        let spy = jasmine.createSpy();
+        dispatcher.register(spy);
+        dispatcher.start();
+        dispatcher.quit();
+        dispatcher.dispatch({
+            action_type: 'foo',
+        });
+        GLib.idle_add(GLib.PRIORITY_LOW, () => {
+            expect(spy).not.toHaveBeenCalled();
+            expect(GLib.source_remove.calls.count()).toEqual(1);
+            done();
+            return GLib.SOURCE_REMOVE;
+        });
+    });
+
+    it('does not quit twice if calling quit() twice', function () {
+        dispatcher.start();
+        dispatcher.quit();
+        dispatcher.quit();
+        expect(GLib.source_remove.calls.count()).toEqual(1);
     });
 });
