@@ -15,17 +15,21 @@ const Dispatcher = new Lang.Class({
         this._queue = [];
         this._listeners = {};
         this._listener_counter = 0;
+        this._idle_id = 0;
     },
 
     start: function () {
         // Use low priority to make sure we only emit a new action once all GUI
         // events from GTK have been processed.
-        this._idle_id = GLib.idle_add(GLib.PRIORITY_LOW,
-            this._process_queue.bind(this));
+        if (!this._idle_id)
+            this._idle_id = GLib.idle_add(GLib.PRIORITY_LOW,
+                this._process_queue.bind(this));
     },
 
-    quit: function () {
-        GLib.source_remove(this._idle_id);
+    stop: function () {
+        if (this._idle_id)
+            GLib.source_remove(this._idle_id);
+        this._idle_id = 0;
     },
 
     _process_queue: function () {
@@ -56,6 +60,13 @@ const Dispatcher = new Lang.Class({
 
     unregister: function (id) {
         delete this._listeners[id];
+    },
+
+    reset: function () {
+        this.stop();
+        this._queue = [];
+        this._listeners = {};
+        this._listener_counter = 0;
     },
 });
 
