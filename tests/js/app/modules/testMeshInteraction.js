@@ -191,6 +191,32 @@ describe('Mesh interaction', function () {
         expect(payloads.length).toBe(1);
     });
 
+    it('indicates that the brand screen has been read after launch from desktop', function () {
+        mesh.BRAND_SCREEN_TIME_MS = 0;
+        mesh.desktop_launch(0);
+        expect(dispatcher.last_payload_with_type(Actions.BRAND_SCREEN_DONE)).not.toBeDefined();
+        Utils.update_gui();
+        expect(dispatcher.last_payload_with_type(Actions.BRAND_SCREEN_DONE)).toBeDefined();
+    });
+
+    it('shows the brand screen only once', function () {
+        mesh.BRAND_SCREEN_TIME_MS = 0;
+        mesh.desktop_launch(0);
+        mesh.desktop_launch(0);
+        Utils.update_gui();
+        let payloads = dispatcher.payloads_with_type(Actions.BRAND_SCREEN_DONE);
+        expect(payloads.length).toBe(1);
+    });
+
+    it('does not show the brand screen on other launch methods', function () {
+        mesh.BRAND_SCREEN_TIME_MS = 0;
+        engine.get_object_by_id_finish.and.returnValue(new ContentObjectModel.ContentObjectModel());
+        mesh.search(0, 'query');
+        mesh.activate_search_result(0, 'ekn://foo/bar', 'query');
+        Utils.update_gui();
+        expect(dispatcher.last_payload_with_type(Actions.BRAND_SCREEN_DONE)).not.toBeDefined();
+    });
+
     describe('search', function () {
         beforeEach(function () {
             engine.get_objects_by_query_finish.and.returnValue([[], null]);

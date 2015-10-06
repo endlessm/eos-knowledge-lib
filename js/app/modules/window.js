@@ -9,6 +9,7 @@ const Lang = imports.lang;
 
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
+const Launcher = imports.app.launcher;
 const Module = imports.app.interfaces.module;
 const StyleClasses = imports.app.styleClasses;
 
@@ -113,11 +114,11 @@ const Window = new Lang.Class({
     _init: function (props) {
         this.parent(props);
 
-        this._home_page = this.factory.create_module_for_slot(this.factory_name,
-            'home-page');
+        this._home_page = this.create_submodule('home-page');
         this.section_page = this.factory.create_named_module('section-page-template');
         this.search_page = this.factory.create_named_module('search-page-template');
         this.article_page = this.factory.create_named_module('article-page-template');
+        this._brand_screen = this.create_submodule('brand-screen');
         if (this.template_type === 'B') {
             this._home_page.get_style_context().add_class(StyleClasses.HOME_PAGE_B);
             this.section_page.get_style_context().add_class(StyleClasses.SECTION_PAGE_B);
@@ -129,6 +130,8 @@ const Window = new Lang.Class({
         }
 
         this._stack = new Gtk.Stack();
+        if (this._brand_screen)
+            this._stack.add(this._brand_screen);
         this._stack.add(this._home_page);
         this._stack.add(this.section_page);
         this._stack.add(this.search_page);
@@ -185,10 +188,17 @@ const Window = new Lang.Class({
                     this.set_busy(false);
                     break;
                 case Actions.FIRST_LAUNCH:
+                    if (this._brand_screen &&
+                        payload.launch_type === Launcher.LaunchType.DESKTOP)
+                        this.show_page(this._brand_screen);
                     if (payload.timestamp)
                         this.present_with_time(payload.timestamp);
                     else
                         this.present();
+                    break;
+                case Actions.BRAND_SCREEN_DONE:
+                    if (this._brand_screen)
+                        this.show_page(this._home_page);
                     break;
                 case Actions.SHOW_HOME_PAGE:
                     this.show_page(this._home_page);
@@ -307,14 +317,18 @@ const Window = new Lang.Class({
         if (old_page === new_page)
             return;
 
-        let is_on_left = (page) => page === this._home_page;
+        let is_on_left = (page) => [this._home_page, this._brand_screen].indexOf(page) > -1;
         let is_on_center = (page) => page === this.section_page || page === this.search_page;
         let nav_back_visible = false;
         if (is_on_left(new_page)) {
-            this._stack.transition_type = Gtk.StackTransitionType.SLIDE_RIGHT;
             nav_back_visible = false;
             this._search_box.visible = false;
             this._set_background_position_style(StyleClasses.BACKGROUND_LEFT);
+            if (is_on_left(old_page)) {
+                this._stack.transition_type = Gtk.StackTransitionType.CROSSFADE;
+            } else {
+                this._stack.transition_type = Gtk.StackTransitionType.SLIDE_RIGHT;
+            }
         } else if (is_on_center(new_page)) {
             if (is_on_left(old_page)) {
                 this._stack.transition_type = Gtk.StackTransitionType.SLIDE_LEFT;
@@ -341,8 +355,7 @@ const Window = new Lang.Class({
 
     /**
      * Method: get_visible_page
-     *
-     * Returns the currently visible page, either the home, section or article page.
+     * Returns the currently visible page
      */
     get_visible_page: function () {
         return this._stack.visible_child;
@@ -358,5 +371,10 @@ const Window = new Lang.Class({
             cursor = Gdk.Cursor.new_for_display(Gdk.Display.get_default(),
                 Gdk.CursorType.WATCH);
         gdk_window.cursor = cursor;
+    },
+
+    // Module override
+    get_slot_names: function () {
+        return ['brand-screen', 'home-page'];
     },
 });

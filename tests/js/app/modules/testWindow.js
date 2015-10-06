@@ -23,7 +23,7 @@ let resource = Gio.Resource.load(TEST_CONTENT_BUILDDIR + 'test-content.gresource
 resource._register();
 
 describe('Window', function () {
-    let app, view, factory, dispatcher;
+    let app, factory, dispatcher;
 
     beforeAll(function (done) {
         // Generate a unique ID for each app instance that we test
@@ -55,99 +55,141 @@ describe('Window', function () {
         factory.add_named_mock('home-page', Minimal.MinimalHomePage);
         factory.add_named_mock('lightbox', Minimal.MinimalLightbox);
         factory.add_named_mock('navigation', Minimal.MinimalNavigation);
+        factory.add_named_mock('brand-screen', Minimal.MinimalHomePage);
         factory.add_named_mock('window', Window.Window, {
+            'brand-screen': null,
             'home-page': 'home-page',
         });
-        view = new Window.Window({
-            application: app,
-            factory: factory,
-            factory_name: 'window',
+        factory.add_named_mock('window-with-brand-screen', Window.Window, {
+            'brand-screen': 'brand-screen',
+            'home-page': 'home-page',
         });
     });
 
-    afterEach(function () {
-        view.destroy();
-    });
+    describe('without brand screen', function () {
+        let view;
 
-    it('can be constructed', function () {
-        expect(view).toBeDefined();
-    });
-
-    it('instantiates a section page A', function () {
-        expect(view.section_page).toBeDefined();
-    });
-
-    it ('instantiates a search page A', function () {
-        expect(view.search_page).toBeDefined();
-    });
-
-    it('instantiates an article page A', function () {
-        expect(view.article_page).toBeDefined();
-    });
-
-    it('correctly sets background image', function () {
-        view.background_image_uri = BACKGROUND_URI;
-        expect(view.background_image_uri).toBe(BACKGROUND_URI);
-    });
-
-    it('updates visible page with show_page', function () {
-        let home_page = factory.get_created_named_mocks('home-page')[0];
-        view.show_page(view.article_page);
-        expect(view.get_visible_page()).toBe(view.article_page);
-        view.show_page(home_page);
-        expect(view.get_visible_page()).toBe(home_page);
-    });
-
-    it('starts on home page', function () {
-        let home_page = factory.get_created_named_mocks('home-page')[0];
-        expect(view.get_visible_page()).toBe(home_page);
-    });
-
-    it('indicates busy during a search', function () {
-        spyOn(view, 'set_busy');
-        dispatcher.dispatch({
-            action_type: Actions.SEARCH_STARTED,
+        beforeEach(function () {
+            view = new Window.Window({
+                application: app,
+                factory: factory,
+                factory_name: 'window',
+            });
         });
-        expect(view.set_busy).toHaveBeenCalledWith(true);
-        dispatcher.dispatch({
-            action_type: Actions.SEARCH_READY,
+
+        afterEach(function () {
+            view.destroy();
         });
-        expect(view.set_busy).toHaveBeenCalledWith(false);
+
+        it('can be constructed', function () {
+            expect(view).toBeDefined();
+        });
+
+        it('instantiates a section page A', function () {
+            expect(view.section_page).toBeDefined();
+        });
+
+        it ('instantiates a search page A', function () {
+            expect(view.search_page).toBeDefined();
+        });
+
+        it('instantiates an article page A', function () {
+            expect(view.article_page).toBeDefined();
+        });
+
+        it('correctly sets background image', function () {
+            view.background_image_uri = BACKGROUND_URI;
+            expect(view.background_image_uri).toBe(BACKGROUND_URI);
+        });
+
+        it('updates visible page with show_page', function () {
+            let home_page = factory.get_created_named_mocks('home-page')[0];
+            view.show_page(view.article_page);
+            expect(view.get_visible_page()).toBe(view.article_page);
+            view.show_page(home_page);
+            expect(view.get_visible_page()).toBe(home_page);
+        });
+
+        it('starts on home page', function () {
+            let home_page = factory.get_created_named_mocks('home-page')[0];
+            expect(view.get_visible_page()).toBe(home_page);
+        });
+
+        it('indicates busy during a search', function () {
+            spyOn(view, 'set_busy');
+            dispatcher.dispatch({
+                action_type: Actions.SEARCH_STARTED,
+            });
+            expect(view.set_busy).toHaveBeenCalledWith(true);
+            dispatcher.dispatch({
+                action_type: Actions.SEARCH_READY,
+            });
+            expect(view.set_busy).toHaveBeenCalledWith(false);
+        });
+
+        it('indicates busy during a failed search', function () {
+            spyOn(view, 'set_busy');
+            dispatcher.dispatch({
+                action_type: Actions.SEARCH_STARTED,
+            });
+            expect(view.set_busy).toHaveBeenCalledWith(true);
+            dispatcher.dispatch({
+                action_type: Actions.SEARCH_FAILED,
+            });
+            expect(view.set_busy).toHaveBeenCalledWith(false);
+        });
+
+        it('indicates busy while querying a set', function () {
+            spyOn(view, 'set_busy');
+            dispatcher.dispatch({
+                action_type: Actions.SHOW_SET,
+            });
+            expect(view.set_busy).toHaveBeenCalledWith(true);
+            dispatcher.dispatch({
+                action_type: Actions.SET_READY,
+            });
+            expect(view.set_busy).toHaveBeenCalledWith(false);
+        });
+
+        it('presents itself when the app launches', function () {
+            spyOn(view, 'show_all');
+            spyOn(view, 'present');
+            spyOn(view, 'present_with_time');
+            dispatcher.dispatch({
+                action_type: Actions.FIRST_LAUNCH,
+                timestamp: 0,
+                launch_type: Launcher.LaunchType.DESKTOP,
+            });
+            expect(view.present.calls.any() || view.present_with_time.calls.any()).toBeTruthy();
+        });
     });
 
-    it('indicates busy during a failed search', function () {
-        spyOn(view, 'set_busy');
-        dispatcher.dispatch({
-            action_type: Actions.SEARCH_STARTED,
-        });
-        expect(view.set_busy).toHaveBeenCalledWith(true);
-        dispatcher.dispatch({
-            action_type: Actions.SEARCH_FAILED,
-        });
-        expect(view.set_busy).toHaveBeenCalledWith(false);
-    });
+    describe('with a brand screen', function () {
+        let view;
 
-    it('indicates busy while querying a set', function () {
-        spyOn(view, 'set_busy');
-        dispatcher.dispatch({
-            action_type: Actions.SHOW_SET,
+        beforeEach(function () {
+            view = new Window.Window({
+                application: app,
+                factory: factory,
+                factory_name: 'window-with-brand-screen',
+            });
         });
-        expect(view.set_busy).toHaveBeenCalledWith(true);
-        dispatcher.dispatch({
-            action_type: Actions.SET_READY,
-        });
-        expect(view.set_busy).toHaveBeenCalledWith(false);
-    });
 
-    it('presents itself when the app launches', function () {
-        spyOn(view, 'show_all');
-        spyOn(view, 'present');
-        spyOn(view, 'present_with_time');
-        dispatcher.dispatch({
-            action_type: Actions.FIRST_LAUNCH,
-            timestamp: 0,
-            launch_type: Launcher.LaunchType.DESKTOP,
+        afterEach(function () {
+            view.destroy();
         });
-        expect(view.present.calls.any() || view.present_with_time.calls.any()).toBeTruthy();
+
+        it('starts on the brand screen page', function () {
+            let brand_screen = factory.get_created_named_mocks('brand-screen')[0];
+            expect(view.get_visible_page()).toBe(brand_screen);
+        });
+
+        it('switches to the home page after the brand screen has been shown', function () {
+            let home_page = factory.get_created_named_mocks('home-page')[0];
+            dispatcher.dispatch({
+                action_type: Actions.BRAND_SCREEN_DONE,
+            });
+            expect(view.get_visible_page()).toBe(home_page);
+        });
     });
 });
