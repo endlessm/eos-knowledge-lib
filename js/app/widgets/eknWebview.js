@@ -36,21 +36,21 @@ const EknWebview = new Lang.Class({
     _init: function (params) {
         this.parent(params);
 
-        this._webKitSettings = this.get_settings();
-        this._webKitSettings.enable_developer_extras = Config.inspector_enabled;
-        this._webKitSettings.enable_write_console_messages_to_stdout = true;
-        this._webKitSettings.javascript_can_access_clipboard = true;
+        let web_settings = this.get_settings();
+        web_settings.enable_developer_extras = Config.inspector_enabled;
+        web_settings.enable_write_console_messages_to_stdout = true;
+        web_settings.javascript_can_access_clipboard = true;
 
-        this._defaultFontSize = this._webKitSettings.default_font_size;
-        this._defaultMonospaceFontSize = this._webKitSettings.default_monospace_font_size;
+        this._defaultFontSize = web_settings.default_font_size;
+        this._defaultMonospaceFontSize = web_settings.default_monospace_font_size;
 
         let screen = Gdk.Screen.get_default();
-        this._gtkSettings = Gtk.Settings.get_for_screen(screen);
-        this._updateFontSizeFromGtkSettings(this._gtkSettings);
+        let gtk_settings = Gtk.Settings.get_for_screen(screen);
+        this._updateFontSizeFromGtkSettings(gtk_settings);
 
         this.connect('context-menu', this._load_context_menu.bind(this));
         this.connect('decide-policy', this._onNavigation.bind(this));
-        this._gtkSettings.connect('notify::gtk-xft-dpi', this._updateFontSizeFromGtkSettings.bind(this));
+        gtk_settings.connect('notify::gtk-xft-dpi', this._updateFontSizeFromGtkSettings.bind(this));
     },
 
     _load_context_menu: function (webview, context_menu, event) {
@@ -75,10 +75,11 @@ const EknWebview = new Lang.Class({
         return false; // not handled, default behavior
     },
 
-    _updateFontSizeFromGtkSettings: function (settings) {
-        let dpi = settings.gtk_xft_dpi / 1024;
-        this._webKitSettings.default_font_size = this._normalizeFontSize(this._defaultFontSize, dpi);
-        this._webKitSettings.default_monospace_font_size = this._normalizeFontSize(this._defaultMonospaceFontSize, dpi);
+    _updateFontSizeFromGtkSettings: function (gtk_settings) {
+        let dpi = gtk_settings.gtk_xft_dpi / 1024;
+        let web_settings = this.get_settings();
+        web_settings.default_font_size = this._normalizeFontSize(this._defaultFontSize, dpi);
+        web_settings.default_monospace_font_size = this._normalizeFontSize(this._defaultMonospaceFontSize, dpi);
     },
 
     _normalizeFontSize: function (size, dpi) {
