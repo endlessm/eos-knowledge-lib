@@ -82,7 +82,10 @@ const MeshInteraction = new Lang.Class({
             history_model: new EosKnowledgePrivate.HistoryModel(),
         });
 
-        this._renderer = new ArticleHTMLRenderer.ArticleHTMLRenderer();
+        this._renderer = new ArticleHTMLRenderer.ArticleHTMLRenderer({
+            enable_scroll_manager: this.template_type === 'A',
+            show_title: this.template_type !== 'A',
+        });
 
         let dispatcher = Dispatcher.get_default();
         dispatcher.register((payload) => {
@@ -206,10 +209,7 @@ const MeshInteraction = new Lang.Class({
     },
 
     _article_render_callback: function (article_model) {
-        return this._renderer.render(article_model, {
-            enable_scroll_manager: this.template_type === 'A',
-            show_title: this.template_type !== 'A',
-        });
+        return this._renderer.render(article_model);
     },
 
     _on_history_item_change: function (presenter, item, is_going_back) {

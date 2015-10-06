@@ -151,6 +151,7 @@ const AisleInteraction = new Lang.Class({
         WebkitContextSetup.register_webkit_extensions();
 
         this._article_renderer = new ArticleHTMLRenderer.ArticleHTMLRenderer();
+        this._article_renderer.set_custom_css_files(['reader.css']);
 
         this._check_for_content_update();
 
@@ -850,9 +851,7 @@ const AisleInteraction = new Lang.Class({
     },
 
     _article_render_callback: function (article_model) {
-        return this._article_renderer.render(article_model, {
-            custom_css_files: ['reader.css'],
-        });
+        return this._article_renderer.render(article_model);
     },
 
     // Take an ArticleObjectModel and create a ReaderDocumentCard view.
