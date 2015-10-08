@@ -1,7 +1,5 @@
 const EvinceDocument = imports.gi.EvinceDocument;
 const Gio = imports.gi.Gio;
-const Gtk = imports.gi.Gtk;
-const System = imports.system;
 
 const Config = imports.app.config;
 const ModuleFactory = imports.app.moduleFactory;
@@ -36,27 +34,7 @@ let setup_presenter_for_resource = function (application, resource_path) {
 
     application.image_attribution_file = resource_file.get_child('credits.json');
 
-    let PresenterClass;
-    switch(app_json['templateType']) {
-        case 'A':
-        case 'B':
-        case 'encyclopedia': {
-            const MeshInteraction = imports.app.modules.meshInteraction;
-            PresenterClass = MeshInteraction.MeshInteraction;
-        }
-            break;
-        case 'reader': {
-            const AisleInteraction = imports.app.modules.aisleInteraction;
-            PresenterClass = AisleInteraction.AisleInteraction;
-        }
-            break;
-        default:
-            printerr('Unknown template type', app_json['templateType']);
-            System.exit(1);
-    }
-
-    return new PresenterClass(
-    {
+    return factory.create_named_module('interaction', {
         template_type: app_json['templateType'],
         css: css,
         application: application,
