@@ -227,6 +227,7 @@ js_files = \
 	js/app/interfaces/module.js \
 	js/app/launcher.js \
 	js/app/moduleFactory.js \
+	js/app/modules/aisleInteraction.js \
 	js/app/modules/appBanner.js \
 	js/app/modules/articleSnippetCard.js \
 	js/app/modules/articleStackModule.js \
@@ -264,7 +265,6 @@ js_files = \
 	js/app/modules/window.js \
 	js/app/mustache.js \
 	js/app/presenterLoader.js \
-	js/app/reader/presenter.js \
 	js/app/reader/standalonePage.js \
 	js/app/reader/userSettingsModel.js \
 	js/app/runner.js \
@@ -358,6 +358,7 @@ javascript_tests = \
 	tests/js/app/interfaces/testCard.js \
 	tests/js/app/interfaces/testInteraction.js \
 	tests/js/app/interfaces/testModule.js \
+	tests/js/app/modules/testAisleInteraction.js \
 	tests/js/app/modules/testAppBanner.js \
 	tests/js/app/modules/testArticleSnippetCard.js \
 	tests/js/app/modules/testArticleStackModule.js \
@@ -387,7 +388,6 @@ javascript_tests = \
 	tests/js/app/modules/testSidebarTemplate.js \
 	tests/js/app/modules/testTextCard.js \
 	tests/js/app/modules/testWindow.js \
-	tests/js/app/reader/testReaderPresenter.js \
 	tests/js/app/reader/testUserSettingsModel.js \
 	tests/js/app/reader/testWebExtension.js \
 	tests/js/app/testArticleHTMLRenderer.js \

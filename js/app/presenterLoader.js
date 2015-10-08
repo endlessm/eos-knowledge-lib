@@ -46,8 +46,8 @@ let setup_presenter_for_resource = function (application, resource_path) {
         }
             break;
         case 'reader': {
-            const ReaderPresenter = imports.app.reader.presenter;
-            PresenterClass = ReaderPresenter.Presenter;
+            const AisleInteraction = imports.app.modules.aisleInteraction;
+            PresenterClass = AisleInteraction.AisleInteraction;
         }
             break;
         default:

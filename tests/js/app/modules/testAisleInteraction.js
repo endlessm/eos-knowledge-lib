@@ -17,7 +17,7 @@ const Minimal = imports.tests.minimal;
 const MockEngine = imports.tests.mockEngine;
 const MockFactory = imports.tests.mockFactory;
 const MockWidgets = imports.tests.mockWidgets;
-const Presenter = imports.app.reader.presenter;
+const AisleInteraction = imports.app.modules.aisleInteraction;
 const QueryObject = imports.search.queryObject;
 
 Gtk.init(null);
@@ -29,7 +29,7 @@ GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.
 const MockApplication = new Lang.Class({
     Name: 'MockApplication',
     Extends: GObject.Object,
-    application_id: 'com.endlessm.EosKnowledgePrivate.Reader.testPresenter',
+    application_id: 'com.endlessm.EosKnowledgePrivate.testAisleInteraction',
 });
 
 const MockUserSettingsModel = new Lang.Class({
@@ -68,7 +68,7 @@ let get_style_context = function () {
 
 const MockView = new Lang.Class({
     Name: 'MockView',
-    GTypeName: 'MockView_TestReaderPresenter',
+    GTypeName: 'MockView_TestAisleInteraction',
     Extends: GObject.Object,
     Signals: {
         'debug-hotkey-pressed': {},
@@ -137,8 +137,8 @@ const MockView = new Lang.Class({
     },
 });
 
-describe('Reader presenter', function () {
-    let engine, settings, view, article_nav_buttons, presenter, dispatcher;
+describe('Aisle interaction', function () {
+    let engine, settings, view, article_nav_buttons, interaction, dispatcher;
 
     const MOCK_DATA = [
         ['Title 1', ['Kim Kardashian'], '2014/11/13 08:00'],
@@ -181,14 +181,14 @@ describe('Reader presenter', function () {
         Utils.register_gresource();
 
         spyOn(AppUtils, 'get_web_plugin_dbus_name').and.returnValue("test0");
-        presenter = new Presenter.Presenter({
+        interaction = new AisleInteraction.AisleInteraction({
             application: application,
             engine: engine,
             settings: settings,
             view: view,
             factory: factory,
         });
-        spyOn(presenter, 'record_search_metric');
+        spyOn(interaction, 'record_search_metric');
     });
 
     it('constructs', function () {});
@@ -199,7 +199,7 @@ describe('Reader presenter', function () {
         });
 
         it('queries the articles in the initial article set', function () {
-            presenter.desktop_launch();
+            interaction.desktop_launch();
             expect(engine.get_objects_by_query).toHaveBeenCalledWith(
                 jasmine.objectContaining({
                     limit: 15,
@@ -214,12 +214,12 @@ describe('Reader presenter', function () {
 
         it('adds the articles as pages', function () {
             spyOn(view, 'append_article_page').and.callThrough();
-            presenter.desktop_launch();
+            interaction.desktop_launch();
             expect(view.append_article_page.calls.count()).toEqual(MOCK_RESULTS.length);
         });
 
         it('shows the snippets on the front cover when loading content', function () {
-            presenter.desktop_launch();
+            interaction.desktop_launch();
             expect(dispatcher.last_payload_with_type(Actions.CLEAR_ITEMS)).toBeDefined();
             expect(dispatcher.last_payload_with_type(Actions.APPEND_ITEMS).models).toEqual(jasmine.any(Array));
         });
@@ -230,7 +230,7 @@ describe('Reader presenter', function () {
                 throw new Error();
             });
             expect(function () {
-                presenter.desktop_launch();
+                interaction.desktop_launch();
             }).not.toThrow();
         });
 
@@ -243,7 +243,7 @@ describe('Reader presenter', function () {
             });
             engine.get_object_by_id_finish.and.returnValue(model);
             spyOn(view, 'show_global_search_standalone_page');
-            presenter.activate_search_result(0, MOCK_ID, 'fake query');
+            interaction.activate_search_result(0, MOCK_ID, 'fake query');
             expect(engine.get_object_by_id).toHaveBeenCalledWith(MOCK_ID,
                                                                  jasmine.any(Object),
                                                                  jasmine.any(Function));
@@ -252,25 +252,25 @@ describe('Reader presenter', function () {
 
         it('starts at the right page when search result is in this issue', function () {
             engine.get_object_by_id_finish.and.returnValue(MOCK_RESULTS[2]);
-            presenter.activate_search_result(0, 'abc2134', 'fake query');
-            expect(presenter.current_page).toBe(3);
+            interaction.activate_search_result(0, 'abc2134', 'fake query');
+            expect(interaction.current_page).toBe(3);
         });
 
         it('dispatches app-launched on launch from desktop', function () {
-            presenter.desktop_launch(0);
+            interaction.desktop_launch(0);
             expect(dispatcher.last_payload_with_type(Actions.FIRST_LAUNCH).launch_type)
                 .toBe(Launcher.LaunchType.DESKTOP);
         });
 
         it('dispatches app-launched on launch from search', function () {
-            presenter.search(0, 'query');
+            interaction.search(0, 'query');
             expect(dispatcher.last_payload_with_type(Actions.FIRST_LAUNCH).launch_type)
                 .toBe(Launcher.LaunchType.SEARCH);
         });
 
         it('dispatches app-launched on launch from search result', function () {
             engine.get_object_by_id_finish.and.returnValue(new ArticleObjectModel.ArticleObjectModel());
-            presenter.activate_search_result(0, 'ekn://foo/bar', 'query');
+            interaction.activate_search_result(0, 'ekn://foo/bar', 'query');
             expect(dispatcher.last_payload_with_type(Actions.FIRST_LAUNCH).launch_type)
                 .toBe(Launcher.LaunchType.SEARCH_RESULT);
         });
@@ -278,13 +278,13 @@ describe('Reader presenter', function () {
         it('dispatches app-launched only once', function () {
             engine.get_object_by_id_finish.and.returnValue(new ArticleObjectModel.ArticleObjectModel());
 
-            presenter.desktop_launch(0);
+            interaction.desktop_launch(0);
             let payloads = dispatcher.payloads_with_type(Actions.FIRST_LAUNCH);
             expect(payloads.length).toBe(1);
 
-            presenter.desktop_launch(0);
-            presenter.search(0, 'query');
-            presenter.activate_search_result(0, 'ekn://foo/bar', 'query');
+            interaction.desktop_launch(0);
+            interaction.search(0, 'query');
+            interaction.activate_search_result(0, 'ekn://foo/bar', 'query');
 
             payloads = dispatcher.payloads_with_type(Actions.FIRST_LAUNCH);
             expect(payloads.length).toBe(1);
@@ -297,57 +297,57 @@ describe('Reader presenter', function () {
         beforeEach(function () {
             engine.get_objects_by_query_finish.and.returnValue([MOCK_RESULTS, null]);
             view.total_pages = MOCK_RESULTS.length + 2;
-            presenter.desktop_launch();
+            interaction.desktop_launch();
         });
 
         it('starts on the first page', function () {
-            expect(presenter.current_page).toBe(0);
+            expect(interaction.current_page).toBe(0);
         });
 
         it('increments the current page when clicking the forward button', function () {
             dispatcher.dispatch({ action_type: Actions.NAV_FORWARD_CLICKED });
-            expect(presenter.history_model.current_item.model.title).toBe('Title 1');
-            expect(presenter.current_page).toBe(1);
+            expect(interaction.history_model.current_item.model.title).toBe('Title 1');
+            expect(interaction.current_page).toBe(1);
             expect(settings.bookmark_page).toBe(1);
         });
 
         it('decrements the current page when clicking the back button', function () {
             dispatcher.dispatch({ action_type: Actions.NAV_FORWARD_CLICKED });
             dispatcher.dispatch({ action_type: Actions.NAV_BACK_CLICKED });
-            expect(presenter.current_page).toBe(0);
+            expect(interaction.current_page).toBe(0);
             expect(settings.bookmark_page).toBe(0);
         });
 
         it('tells the view to go to the overview page', function () {
-            presenter._go_to_page(5);
+            interaction._go_to_page(5);
             spyOn(view, 'show_overview_page');
-            presenter._go_to_page(0);
+            interaction._go_to_page(0);
             expect(view.show_overview_page).toHaveBeenCalled();
         });
 
         it('tells the view to go to the done page', function () {
             spyOn(view, 'show_back_cover');
-            presenter._go_to_page(view.total_pages - 1);
+            interaction._go_to_page(view.total_pages - 1);
             expect(view.show_back_cover).toHaveBeenCalled();
         });
 
         it('goes to the done page when paging forward on the last article page', function () {
             spyOn(view, 'show_back_cover');
-            presenter._go_to_page(view.total_pages - 2);
+            interaction._go_to_page(view.total_pages - 2);
             dispatcher.dispatch({ action_type: Actions.NAV_FORWARD_CLICKED });
             expect(view.show_back_cover).toHaveBeenCalled();
         });
 
         it('tells the view to animate forward when going to a later page', function () {
             spyOn(view, 'show_article_page');
-            presenter._go_to_page(1, EosKnowledgePrivate.LoadingAnimationType.FORWARDS_NAVIGATION);
+            interaction._go_to_page(1, EosKnowledgePrivate.LoadingAnimationType.FORWARDS_NAVIGATION);
             expect(view.show_article_page).toHaveBeenCalledWith(0, EosKnowledgePrivate.LoadingAnimationType.FORWARDS_NAVIGATION);
         });
 
         it('tells the view to animate backward when going to an earlier page', function () {
-            presenter._go_to_page(3, EosKnowledgePrivate.LoadingAnimationType.FORWARDS_NAVIGATION);
+            interaction._go_to_page(3, EosKnowledgePrivate.LoadingAnimationType.FORWARDS_NAVIGATION);
             spyOn(view, 'show_article_page');
-            presenter._go_to_page(2, EosKnowledgePrivate.LoadingAnimationType.BACKWARDS_NAVIGATION);
+            interaction._go_to_page(2, EosKnowledgePrivate.LoadingAnimationType.BACKWARDS_NAVIGATION);
             expect(view.show_article_page).toHaveBeenCalledWith(1, EosKnowledgePrivate.LoadingAnimationType.BACKWARDS_NAVIGATION);
         });
 
@@ -400,22 +400,22 @@ describe('Reader presenter', function () {
         it('updates the content after enough time has passed since the last update', function () {
             let old_date = new Date(Date.now() - UPDATE_INTERVAL_MS - 1000);
             settings.update_timestamp = old_date.toISOString();
-            spyOn(presenter, '_update_content');
-            presenter._check_for_content_update();
-            expect(presenter._update_content).toHaveBeenCalled();
+            spyOn(interaction, '_update_content');
+            interaction._check_for_content_update();
+            expect(interaction._update_content).toHaveBeenCalled();
         });
 
         it('does not update the content if very little time has passed since the last update', function () {
             let old_date = new Date(Date.now() - UPDATE_INTERVAL_MS / 2);
             settings.update_timestamp = old_date.toISOString();
-            spyOn(presenter, '_update_content');
-            presenter._check_for_content_update();
-            expect(presenter._update_content).not.toHaveBeenCalled();
+            spyOn(interaction, '_update_content');
+            interaction._check_for_content_update();
+            expect(interaction._update_content).not.toHaveBeenCalled();
         });
 
         it('has correct values after content update', function () {
             settings.highest_article_read = 5;
-            presenter._update_content();
+            interaction._update_content();
             expect(settings.start_article).toBe(5);
             expect(settings.bookmark_page).toBe(0);
             expect(settings.update_timestamp).toBeGreaterThan(current_time);
@@ -423,8 +423,8 @@ describe('Reader presenter', function () {
 
         it('goes to overview_page when opening magazine from standalone_page', function () {
             spyOn(view, 'show_overview_page');
-            presenter._add_history_item_for_page(3);
-            presenter._open_magazine();
+            interaction._add_history_item_for_page(3);
+            interaction._open_magazine();
             expect(view.show_overview_page).toHaveBeenCalled();
         });
 
@@ -463,7 +463,7 @@ describe('Reader presenter', function () {
                 }));
 
                 expect(view.show_search_results_page).toHaveBeenCalled();
-                expect(presenter.history_model.current_item.query).toBe('Azucar');
+                expect(interaction.history_model.current_item.query).toBe('Azucar');
                 done();
                 return GLib.SOURCE_REMOVE;
             });
@@ -492,7 +492,7 @@ describe('Reader presenter', function () {
                 text: 'Azucar',
             });
             Mainloop.idle_add(function () {
-                expect(presenter.record_search_metric).toHaveBeenCalled();
+                expect(interaction.record_search_metric).toHaveBeenCalled();
                 done();
                 return GLib.SOURCE_REMOVE;
             });
@@ -500,7 +500,7 @@ describe('Reader presenter', function () {
 
         it('issues a search query when triggered by desktop search', function (done) {
             spyOn(view, 'show_search_results_page');
-            presenter.search('', 'Azucar');
+            interaction.search('', 'Azucar');
             Mainloop.idle_add(function () {
                 expect(engine.get_objects_by_query)
                     .toHaveBeenCalledWith(jasmine.objectContaining({
@@ -509,7 +509,7 @@ describe('Reader presenter', function () {
                     jasmine.any(Object),
                     jasmine.any(Function));
                 expect(view.show_search_results_page).toHaveBeenCalled();
-                expect(presenter.history_model.current_item.query).toBe('Azucar');
+                expect(interaction.history_model.current_item.query).toBe('Azucar');
                 done();
                 return GLib.SOURCE_REMOVE;
             });
