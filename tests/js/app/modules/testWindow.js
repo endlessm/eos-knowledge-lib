@@ -23,7 +23,7 @@ let resource = Gio.Resource.load(TEST_CONTENT_BUILDDIR + 'test-content.gresource
 resource._register();
 
 describe('Window', function () {
-    let app, view, dispatcher;
+    let app, view, factory, dispatcher;
 
     beforeAll(function (done) {
         dispatcher = MockDispatcher.mock_default();
@@ -49,16 +49,20 @@ describe('Window', function () {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
         jasmine.addMatchers(InstanceOfMatcher.customMatchers);
 
-        let factory = new MockFactory.MockFactory();
+        factory = new MockFactory.MockFactory();
         factory.add_named_mock('top-bar-search', MockWidgets.MockSearchBox);
         factory.add_named_mock('item-group', MockWidgets.MockItemGroupModule);
         factory.add_named_mock('search-results', MockWidgets.MockItemGroupModule);
-        factory.add_named_mock('home-page-template', Minimal.MinimalHomePage);
+        factory.add_named_mock('home-page', Minimal.MinimalHomePage);
         factory.add_named_mock('lightbox', Minimal.MinimalLightbox);
         factory.add_named_mock('navigation', Minimal.MinimalNavigation);
+        factory.add_named_mock('window', Window.Window, {
+            'home-page': 'home-page',
+        });
         view = new Window.Window({
             application: app,
             factory: factory,
+            factory_name: 'window',
         });
     });
 
@@ -68,10 +72,6 @@ describe('Window', function () {
 
     it('can be constructed', function () {
         expect(view).toBeDefined();
-    });
-
-    it('instantiates a home page A', function () {
-        expect(view.home_page).toBeDefined();
     });
 
     it('instantiates a section page A', function () {
@@ -92,14 +92,16 @@ describe('Window', function () {
     });
 
     it('updates visible page with show_page', function () {
+        let home_page = factory.get_created_named_mocks('home-page')[0];
         view.show_page(view.article_page);
         expect(view.get_visible_page()).toBe(view.article_page);
-        view.show_page(view.home_page);
-        expect(view.get_visible_page()).toBe(view.home_page);
+        view.show_page(home_page);
+        expect(view.get_visible_page()).toBe(home_page);
     });
 
     it('starts on home page', function () {
-        expect(view.get_visible_page()).toBe(view.home_page);
+        let home_page = factory.get_created_named_mocks('home-page')[0];
+        expect(view.get_visible_page()).toBe(home_page);
     });
 
     it('indicates busy during a search', function () {

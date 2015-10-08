@@ -40,15 +40,6 @@ const Window = new Lang.Class({
         'factory': GObject.ParamSpec.override('factory', Module.Module),
         'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
         /**
-         * Property: home-page
-         *
-         * The page created by this widget to represent the HomePage of the app. Read-only.
-         */
-        'home-page': GObject.ParamSpec.object('home-page', 'Home page',
-            'The home page of this view widget.',
-            GObject.ParamFlags.READABLE,
-            Gtk.Widget),
-        /**
          * Property: section-page
          *
          * The section page template.
@@ -122,22 +113,23 @@ const Window = new Lang.Class({
     _init: function (props) {
         this.parent(props);
 
-        this.home_page = this.factory.create_named_module('home-page-template');
+        this._home_page = this.factory.create_module_for_slot(this.factory_name,
+            'home-page');
         this.section_page = this.factory.create_named_module('section-page-template');
         this.search_page = this.factory.create_named_module('search-page-template');
         this.article_page = this.factory.create_named_module('article-page-template');
         if (this.template_type === 'B') {
-            this.home_page.get_style_context().add_class(StyleClasses.HOME_PAGE_B);
+            this._home_page.get_style_context().add_class(StyleClasses.HOME_PAGE_B);
             this.section_page.get_style_context().add_class(StyleClasses.SECTION_PAGE_B);
             this.search_page.get_style_context().add_class(StyleClasses.SEARCH_PAGE_B);
         } else {
-            this.home_page.get_style_context().add_class(StyleClasses.HOME_PAGE_A);
+            this._home_page.get_style_context().add_class(StyleClasses.HOME_PAGE_A);
             this.section_page.get_style_context().add_class(StyleClasses.SECTION_PAGE_A);
             this.search_page.get_style_context().add_class(StyleClasses.SEARCH_PAGE_A);
         }
 
         this._stack = new Gtk.Stack();
-        this._stack.add(this.home_page);
+        this._stack.add(this._home_page);
         this._stack.add(this.section_page);
         this._stack.add(this.search_page);
         this._stack.add(this.article_page);
@@ -193,7 +185,7 @@ const Window = new Lang.Class({
                     this.set_busy(false);
                     break;
                 case Actions.SHOW_HOME_PAGE:
-                    this.show_page(this.home_page);
+                    this.show_page(this._home_page);
                     break;
                 case Actions.SHOW_SECTION_PAGE:
                     this.show_page(this.section_page);
@@ -212,7 +204,7 @@ const Window = new Lang.Class({
 
         this._stack.transition_duration = this.TRANSITION_DURATION;
         this._stack.connect('notify::transition-running', function () {
-            this.home_page.animating = this._stack.transition_running;
+            this._home_page.animating = this._stack.transition_running;
             let context = this.get_style_context();
             if (this._stack.transition_running)
                 context.add_class(StyleClasses.ANIMATING);
@@ -309,7 +301,7 @@ const Window = new Lang.Class({
         if (old_page === new_page)
             return;
 
-        let is_on_left = (page) => page === this.home_page;
+        let is_on_left = (page) => page === this._home_page;
         let is_on_center = (page) => page === this.section_page || page === this.search_page;
         let nav_back_visible = false;
         if (is_on_left(new_page)) {
