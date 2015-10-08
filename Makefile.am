@@ -213,7 +213,6 @@ js_files = \
 	js/app/application.js \
 	js/app/articleHTMLRenderer.js \
 	js/app/compat/compat.js \
-	js/app/compat/cssParse.js \
 	js/app/compat/styleKnobGenerator.js \
 	js/app/config.js \
 	js/app/dispatcher.js \
@@ -227,6 +226,8 @@ js_files = \
 	js/app/interfaces/interaction.js \
 	js/app/interfaces/launcher.js \
 	js/app/interfaces/module.js \
+	js/app/libs/cssParse.js \
+	js/app/libs/mustache.js \
 	js/app/moduleFactory.js \
 	js/app/modules/aisleInteraction.js \
 	js/app/modules/appBanner.js \
@@ -264,7 +265,6 @@ js_files = \
 	js/app/modules/tiledGridArrangement.js \
 	js/app/modules/twoVerticalTemplate.js \
 	js/app/modules/window.js \
-	js/app/mustache.js \
 	js/app/reader/standalonePage.js \
 	js/app/reader/userSettingsModel.js \
 	js/app/runner.js \

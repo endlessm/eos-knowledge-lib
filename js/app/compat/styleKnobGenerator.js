@@ -1,4 +1,4 @@
-const CssParse = imports.app.compat.cssParse;
+const CssParse = imports.app.libs.cssParse;
 const Lang = imports.lang;
 
 function get_knobs_from_css (css, template_type) {
