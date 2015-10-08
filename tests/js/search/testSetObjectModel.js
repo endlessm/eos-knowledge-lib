@@ -31,4 +31,9 @@ describe('Set object model', function () {
     it('marshals a child_tags property', function () {
         expect(model.child_tags).toEqual(jasmine.arrayContaining(jsonld['childTags']));
     });
+
+    it('makes a deep copy of the child tags', function () {
+        jsonld['childTags'] = ['Other', 'tags'];
+        expect(model.child_tags).not.toEqual(jsonld['childTags']);
+    });
 });

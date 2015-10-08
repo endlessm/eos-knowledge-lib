@@ -3,34 +3,28 @@ const Gtk = imports.gi.Gtk;
 const ArticleObjectModel = imports.search.articleObjectModel;
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
 
-const MOCK_ARTICLE_DATA = {
-    '@id': 'ekn:asoiaf/House_Greyjoy',
-    'title': 'House Greyjoy',
-    'synopsis': 'We Do Not Sow',
-    'tableOfContents': [
-        {
-            '@id': '_:1',
-            'hasIndex': 0,
-            'hasIndexLabel': '1',
-            'hasLabel': 'History',
-            'hasContent': 'ekn://asoiaf/House_Greyjoy#History'
-        },
-    ],
-};
-const MOCK_READER_ARTICLE_DATA = {
-    '@id': 'ekn:cooking_magazine/Frango_Frito',
-    'title': 'Receita de frango frito',
-    'issueNumber': 12,
-    'articleNumber': 25,
-};
-
 describe ('Article Object Model', function () {
-    let articleObject;
+    let articleObject, jsonld;
 
     beforeEach(function () {
         jasmine.addMatchers(InstanceOfMatcher.customMatchers);
 
-        articleObject = new ArticleObjectModel.ArticleObjectModel({}, MOCK_ARTICLE_DATA);
+        jsonld = {
+            '@id': 'ekn:asoiaf/House_Greyjoy',
+            'title': 'House Greyjoy',
+            'synopsis': 'We Do Not Sow',
+            'authors': ['Dalton Greyjoy', 'Dagon Greyjoy'],
+            'tableOfContents': [
+                {
+                    '@id': '_:1',
+                    'hasIndex': 0,
+                    'hasIndexLabel': '1',
+                    'hasLabel': 'History',
+                    'hasContent': 'ekn://asoiaf/House_Greyjoy#History'
+                },
+            ],
+        };
+        articleObject = new ArticleObjectModel.ArticleObjectModel({}, jsonld);
     });
 
     describe ('JSON-LD marshaler', function () {
@@ -50,6 +44,11 @@ describe ('Article Object Model', function () {
 
         it('marshals an authors array', function () {
             expect(articleObject.authors).toEqual(jsonld['authors']);
+        });
+
+        it('makes a deep copy of the authors array', function () {
+            jsonld['authors'].push('Loron Greyjoy');
+            expect(articleObject.authors).not.toEqual(jsonld['authors']);
         });
     });
 
@@ -107,12 +106,18 @@ describe ('Article Object Model', function () {
 });
 
 describe ('Reader App Article Object', function () {
-    let readerArticleObject;
+    let readerArticleObject, jsonld;
 
     beforeEach(function () {
         jasmine.addMatchers(InstanceOfMatcher.customMatchers);
 
-        readerArticleObject = new ArticleObjectModel.ArticleObjectModel({}, MOCK_READER_ARTICLE_DATA);
+        jsonld = {
+            '@id': 'ekn:cooking_magazine/Frango_Frito',
+            'title': 'Receita de frango frito',
+            'issueNumber': 12,
+            'articleNumber': 25,
+        };
+        readerArticleObject = new ArticleObjectModel.ArticleObjectModel({}, jsonld);
     });
 
     it ('should present the properties inherent to the Reader App', function () {
