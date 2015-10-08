@@ -5,11 +5,11 @@ const Config = imports.app.config;
 const ModuleFactory = imports.app.moduleFactory;
 const Utils = imports.app.utils;
 
-let setup_presenter_for_resource = function (application, resource_path) {
+let create_interaction = function (application, resource_path) {
     // Initialize libraries
     EvinceDocument.init();
 
-    // Need to register the knowledge resource before loading the presenter
+    // Need to register the knowledge resource before loading the interaction
     let knowledge_resource = Gio.Resource.load(Config.PKGDATADIR + '/eos-knowledge.gresource');
     knowledge_resource._register();
 

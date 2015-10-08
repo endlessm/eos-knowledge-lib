@@ -219,6 +219,7 @@ js_files = \
 	js/app/dispatcher.js \
 	js/app/historyItem.js \
 	js/app/historyPresenter.js \
+	js/app/interactionLoader.js \
 	js/app/interfaces/arrangement.js \
 	js/app/interfaces/card.js \
 	js/app/interfaces/documentCard.js \
@@ -264,7 +265,6 @@ js_files = \
 	js/app/modules/twoVerticalTemplate.js \
 	js/app/modules/window.js \
 	js/app/mustache.js \
-	js/app/presenterLoader.js \
 	js/app/reader/standalonePage.js \
 	js/app/reader/userSettingsModel.js \
 	js/app/runner.js \

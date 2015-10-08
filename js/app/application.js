@@ -6,7 +6,7 @@ const Lang = imports.lang;
 const Dispatcher = imports.app.dispatcher;
 const Engine = imports.search.engine;
 const LegacySearchProvider = imports.search.searchProvider;
-const PresenterLoader = imports.app.presenterLoader;
+const InteractionLoader = imports.app.interactionLoader;
 const Utils = imports.search.utils;
 
 const KnowledgeSearchIface = '\
@@ -31,7 +31,7 @@ const Application = new Lang.Class({
 
     _init: function (props={}) {
         this.parent(props);
-        this._presenter = null;
+        this._interaction = null;
         this._knowledge_search_impl = Gio.DBusExportedObject.wrapJSObject(KnowledgeSearchIface, this);
 
         Engine.Engine.get_default().default_domain = Utils.domain_from_app_id(this.application_id);
@@ -59,34 +59,34 @@ const Application = new Lang.Class({
     },
 
     LoadPage: function (ekn_id, query, timestamp) {
-        this.ensure_presenter();
-        this._presenter.activate_search_result(timestamp, ekn_id, query);
+        this.ensure_interaction();
+        this._interaction.activate_search_result(timestamp, ekn_id, query);
     },
 
     LoadQuery: function (query, timestamp) {
-        this.ensure_presenter();
-        this._presenter.search(timestamp, query);
+        this.ensure_interaction();
+        this._interaction.search(timestamp, query);
     },
 
     vfunc_activate: function () {
         this.parent();
-        this.ensure_presenter();
-        this._presenter.desktop_launch(Gdk.CURRENT_TIME);
+        this.ensure_interaction();
+        this._interaction.desktop_launch(Gdk.CURRENT_TIME);
     },
 
     vfunc_window_removed: function (win) {
-        if (this._presenter && this._presenter.view === win) {
+        if (this._interaction && this._interaction.view === win) {
             Dispatcher.get_default().reset();
-            this._presenter = null;
+            this._interaction = null;
         }
         this.parent(win);
     },
 
     // To be overridden in subclass
-    ensure_presenter: function () {
-        if (this._presenter === null) {
+    ensure_interaction: function () {
+        if (this._interaction === null) {
             Dispatcher.get_default().start();
-            this._presenter = PresenterLoader.setup_presenter_for_resource(this, ARGV[1]);
+            this._interaction = InteractionLoader.create_interaction(this, ARGV[1]);
         }
     },
 
