@@ -3,7 +3,7 @@
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 
-const Launcher = imports.app.launcher;
+const Launcher = imports.app.interfaces.launcher;
 const Module = imports.app.interfaces.module;
 
 /**

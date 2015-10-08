@@ -11,7 +11,7 @@ Utils.register_gresource();
 const Actions = imports.app.actions;
 const ArticleObjectModel = imports.search.articleObjectModel;
 const AppUtils = imports.app.utils;
-const Launcher = imports.app.launcher;
+const Launcher = imports.app.interfaces.launcher;
 const MockDispatcher = imports.tests.mockDispatcher;
 const Minimal = imports.tests.minimal;
 const MockEngine = imports.tests.mockEngine;

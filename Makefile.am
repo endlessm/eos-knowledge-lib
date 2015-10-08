@@ -225,8 +225,8 @@ js_files = \
 	js/app/interfaces/documentCard.js \
 	js/app/interfaces/expandable.js \
 	js/app/interfaces/interaction.js \
+	js/app/interfaces/launcher.js \
 	js/app/interfaces/module.js \
-	js/app/launcher.js \
 	js/app/moduleFactory.js \
 	js/app/modules/aisleInteraction.js \
 	js/app/modules/appBanner.js \
