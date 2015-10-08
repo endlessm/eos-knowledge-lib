@@ -10,6 +10,7 @@ Utils.register_gresource();
 
 const Actions = imports.app.actions;
 const ArticleObjectModel = imports.search.articleObjectModel;
+const AppUtils = imports.app.utils;
 const MockDispatcher = imports.tests.mockDispatcher;
 const Minimal = imports.tests.minimal;
 const MockEngine = imports.tests.mockEngine;
@@ -178,6 +179,7 @@ describe('Reader presenter', function () {
         engine.get_object_by_id_finish.and.returnValue(null);
         Utils.register_gresource();
 
+        spyOn(AppUtils, 'get_web_plugin_dbus_name').and.returnValue("test0");
         presenter = new Presenter.Presenter({
             application: application,
             engine: engine,
