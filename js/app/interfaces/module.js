@@ -54,7 +54,7 @@ const Module = new Lang.Interface({
      *   extra_props - dictionary of construct properties
      */
     create_submodule: function (slot, extra_props={}) {
-        return this.factory.create_module_for_slot(this.factory_name, slot,
+        return this.factory.create_module_for_slot(this, slot,
             extra_props);
     },
 });

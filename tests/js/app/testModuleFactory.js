@@ -22,6 +22,15 @@ const MOCK_APP_JSON = {
     },
 };
 
+const MockModule = new Lang.Class({
+    Name: 'MockModule',
+    Extends: Minimal.MinimalModule,
+
+    get_slot_names: function () {
+        return ['test_slot', 'optional_slot'];
+    },
+});
+
 const MockWarehouse = new Lang.Class({
     Name: 'MockWarehouse',
     Extends: GObject.Object,
@@ -31,7 +40,7 @@ const MockWarehouse = new Lang.Class({
     },
 
     type_to_class: function (module_name) {
-        return Minimal.MinimalModule;
+        return MockModule;
     },
 });
 
@@ -57,9 +66,11 @@ describe('Module factory', function () {
     });
 
     it('supports extra construct properties when creating modules for slots', function () {
+        let parent = module_factory.create_named_module('test');
+
         let test_constructor = jasmine.createSpy('TestModuleConstructor');
         spyOn(warehouse, 'type_to_class').and.returnValue(test_constructor);
-        module_factory.create_module_for_slot('test', 'test_slot', {
+        module_factory.create_module_for_slot(parent, 'test_slot', {
             foo: 'bar',
         });
         expect(test_constructor).toHaveBeenCalledWith(jasmine.objectContaining({
@@ -68,8 +79,16 @@ describe('Module factory', function () {
     });
 
     it('allows null as a value to indicate a slot is not filled', function () {
-        let submodule = module_factory.create_module_for_slot('test',
+        let parent = module_factory.create_named_module('test');
+        let submodule = module_factory.create_module_for_slot(parent,
             'optional_slot');
         expect(submodule).toBeNull();
+    });
+
+    it('errors if creating a module slot not listed in get_slot_names', function () {
+        let parent = module_factory.create_named_module('test');
+        expect(() => {
+            module_factory.create_module_for_slot(parent, 'fake_slot');
+        }).toThrow();
     });
 });
