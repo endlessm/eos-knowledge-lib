@@ -250,6 +250,7 @@ js_files = \
 	js/app/modules/meshInteraction.js \
 	js/app/modules/mediaCard.js \
 	js/app/modules/navigationModule.js \
+	js/app/modules/overflowArrangement.js \
 	js/app/modules/paperTemplate.js \
 	js/app/modules/readerCard.js \
 	js/app/modules/readerDocumentCard.js \
@@ -260,7 +261,6 @@ js_files = \
 	js/app/modules/setBannerModule.js \
 	js/app/modules/setGroupModule.js \
 	js/app/modules/sidebarTemplate.js \
-	js/app/modules/overflowArrangement.js \
 	js/app/modules/textCard.js \
 	js/app/modules/tiledGridArrangement.js \
 	js/app/modules/twoVerticalTemplate.js \
