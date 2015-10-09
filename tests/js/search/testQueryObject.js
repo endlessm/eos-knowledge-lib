@@ -100,6 +100,22 @@ describe('QueryObject', function () {
             expect(result).toMatch('title:baz');
         });
 
+        it('creates title clause based on the stop-free-query if provided', () => {
+            let query_obj = new QueryObject.QueryObject({
+                query: 'foo bar baz',
+                stopword_free_query: 'oof rab zab',
+            });
+            let result = query_obj.get_query_parser_string(query_obj);
+            expect(result).toMatch('exact_title:Foo_Bar_Baz');
+            expect(result).toMatch('title:oof');
+            expect(result).toMatch('title:rab');
+            expect(result).toMatch('title:zab');
+
+            expect(result).not.toMatch('title:foo');
+            expect(result).not.toMatch('title:bar');
+            expect(result).not.toMatch('title:baz');
+        });
+
         it('adds wildcard terms only for incremental search', function () {
             let query_obj = new QueryObject.QueryObject({
                 query: 'foo',
@@ -125,6 +141,17 @@ describe('QueryObject', function () {
             });
             let result = query_obj.get_query_parser_string(query_obj);
             expect(result).toMatch(/\(littl OR littl\*\) AND \(searc OR searc\*\)/);
+        });
+
+        it('uses stopword free terms if matching synopsis', function () {
+            let query_obj = new QueryObject.QueryObject({
+                query: 'littl searc',
+                stopword_free_query: 'no stopwords',
+                match: QueryObject.QueryObjectMatch.TITLE_SYNOPSIS,
+            });
+            let result = query_obj.get_query_parser_string(query_obj);
+            expect(result).toMatch(/\(no OR no\*\) AND \(stopwords OR stopwords\*\)/);
+            expect(result).not.toMatch(/\(littl OR littl\*\) AND \(searc OR searc\*\)/);
         });
 
         it('only uses exact title search for single character queries', function () {

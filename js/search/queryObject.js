@@ -113,6 +113,14 @@ const QueryObject = Lang.Class({
             'Query string with terms to search',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
         /**
+         * Property: stopword-free-query
+         *
+         * A corrected version of the query property with stopword words removed.
+         */
+        'stopword-free-query': GObject.ParamSpec.string('stopword-free-query', 'Stop free query string',
+            'A version of query without any stopword words',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
+        /**
          * Property: type
          *
          * The type of query to preform, see <QueryObjectType>.
@@ -214,9 +222,9 @@ const QueryObject = Lang.Class({
     // Limits the length of the search query the user enters.
     MAX_TERM_LENGTH: 245,
 
-    _sanitized_query: function () {
+    _sanitize_query: function (query) {
         // Remove excess white space
-        let query = this.query.split(_WHITESPACE_REGEX).join(' ').trim();
+        query = query.split(_WHITESPACE_REGEX).join(' ').trim();
 
         // RegExp to match xapian operators or special characters
         let regexString = _XAPIAN_OPERATORS.concat(_XAPIAN_SYNTAX_CHARACTERS.map((chr) => {
@@ -238,8 +246,7 @@ const QueryObject = Lang.Class({
         }).trim();
     },
 
-    _query_clause: function () {
-        let sanitized_query = this._sanitized_query();
+    _get_terms_from_string: function (query) {
         let truncate_bytes = (term) => {
             let new_arr = [];
             let arr = ByteArray.fromString(term);
@@ -262,7 +269,12 @@ const QueryObject = Lang.Class({
             }
             return '';
         }
-        let terms = sanitized_query.split(_TERM_DELIMITER_REGEX).map(truncate_bytes);
+        return query.split(_TERM_DELIMITER_REGEX).map(truncate_bytes);
+    },
+
+    _query_clause: function () {
+        let sanitized_query = this._sanitize_query(this.query);
+        let terms = this._get_terms_from_string(sanitized_query);
         let exact_title_clause = _XAPIAN_PREFIX_EXACT_TITLE + terms.map(Utils.capitalize).join('_');
 
         if (sanitized_query.length === 0)
@@ -282,11 +294,20 @@ const QueryObject = Lang.Class({
 
         clauses.push(maybe_add_wildcard(exact_title_clause));
 
-        let title_clause = terms.map(add_title_prefix).map(maybe_add_wildcard).join(_XAPIAN_OP_AND);
+        // If we were given a stopword free query, use its terms for the rest
+        // of the query clause. If not, we can assume the terms we already have
+        // are free of stopwords.
+        let stopword_free_terms = terms;
+        if (this.stopword_free_query.length !== 0) {
+            let sanitized_stopword_query = this._sanitize_query(this.stopword_free_query);
+            stopword_free_terms = this._get_terms_from_string(sanitized_stopword_query);
+        }
+
+        let title_clause = stopword_free_terms.map(add_title_prefix).map(maybe_add_wildcard).join(_XAPIAN_OP_AND);
         clauses.push(title_clause);
 
         if (this.match === QueryObjectMatch.TITLE_SYNOPSIS) {
-            let body_clause = terms.map(maybe_add_wildcard).join(_XAPIAN_OP_AND);
+            let body_clause = stopword_free_terms.map(maybe_add_wildcard).join(_XAPIAN_OP_AND);
             clauses.push(body_clause);
         }
 
