@@ -85,6 +85,10 @@ describe('Knowledge Engine Module', () => {
         let mock_data;
         if (mock_results)
             mock_data = { results: mock_results.map(JSON.stringify) };
+        mock_engine_request(mock_err, mock_data);
+    }
+
+    function mock_engine_request(mock_err, mock_data) {
         spyOn(engine, '_send_json_ld_request').and.callFake((uri,
                                                              cancellable,
                                                              callback) => {
@@ -98,6 +102,17 @@ describe('Knowledge Engine Module', () => {
                 throw mock_err;
             });
         }
+    }
+
+    // Fakes out the get_fixed_query method to simply pass through the query
+    // object completely untouched.
+    function fake_get_fixed_query() {
+        spyOn(engine, 'get_fixed_query').and.callFake((query_obj, _, callback) => {
+            callback(undefined, query_obj);
+        });
+        spyOn(engine, 'get_fixed_query_finish').and.callFake((task) => {
+            return task;
+        });
     }
 
     function mock_engine_query_with_multiple_values(return_values) {
@@ -193,7 +208,7 @@ describe('Knowledge Engine Module', () => {
                 order: QueryObject.QueryObjectOrder.ASCENDING,
             });
 
-            let mock_uri = engine._get_xapian_uri(query_obj);
+            let mock_uri = engine._get_xapian_query_uri(query_obj);
             let mock_query_obj = mock_uri.get_query();
             expect(get_query_vals_for_key(mock_query_obj, 'order')).toEqual('asc');
         });
@@ -203,12 +218,12 @@ describe('Knowledge Engine Module', () => {
                 query: 'tyrion',
             });
 
-            let mock_uri = engine._get_xapian_uri(query_obj);
+            let mock_uri = engine._get_xapian_query_uri(query_obj);
             let mock_query_obj = mock_uri.get_query();
             expect(get_query_vals_for_key(mock_query_obj, 'lang')).toEqual([]);
 
             engine.language = 'en';
-            let mock_uri = engine._get_xapian_uri(query_obj);
+            let mock_uri = engine._get_xapian_query_uri(query_obj);
             let mock_query_obj = mock_uri.get_query();
             expect(get_query_vals_for_key(mock_query_obj, 'lang')).toEqual('en');
         });
@@ -220,7 +235,7 @@ describe('Knowledge Engine Module', () => {
                 domain: 'foo',
             });
 
-            uri = engine._get_xapian_uri(query_obj);
+            uri = engine._get_xapian_query_uri(query_obj);
             query_obj = uri.get_query();
             expect(get_query_vals_for_key(query_obj, 'path')).toEqual('/foo/db');
         });
@@ -238,7 +253,7 @@ describe('Knowledge Engine Module', () => {
             };
 
 
-            let uri = engine._get_xapian_uri(mock_obj);
+            let uri = engine._get_xapian_query_uri(mock_obj);
             mock_obj = uri.get_query();
             expect(get_query_vals_for_key(mock_obj, 'collapse')).toEqual(String(fakeCollapse));
             expect(get_query_vals_for_key(mock_obj, 'cutoff')).toEqual(String(fakeCutoff));
@@ -367,6 +382,7 @@ describe('Knowledge Engine Module', () => {
         beforeEach(() => {
             spyOn(engine, 'get_object_by_id');
             spyOn(engine, 'get_object_by_id_finish');
+            fake_get_fixed_query();
             let requested_ids = []
             engine.get_object_by_id.and.callFake((id, cancellable, callback) => {
                 requested_ids.push(JSON.parse(id));
@@ -430,6 +446,15 @@ describe('Knowledge Engine Module', () => {
                 expect(callback_called).toEqual(1);
                 done();
             }, 25); // pause for a moment for any more callbacks
+        });
+
+        it('calls into get_fixed_query', () => {
+            let mock_query = new QueryObject.QueryObject({
+                query: 'logorrhea',
+            });
+
+            engine.get_objects_by_query(mock_query, null, noop);
+            expect(engine.get_fixed_query).toHaveBeenCalled();
         });
     });
 
@@ -500,9 +525,27 @@ describe('Knowledge Engine Module', () => {
         });
     });
 
+    describe('get_fixed_query', () => {
+        it('should set the stopword-free-query property of a query object', (done) => {
+            let mock_correction = {
+                'stopWordCorrectedQuery': 'a query with no stop words',
+            };
+            let mock_query_obj = new QueryObject.QueryObject({
+                query: 'a query with lots of stop words',
+            });
+            mock_engine_request(undefined, mock_correction);
+            engine.get_fixed_query(mock_query_obj, null, (engine, task) => {
+                let fixed_query_obj = engine.get_fixed_query_finish(task);
+                expect(fixed_query_obj.stopword_free_query).toEqual('a query with no stop words');
+                done();
+            });
+        });
+    });
+
     describe('v1 compatibility', () => {
         beforeEach(() => {
             mock_ekn_version(engine, 1);
+            fake_get_fixed_query();
         });
 
         describe('get_objects_by_query', () => {

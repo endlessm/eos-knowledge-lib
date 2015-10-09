@@ -168,9 +168,9 @@ const Engine = Lang.Class({
                     ids: [id],
                     domain: domain,
                 });
-                let req_uri = this._get_xapian_uri(query_obj);
+                let query_req_uri = this._get_xapian_query_uri(query_obj);
 
-                this._send_json_ld_request(req_uri, cancellable, task.catch_callback_errors((engine, json_task) => {
+                this._send_json_ld_request(query_req_uri, cancellable, task.catch_callback_errors((engine, json_task) => {
                     let json_ld = this._send_json_ld_request_finish(json_task);
                     handle_redirect(json_ld.results.map(JSON.parse)[0]);
                 }));
@@ -195,8 +195,8 @@ const Engine = Lang.Class({
     /**
      * Function: get_objects_by_query
      *
-     * Asynchronously sends a request for to xapian-bridge for a given
-     * *query_obj*, and return a list of matching models.
+     * Asynchronously sends a request to xapian-bridge for a given *query_obj*,
+     * and return a list of matching models.
      *
      * Parameters:
      *   query_obj - A <QueryObject> describing the query.
@@ -222,54 +222,59 @@ const Engine = Lang.Class({
 
             if (query_obj.domain === '')
                 query_obj = QueryObject.QueryObject.new_from_object(query_obj, { domain: this.default_domain });
-            let req_uri = this._get_xapian_uri(query_obj);
 
-            this._send_json_ld_request(req_uri, cancellable, task.catch_callback_errors((engine, json_task) => {
-                let json_ld = this._send_json_ld_request_finish(json_task);
+            this.get_fixed_query(query_obj, cancellable, task.catch_callback_errors((engine, fix_query_task) => {
+                query_obj = this.get_fixed_query_finish(fix_query_task);
 
-                if (json_ld.results.length === 0) {
-                    task.return_value([[], null]);
-                    return;
-                }
+                let query_req_uri = this._get_xapian_query_uri(query_obj);
 
-                let more_results_query = QueryObject.QueryObject.new_from_object(query_obj, {
-                    offset: json_ld.numResults + json_ld.offset,
-                });
+                this._send_json_ld_request(query_req_uri, cancellable, task.catch_callback_errors((engine, json_task) => {
+                    let json_ld = this._send_json_ld_request_finish(json_task);
 
-                // We need to instantiate models for our results asynchronously.
-                // We'll set up a function here to resolve a result, which
-                // triggers our callback when the last article resolves.
-                let resolved = 0;
-                let results = new Array(json_ld.results.length);
-                let resolve = (index, model) => {
-                    results[index] = model;
-                    resolved++;
-                    if (resolved === results.length)
-                        task.return_value([results, more_results_query]);
-                };
-
-                json_ld.results.forEach((result, index) => {
-                    let id;
-                    let ekn_version = this._ekn_version_from_domain(query_obj.domain);
-                    if (ekn_version >= 2) {
-                        id = result;
-                    } else {
-                        // Old bundles contain all the jsonld in xapian, and
-                        // serve it in the results. If its a redirect we need to
-                        // resolve it, otherwise we can resolve immediately.
-                        let model = this._model_from_json_ld(JSON.parse(result));
-                        if (model.redirects_to.length > 0) {
-                            id = model.redirects_to;
-                        } else {
-                            resolve(index, model);
-                            return;
-                        }
+                    if (json_ld.results.length === 0) {
+                        task.return_value([[], null]);
+                        return;
                     }
-                    this.get_object_by_id(id, cancellable, task.catch_callback_errors((engine, id_task) => {
-                        let model = this.get_object_by_id_finish(id_task);
-                        resolve(index, model);
-                    }));
-                });
+
+                    let more_results_query = QueryObject.QueryObject.new_from_object(query_obj, {
+                        offset: json_ld.numResults + json_ld.offset,
+                    });
+
+                    // We need to instantiate models for our results asynchronously.
+                    // We'll set up a function here to resolve a result, which
+                    // triggers our callback when the last article resolves.
+                    let resolved = 0;
+                    let results = new Array(json_ld.results.length);
+                    let resolve = (index, model) => {
+                        results[index] = model;
+                        resolved++;
+                        if (resolved === results.length)
+                            task.return_value([results, more_results_query]);
+                    };
+
+                    json_ld.results.forEach((result, index) => {
+                        let id;
+                        let ekn_version = this._ekn_version_from_domain(query_obj.domain);
+                        if (ekn_version >= 2) {
+                            id = result;
+                        } else {
+                            // Old bundles contain all the jsonld in xapian, and
+                            // serve it in the results. If its a redirect we need to
+                            // resolve it, otherwise we can resolve immediately.
+                            let model = this._model_from_json_ld(JSON.parse(result));
+                            if (model.redirects_to.length > 0) {
+                                id = model.redirects_to;
+                            } else {
+                                resolve(index, model);
+                                return;
+                            }
+                        }
+                        this.get_object_by_id(id, cancellable, task.catch_callback_errors((engine, id_task) => {
+                            let model = this.get_object_by_id_finish(id_task);
+                            resolve(index, model);
+                        }));
+                    });
+                }));
             }));
         });
         return task;
@@ -286,6 +291,57 @@ const Engine = Lang.Class({
      *   task - The task returned by <get_objects_by_query>
      */
     get_objects_by_query_finish: function (task) {
+        return task.finish();
+    },
+
+    /**
+     * Function: get_fixed_query
+     *
+     * Asynchronously sends a request for to xapian-bridge to correct a given
+     * query object. The corrections can be zero or more of the following:
+     *      - the query with its stop words removed
+     *      - the query which has had spelling correction applied to it.
+     *
+     * Note that the spelling correction will be performed on the original
+     * query string, and not the string with stop words removed.
+     *
+     * Parameters:
+     *   query_obj - A <QueryObject> describing the query.
+     *   cancellable - A Gio.Cancellable to cancel the async request.
+     *   callback - A function which will be called after the request finished.
+     *              The function will be called with the engine and a task object,
+     *              as parameters. The task object can be used with
+     *              <get_fixed_query_finish> to retrieve the result.
+     */
+    get_fixed_query: function (query_obj, cancellable, callback) {
+        let task = new AsyncTask.AsyncTask(this, cancellable, callback);
+        task.catch_errors(() => {
+            let fix_req_uri = this._get_xapian_fix_uri(query_obj);
+            this._send_json_ld_request(fix_req_uri, cancellable, task.catch_callback_errors((engine, fix_query_task) => {
+                let fixed_query_json = this._send_json_ld_request_finish(fix_query_task);
+                let fixed_props = {};
+
+                if (fixed_query_json.hasOwnProperty('stopWordCorrectedQuery')) {
+                    fixed_props.stopword_free_query = fixed_query_json['stopWordCorrectedQuery'];
+                }
+
+                let new_query_object = QueryObject.QueryObject.new_from_object(query_obj, fixed_props);
+                task.return_value(new_query_object);
+            }));
+        });
+        return task;
+    },
+
+    /**
+     * Function: get_fixed_query_finish
+     *
+     * Finishes a call to <get_fixed_query>. Returns a query object with the
+     * corrections applied. Throws an error if one occurred.
+     *
+     * Parameters:
+     *   task - The task returned by <get_fixed_query>
+     */
+    get_fixed_query_finish: function (task) {
         return task.finish();
     },
 
@@ -403,7 +459,22 @@ const Engine = Lang.Class({
         return new Model(props, json_ld);
     },
 
-    _get_xapian_uri: function (query_obj) {
+    _get_xapian_fix_uri: function (query_obj) {
+        let host_uri = 'http://' + this.host;
+        let uri = new Soup.URI(host_uri);
+        uri.set_port(this.port);
+        uri.set_path('/fix');
+
+        let uri_query_args = {
+            path: GLib.build_filenamev([this._content_path_from_domain(query_obj.domain), this._DB_DIR]),
+            q: query_obj.query,
+        };
+
+        uri.set_query(this._serialize_query(uri_query_args));
+        return uri;
+    },
+
+    _get_xapian_query_uri: function (query_obj) {
         let host_uri = "http://" + this.host;
         let uri = new Soup.URI(host_uri);
         uri.set_port(this.port);
