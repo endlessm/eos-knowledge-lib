@@ -214,9 +214,9 @@ const QueryObject = Lang.Class({
     // Limits the length of the search query the user enters.
     MAX_TERM_LENGTH: 245,
 
-    _sanitized_query: function () {
+    _sanitize_query: function (query) {
         // Remove excess white space
-        let query = this.query.split(_WHITESPACE_REGEX).join(' ').trim();
+        query = query.split(_WHITESPACE_REGEX).join(' ').trim();
 
         // RegExp to match xapian operators or special characters
         let regexString = _XAPIAN_OPERATORS.concat(_XAPIAN_SYNTAX_CHARACTERS.map((chr) => {
@@ -238,8 +238,7 @@ const QueryObject = Lang.Class({
         }).trim();
     },
 
-    _query_clause: function () {
-        let sanitized_query = this._sanitized_query();
+    _get_terms_from_string: function (query) {
         let truncate_bytes = (term) => {
             let new_arr = [];
             let arr = ByteArray.fromString(term);
@@ -262,7 +261,12 @@ const QueryObject = Lang.Class({
             }
             return '';
         }
-        let terms = sanitized_query.split(_TERM_DELIMITER_REGEX).map(truncate_bytes);
+        return query.split(_TERM_DELIMITER_REGEX).map(truncate_bytes);
+    },
+
+    _query_clause: function () {
+        let sanitized_query = this._sanitize_query(this.query);
+        let terms = this._get_terms_from_string(sanitized_query);
         let exact_title_clause = _XAPIAN_PREFIX_EXACT_TITLE + terms.map(Utils.capitalize).join('_');
 
         if (sanitized_query.length === 0)
