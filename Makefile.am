@@ -261,6 +261,7 @@ js_files = \
 	js/app/modules/setBannerModule.js \
 	js/app/modules/setGroupModule.js \
 	js/app/modules/sidebarTemplate.js \
+	js/app/modules/suggestedArticlesModule.js \
 	js/app/modules/textCard.js \
 	js/app/modules/tiledGridArrangement.js \
 	js/app/modules/twoVerticalTemplate.js \
@@ -386,6 +387,7 @@ javascript_tests = \
 	tests/js/app/modules/testSetBannerModule.js \
 	tests/js/app/modules/testSetGroupModule.js \
 	tests/js/app/modules/testSidebarTemplate.js \
+	tests/js/app/modules/testSuggestedArticlesModule.js \
 	tests/js/app/modules/testTextCard.js \
 	tests/js/app/modules/testWindow.js \
 	tests/js/app/reader/testUserSettingsModel.js \

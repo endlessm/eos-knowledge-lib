@@ -49,6 +49,7 @@
     <file compressed="true" preprocess="xml-stripblanks">widgets/readerDocumentCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">widgets/searchBannerModule.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">widgets/searchModule.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">widgets/suggestedArticlesModule.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">widgets/textCard.ui</file>
   </gresource>
 </gresources>
