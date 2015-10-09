@@ -37,8 +37,10 @@ const MockFactory = new Lang.Class({
         return this._created_mocks[name] || [];
     },
 
-    create_module_for_slot: function (parent_name, slot, props={}) {
-        let module_name = this._mock_slots[parent_name][slot];
+    create_module_for_slot: function (parent, slot, props={}) {
+        if (parent.get_slot_names().indexOf(slot) === -1)
+            throw new Error('No slot named ' + slot + ' according to module.get_slot_names.');
+        let module_name = this._mock_slots[parent.factory_name][slot];
 
         return this.create_named_module(module_name, props);
     },

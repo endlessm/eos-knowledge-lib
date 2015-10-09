@@ -58,4 +58,8 @@ const PaperTemplate = new Lang.Class({
         });
         this._content_frame.size_allocate(content_alloc);
     },
+
+    get_slot_names: function () {
+        return ['content'];
+    },
 });

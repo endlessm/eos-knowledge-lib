@@ -98,4 +98,8 @@ const ArticleStackModule = new Lang.Class({
             }
         });
     },
+
+    get_slot_names: function () {
+        return ['card-type'];
+    },
 });

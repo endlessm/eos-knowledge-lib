@@ -33,4 +33,8 @@ const TwoVerticalTemplate = new Lang.Class({
         this.add(this.create_submodule('top'));
         this.add(this.create_submodule('bottom'));
     },
+
+    get_slot_names: function () {
+        return ['top', 'bottom'];
+    },
 });
