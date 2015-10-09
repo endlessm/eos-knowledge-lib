@@ -47,6 +47,10 @@ describe ('Article Object Model', function () {
         it ('should marshal a GtkTreeStore from JSON-LD TreeNodes', function () {
             expect(articleObject.table_of_contents).toBeA(Gtk.TreeStore);
         });
+
+        it('marshals an authors array', function () {
+            expect(articleObject.authors).toEqual(jsonld['authors']);
+        });
     });
 
     describe('ekn version 1 compatibility layer', function () {
