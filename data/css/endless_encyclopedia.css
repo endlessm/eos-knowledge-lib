@@ -100,10 +100,12 @@ GtkEntry:selected {
     color: #888a85;
 }
 
-.search-results .results-message,
+.search-results .results-message-title,
+.search-results .results-message-subtitle,
 .search-results .error-message {
     font-size: 1.25em;  /* 15px / 12px/em */
     font-weight: normal;
+    padding-top: 2.0em;
 }
 
 .search-results .card {

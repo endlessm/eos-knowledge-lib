@@ -409,12 +409,14 @@ EknWindow.background-right {
     font-size: 2.25em; /* 36pt * 1/12 * 0.75 DPI correction factor */
 }
 
-.search-page-a .search-results .results-message,
+.search-page-a .search-results .results-message-title,
+.search-page-a .search-results .results-message-subtitle,
 .search-page-a .search-results .error-message {
-    padding-top: 8.0em;
+    padding-top: 2.0em;
 }
 
-.search-page-b .search-results .results-message,
+.search-page-b .search-results .results-message-title,
+.search-page-b .search-results .results-message-subtitle,
 .search-page-b .search-results .error-message {
     font-size: 1.2em;
     padding: 10px 25px;

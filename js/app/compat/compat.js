@@ -116,7 +116,8 @@ function transform_v1_description(json) {
             },
             "properties": {
                 "halign": "center",
-                "message-justify": "center",
+                "message-justify": "left",
+                "message-halign": "center",
             },
         };
         modules["home-card"] = {
@@ -473,6 +474,8 @@ function transform_v1_description(json) {
             "type": "SearchModule",
             "properties": {
                 "margin-top": 20,
+                "message-halign": "start",
+                "halign": "start",
             },
             "slots": {
                 "arrangement": {
@@ -606,6 +609,9 @@ function transform_v1_description(json) {
         };
         modules["search-results"] = {
             "type": "SearchModule",
+            "properties": {
+                "message-halign": "center",
+            },
             "slots": {
                 "arrangement": {
                     "type": "GridArrangement",

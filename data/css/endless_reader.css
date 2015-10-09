@@ -47,20 +47,24 @@ overridden by app specific CSS */
 .search-results-page .title {
     font-family: Montserrat;
     color: black;
-    padding-top: 20px;
-    padding-bottom: 20px;
     font-size: 2.25em; /* 36pt * 1/12 * 0.75 DPI correction factor */
+    padding: 1em 0em 1em 0em;
 }
 
 .search-results-page {
     background-color: #CCCCCC;
 }
 
-.search-results .results-message, .search-results .error-message {
-    padding-top: 100px;
+.search-results .results-message-title,
+.search-results .results-message-subtitle,
+.search-results .error-message {
+    padding-top: 2.0em;
     color: black;
+    font-size: 1.2em;
+}
+
+.search-results .results-message-title.query {
     font-style: italic;
-    font-size: 1.5em;
 }
 
 .sidebar {
