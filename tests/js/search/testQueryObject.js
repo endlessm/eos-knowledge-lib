@@ -14,6 +14,20 @@ describe('QueryObject', function () {
         expect(tags).toEqual(query_obj.tags);
     });
 
+    it('makes a deep copy of arrays passed into it', function () {
+        let ids = ['ekn://busters-es/0123456789012345',
+                   'ekn://busters-es/fabaffacabacbafa'];
+        let tags = ['Venkman', 'Stantz'];
+        let query_obj = new QueryObject.QueryObject({
+            ids: ids,
+            tags: tags,
+        });
+        ids = ids.concat(['ekn://busters-es/0123456789abcdef']);
+        delete tags[1];
+        expect(query_obj.ids).not.toEqual(ids);
+        expect(query_obj.tags).not.toEqual(tags);
+    });
+
     describe('new_from_object constructor', function () {
         it('duplicates properties from source object', function () {
             let tags = ['Venkman', 'Stantz'];

@@ -57,21 +57,24 @@ describe('Compatibility layer', function () {
                     ekn_id: 'ekn://thrones-en/920b7986d1d3fdd6ae5ab7be5564423d8333906b',
                     title: 'Whitewalkers',
                     thumbnail_uri: 'resource:///com/endlessm/thrones-en/whitewalker.jpg',
-                    tags: jasmine.arrayContaining(['asia', 'latin america', 'home page']),
+                    child_tags: jasmine.arrayContaining(['asia', 'latin america']),
+                    tags: ['EknHomePageTag'],
                 }));
             expect(engine.add_runtime_object).toHaveBeenCalledWith('ekn://thrones-en/54551efb90c4a248b3d6a040ed847d5a55608878',
                 jasmine.objectContaining({
                     ekn_id: 'ekn://thrones-en/54551efb90c4a248b3d6a040ed847d5a55608878',
                     title: 'Kings',
                     thumbnail_uri: 'resource:///com/endlessm/thrones-en/joffrey.jpg',
-                    tags: jasmine.arrayContaining(['hostels', 'monuments', 'home page']),
+                    child_tags: jasmine.arrayContaining(['hostels', 'monuments']),
+                    tags: ['EknHomePageTag'],
                 }));
             expect(engine.add_runtime_object).toHaveBeenCalledWith('ekn://thrones-en/9b802deaa87a0eb04ac716058daf47d1a4aae24a',
                 jasmine.objectContaining({
                     ekn_id: 'ekn://thrones-en/9b802deaa87a0eb04ac716058daf47d1a4aae24a',
                     title: 'Weddings',
                     thumbnail_uri: 'resource:///com/endlessm/thrones-en/red_wedding.jpg',
-                    tags: jasmine.arrayContaining(['countries', 'monuments', 'mountains', 'home page']),
+                    child_tags: jasmine.arrayContaining(['countries', 'monuments', 'mountains']),
+                    tags: ['EknHomePageTag'],
                 }));
         });
 

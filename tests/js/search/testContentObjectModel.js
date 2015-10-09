@@ -93,4 +93,19 @@ describe ('Content Object Model', function () {
             expect(contentObject.redirects_to).toEqual(MOCK_CONTENT_DATA.redirectsTo);
         });
     });
+
+    it('makes deep copies of the arrays passed into it', function () {
+        let tags = MOCK_CONTENT_DATA['tags'].slice();
+        let resources = MOCK_CONTENT_DATA['resources'].slice();
+        let model = new ContentObjectModel.ContentObjectModel({
+            ekn_id: 'ekn:text_editors/Emacs',
+            title: 'Emacs',
+            tags: tags,
+            resources: resources,
+        });
+        tags.push('or is it?');
+        delete resources[0];
+        expect(model.tags).not.toEqual(tags);
+        expect(model.resources).not.toEqual(resources);
+    });
 });

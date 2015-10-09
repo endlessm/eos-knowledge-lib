@@ -119,7 +119,7 @@ const ArticleObjectModel = new Lang.Class({
     _article_props_from_json_ld: function (props, json_ld) {
         // Marshal properties specific to ArticleObjectModel
         if (json_ld.hasOwnProperty('authors'))
-            props.authors = parseInt(json_ld.authors);
+            props.authors = json_ld.authors;
 
         if (json_ld.hasOwnProperty('wordCount'))
             props.word_count = parseInt(json_ld.wordCount);
