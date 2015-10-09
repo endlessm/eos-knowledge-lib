@@ -81,7 +81,7 @@ describe('Knowledge Engine Module', () => {
     // Setup a mocked request function which just returns the mock data.
     // From EOS 2.4 onward, xapian-bridge will return string results instead of
     // JSON, so we stringify all mock_data to emulate this.
-    function mock_engine_request(mock_err, mock_results) {
+    function mock_engine_query(mock_err, mock_results) {
         let mock_data;
         if (mock_results)
             mock_data = { results: mock_results.map(JSON.stringify) };
@@ -100,7 +100,7 @@ describe('Knowledge Engine Module', () => {
         }
     }
 
-    function mock_engine_request_with_multiple_values(return_values) {
+    function mock_engine_query_with_multiple_values(return_values) {
         spyOn(engine, '_send_json_ld_request').and.callFake((uri,
                                                              cancellable,
                                                              callback) => {
@@ -410,7 +410,7 @@ describe('Knowledge Engine Module', () => {
                 'another result',
                 'yet another result',
             ];
-            mock_engine_request(undefined, mock_data);
+            mock_engine_query(undefined, mock_data);
 
             engine.get_objects_by_query(new QueryObject.QueryObject(), null, (engine, task) => {
                 let [results, get_more_results_query] = engine.get_objects_by_query_finish(task);
@@ -420,7 +420,7 @@ describe('Knowledge Engine Module', () => {
         });
 
         it('does not call its callback more than once', (done) => {
-            mock_engine_request(new Error('I am an error'), undefined);
+            mock_engine_query(new Error('I am an error'), undefined);
 
             let callback_called = 0;
             engine.get_objects_by_query(new QueryObject.QueryObject(), null, (engine, task) => {
@@ -537,7 +537,7 @@ describe('Knowledge Engine Module', () => {
                 let notSearchResults = [
                     { "@type": "ekv:ArticleObject", "synopsis": "dolla dolla bill y'all" }
                 ];
-                mock_engine_request(undefined, notSearchResults);
+                mock_engine_query(undefined, notSearchResults);
 
                 engine.get_objects_by_query(new QueryObject.QueryObject(), null, (engine, task) => {
                     expect(() => { engine.get_objects_by_query_finish(task); }).toThrow();
@@ -547,7 +547,7 @@ describe('Knowledge Engine Module', () => {
 
             it ("throws an error on unsupported search results", (done) => {
                 let badObjectResults = [{ "@type": "ekv:Kitten" }];
-                mock_engine_request(undefined, badObjectResults);
+                mock_engine_query(undefined, badObjectResults);
                 engine.get_objects_by_query(new QueryObject.QueryObject(), null, (engine, task) => {
                     expect(() => { engine.get_objects_by_query_finish(task); }).toThrow();
                     done();
@@ -555,7 +555,7 @@ describe('Knowledge Engine Module', () => {
             });
 
             it ("resolves to a list of results if jsonld is valid", (done) => {
-                mock_engine_request(undefined, MOCK_ARTICLE_RESULTS);
+                mock_engine_query(undefined, MOCK_ARTICLE_RESULTS);
 
                 engine.get_objects_by_query(new QueryObject.QueryObject(), null, (engine, task) => {
                     let [results, get_more_results_query] = engine.get_objects_by_query_finish(task);
@@ -565,7 +565,7 @@ describe('Knowledge Engine Module', () => {
             });
 
             it ("constructs a list of content objects based on @type", (done) => {
-                mock_engine_request(undefined, MOCK_CONTENT_RESULTS);
+                mock_engine_query(undefined, MOCK_CONTENT_RESULTS);
                 engine.get_objects_by_query(new QueryObject.QueryObject(), null, (engine, task) => {
                     let [results, get_more_results_query] = engine.get_objects_by_query_finish(task);
                     // All results in MOCK_CONTENT_OBJECT_RESULTS are of @type ContentObject,
@@ -578,7 +578,7 @@ describe('Knowledge Engine Module', () => {
             });
 
             it ("constructs a list of article objects based on @type", (done) => {
-                mock_engine_request(undefined, MOCK_ARTICLE_RESULTS);
+                mock_engine_query(undefined, MOCK_ARTICLE_RESULTS);
                 engine.get_objects_by_query(new QueryObject.QueryObject(), null, (engine, task) => {
                     let [results, get_more_results_query] = engine.get_objects_by_query_finish(task);
                     // All results in MOCK_ARTICLE_OBJECT_RESULTS are of @type ArticleObject,
@@ -591,7 +591,7 @@ describe('Knowledge Engine Module', () => {
             });
 
             it ("constructs a list of media objects based on @type", (done) => {
-                mock_engine_request(undefined, MOCK_MEDIA_RESULTS);
+                mock_engine_query(undefined, MOCK_MEDIA_RESULTS);
                 engine.get_objects_by_query(new QueryObject.QueryObject(), null, (engine, task) => {
                     let [results, get_more_results_query] = engine.get_objects_by_query_finish(task);
                     // All results in MOCK_MEDIA_OBJECT_RESULTS are of @type MediaObject,
@@ -604,7 +604,7 @@ describe('Knowledge Engine Module', () => {
             });
 
             it('does not call its callback more than once', (done) => {
-                mock_engine_request(new Error('I am an error'), undefined);
+                mock_engine_query(new Error('I am an error'), undefined);
 
                 let callback_called = 0;
                 engine.get_objects_by_query(new QueryObject.QueryObject(), null, (engine, task) => {
@@ -617,7 +617,7 @@ describe('Knowledge Engine Module', () => {
             });
 
             it('performs redirect resolution', (done) => {
-                mock_engine_request(undefined, [
+                mock_engine_query(undefined, [
                     {
                         '@id': 'ekn://foo/aaaabbbbccccddd2',
                         '@type': 'ekn://_vocab/ArticleObject',
@@ -645,7 +645,7 @@ describe('Knowledge Engine Module', () => {
             });
 
             it('handles 404s when fetching redirects', (done) => {
-                mock_engine_request(undefined, [
+                mock_engine_query(undefined, [
                     {
                         '@id': 'ekn://foo/aaaabbbbccccddd2',
                         '@type': 'ekn://_vocab/ArticleObject',
@@ -728,7 +728,7 @@ describe('Knowledge Engine Module', () => {
 
             it('marshals objects based on @type', (done) => {
                 let mock_id = 'ekn://foo/0123456789abcdef';
-                mock_engine_request(undefined, [{
+                mock_engine_query(undefined, [{
                     '@id': mock_id,
                     '@type': 'ekn://_vocab/ArticleObject',
                     'synopsis': 'NOW IS THE WINTER OF OUR DISCONTENT',
@@ -745,7 +745,7 @@ describe('Knowledge Engine Module', () => {
             it('sets up content stream and content type for html articles', (done) => {
                 let mock_id = 'ekn://foo/0123456789abcdef';
                 let mock_content = '<html>foo</html>';
-                mock_engine_request(undefined, [{
+                mock_engine_query(undefined, [{
                     '@id': mock_id,
                     '@type': 'ekn://_vocab/ArticleObject',
                     'articleBody': mock_content,
@@ -765,7 +765,7 @@ describe('Knowledge Engine Module', () => {
 
             it('does not call its callback more than once', (done) => {
                 let mock_id = 'ekn://foo/0123456789abcdef';
-                mock_engine_request(new Error('I am an error'), undefined);
+                mock_engine_query(new Error('I am an error'), undefined);
 
                 let callback_called = 0;
                 engine.get_object_by_id(mock_id, null, (engine, task) => {
@@ -778,7 +778,7 @@ describe('Knowledge Engine Module', () => {
             });
 
             it('performs redirect resolution', (done) => {
-                mock_engine_request_with_multiple_values([
+                mock_engine_query_with_multiple_values([
                     {
                         results: [{
                             '@id': 'ekn://foo/0123456789abcdef',
@@ -801,7 +801,7 @@ describe('Knowledge Engine Module', () => {
             });
 
             it('handles 404 when fetching redirects', (done) => {
-                mock_engine_request_with_multiple_values([
+                mock_engine_query_with_multiple_values([
                     {
                         results: [{
                             '@id': 'ekn://foo/0123456789abcdef',
