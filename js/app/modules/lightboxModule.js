@@ -113,4 +113,8 @@ const LightboxModule = new GObject.Class({
         this.has_back_button = this._current_index > 0;
         this.has_forward_button = this._current_index < resources.length - 1;
     },
+
+    get_slot_names: function () {
+        return ['card-type'];
+    },
 });
