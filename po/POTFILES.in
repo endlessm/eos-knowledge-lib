@@ -4,6 +4,7 @@ data/widgets/cardA.ui
 data/widgets/readerCard.ui
 data/widgets/searchModule.ui
 data/widgets/suggestedArticlesModule.ui
+data/widgets/suggestedCategoriesModule.ui
 js/app/articleHTMLRenderer.js
 js/app/compat/compat.js
 js/app/modules/aisleInteraction.js
