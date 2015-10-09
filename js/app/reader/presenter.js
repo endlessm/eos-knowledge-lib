@@ -189,6 +189,8 @@ const Presenter = new Lang.Class({
     _NUM_ARTICLE_PAGE_STYLES: 3,
 
     _init: function (props) {
+        this._launched_once = false;
+
         let css = Gio.File.new_for_uri('resource:///com/endlessm/knowledge/css/endless_reader.css');
         Utils.add_css_provider_from_file(css, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 
@@ -328,6 +330,7 @@ const Presenter = new Lang.Class({
     // Launcher override
     search: function (timestamp, query) {
         this._pending_present_timestamp = timestamp;
+        this._launch_type = Launcher.LaunchType.SEARCH;
         this._ensure_content_loaded(() => {
             this._on_search(query);
         });
@@ -436,6 +439,7 @@ const Presenter = new Lang.Class({
     // Launcher override
     desktop_launch: function (timestamp=Gdk.CURRENT_TIME) {
         this._pending_present_timestamp = timestamp;
+        this._launch_type = Launcher.LaunchType.DESKTOP;
         this._ensure_content_loaded(() => {
             this._add_history_item_for_page(this.settings.bookmark_page);
         });
@@ -444,6 +448,7 @@ const Presenter = new Lang.Class({
     // Launcher override
     activate_search_result: function (timestamp, id, query) {
         this._pending_present_timestamp = timestamp;
+        this._launch_type = Launcher.LaunchType.SEARCH_RESULT;
         this._ensure_content_loaded(() => {
             this.engine.get_object_by_id(id, null, (engine, task) => {
                 let model;
@@ -551,8 +556,14 @@ const Presenter = new Lang.Class({
 
     _present_if_needed: function () {
         if (this._pending_present_timestamp !== null) {
-            this.view.show_all();
-            this.view.present_with_time(this._pending_present_timestamp);
+            if (!this._launched_once) {
+                Dispatcher.get_default().dispatch({
+                    action_type: Actions.FIRST_LAUNCH,
+                    timestamp: this._pending_present_timestamp,
+                    launch_type: this._launch_type,
+                });
+                this._launched_once = true;
+            }
             this._pending_present_timestamp = null;
         }
     },

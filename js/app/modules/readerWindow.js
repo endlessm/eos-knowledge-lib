@@ -148,6 +148,10 @@ const ReaderWindow = new Lang.Class({
 
         dispatcher.register((payload) => {
             switch(payload.action_type) {
+                case Actions.FIRST_LAUNCH:
+                    this.show_all();
+                    this.present_with_time(payload.timestamp);
+                    break;
                 case Actions.HISTORY_BACK_ENABLED_CHANGED:
                     this._history_buttons.back_button.sensitive = payload.enabled;
                     break;

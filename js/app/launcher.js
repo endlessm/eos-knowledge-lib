@@ -1,4 +1,7 @@
+/* exported Launcher, LaunchType */
 const Lang = imports.lang;
+
+const Utils = imports.search.utils;
 
 /**
  * Class: Launcher
@@ -71,3 +74,15 @@ const Launcher = new Lang.Interface({
         this.desktop_launch(timestamp);
     }
 });
+
+/**
+ * Enum: LaunchType
+ * Convenience constants for signifying launch type
+ *
+ * DESKTOP       - Represents a normal launch through <Launcher.desktop_launch>.
+ * SEARCH        - Represents a launch through search provider, i.e.,
+ *                 <Launcher.search>.
+ * SEARCH_RESULT - Represents a launch through clicking a search result, i.e.,
+ *                 <Launcher.activate_search_result>.
+ */
+const LaunchType = Utils.define_enum(['DESKTOP', 'SEARCH', 'SEARCH_RESULT']);

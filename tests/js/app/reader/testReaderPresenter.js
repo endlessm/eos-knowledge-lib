@@ -11,6 +11,7 @@ Utils.register_gresource();
 const Actions = imports.app.actions;
 const ArticleObjectModel = imports.search.articleObjectModel;
 const AppUtils = imports.app.utils;
+const Launcher = imports.app.launcher;
 const MockDispatcher = imports.tests.mockDispatcher;
 const Minimal = imports.tests.minimal;
 const MockEngine = imports.tests.mockEngine;
@@ -253,6 +254,40 @@ describe('Reader presenter', function () {
             engine.get_object_by_id_finish.and.returnValue(MOCK_RESULTS[2]);
             presenter.activate_search_result(0, 'abc2134', 'fake query');
             expect(presenter.current_page).toBe(3);
+        });
+
+        it('dispatches app-launched on launch from desktop', function () {
+            presenter.desktop_launch(0);
+            expect(dispatcher.last_payload_with_type(Actions.FIRST_LAUNCH).launch_type)
+                .toBe(Launcher.LaunchType.DESKTOP);
+        });
+
+        it('dispatches app-launched on launch from search', function () {
+            presenter.search(0, 'query');
+            expect(dispatcher.last_payload_with_type(Actions.FIRST_LAUNCH).launch_type)
+                .toBe(Launcher.LaunchType.SEARCH);
+        });
+
+        it('dispatches app-launched on launch from search result', function () {
+            engine.get_object_by_id_finish.and.returnValue(new ArticleObjectModel.ArticleObjectModel());
+            presenter.activate_search_result(0, 'ekn://foo/bar', 'query');
+            expect(dispatcher.last_payload_with_type(Actions.FIRST_LAUNCH).launch_type)
+                .toBe(Launcher.LaunchType.SEARCH_RESULT);
+        });
+
+        it('dispatches app-launched only once', function () {
+            engine.get_object_by_id_finish.and.returnValue(new ArticleObjectModel.ArticleObjectModel());
+
+            presenter.desktop_launch(0);
+            let payloads = dispatcher.payloads_with_type(Actions.FIRST_LAUNCH);
+            expect(payloads.length).toBe(1);
+
+            presenter.desktop_launch(0);
+            presenter.search(0, 'query');
+            presenter.activate_search_result(0, 'ekn://foo/bar', 'query');
+
+            payloads = dispatcher.payloads_with_type(Actions.FIRST_LAUNCH);
+            expect(payloads.length).toBe(1);
         });
     });
 

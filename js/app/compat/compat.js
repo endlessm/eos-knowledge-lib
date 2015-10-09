@@ -22,6 +22,7 @@ function transform_v1_description(json) {
                 "blur-background-image-uri": json["backgroundSectionURI"],
             },
             "slots": {
+                "brand-screen": null,
                 "home-page": "home-page",
             },
         };
@@ -197,6 +198,7 @@ function transform_v1_description(json) {
                 "blur-background-image-uri": json["backgroundSectionURI"],
             },
             "slots": {
+                "brand-screen": null,
                 "home-page": "home-page",
             },
         };

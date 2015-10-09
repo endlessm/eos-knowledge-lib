@@ -10,6 +10,7 @@ Utils.register_gresource();
 const Actions = imports.app.actions;
 const ContentObjectModel = imports.search.contentObjectModel;
 const MeshInteraction = imports.app.modules.meshInteraction;
+const Launcher = imports.app.launcher;
 const Minimal = imports.tests.minimal;
 const MockDispatcher = imports.tests.mockDispatcher;
 const MockEngine = imports.tests.mockEngine;
@@ -68,6 +69,7 @@ const MockView = new Lang.Class({
         this.article_page = connectable_object;
         this.search_page = connectable_object;
         this.no_search_results_page = {};
+        this._visible_page = this.home_page;
     },
 
     connect: function (signal, handler) {
@@ -77,10 +79,12 @@ const MockView = new Lang.Class({
         this.parent(signal, handler);
     },
 
-    show_page: function (page) {},
-    lock_ui: function () {},
-    unlock_ui: function () {},
-    present_with_time: function () {},
+    show_page: function (page) {
+        this._visible_page = page;
+    },
+    get_visible_page: function () {
+        return this._visible_page;
+    },
 });
 
 describe('Mesh interaction', function () {
@@ -153,6 +157,66 @@ describe('Mesh interaction', function () {
         });
         Utils.update_gui();
         expect(dispatcher.last_payload_with_type(Actions.SHOW_SECTION_PAGE)).toBeDefined();
+    });
+
+    it('dispatches app-launched on launch from desktop', function () {
+        mesh.desktop_launch(0);
+        expect(dispatcher.last_payload_with_type(Actions.FIRST_LAUNCH).launch_type)
+            .toBe(Launcher.LaunchType.DESKTOP);
+    });
+
+    it('dispatches app-launched on launch from search', function () {
+        mesh.search(0, 'query');
+        expect(dispatcher.last_payload_with_type(Actions.FIRST_LAUNCH).launch_type)
+            .toBe(Launcher.LaunchType.SEARCH);
+    });
+
+    it('dispatches app-launched on launch from search result', function () {
+        engine.get_object_by_id_finish.and.returnValue(new ContentObjectModel.ContentObjectModel());
+        mesh.activate_search_result(0, 'ekn://foo/bar', 'query');
+        expect(dispatcher.last_payload_with_type(Actions.FIRST_LAUNCH).launch_type)
+            .toBe(Launcher.LaunchType.SEARCH_RESULT);
+    });
+
+    it('dispatches app-launched only once', function () {
+        engine.get_object_by_id_finish.and.returnValue(new ContentObjectModel.ContentObjectModel());
+
+        mesh.desktop_launch(0);
+        let payloads = dispatcher.payloads_with_type(Actions.FIRST_LAUNCH);
+        expect(payloads.length).toBe(1);
+
+        mesh.desktop_launch(0);
+        mesh.search(0, 'query');
+        mesh.activate_search_result(0, 'ekn://foo/bar', 'query');
+
+        payloads = dispatcher.payloads_with_type(Actions.FIRST_LAUNCH);
+        expect(payloads.length).toBe(1);
+    });
+
+    it('indicates that the brand screen has been read after launch from desktop', function () {
+        mesh.BRAND_SCREEN_TIME_MS = 0;
+        mesh.desktop_launch(0);
+        expect(dispatcher.last_payload_with_type(Actions.BRAND_SCREEN_DONE)).not.toBeDefined();
+        Utils.update_gui();
+        expect(dispatcher.last_payload_with_type(Actions.BRAND_SCREEN_DONE)).toBeDefined();
+    });
+
+    it('shows the brand screen only once', function () {
+        mesh.BRAND_SCREEN_TIME_MS = 0;
+        mesh.desktop_launch(0);
+        mesh.desktop_launch(0);
+        Utils.update_gui();
+        let payloads = dispatcher.payloads_with_type(Actions.BRAND_SCREEN_DONE);
+        expect(payloads.length).toBe(1);
+    });
+
+    it('does not show the brand screen on other launch methods', function () {
+        mesh.BRAND_SCREEN_TIME_MS = 0;
+        engine.get_object_by_id_finish.and.returnValue(new ContentObjectModel.ContentObjectModel());
+        mesh.search(0, 'query');
+        mesh.activate_search_result(0, 'ekn://foo/bar', 'query');
+        Utils.update_gui();
+        expect(dispatcher.last_payload_with_type(Actions.BRAND_SCREEN_DONE)).not.toBeDefined();
     });
 
     describe('search', function () {
