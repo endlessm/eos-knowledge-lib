@@ -5,7 +5,7 @@ const Utils = imports.search.utils;
 
 /**
  * Class: Launcher
- * Interface for presenters and other app launchers
+ * Interface for interactions and other app launchers
  *
  * Knowledge apps can be launched in three ways: directly from the desktop, as
  * the result of clicking on a desktop search result, and with a search query.

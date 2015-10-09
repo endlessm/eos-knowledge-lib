@@ -5,7 +5,7 @@ const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 
 const Config = imports.app.config;
-const Mustache = imports.app.mustache.Mustache;
+const Mustache = imports.app.libs.mustache.Mustache;
 const SearchUtils = imports.search.utils;
 
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);

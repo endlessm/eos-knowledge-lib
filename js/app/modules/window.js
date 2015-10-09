@@ -9,7 +9,7 @@ const Lang = imports.lang;
 
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
-const Launcher = imports.app.launcher;
+const Launcher = imports.app.interfaces.launcher;
 const Module = imports.app.interfaces.module;
 const StyleClasses = imports.app.styleClasses;
 

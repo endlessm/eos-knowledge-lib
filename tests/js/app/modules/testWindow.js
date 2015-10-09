@@ -8,7 +8,7 @@ Utils.register_gresource();
 const Actions = imports.app.actions;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
-const Launcher = imports.app.launcher;
+const Launcher = imports.app.interfaces.launcher;
 const Minimal = imports.tests.minimal;
 const MockDispatcher = imports.tests.mockDispatcher;
 const MockFactory = imports.tests.mockFactory;

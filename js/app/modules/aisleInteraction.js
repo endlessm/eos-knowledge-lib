@@ -19,8 +19,10 @@ const Config = imports.app.config;
 const Dispatcher = imports.app.dispatcher;
 const Engine = imports.search.engine;
 const HistoryPresenter = imports.app.historyPresenter;
-const Launcher = imports.app.launcher;
+const Interaction = imports.app.interfaces.interaction;
+const Launcher = imports.app.interfaces.launcher;
 const MediaObjectModel = imports.search.mediaObjectModel;
+const Module = imports.app.interfaces.module;
 const QueryObject = imports.search.queryObject;
 const BackCover = imports.app.modules.backCover;
 const ReaderCard = imports.app.modules.readerCard;
@@ -57,57 +59,26 @@ const DBUS_TOOLTIP_INTERFACE = '\
     </node>';
 
 /**
- * Class: Reader.Presenter
- * Presenter module to manage the reader application
+ * Class: AisleInteraction
+ * AisleInteraction module.
  *
- * Initializes the application from an app.json file given by <app-file>, and
- * manages magazine issues, displaying them in the <view>, and keeping track of
+ * Manages magazine issues, displaying them in the <view>, and keeping track of
  * which ones have been read.
  */
-const Presenter = new Lang.Class({
-    Name: 'Presenter',
-    GTypeName: 'EknReaderPresenter',
+const AisleInteraction = new Lang.Class({
+    Name: 'AisleInteraction',
+    GTypeName: 'EknAisleInteraction',
     Extends: GObject.Object,
-    Implements: [ Launcher.Launcher ],
+    Implements: [ Module.Module, Launcher.Launcher, Interaction.Interaction ],
 
     Properties: {
-        /**
-         * Property: application
-         * The GApplication for the knowledge app
-         *
-         * This should always be set except for during testing. If this is not
-         * set in unit testing, make sure to mock out view object. The real
-         * Endless.Window requires a application on construction.
-         *
-         * Flags:
-         *   Construct only
-         */
-        'application': GObject.ParamSpec.object('application', 'Application',
-            'Presenter for article page',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            GObject.Object.$gtype),
-        /**
-         * Property: factory
-         * Factory to create modules
-         */
-        'factory': GObject.ParamSpec.object('factory', 'Factory', 'Factory',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            GObject.Object.$gtype),
-        /**
-         * Property: engine
-         * Handle to EOS knowledge engine
-         *
-         * Pass an instance of <Engine> to this property.
-         * This is a property for purposes of dependency injection during
-         * testing.
-         *
-         * Flags:
-         *   Construct only
-         */
-        'engine': GObject.ParamSpec.object('engine', 'Engine',
-            'Handle to EOS knowledge engine',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            GObject.Object.$gtype),
+        'factory': GObject.ParamSpec.override('factory', Module.Module),
+        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
+        'application': GObject.ParamSpec.override('application', Interaction.Interaction),
+        'engine': GObject.ParamSpec.override('engine', Interaction.Interaction),
+        'view': GObject.ParamSpec.override('view', Interaction.Interaction),
+        'template-type': GObject.ParamSpec.override('template-type', Interaction.Interaction),
+        'css': GObject.ParamSpec.override('css', Interaction.Interaction),
         /**
          * Property: settings
          * Handles the User Settings
@@ -120,21 +91,6 @@ const Presenter = new Lang.Class({
          */
         'settings': GObject.ParamSpec.object('settings', 'User Settings',
             'Handles the User Settings',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            GObject.Object.$gtype),
-        /**
-         * Property: view
-         * Reader app view
-         *
-         * Pass an instance of <Reader.Window> to this property.
-         * This is a property for purposes of dependency injection during
-         * testing.
-         *
-         * Flags:
-         *   Construct only
-         */
-        'view': GObject.ParamSpec.object('view', 'View',
-            'Reader app view',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             GObject.Object.$gtype),
         /**
@@ -168,22 +124,6 @@ const Presenter = new Lang.Class({
             'The history model for this application',
             GObject.ParamFlags.READABLE,
             GObject.Object.$gtype),
-        /**
-         * Property: template-type
-         * FIXME: This is a temporary step towards the development of interactions.
-         *   Scheduled for destruction.
-         */
-        'template-type': GObject.ParamSpec.string('template-type', 'template-type',
-            'Template type of the Knowledge app',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
-        /**
-         * Property: css
-         * FIXME: This is a temporary step towards the development of interactions.
-         *   Scheduled for destruction.
-         */
-        'css': GObject.ParamSpec.string('css', 'css',
-            'Template type of the Knowledge app',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
     },
 
     _NUM_ARTICLE_PAGE_STYLES: 3,

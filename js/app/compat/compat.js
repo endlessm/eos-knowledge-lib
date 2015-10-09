@@ -14,6 +14,9 @@ function transform_v1_description(json) {
 
     switch (json.templateType) {
     case "A":
+        modules["interaction"] = {
+            "type": "MeshInteraction",
+        };
         modules["window"] = {
             "type": "Window",
             "properties": {
@@ -190,6 +193,9 @@ function transform_v1_description(json) {
         };
         break;
     case "B":
+        modules["interaction"] = {
+            "type": "MeshInteraction",
+        };
         modules["window"] = {
             "type": "Window",
             "properties": {
@@ -337,6 +343,9 @@ function transform_v1_description(json) {
         };
         break;
     case "encyclopedia":
+        modules["interaction"] = {
+            "type": "MeshInteraction",
+        };
         modules["window"] = {
             "type": "EncyclopediaWindow",
             "properties": {
@@ -479,6 +488,9 @@ function transform_v1_description(json) {
         };
         break;
     case "reader":
+        modules["interaction"] = {
+            "type": "AisleInteraction",
+        };
         modules["window"] = {
             "type": "ReaderWindow",
             "properties": {

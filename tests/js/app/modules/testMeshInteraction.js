@@ -10,7 +10,7 @@ Utils.register_gresource();
 const Actions = imports.app.actions;
 const ContentObjectModel = imports.search.contentObjectModel;
 const MeshInteraction = imports.app.modules.meshInteraction;
-const Launcher = imports.app.launcher;
+const Launcher = imports.app.interfaces.launcher;
 const Minimal = imports.tests.minimal;
 const MockDispatcher = imports.tests.mockDispatcher;
 const MockEngine = imports.tests.mockEngine;
