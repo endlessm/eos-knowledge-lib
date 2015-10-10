@@ -54,6 +54,7 @@ describe('Window', function () {
         factory.add_named_mock('search-results', MockWidgets.MockItemGroupModule);
         factory.add_named_mock('home-page', Minimal.MinimalPage);
         factory.add_named_mock('search-page', Minimal.MinimalPage);
+        factory.add_named_mock('article-page', Minimal.MinimalPage);
         factory.add_named_mock('lightbox', Minimal.MinimalLightbox);
         factory.add_named_mock('navigation', Minimal.MinimalNavigation);
         factory.add_named_mock('brand-screen', Minimal.MinimalPage);
@@ -62,12 +63,13 @@ describe('Window', function () {
             'home-page': 'home-page',
             'section-page': 'section-page',
             'search-page': 'search-page',
+            'article-page': 'article-page',
         });
         factory.add_named_mock('window-with-brand-screen', Window.Window, {
             'brand-screen': 'brand-screen',
             'home-page': 'home-page',
             'section-page': 'section-page',
-            'search-page': 'search-page',
+            'article-page': 'article-page',
         });
     });
 
@@ -90,10 +92,6 @@ describe('Window', function () {
             expect(view).toBeDefined();
         });
 
-        it('instantiates an article page A', function () {
-            expect(view.article_page).toBeDefined();
-        });
-
         it('correctly sets background image', function () {
             view.background_image_uri = BACKGROUND_URI;
             expect(view.background_image_uri).toBe(BACKGROUND_URI);
@@ -103,14 +101,15 @@ describe('Window', function () {
             let home_page = factory.get_created_named_mocks('home-page')[0];
             let section_page = factory.get_created_named_mocks('section-page')[0];
             let search_page = factory.get_created_named_mocks('search-page')[0];
-            view.show_page(view.article_page);
-            expect(view.get_visible_page()).toBe(view.article_page);
+            let article_page = factory.get_created_named_mocks('article-page')[0];
             view.show_page(home_page);
             expect(view.get_visible_page()).toBe(home_page);
             view.show_page(section_page);
             expect(view.get_visible_page()).toBe(section_page);
             view.show_page(search_page);
             expect(view.get_visible_page()).toBe(search_page);
+            view.show_page(article_page);
+            expect(view.get_visible_page()).toBe(article_page);
         });
 
         it('starts on home page', function () {

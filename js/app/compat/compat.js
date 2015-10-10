@@ -29,6 +29,7 @@ function transform_v1_description(json) {
                 "home-page": "home-page",
                 "section-page": "section-page",
                 "search-page": "search-page",
+                "article-page": "article-page",
             },
         };
         modules["navigation"] = {
@@ -187,7 +188,7 @@ function transform_v1_description(json) {
                 "show_toc": true,
             },
         };
-        modules["article-page-template"] = {
+        modules["article-page"] = {
             "type": "ArticleStackModule",
             "slots": {
                 "card-type": "document-card",
@@ -210,6 +211,7 @@ function transform_v1_description(json) {
                 "home-page": "home-page",
                 "section-page": "section-page",
                 "search-page": "search-page",
+                "article-page": "article-page",
             },
         };
         modules["navigation"] = {
@@ -339,7 +341,7 @@ function transform_v1_description(json) {
         modules["document-card"] = {
             "type": "KnowledgeDocumentCard",
         };
-        modules["article-page-template"] = {
+        modules["article-page"] = {
             "type": "ArticleStackModule",
             "slots": {
                 "card-type": "document-card",

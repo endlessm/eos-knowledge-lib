@@ -117,7 +117,7 @@ const Window = new Lang.Class({
         this._home_page = this.create_submodule('home-page');
         this._section_page = this.create_submodule('section-page');
         this._search_page = this.create_submodule('search-page');
-        this.article_page = this.factory.create_named_module('article-page-template');
+        this._article_page = this.create_submodule('article-page');
         this._brand_screen = this.create_submodule('brand-screen');
         if (this.template_type === 'B') {
             this._home_page.get_style_context().add_class(StyleClasses.HOME_PAGE_B);
@@ -135,7 +135,7 @@ const Window = new Lang.Class({
         this._stack.add(this._home_page);
         this._stack.add(this._section_page);
         this._stack.add(this._search_page);
-        this._stack.add(this.article_page);
+        this._stack.add(this._article_page);
 
         let navigation = this.factory.create_named_module('navigation');
         navigation.add(this._stack);
@@ -210,7 +210,7 @@ const Window = new Lang.Class({
                     this.show_page(this._search_page);
                     break;
                 case Actions.SHOW_ARTICLE_PAGE:
-                    this.show_page(this.article_page);
+                    this.show_page(this._article_page);
                     break;
             }
         });
@@ -375,6 +375,6 @@ const Window = new Lang.Class({
 
     // Module override
     get_slot_names: function () {
-        return ['brand-screen', 'home-page', 'section-page', 'search-page'];
+        return ['brand-screen', 'home-page', 'section-page', 'search-page', 'article-page'];
     },
 });
