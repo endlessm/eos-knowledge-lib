@@ -3,6 +3,7 @@ const Lang = imports.lang;
 
 const Compat = imports.app.compat.compat;
 const Engine = imports.search.engine;
+const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Warehouse = imports.app.warehouse;
 
 const ModuleFactory = new Lang.Class({
@@ -51,6 +52,22 @@ const ModuleFactory = new Lang.Class({
         this._anonymous_name_to_description = {};
     },
 
+    _parse_json_property: function (module_class, property_name, json_value) {
+        let param_spec = GObject.Object.find_property.call(module_class, property_name);
+        if (param_spec === null) {
+            logError(new Error('Could not find property for', module_class, 'named', property_name));
+            return [false, null];
+        }
+        if (!EosKnowledgePrivate.param_spec_is_enum(param_spec))
+            return [true, json_value];
+        let [success, enum_value] = EosKnowledgePrivate.param_spec_enum_value_from_string(param_spec, json_value);
+        if (!success) {
+            logError(new Error('Could not find enum for', property_name, 'named', json_value));
+            return [false, null];
+        }
+        return [true, enum_value];
+    },
+
     create_named_module: function (name, extra_props={}) {
         let description = this._get_module_description_by_name(name);
 
@@ -60,8 +77,15 @@ const ModuleFactory = new Lang.Class({
             factory_name: name,
         };
 
-        if (description.hasOwnProperty('properties'))
-            Lang.copyProperties(description['properties'], module_props);
+        if (description.hasOwnProperty('properties')) {
+            let properties = description['properties'];
+            for (let property_name in properties) {
+                let [success, value] = this._parse_json_property(module_class, property_name, properties[property_name]);
+                if (!success)
+                    continue;
+                module_props[property_name] = value;
+            }
+        }
         Lang.copyProperties(extra_props, module_props);
 
         return new module_class(module_props);

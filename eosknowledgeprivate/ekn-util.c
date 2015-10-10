@@ -61,3 +61,43 @@ ekn_private_register_global_uri_scheme (const gchar *scheme,
     WebKitWebContext *context = webkit_web_context_get_default ();
     webkit_web_context_register_uri_scheme (context, scheme, callback, NULL, NULL);
 }
+
+/**
+ * ekn_param_spec_is_enum:
+ * @pspec: a GParamSpec
+ *
+ * The param spec type macros don't introspect well, so this helper wraps the
+ * usual macro to check if a param spec is for an enum type.
+ */
+gboolean
+ekn_param_spec_is_enum (GParamSpec *pspec)
+{
+  return G_IS_PARAM_SPEC_ENUM (pspec);
+}
+
+/**
+ * ekn_param_spec_enum_value_from_string:
+ * @pspec: a GParamSpecEnum
+ * @name: either a enum name or nick for the param spec
+ * @value: (out) (allow-none): the integer enum value
+ *
+ * Enum classes and values also introspect poorly. This helper takes an enum
+ * param spec and a name of an enum value and converts that to a integer enum
+ * value.
+ *
+ * Returns: true if a value was parsed successfully.
+ */
+gboolean
+ekn_param_spec_enum_value_from_string (GParamSpecEnum *pspec, const gchar *name, gint *value)
+{
+  GEnumValue *enum_value = NULL;
+  enum_value = g_enum_get_value_by_name (pspec->enum_class, name);
+  if (!enum_value)
+    enum_value = g_enum_get_value_by_nick (pspec->enum_class, name);
+  if (enum_value)
+    {
+      *value = enum_value->value;
+      return TRUE;
+    }
+  return FALSE;
+}
