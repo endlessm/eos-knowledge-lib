@@ -115,17 +115,17 @@ const Window = new Lang.Class({
         this.parent(props);
 
         this._home_page = this.create_submodule('home-page');
-        this.section_page = this.factory.create_named_module('section-page-template');
+        this._section_page = this.create_submodule('section-page');
         this.search_page = this.factory.create_named_module('search-page-template');
         this.article_page = this.factory.create_named_module('article-page-template');
         this._brand_screen = this.create_submodule('brand-screen');
         if (this.template_type === 'B') {
             this._home_page.get_style_context().add_class(StyleClasses.HOME_PAGE_B);
-            this.section_page.get_style_context().add_class(StyleClasses.SECTION_PAGE_B);
+            this._section_page.get_style_context().add_class(StyleClasses.SECTION_PAGE_B);
             this.search_page.get_style_context().add_class(StyleClasses.SEARCH_PAGE_B);
         } else {
             this._home_page.get_style_context().add_class(StyleClasses.HOME_PAGE_A);
-            this.section_page.get_style_context().add_class(StyleClasses.SECTION_PAGE_A);
+            this._section_page.get_style_context().add_class(StyleClasses.SECTION_PAGE_A);
             this.search_page.get_style_context().add_class(StyleClasses.SEARCH_PAGE_A);
         }
 
@@ -133,7 +133,7 @@ const Window = new Lang.Class({
         if (this._brand_screen)
             this._stack.add(this._brand_screen);
         this._stack.add(this._home_page);
-        this._stack.add(this.section_page);
+        this._stack.add(this._section_page);
         this._stack.add(this.search_page);
         this._stack.add(this.article_page);
 
@@ -204,7 +204,7 @@ const Window = new Lang.Class({
                     this.show_page(this._home_page);
                     break;
                 case Actions.SHOW_SECTION_PAGE:
-                    this.show_page(this.section_page);
+                    this.show_page(this._section_page);
                     break;
                 case Actions.SHOW_SEARCH_PAGE:
                     this.show_page(this.search_page);
@@ -318,7 +318,7 @@ const Window = new Lang.Class({
             return;
 
         let is_on_left = (page) => [this._home_page, this._brand_screen].indexOf(page) > -1;
-        let is_on_center = (page) => page === this.section_page || page === this.search_page;
+        let is_on_center = (page) => page === this._section_page || page === this.search_page;
         let nav_back_visible = false;
         if (is_on_left(new_page)) {
             nav_back_visible = false;
@@ -375,6 +375,6 @@ const Window = new Lang.Class({
 
     // Module override
     get_slot_names: function () {
-        return ['brand-screen', 'home-page'];
+        return ['brand-screen', 'home-page', 'section-page'];
     },
 });

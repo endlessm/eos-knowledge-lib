@@ -1,7 +1,7 @@
 // Copyright 2015 Endless Mobile, Inc.
 
 /* exported MinimalArrangement, MinimalBackCover, MinimalCard,
-MinimalDocumentCard, MinimalHomePage, MinimalInteraction, MinimalLightbox, MinimalModule */
+MinimalDocumentCard, MinimalPage, MinimalInteraction, MinimalLightbox, MinimalModule */
 
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
@@ -107,8 +107,8 @@ const MinimalInteraction = new Lang.Class({
     desktop_launch: function () {},
 });
 
-const MinimalHomePage = new Lang.Class({
-    Name: 'MinimalHomePage',
+const MinimalPage = new Lang.Class({
+    Name: 'MinimalPage',
     Extends: Gtk.Grid,
     Implements: [ Module.Module ],
 

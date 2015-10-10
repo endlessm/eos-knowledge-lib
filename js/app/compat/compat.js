@@ -27,6 +27,7 @@ function transform_v1_description(json) {
             "slots": {
                 "brand-screen": null,
                 "home-page": "home-page",
+                "section-page": "section-page",
             },
         };
         modules["navigation"] = {
@@ -82,7 +83,7 @@ function transform_v1_description(json) {
                 "card-type": "results-card",
             },
         };
-        modules["section-page-template"] = {
+        modules["section-page"] = {
             "type": "BannerTemplate",
             "properties": {
                 "margin-start": 150,
@@ -206,6 +207,7 @@ function transform_v1_description(json) {
             "slots": {
                 "brand-screen": null,
                 "home-page": "home-page",
+                "section-page": "section-page",
             },
         };
         modules["navigation"] = {
@@ -284,7 +286,7 @@ function transform_v1_description(json) {
                 "card-type": "results-card",
             },
         };
-        modules["section-page-template"] = {
+        modules["section-page"] = {
             "type": "SidebarTemplate",
             "slots": {
                 "content": "set-banner-module",
