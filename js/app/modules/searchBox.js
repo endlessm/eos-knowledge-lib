@@ -106,7 +106,8 @@ const SearchBox = new Lang.Class({
             try {
                 [this._autocomplete_models, get_more_results_query] = engine.get_objects_by_query_finish(task);
             } catch (error) {
-                logError(error);
+                if (!error.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
+                    logError(error);
                 return;
             }
 
