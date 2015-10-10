@@ -28,6 +28,7 @@ function transform_v1_description(json) {
                 "brand-screen": null,
                 "home-page": "home-page",
                 "section-page": "section-page",
+                "search-page": "search-page",
             },
         };
         modules["navigation"] = {
@@ -159,7 +160,7 @@ function transform_v1_description(json) {
                 "halign": Gtk.Align.CENTER,
             },
         };
-        modules["search-page-template"] = {
+        modules["search-page"] = {
             "type": "BannerTemplate",
             "properties": {
                 "margin-start": 150,
@@ -208,6 +209,7 @@ function transform_v1_description(json) {
                 "brand-screen": null,
                 "home-page": "home-page",
                 "section-page": "section-page",
+                "search-page": "search-page",
             },
         };
         modules["navigation"] = {
@@ -315,7 +317,7 @@ function transform_v1_description(json) {
                 "valign": Gtk.Align.CENTER,
             },
         };
-        modules["search-page-template"] = {
+        modules["search-page"] = {
             "type": "SidebarTemplate",
             "slots": {
                 "content": "results-search-banner",
