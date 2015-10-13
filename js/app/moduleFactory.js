@@ -47,6 +47,8 @@ const ModuleFactory = new Lang.Class({
             this.app_json = Compat.transform_v1_description(this.app_json);
         }
         // After this point, the app.json must be the current version!
+
+        this._anonymous_name_to_description = {};
     },
 
     create_named_module: function (name, extra_props={}) {
@@ -81,9 +83,12 @@ const ModuleFactory = new Lang.Class({
     create_module_for_slot: function (parent_module, slot, extra_props={}) {
         if (parent_module.get_slot_names().indexOf(slot) === -1)
             throw new Error('No slot named ' + slot + ' according to module.get_slot_names.');
-        let factory_name = this._get_module_description_by_name(parent_module.factory_name)['slots'][slot];
-        if (factory_name === null)
+        let slot_value = this._get_module_description_by_name(parent_module.factory_name)['slots'][slot];
+        if (slot_value === null)
             return null;
+        let factory_name = slot_value;
+        if (typeof slot_value === 'object')
+            factory_name = this._setup_anonymous_module(parent_module.factory_name, slot, slot_value);
         return this.create_named_module(factory_name, extra_props);
     },
 
@@ -97,8 +102,16 @@ const ModuleFactory = new Lang.Class({
     _get_module_description_by_name: function (name) {
         let description = this.app_json['modules'][name];
         if (!description)
+            description = this._anonymous_name_to_description[name];
+        if (!description)
             throw new Error('No description found in app.json for ' + name);
 
         return description;
+    },
+
+    _setup_anonymous_module: function (factory_name, slot, description) {
+        let name = factory_name + '.' + slot;
+        this._anonymous_name_to_description[name] = description;
+        return name;
     },
 });
