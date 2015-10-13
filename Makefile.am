@@ -301,6 +301,7 @@ js_files = \
 	js/search/treeNode.js \
 	js/search/utils.js \
 	js/tools/kermit.js \
+	js/tools/searchtest.js \
 	$(NULL)
 
 jsdir = $(pkgdatadir)/js

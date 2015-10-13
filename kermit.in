@@ -17,4 +17,4 @@ if [ "$RUN_DEBUG" != "" ]; then
     DEBUG_COMMAND="gdb --args"
 fi
 
-exec $DEBUG_COMMAND gjs %jsdir%/tools/kermit.js "$@"
+exec $DEBUG_COMMAND gjs %jsdir%/tools/searchtest.js "$@"
