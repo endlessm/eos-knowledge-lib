@@ -83,6 +83,8 @@ const ModuleFactory = new Lang.Class({
     create_module_for_slot: function (parent_module, slot, extra_props={}) {
         if (parent_module.get_slot_names().indexOf(slot) === -1)
             throw new Error('No slot named ' + slot + ' according to module.get_slot_names.');
+        if (slot.indexOf('.') !== -1)
+            logError(new Error('Slot names should never contain a "."'));
         let slot_value = this._get_module_description_by_name(parent_module.factory_name)['slots'][slot];
         if (slot_value === null)
             return null;
