@@ -102,9 +102,9 @@ describe('Module factory', function () {
 
     it('errors if creating a module slot not listed in get_slot_names', function () {
         let parent = module_factory.create_named_module('test');
-        expect(() => {
-            module_factory.create_module_for_slot(parent, 'fake-slot');
-        }).toThrow();
+        spyOn(window, 'logError');
+        module_factory.create_module_for_slot(parent, 'fake-slot');
+        expect(logError).toHaveBeenCalled();
     });
 
     it('warns if creating a malformed slot name', function () {
