@@ -99,9 +99,7 @@ describe('Knowledge Engine Module', () => {
         if (mock_data) {
             engine._send_json_ld_request_finish.and.returnValue(mock_data);
         } else if (mock_err) {
-            engine._send_json_ld_request_finish.and.callFake(() => {
-                throw mock_err;
-            });
+            engine._send_json_ld_request_finish.and.throwError(mock_err);
         }
     }
 
