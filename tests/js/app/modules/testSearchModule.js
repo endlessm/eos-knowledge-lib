@@ -61,7 +61,7 @@ describe('Search module', function () {
     });
 
     it('displays the spinner when a search is started', function () {
-        search_module.visible_child_name = 'error-message';
+        search_module.visible_child_name = 'message';
         dispatcher.dispatch({
             action_type: Actions.SEARCH_STARTED,
             query: 'myfoobar',
@@ -70,7 +70,7 @@ describe('Search module', function () {
     });
 
     it('displays the search page when there are search results', function () {
-        search_module.visible_child_name = 'error-message';
+        search_module.visible_child_name = 'message';
         dispatcher.dispatch({
             action_type: Actions.APPEND_SEARCH,
             models: [new ContentObjectModel.ContentObjectModel()],
@@ -83,7 +83,7 @@ describe('Search module', function () {
     });
 
     it('displays the message page with the results CSS class when there are no results', function () {
-        search_module.visible_child_name = 'error-message';
+        search_module.visible_child_name = 'message';
         dispatcher.dispatch({
             action_type: Actions.SEARCH_READY,
             query: 'myfoobar',

@@ -328,6 +328,7 @@ const AisleInteraction = new Lang.Class({
                 });
 
                 this.engine.get_objects_by_query(query_obj, null, (engine, task) => {
+                    let results, get_more_results_query;
                     try {
                         [results, get_more_results_query] = engine.get_objects_by_query_finish(task);
                     } catch (error) {
