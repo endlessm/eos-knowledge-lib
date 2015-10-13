@@ -804,7 +804,7 @@ describe('Knowledge Engine Module', () => {
 
             it('marshals SetObjectModels based on @type', function (done) {
                 let mock_id = 'ekn://foo/0123456789abcdef';
-                mock_engine_request(undefined, [{
+                mock_engine_query(undefined, [{
                     '@id': mock_id,
                     '@type': 'ekn://_vocab/SetObject',
                     childTags: ['made', 'glorious', 'summer'],
