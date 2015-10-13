@@ -12,11 +12,11 @@ const MOCK_APP_JSON = {
         'test': {
             type: 'TestModule',
             slots: {
-                'test_slot': 'test_submodule',
-                'optional_slot': null,
+                'test-slot': 'test-submodule',
+                'optional-slot': null,
             },
         },
-        'test_submodule': {
+        'test-submodule': {
             type: 'TestModule',
         },
     },
@@ -27,7 +27,7 @@ const MockModule = new Lang.Class({
     Extends: Minimal.MinimalModule,
 
     get_slot_names: function () {
-        return ['test_slot', 'optional_slot'];
+        return ['test-slot', 'optional-slot'];
     },
 });
 
@@ -70,7 +70,7 @@ describe('Module factory', function () {
 
         let test_constructor = jasmine.createSpy('TestModuleConstructor');
         spyOn(warehouse, 'type_to_class').and.returnValue(test_constructor);
-        module_factory.create_module_for_slot(parent, 'test_slot', {
+        module_factory.create_module_for_slot(parent, 'test-slot', {
             foo: 'bar',
         });
         expect(test_constructor).toHaveBeenCalledWith(jasmine.objectContaining({
@@ -81,14 +81,14 @@ describe('Module factory', function () {
     it('allows null as a value to indicate a slot is not filled', function () {
         let parent = module_factory.create_named_module('test');
         let submodule = module_factory.create_module_for_slot(parent,
-            'optional_slot');
+            'optional-slot');
         expect(submodule).toBeNull();
     });
 
     it('errors if creating a module slot not listed in get_slot_names', function () {
         let parent = module_factory.create_named_module('test');
         expect(() => {
-            module_factory.create_module_for_slot(parent, 'fake_slot');
+            module_factory.create_module_for_slot(parent, 'fake-slot');
         }).toThrow();
     });
 });
