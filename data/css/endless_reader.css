@@ -67,6 +67,11 @@ overridden by app specific CSS */
     font-style: italic;
 }
 
+.search-results .suggestions-message {
+    font-size: 1.5em;
+    color: gray;
+}
+
 .sidebar {
     padding: 100px 0px 85px 90px;
 }

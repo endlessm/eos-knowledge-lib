@@ -175,3 +175,22 @@ function format_ui_string (context, ui_string, substring, style_class) {
 
     return ui_string.format(span + substring + '</span>');
 }
+
+// The Fisher-Yates shuffle for randomizing an array
+// Shuffles in place and returns the modified array
+function shuffle (array, sequence) {
+    let current_index = array.length;
+    // While there remain elements to shuffle...
+    while (0 !== current_index) {
+
+        // Pick a remaining element...
+        let random_index = Math.floor(sequence[current_index - 1] * current_index);
+        current_index -= 1;
+
+        // And swap it with the current element.
+        let temp_value = array[current_index];
+        array[current_index] = array[random_index];
+        array[random_index] = temp_value;
+    }
+    return array;
+}
