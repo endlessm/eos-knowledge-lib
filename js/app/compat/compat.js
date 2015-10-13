@@ -113,6 +113,8 @@ function transform_v1_description(json) {
             "slots": {
                 "arrangement": "results-arrangement",
                 "card-type": "results-card",
+                "article-suggestions": null,
+                "category-suggestions": null,
             },
             "properties": {
                 "halign": "center",
@@ -309,6 +311,8 @@ function transform_v1_description(json) {
             "slots": {
                 "arrangement": "results-arrangement",
                 "card-type": "results-card",
+                "article-suggestions": null,
+                "category-suggestions": null,
             },
             "properties": {
                 "message-valign": "center",
@@ -486,6 +490,8 @@ function transform_v1_description(json) {
                     },
                 },
                 "card-type": "results-card",
+                "article-suggestions": null,
+                "category-suggestions": null,
             },
         };
         modules["results-card"] = {
@@ -622,11 +628,9 @@ function transform_v1_description(json) {
                     },
                 },
                 "card-type": "results-card",
+                "article-suggestions": null,
+                "category-suggestions": null,
             },
-            "properties": {
-                "message-halign": "center",
-                "message-justify": "center",
-            }
         };
         break;
     default:

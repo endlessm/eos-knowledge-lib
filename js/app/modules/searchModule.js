@@ -86,6 +86,13 @@ const SearchModule = new Lang.Class({
         this._arrangement = this.create_submodule('arrangement');
         this.add_named(this._arrangement, RESULTS_PAGE_NAME);
 
+        this._suggested_articles_module = this.create_submodule('article-suggestions');
+        if (this._suggested_articles_module)
+            this._no_results_grid.add(this._suggested_articles_module);
+        this._suggested_categories_module = this.create_submodule('category-suggestions');
+        if (this._suggested_categories_module)
+            this._no_results_grid.add(this._suggested_categories_module);
+
         this._message_title.justify = this._message_subtitle.justify = this.message_justify;
         this._message_title.valign = this._message_subtitle.valign = this.message_valign;
         this._message_title.halign = this._message_subtitle.halign = this.message_halign;
@@ -109,7 +116,7 @@ const SearchModule = new Lang.Class({
                 this.visible_child_name = SPINNER_PAGE_NAME;
                 break;
             case Actions.SEARCH_READY:
-                this._finish_search();
+                this._finish_search(payload.query);
                 break;
             case Actions.SEARCH_FAILED:
                 this._finish_search_with_error(payload.error);
@@ -126,7 +133,7 @@ const SearchModule = new Lang.Class({
 
     // Module override
     get_slot_names: function () {
-        return ['arrangement', 'card-type'];
+        return ['arrangement', 'card-type', 'article-suggestions', 'category-suggestions'];
     },
 
     _add_card: function (model) {
@@ -142,7 +149,7 @@ const SearchModule = new Lang.Class({
         this._arrangement.add_card(card);
     },
 
-    _finish_search: function () {
+    _finish_search: function (query) {
         let count = this._arrangement.get_cards().length;
         if (count > 0) {
             this.visible_child_name = RESULTS_PAGE_NAME;
@@ -160,6 +167,15 @@ const SearchModule = new Lang.Class({
                   "  •  Check your spelling\n" +
                   "  •  Try different words with the same meaning as the ones you just typed\n" +
                   "  •  Try again with more generic words");
+
+            Dispatcher.get_default().dispatch({
+                action_type: Actions.CLEAR_SUGGESTED_ARTICLES,
+            });
+
+            Dispatcher.get_default().dispatch({
+                action_type: Actions.NEED_MORE_SUGGESTED_ARTICLES,
+                query: query,
+            });
 
             this.visible_child_name = MESSAGE_PAGE_NAME;
         }
