@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2015-09-29 02:11+0000\n"
+"POT-Creation-Date: 2015-10-06 02:13+0000\n"
 "PO-Revision-Date: 2015-09-29 02:12+0000\n"
 "Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
 "Language-Team: Arabic (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/ar/)\n"
@@ -146,21 +146,21 @@ msgstr ""
 msgid "There was an error during your search."
 msgstr ""
 
-#: js/app/reader/presenter.js:801
+#: js/app/reader/presenter.js:818
 msgid "View the license in your browser"
 msgstr ""
 
-#: js/app/reader/presenter.js:937 js/app/reader/presenter.js:944
+#: js/app/reader/presenter.js:954 js/app/reader/presenter.js:961
 msgid "Oops!"
 msgstr "يا لهذا!"
 
-#: js/app/reader/presenter.js:938
+#: js/app/reader/presenter.js:955
 msgid ""
 "We could not find this magazine!\n"
 "Please try again after restarting your computer."
 msgstr "لم نتمكن من إيجاد هذه المجلة!\nيُرجى المحاولة مرة أُخرى بعد إعادة تشغيل جهاز الكمبيوتر الخاص بك."
 
-#: js/app/reader/presenter.js:945
+#: js/app/reader/presenter.js:962
 msgid ""
 "There was an error loading that page.\n"
 "Try another one or try again after restarting your computer."
@@ -175,11 +175,11 @@ msgstr ""
 #. have them and DO NOT translate words inside curly braces. Also, note: the
 #. "and" is used to join together the names of authors of a blog post. For
 #. example: "Jane Austen and Henry Miller and William Clifford"
-#: js/app/utils.js:76
+#: js/app/utils.js:77
 msgid "by {author}"
 msgstr "بواسطة (المؤلف)"
 
-#: js/app/utils.js:76
+#: js/app/utils.js:77
 msgid "and"
 msgstr "و"
 

@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: eos-knowledge 0.4.0\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-"
 "inc\n"
-"POT-Creation-Date: 2015-10-06 02:13+0000\n"
+"POT-Creation-Date: 2015-10-13 01:56+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -92,12 +92,33 @@ msgstr ""
 msgid "Content courtesy of {blog-link}, licensed under {license-link}."
 msgstr ""
 
-#: js/app/compat/compat.js:98
+#: js/app/compat/compat.js:105
 msgid "SEE ALL CATEGORIES"
 msgstr ""
 
-#: js/app/compat/compat.js:99
+#: js/app/compat/compat.js:106
 msgid "HOME"
+msgstr ""
+
+#: js/app/modules/aisleInteraction.js:770
+msgid "View the license in your browser"
+msgstr ""
+
+#: js/app/modules/aisleInteraction.js:906
+#: js/app/modules/aisleInteraction.js:913
+msgid "Oops!"
+msgstr ""
+
+#: js/app/modules/aisleInteraction.js:907
+msgid ""
+"We could not find this magazine!\n"
+"Please try again after restarting your computer."
+msgstr ""
+
+#: js/app/modules/aisleInteraction.js:914
+msgid ""
+"There was an error loading that page.\n"
+"Try another one or try again after restarting your computer."
 msgstr ""
 
 #: js/app/modules/readerCard.js:60
@@ -144,26 +165,6 @@ msgstr ""
 
 #: js/app/modules/searchModule.js:165
 msgid "There was an error during your search."
-msgstr ""
-
-#: js/app/reader/presenter.js:818
-msgid "View the license in your browser"
-msgstr ""
-
-#: js/app/reader/presenter.js:954 js/app/reader/presenter.js:961
-msgid "Oops!"
-msgstr ""
-
-#: js/app/reader/presenter.js:955
-msgid ""
-"We could not find this magazine!\n"
-"Please try again after restarting your computer."
-msgstr ""
-
-#: js/app/reader/presenter.js:962
-msgid ""
-"There was an error loading that page.\n"
-"Try another one or try again after restarting your computer."
 msgstr ""
 
 #: js/app/reader/standalonePage.js:136
