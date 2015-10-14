@@ -8,6 +8,8 @@ const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
 const Minimal = imports.tests.minimal;
 const ModuleFactory = imports.app.moduleFactory;
 
+Gtk.init(null);
+
 const MOCK_APP_JSON = {
     version: 2,
     modules: {
