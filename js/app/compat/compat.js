@@ -1,10 +1,8 @@
 const Gettext = imports.gettext;
 const GLib = imports.gi.GLib;
-const Gtk = imports.gi.Gtk;
 
 const Config = imports.app.config;
 const Engine = imports.search.engine;
-const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const SetObjectModel = imports.search.setObjectModel;
 
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
@@ -56,14 +54,14 @@ function transform_v1_description(json) {
             "type": "SearchBox",
             "properties": {
                 "width-request": 400,
-                "halign": Gtk.Align.CENTER,
+                "halign": "center",
             }
         };
         modules["home-card"] = {
             "type": "CardA",
             "properties": {
                 "hexpand": true,
-                "halign": Gtk.Align.CENTER,
+                "halign": "center",
             }
         };
         modules["results-arrangement"] = {
@@ -78,7 +76,7 @@ function transform_v1_description(json) {
         modules["set-banner-module"] = {
             "type": "SetBannerModule",
             "properties": {
-                "halign": Gtk.Align.CENTER,
+                "halign": "center",
             },
             "slots": {
                 "card-type": "set-banner-card",
@@ -125,8 +123,8 @@ function transform_v1_description(json) {
                 "card-type": "results-card",
             },
             "properties": {
-                "halign": Gtk.Align.CENTER,
-                "message-justify": Gtk.Justification.CENTER,
+                "halign": "center",
+                "message-justify": "center",
             },
         };
         modules["home-card"] = {
@@ -136,15 +134,15 @@ function transform_v1_description(json) {
             "type": "SetGroupModule",
             "properties": {
                 "expand": true,
-                "halign": Gtk.Align.CENTER,
-                "valign": Gtk.Align.CENTER,
+                "halign": "center",
+                "valign": "center",
                 "max-children": 6,
             },
             "slots": {
                 "arrangement": {
                     "type": "OverflowArrangement",
                     "properties": {
-                        "orientation": Gtk.Orientation.HORIZONTAL,
+                        "orientation": "horizontal",
                     },
                 },
                 "card-type": "home-card",
@@ -163,7 +161,7 @@ function transform_v1_description(json) {
         modules["results-search-banner"] = {
             "type": "SearchBannerModule",
             "properties": {
-                "halign": Gtk.Align.CENTER,
+                "halign": "center",
             },
         };
         modules["search-page"] = {
@@ -234,8 +232,8 @@ function transform_v1_description(json) {
                 "image-uri": json["titleImageURI"],
                 "min-fraction": 0.4,
                 "max-fraction": 0.7,
-                "valign": Gtk.Align.CENTER,
-                "halign": Gtk.Align.CENTER,
+                "valign": "center",
+                "halign": "center",
                 "expand": false,
             },
         };
@@ -243,8 +241,8 @@ function transform_v1_description(json) {
             "type": "SetGroupModule",
             "properties": {
                 "expand": true,
-                "halign": Gtk.Align.FILL,
-                "valign": Gtk.Align.FILL,
+                "halign": "fill",
+                "valign": "fill",
             },
             "slots": {
                 "arrangement": {
@@ -273,9 +271,9 @@ function transform_v1_description(json) {
             "properties": {
                 "width-request": 350,
                 "visible": true,
-                "shadow-type": Gtk.ShadowType.NONE,
-                "halign": Gtk.Align.CENTER,
-                "valign": Gtk.Align.CENTER,
+                "shadow-type": "none",
+                "halign": "center",
+                "valign": "center",
             },
         };
         modules["home-card"] = {
@@ -287,7 +285,7 @@ function transform_v1_description(json) {
         modules["set-banner-module"] = {
             "type": "SetBannerModule",
             "properties": {
-                "valign": Gtk.Align.END,
+                "valign": "end",
             },
             "slots": {
                 "card-type": "set-banner-card",
@@ -320,13 +318,13 @@ function transform_v1_description(json) {
                 "card-type": "results-card",
             },
             "properties": {
-                "message-valign": Gtk.Align.CENTER,
+                "message-valign": "center",
             },
         };
         modules["results-search-banner"] = {
             "type": "SearchBannerModule",
             "properties": {
-                "valign": Gtk.Align.CENTER,
+                "valign": "center",
             },
         };
         modules["search-page"] = {
@@ -438,7 +436,7 @@ function transform_v1_description(json) {
         modules["article-search-box"] = {
             "type": "SearchBox",
             "properties": {
-                "halign": Gtk.Align.CENTER,
+                "halign": "center",
                 "hexpand": true,
             },
         };
@@ -456,9 +454,9 @@ function transform_v1_description(json) {
                 "max-fraction": 0.2,
                 "margin-top": 10,
                 "margin-bottom": 10,
-                "valign": Gtk.Align.START,
+                "valign": "start",
                 "vexpand": false,
-                "halign": Gtk.Align.CENTER,
+                "halign": "center",
             },
         };
         modules["lightbox-card"] = {
@@ -476,7 +474,7 @@ function transform_v1_description(json) {
         modules["results-search-banner"] = {
             type: "SearchBannerModule",
             properties: {
-                "halign": Gtk.Align.START,
+                "halign": "start",
             },
         };
         modules["search-results"] = {
@@ -489,7 +487,7 @@ function transform_v1_description(json) {
                     type: "ListArrangement",
                     "properties": {
                         "hexpand": true,
-                        "halign": Gtk.Align.FILL,
+                        "halign": "fill",
                     },
                 },
                 "card-type": "results-card",
@@ -526,9 +524,9 @@ function transform_v1_description(json) {
             "properties": {
                 "image-uri": json["titleImageURI"],
                 "subtitle": json["appSubtitle"],
-                "subtitle-capitalization": EosKnowledgePrivate.TextTransform.UPPERCASE,
-                "valign": Gtk.Align.START,
-                "halign": Gtk.Align.START,
+                "subtitle-capitalization": "uppercase",
+                "valign": "start",
+                "halign": "start",
                 "margin-top": 50,
                 "margin-start": 75,
             },
@@ -560,14 +558,14 @@ function transform_v1_description(json) {
                 "arrangement": {
                     "type": "OverflowArrangement",
                     "properties": {
-                        "orientation": Gtk.Orientation.VERTICAL,
+                        "orientation": "vertical",
                     },
                 },
             },
             "properties": {
                 "expand": true,
-                "halign": Gtk.Align.END,
-                "valign": Gtk.Align.FILL,
+                "halign": "end",
+                "valign": "fill",
                 "margin-end": 100,
             },
         };
@@ -595,13 +593,13 @@ function transform_v1_description(json) {
         modules["results-card"] = {
             "type": "ReaderCard",
             "properties": {
-                "title-capitalization": EosKnowledgePrivate.TextTransform.UPPERCASE,
+                "title-capitalization": "uppercase",
             },
         };
         modules["results-search-banner"] = {
             "type": "SearchBannerModule",
             "properties": {
-                "halign": Gtk.Align.CENTER,
+                "halign": "center",
             },
         };
         modules["search-page-template"] = {
@@ -628,8 +626,8 @@ function transform_v1_description(json) {
                 "card-type": "results-card",
             },
             "properties": {
-                "message-halign": Gtk.Align.CENTER,
-                "message-justify": Gtk.Justification.CENTER,
+                "message-halign": "center",
+                "message-justify": "center",
             }
         };
         break;

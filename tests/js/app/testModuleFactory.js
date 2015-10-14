@@ -2,6 +2,7 @@
 
 const Lang = imports.lang;
 const GObject = imports.gi.GObject;
+const Gtk = imports.gi.Gtk;
 
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
 const Minimal = imports.tests.minimal;
@@ -27,6 +28,26 @@ const MOCK_APP_JSON = {
         'test-submodule': {
             type: 'TestModule',
         },
+        'card_module': {
+            type: 'MinimalCard',
+            properties: {
+                'expand': 'true',
+                'width-request': 200,
+                'halign': 'end',
+            }
+        },
+        'bad_prop_module': {
+            type: 'MinimalCard',
+            properties: {
+                'asdf': 'true',
+            }
+        },
+        'bad_enum_module': {
+            type: 'MinimalCard',
+            properties: {
+                'halign': 'asdf',
+            }
+        },
     },
 };
 
@@ -48,7 +69,9 @@ const MockWarehouse = new Lang.Class({
         this.parent(props);
     },
 
-    type_to_class: function (module_name) {
+    type_to_class: function (type) {
+        if (type === 'MinimalCard')
+            return Minimal.MinimalCard;
         return MockModule;
     },
 });
@@ -73,19 +96,6 @@ describe('Module factory', function () {
         module_factory.create_named_module('test');
 
         expect(warehouse.type_to_class).toHaveBeenCalledWith('TestModule');
-    });
-
-    it('supports extra construct properties when creating modules for slots', function () {
-        let parent = module_factory.create_named_module('test');
-
-        let test_constructor = jasmine.createSpy('TestModuleConstructor');
-        spyOn(warehouse, 'type_to_class').and.returnValue(test_constructor);
-        module_factory.create_module_for_slot(parent, 'test-slot', {
-            foo: 'bar',
-        });
-        expect(test_constructor).toHaveBeenCalledWith(jasmine.objectContaining({
-            foo: 'bar',
-        }));
     });
 
     it('allows null as a value to indicate a slot is not filled', function () {
@@ -132,6 +142,44 @@ describe('Module factory', function () {
             let module1 = module_factory.create_module_for_slot(parent, 'anonymous-slot-1');
             let module2 = module_factory.create_module_for_slot(parent, 'anonymous-slot-1');
             expect(module1.factory_name).toEqual(module2.factory_name);
+        });
+    });
+
+    describe('properties', function () {
+        it('can be passed in on module creation', function () {
+            let parent = module_factory.create_named_module('test');
+
+            let test_constructor = jasmine.createSpy('TestModuleConstructor');
+            spyOn(warehouse, 'type_to_class').and.returnValue(test_constructor);
+            module_factory.create_module_for_slot(parent, 'test_slot', {
+                foo: 'bar',
+            });
+            expect(test_constructor).toHaveBeenCalledWith(jasmine.objectContaining({
+                foo: 'bar',
+            }));
+        });
+
+        it('are parsed from the app json', function () {
+            let module = module_factory.create_named_module('card_module');
+            expect(module.expand).toBe(true);
+            expect(module.width_request).toBe(200);
+        });
+
+        it('function with enum names in app json', function () {
+            let module = module_factory.create_named_module('card_module');
+            expect(module.halign).toBe(Gtk.Align.END);
+        });
+
+        it('warn if not found on module class', function () {
+            spyOn(window, 'logError');
+            module_factory.create_named_module('bad_prop_module');
+            expect(logError).toHaveBeenCalled();
+        });
+
+        it('warn if not enum value not found', function () {
+            spyOn(window, 'logError');
+            module_factory.create_named_module('bad_enum_module');
+            expect(logError).toHaveBeenCalled();
         });
     });
 });

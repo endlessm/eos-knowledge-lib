@@ -25,6 +25,14 @@ void ekn_private_register_global_uri_scheme (const gchar *scheme,
                                              gpointer user_data,
                                              GDestroyNotify notify);
 
+EKN_AVAILABLE_IN_0_0
+gboolean ekn_param_spec_is_enum (GParamSpec *pspec);
+
+EKN_AVAILABLE_IN_0_0
+gboolean ekn_param_spec_enum_value_from_string (GParamSpecEnum *pspec,
+                                                const gchar *name,
+                                                gint *value);
+
 G_END_DECLS
 
 #endif /* EKN_UTIL_H */
