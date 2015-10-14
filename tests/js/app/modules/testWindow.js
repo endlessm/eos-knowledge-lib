@@ -66,6 +66,7 @@ describe('Window', function () {
             'article-page': 'article-page',
             'navigation': 'navigation',
             'lightbox': 'lightbox',
+            'search': 'top-bar-search',
         });
         factory.add_named_mock('window-with-brand-screen', Window.Window, {
             'brand-screen': 'brand-screen',
@@ -74,6 +75,7 @@ describe('Window', function () {
             'article-page': 'article-page',
             'navigation': 'navigation',
             'lightbox': 'lightbox',
+            'search': 'top-bar-search',
         });
     });
 

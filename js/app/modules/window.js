@@ -144,7 +144,7 @@ const Window = new Lang.Class({
         lightbox.add(navigation);
 
         this._history_buttons = new Endless.TopbarNavButton();
-        this._search_box = this.factory.create_named_module('top-bar-search', {
+        this._search_box = this.create_submodule('search', {
             no_show_all: true,
             visible: false,
         });
@@ -376,6 +376,6 @@ const Window = new Lang.Class({
     // Module override
     get_slot_names: function () {
         return ['brand-screen', 'home-page', 'section-page', 'search-page',
-            'article-page', 'navigation', 'lightbox'];
+            'article-page', 'navigation', 'lightbox', 'search'];
     },
 });
