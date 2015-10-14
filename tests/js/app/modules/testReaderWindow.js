@@ -58,6 +58,7 @@ describe('Window widget', function () {
             'back-page': 'back-page',
             'search-page': 'search-page',
             'standalone-page': 'standalone-page',
+            'document-arrangement': 'document-arrangement',
         });
 
         view = new ReaderWindow.ReaderWindow({

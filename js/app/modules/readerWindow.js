@@ -166,7 +166,7 @@ const ReaderWindow = new Lang.Class({
         this._stack = new Gtk.Stack({
             transition_duration: this._STACK_TRANSITION_TIME,
         });
-        this._arrangement = this.factory.create_named_module('document-arrangement', {
+        this._arrangement = this.create_submodule('document-arrangement', {
             transition_duration: this._STACK_TRANSITION_TIME,
         });
         this._stack.add(this._front_page);
@@ -349,6 +349,7 @@ const ReaderWindow = new Lang.Class({
     },
 
     get_slot_names: function () {
-        return ['front-page', 'back-page', 'search-page', 'standalone-page'];
+        return ['front-page', 'back-page', 'search-page', 'standalone-page',
+            'document-arrangement'];
     },
 });
