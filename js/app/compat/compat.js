@@ -511,6 +511,12 @@ function transform_v1_description(json) {
                 "title-image-uri": json["titleImageURI"],
                 "home-background-uri": json["backgroundHomeURI"],
             },
+            "slots": {
+                "front-page": "front-page",
+                "back-page": "back-page",
+                "search-page": "search-page",
+                "standalone-page": "standalone-page",
+            },
         };
         modules["navigation"] = {
             "type": "NavigationModule",
@@ -527,7 +533,7 @@ function transform_v1_description(json) {
                 "margin-start": 75,
             },
         };
-        modules["front-cover"] = {
+        modules["front-page"] = {
             "type": "SidebarTemplate",
             "slots": {
                 "content": "app-banner",
@@ -541,7 +547,7 @@ function transform_v1_description(json) {
                 "column-spacing": 120,
             },
         };
-        modules["back-cover"] = {
+        modules["back-page"] = {
             "type": "BackCover",
             "properties": {
                 "background-image-uri": json["backgroundSectionURI"],
@@ -598,7 +604,7 @@ function transform_v1_description(json) {
                 "halign": "center",
             },
         };
-        modules["search-page-template"] = {
+        modules["search-page"] = {
             "type": "BannerTemplate",
             "properties": {
                 "separator-margin": 30,

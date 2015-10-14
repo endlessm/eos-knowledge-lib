@@ -120,11 +120,11 @@ const MockView = new Lang.Class({
     present_with_time: function () {},
     show_all: function () {},
     show_article_page: function () {},
-    show_overview_page: function () {},
-    show_back_cover: function () {},
+    show_front_page: function () {},
+    show_back_page: function () {},
     show_global_search_standalone_page: function () {},
     show_in_app_standalone_page: function () {},
-    show_search_results_page: function () {},
+    show_search_page: function () {},
     append_article_page: function (page) {
         this._article_pages.push(page);
     },
@@ -324,22 +324,22 @@ describe('Aisle interaction', function () {
 
         it('tells the view to go to the overview page', function () {
             interaction._go_to_page(5);
-            spyOn(view, 'show_overview_page');
+            spyOn(view, 'show_front_page');
             interaction._go_to_page(0);
-            expect(view.show_overview_page).toHaveBeenCalled();
+            expect(view.show_front_page).toHaveBeenCalled();
         });
 
         it('tells the view to go to the done page', function () {
-            spyOn(view, 'show_back_cover');
+            spyOn(view, 'show_back_page');
             interaction._go_to_page(view.total_pages - 1);
-            expect(view.show_back_cover).toHaveBeenCalled();
+            expect(view.show_back_page).toHaveBeenCalled();
         });
 
         it('goes to the done page when paging forward on the last article page', function () {
-            spyOn(view, 'show_back_cover');
+            spyOn(view, 'show_back_page');
             interaction._go_to_page(view.total_pages - 2);
             dispatcher.dispatch({ action_type: Actions.NAV_FORWARD_CLICKED });
-            expect(view.show_back_cover).toHaveBeenCalled();
+            expect(view.show_back_page).toHaveBeenCalled();
         });
 
         it('tells the view to animate forward when going to a later page', function () {
@@ -426,14 +426,14 @@ describe('Aisle interaction', function () {
         });
 
         it('goes to overview_page when opening magazine from standalone_page', function () {
-            spyOn(view, 'show_overview_page');
+            spyOn(view, 'show_front_page');
             interaction._add_history_item_for_page(3);
             interaction._open_magazine();
-            expect(view.show_overview_page).toHaveBeenCalled();
+            expect(view.show_front_page).toHaveBeenCalled();
         });
 
         it('dispatches a pair of search-started and search-ready on search', function (done) {
-            spyOn(view, 'show_search_results_page');
+            spyOn(view, 'show_search_page');
             dispatcher.dispatch({
                 action_type: Actions.SEARCH_TEXT_ENTERED,
                 text: 'Azucar',
@@ -466,7 +466,7 @@ describe('Aisle interaction', function () {
                     query: 'Azucar',
                 }));
 
-                expect(view.show_search_results_page).toHaveBeenCalled();
+                expect(view.show_search_page).toHaveBeenCalled();
                 expect(interaction.history_model.current_item.query).toBe('Azucar');
                 done();
                 return GLib.SOURCE_REMOVE;
@@ -503,7 +503,7 @@ describe('Aisle interaction', function () {
         });
 
         it('issues a search query when triggered by desktop search', function (done) {
-            spyOn(view, 'show_search_results_page');
+            spyOn(view, 'show_search_page');
             interaction.search('', 'Azucar');
             Mainloop.idle_add(function () {
                 expect(engine.get_objects_by_query)
@@ -512,7 +512,7 @@ describe('Aisle interaction', function () {
                     }),
                     jasmine.any(Object),
                     jasmine.any(Function));
-                expect(view.show_search_results_page).toHaveBeenCalled();
+                expect(view.show_search_page).toHaveBeenCalled();
                 expect(interaction.history_model.current_item.query).toBe('Azucar');
                 done();
                 return GLib.SOURCE_REMOVE;
