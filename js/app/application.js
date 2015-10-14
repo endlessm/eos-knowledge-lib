@@ -34,7 +34,7 @@ const Application = new Lang.Class({
         this._interaction = null;
         this._knowledge_search_impl = Gio.DBusExportedObject.wrapJSObject(KnowledgeSearchIface, this);
 
-        Engine.Engine.get_default().default_domain = Utils.domain_from_app_id(this.application_id);
+        Engine.get_default().default_domain = Utils.domain_from_app_id(this.application_id);
 
         // HACK for legacy compatibility: if the user has an old bundle with
         // a new eos-knowledge-lib, their search-provider ini files will have

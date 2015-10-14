@@ -133,7 +133,7 @@ const AisleInteraction = new Lang.Class({
         let css = Gio.File.new_for_uri('resource:///com/endlessm/knowledge/css/endless_reader.css');
         Utils.add_css_provider_from_file(css, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 
-        props.engine = props.engine || Engine.Engine.get_default();
+        props.engine = props.engine || Engine.get_default();
         props.settings = props.settings || new UserSettingsModel.UserSettingsModel({
             settings_file: Gio.File.new_for_path(props.application.config_dir.get_path() + '/user_settings.json'),
         });

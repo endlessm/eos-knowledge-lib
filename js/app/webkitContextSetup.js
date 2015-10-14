@@ -32,9 +32,9 @@ function _load_ekn_assets (req, article_render_callback) {
         if (!req.get_web_view())
             return;
         let page_uri = req.get_web_view().get_uri();
-        Engine.Engine.get_default().get_object_by_id(req.get_uri(),
-                                                     null,
-                                                     function (engine, task) {
+        Engine.get_default().get_object_by_id(req.get_uri(),
+                                              null,
+                                              function (engine, task) {
             // FIXME: If our webview is gone, or it has moved on to a new page, just return.
             // Might be masking a bug in webkit here. Rushing this fix out for 2.3.
             if (!req.get_web_view() || req.get_web_view().get_uri() !== page_uri)

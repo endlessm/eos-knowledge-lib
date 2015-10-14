@@ -42,7 +42,7 @@ const SearchBox = new Lang.Class({
     _init: function (props={}) {
         if (props.visible === undefined)
             props.visible = true;
-        props.engine = props.engine || Engine.Engine.get_default();
+        props.engine = props.engine || Engine.get_default();
         this.parent(props);
         this._autocomplete_models = {};
         this._cancellable = null;

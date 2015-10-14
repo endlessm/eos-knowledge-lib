@@ -38,7 +38,7 @@ const LightboxModule = new GObject.Class({
     },
 
     _init: function (props={}) {
-        props.engine = props.engine || Engine.Engine.get_default();
+        props.engine = props.engine || Engine.get_default();
 
         this.parent(props);
 

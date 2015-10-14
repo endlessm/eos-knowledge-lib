@@ -70,7 +70,7 @@ const MeshInteraction = new Lang.Class({
         WebkitContextSetup.register_webkit_extensions(props.application.application_id);
         WebkitContextSetup.register_webkit_uri_handlers(this._article_render_callback.bind(this));
 
-        props.engine = props.engine || Engine.Engine.get_default();
+        props.engine = props.engine || Engine.get_default();
 
         this.parent(props);
 
