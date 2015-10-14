@@ -26,6 +26,8 @@ EKN_DEFINE_ENUM_TYPE
 EKN_ENUM_VALUE
 ekn_private_new_input_output_window
 ekn_private_register_global_uri_scheme
+ekn_param_spec_is_enum
+ekn_param_spec_enum_value_from_string
 </SECTION>
 
 <SECTION>
