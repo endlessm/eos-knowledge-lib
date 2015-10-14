@@ -124,14 +124,18 @@ describe('Mesh interaction', function () {
         engine = new MockEngine.MockEngine();
         engine.get_objects_by_query_finish.and.returnValue([sections.map((section) =>
             new SetObjectModel.SetObjectModel(section)), null]);
-        view = new MockView();
 
+        factory.add_named_mock('window', MockView);
+        factory.add_named_mock('interaction', MeshInteraction.MeshInteraction, {
+            'window': 'window',
+        });
         mesh = new MeshInteraction.MeshInteraction({
             application: application,
             factory: factory,
+            factory_name: 'interaction',
             engine: engine,
-            view: view,
         });
+        view = factory.get_created_named_mocks('window')[0];
         spyOn(mesh, 'record_search_metric');
     });
 

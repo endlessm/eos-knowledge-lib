@@ -95,7 +95,6 @@ const MinimalInteraction = new Lang.Class({
         'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
         'application': GObject.ParamSpec.override('application', Interaction.Interaction),
         'engine': GObject.ParamSpec.override('engine', Interaction.Interaction),
-        'view': GObject.ParamSpec.override('view', Interaction.Interaction),
         'template-type': GObject.ParamSpec.override('template-type', Interaction.Interaction),
         'css': GObject.ParamSpec.override('css', Interaction.Interaction),
     },

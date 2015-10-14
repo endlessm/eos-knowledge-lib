@@ -49,7 +49,6 @@ const MeshInteraction = new Lang.Class({
         'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
         'application': GObject.ParamSpec.override('application', Interaction.Interaction),
         'engine': GObject.ParamSpec.override('engine', Interaction.Interaction),
-        'view': GObject.ParamSpec.override('view', Interaction.Interaction),
         'template-type': GObject.ParamSpec.override('template-type', Interaction.Interaction),
         'css': GObject.ParamSpec.override('css', Interaction.Interaction),
     },
@@ -73,12 +72,12 @@ const MeshInteraction = new Lang.Class({
 
         props.engine = props.engine || Engine.Engine.get_default();
 
-        props.view = props.view || props.factory.create_named_module('window', {
-            application: props.application,
-            template_type: props.template_type,
-        });
-
         this.parent(props);
+
+        this._window = this.create_submodule('window', {
+            application: this.application,
+            template_type: this.template_type,
+        });
 
         this.load_theme();
 
@@ -141,7 +140,7 @@ const MeshInteraction = new Lang.Class({
             this._current_article_results_item = null;
 
             // Connect signals
-            this.view.connect('search-focused', this._on_search_focus.bind(this));
+            this._window.connect('search-focused', this._on_search_focus.bind(this));
 
             dispatcher.register((payload) => {
                 switch(payload.action_type) {
@@ -181,7 +180,7 @@ const MeshInteraction = new Lang.Class({
             action_type: Actions.FOCUS_SEARCH,
         });
 
-        this.view.connect('key-press-event', this._on_key_press_event.bind(this));
+        this._window.connect('key-press-event', this._on_key_press_event.bind(this));
         this._history_presenter.connect('history-item-changed', this._on_history_item_change.bind(this));
     },
 
@@ -312,7 +311,7 @@ const MeshInteraction = new Lang.Class({
         Dispatcher.get_default().dispatch({
             action_type: Actions.SHOW_SEARCH_PAGE,
         });
-        this.view.set_focus_child(null);
+        this._window.set_focus_child(null);
         let query_obj = new QueryObject.QueryObject({
             query: item.query,
         });
@@ -646,5 +645,9 @@ const MeshInteraction = new Lang.Class({
                 model: model,
             });
         }
+    },
+
+    get_slot_names: function () {
+        return 'window';
     },
 });

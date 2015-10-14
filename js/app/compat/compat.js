@@ -16,6 +16,9 @@ function transform_v1_description(json) {
     case "A":
         modules["interaction"] = {
             "type": "MeshInteraction",
+            "slots": {
+                "window": "window",
+            },
         };
         modules["window"] = {
             "type": "Window",
@@ -201,6 +204,9 @@ function transform_v1_description(json) {
     case "B":
         modules["interaction"] = {
             "type": "MeshInteraction",
+            "slots": {
+                "window": "window",
+            },
         };
         modules["window"] = {
             "type": "Window",
@@ -357,6 +363,9 @@ function transform_v1_description(json) {
     case "encyclopedia":
         modules["interaction"] = {
             "type": "MeshInteraction",
+            "slots": {
+                "window": "window",
+            },
         };
         modules["window"] = {
             "type": "EncyclopediaWindow",
@@ -502,6 +511,9 @@ function transform_v1_description(json) {
     case "reader":
         modules["interaction"] = {
             "type": "AisleInteraction",
+            "slots": {
+                "window": "window",
+            },
         };
         modules["window"] = {
             "type": "ReaderWindow",
