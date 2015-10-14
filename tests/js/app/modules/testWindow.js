@@ -72,6 +72,7 @@ describe('Window', function () {
             'brand-screen': 'brand-screen',
             'home-page': 'home-page',
             'section-page': 'section-page',
+            'search-page': 'search-page',
             'article-page': 'article-page',
             'navigation': 'navigation',
             'lightbox': 'lightbox',
