@@ -137,7 +137,7 @@ const Window = new Lang.Class({
         this._stack.add(this._search_page);
         this._stack.add(this._article_page);
 
-        let navigation = this.factory.create_named_module('navigation');
+        let navigation = this.create_submodule('navigation');
         navigation.add(this._stack);
 
         let lightbox = this.factory.create_named_module('lightbox');
@@ -375,6 +375,7 @@ const Window = new Lang.Class({
 
     // Module override
     get_slot_names: function () {
-        return ['brand-screen', 'home-page', 'section-page', 'search-page', 'article-page'];
+        return ['brand-screen', 'home-page', 'section-page', 'search-page',
+            'article-page', 'navigation'];
     },
 });

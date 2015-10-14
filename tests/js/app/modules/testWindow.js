@@ -64,12 +64,14 @@ describe('Window', function () {
             'section-page': 'section-page',
             'search-page': 'search-page',
             'article-page': 'article-page',
+            'navigation': 'navigation',
         });
         factory.add_named_mock('window-with-brand-screen', Window.Window, {
             'brand-screen': 'brand-screen',
             'home-page': 'home-page',
             'section-page': 'section-page',
             'article-page': 'article-page',
+            'navigation': 'navigation',
         });
     });
 
