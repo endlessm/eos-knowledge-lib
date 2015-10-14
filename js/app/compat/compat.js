@@ -359,15 +359,20 @@ function transform_v1_description(json) {
                 "home-background-uri": json["backgroundHomeURI"],
                 "results-background-uri": json["backgroundSectionURI"],
             },
+            "slots": {
+                "home-page": "home-page",
+                "search-page": "search-page",
+                "article-page": "article-page",
+            },
         };
-        modules["home-page-template"] = {
+        modules["home-page"] = {
             "type": "EncyclopediaCoverTemplate",
             "slots": {
                 "top": "app-banner",
                 "bottom": "home-search-box",
             },
         };
-        modules["search-page-template"] = {
+        modules["search-page"] = {
             "type": "DividedBannerTemplate",
             "slots": {
                 "top-left": "article-app-banner",
@@ -393,7 +398,7 @@ function transform_v1_description(json) {
                 "content": "search-results",
             },
         };
-        modules["article-page-template"] = {
+        modules["article-page"] = {
             "type": "DividedBannerTemplate",
             "slots": {
                 "top-left": "article-app-banner",
