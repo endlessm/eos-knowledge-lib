@@ -526,6 +526,12 @@ const Engine = Lang.Class({
                 uri: uri,
             });
             this._http_session.queue_message(request, task.catch_callback_errors((session, message) => {
+                if (message.status_code !== 200) {
+                    throw new Error('Xapian bridge status code ' +
+                        message.status_code + ' for URI ' +
+                        message.uri.to_string(true) + ': ' +
+                        message.reason_phrase);
+                }
                 let data = message.response_body.data;
                 task.return_value(this._parse_json_ld_message(data));
             }));
