@@ -47,6 +47,7 @@
     <file compressed="true" preprocess="xml-stripblanks">widgets/paperTemplate.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">widgets/readerCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">widgets/readerDocumentCard.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">widgets/scrollingTemplate.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">widgets/searchBannerModule.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">widgets/searchModule.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">widgets/suggestedArticlesModule.ui</file>

@@ -255,6 +255,7 @@ js_files = \
 	js/app/modules/readerCard.js \
 	js/app/modules/readerDocumentCard.js \
 	js/app/modules/readerWindow.js \
+	js/app/modules/scrollingTemplate.js \
 	js/app/modules/searchBannerModule.js \
 	js/app/modules/searchBox.js \
 	js/app/modules/searchModule.js \
@@ -382,6 +383,7 @@ javascript_tests = \
 	tests/js/app/modules/testReaderCard.js \
 	tests/js/app/modules/testReaderDocumentCard.js \
 	tests/js/app/modules/testReaderWindow.js \
+	tests/js/app/modules/testScrollingTemplate.js \
 	tests/js/app/modules/testSearchBannerModule.js \
 	tests/js/app/modules/testSearchBox.js \
 	tests/js/app/modules/testSearchModule.js \
