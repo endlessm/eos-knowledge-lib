@@ -31,6 +31,7 @@ function transform_v1_description(json) {
                 "search-page": "search-page",
                 "article-page": "article-page",
                 "navigation": "navigation",
+                "lightbox": "lightbox",
             },
         };
         modules["navigation"] = {
@@ -214,6 +215,7 @@ function transform_v1_description(json) {
                 "search-page": "search-page",
                 "article-page": "article-page",
                 "navigation": "navigation",
+                "lightbox": "lightbox",
             },
         };
         modules["navigation"] = {

@@ -140,7 +140,7 @@ const Window = new Lang.Class({
         let navigation = this.create_submodule('navigation');
         navigation.add(this._stack);
 
-        let lightbox = this.factory.create_named_module('lightbox');
+        let lightbox = this.create_submodule('lightbox');
         lightbox.add(navigation);
 
         this._history_buttons = new Endless.TopbarNavButton();
@@ -376,6 +376,6 @@ const Window = new Lang.Class({
     // Module override
     get_slot_names: function () {
         return ['brand-screen', 'home-page', 'section-page', 'search-page',
-            'article-page', 'navigation'];
+            'article-page', 'navigation', 'lightbox'];
     },
 });
