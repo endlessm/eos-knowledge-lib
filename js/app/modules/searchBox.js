@@ -29,20 +29,11 @@ const SearchBox = new Lang.Class({
     Properties: {
         'factory': GObject.ParamSpec.override('factory', Module.Module),
         'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-        /**
-         * Property: engine
-         * Handle to EOS knowledge engine. For testing only.
-         */
-        'engine': GObject.ParamSpec.object('engine', 'Engine',
-            'Handle to EOS knowledge engine',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            GObject.Object.$gtype),
     },
 
     _init: function (props={}) {
         if (props.visible === undefined)
             props.visible = true;
-        props.engine = props.engine || Engine.Engine.get_default();
         this.parent(props);
         this._autocomplete_models = {};
         this._cancellable = null;
@@ -95,7 +86,7 @@ const SearchBox = new Lang.Class({
             query: query,
             limit: RESULTS_SIZE,
         });
-        this.engine.get_objects_by_query(query_obj,
+        Engine.get_default().get_objects_by_query(query_obj,
                                          this._cancellable,
                                          (engine, task) => {
             this._cancellable = null;

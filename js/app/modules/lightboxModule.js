@@ -18,28 +18,11 @@ const LightboxModule = new GObject.Class({
     Implements: [ Module.Module ],
 
     Properties: {
-        /**
-         * Property: engine
-         * Handle to EOS knowledge engine
-         *
-         * Pass an instance of <Engine> to this property.
-         * This is a property for purposes of dependency injection during
-         * testing.
-         *
-         * Flags:
-         *   Construct only
-         */
-        'engine': GObject.ParamSpec.object('engine', 'Engine',
-            'Handle to EOS knowledge engine',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            GObject.Object.$gtype),
         'factory': GObject.ParamSpec.override('factory', Module.Module),
         'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
     },
 
     _init: function (props={}) {
-        props.engine = props.engine || Engine.Engine.get_default();
-
         this.parent(props);
 
         // Lock to ensure we're only loading one lightbox media object at a time
@@ -81,7 +64,7 @@ const LightboxModule = new GObject.Class({
         this._loading_new_lightbox = true;
         let new_index = this._current_index + delta;
         let resource_id = this._article_model.resources[new_index];
-        this.engine.get_object_by_id(resource_id, null, (engine, task) => {
+        Engine.get_default().get_object_by_id(resource_id, null, (engine, task) => {
             this._loading_new_lightbox = false;
             let media_object;
             try {

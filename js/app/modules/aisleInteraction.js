@@ -75,8 +75,6 @@ const AisleInteraction = new Lang.Class({
         'factory': GObject.ParamSpec.override('factory', Module.Module),
         'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
         'application': GObject.ParamSpec.override('application', Interaction.Interaction),
-        'engine': GObject.ParamSpec.override('engine', Interaction.Interaction),
-        'view': GObject.ParamSpec.override('view', Interaction.Interaction),
         'template-type': GObject.ParamSpec.override('template-type', Interaction.Interaction),
         'css': GObject.ParamSpec.override('css', Interaction.Interaction),
         /**
@@ -134,15 +132,15 @@ const AisleInteraction = new Lang.Class({
         let css = Gio.File.new_for_uri('resource:///com/endlessm/knowledge/css/endless_reader.css');
         Utils.add_css_provider_from_file(css, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 
-        props.view = props.view || props.factory.create_named_module('window', {
-            application: props.application,
-        });
-        props.engine = props.engine || Engine.Engine.get_default();
         props.settings = props.settings || new UserSettingsModel.UserSettingsModel({
             settings_file: Gio.File.new_for_path(props.application.config_dir.get_path() + '/user_settings.json'),
         });
 
         this.parent(props);
+
+        this._window = this.create_submodule('window', {
+            application: this.application,
+        });
 
         WebkitContextSetup.register_webkit_uri_handlers(this._article_render_callback.bind(this));
         this._dbus_name = Utils.get_web_plugin_dbus_name();
@@ -172,7 +170,7 @@ const AisleInteraction = new Lang.Class({
                     this._add_history_item_for_page(this._current_page - 1);
                     break;
                 case Actions.NAV_FORWARD_CLICKED:
-                    let next_page = (this._current_page + 1) % this.view.total_pages;
+                    let next_page = (this._current_page + 1) % this._window.total_pages;
                     this._add_history_item_for_page(next_page);
                     break;
                 case Actions.SEARCH_CLICKED:
@@ -197,21 +195,21 @@ const AisleInteraction = new Lang.Class({
             }
         });
 
-        this.view.issue_nav_buttons.back_button.connect('clicked', function () {
+        this._window.issue_nav_buttons.back_button.connect('clicked', function () {
             this.settings.start_article = 0;
             this.settings.bookmark_page = 0;
         }.bind(this));
-        this.view.issue_nav_buttons.forward_button.connect('clicked', function () {
+        this._window.issue_nav_buttons.forward_button.connect('clicked', function () {
             this._update_content();
         }.bind(this));
         this.settings.connect('notify::start-article',
             this._load_new_issue.bind(this));
-        let handler = this.view.connect('debug-hotkey-pressed', function () {
-            this.view.issue_nav_buttons.show();
-            this.view.disconnect(handler);  // One-shot signal handler only.
+        let handler = this._window.connect('debug-hotkey-pressed', function () {
+            this._window.issue_nav_buttons.show();
+            this._window.disconnect(handler);  // One-shot signal handler only.
         }.bind(this));
 
-        this.view.standalone_page.infobar.connect('response', this._open_magazine.bind(this));
+        this._window.standalone_page.infobar.connect('response', this._open_magazine.bind(this));
         this._history_presenter.connect('history-item-changed', this._on_history_item_change.bind(this));
     },
 
@@ -294,7 +292,7 @@ const AisleInteraction = new Lang.Class({
             this._history_presenter.set_current_item_from_props({
                 page_type: this._OVERVIEW_PAGE,
             });
-        } else if (page_index === this.view.total_pages - 1) {
+        } else if (page_index === this._window.total_pages - 1) {
             this._history_presenter.set_current_item_from_props({
                 page_type: this._BACK_COVER,
             });
@@ -321,13 +319,13 @@ const AisleInteraction = new Lang.Class({
                     action_type: Actions.SEARCH_STARTED,
                     query: item.query,
                 });
-                this.view.show_search_results_page();
+                this._window.show_search_results_page();
                 let query_obj = new QueryObject.QueryObject({
                     query: item.query,
                     limit: RESULTS_SIZE,
                 });
 
-                this.engine.get_objects_by_query(query_obj, null, (engine, task) => {
+                Engine.get_default().get_objects_by_query(query_obj, null, (engine, task) => {
                     let results, get_more_results_query;
                     try {
                         [results, get_more_results_query] = engine.get_objects_by_query_finish(task);
@@ -391,7 +389,7 @@ const AisleInteraction = new Lang.Class({
         this._pending_present_timestamp = timestamp;
         this._launch_type = Launcher.LaunchType.SEARCH_RESULT;
         this._ensure_content_loaded(() => {
-            this.engine.get_object_by_id(id, null, (engine, task) => {
+            Engine.get_default().get_object_by_id(id, null, (engine, task) => {
                 let model;
                 try {
                     model = engine.get_object_by_id_finish(task);
@@ -424,7 +422,7 @@ const AisleInteraction = new Lang.Class({
     },
 
     _clear_webview_from_map: function (index) {
-        this.view.get_article_page(index).clear_content();
+        this._window.get_article_page(index).clear_content();
         delete this._webview_map[index];
     },
 
@@ -436,7 +434,7 @@ const AisleInteraction = new Lang.Class({
         }
         // Clear out state from any issue that was already displaying.
         this._article_models = [];
-        this.view.remove_all_article_pages();
+        this._window.remove_all_article_pages();
         Dispatcher.get_default().dispatch({
             action_type: Actions.CLEAR_ITEMS,
         });
@@ -467,9 +465,9 @@ const AisleInteraction = new Lang.Class({
     _load_more_results: function (action_type) {
         if (!this._get_more_results_query)
             return;
-        this.engine.get_objects_by_query(this._get_more_results_query,
-                                         null,
-                                         (engine, task) => {
+        Engine.get_default().get_objects_by_query(this._get_more_results_query,
+                                                  null,
+                                                  (engine, task) => {
             let results, get_more_results_query;
             try {
                 [results, get_more_results_query] = engine.get_objects_by_query_finish(task);
@@ -522,9 +520,9 @@ const AisleInteraction = new Lang.Class({
             sort: QueryObject.QueryObjectSort.ARTICLE_NUMBER,
             tags: ['EknArticleObject'],
         });
-        this.engine.get_objects_by_query(query_obj,
-                                         null,
-                                         (engine, task) => {
+        Engine.get_default().get_objects_by_query(query_obj,
+                                                  null,
+                                                  (engine, task) => {
             let results, get_more_results_query;
             let error;
             try {
@@ -564,9 +562,9 @@ const AisleInteraction = new Lang.Class({
             return;
         }
 
-        this.engine.get_objects_by_query(get_more_results_query,
-                                         null,
-                                         (engine, task) => {
+        Engine.get_default().get_objects_by_query(get_more_results_query,
+                                                  null,
+                                                  (engine, task) => {
             try {
                 [results, get_more_results_query] = engine.get_objects_by_query_finish(task);
             } catch (error) {
@@ -583,9 +581,9 @@ const AisleInteraction = new Lang.Class({
         if (this._is_archived(model)) {
             this._load_standalone_article(model);
             if (from_global_search) {
-                this.view.show_global_search_standalone_page();
+                this._window.show_global_search_standalone_page();
             } else {
-                this.view.show_in_app_standalone_page();
+                this._window.show_in_app_standalone_page();
             }
         } else {
             let page_number = this._get_page_number_for_article_model(model);
@@ -599,11 +597,11 @@ const AisleInteraction = new Lang.Class({
     // pages + overview page + done page. So to go to the overview page, you
     // would call this._go_to_page(0)
     _go_to_page: function (index) {
-        if (this._current_page === index && this.view.article_pages_visible())
+        if (this._current_page === index && this._window.article_pages_visible())
             return;
 
         let animation_type;
-        if (!this.view.article_pages_visible()) {
+        if (!this._window.article_pages_visible()) {
             animation_type = EosKnowledgePrivate.LoadingAnimationType.NONE;
         } else if (index === this._current_page - 1) {
             animation_type = EosKnowledgePrivate.LoadingAnimationType.BACKWARDS_NAVIGATION;
@@ -617,11 +615,11 @@ const AisleInteraction = new Lang.Class({
 
         let current_article = index - 1;
         if (index === 0)
-            this.view.show_overview_page(animation_type);
-        else if (index === this.view.total_pages - 1)
-            this.view.show_back_cover(animation_type);
+            this._window.show_overview_page(animation_type);
+        else if (index === this._window.total_pages - 1)
+            this._window.show_back_cover(animation_type);
         else
-            this.view.show_article_page(current_article, animation_type);
+            this._window.show_article_page(current_article, animation_type);
 
         // We want to always have ready on deck the webviews for the current
         // article, the article preceding the current one, and the next article.
@@ -650,7 +648,7 @@ const AisleInteraction = new Lang.Class({
         article_index_range.filter((index) => {
             return !(index in this._webview_map);
         }).forEach((index) => {
-            let document_card = this.view.get_article_page(index);
+            let document_card = this._window.get_article_page(index);
             document_card.load_content(null, (card, task) => {
                 try {
                     card.load_content_finish(task);
@@ -719,7 +717,7 @@ const AisleInteraction = new Lang.Class({
     _create_pages_from_models: function (models) {
         models.forEach(function (model) {
             let page = this._create_article_page_from_article_model(model, false);
-            this.view.append_article_page(page);
+            this._window.append_article_page(page);
         }, this);
         this._article_models = this._article_models.concat(models);
     },
@@ -751,9 +749,9 @@ const AisleInteraction = new Lang.Class({
         } else if (GLib.uri_parse_scheme(uri) === 'ekn') {
             // If there is no filtered model but the uri has the "ekn://" prefix,
             // it's an archive article.
-            this.engine.get_object_by_id(uri,
-                                         null,
-                                         (engine, task) => {
+            Engine.get_default().get_object_by_id(uri,
+                                                  null,
+                                                  (engine, task) => {
                 let article_model;
                 try {
                     article_model = engine.get_object_by_id_finish(task);
@@ -821,7 +819,7 @@ const AisleInteraction = new Lang.Class({
             // Ensures that the archive notice on the in app standalone page
             // matches that of the standalone page you reach via global search
             frame.add(new ArchiveNotice.ArchiveNotice({
-                label: this.view.standalone_page.infobar.archive_notice.label,
+                label: this._window.standalone_page.infobar.archive_notice.label,
             }));
             frame.get_style_context().add_class(StyleClasses.READER_ARCHIVE_NOTICE_FRAME);
             card_props.info_notice = frame;
@@ -836,7 +834,7 @@ const AisleInteraction = new Lang.Class({
             if (scheme !== 'ekn')
                 return;
 
-            this.engine.get_object_by_id(uri, null, (engine, task) => {
+            Engine.get_default().get_object_by_id(uri, null, (engine, task) => {
                 let clicked_model;
                 try {
                     clicked_model = engine.get_object_by_id_finish(task);
@@ -897,8 +895,8 @@ const AisleInteraction = new Lang.Class({
 
     _show_error_page: function (headline, message) {
         let err_label = this._create_error_label(headline, message);
-        this.view.page_manager.add(err_label);
-        this.view.page_manager.visible_child = err_label;
+        this._window.page_manager.add(err_label);
+        this._window.page_manager.visible_child = err_label;
     },
 
     // Use _create_error_label to show a general error page, when there is no
@@ -937,7 +935,7 @@ const AisleInteraction = new Lang.Class({
                 this._show_error_page();
             }
         });
-        this.view.standalone_page.document_card = document_card;
+        this._window.standalone_page.document_card = document_card;
     },
 
     _on_article_card_clicked: function (model) {
@@ -945,5 +943,9 @@ const AisleInteraction = new Lang.Class({
             page_type: this._ARTICLE_PAGE,
             model: model,
         });
+    },
+
+    get_slot_names: function () {
+        return ['window'];
     },
 });

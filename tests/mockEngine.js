@@ -1,6 +1,8 @@
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 
+const Engine = imports.search.engine;
+
 const MockEngine = new Lang.Class({
     Name: 'MockEngine',
     Extends: GObject.Object,
@@ -42,3 +44,11 @@ const MockEngine = new Lang.Class({
 
     get_objects_by_query_finish: function () {},
 });
+
+// Creates a new MockEngine and sets it up as the engine singleton. Use
+// in a beforeEach to have a new engine each test iteration.
+let mock_default = () => {
+    let engine = new MockEngine();
+    spyOn(Engine, 'get_default').and.returnValue(engine);
+    return engine;
+};

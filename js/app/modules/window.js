@@ -115,36 +115,36 @@ const Window = new Lang.Class({
         this.parent(props);
 
         this._home_page = this.create_submodule('home-page');
-        this.section_page = this.factory.create_named_module('section-page-template');
-        this.search_page = this.factory.create_named_module('search-page-template');
-        this.article_page = this.factory.create_named_module('article-page-template');
+        this._section_page = this.create_submodule('section-page');
+        this._search_page = this.create_submodule('search-page');
+        this._article_page = this.create_submodule('article-page');
         this._brand_screen = this.create_submodule('brand-screen');
         if (this.template_type === 'B') {
             this._home_page.get_style_context().add_class(StyleClasses.HOME_PAGE_B);
-            this.section_page.get_style_context().add_class(StyleClasses.SECTION_PAGE_B);
-            this.search_page.get_style_context().add_class(StyleClasses.SEARCH_PAGE_B);
+            this._section_page.get_style_context().add_class(StyleClasses.SECTION_PAGE_B);
+            this._search_page.get_style_context().add_class(StyleClasses.SEARCH_PAGE_B);
         } else {
             this._home_page.get_style_context().add_class(StyleClasses.HOME_PAGE_A);
-            this.section_page.get_style_context().add_class(StyleClasses.SECTION_PAGE_A);
-            this.search_page.get_style_context().add_class(StyleClasses.SEARCH_PAGE_A);
+            this._section_page.get_style_context().add_class(StyleClasses.SECTION_PAGE_A);
+            this._search_page.get_style_context().add_class(StyleClasses.SEARCH_PAGE_A);
         }
 
         this._stack = new Gtk.Stack();
         if (this._brand_screen)
             this._stack.add(this._brand_screen);
         this._stack.add(this._home_page);
-        this._stack.add(this.section_page);
-        this._stack.add(this.search_page);
-        this._stack.add(this.article_page);
+        this._stack.add(this._section_page);
+        this._stack.add(this._search_page);
+        this._stack.add(this._article_page);
 
-        let navigation = this.factory.create_named_module('navigation');
+        let navigation = this.create_submodule('navigation');
         navigation.add(this._stack);
 
-        let lightbox = this.factory.create_named_module('lightbox');
+        let lightbox = this.create_submodule('lightbox');
         lightbox.add(navigation);
 
         this._history_buttons = new Endless.TopbarNavButton();
-        this._search_box = this.factory.create_named_module('top-bar-search', {
+        this._search_box = this.create_submodule('search', {
             no_show_all: true,
             visible: false,
         });
@@ -204,13 +204,13 @@ const Window = new Lang.Class({
                     this.show_page(this._home_page);
                     break;
                 case Actions.SHOW_SECTION_PAGE:
-                    this.show_page(this.section_page);
+                    this.show_page(this._section_page);
                     break;
                 case Actions.SHOW_SEARCH_PAGE:
-                    this.show_page(this.search_page);
+                    this.show_page(this._search_page);
                     break;
                 case Actions.SHOW_ARTICLE_PAGE:
-                    this.show_page(this.article_page);
+                    this.show_page(this._article_page);
                     break;
             }
         });
@@ -318,7 +318,7 @@ const Window = new Lang.Class({
             return;
 
         let is_on_left = (page) => [this._home_page, this._brand_screen].indexOf(page) > -1;
-        let is_on_center = (page) => page === this.section_page || page === this.search_page;
+        let is_on_center = (page) => [this._section_page, this._search_page].indexOf(page) > -1;
         let nav_back_visible = false;
         if (is_on_left(new_page)) {
             nav_back_visible = false;
@@ -375,6 +375,7 @@ const Window = new Lang.Class({
 
     // Module override
     get_slot_names: function () {
-        return ['brand-screen', 'home-page'];
+        return ['brand-screen', 'home-page', 'section-page', 'search-page',
+            'article-page', 'navigation', 'lightbox', 'search'];
     },
 });

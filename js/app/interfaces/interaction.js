@@ -35,36 +35,6 @@ const Interaction = new Lang.Interface({
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             GObject.Object.$gtype),
         /**
-         * Property: engine
-         * Handle to EOS knowledge engine
-         *
-         * Pass an instance of <Engine> to this property.
-         * This is a property for purposes of dependency injection during
-         * testing.
-         *
-         * Flags:
-         *   Construct only
-         */
-        'engine': GObject.ParamSpec.object('engine', 'Engine',
-            'Handle to EOS knowledge engine',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            GObject.Object.$gtype),
-        /**
-         * Property: view
-         * Knowledge app view
-         *
-         * Pass an instance of <Window> to this property.
-         * This is a property for purposes of dependency injection during
-         * testing.
-         *
-         * Flags:
-         *   Construct only
-         */
-        'view': GObject.ParamSpec.object('view', 'view',
-            'Knowledge app view',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            GObject.Object.$gtype),
-        /**
          * Property: template-type
          * The template type for the Knowledge app.
          *

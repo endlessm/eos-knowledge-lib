@@ -16,6 +16,9 @@ function transform_v1_description(json) {
     case "A":
         modules["interaction"] = {
             "type": "MeshInteraction",
+            "slots": {
+                "window": "window",
+            },
         };
         modules["window"] = {
             "type": "Window",
@@ -27,6 +30,12 @@ function transform_v1_description(json) {
             "slots": {
                 "brand-screen": null,
                 "home-page": "home-page",
+                "section-page": "section-page",
+                "search-page": "search-page",
+                "article-page": "article-page",
+                "navigation": "navigation",
+                "lightbox": "lightbox",
+                "search": "top-bar-search",
             },
         };
         modules["navigation"] = {
@@ -82,7 +91,7 @@ function transform_v1_description(json) {
                 "card-type": "results-card",
             },
         };
-        modules["section-page-template"] = {
+        modules["section-page"] = {
             "type": "BannerTemplate",
             "properties": {
                 "margin-start": 150,
@@ -158,7 +167,7 @@ function transform_v1_description(json) {
                 "halign": Gtk.Align.CENTER,
             },
         };
-        modules["search-page-template"] = {
+        modules["search-page"] = {
             "type": "BannerTemplate",
             "properties": {
                 "margin-start": 150,
@@ -185,7 +194,7 @@ function transform_v1_description(json) {
                 "show_toc": true,
             },
         };
-        modules["article-page-template"] = {
+        modules["article-page"] = {
             "type": "ArticleStackModule",
             "slots": {
                 "card-type": "document-card",
@@ -195,6 +204,9 @@ function transform_v1_description(json) {
     case "B":
         modules["interaction"] = {
             "type": "MeshInteraction",
+            "slots": {
+                "window": "window",
+            },
         };
         modules["window"] = {
             "type": "Window",
@@ -206,6 +218,12 @@ function transform_v1_description(json) {
             "slots": {
                 "brand-screen": null,
                 "home-page": "home-page",
+                "section-page": "section-page",
+                "search-page": "search-page",
+                "article-page": "article-page",
+                "navigation": "navigation",
+                "lightbox": "lightbox",
+                "search": "top-bar-search",
             },
         };
         modules["navigation"] = {
@@ -284,7 +302,7 @@ function transform_v1_description(json) {
                 "card-type": "results-card",
             },
         };
-        modules["section-page-template"] = {
+        modules["section-page"] = {
             "type": "SidebarTemplate",
             "slots": {
                 "content": "set-banner-module",
@@ -313,7 +331,7 @@ function transform_v1_description(json) {
                 "valign": Gtk.Align.CENTER,
             },
         };
-        modules["search-page-template"] = {
+        modules["search-page"] = {
             "type": "SidebarTemplate",
             "slots": {
                 "content": "results-search-banner",
@@ -335,7 +353,7 @@ function transform_v1_description(json) {
         modules["document-card"] = {
             "type": "KnowledgeDocumentCard",
         };
-        modules["article-page-template"] = {
+        modules["article-page"] = {
             "type": "ArticleStackModule",
             "slots": {
                 "card-type": "document-card",
@@ -345,6 +363,9 @@ function transform_v1_description(json) {
     case "encyclopedia":
         modules["interaction"] = {
             "type": "MeshInteraction",
+            "slots": {
+                "window": "window",
+            },
         };
         modules["window"] = {
             "type": "EncyclopediaWindow",
@@ -490,6 +511,9 @@ function transform_v1_description(json) {
     case "reader":
         modules["interaction"] = {
             "type": "AisleInteraction",
+            "slots": {
+                "window": "window",
+            },
         };
         modules["window"] = {
             "type": "ReaderWindow",

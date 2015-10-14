@@ -94,7 +94,7 @@ const AppSearchProvider = Lang.Class({
         this.skeleton = Gio.DBusExportedObject.wrapJSObject(SearchIfaceInfo, this);
         this._search_provider_domain = GLib.quark_from_string('Knowledge App Search Provider Error');
 
-        this._engine = Engine.Engine.get_default();
+        this._engine = Engine.get_default();
         this._object_cache = {};
 
         this._app_proxy = null;

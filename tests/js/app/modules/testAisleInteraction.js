@@ -74,9 +74,9 @@ const MockView = new Lang.Class({
         'debug-hotkey-pressed': {},
     },
 
-    _init: function (nav_buttons) {
+    _init: function () {
         this.parent();
-        this.nav_buttons = nav_buttons;
+        this.nav_buttons = new MockNavButtons();
         this.issue_nav_buttons = {
             back_button: new MockWidgets.MockButton(),
             forward_button: new MockWidgets.MockButton(),
@@ -138,7 +138,7 @@ const MockView = new Lang.Class({
 });
 
 describe('Aisle interaction', function () {
-    let engine, settings, view, article_nav_buttons, interaction, dispatcher;
+    let engine, settings, view, interaction, dispatcher;
 
     const MOCK_DATA = [
         ['Title 1', ['Kim Kardashian'], '2014/11/13 08:00'],
@@ -160,6 +160,7 @@ describe('Aisle interaction', function () {
 
     beforeEach(function () {
         dispatcher = MockDispatcher.mock_default();
+        engine = MockEngine.mock_default();
 
         let factory = new MockFactory.MockFactory();
         factory.add_named_mock('home-card', Minimal.MinimalCard);
@@ -167,9 +168,6 @@ describe('Aisle interaction', function () {
         factory.add_named_mock('document-card', Minimal.MinimalDocumentCard);
 
         let application = new MockApplication();
-        article_nav_buttons = new MockNavButtons();
-        view = new MockView(article_nav_buttons);
-        engine = new MockEngine.MockEngine();
         settings = new MockUserSettingsModel({
             highest_article_read: 0,
             bookmark_page: 0,
@@ -180,14 +178,19 @@ describe('Aisle interaction', function () {
         engine.get_object_by_id_finish.and.returnValue(null);
         Utils.register_gresource();
 
+        factory.add_named_mock('window', MockView);
+        factory.add_named_mock('interaction', AisleInteraction.AisleInteraction, {
+            'window': 'window',
+        });
+
         spyOn(AppUtils, 'get_web_plugin_dbus_name').and.returnValue("test0");
         interaction = new AisleInteraction.AisleInteraction({
             application: application,
-            engine: engine,
             settings: settings,
-            view: view,
             factory: factory,
+            factory_name: 'interaction',
         });
+        view = factory.get_created_named_mocks('window')[0];
         spyOn(interaction, 'record_search_metric');
     });
 
