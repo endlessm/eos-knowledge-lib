@@ -129,12 +129,6 @@ function transform_v1_description(json) {
                 "message-justify": Gtk.Justification.CENTER,
             },
         };
-        modules["home-page-arrangement"] = {
-            "type": "OverflowArrangement",
-            "properties": {
-                "orientation": Gtk.Orientation.HORIZONTAL,
-            },
-        };
         modules["home-card"] = {
             "type": "CardA",
         };
@@ -147,7 +141,12 @@ function transform_v1_description(json) {
                 "max-children": 6,
             },
             "slots": {
-                "arrangement": "home-page-arrangement",
+                "arrangement": {
+                    "type": "OverflowArrangement",
+                    "properties": {
+                        "orientation": Gtk.Orientation.HORIZONTAL,
+                    },
+                },
                 "card-type": "home-card",
             },
         };
@@ -248,7 +247,9 @@ function transform_v1_description(json) {
                 "valign": Gtk.Align.FILL,
             },
             "slots": {
-                "arrangement": "home-page-arrangement",
+                "arrangement": {
+                    "type": "TiledGridArrangement",
+                },
                 "card-type": "home-card",
             },
         };
@@ -263,9 +264,6 @@ function transform_v1_description(json) {
                 "top-right": "home-search",
                 "bottom": "home-page-set-group",
             },
-        };
-        modules["home-page-arrangement"] = {
-            "type": "TiledGridArrangement",
         };
         modules["top-bar-search"] = {
             "type": "SearchBox",
@@ -487,7 +485,13 @@ function transform_v1_description(json) {
                 "margin-top": 20,
             },
             "slots": {
-                "arrangement": "results-arrangement",
+                "arrangement": {
+                    type: "ListArrangement",
+                    "properties": {
+                        "hexpand": true,
+                        "halign": Gtk.Align.FILL,
+                    },
+                },
                 "card-type": "results-card",
             },
         };
@@ -497,15 +501,6 @@ function transform_v1_description(json) {
                 "underline-on-hover": true,
                 "decoration": true,
             },
-        };
-        // FIXME: this should be inlined into search-results, when we get
-        // submodules implemented in the factory
-        modules["results-arrangement"] = {
-            type: "ListArrangement",
-            "properties": {
-                "hexpand": true,
-                "halign": Gtk.Align.FILL,
-            }
         };
         break;
     case "reader":
@@ -562,19 +557,18 @@ function transform_v1_description(json) {
             "type": "ItemGroupModule",
             "slots": {
                 "card-type": "home-card",
-                "arrangement": "snippets-arrangement",
+                "arrangement": {
+                    "type": "OverflowArrangement",
+                    "properties": {
+                        "orientation": Gtk.Orientation.VERTICAL,
+                    },
+                },
             },
             "properties": {
                 "expand": true,
                 "halign": Gtk.Align.END,
                 "valign": Gtk.Align.FILL,
                 "margin-end": 100,
-            },
-        };
-        modules["snippets-arrangement"] = {
-            "type": "OverflowArrangement",
-            "properties": {
-                "orientation": Gtk.Orientation.VERTICAL,
             },
         };
         modules["top-bar-search"] = {
@@ -623,21 +617,20 @@ function transform_v1_description(json) {
         modules["search-results"] = {
             "type": "SearchModule",
             "slots": {
-                "arrangement": "results-arrangement",
+                "arrangement": {
+                    "type": "GridArrangement",
+                    "properties": {
+                        "margin-top": 20,
+                        "bottom-buffer": 250,
+                        "max-children-per-line": 9,
+                    },
+                },
                 "card-type": "results-card",
             },
             "properties": {
                 "message-halign": Gtk.Align.CENTER,
                 "message-justify": Gtk.Justification.CENTER,
             }
-        };
-        modules["results-arrangement"] = {
-            "type": "GridArrangement",
-            "properties": {
-                "margin-top": 20,
-                "bottom-buffer": 250,
-                "max-children-per-line": 9,
-            },
         };
         break;
     default:
