@@ -161,7 +161,7 @@ const ReaderWindow = new Lang.Class({
             this.emit('debug-hotkey-pressed');
         }.bind(this));
 
-        this._search_box = this.factory.create_named_module('top-bar-search');
+        this._search_box = this.create_submodule('search');
 
         this._stack = new Gtk.Stack({
             transition_duration: this._STACK_TRANSITION_TIME,
@@ -350,6 +350,6 @@ const ReaderWindow = new Lang.Class({
 
     get_slot_names: function () {
         return ['front-page', 'back-page', 'search-page', 'standalone-page',
-            'document-arrangement', 'navigation', 'lightbox'];
+            'document-arrangement', 'navigation', 'lightbox', 'search'];
     },
 });

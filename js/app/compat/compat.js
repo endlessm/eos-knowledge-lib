@@ -519,6 +519,7 @@ function transform_v1_description(json) {
                 "document-arrangement": "document-arrangement",
                 "navigation": "navigation",
                 "lightbox": "lightbox",
+                "search": "top-bar-search",
             },
         };
         modules["navigation"] = {

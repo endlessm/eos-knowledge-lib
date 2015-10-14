@@ -45,6 +45,7 @@ describe('Window widget', function () {
         dispatcher = MockDispatcher.mock_default();
 
         factory = new MockFactory.MockFactory();
+        factory.add_named_mock('top-bar-search', MockWidgets.MockSearchBox);
         factory.add_named_mock('document-card', Minimal.MinimalDocumentCard);
         factory.add_named_mock('front-page', MockWidgets.MockSidebarTemplate);
         factory.add_named_mock('back-page', Minimal.MinimalBackCover);
@@ -61,6 +62,7 @@ describe('Window widget', function () {
             'document-arrangement': 'document-arrangement',
             'navigation': 'navigation',
             'lightbox': 'lightbox',
+            'search': 'top-bar-search',
         });
 
         view = new ReaderWindow.ReaderWindow({
