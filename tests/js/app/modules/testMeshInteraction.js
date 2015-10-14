@@ -92,6 +92,7 @@ describe('Mesh interaction', function () {
 
     beforeEach(function () {
         dispatcher = MockDispatcher.mock_default();
+        engine = MockEngine.mock_default();
 
         let application = new GObject.Object();
         application.application_id = 'foobar';
@@ -121,7 +122,6 @@ describe('Mesh interaction', function () {
                 child_tags: ['countries', 'monuments', 'mountains'],
             },
         ];
-        engine = new MockEngine.MockEngine();
         engine.get_objects_by_query_finish.and.returnValue([sections.map((section) =>
             new SetObjectModel.SetObjectModel(section)), null]);
 
@@ -133,7 +133,6 @@ describe('Mesh interaction', function () {
             application: application,
             factory: factory,
             factory_name: 'interaction',
-            engine: engine,
         });
         view = factory.get_created_named_mocks('window')[0];
         spyOn(mesh, 'record_search_metric');

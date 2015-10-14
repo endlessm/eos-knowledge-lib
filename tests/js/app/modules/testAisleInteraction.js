@@ -160,6 +160,7 @@ describe('Aisle interaction', function () {
 
     beforeEach(function () {
         dispatcher = MockDispatcher.mock_default();
+        engine = MockEngine.mock_default();
 
         let factory = new MockFactory.MockFactory();
         factory.add_named_mock('home-card', Minimal.MinimalCard);
@@ -167,7 +168,6 @@ describe('Aisle interaction', function () {
         factory.add_named_mock('document-card', Minimal.MinimalDocumentCard);
 
         let application = new MockApplication();
-        engine = new MockEngine.MockEngine();
         settings = new MockUserSettingsModel({
             highest_article_read: 0,
             bookmark_page: 0,
@@ -186,7 +186,6 @@ describe('Aisle interaction', function () {
         spyOn(AppUtils, 'get_web_plugin_dbus_name').and.returnValue("test0");
         interaction = new AisleInteraction.AisleInteraction({
             application: application,
-            engine: engine,
             settings: settings,
             factory: factory,
             factory_name: 'interaction',

@@ -21,8 +21,8 @@ describe('Lightbox module', function () {
     beforeEach(function () {
         jasmine.addMatchers(WidgetDescendantMatcher.customMatchers);
         dispatcher = MockDispatcher.mock_default();
+        engine = MockEngine.mock_default();
 
-        engine = new MockEngine.MockEngine();
         factory = new MockFactory.MockFactory();
         factory.add_named_mock('lightbox-card', Minimal.MinimalCard);
         factory.add_named_mock('lightbox', LightboxModule.LightboxModule, {
@@ -30,7 +30,6 @@ describe('Lightbox module', function () {
         });
 
         module = new LightboxModule.LightboxModule({
-            engine: engine,
             factory: factory,
             factory_name: 'lightbox',
         });

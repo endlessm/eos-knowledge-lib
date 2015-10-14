@@ -75,7 +75,6 @@ const AisleInteraction = new Lang.Class({
         'factory': GObject.ParamSpec.override('factory', Module.Module),
         'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
         'application': GObject.ParamSpec.override('application', Interaction.Interaction),
-        'engine': GObject.ParamSpec.override('engine', Interaction.Interaction),
         'template-type': GObject.ParamSpec.override('template-type', Interaction.Interaction),
         'css': GObject.ParamSpec.override('css', Interaction.Interaction),
         /**
@@ -133,7 +132,6 @@ const AisleInteraction = new Lang.Class({
         let css = Gio.File.new_for_uri('resource:///com/endlessm/knowledge/css/endless_reader.css');
         Utils.add_css_provider_from_file(css, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 
-        props.engine = props.engine || Engine.get_default();
         props.settings = props.settings || new UserSettingsModel.UserSettingsModel({
             settings_file: Gio.File.new_for_path(props.application.config_dir.get_path() + '/user_settings.json'),
         });
@@ -327,7 +325,7 @@ const AisleInteraction = new Lang.Class({
                     limit: RESULTS_SIZE,
                 });
 
-                this.engine.get_objects_by_query(query_obj, null, (engine, task) => {
+                Engine.get_default().get_objects_by_query(query_obj, null, (engine, task) => {
                     let results, get_more_results_query;
                     try {
                         [results, get_more_results_query] = engine.get_objects_by_query_finish(task);
@@ -391,7 +389,7 @@ const AisleInteraction = new Lang.Class({
         this._pending_present_timestamp = timestamp;
         this._launch_type = Launcher.LaunchType.SEARCH_RESULT;
         this._ensure_content_loaded(() => {
-            this.engine.get_object_by_id(id, null, (engine, task) => {
+            Engine.get_default().get_object_by_id(id, null, (engine, task) => {
                 let model;
                 try {
                     model = engine.get_object_by_id_finish(task);
@@ -467,9 +465,9 @@ const AisleInteraction = new Lang.Class({
     _load_more_results: function (action_type) {
         if (!this._get_more_results_query)
             return;
-        this.engine.get_objects_by_query(this._get_more_results_query,
-                                         null,
-                                         (engine, task) => {
+        Engine.get_default().get_objects_by_query(this._get_more_results_query,
+                                                  null,
+                                                  (engine, task) => {
             let results, get_more_results_query;
             try {
                 [results, get_more_results_query] = engine.get_objects_by_query_finish(task);
@@ -522,9 +520,9 @@ const AisleInteraction = new Lang.Class({
             sort: QueryObject.QueryObjectSort.ARTICLE_NUMBER,
             tags: ['EknArticleObject'],
         });
-        this.engine.get_objects_by_query(query_obj,
-                                         null,
-                                         (engine, task) => {
+        Engine.get_default().get_objects_by_query(query_obj,
+                                                  null,
+                                                  (engine, task) => {
             let results, get_more_results_query;
             let error;
             try {
@@ -564,9 +562,9 @@ const AisleInteraction = new Lang.Class({
             return;
         }
 
-        this.engine.get_objects_by_query(get_more_results_query,
-                                         null,
-                                         (engine, task) => {
+        Engine.get_default().get_objects_by_query(get_more_results_query,
+                                                  null,
+                                                  (engine, task) => {
             try {
                 [results, get_more_results_query] = engine.get_objects_by_query_finish(task);
             } catch (error) {
@@ -751,9 +749,9 @@ const AisleInteraction = new Lang.Class({
         } else if (GLib.uri_parse_scheme(uri) === 'ekn') {
             // If there is no filtered model but the uri has the "ekn://" prefix,
             // it's an archive article.
-            this.engine.get_object_by_id(uri,
-                                         null,
-                                         (engine, task) => {
+            Engine.get_default().get_object_by_id(uri,
+                                                  null,
+                                                  (engine, task) => {
                 let article_model;
                 try {
                     article_model = engine.get_object_by_id_finish(task);
@@ -836,7 +834,7 @@ const AisleInteraction = new Lang.Class({
             if (scheme !== 'ekn')
                 return;
 
-            this.engine.get_object_by_id(uri, null, (engine, task) => {
+            Engine.get_default().get_object_by_id(uri, null, (engine, task) => {
                 let clicked_model;
                 try {
                     clicked_model = engine.get_object_by_id_finish(task);

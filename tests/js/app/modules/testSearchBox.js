@@ -17,11 +17,9 @@ describe('Search box module', function () {
 
     beforeEach(function () {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
-        engine = new MockEngine.MockEngine();
+        engine = MockEngine.mock_default();
         dispatcher = MockDispatcher.mock_default();
-        box = new SearchBox.SearchBox({
-            engine: engine,
-        });
+        box = new SearchBox.SearchBox();
     });
 
     it('constructs', function () {

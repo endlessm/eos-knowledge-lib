@@ -48,7 +48,6 @@ const MeshInteraction = new Lang.Class({
         'factory': GObject.ParamSpec.override('factory', Module.Module),
         'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
         'application': GObject.ParamSpec.override('application', Interaction.Interaction),
-        'engine': GObject.ParamSpec.override('engine', Interaction.Interaction),
         'template-type': GObject.ParamSpec.override('template-type', Interaction.Interaction),
         'css': GObject.ParamSpec.override('css', Interaction.Interaction),
     },
@@ -69,8 +68,6 @@ const MeshInteraction = new Lang.Class({
         // Needs to happen before before any webviews are created
         WebkitContextSetup.register_webkit_extensions(props.application.application_id);
         WebkitContextSetup.register_webkit_uri_handlers(this._article_render_callback.bind(this));
-
-        props.engine = props.engine || Engine.get_default();
 
         this.parent(props);
 
@@ -119,7 +116,7 @@ const MeshInteraction = new Lang.Class({
                 limit: 100,  // FIXME arbitrary, can we say "no limit"?
                 tags: [ Engine.HOME_PAGE_TAG ],
             });
-            this.engine.get_objects_by_query(query_obj, null, (engine, res) => {
+            Engine.get_default().get_objects_by_query(query_obj, null, (engine, res) => {
                 let [models, get_more] = engine.get_objects_by_query_finish(res);
                 // FIXME: This sorting should ideally happen in the arrangement
                 // once it has a sort-by API.
@@ -315,7 +312,7 @@ const MeshInteraction = new Lang.Class({
         let query_obj = new QueryObject.QueryObject({
             query: item.query,
         });
-        this.engine.get_objects_by_query(query_obj, null, (engine, task) => {
+        Engine.get_default().get_objects_by_query(query_obj, null, (engine, task) => {
             let results, get_more_results_query;
             let dispatcher = Dispatcher.get_default();
 
@@ -389,7 +386,7 @@ const MeshInteraction = new Lang.Class({
     _load_more_results: function (action_type) {
         if (!this._get_more_results_query)
             return;
-        this.engine.get_objects_by_query(this._get_more_results_query, null, (engine, task) => {
+        Engine.get_default().get_objects_by_query(this._get_more_results_query, null, (engine, task) => {
             let results, get_more_results_query;
             try {
                 [results, get_more_results_query] = engine.get_objects_by_query_finish(task);
@@ -487,7 +484,7 @@ const MeshInteraction = new Lang.Class({
         }
         this._current_article_results_item = item;
 
-        this.engine.get_objects_by_query(query_obj, null, (engine, task) => {
+        Engine.get_default().get_objects_by_query(query_obj, null, (engine, task) => {
             let results, get_more_results_query;
             try {
                 [results, get_more_results_query] = engine.get_objects_by_query_finish(task);
@@ -604,7 +601,7 @@ const MeshInteraction = new Lang.Class({
 
     // Launcher implementation
     activate_search_result: function (timestamp, ekn_id, query) {
-        this.engine.get_object_by_id(ekn_id, null, (engine, task) => {
+        Engine.get_default().get_object_by_id(ekn_id, null, (engine, task) => {
             try {
                 let model = engine.get_object_by_id_finish(task);
                 this._history_presenter.set_current_item_from_props({
@@ -620,7 +617,7 @@ const MeshInteraction = new Lang.Class({
     },
 
     load_uri: function (ekn_id) {
-        this.engine.get_object_by_id(ekn_id, null, (engine, task) => {
+        Engine.get_default().get_object_by_id(ekn_id, null, (engine, task) => {
             let model;
             try {
                 model = engine.get_object_by_id_finish(task);
