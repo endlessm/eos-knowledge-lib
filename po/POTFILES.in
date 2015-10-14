@@ -6,7 +6,6 @@ data/widgets/searchModule.ui
 data/widgets/suggestedArticlesModule.ui
 data/widgets/suggestedCategoriesModule.ui
 js/app/articleHTMLRenderer.js
-js/app/compat/compat.js
 js/app/modules/aisleInteraction.js
 js/app/modules/encyclopediaWindow.js
 js/app/modules/homePageATemplate.js

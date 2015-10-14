@@ -1,11 +1,15 @@
 // Copyright 2015 Endless Mobile, Inc.
 
+const Gettext = imports.gettext;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
+const Config = imports.app.config;
 const Module = imports.app.interfaces.module;
 const TabButton = imports.app.widgets.tabButton;
+
+let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
 /**
  * Class: HomePageATemplate
@@ -30,14 +34,16 @@ const HomePageATemplate = new Lang.Class({
          */
         'upper-button-label': GObject.ParamSpec.string('upper-button-label',
             'Upper tab button label', 'Upper tab button label',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            _("SEE ALL CATEGORIES")),
         /**
          * Property: basement-button-label
          * Label on the tab button on the basement page
          */
         'basement-button-label': GObject.ParamSpec.string('basement-button-label',
             'Basement tab button label', 'Basement tab button label',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            _("HOME")),
     },
 
     Template: 'resource:///com/endlessm/knowledge/widgets/homePageATemplate.ui',
