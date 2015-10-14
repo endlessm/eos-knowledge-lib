@@ -90,7 +90,7 @@ const EncyclopediaWindow = new Lang.Class({
             background_position: 'top center',
         });
 
-        this._lightbox = this.factory.create_named_module('lightbox');
+        this._lightbox = this.create_submodule('lightbox');
         this._lightbox.add(this._article_page);
 
         this.page_manager.add(this._lightbox, {
@@ -123,6 +123,6 @@ const EncyclopediaWindow = new Lang.Class({
     },
 
     get_slot_names: function () {
-        return ['home-page', 'search-page', 'article-page'];
+        return ['home-page', 'search-page', 'article-page', 'lightbox'];
     },
 });

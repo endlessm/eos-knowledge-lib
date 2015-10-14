@@ -363,6 +363,7 @@ function transform_v1_description(json) {
                 "home-page": "home-page",
                 "search-page": "search-page",
                 "article-page": "article-page",
+                "lightbox": "lightbox",
             },
         };
         modules["home-page"] = {
