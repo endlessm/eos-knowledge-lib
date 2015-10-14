@@ -424,7 +424,8 @@ const MeshInteraction = new Lang.Class({
     _load_document_card_in_view: function (item, is_going_back) {
         let dispatcher = Dispatcher.get_default();
         let animation_type = EosKnowledgePrivate.LoadingAnimationType.FORWARDS_NAVIGATION;
-        if (this.view.get_visible_page() !== this.view.article_page) {
+        let last_item = this._history_presenter.history_model.get_item(-1);
+        if (last_item.page_type !== this.ARTICLE_PAGE) {
             animation_type = EosKnowledgePrivate.LoadingAnimationType.NONE;
             dispatcher.dispatch({
                 action_type: Actions.SHOW_ARTICLE_PAGE,
@@ -453,7 +454,8 @@ const MeshInteraction = new Lang.Class({
     },
 
     _on_back: function () {
-        let types = this.view.get_visible_page() === this.view.article_page ?
+        let item = this._history_presenter.history_model.current_item;
+        let types = item.page_type === this.ARTICLE_PAGE ?
             [this.HOME_PAGE, this.SECTION_PAGE, this.SEARCH_PAGE] : [this.HOME_PAGE];
         let item = this._history_presenter.search_backwards(-1,
             (item) => types.indexOf(item.page_type) >= 0);
