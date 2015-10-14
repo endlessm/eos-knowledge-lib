@@ -28,7 +28,7 @@ const MOCK_APP_JSON = {
         'test-submodule': {
             type: 'TestModule',
         },
-        'card_module': {
+        'card-module': {
             type: 'MinimalCard',
             properties: {
                 'expand': 'true',
@@ -36,13 +36,13 @@ const MOCK_APP_JSON = {
                 'halign': 'end',
             }
         },
-        'bad_prop_module': {
+        'bad-prop-module': {
             type: 'MinimalCard',
             properties: {
                 'asdf': 'true',
             }
         },
-        'bad_enum_module': {
+        'bad-enum-module': {
             type: 'MinimalCard',
             properties: {
                 'halign': 'asdf',
@@ -151,7 +151,7 @@ describe('Module factory', function () {
 
             let test_constructor = jasmine.createSpy('TestModuleConstructor');
             spyOn(warehouse, 'type_to_class').and.returnValue(test_constructor);
-            module_factory.create_module_for_slot(parent, 'test_slot', {
+            module_factory.create_module_for_slot(parent, 'test-slot', {
                 foo: 'bar',
             });
             expect(test_constructor).toHaveBeenCalledWith(jasmine.objectContaining({
@@ -160,25 +160,25 @@ describe('Module factory', function () {
         });
 
         it('are parsed from the app json', function () {
-            let module = module_factory.create_named_module('card_module');
+            let module = module_factory.create_named_module('card-module');
             expect(module.expand).toBe(true);
             expect(module.width_request).toBe(200);
         });
 
         it('function with enum names in app json', function () {
-            let module = module_factory.create_named_module('card_module');
+            let module = module_factory.create_named_module('card-module');
             expect(module.halign).toBe(Gtk.Align.END);
         });
 
         it('warn if not found on module class', function () {
             spyOn(window, 'logError');
-            module_factory.create_named_module('bad_prop_module');
+            module_factory.create_named_module('bad-prop-module');
             expect(logError).toHaveBeenCalled();
         });
 
         it('warn if not enum value not found', function () {
             spyOn(window, 'logError');
-            module_factory.create_named_module('bad_enum_module');
+            module_factory.create_named_module('bad-enum-module');
             expect(logError).toHaveBeenCalled();
         });
     });
