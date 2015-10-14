@@ -495,6 +495,7 @@ function transform_v1_description(json) {
             "type": "AisleInteraction",
             "slots": {
                 "window": "window",
+                "document-card": "document-card",
             },
         };
         modules["window"] = {

@@ -831,7 +831,9 @@ const AisleInteraction = new Lang.Class({
             card_props.page_number = model.article_number;
         }
 
-        let document_card = this.factory.create_named_module('document-card', card_props);
+        // FIXME: This should probably be a slot on a document page and not the
+        // interaction model.
+        let document_card = this.create_submodule('document-card', card_props);
         document_card.connect('ekn-link-clicked', (card, uri) => {
             this._remove_link_tooltip();
             let scheme = GLib.uri_parse_scheme(uri);
@@ -950,6 +952,6 @@ const AisleInteraction = new Lang.Class({
     },
 
     get_slot_names: function () {
-        return ['window'];
+        return ['window', 'document-card'];
     },
 });

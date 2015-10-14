@@ -165,8 +165,6 @@ describe('Aisle interaction', function () {
         engine = MockEngine.mock_default();
 
         let factory = new MockFactory.MockFactory();
-        factory.add_named_mock('home-card', Minimal.MinimalCard);
-        factory.add_named_mock('results-card', Minimal.MinimalCard);
         factory.add_named_mock('document-card', Minimal.MinimalDocumentCard);
 
         let application = new MockApplication();
@@ -183,6 +181,7 @@ describe('Aisle interaction', function () {
         factory.add_named_mock('window', MockView);
         factory.add_named_mock('interaction', AisleInteraction.AisleInteraction, {
             'window': 'window',
+            'document-card': 'document-card',
         });
 
         spyOn(AppUtils, 'get_web_plugin_dbus_name').and.returnValue("test0");
