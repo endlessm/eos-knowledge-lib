@@ -106,7 +106,7 @@ const ReaderWindow = new Lang.Class({
         this._search_page.get_style_context().add_class(StyleClasses.READER_SEARCH_RESULTS_PAGE);
 
         let dispatcher = Dispatcher.get_default();
-        let navigation = this.factory.create_named_module('navigation');
+        let navigation = this.create_submodule('navigation');
 
         this.issue_nav_buttons = new Endless.TopbarNavButton({
             no_show_all: true,
@@ -350,6 +350,6 @@ const ReaderWindow = new Lang.Class({
 
     get_slot_names: function () {
         return ['front-page', 'back-page', 'search-page', 'standalone-page',
-            'document-arrangement'];
+            'document-arrangement', 'navigation'];
     },
 });

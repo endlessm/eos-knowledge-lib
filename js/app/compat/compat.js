@@ -517,6 +517,7 @@ function transform_v1_description(json) {
                 "search-page": "search-page",
                 "standalone-page": "standalone-page",
                 "document-arrangement": "document-arrangement",
+                "navigation": "navigation",
             },
         };
         modules["navigation"] = {
