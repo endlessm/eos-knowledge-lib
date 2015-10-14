@@ -1,13 +1,9 @@
-const Gettext = imports.gettext;
 const GLib = imports.gi.GLib;
 const Gtk = imports.gi.Gtk;
 
-const Config = imports.app.config;
 const Engine = imports.search.engine;
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const SetObjectModel = imports.search.setObjectModel;
-
-let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
 function transform_v1_description(json) {
     let modules = {};
@@ -109,10 +105,6 @@ function transform_v1_description(json) {
                 "middle": "home-search",
                 "bottom": "home-page-set-group",
                 "basement": "home-page-basement-set-group",
-            },
-            "properties": {
-                "upper-button-label": _("SEE ALL CATEGORIES"),
-                "basement-button-label": _("HOME"),
             },
         };
         modules["results-card"] = {
