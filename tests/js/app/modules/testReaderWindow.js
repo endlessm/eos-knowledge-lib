@@ -60,6 +60,7 @@ describe('Window widget', function () {
             'standalone-page': 'standalone-page',
             'document-arrangement': 'document-arrangement',
             'navigation': 'navigation',
+            'lightbox': 'lightbox',
         });
 
         view = new ReaderWindow.ReaderWindow({

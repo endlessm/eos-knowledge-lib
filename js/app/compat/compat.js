@@ -518,6 +518,7 @@ function transform_v1_description(json) {
                 "standalone-page": "standalone-page",
                 "document-arrangement": "document-arrangement",
                 "navigation": "navigation",
+                "lightbox": "lightbox",
             },
         };
         modules["navigation"] = {

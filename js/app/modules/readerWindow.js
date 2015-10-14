@@ -148,7 +148,7 @@ const ReaderWindow = new Lang.Class({
         this.issue_nav_buttons.back_button.label = 'Reset';
         this.issue_nav_buttons.forward_button.label = 'Next week';
 
-        let lightbox = this.factory.create_named_module('lightbox');
+        let lightbox = this.create_submodule('lightbox');
 
         this._article_pages = [];
 
@@ -350,6 +350,6 @@ const ReaderWindow = new Lang.Class({
 
     get_slot_names: function () {
         return ['front-page', 'back-page', 'search-page', 'standalone-page',
-            'document-arrangement', 'navigation'];
+            'document-arrangement', 'navigation', 'lightbox'];
     },
 });
