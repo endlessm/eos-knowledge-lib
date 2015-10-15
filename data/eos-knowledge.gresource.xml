@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
   <gresource prefix="/com/endlessm/knowledge">
+    <file compressed="true">compat/v1-preset-json/A.json</file>
+    <file compressed="true">compat/v1-preset-json/B.json</file>
+    <file compressed="true">compat/v1-preset-json/encyclopedia.json</file>
+    <file compressed="true">compat/v1-preset-json/reader.json</file>
     <file compressed="true">css/endless_encyclopedia.css</file>
     <file compressed="true">css/endless_knowledge.css</file>
     <file compressed="true">css/endless_reader.css</file>
