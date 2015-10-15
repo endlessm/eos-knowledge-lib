@@ -13,36 +13,42 @@ function load_v1_compatibility_preset (templateType) {
 
 function transform_v1_description(json) {
     let preset = load_v1_compatibility_preset(json.templateType);
-    let modules = preset['modules'];
+    let set_property = (factory_name, property, value) => {
+        let parts = factory_name.split('.');
+        let module = preset['modules'][parts[0]];
+        for (let slot of parts.slice(1))
+            module = module['slots'][slot];
+        module['properties'][property] = value;
+    };
     switch (json.templateType) {
     case "A":
-        modules['window']['properties']['title'] = json['appTitle'];
-        modules['window']['properties']['background-image-uri'] = json['backgroundHomeURI'];
-        modules['window']['properties']['blur-background-image-uri'] = json['backgroundSectionURI'];
-        modules['home-page']['slots']['top']['properties']['image-uri'] = json['titleImageURI'];
+        set_property('window', 'title', json['appTitle']);
+        set_property('window', 'background-image-uri', json['backgroundHomeURI']);
+        set_property('window', 'blur-background-image-uri', json['backgroundSectionURI']);
+        set_property('home-page.top', 'image-uri', json['titleImageURI']);
         break;
     case "B":
-        modules['window']['properties']['title'] = json['appTitle'];
-        modules['window']['properties']['background-image-uri'] = json['backgroundHomeURI'];
-        modules['window']['properties']['blur-background-image-uri'] = json['backgroundSectionURI'];
-        modules['home-page']['slots']['top-left']['properties']['image-uri'] = json['titleImageURI'];
+        set_property('window', 'title', json['appTitle']);
+        set_property('window', 'background-image-uri', json['backgroundHomeURI']);
+        set_property('window', 'blur-background-image-uri', json['backgroundSectionURI']);
+        set_property('home-page.top-left', 'image-uri', json['titleImageURI']);
         break;
     case "encyclopedia":
-        modules['window']['properties']['title'] = json['appTitle'];
-        modules['window']['properties']['home-background-uri'] = json['backgroundHomeURI'];
-        modules['window']['properties']['results-background-uri'] = json['backgroundSectionURI'];
-        modules['home-page']['slots']['top']['properties']['image-uri'] = json['titleImageURI'];
-        modules['search-page']['slots']['top-left']['properties']['image-uri'] = json['titleImageURI'];
-        modules['article-page']['slots']['top-left']['properties']['image-uri'] = json['titleImageURI'];
+        set_property('window', 'title', json['appTitle']);
+        set_property('window', 'home-background-uri', json['backgroundHomeURI']);
+        set_property('window', 'results-background-uri', json['backgroundSectionURI']);
+        set_property('home-page.top', 'image-uri', json['titleImageURI']);
+        set_property('search-page.top-left', 'image-uri', json['titleImageURI']);
+        set_property('article-page.top-left', 'image-uri', json['titleImageURI']);
         break;
     case "reader":
-        modules['window']['properties']['title'] = json['appTitle'];
-        modules['window']['properties']['title-image-uri'] = json['titleImageURI'];
-        modules['window']['properties']['home-background-uri'] = json['backgroundHomeURI'];
-        modules['front-page']['slots']['content']['properties']['image-uri'] = json['titleImageURI'];
-        modules['front-page']['slots']['content']['properties']['subtitle'] = json['appSubtitle'];
-        modules['front-page']['properties']['background-image-uri'] = json['backgroundHomeURI'];
-        modules['back-page']['properties']['background-image-uri'] = json['backgroundSectionURI'];
+        set_property('window', 'title', json['appTitle']);
+        set_property('window', 'title-image-uri', json['titleImageURI']);
+        set_property('window', 'home-background-uri', json['backgroundHomeURI']);
+        set_property('front-page.content', 'image-uri', json['titleImageURI']);
+        set_property('front-page.content', 'subtitle', json['appSubtitle']);
+        set_property('front-page', 'background-image-uri', json['backgroundHomeURI']);
+        set_property('back-page', 'background-image-uri', json['backgroundSectionURI']);
         break;
     default:
         throw new Error('Unrecognized v1 preset type: ' + json.templateType);
