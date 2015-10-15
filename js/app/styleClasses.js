@@ -38,6 +38,37 @@ const CARD_B = 'card-b';
 const TEXT_CARD = 'text-card';
 
 /**
+ * Constant: CARD_WIDTH
+ *
+ * This object packs the different CSS classes that describe the width of a card
+ * widget.
+ */
+const CARD_WIDTH = {
+    A: 'width-a',
+    B: 'width-b',
+    C: 'width-c',
+    D: 'width-d',
+    E: 'width-e',
+    F: 'width-f',
+    G: 'width-g',
+    H: 'width-h',
+}
+
+/**
+ * Constant: CARD_HEIGHT
+ *
+ * This object packs the different CSS classes that describe the height of a card
+ * widget.
+ */
+const CARD_HEIGHT = {
+    A: 'height-a',
+    B: 'height-b',
+    C: 'height-c',
+    D: 'height-d',
+    E: 'height-e',
+}
+
+/**
  * Constant: HIGHLIGHTED
  *
  * Matches widgets when they are highlighted.
