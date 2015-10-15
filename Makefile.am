@@ -270,8 +270,8 @@ javascript_tests = \
 	tests/js/app/modules/testKnowledgeDocumentCard.js \
 	tests/js/app/modules/testLightboxModule.js \
 	tests/js/app/modules/testListArrangement.js \
-	tests/js/app/modules/testMeshInteraction.js \
 	tests/js/app/modules/testMediaCard.js \
+	tests/js/app/modules/testMeshInteraction.js \
 	tests/js/app/modules/testOverflowArrangement.js \
 	tests/js/app/modules/testPaperTemplate.js \
 	tests/js/app/modules/testReaderCard.js \
@@ -287,6 +287,7 @@ javascript_tests = \
 	tests/js/app/modules/testSuggestedArticlesModule.js \
 	tests/js/app/modules/testSuggestedCategoriesModule.js \
 	tests/js/app/modules/testTextCard.js \
+	tests/js/app/modules/testTiledGridArrangement.js \
 	tests/js/app/modules/testWindow.js \
 	tests/js/app/testAisleUserSettingsModel.js \
 	tests/js/app/testArticleHTMLRenderer.js \
