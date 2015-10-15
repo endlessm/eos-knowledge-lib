@@ -10,141 +10,144 @@
             "type": "EncyclopediaWindow",
             "properties": {},
             "slots": {
+                "lightbox": {
+                    "type": "LightboxModule",
+                    "slots": {
+                        "card-type": {
+                            "type": "MediaCard"
+                        }
+                    }
+                },
                 "home-page": "home-page",
                 "search-page": "search-page",
-                "article-page": "article-page",
-                "lightbox": "lightbox"
+                "article-page": "article-page"
             }
         },
         "home-page": {
             "type": "EncyclopediaCoverTemplate",
             "slots": {
-                "top": "app-banner",
-                "bottom": "home-search-box"
+                "top": {
+                    "type": "AppBanner",
+                    "properties": {
+                        "min-fraction": 0.5,
+                        "max-fraction": 0.5,
+                        "margin-bottom": 42
+                    }
+                },
+                "bottom": {
+                    "type": "SearchBox",
+                    "properties": {
+                        "max-width-chars": 52
+                    }
+                }
             }
         },
         "search-page": {
             "type": "DividedBannerTemplate",
             "slots": {
-                "top-left": "article-app-banner",
-                "top-right": "article-search-box",
-                "bottom": "search-results-paper-template"
-            }
-        },
-        "search-results-paper-template": {
-            "type": "PaperTemplate",
-            "slots": {
-                "content": "search-results-paper-content"
-            }
-        },
-        "search-results-paper-content": {
-            "type": "BannerTemplate",
-            "properties": {
-                "image-separator": true,
-                "margin-start": 45,
-                "margin-end": 45
-            },
-            "slots": {
-                "banner": "results-search-banner",
-                "content": "search-results"
+                "top-left": {
+                    "type": "AppBanner",
+                    "properties": {
+                        "min-fraction": 0.2,
+                        "max-fraction": 0.2,
+                        "margin-top": 10,
+                        "margin-bottom": 10,
+                        "valign": "start",
+                        "vexpand": false,
+                        "halign": "center"
+                    }
+                },
+                "top-right": {
+                    "type": "SearchBox",
+                    "properties": {
+                        "halign": "center",
+                        "hexpand": true
+                    }
+                },
+                "bottom": {
+                    "type": "PaperTemplate",
+                    "slots": {
+                        "content": {
+                            "type": "BannerTemplate",
+                            "properties": {
+                                "image-separator": true,
+                                "margin-start": 45,
+                                "margin-end": 45
+                            },
+                            "slots": {
+                                "banner": {
+                                    "type": "SearchBannerModule",
+                                    "properties": {
+                                        "halign": "start"
+                                    }
+                                },
+                                "content": {
+                                    "type": "SearchModule",
+                                    "properties": {
+                                        "margin-top": 20,
+                                        "message-halign": "start",
+                                        "halign": "start"
+                                    },
+                                    "slots": {
+                                        "arrangement": {
+                                            "type": "ListArrangement",
+                                            "properties": {
+                                                "hexpand": true,
+                                                "halign": "fill"
+                                            }
+                                        },
+                                        "card-type": {
+                                            "type": "TextCard",
+                                            "properties": {
+                                                "underline-on-hover": true,
+                                                "decoration": true
+                                            }
+                                        },
+                                        "article-suggestions": null,
+                                        "category-suggestions": null
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "article-page": {
             "type": "DividedBannerTemplate",
             "slots": {
-                "top-left": "article-app-banner",
-                "top-right": "article-search-box",
-                "bottom": "article-paper-template"
-            }
-        },
-        "article-paper-template": {
-            "type": "PaperTemplate",
-            "slots": {
-                "content": "article-stack"
-            }
-        },
-        "article-stack": {
-            "type": "ArticleStackModule",
-            "slots": {
-                "card-type": "document-card"
-            }
-        },
-        "app-banner": {
-            "type": "AppBanner",
-            "properties": {
-                "min-fraction": 0.5,
-                "max-fraction": 0.5,
-                "margin-bottom": 42
-            }
-        },
-        "article-search-box": {
-            "type": "SearchBox",
-            "properties": {
-                "halign": "center",
-                "hexpand": true
-            }
-        },
-        "home-search-box": {
-            "type": "SearchBox",
-            "properties": {
-                "max-width-chars": 52
-            }
-        },
-        "article-app-banner": {
-            "type": "AppBanner",
-            "properties": {
-                "min-fraction": 0.2,
-                "max-fraction": 0.2,
-                "margin-top": 10,
-                "margin-bottom": 10,
-                "valign": "start",
-                "vexpand": false,
-                "halign": "center"
-            }
-        },
-        "lightbox-card": {
-            "type": "MediaCard"
-        },
-        "lightbox": {
-            "type": "LightboxModule",
-            "slots": {
-                "card-type": "lightbox-card"
-            }
-        },
-        "document-card": {
-            "type": "KnowledgeDocumentCard"
-        },
-        "results-search-banner": {
-            "type": "SearchBannerModule",
-            "properties": {
-                "halign": "start"
-            }
-        },
-        "search-results": {
-            "type": "SearchModule",
-            "properties": {
-                "margin-top": 20,
-                "message-halign": "start",
-                "halign": "start"
-            },
-            "slots": {
-                "arrangement": {
-                    "type": "ListArrangement",
+                "top-left": {
+                    "type": "AppBanner",
                     "properties": {
-                        "hexpand": true,
-                        "halign": "fill"
+                        "min-fraction": 0.2,
+                        "max-fraction": 0.2,
+                        "margin-top": 10,
+                        "margin-bottom": 10,
+                        "valign": "start",
+                        "vexpand": false,
+                        "halign": "center"
                     }
                 },
-                "card-type": "results-card",
-                "article-suggestions": null,
-                "category-suggestions": null
-            }
-        },
-        "results-card": {
-            "type": "TextCard",
-            "properties": {
-                "underline-on-hover": true,
-                "decoration": true
+                "top-right": {
+                    "type": "SearchBox",
+                    "properties": {
+                        "halign": "center",
+                        "hexpand": true
+                    }
+                },
+                "bottom": {
+                    "type": "PaperTemplate",
+                    "slots": {
+                        "content": {
+                            "type": "ArticleStackModule",
+                            "slots": {
+                                "card-type": {
+                                    "type": "KnowledgeDocumentCard"
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }

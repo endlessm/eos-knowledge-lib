@@ -4,41 +4,71 @@
             "type": "AisleInteraction",
             "slots": {
                 "window": "window",
-                "document-card": "document-card"
+                "document-card": {
+                    "type": "ReaderDocumentCard"
+                }
             }
         },
         "window": {
             "type": "ReaderWindow",
             "properties": {},
             "slots": {
+                "search": {
+                    "type": "SearchBox"
+                },
+                "navigation": {
+                    "type": "NavigationModule"
+                },
+                "lightbox": {
+                    "type": "LightboxModule",
+                    "slots": {
+                        "card-type": {
+                            "type": "MediaCard"
+                        }
+                    }
+                },
+                "document-arrangement": {
+                    "type": "CarouselArrangement"
+                },
                 "front-page": "front-page",
-                "back-page": "back-page",
                 "search-page": "search-page",
                 "standalone-page": "standalone-page",
-                "document-arrangement": "document-arrangement",
-                "navigation": "navigation",
-                "lightbox": "lightbox",
-                "search": "top-bar-search"
-            }
-        },
-        "navigation": {
-            "type": "NavigationModule"
-        },
-        "app-banner": {
-            "type": "AppBanner",
-            "properties": {
-                "subtitle-capitalization": "uppercase",
-                "valign": "start",
-                "halign": "start",
-                "margin-top": 50,
-                "margin-start": 75
+                "back-page": "back-page"
             }
         },
         "front-page": {
             "type": "SidebarTemplate",
             "slots": {
-                "content": "app-banner",
-                "sidebar": "snippets-group"
+                "content": {
+                    "type": "AppBanner",
+                    "properties": {
+                        "subtitle-capitalization": "uppercase",
+                        "valign": "start",
+                        "halign": "start",
+                        "margin-top": 50,
+                        "margin-start": 75
+                    }
+                },
+                "sidebar": {
+                    "type": "ItemGroupModule",
+                    "slots": {
+                        "card-type": {
+                            "type": "ArticleSnippetCard"
+                        },
+                        "arrangement": {
+                            "type": "OverflowArrangement",
+                            "properties": {
+                                "orientation": "vertical"
+                            }
+                        }
+                    },
+                    "properties": {
+                        "expand": true,
+                        "halign": "end",
+                        "valign": "fill",
+                        "margin-end": 100
+                    }
+                }
             },
             "properties": {
                 "sidebar-width": 576,
@@ -47,92 +77,50 @@
                 "column-spacing": 120
             }
         },
-        "back-page": {
-            "type": "BackCover",
-            "properties": {}
-        },
-        "snippets-group": {
-            "type": "ItemGroupModule",
-            "slots": {
-                "card-type": "home-card",
-                "arrangement": {
-                    "type": "OverflowArrangement",
-                    "properties": {
-                        "orientation": "vertical"
-                    }
-                }
-            },
-            "properties": {
-                "expand": true,
-                "halign": "end",
-                "valign": "fill",
-                "margin-end": 100
-            }
-        },
-        "top-bar-search": {
-            "type": "SearchBox"
-        },
-        "document-arrangement": {
-            "type": "CarouselArrangement"
-        },
-        "home-card": {
-            "type": "ArticleSnippetCard"
-        },
-        "document-card": {
-            "type": "ReaderDocumentCard"
-        },
-        "lightbox-card": {
-            "type": "MediaCard"
-        },
-        "lightbox": {
-            "type": "LightboxModule",
-            "slots": {
-                "card-type": "lightbox-card"
-            }
-        },
-        "results-card": {
-            "type": "ReaderCard",
-            "properties": {
-                "title-capitalization": "uppercase"
-            }
-        },
-        "results-search-banner": {
-            "type": "SearchBannerModule",
-            "properties": {
-                "halign": "center"
-            }
-        },
         "search-page": {
             "type": "BannerTemplate",
             "properties": {
                 "separator-margin": 30
             },
             "slots": {
-                "banner": "results-search-banner",
-                "content": "search-results"
+                "banner": {
+                    "type": "SearchBannerModule",
+                    "properties": {
+                        "halign": "center"
+                    }
+                },
+                "content": {
+                    "type": "SearchModule",
+                    "properties": {
+                        "message-halign": "center"
+                    },
+                    "slots": {
+                        "arrangement": {
+                            "type": "GridArrangement",
+                            "properties": {
+                                "margin-top": 20,
+                                "bottom-buffer": 250,
+                                "max-children-per-line": 9
+                            }
+                        },
+                        "card-type": {
+                            "type": "ReaderCard",
+                            "properties": {
+                                "title-capitalization": "uppercase"
+                            }
+                        },
+                        "article-suggestions": null,
+                        "category-suggestions": null
+                    }
+                }
             }
         },
         "standalone-page": {
             "type": "StandalonePage"
         },
-        "search-results": {
-            "type": "SearchModule",
-            "properties": {
-                "message-halign": "center"
-            },
-            "slots": {
-                "arrangement": {
-                    "type": "GridArrangement",
-                    "properties": {
-                        "margin-top": 20,
-                        "bottom-buffer": 250,
-                        "max-children-per-line": 9
-                    }
-                },
-                "card-type": "results-card",
-                "article-suggestions": null,
-                "category-suggestions": null
-            }
+        "back-page": {
+            "type": "BackCover",
+            "properties": {}
         }
     }
 }

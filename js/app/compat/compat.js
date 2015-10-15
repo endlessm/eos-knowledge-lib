@@ -19,27 +19,28 @@ function transform_v1_description(json) {
         modules['window']['properties']['title'] = json['appTitle'];
         modules['window']['properties']['background-image-uri'] = json['backgroundHomeURI'];
         modules['window']['properties']['blur-background-image-uri'] = json['backgroundSectionURI'];
-        modules['app-banner']['properties']['image-uri'] = json['titleImageURI'];
+        modules['home-page']['slots']['top']['properties']['image-uri'] = json['titleImageURI'];
         break;
     case "B":
         modules['window']['properties']['title'] = json['appTitle'];
         modules['window']['properties']['background-image-uri'] = json['backgroundHomeURI'];
         modules['window']['properties']['blur-background-image-uri'] = json['backgroundSectionURI'];
-        modules['app-banner']['properties']['image-uri'] = json['titleImageURI'];
+        modules['home-page']['slots']['top-left']['properties']['image-uri'] = json['titleImageURI'];
         break;
     case "encyclopedia":
         modules['window']['properties']['title'] = json['appTitle'];
         modules['window']['properties']['home-background-uri'] = json['backgroundHomeURI'];
         modules['window']['properties']['results-background-uri'] = json['backgroundSectionURI'];
-        modules['app-banner']['properties']['image-uri'] = json['titleImageURI'];
-        modules['article-app-banner']['properties']['image-uri'] = json['titleImageURI'];
+        modules['home-page']['slots']['top']['properties']['image-uri'] = json['titleImageURI'];
+        modules['search-page']['slots']['top-left']['properties']['image-uri'] = json['titleImageURI'];
+        modules['article-page']['slots']['top-left']['properties']['image-uri'] = json['titleImageURI'];
         break;
     case "reader":
         modules['window']['properties']['title'] = json['appTitle'];
         modules['window']['properties']['title-image-uri'] = json['titleImageURI'];
         modules['window']['properties']['home-background-uri'] = json['backgroundHomeURI'];
-        modules['app-banner']['properties']['image-uri'] = json['titleImageURI'];
-        modules['app-banner']['properties']['subtitle'] = json['appSubtitle'];
+        modules['front-page']['slots']['content']['properties']['image-uri'] = json['titleImageURI'];
+        modules['front-page']['slots']['content']['properties']['subtitle'] = json['appSubtitle'];
         modules['front-page']['properties']['background-image-uri'] = json['backgroundHomeURI'];
         modules['back-page']['properties']['background-image-uri'] = json['backgroundSectionURI'];
         break;
