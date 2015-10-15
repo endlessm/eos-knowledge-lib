@@ -1,0 +1,17 @@
+@import url('resource:///com/endlessm/knowledge/css/endless_knowledge.css');
+
+/* This is all temporary */
+
+.text-card {
+    color: #204a87;
+    font-size: 1.5em;
+    border-bottom: solid 1px gray;
+}
+
+.text-card:hover {
+    color: #3465a4;
+}
+
+EknHighlightsModule {
+    background-color: #d3d7cf;
+}

@@ -235,6 +235,7 @@ js_files = \
 	js/app/modules/articleStackModule.js \
 	js/app/modules/backCover.js \
 	js/app/modules/bannerTemplate.js \
+	js/app/modules/buffetInteraction.js \
 	js/app/modules/cardA.js \
 	js/app/modules/cardB.js \
 	js/app/modules/carouselArrangement.js \
@@ -368,6 +369,7 @@ javascript_tests = \
 	tests/js/app/modules/testArticleStackModule.js \
 	tests/js/app/modules/testBackCover.js \
 	tests/js/app/modules/testBannerTemplate.js \
+	tests/js/app/modules/testBuffetInteraction.js \
 	tests/js/app/modules/testCardA.js \
 	tests/js/app/modules/testCardB.js \
 	tests/js/app/modules/testCarouselArrangement.js \
