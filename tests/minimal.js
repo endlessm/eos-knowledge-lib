@@ -1,7 +1,8 @@
 // Copyright 2015 Endless Mobile, Inc.
 
-/* exported MinimalArrangement, MinimalBackCover, MinimalCard,
-MinimalDocumentCard, MinimalPage, MinimalInteraction, MinimalLightbox, MinimalModule */
+/* exported MinimalArrangement, MinimalBackCover, MinimalCard, MinimalDocumentCard,
+MinimalPage, MinimalHomePage, MinimalInteraction, MinimalLightbox, MinimalModule,
+MinimalNavigation, MinimalStandalonePage, test_arrangement_compliance */
 
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;

@@ -247,8 +247,8 @@ js_files = \
 	js/app/modules/knowledgeDocumentCard.js \
 	js/app/modules/lightboxModule.js \
 	js/app/modules/listArrangement.js \
-	js/app/modules/meshInteraction.js \
 	js/app/modules/mediaCard.js \
+	js/app/modules/meshInteraction.js \
 	js/app/modules/navigationModule.js \
 	js/app/modules/overflowArrangement.js \
 	js/app/modules/paperTemplate.js \

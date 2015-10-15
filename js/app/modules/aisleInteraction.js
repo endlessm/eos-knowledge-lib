@@ -1,3 +1,7 @@
+// Copyright 2015 Endless Mobile, Inc.
+
+/* exported AisleInteraction */
+
 const cairo = imports.gi.cairo;  // note: GI module, not native GJS module
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const EosMetrics = imports.gi.EosMetrics;
@@ -14,6 +18,7 @@ const ArchiveNotice = imports.app.widgets.archiveNotice;
 const ArticleHTMLRenderer = imports.app.articleHTMLRenderer;
 const ArticleObjectModel = imports.search.articleObjectModel;
 const ArticleSnippetCard = imports.app.modules.articleSnippetCard;
+const BackCover = imports.app.modules.backCover;
 const Compat = imports.app.compat.compat;
 const Config = imports.app.config;
 const Dispatcher = imports.app.dispatcher;
@@ -24,7 +29,6 @@ const Launcher = imports.app.interfaces.launcher;
 const MediaObjectModel = imports.search.mediaObjectModel;
 const Module = imports.app.interfaces.module;
 const QueryObject = imports.search.queryObject;
-const BackCover = imports.app.modules.backCover;
 const ReaderCard = imports.app.modules.readerCard;
 const ReaderDocumentCard = imports.app.modules.readerDocumentCard;
 const SidebarTemplate = imports.app.modules.sidebarTemplate;
