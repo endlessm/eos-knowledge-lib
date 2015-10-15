@@ -8,7 +8,6 @@
         },
         "window": {
             "type": "Window",
-            "properties": {},
             "slots": {
                 "search": {
                     "type": "SearchBox"
@@ -128,8 +127,7 @@
                         "message-valign": "center"
                     }
                 }
-            },
-            "properties": {}
+            }
         },
         "article-page": {
             "type": "ArticleStackModule",

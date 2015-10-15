@@ -8,7 +8,6 @@
         },
         "window": {
             "type": "EncyclopediaWindow",
-            "properties": {},
             "slots": {
                 "lightbox": {
                     "type": "LightboxModule",

@@ -18,6 +18,8 @@ function transform_v1_description(json) {
         let module = preset['modules'][parts[0]];
         for (let slot of parts.slice(1))
             module = module['slots'][slot];
+        if (!module.hasOwnProperty('properties'))
+            module['properties'] = {};
         module['properties'][property] = value;
     };
     switch (json.templateType) {
