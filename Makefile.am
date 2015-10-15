@@ -261,13 +261,13 @@ js_files = \
 	js/app/modules/setBannerModule.js \
 	js/app/modules/setGroupModule.js \
 	js/app/modules/sidebarTemplate.js \
+	js/app/modules/standalonePage.js \
 	js/app/modules/suggestedArticlesModule.js \
 	js/app/modules/suggestedCategoriesModule.js \
 	js/app/modules/textCard.js \
 	js/app/modules/tiledGridArrangement.js \
 	js/app/modules/twoVerticalTemplate.js \
 	js/app/modules/window.js \
-	js/app/reader/standalonePage.js \
 	js/app/reader/userSettingsModel.js \
 	js/app/runner.js \
 	js/app/styleClasses.js \

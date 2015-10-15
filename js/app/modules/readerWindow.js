@@ -1,9 +1,9 @@
 // Copyright 2014 Endless Mobile, Inc.
 
+/* exported ReaderWindow */
+
 const Endless = imports.gi.Endless;
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
-const Format = imports.format;
-const Gettext = imports.gettext;
 const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
@@ -12,14 +12,10 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const Actions = imports.app.actions;
-const Config = imports.app.config;
 const Dispatcher = imports.app.dispatcher;
 const Module = imports.app.interfaces.module;
-const StandalonePage = imports.app.reader.standalonePage;
+const StandalonePage = imports.app.modules.standalonePage;
 const StyleClasses = imports.app.styleClasses;
-
-String.prototype.format = Format.format;
-let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
 /**
  * Class: Reader.Window
@@ -65,7 +61,7 @@ const ReaderWindow = new Lang.Class({
         /**
          * Property: standalone-page
          *
-         * The <Reader.StandalonePage> widget created by this widget in order to
+         * The StandalonePage widget created by this widget in order to
          * show a standalone search result from the archive.
          * Read-only.
          */
@@ -124,12 +120,9 @@ const ReaderWindow = new Lang.Class({
 
         this.overview_page = this.factory.create_named_module('front-cover');
         this.back_cover = this.factory.create_named_module('back-cover');
-        this.standalone_page = new StandalonePage.StandalonePage();
-        this.standalone_page.infobar.archive_notice.label = _("This article is part of the archive of the magazine %s.").format(this.title);
-        this.standalone_page.infobar.title_image_uri = this.title_image_uri;
-        this.standalone_page.infobar.background_image_uri = this.home_background_uri;
         this.search_results_page = this.factory.create_named_module('search-page-template');
         this.search_results_page.get_style_context().add_class(StyleClasses.READER_SEARCH_RESULTS_PAGE);
+        this.standalone_page = this.factory.create_named_module('standalone-page');
 
         let dispatcher = Dispatcher.get_default();
         let navigation = this.factory.create_named_module('navigation');

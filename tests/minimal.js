@@ -226,6 +226,22 @@ const MinimalNavigation = new Lang.Class({
     },
 });
 
+const MinimalStandalonePage = new Lang.Class({
+    Name: 'MinimalStandalonePage',
+    Extends: Gtk.Frame,
+    Implements: [ Module.Module ],
+
+    Properties: {
+        'factory': GObject.ParamSpec.override('factory', Module.Module),
+        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
+    },
+
+    _init: function (props={}) {
+        this.parent(props);
+        this.infobar = new Gtk.Label();
+    },
+});
+
 function test_arrangement_compliance() {
     describe('implements Arrangement correctly', function () {
         let cards;

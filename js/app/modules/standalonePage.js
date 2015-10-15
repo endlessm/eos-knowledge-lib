@@ -1,5 +1,7 @@
 // Copyright 2015 Endless Mobile, Inc.
 
+/* exported StandalonePage */
+
 const Gettext = imports.gettext;
 const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
@@ -9,6 +11,7 @@ const Lang = imports.lang;
 const ArchiveNotice = imports.app.widgets.archiveNotice;
 const Config = imports.app.config;
 const ImagePreviewer = imports.app.widgets.imagePreviewer;
+const Module = imports.app.interfaces.module;
 const ReaderDocumentCard = imports.app.modules.readerDocumentCard;
 const StyleClasses = imports.app.styleClasses;
 const Utils = imports.app.utils;
@@ -182,13 +185,18 @@ const Banner = new Lang.Class({
  * Class: Reader.StandalonePage
  * The article page of the reader app.
  *
+ * FIXME: This is not a real module yet; it needs to be modularized.
+ *
  * This page shows an article, title, attribution, and infobar.
  */
 const StandalonePage = new Lang.Class({
     Name: 'StandalonePage',
     GTypeName: 'EknReaderStandalonePage',
     Extends: Gtk.Grid,
+    Implements: [ Module.Module ],
     Properties: {
+        'factory': GObject.ParamSpec.override('factory', Module.Module),
+        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
         /**
          * Property: document-card
          *
@@ -211,6 +219,32 @@ const StandalonePage = new Lang.Class({
             'Infobar', 'The widget to show that this is an archived article during global search',
             GObject.ParamFlags.READABLE,
             Gtk.Widget),
+
+        /**
+         * Property: title
+         *
+         * FIXME: when the infobar is a proper module this can go away.
+         */
+        'title': GObject.ParamSpec.string('title', 'Title', 'Title',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            ''),
+
+        /**
+         * Property: home-background-uri
+         * URI of the home page background
+         */
+        'home-background-uri': GObject.ParamSpec.string('home-background-uri',
+            'Home Background URI', 'Home Background URI',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
+
+        /**
+         * Property: title-image-uri
+         *
+         * FIXME: when the infobar is a proper module this can go away.
+         */
+        'title-image-uri': GObject.ParamSpec.string('title-image-uri',
+            'Title Image URI', 'Title Image URI',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
     },
 
     _init: function (props) {
@@ -218,6 +252,9 @@ const StandalonePage = new Lang.Class({
         props.orientation = Gtk.Orientation.VERTICAL;
 
         this.infobar = new Banner();
+        this.infobar.archive_notice.label = _("This article is part of the archive of the magazine %s.").format(this.title);
+        this.infobar.title_image_uri = this.title_image_uri;
+        this.infobar.background_image_uri = this.home_background_uri;
 
         this.parent(props);
         this._document_card = null;
