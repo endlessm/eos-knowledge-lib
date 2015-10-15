@@ -113,7 +113,7 @@ const MeshInteraction = new Lang.Class({
             });
         } else {
             let query_obj = new QueryObject.QueryObject({
-                limit: 100,  // FIXME arbitrary, can we say "no limit"?
+                limit: -1,
                 tags: [ Engine.HOME_PAGE_TAG ],
             });
             Engine.get_default().get_objects_by_query(query_obj, null, (engine, res) => {
