@@ -117,7 +117,14 @@ const MeshInteraction = new Lang.Class({
                 tags: [ Engine.HOME_PAGE_TAG ],
             });
             Engine.get_default().get_objects_by_query(query_obj, null, (engine, res) => {
-                let [models, get_more] = engine.get_objects_by_query_finish(res);
+                let models;
+                try {
+                    [models] = engine.get_objects_by_query_finish(res);
+                } catch (e) {
+                    logError(e, 'Failed to load sets from database');
+                    return;
+                }
+
                 // FIXME: This sorting should ideally happen in the arrangement
                 // once it has a sort-by API.
                 let sorted_models = models.sort((a, b) => {

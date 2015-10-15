@@ -62,7 +62,13 @@ const BuffetInteraction = new Lang.Class({
             limit: -1,
             tags: ['EknSetObject'],
         }), null, (engine, res) => {
-            let [models] = engine.get_objects_by_query_finish(res);
+            let models;
+            try {
+                [models] = engine.get_objects_by_query_finish(res);
+            } catch (e) {
+                logError(e, 'Failed to load sets from database');
+                return;
+            }
 
             Dispatcher.get_default().dispatch({
                 action_type: Actions.APPEND_SETS,
@@ -75,7 +81,13 @@ const BuffetInteraction = new Lang.Class({
                 limit: -1,
                 tags: ['EknArticleObject'],
             }), null, (engine, res) => {
-                let [models] = engine.get_objects_by_query_finish(res);
+                let models;
+                try {
+                    [models] = engine.get_objects_by_query_finish(res);
+                } catch (e) {
+                    logError(e, 'Failed to load articles from database');
+                    return;
+                }
 
                 Dispatcher.get_default().dispatch({
                     action_type: Actions.APPEND_ITEMS,
