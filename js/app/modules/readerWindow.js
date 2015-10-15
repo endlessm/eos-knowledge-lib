@@ -346,8 +346,8 @@ const ReaderWindow = new Lang.Class({
     },
 
     article_pages_visible: function () {
-        return this._stack.get_visible_child() !== this.search_results_page
-            && this._stack.get_visible_child() !== this.standalone_page;
+        return this._stack.get_visible_child() !== this.search_results_page &&
+            this._stack.get_visible_child() !== this.standalone_page;
     },
 
     get total_pages() {
