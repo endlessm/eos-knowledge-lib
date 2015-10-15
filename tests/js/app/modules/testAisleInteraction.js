@@ -1,3 +1,5 @@
+// Copyright 2015 Endless Mobile, Inc.
+
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
@@ -9,15 +11,15 @@ const Utils = imports.tests.utils;
 Utils.register_gresource();
 
 const Actions = imports.app.actions;
-const ArticleObjectModel = imports.search.articleObjectModel;
+const AisleInteraction = imports.app.modules.aisleInteraction;
 const AppUtils = imports.app.utils;
+const ArticleObjectModel = imports.search.articleObjectModel;
 const Launcher = imports.app.interfaces.launcher;
-const MockDispatcher = imports.tests.mockDispatcher;
 const Minimal = imports.tests.minimal;
+const MockDispatcher = imports.tests.mockDispatcher;
 const MockEngine = imports.tests.mockEngine;
 const MockFactory = imports.tests.mockFactory;
 const MockWidgets = imports.tests.mockWidgets;
-const AisleInteraction = imports.app.modules.aisleInteraction;
 const QueryObject = imports.search.queryObject;
 
 Gtk.init(null);

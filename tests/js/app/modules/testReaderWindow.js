@@ -1,3 +1,5 @@
+// Copyright 2015 Endless Mobile, Inc.
+
 const Endless = imports.gi.Endless;
 const GLib = imports.gi.GLib;
 const Gtk = imports.gi.Gtk;
@@ -46,6 +48,7 @@ describe('Window widget', function () {
         factory.add_named_mock('document-card', Minimal.MinimalDocumentCard);
         factory.add_named_mock('front-cover', MockWidgets.MockSidebarTemplate);
         factory.add_named_mock('back-cover', Minimal.MinimalBackCover);
+        factory.add_named_mock('standalone-page', Minimal.MinimalStandalonePage);
         factory.add_named_mock('document-arrangement', Minimal.MinimalArrangement);
         factory.add_named_mock('lightbox', Minimal.MinimalLightbox);
         factory.add_named_mock('navigation', Minimal.MinimalNavigation);

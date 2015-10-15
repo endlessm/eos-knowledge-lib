@@ -604,6 +604,9 @@ function transform_v1_description(json) {
                 "content": "search-results",
             },
         };
+        modules["standalone-page"] = {
+            "type": "StandalonePage",
+        },
         modules["search-results"] = {
             "type": "SearchModule",
             "slots": {

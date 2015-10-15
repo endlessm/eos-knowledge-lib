@@ -1,7 +1,8 @@
 // Copyright 2015 Endless Mobile, Inc.
 
-/* exported MinimalArrangement, MinimalBackCover, MinimalCard,
-MinimalDocumentCard, MinimalPage, MinimalInteraction, MinimalLightbox, MinimalModule */
+/* exported MinimalArrangement, MinimalBackCover, MinimalCard, MinimalDocumentCard,
+MinimalPage, MinimalHomePage, MinimalInteraction, MinimalLightbox, MinimalModule,
+MinimalNavigation, MinimalStandalonePage, test_arrangement_compliance */
 
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
@@ -222,6 +223,22 @@ const MinimalNavigation = new Lang.Class({
 
     _init: function (props={}) {
         this.parent(props);
+    },
+});
+
+const MinimalStandalonePage = new Lang.Class({
+    Name: 'MinimalStandalonePage',
+    Extends: Gtk.Frame,
+    Implements: [ Module.Module ],
+
+    Properties: {
+        'factory': GObject.ParamSpec.override('factory', Module.Module),
+        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
+    },
+
+    _init: function (props={}) {
+        this.parent(props);
+        this.infobar = new Gtk.Label();
     },
 });
 
