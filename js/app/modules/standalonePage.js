@@ -250,13 +250,13 @@ const StandalonePage = new Lang.Class({
     _init: function (props) {
         props = props || {};
         props.orientation = Gtk.Orientation.VERTICAL;
+        this.parent(props);
 
         this.infobar = new Banner();
         this.infobar.archive_notice.label = _("This article is part of the archive of the magazine %s.").format(this.title);
         this.infobar.title_image_uri = this.title_image_uri;
         this.infobar.background_image_uri = this.home_background_uri;
 
-        this.parent(props);
         this._document_card = null;
 
         this.add(this.infobar);
