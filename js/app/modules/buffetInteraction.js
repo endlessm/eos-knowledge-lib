@@ -2,6 +2,7 @@
 
 /* exported BuffetInteraction */
 
+const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Gdk = imports.gi.Gdk;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
@@ -11,10 +12,16 @@ const Lang = imports.lang;
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
 const Engine = imports.search.engine;
+const HistoryPresenter = imports.app.historyPresenter;
 const Interaction = imports.app.interfaces.interaction;
 const Launcher = imports.app.interfaces.launcher;
 const Module = imports.app.interfaces.module;
 const QueryObject = imports.search.queryObject;
+
+const Pages = {
+    HOME: 'home',
+    SET: 'set',
+};
 
 /**
  * Class: BuffetInteraction
@@ -56,6 +63,10 @@ const BuffetInteraction = new Lang.Class({
 
         this._load_theme();
 
+        this._history_presenter = new HistoryPresenter.HistoryPresenter({
+            history_model: new EosKnowledgePrivate.HistoryModel(),
+        });
+
         // Load all sets, with which to populate the highlights and thematic
         // pages
         Engine.get_default().get_objects_by_query(new QueryObject.QueryObject({
@@ -95,6 +106,23 @@ const BuffetInteraction = new Lang.Class({
                 });
             });
         });
+
+        Dispatcher.get_default().register((payload) => {
+            switch (payload.action_type) {
+                case Actions.SET_CLICKED:
+                    this._history_presenter.set_current_item_from_props({
+                        page_type: Pages.SET,
+                        model: payload.model,
+                    });
+                    break;
+            }
+        });
+
+        this._history_presenter.set_current_item_from_props({
+            page_type: Pages.HOME,
+        });
+        this._history_presenter.connect('history-item-changed',
+            this._on_history_item_change.bind(this));
     },
 
     _load_theme: function () {
@@ -102,6 +130,30 @@ const BuffetInteraction = new Lang.Class({
         provider.load_from_resource('/com/endlessm/knowledge/data/css/endless_buffet.css');
         Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(),
             provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+    },
+
+    _on_history_item_change: function (presenter, item, is_going_back) {
+        let dispatcher = Dispatcher.get_default();
+        dispatcher.dispatch({
+            action_type: Actions.HIDE_MEDIA,
+        });
+
+        switch (item.page_type) {
+            case Pages.SET:
+                dispatcher.dispatch({
+                    action_type: Actions.SHOW_SET,
+                    model: item.model,
+                });
+                dispatcher.dispatch({
+                    action_type: Actions.SHOW_SECTION_PAGE,
+                });
+                break;
+            case Pages.HOME:
+                dispatcher.dispatch({
+                    action_type: Actions.SHOW_HOME_PAGE,
+                });
+                break;
+        }
     },
 
     // Helper function for the three Launcher implementation methods. Returns

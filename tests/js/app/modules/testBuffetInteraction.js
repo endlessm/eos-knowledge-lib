@@ -145,4 +145,44 @@ describe('Buffet interaction', function () {
             .toHaveBeenCalledWith(jasmine.objectContaining({ tags: ['EknArticleObject'] }),
                 jasmine.any(Object), jasmine.any(Function));
     });
+
+    describe('when a set is clicked', function () {
+        beforeEach(function () {
+            dispatcher.dispatch({
+                action_type: Actions.SET_CLICKED,
+                model: set_models[0],
+            });
+        });
+
+        it('changes to the set page', function () {
+            expect(dispatcher.last_payload_with_type(Actions.SHOW_SECTION_PAGE))
+                .toBeDefined();
+        });
+
+        it('signals that a set should be loaded', function () {
+            expect(dispatcher.last_payload_with_type(Actions.SHOW_SET).model)
+                .toBe(set_models[0]);
+        });
+
+        it('goes back to the home page in the history', function () {
+            dispatcher.reset();
+            dispatcher.dispatch({
+                action_type: Actions.HISTORY_BACK_CLICKED,
+            });
+            expect(dispatcher.last_payload_with_type(Actions.SHOW_HOME_PAGE))
+                .toBeDefined();
+        });
+
+        it('goes forward to the set page in the history again', function () {
+            dispatcher.dispatch({
+                action_type: Actions.HISTORY_BACK_CLICKED,
+            });
+            dispatcher.reset();
+            dispatcher.dispatch({
+                action_type: Actions.HISTORY_FORWARD_CLICKED,
+            });
+            expect(dispatcher.last_payload_with_type(Actions.SHOW_SECTION_PAGE))
+                .toBeDefined();
+        });
+    });
 });
