@@ -113,10 +113,13 @@ function transform_v1_description(json) {
             "slots": {
                 "arrangement": "results-arrangement",
                 "card-type": "results-card",
+                "article-suggestions": null,
+                "category-suggestions": null,
             },
             "properties": {
                 "halign": "center",
-                "message-justify": "center",
+                "message-justify": "left",
+                "message-halign": "center",
             },
         };
         modules["home-card"] = {
@@ -308,6 +311,8 @@ function transform_v1_description(json) {
             "slots": {
                 "arrangement": "results-arrangement",
                 "card-type": "results-card",
+                "article-suggestions": null,
+                "category-suggestions": null,
             },
             "properties": {
                 "message-valign": "center",
@@ -476,6 +481,8 @@ function transform_v1_description(json) {
             "type": "SearchModule",
             "properties": {
                 "margin-top": 20,
+                "message-halign": "start",
+                "halign": "start",
             },
             "slots": {
                 "arrangement": {
@@ -486,6 +493,8 @@ function transform_v1_description(json) {
                     },
                 },
                 "card-type": "results-card",
+                "article-suggestions": null,
+                "category-suggestions": null,
             },
         };
         modules["results-card"] = {
@@ -623,6 +632,9 @@ function transform_v1_description(json) {
         },
         modules["search-results"] = {
             "type": "SearchModule",
+            "properties": {
+                "message-halign": "center",
+            },
             "slots": {
                 "arrangement": {
                     "type": "GridArrangement",
@@ -633,11 +645,24 @@ function transform_v1_description(json) {
                     },
                 },
                 "card-type": "results-card",
+                "article-suggestions": null,
+                "category-suggestions": null,
             },
+        };
+        modules["article-suggestions"] = {
+            "type": "SuggestedArticlesModule",
+            "slots": {
+                "arrangement": "suggestions-arrangement",
+                "card-type": "results-card",
+            },
+        };
+        modules["suggestions-arrangement"] = {
+            "type": "OverflowArrangement",
             "properties": {
-                "message-halign": "center",
-                "message-justify": "center",
-            }
+                "orientation": "horizontal",
+                "halign": "center",
+                "valign": "start",
+            },
         };
         break;
     default:

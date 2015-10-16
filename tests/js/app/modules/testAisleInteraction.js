@@ -473,6 +473,31 @@ describe('Aisle interaction', function () {
             });
         });
 
+        it('dispatches suggested articles to be dispatched upon request', function (done) {
+            dispatcher.dispatch({
+                action_type: Actions.NEED_MORE_SUGGESTED_ARTICLES,
+                query: 'Nothing here',
+            });
+            Mainloop.idle_add(function () {
+                expect(engine.get_objects_by_query)
+                    .toHaveBeenCalledWith(jasmine.objectContaining({
+                        sort: QueryObject.QueryObjectSort.ARTICLE_NUMBER,
+                        tags: ['EknArticleObject'],
+                    }),
+                    jasmine.any(Object),
+                    jasmine.any(Function));
+
+                // Expect all the appropriate dispatches to be made
+                expect(dispatcher.dispatched_payloads).toContain(jasmine.objectContaining({
+                    action_type: Actions.APPEND_SUGGESTED_ARTICLES,
+                    models: MOCK_RESULTS,
+                }));
+
+                done();
+                return GLib.SOURCE_REMOVE;
+            });
+        });
+
         it('dispatches a pair of search-started and search-failed if the search fails', function () {
             spyOn(window, 'logError');  // silence console output
             engine.get_objects_by_query_finish.and.throwError(new Error('jet fuel can\'t melt dank memes'));

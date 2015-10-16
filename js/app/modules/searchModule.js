@@ -12,6 +12,7 @@ const Dispatcher = imports.app.dispatcher;
 const InfiniteScrolledWindow = imports.app.widgets.infiniteScrolledWindow;
 const Module = imports.app.interfaces.module;
 const StyleClasses = imports.app.styleClasses;
+const Utils = imports.app.utils;
 
 String.prototype.format = Format.format;
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
@@ -29,7 +30,8 @@ const SPINNER_PAGE_NAME = 'spinner';
  *
  * CSS classes:
  *   search-results - on the widget itself
- *   results-message - on the text showing a no results message
+ *   results-message-title - on the title text showing a no results message
+ *   results-message-subtitle - on the subtitle text showing a no results message
  *   error-message - on the text showing an error
  */
 const SearchModule = new Lang.Class({
@@ -77,16 +79,23 @@ const SearchModule = new Lang.Class({
     },
 
     Template: 'resource:///com/endlessm/knowledge/widgets/searchModule.ui',
-    InternalChildren: [ 'message' ],
+    InternalChildren: [ 'message-title', 'message-subtitle', 'no-results-grid' ],
 
     _init: function (props={}) {
         this.parent(props);
         this._arrangement = this.create_submodule('arrangement');
         this.add_named(this._arrangement, RESULTS_PAGE_NAME);
 
-        this._message.justify = this.message_justify;
-        this._message.valign = this.message_valign;
-        this._message.halign = this.message_halign;
+        this._suggested_articles_module = this.create_submodule('article-suggestions');
+        if (this._suggested_articles_module)
+            this._no_results_grid.add(this._suggested_articles_module);
+        this._suggested_categories_module = this.create_submodule('category-suggestions');
+        if (this._suggested_categories_module)
+            this._no_results_grid.add(this._suggested_categories_module);
+
+        this._message_title.justify = this._message_subtitle.justify = this.message_justify;
+        this._message_title.valign = this._message_subtitle.valign = this.message_valign;
+        this._message_title.halign = this._message_subtitle.halign = this.message_halign;
 
         let dispatcher = Dispatcher.get_default();
         if (this._arrangement instanceof InfiniteScrolledWindow.InfiniteScrolledWindow) {
@@ -107,7 +116,7 @@ const SearchModule = new Lang.Class({
                 this.visible_child_name = SPINNER_PAGE_NAME;
                 break;
             case Actions.SEARCH_READY:
-                this._finish_search();
+                this._finish_search(payload.query);
                 break;
             case Actions.SEARCH_FAILED:
                 this._finish_search_with_error(payload.error);
@@ -124,7 +133,7 @@ const SearchModule = new Lang.Class({
 
     // Module override
     get_slot_names: function () {
-        return ['arrangement', 'card-type'];
+        return ['arrangement', 'card-type', 'article-suggestions', 'category-suggestions'];
     },
 
     _add_card: function (model) {
@@ -140,16 +149,34 @@ const SearchModule = new Lang.Class({
         this._arrangement.add_card(card);
     },
 
-    _finish_search: function () {
+    _finish_search: function (query) {
         let count = this._arrangement.get_cards().length;
         if (count > 0) {
             this.visible_child_name = RESULTS_PAGE_NAME;
         } else {
-            let context = this._message.get_style_context();
+            let context = this._message_title.get_style_context();
             context.remove_class(StyleClasses.ERROR_MESSAGE);
-            context.add_class(StyleClasses.RESULTS_MESSAGE);
-            this._message.label =
-                _("There are no results that match your search.\nTry searching for something else.");
+            context.add_class(StyleClasses.RESULTS_MESSAGE_TITLE);
+            // FIXME: I think we want to set a larger line-height value here
+            // but not possible in GTK CSS
+            this._message_title.label =
+                "<span size=\"xx-large\">" + _("Sorry! :-(") + "</span>\n\n" +
+                Utils.format_ui_string(this._message_title.get_style_context(), _("We didn't find any results that match your search for “%s”\n"), query, StyleClasses.QUERY);
+
+            this._message_subtitle.label = _("WE RECOMMEND THAT YOU:\n\n" +
+                  "  •  Check your spelling\n" +
+                  "  •  Try different words with the same meaning as the ones you just typed\n" +
+                  "  •  Try again with more generic words");
+
+            Dispatcher.get_default().dispatch({
+                action_type: Actions.CLEAR_SUGGESTED_ARTICLES,
+            });
+
+            Dispatcher.get_default().dispatch({
+                action_type: Actions.NEED_MORE_SUGGESTED_ARTICLES,
+                query: query,
+            });
+
             this.visible_child_name = MESSAGE_PAGE_NAME;
         }
     },
@@ -159,10 +186,11 @@ const SearchModule = new Lang.Class({
     // useful error message
     _finish_search_with_error: function (error) {
         this._arrangement.clear();
-        let context = this._message.get_style_context();
-        context.remove_class(StyleClasses.RESULTS_MESSAGE);
+        let context = this._message_title.get_style_context();
+        context.remove_class(StyleClasses.RESULTS_MESSAGE_TITLE);
         context.add_class(StyleClasses.ERROR_MESSAGE);
-        this._message.label = _("There was an error during your search.");
+        this._message_title.label = _("There was an error during your search.");
+        this._message_subtitle = "";
         this.visible_child_name = MESSAGE_PAGE_NAME;
     },
 });

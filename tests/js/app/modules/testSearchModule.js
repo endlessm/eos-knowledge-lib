@@ -88,8 +88,14 @@ describe('Search module', function () {
             action_type: Actions.SEARCH_READY,
             query: 'myfoobar',
         });
+
+        expect(dispatcher.dispatched_payloads).toContain(jasmine.objectContaining({
+            action_type: Actions.NEED_MORE_SUGGESTED_ARTICLES,
+            query: 'myfoobar',
+        }));
+
         expect(search_module.visible_child_name).toBe('message');
-        expect(search_module).toHaveDescendantWithCssClass(StyleClasses.RESULTS_MESSAGE);
+        expect(search_module).toHaveDescendantWithCssClass(StyleClasses.RESULTS_MESSAGE_TITLE);
     });
 
     it('displays the message page with the error CSS class when the search fails', function () {

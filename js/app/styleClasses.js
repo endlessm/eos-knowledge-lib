@@ -539,10 +539,16 @@ const HEADLINE = 'headline';
 const QUERY = 'query';
 
 /**
- * Constant: RESULTS_MESSAGE
+ * Constant: RESULTS_MESSAGE_TITLE
  * Matches search results messages, including "no results"
  */
-const RESULTS_MESSAGE = 'results-message';
+const RESULTS_MESSAGE_TITLE = 'results-message-title';
+
+/**
+ * Constant: RESULTS_MESSAGE_SUBTITLE
+ * Matches search results messages, including "no results"
+ */
+const RESULTS_MESSAGE_SUBTITLE = 'results-message-subtitle';
 
 /**
  * Constant: ERROR_MESSAGE

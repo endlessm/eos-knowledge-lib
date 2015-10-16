@@ -186,6 +186,9 @@ const AisleInteraction = new Lang.Class({
                 case Actions.NEED_MORE_SEARCH:
                     this._load_more_results(Actions.APPEND_SEARCH);
                     break;
+                case Actions.NEED_MORE_SUGGESTED_ARTICLES:
+                    this._load_more_suggestions(payload.query);
+                    break;
                 case Actions.SEARCH_TEXT_ENTERED:
                     this._on_search(payload.text);
                     break;
@@ -488,6 +491,45 @@ const AisleInteraction = new Lang.Class({
                 });
             }
             this._get_more_results_query = get_more_results_query;
+        });
+    },
+
+    // A poor man's hash function
+    _hash_string: function (str) {
+        return str.split('').reduce((num, chr) => {
+            return num + chr.charCodeAt(0);
+        }, 0);
+    },
+
+    _load_more_suggestions: function (query) {
+        let hash = this._hash_string(query);
+        let random_query = new QueryObject.QueryObject({
+            offset: hash % TOTAL_ARTICLES,
+            limit: RESULTS_SIZE,
+            sort: QueryObject.QueryObjectSort.ARTICLE_NUMBER,
+            tags: ['EknArticleObject'],
+        });
+        Engine.get_default().get_objects_by_query(random_query, null, (engine, task) => {
+            let random_results, get_more_results_query;
+            try {
+                [random_results, get_more_results_query] = engine.get_objects_by_query_finish(task);
+            } catch (error) {
+                Dispatcher.get_default().dispatch({
+                    action_type: Actions.SEARCH_FAILED,
+                    query: item.query,
+                    error: error,
+                });
+                logError(error);
+                return;
+            }
+            // Reseed the pseudorandom function so that we get the same random sequence
+            GLib.random_set_seed(hash);
+            // Generate a pseudorandom sequence of numbers to use to shuffle the array
+            let rand_sequence = Array.apply(null, {length: RESULTS_SIZE}).map(GLib.random_double);
+            Dispatcher.get_default().dispatch({
+                action_type: Actions.APPEND_SUGGESTED_ARTICLES,
+                models: Utils.shuffle(random_results, rand_sequence).slice(0, 6),
+            });
         });
     },
 

@@ -8,6 +8,7 @@
     <property name="orientation">vertical</property>
     <child>
       <object class="GtkLabel" id="title">
+        <property name="halign">start</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="wrap">True</property>

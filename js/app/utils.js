@@ -127,3 +127,70 @@ function get_web_plugin_dbus_name () {
     let pid = new Gio.Credentials().get_unix_pid();
     return app_id + pid;
 }
+
+function _rgba_to_markup_color(rgba) {
+    // Ignore alpha, as Pango doesn't render it.
+    return '#%02x%02x%02x'.format(rgba.red * 255, rgba.green * 255,
+        rgba.blue * 255);
+}
+
+function style_context_to_markup_span(context, state) {
+    let font = context.get_font(state);
+    let foreground = context.get_color(state);
+    const _PANGO_STYLES = ['normal', 'oblique', 'italic'];
+    // Unfortunately, ignore the font size; PangoFontDescriptions don't deal
+    // well with font sizes in ems.
+    let properties = {
+        'face': font.get_family(),
+        'style': _PANGO_STYLES[font.get_style()],
+        'weight': font.get_weight(),
+        'color': _rgba_to_markup_color(foreground),
+    };
+    let properties_string = Object.keys(properties).map((key) =>
+        key + '="' + properties[key] + '"').join(' ');
+    return '<span ' + properties_string + '>';
+}
+
+
+/*
+   This allows styling a sub-region of the GtkLabel with an extra CSS class.
+   For example, you can specify:
+   .title { color: white; }
+   .title.query { weight: bold; color: black; }
+   It supports the CSS properties font-family, font-weight, font-style, and
+   color.
+   For example, with the above CSS,
+
+        format_ui_string(context, 'You searched for "%s"', 'cat pictures', 'query')
+
+   will return:
+
+        'You searched for "<span weight="bold" color="#000000">cat pictures</span>"'.
+*/
+function format_ui_string (context, ui_string, substring, style_class) {
+    context.save();
+    context.add_class(style_class);
+    let span = style_context_to_markup_span(context, Gtk.StateFlags.NORMAL);
+    context.restore();
+
+    return ui_string.format(span + substring + '</span>');
+}
+
+// The Fisher-Yates shuffle for randomizing an array
+// Shuffles in place and returns the modified array
+function shuffle (array, sequence) {
+    let current_index = array.length;
+    // While there remain elements to shuffle...
+    while (0 !== current_index) {
+
+        // Pick a remaining element...
+        let random_index = Math.floor(sequence[current_index - 1] * current_index);
+        current_index -= 1;
+
+        // And swap it with the current element.
+        let temp_value = array[current_index];
+        array[current_index] = array[random_index];
+        array[random_index] = temp_value;
+    }
+    return array;
+}
