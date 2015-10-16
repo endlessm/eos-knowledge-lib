@@ -62,6 +62,10 @@ const MockDispatcher = new Lang.Class({
     last_payload_with_type: function (action_type) {
         return this.payloads_with_type(action_type).pop();
     },
+
+    reset: function () {
+        this.dispatched_payloads = [];
+    },
 });
 
 // Creates a new MockDispatcher and sets it up as the dispatcher singleton. Use
