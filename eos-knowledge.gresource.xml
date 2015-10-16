@@ -128,6 +128,7 @@
     <file>js/app/webkitContextSetup.js</file>
     <file>js/app/widgets/archiveNotice.js</file>
     <file>js/app/widgets/eknWebview.js</file>
+    <file>js/app/widgets/imageCoverFrame.js</file>
     <file>js/app/widgets/imagePreviewer.js</file>
     <file>js/app/widgets/inArticleSearch.js</file>
     <file>js/app/widgets/infiniteScrolledWindow.js</file>
