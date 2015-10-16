@@ -69,6 +69,18 @@ const ReaderCard = new Lang.Class({
             this._hover_frame.hide();
         });
     },
+
+    // For entirely fixed-size cards
+
+    vfunc_get_preferred_width: function () {
+        let [min] = this.parent();
+        return [min, min];
+    },
+
+    vfunc_get_preferred_height: function () {
+        let [min] = this.parent();
+        return [min, min];
+    },
 });
 
 function get_css_for_module (css_data, num) {
