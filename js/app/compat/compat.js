@@ -649,21 +649,6 @@ function transform_v1_description(json) {
                 "category-suggestions": null,
             },
         };
-        modules["article-suggestions"] = {
-            "type": "SuggestedArticlesModule",
-            "slots": {
-                "arrangement": "suggestions-arrangement",
-                "card-type": "results-card",
-            },
-        };
-        modules["suggestions-arrangement"] = {
-            "type": "OverflowArrangement",
-            "properties": {
-                "orientation": "horizontal",
-                "halign": "center",
-                "valign": "start",
-            },
-        };
         break;
     default:
         throw new Error('Unrecognized v1 preset type: ' + json.templateType);
