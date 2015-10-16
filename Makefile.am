@@ -481,7 +481,7 @@ introspection_sources = \
 	$(eosknowledgeprivate_headers) \
 	$(NULL)
 
-EosKnowledgePrivate-1.0.gir: libeosknowledgeprivate.la Makefile
+EosKnowledgePrivate-1.0.gir: libeosknowledgeprivate.la
 EosKnowledgePrivate_1_0_gir_INCLUDES = \
 	GLib-2.0 \
 	GObject-2.0 \
