@@ -287,6 +287,7 @@ javascript_tests = \
 	tests/js/app/modules/testSuggestedArticlesModule.js \
 	tests/js/app/modules/testSuggestedCategoriesModule.js \
 	tests/js/app/modules/testTextCard.js \
+	tests/js/app/modules/testThematicModule.js \
 	tests/js/app/modules/testTiledGridArrangement.js \
 	tests/js/app/modules/testWindow.js \
 	tests/js/app/testAisleUserSettingsModel.js \
