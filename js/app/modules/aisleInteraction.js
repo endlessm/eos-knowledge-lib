@@ -323,7 +323,7 @@ const AisleInteraction = new Lang.Class({
                     action_type: Actions.SEARCH_STARTED,
                     query: item.query,
                 });
-                this._window.show_search_results_page();
+                this._window.show_search_page();
                 let query_obj = new QueryObject.QueryObject({
                     query: item.query,
                     limit: RESULTS_SIZE,
@@ -619,9 +619,9 @@ const AisleInteraction = new Lang.Class({
 
         let current_article = index - 1;
         if (index === 0)
-            this._window.show_overview_page(animation_type);
+            this._window.show_front_page(animation_type);
         else if (index === this._window.total_pages - 1)
-            this._window.show_back_cover(animation_type);
+            this._window.show_back_page(animation_type);
         else
             this._window.show_article_page(current_article, animation_type);
 
@@ -831,7 +831,9 @@ const AisleInteraction = new Lang.Class({
             card_props.page_number = model.article_number;
         }
 
-        let document_card = this.factory.create_named_module('document-card', card_props);
+        // FIXME: This should probably be a slot on a document page and not the
+        // interaction model.
+        let document_card = this.create_submodule('document-card', card_props);
         document_card.connect('ekn-link-clicked', (card, uri) => {
             this._remove_link_tooltip();
             let scheme = GLib.uri_parse_scheme(uri);
@@ -950,6 +952,6 @@ const AisleInteraction = new Lang.Class({
     },
 
     get_slot_names: function () {
-        return ['window'];
+        return ['window', 'document-card'];
     },
 });

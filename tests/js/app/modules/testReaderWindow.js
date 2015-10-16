@@ -45,16 +45,30 @@ describe('Window widget', function () {
         dispatcher = MockDispatcher.mock_default();
 
         factory = new MockFactory.MockFactory();
+        factory.add_named_mock('top-bar-search', MockWidgets.MockSearchBox);
         factory.add_named_mock('document-card', Minimal.MinimalDocumentCard);
-        factory.add_named_mock('front-cover', MockWidgets.MockSidebarTemplate);
-        factory.add_named_mock('back-cover', Minimal.MinimalBackCover);
+        factory.add_named_mock('front-page', MockWidgets.MockSidebarTemplate);
+        factory.add_named_mock('back-page', Minimal.MinimalBackCover);
+        factory.add_named_mock('search-page', Minimal.MinimalPage);
         factory.add_named_mock('standalone-page', Minimal.MinimalStandalonePage);
         factory.add_named_mock('document-arrangement', Minimal.MinimalArrangement);
         factory.add_named_mock('lightbox', Minimal.MinimalLightbox);
         factory.add_named_mock('navigation', Minimal.MinimalNavigation);
+        factory.add_named_mock('window', ReaderWindow.ReaderWindow, {
+            'front-page': 'front-page',
+            'back-page': 'back-page',
+            'search-page': 'search-page',
+            'standalone-page': 'standalone-page',
+            'document-arrangement': 'document-arrangement',
+            'navigation': 'navigation',
+            'lightbox': 'lightbox',
+            'search': 'top-bar-search',
+        });
+
         view = new ReaderWindow.ReaderWindow({
             application: app,
             factory: factory,
+            factory_name: 'window',
         });
         for (let i = 0; i < 15; i++) {
             let a = factory.create_named_module('document-card');
@@ -67,14 +81,6 @@ describe('Window widget', function () {
     });
 
     it('constructs', function () {});
-
-    it('has a back-cover widget', function () {
-        expect(view.back_cover).toBeA(Gtk.Widget);
-    });
-
-    it('has an overview-page widget', function () {
-        expect(view.overview_page).toBeA(Gtk.Widget);
-    });
 
     it('has a standalone-page widget', function () {
         expect(view.standalone_page).toBeA(Gtk.Widget);

@@ -40,25 +40,6 @@ const ReaderWindow = new Lang.Class({
         'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
 
         /**
-         * Property: overview-page
-         *
-         * The overview page widget created by this widget. Read-only.
-         */
-        'overview-page': GObject.ParamSpec.object('overview-page', 'Overview Page',
-            'The splash page that appears when the app starts.',
-            GObject.ParamFlags.READABLE, Gtk.Widget.$gtype),
-
-        /**
-         * Property: back-cover
-         *
-         * The <BackCover> widget created by this widget. Read-only.
-         */
-        'back-cover': GObject.ParamSpec.object('back-cover', 'Back cover',
-            'The back cover at the end of the app.',
-            GObject.ParamFlags.READABLE,
-            Gtk.Widget),
-
-        /**
          * Property: standalone-page
          *
          * The StandalonePage widget created by this widget in order to
@@ -118,14 +99,14 @@ const ReaderWindow = new Lang.Class({
         props = props || {};
         this.parent(props);
 
-        this.overview_page = this.factory.create_named_module('front-cover');
-        this.back_cover = this.factory.create_named_module('back-cover');
-        this.search_results_page = this.factory.create_named_module('search-page-template');
-        this.search_results_page.get_style_context().add_class(StyleClasses.READER_SEARCH_RESULTS_PAGE);
-        this.standalone_page = this.factory.create_named_module('standalone-page');
+        this._front_page = this.create_submodule('front-page');
+        this._back_page = this.create_submodule('back-page');
+        this._search_page = this.create_submodule('search-page');
+        this.standalone_page = this.create_submodule('standalone-page');
+        this._search_page.get_style_context().add_class(StyleClasses.READER_SEARCH_RESULTS_PAGE);
 
         let dispatcher = Dispatcher.get_default();
-        let navigation = this.factory.create_named_module('navigation');
+        let navigation = this.create_submodule('navigation');
 
         this.issue_nav_buttons = new Endless.TopbarNavButton({
             no_show_all: true,
@@ -167,7 +148,7 @@ const ReaderWindow = new Lang.Class({
         this.issue_nav_buttons.back_button.label = 'Reset';
         this.issue_nav_buttons.forward_button.label = 'Next week';
 
-        let lightbox = this.factory.create_named_module('lightbox');
+        let lightbox = this.create_submodule('lightbox');
 
         this._article_pages = [];
 
@@ -180,18 +161,18 @@ const ReaderWindow = new Lang.Class({
             this.emit('debug-hotkey-pressed');
         }.bind(this));
 
-        this._search_box = this.factory.create_named_module('top-bar-search');
+        this._search_box = this.create_submodule('search');
 
         this._stack = new Gtk.Stack({
             transition_duration: this._STACK_TRANSITION_TIME,
         });
-        this._arrangement = this.factory.create_named_module('document-arrangement', {
+        this._arrangement = this.create_submodule('document-arrangement', {
             transition_duration: this._STACK_TRANSITION_TIME,
         });
-        this._stack.add(this.overview_page);
-        this._stack.add(this.back_cover);
+        this._stack.add(this._front_page);
+        this._stack.add(this._back_page);
         this._stack.add(this.standalone_page);
-        this._stack.add(this.search_results_page);
+        this._stack.add(this._search_page);
         this._stack.add(this._arrangement);
         this._stack.show_all();
         navigation.add(this._stack);
@@ -209,8 +190,8 @@ const ReaderWindow = new Lang.Class({
             left_topbar_widget: this._history_buttons,
             center_topbar_widget: box,
         });
-        this.overview_page.show_all();
-        this._stack.set_visible_child(this.overview_page);
+        this._front_page.show_all();
+        this._stack.set_visible_child(this._front_page);
 
         this._stack.connect('notify::transition-running', () => {
             if (this._stack.transition_running) {
@@ -227,7 +208,7 @@ const ReaderWindow = new Lang.Class({
         let dispatcher = Dispatcher.get_default();
         dispatcher.dispatch({
             action_type: Actions.NAV_BACK_ENABLED_CHANGED,
-            enabled: this.article_pages_visible() && this._stack.visible_child !== this.overview_page,
+            enabled: this.article_pages_visible() && this._stack.visible_child !== this._front_page,
         });
         dispatcher.dispatch({
             action_type: Actions.NAV_FORWARD_ENABLED_CHANGED,
@@ -242,8 +223,8 @@ const ReaderWindow = new Lang.Class({
             progress_label.current_page = i + 2;
             progress_label.total_pages = this.total_pages;
         }
-        this.back_cover.progress_label.current_page = this.total_pages;
-        this.back_cover.progress_label.total_pages = this.total_pages;
+        this._back_page.progress_label.current_page = this.total_pages;
+        this._back_page.progress_label.total_pages = this.total_pages;
     },
 
     /*
@@ -291,9 +272,9 @@ const ReaderWindow = new Lang.Class({
         this._show_standalone_page();
     },
 
-    show_search_results_page: function () {
+    show_search_page: function () {
         this._stack.set_transition_type(Gtk.StackTransitionType.CROSSFADE);
-        this._stack.set_visible_child(this.search_results_page);
+        this._stack.set_visible_child(this._search_page);
     },
 
     show_article_page: function (index, animation_type) {
@@ -304,16 +285,16 @@ const ReaderWindow = new Lang.Class({
         this._arrangement.set_visible_child(page);
     },
 
-    show_overview_page: function (animation_type) {
+    show_front_page: function (animation_type) {
         this._set_stack_transition(animation_type);
-        this.overview_page.show();
-        this._stack.set_visible_child(this.overview_page);
+        this._front_page.show();
+        this._stack.set_visible_child(this._front_page);
     },
 
-    show_back_cover: function (animation_type) {
+    show_back_page: function (animation_type) {
         this._set_stack_transition(animation_type);
-        this.back_cover.show();
-        this._stack.set_visible_child(this.back_cover);
+        this._back_page.show();
+        this._stack.set_visible_child(this._back_page);
     },
 
     // Converts from our LoadingAnimationType enum to a GtkStackTransitionType
@@ -346,12 +327,12 @@ const ReaderWindow = new Lang.Class({
     },
 
     article_pages_visible: function () {
-        return this._stack.get_visible_child() !== this.search_results_page &&
+        return this._stack.get_visible_child() !== this._search_page &&
             this._stack.get_visible_child() !== this.standalone_page;
     },
 
     get total_pages() {
-        // Done page and overview page account for extra incrementation.
+        // Front and back page account for extra incrementation.
         return this._article_pages.length + 2;
     },
 
@@ -365,5 +346,10 @@ const ReaderWindow = new Lang.Class({
             cursor = Gdk.Cursor.new_for_display(Gdk.Display.get_default(),
                 Gdk.CursorType.WATCH);
         gdk_window.cursor = cursor;
+    },
+
+    get_slot_names: function () {
+        return ['front-page', 'back-page', 'search-page', 'standalone-page',
+            'document-arrangement', 'navigation', 'lightbox', 'search'];
     },
 });

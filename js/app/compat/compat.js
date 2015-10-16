@@ -359,15 +359,21 @@ function transform_v1_description(json) {
                 "home-background-uri": json["backgroundHomeURI"],
                 "results-background-uri": json["backgroundSectionURI"],
             },
+            "slots": {
+                "home-page": "home-page",
+                "search-page": "search-page",
+                "article-page": "article-page",
+                "lightbox": "lightbox",
+            },
         };
-        modules["home-page-template"] = {
+        modules["home-page"] = {
             "type": "EncyclopediaCoverTemplate",
             "slots": {
                 "top": "app-banner",
                 "bottom": "home-search-box",
             },
         };
-        modules["search-page-template"] = {
+        modules["search-page"] = {
             "type": "DividedBannerTemplate",
             "slots": {
                 "top-left": "article-app-banner",
@@ -393,7 +399,7 @@ function transform_v1_description(json) {
                 "content": "search-results",
             },
         };
-        modules["article-page-template"] = {
+        modules["article-page"] = {
             "type": "DividedBannerTemplate",
             "slots": {
                 "top-left": "article-app-banner",
@@ -495,6 +501,7 @@ function transform_v1_description(json) {
             "type": "AisleInteraction",
             "slots": {
                 "window": "window",
+                "document-card": "document-card",
             },
         };
         modules["window"] = {
@@ -503,6 +510,16 @@ function transform_v1_description(json) {
                 "title": json["appTitle"],
                 "title-image-uri": json["titleImageURI"],
                 "home-background-uri": json["backgroundHomeURI"],
+            },
+            "slots": {
+                "front-page": "front-page",
+                "back-page": "back-page",
+                "search-page": "search-page",
+                "standalone-page": "standalone-page",
+                "document-arrangement": "document-arrangement",
+                "navigation": "navigation",
+                "lightbox": "lightbox",
+                "search": "top-bar-search",
             },
         };
         modules["navigation"] = {
@@ -520,7 +537,7 @@ function transform_v1_description(json) {
                 "margin-start": 75,
             },
         };
-        modules["front-cover"] = {
+        modules["front-page"] = {
             "type": "SidebarTemplate",
             "slots": {
                 "content": "app-banner",
@@ -534,7 +551,7 @@ function transform_v1_description(json) {
                 "column-spacing": 120,
             },
         };
-        modules["back-cover"] = {
+        modules["back-page"] = {
             "type": "BackCover",
             "properties": {
                 "background-image-uri": json["backgroundSectionURI"],
@@ -591,7 +608,7 @@ function transform_v1_description(json) {
                 "halign": "center",
             },
         };
-        modules["search-page-template"] = {
+        modules["search-page"] = {
             "type": "BannerTemplate",
             "properties": {
                 "separator-margin": 30,
