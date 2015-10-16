@@ -9,6 +9,7 @@ const ArticleObjectModel = imports.search.articleObjectModel;
 const HighlightsModule = imports.app.modules.highlightsModule;
 const Minimal = imports.tests.minimal;
 const MockDispatcher = imports.tests.mockDispatcher;
+const MockEngine = imports.tests.mockEngine;
 const MockFactory = imports.tests.mockFactory;
 const SetObjectModel = imports.search.setObjectModel;
 const Utils = imports.tests.utils;
@@ -53,7 +54,7 @@ describe('Highlights module', function () {
     });
 
     describe('after dispatching sets', function () {
-        let arrangements, headers, set_models;
+        let arrangements, headers, set_models, article_models, engine;
 
         beforeEach(function () {
             set_models = [['a'], ['b'], ['c', 'd']].map(tags =>
@@ -61,6 +62,12 @@ describe('Highlights module', function () {
                     featured: false,
                     child_tags: tags,
                 }));
+            article_models = ['a', 'b', 'c', 'd'].map(tag =>
+                new ArticleObjectModel.ArticleObjectModel({ tags: [tag] }));
+
+            engine = MockEngine.mock_default();
+            engine.get_objects_by_query_finish.and.returnValue([article_models, null]);
+
             dispatcher.dispatch({
                 action_type: Actions.APPEND_SETS,
                 models: set_models,
@@ -79,90 +86,77 @@ describe('Highlights module', function () {
             expect(headers.length).toBe(set_models.length);
         });
 
-        describe('and articles', function () {
-            let article_models;
+        it('puts cards for all the articles into the featured arrangement', function () {
+            expect(featured.get_cards().length).toBe(article_models.length);
+            expect(factory.get_created_named_mocks('article-card').length)
+                .not.toBeLessThan(article_models.length);
+        });
 
-            beforeEach(function () {
-                article_models = ['a', 'b', 'c', 'd'].map(tag =>
-                    new ArticleObjectModel.ArticleObjectModel({ tags: [tag] }));
-                dispatcher.dispatch({
-                    action_type: Actions.APPEND_ITEMS,
-                    models: article_models,
-                });
+        it('sorts cards for all the articles into the other arrangements', function () {
+            // This is tenuous because it assumes the arrangements are all
+            // created in the order they're specified in the payload
+            let a_cards = arrangements[1].get_cards();
+            expect(a_cards.length).toBe(1);
+            expect(a_cards[0].model.tags).toEqual(['a']);
+
+            let b_cards = arrangements[2].get_cards();
+            expect(b_cards.length).toBe(1);
+            expect(b_cards[0].model.tags).toEqual(['b']);
+
+            let cd_cards = arrangements[3].get_cards();
+            expect(cd_cards.length).toBe(2);
+            expect(cd_cards.map(card => card.model)).toEqual(jasmine.arrayContaining([
+                jasmine.objectContaining({ tags: ['c'] }),
+                jasmine.objectContaining({ tags: ['d'] }),
+            ]));
+        });
+
+        it('clears items but leaves the sets', function () {
+            dispatcher.dispatch({
+                action_type: Actions.CLEAR_ITEMS,
+            });
+            let cards = factory.get_created_named_mocks('article-card');
+            arrangements.forEach(arrangement =>
+                expect(module).toHaveDescendant(arrangement));
+            headers.forEach(header => expect(module).toHaveDescendant(header));
+            cards.forEach(card => expect(module).not.toHaveDescendant(card));
+        });
+
+        it('clears the arrangements except for the featured one', function () {
+            dispatcher.dispatch({
+                action_type: Actions.CLEAR_SETS,
+            });
+            expect(featured.get_cards().length).toBe(article_models.length);
+            expect(module).toHaveDescendant(featured);
+
+            arrangements.filter(arrangement => arrangement !== featured)
+                .forEach(arrangement => expect(module).not.toHaveDescendant(arrangement));
+            headers.forEach(header => expect(module).not.toHaveDescendant(header));
+        });
+
+        describe('when clicking', function () {
+            it('on the header card, dispatches set-clicked', function () {
+                let header = factory.get_created_named_mocks('set-card')[0];
+                header.emit('clicked');
+                Utils.update_gui();
+                expect(dispatcher.last_payload_with_type(Actions.SET_CLICKED))
+                    .toEqual(jasmine.objectContaining({ model: set_models[0] }));
             });
 
-            it('puts cards for all the articles into the featured arrangement', function () {
-                expect(featured.get_cards().length).toBe(article_models.length);
-                expect(factory.get_created_named_mocks('article-card').length)
-                    .not.toBeLessThan(article_models.length);
+            it('on the card in the featured arrangement, dispatches item-clicked', function () {
+                let card = featured.get_cards()[0];
+                card.emit('clicked');
+                Utils.update_gui();
+                expect(dispatcher.last_payload_with_type(Actions.ITEM_CLICKED))
+                    .toEqual(jasmine.objectContaining({ model: card.model }));
             });
 
-            it('sorts cards for all the articles into the other arrangements', function () {
-                // This is tenuous because it assumes the arrangements are all
-                // created in the order they're specified in the payload
-                let a_cards = arrangements[1].get_cards();
-                expect(a_cards.length).toBe(1);
-                expect(a_cards[0].model.tags).toEqual(['a']);
-
-                let b_cards = arrangements[2].get_cards();
-                expect(b_cards.length).toBe(1);
-                expect(b_cards[0].model.tags).toEqual(['b']);
-
-                let cd_cards = arrangements[3].get_cards();
-                expect(cd_cards.length).toBe(2);
-                expect(cd_cards.map(card => card.model)).toEqual(jasmine.arrayContaining([
-                    jasmine.objectContaining({ tags: ['c'] }),
-                    jasmine.objectContaining({ tags: ['d'] }),
-                ]));
-            });
-
-            it('clears items but leaves the sets', function () {
-                dispatcher.dispatch({
-                    action_type: Actions.CLEAR_ITEMS,
-                });
-                let cards = factory.get_created_named_mocks('article-card');
-                arrangements.forEach(arrangement =>
-                    expect(module).toHaveDescendant(arrangement));
-                headers.forEach(header => expect(module).toHaveDescendant(header));
-                cards.forEach(card => expect(module).not.toHaveDescendant(card));
-            });
-
-            it('clears the arrangements except for the featured one', function () {
-                dispatcher.dispatch({
-                    action_type: Actions.CLEAR_SETS,
-                });
-                expect(featured.get_cards().length).toBe(article_models.length);
-                expect(module).toHaveDescendant(featured);
-
-                arrangements.filter(arrangement => arrangement !== featured)
-                    .forEach(arrangement => expect(module).not.toHaveDescendant(arrangement));
-                headers.forEach(header => expect(module).not.toHaveDescendant(header));
-            });
-
-            describe('when clicking', function () {
-                it('on the header card, dispatches set-clicked', function () {
-                    let header = factory.get_created_named_mocks('set-card')[0];
-                    header.emit('clicked');
-                    Utils.update_gui();
-                    expect(dispatcher.last_payload_with_type(Actions.SET_CLICKED))
-                        .toEqual(jasmine.objectContaining({ model: set_models[0] }));
-                });
-
-                it('on the card in the featured arrangement, dispatches item-clicked', function () {
-                    let card = featured.get_cards()[0];
-                    card.emit('clicked');
-                    Utils.update_gui();
-                    expect(dispatcher.last_payload_with_type(Actions.ITEM_CLICKED))
-                        .toEqual(jasmine.objectContaining({ model: card.model }));
-                });
-
-                it('on the card in another arrangement, dispatches item-clicked', function () {
-                    let card = factory.get_created_named_mocks('arrangement')[1].get_cards()[0];
-                    card.emit('clicked');
-                    Utils.update_gui();
-                    expect(dispatcher.last_payload_with_type(Actions.ITEM_CLICKED))
-                        .toEqual(jasmine.objectContaining({ model: card.model }));
-                });
+            it('on the card in another arrangement, dispatches item-clicked', function () {
+                let card = arrangements[1].get_cards()[0];
+                card.emit('clicked');
+                Utils.update_gui();
+                expect(dispatcher.last_payload_with_type(Actions.ITEM_CLICKED))
+                    .toEqual(jasmine.objectContaining({ model: card.model }));
             });
         });
     });

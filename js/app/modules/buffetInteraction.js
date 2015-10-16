@@ -85,26 +85,6 @@ const BuffetInteraction = new Lang.Class({
                 action_type: Actions.APPEND_SETS,
                 models: models,
             });
-
-            // Load all articles, with which to populate the highlights and
-            // thematic pages' arrangements
-            engine.get_objects_by_query(new QueryObject.QueryObject({
-                limit: -1,
-                tags: ['EknArticleObject'],
-            }), null, (engine, res) => {
-                let models;
-                try {
-                    [models] = engine.get_objects_by_query_finish(res);
-                } catch (e) {
-                    logError(e, 'Failed to load articles from database');
-                    return;
-                }
-
-                Dispatcher.get_default().dispatch({
-                    action_type: Actions.APPEND_ITEMS,
-                    models: models,
-                });
-            });
         });
 
         Dispatcher.get_default().register((payload) => {

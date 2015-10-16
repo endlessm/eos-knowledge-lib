@@ -8,7 +8,9 @@ const Lang = imports.lang;
 
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
+const Engine = imports.search.engine;
 const Module = imports.app.interfaces.module;
+const QueryObject = imports.search.queryObject;
 
 /**
  * Class: HighlightsModule
@@ -64,9 +66,7 @@ const HighlightsModule = new Lang.Class({
                 case Actions.APPEND_SETS:
                     payload.models.filter(model => !model.featured)
                     .forEach(this._add_set, this);
-                    break;
-                case Actions.APPEND_ITEMS:
-                    payload.models.forEach(this._add_item, this);
+                    this._load_all_articles();
                     break;
             }
         });
@@ -101,6 +101,30 @@ const HighlightsModule = new Lang.Class({
             });
         });
         return card;
+    },
+
+    // Load all articles in order to populate the arrangements with them. This
+    // happens after APPEND_SETS.
+    // It's unfortunate that we don't have a way to determine whether an
+    // arrangement already contains a particular model. Otherwise, we could load
+    // articles from each set as that set was appended. But as it is, if we did
+    // that, we'd end up with duplicate cards in some arrangements.
+    _load_all_articles: function () {
+        this._clear_items();
+        Engine.get_default().get_objects_by_query(new QueryObject.QueryObject({
+            limit: -1,
+            tags: ['EknArticleObject'],
+        }), null, (engine, res) => {
+            let models;
+            try {
+                [models] = engine.get_objects_by_query_finish(res);
+            } catch (e) {
+                logError(e, 'Failed to load articles from database');
+                return;
+            }
+
+            models.forEach(this._add_item, this);
+        });
     },
 
     _add_set: function (model) {
