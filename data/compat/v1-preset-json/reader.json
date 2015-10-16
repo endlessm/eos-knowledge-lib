@@ -1,0 +1,124 @@
+{
+    "modules": {
+        "interaction": {
+            "type": "AisleInteraction",
+            "slots": {
+                "window": "window",
+                "document-card": {
+                    "type": "ReaderDocumentCard"
+                }
+            }
+        },
+        "window": {
+            "type": "ReaderWindow",
+            "slots": {
+                "search": {
+                    "type": "SearchBox"
+                },
+                "navigation": {
+                    "type": "NavigationModule"
+                },
+                "lightbox": {
+                    "type": "LightboxModule",
+                    "slots": {
+                        "card-type": {
+                            "type": "MediaCard"
+                        }
+                    }
+                },
+                "document-arrangement": {
+                    "type": "CarouselArrangement"
+                },
+                "front-page": "front-page",
+                "search-page": "search-page",
+                "standalone-page": "standalone-page",
+                "back-page": "back-page"
+            }
+        },
+        "front-page": {
+            "type": "SidebarTemplate",
+            "slots": {
+                "content": {
+                    "type": "AppBanner",
+                    "properties": {
+                        "subtitle-capitalization": "uppercase",
+                        "valign": "start",
+                        "halign": "start",
+                        "margin-top": 50,
+                        "margin-start": 75
+                    }
+                },
+                "sidebar": {
+                    "type": "ItemGroupModule",
+                    "slots": {
+                        "card-type": {
+                            "type": "ArticleSnippetCard"
+                        },
+                        "arrangement": {
+                            "type": "OverflowArrangement",
+                            "properties": {
+                                "orientation": "vertical"
+                            }
+                        }
+                    },
+                    "properties": {
+                        "expand": true,
+                        "halign": "end",
+                        "valign": "fill",
+                        "margin-end": 100
+                    }
+                }
+            },
+            "properties": {
+                "sidebar-width": 576,
+                "fixed": false,
+                "column-homogeneous": true,
+                "column-spacing": 120
+            }
+        },
+        "search-page": {
+            "type": "BannerTemplate",
+            "properties": {
+                "separator-margin": 30
+            },
+            "slots": {
+                "banner": {
+                    "type": "SearchBannerModule",
+                    "properties": {
+                        "halign": "center"
+                    }
+                },
+                "content": {
+                    "type": "SearchModule",
+                    "properties": {
+                        "message-halign": "center"
+                    },
+                    "slots": {
+                        "arrangement": {
+                            "type": "GridArrangement",
+                            "properties": {
+                                "margin-top": 20,
+                                "bottom-buffer": 250,
+                                "max-children-per-line": 9
+                            }
+                        },
+                        "card-type": {
+                            "type": "ReaderCard",
+                            "properties": {
+                                "title-capitalization": "uppercase"
+                            }
+                        },
+                        "article-suggestions": null,
+                        "category-suggestions": null
+                    }
+                }
+            }
+        },
+        "standalone-page": {
+            "type": "StandalonePage"
+        },
+        "back-page": {
+            "type": "BackCover"
+        }
+    }
+}

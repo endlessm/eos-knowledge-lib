@@ -1,0 +1,153 @@
+{
+    "modules": {
+        "interaction": {
+            "type": "MeshInteraction",
+            "slots": {
+                "window": "window"
+            }
+        },
+        "window": {
+            "type": "EncyclopediaWindow",
+            "slots": {
+                "lightbox": {
+                    "type": "LightboxModule",
+                    "slots": {
+                        "card-type": {
+                            "type": "MediaCard"
+                        }
+                    }
+                },
+                "home-page": "home-page",
+                "search-page": "search-page",
+                "article-page": "article-page"
+            }
+        },
+        "home-page": {
+            "type": "EncyclopediaCoverTemplate",
+            "slots": {
+                "top": {
+                    "type": "AppBanner",
+                    "properties": {
+                        "min-fraction": 0.5,
+                        "max-fraction": 0.5,
+                        "margin-bottom": 42
+                    }
+                },
+                "bottom": {
+                    "type": "SearchBox",
+                    "properties": {
+                        "max-width-chars": 52
+                    }
+                }
+            }
+        },
+        "search-page": {
+            "type": "DividedBannerTemplate",
+            "slots": {
+                "top-left": {
+                    "type": "AppBanner",
+                    "properties": {
+                        "min-fraction": 0.2,
+                        "max-fraction": 0.2,
+                        "margin-top": 10,
+                        "margin-bottom": 10,
+                        "valign": "start",
+                        "vexpand": false,
+                        "halign": "center"
+                    }
+                },
+                "top-right": {
+                    "type": "SearchBox",
+                    "properties": {
+                        "halign": "center",
+                        "hexpand": true
+                    }
+                },
+                "bottom": {
+                    "type": "PaperTemplate",
+                    "slots": {
+                        "content": {
+                            "type": "BannerTemplate",
+                            "properties": {
+                                "image-separator": true,
+                                "margin-start": 45,
+                                "margin-end": 45
+                            },
+                            "slots": {
+                                "banner": {
+                                    "type": "SearchBannerModule",
+                                    "properties": {
+                                        "halign": "start"
+                                    }
+                                },
+                                "content": {
+                                    "type": "SearchModule",
+                                    "properties": {
+                                        "margin-top": 20,
+                                        "message-halign": "start",
+                                        "halign": "start"
+                                    },
+                                    "slots": {
+                                        "arrangement": {
+                                            "type": "ListArrangement",
+                                            "properties": {
+                                                "hexpand": true,
+                                                "halign": "fill"
+                                            }
+                                        },
+                                        "card-type": {
+                                            "type": "TextCard",
+                                            "properties": {
+                                                "underline-on-hover": true,
+                                                "decoration": true
+                                            }
+                                        },
+                                        "article-suggestions": null,
+                                        "category-suggestions": null
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "article-page": {
+            "type": "DividedBannerTemplate",
+            "slots": {
+                "top-left": {
+                    "type": "AppBanner",
+                    "properties": {
+                        "min-fraction": 0.2,
+                        "max-fraction": 0.2,
+                        "margin-top": 10,
+                        "margin-bottom": 10,
+                        "valign": "start",
+                        "vexpand": false,
+                        "halign": "center"
+                    }
+                },
+                "top-right": {
+                    "type": "SearchBox",
+                    "properties": {
+                        "halign": "center",
+                        "hexpand": true
+                    }
+                },
+                "bottom": {
+                    "type": "PaperTemplate",
+                    "slots": {
+                        "content": {
+                            "type": "ArticleStackModule",
+                            "slots": {
+                                "card-type": {
+                                    "type": "KnowledgeDocumentCard"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

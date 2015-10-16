@@ -1,0 +1,172 @@
+{
+    "modules": {
+        "interaction": {
+            "type": "MeshInteraction",
+            "slots": {
+                "window": "window"
+            }
+        },
+        "window": {
+            "type": "Window",
+            "slots": {
+                "search": {
+                    "type": "SearchBox"
+                },
+                "navigation": {
+                    "type": "NavigationModule"
+                },
+                "lightbox": {
+                    "type": "LightboxModule",
+                    "slots": {
+                        "card-type": {
+                            "type": "MediaCard"
+                        }
+                    }
+                },
+                "brand-screen": null,
+                "home-page": "home-page",
+                "section-page": "section-page",
+                "search-page": "search-page",
+                "article-page": "article-page"
+            }
+        },
+        "section-page": {
+            "type": "BannerTemplate",
+            "properties": {
+                "margin-start": 150,
+                "margin-end": 150
+            },
+            "slots": {
+                "banner": {
+                    "type": "SetBannerModule",
+                    "properties": {
+                        "halign": "center"
+                    },
+                    "slots": {
+                        "card-type": {
+                            "type": "TextCard"
+                        }
+                    }
+                },
+                "content": {
+                    "type": "ItemGroupModule",
+                    "slots": {
+                        "arrangement": {
+                            "type": "GridArrangement",
+                            "properties": {
+                                "bottom-buffer": 250
+                            }
+                        },
+                        "card-type": {
+                            "type": "CardA"
+                        }
+                    }
+                }
+            }
+        },
+        "home-page": {
+            "type": "HomePageATemplate",
+            "slots": {
+                "top": {
+                    "type": "AppBanner",
+                    "properties": {
+                        "min-fraction": 0.35,
+                        "max-fraction": 0.7
+                    }
+                },
+                "middle": {
+                    "type": "SearchBox",
+                    "properties": {
+                        "width-request": 400,
+                        "halign": "center"
+                    }
+                },
+                "bottom": {
+                    "type": "SetGroupModule",
+                    "properties": {
+                        "expand": true,
+                        "halign": "center",
+                        "valign": "center",
+                        "max-children": 6
+                    },
+                    "slots": {
+                        "arrangement": {
+                            "type": "OverflowArrangement",
+                            "properties": {
+                                "orientation": "horizontal"
+                            }
+                        },
+                        "card-type": {
+                            "type": "CardA"
+                        }
+                    }
+                },
+                "basement": {
+                    "type": "SetGroupModule",
+                    "properties": {
+                        "expand": true
+                    },
+                    "slots": {
+                        "arrangement": {
+                            "type": "GridArrangement",
+                            "properties": {
+                                "bottom-buffer": 250
+                            }
+                        },
+                        "card-type": {
+                            "type": "CardA"
+                        }
+                    }
+                }
+            }
+        },
+        "search-page": {
+            "type": "BannerTemplate",
+            "properties": {
+                "margin-start": 150,
+                "margin-end": 150
+            },
+            "slots": {
+                "banner": {
+                    "type": "SearchBannerModule",
+                    "properties": {
+                        "halign": "center"
+                    }
+                },
+                "content": {
+                    "type": "SearchModule",
+                    "slots": {
+                        "arrangement": {
+                            "type": "GridArrangement",
+                            "properties": {
+                                "bottom-buffer": 250
+                            }
+                        },
+                        "card-type": {
+                            "type": "CardA"
+                        },
+                        "article-suggestions": null,
+                        "category-suggestions": null
+                    },
+                    "properties": {
+                        "halign": "center",
+                        "message-justify": "left",
+                        "message-halign": "center"
+                    }
+                }
+            }
+        },
+        "article-page": {
+            "type": "ArticleStackModule",
+            "slots": {
+                "card-type": {
+                    "type": "KnowledgeDocumentCard",
+                    "properties": {
+                        "show-top-title": true,
+                        "show-toc": true
+                    }
+                }
+            }
+        }
+    }
+}
