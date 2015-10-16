@@ -225,6 +225,9 @@ const ContentObjectModel = new Lang.Class({
 
         if (json_ld.hasOwnProperty('redirectsTo'))
             props.redirects_to = json_ld.redirectsTo;
+
+        if (json_ld.hasOwnProperty('featured'))
+            props.featured = json_ld.featured;
     },
 
     _content_legacy_fixups: function (json_ld) {

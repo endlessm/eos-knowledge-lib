@@ -235,6 +235,7 @@ js_files = \
 	js/app/modules/articleStackModule.js \
 	js/app/modules/backCover.js \
 	js/app/modules/bannerTemplate.js \
+	js/app/modules/buffetInteraction.js \
 	js/app/modules/cardA.js \
 	js/app/modules/cardB.js \
 	js/app/modules/carouselArrangement.js \
@@ -242,6 +243,7 @@ js_files = \
 	js/app/modules/encyclopediaCoverTemplate.js \
 	js/app/modules/encyclopediaWindow.js \
 	js/app/modules/gridArrangement.js \
+	js/app/modules/highlightsModule.js \
 	js/app/modules/homePageATemplate.js \
 	js/app/modules/itemGroupModule.js \
 	js/app/modules/knowledgeDocumentCard.js \
@@ -255,6 +257,7 @@ js_files = \
 	js/app/modules/readerCard.js \
 	js/app/modules/readerDocumentCard.js \
 	js/app/modules/readerWindow.js \
+	js/app/modules/scrollingTemplate.js \
 	js/app/modules/searchBannerModule.js \
 	js/app/modules/searchBox.js \
 	js/app/modules/searchModule.js \
@@ -366,10 +369,12 @@ javascript_tests = \
 	tests/js/app/modules/testArticleStackModule.js \
 	tests/js/app/modules/testBackCover.js \
 	tests/js/app/modules/testBannerTemplate.js \
+	tests/js/app/modules/testBuffetInteraction.js \
 	tests/js/app/modules/testCardA.js \
 	tests/js/app/modules/testCardB.js \
 	tests/js/app/modules/testCarouselArrangement.js \
 	tests/js/app/modules/testDividedBannerTemplate.js \
+	tests/js/app/modules/testHighlightsModule.js \
 	tests/js/app/modules/testHomePageATemplate.js \
 	tests/js/app/modules/testItemGroupModule.js \
 	tests/js/app/modules/testKnowledgeDocumentCard.js \
@@ -382,6 +387,7 @@ javascript_tests = \
 	tests/js/app/modules/testReaderCard.js \
 	tests/js/app/modules/testReaderDocumentCard.js \
 	tests/js/app/modules/testReaderWindow.js \
+	tests/js/app/modules/testScrollingTemplate.js \
 	tests/js/app/modules/testSearchBannerModule.js \
 	tests/js/app/modules/testSearchBox.js \
 	tests/js/app/modules/testSearchModule.js \

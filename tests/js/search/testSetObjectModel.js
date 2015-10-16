@@ -12,7 +12,7 @@ describe('Set object model', function () {
             title: 'Astrophysics',
             thumbnail: 'resource:///com/endlessm/physics-en/assets/Astrophysics-thumbnail.jpeg',
             childTags: ['Astrophysics'],
-            featured: false,
+            featured: true,
         };
         model = new SetObjectModel.SetObjectModel({}, jsonld);
     });
@@ -24,7 +24,7 @@ describe('Set object model', function () {
     it('inherits properties set from parent model', function () {
         expect(model.title).toEqual(jsonld['title']);
         expect(model.tags).toEqual(jasmine.arrayContaining(jsonld['tags']));
-        expect(model.featured).toBeFalsy();
+        expect(model.featured).toBeTruthy();
         expect(model.thumbnail_uri).toEqual(jsonld['thumbnail']);
     });
 

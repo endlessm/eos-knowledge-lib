@@ -4,6 +4,7 @@
     <file compressed="true">css/endless_encyclopedia.css</file>
     <file compressed="true">css/endless_knowledge.css</file>
     <file compressed="true">css/endless_reader.css</file>
+    <file compressed="true">css/endless_buffet.css</file>
     <file compressed="true">css/hide_title.css</file>
     <file compressed="true">css/mediaCard.css</file>
     <file compressed="true">css/lightbox.css</file>
@@ -47,6 +48,7 @@
     <file compressed="true" preprocess="xml-stripblanks">widgets/paperTemplate.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">widgets/readerCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">widgets/readerDocumentCard.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">widgets/scrollingTemplate.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">widgets/searchBannerModule.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">widgets/searchModule.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">widgets/suggestedArticlesModule.ui</file>
