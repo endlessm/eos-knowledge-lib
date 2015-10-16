@@ -58,6 +58,7 @@
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/suggestedArticlesModule.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/suggestedCategoriesModule.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/textCard.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">data/widgets/thumbCard.ui</file>
     <file>js/app/actions.js</file>
     <file>js/app/aisleUserSettingsModel.js</file>
     <file>js/app/application.js</file>
@@ -119,6 +120,7 @@
     <file>js/app/modules/suggestedCategoriesModule.js</file>
     <file>js/app/modules/textCard.js</file>
     <file>js/app/modules/thematicModule.js</file>
+    <file>js/app/modules/thumbCard.js</file>
     <file>js/app/modules/tiledGridArrangement.js</file>
     <file>js/app/modules/twoVerticalTemplate.js</file>
     <file>js/app/modules/window.js</file>
