@@ -47,7 +47,7 @@ function _load_ekn_assets (req, article_render_callback) {
                     let stream = Gio.MemoryInputStream.new_from_bytes(bytes);
                     req.finish(stream, -1, 'text/html; charset=utf-8');
                 } else {
-                    let stream = model.get_content_stream();
+                    let stream = model.get_content_stream(model.ekn_id);
                     req.finish(stream, -1, null);
                 }
             } catch (error) {

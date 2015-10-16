@@ -52,7 +52,7 @@ const MediaCard = new Lang.Class({
         this._previewer = new Previewer.Previewer({
             visible: true,
         });
-        this._previewer.set_content(this.model.get_content_stream(),
+        this._previewer.set_content(this.model.get_content_stream(this.model.ekn_id),
                                    this.model.content_type);
         this._grid.insert_row(0);
         this._grid.attach(this._previewer, 0, 0, 1, 1);

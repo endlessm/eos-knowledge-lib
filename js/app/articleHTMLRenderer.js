@@ -128,7 +128,7 @@ const ArticleHTMLRenderer = new Lang.Class({
             js_files = js_files.concat(opts.custom_js_files);
         }
 
-        let stream = model.get_content_stream();
+        let stream = model.get_content_stream(model.ekn_id);
         let html = SearchUtils.read_stream_sync(stream);
         return Mustache.render(this._template, {
             'title': opts.show_title ? model.title : false,

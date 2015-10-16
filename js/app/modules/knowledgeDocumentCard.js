@@ -181,7 +181,7 @@ const KnowledgeDocumentCard = new Lang.Class({
                 // FIXME: Remove this line once we support table of contents
                 // widget for PDFs
                 this.model.table_of_contents = undefined;
-                let stream = this.model.get_content_stream();
+                let stream = this.model.get_content_stream(this.model.ekn_id);
                 let content_type = this.model.content_type;
                 this.content_view = new PDFView.PDFView({
                     expand: true,

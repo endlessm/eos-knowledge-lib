@@ -403,6 +403,17 @@ const Engine = Lang.Class({
         return this._shard_file_cache[domain];
     },
 
+    _get_content_stream: function (ekn_id) {
+        let [domain, hash] = Utils.components_from_ekn_id(ekn_id);
+        let shard_file = this._shard_file_from_domain(domain);
+        let record = shard_file.find_record_by_hex_name(hash);
+
+        if (record === null)
+            throw new Error('Could not find stream for ' + ekn_id);
+
+        return record.data.get_stream();
+    },
+
     // Returns a marshaled ObjectModel based on json_ld's @type value, or throws
     // error if there is no corresponding model
     _model_from_json_ld: function (json_ld) {
@@ -427,19 +438,11 @@ const Engine = Lang.Class({
         let props = {};
 
         let ekn_id = json_ld['@id'];
-        let [domain, hash] = Utils.components_from_ekn_id(ekn_id);
+        let [domain] = Utils.components_from_ekn_id(ekn_id);
         props.ekn_version = this._ekn_version_from_domain(domain);
 
         if (props.ekn_version >= 2) {
-            props.get_content_stream = () => {
-                let shard_file = this._shard_file_from_domain(domain);
-                let record = shard_file.find_record_by_hex_name(hash);
-
-                if (record === null)
-                    throw new Error('Could not find shard record for ' + ekn_id);
-
-                return record.data.get_stream();
-            };
+            props.get_content_stream = this._get_content_stream.bind(this);
         } else {
             if (json_ld.hasOwnProperty('articleBody')) {
                 // Legacy databases store their HTML within the xapian databases
