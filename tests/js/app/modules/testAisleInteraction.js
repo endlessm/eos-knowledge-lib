@@ -176,7 +176,6 @@ describe('Aisle interaction', function () {
         });
         engine.get_objects_by_query_finish.and.returnValue([[], null]);
         engine.get_object_by_id_finish.and.returnValue(null);
-        Utils.register_gresource();
 
         factory.add_named_mock('window', MockView);
         factory.add_named_mock('interaction', AisleInteraction.AisleInteraction, {
