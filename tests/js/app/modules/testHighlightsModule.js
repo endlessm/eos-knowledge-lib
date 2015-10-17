@@ -65,8 +65,18 @@ describe('Highlights module', function () {
             article_models = ['a', 'b', 'c', 'd'].map(tag =>
                 new ArticleObjectModel.ArticleObjectModel({ tags: [tag] }));
 
+            module.RESULTS_BATCH_SIZE = 2;
+
             engine = MockEngine.mock_default();
-            engine.get_objects_by_query_finish.and.returnValue([article_models, null]);
+            engine.get_objects_by_query_finish.and.callFake(() => {
+                let calls = engine.get_objects_by_query_finish.calls.count();
+                if (calls > 2)
+                    return [[], null];
+                if (calls > 1)
+                    return [article_models.slice(module.RESULTS_BATCH_SIZE), null];
+                return [article_models.slice(0, module.RESULTS_BATCH_SIZE),
+                    'get more results query'];
+            });
 
             dispatcher.dispatch({
                 action_type: Actions.APPEND_SETS,

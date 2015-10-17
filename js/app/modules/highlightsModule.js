@@ -46,6 +46,9 @@ const HighlightsModule = new Lang.Class({
         'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
     },
 
+    // Overridable in tests
+    RESULTS_BATCH_SIZE: 15,
+
     _init: function (props={}) {
         props.orientation = Gtk.Orientation.VERTICAL;
         this.parent(props);
@@ -111,20 +114,26 @@ const HighlightsModule = new Lang.Class({
     // that, we'd end up with duplicate cards in some arrangements.
     _load_all_articles: function () {
         this._clear_items();
-        Engine.get_default().get_objects_by_query(new QueryObject.QueryObject({
-            limit: -1,
-            tags: ['EknArticleObject'],
-        }), null, (engine, res) => {
-            let models;
+
+        let process_results = (engine, res) => {
+            let models, get_more;
             try {
-                [models] = engine.get_objects_by_query_finish(res);
+                [models, get_more] = engine.get_objects_by_query_finish(res);
             } catch (e) {
                 logError(e, 'Failed to load articles from database');
                 return;
             }
 
+            if (get_more)
+                engine.get_objects_by_query(get_more, null, process_results);
+
             models.forEach(this._add_item, this);
+        };
+        let query = new QueryObject.QueryObject({
+            limit: this.RESULTS_BATCH_SIZE,
+            tags: ['EknArticleObject'],
         });
+        Engine.get_default().get_objects_by_query(query, null, process_results);
     },
 
     _add_set: function (model) {
