@@ -398,7 +398,6 @@ javascript_tests = \
 	tests/js/app/modules/testSuggestedCategoriesModule.js \
 	tests/js/app/modules/testTextCard.js \
 	tests/js/app/modules/testWindow.js \
-	tests/js/app/reader/testWebExtension.js \
 	tests/js/app/testAisleUserSettingsModel.js \
 	tests/js/app/testArticleHTMLRenderer.js \
 	tests/js/app/testDispatcher.js \
@@ -407,6 +406,7 @@ javascript_tests = \
 	tests/js/app/testModuleFactory.js \
 	tests/js/app/testStyleKnobGenerator.js \
 	tests/js/app/testUtils.js \
+	tests/js/app/testWebExtension.js \
 	tests/js/app/widgets/testLightbox.js \
 	tests/js/app/widgets/testPDFView.js \
 	tests/js/app/widgets/testPreviewer.js \
