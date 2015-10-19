@@ -34,7 +34,7 @@ const ReaderDocumentCard = imports.app.modules.readerDocumentCard;
 const SidebarTemplate = imports.app.modules.sidebarTemplate;
 const StyleClasses = imports.app.styleClasses;
 const StyleKnobGenerator = imports.app.compat.styleKnobGenerator;
-const UserSettingsModel = imports.app.reader.userSettingsModel;
+const AisleUserSettingsModel = imports.app.aisleUserSettingsModel;
 const Utils = imports.app.utils;
 const WebkitContextSetup = imports.app.webkitContextSetup;
 const WebviewTooltip = imports.app.widgets.webviewTooltip;
@@ -85,7 +85,7 @@ const AisleInteraction = new Lang.Class({
          * Property: settings
          * Handles the User Settings
          *
-         * Handles the <UserSettingsModel>, which controls things like the
+         * Handles the <AisleUserSettingsModel>, which controls things like the
          * last article read and last issue read.
          *
          * Flags:
@@ -136,7 +136,7 @@ const AisleInteraction = new Lang.Class({
         let css = Gio.File.new_for_uri('resource:///com/endlessm/knowledge/css/endless_reader.css');
         Utils.add_css_provider_from_file(css, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 
-        props.settings = props.settings || new UserSettingsModel.UserSettingsModel({
+        props.settings = props.settings || new AisleUserSettingsModel.AisleUserSettingsModel({
             settings_file: Gio.File.new_for_path(props.application.config_dir.get_path() + '/user_settings.json'),
         });
 

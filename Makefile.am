@@ -210,6 +210,7 @@ libtooltipplugin_la_LDFLAGS = -module -avoid-version -no-undefined
 
 js_files = \
 	js/app/actions.js \
+	js/app/aisleUserSettingsModel.js \
 	js/app/application.js \
 	js/app/articleHTMLRenderer.js \
 	js/app/compat/compat.js \
@@ -271,7 +272,6 @@ js_files = \
 	js/app/modules/tiledGridArrangement.js \
 	js/app/modules/twoVerticalTemplate.js \
 	js/app/modules/window.js \
-	js/app/reader/userSettingsModel.js \
 	js/app/runner.js \
 	js/app/styleClasses.js \
 	js/app/utils.js \
@@ -398,8 +398,8 @@ javascript_tests = \
 	tests/js/app/modules/testSuggestedCategoriesModule.js \
 	tests/js/app/modules/testTextCard.js \
 	tests/js/app/modules/testWindow.js \
-	tests/js/app/reader/testUserSettingsModel.js \
 	tests/js/app/reader/testWebExtension.js \
+	tests/js/app/testAisleUserSettingsModel.js \
 	tests/js/app/testArticleHTMLRenderer.js \
 	tests/js/app/testDispatcher.js \
 	tests/js/app/testHistoryItem.js \
