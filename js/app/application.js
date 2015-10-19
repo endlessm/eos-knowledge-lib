@@ -1,6 +1,9 @@
+imports.gi.versions.WebKit2 = '4.0';
+
 const Endless = imports.gi.Endless;
 const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
+const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 
 const Dispatcher = imports.app.dispatcher;
@@ -23,13 +26,25 @@ const KnowledgeSearchIface = '\
     </method> \
   </interface> \
 </node>';
+const INACTIVITY_TIMEOUT = 12000;
 
 const Application = new Lang.Class({
     Name: 'Application',
     GTypeName: 'EknApplication',
     Extends: Endless.Application,
 
+    Properties: {
+        /**
+         * Property: resource-path
+         * Path to applications gresource.
+         */
+        'resource-path': GObject.ParamSpec.string('resource-path',
+            'Resource Path', 'Resource Path',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
+    },
+
     _init: function (props={}) {
+        props.inactivity_timeout = INACTIVITY_TIMEOUT;
         this.parent(props);
         this._interaction = null;
         this._knowledge_search_impl = Gio.DBusExportedObject.wrapJSObject(KnowledgeSearchIface, this);
@@ -86,7 +101,7 @@ const Application = new Lang.Class({
     ensure_interaction: function () {
         if (this._interaction === null) {
             Dispatcher.get_default().start();
-            this._interaction = InteractionLoader.create_interaction(this, ARGV[1]);
+            this._interaction = InteractionLoader.create_interaction(this, this.resource_path);
         }
     },
 

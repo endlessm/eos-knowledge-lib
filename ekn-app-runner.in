@@ -17,4 +17,12 @@ if [ "$RUN_DEBUG" != "" ]; then
     DEBUG_COMMAND="gdb --args"
 fi
 
-exec $DEBUG_COMMAND gjs %jsdir%/app/runner.js $@
+if [ "$#" -lt 2 ]; then
+    echo "Run this script by passing it an app ID and a gresource file"
+    exit 1
+fi
+
+APP_ID="$1" && shift
+RESOURCE_PATH="$1" && shift
+
+exec $DEBUG_COMMAND gjs -c "new imports.app.application.Application({ application_id: '$APP_ID', resource_path: '$RESOURCE_PATH',}).run(ARGV);" "$@"

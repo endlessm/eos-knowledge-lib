@@ -272,7 +272,6 @@ js_files = \
 	js/app/modules/tiledGridArrangement.js \
 	js/app/modules/twoVerticalTemplate.js \
 	js/app/modules/window.js \
-	js/app/runner.js \
 	js/app/styleClasses.js \
 	js/app/utils.js \
 	js/app/warehouse.js \
