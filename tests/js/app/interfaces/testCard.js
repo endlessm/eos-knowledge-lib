@@ -106,6 +106,50 @@ describe('Card interface', function () {
         expect(card).toHaveCssClass('variant2');
     });
 
+    describe ('specific sizing classes', function () {
+        // These values fall in the middle of the range of dimensions for such class name
+        let in_between_class_dimensions = {
+            A: 150,
+            B: 250,
+            C: 350,
+            D: 450,
+            E: 650,
+            F: 850,
+            G: 1050,
+            H: 1250,
+        };
+
+        beforeEach(function () {
+            this.win = new Gtk.OffscreenWindow();
+        });
+
+        afterEach(function () {
+            this.win.destroy();
+        });
+
+        Object.keys(StyleClasses.CARD_WIDTH).forEach(width_class => {
+            Object.keys(StyleClasses.CARD_HEIGHT).forEach(height_class => {
+                let width = in_between_class_dimensions[width_class];
+                let height = in_between_class_dimensions[height_class];
+                test_style_classes_for_height_and_width(StyleClasses.CARD_WIDTH[width_class], StyleClasses.CARD_HEIGHT[height_class], height, width);
+            });
+        });
+    });
+
     // FIXME: no way to verify this.
     it('displays the record thumbnail in the thumbnail frame');
 });
+
+function test_style_classes_for_height_and_width(style_class_height, style_class_width, height, width) {
+    it ('assigns correct classes to card of dimensions (' + width + ', ' + height + ')', function () {
+        let card = new Minimal.MinimalCard();
+
+        this.win.add(card);
+        this.win.set_size_request(width, height);
+        this.win.show_all();
+        Utils.update_gui();
+
+        expect(card).toHaveCssClass(style_class_height);
+        expect(card).toHaveCssClass(style_class_width);
+    });
+}

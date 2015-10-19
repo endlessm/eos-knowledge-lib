@@ -83,7 +83,12 @@ const MinimalCard = new Lang.Class({
 
     _init: function (props={}) {
         this.parent(props);
-    }
+    },
+
+    vfunc_size_allocate: function (allocation) {
+        this.parent(allocation);
+        this.update_card_sizing_classes(allocation.height, allocation.width);
+    },
 });
 
 const MinimalInteraction = new Lang.Class({

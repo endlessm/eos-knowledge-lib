@@ -161,6 +161,58 @@ const Card = new Lang.Interface({
     },
 
     /**
+     * Method: update_card_sizing_classes
+     * Assigns the appropriate CSS classes based on the height and width
+     *
+     * This method takes the height and width of the card widget and assigns the
+     * appropriate CSS classes, according to our design constraints.
+     */
+    update_card_sizing_classes: function (height, width) {
+        let width_class, height_class;
+
+        if (width < 200) {
+            width_class = StyleClasses.CARD_WIDTH.A;
+        } else if (width < 300) {
+            width_class = StyleClasses.CARD_WIDTH.B;
+        } else if (width < 400) {
+            width_class = StyleClasses.CARD_WIDTH.C;
+        } else if (width < 600) {
+            width_class = StyleClasses.CARD_WIDTH.D;
+        } else if (width < 800) {
+            width_class = StyleClasses.CARD_WIDTH.E;
+        } else if (width < 1000) {
+            width_class = StyleClasses.CARD_WIDTH.F;
+        } else if (width < 1200) {
+            width_class = StyleClasses.CARD_WIDTH.G;
+        } else {
+            width_class = StyleClasses.CARD_WIDTH.H;
+        }
+
+        if (height < 200) {
+            height_class = StyleClasses.CARD_HEIGHT.A;
+        } else if (height < 300) {
+            height_class = StyleClasses.CARD_HEIGHT.B;
+        } else if (height < 400) {
+            height_class = StyleClasses.CARD_HEIGHT.C;
+        } else if (height < 600) {
+            height_class = StyleClasses.CARD_HEIGHT.D;
+        } else {
+            height_class = StyleClasses.CARD_HEIGHT.E;
+        }
+
+        let context = this.get_style_context();
+        if (typeof width_class !== undefined && !context.has_class(width_class)) {
+            Object.keys(StyleClasses.CARD_WIDTH).forEach(name => context.remove_class(StyleClasses.CARD_WIDTH[name]));
+            context.add_class(width_class);
+        }
+
+        if (typeof width_class !== undefined && !context.has_class(height_class)) {
+            Object.keys(StyleClasses.CARD_HEIGHT).forEach(name => context.remove_class(StyleClasses.CARD_HEIGHT[name]));
+            context.add_class(height_class);
+        }
+    },
+
+    /**
      * Method: fade_in
      * Use instead of *Gtk.Widget.show()* or *Gtk.Widget.show_all()*.
      */
