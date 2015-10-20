@@ -312,10 +312,6 @@ jsdir = $(pkgdatadir)/js
 # directory in the path, so we need to install to pkgdatadir instead of jsdir here.
 nobase_dist_pkgdata_DATA = $(js_files)
 
-# Overrides for the C library
-overridesdir = $(jsdir)/overrides
-dist_overrides_DATA = overrides/EosKnowledgePrivate.js
-
 # # # SUBSTITUTED FILES # # #
 # These files need to be filled in with make variables
 
