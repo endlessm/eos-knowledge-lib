@@ -24,7 +24,7 @@ const ArchiveNotice = new Lang.Class({
         this.bind_property('label', this._archive_label, 'label', GObject.BindingFlags.SYNC_CREATE);
     },
 
-    Template: 'resource:///com/endlessm/knowledge/widgets/archiveNotice.ui',
+    Template: 'resource:///com/endlessm/knowledge/data/widgets/archiveNotice.ui',
     InternalChildren: [ 'archive-label', 'archive-icon' ],
 
     set label (v) {

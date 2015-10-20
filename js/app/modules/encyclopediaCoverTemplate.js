@@ -25,7 +25,7 @@ const EncyclopediaCoverTemplate = new Lang.Class({
         'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
     },
 
-    Template: 'resource:///com/endlessm/knowledge/widgets/encyclopediaCoverTemplate.ui',
+    Template: 'resource:///com/endlessm/knowledge/data/widgets/encyclopediaCoverTemplate.ui',
 
     _init: function (props={}) {
         this.parent(props);

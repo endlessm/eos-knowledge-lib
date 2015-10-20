@@ -82,7 +82,7 @@ GtkEntry:selected {
 
 .divided-banner-template .separator {
     padding-bottom: 35px;
-    background-image: url('resource:///com/endlessm/knowledge/images/separator.png');
+    background-image: url('resource:///com/endlessm/knowledge/data/images/separator.png');
     background-size: 100%;
     background-repeat: no-repeat;
 }

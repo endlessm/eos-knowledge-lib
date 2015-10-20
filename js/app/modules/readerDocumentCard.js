@@ -54,7 +54,7 @@ const ReaderDocumentCard = new Lang.Class({
             Gtk.Widget),
     },
 
-    Template: 'resource:///com/endlessm/knowledge/widgets/readerDocumentCard.ui',
+    Template: 'resource:///com/endlessm/knowledge/data/widgets/readerDocumentCard.ui',
     InternalChildren: [ 'title-label', 'attribution-label', 'title-view', 'ornament-frame',
         'separator', 'decorative-frame', 'content-grid' ],
 

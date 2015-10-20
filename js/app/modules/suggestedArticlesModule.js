@@ -31,7 +31,7 @@ const SuggestedArticlesModule = new Lang.Class({
         'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
     },
 
-    Template: 'resource:///com/endlessm/knowledge/widgets/suggestedArticlesModule.ui',
+    Template: 'resource:///com/endlessm/knowledge/data/widgets/suggestedArticlesModule.ui',
 
     _init: function (props={}) {
         this.parent(props);

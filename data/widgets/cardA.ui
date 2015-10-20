@@ -81,7 +81,7 @@
           <object class="GtkImage" id="pdf-icon">
             <property name="can_focus">False</property>
             <property name="no_show_all">True</property>
-            <property name="resource">/com/endlessm/knowledge/images/pdf_icon.png</property>
+            <property name="resource">/com/endlessm/knowledge/data/images/pdf_icon.png</property>
             <style>
               <class name="pdf-card-icon"/>
             </style>

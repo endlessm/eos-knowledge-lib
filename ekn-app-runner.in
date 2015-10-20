@@ -1,6 +1,5 @@
 #!/bin/bash
 
-export GJS_PATH="%jsdir%${GJS_PATH:+:$GJS_PATH}"
 export GI_TYPELIB_PATH="%typelibdir%${GI_TYPELIB_PATH:+:$GI_TYPELIB_PATH}"
 export LD_LIBRARY_PATH="%pkglibdir%${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
 
@@ -25,4 +24,15 @@ fi
 APP_ID="$1" && shift
 RESOURCE_PATH="$1" && shift
 
-exec $DEBUG_COMMAND gjs -c "new imports.app.application.Application({ application_id: '$APP_ID', resource_path: '$RESOURCE_PATH',}).run(ARGV);" "$@"
+SCRIPT="const Gio = imports.gi.Gio;
+Gio.Resource.load('%pkgdatadir%/eos-knowledge.gresource')._register();
+imports.searchPath.unshift('resource:///com/endlessm/knowledge/js');
+
+const Application = imports.app.application;
+let application = new Application.Application({
+    application_id: '$APP_ID',
+    resource_path: '$RESOURCE_PATH',
+});
+application.run(ARGV);"
+
+exec $DEBUG_COMMAND gjs -c "$SCRIPT" "$@"

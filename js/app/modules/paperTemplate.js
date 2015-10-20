@@ -30,7 +30,7 @@ const PaperTemplate = new Lang.Class({
         'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
     },
 
-    Template: 'resource:///com/endlessm/knowledge/widgets/paperTemplate.ui',
+    Template: 'resource:///com/endlessm/knowledge/data/widgets/paperTemplate.ui',
     InternalChildren: [ 'content-frame' ],
 
     // The fraction of extra space each margin should grab, from [0, 0.5]

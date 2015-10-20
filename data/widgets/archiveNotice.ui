@@ -9,7 +9,7 @@
     <property name="column_spacing">8</property>
       <child>
         <object class="GtkImage" id="archive-icon">
-          <property name="resource">/com/endlessm/knowledge/images/reader/archive.svg</property>
+          <property name="resource">/com/endlessm/knowledge/data/images/reader/archive.svg</property>
           <property name="visible">True</property>
         </object>
       </child>

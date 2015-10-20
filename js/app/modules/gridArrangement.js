@@ -31,7 +31,7 @@ const GridArrangement = new Lang.Class({
             0, GLib.MAXINT32, 7),
     },
 
-    Template: 'resource:///com/endlessm/knowledge/widgets/gridArrangement.ui',
+    Template: 'resource:///com/endlessm/knowledge/data/widgets/gridArrangement.ui',
     InternalChildren: [ 'flow_box' ],
 
     _init: function (props={}) {

@@ -46,7 +46,7 @@ const RESULTS_SIZE = 15;
 const TOTAL_ARTICLES = 30;
 const NUM_OVERVIEW_SNIPPETS = 3;
 
-const DATA_RESOURCE_PATH = 'resource:///com/endlessm/knowledge/';
+const DATA_RESOURCE_PATH = 'resource:///com/endlessm/knowledge/data/';
 
 // 1 week in miliseconds
 const UPDATE_INTERVAL_MS = 604800000;
@@ -133,7 +133,7 @@ const AisleInteraction = new Lang.Class({
     _init: function (props) {
         this._launched_once = false;
 
-        let css = Gio.File.new_for_uri('resource:///com/endlessm/knowledge/css/endless_reader.css');
+        let css = Gio.File.new_for_uri(DATA_RESOURCE_PATH + 'css/endless_reader.css');
         Utils.add_css_provider_from_file(css, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 
         props.settings = props.settings || new AisleUserSettingsModel.AisleUserSettingsModel({

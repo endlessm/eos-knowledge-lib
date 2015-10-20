@@ -6,7 +6,7 @@ const SetObjectModel = imports.search.setObjectModel;
 const Utils = imports.app.utils;
 
 function load_v1_compatibility_preset (templateType) {
-    let preset_uri = 'resource:///com/endlessm/knowledge/compat/v1-preset-json/' + templateType + '.json';
+    let preset_uri = 'resource:///com/endlessm/knowledge/data/compat/v1-preset-json/' + templateType + '.json';
     let file = Gio.File.new_for_uri(preset_uri);
     return Utils.parse_object_from_file(file);
 }

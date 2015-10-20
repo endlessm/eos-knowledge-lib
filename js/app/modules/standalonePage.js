@@ -33,7 +33,7 @@ const OpenButton = new Lang.Class({
             GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE, ''),
     },
 
-    _OPEN_ICON: '/com/endlessm/knowledge/images/reader/standalone_arrow.svg',
+    _OPEN_ICON: '/com/endlessm/knowledge/data/images/reader/standalone_arrow.svg',
 
     _init: function (props={}) {
         let image = new Gtk.Image({

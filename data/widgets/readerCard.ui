@@ -96,7 +96,7 @@
                       <object class="GtkImage" id="archive-icon">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="resource">/com/endlessm/knowledge/images/reader/archive.svg</property>
+                        <property name="resource">/com/endlessm/knowledge/data/images/reader/archive.svg</property>
                       </object>
                       <packing>
                         <property name="left_attach">0</property>

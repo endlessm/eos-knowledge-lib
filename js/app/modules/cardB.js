@@ -29,7 +29,7 @@ const CardB = new Lang.Class({
             Card.Card),
     },
 
-    Template: 'resource:///com/endlessm/knowledge/widgets/cardB.ui',
+    Template: 'resource:///com/endlessm/knowledge/data/widgets/cardB.ui',
     InternalChildren: [ 'thumbnail-frame', 'title-label' ],
 
     _init: function (props={}) {

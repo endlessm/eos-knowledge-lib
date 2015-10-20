@@ -26,7 +26,7 @@ const ScrollingTemplate = new Lang.Class({
         'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
     },
 
-    Template: 'resource:///com/endlessm/knowledge/widgets/scrollingTemplate.ui',
+    Template: 'resource:///com/endlessm/knowledge/data/widgets/scrollingTemplate.ui',
     InternalChildren: [ 'viewport' ],
 
     _init: function (props={}) {

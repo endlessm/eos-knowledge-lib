@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+  <gresource prefix="/com/endlessm/knowledge">
+    <file compressed="true">data/compat/v1-preset-json/A.json</file>
+    <file compressed="true">data/compat/v1-preset-json/B.json</file>
+    <file compressed="true">data/compat/v1-preset-json/encyclopedia.json</file>
+    <file compressed="true">data/compat/v1-preset-json/reader.json</file>
+    <file compressed="true">data/css/endless_encyclopedia.css</file>
+    <file compressed="true">data/css/endless_knowledge.css</file>
+    <file compressed="true">data/css/endless_reader.css</file>
+    <file compressed="true">data/css/endless_buffet.css</file>
+    <file compressed="true">data/css/hide_title.css</file>
+    <file compressed="true">data/css/mediaCard.css</file>
+    <file compressed="true">data/css/lightbox.css</file>
+    <file compressed="true">data/css/no_image_links.css</file>
+    <file compressed="true">data/css/themes/jungle.css</file>
+    <file compressed="true">data/css/themes/templateA.css</file>
+    <file>data/images/pdf-background.png</file>
+    <file>data/images/pdf_icon.png</file>
+    <file preprocess="xml-stripblanks">data/images/reader/archive.svg</file>
+    <file preprocess="xml-stripblanks">data/images/reader/external-link.svg</file>
+    <file preprocess="xml-stripblanks">data/images/reader/left-arrow.svg</file>
+    <file preprocess="xml-stripblanks">data/images/reader/right-arrow.svg</file>
+    <file preprocess="xml-stripblanks">data/images/reader/standalone_arrow.svg</file>
+    <file>data/images/separator.png</file>
+    <file compressed="true">data/templates/article.mst</file>
+    <file compressed="true">data/templates/css/embedly.css</file>
+    <file compressed="true">data/templates/css/reader.css</file>
+    <file compressed="true">data/templates/css/wikihow.css</file>
+    <file compressed="true">data/templates/css/wikimedia.css</file>
+    <file>data/templates/images/noise.png</file>
+    <file>data/templates/images/object-view.png</file>
+    <file compressed="true">data/templates/js/clipboard-manager.js</file>
+    <file compressed="true">data/templates/js/content-fixes.js</file>
+    <file compressed="true">data/templates/js/hide-broken-images.js</file>
+    <file compressed="true">data/templates/js/jquery-min.js</file>
+    <file compressed="true">data/templates/js/no-link-remover.js</file>
+    <file compressed="true">data/templates/js/scroll-manager.js</file>
+    <file compressed="true" preprocess="xml-stripblanks">data/widgets/appBanner.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">data/widgets/archiveNotice.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">data/widgets/articleSnippetCard.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">data/widgets/backCover.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">data/widgets/cardA.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">data/widgets/cardB.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">data/widgets/dividedBannerTemplate.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">data/widgets/encyclopediaCoverTemplate.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">data/widgets/gridArrangement.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">data/widgets/knowledgeDocumentCard.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">data/widgets/listArrangement.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">data/widgets/homePageATemplate.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">data/widgets/mediaCard.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">data/widgets/paperTemplate.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">data/widgets/readerCard.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">data/widgets/readerDocumentCard.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">data/widgets/scrollingTemplate.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">data/widgets/searchBannerModule.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">data/widgets/searchModule.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">data/widgets/suggestedArticlesModule.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">data/widgets/suggestedCategoriesModule.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">data/widgets/textCard.ui</file>
+    <file>js/app/actions.js</file>
+    <file>js/app/aisleUserSettingsModel.js</file>
+    <file>js/app/application.js</file>
+    <file>js/app/articleHTMLRenderer.js</file>
+    <file>js/app/compat/compat.js</file>
+    <file>js/app/compat/styleKnobGenerator.js</file>
+    <file>js/app/config.js</file>
+    <file>js/app/dispatcher.js</file>
+    <file>js/app/historyItem.js</file>
+    <file>js/app/historyPresenter.js</file>
+    <file>js/app/interactionLoader.js</file>
+    <file>js/app/interfaces/arrangement.js</file>
+    <file>js/app/interfaces/card.js</file>
+    <file>js/app/interfaces/documentCard.js</file>
+    <file>js/app/interfaces/expandable.js</file>
+    <file>js/app/interfaces/interaction.js</file>
+    <file>js/app/interfaces/launcher.js</file>
+    <file>js/app/interfaces/module.js</file>
+    <file>js/app/libs/cssParse.js</file>
+    <file>js/app/libs/mustache.js</file>
+    <file>js/app/moduleFactory.js</file>
+    <file>js/app/modules/aisleInteraction.js</file>
+    <file>js/app/modules/appBanner.js</file>
+    <file>js/app/modules/articleSnippetCard.js</file>
+    <file>js/app/modules/articleStackModule.js</file>
+    <file>js/app/modules/backCover.js</file>
+    <file>js/app/modules/bannerTemplate.js</file>
+    <file>js/app/modules/buffetInteraction.js</file>
+    <file>js/app/modules/cardA.js</file>
+    <file>js/app/modules/cardB.js</file>
+    <file>js/app/modules/carouselArrangement.js</file>
+    <file>js/app/modules/dividedBannerTemplate.js</file>
+    <file>js/app/modules/encyclopediaCoverTemplate.js</file>
+    <file>js/app/modules/encyclopediaWindow.js</file>
+    <file>js/app/modules/gridArrangement.js</file>
+    <file>js/app/modules/highlightsModule.js</file>
+    <file>js/app/modules/homePageATemplate.js</file>
+    <file>js/app/modules/itemGroupModule.js</file>
+    <file>js/app/modules/knowledgeDocumentCard.js</file>
+    <file>js/app/modules/lightboxModule.js</file>
+    <file>js/app/modules/listArrangement.js</file>
+    <file>js/app/modules/mediaCard.js</file>
+    <file>js/app/modules/meshInteraction.js</file>
+    <file>js/app/modules/navigationModule.js</file>
+    <file>js/app/modules/overflowArrangement.js</file>
+    <file>js/app/modules/paperTemplate.js</file>
+    <file>js/app/modules/readerCard.js</file>
+    <file>js/app/modules/readerDocumentCard.js</file>
+    <file>js/app/modules/readerWindow.js</file>
+    <file>js/app/modules/scrollingTemplate.js</file>
+    <file>js/app/modules/searchBannerModule.js</file>
+    <file>js/app/modules/searchBox.js</file>
+    <file>js/app/modules/searchModule.js</file>
+    <file>js/app/modules/setBannerModule.js</file>
+    <file>js/app/modules/setGroupModule.js</file>
+    <file>js/app/modules/sidebarTemplate.js</file>
+    <file>js/app/modules/standalonePage.js</file>
+    <file>js/app/modules/suggestedArticlesModule.js</file>
+    <file>js/app/modules/suggestedCategoriesModule.js</file>
+    <file>js/app/modules/textCard.js</file>
+    <file>js/app/modules/tiledGridArrangement.js</file>
+    <file>js/app/modules/twoVerticalTemplate.js</file>
+    <file>js/app/modules/window.js</file>
+    <file>js/app/styleClasses.js</file>
+    <file>js/app/utils.js</file>
+    <file>js/app/warehouse.js</file>
+    <file>js/app/webkitContextSetup.js</file>
+    <file>js/app/widgets/archiveNotice.js</file>
+    <file>js/app/widgets/eknWebview.js</file>
+    <file>js/app/widgets/imagePreviewer.js</file>
+    <file>js/app/widgets/inArticleSearch.js</file>
+    <file>js/app/widgets/infiniteScrolledWindow.js</file>
+    <file>js/app/widgets/lightbox.js</file>
+    <file>js/app/widgets/marginButton.js</file>
+    <file>js/app/widgets/navButtonOverlay.js</file>
+    <file>js/app/widgets/PDFView.js</file>
+    <file>js/app/widgets/previewer.js</file>
+    <file>js/app/widgets/progressLabel.js</file>
+    <file>js/app/widgets/spaceContainer.js</file>
+    <file>js/app/widgets/tabButton.js</file>
+    <file>js/app/widgets/tableOfContents.js</file>
+    <file>js/app/widgets/webviewTooltip.js</file>
+    <file>js/search/application.js</file>
+    <file>js/search/articleObjectModel.js</file>
+    <file>js/search/asyncTask.js</file>
+    <file>js/search/blacklist.js</file>
+    <file>js/search/contentObjectModel.js</file>
+    <file>js/search/datadir.js</file>
+    <file>js/search/engine.js</file>
+    <file>js/search/mediaObjectModel.js</file>
+    <file>js/search/queryObject.js</file>
+    <file>js/search/searchProvider.js</file>
+    <file>js/search/setObjectModel.js</file>
+    <file>js/search/treeNode.js</file>
+    <file>js/search/utils.js</file>
+    <file>js/tools/kermit.js</file>
+  </gresource>
+</gresources>

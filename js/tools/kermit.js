@@ -18,24 +18,26 @@ const USAGE = [
 // size of xapian-bridge result batches
 const BATCH_SIZE = 10;
 
-switch (ARGV[0]) {
-    case 'grep':
-        if (ARGV.length === 3) {
-            grep(ARGV[1], ARGV[2]);
-            break;
-        }
-    case 'dump':
-        if (ARGV.length === 4) {
-            dump(ARGV[1], ARGV[2], ARGV[3]);
-            break;
-        }
-    case 'query':
-        if (ARGV.length === 3) {
-            query(ARGV[1], ARGV[2]);
-            break;
-        }
-    default:
-        fail_with_message(USAGE);
+function main () {
+    switch (ARGV[0]) {
+        case 'grep':
+            if (ARGV.length === 3) {
+                grep(ARGV[1], ARGV[2]);
+                break;
+            }
+        case 'dump':
+            if (ARGV.length === 4) {
+                dump(ARGV[1], ARGV[2], ARGV[3]);
+                break;
+            }
+        case 'query':
+            if (ARGV.length === 3) {
+                query(ARGV[1], ARGV[2]);
+                break;
+            }
+        default:
+            fail_with_message(USAGE);
+    }
 }
 
 function grep (path, pattern) {

@@ -37,7 +37,7 @@ const ArticleSnippetCard = new Lang.Class({
             Card.Card),
     },
 
-    Template: 'resource:///com/endlessm/knowledge/widgets/articleSnippetCard.ui',
+    Template: 'resource:///com/endlessm/knowledge/data/widgets/articleSnippetCard.ui',
     InternalChildren: [ 'title-label', 'synopsis-label' ],
 
     _init: function (props={}) {

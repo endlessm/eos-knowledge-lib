@@ -10,7 +10,7 @@ const SearchUtils = imports.search.utils;
 
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
-const _ARTICLE_TEMPLATE = 'resource:///com/endlessm/knowledge/templates/article.mst';
+const _ARTICLE_TEMPLATE = 'resource:///com/endlessm/knowledge/data/templates/article.mst';
 
 const ArticleHTMLRenderer = new Lang.Class({
     Name: "ArticleHTMLRenderer",

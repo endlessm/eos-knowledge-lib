@@ -24,7 +24,7 @@ const DividedBannerTemplate = new Lang.Class({
         'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
     },
 
-    Template: 'resource:///com/endlessm/knowledge/widgets/dividedBannerTemplate.ui',
+    Template: 'resource:///com/endlessm/knowledge/data/widgets/dividedBannerTemplate.ui',
 
     _init: function (props={}) {
         this._cards = null;
