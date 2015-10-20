@@ -114,6 +114,11 @@ EknSearchModule {
     color: black;
 }
 
+.sequence-card {
+    background-color: white;
+    color: black;
+}
+
 EknSideMenuTemplate .context-bar {
     background-image: linear-gradient(to bottom, alpha(black, 0.05) 0%,
                                                  alpha(black, 0) 100%),

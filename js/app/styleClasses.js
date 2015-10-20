@@ -37,6 +37,12 @@ const CARD_B = 'card-b';
  */
 const TEXT_CARD = 'text-card';
 
+/**
+ * Constant: SEQUENCE_CARD
+ *
+ * Matches #EknSequenceCard widgets.
+ */
+const SEQUENCE_CARD = 'sequence-card';
 
 /**
  * Constant: SEARCH_RESULT_CARD
