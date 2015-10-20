@@ -1,7 +1,15 @@
 <SECTION>
-<FILE>hello</FILE>
-ekn_hello_c
-ekn_hello_c_provider_get_greeting
+<FILE>enums</FILE>
+EknLoadingAnimation
+EknTextTransform
+EknTreeNodeColumn
+<SUBSECTION Standard>
+EKN_TYPE_LOADING_ANIMATION
+EKN_TYPE_TEXT_TRANSFORM
+EKN_TYPE_TREE_NODE_COLUMN
+ekn_loading_animation_get_type
+ekn_text_transform_get_type
+ekn_tree_node_column_get_type
 <SUBSECTION Private>
 EKN_AVAILABLE_IN_0_0
 EKN_AVAILABLE_IN_0_2
@@ -70,18 +78,4 @@ EKN_IS_HISTORY_ITEM_MODEL
 EKN_HISTORY_ITEM_MODEL_GET_INTERFACE
 EKN_TYPE_HISTORY_ITEM_MODEL
 ekn_history_item_model_get_type
-</SECTION>
-
-<SECTION>
-<FILE>enums</FILE>
-EknLoadingAnimation
-EknTextTransform
-EknTreeNodeColumn
-<SUBSECTION Standard>
-EKN_TYPE_LOADING_ANIMATION
-EKN_TYPE_TEXT_TRANSFORM
-EKN_TYPE_TREE_NODE_COLUMN
-ekn_loading_animation_get_type
-ekn_text_transform_get_type
-ekn_tree_node_column_get_type
 </SECTION>

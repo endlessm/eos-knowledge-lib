@@ -10,15 +10,14 @@
   </bookinfo>
 
   <chapter>
-    <title>Model API Reference</title>
-    <xi:include href="xml/history-model.xml"/>
-    <xi:include href="xml/history-item-model.xml"/>
+    <title>Enum API Reference</title>
     <xi:include href="xml/enums.xml"/>
   </chapter>
 
   <chapter>
-    <title>Bogus API Reference</title>
-    <xi:include href="xml/hello.xml"/>
+    <title>Model API Reference</title>
+    <xi:include href="xml/history-model.xml"/>
+    <xi:include href="xml/history-item-model.xml"/>
   </chapter>
 
   <chapter id="object-tree">

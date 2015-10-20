@@ -127,7 +127,6 @@ gresources += $(compatdata_DATA)
 eosknowledgeprivate_headers = \
 	lib/eosknowledgeprivate/eosknowledge.h \
 	lib/eosknowledgeprivate/ekn-enums.h \
-	lib/eosknowledgeprivate/ekn-hello.h \
 	lib/eosknowledgeprivate/ekn-history-item-model.h \
 	lib/eosknowledgeprivate/ekn-history-model.h \
 	lib/eosknowledgeprivate/ekn-macros.h \
@@ -138,7 +137,6 @@ eosknowledgeprivate_headers = \
 
 eosknowledgeprivate_sources = \
 	lib/eosknowledgeprivate/ekn-enums.c \
-	lib/eosknowledgeprivate/ekn-hello.c \
 	lib/eosknowledgeprivate/ekn-history-item-model.c \
 	lib/eosknowledgeprivate/ekn-history-model.c \
 	lib/eosknowledgeprivate/ekn-init.c lib/eosknowledgeprivate/ekn-init-private.h \
@@ -243,7 +241,6 @@ bin_SCRIPTS += \
 # # # TESTS # # #
 
 javascript_tests = \
-	tests/eosknowledgeprivate/testHello.js \
 	tests/eosknowledgeprivate/testHistoryItemModel.js \
 	tests/eosknowledgeprivate/testHistoryModel.js \
 	tests/js/app/compat/testCompat.js \
