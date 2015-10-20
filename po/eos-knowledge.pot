@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: eos-knowledge 0.4.0\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-"
 "inc\n"
-"POT-Creation-Date: 2015-10-13 01:56+0000\n"
+"POT-Creation-Date: 2015-10-20 01:55+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -37,6 +37,14 @@ msgstr ""
 
 #: data/widgets/readerCard.ui:113 js/app/widgets/webviewTooltip.js:138
 msgid "Archive"
+msgstr ""
+
+#: data/widgets/suggestedArticlesModule.ui:18
+msgid "You might be interested in..."
+msgstr ""
+
+#: data/widgets/suggestedCategoriesModule.ui:18
+msgid "Browse Categories"
 msgstr ""
 
 #. TRANSLATORS: anything inside curly braces '{}' is going
@@ -92,43 +100,38 @@ msgstr ""
 msgid "Content courtesy of {blog-link}, licensed under {license-link}."
 msgstr ""
 
-#: js/app/compat/compat.js:105
-msgid "SEE ALL CATEGORIES"
-msgstr ""
-
-#: js/app/compat/compat.js:106
-msgid "HOME"
-msgstr ""
-
-#: js/app/modules/aisleInteraction.js:770
+#: js/app/modules/aisleInteraction.js:815
 msgid "View the license in your browser"
 msgstr ""
 
-#: js/app/modules/aisleInteraction.js:906
-#: js/app/modules/aisleInteraction.js:913
+#: js/app/modules/aisleInteraction.js:953
+#: js/app/modules/aisleInteraction.js:960
 msgid "Oops!"
 msgstr ""
 
-#: js/app/modules/aisleInteraction.js:907
+#: js/app/modules/aisleInteraction.js:954
 msgid ""
 "We could not find this magazine!\n"
 "Please try again after restarting your computer."
 msgstr ""
 
-#: js/app/modules/aisleInteraction.js:914
+#: js/app/modules/aisleInteraction.js:961
 msgid ""
 "There was an error loading that page.\n"
 "Try another one or try again after restarting your computer."
 msgstr ""
 
+#: js/app/modules/homePageATemplate.js:38
+msgid "SEE ALL CATEGORIES"
+msgstr ""
+
+#: js/app/modules/homePageATemplate.js:46
+msgid "HOME"
+msgstr ""
+
 #: js/app/modules/readerCard.js:60
 #, javascript-format
 msgid "Page %s"
-msgstr ""
-
-#: js/app/modules/readerWindow.js:128
-#, javascript-format
-msgid "This article is part of the archive of the magazine %s."
 msgstr ""
 
 #. TRANSLATORS: This message is displayed while an app is
@@ -137,7 +140,7 @@ msgstr ""
 #. surrounded by Unicode left and right double quotes (U+201C
 #. and U+201D). Make sure to include %s in your translation and
 #. use whatever quote marks are appropriate for your language.
-#: js/app/modules/searchBannerModule.js:55
+#: js/app/modules/searchBannerModule.js:56
 #, javascript-format
 msgid "Searching for “%s”"
 msgstr ""
@@ -148,27 +151,44 @@ msgstr ""
 #. surrounded by Unicode left and right double quotes (U+201C
 #. and U+201D). Make sure to include %s in your translation and
 #. use whatever quote marks are appropriate for your language.
-#: js/app/modules/searchBannerModule.js:67
+#: js/app/modules/searchBannerModule.js:68
 #, javascript-format
 msgid "Search results for “%s”"
 msgstr ""
 
-#: js/app/modules/searchBannerModule.js:73
+#: js/app/modules/searchBannerModule.js:74
 msgid "OOPS!"
 msgstr ""
 
-#: js/app/modules/searchModule.js:152
-msgid ""
-"There are no results that match your search.\n"
-"Try searching for something else."
+#: js/app/modules/searchModule.js:163
+msgid "Sorry! :-("
 msgstr ""
 
-#: js/app/modules/searchModule.js:165
+#: js/app/modules/searchModule.js:164
+#, javascript-format
+msgid "We didn't find any results that match your search for “%s”\n"
+msgstr ""
+
+#: js/app/modules/searchModule.js:166
+msgid ""
+"WE RECOMMEND THAT YOU:\n"
+"\n"
+"  •  Check your spelling\n"
+"  •  Try different words with the same meaning as the ones you just typed\n"
+"  •  Try again with more generic words"
+msgstr ""
+
+#: js/app/modules/searchModule.js:192
 msgid "There was an error during your search."
 msgstr ""
 
-#: js/app/reader/standalonePage.js:136
+#: js/app/modules/standalonePage.js:139
 msgid "Open the magazine"
+msgstr ""
+
+#: js/app/modules/standalonePage.js:256
+#, javascript-format
+msgid "This article is part of the archive of the magazine %s."
 msgstr ""
 
 #. TRANSLATORS: anything inside curly braces '{}' is going to be substituted

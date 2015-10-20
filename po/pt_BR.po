@@ -5,6 +5,7 @@
 # Translators:
 # Fernando Farfan <fernando@endlessm.com>, 2015
 # Ivan G. Gonçalves <i@endlessm.com>, 2015
+# Mariana Barbosa <mari@endlessm.com>, 2015
 # Philip Chimento <philip.chimento@gmail.com>, 2015
 # Renato Peixoto Pinto <renato@endlessm.com>, 2014
 # Richard Vignais, 2014
@@ -12,9 +13,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2015-10-06 02:13+0000\n"
-"PO-Revision-Date: 2015-09-29 02:12+0000\n"
-"Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
+"POT-Creation-Date: 2015-10-13 01:56+0000\n"
+"PO-Revision-Date: 2015-10-13 20:13+0000\n"
+"Last-Translator: Mariana Barbosa <mari@endlessm.com>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -96,13 +97,34 @@ msgstr "Cortesia de conteúdo de {blog-link}.  Utilizado com permissão."
 msgid "Content courtesy of {blog-link}, licensed under {license-link}."
 msgstr "Cortesia de conteúdo de {blog-link}, licenciado sob {license-link}."
 
-#: js/app/compat/compat.js:98
+#: js/app/compat/compat.js:105
 msgid "SEE ALL CATEGORIES"
 msgstr "Ver todas as categorias"
 
-#: js/app/compat/compat.js:99
+#: js/app/compat/compat.js:106
 msgid "HOME"
 msgstr "PÁGINA PRINCIPAL"
+
+#: js/app/modules/aisleInteraction.js:770
+msgid "View the license in your browser"
+msgstr "Veja a licença no seu browser"
+
+#: js/app/modules/aisleInteraction.js:906
+#: js/app/modules/aisleInteraction.js:913
+msgid "Oops!"
+msgstr "Opa!"
+
+#: js/app/modules/aisleInteraction.js:907
+msgid ""
+"We could not find this magazine!\n"
+"Please try again after restarting your computer."
+msgstr "Não conseguimos encontrar essa revista!\nPor favor, tente novamente após reiniciar seu computador. "
+
+#: js/app/modules/aisleInteraction.js:914
+msgid ""
+"There was an error loading that page.\n"
+"Try another one or try again after restarting your computer."
+msgstr "Ocorreu um erro no carregamento da página. \nTente outro ou tente novamente após reiniciar seu computador. "
 
 #: js/app/modules/readerCard.js:60
 #, javascript-format
@@ -123,7 +145,7 @@ msgstr "Este artigo é parte do acervo da revista %s."
 #: js/app/modules/searchBannerModule.js:55
 #, javascript-format
 msgid "Searching for “%s”"
-msgstr ""
+msgstr "Pesquisando por “%s”"
 
 #. TRANSLATORS: This message is displayed when an app is
 #. done searching for results. The %s will be replaced with the
@@ -138,37 +160,17 @@ msgstr "Resultados da pesquisa por “%s”"
 
 #: js/app/modules/searchBannerModule.js:73
 msgid "OOPS!"
-msgstr ""
+msgstr "OPA!"
 
 #: js/app/modules/searchModule.js:152
 msgid ""
 "There are no results that match your search.\n"
 "Try searching for something else."
-msgstr ""
+msgstr "Não há resultados para a sua pesquisa\nTente pesquisar outra coisa."
 
 #: js/app/modules/searchModule.js:165
 msgid "There was an error during your search."
-msgstr ""
-
-#: js/app/reader/presenter.js:818
-msgid "View the license in your browser"
-msgstr "Veja a licença no seu browser"
-
-#: js/app/reader/presenter.js:954 js/app/reader/presenter.js:961
-msgid "Oops!"
-msgstr "Oops!"
-
-#: js/app/reader/presenter.js:955
-msgid ""
-"We could not find this magazine!\n"
-"Please try again after restarting your computer."
-msgstr "Não conseguimos encontrar essa revista!\nPor favor, tente novamente após reiniciar seu computador. "
-
-#: js/app/reader/presenter.js:962
-msgid ""
-"There was an error loading that page.\n"
-"Try another one or try again after restarting your computer."
-msgstr "Ocorreu um erro no carregamento da página. \nTente outro ou tente novamente após reiniciar seu computador. "
+msgstr "Houve um erro durante a sua pesquisa."
 
 #: js/app/reader/standalonePage.js:136
 msgid "Open the magazine"

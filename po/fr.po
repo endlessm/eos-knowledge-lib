@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2015-10-06 02:13+0000\n"
-"PO-Revision-Date: 2015-09-29 02:12+0000\n"
+"POT-Creation-Date: 2015-10-13 01:56+0000\n"
+"PO-Revision-Date: 2015-10-13 18:22+0000\n"
 "Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
 "Language-Team: French (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/fr/)\n"
 "MIME-Version: 1.0\n"
@@ -38,7 +38,7 @@ msgstr "PDF"
 
 #: data/widgets/readerCard.ui:113 js/app/widgets/webviewTooltip.js:138
 msgid "Archive"
-msgstr ""
+msgstr "Archive"
 
 #. TRANSLATORS: anything inside curly braces '{}' is going
 #. to be substituted in code. Please make sure to leave the
@@ -93,23 +93,44 @@ msgstr "Permission de contenu de {blog-link}. Utilisé grâce à une aimable per
 msgid "Content courtesy of {blog-link}, licensed under {license-link}."
 msgstr "Permission de contenu de {blog-link}, sous licence {license-link}."
 
-#: js/app/compat/compat.js:98
+#: js/app/compat/compat.js:105
 msgid "SEE ALL CATEGORIES"
 msgstr "VOIR TOUTES LES CATÉGORIES"
 
-#: js/app/compat/compat.js:99
+#: js/app/compat/compat.js:106
 msgid "HOME"
 msgstr "PAGE D'ACCUEIL "
+
+#: js/app/modules/aisleInteraction.js:770
+msgid "View the license in your browser"
+msgstr "Voir la licence dans votre navigateur"
+
+#: js/app/modules/aisleInteraction.js:906
+#: js/app/modules/aisleInteraction.js:913
+msgid "Oops!"
+msgstr "Oups !"
+
+#: js/app/modules/aisleInteraction.js:907
+msgid ""
+"We could not find this magazine!\n"
+"Please try again after restarting your computer."
+msgstr "Nous n'avons pas trouvé ce magazine !\nEssayez de nouveau après avoir redémarré votre ordinateur."
+
+#: js/app/modules/aisleInteraction.js:914
+msgid ""
+"There was an error loading that page.\n"
+"Try another one or try again after restarting your computer."
+msgstr "Il y a eu une erreur pendant le chargement de cette page.\nEssayez-en une autre ou réessayez après avoir redémarré votre ordinateur."
 
 #: js/app/modules/readerCard.js:60
 #, javascript-format
 msgid "Page %s"
-msgstr ""
+msgstr "Page %s"
 
 #: js/app/modules/readerWindow.js:128
 #, javascript-format
 msgid "This article is part of the archive of the magazine %s."
-msgstr ""
+msgstr "Ciet article fait partie de l'archve du magasine %s."
 
 #. TRANSLATORS: This message is displayed while an app is
 #. searching for results. The %s will be replaced with the term
@@ -120,7 +141,7 @@ msgstr ""
 #: js/app/modules/searchBannerModule.js:55
 #, javascript-format
 msgid "Searching for “%s”"
-msgstr ""
+msgstr "Recherche de “%s”"
 
 #. TRANSLATORS: This message is displayed when an app is
 #. done searching for results. The %s will be replaced with the
@@ -131,45 +152,25 @@ msgstr ""
 #: js/app/modules/searchBannerModule.js:67
 #, javascript-format
 msgid "Search results for “%s”"
-msgstr ""
+msgstr "Résultats de recherche pour “%s”"
 
 #: js/app/modules/searchBannerModule.js:73
 msgid "OOPS!"
-msgstr ""
+msgstr "OUPS !"
 
 #: js/app/modules/searchModule.js:152
 msgid ""
 "There are no results that match your search.\n"
 "Try searching for something else."
-msgstr ""
+msgstr "Aucun résultat ne correspond à votre recherche.\nEssayez de chercher autre chose."
 
 #: js/app/modules/searchModule.js:165
 msgid "There was an error during your search."
-msgstr ""
-
-#: js/app/reader/presenter.js:818
-msgid "View the license in your browser"
-msgstr ""
-
-#: js/app/reader/presenter.js:954 js/app/reader/presenter.js:961
-msgid "Oops!"
-msgstr "Oups !"
-
-#: js/app/reader/presenter.js:955
-msgid ""
-"We could not find this magazine!\n"
-"Please try again after restarting your computer."
-msgstr "Nous n'avons pas trouvé ce magazine !\nEssayez de nouveau après avoir redémarré votre ordinateur."
-
-#: js/app/reader/presenter.js:962
-msgid ""
-"There was an error loading that page.\n"
-"Try another one or try again after restarting your computer."
-msgstr "Il y a eu une erreur pendant le chargement de cette page.\nEssayez-en une autre ou réessayez après avoir redémarré votre ordinateur."
+msgstr "Il y a eu une erreur pendant votre recherche."
 
 #: js/app/reader/standalonePage.js:136
 msgid "Open the magazine"
-msgstr ""
+msgstr "Ouvrez le magasine"
 
 #. TRANSLATORS: anything inside curly braces '{}' is going to be substituted
 #. in code. Please make sure to leave the curly braces around any words that
@@ -189,4 +190,4 @@ msgstr "et"
 #: js/app/widgets/webviewTooltip.js:122
 #, javascript-format
 msgid "Page %d"
-msgstr ""
+msgstr "Page %d"
