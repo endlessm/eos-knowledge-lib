@@ -125,24 +125,24 @@ gresources += $(compatdata_DATA)
 # # # MAIN LIBRARY # # #
 
 eosknowledgeprivate_headers = \
-	eosknowledgeprivate/eosknowledge.h \
-	eosknowledgeprivate/ekn-enums.h \
-	eosknowledgeprivate/ekn-hello.h \
-	eosknowledgeprivate/ekn-history-item-model.h \
-	eosknowledgeprivate/ekn-history-model.h \
-	eosknowledgeprivate/ekn-macros.h \
-	eosknowledgeprivate/ekn-types.h \
-	eosknowledgeprivate/ekn-util.h \
-	eosknowledgeprivate/ekn-version.h \
+	lib/eosknowledgeprivate/eosknowledge.h \
+	lib/eosknowledgeprivate/ekn-enums.h \
+	lib/eosknowledgeprivate/ekn-hello.h \
+	lib/eosknowledgeprivate/ekn-history-item-model.h \
+	lib/eosknowledgeprivate/ekn-history-model.h \
+	lib/eosknowledgeprivate/ekn-macros.h \
+	lib/eosknowledgeprivate/ekn-types.h \
+	lib/eosknowledgeprivate/ekn-util.h \
+	lib/eosknowledgeprivate/ekn-version.h \
 	$(NULL)
 
 eosknowledgeprivate_sources = \
-	eosknowledgeprivate/ekn-enums.c \
-	eosknowledgeprivate/ekn-hello.c \
-	eosknowledgeprivate/ekn-history-item-model.c \
-	eosknowledgeprivate/ekn-history-model.c \
-	eosknowledgeprivate/ekn-init.c eosknowledgeprivate/ekn-init-private.h \
-	eosknowledgeprivate/ekn-util.c \
+	lib/eosknowledgeprivate/ekn-enums.c \
+	lib/eosknowledgeprivate/ekn-hello.c \
+	lib/eosknowledgeprivate/ekn-history-item-model.c \
+	lib/eosknowledgeprivate/ekn-history-model.c \
+	lib/eosknowledgeprivate/ekn-init.c lib/eosknowledgeprivate/ekn-init-private.h \
+	lib/eosknowledgeprivate/ekn-util.c \
 	$(NULL)
 
 # Endless Knowledge Apps GUI library
@@ -173,8 +173,8 @@ libeosknowledgeprivate_la_LDFLAGS = \
 
 pkglib_LTLIBRARIES += libeosknowledgesearchprivate.la
 libeosknowledgesearchprivate_la_SOURCES = \
-        eosknowledgesearchprivate/ekns-subtree-dispatcher.c \
-        eosknowledgesearchprivate/ekns-subtree-dispatcher.h
+        lib/eosknowledgesearchprivate/ekns-subtree-dispatcher.c \
+        lib/eosknowledgesearchprivate/ekns-subtree-dispatcher.h
 
 libeosknowledgesearchprivate_la_CPPFLAGS = @EOS_KNOWLEDGE_PRIVATE_CFLAGS@
 libeosknowledgesearchprivate_la_CFLAGS = $(AM_CFLAGS)
@@ -187,7 +187,7 @@ webextensiondir = $(pkglibdir)/web-extensions
 webextension_LTLIBRARIES =
 
 webextension_LTLIBRARIES += libgresourceplugin.la
-libgresourceplugin_la_SOURCES = lib/gresourceplugin.c
+libgresourceplugin_la_SOURCES = lib/web-extensions/gresourceplugin.c
 libgresourceplugin_la_CFLAGS = $(GRESOURCE_PLUGIN_CFLAGS)
 libgresourceplugin_la_CPPFLAGS = \
 	-DPKGDATADIR=\""$(pkgdatadir)"\" \
@@ -197,7 +197,7 @@ libgresourceplugin_la_LDFLAGS = -module -avoid-version -no-undefined
 
 # WebKit web extension for determining DOM element coordinates for tooltips
 webextension_LTLIBRARIES += libtooltipplugin.la
-libtooltipplugin_la_SOURCES = lib/tooltipplugin.c
+libtooltipplugin_la_SOURCES = lib/web-extensions/tooltipplugin.c
 libtooltipplugin_la_CFLAGS = $(TOOLTIP_PLUGIN_CFLAGS)
 libtooltipplugin_la_CPPFLAGS = \
 	-DPKGDATADIR=\""$(pkgdatadir)"\" \

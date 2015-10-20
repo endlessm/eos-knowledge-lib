@@ -13,7 +13,7 @@ DOC_MAIN_SGML_FILE=$(DOC_MODULE)-docs.xml
 # gtk-doc will search all .c and .h files beneath these paths
 # for inline comments documenting functions and macros.
 # e.g. DOC_SOURCE_DIR=$(top_srcdir)/gtk $(top_srcdir)/gdk
-DOC_SOURCE_DIR=$(top_srcdir)/eosknowledgeprivate
+DOC_SOURCE_DIR=$(top_srcdir)/lib/eosknowledgeprivate
 
 # Extra options to pass to gtkdoc-scangobj. Not normally needed.
 SCANGOBJ_OPTIONS=
@@ -39,8 +39,8 @@ FIXXREF_OPTIONS=
 
 # Used for dependencies. The docs will be rebuilt if any of these change.
 BUILT_HFILES=
-HFILE_GLOB=$(top_srcdir)/eosknowledgeprivate/*.h
-CFILE_GLOB=$(top_srcdir)/eosknowledgeprivate/*.c
+HFILE_GLOB=$(top_srcdir)/lib/eosknowledgeprivate/*.h
+CFILE_GLOB=$(top_srcdir)/lib/eosknowledgeprivate/*.c
 
 # Extra header to include when scanning, which are not under DOC_SOURCE_DIR
 # e.g. EXTRA_HFILES=$(top_srcdir)/contrib/extra.h
