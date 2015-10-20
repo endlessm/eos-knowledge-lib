@@ -208,6 +208,7 @@ libtooltipplugin_la_LDFLAGS = -module -avoid-version -no-undefined
 # These files need to be filled in with make variables
 
 subst = $(SED) \
+	-e 's,%bindir%,$(bindir),g' \
 	-e 's,%compatdatadir%,$(compatdatadir),g' \
 	-e 's,%datadir%,$(datadir),g' \
 	-e 's,%pkgdatadir%,$(pkgdatadir),g' \
@@ -217,6 +218,7 @@ subst = $(SED) \
 	$(NULL)
 
 subst_files = \
+	data/com.endlessm.EknSearchProvider.service \
 	js/app/config.js \
 	ekn-search-provider \
 	ekn-app-runner \
@@ -230,6 +232,9 @@ $(subst_files): %: %.in Makefile
 
 CLEANFILES += $(subst_files)
 EXTRA_DIST += $(patsubst %,%.in,$(subst_files))
+
+servicedir = $(datadir)/dbus-1/services
+service_DATA = data/com.endlessm.EknSearchProvider.service
 
 bin_SCRIPTS += \
 	ekn-search-provider \
@@ -389,16 +394,6 @@ EOS_JS_COVERAGE_FILES = \
 
 AM_JS_LOG_FLAGS += @EOS_JS_COVERAGE_LOG_FLAGS@
 AM_LDFLAGS = @EOS_C_COVERAGE_LDFLAGS@
-
-# # # SEARCH PROVIDER # # #
-
-servicedir = $(datadir)/dbus-1/services
-service_DATA = data/com.endlessm.EknSearchProvider.service
-
-data/com.endlessm.EknSearchProvider.service: $(top_srcdir)/data/com.endlessm.EknSearchProvider.service.in Makefile
-	$(AM_V_GEN) sed -e 's|@BINDIR@|$(bindir)|g' $< > $@
-CLEANFILES += data/com.endlessm.EknSearchProvider.service
-EXTRA_DIST += data/com.endlessm.EknSearchProvider.service.in
 
 # # # DOCUMENTATION # # #
 
