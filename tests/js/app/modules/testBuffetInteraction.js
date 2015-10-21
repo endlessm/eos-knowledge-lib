@@ -10,7 +10,6 @@ const Utils = imports.tests.utils;
 Utils.register_gresource();
 
 const Actions = imports.app.actions;
-const ArticleObjectModel = imports.search.articleObjectModel;
 const BuffetInteraction = imports.app.modules.buffetInteraction;
 const ContentObjectModel = imports.search.contentObjectModel;
 const Launcher = imports.app.interfaces.launcher;
@@ -34,27 +33,15 @@ const MockView = new Lang.Class({
 });
 
 describe('Buffet interaction', function () {
-    let buffet, dispatcher, engine, factory, set_models, article_models;
+    let buffet, dispatcher, engine, factory, set_models;
 
     beforeEach(function () {
         dispatcher = MockDispatcher.mock_default();
 
         set_models = [0, 1, 2].map(() => new SetObjectModel.SetObjectModel());
-        article_models = [0, 1, 2, 3, 4, 5].map(() =>
-            new ArticleObjectModel.ArticleObjectModel());
 
-        // Return different models based on what the interaction is asking for
         engine = MockEngine.mock_default();
-        engine.get_objects_by_query.and.callFake((query, cancel, callback) => {
-            let task = query.tags.indexOf('EknSetObject') > -1 ? 'sets' : 'articles';
-            callback(engine, task);
-            return task;
-        });
-        engine.get_objects_by_query_finish.and.callFake(task => {
-            if (task === 'sets')
-                return [set_models, null];
-            return [article_models, null];
-        });
+        engine.get_objects_by_query_finish.and.returnValue([set_models, null]);
 
         factory = new MockFactory.MockFactory();
         factory.add_named_mock('window', MockView);
@@ -137,12 +124,43 @@ describe('Buffet interaction', function () {
                 jasmine.any(Object), jasmine.any(Function));
     });
 
-    it('dispatches article models to populate the app with', function () {
-        let payloads = dispatcher.payloads_with_type(Actions.APPEND_ITEMS);
-        expect(payloads.length).toBe(1);
-        expect(article_models).toEqual(payloads[0].models);
-        expect(engine.get_objects_by_query)
-            .toHaveBeenCalledWith(jasmine.objectContaining({ tags: ['EknArticleObject'] }),
-                jasmine.any(Object), jasmine.any(Function));
+    describe('when a set is clicked', function () {
+        beforeEach(function () {
+            dispatcher.dispatch({
+                action_type: Actions.SET_CLICKED,
+                model: set_models[0],
+            });
+        });
+
+        it('changes to the set page', function () {
+            expect(dispatcher.last_payload_with_type(Actions.SHOW_SECTION_PAGE))
+                .toBeDefined();
+        });
+
+        it('signals that a set should be loaded', function () {
+            expect(dispatcher.last_payload_with_type(Actions.SHOW_SET).model)
+                .toBe(set_models[0]);
+        });
+
+        it('goes back to the home page in the history', function () {
+            dispatcher.reset();
+            dispatcher.dispatch({
+                action_type: Actions.HISTORY_BACK_CLICKED,
+            });
+            expect(dispatcher.last_payload_with_type(Actions.SHOW_HOME_PAGE))
+                .toBeDefined();
+        });
+
+        it('goes forward to the set page in the history again', function () {
+            dispatcher.dispatch({
+                action_type: Actions.HISTORY_BACK_CLICKED,
+            });
+            dispatcher.reset();
+            dispatcher.dispatch({
+                action_type: Actions.HISTORY_FORWARD_CLICKED,
+            });
+            expect(dispatcher.last_payload_with_type(Actions.SHOW_SECTION_PAGE))
+                .toBeDefined();
+        });
     });
 });

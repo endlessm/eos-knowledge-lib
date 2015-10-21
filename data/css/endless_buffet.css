@@ -2,16 +2,18 @@
 
 /* This is all temporary */
 
-.text-card {
+.text-card .title.label {
     color: #204a87;
+    font-weight: normal;
     font-size: 1.5em;
     border-bottom: solid 1px gray;
 }
 
-.text-card:hover {
+.text-card:hover .title.label {
     color: #3465a4;
 }
 
-EknHighlightsModule {
+EknHighlightsModule,
+EknThematicModule {
     background-color: #d3d7cf;
 }

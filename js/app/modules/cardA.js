@@ -56,4 +56,16 @@ const CardA = new Lang.Class({
 
         Utils.set_hand_cursor_on_widget(this);
     },
+
+    // For entirely fixed-size cards
+
+    vfunc_get_preferred_width: function () {
+        let [min] = this.parent();
+        return [min, min];
+    },
+
+    vfunc_get_preferred_height: function () {
+        let [min] = this.parent();
+        return [min, min];
+    },
 });

@@ -1,6 +1,6 @@
 // Copyright 2015 Endless Mobile, Inc.
 
-/* exported HighlightsModule */
+/* exported ThematicModule */
 
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
@@ -13,8 +13,8 @@ const Module = imports.app.interfaces.module;
 const QueryObject = imports.search.queryObject;
 
 /**
- * Class: HighlightsModule
- * Module for showing featured articles as well as themes
+ * Class: ThematicModule
+ * Module for showing themes from one main category
  *
  * This module is designed for apps that have both featured and non-featured
  * sets, where the non-featured sets act as "themes" which unite articles across
@@ -23,9 +23,12 @@ const QueryObject = imports.search.queryObject;
  * This module shows a few arrangements consecutively.
  * We recommend placing it in a <ScrollingArrangement> or another module that
  * can allow it to scroll.
- * The top arrangement shows an assortment of cards from all sets.
- * Each subsequent arrangement shows the highlights of one non-featured
- * (thematic) set.
+ *
+ * In contrast to the <HighlightsModule> this module shows articles from one
+ * set, subdivided into several arrangements.
+ * Each arrangement shows either one theme from the selected featured set,
+ * or one featured set that has cards from the selected theme.
+ *
  * Clicking on a card in the arrangement takes you directly to that article.
  * Above each arrangement is a card ("header") showing the title of the set
  * which can also be clicked to show more information about that set.
@@ -35,9 +38,9 @@ const QueryObject = imports.search.queryObject;
  *   card-type - type of cards to create for articles
  *   header-card-type - type of cards to create for sets
  */
-const HighlightsModule = new Lang.Class({
-    Name: 'HighlightsModule',
-    GTypeName: 'EknHighlightsModule',
+const ThematicModule = new Lang.Class({
+    Name: 'ThematicModule',
+    GTypeName: 'EknThematicModule',
     Extends: Gtk.Grid,
     Implements: [ Module.Module ],
 
@@ -46,20 +49,19 @@ const HighlightsModule = new Lang.Class({
         'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
     },
 
-    // Overridable in tests
-    RESULTS_BATCH_SIZE: 15,
-
     _init: function (props={}) {
         props.orientation = Gtk.Orientation.VERTICAL;
         this.parent(props);
-
-        this._featured_arrangement = this.create_submodule('arrangement');
-        this._set_arrangements = [];
-
-        this.add(this._featured_arrangement);
+        this._arrangements = [];
+        this._featured_arrangements = [];
+        this._non_featured_arrangements = [];
+        this._headers_by_arrangement = {};
 
         Dispatcher.get_default().register((payload) => {
             switch (payload.action_type) {
+                case Actions.SET_CLICKED:
+                    this._show_set(payload.model);
+                    break;
                 case Actions.CLEAR_SETS:
                     this._clear_all();
                     break;
@@ -67,9 +69,7 @@ const HighlightsModule = new Lang.Class({
                     this._clear_items();
                     break;
                 case Actions.APPEND_SETS:
-                    payload.models.filter(model => !model.featured)
-                    .forEach(this._add_set, this);
-                    this._load_all_articles();
+                    payload.models.forEach(this._add_set, this);
                     break;
             }
         });
@@ -80,9 +80,49 @@ const HighlightsModule = new Lang.Class({
         return ['arrangement', 'card-type', 'header-card-type'];
     },
 
+    // Helper method for _show_set()
+    _show_non_empty_arrangements: function (arrangements) {
+        arrangements.filter(arrangement => arrangement.get_cards().length > 0)
+        .forEach(arrangement => {
+            arrangement.show_all();
+            this._headers_by_arrangement[arrangement].show_all();
+        });
+    },
+
+    _show_set: function (model) {
+        this._clear_items();
+
+        let query = new QueryObject.QueryObject({
+            limit: -1,
+            tags: model.child_tags,
+        });
+        Engine.get_default().get_objects_by_query(query, null, (engine, task) => {
+            let results;
+            try {
+                [results] = engine.get_objects_by_query_finish(task);
+            } catch (e) {
+                logError(e, 'Failed to load objects from set');
+                return;
+            }
+
+            results.forEach(this._add_item, this);
+
+            if (model.featured)
+                this._show_non_empty_arrangements(this._non_featured_arrangements);
+            else
+                this._show_non_empty_arrangements(this._featured_arrangements);
+
+            Dispatcher.get_default().dispatch({
+                action_type: Actions.SET_READY,
+                model: model,
+            });
+        });
+    },
+
     _create_set_card: function (model) {
         let card = this.create_submodule('header-card-type', {
             model: model,
+            visible: false,
         });
         card.connect('clicked', () => {
             Dispatcher.get_default().dispatch({
@@ -106,69 +146,49 @@ const HighlightsModule = new Lang.Class({
         return card;
     },
 
-    // Load all articles in order to populate the arrangements with them. This
-    // happens after APPEND_SETS.
-    // It's unfortunate that we don't have a way to determine whether an
-    // arrangement already contains a particular model. Otherwise, we could load
-    // articles from each set as that set was appended. But as it is, if we did
-    // that, we'd end up with duplicate cards in some arrangements.
-    _load_all_articles: function () {
-        this._clear_items();
-
-        let process_results = (engine, res) => {
-            let models, get_more;
-            try {
-                [models, get_more] = engine.get_objects_by_query_finish(res);
-            } catch (e) {
-                logError(e, 'Failed to load articles from database');
-                return;
-            }
-
-            if (get_more)
-                engine.get_objects_by_query(get_more, null, process_results);
-
-            models.forEach(this._add_item, this);
-        };
-        let query = new QueryObject.QueryObject({
-            limit: this.RESULTS_BATCH_SIZE,
-            tags: ['EknArticleObject'],
-        });
-        Engine.get_default().get_objects_by_query(query, null, process_results);
-    },
-
     _add_set: function (model) {
         let header = this._create_set_card(model);
-        header.show_all();
         this.add(header);
 
         let arrangement = this.create_submodule('arrangement', {
             vexpand: true,
+            visible: false,
         });
         arrangement.accepted_child_tags = model.child_tags.slice();
-        arrangement.show_all();
         this.add(arrangement);
-        this._set_arrangements.push(arrangement);
+        this._arrangements.push(arrangement);
+        this._headers_by_arrangement[arrangement] = header;
+
+        if (model.featured) {
+            this._featured_arrangements.push(arrangement);
+        } else {
+            this._non_featured_arrangements.push(arrangement);
+        }
     },
 
     _add_item: function (model) {
-        this._featured_arrangement.add_card(this._create_article_card(model));
-
-        this._set_arrangements.forEach(arrangement => {
+        this._arrangements.forEach(arrangement => {
             if (model.tags.some(tag =>
-                arrangement.accepted_child_tags.indexOf(tag) !== -1)) {
+                arrangement.accepted_child_tags.indexOf(tag) > -1)) {
                 arrangement.add_card(this._create_article_card(model));
             }
         });
     },
 
     _clear_all: function () {
-        this.get_children().filter(child => child !== this._featured_arrangement)
-            .forEach(this.remove, this);
-        this._set_arrangements = [];
+        this.get_children().forEach(this.remove, this);
+        this._arrangements = [];
+        this._featured_arrangements = [];
+        this._non_featured_arrangements = [];
+        this._headers_by_arrangement = {};
     },
 
     _clear_items: function () {
-        this._featured_arrangement.clear();
-        this._set_arrangements.forEach(arrangement => arrangement.clear());
+        // Only arrangements that have cards in them should be shown
+        this._arrangements.forEach(arrangement => {
+            arrangement.clear();
+            arrangement.hide();
+            this._headers_by_arrangement[arrangement].hide();
+        });
     },
 });
