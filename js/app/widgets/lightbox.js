@@ -21,17 +21,14 @@ GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.
  * <lightbox-widget> above some other base content. The base content
  * should be added with lightbox.add().
  *
- * An optional <infobox-widget> can also be added, in a infobox panel
- * underneath the <lightbox-widget> widget.
- *
  * To show or hide both of these widgets above the main content, set the
  * <reveal-overlays> property. The lightbox will animate the content visible
  * and invisible and update the <overlays-revealed> property when the
  * animation is complete.
  *
- * You need to call show() on both the <lightbox-widget> and <infobox-widget>
- * before adding them to the lightbox. To respect the <reveal-overlays>
- * property show_all() will not work on the widget overlays.
+ * You need to call show() on the <lightbox-widget> before adding it to the
+ * lightbox. To respect the <reveal-overlays> property show_all() will not work
+ * on the widget overlays.
  */
 const Lightbox = new Lang.Class({
     Name: 'Lightbox',
@@ -55,10 +52,10 @@ const Lightbox = new Lang.Class({
             false),
         /**
          * Property: overlays-revealed
-         * True if lightbox and infobox are revealed and animation target reached
+         * True if lightbox is revealed and animation target reached
          */
         'overlays-revealed': GObject.ParamSpec.boolean('overlays-revealed', 'Overlays Revealed',
-            'True if lightbox and infobox are revealed and animation target reached',
+            'True if lightbox is revealed and animation target reached',
             GObject.ParamFlags.READABLE, false),
         /**
          * Property: transition-duration
