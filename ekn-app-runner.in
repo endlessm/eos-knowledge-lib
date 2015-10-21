@@ -33,6 +33,6 @@ let application = new Application.Application({
     application_id: '$APP_ID',
     resource_path: '$RESOURCE_PATH',
 });
-application.run(ARGV);"
+application.run(['$0'].concat(ARGV));"
 
 exec $DEBUG_COMMAND gjs -c "$SCRIPT" "$@"

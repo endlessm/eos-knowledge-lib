@@ -23,6 +23,6 @@ imports.searchPath.unshift('resource:///com/endlessm/knowledge/js');
 
 const Application = imports.search.application;
 let application = new Application.Application();
-application.run(ARGV);"
+application.run(['$0'].concat(ARGV));"
 
 exec $DEBUG_COMMAND gjs -c "$SCRIPT" "$@"
