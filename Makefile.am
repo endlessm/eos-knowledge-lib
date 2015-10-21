@@ -386,9 +386,9 @@ EXTRA_DIST += jasmine.json
 
 # # # COVERAGE # # #
 
-EOS_JS_COVERAGE_FILES = \
-	$(js_files) \
-	$(NULL)
+# Don't specify the resource:/// URIs here, because the tests load modules from
+# the local directory, not from the GResource
+EOS_JS_COVERAGE_FILES := $(shell find $(top_srcdir)/js -name '*.js' | $(SED) s,^$(top_srcdir)/,,)
 
 @EOS_COVERAGE_RULES@
 
