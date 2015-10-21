@@ -2,7 +2,7 @@
     <head>
         <meta charset="UTF-8">
         {{#css-files}}
-        <link rel="stylesheet" type="text/css" href="resource:///com/endlessm/knowledge/templates/css/{{{.}}}"/>
+        <link rel="stylesheet" type="text/css" href="resource:///com/endlessm/knowledge/data/templates/css/{{{.}}}"/>
         {{/css-files}}
     </head>
     <body>
@@ -26,7 +26,7 @@
             </section>
         </div>
         {{#javascript-files}}
-        <script type="text/javascript" src="resource:///com/endlessm/knowledge/templates/js/{{{.}}}"></script>
+        <script type="text/javascript" src="resource:///com/endlessm/knowledge/data/templates/js/{{{.}}}"></script>
         {{/javascript-files}}
         {{#include-mathjax}}
         <script type="text/x-mathjax-config">

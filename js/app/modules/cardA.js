@@ -28,7 +28,7 @@ const CardA = new Lang.Class({
             Card.Card),
     },
 
-    Template: 'resource:///com/endlessm/knowledge/widgets/cardA.ui',
+    Template: 'resource:///com/endlessm/knowledge/data/widgets/cardA.ui',
     InternalChildren: [ 'thumbnail-frame', 'title-label', 'synopsis-label',
         'pdf-icon', 'pdf-label' ],
 

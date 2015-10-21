@@ -1,6 +1,6 @@
 const Gio = imports.gi.Gio;
 
-const UserSettingsModel = imports.app.reader.userSettingsModel;
+const AisleUserSettingsModel = imports.app.aisleUserSettingsModel;
 
 describe('Reader user settings model', function () {
     let user_settings_file;
@@ -12,7 +12,7 @@ describe('Reader user settings model', function () {
 
     describe('construction process', function () {
         it('works', function () {
-            let settings = new UserSettingsModel.UserSettingsModel({
+            let settings = new AisleUserSettingsModel.AisleUserSettingsModel({
                 settings_file: user_settings_file,
             });
         });
@@ -25,7 +25,7 @@ describe('Reader user settings model', function () {
                 update_timestamp: current_time,
             };
             user_settings_file.replace_contents(JSON.stringify(data), null, false, 0, null);
-            let settings = new UserSettingsModel.UserSettingsModel({
+            let settings = new AisleUserSettingsModel.AisleUserSettingsModel({
                 settings_file: user_settings_file,
             });
             expect(settings.start_article).toBe(3);
@@ -37,7 +37,7 @@ describe('Reader user settings model', function () {
         it('gracefully handles a settings file that is not JSON', function () {
             user_settings_file.replace_contents("This is not JSON", null, false, 0, null);
 
-            let settings = new UserSettingsModel.UserSettingsModel({
+            let settings = new AisleUserSettingsModel.AisleUserSettingsModel({
                 settings_file: user_settings_file,
             });
             expect(settings.start_article).toBe(0);
@@ -47,7 +47,7 @@ describe('Reader user settings model', function () {
         });
 
         it('gracefully handles case where settings file does not exist', function () {
-            let settings = new UserSettingsModel.UserSettingsModel({
+            let settings = new AisleUserSettingsModel.AisleUserSettingsModel({
                 settings_file: Gio.File.new_for_path('nothing/here'),
             });
             expect(settings.start_article).toBe(0);
@@ -61,7 +61,7 @@ describe('Reader user settings model', function () {
         let settings;
 
         beforeEach(function () {
-            settings = new UserSettingsModel.UserSettingsModel({
+            settings = new AisleUserSettingsModel.AisleUserSettingsModel({
                 settings_file: user_settings_file,
             });
         });

@@ -165,11 +165,11 @@ overridden by app specific CSS */
 }
 
 .nav-back-button .arrow {
-    -gtk-icon-source: url('resource:///com/endlessm/knowledge/images/reader/left-arrow.svg');
+    -gtk-icon-source: url('resource:///com/endlessm/knowledge/data/images/reader/left-arrow.svg');
 }
 
 .nav-forward-button .arrow {
-    -gtk-icon-source: url('resource:///com/endlessm/knowledge/images/reader/right-arrow.svg');
+    -gtk-icon-source: url('resource:///com/endlessm/knowledge/data/images/reader/right-arrow.svg');
 }
 
 .animating .nav-forward-button, .animating .nav-back-button {

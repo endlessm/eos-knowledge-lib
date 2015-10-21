@@ -78,7 +78,7 @@ const SearchModule = new Lang.Class({
             Gtk.Align.$gtype, Gtk.Align.START),
     },
 
-    Template: 'resource:///com/endlessm/knowledge/widgets/searchModule.ui',
+    Template: 'resource:///com/endlessm/knowledge/data/widgets/searchModule.ui',
     InternalChildren: [ 'message-title', 'message-subtitle', 'no-results-grid' ],
 
     _init: function (props={}) {

@@ -17,4 +17,11 @@ if [ "$RUN_DEBUG" != "" ]; then
     DEBUG_COMMAND="gdb --args"
 fi
 
-exec $DEBUG_COMMAND gjs %jsdir%/tools/kermit.js "$@"
+SCRIPT="const Gio = imports.gi.Gio;
+Gio.Resource.load('%pkgdatadir%/eos-knowledge.gresource')._register();
+imports.searchPath.unshift('resource:///com/endlessm/knowledge/js');
+
+const Kermit = imports.tools.kermit;
+Kermit.main();"
+
+exec $DEBUG_COMMAND gjs -c "$SCRIPT" "$@"

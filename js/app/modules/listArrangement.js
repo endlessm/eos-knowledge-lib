@@ -21,7 +21,7 @@ const ListArrangement = new Lang.Class({
         'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
     },
 
-    Template: 'resource:///com/endlessm/knowledge/widgets/listArrangement.ui',
+    Template: 'resource:///com/endlessm/knowledge/data/widgets/listArrangement.ui',
     InternalChildren: [ 'list_box' ],
 
     _init: function (props={}) {

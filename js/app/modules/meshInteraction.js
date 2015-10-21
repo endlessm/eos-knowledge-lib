@@ -27,7 +27,7 @@ const TextCard = imports.app.modules.textCard;
 const Utils = imports.app.utils;
 const WebkitContextSetup = imports.app.webkitContextSetup;
 
-const DATA_RESOURCE_PATH = 'resource:///com/endlessm/knowledge/';
+const DATA_RESOURCE_PATH = 'resource:///com/endlessm/knowledge/data/';
 const RESULTS_SIZE = 10;
 
 /**
@@ -533,7 +533,7 @@ const MeshInteraction = new Lang.Class({
     load_theme: function () {
         let provider = new Gtk.CssProvider();
         if (this.template_type === 'encyclopedia') {
-            let css_file = Gio.File.new_for_uri('resource:///com/endlessm/knowledge/css/endless_encyclopedia.css');
+            let css_file = Gio.File.new_for_uri(DATA_RESOURCE_PATH + 'css/endless_encyclopedia.css');
             provider.load_from_file(css_file);
         } else {
             this._style_knobs = StyleKnobGenerator.get_knobs_from_css(this.css, this.template_type);

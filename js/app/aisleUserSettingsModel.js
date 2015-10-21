@@ -10,13 +10,17 @@ const Utils = imports.app.utils;
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 
 /**
- * Class: Reader.UserSettingsModel
+ * Class: AisleUserSettingsModel
  *
- * This model is an abstraction of all the user settings for the Reader Apps.
+ * This model is an abstraction of all the user settings for apps using the
+ * aisle interaction.
+ *
+ * FIXME: Maybe make this more general purposed beyond the aisle interaction? At
+ * least when other apps have need to persistent state.
  */
-const UserSettingsModel = new Lang.Class({
-    Name: 'UserSettingsModel',
-    GTypeName: 'EknUserSettingsModel',
+const AisleUserSettingsModel = new Lang.Class({
+    Name: 'AisleUserSettingsModel',
+    GTypeName: 'EknAisleUserSettingsModel',
     Extends: GObject.Object,
     Properties: {
         /**

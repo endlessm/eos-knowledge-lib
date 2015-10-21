@@ -65,8 +65,8 @@ const WebviewTooltip = new Lang.Class({
             0, GLib.MAXUINT32, 0),
     },
 
-    _EXTERNAL_LINK_ICON: '/com/endlessm/knowledge/images/reader/external-link.svg',
-    _ARCHIVE_ICON: 'resource:///com/endlessm/knowledge/images/reader/archive.svg',
+    _EXTERNAL_LINK_ICON: '/com/endlessm/knowledge/data/images/reader/external-link.svg',
+    _ARCHIVE_ICON: 'resource:///com/endlessm/knowledge/data/images/reader/archive.svg',
     _ARCHIVE_ICON_SIZE: 10,
 
     _init: function (props={}) {

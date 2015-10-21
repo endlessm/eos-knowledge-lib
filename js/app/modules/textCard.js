@@ -56,7 +56,7 @@ const TextCard = new Lang.Class({
             false),
     },
 
-    Template: 'resource:///com/endlessm/knowledge/widgets/textCard.ui',
+    Template: 'resource:///com/endlessm/knowledge/data/widgets/textCard.ui',
     InternalChildren: [ 'decoration-label', 'title-label' ],
 
     _init: function (params={}) {

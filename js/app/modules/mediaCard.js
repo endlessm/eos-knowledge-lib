@@ -31,7 +31,7 @@ const MediaCard = new Lang.Class({
             Card.Card),
     },
 
-    Template: 'resource:///com/endlessm/knowledge/widgets/mediaCard.ui',
+    Template: 'resource:///com/endlessm/knowledge/data/widgets/mediaCard.ui',
     InternalChildren: [ 'caption-label', 'attribution-label', 'grid',
         'attribution-button', 'separator' ],
 
@@ -42,7 +42,7 @@ const MediaCard = new Lang.Class({
         this.parent(props);
 
         if (!this._css_has_loaded) {
-            let css = Gio.File.new_for_uri('resource:///com/endlessm/knowledge/css/mediaCard.css');
+            let css = Gio.File.new_for_uri('resource:///com/endlessm/knowledge/data/css/mediaCard.css');
             Utils.add_css_provider_from_file(css, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
             this._css_has_loaded = true;
         }

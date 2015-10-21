@@ -1,6 +1,5 @@
 #!/bin/bash
 
-export GJS_PATH="%jsdir%${GJS_PATH:+:$GJS_PATH}"
 export GI_TYPELIB_PATH="%typelibdir%${GI_TYPELIB_PATH:+:$GI_TYPELIB_PATH}"
 export LD_LIBRARY_PATH="%pkglibdir%${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
 
@@ -17,4 +16,23 @@ if [ "$RUN_DEBUG" != "" ]; then
     DEBUG_COMMAND="gdb --args"
 fi
 
-exec $DEBUG_COMMAND gjs %jsdir%/app/runner.js $@
+if [ "$#" -lt 2 ]; then
+    echo "Run this script by passing it an app ID and a gresource file"
+    exit 1
+fi
+
+APP_ID="$1" && shift
+RESOURCE_PATH="$1" && shift
+
+SCRIPT="const Gio = imports.gi.Gio;
+Gio.Resource.load('%pkgdatadir%/eos-knowledge.gresource')._register();
+imports.searchPath.unshift('resource:///com/endlessm/knowledge/js');
+
+const Application = imports.app.application;
+let application = new Application.Application({
+    application_id: '$APP_ID',
+    resource_path: '$RESOURCE_PATH',
+});
+application.run(ARGV);"
+
+exec $DEBUG_COMMAND gjs -c "$SCRIPT" "$@"

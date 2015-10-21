@@ -99,7 +99,7 @@ const BuffetInteraction = new Lang.Class({
 
     _load_theme: function () {
         let provider = new Gtk.CssProvider();
-        provider.load_from_resource('/com/endlessm/knowledge/css/endless_buffet.css');
+        provider.load_from_resource('/com/endlessm/knowledge/data/css/endless_buffet.css');
         Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(),
             provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
     },

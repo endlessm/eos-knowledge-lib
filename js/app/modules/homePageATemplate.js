@@ -46,7 +46,7 @@ const HomePageATemplate = new Lang.Class({
             _("HOME")),
     },
 
-    Template: 'resource:///com/endlessm/knowledge/widgets/homePageATemplate.ui',
+    Template: 'resource:///com/endlessm/knowledge/data/widgets/homePageATemplate.ui',
     InternalChildren: [ 'upper-grid', 'inner-grid', 'upper-button-stack', 'basement-grid', 'basement-button-stack' ],
 
 

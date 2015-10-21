@@ -476,7 +476,7 @@ EosWindow .scrollbar.slider {
 
 .document-card WebKitWebView {
     background-color: #ececec;
-    background-image: url('resource:///com/endlessm/knowledge/templates/images/noise.png');
+    background-image: url('resource:///com/endlessm/knowledge/data/templates/images/noise.png');
 }
 
 .document-card .title {
@@ -536,5 +536,5 @@ EosWindow .scrollbar.slider {
 }
 
 .pdf-view:not(.overshoot):not(.undershoot) {
-    background-image: url('resource:///com/endlessm/knowledge/images/pdf-background.png');
+    background-image: url('resource:///com/endlessm/knowledge/data/images/pdf-background.png');
 }

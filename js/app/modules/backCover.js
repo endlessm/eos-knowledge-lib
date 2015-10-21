@@ -47,7 +47,7 @@ const BackCover = new Lang.Class({
             Gtk.Widget),
     },
 
-    Template: 'resource:///com/endlessm/knowledge/widgets/backCover.ui',
+    Template: 'resource:///com/endlessm/knowledge/data/widgets/backCover.ui',
     InternalChildren: [ 'overlay', 'headline', 'subtitle' ],
 
     _init: function (props={}) {

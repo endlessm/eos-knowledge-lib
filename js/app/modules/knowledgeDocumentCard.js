@@ -76,7 +76,7 @@ const KnowledgeDocumentCard = new Lang.Class({
             TableOfContents.TableOfContents.$gtype),
     },
 
-    Template: 'resource:///com/endlessm/knowledge/widgets/knowledgeDocumentCard.ui',
+    Template: 'resource:///com/endlessm/knowledge/data/widgets/knowledgeDocumentCard.ui',
     InternalChildren: [ 'title-label', 'top-title-label', 'toolbar-frame',
         'toolbar-grid', 'content-frame', 'content-grid' ],
 

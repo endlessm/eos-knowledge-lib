@@ -26,6 +26,3 @@ let Application = new Lang.Class({
         this._search_provider.unregister(connection);
     },
 });
-
-let app = new Application();
-app.run(['ekn-search-provider'].concat(ARGV));

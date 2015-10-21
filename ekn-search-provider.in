@@ -17,4 +17,12 @@ if [ "$RUN_DEBUG" != "" ]; then
     DEBUG_COMMAND="gdb --args"
 fi
 
-exec $DEBUG_COMMAND gjs %jsdir%/search/application.js $@
+SCRIPT="const Gio = imports.gi.Gio;
+Gio.Resource.load('%pkgdatadir%/eos-knowledge.gresource')._register();
+imports.searchPath.unshift('resource:///com/endlessm/knowledge/js');
+
+const Application = imports.search.application;
+let application = new Application.Application();
+application.run(ARGV);"
+
+exec $DEBUG_COMMAND gjs -c "$SCRIPT" "$@"

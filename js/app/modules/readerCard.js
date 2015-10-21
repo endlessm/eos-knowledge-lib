@@ -41,7 +41,7 @@ const ReaderCard = new Lang.Class({
             Card.Card),
     },
 
-    Template: 'resource:///com/endlessm/knowledge/widgets/readerCard.ui',
+    Template: 'resource:///com/endlessm/knowledge/data/widgets/readerCard.ui',
     InternalChildren: [  'title-label', 'archive-icon', 'card-info-grid',
         'card-info-label', 'hover-frame' ],
 

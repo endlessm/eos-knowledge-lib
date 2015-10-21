@@ -108,9 +108,9 @@ EXTRA_DIST += $(gresources:.gresource=.gresource.xml) $(gresource_depedencies)
 
 # glib-compile-resources --generate-dependencies can't be run until all
 # dependencies are present, so we need to build the scss first
-data/eos-knowledge.gresource.deps: $(scss_targets)
-pkgdata_DATA += data/eos-knowledge.gresource
-gresources += data/eos-knowledge.gresource
+eos-knowledge.gresource.deps: $(scss_targets) $(subst_files)
+pkgdata_DATA += eos-knowledge.gresource
+gresources += eos-knowledge.gresource
 
 compatdatadir = $(pkgdatadir)/compat
 compatdata_DATA = \
@@ -125,24 +125,22 @@ gresources += $(compatdata_DATA)
 # # # MAIN LIBRARY # # #
 
 eosknowledgeprivate_headers = \
-	eosknowledgeprivate/eosknowledge.h \
-	eosknowledgeprivate/ekn-enums.h \
-	eosknowledgeprivate/ekn-hello.h \
-	eosknowledgeprivate/ekn-history-item-model.h \
-	eosknowledgeprivate/ekn-history-model.h \
-	eosknowledgeprivate/ekn-macros.h \
-	eosknowledgeprivate/ekn-types.h \
-	eosknowledgeprivate/ekn-util.h \
-	eosknowledgeprivate/ekn-version.h \
+	lib/eosknowledgeprivate/eosknowledge.h \
+	lib/eosknowledgeprivate/ekn-enums.h \
+	lib/eosknowledgeprivate/ekn-history-item-model.h \
+	lib/eosknowledgeprivate/ekn-history-model.h \
+	lib/eosknowledgeprivate/ekn-macros.h \
+	lib/eosknowledgeprivate/ekn-types.h \
+	lib/eosknowledgeprivate/ekn-util.h \
+	lib/eosknowledgeprivate/ekn-version.h \
 	$(NULL)
 
 eosknowledgeprivate_sources = \
-	eosknowledgeprivate/ekn-enums.c \
-	eosknowledgeprivate/ekn-hello.c \
-	eosknowledgeprivate/ekn-history-item-model.c \
-	eosknowledgeprivate/ekn-history-model.c \
-	eosknowledgeprivate/ekn-init.c eosknowledgeprivate/ekn-init-private.h \
-	eosknowledgeprivate/ekn-util.c \
+	lib/eosknowledgeprivate/ekn-enums.c \
+	lib/eosknowledgeprivate/ekn-history-item-model.c \
+	lib/eosknowledgeprivate/ekn-history-model.c \
+	lib/eosknowledgeprivate/ekn-init.c lib/eosknowledgeprivate/ekn-init-private.h \
+	lib/eosknowledgeprivate/ekn-util.c \
 	$(NULL)
 
 # Endless Knowledge Apps GUI library
@@ -173,8 +171,8 @@ libeosknowledgeprivate_la_LDFLAGS = \
 
 pkglib_LTLIBRARIES += libeosknowledgesearchprivate.la
 libeosknowledgesearchprivate_la_SOURCES = \
-        eosknowledgesearchprivate/ekns-subtree-dispatcher.c \
-        eosknowledgesearchprivate/ekns-subtree-dispatcher.h
+        lib/eosknowledgesearchprivate/ekns-subtree-dispatcher.c \
+        lib/eosknowledgesearchprivate/ekns-subtree-dispatcher.h
 
 libeosknowledgesearchprivate_la_CPPFLAGS = @EOS_KNOWLEDGE_PRIVATE_CFLAGS@
 libeosknowledgesearchprivate_la_CFLAGS = $(AM_CFLAGS)
@@ -187,7 +185,7 @@ webextensiondir = $(pkglibdir)/web-extensions
 webextension_LTLIBRARIES =
 
 webextension_LTLIBRARIES += libgresourceplugin.la
-libgresourceplugin_la_SOURCES = lib/gresourceplugin.c
+libgresourceplugin_la_SOURCES = lib/web-extensions/gresourceplugin.c
 libgresourceplugin_la_CFLAGS = $(GRESOURCE_PLUGIN_CFLAGS)
 libgresourceplugin_la_CPPFLAGS = \
 	-DPKGDATADIR=\""$(pkgdatadir)"\" \
@@ -197,7 +195,7 @@ libgresourceplugin_la_LDFLAGS = -module -avoid-version -no-undefined
 
 # WebKit web extension for determining DOM element coordinates for tooltips
 webextension_LTLIBRARIES += libtooltipplugin.la
-libtooltipplugin_la_SOURCES = lib/tooltipplugin.c
+libtooltipplugin_la_SOURCES = lib/web-extensions/tooltipplugin.c
 libtooltipplugin_la_CFLAGS = $(TOOLTIP_PLUGIN_CFLAGS)
 libtooltipplugin_la_CPPFLAGS = \
 	-DPKGDATADIR=\""$(pkgdatadir)"\" \
@@ -206,124 +204,13 @@ libtooltipplugin_la_CPPFLAGS = \
 libtooltipplugin_la_LIBADD = $(TOOLTIP_PLUGIN_LIBS)
 libtooltipplugin_la_LDFLAGS = -module -avoid-version -no-undefined
 
-# # # JAVASCRIPT # # #
-
-js_files = \
-	js/app/actions.js \
-	js/app/application.js \
-	js/app/articleHTMLRenderer.js \
-	js/app/compat/compat.js \
-	js/app/compat/styleKnobGenerator.js \
-	js/app/config.js \
-	js/app/dispatcher.js \
-	js/app/historyItem.js \
-	js/app/historyPresenter.js \
-	js/app/interactionLoader.js \
-	js/app/interfaces/arrangement.js \
-	js/app/interfaces/card.js \
-	js/app/interfaces/documentCard.js \
-	js/app/interfaces/expandable.js \
-	js/app/interfaces/interaction.js \
-	js/app/interfaces/launcher.js \
-	js/app/interfaces/module.js \
-	js/app/libs/cssParse.js \
-	js/app/libs/mustache.js \
-	js/app/moduleFactory.js \
-	js/app/modules/aisleInteraction.js \
-	js/app/modules/appBanner.js \
-	js/app/modules/articleSnippetCard.js \
-	js/app/modules/articleStackModule.js \
-	js/app/modules/backCover.js \
-	js/app/modules/bannerTemplate.js \
-	js/app/modules/buffetInteraction.js \
-	js/app/modules/cardA.js \
-	js/app/modules/cardB.js \
-	js/app/modules/carouselArrangement.js \
-	js/app/modules/dividedBannerTemplate.js \
-	js/app/modules/encyclopediaCoverTemplate.js \
-	js/app/modules/encyclopediaWindow.js \
-	js/app/modules/gridArrangement.js \
-	js/app/modules/highlightsModule.js \
-	js/app/modules/homePageATemplate.js \
-	js/app/modules/itemGroupModule.js \
-	js/app/modules/knowledgeDocumentCard.js \
-	js/app/modules/lightboxModule.js \
-	js/app/modules/listArrangement.js \
-	js/app/modules/mediaCard.js \
-	js/app/modules/meshInteraction.js \
-	js/app/modules/navigationModule.js \
-	js/app/modules/overflowArrangement.js \
-	js/app/modules/paperTemplate.js \
-	js/app/modules/readerCard.js \
-	js/app/modules/readerDocumentCard.js \
-	js/app/modules/readerWindow.js \
-	js/app/modules/scrollingTemplate.js \
-	js/app/modules/searchBannerModule.js \
-	js/app/modules/searchBox.js \
-	js/app/modules/searchModule.js \
-	js/app/modules/setBannerModule.js \
-	js/app/modules/setGroupModule.js \
-	js/app/modules/sidebarTemplate.js \
-	js/app/modules/standalonePage.js \
-	js/app/modules/suggestedArticlesModule.js \
-	js/app/modules/suggestedCategoriesModule.js \
-	js/app/modules/textCard.js \
-	js/app/modules/tiledGridArrangement.js \
-	js/app/modules/twoVerticalTemplate.js \
-	js/app/modules/window.js \
-	js/app/reader/userSettingsModel.js \
-	js/app/runner.js \
-	js/app/styleClasses.js \
-	js/app/utils.js \
-	js/app/warehouse.js \
-	js/app/webkitContextSetup.js \
-	js/app/widgets/archiveNotice.js \
-	js/app/widgets/eknWebview.js \
-	js/app/widgets/imagePreviewer.js \
-	js/app/widgets/inArticleSearch.js \
-	js/app/widgets/infiniteScrolledWindow.js \
-	js/app/widgets/lightbox.js \
-	js/app/widgets/marginButton.js \
-	js/app/widgets/navButtonOverlay.js \
-	js/app/widgets/PDFView.js \
-	js/app/widgets/previewer.js \
-	js/app/widgets/progressLabel.js \
-	js/app/widgets/spaceContainer.js \
-	js/app/widgets/tabButton.js \
-	js/app/widgets/tableOfContents.js \
-	js/app/widgets/webviewTooltip.js \
-	js/search/application.js \
-	js/search/articleObjectModel.js \
-	js/search/asyncTask.js \
-	js/search/blacklist.js \
-	js/search/contentObjectModel.js \
-	js/search/datadir.js \
-	js/search/engine.js \
-	js/search/mediaObjectModel.js \
-	js/search/queryObject.js \
-	js/search/searchProvider.js \
-	js/search/setObjectModel.js \
-	js/search/treeNode.js \
-	js/search/utils.js \
-	js/tools/kermit.js \
-	$(NULL)
-
-jsdir = $(pkgdatadir)/js
-# We want nobase to preserve directory structure, but that will include the js
-# directory in the path, so we need to install to pkgdatadir instead of jsdir here.
-nobase_dist_pkgdata_DATA = $(js_files)
-
-# Overrides for the C library
-overridesdir = $(jsdir)/overrides
-dist_overrides_DATA = overrides/EosKnowledgePrivate.js
-
 # # # SUBSTITUTED FILES # # #
 # These files need to be filled in with make variables
 
 subst = $(SED) \
+	-e 's,%bindir%,$(bindir),g' \
 	-e 's,%compatdatadir%,$(compatdatadir),g' \
 	-e 's,%datadir%,$(datadir),g' \
-	-e 's,%jsdir%,$(jsdir),g' \
 	-e 's,%pkgdatadir%,$(pkgdatadir),g' \
 	-e 's,%pkglibdir%,$(pkglibdir),g' \
 	-e 's,%typelibdir%,$(typelibdir),g' \
@@ -331,6 +218,7 @@ subst = $(SED) \
 	$(NULL)
 
 subst_files = \
+	data/com.endlessm.EknSearchProvider.service \
 	js/app/config.js \
 	ekn-search-provider \
 	ekn-app-runner \
@@ -345,6 +233,9 @@ $(subst_files): %: %.in Makefile
 CLEANFILES += $(subst_files)
 EXTRA_DIST += $(patsubst %,%.in,$(subst_files))
 
+servicedir = $(datadir)/dbus-1/services
+service_DATA = data/com.endlessm.EknSearchProvider.service
+
 bin_SCRIPTS += \
 	ekn-search-provider \
 	ekn-app-runner \
@@ -355,7 +246,6 @@ bin_SCRIPTS += \
 # # # TESTS # # #
 
 javascript_tests = \
-	tests/eosknowledgeprivate/testHello.js \
 	tests/eosknowledgeprivate/testHistoryItemModel.js \
 	tests/eosknowledgeprivate/testHistoryModel.js \
 	tests/js/app/compat/testCompat.js \
@@ -398,8 +288,7 @@ javascript_tests = \
 	tests/js/app/modules/testSuggestedCategoriesModule.js \
 	tests/js/app/modules/testTextCard.js \
 	tests/js/app/modules/testWindow.js \
-	tests/js/app/reader/testUserSettingsModel.js \
-	tests/js/app/reader/testWebExtension.js \
+	tests/js/app/testAisleUserSettingsModel.js \
 	tests/js/app/testArticleHTMLRenderer.js \
 	tests/js/app/testDispatcher.js \
 	tests/js/app/testHistoryItem.js \
@@ -407,6 +296,7 @@ javascript_tests = \
 	tests/js/app/testModuleFactory.js \
 	tests/js/app/testStyleKnobGenerator.js \
 	tests/js/app/testUtils.js \
+	tests/js/app/testWebExtension.js \
 	tests/js/app/widgets/testLightbox.js \
 	tests/js/app/widgets/testPDFView.js \
 	tests/js/app/widgets/testPreviewer.js \
@@ -504,16 +394,6 @@ EOS_JS_COVERAGE_FILES = \
 
 AM_JS_LOG_FLAGS += @EOS_JS_COVERAGE_LOG_FLAGS@
 AM_LDFLAGS = @EOS_C_COVERAGE_LDFLAGS@
-
-# # # SEARCH PROVIDER # # #
-
-servicedir = $(datadir)/dbus-1/services
-service_DATA = data/com.endlessm.EknSearchProvider.service
-
-data/com.endlessm.EknSearchProvider.service: $(top_srcdir)/data/com.endlessm.EknSearchProvider.service.in Makefile
-	$(AM_V_GEN) sed -e 's|@BINDIR@|$(bindir)|g' $< > $@
-CLEANFILES += data/com.endlessm.EknSearchProvider.service
-EXTRA_DIST += data/com.endlessm.EknSearchProvider.service.in
 
 # # # DOCUMENTATION # # #
 
