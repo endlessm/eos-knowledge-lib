@@ -18,17 +18,21 @@ const ImageCoverFrame = Lang.Class({
     Extends: Gtk.Widget,
 
     _init: function (props={}) {
+        props.visible = true;
         this.parent(props);
         this.set_has_window(false);
 
         this._aspect = 1.0;
         this._natural_width = 0;
         this._natural_height = 0;
+        this._pixbuf = null;
     },
 
     set_content: function (stream) {
-        if (stream === null)
+        if (stream === null) {
+            this._pixbuf = null;
             return;
+        }
 
         this._pixbuf = GdkPixbuf.Pixbuf.new_from_stream(stream, null);
 

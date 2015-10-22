@@ -2,18 +2,52 @@ const Endless = imports.gi.Endless;
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
+const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const Utils = imports.tests.utils;
 Utils.register_gresource();
 const ArticleObjectModel = imports.search.articleObjectModel;
-const ThumbCard = imports.app.modules.thumbCard;
+const Engine = imports.search.engine;
+const MediaObjectModel = imports.search.mediaObjectModel;
 const PostCard = imports.app.modules.postCard;
 const SearchResultCard = imports.app.modules.searchResultCard;
+const ThumbCard = imports.app.modules.thumbCard;
 
 const TEST_APPLICATION_ID = 'com.endlessm.knowledge.card';
 const TESTDIR = Endless.getCurrentFileDir() + '/..';
+
+const MockEngine = new Lang.Class({
+    Name: 'MockEngine',
+    Extends: GObject.Object,
+
+    _init: function () {
+        this.parent();
+        this.host = 'localhost';
+        this.port = 3003;
+        this.language = '';
+    },
+
+    add_runtime_object: function () {},
+    get_ekn_id: function () {},
+
+    // FIXME: we launch into the callbacks synchronously because all the tests
+    // in testAisleInteraction expect it currently. Would be good to rewrite
+    // those tests to tolerate a mock object that was actually async.
+
+    get_object_by_id: function (query, cancellable, callback) {
+        callback(this);
+    },
+
+    get_object_by_id_finish: function () {},
+
+    get_objects_by_query: function (query, cancellable, callback) {
+        callback(this);
+    },
+
+    get_objects_by_query_finish: function () {},
+});
 
 const TestApplication = new Lang.Class ({
     Name: 'TestApplication',
@@ -60,20 +94,28 @@ const TestApplication = new Lang.Class ({
             },
         ];
 
+        let engine = new MockEngine();
+        Engine.get_default = () => engine;
+        let get_content_stream = function () {
+            let filename = this.ekn_id.slice(6);
+            let file = Gio.File.new_for_path(Utils.get_test_content_builddir() + filename);
+            return file.read(null);
+        }
+
         let create_cards = (CardType, orientation) => {
             let grid = new Gtk.Grid({
                 orientation: orientation,
             });
             models.map((json) => {
-                let props = {
-                    ekn_version: 2,
-                };
-                props.get_content_stream = (ekn_id) => {
-                    let filename = ekn_id.slice(6);
-                    let file = Gio.File.new_for_path(Utils.get_test_content_builddir() + filename);
-                    return file.read(null);
-                };
-                let model = new ArticleObjectModel.ArticleObjectModel(props, json);
+                engine.get_object_by_id_finish = function () {
+                    let props = {
+                        ekn_id: json.thumbnail,
+                        get_content_stream: get_content_stream,
+                    };
+                    let media_model = new MediaObjectModel.MediaObjectModel(props);
+                    return media_model;
+                }
+                let model = new ArticleObjectModel.ArticleObjectModel({}, json);
                 let card = new CardType({
                     model: model,
                     'title-capitalization': EosKnowledgePrivate.TextTransform.UPPERCASE,
