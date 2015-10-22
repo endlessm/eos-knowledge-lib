@@ -7,6 +7,7 @@ const Lang = imports.lang;
 
 const Config = imports.app.config;
 const Module = imports.app.interfaces.module;
+const SlidingPanel = imports.app.widgets.slidingPanel;
 const TabButton = imports.app.widgets.tabButton;
 
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
@@ -47,19 +48,16 @@ const HomePageATemplate = new Lang.Class({
     },
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/homePageATemplate.ui',
-    InternalChildren: [ 'upper-grid', 'inner-grid', 'upper-button-stack', 'basement-grid', 'basement-button-stack' ],
+    InternalChildren: [ 'upper-grid', 'inner-grid', 'basement-grid' ],
 
+    _BUTTON_TRANSITION_TIME: 500,
 
     _init: function (props={}) {
+        // FIXME: these should be in the template.ui file, but aren't working
+        // from there. Why?
+        props.transition_type = Gtk.StackTransitionType.SLIDE_UP_DOWN;
+        props.transition_duration = 500;
         this.parent(props);
-
-        this._upper_tab_button = new TabButton.TabButton({
-            position: Gtk.PositionType.BOTTOM,
-            label: this.upper_button_label,
-        });
-
-        this._upper_button_stack.add(this._upper_tab_button);
-        this._upper_button_stack.set_visible_child(this._upper_tab_button);
 
         ['top', 'middle'].forEach((slot) => {
             let submodule = this.create_submodule(slot);
@@ -70,67 +68,54 @@ const HomePageATemplate = new Lang.Class({
         this._bottom = this.create_submodule('bottom');
         this._upper_grid.attach(this._bottom, 0, 1, 1, 1);
 
-        this._basement_tab_button = new TabButton.TabButton({
-            position: Gtk.PositionType.TOP,
-            label: this.basement_button_label,
-        });
-        this._basement_tab_button.show()
-
-        this._basement_button_stack.add(this._basement_tab_button);
-        this._basement_button_stack.set_visible_child(this._basement_tab_button);
-
         this._basement = this.create_submodule('basement');
         this._basement_grid.attach(this._basement, 0, 1, 1, 1);
 
-        this._upper_grid.show_all();
+        let top_panel = this._setup_panel_buttom(Gtk.PositionType.TOP);
+        let bottom_panel = this._setup_panel_buttom(Gtk.PositionType.BOTTOM);
+
+        this._basement_grid.attach(top_panel, 0, 0, 1, 1);
+        this._upper_grid.attach(bottom_panel, 0, 2, 1, 1);
+
         this.set_visible_child(this._upper_grid);
-
-        [this._upper_tab_button, this._basement_tab_button].forEach((tab_button) => {
-            tab_button.connect('clicked', (button) => {
-                let in_basement = this.get_visible_child() === this._basement_grid;
-                let transition = in_basement ? Gtk.StackTransitionType.SLIDE_UP : Gtk.StackTransitionType.SLIDE_DOWN;
-                this._hide_button(button, transition);
-                let stack = button.get_parent();
-                let id = stack.connect('notify::transition-running', () => {
-                    if (!stack.transition_running && stack.visible_child != button) {
-                        let next_page = in_basement ? this._upper_grid : this._basement_grid;
-                        this.transition_type = in_basement ? Gtk.StackTransitionType.SLIDE_DOWN : Gtk.StackTransitionType.SLIDE_UP;
-                        this.set_visible_child(next_page);
-                    }
-                    stack.disconnect(id);
-                });
-            });
-        });
-
         this.connect('notify::transition-running', () => {
             if (!this.transition_running) {
                 if (this.get_visible_child() === this._basement_grid) {
-                    this._show_button(this._basement_tab_button, Gtk.StackTransitionType.SLIDE_DOWN);
+                    top_panel.reveal_panel = true;
                 } else {
-                    this._show_button(this._upper_tab_button, Gtk.StackTransitionType.SLIDE_UP);
+                    bottom_panel.reveal_panel = true;
                 }
             }
         });
 
         this._bottom.connect('notify::has-more-content', () => {
             if (this._bottom.has_more_content) {
-                this._upper_tab_button.show();
-                this._upper_button_stack.set_visible_child(this._upper_tab_button);
+                bottom_panel.reveal_panel = true;
             }
         });
     },
 
-    _hide_button: function (button, transition) {
-        let stack = button.get_parent();
-        let invisible_frame = stack.get_children()[0];
-        stack.transition_type = transition;
-        stack.visible_child = invisible_frame;
-    },
-
-    _show_button: function (button, transition) {
-        let stack = button.get_parent();
-        stack.transition_type = transition;
-        stack.visible_child = button;
+    _setup_panel_buttom: function (position) {
+        let is_bottom = (position === Gtk.PositionType.BOTTOM);
+        let button = new TabButton.TabButton({
+            position: position,
+            visible: true,
+            label: is_bottom ? this.upper_button_label : this.basement_button_label,
+        });
+        let panel = new SlidingPanel.SlidingPanel({
+            panel_widget: button,
+            hide_direction: position,
+            transition_duration: this._BUTTON_TRANSITION_TIME,
+        });
+        button.connect('clicked', () => {
+            let next_page = is_bottom ? this._basement_grid : this._upper_grid;
+            panel.reveal_panel = false;
+            let id = panel.connect('notify::panel-revealed', () => {
+                this.set_visible_child(next_page);
+                panel.disconnect(id);
+            });
+        });
+        return panel;
     },
 
     get_slot_names: function () {
