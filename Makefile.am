@@ -263,6 +263,7 @@ javascript_tests = \
 	tests/js/app/modules/testCardA.js \
 	tests/js/app/modules/testCardB.js \
 	tests/js/app/modules/testCarouselArrangement.js \
+	tests/js/app/modules/testContextBanner.js \
 	tests/js/app/modules/testDividedBannerTemplate.js \
 	tests/js/app/modules/testHighlightsModule.js \
 	tests/js/app/modules/testHomePageATemplate.js \

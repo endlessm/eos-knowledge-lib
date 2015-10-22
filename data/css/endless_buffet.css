@@ -103,3 +103,10 @@ EknSideMenuTemplate .close-button:hover,
 EknSideMenuTemplate .menu-button:hover {
     color: #5bc2e5;  /* FIXME: no spec from design */
 }
+
+EknContextBanner {
+    font-family: 'Lato Thin';
+    font-size: 22px;
+    color: #666666;
+    text-shadow: 0px 1px alpha(white, 0.004);
+}

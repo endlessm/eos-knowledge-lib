@@ -93,6 +93,7 @@
     <file>js/app/modules/cardA.js</file>
     <file>js/app/modules/cardB.js</file>
     <file>js/app/modules/carouselArrangement.js</file>
+    <file>js/app/modules/contextBanner.js</file>
     <file>js/app/modules/dividedBannerTemplate.js</file>
     <file>js/app/modules/encyclopediaCoverTemplate.js</file>
     <file>js/app/modules/encyclopediaWindow.js</file>
