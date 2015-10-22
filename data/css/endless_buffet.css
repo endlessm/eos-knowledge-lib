@@ -51,3 +51,13 @@ EknThematicModule {
 .post-card .title, .post-card .card-synopsis {
     color: white;
 }
+
+.search-result-card {
+    background-color: white;
+    color: black;
+}
+
+.search-result-card .title,
+.search-result-card .card-synopsis {
+    padding-left: 8px;
+}

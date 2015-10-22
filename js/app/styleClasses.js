@@ -37,6 +37,15 @@ const CARD_B = 'card-b';
  */
 const TEXT_CARD = 'text-card';
 
+
+/**
+ * Constant: SEARCH_RESULT_CARD
+ *
+ * Matches #EknSearchResultCard widgets.
+ * It is present on any search result card widget or subclass thereof.
+ */
+const SEARCH_RESULT_CARD = 'search-result-card';
+
 /**
  * Constant: CARD_WIDTH
  *

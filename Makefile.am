@@ -282,6 +282,7 @@ javascript_tests = \
 	tests/js/app/modules/testSearchBannerModule.js \
 	tests/js/app/modules/testSearchBox.js \
 	tests/js/app/modules/testSearchModule.js \
+	tests/js/app/modules/testSearchResultCard.js \
 	tests/js/app/modules/testSetBannerModule.js \
 	tests/js/app/modules/testSetGroupModule.js \
 	tests/js/app/modules/testSidebarTemplate.js \

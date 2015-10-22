@@ -10,6 +10,7 @@ Utils.register_gresource();
 const ArticleObjectModel = imports.search.articleObjectModel;
 const ThumbCard = imports.app.modules.thumbCard;
 const PostCard = imports.app.modules.postCard;
+const SearchResultCard = imports.app.modules.searchResultCard;
 
 const TEST_APPLICATION_ID = 'com.endlessm.knowledge.card';
 const TESTDIR = Endless.getCurrentFileDir() + '/..';
@@ -86,6 +87,7 @@ const TestApplication = new Lang.Class ({
 
         let thumb_grid = create_cards(ThumbCard.ThumbCard, Gtk.Orientation.HORIZONTAL);
         let post_grid = create_cards(PostCard.PostCard, Gtk.Orientation.HORIZONTAL);
+        let search_results_grid = create_cards(SearchResultCard.SearchResultCard, Gtk.Orientation.VERTICAL);
 
         let grand_grid = new Gtk.Grid({
             orientation: Gtk.Orientation.VERTICAL,
@@ -93,6 +95,7 @@ const TestApplication = new Lang.Class ({
 
         grand_grid.add(thumb_grid);
         grand_grid.add(post_grid);
+        grand_grid.add(search_results_grid);
 
         let window = new Endless.Window({
             application: this,

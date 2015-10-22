@@ -56,6 +56,7 @@
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/scrollingTemplate.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/searchBannerModule.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/searchModule.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">data/widgets/searchResultCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/suggestedArticlesModule.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/suggestedCategoriesModule.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/textCard.ui</file>
@@ -114,6 +115,7 @@
     <file>js/app/modules/searchBannerModule.js</file>
     <file>js/app/modules/searchBox.js</file>
     <file>js/app/modules/searchModule.js</file>
+    <file>js/app/modules/searchResultCard.js</file>
     <file>js/app/modules/setBannerModule.js</file>
     <file>js/app/modules/setGroupModule.js</file>
     <file>js/app/modules/sidebarTemplate.js</file>
