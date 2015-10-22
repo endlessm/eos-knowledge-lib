@@ -50,6 +50,16 @@ const SlidingPanel = new Lang.Class({
         'panel-revealed': GObject.ParamSpec.boolean('panel-revealed',
             'Panel Revealed', 'Panel Revealed',
             GObject.ParamFlags.READABLE, false),
+        /**
+         * Property: hide-when-invisible
+         *
+         * True if the panel should hide entirely when not animating or showing
+         * the widget.
+         */
+        'hide-when-invisible': GObject.ParamSpec.boolean('hide-when-invisible',
+            'Hide When Invisible', 'Hide When Invisible',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            false),
     },
 
     _init: function (props={}) {
@@ -61,6 +71,9 @@ const SlidingPanel = new Lang.Class({
             visible: true,
         });
         this.parent(props);
+
+        if (this.hide_when_invisible)
+            this.no_show_all = true;
 
         switch(this.hide_direction) {
             case Gtk.PositionType.TOP:
@@ -92,8 +105,11 @@ const SlidingPanel = new Lang.Class({
         this.set_visible_child(this._reveal_panel ? this._panel_frame : this._transparent_frame);
 
         this.connect('notify::transition-running', () => {
-            if (!this.transition_running)
-                this.notify('panel-revealed');
+            if (this.transition_running)
+                return;
+            if (!this.reveal_panel && this.hide_when_invisible)
+                this.visible = false;
+            this.notify('panel-revealed');
         });
     },
 
@@ -119,8 +135,12 @@ const SlidingPanel = new Lang.Class({
     },
 
     set reveal_panel (v) {
+        if (v === this._reveal_panel)
+            return;
+        this._reveal_panel = v;
+        if (v && this.hide_when_invisible)
+            this.visible = true;
         if (this.get_children().length > 0)
             this.set_visible_child(v ? this._panel_frame : this._transparent_frame);
-        this._reveal_panel = v;
     },
 });
