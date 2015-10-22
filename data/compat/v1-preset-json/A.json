@@ -65,7 +65,7 @@
             }
         },
         "home-page": {
-            "type": "HomePageATemplate",
+            "type": "HamburgerBasementTemplate",
             "slots": {
                 "top": {
                     "type": "AppBanner",

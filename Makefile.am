@@ -266,7 +266,7 @@ javascript_tests = \
 	tests/js/app/modules/testContextBanner.js \
 	tests/js/app/modules/testDividedBannerTemplate.js \
 	tests/js/app/modules/testHighlightsModule.js \
-	tests/js/app/modules/testHomePageATemplate.js \
+	tests/js/app/modules/testHamburgerBasementTemplate.js \
 	tests/js/app/modules/testItemGroupModule.js \
 	tests/js/app/modules/testKnowledgeDocumentCard.js \
 	tests/js/app/modules/testLightboxModule.js \

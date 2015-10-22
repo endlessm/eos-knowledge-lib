@@ -13,16 +13,17 @@ const TabButton = imports.app.widgets.tabButton;
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
 /**
- * Class: HomePageATemplate
+ * Class: HamburgerBasementTemplate
  *
- * A Home Page Template used for Template A apps.
+ * A template with two 'pages', a upper page with three vertical slots, and a
+ * basement page with one large slot.
  *
  * CSS Styles:
- *      home-page-a-template - on the template
+ *      hamburger-basement-template - on the template
  */
-const HomePageATemplate = new Lang.Class({
-    Name: 'HomePageATemplate',
-    GTypeName: 'EknHomePageATemplate',
+const HamburgerBasementTemplate = new Lang.Class({
+    Name: 'HamburgerBasementTemplate',
+    GTypeName: 'EknHamburgerBasementTemplate',
     Extends: Gtk.Stack,
     Implements: [ Module.Module ],
 
@@ -47,7 +48,7 @@ const HomePageATemplate = new Lang.Class({
             _("HOME")),
     },
 
-    Template: 'resource:///com/endlessm/knowledge/data/widgets/homePageATemplate.ui',
+    Template: 'resource:///com/endlessm/knowledge/data/widgets/hamburgerBasementTemplate.ui',
     InternalChildren: [ 'upper-grid', 'inner-grid', 'basement-grid' ],
 
     _BUTTON_TRANSITION_TIME: 500,
