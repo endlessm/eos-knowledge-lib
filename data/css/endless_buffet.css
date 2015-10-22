@@ -114,9 +114,34 @@ EknSearchModule {
     color: black;
 }
 
-.sequence-card {
+.document-card .sequence-card {
     background-color: white;
-    color: black;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.25);
+    padding: 15px 30px;
+}
+
+.document-card .sequence-card .title {
+    font-size: 16px;
+    font-weight: normal;
+    color: #044a80;
+}
+
+.document-card .sequence-card .previous-label,
+.document-card .sequence-card .next-label {
+    font-size: 11px;
+    color: #49bde3;
+}
+
+.document-card .panel {
+    padding: 0px 200px;
+}
+
+/* So the box shadow works on the sequence card. */
+.document-card .panel.top {
+    padding-bottom: 10px;
+}
+.document-card .panel.bottom {
+    padding-top: 10px;
 }
 
 EknSideMenuTemplate .context-bar {
