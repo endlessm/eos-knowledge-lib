@@ -127,7 +127,7 @@ const Card = new Lang.Interface({
             }
             this._background_provider.load_from_data(frame_css);
         }
-        frame.show_all();
+        frame.visible = true;
     },
 
     /**

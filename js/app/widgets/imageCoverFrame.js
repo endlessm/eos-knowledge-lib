@@ -18,6 +18,7 @@ const ImageCoverFrame = Lang.Class({
     Extends: Gtk.Widget,
 
     _init: function (props={}) {
+        props.visible = true;
         this.parent(props);
         this.set_has_window(false);
 
