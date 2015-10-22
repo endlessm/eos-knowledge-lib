@@ -24,13 +24,13 @@
             <property name="orientation">vertical</property>
             <property name="vexpand">True</property>
             <property name="valign">center</property>
-            <property name="row-spacing">25</property>
             <child>
               <object class="GtkLabel" id="title-label">
                 <property name="can_focus">False</property>
                 <property name="hexpand">True</property>
                 <property name="halign">center</property>
                 <property name="use_markup">True</property>
+                <property name="wrap">True</property>
                 <property name="wrap_mode">word-char</property>
                 <property name="ellipsize">end</property>
                 <property name="lines">2</property>
