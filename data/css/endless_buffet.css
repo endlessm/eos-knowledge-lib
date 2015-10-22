@@ -2,6 +2,11 @@
 
 /* This is all temporary */
 
+.card .title {
+    font-family: Lato;
+    font-weight: 300;
+}
+
 .text-card .title.label {
     color: #204a87;
     font-weight: normal;
