@@ -637,3 +637,10 @@ const ARTICLE_SEARCH = 'article-search';
  * Matches a set group module.
  */
 const SET_GROUP = 'set-group';
+
+/**
+ * Constant: PANEL
+ *
+ * Matches a panel.
+ */
+const PANEL = 'panel';

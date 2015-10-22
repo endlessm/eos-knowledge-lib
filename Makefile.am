@@ -311,6 +311,7 @@ javascript_tests = \
 	tests/js/app/widgets/testPreviewer.js \
 	tests/js/app/widgets/testImageCoverFrame.js \
 	tests/js/app/widgets/testProgressLabel.js \
+	tests/js/app/widgets/testSlidingPanel.js \
 	tests/js/app/widgets/testSpaceContainer.js \
 	tests/js/app/widgets/testTableOfContents.js \
 	tests/js/app/widgets/testWebviewTooltip.js \
