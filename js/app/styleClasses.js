@@ -76,6 +76,14 @@ const CARD_HEIGHT = {
 const THUMB_CARD = 'thumb-card';
 
 /**
+ * Constant: POST_CARD
+ *
+ * Matches #EknPostCard widgets.
+ * It is present on any thumb card widget or subclass thereof.
+ */
+const POST_CARD = 'post-card';
+
+/**
  * Constant: HIGHLIGHTED
  *
  * Matches widgets when they are highlighted.
