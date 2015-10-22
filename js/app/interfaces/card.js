@@ -9,6 +9,7 @@ const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 
 const ContentObjectModel = imports.search.contentObjectModel;
+const Engine = imports.search.engine;
 const ImageCoverFrame = imports.app.widgets.imageCoverFrame;
 const Module = imports.app.interfaces.module;
 const StyleClasses = imports.app.styleClasses;
@@ -115,7 +116,17 @@ const Card = new Lang.Interface({
         // extension or something like that
         if (scheme === 'ekn') {
             let coveredFrame = new ImageCoverFrame.ImageCoverFrame();
-            coveredFrame.set_content(this.model.get_content_stream(this.model.thumbnail_uri))
+            Engine.get_default().get_object_by_id(this.model.thumbnail_uri, null, (engine, task) => {
+                let media_object;
+                try {
+                    media_object = engine.get_object_by_id_finish(task);
+                } catch (error) {
+                    logError(error);
+                    return;
+                }
+
+                coveredFrame.set_content(media_object.get_content_stream());
+            });
             frame.add(coveredFrame);
         } else {
             let frame_css = '* { background-image: url("' + this.model.thumbnail_uri + '"); }';
