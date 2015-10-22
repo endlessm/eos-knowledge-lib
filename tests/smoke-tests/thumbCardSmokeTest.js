@@ -1,4 +1,5 @@
 const Endless = imports.gi.Endless;
+const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
@@ -6,9 +7,9 @@ const Lang = imports.lang;
 
 const Utils = imports.tests.utils;
 Utils.register_gresource();
-const ContentObjectModel = imports.search.contentObjectModel;
-const ThumbCard = imports.app.modules.thumbCard;
 const ArticleObjectModel = imports.search.articleObjectModel;
+const ThumbCard = imports.app.modules.thumbCard;
+const PostCard = imports.app.modules.postCard;
 
 const TEST_APPLICATION_ID = 'com.endlessm.knowledge.card';
 const TESTDIR = Endless.getCurrentFileDir() + '/..';
@@ -57,36 +58,46 @@ const TestApplication = new Lang.Class ({
                     synopsis: 'Here is a short synopsis.',
             },
         ];
-        let cards = models.map((json) => {
-            let props = {
-                ekn_version: 2,
-            };
-            props.get_content_stream = (ekn_id) => {
-                let filename = ekn_id.slice(6)
-                let file = Gio.File.new_for_path(Utils.get_test_content_builddir() + filename);
-                return file.read(null);
-            };
-            let model = new ArticleObjectModel.ArticleObjectModel(props, json);
-            let card = new ThumbCard.ThumbCard({
-                model: model,
+
+        let create_cards = (CardType, orientation) => {
+            let grid = new Gtk.Grid({
+                orientation: orientation,
             });
-            return card;
-        });
-        let grid = new Gtk.Grid({
-            orientation: Gtk.Orientation.HORIZONTAL,
+            models.map((json) => {
+                let props = {
+                    ekn_version: 2,
+                };
+                props.get_content_stream = (ekn_id) => {
+                    let filename = ekn_id.slice(6);
+                    let file = Gio.File.new_for_path(Utils.get_test_content_builddir() + filename);
+                    return file.read(null);
+                };
+                let model = new ArticleObjectModel.ArticleObjectModel(props, json);
+                let card = new CardType({
+                    model: model,
+                    'title-capitalization': EosKnowledgePrivate.TextTransform.UPPERCASE,
+                });
+                return card;
+            }).forEach((card) => {
+                grid.add(card);
+            });
+            return grid;
+        }
+
+        let thumb_grid = create_cards(ThumbCard.ThumbCard, Gtk.Orientation.HORIZONTAL);
+        let post_grid = create_cards(PostCard.PostCard, Gtk.Orientation.HORIZONTAL);
+
+        let grand_grid = new Gtk.Grid({
+            orientation: Gtk.Orientation.VERTICAL,
         });
 
-        cards.forEach(function (card, index) {
-            card.connect('clicked', function () {
-                print('Card', index + 1, 'clicked');
-            });
-            grid.attach(card, index % 4, Math.floor(index / 4), 1, 1);
-        });
+        grand_grid.add(thumb_grid);
+        grand_grid.add(post_grid);
 
         let window = new Endless.Window({
             application: this,
         });
-        window.get_page_manager().add(grid);
+        window.get_page_manager().add(grand_grid);
         window.show_all();
     },
 });

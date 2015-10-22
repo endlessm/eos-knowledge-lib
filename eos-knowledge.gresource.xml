@@ -50,6 +50,7 @@
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/homePageATemplate.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/mediaCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/paperTemplate.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">data/widgets/postCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/readerCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/readerDocumentCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/scrollingTemplate.ui</file>
@@ -105,6 +106,7 @@
     <file>js/app/modules/navigationModule.js</file>
     <file>js/app/modules/overflowArrangement.js</file>
     <file>js/app/modules/paperTemplate.js</file>
+    <file>js/app/modules/postCard.js</file>
     <file>js/app/modules/readerCard.js</file>
     <file>js/app/modules/readerDocumentCard.js</file>
     <file>js/app/modules/readerWindow.js</file>

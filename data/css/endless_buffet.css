@@ -2,6 +2,11 @@
 
 /* This is all temporary */
 
+.card .title {
+    font-family: Lato;
+    font-weight: 300;
+}
+
 .text-card .title.label {
     color: #204a87;
     font-weight: normal;
@@ -28,4 +33,21 @@ EknThematicModule {
 
 .thumb-card .title {
     font-size: 1.5em;
+}
+
+.post-card .shadow-frame {
+    padding: 20px 5px 20px 5px;
+    background-image: linear-gradient(to top, black 0%, alpha(black, 0.69) 30%, alpha(black, 0.5) 49%, alpha(black, 0) 100%);
+}
+
+.post-card .title {
+    font-size: 1.5em;
+}
+
+.post-card .card-synopsis {
+    font-size: 0.6em;
+}
+
+.post-card .title, .post-card .card-synopsis {
+    color: white;
 }
