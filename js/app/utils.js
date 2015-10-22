@@ -194,3 +194,8 @@ function shuffle (array, sequence) {
     }
     return array;
 }
+
+const DBUS_WEBVIEW_EXPORT_PATH = '/com/endlessm/webview/';
+function dbus_object_path_for_webview (view) {
+    return DBUS_WEBVIEW_EXPORT_PATH + view.get_page_id();
+}

@@ -10,6 +10,7 @@ const ArticleObjectModel = imports.search.articleObjectModel;
 const KnowledgeDocumentCard = imports.app.modules.knowledgeDocumentCard;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
+const Minimal = imports.tests.minimal;
 const MockWidgets = imports.tests.mockWidgets;
 const StyleClasses = imports.app.styleClasses;
 const TableOfContents = imports.app.widgets.tableOfContents;
@@ -94,7 +95,7 @@ describe('Document Card', function () {
     });
 
     describe('with html model', function () {
-        let html_model, toc_json, toc;
+        let html_model, toc_json, toc, previous_card, next_card;
         beforeEach(function (done) {
             toc_json = { "tableOfContents":
                 [{"hasIndex": 0, "hasIndexLabel": 1, "hasLabel": "Foo", "hasContent": "#Foo"},
@@ -107,9 +108,13 @@ describe('Document Card', function () {
                 title: 'Html title',
                 table_of_contents: toc,
             });
+            previous_card = new Minimal.MinimalCard();
+            next_card = new Minimal.MinimalCard();
             card = new KnowledgeDocumentCard.KnowledgeDocumentCard({
                 model: html_model,
                 show_toc: true,
+                previous_card: previous_card,
+                next_card: next_card,
             });
             spyOn(card, '_create_webview').and.returnValue(new MockWidgets.MockEknWebview());
             card.load_content(null, (card, task) => {
@@ -120,6 +125,11 @@ describe('Document Card', function () {
         });
 
         it('can be loaded', function () {});
+
+        it('adds a previous/next card when set', function () {
+            expect(card).toHaveDescendant(previous_card);
+            expect(card).toHaveDescendant(next_card);
+        });
 
         describe('table of contents', function () {
             let win;

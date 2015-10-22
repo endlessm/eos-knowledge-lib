@@ -126,6 +126,7 @@ const MockEknWebview = new Lang.Class({
         this.renderer = new MockRenderer();
     },
     load_uri: function () {},
+    get_page_id: function () { return 1; },
 });
 
 // Test box with a natural request of a particular size.

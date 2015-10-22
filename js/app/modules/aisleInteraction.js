@@ -49,7 +49,6 @@ const DATA_RESOURCE_PATH = 'resource:///com/endlessm/knowledge/data/';
 // 1 week in miliseconds
 const UPDATE_INTERVAL_MS = 604800000;
 const _SEARCH_METRIC = 'a628c936-5d87-434a-a57a-015a0f223838';
-const DBUS_WEBVIEW_EXPORT_PATH = '/com/endlessm/webview/';
 const DBUS_TOOLTIP_INTERFACE = '\
     <node> \
         <interface name="com.endlessm.Knowledge.TooltipCoordinates"> \
@@ -729,8 +728,7 @@ const AisleInteraction = new Lang.Class({
             let watch_id = Gio.DBus.watch_name(Gio.BusType.SESSION,
                 this._dbus_name, Gio.BusNameWatcherFlags.NONE,
                 (connection, name, owner) => {
-                    let webview_object_path = DBUS_WEBVIEW_EXPORT_PATH +
-                        view.get_page_id();
+                    let webview_object_path = Utils.dbus_object_path_for_webview(view);
                     let ProxyConstructor =
                         Gio.DBusProxy.makeProxyWrapper(DBUS_TOOLTIP_INTERFACE);
                     let proxy = new ProxyConstructor(connection,
