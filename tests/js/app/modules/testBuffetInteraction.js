@@ -162,5 +162,12 @@ describe('Buffet interaction', function () {
             expect(dispatcher.last_payload_with_type(Actions.SHOW_SECTION_PAGE))
                 .toBeDefined();
         });
+
+        it('goes back to the home page when the home button is clicked', function () {
+            dispatcher.dispatch({
+                action_type: Actions.HOME_CLICKED,
+            });
+            expect(dispatcher.last_payload_with_type(Actions.SHOW_HOME_PAGE)).toBeDefined();
+        });
     });
 });

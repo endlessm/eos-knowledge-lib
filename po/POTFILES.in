@@ -1,6 +1,7 @@
 data/widgets/backCover.ui
 data/widgets/cardA.ui
 data/widgets/readerCard.ui
+data/widgets/sideMenuTemplate.ui
 data/widgets/suggestedArticlesModule.ui
 data/widgets/suggestedCategoriesModule.ui
 js/app/articleHTMLRenderer.js

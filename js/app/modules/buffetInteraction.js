@@ -89,6 +89,11 @@ const BuffetInteraction = new Lang.Class({
 
         Dispatcher.get_default().register((payload) => {
             switch (payload.action_type) {
+                case Actions.HOME_CLICKED:
+                    this._history_presenter.set_current_item_from_props({
+                        page_type: Pages.HOME,
+                    });
+                    break;
                 case Actions.SET_CLICKED:
                     this._history_presenter.set_current_item_from_props({
                         page_type: Pages.SET,
