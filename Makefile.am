@@ -288,6 +288,7 @@ javascript_tests = \
 	tests/js/app/modules/testSuggestedCategoriesModule.js \
 	tests/js/app/modules/testTextCard.js \
 	tests/js/app/modules/testThematicModule.js \
+	tests/js/app/modules/testThumbCard.js \
 	tests/js/app/modules/testTiledGridArrangement.js \
 	tests/js/app/modules/testWindow.js \
 	tests/js/app/testAisleUserSettingsModel.js \
@@ -302,6 +303,7 @@ javascript_tests = \
 	tests/js/app/widgets/testLightbox.js \
 	tests/js/app/widgets/testPDFView.js \
 	tests/js/app/widgets/testPreviewer.js \
+	tests/js/app/widgets/testImageCoverFrame.js \
 	tests/js/app/widgets/testProgressLabel.js \
 	tests/js/app/widgets/testSpaceContainer.js \
 	tests/js/app/widgets/testTableOfContents.js \

@@ -68,6 +68,13 @@ const CARD_HEIGHT = {
     E: 'height-e',
 }
 
+/** Constant: THUMB_CARD
+ *
+ * Matches #EknThumbCard widgets.
+ * It is present on any thumb card widget or subclass thereof.
+ */
+const THUMB_CARD = 'thumb-card';
+
 /**
  * Constant: HIGHLIGHTED
  *

@@ -17,3 +17,15 @@ EknHighlightsModule,
 EknThematicModule {
     background-color: #d3d7cf;
 }
+
+.thumb-card {
+    background-color: white;
+}
+
+.thumb-card .title, .thumb-card .card-synopsis {
+    color: black;
+}
+
+.thumb-card .title {
+    font-size: 1.5em;
+}

@@ -9,6 +9,7 @@ const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 
 const ContentObjectModel = imports.search.contentObjectModel;
+const ImageCoverFrame = imports.app.widgets.imageCoverFrame;
 const Module = imports.app.interfaces.module;
 const StyleClasses = imports.app.styleClasses;
 const Utils = imports.app.utils;
@@ -112,18 +113,21 @@ const Card = new Lang.Interface({
         let scheme = Gio.File.new_for_uri(this.model.thumbnail_uri).get_uri_scheme();
         // FIXME: to actually support ekn uris here, we'd need a gvfs
         // extension or something like that
-        if (scheme === 'ekn')
-            return;
-
-        let frame_css = '* { background-image: url("' + this.model.thumbnail_uri + '"); }';
-        if (!this._background_provider) {
-            this._background_provider = new Gtk.CssProvider();
-            let context = frame.get_style_context();
-            context.add_provider(this._background_provider,
-                Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+        if (scheme === 'ekn') {
+            let coveredFrame = new ImageCoverFrame.ImageCoverFrame();
+            coveredFrame.set_content(this.model.get_content_stream(this.model.thumbnail_uri))
+            frame.add(coveredFrame);
+        } else {
+            let frame_css = '* { background-image: url("' + this.model.thumbnail_uri + '"); }';
+            if (!this._background_provider) {
+                this._background_provider = new Gtk.CssProvider();
+                let context = frame.get_style_context();
+                context.add_provider(this._background_provider,
+                    Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+            }
+            this._background_provider.load_from_data(frame_css);
         }
-        this._background_provider.load_from_data(frame_css);
-        frame.visible = true;
+        frame.show_all();
     },
 
     /**
