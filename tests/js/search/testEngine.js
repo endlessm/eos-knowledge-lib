@@ -347,7 +347,7 @@ describe('Knowledge Engine Module', () => {
                 let result = engine.get_object_by_id_finish(task);
                 expect(result).toBeA(ArticleObjectModel.ArticleObjectModel);
                 expect(result.content_type).toBe('text/html');
-                let stream = result.get_content_stream(result.ekn_id);
+                let stream = result.get_content_stream();
                 expect(stream).toBeA(Gio.InputStream);
                 let html = stream.read_bytes(16, null).get_data().toString();
                 expect(html).toBe(mock_content);
@@ -828,7 +828,7 @@ describe('Knowledge Engine Module', () => {
                     let result = engine.get_object_by_id_finish(task);
                     expect(result).toBeA(ArticleObjectModel.ArticleObjectModel);
                     expect(result.content_type).toBe('text/html');
-                    let stream = result.get_content_stream(result.ekn_id);
+                    let stream = result.get_content_stream();
                     expect(stream).toBeA(Gio.InputStream);
                     let html = stream.read_bytes(16, null).get_data().toString();
                     expect(html).toBe(mock_content);
