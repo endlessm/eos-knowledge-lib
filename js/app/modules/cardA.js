@@ -6,6 +6,7 @@ const Lang = imports.lang;
 const Card = imports.app.interfaces.card;
 const MarginButton = imports.app.widgets.marginButton;
 const Module = imports.app.interfaces.module;
+const SetObjectModel = imports.search.setObjectModel;
 const Utils = imports.app.utils;
 
 /**
@@ -40,7 +41,10 @@ const CardA = new Lang.Class({
         this.parent(props);
 
         this.set_title_label_from_model(this._title_label);
-        this.set_thumbnail_frame_from_model(this._thumbnail_frame);
+
+        if (this.model instanceof SetObjectModel.SetObjectModel) {
+            this.set_thumbnail_frame_from_model(this._thumbnail_frame);
+        }
 
         if (!this._thumbnail_frame.visible) {
             this._title_label.xalign = 0;
