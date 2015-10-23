@@ -2,6 +2,7 @@
 
 /* exported HighlightsModule */
 
+const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
@@ -11,6 +12,7 @@ const Dispatcher = imports.app.dispatcher;
 const Engine = imports.search.engine;
 const Module = imports.app.interfaces.module;
 const QueryObject = imports.search.queryObject;
+const Utils = imports.app.utils;
 
 /**
  * Class: HighlightsModule
@@ -31,7 +33,8 @@ const QueryObject = imports.search.queryObject;
  * which can also be clicked to show more information about that set.
  *
  * Slots:
- *   arrangement - arrangement to display cards in
+ *   large-arrangement - large arrangement to display cards in
+ *   small-arrangement - smaller arrangement to display cards in
  *   card-type - type of cards to create for articles
  *   header-card-type - type of cards to create for sets
  */
@@ -53,7 +56,7 @@ const HighlightsModule = new Lang.Class({
         props.orientation = Gtk.Orientation.VERTICAL;
         this.parent(props);
 
-        this._featured_arrangement = this.create_submodule('arrangement');
+        this._featured_arrangement = this.create_submodule('large-arrangement');
         this._set_arrangements = [];
 
         this.add(this._featured_arrangement);
@@ -67,8 +70,11 @@ const HighlightsModule = new Lang.Class({
                     this._clear_items();
                     break;
                 case Actions.APPEND_SETS:
-                    payload.models.filter(model => !model.featured)
-                    .forEach(this._add_set, this);
+                    let models = payload.models.filter(model => !model.featured);
+                    let rand_sequence = models.map(GLib.random_double);
+                    Utils.shuffle(models, rand_sequence);
+                    this._add_set(models[0], 'small-arrangement');
+                    this._add_set(models[1], 'large-arrangement');
                     this._load_all_articles();
                     break;
             }
@@ -77,7 +83,8 @@ const HighlightsModule = new Lang.Class({
 
     // Module override
     get_slot_names: function () {
-        return ['arrangement', 'card-type', 'header-card-type'];
+        return ['large-arrangement', 'small-arrangement', 'card-type',
+            'header-card-type'];
     },
 
     _create_set_card: function (model) {
@@ -136,12 +143,12 @@ const HighlightsModule = new Lang.Class({
         Engine.get_default().get_objects_by_query(query, null, process_results);
     },
 
-    _add_set: function (model) {
+    _add_set: function (model, arrangement_slot) {
         let header = this._create_set_card(model);
         header.show_all();
         this.add(header);
 
-        let arrangement = this.create_submodule('arrangement', {
+        let arrangement = this.create_submodule(arrangement_slot, {
             vexpand: true,
         });
         arrangement.accepted_child_tags = model.child_tags.slice();
