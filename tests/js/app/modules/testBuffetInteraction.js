@@ -53,6 +53,7 @@ describe('Buffet interaction', function () {
             factory: factory,
             factory_name: 'interaction',
         });
+        spyOn(buffet, 'record_search_metric');
     });
 
     it('dispatches app-launched on launch from desktop', function () {
@@ -168,6 +169,56 @@ describe('Buffet interaction', function () {
                 action_type: Actions.HOME_CLICKED,
             });
             expect(dispatcher.last_payload_with_type(Actions.SHOW_HOME_PAGE)).toBeDefined();
+        });
+    });
+
+    describe('when a search query is entered', function () {
+        beforeEach(function () {
+            // Simulate batches of results
+            engine.get_objects_by_query.calls.reset();
+            engine.get_objects_by_query_finish.and.callFake(() => {
+                let calls = engine.get_objects_by_query.calls.count();
+                if (calls == 1)
+                    return [[0, 1, 2, 3, 4].map(() =>
+                        new ContentObjectModel.ContentObjectModel()), 1];
+                if (calls == 2)
+                    return [[0, 1].map(() =>
+                        new ContentObjectModel.ContentObjectModel()), null];
+                return [[], null];
+            });
+            dispatcher.dispatch({
+                action_type: Actions.SEARCH_TEXT_ENTERED,
+                text: 'user query',
+            });
+        });
+
+        it('launches a search', function () {
+            expect(dispatcher.last_payload_with_type(Actions.SEARCH_STARTED).query)
+                .toEqual('user query');
+            expect(dispatcher.last_payload_with_type(Actions.SHOW_SEARCH_PAGE))
+                .toBeDefined();
+            expect(dispatcher.last_payload_with_type(Actions.SEARCH_READY).query)
+                .toEqual('user query');
+        });
+
+        it('batches the results', function () {
+            expect(dispatcher.last_payload_with_type(Actions.CLEAR_SEARCH))
+                .toBeDefined();
+            let append_payloads = dispatcher.payloads_with_type(Actions.APPEND_SEARCH);
+            expect(append_payloads.length).toBe(1);
+            expect(append_payloads[0].models.length).toBe(5);
+
+            dispatcher.dispatch({
+                action_type: Actions.NEED_MORE_SEARCH,
+            });
+            Utils.update_gui();
+            append_payloads = dispatcher.payloads_with_type(Actions.APPEND_SEARCH);
+            expect(append_payloads.length).toBe(2);
+            expect(append_payloads[1].models.length).toBe(2);
+        });
+
+        it('records a search metric', function () {
+            expect(buffet.record_search_metric).toHaveBeenCalledWith('user query');
         });
     });
 });

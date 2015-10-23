@@ -3,6 +3,7 @@
 /* exported BuffetInteraction */
 
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
+const EosMetrics = imports.gi.EosMetrics;
 const Gdk = imports.gi.Gdk;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
@@ -17,11 +18,15 @@ const Interaction = imports.app.interfaces.interaction;
 const Launcher = imports.app.interfaces.launcher;
 const Module = imports.app.interfaces.module;
 const QueryObject = imports.search.queryObject;
+const Utils = imports.app.utils;
 
 const Pages = {
     HOME: 'home',
     SET: 'set',
+    SEARCH: 'search',
 };
+const RESULTS_SIZE = 15;
+const SEARCH_METRIC_EVENT_ID = 'a628c936-5d87-434a-a57a-015a0f223838';
 
 /**
  * Class: BuffetInteraction
@@ -100,6 +105,12 @@ const BuffetInteraction = new Lang.Class({
                         model: payload.model,
                     });
                     break;
+                case Actions.SEARCH_TEXT_ENTERED:
+                    this._start_search_via_history(payload.text);
+                    break;
+                case Actions.NEED_MORE_SEARCH:
+                    this._load_more_results();
+                    break;
             }
         });
 
@@ -117,12 +128,95 @@ const BuffetInteraction = new Lang.Class({
             provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
     },
 
+    _start_search_via_history: function (query) {
+        let sanitized_query = Utils.sanitize_query(query);
+        if (sanitized_query.length === 0)
+            return;
+
+        this.record_search_metric(query);
+        this._history_presenter.set_current_item_from_props({
+            page_type: Pages.SEARCH,
+            query: sanitized_query,
+        });
+    },
+
+    _do_search: function (history_item) {
+        let dispatcher = Dispatcher.get_default();
+        dispatcher.dispatch({
+            action_type: Actions.SEARCH_STARTED,
+            query: history_item.query,
+        });
+        dispatcher.dispatch({
+            action_type: Actions.SHOW_SEARCH_PAGE,
+        });
+        let query_obj = new QueryObject.QueryObject({
+            query: history_item.query,
+            limit: RESULTS_SIZE,
+        });
+        Engine.get_default().get_objects_by_query(query_obj, null, (engine, task) => {
+            let results, get_more;
+            try {
+                [results, get_more] = engine.get_objects_by_query_finish(task);
+            } catch (error) {
+                logError(error);
+                let dispatcher = Dispatcher.get_default();
+                dispatcher.dispatch({
+                    action_type: Actions.SEARCH_FAILED,
+                    query: history_item.query,
+                    error: error,
+                });
+                return;
+            }
+            this._get_more_results_query = get_more;
+            dispatcher.dispatch({
+                action_type: Actions.CLEAR_SEARCH,
+            });
+            dispatcher.dispatch({
+                action_type: Actions.APPEND_SEARCH,
+                models: results,
+            });
+        });
+
+        dispatcher.dispatch({
+            action_type: Actions.SEARCH_READY,
+            query: history_item.query,
+        });
+    },
+
+    _load_more_results: function () {
+        if (!this._get_more_results_query)
+            return;
+        Engine.get_default().get_objects_by_query(this._get_more_results_query, null, (engine, task) => {
+            let results, get_more;
+            try {
+                [results, get_more] = engine.get_objects_by_query_finish(task);
+            } catch (error) {
+                logError(error);
+                return;
+            }
+
+            if (results.length < 1)
+                return;
+
+            this._get_more_results_query = get_more;
+            Dispatcher.get_default().dispatch({
+                action_type: Actions.APPEND_SEARCH,
+                models: results,
+            });
+        });
+        // Null the query we just sent to the engine, when results come back
+        // we'll have a new more results query. But this keeps us from double
+        // loading this query.
+        this._get_more_results_query = null;
+    },
+
     _on_history_item_change: function (presenter, item, is_going_back) {
         let dispatcher = Dispatcher.get_default();
         dispatcher.dispatch({
             action_type: Actions.HIDE_MEDIA,
         });
 
+        let search_text = '';
         switch (item.page_type) {
             case Pages.SET:
                 dispatcher.dispatch({
@@ -138,7 +232,15 @@ const BuffetInteraction = new Lang.Class({
                     action_type: Actions.SHOW_HOME_PAGE,
                 });
                 break;
+            case Pages.SEARCH:
+                this._do_search(item);
+                search_text = item.query;
+                break;
         }
+        dispatcher.dispatch({
+            action_type: Actions.SET_SEARCH_TEXT,
+            text: search_text,
+        });
     },
 
     // Helper function for the three Launcher implementation methods. Returns
@@ -170,6 +272,7 @@ const BuffetInteraction = new Lang.Class({
 
     // Launcher override
     search: function (timestamp, query) {
+        this._start_search_via_history(query);
         this._dispatch_launch(timestamp, Launcher.LaunchType.SEARCH);
     },
 
@@ -181,5 +284,12 @@ const BuffetInteraction = new Lang.Class({
     // Module override
     get_slot_names: function () {
         return ['window'];
+    },
+
+    // Should be mocked out during tests so that we don't actually send metrics
+    record_search_metric: function (query) {
+        let recorder = EosMetrics.EventRecorder.get_default();
+        recorder.record_event(SEARCH_METRIC_EVENT_ID, new GLib.Variant('(ss)',
+            [query, this.application.application_id]));
     },
 });
