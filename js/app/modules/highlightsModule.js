@@ -75,7 +75,8 @@ const HighlightsModule = new Lang.Class({
                     Utils.shuffle(models, rand_sequence);
                     this._add_set(models[0], 'small-arrangement');
                     this._add_set(models[1], 'large-arrangement');
-                    this._load_all_articles();
+                    let tags_to_load = models[0].child_tags.concat(models[1].child_tags);
+                    this._populate_arrangements(tags_to_load);
                     break;
             }
         });
@@ -113,13 +114,9 @@ const HighlightsModule = new Lang.Class({
         return card;
     },
 
-    // Load all articles in order to populate the arrangements with them. This
-    // happens after APPEND_SETS.
-    // It's unfortunate that we don't have a way to determine whether an
-    // arrangement already contains a particular model. Otherwise, we could load
-    // articles from each set as that set was appended. But as it is, if we did
-    // that, we'd end up with duplicate cards in some arrangements.
-    _load_all_articles: function () {
+    // Load all articles referenced by the shown arrangements in order to
+    // populate the arrangements with them. This happens after APPEND_SETS.
+    _populate_arrangements: function (tags_to_load) {
         this._clear_items();
 
         let process_results = (engine, res) => {
@@ -138,7 +135,7 @@ const HighlightsModule = new Lang.Class({
         };
         let query = new QueryObject.QueryObject({
             limit: this.RESULTS_BATCH_SIZE,
-            tags: ['EknArticleObject'],
+            tags: tags_to_load,
         });
         Engine.get_default().get_objects_by_query(query, null, process_results);
     },
