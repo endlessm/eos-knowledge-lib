@@ -35,13 +35,8 @@ EknThematicModule {
     font-size: 1.5em;
 }
 
-.post-card .shadow-frame {
-    padding: 20px 5px 20px 5px;
-    background-image: linear-gradient(to top, black 0%, alpha(black, 0.69) 30%, alpha(black, 0.5) 49%, alpha(black, 0) 100%);
-}
-
 .post-card .title {
-    font-size: 1.5em;
+    font-size: 1.2em;
 }
 
 .post-card .card-synopsis {
@@ -50,6 +45,26 @@ EknThematicModule {
 
 .post-card .title, .post-card .card-synopsis {
     color: white;
+}
+
+.post-card.article .shadow-frame {
+    padding: 20px 5px 20px 5px;
+    background-image: linear-gradient(to top, black 0%, alpha(black, 0.69) 30%, alpha(black, 0.5) 49%, alpha(black, 0) 100%);
+}
+
+.post-card.set {
+    background-image: url('resource:///com/endlessm/knowledge/data/images/deckbg.svg');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-position: center;
+}
+
+.post-card.set .shadow-frame {
+    background-color: white;
+}
+
+.post-card.set .title {
+    color: #044A80;
 }
 
 .search-result-card {

@@ -93,6 +93,20 @@ const THUMB_CARD = 'thumb-card';
 const POST_CARD = 'post-card';
 
 /**
+ * Constant: SET
+ *
+ * It is present on any widget representing a set model.
+ */
+const SET = 'set';
+
+/**
+ * Constant: ARTICLE
+ *
+ * It is present on any widget representing a article model.
+ */
+const ARTICLE = 'article';
+
+/**
  * Constant: HIGHLIGHTED
  *
  * Matches widgets when they are highlighted.

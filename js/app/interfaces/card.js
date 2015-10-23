@@ -8,10 +8,12 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 
+const ArticleObjectModel = imports.search.articleObjectModel;
 const ContentObjectModel = imports.search.contentObjectModel;
 const Engine = imports.search.engine;
 const ImageCoverFrame = imports.app.widgets.imageCoverFrame;
 const Module = imports.app.interfaces.module;
+const SetObjectModel = imports.search.setObjectModel;
 const StyleClasses = imports.app.styleClasses;
 const Utils = imports.app.utils;
 
@@ -99,6 +101,19 @@ const Card = new Lang.Interface({
     set_label_or_hide: function (label, text) {
         label.label = GLib.markup_escape_text(text, -1);
         label.visible = !!text;
+    },
+
+    /**
+     * Method: add_contextual_css_class
+     *
+     * Adds a css class based on the type of model this is.
+     */
+    add_contextual_css_class: function () {
+        if (this.model instanceof SetObjectModel.SetObjectModel) {
+            this.get_style_context().add_class(StyleClasses.SET);
+        } else if (this.model instanceof ArticleObjectModel.ArticleObjectModel) {
+            this.get_style_context().add_class(StyleClasses.ARTICLE);
+        }
     },
 
     /**
