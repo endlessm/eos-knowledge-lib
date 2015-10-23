@@ -42,14 +42,31 @@ const SuggestedCategoriesModule = new Lang.Class({
             'Featured only', 'Show only featured models in the arrangement',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             false),
+        /**
+         * Property: show-title
+         * Whether to show the title at the top
+         *
+         * Default value:
+         *   true
+         */
+        'show-title': GObject.ParamSpec.boolean('show-title',
+            'Show title', 'Whether to show the title at the top',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            true),
     },
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/suggestedCategoriesModule.ui',
+    InternalChildren: [ 'title' ],
 
     _init: function (props={}) {
         this.parent(props);
         this._arrangement = this.create_submodule('arrangement');
         this.add(this._arrangement);
+
+        if (!this.show_title) {
+            this._title.no_show_all = true;
+            this._title.hide();
+        }
 
         Dispatcher.get_default().register((payload) => {
             switch(payload.action_type) {
