@@ -11,6 +11,7 @@ const HISTORY_FORWARD_CLICKED = 'history-forward-clicked';
 const SET_CLICKED = 'set-clicked';
 const ITEM_CLICKED = 'item-clicked';
 const SEARCH_CLICKED = 'search-clicked';
+const HOME_CLICKED = 'home-clicked';
 const SEARCH_TEXT_ENTERED = 'search-text-entered';
 const AUTOCOMPLETE_CLICKED = 'autocomplete-clicked';
 const ARTICLE_LINK_CLICKED = 'article-link-clicked';

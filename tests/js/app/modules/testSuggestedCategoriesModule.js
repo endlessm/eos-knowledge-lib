@@ -2,6 +2,9 @@ const Gtk = imports.gi.Gtk;
 
 Gtk.init(null);
 
+const Utils = imports.tests.utils;
+Utils.register_gresource();
+
 const Actions = imports.app.actions;
 const ContentObjectModel = imports.search.contentObjectModel;
 const SuggestedCategoriesModule = imports.app.modules.suggestedCategoriesModule;
@@ -78,5 +81,21 @@ describe('Suggested categories module', function () {
         });
         expect(arrangement.get_cards().length).toBe(3);
         expect(factory.get_created_named_mocks('home-card').length).toBe(6);
+    });
+
+    it('adds only featured cards when featured-only is true', function () {
+        suggestions = new SuggestedCategoriesModule.SuggestedCategoriesModule({
+            factory: factory,
+            factory_name: 'suggested-categories',
+            featured_only: true,
+        });
+        arrangement = factory.get_created_named_mocks('test-arrangement')[1];
+        let models = [true, false, true].map(featured =>
+            new ContentObjectModel.ContentObjectModel({ featured: featured }));
+        dispatcher.dispatch({
+            action_type: Actions.APPEND_SETS,
+            models: models,
+        });
+        expect(arrangement.get_cards().length).toBe(2);
     });
 });

@@ -263,6 +263,7 @@ javascript_tests = \
 	tests/js/app/modules/testCardA.js \
 	tests/js/app/modules/testCardB.js \
 	tests/js/app/modules/testCarouselArrangement.js \
+	tests/js/app/modules/testContextBanner.js \
 	tests/js/app/modules/testDividedBannerTemplate.js \
 	tests/js/app/modules/testHighlightsModule.js \
 	tests/js/app/modules/testHomePageATemplate.js \
@@ -286,6 +287,7 @@ javascript_tests = \
 	tests/js/app/modules/testSetBannerModule.js \
 	tests/js/app/modules/testSetGroupModule.js \
 	tests/js/app/modules/testSidebarTemplate.js \
+	tests/js/app/modules/testSideMenuTemplate.js \
 	tests/js/app/modules/testSuggestedArticlesModule.js \
 	tests/js/app/modules/testSuggestedCategoriesModule.js \
 	tests/js/app/modules/testTextCard.js \

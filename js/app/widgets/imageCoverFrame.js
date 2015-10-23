@@ -44,11 +44,11 @@ const ImageCoverFrame = Lang.Class({
     },
 
     vfunc_get_preferred_width: function () {
-        return [2, this._natural_width];
+        return [2, Math.max(this._natural_width, 2)];
     },
 
     vfunc_get_preferred_height: function () {
-        return [2, this._natural_height];
+        return [2, Math.max(this._natural_height, 2)];
     },
 
     // Scales the image to the right dimensions so that it covers the

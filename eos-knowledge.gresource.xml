@@ -57,6 +57,7 @@
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/searchBannerModule.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/searchModule.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/searchResultCard.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">data/widgets/sideMenuTemplate.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/suggestedArticlesModule.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/suggestedCategoriesModule.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/textCard.ui</file>
@@ -92,6 +93,7 @@
     <file>js/app/modules/cardA.js</file>
     <file>js/app/modules/cardB.js</file>
     <file>js/app/modules/carouselArrangement.js</file>
+    <file>js/app/modules/contextBanner.js</file>
     <file>js/app/modules/dividedBannerTemplate.js</file>
     <file>js/app/modules/encyclopediaCoverTemplate.js</file>
     <file>js/app/modules/encyclopediaWindow.js</file>
@@ -119,6 +121,7 @@
     <file>js/app/modules/setBannerModule.js</file>
     <file>js/app/modules/setGroupModule.js</file>
     <file>js/app/modules/sidebarTemplate.js</file>
+    <file>js/app/modules/sideMenuTemplate.js</file>
     <file>js/app/modules/standalonePage.js</file>
     <file>js/app/modules/suggestedArticlesModule.js</file>
     <file>js/app/modules/suggestedCategoriesModule.js</file>
