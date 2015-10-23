@@ -8,6 +8,7 @@ const Lang = imports.lang;
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
 const Module = imports.app.interfaces.module;
+const SequenceCard = imports.app.modules.sequenceCard;
 
 /**
  * Class: ArticleStackModule
@@ -46,7 +47,7 @@ const ArticleStackModule = new Lang.Class({
         Dispatcher.get_default().register((payload) => {
             switch(payload.action_type) {
                 case Actions.SHOW_ARTICLE:
-                    this._show_article(payload.model, payload.animation_type);
+                    this._show_article(payload);
                     break;
             }
         });
@@ -62,10 +63,23 @@ const ArticleStackModule = new Lang.Class({
         });
     },
 
-    _show_article: function (model, animation_type) {
-        let document_card = this.create_submodule('card-type', {
-            model: model,
-        });
+    _show_article: function (payload) {
+        let document_card_props = {
+            model: payload.model,
+        };
+        if (payload.previous_model) {
+            document_card_props.previous_card = new SequenceCard.SequenceCard({
+                model: payload.previous_model,
+                sequence: SequenceCard.Sequence.PREVIOUS,
+            });
+        }
+        if (payload.next_model) {
+            document_card_props.next_card = new SequenceCard.SequenceCard({
+                model: payload.next_model,
+                sequence: SequenceCard.Sequence.NEXT,
+            });
+        }
+        let document_card = this.create_submodule('card-type', document_card_props);
 
         document_card.connect('ekn-link-clicked', (card, ekn_id) => {
             Dispatcher.get_default().dispatch({
@@ -74,9 +88,9 @@ const ArticleStackModule = new Lang.Class({
             });
         });
 
-        if (animation_type === EosKnowledgePrivate.LoadingAnimation.FORWARDS_NAVIGATION) {
+        if (payload.animation_type === EosKnowledgePrivate.LoadingAnimation.FORWARDS_NAVIGATION) {
             this.transition_type = Gtk.StackTransitionType.SLIDE_LEFT;
-        } else if (animation_type === EosKnowledgePrivate.LoadingAnimation.BACKWARDS_NAVIGATION) {
+        } else if (payload.animation_type === EosKnowledgePrivate.LoadingAnimation.BACKWARDS_NAVIGATION) {
             this.transition_type = Gtk.StackTransitionType.SLIDE_RIGHT;
         } else {
             this.transition_type = Gtk.StackTransitionType.NONE;
