@@ -21,8 +21,8 @@ const QueryObject = imports.search.queryObject;
  * the featured sets.
  *
  * This module shows a few arrangements consecutively.
- * We recommend placing it in a <ScrollingArrangement> or another module that
- * can allow it to scroll.
+ * We recommend placing it in a <ScrollingTemplate> or another module that can
+ * allow it to scroll.
  * The top arrangement shows an assortment of cards from all sets.
  * Each subsequent arrangement shows the highlights of one non-featured
  * (thematic) set.
