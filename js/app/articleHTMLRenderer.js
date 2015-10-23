@@ -11,22 +11,49 @@ const SearchUtils = imports.search.utils;
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
 const _ARTICLE_TEMPLATE = 'resource:///com/endlessm/knowledge/data/templates/article.mst';
+let _template_contents;
+// Caches so we only load once.
+function load_article_template () {
+    if (_template_contents)
+        return _template_contents;
+    let file = Gio.file_new_for_uri(_ARTICLE_TEMPLATE);
+    let [success, string] = file.load_contents(null);
+    _template_contents = string.toString();
+    // Makes calls to Mustache.render with this template faster
+    Mustache.parse(_template_contents);
+    return _template_contents;
+}
 
 const ArticleHTMLRenderer = new Lang.Class({
     Name: "ArticleHTMLRenderer",
     GTypeName: 'EknArticleHTMLRenderer',
     Extends: GObject.Object,
 
+    Properties: {
+        /**
+         * Property: show-title
+         * True if the article title should be rendered inside the web page.
+         */
+        'show-title': GObject.ParamSpec.boolean('show-title',
+           'Show Title', 'Show Title',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
+            false),
+        /**
+         * Property: enable-scroll-manager
+         * True if the web side javascript to scroll with the table of contents
+         * should be injected.
+         */
+        'enable-scroll-manager': GObject.ParamSpec.boolean('enable-scroll-manager',
+           'Enable Scroll Manager', 'Enable Scroll Manager',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
+            false),
+    },
+
     _init: function (props={}) {
         this.parent(props);
-        let file = Gio.file_new_for_uri(_ARTICLE_TEMPLATE);
-        let [success, string] = file.load_contents(null);
-        if (success) {
-            this._template = string.toString();
-            Mustache.parse(this._template);
-        } else {
-            throw new Error('Could not open article template');
-        }
+        this._template = load_article_template();
+        this._custom_css_files = [];
+        this._custom_javascript_files = [];
     },
 
     _strip_tags: function (html) {
@@ -91,7 +118,7 @@ const ArticleHTMLRenderer = new Lang.Class({
         return css_files;
     },
 
-    _get_javascript_files: function (model, enable_scroll_manager) {
+    _get_javascript_files: function (model) {
         let javascript_files = [
             'jquery-min.js',
             'clipboard-manager.js',
@@ -100,38 +127,32 @@ const ArticleHTMLRenderer = new Lang.Class({
             'no-link-remover.js',
         ];
 
-        if (enable_scroll_manager)
+        if (this.enable_scroll_manager)
             javascript_files.push('scroll-manager.js');
 
         return javascript_files;
     },
 
-    /*
-        The render method is called with an article model :model
-        and a dictionary of options :opts specifying how to render
-        the webpage.
-        :opts should be a dictionary with the following optional
-        keys.
-        custom_css_files: an array of strings, specifying extra CSS files to include
-        custom_js_files: an array of strings, specifying extra JS files to include
-        show_title: a boolean specifying whether or not to show the article title in an <h1> tag
-        enable_scroll_manager: a boolean specifying whether or not to enable javascript for smooth scrolling
-    */
-    render: function (model, opts={}) {
-        let css_files = this._get_css_files(model);
-        if (opts.hasOwnProperty('custom_css_files')) {
-            css_files = css_files.concat(opts.custom_css_files);
-        }
+    set_custom_css_files: function (custom_css_files) {
+        this._custom_css_files = custom_css_files;
+    },
 
-        let js_files = this._get_javascript_files(model, opts.enable_scroll_manager);
-        if (opts.hasOwnProperty('custom_js_files')) {
-            js_files = js_files.concat(opts.custom_js_files);
-        }
+    set_custom_javascript_files: function (custom_javascript_files) {
+        this._custom_javascript_files = custom_javascript_files;
+    },
+
+    /*
+     * The render method is called with an article model :model and returns a
+     * string of ready to display html.
+     */
+    render: function (model) {
+        let css_files = this._get_css_files(model).concat(this._custom_css_files);
+        let js_files = this._get_javascript_files(model).concat(this._custom_javascript_files);
 
         let stream = model.get_content_stream();
         let html = SearchUtils.read_stream_sync(stream);
         return Mustache.render(this._template, {
-            'title': opts.show_title ? model.title : false,
+            'title': this.show_title ? model.title : false,
             'body-html': this._strip_tags(html),
             'disclaimer': this._get_disclaimer(model),
             'copy-button-text': _("Copy"),
@@ -148,7 +169,6 @@ function _to_link(uri, text) {
 }
 
 function _get_display_string_for_license(license) {
-    let message;
     if (license === Endless.LICENSE_NO_LICENSE)
         // TRANSLATORS: the text inside curly braces {blog-link} is going to be
         // substituted in code. Please make sure that your translation contains

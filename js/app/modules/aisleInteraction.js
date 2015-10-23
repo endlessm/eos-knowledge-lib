@@ -15,7 +15,6 @@ const Lang = imports.lang;
 
 const Actions = imports.app.actions;
 const ArchiveNotice = imports.app.widgets.archiveNotice;
-const ArticleHTMLRenderer = imports.app.articleHTMLRenderer;
 const ArticleObjectModel = imports.search.articleObjectModel;
 const ArticleSnippetCard = imports.app.modules.articleSnippetCard;
 const BackCover = imports.app.modules.backCover;
@@ -36,7 +35,6 @@ const StyleClasses = imports.app.styleClasses;
 const StyleKnobGenerator = imports.app.compat.styleKnobGenerator;
 const AisleUserSettingsModel = imports.app.aisleUserSettingsModel;
 const Utils = imports.app.utils;
-const WebkitContextSetup = imports.app.webkitContextSetup;
 const WebviewTooltip = imports.app.widgets.webviewTooltip;
 
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
@@ -146,11 +144,7 @@ const AisleInteraction = new Lang.Class({
             application: this.application,
         });
 
-        WebkitContextSetup.register_webkit_uri_handlers(this._article_render_callback.bind(this));
         this._dbus_name = Utils.get_web_plugin_dbus_name();
-        WebkitContextSetup.register_webkit_extensions();
-
-        this._article_renderer = new ArticleHTMLRenderer.ArticleHTMLRenderer();
 
         this._check_for_content_update();
 
@@ -847,12 +841,6 @@ const AisleInteraction = new Lang.Class({
             this._remove_link_tooltip();
         });
         this._link_tooltip.show_all();
-    },
-
-    _article_render_callback: function (article_model) {
-        return this._article_renderer.render(article_model, {
-            custom_css_files: ['reader.css'],
-        });
     },
 
     // Take an ArticleObjectModel and create a ReaderDocumentCard view.

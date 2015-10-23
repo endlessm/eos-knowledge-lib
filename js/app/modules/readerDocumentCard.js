@@ -148,6 +148,7 @@ const ReaderDocumentCard = new Lang.Class({
 
     _get_webview: function (article_model) {
         let webview = this._create_webview();
+        webview.renderer.set_custom_css_files(['reader.css']);
 
         webview.connect('decide-policy', (view, decision, type)  => {
             if (type !== WebKit2.PolicyDecisionType.NAVIGATION_ACTION)

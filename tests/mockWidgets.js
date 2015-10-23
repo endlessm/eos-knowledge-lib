@@ -83,6 +83,29 @@ const MockSidebarTemplate = new Lang.Class({
     connect: function () {},
 });
 
+const MockRenderer = new Lang.Class({
+    Name: 'MockRenderer',
+    Extends: GObject.Object,
+    Properties: {
+        'show-title': GObject.ParamSpec.boolean('show-title',
+           'Show Title', 'Show Title',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
+            false),
+        'enable-scroll-manager': GObject.ParamSpec.boolean('enable-scroll-manager',
+           'Enable Scroll Manager', 'Enable Scroll Manager',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
+            false),
+    },
+    _init: function (props={}) {
+        this.parent(props);
+    },
+    set_custom_css_files: function () {},
+    set_custom_javascript_files: function () {},
+    render: function () {
+        return '<html><body></body></html>';
+    },
+});
+
 const MockEknWebview = new Lang.Class({
     Name: 'MockEknWebview',
     Extends: Gtk.Widget,
@@ -99,6 +122,7 @@ const MockEknWebview = new Lang.Class({
     },
     _init: function (props={}) {
         this.parent(props);
+        this.renderer = new MockRenderer();
     },
     load_uri: function () {},
 });

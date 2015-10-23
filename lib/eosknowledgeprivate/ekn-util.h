@@ -20,12 +20,6 @@ EKN_AVAILABLE_IN_0_0
 GdkWindow *ekn_private_new_input_output_window (GtkWidget *widget);
 
 EKN_AVAILABLE_IN_0_0
-void ekn_private_register_global_uri_scheme (const gchar *scheme,
-                                             WebKitURISchemeRequestCallback callback,
-                                             gpointer user_data,
-                                             GDestroyNotify notify);
-
-EKN_AVAILABLE_IN_0_0
 gboolean ekn_param_spec_is_enum (GParamSpec *pspec);
 
 EKN_AVAILABLE_IN_0_0
