@@ -296,6 +296,7 @@ javascript_tests = \
 	tests/js/app/modules/testThumbCard.js \
 	tests/js/app/modules/testTiledGridArrangement.js \
 	tests/js/app/modules/testWindow.js \
+	tests/js/app/modules/testWindshieldArrangement.js \
 	tests/js/app/testAisleUserSettingsModel.js \
 	tests/js/app/testArticleHTMLRenderer.js \
 	tests/js/app/testDispatcher.js \
