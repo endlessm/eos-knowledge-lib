@@ -204,6 +204,16 @@ libtooltipplugin_la_CPPFLAGS = \
 libtooltipplugin_la_LIBADD = $(TOOLTIP_PLUGIN_LIBS)
 libtooltipplugin_la_LDFLAGS = -module -avoid-version -no-undefined
 
+webextension_LTLIBRARIES += libscrollplugin.la
+libscrollplugin_la_SOURCES = lib/web-extensions/scrollplugin.c
+libscrollplugin_la_CFLAGS = $(SCROLL_PLUGIN_CFLAGS)
+libscrollplugin_la_CPPFLAGS = \
+	-DPKGDATADIR=\""$(pkgdatadir)"\" \
+	-DLOCALEDIR=\""$(datadir)/locale"\" \
+	$(NULL)
+libscrollplugin_la_LIBADD = $(SCROLL_PLUGIN_LIBS)
+libscrollplugin_la_LDFLAGS = -module -avoid-version -no-undefined
+
 # # # SUBSTITUTED FILES # # #
 # These files need to be filled in with make variables
 
