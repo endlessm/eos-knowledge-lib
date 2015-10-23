@@ -60,12 +60,12 @@ const ThumbCard = new Lang.Class({
     _MINIMAL_SIZE: 100,
     vfunc_get_preferred_width: function () {
         let [min, nat] = this.parent();
-        return [this._MINIMAL_SIZE, nat];
+        return [this._MINIMAL_SIZE, Math.max(this._MINIMAL_SIZE, nat)];
     },
 
     vfunc_get_preferred_height: function () {
         let [min, nat] = this.parent();
-        return [this._MINIMAL_SIZE, nat];
+        return [this._MINIMAL_SIZE, Math.max(this._MINIMAL_SIZE, nat)];
     },
 
     vfunc_size_allocate: function (alloc) {
