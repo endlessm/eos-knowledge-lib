@@ -35,34 +35,6 @@ ekn_private_new_input_output_window (GtkWidget *widget)
 }
 
 /**
- * ekn_private_register_global_uri_scheme:
- * @scheme: the network scheme to register
- * @callback: a #WebKitURISchemeRequestCallback.
- * @user_data: user data for the @callback
- * @notify: destroy notify function for the @callback
- *
- * Workaround for https://bugzilla.gnome.org/show_bug.cgi?id=729611
- *
- * Registers a URI scheme handler with the (global) default context. Does not
- * pass the GDestroyNotifyFunc, which GJS uses to shim a destructor for
- * @callback, along to the the web context.
- *
- * The default web context is a global object which does not get destroyed
- * until a atexit handler after the javascript runtime has been torn down.
- * Calling into the GJS function destructor at that point would be a
- * mistake.
- */
-void
-ekn_private_register_global_uri_scheme (const gchar *scheme,
-                                        WebKitURISchemeRequestCallback callback,
-                                        gpointer user_data,
-                                        GDestroyNotify notify)
-{
-    WebKitWebContext *context = webkit_web_context_get_default ();
-    webkit_web_context_register_uri_scheme (context, scheme, callback, NULL, NULL);
-}
-
-/**
  * ekn_param_spec_is_enum:
  * @pspec: a GParamSpec
  *
