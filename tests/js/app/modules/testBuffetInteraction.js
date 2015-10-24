@@ -10,9 +10,11 @@ const Utils = imports.tests.utils;
 Utils.register_gresource();
 
 const Actions = imports.app.actions;
+const ArticleObjectModel = imports.search.articleObjectModel;
 const BuffetInteraction = imports.app.modules.buffetInteraction;
 const ContentObjectModel = imports.search.contentObjectModel;
 const Launcher = imports.app.interfaces.launcher;
+const MediaObjectModel = imports.search.mediaObjectModel;
 const Module = imports.app.interfaces.module;
 const MockDispatcher = imports.tests.mockDispatcher;
 const MockEngine = imports.tests.mockEngine;
@@ -33,12 +35,14 @@ const MockView = new Lang.Class({
 });
 
 describe('Buffet interaction', function () {
-    let buffet, dispatcher, engine, factory, set_models;
+    let buffet, dispatcher, engine, factory, set_models, article_model, media_model;
 
     beforeEach(function () {
         dispatcher = MockDispatcher.mock_default();
 
         set_models = [0, 1, 2].map(() => new SetObjectModel.SetObjectModel());
+        article_model = new ArticleObjectModel.ArticleObjectModel();
+        media_model = new MediaObjectModel.MediaObjectModel();
 
         engine = MockEngine.mock_default();
         engine.get_objects_by_query_finish.and.returnValue([set_models, null]);
@@ -169,6 +173,47 @@ describe('Buffet interaction', function () {
                 action_type: Actions.HOME_CLICKED,
             });
             expect(dispatcher.last_payload_with_type(Actions.SHOW_HOME_PAGE)).toBeDefined();
+        });
+    });
+
+    describe('when an item is clicked', function () {
+        beforeEach(function () {
+            dispatcher.dispatch({
+                action_type: Actions.ITEM_CLICKED,
+                model: article_model,
+            });
+        });
+
+        it('changes to the article page', function () {
+            let payload = dispatcher.last_payload_with_type(Actions.SHOW_ARTICLE_PAGE);
+            expect(payload).toBeDefined();
+        });
+
+        it('dispatches show article with the article model', function () {
+            let payload = dispatcher.last_payload_with_type(Actions.SHOW_ARTICLE);
+            expect(payload.model).toBe(article_model);
+        });
+    });
+
+    describe('when a link is clicked', function () {
+        it('changes to the article page if link is an article', function () {
+            engine.get_object_by_id_finish.and.returnValue(article_model);
+            dispatcher.dispatch({
+                action_type: Actions.ARTICLE_LINK_CLICKED,
+                ekn_id: 'ekn://foo/bar',
+            });
+            let payload = dispatcher.last_payload_with_type(Actions.SHOW_ARTICLE);
+            expect(payload.model).toBe(article_model);
+        });
+
+        it('shows media if the link is a media object', function () {
+            engine.get_object_by_id_finish.and.returnValue(media_model);
+            dispatcher.dispatch({
+                action_type: Actions.ARTICLE_LINK_CLICKED,
+                ekn_id: 'ekn://foo/bar',
+            });
+            let payload = dispatcher.last_payload_with_type(Actions.SHOW_MEDIA);
+            expect(payload.model).toBe(media_model);
         });
     });
 
