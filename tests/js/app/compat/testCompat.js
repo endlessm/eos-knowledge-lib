@@ -78,6 +78,18 @@ describe('Compatibility layer', function () {
                 }));
         });
 
+        it('deals with non-ASCII characters in section titles', function () {
+            json = { sections: [ {
+                title: 'Schrödinger',
+                thumbnailURI: 'https://schroedinger.at/portrait.png',
+            } ] };
+            engine.default_domain = 'physics-en';
+            Compat.create_v1_set_models(json, engine);
+            // Independently generated SHA1 hash of "categoryphysics-enSchrödinger"
+            expect(engine.add_runtime_object).toHaveBeenCalledWith('ekn://physics-en/9eb84f7fc3b32179b2d0adb2f7d71d18ce446add',
+                jasmine.any(Object));
+        });
+
         it('does nothing if no sections, like in a reader app', function () {
             Compat.create_v1_set_models({}, engine);
             expect(engine.add_runtime_object).not.toHaveBeenCalled();
