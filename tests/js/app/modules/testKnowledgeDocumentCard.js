@@ -1,6 +1,7 @@
 const EvinceDocument = imports.gi.EvinceDocument;
 const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
+const WebKit2 = imports.gi.WebKit2;
 
 const Utils = imports.tests.utils;
 Utils.register_gresource();
@@ -9,6 +10,7 @@ const ArticleObjectModel = imports.search.articleObjectModel;
 const KnowledgeDocumentCard = imports.app.modules.knowledgeDocumentCard;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
+const MockWidgets = imports.tests.mockWidgets;
 const StyleClasses = imports.app.styleClasses;
 const TableOfContents = imports.app.widgets.tableOfContents;
 const TreeNode = imports.search.treeNode;
@@ -20,32 +22,19 @@ EvinceDocument.init();
 const TEST_CONTENT_DIR = Utils.get_test_content_srcdir();
 
 describe('Document Card', function () {
-    let card
-    let articleObject;
-
-    let toc_json = { "tableOfContents":
-    [{"hasIndex": 0, "hasIndexLabel": 1, "hasLabel": "Foo", "hasContent": "#Foo"},
-     {"hasIndex": 1, "hasIndexLabel": 2, "hasLabel": "Bar", "hasContent": "#Bar"},
-     {"hasIndex": 2, "hasIndexLabel": 3, "hasLabel": "Baz", "hasContent": "#Baz"}]};
+    let card, model;
 
     beforeEach(function () {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
         jasmine.addMatchers(InstanceOfMatcher.customMatchers);
         jasmine.addMatchers(WidgetDescendantMatcher.customMatchers);
 
-        let toc = TreeNode.tree_model_from_tree_node(toc_json);
-        articleObject = new ArticleObjectModel.ArticleObjectModel({
+        model = new ArticleObjectModel.ArticleObjectModel({
             ekn_id: 'ekn:///foo/bar',
-            content_type: 'application/pdf',
-            get_content_stream: () => {
-                let file = Gio.File.new_for_path(TEST_CONTENT_DIR + 'pdf-sample1.pdf');
-                return file.read(null);
-            },
-            title: 'Wikihow & title',
-            table_of_contents: toc,
+            title: '!!!',
         });
         card = new KnowledgeDocumentCard.KnowledgeDocumentCard({
-            model: articleObject,
+            model: model,
             show_toc: true,
         });
     });
@@ -58,46 +47,10 @@ describe('Document Card', function () {
         expect(card.toc).toBeA(TableOfContents.TableOfContents);
     });
 
-    it('can set toc section list', function () {
-        let labels = [];
-        for (let obj of toc_json['tableOfContents']) {
-            if (!('hasParent' in obj)) {
-                labels.push(obj['hasLabel']);
-            }
-        }
-        expect(card.toc.section_list).toEqual(labels);
-    });
-
-    describe('table of contents', function () {
-        let win;
-        const TOP_BOTTOM_BAR_HEIGHT = 36 + 30;
-        beforeEach(function (done) {
-            card.load_content(null, () => {
-                win = new Gtk.OffscreenWindow();
-                win.add(card);
-                win.show_all();
-                done();
-            });
-        });
-
-        it('collapses toc at SVGA', function () {
-            win.set_size_request(800, 600 - TOP_BOTTOM_BAR_HEIGHT);
-            Utils.update_gui();
-            expect(card.toc.collapsed).toBe(true);
-        });
-
-        it('does not collapse toc at XGA', function () {
-            win.set_size_request(1024, 768 - TOP_BOTTOM_BAR_HEIGHT);
-            Utils.update_gui();
-            expect(card.toc.collapsed).toBe(false);
-        });
-
-        it('collapses in composite mode', function () {
-            spyOn(imports.app.utils, 'get_text_scaling_factor').and.returnValue(2.2);
-            win.set_size_request(1600, 1200 - TOP_BOTTOM_BAR_HEIGHT);
-            Utils.update_gui();
-            expect(card.toc.collapsed).toBe(true);
-        });
+    it('has labels that understand Pango markup', function () {
+        expect(Gtk.test_find_label(card, '*!!!*').use_markup).toBeTruthy();
+        // FIXME: the above line will find either title_label or top_title_label
+        // but not both
     });
 
     describe('Style class of document card', function () {
@@ -115,14 +68,98 @@ describe('Document Card', function () {
         });
     });
 
-    it('has labels that understand Pango markup', function () {
-        let card = new KnowledgeDocumentCard.KnowledgeDocumentCard({
-            model: new ArticleObjectModel.ArticleObjectModel({
-                title: '!!!',
-            }),
+    describe('with pdf model', function () {
+        let pdf_model;
+        beforeEach(function (done) {
+            pdf_model = new ArticleObjectModel.ArticleObjectModel({
+                ekn_id: 'ekn:///foo/bar',
+                content_type: 'application/pdf',
+                get_content_stream: () => {
+                    let file = Gio.File.new_for_path(TEST_CONTENT_DIR + 'pdf-sample1.pdf');
+                    return file.read(null);
+                },
+                title: 'Pdf title',
+            });
+
+            card = new KnowledgeDocumentCard.KnowledgeDocumentCard({
+                model: pdf_model,
+            });
+            card.load_content(null, (card, task) => {
+                expect(() => card.load_content_finish(task)).not.toThrow();
+                done();
+            });
         });
-        expect(Gtk.test_find_label(card, '*!!!*').use_markup).toBeTruthy();
-        // FIXME: the above line will find either title_label or top_title_label
-        // but not both
+
+        it('can be loaded', function () {});
+    });
+
+    describe('with html model', function () {
+        let html_model, toc_json, toc;
+        beforeEach(function (done) {
+            toc_json = { "tableOfContents":
+                [{"hasIndex": 0, "hasIndexLabel": 1, "hasLabel": "Foo", "hasContent": "#Foo"},
+                 {"hasIndex": 1, "hasIndexLabel": 2, "hasLabel": "Bar", "hasContent": "#Bar"},
+                 {"hasIndex": 2, "hasIndexLabel": 3, "hasLabel": "Baz", "hasContent": "#Baz"}]};
+            toc = TreeNode.tree_model_from_tree_node(toc_json);
+            html_model = new ArticleObjectModel.ArticleObjectModel({
+                ekn_id: 'ekn:///foo/bar',
+                content_type: 'text/html',
+                title: 'Html title',
+                table_of_contents: toc,
+            });
+            card = new KnowledgeDocumentCard.KnowledgeDocumentCard({
+                model: html_model,
+                show_toc: true,
+            });
+            spyOn(card, '_create_webview').and.returnValue(new MockWidgets.MockEknWebview());
+            card.load_content(null, (card, task) => {
+                card.load_content_finish(task);
+                done();
+            });
+            card.content_view.emit('load-changed', WebKit2.LoadEvent.COMMITTED);
+        });
+
+        it('can be loaded', function () {});
+
+        describe('table of contents', function () {
+            let win;
+            const TOP_BOTTOM_BAR_HEIGHT = 36 + 30;
+            beforeEach(function () {
+                win = new Gtk.OffscreenWindow();
+                win.add(card);
+            });
+
+            it('section list is populated', function () {
+                let labels = [];
+                for (let obj of toc_json['tableOfContents']) {
+                    if (!('hasParent' in obj)) {
+                        labels.push(obj['hasLabel']);
+                    }
+                }
+                expect(card.toc.section_list).toEqual(labels);
+            });
+
+            it('collapses toc at SVGA', function () {
+                win.set_size_request(800, 600 - TOP_BOTTOM_BAR_HEIGHT);
+                win.show_all();
+                Utils.update_gui();
+                expect(card.toc.collapsed).toBe(true);
+            });
+
+            it('does not collapse toc at XGA', function () {
+                win.set_size_request(1024, 768 - TOP_BOTTOM_BAR_HEIGHT);
+                win.show_all();
+                Utils.update_gui();
+                expect(card.toc.collapsed).toBe(false);
+            });
+
+            it('collapses in composite mode', function () {
+                spyOn(imports.app.utils, 'get_text_scaling_factor').and.returnValue(2.2);
+                win.set_size_request(1600, 1200 - TOP_BOTTOM_BAR_HEIGHT);
+                win.show_all();
+                Utils.update_gui();
+                expect(card.toc.collapsed).toBe(true);
+            });
+        });
     });
 });

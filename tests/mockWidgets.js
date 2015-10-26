@@ -109,7 +109,7 @@ const MockRenderer = new Lang.Class({
 
 const MockEknWebview = new Lang.Class({
     Name: 'MockEknWebview',
-    Extends: Gtk.Widget,
+    Extends: Gtk.Frame,
     Signals: {
         'load-changed': {
             param_types: [ GObject.TYPE_UINT ],

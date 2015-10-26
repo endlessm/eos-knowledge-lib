@@ -236,12 +236,17 @@ const KnowledgeDocumentCard = new Lang.Class({
         this.content_view.run_javascript(script, null, null);
     },
 
-    _get_webview: function () {
-        let webview = new EknWebview.EknWebview({
+    // Keep separate function to mock out in tests
+    _create_webview: function () {
+        return new EknWebview.EknWebview({
             expand: true,
             width_request: this.MIN_CONTENT_WIDTH,
             height_request: this.MIN_CONTENT_HEIGHT,
         });
+    },
+
+    _get_webview: function () {
+        let webview = this._create_webview();
 
         webview.renderer.enable_scroll_manager = this.show_toc;
         webview.renderer.show_title = !this.show_toc;
