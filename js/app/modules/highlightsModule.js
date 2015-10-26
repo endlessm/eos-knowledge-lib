@@ -2,6 +2,7 @@
 
 /* exported HighlightsModule */
 
+const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
@@ -11,6 +12,7 @@ const Dispatcher = imports.app.dispatcher;
 const Engine = imports.search.engine;
 const Module = imports.app.interfaces.module;
 const QueryObject = imports.search.queryObject;
+const Utils = imports.app.utils;
 
 /**
  * Class: HighlightsModule
@@ -21,8 +23,8 @@ const QueryObject = imports.search.queryObject;
  * the featured sets.
  *
  * This module shows a few arrangements consecutively.
- * We recommend placing it in a <ScrollingArrangement> or another module that
- * can allow it to scroll.
+ * We recommend placing it in a <ScrollingTemplate> or another module that can
+ * allow it to scroll.
  * The top arrangement shows an assortment of cards from all sets.
  * Each subsequent arrangement shows the highlights of one non-featured
  * (thematic) set.
@@ -31,7 +33,8 @@ const QueryObject = imports.search.queryObject;
  * which can also be clicked to show more information about that set.
  *
  * Slots:
- *   arrangement - arrangement to display cards in
+ *   large-arrangement - large arrangement to display cards in
+ *   small-arrangement - smaller arrangement to display cards in
  *   card-type - type of cards to create for articles
  *   header-card-type - type of cards to create for sets
  */
@@ -53,7 +56,7 @@ const HighlightsModule = new Lang.Class({
         props.orientation = Gtk.Orientation.VERTICAL;
         this.parent(props);
 
-        this._featured_arrangement = this.create_submodule('arrangement');
+        this._featured_arrangement = this.create_submodule('large-arrangement');
         this._set_arrangements = [];
 
         this.add(this._featured_arrangement);
@@ -67,9 +70,13 @@ const HighlightsModule = new Lang.Class({
                     this._clear_items();
                     break;
                 case Actions.APPEND_SETS:
-                    payload.models.filter(model => !model.featured)
-                    .forEach(this._add_set, this);
-                    this._load_all_articles();
+                    let models = payload.models.filter(model => !model.featured);
+                    let rand_sequence = models.map(GLib.random_double);
+                    Utils.shuffle(models, rand_sequence);
+                    this._add_set(models[0], 'small-arrangement');
+                    this._add_set(models[1], 'large-arrangement');
+                    let tags_to_load = models[0].child_tags.concat(models[1].child_tags);
+                    this._populate_arrangements(tags_to_load);
                     break;
             }
         });
@@ -77,7 +84,8 @@ const HighlightsModule = new Lang.Class({
 
     // Module override
     get_slot_names: function () {
-        return ['arrangement', 'card-type', 'header-card-type'];
+        return ['large-arrangement', 'small-arrangement', 'card-type',
+            'header-card-type'];
     },
 
     _create_set_card: function (model) {
@@ -106,13 +114,9 @@ const HighlightsModule = new Lang.Class({
         return card;
     },
 
-    // Load all articles in order to populate the arrangements with them. This
-    // happens after APPEND_SETS.
-    // It's unfortunate that we don't have a way to determine whether an
-    // arrangement already contains a particular model. Otherwise, we could load
-    // articles from each set as that set was appended. But as it is, if we did
-    // that, we'd end up with duplicate cards in some arrangements.
-    _load_all_articles: function () {
+    // Load all articles referenced by the shown arrangements in order to
+    // populate the arrangements with them. This happens after APPEND_SETS.
+    _populate_arrangements: function (tags_to_load) {
         this._clear_items();
 
         let process_results = (engine, res) => {
@@ -131,17 +135,17 @@ const HighlightsModule = new Lang.Class({
         };
         let query = new QueryObject.QueryObject({
             limit: this.RESULTS_BATCH_SIZE,
-            tags: ['EknArticleObject'],
+            tags: tags_to_load,
         });
         Engine.get_default().get_objects_by_query(query, null, process_results);
     },
 
-    _add_set: function (model) {
+    _add_set: function (model, arrangement_slot) {
         let header = this._create_set_card(model);
         header.show_all();
         this.add(header);
 
-        let arrangement = this.create_submodule('arrangement', {
+        let arrangement = this.create_submodule(arrangement_slot, {
             vexpand: true,
         });
         arrangement.accepted_child_tags = model.child_tags.slice();
