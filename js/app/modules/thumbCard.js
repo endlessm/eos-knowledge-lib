@@ -77,7 +77,7 @@ const ThumbCard = new Lang.Class({
         // will lay themselves out. The proportion refers to
         // the proportion of space to be taken up by the
         // thumbnail image
-        if (alloc.width > alloc.height) {
+        if (this._should_go_horizontal(alloc.width, alloc.height)) {
             this._title_label.halign = this._synopsis_label.halign = Gtk.Align.START;
             orientation = Gtk.Orientation.HORIZONTAL;
             proportion = 1/2;
@@ -103,8 +103,24 @@ const ThumbCard = new Lang.Class({
             height: text_h,
         });
 
+        if (this._should_show_synopsis(alloc.width, alloc.height))
+            this.set_label_or_hide(this._synopsis_label, this.model.synopsis);
+        else
+            this._synopsis_label.hide();
+
         this._thumbnail_frame.size_allocate(thumb_alloc);
         this._content_frame.size_allocate(text_alloc);
         this.update_card_sizing_classes(alloc.height, alloc.width);
+    },
+
+    _should_go_horizontal: function (width, height) {
+        return (width > 399 && height < 300) ||
+            (width > 599 && height < 400) ||
+            (width > 799 && height < 600) ||
+            (width > 999);
+    },
+
+    _should_show_synopsis: function (width, height) {
+        return height > 400 && this._should_go_horizontal(width, height);
     },
 });
