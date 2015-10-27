@@ -20,41 +20,50 @@
           </object>
         </child>
         <child>
-          <object class="GtkGrid" id="inner-grid">
-            <property name="orientation">vertical</property>
-            <property name="vexpand">True</property>
-            <property name="valign">center</property>
+          <object class="GtkFrame" id="content-frame">
             <property name="visible">True</property>
             <child>
-              <object class="GtkLabel" id="title-label">
-                <property name="can_focus">False</property>
-                <property name="hexpand">True</property>
-                <property name="halign">center</property>
-                <property name="use_markup">True</property>
-                <property name="wrap">True</property>
-                <property name="wrap_mode">word-char</property>
-                <property name="ellipsize">end</property>
-                <property name="lines">2</property>
-                <style>
-                  <class name="title"/>
-                </style>
+              <object class="GtkGrid" id="inner-grid">
+                <property name="orientation">vertical</property>
+                <property name="vexpand">True</property>
+                <property name="valign">center</property>
+                <property name="visible">True</property>
+                <child>
+                  <object class="GtkLabel" id="title-label">
+                    <property name="can_focus">False</property>
+                    <property name="hexpand">True</property>
+                    <property name="halign">center</property>
+                    <property name="xalign">0</property>
+                    <property name="use_markup">True</property>
+                    <property name="wrap">True</property>
+                    <property name="wrap_mode">word-char</property>
+                    <property name="ellipsize">end</property>
+                    <property name="lines">2</property>
+                    <style>
+                      <class name="title"/>
+                    </style>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="synopsis-label">
+                    <property name="can_focus">False</property>
+                    <property name="hexpand">True</property>
+                    <property name="halign">center</property>
+                    <property name="use_markup">True</property>
+                    <property name="wrap">True</property>
+                    <property name="wrap_mode">word-char</property>
+                    <property name="ellipsize">end</property>
+                    <property name="lines">5</property>
+                    <style>
+                      <class name="card-synopsis"/>
+                    </style>
+                  </object>
+                </child>
               </object>
             </child>
-            <child>
-              <object class="GtkLabel" id="synopsis-label">
-                <property name="can_focus">False</property>
-                <property name="hexpand">True</property>
-                <property name="halign">center</property>
-                <property name="use_markup">True</property>
-                <property name="wrap">True</property>
-                <property name="wrap_mode">word-char</property>
-                <property name="ellipsize">end</property>
-                <property name="lines">5</property>
-                <style>
-                  <class name="card-synopsis"/>
-                </style>
-              </object>
-            </child>
+            <style>
+              <class name="content-frame"/>
+            </style>
           </object>
         </child>
       </object>

@@ -31,7 +31,7 @@ const ThumbCard = new Lang.Class({
     },
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/thumbCard.ui',
-    InternalChildren: [ 'thumbnail-frame', 'grid', 'inner-grid', 'title-label', 'synopsis-label'],
+    InternalChildren: [ 'thumbnail-frame', 'grid', 'inner-grid', 'content-frame', 'title-label', 'synopsis-label'],
 
     _init: function (props={}) {
         this.parent(props);
@@ -104,6 +104,6 @@ const ThumbCard = new Lang.Class({
         });
 
         this._thumbnail_frame.size_allocate(thumb_alloc);
-        this._inner_grid.size_allocate(text_alloc);
+        this._content_frame.size_allocate(text_alloc);
     },
 });
