@@ -129,14 +129,14 @@ const Card = new Lang.Interface({
             });
             frame.add(coveredFrame);
         } else {
-            let frame_css = '* { background-image: url("' + this.model.thumbnail_uri + '"); }';
-            if (!this._background_provider) {
-                this._background_provider = new Gtk.CssProvider();
-                let context = frame.get_style_context();
-                context.add_provider(this._background_provider,
-                    Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
-            }
-            this._background_provider.load_from_data(frame_css);
+            let css_data = {
+                'background-image': 'url("' + this.model.thumbnail_uri + '")',
+                'background-repeat': 'no-repeat',
+                'background-position': 'center',
+                'background-size': 'cover',
+            };
+            let css_string = Utils.object_to_css_string(css_data);
+            Utils.apply_css_to_widget(css_string, frame);
         }
         frame.visible = true;
     },
