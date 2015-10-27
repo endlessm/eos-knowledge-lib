@@ -27,12 +27,57 @@ EknThematicModule {
     background-color: white;
 }
 
+.thumb-card .title {
+    font-size: 24px;
+}
+
+.thumb-card .card-synopsis {
+    font-size: 14px;
+}
+
 .thumb-card .title, .thumb-card .card-synopsis {
     color: black;
 }
 
-.thumb-card .title {
-    font-size: 1.5em;
+.thumb-card.width-a .title,
+.thumb-card.width-b .title {
+    font-size: 14px;
+}
+
+.thumb-card.width-c .title,
+.thumb-card.width-d.height-c .title,
+.thumb-card.width-d.height-b .title {
+    font-size: 16px;
+}
+
+.thumb-card.width-d.height-d .title,
+.thumb-card.width-e.height-b .title,
+.thumb-card.width-e.height-c .title {
+    font-size: 23px;
+}
+
+.thumb-card.width-e .title,
+.thumb-card.width-f .title,
+.thumb-card.width-g .title,
+.thumb-card.width-h .title {
+    font-size: 37px;
+}
+
+.thumb-card .content-frame {
+    padding: 20px;
+}
+
+.thumb-card.width-d.height-b .content-frame,
+.thumb-card.width-e.height-b .content-frame,
+.thumb-card.width-e.height-c .content-frame {
+    padding: 20px 30px 20px 30px;
+}
+
+.thumb-card.width-e .content-frame,
+.thumb-card.width-f .content-frame,
+.thumb-card.width-g .content-frame,
+.thumb-card.width-h .content-frame {
+    padding: 40px;
 }
 
 .post-card .title {

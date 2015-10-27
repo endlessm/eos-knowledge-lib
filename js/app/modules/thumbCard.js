@@ -105,5 +105,6 @@ const ThumbCard = new Lang.Class({
 
         this._thumbnail_frame.size_allocate(thumb_alloc);
         this._content_frame.size_allocate(text_alloc);
+        this.update_card_sizing_classes(alloc.height, alloc.width);
     },
 });
