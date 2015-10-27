@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2015-10-13 01:56+0000\n"
-"PO-Revision-Date: 2015-10-13 20:55+0000\n"
+"POT-Creation-Date: 2015-10-20 01:55+0000\n"
+"PO-Revision-Date: 2015-10-20 01:55+0000\n"
 "Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
 "Language-Team: Arabic (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/ar/)\n"
 "MIME-Version: 1.0\n"
@@ -38,6 +38,14 @@ msgstr "صيغة PDF"
 #: data/widgets/readerCard.ui:113 js/app/widgets/webviewTooltip.js:138
 msgid "Archive"
 msgstr "الأرشيف"
+
+#: data/widgets/suggestedArticlesModule.ui:18
+msgid "You might be interested in..."
+msgstr ""
+
+#: data/widgets/suggestedCategoriesModule.ui:18
+msgid "Browse Categories"
+msgstr ""
 
 #. TRANSLATORS: anything inside curly braces '{}' is going
 #. to be substituted in code. Please make sure to leave the
@@ -92,44 +100,39 @@ msgstr "المحتوى مهدى من {blog-link}. تم استخدامه بإذن
 msgid "Content courtesy of {blog-link}, licensed under {license-link}."
 msgstr "المحتوى مهدى من {blog-link}، ومرخص بموجب {license-link}."
 
-#: js/app/compat/compat.js:105
-msgid "SEE ALL CATEGORIES"
-msgstr "مشاهدة جميع الفئات"
-
-#: js/app/compat/compat.js:106
-msgid "HOME"
-msgstr "الصفحة الرئيسية"
-
-#: js/app/modules/aisleInteraction.js:770
+#: js/app/modules/aisleInteraction.js:815
 msgid "View the license in your browser"
 msgstr "عرض الترخيص في المستعرض الخاص بك"
 
-#: js/app/modules/aisleInteraction.js:906
-#: js/app/modules/aisleInteraction.js:913
+#: js/app/modules/aisleInteraction.js:953
+#: js/app/modules/aisleInteraction.js:960
 msgid "Oops!"
 msgstr "يا لهذا!"
 
-#: js/app/modules/aisleInteraction.js:907
+#: js/app/modules/aisleInteraction.js:954
 msgid ""
 "We could not find this magazine!\n"
 "Please try again after restarting your computer."
 msgstr "لم نتمكن من إيجاد هذه المجلة!\nيُرجى المحاولة مرة أُخرى بعد إعادة تشغيل جهاز الكمبيوتر الخاص بك."
 
-#: js/app/modules/aisleInteraction.js:914
+#: js/app/modules/aisleInteraction.js:961
 msgid ""
 "There was an error loading that page.\n"
 "Try another one or try again after restarting your computer."
 msgstr "وقع خطأٌ ما أثناء تحميل تلك الصفحة.\nجرب صفحة أخرى أو حاول مرة أخرى فيما بعد بعد إعادة تشغيل الكمبيوتر."
 
+#: js/app/modules/homePageATemplate.js:38
+msgid "SEE ALL CATEGORIES"
+msgstr "مشاهدة جميع الفئات"
+
+#: js/app/modules/homePageATemplate.js:46
+msgid "HOME"
+msgstr "الصفحة الرئيسية"
+
 #: js/app/modules/readerCard.js:60
 #, javascript-format
 msgid "Page %s"
 msgstr "الصفحة %s"
-
-#: js/app/modules/readerWindow.js:128
-#, javascript-format
-msgid "This article is part of the archive of the magazine %s."
-msgstr "هذه المقالة هي جزء من أرشيف مجلة %s."
 
 #. TRANSLATORS: This message is displayed while an app is
 #. searching for results. The %s will be replaced with the term
@@ -137,7 +140,7 @@ msgstr "هذه المقالة هي جزء من أرشيف مجلة %s."
 #. surrounded by Unicode left and right double quotes (U+201C
 #. and U+201D). Make sure to include %s in your translation and
 #. use whatever quote marks are appropriate for your language.
-#: js/app/modules/searchBannerModule.js:55
+#: js/app/modules/searchBannerModule.js:56
 #, javascript-format
 msgid "Searching for “%s”"
 msgstr "البحث عن “%s”"
@@ -148,28 +151,45 @@ msgstr "البحث عن “%s”"
 #. surrounded by Unicode left and right double quotes (U+201C
 #. and U+201D). Make sure to include %s in your translation and
 #. use whatever quote marks are appropriate for your language.
-#: js/app/modules/searchBannerModule.js:67
+#: js/app/modules/searchBannerModule.js:68
 #, javascript-format
 msgid "Search results for “%s”"
 msgstr "نتائج البحث الخاصة بـ “%s”"
 
-#: js/app/modules/searchBannerModule.js:73
+#: js/app/modules/searchBannerModule.js:74
 msgid "OOPS!"
 msgstr "عفواً!"
 
-#: js/app/modules/searchModule.js:152
-msgid ""
-"There are no results that match your search.\n"
-"Try searching for something else."
-msgstr "لا توجد نتائج تطابق البحث الخاص بك.\nحاول البحث عن شيء آخر."
+#: js/app/modules/searchModule.js:163
+msgid "Sorry! :-("
+msgstr ""
 
-#: js/app/modules/searchModule.js:165
+#: js/app/modules/searchModule.js:164
+#, javascript-format
+msgid "We didn't find any results that match your search for “%s”\n"
+msgstr ""
+
+#: js/app/modules/searchModule.js:166
+msgid ""
+"WE RECOMMEND THAT YOU:\n"
+"\n"
+"  •  Check your spelling\n"
+"  •  Try different words with the same meaning as the ones you just typed\n"
+"  •  Try again with more generic words"
+msgstr ""
+
+#: js/app/modules/searchModule.js:192
 msgid "There was an error during your search."
 msgstr "وقع خطأ أثناء عملية البحث."
 
-#: js/app/reader/standalonePage.js:136
+#: js/app/modules/standalonePage.js:139
 msgid "Open the magazine"
 msgstr "فتح المجلة"
+
+#: js/app/modules/standalonePage.js:256
+#, javascript-format
+msgid "This article is part of the archive of the magazine %s."
+msgstr "هذه المقالة هي جزء من أرشيف مجلة %s."
 
 #. TRANSLATORS: anything inside curly braces '{}' is going to be substituted
 #. in code. Please make sure to leave the curly braces around any words that
