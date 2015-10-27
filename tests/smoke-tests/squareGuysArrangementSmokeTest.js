@@ -45,6 +45,7 @@ for (let i = 0; i < 10; i++) {
     arrangement.add(card);
 }
 
+win.connect('destroy', Gtk.main_quit);
 win.add(arrangement);
 win.show_all();
 Gtk.main();
