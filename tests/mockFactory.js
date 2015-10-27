@@ -41,6 +41,8 @@ const MockFactory = new Lang.Class({
         if (parent.get_slot_names().indexOf(slot) === -1)
             throw new Error('No slot named ' + slot + ' according to module.get_slot_names.');
         let module_name = this._mock_slots[parent.factory_name][slot];
+        if (module_name === null)
+            return null;
 
         Lang.copyProperties(this._mock_props[module_name], props);
 
