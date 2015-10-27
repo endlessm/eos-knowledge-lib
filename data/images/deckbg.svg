@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="299" height="302" viewBox="0 0 299 302">
+  <defs>
+    <filter id="drop-shadow-1" filterUnits="userSpaceOnUse">
+      <feOffset in="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="3.162" result="dropBlur"/>
+      <feFlood flood-opacity="0.2"/>
+      <feComposite operator="in" in2="dropBlur" result="dropShadowComp"/>
+      <feComposite in="SourceGraphic" result="shadowed"/>
+    </filter>
+  </defs>
+  <path d="M 9.232,25.156 272.757,9.325 288.768,275.844 25.243,291.675 9.232,25.156 Z" style="fill:white; filter:url(#drop-shadow-1)"/>
+  <path d="M 24,9 287.992,24.675 276,289 11,280 24,9 Z" style="fill:white; filter:url(#drop-shadow-1)"/>
+</svg>

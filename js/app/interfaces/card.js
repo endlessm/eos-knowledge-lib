@@ -8,10 +8,12 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 
+const ArticleObjectModel = imports.search.articleObjectModel;
 const ContentObjectModel = imports.search.contentObjectModel;
 const Engine = imports.search.engine;
 const ImageCoverFrame = imports.app.widgets.imageCoverFrame;
 const Module = imports.app.interfaces.module;
+const SetObjectModel = imports.search.setObjectModel;
 const StyleClasses = imports.app.styleClasses;
 const Utils = imports.app.utils;
 
@@ -102,6 +104,19 @@ const Card = new Lang.Interface({
     },
 
     /**
+     * Method: add_contextual_css_class
+     *
+     * Adds a css class based on the type of model this is.
+     */
+    add_contextual_css_class: function () {
+        if (this.model instanceof SetObjectModel.SetObjectModel) {
+            this.get_style_context().add_class(StyleClasses.SET);
+        } else if (this.model instanceof ArticleObjectModel.ArticleObjectModel) {
+            this.get_style_context().add_class(StyleClasses.ARTICLE);
+        }
+    },
+
+    /**
      * Method: set_thumbnail_frame_from_model
      *
      * Sets up a frame to show the model's thumbnail uri.
@@ -129,14 +144,14 @@ const Card = new Lang.Interface({
             });
             frame.add(coveredFrame);
         } else {
-            let frame_css = '* { background-image: url("' + this.model.thumbnail_uri + '"); }';
-            if (!this._background_provider) {
-                this._background_provider = new Gtk.CssProvider();
-                let context = frame.get_style_context();
-                context.add_provider(this._background_provider,
-                    Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
-            }
-            this._background_provider.load_from_data(frame_css);
+            let css_data = {
+                'background-image': 'url("' + this.model.thumbnail_uri + '")',
+                'background-repeat': 'no-repeat',
+                'background-position': 'center',
+                'background-size': 'cover',
+            };
+            let css_string = Utils.object_to_css_string(css_data);
+            Utils.apply_css_to_widget(css_string, frame);
         }
         frame.visible = true;
     },
