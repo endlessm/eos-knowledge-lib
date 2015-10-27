@@ -51,10 +51,9 @@ const PostCard = new Lang.Class({
         }
     },
 
-    _MINIMAL_SIZE: 100,
     vfunc_get_preferred_width: function () {
         let [min, nat] = this.parent();
-        return [this._MINIMAL_SIZE, Math.max(this._MINIMAL_SIZE, nat)];
+        return [Card.MinSize.A, Math.max(Card.MinSize.A, nat)];
     },
 
     vfunc_get_request_mode: function () {
@@ -63,13 +62,13 @@ const PostCard = new Lang.Class({
 
     vfunc_get_preferred_height: function () {
         let [min, nat] = this.parent();
-        return [this._MINIMAL_SIZE, Math.max(this._MINIMAL_SIZE, nat)];
+        return [Card.MinSize.A, Math.max(Card.MinSize.A, nat)];
     },
 
     vfunc_size_allocate: function (alloc) {
         this.parent(alloc);
         if (this.model instanceof SetObjectModel.SetObjectModel) {
-            let sleeve_height = alloc.height > 180 ? 120 : 80;
+            let sleeve_height = alloc.height > Card.MaxSize.B ? 120 : 80;
             let sleeve_alloc = new Cairo.RectangleInt({
                 x: 0,
                 y: (alloc.height / 2) - (sleeve_height / 2),

@@ -57,15 +57,14 @@ const ThumbCard = new Lang.Class({
         return [thumb_width, thumb_height, text_width, text_height];
     },
 
-    _MINIMAL_SIZE: 100,
     vfunc_get_preferred_width: function () {
         let [min, nat] = this.parent();
-        return [this._MINIMAL_SIZE, Math.max(this._MINIMAL_SIZE, nat)];
+        return [Card.MinSize.A, Math.max(Card.MinSize.A, nat)];
     },
 
     vfunc_get_preferred_height: function () {
         let [min, nat] = this.parent();
-        return [this._MINIMAL_SIZE, Math.max(this._MINIMAL_SIZE, nat)];
+        return [Card.MinSize.A, Math.max(Card.MinSize.A, nat)];
     },
 
     vfunc_size_allocate: function (alloc) {
@@ -114,13 +113,13 @@ const ThumbCard = new Lang.Class({
     },
 
     _should_go_horizontal: function (width, height) {
-        return (width > 399 && height < 300) ||
-            (width > 599 && height < 400) ||
-            (width > 799 && height < 600) ||
-            (width > 999);
+        return (width > Card.MaxSize.C && height < Card.MinSize.C) ||
+            (width > Card.MaxSize.D && height < Card.MinSize.D) ||
+            (width > Card.MaxSize.E && height < Card.MinSize.E) ||
+            (width > Card.MaxSize.F);
     },
 
     _should_show_synopsis: function (width, height) {
-        return height > 400 && this._should_go_horizontal(width, height);
+        return height > Card.MaxSize.C && this._should_go_horizontal(width, height);
     },
 });

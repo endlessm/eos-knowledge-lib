@@ -41,15 +41,13 @@ const SearchResultCard = new Lang.Class({
         Utils.set_hand_cursor_on_widget(this);
     },
 
-    _MINIMAL_WIDTH: 600,
-    _MINIMAL_HEIGHT: 100,
     vfunc_get_preferred_width: function () {
         let [min, nat] = this.parent();
-        return [this._MINIMAL_WIDTH, Math.max(this._MINIMAL_WIDTH, nat)];
+        return [Card.MinSize.E, Math.max(Card.MinSize.E, nat)];
     },
 
     vfunc_get_preferred_height: function () {
         let [min, nat] = this.parent();
-        return [this._MINIMAL_HEIGHT, Math.max(this._MINIMAL_HEIGHT, nat)];
+        return [Card.MinSize.A, Math.max(Card.MinSize.A, nat)];
     },
 });

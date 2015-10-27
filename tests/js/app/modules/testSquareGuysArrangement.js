@@ -48,8 +48,8 @@ describe('SquareGuys arrangement', function () {
     Minimal.test_arrangement_compliance();
 
     describe('sizing allocation', function () {
-        // At 2000x2000, all eight cards should be visible and of size 400x300
-        testSizingArrangementForDimensions(2000, 2000, 8, 400, 300);
+        // At 2000x2000, all eight cards should be visible and of size 399x300
+        testSizingArrangementForDimensions(2000, 2000, 8, 399, 300);
 
         // At 1200x1200, all eight cards should be visible and of size 300x300
         testSizingArrangementForDimensions(1200, 1200, 8, 300, 300);

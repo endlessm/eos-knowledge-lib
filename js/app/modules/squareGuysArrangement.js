@@ -10,14 +10,15 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const Arrangement = imports.app.interfaces.arrangement;
+const Card = imports.app.interfaces.card;
 const Module = imports.app.interfaces.module;
 
 const COL_COUNT_MAX = 4;
 const COL_COUNT_MIN = 3;
 const ROW_COUNT = 2;
-const CARD_SIZE_SMALL = 200;
-const CARD_SIZE_BIG = 300;
-const CARD_SIZE_MAX = 400;
+const CARD_SIZE_SMALL = Card.MinSize.B;
+const CARD_SIZE_BIG = Card.MinSize.C;
+const CARD_SIZE_MAX = Card.MaxSize.C;
 const NUM_SHOWN_MAX = COL_COUNT_MAX * ROW_COUNT;
 const NUM_SHOWN_MIN = COL_COUNT_MIN * ROW_COUNT;
 

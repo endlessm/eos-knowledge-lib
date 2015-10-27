@@ -1,5 +1,7 @@
 // Copyright 2015 Endless Mobile, Inc.
 
+/* exported Card, MinSize, MaxSize */
+
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
@@ -16,6 +18,58 @@ const Module = imports.app.interfaces.module;
 const SetObjectModel = imports.search.setObjectModel;
 const StyleClasses = imports.app.styleClasses;
 const Utils = imports.app.utils;
+
+/**
+ * Constants: MinSize
+ * Minimum size of cards for each size class
+ *
+ * Members:
+ *  A - Smallest possible size for cards
+ *  B - Size B
+ *  C - Size C
+ *  D - Size D
+ *  E - Size E
+ *  F - Currently width-only
+ *  G - Currently width-only
+ *  H - Currently width-only
+ */
+const MinSize = {
+    A: 100,
+    B: 200,
+    C: 300,
+    D: 400,
+    E: 600,
+    F: 800,
+    G: 1000,
+    H: 1200,
+};
+
+/**
+ * Constants: MaxSize
+ * Maximum size of a card for each size class
+ *
+ * Members:
+ *  A - Size A
+ *  B - Size B
+ *  C - Size C
+ *  D - Size D
+ *  E - This is the largest height class that a card will currently get.
+ *      Even cards that are taller than this will still get class E.
+ *  F - Currently width-only
+ *  G - Currently width-only
+ *  H - Currently width-only.
+ *      Even cards that are wider than this will still get class H.
+ */
+const MaxSize = {
+    A: MinSize.B - 1,
+    B: MinSize.C - 1,
+    C: MinSize.D - 1,
+    D: MinSize.E - 1,
+    E: MinSize.F - 1,
+    F: MinSize.G - 1,
+    G: MinSize.H - 1,
+    H: 1399,
+};
 
 /**
  * Interface: Card
@@ -200,31 +254,31 @@ const Card = new Lang.Interface({
     update_card_sizing_classes: function (height, width) {
         let width_class, height_class;
 
-        if (width < 200) {
+        if (width <= MaxSize.A) {
             width_class = StyleClasses.CARD_WIDTH.A;
-        } else if (width < 300) {
+        } else if (width <= MaxSize.B) {
             width_class = StyleClasses.CARD_WIDTH.B;
-        } else if (width < 400) {
+        } else if (width <= MaxSize.C) {
             width_class = StyleClasses.CARD_WIDTH.C;
-        } else if (width < 600) {
+        } else if (width <= MaxSize.D) {
             width_class = StyleClasses.CARD_WIDTH.D;
-        } else if (width < 800) {
+        } else if (width <= MaxSize.E) {
             width_class = StyleClasses.CARD_WIDTH.E;
-        } else if (width < 1000) {
+        } else if (width <= MaxSize.F) {
             width_class = StyleClasses.CARD_WIDTH.F;
-        } else if (width < 1200) {
+        } else if (width <= MaxSize.G) {
             width_class = StyleClasses.CARD_WIDTH.G;
         } else {
             width_class = StyleClasses.CARD_WIDTH.H;
         }
 
-        if (height < 200) {
+        if (height <= MaxSize.A) {
             height_class = StyleClasses.CARD_HEIGHT.A;
-        } else if (height < 300) {
+        } else if (height <= MaxSize.B) {
             height_class = StyleClasses.CARD_HEIGHT.B;
-        } else if (height < 400) {
+        } else if (height <= MaxSize.C) {
             height_class = StyleClasses.CARD_HEIGHT.C;
-        } else if (height < 600) {
+        } else if (height <= MaxSize.D) {
             height_class = StyleClasses.CARD_HEIGHT.D;
         } else {
             height_class = StyleClasses.CARD_HEIGHT.E;
