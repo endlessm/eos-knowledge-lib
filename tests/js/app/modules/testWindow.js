@@ -13,6 +13,7 @@ const Minimal = imports.tests.minimal;
 const MockDispatcher = imports.tests.mockDispatcher;
 const MockFactory = imports.tests.mockFactory;
 const MockWidgets = imports.tests.mockWidgets;
+const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 const Window = imports.app.modules.window;
 
 const TEST_CONTENT_BUILDDIR = Utils.get_test_content_builddir();
@@ -74,8 +75,8 @@ describe('Window', function () {
             'section-page': 'section-page',
             'search-page': 'search-page',
             'article-page': 'article-page',
-            'navigation': 'navigation',
-            'lightbox': 'lightbox',
+            'navigation': null,
+            'lightbox': null,
             'search': 'top-bar-search',
         });
     });
@@ -173,10 +174,12 @@ describe('Window', function () {
         });
     });
 
-    describe('with a brand screen', function () {
+    describe('with a brand screen and no lightbox / navigation', function () {
         let view;
 
         beforeEach(function () {
+            jasmine.addMatchers(WidgetDescendantMatcher.customMatchers);
+
             view = new Window.Window({
                 application: app,
                 factory: factory,
@@ -199,6 +202,11 @@ describe('Window', function () {
                 action_type: Actions.BRAND_SCREEN_DONE,
             });
             expect(view.get_visible_page()).toBe(home_page);
+        });
+
+        it('still packs the pages even without a lightbox and navigation module', function () {
+            let home_page = factory.get_created_named_mocks('home-page')[0];
+            expect(view).toHaveDescendant(home_page);
         });
     });
 });

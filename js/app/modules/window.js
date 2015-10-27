@@ -137,18 +137,29 @@ const Window = new Lang.Class({
         this._stack.add(this._search_page);
         this._stack.add(this._article_page);
 
+        // We need to pack a bunch of modules inside each other, but some of
+        // them are optional. "matryoshka" is the innermost widget that needs to
+        // have something packed around it.
+        let matryoshka = this._stack;
+
         let navigation = this.create_submodule('navigation');
-        navigation.add(this._stack);
+        if (navigation) {
+            navigation.add(matryoshka);
+            matryoshka = navigation;
+        }
 
         let lightbox = this.create_submodule('lightbox');
-        lightbox.add(navigation);
+        if (lightbox) {
+            lightbox.add(matryoshka);
+            matryoshka = lightbox;
+        }
 
         this._history_buttons = new Endless.TopbarNavButton();
         this._search_box = this.create_submodule('search', {
             no_show_all: true,
             visible: false,
         });
-        this.page_manager.add(lightbox, {
+        this.page_manager.add(matryoshka, {
             left_topbar_widget: this._history_buttons,
             center_topbar_widget: this._search_box,
         });
