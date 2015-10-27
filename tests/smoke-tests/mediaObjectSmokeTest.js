@@ -123,7 +123,7 @@ const TestApplication = new Lang.Class ({
                 "caption": "Richard Stallman at Pittsburgh University",
                 "license": "GNU",
                 "copyrightHolder": "the world",
-                "encodingFormat": "jpg",
+                "contentType": "image/jpeg",
                 "height": "666",
                 "width": "666"
             },
@@ -135,7 +135,7 @@ const TestApplication = new Lang.Class ({
                 "title": "Editing C source code in GNU Emacs",
                 "tags": ["Editor", "emacs"],
                 "caption": "Editing C source code in GNU Emacs",
-                "encodingFormat": "png",
+                "contenType": "image/png",
                 "height": "666",
                 "width": "666"
             },
@@ -147,7 +147,7 @@ const TestApplication = new Lang.Class ({
                 "title": "Editing multiple Dired buffers in GNU Emacs",
                 "tags": ["Dired buffers", "emacs"],
                 "caption": "Editing multiple Dired buffers in GNU Emacs",
-                "encodingFormat": "png",
+                "contentType": "image/png",
                 "height": "666",
                 "copyrightHolder": "the world",
                 "width": "666"
