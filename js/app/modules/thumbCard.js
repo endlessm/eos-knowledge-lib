@@ -57,6 +57,10 @@ const ThumbCard = new Lang.Class({
         return [thumb_width, thumb_height, text_width, text_height];
     },
 
+    vfunc_get_request_mode: function () {
+        return Gtk.SizeRequestMode.CONSTANT_SIZE;
+    },
+
     vfunc_get_preferred_width: function () {
         let [min, nat] = this.parent();
         return [Card.MinSize.A, Math.max(Card.MinSize.A, nat)];
