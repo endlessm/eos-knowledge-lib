@@ -37,17 +37,8 @@ const SearchResultCard = new Lang.Class({
         this.set_title_label_from_model(this._title_label);
         this.set_thumbnail_frame_from_model(this._thumbnail_frame);
         this.set_label_or_hide(this._synopsis_label, this.model.synopsis);
+        this.set_size_request(Card.MinSize.E, Card.MinSize.A);
 
         Utils.set_hand_cursor_on_widget(this);
-    },
-
-    vfunc_get_preferred_width: function () {
-        let [min, nat] = this.parent();
-        return [Card.MinSize.E, Math.max(Card.MinSize.E, nat)];
-    },
-
-    vfunc_get_preferred_height: function () {
-        let [min, nat] = this.parent();
-        return [Card.MinSize.A, Math.max(Card.MinSize.A, nat)];
     },
 });

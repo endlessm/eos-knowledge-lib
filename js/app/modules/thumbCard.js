@@ -39,6 +39,7 @@ const ThumbCard = new Lang.Class({
         this.set_title_label_from_model(this._title_label);
         this.set_thumbnail_frame_from_model(this._thumbnail_frame);
         this.set_label_or_hide(this._synopsis_label, this.model.synopsis);
+        this.set_size_request(Card.MinSize.A, Card.MinSize.A);
 
         Utils.set_hand_cursor_on_widget(this);
     },
@@ -55,20 +56,6 @@ const ThumbCard = new Lang.Class({
             thumb_height = text_height = alloc.height;
         }
         return [thumb_width, thumb_height, text_width, text_height];
-    },
-
-    vfunc_get_request_mode: function () {
-        return Gtk.SizeRequestMode.CONSTANT_SIZE;
-    },
-
-    vfunc_get_preferred_width: function () {
-        let [min, nat] = this.parent();
-        return [Card.MinSize.A, Math.max(Card.MinSize.A, nat)];
-    },
-
-    vfunc_get_preferred_height: function () {
-        let [min, nat] = this.parent();
-        return [Card.MinSize.A, Math.max(Card.MinSize.A, nat)];
     },
 
     vfunc_size_allocate: function (alloc) {
