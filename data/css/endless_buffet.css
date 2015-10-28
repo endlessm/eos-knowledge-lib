@@ -85,6 +85,11 @@ EknSearchModule {
     background-image: linear-gradient(to top, black 0%, alpha(black, 0.69) 30%, alpha(black, 0.5) 49%, alpha(black, 0) 100%);
 }
 
+.post-card.article .title {
+    padding-bottom: 20px;
+    color: white;
+}
+
 .post-card.set {
     background-image: url('resource:///com/endlessm/knowledge/data/images/deckbg.svg');
     background-repeat: no-repeat;
