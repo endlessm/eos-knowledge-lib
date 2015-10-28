@@ -110,8 +110,9 @@ EknSearchModule {
     font-weight: 200;
 }
 
-.search-result-card .card-synopsis {
+.card-synopsis {
     color: black;
+    font-size: 14px;
 }
 
 .results-message-title,
