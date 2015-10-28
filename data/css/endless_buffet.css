@@ -1,42 +1,36 @@
-@import url('resource:///com/endlessm/knowledge/data/css/endless_knowledge.css');
-
 /* This is all temporary */
 
-.card .title {
+* {
     font-family: Lato;
-    font-weight: 300;
 }
 
-.text-card .title.label {
-    color: #204a87;
-    font-weight: normal;
-    font-size: 1.5em;
+.card .title {
+    color: #044a80;
+}
+
+EknHighlightsModule .text-card .title.label,
+EknThematicModule .text-card .title.label,
+.browse-categories-title {
+    font-weight: 200;
+    font-size: 22px;
     border-bottom: solid 1px gray;
 }
 
-.text-card:hover .title.label {
-    color: #3465a4;
+.browse-categories-title {
+    color: #999999;
 }
 
-EknHighlightsModule,
-EknThematicModule {
-    background-color: #d3d7cf;
+EknScrollingTemplate .suggested-categories {
+    background-color: #e7ecee;
 }
 
-.thumb-card {
-    background-color: white;
+EknScrollingTemplate:not(.overshoot):not(.undershoot),
+EknSearchModule {
+    background-color: #d3d7da; /* FIXME: faulty spec from design */
 }
 
-.thumb-card .title {
-    font-size: 24px;
-}
-
-.thumb-card .card-synopsis {
-    font-size: 14px;
-}
-
-.thumb-card .title, .thumb-card .card-synopsis {
-    color: black;
+.text-card:hover .title {
+    color: #49bde3;
 }
 
 .thumb-card.width-a .title,
@@ -84,12 +78,10 @@ EknThematicModule {
     font-size: 1.2em;
 }
 
-.post-card .card-synopsis {
-    font-size: 0.6em;
-}
-
-.post-card .title, .post-card .card-synopsis {
-    color: white;
+.thumb-card,
+.search-result-card {
+    background-color: white;
+    box-shadow: 0 0 5px alpha(black, 0.25);
 }
 
 .post-card.article .shadow-frame {
@@ -105,21 +97,21 @@ EknThematicModule {
 }
 
 .post-card.set .shadow-frame {
-    background-color: white;
+    padding: 20px 0px 20px 0px;
+    background-color: alpha(white, 0.949);
 }
 
 .post-card.set .title {
-    color: #044A80;
+    font-weight: 200;
 }
 
-.search-result-card {
-    background-color: white;
+.search-result-card .card-synopsis {
     color: black;
 }
 
-.search-result-card .title,
-.search-result-card .card-synopsis {
-    padding-left: 8px;
+.results-message-title,
+.results-message.subtitle {
+    color: black;
 }
 
 EknSideMenuTemplate .context-bar {
@@ -134,11 +126,15 @@ EknSideMenuTemplate .menu {
     box-shadow: 0px 1px 20px 0px alpha(black, 0.5);
 }
 
-EknSideMenuTemplate .menu .home-button {
-    font-size: 1.2em;
+EknSideMenuTemplate .menu .home-button,
+EknSideMenuTemplate .menu .card .title {
+    font-size: 16px;
     font-family: 'Lato Thin';
-    font-weight: bold;
     color: #044a80;
+}
+
+.home-button {
+    font-weight: bold;
 }
 
 EknSideMenuTemplate .menu .home-button:hover {
@@ -152,7 +148,7 @@ EknSideMenuTemplate .menu .separator {
 
 EknSideMenuTemplate .close-button,
 EknSideMenuTemplate .menu-button {
-    color: #555753;  /* FIXME: no spec from design */
+    color: #cccccc;  /* FIXME: no spec from design */
 }
 
 EknSideMenuTemplate .menu-button {

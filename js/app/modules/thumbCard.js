@@ -39,6 +39,7 @@ const ThumbCard = new Lang.Class({
         this.set_title_label_from_model(this._title_label);
         this.set_thumbnail_frame_from_model(this._thumbnail_frame);
         this.set_label_or_hide(this._synopsis_label, this.model.synopsis);
+        this.set_size_request(Card.MinSize.A, Card.MinSize.A);
 
         Utils.set_hand_cursor_on_widget(this);
     },
@@ -57,17 +58,6 @@ const ThumbCard = new Lang.Class({
         return [thumb_width, thumb_height, text_width, text_height];
     },
 
-    _MINIMAL_SIZE: 100,
-    vfunc_get_preferred_width: function () {
-        let [min, nat] = this.parent();
-        return [this._MINIMAL_SIZE, Math.max(this._MINIMAL_SIZE, nat)];
-    },
-
-    vfunc_get_preferred_height: function () {
-        let [min, nat] = this.parent();
-        return [this._MINIMAL_SIZE, Math.max(this._MINIMAL_SIZE, nat)];
-    },
-
     vfunc_size_allocate: function (alloc) {
         this.parent(alloc);
         let orientation, proportion;
@@ -77,7 +67,7 @@ const ThumbCard = new Lang.Class({
         // will lay themselves out. The proportion refers to
         // the proportion of space to be taken up by the
         // thumbnail image
-        if (alloc.width > alloc.height) {
+        if (this._should_go_horizontal(alloc.width, alloc.height)) {
             this._title_label.halign = this._synopsis_label.halign = Gtk.Align.START;
             orientation = Gtk.Orientation.HORIZONTAL;
             proportion = 1/2;
@@ -103,8 +93,24 @@ const ThumbCard = new Lang.Class({
             height: text_h,
         });
 
+        if (this._should_show_synopsis(alloc.width, alloc.height))
+            this.set_label_or_hide(this._synopsis_label, this.model.synopsis);
+        else
+            this._synopsis_label.hide();
+
         this._thumbnail_frame.size_allocate(thumb_alloc);
         this._content_frame.size_allocate(text_alloc);
         this.update_card_sizing_classes(alloc.height, alloc.width);
+    },
+
+    _should_go_horizontal: function (width, height) {
+        return (width > Card.MaxSize.C && height < Card.MinSize.C) ||
+            (width > Card.MaxSize.D && height < Card.MinSize.D) ||
+            (width > Card.MaxSize.E && height < Card.MinSize.E) ||
+            (width > Card.MaxSize.F);
+    },
+
+    _should_show_synopsis: function (width, height) {
+        return height > Card.MaxSize.C && this._should_go_horizontal(width, height);
     },
 });
