@@ -9,6 +9,7 @@ const Lang = imports.lang;
 const Utils = imports.tests.utils;
 Utils.register_gresource();
 const ArticleObjectModel = imports.search.articleObjectModel;
+const SetObjectModel = imports.search.setObjectModel;
 const Engine = imports.search.engine;
 const MediaObjectModel = imports.search.mediaObjectModel;
 const PostCard = imports.app.modules.postCard;
@@ -105,6 +106,8 @@ const TestApplication = new Lang.Class ({
         let create_cards = (CardType, orientation) => {
             let grid = new Gtk.Grid({
                 orientation: orientation,
+                column_homogeneous: true,
+                row_homogeneous: true,
             });
             models.map((json) => {
                 engine.get_object_by_id_finish = function () {
