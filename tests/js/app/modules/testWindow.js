@@ -13,6 +13,7 @@ const Minimal = imports.tests.minimal;
 const MockDispatcher = imports.tests.mockDispatcher;
 const MockFactory = imports.tests.mockFactory;
 const MockWidgets = imports.tests.mockWidgets;
+const SearchBox = imports.app.modules.searchBox;
 const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 const Window = imports.app.modules.window;
 
@@ -59,6 +60,7 @@ describe('Window', function () {
         factory.add_named_mock('lightbox', Minimal.MinimalLightbox);
         factory.add_named_mock('navigation', Minimal.MinimalNavigation);
         factory.add_named_mock('brand-screen', Minimal.MinimalPage);
+        factory.add_named_mock('real-search-box', SearchBox.SearchBox);
         factory.add_named_mock('window', Window.Window, {
             'brand-screen': null,
             'home-page': 'home-page',
@@ -73,7 +75,7 @@ describe('Window', function () {
             'brand-screen': 'brand-screen',
             'home-page': 'home-page',
             'section-page': 'section-page',
-            'search-page': 'search-page',
+            'search-page': 'real-search-box',
             'article-page': 'article-page',
             'navigation': null,
             'lightbox': null,
@@ -207,6 +209,24 @@ describe('Window', function () {
         it('still packs the pages even without a lightbox and navigation module', function () {
             let home_page = factory.get_created_named_mocks('home-page')[0];
             expect(view).toHaveDescendant(home_page);
+        });
+
+        it('shows the top bar search box on a page that has no search box', function () {
+            dispatcher.dispatch({
+                action_type: Actions.SHOW_HOME_PAGE,
+            });
+            Utils.update_gui();
+            let search = factory.get_created_named_mocks('top-bar-search')[0];
+            expect(search.visible).toBeTruthy();
+        });
+
+        it('hides the top bar search on a page that has a search box', function () {
+            dispatcher.dispatch({
+                action_type: Actions.SHOW_SEARCH_PAGE,
+            });
+            Utils.update_gui();
+            let search = factory.get_created_named_mocks('top-bar-search')[0];
+            expect(search.visible).toBeFalsy();
         });
     });
 });
