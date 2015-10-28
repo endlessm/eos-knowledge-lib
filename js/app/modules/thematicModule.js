@@ -59,7 +59,7 @@ const ThematicModule = new Lang.Class({
 
         Dispatcher.get_default().register((payload) => {
             switch (payload.action_type) {
-                case Actions.SET_CLICKED:
+                case Actions.SHOW_SET:
                     this._show_set(payload.model);
                     break;
                 case Actions.CLEAR_SETS:
