@@ -10,14 +10,18 @@
 
 EknHighlightsModule .text-card .title.label,
 EknThematicModule .text-card .title.label,
-.browse-categories-title {
+.browse-categories .title {
     font-weight: 200;
     font-size: 22px;
-    border-bottom: solid 1px gray;
+    border-bottom: solid 1px #cccccc;
 }
 
-.browse-categories-title {
+.browse-categories .title {
     color: #999999;
+}
+
+.browse-categories {
+    padding: 20px 50px;
 }
 
 EknScrollingTemplate .suggested-categories {
