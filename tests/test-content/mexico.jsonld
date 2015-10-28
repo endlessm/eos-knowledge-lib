@@ -1,709 +1,486 @@
 {
-    "@context": "ekn://_context/ArticleObject",
-    "@id": "file:///mexico.html",
-    "@type": "ekv:ArticleObject",
-    "lastModifiedDate": "2014-09-28T22:42:55",
-    "license": "Creative Commons",
-    "originalTitle": "M\u00e9xico",
-    "articleBody": "<html>'Mexico is noice'-joel</html>",
-    "references": [
-        "<li id=\"ficha_nota-2\"><a href=\"#ficha_ref-2\">&#8593;</a> Art&#237;culo 4.&#176; de la <a href=\"/wiki/Ley_General_de_Derechos_Ling%C3%BC%C3%ADsticos_de_los_Pueblos_Ind%C3%ADgenas\" title=\"Ley General de Derechos Ling&#252;&#237;sticos de los Pueblos Ind&#237;genas\">Ley General de Derechos Ling&#252;&#237;sticos de los Pueblos Ind&#237;genas</a>.<br/></li>\n",
-        "<li id=\"ficha_nota-3\"><a href=\"#ficha_ref-3\">&#8593;</a> Fuente: <a href=\"/wiki/Conapo\" title=\"Conapo\" class=\"mw-redirect\">Conapo</a>  <br/></li>\n",
-        "<li id=\"ficha_nota-4\"><a href=\"#ficha_ref-4\">&#8593;</a> <a href=\"/wiki/Fondo_Monetario_Internacional\" title=\"Fondo Monetario Internacional\">Fondo Monetario Internacional</a>  <br/></li>\n"
+    "contentURL": "26ab35bbee4f6a36a628fd59171b7bcd7072a302.html",
+    "originalURI": "https://en.wikipedia.org/wiki/Mexico",
+    "contentType": "text/html",
+    "license": "CC-BY-SA 3.0",
+    "sourceURI": "https://en.wikipedia.org/wiki/Mexico",
+    "title": "Mexico",
+    "sourceName": "Wikipedia",
+    "lastModifiedDate": "2015-06-16T14:31:06",
+    "tags": [
+        "States and territories established in 1813",
+        "Romance countries and territories",
+        "G15 nations",
+        "Mexico",
+        "G20 nations",
+        "Member states of the United Nations",
+        "Former Spanish colonies",
+        "Liberal democracies",
+        "Federal constitutional republics",
+        "EknArticleObject"
     ],
-    "resources": [],
-    "sourceURI": "http://es.wikipedia.org/wiki/M%C3%A9xico",
-    "synopsis": "M\u00e9xico ( [\u02c8mexiko]), oficialmente llamado Estados Unidos Mexicanos, es un pa\u00eds situado en la parte meridional de Am\u00e9rica del Norte. Limita al norte con los Estados Unidos de Am\u00e9rica, al sureste con Belice y Guatemala, al oeste con el oc\u00e9ano Pac\u00edfico y al este con el golfo de M\u00e9xico y el mar Caribe. Es el d\u00e9cimo cuarto pa\u00eds m\u00e1s extenso del mundo, con una superficie cercana a los 2 millones de km\u00b2. Es el und\u00e9cimo pa\u00eds m\u00e1s poblado del mundo, con una poblaci\u00f3n que a mediados de 2013 ronda los 118 millones de personas,   la mayor\u00eda de las cuales tienen como lengua materna el espa\u00f1ol, al que el estado reconoce como lengua nacional junto a 67 lenguas ind\u00edgenas propias de la naci\u00f3n.",
+    "rank": 3,
+    "@type": "ekn://_vocab/ArticleObject",
+    "originalTitle": "Mexico",
+    "source": "wikipedia",
+    "synopsis": "Mexico (i/ˈmɛksɨkoʊ/; Spanish: México [ˈmexiko] ( listen)), officially the United Mexican States (Spanish:  Estados Unidos Mexicanos (help·info)), is a federal republic in North America. It is bordered on the north by the United States; on the south and west by the Pacific Ocean; on the southeast by Guatemala, Belize, and the Caribbean Sea; and on the east by the Gulf of Mexico. Covering almost two million square kilometres (over 760,000 sq mi), Mexico is the fifth largest country in the Americas by total area and the 13th largest independent nation in the world. With an estimated population of over 113 million, it is the eleventh most populous and the most populous Spanish-speaking country in the world and the second most populous country in Latin America. Mexico is a federation comprising thirty-one states and a Federal District, its capital and largest city.",
     "tableOfContents": [
         {
-            "@id": "_:216789356",
-            "hasContent": "#Toponimia",
             "hasIndex": 0,
+            "hasLabel": "Etymology",
             "hasIndexLabel": "1",
-            "hasLabel": "Toponimia"
+            "@id": "_:1473008172",
+            "hasContent": "#Etymology"
         },
         {
-            "@id": "_:1462366156",
-            "hasContent": "#.C3.89poca_precolombina",
+            "hasParent": "_:1580289292",
+            "hasContent": "#Post-classic_period_.28700.E2.80.931519_AD.29",
+            "hasIndexLabel": "2.1.1",
             "hasIndex": 0,
+            "hasLabel": "Post-classic period (700–1519 AD)",
+            "@id": "_:1581955020"
+        },
+        {
+            "hasParent": "_:1580289068",
+            "hasContent": "#Ancient_cultures",
             "hasIndexLabel": "2.1",
-            "hasLabel": "\u00c9poca precolombina",
-            "hasParent": "_:1462363852"
+            "hasIndex": 0,
+            "hasLabel": "Ancient cultures",
+            "@id": "_:1580289292"
         },
         {
-            "@id": "_:212506860",
-            "hasContent": "#Conquista_espa.C3.B1ola",
-            "hasIndex": 1,
+            "hasParent": "_:1580289068",
+            "hasContent": "#Spanish_conquest_.281519.29",
             "hasIndexLabel": "2.2",
-            "hasLabel": "Conquista espa\u00f1ola",
-            "hasParent": "_:1462363852"
+            "hasIndex": 1,
+            "hasLabel": "Spanish conquest (1519)",
+            "@id": "_:1588258188"
         },
         {
-            "@id": "_:212532428",
-            "hasContent": "#.C3.89poca_virreinal",
+            "hasParent": "_:1588257612",
+            "hasContent": "#Period_of_the_conquest_.281521.E2.80.931650.29",
+            "hasIndexLabel": "2.3.1",
+            "hasIndex": 0,
+            "hasLabel": "Period of the conquest (1521–1650)",
+            "@id": "_:1588259436"
+        },
+        {
+            "hasParent": "_:1588257612",
+            "hasContent": "#The_colonial_period_.281650.E2.80.931821.29",
+            "hasIndexLabel": "2.3.2",
+            "hasIndex": 1,
+            "hasLabel": "The colonial period (1650–1821)",
+            "@id": "_:1588258828"
+        },
+        {
+            "hasParent": "_:1588257612",
+            "hasContent": "#Independence_from_Spain_.281821.29",
+            "hasIndexLabel": "2.3.3",
             "hasIndex": 2,
+            "hasLabel": "Independence from Spain (1821)",
+            "@id": "_:1465782860"
+        },
+        {
+            "hasParent": "_:1580289068",
+            "hasContent": "#Colonial_period_.281519.E2.80.931821.29",
             "hasIndexLabel": "2.3",
-            "hasLabel": "\u00c9poca virreinal",
-            "hasParent": "_:1462363852"
+            "hasIndex": 2,
+            "hasLabel": "Colonial period (1519–1821)",
+            "@id": "_:1588257612"
         },
         {
-            "@id": "_:1461938636",
-            "hasContent": "#Independencia",
+            "hasParent": "_:1516227404",
+            "hasContent": "#Territorial_losses_and_Ju.C3.A1rez_reforms_.281821-1876.29",
+            "hasIndexLabel": "2.4.1",
+            "hasIndex": 0,
+            "hasLabel": "Territorial losses and Juárez reforms (1821-1876)",
+            "@id": "_:1474313260"
+        },
+        {
+            "hasParent": "_:1516227404",
+            "hasContent": "#Porfiriato_.281876.E2.80.931910.29",
+            "hasIndexLabel": "2.4.2",
+            "hasIndex": 1,
+            "hasLabel": "Porfiriato (1876–1910)",
+            "@id": "_:1474453388"
+        },
+        {
+            "hasParent": "_:1516227404",
+            "hasContent": "#Mexican_Revolution_.281910.E2.80.931929.29",
+            "hasIndexLabel": "2.4.3",
+            "hasIndex": 2,
+            "hasLabel": "Mexican Revolution (1910–1929)",
+            "@id": "_:1473014924"
+        },
+        {
+            "hasParent": "_:1516227404",
+            "hasContent": "#One-party_rule_.281929.E2.80.932000.29",
+            "hasIndexLabel": "2.4.4",
             "hasIndex": 3,
+            "hasLabel": "One-party rule (1929–2000)",
+            "@id": "_:1588050252"
+        },
+        {
+            "hasParent": "_:1516227404",
+            "hasContent": "#End_of_one-party_rule_.282000.E2.80.93.29",
+            "hasIndexLabel": "2.4.5",
+            "hasIndex": 4,
+            "hasLabel": "End of one-party rule (2000–)",
+            "@id": "_:1588049452"
+        },
+        {
+            "hasParent": "_:1580289068",
+            "hasContent": "#Birth_of_Mexico_.281821.29",
             "hasIndexLabel": "2.4",
-            "hasLabel": "Independencia",
-            "hasParent": "_:1462363852"
+            "hasIndex": 3,
+            "hasLabel": "Birth of Mexico (1821)",
+            "@id": "_:1516227404"
         },
         {
-            "@id": "_:1461940140",
-            "hasContent": "#Siglo_XIX",
-            "hasIndex": 4,
-            "hasIndexLabel": "2.5",
-            "hasLabel": "Siglo XIX",
-            "hasParent": "_:1462363852"
-        },
-        {
-            "@id": "_:1461937964",
-            "hasContent": "#Revoluci.C3.B3n_Mexicana",
-            "hasIndex": 5,
-            "hasIndexLabel": "2.6",
-            "hasLabel": "Revoluci\u00f3n Mexicana",
-            "hasParent": "_:1462363852"
-        },
-        {
-            "@id": "_:1461936716",
-            "hasContent": "#M.C3.A9xico_contempor.C3.A1neo",
-            "hasIndex": 6,
-            "hasIndexLabel": "2.7",
-            "hasLabel": "M\u00e9xico contempor\u00e1neo",
-            "hasParent": "_:1462363852"
-        },
-        {
-            "@id": "_:1462363852",
-            "hasContent": "#Historia",
             "hasIndex": 1,
+            "hasLabel": "History",
             "hasIndexLabel": "2",
-            "hasLabel": "Historia"
+            "@id": "_:1580289068",
+            "hasContent": "#History"
         },
         {
-            "@id": "_:216476844",
-            "hasContent": "#Gobierno_federal",
-            "hasIndex": 0,
-            "hasIndexLabel": "3.1.1",
-            "hasLabel": "Gobierno federal",
-            "hasParent": "_:216474060"
-        },
-        {
-            "@id": "_:216474828",
-            "hasContent": "#Gobiernos_de_las_entidades_federativas",
-            "hasIndex": 1,
-            "hasIndexLabel": "3.1.2",
-            "hasLabel": "Gobiernos de las entidades federativas",
-            "hasParent": "_:216474060"
-        },
-        {
-            "@id": "_:216474060",
-            "hasContent": "#Gobierno_y_administraci.C3.B3n",
-            "hasIndex": 0,
+            "hasParent": "_:1580525996",
+            "hasContent": "#Climate",
             "hasIndexLabel": "3.1",
-            "hasLabel": "Gobierno y administraci\u00f3n",
-            "hasParent": "_:1461938412"
+            "hasIndex": 0,
+            "hasLabel": "Climate",
+            "@id": "_:1588258444"
         },
         {
-            "@id": "_:216476716",
-            "hasContent": "#Organizaci.C3.B3n_territorial",
-            "hasIndex": 1,
+            "hasParent": "_:1580525996",
+            "hasContent": "#Biodiversity",
             "hasIndexLabel": "3.2",
-            "hasLabel": "Organizaci\u00f3n territorial",
-            "hasParent": "_:1461938412"
+            "hasIndex": 1,
+            "hasLabel": "Biodiversity",
+            "@id": "_:1588258412"
         },
         {
-            "@id": "_:216473804",
-            "hasContent": "#Pol.C3.ADtica",
             "hasIndex": 2,
-            "hasIndexLabel": "3.3",
-            "hasLabel": "Pol\u00edtica",
-            "hasParent": "_:1461938412"
-        },
-        {
-            "@id": "_:212507532",
-            "hasContent": "#Relaciones_exteriores",
-            "hasIndex": 3,
-            "hasIndexLabel": "3.4",
-            "hasLabel": "Relaciones exteriores",
-            "hasParent": "_:1461938412"
-        },
-        {
-            "@id": "_:1462025612",
-            "hasContent": "#Presupuesto_de_las_Fuerzas_Armadas",
-            "hasIndex": 0,
-            "hasIndexLabel": "3.5.1",
-            "hasLabel": "Presupuesto de las Fuerzas Armadas",
-            "hasParent": "_:216476972"
-        },
-        {
-            "@id": "_:216476972",
-            "hasContent": "#Fuerzas_Armadas",
-            "hasIndex": 4,
-            "hasIndexLabel": "3.5",
-            "hasLabel": "Fuerzas Armadas",
-            "hasParent": "_:1461938412"
-        },
-        {
-            "@id": "_:216473964",
-            "hasContent": "#Derechos_humanos",
-            "hasIndex": 5,
-            "hasIndexLabel": "3.6",
-            "hasLabel": "Derechos humanos",
-            "hasParent": "_:1461938412"
-        },
-        {
-            "@id": "_:1461938412",
-            "hasContent": "#Estado",
-            "hasIndex": 2,
+            "hasLabel": "Geography",
             "hasIndexLabel": "3",
-            "hasLabel": "Estado"
+            "@id": "_:1580525996",
+            "hasContent": "#Geography"
         },
         {
-            "@id": "_:216474124",
-            "hasContent": "#Relieve",
-            "hasIndex": 0,
+            "hasParent": "_:1588258028",
+            "hasContent": "#Government",
             "hasIndexLabel": "4.1",
-            "hasLabel": "Relieve",
-            "hasParent": "_:216475884"
+            "hasIndex": 0,
+            "hasLabel": "Government",
+            "@id": "_:1575658988"
         },
         {
-            "@id": "_:216476204",
-            "hasContent": "#Clima",
-            "hasIndex": 1,
+            "hasParent": "_:1588258028",
+            "hasContent": "#Politics",
             "hasIndexLabel": "4.2",
-            "hasLabel": "Clima",
-            "hasParent": "_:216475884"
+            "hasIndex": 1,
+            "hasLabel": "Politics",
+            "@id": "_:1575659884"
         },
         {
-            "@id": "_:216476876",
-            "hasContent": "#Hidrograf.C3.ADa",
-            "hasIndex": 2,
+            "hasParent": "_:1575657708",
+            "hasContent": "#Crime",
+            "hasIndexLabel": "4.3.1",
+            "hasIndex": 0,
+            "hasLabel": "Crime",
+            "@id": "_:1575660300"
+        },
+        {
+            "hasParent": "_:1588258028",
+            "hasContent": "#Law_enforcement",
             "hasIndexLabel": "4.3",
-            "hasLabel": "Hidrograf\u00eda",
-            "hasParent": "_:216475884"
+            "hasIndex": 2,
+            "hasLabel": "Law enforcement",
+            "@id": "_:1575657708"
         },
         {
-            "@id": "_:216476396",
-            "hasContent": "#Biodiversidad",
-            "hasIndex": 3,
+            "hasParent": "_:1588258028",
+            "hasContent": "#Foreign_relations",
             "hasIndexLabel": "4.4",
-            "hasLabel": "Biodiversidad",
-            "hasParent": "_:216475884"
+            "hasIndex": 3,
+            "hasLabel": "Foreign relations",
+            "@id": "_:1580703308"
         },
         {
-            "@id": "_:216475884",
-            "hasContent": "#Geograf.C3.ADa",
+            "hasParent": "_:1588258028",
+            "hasContent": "#Military",
+            "hasIndexLabel": "4.5",
+            "hasIndex": 4,
+            "hasLabel": "Military",
+            "@id": "_:1575659820"
+        },
+        {
+            "hasParent": "_:1588258028",
+            "hasContent": "#Administrative_divisions",
+            "hasIndexLabel": "4.6",
+            "hasIndex": 5,
+            "hasLabel": "Administrative divisions",
+            "@id": "_:1580703276"
+        },
+        {
             "hasIndex": 3,
+            "hasLabel": "Government and politics",
             "hasIndexLabel": "4",
-            "hasLabel": "Geograf\u00eda"
+            "@id": "_:1588258028",
+            "hasContent": "#Government_and_politics"
         },
         {
-            "@id": "_:216475692",
-            "hasContent": "#Historia_econ.C3.B3mica",
-            "hasIndex": 0,
+            "hasParent": "_:1580700332",
+            "hasContent": "#Communications",
             "hasIndexLabel": "5.1",
-            "hasLabel": "Historia econ\u00f3mica",
-            "hasParent": "_:216473900"
+            "hasIndex": 0,
+            "hasLabel": "Communications",
+            "@id": "_:1580702284"
         },
         {
-            "@id": "_:216477036",
-            "hasContent": "#Indicadores_de_la_econom.C3.ADa_mexicana",
-            "hasIndex": 1,
+            "hasParent": "_:1580700332",
+            "hasContent": "#Energy",
             "hasIndexLabel": "5.2",
-            "hasLabel": "Indicadores de la econom\u00eda mexicana",
-            "hasParent": "_:216473900"
+            "hasIndex": 1,
+            "hasLabel": "Energy",
+            "@id": "_:1580701452"
         },
         {
-            "@id": "_:216477292",
-            "hasContent": "#Petr.C3.B3leo",
-            "hasIndex": 2,
+            "hasParent": "_:1580700332",
+            "hasContent": "#Science_and_technology",
             "hasIndexLabel": "5.3",
-            "hasLabel": "Petr\u00f3leo",
-            "hasParent": "_:216473900"
+            "hasIndex": 2,
+            "hasLabel": "Science and technology",
+            "@id": "_:1580700972"
         },
         {
-            "@id": "_:216475116",
-            "hasContent": "#Turismo",
-            "hasIndex": 3,
+            "hasParent": "_:1580700332",
+            "hasContent": "#Tourism",
             "hasIndexLabel": "5.4",
-            "hasLabel": "Turismo",
-            "hasParent": "_:216473900"
+            "hasIndex": 3,
+            "hasLabel": "Tourism",
+            "@id": "_:1580703436"
         },
         {
-            "@id": "_:216473900",
-            "hasContent": "#Econom.C3.ADa",
+            "hasParent": "_:1580700332",
+            "hasContent": "#Transportation",
+            "hasIndexLabel": "5.5",
             "hasIndex": 4,
+            "hasLabel": "Transportation",
+            "@id": "_:1580703180"
+        },
+        {
+            "hasIndex": 4,
+            "hasLabel": "Economy",
             "hasIndexLabel": "5",
-            "hasLabel": "Econom\u00eda"
+            "@id": "_:1580700332",
+            "hasContent": "#Economy"
         },
         {
-            "@id": "_:216474796",
-            "hasContent": "#Energ.C3.ADa",
-            "hasIndex": 0,
+            "hasParent": "_:1580701004",
+            "hasContent": "#Mestizo",
             "hasIndexLabel": "6.1",
-            "hasLabel": "Energ\u00eda",
-            "hasParent": "_:216475372"
+            "hasIndex": 0,
+            "hasLabel": "Mestizo",
+            "@id": "_:1580700812"
         },
         {
-            "@id": "_:216475500",
-            "hasContent": "#Presas",
-            "hasIndex": 1,
+            "hasParent": "_:1580701004",
+            "hasContent": "#Indigenous_peoples",
             "hasIndexLabel": "6.2",
-            "hasLabel": "Presas",
-            "hasParent": "_:216475372"
+            "hasIndex": 1,
+            "hasLabel": "Indigenous peoples",
+            "@id": "_:1580700684"
         },
         {
-            "@id": "_:216473932",
-            "hasContent": "#Petroqu.C3.ADmica",
-            "hasIndex": 2,
+            "hasParent": "_:1580701004",
+            "hasContent": "#Mexicans_of_European_descent",
             "hasIndexLabel": "6.3",
-            "hasLabel": "Petroqu\u00edmica",
-            "hasParent": "_:216475372"
+            "hasIndex": 2,
+            "hasLabel": "Mexicans of European descent",
+            "@id": "_:1580702508"
         },
         {
-            "@id": "_:210240460",
-            "hasContent": "#Transportes",
-            "hasIndex": 3,
+            "hasParent": "_:1580701004",
+            "hasContent": "#Population_genetics",
             "hasIndexLabel": "6.4",
-            "hasLabel": "Transportes",
-            "hasParent": "_:216475372"
+            "hasIndex": 3,
+            "hasLabel": "Population genetics",
+            "@id": "_:1580700716"
         },
         {
-            "@id": "_:210242764",
-            "hasContent": "#Comunicaciones",
-            "hasIndex": 4,
+            "hasParent": "_:1580701004",
+            "hasContent": "#Languages",
             "hasIndexLabel": "6.5",
-            "hasLabel": "Comunicaciones",
-            "hasParent": "_:216475372"
+            "hasIndex": 4,
+            "hasLabel": "Languages",
+            "@id": "_:1580700844"
         },
         {
-            "@id": "_:210241964",
-            "hasContent": "#Medios_de_difusi.C3.B3n",
-            "hasIndex": 5,
+            "hasParent": "_:1580701004",
+            "hasContent": "#Urban_areas",
             "hasIndexLabel": "6.6",
-            "hasLabel": "Medios de difusi\u00f3n",
-            "hasParent": "_:216475372"
+            "hasIndex": 5,
+            "hasLabel": "Urban areas",
+            "@id": "_:1580699852"
         },
         {
-            "@id": "_:1462362156",
-            "hasContent": "#Peri.C3.B3dicos",
-            "hasIndex": 0,
-            "hasIndexLabel": "6.7.1",
-            "hasLabel": "Peri\u00f3dicos",
-            "hasParent": "_:1462363596"
-        },
-        {
-            "@id": "_:212506092",
-            "hasContent": "#Cadenas_de_televisi.C3.B3n",
-            "hasIndex": 1,
-            "hasIndexLabel": "6.7.2",
-            "hasLabel": "Cadenas de televisi\u00f3n",
-            "hasParent": "_:1462363596"
-        },
-        {
-            "@id": "_:216954060",
-            "hasContent": "#Cadenas_de_radio",
-            "hasIndex": 2,
-            "hasIndexLabel": "6.7.3",
-            "hasLabel": "Cadenas de radio",
-            "hasParent": "_:1462363596"
-        },
-        {
-            "@id": "_:1462365900",
-            "hasContent": "#Telefon.C3.ADa_m.C3.B3vil",
-            "hasIndex": 3,
-            "hasIndexLabel": "6.7.4",
-            "hasLabel": "Telefon\u00eda m\u00f3vil",
-            "hasParent": "_:1462363596"
-        },
-        {
-            "@id": "_:1462363596",
-            "hasContent": "#Medios_de_comunicaci.C3.B3n",
-            "hasIndex": 6,
+            "hasParent": "_:1580701004",
+            "hasContent": "#Religion",
             "hasIndexLabel": "6.7",
-            "hasLabel": "Medios de comunicaci\u00f3n",
-            "hasParent": "_:216475372"
+            "hasIndex": 6,
+            "hasLabel": "Religion",
+            "@id": "_:1580700300"
         },
         {
-            "@id": "_:212519500",
-            "hasContent": "#Agua_potable_y_saneamiento",
-            "hasIndex": 7,
+            "hasParent": "_:1580701004",
+            "hasContent": "#Women",
             "hasIndexLabel": "6.8",
-            "hasLabel": "Agua potable y saneamiento",
-            "hasParent": "_:216475372"
+            "hasIndex": 7,
+            "hasLabel": "Women",
+            "@id": "_:1581888172"
         },
         {
-            "@id": "_:216475372",
-            "hasContent": "#Infraestructura",
             "hasIndex": 5,
+            "hasLabel": "Demographics",
             "hasIndexLabel": "6",
-            "hasLabel": "Infraestructura"
+            "@id": "_:1580701004",
+            "hasContent": "#Demographics"
         },
         {
-            "@id": "_:210240780",
-            "hasContent": "#Zonas_metropolitanas",
-            "hasIndex": 0,
+            "hasParent": "_:1581890764",
+            "hasContent": "#Literature",
             "hasIndexLabel": "7.1",
-            "hasLabel": "Zonas metropolitanas",
-            "hasParent": "_:1446115020"
+            "hasIndex": 0,
+            "hasLabel": "Literature",
+            "@id": "_:1581888716"
         },
         {
-            "@id": "_:210240716",
-            "hasContent": "#Municipios_y_delegaciones_m.C3.A1s_poblados",
-            "hasIndex": 1,
+            "hasParent": "_:1581890764",
+            "hasContent": "#Visual_arts",
             "hasIndexLabel": "7.2",
-            "hasLabel": "Municipios y delegaciones m\u00e1s poblados",
-            "hasParent": "_:1446115020"
+            "hasIndex": 1,
+            "hasLabel": "Visual arts",
+            "@id": "_:1581887756"
         },
         {
-            "@id": "_:210242796",
-            "hasContent": "#Inmigraci.C3.B3n_en_M.C3.A9xico",
-            "hasIndex": 0,
-            "hasIndexLabel": "7.3.1",
-            "hasLabel": "Inmigraci\u00f3n en M\u00e9xico",
-            "hasParent": "_:210240524"
-        },
-        {
-            "@id": "_:210240524",
-            "hasContent": "#Grupos_.C3.A9tnicos",
-            "hasIndex": 2,
+            "hasParent": "_:1581890764",
+            "hasContent": "#Cinema",
             "hasIndexLabel": "7.3",
-            "hasLabel": "Grupos \u00e9tnicos",
-            "hasParent": "_:1446115020"
+            "hasIndex": 2,
+            "hasLabel": "Cinema",
+            "@id": "_:1581887628"
         },
         {
-            "@id": "_:210239532",
-            "hasContent": "#Creencias_y_religiones",
-            "hasIndex": 3,
+            "hasParent": "_:1581890764",
+            "hasContent": "#Media",
             "hasIndexLabel": "7.4",
-            "hasLabel": "Creencias y religiones",
-            "hasParent": "_:1446115020"
-        },
-        {
-            "@id": "_:210242124",
-            "hasContent": "#Lenguas_nacionales",
-            "hasIndex": 0,
-            "hasIndexLabel": "7.5.1",
-            "hasLabel": "Lenguas nacionales",
-            "hasParent": "_:210242636"
-        },
-        {
-            "@id": "_:210241484",
-            "hasContent": "#Lenguas_al.C3.B3ctonas",
-            "hasIndex": 1,
-            "hasIndexLabel": "7.5.2",
-            "hasLabel": "Lenguas al\u00f3ctonas",
-            "hasParent": "_:210242636"
-        },
-        {
-            "@id": "_:210240236",
-            "hasContent": "#Lenguaje_de_se.C3.B1as",
-            "hasIndex": 2,
-            "hasIndexLabel": "7.5.3",
-            "hasLabel": "Lenguaje de se\u00f1as",
-            "hasParent": "_:210242636"
-        },
-        {
-            "@id": "_:210241932",
-            "hasContent": "#Braille_espa.C3.B1ol",
             "hasIndex": 3,
-            "hasIndexLabel": "7.5.4",
-            "hasLabel": "Braille espa\u00f1ol",
-            "hasParent": "_:210242636"
+            "hasLabel": "Media",
+            "@id": "_:1581888780"
         },
         {
-            "@id": "_:210242636",
-            "hasContent": "#Lenguas",
-            "hasIndex": 4,
+            "hasParent": "_:1581890764",
+            "hasContent": "#Music",
             "hasIndexLabel": "7.5",
-            "hasLabel": "Lenguas",
-            "hasParent": "_:1446115020"
+            "hasIndex": 4,
+            "hasLabel": "Music",
+            "@id": "_:1581889228"
         },
         {
-            "@id": "_:1446115020",
-            "hasContent": "#Demograf.C3.ADa",
+            "hasParent": "_:1581890764",
+            "hasContent": "#Cuisine",
+            "hasIndexLabel": "7.6",
+            "hasIndex": 5,
+            "hasLabel": "Cuisine",
+            "@id": "_:1581889324"
+        },
+        {
+            "hasParent": "_:1581890764",
+            "hasContent": "#Sports",
+            "hasIndexLabel": "7.7",
             "hasIndex": 6,
+            "hasLabel": "Sports",
+            "@id": "_:1581891180"
+        },
+        {
+            "hasIndex": 6,
+            "hasLabel": "Culture",
             "hasIndexLabel": "7",
-            "hasLabel": "Demograf\u00eda"
+            "@id": "_:1581890764",
+            "hasContent": "#Culture"
         },
         {
-            "@id": "_:1446114828",
-            "hasContent": "#Educaci.C3.B3n",
             "hasIndex": 7,
+            "hasLabel": "Health",
             "hasIndexLabel": "8",
-            "hasLabel": "Educaci\u00f3n"
+            "@id": "_:1581889996",
+            "hasContent": "#Health"
         },
         {
-            "@id": "_:1540979276",
-            "hasContent": "#Lo_mexicano",
-            "hasIndex": 0,
-            "hasIndexLabel": "9.1",
-            "hasLabel": "Lo mexicano",
-            "hasParent": "_:210241196"
-        },
-        {
-            "@id": "_:1462361772",
-            "hasContent": "#.C3.93pera",
-            "hasIndex": 0,
-            "hasIndexLabel": "9.2.1.1",
-            "hasLabel": "\u00d3pera",
-            "hasParent": "_:212508012"
-        },
-        {
-            "@id": "_:212508012",
-            "hasContent": "#M.C3.BAsica_acad.C3.A9mica",
-            "hasIndex": 0,
-            "hasIndexLabel": "9.2.1",
-            "hasLabel": "M\u00fasica acad\u00e9mica",
-            "hasParent": "_:1461943500"
-        },
-        {
-            "@id": "_:212506444",
-            "hasContent": "#M.C3.BAsica_instrumental_y_jazz",
-            "hasIndex": 1,
-            "hasIndexLabel": "9.2.2",
-            "hasLabel": "M\u00fasica instrumental y jazz",
-            "hasParent": "_:1461943500"
-        },
-        {
-            "@id": "_:212519724",
-            "hasContent": "#M.C3.BAsica_popular_y_folcl.C3.B3rica",
-            "hasIndex": 2,
-            "hasIndexLabel": "9.2.3",
-            "hasLabel": "M\u00fasica popular y folcl\u00f3rica",
-            "hasParent": "_:1461943500"
-        },
-        {
-            "@id": "_:1461941100",
-            "hasContent": "#M.C3.BAsica_popular_contempor.C3.A1nea",
-            "hasIndex": 3,
-            "hasIndexLabel": "9.2.4",
-            "hasLabel": "M\u00fasica popular contempor\u00e1nea",
-            "hasParent": "_:1461943500"
-        },
-        {
-            "@id": "_:1461943500",
-            "hasContent": "#M.C3.BAsica",
-            "hasIndex": 1,
-            "hasIndexLabel": "9.2",
-            "hasLabel": "M\u00fasica",
-            "hasParent": "_:210241196"
-        },
-        {
-            "@id": "_:216474188",
-            "hasContent": "#Danza",
-            "hasIndex": 2,
-            "hasIndexLabel": "9.3",
-            "hasLabel": "Danza",
-            "hasParent": "_:210241196"
-        },
-        {
-            "@id": "_:212529932",
-            "hasContent": "#Literatura",
-            "hasIndex": 3,
-            "hasIndexLabel": "9.4",
-            "hasLabel": "Literatura",
-            "hasParent": "_:210241196"
-        },
-        {
-            "@id": "_:212529484",
-            "hasContent": "#Pintura",
-            "hasIndex": 4,
-            "hasIndexLabel": "9.5",
-            "hasLabel": "Pintura",
-            "hasParent": "_:210241196"
-        },
-        {
-            "@id": "_:212532492",
-            "hasContent": "#Escultura",
-            "hasIndex": 5,
-            "hasIndexLabel": "9.6",
-            "hasLabel": "Escultura",
-            "hasParent": "_:210241196"
-        },
-        {
-            "@id": "_:1542524620",
-            "hasContent": "#Arquitectura",
-            "hasIndex": 6,
-            "hasIndexLabel": "9.7",
-            "hasLabel": "Arquitectura",
-            "hasParent": "_:210241196"
-        },
-        {
-            "@id": "_:1462366092",
-            "hasContent": "#Cine",
-            "hasIndex": 7,
-            "hasIndexLabel": "9.8",
-            "hasLabel": "Cine",
-            "hasParent": "_:210241196"
-        },
-        {
-            "@id": "_:1461942476",
-            "hasContent": "#Fotograf.C3.ADa",
             "hasIndex": 8,
-            "hasIndexLabel": "9.9",
-            "hasLabel": "Fotograf\u00eda",
-            "hasParent": "_:210241196"
-        },
-        {
-            "@id": "_:1462362828",
-            "hasContent": "#Gastronom.C3.ADa",
-            "hasIndex": 9,
-            "hasIndexLabel": "9.10",
-            "hasLabel": "Gastronom\u00eda",
-            "hasParent": "_:210241196"
-        },
-        {
-            "@id": "_:1461941516",
-            "hasContent": "#Valor_econ.C3.B3mico_de_la_cultura_mexicana",
-            "hasIndex": 10,
-            "hasIndexLabel": "9.11",
-            "hasLabel": "Valor econ\u00f3mico de la cultura mexicana",
-            "hasParent": "_:210241196"
-        },
-        {
-            "@id": "_:216490604",
-            "hasContent": "#Premios_Nobel_mexicanos",
-            "hasIndex": 11,
-            "hasIndexLabel": "9.12",
-            "hasLabel": "Premios Nobel mexicanos",
-            "hasParent": "_:210241196"
-        },
-        {
-            "@id": "_:210240908",
-            "hasContent": "#Zonas_arqueol.C3.B3gicas",
-            "hasIndex": 0,
-            "hasIndexLabel": "9.13.1",
-            "hasLabel": "Zonas arqueol\u00f3gicas",
-            "hasParent": "_:210242156"
-        },
-        {
-            "@id": "_:210242540",
-            "hasContent": "#Monumentos_hist.C3.B3ricos",
-            "hasIndex": 1,
-            "hasIndexLabel": "9.13.2",
-            "hasLabel": "Monumentos hist\u00f3ricos",
-            "hasParent": "_:210242156"
-        },
-        {
-            "@id": "_:210242156",
-            "hasContent": "#Patrimonio_cultural",
-            "hasIndex": 12,
-            "hasIndexLabel": "9.13",
-            "hasLabel": "Patrimonio cultural",
-            "hasParent": "_:210241196"
-        },
-        {
-            "@id": "_:210241100",
-            "hasContent": "#Festividades",
-            "hasIndex": 13,
-            "hasIndexLabel": "9.14",
-            "hasLabel": "Festividades",
-            "hasParent": "_:210241196"
-        },
-        {
-            "@id": "_:210241196",
-            "hasContent": "#Cultura",
-            "hasIndex": 8,
+            "hasLabel": "Education",
             "hasIndexLabel": "9",
-            "hasLabel": "Cultura"
-        },
-        {
-            "@id": "_:210242412",
-            "hasContent": "#Ciencia_y_tecnolog.C3.ADa",
-            "hasIndex": 9,
-            "hasIndexLabel": "10",
-            "hasLabel": "Ciencia y tecnolog\u00eda"
-        },
-        {
-            "@id": "_:212507148",
-            "hasContent": "#Deportes_tradicionales",
-            "hasIndex": 0,
-            "hasIndexLabel": "11.1",
-            "hasLabel": "Deportes tradicionales",
-            "hasParent": "_:216764300"
-        },
-        {
-            "@id": "_:216585772",
-            "hasContent": "#F.C3.BAtbol",
-            "hasIndex": 0,
-            "hasIndexLabel": "11.2.1",
-            "hasLabel": "F\u00fatbol",
-            "hasParent": "_:216586380"
-        },
-        {
-            "@id": "_:1462019116",
-            "hasContent": "#B.C3.A9isbol",
-            "hasIndex": 1,
-            "hasIndexLabel": "11.2.2",
-            "hasLabel": "B\u00e9isbol",
-            "hasParent": "_:216586380"
-        },
-        {
-            "@id": "_:216586092",
-            "hasContent": "#B.C3.A1squetbol",
-            "hasIndex": 2,
-            "hasIndexLabel": "11.2.3",
-            "hasLabel": "B\u00e1squetbol",
-            "hasParent": "_:216586380"
-        },
-        {
-            "@id": "_:216586892",
-            "hasContent": "#Pelota_vasca",
-            "hasIndex": 3,
-            "hasIndexLabel": "11.2.4",
-            "hasLabel": "Pelota vasca",
-            "hasParent": "_:216586380"
-        },
-        {
-            "@id": "_:216585260",
-            "hasContent": "#Otros_deportes",
-            "hasIndex": 4,
-            "hasIndexLabel": "11.2.5",
-            "hasLabel": "Otros deportes",
-            "hasParent": "_:216586380"
-        },
-        {
-            "@id": "_:216587564",
-            "hasContent": "#Deportes_motorizados",
-            "hasIndex": 5,
-            "hasIndexLabel": "11.2.6",
-            "hasLabel": "Deportes motorizados",
-            "hasParent": "_:216586380"
-        },
-        {
-            "@id": "_:216586380",
-            "hasContent": "#Deportes_profesionales",
-            "hasIndex": 1,
-            "hasIndexLabel": "11.2",
-            "hasLabel": "Deportes profesionales",
-            "hasParent": "_:216764300"
-        },
-        {
-            "@id": "_:216585292",
-            "hasContent": "#Participaci.C3.B3n_de_M.C3.A9xico_en_el_mundo",
-            "hasIndex": 2,
-            "hasIndexLabel": "11.3",
-            "hasLabel": "Participaci\u00f3n de M\u00e9xico en el mundo",
-            "hasParent": "_:216764300"
-        },
-        {
-            "@id": "_:216764300",
-            "hasContent": "#Deporte",
-            "hasIndex": 10,
-            "hasIndexLabel": "11",
-            "hasLabel": "Deporte"
+            "@id": "_:1581888876",
+            "hasContent": "#Education"
         }
     ],
-    "tags": [
-        "M\u00e9xico"
-    ],
-    "thumbnail": "ekn://general-es/0b314c5cc68c5997",
-    "title": "M\u00e9xico"
+    "@context": "ekn://_context/ArticleObject",
+    "@id": "ekn://encyclopedia-en/26ab35bbee4f6a36a628fd59171b7bcd7072a302",
+    "thumbnail": "ekn://encyclopedia-en/c5182fc509e62ddd741bacda1dda5b318a0fada3",
+    "resources": [
+        "ekn://encyclopedia-en/c5182fc509e62ddd741bacda1dda5b318a0fada3",
+        "ekn://encyclopedia-en/c4ee86322d3aec4f7467c9ff95b929e2370dc239",
+        "ekn://encyclopedia-en/d7bc06082841a56037dcb500c1beaa026b6da710",
+        "ekn://encyclopedia-en/7cf0cf34c00e0644ee035138f9912ebc30031962",
+        "ekn://encyclopedia-en/7cf0cf34c00e0644ee035138f9912ebc30031962",
+        "ekn://encyclopedia-en/31dc8de7f8c905a5839db0cfd2ea58b9a3ad592e",
+        "ekn://encyclopedia-en/31dc8de7f8c905a5839db0cfd2ea58b9a3ad592e",
+        "ekn://encyclopedia-en/eba22286e0fd92b87dac15442edfcf91865c5a38",
+        "ekn://encyclopedia-en/bca9bf81b83504deac98c507c43de927e0aac0ec",
+        "ekn://encyclopedia-en/d0130e4c8f95a11db18d08049b50f2aa9119fa5b",
+        "ekn://encyclopedia-en/883c02df9951dab5c269c9f3a960e007ccb31922",
+        "ekn://encyclopedia-en/b683598eb6dcb52e64fea0c26df69e497e33e62a",
+        "ekn://encyclopedia-en/b7c51ebdf06b83a268f4b7d5323a2872148159c6",
+        "ekn://encyclopedia-en/0902a366d712277098c230e5b67bdee51605227e",
+        "ekn://encyclopedia-en/81b2762608f7febc7c3b4888ec876fc962d09363",
+        "ekn://encyclopedia-en/4dd966dc8652892b883a18b75d0513c0208c0c4e",
+        "ekn://encyclopedia-en/7141bd81d3f513bee17a77f5c0a072418320fb85",
+        "ekn://encyclopedia-en/7cc527fc07f8a0938801a2d34f234541cc25bc3b",
+        "ekn://encyclopedia-en/842694c33f2744253280ea382dceaa9c8d87801c",
+        "ekn://encyclopedia-en/2fab13384fc477c648e9b613ef56b111a053fcdd",
+        "ekn://encyclopedia-en/f48d1db2152f66f735fa83336862b6f351184405",
+        "ekn://encyclopedia-en/883bc697466af308475b19af21d0a46ac091a9dd",
+        "ekn://encyclopedia-en/9cef6171744222a261dcfeb6ac7580b92285da2d",
+        "ekn://encyclopedia-en/f1b85d905a0baa6130a52d00a49f80ae9724cc1a",
+        "ekn://encyclopedia-en/39788e5884035e33e2039c3e97462a238a8611ba",
+        "ekn://encyclopedia-en/b03432284a21c11c6541f9e82a7ae3eb9ce69085",
+        "ekn://encyclopedia-en/e550a76c28e6f91a5538d0300fc4d16f6b4a3732",
+        "ekn://encyclopedia-en/640f91838722eb988fb0fd9b0a172a60a72e96e7",
+        "ekn://encyclopedia-en/15bed867b5b940d3ea104eb27c45dd1c79e8e9ef",
+        "ekn://encyclopedia-en/667dc960def813e7ad8f1a6b58ef5340fb975e4f",
+        "ekn://encyclopedia-en/2f506c0aadbd4a40800ae0b712086fbd323c4db7",
+        "ekn://encyclopedia-en/211b6d38f1194192915bd088e2727f77e13f5fcf",
+        "ekn://encyclopedia-en/f771715954d4abcda4616420c2638583512636df",
+        "ekn://encyclopedia-en/201844af01dcd73feab4720ddcdb383a12017eba",
+        "ekn://encyclopedia-en/2716eaa871c64d1e994a94f8173072c72ba952d9",
+        "ekn://encyclopedia-en/002acd944ce05cd02931bbd988041449dcaacd6e",
+        "ekn://encyclopedia-en/12717d9b923b7a5301739376974c7b91c2e91225",
+        "ekn://encyclopedia-en/0e847cb40c8061141eaa82605f1513df5a4e32bf",
+        "ekn://encyclopedia-en/84bf30019ccb1cc0af1b776be270a13ede483d9f",
+        "ekn://encyclopedia-en/bbc20e08696f497a4be6e24fa0cd2812fc93af0d",
+        "ekn://encyclopedia-en/7870e541607b042a705ac4666501092643a7ef99",
+        "ekn://encyclopedia-en/3b8dafaf61bdb516ffea4e2d4ae0a02e39f54f8e",
+        "ekn://encyclopedia-en/0326d08842065b2ff23e5d8589d5f7e7602af127",
+        "ekn://encyclopedia-en/07ea0f06e57c74676b078863b202d02f0b90805e",
+        "ekn://encyclopedia-en/e564841108ef0f1bf9669557ca55481e95a3bcf4",
+        "ekn://encyclopedia-en/bb016aef66b898f191e5531a67a41a2c1797c552",
+        "ekn://encyclopedia-en/f8b90134ad857ec124d4a0c14bad0c73ec759070",
+        "ekn://encyclopedia-en/1a47f14b774098686865e06d7cac42a7a1366a6f",
+        "ekn://encyclopedia-en/f48ab9f4345834be40e1e3e2321129d6fc9b8c8f",
+        "ekn://encyclopedia-en/7c4eab4fd8757a5a830ef5bcbe534f94ed26263d",
+        "ekn://encyclopedia-en/676a4b9b364769a72b36d672782766511ab5e372",
+        "ekn://encyclopedia-en/e07d8f449b39db25fb680b10b8e21f416ccf464b",
+        "ekn://encyclopedia-en/781c46b3da8a4a0898554d85a3e5dc112a3d146d"
+    ]
 }
