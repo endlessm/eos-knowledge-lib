@@ -94,6 +94,7 @@ describe('Suggested articles module', function () {
         let payload = dispatcher.last_payload_with_type(Actions.ITEM_CLICKED);
         let matcher = jasmine.objectContaining({
             model: model,
+            context: [ model ],
         });
         expect(payload).toEqual(matcher);
     });

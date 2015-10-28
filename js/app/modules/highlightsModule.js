@@ -103,7 +103,7 @@ const HighlightsModule = new Lang.Class({
         return card;
     },
 
-    _create_article_card: function (model) {
+    _add_article_card: function (model, arrangement) {
         let card = this.create_submodule('card-type', {
             model: model,
         });
@@ -111,9 +111,10 @@ const HighlightsModule = new Lang.Class({
             Dispatcher.get_default().dispatch({
                 action_type: Actions.ITEM_CLICKED,
                 model: model,
+                context: arrangement.get_cards().map((card) => card.model),
             });
         });
-        return card;
+        arrangement.add_card(card);
     },
 
     // Load all articles referenced by the shown arrangements in order to
@@ -161,12 +162,12 @@ const HighlightsModule = new Lang.Class({
     },
 
     _add_item: function (model) {
-        this._featured_arrangement.add_card(this._create_article_card(model));
+        this._add_article_card(model, this._featured_arrangement);
 
         this._set_arrangements.forEach(arrangement => {
             if (model.tags.some(tag =>
                 arrangement.accepted_child_tags.indexOf(tag) !== -1)) {
-                arrangement.add_card(this._create_article_card(model));
+                this._add_article_card(model, arrangement);
             }
         });
     },

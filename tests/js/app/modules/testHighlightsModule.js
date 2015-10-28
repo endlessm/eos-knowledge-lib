@@ -160,16 +160,24 @@ describe('Highlights module', function () {
                 let card = featured.get_cards()[0];
                 card.emit('clicked');
                 Utils.update_gui();
-                expect(dispatcher.last_payload_with_type(Actions.ITEM_CLICKED))
-                    .toEqual(jasmine.objectContaining({ model: card.model }));
+                let payload = dispatcher.last_payload_with_type(Actions.ITEM_CLICKED);
+                let matcher = jasmine.objectContaining({
+                    model: card.model,
+                    context: article_models,
+                });
+                expect(payload).toEqual(matcher);
             });
 
             it('on the card in another arrangement, dispatches item-clicked', function () {
                 let card = theme1.get_cards()[0];
                 card.emit('clicked');
                 Utils.update_gui();
-                expect(dispatcher.last_payload_with_type(Actions.ITEM_CLICKED))
-                    .toEqual(jasmine.objectContaining({ model: card.model }));
+                let payload = dispatcher.last_payload_with_type(Actions.ITEM_CLICKED);
+                let matcher = jasmine.objectContaining({
+                    model: card.model,
+                    context: article_models.filter((model) => model.tags[0] === 'b'),
+                });
+                expect(payload).toEqual(matcher);
             });
         });
     });
