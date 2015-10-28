@@ -16,6 +16,9 @@
         <property name="ellipsize">end</property>
         <property name="lines">5</property>
         <property name="label" translatable="yes">Browse Categories</property>
+        <style>
+          <class name="browse-categories-title"/>
+        </style>
       </object>
     </child>
     <style>

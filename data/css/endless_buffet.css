@@ -23,6 +23,13 @@ EknThematicModule {
     background-color: #d3d7cf;
 }
 
+.browse-categories-title {
+    font-weight: 200;
+    font-size: 22px;
+    border-bottom: solid 1px gray;
+    color: #999999;
+}
+
 .thumb-card {
     background-color: white;
 }

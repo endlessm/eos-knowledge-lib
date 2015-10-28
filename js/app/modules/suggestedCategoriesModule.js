@@ -15,6 +15,9 @@ const StyleClasses = imports.app.styleClasses;
  * Class: SuggestedCategoriesModule
  * A module that displays all suggested articles as cards in an arrangement.
  *
+ * CSS classes:
+ *   browse-categories-title - on the "Browse Categories" title
+ *
  * Slots:
  *   arrangement
  *   card-type
