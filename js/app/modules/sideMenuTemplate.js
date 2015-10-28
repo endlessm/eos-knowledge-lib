@@ -10,6 +10,7 @@ const Lang = imports.lang;
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
 const Module = imports.app.interfaces.module;
+const SlidingPanelOverlay = imports.app.widgets.slidingPanelOverlay;
 
 const _MENU_HOT_ZONE_WIDTH_PX = 3;
 
@@ -45,7 +46,7 @@ const _MENU_HOT_ZONE_WIDTH_PX = 3;
 const SideMenuTemplate = new Lang.Class({
     Name: 'SideMenuTemplate',
     GTypeName: 'EknSideMenuTemplate',
-    Extends: Gtk.Overlay,
+    Extends: SlidingPanelOverlay.SlidingPanelOverlay,
     Implements: [ Module.Module ],
 
     Properties: {
@@ -57,8 +58,7 @@ const SideMenuTemplate = new Lang.Class({
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/sideMenuTemplate.ui',
     Children: [ 'home-button', 'menu-button', 'menu-close-button' ],
-    InternalChildren: [ 'context-bar-grid', 'grid', 'menu-grid', 'revealer',
-        'separator' ],
+    InternalChildren: [ 'context-bar-grid', 'grid', 'menu-grid', 'separator' ],
 
     _init: function (props={}) {
         this._menu_open = false;
@@ -70,6 +70,8 @@ const SideMenuTemplate = new Lang.Class({
         });
         if (context)
             this._context_bar_grid.add(context);
+
+        this._menu_panel = this.add_panel_widget(this._menu_grid, Gtk.PositionType.LEFT);
 
         let sidebar = this.create_submodule('sidebar', {
             vexpand: true,
@@ -94,7 +96,7 @@ const SideMenuTemplate = new Lang.Class({
     },
 
     get menu_open() {
-        return this._revealer.reveal_child;
+        return this._menu_panel.reveal_panel;
     },
 
     // Module override
@@ -103,11 +105,11 @@ const SideMenuTemplate = new Lang.Class({
     },
 
     _open_menu: function () {
-        this._revealer.reveal_child = true;
+        this._menu_panel.reveal_panel = true;
     },
 
     _close_menu: function () {
-        this._revealer.reveal_child = false;
+        this._menu_panel.reveal_panel = false;
     },
 
     _on_motion: function (widget, event) {
