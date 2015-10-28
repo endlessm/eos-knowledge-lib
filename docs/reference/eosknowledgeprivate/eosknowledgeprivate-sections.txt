@@ -35,6 +35,8 @@ EKN_ENUM_VALUE
 ekn_private_new_input_output_window
 ekn_param_spec_is_enum
 ekn_param_spec_enum_value_from_string
+ekn_widget_style_get_float
+ekn_widget_style_get_int
 </SECTION>
 
 <SECTION>
