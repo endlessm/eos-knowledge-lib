@@ -1,5 +1,6 @@
 // Copyright 2015 Endless Mobile, Inc.
 
+const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
@@ -43,25 +44,31 @@ const SlidingPanelOverlay = new Lang.Class({
         this.notify('transition-duration');
     },
 
+    vfunc_get_child_position: function (panel, child_allocation) {
+        let clamp = (v, low, high) => Math.min(high, Math.max(low, v));
+
+        let fill_percentage = EosKnowledgePrivate.widget_style_get_float(panel, 'fill-percentage');
+
+        let direction = panel.hide_direction;
+        let [fill_coord, fill_size, align_coord, align_size] = ['x', 'width', 'y', 'height'];
+        if (direction === Gtk.PositionType.LEFT || direction === Gtk.PositionType.RIGHT)
+            [fill_coord, fill_size, align_coord, align_size] = ['y', 'height', 'x', 'width'];
+        let start = (direction === Gtk.PositionType.TOP || direction === Gtk.PositionType.LEFT);
+
+        let [min, nat] = panel.get_preferred_size();
+        let allocation = this.get_allocation();
+        child_allocation[fill_size] = clamp(nat[fill_size], allocation[fill_size] * fill_percentage, allocation[fill_size]);
+        child_allocation[fill_coord] = (allocation[fill_size] - child_allocation[fill_size]) / 2;
+        child_allocation[align_size] = nat[align_size];
+        child_allocation[align_coord] = start ? 0 : allocation[align_size] - child_allocation[align_size];
+    },
+
     add_panel_widget: function (widget, position) {
         let panel = new SlidingPanel.SlidingPanel({
             panel_widget: widget,
             hide_direction: position,
             hide_when_invisible: true,
         });
-        if (position === Gtk.PositionType.TOP) {
-            panel.valign = Gtk.Align.START;
-            panel.halign = Gtk.Align.FILL;
-        } else if (position === Gtk.PositionType.RIGHT) {
-            panel.valign = Gtk.Align.FILL;
-            panel.halign = Gtk.Align.END;
-        } else if (position === Gtk.PositionType.BOTTOM) {
-            panel.valign = Gtk.Align.END;
-            panel.halign = Gtk.Align.FILL;
-        } else {
-            panel.valign = Gtk.Align.FILL;
-            panel.halign = Gtk.Align.START;
-        }
 
         this.bind_property('transition-duration',
            panel, 'transition-duration', GObject.BindingFlags.SYNC_CREATE);

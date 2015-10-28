@@ -35,16 +35,4 @@ describe('Sliding panel overlay', function () {
         overlay.transition_duration = 1000;
         expect(panel.transition_duration).toBe(1000);
     });
-
-    it('sets align appropriate to the position of the panel', function () {
-        let test_position_and_align = (position, valign, halign) => {
-            let panel = overlay.add_panel_widget(new Gtk.Label(), position);
-            expect(panel.valign).toBe(valign);
-            expect(panel.halign).toBe(halign);
-        };
-        test_position_and_align(Gtk.PositionType.TOP, Gtk.Align.START, Gtk.Align.FILL);
-        test_position_and_align(Gtk.PositionType.RIGHT, Gtk.Align.FILL, Gtk.Align.END);
-        test_position_and_align(Gtk.PositionType.BOTTOM, Gtk.Align.END, Gtk.Align.FILL);
-        test_position_and_align(Gtk.PositionType.LEFT, Gtk.Align.FILL, Gtk.Align.START);
-    });
 });

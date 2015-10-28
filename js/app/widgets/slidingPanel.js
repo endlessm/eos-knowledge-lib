@@ -144,3 +144,10 @@ const SlidingPanel = new Lang.Class({
             this.set_visible_child(v ? this._panel_frame : this._transparent_frame);
     },
 });
+
+// These custom style properties are specifically for when using the
+// slidingPanel in a slidingPanelOverlay. Fill percentage will control how much
+// of the side the panel is on to fill.
+Gtk.Widget.install_style_property.call(SlidingPanel, GObject.ParamSpec.float(
+    'fill-percentage', 'Fill percentage', 'Fill percentage',
+    GObject.ParamFlags.READABLE, 0, 1, 1));
