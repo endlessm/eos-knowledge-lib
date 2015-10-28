@@ -1,10 +1,39 @@
 // Copyright 2015 Endless Mobile, Inc.
 
+const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
+const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const StyleClasses = imports.app.styleClasses;
+
+const PanelFrame = new Lang.Class({
+    Name: 'PanelFrame',
+    GTypeName: 'EknPanelFrame',
+    Extends: Gtk.Frame,
+
+    _init: function (panel, params={}) {
+        this.parent(params);
+        this.panel = panel;
+    },
+
+    vfunc_size_allocate: function (allocation) {
+        this.set_allocation(allocation);
+        if (!this.get_child())
+            return;
+
+        let shadow_margin = EosKnowledgePrivate.widget_style_get_int(this.panel, 'shadow-margin');
+
+        // Remove the extra space given by the SlidingPanelOverlay
+        allocation.width -= 2 * shadow_margin;
+        allocation.height -= 2 * shadow_margin;
+        allocation.x += shadow_margin;
+        allocation.y += shadow_margin;
+        this.get_child().size_allocate(allocation);
+    },
+});
+
 
 /**
  * Class: SlidingPanel
@@ -63,14 +92,15 @@ const SlidingPanel = new Lang.Class({
     },
 
     _init: function (props={}) {
-        this._panel_frame = new Gtk.Frame({
+        this._panel_frame = new PanelFrame(this, {
             visible: true,
         });
-        this._panel_frame.get_style_context().add_class(StyleClasses.PANEL);
         this._transparent_frame = new Gtk.Frame({
             visible: true,
         });
+
         this.parent(props);
+        this.get_style_context().add_class(StyleClasses.PANEL);
 
         if (this.hide_when_invisible)
             this.no_show_all = true;
@@ -80,25 +110,25 @@ const SlidingPanel = new Lang.Class({
                 this.transition_type = Gtk.StackTransitionType.SLIDE_UP_DOWN;
                 this.add(this._panel_frame);
                 this.add(this._transparent_frame);
-                this._panel_frame.get_style_context().add_class(Gtk.STYLE_CLASS_TOP);
+                this.get_style_context().add_class(Gtk.STYLE_CLASS_TOP);
                 break;
             case Gtk.PositionType.RIGHT:
                 this.transition_type = Gtk.StackTransitionType.SLIDE_LEFT_RIGHT;
                 this.add(this._transparent_frame);
                 this.add(this._panel_frame);
-                this._panel_frame.get_style_context().add_class(Gtk.STYLE_CLASS_RIGHT);
+                this.get_style_context().add_class(Gtk.STYLE_CLASS_RIGHT);
                 break;
             case Gtk.PositionType.BOTTOM:
                 this.transition_type = Gtk.StackTransitionType.SLIDE_UP_DOWN;
                 this.add(this._transparent_frame);
                 this.add(this._panel_frame);
-                this._panel_frame.get_style_context().add_class(Gtk.STYLE_CLASS_BOTTOM);
+                this.get_style_context().add_class(Gtk.STYLE_CLASS_BOTTOM);
                 break;
             case Gtk.PositionType.LEFT:
                 this.transition_type = Gtk.StackTransitionType.SLIDE_LEFT_RIGHT;
                 this.add(this._panel_frame);
                 this.add(this._transparent_frame);
-                this._panel_frame.get_style_context().add_class(Gtk.STYLE_CLASS_LEFT);
+                this.get_style_context().add_class(Gtk.STYLE_CLASS_LEFT);
                 break;
         }
 
@@ -151,3 +181,8 @@ const SlidingPanel = new Lang.Class({
 Gtk.Widget.install_style_property.call(SlidingPanel, GObject.ParamSpec.float(
     'fill-percentage', 'Fill percentage', 'Fill percentage',
     GObject.ParamFlags.READABLE, 0, 1, 1));
+// Shadow margin will add extra drawable area on the slidingPanel in a
+// slidingPanelOverlay. Useful for drawing a box-shadow.
+Gtk.Widget.install_style_property.call(SlidingPanel, GObject.ParamSpec.int(
+    'shadow-margin', 'Shadow Margin', 'Shadow Margin',
+    GObject.ParamFlags.READABLE, 0, GLib.MAXINT32, 0));

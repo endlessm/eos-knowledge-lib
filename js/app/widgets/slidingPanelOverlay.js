@@ -14,7 +14,7 @@ const SlidingPanel = imports.app.widgets.slidingPanel;
  */
 const SlidingPanelOverlay = new Lang.Class({
     Name: 'SlidingPanelOverlay',
-    GTypeName: 'SlidingPanelOverlay',
+    GTypeName: 'EknSlidingPanelOverlay',
     Extends: Gtk.Overlay,
 
     Properties: {
@@ -48,6 +48,7 @@ const SlidingPanelOverlay = new Lang.Class({
         let clamp = (v, low, high) => Math.min(high, Math.max(low, v));
 
         let fill_percentage = EosKnowledgePrivate.widget_style_get_float(panel, 'fill-percentage');
+        let shadow_margin = EosKnowledgePrivate.widget_style_get_int(panel, 'shadow-margin');
 
         let direction = panel.hide_direction;
         let [fill_coord, fill_size, align_coord, align_size] = ['x', 'width', 'y', 'height'];
@@ -61,6 +62,14 @@ const SlidingPanelOverlay = new Lang.Class({
         child_allocation[fill_coord] = (allocation[fill_size] - child_allocation[fill_size]) / 2;
         child_allocation[align_size] = nat[align_size];
         child_allocation[align_coord] = start ? 0 : allocation[align_size] - child_allocation[align_size];
+
+        // Add the extra margin for drawing box shadows after the rest of
+        // sizing. This way the fill fraction will still be accurate to the real
+        // panel size.
+        child_allocation.width += 2 * shadow_margin;
+        child_allocation.height += 2 * shadow_margin;
+        child_allocation.x -= shadow_margin;
+        child_allocation.y -= shadow_margin;
     },
 
     add_panel_widget: function (widget, position) {

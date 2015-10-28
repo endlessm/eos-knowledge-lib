@@ -29,13 +29,12 @@ describe('Sliding panel', function () {
         expect(panel.visible_child).toHaveDescendant(panel_widget);
     });
 
-    it('has a panel style class on the frame containing the widget', function () {
+    it('has a panel style class', function () {
         let panel = new SlidingPanel.SlidingPanel({
             panel_widget: panel_widget,
             reveal_panel: true,
         });
-        expect(panel.visible_child).toBeA(Gtk.Frame);
-        expect(panel.visible_child).toHaveCssClass(StyleClasses.PANEL);
+        expect(panel).toHaveCssClass(StyleClasses.PANEL);
     });
 
     it('adds style classes appropriate to the hide direciton of the panel', function () {
@@ -45,7 +44,7 @@ describe('Sliding panel', function () {
                 reveal_panel: true,
                 hide_direction: direction,
             });
-            expect(panel.visible_child).toHaveCssClass(klass);
+            expect(panel).toHaveCssClass(klass);
             panel.destroy();
         };
         test_direction_and_class(Gtk.PositionType.TOP, Gtk.STYLE_CLASS_TOP);

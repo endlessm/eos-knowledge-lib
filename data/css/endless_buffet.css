@@ -132,20 +132,9 @@ EknSearchModule {
     color: #49bde3;
 }
 
-.document-card EknSlidingPanel {
+.document-card .panel {
     -EknSlidingPanel-fill-percentage: 0.73;
-}
-
-/* So the box shadow works on the sequence card. */
-.document-card .panel.top {
-    padding-bottom: 10px;
-    padding-right: 10px;
-    padding-left: 10px;
-}
-.document-card .panel.bottom {
-    padding-top: 10px;
-    padding-right: 10px;
-    padding-left: 10px;
+    -EknSlidingPanel-shadow-margin: 7;
 }
 
 EknSideMenuTemplate .context-bar {
