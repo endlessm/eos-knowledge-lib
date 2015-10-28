@@ -174,8 +174,12 @@ describe('Thematic module', function () {
                         dispatcher.reset();
                         headers[0].emit('clicked');
                         Utils.update_gui();
-                        expect(dispatcher.last_payload_with_type(Actions.SET_CLICKED))
-                            .toEqual(jasmine.objectContaining({ model: set_models[0] }));
+                        let payload = dispatcher.last_payload_with_type(Actions.SET_CLICKED);
+                        let matcher = jasmine.objectContaining({
+                            model: set_models[0],
+                            context: set_models,
+                        });
+                        expect(payload).toEqual(matcher);
                     });
 
                     it('on a card in an arrangement, dispatches item-clicked', function () {

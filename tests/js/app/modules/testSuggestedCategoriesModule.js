@@ -110,6 +110,7 @@ describe('Suggested categories module', function () {
         let payload = dispatcher.last_payload_with_type(Actions.SET_CLICKED);
         let matcher = jasmine.objectContaining({
             model: model,
+            context: [ model ],
         });
         expect(payload).toEqual(matcher);
     });

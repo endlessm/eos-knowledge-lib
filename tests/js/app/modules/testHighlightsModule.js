@@ -148,8 +148,12 @@ describe('Highlights module', function () {
                 let header = factory.get_created_named_mocks('set-card')[0];
                 header.emit('clicked');
                 Utils.update_gui();
-                expect(dispatcher.last_payload_with_type(Actions.SET_CLICKED))
-                    .toEqual(jasmine.objectContaining({ model: set_models[0] }));
+                let payload = dispatcher.last_payload_with_type(Actions.SET_CLICKED);
+                let matcher = jasmine.objectContaining({
+                    model: set_models[0],
+                    context: set_models.slice(0, 2),
+                });
+                expect(payload).toEqual(matcher);
             });
 
             it('on the card in the featured arrangement, dispatches item-clicked', function () {

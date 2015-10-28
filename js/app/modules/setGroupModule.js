@@ -92,6 +92,7 @@ const SetGroupModule = new Lang.Class({
             Dispatcher.get_default().dispatch({
                 action_type: Actions.SET_CLICKED,
                 model: model,
+                context: this._arrangement.get_cards().map((card) => card.model),
             });
         });
         this._cards.push(card);

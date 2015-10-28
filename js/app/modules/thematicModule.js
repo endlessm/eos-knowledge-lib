@@ -125,9 +125,12 @@ const ThematicModule = new Lang.Class({
             visible: false,
         });
         card.connect('clicked', () => {
+            let sets = this._arrangements.map((arrangement) =>
+                this._headers_by_arrangement[arrangement].model);
             Dispatcher.get_default().dispatch({
                 action_type: Actions.SET_CLICKED,
                 model: model,
+                context: sets,
             });
         });
         return card;
