@@ -193,6 +193,7 @@ describe('Search module', function () {
         let payload = dispatcher.last_payload_with_type(Actions.SEARCH_CLICKED);
         let matcher = jasmine.objectContaining({
             model: model,
+            context: [ model ],
         });
         expect(payload).toEqual(matcher);
     });
