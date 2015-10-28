@@ -55,7 +55,7 @@
                   </object>
                 </child>
                 <style>
-                  <class name="shadow-frame"/>
+                  <class name="content-frame"/>
                 </style>
               </object>
               <packing>
