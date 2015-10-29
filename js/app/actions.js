@@ -12,6 +12,7 @@ const SET_CLICKED = 'set-clicked';
 const ITEM_CLICKED = 'item-clicked';
 const SEARCH_CLICKED = 'search-clicked';
 const HOME_CLICKED = 'home-clicked';
+const ALL_SETS_CLICKED = 'all-sets-clicked';
 const SEARCH_TEXT_ENTERED = 'search-text-entered';
 const AUTOCOMPLETE_CLICKED = 'autocomplete-clicked';
 const ARTICLE_LINK_CLICKED = 'article-link-clicked';
