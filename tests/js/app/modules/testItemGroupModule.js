@@ -8,6 +8,7 @@ const ItemGroupModule = imports.app.modules.itemGroupModule;
 const Minimal = imports.tests.minimal;
 const MockDispatcher = imports.tests.mockDispatcher;
 const MockFactory = imports.tests.mockFactory;
+const Utils = imports.tests.utils;
 const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 
 describe('Item group module', function () {
@@ -78,5 +79,20 @@ describe('Item group module', function () {
         });
         expect(arrangement.get_cards().length).toBe(3);
         expect(factory.get_created_named_mocks('home-card').length).toBe(6);
+    });
+
+    it('dispatches item clicked', function () {
+        let model = new ContentObjectModel.ContentObjectModel();
+        dispatcher.dispatch({
+            action_type: Actions.APPEND_ITEMS,
+            models: [ model ],
+        });
+        arrangement.get_cards()[0].emit('clicked');
+        Utils.update_gui();
+        let payload = dispatcher.last_payload_with_type(Actions.ITEM_CLICKED);
+        let matcher = jasmine.objectContaining({
+            model: model,
+        });
+        expect(payload).toEqual(matcher);
     });
 });
