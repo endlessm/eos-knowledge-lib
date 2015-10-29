@@ -118,6 +118,7 @@ const BuffetInteraction = new Lang.Class({
                     this._load_ekn_id(payload.ekn_id);
                     break;
                 case Actions.ITEM_CLICKED:
+                case Actions.SEARCH_CLICKED:
                     this._history_presenter.set_current_item_from_props({
                         page_type: Pages.ARTICLE,
                         model: payload.model,

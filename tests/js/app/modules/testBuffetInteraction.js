@@ -176,24 +176,28 @@ describe('Buffet interaction', function () {
         });
     });
 
-    describe('when an item is clicked', function () {
-        beforeEach(function () {
-            dispatcher.dispatch({
-                action_type: Actions.ITEM_CLICKED,
-                model: article_model,
+    let test_article_click_action = (action, descriptor) => {
+        describe('when a ' + descriptor + ' is clicked', function () {
+            beforeEach(function () {
+                dispatcher.dispatch({
+                    action_type: action,
+                    model: article_model,
+                });
+            });
+
+            it('changes to the article page', function () {
+                let payload = dispatcher.last_payload_with_type(Actions.SHOW_ARTICLE_PAGE);
+                expect(payload).toBeDefined();
+            });
+
+            it('dispatches show article with the article model', function () {
+                let payload = dispatcher.last_payload_with_type(Actions.SHOW_ARTICLE);
+                expect(payload.model).toBe(article_model);
             });
         });
-
-        it('changes to the article page', function () {
-            let payload = dispatcher.last_payload_with_type(Actions.SHOW_ARTICLE_PAGE);
-            expect(payload).toBeDefined();
-        });
-
-        it('dispatches show article with the article model', function () {
-            let payload = dispatcher.last_payload_with_type(Actions.SHOW_ARTICLE);
-            expect(payload.model).toBe(article_model);
-        });
-    });
+    };
+    test_article_click_action(Actions.ITEM_CLICKED, 'item');
+    test_article_click_action(Actions.SEARCH_CLICKED, 'search item');
 
     describe('when a link is clicked', function () {
         it('changes to the article page if link is an article', function () {
