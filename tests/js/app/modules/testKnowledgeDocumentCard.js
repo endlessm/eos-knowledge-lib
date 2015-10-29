@@ -29,6 +29,7 @@ describe('Document Card', function () {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
         jasmine.addMatchers(InstanceOfMatcher.customMatchers);
         jasmine.addMatchers(WidgetDescendantMatcher.customMatchers);
+        Gio.DBus.session.signal_subscribe = () => {};
 
         model = new ArticleObjectModel.ArticleObjectModel({
             ekn_id: 'ekn:///foo/bar',
