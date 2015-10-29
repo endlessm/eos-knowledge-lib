@@ -118,6 +118,7 @@ const Window = new Lang.Class({
 
         this._home_page = this.create_submodule('home-page');
         this._section_page = this.create_submodule('section-page');
+        this._all_sets_page = this.create_submodule('all-sets-page');
         this._search_page = this.create_submodule('search-page');
         this._article_page = this.create_submodule('article-page');
         this._brand_screen = this.create_submodule('brand-screen');
@@ -138,6 +139,8 @@ const Window = new Lang.Class({
         this._stack.add(this._section_page);
         this._stack.add(this._search_page);
         this._stack.add(this._article_page);
+        if (this._all_sets_page)
+            this._stack.add(this._all_sets_page);
 
         // We need to pack a bunch of modules inside each other, but some of
         // them are optional. "matryoshka" is the innermost widget that needs to
@@ -218,6 +221,9 @@ const Window = new Lang.Class({
                     break;
                 case Actions.SHOW_SECTION_PAGE:
                     this.show_page(this._section_page);
+                    break;
+                case Actions.SHOW_ALL_SETS_PAGE:
+                    this.show_page(this._all_sets_page);
                     break;
                 case Actions.SHOW_SEARCH_PAGE:
                     this.show_page(this._search_page);
@@ -395,7 +401,7 @@ const Window = new Lang.Class({
 
     // Module override
     get_slot_names: function () {
-        return ['brand-screen', 'home-page', 'section-page', 'search-page',
+        return ['brand-screen', 'home-page', 'section-page', 'all-sets-page', 'search-page',
             'article-page', 'navigation', 'lightbox', 'search'];
     },
 });

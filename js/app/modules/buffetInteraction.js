@@ -27,6 +27,7 @@ const Pages = {
     SET: 'set',
     SEARCH: 'search',
     ARTICLE: 'article',
+    ALL_SETS: 'all-sets',
 };
 const RESULTS_SIZE = 15;
 const SEARCH_METRIC_EVENT_ID = 'a628c936-5d87-434a-a57a-015a0f223838';
@@ -106,6 +107,11 @@ const BuffetInteraction = new Lang.Class({
                     this._history_presenter.set_current_item_from_props({
                         page_type: Pages.SET,
                         model: payload.model,
+                    });
+                    break;
+                case Actions.ALL_SETS_CLICKED:
+                    this._history_presenter.set_current_item_from_props({
+                        page_type: Pages.ALL_SETS,
                     });
                     break;
                 case Actions.SEARCH_TEXT_ENTERED:
@@ -244,6 +250,11 @@ const BuffetInteraction = new Lang.Class({
             case Pages.HOME:
                 dispatcher.dispatch({
                     action_type: Actions.SHOW_HOME_PAGE,
+                });
+                break;
+            case Pages.ALL_SETS:
+                dispatcher.dispatch({
+                    action_type: Actions.SHOW_ALL_SETS_PAGE,
                 });
                 break;
             case Pages.SEARCH:
