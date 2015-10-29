@@ -132,6 +132,15 @@ const BuffetInteraction = new Lang.Class({
                         context: payload.context,
                     });
                     break;
+                case Actions.PREVIOUS_DOCUMENT_CLICKED:
+                case Actions.NEXT_DOCUMENT_CLICKED:
+                    let item = this._history_presenter.history_model.current_item;
+                    this._history_presenter.set_current_item_from_props({
+                        page_type: Pages.ARTICLE,
+                        model: payload.model,
+                        context: item.context,
+                    });
+                    break;
             }
         });
 

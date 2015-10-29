@@ -212,6 +212,24 @@ describe('Buffet interaction', function () {
                 expect(payload.previous_model).toBe(prev_model);
                 expect(payload.next_model).toBe(next_model);
             });
+
+            it('handles previous card click', function () {
+                dispatcher.dispatch({
+                    action_type: Actions.PREVIOUS_DOCUMENT_CLICKED,
+                    model: prev_model,
+                });
+                let payload = dispatcher.last_payload_with_type(Actions.SHOW_ARTICLE);
+                expect(payload.model).toBe(prev_model);
+            });
+
+            it('handles previous card click', function () {
+                dispatcher.dispatch({
+                    action_type: Actions.NEXT_DOCUMENT_CLICKED,
+                    model: next_model,
+                });
+                let payload = dispatcher.last_payload_with_type(Actions.SHOW_ARTICLE);
+                expect(payload.model).toBe(next_model);
+            });
         });
     };
     test_article_click_action(Actions.ITEM_CLICKED, 'item');
