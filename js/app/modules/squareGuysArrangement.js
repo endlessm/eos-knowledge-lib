@@ -63,10 +63,6 @@ const SquareGuysArrangement = new Lang.Class({
         this.get_children().forEach((child) => this.remove(child));
     },
 
-    vfunc_get_request_mode: function () {
-        return Gtk.SizeRequestMode.CONSTANT_SIZE;
-    },
-
     vfunc_get_preferred_width: function () {
         return [this._get_size_with_spacing(CARD_SIZE_SMALL, COL_COUNT_MIN),
             this._get_size_with_spacing(CARD_SIZE_MAX, COL_COUNT_MAX)];

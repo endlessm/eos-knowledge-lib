@@ -3,34 +3,12 @@
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
-const SquareGuysArrangement = imports.app.modules.squareGuysArrangement;
 const Minimal = imports.tests.minimal;
+const MockWidgets = imports.tests.mockWidgets;
+const SquareGuysArrangement = imports.app.modules.squareGuysArrangement;
 const Utils = imports.tests.utils;
 
 Gtk.init(null);
-
-// Colored box with a natural request of a particular size.
-const ResizeableBox = new Lang.Class({
-    Name: 'ResizeableBox',
-    Extends: Gtk.Frame,
-
-    _init: function (size, props={}) {
-        props['valign'] = Gtk.Align.START;
-        props['halign'] = Gtk.Align.START;
-        props['vexpand'] = false;
-        props['hexpand'] = false;
-        this.parent(props);
-        this.size = size;
-    },
-
-    vfunc_get_preferred_width: function () {
-        return [1, this.size];
-    },
-
-    vfunc_get_preferred_height: function () {
-        return [1, this.size];
-    },
-});
 
 describe('SquareGuys arrangement', function () {
     beforeEach(function () {
@@ -83,7 +61,7 @@ function testSizingArrangementForDimensions(arr_width, arr_height, visible_child
         this.win.show_all();
 
         for (let i=0; i<8; i++) {
-            cards.push(add_card(new ResizeableBox(400)));
+            cards.push(add_card(new MockWidgets.TestBox(400)));
         }
 
         this.win.queue_resize();

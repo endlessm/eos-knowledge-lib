@@ -1,7 +1,8 @@
 // Copyright 2015 Endless Mobile, Inc.
 
 /* exported MockButton, MockHistoryButtons, MockItemGroupModule,
-MockScrolledArrangement, MockSearchBox, MockSidebarTemplate */
+MockScrolledArrangement, MockSearchBox, MockSidebarTemplate, MockEknWebview,
+TestBox */
 
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
@@ -125,4 +126,27 @@ const MockEknWebview = new Lang.Class({
         this.renderer = new MockRenderer();
     },
     load_uri: function () {},
+});
+
+// Test box with a natural request of a particular size.
+const TestBox = new Lang.Class({
+    Name: 'TestBox',
+    Extends: Gtk.Frame,
+
+    _init: function (size, props={}) {
+        props['valign'] = Gtk.Align.START;
+        props['halign'] = Gtk.Align.START;
+        props['hexpand'] = true;
+        props['vexpand'] = true;
+        this.parent(props);
+        this.size = size;
+    },
+
+    vfunc_get_preferred_width: function () {
+        return [1, this.size];
+    },
+
+    vfunc_get_preferred_height: function () {
+        return [1, this.size];
+    },
 });
