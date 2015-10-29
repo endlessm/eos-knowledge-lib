@@ -15,6 +15,7 @@ const BuffetInteraction = imports.app.modules.buffetInteraction;
 const ContentObjectModel = imports.search.contentObjectModel;
 const Launcher = imports.app.interfaces.launcher;
 const MediaObjectModel = imports.search.mediaObjectModel;
+const Minimal = imports.tests.minimal;
 const Module = imports.app.interfaces.module;
 const MockDispatcher = imports.tests.mockDispatcher;
 const MockEngine = imports.tests.mockEngine;
@@ -41,7 +42,9 @@ describe('Buffet interaction', function () {
         dispatcher = MockDispatcher.mock_default();
 
         set_models = [0, 1, 2].map(() => new SetObjectModel.SetObjectModel());
-        article_model = new ArticleObjectModel.ArticleObjectModel();
+        article_model = new ArticleObjectModel.ArticleObjectModel({
+            ekn_id: 'ekn://test/article',
+        });
         media_model = new MediaObjectModel.MediaObjectModel();
 
         engine = MockEngine.mock_default();
@@ -178,10 +181,19 @@ describe('Buffet interaction', function () {
 
     let test_article_click_action = (action, descriptor) => {
         describe('when a ' + descriptor + ' is clicked', function () {
+            let prev_model, next_model;
             beforeEach(function () {
+                prev_model = new ArticleObjectModel.ArticleObjectModel({
+                    ekn_id: 'ekn://test/prev',
+                });
+                next_model = new ArticleObjectModel.ArticleObjectModel({
+                    ekn_id: 'ekn://test/next',
+                });
+
                 dispatcher.dispatch({
                     action_type: action,
                     model: article_model,
+                    context: [prev_model, article_model, next_model],
                 });
             });
 
@@ -193,6 +205,12 @@ describe('Buffet interaction', function () {
             it('dispatches show article with the article model', function () {
                 let payload = dispatcher.last_payload_with_type(Actions.SHOW_ARTICLE);
                 expect(payload.model).toBe(article_model);
+            });
+
+            it('dispatches show article with previous and next models', function () {
+                let payload = dispatcher.last_payload_with_type(Actions.SHOW_ARTICLE);
+                expect(payload.previous_model).toBe(prev_model);
+                expect(payload.next_model).toBe(next_model);
             });
         });
     };

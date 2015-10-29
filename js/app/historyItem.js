@@ -2,6 +2,7 @@ const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 
+const Arrangement = imports.app.interfaces.arrangement;
 const ContentObjectModel = imports.search.contentObjectModel;
 
 /**
@@ -69,6 +70,26 @@ const HistoryItem = new Lang.Class({
             'From Global Search', 'From Global Search',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT, false),
     },
+
+    _init: function (props={}) {
+        Object.defineProperties(this, {
+            /**
+             * Property: context
+             * List of models this model was accessed from.
+             *
+             * For 'article' pages, a list of articles from which the currently
+             * viewed article page was selected, or null.
+             */
+            'context': {
+                value: props.context ? props.context.slice(0) : [],
+                writable: false,
+            },
+        });
+        delete props.context;
+
+        this.parent(props);
+    },
+
 
     equals: function (item) {
         if (this.model)
