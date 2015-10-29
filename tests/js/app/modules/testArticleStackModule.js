@@ -1,5 +1,8 @@
 const Gtk = imports.gi.Gtk;
 
+const Utils = imports.tests.utils;
+Utils.register_gresource();
+
 const Actions = imports.app.actions;
 const ArticleStackModule = imports.app.modules.articleStackModule;
 const ContentObjectModel = imports.search.contentObjectModel;
@@ -7,6 +10,7 @@ const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
 const MockDispatcher = imports.tests.mockDispatcher;
 const MockFactory = imports.tests.mockFactory;
 const Minimal = imports.tests.minimal;
+const SequenceCard = imports.app.modules.sequenceCard;
 const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 
 Gtk.init(null);
@@ -43,5 +47,24 @@ describe('Article Page A', function () {
         });
         let card = factory.get_created_named_mocks('mock-card')[0];
         expect(module).toHaveDescendant(card);
+    });
+
+    it('sets up a previous and next card if in the payload', function () {
+        let model_t = new ContentObjectModel.ContentObjectModel();
+        let model_s = new ContentObjectModel.ContentObjectModel({
+            title: 'foo',
+        });
+        let model_hansel = new ContentObjectModel.ContentObjectModel({
+            title: 'bar',
+        });
+        dispatcher.dispatch({
+            action_type: Actions.SHOW_ARTICLE,
+            model: model_t,
+            previous_model: model_s,
+            next_model: model_hansel,
+        });
+        let card = factory.get_created_named_mocks('mock-card')[0];
+        expect(card.previous_card).toBeA(SequenceCard.SequenceCard);
+        expect(card.next_card).toBeA(SequenceCard.SequenceCard);
     });
 });

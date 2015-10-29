@@ -114,11 +114,38 @@ EknSearchModule {
     color: black;
 }
 
+.document-card .sequence-card {
+    background-color: white;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.25);
+    padding: 15px 30px;
+}
+
+.document-card .sequence-card .title {
+    font-size: 16px;
+    font-weight: normal;
+    color: #044a80;
+}
+
+.document-card .sequence-card .previous-label,
+.document-card .sequence-card .next-label {
+    font-size: 11px;
+    color: #49bde3;
+}
+
+.document-card .panel {
+    -EknSlidingPanel-fill-percentage: 0.73;
+    -EknSlidingPanel-shadow-margin: 7;
+}
+
 EknSideMenuTemplate .context-bar {
     background-image: linear-gradient(to bottom, alpha(black, 0.05) 0%,
                                                  alpha(black, 0) 100%),
                       linear-gradient(0deg, #e7ecee 0%, #e7ecee 100%);
     box-shadow: 0px 2px 5px 0px alpha(black, 0.15);
+}
+
+EknSideMenuTemplate .panel {
+    -EknSlidingPanel-shadow-margin: 40;
 }
 
 EknSideMenuTemplate .menu {

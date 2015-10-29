@@ -27,6 +27,14 @@ gboolean ekn_param_spec_enum_value_from_string (GParamSpecEnum *pspec,
                                                 const gchar *name,
                                                 gint *value);
 
+EKN_AVAILABLE_IN_0_0
+gfloat ekn_widget_style_get_float (GtkWidget *widget,
+                                   const gchar *name);
+
+EKN_AVAILABLE_IN_0_0
+gint ekn_widget_style_get_int (GtkWidget *widget,
+                               const gchar *name);
+
 G_END_DECLS
 
 #endif /* EKN_UTIL_H */

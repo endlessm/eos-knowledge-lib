@@ -204,6 +204,16 @@ libtooltipplugin_la_CPPFLAGS = \
 libtooltipplugin_la_LIBADD = $(TOOLTIP_PLUGIN_LIBS)
 libtooltipplugin_la_LDFLAGS = -module -avoid-version -no-undefined
 
+webextension_LTLIBRARIES += libscrollplugin.la
+libscrollplugin_la_SOURCES = lib/web-extensions/scrollplugin.c
+libscrollplugin_la_CFLAGS = $(SCROLL_PLUGIN_CFLAGS)
+libscrollplugin_la_CPPFLAGS = \
+	-DPKGDATADIR=\""$(pkgdatadir)"\" \
+	-DLOCALEDIR=\""$(datadir)/locale"\" \
+	$(NULL)
+libscrollplugin_la_LIBADD = $(SCROLL_PLUGIN_LIBS)
+libscrollplugin_la_LDFLAGS = -module -avoid-version -no-undefined
+
 # # # SUBSTITUTED FILES # # #
 # These files need to be filled in with make variables
 
@@ -266,7 +276,7 @@ javascript_tests = \
 	tests/js/app/modules/testContextBanner.js \
 	tests/js/app/modules/testDividedBannerTemplate.js \
 	tests/js/app/modules/testHighlightsModule.js \
-	tests/js/app/modules/testHomePageATemplate.js \
+	tests/js/app/modules/testHamburgerBasementTemplate.js \
 	tests/js/app/modules/testItemGroupModule.js \
 	tests/js/app/modules/testKnowledgeDocumentCard.js \
 	tests/js/app/modules/testLightboxModule.js \
@@ -284,6 +294,7 @@ javascript_tests = \
 	tests/js/app/modules/testSearchBox.js \
 	tests/js/app/modules/testSearchModule.js \
 	tests/js/app/modules/testSearchResultCard.js \
+	tests/js/app/modules/testSequenceCard.js \
 	tests/js/app/modules/testSetBannerModule.js \
 	tests/js/app/modules/testSetGroupModule.js \
 	tests/js/app/modules/testSidebarTemplate.js \
@@ -311,6 +322,8 @@ javascript_tests = \
 	tests/js/app/widgets/testPreviewer.js \
 	tests/js/app/widgets/testImageCoverFrame.js \
 	tests/js/app/widgets/testProgressLabel.js \
+	tests/js/app/widgets/testSlidingPanel.js \
+	tests/js/app/widgets/testSlidingPanelOverlay.js \
 	tests/js/app/widgets/testSpaceContainer.js \
 	tests/js/app/widgets/testTableOfContents.js \
 	tests/js/app/widgets/testWebviewTooltip.js \

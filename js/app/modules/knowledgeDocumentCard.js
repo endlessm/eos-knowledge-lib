@@ -2,6 +2,7 @@
 
 const Cairo = imports.gi.cairo;
 const Endless = imports.gi.Endless;
+const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
@@ -14,6 +15,7 @@ const EknWebview = imports.app.widgets.eknWebview;
 const InArticleSearch = imports.app.widgets.inArticleSearch;
 const Module = imports.app.interfaces.module;
 const PDFView = imports.app.widgets.PDFView;
+const SlidingPanelOverlay = imports.app.widgets.slidingPanelOverlay;
 const StyleClasses = imports.app.styleClasses;
 const TableOfContents = imports.app.widgets.tableOfContents;
 const TreeNode = imports.search.treeNode;
@@ -74,6 +76,20 @@ const KnowledgeDocumentCard = new Lang.Class({
             'The table of contents widget to the left of the article page.',
             GObject.ParamFlags.READABLE,
             TableOfContents.TableOfContents.$gtype),
+        /**
+         * Property: previous-card
+         * Card linking to the previous document card.
+         */
+        'previous-card': GObject.ParamSpec.object('previous-card',
+            'Previous Card', 'Previous Card',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, Gtk.Widget),
+        /**
+         * Property: next-card
+         * Card linking to the next document card.
+         */
+        'next-card': GObject.ParamSpec.object('next-card',
+            'Next Card', 'Next Card',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, Gtk.Widget),
     },
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/knowledgeDocumentCard.ui',
@@ -108,6 +124,16 @@ const KnowledgeDocumentCard = new Lang.Class({
 
         this.set_title_label_from_model(this._title_label);
         this.set_title_label_from_model(this._top_title_label);
+
+        this._panel_overlay = new SlidingPanelOverlay.SlidingPanelOverlay();
+        if (this.previous_card)
+            this._previous_panel = this._panel_overlay.add_panel_widget(this.previous_card,
+                                                                        Gtk.PositionType.TOP);
+        if (this.next_card)
+            this._next_panel = this._panel_overlay.add_panel_widget(this.next_card,
+                                                                    Gtk.PositionType.BOTTOM);
+        this._content_grid.attach(this._panel_overlay, 0, 1, 1, 1);
+        this.show_all();
 
         this._setup_toc();
 
@@ -159,11 +185,10 @@ const KnowledgeDocumentCard = new Lang.Class({
         let task = new AsyncTask.AsyncTask(this, cancellable, callback);
         task.catch_errors(() => {
             if (this.model.content_type === 'text/html') {
-
                 this.content_view = this._get_webview();
-                this._content_grid.add(this.content_view);
+
                 let article_search = new InArticleSearch.InArticleSearch(this.content_view);
-                this._content_grid.add(article_search);
+                this._content_grid.attach(article_search, 0, 2, 1, 1);
 
                 this._webview_load_id = this.content_view.connect('load-changed', (view, status) => {
                     if (status !== WebKit2.LoadEvent.COMMITTED)
@@ -189,11 +214,12 @@ const KnowledgeDocumentCard = new Lang.Class({
                     height_request: this.MIN_CONTENT_HEIGHT,
                 });
                 this.content_view.load_stream(stream, content_type);
-                this._content_grid.add(this.content_view);
                 task.return_value();
             } else {
                 throw new Error("Unknown article content type: ", this.model.content_type);
             }
+
+            this._panel_overlay.add(this.content_view);
         });
     },
 
@@ -236,15 +262,41 @@ const KnowledgeDocumentCard = new Lang.Class({
         this.content_view.run_javascript(script, null, null);
     },
 
-    _get_webview: function () {
-        let webview = new EknWebview.EknWebview({
+    // Keep separate function to mock out in tests
+    _create_webview: function () {
+        return new EknWebview.EknWebview({
             expand: true,
             width_request: this.MIN_CONTENT_WIDTH,
             height_request: this.MIN_CONTENT_HEIGHT,
         });
+    },
+
+    _get_webview: function () {
+        let webview = this._create_webview();
 
         webview.renderer.enable_scroll_manager = this.show_toc;
         webview.renderer.show_title = !this.show_toc;
+
+        // If we ever want previous/next cards to work with PDFs we'll need to
+        // generalize the show panel logic here.
+        let exited_top_area = false;
+        Gio.DBus.session.signal_subscribe(null,
+                                          'com.endlessm.Knowledge.WebviewScroll',
+                                          null,
+                                          Utils.dbus_object_path_for_webview(webview),
+                                          null,
+                                          0,
+                                          (connection, sender, path, name, signal, variant) => {
+            let [scroll_height, scroll_height_max] = variant.deep_unpack();
+            let in_top_area = scroll_height < 25;
+            let in_bottom_area = (scroll_height_max - scroll_height) < 25;
+            if (this._previous_panel)
+                this._previous_panel.reveal_panel = exited_top_area && in_top_area;
+            if (this._next_panel)
+                this._next_panel.reveal_panel = in_bottom_area;
+            if (!in_top_area)
+                exited_top_area = true;
+        });
 
         webview.connect('notify::uri', function () {
             if (webview.uri.indexOf('#') >= 0) {

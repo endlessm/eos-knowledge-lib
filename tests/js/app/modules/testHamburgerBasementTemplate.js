@@ -6,7 +6,7 @@ const Utils = imports.tests.utils;
 Utils.register_gresource();
 
 const CssClassMatcher = imports.tests.CssClassMatcher;
-const HomePageATemplate = imports.app.modules.homePageATemplate;
+const HamburgerBasementTemplate = imports.app.modules.hamburgerBasementTemplate;
 const MockFactory = imports.tests.mockFactory;
 const MockPlaceholder = imports.tests.mockPlaceholder;
 const StyleClasses = imports.app.styleClasses;
@@ -14,7 +14,7 @@ const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 
 Gtk.init(null);
 
-describe('HomePageATemplate module', function () {
+describe('HamburgerBasementTemplate module', function () {
     let home_page, factory;
 
     beforeEach(function () {
@@ -26,7 +26,7 @@ describe('HomePageATemplate module', function () {
         factory.add_named_mock('Placeholder2', MockPlaceholder.MockPlaceholder);
         factory.add_named_mock('Placeholder3', MockPlaceholder.MockPlaceholder);
         factory.add_named_mock('Placeholder4', MockPlaceholder.MockPlaceholder);
-        factory.add_named_mock('home-page-template', HomePageATemplate.HomePageATemplate,
+        factory.add_named_mock('home-page-template', HamburgerBasementTemplate.HamburgerBasementTemplate,
         {
             'top': 'Placeholder1',
             'middle': 'Placeholder2',
@@ -34,7 +34,7 @@ describe('HomePageATemplate module', function () {
             'basement': 'Placeholder4',
         });
 
-        home_page = new HomePageATemplate.HomePageATemplate({
+        home_page = new HamburgerBasementTemplate.HamburgerBasementTemplate({
             factory: factory,
             factory_name: 'home-page-template',
         });
@@ -59,7 +59,7 @@ describe('HomePageATemplate module', function () {
 
     describe('CSS style context', function () {
         it('has home page A template class', function () {
-            expect(home_page).toHaveCssClass('home-page-a-template');
+            expect(home_page).toHaveCssClass('hamburger-basement-template');
         });
 
         it('has tab button class', function () {

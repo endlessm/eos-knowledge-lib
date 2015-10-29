@@ -183,6 +183,13 @@ const MinimalDocumentCard = new Lang.Class({
         'show-top-title': GObject.ParamSpec.boolean('show-top-title', '', '',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
             true),
+        'previous-card': GObject.ParamSpec.object('previous-card',
+            'Previous Card', 'Previous Card',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, Gtk.Widget),
+        'next-card': GObject.ParamSpec.object('next-card',
+            'Next Card', 'Next Card',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, Gtk.Widget),
+
     },
 
     _init: function (props={}) {

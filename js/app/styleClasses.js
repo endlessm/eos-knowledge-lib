@@ -37,6 +37,12 @@ const CARD_B = 'card-b';
  */
 const TEXT_CARD = 'text-card';
 
+/**
+ * Constant: SEQUENCE_CARD
+ *
+ * Matches #EknSequenceCard widgets.
+ */
+const SEQUENCE_CARD = 'sequence-card';
 
 /**
  * Constant: SEARCH_RESULT_CARD
@@ -637,3 +643,10 @@ const ARTICLE_SEARCH = 'article-search';
  * Matches a set group module.
  */
 const SET_GROUP = 'set-group';
+
+/**
+ * Constant: PANEL
+ *
+ * Matches a panel.
+ */
+const PANEL = 'panel';

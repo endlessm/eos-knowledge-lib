@@ -73,3 +73,33 @@ ekn_param_spec_enum_value_from_string (GParamSpecEnum *pspec, const gchar *name,
     }
   return FALSE;
 }
+
+/**
+ * ekn_widget_style_get_float:
+ * @name: style property name
+ *
+ * Calls the non-introspectable varargs function gtk_widget_style_get to read a
+ * floating point value from a style property.
+ */
+gfloat
+ekn_widget_style_get_float (GtkWidget *widget, const gchar *name)
+{
+  gfloat ret;
+  gtk_widget_style_get (widget, name, &ret, NULL);
+  return ret;
+}
+
+/**
+ * ekn_widget_style_get_int:
+ * @name: style property name
+ *
+ * Calls the non-introspectable varargs function gtk_widget_style_get to read a
+ * integer point value from a style property.
+ */
+gint
+ekn_widget_style_get_int (GtkWidget *widget, const gchar *name)
+{
+  gint ret;
+  gtk_widget_style_get (widget, name, &ret, NULL);
+  return ret;
+}

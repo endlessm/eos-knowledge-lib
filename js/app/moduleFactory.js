@@ -105,15 +105,15 @@ const ModuleFactory = new Lang.Class({
      *   extra_props - dictionary of construct properties for the submodule
      */
     create_module_for_slot: function (parent_module, slot, extra_props={}) {
-        if (parent_module.get_slot_names().indexOf(slot) === -1) {
-            logError(new Error('No slot named ' + slot + ' according to module.get_slot_names.'));
-            return null;
-        }
+        if (parent_module.get_slot_names().indexOf(slot) === -1)
+            throw new Error('No slot named ' + slot + ' according to module.get_slot_names.');
         if (slot.indexOf('.') !== -1)
             logError(new Error('Slot names should never contain a "."'));
         let slot_value = this._get_module_description_by_name(parent_module.factory_name)['slots'][slot];
         if (slot_value === null)
             return null;
+        if (slot_value === undefined)
+            throw new Error('No value in ' + parent_module.factory_name + ' module for slot ' + slot);
         let factory_name = slot_value;
         if (typeof slot_value === 'object')
             factory_name = this._setup_anonymous_module(parent_module.factory_name, slot, slot_value);

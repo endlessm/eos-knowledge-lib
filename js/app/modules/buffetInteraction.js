@@ -11,11 +11,13 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const Actions = imports.app.actions;
+const ArticleObjectModel = imports.search.articleObjectModel;
 const Dispatcher = imports.app.dispatcher;
 const Engine = imports.search.engine;
 const HistoryPresenter = imports.app.historyPresenter;
 const Interaction = imports.app.interfaces.interaction;
 const Launcher = imports.app.interfaces.launcher;
+const MediaObjectModel = imports.search.mediaObjectModel;
 const Module = imports.app.interfaces.module;
 const QueryObject = imports.search.queryObject;
 const Utils = imports.app.utils;
@@ -24,6 +26,7 @@ const Pages = {
     HOME: 'home',
     SET: 'set',
     SEARCH: 'search',
+    ARTICLE: 'article',
 };
 const RESULTS_SIZE = 15;
 const SEARCH_METRIC_EVENT_ID = 'a628c936-5d87-434a-a57a-015a0f223838';
@@ -110,6 +113,15 @@ const BuffetInteraction = new Lang.Class({
                     break;
                 case Actions.NEED_MORE_SEARCH:
                     this._load_more_results();
+                    break;
+                case Actions.ARTICLE_LINK_CLICKED:
+                    this._load_ekn_id(payload.ekn_id);
+                    break;
+                case Actions.ITEM_CLICKED:
+                    this._history_presenter.set_current_item_from_props({
+                        page_type: Pages.ARTICLE,
+                        model: payload.model,
+                    });
                     break;
             }
         });
@@ -236,11 +248,49 @@ const BuffetInteraction = new Lang.Class({
                 this._do_search(item);
                 search_text = item.query;
                 break;
+            case Pages.ARTICLE:
+                dispatcher.dispatch({
+                    action_type: Actions.SHOW_ARTICLE,
+                    model: item.model,
+                    animation_type: EosKnowledgePrivate.LoadingAnimation.NONE,
+                });
+                dispatcher.dispatch({
+                    action_type: Actions.SHOW_ARTICLE_PAGE,
+                });
+                break;
         }
         dispatcher.dispatch({
             action_type: Actions.SET_SEARCH_TEXT,
             text: search_text,
         });
+    },
+
+    _load_ekn_id: function (ekn_id) {
+        Engine.get_default().get_object_by_id(ekn_id, null, (engine, task) => {
+            let model;
+            try {
+                model = engine.get_object_by_id_finish(task);
+            } catch (error) {
+                logError(error);
+                return;
+            }
+
+            this._load_model(model);
+        });
+    },
+
+    _load_model: function (model) {
+        if (model instanceof ArticleObjectModel.ArticleObjectModel) {
+            this._history_presenter.set_current_item_from_props({
+                page_type: Pages.ARTICLE,
+                model: model,
+            });
+        } else if (model instanceof MediaObjectModel.MediaObjectModel) {
+            Dispatcher.get_default().dispatch({
+                action_type: Actions.SHOW_MEDIA,
+                model: model,
+            });
+        }
     },
 
     // Helper function for the three Launcher implementation methods. Returns

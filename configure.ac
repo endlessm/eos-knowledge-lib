@@ -225,12 +225,11 @@ PKG_CHECK_MODULES([TOOLTIP_PLUGIN], [
     webkit2gtk-4.0
     javascriptcoregtk-4.0
 ])
-PKG_CHECK_MODULES([ENCYCLOPEDIA_PLUGIN], [
+PKG_CHECK_MODULES([SCROLL_PLUGIN], [
     glib-2.0
     gmodule-2.0
-    gio-2.0 >= 2.32
+    gio-2.0
     webkit2gtk-4.0
-    javascriptcoregtk-4.0
 ])
 
 # Check installed GIRs for Javascript overrides
