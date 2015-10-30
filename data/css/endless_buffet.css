@@ -75,6 +75,31 @@ EknSearchModule {
     padding: 40px;
 }
 
+.search-result-card.width-e .title,
+.search-result-card.width-e .card-synopsis {
+    font-size: 14px;
+}
+
+.search-result-card.width-f .title,
+.search-result-card.width-f .card-synopsis {
+    font-size: 16px;
+}
+
+.search-result-card.width-g .title,
+.search-result-card.width-h .title {
+    font-size: 22px;
+}
+
+.search-result-card.width-g .card-synopsis,
+.search-result-card.width-h .card-synopsis {
+    font-size: 18px;
+}
+
+.search-result-card.width-e .content-frame,
+.search-result-card.width-f .content-frame {
+    padding: 20px;
+}
+
 .thumb-card,
 .search-result-card {
     background-color: white;
