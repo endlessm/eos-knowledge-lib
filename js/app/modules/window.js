@@ -11,7 +11,9 @@ const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
 const Launcher = imports.app.interfaces.launcher;
 const Module = imports.app.interfaces.module;
+const SearchBox = imports.app.modules.searchBox;
 const StyleClasses = imports.app.styleClasses;
+const Utils = imports.app.utils;
 
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 
@@ -238,6 +240,10 @@ const Window = new Lang.Class({
             else
                 context.remove_class(StyleClasses.ANIMATING);
         }.bind(this));
+
+        this._stack.connect_after('notify::visible-child',
+            this._after_stack_visible_child_changed.bind(this));
+
         this.connect('size-allocate', Lang.bind(this, function(widget, allocation) {
             let win_width = allocation.width;
             let win_height = allocation.height;
@@ -323,6 +329,12 @@ const Window = new Lang.Class({
         this.get_style_context().add_class(klass);
     },
 
+    _after_stack_visible_child_changed: function () {
+        let new_page = this._stack.visible_child;
+        this._search_box.visible =
+            !Utils.has_descendant_with_type(new_page, SearchBox.SearchBox);
+    },
+
     show_page: function (new_page) {
         let old_page = this.get_visible_page();
         if (old_page === new_page)
@@ -333,7 +345,6 @@ const Window = new Lang.Class({
         let nav_back_visible = false;
         if (is_on_left(new_page)) {
             nav_back_visible = false;
-            this._search_box.visible = false;
             this._set_background_position_style(StyleClasses.BACKGROUND_LEFT);
             if (is_on_left(old_page)) {
                 this._stack.transition_type = Gtk.StackTransitionType.CROSSFADE;
@@ -349,12 +360,10 @@ const Window = new Lang.Class({
                 this._stack.transition_type = Gtk.StackTransitionType.SLIDE_RIGHT;
             }
             nav_back_visible = true;
-            this._search_box.visible = true;
             this._set_background_position_style(StyleClasses.BACKGROUND_CENTER);
         } else {
             this._stack.transition_type = Gtk.StackTransitionType.SLIDE_LEFT;
             nav_back_visible = true;
-            this._search_box.visible = true;
             this._set_background_position_style(StyleClasses.BACKGROUND_RIGHT);
         }
         Dispatcher.get_default().dispatch({

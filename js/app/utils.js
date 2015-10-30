@@ -1,3 +1,5 @@
+/* exported has_descendant_with_type */
+
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Format = imports.format;
 const Gdk = imports.gi.Gdk;
@@ -198,4 +200,16 @@ function shuffle (array, sequence) {
 const DBUS_WEBVIEW_EXPORT_PATH = '/com/endlessm/webview/';
 function dbus_object_path_for_webview (view) {
     return DBUS_WEBVIEW_EXPORT_PATH + view.get_page_id();
+}
+
+function has_descendant_with_type (widget, klass) {
+    if (widget instanceof klass)
+        return true;
+    if (widget instanceof Gtk.Container) {
+        let children = [];
+        // Retrieves internal children as well, widget.get_children() does not
+        widget.forall(child => children.push(child));
+        return children.some(child => has_descendant_with_type(child, klass));
+    }
+    return false;
 }

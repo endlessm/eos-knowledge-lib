@@ -10,14 +10,18 @@
 
 EknHighlightsModule .text-card .title.label,
 EknThematicModule .text-card .title.label,
-.browse-categories-title {
+.browse-categories .title {
     font-weight: 200;
     font-size: 22px;
-    border-bottom: solid 1px gray;
+    border-bottom: solid 1px #cccccc;
 }
 
-.browse-categories-title {
+.browse-categories .title {
     color: #999999;
+}
+
+.browse-categories {
+    padding: 20px 50px;
 }
 
 EknScrollingTemplate .suggested-categories {
@@ -106,8 +110,9 @@ EknSearchModule {
     font-weight: 200;
 }
 
-.search-result-card .card-synopsis {
+.card-synopsis {
     color: black;
+    font-size: 14px;
 }
 
 .results-message-title,
@@ -143,6 +148,10 @@ EknSideMenuTemplate .context-bar {
                                                  alpha(black, 0) 100%),
                       linear-gradient(0deg, #e7ecee 0%, #e7ecee 100%);
     box-shadow: 0px 2px 5px 0px alpha(black, 0.15);
+}
+
+EknSideMenuTemplate .context-bar-shadow-frame {
+    padding-bottom: 10px;
 }
 
 EknSideMenuTemplate .panel {

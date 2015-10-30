@@ -45,6 +45,11 @@ const SlidingPanelOverlay = new Lang.Class({
     },
 
     vfunc_get_child_position: function (panel, child_allocation) {
+        if (!(panel instanceof SlidingPanel.SlidingPanel)) {
+            this.parent(panel, child_allocation);
+            return;
+        }
+
         let clamp = (v, low, high) => Math.min(high, Math.max(low, v));
 
         let fill_percentage = EosKnowledgePrivate.widget_style_get_float(panel, 'fill-percentage');

@@ -39,6 +39,8 @@ const _MENU_HOT_ZONE_WIDTH_PX = 3;
  * CSS classes:
  *   close-button - on the button that closes the menu
  *   context-bar - on the context bar
+ *   context-bar-shadow-frame - hack for padding the context bar so the shadow
+ *                              shows up
  *   home-button - on the button that goes to the home page
  *   menu - on the whole menu sidebar
  *   menu-button - on the button that opens the menu

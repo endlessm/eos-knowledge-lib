@@ -14,10 +14,36 @@
         <property name="can_focus">False</property>
         <property name="orientation">vertical</property>
         <child>
+          <object class="GtkFrame" id="spacer">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="valign">start</property>
+            <property name="hexpand">True</property>
+            <property name="label_xalign">0</property>
+            <property name="shadow_type">none</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">0</property>
+          </packing>
+        </child>
+      </object>
+      <packing>
+        <property name="index">-1</property>
+      </packing>
+    </child>
+    <child type="overlay">
+      <object class="GtkFrame" id="context-bar-shadow-frame">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="valign">start</property>
+        <property name="hexpand">True</property>
+        <property name="label_xalign">0</property>
+        <property name="shadow_type">none</property>
+        <child>
           <object class="GtkGrid" id="context-bar-grid">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="hexpand">True</property>
             <child>
               <object class="GtkButton" id="menu-button">
                 <property name="visible">True</property>
@@ -44,17 +70,23 @@
               <class name="context-bar"/>
             </style>
           </object>
-          <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">0</property>
-          </packing>
         </child>
+        <style>
+          <class name="context-bar-shadow-frame"/>
+        </style>
       </object>
       <packing>
         <property name="index">-1</property>
       </packing>
     </child>
   </template>
+  <object class="GtkSizeGroup" id="context-bar-overlay-size-group">
+    <property name="mode">vertical</property>
+    <widgets>
+      <widget name="context-bar-grid"/>
+      <widget name="spacer"/>
+    </widgets>
+  </object>
   <object class="GtkGrid" id="menu-grid">
     <property name="width_request">199</property>
     <property name="visible">True</property>
