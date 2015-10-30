@@ -26,15 +26,17 @@
           <object class="GtkGrid" id="content-grid">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="valign">end</property>
+            <property name="valign">fill</property>
             <child>
               <object class="GtkFrame" id="shadow-frame">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="vexpand">True</property>
                 <child>
                   <object class="GtkGrid" id="inner-content-grid">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="valign">end</property>
                     <property name="orientation">vertical</property>
                     <child>
                       <object class="GtkLabel" id="title-label">
@@ -55,7 +57,7 @@
                   </object>
                 </child>
                 <style>
-                  <class name="shadow-frame"/>
+                  <class name="content-frame"/>
                 </style>
               </object>
               <packing>

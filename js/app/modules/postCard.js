@@ -44,8 +44,6 @@ const PostCard = new Lang.Class({
         Utils.set_hand_cursor_on_widget(this);
 
         if (this.model instanceof SetObjectModel.SetObjectModel) {
-            this._content_grid.valign = Gtk.Align.FILL;
-            this._shadow_frame.vexpand = true;
             this._inner_content_grid.valign = Gtk.Align.CENTER;
             this._left_sleeve.visible = this._right_sleeve.visible = true;
             this._thumbnail_frame.margin = 10;
@@ -67,6 +65,28 @@ const PostCard = new Lang.Class({
             // Ensure that margin grows with card size so that we
             // always see the deck svg in the background
             this._thumbnail_frame.margin = alloc.width / 20;
+        } else {
+            let content_height = this._get_content_height(alloc.height);
+            let content_alloc = new Cairo.RectangleInt({
+                x: 0,
+                y: alloc.height - content_height,
+                width: alloc.width,
+                height: content_height,
+            });
+            this._content_grid.size_allocate(content_alloc);
         }
+        this.update_card_sizing_classes(alloc.height, alloc.width);
     },
+
+    _get_content_height: function (height) {
+        if (height <= Card.MaxSize.B) {
+            return 90;
+        } else if (height <= Card.MaxSize.C) {
+            return 140;
+        } else if (height <= Card.MaxSize.D) {
+            return 190;
+        } else {
+            return 290;
+        }
+    }
 });
