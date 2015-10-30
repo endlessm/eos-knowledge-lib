@@ -187,11 +187,11 @@ const BuffetInteraction = new Lang.Class({
                 action_type: Actions.APPEND_SEARCH,
                 models: results,
             });
-        });
 
-        dispatcher.dispatch({
-            action_type: Actions.SEARCH_READY,
-            query: history_item.query,
+            dispatcher.dispatch({
+                action_type: Actions.SEARCH_READY,
+                query: history_item.query,
+            });
         });
     },
 
