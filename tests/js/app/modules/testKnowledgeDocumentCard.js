@@ -23,13 +23,22 @@ EvinceDocument.init();
 const TEST_CONTENT_DIR = Utils.get_test_content_srcdir();
 
 describe('Document Card', function () {
-    let card, model;
+    let card, model, real_session_descriptor;
 
     beforeEach(function () {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
         jasmine.addMatchers(InstanceOfMatcher.customMatchers);
         jasmine.addMatchers(WidgetDescendantMatcher.customMatchers);
-        Gio.DBus.session.signal_subscribe = () => {};
+        // Mock out the entire session bus or we will error in an environment
+        // without a session bus. Because session is a property with only a
+        // getter, it can't be mocked with regular spyOn methods yet. See bug
+        // https://github.com/jasmine/jasmine/issues/943
+        real_session_descriptor = Object.getOwnPropertyDescriptor(Gio.DBus, 'session');
+        let mock_session = jasmine.createSpyObj('session', ['signal_subscribe']);
+        Object.defineProperty(Gio.DBus, 'session', {
+            value: mock_session,
+            configurable: true,
+        });
 
         model = new ArticleObjectModel.ArticleObjectModel({
             ekn_id: 'ekn:///foo/bar',
@@ -39,6 +48,10 @@ describe('Document Card', function () {
             model: model,
             show_toc: true,
         });
+    });
+
+    afterEach(function () {
+        Object.defineProperty(Gio.DBus, 'session', real_session_descriptor);
     });
 
     it('can be constructed', function () {
