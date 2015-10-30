@@ -198,6 +198,7 @@ describe('Buffet interaction', function () {
     };
     test_article_click_action(Actions.ITEM_CLICKED, 'item');
     test_article_click_action(Actions.SEARCH_CLICKED, 'search item');
+    test_article_click_action(Actions.AUTOCOMPLETE_CLICKED, 'autocomplete entry');
 
     describe('when a link is clicked', function () {
         it('changes to the article page if link is an article', function () {
