@@ -29,7 +29,7 @@ const SearchResultCard = new Lang.Class({
     },
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/searchResultCard.ui',
-    InternalChildren: [ 'thumbnail-frame', 'title-label', 'synopsis-label'],
+    InternalChildren: [ 'thumbnail-frame', 'content-frame', 'title-label', 'synopsis-label'],
 
     _init: function (props={}) {
         this.parent(props);
