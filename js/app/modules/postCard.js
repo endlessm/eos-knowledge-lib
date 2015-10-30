@@ -46,7 +46,7 @@ const PostCard = new Lang.Class({
         if (this.model instanceof SetObjectModel.SetObjectModel) {
             this._inner_content_grid.valign = Gtk.Align.CENTER;
             this._left_sleeve.visible = this._right_sleeve.visible = true;
-            this._thumbnail_frame.margin = 10;
+            this._thumbnail_frame.margin = 13;
         }
     },
 
