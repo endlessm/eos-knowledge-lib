@@ -90,7 +90,7 @@ const Application = new Lang.Class({
     },
 
     vfunc_window_removed: function (win) {
-        if (this._interaction && this._interaction.view === win) {
+        if (this._interaction) {
             Dispatcher.get_default().reset();
             this._interaction = null;
         }
