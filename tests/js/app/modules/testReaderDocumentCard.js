@@ -28,7 +28,11 @@ describe('Document Card', function () {
         card = new ReaderDocumentCard.ReaderDocumentCard({
             model: article_object,
         });
-        spyOn(card, '_create_webview').and.returnValue(new MockWidgets.MockEknWebview());
+        spyOn(card, '_create_webview').and.callFake(() => {
+            let webview = new MockWidgets.MockEknWebview();
+            spyOn(webview.renderer, 'set_custom_css_files');
+            return webview;
+        });
     });
 
     it('can be constructed', function () {
@@ -85,5 +89,36 @@ describe('Document Card', function () {
         });
         expect(Gtk.test_find_label(card, '*!!!*').use_markup).toBeTruthy();
         expect(Gtk.test_find_label(card, '*@@@*').use_markup).toBeTruthy();
+    });
+
+    it('adds custom reader CSS if no other CSS requested', function (done) {
+        card.load_content(null, (card, task) => {
+            card.load_content_finish(task);
+            expect(card.content_view.renderer.set_custom_css_files)
+                .toHaveBeenCalledWith(jasmine.arrayContaining(['reader.css']));
+            done();
+        });
+        card.content_view.emit('load-changed', WebKit2.LoadEvent.COMMITTED);
+        card.content_view.emit('load-changed', WebKit2.LoadEvent.FINISHED);
+    });
+
+    it('adds custom CSS if requested', function (done) {
+        card = new ReaderDocumentCard.ReaderDocumentCard({
+            model: article_object,
+            custom_css: 'some_custom.css',
+        });
+        spyOn(card, '_create_webview').and.callFake(() => {
+            let webview = new MockWidgets.MockEknWebview();
+            spyOn(webview.renderer, 'set_custom_css_files');
+            return webview;
+        });
+        card.load_content(null, (card, task) => {
+            card.load_content_finish(task);
+            expect(card.content_view.renderer.set_custom_css_files)
+                .toHaveBeenCalledWith(jasmine.arrayContaining(['some_custom.css']));
+            done();
+        });
+        card.content_view.emit('load-changed', WebKit2.LoadEvent.COMMITTED);
+        card.content_view.emit('load-changed', WebKit2.LoadEvent.FINISHED);
     });
 });

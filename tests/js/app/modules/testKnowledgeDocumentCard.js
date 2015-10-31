@@ -185,5 +185,25 @@ describe('Document Card', function () {
                 expect(card.toc.collapsed).toBe(true);
             });
         });
+
+        it('adds custom CSS if requested', function (done) {
+            card = new KnowledgeDocumentCard.KnowledgeDocumentCard({
+                model: html_model,
+                custom_css: 'some_custom.css',
+            });
+            spyOn(card, '_create_webview').and.callFake(() => {
+                let webview = new MockWidgets.MockEknWebview();
+                spyOn(webview.renderer, 'set_custom_css_files');
+                return webview;
+            });
+            card.load_content(null, (card, task) => {
+                card.load_content_finish(task);
+                expect(card.content_view.renderer.set_custom_css_files)
+                    .toHaveBeenCalledWith(jasmine.arrayContaining(['some_custom.css']));
+                done();
+            });
+            card.content_view.emit('load-changed', WebKit2.LoadEvent.COMMITTED);
+            card.content_view.emit('load-changed', WebKit2.LoadEvent.FINISHED);
+        });
     });
 });

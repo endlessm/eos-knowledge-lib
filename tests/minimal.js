@@ -174,6 +174,8 @@ const MinimalDocumentCard = new Lang.Class({
         'title-capitalization': GObject.ParamSpec.override('title-capitalization',
             Card.Card),
         'content-view': GObject.ParamSpec.override('content-view', DocumentCard.DocumentCard),
+        'custom-css': GObject.ParamSpec.override('custom-css',
+            DocumentCard.DocumentCard),
         'info-notice': GObject.ParamSpec.object('info-notice', 'Info notice',
             '', GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE,
             Gtk.Widget),
