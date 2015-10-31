@@ -15,12 +15,9 @@ const Module = imports.app.interfaces.module;
 
 const COL_COUNT_MAX = 4;
 const COL_COUNT_MIN = 3;
-const ROW_COUNT = 2;
 const CARD_SIZE_SMALL = Card.MinSize.B;
 const CARD_SIZE_BIG = Card.MinSize.C;
 const CARD_SIZE_MAX = Card.MaxSize.C;
-const NUM_SHOWN_MAX = COL_COUNT_MAX * ROW_COUNT;
-const NUM_SHOWN_MIN = COL_COUNT_MIN * ROW_COUNT;
 
 const SquareGuysArrangement = new Lang.Class({
     Name: 'SquareGuysArrangement',
@@ -42,13 +39,29 @@ const SquareGuysArrangement = new Lang.Class({
             'The amount of space in pixels between children cards',
             GObject.ParamFlags.READWRITE,
             0, GLib.MAXUINT16, 0),
+
+        /**
+         * Property: max-rows
+         * Maximum number of card rows to be displayed
+         *
+         * A value of zero means no maximum.
+         *
+         * Default:
+         *   0
+         */
+        'max-rows': GObject.ParamSpec.uint('max-rows', 'Maximum rows',
+            'The maximum number of card rows to be displayed.',
+            GObject.ParamFlags.READWRITE,
+            0, GLib.MAXUINT16, 0),
     },
 
     _init: function (props={}) {
         this._spacing = 0;
+        this._max_rows = 0;
         this.parent(props);
 
         this._small_mode = false;
+        this._three_column_mode = false;
     },
 
     add_card: function (widget) {
@@ -70,7 +83,9 @@ const SquareGuysArrangement = new Lang.Class({
 
     vfunc_get_preferred_height: function () {
         let card_size = this._small_mode ? CARD_SIZE_SMALL : CARD_SIZE_BIG;
-        let height = this._get_size_with_spacing(card_size, ROW_COUNT);
+        let rows_for_children = Math.ceil(this.get_children().length / this._get_columns_per_row());
+        let rows_visible = this._max_rows === 0 ? rows_for_children : Math.min(this._max_rows, rows_for_children);
+        let height = this._get_size_with_spacing(card_size, rows_visible);
         return [height, height];
     },
 
@@ -78,16 +93,15 @@ const SquareGuysArrangement = new Lang.Class({
         this.parent(alloc);
 
         this._small_mode = (alloc.width < this._get_size_with_spacing(CARD_SIZE_BIG, COL_COUNT_MIN));
-        let three_column_mode = (alloc.width < this._get_size_with_spacing(CARD_SIZE_BIG, COL_COUNT_MAX));
+        this._three_column_mode = (alloc.width < this._get_size_with_spacing(CARD_SIZE_BIG, COL_COUNT_MAX));
 
-        let col_count = three_column_mode ? COL_COUNT_MIN : COL_COUNT_MAX;
+        let col_count = this._get_columns_per_row();
 
         let available_width = alloc.width - (this._spacing * (col_count - 1));
-        let available_height = alloc.height - this._spacing;
 
         // Cards width and height cannot be larger than the max sizes of the cards
         let child_width = Math.min(Math.floor(available_width / (col_count)), CARD_SIZE_MAX);
-        let child_height = Math.min(Math.floor(available_height / ROW_COUNT), this._small_mode ? CARD_SIZE_SMALL : CARD_SIZE_BIG);
+        let child_height = Math.min(this._small_mode ? CARD_SIZE_SMALL : CARD_SIZE_BIG);
         let x = alloc.x;
         let y = alloc.y;
         let delta_x = child_width + this._spacing;
@@ -99,27 +113,30 @@ const SquareGuysArrangement = new Lang.Class({
             let extra_card_spacing = Math.floor(extra_arrangement_space / (col_count - 1));
             delta_x += extra_card_spacing;
         }
-        let num_shown_children = three_column_mode ? NUM_SHOWN_MIN : NUM_SHOWN_MAX;
-        this.get_children().forEach((child, ix) => {
-            if (ix >= num_shown_children) {
-                child.set_child_visible(false);
-                return;
-            }
 
-            child.set_child_visible(true);
+        let all_children = this.get_children();
+        let visible_children_count = this._max_rows === 0 ? all_children.length :
+            Math.min(all_children.length, this._max_rows  * col_count);
+
+        all_children.slice(0, visible_children_count).forEach((card, ix) => {
+            card.set_child_visible(true);
             let child_alloc = new Cairo.RectangleInt({
                 x: x,
                 y: y,
                 width: child_width,
                 height: child_height,
             });
-            child.size_allocate(child_alloc);
-            if (ix % ROW_COUNT == 1) {
-                x += delta_x;
-                y = alloc.y;
-            } else {
+            card.size_allocate(child_alloc);
+            if ((ix + 1) % col_count === 0) {
+                x = alloc.x;
                 y += delta_y;
+            } else {
+                x += delta_x;
             }
+        });
+
+        all_children.slice(visible_children_count, all_children.length).forEach((card) => {
+            card.set_child_visible(false);
         });
     },
 
@@ -135,7 +152,22 @@ const SquareGuysArrangement = new Lang.Class({
         this.queue_resize();
     },
 
+    get max_rows() {
+        return this._max_rows;
+    },
+
+    set max_rows(value) {
+        if (this._max_rows === value)
+            return;
+        this._max_rows = value;
+        this.notify('max-rows');
+    },
+
     _get_size_with_spacing: function (size, count) {
         return size * count + this._spacing * (count - 1);
     },
+
+    _get_columns_per_row: function () {
+        return this._three_column_mode ? COL_COUNT_MIN : COL_COUNT_MAX;
+    }
 });
