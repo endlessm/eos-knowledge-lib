@@ -1,6 +1,7 @@
 const Gtk = imports.gi.Gtk;
 
-Gtk.init(null);
+const Utils = imports.tests.utils;
+Utils.register_gresource();
 
 const Actions = imports.app.actions;
 const ContentObjectModel = imports.search.contentObjectModel;
@@ -9,6 +10,8 @@ const Minimal = imports.tests.minimal;
 const MockDispatcher = imports.tests.mockDispatcher;
 const MockFactory = imports.tests.mockFactory;
 const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
+
+Gtk.init(null);
 
 describe('Suggested articles module', function () {
     let suggestions, arrangement, factory, dispatcher;
