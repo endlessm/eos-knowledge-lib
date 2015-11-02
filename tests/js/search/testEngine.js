@@ -137,6 +137,9 @@ describe('Knowledge Engine Module', () => {
     }
 
     function mock_ekn_shard (shard) {
+        if (!shard)
+            shard = new MockShard.MockShardFile();
+
         engine._shard_file_from_domain = (() => shard);
     }
 
@@ -201,6 +204,10 @@ describe('Knowledge Engine Module', () => {
     });
 
     describe('get_xapian_uri', () => {
+        beforeEach(() => {
+            mock_ekn_shard();
+        });
+
         it('sets order field', () => {
             let query_obj = new QueryObject.QueryObject({
                 query: 'tyrion',
@@ -271,6 +278,41 @@ describe('Knowledge Engine Module', () => {
             expect(get_query_vals_for_key(mock_obj, 'cutoff')).toEqual(String(fakeCutoff));
             expect(get_query_vals_for_key(mock_obj, 'sortBy')).toEqual(String(fakeSortBy));
             expect(get_query_vals_for_key(mock_obj, 'q')).toEqual(fakeQ);
+        });
+    });
+
+    describe('get_xapian_uri (single-file)', () => {
+        beforeEach(() => {
+            let mock_shard_file = new MockShard.MockShardFile();
+            let mock_shard_record = new MockShard.MockShardRecord();
+
+            let mock_data = new MockShard.MockShardBlob();
+            mock_data.get_offset = (() => {
+                return 65;
+            });
+
+            mock_shard_record.data = mock_data;
+
+            mock_shard_file.find_record_by_hex_name.and.callFake((hex_name) => {
+                // SHA-1 hash of "xapian-db". See engine.js for details on this API.
+                if (hex_name == '209cc19d2a6d85dc097bb7950c2342b81b5c2dea')
+                    return mock_shard_record;
+                else
+                    return fail("Called with the wrong hex name");
+            });
+
+            mock_ekn_shard(mock_shard_file);
+        });
+
+        it('properly sets db_offset', () => {
+            let query_obj = new QueryObject.QueryObject({
+                query: 'tyrion',
+                order: QueryObject.QueryObjectOrder.ASCENDING,
+            });
+
+            let mock_uri = engine._get_xapian_query_uri(query_obj);
+            let mock_query_obj = mock_uri.get_query();
+            expect(get_query_vals_for_key(mock_query_obj, 'db_offset')).toEqual('65');
         });
     });
 
@@ -419,6 +461,8 @@ describe('Knowledge Engine Module', () => {
             engine.get_object_by_id_finish.and.callFake(() => {
                 return requested_ids.shift();
             });
+
+            mock_ekn_shard();
         });
 
         it('sends requests', () => {
@@ -554,6 +598,10 @@ describe('Knowledge Engine Module', () => {
     });
 
     describe('get_fixed_query', () => {
+        beforeEach(() => {
+            mock_ekn_shard();
+        });
+
         it('should set the stopword-free-query property of a query object', (done) => {
             let mock_correction = {
                 'stopWordCorrectedQuery': 'a query with no stop words',
@@ -583,6 +631,7 @@ describe('Knowledge Engine Module', () => {
         beforeEach(() => {
             mock_ekn_version(engine, 1);
             fake_get_fixed_query();
+            mock_ekn_shard();
         });
 
         describe('get_objects_by_query', () => {

@@ -26,6 +26,14 @@ const _XB_QUERY_ENDPOINT = '/query';
 const _XB_FIX_ENDPOINT = '/fix';
 
 /**
+ * Constant: XAPIAN_DB_RECORD
+ *
+ * The name record in a shard file that contains the Xapian DB in the data
+ * portion. The given SHA-1 is simply a hash of the string "xapian-db".
+ */
+const XAPIAN_DB_RECORD = GLib.compute_checksum_for_string(GLib.ChecksumType.SHA1, 'xapian-db', -1);
+
+/**
  * Class: Engine
  *
  * Engine represents the connection to the Knowledge Engine's API. It exposes
@@ -534,7 +542,17 @@ const Engine = Lang.Class({
         uri.set_port(this.port);
         uri.set_path(endpoint);
 
-        params.path = GLib.build_filenamev([this._content_path_from_domain(domain), this._DB_DIR]);
+        let shard_file = this._shard_file_from_domain(domain);
+        let record = shard_file.find_record_by_hex_name(XAPIAN_DB_RECORD);
+
+        // If we have the record, then use it. Otherwise, fall back to the
+        // old database directory.
+        if (record) {
+            params.path = this._shard_path_from_domain(domain);
+            params.db_offset = record.data.get_offset();
+        } else {
+            params.path = GLib.build_filenamev([this._content_path_from_domain(domain), this._DB_DIR]);
+        }
 
         uri.set_query(this._serialize_query(params));
         return uri;
