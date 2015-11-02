@@ -26,6 +26,14 @@ const _XB_QUERY_ENDPOINT = '/query';
 const _XB_FIX_ENDPOINT = '/fix';
 
 /**
+ * Constant: XAPIAN_DB_RECORD
+ *
+ * The name record in a shard file that contains the Xapian DB in the data
+ * portion. The given SHA-1 is simply a hash of the string "xapian-db".
+ */
+const XAPIAN_DB_RECORD = '209cc19d2a6d85dc097bb7950c2342b81b5c2dea';
+
+/**
  * Class: Engine
  *
  * Engine represents the connection to the Knowledge Engine's API. It exposes
@@ -465,27 +473,38 @@ const Engine = Lang.Class({
         return new Model(props, json_ld);
     },
 
-    _get_xapian_fix_uri: function (query_obj) {
+    _build_xapian_uri: function (endpoint, domain, params) {
         let host_uri = 'http://' + this.host;
         let uri = new Soup.URI(host_uri);
         uri.set_port(this.port);
-        uri.set_path(_XB_FIX_ENDPOINT);
+        uri.set_path(endpoint);
 
-        let uri_query_args = {
-            path: GLib.build_filenamev([this._content_path_from_domain(query_obj.domain), this._DB_DIR]),
-            q: query_obj.query,
-        };
+        let shard_file = this._shard_file_from_domain(domain);
+        let record = shard_file.find_record_by_hex_name(XAPIAN_DB_RECORD);
 
-        uri.set_query(this._serialize_query(uri_query_args));
+        // If we have the record, then use it. Otherwise, fall back to the
+        // old database directory.
+        if (record) {
+            params.path = this._shard_path_from_domain(domain);
+            params.db_offset = record.data.get_offset();
+        } else {
+            params.path = GLib.build_filenamev([this._content_path_from_domain(domain), this._DB_DIR]);
+        }
+
+        uri.set_query(this._serialize_query(params));
+        log(uri.to_string(true));
         return uri;
     },
 
-    _get_xapian_query_uri: function (query_obj) {
-        let host_uri = 'http://' + this.host;
-        let uri = new Soup.URI(host_uri);
-        uri.set_port(this.port);
-        uri.set_path(_XB_QUERY_ENDPOINT);
+    _get_xapian_fix_uri: function (query_obj) {
+        let uri_query_args = {
+            q: query_obj.query,
+        };
 
+        return this._build_xapian_uri(_XB_FIX_ENDPOINT, query_obj.domain, uri_query_args);
+    },
+
+    _get_xapian_query_uri: function (query_obj) {
         let uri_query_args = {
             collapse: query_obj.get_collapse_value(),
             cutoff: query_obj.get_cutoff(),
@@ -493,13 +512,11 @@ const Engine = Lang.Class({
             limit: query_obj.limit,
             offset: query_obj.offset,
             order: query_obj.order === QueryObject.QueryObjectOrder.ASCENDING ? 'asc' : 'desc',
-            path: GLib.build_filenamev([this._content_path_from_domain(query_obj.domain), this._DB_DIR]),
             q: query_obj.get_query_parser_string(),
             sortBy: query_obj.get_sort_value(),
         };
 
-        uri.set_query(this._serialize_query(uri_query_args));
-        return uri;
+        return this._build_xapian_uri(_XB_QUERY_ENDPOINT, query_obj.domain, uri_query_args);
     },
 
     _serialize_query: function (uri_query_args) {
