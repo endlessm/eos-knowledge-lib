@@ -64,6 +64,33 @@ describe('Half Arrangement', function () {
         // and the children cards should be 200x300.
         testSizingArrangementForDimensions(600, 200, Card.MinSize.C);
     });
+
+    describe('shows right number of featured cards', function () {
+        beforeEach(function () {
+            this.win = new Gtk.OffscreenWindow();
+            this.win.add(this.arrangement);
+            // In a 1000px wide arrangement, feature cards will be 500px wide
+            // and regular cards will be 333px wide.
+            this.win.set_size_request(1000, 500);
+        });
+
+        afterEach(function () {
+            this.win.destroy();
+        });
+
+        // With 1 packed cards, 1 should be featured.
+        testFeaturedCardsInArrangement(1, 1, 500, 0);
+        // With 2 packed cards, 2 should be featured.
+        testFeaturedCardsInArrangement(2, 2, 500, 0);
+        // With 3 packed cards, 3 should be featured.
+        testFeaturedCardsInArrangement(3, 3, 500, 0);
+        // With 4 packed cards, 4 should be featured.
+        testFeaturedCardsInArrangement(4, 4, 500, 0);
+        // With 5 packed cards, 2 should be featured.
+        testFeaturedCardsInArrangement(5, 2, 500, 333);
+        // With 10 packed cards, 2 should be featured.
+        testFeaturedCardsInArrangement(10, 2, 500, 333);
+    });
 });
 
 function testSizingArrangementForDimensions(arrangement_size, card_width, card_height) {
@@ -87,6 +114,24 @@ function testSizingArrangementForDimensions(arrangement_size, card_width, card_h
             expect(card.get_child_visible()).toBe(true);
             expect(card.get_allocation().width).toBe(card_width);
             expect(card.get_allocation().height).toBe(card_height);
+        });
+    });
+}
+
+function testFeaturedCardsInArrangement(total_cards, featured_cards, featured_size, non_featured_size) {
+    it('treats ' + featured_cards + ' cards as featured when ' + total_cards + ' cards are added', function () {
+        for (let i = 0; i < total_cards; i++) {
+            this.arrangement.add_card(new MockWidgets.TestBox(featured_size));
+        }
+        this.win.show_all();
+        this.win.queue_resize();
+        Utils.update_gui();
+
+        this.arrangement.get_cards().slice(0, featured_cards).forEach((card) => {
+            expect(card.get_allocation().width).toBe(featured_size);
+        });
+        this.arrangement.get_cards().slice(featured_cards).forEach((card) => {
+            expect(card.get_allocation().width).toBe(non_featured_size);
         });
     });
 }

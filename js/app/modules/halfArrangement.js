@@ -12,7 +12,7 @@ const Arrangement = imports.app.interfaces.arrangement;
 const Card = imports.app.interfaces.card;
 const Module = imports.app.interfaces.module;
 
-const HIGHLIGHTED_CARDS_COUNT = 2;
+const FEATURED_CARDS_PER_ROW = 2;
 const MAX_CARDS_PER_ROW = 4;
 const MIN_CARDS_PER_ROW = 3;
 const FOUR_CARDS_THRESHOLD = 4 * Card.MinSize.C;
@@ -58,6 +58,7 @@ const HalfArrangement = new Lang.Class({
         this._spacing = 0;
         this._small_card_mode = false;
         this._cards_per_row = MAX_CARDS_PER_ROW;
+        this._featured_cards_count = FEATURED_CARDS_PER_ROW;
 
         this.parent(props);
     },
@@ -79,53 +80,62 @@ const HalfArrangement = new Lang.Class({
     },
 
     vfunc_get_preferred_height: function () {
-        // Calculate space for featured card
-        let req_height = FEATURED_CARD_HEIGHT + this._spacing;
+        this._featured_cards_count = this._get_featured_cards_count();
+        // Calculate space for featured cards
+        let featured_rows = Math.ceil(this._featured_cards_count / FEATURED_CARDS_PER_ROW);
+        let req_height = this._get_size_with_spacing(FEATURED_CARD_HEIGHT, featured_rows);
 
         // Calculate space for support cards
-        let children_count = this.get_children().length - HIGHLIGHTED_CARDS_COUNT;
+        let children_count = this.get_children().length - this._featured_cards_count;
         let children_rows = Math.ceil(children_count / this._cards_per_row);
         let card_height = this._small_card_mode ? CARD_HEIGHT_MIN : CARD_HEIGHT_MAX;
         req_height += card_height * children_rows + this._spacing * (children_rows - 1);
-
         return [req_height, req_height];
     },
 
     vfunc_size_allocate: function (alloc) {
         this.parent(alloc);
 
+        this._featured_cards_count = this._get_featured_cards_count();
         let three_column_mode = alloc.width + (MIN_CARDS_PER_ROW * this._spacing) < FOUR_CARDS_THRESHOLD;
         this._small_card_mode = alloc.width < SMALL_CARDS_THRESHOLD;
         this._cards_per_row = (three_column_mode ? MIN_CARDS_PER_ROW : MAX_CARDS_PER_ROW);
 
-        let highlighted_width = Math.floor((alloc.width - this._spacing) / HIGHLIGHTED_CARDS_COUNT);
-        let spare_pixels = alloc.width - (highlighted_width * HIGHLIGHTED_CARDS_COUNT + this._spacing);
+        let featured_card_width = Math.floor((alloc.width - this._spacing) / FEATURED_CARDS_PER_ROW);
+        let spare_pixels = alloc.width - (featured_card_width * FEATURED_CARDS_PER_ROW + this._spacing);
 
         let x = alloc.x;
         let y = alloc.y;
+        let delta_x = featured_card_width + this._spacing + spare_pixels;
+        let delta_y = FEATURED_CARD_HEIGHT + this._spacing;
+
         let all_children = this.get_children();
 
         // Featured cards:
-        // Place two featured cards at top of arrangement
-        all_children.slice(0, HIGHLIGHTED_CARDS_COUNT).forEach((card) => {
+        // Place two featured cards per row at top of arrangement
+        all_children.slice(0, this._featured_cards_count).forEach((card, ix) => {
             let card_alloc = new Cairo.RectangleInt({
                 x: x,
                 y: y,
-                width: highlighted_width,
+                width: featured_card_width,
                 height: FEATURED_CARD_HEIGHT,
             });
-
-            x += (highlighted_width + this._spacing + spare_pixels);
             card.size_allocate(card_alloc);
             card.set_child_visible(true);
+
+            if ((ix + 1) % FEATURED_CARDS_PER_ROW === 0) {
+                x = alloc.x;
+                y += delta_y;
+            } else {
+                x += delta_x;
+            }
         });
 
         x = alloc.x;
-        y += FEATURED_CARD_HEIGHT + this._spacing;
         let gutters_per_row = this._cards_per_row - 1;
         let card_width = Math.floor((alloc.width - gutters_per_row * this._spacing) / this._cards_per_row);
         let card_height = this._small_card_mode ? FEATURED_CARD_HEIGHT : CARD_HEIGHT_MAX;
-        let delta_x = card_width + this._spacing;
+        delta_x = card_width + this._spacing;
 
         // Calculate spare pixels
         // The floor operation we do above may lead us to have 1..3 spare pixels
@@ -133,7 +143,7 @@ const HalfArrangement = new Lang.Class({
 
         // Child cards
         // Place rest of cards below the featured cards, in as many rows as needed
-        all_children.slice(HIGHLIGHTED_CARDS_COUNT).forEach((card, ix) => {
+        all_children.slice(this._featured_cards_count).forEach((card, ix) => {
             let card_alloc = new Cairo.RectangleInt({
                 x: x,
                 y: y,
@@ -187,5 +197,13 @@ const HalfArrangement = new Lang.Class({
         if (column >= num_gutters - Math.floor(spare_pixels / 2))
             return 1;
         return 0;
+    },
+
+    _get_featured_cards_count: function () {
+        return this.get_children().length > 4 ? FEATURED_CARDS_PER_ROW : this.get_children().length;
+    },
+
+    _get_size_with_spacing: function (size, count) {
+        return size * count + this._spacing * (count - 1);
     },
 });
