@@ -29,6 +29,7 @@
     <file compressed="true">data/templates/article.mst</file>
     <file compressed="true">data/templates/css/embedly.css</file>
     <file compressed="true">data/templates/css/reader.css</file>
+    <file compressed="true">data/templates/css/reader2.css</file>
     <file compressed="true">data/templates/css/wikihow.css</file>
     <file compressed="true">data/templates/css/wikimedia.css</file>
     <file>data/templates/images/noise.png</file>

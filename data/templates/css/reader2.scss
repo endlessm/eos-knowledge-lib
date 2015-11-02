@@ -1,0 +1,161 @@
+html {
+    background-color: white;
+    background-image: none;
+}
+
+* {
+    font-family: Lato;
+}
+
+.mw-body {
+    padding: 0;
+
+    .eos-article-title {
+        text-align: center;
+        background-color: #f6f6f6;
+        padding: 40px;
+        margin-top: 0px;
+
+        h1 {
+            font-weight: bold;
+            color: #044a80;
+            font-size: 43px;
+            line-height: 60px;
+        }
+    }
+
+    .infobox, .thumb, .mbox-small, .tright, .floatright, .vertical-navbox,
+    table[align="right"] {
+        margin: 0px 10px 20px 20px;
+        clear: right;
+        float: right;
+        /* Override !important rule in wikimedia.scss which is probably
+        overriding an !important rule in a style attribute */
+        width: 33% !important;
+    }
+}
+
+#inside-content {
+    $page-margin: 62px;
+    padding: 30px $page-margin;
+
+    font-size: 18px;
+    color: #999999;
+    line-height: 30px;
+
+    h2, h3, h4, h5, h6 {
+        font-weight: bold;
+        color: #4b4b4b;
+        margin-top: 30px;
+        margin-bottom: 15px;
+        text-transform: none;
+    }
+
+    h2 {
+        font-size: 32px;
+        line-height: 45px;
+    }
+
+    h3 {
+        font-size: 24px;
+    }
+
+    a {
+        color: #49bde3;
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+
+    .disclaimer p {
+        color: #999999;
+        margin-top: 15px;
+        font-size: 14px;
+        line-height: normal;
+        width: auto;
+    }
+
+    /* last <hr> is the separator between content and disclaimer */
+    hr:last-of-type {
+        border: 0;
+        margin-top: 50px;
+        height: 1px;
+        background-color: #cccccc;
+    }
+
+    .infobox {
+        color: #666666;
+        box-shadow: none;
+        line-height: normal;
+
+        th:only-child,
+        caption {
+            line-height: 18px;
+            margin-bottom: 10px;
+
+            /* Some rules need to override Wikipedia's hardcoded style attribute
+            on the element */
+            background-color: transparent !important;
+            font-weight: normal !important;
+            font-size: 18px !important;
+        }
+
+        /* Select primary cell of an infobox eigendata pair */
+        tr > th:first-child:not(:only-child),
+        tr > td:first-child:not(:only-child) {
+            text-transform: uppercase;
+            font-weight: normal;
+            font-size: 12px;
+            line-height: 12px;
+            text-align: left;
+            border-right: 0px; /* Get rid of spacing between infobox pairs */
+
+            /* Some rules need to override Wikipedia's hardcoded style attribute
+            on the element */
+            background-color: #e7eeee !important;
+            padding: 10px !important;
+        }
+
+        /* Select secondary cell(s) of an infobox eigendata pair */
+        th ~ td,
+        td:first-child ~ td {
+            font-size: 12px;
+            line-height: 12px;
+            border-left: 0px; /* Get rid of spacing between infobox pairs */
+
+            /* Some rules need to override Wikipedia's hardcoded style attribute
+            on the element */
+            background-color: #f6f6f6 !important;
+            padding: 10px !important;
+        }
+    }
+
+    /* Style floating images. This works fine for images outside of infoboxes.
+    The structure of images in infoboxes is so inconsistent in Wikipedia pages
+    that this will be inadequate to catch everything. In particular, the border
+    around the image and caption as a whole will not show up, as often the
+    captions are cousin elements inside an unclassed toplevel div. We try the
+    best we can anyway. */
+    .thumb,
+    td .eos-image-link image {
+        border: 0px !important; /* Ugh, override !important rule in wikimedia.scss */
+        box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.25);
+
+        &:hover, &:active {
+            outline: 1px solid #49bde3;
+        }
+
+        &:active {
+            box-shadow: none;
+        }
+    }
+
+    .thumbcaption,
+    td .eos-image-link + * {
+        font-size: 14px;
+        color: #044a80;
+        padding: 10px;
+        text-align: center;
+        line-height: normal;
+    }
+}
