@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2015-10-20 01:55+0000\n"
-"PO-Revision-Date: 2015-10-20 01:55+0000\n"
+"POT-Creation-Date: 2015-10-27 01:55+0000\n"
+"PO-Revision-Date: 2015-10-27 01:55+0000\n"
 "Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/es/)\n"
 "MIME-Version: 1.0\n"
@@ -20,10 +20,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: es\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-
-#: eosknowledgeprivate/ekn-hello.c:36
-msgid "Hello C world!"
-msgstr "¡Hola Mundo C!"
 
 #: data/widgets/backCover.ui:21
 msgid "Did you like this issue?"
@@ -42,6 +38,10 @@ msgstr "PDF"
 msgid "Archive"
 msgstr "Archivo"
 
+#: data/widgets/sideMenuTemplate.ui:72 js/app/modules/homePageATemplate.js:46
+msgid "HOME"
+msgstr "INICIO"
+
 #: data/widgets/suggestedArticlesModule.ui:18
 msgid "You might be interested in..."
 msgstr ""
@@ -54,7 +54,7 @@ msgstr ""
 #. to be substituted in code. Please make sure to leave the
 #. curly braces around any words that have them and DO NOT
 #. translate words inside curly braces.
-#: js/app/articleHTMLRenderer.js:48
+#: js/app/articleHTMLRenderer.js:75
 msgid ""
 "This page contains content from {original-link}, available under a {license-"
 "link} license."
@@ -62,7 +62,7 @@ msgstr "Esta página contiene contenido de {original-link}, disponible bajo una 
 
 #. TRANSLATORS: Replace this with a link to the homepage of
 #. wikiHow in your language.
-#: js/app/articleHTMLRenderer.js:55
+#: js/app/articleHTMLRenderer.js:82
 msgid "http://wikihow.com"
 msgstr "http://es.wikihow.com"
 
@@ -70,28 +70,28 @@ msgstr "http://es.wikihow.com"
 #. to be substituted in code. Please make sure to leave the
 #. curly braces around any words that have them and DO NOT
 #. translate words inside curly braces.
-#: js/app/articleHTMLRenderer.js:60
+#: js/app/articleHTMLRenderer.js:87
 msgid ""
 "See {wikihow-article-link} for more details, videos, pictures and "
 "attribution. Courtesy of {wikihow-link}, where anyone can easily learn how "
 "to do anything."
 msgstr "Ve {wikihow-article-link} para más detalles, videos, fotos y atribuciones. Por cortesía de {wikihow-link}, donde cualquier persona puede fácilmente aprender cómo hacer cualquier cosa."
 
-#: js/app/articleHTMLRenderer.js:137
+#: js/app/articleHTMLRenderer.js:158
 msgid "Copy"
 msgstr "Copiar"
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
-#: js/app/articleHTMLRenderer.js:156
+#: js/app/articleHTMLRenderer.js:176
 msgid "Content taken from {blog-link}."
 msgstr "Contenido tomado de {blog-link}."
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
-#: js/app/articleHTMLRenderer.js:161
+#: js/app/articleHTMLRenderer.js:181
 msgid "Content courtesy of {blog-link}. Used with kind permission."
 msgstr "Contenido por cortesía de {blog-link}. Usado con permiso generoso."
 
@@ -99,38 +99,49 @@ msgstr "Contenido por cortesía de {blog-link}. Usado con permiso generoso."
 #. is going to be substituted in code. Please make sure that your
 #. translation contains both {blog-link} and {license-link} and they are not
 #. translated.
-#: js/app/articleHTMLRenderer.js:169
+#: js/app/articleHTMLRenderer.js:189
 msgid "Content courtesy of {blog-link}, licensed under {license-link}."
 msgstr "Contenido por cortesía de {blog-link}, bajo la licencia {license-link}."
 
-#: js/app/modules/aisleInteraction.js:815
+#: js/app/modules/aisleInteraction.js:809
 msgid "View the license in your browser"
 msgstr "Ve la licencia en tu navegador"
 
-#: js/app/modules/aisleInteraction.js:953
-#: js/app/modules/aisleInteraction.js:960
+#: js/app/modules/aisleInteraction.js:941
+#: js/app/modules/aisleInteraction.js:948
 msgid "Oops!"
 msgstr "¡Uy!"
 
-#: js/app/modules/aisleInteraction.js:954
+#: js/app/modules/aisleInteraction.js:942
 msgid ""
 "We could not find this magazine!\n"
 "Please try again after restarting your computer."
 msgstr "¡No pudimos encontrar esta revista!\nPor favor intenta de nuevo después de reiniciar tu computadora."
 
-#: js/app/modules/aisleInteraction.js:961
+#: js/app/modules/aisleInteraction.js:949
 msgid ""
 "There was an error loading that page.\n"
 "Try another one or try again after restarting your computer."
 msgstr "Hubo un error al cargar esa página.\nPor favor intenta con otra o intenta de nuevo después de reiniciar tu computadora."
 
+#: js/app/modules/contextBanner.js:49 js/app/modules/contextBanner.js:57
+msgid "Highlights"
+msgstr ""
+
+#. TRANSLATORS: %d will be replaced with the number of
+#. search results and %s will be replaced with the text the
+#. user searched for. Make sure to keep the %d and %s tokens in
+#. your translation.
+#: js/app/modules/contextBanner.js:73
+#, javascript-format
+msgid "%d result for “%s”"
+msgid_plural "%d results for “%s”"
+msgstr[0] ""
+msgstr[1] ""
+
 #: js/app/modules/homePageATemplate.js:38
 msgid "SEE ALL CATEGORIES"
 msgstr "VER TODAS LAS CATEGORÍAS"
-
-#: js/app/modules/homePageATemplate.js:46
-msgid "HOME"
-msgstr "INICIO"
 
 #: js/app/modules/readerCard.js:60
 #, javascript-format

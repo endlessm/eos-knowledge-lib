@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: eos-knowledge 0.4.0\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-"
 "inc\n"
-"POT-Creation-Date: 2015-10-27 01:55+0000\n"
+"POT-Creation-Date: 2015-11-03 02:54+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -36,7 +36,16 @@ msgstr ""
 msgid "Archive"
 msgstr ""
 
-#: data/widgets/sideMenuTemplate.ui:72 js/app/modules/homePageATemplate.js:46
+#: data/widgets/sequenceCard.ui:21
+msgid "Next Article"
+msgstr ""
+
+#: data/widgets/sequenceCard.ui:59
+msgid "Previous Article"
+msgstr ""
+
+#: data/widgets/sideMenuTemplate.ui:96
+#: js/app/modules/hamburgerBasementTemplate.js:48
 msgid "HOME"
 msgstr ""
 
@@ -44,7 +53,7 @@ msgstr ""
 msgid "You might be interested in..."
 msgstr ""
 
-#: data/widgets/suggestedCategoriesModule.ui:18
+#: data/widgets/suggestedCategoriesModule.ui:19
 msgid "Browse Categories"
 msgstr ""
 
@@ -101,22 +110,22 @@ msgstr ""
 msgid "Content courtesy of {blog-link}, licensed under {license-link}."
 msgstr ""
 
-#: js/app/modules/aisleInteraction.js:809
+#: js/app/modules/aisleInteraction.js:807
 msgid "View the license in your browser"
 msgstr ""
 
-#: js/app/modules/aisleInteraction.js:941
-#: js/app/modules/aisleInteraction.js:948
+#: js/app/modules/aisleInteraction.js:939
+#: js/app/modules/aisleInteraction.js:946
 msgid "Oops!"
 msgstr ""
 
-#: js/app/modules/aisleInteraction.js:942
+#: js/app/modules/aisleInteraction.js:940
 msgid ""
 "We could not find this magazine!\n"
 "Please try again after restarting your computer."
 msgstr ""
 
-#: js/app/modules/aisleInteraction.js:949
+#: js/app/modules/aisleInteraction.js:947
 msgid ""
 "There was an error loading that page.\n"
 "Try another one or try again after restarting your computer."
@@ -137,7 +146,7 @@ msgid_plural "%d results for “%s”"
 msgstr[0] ""
 msgstr[1] ""
 
-#: js/app/modules/homePageATemplate.js:38
+#: js/app/modules/hamburgerBasementTemplate.js:40
 msgid "SEE ALL CATEGORIES"
 msgstr ""
 
@@ -208,11 +217,11 @@ msgstr ""
 #. have them and DO NOT translate words inside curly braces. Also, note: the
 #. "and" is used to join together the names of authors of a blog post. For
 #. example: "Jane Austen and Henry Miller and William Clifford"
-#: js/app/utils.js:77
+#: js/app/utils.js:79
 msgid "by {author}"
 msgstr ""
 
-#: js/app/utils.js:77
+#: js/app/utils.js:79
 msgid "and"
 msgstr ""
 
