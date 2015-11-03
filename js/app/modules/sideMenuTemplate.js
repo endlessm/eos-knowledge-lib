@@ -115,7 +115,7 @@ const SideMenuTemplate = new Lang.Class({
     },
 
     _on_motion: function (widget, event) {
-        let [got_coords, x] = event.get_coords();
+        let [got_coords, x] = event.get_root_coords();
         if (!got_coords)
             return Gdk.EVENT_PROPAGATE;
 
