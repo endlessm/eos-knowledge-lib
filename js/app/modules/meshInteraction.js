@@ -234,41 +234,13 @@ const MeshInteraction = new Lang.Class({
             switch (item.page_type) {
                 case this.SEARCH_PAGE:
                     dispatcher.dispatch({
-                        action_type: Actions.SEARCH_STARTED,
-                        query: item.query,
-                    });
-                    dispatcher.dispatch({
                         action_type: Actions.SHOW_SEARCH_PAGE,
                     });
-                    this._refresh_article_results(item, (success) => {
-                        if (!success) {
-                            dispatcher.dispatch({
-                                action_type: Actions.SEARCH_FAILED,
-                                query: item.query,
-                                error: new Error('Search failed for unknown reason'),
-                            });
-                            dispatcher.dispatch({
-                                action_type: Actions.SHOW_SEARCH_PAGE,
-                            });
-                            return;
-                        }
-                        dispatcher.dispatch({
-                            action_type: Actions.SEARCH_READY,
-                            query: item.query,
-                        });
-                    });
                     search_text = item.query;
+                    this._update_search_results(item);
                     break;
                 case this.SECTION_PAGE:
-                    dispatcher.dispatch({
-                        action_type: Actions.SHOW_SET,
-                        model: item.model,
-                    });
-                    this._refresh_article_results(item, () => {
-                        dispatcher.dispatch({
-                            action_type: Actions.SET_READY,
-                            model: item.model,
-                        });
+                    this._update_set_results(item, () => {
                         dispatcher.dispatch({
                             action_type: Actions.SHOW_SECTION_PAGE,
                         });
@@ -451,62 +423,89 @@ const MeshInteraction = new Lang.Class({
         this._history_presenter.set_current_item(HistoryItem.HistoryItem.new_from_object(item));
     },
 
-    // Callback is called with a boolean argument; true if the search was
-    // successful (even if no results), false if there was an error
-    _refresh_article_results: function (item, callback) {
-        let query_obj = null;
-        if (item.page_type === this.SECTION_PAGE) {
-            query_obj = new QueryObject.QueryObject({
-                tags: item.model.child_tags,
-                limit: RESULTS_SIZE,
-            });
-        } else if (item.query) {
-            query_obj = new QueryObject.QueryObject({
-                query: item.query,
-                limit: RESULTS_SIZE,
-            });
-        } else {
-            printerr('No way to query for this history item.');
-            callback(false);
+    _update_search_results: function (item) {
+        let query_obj = new QueryObject.QueryObject({
+            query: item.query,
+            limit: RESULTS_SIZE,
+        });
+        if (this._current_article_results_item === item)
             return;
-        }
-
-        if (this._current_article_results_item === item) {
-            callback(true);
-            return;
-        }
         this._current_article_results_item = item;
 
+        let dispatcher = Dispatcher.get_default();
+        dispatcher.dispatch({
+            action_type: Actions.SEARCH_STARTED,
+            query: item.query,
+        });
         Engine.get_default().get_objects_by_query(query_obj, null, (engine, task) => {
             let results, get_more_results_query;
             try {
                 [results, get_more_results_query] = engine.get_objects_by_query_finish(task);
             } catch (error) {
                 logError(error);
-                callback(false);
+                dispatcher.dispatch({
+                    action_type: Actions.SEARCH_FAILED,
+                    query: item.query,
+                    error: new Error('Search failed for unknown reason'),
+                });
                 return;
             }
             this._get_more_results_query = get_more_results_query;
 
-            let dispatcher = Dispatcher.get_default();
-            if (item.page_type === this.SEARCH_PAGE) {
-                dispatcher.dispatch({
-                    action_type: Actions.CLEAR_SEARCH,
-                });
-                dispatcher.dispatch({
-                    action_type: Actions.APPEND_SEARCH,
-                    models: results,
-                });
-            } else {
-                dispatcher.dispatch({
-                    action_type: Actions.CLEAR_ITEMS,
-                });
-                dispatcher.dispatch({
-                    action_type: Actions.APPEND_ITEMS,
-                    models: results,
-                });
+            dispatcher.dispatch({
+                action_type: Actions.CLEAR_SEARCH,
+            });
+            dispatcher.dispatch({
+                action_type: Actions.APPEND_SEARCH,
+                models: results,
+            });
+            dispatcher.dispatch({
+                action_type: Actions.SEARCH_READY,
+                query: item.query,
+            });
+        });
+    },
+
+    _update_set_results: function (item, callback) {
+        let query_obj = new QueryObject.QueryObject({
+            tags: item.model.child_tags,
+            limit: RESULTS_SIZE,
+        });
+
+        if (this._current_article_results_item === item) {
+            callback();
+            return;
+        }
+        this._current_article_results_item = item;
+
+        let dispatcher = Dispatcher.get_default();
+        dispatcher.dispatch({
+            action_type: Actions.SHOW_SET,
+            model: item.model,
+        });
+        Engine.get_default().get_objects_by_query(query_obj, null, (engine, task) => {
+            let results, get_more_results_query;
+            try {
+                [results, get_more_results_query] = engine.get_objects_by_query_finish(task);
+            } catch (error) {
+                logError(error);
+                callback();
+                return;
             }
-            callback(true);
+            this._get_more_results_query = get_more_results_query;
+
+            dispatcher.dispatch({
+                action_type: Actions.CLEAR_ITEMS,
+            });
+            dispatcher.dispatch({
+                action_type: Actions.APPEND_ITEMS,
+                models: results,
+            });
+            dispatcher.dispatch({
+                action_type: Actions.SET_READY,
+                model: item.model,
+            });
+            callback();
         });
     },
 
