@@ -27,6 +27,14 @@ const DocumentCard = new Lang.Interface({
             'The view used to show article content.',
             GObject.ParamFlags.READABLE,
             Gtk.Widget),
+        /**
+         * Property: custom-css
+         * Name of a custom CSS file to apply to web content
+         */
+        'custom-css': GObject.ParamSpec.string('custom-css', 'Custom CSS',
+            'Name of a custom CSS file to apply to web content',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            ''),
     },
 
     Signals: {

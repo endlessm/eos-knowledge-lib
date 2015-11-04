@@ -48,6 +48,8 @@ const KnowledgeDocumentCard = new Lang.Class({
         'title-capitalization': GObject.ParamSpec.override('title-capitalization',
             Card.Card),
         'content-view': GObject.ParamSpec.override('content-view', DocumentCard.DocumentCard),
+        'custom-css': GObject.ParamSpec.override('custom-css',
+            DocumentCard.DocumentCard),
 
         /**
          * Property: show-top-title
@@ -276,6 +278,8 @@ const KnowledgeDocumentCard = new Lang.Class({
 
         webview.renderer.enable_scroll_manager = this.show_toc;
         webview.renderer.show_title = !this.show_toc;
+        if (this.custom_css)
+            webview.renderer.set_custom_css_files([this.custom_css]);
 
         // If we ever want previous/next cards to work with PDFs we'll need to
         // generalize the show panel logic here.

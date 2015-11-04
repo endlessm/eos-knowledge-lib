@@ -39,6 +39,8 @@ const ReaderDocumentCard = new Lang.Class({
         'title-capitalization': GObject.ParamSpec.override('title-capitalization',
             Card.Card),
         'content-view': GObject.ParamSpec.override('content-view', DocumentCard.DocumentCard),
+        'custom-css': GObject.ParamSpec.override('custom-css',
+            DocumentCard.DocumentCard),
 
         /**
          * Property: info-notice
@@ -63,6 +65,9 @@ const ReaderDocumentCard = new Lang.Class({
         this.info_notice.valign = Gtk.Align.START;
         this.info_notice.halign = Gtk.Align.CENTER;
         this.info_notice.margin_top = _PROGRESS_LABEL_MARGIN + _DECORATIVE_BAR_HEIGHT;
+
+        if (!(props.custom_css || props['custom-css'] || props.customCss))
+            props.custom_css = 'reader.css';
 
         this.parent(props);
 
@@ -148,7 +153,8 @@ const ReaderDocumentCard = new Lang.Class({
 
     _get_webview: function (article_model) {
         let webview = this._create_webview();
-        webview.renderer.set_custom_css_files(['reader.css']);
+        if (this.custom_css)
+            webview.renderer.set_custom_css_files([this.custom_css]);
 
         webview.connect('decide-policy', (view, decision, type)  => {
             if (type !== WebKit2.PolicyDecisionType.NAVIGATION_ACTION)
