@@ -119,6 +119,7 @@ const HighlightsModule = new Lang.Class({
     _populate_arrangements: function (tags_to_load) {
         this._clear_items();
 
+        let all_models = [];
         let process_results = (engine, res) => {
             let models, get_more;
             try {
@@ -128,10 +129,12 @@ const HighlightsModule = new Lang.Class({
                 return;
             }
 
-            if (get_more)
-                engine.get_objects_by_query(get_more, null, process_results);
-
-            models.forEach(this._add_item, this);
+            all_models = all_models.concat(models);
+            if (get_more === null) {
+                all_models.forEach(this._add_item, this);
+                return;
+            }
+            engine.get_objects_by_query(get_more, null, process_results);
         };
         let query = new QueryObject.QueryObject({
             limit: this.RESULTS_BATCH_SIZE,

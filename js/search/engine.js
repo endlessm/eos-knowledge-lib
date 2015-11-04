@@ -240,9 +240,14 @@ const Engine = Lang.Class({
                         return;
                     }
 
-                    let more_results_query = QueryObject.QueryObject.new_from_object(query_obj, {
-                        offset: json_ld.numResults + json_ld.offset,
-                    });
+                    let more_results_query;
+                    if (json_ld.results.length < query_obj.limit) {
+                        more_results_query = null;
+                    } else {
+                        more_results_query = QueryObject.QueryObject.new_from_object(query_obj, {
+                            offset: json_ld.numResults + json_ld.offset,
+                        });
+                    }
 
                     // We need to instantiate models for our results asynchronously.
                     // We'll set up a function here to resolve a result, which
