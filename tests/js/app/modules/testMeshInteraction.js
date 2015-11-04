@@ -1,5 +1,6 @@
 // Copyright 2015 Endless Mobile, Inc.
 
+const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
@@ -357,6 +358,44 @@ describe('Mesh interaction', function () {
                 text: 'bar',
             });
             expect(cancel_spy).toHaveBeenCalled();
+        });
+    });
+
+    describe('on article selected', function () {
+        let article_model;
+        beforeEach(function () {
+            article_model = new ContentObjectModel.ContentObjectModel({
+                ekn_id: 'ekn://foo/bar',
+            });
+        });
+
+        it('shows the article page', function () {
+            dispatcher.dispatch({
+                action_type: Actions.ITEM_CLICKED,
+                model: article_model,
+            });
+            expect(dispatcher.last_payload_with_type(Actions.SHOW_ARTICLE_PAGE)).toBeDefined();
+        });
+
+        it('shows the article without animation when first loading the page', function () {
+            dispatcher.dispatch({
+                action_type: Actions.ITEM_CLICKED,
+                model: article_model,
+            });
+            let payload = dispatcher.last_payload_with_type(Actions.SHOW_ARTICLE);
+            expect(payload.model).toBe(article_model);
+            expect(payload.animation_type).toBe(EosKnowledgePrivate.LoadingAnimationType.NONE);
+        });
+
+        it('loads the article list', function () {
+            engine.get_objects_by_query_finish.and.returnValue([[ article_model ], null]);
+            dispatcher.dispatch({
+                action_type: Actions.AUTOCOMPLETE_CLICKED,
+                model: article_model,
+                text: 'foo',
+            });
+            let payload = dispatcher.last_payload_with_type(Actions.APPEND_SEARCH);
+            expect(payload.models).toEqual([ article_model ]);
         });
     });
 

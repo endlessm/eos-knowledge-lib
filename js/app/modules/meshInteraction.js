@@ -211,6 +211,7 @@ const MeshInteraction = new Lang.Class({
                 });
                 break;
             case this.ARTICLE_PAGE:
+                this._update_article_list();
                 dispatcher.dispatch({
                     action_type: Actions.SHOW_ARTICLE,
                     model: item.model,
@@ -305,16 +306,36 @@ const MeshInteraction = new Lang.Class({
         this._history_presenter.set_current_item(HistoryItem.HistoryItem.new_from_object(item));
     },
 
+    _update_article_list: function () {
+        this._history_presenter.search_backwards(0, (item) => {
+            if (item.query) {
+                this._update_search_results(item);
+                return true;
+            }
+            if (item.page_type === this.SECTION_PAGE) {
+                this._update_set_results(item);
+                return true;
+            }
+            return false;
+        });
+        this._update_highlight();
+    },
+
     _update_search_results: function (item) {
         let query_obj = new QueryObject.QueryObject({
             query: item.query,
             limit: RESULTS_SIZE,
         });
-        if (this._current_search_query === item.query)
+        let dispatcher = Dispatcher.get_default();
+        if (this._current_search_query === item.query) {
+            dispatcher.dispatch({
+                action_type: Actions.SEARCH_READY,
+                query: item.query,
+            });
             return;
+        }
         this._current_search_query = item.query;
 
-        let dispatcher = Dispatcher.get_default();
         dispatcher.dispatch({
             action_type: Actions.SEARCH_STARTED,
             query: item.query,
@@ -346,6 +367,7 @@ const MeshInteraction = new Lang.Class({
                 action_type: Actions.APPEND_SEARCH,
                 models: results,
             });
+            this._update_highlight();
             dispatcher.dispatch({
                 action_type: Actions.SEARCH_READY,
                 query: item.query,
@@ -370,13 +392,7 @@ const MeshInteraction = new Lang.Class({
                 return;
 
             let dispatcher = Dispatcher.get_default();
-            let item = this._history_presenter.history_model.current_item;
-            if (item.page_type === this.ARTICLE_PAGE) {
-                dispatcher.dispatch({
-                    action_type: Actions.HIGHLIGHT_ITEM,
-                    model: item.model,
-                });
-            }
+            this._update_highlight();
             dispatcher.dispatch({
                 action_type: Actions.APPEND_SEARCH,
                 models: results,
@@ -387,19 +403,23 @@ const MeshInteraction = new Lang.Class({
         this._more_search_results_query = null;
     },
 
-    _update_set_results: function (item, callback) {
+    _update_set_results: function (item, callback=() => {}) {
         let query_obj = new QueryObject.QueryObject({
             tags: item.model.child_tags,
             limit: RESULTS_SIZE,
         });
 
+        let dispatcher = Dispatcher.get_default();
         if (this._current_set_id === item.model.ekn_id) {
+            dispatcher.dispatch({
+                action_type: Actions.SET_READY,
+                model: item.model,
+            });
             callback();
             return;
         }
         this._current_set_id = item.model.ekn_id;
 
-        let dispatcher = Dispatcher.get_default();
         dispatcher.dispatch({
             action_type: Actions.SHOW_SET,
             model: item.model,
@@ -427,6 +447,7 @@ const MeshInteraction = new Lang.Class({
                 action_type: Actions.APPEND_ITEMS,
                 models: results,
             });
+            this._update_highlight();
             dispatcher.dispatch({
                 action_type: Actions.SET_READY,
                 model: item.model,
@@ -451,13 +472,7 @@ const MeshInteraction = new Lang.Class({
                 return;
 
             let dispatcher = Dispatcher.get_default();
-            let item = this._history_presenter.history_model.current_item;
-            if (item.page_type === this.ARTICLE_PAGE) {
-                dispatcher.dispatch({
-                    action_type: Actions.HIGHLIGHT_ITEM,
-                    model: item.model,
-                });
-            }
+            this._update_highlight();
             dispatcher.dispatch({
                 action_type: Actions.APPEND_ITEMS,
                 models: results,
@@ -466,6 +481,16 @@ const MeshInteraction = new Lang.Class({
         });
         // Null the query to avoid double loading.
         this._more_set_results_query = null;
+    },
+
+    _update_highlight: function () {
+        let item = this._history_presenter.history_model.current_item;
+        if (item.page_type === this.ARTICLE_PAGE) {
+            Dispatcher.get_default().dispatch({
+                action_type: Actions.HIGHLIGHT_ITEM,
+                model: item.model,
+            });
+        }
     },
 
     /*
