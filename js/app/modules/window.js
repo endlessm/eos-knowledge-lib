@@ -369,13 +369,19 @@ const Window = new Lang.Class({
                 this._stack.transition_type = Gtk.StackTransitionType.SLIDE_LEFT;
             } else if (is_on_center(old_page)) {
                 this._stack.transition_type = Gtk.StackTransitionType.CROSSFADE;
+            } else if (this.template_type === 'B') {
+                this._stack.transition_type = Gtk.StackTransitionType.CROSSFADE;
             } else {
                 this._stack.transition_type = Gtk.StackTransitionType.SLIDE_RIGHT;
             }
             nav_back_visible = true;
             this._set_background_position_style(StyleClasses.BACKGROUND_CENTER);
         } else {
-            this._stack.transition_type = Gtk.StackTransitionType.SLIDE_LEFT;
+            if (this.template_type === 'B') {
+                this._stack.transition_type = Gtk.StackTransitionType.CROSSFADE;
+            } else {
+                this._stack.transition_type = Gtk.StackTransitionType.SLIDE_LEFT;
+            }
             nav_back_visible = true;
             this._set_background_position_style(StyleClasses.BACKGROUND_RIGHT);
         }
