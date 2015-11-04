@@ -29,8 +29,8 @@ const MockDispatcher = new Lang.Class({
         if (payload) {
             for (let id in this._listeners)
                 this._listeners[id](payload);
-            this._process_queue();
             this.dispatched_payloads.push(payload);
+            this._process_queue();
         }
         this._processing = false;
     },
