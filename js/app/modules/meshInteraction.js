@@ -78,6 +78,11 @@ const MeshInteraction = new Lang.Class({
             history_model: new EosKnowledgePrivate.HistoryModel(),
         });
 
+        this._current_set_id = null;
+        this._current_search_query = '';
+        this._set_cancellable = new Gio.Cancellable();
+        this._search_cancellable = new Gio.Cancellable();
+
         let dispatcher = Dispatcher.get_default();
         dispatcher.register((payload) => {
             switch(payload.action_type) {
@@ -102,11 +107,6 @@ const MeshInteraction = new Lang.Class({
                 }
             });
         } else {
-            this._current_set_id = null;
-            this._current_search_query = '';
-            this._set_cancellable = new Gio.Cancellable();
-            this._search_cancellable = new Gio.Cancellable();
-
             // Connect signals
             this._window.connect('search-focused', this._on_search_focus.bind(this));
 
@@ -220,8 +220,11 @@ const MeshInteraction = new Lang.Class({
                     });
                     return;
                 case this.SEARCH_PAGE:
-                    this._do_search_in_view(item);
-                    return;
+                    dispatcher.dispatch({
+                        action_type: Actions.SHOW_SEARCH_PAGE,
+                    });
+                    this._update_search_results(item);
+                    break;
                 case this.HOME_PAGE:
                     dispatcher.dispatch({
                         action_type: Actions.SHOW_HOME_PAGE,
@@ -262,50 +265,6 @@ const MeshInteraction = new Lang.Class({
         dispatcher.dispatch({
             action_type: Actions.SET_SEARCH_TEXT,
             text: search_text,
-        });
-    },
-
-    _do_search_in_view: function (item) {
-        Dispatcher.get_default().dispatch({
-            action_type: Actions.SEARCH_STARTED,
-            query: item.query,
-        });
-
-        Dispatcher.get_default().dispatch({
-            action_type: Actions.SHOW_SEARCH_PAGE,
-        });
-        this._window.set_focus_child(null);
-        let query_obj = new QueryObject.QueryObject({
-            query: item.query,
-        });
-        Engine.get_default().get_objects_by_query(query_obj, null, (engine, task) => {
-            let results, get_more_results_query;
-            let dispatcher = Dispatcher.get_default();
-
-            dispatcher.dispatch({
-                action_type: Actions.CLEAR_SEARCH,
-            });
-
-            try {
-                [results, get_more_results_query] = engine.get_objects_by_query_finish(task);
-            } catch (error) {
-                logError(error);
-                dispatcher.dispatch({
-                    action_type: Actions.SEARCH_FAILED,
-                    query: item.query,
-                    error: error,
-                });
-                return;
-            }
-
-            dispatcher.dispatch({
-                action_type: Actions.APPEND_SEARCH,
-                models: results,
-            });
-            dispatcher.dispatch({
-                action_type: Actions.SEARCH_READY,
-                query: item.query,
-            });
         });
     },
 
