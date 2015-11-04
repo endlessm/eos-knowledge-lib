@@ -94,7 +94,7 @@ const SearchModule = new Lang.Class({
             this._no_results_grid.add(this._suggested_categories_module);
 
         this._message_title.justify = this._message_subtitle.justify = this.message_justify;
-        this._message_title.valign = this._message_subtitle.valign = this.message_valign;
+        this._no_results_grid.valign = this.message_valign;
         this._message_title.halign = this._message_subtitle.halign = this.message_halign;
 
         let dispatcher = Dispatcher.get_default();
