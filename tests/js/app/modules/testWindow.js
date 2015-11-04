@@ -57,6 +57,7 @@ describe('Window', function () {
         factory.add_named_mock('home-page', Minimal.MinimalPage);
         factory.add_named_mock('search-page', Minimal.MinimalPage);
         factory.add_named_mock('article-page', Minimal.MinimalPage);
+        factory.add_named_mock('all-sets-page', Minimal.MinimalPage);
         factory.add_named_mock('lightbox', Minimal.MinimalLightbox);
         factory.add_named_mock('navigation', Minimal.MinimalNavigation);
         factory.add_named_mock('brand-screen', Minimal.MinimalPage);
@@ -67,6 +68,7 @@ describe('Window', function () {
             'section-page': 'section-page',
             'search-page': 'search-page',
             'article-page': 'article-page',
+            'all-sets-page': 'all-sets-page',
             'navigation': 'navigation',
             'lightbox': 'lightbox',
             'search': 'top-bar-search',
@@ -77,6 +79,7 @@ describe('Window', function () {
             'section-page': 'section-page',
             'search-page': 'real-search-box',
             'article-page': 'article-page',
+            'all-sets-page': 'all-sets-page',
             'navigation': null,
             'lightbox': null,
             'search': 'top-bar-search',
@@ -112,6 +115,7 @@ describe('Window', function () {
             let section_page = factory.get_created_named_mocks('section-page')[0];
             let search_page = factory.get_created_named_mocks('search-page')[0];
             let article_page = factory.get_created_named_mocks('article-page')[0];
+            let all_sets_page = factory.get_created_named_mocks('all-sets-page')[0];
             view.show_page(home_page);
             expect(view.get_visible_page()).toBe(home_page);
             view.show_page(section_page);
@@ -120,6 +124,8 @@ describe('Window', function () {
             expect(view.get_visible_page()).toBe(search_page);
             view.show_page(article_page);
             expect(view.get_visible_page()).toBe(article_page);
+            view.show_page(all_sets_page);
+            expect(view.get_visible_page()).toBe(all_sets_page);
         });
 
         it('starts on home page', function () {
@@ -204,6 +210,14 @@ describe('Window', function () {
                 action_type: Actions.BRAND_SCREEN_DONE,
             });
             expect(view.get_visible_page()).toBe(home_page);
+        });
+
+        it('switches to the categories page after the show-all-sets page is dispatched', function () {
+            let all_sets_page = factory.get_created_named_mocks('all-sets-page')[0];
+            dispatcher.dispatch({
+                action_type: Actions.SHOW_ALL_SETS_PAGE,
+            });
+            expect(view.get_visible_page()).toBe(all_sets_page);
         });
 
         it('still packs the pages even without a lightbox and navigation module', function () {

@@ -222,6 +222,15 @@ describe('Buffet interaction', function () {
         });
     });
 
+    describe('when browse categories title is clicked', function () {
+        it('changes to the all categories page', function () {
+            dispatcher.dispatch({
+                action_type: Actions.ALL_SETS_CLICKED,
+            });
+            expect(dispatcher.last_payload_with_type(Actions.SHOW_ALL_SETS_PAGE)).toBeDefined();
+        });
+    });
+
     describe('when a search query is entered', function () {
         beforeEach(function () {
             // Simulate batches of results

@@ -11,6 +11,8 @@ const Dispatcher = imports.app.dispatcher;
 const Module = imports.app.interfaces.module;
 const StyleClasses = imports.app.styleClasses;
 
+const Utils = imports.app.utils;
+
 /**
  * Class: SuggestedCategoriesModule
  * A module that displays all suggested articles as cards in an arrangement.
@@ -59,7 +61,7 @@ const SuggestedCategoriesModule = new Lang.Class({
     },
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/suggestedCategoriesModule.ui',
-    InternalChildren: [ 'title' ],
+    InternalChildren: [ 'title-button' ],
 
     _init: function (props={}) {
         this.parent(props);
@@ -67,9 +69,17 @@ const SuggestedCategoriesModule = new Lang.Class({
         this.add(this._arrangement);
 
         if (!this.show_title) {
-            this._title.no_show_all = true;
-            this._title.hide();
+            this._title_button.no_show_all = true;
+            this._title_button.hide();
         }
+
+        this._title_button.connect('clicked', () => {
+            Dispatcher.get_default().dispatch({
+                action_type: Actions.ALL_SETS_CLICKED,
+            });
+        });
+
+        Utils.set_hand_cursor_on_widget(this._title_button);
 
         Dispatcher.get_default().register((payload) => {
             switch(payload.action_type) {
