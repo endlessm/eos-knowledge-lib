@@ -92,56 +92,41 @@ const MeshInteraction = new Lang.Class({
                 case Actions.ARTICLE_LINK_CLICKED:
                     this.load_uri(payload.ekn_id);
                     break;
+                case Actions.NAV_BACK_CLICKED:
+                    this._on_back();
+                    break;
+                case Actions.SET_CLICKED:
+                    this._history_presenter.set_current_item_from_props({
+                        page_type: this.SECTION_PAGE,
+                        model: payload.model,
+                    });
+                    break;
+                case Actions.ITEM_CLICKED:
+                case Actions.SEARCH_CLICKED:
+                    this._history_presenter.set_current_item_from_props({
+                        page_type: this.ARTICLE_PAGE,
+                        model: payload.model,
+                    });
+                    break;
+                case Actions.NEED_MORE_ITEMS:
+                    this._load_more_set_results();
+                    break;
+                case Actions.NEED_MORE_SEARCH:
+                    this._load_more_search_results();
+                    break;
+                case Actions.AUTOCOMPLETE_CLICKED:
+                    this._history_presenter.set_current_item_from_props({
+                        page_type: this.ARTICLE_PAGE,
+                        model: payload.model,
+                        query: payload.text,
+                    });
+                    break;
             }
         });
 
-        if (this.template_type === 'encyclopedia') {
-            dispatcher.register((payload) => {
-                switch(payload.action_type) {
-                    case Actions.AUTOCOMPLETE_CLICKED:
-                        this.load_uri(payload.model.ekn_id);
-                        break;
-                    case Actions.SEARCH_CLICKED:
-                        this.load_model(payload.model);
-                        break;
-                }
-            });
-        } else {
+        if (this.template_type !== 'encyclopedia') {
             // Connect signals
             this._window.connect('search-focused', this._on_search_focus.bind(this));
-
-            dispatcher.register((payload) => {
-                switch(payload.action_type) {
-                    case Actions.NAV_BACK_CLICKED:
-                        this._on_back();
-                        break;
-                    case Actions.SET_CLICKED:
-                        this._history_presenter.set_current_item_from_props({
-                            page_type: this.SECTION_PAGE,
-                            model: payload.model,
-                        });
-                        break;
-                    case Actions.ITEM_CLICKED:
-                    case Actions.SEARCH_CLICKED:
-                        this._history_presenter.set_current_item_from_props({
-                            page_type: this.ARTICLE_PAGE,
-                            model: payload.model,
-                        });
-                        break;
-                    case Actions.NEED_MORE_ITEMS:
-                        this._load_more_set_results();
-                        break;
-                    case Actions.NEED_MORE_SEARCH:
-                        this._load_more_search_results();
-                        break;
-                    case Actions.AUTOCOMPLETE_CLICKED:
-                        this._history_presenter.set_current_item_from_props({
-                            page_type: this.ARTICLE_PAGE,
-                            model: payload.model,
-                            query: payload.text,
-                        });
-                        break;                }
-            });
         }
 
         this._window.connect('key-press-event', this._on_key_press_event.bind(this));
