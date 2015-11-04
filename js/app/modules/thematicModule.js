@@ -59,7 +59,7 @@ const ThematicModule = new Lang.Class({
 
         Dispatcher.get_default().register((payload) => {
             switch (payload.action_type) {
-                case Actions.SET_CLICKED:
+                case Actions.SHOW_SET:
                     this._show_set(payload.model);
                     break;
                 case Actions.CLEAR_SETS:
@@ -125,15 +125,18 @@ const ThematicModule = new Lang.Class({
             visible: false,
         });
         card.connect('clicked', () => {
+            let sets = this._arrangements.map((arrangement) =>
+                this._headers_by_arrangement[arrangement].model);
             Dispatcher.get_default().dispatch({
                 action_type: Actions.SET_CLICKED,
                 model: model,
+                context: sets,
             });
         });
         return card;
     },
 
-    _create_article_card: function (model) {
+    _add_article_card: function (model, arrangement) {
         let card = this.create_submodule('card-type', {
             model: model,
         });
@@ -141,9 +144,10 @@ const ThematicModule = new Lang.Class({
             Dispatcher.get_default().dispatch({
                 action_type: Actions.ITEM_CLICKED,
                 model: model,
+                context: arrangement.get_cards().map((card) => card.model),
             });
         });
-        return card;
+        arrangement.add_card(card);
     },
 
     _add_set: function (model) {
@@ -170,7 +174,7 @@ const ThematicModule = new Lang.Class({
         this._arrangements.forEach(arrangement => {
             if (model.tags.some(tag =>
                 arrangement.accepted_child_tags.indexOf(tag) > -1)) {
-                arrangement.add_card(this._create_article_card(model));
+                this._add_article_card(model, arrangement);
             }
         });
     },

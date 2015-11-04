@@ -73,6 +73,7 @@ const ItemGroupModule = new Lang.Class({
             Dispatcher.get_default().dispatch({
                 action_type: Actions.ITEM_CLICKED,
                 model: model,
+                context: this._arrangement.get_cards().map((card) => card.model),
             });
         });
         this._arrangement.add_card(card);

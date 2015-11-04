@@ -68,15 +68,29 @@ const ArticleStackModule = new Lang.Class({
             model: payload.model,
         };
         if (payload.previous_model) {
-            document_card_props.previous_card = new SequenceCard.SequenceCard({
+            let card = new SequenceCard.SequenceCard({
                 model: payload.previous_model,
                 sequence: SequenceCard.Sequence.PREVIOUS,
             });
+            document_card_props.previous_card = card;
+            card.connect('clicked', () => {
+                Dispatcher.get_default().dispatch({
+                    action_type: Actions.PREVIOUS_DOCUMENT_CLICKED,
+                    model: card.model,
+                });
+            });
         }
         if (payload.next_model) {
-            document_card_props.next_card = new SequenceCard.SequenceCard({
+            let card = new SequenceCard.SequenceCard({
                 model: payload.next_model,
                 sequence: SequenceCard.Sequence.NEXT,
+            });
+            document_card_props.next_card = card;
+            card.connect('clicked', () => {
+                Dispatcher.get_default().dispatch({
+                    action_type: Actions.NEXT_DOCUMENT_CLICKED,
+                    model: card.model,
+                });
             });
         }
         let document_card = this.create_submodule('card-type', document_card_props);

@@ -68,6 +68,7 @@ const SearchBox = new Lang.Class({
                 action_type: Actions.AUTOCOMPLETE_CLICKED,
                 text: this.text,
                 model: model,
+                context: this._autocomplete_models,
             });
         });
     },

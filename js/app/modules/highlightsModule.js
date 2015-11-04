@@ -57,6 +57,7 @@ const HighlightsModule = new Lang.Class({
         this.parent(props);
 
         this._featured_arrangement = this.create_submodule('large-arrangement');
+        this._sets = [];
         this._set_arrangements = [];
 
         this.add(this._featured_arrangement);
@@ -96,12 +97,13 @@ const HighlightsModule = new Lang.Class({
             Dispatcher.get_default().dispatch({
                 action_type: Actions.SET_CLICKED,
                 model: model,
+                context: this._sets,
             });
         });
         return card;
     },
 
-    _create_article_card: function (model) {
+    _add_article_card: function (model, arrangement) {
         let card = this.create_submodule('card-type', {
             model: model,
         });
@@ -109,9 +111,10 @@ const HighlightsModule = new Lang.Class({
             Dispatcher.get_default().dispatch({
                 action_type: Actions.ITEM_CLICKED,
                 model: model,
+                context: arrangement.get_cards().map((card) => card.model),
             });
         });
-        return card;
+        arrangement.add_card(card);
     },
 
     // Load all articles referenced by the shown arrangements in order to
@@ -154,16 +157,17 @@ const HighlightsModule = new Lang.Class({
         arrangement.accepted_child_tags = model.child_tags.slice();
         arrangement.show_all();
         this.add(arrangement);
+        this._sets.push(model);
         this._set_arrangements.push(arrangement);
     },
 
     _add_item: function (model) {
-        this._featured_arrangement.add_card(this._create_article_card(model));
+        this._add_article_card(model, this._featured_arrangement);
 
         this._set_arrangements.forEach(arrangement => {
             if (model.tags.some(tag =>
                 arrangement.accepted_child_tags.indexOf(tag) !== -1)) {
-                arrangement.add_card(this._create_article_card(model));
+                this._add_article_card(model, arrangement);
             }
         });
     },
@@ -171,6 +175,7 @@ const HighlightsModule = new Lang.Class({
     _clear_all: function () {
         this.get_children().filter(child => child !== this._featured_arrangement)
             .forEach(this.remove, this);
+        this._sets = [];
         this._set_arrangements = [];
     },
 

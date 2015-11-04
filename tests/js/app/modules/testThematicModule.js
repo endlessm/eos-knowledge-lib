@@ -106,7 +106,7 @@ describe('Thematic module', function () {
             describe('a featured set', function () {
                 beforeEach(function () {
                     dispatcher.dispatch({
-                        action_type: Actions.SET_CLICKED,
+                        action_type: Actions.SHOW_SET,
                         model: featured_models[0],
                     });
                     Utils.update_gui();
@@ -174,8 +174,12 @@ describe('Thematic module', function () {
                         dispatcher.reset();
                         headers[0].emit('clicked');
                         Utils.update_gui();
-                        expect(dispatcher.last_payload_with_type(Actions.SET_CLICKED))
-                            .toEqual(jasmine.objectContaining({ model: set_models[0] }));
+                        let payload = dispatcher.last_payload_with_type(Actions.SET_CLICKED);
+                        let matcher = jasmine.objectContaining({
+                            model: set_models[0],
+                            context: set_models,
+                        });
+                        expect(payload).toEqual(matcher);
                     });
 
                     it('on a card in an arrangement, dispatches item-clicked', function () {
@@ -191,7 +195,7 @@ describe('Thematic module', function () {
             describe('a non-featured set', function () {
                 beforeEach(function () {
                     dispatcher.dispatch({
-                        action_type: Actions.SET_CLICKED,
+                        action_type: Actions.SHOW_SET,
                         model: non_featured_models[2],
                     });
                     Utils.update_gui();
@@ -210,7 +214,7 @@ describe('Thematic module', function () {
             describe('a featured set that leaves empty arrangements', function () {
                 beforeEach(function () {
                     dispatcher.dispatch({
-                        action_type: Actions.SET_CLICKED,
+                        action_type: Actions.SHOW_SET,
                         model: featured_models[1],
                     });
                 });
@@ -230,7 +234,7 @@ describe('Thematic module', function () {
             describe('a non-featured set that leaves empty arrangements', function () {
                 beforeEach(function () {
                     dispatcher.dispatch({
-                        action_type: Actions.SET_CLICKED,
+                        action_type: Actions.SHOW_SET,
                         model: non_featured_models[3],
                     });
                 });

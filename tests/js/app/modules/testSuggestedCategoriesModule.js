@@ -98,4 +98,20 @@ describe('Suggested categories module', function () {
         });
         expect(arrangement.get_cards().length).toBe(2);
     });
+
+    it('dispatches set clicked', function () {
+        let model = new ContentObjectModel.ContentObjectModel();
+        dispatcher.dispatch({
+            action_type: Actions.APPEND_SETS,
+            models: [ model ],
+        });
+        arrangement.get_cards()[0].emit('clicked');
+        Utils.update_gui();
+        let payload = dispatcher.last_payload_with_type(Actions.SET_CLICKED);
+        let matcher = jasmine.objectContaining({
+            model: model,
+            context: [ model ],
+        });
+        expect(payload).toEqual(matcher);
+    });
 });

@@ -1,6 +1,7 @@
 const Gtk = imports.gi.Gtk;
 
-Gtk.init(null);
+const Utils = imports.tests.utils;
+Utils.register_gresource();
 
 const Actions = imports.app.actions;
 const ContentObjectModel = imports.search.contentObjectModel;
@@ -9,6 +10,8 @@ const Minimal = imports.tests.minimal;
 const MockDispatcher = imports.tests.mockDispatcher;
 const MockFactory = imports.tests.mockFactory;
 const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
+
+Gtk.init(null);
 
 describe('Suggested articles module', function () {
     let suggestions, arrangement, factory, dispatcher;
@@ -78,5 +81,21 @@ describe('Suggested articles module', function () {
         });
         expect(arrangement.get_cards().length).toBe(3);
         expect(factory.get_created_named_mocks('home-card').length).toBe(6);
+    });
+
+    it('dispatches item clicked', function () {
+        let model = new ContentObjectModel.ContentObjectModel();
+        dispatcher.dispatch({
+            action_type: Actions.APPEND_SUGGESTED_ARTICLES,
+            models: [ model ],
+        });
+        arrangement.get_cards()[0].emit('clicked');
+        Utils.update_gui();
+        let payload = dispatcher.last_payload_with_type(Actions.ITEM_CLICKED);
+        let matcher = jasmine.objectContaining({
+            model: model,
+            context: [ model ],
+        });
+        expect(payload).toEqual(matcher);
     });
 });

@@ -10,6 +10,7 @@ const Minimal = imports.tests.minimal;
 const MockDispatcher = imports.tests.mockDispatcher;
 const MockFactory = imports.tests.mockFactory;
 const SetGroupModule = imports.app.modules.setGroupModule;
+const Utils = imports.tests.utils;
 const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 
 describe('Set group module', function () {
@@ -80,5 +81,21 @@ describe('Set group module', function () {
         });
         expect(arrangement.get_cards().length).toBe(3);
         expect(factory.get_created_named_mocks('home-card').length).toBe(6);
+    });
+
+    it('dispatches set clicked', function () {
+        let model = new ContentObjectModel.ContentObjectModel();
+        dispatcher.dispatch({
+            action_type: Actions.APPEND_SETS,
+            models: [ model ],
+        });
+        arrangement.get_cards()[0].emit('clicked');
+        Utils.update_gui();
+        let payload = dispatcher.last_payload_with_type(Actions.SET_CLICKED);
+        let matcher = jasmine.objectContaining({
+            model: model,
+            context: [ model ],
+        });
+        expect(payload).toEqual(matcher);
     });
 });

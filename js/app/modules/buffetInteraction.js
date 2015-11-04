@@ -129,6 +129,16 @@ const BuffetInteraction = new Lang.Class({
                     this._history_presenter.set_current_item_from_props({
                         page_type: Pages.ARTICLE,
                         model: payload.model,
+                        context: payload.context,
+                    });
+                    break;
+                case Actions.PREVIOUS_DOCUMENT_CLICKED:
+                case Actions.NEXT_DOCUMENT_CLICKED:
+                    let item = this._history_presenter.history_model.current_item;
+                    this._history_presenter.set_current_item_from_props({
+                        page_type: Pages.ARTICLE,
+                        model: payload.model,
+                        context: item.context,
                     });
                     break;
             }
@@ -262,11 +272,19 @@ const BuffetInteraction = new Lang.Class({
                 search_text = item.query;
                 break;
             case Pages.ARTICLE:
-                dispatcher.dispatch({
+                let payload = {
                     action_type: Actions.SHOW_ARTICLE,
                     model: item.model,
                     animation_type: EosKnowledgePrivate.LoadingAnimation.NONE,
-                });
+                };
+                if (item.context) {
+                    let index = item.context.indexOf(item.model);
+                    if (index > 0)
+                        payload.previous_model = item.context[index - 1];
+                    if (index < item.context.length - 1)
+                        payload.next_model = item.context[index + 1];
+                }
+                dispatcher.dispatch(payload);
                 dispatcher.dispatch({
                     action_type: Actions.SHOW_ARTICLE_PAGE,
                 });
