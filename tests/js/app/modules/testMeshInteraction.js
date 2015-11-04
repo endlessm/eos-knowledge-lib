@@ -213,7 +213,9 @@ describe('Mesh interaction', function () {
     describe('on set click', function () {
         let article_model, set_model;
         beforeEach(function () {
-            article_model = new ContentObjectModel.ContentObjectModel();
+            article_model = new ContentObjectModel.ContentObjectModel({
+                ekn_id: 'ekn://foo/bar',
+            });
             set_model = new SetObjectModel.SetObjectModel();
             engine.get_objects_by_query_finish.and.returnValue([[article_model], null]);
         });

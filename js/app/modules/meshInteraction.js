@@ -102,7 +102,8 @@ const MeshInteraction = new Lang.Class({
                 }
             });
         } else {
-            this._current_article_results_item = null;
+            this._current_set_id = null;
+            this._current_search_query = '';
 
             // Connect signals
             this._window.connect('search-focused', this._on_search_focus.bind(this));
@@ -428,9 +429,9 @@ const MeshInteraction = new Lang.Class({
             query: item.query,
             limit: RESULTS_SIZE,
         });
-        if (this._current_article_results_item === item)
+        if (this._current_search_query === item.query)
             return;
-        this._current_article_results_item = item;
+        this._current_search_query = item.query;
 
         let dispatcher = Dispatcher.get_default();
         dispatcher.dispatch({
@@ -472,11 +473,11 @@ const MeshInteraction = new Lang.Class({
             limit: RESULTS_SIZE,
         });
 
-        if (this._current_article_results_item === item) {
+        if (this._current_set_id === item.model.ekn_id) {
             callback();
             return;
         }
-        this._current_article_results_item = item;
+        this._current_set_id = item.model.ekn_id;
 
         let dispatcher = Dispatcher.get_default();
         dispatcher.dispatch({
