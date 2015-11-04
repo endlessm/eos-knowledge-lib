@@ -9,6 +9,8 @@ const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
 const Module = imports.app.interfaces.module;
 const SequenceCard = imports.app.modules.sequenceCard;
+const WebviewTooltip = imports.app.widgets.webviewTooltip;
+const WebviewTooltipPresenter = imports.app.webviewTooltipPresenter;
 
 /**
  * Class: ArticleStackModule
@@ -43,6 +45,8 @@ const ArticleStackModule = new Lang.Class({
         props.visible = true;
         props.transition_duration = this.CONTENT_TRANSITION_DURATION;
         this.parent(props);
+
+        this._webview_tooltip_presenter = new WebviewTooltipPresenter.WebviewTooltipPresenter();
 
         Dispatcher.get_default().register((payload) => {
             switch(payload.action_type) {
@@ -125,6 +129,8 @@ const ArticleStackModule = new Lang.Class({
                 logError(error);
             }
         });
+        this._webview_tooltip_presenter.connect_tooltip_to_card(document_card, null,
+            WebviewTooltip.TYPE_UNDECORATED_LINK);
     },
 
     get_slot_names: function () {

@@ -5,6 +5,7 @@ Utils.register_gresource();
 
 const Actions = imports.app.actions;
 const ArticleObjectModel = imports.search.articleObjectModel;
+const AppUtils = imports.app.utils;
 const ArticleStackModule = imports.app.modules.articleStackModule;
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
 const MockDispatcher = imports.tests.mockDispatcher;
@@ -37,6 +38,7 @@ describe('Article Page A', function () {
             title: 'bar',
         });
 
+        spyOn(AppUtils, 'get_web_plugin_dbus_name').and.returnValue("test0");
         module = new ArticleStackModule.ArticleStackModule({
             factory: factory,
             factory_name: 'article-stack-module',
