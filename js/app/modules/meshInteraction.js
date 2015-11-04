@@ -127,10 +127,10 @@ const MeshInteraction = new Lang.Class({
                         });
                         break;
                     case Actions.NEED_MORE_ITEMS:
-                        this._load_more_results(Actions.APPEND_ITEMS);
+                        this._load_more_set_results();
                         break;
                     case Actions.NEED_MORE_SEARCH:
-                        this._load_more_results(Actions.APPEND_SEARCH);
+                        this._load_more_search_results();
                         break;
                     case Actions.AUTOCOMPLETE_CLICKED:
                         this._history_presenter.set_current_item_from_props({
@@ -347,40 +347,6 @@ const MeshInteraction = new Lang.Class({
         return str;
     },
 
-    _load_more_results: function (action_type) {
-        if (!this._get_more_results_query)
-            return;
-        Engine.get_default().get_objects_by_query(this._get_more_results_query, null, (engine, task) => {
-            let results, get_more_results_query;
-            try {
-                [results, get_more_results_query] = engine.get_objects_by_query_finish(task);
-            } catch (error) {
-                logError(error);
-                return;
-            }
-
-            if (results.length > 0) {
-                let dispatcher = Dispatcher.get_default();
-                let item = this._history_presenter.history_model.current_item;
-                if (item.page_type === this.ARTICLE_PAGE) {
-                    dispatcher.dispatch({
-                        action_type: Actions.HIGHLIGHT_ITEM,
-                        model: item.model,
-                    });
-                }
-                dispatcher.dispatch({
-                    action_type: action_type,
-                    models: results,
-                });
-            }
-            this._get_more_results_query = get_more_results_query;
-        });
-        // Null the query we just sent to the engine, when results come back
-        // we'll have a new more results query. But this keeps us from double
-        // loading this query.
-        this._get_more_results_query = null;
-    },
-
     _load_document_card_in_view: function (item, is_going_back) {
         let dispatcher = Dispatcher.get_default();
         let animation_type = EosKnowledgePrivate.LoadingAnimationType.FORWARDS_NAVIGATION;
@@ -451,7 +417,7 @@ const MeshInteraction = new Lang.Class({
                 });
                 return;
             }
-            this._get_more_results_query = get_more_results_query;
+            this._more_search_results_query = get_more_results_query;
 
             dispatcher.dispatch({
                 action_type: Actions.CLEAR_SEARCH,
@@ -465,6 +431,38 @@ const MeshInteraction = new Lang.Class({
                 query: item.query,
             });
         });
+    },
+
+    _load_more_search_results: function () {
+        if (!this._more_search_results_query)
+            return;
+        Engine.get_default().get_objects_by_query(this._more_search_results_query, null, (engine, task) => {
+            let results, get_more_results_query;
+            try {
+                [results, get_more_results_query] = engine.get_objects_by_query_finish(task);
+            } catch (error) {
+                logError(error);
+                return;
+            }
+            if (!results)
+                return;
+
+            let dispatcher = Dispatcher.get_default();
+            let item = this._history_presenter.history_model.current_item;
+            if (item.page_type === this.ARTICLE_PAGE) {
+                dispatcher.dispatch({
+                    action_type: Actions.HIGHLIGHT_ITEM,
+                    model: item.model,
+                });
+            }
+            dispatcher.dispatch({
+                action_type: Actions.APPEND_SEARCH,
+                models: results,
+            });
+            this._more_search_results_query = get_more_results_query;
+        });
+        // Null the query to avoid double loading.
+        this._more_search_results_query = null;
     },
 
     _update_set_results: function (item, callback) {
@@ -493,7 +491,7 @@ const MeshInteraction = new Lang.Class({
                 callback();
                 return;
             }
-            this._get_more_results_query = get_more_results_query;
+            this._more_set_results_query = get_more_results_query;
 
             dispatcher.dispatch({
                 action_type: Actions.CLEAR_ITEMS,
@@ -508,6 +506,38 @@ const MeshInteraction = new Lang.Class({
             });
             callback();
         });
+    },
+
+    _load_more_set_results: function () {
+        if (!this._more_set_results_query)
+            return;
+        Engine.get_default().get_objects_by_query(this._more_set_results_query, null, (engine, task) => {
+            let results, get_more_results_query;
+            try {
+                [results, get_more_results_query] = engine.get_objects_by_query_finish(task);
+            } catch (error) {
+                logError(error);
+                return;
+            }
+            if (!results)
+                return;
+
+            let dispatcher = Dispatcher.get_default();
+            let item = this._history_presenter.history_model.current_item;
+            if (item.page_type === this.ARTICLE_PAGE) {
+                dispatcher.dispatch({
+                    action_type: Actions.HIGHLIGHT_ITEM,
+                    model: item.model,
+                });
+            }
+            dispatcher.dispatch({
+                action_type: Actions.APPEND_ITEMS,
+                models: results,
+            });
+            this._more_set_results_query = get_more_results_query;
+        });
+        // Null the query to avoid double loading.
+        this._more_set_results_query = null;
     },
 
     /*
