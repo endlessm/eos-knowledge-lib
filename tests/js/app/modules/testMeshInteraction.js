@@ -95,19 +95,6 @@ describe('Mesh interaction', function () {
             .toEqual(payloads[0].models.map((model) => model.title));
     });
 
-    it('switches to the correct section page when clicking a card on the home page', function () {
-        let model = new ContentObjectModel.ContentObjectModel({
-            title: 'An article in a section',
-        });
-        engine.get_objects_by_query_finish.and.returnValue([[ model ], null]);
-        dispatcher.dispatch({
-            action_type: Actions.SET_CLICKED,
-            model: new SetObjectModel.SetObjectModel(),
-        });
-        Utils.update_gui();
-        expect(dispatcher.last_payload_with_type(Actions.SHOW_SECTION_PAGE)).toBeDefined();
-    });
-
     it('dispatches app-launched on launch from desktop', function () {
         mesh.desktop_launch(0);
         Utils.update_gui();
@@ -221,6 +208,50 @@ describe('Mesh interaction', function () {
             action_type: Actions.NAV_BACK_CLICKED,
         });
         expect(dispatcher.last_payload_with_type(Actions.SHOW_HOME_PAGE)).toBeDefined();
+    });
+
+    describe('on set click', function () {
+        let article_model, set_model;
+        beforeEach(function () {
+            article_model = new ContentObjectModel.ContentObjectModel();
+            set_model = new SetObjectModel.SetObjectModel();
+            engine.get_objects_by_query_finish.and.returnValue([[article_model], null]);
+        });
+
+        it('shows the section page after engine query returns', function () {
+            engine.get_objects_by_query.and.stub();
+            dispatcher.dispatch({
+                action_type: Actions.SET_CLICKED,
+                model: set_model,
+            });
+            expect(dispatcher.last_payload_with_type(Actions.SHOW_SECTION_PAGE)).not.toBeDefined();
+            let callback = engine.get_objects_by_query.calls.mostRecent().args[2];
+            callback(engine);
+            expect(dispatcher.last_payload_with_type(Actions.SHOW_SECTION_PAGE)).toBeDefined();
+        });
+
+        it('shows the set', function () {
+            dispatcher.dispatch({
+                action_type: Actions.SET_CLICKED,
+                model: set_model,
+            });
+            let payload = dispatcher.last_payload_with_type(Actions.SHOW_SET);
+            expect(payload.model).toBe(set_model);
+        });
+
+        it('loads the set items from engine', function () {
+            dispatcher.dispatch({
+                action_type: Actions.SET_CLICKED,
+                model: set_model,
+            });
+            expect(dispatcher.has_payload_sequence([
+                Actions.CLEAR_ITEMS,
+                Actions.APPEND_ITEMS,
+                Actions.SET_READY
+            ])).toBe(true);
+            let payload = dispatcher.last_payload_with_type(Actions.APPEND_ITEMS);
+            expect(payload.models).toEqual([ article_model ]);
+        });
     });
 
     describe('search', function () {
