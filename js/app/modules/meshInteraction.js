@@ -204,63 +204,42 @@ const MeshInteraction = new Lang.Class({
         dispatcher.dispatch({
             action_type: Actions.HIDE_MEDIA,
         });
+        dispatcher.dispatch({
+            action_type: Actions.CLEAR_HIGHLIGHTED_ITEM,
+            model: item.model,
+        });
 
         let search_text = '';
-        if (this.template_type === 'encyclopedia') {
-            search_text = item.query;
-            switch (item.page_type) {
-                case this.ARTICLE_PAGE:
+        switch (item.page_type) {
+            case this.SEARCH_PAGE:
+                dispatcher.dispatch({
+                    action_type: Actions.SHOW_SEARCH_PAGE,
+                });
+                search_text = item.query;
+                this._update_search_results(item);
+                break;
+            case this.SECTION_PAGE:
+                this._update_set_results(item, () => {
                     dispatcher.dispatch({
-                        action_type: Actions.SHOW_ARTICLE,
-                        model: item.model,
-                        animation_type: EosKnowledgePrivate.LoadingAnimation.NONE,
+                        action_type: Actions.SHOW_SECTION_PAGE,
                     });
-                    dispatcher.dispatch({
-                        action_type: Actions.SHOW_ARTICLE_PAGE,
-                    });
-                    return;
-                case this.SEARCH_PAGE:
-                    dispatcher.dispatch({
-                        action_type: Actions.SHOW_SEARCH_PAGE,
-                    });
-                    this._update_search_results(item);
-                    break;
-                case this.HOME_PAGE:
-                    dispatcher.dispatch({
-                        action_type: Actions.SHOW_HOME_PAGE,
-                    });
-                    return;
-            }
-        } else {
-            dispatcher.dispatch({
-                action_type: Actions.CLEAR_HIGHLIGHTED_ITEM,
-                model: item.model,
-            });
-
-            switch (item.page_type) {
-                case this.SEARCH_PAGE:
-                    dispatcher.dispatch({
-                        action_type: Actions.SHOW_SEARCH_PAGE,
-                    });
-                    search_text = item.query;
-                    this._update_search_results(item);
-                    break;
-                case this.SECTION_PAGE:
-                    this._update_set_results(item, () => {
-                        dispatcher.dispatch({
-                            action_type: Actions.SHOW_SECTION_PAGE,
-                        });
-                    });
-                    break;
-                case this.ARTICLE_PAGE:
-                    this._load_document_card_in_view(item, is_going_back);
-                    break;
-                case this.HOME_PAGE:
-                    dispatcher.dispatch({
-                        action_type: Actions.SHOW_HOME_PAGE,
-                    });
-                    break;
-            }
+                });
+                break;
+            case this.ARTICLE_PAGE:
+                dispatcher.dispatch({
+                    action_type: Actions.SHOW_ARTICLE,
+                    model: item.model,
+                    animation_type: this._get_article_animation_type(item, is_going_back),
+                });
+                dispatcher.dispatch({
+                    action_type: Actions.SHOW_ARTICLE_PAGE,
+                });
+                break;
+            case this.HOME_PAGE:
+                dispatcher.dispatch({
+                    action_type: Actions.SHOW_HOME_PAGE,
+                });
+                break;
         }
         dispatcher.dispatch({
             action_type: Actions.SET_SEARCH_TEXT,
@@ -308,23 +287,13 @@ const MeshInteraction = new Lang.Class({
         return str;
     },
 
-    _load_document_card_in_view: function (item, is_going_back) {
-        let dispatcher = Dispatcher.get_default();
-        let animation_type = EosKnowledgePrivate.LoadingAnimationType.FORWARDS_NAVIGATION;
+    _get_article_animation_type: function (item, is_going_back) {
         let last_item = this._history_presenter.history_model.get_item(is_going_back ? 1 : -1);
-        if (!last_item || last_item.page_type !== this.ARTICLE_PAGE) {
-            animation_type = EosKnowledgePrivate.LoadingAnimationType.NONE;
-            dispatcher.dispatch({
-                action_type: Actions.SHOW_ARTICLE_PAGE,
-            });
-        } else if (is_going_back) {
-            animation_type = EosKnowledgePrivate.LoadingAnimationType.BACKWARDS_NAVIGATION;
-        }
-        dispatcher.dispatch({
-            action_type: Actions.SHOW_ARTICLE,
-            model: item.model,
-            animation_type: animation_type,
-        });
+        if (this.template_type === 'encyclopedia' || !last_item || last_item.page_type !== this.ARTICLE_PAGE)
+            return EosKnowledgePrivate.LoadingAnimationType.NONE;
+        if (is_going_back)
+            return EosKnowledgePrivate.LoadingAnimationType.BACKWARDS_NAVIGATION;
+        return EosKnowledgePrivate.LoadingAnimationType.FORWARDS_NAVIGATION;
     },
 
     _on_home_button_clicked: function (button) {
