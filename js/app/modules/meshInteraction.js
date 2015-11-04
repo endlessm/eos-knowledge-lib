@@ -104,6 +104,8 @@ const MeshInteraction = new Lang.Class({
         } else {
             this._current_set_id = null;
             this._current_search_query = '';
+            this._set_cancellable = new Gio.Cancellable();
+            this._search_cancellable = new Gio.Cancellable();
 
             // Connect signals
             this._window.connect('search-focused', this._on_search_focus.bind(this));
@@ -404,11 +406,16 @@ const MeshInteraction = new Lang.Class({
             action_type: Actions.SEARCH_STARTED,
             query: item.query,
         });
-        Engine.get_default().get_objects_by_query(query_obj, null, (engine, task) => {
+        this._search_cancellable.cancel();
+        this._search_cancellable.reset();
+        this._more_search_results_query = null;
+        Engine.get_default().get_objects_by_query(query_obj, this._search_cancellable, (engine, task) => {
             let results, get_more_results_query;
             try {
                 [results, get_more_results_query] = engine.get_objects_by_query_finish(task);
             } catch (error) {
+                if (error.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
+                    return;
                 logError(error);
                 dispatcher.dispatch({
                     action_type: Actions.SEARCH_FAILED,
@@ -436,11 +443,13 @@ const MeshInteraction = new Lang.Class({
     _load_more_search_results: function () {
         if (!this._more_search_results_query)
             return;
-        Engine.get_default().get_objects_by_query(this._more_search_results_query, null, (engine, task) => {
+        Engine.get_default().get_objects_by_query(this._more_search_results_query, this._search_cancellable, (engine, task) => {
             let results, get_more_results_query;
             try {
                 [results, get_more_results_query] = engine.get_objects_by_query_finish(task);
             } catch (error) {
+                if (error.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
+                    return;
                 logError(error);
                 return;
             }
@@ -482,11 +491,16 @@ const MeshInteraction = new Lang.Class({
             action_type: Actions.SHOW_SET,
             model: item.model,
         });
-        Engine.get_default().get_objects_by_query(query_obj, null, (engine, task) => {
+        this._set_cancellable.cancel();
+        this._set_cancellable.reset();
+        this._more_set_results_query = null;
+        Engine.get_default().get_objects_by_query(query_obj, this._set_cancellable, (engine, task) => {
             let results, get_more_results_query;
             try {
                 [results, get_more_results_query] = engine.get_objects_by_query_finish(task);
             } catch (error) {
+                if (error.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
+                    return;
                 logError(error);
                 callback();
                 return;
@@ -511,12 +525,13 @@ const MeshInteraction = new Lang.Class({
     _load_more_set_results: function () {
         if (!this._more_set_results_query)
             return;
-        Engine.get_default().get_objects_by_query(this._more_set_results_query, null, (engine, task) => {
+        Engine.get_default().get_objects_by_query(this._more_set_results_query, this._set_cancellable, (engine, task) => {
             let results, get_more_results_query;
             try {
                 [results, get_more_results_query] = engine.get_objects_by_query_finish(task);
             } catch (error) {
-                logError(error);
+                if (!error.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
+                    logError(error);
                 return;
             }
             if (!results)

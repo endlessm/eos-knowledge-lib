@@ -216,7 +216,9 @@ describe('Mesh interaction', function () {
             article_model = new ContentObjectModel.ContentObjectModel({
                 ekn_id: 'ekn://foo/bar',
             });
-            set_model = new SetObjectModel.SetObjectModel();
+            set_model = new SetObjectModel.SetObjectModel({
+                ekn_id: 'ekn://foo/set',
+            });
             engine.get_objects_by_query_finish.and.returnValue([[article_model], null]);
         });
 
@@ -253,6 +255,24 @@ describe('Mesh interaction', function () {
             ])).toBe(true);
             let payload = dispatcher.last_payload_with_type(Actions.APPEND_ITEMS);
             expect(payload.models).toEqual([ article_model ]);
+        });
+
+        it('cancels existing set queries', function () {
+            engine.get_objects_by_query.and.stub();
+            dispatcher.dispatch({
+                action_type: Actions.SET_CLICKED,
+                model: set_model,
+            });
+            let cancellable = engine.get_objects_by_query.calls.mostRecent().args[1];
+            let cancel_spy = jasmine.createSpy();
+            cancellable.connect(cancel_spy);
+            dispatcher.dispatch({
+                action_type: Actions.SET_CLICKED,
+                model: new SetObjectModel.SetObjectModel({
+                    ekn_id: 'ekn://foo/otherset',
+                }),
+            });
+            expect(cancel_spy).toHaveBeenCalled();
         });
     });
 
@@ -321,6 +341,22 @@ describe('Mesh interaction', function () {
                 action_type: Actions.SEARCH_FAILED,
                 query: query,
             }));
+        });
+
+        it('cancels existing search queries', function () {
+            engine.get_objects_by_query.and.stub();
+            dispatcher.dispatch({
+                action_type: Actions.SEARCH_TEXT_ENTERED,
+                text: query,
+            });
+            let cancellable = engine.get_objects_by_query.calls.mostRecent().args[1];
+            let cancel_spy = jasmine.createSpy();
+            cancellable.connect(cancel_spy);
+            dispatcher.dispatch({
+                action_type: Actions.SEARCH_TEXT_ENTERED,
+                text: 'bar',
+            });
+            expect(cancel_spy).toHaveBeenCalled();
         });
     });
 
