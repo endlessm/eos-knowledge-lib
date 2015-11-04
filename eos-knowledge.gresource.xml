@@ -120,6 +120,7 @@
     <file>js/app/modules/readerDocumentCard.js</file>
     <file>js/app/modules/readerWindow.js</file>
     <file>js/app/modules/scrollingTemplate.js</file>
+    <file>js/app/modules/searchAndItemModule.js</file>
     <file>js/app/modules/searchBannerModule.js</file>
     <file>js/app/modules/searchBox.js</file>
     <file>js/app/modules/searchModule.js</file>
