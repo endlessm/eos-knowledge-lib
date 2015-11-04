@@ -17,6 +17,7 @@ let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 const TYPE_EXTERNAL_LINK = 1;
 const TYPE_IN_ISSUE_LINK = 2;
 const TYPE_ARCHIVE_LINK = 3;
+const TYPE_UNDECORATED_LINK = 4;
 
 /**
  * Class: Reader.WebviewTooltip
@@ -35,13 +36,14 @@ const WebviewTooltip = new Lang.Class({
          *  - TYPE_EXTERNAL_LINK
          *  - TYPE_IN_ISSUE_LINK
          *  - TYPE_ARCHIVE_LINK
+         *  - TYPE_UNDECORATED_LINK
          *
          * Defaults to TYPE_EXTERNAL_LINK.
          */
         'type': GObject.ParamSpec.uint('type', 'Tooltip Type',
             'Type of the tooltip',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            this.TYPE_EXTERNAL_LINK, this.TYPE_ARCHIVE_LINK, this.TYPE_EXTERNAL_LINK),
+            this.TYPE_EXTERNAL_LINK, this.TYPE_UNDECORATED_LINK, this.TYPE_EXTERNAL_LINK),
 
         /**
          * Property: title
@@ -90,6 +92,9 @@ const WebviewTooltip = new Lang.Class({
                 break;
             case TYPE_ARCHIVE_LINK:
                 this._pack_archive_link_tooltip();
+                break;
+            case TYPE_UNDECORATED_LINK:
+                this._pack_undecorated_link_tooltip();
                 break;
         }
     },
@@ -165,5 +170,9 @@ const WebviewTooltip = new Lang.Class({
         grid.add(type_grid);
         grid.add(this._title_label);
         this.add(grid);
+    },
+
+    _pack_undecorated_link_tooltip: function () {
+        this.add(this._title_label);
     },
 });
