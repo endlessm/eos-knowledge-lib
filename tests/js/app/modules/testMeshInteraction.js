@@ -11,65 +11,19 @@ const Actions = imports.app.actions;
 const ContentObjectModel = imports.search.contentObjectModel;
 const MeshInteraction = imports.app.modules.meshInteraction;
 const Launcher = imports.app.interfaces.launcher;
-const Minimal = imports.tests.minimal;
 const MockDispatcher = imports.tests.mockDispatcher;
 const MockEngine = imports.tests.mockEngine;
 const MockFactory = imports.tests.mockFactory;
-const MockWidgets = imports.tests.mockWidgets;
 const SetObjectModel = imports.search.setObjectModel;
 
 Gtk.init(null);
 
-const MockHomePage = new Lang.Class({
-    Name: 'MockHomePage',
-    Extends: GObject.Object,
-    Signals: {
-        'search-entered': {
-            param_types: [GObject.TYPE_STRING],
-        },
-    },
-
-    _init: function () {
-        this.parent();
-        this.app_banner = {};
-        this._bottom = new MockWidgets.MockItemGroupModule();
-    },
-
-    connect: function (signal, handler) {
-        // Silently ignore signals that we aren't mocking
-        if (GObject.signal_lookup(signal, MockHomePage.$gtype) === 0)
-            return;
-        this.parent(signal, handler);
-    },
-});
-
 const MockView = new Lang.Class({
     Name: 'MockView',
     Extends: GObject.Object,
-    Signals: {
-        'back-clicked': {},
-        'forward-clicked': {},
-        'search-entered': {
-            param_types: [GObject.TYPE_STRING],
-        },
-    },
 
     _init: function () {
         this.parent();
-        let connectable_object = {
-            connect: function () {},
-        };
-        this.section_page = connectable_object;
-        this.section_page.remove_all_cards = function () {};
-        this.section_page.append_cards = function () {};
-        this.home_page = new MockHomePage();
-        this.home_page.tab_button = {};
-        this.categories_page = connectable_object;
-        this.categories_page.tab_button = {};
-        this.article_page = connectable_object;
-        this.search_page = connectable_object;
-        this.no_search_results_page = {};
-        this._visible_page = this.home_page;
     },
 
     connect: function (signal, handler) {
@@ -78,17 +32,10 @@ const MockView = new Lang.Class({
             return;
         this.parent(signal, handler);
     },
-
-    show_page: function (page) {
-        this._visible_page = page;
-    },
-    get_visible_page: function () {
-        return this._visible_page;
-    },
 });
 
 describe('Mesh interaction', function () {
-    let mesh, view, engine, factory, sections, dispatcher;
+    let mesh, engine, factory, sections, dispatcher;
 
     beforeEach(function () {
         dispatcher = MockDispatcher.mock_default();
@@ -97,8 +44,6 @@ describe('Mesh interaction', function () {
         let application = new GObject.Object();
         application.application_id = 'foobar';
         factory = new MockFactory.MockFactory();
-        factory.add_named_mock('results-card', Minimal.MinimalCard);
-        factory.add_named_mock('document-card', Minimal.MinimalDocumentCard);
 
         // The mesh interaction is going to sort these by featured boolean
         // so make sure they are ordered with featured ones first otherwise
@@ -134,7 +79,6 @@ describe('Mesh interaction', function () {
             factory: factory,
             factory_name: 'interaction',
         });
-        view = factory.get_created_named_mocks('window')[0];
         spyOn(mesh, 'record_search_metric');
     });
 
@@ -349,7 +293,6 @@ describe('Mesh interaction', function () {
         });
 
         it('leads back to the section page', function () {
-            view.emit('search-entered', 'query not found');
             dispatcher.dispatch({ action_type: Actions.HISTORY_BACK_CLICKED });
             Utils.update_gui();
             expect(dispatcher.last_payload_with_type(Actions.SHOW_SECTION_PAGE)).toBeDefined();
