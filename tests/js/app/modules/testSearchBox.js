@@ -43,6 +43,7 @@ describe('Search box module', function () {
         // take effect, so we stick it in a Gtk.Window first.
         let win = new Gtk.OffscreenWindow();
         win.add(box);
+        win.show_all();
         dispatcher.dispatch({
             action_type: Actions.FOCUS_SEARCH,
         });
