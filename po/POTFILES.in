@@ -17,3 +17,4 @@ js/app/modules/searchModule.js
 js/app/modules/standalonePage.js
 js/app/utils.js
 js/app/widgets/webviewTooltip.js
+js/app/widgets/webviewTooltipPresenter.js
