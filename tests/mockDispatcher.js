@@ -63,6 +63,12 @@ const MockDispatcher = new Lang.Class({
         return this.payloads_with_type(action_type).pop();
     },
 
+    has_payload_sequence: function (action_types) {
+        return this.dispatched_payloads.some((payload, payload_index) =>
+            action_types.every((action, action_index) =>
+                this.dispatched_payloads[payload_index + action_index].action_type === action));
+    },
+
     reset: function () {
         this.dispatched_payloads = [];
     },
