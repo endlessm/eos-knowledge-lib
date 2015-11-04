@@ -2,6 +2,7 @@
 
 const Format = imports.format;
 const Gettext = imports.gettext;
+const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
@@ -42,6 +43,18 @@ const SearchModule = new Lang.Class({
     Properties: {
         'factory': GObject.ParamSpec.override('factory', Module.Module),
         'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
+        /**
+         * Property: max-children
+         *
+         * The maximum amount of child widgets to show.
+         *
+         * Default value:
+         *   **1000**
+         */
+        'max-children':  GObject.ParamSpec.int('max-children', 'Max children',
+            'The maximum number of children to show in this container',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            0, GLib.MAXINT32, 1000),
         /**
          * Property: message-justify
          * Horizontal justification of message text
@@ -98,9 +111,13 @@ const SearchModule = new Lang.Class({
 
         let dispatcher = Dispatcher.get_default();
         if (this._arrangement instanceof InfiniteScrolledWindow.InfiniteScrolledWindow) {
-            this._arrangement.connect('need-more-content', () => dispatcher.dispatch({
-                action_type: Actions.NEED_MORE_SEARCH,
-            }));
+            this._arrangement.connect('need-more-content', () => {
+                if (this._arrangement.get_cards().length >= this.max_children)
+                    return;
+                dispatcher.dispatch({
+                    action_type: Actions.NEED_MORE_SEARCH,
+                });
+            });
         }
 
         dispatcher.register((payload) => {
@@ -136,6 +153,8 @@ const SearchModule = new Lang.Class({
     },
 
     _add_card: function (model) {
+        if (this._arrangement.get_cards().length >= this.max_children)
+            return;
         let card = this.create_submodule('card-type', {
             model: model,
         });

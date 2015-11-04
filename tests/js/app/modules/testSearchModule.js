@@ -141,7 +141,7 @@ describe('Search module', function () {
                 this.parent(props);
             },
             add_card: function () {},
-            get_cards: function () {},
+            get_cards: function () { return []; },
             clear: function () {},
         });
 
