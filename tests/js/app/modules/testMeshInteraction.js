@@ -254,31 +254,58 @@ describe('Mesh interaction', function () {
         });
     });
 
-    describe('search', function () {
+    describe('on search entered', function () {
+        let article_model, query;
         beforeEach(function () {
-            engine.get_objects_by_query_finish.and.returnValue([[], null]);
+            article_model = new ContentObjectModel.ContentObjectModel({
+                ekn_id: 'ekn://foo/bar',
+            });
+            query = 'foo';
+            engine.get_objects_by_query_finish.and.returnValue([[article_model], null]);
         });
 
-        it('occurs after search-entered is dispatched', function () {
+        it('queries the engine', function () {
             dispatcher.dispatch({
                 action_type: Actions.SEARCH_TEXT_ENTERED,
-                text: 'query not found',
+                text: query,
             });
             expect(engine.get_objects_by_query)
                 .toHaveBeenCalledWith(jasmine.objectContaining({
-                    query: 'query not found',
+                    query: query,
                 }),
                 jasmine.any(Object),
                 jasmine.any(Function));
-                expect(dispatcher.last_payload_with_type(Actions.SHOW_SEARCH_PAGE)).toBeDefined();
+        });
+
+        it('show the search page', function () {
+            dispatcher.dispatch({
+                action_type: Actions.SEARCH_TEXT_ENTERED,
+                text: query,
+            });
+            expect(dispatcher.last_payload_with_type(Actions.SHOW_SEARCH_PAGE)).toBeDefined();
         });
 
         it('records a metric', function () {
             dispatcher.dispatch({
                 action_type: Actions.SEARCH_TEXT_ENTERED,
-                text: 'query not found',
+                text: query,
             });
             expect(mesh.record_search_metric).toHaveBeenCalled();
+        });
+
+        it('loads the results from engine', function () {
+            dispatcher.dispatch({
+                action_type: Actions.SEARCH_TEXT_ENTERED,
+                text: query,
+            });
+            expect(dispatcher.has_payload_sequence([
+                Actions.SEARCH_STARTED,
+                Actions.CLEAR_SEARCH,
+                Actions.APPEND_SEARCH,
+                Actions.SEARCH_READY
+            ])).toBe(true);
+            let payload = dispatcher.last_payload_with_type(Actions.APPEND_SEARCH);
+            expect(payload.models).toEqual([ article_model ]);
         });
 
         it('dispatches search-failed if the search fails', function () {
@@ -286,11 +313,11 @@ describe('Mesh interaction', function () {
             engine.get_objects_by_query_finish.and.throwError(new Error('Ugh'));
             dispatcher.dispatch({
                 action_type: Actions.SEARCH_TEXT_ENTERED,
-                text: 'query not found',
+                text: query,
             });
             expect(dispatcher.dispatched_payloads).toContain(jasmine.objectContaining({
                 action_type: Actions.SEARCH_FAILED,
-                query: 'query not found',
+                query: query,
             }));
         });
     });
