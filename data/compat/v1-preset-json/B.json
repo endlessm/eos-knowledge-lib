@@ -78,6 +78,9 @@
         },
         "section-page": {
             "type": "SidebarTemplate",
+            "properties": {
+                "on-left": false
+            },
             "slots": {
                 "content": {
                     "type": "SetBannerModule",
@@ -105,6 +108,9 @@
         },
         "search-page": {
             "type": "SidebarTemplate",
+            "properties": {
+                "on-left": false
+            },
             "slots": {
                 "content": {
                     "type": "SearchBannerModule",

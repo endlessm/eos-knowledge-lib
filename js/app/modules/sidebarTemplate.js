@@ -93,6 +93,13 @@ const SidebarTemplate = new Lang.Class({
             true),
 
         /**
+         * Property: on-left
+         * True if the sidebar should be on the left.
+         */
+        'on-left':  GObject.ParamSpec.boolean('on-left', 'On Left', 'On Left',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, true),
+
+        /**
          * Property: background-image-uri
          * The background image URI for this template.
          *
@@ -135,8 +142,10 @@ const SidebarTemplate = new Lang.Class({
 
         content_frame.add(this._content);
         sidebar_frame.add(this._sidebar);
-        this.add(content_frame);
-        this.add(sidebar_frame);
+        let children = [sidebar_frame, content_frame];
+        if (!this.on_left)
+            children.reverse();
+        children.forEach((child) => this.add(child));
 
         this.get_style_context().add_class(StyleClasses.SIDEBAR_TEMPLATE);
         content_frame.get_style_context().add_class(StyleClasses.CONTENT);

@@ -37,6 +37,9 @@
         },
         "front-page": {
             "type": "SidebarTemplate",
+            "properties": {
+                "on-left": false
+            },
             "slots": {
                 "content": {
                     "type": "AppBanner",
