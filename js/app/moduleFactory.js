@@ -55,14 +55,14 @@ const ModuleFactory = new Lang.Class({
     _parse_json_property: function (module_class, property_name, json_value) {
         let param_spec = GObject.Object.find_property.call(module_class, property_name);
         if (param_spec === null) {
-            logError(new Error('Could not find property for', module_class, 'named', property_name));
+            logError(new Error('Could not find property for ' + module_class + ' named ' + property_name));
             return [false, null];
         }
         if (!EosKnowledgePrivate.param_spec_is_enum(param_spec))
             return [true, json_value];
         let [success, enum_value] = EosKnowledgePrivate.param_spec_enum_value_from_string(param_spec, json_value);
         if (!success) {
-            logError(new Error('Could not find enum for', property_name, 'named', json_value));
+            logError(new Error('Could not find enum for ' + property_name + ' named ' + json_value));
             return [false, null];
         }
         return [true, enum_value];
