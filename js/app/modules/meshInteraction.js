@@ -606,8 +606,8 @@ const MeshInteraction = new Lang.Class({
             } catch (error) {
                 logError(error);
             }
+            this._dispatch_launch(timestamp, Launcher.LaunchType.SEARCH_RESULT);
         });
-        this._dispatch_launch(timestamp, Launcher.LaunchType.SEARCH_RESULT);
     },
 
     load_uri: function (ekn_id) {
