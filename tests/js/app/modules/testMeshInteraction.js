@@ -226,6 +226,7 @@ describe('Mesh interaction', function () {
         mesh.BRAND_SCREEN_TIME_MS = 0;
         mesh.desktop_launch(0);
         Utils.update_gui();
+        expect(dispatcher.last_payload_with_type(Actions.SHOW_HOME_PAGE)).toBeDefined();
         let payload = dispatcher.last_payload_with_type(Actions.HISTORY_BACK_ENABLED_CHANGED);
         expect(!payload || !payload.enabled).toBeTruthy();
     });
@@ -234,6 +235,8 @@ describe('Mesh interaction', function () {
         mesh.BRAND_SCREEN_TIME_MS = 0;
         mesh.search(0, 'query');
         Utils.update_gui();
+        expect(dispatcher.last_payload_with_type(Actions.SHOW_HOME_PAGE)).not.toBeDefined();
+        expect(dispatcher.last_payload_with_type(Actions.SHOW_SEARCH_PAGE)).toBeDefined();
         let payload = dispatcher.last_payload_with_type(Actions.HISTORY_BACK_ENABLED_CHANGED);
         expect(!payload || !payload.enabled).toBeTruthy();
     });
@@ -243,6 +246,8 @@ describe('Mesh interaction', function () {
         engine.get_object_by_id_finish.and.returnValue(new ContentObjectModel.ContentObjectModel());
         mesh.activate_search_result(0, 'ekn://foo/bar', 'query');
         Utils.update_gui();
+        expect(dispatcher.last_payload_with_type(Actions.SHOW_HOME_PAGE)).not.toBeDefined();
+        expect(dispatcher.last_payload_with_type(Actions.SHOW_ARTICLE_PAGE)).toBeDefined();
         let payload = dispatcher.last_payload_with_type(Actions.HISTORY_BACK_ENABLED_CHANGED);
         expect(!payload || !payload.enabled).toBeTruthy();
     });
