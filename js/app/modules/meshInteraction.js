@@ -405,7 +405,7 @@ const MeshInteraction = new Lang.Class({
     _load_document_card_in_view: function (item, is_going_back) {
         let dispatcher = Dispatcher.get_default();
         let animation_type = EosKnowledgePrivate.LoadingAnimationType.FORWARDS_NAVIGATION;
-        let last_item = this._history_presenter.history_model.get_item(-1);
+        let last_item = this._history_presenter.history_model.get_item(is_going_back ? 1 : -1);
         if (!last_item || last_item.page_type !== this.ARTICLE_PAGE) {
             animation_type = EosKnowledgePrivate.LoadingAnimationType.NONE;
             dispatcher.dispatch({
