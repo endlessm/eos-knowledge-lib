@@ -126,10 +126,12 @@ const Window = new Lang.Class({
             this._home_page.get_style_context().add_class(StyleClasses.HOME_PAGE_B);
             this._section_page.get_style_context().add_class(StyleClasses.SECTION_PAGE_B);
             this._search_page.get_style_context().add_class(StyleClasses.SEARCH_PAGE_B);
+            this._article_page.get_style_context().add_class(StyleClasses.ARTICLE_PAGE_B);
         } else {
             this._home_page.get_style_context().add_class(StyleClasses.HOME_PAGE_A);
             this._section_page.get_style_context().add_class(StyleClasses.SECTION_PAGE_A);
             this._search_page.get_style_context().add_class(StyleClasses.SEARCH_PAGE_A);
+            this._article_page.get_style_context().add_class(StyleClasses.ARTICLE_PAGE_A);
         }
 
         this._stack = new Gtk.Stack({
