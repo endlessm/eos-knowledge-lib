@@ -222,6 +222,31 @@ describe('Mesh interaction', function () {
         expect(dispatcher.last_payload_with_type(Actions.BRAND_SCREEN_DONE)).not.toBeDefined();
     });
 
+    it('cannot go back from the home page after launch from desktop', function () {
+        mesh.BRAND_SCREEN_TIME_MS = 0;
+        mesh.desktop_launch(0);
+        Utils.update_gui();
+        let payload = dispatcher.last_payload_with_type(Actions.HISTORY_BACK_ENABLED_CHANGED);
+        expect(!payload || !payload.enabled).toBeTruthy();
+    });
+
+    it('cannot go back from the search page after launch from search', function () {
+        mesh.BRAND_SCREEN_TIME_MS = 0;
+        mesh.search(0, 'query');
+        Utils.update_gui();
+        let payload = dispatcher.last_payload_with_type(Actions.HISTORY_BACK_ENABLED_CHANGED);
+        expect(!payload || !payload.enabled).toBeTruthy();
+    });
+
+    it('cannot go back from the article page after launch from search result', function () {
+        mesh.BRAND_SCREEN_TIME_MS = 0;
+        engine.get_object_by_id_finish.and.returnValue(new ContentObjectModel.ContentObjectModel());
+        mesh.activate_search_result(0, 'ekn://foo/bar', 'query');
+        Utils.update_gui();
+        let payload = dispatcher.last_payload_with_type(Actions.HISTORY_BACK_ENABLED_CHANGED);
+        expect(!payload || !payload.enabled).toBeTruthy();
+    });
+
     describe('search', function () {
         beforeEach(function () {
             engine.get_objects_by_query_finish.and.returnValue([[], null]);
@@ -265,6 +290,7 @@ describe('Mesh interaction', function () {
 
     describe('history', function () {
         beforeEach(function () {
+            mesh.desktop_launch(0);
             engine.get_objects_by_query_finish.and.returnValue([[
                 new ContentObjectModel.ContentObjectModel({
                     title: 'An article in a section',
