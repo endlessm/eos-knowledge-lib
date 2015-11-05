@@ -252,6 +252,29 @@ describe('Mesh interaction', function () {
         expect(!payload || !payload.enabled).toBeTruthy();
     });
 
+    it('goes back to the home page via the sidebar after launch from search', function () {
+        mesh.BRAND_SCREEN_TIME_MS = 0;
+        mesh.search(0, 'query');
+        Utils.update_gui();
+        dispatcher.reset();
+        dispatcher.dispatch({
+            action_type: Actions.NAV_BACK_CLICKED,
+        });
+        expect(dispatcher.last_payload_with_type(Actions.SHOW_HOME_PAGE)).toBeDefined();
+    });
+
+    it('goes back to the home page via the sidebar after launch from search result', function () {
+        mesh.BRAND_SCREEN_TIME_MS = 0;
+        engine.get_object_by_id_finish.and.returnValue(new ContentObjectModel.ContentObjectModel());
+        mesh.activate_search_result(0, 'ekn://foo/bar', 'query');
+        Utils.update_gui();
+        dispatcher.reset();
+        dispatcher.dispatch({
+            action_type: Actions.NAV_BACK_CLICKED,
+        });
+        expect(dispatcher.last_payload_with_type(Actions.SHOW_HOME_PAGE)).toBeDefined();
+    });
+
     describe('search', function () {
         beforeEach(function () {
             engine.get_objects_by_query_finish.and.returnValue([[], null]);

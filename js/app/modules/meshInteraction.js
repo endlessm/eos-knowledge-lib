@@ -440,6 +440,8 @@ const MeshInteraction = new Lang.Class({
             [this.HOME_PAGE, this.SECTION_PAGE, this.SEARCH_PAGE] : [this.HOME_PAGE];
         let item = this._history_presenter.search_backwards(-1,
             (item) => types.indexOf(item.page_type) >= 0);
+        if (!item)
+            item = { page_type: this.HOME_PAGE };
         this._history_presenter.set_current_item(HistoryItem.HistoryItem.new_from_object(item));
     },
 
