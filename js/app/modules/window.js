@@ -132,7 +132,9 @@ const Window = new Lang.Class({
             this._search_page.get_style_context().add_class(StyleClasses.SEARCH_PAGE_A);
         }
 
-        this._stack = new Gtk.Stack();
+        this._stack = new Gtk.Stack({
+            transition_duration: 0,
+        });
         if (this._brand_screen)
             this._stack.add(this._brand_screen);
         this._stack.add(this._home_page);
@@ -237,7 +239,6 @@ const Window = new Lang.Class({
         this._history_buttons.get_style_context().add_class(Gtk.STYLE_CLASS_LINKED);
         this._history_buttons.show_all();
 
-        this._stack.transition_duration = this.TRANSITION_DURATION;
         this._stack.connect('notify::transition-running', function () {
             this._home_page.animating = this._stack.transition_running;
             let context = this.get_style_context();
@@ -343,8 +344,12 @@ const Window = new Lang.Class({
 
     show_page: function (new_page) {
         let old_page = this.get_visible_page();
-        if (old_page === new_page)
+        if (old_page === new_page) {
+            // Even though we didn't change, this should still count as the
+            // first transition.
+            this._stack.transition_duration = this.TRANSITION_DURATION;
             return;
+        }
 
         let is_on_left = (page) => [this._home_page, this._brand_screen].indexOf(page) > -1;
         let is_on_center = (page) => [this._section_page, this._search_page].indexOf(page) > -1;
@@ -377,6 +382,10 @@ const Window = new Lang.Class({
             enabled: nav_back_visible,
         });
         this._stack.visible_child = new_page;
+
+        // The first transition on app startup has duration 0, subsequent ones
+        // are normal.
+        this._stack.transition_duration = this.TRANSITION_DURATION;
     },
 
     /**

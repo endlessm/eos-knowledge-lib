@@ -89,10 +89,6 @@ const MeshInteraction = new Lang.Class({
             }
         });
 
-        this._history_presenter.set_current_item_from_props({
-            page_type: this.HOME_PAGE,
-        });
-
         if (this.template_type === 'encyclopedia') {
             dispatcher.register((payload) => {
                 switch(payload.action_type) {
@@ -172,10 +168,6 @@ const MeshInteraction = new Lang.Class({
                         break;                }
             });
         }
-
-        dispatcher.dispatch({
-            action_type: Actions.FOCUS_SEARCH,
-        });
 
         this._window.connect('key-press-event', this._on_key_press_event.bind(this));
         this._history_presenter.connect('history-item-changed', this._on_history_item_change.bind(this));
@@ -414,7 +406,7 @@ const MeshInteraction = new Lang.Class({
         let dispatcher = Dispatcher.get_default();
         let animation_type = EosKnowledgePrivate.LoadingAnimationType.FORWARDS_NAVIGATION;
         let last_item = this._history_presenter.history_model.get_item(-1);
-        if (last_item.page_type !== this.ARTICLE_PAGE) {
+        if (!last_item || last_item.page_type !== this.ARTICLE_PAGE) {
             animation_type = EosKnowledgePrivate.LoadingAnimationType.NONE;
             dispatcher.dispatch({
                 action_type: Actions.SHOW_ARTICLE_PAGE,
@@ -448,6 +440,8 @@ const MeshInteraction = new Lang.Class({
             [this.HOME_PAGE, this.SECTION_PAGE, this.SEARCH_PAGE] : [this.HOME_PAGE];
         let item = this._history_presenter.search_backwards(-1,
             (item) => types.indexOf(item.page_type) >= 0);
+        if (!item)
+            item = { page_type: this.HOME_PAGE };
         this._history_presenter.set_current_item(HistoryItem.HistoryItem.new_from_object(item));
     },
 
@@ -578,6 +572,18 @@ const MeshInteraction = new Lang.Class({
     desktop_launch: function (timestamp) {
         if (!this._dispatch_launch(timestamp, Launcher.LaunchType.DESKTOP))
             return;
+
+        Dispatcher.get_default().dispatch({
+            action_type: Actions.SHOW_HOME_PAGE,
+        });
+        this._history_presenter.set_current_item_from_props({
+            page_type: this.HOME_PAGE,
+        });
+
+        Dispatcher.get_default().dispatch({
+            action_type: Actions.FOCUS_SEARCH,
+        });
+
         GLib.timeout_add(GLib.PRIORITY_DEFAULT, this.BRAND_SCREEN_TIME_MS, () => {
             Dispatcher.get_default().dispatch({
                 action_type: Actions.BRAND_SCREEN_DONE,
@@ -588,12 +594,22 @@ const MeshInteraction = new Lang.Class({
 
     // Launcher implementation
     search: function (timestamp, query) {
-        this.do_search(query);
+        // Show an empty article page while waiting
+        Dispatcher.get_default().dispatch({
+            action_type: Actions.SHOW_SEARCH_PAGE,
+        });
+
+        this.do_search(query);  // sets history presenter item
         this._dispatch_launch(timestamp, Launcher.LaunchType.SEARCH);
     },
 
     // Launcher implementation
     activate_search_result: function (timestamp, ekn_id, query) {
+        // Show an empty article page while waiting
+        Dispatcher.get_default().dispatch({
+            action_type: Actions.SHOW_ARTICLE_PAGE,
+        });
+
         Engine.get_default().get_object_by_id(ekn_id, null, (engine, task) => {
             try {
                 let model = engine.get_object_by_id_finish(task);
@@ -605,8 +621,8 @@ const MeshInteraction = new Lang.Class({
             } catch (error) {
                 logError(error);
             }
+            this._dispatch_launch(timestamp, Launcher.LaunchType.SEARCH_RESULT);
         });
-        this._dispatch_launch(timestamp, Launcher.LaunchType.SEARCH_RESULT);
     },
 
     load_uri: function (ekn_id) {
