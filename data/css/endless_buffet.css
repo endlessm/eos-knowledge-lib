@@ -123,6 +123,7 @@ EknSearchModule {
 .card-synopsis {
     color: black;
     font-size: 14px;
+    padding-top: 30px;
 }
 
 .results-message-title,
