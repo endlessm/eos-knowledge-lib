@@ -239,3 +239,7 @@ EknContextBanner {
     color: #666666;
     text-shadow: 0px 1px alpha(white, 0.004);
 }
+
+.document-card WebKitWebView {
+    background-color: white;
+}
