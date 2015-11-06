@@ -182,7 +182,8 @@ EknSideMenuTemplate .menu .card .title {
     font-weight: bold;
 }
 
-EknSideMenuTemplate .menu .home-button:hover {
+EknSideMenuTemplate .menu .home-button:hover,
+EknSideMenuTemplate .menu .card:hover .title {
     color: #5bc2e5;
 }
 
