@@ -90,6 +90,7 @@ EknSearchModule {
 }
 
 .thumb-card,
+.post-card.article,
 .search-result-card {
     background-color: white;
     box-shadow: 0 0 5px alpha(black, 0.25);
