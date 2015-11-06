@@ -15,7 +15,6 @@ const Module = imports.app.interfaces.module;
 
 String.prototype.format = Format.format;
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
-let ngettext = Gettext.dngettext.bind(null, Config.GETTEXT_PACKAGE);
 
 /**
  * Class: ContextBanner
@@ -69,12 +68,15 @@ const ContextBanner = new Lang.Class({
                     this._search_count += payload.models.length;
                     break;
                 case Actions.SEARCH_READY:
-                    /* TRANSLATORS: %d will be replaced with the number of
-                    search results and %s will be replaced with the text the
-                    user searched for. Make sure to keep the %d and %s tokens in
-                    your translation. */
-                    this.label = ngettext("%d result for “%s”", "%d results for “%s”",
-                        this._search_count).format(this._search_count, payload.query);
+                    if (this._search_count === 0) {
+                        /* TRANSLATORS: %s will be replaced with the text the user
+                        searched for. Make sure to keep the %s token in your translation. */
+                        this.label = _("Search results for “%s”").format(payload.query);
+                    } else {
+                        /* TRANSLATORS: %s will be replaced with the text the user
+                        searched for. Make sure to keep %s token in your translation. */
+                        this.label = _("Results were found for “%s”").format(payload.query);
+                    }
                     break;
             }
         });

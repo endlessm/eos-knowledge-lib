@@ -12,7 +12,6 @@ const Dispatcher = imports.app.dispatcher;
 const InfiniteScrolledWindow = imports.app.widgets.infiniteScrolledWindow;
 const Module = imports.app.interfaces.module;
 const StyleClasses = imports.app.styleClasses;
-const Utils = imports.app.utils;
 
 String.prototype.format = Format.format;
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
@@ -162,12 +161,12 @@ const SearchModule = new Lang.Class({
             // but not possible in GTK CSS
             this._message_title.label =
                 "<span size=\"xx-large\">" + _("Sorry! :-(") + "</span>\n\n" +
-                Utils.format_ui_string(this._message_title.get_style_context(), _("We didn't find any results that match your search for “%s”\n"), query, StyleClasses.QUERY);
+                _("Sorry, there are no results that match your search.\n");
 
-            this._message_subtitle.label = _("WE RECOMMEND THAT YOU:\n\n" +
+            this._message_subtitle.label = _("We recommend that you:\n\n" +
                   "  •  Check your spelling\n" +
-                  "  •  Try different words with the same meaning as the ones you just typed\n" +
-                  "  •  Try again with more generic words");
+                  "  •  Try other words that mean the same thing\n" +
+                  "  •  Try using more general words");
 
             Dispatcher.get_default().dispatch({
                 action_type: Actions.CLEAR_SUGGESTED_ARTICLES,

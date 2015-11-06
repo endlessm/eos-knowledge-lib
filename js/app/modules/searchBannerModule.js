@@ -65,7 +65,7 @@ const SearchBannerModule = new Lang.Class({
                     surrounded by Unicode left and right double quotes (U+201C
                     and U+201D). Make sure to include %s in your translation and
                     use whatever quote marks are appropriate for your language. */
-                    this.label = Utils.format_ui_string(this.get_style_context(), _("Search results for “%s”"),
+                    this.label = Utils.format_ui_string(this.get_style_context(), _("Results were found for “%s”"),
                         payload.query, StyleClasses.QUERY);
                     break;
                 case Actions.SEARCH_FAILED:
