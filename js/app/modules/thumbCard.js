@@ -72,6 +72,7 @@ const ThumbCard = new Lang.Class({
             orientation = Gtk.Orientation.HORIZONTAL;
             proportion = 1/2;
         } else {
+            this._title_label.justify = Gtk.Justification.CENTER;
             this._title_label.halign = this._synopsis_label.halign = Gtk.Align.CENTER;
             orientation = Gtk.Orientation.VERTICAL;
             proportion = 2/3;
