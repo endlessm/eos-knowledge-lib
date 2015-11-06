@@ -28,11 +28,13 @@ describe('Highlights module', function () {
         factory.add_named_mock('arrangement2', Minimal.MinimalArrangement);
         factory.add_named_mock('article-card', Minimal.MinimalCard);
         factory.add_named_mock('set-card', Minimal.MinimalCard);
+        factory.add_named_mock('large-card', Minimal.MinimalCard);
         factory.add_named_mock('highlights', HighlightsModule.HighlightsModule, {
             'large-arrangement': 'arrangement1',
             'small-arrangement': 'arrangement2',
             'card-type': 'article-card',
             'header-card-type': 'set-card',
+            'large-card-type': 'large-card',
         });
         module = new HighlightsModule.HighlightsModule({
             factory: factory,

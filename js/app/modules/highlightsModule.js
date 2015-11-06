@@ -37,6 +37,7 @@ const Utils = imports.app.utils;
  *   small-arrangement - smaller arrangement to display cards in
  *   card-type - type of cards to create for articles
  *   header-card-type - type of cards to create for sets
+ *   large-card-type - type of cards to create in the lower large-arrangement
  */
 const HighlightsModule = new Lang.Class({
     Name: 'HighlightsModule',
@@ -86,7 +87,7 @@ const HighlightsModule = new Lang.Class({
     // Module override
     get_slot_names: function () {
         return ['large-arrangement', 'small-arrangement', 'card-type',
-            'header-card-type'];
+            'header-card-type', 'large-card-type'];
     },
 
     _create_set_card: function (model) {
@@ -103,8 +104,16 @@ const HighlightsModule = new Lang.Class({
         return card;
     },
 
+    _get_card_slot_for_arrangement: function (arrangement) {
+        if (this._set_arrangements.length >= 2 &&
+            arrangement === this._set_arrangements[1])
+            return 'large-card-type';
+        return 'card-type';
+    },
+
     _add_article_card: function (model, arrangement) {
-        let card = this.create_submodule('card-type', {
+        let card_slot = this._get_card_slot_for_arrangement(arrangement);
+        let card = this.create_submodule(card_slot, {
             model: model,
         });
         card.connect('clicked', () => {
