@@ -38,7 +38,7 @@ describe('Article Page A', function () {
             title: 'bar',
         });
 
-        spyOn(AppUtils, 'get_web_plugin_dbus_name').and.returnValue("test0");
+        spyOn(AppUtils, 'get_web_plugin_dbus_name').and.returnValue('test0');
         module = new ArticleStackModule.ArticleStackModule({
             factory: factory,
             factory_name: 'article-stack-module',

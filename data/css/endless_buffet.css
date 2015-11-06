@@ -160,10 +160,6 @@ EknSearchModule {
     font-size: 1.0em; /* 16px / 12px/em * 72/96 */
 }
 
-.webview-tooltip .tooltip-type-label {
-    font-size: 0.625em; /* 10px / 12px/em * 72/96 */
-}
-
 .document-card .panel {
     -EknSlidingPanel-fill-percentage: 0.73;
     -EknSlidingPanel-shadow-margin: 7;
