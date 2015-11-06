@@ -11,9 +11,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2015-10-27 01:55+0000\n"
-"PO-Revision-Date: 2015-10-27 01:55+0000\n"
-"Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
+"POT-Creation-Date: 2015-11-03 02:54+0000\n"
+"PO-Revision-Date: 2015-11-06 18:41+0000\n"
+"Last-Translator: Fernando Farfan <fernando@endlessm.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -38,7 +38,16 @@ msgstr "PDF"
 msgid "Archive"
 msgstr "Archivo"
 
-#: data/widgets/sideMenuTemplate.ui:72 js/app/modules/homePageATemplate.js:46
+#: data/widgets/sequenceCard.ui:21
+msgid "Next Article"
+msgstr "Próximo Artículo"
+
+#: data/widgets/sequenceCard.ui:59
+msgid "Previous Article"
+msgstr ""
+
+#: data/widgets/sideMenuTemplate.ui:96
+#: js/app/modules/hamburgerBasementTemplate.js:48
 msgid "HOME"
 msgstr "INICIO"
 
@@ -46,7 +55,7 @@ msgstr "INICIO"
 msgid "You might be interested in..."
 msgstr ""
 
-#: data/widgets/suggestedCategoriesModule.ui:18
+#: data/widgets/suggestedCategoriesModule.ui:19
 msgid "Browse Categories"
 msgstr ""
 
@@ -103,22 +112,22 @@ msgstr "Contenido por cortesía de {blog-link}. Usado con permiso generoso."
 msgid "Content courtesy of {blog-link}, licensed under {license-link}."
 msgstr "Contenido por cortesía de {blog-link}, bajo la licencia {license-link}."
 
-#: js/app/modules/aisleInteraction.js:809
+#: js/app/modules/aisleInteraction.js:807
 msgid "View the license in your browser"
 msgstr "Ve la licencia en tu navegador"
 
-#: js/app/modules/aisleInteraction.js:941
-#: js/app/modules/aisleInteraction.js:948
+#: js/app/modules/aisleInteraction.js:939
+#: js/app/modules/aisleInteraction.js:946
 msgid "Oops!"
 msgstr "¡Uy!"
 
-#: js/app/modules/aisleInteraction.js:942
+#: js/app/modules/aisleInteraction.js:940
 msgid ""
 "We could not find this magazine!\n"
 "Please try again after restarting your computer."
 msgstr "¡No pudimos encontrar esta revista!\nPor favor intenta de nuevo después de reiniciar tu computadora."
 
-#: js/app/modules/aisleInteraction.js:949
+#: js/app/modules/aisleInteraction.js:947
 msgid ""
 "There was an error loading that page.\n"
 "Try another one or try again after restarting your computer."
@@ -126,7 +135,7 @@ msgstr "Hubo un error al cargar esa página.\nPor favor intenta con otra o inten
 
 #: js/app/modules/contextBanner.js:49 js/app/modules/contextBanner.js:57
 msgid "Highlights"
-msgstr ""
+msgstr "Destacados"
 
 #. TRANSLATORS: %d will be replaced with the number of
 #. search results and %s will be replaced with the text the
@@ -139,7 +148,7 @@ msgid_plural "%d results for “%s”"
 msgstr[0] ""
 msgstr[1] ""
 
-#: js/app/modules/homePageATemplate.js:38
+#: js/app/modules/hamburgerBasementTemplate.js:40
 msgid "SEE ALL CATEGORIES"
 msgstr "VER TODAS LAS CATEGORÍAS"
 
@@ -210,11 +219,11 @@ msgstr "Este artículo es parte del archivo de la revista %s."
 #. have them and DO NOT translate words inside curly braces. Also, note: the
 #. "and" is used to join together the names of authors of a blog post. For
 #. example: "Jane Austen and Henry Miller and William Clifford"
-#: js/app/utils.js:77
+#: js/app/utils.js:79
 msgid "by {author}"
 msgstr "por {author}"
 
-#: js/app/utils.js:77
+#: js/app/utils.js:79
 msgid "and"
 msgstr "y"
 
