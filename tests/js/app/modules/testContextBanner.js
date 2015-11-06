@@ -52,11 +52,7 @@ describe('Context banner', function () {
             });
         });
 
-        it('displays the number of search results when showing search', function () {
-            expect(module.label).toMatch(/\b4\b/);
-        });
-
-        it('displays the number of search results when showing search', function () {
+        it('displays the user query when showing search', function () {
             expect(module.label).toMatch(/some user text/);
         });
     });
