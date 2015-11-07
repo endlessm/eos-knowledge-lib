@@ -65,12 +65,12 @@ const ImageCoverFrame = Lang.Class({
             return;
         let allocation = this.get_allocation();
         let [width, height] = this.get_scaled_dimensions(this._aspect, allocation.width, allocation.height);
-        this._scaled_pixbuf = this._pixbuf.scale_simple(width, height, GdkPixbuf.InterpType.BILINEAR);
+        let scaled_pixbuf = this._pixbuf.scale_simple(width, height, GdkPixbuf.InterpType.BILINEAR);
 
         // Position the image in the center
         let x = (allocation.width / 2) - width / 2;
         let y = (allocation.height / 2) - height / 2;
-        Gdk.cairo_set_source_pixbuf(cr, this._scaled_pixbuf, x, y);
+        Gdk.cairo_set_source_pixbuf(cr, scaled_pixbuf, x, y);
         cr.paint();
     },
 
