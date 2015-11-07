@@ -34,6 +34,17 @@ const ArticleStackModule = new Lang.Class({
             'Handle to EOS knowledge engine',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             GObject.Object.$gtype),
+        /**
+         * Property: do-sliding-animation
+         * Whether the stack should use a sliding animation or just crossfade.
+         *
+         * If true, the article stack module will transition new articles in
+         * from the left and old from the right. If false, will just crossfade.
+         */
+        'do-sliding-animation': GObject.ParamSpec.boolean('do-sliding-animation',
+            'Do Sliding Animation', 'Do Sliding Animation',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            true),
     },
 
     CONTENT_TRANSITION_DURATION: 500,
@@ -103,9 +114,15 @@ const ArticleStackModule = new Lang.Class({
         });
 
         if (payload.animation_type === EosKnowledgePrivate.LoadingAnimation.FORWARDS_NAVIGATION) {
-            this.transition_type = Gtk.StackTransitionType.SLIDE_LEFT;
+            if (this.do_sliding_animation)
+                this.transition_type = Gtk.StackTransitionType.SLIDE_LEFT;
+            else
+                this.transition_type = Gtk.StackTransitionType.CROSSFADE;
         } else if (payload.animation_type === EosKnowledgePrivate.LoadingAnimation.BACKWARDS_NAVIGATION) {
-            this.transition_type = Gtk.StackTransitionType.SLIDE_RIGHT;
+            if (this.do_sliding_animation)
+                this.transition_type = Gtk.StackTransitionType.SLIDE_RIGHT;
+            else
+                this.transition_type = Gtk.StackTransitionType.CROSSFADE;
         } else {
             this.transition_type = Gtk.StackTransitionType.NONE;
         }

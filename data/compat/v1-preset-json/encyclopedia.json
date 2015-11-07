@@ -140,6 +140,9 @@
                     "slots": {
                         "content": {
                             "type": "ArticleStackModule",
+                            "properties": {
+                                "do-sliding-animation": false
+                            },
                             "slots": {
                                 "card-type": {
                                     "type": "KnowledgeDocumentCard"

@@ -275,7 +275,7 @@ const MeshInteraction = new Lang.Class({
 
     _get_article_animation_type: function (item, is_going_back) {
         let last_item = this._history_presenter.history_model.get_item(is_going_back ? 1 : -1);
-        if (this.template_type === 'encyclopedia' || !last_item || last_item.page_type !== this.ARTICLE_PAGE)
+        if (!last_item || last_item.page_type !== this.ARTICLE_PAGE)
             return EosKnowledgePrivate.LoadingAnimationType.NONE;
         if (is_going_back)
             return EosKnowledgePrivate.LoadingAnimationType.BACKWARDS_NAVIGATION;
