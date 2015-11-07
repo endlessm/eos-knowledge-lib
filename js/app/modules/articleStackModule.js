@@ -127,15 +127,14 @@ const ArticleStackModule = new Lang.Class({
             this.transition_type = Gtk.StackTransitionType.NONE;
         }
 
+        this.add(document_card);
+        document_card.show_all();
+
         document_card.load_content(null, (card, task) => {
             try {
                 document_card.load_content_finish(task);
-                if (document_card.get_parent() !== null) {
-                    document_card.reparent(this);
-                } else {
-                    this.add(document_card);
-                }
-                document_card.show_all();
+                if (document_card.get_parent() === null)
+                    return;
                 this.visible_child = document_card;
                 document_card.grab_focus();
             } catch (error) {

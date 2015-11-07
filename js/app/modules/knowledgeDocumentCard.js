@@ -268,6 +268,7 @@ const KnowledgeDocumentCard = new Lang.Class({
     _create_webview: function () {
         return new EknWebview.EknWebview({
             expand: true,
+            visible: true,
             width_request: this.MIN_CONTENT_WIDTH,
             height_request: this.MIN_CONTENT_HEIGHT,
         });
