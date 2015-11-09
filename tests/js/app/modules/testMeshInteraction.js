@@ -141,6 +141,8 @@ describe('Mesh interaction', function () {
     it('can be constructed', function () {});
 
     it('dispatches category models for home page', () => {
+        mesh.desktop_launch(0);
+        Utils.update_gui();
         let payloads = dispatcher.dispatched_payloads.filter((payload) => {
             return payload.action_type === Actions.APPEND_SETS;
         });
@@ -164,6 +166,7 @@ describe('Mesh interaction', function () {
 
     it('dispatches app-launched on launch from desktop', function () {
         mesh.desktop_launch(0);
+        Utils.update_gui();
         expect(dispatcher.last_payload_with_type(Actions.FIRST_LAUNCH).launch_type)
             .toBe(Launcher.LaunchType.DESKTOP);
     });
@@ -185,6 +188,7 @@ describe('Mesh interaction', function () {
         engine.get_object_by_id_finish.and.returnValue(new ContentObjectModel.ContentObjectModel());
 
         mesh.desktop_launch(0);
+        Utils.update_gui();
         let payloads = dispatcher.payloads_with_type(Actions.FIRST_LAUNCH);
         expect(payloads.length).toBe(1);
 

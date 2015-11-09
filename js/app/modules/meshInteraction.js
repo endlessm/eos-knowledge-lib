@@ -12,6 +12,7 @@ const Lang = imports.lang;
 const Actions = imports.app.actions;
 const ArticleHTMLRenderer = imports.app.articleHTMLRenderer;
 const ArticleObjectModel = imports.search.articleObjectModel;
+const AsyncTask = imports.search.asyncTask;
 const Dispatcher = imports.app.dispatcher;
 const Engine = imports.search.engine;
 const HistoryItem = imports.app.historyItem;
@@ -101,35 +102,6 @@ const MeshInteraction = new Lang.Class({
                 }
             });
         } else {
-            let query_obj = new QueryObject.QueryObject({
-                limit: -1,
-                tags: [ Engine.HOME_PAGE_TAG ],
-            });
-            Engine.get_default().get_objects_by_query(query_obj, null, (engine, res) => {
-                let models;
-                try {
-                    [models] = engine.get_objects_by_query_finish(res);
-                } catch (e) {
-                    logError(e, 'Failed to load sets from database');
-                    return;
-                }
-
-                // FIXME: This sorting should ideally happen in the arrangement
-                // once it has a sort-by API.
-                let sorted_models = models.sort((a, b) => {
-                    let sortVal = 0;
-                    if (a.featured)
-                        sortVal--;
-                    if (b.featured)
-                        sortVal++;
-                    return sortVal;
-                });
-                dispatcher.dispatch({
-                    action_type: Actions.APPEND_SETS,
-                    models: sorted_models,
-                });
-            });
-
             this._current_article_results_item = null;
 
             // Connect signals
@@ -171,6 +143,40 @@ const MeshInteraction = new Lang.Class({
 
         this._window.connect('key-press-event', this._on_key_press_event.bind(this));
         this._history_presenter.connect('history-item-changed', this._on_history_item_change.bind(this));
+    },
+
+    _load_sets_on_home_page: function (cancellable, callback) {
+        let query_obj = new QueryObject.QueryObject({
+            limit: -1,
+            tags: [ Engine.HOME_PAGE_TAG ],
+        });
+        let task = new AsyncTask.AsyncTask(this, cancellable, callback);
+        task.catch_errors(() => {
+            Engine.get_default().get_objects_by_query(query_obj, cancellable, task.catch_callback_errors((engine, inner_task) => {
+                let [models] = engine.get_objects_by_query_finish(inner_task);
+
+                // FIXME: This sorting should ideally happen in the arrangement
+                // once it has a sort-by API.
+                let sorted_models = models.sort((a, b) => {
+                    let sortVal = 0;
+                    if (a.featured)
+                        sortVal--;
+                    if (b.featured)
+                        sortVal++;
+                    return sortVal;
+                });
+                Dispatcher.get_default().dispatch({
+                    action_type: Actions.APPEND_SETS,
+                    models: sorted_models,
+                });
+
+                task.return_value(true);
+            }));
+        });
+    },
+
+    _load_sets_on_home_page_finish: function (task) {
+        return task.finish();
     },
 
     STYLE_MAP: {
@@ -553,8 +559,9 @@ const MeshInteraction = new Lang.Class({
             [query, this.application.application_id]));
     },
 
-    // Helper function for the three Launcher implementation methods. Returns
-    // true if an action was really dispatched.
+    // Helper function for two Launcher implementation methods. Returns true if
+    // an action was really dispatched. (In desktop_launch() we return right
+    // away if we were already launched, but dispatch the launch action later.)
     _dispatch_launch: function (timestamp, launch_type) {
         if (this._launched_once)
             return false;
@@ -570,8 +577,9 @@ const MeshInteraction = new Lang.Class({
 
     // Launcher implementation
     desktop_launch: function (timestamp) {
-        if (!this._dispatch_launch(timestamp, Launcher.LaunchType.DESKTOP))
+        if (this._launched_once)
             return;
+        this._launched_once = true;
 
         Dispatcher.get_default().dispatch({
             action_type: Actions.SHOW_HOME_PAGE,
@@ -580,15 +588,23 @@ const MeshInteraction = new Lang.Class({
             page_type: this.HOME_PAGE,
         });
 
-        Dispatcher.get_default().dispatch({
-            action_type: Actions.FOCUS_SEARCH,
-        });
-
         GLib.timeout_add(GLib.PRIORITY_DEFAULT, this.BRAND_SCREEN_TIME_MS, () => {
             Dispatcher.get_default().dispatch({
                 action_type: Actions.BRAND_SCREEN_DONE,
             });
             return GLib.SOURCE_REMOVE;
+        });
+
+        this._load_sets_on_home_page(null, (mesh, task) => {
+            this._load_sets_on_home_page_finish(task);
+            Dispatcher.get_default().dispatch({
+                action_type: Actions.FIRST_LAUNCH,
+                timestamp: timestamp,
+                launch_type: Launcher.LaunchType.DESKTOP,
+            });
+            Dispatcher.get_default().dispatch({
+                action_type: Actions.FOCUS_SEARCH,
+            });
         });
     },
 
@@ -600,6 +616,10 @@ const MeshInteraction = new Lang.Class({
         });
 
         this.do_search(query);  // sets history presenter item
+        // Don't wait for the sets to load on the home page, since we don't
+        // start off showing the home page
+        this._load_sets_on_home_page(null, (mesh, task) =>
+            this._load_sets_on_home_page_finish(task));
         this._dispatch_launch(timestamp, Launcher.LaunchType.SEARCH);
     },
 
@@ -623,6 +643,10 @@ const MeshInteraction = new Lang.Class({
             }
             this._dispatch_launch(timestamp, Launcher.LaunchType.SEARCH_RESULT);
         });
+        // Don't wait for the sets to load on the home page, since we don't
+        // start off showing the home page
+        this._load_sets_on_home_page(null, (mesh, task) =>
+            this._load_sets_on_home_page_finish(task));
     },
 
     load_uri: function (ekn_id) {
