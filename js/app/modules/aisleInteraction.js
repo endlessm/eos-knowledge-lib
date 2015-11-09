@@ -58,6 +58,7 @@ const DBUS_TOOLTIP_INTERFACE = '\
             </method> \
         </interface> \
     </node>';
+const WEBVIEW_OBJECT_PATH = '/com/endlessm/webview';
 
 /**
  * Class: AisleInteraction
@@ -142,8 +143,6 @@ const AisleInteraction = new Lang.Class({
         this._window = this.create_submodule('window', {
             application: this.application,
         });
-
-        this._dbus_name = Utils.get_web_plugin_dbus_name();
 
         this._check_for_content_update();
 
@@ -725,20 +724,22 @@ const AisleInteraction = new Lang.Class({
             let mouse_position = this._get_mouse_coordinates(view);
 
             // Wait for the DBus interface to appear on the bus
+            let dbus_name = Utils.get_web_plugin_dbus_name_for_webview(view);
             let watch_id = Gio.DBus.watch_name(Gio.BusType.SESSION,
-                this._dbus_name, Gio.BusNameWatcherFlags.NONE,
+                dbus_name, Gio.BusNameWatcherFlags.NONE,
                 (connection, name, owner) => {
-                    let webview_object_path = Utils.dbus_object_path_for_webview(view);
                     let ProxyConstructor =
                         Gio.DBusProxy.makeProxyWrapper(DBUS_TOOLTIP_INTERFACE);
                     let proxy = new ProxyConstructor(connection,
-                        this._dbus_name, webview_object_path);
+                        dbus_name, WEBVIEW_OBJECT_PATH);
                     proxy.GetCoordinatesRemote(mouse_position, (coordinates, error) => {
                         // Fall back to just popping up the tooltip at the
                         // mouse's position if there was an error.
-                        if (error)
+                        if (error) {
                             coordinates = [[mouse_position[0],
                                 mouse_position[1], 1, 1]];
+                            logError(error, 'No tooltip coordinates');
+                        }
                         this._setup_link_tooltip(view, uri, coordinates[0]);
                         Gio.DBus.unwatch_name(watch_id);
                     });

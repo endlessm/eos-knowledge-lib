@@ -5,19 +5,13 @@
 #include <webkitdom/webkitdom.h>
 
 #define BUS_INTERFACE_NAME "com.endlessm.Knowledge.TooltipCoordinates"
+#define OBJECT_PATH "/com/endlessm/webview"
 
 typedef struct {
-  WebKitWebExtension *extension;  /* unowned */
-  GDBusConnection *connection;  /* unowned */
-  GDBusNodeInfo *node;  /* owned */
-  GDBusInterfaceInfo *interface;  /* owned by node */
-  GSList *bus_ids;  /* GSList<guint>; owned */
-} TooltipPluginContext;
-
-typedef struct {
-  TooltipPluginContext *ctxt;  /* unowned */
+  guint bus_id;
+  gchar *base_name;  /* owned */
   WebKitWebPage *page;  /* unowned */
-} RegisterCallbackData;
+} TooltipPluginContext;
 
 static const gchar introspection_xml[] =
   "<node>"
@@ -32,8 +26,7 @@ static const gchar introspection_xml[] =
 static void
 tooltip_plugin_context_free (TooltipPluginContext *ctxt)
 {
-  g_clear_pointer (&ctxt->node, g_dbus_node_info_unref);
-  g_clear_pointer (&ctxt->bus_ids, g_slist_free);
+  g_clear_pointer (&ctxt->base_name, g_free);
   g_free (ctxt);
 }
 
@@ -211,71 +204,29 @@ static GDBusInterfaceVTable vtable = {
   NULL,  /* set_property */
 };
 
-static gboolean
-register_object (RegisterCallbackData *data)
-{
-  GError *error = NULL;
-
-  if (data->ctxt->connection == NULL)
-    return G_SOURCE_CONTINUE;  /* Try again when the connection is ready */
-
-  /* The ID is known to the main process and the web process. So we can address
-  a specific web page over DBus. */
-  guint64 id = webkit_web_page_get_id (data->page);
-
-  gchar *object_path = g_strdup_printf("/com/endlessm/webview/%"
-                                       G_GUINT64_FORMAT, id);
-
-  guint bus_id = g_dbus_connection_register_object (data->ctxt->connection,
-                                                    object_path,
-                                                    data->ctxt->interface,
-                                                    &vtable,
-                                                    data->page, NULL,
-                                                    &error);
-  if (bus_id == 0)
-    {
-      g_critical ("Failed to export webview object on bus: %s", error->message);
-      g_clear_error (&error);
-      goto out;
-    }
-
-  data->ctxt->bus_ids = g_slist_prepend (data->ctxt->bus_ids,
-                                         GUINT_TO_POINTER (bus_id));
-
-out:
-  g_free (object_path);
-  return G_SOURCE_REMOVE;
-}
-
-static void
-on_page_created (WebKitWebExtension   *extension,
-                 WebKitWebPage        *page,
-                 TooltipPluginContext *ctxt)
-{
-  RegisterCallbackData *data = g_new0(RegisterCallbackData, 1);
-  data->ctxt = ctxt;
-  data->page = page;
-
-  g_idle_add_full (G_PRIORITY_HIGH_IDLE, (GSourceFunc) register_object,
-                   data, g_free);
-  /* Idle source now owns data */
-}
-
 static void
 on_bus_acquired (GDBusConnection      *connection,
                  const gchar          *name,
                  TooltipPluginContext *ctxt)
 {
   GError *error = NULL;
+  g_autoptr (GDBusNodeInfo) node;
+  GDBusInterfaceInfo *interface;
 
-  ctxt->connection = connection;
-
-  ctxt->node = g_dbus_node_info_new_for_xml (introspection_xml, &error);
-  if (ctxt->node == NULL)
+  node = g_dbus_node_info_new_for_xml (introspection_xml, &error);
+  if (node == NULL)
     goto fail;
-  ctxt->interface = g_dbus_node_info_lookup_interface (ctxt->node,
-                                                       BUS_INTERFACE_NAME);
-  if (ctxt->interface == NULL)
+  interface = g_dbus_node_info_lookup_interface (node, BUS_INTERFACE_NAME);
+  if (interface == NULL)
+    goto fail;
+
+  ctxt->bus_id = g_dbus_connection_register_object (connection,
+                                                    OBJECT_PATH,
+                                                    interface,
+                                                    &vtable,
+                                                    ctxt->page, NULL,
+                                                    &error);
+  if (ctxt->bus_id == 0)
     goto fail;
 
   return;
@@ -294,15 +245,6 @@ fail:
 }
 
 static void
-unregister_object (gpointer         data,
-                   GDBusConnection *connection)
-{
-  guint bus_id = GPOINTER_TO_UINT (data);
-  if (!g_dbus_connection_unregister_object (connection, bus_id))
-    g_critical ("Trouble unregistering object");
-}
-
-static void
 on_name_lost (GDBusConnection      *connection,
               const gchar          *name,
               TooltipPluginContext *ctxt)
@@ -312,21 +254,22 @@ on_name_lost (GDBusConnection      *connection,
     return;
   }
 
-  g_slist_foreach (ctxt->bus_ids, (GFunc) unregister_object, connection);
+  if (!g_dbus_connection_unregister_object (connection, ctxt->bus_id))
+    g_critical ("Trouble unregistering object");
 }
 
-void
-webkit_web_extension_initialize_with_user_data (WebKitWebExtension *extension,
-                                                const GVariant     *data_from_app)
+static void
+on_page_created (WebKitWebExtension   *extension,
+                 WebKitWebPage        *page,
+                 TooltipPluginContext *ctxt)
 {
-  const gchar *well_known_name = g_variant_get_string ((GVariant *) data_from_app,
-                                                       NULL);
+  ctxt->page = page;
 
-  TooltipPluginContext *ctxt = g_new0(TooltipPluginContext, 1);
-  ctxt->extension = extension;
-
-  g_signal_connect (ctxt->extension, "page-created",
-                    G_CALLBACK (on_page_created), ctxt);
+  /* The ID is known to the main process and the web process. So we can address
+  a specific web page over DBus. */
+  guint64 id = webkit_web_page_get_id (ctxt->page);
+  gchar *well_known_name = g_strdup_printf ("%s-%" G_GUINT64_FORMAT,
+                                            ctxt->base_name, id);
 
   g_bus_own_name (G_BUS_TYPE_SESSION,
                   well_known_name,
@@ -335,4 +278,18 @@ webkit_web_extension_initialize_with_user_data (WebKitWebExtension *extension,
                   NULL,
                   (GBusNameLostCallback) on_name_lost,
                   ctxt, (GDestroyNotify) tooltip_plugin_context_free);
+
+  g_free (well_known_name);
+}
+
+void
+webkit_web_extension_initialize_with_user_data (WebKitWebExtension *extension,
+                                                const GVariant     *data_from_app)
+{
+  TooltipPluginContext *ctxt = g_new0 (TooltipPluginContext, 1);
+  ctxt->base_name = g_strdup (g_variant_get_string ((GVariant *) data_from_app,
+                                                     NULL));
+
+  g_signal_connect (extension, "page-created", G_CALLBACK (on_page_created),
+                    ctxt);
 }
