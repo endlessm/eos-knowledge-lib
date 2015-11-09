@@ -163,7 +163,7 @@ const SearchModule = new Lang.Class({
             // but not possible in GTK CSS
             this._message_title.label =
                 "<span size=\"xx-large\">" + _("Sorry! :-(") + "</span>\n\n" +
-                _("Sorry, there are no results that match your search.\n");
+                _("There are no results that match your search.\n");
 
             this._message_subtitle.label = _("We recommend that you:\n\n" +
                   "  •  Check your spelling\n" +
