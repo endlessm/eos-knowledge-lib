@@ -253,6 +253,17 @@ describe('Aisle interaction', function () {
             expect(view.show_global_search_standalone_page).toHaveBeenCalled();
         });
 
+        it('loads the global search standalone page without a info notice', function () {
+            const MOCK_ID = 'abc123';
+            let model = new ArticleObjectModel.ArticleObjectModel({
+                article_number: 5000,
+                title: 'I Write a Blog',
+            });
+            engine.get_object_by_id_finish.and.returnValue(model);
+            interaction.activate_search_result(0, MOCK_ID, 'fake query');
+            expect(view.standalone_page.document_card.info_notice).toBe(null);
+        });
+
         it('starts at the right page when search result is in this issue', function () {
             engine.get_object_by_id_finish.and.returnValue(MOCK_RESULTS[2]);
             interaction.activate_search_result(0, 'abc2134', 'fake query');

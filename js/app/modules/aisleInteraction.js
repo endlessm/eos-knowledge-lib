@@ -620,7 +620,7 @@ const AisleInteraction = new Lang.Class({
 
     _go_to_article: function (model, from_global_search) {
         if (this._is_archived(model)) {
-            this._load_standalone_article(model);
+            this._load_standalone_article(model, from_global_search);
             if (from_global_search) {
                 this._window.show_global_search_standalone_page();
             } else {
@@ -758,7 +758,7 @@ const AisleInteraction = new Lang.Class({
     // pages, asynchronously.
     _create_pages_from_models: function (models) {
         models.forEach(function (model) {
-            let page = this._create_article_page_from_article_model(model, false);
+            let page = this._create_article_page_from_article_model(model, new ProgressLabel.ProgressLabel());
             this._window.append_article_page(page);
         }, this);
         this._article_models = this._article_models.concat(models);
@@ -846,22 +846,11 @@ const AisleInteraction = new Lang.Class({
     },
 
     // Take an ArticleObjectModel and create a ReaderDocumentCard view.
-    _create_article_page_from_article_model: function (model, archived) {
+    _create_article_page_from_article_model: function (model, info_notice) {
         let card_props = {
             model: model,
+            info_notice: info_notice,
         };
-        if (archived) {
-            let frame = new Gtk.Frame();
-            // Ensures that the archive notice on the in app standalone page
-            // matches that of the standalone page you reach via global search
-            frame.add(new ArchiveNotice.ArchiveNotice({
-                label: this._window.standalone_page.infobar.archive_notice.label,
-            }));
-            frame.get_style_context().add_class(StyleClasses.READER_ARCHIVE_NOTICE_FRAME);
-            card_props.info_notice = frame;
-        } else {
-            card_props.info_notice = new ProgressLabel.ProgressLabel();
-        }
 
         // FIXME: This should probably be a slot on a document page and not the
         // interaction model.
@@ -963,8 +952,18 @@ const AisleInteraction = new Lang.Class({
         });
     },
 
-    _load_standalone_article: function (model) {
-        let document_card = this._create_article_page_from_article_model(model, true);
+    _load_standalone_article: function (model, from_global_search) {
+        let info_notice = null;
+        if (!from_global_search) {
+            info_notice = new Gtk.Frame();
+            // Ensures that the archive notice on the in app standalone page
+            // matches that of the standalone page you reach via global search
+            info_notice.add(new ArchiveNotice.ArchiveNotice({
+                label: this._window.standalone_page.infobar.archive_notice.label,
+            }));
+            info_notice.get_style_context().add_class(StyleClasses.READER_ARCHIVE_NOTICE_FRAME);
+        }
+        let document_card = this._create_article_page_from_article_model(model, info_notice);
         document_card.load_content(null, (card, task) => {
             try {
                 card.load_content_finish(task);

@@ -174,8 +174,8 @@ const MinimalDocumentCard = new Lang.Class({
         'content-view': GObject.ParamSpec.override('content-view', DocumentCard.DocumentCard),
         'custom-css': GObject.ParamSpec.override('custom-css',
             DocumentCard.DocumentCard),
-        'info-notice': GObject.ParamSpec.object('info-notice', 'Info notice',
-            '', GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE,
+        'info-notice': GObject.ParamSpec.object('info-notice', '', '',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
             Gtk.Widget),
         'show-toc': GObject.ParamSpec.boolean('show-toc', '', '',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
@@ -193,7 +193,6 @@ const MinimalDocumentCard = new Lang.Class({
     },
 
     _init: function (props={}) {
-        props.info_notice = props.info_notice || new Gtk.Label();
         this.parent(props);
         this.toc = {
             connect: function () {},
