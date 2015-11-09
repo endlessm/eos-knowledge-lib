@@ -115,10 +115,12 @@ const SideMenuTemplate = new Lang.Class({
     },
 
     _on_motion: function (widget, event) {
-        let [got_coords, x] = event.get_coords();
+        let [got_coords, event_x] = event.get_root_coords();
         if (!got_coords)
             return Gdk.EVENT_PROPAGATE;
 
+        let [ret, win_x, win_y] = this.get_window().get_origin();
+        let x = event_x - win_x;
         if (!this.menu_open && x <= _MENU_HOT_ZONE_WIDTH_PX)
             this._open_menu();
         else if (this.menu_open && x > this._menu_grid.get_allocation().width)
