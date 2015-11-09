@@ -602,6 +602,12 @@ const DECORATION = 'decoration';
 const SEARCH_RESULTS = 'search-results';
 
 /**
+ * Constant: NO_RESULTS
+ * On the <SearchModule> module when there are no results
+ */
+const NO_RESULTS = 'no-results';
+
+/**
  * Constant: HEADLINE
  * Matches headline text in various widgets
  */

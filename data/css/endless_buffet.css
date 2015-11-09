@@ -14,33 +14,54 @@
     border-radius: 20px;
 }
 
-.card .title {
+.card .title,
+.search-results .results-message-title,
+.suggested-categories .browse-content .title,
+.suggested-articles .browse-content .title  {
     color: #044a80;
+}
+
+.search-results .separator,
+.search-results .results-message-subtitle,
+.browse-content .title {
+    color: #999999;
+}
+
+.search-results .results-message-title,
+.search-results .results-message-subtitle {
+    padding: 20px 60px 0px 60px;
+    padding-left: 60px;
+    padding-right: 60px;
+    font-size: 18px;
+}
+
+.search-results .results-message-subtitle {
+    padding-bottom: 40px;
 }
 
 EknHighlightsModule .text-card .title.label,
 EknThematicModule .text-card .title.label,
-.browse-categories .title {
+.browse-content .title {
     font-weight: 200;
     font-size: 22px;
     border-bottom: solid 1px #999999;
 }
 
-.browse-categories .title {
-    color: #999999;
-}
-
-.browse-categories {
+.browse-content {
     padding: 20px 50px;
 }
 
-EknScrollingTemplate .suggested-categories {
+EknScrollingTemplate .suggested-categories,
+EknScrollingTemplate .suggested-articles {
     background-color: #f6f6f6;
 }
 
-EknScrollingTemplate:not(.overshoot):not(.undershoot),
-EknSearchModule {
+EknScrollingTemplate:not(.overshoot):not(.undershoot) {
     background-color: #e7ecee;
+}
+
+EknScrollingTemplate .no-results {
+    background-color: white;
 }
 
 .text-card:hover .title {
