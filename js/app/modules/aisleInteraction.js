@@ -736,9 +736,11 @@ const AisleInteraction = new Lang.Class({
                     proxy.GetCoordinatesRemote(mouse_position, (coordinates, error) => {
                         // Fall back to just popping up the tooltip at the
                         // mouse's position if there was an error.
-                        if (error)
+                        if (error) {
                             coordinates = [[mouse_position[0],
                                 mouse_position[1], 1, 1]];
+                            logError(error, 'No tooltip coordinates');
+                        }
                         this._setup_link_tooltip(view, uri, coordinates[0]);
                         Gio.DBus.unwatch_name(watch_id);
                     });
