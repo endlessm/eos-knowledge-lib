@@ -1,4 +1,4 @@
-/* exported has_descendant_with_type */
+/* exported get_web_plugin_dbus_name_for_webview, has_descendant_with_type */
 
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Format = imports.format;
@@ -200,6 +200,10 @@ function shuffle (array, sequence) {
 const DBUS_WEBVIEW_EXPORT_PATH = '/com/endlessm/webview/';
 function dbus_object_path_for_webview (view) {
     return DBUS_WEBVIEW_EXPORT_PATH + view.get_page_id();
+}
+
+function get_web_plugin_dbus_name_for_webview (view) {
+    return get_web_plugin_dbus_name() + '-' + view.get_page_id();
 }
 
 function has_descendant_with_type (widget, klass) {
