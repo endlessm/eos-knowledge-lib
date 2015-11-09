@@ -111,9 +111,9 @@ AS_IF([test "x$ac_cv_prog_cc_c99" = "xno"], [AC_MSG_ERROR([C99 is required.])])
 # during 'make distcheck'.
 AC_ARG_ENABLE([strict-flags],
     [AS_HELP_STRING([--enable-strict-flags=@<:@no/yes/error@:>@],
-        [Use strict compiler flags @<:@default=no@:>@])],
+        [Use strict compiler flags @<:@default=yes@:>@])],
     [],
-    [enable_strict_flags=no])
+    [enable_strict_flags=yes])
 # Emmanuele's list of flags
 STRICT_COMPILER_FLAGS="$STRICT_COMPILER_FLAGS
     -Wall
@@ -145,7 +145,9 @@ AC_SUBST([STRICT_CFLAGS])
 # during 'make distcheck'.
 AC_ARG_ENABLE([gir-doc],
     [AS_HELP_STRING([--enable-gir-doc],
-        [Build GIR documentation for Javascript @<:@default=no@:>@])])
+        [Build GIR documentation for Javascript @<:@default=yes@:>@])],
+    [],
+    [enable_gir_doc=yes])
 AS_IF([test "x$enable_gir_doc" = "xyes"], [
     AS_IF([test "x$GIRDOCTOOL" = "xnotfound"],
         [AC_MSG_ERROR([g-ir-doc-tool must be installed for --enable-gir-doc])])
@@ -156,7 +158,9 @@ AM_CONDITIONAL([ENABLE_GIR_DOC], [test "x$enable_gir_doc" = "xyes"])
 # --enable-js-doc: Build pure Javascript module documentation.
 AC_ARG_ENABLE([js-doc],
     [AS_HELP_STRING([--enable-js-doc],
-        [Build documentation for pure Javascript modules @<:@default=no@:>@])])
+        [Build documentation for pure Javascript modules @<:@default=yes@:>@])],
+    [],
+    [enable_js_doc=yes])
 AS_IF([test "x$enable_js_doc" = "xyes"], [
     AS_IF([test "x$NATURALDOCS" = "xnotfound"],
         [AC_MSG_ERROR([NaturalDocs must be installed for --enable-js-doc])])])
