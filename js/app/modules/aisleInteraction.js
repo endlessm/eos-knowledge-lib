@@ -33,7 +33,6 @@ const StyleClasses = imports.app.styleClasses;
 const StyleKnobGenerator = imports.app.compat.styleKnobGenerator;
 const AisleUserSettingsModel = imports.app.aisleUserSettingsModel;
 const Utils = imports.app.utils;
-const WebviewTooltip = imports.app.widgets.webviewTooltip;
 const WebviewTooltipPresenter = imports.app.webviewTooltipPresenter;
 
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
@@ -203,6 +202,8 @@ const AisleInteraction = new Lang.Class({
 
         this._window.standalone_page.infobar.connect('response', this._open_magazine.bind(this));
         this._history_presenter.connect('history-item-changed', this._on_history_item_change.bind(this));
+        this._webview_tooltip_presenter.connect('show-tooltip',
+            this._on_show_tooltip.bind(this));
     },
 
     get current_page() {
@@ -688,8 +689,7 @@ const AisleInteraction = new Lang.Class({
                     this._show_specific_error_page();
                 }
             });
-            this._webview_tooltip_presenter.connect_tooltip_to_card(document_card,
-                this._article_models, WebviewTooltip.TYPE_UNDECORATED_LINK);
+            this._webview_tooltip_presenter.set_document_card(document_card);
             this._webview_map[index] = document_card;
         });
 
@@ -849,6 +849,70 @@ const AisleInteraction = new Lang.Class({
             page_type: this._ARTICLE_PAGE,
             model: model,
         });
+    },
+
+    _on_show_tooltip: function (tooltip_presenter, tooltip, uri) {
+        let filtered_indices = [];
+        let filtered_models = this._article_models.filter((model, index) => {
+            if (model.ekn_id === uri)
+                filtered_indices.push(index);
+            return (model.ekn_id === uri);
+        });
+        let builder = Gtk.Builder.new_from_resource('/com/endlessm/knowledge/data/widgets/tooltips.ui');
+
+        // If a model is filtered by the uri, it means it's an in-issue article.
+        if (filtered_models.length > 0) {
+            // We expect to have one article model that matches the given uri,
+            // hence we obtain the first filtered model and first matched index.
+            // Note: The page number argument is incremented by two, to account
+            // for the 0-base index and the overview page.
+            let contents = builder.get_object('page-label-tooltip');
+            let title_label = builder.get_object('page-title-label');
+            title_label.label = filtered_models[0].title;
+            let page_number_label = builder.get_object('page-number-label');
+            /* TRANSLATORS: This shows the page number; %d will be replaced with
+            the page number of the article. */
+            page_number_label.label = _("Page %d").format(filtered_indices[0] + 2).toLocaleUpperCase();
+            tooltip.add(contents);
+            tooltip.show_all();
+            return Gdk.EVENT_STOP;
+        }
+
+        if (GLib.uri_parse_scheme(uri) === 'ekn') {
+            // If there is no filtered model but the uri has the "ekn://" prefix,
+            // it's an archive article.
+            Engine.get_default().get_object_by_id(uri, null, (engine, task) => {
+                let article_model;
+                try {
+                    article_model = engine.get_object_by_id_finish(task);
+                } catch (error) {
+                    logError(error, 'Could not get article model');
+                    return;
+                }
+                let contents = builder.get_object('archive-tooltip');
+                let title_label = builder.get_object('archive-title-label');
+                title_label.label = article_model.title;
+                tooltip.add(contents);
+                tooltip.show_all();
+            });
+            return Gdk.EVENT_STOP;
+        }
+
+        if (GLib.uri_parse_scheme(uri) === 'file' && uri.indexOf('/licenses/') > -1) {
+            // If the uri has the "file://" scheme and it includes a segments for "licenses",
+            // it corresponds to a license file, and we should display it as an external link.
+            let contents = builder.get_object('license-tooltip');
+            tooltip.add(contents);
+            tooltip.show_all();
+            return Gdk.EVENT_STOP;
+        }
+
+        let contents = builder.get_object('external-link-tooltip');
+        let title_label = builder.get_object('link-label');
+        title_label.label = uri;
+        tooltip.add(contents);
+        tooltip.show_all();
+        return Gdk.EVENT_STOP;
     },
 
     get_slot_names: function () {

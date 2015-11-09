@@ -268,6 +268,14 @@ overridden by app specific CSS */
     font-size: 0.625em; /* 10px / 12px/em * 72/96 */
 }
 
+.webview-tooltip .archive-icon {
+    -gtk-icon-source: url('resource:///com/endlessm/knowledge/data/images/reader/archive.svg');
+}
+
+.webview-tooltip .external-link-icon {
+    -gtk-icon-source: url('resource:///com/endlessm/knowledge/data/images/reader/external-link.svg');
+}
+
 .archive-notice-frame {
     background-color: #D1D1D1;
     border-radius: 5px;
