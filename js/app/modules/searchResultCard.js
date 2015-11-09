@@ -1,5 +1,6 @@
 // Copyright 2015 Endless Mobile, Inc.
 
+const Cairo = imports.gi.cairo;
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 
@@ -29,7 +30,7 @@ const SearchResultCard = new Lang.Class({
     },
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/searchResultCard.ui',
-    InternalChildren: [ 'thumbnail-frame', 'title-label', 'synopsis-label'],
+    InternalChildren: [ 'thumbnail-frame', 'content-frame', 'title-label', 'synopsis-label'],
 
     _init: function (props={}) {
         this.parent(props);
@@ -40,5 +41,41 @@ const SearchResultCard = new Lang.Class({
         this.set_size_request(Card.MinSize.E, Card.MinSize.A);
 
         Utils.set_hand_cursor_on_widget(this);
+    },
+
+    _TEXT_SIZE_RATIO: 0.64,
+
+    vfunc_size_allocate: function (alloc) {
+        let text_width = alloc.width * this._TEXT_SIZE_RATIO;
+        let image_width = alloc.height;
+        let total_width = text_width + image_width;
+        let margin = alloc.width - total_width;
+
+        let card_alloc = new Cairo.RectangleInt({
+            x: alloc.x + (margin / 2),
+            y: alloc.y,
+            width: total_width,
+            height: alloc.height,
+        });
+
+        this.parent(card_alloc);
+
+        let image_alloc = new Cairo.RectangleInt({
+            x: alloc.x + (margin / 2),
+            y: alloc.y,
+            width: image_width,
+            height: alloc.height,
+        });
+        this._thumbnail_frame.size_allocate(image_alloc);
+
+        let text_alloc = new Cairo.RectangleInt({
+            x: alloc.x + (margin / 2) + image_width,
+            y: alloc.y,
+            width: text_width,
+            height: alloc.height,
+        });
+        this._content_frame.size_allocate(text_alloc);
+
+        this.update_card_sizing_classes(total_width, alloc.width);
     },
 });
