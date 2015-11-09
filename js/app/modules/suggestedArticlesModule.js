@@ -39,11 +39,6 @@ const SuggestedArticlesModule = new Lang.Class({
         this.add(this._arrangement);
 
         let dispatcher = Dispatcher.get_default();
-        if (this._arrangement instanceof InfiniteScrolledWindow.InfiniteScrolledWindow) {
-            this._arrangement.connect('need-more-content', () => dispatcher.dispatch({
-                action_type: Actions.NEED_MORE_SUGGESTED_ARTICLES,
-            }));
-        }
         dispatcher.register((payload) => {
             switch(payload.action_type) {
                 case Actions.CLEAR_SUGGESTED_ARTICLES:

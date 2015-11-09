@@ -486,15 +486,8 @@ const AisleInteraction = new Lang.Class({
         });
     },
 
-    // A poor man's hash function
-    _hash_string: function (str) {
-        return str.split('').reduce((num, chr) => {
-            return num + chr.charCodeAt(0);
-        }, 0);
-    },
-
     _load_more_suggestions: function (query) {
-        let hash = this._hash_string(query);
+        let hash = Utils.dumb_hash(query);
         let random_query = new QueryObject.QueryObject({
             offset: hash % TOTAL_ARTICLES,
             limit: RESULTS_SIZE,
