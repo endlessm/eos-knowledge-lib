@@ -135,12 +135,21 @@ const ArticleStackModule = new Lang.Class({
                 document_card.load_content_finish(task);
                 if (document_card.get_parent() === null)
                     return;
-                this.visible_child = document_card;
-                document_card.grab_focus();
+                if (payload.animation_type !== EosKnowledgePrivate.LoadingAnimation.NONE) {
+                    this.visible_child = document_card;
+                    document_card.grab_focus();
+                }
             } catch (error) {
                 logError(error);
             }
         });
+
+        // Don't wait for WebKit to signal load-committed if we don't have a
+        // loading animation; instead, cut right to the unfinished page
+        if (payload.animation_type === EosKnowledgePrivate.LoadingAnimation.NONE) {
+            this.visible_child = document_card;
+            document_card.grab_focus();
+        }
     },
 
     get_slot_names: function () {
