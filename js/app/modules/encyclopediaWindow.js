@@ -76,6 +76,7 @@ const EncyclopediaWindow = new Lang.Class({
         this.page_manager.transition_duration = 500;  // ms
 
         this.page_manager.add(this._home_page, {
+            left_topbar_widget: this._history_buttons,
             background_uri: this.home_background_uri,
             background_repeats: false,
             background_size: 'cover',

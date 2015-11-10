@@ -115,7 +115,7 @@ const KnowledgeDocumentCard = new Lang.Class({
         switcher_pct: 50 / 56,
         right_margin_pct: 3 / 56
     },
-    MIN_CONTENT_WIDTH: 400,
+    MIN_CONTENT_WIDTH: 300,
     MIN_CONTENT_HEIGHT: 300,
 
     // Duration of animated scroll from section to section in the page.

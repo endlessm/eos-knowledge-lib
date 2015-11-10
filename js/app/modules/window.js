@@ -126,10 +126,12 @@ const Window = new Lang.Class({
             this._home_page.get_style_context().add_class(StyleClasses.HOME_PAGE_B);
             this._section_page.get_style_context().add_class(StyleClasses.SECTION_PAGE_B);
             this._search_page.get_style_context().add_class(StyleClasses.SEARCH_PAGE_B);
+            this._article_page.get_style_context().add_class(StyleClasses.ARTICLE_PAGE_B);
         } else {
             this._home_page.get_style_context().add_class(StyleClasses.HOME_PAGE_A);
             this._section_page.get_style_context().add_class(StyleClasses.SECTION_PAGE_A);
             this._search_page.get_style_context().add_class(StyleClasses.SEARCH_PAGE_A);
+            this._article_page.get_style_context().add_class(StyleClasses.ARTICLE_PAGE_A);
         }
 
         this._stack = new Gtk.Stack({
@@ -367,13 +369,19 @@ const Window = new Lang.Class({
                 this._stack.transition_type = Gtk.StackTransitionType.SLIDE_LEFT;
             } else if (is_on_center(old_page)) {
                 this._stack.transition_type = Gtk.StackTransitionType.CROSSFADE;
+            } else if (this.template_type === 'B') {
+                this._stack.transition_type = Gtk.StackTransitionType.CROSSFADE;
             } else {
                 this._stack.transition_type = Gtk.StackTransitionType.SLIDE_RIGHT;
             }
             nav_back_visible = true;
             this._set_background_position_style(StyleClasses.BACKGROUND_CENTER);
         } else {
-            this._stack.transition_type = Gtk.StackTransitionType.SLIDE_LEFT;
+            if (this.template_type === 'B') {
+                this._stack.transition_type = Gtk.StackTransitionType.CROSSFADE;
+            } else {
+                this._stack.transition_type = Gtk.StackTransitionType.SLIDE_LEFT;
+            }
             nav_back_visible = true;
             this._set_background_position_style(StyleClasses.BACKGROUND_RIGHT);
         }

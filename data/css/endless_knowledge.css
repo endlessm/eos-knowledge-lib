@@ -435,8 +435,14 @@ EknWindow.background-right {
 }
 
 .section-page-b EknItemGroupModule,
-.search-page-b .search-results {
+.search-page-b .search-results,
+.article-page-b EknItemGroupModule,
+.article-page-b .search-results {
     background-color: alpha(black, 0.75);
+}
+
+.article-page-b .sidebar {
+    padding-left: 60px;
 }
 
 .section-page-b .scrollbar.trough,

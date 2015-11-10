@@ -46,7 +46,7 @@ const SearchBox = new Lang.Class({
                     this.set_text_programmatically(payload.text);
                     break;
                 case Actions.FOCUS_SEARCH:
-                    if (this.visible) {
+                    if (this.get_mapped()) {
                         this.grab_focus();
                     }
                     break;

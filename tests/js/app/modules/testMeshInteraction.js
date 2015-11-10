@@ -1,5 +1,6 @@
 // Copyright 2015 Endless Mobile, Inc.
 
+const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
@@ -11,65 +12,19 @@ const Actions = imports.app.actions;
 const ContentObjectModel = imports.search.contentObjectModel;
 const MeshInteraction = imports.app.modules.meshInteraction;
 const Launcher = imports.app.interfaces.launcher;
-const Minimal = imports.tests.minimal;
 const MockDispatcher = imports.tests.mockDispatcher;
 const MockEngine = imports.tests.mockEngine;
 const MockFactory = imports.tests.mockFactory;
-const MockWidgets = imports.tests.mockWidgets;
 const SetObjectModel = imports.search.setObjectModel;
 
 Gtk.init(null);
 
-const MockHomePage = new Lang.Class({
-    Name: 'MockHomePage',
-    Extends: GObject.Object,
-    Signals: {
-        'search-entered': {
-            param_types: [GObject.TYPE_STRING],
-        },
-    },
-
-    _init: function () {
-        this.parent();
-        this.app_banner = {};
-        this._bottom = new MockWidgets.MockItemGroupModule();
-    },
-
-    connect: function (signal, handler) {
-        // Silently ignore signals that we aren't mocking
-        if (GObject.signal_lookup(signal, MockHomePage.$gtype) === 0)
-            return;
-        this.parent(signal, handler);
-    },
-});
-
 const MockView = new Lang.Class({
     Name: 'MockView',
     Extends: GObject.Object,
-    Signals: {
-        'back-clicked': {},
-        'forward-clicked': {},
-        'search-entered': {
-            param_types: [GObject.TYPE_STRING],
-        },
-    },
 
     _init: function () {
         this.parent();
-        let connectable_object = {
-            connect: function () {},
-        };
-        this.section_page = connectable_object;
-        this.section_page.remove_all_cards = function () {};
-        this.section_page.append_cards = function () {};
-        this.home_page = new MockHomePage();
-        this.home_page.tab_button = {};
-        this.categories_page = connectable_object;
-        this.categories_page.tab_button = {};
-        this.article_page = connectable_object;
-        this.search_page = connectable_object;
-        this.no_search_results_page = {};
-        this._visible_page = this.home_page;
     },
 
     connect: function (signal, handler) {
@@ -78,17 +33,10 @@ const MockView = new Lang.Class({
             return;
         this.parent(signal, handler);
     },
-
-    show_page: function (page) {
-        this._visible_page = page;
-    },
-    get_visible_page: function () {
-        return this._visible_page;
-    },
 });
 
 describe('Mesh interaction', function () {
-    let mesh, view, engine, factory, sections, dispatcher;
+    let mesh, engine, factory, sections, dispatcher;
 
     beforeEach(function () {
         dispatcher = MockDispatcher.mock_default();
@@ -97,8 +45,6 @@ describe('Mesh interaction', function () {
         let application = new GObject.Object();
         application.application_id = 'foobar';
         factory = new MockFactory.MockFactory();
-        factory.add_named_mock('results-card', Minimal.MinimalCard);
-        factory.add_named_mock('document-card', Minimal.MinimalDocumentCard);
 
         // The mesh interaction is going to sort these by featured boolean
         // so make sure they are ordered with featured ones first otherwise
@@ -134,7 +80,6 @@ describe('Mesh interaction', function () {
             factory: factory,
             factory_name: 'interaction',
         });
-        view = factory.get_created_named_mocks('window')[0];
         spyOn(mesh, 'record_search_metric');
     });
 
@@ -149,19 +94,6 @@ describe('Mesh interaction', function () {
         expect(payloads.length).toBe(1);
         expect(sections.map((section) => section['title']))
             .toEqual(payloads[0].models.map((model) => model.title));
-    });
-
-    it('switches to the correct section page when clicking a card on the home page', function () {
-        let model = new ContentObjectModel.ContentObjectModel({
-            title: 'An article in a section',
-        });
-        engine.get_objects_by_query_finish.and.returnValue([[ model ], null]);
-        dispatcher.dispatch({
-            action_type: Actions.SET_CLICKED,
-            model: new SetObjectModel.SetObjectModel(),
-        });
-        Utils.update_gui();
-        expect(dispatcher.last_payload_with_type(Actions.SHOW_SECTION_PAGE)).toBeDefined();
     });
 
     it('dispatches app-launched on launch from desktop', function () {
@@ -279,31 +211,124 @@ describe('Mesh interaction', function () {
         expect(dispatcher.last_payload_with_type(Actions.SHOW_HOME_PAGE)).toBeDefined();
     });
 
-    describe('search', function () {
+    describe('on set click', function () {
+        let article_model, set_model;
         beforeEach(function () {
-            engine.get_objects_by_query_finish.and.returnValue([[], null]);
+            article_model = new ContentObjectModel.ContentObjectModel({
+                ekn_id: 'ekn://foo/bar',
+            });
+            set_model = new SetObjectModel.SetObjectModel({
+                ekn_id: 'ekn://foo/set',
+            });
+            engine.get_objects_by_query_finish.and.returnValue([[article_model], null]);
         });
 
-        it('occurs after search-entered is dispatched', function () {
+        it('shows the section page after engine query returns', function () {
+            engine.get_objects_by_query.and.stub();
+            dispatcher.dispatch({
+                action_type: Actions.SET_CLICKED,
+                model: set_model,
+            });
+            expect(dispatcher.last_payload_with_type(Actions.SHOW_SECTION_PAGE)).not.toBeDefined();
+            let callback = engine.get_objects_by_query.calls.mostRecent().args[2];
+            callback(engine);
+            expect(dispatcher.last_payload_with_type(Actions.SHOW_SECTION_PAGE)).toBeDefined();
+        });
+
+        it('shows the set', function () {
+            dispatcher.dispatch({
+                action_type: Actions.SET_CLICKED,
+                model: set_model,
+            });
+            let payload = dispatcher.last_payload_with_type(Actions.SHOW_SET);
+            expect(payload.model).toBe(set_model);
+        });
+
+        it('loads the set items from engine', function () {
+            dispatcher.dispatch({
+                action_type: Actions.SET_CLICKED,
+                model: set_model,
+            });
+            expect(dispatcher.has_payload_sequence([
+                Actions.CLEAR_ITEMS,
+                Actions.APPEND_ITEMS,
+                Actions.SET_READY
+            ])).toBe(true);
+            let payload = dispatcher.last_payload_with_type(Actions.APPEND_ITEMS);
+            expect(payload.models).toEqual([ article_model ]);
+        });
+
+        it('cancels existing set queries', function () {
+            engine.get_objects_by_query.and.stub();
+            dispatcher.dispatch({
+                action_type: Actions.SET_CLICKED,
+                model: set_model,
+            });
+            let cancellable = engine.get_objects_by_query.calls.mostRecent().args[1];
+            let cancel_spy = jasmine.createSpy();
+            cancellable.connect(cancel_spy);
+            dispatcher.dispatch({
+                action_type: Actions.SET_CLICKED,
+                model: new SetObjectModel.SetObjectModel({
+                    ekn_id: 'ekn://foo/otherset',
+                }),
+            });
+            expect(cancel_spy).toHaveBeenCalled();
+        });
+    });
+
+    describe('on search entered', function () {
+        let article_model, query;
+        beforeEach(function () {
+            article_model = new ContentObjectModel.ContentObjectModel({
+                ekn_id: 'ekn://foo/bar',
+            });
+            query = 'foo';
+            engine.get_objects_by_query_finish.and.returnValue([[article_model], null]);
+        });
+
+        it('queries the engine', function () {
             dispatcher.dispatch({
                 action_type: Actions.SEARCH_TEXT_ENTERED,
-                text: 'query not found',
+                text: query,
             });
             expect(engine.get_objects_by_query)
                 .toHaveBeenCalledWith(jasmine.objectContaining({
-                    query: 'query not found',
+                    query: query,
                 }),
                 jasmine.any(Object),
                 jasmine.any(Function));
-                expect(dispatcher.last_payload_with_type(Actions.SHOW_SEARCH_PAGE)).toBeDefined();
+        });
+
+        it('show the search page', function () {
+            dispatcher.dispatch({
+                action_type: Actions.SEARCH_TEXT_ENTERED,
+                text: query,
+            });
+            expect(dispatcher.last_payload_with_type(Actions.SHOW_SEARCH_PAGE)).toBeDefined();
         });
 
         it('records a metric', function () {
             dispatcher.dispatch({
                 action_type: Actions.SEARCH_TEXT_ENTERED,
-                text: 'query not found',
+                text: query,
             });
             expect(mesh.record_search_metric).toHaveBeenCalled();
+        });
+
+        it('loads the results from engine', function () {
+            dispatcher.dispatch({
+                action_type: Actions.SEARCH_TEXT_ENTERED,
+                text: query,
+            });
+            expect(dispatcher.has_payload_sequence([
+                Actions.SEARCH_STARTED,
+                Actions.CLEAR_SEARCH,
+                Actions.APPEND_SEARCH,
+                Actions.SEARCH_READY
+            ])).toBe(true);
+            let payload = dispatcher.last_payload_with_type(Actions.APPEND_SEARCH);
+            expect(payload.models).toEqual([ article_model ]);
         });
 
         it('dispatches search-failed if the search fails', function () {
@@ -311,12 +336,66 @@ describe('Mesh interaction', function () {
             engine.get_objects_by_query_finish.and.throwError(new Error('Ugh'));
             dispatcher.dispatch({
                 action_type: Actions.SEARCH_TEXT_ENTERED,
-                text: 'query not found',
+                text: query,
             });
             expect(dispatcher.dispatched_payloads).toContain(jasmine.objectContaining({
                 action_type: Actions.SEARCH_FAILED,
-                query: 'query not found',
+                query: query,
             }));
+        });
+
+        it('cancels existing search queries', function () {
+            engine.get_objects_by_query.and.stub();
+            dispatcher.dispatch({
+                action_type: Actions.SEARCH_TEXT_ENTERED,
+                text: query,
+            });
+            let cancellable = engine.get_objects_by_query.calls.mostRecent().args[1];
+            let cancel_spy = jasmine.createSpy();
+            cancellable.connect(cancel_spy);
+            dispatcher.dispatch({
+                action_type: Actions.SEARCH_TEXT_ENTERED,
+                text: 'bar',
+            });
+            expect(cancel_spy).toHaveBeenCalled();
+        });
+    });
+
+    describe('on article selected', function () {
+        let article_model;
+        beforeEach(function () {
+            article_model = new ContentObjectModel.ContentObjectModel({
+                ekn_id: 'ekn://foo/bar',
+            });
+        });
+
+        it('shows the article page', function () {
+            dispatcher.dispatch({
+                action_type: Actions.ITEM_CLICKED,
+                model: article_model,
+            });
+            expect(dispatcher.last_payload_with_type(Actions.SHOW_ARTICLE_PAGE)).toBeDefined();
+        });
+
+        it('shows the article without animation when first loading the page', function () {
+            dispatcher.dispatch({
+                action_type: Actions.ITEM_CLICKED,
+                model: article_model,
+            });
+            let payload = dispatcher.last_payload_with_type(Actions.SHOW_ARTICLE);
+            expect(payload.model).toBe(article_model);
+            expect(payload.animation_type).toBe(EosKnowledgePrivate.LoadingAnimationType.NONE);
+        });
+
+        it('loads the article list', function () {
+            engine.get_objects_by_query_finish.and.returnValue([[ article_model ], null]);
+            dispatcher.dispatch({
+                action_type: Actions.AUTOCOMPLETE_CLICKED,
+                model: article_model,
+                text: 'foo',
+            });
+            let payload = dispatcher.last_payload_with_type(Actions.APPEND_SEARCH);
+            expect(payload.models).toEqual([ article_model ]);
         });
     });
 
@@ -349,7 +428,6 @@ describe('Mesh interaction', function () {
         });
 
         it('leads back to the section page', function () {
-            view.emit('search-entered', 'query not found');
             dispatcher.dispatch({ action_type: Actions.HISTORY_BACK_CLICKED });
             Utils.update_gui();
             expect(dispatcher.last_payload_with_type(Actions.SHOW_SECTION_PAGE)).toBeDefined();

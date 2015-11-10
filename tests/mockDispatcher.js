@@ -29,8 +29,8 @@ const MockDispatcher = new Lang.Class({
         if (payload) {
             for (let id in this._listeners)
                 this._listeners[id](payload);
-            this._process_queue();
             this.dispatched_payloads.push(payload);
+            this._process_queue();
         }
         this._processing = false;
     },
@@ -61,6 +61,12 @@ const MockDispatcher = new Lang.Class({
 
     last_payload_with_type: function (action_type) {
         return this.payloads_with_type(action_type).pop();
+    },
+
+    has_payload_sequence: function (action_types) {
+        return this.dispatched_payloads.some((payload, payload_index) =>
+            action_types.every((action, action_index) =>
+                this.dispatched_payloads[payload_index + action_index].action_type === action));
     },
 
     reset: function () {

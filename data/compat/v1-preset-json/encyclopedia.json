@@ -85,7 +85,8 @@
                                     "properties": {
                                         "margin-top": 20,
                                         "message-halign": "start",
-                                        "halign": "start"
+                                        "halign": "fill",
+                                        "max-children": 10
                                     },
                                     "slots": {
                                         "arrangement": {

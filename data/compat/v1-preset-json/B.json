@@ -78,6 +78,9 @@
         },
         "section-page": {
             "type": "SidebarTemplate",
+            "properties": {
+                "on-left": false
+            },
             "slots": {
                 "content": {
                     "type": "SetBannerModule",
@@ -105,6 +108,9 @@
         },
         "search-page": {
             "type": "SidebarTemplate",
+            "properties": {
+                "on-left": false
+            },
             "slots": {
                 "content": {
                     "type": "SearchBannerModule",
@@ -131,10 +137,47 @@
             }
         },
         "article-page": {
-            "type": "ArticleStackModule",
+            "type": "SidebarTemplate",
             "slots": {
-                "card-type": {
-                    "type": "KnowledgeDocumentCard"
+                "content": {
+                    "type": "ArticleStackModule",
+                    "slots": {
+                        "card-type": {
+                            "type": "KnowledgeDocumentCard"
+                        }
+                    }
+                },
+                "sidebar": {
+                    "type": "SearchAndItemModule",
+                    "slots": {
+                        "search": {
+                            "type": "SearchModule",
+                            "slots": {
+                                "arrangement": {
+                                    "type": "ListArrangement"
+                                },
+                                "card-type": {
+                                    "type": "TextCard"
+                                },
+                                "article-suggestions": null,
+                                "category-suggestions": null
+                            },
+                            "properties": {
+                                "message-valign": "center"
+                            }
+                        },
+                        "item": {
+                            "type": "ItemGroupModule",
+                            "slots": {
+                                "arrangement": {
+                                    "type": "ListArrangement"
+                                },
+                                "card-type": {
+                                    "type": "TextCard"
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }

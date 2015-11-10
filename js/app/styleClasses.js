@@ -347,6 +347,20 @@ const SEARCH_PAGE_A = 'search-page-a';
 const SEARCH_PAGE_B = 'search-page-b';
 
 /**
+ * Constant: ARTICLE_PAGE_A
+ *
+ * Matches the ArticlePageA of the knowledge apps.
+ */
+const ARTICLE_PAGE_A = 'article-page-a';
+
+/**
+ * Constant: ARTICLE_PAGE_B
+ *
+ * Matches the ArticlePageB of the knowledge apps.
+ */
+const ARTICLE_PAGE_B = 'article-page-b';
+
+/**
  * Constant: SIDEBAR_TEMPLATE
  *
  * Matches the sidebar template's toplevel widget.

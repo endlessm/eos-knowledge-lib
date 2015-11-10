@@ -78,6 +78,11 @@ const MeshInteraction = new Lang.Class({
             history_model: new EosKnowledgePrivate.HistoryModel(),
         });
 
+        this._current_set_id = null;
+        this._current_search_query = '';
+        this._set_cancellable = new Gio.Cancellable();
+        this._search_cancellable = new Gio.Cancellable();
+
         let dispatcher = Dispatcher.get_default();
         dispatcher.register((payload) => {
             switch(payload.action_type) {
@@ -87,58 +92,41 @@ const MeshInteraction = new Lang.Class({
                 case Actions.ARTICLE_LINK_CLICKED:
                     this.load_uri(payload.ekn_id);
                     break;
+                case Actions.NAV_BACK_CLICKED:
+                    this._on_back();
+                    break;
+                case Actions.SET_CLICKED:
+                    this._history_presenter.set_current_item_from_props({
+                        page_type: this.SECTION_PAGE,
+                        model: payload.model,
+                    });
+                    break;
+                case Actions.ITEM_CLICKED:
+                case Actions.SEARCH_CLICKED:
+                    this._history_presenter.set_current_item_from_props({
+                        page_type: this.ARTICLE_PAGE,
+                        model: payload.model,
+                    });
+                    break;
+                case Actions.NEED_MORE_ITEMS:
+                    this._load_more_set_results();
+                    break;
+                case Actions.NEED_MORE_SEARCH:
+                    this._load_more_search_results();
+                    break;
+                case Actions.AUTOCOMPLETE_CLICKED:
+                    this._history_presenter.set_current_item_from_props({
+                        page_type: this.ARTICLE_PAGE,
+                        model: payload.model,
+                        query: payload.text,
+                    });
+                    break;
             }
         });
 
-        if (this.template_type === 'encyclopedia') {
-            dispatcher.register((payload) => {
-                switch(payload.action_type) {
-                    case Actions.AUTOCOMPLETE_CLICKED:
-                        this.load_uri(payload.model.ekn_id);
-                        break;
-                    case Actions.SEARCH_CLICKED:
-                        this.load_model(payload.model);
-                        break;
-                }
-            });
-        } else {
-            this._current_article_results_item = null;
-
+        if (this.template_type !== 'encyclopedia') {
             // Connect signals
             this._window.connect('search-focused', this._on_search_focus.bind(this));
-
-            dispatcher.register((payload) => {
-                switch(payload.action_type) {
-                    case Actions.NAV_BACK_CLICKED:
-                        this._on_back();
-                        break;
-                    case Actions.SET_CLICKED:
-                        this._history_presenter.set_current_item_from_props({
-                            page_type: this.SECTION_PAGE,
-                            model: payload.model,
-                        });
-                        break;
-                    case Actions.ITEM_CLICKED:
-                    case Actions.SEARCH_CLICKED:
-                        this._history_presenter.set_current_item_from_props({
-                            page_type: this.ARTICLE_PAGE,
-                            model: payload.model,
-                        });
-                        break;
-                    case Actions.NEED_MORE_ITEMS:
-                        this._load_more_results(Actions.APPEND_ITEMS);
-                        break;
-                    case Actions.NEED_MORE_SEARCH:
-                        this._load_more_results(Actions.APPEND_SEARCH);
-                        break;
-                    case Actions.AUTOCOMPLETE_CLICKED:
-                        this._history_presenter.set_current_item_from_props({
-                            page_type: this.ARTICLE_PAGE,
-                            model: payload.model,
-                            query: payload.text,
-                        });
-                        break;                }
-            });
         }
 
         this._window.connect('key-press-event', this._on_key_press_event.bind(this));
@@ -201,136 +189,47 @@ const MeshInteraction = new Lang.Class({
         dispatcher.dispatch({
             action_type: Actions.HIDE_MEDIA,
         });
+        dispatcher.dispatch({
+            action_type: Actions.CLEAR_HIGHLIGHTED_ITEM,
+            model: item.model,
+        });
 
         let search_text = '';
-        if (this.template_type === 'encyclopedia') {
-            search_text = item.query;
-            switch (item.page_type) {
-                case this.ARTICLE_PAGE:
+        switch (item.page_type) {
+            case this.SEARCH_PAGE:
+                dispatcher.dispatch({
+                    action_type: Actions.SHOW_SEARCH_PAGE,
+                });
+                search_text = item.query;
+                this._update_search_results(item);
+                break;
+            case this.SECTION_PAGE:
+                this._update_set_results(item, () => {
                     dispatcher.dispatch({
-                        action_type: Actions.SHOW_ARTICLE,
-                        model: item.model,
-                        animation_type: EosKnowledgePrivate.LoadingAnimation.NONE,
+                        action_type: Actions.SHOW_SECTION_PAGE,
                     });
-                    dispatcher.dispatch({
-                        action_type: Actions.SHOW_ARTICLE_PAGE,
-                    });
-                    return;
-                case this.SEARCH_PAGE:
-                    this._do_search_in_view(item);
-                    return;
-                case this.HOME_PAGE:
-                    dispatcher.dispatch({
-                        action_type: Actions.SHOW_HOME_PAGE,
-                    });
-                    return;
-            }
-        } else {
-            dispatcher.dispatch({
-                action_type: Actions.CLEAR_HIGHLIGHTED_ITEM,
-                model: item.model,
-            });
-
-            switch (item.page_type) {
-                case this.SEARCH_PAGE:
-                    dispatcher.dispatch({
-                        action_type: Actions.SEARCH_STARTED,
-                        query: item.query,
-                    });
-                    dispatcher.dispatch({
-                        action_type: Actions.SHOW_SEARCH_PAGE,
-                    });
-                    this._refresh_article_results(item, (success) => {
-                        if (!success) {
-                            dispatcher.dispatch({
-                                action_type: Actions.SEARCH_FAILED,
-                                query: item.query,
-                                error: new Error('Search failed for unknown reason'),
-                            });
-                            dispatcher.dispatch({
-                                action_type: Actions.SHOW_SEARCH_PAGE,
-                            });
-                            return;
-                        }
-                        dispatcher.dispatch({
-                            action_type: Actions.SEARCH_READY,
-                            query: item.query,
-                        });
-                    });
-                    search_text = item.query;
-                    break;
-                case this.SECTION_PAGE:
-                    dispatcher.dispatch({
-                        action_type: Actions.SHOW_SET,
-                        model: item.model,
-                    });
-                    this._refresh_article_results(item, () => {
-                        dispatcher.dispatch({
-                            action_type: Actions.SET_READY,
-                            model: item.model,
-                        });
-                        dispatcher.dispatch({
-                            action_type: Actions.SHOW_SECTION_PAGE,
-                        });
-                    });
-                    break;
-                case this.ARTICLE_PAGE:
-                    this._load_document_card_in_view(item, is_going_back);
-                    break;
-                case this.HOME_PAGE:
-                    dispatcher.dispatch({
-                        action_type: Actions.SHOW_HOME_PAGE,
-                    });
-                    break;
-            }
+                });
+                break;
+            case this.ARTICLE_PAGE:
+                this._update_article_list();
+                dispatcher.dispatch({
+                    action_type: Actions.SHOW_ARTICLE,
+                    model: item.model,
+                    animation_type: this._get_article_animation_type(item, is_going_back),
+                });
+                dispatcher.dispatch({
+                    action_type: Actions.SHOW_ARTICLE_PAGE,
+                });
+                break;
+            case this.HOME_PAGE:
+                dispatcher.dispatch({
+                    action_type: Actions.SHOW_HOME_PAGE,
+                });
+                break;
         }
         dispatcher.dispatch({
             action_type: Actions.SET_SEARCH_TEXT,
             text: search_text,
-        });
-    },
-
-    _do_search_in_view: function (item) {
-        Dispatcher.get_default().dispatch({
-            action_type: Actions.SEARCH_STARTED,
-            query: item.query,
-        });
-
-        Dispatcher.get_default().dispatch({
-            action_type: Actions.SHOW_SEARCH_PAGE,
-        });
-        this._window.set_focus_child(null);
-        let query_obj = new QueryObject.QueryObject({
-            query: item.query,
-        });
-        Engine.get_default().get_objects_by_query(query_obj, null, (engine, task) => {
-            let results, get_more_results_query;
-            let dispatcher = Dispatcher.get_default();
-
-            dispatcher.dispatch({
-                action_type: Actions.CLEAR_SEARCH,
-            });
-
-            try {
-                [results, get_more_results_query] = engine.get_objects_by_query_finish(task);
-            } catch (error) {
-                logError(error);
-                dispatcher.dispatch({
-                    action_type: Actions.SEARCH_FAILED,
-                    query: item.query,
-                    error: error,
-                });
-                return;
-            }
-
-            dispatcher.dispatch({
-                action_type: Actions.APPEND_SEARCH,
-                models: results,
-            });
-            dispatcher.dispatch({
-                action_type: Actions.SEARCH_READY,
-                query: item.query,
-            });
         });
     },
 
@@ -374,57 +273,13 @@ const MeshInteraction = new Lang.Class({
         return str;
     },
 
-    _load_more_results: function (action_type) {
-        if (!this._get_more_results_query)
-            return;
-        Engine.get_default().get_objects_by_query(this._get_more_results_query, null, (engine, task) => {
-            let results, get_more_results_query;
-            try {
-                [results, get_more_results_query] = engine.get_objects_by_query_finish(task);
-            } catch (error) {
-                logError(error);
-                return;
-            }
-
-            if (results.length > 0) {
-                let dispatcher = Dispatcher.get_default();
-                let item = this._history_presenter.history_model.current_item;
-                if (item.page_type === this.ARTICLE_PAGE) {
-                    dispatcher.dispatch({
-                        action_type: Actions.HIGHLIGHT_ITEM,
-                        model: item.model,
-                    });
-                }
-                dispatcher.dispatch({
-                    action_type: action_type,
-                    models: results,
-                });
-            }
-            this._get_more_results_query = get_more_results_query;
-        });
-        // Null the query we just sent to the engine, when results come back
-        // we'll have a new more results query. But this keeps us from double
-        // loading this query.
-        this._get_more_results_query = null;
-    },
-
-    _load_document_card_in_view: function (item, is_going_back) {
-        let dispatcher = Dispatcher.get_default();
-        let animation_type = EosKnowledgePrivate.LoadingAnimationType.FORWARDS_NAVIGATION;
+    _get_article_animation_type: function (item, is_going_back) {
         let last_item = this._history_presenter.history_model.get_item(is_going_back ? 1 : -1);
-        if (!last_item || last_item.page_type !== this.ARTICLE_PAGE) {
-            animation_type = EosKnowledgePrivate.LoadingAnimationType.NONE;
-            dispatcher.dispatch({
-                action_type: Actions.SHOW_ARTICLE_PAGE,
-            });
-        } else if (is_going_back) {
-            animation_type = EosKnowledgePrivate.LoadingAnimationType.BACKWARDS_NAVIGATION;
-        }
-        dispatcher.dispatch({
-            action_type: Actions.SHOW_ARTICLE,
-            model: item.model,
-            animation_type: animation_type,
-        });
+        if (this.template_type === 'encyclopedia' || !last_item || last_item.page_type !== this.ARTICLE_PAGE)
+            return EosKnowledgePrivate.LoadingAnimationType.NONE;
+        if (is_going_back)
+            return EosKnowledgePrivate.LoadingAnimationType.BACKWARDS_NAVIGATION;
+        return EosKnowledgePrivate.LoadingAnimationType.FORWARDS_NAVIGATION;
     },
 
     _on_home_button_clicked: function (button) {
@@ -451,63 +306,191 @@ const MeshInteraction = new Lang.Class({
         this._history_presenter.set_current_item(HistoryItem.HistoryItem.new_from_object(item));
     },
 
-    // Callback is called with a boolean argument; true if the search was
-    // successful (even if no results), false if there was an error
-    _refresh_article_results: function (item, callback) {
-        let query_obj = null;
-        if (item.page_type === this.SECTION_PAGE) {
-            query_obj = new QueryObject.QueryObject({
-                tags: item.model.child_tags,
-                limit: RESULTS_SIZE,
-            });
-        } else if (item.query) {
-            query_obj = new QueryObject.QueryObject({
+    _update_article_list: function () {
+        this._history_presenter.search_backwards(0, (item) => {
+            if (item.query) {
+                this._update_search_results(item);
+                return true;
+            }
+            if (item.page_type === this.SECTION_PAGE) {
+                this._update_set_results(item);
+                return true;
+            }
+            return false;
+        });
+        this._update_highlight();
+    },
+
+    _update_search_results: function (item) {
+        let query_obj = new QueryObject.QueryObject({
+            query: item.query,
+            limit: RESULTS_SIZE,
+        });
+        let dispatcher = Dispatcher.get_default();
+        if (this._current_search_query === item.query) {
+            dispatcher.dispatch({
+                action_type: Actions.SEARCH_READY,
                 query: item.query,
-                limit: RESULTS_SIZE,
             });
-        } else {
-            printerr('No way to query for this history item.');
-            callback(false);
             return;
         }
+        this._current_search_query = item.query;
 
-        if (this._current_article_results_item === item) {
-            callback(true);
-            return;
-        }
-        this._current_article_results_item = item;
-
-        Engine.get_default().get_objects_by_query(query_obj, null, (engine, task) => {
+        dispatcher.dispatch({
+            action_type: Actions.SEARCH_STARTED,
+            query: item.query,
+        });
+        this._search_cancellable.cancel();
+        this._search_cancellable.reset();
+        this._more_search_results_query = null;
+        Engine.get_default().get_objects_by_query(query_obj, this._search_cancellable, (engine, task) => {
             let results, get_more_results_query;
             try {
                 [results, get_more_results_query] = engine.get_objects_by_query_finish(task);
             } catch (error) {
+                if (error.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
+                    return;
                 logError(error);
-                callback(false);
+                dispatcher.dispatch({
+                    action_type: Actions.SEARCH_FAILED,
+                    query: item.query,
+                    error: new Error('Search failed for unknown reason'),
+                });
                 return;
             }
-            this._get_more_results_query = get_more_results_query;
+            this._more_search_results_query = get_more_results_query;
+
+            dispatcher.dispatch({
+                action_type: Actions.CLEAR_SEARCH,
+            });
+            dispatcher.dispatch({
+                action_type: Actions.APPEND_SEARCH,
+                models: results,
+            });
+            this._update_highlight();
+            dispatcher.dispatch({
+                action_type: Actions.SEARCH_READY,
+                query: item.query,
+            });
+        });
+    },
+
+    _load_more_search_results: function () {
+        if (!this._more_search_results_query)
+            return;
+        Engine.get_default().get_objects_by_query(this._more_search_results_query, this._search_cancellable, (engine, task) => {
+            let results, get_more_results_query;
+            try {
+                [results, get_more_results_query] = engine.get_objects_by_query_finish(task);
+            } catch (error) {
+                if (error.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
+                    return;
+                logError(error);
+                return;
+            }
+            if (!results)
+                return;
 
             let dispatcher = Dispatcher.get_default();
-            if (item.page_type === this.SEARCH_PAGE) {
-                dispatcher.dispatch({
-                    action_type: Actions.CLEAR_SEARCH,
-                });
-                dispatcher.dispatch({
-                    action_type: Actions.APPEND_SEARCH,
-                    models: results,
-                });
-            } else {
-                dispatcher.dispatch({
-                    action_type: Actions.CLEAR_ITEMS,
-                });
-                dispatcher.dispatch({
-                    action_type: Actions.APPEND_ITEMS,
-                    models: results,
-                });
-            }
-            callback(true);
+            this._update_highlight();
+            dispatcher.dispatch({
+                action_type: Actions.APPEND_SEARCH,
+                models: results,
+            });
+            this._more_search_results_query = get_more_results_query;
         });
+        // Null the query to avoid double loading.
+        this._more_search_results_query = null;
+    },
+
+    _update_set_results: function (item, callback=() => {}) {
+        let query_obj = new QueryObject.QueryObject({
+            tags: item.model.child_tags,
+            limit: RESULTS_SIZE,
+        });
+
+        let dispatcher = Dispatcher.get_default();
+        if (this._current_set_id === item.model.ekn_id) {
+            dispatcher.dispatch({
+                action_type: Actions.SET_READY,
+                model: item.model,
+            });
+            callback();
+            return;
+        }
+        this._current_set_id = item.model.ekn_id;
+
+        dispatcher.dispatch({
+            action_type: Actions.SHOW_SET,
+            model: item.model,
+        });
+        this._set_cancellable.cancel();
+        this._set_cancellable.reset();
+        this._more_set_results_query = null;
+        Engine.get_default().get_objects_by_query(query_obj, this._set_cancellable, (engine, task) => {
+            let results, get_more_results_query;
+            try {
+                [results, get_more_results_query] = engine.get_objects_by_query_finish(task);
+            } catch (error) {
+                if (error.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
+                    return;
+                logError(error);
+                callback();
+                return;
+            }
+            this._more_set_results_query = get_more_results_query;
+
+            dispatcher.dispatch({
+                action_type: Actions.CLEAR_ITEMS,
+            });
+            dispatcher.dispatch({
+                action_type: Actions.APPEND_ITEMS,
+                models: results,
+            });
+            this._update_highlight();
+            dispatcher.dispatch({
+                action_type: Actions.SET_READY,
+                model: item.model,
+            });
+            callback();
+        });
+    },
+
+    _load_more_set_results: function () {
+        if (!this._more_set_results_query)
+            return;
+        Engine.get_default().get_objects_by_query(this._more_set_results_query, this._set_cancellable, (engine, task) => {
+            let results, get_more_results_query;
+            try {
+                [results, get_more_results_query] = engine.get_objects_by_query_finish(task);
+            } catch (error) {
+                if (!error.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
+                    logError(error);
+                return;
+            }
+            if (!results)
+                return;
+
+            let dispatcher = Dispatcher.get_default();
+            this._update_highlight();
+            dispatcher.dispatch({
+                action_type: Actions.APPEND_ITEMS,
+                models: results,
+            });
+            this._more_set_results_query = get_more_results_query;
+        });
+        // Null the query to avoid double loading.
+        this._more_set_results_query = null;
+    },
+
+    _update_highlight: function () {
+        let item = this._history_presenter.history_model.current_item;
+        if (item.page_type === this.ARTICLE_PAGE) {
+            Dispatcher.get_default().dispatch({
+                action_type: Actions.HIGHLIGHT_ITEM,
+                model: item.model,
+            });
+        }
     },
 
     /*
