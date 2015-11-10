@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2015-11-03 02:54+0000\n"
-"PO-Revision-Date: 2015-11-03 02:54+0000\n"
+"POT-Creation-Date: 2015-11-06 22:23+0000\n"
+"PO-Revision-Date: 2015-11-06 22:23+0000\n"
 "Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
 "Language-Team: French (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/fr/)\n"
 "MIME-Version: 1.0\n"
@@ -53,8 +53,8 @@ msgstr "PAGE D'ACCUEIL "
 msgid "You might be interested in..."
 msgstr ""
 
-#: data/widgets/suggestedCategoriesModule.ui:19
-msgid "Browse Categories"
+#: data/widgets/suggestedCategoriesModule.ui:17
+msgid "Browse by topic"
 msgstr ""
 
 #. TRANSLATORS: anything inside curly braces '{}' is going
@@ -131,20 +131,33 @@ msgid ""
 "Try another one or try again after restarting your computer."
 msgstr "Il y a eu une erreur pendant le chargement de cette page.\nEssayez-en une autre ou réessayez après avoir redémarré votre ordinateur."
 
-#: js/app/modules/contextBanner.js:49 js/app/modules/contextBanner.js:57
+#: js/app/modules/contextBanner.js:48 js/app/modules/contextBanner.js:56
 msgid "Highlights"
 msgstr ""
 
-#. TRANSLATORS: %d will be replaced with the number of
-#. search results and %s will be replaced with the text the
-#. user searched for. Make sure to keep the %d and %s tokens in
-#. your translation.
-#: js/app/modules/contextBanner.js:73
+#: js/app/modules/contextBanner.js:59
+msgid "All Categories"
+msgstr ""
+
+#. TRANSLATORS: %s will be replaced with the text the user
+#. searched for. Make sure to keep the %s token in your translation.
+#: js/app/modules/contextBanner.js:74
 #, javascript-format
-msgid "%d result for “%s”"
-msgid_plural "%d results for “%s”"
-msgstr[0] ""
-msgstr[1] ""
+msgid "Search results for “%s”"
+msgstr "Résultats de recherche pour “%s”"
+
+#. TRANSLATORS: %s will be replaced with the text the user
+#. searched for. Make sure to keep %s token in your translation.
+#. TRANSLATORS: This message is displayed when an app is
+#. done searching for results. The %s will be replaced with the
+#. term that the user searched for. Note, in English, it is
+#. surrounded by Unicode left and right double quotes (U+201C
+#. and U+201D). Make sure to include %s in your translation and
+#. use whatever quote marks are appropriate for your language.
+#: js/app/modules/contextBanner.js:78 js/app/modules/searchBannerModule.js:68
+#, javascript-format
+msgid "Results were found for “%s”"
+msgstr ""
 
 #: js/app/modules/hamburgerBasementTemplate.js:40
 msgid "SEE ALL CATEGORIES"
@@ -166,17 +179,6 @@ msgstr "Page %s"
 msgid "Searching for “%s”"
 msgstr "Recherche de “%s”"
 
-#. TRANSLATORS: This message is displayed when an app is
-#. done searching for results. The %s will be replaced with the
-#. term that the user searched for. Note, in English, it is
-#. surrounded by Unicode left and right double quotes (U+201C
-#. and U+201D). Make sure to include %s in your translation and
-#. use whatever quote marks are appropriate for your language.
-#: js/app/modules/searchBannerModule.js:68
-#, javascript-format
-msgid "Search results for “%s”"
-msgstr "Résultats de recherche pour “%s”"
-
 #: js/app/modules/searchBannerModule.js:74
 msgid "OOPS!"
 msgstr "OUPS !"
@@ -186,17 +188,16 @@ msgid "Sorry! :-("
 msgstr ""
 
 #: js/app/modules/searchModule.js:164
-#, javascript-format
-msgid "We didn't find any results that match your search for “%s”\n"
+msgid "Sorry, there are no results that match your search.\n"
 msgstr ""
 
 #: js/app/modules/searchModule.js:166
 msgid ""
-"WE RECOMMEND THAT YOU:\n"
+"We recommend that you:\n"
 "\n"
 "  •  Check your spelling\n"
-"  •  Try different words with the same meaning as the ones you just typed\n"
-"  •  Try again with more generic words"
+"  •  Try other words that mean the same thing\n"
+"  •  Try using more general words"
 msgstr ""
 
 #: js/app/modules/searchModule.js:192

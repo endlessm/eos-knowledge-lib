@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: eos-knowledge 0.4.0\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-"
 "inc\n"
-"POT-Creation-Date: 2015-11-06 22:23+0000\n"
+"POT-Creation-Date: 2015-11-10 02:54+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -109,22 +109,22 @@ msgstr ""
 msgid "Content courtesy of {blog-link}, licensed under {license-link}."
 msgstr ""
 
-#: js/app/modules/aisleInteraction.js:807
+#: js/app/modules/aisleInteraction.js:808
 msgid "View the license in your browser"
 msgstr ""
 
-#: js/app/modules/aisleInteraction.js:939
-#: js/app/modules/aisleInteraction.js:946
+#: js/app/modules/aisleInteraction.js:940
+#: js/app/modules/aisleInteraction.js:947
 msgid "Oops!"
 msgstr ""
 
-#: js/app/modules/aisleInteraction.js:940
+#: js/app/modules/aisleInteraction.js:941
 msgid ""
 "We could not find this magazine!\n"
 "Please try again after restarting your computer."
 msgstr ""
 
-#: js/app/modules/aisleInteraction.js:947
+#: js/app/modules/aisleInteraction.js:948
 msgid ""
 "There was an error loading that page.\n"
 "Try another one or try again after restarting your computer."
@@ -217,11 +217,11 @@ msgstr ""
 #. have them and DO NOT translate words inside curly braces. Also, note: the
 #. "and" is used to join together the names of authors of a blog post. For
 #. example: "Jane Austen and Henry Miller and William Clifford"
-#: js/app/utils.js:79
+#: js/app/utils.js:80
 msgid "by {author}"
 msgstr ""
 
-#: js/app/utils.js:79
+#: js/app/utils.js:80
 msgid "and"
 msgstr ""
 
