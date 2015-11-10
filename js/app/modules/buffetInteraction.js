@@ -61,7 +61,7 @@ const BuffetInteraction = new Lang.Class({
     BRAND_SCREEN_TIME_MS: 1500,
 
     _init: function (props={}) {
-        this._launched_once = false;
+        this._launched_once = this._timer_ready = this._content_ready = false;
 
         this.parent(props);
 
@@ -122,6 +122,14 @@ const BuffetInteraction = new Lang.Class({
                     break;
                 case Actions.NEED_MORE_SUGGESTED_ARTICLES:
                     this._load_more_suggestions(payload.query);
+                    break;
+                case Actions.MODULE_READY:
+                    this._content_ready = true;
+                    if (this._timer_ready) {
+                        Dispatcher.get_default().dispatch({
+                            action_type: Actions.BRAND_SCREEN_DONE,
+                        });
+                    }
                     break;
                 case Actions.ARTICLE_LINK_CLICKED:
                     this._load_ekn_id(payload.ekn_id);
@@ -382,9 +390,12 @@ const BuffetInteraction = new Lang.Class({
         if (!this._dispatch_launch(timestamp, Launcher.LaunchType.DESKTOP))
             return;
         GLib.timeout_add(GLib.PRIORITY_DEFAULT, this.BRAND_SCREEN_TIME_MS, () => {
-            Dispatcher.get_default().dispatch({
-                action_type: Actions.BRAND_SCREEN_DONE,
-            });
+            this._timer_ready = true;
+            if (this._content_ready) {
+                Dispatcher.get_default().dispatch({
+                    action_type: Actions.BRAND_SCREEN_DONE,
+                });
+            }
             return GLib.SOURCE_REMOVE;
         });
     },

@@ -144,6 +144,10 @@ const HighlightsModule = new Lang.Class({
             all_models = all_models.concat(models);
             if (get_more === null) {
                 all_models.forEach(this._add_item, this);
+                Dispatcher.get_default().dispatch({
+                    action_type: Actions.MODULE_READY,
+                    module: this,
+                });
                 return;
             }
             engine.get_objects_by_query(get_more, null, process_results);

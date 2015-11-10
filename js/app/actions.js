@@ -33,6 +33,7 @@ const CLEAR_HIGHLIGHTED_ITEM = 'clear-highlighted-item';
 const APPEND_SETS = 'append-sets';
 const APPEND_ITEMS = 'append-items';
 const APPEND_SEARCH = 'append-search';
+const MODULE_READY = 'module-ready';
 const NEED_MORE_SUGGESTED_ARTICLES = 'need-more-suggested-articles';
 const APPEND_SUGGESTED_ARTICLES = 'append-suggested-articles';
 const CLEAR_SUGGESTED_ARTICLES = 'clear-suggested-articles';
