@@ -27,6 +27,7 @@ const Interaction = imports.app.interfaces.interaction;
 const Launcher = imports.app.interfaces.launcher;
 const MediaObjectModel = imports.search.mediaObjectModel;
 const Module = imports.app.interfaces.module;
+const ProgressLabel = imports.app.widgets.progressLabel;
 const QueryObject = imports.search.queryObject;
 const ReaderCard = imports.app.modules.readerCard;
 const ReaderDocumentCard = imports.app.modules.readerDocumentCard;
@@ -858,6 +859,8 @@ const AisleInteraction = new Lang.Class({
             }));
             frame.get_style_context().add_class(StyleClasses.READER_ARCHIVE_NOTICE_FRAME);
             card_props.info_notice = frame;
+        } else {
+            card_props.info_notice = new ProgressLabel.ProgressLabel();
         }
 
         // FIXME: This should probably be a slot on a document page and not the

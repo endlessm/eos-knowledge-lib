@@ -10,7 +10,6 @@ const Card = imports.app.interfaces.card;
 const DocumentCard = imports.app.interfaces.documentCard;
 const EknWebview = imports.app.widgets.eknWebview;
 const Module = imports.app.interfaces.module;
-const ProgressLabel = imports.app.widgets.progressLabel;
 const Utils = imports.app.utils;
 const WebKit2 = imports.gi.WebKit2;
 
@@ -40,18 +39,15 @@ const ReaderDocumentCard = new Lang.Class({
         'content-view': GObject.ParamSpec.override('content-view', DocumentCard.DocumentCard),
         'custom-css': GObject.ParamSpec.override('custom-css',
             DocumentCard.DocumentCard),
-
         /**
          * Property: info-notice
          *
-         * A widget showing where in the series of articles this article
-         * resides. Is either a <Reader.ProgressLabel> widget or, in the
-         * case of standalone pages a label saying that this article is
-         * in the archive.
+         * A widget showing info about the cards position in the app, overlaid
+         * over card contents.
          */
         'info-notice': GObject.ParamSpec.object('info-notice', 'Progress Label',
             'The progress indicator at the top of the page',
-            GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE,
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             Gtk.Widget),
     },
 
@@ -60,11 +56,6 @@ const ReaderDocumentCard = new Lang.Class({
         'separator', 'decorative-frame', 'content-grid' ],
 
     _init: function (props={}) {
-        this.info_notice = props.info_notice || new ProgressLabel.ProgressLabel();
-        this.info_notice.valign = Gtk.Align.START;
-        this.info_notice.halign = Gtk.Align.CENTER;
-        this.info_notice.margin_top = _PROGRESS_LABEL_MARGIN + _DECORATIVE_BAR_HEIGHT;
-
         if (!(props.custom_css || props['custom-css'] || props.customCss))
             props.custom_css = 'reader.css';
 
@@ -88,7 +79,12 @@ const ReaderDocumentCard = new Lang.Class({
         });
         this._size_group.add_widget(this._title_view);
 
-        this.add_overlay(this.info_notice);
+        if (this.info_notice) {
+            this.info_notice.valign = Gtk.Align.START;
+            this.info_notice.halign = Gtk.Align.CENTER;
+            this.info_notice.margin_top = _PROGRESS_LABEL_MARGIN + _DECORATIVE_BAR_HEIGHT;
+            this.add_overlay(this.info_notice);
+        }
     },
 
     _set_attribution_label_from_model: function () {
