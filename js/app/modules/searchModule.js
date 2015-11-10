@@ -30,6 +30,7 @@ const SPINNER_PAGE_NAME = 'spinner';
  *
  * CSS classes:
  *   search-results - on the widget itself
+ *   no-results - on the widget when showing a no results message
  *   results-message-title - on the title text showing a no results message
  *   results-message-subtitle - on the subtitle text showing a no results message
  *   error-message - on the text showing an error
@@ -172,6 +173,7 @@ const SearchModule = new Lang.Class({
         let count = this._arrangement.get_cards().length;
         if (count > 0) {
             this.visible_child_name = RESULTS_PAGE_NAME;
+            this.get_style_context().remove_class(StyleClasses.NO_RESULTS);
         } else {
             let context = this._message_title.get_style_context();
             context.remove_class(StyleClasses.ERROR_MESSAGE);
@@ -179,8 +181,8 @@ const SearchModule = new Lang.Class({
             // FIXME: I think we want to set a larger line-height value here
             // but not possible in GTK CSS
             this._message_title.label =
-                "<span size=\"xx-large\">" + _("Sorry! :-(") + "</span>\n\n" +
-                _("Sorry, there are no results that match your search.\n");
+                "<span weight=\"bold\" size=\"xx-large\">" + _("Sorry! :-(") + "</span>\n\n" +
+                _("There are no results that match your search.\n");
 
             this._message_subtitle.label = _("We recommend that you:\n\n" +
                   "  •  Check your spelling\n" +
@@ -197,6 +199,7 @@ const SearchModule = new Lang.Class({
             });
 
             this.visible_child_name = MESSAGE_PAGE_NAME;
+            this.get_style_context().add_class(StyleClasses.NO_RESULTS);
         }
     },
 

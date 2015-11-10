@@ -23,7 +23,7 @@
           </object>
         </child>
         <style>
-          <class name="browse-categories"/>
+          <class name="browse-content"/>
         </style>
       </object>
       <packing>

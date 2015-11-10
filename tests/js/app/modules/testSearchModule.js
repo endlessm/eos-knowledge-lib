@@ -79,6 +79,7 @@ describe('Search module', function () {
             action_type: Actions.SEARCH_READY,
             query: 'myfoobar',
         });
+        expect(search_module).not.toHaveCssClass(StyleClasses.NO_RESULTS);
         expect(search_module.visible_child_name).toBe('results');
     });
 
@@ -95,6 +96,7 @@ describe('Search module', function () {
         }));
 
         expect(search_module.visible_child_name).toBe('message');
+        expect(search_module).toHaveCssClass(StyleClasses.NO_RESULTS);
         expect(search_module).toHaveDescendantWithCssClass(StyleClasses.RESULTS_MESSAGE_TITLE);
     });
 

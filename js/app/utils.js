@@ -192,6 +192,11 @@ function shuffle (array, sequence) {
     return array;
 }
 
+// A poor man's hash function
+function dumb_hash (str) {
+    return str.split('').reduce((num, chr) => num + chr.charCodeAt(0), 0);
+}
+
 function get_web_plugin_dbus_name () {
     let app_id = Gio.Application.get_default().application_id;
     let pid = new Gio.Credentials().get_unix_pid();

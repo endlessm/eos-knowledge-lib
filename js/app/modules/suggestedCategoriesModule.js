@@ -18,7 +18,8 @@ const Utils = imports.app.utils;
  * A module that displays all suggested articles as cards in an arrangement.
  *
  * CSS classes:
- *   browse-categories-title - on the "Browse Categories" title
+ *   suggested-categories - on the module itself
+ *   browse-content - on the "Browse Categories" title
  *
  * Slots:
  *   arrangement

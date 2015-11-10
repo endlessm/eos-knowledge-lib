@@ -120,6 +120,9 @@ const BuffetInteraction = new Lang.Class({
                 case Actions.NEED_MORE_SEARCH:
                     this._load_more_results();
                     break;
+                case Actions.NEED_MORE_SUGGESTED_ARTICLES:
+                    this._load_more_suggestions(payload.query);
+                    break;
                 case Actions.ARTICLE_LINK_CLICKED:
                     this._load_ekn_id(payload.ekn_id);
                     break;
@@ -149,6 +152,41 @@ const BuffetInteraction = new Lang.Class({
         });
         this._history_presenter.connect('history-item-changed',
             this._on_history_item_change.bind(this));
+    },
+
+    // this number ought to be the number of articles in database
+    // but we don't have a way of getting that so this is just a conservative guess
+    _TOTAL_ARTICLES: 50,
+    _load_more_suggestions: function (query) {
+        let hash = Utils.dumb_hash(query);
+        let random_query = new QueryObject.QueryObject({
+            offset: hash % this._TOTAL_ARTICLES,
+            limit: RESULTS_SIZE,
+            sort: QueryObject.QueryObjectSort.ARTICLE_NUMBER,
+            tags: ['EknArticleObject'],
+        });
+        Engine.get_default().get_objects_by_query(random_query, null, (engine, task) => {
+            let random_results, get_more_results_query;
+            try {
+                [random_results, get_more_results_query] = engine.get_objects_by_query_finish(task);
+            } catch (error) {
+                Dispatcher.get_default().dispatch({
+                    action_type: Actions.SEARCH_FAILED,
+                    query: item.query,
+                    error: error,
+                });
+                logError(error);
+                return;
+            }
+            // Reseed the pseudorandom function so that we get the same random sequence
+            GLib.random_set_seed(hash);
+            // Generate a pseudorandom sequence of numbers to use to shuffle the array
+            let rand_sequence = Array.apply(null, {length: RESULTS_SIZE}).map(GLib.random_double);
+            Dispatcher.get_default().dispatch({
+                action_type: Actions.APPEND_SUGGESTED_ARTICLES,
+                models: Utils.shuffle(random_results, rand_sequence).slice(0, 4),
+            });
+        });
     },
 
     _load_theme: function () {

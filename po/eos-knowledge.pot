@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: eos-knowledge 0.4.0\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-"
 "inc\n"
-"POT-Creation-Date: 2015-11-10 02:54+0000\n"
+"POT-Creation-Date: 2015-11-10 15:04-0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -48,7 +48,7 @@ msgstr ""
 msgid "HOME"
 msgstr ""
 
-#: data/widgets/suggestedArticlesModule.ui:18
+#: data/widgets/suggestedArticlesModule.ui:17
 msgid "You might be interested in..."
 msgstr ""
 
@@ -109,22 +109,22 @@ msgstr ""
 msgid "Content courtesy of {blog-link}, licensed under {license-link}."
 msgstr ""
 
-#: js/app/modules/aisleInteraction.js:808
+#: js/app/modules/aisleInteraction.js:801
 msgid "View the license in your browser"
 msgstr ""
 
+#: js/app/modules/aisleInteraction.js:933
 #: js/app/modules/aisleInteraction.js:940
-#: js/app/modules/aisleInteraction.js:947
 msgid "Oops!"
 msgstr ""
 
-#: js/app/modules/aisleInteraction.js:941
+#: js/app/modules/aisleInteraction.js:934
 msgid ""
 "We could not find this magazine!\n"
 "Please try again after restarting your computer."
 msgstr ""
 
-#: js/app/modules/aisleInteraction.js:948
+#: js/app/modules/aisleInteraction.js:941
 msgid ""
 "There was an error loading that page.\n"
 "Try another one or try again after restarting your computer."
@@ -182,15 +182,15 @@ msgstr ""
 msgid "OOPS!"
 msgstr ""
 
-#: js/app/modules/searchModule.js:163
+#: js/app/modules/searchModule.js:165
 msgid "Sorry! :-("
 msgstr ""
 
-#: js/app/modules/searchModule.js:164
-msgid "Sorry, there are no results that match your search.\n"
+#: js/app/modules/searchModule.js:166
+msgid "There are no results that match your search.\n"
 msgstr ""
 
-#: js/app/modules/searchModule.js:166
+#: js/app/modules/searchModule.js:168
 msgid ""
 "We recommend that you:\n"
 "\n"
@@ -199,7 +199,7 @@ msgid ""
 "  •  Try using more general words"
 msgstr ""
 
-#: js/app/modules/searchModule.js:192
+#: js/app/modules/searchModule.js:195
 msgid "There was an error during your search."
 msgstr ""
 
