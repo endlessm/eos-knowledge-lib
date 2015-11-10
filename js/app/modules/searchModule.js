@@ -162,7 +162,7 @@ const SearchModule = new Lang.Class({
             // FIXME: I think we want to set a larger line-height value here
             // but not possible in GTK CSS
             this._message_title.label =
-                "<span size=\"xx-large\">" + _("Sorry! :-(") + "</span>\n\n" +
+                "<span weight=\"bold\" size=\"xx-large\">" + _("Sorry! :-(") + "</span>\n\n" +
                 _("There are no results that match your search.\n");
 
             this._message_subtitle.label = _("We recommend that you:\n\n" +
