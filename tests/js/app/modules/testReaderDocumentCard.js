@@ -5,9 +5,9 @@ const Utils = imports.tests.utils;
 Utils.register_gresource();
 
 const ArticleObjectModel = imports.search.articleObjectModel;
-const ReaderDocumentCard = imports.app.modules.readerDocumentCard;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const MockWidgets = imports.tests.mockWidgets;
+const ReaderDocumentCard = imports.app.modules.readerDocumentCard;
 const StyleClasses = imports.app.styleClasses;
 const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 
@@ -120,5 +120,16 @@ describe('Document Card', function () {
         });
         card.content_view.emit('load-changed', WebKit2.LoadEvent.COMMITTED);
         card.content_view.emit('load-changed', WebKit2.LoadEvent.FINISHED);
+    });
+
+    describe('info notice', function () {
+        it('is added when set on construction', function () {
+            let widget = new Gtk.Label();
+            card = new ReaderDocumentCard.ReaderDocumentCard({
+                model: article_object,
+                info_notice: widget,
+            });
+            expect(card).toHaveDescendant(widget);
+        });
     });
 });
