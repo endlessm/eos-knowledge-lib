@@ -7,7 +7,8 @@ const FADE_DURATION = 200;
 
 $(document).ready(function () {
     var mouse_is_down = false;
-    var window_focus;
+    // Webview should start focused
+    var window_focus = true;
     $(window).focus(function() {
         window_focus = true;
     }).blur(function() {

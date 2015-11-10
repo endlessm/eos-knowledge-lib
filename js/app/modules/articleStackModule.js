@@ -137,7 +137,7 @@ const ArticleStackModule = new Lang.Class({
                     return;
                 if (payload.animation_type !== EosKnowledgePrivate.LoadingAnimation.NONE) {
                     this.visible_child = document_card;
-                    document_card.grab_focus();
+                    document_card.content_view.grab_focus();
                 }
             } catch (error) {
                 logError(error);
@@ -148,7 +148,7 @@ const ArticleStackModule = new Lang.Class({
         // loading animation; instead, cut right to the unfinished page
         if (payload.animation_type === EosKnowledgePrivate.LoadingAnimation.NONE) {
             this.visible_child = document_card;
-            document_card.grab_focus();
+            document_card.content_view.grab_focus();
         }
     },
 
