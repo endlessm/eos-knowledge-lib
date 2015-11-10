@@ -211,7 +211,8 @@ const MeshInteraction = new Lang.Class({
                 });
                 break;
             case this.ARTICLE_PAGE:
-                this._update_article_list();
+                if (this.template_type === 'B')
+                    this._update_article_list();
                 dispatcher.dispatch({
                     action_type: Actions.SHOW_ARTICLE,
                     model: item.model,

@@ -79,6 +79,7 @@ describe('Mesh interaction', function () {
             application: application,
             factory: factory,
             factory_name: 'interaction',
+            template_type: 'B',
         });
         spyOn(mesh, 'record_search_metric');
     });
