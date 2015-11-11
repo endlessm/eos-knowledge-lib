@@ -858,8 +858,6 @@ const AisleInteraction = new Lang.Class({
             }));
             frame.get_style_context().add_class(StyleClasses.READER_ARCHIVE_NOTICE_FRAME);
             card_props.info_notice = frame;
-        } else {
-            card_props.page_number = model.article_number;
         }
 
         // FIXME: This should probably be a slot on a document page and not the
