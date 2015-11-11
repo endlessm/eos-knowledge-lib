@@ -319,6 +319,12 @@ EknSideMenuTemplate .menu-button:hover {
     color: #49bde3;
 }
 
+EknSideMenuTemplate .text-card,
+EknSideMenuTemplate .home-button,
+EknSideMenuTemplate .close-button {
+    padding: 6px 0px;
+}
+
 EknContextBanner {
     font-family: 'Lato Thin';
     font-size: 22px;
