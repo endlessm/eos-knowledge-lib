@@ -72,7 +72,7 @@ const MeshInteraction = new Lang.Class({
             template_type: this.template_type,
         });
 
-        this.load_theme();
+        this._load_theme();
 
         this._history_presenter = new HistoryPresenter.HistoryPresenter({
             history_model: new EosKnowledgePrivate.HistoryModel(),
@@ -87,10 +87,10 @@ const MeshInteraction = new Lang.Class({
         dispatcher.register((payload) => {
             switch(payload.action_type) {
                 case Actions.SEARCH_TEXT_ENTERED:
-                    this.do_search(payload.text);
+                    this._do_search(payload.text);
                     break;
                 case Actions.ARTICLE_LINK_CLICKED:
-                    this.load_uri(payload.ekn_id);
+                    this._load_uri(payload.ekn_id);
                     break;
                 case Actions.NAV_BACK_CLICKED:
                     this._on_back();
@@ -211,7 +211,8 @@ const MeshInteraction = new Lang.Class({
                 });
                 break;
             case this.ARTICLE_PAGE:
-                this._update_article_list();
+                if (this.template_type === 'B')
+                    this._update_article_list();
                 dispatcher.dispatch({
                     action_type: Actions.SHOW_ARTICLE,
                     model: item.model,
@@ -275,7 +276,7 @@ const MeshInteraction = new Lang.Class({
 
     _get_article_animation_type: function (item, is_going_back) {
         let last_item = this._history_presenter.history_model.get_item(is_going_back ? 1 : -1);
-        if (this.template_type === 'encyclopedia' || !last_item || last_item.page_type !== this.ARTICLE_PAGE)
+        if (!last_item || last_item.page_type !== this.ARTICLE_PAGE)
             return EosKnowledgePrivate.LoadingAnimationType.NONE;
         if (is_going_back)
             return EosKnowledgePrivate.LoadingAnimationType.BACKWARDS_NAVIGATION;
@@ -499,7 +500,7 @@ const MeshInteraction = new Lang.Class({
      * styles. Make sure to apply the theme styling second, so that
      * it gets priority.
      */
-    load_theme: function () {
+    _load_theme: function () {
         let provider = new Gtk.CssProvider();
         if (this.template_type === 'encyclopedia') {
             let css_file = Gio.File.new_for_uri(DATA_RESOURCE_PATH + 'css/endless_encyclopedia.css');
@@ -523,12 +524,12 @@ const MeshInteraction = new Lang.Class({
             provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
     },
 
-    do_search: function (query) {
+    _do_search: function (query) {
         let sanitized_query = Utils.sanitize_query(query);
         if (sanitized_query.length === 0)
             return;
 
-        this.record_search_metric(query);
+        this._record_search_metric(query);
         this._history_presenter.set_current_item_from_props({
             page_type: this.SEARCH_PAGE,
             query: sanitized_query,
@@ -536,7 +537,7 @@ const MeshInteraction = new Lang.Class({
     },
 
     // Should be mocked out during tests so that we don't actually send metrics
-    record_search_metric: function (query) {
+    _record_search_metric: function (query) {
         let recorder = EosMetrics.EventRecorder.get_default();
         recorder.record_event(this.SEARCH_METRIC, new GLib.Variant('(ss)',
             [query, this.application.application_id]));
@@ -598,7 +599,7 @@ const MeshInteraction = new Lang.Class({
             action_type: Actions.SHOW_SEARCH_PAGE,
         });
 
-        this.do_search(query);  // sets history presenter item
+        this._do_search(query);  // sets history presenter item
         // Don't wait for the sets to load on the home page, since we don't
         // start off showing the home page
         this._load_sets_on_home_page(null, (mesh, task) =>
@@ -632,7 +633,7 @@ const MeshInteraction = new Lang.Class({
             this._load_sets_on_home_page_finish(task));
     },
 
-    load_uri: function (ekn_id) {
+    _load_uri: function (ekn_id) {
         Engine.get_default().get_object_by_id(ekn_id, null, (engine, task) => {
             let model;
             try {
@@ -642,11 +643,11 @@ const MeshInteraction = new Lang.Class({
                 return;
             }
 
-            this.load_model(model);
+            this._load_model(model);
         });
     },
 
-    load_model: function (model) {
+    _load_model: function (model) {
         if (model instanceof ArticleObjectModel.ArticleObjectModel) {
             this._history_presenter.set_current_item_from_props({
                 page_type: this.ARTICLE_PAGE,

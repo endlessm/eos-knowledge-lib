@@ -34,6 +34,17 @@ const ArticleStackModule = new Lang.Class({
             'Handle to EOS knowledge engine',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             GObject.Object.$gtype),
+        /**
+         * Property: do-sliding-animation
+         * Whether the stack should use a sliding animation or just crossfade.
+         *
+         * If true, the article stack module will transition new articles in
+         * from the left and old from the right. If false, will just crossfade.
+         */
+        'do-sliding-animation': GObject.ParamSpec.boolean('do-sliding-animation',
+            'Do Sliding Animation', 'Do Sliding Animation',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            true),
     },
 
     CONTENT_TRANSITION_DURATION: 500,
@@ -103,28 +114,42 @@ const ArticleStackModule = new Lang.Class({
         });
 
         if (payload.animation_type === EosKnowledgePrivate.LoadingAnimation.FORWARDS_NAVIGATION) {
-            this.transition_type = Gtk.StackTransitionType.SLIDE_LEFT;
+            if (this.do_sliding_animation)
+                this.transition_type = Gtk.StackTransitionType.SLIDE_LEFT;
+            else
+                this.transition_type = Gtk.StackTransitionType.CROSSFADE;
         } else if (payload.animation_type === EosKnowledgePrivate.LoadingAnimation.BACKWARDS_NAVIGATION) {
-            this.transition_type = Gtk.StackTransitionType.SLIDE_RIGHT;
+            if (this.do_sliding_animation)
+                this.transition_type = Gtk.StackTransitionType.SLIDE_RIGHT;
+            else
+                this.transition_type = Gtk.StackTransitionType.CROSSFADE;
         } else {
             this.transition_type = Gtk.StackTransitionType.NONE;
         }
 
+        this.add(document_card);
+        document_card.show_all();
+
         document_card.load_content(null, (card, task) => {
             try {
                 document_card.load_content_finish(task);
-                if (document_card.get_parent() !== null) {
-                    document_card.reparent(this);
-                } else {
-                    this.add(document_card);
+                if (document_card.get_parent() === null)
+                    return;
+                if (payload.animation_type !== EosKnowledgePrivate.LoadingAnimation.NONE) {
+                    this.visible_child = document_card;
+                    document_card.content_view.grab_focus();
                 }
-                document_card.show_all();
-                this.visible_child = document_card;
-                document_card.grab_focus();
             } catch (error) {
                 logError(error);
             }
         });
+
+        // Don't wait for WebKit to signal load-committed if we don't have a
+        // loading animation; instead, cut right to the unfinished page
+        if (payload.animation_type === EosKnowledgePrivate.LoadingAnimation.NONE) {
+            this.visible_child = document_card;
+            document_card.content_view.grab_focus();
+        }
     },
 
     get_slot_names: function () {

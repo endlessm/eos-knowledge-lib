@@ -79,8 +79,9 @@ describe('Mesh interaction', function () {
             application: application,
             factory: factory,
             factory_name: 'interaction',
+            template_type: 'B',
         });
-        spyOn(mesh, 'record_search_metric');
+        spyOn(mesh, '_record_search_metric');
     });
 
     it('can be constructed', function () {});
@@ -313,7 +314,7 @@ describe('Mesh interaction', function () {
                 action_type: Actions.SEARCH_TEXT_ENTERED,
                 text: query,
             });
-            expect(mesh.record_search_metric).toHaveBeenCalled();
+            expect(mesh._record_search_metric).toHaveBeenCalled();
         });
 
         it('loads the results from engine', function () {

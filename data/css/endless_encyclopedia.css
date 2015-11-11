@@ -125,7 +125,8 @@ GtkEntry:selected {
 }
 
 .paper-template .content {
-    background-color: #e9e4de;
+    background-image: linear-gradient(to bottom, #ececec 0%, #ececec 100%),
+                      url('resource:///com/endlessm/knowledge/data/templates/images/noise.png');
 }
 
 .scrollbar {

@@ -310,10 +310,17 @@ const BuffetInteraction = new Lang.Class({
                 search_text = item.query;
                 break;
             case Pages.ARTICLE:
+                let animation_type = EosKnowledgePrivate.LoadingAnimationType.FORWARDS_NAVIGATION;
+                let last_item = this._history_presenter.history_model.get_item(is_going_back ? 1 : -1);
+                if (!last_item || last_item.page_type !== Pages.ARTICLE) {
+                    animation_type = EosKnowledgePrivate.LoadingAnimationType.NONE;
+                } else if (is_going_back) {
+                    animation_type = EosKnowledgePrivate.LoadingAnimationType.BACKWARDS_NAVIGATION;
+                }
                 let payload = {
                     action_type: Actions.SHOW_ARTICLE,
                     model: item.model,
-                    animation_type: EosKnowledgePrivate.LoadingAnimation.NONE,
+                    animation_type: animation_type,
                 };
                 if (item.context) {
                     let index = item.context.indexOf(item.model);
