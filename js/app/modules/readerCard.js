@@ -55,9 +55,9 @@ const ReaderCard = new Lang.Class({
         this.set_title_label_from_model(this._title_label);
         this.set_style_variant_from_model();
 
-        // page_number of 0 means an archived article
-        if (this.page_number) {
-            this._card_info_label.label = (_("Page %s").format('<b>' + this.page_number + '</b>'));
+        // page_number of -1 means an archived article
+        if (this.model.page_number > 0) {
+            this._card_info_label.label = (_("Page %s").format('<b>' + (this.model.page_number + 1) + '</b>'));
             this._card_info_grid.remove(this._archive_icon);
         }
 
