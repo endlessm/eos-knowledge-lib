@@ -1,6 +1,7 @@
 // Copyright 2015 Endless Mobile, Inc.
 
 const Cairo = imports.gi.cairo;
+const Gdk = imports.gi.Gdk;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
@@ -101,6 +102,13 @@ const ThumbCard = new Lang.Class({
         this._thumbnail_frame.size_allocate(thumb_alloc);
         this._content_frame.size_allocate(text_alloc);
         this.update_card_sizing_classes(alloc.height, alloc.width);
+    },
+
+    vfunc_draw: function (cr) {
+        this.parent(cr);
+        Utils.render_border_with_arrow(this, cr);
+        cr.$dispose();  // workaround bug for not freeing cairo context
+        return Gdk.EVENT_PROPAGATE;
     },
 
     _should_go_horizontal: function (width, height) {

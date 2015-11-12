@@ -1,5 +1,6 @@
 /* exported dbus_object_path_for_webview, get_web_plugin_dbus_name,
-get_web_plugin_dbus_name_for_webview, has_descendant_with_type */
+get_web_plugin_dbus_name_for_webview, has_descendant_with_type,
+render_border_with_arrow */
 
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Format = imports.format;
@@ -235,4 +236,30 @@ function set_container_clip (container) {
         }
     });
     container.set_clip(clip);
+}
+
+function render_border_with_arrow (widget, cr) {
+    let context = widget.get_style_context();
+    let width = widget.get_allocated_width();
+    let height = widget.get_allocated_height();
+
+    // Draw focus rectangle even when the widget is not focused, so we can
+    // style it with outline
+    Gtk.render_focus(context, cr, 0, 0, width, height);
+
+    // Render the triangle in the corner
+    // FIXME: gtk_style_context_get_border_color is deprecated; ideally we
+    // want to get the "outline" style rather than the "border" style, but
+    // that is private to GTK and can only be accessed with render_focus().
+    let color = context.get_border_color(context.get_state());
+    cr.save();
+    Gdk.cairo_set_source_rgba(cr, color);
+    cr.moveTo(width, height);
+    cr.lineTo(width - 36, height);
+    cr.lineTo(width, height - 36);
+    cr.fill();
+    cr.restore();
+
+    // Render the arrow on top of the triangle
+    Gtk.render_arrow(context, cr, 0, width - 15, height - 15, 12);
 }

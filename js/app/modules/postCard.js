@@ -1,5 +1,6 @@
 // Copyright 2015 Endless Mobile, Inc.
 
+const Gdk = imports.gi.Gdk;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
@@ -35,6 +36,8 @@ const PostCard = new Lang.Class({
     _init: function (props={}) {
         this.parent(props);
 
+        this._showing_set = (this.model instanceof SetObjectModel.SetObjectModel);
+
         this.set_title_label_from_model(this._title_label);
         this.set_thumbnail_frame_from_model(this._thumbnail_frame);
         this.add_contextual_css_class();
@@ -42,10 +45,15 @@ const PostCard = new Lang.Class({
 
         Utils.set_hand_cursor_on_widget(this);
 
-        if (this.model instanceof SetObjectModel.SetObjectModel) {
+        if (this._showing_set) {
             this._inner_content_grid.valign = Gtk.Align.CENTER;
             this._left_sleeve.visible = this._right_sleeve.visible = true;
             this._thumbnail_frame.margin = 13;
+            this._thumbnail_frame.connect_after('draw', (widget, cr) => {
+                Utils.render_border_with_arrow(this._thumbnail_frame, cr);
+                cr.$dispose();  // workaround not freeing cairo context
+                return Gdk.EVENT_PROPAGATE;
+            });
         }
     },
 
@@ -75,6 +83,14 @@ const PostCard = new Lang.Class({
             this._content_grid.size_allocate(content_alloc);
         }
         this.update_card_sizing_classes(alloc.height, alloc.width);
+    },
+
+    vfunc_draw: function (cr) {
+        this.parent(cr);
+        if (!this._showing_set)
+            Utils.render_border_with_arrow(this, cr);
+        cr.$dispose();  // workaround not freeing cairo context
+        return Gdk.EVENT_PROPAGATE;
     },
 
     _get_content_height: function (height) {
