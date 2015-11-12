@@ -337,6 +337,15 @@ const AisleInteraction = new Lang.Class({
                         logError(error);
                         return;
                     }
+                    // FIXME: This is an awful hack. We need our reader search
+                    // cards to show the proper page number on hover, however we
+                    // make the cards in the SearchModule and not here. We need
+                    // to figure out a good way to create cards with UI
+                    // depending on application state anywhere our module tree,
+                    // but for now we just hack up the models page_number.
+                    results.map((model) => {
+                        model.page_number = this._get_page_number_for_article_model(model);
+                    });
                     dispatcher.dispatch({
                         action_type: Actions.CLEAR_SEARCH,
                     });
@@ -849,8 +858,6 @@ const AisleInteraction = new Lang.Class({
             }));
             frame.get_style_context().add_class(StyleClasses.READER_ARCHIVE_NOTICE_FRAME);
             card_props.info_notice = frame;
-        } else {
-            card_props.page_number = model.article_number;
         }
 
         // FIXME: This should probably be a slot on a document page and not the

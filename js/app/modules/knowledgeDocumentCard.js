@@ -44,7 +44,6 @@ const KnowledgeDocumentCard = new Lang.Class({
         'factory': GObject.ParamSpec.override('factory', Module.Module),
         'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
         'model': GObject.ParamSpec.override('model', Card.Card),
-        'page-number': GObject.ParamSpec.override('page-number', Card.Card),
         'title-capitalization': GObject.ParamSpec.override('title-capitalization',
             Card.Card),
         'content-view': GObject.ParamSpec.override('content-view', DocumentCard.DocumentCard),

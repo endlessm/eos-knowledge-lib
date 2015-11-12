@@ -103,17 +103,6 @@ const Card = new Lang.Interface({
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             ContentObjectModel.ContentObjectModel),
         /**
-         * Property: page-number
-         *
-         * Page number of the cards model, within the context of the app. Must
-         * be a human readable (starting from 1) integer. A value of zero means
-         * the model has no page number inside the app.
-         */
-        'page-number': GObject.ParamSpec.uint('page-number', 'Page Number',
-            'Page Number of the article within the current set of articles',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            0, GLib.MAXUINT32, 0),
-        /**
          * Property: title-capitalization
          * Manner in which the card's title is formatted
          *
