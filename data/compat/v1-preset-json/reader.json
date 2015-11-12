@@ -37,9 +37,6 @@
         },
         "front-page": {
             "type": "SidebarTemplate",
-            "properties": {
-                "on-left": false
-            },
             "slots": {
                 "content": {
                     "type": "AppBanner",
@@ -73,6 +70,7 @@
                 }
             },
             "properties": {
+                "on-left": false,
                 "sidebar-width": 576,
                 "fixed": false,
                 "column-homogeneous": true,
