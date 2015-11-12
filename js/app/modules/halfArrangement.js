@@ -11,6 +11,7 @@ const Lang = imports.lang;
 const Arrangement = imports.app.interfaces.arrangement;
 const Card = imports.app.interfaces.card;
 const Module = imports.app.interfaces.module;
+const Utils = imports.app.utils;
 
 const FEATURED_CARDS_PER_ROW = 2;
 const MAX_CARDS_PER_ROW = 4;
@@ -160,6 +161,7 @@ const HalfArrangement = new Lang.Class({
                 x += delta_x + this._get_spare_pixels_for_card_index(spare_pixels, ix);
             }
         });
+        Utils.set_container_clip(this);
     },
 
     get spacing() {

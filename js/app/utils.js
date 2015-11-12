@@ -223,3 +223,16 @@ function has_descendant_with_type (widget, klass) {
     }
     return false;
 }
+
+// Kinda annoying quirk of gtk--any container doing a custom allocate needs to
+// set its clip properly to accommodate widgets that draw outside of their
+// allocation (such as widgets with box shadow). Call this function to do so.
+function set_container_clip (container) {
+    let clip = container.get_allocation();
+    container.forall((child) => {
+        if (child.get_child_visible() && child.get_visible()) {
+            clip = Gdk.rectangle_union(child.get_clip(), clip);
+        }
+    });
+    container.set_clip(clip);
+}

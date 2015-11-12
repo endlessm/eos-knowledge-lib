@@ -12,6 +12,7 @@ const Lang = imports.lang;
 const Arrangement = imports.app.interfaces.arrangement;
 const Card = imports.app.interfaces.card;
 const Module = imports.app.interfaces.module;
+const Utils = imports.app.utils;
 
 const COL_COUNT_MAX = 4;
 const COL_COUNT_MIN = 3;
@@ -138,6 +139,7 @@ const SquareGuysArrangement = new Lang.Class({
         all_children.slice(visible_children_count, all_children.length).forEach((card) => {
             card.set_child_visible(false);
         });
+        Utils.set_container_clip(this);
     },
 
     get spacing() {

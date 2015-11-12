@@ -11,6 +11,7 @@ const Lang = imports.lang;
 const Arrangement = imports.app.interfaces.arrangement;
 const Card = imports.app.interfaces.card;
 const Module = imports.app.interfaces.module;
+const Utils = imports.app.utils;
 
 const SECOND_ROW_CARD_COUNT = 3;
 const CARD_SIZE_SMALL = Card.MinSize.B;
@@ -137,6 +138,7 @@ const WindshieldArrangement = new Lang.Class({
         all_children.slice(SECOND_ROW_CARD_COUNT + 1, all_children.length).forEach((card) => {
             card.set_child_visible(false);
         });
+        Utils.set_container_clip(this);
     },
 
     get spacing() {
