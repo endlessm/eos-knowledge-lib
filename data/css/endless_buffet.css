@@ -51,16 +51,17 @@ EknThematicModule .text-card .title.label,
     padding: 20px 50px;
 }
 
-EknScrollingTemplate .suggested-categories,
-EknScrollingTemplate .suggested-articles {
+EknSearchModule .suggested-categories,
+EknSearchModule .suggested-articles {
     background-color: #f6f6f6;
 }
 
-EknScrollingTemplate:not(.overshoot):not(.undershoot) {
+EknScrollingTemplate:not(.overshoot):not(.undershoot),
+EknSearchModule {
     background-color: #e7ecee;
 }
 
-EknScrollingTemplate .no-results {
+EknSearchModule .no-results {
     background-color: white;
 }
 
