@@ -101,6 +101,9 @@ describe('Buffet interaction', function () {
         buffet.BRAND_SCREEN_TIME_MS = 0;
         buffet.desktop_launch(0);
         expect(dispatcher.last_payload_with_type(Actions.BRAND_SCREEN_DONE)).not.toBeDefined();
+        dispatcher.dispatch({
+            action_type: Actions.MODULE_READY,
+        });
         Utils.update_gui();
         expect(dispatcher.last_payload_with_type(Actions.BRAND_SCREEN_DONE)).toBeDefined();
     });
@@ -108,6 +111,9 @@ describe('Buffet interaction', function () {
     it('shows the brand screen only once', function () {
         buffet.BRAND_SCREEN_TIME_MS = 0;
         buffet.desktop_launch(0);
+        dispatcher.dispatch({
+            action_type: Actions.MODULE_READY,
+        });
         buffet.desktop_launch(0);
         Utils.update_gui();
         let payloads = dispatcher.payloads_with_type(Actions.BRAND_SCREEN_DONE);
