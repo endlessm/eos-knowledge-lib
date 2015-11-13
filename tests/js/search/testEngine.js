@@ -557,6 +557,15 @@ describe('Knowledge Engine Module', () => {
         });
     });
 
+    describe('preloading', () => {
+        it('will init the shard', function () {
+            let mock_shard_file = new MockShard.MockShardFile();
+            mock_ekn_shard(mock_shard_file);
+            engine.preload_default_domain();
+            expect(mock_shard_file.init_async).toHaveBeenCalled();
+        });
+    });
+
     describe('v1 compatibility', () => {
         beforeEach(() => {
             mock_ekn_version(engine, 1);
