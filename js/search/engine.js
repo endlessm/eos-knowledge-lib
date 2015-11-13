@@ -364,6 +364,31 @@ const Engine = Lang.Class({
         this._runtime_objects.set(id, model);
     },
 
+    /**
+     * Method: preload_domain
+     *
+     * Optional call to load up a shard file for a given domain. Will make the
+     * subsequent call to get_object_by_id or get_objects_by_query return
+     * quicker.
+     */
+    preload_domain: function (domain) {
+        if (this._ekn_version_from_domain(domain) < 2)
+            return;
+        let shard_file = this._shard_file_from_domain(domain);
+        shard_file.init_async(0, null, (shard_file, result) => {
+            shard_file.init_finish(result);
+        });
+    },
+
+    /**
+     * Method: preload_default_domain
+     *
+     * Calls preload_domain with the default domain.
+     */
+    preload_default_domain: function () {
+        this.preload_domain(this.default_domain);
+    },
+
     _content_path_from_domain: function (domain) {
         if (this._content_path_cache[domain] === undefined)
             this._content_path_cache[domain] = datadir.get_data_dir_for_domain(domain).get_path();
