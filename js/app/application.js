@@ -73,6 +73,11 @@ const Application = new Lang.Class({
         this._legacy_search_provider.skeleton.unexport_from_connection(connection);
     },
 
+    vfunc_startup: function () {
+        this.parent();
+        Engine.get_default().preload_default_domain();
+    },
+
     LoadPage: function (ekn_id, query, timestamp) {
         this.ensure_interaction();
         this._interaction.activate_search_result(timestamp, ekn_id, query);
