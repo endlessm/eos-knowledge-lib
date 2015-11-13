@@ -391,7 +391,6 @@ const Engine = Lang.Class({
             let shard_file = new EosShard.ShardFile({
                 path: this._shard_path_from_domain(domain),
             });
-            shard_file.init(null);
             this._shard_file_cache[domain] = shard_file;
         }
 
@@ -403,18 +402,21 @@ const Engine = Lang.Class({
         task.catch_errors(() => {
             let [domain, hash] = Utils.components_from_ekn_id(id);
             let shard_file = this._shard_file_from_domain(domain);
-            let record = shard_file.find_record_by_hex_name(hash);
-            if (!record)
-                throw new Error('Could not find epak record for ' + id);
-            let metadata_stream = record.metadata.get_stream();
-            Utils.read_stream(metadata_stream, cancellable, task.catch_callback_errors((stream, stream_task) => {
-                let data = Utils.read_stream_finish(stream_task);
-                let json_ld = JSON.parse(data);
-                let props = {
-                    ekn_version: 2,
-                    get_content_stream: () => record.data.get_stream(),
-                };
-                task.return_value(this._get_model_from_json_ld(props, json_ld));
+            shard_file.init_async(0, null, task.catch_callback_errors((shard_file, result) => {
+                shard_file.init_finish(result);
+                let record = shard_file.find_record_by_hex_name(hash);
+                if (!record)
+                    throw new Error('Could not find epak record for ' + id);
+                let metadata_stream = record.metadata.get_stream();
+                Utils.read_stream(metadata_stream, cancellable, task.catch_callback_errors((stream, stream_task) => {
+                    let data = Utils.read_stream_finish(stream_task);
+                    let json_ld = JSON.parse(data);
+                    let props = {
+                        ekn_version: 2,
+                        get_content_stream: () => record.data.get_stream(),
+                    };
+                    task.return_value(this._get_model_from_json_ld(props, json_ld));
+                }));
             }));
         });
         return task;
