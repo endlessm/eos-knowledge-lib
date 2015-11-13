@@ -22,6 +22,8 @@
     <file preprocess="xml-stripblanks">data/images/reader/left-arrow.svg</file>
     <file preprocess="xml-stripblanks">data/images/reader/right-arrow.svg</file>
     <file preprocess="xml-stripblanks">data/images/reader/standalone_arrow.svg</file>
+    <file preprocess="xml-stripblanks" compressed="true">data/images/arrow-gray.svg</file>
+    <file preprocess="xml-stripblanks" compressed="true">data/images/arrow-white.svg</file>
     <file preprocess="xml-stripblanks">data/images/deckbg.svg</file>
     <file preprocess="xml-stripblanks">data/images/sleeveshadow_left.svg</file>
     <file preprocess="xml-stripblanks">data/images/sleeveshadow_right.svg</file>
