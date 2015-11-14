@@ -44,6 +44,7 @@ EknThematicModule .text-card .title.label,
 .browse-content .title {
     font-weight: 200;
     font-size: 22px;
+    padding-bottom: 4px;
     border-bottom: solid 1px #999999;
 }
 
