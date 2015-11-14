@@ -7,6 +7,8 @@ const Lang = imports.lang;
 
 const Card = imports.app.interfaces.card;
 const Module = imports.app.interfaces.module;
+const StyleClasses = imports.app.styleClasses;
+const ThemeableImage = imports.app.widgets.themeableImage;
 const Utils = imports.app.utils;
 
 /**
@@ -21,7 +23,6 @@ const Utils = imports.app.utils;
  * Style classes:
  *   card, text-card - on the widget itself
  *   title - on the title label
- *   decoration - on the decorative bullet label
  */
 const TextCard = new Lang.Class({
     Name: 'TextCard',
@@ -45,19 +46,10 @@ const TextCard = new Lang.Class({
             'Underline on hover', 'Whether to underline the link on hover',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             false),
-
-        /**
-         * Property: decoration
-         * Whether to add a decorative bullet to the label
-         */
-        'decoration': GObject.ParamSpec.boolean('decoration', 'Decoration',
-            'Whether to add a decorative bullet to the label',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            false),
     },
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/textCard.ui',
-    InternalChildren: [ 'decoration-label', 'title-label' ],
+    InternalChildren: [ 'grid', 'title-label' ],
 
     _init: function (params={}) {
         this.parent(params);
@@ -78,10 +70,13 @@ const TextCard = new Lang.Class({
             });
         }
 
-        if (this.decoration) {
-            this._decoration_label.no_show_all = false;
-            this._decoration_label.show();
-        }
+        let before = new ThemeableImage.ThemeableImage({
+            visible: true,
+            valign: Gtk.Align.CENTER,
+            halign: Gtk.Align.CENTER,
+        });
+        before.get_style_context().add_class(StyleClasses.BEFORE);
+        this._grid.attach(before, 0, 0, 1, 1);
     },
 });
 

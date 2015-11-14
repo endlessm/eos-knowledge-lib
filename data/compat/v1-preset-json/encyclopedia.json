@@ -99,8 +99,7 @@
                                         "card-type": {
                                             "type": "TextCard",
                                             "properties": {
-                                                "underline-on-hover": true,
-                                                "decoration": true
+                                                "underline-on-hover": true
                                             }
                                         },
                                         "article-suggestions": null,
