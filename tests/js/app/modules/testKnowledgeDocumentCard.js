@@ -23,7 +23,7 @@ EvinceDocument.init();
 const TEST_CONTENT_DIR = Utils.get_test_content_srcdir();
 
 describe('Document Card', function () {
-    let card, model, real_session_descriptor;
+    let card, model, real_session_descriptor, toc_json, toc;
 
     beforeEach(function () {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
@@ -39,6 +39,12 @@ describe('Document Card', function () {
             value: mock_session,
             configurable: true,
         });
+
+        toc_json = { "tableOfContents":
+            [{"hasIndex": 0, "hasIndexLabel": 1, "hasLabel": "Foo", "hasContent": "#Foo"},
+             {"hasIndex": 1, "hasIndexLabel": 2, "hasLabel": "Bar", "hasContent": "#Bar"},
+             {"hasIndex": 2, "hasIndexLabel": 3, "hasLabel": "Baz", "hasContent": "#Baz"}]};
+        toc = TreeNode.tree_model_from_tree_node(toc_json);
 
         model = new ArticleObjectModel.ArticleObjectModel({
             ekn_id: 'ekn:///foo/bar',
@@ -94,6 +100,7 @@ describe('Document Card', function () {
                     return file.read(null);
                 },
                 title: 'Pdf title',
+                table_of_contents: toc,
             });
 
             card = new KnowledgeDocumentCard.KnowledgeDocumentCard({
@@ -106,16 +113,15 @@ describe('Document Card', function () {
         });
 
         it('can be loaded', function () {});
+
+        it('never show a table of contents', function () {
+            expect(card.toc.visible).toBe(false);
+        });
     });
 
     describe('with html model', function () {
-        let html_model, toc_json, toc, previous_card, next_card;
+        let html_model, previous_card, next_card;
         beforeEach(function (done) {
-            toc_json = { "tableOfContents":
-                [{"hasIndex": 0, "hasIndexLabel": 1, "hasLabel": "Foo", "hasContent": "#Foo"},
-                 {"hasIndex": 1, "hasIndexLabel": 2, "hasLabel": "Bar", "hasContent": "#Bar"},
-                 {"hasIndex": 2, "hasIndexLabel": 3, "hasLabel": "Baz", "hasContent": "#Baz"}]};
-            toc = TreeNode.tree_model_from_tree_node(toc_json);
             html_model = new ArticleObjectModel.ArticleObjectModel({
                 ekn_id: 'ekn:///foo/bar',
                 content_type: 'text/html',

@@ -42,7 +42,9 @@ const PDFView = new Lang.Class({
         let document_model = new EvinceView.DocumentModel({
             document: evince_document,
         });
-        let view = new EvinceView.View();
+        let view = new EvinceView.View({
+            visible: true,
+        });
         view.set_model(document_model);
 
         let child = this.get_child();
