@@ -8,7 +8,7 @@
     <property name="receives_default">False</property>
     <property name="hexpand">True</property>
     <child>
-      <object class="GtkGrid" id="grid1">
+      <object class="GtkGrid" id="grid">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <child>
@@ -29,21 +29,6 @@
           </object>
           <packing>
             <property name="left_attach">1</property>
-            <property name="top_attach">0</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkLabel" id="decoration-label">
-            <property name="can_focus">False</property>
-            <property name="no_show_all">True</property>
-            <property name="label">•</property>
-            <property name="single_line_mode">True</property>
-            <style>
-              <class name="decoration"/>
-            </style>
-          </object>
-          <packing>
-            <property name="left_attach">0</property>
             <property name="top_attach">0</property>
           </packing>
         </child>
