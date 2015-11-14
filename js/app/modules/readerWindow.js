@@ -263,7 +263,6 @@ const ReaderWindow = new Lang.Class({
 
     show_global_search_standalone_page: function () {
         this.standalone_page.infobar.show();
-        this.standalone_page.document_card.info_notice.hide();
         this._show_standalone_page();
     },
 
