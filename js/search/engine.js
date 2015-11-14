@@ -134,9 +134,7 @@ const Engine = Lang.Class({
                 return;
             }
 
-            let handle_redirect = (result) => {
-                let model = this._model_from_json_ld(result);
-
+            let handle_redirect = (model) => {
                 // If the requested model should redirect to another, then fetch
                 // that model instead.
                 if (model.redirects_to.length > 0) {
@@ -155,15 +153,8 @@ const Engine = Lang.Class({
             // Xapian DB itself, and hence require no HTTP request to xapian-bridge
             // when fetching an object
             if (ekn_version >= 2) {
-                let shard_file = this._shard_file_from_domain(domain);
-                let record = shard_file.find_record_by_hex_name(hash);
-                if (!record)
-                    throw new Error('Could not find epak record for ' + id);
-
-                let metadata_stream = record.metadata.get_stream();
-                Utils.read_stream(metadata_stream, cancellable, task.catch_callback_errors((stream, stream_task) => {
-                    let data = Utils.read_stream_finish(stream_task);
-                    handle_redirect(JSON.parse(data));
+                this._get_model_from_shard(id, cancellable, task.catch_callback_errors((engine, shard_task) => {
+                    handle_redirect(this._get_model_from_shard_finish(shard_task));
                 }));
             } else {
                 // Older bundles require an HTTP request for every object request
@@ -173,10 +164,9 @@ const Engine = Lang.Class({
                     domain: domain,
                 });
                 let query_req_uri = this._get_xapian_query_uri(query_obj);
-
                 this._send_json_ld_request(query_req_uri, cancellable, task.catch_callback_errors((engine, json_task) => {
-                    let json_ld = this._send_json_ld_request_finish(json_task);
-                    handle_redirect(json_ld.results.map(JSON.parse)[0]);
+                    let results = this._send_json_ld_request_finish(json_task).results;
+                    handle_redirect(this._get_v1_model_from_string(results[0]));
                 }));
             }
         });
@@ -270,7 +260,7 @@ const Engine = Lang.Class({
                             // Old bundles contain all the jsonld in xapian, and
                             // serve it in the results. If its a redirect we need to
                             // resolve it, otherwise we can resolve immediately.
-                            let model = this._model_from_json_ld(JSON.parse(result));
+                            let model = this._get_v1_model_from_string(result);
                             if (model.redirects_to.length > 0) {
                                 id = model.redirects_to;
                             } else {
@@ -374,6 +364,31 @@ const Engine = Lang.Class({
         this._runtime_objects.set(id, model);
     },
 
+    /**
+     * Method: preload_domain
+     *
+     * Optional call to load up a shard file for a given domain. Will make the
+     * subsequent call to get_object_by_id or get_objects_by_query return
+     * quicker.
+     */
+    preload_domain: function (domain) {
+        if (this._ekn_version_from_domain(domain) < 2)
+            return;
+        let shard_file = this._shard_file_from_domain(domain);
+        shard_file.init_async(0, null, (shard_file, result) => {
+            shard_file.init_finish(result);
+        });
+    },
+
+    /**
+     * Method: preload_default_domain
+     *
+     * Calls preload_domain with the default domain.
+     */
+    preload_default_domain: function () {
+        this.preload_domain(this.default_domain);
+    },
+
     _content_path_from_domain: function (domain) {
         if (this._content_path_cache[domain] === undefined)
             this._content_path_cache[domain] = datadir.get_data_dir_for_domain(domain).get_path();
@@ -401,16 +416,73 @@ const Engine = Lang.Class({
             let shard_file = new EosShard.ShardFile({
                 path: this._shard_path_from_domain(domain),
             });
-            shard_file.init(null);
             this._shard_file_cache[domain] = shard_file;
         }
 
         return this._shard_file_cache[domain];
     },
 
+    _get_model_from_shard: function (id, cancellable, callback) {
+        let task = new AsyncTask.AsyncTask(this, cancellable, callback);
+        task.catch_errors(() => {
+            let [domain, hash] = Utils.components_from_ekn_id(id);
+            let shard_file = this._shard_file_from_domain(domain);
+            shard_file.init_async(0, null, task.catch_callback_errors((shard_file, result) => {
+                shard_file.init_finish(result);
+                let record = shard_file.find_record_by_hex_name(hash);
+                if (!record)
+                    throw new Error('Could not find epak record for ' + id);
+                let metadata_stream = record.metadata.get_stream();
+                Utils.read_stream(metadata_stream, cancellable, task.catch_callback_errors((stream, stream_task) => {
+                    let data = Utils.read_stream_finish(stream_task);
+                    let json_ld = JSON.parse(data);
+                    let props = {
+                        ekn_version: 2,
+                        get_content_stream: () => record.data.get_stream(),
+                    };
+                    task.return_value(this._get_model_from_json_ld(props, json_ld));
+                }));
+            }));
+        });
+        return task;
+    },
+
+    _get_model_from_shard_finish: function (task) {
+        return task.finish();
+    },
+
+    _get_v1_model_from_string: function (string) {
+        let json_ld = JSON.parse(string);
+        let ekn_id = json_ld['@id'];
+        let [domain, hash] = Utils.components_from_ekn_id(ekn_id);
+        let props = {
+            ekn_version: 1,
+        };
+        if (json_ld.hasOwnProperty('articleBody')) {
+            // Legacy databases store their HTML within the xapian databases
+            // themselves and don't store a contentType property
+            props.content_type = 'text/html';
+            props.get_content_stream = () => {
+                return Utils.string_to_stream(json_ld.articleBody);
+            };
+        } else if (json_ld.hasOwnProperty('contentURL')) {
+            let content_path = this._content_path_from_domain(domain);
+            let model_path = GLib.build_filenamev([content_path, this._MEDIA_DIR, json_ld.contentURL]);
+            // We don't care if the guess was certain or not, since the
+            // content_type is a required parameter
+            let [guessed_mimetype, __] = Gio.content_type_guess(model_path, null);
+            props.content_type = guessed_mimetype;
+            props.get_content_stream = () => {
+                let file = Gio.File.new_for_path(model_path);
+                return file.read(null);
+            };
+        }
+        return this._get_model_from_json_ld(props, json_ld);
+    },
+
     // Returns a marshaled ObjectModel based on json_ld's @type value, or throws
     // error if there is no corresponding model
-    _model_from_json_ld: function (json_ld) {
+    _get_model_from_json_ld: function (props, json_ld) {
         let ekn_model_by_ekv_type = {
             'ekn://_vocab/ContentObject':
                 ContentObjectModel.ContentObjectModel,
@@ -429,44 +501,6 @@ const Engine = Lang.Class({
             throw new Error('No EKN model found for json_ld type ' + json_ld_type);
 
         let Model = ekn_model_by_ekv_type[json_ld_type];
-        let props = {};
-
-        let ekn_id = json_ld['@id'];
-        let [domain, hash] = Utils.components_from_ekn_id(ekn_id);
-        props.ekn_version = this._ekn_version_from_domain(domain);
-
-        if (props.ekn_version >= 2) {
-            props.get_content_stream = () => {
-                let shard_file = this._shard_file_from_domain(domain);
-                let record = shard_file.find_record_by_hex_name(hash);
-
-                if (record === null)
-                    throw new Error('Could not find shard record for ' + ekn_id);
-
-                return record.data.get_stream();
-            };
-        } else {
-            if (json_ld.hasOwnProperty('articleBody')) {
-                // Legacy databases store their HTML within the xapian databases
-                // themselves and don't store a contentType property
-                props.content_type = 'text/html';
-                props.get_content_stream = () => {
-                    return Utils.string_to_stream(json_ld.articleBody);
-                };
-            } else if (json_ld.hasOwnProperty('contentURL')) {
-                let content_path = this._content_path_from_domain(domain);
-                let model_path = GLib.build_filenamev([content_path, this._MEDIA_DIR, json_ld.contentURL]);
-                // We don't care if the guess was certain or not, since the
-                // content_type is a required parameter
-                let [guessed_mimetype, __] = Gio.content_type_guess(model_path, null);
-                props.content_type = guessed_mimetype;
-                props.get_content_stream = () => {
-                    let file = Gio.File.new_for_path(model_path);
-                    return file.read(null);
-                };
-            }
-        }
-
         return new Model(props, json_ld);
     },
 
