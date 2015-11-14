@@ -155,7 +155,7 @@ const KnowledgeDocumentCard = new Lang.Class({
         this._toolbar_grid.add(this.toc);
 
         let _toc_visible = false;
-        if (this.model.table_of_contents !== undefined) {
+        if (this.model.table_of_contents !== undefined && this.model.content_type !== 'application/pdf') {
             this._mainArticleSections = this._get_toplevel_toc_elements(this.model.table_of_contents);
             if (this._mainArticleSections.length > 1) {
                 this.toc.section_list = this._mainArticleSections.map(function (section) {
@@ -204,9 +204,6 @@ const KnowledgeDocumentCard = new Lang.Class({
 
                 this.content_view.load_uri(this.model.ekn_id);
             } else if (this.model.content_type === 'application/pdf') {
-                // FIXME: Remove this line once we support table of contents
-                // widget for PDFs
-                this.model.table_of_contents = undefined;
                 let stream = this.model.get_content_stream();
                 let content_type = this.model.content_type;
                 this.content_view = new PDFView.PDFView({
