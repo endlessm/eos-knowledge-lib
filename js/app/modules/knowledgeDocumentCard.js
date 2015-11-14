@@ -213,6 +213,7 @@ const KnowledgeDocumentCard = new Lang.Class({
                     expand: true,
                     width_request: this.MIN_CONTENT_WIDTH,
                     height_request: this.MIN_CONTENT_HEIGHT,
+                    visible: true,
                 });
                 this.content_view.load_stream(stream, content_type);
                 task.return_value();
