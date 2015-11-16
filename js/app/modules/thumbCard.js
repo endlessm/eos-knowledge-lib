@@ -31,7 +31,7 @@ const ThumbCard = new Lang.Class({
     },
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/thumbCard.ui',
-    InternalChildren: [ 'thumbnail-frame', 'grid', 'inner-grid', 'content-frame', 'title-label', 'synopsis-label'],
+    InternalChildren: [ 'thumbnail-frame', 'grid', 'inner-grid', 'content-frame', 'title-label', 'synopsis-label', 'context-label'],
 
     _init: function (props={}) {
         this.parent(props);
@@ -39,6 +39,7 @@ const ThumbCard = new Lang.Class({
         this.set_title_label_from_model(this._title_label);
         this.set_thumbnail_frame_from_model(this._thumbnail_frame);
         this.set_label_or_hide(this._synopsis_label, this.model.synopsis);
+        this.set_context_label_from_model(this._context_label);
         this.set_size_request(Card.MinSize.A, Card.MinSize.A);
 
         Utils.set_hand_cursor_on_widget(this);
@@ -68,12 +69,12 @@ const ThumbCard = new Lang.Class({
         // the proportion of space to be taken up by the
         // thumbnail image
         if (this._should_go_horizontal(alloc.width, alloc.height)) {
-            this._title_label.halign = this._synopsis_label.halign = Gtk.Align.START;
+            this._title_label.halign = this._synopsis_label.halign = this._context_label.halign = Gtk.Align.START;
             orientation = Gtk.Orientation.HORIZONTAL;
             proportion = 1/2;
         } else {
             this._title_label.justify = Gtk.Justification.CENTER;
-            this._title_label.halign = this._synopsis_label.halign = Gtk.Align.CENTER;
+            this._title_label.halign = this._synopsis_label.halign = this._context_label.halign = Gtk.Align.CENTER;
             orientation = Gtk.Orientation.VERTICAL;
             proportion = 2/3;
         }
