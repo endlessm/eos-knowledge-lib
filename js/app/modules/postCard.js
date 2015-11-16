@@ -31,7 +31,7 @@ const PostCard = new Lang.Class({
     },
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/postCard.ui',
-    InternalChildren: [ 'thumbnail-frame', 'title-label', 'content-grid', 'inner-content-grid', 'shadow-frame', 'left-sleeve', 'right-sleeve' ],
+    InternalChildren: [ 'thumbnail-frame', 'title-label', 'context-label', 'content-grid', 'inner-content-grid', 'shadow-frame', 'left-sleeve', 'right-sleeve' ],
 
     _init: function (props={}) {
         this.parent(props);
@@ -54,6 +54,8 @@ const PostCard = new Lang.Class({
                 cr.$dispose();  // workaround not freeing cairo context
                 return Gdk.EVENT_PROPAGATE;
             });
+        } else {
+            this.set_context_label_from_model(this._context_label);
         }
     },
 
