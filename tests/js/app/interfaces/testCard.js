@@ -27,6 +27,7 @@ describe('Card interface', function () {
             thumbnail_uri: 'about:blank',
             authors: ['record author &'],
             article_number: 0,
+            tags: ['foo', 'bar'],
         });
         card = new Minimal.MinimalCard({
             model: model,
@@ -72,6 +73,13 @@ describe('Card interface', function () {
         let label = new Gtk.Label();
         card.set_title_label_from_model(label);
         expect(label.visible).toBeTruthy();
+    });
+
+    it('sets a context label visible if model has tags', function () {
+        let label = new Gtk.Label();
+        card.set_context_label_from_model(label);
+        expect(label.visible).toBeTruthy();
+        expect(label.label).toBe('foo | bar');
     });
 
     it('markup-escapes the title', function () {

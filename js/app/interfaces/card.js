@@ -147,6 +147,25 @@ const Card = new Lang.Interface({
     },
 
     /**
+     * Method: set_context_label_from_model
+     *
+     * Sets the text on a context label. The context is the list of tags
+     * associated with this article. Tags are also incidentally the same
+     * as set titles.
+     *
+     * According to designs (and based on what fits on screen), we only want
+     * to show a maximum of two set titles in the context label.
+     * Moreover, we want to exclude the 'Ekn'-prefixed tags which won't mean
+     * anything to the user.
+     */
+    set_context_label_from_model: function (label) {
+        this.set_label_or_hide(label,
+                               this.model.tags.filter((tag) => !tag.startsWith('Ekn'))
+                               .slice(0, 2)
+                               .join(' | '));
+    },
+
+    /**
      * Method: add_contextual_css_class
      *
      * Adds a css class based on the type of model this is.
