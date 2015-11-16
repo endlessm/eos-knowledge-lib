@@ -34,6 +34,10 @@ describe('Text card widget', function () {
         expect(card).toHaveDescendantWithCssClass(StyleClasses.BEFORE);
     });
 
+    it('has a widget with after class', function () {
+        expect(card).toHaveDescendantWithCssClass(StyleClasses.AFTER);
+    });
+
     it('has labels that understand Pango markup', function () {
         let card = new TextCard.TextCard({
             model: new ContentObjectModel.ContentObjectModel({

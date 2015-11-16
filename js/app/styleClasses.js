@@ -690,3 +690,9 @@ const WINDOW_LARGE = 'window-large';
  * Matches a widget before another widget.
  */
 const BEFORE = 'before';
+
+/**
+ * Constant: AFTER
+ * Matches a widget after another widget.
+ */
+const AFTER = 'after';

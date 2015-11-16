@@ -77,6 +77,13 @@ const TextCard = new Lang.Class({
         });
         before.get_style_context().add_class(StyleClasses.BEFORE);
         this._grid.attach(before, 0, 0, 1, 1);
+        let after = new ThemeableImage.ThemeableImage({
+            visible: true,
+            valign: Gtk.Align.CENTER,
+            halign: Gtk.Align.CENTER,
+        });
+        after.get_style_context().add_class(StyleClasses.AFTER);
+        this._grid.attach(after, 2, 0, 1, 1);
     },
 });
 
