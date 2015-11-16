@@ -112,6 +112,13 @@ EknSearchModule .no-results {
     padding: 40px;
 }
 
+.card.width-e.height-e .card-context,
+.card.width-f .card-context,
+.card.width-g .card-context,
+.card.width-h .card-context {
+    font-size: 14px;
+}
+
 .search-result-card.width-e .title,
 .search-result-card.width-e .card-synopsis {
     font-size: 14px;
@@ -220,6 +227,12 @@ EknSearchModule .no-results {
     color: black;
     font-size: 14px;
     padding-top: 30px;
+}
+
+.card-context {
+    font-size: 12px;
+    font-style: italic;
+    color: #49bde3;
 }
 
 .results-message-title,
