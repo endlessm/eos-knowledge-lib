@@ -50,6 +50,12 @@ function transform_v1_description(json) {
         set_prop_for_name('window', 'blur-background-image-uri', json['backgroundSectionURI']);
         set_prop_for_type('AppBanner', 'image-uri', json['titleImageURI']);
         break;
+    case "buffet":
+        set_prop_for_name('window', 'title', json['appTitle']);
+        set_prop_for_name('window', 'background-image-uri', json['backgroundHomeURI']);
+        set_prop_for_name('window', 'blur-background-image-uri', json['backgroundSectionURI']);
+        set_prop_for_type('AppBanner', 'image-uri', json['titleImageURI']);
+        break;
     case "encyclopedia":
         set_prop_for_name('window', 'title', json['appTitle']);
         set_prop_for_name('window', 'home-background-uri', json['backgroundHomeURI']);

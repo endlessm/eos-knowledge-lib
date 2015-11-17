@@ -3,6 +3,7 @@
   <gresource prefix="/com/endlessm/knowledge">
     <file compressed="true">data/compat/v1-preset-json/A.json</file>
     <file compressed="true">data/compat/v1-preset-json/B.json</file>
+    <file compressed="true">data/compat/v1-preset-json/buffet.json</file>
     <file compressed="true">data/compat/v1-preset-json/encyclopedia.json</file>
     <file compressed="true">data/compat/v1-preset-json/reader.json</file>
     <file compressed="true">data/css/endless_encyclopedia.css</file>
