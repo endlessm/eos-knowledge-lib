@@ -81,6 +81,19 @@ const Engine = Lang.Class({
             ''),
 
         /**
+         * Property: default-domain-path
+         *
+         * The path to the default domains database, if unset will be search for
+         * in XDG_DATA_DIRS normally.
+         *
+         * e.g. /endless/share/ekn/data/animals-es
+         */
+        'default-domain-path': GObject.ParamSpec.string('default-domain-path',
+            'Default Domain Path', 'The path to the default domain database',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
+            ''),
+
+        /**
          * Property: language
          *
          * The ISO639 language code which will be used for various search
@@ -390,6 +403,9 @@ const Engine = Lang.Class({
     },
 
     _content_path_from_domain: function (domain) {
+        if (domain === this.default_domain && this.default_domain_path)
+            return this.default_domain_path;
+
         if (this._content_path_cache[domain] === undefined)
             this._content_path_cache[domain] = datadir.get_data_dir_for_domain(domain).get_path();
 
