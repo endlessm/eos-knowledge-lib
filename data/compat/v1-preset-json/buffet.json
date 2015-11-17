@@ -9,68 +9,31 @@
         "window": {
             "type": "Window",
             "slots": {
-                "brand-screen": "brand-screen",
+                "search": {
+                    "type": "SearchBox"
+                },
+                "navigation": null,
+                "lightbox": {
+                    "type": "LightboxModule",
+                    "slots": {
+                        "card-type": {
+                            "type": "MediaCard"
+                        }
+                    }
+                },
+                "brand-screen": {
+                    "type": "AppBanner",
+                    "properties": {
+                        "max-fraction": 0.6
+                    }
+                },
                 "home-page": "home-page",
                 "section-page": "section-page",
                 "search-page": "search-page",
                 "all-sets-page": "all-sets-page",
-                "article-page": "article-page",
-                "navigation": null,
-                "lightbox": "lightbox",
-                "search": "top-bar-search"
+                "article-page": "article-page"
             }
         },
-        "brand-screen": {
-            "type": "AppBanner",
-            "properties": {
-                "max-fraction": 0.6
-            }
-        },
-        "top-bar-search": {
-            "type": "SearchBox"
-        },
-        "results-arrangement": {
-            "type": "ListArrangement",
-            "properties": {
-                "bottom-buffer": 250
-            }
-        },
-        "main-card": {
-            "type": "ThumbCard",
-            "properties": {
-                "title-capitalization": "uppercase"
-            }
-        },
-        "header-card": {
-            "type": "TextCard",
-            "properties": {
-                "margin-top": 25,
-                "margin-bottom": 10
-            }
-        },
-        "main-menu": {
-            "type": "SuggestedCategoriesModule",
-            "properties": {
-                    "featured-only": true,
-                    "show-title": false
-            },
-            "slots": {
-                "arrangement": {
-                    "type": "ListArrangement"
-                },
-                "card-type": {
-                    "type": "TextCard",
-                    "properties": {
-                        "title-capitalization": "uppercase",
-                        "margin-top": 5
-                    }
-                }
-            }
-        },
-        "context-banner": {
-            "type": "ContextBanner"
-        },
-
         "all-sets-page": {
             "type": "SideMenuTemplate",
             "slots": {
@@ -97,7 +60,6 @@
                 }
             }
         },
-
         "section-page": {
             "type": "SideMenuTemplate",
             "slots": {
@@ -187,9 +149,6 @@
                 }
             }
         },
-        "results-card": {
-            "type": "SearchResultCard"
-        },
         "search-page": {
             "type": "SideMenuTemplate",
             "slots": {
@@ -198,14 +157,41 @@
                 "content": {
                     "type": "SearchModule",
                     "slots": {
-                        "arrangement": "results-arrangement",
-                        "card-type": "results-card",
+                        "arrangement": {
+                            "type": "ListArrangement",
+                            "properties": {
+                                "bottom-buffer": 250
+                            }
+                        },
+                        "card-type": {
+                            "type": "SearchResultCard"
+                        },
                         "article-suggestions": "article-suggestions",
                         "category-suggestions": "category-suggestions"
                     },
                     "properties": {
                         "halign": "fill",
                         "message-justify": "left"
+                    }
+                }
+            }
+        },
+        "article-page": {
+            "type": "SideMenuTemplate",
+            "slots": {
+                "context": "context-banner",
+                "sidebar": "main-menu",
+                "content": {
+                    "type": "ArticleStackModule",
+                    "slots": {
+                        "card-type": {
+                            "type": "KnowledgeDocumentCard",
+                            "properties": {
+                                "show_top_title": false,
+                                "show_toc": false,
+                                "custom_css": "reader2.css"
+                            }
+                        }
                     }
                 }
             }
@@ -248,35 +234,40 @@
                 }
             }
         },
-        "lightbox-card": {
-            "type": "MediaCard"
-        },
-        "lightbox": {
-            "type": "LightboxModule",
-            "slots": {
-                "card-type": "lightbox-card"
-            }
-        },
-        "document-card": {
-            "type": "KnowledgeDocumentCard",
+        "main-card": {
+            "type": "ThumbCard",
             "properties": {
-                "show_top_title": false,
-                "show_toc": false,
-                "custom_css": "reader2.css"
+                "title-capitalization": "uppercase"
             }
         },
-        "article-page": {
-            "type": "SideMenuTemplate",
+        "header-card": {
+            "type": "TextCard",
+            "properties": {
+                "margin-top": 25,
+                "margin-bottom": 10
+            }
+        },
+        "main-menu": {
+            "type": "SuggestedCategoriesModule",
+            "properties": {
+                    "featured-only": true,
+                    "show-title": false
+            },
             "slots": {
-                "context": "context-banner",
-                "sidebar": "main-menu",
-                "content": {
-                    "type": "ArticleStackModule",
-                    "slots": {
-                        "card-type": "document-card"
+                "arrangement": {
+                    "type": "ListArrangement"
+                },
+                "card-type": {
+                    "type": "TextCard",
+                    "properties": {
+                        "title-capitalization": "uppercase",
+                        "margin-top": 5
                     }
                 }
             }
+        },
+        "context-banner": {
+            "type": "ContextBanner"
         }
     }
 }
