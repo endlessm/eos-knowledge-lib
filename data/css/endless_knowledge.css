@@ -418,8 +418,8 @@ EknWindow.background-right {
 .search-page-b .search-results .results-message-title,
 .search-page-b .search-results .results-message-subtitle,
 .search-page-b .search-results .error-message {
-    font-size: 1.2em;
-    padding: 10px 25px;
+    font-size: 0.8em;
+    padding: 8px 15px;
 }
 
 .section-page-a GtkSeparator,
