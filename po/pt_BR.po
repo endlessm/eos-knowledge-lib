@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2015-11-10 15:04-0800\n"
+"POT-Creation-Date: 2015-11-17 02:53+0000\n"
 "PO-Revision-Date: 2015-11-10 23:07+0000\n"
 "Last-Translator: Philip Chimento <philip.chimento@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/pt_BR/)\n"
@@ -114,22 +114,22 @@ msgstr "Cortesia de conteúdo de {blog-link}.  Utilizado com permissão."
 msgid "Content courtesy of {blog-link}, licensed under {license-link}."
 msgstr "Cortesia de conteúdo de {blog-link}, licenciado sob {license-link}."
 
-#: js/app/modules/aisleInteraction.js:801
+#: js/app/modules/aisleInteraction.js:811
 msgid "View the license in your browser"
 msgstr "Veja a licença no seu browser"
 
-#: js/app/modules/aisleInteraction.js:933
-#: js/app/modules/aisleInteraction.js:940
+#: js/app/modules/aisleInteraction.js:932
+#: js/app/modules/aisleInteraction.js:939
 msgid "Oops!"
 msgstr "Opa!"
 
-#: js/app/modules/aisleInteraction.js:934
+#: js/app/modules/aisleInteraction.js:933
 msgid ""
 "We could not find this magazine!\n"
 "Please try again after restarting your computer."
 msgstr "Não conseguimos encontrar essa revista!\nPor favor, tente novamente após reiniciar seu computador. "
 
-#: js/app/modules/aisleInteraction.js:941
+#: js/app/modules/aisleInteraction.js:940
 msgid ""
 "There was an error loading that page.\n"
 "Try another one or try again after restarting your computer."
@@ -167,7 +167,7 @@ msgstr "Foram encontrados resultados para “%s”"
 msgid "SEE ALL CATEGORIES"
 msgstr "Ver todas as categorias"
 
-#: js/app/modules/readerCard.js:60
+#: js/app/modules/readerCard.js:59
 #, javascript-format
 msgid "Page %s"
 msgstr "Página %s"
@@ -187,15 +187,15 @@ msgstr "Pesquisando por “%s”"
 msgid "OOPS!"
 msgstr "OPA!"
 
-#: js/app/modules/searchModule.js:165
+#: js/app/modules/searchModule.js:184
 msgid "Sorry! :-("
 msgstr "Desculpe! :-("
 
-#: js/app/modules/searchModule.js:166
+#: js/app/modules/searchModule.js:185
 msgid "There are no results that match your search.\n"
 msgstr "Não encontramos nenhum resultado para a sua busca.\n"
 
-#: js/app/modules/searchModule.js:168
+#: js/app/modules/searchModule.js:187
 msgid ""
 "We recommend that you:\n"
 "\n"
@@ -204,7 +204,7 @@ msgid ""
 "  •  Try using more general words"
 msgstr "Recomendamos que você:\n\n• Confira se a palavra foi escrita corretamente\n• Tente outras palavras com o mesmo significado\n• Tente usar palavras mais genéricas"
 
-#: js/app/modules/searchModule.js:195
+#: js/app/modules/searchModule.js:214
 msgid "There was an error during your search."
 msgstr "Houve um erro durante a sua pesquisa."
 
@@ -222,11 +222,11 @@ msgstr "Este artigo é parte do acervo da revista %s."
 #. have them and DO NOT translate words inside curly braces. Also, note: the
 #. "and" is used to join together the names of authors of a blog post. For
 #. example: "Jane Austen and Henry Miller and William Clifford"
-#: js/app/utils.js:80
+#: js/app/utils.js:81
 msgid "by {author}"
 msgstr "Por {author}"
 
-#: js/app/utils.js:80
+#: js/app/utils.js:81
 msgid "and"
 msgstr "e"
 
