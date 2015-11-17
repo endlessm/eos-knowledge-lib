@@ -41,6 +41,7 @@ const SequenceCard = new Lang.Class({
         'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
         'model': GObject.ParamSpec.override('model', Card.Card),
         'title-capitalization': GObject.ParamSpec.override('title-capitalization', Card.Card),
+        'highlight-string': GObject.ParamSpec.override('highlight-string', Card.Card),
         /**
          * Property: sequence
          * A <Sequence> value for the card. Previous or next.
