@@ -79,7 +79,7 @@ describe('Card interface', function () {
         let label = new Gtk.Label();
         card.set_context_label_from_model(label);
         expect(label.visible).toBeTruthy();
-        expect(label.label).toBe('foo | bar');
+        expect(label.label).toBe('FOO | BAR');
     });
 
     it('markup-escapes the title', function () {

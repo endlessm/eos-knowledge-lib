@@ -162,7 +162,8 @@ const Card = new Lang.Interface({
         this.set_label_or_hide(label,
                                this.model.tags.filter((tag) => !tag.startsWith('Ekn'))
                                .slice(0, 2)
-                               .join(' | '));
+                               .join(' | ')
+                               .toLocaleUpperCase());
     },
 
     /**
