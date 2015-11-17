@@ -2,6 +2,7 @@
 
 /* exported SidebarTemplate, get_css_for_module */
 
+const Cairo = imports.gi.cairo;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
@@ -115,6 +116,9 @@ const SidebarTemplate = new Lang.Class({
         'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
     },
 
+    SIDEBAR_WIDTH_MIN: 240,
+    SIDEBAR_WIDTH_THRESHOLD: 800,
+
     _init: function (props={}) {
         props.orientation = Gtk.Orientation.HORIZONTAL;
         props.expand = true;
@@ -128,33 +132,35 @@ const SidebarTemplate = new Lang.Class({
             context.add_provider(provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
         }
 
-        let content_frame = new Gtk.Frame({
+        this.content_frame = new Gtk.Frame({
             expand: true,
         });
         let SidebarFrameClass = this.fixed ? _FixedWidthFrame : _MaxWidthFrame;
-        let sidebar_frame = new SidebarFrameClass({
+        this.sidebar_frame = new SidebarFrameClass({
             expand: false,
         });
-        sidebar_frame.width = this.sidebar_width;
+        this.sidebar_frame.width = this.sidebar_width;
 
         this._sidebar = this.create_submodule('sidebar');
         this._content = this.create_submodule('content');
 
-        content_frame.add(this._content);
-        sidebar_frame.add(this._sidebar);
-        let children = [sidebar_frame, content_frame];
+        this.content_frame.add(this._content);
+        this.sidebar_frame.add(this._sidebar);
+        let children = [this.sidebar_frame, this.content_frame];
         if (!this.on_left)
             children.reverse();
         children.forEach((child) => this.add(child));
 
         this.get_style_context().add_class(StyleClasses.SIDEBAR_TEMPLATE);
-        content_frame.get_style_context().add_class(StyleClasses.CONTENT);
-        sidebar_frame.get_style_context().add_class(StyleClasses.SIDEBAR);
+        this.content_frame.get_style_context().add_class(StyleClasses.CONTENT);
+        this.sidebar_frame.get_style_context().add_class(StyleClasses.SIDEBAR);
 
         this._content_base_margin_start = this._content.margin_start;
         this._sidebar_base_margin_end = this._sidebar.margin_end;
         this.connect('size-allocate', this._update_margins.bind(this));
         this._update_margins(this, this.get_allocation());
+
+        this._orig_sidebar_width = this.sidebar_width;
     },
 
     _update_margins: function (widget, alloc) {
@@ -171,6 +177,20 @@ const SidebarTemplate = new Lang.Class({
 
     get_slot_names: function () {
         return [ 'sidebar', 'content' ];
+    },
+
+    vfunc_size_allocate: function (alloc) {
+        // We need to adjust the sidebar width for apps with a fixed-width sidebar
+        if (this.fixed) {
+            if (alloc.width < this.SIDEBAR_WIDTH_THRESHOLD) {
+                this.sidebar_width = this.SIDEBAR_WIDTH_MIN;
+            } else {
+                this.sidebar_width = this._orig_sidebar_width;
+            }
+            this.sidebar_frame.width = this.sidebar_width;
+        }
+
+        this.parent(alloc);
     },
 });
 

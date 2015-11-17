@@ -1,3 +1,4 @@
+const Cairo = imports.gi.cairo;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
@@ -26,6 +27,9 @@ const DividedBannerTemplate = new Lang.Class({
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/dividedBannerTemplate.ui',
 
+    WIDTH_THRESHOLD: 800,
+    SMALL_TOP_RIGHT_SLOT: 200,
+
     _init: function (props={}) {
         this._cards = null;
         this.parent(props);
@@ -40,9 +44,25 @@ const DividedBannerTemplate = new Lang.Class({
             this.attach.bind(this, submodule).apply(this, PACKING_ARGS[slot]);
             this['_' + slot] = submodule;
         });
+
+        this._orig_row_spacing = this.row_spacing;
     },
 
     get_slot_names: function () {
         return [ 'top-left', 'top-right', 'bottom' ];
+    },
+
+    vfunc_size_allocate: function (alloc) {
+        this.parent(alloc);
+
+        if (alloc.width < this.WIDTH_THRESHOLD) {
+            this._orig_row_spacing = this.row_spacing;
+            this.row_spacing = this._orig_row_spacing / 2;
+            let top_right_alloc = this['_top-right'].get_allocation();
+            top_right_alloc.width = this.SMALL_TOP_RIGHT_SLOT;
+            this['_top-right'].size_allocate(top_right_alloc);
+        } else {
+            this.row_spacing = this._orig_row_spacing;
+        }
     },
 });
