@@ -49,6 +49,7 @@ const KnowledgeDocumentCard = new Lang.Class({
         'content-view': GObject.ParamSpec.override('content-view', DocumentCard.DocumentCard),
         'custom-css': GObject.ParamSpec.override('custom-css',
             DocumentCard.DocumentCard),
+        'highlight-string': GObject.ParamSpec.override('highlight-string', Card.Card),
 
         /**
          * Property: show-top-title

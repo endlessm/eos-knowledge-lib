@@ -114,6 +114,17 @@ const Card = new Lang.Interface({
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             EosKnowledgePrivate.TextTransformType,
             EosKnowledgePrivate.TextTransform.NONE),
+        /**
+         * Property: highlight-string
+         * A substring within a card's title or synopsis to get highlighted
+         *
+         * Sometimes we want to highlight a particular substring with the
+         * text of a card. This property specifies which substring to highlight.
+         */
+        'highlight-string': GObject.ParamSpec.string('highlight-string',
+            'Highlight string', 'Substring to be highlighted on card',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            ''),
     },
 
     set css (v) {
