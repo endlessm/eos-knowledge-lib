@@ -11,7 +11,6 @@ describe('Dispatcher', function () {
         jasmine.addMatchers(InstanceOfMatcher.customMatchers);
 
         dispatcher = new Dispatcher.Dispatcher();
-        dispatcher.start();
     });
 
     afterEach(function () {
@@ -84,7 +83,6 @@ describe('Dispatcher', function () {
             dispatcher.register(spy1);
             dispatcher.register(spy2);
             dispatcher.reset();
-            dispatcher.start();
             dispatcher.dispatch({
                 action_type: 'foo',
             });
@@ -100,7 +98,6 @@ describe('Dispatcher', function () {
                 action_type: 'foo',
             });
             dispatcher.reset();
-            dispatcher.start();
             let spy = jasmine.createSpy();
             dispatcher.register(spy);
             GLib.idle_add(GLib.PRIORITY_LOW, () => {
@@ -109,36 +106,15 @@ describe('Dispatcher', function () {
             });
         });
     });
-});
 
-// Spying on GLib.source_remove is unfortunately an implementation detail.
-describe('Dispatcher start and stop', function () {
-    let dispatcher;
-
-    beforeEach(function () {
+    // Spying on GLib.source_remove and expecting the idle source to be added
+    // as a consequence of dispatch() is unfortunately an implementation detail.
+    it('does not stop twice if calling stop() twice', function () {
         spyOn(GLib, 'source_remove').and.callThrough();
-        dispatcher = new Dispatcher.Dispatcher();
-    });
-
-    it('does not start twice if calling start() twice', function (done) {
-        dispatcher.start();
-        let spy = jasmine.createSpy();
-        dispatcher.register(spy);
-        dispatcher.start();
-        dispatcher.stop();
+        let dispatcher = new Dispatcher.Dispatcher();
         dispatcher.dispatch({
             action_type: 'foo',
         });
-        GLib.idle_add(GLib.PRIORITY_LOW, () => {
-            expect(spy).not.toHaveBeenCalled();
-            expect(GLib.source_remove.calls.count()).toEqual(1);
-            done();
-            return GLib.SOURCE_REMOVE;
-        });
-    });
-
-    it('does not stop twice if calling stop() twice', function () {
-        dispatcher.start();
         dispatcher.stop();
         dispatcher.stop();
         expect(GLib.source_remove.calls.count()).toEqual(1);

@@ -18,14 +18,6 @@ const Dispatcher = new Lang.Class({
         this._idle_id = 0;
     },
 
-    start: function () {
-        // Use low priority to make sure we only emit a new action once all GUI
-        // events from GTK have been processed.
-        if (!this._idle_id)
-            this._idle_id = GLib.idle_add(GLib.PRIORITY_LOW,
-                this._process_queue.bind(this));
-    },
-
     stop: function () {
         if (this._idle_id)
             GLib.source_remove(this._idle_id);
@@ -34,23 +26,29 @@ const Dispatcher = new Lang.Class({
 
     _process_queue: function () {
         let payload = this._queue.shift();
-        if (!payload)
-            return GLib.SOURCE_CONTINUE;
-
-        for (let id in this._listeners) {
-            try {
-                this._listeners[id](payload);
-            } catch (error) {
-                logError(error);
+        if (payload) {
+            for (let id in this._listeners) {
+                try {
+                    this._listeners[id](payload);
+                } catch (error) {
+                    logError(error);
+                }
             }
+            if (this._queue.length > 0)
+                return GLib.SOURCE_CONTINUE;
         }
-        return GLib.SOURCE_CONTINUE;
+
+        this._idle_id = 0;
+        return GLib.SOURCE_REMOVE;
     },
 
     dispatch: function (payload) {
         if (!payload.action_type)
             throw new Error('Dispatch payloads need an action_type');
         this._queue.push(payload);
+        if (!this._idle_id)
+            this._idle_id = GLib.idle_add(GLib.PRIORITY_LOW,
+                this._process_queue.bind(this));
     },
 
     register: function (callback) {
