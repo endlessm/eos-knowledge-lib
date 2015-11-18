@@ -105,7 +105,6 @@ const Application = new Lang.Class({
     // To be overridden in subclass
     ensure_interaction: function () {
         if (this._interaction === null) {
-            Dispatcher.get_default().start();
             this._interaction = InteractionLoader.create_interaction(this, this.resource_path);
         }
     },
