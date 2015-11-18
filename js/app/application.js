@@ -3,6 +3,7 @@ imports.gi.versions.WebKit2 = '4.0';
 const Endless = imports.gi.Endless;
 const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
+const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 
@@ -49,7 +50,17 @@ const Application = new Lang.Class({
         this._interaction = null;
         this._knowledge_search_impl = Gio.DBusExportedObject.wrapJSObject(KnowledgeSearchIface, this);
 
-        Engine.get_default().default_domain = Utils.domain_from_app_id(this.application_id);
+        let engine = Engine.get_default();
+        engine.default_domain = Utils.domain_from_app_id(this.application_id);
+
+        this.add_main_option('data-path', 0, GLib.OptionFlags.NONE, GLib.OptionArg.FILENAME,
+                             'Optional argument to set the default data path', null);
+        this.connect('handle-local-options', (application, options) => {
+            let path = options.lookup_value('data-path', null);
+            if (path)
+                engine.default_domain_path = path.deep_unpack().toString();
+            return -1;
+        });
 
         // HACK for legacy compatibility: if the user has an old bundle with
         // a new eos-knowledge-lib, their search-provider ini files will have
