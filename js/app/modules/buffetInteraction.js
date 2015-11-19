@@ -250,6 +250,7 @@ const BuffetInteraction = new Lang.Class({
             dispatcher.dispatch({
                 action_type: Actions.APPEND_SEARCH,
                 models: results,
+                query: history_item.query,
             });
 
             dispatcher.dispatch({

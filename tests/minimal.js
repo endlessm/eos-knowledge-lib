@@ -78,6 +78,7 @@ const MinimalCard = new Lang.Class({
         'model': GObject.ParamSpec.override('model', Card.Card),
         'title-capitalization': GObject.ParamSpec.override('title-capitalization',
             Card.Card),
+        'highlight-string': GObject.ParamSpec.override('highlight-string', Card.Card),
     },
 
     _init: function (props={}) {
@@ -189,6 +190,7 @@ const MinimalDocumentCard = new Lang.Class({
         'next-card': GObject.ParamSpec.object('next-card',
             'Next Card', 'Next Card',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, Gtk.Widget),
+        'highlight-string': GObject.ParamSpec.override('highlight-string', Card.Card),
 
     },
 

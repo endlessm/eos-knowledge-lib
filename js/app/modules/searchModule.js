@@ -127,7 +127,9 @@ const SearchModule = new Lang.Class({
                 this._arrangement.clear();
                 break;
             case Actions.APPEND_SEARCH:
-                payload.models.forEach(this._add_card, this);
+                payload.models.forEach((card) => {
+                    this._add_card(card, payload.query);
+                });
                 break;
             case Actions.SEARCH_STARTED:
                 this.visible_child_name = SPINNER_PAGE_NAME;
@@ -153,11 +155,12 @@ const SearchModule = new Lang.Class({
         return ['arrangement', 'card-type', 'article-suggestions', 'category-suggestions'];
     },
 
-    _add_card: function (model) {
+    _add_card: function (model, query='') {
         if (this._arrangement.get_cards().length >= this.max_children)
             return;
         let card = this.create_submodule('card-type', {
             model: model,
+            highlight_string: query,
         });
         card.connect('clicked', () => {
             Dispatcher.get_default().dispatch({

@@ -135,6 +135,7 @@ function _rgba_to_markup_color(rgba) {
 function style_context_to_markup_span(context, state) {
     let font = context.get_font(state);
     let foreground = context.get_color(state);
+    let background = context.get_background_color(state);
     const _PANGO_STYLES = ['normal', 'oblique', 'italic'];
     // Unfortunately, ignore the font size; PangoFontDescriptions don't deal
     // well with font sizes in ems.
@@ -143,6 +144,7 @@ function style_context_to_markup_span(context, state) {
         'style': _PANGO_STYLES[font.get_style()],
         'weight': font.get_weight(),
         'color': _rgba_to_markup_color(foreground),
+        'bgcolor': _rgba_to_markup_color(background),
     };
     let properties_string = Object.keys(properties).map((key) =>
         key + '="' + properties[key] + '"').join(' ');

@@ -34,6 +34,7 @@ const ArticleSnippetCard = new Lang.Class({
         'model': GObject.ParamSpec.override('model', Card.Card),
         'title-capitalization': GObject.ParamSpec.override('title-capitalization',
             Card.Card),
+        'highlight-string': GObject.ParamSpec.override('highlight-string', Card.Card),
     },
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/articleSnippetCard.ui',

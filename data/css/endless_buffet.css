@@ -21,6 +21,11 @@
     color: #044a80;
 }
 
+.card .title.highlighted,
+.card .card-synopsis.highlighted {
+    background-color: #d9f0f8;
+}
+
 .search-results .separator,
 .search-results .results-message-subtitle,
 .browse-content .title {

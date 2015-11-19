@@ -114,6 +114,17 @@ const Card = new Lang.Interface({
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             EosKnowledgePrivate.TextTransformType,
             EosKnowledgePrivate.TextTransform.NONE),
+        /**
+         * Property: highlight-string
+         * A substring within a card's title or synopsis to get highlighted
+         *
+         * Sometimes we want to highlight a particular substring with the
+         * text of a card. This property specifies which substring to highlight.
+         */
+        'highlight-string': GObject.ParamSpec.string('highlight-string',
+            'Highlight string', 'Substring to be highlighted on card',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            ''),
     },
 
     set css (v) {
@@ -162,7 +173,8 @@ const Card = new Lang.Interface({
         this.set_label_or_hide(label,
                                this.model.tags.filter((tag) => !tag.startsWith('Ekn'))
                                .slice(0, 2)
-                               .join(' | '));
+                               .join(' | ')
+                               .toLocaleUpperCase());
     },
 
     /**
@@ -219,12 +231,36 @@ const Card = new Lang.Interface({
     },
 
     /**
+     * Method: set_label_with_highlight
+     *
+     * Sets up a label that should highlight any substrings within it that
+     * match the card's highlight-string property.
+     */
+    set_label_with_highlight: function (label, str) {
+        // parenthesize the targeted string so we can reference it later on in
+        // the replace step using '$1'. This is so we can preserve case
+        // sensitivity when doing the replacement.
+        let regex = new RegExp('(' + this.highlight_string + ')', 'gi');
+        let title = GLib.markup_escape_text(str, -1);
+        if (this.highlight_string) {
+            let context = label.get_style_context();
+            context.save();
+            context.add_class(StyleClasses.HIGHLIGHTED);
+            let span = Utils.style_context_to_markup_span(label.get_style_context(), Gtk.StateFlags.NORMAL);
+            title = title.replace(regex, span + '$1</span>');
+            context.restore();
+        }
+        label.label = title;
+        label.visible = !!title;
+    },
+
+    /**
      * Method: set_title_label_from_model
      *
      * Sets up a label to show the model's title.
      */
     set_title_label_from_model: function (label) {
-        this.set_label_or_hide(label,
+        this.set_label_with_highlight(label,
             Utils.format_capitals(this.model.title, this.title_capitalization));
     },
 
