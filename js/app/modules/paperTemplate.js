@@ -57,6 +57,7 @@ const PaperTemplate = new Lang.Class({
             height: alloc.height,
         });
         this._content_frame.size_allocate(content_alloc);
+        Utils.set_container_clip(this);
     },
 
     get_slot_names: function () {
