@@ -9,7 +9,7 @@ const Lang = imports.lang;
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
 const Module = imports.app.interfaces.module;
-const StyleClasses = imports.app.styleClasses;
+const ThemeableImage = imports.app.widgets.themeableImage;
 
 const Utils = imports.app.utils;
 
@@ -66,12 +66,23 @@ const SuggestedCategoriesModule = new Lang.Class({
 
     _init: function (props={}) {
         this.parent(props);
+
+        let separator = new ThemeableImage.ThemeableImage({
+            visible: true,
+            halign: Gtk.Align.FILL,
+            valign: Gtk.Align.CENTER,
+            no_show_all: true,
+        });
+        separator.get_style_context().add_class(Gtk.STYLE_CLASS_SEPARATOR);
+        this.add(separator);
+
         this._arrangement = this.create_submodule('arrangement');
         this.add(this._arrangement);
 
         if (!this.show_title) {
             this._title_button.no_show_all = true;
             this._title_button.hide();
+            separator.hide();
         }
 
         this._title_button.connect('clicked', () => {
