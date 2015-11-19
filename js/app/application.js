@@ -3,6 +3,7 @@ imports.gi.versions.WebKit2 = '4.0';
 const Endless = imports.gi.Endless;
 const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
+const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 
@@ -51,6 +52,9 @@ const Application = new Lang.Class({
 
         Engine.get_default().default_domain = Utils.domain_from_app_id(this.application_id);
 
+        this.add_main_option('data-path', 0, GLib.OptionFlags.NONE, GLib.OptionArg.FILENAME,
+                             'Optional argument to set the default data path', null);
+
         // HACK for legacy compatibility: if the user has an old bundle with
         // a new eos-knowledge-lib, their search-provider ini files will have
         // the application ID rather than ekn-search-provider. Export an old
@@ -58,6 +62,13 @@ const Application = new Lang.Class({
         this._legacy_search_provider = new LegacySearchProvider.AppSearchProvider({
             application_id: this.application_id,
         });
+    },
+
+    vfunc_handle_local_options: function (options) {
+        let path = options.lookup_value('data-path', null);
+        if (path)
+            Engine.get_default().default_domain_path = path.deep_unpack().toString();
+        return -1;
     },
 
     vfunc_dbus_register: function (connection, path) {

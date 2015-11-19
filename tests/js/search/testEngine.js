@@ -163,11 +163,11 @@ describe('Knowledge Engine Module', () => {
         engine.default_domain = 'foo';
 
         // Inject a custom content path finder so we don't hit the disk ever.
-        engine._content_path_from_domain = function(domain) {
+        spyOn(engine, '_content_path_from_domain').and.callFake((domain) => {
             // The rule for our test suite is that domain 'foo' gets
             // the content-path /foo'.
             return '/' + domain;
-        };
+        });
 
         // Test the newest code paths.
         mock_ekn_version(engine, 2);
@@ -237,6 +237,19 @@ describe('Knowledge Engine Module', () => {
             uri = engine._get_xapian_query_uri(query_obj);
             query_obj = uri.get_query();
             expect(get_query_vals_for_key(query_obj, 'path')).toEqual('/foo/db');
+        });
+
+        it('allows the default domain path to be overridden', () => {
+            let uri, query_obj;
+            engine.default_domain_path = '/bar';
+            engine._content_path_from_domain.and.callThrough();
+            let query_obj = new QueryObject.QueryObject({
+                query: 'tyrion',
+                domain: 'foo',
+            });
+            uri = engine._get_xapian_query_uri(query_obj);
+            query_obj = uri.get_query();
+            expect(get_query_vals_for_key(query_obj, 'path')).toEqual('/bar/db');
         });
 
         it('calls into QueryObject for other uri fields', () => {
