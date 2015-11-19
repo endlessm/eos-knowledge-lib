@@ -246,8 +246,7 @@
         "header-card": {
             "type": "TextCard",
             "properties": {
-                "margin-top": 25,
-                "margin-bottom": 10
+                "margin-top": 25
             }
         },
         "main-menu": {
