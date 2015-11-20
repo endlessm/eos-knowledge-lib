@@ -86,6 +86,20 @@ EknSearchModule .no-results {
     color: #49bde3;
 }
 
+EknHighlightsModule .text-card .after,
+EknThematicModule .text-card .after {
+    -gtk-icon-source: url('resource:///com/endlessm/knowledge/data/images/title-arrow-dark.svg');
+    -EknThemeableImage-min-height: 10;
+    -EknThemeableImage-min-width: 11;
+    margin-left: 8px;
+    margin-top: 6px;
+}
+
+EknHighlightsModule .text-card:hover .after,
+EknThematicModule .text-card:hover .after {
+    -gtk-icon-source: url('resource:///com/endlessm/knowledge/data/images/title-arrow-light.svg');
+}
+
 /* default size */
 .card {
     font-size: 14px;
