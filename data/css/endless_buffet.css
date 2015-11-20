@@ -87,6 +87,7 @@ EknSuggestedCategoriesModule .button:hover .title,
     color: #49bde3;
 }
 
+EknSuggestedCategoriesModule .browse-content .after,
 EknHighlightsModule .text-card .after,
 EknThematicModule .text-card .after {
     -gtk-icon-source: url('resource:///com/endlessm/knowledge/data/images/title-arrow-dark.svg');
@@ -96,6 +97,7 @@ EknThematicModule .text-card .after {
     margin-top: 6px;
 }
 
+EknSuggestedCategoriesModule .browse-content:hover .after,
 EknHighlightsModule .text-card:hover .after,
 EknThematicModule .text-card:hover .after {
     -gtk-icon-source: url('resource:///com/endlessm/knowledge/data/images/title-arrow-light.svg');
