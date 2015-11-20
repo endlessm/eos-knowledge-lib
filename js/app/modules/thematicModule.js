@@ -112,6 +112,7 @@ const ThematicModule = new Lang.Class({
         let card = this.create_submodule('header-card-type', {
             model: model,
             visible: true,
+            halign: Gtk.Align.START,
         });
         card.connect('clicked', () => {
             Dispatcher.get_default().dispatch({
