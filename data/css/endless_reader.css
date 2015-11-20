@@ -47,8 +47,15 @@ overridden by app specific CSS */
 .search-results-page .title {
     font-family: Montserrat;
     color: black;
-    font-size: 2.25em; /* 36pt * 1/12 * 0.75 DPI correction factor */
     padding: 1em 0em 1em 0em;
+}
+
+.search-results-page .title {
+    font-size: 2.25em; /* 36pt * 1/12 * 0.75 DPI correction factor */
+}
+
+.window-small .search-results-page .title {
+    font-size: 1.75em; /* 28pt * 1/12 * 0.75 DPI correction factor */
 }
 
 .search-results-page {
@@ -74,6 +81,10 @@ overridden by app specific CSS */
 
 .sidebar {
     padding: 100px 0px 85px 90px;
+}
+
+.window-small .sidebar {
+    padding: 100px 0px 20px 90px;
 }
 
 .back-cover .title {

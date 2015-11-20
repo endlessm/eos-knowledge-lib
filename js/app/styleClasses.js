@@ -670,3 +670,17 @@ const SET_GROUP = 'set-group';
  * Matches a panel.
  */
 const PANEL = 'panel';
+
+/**
+ * Constant: WINDOW_SMALL
+ *
+ * Class to identify a small window
+ */
+const WINDOW_SMALL = 'window-small';
+
+/**
+ * Constant: WINDOW_LARGE
+ *
+ * Class to identify a large window
+ */
+const WINDOW_LARGE = 'window-large';

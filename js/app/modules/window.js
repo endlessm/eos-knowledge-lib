@@ -111,6 +111,8 @@ const Window = new Lang.Class({
         },
     },
 
+    WINDOW_WIDTH_THRESHOLD: 800,
+    WINDOW_HEIGHT_THRESHOLD: 600,
     TRANSITION_DURATION: 500,
 
     _init: function (props) {
@@ -421,4 +423,17 @@ const Window = new Lang.Class({
         return ['brand-screen', 'home-page', 'section-page', 'all-sets-page', 'search-page',
             'article-page', 'navigation', 'lightbox', 'search'];
     },
+
+    vfunc_size_allocate: function (alloc) {
+        this.parent(alloc);
+
+        let context = this.get_style_context();
+        if (alloc.width <= this.WINDOW_WIDTH_THRESHOLD || alloc.height <= this.WINDOW_HEIGHT_THRESHOLD) {
+            context.remove_class(StyleClasses.WINDOW_LARGE);
+            context.add_class(StyleClasses.WINDOW_SMALL);
+        } else {
+            context.remove_class(StyleClasses.WINDOW_SMALL);
+            context.add_class(StyleClasses.WINDOW_LARGE);
+        }
+    }
 });
