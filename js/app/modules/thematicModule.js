@@ -55,7 +55,7 @@ const ThematicModule = new Lang.Class({
         this._arrangements = [];
         this._featured_arrangements = [];
         this._non_featured_arrangements = [];
-        this._headers_by_arrangement = {};
+        this._sets = [];
 
         Dispatcher.get_default().register((payload) => {
             switch (payload.action_type) {
@@ -80,15 +80,6 @@ const ThematicModule = new Lang.Class({
         return ['arrangement', 'card-type', 'header-card-type'];
     },
 
-    // Helper method for _show_set()
-    _show_non_empty_arrangements: function (arrangements) {
-        arrangements.filter(arrangement => arrangement.get_cards().length > 0)
-        .forEach(arrangement => {
-            arrangement.show_all();
-            this._headers_by_arrangement[arrangement].show_all();
-        });
-    },
-
     _show_set: function (model) {
         this._clear_items();
 
@@ -105,12 +96,9 @@ const ThematicModule = new Lang.Class({
                 return;
             }
 
-            results.forEach(this._add_item, this);
-
-            if (model.featured)
-                this._show_non_empty_arrangements(this._non_featured_arrangements);
-            else
-                this._show_non_empty_arrangements(this._featured_arrangements);
+            let arrangements = model.featured ?
+                this._non_featured_arrangements : this._featured_arrangements;
+            results.forEach((item) => this._add_item(item, arrangements));
 
             Dispatcher.get_default().dispatch({
                 action_type: Actions.SET_READY,
@@ -122,15 +110,13 @@ const ThematicModule = new Lang.Class({
     _create_set_card: function (model) {
         let card = this.create_submodule('header-card-type', {
             model: model,
-            visible: false,
+            visible: true,
         });
         card.connect('clicked', () => {
-            let sets = this._arrangements.map((arrangement) =>
-                this._headers_by_arrangement[arrangement].model);
             Dispatcher.get_default().dispatch({
                 action_type: Actions.SET_CLICKED,
                 model: model,
-                context: sets,
+                context: this._sets,
             });
         });
         return card;
@@ -151,30 +137,41 @@ const ThematicModule = new Lang.Class({
     },
 
     _add_set: function (model) {
+        this._sets.push(model);
         let header = this._create_set_card(model);
-        this.add(header);
 
         let arrangement = this.create_submodule('arrangement', {
             vexpand: true,
             visible: false,
+            no_show_all: true,
         });
         arrangement.accepted_child_tags = model.child_tags.slice();
-        this.add(arrangement);
         this._arrangements.push(arrangement);
-        this._headers_by_arrangement[arrangement] = header;
 
         if (model.featured) {
             this._featured_arrangements.push(arrangement);
         } else {
             this._non_featured_arrangements.push(arrangement);
         }
+
+        let set_grid = new Gtk.Grid({
+            orientation: Gtk.Orientation.VERTICAL,
+            no_show_all: true,
+        });
+        set_grid.add(header);
+        set_grid.add(arrangement);
+        this.add(set_grid);
+
+        arrangement.bind_property('visible', set_grid, 'visible',
+            GObject.BindingFlags.SYNC_CREATE);
     },
 
-    _add_item: function (model) {
-        this._arrangements.forEach(arrangement => {
+    _add_item: function (model, arrangements) {
+        arrangements.forEach(arrangement => {
             if (model.tags.some(tag =>
                 arrangement.accepted_child_tags.indexOf(tag) > -1)) {
                 this._add_article_card(model, arrangement);
+                arrangement.visible = true;
             }
         });
     },
@@ -184,7 +181,7 @@ const ThematicModule = new Lang.Class({
         this._arrangements = [];
         this._featured_arrangements = [];
         this._non_featured_arrangements = [];
-        this._headers_by_arrangement = {};
+        this._sets = [];
     },
 
     _clear_items: function () {
@@ -192,7 +189,6 @@ const ThematicModule = new Lang.Class({
         this._arrangements.forEach(arrangement => {
             arrangement.clear();
             arrangement.hide();
-            this._headers_by_arrangement[arrangement].hide();
         });
     },
 });
