@@ -409,15 +409,33 @@ EknWindow.background-right {
     font-size: 2.25em; /* 36pt * 1/12 * 0.75 DPI correction factor */
 }
 
+.window-small .section-page-a .title,
+.window-small .search-page-a .title {
+    font-size: 1.75em; /* 28pt * 1/12 * 0.75 DPI correction factor */
+}
+
 .search-page-a .search-results .results-message-title,
 .search-page-a .search-results .results-message-subtitle,
 .search-page-a .search-results .error-message {
     padding-top: 2.0em;
 }
 
+.window-small .search-page-a .search-results .results-message-title,
+.window-small .search-page-a .search-results .results-message-subtitle,
+.window-small .search-page-a .search-results .error-message {
+    padding-top: 1.5em;
+}
+
 .search-page-b .search-results .results-message-title,
 .search-page-b .search-results .results-message-subtitle,
 .search-page-b .search-results .error-message {
+    font-size: 1.2em;
+    padding: 10px 25px;
+}
+
+.window-small .search-page-b .search-results .results-message-title,
+.window-small .search-page-b .search-results .results-message-subtitle,
+.window-small .search-page-b .search-results .error-message {
     font-size: 0.8em;
     padding: 8px 15px;
 }
@@ -430,6 +448,13 @@ EknWindow.background-right {
 .section-page-b .title,
 .search-page-b .title {
     font-size: 4.5em; /* 72pt * 1/12 * 0.75 DPI correction factor */
+    padding: 0.9em 0em 0.9em 1.2em;
+    color: white;
+}
+
+.window-small .section-page-b .title,
+.window-small .search-page-b .title {
+    font-size: 3.5em; /* 56pt * 1/12 * 0.75 DPI correction factor */
     padding: 0.9em 0em 0.9em 1.2em;
     color: white;
 }
