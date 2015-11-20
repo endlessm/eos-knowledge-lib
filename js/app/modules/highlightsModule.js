@@ -90,6 +90,7 @@ const HighlightsModule = new Lang.Class({
     _add_set_card: function (model) {
         let card = this.create_submodule('header-card-type', {
             model: model,
+            halign: Gtk.Align.START,
         });
         card.connect('clicked', () => {
             Dispatcher.get_default().dispatch({
