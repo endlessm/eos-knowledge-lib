@@ -82,6 +82,7 @@ EknSearchModule .no-results {
     background-color: white;
 }
 
+EknSuggestedCategoriesModule .button:hover .title,
 .text-card:hover .title {
     color: #49bde3;
 }
