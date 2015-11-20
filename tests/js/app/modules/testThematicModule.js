@@ -34,6 +34,7 @@ describe('Thematic module', function () {
         module = new ThematicModule.ThematicModule({
             factory: factory,
             factory_name: 'highlights',
+            visible: true,
         });
     });
 
@@ -117,7 +118,7 @@ describe('Thematic module', function () {
                     // doesn't have any cards at all
                     expect(arrangements.filter(arrangement => arrangement.visible).length)
                         .toBe(non_featured_models.length - 1);
-                    let visible_headers = headers.filter(header => header.visible);
+                    let visible_headers = headers.filter(header => header.is_visible());
                     expect(visible_headers.length).toBe(non_featured_models.length - 1);
                     visible_headers.forEach(header =>
                         expect(header.model.featured).toBeFalsy());
@@ -204,7 +205,7 @@ describe('Thematic module', function () {
                 it('shows only the featured arrangements', function () {
                     expect(arrangements.filter(arrangement => arrangement.visible).length)
                         .toBe(featured_models.length);
-                    let visible_headers = headers.filter(header => header.visible);
+                    let visible_headers = headers.filter(header => header.is_visible());
                     expect(visible_headers.length).toBe(featured_models.length);
                     visible_headers.forEach(header =>
                         expect(header.model.featured).toBeTruthy());
@@ -224,7 +225,7 @@ describe('Thematic module', function () {
                     visible_arrangements.forEach(arrangement => {
                         expect(arrangement.get_cards().length).toBeGreaterThan(0);
                     });
-                    let visible_headers = headers.filter(header => header.visible);
+                    let visible_headers = headers.filter(header => header.is_visible());
                     expect(visible_headers.length).toBe(visible_arrangements.length);
                     visible_headers.forEach(header =>
                         expect(header.model.featured).toBeFalsy());
@@ -244,7 +245,7 @@ describe('Thematic module', function () {
                     visible_arrangements.forEach(arrangement => {
                         expect(arrangement.get_cards().length).toBeGreaterThan(0);
                     });
-                    let visible_headers = headers.filter(header => header.visible);
+                    let visible_headers = headers.filter(header => header.is_visible());
                     expect(visible_headers.length).toBe(visible_arrangements.length);
                     visible_headers.forEach(header =>
                         expect(header.model.featured).toBeTruthy());
