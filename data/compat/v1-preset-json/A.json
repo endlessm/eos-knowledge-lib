@@ -34,8 +34,8 @@
         "section-page": {
             "type": "BannerTemplate",
             "properties": {
-                "margin-start": 150,
-                "margin-end": 150
+                "margin-start": 100,
+                "margin-end": 100
             },
             "slots": {
                 "banner": {
@@ -124,8 +124,8 @@
         "search-page": {
             "type": "BannerTemplate",
             "properties": {
-                "margin-start": 150,
-                "margin-end": 150
+                "margin-start": 100,
+                "margin-end": 100
             },
             "slots": {
                 "banner": {

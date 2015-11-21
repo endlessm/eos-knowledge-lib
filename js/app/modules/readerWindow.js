@@ -93,6 +93,8 @@ const ReaderWindow = new Lang.Class({
         'debug-hotkey-pressed': {},
     },
 
+    WINDOW_WIDTH_THRESHOLD: 800,
+    WINDOW_HEIGHT_THRESHOLD: 600,
     _STACK_TRANSITION_TIME: 500,
 
     _init: function (props) {
@@ -351,4 +353,17 @@ const ReaderWindow = new Lang.Class({
         return ['front-page', 'back-page', 'search-page', 'standalone-page',
             'document-arrangement', 'navigation', 'lightbox', 'search'];
     },
+
+    vfunc_size_allocate: function (alloc) {
+        this.parent(alloc);
+
+        let context = this.get_style_context();
+        if (alloc.width <= this.WINDOW_WIDTH_THRESHOLD || alloc.height <= this.WINDOW_HEIGHT_THRESHOLD) {
+            context.remove_class(StyleClasses.WINDOW_LARGE);
+            context.add_class(StyleClasses.WINDOW_SMALL);
+        } else {
+            context.remove_class(StyleClasses.WINDOW_SMALL);
+            context.add_class(StyleClasses.WINDOW_LARGE);
+        }
+    }
 });
