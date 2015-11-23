@@ -71,7 +71,7 @@
                 "top": {
                     "type": "AppBanner",
                     "properties": {
-                        "min-fraction": 0.35,
+                        "min-fraction": 0.2,
                         "max-fraction": 0.7
                     }
                 },

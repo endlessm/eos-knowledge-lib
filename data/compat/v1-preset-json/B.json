@@ -41,7 +41,7 @@
                 "top-left": {
                     "type": "AppBanner",
                     "properties": {
-                        "min-fraction": 0.3,
+                        "min-fraction": 0.2,
                         "max-fraction": 0.7,
                         "valign": "center",
                         "halign": "center",
