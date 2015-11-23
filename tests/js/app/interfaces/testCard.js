@@ -101,13 +101,18 @@ describe('Card interface', function () {
     });
 
     it('highlights substring in title', function () {
+        let css = '.highlighted{background-color:#ff0000;}';
         card = new Minimal.MinimalCard({
             model: model,
             highlight_string: 'title',
         });
         let label = new Gtk.Label();
+        label.get_style_context().add_class('highlighted');
+        let provider = new Gtk.CssProvider();
+        provider.load_from_data(css);
+        label.get_style_context().add_provider(provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
         card.set_title_label_from_model(label);
-        expect(label.label.match(/<span .*bgcolor="#000000.*">title<\/span>/)).not.toBeNull();
+        expect(label.label.match(/<span .*bgcolor="#ff0000.*">title<\/span>/)).not.toBeNull();
     });
 
     it('sets a thumbnail frame visible if model has a thumbnail uri', function () {
