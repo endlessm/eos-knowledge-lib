@@ -150,7 +150,6 @@
                         "category-suggestions": null
                     },
                     "properties": {
-                        "halign": "center",
                         "message-justify": "left",
                         "message-halign": "center"
                     }
