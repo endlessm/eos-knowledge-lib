@@ -144,8 +144,15 @@ function style_context_to_markup_span(context, state) {
         'style': _PANGO_STYLES[font.get_style()],
         'weight': font.get_weight(),
         'color': _rgba_to_markup_color(foreground),
-        'bgcolor': _rgba_to_markup_color(background),
     };
+    // If no background color is specified, the default will be a black
+    // background with alpha set to 0. But since Pango ignores the alpha
+    // channel, we end up with an unwanted, all-black background. So
+    // to avoid this we should only set the background color if the alpha
+    // channel is non-zero.
+    if (background.alpha !== 0) {
+        properties.bgcolor = _rgba_to_markup_color(background);
+    }
     let properties_string = Object.keys(properties).map((key) =>
         key + '="' + properties[key] + '"').join(' ');
     return '<span ' + properties_string + '>';
