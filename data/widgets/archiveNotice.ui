@@ -16,6 +16,10 @@
       <child>
         <object class="GtkLabel" id="archive-label">
           <property name="visible">True</property>
+          <property name="wrap">True</property>
+          <property name="wrap_mode">word-char</property>
+          <property name="ellipsize">end</property>
+          <property name="lines">2</property>
         </object>
       </child>
     <style>
