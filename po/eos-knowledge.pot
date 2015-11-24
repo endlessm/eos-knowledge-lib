@@ -162,7 +162,7 @@ msgstr ""
 msgid "SEE ALL CATEGORIES"
 msgstr ""
 
-#: js/app/modules/readerCard.js:60
+#: js/app/modules/readerCard.js:59
 #, javascript-format
 msgid "Page %s"
 msgstr ""
