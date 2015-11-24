@@ -190,9 +190,9 @@
                         "card-type": {
                             "type": "KnowledgeDocumentCard",
                             "properties": {
-                                "show_top_title": false,
-                                "show_toc": false,
-                                "custom_css": "reader2.css"
+                                "show-top-title": false,
+                                "show-toc": false,
+                                "custom-css": "reader2.css"
                             }
                         }
                     }
