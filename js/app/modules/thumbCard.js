@@ -70,13 +70,16 @@ const ThumbCard = new Lang.Class({
         // the proportion of space to be taken up by the
         // thumbnail image
         if (this._should_go_horizontal(alloc.width, alloc.height)) {
+            this._title_label.justify = Gtk.Justification.LEFT;
             this._title_label.halign = this._synopsis_label.halign = this._context_label.halign = Gtk.Align.START;
             orientation = Gtk.Orientation.HORIZONTAL;
+            this._title_label.xalign = this._context_label.xalign = 0;
             proportion = 1/2;
         } else {
             this._title_label.justify = Gtk.Justification.CENTER;
             this._title_label.halign = this._synopsis_label.halign = this._context_label.halign = Gtk.Align.CENTER;
             orientation = Gtk.Orientation.VERTICAL;
+            this._title_label.xalign = this._context_label.xalign = 0.5;
             proportion = 2/3;
         }
 
