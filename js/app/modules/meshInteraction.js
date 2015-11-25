@@ -590,11 +590,6 @@ const MeshInteraction = new Lang.Class({
 
     // Launcher implementation
     search: function (timestamp, query) {
-        // Show an empty article page while waiting
-        Dispatcher.get_default().dispatch({
-            action_type: Actions.SHOW_SEARCH_PAGE,
-        });
-
         this._do_search(query);  // sets history presenter item
         // Don't wait for the sets to load on the home page, since we don't
         // start off showing the home page
