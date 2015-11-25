@@ -210,13 +210,14 @@ const Window = new Lang.Class({
                     this.set_busy(false);
                     break;
                 case Actions.FIRST_LAUNCH:
-                    if (this._brand_screen &&
-                        payload.launch_type === Launcher.LaunchType.DESKTOP)
-                        this.show_page(this._brand_screen);
                     if (payload.timestamp)
                         this.present_with_time(payload.timestamp);
                     else
                         this.present();
+                    break;
+                case Actions.SHOW_BRAND_SCREEN:
+                    if (this._brand_screen)
+                        this.show_page(this._brand_screen);
                     break;
                 case Actions.BRAND_SCREEN_DONE:
                     if (this._brand_screen)

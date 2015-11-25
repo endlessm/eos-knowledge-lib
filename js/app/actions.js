@@ -3,6 +3,7 @@
 // UI event actions, avoid updating other module UI from these, they will be
 // processed by the interaction models.
 const FIRST_LAUNCH = 'first-launch';
+const SHOW_BRAND_SCREEN = 'show-brand-screen';
 const BRAND_SCREEN_DONE = 'brand-screen-done';
 const NAV_BACK_CLICKED = 'nav-back-clicked';
 const NAV_FORWARD_CLICKED = 'nav-forward-clicked';

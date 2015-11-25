@@ -100,7 +100,7 @@ describe('Buffet interaction', function () {
     it('indicates that the brand screen has been read after launch from desktop', function () {
         buffet.BRAND_SCREEN_TIME_MS = 0;
         buffet.desktop_launch(0);
-        expect(dispatcher.last_payload_with_type(Actions.BRAND_SCREEN_DONE)).not.toBeDefined();
+        expect(dispatcher.last_payload_with_type(Actions.SHOW_BRAND_SCREEN)).toBeDefined();
         dispatcher.dispatch({
             action_type: Actions.MODULE_READY,
         });
@@ -116,7 +116,7 @@ describe('Buffet interaction', function () {
         });
         buffet.desktop_launch(0);
         Utils.update_gui();
-        let payloads = dispatcher.payloads_with_type(Actions.BRAND_SCREEN_DONE);
+        let payloads = dispatcher.payloads_with_type(Actions.SHOW_BRAND_SCREEN);
         expect(payloads.length).toBe(1);
     });
 
@@ -126,7 +126,7 @@ describe('Buffet interaction', function () {
         buffet.search(0, 'query');
         buffet.activate_search_result(0, 'ekn://foo/bar', 'query');
         Utils.update_gui();
-        expect(dispatcher.last_payload_with_type(Actions.BRAND_SCREEN_DONE)).not.toBeDefined();
+        expect(dispatcher.last_payload_with_type(Actions.SHOW_BRAND_SCREEN)).not.toBeDefined();
     });
 
     it('dispatches set models to populate the app with', function () {
@@ -140,6 +140,8 @@ describe('Buffet interaction', function () {
 
     describe('when a set is clicked', function () {
         beforeEach(function () {
+            buffet.BRAND_SCREEN_TIME_MS = 0;
+            buffet.desktop_launch(0);
             dispatcher.dispatch({
                 action_type: Actions.SET_CLICKED,
                 model: set_models[0],
