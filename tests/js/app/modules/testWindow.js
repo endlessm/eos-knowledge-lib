@@ -204,12 +204,12 @@ describe('Window', function () {
             expect(view.get_visible_page()).toBe(brand_screen);
         });
 
-        it('switches to the home page after the brand screen has been shown', function () {
-            let home_page = factory.get_created_named_mocks('home-page')[0];
+        it('switches to the brand screen when show-brand-screen is dispatched', function () {
+            let brand_screen = factory.get_created_named_mocks('brand-screen')[0];
             dispatcher.dispatch({
-                action_type: Actions.BRAND_SCREEN_DONE,
+                action_type: Actions.SHOW_BRAND_SCREEN,
             });
-            expect(view.get_visible_page()).toBe(home_page);
+            expect(view.get_visible_page()).toBe(brand_screen);
         });
 
         it('switches to the categories page after the show-all-sets page is dispatched', function () {

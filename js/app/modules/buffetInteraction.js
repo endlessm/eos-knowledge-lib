@@ -155,9 +155,6 @@ const BuffetInteraction = new Lang.Class({
             }
         });
 
-        this._history_presenter.set_current_item_from_props({
-            page_type: Pages.HOME,
-        });
         this._history_presenter.connect('history-item-changed',
             this._on_history_item_change.bind(this));
     },
@@ -395,8 +392,18 @@ const BuffetInteraction = new Lang.Class({
 
     // Launcher implementation
     desktop_launch: function (timestamp) {
-        if (!this._dispatch_launch(timestamp, Launcher.LaunchType.DESKTOP))
+        this._history_presenter.set_current_item_from_props({
+            page_type: Pages.HOME,
+        });
+
+        if (!this._dispatch_launch(timestamp, Launcher.LaunchType.DESKTOP)) {
             return;
+        }
+
+        Dispatcher.get_default().dispatch({
+            action_type: Actions.SHOW_BRAND_SCREEN,
+        });
+
         GLib.timeout_add(GLib.PRIORITY_DEFAULT, this.BRAND_SCREEN_TIME_MS, () => {
             this._timer_ready = true;
             if (this._content_ready) {
