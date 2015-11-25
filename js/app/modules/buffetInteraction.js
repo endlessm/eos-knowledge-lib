@@ -423,7 +423,24 @@ const BuffetInteraction = new Lang.Class({
 
     // Launcher override
     activate_search_result: function (timestamp, ekn_id, query) {
-        this._dispatch_launch(timestamp, Launcher.LaunchType.SEARCH_RESULT);
+        // Show an empty article page while waiting
+        Dispatcher.get_default().dispatch({
+            action_type: Actions.SHOW_ARTICLE_PAGE,
+        });
+
+        Engine.get_default().get_object_by_id(ekn_id, null, (engine, task) => {
+            try {
+                let model = engine.get_object_by_id_finish(task);
+                this._history_presenter.set_current_item_from_props({
+                    page_type: Pages.ARTICLE,
+                    model: model,
+                    query: query,
+                });
+            } catch (error) {
+                logError(error);
+            }
+            this._dispatch_launch(timestamp, Launcher.LaunchType.SEARCH_RESULT);
+        });
     },
 
     // Module override
