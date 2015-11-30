@@ -77,8 +77,8 @@
                                         "halign": "center",
                                         "margin-top": 20,
                                         "margin-bottom": 20,
-                                        "margin-start": 50,
-                                        "margin-end": 50
+                                        "margin-start": 20,
+                                        "margin-end": 20
                                     },
                                     "slots": {
                                         "arrangement": {
@@ -115,8 +115,8 @@
                                         "halign": "center",
                                         "margin-top": 20,
                                         "margin-bottom": 20,
-                                        "margin-start": 50,
-                                        "margin-end": 50
+                                        "margin-start": 20,
+                                        "margin-end": 20
                                     },
                                     "slots": {
                                         "large-arrangement": {
@@ -207,8 +207,8 @@
                     "properties" : {
                         "max-rows": 1,
                         "spacing": 10,
-                        "margin-start": 50,
-                        "margin-end": 50,
+                        "margin-start": 20,
+                        "margin-end": 20,
                         "margin-bottom": 20
                     }
                 },
@@ -224,8 +224,8 @@
                         "max-rows": 1,
                         "valign": "end",
                         "spacing": 20,
-                        "margin-start": 50,
-                        "margin-end": 50,
+                        "margin-start": 20,
+                        "margin-end": 20,
                         "margin-bottom": 20
                     }
                 },
