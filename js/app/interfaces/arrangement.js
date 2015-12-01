@@ -35,6 +35,10 @@ const Arrangement = new Lang.Interface({
      */
     get_cards: Lang.Interface.UNIMPLEMENTED,
 
+    get_max_cards: function () {
+        return -1;
+    },
+
     /**
      * Method: clear
      * Remove all cards from the arrangement

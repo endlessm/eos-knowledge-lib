@@ -14,4 +14,8 @@ describe('Arrangement interface', function () {
     it('has a minimal implementation', function () {
         expect(arrangement).toBeDefined();
     });
+
+    it('returns -1 for default card limit', function () {
+        expect(arrangement.get_max_cards()).toBe(-1);
+    });
 });

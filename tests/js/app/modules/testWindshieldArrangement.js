@@ -49,6 +49,12 @@ describe('Windshield Arrangement', function () {
         // cards should be 200x200.
         testSizingArrangementForDimensions(600, 400, 200);
     });
+
+    describe('get_max_cards', function () {
+        it ('is 4', function () {
+            expect(this.arrangement.get_max_cards()).toBe(4);
+        });
+    });
 });
 
 function testSizingArrangementForDimensions(total_width, total_height, child_width) {
