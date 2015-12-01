@@ -8,6 +8,7 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const Actions = imports.app.actions;
+const CardContainer = imports.app.interfaces.cardContainer;
 const Dispatcher = imports.app.dispatcher;
 const Expandable = imports.app.interfaces.expandable;
 const InfiniteScrolledWindow = imports.app.widgets.infiniteScrolledWindow;
@@ -29,12 +30,15 @@ const SetGroupModule = new Lang.Class({
     Name: 'SetGroupModule',
     GTypeName: 'EknSetGroupModule',
     Extends: Gtk.Frame,
-    Implements: [ Module.Module, Expandable.Expandable ],
+    Implements: [ Module.Module, Expandable.Expandable,
+        CardContainer.CardContainer ],
 
     Properties: {
         'factory': GObject.ParamSpec.override('factory', Module.Module),
         'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
         'has-more-content': GObject.ParamSpec.override('has-more-content', Expandable.Expandable),
+        'fade-cards': GObject.ParamSpec.override('fade-cards',
+            CardContainer.CardContainer),
         /**
          * Property: max-children
          *
@@ -67,7 +71,9 @@ const SetGroupModule = new Lang.Class({
                     this._cards = [];
                     break;
                 case Actions.APPEND_SETS:
-                    payload.models.forEach(this._add_card, this);
+                    let fade = this.fade_cards &&
+                        (this._arrangement.get_cards().length > 0);
+                    payload.models.forEach(this._add_card.bind(this, fade));
                     break;
                 case Actions.HIGHLIGHT_ITEM:
                     this._arrangement.highlight(payload.model);
@@ -84,10 +90,12 @@ const SetGroupModule = new Lang.Class({
         return ['arrangement', 'card-type'];
     },
 
-    _add_card: function (model) {
+    _add_card: function (fade, model) {
         let card = this.create_submodule('card-type', {
             model: model,
         });
+        if (fade)
+            card.fade_in();
         card.connect('clicked', () => {
             Dispatcher.get_default().dispatch({
                 action_type: Actions.SET_CLICKED,
