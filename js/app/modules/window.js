@@ -67,7 +67,7 @@ const Window = new Lang.Class({
          */
         'background-image-uri': GObject.ParamSpec.string('background-image-uri', 'Background image URI',
             'The background image of this window.',
-            GObject.ParamFlags.READWRITE,
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             ''),
         /**
          * Property: blur-background-image-uri
@@ -77,7 +77,7 @@ const Window = new Lang.Class({
          */
         'blur-background-image-uri': GObject.ParamSpec.string('blur-background-image-uri', 'Blurred background image URI',
             'The blurred background image of this window.',
-            GObject.ParamFlags.READWRITE,
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             ''),
         /**
          * Property: template-type
@@ -107,6 +107,8 @@ const Window = new Lang.Class({
 
     _init: function (props) {
         this.parent(props);
+
+        let context = this.get_style_context();
 
         this._home_page = this.create_submodule('home-page');
         this._section_page = this.create_submodule('section-page');
@@ -164,6 +166,25 @@ const Window = new Lang.Class({
             left_topbar_widget: this._history_buttons,
             center_topbar_widget: this._search_box,
         });
+
+        let frame_css = '';
+        if (this.background_image_uri)
+            frame_css += '\
+                EknWindow.background-left { \
+                    background-image: url("' + this.background_image_uri + '");\
+                }\n';
+        if (this.blur_background_image_uri)
+            frame_css += '\
+                EknWindow.background-center, EknWindow.background-right { \
+                    background-image: url("' + this.blur_background_image_uri + '");\
+                }';
+
+        if (frame_css !== '') {
+            let provider = new Gtk.CssProvider();
+            provider.load_from_data(frame_css);
+            context.add_provider(provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+        }
+        context.add_class(StyleClasses.BACKGROUND_LEFT);
 
         let dispatcher = Dispatcher.get_default();
         dispatcher.dispatch({
@@ -235,7 +256,6 @@ const Window = new Lang.Class({
 
         this._stack.connect('notify::transition-running', function () {
             this._home_page.animating = this._stack.transition_running;
-            let context = this.get_style_context();
             if (this._stack.transition_running)
                 context.add_class(StyleClasses.ANIMATING);
             else
@@ -246,43 +266,6 @@ const Window = new Lang.Class({
             this._after_stack_visible_child_changed.bind(this));
 
         this.show_all();
-        this._set_background_position_style(StyleClasses.BACKGROUND_LEFT);
-    },
-
-    get background_image_uri () {
-        return this._background_image_uri;
-    },
-
-    set background_image_uri (v) {
-        if (this._background_image_uri === v) {
-            return;
-        }
-        this._background_image_uri = v;
-        if (this._background_image_uri !== null) {
-            let frame_css = 'EknWindow.background-left { background-image: url("' + this._background_image_uri + '");}';
-            let provider = new Gtk.CssProvider();
-            provider.load_from_data(frame_css);
-            let context = this.get_style_context();
-            context.add_provider(provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
-        }
-    },
-
-    get blur_background_image_uri () {
-        return this._blur_background_image_uri;
-    },
-
-    set blur_background_image_uri (v) {
-        if (this._blur_background_image_uri === v) {
-            return;
-        }
-        this._blur_background_image_uri = v;
-        if (this._blur_background_image_uri !== null) {
-            let frame_css = 'EknWindow.background-center, EknWindow.background-right { background-image: url("' + this._blur_background_image_uri + '");}';
-            let provider = new Gtk.CssProvider();
-            provider.load_from_data(frame_css);
-            let context = this.get_style_context();
-            context.add_provider(provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
-        }
     },
 
     _set_background_position_style: function (klass) {
