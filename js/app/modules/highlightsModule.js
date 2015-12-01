@@ -126,8 +126,11 @@ const HighlightsModule = new Lang.Class({
         });
         this.add(arrangement);
 
-        let all_models = [];
-        let process_results = (engine, res) => {
+        let query = new QueryObject.QueryObject({
+            limit: arrangement.get_max_cards(),
+            tags: set.child_tags,
+        });
+        Engine.get_default().get_objects_by_query(query, null, (engine, res) => {
             let models, get_more;
             try {
                 [models, get_more] = engine.get_objects_by_query_finish(res);
@@ -137,19 +140,9 @@ const HighlightsModule = new Lang.Class({
                 return;
             }
 
-            all_models = all_models.concat(models);
-            if (get_more === null) {
-                all_models.forEach(model => this._add_article_card(model, card_slot, arrangement));
-                this._finish_load();
-                return;
-            }
-            engine.get_objects_by_query(get_more, null, process_results);
-        };
-        let query = new QueryObject.QueryObject({
-            limit: this.RESULTS_BATCH_SIZE,
-            tags: set.child_tags,
+            models.forEach(model => this._add_article_card(model, card_slot, arrangement));
+            this._finish_load();
         });
-        Engine.get_default().get_objects_by_query(query, null, process_results);
     },
 
     _finish_load: function () {
