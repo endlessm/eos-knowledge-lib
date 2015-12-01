@@ -69,9 +69,12 @@ const HighlightsModule = new Lang.Class({
                     let models = payload.models.filter(model => !model.featured);
                     Utils.shuffle(models, models.map(GLib.random_double));
                     this._sets = models.slice(0, 3);
-                    this._create_set(this._sets[0], 'large-arrangement', 'card-type', false);
-                    this._create_set(this._sets[1], 'small-arrangement', 'card-type', true);
-                    this._create_set(this._sets[2], 'large-arrangement', 'large-card-type', true);
+                    if (this._sets.length > 0)
+                        this._create_set(this._sets[0], 'large-arrangement', 'card-type', false);
+                    if (this._sets.length > 1)
+                        this._create_set(this._sets[1], 'small-arrangement', 'card-type', true);
+                    if (this._sets.length > 2)
+                        this._create_set(this._sets[2], 'large-arrangement', 'large-card-type', true);
                     break;
             }
         });

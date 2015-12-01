@@ -173,4 +173,24 @@ describe('Highlights module', function () {
         let headers = factory.get_created_named_mocks('set-card');
         headers.forEach(header => expect(header.model.featured).toBe(false));
     });
+
+    it('handles only two sets', function () {
+        let models = [1, 2].map(() => new SetObjectModel.SetObjectModel());
+        dispatcher.dispatch({
+            action_type: Actions.APPEND_SETS,
+            models: models,
+        });
+        expect(factory.get_created_named_mocks('arrangement1').length).toBe(1);
+        expect(factory.get_created_named_mocks('arrangement2').length).toBe(1);
+    });
+
+    it('handles only one set', function () {
+        let models = [new SetObjectModel.SetObjectModel()];
+        dispatcher.dispatch({
+            action_type: Actions.APPEND_SETS,
+            models: models,
+        });
+        expect(factory.get_created_named_mocks('arrangement1').length).toBe(1);
+        expect(factory.get_created_named_mocks('arrangement2').length).toBe(0);
+    });
 });
