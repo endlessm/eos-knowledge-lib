@@ -66,6 +66,10 @@ const WindshieldArrangement = new Lang.Class({
         this.get_children().forEach((child) => this.remove(child));
     },
 
+    get_max_cards: function () {
+        return SECOND_ROW_CARD_COUNT + 1;
+    },
+
     vfunc_get_preferred_width: function () {
         return [this._get_size_with_spacing(CARD_SIZE_SMALL, SECOND_ROW_CARD_COUNT),
             this._get_size_with_spacing(CARD_SIZE_MAX, SECOND_ROW_CARD_COUNT)];

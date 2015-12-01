@@ -52,7 +52,7 @@ const SquareGuysArrangement = new Lang.Class({
          */
         'max-rows': GObject.ParamSpec.uint('max-rows', 'Maximum rows',
             'The maximum number of card rows to be displayed.',
-            GObject.ParamFlags.READWRITE,
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             0, GLib.MAXUINT16, 0),
     },
 
@@ -75,6 +75,12 @@ const SquareGuysArrangement = new Lang.Class({
 
     clear: function () {
         this.get_children().forEach((child) => this.remove(child));
+    },
+
+    get_max_cards: function () {
+        if (this.max_rows === 0)
+            return -1;
+        return COL_COUNT_MAX * this.max_rows;
     },
 
     vfunc_get_preferred_width: function () {
