@@ -57,6 +57,10 @@ EosWindow {
 
 EknWindow {
     background-position: 0% 50%;
+    /* 110% defines how much the background slides for parallax scrolling when
+    switching pages, and therefore also how zoomed in the background image is
+    from its original size. */
+    background-size: 110% auto;
     background-repeat: no-repeat;
     transition: background-position 0.5s ease;
 }

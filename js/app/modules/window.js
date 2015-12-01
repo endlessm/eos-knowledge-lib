@@ -1,7 +1,6 @@
 // Copyright 2014 Endless Mobile, Inc.
 
 const Endless = imports.gi.Endless;
-const GdkPixbuf = imports.gi.GdkPixbuf;
 const GObject = imports.gi.GObject;
 const Gdk = imports.gi.Gdk;
 const Gtk = imports.gi.Gtk;
@@ -14,15 +13,6 @@ const Module = imports.app.interfaces.module;
 const SearchBox = imports.app.modules.searchBox;
 const StyleClasses = imports.app.styleClasses;
 const Utils = imports.app.utils;
-
-GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
-
-/**
- * Defines how much the background slides when switching pages, and
- * therefore also how zoomed in the background image is from its
- * original size.
- */
-const PARALLAX_BACKGROUND_SCALE = 1.1;
 
 /**
  * Class: Window
@@ -255,28 +245,6 @@ const Window = new Lang.Class({
         this._stack.connect_after('notify::visible-child',
             this._after_stack_visible_child_changed.bind(this));
 
-        this.connect('size-allocate', Lang.bind(this, function(widget, allocation) {
-            let win_width = allocation.width;
-            let win_height = allocation.height;
-            if (this.background_image_uri &&
-                (this._last_allocation === undefined ||
-                (this._last_allocation.width !== win_width ||
-                this._last_allocation.height !== win_height))) {
-                let bg_mult_ratio = Math.max(win_width / this._background_image_width, win_height / this._background_image_height) * PARALLAX_BACKGROUND_SCALE;
-                let bg_width = Math.ceil(this._background_image_width * bg_mult_ratio);
-                let bg_height = Math.ceil(this._background_image_height * bg_mult_ratio);
-
-                let frame_css = 'EknWindow { background-size: ' + bg_width + 'px ' + bg_height + 'px;}';
-                let context = this.get_style_context();
-                if (this._bg_size_provider === undefined) {
-                    this._bg_size_provider = new Gtk.CssProvider();
-                    context.add_provider(this._bg_size_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
-                }
-                this._bg_size_provider.load_from_data(frame_css);
-            }
-            this._last_allocation = { width: win_width, height: win_height };
-        }));
-
         this.show_all();
         this._set_background_position_style(StyleClasses.BACKGROUND_LEFT);
     },
@@ -296,22 +264,6 @@ const Window = new Lang.Class({
             provider.load_from_data(frame_css);
             let context = this.get_style_context();
             context.add_provider(provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
-
-            let bg_image_pixbuf;
-            if (this._background_image_uri.indexOf("file://") === 0) {
-                let filePath = this._background_image_uri.split("file://")[1];
-                bg_image_pixbuf = GdkPixbuf.Pixbuf.new_from_file(filePath);
-            } else if (this._background_image_uri.indexOf("resource://") === 0) {
-                let resource = this._background_image_uri.split("resource://")[1];
-                bg_image_pixbuf = GdkPixbuf.Pixbuf.new_from_resource(resource);
-            } else {
-                printerr("Error: background image URI is not a valid format.");
-            }
-
-            if (bg_image_pixbuf !== undefined) {
-                this._background_image_width = bg_image_pixbuf.width;
-                this._background_image_height = bg_image_pixbuf.height;
-            }
         }
     },
 
