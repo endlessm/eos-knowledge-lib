@@ -335,10 +335,11 @@ const Window = new Lang.Class({
     },
 
     _set_background_position_style: function (klass) {
-        this.get_style_context().remove_class(StyleClasses.BACKGROUND_LEFT);
-        this.get_style_context().remove_class(StyleClasses.BACKGROUND_CENTER);
-        this.get_style_context().remove_class(StyleClasses.BACKGROUND_RIGHT);
-        this.get_style_context().add_class(klass);
+        let context = this.get_style_context();
+        context.remove_class(StyleClasses.BACKGROUND_LEFT);
+        context.remove_class(StyleClasses.BACKGROUND_CENTER);
+        context.remove_class(StyleClasses.BACKGROUND_RIGHT);
+        context.add_class(klass);
     },
 
     _after_stack_visible_child_changed: function () {
