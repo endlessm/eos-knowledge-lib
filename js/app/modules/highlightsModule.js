@@ -57,28 +57,21 @@ const HighlightsModule = new Lang.Class({
         props.orientation = Gtk.Orientation.VERTICAL;
         this.parent(props);
 
-        this._featured_arrangement = this.create_submodule('large-arrangement');
         this._sets = [];
-        this._set_arrangements = [];
-
-        this.add(this._featured_arrangement);
+        this._loaded_sets = 0;
 
         Dispatcher.get_default().register((payload) => {
             switch (payload.action_type) {
                 case Actions.CLEAR_SETS:
                     this._clear_all();
                     break;
-                case Actions.CLEAR_ITEMS:
-                    this._clear_items();
-                    break;
                 case Actions.APPEND_SETS:
                     let models = payload.models.filter(model => !model.featured);
-                    let rand_sequence = models.map(GLib.random_double);
-                    Utils.shuffle(models, rand_sequence);
-                    this._add_set(models[0], 'small-arrangement');
-                    this._add_set(models[1], 'large-arrangement');
-                    let tags_to_load = models[0].child_tags.concat(models[1].child_tags);
-                    this._populate_arrangements(tags_to_load);
+                    Utils.shuffle(models, models.map(GLib.random_double));
+                    this._sets = models.slice(0, 3);
+                    this._create_set(this._sets[0], 'large-arrangement', 'card-type', false);
+                    this._create_set(this._sets[1], 'small-arrangement', 'card-type', true);
+                    this._create_set(this._sets[2], 'large-arrangement', 'large-card-type', true);
                     break;
             }
         });
@@ -90,7 +83,7 @@ const HighlightsModule = new Lang.Class({
             'header-card-type', 'large-card-type'];
     },
 
-    _create_set_card: function (model) {
+    _add_set_card: function (model) {
         let card = this.create_submodule('header-card-type', {
             model: model,
         });
@@ -101,18 +94,10 @@ const HighlightsModule = new Lang.Class({
                 context: this._sets,
             });
         });
-        return card;
+        this.add(card);
     },
 
-    _get_card_slot_for_arrangement: function (arrangement) {
-        if (this._set_arrangements.length >= 2 &&
-            arrangement === this._set_arrangements[1])
-            return 'large-card-type';
-        return 'card-type';
-    },
-
-    _add_article_card: function (model, arrangement) {
-        let card_slot = this._get_card_slot_for_arrangement(arrangement);
+    _add_article_card: function (model, card_slot, arrangement) {
         let card = this.create_submodule(card_slot, {
             model: model,
         });
@@ -128,8 +113,15 @@ const HighlightsModule = new Lang.Class({
 
     // Load all articles referenced by the shown arrangements in order to
     // populate the arrangements with them. This happens after APPEND_SETS.
-    _populate_arrangements: function (tags_to_load) {
-        this._clear_items();
+    _create_set: function (set, arrangement_slot, card_slot, add_header) {
+        if (add_header)
+            this._add_set_card(set);
+
+        let arrangement = this.create_submodule(arrangement_slot, {
+            vexpand: true,
+            visible: true,
+        });
+        this.add(arrangement);
 
         let all_models = [];
         let process_results = (engine, res) => {
@@ -138,62 +130,38 @@ const HighlightsModule = new Lang.Class({
                 [models, get_more] = engine.get_objects_by_query_finish(res);
             } catch (e) {
                 logError(e, 'Failed to load articles from database');
+                this._finish_load();
                 return;
             }
 
             all_models = all_models.concat(models);
             if (get_more === null) {
-                all_models.forEach(this._add_item, this);
-                Dispatcher.get_default().dispatch({
-                    action_type: Actions.MODULE_READY,
-                    module: this,
-                });
+                all_models.forEach(model => this._add_article_card(model, card_slot, arrangement));
+                this._finish_load();
                 return;
             }
             engine.get_objects_by_query(get_more, null, process_results);
         };
         let query = new QueryObject.QueryObject({
             limit: this.RESULTS_BATCH_SIZE,
-            tags: tags_to_load,
+            tags: set.child_tags,
         });
         Engine.get_default().get_objects_by_query(query, null, process_results);
     },
 
-    _add_set: function (model, arrangement_slot) {
-        let header = this._create_set_card(model);
-        header.show_all();
-        this.add(header);
-
-        let arrangement = this.create_submodule(arrangement_slot, {
-            vexpand: true,
-        });
-        arrangement.accepted_child_tags = model.child_tags.slice();
-        arrangement.show_all();
-        this.add(arrangement);
-        this._sets.push(model);
-        this._set_arrangements.push(arrangement);
-    },
-
-    _add_item: function (model) {
-        this._add_article_card(model, this._featured_arrangement);
-
-        this._set_arrangements.forEach(arrangement => {
-            if (model.tags.some(tag =>
-                arrangement.accepted_child_tags.indexOf(tag) !== -1)) {
-                this._add_article_card(model, arrangement);
-            }
-        });
+    _finish_load: function () {
+        this._loaded_sets++;
+        if (this._loaded_sets < this._sets.length)
+            return;
+        Dispatcher.get_default().dispatch({
+             action_type: Actions.MODULE_READY,
+             module: this,
+         });
     },
 
     _clear_all: function () {
-        this.get_children().filter(child => child !== this._featured_arrangement)
-            .forEach(this.remove, this);
+        this.get_children().forEach(this.remove, this);
         this._sets = [];
-        this._set_arrangements = [];
-    },
-
-    _clear_items: function () {
-        this._featured_arrangement.clear();
-        this._set_arrangements.forEach(arrangement => arrangement.clear());
+        this._loaded_sets = 0;
     },
 });
