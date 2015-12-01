@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: eos-knowledge 0.4.0\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-"
 "inc\n"
-"POT-Creation-Date: 2015-11-24 02:53+0000\n"
+"POT-Creation-Date: 2015-12-01 02:54+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -162,7 +162,7 @@ msgstr ""
 msgid "SEE ALL CATEGORIES"
 msgstr ""
 
-#: js/app/modules/readerCard.js:59
+#: js/app/modules/readerCard.js:60
 #, javascript-format
 msgid "Page %s"
 msgstr ""
