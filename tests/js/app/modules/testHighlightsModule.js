@@ -1,6 +1,7 @@
 // Copyright 2015 Endless Mobile, Inc.
 
 const Gtk = imports.gi.Gtk;
+const Lang = imports.lang;
 
 Gtk.init(null);
 
@@ -16,6 +17,16 @@ const Utils = imports.tests.utils;
 const UtilsApp = imports.app.utils;
 const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 
+const LimitedArrangment = new Lang.Class({
+    Name: 'LimitedArrangment',
+    Extends: Minimal.MinimalArrangement,
+
+    get_max_cards: function () {
+        return 2;
+    },
+});
+
+
 describe('Highlights module', function () {
     let module, factory, dispatcher, engine;
 
@@ -27,8 +38,8 @@ describe('Highlights module', function () {
         engine.get_objects_by_query_finish.and.returnValue([[], null]);
 
         factory = new MockFactory.MockFactory();
-        factory.add_named_mock('arrangement1', Minimal.MinimalArrangement);
-        factory.add_named_mock('arrangement2', Minimal.MinimalArrangement);
+        factory.add_named_mock('arrangement1', LimitedArrangment);
+        factory.add_named_mock('arrangement2', LimitedArrangment);
         factory.add_named_mock('article-card', Minimal.MinimalCard);
         factory.add_named_mock('set-card', Minimal.MinimalCard);
         factory.add_named_mock('large-card', Minimal.MinimalCard);
@@ -192,5 +203,17 @@ describe('Highlights module', function () {
         });
         expect(factory.get_created_named_mocks('arrangement1').length).toBe(1);
         expect(factory.get_created_named_mocks('arrangement2').length).toBe(0);
+    });
+
+    it('only creates as many cards as necessary', function () {
+        let set_models = [1, 2, 3].map(() => new SetObjectModel.SetObjectModel());
+        dispatcher.dispatch({
+            action_type: Actions.APPEND_SETS,
+            models: set_models,
+        });
+        expect(engine.get_objects_by_query.calls.count()).toBe(3);
+        engine.get_objects_by_query.calls.allArgs().forEach((args) => {
+            expect(args[0].limit).toBe(2);
+        });
     });
 });
