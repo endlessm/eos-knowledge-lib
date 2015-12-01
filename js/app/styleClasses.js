@@ -564,13 +564,6 @@ const READER_WEBVIEW_TOOLTIP = 'webview-tooltip';
 const READER_ARCHIVE_NOTICE_FRAME = 'archive-notice-frame';
 
 /**
- * Constant: READER_TOOLTIP_TYPE_LABEL
- *
- * Matches the tooltip type label widget in Reader apps.
- */
-const READER_TOOLTIP_TYPE_LABEL = 'tooltip-type-label';
-
-/**
  * Constant: READER_SEARCH_RESULTS_PAGE
  *
  * Matches the search results page in Reader apps.

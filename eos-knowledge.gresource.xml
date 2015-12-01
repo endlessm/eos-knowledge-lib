@@ -72,6 +72,7 @@
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/suggestedCategoriesModule.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/textCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/thumbCard.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">data/widgets/tooltips.ui</file>
     <file>js/app/actions.js</file>
     <file>js/app/aisleUserSettingsModel.js</file>
     <file>js/app/application.js</file>
@@ -152,6 +153,7 @@
     <file>js/app/toggleTweener.js</file>
     <file>js/app/utils.js</file>
     <file>js/app/warehouse.js</file>
+    <file>js/app/webviewTooltipPresenter.js</file>
     <file>js/app/widgets/archiveNotice.js</file>
     <file>js/app/widgets/eknWebview.js</file>
     <file>js/app/widgets/imageCoverFrame.js</file>
@@ -170,7 +172,6 @@
     <file>js/app/widgets/tabButton.js</file>
     <file>js/app/widgets/tableOfContents.js</file>
     <file>js/app/widgets/themeableImage.js</file>
-    <file>js/app/widgets/webviewTooltip.js</file>
     <file>js/app/widgetSurfaceCache.js</file>
     <file>js/search/application.js</file>
     <file>js/search/articleObjectModel.js</file>
