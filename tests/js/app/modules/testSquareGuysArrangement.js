@@ -53,6 +53,27 @@ describe('SquareGuys arrangement', function () {
         // At 600x400, and 2 max_rows, only first six cards should be visible; all cards of size 200x200
         testSizingArrangementForDimensions(msg, 600, 400, 2, 6, 200, 200);
     });
+
+    describe('get_max_cards', function () {
+        it ('is 4 for one row', function () {
+            let arrangement = new SquareGuysArrangement.SquareGuysArrangement({
+                max_rows: 1,
+            });
+            expect(arrangement.get_max_cards()).toBe(4);
+        });
+
+        it ('is 8 for two rows', function () {
+            let arrangement = new SquareGuysArrangement.SquareGuysArrangement({
+                max_rows: 2,
+            });
+            expect(arrangement.get_max_cards()).toBe(8);
+        });
+
+        it ('is -1 if max rows unset', function () {
+            let arrangement = new SquareGuysArrangement.SquareGuysArrangement();
+            expect(arrangement.get_max_cards()).toBe(-1);
+        });
+    });
 });
 
 function testSizingArrangementForDimensions(message, arr_width, arr_height, max_rows, visible_children, child_width, child_height) {
