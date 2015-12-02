@@ -1,14 +1,20 @@
 // Copyright 2015 Endless Mobile, Inc.
 
+/* exported ArticleStackModule */
+
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
+const Gdk = imports.gi.Gdk;
+const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
+const Engine = imports.search.engine;
 const Module = imports.app.interfaces.module;
 const SequenceCard = imports.app.modules.sequenceCard;
+const WebviewTooltipPresenter = imports.app.webviewTooltipPresenter;
 
 /**
  * Class: ArticleStackModule
@@ -54,6 +60,9 @@ const ArticleStackModule = new Lang.Class({
         props.visible = true;
         props.transition_duration = this.CONTENT_TRANSITION_DURATION;
         this.parent(props);
+
+        this._webview_tooltip_presenter = new WebviewTooltipPresenter.WebviewTooltipPresenter();
+        this._webview_tooltip_presenter.connect('show-tooltip', this._on_show_tooltip.bind(this));
 
         Dispatcher.get_default().register((payload) => {
             switch(payload.action_type) {
@@ -150,7 +159,33 @@ const ArticleStackModule = new Lang.Class({
             this.visible_child = document_card;
             document_card.content_view.grab_focus();
         }
+        this._webview_tooltip_presenter.set_document_card(document_card);
     },
+
+    _on_show_tooltip: function (tooltip_presenter, tooltip, uri) {
+        let builder = this._webview_tooltip_presenter.get_widget_builder();
+        let contents = builder.get_object('default-tooltip');
+        tooltip.add(contents);
+
+        if (GLib.uri_parse_scheme(uri) === 'ekn') {
+            Engine.get_default().get_object_by_id(uri, null, (engine, task) => {
+                let article_model;
+                try {
+                    article_model = engine.get_object_by_id_finish(task);
+                } catch (error) {
+                    logError(error, 'Could not get article model');
+                    return;
+                }
+                contents.label = article_model.title;
+                tooltip.show_all();
+            });
+            return Gdk.EVENT_STOP;
+        }
+
+        contents.label = uri;
+        tooltip.show_all();
+        return Gdk.EVENT_STOP;
+     },
 
     get_slot_names: function () {
         return ['card-type'];

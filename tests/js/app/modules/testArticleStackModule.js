@@ -4,12 +4,13 @@ const Utils = imports.tests.utils;
 Utils.register_gresource();
 
 const Actions = imports.app.actions;
+const AppUtils = imports.app.utils;
 const ArticleObjectModel = imports.search.articleObjectModel;
 const ArticleStackModule = imports.app.modules.articleStackModule;
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
+const Minimal = imports.tests.minimal;
 const MockDispatcher = imports.tests.mockDispatcher;
 const MockFactory = imports.tests.mockFactory;
-const Minimal = imports.tests.minimal;
 const SequenceCard = imports.app.modules.sequenceCard;
 const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 
@@ -36,6 +37,8 @@ describe('Article Page A', function () {
         next_model = new ArticleObjectModel.ArticleObjectModel({
             title: 'bar',
         });
+
+        spyOn(AppUtils, 'get_web_plugin_dbus_name').and.returnValue('test0');
 
         module = new ArticleStackModule.ArticleStackModule({
             factory: factory,
