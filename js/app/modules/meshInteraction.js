@@ -561,15 +561,16 @@ const MeshInteraction = new Lang.Class({
 
     // Launcher implementation
     desktop_launch: function (timestamp) {
-        if (this._launched_once)
-            return;
-        this._launched_once = true;
-
-        Dispatcher.get_default().dispatch({
-            action_type: Actions.SHOW_HOME_PAGE,
-        });
         this._history_presenter.set_current_item_from_props({
             page_type: this.HOME_PAGE,
+        });
+
+        if (!this._dispatch_launch(timestamp, Launcher.LaunchType.DESKTOP)) {
+            return;
+        }
+
+        Dispatcher.get_default().dispatch({
+            action_type: Actions.SHOW_BRAND_SCREEN,
         });
 
         GLib.timeout_add(GLib.PRIORITY_DEFAULT, this.BRAND_SCREEN_TIME_MS, () => {
@@ -582,11 +583,6 @@ const MeshInteraction = new Lang.Class({
         this._load_sets_on_home_page(null, (mesh, task) => {
             this._load_sets_on_home_page_finish(task);
             Dispatcher.get_default().dispatch({
-                action_type: Actions.FIRST_LAUNCH,
-                timestamp: timestamp,
-                launch_type: Launcher.LaunchType.DESKTOP,
-            });
-            Dispatcher.get_default().dispatch({
                 action_type: Actions.FOCUS_SEARCH,
             });
         });
@@ -594,11 +590,6 @@ const MeshInteraction = new Lang.Class({
 
     // Launcher implementation
     search: function (timestamp, query) {
-        // Show an empty article page while waiting
-        Dispatcher.get_default().dispatch({
-            action_type: Actions.SHOW_SEARCH_PAGE,
-        });
-
         this._do_search(query);  // sets history presenter item
         // Don't wait for the sets to load on the home page, since we don't
         // start off showing the home page

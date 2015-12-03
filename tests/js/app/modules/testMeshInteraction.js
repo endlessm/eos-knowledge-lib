@@ -136,7 +136,7 @@ describe('Mesh interaction', function () {
     it('indicates that the brand screen has been read after launch from desktop', function () {
         mesh.BRAND_SCREEN_TIME_MS = 0;
         mesh.desktop_launch(0);
-        expect(dispatcher.last_payload_with_type(Actions.BRAND_SCREEN_DONE)).not.toBeDefined();
+        expect(dispatcher.last_payload_with_type(Actions.SHOW_BRAND_SCREEN)).toBeDefined();
         Utils.update_gui();
         expect(dispatcher.last_payload_with_type(Actions.BRAND_SCREEN_DONE)).toBeDefined();
     });
@@ -146,7 +146,7 @@ describe('Mesh interaction', function () {
         mesh.desktop_launch(0);
         mesh.desktop_launch(0);
         Utils.update_gui();
-        let payloads = dispatcher.payloads_with_type(Actions.BRAND_SCREEN_DONE);
+        let payloads = dispatcher.payloads_with_type(Actions.SHOW_BRAND_SCREEN);
         expect(payloads.length).toBe(1);
     });
 
@@ -156,7 +156,7 @@ describe('Mesh interaction', function () {
         mesh.search(0, 'query');
         mesh.activate_search_result(0, 'ekn://foo/bar', 'query');
         Utils.update_gui();
-        expect(dispatcher.last_payload_with_type(Actions.BRAND_SCREEN_DONE)).not.toBeDefined();
+        expect(dispatcher.last_payload_with_type(Actions.SHOW_BRAND_SCREEN)).not.toBeDefined();
     });
 
     it('cannot go back from the home page after launch from desktop', function () {
@@ -402,6 +402,7 @@ describe('Mesh interaction', function () {
 
     describe('history', function () {
         beforeEach(function () {
+            mesh.BRAND_SCREEN_TIME_MS = 0;
             mesh.desktop_launch(0);
             engine.get_objects_by_query_finish.and.returnValue([[
                 new ContentObjectModel.ContentObjectModel({
