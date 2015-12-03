@@ -1,9 +1,10 @@
 // Copyright 2014 Endless Mobile, Inc.
 
 const Endless = imports.gi.Endless;
-const GdkPixbuf = imports.gi.GdkPixbuf;
-const GObject = imports.gi.GObject;
 const Gdk = imports.gi.Gdk;
+const GdkPixbuf = imports.gi.GdkPixbuf;
+const Gio = imports.gi.Gio;
+const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
@@ -14,8 +15,6 @@ const Module = imports.app.interfaces.module;
 const SearchBox = imports.app.modules.searchBox;
 const StyleClasses = imports.app.styleClasses;
 const Utils = imports.app.utils;
-
-GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 
 /**
  * Defines how much the background slides when switching pages, and
@@ -77,7 +76,7 @@ const Window = new Lang.Class({
          */
         'background-image-uri': GObject.ParamSpec.string('background-image-uri', 'Background image URI',
             'The background image of this window.',
-            GObject.ParamFlags.READWRITE,
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             ''),
         /**
          * Property: blur-background-image-uri
@@ -87,7 +86,7 @@ const Window = new Lang.Class({
          */
         'blur-background-image-uri': GObject.ParamSpec.string('blur-background-image-uri', 'Blurred background image URI',
             'The blurred background image of this window.',
-            GObject.ParamFlags.READWRITE,
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             ''),
         /**
          * Property: template-type
@@ -117,6 +116,11 @@ const Window = new Lang.Class({
 
     _init: function (props) {
         this.parent(props);
+
+        let context = this.get_style_context();
+        this._bg_size_provider = new Gtk.CssProvider();
+        context.add_provider(this._bg_size_provider,
+            Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 
         this._home_page = this.create_submodule('home-page');
         this._section_page = this.create_submodule('section-page');
@@ -174,6 +178,35 @@ const Window = new Lang.Class({
             left_topbar_widget: this._history_buttons,
             center_topbar_widget: this._search_box,
         });
+
+        let frame_css = '';
+        if (this.background_image_uri) {
+            frame_css += '\
+                EknWindow.background-left { \
+                    background-image: url("' + this.background_image_uri + '");\
+                }\n';
+            try {
+                let stream = Gio.File.new_for_uri(this.background_image_uri).read(null);
+                let bg_pixbuf = GdkPixbuf.Pixbuf.new_from_stream(stream, null);
+                this._background_image_width = bg_pixbuf.width;
+                this._background_image_height = bg_pixbuf.height;
+            } catch (e) {
+                logError(e, 'Background image URI is not a valid format.');
+            }
+        }
+        if (this.blur_background_image_uri) {
+            frame_css += '\
+                EknWindow.background-center, EknWindow.background-right { \
+                    background-image: url("' + this.blur_background_image_uri + '");\
+                }';
+        }
+
+        if (frame_css !== '') {
+            let provider = new Gtk.CssProvider();
+            provider.load_from_data(frame_css);
+            context.add_provider(provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+        }
+        context.add_class(StyleClasses.BACKGROUND_LEFT);
 
         let dispatcher = Dispatcher.get_default();
         dispatcher.dispatch({
@@ -246,7 +279,6 @@ const Window = new Lang.Class({
 
         this._stack.connect('notify::transition-running', function () {
             this._home_page.animating = this._stack.transition_running;
-            let context = this.get_style_context();
             if (this._stack.transition_running)
                 context.add_class(StyleClasses.ANIMATING);
             else
@@ -256,89 +288,16 @@ const Window = new Lang.Class({
         this._stack.connect_after('notify::visible-child',
             this._after_stack_visible_child_changed.bind(this));
 
-        this.connect('size-allocate', Lang.bind(this, function(widget, allocation) {
-            let win_width = allocation.width;
-            let win_height = allocation.height;
-            if (this.background_image_uri &&
-                (this._last_allocation === undefined ||
-                (this._last_allocation.width !== win_width ||
-                this._last_allocation.height !== win_height))) {
-                let bg_mult_ratio = Math.max(win_width / this._background_image_width, win_height / this._background_image_height) * PARALLAX_BACKGROUND_SCALE;
-                let bg_width = Math.ceil(this._background_image_width * bg_mult_ratio);
-                let bg_height = Math.ceil(this._background_image_height * bg_mult_ratio);
-
-                let frame_css = 'EknWindow { background-size: ' + bg_width + 'px ' + bg_height + 'px;}';
-                let context = this.get_style_context();
-                if (this._bg_size_provider === undefined) {
-                    this._bg_size_provider = new Gtk.CssProvider();
-                    context.add_provider(this._bg_size_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
-                }
-                this._bg_size_provider.load_from_data(frame_css);
-            }
-            this._last_allocation = { width: win_width, height: win_height };
-        }));
-
         this.show_all();
         this._set_background_position_style(StyleClasses.BACKGROUND_LEFT);
     },
 
-    get background_image_uri () {
-        return this._background_image_uri;
-    },
-
-    set background_image_uri (v) {
-        if (this._background_image_uri === v) {
-            return;
-        }
-        this._background_image_uri = v;
-        if (this._background_image_uri !== null) {
-            let frame_css = 'EknWindow.background-left { background-image: url("' + this._background_image_uri + '");}';
-            let provider = new Gtk.CssProvider();
-            provider.load_from_data(frame_css);
-            let context = this.get_style_context();
-            context.add_provider(provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
-
-            let bg_image_pixbuf;
-            if (this._background_image_uri.indexOf("file://") === 0) {
-                let filePath = this._background_image_uri.split("file://")[1];
-                bg_image_pixbuf = GdkPixbuf.Pixbuf.new_from_file(filePath);
-            } else if (this._background_image_uri.indexOf("resource://") === 0) {
-                let resource = this._background_image_uri.split("resource://")[1];
-                bg_image_pixbuf = GdkPixbuf.Pixbuf.new_from_resource(resource);
-            } else {
-                printerr("Error: background image URI is not a valid format.");
-            }
-
-            if (bg_image_pixbuf !== undefined) {
-                this._background_image_width = bg_image_pixbuf.width;
-                this._background_image_height = bg_image_pixbuf.height;
-            }
-        }
-    },
-
-    get blur_background_image_uri () {
-        return this._blur_background_image_uri;
-    },
-
-    set blur_background_image_uri (v) {
-        if (this._blur_background_image_uri === v) {
-            return;
-        }
-        this._blur_background_image_uri = v;
-        if (this._blur_background_image_uri !== null) {
-            let frame_css = 'EknWindow.background-center, EknWindow.background-right { background-image: url("' + this._blur_background_image_uri + '");}';
-            let provider = new Gtk.CssProvider();
-            provider.load_from_data(frame_css);
-            let context = this.get_style_context();
-            context.add_provider(provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
-        }
-    },
-
     _set_background_position_style: function (klass) {
-        this.get_style_context().remove_class(StyleClasses.BACKGROUND_LEFT);
-        this.get_style_context().remove_class(StyleClasses.BACKGROUND_CENTER);
-        this.get_style_context().remove_class(StyleClasses.BACKGROUND_RIGHT);
-        this.get_style_context().add_class(klass);
+        let context = this.get_style_context();
+        context.remove_class(StyleClasses.BACKGROUND_LEFT);
+        context.remove_class(StyleClasses.BACKGROUND_CENTER);
+        context.remove_class(StyleClasses.BACKGROUND_RIGHT);
+        context.add_class(klass);
     },
 
     _after_stack_visible_child_changed: function () {
@@ -436,5 +395,23 @@ const Window = new Lang.Class({
             context.remove_class(StyleClasses.WINDOW_SMALL);
             context.add_class(StyleClasses.WINDOW_LARGE);
         }
+
+        // FIXME: if GTK gains support for the 'vmax' CSS unit, then we can move
+        // this calculation to pure CSS and get rid of the extra CSS provider.
+        // https://developer.mozilla.org/en-US/docs/Web/CSS/length
+        if (this.background_image_uri &&
+            !this._last_allocation ||
+            this._last_allocation.width !== alloc.width ||
+            this._last_allocation.height !== alloc.height) {
+            let bg_mult_ratio = Math.max(alloc.width / this._background_image_width,
+                alloc.height / this._background_image_height) *
+                PARALLAX_BACKGROUND_SCALE;
+            let bg_width = Math.ceil(this._background_image_width * bg_mult_ratio);
+            let bg_height = Math.ceil(this._background_image_height * bg_mult_ratio);
+            let frame_css = 'EknWindow { background-size: ' + bg_width + 'px ' +
+                bg_height + 'px; }';
+            this._bg_size_provider.load_from_data(frame_css);
+        }
+        this._last_allocation = alloc;
     }
 });
