@@ -144,25 +144,20 @@ EknWindow.background-right {
 
 .card-a {
     padding: 10px 10px 0px 10px;
-    margin: 7px;
-    background-color: white;
-    /* FIXME: background-image: need "noise" asset at 2% opacity */
-    transition: margin 250ms ease-in-out;
+    margin: 3px;
+    background-image: linear-gradient(to left, white, white);
+    background-size: 95% 95%;
+    background-position: center center;
+    background-repeat: no-repeat;
+    transition: background-size 250ms ease-in-out;
 }
 
 .card-a:hover {
-    margin: 3px;
+    background-size: 100% 100%;
 }
 
 .card-a .thumbnail {
-    transition: padding 250ms ease-in-out;
     padding-top: 133px; /* Height of our assets from design */
-}
-
-.card-a:hover .thumbnail {
-    /* Width grows from 163 to 171 right now. 133 * 171 / 163 = 139. This should
-     * preserve aspect ratio, while growing. */
-    padding-top: 139px;
 }
 
 .card-a .title {
@@ -228,14 +223,6 @@ EknWindow.background-right {
 .sidebar-template .sidebar .text-card.highlighted .title,
 .sidebar-template .sidebar .text-card.highlighted:hover .title {
     color: @template-b-text-color-highlighted;
-}
-
-.card-a:hover .title,
-.card-a:hover .card-synopsis {
-    /* Add as much padding here as we take out of the card margin, so we don't make
-     * more space for the label. Having more letters pop in is distracting. */
-    padding-left: 4px;
-    padding-right: 4px;
 }
 
 .card-a .card-synopsis {

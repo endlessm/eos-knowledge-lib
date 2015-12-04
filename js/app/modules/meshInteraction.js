@@ -253,24 +253,24 @@ const MeshInteraction = new Lang.Class({
 
     _get_knob_css: function (css_data) {
         let str = '';
-        for (let key in css_data) {
-            let module_styles = css_data[key];
-            let title_data = Utils.get_css_for_submodule('title', module_styles);
-            let module_data = Utils.get_css_for_submodule('module', module_styles);
+        // for (let key in css_data) {
+        //     let module_styles = css_data[key];
+        //     let title_data = Utils.get_css_for_submodule('title', module_styles);
+        //     let module_data = Utils.get_css_for_submodule('module', module_styles);
 
-            // For now, only TextCard and TabButton have bespoke CSS
-            // structure, since they need to use the @define syntax
-            if (key === 'article_card' && this.template_type === 'B') {
-                str += TextCard.get_css_for_module(module_styles);
-            } else if (key === 'tab_button' && this.template_type === 'A') {
-                str += TabButton.get_css_for_module(module_styles);
-            } else {
-                // All other modules can just convert their knobs to CSS strings
-                // directly using the STYLE_MAP
-                str += Utils.object_to_css_string(title_data, this.STYLE_MAP[this.template_type][key] + ' .title') + '\n';
-                str += Utils.object_to_css_string(module_data, this.STYLE_MAP[this.template_type][key]) + '\n';
-            }
-        }
+        //     // For now, only TextCard and TabButton have bespoke CSS
+        //     // structure, since they need to use the @define syntax
+        //     if (key === 'article_card' && this.template_type === 'B') {
+        //         str += TextCard.get_css_for_module(module_styles);
+        //     } else if (key === 'tab_button' && this.template_type === 'A') {
+        //         str += TabButton.get_css_for_module(module_styles);
+        //     } else {
+        //         // All other modules can just convert their knobs to CSS strings
+        //         // directly using the STYLE_MAP
+        //         str += Utils.object_to_css_string(title_data, this.STYLE_MAP[this.template_type][key] + ' .title') + '\n';
+        //         str += Utils.object_to_css_string(module_data, this.STYLE_MAP[this.template_type][key]) + '\n';
+        //     }
+        // }
         return str;
     },
 
