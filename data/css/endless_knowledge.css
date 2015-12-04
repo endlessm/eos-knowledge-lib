@@ -525,3 +525,16 @@ EosWindow .scrollbar.slider {
 .pdf-view:not(.overshoot):not(.undershoot) {
     background-image: url('resource:///com/endlessm/knowledge/data/images/pdf-background.png');
 }
+
+.webview-tooltip {
+    background-color: alpha(black, 0.4);
+    border-radius: 8px 8px 8px 8px;
+    padding: 10px 14px;
+}
+
+.webview-tooltip GtkLabel {
+    color: white;
+    font-family: Lato;
+    font-size: 1.0em; /* 16px / 12px/em * 72/96 */
+    font-weight: bold;
+}

@@ -141,3 +141,16 @@ GtkEntry:selected {
     background-color: #9b9b9b;
     border-radius: 20px;
 }
+
+.webview-tooltip {
+    background-color: alpha(black, 0.4);
+    border-radius: 8px 8px 8px 8px;
+    padding: 10px 14px;
+}
+
+.webview-tooltip GtkLabel {
+    color: white;
+    font-family: Lato;
+    font-size: 1.3em; /* 16px / 12px/em */
+    font-weight: bold;
+}
