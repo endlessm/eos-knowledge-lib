@@ -11,6 +11,7 @@ const Dispatcher = imports.app.dispatcher;
 const Engine = imports.search.engine;
 const Module = imports.app.interfaces.module;
 const QueryObject = imports.search.queryObject;
+const ThemeableImage = imports.app.widgets.themeableImage;
 
 /**
  * Class: ThematicModule
@@ -111,6 +112,7 @@ const ThematicModule = new Lang.Class({
         let card = this.create_submodule('header-card-type', {
             model: model,
             visible: true,
+            halign: Gtk.Align.START,
         });
         card.connect('clicked', () => {
             Dispatcher.get_default().dispatch({
@@ -140,6 +142,13 @@ const ThematicModule = new Lang.Class({
         this._sets.push(model);
         let header = this._create_set_card(model);
 
+        let separator = new ThemeableImage.ThemeableImage({
+            visible: true,
+            halign: Gtk.Align.FILL,
+            valign: Gtk.Align.CENTER,
+        });
+        separator.get_style_context().add_class(Gtk.STYLE_CLASS_SEPARATOR);
+
         let arrangement = this.create_submodule('arrangement', {
             vexpand: true,
             visible: false,
@@ -159,7 +168,9 @@ const ThematicModule = new Lang.Class({
             no_show_all: true,
         });
         set_grid.add(header);
+        set_grid.add(separator);
         set_grid.add(arrangement);
+
         this.add(set_grid);
 
         arrangement.bind_property('visible', set_grid, 'visible',

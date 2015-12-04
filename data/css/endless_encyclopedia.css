@@ -119,7 +119,10 @@ GtkEntry:selected {
     padding: 0 0 0 0;
 }
 
-.search-results .card .decoration {
+.search-results .card .before {
+    -gtk-icon-source: -gtk-icontheme("media-record-symbolic");
+    -EknThemeableImage-min-width: 6;
+    -EknThemeableImage-min-height: 6;
     color: rgba(145, 145, 145, 0.5);
     padding-right: 0.8em;
 }

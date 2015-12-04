@@ -551,19 +551,23 @@ EosWindow .scrollbar.slider {
     padding-right: 15px;
 }
 
-.nav-back-button .arrow {
+.nav-back-button .image {
     -gtk-icon-source: -gtk-icontheme("go-previous-symbolic");
+    -EknThemeableImage-min-width: 22;
+    -EknThemeableImage-min-height: 22;
 }
 
-.nav-forward-button .arrow {
+.nav-forward-button .image {
     -gtk-icon-source: -gtk-icontheme("go-next-symbolic");
+    -EknThemeableImage-min-width: 22;
+    -EknThemeableImage-min-height: 22;
 }
 
-.nav-back-button.rtl .arrow {
+.nav-back-button.rtl .image {
     -gtk-icon-source: -gtk-icontheme("go-previous-symbolic-rtl");
 }
 
-.nav-forward-button.rtl .arrow {
+.nav-forward-button.rtl .image {
     -gtk-icon-source: -gtk-icontheme("go-next-symbolic-rtl");
 }
 

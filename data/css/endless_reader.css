@@ -175,12 +175,16 @@ overridden by app specific CSS */
     padding-right: 24px;
 }
 
-.nav-back-button .arrow {
+.nav-back-button .image {
     -gtk-icon-source: url('resource:///com/endlessm/knowledge/data/images/reader/left-arrow.svg');
+    -EknThemeableImage-min-width: 24;
+    -EknThemeableImage-min-height: 23;
 }
 
-.nav-forward-button .arrow {
+.nav-forward-button .image {
     -gtk-icon-source: url('resource:///com/endlessm/knowledge/data/images/reader/right-arrow.svg');
+    -EknThemeableImage-min-width: 24;
+    -EknThemeableImage-min-height: 23;
 }
 
 .animating .nav-forward-button, .animating .nav-back-button {

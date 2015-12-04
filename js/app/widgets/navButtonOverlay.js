@@ -1,30 +1,14 @@
 // Copyright 2014 Endless Mobile, Inc.
 
 const GObject = imports.gi.GObject;
-const GLib = imports.gi.GLib;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const StyleClasses = imports.app.styleClasses;
+const ThemeableImage = imports.app.widgets.themeableImage;
 const Utils = imports.app.utils;
 
 const _SCROLLBAR_MARGIN_PX = 13;  // FIXME should be dynamic
-
-const ArrowImage = new Lang.Class({
-    Name: 'ArrowImage',
-    GTypeName: 'EknArrowImage',
-    Extends: Gtk.Image,
-
-    _init: function (props={}) {
-        this.parent(props);
-        this.get_style_context().add_class(Gtk.STYLE_CLASS_ARROW);
-    },
-
-    vfunc_draw: function (cr) {
-        Gtk.render_activity(this.get_style_context(), cr, 0, 0, this.get_allocated_width(), this.get_allocated_height());
-        cr.$dispose();
-    },
-});
 
 /**
  * Class: NavButtonOverlay
@@ -58,15 +42,6 @@ const NavButtonOverlay = new Lang.Class({
             'Is Forward Visible',
             'Boolean property to manage whether the Forward button should be shown. Defaults to true',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT, true),
-        /**
-         * Property: 'icon-size'
-         * The size of the icons to be used in the navigation buttons.
-         * FIXME: we should move this to the css theme ideally.
-         */
-        'icon-size': GObject.ParamSpec.uint('icon-size', 'Icon Size',
-            'Size of the custom icons for the navigation buttons',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            0, GLib.MAXUINT32, 22),
         /**
          * Property: accommodate-scrollbar
          * Whether to move the rightmost button to accommodate a scrollbar.
@@ -127,12 +102,8 @@ const NavButtonOverlay = new Lang.Class({
 
         this.parent(props);
 
-        this._back_button.image = new ArrowImage({
-            pixel_size: this.icon_size,
-        });
-        this._forward_button.image = new ArrowImage({
-            pixel_size: this.icon_size,
-        });
+        this._back_button.image = new ThemeableImage.ThemeableImage();
+        this._forward_button.image = new ThemeableImage.ThemeableImage();
 
         Utils.set_hand_cursor_on_widget(this._back_button);
         Utils.set_hand_cursor_on_widget(this._forward_button);

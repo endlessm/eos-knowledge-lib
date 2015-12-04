@@ -25,6 +25,8 @@
     <file preprocess="xml-stripblanks">data/images/reader/standalone_arrow.svg</file>
     <file preprocess="xml-stripblanks" compressed="true">data/images/arrow-gray.svg</file>
     <file preprocess="xml-stripblanks" compressed="true">data/images/arrow-white.svg</file>
+    <file preprocess="xml-stripblanks" compressed="true">data/images/title-arrow-dark.svg</file>
+    <file preprocess="xml-stripblanks" compressed="true">data/images/title-arrow-light.svg</file>
     <file preprocess="xml-stripblanks">data/images/deckbg.svg</file>
     <file preprocess="xml-stripblanks">data/images/sleeveshadow_left.svg</file>
     <file preprocess="xml-stripblanks">data/images/sleeveshadow_right.svg</file>
@@ -164,6 +166,7 @@
     <file>js/app/widgets/spaceContainer.js</file>
     <file>js/app/widgets/tabButton.js</file>
     <file>js/app/widgets/tableOfContents.js</file>
+    <file>js/app/widgets/themeableImage.js</file>
     <file>js/app/widgets/webviewTooltip.js</file>
     <file>js/search/application.js</file>
     <file>js/search/articleObjectModel.js</file>

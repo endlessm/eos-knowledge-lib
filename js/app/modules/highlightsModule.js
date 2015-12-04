@@ -12,6 +12,7 @@ const Dispatcher = imports.app.dispatcher;
 const Engine = imports.search.engine;
 const Module = imports.app.interfaces.module;
 const QueryObject = imports.search.queryObject;
+const ThemeableImage = imports.app.widgets.themeableImage;
 const Utils = imports.app.utils;
 
 /**
@@ -89,6 +90,7 @@ const HighlightsModule = new Lang.Class({
     _add_set_card: function (model) {
         let card = this.create_submodule('header-card-type', {
             model: model,
+            halign: Gtk.Align.START,
         });
         card.connect('clicked', () => {
             Dispatcher.get_default().dispatch({
@@ -117,8 +119,18 @@ const HighlightsModule = new Lang.Class({
     // Load all articles referenced by the shown arrangements in order to
     // populate the arrangements with them. This happens after APPEND_SETS.
     _create_set: function (set, arrangement_slot, card_slot, add_header) {
-        if (add_header)
+        if (add_header) {
             this._add_set_card(set);
+
+            let separator = new ThemeableImage.ThemeableImage({
+                visible: true,
+                halign: Gtk.Align.FILL,
+                valign: Gtk.Align.CENTER,
+            });
+            separator.get_style_context().add_class(Gtk.STYLE_CLASS_SEPARATOR);
+            this.add(separator);
+        }
+
 
         let arrangement = this.create_submodule(arrangement_slot, {
             vexpand: true,

@@ -10,6 +10,7 @@ const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
 const Module = imports.app.interfaces.module;
 const StyleClasses = imports.app.styleClasses;
+const ThemeableImage = imports.app.widgets.themeableImage;
 
 const Utils = imports.app.utils;
 
@@ -62,16 +63,35 @@ const SuggestedCategoriesModule = new Lang.Class({
     },
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/suggestedCategoriesModule.ui',
-    InternalChildren: [ 'title-button' ],
+    InternalChildren: [ 'title-button', 'title-button-grid' ],
 
     _init: function (props={}) {
         this.parent(props);
+
+        let after = new ThemeableImage.ThemeableImage({
+            visible: true,
+            valign: Gtk.Align.CENTER,
+            halign: Gtk.Align.CENTER,
+        });
+        after.get_style_context().add_class(StyleClasses.AFTER);
+        this._title_button_grid.attach(after, 1, 0, 1, 1);
+
+        let separator = new ThemeableImage.ThemeableImage({
+            visible: true,
+            halign: Gtk.Align.FILL,
+            valign: Gtk.Align.CENTER,
+            no_show_all: true,
+        });
+        separator.get_style_context().add_class(Gtk.STYLE_CLASS_SEPARATOR);
+        this.add(separator);
+
         this._arrangement = this.create_submodule('arrangement');
         this.add(this._arrangement);
 
         if (!this.show_title) {
             this._title_button.no_show_all = true;
             this._title_button.hide();
+            separator.hide();
         }
 
         this._title_button.connect('clicked', () => {

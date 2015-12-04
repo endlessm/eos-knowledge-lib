@@ -684,3 +684,15 @@ const WINDOW_SMALL = 'window-small';
  * Class to identify a large window
  */
 const WINDOW_LARGE = 'window-large';
+
+/*
+ * Constant: BEFORE
+ * Matches a widget before another widget.
+ */
+const BEFORE = 'before';
+
+/**
+ * Constant: AFTER
+ * Matches a widget after another widget.
+ */
+const AFTER = 'after';

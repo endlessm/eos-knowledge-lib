@@ -30,8 +30,12 @@ describe('Text card widget', function () {
         expect(card).toHaveDescendantWithCssClass(StyleClasses.CARD_TITLE);
     });
 
-    it('has a decoration widget with decoration class', function () {
-        expect(card).toHaveDescendantWithCssClass(StyleClasses.DECORATION);
+    it('has a widget with before class', function () {
+        expect(card).toHaveDescendantWithCssClass(StyleClasses.BEFORE);
+    });
+
+    it('has a widget with after class', function () {
+        expect(card).toHaveDescendantWithCssClass(StyleClasses.AFTER);
     });
 
     it('has labels that understand Pango markup', function () {
