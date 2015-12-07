@@ -331,7 +331,6 @@ EknSideMenuTemplate .menu .card:hover .title {
 }
 
 EknSideMenuTemplate .menu .separator {
-    -GtkSeparator-wide-separators: 0;
     color: #cccccc;
 }
 
