@@ -392,6 +392,8 @@ const Window = new Lang.Class({
     vfunc_size_allocate: function (alloc) {
         this.parent(alloc);
 
+        printerr('here', alloc.width, alloc.height);
+
         let context = this.get_style_context();
         if (alloc.width <= this.WINDOW_WIDTH_THRESHOLD || alloc.height <= this.WINDOW_HEIGHT_THRESHOLD) {
             context.remove_class(StyleClasses.WINDOW_LARGE);
