@@ -58,19 +58,6 @@
 EknWindow {
     background-position: 0% 50%;
     background-repeat: no-repeat;
-    transition: background-position 0.5s ease;
-}
-
-EknWindow.background-left {
-    background-position: 0% 50%;
-}
-
-EknWindow.background-center {
-    background-position: 50% 50%;
-}
-
-EknWindow.background-right {
-    background-position: 100% 50%;
 }
 
 .section-page-a .title,
@@ -231,7 +218,6 @@ EknWindow.background-right {
     font-family: 'Lato', sans-serif;
     font-size: 0.8em;
     text-shadow: white 0px 1px 0px;
-    transition: padding 250ms ease-in-out;
 }
 
 .pdf-card-icon {
@@ -528,14 +514,6 @@ window .scrollbar.slider {
     border-radius: 27px 0px 0px 27px;
     border-right: 0px;
     padding: 15px 0px 15px 15px;
-}
-
-.nav-back-button:hover, .nav-forward-button.rtl:hover {
-    padding-left: 15px;
-}
-
-.nav-forward-button:hover, .nav-back-button.rtl:hover {
-    padding-right: 15px;
 }
 
 .nav-back-button .image {

@@ -393,32 +393,5 @@ const Window = new Lang.Class({
         this.parent(alloc);
 
         printerr('here', alloc.width, alloc.height);
-
-        let context = this.get_style_context();
-        if (alloc.width <= this.WINDOW_WIDTH_THRESHOLD || alloc.height <= this.WINDOW_HEIGHT_THRESHOLD) {
-            context.remove_class(StyleClasses.WINDOW_LARGE);
-            context.add_class(StyleClasses.WINDOW_SMALL);
-        } else {
-            context.remove_class(StyleClasses.WINDOW_SMALL);
-            context.add_class(StyleClasses.WINDOW_LARGE);
-        }
-
-        // FIXME: if GTK gains support for the 'vmax' CSS unit, then we can move
-        // this calculation to pure CSS and get rid of the extra CSS provider.
-        // https://developer.mozilla.org/en-US/docs/Web/CSS/length
-        if (this.background_image_uri &&
-            !this._last_allocation ||
-            this._last_allocation.width !== alloc.width ||
-            this._last_allocation.height !== alloc.height) {
-            let bg_mult_ratio = Math.max(alloc.width / this._background_image_width,
-                alloc.height / this._background_image_height) *
-                PARALLAX_BACKGROUND_SCALE;
-            let bg_width = Math.ceil(this._background_image_width * bg_mult_ratio);
-            let bg_height = Math.ceil(this._background_image_height * bg_mult_ratio);
-            let frame_css = 'EknWindow { background-size: ' + bg_width + 'px ' +
-                bg_height + 'px; }';
-            this._bg_size_provider.load_from_data(frame_css);
-        }
-        this._last_allocation = alloc;
     }
 });
