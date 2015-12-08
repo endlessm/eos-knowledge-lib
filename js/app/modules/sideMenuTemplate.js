@@ -60,7 +60,7 @@ const SideMenuTemplate = new Lang.Class({
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/sideMenuTemplate.ui',
     Children: [ 'home-button', 'menu-button', 'menu-close-button' ],
-    InternalChildren: [ 'context-bar-grid', 'grid', 'menu-grid', 'separator' ],
+    InternalChildren: [ 'context-bar', 'grid', 'menu-grid', 'separator' ],
 
     _init: function (props={}) {
         this._menu_open = false;
@@ -71,7 +71,7 @@ const SideMenuTemplate = new Lang.Class({
             halign: Gtk.Align.CENTER,
         });
         if (context)
-            this._context_bar_grid.add(context);
+            this._context_bar.set_center_widget(context);
 
         this._menu_panel = this.add_panel_widget(this._menu_grid, Gtk.PositionType.LEFT);
 

@@ -41,9 +41,10 @@
         <property name="label_xalign">0</property>
         <property name="shadow_type">none</property>
         <child>
-          <object class="GtkGrid" id="context-bar-grid">
+          <object class="GtkBox" id="context-bar">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="orientation">horizontal</property>
             <child>
               <object class="GtkButton" id="menu-button">
                 <property name="visible">True</property>
@@ -62,8 +63,7 @@
                 </style>
               </object>
               <packing>
-                <property name="left_attach">0</property>
-                <property name="top_attach">0</property>
+                <property name="pack_type">start</property>
               </packing>
             </child>
             <style>
@@ -83,7 +83,7 @@
   <object class="GtkSizeGroup" id="context-bar-overlay-size-group">
     <property name="mode">vertical</property>
     <widgets>
-      <widget name="context-bar-grid"/>
+      <widget name="context-bar"/>
       <widget name="spacer"/>
     </widgets>
   </object>
