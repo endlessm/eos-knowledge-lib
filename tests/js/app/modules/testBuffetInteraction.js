@@ -250,6 +250,22 @@ describe('Buffet interaction', function () {
     test_article_click_action(Actions.SEARCH_CLICKED, 'search item');
     test_article_click_action(Actions.AUTOCOMPLETE_CLICKED, 'autocomplete entry');
 
+    describe('when a set link is clicked', function () {
+        it('changes to the set page if link is a set', function () {
+            let set_model = new SetObjectModel.SetObjectModel({
+                ekn_id: 'ekn://test/set',
+            });
+
+            engine.get_object_by_id_finish.and.returnValue(set_model);
+            dispatcher.dispatch({
+                action_type: Actions.SEARCH_CLICKED,
+                model: set_model,
+            });
+            let payload = dispatcher.last_payload_with_type(Actions.SHOW_SET);
+            expect(payload.model).toBe(set_model);
+        });
+    });
+
     describe('when a link is clicked', function () {
         it('changes to the article page if link is an article', function () {
             engine.get_object_by_id_finish.and.returnValue(article_model);
