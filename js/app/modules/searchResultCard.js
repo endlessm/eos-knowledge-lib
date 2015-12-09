@@ -41,6 +41,7 @@ const SearchResultCard = new Lang.Class({
         this.set_label_or_hide(this._synopsis_label, this.model.synopsis);
         this.set_label_with_highlight(this._synopsis_label, this.model.synopsis);
         this.set_size_request(Card.MinSize.E, Card.MinSize.A);
+        this._synopsis_label.visible = true;
 
         Utils.set_hand_cursor_on_widget(this);
     },
