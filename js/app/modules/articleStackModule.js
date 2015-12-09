@@ -177,6 +177,13 @@ const ArticleStackModule = new Lang.Class({
             return Gdk.EVENT_STOP;
         }
 
+        if (GLib.uri_parse_scheme(uri) === 'file' && uri.indexOf('/licenses/') > -1) {
+            // If the uri has the "file://" scheme and it includes a segments for "licenses",
+            // it corresponds to a license file, and we should display it as an external link.
+            this._webview_tooltip_presenter.show_license_tooltip(tooltip);
+            return Gdk.EVENT_STOP;
+        }
+
         this._webview_tooltip_presenter.show_external_link_tooltip(tooltip, uri);
         return Gdk.EVENT_STOP;
      },
