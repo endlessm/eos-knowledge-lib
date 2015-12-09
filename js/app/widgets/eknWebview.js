@@ -79,6 +79,10 @@ const EknWebview = new Lang.Class({
 
         this.connect('context-menu', this._load_context_menu.bind(this));
         this.connect('decide-policy', this._onNavigation.bind(this));
+        this.connect('query-tooltip', () => {
+            GObject.signal_stop_emission_by_name(this, 'query-tooltip');
+            return false;
+        });
         gtk_settings.connect('notify::gtk-xft-dpi', this._updateFontSizeFromGtkSettings.bind(this));
     },
 
