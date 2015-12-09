@@ -46,10 +46,11 @@ const SearchResultCard = new Lang.Class({
     },
 
     _TEXT_SIZE_RATIO: 0.64,
+    _IMAGE_WIDTH_RATIO: 1.5,
 
     vfunc_size_allocate: function (alloc) {
         let text_width = alloc.width * this._TEXT_SIZE_RATIO;
-        let image_width = alloc.height;
+        let image_width = alloc.height * this._IMAGE_WIDTH_RATIO;
         let total_width = text_width + image_width;
         let margin = alloc.width - total_width;
 
