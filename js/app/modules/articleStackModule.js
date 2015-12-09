@@ -163,10 +163,6 @@ const ArticleStackModule = new Lang.Class({
     },
 
     _on_show_tooltip: function (tooltip_presenter, tooltip, uri) {
-        let builder = this._webview_tooltip_presenter.get_widget_builder();
-        let contents = builder.get_object('default-tooltip');
-        tooltip.add(contents);
-
         if (GLib.uri_parse_scheme(uri) === 'ekn') {
             Engine.get_default().get_object_by_id(uri, null, (engine, task) => {
                 let article_model;
@@ -176,14 +172,12 @@ const ArticleStackModule = new Lang.Class({
                     logError(error, 'Could not get article model');
                     return;
                 }
-                contents.label = article_model.title;
-                tooltip.show_all();
+                this._webview_tooltip_presenter.show_default_tooltip(tooltip, article_model.title);
             });
             return Gdk.EVENT_STOP;
         }
 
-        contents.label = uri;
-        tooltip.show_all();
+        this._webview_tooltip_presenter.show_external_link_tooltip(tooltip, uri);
         return Gdk.EVENT_STOP;
      },
 

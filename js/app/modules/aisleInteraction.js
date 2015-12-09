@@ -856,7 +856,6 @@ const AisleInteraction = new Lang.Class({
                 filtered_indices.push(index);
             return (model.ekn_id === uri);
         });
-        let builder = this._webview_tooltip_presenter.get_widget_builder();
 
         // If a model is filtered by the uri, it means it's an in-issue article.
         if (filtered_models.length > 0) {
@@ -864,15 +863,12 @@ const AisleInteraction = new Lang.Class({
             // hence we obtain the first filtered model and first matched index.
             // Note: The page number argument is incremented by two, to account
             // for the 0-base index and the overview page.
-            let contents = builder.get_object('page-label-tooltip');
-            let title_label = builder.get_object('page-title-label');
-            title_label.label = filtered_models[0].title;
-            let page_number_label = builder.get_object('page-number-label');
+
             /* TRANSLATORS: This shows the page number; %d will be replaced with
             the page number of the article. */
-            page_number_label.label = _("Page %d").format(filtered_indices[0] + 2).toLocaleUpperCase();
-            tooltip.add(contents);
-            tooltip.show_all();
+            let page_number_string = _("Page %d").format(filtered_indices[0] + 2).toLocaleUpperCase();
+            this._webview_tooltip_presenter.show_page_label_tooltip(tooltip,
+                filtered_models[0].title, page_number_string);
             return Gdk.EVENT_STOP;
         }
 
@@ -887,11 +883,7 @@ const AisleInteraction = new Lang.Class({
                     logError(error, 'Could not get article model');
                     return;
                 }
-                let contents = builder.get_object('archive-tooltip');
-                let title_label = builder.get_object('archive-title-label');
-                title_label.label = article_model.title;
-                tooltip.add(contents);
-                tooltip.show_all();
+                this._webview_tooltip_presenter.show_archive_tooltip(tooltip, article_model.title);
             });
             return Gdk.EVENT_STOP;
         }
@@ -899,17 +891,11 @@ const AisleInteraction = new Lang.Class({
         if (GLib.uri_parse_scheme(uri) === 'file' && uri.indexOf('/licenses/') > -1) {
             // If the uri has the "file://" scheme and it includes a segments for "licenses",
             // it corresponds to a license file, and we should display it as an external link.
-            let contents = builder.get_object('license-tooltip');
-            tooltip.add(contents);
-            tooltip.show_all();
+            this._webview_tooltip_presenter.show_license_tooltip(tooltip);
             return Gdk.EVENT_STOP;
         }
 
-        let contents = builder.get_object('external-link-tooltip');
-        let title_label = builder.get_object('link-label');
-        title_label.label = uri;
-        tooltip.add(contents);
-        tooltip.show_all();
+        this._webview_tooltip_presenter.show_external_link_tooltip(tooltip, uri);
         return Gdk.EVENT_STOP;
     },
 
