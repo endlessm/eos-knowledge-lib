@@ -74,6 +74,14 @@ const QueryObjectSort = Utils.define_enum(['RELEVANCE', 'ARTICLE_NUMBER', 'RANK'
 const QueryObjectOrder = Utils.define_enum(['ASCENDING', 'DESCENDING']);
 
 /**
+ * Enum: QueryObjectTagMatch
+ *
+ * ANY - Match articles whose tags contain any of the tags in the query.
+ * ALL - Match articles whose tags contain all of the tags in the query.
+ */
+const QueryObjectTagMatch = Utils.define_enum(['ANY', 'ALL']);
+
+/**
  * Class: QueryObject
  *
  * The QueryObject class allows you to describe a query to a knowledge app
@@ -187,6 +195,17 @@ const QueryObject = Lang.Class({
             'What order to put results in',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             0, Object.keys(QueryObjectOrder).length, QueryObjectOrder.ASCENDING),
+        /**
+         * Property: tag-match
+         *
+         * How to match tags in the query, see <QueryObjectTagMatch>.
+         *
+         * Defaults to <QueryObjectTagMatch.ANY>.
+         */
+        'tag-match': GObject.ParamSpec.uint('tag-match', 'Tag Match',
+            'How to match tags in the query',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            0, Object.keys(QueryObjectTagMatch).length, QueryObjectTagMatch.ANY),
     },
 
     _init: function (props={}) {
@@ -321,7 +340,8 @@ const QueryObject = Lang.Class({
         let prefixed_tags = this.tags.map(Utils.quote).map((tag) => {
             return _XAPIAN_PREFIX_TAG + tag;
         });
-        return prefixed_tags.join(_XAPIAN_OP_OR);
+        let join_op = this.tag_match === QueryObjectTagMatch.ANY ? _XAPIAN_OP_OR : _XAPIAN_OP_AND;
+        return prefixed_tags.join(join_op);
     },
 
     _blacklist_clause: function () {
