@@ -187,26 +187,26 @@ const QueryObject = Lang.Class({
             'What order to put results in',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             0, Object.keys(QueryObjectOrder).length, QueryObjectOrder.ASCENDING),
-        /**
-         * Property: tags
-         *
-         * A list of tags to restrict the search to. All articles returned will
-         * match at least one of the tags.
-         */
-        /**
-         * Property: ids
-         *
-         * A list of specific ekn ids to limit the search to. Can be used with
-         * an empty query to retrieve the given set of ids.
-         */
     },
 
     _init: function (props={}) {
         // FIXME: When we have support for list GObject properties in gjs.
         Object.defineProperties(this, {
+            /**
+             * Property: tags
+             *
+             * A list of tags to restrict the search to. All articles returned will
+             * match at least one of the tags.
+             */
             'tags': {
                 value: props.tags ? props.tags.slice(0) : [],
                 writable: false,
+            /**
+             * Property: ids
+             *
+             * A list of specific ekn ids to limit the search to. Can be used with
+             * an empty query to retrieve the given set of ids.
+             */
             },
             'ids': {
                 value: props.ids ? props.ids.slice(0) : [],
