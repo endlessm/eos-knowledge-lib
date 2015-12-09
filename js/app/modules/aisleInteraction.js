@@ -869,10 +869,7 @@ const AisleInteraction = new Lang.Class({
             let page_number_string = _("Page %d").format(filtered_indices[0] + 2).toLocaleUpperCase();
             this._webview_tooltip_presenter.show_page_label_tooltip(tooltip,
                 filtered_models[0].title, page_number_string);
-            return Gdk.EVENT_STOP;
-        }
-
-        if (GLib.uri_parse_scheme(uri) === 'ekn') {
+        } else if (GLib.uri_parse_scheme(uri) === 'ekn') {
             // If there is no filtered model but the uri has the "ekn://" prefix,
             // it's an archive article.
             Engine.get_default().get_object_by_id(uri, null, (engine, task) => {
@@ -885,17 +882,13 @@ const AisleInteraction = new Lang.Class({
                 }
                 this._webview_tooltip_presenter.show_archive_tooltip(tooltip, article_model.title);
             });
-            return Gdk.EVENT_STOP;
-        }
-
-        if (GLib.uri_parse_scheme(uri) === 'file' && uri.indexOf('/licenses/') > -1) {
+        } else if (GLib.uri_parse_scheme(uri) === 'file' && uri.indexOf('/licenses/') > -1) {
             // If the uri has the "file://" scheme and it includes a segments for "licenses",
             // it corresponds to a license file, and we should display it as an external link.
             this._webview_tooltip_presenter.show_license_tooltip(tooltip);
-            return Gdk.EVENT_STOP;
+        } else {
+            this._webview_tooltip_presenter.show_external_link_tooltip(tooltip, uri);
         }
-
-        this._webview_tooltip_presenter.show_external_link_tooltip(tooltip, uri);
         return Gdk.EVENT_STOP;
     },
 
