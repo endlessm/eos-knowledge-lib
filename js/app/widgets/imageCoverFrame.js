@@ -18,6 +18,9 @@ const ImageCoverFrame = Lang.Class({
 
     _init: function (props={}) {
         props.visible = true;
+        props.expand = true;
+        props.valign = Gtk.Align.FILL;
+        props.halign = Gtk.Align.FILL;
         this.parent(props);
         this.set_has_window(false);
 
@@ -62,7 +65,13 @@ const ImageCoverFrame = Lang.Class({
         cr.paint();
     },
 
+    vfunc_size_allocate: function (allocation) {
+        printerr('allocating', allocation.width, allocation.height, this.expand, this.valign, this.halign);
+        return this.parent(allocation);
+    },
+
     vfunc_draw: function (cr) {
+        printerr('drawing');
         this._draw_scaled_pixbuf(cr);
         // We need to manually call dispose on cairo contexts. This is somewhat related to the bug listed here
         // https://bugzilla.gnome.org/show_bug.cgi?id=685513 for the shell. We should see if they come up with

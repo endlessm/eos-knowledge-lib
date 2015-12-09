@@ -201,10 +201,11 @@ const Card = new Lang.Interface({
             return;
 
         let scheme = Gio.File.new_for_uri(this.model.thumbnail_uri).get_uri_scheme();
+        let coveredFrame = new ImageCoverFrame.ImageCoverFrame();
+        frame.add(coveredFrame);
         // FIXME: to actually support ekn uris here, we'd need a gvfs
         // extension or something like that
         if (scheme === 'ekn') {
-            let coveredFrame = new ImageCoverFrame.ImageCoverFrame();
             Engine.get_default().get_object_by_id(this.model.thumbnail_uri, null, (engine, task) => {
                 let media_object;
                 try {
@@ -216,18 +217,12 @@ const Card = new Lang.Interface({
 
                 coveredFrame.set_content(media_object.get_content_stream());
             });
-            frame.add(coveredFrame);
         } else {
-            let css_data = {
-                'background-image': 'url("' + this.model.thumbnail_uri + '")',
-                'background-repeat': 'no-repeat',
-                'background-position': 'center',
-                'background-size': 'cover',
-            };
-            let css_string = Utils.object_to_css_string(css_data);
-            Utils.apply_css_to_widget(css_string, frame);
+            let file = Gio.File.new_for_uri(this.model.thumbnail_uri);
+            coveredFrame.set_content(file.read(null));
         }
-        frame.visible = true;
+        // frame.visible = true;
+        // frame.show_all();
     },
 
     /**

@@ -201,11 +201,11 @@ const Window = new Lang.Class({
                 }';
         }
 
-        if (frame_css !== '') {
-            let provider = new Gtk.CssProvider();
-            provider.load_from_data(frame_css);
-            context.add_provider(provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
-        }
+        // if (frame_css !== '') {
+        //     let provider = new Gtk.CssProvider();
+        //     provider.load_from_data(frame_css);
+        //     context.add_provider(provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+        // }
         context.add_class(StyleClasses.BACKGROUND_LEFT);
 
         let dispatcher = Dispatcher.get_default();

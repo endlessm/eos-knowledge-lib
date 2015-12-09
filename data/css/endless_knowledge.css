@@ -143,10 +143,6 @@ EknWindow {
     background-size: 100% 100%;
 }
 
-.card-a .thumbnail {
-    padding-top: 133px; /* Height of our assets from design */
-}
-
 .card-a .title {
     padding: 4px 0px 4px 0px;
     color: #d16550;

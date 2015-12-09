@@ -100,8 +100,8 @@ const AppBanner = new Lang.Class({
         this.attach(this._logo, 0, 0, 1, 1);
 
         if (this.image_uri) {
-            let stream = Gio.File.new_for_uri(this.image_uri).read(null);
-            this._logo.set_content(stream);
+            // let stream = Gio.File.new_for_uri(this.image_uri).read(null);
+            // this._logo.set_content(stream);
         }
 
         let subtitle = Utils.format_capitals(this.subtitle,
