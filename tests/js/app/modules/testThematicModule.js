@@ -58,11 +58,13 @@ describe('Thematic module', function () {
                 new SetObjectModel.SetObjectModel({
                     featured: false,
                     child_tags: tags,
+                    title: 'Set Title',
                 }));
             featured_models = ['e', 'f', 'g'].map(tag =>
                 new SetObjectModel.SetObjectModel({
                     featured: true,
                     child_tags: [tag],
+                    title: 'Set Title',
                 }));
             set_models = non_featured_models.concat(featured_models);
 
@@ -187,6 +189,8 @@ describe('Thematic module', function () {
                         let card = arrangements[0].get_cards()[0];
                         card.emit('clicked');
                         Utils.update_gui();
+                        let payload = dispatcher.last_payload_with_type(Actions.ITEM_CLICKED);
+                        expect(payload.context_label).toEqual("Set Title");
                         expect(dispatcher.last_payload_with_type(Actions.ITEM_CLICKED))
                             .toEqual(jasmine.objectContaining({ model: card.model }));
                     });

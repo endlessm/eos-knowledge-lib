@@ -2,18 +2,22 @@
 
 /* exported HighlightsModule */
 
+const Gettext = imports.gettext;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const Actions = imports.app.actions;
+const Config = imports.app.config;
 const Dispatcher = imports.app.dispatcher;
 const Engine = imports.search.engine;
 const Module = imports.app.interfaces.module;
 const QueryObject = imports.search.queryObject;
 const ThemeableImage = imports.app.widgets.themeableImage;
 const Utils = imports.app.utils;
+
+let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
 /**
  * Class: HighlightsModule
@@ -111,6 +115,7 @@ const HighlightsModule = new Lang.Class({
                 action_type: Actions.ITEM_CLICKED,
                 model: model,
                 context: arrangement.get_cards().map((card) => card.model),
+                context_label: _("Highlights"),
             });
         });
         arrangement.add_card(card);
