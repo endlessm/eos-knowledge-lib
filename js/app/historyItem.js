@@ -60,6 +60,15 @@ const HistoryItem = new Lang.Class({
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             ''),
         /**
+         * Property: context-label
+         *
+         * A context label describing what category this item belongs to.
+         */
+        'context-label': GObject.ParamSpec.string('context-label', 'Context label',
+            'The context label describing what category this item belongs to',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            ''),
+        /**
          * Property: from-global-search
          *
          * True if this history object was activated from global search,

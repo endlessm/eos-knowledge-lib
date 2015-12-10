@@ -133,6 +133,7 @@ const ThematicModule = new Lang.Class({
                 action_type: Actions.ITEM_CLICKED,
                 model: model,
                 context: arrangement.get_cards().map((card) => card.model),
+                context_label: arrangement.set_title,
             });
         });
         arrangement.add_card(card);
@@ -155,6 +156,7 @@ const ThematicModule = new Lang.Class({
             no_show_all: true,
         });
         arrangement.accepted_child_tags = model.child_tags.slice();
+        arrangement.set_title = model.title;
         this._arrangements.push(arrangement);
 
         if (model.featured) {

@@ -202,6 +202,7 @@ describe('Buffet interaction', function () {
                     action_type: action,
                     model: article_model,
                     context: [prev_model, article_model, next_model],
+                    context_label: 'Some Context',
                 });
             });
 
@@ -219,6 +220,11 @@ describe('Buffet interaction', function () {
                 let payload = dispatcher.last_payload_with_type(Actions.SHOW_ARTICLE);
                 expect(payload.previous_model).toBe(prev_model);
                 expect(payload.next_model).toBe(next_model);
+            });
+
+            it('dispatches show article with a context label', function () {
+                let payload = dispatcher.last_payload_with_type(Actions.SHOW_ARTICLE_PAGE);
+                expect(payload.context_label).toBe('Some Context');
             });
 
             it('handles previous card click', function () {

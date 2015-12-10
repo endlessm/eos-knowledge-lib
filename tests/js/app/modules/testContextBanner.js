@@ -39,6 +39,15 @@ describe('Context banner', function () {
         expect(module.label).toEqual('Set title');
     });
 
+    it('displays the context label when showing an article', function () {
+        dispatcher.dispatch({
+            action_type: Actions.SHOW_ARTICLE_PAGE,
+            context_label: 'Some context',
+        });
+        expect(module.label).toEqual('Some context');
+    });
+
+
     describe('when showing search', function () {
         beforeEach(function () {
             dispatcher.dispatch({

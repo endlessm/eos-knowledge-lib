@@ -66,7 +66,7 @@ const SearchBox = new Lang.Class({
             let model = this._autocomplete_models.filter((model) => model.ekn_id === ekn_id)[0];
             dispatcher.dispatch({
                 action_type: Actions.AUTOCOMPLETE_CLICKED,
-                text: this.text,
+                query: this.text,
                 model: model,
                 context: this._autocomplete_models,
             });

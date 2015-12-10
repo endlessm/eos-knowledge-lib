@@ -58,6 +58,9 @@ const ContextBanner = new Lang.Class({
                 case Actions.SHOW_ALL_SETS_PAGE:
                     this.label = _("All Categories");
                     break;
+                case Actions.SHOW_ARTICLE_PAGE:
+                    this.label = payload.context_label;
+                    break;
                 case Actions.SHOW_SET:
                     this.label = payload.model.title;
                     break;

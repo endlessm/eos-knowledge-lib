@@ -5,6 +5,7 @@
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const EosMetrics = imports.gi.EosMetrics;
 const Gdk = imports.gi.Gdk;
+const Gettext = imports.gettext;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
@@ -12,6 +13,7 @@ const Lang = imports.lang;
 
 const Actions = imports.app.actions;
 const ArticleObjectModel = imports.search.articleObjectModel;
+const Config = imports.app.config;
 const Dispatcher = imports.app.dispatcher;
 const Engine = imports.search.engine;
 const HistoryPresenter = imports.app.historyPresenter;
@@ -21,6 +23,8 @@ const MediaObjectModel = imports.search.mediaObjectModel;
 const Module = imports.app.interfaces.module;
 const QueryObject = imports.search.queryObject;
 const Utils = imports.app.utils;
+
+let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
 const Pages = {
     HOME: 'home',
@@ -107,6 +111,7 @@ const BuffetInteraction = new Lang.Class({
                     this._history_presenter.set_current_item_from_props({
                         page_type: Pages.SET,
                         model: payload.model,
+                        context_label: payload.model.title,
                     });
                     break;
                 case Actions.ALL_SETS_CLICKED:
@@ -134,13 +139,20 @@ const BuffetInteraction = new Lang.Class({
                 case Actions.ARTICLE_LINK_CLICKED:
                     this._load_ekn_id(payload.ekn_id);
                     break;
-                case Actions.ITEM_CLICKED:
                 case Actions.AUTOCOMPLETE_CLICKED:
+                case Actions.ITEM_CLICKED:
                 case Actions.SEARCH_CLICKED:
+                    let context_label = '';
+                    if (payload.query) {
+                        context_label = _("Results were found for “%s”").format(payload.query);
+                    } else if (payload.context_label) {
+                        context_label = payload.context_label;
+                    }
                     this._history_presenter.set_current_item_from_props({
                         page_type: Pages.ARTICLE,
                         model: payload.model,
                         context: payload.context,
+                        context_label: context_label,
                     });
                     break;
                 case Actions.PREVIOUS_DOCUMENT_CLICKED:
@@ -338,6 +350,7 @@ const BuffetInteraction = new Lang.Class({
                 dispatcher.dispatch(payload);
                 dispatcher.dispatch({
                     action_type: Actions.SHOW_ARTICLE_PAGE,
+                    context_label: item.context_label,
                 });
                 break;
         }

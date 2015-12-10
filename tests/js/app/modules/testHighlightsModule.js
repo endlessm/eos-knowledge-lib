@@ -156,6 +156,7 @@ describe('Highlights module', function () {
                 let matcher = jasmine.objectContaining({
                     model: card.model,
                     context: featured.get_cards().map(card => card.model),
+                    context_label: 'Highlights',
                 });
                 expect(payload).toEqual(matcher);
             });
