@@ -60,7 +60,7 @@ const HamburgerBasementTemplate = new Lang.Class({
         props.transition_duration = 500;
         this.parent(props);
 
-        ['top', 'middle'].forEach((slot) => {
+        ['top'].forEach((slot) => {
             let submodule = this.create_submodule(slot);
             this._inner_grid.add(submodule);
             this['_' + slot] = submodule;
