@@ -53,20 +53,13 @@ const ContextBanner = new Lang.Class({
         Dispatcher.get_default().register(payload => {
             switch (payload.action_type) {
                 case Actions.SHOW_HOME_PAGE:
-                    this.visible = true;
                     this.label = _("Highlights");
                     break;
                 case Actions.SHOW_ALL_SETS_PAGE:
-                    this.visible = true;
                     this.label = _("All Categories");
                     break;
                 case Actions.SHOW_SET:
-                    this.visible = true;
                     this.label = payload.model.title;
-                    break;
-                case Actions.SHOW_ARTICLE_PAGE:
-                    // context should be blank when reading articles
-                    this.visible = false;
                     break;
                 case Actions.CLEAR_SEARCH:
                     this._search_count = 0;
@@ -75,7 +68,6 @@ const ContextBanner = new Lang.Class({
                     this._search_count += payload.models.length;
                     break;
                 case Actions.SEARCH_READY:
-                    this.visible = true;
                     if (this._search_count === 0) {
                         /* TRANSLATORS: %s will be replaced with the text the user
                         searched for. Make sure to keep the %s token in your translation. */
