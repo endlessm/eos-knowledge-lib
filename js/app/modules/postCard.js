@@ -64,7 +64,7 @@ const PostCard = new Lang.Class({
         this.parent(alloc);
         if (this.model instanceof SetObjectModel.SetObjectModel) {
             let sleeve_height = alloc.height > Card.MaxSize.B ? 120 : 80;
-            let sleeve_alloc = new Cairo.RectangleInt({
+            let sleeve_alloc = new Gdk.Rectangle({
                 x: 0,
                 y: (alloc.height / 2) - (sleeve_height / 2),
                 width: alloc.width,
@@ -77,7 +77,7 @@ const PostCard = new Lang.Class({
             this._thumbnail_frame.margin = alloc.width / 20;
         } else {
             let content_height = this._get_content_height(alloc.height);
-            let content_alloc = new Cairo.RectangleInt({
+            let content_alloc = new Gdk.Rectangle({
                 x: 0,
                 y: alloc.height - content_height,
                 width: alloc.width,

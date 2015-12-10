@@ -50,7 +50,7 @@ const PaperTemplate = new Lang.Class({
         let paper_nat = Math.max(child_nat, this._NATURAL_PAPER_WIDTH * Utils.get_text_scaling_factor());
         let extra = Math.max(alloc.width - paper_nat, 0);
         let margin = extra * this._MARGIN_FILL_FRACTION;
-        let content_alloc = new Cairo.RectangleInt({
+        let content_alloc = new Gdk.Rectangle({
             x: alloc.x + margin,
             y: alloc.y,
             width: alloc.width - (2 * margin),

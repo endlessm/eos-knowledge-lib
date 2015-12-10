@@ -182,7 +182,7 @@ const Window = new Lang.Class({
         let frame_css = '';
         if (this.background_image_uri) {
             frame_css += '\
-                EknWindow.background-left { \
+                window.background-left { \
                     background-image: url("' + this.background_image_uri + '");\
                 }\n';
             try {
@@ -196,7 +196,7 @@ const Window = new Lang.Class({
         }
         if (this.blur_background_image_uri) {
             frame_css += '\
-                EknWindow.background-center, EknWindow.background-right { \
+                window.background-center, window.background-right { \
                     background-image: url("' + this.blur_background_image_uri + '");\
                 }';
         }

@@ -239,11 +239,11 @@ function has_descendant_with_type (widget, klass) {
 // allocation (such as widgets with box shadow). Call this function to do so.
 function set_container_clip (container) {
     let clip = container.get_allocation();
-    container.forall((child) => {
-        if (child.get_child_visible() && child.get_visible()) {
-            clip = Gdk.rectangle_union(child.get_clip(), clip);
-        }
-    });
+    // container.forall((child) => {
+    //     if (child.get_child_visible() && child.get_visible()) {
+    //         clip = Gdk.rectangle_union(child.get_clip(), clip);
+    //     }
+    // });
     container.set_clip(clip);
 }
 

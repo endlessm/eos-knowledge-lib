@@ -7,6 +7,7 @@ const Endless = imports.gi.Endless;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
+const Gdk = imports.gi.Gdk;
 const Lang = imports.lang;
 
 const Arrangement = imports.app.interfaces.arrangement;
@@ -127,7 +128,7 @@ const SquareGuysArrangement = new Lang.Class({
 
         all_children.slice(0, visible_children_count).forEach((card, ix) => {
             card.set_child_visible(true);
-            let child_alloc = new Cairo.RectangleInt({
+            let child_alloc = new Gdk.Rectangle({
                 x: x,
                 y: y,
                 width: child_width,

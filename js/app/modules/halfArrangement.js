@@ -115,7 +115,7 @@ const HalfArrangement = new Lang.Class({
         // Featured cards:
         // Place two featured cards per row at top of arrangement
         all_children.slice(0, this._featured_cards_count).forEach((card, ix) => {
-            let card_alloc = new Cairo.RectangleInt({
+            let card_alloc = new Gdk.Rectangle({
                 x: x,
                 y: y,
                 width: featured_card_width,
@@ -145,7 +145,7 @@ const HalfArrangement = new Lang.Class({
         // Child cards
         // Place rest of cards below the featured cards, in as many rows as needed
         all_children.slice(this._featured_cards_count).forEach((card, ix) => {
-            let card_alloc = new Cairo.RectangleInt({
+            let card_alloc = new Gdk.Rectangle({
                 x: x,
                 y: y,
                 width: card_width,
