@@ -291,8 +291,8 @@ const Window = new Lang.Class({
             }
         }.bind(this));
 
-        this._stack.connect_after('notify::visible-child',
-            this._after_stack_visible_child_changed.bind(this));
+        //this._stack.connect_after('notify::visible-child',
+        //    this._after_stack_visible_child_changed.bind(this));
 
         this.show_all();
         this._set_background_position_style(StyleClasses.BACKGROUND_LEFT);
@@ -304,12 +304,6 @@ const Window = new Lang.Class({
         context.remove_class(StyleClasses.BACKGROUND_CENTER);
         context.remove_class(StyleClasses.BACKGROUND_RIGHT);
         context.add_class(klass);
-    },
-
-    _after_stack_visible_child_changed: function () {
-        let new_page = this._stack.visible_child;
-        this._search_box.visible =
-            !Utils.has_descendant_with_type(new_page, SearchBox.SearchBox);
     },
 
     show_page: function (new_page) {
