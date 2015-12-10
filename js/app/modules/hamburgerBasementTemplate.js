@@ -76,7 +76,7 @@ const HamburgerBasementTemplate = new Lang.Class({
         let bottom_panel = this._setup_panel_buttom(Gtk.PositionType.BOTTOM);
 
         this._basement_grid.attach(top_panel, 0, 0, 1, 1);
-        this._upper_grid.attach(bottom_panel, 0, 2, 1, 1);
+        //this._upper_grid.attach(bottom_panel, 0, 2, 1, 1);
 
         this.set_visible_child(this._upper_grid);
         this.connect('notify::transition-running', () => {
