@@ -35,7 +35,7 @@ const PARALLAX_BACKGROUND_SCALE = 1.1;
 const Window = new Lang.Class({
     Name: 'Window',
     GTypeName: 'EknWindow',
-    Extends: Endless.Window,
+    Extends: Gtk.Window,
     Implements: [ Module.Module ],
 
     Properties: {
@@ -174,7 +174,7 @@ const Window = new Lang.Class({
             no_show_all: true,
             visible: false,
         });
-        this.page_manager.add(matryoshka, {
+        this.add(matryoshka, {
             left_topbar_widget: this._history_buttons,
             center_topbar_widget: this._search_box,
         });
@@ -373,6 +373,7 @@ const Window = new Lang.Class({
     },
 
     set_busy: function (busy) {
+        return;
         let gdk_window = this.page_manager.get_window();
         if (!gdk_window)
             return;
