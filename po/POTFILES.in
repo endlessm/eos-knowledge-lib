@@ -7,9 +7,11 @@ data/widgets/suggestedArticlesModule.ui
 data/widgets/suggestedCategoriesModule.ui
 js/app/articleHTMLRenderer.js
 js/app/modules/aisleInteraction.js
+js/app/modules/buffetInteraction.js
 js/app/modules/contextBanner.js
 js/app/modules/encyclopediaWindow.js
 js/app/modules/hamburgerBasementTemplate.js
+js/app/modules/highlightsModule.js
 js/app/modules/readerCard.js
 js/app/modules/readerWindow.js
 js/app/modules/searchBannerModule.js

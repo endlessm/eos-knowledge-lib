@@ -167,6 +167,7 @@ const SearchModule = new Lang.Class({
                 action_type: Actions.SEARCH_CLICKED,
                 model: model,
                 context: this._arrangement.get_cards().map((card) => card.model),
+                query: query,
             });
         });
         this._arrangement.add_card(card);
