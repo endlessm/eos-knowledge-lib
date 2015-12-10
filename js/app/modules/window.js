@@ -112,7 +112,7 @@ const Window = new Lang.Class({
 
     WINDOW_WIDTH_THRESHOLD: 800,
     WINDOW_HEIGHT_THRESHOLD: 600,
-    TRANSITION_DURATION: 500,
+    TRANSITION_DURATION: 10000,
 
     _init: function (props) {
         this.parent(props);
