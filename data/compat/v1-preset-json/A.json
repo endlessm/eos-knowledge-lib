@@ -32,24 +32,6 @@
             }
         },
         "section-page": {
-            "type": "BannerTemplate",
-            "properties": {
-                "margin-start": 100,
-                "margin-end": 100
-            },
-            "slots": {
-                "banner": {
-                    "type": "SetBannerModule",
-                    "properties": {
-                        "halign": "center"
-                    },
-                    "slots": {
-                        "card-type": {
-                            "type": "TextCard"
-                        }
-                    }
-                },
-                "content": {
                     "type": "ItemGroupModule",
                     "slots": {
                         "arrangement": {
@@ -61,8 +43,6 @@
                         "card-type": {
                             "type": "CardA"
                         }
-                    }
-                }
             }
         },
         "home-page": {
