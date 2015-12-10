@@ -281,8 +281,13 @@ const Window = new Lang.Class({
             this._home_page.animating = this._stack.transition_running;
             if (this._stack.transition_running)
                 context.add_class(StyleClasses.ANIMATING);
-            else
+            else {
                 context.remove_class(StyleClasses.ANIMATING);
+                if (this.get_visible_page() === this._home_page)
+                    this.show_page(this._section_page);
+                else
+                    this.show_page(this._home_page);
+            }
         }.bind(this));
 
         this._stack.connect_after('notify::visible-child',
