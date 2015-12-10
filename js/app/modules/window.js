@@ -158,7 +158,7 @@ const Window = new Lang.Class({
         let matryoshka = this._stack;
 
         let navigation = this.create_submodule('navigation');
-        if (navigation) {
+        if (false) {
             navigation.add(matryoshka);
             matryoshka = navigation;
         }
