@@ -112,7 +112,7 @@ const Window = new Lang.Class({
 
     WINDOW_WIDTH_THRESHOLD: 800,
     WINDOW_HEIGHT_THRESHOLD: 600,
-    TRANSITION_DURATION: 10000,
+    TRANSITION_DURATION: 500,
 
     _init: function (props) {
         this.parent(props);
@@ -280,9 +280,10 @@ const Window = new Lang.Class({
         this._stack.connect('notify::transition-running', function () {
             this._home_page.animating = this._stack.transition_running;
             if (this._stack.transition_running)
-                context.add_class(StyleClasses.ANIMATING);
+                this._fart = 2;
+                //context.add_class(StyleClasses.ANIMATING);
             else {
-                context.remove_class(StyleClasses.ANIMATING);
+                //context.remove_class(StyleClasses.ANIMATING);
                 if (this.get_visible_page() === this._home_page)
                     this.show_page(this._section_page);
                 else

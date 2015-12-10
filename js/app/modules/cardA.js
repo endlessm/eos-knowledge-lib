@@ -55,7 +55,7 @@ const CardA = new Lang.Class({
             this._pdf_label.visible = is_pdf;
 
             this.set_label_or_hide(this._synopsis_label, this.model.synopsis);
-            this._synopsis_label.visible = this._synopsis_label.visible && !is_pdf;
+            this._synopsis_label.visible = false;//this._synopsis_label.visible && !is_pdf;
         }
 
         Utils.set_hand_cursor_on_widget(this);
