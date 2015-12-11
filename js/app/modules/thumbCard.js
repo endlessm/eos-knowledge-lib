@@ -1,6 +1,5 @@
 // Copyright 2015 Endless Mobile, Inc.
 
-const Cairo = imports.gi.cairo;
 const Gdk = imports.gi.Gdk;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
@@ -85,14 +84,14 @@ const ThumbCard = new Lang.Class({
 
         let [thumb_w, thumb_h, text_w, text_h] = this._get_dimensions(alloc, orientation, proportion);
 
-        let thumb_alloc = new Cairo.RectangleInt({
+        let thumb_alloc = new Gdk.Rectangle({
             x: alloc.x,
             y: alloc.y,
             width: thumb_w,
             height: thumb_h,
         });
 
-        let text_alloc = new Cairo.RectangleInt({
+        let text_alloc = new Gdk.Rectangle({
             x: alloc.x + (alloc.width - text_w),
             y: alloc.y + (alloc.height - text_h),
             width: text_w,

@@ -276,7 +276,7 @@ function set_container_clip (container) {
     let clip = container.get_allocation();
     container.forall((child) => {
         if (child.get_child_visible() && child.get_visible()) {
-            clip = Gdk.rectangle_union(child.get_clip(), clip);
+            clip = child.get_clip().union(clip);
         }
     });
     container.set_clip(clip);

@@ -5,7 +5,6 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
-const Cairo = imports.gi.cairo;
 const Card = imports.app.interfaces.card;
 const MarginButton = imports.app.widgets.marginButton;
 const Module = imports.app.interfaces.module;
@@ -62,7 +61,7 @@ const PostCard = new Lang.Class({
 
     vfunc_size_allocate: function (alloc) {
         this.parent(alloc);
-        let child_alloc = new Cairo.RectangleInt({
+        let child_alloc = new Gdk.Rectangle({
             x: 0,
             width: alloc.width,
         });

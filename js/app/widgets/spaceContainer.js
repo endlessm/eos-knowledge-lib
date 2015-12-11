@@ -1,5 +1,5 @@
-const Cairo = imports.gi.cairo;  // note GI module, not native module
 const Endless = imports.gi.Endless;
+const Gdk = imports.gi.Gdk;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
@@ -279,7 +279,7 @@ const SpaceContainer = new Lang.Class({
             props[secondary] = allocation[secondary];
             props[primary_pos] = allocation[primary_pos] + pad_start + cum_rel_positions[ix];
             props[secondary_pos] = allocation[secondary_pos];
-            let rect = new Cairo.RectangleInt(props);
+            let rect = new Gdk.Rectangle(props);
             info.child.size_allocate(rect);
         });
     },

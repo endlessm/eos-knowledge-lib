@@ -243,6 +243,7 @@ EOS_CHECK_GJS_GIR([GObject], [2.0])
 EOS_CHECK_GJS_GIR([Gtk], [3.0])
 EOS_CHECK_GJS_GIR([Pango], [1.0])
 EOS_CHECK_GJS_GIR([WebKit2], [4.0])
+EOS_CHECK_GJS_GIR_API([Gdk], [Rectangle])
 
 # Code Coverage
 # -------------
