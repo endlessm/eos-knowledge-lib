@@ -138,7 +138,7 @@ const QueryObject = Lang.Class({
         'type': GObject.ParamSpec.uint('type', 'Type',
             'Type of query to preform',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            0, Object.keys(QueryObjectType).length, QueryObjectType.INCREMENTAL),
+            0, Object.keys(QueryObjectType).length - 1, QueryObjectType.INCREMENTAL),
         /**
          * Property: match
          *
@@ -149,7 +149,7 @@ const QueryObject = Lang.Class({
         'match': GObject.ParamSpec.uint('match', 'Match',
             'What to match against in the source documents',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            0, Object.keys(QueryObjectMatch).length, QueryObjectMatch.TITLE_ONLY),
+            0, Object.keys(QueryObjectMatch).length - 1, QueryObjectMatch.TITLE_ONLY),
         /**
          * Property: limit
          *
@@ -183,7 +183,7 @@ const QueryObject = Lang.Class({
         'sort': GObject.ParamSpec.uint('sort', 'Sort',
             'What to sort-by against in the source documents',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            0, Object.keys(QueryObjectSort).length, QueryObjectSort.RELEVANCE),
+            0, Object.keys(QueryObjectSort).length - 1, QueryObjectSort.RELEVANCE),
         /**
          * Property: order
          *
@@ -194,7 +194,7 @@ const QueryObject = Lang.Class({
         'order': GObject.ParamSpec.uint('order', 'Order',
             'What order to put results in',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            0, Object.keys(QueryObjectOrder).length, QueryObjectOrder.ASCENDING),
+            0, Object.keys(QueryObjectOrder).length - 1, QueryObjectOrder.ASCENDING),
         /**
          * Property: tag-match
          *
@@ -205,7 +205,7 @@ const QueryObject = Lang.Class({
         'tag-match': GObject.ParamSpec.uint('tag-match', 'Tag Match',
             'How to match tags in the query',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            0, Object.keys(QueryObjectTagMatch).length, QueryObjectTagMatch.ANY),
+            0, Object.keys(QueryObjectTagMatch).length - 1, QueryObjectTagMatch.ANY),
     },
 
     _init: function (props={}) {
