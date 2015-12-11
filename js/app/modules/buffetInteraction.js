@@ -21,6 +21,7 @@ const Interaction = imports.app.interfaces.interaction;
 const Launcher = imports.app.interfaces.launcher;
 const MediaObjectModel = imports.search.mediaObjectModel;
 const Module = imports.app.interfaces.module;
+const SetObjectModel = imports.search.setObjectModel;
 const QueryObject = imports.search.queryObject;
 const Utils = imports.app.utils;
 
@@ -142,18 +143,25 @@ const BuffetInteraction = new Lang.Class({
                 case Actions.AUTOCOMPLETE_CLICKED:
                 case Actions.ITEM_CLICKED:
                 case Actions.SEARCH_CLICKED:
-                    let context_label = '';
-                    if (payload.query) {
-                        context_label = _("Results were found for “%s”").format(payload.query);
-                    } else if (payload.context_label) {
-                        context_label = payload.context_label;
+                    if (payload.model instanceof SetObjectModel.SetObjectModel) {
+                        this._history_presenter.set_current_item_from_props({
+                            page_type: Pages.SET,
+                            model: payload.model,
+                        });
+                    } else {
+                        let context_label = '';
+                        if (payload.query) {
+                            context_label = _("Results were found for “%s”").format(payload.query);
+                        } else if (payload.context_label) {
+                            context_label = payload.context_label;
+                        }
+                        this._history_presenter.set_current_item_from_props({
+                            page_type: Pages.ARTICLE,
+                            model: payload.model,
+                            context: payload.context,
+                            context_label: context_label,
+                        });
                     }
-                    this._history_presenter.set_current_item_from_props({
-                        page_type: Pages.ARTICLE,
-                        model: payload.model,
-                        context: payload.context,
-                        context_label: context_label,
-                    });
                     break;
                 case Actions.PREVIOUS_DOCUMENT_CLICKED:
                 case Actions.NEXT_DOCUMENT_CLICKED:

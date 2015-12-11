@@ -40,16 +40,18 @@ const SearchResultCard = new Lang.Class({
         this.set_thumbnail_frame_from_model(this._thumbnail_frame);
         this.set_label_or_hide(this._synopsis_label, this.model.synopsis);
         this.set_label_with_highlight(this._synopsis_label, this.model.synopsis);
-        this.set_size_request(Card.MinSize.E, Card.MinSize.A);
+        this._synopsis_label.visible = true;
+        this.set_size_request(Card.MinSize.H, Card.MinSize.B);
 
         Utils.set_hand_cursor_on_widget(this);
     },
 
     _TEXT_SIZE_RATIO: 0.64,
+    _IMAGE_WIDTH_RATIO: 1.5,
 
     vfunc_size_allocate: function (alloc) {
         let text_width = alloc.width * this._TEXT_SIZE_RATIO;
-        let image_width = alloc.height;
+        let image_width = alloc.height * this._IMAGE_WIDTH_RATIO;
         let total_width = text_width + image_width;
         let margin = alloc.width - total_width;
 
