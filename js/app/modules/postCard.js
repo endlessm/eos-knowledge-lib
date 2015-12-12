@@ -62,29 +62,20 @@ const PostCard = new Lang.Class({
 
     vfunc_size_allocate: function (alloc) {
         this.parent(alloc);
+        let child_alloc = new Cairo.RectangleInt({
+            x: 0,
+            width: alloc.width,
+        });
         if (this._showing_set) {
             let sleeve_height = alloc.height > Card.MaxSize.B ? 120 : 80;
-            let sleeve_alloc = new Cairo.RectangleInt({
-                x: 0,
-                y: (alloc.height / 2) - (sleeve_height / 2),
-                width: alloc.width,
-                height: sleeve_height,
-            });
-            this._shadow_frame.size_allocate(sleeve_alloc);
-
-            // Ensure that margin grows with card size so that we
-            // always see the deck svg in the background
-            this._thumbnail_frame.margin = alloc.width / 20;
+            child_alloc.y = (alloc.height / 2) - (sleeve_height / 2);
+            child_alloc.height = sleeve_height;
         } else {
             let content_height = this._get_content_height(alloc.height);
-            let content_alloc = new Cairo.RectangleInt({
-                x: 0,
-                y: alloc.height - content_height,
-                width: alloc.width,
-                height: content_height,
-            });
-            this._shadow_frame.size_allocate(content_alloc);
+            child_alloc.y = alloc.height - content_height;
+            child_alloc.height = content_height;
         }
+        this._shadow_frame.size_allocate(child_alloc);
         this.update_card_sizing_classes(alloc.height, alloc.width);
     },
 
