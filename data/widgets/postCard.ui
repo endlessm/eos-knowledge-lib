@@ -23,91 +23,53 @@
           </object>
         </child>
         <child type="overlay">
-          <object class="GtkGrid" id="content-grid">
+          <object class="GtkFrame" id="shadow-frame">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="valign">fill</property>
+            <property name="vexpand">True</property>
             <child>
-              <object class="GtkFrame" id="shadow-frame">
+              <object class="GtkGrid" id="inner-content-grid">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="vexpand">True</property>
+                <property name="valign">end</property>
+                <property name="orientation">vertical</property>
                 <child>
-                  <object class="GtkGrid" id="inner-content-grid">
-                    <property name="visible">True</property>
+                  <object class="GtkLabel" id="title-label">
                     <property name="can_focus">False</property>
-                    <property name="valign">end</property>
-                    <property name="orientation">vertical</property>
-                    <child>
-                      <object class="GtkLabel" id="title-label">
-                        <property name="can_focus">False</property>
-                        <property name="hexpand">True</property>
-                        <property name="halign">center</property>
-                        <property name="use_markup">True</property>
-                        <property name="wrap_mode">word-char</property>
-                        <property name="wrap">True</property>
-                        <property name="ellipsize">end</property>
-                        <property name="lines">2</property>
-                        <property name="justify">center</property>
-                        <style>
-                          <class name="title"/>
-                        </style>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkLabel" id="context-label">
-                        <property name="can_focus">False</property>
-                        <property name="expand">True</property>
-                        <property name="halign">center</property>
-                        <property name="valign">end</property>
-                        <property name="use_markup">True</property>
-                        <property name="wrap">True</property>
-                        <property name="wrap_mode">word-char</property>
-                        <property name="ellipsize">end</property>
-                        <property name="lines">2</property>
-                        <style>
-                          <class name="card-context"/>
-                        </style>
-                      </object>
-                    </child>
+                    <property name="hexpand">True</property>
+                    <property name="halign">center</property>
+                    <property name="use_markup">True</property>
+                    <property name="wrap_mode">word-char</property>
+                    <property name="wrap">True</property>
+                    <property name="ellipsize">end</property>
+                    <property name="lines">2</property>
+                    <property name="justify">center</property>
+                    <style>
+                      <class name="title"/>
+                    </style>
                   </object>
                 </child>
-                <style>
-                  <class name="content-frame"/>
-                </style>
+                <child>
+                  <object class="GtkLabel" id="context-label">
+                    <property name="can_focus">False</property>
+                    <property name="expand">True</property>
+                    <property name="halign">center</property>
+                    <property name="valign">end</property>
+                    <property name="use_markup">True</property>
+                    <property name="wrap">True</property>
+                    <property name="wrap_mode">word-char</property>
+                    <property name="ellipsize">end</property>
+                    <property name="lines">2</property>
+                    <style>
+                      <class name="card-context"/>
+                    </style>
+                  </object>
+                </child>
               </object>
-              <packing>
-                <property name="left_attach">0</property>
-                <property name="top_attach">0</property>
-                <property name="width">2</property>
-              </packing>
             </child>
-            <child>
-              <object class="GtkImage" id="left-sleeve">
-                <property name="visible">False</property>
-                <property name="no_show_all">True</property>
-                <property name="halign">start</property>
-                <property name="resource">/com/endlessm/knowledge/data/images/sleeveshadow_left.svg</property>
-              </object>
-              <packing>
-                <property name="left_attach">0</property>
-                <property name="top_attach">1</property>
-                <property name="width">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkImage" id="right-sleeve">
-                <property name="visible">False</property>
-                <property name="no_show_all">True</property>
-                <property name="halign">end</property>
-                <property name="resource">/com/endlessm/knowledge/data/images/sleeveshadow_right.svg</property>
-              </object>
-              <packing>
-                <property name="left_attach">1</property>
-                <property name="top_attach">1</property>
-                <property name="width">1</property>
-              </packing>
-            </child>
+            <style>
+              <class name="content-frame"/>
+            </style>
           </object>
           <packing>
             <property name="pass_through">True</property>

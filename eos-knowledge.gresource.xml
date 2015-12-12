@@ -28,8 +28,6 @@
     <file preprocess="xml-stripblanks" compressed="true">data/images/title-arrow-dark.svg</file>
     <file preprocess="xml-stripblanks" compressed="true">data/images/title-arrow-light.svg</file>
     <file preprocess="xml-stripblanks">data/images/deckbg.svg</file>
-    <file preprocess="xml-stripblanks">data/images/sleeveshadow_left.svg</file>
-    <file preprocess="xml-stripblanks">data/images/sleeveshadow_right.svg</file>
     <file>data/images/separator.png</file>
     <file compressed="true">data/templates/article.mst</file>
     <file compressed="true">data/templates/css/embedly.css</file>
