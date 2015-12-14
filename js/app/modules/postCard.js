@@ -32,7 +32,8 @@ const PostCard = new Lang.Class({
     },
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/postCard.ui',
-    InternalChildren: [ 'thumbnail-frame', 'title-label', 'context-label', 'content-grid', 'inner-content-grid', 'shadow-frame', 'left-sleeve', 'right-sleeve' ],
+    InternalChildren: [ 'thumbnail-frame', 'title-label', 'context-label',
+        'inner-content-grid', 'shadow-frame' ],
 
     _init: function (props={}) {
         this.parent(props);
@@ -48,7 +49,6 @@ const PostCard = new Lang.Class({
 
         if (this._showing_set) {
             this._inner_content_grid.valign = Gtk.Align.CENTER;
-            this._left_sleeve.visible = this._right_sleeve.visible = true;
             this._thumbnail_frame.margin = 13;
             this._thumbnail_frame.connect_after('draw', (widget, cr) => {
                 Utils.render_border_with_arrow(this._thumbnail_frame, cr);
@@ -62,36 +62,52 @@ const PostCard = new Lang.Class({
 
     vfunc_size_allocate: function (alloc) {
         this.parent(alloc);
-        if (this.model instanceof SetObjectModel.SetObjectModel) {
+        let child_alloc = new Cairo.RectangleInt({
+            x: 0,
+            width: alloc.width,
+        });
+        if (this._showing_set) {
             let sleeve_height = alloc.height > Card.MaxSize.B ? 120 : 80;
-            let sleeve_alloc = new Cairo.RectangleInt({
-                x: 0,
-                y: (alloc.height / 2) - (sleeve_height / 2),
-                width: alloc.width,
-                height: sleeve_height,
-            });
-            this._content_grid.size_allocate(sleeve_alloc);
-
-            // Ensure that margin grows with card size so that we
-            // always see the deck svg in the background
-            this._thumbnail_frame.margin = alloc.width / 20;
+            child_alloc.y = (alloc.height / 2) - (sleeve_height / 2);
+            child_alloc.height = sleeve_height;
         } else {
             let content_height = this._get_content_height(alloc.height);
-            let content_alloc = new Cairo.RectangleInt({
-                x: 0,
-                y: alloc.height - content_height,
-                width: alloc.width,
-                height: content_height,
-            });
-            this._content_grid.size_allocate(content_alloc);
+            child_alloc.y = alloc.height - content_height;
+            child_alloc.height = content_height;
         }
+        this._shadow_frame.size_allocate(child_alloc);
         this.update_card_sizing_classes(alloc.height, alloc.width);
     },
 
     vfunc_draw: function (cr) {
+        if (this._showing_set) {
+            let margin = this._thumbnail_frame.margin;
+            let sleeve_alloc = this._shadow_frame.get_allocation();
+            let shadow_top = sleeve_alloc.y + sleeve_alloc.height;
+
+            cr.save();
+            Gdk.cairo_set_source_rgba(cr, new Gdk.RGBA({
+                red: 0.6,
+                green: 0.6,
+                blue: 0.6,
+                alpha: 1.0,
+            }));
+            cr.moveTo(0, shadow_top);
+            cr.lineTo(margin, shadow_top);
+            cr.lineTo(margin, shadow_top + margin);
+            cr.fill();
+            cr.moveTo(sleeve_alloc.width, shadow_top);
+            cr.lineTo(sleeve_alloc.width - margin, shadow_top);
+            cr.lineTo(sleeve_alloc.width - margin, shadow_top + margin);
+            cr.fill();
+            cr.restore();
+        }
+
         this.parent(cr);
+
         if (!this._showing_set)
             Utils.render_border_with_arrow(this, cr);
+
         cr.$dispose();  // workaround not freeing cairo context
         return Gdk.EVENT_PROPAGATE;
     },
