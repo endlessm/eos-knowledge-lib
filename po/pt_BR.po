@@ -9,13 +9,14 @@
 # Philip Chimento <philip.chimento@gmail.com>, 2015
 # Renato Peixoto Pinto <renato@endlessm.com>, 2014
 # Richard Vignais, 2014
+# mattdangerw <watson@endlessm.com>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2015-12-08 02:56+0000\n"
-"PO-Revision-Date: 2015-11-10 23:07+0000\n"
-"Last-Translator: Philip Chimento <philip.chimento@gmail.com>\n"
+"POT-Creation-Date: 2015-12-14 20:22+0000\n"
+"PO-Revision-Date: 2015-12-14 21:01+0000\n"
+"Last-Translator: mattdangerw <watson@endlessm.com>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -36,7 +37,7 @@ msgstr "Não perca a edição da próxima semana com mais artigos em sua revista
 msgid "PDF"
 msgstr "PDF"
 
-#: data/widgets/readerCard.ui:113 js/app/widgets/webviewTooltip.js:138
+#: data/widgets/readerCard.ui:113
 msgid "Archive"
 msgstr "Arquivo"
 
@@ -114,28 +115,39 @@ msgstr "Cortesia de conteúdo de {blog-link}.  Utilizado com permissão."
 msgid "Content courtesy of {blog-link}, licensed under {license-link}."
 msgstr "Cortesia de conteúdo de {blog-link}, licenciado sob {license-link}."
 
-#: js/app/modules/aisleInteraction.js:811
-msgid "View the license in your browser"
-msgstr "Veja a licença no seu browser"
-
-#: js/app/modules/aisleInteraction.js:932
-#: js/app/modules/aisleInteraction.js:939
+#: js/app/modules/aisleInteraction.js:799
+#: js/app/modules/aisleInteraction.js:806
 msgid "Oops!"
 msgstr "Opa!"
 
-#: js/app/modules/aisleInteraction.js:933
+#: js/app/modules/aisleInteraction.js:800
 msgid ""
 "We could not find this magazine!\n"
 "Please try again after restarting your computer."
 msgstr "Não conseguimos encontrar essa revista!\nPor favor, tente novamente após reiniciar seu computador. "
 
-#: js/app/modules/aisleInteraction.js:940
+#: js/app/modules/aisleInteraction.js:807
 msgid ""
 "There was an error loading that page.\n"
 "Try another one or try again after restarting your computer."
 msgstr "Ocorreu um erro no carregamento da página. \nTente outro ou tente novamente após reiniciar seu computador. "
 
+#. TRANSLATORS: This shows the page number; %d will be replaced with
+#. the page number of the article.
+#: js/app/modules/aisleInteraction.js:869
+#, javascript-format
+msgid "Page %d"
+msgstr "Página %d"
+
+#. TRANSLATORS: %s will be replaced with the text the user
+#. searched for. Make sure to keep %s token in your translation.
+#: js/app/modules/buffetInteraction.js:154 js/app/modules/contextBanner.js:81
+#, javascript-format
+msgid "Results were found for “%s”"
+msgstr "Foram encontrados resultados para “%s”"
+
 #: js/app/modules/contextBanner.js:48 js/app/modules/contextBanner.js:56
+#: js/app/modules/highlightsModule.js:118
 msgid "Highlights"
 msgstr "Destaques"
 
@@ -145,23 +157,10 @@ msgstr "Todas as Categorias"
 
 #. TRANSLATORS: %s will be replaced with the text the user
 #. searched for. Make sure to keep the %s token in your translation.
-#: js/app/modules/contextBanner.js:74
+#: js/app/modules/contextBanner.js:77
 #, javascript-format
 msgid "Search results for “%s”"
 msgstr "Resultados da pesquisa por “%s”"
-
-#. TRANSLATORS: %s will be replaced with the text the user
-#. searched for. Make sure to keep %s token in your translation.
-#. TRANSLATORS: This message is displayed when an app is
-#. done searching for results. The %s will be replaced with the
-#. term that the user searched for. Note, in English, it is
-#. surrounded by Unicode left and right double quotes (U+201C
-#. and U+201D). Make sure to include %s in your translation and
-#. use whatever quote marks are appropriate for your language.
-#: js/app/modules/contextBanner.js:78 js/app/modules/searchBannerModule.js:68
-#, javascript-format
-msgid "Results were found for “%s”"
-msgstr "Foram encontrados resultados para “%s”"
 
 #: js/app/modules/hamburgerBasementTemplate.js:40
 msgid "SEE ALL CATEGORIES"
@@ -183,19 +182,30 @@ msgstr "Página %s"
 msgid "Searching for “%s”"
 msgstr "Pesquisando por “%s”"
 
+#. TRANSLATORS: This message is displayed when an app is
+#. done searching for results. The %s will be replaced with the
+#. term that the user searched for. Note, in English, it is
+#. surrounded by Unicode left and right double quotes (U+201C
+#. and U+201D). Make sure to include %s in your translation and
+#. use whatever quote marks are appropriate for your language.
+#: js/app/modules/searchBannerModule.js:68
+#, javascript-format
+msgid "Results for “%s”"
+msgstr "Resultados para “%s”"
+
 #: js/app/modules/searchBannerModule.js:74
 msgid "OOPS!"
 msgstr "OPA!"
 
-#: js/app/modules/searchModule.js:187
+#: js/app/modules/searchModule.js:188
 msgid "Sorry! :-("
 msgstr "Desculpe! :-("
 
-#: js/app/modules/searchModule.js:188
+#: js/app/modules/searchModule.js:189
 msgid "There are no results that match your search.\n"
 msgstr "Não encontramos nenhum resultado para a sua busca.\n"
 
-#: js/app/modules/searchModule.js:190
+#: js/app/modules/searchModule.js:191
 msgid ""
 "We recommend that you:\n"
 "\n"
@@ -204,7 +214,7 @@ msgid ""
 "  •  Try using more general words"
 msgstr "Recomendamos que você:\n\n• Confira se a palavra foi escrita corretamente\n• Tente outras palavras com o mesmo significado\n• Tente usar palavras mais genéricas"
 
-#: js/app/modules/searchModule.js:217
+#: js/app/modules/searchModule.js:218
 msgid "There was an error during your search."
 msgstr "Houve um erro durante a sua pesquisa."
 
@@ -229,10 +239,3 @@ msgstr "Por {author}"
 #: js/app/utils.js:81
 msgid "and"
 msgstr "e"
-
-#. TRANSLATORS: This shows the page number; %d will be replaced with
-#. the page number of the article.
-#: js/app/widgets/webviewTooltip.js:122
-#, javascript-format
-msgid "Page %d"
-msgstr "Página %d"
