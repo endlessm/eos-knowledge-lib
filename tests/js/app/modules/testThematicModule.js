@@ -54,7 +54,7 @@ describe('Thematic module', function () {
             headers;
 
         beforeEach(function () {
-            non_featured_models = [['a'], ['b', 'c'], ['d'], ['h']].map(tags =>
+            non_featured_models = [['a'], ['c', 'd'], ['d'], ['h']].map(tags =>
                 new SetObjectModel.SetObjectModel({
                     featured: false,
                     child_tags: tags,
@@ -101,7 +101,7 @@ describe('Thematic module', function () {
                 });
                 engine.get_objects_by_query_finish.and.callFake((task) => {
                     let results = article_models.filter(model =>
-                        model.tags.some(tag => task.indexOf(tag) > -1));
+                            task.filter(tag => model.tags.indexOf(tag) < 0).length === 0);
                     return [results, null];
                 });
             });
@@ -116,12 +116,14 @@ describe('Thematic module', function () {
                 });
 
                 it('shows only the non-featured arrangements', function () {
-                    // The -1s are because we have a non-featured model that
-                    // doesn't have any cards at all
-                    expect(arrangements.filter(arrangement => arrangement.visible).length)
-                        .toBe(non_featured_models.length - 1);
+                    let arrs = arrangements.filter(arrangement => arrangement.visible);
+                    // Should only show 1 arrangement to start with
+                    expect(arrs.length).toBe(1);
+
+                    expect(arrs[0].get_cards()[0].model.tags).toContain('a');
+                    expect(arrs[0].get_cards()[0].model.tags).toContain('e');
                     let visible_headers = headers.filter(header => header.is_visible());
-                    expect(visible_headers.length).toBe(non_featured_models.length - 1);
+                    expect(visible_headers.length).toBe(1);
                     visible_headers.forEach(header =>
                         expect(header.model.featured).toBeFalsy());
                 });
@@ -133,15 +135,19 @@ describe('Thematic module', function () {
                     expect(a_cards.length).toBe(1);
                     expect(a_cards[0].model.tags).toEqual(article_models[0].tags);
 
+                    // Now load the next arrangement
+                    module.show_more_content();
                     let bc_cards = arrangements[1].get_cards();
-                    expect(bc_cards.length).toBe(3);
+                    expect(bc_cards.length).toBe(2);
                     expect(bc_cards.map(card => card.model)).toEqual(jasmine.arrayContaining([
-                        jasmine.objectContaining({ tags: article_models[1].tags }),
                         jasmine.objectContaining({ tags: article_models[2].tags }),
                         jasmine.objectContaining({ tags: article_models[3].tags }),
                     ]));
 
+                    // Load third arrangement
+                    module.show_more_content();
                     let d_cards = arrangements[2].get_cards();
+                    // All cards have 'd' and 'e' tags so all should show up in this arrangement
                     expect(d_cards.length).toBe(6);
                     expect(d_cards.map(card => card.model)).toEqual(article_models);
                 });
@@ -208,9 +214,9 @@ describe('Thematic module', function () {
 
                 it('shows only the featured arrangements', function () {
                     expect(arrangements.filter(arrangement => arrangement.visible).length)
-                        .toBe(featured_models.length);
+                        .toBe(1);
                     let visible_headers = headers.filter(header => header.is_visible());
-                    expect(visible_headers.length).toBe(featured_models.length);
+                    expect(visible_headers.length).toBe(1);
                     visible_headers.forEach(header =>
                         expect(header.model.featured).toBeTruthy());
                 });

@@ -68,6 +68,9 @@
                 "sidebar": "main-menu",
                 "content": {
                     "type": "ScrollingTemplate",
+                    "properties": {
+                        "name": "theme-scroll"
+                    },
                     "slots": {
                         "content": {
                             "type": "TwoVerticalTemplate",
@@ -79,7 +82,8 @@
                                         "margin-top": 20,
                                         "margin-bottom": 20,
                                         "margin-start": 20,
-                                        "margin-end": 20
+                                        "margin-end": 20,
+                                        "scroll-server": "theme-scroll"
                                     },
                                     "slots": {
                                         "arrangement": {

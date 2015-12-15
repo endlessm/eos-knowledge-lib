@@ -16,6 +16,7 @@ const DocumentCard = imports.app.interfaces.documentCard;
 const Interaction = imports.app.interfaces.interaction;
 const Launcher = imports.app.interfaces.launcher;
 const Module = imports.app.interfaces.module;
+const Scrollable = imports.app.interfaces.scrollable;
 const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 const Utils = imports.tests.utils;
 
@@ -89,6 +90,25 @@ const MinimalCard = new Lang.Class({
         this.parent(allocation);
         this.update_card_sizing_classes(allocation.height, allocation.width);
     },
+});
+
+const MinimalScrollable = new Lang.Class({
+    Name: 'MinimalScrollable',
+    Extends: GObject.Object,
+    Implements: [ Module.Module, Scrollable.Scrollable ],
+
+    Properties: {
+        'factory': GObject.ParamSpec.override('factory', Module.Module),
+        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
+        'scroll-server': GObject.ParamSpec.override('scroll-server', Scrollable.Scrollable),
+    },
+
+    _init: function (props={}) {
+        this.parent(props);
+        this.scrollable_init();
+    },
+
+    show_more_content: function () {},
 });
 
 const MinimalInteraction = new Lang.Class({
