@@ -4,6 +4,17 @@
     font-family: Lato;
 }
 
+/* FIXME: font on browse by topic page should be uppercase */
+/* FIXME: change search bar to be the same size as in template A/B */
+
+.entry {
+    font-size: 18px;
+}
+
+.search-results GtkListBoxRow {
+	padding: 0 40px;
+}
+
 .scrollbar {
     -GtkRange-trough-border: 3px;
     -GtkRange-slider-width: 8px;
@@ -47,7 +58,6 @@
 EknHighlightsModule .text-card .title.label,
 EknThematicModule .text-card .title.label,
 .browse-content .title {
-    font-weight: 200;
     font-size: 22px;
 }
 
@@ -152,9 +162,14 @@ EknThematicModule .text-card:hover .after {
     font-size: 14px;
 }
 
+.search-result-card.width-d .title,
+.search-result-card.width-d .card-synopsis {
+    font-size: 16px;
+}
+
 .search-result-card.width-e .title,
 .search-result-card.width-e .card-synopsis {
-    font-size: 14px;
+    font-size: 16px;
 }
 
 .search-result-card.width-f .title,
@@ -252,10 +267,6 @@ EknThematicModule .text-card:hover .after {
     background-color: alpha(white, 0.949);
 }
 
-.post-card.set .title {
-    font-weight: 300;
-}
-
 .card-synopsis {
     color: black;
     font-size: 14px;
@@ -264,7 +275,11 @@ EknThematicModule .text-card:hover .after {
 
 .card-context {
     font-size: 12px;
-    font-style: italic;
+    font-style: normal;
+    color: #044a80;
+}
+
+.post-card .card-context {
     color: #49bde3;
 }
 
@@ -317,7 +332,7 @@ EknSideMenuTemplate .menu {
 EknSideMenuTemplate .menu .home-button,
 EknSideMenuTemplate .menu .card .title {
     font-size: 16px;
-    font-family: 'Lato Thin';
+    font-family: Lato;
     color: #044a80;
 }
 
@@ -355,7 +370,7 @@ EknSideMenuTemplate .close-button {
 }
 
 EknContextBanner {
-    font-family: 'Lato Thin';
+    font-family: Lato;
     font-size: 22px;
     color: #666666;
     text-shadow: 0px 1px alpha(white, 0.004);
