@@ -89,6 +89,7 @@
     <file>js/app/interfaces/interaction.js</file>
     <file>js/app/interfaces/launcher.js</file>
     <file>js/app/interfaces/module.js</file>
+    <file>js/app/interfaces/scrollable.js</file>
     <file>js/app/libs/cssParse.js</file>
     <file>js/app/libs/mustache.js</file>
     <file>js/app/moduleFactory.js</file>
