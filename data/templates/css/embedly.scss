@@ -48,10 +48,9 @@ html {
         font-size: 1.0625em; /* 17px / 12px/em * 72/96 */
     }
     p, li {
-        color: #666666;
-        font-family: Lato;
-        font-weight: 300; /* light (300 instead of 200 for Lato) */
-        font-size: 0.9375em; /* 15px / 12px/em * 72/96 */
+        color: black;
+        font-family: 'DejaVu Sans';
+        font-size: 20px;
     }
     p {
         line-height: 1.56;
@@ -60,10 +59,7 @@ html {
         line-height: 1.875;
     }
     a {
-        color: #666666;
-        font-family: Lato;
         font-weight: bold;
-        font-size: 0.9375em; /* 15px / 12px/em * 72/96 */
         text-decoration: underline;
         &:hover {
             cursor: pointer;

@@ -4,8 +4,33 @@ EosWindow {
     background-color: #efefef;
 }
 
+* {
+    font-family: Roboto; /* remove hardcoding */
+}
+
+/* FIXME: figure out where this goes */
+EknReaderCard .title {
+font-family: Roboto;
+font-size: 18px;
+font-weight: 500;
+/* fixme: make mixed case */
+}
+
+/* FIXME: figure out where this goes */
+/*.entry {
+    font-size: 18px;
+}*/
+
+/* FIXME : figure out where this goes */
+.sidebar.frame {
+background-image: linear-gradient(to bottom,
+	alpha(black, 0.7) 0%,
+	alpha(black, 0.7) 100%);
+padding-left: 45px;
+}
+
 .progress-label {
-    font-size: 1em;
+    font-size: 14px;
     color: #494949;
 }
 
@@ -21,7 +46,7 @@ EosWindow {
 .article-snippet .synopsis {
     padding-top: 10px;
     color: #f2f2f2;
-    font-size: 1em; /* 16px / 12px/em * 72/96 */
+    font-size: 14px;
 }
 
 /* These individual snippet stylings will be
@@ -87,6 +112,12 @@ overridden by app specific CSS */
     padding: 100px 0px 20px 90px;
 }
 
+.back-cover GtkGrid {
+	background-image: linear-gradient(to bottom, 
+		alpha(black, 0.5) 0%,
+		alpha(black, 0.5) 100%);
+}
+
 .back-cover .title {
     font-size: 2em;
     color: #fce94f;
@@ -94,8 +125,8 @@ overridden by app specific CSS */
 }
 
 .back-cover .subtitle {
-    padding-top: 3px;
-    font-size: 1em; /* 16px / 12px/em * 72/96 */
+    padding: 3px 60px 0;
+    font-size: 18px; /* FIXME make this show up */
     color: #eeeeec;
 }
 
@@ -109,7 +140,8 @@ overridden by app specific CSS */
 }
 
 .document-card .title {
-    font-size: 4em;
+    font-weight: bold;
+    font-size: 22px;
 }
 
 .document-card .attribution {

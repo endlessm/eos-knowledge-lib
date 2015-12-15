@@ -35,6 +35,8 @@
                 <property name="expand">True</property>
                 <property name="valign">start</property>
                 <property name="halign">center</property>
+                <property name="justify">center</property>
+                <property name="wrap">True</property>
                 <style>
                   <class name="subtitle"/>
                 </style>
