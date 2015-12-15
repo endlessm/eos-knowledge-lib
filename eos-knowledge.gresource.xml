@@ -123,6 +123,7 @@
     <file>js/app/modules/readerCard.js</file>
     <file>js/app/modules/readerDocumentCard.js</file>
     <file>js/app/modules/readerWindow.js</file>
+    <file>js/app/modules/responsiveMarginsModule.js</file>
     <file>js/app/modules/scrollingTemplate.js</file>
     <file>js/app/modules/searchAndItemModule.js</file>
     <file>js/app/modules/searchBannerModule.js</file>
