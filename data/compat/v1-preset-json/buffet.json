@@ -67,6 +67,9 @@
                 "sidebar": "main-menu",
                 "content": {
                     "type": "ScrollingTemplate",
+                    "properties": {
+                        "bottom-buffer": 400
+                    },
                     "slots": {
                         "content": {
                             "type": "TwoVerticalTemplate",
