@@ -6,6 +6,7 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
+const InfiniteScrolledWindow = imports.app.widgets.infiniteScrolledWindow;
 const Module = imports.app.interfaces.module;
 
 /**
@@ -18,7 +19,7 @@ const Module = imports.app.interfaces.module;
 const ScrollingTemplate = new Lang.Class({
     Name: 'ScrollingTemplate',
     GTypeName: 'EknScrollingTemplate',
-    Extends: Gtk.ScrolledWindow,
+    Extends: InfiniteScrolledWindow.InfiniteScrolledWindow,
     Implements: [ Module.Module ],
 
     Properties: {
