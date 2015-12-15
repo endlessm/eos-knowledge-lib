@@ -12,14 +12,14 @@
 }
 
 .media-card-caption {
-    font-size: .81em;  /* 13pt * 1/12 * 0.75 DPI correction factor */
+    font-size: 12px;
     font-family: Lato;
     color: #666666;
 }
 
 .media-card-attribution-text {
     font-weight: bold;
-    font-size: .62em;  /* 10pt * 1/12 * 0.75 DPI correction factor */
+    font-size: 9px;
     font-family: Lato;
     color: #b2b2b2;
     transition: color 250ms ease-in-out;

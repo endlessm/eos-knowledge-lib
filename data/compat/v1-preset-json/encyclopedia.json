@@ -36,7 +36,7 @@
                 "bottom": {
                     "type": "SearchBox",
                     "properties": {
-                        "max-width-chars": 52
+                        "max-width-chars": 36
                     }
                 }
             }
@@ -60,7 +60,8 @@
                     "type": "SearchBox",
                     "properties": {
                         "halign": "center",
-                        "hexpand": true
+                        "hexpand": true,
+                        "width-chars": 30
                     }
                 },
                 "bottom": {
@@ -77,7 +78,8 @@
                                 "banner": {
                                     "type": "SearchBannerModule",
                                     "properties": {
-                                        "halign": "start"
+                                        "halign": "start",
+                                        "lines": 1
                                     }
                                 },
                                 "content": {

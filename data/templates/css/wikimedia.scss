@@ -8,7 +8,7 @@
 // Variables
 //
 
-$font1: "Lato", sans-serif;
+$font1: "DejaVu Sans", sans-serif;
 $font2: "Montserrat", sans-serif;
 
 $cols: 100% / 36;
@@ -86,7 +86,8 @@ html {
 .mw-body {
     $rhythm: 22px;
     color: $gray;
-    font: 0.8125em $font1; /* 13px / 12px/em * 72/96 */
+    font: 22px $font1;
+    font-weight: 500;
     line-height: 1.71;
     padding: 20px $cols * 2;
     a {
@@ -405,7 +406,7 @@ html {
     $in-cols: 100% / 13;
 }
 
-@media (min-width: $xga) {
+@media (min-width: 720px) {
     .mw-body {
         $in-cols: 100% / 36;
         padding: 30px $cols * 2;
