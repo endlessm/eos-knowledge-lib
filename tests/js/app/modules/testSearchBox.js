@@ -54,7 +54,7 @@ describe('Search box module', function () {
         box.set_text_programmatically('foo');
         box.emit('activate');
         let payload = dispatcher.last_payload_with_type(Actions.SEARCH_TEXT_ENTERED);
-        expect(payload.text).toBe('foo');
+        expect(payload.query).toBe('foo');
     });
 
     it('calls into engine for auto complete results', function () {
@@ -74,5 +74,6 @@ describe('Search box module', function () {
         let payload = dispatcher.last_payload_with_type(Actions.AUTOCOMPLETE_CLICKED);
         expect(payload.model).toBe(model);
         expect(payload.context).toEqual([ model ]);
+        expect(payload.query).toEqual('foo');
     });
 });

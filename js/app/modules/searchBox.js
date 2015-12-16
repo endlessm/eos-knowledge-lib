@@ -59,7 +59,7 @@ const SearchBox = new Lang.Class({
         this.connect('activate', () => {
             dispatcher.dispatch({
                 action_type: Actions.SEARCH_TEXT_ENTERED,
-                text: this.text,
+                query: this.text,
             });
         });
         this.connect('menu-item-selected', (entry, ekn_id) => {
