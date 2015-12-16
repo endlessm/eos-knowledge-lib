@@ -1,4 +1,5 @@
 const ByteArray = imports.byteArray;
+const Endless = imports.gi.Endless;
 const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
@@ -24,6 +25,10 @@ const Utils = imports.app.utils;
  * ensure that the current page (if any) as well as all subsequently loaded
  * pages in this webview will have the given JS or CSS injected only when the
  * HTML document has finished loading
+ *
+ * CSS classes:
+ *   composite - on the <html> element, _browser-side_, if the webview is in a
+ *     window on a composite TV screen
  *
  * Parent class:
  *     WebKit2.WebView
@@ -51,6 +56,8 @@ const EknWebview = new Lang.Class({
     ],
 
     _init: function (params) {
+        if (!params.user_content_manager)
+            params.user_content_manager = new WebKit2.UserContentManager();
         let context = new WebKit2.WebContext();
         params.web_context = context;
         // Need to handle this signal before we make a webview
@@ -83,6 +90,7 @@ const EknWebview = new Lang.Class({
             GObject.signal_stop_emission_by_name(this, 'query-tooltip');
             return false;
         });
+        this.connect('notify::parent', this._check_for_composite.bind(this));
         gtk_settings.connect('notify::gtk-xft-dpi', this._updateFontSizeFromGtkSettings.bind(this));
     },
 
@@ -153,5 +161,27 @@ const EknWebview = new Lang.Class({
     _normalizeFontSize: function (size, dpi) {
         // 96 is the base DPI when no font scaling is applied.
         return size * dpi / 96;
-    }
+    },
+
+    _check_for_composite: function () {
+        if (!this.parent)
+            return;
+        let screen = this.get_toplevel().screen;
+        if (!screen || !Endless.is_composite_tv_screen(screen)) {
+            if (this._has_composite_injection_script)
+                this.user_content_manager.remove_all_scripts();
+            return;
+        }
+
+        if (this._has_composite_injection_script)
+            return;
+        let script = 'document.documentElement.classList.add("' +
+            Endless.STYLE_CLASS_COMPOSITE + '");';
+        let inject_composite = WebKit2.UserScript.new(script,
+            WebKit2.UserContentInjectedFrames.ALL_FRAMES,
+            WebKit2.UserScriptInjectionTime.START,
+            null, null);
+        this.user_content_manager.add_script(inject_composite);
+        this._has_composite_injection_script = true;
+    },
 });
