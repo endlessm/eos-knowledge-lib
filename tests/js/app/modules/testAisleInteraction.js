@@ -446,7 +446,7 @@ describe('Aisle interaction', function () {
             spyOn(view, 'show_search_page');
             dispatcher.dispatch({
                 action_type: Actions.SEARCH_TEXT_ENTERED,
-                text: 'Azucar',
+                query: 'Azucar',
             });
             Mainloop.idle_add(function () {
                 expect(engine.get_objects_by_query)
@@ -513,7 +513,7 @@ describe('Aisle interaction', function () {
             engine.get_objects_by_query_finish.and.throwError(new Error('jet fuel can\'t melt dank memes'));
             dispatcher.dispatch({
                 action_type: Actions.SEARCH_TEXT_ENTERED,
-                text: 'bad query',
+                query: 'bad query',
             });
             expect(dispatcher.dispatched_payloads).toContain(jasmine.objectContaining({
                 action_type: Actions.SEARCH_STARTED,
@@ -528,7 +528,7 @@ describe('Aisle interaction', function () {
         it('records a metric when search-entered is dispatched', function (done) {
             dispatcher.dispatch({
                 action_type: Actions.SEARCH_TEXT_ENTERED,
-                text: 'Azucar',
+                query: 'Azucar',
             });
             Mainloop.idle_add(function () {
                 expect(interaction.record_search_metric).toHaveBeenCalled();

@@ -297,7 +297,7 @@ describe('Buffet interaction', function () {
             });
             dispatcher.dispatch({
                 action_type: Actions.SEARCH_TEXT_ENTERED,
-                text: 'user query',
+                query: 'user query',
             });
         });
 

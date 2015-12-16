@@ -183,7 +183,7 @@ const AisleInteraction = new Lang.Class({
                     this._load_more_suggestions(payload.query);
                     break;
                 case Actions.SEARCH_TEXT_ENTERED:
-                    this._on_search(payload.text);
+                    this._on_search(payload.query);
                     break;
                 case Actions.AUTOCOMPLETE_CLICKED:
                 case Actions.ITEM_CLICKED:

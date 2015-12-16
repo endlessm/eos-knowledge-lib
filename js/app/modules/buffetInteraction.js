@@ -120,7 +120,7 @@ const BuffetInteraction = new Lang.Class({
                     });
                     break;
                 case Actions.SEARCH_TEXT_ENTERED:
-                    this._start_search_via_history(payload.text);
+                    this._start_search_via_history(payload.query);
                     break;
                 case Actions.NEED_MORE_SEARCH:
                     this._load_more_results();
