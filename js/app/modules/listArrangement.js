@@ -22,7 +22,7 @@ const ListArrangement = new Lang.Class({
     },
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/listArrangement.ui',
-    InternalChildren: [ 'list_box' ],
+    InternalChildren: [ 'list_box', 'size-group' ],
 
     _init: function (props={}) {
         this.parent(props);
@@ -30,6 +30,7 @@ const ListArrangement = new Lang.Class({
 
     add_card: function (widget) {
         this._list_box.add(widget);
+        this._size_group.add_widget(widget);
     },
 
     get_cards: function () {
@@ -38,6 +39,10 @@ const ListArrangement = new Lang.Class({
 
     clear: function () {
         let children = this._list_box.get_children();
-        children.forEach((child) => this._list_box.remove(child));
+        children.forEach((child) => {
+            this._list_box.remove(child);
+            this._size_group.remove_widget(child);
+        });
+
     },
 });
