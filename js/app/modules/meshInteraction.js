@@ -87,7 +87,7 @@ const MeshInteraction = new Lang.Class({
         dispatcher.register((payload) => {
             switch(payload.action_type) {
                 case Actions.SEARCH_TEXT_ENTERED:
-                    this._do_search(payload.text);
+                    this._do_search(payload.query);
                     break;
                 case Actions.ARTICLE_LINK_CLICKED:
                     this._load_uri(payload.ekn_id);
@@ -118,7 +118,7 @@ const MeshInteraction = new Lang.Class({
                     this._history_presenter.set_current_item_from_props({
                         page_type: this.ARTICLE_PAGE,
                         model: payload.model,
-                        query: payload.text,
+                        query: payload.query,
                     });
                     break;
             }

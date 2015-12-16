@@ -291,7 +291,7 @@ describe('Mesh interaction', function () {
         it('queries the engine', function () {
             dispatcher.dispatch({
                 action_type: Actions.SEARCH_TEXT_ENTERED,
-                text: query,
+                query: query,
             });
             expect(engine.get_objects_by_query)
                 .toHaveBeenCalledWith(jasmine.objectContaining({
@@ -304,7 +304,7 @@ describe('Mesh interaction', function () {
         it('show the search page', function () {
             dispatcher.dispatch({
                 action_type: Actions.SEARCH_TEXT_ENTERED,
-                text: query,
+                query: query,
             });
             expect(dispatcher.last_payload_with_type(Actions.SHOW_SEARCH_PAGE)).toBeDefined();
         });
@@ -312,7 +312,7 @@ describe('Mesh interaction', function () {
         it('records a metric', function () {
             dispatcher.dispatch({
                 action_type: Actions.SEARCH_TEXT_ENTERED,
-                text: query,
+                query: query,
             });
             expect(mesh._record_search_metric).toHaveBeenCalled();
         });
@@ -320,7 +320,7 @@ describe('Mesh interaction', function () {
         it('loads the results from engine', function () {
             dispatcher.dispatch({
                 action_type: Actions.SEARCH_TEXT_ENTERED,
-                text: query,
+                query: query,
             });
             expect(dispatcher.has_payload_sequence([
                 Actions.SEARCH_STARTED,
@@ -337,7 +337,7 @@ describe('Mesh interaction', function () {
             engine.get_objects_by_query_finish.and.throwError(new Error('Ugh'));
             dispatcher.dispatch({
                 action_type: Actions.SEARCH_TEXT_ENTERED,
-                text: query,
+                query: query,
             });
             expect(dispatcher.dispatched_payloads).toContain(jasmine.objectContaining({
                 action_type: Actions.SEARCH_FAILED,
@@ -349,14 +349,14 @@ describe('Mesh interaction', function () {
             engine.get_objects_by_query.and.stub();
             dispatcher.dispatch({
                 action_type: Actions.SEARCH_TEXT_ENTERED,
-                text: query,
+                query: query,
             });
             let cancellable = engine.get_objects_by_query.calls.mostRecent().args[1];
             let cancel_spy = jasmine.createSpy();
             cancellable.connect(cancel_spy);
             dispatcher.dispatch({
                 action_type: Actions.SEARCH_TEXT_ENTERED,
-                text: 'bar',
+                query: 'bar',
             });
             expect(cancel_spy).toHaveBeenCalled();
         });
@@ -393,7 +393,7 @@ describe('Mesh interaction', function () {
             dispatcher.dispatch({
                 action_type: Actions.AUTOCOMPLETE_CLICKED,
                 model: article_model,
-                text: 'foo',
+                query: 'foo',
             });
             let payload = dispatcher.last_payload_with_type(Actions.APPEND_SEARCH);
             expect(payload.models).toEqual([ article_model ]);
