@@ -94,7 +94,7 @@ overridden by app specific CSS */
 }
 
 .back-cover .subtitle {
-    padding-top: 3px;
+    padding: 3px 60px 0px, 60px;
     font-size: 1em; /* 16px / 12px/em * 72/96 */
     color: #eeeeec;
 }
