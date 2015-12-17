@@ -1,7 +1,3 @@
-* {
-    font-family: Lato; /* Default text */
-}
-
 .entry {
     background: rgba(0,0,0,0.2);
     padding: 0.5em .3em 0.5em .3em;
@@ -156,6 +152,10 @@ GtkEntry:selected {
 }
 
 /* Changes for composite TVs */
+
+.composite {
+    font-family: Roboto;
+}
 
 .composite .divided-banner-template .title {
     font-weight: normal;
