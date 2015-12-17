@@ -407,9 +407,9 @@ const Window = new Lang.Class({
         // this calculation to pure CSS and get rid of the extra CSS provider.
         // https://developer.mozilla.org/en-US/docs/Web/CSS/length
         if (this.background_image_uri &&
-            !this._last_allocation ||
+            (!this._last_allocation ||
             this._last_allocation.width !== alloc.width ||
-            this._last_allocation.height !== alloc.height) {
+            this._last_allocation.height !== alloc.height)) {
             let bg_mult_ratio = Math.max(alloc.width / this._background_image_width,
                 alloc.height / this._background_image_height) *
                 PARALLAX_BACKGROUND_SCALE;
