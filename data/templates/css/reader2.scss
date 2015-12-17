@@ -17,6 +17,7 @@ html {
         margin-top: 0px;
 
         h1 {
+            font-family: Lato;
             font-weight: bold;
             color: #044a80;
             font-size: 43px;
@@ -284,5 +285,13 @@ $max-d: 599px;
             font-size: 17px;
             padding: 12px;
         }
+    }
+}
+
+/* Composite */
+@media (device-width: 720px) and (device-height: 480px),
+       (device-width: 720px) and (device-height: 576px) {
+    #inside-content {
+        color: black;
     }
 }
