@@ -16,3 +16,11 @@ html, body {
         right: 0;
     }
 }
+
+/* Composite resolutions */
+@media (device-width: 720px) and (device-height: 480px),
+       (device-width: 720px) and (device-height: 576px) {
+    html, body {
+        margin-right: 10px;
+    }
+}
