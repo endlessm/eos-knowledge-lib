@@ -90,3 +90,13 @@ html {
         clear: both;
     }
 }
+
+/* Composite resolutions */
+@media (device-width: 720px) and (device-height: 480px),
+       (device-width: 720px) and (device-height: 576px) {
+    #inside-content {
+        p, li {
+            font-weight: normal;
+        }
+    }
+}
