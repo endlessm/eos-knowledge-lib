@@ -523,7 +523,7 @@ EosWindow .scrollbar.slider {
     border: 1px solid alpha(white, 0.4);
     box-shadow: inset 0px 1px 1px 0px alpha(black, 0.5),
         inset 0px 1px 4px 0px alpha(black, 0.4);
-    transition: padding 500ms ease-in-out;
+    -EknGrowButton-grow-pixels: 15;
 }
 
 .nav-back-button GtkImage, .nav-forward-button GtkImage {
@@ -534,21 +534,13 @@ EosWindow .scrollbar.slider {
 .nav-back-button, .nav-forward-button.rtl {
     border-left: 0px;
     border-radius: 0px 27px 27px 0px;
-    padding: 15px 15px 15px 0px;
+    padding: 15px;
 }
 
 .nav-forward-button, .nav-back-button.rtl {
     border-radius: 27px 0px 0px 27px;
     border-right: 0px;
-    padding: 15px 0px 15px 15px;
-}
-
-.nav-back-button:hover, .nav-forward-button.rtl:hover {
-    padding-left: 15px;
-}
-
-.nav-forward-button:hover, .nav-back-button.rtl:hover {
-    padding-right: 15px;
+    padding: 15px;
 }
 
 .nav-back-button .image {
