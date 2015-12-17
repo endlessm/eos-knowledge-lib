@@ -1,5 +1,6 @@
 // Copyright 2015 Endless Mobile, Inc.
 
+const Endless = imports.gi.Endless;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
@@ -15,6 +16,8 @@ const WebKit2 = imports.gi.WebKit2;
 
 const _PROGRESS_LABEL_MARGIN = 20;
 const _DECORATIVE_BAR_HEIGHT = 19;
+const _COMPOSITE_SEPARATOR_MARGIN_PX = 10;
+const _COMPOSITE_TITLE_VIEW_LEFT_MARGIN_PX = 40;
 
 /**
  * Class: ReaderDocumentCard
@@ -85,6 +88,12 @@ const ReaderDocumentCard = new Lang.Class({
             this.info_notice.halign = Gtk.Align.CENTER;
             this.info_notice.margin_top = _PROGRESS_LABEL_MARGIN + _DECORATIVE_BAR_HEIGHT;
             this.add_overlay(this.info_notice);
+        }
+
+        if (Endless.is_composite_tv_screen(null)) {
+            this._title_view.margin_start = _COMPOSITE_TITLE_VIEW_LEFT_MARGIN_PX;
+            this._separator.margin_start = _COMPOSITE_SEPARATOR_MARGIN_PX;
+            this._separator.margin_end = _COMPOSITE_SEPARATOR_MARGIN_PX;
         }
     },
 
