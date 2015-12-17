@@ -61,7 +61,6 @@ html {
     }
     a {
         color: #666666;
-        font-family: Lato;
         font-weight: bold;
         font-size: 0.9375em; /* 15px / 12px/em * 72/96 */
         text-decoration: underline;
@@ -96,7 +95,13 @@ html {
        (device-width: 720px) and (device-height: 576px) {
     #inside-content {
         p, li {
+            color: black;
+            font-family: 'DejaVu Sans';
             font-weight: normal;
+        }
+
+        a {
+            color: black;
         }
     }
 }
