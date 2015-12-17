@@ -154,3 +154,14 @@ GtkEntry:selected {
     font-size: 1.3em; /* 16px / 12px/em */
     font-weight: bold;
 }
+
+/* Changes for composite TVs */
+
+.composite .divided-banner-template .title {
+    font-weight: normal;
+}
+
+.composite .divided-banner-template .title.query,
+.webview-tooltip GtkLabel {
+    font-weight: bold;
+}

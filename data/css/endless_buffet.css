@@ -400,3 +400,16 @@ EknContextBanner {
 .composite .search-result-card.width-e .card-synopsis {
     font-size: 16px;
 }
+
+.composite EknHighlightsModule .text-card .title.label,
+.composite EknThematicModule .text-card .title.label,
+.composite .browse-content .title,
+.composite .post-card.set .title {
+    font-weight: normal;
+}
+
+.composite EknSideMenuTemplate .menu .home-button,
+.composite EknSideMenuTemplate .menu .card .title,
+.composite EknContextBanner {
+    font-family: Lato;
+}
