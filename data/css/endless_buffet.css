@@ -1,9 +1,5 @@
 /* This is all temporary */
 
-* {
-    font-family: Lato;
-}
-
 .scrollbar {
     -GtkRange-trough-border: 3px;
     -GtkRange-slider-width: 8px;

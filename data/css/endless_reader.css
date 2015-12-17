@@ -192,7 +192,6 @@ overridden by app specific CSS */
 }
 
 .open-button GtkLabel {
-    font-family: Lato;
     font-weight: 900;
     font-size: 0.625em;
     color: #333333;
@@ -219,7 +218,6 @@ overridden by app specific CSS */
 }
 
 .reader-card .title {
-    font-family: Lato;
     font-size: 1.25em; /* 20px / 12px/em * 72/96 */
     text-shadow: 0px 1px 0px white;
 }
@@ -248,7 +246,6 @@ overridden by app specific CSS */
 
 .card-info-title {
     color: white;
-    font-family: Lato;
     font-size: 1.0em; /* 16px / 12px/em * 72/96 */
     font-weight: 300; /* Light */
 }
@@ -301,4 +298,10 @@ scrollbars, style the GTK scrollbars to look slightly more like them */
 .scrollbar.slider {
     background-color: #333333;
     border-radius: 20px;
+}
+
+/* Changes for composite TVs */
+
+.composite {
+    font-family: Roboto;
 }
