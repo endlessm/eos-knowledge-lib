@@ -1,5 +1,6 @@
 // Copyright 2015 Endless Mobile, Inc.
 
+const Endless = imports.gi.Endless;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
@@ -7,9 +8,14 @@ const Lang = imports.lang;
 
 const Module = imports.app.interfaces.module;
 
+const COMPOSITE_REDUCE_MARGINS_FRACTION = 0.4;
+
 /**
  * Class: BannerTemplate
  * This template has a top banner area, separator, and main content area.
+ *
+ * The left and right margins on this layout template will reduce to 40% of
+ * their given values on a composite TV screen.
  *
  * Slots
  *   banner
@@ -69,6 +75,11 @@ const BannerTemplate = new Lang.Class({
         }
         else {
             separator = new Gtk.Separator(separator_props);
+        }
+
+        if (Endless.is_composite_tv_screen(null)) {
+            this.margin_start *= COMPOSITE_REDUCE_MARGINS_FRACTION;
+            this.margin_end *= COMPOSITE_REDUCE_MARGINS_FRACTION;
         }
 
         this.add(this.create_submodule('banner'));
