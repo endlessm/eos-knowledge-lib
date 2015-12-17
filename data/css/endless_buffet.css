@@ -152,6 +152,11 @@ EknThematicModule .text-card:hover .after {
     font-size: 14px;
 }
 
+.search-result-card.width-d .title,
+.search-result-card.width-d .card-synopsis {
+    font-size: 14px;
+}
+
 .search-result-card.width-e .title,
 .search-result-card.width-e .card-synopsis {
     font-size: 14px;
@@ -376,4 +381,17 @@ EknContextBanner {
     font-family: Lato;
     font-size: 1.0em; /* 16px / 12px/em * 72/96 */
     font-weight: bold;
+}
+
+/* Changes for composite TVs */
+
+.composite .search-results GtkListBoxRow {
+    padding: 0 40px;
+}
+
+.composite .search-result-card.width-d .title,
+.composite .search-result-card.width-d .card-synopsis,
+.composite .search-result-card.width-e .title,
+.composite .search-result-card.width-e .card-synopsis {
+    font-size: 16px;
 }
