@@ -240,13 +240,11 @@ EknWindow.parallax.background-right {
     border-style: solid;
     border-width: 5px;
     border-color: @card-b-border-color;
-    box-shadow: -4px 0px 20px 0px alpha(black, 0.40);
     transition: border-color 250ms ease-in-out;
 }
 
 .card-b:hover {
     border-color: @card-b-border-color-hover;
-    box-shadow: 0px 0px 10px 0px alpha(black, 0.81);
 }
 
 .card-b .thumbnail {
@@ -260,13 +258,11 @@ EknWindow.parallax.background-right {
     background-color: @card-b-border-color;
     transition: color 250ms ease-in-out,
                 background-color 250ms ease-in-out,
-                background-image 250ms ease-in-out,
-                text-shadow 250ms ease-in-out;
+                background-image 250ms ease-in-out;
 }
 
 .card-b:hover .title {
     color: @template-b-text-color-hover;
-    text-shadow: 0px 1px 0px white;
     background-color: @card-b-border-color-hover;
     background-image: linear-gradient(-179deg,
                                       alpha(white, 0.15) 0%,
