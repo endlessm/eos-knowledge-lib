@@ -188,8 +188,7 @@ EknWindow.background-right {
     padding: 6px;
     border: 2px solid alpha(white, 0);
     background-color: alpha(white, 0);
-    transition: color 250ms ease-in-out,
-                background-color 250ms ease-in-out,
+    transition: background-color 250ms ease-in-out,
                 background-image 250ms ease-in-out,
                 border 250ms ease-in-out;
 }
@@ -200,17 +199,16 @@ EknWindow.background-right {
     font-size: 1.125em; /* 18pt * 1/12 * 0.75 DPI correction factor */
     font-weight: normal;
     color: @template-b-text-color;
+    transition: color 250ms ease-in-out;
 }
 
 .sidebar-template .sidebar .text-card:hover,
 .sidebar-template .sidebar .text-card.highlighted:hover {
-    text-shadow: 0px 1px 0px white;
     border: 2px solid white;
     background-color: alpha(white, 0.9);
     background-image: linear-gradient(-179deg,
                                       alpha(white, 0.05) 0%,
                                       alpha(black, 0.05) 100%);
-    box-shadow: 0px 0px 20px 0px black;
 }
 
 .sidebar-template .sidebar .text-card:hover .title {
@@ -227,6 +225,7 @@ EknWindow.background-right {
 .sidebar-template .sidebar .text-card.highlighted .title,
 .sidebar-template .sidebar .text-card.highlighted:hover .title {
     color: @template-b-text-color-highlighted;
+    transition-property: none;
 }
 
 .card-a:hover .title,
