@@ -1,3 +1,4 @@
+const Cairo = imports.cairo;
 const Gdk = imports.gi.Gdk;
 const GdkPixbuf = imports.gi.GdkPixbuf;
 const Gtk = imports.gi.Gtk;
@@ -21,7 +22,6 @@ const ImageCoverFrame = Lang.Class({
         this.parent(props);
         this.set_has_window(false);
 
-        this._aspect = 1.0;
         this._stream = null;
         this._pixbuf = null;
     },
@@ -31,39 +31,50 @@ const ImageCoverFrame = Lang.Class({
         this.queue_draw();
     },
 
-    _ensure_pixbuf: function () {
-        if ((!this._stream) || this._pixbuf)
-            return;
-        this._pixbuf = GdkPixbuf.Pixbuf.new_from_stream(this._stream, null);
-        this._aspect = this._pixbuf.get_width() / this._pixbuf.get_height();
-    },
-
-    // Scales the image to the right dimensions so that it covers the
-    // allocated space while still maintaining its aspect ratio.
-    // Make it a public function so we can test it independently.
-    get_scaled_dimensions: function (aspect, allocated_width, allocated_height) {
-        let height = Math.max(allocated_width / aspect, allocated_height);
-        let width = height * aspect;
-        return [Math.round(width), Math.round(height)];
-    },
-
-    _draw_scaled_pixbuf: function (cr) {
+    _ensure_surface: function () {
         if (!this._stream)
             return;
-        this._ensure_pixbuf();
-        let allocation = this.get_allocation();
-        let [width, height] = this.get_scaled_dimensions(this._aspect, allocation.width, allocation.height);
-        let scaled_pixbuf = this._pixbuf.scale_simple(width, height, GdkPixbuf.InterpType.BILINEAR);
 
-        // Position the image in the center
-        let x = (allocation.width / 2) - width / 2;
-        let y = (allocation.height / 2) - height / 2;
-        Gdk.cairo_set_source_pixbuf(cr, scaled_pixbuf, x, y);
+        let allocation = this.get_allocation();
+        if (this._surface && this._last_width === allocation.width && this._last_height === allocation.height)
+            return;
+        this._last_width = allocation.width;
+        this._last_height = allocation.height;
+
+        if (!this._pixbuf)
+            this._pixbuf = GdkPixbuf.Pixbuf.new_from_stream(this._stream, null);
+
+        this._surface = this.get_window().create_similar_surface(Cairo.Content.COLOR, allocation.width, allocation.height);
+        let cr = new Cairo.Context(this._surface);
+
+        // Helps to read these transforms in reverse. We center the pixbuf at
+        // the origin, scale it to cover, then translate its center to the
+        // center of our allocation.
+        cr.translate(allocation.width / 2, allocation.height / 2);
+        let scale = Math.max(allocation.width / this._pixbuf.get_width(),
+                             allocation.height / this._pixbuf.get_height());
+        cr.scale(scale, scale);
+        cr.translate(-this._pixbuf.get_width() / 2, -this._pixbuf.get_height() / 2);
+
+        Gdk.cairo_set_source_pixbuf(cr, this._pixbuf, 0, 0);
         cr.paint();
+        cr.$dispose();
+    },
+
+    vfunc_unmap: function () {
+        this.parent();
+        // Free our cached surface when we unmap. Keeping it around could
+        // improve performance in some cases, at the cost of memory footprint.
+        this._surface = null;
     },
 
     vfunc_draw: function (cr) {
-        this._draw_scaled_pixbuf(cr);
+        this._ensure_surface();
+        if (!this._surface)
+            return true;
+
+        cr.setSourceSurface(this._surface, 0, 0);
+        cr.paint();
         // We need to manually call dispose on cairo contexts. This is somewhat related to the bug listed here
         // https://bugzilla.gnome.org/show_bug.cgi?id=685513 for the shell. We should see if they come up with
         // a better fix in the future, i.e. fix this through gjs.
