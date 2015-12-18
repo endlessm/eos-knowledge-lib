@@ -24,7 +24,7 @@ describe('Card interface', function () {
 
         model = new ArticleObjectModel.ArticleObjectModel({
             title: 'record title &',
-            thumbnail_uri: 'about:blank',
+            thumbnail_uri: 'ekn://foo/bar',
             authors: ['record author &'],
             article_number: 0,
             tags: ['foo', 'bar'],
