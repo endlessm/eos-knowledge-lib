@@ -188,11 +188,10 @@ EknWindow.background-right {
     padding: 6px;
     border: 2px solid alpha(white, 0);
     background-color: alpha(white, 0);
-    transition-timing-function: ease-in-out;
-    transition: color 250ms,
-                background-color 250ms,
-                background-image 250ms,
-                border 250ms;
+    transition: color 250ms ease-in-out,
+                background-color 250ms ease-in-out,
+                background-image 250ms ease-in-out,
+                border 250ms ease-in-out;
 }
 
 .sidebar-template .sidebar .text-card .title {
@@ -289,11 +288,10 @@ EknWindow.background-right {
     font-size: 1.8em;
     padding: .9em 0em;
     background-color: @card-b-border-color;
-    transition-timing-function: ease-in-out;
-    transition: color 250ms,
-                background-color 250ms,
-                background-image 250ms,
-                text-shadow 250ms;
+    transition: color 250ms ease-in-out,
+                background-color 250ms ease-in-out,
+                background-image 250ms ease-in-out,
+                text-shadow 250ms ease-in-out;
 }
 
 .card-b:hover .title {
