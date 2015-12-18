@@ -21,7 +21,6 @@ const ImageCoverFrame = Lang.Class({
         this.parent(props);
         this.set_has_window(false);
 
-        this._aspect = 1.0;
         this._stream = null;
         this._pixbuf = null;
     },
@@ -31,34 +30,24 @@ const ImageCoverFrame = Lang.Class({
         this.queue_draw();
     },
 
-    _ensure_pixbuf: function () {
-        if ((!this._stream) || this._pixbuf)
-            return;
-        this._pixbuf = GdkPixbuf.Pixbuf.new_from_stream(this._stream, null);
-        this._aspect = this._pixbuf.get_width() / this._pixbuf.get_height();
-    },
-
-    // Scales the image to the right dimensions so that it covers the
-    // allocated space while still maintaining its aspect ratio.
-    // Make it a public function so we can test it independently.
-    get_scaled_dimensions: function (aspect, allocated_width, allocated_height) {
-        let height = Math.max(allocated_width / aspect, allocated_height);
-        let width = height * aspect;
-        return [Math.round(width), Math.round(height)];
-    },
-
     _draw_scaled_pixbuf: function (cr) {
         if (!this._stream)
             return;
-        this._ensure_pixbuf();
-        let allocation = this.get_allocation();
-        let [width, height] = this.get_scaled_dimensions(this._aspect, allocation.width, allocation.height);
-        let scaled_pixbuf = this._pixbuf.scale_simple(width, height, GdkPixbuf.InterpType.BILINEAR);
 
-        // Position the image in the center
-        let x = (allocation.width / 2) - width / 2;
-        let y = (allocation.height / 2) - height / 2;
-        Gdk.cairo_set_source_pixbuf(cr, scaled_pixbuf, x, y);
+        if (!this._pixbuf)
+            this._pixbuf = GdkPixbuf.Pixbuf.new_from_stream(this._stream, null);
+        let allocation = this.get_allocation();
+
+        // Helps to read these transforms in reverse. We center the pixbuf at
+        // the origin, scale it to cover, then translate its center to the
+        // center of our allocation.
+        cr.translate(allocation.width / 2, allocation.height / 2);
+        let scale = Math.max(allocation.width / this._pixbuf.get_width(),
+                             allocation.height / this._pixbuf.get_height());
+        cr.scale(scale, scale);
+        cr.translate(-this._pixbuf.get_width() / 2, -this._pixbuf.get_height() / 2);
+
+        Gdk.cairo_set_source_pixbuf(cr, this._pixbuf, 0, 0);
         cr.paint();
     },
 
