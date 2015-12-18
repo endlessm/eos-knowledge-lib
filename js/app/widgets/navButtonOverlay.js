@@ -1,5 +1,8 @@
 // Copyright 2014 Endless Mobile, Inc.
 
+const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
+const Gdk = imports.gi.Gdk;
+const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
@@ -9,6 +12,95 @@ const ThemeableImage = imports.app.widgets.themeableImage;
 const Utils = imports.app.utils;
 
 const _SCROLLBAR_MARGIN_PX = 13;  // FIXME should be dynamic
+
+/**
+ * Class: GrowButton
+ *
+ * A button which grows to reveal more of itself on hover. Previously done as a
+ * padding animation, in css, but resizing the button every frame was too slow.
+ */
+const GrowButton = new Lang.Class({
+    Name: 'GrowButton',
+    GTypeName: 'EknGrowButton',
+    Extends: Gtk.Button,
+
+    Properties: {
+        /**
+         * Property: transition-duration
+         * The duration of the grow/shrink animation.
+         */
+        'transition-duration': GObject.ParamSpec.uint('transition-duration',
+            'Transition Duration', 'Transition Duration',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            0, GLib.MAXUINT32, 500),
+    },
+
+    _init: function (props={}) {
+        this.parent(props);
+
+        this._hover = false;
+        this._tween = 0;
+        this._tick_id = 0;
+        this._grow_pixels = 0;
+
+        this.connect('state-flags-changed', () => {
+            let hover = (this.get_state_flags() & Gtk.StateFlags.PRELIGHT) !== 0;
+            if (this._hover === hover)
+                return;
+
+            this._hover = hover;
+            this._start_time = this.get_frame_clock().get_frame_time();
+            this._start_tween = this._tween;
+
+            if (this._tick_id === 0)
+                this._tick_id = this.add_tick_callback(this._tick_callback.bind(this));
+        });
+        this.connect('style-set', this._update_custom_style.bind(this));
+        this.connect('style-updated', this._update_custom_style.bind(this));
+    },
+
+    _update_custom_style: function () {
+        this._grow_pixels = EosKnowledgePrivate.widget_style_get_int(this, 'grow-pixels');
+    },
+
+    _tick_callback: function (widget, frame_clock) {
+        this.queue_draw();
+
+        let now = frame_clock.get_frame_time();
+        let progress = (now - this._start_time) / this.transition_duration / 1000;
+        this._tween = this._start_tween + (this._hover ? progress : -progress);
+
+        if (this._hover && this._tween >= 1) {
+            this._tween = 1;
+            this._tick_id = 0;
+            return GLib.SOURCE_REMOVE;
+        }
+        if (!this._hover && this._tween <= 0) {
+            this._tween = 0;
+            this._tick_id = 0;
+            return GLib.SOURCE_REMOVE;
+        }
+        return GLib.SOURCE_CONTINUE;
+    },
+
+    vfunc_draw: function (cr) {
+        // t: variable from [0, 1], start: initial value, end: final value
+        let ease_in_out = (t, start, end) => {
+            let d = end - start;
+            if (t < 0.5)
+                return start + 2 * d * t * t;
+            return start - d * (2 * t * t - 4 * t + 1);
+        };
+        let start = this.halign === Gtk.Align.START ? -this._grow_pixels : this._grow_pixels;
+        cr.translate(Math.floor(ease_in_out(this._tween, start, 0)), 0);
+        this.parent(cr);
+        cr.$dispose();
+        return Gdk.EVENT_PROPAGATE;
+    },
+});
+Gtk.Widget.install_style_property.call(GrowButton, GObject.ParamSpec.int(
+    'grow-pixels', 'Grow Pixels', 'Grow Pixels',
+    GObject.ParamFlags.READABLE, 0, GLib.MAXINT32, 0));
 
 /**
  * Class: NavButtonOverlay
@@ -74,7 +166,7 @@ const NavButtonOverlay = new Lang.Class({
         /*
          * Back button
          */
-        this._back_button = new Gtk.Button({
+        this._back_button = new GrowButton({
             halign: Gtk.Align.START,
             valign: Gtk.Align.CENTER,
             no_show_all: true,
@@ -88,7 +180,7 @@ const NavButtonOverlay = new Lang.Class({
         /*
          * Forward button
          */
-        this._forward_button = new Gtk.Button({
+        this._forward_button = new GrowButton({
             halign: Gtk.Align.END,
             valign: Gtk.Align.CENTER,
             no_show_all: true,
