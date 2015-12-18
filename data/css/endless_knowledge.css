@@ -287,16 +287,12 @@ EknWindow.background-right {
     padding: .9em 0em;
     background-color: @card-b-border-color;
     transition: color 250ms ease-in-out,
-                background-color 250ms ease-in-out,
-                background-image 250ms ease-in-out;
+                background-color 250ms ease-in-out;
 }
 
 .card-b:hover .title {
     color: @template-b-text-color-hover;
     background-color: @card-b-border-color-hover;
-    background-image: linear-gradient(-179deg,
-                                      alpha(white, 0.15) 0%,
-                                      alpha(black, 0.15) 100%);
 }
 
 /* ===== Table of contents styling ===== */
