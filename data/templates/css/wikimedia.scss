@@ -18,9 +18,9 @@ $cols: 100% / 36;
 $hxga: 512px * 36 / 56;
 $vga: 640px * 36 / 56;
 $svga: 800px * 36 / 56;
-$xga: 1024px * 36 / 56;
 $wxga: 1366px * 36 / 56;
 $fhd: 1920px * 36 / 56;
+$two-column-width: 720px;
 
 $gray-dark: #282828;
 $gray: #505050;
@@ -407,7 +407,7 @@ html {
     $in-cols: 100% / 13;
 }
 
-@media (min-width: $xga) {
+@media (min-width: $two-column-width) {
     .mw-body {
         $in-cols: 100% / 36;
         padding: 30px $cols * 2;
