@@ -577,3 +577,10 @@ EosWindow .scrollbar.slider {
 .composite .home-page-b .search-box {
     font-size: 16px;
 }
+
+.composite .section-page-b EknItemGroupModule,
+.composite .search-page-b .search-results,
+.composite .article-page-b EknItemGroupModule,
+.composite .article-page-b .search-results {
+    background-color: alpha(black, 0.8);
+}

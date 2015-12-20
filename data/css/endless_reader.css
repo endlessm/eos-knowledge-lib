@@ -320,6 +320,16 @@ scrollbars, style the GTK scrollbars to look slightly more like them */
     font-weight: 500;
 }
 
+.composite .sidebar {
+    background-image: linear-gradient(to bottom, alpha(black, 0.7) 0%,
+                                      alpha(black, 0.7) 100%);
+}
+
+.composite .back-cover GtkGrid {
+    background-image: linear-gradient(to bottom, alpha(black, 0.5) 0%,
+                                      alpha(black, 0.5) 100%);
+}
+
 .composite .back-cover .subtitle {
     font-size: 18px;
 }
