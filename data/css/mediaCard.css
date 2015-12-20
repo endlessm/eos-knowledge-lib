@@ -28,3 +28,11 @@
 .media-card-attribution-text:hover {
     color: #ff6900;
 }
+
+.composite .media-card-caption {
+    font-size: 12px;
+}
+
+.composite .media-card-attribution-text {
+    font-size: 9px;
+}

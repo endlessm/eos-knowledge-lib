@@ -570,3 +570,40 @@ EosWindow .scrollbar.slider {
 .composite .title {
     font-family: Roboto;
 }
+
+.composite .headerbar .entry {
+    font-size: 18px;
+}
+
+.composite .search-page-a .search-results .results-message-title,
+.composite .search-page-a .search-results .results-message-subtitle,
+.composite .search-page-a .search-results .error-message {
+    font-size: 16px;
+}
+
+.composite .search-page-b .search-results .results-message-title,
+.composite .search-page-b .search-results .results-message-subtitle,
+.composite .search-page-b .search-results .error-message {
+    font-size: 12px;
+}
+
+.composite .card-a .title {
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.composite .section-page-a .card-a .title,
+.composite .search-page-a .card-a .title {
+    font-size: 12px;
+}
+
+.composite .card-a .card-synopsis {
+    color: black;
+    font-size: 14px;
+    text-shadow: none;
+}
+
+.composite .home-page-a .search-box,
+.composite .home-page-b .search-box {
+    font-size: 16px;
+}

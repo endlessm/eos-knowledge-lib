@@ -308,5 +308,10 @@ h2 + ol, h3 + ol, .steps_list_2 {
        (device-width: 720px) and (device-height: 576px) {
     #bodycontents {
         font-family: $font1-composite;
+        font-size: 22px;
+
+        h2, h3, .firstHeading, h4 {
+            font-size: 26px;
+        }
     }
 }

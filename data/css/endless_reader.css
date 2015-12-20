@@ -305,3 +305,26 @@ scrollbars, style the GTK scrollbars to look slightly more like them */
 .composite {
     font-family: Roboto;
 }
+
+.composite .entry {
+    font-size: 18px;
+}
+
+.composite .progress-label,
+.composite .article-snippet .synopsis {
+    font-size: 14px;
+}
+
+.composite .reader-card .title {
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.composite .back-cover .subtitle {
+    font-size: 18px;
+}
+
+.composite .document-card .title {
+    font-weight: bold;
+    font-size: 22px;
+}

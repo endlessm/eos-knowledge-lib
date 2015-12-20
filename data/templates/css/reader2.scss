@@ -292,6 +292,28 @@ $max-d: 599px;
 @media (device-width: 720px) and (device-height: 480px),
        (device-width: 720px) and (device-height: 576px) {
     #inside-content {
+        font-size: 22px;
         color: black;
+    }
+
+    .infobox {
+        th:only-child,
+        caption {
+            line-height: 20px;
+            font-size: 20px !important;
+        }
+
+        tr > th:first-child:not(:only-child),
+        tr > td:first-child:not(:only-child),
+        th ~ td,
+        td:first-child ~ td {
+            line-height: 20px;
+            font-size: 20px;
+        }
+    }
+
+    .thumbcaption,
+    td .eos-image-link + * {
+        font-size: 20px;
     }
 }
