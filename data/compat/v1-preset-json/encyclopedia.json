@@ -36,7 +36,7 @@
                 "bottom": {
                     "type": "SearchBox",
                     "properties": {
-                        "max-width-chars": 52
+                        "max-width-chars": 36
                     }
                 }
             }
