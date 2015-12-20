@@ -159,6 +159,7 @@ GtkEntry:selected {
 
 .composite .entry {
     font-size: 18px;
+    background-color: alpha(black, 0.8);
 }
 
 .composite .divided-banner-template .title {
