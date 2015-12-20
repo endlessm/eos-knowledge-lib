@@ -94,7 +94,7 @@ overridden by app specific CSS */
 }
 
 .back-cover .subtitle {
-    padding: 3px 60px 0px, 60px;
+    padding: 3px 60px 0px 60px;
     font-size: 1em; /* 16px / 12px/em * 72/96 */
     color: #eeeeec;
 }
@@ -323,6 +323,7 @@ scrollbars, style the GTK scrollbars to look slightly more like them */
 .composite .sidebar {
     background-image: linear-gradient(to bottom, alpha(black, 0.7) 0%,
                                       alpha(black, 0.7) 100%);
+    padding-left: 45px;
 }
 
 .composite .back-cover GtkGrid {
