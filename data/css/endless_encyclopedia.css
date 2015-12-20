@@ -157,11 +157,27 @@ GtkEntry:selected {
     font-family: Roboto;
 }
 
-.composite .divided-banner-template .title {
-    font-weight: normal;
+.composite .entry {
+    font-size: 18px;
 }
 
-.composite .divided-banner-template .title.query,
-.webview-tooltip GtkLabel {
+.composite .divided-banner-template .title {
+    font-weight: normal;
+    font-size: 20px;
     font-weight: bold;
+}
+
+.composite .webview-tooltip GtkLabel {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.composite .search-results .results-message-title,
+.composite .search-results .results-message-subtitle,
+.composite .search-results .error-message {
+    font-size: 15px;
+}
+
+.composite .search-results .card .title {
+    font-size: 16px;
 }
