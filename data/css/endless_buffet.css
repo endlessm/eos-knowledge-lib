@@ -389,6 +389,14 @@ EknContextBanner {
     padding: 0 40px;
 }
 
+.composite .card-context {
+    font-style: normal;
+}
+
+.composite .thumb-card .card-context {
+    color: #044a80;
+}
+
 .composite .search-result-card.width-d .title,
 .composite .search-result-card.width-d .card-synopsis,
 .composite .search-result-card.width-e .title,
