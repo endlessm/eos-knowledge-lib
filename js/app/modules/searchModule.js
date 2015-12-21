@@ -97,7 +97,9 @@ const SearchModule = new Lang.Class({
     _init: function (props={}) {
         this.parent(props);
         this._arrangement = this.create_submodule('arrangement');
-        this.add_named(this._arrangement, RESULTS_PAGE_NAME);
+        let responsive_margins = this.create_submodule('responsive-margins');
+        responsive_margins.add(this._arrangement);
+        this.add_named(responsive_margins, RESULTS_PAGE_NAME);
 
         this._suggested_articles_module = this.create_submodule('article-suggestions');
         if (this._suggested_articles_module)
@@ -152,7 +154,7 @@ const SearchModule = new Lang.Class({
 
     // Module override
     get_slot_names: function () {
-        return ['arrangement', 'card-type', 'article-suggestions', 'category-suggestions'];
+        return ['arrangement', 'card-type', 'article-suggestions', 'category-suggestions', 'responsive-margins'];
     },
 
     _add_card: function (model, query='') {

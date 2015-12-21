@@ -55,7 +55,8 @@
                                     "type": "PostCard"
                                 }
                             }
-                        }
+                        },
+                        "responsive-margins": "responsive-margins"
                     }
                 }
             }
@@ -93,7 +94,8 @@
                                 },
                                 "bottom": "category-suggestions"
                             }
-                        }
+                        },
+                        "responsive-margins": "responsive-margins"
                     }
                 }
             }
@@ -144,7 +146,8 @@
                                 },
                                 "bottom": "category-suggestions"
                             }
-                        }
+                        },
+                        "responsive-margins": "responsive-margins"
                     }
                 }
             }
@@ -167,7 +170,8 @@
                             "type": "SearchResultCard"
                         },
                         "article-suggestions": "article-suggestions",
-                        "category-suggestions": "category-suggestions"
+                        "category-suggestions": "category-suggestions",
+                        "responsive-margins": "responsive-margins"
                     },
                     "properties": {
                         "halign": "fill",
@@ -270,6 +274,9 @@
         },
         "context-banner": {
             "type": "ContextBanner"
+        },
+        "responsive-margins": {
+            "type": "ResponsiveMarginsModule"
         }
     }
 }

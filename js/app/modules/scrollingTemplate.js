@@ -33,11 +33,14 @@ const ScrollingTemplate = new Lang.Class({
         this.parent(props);
 
         let content = this.create_submodule('content');
-        this._viewport.add(content);
+        let responsive_margins = this.create_submodule('responsive-margins');
+
+        responsive_margins.add(content);
+        this._viewport.add(responsive_margins);
     },
 
     // Module override
     get_slot_names: function () {
-        return ['content'];
+        return ['content', 'responsive-margins'];
     },
 });

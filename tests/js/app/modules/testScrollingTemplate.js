@@ -20,8 +20,10 @@ describe('Scrolling template', function () {
 
         factory = new MockFactory.MockFactory();
         factory.add_named_mock('placeholder', MockPlaceholder.MockPlaceholder);
+        factory.add_named_mock('responsive-margins', Gtk.Frame);
         factory.add_named_mock('template', ScrollingTemplate.ScrollingTemplate, {
             'content': 'placeholder',
+            'responsive-margins': 'responsive-margins',
         });
 
         template = new ScrollingTemplate.ScrollingTemplate({
