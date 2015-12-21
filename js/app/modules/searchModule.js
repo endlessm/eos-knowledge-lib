@@ -98,8 +98,12 @@ const SearchModule = new Lang.Class({
         this.parent(props);
         this._arrangement = this.create_submodule('arrangement');
         let responsive_margins = this.create_submodule('responsive-margins');
-        responsive_margins.add(this._arrangement);
-        this.add_named(responsive_margins, RESULTS_PAGE_NAME);
+        if (responsive_margins) {
+            responsive_margins.add(this._arrangement);
+            this.add_named(responsive_margins, RESULTS_PAGE_NAME);
+        } else {
+            this.add_named(this._arrangement, RESULTS_PAGE_NAME);
+        }
 
         this._suggested_articles_module = this.create_submodule('article-suggestions');
         if (this._suggested_articles_module)
