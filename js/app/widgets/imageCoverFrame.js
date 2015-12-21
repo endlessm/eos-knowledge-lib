@@ -2,6 +2,7 @@ const Gdk = imports.gi.Gdk;
 const GdkPixbuf = imports.gi.GdkPixbuf;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
+const WidgetSurfaceCache = imports.app.widgetSurfaceCache;
 
 /**
  * Class: ImageCoverFrame
@@ -23,11 +24,18 @@ const ImageCoverFrame = Lang.Class({
 
         this._stream = null;
         this._pixbuf = null;
+        this._last_width = 0;
+        this._last_height = 0;
+
+        this._surface_cache = new WidgetSurfaceCache.WidgetSurfaceCache(this, this._draw_scaled_pixbuf.bind(this), {
+            has_alpha: false,
+        });
     },
 
     set_content: function (stream) {
         this._stream = stream;
         this.queue_draw();
+        this._surface_cache.invalidate();
     },
 
     _draw_scaled_pixbuf: function (cr) {
@@ -52,7 +60,19 @@ const ImageCoverFrame = Lang.Class({
     },
 
     vfunc_draw: function (cr) {
-        this._draw_scaled_pixbuf(cr);
+        if (!this._stream)
+            return true;
+
+        // This is just a static image, we should only need to redraw after a
+        // resize of the contents is changed
+        let allocation = this.get_allocation();
+        if (this._last_width !== allocation.width && this._last_height !== allocation.height)
+            this._surface_cache.invalidate();
+        this._last_width = allocation.width;
+        this._last_height = allocation.height;
+
+        cr.setSourceSurface(this._surface_cache.get_surface(), 0, 0);
+        cr.paint();
         // We need to manually call dispose on cairo contexts. This is somewhat related to the bug listed here
         // https://bugzilla.gnome.org/show_bug.cgi?id=685513 for the shell. We should see if they come up with
         // a better fix in the future, i.e. fix this through gjs.
