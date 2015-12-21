@@ -169,6 +169,7 @@
     <file>js/app/widgets/tableOfContents.js</file>
     <file>js/app/widgets/themeableImage.js</file>
     <file>js/app/widgets/webviewTooltip.js</file>
+    <file>js/app/widgetSurfaceCache.js</file>
     <file>js/search/application.js</file>
     <file>js/search/articleObjectModel.js</file>
     <file>js/search/asyncTask.js</file>
