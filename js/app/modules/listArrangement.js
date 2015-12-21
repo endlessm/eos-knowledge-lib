@@ -3,7 +3,6 @@
 /* exported ListArrangement */
 
 const GObject = imports.gi.GObject;
-const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const Arrangement = imports.app.interfaces.arrangement;
@@ -22,24 +21,24 @@ const ListArrangement = new Lang.Class({
     },
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/listArrangement.ui',
-    InternalChildren: [ 'list_box', 'size-group' ],
+    InternalChildren: [ 'grid', 'size-group' ],
 
     _init: function (props={}) {
         this.parent(props);
     },
 
     add_card: function (widget) {
-        this._list_box.add(widget);
+        this._grid.add(widget);
         this._size_group.add_widget(widget);
     },
 
     get_cards: function () {
-        return this._list_box.get_children().map((list_child) => list_child.get_child());
+        return this._grid.get_children();
     },
 
     clear: function () {
-        this._list_box.get_children().forEach((child) => {
-            this._list_box.remove(child);
+        this._grid.get_children().forEach((child) => {
+            this._grid.remove(child);
         });
         this._size_group.get_widgets().forEach((widget) => {
             this._size_group.remove_widget(widget);
