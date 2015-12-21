@@ -38,11 +38,11 @@ const ListArrangement = new Lang.Class({
     },
 
     clear: function () {
-        let children = this._list_box.get_children();
-        children.forEach((child) => {
+        this._list_box.get_children().forEach((child) => {
             this._list_box.remove(child);
-            this._size_group.remove_widget(child);
         });
-
+        this._size_group.get_widgets().forEach((widget) => {
+            this._size_group.remove_widget(widget);
+        });
     },
 });
