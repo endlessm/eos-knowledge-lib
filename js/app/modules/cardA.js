@@ -1,5 +1,6 @@
 // Copyright 2014 Endless Mobile, Inc.
 
+const Cairo = imports.gi.cairo;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
@@ -8,10 +9,15 @@ const Card = imports.app.interfaces.card;
 const MarginButton = imports.app.widgets.marginButton;
 const Module = imports.app.interfaces.module;
 const SetObjectModel = imports.search.setObjectModel;
+const ToggleTweener = imports.app.toggleTweener;
 const Utils = imports.app.utils;
+const WidgetSurfaceCache = imports.app.widgetSurfaceCache;
 
 const WIDTH = 197; // 183px width + 2 * 7px margin
 const HEIGHT = 223; // 209px height + 2 * 7px margin
+const GROW_FRACTION = 0.05;
+const HOVER_WIDTH = Math.ceil(WIDTH * (1 + GROW_FRACTION));
+const HOVER_HEIGHT = Math.ceil(HEIGHT * (1 + GROW_FRACTION));
 
 /**
  * Class: CardA
@@ -45,6 +51,7 @@ const CardA = new Lang.Class({
         if (this.model instanceof SetObjectModel.SetObjectModel) {
             this.set_thumbnail_frame_from_model(this._thumbnail_frame);
         }
+        this._thumbnail_frame.height_request = 133;
 
         if (!this._thumbnail_frame.visible) {
             this._title_label.xalign = 0;
@@ -59,6 +66,44 @@ const CardA = new Lang.Class({
         }
 
         Utils.set_hand_cursor_on_widget(this);
+
+        // We will cache the appearance of our card to a surface, and use the
+        // cache only when animating the card bigger or smaller.
+        this._surface_cache = new WidgetSurfaceCache.WidgetSurfaceCache(this, (cr) => {
+            MarginButton.MarginButton.prototype.vfunc_draw.call(this, cr);
+        });
+        this._tweener = new ToggleTweener.ToggleTweener(this, {
+            inactive_value: 1,
+            active_value: 1 + GROW_FRACTION,
+        });
+        this.connect('state-flags-changed', () => {
+            this._tweener.set_active((this.get_state_flags() & Gtk.StateFlags.PRELIGHT) !== 0);
+        });
+    },
+
+    vfunc_draw: function (cr) {
+        if (!this._tweener.is_tweening())
+            this._surface_cache.invalidate();
+        let allocation = this.get_allocation();
+        let scale = this._tweener.get_value();
+        cr.translate(allocation.width / 2, allocation.height / 2);
+        cr.scale(scale, scale);
+        cr.translate(- allocation.width / 2, - allocation.height / 2);
+        cr.setSourceSurface(this._surface_cache.get_surface(), 0, 0);
+        cr.paint();
+        cr.$dispose();
+        return false;
+    },
+
+    vfunc_size_allocate: function (alloc) {
+        this.parent(alloc);
+        let clip = new Cairo.RectangleInt({
+            x: alloc.x - WIDTH * GROW_FRACTION / 2,
+            y: alloc.y - HEIGHT * GROW_FRACTION / 2,
+            width: HOVER_WIDTH,
+            height: HOVER_HEIGHT,
+        });
+        this.set_clip(clip);
     },
 
     // For entirely fixed-size cards
