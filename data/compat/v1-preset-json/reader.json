@@ -110,7 +110,8 @@
                             }
                         },
                         "article-suggestions": null,
-                        "category-suggestions": null
+                        "category-suggestions": null,
+                        "responsive-margins": null
                     }
                 }
             }

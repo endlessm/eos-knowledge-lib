@@ -128,7 +128,8 @@
                             "type": "TextCard"
                         },
                         "article-suggestions": null,
-                        "category-suggestions": null
+                        "category-suggestions": null,
+                        "responsive-margins": null
                     },
                     "properties": {
                         "message-valign": "center"
@@ -160,7 +161,8 @@
                                     "type": "TextCard"
                                 },
                                 "article-suggestions": null,
-                                "category-suggestions": null
+                                "category-suggestions": null,
+                                "responsive-margins": null
                             },
                             "properties": {
                                 "message-valign": "center"

@@ -36,8 +36,12 @@ const ScrollingTemplate = new Lang.Class({
         let content = this.create_submodule('content');
         let responsive_margins = this.create_submodule('responsive-margins');
 
-        responsive_margins.add(content);
-        this._viewport.add(responsive_margins);
+        if (responsive_margins) {
+            responsive_margins.add(content);
+            this._viewport.add(responsive_margins);
+        } else {
+            this._viewport.add(content);
+        }
     },
 
     // Module override
