@@ -195,7 +195,6 @@ EknWindow.background-right {
 
 .sidebar-template .sidebar .text-card .title {
     padding: 0em 0em 0em 1.5em;
-    font-family: Lato;
     font-size: 1.125em; /* 18pt * 1/12 * 0.75 DPI correction factor */
     font-weight: normal;
     color: @template-b-text-color;
@@ -239,7 +238,6 @@ EknWindow.background-right {
 .card-a .card-synopsis {
     padding: 0px 0px 4px 0px;
     color: #666666;
-    font-family: 'Lato', sans-serif;
     font-size: 0.8em;
     text-shadow: white 0px 1px 0px;
     transition: padding 250ms ease-in-out;
@@ -257,7 +255,6 @@ EknWindow.background-right {
 .pdf-card-label {
     padding-top: 10px;
     padding-left: 8px;
-    font-family: 'Lato', sans-serif;
     font-size: 0.9em;
     color: #666666
 }
@@ -297,7 +294,6 @@ EknWindow.background-right {
 /* ===== Table of contents styling ===== */
 .toc-entry {
     color: rgb(204, 204, 204);
-    font-family: Lato;
     font-weight: 900;  /* Black */
     font-size: .7em;
     background-color: transparent;
@@ -373,7 +369,6 @@ EknWindow.background-right {
     padding-bottom: 0.9em;
     border-style: solid;
     -GtkButton-image-spacing: 15px;
-    font-family: Lato;
     font-weight: bold;
     font-size: 0.75em;  /* 12pt * 1/12 * 0.75 DPI correction factor */
     text-shadow: 0px -1px 0px alpha(black, 0.40);
@@ -567,4 +562,55 @@ EosWindow .scrollbar.slider {
     font-family: Lato;
     font-size: 1.0em; /* 16px / 12px/em * 72/96 */
     font-weight: bold;
+}
+
+/* Changes for composite TVs */
+
+.composite,
+.composite .title {
+    font-family: Roboto;
+}
+
+.composite .headerbar .entry {
+    font-size: 18px;
+}
+
+.composite .search-page-a .search-results .results-message-title,
+.composite .search-page-a .search-results .results-message-subtitle,
+.composite .search-page-a .search-results .error-message {
+    font-size: 16px;
+}
+
+.composite .search-page-b .search-results .results-message-title,
+.composite .search-page-b .search-results .results-message-subtitle,
+.composite .search-page-b .search-results .error-message {
+    font-size: 12px;
+}
+
+.composite .card-a .title {
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.composite .section-page-a .card-a .title,
+.composite .search-page-a .card-a .title {
+    font-size: 12px;
+}
+
+.composite .card-a .card-synopsis {
+    color: black;
+    font-size: 14px;
+    text-shadow: none;
+}
+
+.composite .home-page-a .search-box,
+.composite .home-page-b .search-box {
+    font-size: 16px;
+}
+
+.composite .section-page-b EknItemGroupModule,
+.composite .search-page-b .search-results,
+.composite .article-page-b EknItemGroupModule,
+.composite .article-page-b .search-results {
+    background-color: alpha(black, 0.8);
 }

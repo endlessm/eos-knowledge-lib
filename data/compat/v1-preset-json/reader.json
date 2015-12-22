@@ -104,10 +104,7 @@
                             }
                         },
                         "card-type": {
-                            "type": "ReaderCard",
-                            "properties": {
-                                "title-capitalization": "uppercase"
-                            }
+                            "type": "ReaderCard"
                         },
                         "article-suggestions": null,
                         "category-suggestions": null,

@@ -61,9 +61,7 @@ html {
     }
     a {
         color: #666666;
-        font-family: Lato;
         font-weight: bold;
-        font-size: 0.9375em; /* 15px / 12px/em * 72/96 */
         text-decoration: underline;
         &:hover {
             cursor: pointer;
@@ -88,5 +86,22 @@ html {
         background-color: rgba(0, 0, 0, 0.1);
         margin: 50px 0px 50px 0px;
         clear: both;
+    }
+}
+
+/* Composite resolutions */
+@media (device-width: 720px) and (device-height: 480px),
+       (device-width: 720px) and (device-height: 576px) {
+    #inside-content {
+        p, li {
+            color: black;
+            font-family: 'DejaVu Sans';
+            font-weight: normal;
+            font-size: 20px;
+        }
+
+        a {
+            color: black;
+        }
     }
 }

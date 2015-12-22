@@ -1,9 +1,5 @@
 /* This is all temporary */
 
-* {
-    font-family: Lato;
-}
-
 .scrollbar {
     -GtkRange-trough-border: 3px;
     -GtkRange-slider-width: 8px;
@@ -149,6 +145,11 @@ EknThematicModule .text-card:hover .after {
 .card.width-f .card-context,
 .card.width-g .card-context,
 .card.width-h .card-context {
+    font-size: 14px;
+}
+
+.search-result-card.width-d .title,
+.search-result-card.width-d .card-synopsis {
     font-size: 14px;
 }
 
@@ -376,4 +377,42 @@ EknContextBanner {
     font-family: Lato;
     font-size: 1.0em; /* 16px / 12px/em * 72/96 */
     font-weight: bold;
+}
+
+/* Changes for composite TVs */
+
+.composite .entry {
+    font-size: 18px;
+}
+
+.composite .search-results GtkListBoxRow {
+    padding: 0 40px;
+}
+
+.composite .card-context {
+    font-style: normal;
+}
+
+.composite .thumb-card .card-context {
+    color: #044a80;
+}
+
+.composite .search-result-card.width-d .title,
+.composite .search-result-card.width-d .card-synopsis,
+.composite .search-result-card.width-e .title,
+.composite .search-result-card.width-e .card-synopsis {
+    font-size: 16px;
+}
+
+.composite EknHighlightsModule .text-card .title.label,
+.composite EknThematicModule .text-card .title.label,
+.composite .browse-content .title,
+.composite .post-card.set .title {
+    font-weight: normal;
+}
+
+.composite EknSideMenuTemplate .menu .home-button,
+.composite EknSideMenuTemplate .menu .card .title,
+.composite EknContextBanner {
+    font-family: Lato;
 }

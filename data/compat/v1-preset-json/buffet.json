@@ -51,9 +51,7 @@
                                         "spacing": 20
                                     }
                                 },
-                                "card-type": {
-                                    "type": "PostCard"
-                                }
+                                "card-type": "set-card"
                             }
                         },
                         "responsive-margins": "responsive-margins"
@@ -237,12 +235,7 @@
                         "margin-bottom": 20
                     }
                 },
-                "card-type": {
-                    "type": "PostCard",
-                    "properties": {
-                        "title-capitalization": "uppercase"
-                    }
-                }
+                "card-type": "set-card"
             }
         },
         "main-card": {
@@ -255,6 +248,12 @@
             "type": "TextCard",
             "properties": {
                 "margin-top": 25
+            }
+        },
+        "set-card": {
+            "type": "PostCard",
+            "properties": {
+                "title-capitalization": "uppercase"
             }
         },
         "main-menu": {

@@ -1,7 +1,3 @@
-* {
-    font-family: Lato; /* Default text */
-}
-
 .entry {
     background: rgba(0,0,0,0.2);
     padding: 0.5em .3em 0.5em .3em;
@@ -153,4 +149,36 @@ GtkEntry:selected {
     font-family: Lato;
     font-size: 1.3em; /* 16px / 12px/em */
     font-weight: bold;
+}
+
+/* Changes for composite TVs */
+
+.composite {
+    font-family: Roboto;
+}
+
+.composite .entry {
+    font-size: 18px;
+    background-color: alpha(black, 0.8);
+}
+
+.composite .divided-banner-template .title {
+    font-weight: normal;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.composite .webview-tooltip GtkLabel {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.composite .search-results .results-message-title,
+.composite .search-results .results-message-subtitle,
+.composite .search-results .error-message {
+    font-size: 15px;
+}
+
+.composite .search-results .card .title {
+    font-size: 16px;
 }

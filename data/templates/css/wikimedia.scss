@@ -9,6 +9,8 @@
 //
 
 $font1: "Lato", sans-serif;
+$font1-heading: "Lato";
+$font1-composite: "DejaVu Sans";
 $font2: "Montserrat", sans-serif;
 
 $cols: 100% / 36;
@@ -16,9 +18,9 @@ $cols: 100% / 36;
 $hxga: 512px * 36 / 56;
 $vga: 640px * 36 / 56;
 $svga: 800px * 36 / 56;
-$xga: 1024px * 36 / 56;
 $wxga: 1366px * 36 / 56;
 $fhd: 1920px * 36 / 56;
+$two-column-width: 720px;
 
 $gray-dark: #282828;
 $gray: #505050;
@@ -99,7 +101,7 @@ html {
     }
     .eos-article-title {
         color: $gray-dark;
-        font: 1.875em $font1; /* 30px / 12px/em * 72/96 */
+        font: 1.875em $font1-heading; /* 30px / 12px/em * 72/96 */
         line-height: 1.375;
         margin-bottom: 36px;
         margin-top: 22px;
@@ -111,7 +113,7 @@ html {
         margin-bottom: $rhythm;
         margin-top: $rhythm;
         // text-transform: uppercase
-   
+
     }
     h3, h4, h5, h6 {
         color: $gray-dark;
@@ -405,7 +407,7 @@ html {
     $in-cols: 100% / 13;
 }
 
-@media (min-width: $xga) {
+@media (min-width: $two-column-width) {
     .mw-body {
         $in-cols: 100% / 36;
         padding: 30px $cols * 2;
@@ -430,5 +432,14 @@ html {
             float: right;
             width: $in-cols * 11 !important;
         }
+    }
+}
+
+/* Composite resolutions */
+@media (device-width: 720px) and (device-height: 480px),
+       (device-width: 720px) and (device-height: 576px) {
+    .mw-body {
+        font-family: $font1-composite;
+        font-size: 22px;
     }
 }

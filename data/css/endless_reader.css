@@ -94,7 +94,7 @@ overridden by app specific CSS */
 }
 
 .back-cover .subtitle {
-    padding-top: 3px;
+    padding: 3px 60px 0px 60px;
     font-size: 1em; /* 16px / 12px/em * 72/96 */
     color: #eeeeec;
 }
@@ -192,7 +192,6 @@ overridden by app specific CSS */
 }
 
 .open-button GtkLabel {
-    font-family: Lato;
     font-weight: 900;
     font-size: 0.625em;
     color: #333333;
@@ -219,7 +218,6 @@ overridden by app specific CSS */
 }
 
 .reader-card .title {
-    font-family: Lato;
     font-size: 1.25em; /* 20px / 12px/em * 72/96 */
     text-shadow: 0px 1px 0px white;
 }
@@ -248,7 +246,6 @@ overridden by app specific CSS */
 
 .card-info-title {
     color: white;
-    font-family: Lato;
     font-size: 1.0em; /* 16px / 12px/em * 72/96 */
     font-weight: 300; /* Light */
 }
@@ -301,4 +298,44 @@ scrollbars, style the GTK scrollbars to look slightly more like them */
 .scrollbar.slider {
     background-color: #333333;
     border-radius: 20px;
+}
+
+/* Changes for composite TVs */
+
+.composite {
+    font-family: Roboto;
+}
+
+.composite .entry {
+    font-size: 18px;
+}
+
+.composite .progress-label,
+.composite .article-snippet .synopsis {
+    font-size: 14px;
+}
+
+.composite .reader-card .title {
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.composite .sidebar {
+    background-image: linear-gradient(to bottom, alpha(black, 0.7) 0%,
+                                      alpha(black, 0.7) 100%);
+    padding-left: 45px;
+}
+
+.composite .back-cover GtkGrid {
+    background-image: linear-gradient(to bottom, alpha(black, 0.5) 0%,
+                                      alpha(black, 0.5) 100%);
+}
+
+.composite .back-cover .subtitle {
+    font-size: 18px;
+}
+
+.composite .document-card .title {
+    font-weight: bold;
+    font-size: 22px;
 }
