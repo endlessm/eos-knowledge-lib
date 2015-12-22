@@ -11,6 +11,7 @@ const Dispatcher = imports.app.dispatcher;
 const Engine = imports.search.engine;
 const Module = imports.app.interfaces.module;
 const QueryObject = imports.search.queryObject;
+const Scrollable = imports.app.interfaces.scrollable;
 const ThemeableImage = imports.app.widgets.themeableImage;
 
 /**
@@ -43,11 +44,12 @@ const ThematicModule = new Lang.Class({
     Name: 'ThematicModule',
     GTypeName: 'EknThematicModule',
     Extends: Gtk.Grid,
-    Implements: [ Module.Module ],
+    Implements: [ Module.Module, Scrollable.Scrollable ],
 
     Properties: {
         'factory': GObject.ParamSpec.override('factory', Module.Module),
         'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
+        'scroll-server': GObject.ParamSpec.override('scroll-server', Scrollable.Scrollable),
     },
 
     _init: function (props={}) {
@@ -57,6 +59,8 @@ const ThematicModule = new Lang.Class({
         this._featured_arrangements = [];
         this._non_featured_arrangements = [];
         this._sets = [];
+
+        this.scrollable_init();
 
         Dispatcher.get_default().register((payload) => {
             switch (payload.action_type) {
@@ -81,12 +85,14 @@ const ThematicModule = new Lang.Class({
         return ['arrangement', 'card-type', 'header-card-type'];
     },
 
-    _show_set: function (model) {
-        this._clear_items();
-
+    show_more_content: function () {
+        if (this._current_index >= this._current_arrangements.length)
+            return;
+        let arrangement = this._current_arrangements[this._current_index];
         let query = new QueryObject.QueryObject({
             limit: -1,
-            tags: model.child_tags,
+            tags: this._current_model.child_tags.concat(arrangement.accepted_child_tags),
+            tag_match: QueryObject.QueryObjectTagMatch.ALL,
         });
         Engine.get_default().get_objects_by_query(query, null, (engine, task) => {
             let results;
@@ -97,14 +103,29 @@ const ThematicModule = new Lang.Class({
                 return;
             }
 
-            let arrangements = model.featured ?
-                this._non_featured_arrangements : this._featured_arrangements;
-            results.forEach((item) => this._add_item(item, arrangements));
+            this._current_index += 1;
+            // If we got no results for this arrangement, move onto the next one
+            if (results.length === 0) {
+                this.show_more_content();
+            } else {
+                results.forEach((model) => this._add_article_card(model, arrangement));
+                arrangement.visible = true;
+            }
+        });
+    },
 
-            Dispatcher.get_default().dispatch({
-                action_type: Actions.SET_READY,
-                model: model,
-            });
+    _show_set: function (model) {
+        this._clear_items();
+
+        this._current_arrangements = model.featured ?
+            this._non_featured_arrangements : this._featured_arrangements;
+        this._current_index = 0;
+        this._current_model = model;
+        this.show_more_content();
+
+        Dispatcher.get_default().dispatch({
+            action_type: Actions.SET_READY,
+            model: model,
         });
     },
 
@@ -177,16 +198,6 @@ const ThematicModule = new Lang.Class({
 
         arrangement.bind_property('visible', set_grid, 'visible',
             GObject.BindingFlags.SYNC_CREATE);
-    },
-
-    _add_item: function (model, arrangements) {
-        arrangements.forEach(arrangement => {
-            if (model.tags.some(tag =>
-                arrangement.accepted_child_tags.indexOf(tag) > -1)) {
-                this._add_article_card(model, arrangement);
-                arrangement.visible = true;
-            }
-        });
     },
 
     _clear_all: function () {

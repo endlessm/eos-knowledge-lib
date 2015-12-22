@@ -264,6 +264,7 @@ javascript_tests = \
 	tests/js/app/interfaces/testCard.js \
 	tests/js/app/interfaces/testInteraction.js \
 	tests/js/app/interfaces/testModule.js \
+	tests/js/app/interfaces/testScrollable.js \
 	tests/js/app/modules/testAisleInteraction.js \
 	tests/js/app/modules/testAppBanner.js \
 	tests/js/app/modules/testArticleSnippetCard.js \

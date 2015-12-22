@@ -219,6 +219,15 @@ describe('QueryObject', function () {
             expect(result).toMatch('tag:"cats" OR tag:"dogs" OR tag:"turtles"');
         });
 
+        it('joins tags with AND for tag-match all', function () {
+            let query_obj = new QueryObject.QueryObject({
+                tags: ['cats', 'dogs', 'turtles'],
+                tag_match: QueryObject.QueryObjectTagMatch.ALL,
+            });
+            let result = query_obj.get_query_parser_string(query_obj);
+            expect(result).toMatch('tag:"cats" AND tag:"dogs" AND tag:"turtles"');
+        });
+
         it('should surround multiword tags in quotes', function () {
             let query_obj = new QueryObject.QueryObject({
                 tags: ['cat zombies'],

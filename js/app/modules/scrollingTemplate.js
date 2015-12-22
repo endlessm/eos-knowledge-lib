@@ -6,6 +6,9 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
+const Actions = imports.app.actions;
+const Dispatcher = imports.app.dispatcher;
+const InfiniteScrolledWindow = imports.app.widgets.infiniteScrolledWindow;
 const Module = imports.app.interfaces.module;
 
 /**
@@ -18,7 +21,7 @@ const Module = imports.app.interfaces.module;
 const ScrollingTemplate = new Lang.Class({
     Name: 'ScrollingTemplate',
     GTypeName: 'EknScrollingTemplate',
-    Extends: Gtk.ScrolledWindow,
+    Extends: InfiniteScrolledWindow.InfiniteScrolledWindow,
     Implements: [ Module.Module ],
 
     Properties: {
@@ -41,6 +44,13 @@ const ScrollingTemplate = new Lang.Class({
         } else {
             this._viewport.add(content);
         }
+
+        this.connect('need-more-content', () => {
+            Dispatcher.get_default().dispatch({
+                action_type: Actions.NEED_MORE_CONTENT,
+                scroll_server: this.name,
+            });
+        });
     },
 
     // Module override
