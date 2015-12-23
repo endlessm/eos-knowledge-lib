@@ -206,7 +206,8 @@ const Window = new Lang.Class({
             provider.load_from_data(frame_css);
             context.add_provider(provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
         }
-        context.add_class(StyleClasses.BACKGROUND_LEFT);
+        if (!Utils.low_performance_mode())
+            this.get_style_context().add_class('parallax');
 
         let dispatcher = Dispatcher.get_default();
         dispatcher.dispatch({
@@ -351,6 +352,8 @@ const Window = new Lang.Class({
             action_type: Actions.NAV_BACK_ENABLED_CHANGED,
             enabled: nav_back_visible,
         });
+        if (Utils.low_performance_mode())
+            this._stack.transition_type = Gtk.StackTransitionType.NONE;
         this._stack.visible_child = new_page;
 
         // The first transition on app startup has duration 0, subsequent ones
@@ -395,6 +398,9 @@ const Window = new Lang.Class({
             context.remove_class(StyleClasses.WINDOW_SMALL);
             context.add_class(StyleClasses.WINDOW_LARGE);
         }
+
+        if (Utils.low_performance_mode())
+            return;
 
         // FIXME: if GTK gains support for the 'vmax' CSS unit, then we can move
         // this calculation to pure CSS and get rid of the extra CSS provider.

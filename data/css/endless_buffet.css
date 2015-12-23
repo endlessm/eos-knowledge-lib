@@ -4,6 +4,10 @@
     font-family: Lato;
 }
 
+EknWindow {
+    background-size: cover;
+}
+
 .scrollbar {
     -GtkRange-trough-border: 3px;
     -GtkRange-slider-width: 8px;
