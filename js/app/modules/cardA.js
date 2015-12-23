@@ -69,8 +69,10 @@ const CardA = new Lang.Class({
 
         // We will cache the appearance of our card to a surface, and use the
         // cache only when animating the card bigger or smaller.
-        this._surface_cache = new WidgetSurfaceCache.WidgetSurfaceCache(this, (cr) => {
-            MarginButton.MarginButton.prototype.vfunc_draw.call(this, cr);
+        this._surface_cache = new WidgetSurfaceCache.WidgetSurfaceCache(this,
+            this._draw_cache_surface.bind(this), {
+            width: HOVER_WIDTH,
+            height: HOVER_HEIGHT,
         });
         this._tweener = new ToggleTweener.ToggleTweener(this, {
             inactive_value: 1,
@@ -81,16 +83,32 @@ const CardA = new Lang.Class({
         });
     },
 
+    _draw_cache_surface: function (cr) {
+        // We will cache the scaled up version of the card to use when
+        // transitioning, it leads to the nicest looking transition.
+        let allocation = this.get_allocation();
+        cr.translate(HOVER_WIDTH / 2, HOVER_HEIGHT / 2);
+        cr.scale(1 + GROW_FRACTION, 1 + GROW_FRACTION);
+        cr.translate(- allocation.width / 2, - allocation.height / 2);
+        MarginButton.MarginButton.prototype.vfunc_draw.call(this, cr);
+    },
+
     vfunc_draw: function (cr) {
-        if (!this._tweener.is_tweening())
-            this._surface_cache.invalidate();
         let allocation = this.get_allocation();
         let scale = this._tweener.get_value();
-        cr.translate(allocation.width / 2, allocation.height / 2);
-        cr.scale(scale, scale);
-        cr.translate(- allocation.width / 2, - allocation.height / 2);
-        cr.setSourceSurface(this._surface_cache.get_surface(), 0, 0);
-        cr.paint();
+        if (this._tweener.is_tweening()) {
+            cr.translate(allocation.width / 2, allocation.height / 2);
+            cr.scale(scale / (1 + GROW_FRACTION), scale / (1 + GROW_FRACTION));
+            cr.translate(- HOVER_WIDTH / 2, - HOVER_HEIGHT / 2);
+            cr.setSourceSurface(this._surface_cache.get_surface(), 0, 0);
+            cr.paint();
+        } else {
+            cr.translate(allocation.width / 2, allocation.height / 2);
+            cr.scale(scale, scale);
+            cr.translate(-allocation.width / 2, -allocation.height / 2);
+            this.parent(cr);
+            this._surface_cache.invalidate();
+        }
         cr.$dispose();
         return false;
     },
