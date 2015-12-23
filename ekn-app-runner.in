@@ -11,6 +11,12 @@ if [ "$GJS_DEBUG_TOPICS" == "" ]; then
     export GJS_DEBUG_TOPICS="JS ERROR;JS LOG"
 fi
 
+# This will undoubtedly change in the future, but for now we will disable some
+# of our more costly animations on arm.
+if [[ "$(uname -m)" == arm* ]]; then
+    export LOW_PERFORMANCE_MODE=1
+fi
+
 DEBUG_COMMAND=""
 if [ "$RUN_DEBUG" != "" ]; then
     DEBUG_COMMAND="gdb --args"

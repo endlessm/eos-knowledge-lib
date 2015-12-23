@@ -8,6 +8,7 @@ const Format = imports.format;
 const Gdk = imports.gi.Gdk;
 const Gettext = imports.gettext;
 const Gio = imports.gi.Gio;
+const GLib = imports.gi.GLib;
 const Gtk = imports.gi.Gtk;
 
 const Config = imports.app.config;
@@ -305,4 +306,8 @@ function render_border_with_arrow (widget, cr) {
 
     // Render the arrow on top of the triangle
     Gtk.render_arrow(context, cr, 0, width - 15, height - 15, 12);
+}
+
+function low_performance_mode () {
+    return GLib.getenv('LOW_PERFORMANCE_MODE') !== null;
 }
