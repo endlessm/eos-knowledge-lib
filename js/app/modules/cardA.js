@@ -1,6 +1,7 @@
 // Copyright 2014 Endless Mobile, Inc.
 
 const GObject = imports.gi.GObject;
+const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const Card = imports.app.interfaces.card;
@@ -8,6 +9,9 @@ const MarginButton = imports.app.widgets.marginButton;
 const Module = imports.app.interfaces.module;
 const SetObjectModel = imports.search.setObjectModel;
 const Utils = imports.app.utils;
+
+const WIDTH = 197; // 183px width + 2 * 7px margin
+const HEIGHT = 223; // 209px height + 2 * 7px margin
 
 /**
  * Class: CardA
@@ -34,10 +38,6 @@ const CardA = new Lang.Class({
         'pdf-icon', 'pdf-label' ],
 
     _init: function (props={}) {
-        // TODO: we do want all cards to be the same size, but we may want to
-        // make this size scale with resolution down the road
-        props.width_request = 197;  // 183px width + 2 * 7px margin
-        props.height_request = 223;  // 209px height + 2 * 7px margin
         this.parent(props);
 
         this.set_title_label_from_model(this._title_label);
@@ -62,14 +62,15 @@ const CardA = new Lang.Class({
     },
 
     // For entirely fixed-size cards
+    vfunc_get_request_mode: function () {
+        return Gtk.SizeRequestMode.CONSTANT_SIZE;
+    },
 
     vfunc_get_preferred_width: function () {
-        let [min] = this.parent();
-        return [min, min];
+        return [WIDTH, WIDTH];
     },
 
     vfunc_get_preferred_height: function () {
-        let [min] = this.parent();
-        return [min, min];
+        return [HEIGHT, HEIGHT];
     },
 });
