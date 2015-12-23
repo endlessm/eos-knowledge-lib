@@ -56,20 +56,21 @@ EosWindow {
 }
 
 EknWindow {
-    background-position: 0% 50%;
+    background-size: cover;
+    background-position: center;
     background-repeat: no-repeat;
     transition: background-position 0.5s ease;
 }
 
-EknWindow.background-left {
+EknWindow.parallax.background-left {
     background-position: 0% 50%;
 }
 
-EknWindow.background-center {
+EknWindow.parallax.background-center {
     background-position: 50% 50%;
 }
 
-EknWindow.background-right {
+EknWindow.parallax.background-right {
     background-position: 100% 50%;
 }
 
