@@ -1,6 +1,7 @@
 // Copyright 2015 Endless Mobile, Inc.
 
 const Cairo = imports.cairo;
+const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 
@@ -27,6 +28,21 @@ const WidgetSurfaceCache = new Lang.Class({
             'Has Alpha', 'Has Alpha',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             true),
+        /**
+         * Property: width
+         * Width of the surface. If -1, allocated_width will be used.
+         */
+        'width': GObject.ParamSpec.int('width', 'Width', 'Width',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            -1, GLib.MAXINT32, -1),
+        /**
+         * Property: height
+         * Height of the surface. If -1, allocated_height will be used.
+         */
+        'height': GObject.ParamSpec.int('height', 'Height', 'Height',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            -1, GLib.MAXINT32, -1),
+
     },
 
     _init: function (widget, draw, props={}) {
@@ -61,8 +77,8 @@ const WidgetSurfaceCache = new Lang.Class({
         if (this._surface)
             return this._surface;
 
-        let width = this._widget.get_allocated_width();
-        let height = this._widget.get_allocated_height();
+        let width = this.width > 0 ? this.width : this._widget.get_allocated_width();
+        let height = this.height > 0 ? this.height : this._widget.get_allocated_height();
         let content = this.has_alpha ? Cairo.Content.COLOR_ALPHA : Cairo.Content.COLOR;
         this._surface = this._widget.get_window().create_similar_surface(content,
                                                                          width,
