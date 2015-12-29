@@ -178,6 +178,7 @@ EknWindow.parallax.background-right {
 
 .sidebar-template .sidebar .text-card .title {
     padding: 0em 0em 0em 1.5em;
+    font-family: Lato;
     font-size: 1.125em; /* 18pt * 1/12 * 0.75 DPI correction factor */
     font-weight: normal;
     color: @template-b-text-color;
@@ -541,6 +542,10 @@ EosWindow .scrollbar.slider {
     font-family: Roboto;
 }
 
+.composite .sidebar-template .sidebar .text-card .title {
+    font-family: Roboto;
+}
+
 .composite .headerbar .entry {
     font-size: 18px;
 }
@@ -569,7 +574,7 @@ EosWindow .scrollbar.slider {
 
 .composite .card-a .card-synopsis {
     color: black;
-    font-size: 14px;
+    font-size: 8px;
     text-shadow: none;
 }
 
