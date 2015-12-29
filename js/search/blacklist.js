@@ -123,6 +123,7 @@ const blacklist = {
         "Clitoris",
         "Colombian pornographic film actors",
         "Czech pornographic film actors",
+        "Erotic video games",
         "Erotica",
         "Erotica and pornography websites",
         "Execution methods",
