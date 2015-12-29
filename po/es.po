@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2015-12-14 20:22+0000\n"
+"POT-Creation-Date: 2015-12-22 02:49+0000\n"
 "PO-Revision-Date: 2015-12-14 21:00+0000\n"
 "Last-Translator: mattdangerw <watson@endlessm.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/es/)\n"
@@ -195,15 +195,15 @@ msgstr "Resultados para \"%s\""
 msgid "OOPS!"
 msgstr "¡UY!"
 
-#: js/app/modules/searchModule.js:188
+#: js/app/modules/searchModule.js:194
 msgid "Sorry! :-("
 msgstr "Lo sentimos! :-("
 
-#: js/app/modules/searchModule.js:189
+#: js/app/modules/searchModule.js:195
 msgid "There are no results that match your search.\n"
 msgstr "No hemos encontrado resultados que coincidan con tu búsqueda.\n"
 
-#: js/app/modules/searchModule.js:191
+#: js/app/modules/searchModule.js:197
 msgid ""
 "We recommend that you:\n"
 "\n"
@@ -212,7 +212,7 @@ msgid ""
 "  •  Try using more general words"
 msgstr "Te recomendamos que:\n\n• Revises como lo escribiste\n• Pruebes otras palabras similares \n• Pruebes palabras más generales"
 
-#: js/app/modules/searchModule.js:218
+#: js/app/modules/searchModule.js:224
 msgid "There was an error during your search."
 msgstr "Hubo un error durante tu búsqueda. "
 
