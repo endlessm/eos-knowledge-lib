@@ -32,6 +32,8 @@ const MockView = new Lang.Class({
         'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
         'template-type': GObject.ParamSpec.string('template-type', '', '',
             GObject.ParamFlags.READWRITE, ''),
+        'subtitle': GObject.ParamSpec.string('subtitle', '', '',
+            GObject.ParamFlags.READWRITE, ''),
     },
 });
 

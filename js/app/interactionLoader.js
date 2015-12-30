@@ -28,12 +28,17 @@ let create_interaction = function (application, resource_path) {
         css = data.toString();
     }
 
+    let app_subtitle = '';
+    if (app_json['appSubtitle'])
+        app_subtitle = app_json['appSubtitle'];
+
     application.image_attribution_file = resource_file.get_child('credits.json');
 
     return factory.create_named_module('interaction', {
         template_type: app_json['templateType'],
         css: css,
         application: application,
+        subtitle: app_subtitle,
         factory: factory,
     });
 };

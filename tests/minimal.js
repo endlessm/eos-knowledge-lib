@@ -122,6 +122,7 @@ const MinimalInteraction = new Lang.Class({
         'application': GObject.ParamSpec.override('application', Interaction.Interaction),
         'template-type': GObject.ParamSpec.override('template-type', Interaction.Interaction),
         'css': GObject.ParamSpec.override('css', Interaction.Interaction),
+        'subtitle': GObject.ParamSpec.override('subtitle', Interaction.Interaction),
     },
 
     _init: function (props={}) {
@@ -139,6 +140,7 @@ const MinimalPage = new Lang.Class({
     Properties: {
         'factory': GObject.ParamSpec.override('factory', Module.Module),
         'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
+        'subtitle': GObject.ParamSpec.string('subtitle', '', '', GObject.ParamFlags.READWRITE, ''),
     },
 
     _init: function (props={}) {
