@@ -68,6 +68,7 @@ const AisleInteraction = new Lang.Class({
         'application': GObject.ParamSpec.override('application', Interaction.Interaction),
         'template-type': GObject.ParamSpec.override('template-type', Interaction.Interaction),
         'css': GObject.ParamSpec.override('css', Interaction.Interaction),
+        'subtitle': GObject.ParamSpec.override('subtitle', Interaction.Interaction),
         /**
          * Property: settings
          * Handles the User Settings
@@ -131,6 +132,7 @@ const AisleInteraction = new Lang.Class({
 
         this._window = this.create_submodule('window', {
             application: this.application,
+            subtitle: this.subtitle,
         });
 
         this._check_for_content_update();

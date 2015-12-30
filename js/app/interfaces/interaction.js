@@ -59,5 +59,17 @@ const Interaction = new Lang.Interface({
         'css': GObject.ParamSpec.string('css', 'css',
             'CSS overrides for the Knowledge app',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
+        /**
+         * Property: subtitle
+         * The application subtitle
+         *
+         * The specific subtitle of this Knowledge App.
+         *
+         * Flags:
+         *   Construct only
+         */
+        'subtitle': GObject.ParamSpec.string('subtitle', 'subtitle',
+            'Application subtitle',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
     },
 });
