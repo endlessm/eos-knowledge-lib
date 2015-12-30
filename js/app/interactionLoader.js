@@ -1,7 +1,6 @@
 const EvinceDocument = imports.gi.EvinceDocument;
 const Gio = imports.gi.Gio;
 
-const Config = imports.app.config;
 const ModuleFactory = imports.app.moduleFactory;
 const Utils = imports.app.utils;
 
