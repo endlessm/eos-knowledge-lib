@@ -28,9 +28,9 @@ let create_interaction = function (application, resource_path) {
         css = data.toString();
     }
 
-    let app_subtitle = '';
-    if (app_json['appSubtitle'])
-        app_subtitle = app_json['appSubtitle'];
+    let desktop_id = appname.slice(0, appname.indexOf('/'));
+    let desktop_app_info = Gio.DesktopAppInfo.new('com.endlessm.' + desktop_id + '.desktop');
+    let app_subtitle = desktop_app_info.get_description();
 
     application.image_attribution_file = resource_file.get_child('credits.json');
 
