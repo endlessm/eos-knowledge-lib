@@ -367,6 +367,12 @@ EknContextBanner {
     text-shadow: 0px 1px alpha(white, 0.004);
 }
 
+EknAppBanner {
+    font-family: Lato;
+    font-size: 1.19em; /* 19px / 12px/em * 72/96 */
+    color: #c4eefc;
+}
+
 .document-card WebKitWebView {
     background-color: white;
 }
@@ -420,4 +426,8 @@ EknContextBanner {
 .composite EknSideMenuTemplate .menu .card .title,
 .composite EknContextBanner {
     font-family: Lato;
+}
+
+.composite EknAppBanner {
+    font-size: 19px;
 }
