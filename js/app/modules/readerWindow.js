@@ -87,6 +87,15 @@ const ReaderWindow = new Lang.Class({
         'title-image-uri': GObject.ParamSpec.string('title-image-uri',
             'Title Image URI', 'Title Image URI',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
+        /**
+         * Property: subtitle
+         * The application subtitle
+         *
+         * The specific subtitle of this Knowledge App.
+         */
+        'subtitle': GObject.ParamSpec.string('subtitle', 'subtitle',
+            'Application subtitle',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
     },
 
     Signals: {
@@ -101,7 +110,9 @@ const ReaderWindow = new Lang.Class({
         props = props || {};
         this.parent(props);
 
-        this._front_page = this.create_submodule('front-page');
+        this._front_page = this.create_submodule('front-page', {
+            'subtitle': this.subtitle,
+        });
         this._back_page = this.create_submodule('back-page');
         this._search_page = this.create_submodule('search-page');
         this.standalone_page = this.create_submodule('standalone-page');
