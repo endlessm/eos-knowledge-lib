@@ -289,7 +289,7 @@ const Window = new Lang.Class({
         this._stack.connect_after('notify::visible-child',
             this._update_top_bar_visibility.bind(this));
 
-        this.show_all();
+        this.get_child().show_all();
         this._set_background_position_style(StyleClasses.BACKGROUND_LEFT);
     },
 
