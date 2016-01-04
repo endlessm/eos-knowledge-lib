@@ -287,7 +287,7 @@ const Window = new Lang.Class({
         }.bind(this));
 
         this._stack.connect_after('notify::visible-child',
-            this._after_stack_visible_child_changed.bind(this));
+            this._update_top_bar_visibility.bind(this));
 
         this.show_all();
         this._set_background_position_style(StyleClasses.BACKGROUND_LEFT);
@@ -301,7 +301,7 @@ const Window = new Lang.Class({
         context.add_class(klass);
     },
 
-    _after_stack_visible_child_changed: function () {
+    _update_top_bar_visibility: function () {
         let new_page = this._stack.visible_child;
         this._search_box.visible =
             !Utils.has_descendant_with_type(new_page, SearchBox.SearchBox);
@@ -313,6 +313,7 @@ const Window = new Lang.Class({
             // Even though we didn't change, this should still count as the
             // first transition.
             this._stack.transition_duration = this.TRANSITION_DURATION;
+            this._update_top_bar_visibility();
             return;
         }
 
