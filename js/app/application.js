@@ -26,7 +26,6 @@ const KnowledgeSearchIface = '\
     </method> \
   </interface> \
 </node>';
-const INACTIVITY_TIMEOUT = 12000;
 
 const Application = new Lang.Class({
     Name: 'Application',
@@ -44,7 +43,6 @@ const Application = new Lang.Class({
     },
 
     _init: function (props={}) {
-        props.inactivity_timeout = INACTIVITY_TIMEOUT;
         this.parent(props);
         this._interaction = null;
         this._knowledge_search_impl = Gio.DBusExportedObject.wrapJSObject(KnowledgeSearchIface, this);
