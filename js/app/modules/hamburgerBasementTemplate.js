@@ -72,8 +72,8 @@ const HamburgerBasementTemplate = new Lang.Class({
         this._basement = this.create_submodule('basement');
         this._basement_grid.attach(this._basement, 0, 1, 1, 1);
 
-        let top_panel = this._setup_panel_buttom(Gtk.PositionType.TOP);
-        let bottom_panel = this._setup_panel_buttom(Gtk.PositionType.BOTTOM);
+        let top_panel = this._setup_panel_button(Gtk.PositionType.TOP);
+        let bottom_panel = this._setup_panel_button(Gtk.PositionType.BOTTOM);
 
         this._basement_grid.attach(top_panel, 0, 0, 1, 1);
         this._upper_grid.attach(bottom_panel, 0, 2, 1, 1);
@@ -96,7 +96,7 @@ const HamburgerBasementTemplate = new Lang.Class({
         });
     },
 
-    _setup_panel_buttom: function (position) {
+    _setup_panel_button: function (position) {
         let is_bottom = (position === Gtk.PositionType.BOTTOM);
         let button = new TabButton.TabButton({
             position: position,
