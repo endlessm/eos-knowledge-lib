@@ -105,7 +105,7 @@ const EncyclopediaWindow = new Lang.Class({
             background_size: 'cover',
             background_position: 'top center'
         });
-        this.show_all();
+        this.get_child().show_all();
     },
 
     get_visible_page: function () {
