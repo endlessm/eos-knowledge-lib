@@ -63,7 +63,7 @@ const BuffetInteraction = new Lang.Class({
         'css': GObject.ParamSpec.override('css', Interaction.Interaction),
     },
 
-    BRAND_SCREEN_TIME_MS: 1500,
+    BRAND_PAGE_TIME_MS: 1500,
 
     _init: function (props={}) {
         this._launched_once = this._timer_ready = this._content_ready = false;
@@ -133,7 +133,7 @@ const BuffetInteraction = new Lang.Class({
                     this._content_ready = true;
                     if (this._timer_ready) {
                         Dispatcher.get_default().dispatch({
-                            action_type: Actions.BRAND_SCREEN_DONE,
+                            action_type: Actions.BRAND_PAGE_DONE,
                         });
                     }
                     break;
@@ -404,7 +404,7 @@ const BuffetInteraction = new Lang.Class({
         this._launched_once = true;
 
         Dispatcher.get_default().dispatch({
-            action_type: Actions.FIRST_LAUNCH,
+            action_type: Actions.PRESENT_WINDOW,
             timestamp: timestamp,
             launch_type: launch_type,
         });
@@ -422,14 +422,14 @@ const BuffetInteraction = new Lang.Class({
         }
 
         Dispatcher.get_default().dispatch({
-            action_type: Actions.SHOW_BRAND_SCREEN,
+            action_type: Actions.SHOW_BRAND_PAGE,
         });
 
-        GLib.timeout_add(GLib.PRIORITY_DEFAULT, this.BRAND_SCREEN_TIME_MS, () => {
+        GLib.timeout_add(GLib.PRIORITY_DEFAULT, this.BRAND_PAGE_TIME_MS, () => {
             this._timer_ready = true;
             if (this._content_ready) {
                 Dispatcher.get_default().dispatch({
-                    action_type: Actions.BRAND_SCREEN_DONE,
+                    action_type: Actions.BRAND_PAGE_DONE,
                 });
             }
             return GLib.SOURCE_REMOVE;

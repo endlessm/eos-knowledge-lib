@@ -60,10 +60,10 @@ describe('Window', function () {
         factory.add_named_mock('all-sets-page', Minimal.MinimalPage);
         factory.add_named_mock('lightbox', Minimal.MinimalBinModule);
         factory.add_named_mock('navigation', Minimal.MinimalBinModule);
-        factory.add_named_mock('brand-screen', Minimal.MinimalPage);
+        factory.add_named_mock('brand-page', Minimal.MinimalPage);
         factory.add_named_mock('real-search-box', SearchBox.SearchBox);
         factory.add_named_mock('window', Window.Window, {
-            'brand-screen': null,
+            'brand-page': null,
             'home-page': 'home-page',
             'section-page': 'section-page',
             'search-page': 'search-page',
@@ -73,8 +73,8 @@ describe('Window', function () {
             'lightbox': 'lightbox',
             'search': 'top-bar-search',
         });
-        factory.add_named_mock('window-with-brand-screen', Window.Window, {
-            'brand-screen': 'brand-screen',
+        factory.add_named_mock('window-with-brand-page', Window.Window, {
+            'brand-page': 'brand-page',
             'home-page': 'home-page',
             'section-page': 'section-page',
             'search-page': 'real-search-box',
@@ -86,7 +86,7 @@ describe('Window', function () {
         });
     });
 
-    describe('without brand screen', function () {
+    describe('without brand page', function () {
         let view;
 
         beforeEach(function () {
@@ -174,7 +174,7 @@ describe('Window', function () {
             spyOn(view, 'present');
             spyOn(view, 'present_with_time');
             dispatcher.dispatch({
-                action_type: Actions.FIRST_LAUNCH,
+                action_type: Actions.PRESENT_WINDOW,
                 timestamp: 0,
                 launch_type: Launcher.LaunchType.DESKTOP,
             });
@@ -182,7 +182,7 @@ describe('Window', function () {
         });
     });
 
-    describe('with a brand screen and no lightbox / navigation', function () {
+    describe('with a brand page and no lightbox / navigation', function () {
         let view;
 
         beforeEach(function () {
@@ -191,7 +191,7 @@ describe('Window', function () {
             view = new Window.Window({
                 application: app,
                 factory: factory,
-                factory_name: 'window-with-brand-screen',
+                factory_name: 'window-with-brand-page',
             });
         });
 
@@ -199,17 +199,17 @@ describe('Window', function () {
             view.destroy();
         });
 
-        it('starts on the brand screen page', function () {
-            let brand_screen = factory.get_created_named_mocks('brand-screen')[0];
-            expect(view.get_visible_page()).toBe(brand_screen);
+        it('starts on the brand page page', function () {
+            let brand_page = factory.get_created_named_mocks('brand-page')[0];
+            expect(view.get_visible_page()).toBe(brand_page);
         });
 
-        it('switches to the brand screen when show-brand-screen is dispatched', function () {
-            let brand_screen = factory.get_created_named_mocks('brand-screen')[0];
+        it('switches to the brand page when show-brand-page is dispatched', function () {
+            let brand_page = factory.get_created_named_mocks('brand-page')[0];
             dispatcher.dispatch({
-                action_type: Actions.SHOW_BRAND_SCREEN,
+                action_type: Actions.SHOW_BRAND_PAGE,
             });
-            expect(view.get_visible_page()).toBe(brand_screen);
+            expect(view.get_visible_page()).toBe(brand_page);
         });
 
         it('switches to the categories page after the show-all-sets page is dispatched', function () {

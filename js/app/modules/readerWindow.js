@@ -124,7 +124,7 @@ const ReaderWindow = new Lang.Class({
 
         dispatcher.register((payload) => {
             switch(payload.action_type) {
-                case Actions.FIRST_LAUNCH:
+                case Actions.PRESENT_WINDOW:
                     this.show_all();
                     this.present_with_time(payload.timestamp);
                     break;

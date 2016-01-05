@@ -100,70 +100,70 @@ describe('Mesh interaction', function () {
             .toEqual(payloads[0].models.map((model) => model.title));
     });
 
-    it('dispatches app-launched on launch from desktop', function () {
+    it('dispatches present window on launch from desktop', function () {
         mesh.desktop_launch(0);
         Utils.update_gui();
-        expect(dispatcher.last_payload_with_type(Actions.FIRST_LAUNCH).launch_type)
+        expect(dispatcher.last_payload_with_type(Actions.PRESENT_WINDOW).launch_type)
             .toBe(Launcher.LaunchType.DESKTOP);
     });
 
-    it('dispatches app-launched on launch from search', function () {
+    it('dispatches present window on launch from search', function () {
         mesh.search(0, 'query');
-        expect(dispatcher.last_payload_with_type(Actions.FIRST_LAUNCH).launch_type)
+        expect(dispatcher.last_payload_with_type(Actions.PRESENT_WINDOW).launch_type)
             .toBe(Launcher.LaunchType.SEARCH);
     });
 
-    it('dispatches app-launched on launch from search result', function () {
+    it('dispatches present window on launch from search result', function () {
         engine.get_object_by_id_finish.and.returnValue(new ContentObjectModel.ContentObjectModel());
         mesh.activate_search_result(0, 'ekn://foo/bar', 'query');
-        expect(dispatcher.last_payload_with_type(Actions.FIRST_LAUNCH).launch_type)
+        expect(dispatcher.last_payload_with_type(Actions.PRESENT_WINDOW).launch_type)
             .toBe(Launcher.LaunchType.SEARCH_RESULT);
     });
 
-    it('dispatches app-launched only once', function () {
+    it('dispatches present window only once', function () {
         engine.get_object_by_id_finish.and.returnValue(new ContentObjectModel.ContentObjectModel());
 
         mesh.desktop_launch(0);
         Utils.update_gui();
-        let payloads = dispatcher.payloads_with_type(Actions.FIRST_LAUNCH);
+        let payloads = dispatcher.payloads_with_type(Actions.PRESENT_WINDOW);
         expect(payloads.length).toBe(1);
 
         mesh.desktop_launch(0);
         mesh.search(0, 'query');
         mesh.activate_search_result(0, 'ekn://foo/bar', 'query');
 
-        payloads = dispatcher.payloads_with_type(Actions.FIRST_LAUNCH);
+        payloads = dispatcher.payloads_with_type(Actions.PRESENT_WINDOW);
         expect(payloads.length).toBe(1);
     });
 
-    it('indicates that the brand screen has been read after launch from desktop', function () {
-        mesh.BRAND_SCREEN_TIME_MS = 0;
+    it('indicates that the brand page has been read after launch from desktop', function () {
+        mesh.BRAND_PAGE_TIME_MS = 0;
         mesh.desktop_launch(0);
-        expect(dispatcher.last_payload_with_type(Actions.SHOW_BRAND_SCREEN)).toBeDefined();
+        expect(dispatcher.last_payload_with_type(Actions.SHOW_BRAND_PAGE)).toBeDefined();
         Utils.update_gui();
-        expect(dispatcher.last_payload_with_type(Actions.BRAND_SCREEN_DONE)).toBeDefined();
+        expect(dispatcher.last_payload_with_type(Actions.BRAND_PAGE_DONE)).toBeDefined();
     });
 
-    it('shows the brand screen only once', function () {
-        mesh.BRAND_SCREEN_TIME_MS = 0;
+    it('shows the brand page only once', function () {
+        mesh.BRAND_PAGE_TIME_MS = 0;
         mesh.desktop_launch(0);
         mesh.desktop_launch(0);
         Utils.update_gui();
-        let payloads = dispatcher.payloads_with_type(Actions.SHOW_BRAND_SCREEN);
+        let payloads = dispatcher.payloads_with_type(Actions.SHOW_BRAND_PAGE);
         expect(payloads.length).toBe(1);
     });
 
-    it('does not show the brand screen on other launch methods', function () {
-        mesh.BRAND_SCREEN_TIME_MS = 0;
+    it('does not show the brand page on other launch methods', function () {
+        mesh.BRAND_PAGE_TIME_MS = 0;
         engine.get_object_by_id_finish.and.returnValue(new ContentObjectModel.ContentObjectModel());
         mesh.search(0, 'query');
         mesh.activate_search_result(0, 'ekn://foo/bar', 'query');
         Utils.update_gui();
-        expect(dispatcher.last_payload_with_type(Actions.SHOW_BRAND_SCREEN)).not.toBeDefined();
+        expect(dispatcher.last_payload_with_type(Actions.SHOW_BRAND_PAGE)).not.toBeDefined();
     });
 
     it('cannot go back from the home page after launch from desktop', function () {
-        mesh.BRAND_SCREEN_TIME_MS = 0;
+        mesh.BRAND_PAGE_TIME_MS = 0;
         mesh.desktop_launch(0);
         Utils.update_gui();
         expect(dispatcher.last_payload_with_type(Actions.SHOW_HOME_PAGE)).toBeDefined();
@@ -172,7 +172,7 @@ describe('Mesh interaction', function () {
     });
 
     it('cannot go back from the search page after launch from search', function () {
-        mesh.BRAND_SCREEN_TIME_MS = 0;
+        mesh.BRAND_PAGE_TIME_MS = 0;
         mesh.search(0, 'query');
         Utils.update_gui();
         expect(dispatcher.last_payload_with_type(Actions.SHOW_HOME_PAGE)).not.toBeDefined();
@@ -182,7 +182,7 @@ describe('Mesh interaction', function () {
     });
 
     it('cannot go back from the article page after launch from search result', function () {
-        mesh.BRAND_SCREEN_TIME_MS = 0;
+        mesh.BRAND_PAGE_TIME_MS = 0;
         engine.get_object_by_id_finish.and.returnValue(new ContentObjectModel.ContentObjectModel());
         mesh.activate_search_result(0, 'ekn://foo/bar', 'query');
         Utils.update_gui();
@@ -193,7 +193,7 @@ describe('Mesh interaction', function () {
     });
 
     it('goes back to the home page via the sidebar after launch from search', function () {
-        mesh.BRAND_SCREEN_TIME_MS = 0;
+        mesh.BRAND_PAGE_TIME_MS = 0;
         mesh.search(0, 'query');
         Utils.update_gui();
         dispatcher.reset();
@@ -204,7 +204,7 @@ describe('Mesh interaction', function () {
     });
 
     it('goes back to the home page via the sidebar after launch from search result', function () {
-        mesh.BRAND_SCREEN_TIME_MS = 0;
+        mesh.BRAND_PAGE_TIME_MS = 0;
         engine.get_object_by_id_finish.and.returnValue(new ContentObjectModel.ContentObjectModel());
         mesh.activate_search_result(0, 'ekn://foo/bar', 'query');
         Utils.update_gui();
@@ -405,7 +405,7 @@ describe('Mesh interaction', function () {
 
     describe('history', function () {
         beforeEach(function () {
-            mesh.BRAND_SCREEN_TIME_MS = 0;
+            mesh.BRAND_PAGE_TIME_MS = 0;
             mesh.desktop_launch(0);
             engine.get_objects_by_query_finish.and.returnValue([[
                 new ContentObjectModel.ContentObjectModel({

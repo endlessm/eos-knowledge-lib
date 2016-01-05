@@ -66,70 +66,70 @@ describe('Buffet interaction', function () {
         spyOn(buffet, 'record_search_metric');
     });
 
-    it('dispatches app-launched on launch from desktop', function () {
+    it('dispatches present window on launch from desktop', function () {
         buffet.desktop_launch(0);
-        expect(dispatcher.last_payload_with_type(Actions.FIRST_LAUNCH).launch_type)
+        expect(dispatcher.last_payload_with_type(Actions.PRESENT_WINDOW).launch_type)
             .toBe(Launcher.LaunchType.DESKTOP);
     });
 
-    it('dispatches app-launched on launch from search', function () {
+    it('dispatches present window on launch from search', function () {
         buffet.search(0, 'query');
-        expect(dispatcher.last_payload_with_type(Actions.FIRST_LAUNCH).launch_type)
+        expect(dispatcher.last_payload_with_type(Actions.PRESENT_WINDOW).launch_type)
             .toBe(Launcher.LaunchType.SEARCH);
     });
 
-    it('dispatches app-launched on launch from search result', function () {
+    it('dispatches present window on launch from search result', function () {
         engine.get_object_by_id_finish.and.returnValue(new ContentObjectModel.ContentObjectModel());
         buffet.activate_search_result(0, 'ekn://foo/bar', 'query');
-        expect(dispatcher.last_payload_with_type(Actions.FIRST_LAUNCH).launch_type)
+        expect(dispatcher.last_payload_with_type(Actions.PRESENT_WINDOW).launch_type)
             .toBe(Launcher.LaunchType.SEARCH_RESULT);
     });
 
-    it('dispatches app-launched only once', function () {
+    it('dispatches present window only once', function () {
         engine.get_object_by_id_finish.and.returnValue(new ContentObjectModel.ContentObjectModel());
 
         buffet.desktop_launch(0);
-        let payloads = dispatcher.payloads_with_type(Actions.FIRST_LAUNCH);
+        let payloads = dispatcher.payloads_with_type(Actions.PRESENT_WINDOW);
         expect(payloads.length).toBe(1);
 
         buffet.desktop_launch(0);
         buffet.search(0, 'query');
         buffet.activate_search_result(0, 'ekn://foo/bar', 'query');
 
-        payloads = dispatcher.payloads_with_type(Actions.FIRST_LAUNCH);
+        payloads = dispatcher.payloads_with_type(Actions.PRESENT_WINDOW);
         expect(payloads.length).toBe(1);
     });
 
-    it('indicates that the brand screen has been read after launch from desktop', function () {
-        buffet.BRAND_SCREEN_TIME_MS = 0;
+    it('indicates that the brand page has been read after launch from desktop', function () {
+        buffet.BRAND_PAGE_TIME_MS = 0;
         buffet.desktop_launch(0);
-        expect(dispatcher.last_payload_with_type(Actions.SHOW_BRAND_SCREEN)).toBeDefined();
+        expect(dispatcher.last_payload_with_type(Actions.SHOW_BRAND_PAGE)).toBeDefined();
         dispatcher.dispatch({
             action_type: Actions.MODULE_READY,
         });
         Utils.update_gui();
-        expect(dispatcher.last_payload_with_type(Actions.BRAND_SCREEN_DONE)).toBeDefined();
+        expect(dispatcher.last_payload_with_type(Actions.BRAND_PAGE_DONE)).toBeDefined();
     });
 
-    it('shows the brand screen only once', function () {
-        buffet.BRAND_SCREEN_TIME_MS = 0;
+    it('shows the brand page only once', function () {
+        buffet.BRAND_PAGE_TIME_MS = 0;
         buffet.desktop_launch(0);
         dispatcher.dispatch({
             action_type: Actions.MODULE_READY,
         });
         buffet.desktop_launch(0);
         Utils.update_gui();
-        let payloads = dispatcher.payloads_with_type(Actions.SHOW_BRAND_SCREEN);
+        let payloads = dispatcher.payloads_with_type(Actions.SHOW_BRAND_PAGE);
         expect(payloads.length).toBe(1);
     });
 
-    it('does not show the brand screen on other launch methods', function () {
-        buffet.BRAND_SCREEN_TIME_MS = 0;
+    it('does not show the brand page on other launch methods', function () {
+        buffet.BRAND_PAGE_TIME_MS = 0;
         engine.get_object_by_id_finish.and.returnValue(new ContentObjectModel.ContentObjectModel());
         buffet.search(0, 'query');
         buffet.activate_search_result(0, 'ekn://foo/bar', 'query');
         Utils.update_gui();
-        expect(dispatcher.last_payload_with_type(Actions.SHOW_BRAND_SCREEN)).not.toBeDefined();
+        expect(dispatcher.last_payload_with_type(Actions.SHOW_BRAND_PAGE)).not.toBeDefined();
     });
 
     it('dispatches set models to populate the app with', function () {
@@ -143,7 +143,7 @@ describe('Buffet interaction', function () {
 
     describe('when a set is clicked', function () {
         beforeEach(function () {
-            buffet.BRAND_SCREEN_TIME_MS = 0;
+            buffet.BRAND_PAGE_TIME_MS = 0;
             buffet.desktop_launch(0);
             dispatcher.dispatch({
                 action_type: Actions.SET_CLICKED,
