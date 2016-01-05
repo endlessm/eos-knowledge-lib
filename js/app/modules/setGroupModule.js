@@ -99,7 +99,16 @@ const SetGroupModule = new Lang.Class({
         if (this._cards.length <= this.max_children) {
             this._arrangement.add_card(card);
         }
-        this.has_more_content = this._cards.length > this.max_children;
-        this.notify('has-more-content')
+        this._check_more_content();
+    },
+
+    _check_more_content: function () {
+        this.has_more_content = this._cards.length > this.max_children || !this._arrangement.all_visible;
+        this.notify('has-more-content');
+    },
+
+    vfunc_size_allocate: function (alloc) {
+        this.parent(alloc);
+        this._check_more_content();
     },
 });
