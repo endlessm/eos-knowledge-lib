@@ -605,6 +605,7 @@ const MeshInteraction = new Lang.Class({
         Dispatcher.get_default().dispatch({
             action_type: Actions.SHOW_ARTICLE_PAGE,
         });
+        this._dispatch_launch(timestamp, Launcher.LaunchType.SEARCH_RESULT);
 
         Engine.get_default().get_object_by_id(ekn_id, null, (engine, task) => {
             try {
@@ -617,7 +618,6 @@ const MeshInteraction = new Lang.Class({
             } catch (error) {
                 logError(error);
             }
-            this._dispatch_launch(timestamp, Launcher.LaunchType.SEARCH_RESULT);
         });
         // Don't wait for the sets to load on the home page, since we don't
         // start off showing the home page
