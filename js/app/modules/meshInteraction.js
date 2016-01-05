@@ -58,9 +58,9 @@ const MeshInteraction = new Lang.Class({
     SECTION_PAGE: 'section',
 
     SEARCH_METRIC: 'a628c936-5d87-434a-a57a-015a0f223838',
-    // Overridable in tests. Brand screen should be visible for 2 seconds. The
+    // Overridable in tests. Brand page should be visible for 2 seconds. The
     // transition is currently hardcoded to a slow fade over 500 ms.
-    BRAND_SCREEN_TIME_MS: 1500,
+    BRAND_PAGE_TIME_MS: 1500,
 
     _init: function (props) {
         this._launched_once = false;
@@ -551,7 +551,7 @@ const MeshInteraction = new Lang.Class({
         this._launched_once = true;
 
         Dispatcher.get_default().dispatch({
-            action_type: Actions.FIRST_LAUNCH,
+            action_type: Actions.PRESENT_WINDOW,
             timestamp: timestamp,
             launch_type: launch_type,
         });
@@ -569,12 +569,12 @@ const MeshInteraction = new Lang.Class({
         }
 
         Dispatcher.get_default().dispatch({
-            action_type: Actions.SHOW_BRAND_SCREEN,
+            action_type: Actions.SHOW_BRAND_PAGE,
         });
 
-        GLib.timeout_add(GLib.PRIORITY_DEFAULT, this.BRAND_SCREEN_TIME_MS, () => {
+        GLib.timeout_add(GLib.PRIORITY_DEFAULT, this.BRAND_PAGE_TIME_MS, () => {
             Dispatcher.get_default().dispatch({
-                action_type: Actions.BRAND_SCREEN_DONE,
+                action_type: Actions.BRAND_PAGE_DONE,
             });
             return GLib.SOURCE_REMOVE;
         });

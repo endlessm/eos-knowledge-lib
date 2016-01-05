@@ -21,7 +21,7 @@
                         }
                     }
                 },
-                "brand-screen": {
+                "brand-page": {
                     "type": "AppBanner",
                     "properties": {
                         "max-fraction": 0.6,
