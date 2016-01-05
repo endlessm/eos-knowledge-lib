@@ -90,9 +90,7 @@ const HamburgerBasementTemplate = new Lang.Class({
         });
 
         this._bottom.connect('notify::has-more-content', () => {
-            if (this._bottom.has_more_content) {
-                bottom_panel.reveal_panel = true;
-            }
+            bottom_panel.reveal_panel = this._bottom.has_more_content;
         });
     },
 
