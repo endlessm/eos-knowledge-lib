@@ -2,6 +2,7 @@
 
 /* exported Arrangement */
 
+const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
@@ -19,6 +20,20 @@ const Arrangement = new Lang.Interface({
     Name: 'Arrangement',
     GTypeName: 'EknArrangement',
     Requires: [ Gtk.Widget, Module.Module ],
+
+    Properties: {
+        /**
+         * Property: all-visible
+         * Whether all children are visible or some were cut off
+         *
+         * Flags:
+         *   read-only
+         */
+        'all-visible': GObject.ParamSpec.boolean('all-visible', 'All visible',
+            'All children visible',
+            GObject.ParamFlags.READABLE,
+            true),
+    },
 
     /**
      * Method: add_card
