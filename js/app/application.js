@@ -27,7 +27,6 @@ const KnowledgeSearchIface = '\
     </method> \
   </interface> \
 </node>';
-const INACTIVITY_TIMEOUT = 12000;
 
 const Application = new Lang.Class({
     Name: 'Application',
@@ -45,7 +44,6 @@ const Application = new Lang.Class({
     },
 
     _init: function (props={}) {
-        props.inactivity_timeout = INACTIVITY_TIMEOUT;
         this.parent(props);
         this._interaction = null;
         this._knowledge_search_impl = Gio.DBusExportedObject.wrapJSObject(KnowledgeSearchIface, this);
@@ -103,14 +101,6 @@ const Application = new Lang.Class({
         this.parent();
         this.ensure_interaction();
         this._interaction.desktop_launch(Gdk.CURRENT_TIME);
-    },
-
-    vfunc_window_removed: function (win) {
-        if (this._interaction) {
-            Dispatcher.get_default().reset();
-            this._interaction = null;
-        }
-        this.parent(win);
     },
 
     // To be overridden in subclass

@@ -54,7 +54,10 @@ const EncyclopediaWindow = new Lang.Class({
         dispatcher.register((payload) => {
             switch(payload.action_type) {
                 case Actions.FIRST_LAUNCH:
-                    this.present_with_time(payload.timestamp);
+                    if (payload.timestamp)
+                        this.present_with_time(payload.timestamp);
+                    else
+                        this.present();
                     break;
                 case Actions.HISTORY_BACK_ENABLED_CHANGED:
                     this._history_buttons.back_button.sensitive = payload.enabled;
@@ -102,7 +105,7 @@ const EncyclopediaWindow = new Lang.Class({
             background_size: 'cover',
             background_position: 'top center'
         });
-        this.show_all();
+        this.get_child().show_all();
     },
 
     get_visible_page: function () {
