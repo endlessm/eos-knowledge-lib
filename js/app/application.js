@@ -92,14 +92,6 @@ const Application = new Lang.Class({
         this._interaction.desktop_launch(Gdk.CURRENT_TIME);
     },
 
-    vfunc_window_removed: function (win) {
-        if (this._interaction) {
-            Dispatcher.get_default().reset();
-            this._interaction = null;
-        }
-        this.parent(win);
-    },
-
     // To be overridden in subclass
     ensure_interaction: function () {
         if (this._interaction === null) {
