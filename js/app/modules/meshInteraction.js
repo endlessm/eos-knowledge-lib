@@ -171,14 +171,15 @@ const MeshInteraction = new Lang.Class({
         A: {
             section_card: '.card-a',
             article_card: '.article-card',
-            section_page: '.section-page-a',
-            search_page: '.search-page-a',
+            section_page_banner: '.section-page-a EknSetBannerModule',
+            search_page_banner: '.search-page-a EknSearchBannerModule',
             no_search_results_page: '.no-search-results-page-a'
         },
         B: {
             section_card: '.card-b',
             article_card: '.text-card',
-            section_page: '.section-page-b',
+            section_page_banner: '.section-page-b EknSetBannerModule',
+            search_page_banner: '.search-page-b EknSearchBannerModule',
             search_page: '.search-page-b',
             no_search_results_page: '.no-search-results-page-b'
         },
