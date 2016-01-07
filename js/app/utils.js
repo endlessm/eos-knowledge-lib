@@ -1,6 +1,7 @@
-/* exported dbus_object_path_for_webview, get_web_plugin_dbus_name,
-get_web_plugin_dbus_name_for_webview, has_descendant_with_type,
-render_border_with_arrow */
+/* exported dbus_object_path_for_webview, get_css_for_title_and_module,
+get_web_plugin_dbus_name, get_web_plugin_dbus_name_for_webview,
+has_descendant_with_type, render_border_with_arrow,
+split_out_conditional_knobs */
 
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Format = imports.format;
@@ -117,6 +118,39 @@ function object_to_css_string (obj, selector="*") {
     }
     css_string += "}\n";
     return css_string;
+}
+
+/* Font overrides should not apply in composite mode; this function separates
+out the non-composite override knobs and deletes them from the passed-in
+css_data object */
+function split_out_conditional_knobs (css_data) {
+    let conditional_data = {};
+    ['font-family', 'font-size', 'font-weight', 'font-style'].forEach(key => {
+        if (key in css_data) {
+            conditional_data[key] = css_data[key];
+            delete css_data[key];
+        }
+    });
+    return conditional_data;
+}
+
+/* Convenience function for repeated code */
+function get_css_for_title_and_module (css_data, title_selector, module_selector) {
+    const NON_COMPOSITE_SELECTOR = 'EosWindow:not(.composite) ';
+
+    let title_data = get_css_for_submodule('title', css_data);
+    let conditional_title_data = split_out_conditional_knobs(title_data);
+    let str = object_to_css_string(title_data, title_selector);
+    str += object_to_css_string(conditional_title_data,
+        NON_COMPOSITE_SELECTOR + title_selector);
+
+    let module_data = get_css_for_submodule('module', css_data);
+    let conditional_module_data = split_out_conditional_knobs(module_data);
+    str += object_to_css_string(module_data, module_selector);
+    str += object_to_css_string(conditional_module_data,
+        NON_COMPOSITE_SELECTOR + module_selector);
+
+    return str;
 }
 
 const DESKTOP_INTERFACE_SCHEMA = 'org.gnome.desktop.interface';

@@ -91,11 +91,8 @@ function get_css_for_module (css_data, num) {
             '.reader-card.variant' + num + ' .decorative-bar');
         delete css_data['title-background-color'];
     }
-    let title_data = Utils.get_css_for_submodule('title', css_data);
-    str += Utils.object_to_css_string(title_data, '.reader-card.variant' +
-        num + ' .title');
-    let module_data = Utils.get_css_for_submodule('module', css_data);
-    str += Utils.object_to_css_string(module_data, '.reader-card.variant' +
-        num + ' .attribution');
+    str += Utils.get_css_for_title_and_module(css_data,
+        '.reader-card.variant' + num + ' .title',
+        '.reader-card.variant' + num + ' .attribution');
     return str;
 }

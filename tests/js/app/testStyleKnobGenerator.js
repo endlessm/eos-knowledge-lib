@@ -8,11 +8,11 @@ let style_knobs_a = {
     'tab_button': {
         'module-background-color': '#7DA443',
     },
-    'section_page': {
+    'section_page_banner': {
         'title-font-family': "'Marcellus SC'",
         'title-font-weight': 'bold',
     },
-    'search_page': {
+    'search_page_banner': {
         'title-font-family': "'Marcellus SC'",
         'title-font-weight': 'bold',
     },
@@ -43,13 +43,13 @@ let style_knobs_b = {
         'title-color': '#98B8FF',
         'hover-color': '#4573D9',
     },
-    'section_page': {
+    'section_page_banner': {
         'title-font-size': '9.0em',
         'title-padding': '0.5em 0.0em 0.5em 0.7em',
         'title-font-family': "'Amatic SC'",
         'title-font-weight': 'bold',
     },
-    'search_page': {
+    'search_page_banner': {
         'title-font-size': '9.0em',
         'title-padding': '0.5em 0.0em 0.5em 0.7em',
         'title-font-family': "'Amatic SC'",

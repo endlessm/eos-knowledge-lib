@@ -125,8 +125,8 @@ function selector_to_knob_reader (knobs, props, selector) {
 function selector_to_knob_ka (knobs, props, selector) {
     switch (selector) {
         case '.section-page-title':
-            knobs['section_page'] = merge_object_properties(knobs['section_page'], prefix_keys_with(props, 'title-'));
-            knobs['search_page'] = merge_object_properties(knobs['search_page'], prefix_keys_with(props, 'title-'));
+            knobs['section_page_banner'] = merge_object_properties(knobs['section_page_banner'], prefix_keys_with(props, 'title-'));
+            knobs['search_page_banner'] = merge_object_properties(knobs['search_page_banner'], prefix_keys_with(props, 'title-'));
             break;
         case '.home-page .card-title':
             knobs['section_card'] = merge_object_properties(knobs['section_card'], prefix_keys_with(props, 'title-'));

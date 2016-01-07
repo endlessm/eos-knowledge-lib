@@ -211,5 +211,8 @@ const SidebarTemplate = new Lang.Class({
 
 function get_css_for_module(css_data) {
     let module_data = Utils.get_css_for_submodule('module', css_data);
-    return Utils.object_to_css_string(module_data, '.' + StyleClasses.SIDEBAR);
+    let conditional_module_data = Utils.split_out_conditional_knobs(module_data);
+    return (Utils.object_to_css_string(module_data, '.' + StyleClasses.SIDEBAR) +
+        Utils.object_to_css_string(conditional_module_data,
+            'EosWindow:not(.composite) .' + StyleClasses.SIDEBAR));
 }
