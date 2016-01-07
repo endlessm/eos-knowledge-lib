@@ -1,6 +1,7 @@
 // Copyright 2014 Endless Mobile, Inc.
 
 const Cairo = imports.gi.cairo;
+const Endless = imports.gi.Endless;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
@@ -81,6 +82,10 @@ const CardA = new Lang.Class({
         this.connect('state-flags-changed', () => {
             this._tweener.set_active((this.get_state_flags() & Gtk.StateFlags.PRELIGHT) !== 0);
         });
+
+        if (Endless.is_composite_tv_screen(null)) {
+            this._synopsis_label.lines = 5;
+        }
     },
 
     _draw_cache_surface: function (cr) {
