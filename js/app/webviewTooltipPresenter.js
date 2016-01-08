@@ -154,6 +154,7 @@ const WebviewTooltipPresenter = new GObject.Class({
 
     _remove_link_tooltip: function () {
         if (this._link_tooltip) {
+            this._link_tooltip.hide();
             this._link_tooltip.destroy();
             this._link_tooltip = null;
         }
@@ -173,9 +174,6 @@ const WebviewTooltipPresenter = new GObject.Class({
             modal: false,
         });
         this._link_tooltip.get_style_context().add_class(StyleClasses.READER_WEBVIEW_TOOLTIP);
-        this._link_tooltip.connect('leave-notify-event', () => {
-            this._remove_link_tooltip();
-        });
         if (!this.emit('show-tooltip', this._link_tooltip, uri))
             this._remove_link_tooltip();
     },
