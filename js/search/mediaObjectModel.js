@@ -10,8 +10,8 @@ GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.
 
 /**
  * Class: MediaObjectModel
- * The model class for media objects. A media obejct has the same
- * properties as a <ContentObjectModel>, plus <caption>, <encoding-format>, <height>
+ * The model class for media objects. A media object has the same
+ * properties as a <ContentObjectModel>, plus <caption>, <height>
  * and <width> properties
  */
 const MediaObjectModel = new Lang.Class({
@@ -26,15 +26,6 @@ const MediaObjectModel = new Lang.Class({
          */
         'caption': GObject.ParamSpec.string('caption',
             'Caption', 'Displayable caption for the media',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            ''),
-
-        /**
-         * Property: encoding-format
-         * The format in which the content is encoded. Defaults to empty string
-         */
-        'encoding-format': GObject.ParamSpec.string('encoding-format',
-            'Encoding Format', 'The format in which the content is encoded',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             ''),
 
@@ -68,9 +59,6 @@ const MediaObjectModel = new Lang.Class({
         // Marshal properties specific to MediaObjectModel
         if (json_ld.hasOwnProperty('caption'))
             props.caption = json_ld.caption;
-
-        if (json_ld.hasOwnProperty('encodingFormat'))
-            props.encoding_format = json_ld.encodingFormat;
 
         if (json_ld.hasOwnProperty('height'))
             props.height = parseInt(json_ld.height);
