@@ -98,9 +98,10 @@ var EknWebview = new Knowledge.Class({
 
     _load_context_menu: function (webview, context_menu, event) {
         context_menu.get_items().forEach(function (item) {
-            // Remove all menu items except 'Copy'
+            // Remove unwanted menu items
             let action = item.get_stock_action();
             if (action !== WebKit2.ContextMenuAction.COPY &&
+                action !== WebKit2.ContextMenuAction.COPY_IMAGE_TO_CLIPBOARD &&
                 action !== WebKit2.ContextMenuAction.INSPECT_ELEMENT) {
                 context_menu.remove(item);
             }
