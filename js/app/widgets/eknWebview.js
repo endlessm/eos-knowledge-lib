@@ -130,6 +130,13 @@ const EknWebview = new Lang.Class({
         }
     },
 
+    // Tell MathJax to stop any processing; should improve performance when
+    // navigating to another page before processing is finished.
+    _stop_mathjax: function () {
+        this.run_javascript('if (typeof MathJax !== "undefined") MathJax.Hub.queue.Suspend();',
+            null, null);
+    },
+
     _onNavigation: function (webview, decision, decision_type) {
         if (decision_type === WebKit2.PolicyDecisionType.NAVIGATION_ACTION) {
             let uri = Compat.normalize_old_browser_urls(decision.request.uri);
@@ -139,6 +146,7 @@ const EknWebview = new Lang.Class({
                 decision.ignore();
                 return true; // handled
             }
+            this._stop_mathjax();
         }
         return false; // not handled, default behavior
     },
