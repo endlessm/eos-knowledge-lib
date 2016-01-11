@@ -1,8 +1,8 @@
 // Copyright 2015 Endless Mobile, Inc.
 
 /* exported MinimalArrangement, MinimalBackCover, MinimalCard, MinimalDocumentCard,
-MinimalPage, MinimalHomePage, MinimalInteraction, MinimalLightbox, MinimalModule,
-MinimalNavigation, MinimalStandalonePage, test_arrangement_compliance */
+MinimalPage, MinimalHomePage, MinimalInteraction, MinimalBinModule, MinimalModule,
+test_arrangement_compliance */
 
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
@@ -231,8 +231,8 @@ const MinimalDocumentCard = new Lang.Class({
     clear_content: function () {},
 });
 
-const MinimalLightbox = new Lang.Class({
-    Name: 'MinimalLightbox',
+const MinimalBinModule = new Lang.Class({
+    Name: 'MinimalBinModule',
     Extends: Gtk.Frame,
     Implements: [ Module.Module ],
 
@@ -243,37 +243,7 @@ const MinimalLightbox = new Lang.Class({
 
     _init: function (props={}) {
         this.parent(props);
-    },
-});
-
-const MinimalNavigation = new Lang.Class({
-    Name: 'MinimalNavigation',
-    Extends: Gtk.Frame,
-    Implements: [ Module.Module ],
-
-    Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-    },
-
-    _init: function (props={}) {
-        this.parent(props);
-    },
-});
-
-const MinimalStandalonePage = new Lang.Class({
-    Name: 'MinimalStandalonePage',
-    Extends: Gtk.Frame,
-    Implements: [ Module.Module ],
-
-    Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-    },
-
-    _init: function (props={}) {
-        this.parent(props);
-        this.infobar = new Gtk.Label();
+        this.infobar = new Gtk.Label(); // StandalonePage requires this
     },
 });
 
