@@ -58,8 +58,8 @@ describe('Window', function () {
         factory.add_named_mock('search-page', Minimal.MinimalPage);
         factory.add_named_mock('article-page', Minimal.MinimalPage);
         factory.add_named_mock('all-sets-page', Minimal.MinimalPage);
-        factory.add_named_mock('lightbox', Minimal.MinimalLightbox);
-        factory.add_named_mock('navigation', Minimal.MinimalNavigation);
+        factory.add_named_mock('lightbox', Minimal.MinimalBinModule);
+        factory.add_named_mock('navigation', Minimal.MinimalBinModule);
         factory.add_named_mock('brand-screen', Minimal.MinimalPage);
         factory.add_named_mock('real-search-box', SearchBox.SearchBox);
         factory.add_named_mock('window', Window.Window, {
