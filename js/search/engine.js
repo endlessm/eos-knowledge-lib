@@ -238,72 +238,76 @@ const Engine = Lang.Class({
             if (query_obj.domain === '')
                 query_obj = QueryObject.QueryObject.new_from_object(query_obj, { domain: this.default_domain });
 
-            let do_query = (query_obj) => {
-                let query_req_uri = this._get_xapian_query_uri(query_obj);
-                this._send_json_ld_request(query_req_uri, cancellable, task.catch_callback_errors((engine, json_task) => {
-                    let json_ld = this._send_json_ld_request_finish(json_task);
+            let shard_file = this._shard_file_from_domain(query_obj.domain);
+            shard_file.init_async(0, null, (shard_file, result) => {
+                shard_file.init_finish(result);
+                let do_query = (query_obj) => {
+                    let query_req_uri = this._get_xapian_query_uri(query_obj);
+                    this._send_json_ld_request(query_req_uri, cancellable, task.catch_callback_errors((engine, json_task) => {
+                        let json_ld = this._send_json_ld_request_finish(json_task);
 
-                    if (json_ld.results.length === 0) {
-                        task.return_value([[], null]);
-                        return;
-                    }
-
-                    let more_results_query;
-                    if (json_ld.results.length < query_obj.limit) {
-                        more_results_query = null;
-                    } else {
-                        more_results_query = QueryObject.QueryObject.new_from_object(query_obj, {
-                            offset: json_ld.numResults + json_ld.offset,
-                        });
-                    }
-
-                    // We need to instantiate models for our results asynchronously.
-                    // We'll set up a function here to resolve a result, which
-                    // triggers our callback when the last article resolves.
-                    let resolved = 0;
-                    let results = new Array(json_ld.results.length);
-                    let resolve = (index, model) => {
-                        results[index] = model;
-                        resolved++;
-                        if (resolved === results.length)
-                            task.return_value([results, more_results_query]);
-                    };
-
-                    json_ld.results.forEach((result, index) => {
-                        let id;
-                        let ekn_version = this._ekn_version_from_domain(query_obj.domain);
-                        if (ekn_version >= 2) {
-                            id = result;
-                        } else {
-                            // Old bundles contain all the jsonld in xapian, and
-                            // serve it in the results. If its a redirect we need to
-                            // resolve it, otherwise we can resolve immediately.
-                            let model = this._get_v1_model_from_string(result);
-                            if (model.redirects_to.length > 0) {
-                                id = model.redirects_to;
-                            } else {
-                                resolve(index, model);
-                                return;
-                            }
+                        if (json_ld.results.length === 0) {
+                            task.return_value([[], null]);
+                            return;
                         }
-                        this.get_object_by_id(id, cancellable, task.catch_callback_errors((engine, id_task) => {
-                            let model = this.get_object_by_id_finish(id_task);
-                            resolve(index, model);
-                        }));
-                    });
-                }));
-            };
 
-            // If we have a user entered query string, we should fix it up.
-            // Otherwise we can just query directly.
-            if (query_obj.query) {
-                this.get_fixed_query(query_obj, cancellable, task.catch_callback_errors((engine, fix_query_task) => {
-                    query_obj = this.get_fixed_query_finish(fix_query_task);
+                        let more_results_query;
+                        if (json_ld.results.length < query_obj.limit) {
+                            more_results_query = null;
+                        } else {
+                            more_results_query = QueryObject.QueryObject.new_from_object(query_obj, {
+                                offset: json_ld.numResults + json_ld.offset,
+                            });
+                        }
+
+                        // We need to instantiate models for our results asynchronously.
+                        // We'll set up a function here to resolve a result, which
+                        // triggers our callback when the last article resolves.
+                        let resolved = 0;
+                        let results = new Array(json_ld.results.length);
+                        let resolve = (index, model) => {
+                            results[index] = model;
+                            resolved++;
+                            if (resolved === results.length)
+                                task.return_value([results, more_results_query]);
+                        };
+
+                        json_ld.results.forEach((result, index) => {
+                            let id;
+                            let ekn_version = this._ekn_version_from_domain(query_obj.domain);
+                            if (ekn_version >= 2) {
+                                id = result;
+                            } else {
+                                // Old bundles contain all the jsonld in xapian, and
+                                // serve it in the results. If its a redirect we need to
+                                // resolve it, otherwise we can resolve immediately.
+                                let model = this._get_v1_model_from_string(result);
+                                if (model.redirects_to.length > 0) {
+                                    id = model.redirects_to;
+                                } else {
+                                    resolve(index, model);
+                                    return;
+                                }
+                            }
+                            this.get_object_by_id(id, cancellable, task.catch_callback_errors((engine, id_task) => {
+                                let model = this.get_object_by_id_finish(id_task);
+                                resolve(index, model);
+                            }));
+                        });
+                    }));
+                };
+
+                // If we have a user entered query string, we should fix it up.
+                // Otherwise we can just query directly.
+                if (query_obj.query) {
+                    this.get_fixed_query(query_obj, cancellable, task.catch_callback_errors((engine, fix_query_task) => {
+                        query_obj = this.get_fixed_query_finish(fix_query_task);
+                        do_query(query_obj);
+                    }));
+                } else {
                     do_query(query_obj);
-                }));
-            } else {
-                do_query(query_obj);
-            }
+                }
+            });
         });
         return task;
     },
