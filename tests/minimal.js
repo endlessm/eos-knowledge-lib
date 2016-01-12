@@ -2,7 +2,7 @@
 
 /* exported MinimalArrangement, MinimalBackCover, MinimalCard, MinimalDocumentCard,
 MinimalPage, MinimalHomePage, MinimalInteraction, MinimalBinModule, MinimalModule,
-test_arrangement_compliance */
+test_arrangement_compliance, test_card_container_compliance */
 
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
@@ -15,6 +15,8 @@ const ContentObjectModel = imports.search.contentObjectModel;
 const DocumentCard = imports.app.interfaces.documentCard;
 const Interaction = imports.app.interfaces.interaction;
 const Launcher = imports.app.interfaces.launcher;
+const MockDispatcher = imports.tests.mockDispatcher;
+const MockFactory = imports.tests.mockFactory;
 const Module = imports.app.interfaces.module;
 const Scrollable = imports.app.interfaces.scrollable;
 const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
@@ -84,6 +86,8 @@ const MinimalCard = new Lang.Class({
 
     _init: function (props={}) {
         this.parent(props);
+        // For test_card_container_compliance() below
+        spyOn(this, 'fade_in').and.callThrough();
     },
 
     vfunc_size_allocate: function (allocation) {
@@ -281,6 +285,87 @@ function test_arrangement_compliance() {
             cards.forEach((card) =>
                 expect(this.arrangement).not.toHaveDescendant(card));
             expect(this.arrangement.get_cards().length).toBe(0);
+        });
+    });
+}
+
+function test_card_container_compliance(action, CardContainerClass, extra_slots={}) {
+    describe(CardContainerClass.$gtype.name + ' implements CardContainer correctly', function () {
+        let factory, dispatcher;
+
+        beforeEach(function () {
+            dispatcher = MockDispatcher.mock_default();
+            factory = new MockFactory.MockFactory();
+
+            factory.add_named_mock('card', MinimalCard);
+            factory.add_named_mock('arrangement', MinimalArrangement);
+            let slots = {
+                'arrangement': 'arrangement',
+                'card-type': 'card',
+            };
+            for (let slot in extra_slots) {
+                factory.add_named_mock(slot, extra_slots[slot]);
+                slots[slot] = slot;
+            }
+            factory.add_named_mock('card-container', CardContainerClass, slots);
+        });
+
+        describe('when requested to fade in', function () {
+            let arrangement;
+
+            beforeEach(function () {
+                new CardContainerClass({
+                    factory: factory,
+                    factory_name: 'card-container',
+                    fade_cards: true,
+                });
+                arrangement = factory.get_last_created_named_mock('arrangement');
+            });
+
+            it('does not fade in the first batch of cards', function () {
+                dispatcher.dispatch({
+                    action_type: action,
+                    models: [new ContentObjectModel.ContentObjectModel()],
+                });
+                Utils.update_gui();
+                expect(arrangement.get_cards()[0].fade_in).not.toHaveBeenCalled();
+            });
+
+            it('does so otherwise when requested', function () {
+                dispatcher.dispatch({
+                    action_type: action,
+                    models: [new ContentObjectModel.ContentObjectModel()],
+                });
+                Utils.update_gui();
+                expect(arrangement.get_cards()[0].fade_in).not.toHaveBeenCalled();
+                dispatcher.dispatch({
+                    action_type: action,
+                    models: [new ContentObjectModel.ContentObjectModel()],
+                });
+                Utils.update_gui();
+                expect(arrangement.get_cards()[1].fade_in).toHaveBeenCalled();
+            });
+        });
+
+        it('does not fade in when not requested to', function () {
+            new CardContainerClass({
+                factory: factory,
+                factory_name: 'card-container',
+                fade_cards: false,
+            });
+            let arrangement = factory.get_last_created_named_mock('arrangement');
+            dispatcher.dispatch({
+                action_type: action,
+                models: [new ContentObjectModel.ContentObjectModel()],
+            });
+            Utils.update_gui();
+            expect(arrangement.get_cards()[0].fade_in).not.toHaveBeenCalled();
+            dispatcher.dispatch({
+                action_type: action,
+                models: [new ContentObjectModel.ContentObjectModel()],
+            });
+            Utils.update_gui();
+            expect(arrangement.get_cards()[1].fade_in).not.toHaveBeenCalled();
         });
     });
 }

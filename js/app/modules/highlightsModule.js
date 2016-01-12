@@ -9,6 +9,7 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const Actions = imports.app.actions;
+const CardContainer = imports.app.interfaces.cardContainer;
 const Config = imports.app.config;
 const Dispatcher = imports.app.dispatcher;
 const Engine = imports.search.engine;
@@ -48,11 +49,13 @@ const HighlightsModule = new Lang.Class({
     Name: 'HighlightsModule',
     GTypeName: 'EknHighlightsModule',
     Extends: Gtk.Grid,
-    Implements: [ Module.Module ],
+    Implements: [ Module.Module, CardContainer.CardContainer ],
 
     Properties: {
         'factory': GObject.ParamSpec.override('factory', Module.Module),
         'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
+        'fade-cards': GObject.ParamSpec.override('fade-cards',
+            CardContainer.CardContainer),
     },
 
     // Overridable in tests

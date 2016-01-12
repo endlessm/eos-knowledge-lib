@@ -338,6 +338,11 @@ const Card = new Lang.Interface({
      * Use instead of *Gtk.Widget.show()* or *Gtk.Widget.show_all()*.
      */
     fade_in: function () {
+        if (Utils.low_performance_mode()) {
+            this.show();
+            return;
+        }
+
         let context = this.get_style_context();
         context.add_class(StyleClasses.INVISIBLE);
         // FIXME: for some reason even if initial opacity = 0 in css, the

@@ -204,3 +204,6 @@ describe('Search module', function () {
         expect(payload).toEqual(matcher);
     });
 });
+
+Minimal.test_card_container_compliance(Actions.APPEND_SEARCH,
+    SearchModule.SearchModule, { 'responsive-margins': Gtk.Frame });
