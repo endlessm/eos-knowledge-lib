@@ -15,6 +15,7 @@ describe('Responsive margins module', function () {
 
     it('constructs', function () {});
 
+    testMarginsForDimensions(720, 0);
     testMarginsForDimensions(800, 40);
     testMarginsForDimensions(1100, 62);
     testMarginsForDimensions(1400, 83);

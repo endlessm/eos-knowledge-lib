@@ -8,9 +8,11 @@ const Lang = imports.lang;
 
 const Module = imports.app.interfaces.module;
 
+const MARGIN_THRESHOLD_TINY = 800;
 const MARGIN_THRESHOLD_SMALL = 1000;
 const MARGIN_THRESHOLD_MEDIUM = 1200;
 const MARGIN_THRESHOLD_LARGE = 1500;
+const MARGIN_TINY = 0;
 const MARGIN_SMALL = 40;
 const MARGIN_MEDIUM = 62;
 const MARGIN_LARGE = 83;
@@ -37,7 +39,9 @@ const ResponsiveMarginsModule = new Lang.Class({
 
     vfunc_size_allocate: function (alloc) {
         let margin;
-        if (alloc.width < MARGIN_THRESHOLD_SMALL) {
+        if (alloc.width < MARGIN_THRESHOLD_TINY) {
+            margin = MARGIN_TINY;
+        } else if (alloc.width < MARGIN_THRESHOLD_SMALL) {
             margin = MARGIN_SMALL;
         } else if (alloc.width < MARGIN_THRESHOLD_MEDIUM) {
             margin = MARGIN_MEDIUM;
