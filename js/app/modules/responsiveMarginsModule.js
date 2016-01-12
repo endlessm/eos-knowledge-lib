@@ -47,8 +47,9 @@ const ResponsiveMarginsModule = new Lang.Class({
             margin = MARGIN_XLARGE;
         }
 
-        this.get_children()[0].margin_start = margin;
-        this.get_children()[0].margin_end = margin;
+        let child = this.get_children()[0];
+        child.margin_start = margin;
+        child.margin_end = margin;
 
         this.parent(alloc);
     },
