@@ -9,10 +9,11 @@
       <object class="GtkLabel" id="subtitle-label">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="halign">center</property>
+        <property name="halign">fill</property>
         <property name="valign">start</property>
         <property name="vexpand">True</property>
         <property name="use_markup">True</property>
+        <property name="wrap">True</property>
         <style>
           <class name="subtitle"/>
         </style>

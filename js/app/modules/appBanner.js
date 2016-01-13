@@ -11,6 +11,21 @@ const Module = imports.app.interfaces.module;
 const ImagePreviewer = imports.app.widgets.imagePreviewer;
 const Utils = imports.app.utils;
 
+function _alignment_to_justification (align) {
+    switch (align) {
+        case Gtk.Align.FILL:
+        case Gtk.Align.CENTER:
+            return Gtk.Justification.CENTER;
+        case Gtk.Align.START:
+            return (Gtk.get_locale_direction() === Gtk.TextDirection.RTL) ?
+                Gtk.Justification.RIGHT : Gtk.Justification.LEFT;
+        case Gtk.Align.END:
+            return (Gtk.get_locale_direction() === Gtk.TextDirection.RTL) ?
+                Gtk.Justification.LEFT : Gtk.Justification.RIGHT;
+    }
+    return Gtk.Justification.CENTER;
+}
+
 /**
  * Class: AppBanner
  *
@@ -83,8 +98,6 @@ const AppBanner = new Lang.Class({
             0.0, 1.0, 1.0),
     },
 
-    // Note: The 50-px margin-start on the subtitle looks reasonable until we
-    // get better instructions from design.
     Template: 'resource:///com/endlessm/knowledge/data/widgets/appBanner.ui',
     InternalChildren: [ 'subtitle-label' ],
 
@@ -111,6 +124,7 @@ const AppBanner = new Lang.Class({
         this._subtitle_label.label = ('<span letter_spacing="758">' +
             GLib.markup_escape_text(subtitle, -1) + '</span>');
         this._subtitle_label.visible = !!this.subtitle;
+        this._subtitle_label.justify = _alignment_to_justification(this.halign);
     },
 
     set subtitle(value) {
