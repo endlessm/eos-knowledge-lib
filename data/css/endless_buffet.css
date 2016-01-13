@@ -392,10 +392,6 @@ EknAppBanner {
 
 /* Changes for composite TVs */
 
-.composite .entry {
-    font-size: 18px;
-}
-
 .composite .search-results GtkListBoxRow {
     padding: 0 40px;
 }
