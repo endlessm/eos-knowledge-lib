@@ -36,14 +36,8 @@ const ScrollingTemplate = new Lang.Class({
         this.parent(props);
 
         let content = this.create_submodule('content');
-        let responsive_margins = this.create_submodule('responsive-margins');
 
-        if (responsive_margins) {
-            responsive_margins.add(content);
-            this._viewport.add(responsive_margins);
-        } else {
-            this._viewport.add(content);
-        }
+        this._viewport.add(content);
 
         this.connect('need-more-content', () => {
             Dispatcher.get_default().dispatch({
@@ -55,6 +49,6 @@ const ScrollingTemplate = new Lang.Class({
 
     // Module override
     get_slot_names: function () {
-        return ['content', 'responsive-margins'];
+        return ['content'];
     },
 });

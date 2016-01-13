@@ -2,6 +2,7 @@
 
 const Gtk = imports.gi.Gtk;
 
+const MockFactory = imports.tests.mockFactory;
 const ResponsiveMarginsModule = imports.app.modules.responsiveMarginsModule;
 const Utils = imports.tests.utils;
 
@@ -9,8 +10,16 @@ Gtk.init(null);
 
 describe('Responsive margins module', function () {
     beforeEach(function () {
-        this.responsive_margins = new ResponsiveMarginsModule.ResponsiveMarginsModule();
-        this.responsive_margins.add(new Gtk.Label());
+        this.factory = new MockFactory.MockFactory();
+        this.factory.add_named_mock('content', Gtk.Label);
+        this.factory.add_named_mock('module', ResponsiveMarginsModule.ResponsiveMarginsModule, {
+            'content': 'content',
+        });
+
+        this.responsive_margins = new ResponsiveMarginsModule.ResponsiveMarginsModule({
+            factory: this.factory,
+            factory_name: 'module',
+        });
     });
 
     it('constructs', function () {});

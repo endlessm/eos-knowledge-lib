@@ -35,6 +35,8 @@ const ResponsiveMarginsModule = new Lang.Class({
 
     _init: function (props={}) {
         this.parent(props);
+
+        this.add(this.create_submodule('content'));
     },
 
     vfunc_size_allocate: function (alloc) {
@@ -55,5 +57,10 @@ const ResponsiveMarginsModule = new Lang.Class({
         this.get_children()[0].margin_end = margin;
 
         this.parent(alloc);
+    },
+
+    // Module override
+    get_slot_names: function () {
+        return ['content'];
     },
 });
