@@ -98,8 +98,6 @@ const AppBanner = new Lang.Class({
             0.0, 1.0, 1.0),
     },
 
-    // Note: The 50-px margin-start on the subtitle looks reasonable until we
-    // get better instructions from design.
     Template: 'resource:///com/endlessm/knowledge/data/widgets/appBanner.ui',
     InternalChildren: [ 'subtitle-label' ],
 
