@@ -58,33 +58,4 @@ describe('Sidebar template', function () {
     it('has the sidebar-frame class on its sidebar frame', function () {
         expect(template).toHaveDescendantWithCssClass(StyleClasses.SIDEBAR);
     });
-
-    describe('at different sizes', function () {
-        let win;
-
-        beforeEach(function () {
-            win = new Gtk.OffscreenWindow();
-            template.expand = true;
-            win.add(template);
-            win.show_all();
-        });
-
-        afterEach(function () {
-            win.destroy();
-        });
-
-        it('reduces the margins on its submodules when there is less room', function () {
-            win.set_size_request(500, 500);
-            Utils.update_gui();
-            expect(content.margin_start).toBeLessThan(200);
-            expect(sidebar.margin_end).toBeLessThan(200);
-        });
-
-        it('leaves the margins alone when there is enough room', function () {
-            win.set_size_request(1500, 1500);
-            Utils.update_gui();
-            expect(content.margin_start).toBe(200);
-            expect(sidebar.margin_end).toBe(200);
-        });
-    });
 });
