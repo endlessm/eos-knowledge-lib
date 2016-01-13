@@ -390,6 +390,26 @@ EknAppBanner {
     font-weight: bold;
 }
 
+EknResponsiveMarginsModule.tiny {
+    margin: 0px;
+}
+
+EknResponsiveMarginsModule.small {
+    margin: 0px 40px;
+}
+
+EknResponsiveMarginsModule.medium {
+    margin: 0px 62px;
+}
+
+EknResponsiveMarginsModule.large {
+    margin: 0px 83px;
+}
+
+EknResponsiveMarginsModule.xlarge {
+    margin: 0px 120px;
+}
+
 /* Changes for composite TVs */
 
 .composite .search-results GtkListBoxRow {
