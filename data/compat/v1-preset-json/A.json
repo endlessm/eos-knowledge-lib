@@ -147,8 +147,7 @@
                             "type": "CardA"
                         },
                         "article-suggestions": null,
-                        "category-suggestions": null,
-                        "responsive-margins": null
+                        "category-suggestions": null
                     },
                     "properties": {
                         "message-justify": "left",

@@ -32,13 +32,11 @@ describe('Search module', function () {
         dispatcher = MockDispatcher.mock_default();
         factory = new MockFactory.MockFactory();
         factory.add_named_mock('results-card', Minimal.MinimalCard);
-        factory.add_named_mock('responsive-margins', Gtk.Frame);
         factory.add_named_mock('results-arrangement',
             Minimal.MinimalArrangement);
         factory.add_named_mock('search-module', SearchModule.SearchModule, {
             'arrangement': 'results-arrangement',
             'card-type': 'results-card',
-            'responsive-margins': 'responsive-margins',
         });
         search_module = new SearchModule.SearchModule({
             factory: factory,
