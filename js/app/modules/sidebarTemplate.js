@@ -12,9 +12,6 @@ const Module = imports.app.interfaces.module;
 const StyleClasses = imports.app.styleClasses;
 const Utils = imports.app.utils;
 
-const _PAGE_WIDTH_THRESHOLD_PX = 1366;
-const _MARGIN_DIFF_PX = 50;
-
 const _FixedWidthFrame = new Lang.Class({
     Name: 'FixedWidthFrame',
     GTypeName: 'EknFixedWidthFrame',
@@ -47,11 +44,6 @@ const _MaxWidthFrame = new Lang.Class({
  * The <sidebar-width> property controls the width of the sidebar slot, and the
  * <fixed> property controls whether this is a fixed or a maximum width.
  * This template can also set a background image in code.
- *
- * The layout is responsive to screen size changes.
- * If the template's width is less than 1366 pixels, then 50 pixels will be
- * deducted from the left margin of the content submodule and the right margin
- * of the sidebar submodule.
  *
  * Slots:
  *   sidebar
@@ -155,24 +147,7 @@ const SidebarTemplate = new Lang.Class({
         this.content_frame.get_style_context().add_class(StyleClasses.CONTENT);
         this.sidebar_frame.get_style_context().add_class(StyleClasses.SIDEBAR);
 
-        this._content_base_margin_start = this._content.margin_start;
-        this._sidebar_base_margin_end = this._sidebar.margin_end;
-        this.connect('size-allocate', this._update_margins.bind(this));
-        this._update_margins(this, this.get_allocation());
-
         this._orig_sidebar_width = this.sidebar_width;
-    },
-
-    _update_margins: function (widget, alloc) {
-        if (alloc.width >= _PAGE_WIDTH_THRESHOLD_PX) {
-            this._content.margin_start = this._content_base_margin_start;
-            this._sidebar.margin_end = this._sidebar_base_margin_end;
-        } else {
-            this._content.margin_start = Math.max(0,
-                this._content_base_margin_start - _MARGIN_DIFF_PX);
-            this._sidebar.margin_end = Math.max(0,
-                this._sidebar_base_margin_end - _MARGIN_DIFF_PX);
-        }
     },
 
     get_slot_names: function () {
