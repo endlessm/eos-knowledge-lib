@@ -1,5 +1,6 @@
 const Engine = imports.search.engine;
 const EosShard = imports.gi.EosShard;
+const GLib = imports.gi.GLib;
 const Gio = imports.gi.Gio;
 const QueryObject = imports.search.queryObject;
 const System = imports.system;
@@ -113,6 +114,12 @@ function dump (path, id, data_or_meta) {
 
     let shard = get_shard_for_path(path);
     let record = shard.find_record_by_hex_name(id);
+
+    if (record === null) {
+        let sha1 = GLib.compute_checksum_for_string(GLib.ChecksumType.SHA1, id, -1);
+        record = shard.find_record_by_hex_name(sha1);
+    }
+
     if (record === null) {
         fail_with_message('Could not find shard entry for id', id);
     }
