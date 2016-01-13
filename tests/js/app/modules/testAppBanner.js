@@ -42,4 +42,23 @@ describe('App banner module', function () {
         let subtitle_widget = Gtk.test_find_label(app_banner, 'A Cute Pig');
         expect(subtitle_widget).toHaveCssClass(StyleClasses.SUBTITLE);
     });
+
+    it('justifies the subtitle appropriately to its alignment', function () {
+        Gtk.Widget.set_default_direction(Gtk.TextDirection.LTR);
+        let expected_justifications = {};
+        expected_justifications[Gtk.Align.START] = Gtk.Justification.LEFT;
+        expected_justifications[Gtk.Align.END] = Gtk.Justification.RIGHT;
+        expected_justifications[Gtk.Align.CENTER] = Gtk.Justification.CENTER;
+        expected_justifications[Gtk.Align.FILL] = Gtk.Justification.CENTER;
+
+        for (let align in expected_justifications) {
+            let app_banner = new AppBanner.AppBanner({
+                image_uri: pig_uri,
+                subtitle: 'A Cute Pig',
+                halign: align,
+            });
+            let subtitle_widget = Gtk.test_find_label(app_banner, 'A Cute Pig');
+            expect(subtitle_widget.justify).toBe(expected_justifications[align]);
+        }
+    });
 });
