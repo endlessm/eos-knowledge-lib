@@ -156,7 +156,6 @@ describe('Search module', function () {
         factory.add_named_mock('infinite-module', SearchModule.SearchModule, {
             'arrangement': 'infinite-arrangement',
             'card-type': 'results-card',
-            'responsive-margins': 'responsive-margins',
         });
         search_module = new SearchModule.SearchModule({
             factory: factory,
@@ -208,4 +207,4 @@ describe('Search module', function () {
 });
 
 Minimal.test_card_container_compliance(Actions.APPEND_SEARCH,
-    SearchModule.SearchModule, { 'responsive-margins': Gtk.Frame });
+    SearchModule.SearchModule);
