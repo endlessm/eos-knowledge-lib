@@ -174,8 +174,7 @@
                             "type": "SearchResultCard"
                         },
                         "article-suggestions": "article-suggestions",
-                        "category-suggestions": "category-suggestions",
-                        "responsive-margins": "responsive-margins"
+                        "category-suggestions": "category-suggestions"
                     },
                     "properties": {
                         "halign": "fill",
