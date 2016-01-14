@@ -41,6 +41,7 @@
                 "content": {
                     "type": "AppBanner",
                     "properties": {
+                        "show-subtitle": true,
                         "subtitle-capitalization": "uppercase",
                         "valign": "start",
                         "halign": "start",

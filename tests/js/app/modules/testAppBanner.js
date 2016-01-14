@@ -7,6 +7,7 @@ const Utils = imports.tests.utils;
 Utils.register_gresource();
 
 const AppBanner = imports.app.modules.appBanner;
+const AppUtils = imports.app.utils;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const StyleClasses = imports.app.styleClasses;
 
@@ -21,17 +22,28 @@ describe('App banner module', function () {
     beforeEach(function () {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
 
+        spyOn(AppUtils, 'get_desktop_app_info').and.returnValue({
+            get_description: () => "A Cute Pig",
+        });
         app_banner = new AppBanner.AppBanner({
             image_uri: pig_uri,
-            subtitle: 'A Cute Pig',
+            show_subtitle: true,
         });
     });
 
     it('can be constructed', function () {});
 
-    it('displays the subtitle', function () {
+    it('displays the subtitle if show subtitle true', function () {
         let subtitle_widget = Gtk.test_find_label(app_banner, 'A Cute Pig');
         expect(subtitle_widget).not.toBeNull();
+    });
+
+    it('does not displays the subtitle if show subtitle false', function () {
+        app_banner = new AppBanner.AppBanner({
+            image_uri: pig_uri,
+        });
+        let subtitle_widget = Gtk.test_find_label(app_banner, 'A Cute Pig');
+        expect(subtitle_widget).toBeNull();
     });
 
     it('has the app-banner CSS class', function () {
@@ -54,7 +66,7 @@ describe('App banner module', function () {
         for (let align in expected_justifications) {
             let app_banner = new AppBanner.AppBanner({
                 image_uri: pig_uri,
-                subtitle: 'A Cute Pig',
+                show_subtitle: true,
                 halign: align,
             });
             let subtitle_widget = Gtk.test_find_label(app_banner, 'A Cute Pig');

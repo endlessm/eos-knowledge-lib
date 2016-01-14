@@ -53,13 +53,14 @@ const AppBanner = new Lang.Class({
             'URI to the title image',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
         /**
-         * Property: subtitle
-         * A subtitle for the application. Defaults to an empty string.
+         * Property: show-subtitle
+         * Whether to show an application subtitle underneath the image.
+         * Subtitle will be taken from the desktop file description field.
          */
-        'subtitle': GObject.ParamSpec.string('subtitle', 'App subtitle',
-            'A subtitle for the app',
+        'show-subtitle': GObject.ParamSpec.boolean('show-subtitle',
+            'Show Subtitle', 'Show Subtitle',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            ''),
+            false),
         /**
          * Property: subtitle-capitalization
          * Manner in which the app's subtitle is formatted
@@ -119,14 +120,16 @@ const AppBanner = new Lang.Class({
             this._logo.set_content(stream);
         }
 
-        let subtitle = Utils.format_capitals(this.subtitle,
-            this.subtitle_capitalization);
-        // 758 = 0.74 px * 1024 Pango units / px
-        // FIXME: Should be achievable through CSS when we fix GTK
-        this._subtitle_label.label = ('<span letter_spacing="758">' +
-            GLib.markup_escape_text(subtitle, -1) + '</span>');
-        this._subtitle_label.visible = !!this.subtitle;
-        this._subtitle_label.justify = _alignment_to_justification(this.halign);
+        let subtitle = Utils.get_desktop_app_info().get_description();
+        if (this.show_subtitle && subtitle) {
+            subtitle = Utils.format_capitals(subtitle, this.subtitle_capitalization);
+            // 758 = 0.74 px * 1024 Pango units / px
+            // FIXME: Should be achievable through CSS when we fix GTK
+            this._subtitle_label.label = ('<span letter_spacing="758">' +
+                GLib.markup_escape_text(subtitle, -1) + '</span>');
+            this._subtitle_label.visible = !!this.subtitle;
+            this._subtitle_label.justify = _alignment_to_justification(this.halign);
+        }
     },
 
     set subtitle(value) {
