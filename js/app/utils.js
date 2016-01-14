@@ -311,3 +311,8 @@ function render_border_with_arrow (widget, cr) {
 function low_performance_mode () {
     return GLib.getenv('LOW_PERFORMANCE_MODE') !== null;
 }
+
+function get_desktop_app_info () {
+    let app_id = Gio.Application.get_default().application_id;
+    return Gio.DesktopAppInfo.new(app_id + '.desktop');
+}
