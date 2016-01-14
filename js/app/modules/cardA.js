@@ -1,7 +1,7 @@
 // Copyright 2014 Endless Mobile, Inc.
 
 const Cairo = imports.gi.cairo;
-const Endless = imports.gi.Endless;
+const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
@@ -64,6 +64,8 @@ const CardA = new Lang.Class({
 
             this.set_label_or_hide(this._synopsis_label, this.model.synopsis);
             this._synopsis_label.visible = this._synopsis_label.visible && !is_pdf;
+            this._label_adjust_handler = this._synopsis_label.connect_after('size-allocate',
+                this._after_synopsis_label_size_allocate.bind(this));
         }
 
         Utils.set_hand_cursor_on_widget(this);
@@ -82,10 +84,6 @@ const CardA = new Lang.Class({
         this.connect('state-flags-changed', () => {
             this._tweener.set_active((this.get_state_flags() & Gtk.StateFlags.PRELIGHT) !== 0);
         });
-
-        if (Endless.is_composite_tv_screen(null)) {
-            this._synopsis_label.lines = 5;
-        }
     },
 
     _draw_cache_surface: function (cr) {
@@ -96,6 +94,32 @@ const CardA = new Lang.Class({
         cr.scale(1 + GROW_FRACTION, 1 + GROW_FRACTION);
         cr.translate(- allocation.width / 2, - allocation.height / 2);
         MarginButton.MarginButton.prototype.vfunc_draw.call(this, cr);
+    },
+
+    _after_synopsis_label_size_allocate: function (label, alloc) {
+        if (!this._synopsis_label.visible)
+            return;
+
+        let card_alloc = this.get_allocation();
+        // The label gets some space allocated that falls outside the
+        // card boundary, the 'overshoot'.
+        let overshoot = (alloc.y + alloc.height) -
+            (card_alloc.y + card_alloc.height);
+        let synopsis_height = alloc.height - overshoot;
+        // '0' is the usual character for determining line height.
+        let layout = label.create_pango_layout('0');
+        let [ink_rect, logical_rect] = layout.get_pixel_extents();
+        let synopsis_line_height = logical_rect.height;
+        let lines = Math.floor(synopsis_height / synopsis_line_height);
+        // Don't queue a resize from within a size_allocate()
+        GLib.idle_add(GLib.PRIORITY_DEFAULT_IDLE, () => {
+            label.lines = lines;
+            return GLib.SOURCE_REMOVE;
+        });
+
+        // We can get away with doing this once, since the card is fixed-size.
+        GObject.signal_handler_disconnect(label, this._label_adjust_handler);
+        this._label_adjust_handler = 0;
     },
 
     vfunc_draw: function (cr) {
