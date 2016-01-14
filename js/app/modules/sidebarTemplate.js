@@ -112,15 +112,6 @@ const SidebarTemplate = new Lang.Class({
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             ''),
 
-        /**
-         * Property: subtitle
-         * The application subtitle
-         *
-         * The specific subtitle of this Knowledge App.
-         */
-        'subtitle': GObject.ParamSpec.string('subtitle', 'subtitle',
-            'Application subtitle',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
         'factory': GObject.ParamSpec.override('factory', Module.Module),
         'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
     },
@@ -151,13 +142,7 @@ const SidebarTemplate = new Lang.Class({
         this.sidebar_frame.width = this.sidebar_width;
 
         this._sidebar = this.create_submodule('sidebar');
-        if (this.subtitle) {
-            this._content = this.create_submodule('content', {
-                'subtitle': this.subtitle,
-            });
-        } else {
-            this._content = this.create_submodule('content');
-        }
+        this._content = this.create_submodule('content');
 
         this.content_frame.add(this._content);
         this.sidebar_frame.add(this._sidebar);

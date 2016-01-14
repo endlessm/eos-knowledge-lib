@@ -27,17 +27,12 @@ let create_interaction = function (application, resource_path) {
         css = data.toString();
     }
 
-    let desktop_id = appname.slice(0, appname.indexOf('/'));
-    let desktop_app_info = Gio.DesktopAppInfo.new('com.endlessm.' + desktop_id + '.desktop');
-    let app_subtitle = desktop_app_info.get_description();
-
     application.image_attribution_file = resource_file.get_child('credits.json');
 
     return factory.create_named_module('interaction', {
         template_type: app_json['templateType'],
         css: css,
         application: application,
-        subtitle: app_subtitle,
         factory: factory,
     });
 };
