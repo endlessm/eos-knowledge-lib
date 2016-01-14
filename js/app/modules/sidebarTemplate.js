@@ -35,10 +35,10 @@ const SidebarTemplate = new Lang.Class({
 
     Properties: {
         /**
-         * Property: on-left
-         * True if the sidebar should be on the left.
+         * Property: sidebar-first
+         * True if the sidebar should be first in the reading direction.
          */
-        'on-left':  GObject.ParamSpec.boolean('on-left', 'On Left', 'On Left',
+        'sidebar-first':  GObject.ParamSpec.boolean('sidebar-first', 'Sidebar First', 'Sidebar First',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, true),
 
         /**
@@ -151,14 +151,17 @@ const SidebarTemplate = new Lang.Class({
         sidebar_width = Math.max(sidebar_width, sidebar_min);
         let content_width = alloc.width - sidebar_width;
 
+        let sidebar_left = this.sidebar_first;
+        if (this.get_direction() === Gtk.TextDirection.RTL)
+            sidebar_left = !sidebar_left;
         this.sidebar_frame.size_allocate(new Cairo.RectangleInt({
-            x: alloc.x + (this.on_left ? 0 : content_width),
+            x: alloc.x + (sidebar_left ? 0 : content_width),
             y: alloc.y,
             width: sidebar_width,
             height: alloc.height,
         }));
         this.content_frame.size_allocate(new Cairo.RectangleInt({
-            x: alloc.x + (this.on_left ? sidebar_width : 0),
+            x: alloc.x + (sidebar_left ? sidebar_width : 0),
             y: alloc.y,
             width: content_width,
             height: alloc.height,

@@ -79,7 +79,7 @@
         "section-page": {
             "type": "SidebarTemplate",
             "properties": {
-                "on-left": false
+                "sidebar-first": false
             },
             "slots": {
                 "content": {
@@ -109,7 +109,7 @@
         "search-page": {
             "type": "SidebarTemplate",
             "properties": {
-                "on-left": false
+                "sidebar-first": false
             },
             "slots": {
                 "content": {
