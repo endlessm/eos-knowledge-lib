@@ -38,7 +38,52 @@ overridden by app specific CSS */
     color: #729fcf;
 }
 
-.sidebar-template,
+EknSplitPercentageTemplate {
+    -EknSplitPercentageTemplate-start-percentage: 0.58;
+}
+
+EknSplitPercentageTemplate .end {
+    background: rgba(51, 51, 51, 0.30);
+    background-image: linear-gradient(-180deg, rgba(176, 176, 176, 0.20) 1%, alpha(black, 0.30) 100%);
+}
+
+EknSplitPercentageTemplate .start EknResponsiveMarginsModule {
+    -EknResponsiveMarginsModule-margin-threshold-small: 576;
+    -EknResponsiveMarginsModule-margin-threshold-medium: 576;
+    -EknResponsiveMarginsModule-margin-threshold-large: 576;
+    -EknResponsiveMarginsModule-margin-threshold-xlarge: 576;
+}
+
+EknSplitPercentageTemplate .start EknResponsiveMarginsModule.tiny {
+    margin: 20px;
+}
+
+EknSplitPercentageTemplate .start EknResponsiveMarginsModule.small,
+EknSplitPercentageTemplate .start EknResponsiveMarginsModule.medium,
+EknSplitPercentageTemplate .start EknResponsiveMarginsModule.large,
+EknSplitPercentageTemplate .start EknResponsiveMarginsModule.xlarge {
+    margin: 60px;
+}
+
+EknSplitPercentageTemplate .end EknResponsiveMarginsModule {
+    -EknResponsiveMarginsModule-margin-threshold-small: 400;
+    -EknResponsiveMarginsModule-margin-threshold-medium: 400;
+    -EknResponsiveMarginsModule-margin-threshold-large: 400;
+    -EknResponsiveMarginsModule-margin-threshold-xlarge: 400;
+}
+
+EknSplitPercentageTemplate .end EknResponsiveMarginsModule.tiny {
+    margin: 25px 60px 25px 25px;
+}
+
+EknSplitPercentageTemplate .start EknResponsiveMarginsModule.small,
+EknSplitPercentageTemplate .end EknResponsiveMarginsModule.medium,
+EknSplitPercentageTemplate .end EknResponsiveMarginsModule.large,
+EknSplitPercentageTemplate .end EknResponsiveMarginsModule.xlarge {
+    margin: 50px 75px 50px 100px;
+}
+
+EknSplitPercentageTemplate,
 .back-cover {
     background-size: cover;
     background-position: center;
@@ -77,14 +122,6 @@ overridden by app specific CSS */
 .search-results .suggestions-message {
     font-size: 1.5em;
     color: gray;
-}
-
-.sidebar {
-    padding: 100px 0px 85px 90px;
-}
-
-.window-small .sidebar {
-    padding: 100px 0px 20px 90px;
 }
 
 .back-cover .title {
@@ -250,7 +287,7 @@ overridden by app specific CSS */
     font-weight: 300; /* Light */
 }
 
-.sidebar-template .subtitle {
+EknSplitPercentageTemplate .subtitle {
     font-family: Roboto;
     font-size: 1.06em; /* 17px / 12px/em * 72/96 */
     color: white;
@@ -316,10 +353,9 @@ scrollbars, style the GTK scrollbars to look slightly more like them */
     font-weight: 500;
 }
 
-.composite .sidebar {
+.composite EknSplitPercentageTemplate .end {
     background-image: linear-gradient(to bottom, alpha(black, 0.7) 0%,
                                       alpha(black, 0.7) 100%);
-    padding-left: 45px;
 }
 
 .composite .back-cover GtkGrid {
