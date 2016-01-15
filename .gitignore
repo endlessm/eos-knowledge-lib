@@ -9,6 +9,7 @@
 /js/app/config.js.in
 /ekn-app-runner
 /kermit
+/picard
 /ekn-search-provider
 /eos-encyclopedia
 /data/com.endlessm.EknSearchProvider.service

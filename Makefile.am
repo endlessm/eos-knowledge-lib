@@ -230,11 +230,12 @@ subst = $(SED) \
 
 subst_files = \
 	data/com.endlessm.EknSearchProvider.service \
-	js/app/config.js \
 	ekn-search-provider \
 	ekn-app-runner \
-	kermit \
 	eos-encyclopedia \
+	js/app/config.js \
+	kermit \
+	picard \
 	$(NULL)
 
 $(subst_files): %: %.in Makefile
@@ -250,8 +251,9 @@ service_DATA = data/com.endlessm.EknSearchProvider.service
 bin_SCRIPTS += \
 	ekn-search-provider \
 	ekn-app-runner \
-	kermit \
 	eos-encyclopedia \
+	kermit \
+	picard \
 	$(NULL)
 
 # # # TESTS # # #
