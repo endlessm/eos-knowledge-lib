@@ -32,7 +32,7 @@ const TiledGridArrangement = new Lang.Class({
         this._cards.forEach(this.remove, this);
         this._cards.push(widget);
 
-        let columns = this._cards.length / 2;
+        let columns = Math.ceil(this._cards.length / 2);
         let i = 0;
         for (let card of this._cards) {
             let col = i % columns;
