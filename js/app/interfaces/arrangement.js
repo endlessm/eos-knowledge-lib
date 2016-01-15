@@ -2,6 +2,7 @@
 
 /* exported Arrangement */
 
+const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
@@ -33,6 +34,17 @@ const Arrangement = new Lang.Interface({
             'All children visible',
             GObject.ParamFlags.READABLE,
             true),
+        /**
+         * Property: spacing
+         * The amount of space in pixels between cards
+         *
+         * Default:
+         *   0
+         */
+        'spacing': GObject.ParamSpec.uint('spacing', 'Spacing',
+            'The amount of space in pixels between cards',
+            GObject.ParamFlags.READWRITE,
+            0, GLib.MAXUINT16, 0),
     },
 
     /**

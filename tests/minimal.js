@@ -35,6 +35,7 @@ const MinimalArrangement = new Lang.Class({
             0, GLib.MAXUINT32, 1),
         'all-visible': GObject.ParamSpec.override('all-visible',
             Arrangement.Arrangement),
+        'spacing': GObject.ParamSpec.override('spacing', Arrangement.Arrangement),
     },
 
     _init: function (props={}) {

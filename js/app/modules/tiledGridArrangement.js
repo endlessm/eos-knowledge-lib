@@ -19,11 +19,16 @@ const TiledGridArrangement = new Lang.Class({
         'factory': GObject.ParamSpec.override('factory', Module.Module),
         'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
         'all-visible': GObject.ParamSpec.override('all-visible', Arrangement.Arrangement),
+        'spacing': GObject.ParamSpec.override('spacing', Arrangement.Arrangement),
     },
 
     _init: function (props={}) {
         this._cards = [];
         this.parent(props);
+        this.bind_property('spacing', this, 'column-spacing',
+            GObject.BindingFlags.SYNC_CREATE);
+        this.bind_property('spacing', this, 'row-spacing',
+            GObject.BindingFlags.SYNC_CREATE);
     },
 
     add_card: function (widget) {

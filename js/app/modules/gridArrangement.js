@@ -20,6 +20,7 @@ const GridArrangement = new Lang.Class({
         'factory': GObject.ParamSpec.override('factory', Module.Module),
         'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
         'all-visible': GObject.ParamSpec.override('all-visible', Arrangement.Arrangement),
+        'spacing': GObject.ParamSpec.override('spacing', Arrangement.Arrangement),
         /**
          * Property: max-children-per-line
          *
@@ -38,8 +39,12 @@ const GridArrangement = new Lang.Class({
     _init: function (props={}) {
         this.parent(props);
         this.bind_property('max-children-per-line',
-                           this._flow_box, 'max-children-per-line',
-                           GObject.BindingFlags.SYNC_CREATE);
+            this._flow_box, 'max-children-per-line',
+            GObject.BindingFlags.SYNC_CREATE);
+        this.bind_property('spacing', this._flow_box, 'column-spacing',
+            GObject.BindingFlags.SYNC_CREATE);
+        this.bind_property('spacing', this._flow_box, 'row-spacing',
+            GObject.BindingFlags.SYNC_CREATE);
     },
 
     add_card: function (widget) {
