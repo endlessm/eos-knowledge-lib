@@ -30,18 +30,7 @@ const SquareGuysArrangement = new Lang.Class({
         'factory': GObject.ParamSpec.override('factory', Module.Module),
         'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
         'all-visible': GObject.ParamSpec.override('all-visible', Arrangement.Arrangement),
-        /**
-         * Property: spacing
-         * The amount of space in pixels between children cards
-         *
-         * Default:
-         *   0
-         */
-        'spacing': GObject.ParamSpec.uint('spacing', 'Spacing',
-            'The amount of space in pixels between children cards',
-            GObject.ParamFlags.READWRITE,
-            0, GLib.MAXUINT16, 0),
-
+        'spacing': GObject.ParamSpec.override('spacing', Arrangement.Arrangement),
         /**
          * Property: max-rows
          * Maximum number of card rows to be displayed
@@ -82,6 +71,12 @@ const SquareGuysArrangement = new Lang.Class({
         if (this.max_rows === 0)
             return -1;
         return COL_COUNT_MAX * this.max_rows;
+    },
+
+    // Removing a widget should recalculate the positions of all widgets
+    vfunc_remove: function (widget) {
+        this.parent(widget);
+        this.queue_resize();
     },
 
     vfunc_get_preferred_width: function () {

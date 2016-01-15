@@ -20,6 +20,7 @@ const GridArrangement = new Lang.Class({
         'factory': GObject.ParamSpec.override('factory', Module.Module),
         'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
         'all-visible': GObject.ParamSpec.override('all-visible', Arrangement.Arrangement),
+        'spacing': GObject.ParamSpec.override('spacing', Arrangement.Arrangement),
         /**
          * Property: max-children-per-line
          *
@@ -38,8 +39,29 @@ const GridArrangement = new Lang.Class({
     _init: function (props={}) {
         this.parent(props);
         this.bind_property('max-children-per-line',
-                           this._flow_box, 'max-children-per-line',
-                           GObject.BindingFlags.SYNC_CREATE);
+            this._flow_box, 'max-children-per-line',
+            GObject.BindingFlags.SYNC_CREATE);
+        this.bind_property('spacing', this._flow_box, 'column-spacing',
+            GObject.BindingFlags.SYNC_CREATE);
+        this.bind_property('spacing', this._flow_box, 'row-spacing',
+            GObject.BindingFlags.SYNC_CREATE);
+        this._real_remove = this.remove;
+        this.remove = this.override_remove;
+    },
+
+    // Preserve the illusion that the cards are direct children
+    override_remove: function (widget) {
+        if (widget.get_parent() === this) {
+            this._real_remove(widget);
+            return;
+        }
+        this._flow_box.get_children().some(flow_box_child => {
+            if (flow_box_child.get_child() === widget) {
+                this._flow_box.remove(flow_box_child);
+                return true;
+            }
+            return false;
+        });
     },
 
     add_card: function (widget) {

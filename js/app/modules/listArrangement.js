@@ -19,6 +19,7 @@ const ListArrangement = new Lang.Class({
         'factory': GObject.ParamSpec.override('factory', Module.Module),
         'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
         'all-visible': GObject.ParamSpec.override('all-visible', Arrangement.Arrangement),
+        'spacing': GObject.ParamSpec.override('spacing', Arrangement.Arrangement),
     },
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/listArrangement.ui',
@@ -26,6 +27,20 @@ const ListArrangement = new Lang.Class({
 
     _init: function (props={}) {
         this.parent(props);
+        this.bind_property('spacing', this._grid, 'row-spacing',
+            GObject.BindingFlags.SYNC_CREATE);
+        this._real_remove = this.remove;
+        this.remove = this.override_remove;
+    },
+
+    // Preserve the illusion that the cards are direct children
+    override_remove: function (widget) {
+        if (widget.get_parent() === this) {
+            this._real_remove(widget);
+            return;
+        }
+        this._grid.remove(widget);
+        this._size_group.remove_widget(widget);
     },
 
     add_card: function (widget) {

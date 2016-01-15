@@ -19,6 +19,8 @@ const CarouselArrangement = new Lang.Class({
         'factory': GObject.ParamSpec.override('factory', Module.Module),
         'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
         'all-visible': GObject.ParamSpec.override('all-visible', Arrangement.Arrangement),
+        'spacing': GObject.ParamSpec.override('spacing',
+            Arrangement.Arrangement),  // spacing is ignored
     },
 
     _init: function (props={}) {

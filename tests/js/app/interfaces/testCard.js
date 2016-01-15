@@ -1,6 +1,7 @@
 // Copyright 2015 Endless Mobile, Inc.
 
 const Lang = imports.lang;
+const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
@@ -11,7 +12,9 @@ Utils.register_gresource();
 
 const ArticleObjectModel = imports.search.articleObjectModel;
 const CssClassMatcher = imports.tests.CssClassMatcher;
+const MediaObjectModel = imports.search.mediaObjectModel;
 const Minimal = imports.tests.minimal;
+const MockEngine = imports.tests.mockEngine;
 const StyleClasses = imports.app.styleClasses;
 
 Gtk.init(null);
@@ -116,6 +119,11 @@ describe('Card interface', function () {
     });
 
     it('sets a thumbnail frame visible if model has a thumbnail uri', function () {
+        let engine = MockEngine.mock_default();
+        engine.get_object_by_id_finish.and.callFake(() =>
+            new MediaObjectModel.MediaObjectModel({
+                get_content_stream: () => new Gio.MemoryInputStream(),
+            }));
         let frame = new Gtk.Frame();
         card.set_thumbnail_frame_from_model(frame);
         expect(frame.visible).toBeTruthy();

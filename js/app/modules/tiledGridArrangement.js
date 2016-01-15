@@ -19,20 +19,32 @@ const TiledGridArrangement = new Lang.Class({
         'factory': GObject.ParamSpec.override('factory', Module.Module),
         'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
         'all-visible': GObject.ParamSpec.override('all-visible', Arrangement.Arrangement),
+        'spacing': GObject.ParamSpec.override('spacing', Arrangement.Arrangement),
     },
 
     _init: function (props={}) {
         this._cards = [];
         this.parent(props);
+        this.bind_property('spacing', this, 'column-spacing',
+            GObject.BindingFlags.SYNC_CREATE);
+        this.bind_property('spacing', this, 'row-spacing',
+            GObject.BindingFlags.SYNC_CREATE);
+    },
+
+    vfunc_remove: function (widget) {
+        this.parent(widget);
+        this._cards.splice(this._cards.indexOf(widget), 1);
     },
 
     add_card: function (widget) {
         // FIXME: For now we're always showing two rows of cards.
         // An alternative would be to show 1 row for 4 cards, and 2 rows otherwise
-        this._cards.forEach(this.remove, this);
+        let cards = this._cards.slice();
+        cards.forEach(this.remove, this);
+        this._cards = cards;
         this._cards.push(widget);
 
-        let columns = this._cards.length / 2;
+        let columns = Math.ceil(this._cards.length / 2);
         let i = 0;
         for (let card of this._cards) {
             let col = i % columns;
@@ -47,7 +59,7 @@ const TiledGridArrangement = new Lang.Class({
     },
 
     clear: function () {
-        this._cards.forEach(this.remove, this);
-        this._cards = [];
+        let cards = this._cards.slice();
+        cards.forEach(this.remove, this);
     },
 });

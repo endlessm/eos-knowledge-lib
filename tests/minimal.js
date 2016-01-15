@@ -33,6 +33,9 @@ const MinimalArrangement = new Lang.Class({
         'transition-duration': GObject.ParamSpec.uint('transition-duration', '', '',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
             0, GLib.MAXUINT32, 1),
+        'all-visible': GObject.ParamSpec.override('all-visible',
+            Arrangement.Arrangement),
+        'spacing': GObject.ParamSpec.override('spacing', Arrangement.Arrangement),
     },
 
     _init: function (props={}) {
@@ -226,6 +229,7 @@ const MinimalDocumentCard = new Lang.Class({
             connect: function () {},
         };
         this.content_view = {
+            grab_focus: function () {},
             connect: function () {},
         };
     },
@@ -285,6 +289,17 @@ function test_arrangement_compliance() {
             cards.forEach((card) =>
                 expect(this.arrangement).not.toHaveDescendant(card));
             expect(this.arrangement.get_cards().length).toBe(0);
+        });
+
+        it('by being able to remove individual cards', function () {
+            add_cards(this.arrangement, 3);
+            this.arrangement.remove(cards[1]);
+            Utils.update_gui();
+
+            expect(this.arrangement.get_cards().length).toBe(2);
+            expect(this.arrangement).toHaveDescendant(cards[0]);
+            expect(this.arrangement).not.toHaveDescendant(cards[1]);
+            expect(this.arrangement).toHaveDescendant(cards[2]);
         });
     });
 }
