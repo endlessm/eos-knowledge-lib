@@ -226,6 +226,7 @@ const MinimalDocumentCard = new Lang.Class({
             connect: function () {},
         };
         this.content_view = {
+            grab_focus: function () {},
             connect: function () {},
         };
     },
