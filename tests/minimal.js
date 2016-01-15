@@ -33,6 +33,8 @@ const MinimalArrangement = new Lang.Class({
         'transition-duration': GObject.ParamSpec.uint('transition-duration', '', '',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
             0, GLib.MAXUINT32, 1),
+        'all-visible': GObject.ParamSpec.override('all-visible',
+            Arrangement.Arrangement),
     },
 
     _init: function (props={}) {
