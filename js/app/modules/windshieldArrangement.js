@@ -61,6 +61,14 @@ const WindshieldArrangement = new Lang.Class({
         return SECOND_ROW_CARD_COUNT + 1;
     },
 
+    // Removing a visible widget should recalculate the positions of all widgets
+    vfunc_remove: function (widget) {
+        let needs_resize = widget.get_child_visible();
+        this.parent(widget);
+        if (needs_resize)
+            this.queue_resize();
+    },
+
     vfunc_get_preferred_width: function () {
         return [this._get_size_with_spacing(CARD_SIZE_SMALL, SECOND_ROW_CARD_COUNT),
             this._get_size_with_spacing(CARD_SIZE_MAX, SECOND_ROW_CARD_COUNT)];

@@ -45,6 +45,23 @@ const GridArrangement = new Lang.Class({
             GObject.BindingFlags.SYNC_CREATE);
         this.bind_property('spacing', this._flow_box, 'row-spacing',
             GObject.BindingFlags.SYNC_CREATE);
+        this._real_remove = this.remove;
+        this.remove = this.override_remove;
+    },
+
+    // Preserve the illusion that the cards are direct children
+    override_remove: function (widget) {
+        if (widget.get_parent() === this) {
+            this._real_remove(widget);
+            return;
+        }
+        this._flow_box.get_children().some(flow_box_child => {
+            if (flow_box_child.get_child() === widget) {
+                this._flow_box.remove(flow_box_child);
+                return true;
+            }
+            return false;
+        });
     },
 
     add_card: function (widget) {

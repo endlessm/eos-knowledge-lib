@@ -66,6 +66,12 @@ const HalfArrangement = new Lang.Class({
         this.get_children().forEach((child) => this.remove(child));
     },
 
+    // Removal of any card should cause a recalculate
+    vfunc_remove: function (widget) {
+        this.parent(widget);
+        this.queue_resize();
+    },
+
     vfunc_get_preferred_width: function () {
         return [MINIMUM_ARRANGEMENT_WIDTH + this._spacing, FOUR_CARDS_THRESHOLD * 2];
     },

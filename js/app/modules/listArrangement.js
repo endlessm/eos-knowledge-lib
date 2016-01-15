@@ -29,6 +29,18 @@ const ListArrangement = new Lang.Class({
         this.parent(props);
         this.bind_property('spacing', this._grid, 'row-spacing',
             GObject.BindingFlags.SYNC_CREATE);
+        this._real_remove = this.remove;
+        this.remove = this.override_remove;
+    },
+
+    // Preserve the illusion that the cards are direct children
+    override_remove: function (widget) {
+        if (widget.get_parent() === this) {
+            this._real_remove(widget);
+            return;
+        }
+        this._grid.remove(widget);
+        this._size_group.remove_widget(widget);
     },
 
     add_card: function (widget) {

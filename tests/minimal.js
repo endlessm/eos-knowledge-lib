@@ -290,6 +290,17 @@ function test_arrangement_compliance() {
                 expect(this.arrangement).not.toHaveDescendant(card));
             expect(this.arrangement.get_cards().length).toBe(0);
         });
+
+        it('by being able to remove individual cards', function () {
+            add_cards(this.arrangement, 3);
+            this.arrangement.remove(cards[1]);
+            Utils.update_gui();
+
+            expect(this.arrangement.get_cards().length).toBe(2);
+            expect(this.arrangement).toHaveDescendant(cards[0]);
+            expect(this.arrangement).not.toHaveDescendant(cards[1]);
+            expect(this.arrangement).toHaveDescendant(cards[2]);
+        });
     });
 }
 

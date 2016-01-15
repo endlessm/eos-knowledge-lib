@@ -31,10 +31,17 @@ const TiledGridArrangement = new Lang.Class({
             GObject.BindingFlags.SYNC_CREATE);
     },
 
+    vfunc_remove: function (widget) {
+        this.parent(widget);
+        this._cards.splice(this._cards.indexOf(widget), 1);
+    },
+
     add_card: function (widget) {
         // FIXME: For now we're always showing two rows of cards.
         // An alternative would be to show 1 row for 4 cards, and 2 rows otherwise
-        this._cards.forEach(this.remove, this);
+        let cards = this._cards.slice();
+        cards.forEach(this.remove, this);
+        this._cards = cards;
         this._cards.push(widget);
 
         let columns = Math.ceil(this._cards.length / 2);
@@ -52,7 +59,7 @@ const TiledGridArrangement = new Lang.Class({
     },
 
     clear: function () {
-        this._cards.forEach(this.remove, this);
-        this._cards = [];
+        let cards = this._cards.slice();
+        cards.forEach(this.remove, this);
     },
 });

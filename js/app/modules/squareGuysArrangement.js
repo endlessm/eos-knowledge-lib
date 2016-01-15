@@ -73,6 +73,12 @@ const SquareGuysArrangement = new Lang.Class({
         return COL_COUNT_MAX * this.max_rows;
     },
 
+    // Removing a widget should recalculate the positions of all widgets
+    vfunc_remove: function (widget) {
+        this.parent(widget);
+        this.queue_resize();
+    },
+
     vfunc_get_preferred_width: function () {
         return [this._get_size_with_spacing(CARD_SIZE_SMALL, COL_COUNT_MIN),
             this._get_size_with_spacing(CARD_SIZE_MAX, COL_COUNT_MAX)];
