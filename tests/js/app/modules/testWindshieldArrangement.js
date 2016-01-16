@@ -3,7 +3,6 @@
 const Gtk = imports.gi.Gtk;
 
 const Minimal = imports.tests.minimal;
-const MockWidgets = imports.tests.mockWidgets;
 const Utils = imports.tests.utils;
 const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 const WindshieldArrangement = imports.app.modules.windshieldArrangement;
@@ -69,7 +68,7 @@ function testSizingArrangementForDimensions(total_width, total_height, child_wid
         cards = [];
 
         for (let i = 0; i < 5; i++) {
-            cards.push(add_card(new MockWidgets.TestBox(2000)));
+            cards.push(add_card(new Minimal.MinimalCard()));
         }
         win = new Gtk.OffscreenWindow();
     });

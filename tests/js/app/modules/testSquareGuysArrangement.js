@@ -4,7 +4,6 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const Minimal = imports.tests.minimal;
-const MockWidgets = imports.tests.mockWidgets;
 const SquareGuysArrangement = imports.app.modules.squareGuysArrangement;
 const Utils = imports.tests.utils;
 
@@ -105,7 +104,7 @@ function testSizingArrangementForDimensions(message, arr_width, arr_height, max_
         win.show_all();
 
         for (let i=0; i<8; i++) {
-            cards.push(add_card(new MockWidgets.TestBox(400)));
+            cards.push(add_card(new Minimal.MinimalCard()));
         }
 
         win.queue_resize();
