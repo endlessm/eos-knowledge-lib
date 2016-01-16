@@ -4,24 +4,18 @@ const Gtk = imports.gi.Gtk;
 
 const Minimal = imports.tests.minimal;
 const Utils = imports.tests.utils;
-const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 const WindshieldArrangement = imports.app.modules.windshieldArrangement;
 
 Gtk.init(null);
 
+Minimal.test_arrangement_compliance(WindshieldArrangement.WindshieldArrangement);
+
 describe('Windshield Arrangement', function () {
     beforeEach(function () {
-        jasmine.addMatchers(WidgetDescendantMatcher.customMatchers);
         this.arrangement = new WindshieldArrangement.WindshieldArrangement({
             vexpand: false,
         });
     });
-
-    it('constructs', function () {
-        expect(this.arrangement).toBeDefined();
-    });
-
-    Minimal.test_arrangement_compliance();
 
     describe('sizing allocation', function () {
         // At 2000x2000, the featured card should be 2000x400, and the children

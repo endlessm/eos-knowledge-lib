@@ -9,16 +9,12 @@ const Utils = imports.tests.utils;
 
 Gtk.init(null);
 
+Minimal.test_arrangement_compliance(SquareGuysArrangement.SquareGuysArrangement);
+
 describe('SquareGuys arrangement', function () {
     beforeEach(function () {
         this.arrangement = new SquareGuysArrangement.SquareGuysArrangement();
     });
-
-    it('constructs', function () {
-        expect(this.arrangement).toBeDefined();
-    });
-
-    Minimal.test_arrangement_compliance();
 
     describe('maximum rows', function () {
         let msg = 'shows correct number of cards for max_rows = '

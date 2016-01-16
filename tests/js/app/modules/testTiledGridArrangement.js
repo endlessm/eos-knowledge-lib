@@ -7,22 +7,15 @@ const Minimal = imports.tests.minimal;
 const TiledGridArrangement = imports.app.modules.tiledGridArrangement;
 const Utils = imports.tests.utils;
 
+Minimal.test_arrangement_compliance(TiledGridArrangement.TiledGridArrangement);
+
 describe('Tiled grid arrangement', function () {
     let arrangement, cards;
 
     beforeEach(function () {
         arrangement = new TiledGridArrangement.TiledGridArrangement();
-        // Use the test suite's provided "this" object so that arrangement can
-        // be in scope in the compliance tests in minimal.js.
-        this.arrangement = arrangement;
         cards = [];
     });
-
-    it('constructs', function () {
-        expect(arrangement).toBeDefined();
-    });
-
-    Minimal.test_arrangement_compliance();
 
     function add_cards(ncards) {
         for (let ix = 0; ix < ncards; ix++)

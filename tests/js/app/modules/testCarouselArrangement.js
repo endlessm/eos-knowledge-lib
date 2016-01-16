@@ -8,16 +8,4 @@ const Minimal = imports.tests.minimal;
 
 Gtk.init(null);
 
-describe('Carousel arrangement', function () {
-    beforeEach(function () {
-        // Use the test suite's provided "this" object so that arrangement can
-        // be in scope in the compliance tests in minimal.js.
-        this.arrangement = new CarouselArrangement.CarouselArrangement();
-    });
-
-    it('constructs', function () {
-        expect(this.arrangement).toBeDefined();
-    });
-
-    Minimal.test_arrangement_compliance();
-});
+Minimal.test_arrangement_compliance(CarouselArrangement.CarouselArrangement);
