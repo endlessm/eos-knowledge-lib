@@ -41,18 +41,6 @@ const SidebarTemplate = new Lang.Class({
         'sidebar-first':  GObject.ParamSpec.boolean('sidebar-first', 'Sidebar First', 'Sidebar First',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, true),
 
-        /**
-         * Property: background-image-uri
-         * The background image URI for this template.
-         *
-         * Generally set to a resource:// URI and generally takes up the whole
-         * page.
-         */
-        'background-image-uri': GObject.ParamSpec.string('background-image-uri',
-            'Background image URI', 'URI for background image of this widget',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            ''),
-
         'factory': GObject.ParamSpec.override('factory', Module.Module),
         'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
     },
@@ -60,14 +48,6 @@ const SidebarTemplate = new Lang.Class({
     _init: function (props={}) {
         props.expand = true;
         this.parent(props);
-
-        if (this.background_image_uri) {
-            let frame_css = '* { background-image: url("' + this.background_image_uri + '");}';
-            let provider = new Gtk.CssProvider();
-            provider.load_from_data(frame_css);
-            let context = this.get_style_context();
-            context.add_provider(provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
-        }
 
         this.content_frame = new Gtk.Frame({
             expand: true,
@@ -126,16 +106,6 @@ const SidebarTemplate = new Lang.Class({
         let min = Math.max(sidebar_min, this._sidebar_width_small) + content_min;
         let nat = Math.max(sidebar_min, this._sidebar_width_large) + content_nat;
         return [min, nat];
-    },
-
-    vfunc_draw: function (cr) {
-        let width = this.get_allocated_width();
-        let height = this.get_allocated_height();
-        Gtk.render_background(this.get_style_context(), cr,
-            0, 0, width, height);
-        this.parent(cr);
-        cr.$dispose();
-        return false;
     },
 
     vfunc_size_allocate: function (alloc) {
