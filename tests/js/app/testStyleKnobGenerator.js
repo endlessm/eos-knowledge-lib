@@ -58,10 +58,6 @@ let style_knobs_b = {
 };
 
 let style_knobs_reader = {
-  'overview_page': {
-    'module-background': 'rgba(51, 51, 51, 0.30)',
-    'module-background-image': 'linear-gradient(-180deg, rgba(176, 176, 176, 0.20) 1%, alpha(black, 0.30) 100%)',
-  },
   'snippet0': {
     'module-font-family': 'ABeeZee',
     'module-font-size': '1em',
