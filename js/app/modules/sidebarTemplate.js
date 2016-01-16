@@ -10,7 +10,6 @@ const Lang = imports.lang;
 
 const Module = imports.app.interfaces.module;
 const StyleClasses = imports.app.styleClasses;
-const Utils = imports.app.utils;
 
 const _PAGE_WIDTH_THRESHOLD_PX = 1366;
 const _MARGIN_DIFF_PX = 50;
@@ -193,11 +192,3 @@ const SidebarTemplate = new Lang.Class({
         this.parent(alloc);
     },
 });
-
-function get_css_for_module(css_data) {
-    let module_data = Utils.get_css_for_submodule('module', css_data);
-    let conditional_module_data = Utils.split_out_conditional_knobs(module_data);
-    return (Utils.object_to_css_string(module_data, '.' + StyleClasses.SIDEBAR) +
-        Utils.object_to_css_string(conditional_module_data,
-            'EosWindow:not(.composite) .' + StyleClasses.SIDEBAR));
-}
