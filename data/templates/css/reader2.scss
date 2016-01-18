@@ -294,26 +294,26 @@ $max-d: 599px;
     #inside-content {
         font-size: 22px;
         color: black;
-    }
 
-    .infobox {
-        th:only-child,
-        caption {
-            line-height: 20px;
-            font-size: 20px !important;
+        .infobox {
+            th:only-child,
+            caption {
+                line-height: 20px;
+                font-size: 20px !important;
+            }
+
+            tr > th:first-child:not(:only-child),
+            tr > td:first-child:not(:only-child),
+            th ~ td,
+            td:first-child ~ td {
+                line-height: 20px;
+                font-size: 20px;
+            }
         }
 
-        tr > th:first-child:not(:only-child),
-        tr > td:first-child:not(:only-child),
-        th ~ td,
-        td:first-child ~ td {
-            line-height: 20px;
+        .thumbcaption,
+        td .eos-image-link + * {
             font-size: 20px;
         }
-    }
-
-    .thumbcaption,
-    td .eos-image-link + * {
-        font-size: 20px;
     }
 }
