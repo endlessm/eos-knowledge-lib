@@ -89,6 +89,16 @@ html {
     }
 }
 
+/* Lower resolutions */
+@media (max-width: 450px) {
+    #inside-content {
+        img {
+            float: center;
+            display: block;
+        }
+    }
+}
+
 /* Composite resolutions */
 @media (device-width: 720px) and (device-height: 480px),
        (device-width: 720px) and (device-height: 576px) {
