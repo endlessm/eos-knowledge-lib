@@ -36,6 +36,7 @@ const TiledGridArrangement = new Lang.Class({
         this._cards.splice(this._cards.indexOf(widget), 1);
     },
 
+    // Arrangement implementation
     add_card: function (widget) {
         // FIXME: For now we're always showing two rows of cards.
         // An alternative would be to show 1 row for 4 cards, and 2 rows otherwise
@@ -54,10 +55,12 @@ const TiledGridArrangement = new Lang.Class({
         }
     },
 
+    // Arrangement implementation
     get_cards: function () {
         return this._cards;
     },
 
+    // Arrangement implementation
     clear: function () {
         let cards = this._cards.slice();
         cards.forEach(this.remove, this);

@@ -53,18 +53,22 @@ const SquareGuysArrangement = new Lang.Class({
         this._three_column_mode = false;
     },
 
+    // Arrangement implementation
     add_card: function (widget) {
         this.add(widget);
     },
 
+    // Arrangement implementation
     get_cards: function () {
         return this.get_children();
     },
 
+    // Arrangement implementation
     clear: function () {
         this.get_children().forEach((child) => this.remove(child));
     },
 
+    // Arrangement implementation
     get_max_cards: function () {
         if (this.max_rows === 0)
             return -1;

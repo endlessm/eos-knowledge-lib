@@ -64,14 +64,17 @@ const GridArrangement = new Lang.Class({
         });
     },
 
+    // Arrangement implementation
     add_card: function (widget) {
         this._flow_box.add(widget);
     },
 
+    // Arrangement implementation
     get_cards: function () {
         return this._flow_box.get_children().map((flow_child) => flow_child.get_child());
     },
 
+    // Arrangement implementation
     clear: function () {
         let children = this._flow_box.get_children();
         children.forEach((child) => this._flow_box.remove(child));

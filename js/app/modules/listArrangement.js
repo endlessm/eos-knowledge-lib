@@ -43,15 +43,18 @@ const ListArrangement = new Lang.Class({
         this._size_group.remove_widget(widget);
     },
 
+    // Arrangement implementation
     add_card: function (widget) {
         this._grid.add(widget);
         this._size_group.add_widget(widget);
     },
 
+    // Arrangement implementation
     get_cards: function () {
         return this._grid.get_children();
     },
 
+    // Arrangement implementation
     clear: function () {
         this._grid.get_children().forEach((child) => {
             this._grid.remove(child);
