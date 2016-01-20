@@ -144,6 +144,7 @@
     <file>js/app/modules/suggestedCategoriesModule.js</file>
     <file>js/app/modules/textCard.js</file>
     <file>js/app/modules/thematicModule.js</file>
+    <file>js/app/modules/thirtiesArrangement.js</file>
     <file>js/app/modules/thumbCard.js</file>
     <file>js/app/modules/tiledGridArrangement.js</file>
     <file>js/app/modules/twoVerticalTemplate.js</file>
