@@ -280,8 +280,8 @@ javascript_tests = \
 	tests/js/app/modules/testContextBanner.js \
 	tests/js/app/modules/testDividedBannerTemplate.js \
 	tests/js/app/modules/testHalfArrangement.js \
-	tests/js/app/modules/testHighlightsModule.js \
 	tests/js/app/modules/testHamburgerBasementTemplate.js \
+	tests/js/app/modules/testHighlightsModule.js \
 	tests/js/app/modules/testItemGroupModule.js \
 	tests/js/app/modules/testKnowledgeDocumentCard.js \
 	tests/js/app/modules/testLightboxModule.js \
@@ -328,10 +328,10 @@ javascript_tests = \
 	tests/js/app/testUtils.js \
 	tests/js/app/testWebExtension.js \
 	tests/js/app/testWidgetSurfaceCache.js \
+	tests/js/app/widgets/testImageCoverFrame.js \
 	tests/js/app/widgets/testLightbox.js \
 	tests/js/app/widgets/testPDFView.js \
 	tests/js/app/widgets/testPreviewer.js \
-	tests/js/app/widgets/testImageCoverFrame.js \
 	tests/js/app/widgets/testProgressLabel.js \
 	tests/js/app/widgets/testSlidingPanel.js \
 	tests/js/app/widgets/testSlidingPanelOverlay.js \
