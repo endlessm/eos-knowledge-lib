@@ -31,6 +31,9 @@ describe('Highlights module', function () {
     let module, factory, dispatcher, engine;
 
     beforeEach(function () {
+        // De-randomize
+        spyOn(UtilsApp, 'shuffle').and.callFake(array => array.slice());
+
         jasmine.addMatchers(WidgetDescendantMatcher.customMatchers);
         dispatcher = MockDispatcher.mock_default();
         engine = MockEngine.mock_default();
@@ -54,9 +57,6 @@ describe('Highlights module', function () {
             factory: factory,
             factory_name: 'highlights',
         });
-
-        // De-randomize
-        spyOn(UtilsApp, 'shuffle').and.callFake(array => array);
     });
 
     it('constructs', function () {
@@ -142,7 +142,7 @@ describe('Highlights module', function () {
                 Utils.update_gui();
                 let payload = dispatcher.last_payload_with_type(Actions.SET_CLICKED);
                 let matcher = jasmine.objectContaining({
-                    model: set_models[0],
+                    model: header.model,
                     context: set_models,
                 });
                 expect(payload).toEqual(matcher);
