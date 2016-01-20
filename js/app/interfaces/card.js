@@ -16,6 +16,7 @@ const Engine = imports.search.engine;
 const ImageCoverFrame = imports.app.widgets.imageCoverFrame;
 const Module = imports.app.interfaces.module;
 const SetObjectModel = imports.search.setObjectModel;
+const SpaceContainer = imports.app.widgets.spaceContainer;
 const StyleClasses = imports.app.styleClasses;
 const Utils = imports.app.utils;
 
@@ -169,12 +170,34 @@ const Card = new Lang.Interface({
      * Moreover, we want to exclude the 'Ekn'-prefixed tags which won't mean
      * anything to the user.
      */
-    set_context_label_from_model: function (label) {
-        this.set_label_or_hide(label,
-                               this.model.tags.filter((tag) => !tag.startsWith('Ekn'))
-                               .slice(0, 2)
-                               .join(' | ')
-                               .toLocaleUpperCase());
+    set_context_label_from_model: function (container) {
+        this._space_container = new SpaceContainer.SpaceContainer({
+            orientation: Gtk.Orientation.HORIZONTAL,
+        });
+
+        // Sort the context tags from shortest to longest in order to
+        // maximise chances that we can fit two of them on the card.
+        let tags = this.model.tags.filter((tag) => !tag.startsWith('Ekn'))
+                              .sort((a, b) => a.length - b.length);
+        if (tags.length > 0) {
+            let first_tag = new Gtk.Label({
+                lines: 1,
+                label: tags[0].toLocaleUpperCase(),
+            });
+            this._space_container.add(first_tag);
+
+            if (tags.length > 1) {
+                let second_tag = new Gtk.Label({
+                    lines: 1,
+                    label: ' | ' + tags[1].toLocaleUpperCase(),
+                });
+                this._space_container.add(second_tag);
+            }
+        }
+
+        this._space_container.get_style_context().add_class('card-context');
+        this._space_container.show_all();
+        container.add(this._space_container);
     },
 
     /**

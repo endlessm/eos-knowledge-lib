@@ -32,8 +32,7 @@ const PostCard = new Lang.Class({
     },
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/postCard.ui',
-    InternalChildren: [ 'thumbnail-frame', 'title-label', 'context-label',
-        'inner-content-grid', 'shadow-frame' ],
+    InternalChildren: [ 'thumbnail-frame', 'title-label', 'inner-content-grid', 'shadow-frame' ],
 
     _init: function (props={}) {
         this.parent(props);
@@ -56,7 +55,7 @@ const PostCard = new Lang.Class({
                 return Gdk.EVENT_PROPAGATE;
             });
         } else {
-            this.set_context_label_from_model(this._context_label);
+            this.set_context_label_from_model(this._inner_content_grid);
         }
     },
 
