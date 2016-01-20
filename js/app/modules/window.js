@@ -97,15 +97,6 @@ const Window = new Lang.Class({
         'template-type':  GObject.ParamSpec.string('template-type', 'Template Type',
             'Which template the window should display with',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, 'A'),
-        /**
-         * Property: subtitle
-         * The application subtitle
-         *
-         * The specific subtitle of this Knowledge App.
-         */
-        'subtitle': GObject.ParamSpec.string('subtitle', 'subtitle',
-            'Application subtitle',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
     },
 
     Signals: {
@@ -136,9 +127,7 @@ const Window = new Lang.Class({
         this._all_sets_page = this.create_submodule('all-sets-page');
         this._search_page = this.create_submodule('search-page');
         this._article_page = this.create_submodule('article-page');
-        this._brand_screen = this.create_submodule('brand-screen', {
-            'subtitle': this.subtitle,
-        });
+        this._brand_screen = this.create_submodule('brand-screen');
         if (this.template_type === 'B') {
             this._home_page.get_style_context().add_class(StyleClasses.HOME_PAGE_B);
             this._section_page.get_style_context().add_class(StyleClasses.SECTION_PAGE_B);

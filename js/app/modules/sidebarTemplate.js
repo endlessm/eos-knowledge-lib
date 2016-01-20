@@ -3,6 +3,8 @@
 /* exported SidebarTemplate, get_css_for_module */
 
 const Cairo = imports.gi.cairo;
+const Endless = imports.gi.Endless;
+const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
@@ -12,46 +14,9 @@ const Module = imports.app.interfaces.module;
 const StyleClasses = imports.app.styleClasses;
 const Utils = imports.app.utils;
 
-const _PAGE_WIDTH_THRESHOLD_PX = 1366;
-const _MARGIN_DIFF_PX = 50;
-
-const _FixedWidthFrame = new Lang.Class({
-    Name: 'FixedWidthFrame',
-    GTypeName: 'EknFixedWidthFrame',
-    Extends: Gtk.Frame,
-
-    vfunc_get_preferred_width: function () {
-        return [this.width, this.width];
-    },
-});
-
-const _MaxWidthFrame = new Lang.Class({
-    Name: 'MaxWidthFrame',
-    GTypeName: 'EknMaxWidthFrame',
-    Extends: Gtk.Frame,
-
-    vfunc_get_request_mode: function () {
-        return Gtk.SizeRequestMode.HEIGHT_FOR_WIDTH;
-    },
-
-    vfunc_get_preferred_width: function () {
-        let [min, nat] = this.parent();
-        return [Math.min(min, this.width), Math.min(nat, this.width)];
-    },
-});
-
 /**
  * Class: SidebarTemplate
  * Template with a sidebar and content area
- *
- * The <sidebar-width> property controls the width of the sidebar slot, and the
- * <fixed> property controls whether this is a fixed or a maximum width.
- * This template can also set a background image in code.
- *
- * The layout is responsive to screen size changes.
- * If the template's width is less than 1366 pixels, then 50 pixels will be
- * deducted from the left margin of the content submodule and the right margin
- * of the sidebar submodule.
  *
  * Slots:
  *   sidebar
@@ -65,154 +30,122 @@ const _MaxWidthFrame = new Lang.Class({
 const SidebarTemplate = new Lang.Class({
     Name: 'SidebarTemplate',
     GTypeName: 'EknSidebarTemplate',
-    Extends: Gtk.Grid,
+    Extends: Endless.CustomContainer,
     Implements: [ Module.Module ],
 
     Properties: {
         /**
-         * Property: sidebar-width
-         * Sidebar width in pixels.
-         *
-         * Default:
-         *   400
+         * Property: sidebar-first
+         * True if the sidebar should be first in the reading direction.
          */
-        'sidebar-width': GObject.ParamSpec.int('sidebar-width',
-            'sidebar width', 'Sidebar width in pixels',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            1, GLib.MAXINT32, 400),
-
-        /**
-         * Property: fixed
-         * True if the <sidebar-width> is a fixed width, false if a maximum.
-         *
-         * Default:
-         *   true
-         */
-        'fixed': GObject.ParamSpec.boolean('fixed', 'Fixed',
-            'Whether the width is a fixed width or maximum width',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            true),
-
-        /**
-         * Property: on-left
-         * True if the sidebar should be on the left.
-         */
-        'on-left':  GObject.ParamSpec.boolean('on-left', 'On Left', 'On Left',
+        'sidebar-first':  GObject.ParamSpec.boolean('sidebar-first', 'Sidebar First', 'Sidebar First',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, true),
 
-        /**
-         * Property: background-image-uri
-         * The background image URI for this template.
-         *
-         * Generally set to a resource:// URI and generally takes up the whole
-         * page.
-         */
-        'background-image-uri': GObject.ParamSpec.string('background-image-uri',
-            'Background image URI', 'URI for background image of this widget',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            ''),
-
-        /**
-         * Property: subtitle
-         * The application subtitle
-         *
-         * The specific subtitle of this Knowledge App.
-         */
-        'subtitle': GObject.ParamSpec.string('subtitle', 'subtitle',
-            'Application subtitle',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
         'factory': GObject.ParamSpec.override('factory', Module.Module),
         'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
     },
 
-    SIDEBAR_WIDTH_MIN: 240,
-    SIDEBAR_WIDTH_THRESHOLD: 800,
-
     _init: function (props={}) {
-        props.orientation = Gtk.Orientation.HORIZONTAL;
         props.expand = true;
         this.parent(props);
-
-        if (this.background_image_uri) {
-            let frame_css = '* { background-image: url("' + this.background_image_uri + '");}';
-            let provider = new Gtk.CssProvider();
-            provider.load_from_data(frame_css);
-            let context = this.get_style_context();
-            context.add_provider(provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
-        }
 
         this.content_frame = new Gtk.Frame({
             expand: true,
         });
-        let SidebarFrameClass = this.fixed ? _FixedWidthFrame : _MaxWidthFrame;
-        this.sidebar_frame = new SidebarFrameClass({
+        this.sidebar_frame = new Gtk.Frame({
             expand: false,
         });
-        this.sidebar_frame.width = this.sidebar_width;
 
         this._sidebar = this.create_submodule('sidebar');
-        if (this.subtitle) {
-            this._content = this.create_submodule('content', {
-                'subtitle': this.subtitle,
-            });
-        } else {
-            this._content = this.create_submodule('content');
-        }
+        this._content = this.create_submodule('content');
 
         this.content_frame.add(this._content);
         this.sidebar_frame.add(this._sidebar);
-        let children = [this.sidebar_frame, this.content_frame];
-        if (!this.on_left)
-            children.reverse();
-        children.forEach((child) => this.add(child));
+        this.add(this.content_frame);
+        this.add(this.sidebar_frame);
 
         this.get_style_context().add_class(StyleClasses.SIDEBAR_TEMPLATE);
         this.content_frame.get_style_context().add_class(StyleClasses.CONTENT);
         this.sidebar_frame.get_style_context().add_class(StyleClasses.SIDEBAR);
 
-        this._content_base_margin_start = this._content.margin_start;
-        this._sidebar_base_margin_end = this._sidebar.margin_end;
-        this.connect('size-allocate', this._update_margins.bind(this));
-        this._update_margins(this, this.get_allocation());
-
-        this._orig_sidebar_width = this.sidebar_width;
+        this.connect('style-set', () => this._update_custom_style());
+        this.connect('style-updated', () => this._update_custom_style());
     },
 
-    _update_margins: function (widget, alloc) {
-        if (alloc.width >= _PAGE_WIDTH_THRESHOLD_PX) {
-            this._content.margin_start = this._content_base_margin_start;
-            this._sidebar.margin_end = this._sidebar_base_margin_end;
-        } else {
-            this._content.margin_start = Math.max(0,
-                this._content_base_margin_start - _MARGIN_DIFF_PX);
-            this._sidebar.margin_end = Math.max(0,
-                this._sidebar_base_margin_end - _MARGIN_DIFF_PX);
-        }
+    _update_custom_style: function () {
+        let threshold_width_large = EosKnowledgePrivate.widget_style_get_int(this, 'threshold-width-large');
+        let sidebar_width_large = EosKnowledgePrivate.widget_style_get_int(this, 'sidebar-width-large');
+        let sidebar_width_small = EosKnowledgePrivate.widget_style_get_int(this, 'sidebar-width-small');
+        if (this._threshold_width_large === threshold_width_large &&
+            this._sidebar_width_large === sidebar_width_large &&
+            this._sidebar_width_small === sidebar_width_small)
+            return;
+        this._threshold_width_large = threshold_width_large;
+        this._sidebar_width_large = sidebar_width_large;
+        this._sidebar_width_small = sidebar_width_small;
+        this.queue_resize();
     },
 
     get_slot_names: function () {
         return [ 'sidebar', 'content' ];
     },
 
-    vfunc_size_allocate: function (alloc) {
-        // We need to adjust the sidebar width for apps with a fixed-width sidebar
-        if (this.fixed) {
-            if (alloc.width < this.SIDEBAR_WIDTH_THRESHOLD) {
-                this.sidebar_width = this.SIDEBAR_WIDTH_MIN;
-            } else {
-                this.sidebar_width = this._orig_sidebar_width;
-            }
-            this.sidebar_frame.width = this.sidebar_width;
-        }
+    vfunc_get_request_mode: function () {
+        return Gtk.SizeRequestMode.CONSTANT_SIZE;
+    },
 
+    vfunc_get_preferred_height: function () {
+        let [content_min, content_nat] = this.content_frame.get_preferred_height();
+        let [sidebar_min, sidebar_nat] = this.sidebar_frame.get_preferred_height();
+        return [Math.max(content_min, sidebar_min), Math.max(content_nat, sidebar_nat)];
+    },
+
+    vfunc_get_preferred_width: function () {
+        let [content_min, content_nat] = this.content_frame.get_preferred_width();
+        let [sidebar_min, sidebar_nat] = this.sidebar_frame.get_preferred_width();
+        let min = Math.max(sidebar_min, this._sidebar_width_small) + content_min;
+        let nat = Math.max(sidebar_min, this._sidebar_width_large) + content_nat;
+        return [min, nat];
+    },
+
+    vfunc_size_allocate: function (alloc) {
         this.parent(alloc);
+
+        let [content_min, content_nat] = this.content_frame.get_preferred_width();
+        let [sidebar_min, sidebar_nat] = this.sidebar_frame.get_preferred_width();
+
+        let sidebar_width = this._sidebar_width_small;
+        if (alloc.width - content_min >= this._sidebar_width_large &&
+            alloc.width >= this._threshold_width_large)
+            sidebar_width = this._sidebar_width_large;
+        sidebar_width = Math.max(sidebar_width, sidebar_min);
+        let content_width = alloc.width - sidebar_width;
+
+        let sidebar_left = this.sidebar_first;
+        if (this.get_direction() === Gtk.TextDirection.RTL)
+            sidebar_left = !sidebar_left;
+        this.sidebar_frame.size_allocate(new Cairo.RectangleInt({
+            x: alloc.x + (sidebar_left ? 0 : content_width),
+            y: alloc.y,
+            width: sidebar_width,
+            height: alloc.height,
+        }));
+        this.content_frame.size_allocate(new Cairo.RectangleInt({
+            x: alloc.x + (sidebar_left ? sidebar_width : 0),
+            y: alloc.y,
+            width: content_width,
+            height: alloc.height,
+        }));
+        Utils.set_container_clip(this);
     },
 });
 
-function get_css_for_module(css_data) {
-    let module_data = Utils.get_css_for_submodule('module', css_data);
-    let conditional_module_data = Utils.split_out_conditional_knobs(module_data);
-    return (Utils.object_to_css_string(module_data, '.' + StyleClasses.SIDEBAR) +
-        Utils.object_to_css_string(conditional_module_data,
-            'EosWindow:not(.composite) .' + StyleClasses.SIDEBAR));
-}
+Gtk.Widget.install_style_property.call(SidebarTemplate, GObject.ParamSpec.int(
+    'sidebar-width-large', 'Sidebar Width Large', 'Sidebar Width Large',
+    GObject.ParamFlags.READABLE, 0, GLib.MAXINT32, 400));
+Gtk.Widget.install_style_property.call(SidebarTemplate, GObject.ParamSpec.int(
+    'sidebar-width-small', 'Sidebar Width Small', 'Sidebar Width Small',
+    GObject.ParamFlags.READABLE, 0, GLib.MAXINT32, 240));
+Gtk.Widget.install_style_property.call(SidebarTemplate, GObject.ParamSpec.int(
+    'threshold-width-large', 'Threshold Width Large', 'Threshold Width Large',
+    GObject.ParamFlags.READABLE, 0, GLib.MAXINT32, 800));

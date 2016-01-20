@@ -19,12 +19,8 @@ describe('Sidebar template', function () {
         jasmine.addMatchers(WidgetDescendantMatcher.customMatchers);
 
         factory = new MockFactory.MockFactory();
-        factory.add_named_mock('mock-sidebar', Gtk.Label, {}, {
-            margin_end: 200,
-        });
-        factory.add_named_mock('mock-content', Gtk.Label, {}, {
-            margin_start: 200,
-        });
+        factory.add_named_mock('mock-sidebar', Gtk.Label);
+        factory.add_named_mock('mock-content', Gtk.Label);
         factory.add_named_mock('sidebar-template', SidebarTemplate.SidebarTemplate,
         {
             'sidebar': 'mock-sidebar',
@@ -59,7 +55,7 @@ describe('Sidebar template', function () {
         expect(template).toHaveDescendantWithCssClass(StyleClasses.SIDEBAR);
     });
 
-    describe('at different sizes', function () {
+    describe('size_allocate', function () {
         let win;
 
         beforeEach(function () {
@@ -73,18 +69,16 @@ describe('Sidebar template', function () {
             win.destroy();
         });
 
-        it('reduces the margins on its submodules when there is less room', function () {
-            win.set_size_request(500, 500);
+        it('allocates large sidebar width when >= 800 pixels available', function () {
+            win.set_size_request(800, 600);
             Utils.update_gui();
-            expect(content.margin_start).toBeLessThan(200);
-            expect(sidebar.margin_end).toBeLessThan(200);
+            expect(sidebar.get_allocated_width()).toBe(400);
         });
 
-        it('leaves the margins alone when there is enough room', function () {
-            win.set_size_request(1500, 1500);
+        it('allocates small sidebar width when < 800 pixels available', function () {
+            win.set_size_request(640, 480);
             Utils.update_gui();
-            expect(content.margin_start).toBe(200);
-            expect(sidebar.margin_end).toBe(200);
+            expect(sidebar.get_allocated_width()).toBe(240);
         });
     });
 });

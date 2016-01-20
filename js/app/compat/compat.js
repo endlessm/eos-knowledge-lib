@@ -72,7 +72,6 @@ function transform_v1_description(json) {
         set_prop_for_name('standalone-page', 'title-image-uri', json['titleImageURI']);
         set_prop_for_name('standalone-page', 'home-background-uri', json['backgroundHomeURI']);
         set_prop_for_type('AppBanner', 'image-uri', json['titleImageURI']);
-        set_prop_for_type('AppBanner', 'subtitle', json['appSubtitle']);
         break;
     default:
         throw new Error('Unrecognized v1 preset type: ' + json.templateType);

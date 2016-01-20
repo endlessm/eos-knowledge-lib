@@ -36,45 +36,46 @@
             }
         },
         "front-page": {
-            "type": "SidebarTemplate",
+            "type": "SplitPercentageTemplate",
             "slots": {
-                "content": {
-                    "type": "AppBanner",
-                    "properties": {
-                        "subtitle-capitalization": "uppercase",
-                        "valign": "start",
-                        "halign": "start",
-                        "margin-top": 50,
-                        "margin-start": 75
-                    }
-                },
-                "sidebar": {
-                    "type": "ItemGroupModule",
+                "start": {
+                    "type": "ResponsiveMarginsModule",
                     "slots": {
-                        "card-type": {
-                            "type": "ArticleSnippetCard"
-                        },
-                        "arrangement": {
-                            "type": "OverflowArrangement",
+                        "content": {
+                            "type": "AppBanner",
                             "properties": {
-                                "orientation": "vertical"
+                                "show-subtitle": true,
+                                "subtitle-capitalization": "uppercase",
+                                "valign": "start",
+                                "halign": "start"
                             }
                         }
-                    },
-                    "properties": {
-                        "expand": true,
-                        "halign": "end",
-                        "valign": "fill",
-                        "margin-end": 100
+                    }
+                },
+                "end": {
+                    "type": "ResponsiveMarginsModule",
+                    "slots": {
+                        "content": {
+                            "type": "ItemGroupModule",
+                            "slots": {
+                                "card-type": {
+                                    "type": "ArticleSnippetCard"
+                                },
+                                "arrangement": {
+                                    "type": "OverflowArrangement",
+                                    "properties": {
+                                        "orientation": "vertical"
+                                    }
+                                }
+                            },
+                            "properties": {
+                                "expand": true,
+                                "halign": "end",
+                                "valign": "fill"
+                            }
+                        }
                     }
                 }
-            },
-            "properties": {
-                "on-left": false,
-                "sidebar-width": 576,
-                "fixed": false,
-                "column-homogeneous": true,
-                "column-spacing": 120
             }
         },
         "search-page": {
@@ -107,8 +108,7 @@
                             "type": "ReaderCard"
                         },
                         "article-suggestions": null,
-                        "category-suggestions": null,
-                        "responsive-margins": null
+                        "category-suggestions": null
                     }
                 }
             }

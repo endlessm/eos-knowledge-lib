@@ -79,7 +79,7 @@
         "section-page": {
             "type": "SidebarTemplate",
             "properties": {
-                "on-left": false
+                "sidebar-first": false
             },
             "slots": {
                 "content": {
@@ -109,7 +109,7 @@
         "search-page": {
             "type": "SidebarTemplate",
             "properties": {
-                "on-left": false
+                "sidebar-first": false
             },
             "slots": {
                 "content": {
@@ -128,8 +128,7 @@
                             "type": "TextCard"
                         },
                         "article-suggestions": null,
-                        "category-suggestions": null,
-                        "responsive-margins": null
+                        "category-suggestions": null
                     },
                     "properties": {
                         "message-valign": "center"
@@ -161,8 +160,7 @@
                                     "type": "TextCard"
                                 },
                                 "article-suggestions": null,
-                                "category-suggestions": null,
-                                "responsive-margins": null
+                                "category-suggestions": null
                             },
                             "properties": {
                                 "message-valign": "center"

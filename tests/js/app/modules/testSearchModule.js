@@ -32,13 +32,11 @@ describe('Search module', function () {
         dispatcher = MockDispatcher.mock_default();
         factory = new MockFactory.MockFactory();
         factory.add_named_mock('results-card', Minimal.MinimalCard);
-        factory.add_named_mock('responsive-margins', Gtk.Frame);
         factory.add_named_mock('results-arrangement',
             Minimal.MinimalArrangement);
         factory.add_named_mock('search-module', SearchModule.SearchModule, {
             'arrangement': 'results-arrangement',
             'card-type': 'results-card',
-            'responsive-margins': 'responsive-margins',
         });
         search_module = new SearchModule.SearchModule({
             factory: factory,
@@ -158,7 +156,6 @@ describe('Search module', function () {
         factory.add_named_mock('infinite-module', SearchModule.SearchModule, {
             'arrangement': 'infinite-arrangement',
             'card-type': 'results-card',
-            'responsive-margins': 'responsive-margins',
         });
         search_module = new SearchModule.SearchModule({
             factory: factory,
@@ -210,4 +207,4 @@ describe('Search module', function () {
 });
 
 Minimal.test_card_container_compliance(Actions.APPEND_SEARCH,
-    SearchModule.SearchModule, { 'responsive-margins': Gtk.Frame });
+    SearchModule.SearchModule);

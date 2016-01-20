@@ -25,6 +25,7 @@
                     "type": "AppBanner",
                     "properties": {
                         "max-fraction": 0.6,
+                        "show-subtitle": true,
                         "subtitle-capitalization": "uppercase"
                     }
                 },
@@ -44,18 +45,22 @@
                     "type": "ScrollingTemplate",
                     "slots": {
                         "content": {
-                            "type": "SetGroupModule",
+                            "type": "ResponsiveMarginsModule",
                             "slots": {
-                                "arrangement": {
-                                    "type": "SquareGuysArrangement",
-                                    "properties": {
-                                        "spacing": 20
+                                "content": {
+                                    "type": "SetGroupModule",
+                                    "slots": {
+                                        "arrangement": {
+                                            "type": "SquareGuysArrangement",
+                                            "properties": {
+                                                "spacing": 20
+                                            }
+                                        },
+                                        "card-type": "set-card"
                                     }
-                                },
-                                "card-type": "set-card"
+                                }
                             }
-                        },
-                        "responsive-margins": "responsive-margins"
+                        }
                     }
                 }
             }
@@ -72,33 +77,37 @@
                     },
                     "slots": {
                         "content": {
-                            "type": "TwoVerticalTemplate",
+                            "type": "ResponsiveMarginsModule",
                             "slots": {
-                                "top": {
-                                    "type": "ThematicModule",
-                                    "properties": {
-                                        "halign": "center",
-                                        "margin-top": 20,
-                                        "margin-bottom": 20,
-                                        "margin-start": 20,
-                                        "margin-end": 20,
-                                        "scroll-server": "theme-scroll"
-                                    },
+                                "content": {
+                                    "type": "TwoVerticalTemplate",
                                     "slots": {
-                                        "arrangement": {
-                                            "type": "HalfArrangement",
+                                        "top": {
+                                            "type": "ThematicModule",
                                             "properties": {
-                                                "spacing": 20
+                                                "halign": "center",
+                                                "margin-top": 20,
+                                                "margin-bottom": 20,
+                                                "margin-start": 20,
+                                                "margin-end": 20,
+                                                "scroll-server": "theme-scroll"
+                                            },
+                                            "slots": {
+                                                "arrangement": {
+                                                    "type": "HalfArrangement",
+                                                    "properties": {
+                                                        "spacing": 20
+                                                    }
+                                                },
+                                                "card-type": "main-card",
+                                                "header-card-type": "header-card"
                                             }
                                         },
-                                        "card-type": "main-card",
-                                        "header-card-type": "header-card"
+                                        "bottom": "category-suggestions"
                                     }
-                                },
-                                "bottom": "category-suggestions"
+                                }
                             }
-                        },
-                        "responsive-margins": "responsive-margins"
+                        }
                     }
                 }
             }
@@ -112,45 +121,49 @@
                     "type": "ScrollingTemplate",
                     "slots": {
                         "content": {
-                            "type": "TwoVerticalTemplate",
+                            "type": "ResponsiveMarginsModule",
                             "slots": {
-                                "top": {
-                                    "type": "HighlightsModule",
-                                    "properties": {
-                                        "halign": "center",
-                                        "margin-top": 20,
-                                        "margin-bottom": 20,
-                                        "margin-start": 20,
-                                        "margin-end": 20
-                                    },
+                                "content": {
+                                    "type": "TwoVerticalTemplate",
                                     "slots": {
-                                        "large-arrangement": {
-                                            "type": "WindshieldArrangement",
+                                        "top": {
+                                            "type": "HighlightsModule",
                                             "properties": {
-                                                "spacing": 20
+                                                "halign": "center",
+                                                "margin-top": 20,
+                                                "margin-bottom": 20,
+                                                "margin-start": 20,
+                                                "margin-end": 20
+                                            },
+                                            "slots": {
+                                                "large-arrangement": {
+                                                    "type": "WindshieldArrangement",
+                                                    "properties": {
+                                                        "spacing": 20
+                                                    }
+                                                },
+                                                "small-arrangement": {
+                                                    "type": "SquareGuysArrangement",
+                                                    "properties": {
+                                                        "spacing": 20,
+                                                        "max-rows": 2
+                                                    }
+                                                },
+                                                "card-type": "main-card",
+                                                "header-card-type": "header-card",
+                                                "large-card-type": {
+                                                    "type": "PostCard",
+                                                    "properties": {
+                                                        "title-capitalization": "uppercase"
+                                                    }
+                                                }
                                             }
                                         },
-                                        "small-arrangement": {
-                                            "type": "SquareGuysArrangement",
-                                            "properties": {
-                                                "spacing": 20,
-                                                "max-rows": 2
-                                            }
-                                        },
-                                        "card-type": "main-card",
-                                        "header-card-type": "header-card",
-                                        "large-card-type": {
-                                            "type": "PostCard",
-                                            "properties": {
-                                                "title-capitalization": "uppercase"
-                                            }
-                                        }
+                                        "bottom": "category-suggestions"
                                     }
-                                },
-                                "bottom": "category-suggestions"
+                                }
                             }
-                        },
-                        "responsive-margins": "responsive-margins"
+                        }
                     }
                 }
             }
@@ -173,8 +186,7 @@
                             "type": "SearchResultCard"
                         },
                         "article-suggestions": "article-suggestions",
-                        "category-suggestions": "category-suggestions",
-                        "responsive-margins": "responsive-margins"
+                        "category-suggestions": "category-suggestions"
                     },
                     "properties": {
                         "halign": "fill",
@@ -278,9 +290,6 @@
         },
         "context-banner": {
             "type": "ContextBanner"
-        },
-        "responsive-margins": {
-            "type": "ResponsiveMarginsModule"
         }
     }
 }
