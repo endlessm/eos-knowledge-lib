@@ -2,8 +2,8 @@
 
 /* exported SquareGuysArrangement */
 
-const Cairo = imports.gi.cairo;
 const Endless = imports.gi.Endless;
+const Gdk = imports.gi.Gdk;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
@@ -123,7 +123,7 @@ const SquareGuysArrangement = new Lang.Class({
 
         all_children.slice(0, visible_children_count).forEach((card, ix) => {
             card.set_child_visible(true);
-            let child_alloc = new Cairo.RectangleInt({
+            let child_alloc = new Gdk.Rectangle({
                 x: x,
                 y: y,
                 width: child_width,

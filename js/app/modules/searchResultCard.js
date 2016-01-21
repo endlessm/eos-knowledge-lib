@@ -1,6 +1,5 @@
 // Copyright 2015 Endless Mobile, Inc.
 
-const Cairo = imports.gi.cairo;
 const Gdk = imports.gi.Gdk;
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
@@ -55,7 +54,7 @@ const SearchResultCard = new Lang.Class({
         let total_width = text_width + image_width;
         let margin = alloc.width - total_width;
 
-        let card_alloc = new Cairo.RectangleInt({
+        let card_alloc = new Gdk.Rectangle({
             x: alloc.x + (margin / 2),
             y: alloc.y,
             width: total_width,
@@ -64,7 +63,7 @@ const SearchResultCard = new Lang.Class({
 
         this.parent(card_alloc);
 
-        let image_alloc = new Cairo.RectangleInt({
+        let image_alloc = new Gdk.Rectangle({
             x: alloc.x + (margin / 2),
             y: alloc.y,
             width: image_width,
@@ -72,7 +71,7 @@ const SearchResultCard = new Lang.Class({
         });
         this._thumbnail_frame.size_allocate(image_alloc);
 
-        let text_alloc = new Cairo.RectangleInt({
+        let text_alloc = new Gdk.Rectangle({
             x: alloc.x + (margin / 2) + image_width,
             y: alloc.y,
             width: text_width,

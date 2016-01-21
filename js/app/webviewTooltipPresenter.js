@@ -2,7 +2,6 @@
 
 /* exported WebviewTooltipPresenter */
 
-const cairo = imports.gi.cairo;  // note: GI module, not native GJS module
 const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
@@ -165,7 +164,7 @@ const WebviewTooltipPresenter = new GObject.Class({
 
         this._link_tooltip = new Gtk.Popover({
             relative_to: view,
-            pointing_to: new cairo.RectangleInt({
+            pointing_to: new Gdk.Rectangle({
                 x: coordinates[0],
                 y: coordinates[1],
                 width: coordinates[2],

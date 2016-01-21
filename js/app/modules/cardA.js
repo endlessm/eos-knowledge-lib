@@ -1,6 +1,6 @@
 // Copyright 2014 Endless Mobile, Inc.
 
-const Cairo = imports.gi.cairo;
+const Gdk = imports.gi.Gdk;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
@@ -144,7 +144,7 @@ const CardA = new Lang.Class({
 
     vfunc_size_allocate: function (alloc) {
         this.parent(alloc);
-        let clip = new Cairo.RectangleInt({
+        let clip = new Gdk.Rectangle({
             x: alloc.x - WIDTH * GROW_FRACTION / 2,
             y: alloc.y - HEIGHT * GROW_FRACTION / 2,
             width: HOVER_WIDTH,

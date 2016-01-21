@@ -1,7 +1,7 @@
 // Copyright 2014 Endless Mobile, Inc.
 
-const Cairo = imports.gi.cairo;
 const Endless = imports.gi.Endless;
+const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
@@ -353,7 +353,7 @@ const KnowledgeDocumentCard = new Lang.Class({
         let has_margins = border_style.top > 0 && border_style.bottom > 0;
         if (!this.toc.visible) {
             let margin = has_margins ? this.EXPANDED_LAYOUT.right_margin_pct * alloc.width : 0;
-            let switcher_alloc = new Cairo.RectangleInt({
+            let switcher_alloc = new Gdk.Rectangle({
                 x: alloc.x + margin,
                 y: alloc.y,
                 width: alloc.width - 2 * margin,
@@ -396,13 +396,13 @@ const KnowledgeDocumentCard = new Lang.Class({
             toolbar_right_margin = 0;
             right_margin = 0;
         }
-        let toolbar_alloc = new Cairo.RectangleInt({
+        let toolbar_alloc = new Gdk.Rectangle({
             x: alloc.x + left_margin,
             y: alloc.y,
             width: this._get_toolbar_width(alloc.width),
             height: alloc.height
         });
-        let switcher_alloc = new Cairo.RectangleInt({
+        let switcher_alloc = new Gdk.Rectangle({
             x: toolbar_alloc.x + toolbar_alloc.width + toolbar_right_margin,
             y: alloc.y,
             width: alloc.width - toolbar_alloc.width - left_margin - toolbar_right_margin - right_margin,

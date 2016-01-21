@@ -1,4 +1,3 @@
-const Cairo = imports.gi.cairo;
 const Endless = imports.gi.Endless;
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Gdk = imports.gi.Gdk;
@@ -255,7 +254,7 @@ const LightboxContainer = new Lang.Class({
 
         this.set_events(Gdk.EventMask.BUTTON_PRESS_MASK | Gdk.EventMask.BUTTON_RELEASE_MASK | Gdk.EventMask.KEY_PRESS_MASK);
         this.set_has_window(true);
-        this._frame_allocation = new Cairo.RectangleInt();
+        this._frame_allocation = new Gdk.Rectangle();
 
         /**
          * Close button
@@ -410,7 +409,7 @@ const LightboxContainer = new Lang.Class({
         // Frame allocation is what all other allocation will be based on, it
         // is the allocation of the white box, containing the info and content
         // widgets
-        this._frame_allocation = new Cairo.RectangleInt({
+        this._frame_allocation = new Gdk.Rectangle({
             width: content_width,
             height: content_height,
         });
@@ -418,7 +417,7 @@ const LightboxContainer = new Lang.Class({
         this._frame_allocation.y = alloc.y + (alloc.height - this._frame_allocation.height) / 2;
 
         // Content widget should be centered in the top of the frame.
-        let content_alloc = new Cairo.RectangleInt({
+        let content_alloc = new Gdk.Rectangle({
             x: this._frame_allocation.x + (this._frame_allocation.width - content_width) / 2,
             y: this._frame_allocation.y,
             width: content_width,
@@ -429,7 +428,7 @@ const LightboxContainer = new Lang.Class({
         if (this.close_visible) {
             this._close_button.set_child_visible(true);
             // Close button will appear at the right top of the frame
-            let close_alloc = new Cairo.RectangleInt({
+            let close_alloc = new Gdk.Rectangle({
                 x: this._frame_allocation.x + this._frame_allocation.width,
                 y: this._frame_allocation.y,
                 width: close_width,
@@ -442,7 +441,7 @@ const LightboxContainer = new Lang.Class({
 
         if (this.forward_arrow_visible || this.back_arrow_visible) {
             // Our arrow appear centered underneath the frame
-            let arrow_alloc = new Cairo.RectangleInt({
+            let arrow_alloc = new Gdk.Rectangle({
                 x: alloc.x + (alloc.width - arrow_width * 2) / 2,
                 y: this._frame_allocation.y + this._frame_allocation.height,
                 width: arrow_width,

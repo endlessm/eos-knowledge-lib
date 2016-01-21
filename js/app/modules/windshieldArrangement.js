@@ -2,8 +2,8 @@
 
 /* exported WindshieldArrangement */
 
-const Cairo = imports.gi.cairo;
 const Endless = imports.gi.Endless;
+const Gdk = imports.gi.Gdk;
 const GObject = imports.gi.GObject;
 const GLib = imports.gi.GLib;
 const Lang = imports.lang;
@@ -110,7 +110,7 @@ const WindshieldArrangement = new Lang.Class({
         // this spot, but for that we'd need the arrangement interface to
         // receive a model, instead of a widget in the "add" method.
         let featured_card = all_children[0];
-        let featured_card_alloc = new Cairo.RectangleInt({
+        let featured_card_alloc = new Gdk.Rectangle({
             x: alloc.x,
             y: alloc.y,
             width: alloc.width,
@@ -126,7 +126,7 @@ const WindshieldArrangement = new Lang.Class({
         // Place three support cards in a row below the featured cards
         all_children.slice(1, SECOND_ROW_CARD_COUNT + 1).forEach((card, i) => {
             card.set_child_visible(true);
-            let child_alloc = new Cairo.RectangleInt({
+            let child_alloc = new Gdk.Rectangle({
                 x: x,
                 y: y,
                 width: child_width,
