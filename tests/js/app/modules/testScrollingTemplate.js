@@ -5,6 +5,8 @@ const Gtk = imports.gi.Gtk;
 const Utils = imports.tests.utils;
 Utils.register_gresource();
 
+const Actions = imports.app.actions;
+const MockDispatcher = imports.tests.mockDispatcher;
 const MockFactory = imports.tests.mockFactory;
 const MockPlaceholder = imports.tests.mockPlaceholder;
 const ScrollingTemplate = imports.app.modules.scrollingTemplate;
@@ -35,5 +37,25 @@ describe('Scrolling template', function () {
     it('packs all its children', function () {
         let content = factory.get_created_named_mocks('placeholder')[0];
         expect(template).toHaveDescendant(content);
+    });
+
+    describe('when showing pages', function () {
+        beforeEach(function () {
+            template.vadjustment.set_value(template.vadjustment.get_upper());
+        });
+
+        function test_show_page (action, descriptor) {
+            it('scrolls back to the top of the ' + descriptor + ' page', function () {
+                MockDispatcher.mock_default().dispatch({
+                    action_type: action,
+                });
+                expect(template.vadjustment.get_value()).toBe(template.vadjustment.get_lower());
+            });
+        }
+        test_show_page(Actions.SHOW_HOME_PAGE, 'home');
+        test_show_page(Actions.SHOW_ALL_SETS_PAGE, 'sets');
+        test_show_page(Actions.SHOW_SECTION_PAGE, 'section');
+        test_show_page(Actions.SHOW_SEARCH_PAGE, 'search');
+        test_show_page(Actions.SHOW_ARTICLE_PAGE, 'article');
     });
 });
