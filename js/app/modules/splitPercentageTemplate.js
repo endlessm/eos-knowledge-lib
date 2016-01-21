@@ -1,8 +1,8 @@
 // Copyright 2016 Endless Mobile, Inc.
 
-const Cairo = imports.gi.cairo;
 const Endless = imports.gi.Endless;
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
+const Gdk = imports.gi.Gdk;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
@@ -126,13 +126,13 @@ const SplitPercentageTemplate = new Lang.Class({
         }
 
         let start_on_left = this.get_direction() === Gtk.TextDirection.LTR;
-        this._start_frame.size_allocate(new Cairo.RectangleInt({
+        this._start_frame.size_allocate(new Gdk.Rectangle({
             x: alloc.x + (start_on_left ? 0 : end_width),
             y: alloc.y,
             width: start_width,
             height: alloc.height,
         }));
-        this._end_frame.size_allocate(new Cairo.RectangleInt({
+        this._end_frame.size_allocate(new Gdk.Rectangle({
             x: alloc.x + (start_on_left ? start_width : 0),
             y: alloc.y,
             width: end_width,

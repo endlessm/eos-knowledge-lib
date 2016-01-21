@@ -2,9 +2,9 @@
 
 /* exported SidebarTemplate, get_css_for_module */
 
-const Cairo = imports.gi.cairo;
 const Endless = imports.gi.Endless;
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
+const Gdk = imports.gi.Gdk;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
@@ -124,13 +124,13 @@ const SidebarTemplate = new Lang.Class({
         let sidebar_left = this.sidebar_first;
         if (this.get_direction() === Gtk.TextDirection.RTL)
             sidebar_left = !sidebar_left;
-        this.sidebar_frame.size_allocate(new Cairo.RectangleInt({
+        this.sidebar_frame.size_allocate(new Gdk.Rectangle({
             x: alloc.x + (sidebar_left ? 0 : content_width),
             y: alloc.y,
             width: sidebar_width,
             height: alloc.height,
         }));
-        this.content_frame.size_allocate(new Cairo.RectangleInt({
+        this.content_frame.size_allocate(new Gdk.Rectangle({
             x: alloc.x + (sidebar_left ? sidebar_width : 0),
             y: alloc.y,
             width: content_width,
