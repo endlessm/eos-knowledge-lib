@@ -76,7 +76,7 @@ EknSplitPercentageTemplate .end EknResponsiveMarginsModule.tiny {
     margin: 25px 60px 25px 25px;
 }
 
-EknSplitPercentageTemplate .start EknResponsiveMarginsModule.small,
+EknSplitPercentageTemplate .end EknResponsiveMarginsModule.small,
 EknSplitPercentageTemplate .end EknResponsiveMarginsModule.medium,
 EknSplitPercentageTemplate .end EknResponsiveMarginsModule.large,
 EknSplitPercentageTemplate .end EknResponsiveMarginsModule.xlarge {
