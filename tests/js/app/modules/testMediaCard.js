@@ -10,7 +10,7 @@ const MediaCard = imports.app.modules.mediaCard;
 
 Gtk.init(null);
 
-describe ('Media Infobox', function () {
+describe ('Media Card', function () {
     let imageObject;
 
     beforeEach(function () {

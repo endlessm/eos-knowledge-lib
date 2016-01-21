@@ -19,7 +19,7 @@ const ReaderWindow = imports.app.modules.readerWindow;
 
 const EXPECTED_TOTAL_PAGES = 17;
 
-describe('Window widget', function () {
+describe('Reader window', function () {
     let view, app, factory, dispatcher;
 
     beforeAll(function (done) {

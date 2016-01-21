@@ -13,7 +13,7 @@ const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 
 Gtk.init(null);
 
-describe('Document Card', function () {
+describe('Reader Document Card', function () {
     let card, article_object;
 
     beforeEach(function () {

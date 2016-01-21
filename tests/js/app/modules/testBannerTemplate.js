@@ -9,7 +9,7 @@ const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 
 Gtk.init(null);
 
-describe('HomePageBTemplate module', function () {
+describe('Banner template', function () {
     let template, factory;
 
     beforeEach(function () {

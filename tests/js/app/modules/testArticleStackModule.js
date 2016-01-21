@@ -16,7 +16,7 @@ const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 
 Gtk.init(null);
 
-describe('Article Page A', function () {
+describe('Article stack', function () {
     let module, factory, dispatcher, article_model, previous_model, next_model;
 
     beforeEach(function () {

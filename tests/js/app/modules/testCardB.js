@@ -10,7 +10,7 @@ const StyleClasses = imports.app.styleClasses;
 
 Gtk.init(null);
 
-describe('Card widget', function () {
+describe('Card B', function () {
     let card;
 
     beforeEach(function () {
