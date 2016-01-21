@@ -10,6 +10,15 @@ const MarginButton = imports.app.widgets.marginButton;
 const Module = imports.app.interfaces.module;
 const Utils = imports.app.utils;
 
+const SMALL_HEIGHT = 80;
+const MEDIUM_HEIGHT = 120;
+const LARGE_HEIGHT = 140;
+const X_LARGE_HEIGHT = 220;
+
+const SMALL_WIDTH = 190;
+const MEDIUM_WIDTH = 290;
+const LARGE_WIDTH = 390;
+
 /**
  * Class: ThumbCard
  *
@@ -50,12 +59,12 @@ const ThumbCard = new Lang.Class({
         let thumb_width, thumb_height, text_width, text_height;
         if (orientation == Gtk.Orientation.VERTICAL) {
             thumb_width = text_width = alloc.width;
-            thumb_height = alloc.height * proportion;
-            text_height = alloc.height - thumb_height;
+            text_height = this._get_text_height(alloc);
+            thumb_height = alloc.height - text_height;
         } else {
-            thumb_width = alloc.width * proportion;
-            text_width = alloc.width - thumb_width;
             thumb_height = text_height = alloc.height;
+            text_width = this._get_text_width(alloc);
+            thumb_width = alloc.width - text_width;
         }
         return [thumb_width, thumb_height, text_width, text_height];
     },
@@ -107,9 +116,41 @@ const ThumbCard = new Lang.Class({
             this._synopsis_label.hide();
         }
 
+        if (this._should_hide_context(alloc.width, alloc.height)) {
+            this._space_container.hide();
+        } else {
+            this._space_container.show_all();
+        }
+
         this._thumbnail_frame.size_allocate(thumb_alloc);
         this._content_frame.size_allocate(text_alloc);
         this.update_card_sizing_classes(alloc.height, alloc.width);
+    },
+
+    _get_text_height: function (alloc) {
+        if (alloc.width <= Card.MaxSize.B) {
+            return SMALL_HEIGHT;
+        } else if (alloc.width <= Card.MaxSize.C) {
+            if (alloc.height <= Card.MaxSize.B) {
+                return SMALL_HEIGHT;
+            }
+            return MEDIUM_HEIGHT;
+        } else if (alloc.width <= Card.MaxSize.D) {
+            if (alloc.height <= Card.MaxSize.C) {
+                return MEDIUM_HEIGHT;
+            }
+            return LARGE_HEIGHT;
+        }
+        return X_LARGE_HEIGHT;
+    },
+
+    _get_text_width: function (alloc) {
+        if (alloc.width <= Card.MaxSize.D) {
+            return SMALL_WIDTH;
+        } else if (alloc.width <= Card.MaxSize.E) {
+            return MEDIUM_WIDTH;
+        }
+        return LARGE_WIDTH;
     },
 
     vfunc_draw: function (cr) {
@@ -128,5 +169,9 @@ const ThumbCard = new Lang.Class({
 
     _should_show_synopsis: function (width, height) {
         return height > Card.MaxSize.C && this._should_go_horizontal(width, height);
+    },
+
+    _should_hide_context: function (width, height) {
+        return width <= Card.MaxSize.B || (width <= Card.MaxSize.C && height <= Card.MaxSize.B);
     },
 });
