@@ -79,10 +79,12 @@ describe('Card interface', function () {
     });
 
     it('sets a context label visible if model has tags', function () {
-        let label = new Gtk.Label();
-        card.set_context_label_from_model(label);
-        expect(label.visible).toBeTruthy();
-        expect(label.label).toBe('FOO | BAR');
+        let grid = new Gtk.Grid();
+        card.set_context_label_from_model(grid);
+        let first_tag = Gtk.test_find_label(grid, 'FOO');
+        expect(first_tag).not.toBeNull();
+        let second_tag = Gtk.test_find_label(grid, ' | BAR');
+        expect(second_tag).not.toBeNull();
     });
 
     it('markup-escapes the title', function () {

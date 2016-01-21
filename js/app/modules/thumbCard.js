@@ -31,7 +31,7 @@ const ThumbCard = new Lang.Class({
     },
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/thumbCard.ui',
-    InternalChildren: [ 'thumbnail-frame', 'grid', 'inner-grid', 'content-frame', 'title-label', 'synopsis-label', 'context-label'],
+    InternalChildren: [ 'thumbnail-frame', 'grid', 'inner-grid', 'content-frame', 'title-label', 'synopsis-label' ],
 
     _init: function (props={}) {
         this.parent(props);
@@ -39,7 +39,8 @@ const ThumbCard = new Lang.Class({
         this.set_title_label_from_model(this._title_label);
         this.set_thumbnail_frame_from_model(this._thumbnail_frame);
         this.set_label_or_hide(this._synopsis_label, this.model.synopsis);
-        this.set_context_label_from_model(this._context_label);
+        this.set_context_label_from_model(this._inner_grid);
+
         this.set_size_request(Card.MinSize.A, Card.MinSize.A);
 
         Utils.set_hand_cursor_on_widget(this);
@@ -70,15 +71,15 @@ const ThumbCard = new Lang.Class({
         // thumbnail image
         if (this._should_go_horizontal(alloc.width, alloc.height)) {
             this._title_label.justify = Gtk.Justification.LEFT;
-            this._title_label.halign = this._synopsis_label.halign = this._context_label.halign = Gtk.Align.START;
+            this._title_label.halign = this._synopsis_label.halign = this._space_container.halign = Gtk.Align.START;
             orientation = Gtk.Orientation.HORIZONTAL;
-            this._title_label.xalign = this._context_label.xalign = 0;
+            this._title_label.xalign = 0;
             proportion = 1/2;
         } else {
             this._title_label.justify = Gtk.Justification.CENTER;
-            this._title_label.halign = this._synopsis_label.halign = this._context_label.halign = Gtk.Align.CENTER;
+            this._title_label.halign = this._synopsis_label.halign = this._space_container.halign = Gtk.Align.CENTER;
             orientation = Gtk.Orientation.VERTICAL;
-            this._title_label.xalign = this._context_label.xalign = 0.5;
+            this._title_label.xalign = 0.5;
             proportion = 2/3;
         }
 
@@ -98,10 +99,13 @@ const ThumbCard = new Lang.Class({
             height: text_h,
         });
 
-        if (this._should_show_synopsis(alloc.width, alloc.height))
+        if (this._should_show_synopsis(alloc.width, alloc.height)) {
             this.set_label_or_hide(this._synopsis_label, this.model.synopsis);
-        else
+            this._title_label.valign = Gtk.Align.END;
+        } else {
+            this._title_label.valign = Gtk.Align.CENTER;
             this._synopsis_label.hide();
+        }
 
         this._thumbnail_frame.size_allocate(thumb_alloc);
         this._content_frame.size_allocate(text_alloc);
