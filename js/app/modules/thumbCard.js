@@ -51,7 +51,7 @@ const ThumbCard = new Lang.Class({
         this.set_label_or_hide(this._synopsis_label, this.model.synopsis);
         this.set_context_label_from_model(this._inner_grid);
 
-        this.set_size_request(Card.MinSize.A, Card.MinSize.A);
+        this.set_size_request(Card.MinSize.B, Card.MinSize.B);
 
         Utils.set_hand_cursor_on_widget(this);
     },
