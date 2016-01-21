@@ -135,7 +135,6 @@ const ReaderDocumentCard = new Lang.Class({
 
             this._size_group.add_widget(this.content_view);
             this._content_grid.attach(this.content_view, 2, 0, 1, 2);
-            this.content_view.grab_focus();
             this.content_view.show_all();
         });
     },
