@@ -339,6 +339,34 @@ function addTestsForOrientation(primary, secondary, primary_pos, primary_align) 
 }
 
 function addGeometryTestsForOrientationAndModes(primary, secondary, primary_for_secondary, secondary_for_primary) {
+    it('requests ' + secondary + ' for ' + primary + ' equal to the maximum of its children', function () {
+        this.add_box(new ConstantAreaBox(50, secondary_for_primary));
+        this.add_box(new ConstantAreaBox(50, secondary_for_primary));
+        this.add_box(new ConstantAreaBox(100, secondary_for_primary));
+
+        let [minimum, natural] = this.container['get_preferred_' + secondary + '_for_' + primary](100);
+        expect(minimum).toBe(100);
+        expect(natural).toBe(100);
+    });
+
+    it('requests minimum ' + primary + ' for ' + secondary + ' equal to the minimum of its first child', function () {
+        this.add_box(new ConstantAreaBox(100, primary_for_secondary));
+        this.add_box(new ConstantAreaBox(200, primary_for_secondary));
+        this.add_box(new ConstantAreaBox(200, primary_for_secondary));
+
+        let [minimum, natural] = this.container['get_preferred_' + primary + '_for_' + secondary](100);
+        expect(minimum).toBe(100);
+    });
+
+    it('requests natural ' + primary + ' for ' + secondary + ' equal to the sum of its children', function () {
+        this.add_box(new ConstantAreaBox(100, primary_for_secondary));
+        this.add_box(new ConstantAreaBox(100, primary_for_secondary));
+        this.add_box(new ConstantAreaBox(100, primary_for_secondary));
+
+        let [minimum, natural] = this.container['get_preferred_' + primary + '_for_' + secondary](100);
+        expect(natural).toBe(300);
+    });
+
     it('allocates ' + primary + ' for ' + secondary, function () {
         let boxes = [100, 100, 100, 100].map((size) =>
             this.add_box(new ConstantAreaBox(size, primary_for_secondary)));
