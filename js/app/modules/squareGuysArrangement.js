@@ -80,23 +80,23 @@ const SquareGuysArrangement = new Lang.Class({
     },
 
     vfunc_get_preferred_width: function () {
-        return [this._get_size_with_spacing(CARD_SIZE_SMALL, COL_COUNT_MIN),
-            this._get_size_with_spacing(CARD_SIZE_MAX, COL_COUNT_MAX)];
+        return [Arrangement.get_size_with_spacing(CARD_SIZE_SMALL, COL_COUNT_MIN, this._spacing),
+            Arrangement.get_size_with_spacing(CARD_SIZE_MAX, COL_COUNT_MAX, this._spacing)];
     },
 
     vfunc_get_preferred_height: function () {
         let card_size = this._small_mode ? CARD_SIZE_SMALL : CARD_SIZE_BIG;
         let rows_for_children = Math.ceil(this.get_children().length / this._get_columns_per_row());
         let rows_visible = this._max_rows === 0 ? rows_for_children : Math.min(this._max_rows, rows_for_children);
-        let height = this._get_size_with_spacing(card_size, rows_visible);
+        let height = Arrangement.get_size_with_spacing(card_size, rows_visible, this._spacing);
         return [height, height];
     },
 
     vfunc_size_allocate: function (alloc) {
         this.parent(alloc);
 
-        this._small_mode = (alloc.width < this._get_size_with_spacing(CARD_SIZE_BIG, COL_COUNT_MIN));
-        this._three_column_mode = (alloc.width < this._get_size_with_spacing(CARD_SIZE_BIG, COL_COUNT_MAX));
+        this._small_mode = (alloc.width < Arrangement.get_size_with_spacing(CARD_SIZE_BIG, COL_COUNT_MIN, this._spacing));
+        this._three_column_mode = (alloc.width < Arrangement.get_size_with_spacing(CARD_SIZE_BIG, COL_COUNT_MAX, this._spacing));
 
         let col_count = this._get_columns_per_row();
 
@@ -110,7 +110,7 @@ const SquareGuysArrangement = new Lang.Class({
         let delta_x = child_width + this._spacing;
         let delta_y = child_height + this._spacing;
 
-        let extra_arrangement_space = alloc.width - this._get_size_with_spacing(CARD_SIZE_MAX, COL_COUNT_MAX);
+        let extra_arrangement_space = alloc.width - Arrangement.get_size_with_spacing(CARD_SIZE_MAX, COL_COUNT_MAX, this._spacing);
         if (extra_arrangement_space > 0) {
             // If we get extra card spacing, we pad the cards horizontally, increasing the delta_x
             let extra_card_spacing = Math.floor(extra_arrangement_space / (col_count - 1));
@@ -165,10 +165,6 @@ const SquareGuysArrangement = new Lang.Class({
             return;
         this._max_rows = value;
         this.notify('max-rows');
-    },
-
-    _get_size_with_spacing: function (size, count) {
-        return size * count + this._spacing * (count - 1);
     },
 
     _get_columns_per_row: function () {

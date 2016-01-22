@@ -74,12 +74,12 @@ const WindshieldArrangement = new Lang.Class({
     },
 
     vfunc_get_preferred_width: function () {
-        return [this._get_size_with_spacing(CARD_SIZE_SMALL, SECOND_ROW_CARD_COUNT),
-            this._get_size_with_spacing(CARD_SIZE_MAX, SECOND_ROW_CARD_COUNT)];
+        return [Arrangement.get_size_with_spacing(CARD_SIZE_SMALL, SECOND_ROW_CARD_COUNT, this._spacing),
+            Arrangement.get_size_with_spacing(CARD_SIZE_MAX, SECOND_ROW_CARD_COUNT, this._spacing)];
     },
 
     vfunc_get_preferred_height_for_width: function (width) {
-        this._small_mode = (width < this._get_size_with_spacing(CARD_SIZE_BIG, SECOND_ROW_CARD_COUNT));
+        this._small_mode = (width < Arrangement.get_size_with_spacing(CARD_SIZE_BIG, SECOND_ROW_CARD_COUNT, this._spacing));
         let card_size = CARD_SIZE_SMALL * (this._small_mode ? SECOND_ROW_CARD_COUNT - 1 : SECOND_ROW_CARD_COUNT);
         let height = card_size + this._spacing;
         return [height, height];
@@ -92,7 +92,7 @@ const WindshieldArrangement = new Lang.Class({
         if (this.get_children().length === 0)
             return;
 
-        this._small_mode = (alloc.width < this._get_size_with_spacing(CARD_SIZE_BIG, SECOND_ROW_CARD_COUNT));
+        this._small_mode = (alloc.width < Arrangement.get_size_with_spacing(CARD_SIZE_BIG, SECOND_ROW_CARD_COUNT, this._spacing));
 
         let available_width = alloc.width - ((SECOND_ROW_CARD_COUNT - 1) * this._spacing);
         let available_height = alloc.height - this._spacing;
@@ -105,7 +105,7 @@ const WindshieldArrangement = new Lang.Class({
 
         // Calculate spare pixels
         // The floor operation we do above may lead us to have 1,2 spare pixels
-        let spare_pixels = alloc.width - (this._get_size_with_spacing(child_width, SECOND_ROW_CARD_COUNT));
+        let spare_pixels = alloc.width - (Arrangement.get_size_with_spacing(child_width, SECOND_ROW_CARD_COUNT, this._spacing));
         let all_children = this.get_children();
 
         // Featured card:
@@ -159,9 +159,5 @@ const WindshieldArrangement = new Lang.Class({
         this._spacing = value;
         this.notify('spacing');
         this.queue_resize();
-    },
-
-    _get_size_with_spacing: function (size, count) {
-        return size * count + this._spacing * (count - 1);
     },
 });

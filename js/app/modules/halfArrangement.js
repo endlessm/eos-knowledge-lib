@@ -80,7 +80,7 @@ const HalfArrangement = new Lang.Class({
         this._featured_cards_count = this._get_featured_cards_count();
         // Calculate space for featured cards
         let featured_rows = Math.ceil(this._featured_cards_count / FEATURED_CARDS_PER_ROW);
-        let req_height = this._get_size_with_spacing(FEATURED_CARD_HEIGHT, featured_rows);
+        let req_height = Arrangement.get_size_with_spacing(FEATURED_CARD_HEIGHT, featured_rows, this._spacing);
 
         // Calculate space for support cards
         let children_count = this.get_children().length - this._featured_cards_count;
@@ -174,9 +174,5 @@ const HalfArrangement = new Lang.Class({
 
     _get_featured_cards_count: function () {
         return this.get_children().length > 4 ? FEATURED_CARDS_PER_ROW : this.get_children().length;
-    },
-
-    _get_size_with_spacing: function (size, count) {
-        return size * count + this._spacing * (count - 1);
     },
 });

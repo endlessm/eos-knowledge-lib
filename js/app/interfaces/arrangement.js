@@ -114,3 +114,7 @@ function get_spare_pixels_for_card_index (spare_pixels, cards_per_row, idx) {
         return 1;
     return 0;
 }
+
+function get_size_with_spacing (size, count, spacing) {
+    return size * count + spacing * (count - 1);
+}
