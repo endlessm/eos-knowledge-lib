@@ -346,11 +346,13 @@ javascript_tests = \
 	tests/js/search/testAsyncTask.js \
 	tests/js/search/testContentObjectModel.js \
 	tests/js/search/testDatadir.js \
+	tests/js/search/testDomain.js \
 	tests/js/search/testEngine.js \
 	tests/js/search/testMediaObjectModels.js \
 	tests/js/search/testQueryObject.js \
 	tests/js/search/testSetObjectModel.js \
 	tests/js/search/testTreeNode.js \
+	tests/js/search/testXapianBridge.js \
 	$(NULL)
 test_content = \
 	tests/test-content/agot.svg \

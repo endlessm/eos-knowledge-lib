@@ -3,33 +3,6 @@ const Lang = imports.lang;
 
 const Engine = imports.search.engine;
 
-const MockDomain = new Lang.Class({
-    Name: 'MockDomain',
-
-    _init: function (ekn_version) {
-        this.ekn_version = ekn_version;
-    },
-
-    load: function (cancellable, callback) {
-        callback();
-    },
-
-    load_finish: function (task) {
-    },
-
-    get_content_path: function () {
-        return this._content_path;
-    },
-
-    get_shard_path: function () {
-        return this._shard_path;
-    },
-
-    get_shard_file: function () {
-        return this._shard_file;
-    },
-});
-
 const MockEngine = new Lang.Class({
     Name: 'MockEngine',
     Extends: GObject.Object,
