@@ -9,7 +9,7 @@ const System = imports.system;
 const Card = imports.app.interfaces.card;
 const ContentObjectModel = imports.search.contentObjectModel;
 const Module = imports.app.interfaces.module;
-const Warehouse = imports.app.warehouse;
+const ModuleFactory = imports.app.moduleFactory;
 
 // For those interested in picard's etymology, it goes roughly like this:
 // Arrangement smoke test -> Tasteful floral arrangement -> Martha Stewart ->
@@ -57,9 +57,21 @@ function main() {
         Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 
     let module_name = ARGV.shift() + 'Arrangement';
-    let warehouse = new Warehouse.Warehouse();
-    let ArrangementClass = warehouse.type_to_class(module_name);
-    widgets.arrangement = new ArrangementClass();
+    let factory = new ModuleFactory.ModuleFactory({
+        app_json: {
+            "version": 2,
+            "modules": {
+                "arrangement": {
+                    "type": module_name,
+                },
+                "card": {
+                    "type": "ColorBox",
+                },
+            },
+        },
+    });
+    factory.warehouse.register_class('ColorBox', ColorBox);
+    widgets.arrangement = factory.create_named_module('arrangement');
 
     build_ui();
     connect_signals();
@@ -184,7 +196,7 @@ function connect_signals() {
         widgets.titlebar.subtitle = width + 'x' + height;
     });
     widgets.add_box.connect('clicked', () => {
-        let box = new ColorBox({
+        let box = widgets.arrangement.factory.create_named_module('card', {
             model: new ContentObjectModel.ContentObjectModel(),
         });
         box.show_all();
