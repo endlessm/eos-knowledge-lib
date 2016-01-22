@@ -44,7 +44,7 @@ const DividedBannerTemplate = new Lang.Class({
             this['_' + slot] = submodule;
         });
 
-        this._orig_row_spacing = this.row_spacing;
+        this._orig_row_spacing = null;
     },
 
     get_slot_names: function () {
@@ -54,8 +54,11 @@ const DividedBannerTemplate = new Lang.Class({
     vfunc_size_allocate: function (alloc) {
         this.parent(alloc);
 
-        if (alloc.width < this.WIDTH_THRESHOLD) {
+        if (this._orig_row_spacing === null) {
             this._orig_row_spacing = this.row_spacing;
+        }
+
+        if (alloc.width < this.WIDTH_THRESHOLD) {
             this.row_spacing = this._orig_row_spacing / 2;
         } else {
             this.row_spacing = this._orig_row_spacing;

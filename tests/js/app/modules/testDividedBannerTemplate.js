@@ -12,6 +12,8 @@ const MockPlaceholder = imports.tests.mockPlaceholder;
 const StyleClasses = imports.app.styleClasses;
 const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 
+const ORIG_ROW_SPACING = 30;
+
 Gtk.init(null);
 
 describe('DividedBannerTemplate module', function () {
@@ -53,6 +55,43 @@ describe('DividedBannerTemplate module', function () {
     describe('CSS style context', function () {
         it('has divided banner template class', function () {
             expect(home_page).toHaveCssClass('divided-banner-template');
+        });
+    });
+
+    describe("when allocates size", function () {
+        let win;
+
+        beforeEach(function () {
+            win = new Gtk.OffscreenWindow();
+            home_page.row_spacing = ORIG_ROW_SPACING;
+            win.add(home_page);
+            win.show_all();
+        });
+
+        afterEach(function () {
+            win.destroy();
+        });
+
+        it('sets the original row spacing', function () {
+            win.set_size_request(640, 480);
+            Utils.update_gui();
+            expect(home_page._orig_row_spacing).toBe(ORIG_ROW_SPACING);
+        });
+
+        it('reduces spacing to half when the width available < 800px', function () {
+            win.set_size_request(720, 480);
+            Utils.update_gui();
+            win.set_size_request(640, 480);
+            Utils.update_gui();
+            expect(home_page.row_spacing).toBe(home_page._orig_row_spacing / 2);
+        });
+
+        it('restores original spacing when width the available >= 800px', function () {
+            win.set_size_request(800, 600);
+            Utils.update_gui();
+            win.set_size_request(1024, 768);
+            Utils.update_gui();
+            expect(home_page.row_spacing).toBe(home_page._orig_row_spacing);
         });
     });
 });
