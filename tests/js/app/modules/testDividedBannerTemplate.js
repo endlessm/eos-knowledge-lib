@@ -55,4 +55,30 @@ describe('DividedBannerTemplate module', function () {
             expect(home_page).toHaveCssClass('divided-banner-template');
         });
     });
+
+    describe("when allocates size", function () {
+        let win;
+
+        beforeEach(function () {
+            win = new Gtk.OffscreenWindow();
+            win.add(home_page);
+            win.show_all();
+        });
+
+        afterEach(function () {
+            win.destroy();
+        });
+
+        it('reduces the row spacing to the half when the width < 800px', function () {
+            win.set_size_request(640, 480);
+            Utils.update_gui();
+            expect(home_page.row_spacing).toBe(home_page._orig_row_spacing / 2);
+        });
+
+        it('restores the original row spacing when the width >= 800px', function () {
+            win.set_size_request(800, 600);
+            Utils.update_gui();
+            expect(home_page.row_spacing).toBe(home_page._orig_row_spacing);
+        });
+    });
 });
