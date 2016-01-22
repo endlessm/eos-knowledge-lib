@@ -5,7 +5,7 @@
 const Endless = imports.gi.Endless;
 const Gdk = imports.gi.Gdk;
 const GObject = imports.gi.GObject;
-const GLib = imports.gi.GLib;
+const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const Arrangement = imports.app.interfaces.arrangement;
@@ -69,12 +69,17 @@ const WindshieldArrangement = new Lang.Class({
             this.queue_resize();
     },
 
+    vfunc_get_request_mode: function () {
+        return Gtk.SizeRequestMode.HEIGHT_FOR_WIDTH;
+    },
+
     vfunc_get_preferred_width: function () {
         return [this._get_size_with_spacing(CARD_SIZE_SMALL, SECOND_ROW_CARD_COUNT),
             this._get_size_with_spacing(CARD_SIZE_MAX, SECOND_ROW_CARD_COUNT)];
     },
 
-    vfunc_get_preferred_height: function () {
+    vfunc_get_preferred_height_for_width: function (width) {
+        this._small_mode = (width < this._get_size_with_spacing(CARD_SIZE_BIG, SECOND_ROW_CARD_COUNT));
         let card_size = CARD_SIZE_SMALL * (this._small_mode ? SECOND_ROW_CARD_COUNT - 1 : SECOND_ROW_CARD_COUNT);
         let height = card_size + this._spacing;
         return [height, height];
