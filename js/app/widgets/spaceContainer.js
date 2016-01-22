@@ -86,13 +86,13 @@ const SpaceContainer = new Lang.Class({
     // The secondary dimension (i.e., width if orientation == VERTICAL) is the
     // maximum minimal and natural secondary dimensions of any one child, even
     // including ones that are not shown.
-    _get_preferred_secondary: function (secondary) {
+    _get_preferred_secondary: function (secondary, space) {
         let children = this.get_children();
         if (children.length === 0)
             return [0, 0];
         return children.reduce((accum, child) => {
             let [min, nat] = accum;
-            let [child_min, child_nat] = child['get_preferred_' + secondary]();
+            let [child_min, child_nat] = this._child_get_preferred_size(child, secondary, space);
             return [Math.max(child_min, min), Math.max(child_nat, nat)];
         }, [0, 0]);
     },
@@ -102,29 +102,28 @@ const SpaceContainer = new Lang.Class({
     // the first child, since the widget can shrink down to one child; preferred
     // natural primary dimension is the combined natural primary dimension of
     // all children, since given enough space we would display all of them.
-    _get_preferred_primary: function (primary) {
+    _get_preferred_primary: function (primary, space) {
         let children = this._get_visible_children();
         if (children.length === 0)
             return [0, 0];
-        let primary_getter = 'get_preferred_' + primary;
-        let [min, nat] = children[0][primary_getter]();
+        let [min, nat] = this._child_get_preferred_size(children[0], primary, space);
         nat += children.slice(1).reduce((accum, child) => {
-            let [child_min, child_nat] = child[primary_getter]();
+            let [child_min, child_nat] = this._child_get_preferred_size(child, primary, space);
             return accum + child_nat + this._spacing;
         }, 0);
         return [min, nat];
     },
 
-    _child_get_preferred_primary: function (child, primary, secondary_space) {
+    _child_get_preferred_size: function (child, dimension, space) {
         if (child.get_request_mode() === Gtk.SizeRequestMode.HEIGHT_FOR_WIDTH &&
-            primary === 'height') {
-            return child.get_preferred_height_for_width(secondary_space);
+            dimension === 'height' && space > -1) {
+            return child.get_preferred_height_for_width(space);
         }
         if (child.get_request_mode() === Gtk.SizeRequestMode.WIDTH_FOR_HEIGHT &&
-            primary === 'width') {
-            return child.get_preferred_width_for_height(secondary_space);
+            dimension === 'width' && space > -1) {
+            return child.get_preferred_width_for_height(space);
         }
-        return child['get_preferred_' + primary]();
+        return child['get_preferred_' + dimension]();
     },
 
     _get_shown_children_info: function (children, primary, available_space, secondary_space) {
@@ -134,8 +133,7 @@ const SpaceContainer = new Lang.Class({
         // Determine how many children will fit in the available space.
         children.forEach((child, ix) => {
             let [child_min, child_nat] =
-                this._child_get_preferred_primary(child, primary,
-                    secondary_space);
+                this._child_get_preferred_size(child, primary, secondary_space);
             cum_min_size += child_min;
             if (ix > 0)
                 cum_min_size += this._spacing;
@@ -211,14 +209,26 @@ const SpaceContainer = new Lang.Class({
 
     vfunc_get_preferred_width: function () {
         if (this.orientation === Gtk.Orientation.VERTICAL)
-            return this._get_preferred_secondary('width');
-        return this._get_preferred_primary('width');
+            return this._get_preferred_secondary('width', 1);
+        return this._get_preferred_primary('width', 1);
+    },
+
+    vfunc_get_preferred_width_for_height: function (height) {
+        if (this.orientation === Gtk.Orientation.VERTICAL)
+            return this._get_preferred_primary('width', height);
+        return this._get_preferred_secondary('width', height);
     },
 
     vfunc_get_preferred_height: function () {
         if (this.orientation === Gtk.Orientation.VERTICAL)
-            return this._get_preferred_primary('height');
-        return this._get_preferred_secondary('height');
+            return this._get_preferred_primary('height', 1);
+        return this._get_preferred_secondary('height', 1);
+    },
+
+    vfunc_get_preferred_height_for_width: function (width) {
+        if (this.orientation === Gtk.Orientation.VERTICAL)
+            return this._get_preferred_primary('height', width);
+        return this._get_preferred_secondary('height', width);
     },
 
     vfunc_size_allocate: function (allocation) {
