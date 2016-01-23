@@ -353,8 +353,6 @@ const Window = new Lang.Class({
             action_type: Actions.NAV_BACK_ENABLED_CHANGED,
             enabled: nav_back_visible,
         });
-        if (Utils.low_performance_mode())
-            this._stack.transition_type = Gtk.StackTransitionType.NONE;
         this._stack.visible_child = new_page;
 
         // The first transition on app startup has duration 0, subsequent ones
