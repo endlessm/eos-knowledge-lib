@@ -153,8 +153,6 @@ const EncyclopediaWindow = new Lang.Class({
         } else {
             this.page_manager.transition_type = Gtk.StackTransitionType.NONE;
         }
-        if (Utils.low_performance_mode())
-            this.page_manager.transition_type = Gtk.StackTransitionType.NONE;
         this.page_manager.visible_child = page;
     },
 
