@@ -170,13 +170,18 @@ const Window = new Lang.Class({
         }
 
         this._history_buttons = new Endless.TopbarNavButton();
-        this._search_box = this.create_submodule('search', {
-            no_show_all: true,
-            visible: false,
-        });
+
+        // FIXME: comment
+        this._search_stack = new Gtk.Stack();
+        this._invisible_frame = new Gtk.Frame();
+        this._search_stack.add(this._invisible_frame);
+        this._search_box = this.create_submodule('search');
+        this._search_stack.add(this._search_box);
+        this._search_stack.show_all();
+
         this.page_manager.add(matryoshka, {
             left_topbar_widget: this._history_buttons,
-            center_topbar_widget: this._search_box,
+            center_topbar_widget: this._search_stack,
         });
 
         let frame_css = '';
@@ -303,8 +308,11 @@ const Window = new Lang.Class({
 
     _update_top_bar_visibility: function () {
         let new_page = this._stack.visible_child;
-        this._search_box.visible =
-            !Utils.has_descendant_with_type(new_page, SearchBox.SearchBox);
+        if (Utils.has_descendant_with_type(new_page, SearchBox.SearchBox)) {
+            this._search_stack.visible_child = this._invisible_frame;
+        } else {
+            this._search_stack.visible_child = this._search_box;
+        }
     },
 
     show_page: function (new_page) {
