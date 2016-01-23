@@ -238,7 +238,8 @@ const Engine = Lang.Class({
             if (query_obj.domain === '')
                 query_obj = QueryObject.QueryObject.new_from_object(query_obj, { domain: this.default_domain });
 
-            this._load_domain(query_obj.domain, () => {
+            this._load_domain(query_obj.domain, cancellable, task.catch_callback_errors((source, load_domain_task) => {
+                this._load_domain_finish(load_domain_task);
                 let do_query = (query_obj) => {
                     let query_req_uri = this._get_xapian_query_uri(query_obj);
                     this._send_json_ld_request(query_req_uri, cancellable, task.catch_callback_errors((engine, json_task) => {
@@ -305,7 +306,7 @@ const Engine = Lang.Class({
                 } else {
                     do_query(query_obj);
                 }
-            });
+            }));
         });
         return task;
     },
@@ -395,16 +396,22 @@ const Engine = Lang.Class({
         this._runtime_objects.set(id, model);
     },
 
-    _load_domain: function (domain, callback) {
+    _load_domain: function (domain, cancellable, callback) {
+        let task = new AsyncTask.AsyncTask(this, cancellable, callback);
         let shard_file = this._shard_file_from_domain(domain);
         if (shard_file) {
-            shard_file.init_async(0, null, (shard_file, result) => {
+            shard_file.init_async(0, cancellable, task.catch_callback_errors((shard_file, result) => {
                 shard_file.init_finish(result);
-                callback();
-            });
+                task.return_value(true);
+            }));
         } else {
-            callback();
+            task.return_value(true);
         }
+        return task;
+    },
+
+    _load_domain_finish: function (task) {
+        return task.finish();
     },
 
     /**
@@ -415,7 +422,9 @@ const Engine = Lang.Class({
      * quicker.
      */
     preload_domain: function (domain) {
-        this._load_domain(domain, () => {});
+        this._load_domain(domain, null, (source, task) => {
+            this._load_domain_finish(task);
+        });
     },
 
     /**
@@ -470,7 +479,8 @@ const Engine = Lang.Class({
         let task = new AsyncTask.AsyncTask(this, cancellable, callback);
         task.catch_errors(() => {
             let [domain, hash] = Utils.components_from_ekn_id(id);
-            this._load_domain(domain, task.catch_callback_errors(() => {
+            this._load_domain(domain, cancellable, task.catch_callback_errors((source, load_domain_task) => {
+                this._load_domain_finish(load_domain_task);
                 let shard_file = this._shard_file_from_domain(domain);
                 let record = shard_file.find_record_by_hex_name(hash);
                 if (!record)
