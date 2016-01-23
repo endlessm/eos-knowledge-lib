@@ -47,6 +47,8 @@ const GrowButton = new Lang.Class({
     },
 
     vfunc_draw: function (cr) {
+        if (!this.sensitive)
+            return false;
         cr.translate(Math.round(this._tweener.get_value()), 0);
         this.parent(cr);
         cr.$dispose();
@@ -124,7 +126,7 @@ const NavButtonOverlay = new Lang.Class({
         this._back_button = new GrowButton({
             halign: Gtk.Align.START,
             valign: Gtk.Align.CENTER,
-            no_show_all: true,
+            visible: true,
         });
         this._back_button.connect('clicked', function () {
             this.emit('back-clicked');
@@ -138,7 +140,7 @@ const NavButtonOverlay = new Lang.Class({
         this._forward_button = new GrowButton({
             halign: Gtk.Align.END,
             valign: Gtk.Align.CENTER,
-            no_show_all: true,
+            visible: true,
             margin_end: this._accommodate_scrollbar ? _SCROLLBAR_MARGIN_PX : 0,
         });
         this._forward_button.connect('clicked', function () {
@@ -160,9 +162,9 @@ const NavButtonOverlay = new Lang.Class({
     },
 
     set back_visible (v) {
-        if (this._back_button.visible === v)
+        if (this._back_button.sensitive === v)
             return;
-        this._back_button.visible = v;
+        this._back_button.sensitive = v;
         this.notify('back-visible');
     },
 
@@ -171,9 +173,9 @@ const NavButtonOverlay = new Lang.Class({
     },
 
     set forward_visible (v) {
-        if (this._forward_button.visible === v)
+        if (this._forward_button.sensitive === v)
             return;
-        this._forward_button.visible = v;
+        this._forward_button.sensitive = v;
         this.notify('forward-visible');
     },
 
