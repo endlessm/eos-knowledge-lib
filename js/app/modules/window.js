@@ -394,7 +394,13 @@ const Window = new Lang.Class({
             'article-page', 'navigation', 'lightbox', 'search'];
     },
 
+    vfunc_get_preferred_width: function () {
+        printerr('RESIZE');
+        return this.parent();
+    },
+
     vfunc_size_allocate: function (alloc) {
+        printerr('ALLOCATE');
         this.parent(alloc);
 
         let context = this.get_style_context();
