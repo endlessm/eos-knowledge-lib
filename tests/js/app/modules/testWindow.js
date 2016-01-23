@@ -242,7 +242,7 @@ describe('Window', function () {
             });
             Utils.update_gui();
             let search = factory.get_created_named_mocks('top-bar-search')[0];
-            expect(search.visible).toBeTruthy();
+            expect(search.get_child_visible()).toBeTruthy();
         });
 
         it('hides the top bar search on a page that has a search box', function () {
@@ -251,7 +251,7 @@ describe('Window', function () {
             });
             Utils.update_gui();
             let search = factory.get_created_named_mocks('top-bar-search')[0];
-            expect(search.visible).toBeFalsy();
+            expect(search.get_child_visible()).toBeFalsy();
         });
 
         it('disables the home button when in the brand page', function () {
