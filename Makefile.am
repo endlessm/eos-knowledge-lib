@@ -226,14 +226,18 @@ subst = $(SED) \
 	-e 's,%pkglibdir%,$(pkglibdir),g' \
 	-e 's,%typelibdir%,$(typelibdir),g' \
 	-e 's,%webextensiondir%,$(webextensiondir),g' \
+	-e 's,%sysconfdir%,$(sysconfdir),g' \
 	$(NULL)
 
 subst_files = \
+	data/com.endlessm.EknDownloader.service \
 	data/com.endlessm.EknSearchProvider.service \
+	ekn-downloader \
 	ekn-search-provider \
 	ekn-app-runner \
 	eos-encyclopedia \
 	js/app/config.js \
+	js/search/config.js \
 	kermit \
 	picard \
 	$(NULL)
@@ -246,15 +250,22 @@ CLEANFILES += $(subst_files)
 EXTRA_DIST += $(patsubst %,%.in,$(subst_files))
 
 servicedir = $(datadir)/dbus-1/services
-service_DATA = data/com.endlessm.EknSearchProvider.service
+service_DATA = \
+	data/com.endlessm.EknSearchProvider.service \
+	data/com.endlessm.EknDownloader.service \
+	$(NULL)
 
 bin_SCRIPTS += \
+	ekn-downloader \
 	ekn-search-provider \
 	ekn-app-runner \
 	eos-encyclopedia \
 	kermit \
 	picard \
 	$(NULL)
+
+confdir = $(sysconfdir)/eos-knowledge-lib
+conf_DATA = data/downloader.ini
 
 # # # TESTS # # #
 

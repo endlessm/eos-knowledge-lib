@@ -9,12 +9,15 @@
 \#*\#
 /js/app/config.js
 /js/app/config.js.in
+/js/search/config.js
 /ekn-app-runner
 /kermit
 /picard
+/ekn-downloader
 /ekn-search-provider
 /eos-encyclopedia
 /data/com.endlessm.EknSearchProvider.service
+/data/com.endlessm.EknDownloader.service
 
 # Sass
 .sass-cache
