@@ -7,6 +7,7 @@ const Engine = imports.search.engine;
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
 const MediaObjectModel = imports.search.mediaObjectModel;
 const MockShard = imports.tests.mockShard;
+const MockEngine = imports.tests.mockEngine;
 const QueryObject = imports.search.queryObject;
 const SetObjectModel = imports.search.setObjectModel;
 const Utils = imports.search.utils;
@@ -128,19 +129,11 @@ describe('Knowledge Engine Module', () => {
         });
     }
 
-    function mock_ekn_version (engine, version) {
-        engine._ekn_version_from_domain = function(domain) {
-            // The rule for our test suite is that domain 'foo' gets
-            // the content-path /foo'.
-            return version;
-        };
-    }
-
     function mock_ekn_shard (shard) {
         if (!shard)
             shard = new MockShard.MockShardFile();
 
-        engine._shard_file_from_domain = (() => shard);
+        engine._mock_domain.get_shard_file = (() => shard);
     }
 
     // where querystring is the URI component after a '?', and key is the
@@ -165,15 +158,15 @@ describe('Knowledge Engine Module', () => {
         engine = new Engine.Engine();
         engine.default_domain = 'foo';
 
-        // Inject a custom content path finder so we don't hit the disk ever.
-        spyOn(engine, '_content_path_from_domain').and.callFake((domain) => {
-            // The rule for our test suite is that domain 'foo' gets
-            // the content-path /foo'.
-            return '/' + domain;
-        });
+        // Test EKN version 2.
+        let domain = new MockEngine.MockDomain(2);
 
-        // Test the newest code paths.
-        mock_ekn_version(engine, 2);
+        // Don't hit the disk.
+        domain._content_path = '/foo';
+        domain._shard_file = new MockShard.MockShardFile();
+
+        engine._mock_domain = domain;
+        engine._get_domain = (() => engine._mock_domain);
     });
 
     describe('constructor', () => {
@@ -204,10 +197,6 @@ describe('Knowledge Engine Module', () => {
     });
 
     describe('get_xapian_uri', () => {
-        beforeEach(() => {
-            mock_ekn_shard();
-        });
-
         it('sets order field', () => {
             let query_obj = new QueryObject.QueryObject({
                 query: 'tyrion',
@@ -244,19 +233,6 @@ describe('Knowledge Engine Module', () => {
             uri = engine._get_xapian_query_uri(query_obj);
             query_obj = uri.get_query();
             expect(get_query_vals_for_key(query_obj, 'path')).toEqual('/foo/db');
-        });
-
-        it('allows the default domain path to be overridden', () => {
-            let uri, query_obj;
-            engine.default_domain_path = '/bar';
-            engine._content_path_from_domain.and.callThrough();
-            let query_obj = new QueryObject.QueryObject({
-                query: 'tyrion',
-                domain: 'foo',
-            });
-            uri = engine._get_xapian_query_uri(query_obj);
-            query_obj = uri.get_query();
-            expect(get_query_vals_for_key(query_obj, 'path')).toEqual('/bar/db');
         });
 
         it('calls into QueryObject for other uri fields', () => {
@@ -461,8 +437,6 @@ describe('Knowledge Engine Module', () => {
             engine.get_object_by_id_finish.and.callFake(() => {
                 return requested_ids.shift();
             });
-
-            mock_ekn_shard();
         });
 
         it('sends requests', () => {
@@ -598,10 +572,6 @@ describe('Knowledge Engine Module', () => {
     });
 
     describe('get_fixed_query', () => {
-        beforeEach(() => {
-            mock_ekn_shard();
-        });
-
         it('should set the stopword-free-query property of a query object', (done) => {
             let mock_correction = {
                 'stopWordCorrectedQuery': 'a query with no stop words',
@@ -618,20 +588,10 @@ describe('Knowledge Engine Module', () => {
         });
     });
 
-    describe('preloading', () => {
-        it('will init the shard', function () {
-            let mock_shard_file = new MockShard.MockShardFile();
-            mock_ekn_shard(mock_shard_file);
-            engine.preload_default_domain();
-            expect(mock_shard_file.init_async).toHaveBeenCalled();
-        });
-    });
-
     describe('v1 compatibility', () => {
         beforeEach(() => {
-            mock_ekn_version(engine, 1);
+            engine._mock_domain.ekn_version = 1;
             fake_get_fixed_query();
-            mock_ekn_shard();
         });
 
         describe('get_objects_by_query', () => {
@@ -841,18 +801,6 @@ describe('Knowledge Engine Module', () => {
 
                 expect(requested_uri_string).toMatch(/^http:\/\/127.0.0.1:3004\/query?/);
                 expect(get_query_vals_for_key(requested_query, 'path')).toMatch('/foo');
-            });
-
-            it('uses correct domain for id', () => {
-                let request_spy = engine_request_spy();
-                let mock_id = 'ekn://new_domain/0123456789abcdef';
-
-                engine.get_object_by_id(mock_id, null, noop);
-                let last_req_args = request_spy.calls.mostRecent().args;
-                let requested_uri = last_req_args[0];
-                let requested_query = requested_uri.get_query();
-
-                expect(get_query_vals_for_key(requested_query, 'path')).toMatch('/new_domain');
             });
 
             it('marshals ArticleObjectModels based on @type', (done) => {

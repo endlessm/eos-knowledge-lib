@@ -33,6 +33,63 @@ const _XB_FIX_ENDPOINT = '/fix';
  */
 const XAPIAN_DB_RECORD = GLib.compute_checksum_for_string(GLib.ChecksumType.SHA1, 'xapian-db', -1);
 
+const Domain = new Lang.Class({
+    Name: 'Domain',
+
+    _init: function (domain) {
+        this._domain = domain;
+
+        this.ekn_version = Utils.get_ekn_version_for_domain(this._domain);
+        this._content_path = null;
+        this._shard_file = null;
+    },
+
+    load: function (cancellable, callback) {
+        let task = new AsyncTask.AsyncTask(this, cancellable, callback);
+
+        let shard_file = this.get_shard_file();
+        if (shard_file !== null) {
+            shard_file.init_async(0, cancellable, task.catch_callback_errors((shard_file, result) => {
+                shard_file.init_finish(result);
+                task.return_value(true);
+            }));
+        } else {
+            task.return_value(true);
+        }
+
+        return task;
+    },
+
+    load_finish: function (task) {
+        return task.finish();
+    },
+
+    get_content_path: function () {
+        if (this._content_path === null)
+            this._content_path = datadir.get_data_dir_for_domain(this._domain).get_path();
+
+        return this._content_path;
+    },
+
+    get_shard_path: function () {
+        let path_components = [this.get_content_path(), 'media.shard'];
+        let filename = GLib.build_filenamev(path_components);
+        return filename;
+    },
+
+    get_shard_file: function () {
+        if (this.ekn_version < 2)
+            return null;
+
+        if (this._shard_file === null)
+            this._shard_file = new EosShard.ShardFile({
+                path: this.get_shard_path(),
+            });
+
+        return this._shard_file;
+    },
+});
+
 /**
  * Class: Engine
  *
@@ -123,14 +180,8 @@ const Engine = Lang.Class({
         this.parent(params);
         this._http_session = new Soup.Session();
 
-        // Caches domain => content path so that we don't have to hit the
-        // disk on every object lookup.
-        this._content_path_cache = {};
+        this._domain_cache = {};
 
-        // Like _content_path_cache, but for EKN_VERSION files
-        this._ekn_version_cache = {};
-
-        this._shard_file_cache = {};
         this._runtime_objects = new Map();
     },
 
@@ -168,7 +219,7 @@ const Engine = Lang.Class({
             };
 
             let [domain, hash] = Utils.components_from_ekn_id(id);
-            let ekn_version = this._ekn_version_from_domain(domain);
+            let ekn_version = this._get_domain(domain).ekn_version;
 
             // Bundles with version >= 2 store all json-ld on disk instead of in the
             // Xapian DB itself, and hence require no HTTP request to xapian-bridge
@@ -238,8 +289,11 @@ const Engine = Lang.Class({
             if (query_obj.domain === '')
                 query_obj = QueryObject.QueryObject.new_from_object(query_obj, { domain: this.default_domain });
 
-            this._load_domain(query_obj.domain, cancellable, task.catch_callback_errors((source, load_domain_task) => {
-                this._load_domain_finish(load_domain_task);
+            let domain_obj = this._get_domain(query_obj.domain);
+
+            domain_obj.load(cancellable, task.catch_callback_errors((source, load_domain_task) => {
+                domain_obj.load_finish(load_domain_task);
+
                 let do_query = (query_obj) => {
                     let query_req_uri = this._get_xapian_query_uri(query_obj);
                     this._send_json_ld_request(query_req_uri, cancellable, task.catch_callback_errors((engine, json_task) => {
@@ -273,7 +327,7 @@ const Engine = Lang.Class({
 
                         json_ld.results.forEach((result, index) => {
                             let id;
-                            let ekn_version = this._ekn_version_from_domain(query_obj.domain);
+                            let ekn_version = this._get_domain(query_obj.domain).ekn_version;
                             if (ekn_version >= 2) {
                                 id = result;
                             } else {
@@ -396,35 +450,17 @@ const Engine = Lang.Class({
         this._runtime_objects.set(id, model);
     },
 
-    _load_domain: function (domain, cancellable, callback) {
-        let task = new AsyncTask.AsyncTask(this, cancellable, callback);
-        let shard_file = this._shard_file_from_domain(domain);
-        if (shard_file) {
-            shard_file.init_async(0, cancellable, task.catch_callback_errors((shard_file, result) => {
-                shard_file.init_finish(result);
-                task.return_value(true);
-            }));
-        } else {
-            task.return_value(true);
+    _get_domain: function (domain) {
+        if (this._domain_cache[domain] === undefined) {
+            let domain_obj = new Domain(domain);
+
+            if (domain === this.default_domain && this.default_domain_path)
+                domain_obj._content_path = this.default_domain_path;
+
+            this._domain_cache[domain] = domain_obj;
         }
-        return task;
-    },
 
-    _load_domain_finish: function (task) {
-        return task.finish();
-    },
-
-    /**
-     * Method: preload_domain
-     *
-     * Optional call to load up a shard file for a given domain. Will make the
-     * subsequent call to get_object_by_id or get_objects_by_query return
-     * quicker.
-     */
-    preload_domain: function (domain) {
-        this._load_domain(domain, null, (source, task) => {
-            this._load_domain_finish(task);
-        });
+        return this._domain_cache[domain];
     },
 
     /**
@@ -433,55 +469,17 @@ const Engine = Lang.Class({
      * Calls preload_domain with the default domain.
      */
     preload_default_domain: function () {
-        this.preload_domain(this.default_domain);
-    },
-
-    _content_path_from_domain: function (domain) {
-        if (domain === this.default_domain && this.default_domain_path)
-            return this.default_domain_path;
-
-        if (this._content_path_cache[domain] === undefined)
-            this._content_path_cache[domain] = datadir.get_data_dir_for_domain(domain).get_path();
-
-        return this._content_path_cache[domain];
-    },
-
-    _ekn_version_from_domain: function (domain) {
-        if (this._ekn_version_cache[domain] === undefined)
-            this._ekn_version_cache[domain] = Utils.get_ekn_version_for_domain(domain);
-
-        return this._ekn_version_cache[domain];
-    },
-
-    _shard_path_from_domain: function (domain) {
-        let content_path = this._content_path_from_domain(domain);
-
-        let path_components = [content_path, 'media.shard'];
-        let filename = GLib.build_filenamev(path_components);
-        return filename;
-    },
-
-    _shard_file_from_domain: function (domain) {
-        if (this._ekn_version_from_domain(domain) < 2)
-            return null;
-
-        if (this._shard_file_cache[domain] === undefined) {
-            let shard_file = new EosShard.ShardFile({
-                path: this._shard_path_from_domain(domain),
-            });
-            this._shard_file_cache[domain] = shard_file;
-        }
-
-        return this._shard_file_cache[domain];
+        this._get_domain(this.default_domain).load(null, () => {});
     },
 
     _get_model_from_shard: function (id, cancellable, callback) {
         let task = new AsyncTask.AsyncTask(this, cancellable, callback);
         task.catch_errors(() => {
             let [domain, hash] = Utils.components_from_ekn_id(id);
-            this._load_domain(domain, cancellable, task.catch_callback_errors((source, load_domain_task) => {
-                this._load_domain_finish(load_domain_task);
-                let shard_file = this._shard_file_from_domain(domain);
+            let domain_obj = this._get_domain(domain);
+            domain_obj.load(cancellable, task.catch_callback_errors((source, load_domain_task) => {
+                domain_obj.load_finish(load_domain_task);
+                let shard_file = this._get_domain(domain).get_shard_file();
                 let record = shard_file.find_record_by_hex_name(hash);
                 if (!record)
                     throw new Error('Could not find epak record for ' + id);
@@ -519,7 +517,7 @@ const Engine = Lang.Class({
                 return Utils.string_to_stream(json_ld.articleBody);
             };
         } else if (json_ld.hasOwnProperty('contentURL')) {
-            let content_path = this._content_path_from_domain(domain);
+            let content_path = this._get_domain(domain).get_content_path();
             let model_path = GLib.build_filenamev([content_path, this._MEDIA_DIR, json_ld.contentURL]);
             // We don't care if the guess was certain or not, since the
             // content_type is a required parameter
@@ -565,7 +563,8 @@ const Engine = Lang.Class({
 
         let record;
 
-        let shard_file = this._shard_file_from_domain(domain);
+        let domain_obj = this._get_domain(domain);
+        let shard_file = domain_obj.get_shard_file();
         if (shard_file)
             record = shard_file.find_record_by_hex_name(XAPIAN_DB_RECORD);
         else
@@ -574,10 +573,10 @@ const Engine = Lang.Class({
         // If we have the record, then use it. Otherwise, fall back to the
         // old database directory.
         if (record) {
-            params.path = this._shard_path_from_domain(domain);
+            params.path = domain_obj.get_shard_path();
             params.db_offset = record.data.get_offset();
         } else {
-            params.path = GLib.build_filenamev([this._content_path_from_domain(domain), this._DB_DIR]);
+            params.path = GLib.build_filenamev([domain_obj.get_content_path(), this._DB_DIR]);
         }
 
         uri.set_query(this._serialize_query(params));
