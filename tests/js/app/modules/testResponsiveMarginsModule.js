@@ -3,6 +3,7 @@
 const Gtk = imports.gi.Gtk;
 
 const MockFactory = imports.tests.mockFactory;
+const MockWidgets = imports.tests.mockWidgets;
 const ResponsiveMarginsModule = imports.app.modules.responsiveMarginsModule;
 const Utils = imports.tests.utils;
 
@@ -13,7 +14,7 @@ describe('Responsive margins module', function () {
 
     beforeEach(function () {
         factory = new MockFactory.MockFactory();
-        factory.add_named_mock('content', Gtk.Label);
+        factory.add_named_mock('content', MockWidgets.MockSizeWidget);
         factory.add_named_mock('module', ResponsiveMarginsModule.ResponsiveMarginsModule, {
             'content': 'content',
         });
@@ -25,25 +26,73 @@ describe('Responsive margins module', function () {
 
         let provider = new Gtk.CssProvider();
         provider.load_from_data('\
-        .tiny {\
-          margin: 0px;\
+        * {\
+            border-width: 0px;\
         }\
-        .small {\
+        .tiny {\
           margin: 10px;\
         }\
-        .medium {\
+        .small {\
           margin: 20px;\
         }\
-        .large {\
+        .medium {\
           margin: 30px;\
         }\
-        .xlarge {\
+        .large {\
           margin: 40px;\
+        }\
+        .xlarge {\
+          margin: 50px;\
         }');
         responsive_margins.get_style_context().add_provider(provider, 800);
     });
 
     it('constructs', function () {});
+
+    function test_constant_size_requests (primary) {
+        describe('get preferred ' + primary, function () {
+            let win;
+
+            beforeEach(function () {
+                win = new Gtk.OffscreenWindow();
+                win.add(responsive_margins);
+                win.show_all();
+            });
+
+            afterEach(function () {
+                win.destroy();
+            });
+
+            it ('minimal includes tiny margins', function () {
+                let content = factory.get_last_created_named_mock('content');
+                content[primary + '_spy'].and.returnValue([50, 50]);
+                content.queue_resize();
+                expect(responsive_margins['get_preferred_' + primary]()[0]).toBe(70);
+            });
+
+            it ('natural includes xlarge margins', function () {
+                let content = factory.get_last_created_named_mock('content');
+                content[primary + '_spy'].and.returnValue([50, 50]);
+                content.queue_resize();
+                expect(responsive_margins['get_preferred_' + primary]()[1]).toBe(150);
+            });
+        });
+    }
+    test_constant_size_requests('width');
+    test_constant_size_requests('height');
+
+    it ('height for width passes correct width for tiny and xlarge margins', function () {
+        let win = new Gtk.OffscreenWindow();
+        win.add(responsive_margins);
+        win.show_all();
+
+        let content = factory.get_last_created_named_mock('content');
+        content.mode_spy.and.returnValue(Gtk.SizeRequestMode.HEIGHT_FOR_WIDTH);
+        content.queue_resize();
+        responsive_margins.get_preferred_height_for_width(200);
+        expect(content.height_for_width_spy).toHaveBeenCalledWith(180);
+        expect(content.height_for_width_spy).toHaveBeenCalledWith(100);
+    });
 
     function testMarginsForDimensions(total_width, margin) {
         describe('at ' + total_width + ' width', function () {
@@ -71,10 +120,11 @@ describe('Responsive margins module', function () {
         });
     }
 
-    testMarginsForDimensions(720, 0);
-    testMarginsForDimensions(800, 10);
-    testMarginsForDimensions(1100, 20);
-    testMarginsForDimensions(1400, 30);
-    testMarginsForDimensions(1600, 40);
+    testMarginsForDimensions(720, 10);
+    testMarginsForDimensions(800, 20);
+    testMarginsForDimensions(1100, 30);
+    testMarginsForDimensions(1400, 40);
+    testMarginsForDimensions(1600, 50);
 });
+
 

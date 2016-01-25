@@ -65,32 +65,49 @@ const ResponsiveMarginsModule = new Lang.Class({
         return margins;
     },
 
-    vfunc_get_request_mode: function () {
-        return Gtk.SizeRequestMode.CONSTANT_SIZE;
-    },
-
     vfunc_get_preferred_width: function () {
         let [min, nat] = this.parent();
         let margins = this._get_responsive_margins();
         return [margins.tiny.left + min + margins.tiny.right,
-                margins.large.left + nat + margins.large.right];
+                margins.xlarge.left + nat + margins.xlarge.right];
+    },
+
+    vfunc_get_preferred_width_for_height: function () {
+        // FIXME: No point trying to anything fancier here, as GtkFrame will
+        // ignore width for height anyway at the moment
+        return this.get_preferred_width();
     },
 
     vfunc_get_preferred_height: function () {
         let [min, nat] = this.parent();
         let margins = this._get_responsive_margins();
         return [margins.tiny.top + min + margins.tiny.bottom,
-                margins.large.top + nat + margins.large.bottom];
+                margins.xlarge.top + nat + margins.xlarge.bottom];
+    },
+
+    vfunc_get_preferred_height_for_width: function (width) {
+        let margins = this._get_responsive_margins();
+        let min_width = width;
+        if (width > 0)
+            min_width = Math.max(1, min_width - margins.tiny.left - margins.tiny.right);
+        let nat_width = width;
+        if (width > 0)
+            nat_width = Math.max(1, nat_width - margins.xlarge.left - margins.xlarge.right);
+        let [min,] = this.parent(min_width);
+        let [, nat] = this.parent(nat_width);
+        return [margins.tiny.top + min + margins.tiny.bottom,
+                margins.xlarge.top + nat + margins.xlarge.bottom];
     },
 
     vfunc_size_allocate: function (alloc) {
-        let [min_width, nat_width] = ResponsiveMarginsModule.prototype.vfunc_get_preferred_width.call(this);
-        let [min_height, nat_height] = ResponsiveMarginsModule.prototype.vfunc_get_preferred_height.call(this);
         let margins = this._get_responsive_margins();
+        let [min_size, nat_size] = this.get_preferred_size();
+        let base_min_width = min_size.width - margins.tiny.left - margins.tiny.right;
+        let base_min_height = min_size.height - margins.tiny.top - margins.tiny.bottom;
         let margin = margins.tiny;
         ['small', 'medium', 'large', 'xlarge'].forEach((klass) => {
-            let min_width_klass = margins[klass].left + margins[klass].right + min_width;
-            let min_height_klass = margins[klass].top + margins[klass].bottom + min_height;
+            let min_width_klass = margins[klass].left + margins[klass].right + base_min_width;
+            let min_height_klass = margins[klass].top + margins[klass].bottom + base_min_height;
             if (alloc.width >= Math.max(min_width_klass, this._thresholds[klass]) &&
                 alloc.height >= min_height_klass)
                 margin = margins[klass];
