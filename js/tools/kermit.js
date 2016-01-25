@@ -93,7 +93,7 @@ function perform_query (engine, query_obj) {
                 perform_query(engine, more_results);
             }
         } catch (e) {
-            fail_with_message(e);
+            fail_with_error(e);
         }
     });
 }
@@ -137,7 +137,7 @@ function get_shard_for_path (path) {
         });
         shard.init(null);
     } catch (e) {
-        fail_with_message('Could not open shard at path', path, '-', e);
+        fail_with_error(e, 'Could not open shard at path', path);
     }
     return shard;
 }
@@ -146,5 +146,11 @@ function fail_with_message () {
     // join args with space, a la print/console.log
     var args = Array.prototype.slice.call(arguments);
     printerr(args.join(' '));
+    System.exit(1);
+}
+
+function fail_with_error (e) {
+    var args = Array.prototype.slice.call(arguments, 1);
+    logError(e, e + ' ' + args.join(' '));
     System.exit(1);
 }
