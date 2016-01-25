@@ -40,10 +40,35 @@ const InfiniteScrolledWindow = new Lang.Class({
     _init: function(props) {
         this.parent(props);
 
+        // This internal property is used to moderate the emission of the
+        // 'need-more-content' signal. It ensures that only one signal gets
+        // emitted before content is added. This prevents multiple notifiers
+        // all requesting new content at the same time and causing the scroll
+        // window to take on too much content.
+        // If this property is true, it means we have already requested more
+        // content, so we should wait patiently until that content has arrived
+        // before requesting more.
+        // It is important to note that this property starts out with the value
+        // 'true'. That is, the onus is on the parent module to kick off the
+        // dance by adding a first set of content, after which the infinite
+        // scroll view will request more as needed.
+        this._requested_content = true;
         this.vadjustment.connect('value-changed', this._check_scroll.bind(this));
-        this.vadjustment.connect('notify::page-size', this._check_scroll.bind(this));
-        this.vadjustment.connect('notify::upper', this._check_scroll.bind(this));
-        this.connect('size-allocate', this._check_scroll.bind(this));
+        this.vadjustment.connect('notify::page-size', this._check_extra_space.bind(this));
+        this.connect('size-allocate', this._check_extra_space.bind(this));
+    },
+
+    new_content_added: function () {
+        this._requested_content = false;
+    },
+
+    _check_extra_space: function () {
+        if (this._requested_content)
+            return;
+        if (this.vadjustment.page_size === this.vadjustment.upper) {
+            this._requested_content = true;
+            this.emit('need-more-content');
+        }
     },
 
     /*
@@ -53,12 +78,17 @@ const InfiniteScrolledWindow = new Lang.Class({
      * emit need-more-content.
      */
     _check_scroll: function () {
+        if (this._requested_content)
+            return;
         let adjustment = this.vadjustment;
         let value = adjustment.value;
         let upper = adjustment.upper;
         let page_size = adjustment.page_size;
-        if (page_size === upper || value >= (upper - page_size - this.bottom_buffer))
+
+        if (page_size === upper || value >= (upper - page_size - this.bottom_buffer)) {
+            this._requested_content = true;
             this.emit('need-more-content');
+        }
     },
 
     vfunc_get_preferred_width: function () {

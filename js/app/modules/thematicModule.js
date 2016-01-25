@@ -114,6 +114,10 @@ const ThematicModule = new Lang.Class({
             } else {
                 results.forEach((model) => this._add_article_card(model, arrangement));
                 arrangement.visible = true;
+                Dispatcher.get_default().dispatch({
+                    action_type: Actions.CONTENT_ADDED,
+                    scroll_server: this.scroll_server,
+                });
             }
         });
     },
