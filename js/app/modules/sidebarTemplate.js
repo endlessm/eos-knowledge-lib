@@ -90,13 +90,29 @@ const SidebarTemplate = new Lang.Class({
         return [ 'sidebar', 'content' ];
     },
 
-    vfunc_get_request_mode: function () {
-        return Gtk.SizeRequestMode.CONSTANT_SIZE;
+    _distribute_width: function (available_width) {
+        let [content_min, content_nat] = this.content_frame.get_preferred_width();
+        let [sidebar_min, sidebar_nat] = this.sidebar_frame.get_preferred_width();
+
+        let sidebar_width = this._sidebar_width_small;
+        if (available_width - content_min >= this._sidebar_width_large &&
+            available_width >= this._threshold_width_large)
+            sidebar_width = this._sidebar_width_large;
+        sidebar_width = Math.max(sidebar_width, sidebar_min);
+        let content_width = available_width - sidebar_width;
+        return [sidebar_width, content_width];
     },
 
     vfunc_get_preferred_height: function () {
         let [content_min, content_nat] = this.content_frame.get_preferred_height();
         let [sidebar_min, sidebar_nat] = this.sidebar_frame.get_preferred_height();
+        return [Math.max(content_min, sidebar_min), Math.max(content_nat, sidebar_nat)];
+    },
+
+    vfunc_get_preferred_height_for_width: function (width) {
+        let [sidebar_width, content_width] = this._distribute_width(width);
+        let [content_min, content_nat] = this.content_frame.get_preferred_height_for_width(content_width);
+        let [sidebar_min, sidebar_nat] = this.sidebar_frame.get_preferred_height_for_width(sidebar_width);
         return [Math.max(content_min, sidebar_min), Math.max(content_nat, sidebar_nat)];
     },
 
@@ -108,18 +124,14 @@ const SidebarTemplate = new Lang.Class({
         return [min, nat];
     },
 
+    vfunc_get_preferred_width_for_height: function () {
+        return this.get_preferred_width();
+    },
+
     vfunc_size_allocate: function (alloc) {
         this.parent(alloc);
 
-        let [content_min, content_nat] = this.content_frame.get_preferred_width();
-        let [sidebar_min, sidebar_nat] = this.sidebar_frame.get_preferred_width();
-
-        let sidebar_width = this._sidebar_width_small;
-        if (alloc.width - content_min >= this._sidebar_width_large &&
-            alloc.width >= this._threshold_width_large)
-            sidebar_width = this._sidebar_width_large;
-        sidebar_width = Math.max(sidebar_width, sidebar_min);
-        let content_width = alloc.width - sidebar_width;
+        let [sidebar_width, content_width] = this._distribute_width(alloc.width);
 
         let sidebar_left = this.sidebar_first;
         if (this.get_direction() === Gtk.TextDirection.RTL)
