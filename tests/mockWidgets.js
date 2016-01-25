@@ -151,3 +151,59 @@ const TestBox = new Lang.Class({
         return [1, this.size];
     },
 });
+
+const MockSizeWidget = new Lang.Class({
+    Name: 'MockSkizeWidget',
+    Extends: Gtk.Widget,
+
+    _init: function (props={}) {
+        this.parent(props);
+        this.set_has_window(false);
+        // Spying directly on the vfuncs does not play well with gjs internals
+        spyOn(this, 'mode_spy').and.callThrough();
+        spyOn(this, 'width_spy').and.callThrough();
+        spyOn(this, 'width_for_height_spy').and.callThrough();
+        spyOn(this, 'height_spy').and.callThrough();
+        spyOn(this, 'height_for_width_spy').and.callThrough();
+    },
+
+    vfunc_get_request_mode: function () {
+        return this.mode_spy();
+    },
+
+    vfunc_get_preferred_width: function () {
+        return this.width_spy();
+    },
+
+    vfunc_get_preferred_width_for_height: function (width) {
+        return this.width_for_height_spy(width);
+    },
+
+    vfunc_get_preferred_height: function () {
+        return this.height_spy();
+    },
+
+    vfunc_get_preferred_height_for_width: function (height) {
+        return this.height_for_width_spy(height);
+    },
+
+    mode_spy: function () {
+        return Gtk.SizeRequestMode.CONSTANT_SIZE;
+    },
+
+    width_spy: function () {
+        return [10, 10];
+    },
+
+    width_for_height_spy: function () {
+        return [10, 10];
+    },
+
+    height_spy: function () {
+        return [10, 10];
+    },
+
+    height_for_width_spy: function () {
+        return [10, 10];
+    },
+});
