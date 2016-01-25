@@ -49,6 +49,9 @@ const ItemGroupModule = new Lang.Class({
                     break;
                 case Actions.APPEND_ITEMS:
                     payload.models.forEach(this._add_card, this);
+                    if (this._arrangement instanceof InfiniteScrolledWindow.InfiniteScrolledWindow) {
+                        this._arrangement.new_content_added();
+                    }
                     break;
                 case Actions.HIGHLIGHT_ITEM:
                     this._arrangement.highlight(payload.model);

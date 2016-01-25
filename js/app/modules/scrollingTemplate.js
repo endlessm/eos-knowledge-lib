@@ -45,6 +45,16 @@ const ScrollingTemplate = new Lang.Class({
                 scroll_server: this.name,
             });
         });
+
+        Dispatcher.get_default().register((payload) => {
+            switch (payload.action_type) {
+                case Actions.CONTENT_ADDED:
+                    if (payload.scroll_server === this.name) {
+                        this.new_content_added();
+                    }
+                    break;
+            }
+        });
     },
 
     // Module override

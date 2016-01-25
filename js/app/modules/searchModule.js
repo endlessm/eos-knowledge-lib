@@ -130,6 +130,10 @@ const SearchModule = new Lang.Class({
                 payload.models.forEach((card) => {
                     this._add_card(card, payload.query);
                 });
+
+                if (this._arrangement instanceof InfiniteScrolledWindow.InfiniteScrolledWindow) {
+                    this._arrangement.new_content_added();
+                }
                 break;
             case Actions.SEARCH_STARTED:
                 this.visible_child_name = SPINNER_PAGE_NAME;
