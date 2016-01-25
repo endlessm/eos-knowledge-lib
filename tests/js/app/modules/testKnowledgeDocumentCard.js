@@ -22,7 +22,7 @@ EvinceDocument.init();
 
 const TEST_CONTENT_DIR = Utils.get_test_content_srcdir();
 
-describe('Document Card', function () {
+describe('Knowledge Document Card', function () {
     let card, model, real_session_descriptor, toc_json, toc;
 
     beforeEach(function () {

@@ -3,28 +3,60 @@
 const Gtk = imports.gi.Gtk;
 
 const Minimal = imports.tests.minimal;
-const MockWidgets = imports.tests.mockWidgets;
 const Utils = imports.tests.utils;
-const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 const WindshieldArrangement = imports.app.modules.windshieldArrangement;
 
 Gtk.init(null);
 
+Minimal.test_arrangement_compliance(WindshieldArrangement.WindshieldArrangement);
+
 describe('Windshield Arrangement', function () {
+    let arrangement;
+
     beforeEach(function () {
-        jasmine.addMatchers(WidgetDescendantMatcher.customMatchers);
-        this.arrangement = new WindshieldArrangement.WindshieldArrangement({
-            vexpand: false,
-        });
+        arrangement = new WindshieldArrangement.WindshieldArrangement();
     });
-
-    it('constructs', function () {
-        expect(this.arrangement).toBeDefined();
-    });
-
-    Minimal.test_arrangement_compliance();
 
     describe('sizing allocation', function () {
+        let win;
+
+        beforeEach(function () {
+            for (let i = 0; i < 5; i++) {
+                let card = new Minimal.MinimalCard();
+                arrangement.add(card);
+            }
+            win = new Gtk.OffscreenWindow();
+            win.add(arrangement);
+            win.show_all();
+        });
+
+        afterEach(function () {
+            win.destroy();
+        });
+
+        function testSizingArrangementForDimensions(total_width, total_height, child_width) {
+            it('handles arrangement with dimensions ' + total_width + 'x' + total_height, function () {
+                win.set_size_request(total_width, total_height);
+                Utils.update_gui();
+
+                arrangement.get_cards().forEach((card, i) => {
+                    if (i === 0) {
+                        // FIXME: For now we're treating the first card as the
+                        // featured card.
+                        expect(card.get_child_visible()).toBe(true);
+                        expect(card.get_allocation().width).toBe(total_width);
+                    } else if (i < 4) {
+                        // Three supporting child cards should be visible
+                        expect(card.get_child_visible()).toBe(true);
+                        expect(card.get_allocation().width).toBe(child_width);
+                    } else {
+                        // Additional cards should not be visible
+                        expect(card.get_child_visible()).toBe(false);
+                    }
+                });
+            });
+        }
+
         // At 2000x2000, the featured card should be 2000x400, and the children
         // cards should be 666x200.
         testSizingArrangementForDimensions(2000, 600, 666);
@@ -50,55 +82,7 @@ describe('Windshield Arrangement', function () {
         testSizingArrangementForDimensions(600, 400, 200);
     });
 
-    describe('get_max_cards', function () {
-        it ('is 4', function () {
-            expect(this.arrangement.get_max_cards()).toBe(4);
-        });
+    it('has maximum 4 cards', function () {
+        expect(arrangement.get_max_cards()).toBe(4);
     });
 });
-
-function testSizingArrangementForDimensions(total_width, total_height, child_width) {
-    let win, add_card, cards;
-
-    beforeEach(function () {
-        add_card = (card) => {
-            card.show_all();
-            this.arrangement.add(card);
-            return card;
-        };
-        cards = [];
-
-        for (let i = 0; i < 5; i++) {
-            cards.push(add_card(new MockWidgets.TestBox(2000)));
-        }
-        win = new Gtk.OffscreenWindow();
-    });
-
-    afterEach(function () {
-        win.destroy();
-    });
-
-    it ('handles arrangement with dimensions ' + total_width + 'x' + total_height, function () {
-        win.add(this.arrangement);
-        win.set_size_request(total_width, total_height);
-        win.show_all();
-
-        win.queue_resize();
-        Utils.update_gui();
-
-        this.arrangement.get_cards().forEach((card, i) => {
-            if (i === 0) {
-                // FIXME: For now we're treating the first card as the featured card.
-                expect(card.get_child_visible()).toBe(true);
-                expect(card.get_allocation().width).toBe(total_width);
-            } else if (i < 4) {
-                // Three supporting child cards should be visible
-                expect(card.get_child_visible()).toBe(true);
-                expect(card.get_allocation().width).toBe(child_width);
-            } else {
-                // Additional cards should not be visible
-                expect(card.get_child_visible()).toBe(false);
-            }
-        });
-    });
-}

@@ -34,7 +34,7 @@ const customMatchers = {
                     pass: _match_descendant(widget, expected, function (a, b) { return a === b; })
                 };
                 if (result.pass)
-                    result.message = 'Expected ' + widget + ' not to have a descendant' + expected + ', but it did';
+                    result.message = 'Expected ' + widget + ' not to have a descendant ' + expected + ', but it did';
                 else
                     result.message = 'Expected ' + widget + ' to have a descendant ' + expected + ', but it did not';
                 return result;

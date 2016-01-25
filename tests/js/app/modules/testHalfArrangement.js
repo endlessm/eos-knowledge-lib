@@ -5,21 +5,16 @@ const Gtk = imports.gi.Gtk;
 const Card = imports.app.interfaces.card;
 const HalfArrangement = imports.app.modules.halfArrangement;
 const Minimal = imports.tests.minimal;
-const MockWidgets = imports.tests.mockWidgets;
 const Utils = imports.tests.utils;
 
 Gtk.init(null);
+
+Minimal.test_arrangement_compliance(HalfArrangement.HalfArrangement);
 
 describe('Half Arrangement', function () {
     beforeEach(function () {
         this.arrangement = new HalfArrangement.HalfArrangement();
     });
-
-    it('constructs', function () {
-        expect(this.arrangement).toBeDefined();
-    });
-
-    Minimal.test_arrangement_compliance();
 
     describe('sizing allocation', function () {
         beforeEach(function () {
@@ -30,7 +25,7 @@ describe('Half Arrangement', function () {
             };
 
             for (let i = 0; i < 5; i++)
-                add_card(new MockWidgets.TestBox(2000));
+                add_card(new Minimal.MinimalCard());
 
             this.win = new Gtk.OffscreenWindow();
             this.win.add(this.arrangement);
@@ -121,7 +116,7 @@ function testSizingArrangementForDimensions(arrangement_size, card_width, card_h
 function testFeaturedCardsInArrangement(total_cards, featured_cards, featured_size, non_featured_size) {
     it('treats ' + featured_cards + ' cards as featured when ' + total_cards + ' cards are added', function () {
         for (let i = 0; i < total_cards; i++) {
-            this.arrangement.add_card(new MockWidgets.TestBox(featured_size));
+            this.arrangement.add_card(new Minimal.MinimalCard());
         }
         this.win.show_all();
         this.win.queue_resize();

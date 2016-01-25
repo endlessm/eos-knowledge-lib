@@ -2,7 +2,7 @@ const Gio = imports.gi.Gio;
 
 const AisleUserSettingsModel = imports.app.aisleUserSettingsModel;
 
-describe('Reader user settings model', function () {
+describe('Aisle user settings model', function () {
     let user_settings_file;
     let current_time = new Date().toISOString();
 

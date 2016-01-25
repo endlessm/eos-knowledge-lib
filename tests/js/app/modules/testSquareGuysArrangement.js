@@ -4,22 +4,17 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const Minimal = imports.tests.minimal;
-const MockWidgets = imports.tests.mockWidgets;
 const SquareGuysArrangement = imports.app.modules.squareGuysArrangement;
 const Utils = imports.tests.utils;
 
 Gtk.init(null);
 
+Minimal.test_arrangement_compliance(SquareGuysArrangement.SquareGuysArrangement);
+
 describe('SquareGuys arrangement', function () {
     beforeEach(function () {
         this.arrangement = new SquareGuysArrangement.SquareGuysArrangement();
     });
-
-    it('constructs', function () {
-        expect(this.arrangement).toBeDefined();
-    });
-
-    Minimal.test_arrangement_compliance();
 
     describe('maximum rows', function () {
         let msg = 'shows correct number of cards for max_rows = '
@@ -105,7 +100,7 @@ function testSizingArrangementForDimensions(message, arr_width, arr_height, max_
         win.show_all();
 
         for (let i=0; i<8; i++) {
-            cards.push(add_card(new MockWidgets.TestBox(400)));
+            cards.push(add_card(new Minimal.MinimalCard()));
         }
 
         win.queue_resize();

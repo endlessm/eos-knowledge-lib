@@ -253,13 +253,19 @@ const MinimalBinModule = new Lang.Class({
     },
 });
 
-function test_arrangement_compliance() {
-    describe('implements Arrangement correctly', function () {
-        let cards;
+function test_arrangement_compliance(ArrangementClass, extra_slots={}) {
+    describe(ArrangementClass.$gtype.name + ' implements Arrangement correctly', function () {
+        let arrangement, cards;
 
         beforeEach(function () {
             jasmine.addMatchers(WidgetDescendantMatcher.customMatchers);
+
+            arrangement = new ArrangementClass();
             cards = [];
+        });
+
+        it('by constructing', function () {
+            expect(arrangement).toBeDefined();
         });
 
         function add_cards(arrangement, ncards) {
@@ -273,31 +279,31 @@ function test_arrangement_compliance() {
         }
 
         it('by adding cards to the list', function () {
-            add_cards(this.arrangement, 3);
+            add_cards(arrangement, 3);
             cards.forEach((card) =>
-                expect(this.arrangement).toHaveDescendant(card));
-            expect(this.arrangement.get_cards().length).toBe(3);
+                expect(arrangement).toHaveDescendant(card));
+            expect(arrangement.get_cards().length).toBe(3);
         });
 
         it('by removing cards from the list', function () {
-            add_cards(this.arrangement, 3);
-            this.arrangement.clear();
+            add_cards(arrangement, 3);
+            arrangement.clear();
             Utils.update_gui();
 
             cards.forEach((card) =>
-                expect(this.arrangement).not.toHaveDescendant(card));
-            expect(this.arrangement.get_cards().length).toBe(0);
+                expect(arrangement).not.toHaveDescendant(card));
+            expect(arrangement.get_cards().length).toBe(0);
         });
 
         it('by being able to remove individual cards', function () {
-            add_cards(this.arrangement, 3);
-            this.arrangement.remove(cards[1]);
+            add_cards(arrangement, 3);
+            arrangement.remove(cards[1]);
             Utils.update_gui();
 
-            expect(this.arrangement.get_cards().length).toBe(2);
-            expect(this.arrangement).toHaveDescendant(cards[0]);
-            expect(this.arrangement).not.toHaveDescendant(cards[1]);
-            expect(this.arrangement).toHaveDescendant(cards[2]);
+            expect(arrangement.get_cards().length).toBe(2);
+            expect(arrangement).toHaveDescendant(cards[0]);
+            expect(arrangement).not.toHaveDescendant(cards[1]);
+            expect(arrangement).toHaveDescendant(cards[2]);
         });
     });
 }
