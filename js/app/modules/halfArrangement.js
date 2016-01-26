@@ -154,7 +154,7 @@ const HalfArrangement = new Lang.Class({
                 x = alloc.x;
                 y += card_height + this._spacing;
             } else {
-                x += delta_x + this._get_spare_pixels_for_card_index(spare_pixels, ix);
+                x += delta_x + Arrangement.get_spare_pixels_for_card_index(spare_pixels, this._cards_per_row, ix);
             }
         });
         Utils.set_container_clip(this);
@@ -170,31 +170,6 @@ const HalfArrangement = new Lang.Class({
         this._spacing = value;
         this.notify('spacing');
         this.queue_resize();
-    },
-
-    _get_spare_pixels_for_card_index: function (spare_pixels, ix) {
-        if (spare_pixels === 0)
-            return 0;
-
-        // All gutters need an extra pixel
-        if (spare_pixels === this._cards_per_row - 1)
-            return 1;
-
-        let column = ix % this._cards_per_row;
-        let num_gutters = this._cards_per_row - 1;
-
-        // Assign a spare pixel to the center gutter if that helps keep things symmetric
-        if (num_gutters % 2 === 1 && spare_pixels % 2 === 1) {
-            if (column === (num_gutters - 1) / 2)
-                return 1;
-            spare_pixels--;
-        }
-        // Assign remaining spare pixels to alternating columns on either side
-        if (column < Math.ceil(spare_pixels / 2))
-            return 1;
-        if (column >= num_gutters - Math.floor(spare_pixels / 2))
-            return 1;
-        return 0;
     },
 
     _get_featured_cards_count: function () {
