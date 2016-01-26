@@ -1,5 +1,7 @@
 /* This is all temporary */
 
+@import url("resource:///com/endlessm/knowledge/data/css/common.css");
+
 EknWindow {
     background-size: cover;
 }

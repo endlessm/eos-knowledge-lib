@@ -1,3 +1,6 @@
+
+@import url("resource:///com/endlessm/knowledge/data/css/common.css");
+
 @define-color template-b-text-color #eeccf8;
 @define-color template-b-text-color-hover #d64970;
 @define-color template-b-text-color-highlighted #333333;
