@@ -78,13 +78,35 @@ const SplitPercentageTemplate = new Lang.Class({
         return [ 'start', 'end' ];
     },
 
-    vfunc_get_request_mode: function () {
-        return Gtk.SizeRequestMode.CONSTANT_SIZE;
+    _distribute_width: function (available_width) {
+        let [start_min, start_nat] = this._start_frame.get_preferred_width();
+        let [end_min, end_nat] = this._end_frame.get_preferred_width();
+
+        let start_width = this._start_fraction * available_width;
+        let end_width = available_width - start_width;
+
+        if (start_width < start_min) {
+            start_width = start_min;
+            end_width = available_width - start_width;
+        }
+
+        if (end_width < end_min) {
+            end_width = end_min;
+            start_width = available_width - end_width;
+        }
+        return [start_width, end_width];
     },
 
     vfunc_get_preferred_height: function () {
         let [start_min, start_nat] = this._start_frame.get_preferred_height();
         let [end_min, end_nat] = this._end_frame.get_preferred_height();
+        return [Math.max(start_min, end_min), Math.max(start_nat, end_nat)];
+    },
+
+    vfunc_get_preferred_height_for_width: function (width) {
+        let [start_width, end_width] = this._distribute_width(width);
+        let [start_min, start_nat] = this._start_frame.get_preferred_height_for_width(start_width);
+        let [end_min, end_nat] = this._end_frame.get_preferred_height_for_width(end_width);
         return [Math.max(start_min, end_min), Math.max(start_nat, end_nat)];
     },
 
@@ -94,6 +116,12 @@ const SplitPercentageTemplate = new Lang.Class({
         let min = start_min + end_min;
         let nat = Math.max(start_nat / this._start_fraction, end_nat / (1 - this._start_fraction));
         return [min, nat];
+    },
+
+    vfunc_get_preferred_width_for_height: function () {
+        // FIXME: No point trying to anything fancier here, as GtkFrame will
+        // ignore width for height anyway at the moment
+        return this.get_preferred_width();
     },
 
     vfunc_draw: function (cr) {
@@ -109,21 +137,7 @@ const SplitPercentageTemplate = new Lang.Class({
     vfunc_size_allocate: function (alloc) {
         this.parent(alloc);
 
-        let [start_min, start_nat] = this._start_frame.get_preferred_width();
-        let [end_min, end_nat] = this._end_frame.get_preferred_width();
-
-        let start_width = this._start_fraction * alloc.width;
-        let end_width = (1 - this._start_fraction) * alloc.width;
-
-        if (start_width < start_min) {
-            start_width = start_min;
-            end_width = alloc.width - start_width;
-        }
-
-        if (end_width < end_min) {
-            end_width = end_min;
-            start_width = alloc.width - end_width;
-        }
+        let [start_width, end_width] = this._distribute_width(alloc.width);
 
         let start_on_left = this.get_direction() === Gtk.TextDirection.LTR;
         this._start_frame.size_allocate(new Gdk.Rectangle({

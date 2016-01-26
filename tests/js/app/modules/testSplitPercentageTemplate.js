@@ -7,6 +7,7 @@ const MockFactory = imports.tests.mockFactory;
 const SplitPercentageTemplate = imports.app.modules.splitPercentageTemplate;
 const Utils = imports.tests.utils;
 const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
+const MockWidgets = imports.tests.mockWidgets;
 
 Gtk.init(null);
 
@@ -18,8 +19,8 @@ describe('Split percentage template', function () {
         jasmine.addMatchers(WidgetDescendantMatcher.customMatchers);
 
         factory = new MockFactory.MockFactory();
-        factory.add_named_mock('start', Gtk.Label);
-        factory.add_named_mock('end', Gtk.Label);
+        factory.add_named_mock('start', MockWidgets.MockSizeWidget);
+        factory.add_named_mock('end', MockWidgets.MockSizeWidget);
         factory.add_named_mock('start-template', SplitPercentageTemplate.SplitPercentageTemplate,
         {
             'start': 'start',
@@ -50,22 +51,40 @@ describe('Split percentage template', function () {
         expect(template).toHaveDescendantWithCssClass('start');
     });
 
-    describe('size allocate', function () {
+    describe('sizing', function () {
         let win;
 
         beforeEach(function () {
             win = new Gtk.OffscreenWindow();
+            // Default theme has a 1px border on frames messing up sizing, clear it.
+            let provider = new Gtk.CssProvider();
+            provider.load_from_data('\
+            * {\
+                border-width: 0px;\
+            }');
+            Gtk.StyleContext.add_provider_for_screen(win.get_screen(), provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+
             template.expand = true;
             win.add(template);
             win.show_all();
+            win.set_size_request(500, 500);
         });
 
         afterEach(function () {
             win.destroy();
         });
 
-        it('respects the start percentage style property', function () {
-            win.set_size_request(500, 500);
+        it('requests height for width with the correct values', function () {
+            start.mode_spy.and.returnValue(Gtk.SizeRequestMode.HEIGHT_FOR_WIDTH);
+            end.mode_spy.and.returnValue(Gtk.SizeRequestMode.HEIGHT_FOR_WIDTH);
+            start.queue_resize();
+            end.queue_resize();
+            template.get_preferred_height_for_width(500);
+            expect(start.height_for_width_spy).toHaveBeenCalledWith(250);
+            expect(end.height_for_width_spy).toHaveBeenCalledWith(250);
+        });
+
+        it('allocate respects the start percentage style property', function () {
             Utils.update_gui();
             expect(end.get_allocated_width()).toBe(start.get_allocated_width());
         });
