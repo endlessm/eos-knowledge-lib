@@ -3,13 +3,14 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# chenzibing <chenzibing_endless@126.com>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
 "POT-Creation-Date: 2016-01-19 02:54+0000\n"
-"PO-Revision-Date: 2015-12-14 20:23+0000\n"
-"Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
+"PO-Revision-Date: 2016-01-23 15:26+0000\n"
+"Last-Translator: chenzibing <chenzibing_endless@126.com>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -19,41 +20,41 @@ msgstr ""
 
 #: data/widgets/backCover.ui:21
 msgid "Did you like this issue?"
-msgstr ""
+msgstr "您喜欢这些出版物吗？"
 
 #: data/widgets/backCover.ui:34
 msgid ""
 "Don't miss next week's issue with more articles in your favorite magazine!"
-msgstr ""
+msgstr "您收藏的杂志中还有更多文章，下周精彩请勿错过！"
 
 #: data/widgets/cardA.ui:99
 msgid "PDF"
-msgstr ""
+msgstr "PDF"
 
 #: data/widgets/readerCard.ui:113
 msgid "Archive"
-msgstr ""
+msgstr "文档"
 
 #: data/widgets/sequenceCard.ui:21
 msgid "Next Article"
-msgstr ""
+msgstr "下一篇"
 
 #: data/widgets/sequenceCard.ui:59
 msgid "Previous Article"
-msgstr ""
+msgstr "上一篇"
 
 #: data/widgets/sideMenuTemplate.ui:96
 #: js/app/modules/hamburgerBasementTemplate.js:48
 msgid "HOME"
-msgstr ""
+msgstr "主页"
 
 #: data/widgets/suggestedArticlesModule.ui:17
 msgid "You might be interested in..."
-msgstr ""
+msgstr "您可能会对此感兴趣..."
 
 #: data/widgets/suggestedCategoriesModule.ui:22
 msgid "Browse by topic"
-msgstr ""
+msgstr "根据主题浏览"
 
 #. TRANSLATORS: anything inside curly braces '{}' is going
 #. to be substituted in code. Please make sure to leave the
@@ -63,13 +64,13 @@ msgstr ""
 msgid ""
 "This page contains content from {original-link}, available under a {license-"
 "link} license."
-msgstr ""
+msgstr "该页存在来源于{原始链接}的内容，已获得{认证链接}的许可认证。"
 
 #. TRANSLATORS: Replace this with a link to the homepage of
 #. wikiHow in your language.
 #: js/app/articleHTMLRenderer.js:82
 msgid "http://wikihow.com"
-msgstr ""
+msgstr "http://wikihow.com"
 
 #. TRANSLATORS: anything inside curly braces '{}' is going
 #. to be substituted in code. Please make sure to leave the
@@ -80,25 +81,25 @@ msgid ""
 "See {wikihow-article-link} for more details, videos, pictures and "
 "attribution. Courtesy of {wikihow-link}, where anyone can easily learn how "
 "to do anything."
-msgstr ""
+msgstr "查看更多关于{wikihow-文章链接}的细节，视频，图片和来源。内容由{wikihow-link}提供，在此您可以轻松掌握各种技巧。"
 
 #: js/app/articleHTMLRenderer.js:158
 msgid "Copy"
-msgstr ""
+msgstr "复制"
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
 #: js/app/articleHTMLRenderer.js:176
 msgid "Content taken from {blog-link}."
-msgstr ""
+msgstr "来源于{博客链接}的内容。"
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
 #: js/app/articleHTMLRenderer.js:181
 msgid "Content courtesy of {blog-link}. Used with kind permission."
-msgstr ""
+msgstr "内容由{博客链接}提供。经授权许可使用。"
 
 #. TRANSLATORS: the text inside curly braces ({blog-link}, {license-link})
 #. is going to be substituted in code. Please make sure that your
@@ -106,63 +107,63 @@ msgstr ""
 #. translated.
 #: js/app/articleHTMLRenderer.js:189
 msgid "Content courtesy of {blog-link}, licensed under {license-link}."
-msgstr ""
+msgstr "内容由{博客链接}提供，已得到{认证链接}许可认证。"
 
 #: js/app/modules/aisleInteraction.js:801
 #: js/app/modules/aisleInteraction.js:808
 msgid "Oops!"
-msgstr ""
+msgstr "哎呀！"
 
 #: js/app/modules/aisleInteraction.js:802
 msgid ""
 "We could not find this magazine!\n"
 "Please try again after restarting your computer."
-msgstr ""
+msgstr "我们无法找到该杂志！请在重启电脑后重新尝试。"
 
 #: js/app/modules/aisleInteraction.js:809
 msgid ""
 "There was an error loading that page.\n"
 "Try another one or try again after restarting your computer."
-msgstr ""
+msgstr "加载该页时出现一个错误。请尝试另一页或在重启电脑后重新尝试。"
 
 #. TRANSLATORS: This shows the page number; %d will be replaced with
 #. the page number of the article.
 #: js/app/modules/aisleInteraction.js:871
 #, javascript-format
 msgid "Page %d"
-msgstr ""
+msgstr "第%d页"
 
 #. TRANSLATORS: %s will be replaced with the text the user
 #. searched for. Make sure to keep %s token in your translation.
 #: js/app/modules/buffetInteraction.js:156 js/app/modules/contextBanner.js:81
 #, javascript-format
 msgid "Results were found for “%s”"
-msgstr ""
+msgstr "已找到“%s”的结果"
 
 #: js/app/modules/contextBanner.js:48 js/app/modules/contextBanner.js:56
 #: js/app/modules/highlightsModule.js:121
 msgid "Highlights"
-msgstr ""
+msgstr "标记"
 
 #: js/app/modules/contextBanner.js:59
 msgid "All Categories"
-msgstr ""
+msgstr "全部类别"
 
 #. TRANSLATORS: %s will be replaced with the text the user
 #. searched for. Make sure to keep the %s token in your translation.
 #: js/app/modules/contextBanner.js:77
 #, javascript-format
 msgid "Search results for “%s”"
-msgstr ""
+msgstr "搜索“%s”的结果"
 
 #: js/app/modules/hamburgerBasementTemplate.js:40
 msgid "SEE ALL CATEGORIES"
-msgstr ""
+msgstr "展示全部类别"
 
 #: js/app/modules/readerCard.js:60
 #, javascript-format
 msgid "Page %s"
-msgstr ""
+msgstr "第%s页"
 
 #. TRANSLATORS: This message is displayed while an app is
 #. searching for results. The %s will be replaced with the term
@@ -173,7 +174,7 @@ msgstr ""
 #: js/app/modules/searchBannerModule.js:56
 #, javascript-format
 msgid "Searching for “%s”"
-msgstr ""
+msgstr "搜索“%s”"
 
 #. TRANSLATORS: This message is displayed when an app is
 #. done searching for results. The %s will be replaced with the
@@ -184,19 +185,19 @@ msgstr ""
 #: js/app/modules/searchBannerModule.js:68
 #, javascript-format
 msgid "Results for “%s”"
-msgstr ""
+msgstr "“%s”的结果"
 
 #: js/app/modules/searchBannerModule.js:74
 msgid "OOPS!"
-msgstr ""
+msgstr "哎呀！"
 
 #: js/app/modules/searchModule.js:201
 msgid "Sorry! :-("
-msgstr ""
+msgstr "很抱歉！:-("
 
 #: js/app/modules/searchModule.js:202
 msgid "There are no results that match your search.\n"
-msgstr ""
+msgstr "没有符合您搜索的结果。\n"
 
 #: js/app/modules/searchModule.js:204
 msgid ""
@@ -205,20 +206,20 @@ msgid ""
 "  •  Check your spelling\n"
 "  •  Try other words that mean the same thing\n"
 "  •  Try using more general words"
-msgstr ""
+msgstr "我们建议您：·\n检查您的拼写\n尝试相同意思的其他表述\n使用更普遍的表述"
 
 #: js/app/modules/searchModule.js:231
 msgid "There was an error during your search."
-msgstr ""
+msgstr "搜索中出现一个错误。"
 
 #: js/app/modules/standalonePage.js:139
 msgid "Open the magazine"
-msgstr ""
+msgstr "打开杂志"
 
 #: js/app/modules/standalonePage.js:256
 #, javascript-format
 msgid "This article is part of the archive of the magazine %s."
-msgstr ""
+msgstr "该文章是在杂志%s档案中一部分。"
 
 #. TRANSLATORS: anything inside curly braces '{}' is going to be substituted
 #. in code. Please make sure to leave the curly braces around any words that
@@ -227,8 +228,8 @@ msgstr ""
 #. example: "Jane Austen and Henry Miller and William Clifford"
 #: js/app/utils.js:83
 msgid "by {author}"
-msgstr ""
+msgstr "作者：{author}"
 
 #: js/app/utils.js:83
 msgid "and"
-msgstr ""
+msgstr "与"
