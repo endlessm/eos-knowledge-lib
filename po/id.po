@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
 "POT-Creation-Date: 2016-01-19 02:54+0000\n"
-"PO-Revision-Date: 2016-01-22 18:59+0000\n"
+"PO-Revision-Date: 2016-01-24 20:36+0000\n"
 "Last-Translator: Roddy Shuler <roddy@endlessm.com>\n"
 "Language-Team: Indonesian (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/id/)\n"
 "MIME-Version: 1.0\n"
@@ -19,41 +19,41 @@ msgstr ""
 
 #: data/widgets/backCover.ui:21
 msgid "Did you like this issue?"
-msgstr ""
+msgstr "Anda suka terbitan ini?"
 
 #: data/widgets/backCover.ui:34
 msgid ""
 "Don't miss next week's issue with more articles in your favorite magazine!"
-msgstr ""
+msgstr "Jangan lewatkan edisi minggu depan dengan lebih banyak artikel di majalah favorit Anda!"
 
 #: data/widgets/cardA.ui:99
 msgid "PDF"
-msgstr ""
+msgstr "PDF"
 
 #: data/widgets/readerCard.ui:113
 msgid "Archive"
-msgstr ""
+msgstr "Arsip"
 
 #: data/widgets/sequenceCard.ui:21
 msgid "Next Article"
-msgstr ""
+msgstr "Artikel Selanjutnya"
 
 #: data/widgets/sequenceCard.ui:59
 msgid "Previous Article"
-msgstr ""
+msgstr "Artikel Sebelumnya"
 
 #: data/widgets/sideMenuTemplate.ui:96
 #: js/app/modules/hamburgerBasementTemplate.js:48
 msgid "HOME"
-msgstr ""
+msgstr "BERANDA"
 
 #: data/widgets/suggestedArticlesModule.ui:17
 msgid "You might be interested in..."
-msgstr ""
+msgstr "Anda mungkin tertarik pada..."
 
 #: data/widgets/suggestedCategoriesModule.ui:22
 msgid "Browse by topic"
-msgstr ""
+msgstr "Jelajahi berdasarkan topik"
 
 #. TRANSLATORS: anything inside curly braces '{}' is going
 #. to be substituted in code. Please make sure to leave the
@@ -63,13 +63,13 @@ msgstr ""
 msgid ""
 "This page contains content from {original-link}, available under a {license-"
 "link} license."
-msgstr ""
+msgstr "Halaman ini mengandung konten dari {original-link}, yang tersedia dengan lisensi {license-link}."
 
 #. TRANSLATORS: Replace this with a link to the homepage of
 #. wikiHow in your language.
 #: js/app/articleHTMLRenderer.js:82
 msgid "http://wikihow.com"
-msgstr ""
+msgstr "http://wikihow.com"
 
 #. TRANSLATORS: anything inside curly braces '{}' is going
 #. to be substituted in code. Please make sure to leave the
@@ -80,25 +80,25 @@ msgid ""
 "See {wikihow-article-link} for more details, videos, pictures and "
 "attribution. Courtesy of {wikihow-link}, where anyone can easily learn how "
 "to do anything."
-msgstr ""
+msgstr "Lihat {wikihow-article-link} untuk rincian, video, gambar dan atribusi selengkapnya. Milik {wikihow-link}, di mana setiap orang dapat mempelajari cara melakukan sesuatu secara mudah."
 
 #: js/app/articleHTMLRenderer.js:158
 msgid "Copy"
-msgstr ""
+msgstr "Salin"
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
 #: js/app/articleHTMLRenderer.js:176
 msgid "Content taken from {blog-link}."
-msgstr ""
+msgstr "Konten diambil dari {blog-link}."
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
 #: js/app/articleHTMLRenderer.js:181
 msgid "Content courtesy of {blog-link}. Used with kind permission."
-msgstr ""
+msgstr "Konten adalah hak milik {blog-link}. Digunakan dengan izin."
 
 #. TRANSLATORS: the text inside curly braces ({blog-link}, {license-link})
 #. is going to be substituted in code. Please make sure that your
@@ -106,63 +106,63 @@ msgstr ""
 #. translated.
 #: js/app/articleHTMLRenderer.js:189
 msgid "Content courtesy of {blog-link}, licensed under {license-link}."
-msgstr ""
+msgstr "Konten adalah hak milik {blog-link}, berlisensi di bawah {license-link}."
 
 #: js/app/modules/aisleInteraction.js:801
 #: js/app/modules/aisleInteraction.js:808
 msgid "Oops!"
-msgstr ""
+msgstr "Ups!"
 
 #: js/app/modules/aisleInteraction.js:802
 msgid ""
 "We could not find this magazine!\n"
 "Please try again after restarting your computer."
-msgstr ""
+msgstr "Kami tidak dapat menemukan majalah ini! Mohon coba lagi setelah menyalakan ulang komputer Anda."
 
 #: js/app/modules/aisleInteraction.js:809
 msgid ""
 "There was an error loading that page.\n"
 "Try another one or try again after restarting your computer."
-msgstr ""
+msgstr "Terjadi kesalahan saat memuat halaman itu.\nCoba yang lain atau coba lagi setelah menyalakan ulang komputer Anda."
 
 #. TRANSLATORS: This shows the page number; %d will be replaced with
 #. the page number of the article.
 #: js/app/modules/aisleInteraction.js:871
 #, javascript-format
 msgid "Page %d"
-msgstr ""
+msgstr "Halaman %d"
 
 #. TRANSLATORS: %s will be replaced with the text the user
 #. searched for. Make sure to keep %s token in your translation.
 #: js/app/modules/buffetInteraction.js:156 js/app/modules/contextBanner.js:81
 #, javascript-format
 msgid "Results were found for “%s”"
-msgstr ""
+msgstr "Ada hasil ditemukan untuk \"%s\""
 
 #: js/app/modules/contextBanner.js:48 js/app/modules/contextBanner.js:56
 #: js/app/modules/highlightsModule.js:121
 msgid "Highlights"
-msgstr ""
+msgstr "Sorotan"
 
 #: js/app/modules/contextBanner.js:59
 msgid "All Categories"
-msgstr ""
+msgstr "Semua Kategori"
 
 #. TRANSLATORS: %s will be replaced with the text the user
 #. searched for. Make sure to keep the %s token in your translation.
 #: js/app/modules/contextBanner.js:77
 #, javascript-format
 msgid "Search results for “%s”"
-msgstr ""
+msgstr "Hasil pencarian untuk \"%s\""
 
 #: js/app/modules/hamburgerBasementTemplate.js:40
 msgid "SEE ALL CATEGORIES"
-msgstr ""
+msgstr "LIHAT SEMUA KATEGORI"
 
 #: js/app/modules/readerCard.js:60
 #, javascript-format
 msgid "Page %s"
-msgstr ""
+msgstr "Halaman %s"
 
 #. TRANSLATORS: This message is displayed while an app is
 #. searching for results. The %s will be replaced with the term
@@ -173,7 +173,7 @@ msgstr ""
 #: js/app/modules/searchBannerModule.js:56
 #, javascript-format
 msgid "Searching for “%s”"
-msgstr ""
+msgstr "Mencari \"%s\""
 
 #. TRANSLATORS: This message is displayed when an app is
 #. done searching for results. The %s will be replaced with the
@@ -184,15 +184,15 @@ msgstr ""
 #: js/app/modules/searchBannerModule.js:68
 #, javascript-format
 msgid "Results for “%s”"
-msgstr ""
+msgstr "Hasil untuk “%s”"
 
 #: js/app/modules/searchBannerModule.js:74
 msgid "OOPS!"
-msgstr ""
+msgstr "UPS!"
 
 #: js/app/modules/searchModule.js:201
 msgid "Sorry! :-("
-msgstr ""
+msgstr "Maaf! :-("
 
 #: js/app/modules/searchModule.js:202
 msgid "There are no results that match your search.\n"
@@ -205,20 +205,20 @@ msgid ""
 "  •  Check your spelling\n"
 "  •  Try other words that mean the same thing\n"
 "  •  Try using more general words"
-msgstr ""
+msgstr "Kami menyarankan:\n\n  •  Periksa ejaan Anda\n  •  Coba kata lain yang artinya sama\n  •  Coba menggunakan kata yang lebih umum"
 
 #: js/app/modules/searchModule.js:231
 msgid "There was an error during your search."
-msgstr ""
+msgstr "Ada gangguan pada pencarian Anda."
 
 #: js/app/modules/standalonePage.js:139
 msgid "Open the magazine"
-msgstr ""
+msgstr "Buka majalah"
 
 #: js/app/modules/standalonePage.js:256
 #, javascript-format
 msgid "This article is part of the archive of the magazine %s."
-msgstr ""
+msgstr "Artikel ini adalah bagian dari arsip dari majalah %s."
 
 #. TRANSLATORS: anything inside curly braces '{}' is going to be substituted
 #. in code. Please make sure to leave the curly braces around any words that
@@ -227,8 +227,8 @@ msgstr ""
 #. example: "Jane Austen and Henry Miller and William Clifford"
 #: js/app/utils.js:83
 msgid "by {author}"
-msgstr ""
+msgstr "oleh {penulis}"
 
 #: js/app/utils.js:83
 msgid "and"
-msgstr ""
+msgstr "dan"

@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2016-01-12 02:54+0000\n"
+"POT-Creation-Date: 2016-01-19 02:54+0000\n"
 "PO-Revision-Date: 2015-12-14 21:01+0000\n"
 "Last-Translator: mattdangerw <watson@endlessm.com>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/pt_BR/)\n"
@@ -147,7 +147,7 @@ msgid "Results were found for “%s”"
 msgstr "Foram encontrados resultados para “%s”"
 
 #: js/app/modules/contextBanner.js:48 js/app/modules/contextBanner.js:56
-#: js/app/modules/highlightsModule.js:118
+#: js/app/modules/highlightsModule.js:121
 msgid "Highlights"
 msgstr "Destaques"
 
@@ -197,15 +197,15 @@ msgstr "Resultados para “%s”"
 msgid "OOPS!"
 msgstr "OPA!"
 
-#: js/app/modules/searchModule.js:194
+#: js/app/modules/searchModule.js:201
 msgid "Sorry! :-("
 msgstr "Desculpe! :-("
 
-#: js/app/modules/searchModule.js:195
+#: js/app/modules/searchModule.js:202
 msgid "There are no results that match your search.\n"
 msgstr "Não encontramos nenhum resultado para a sua busca.\n"
 
-#: js/app/modules/searchModule.js:197
+#: js/app/modules/searchModule.js:204
 msgid ""
 "We recommend that you:\n"
 "\n"
@@ -214,7 +214,7 @@ msgid ""
 "  •  Try using more general words"
 msgstr "Recomendamos que você:\n\n• Confira se a palavra foi escrita corretamente\n• Tente outras palavras com o mesmo significado\n• Tente usar palavras mais genéricas"
 
-#: js/app/modules/searchModule.js:224
+#: js/app/modules/searchModule.js:231
 msgid "There was an error during your search."
 msgstr "Houve um erro durante a sua pesquisa."
 
