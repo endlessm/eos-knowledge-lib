@@ -25,7 +25,6 @@ const Interaction = imports.app.interfaces.interaction;
 const Launcher = imports.app.interfaces.launcher;
 const MediaObjectModel = imports.search.mediaObjectModel;
 const Module = imports.app.interfaces.module;
-const ProgressLabel = imports.app.widgets.progressLabel;
 const QueryObject = imports.search.queryObject;
 const ReaderCard = imports.app.modules.readerCard;
 const ReaderDocumentCard = imports.app.modules.readerDocumentCard;
@@ -181,6 +180,9 @@ const AisleInteraction = new Lang.Class({
                         page_type: this._ARTICLE_PAGE,
                         model: payload.model,
                     });
+                    break;
+                case Actions.ARTICLE_LINK_CLICKED:
+                    this._load_ekn_id(payload.ekn_id);
                     break;
             }
         });
@@ -706,10 +708,7 @@ const AisleInteraction = new Lang.Class({
     // have seen the loading splash screen. Also start loading the rest of the
     // pages, asynchronously.
     _create_pages_from_models: function (models) {
-        models.forEach(function (model) {
-            let page = this._create_article_page_from_article_model(model, new ProgressLabel.ProgressLabel());
-            this._window.append_article_page(page);
-        }, this);
+        models.forEach(this._window.append_article_page, this._window);
         this._article_models = this._article_models.concat(models);
     },
 
@@ -753,6 +752,33 @@ const AisleInteraction = new Lang.Class({
         });
 
         return document_card;
+    },
+
+    _load_ekn_id: function (ekn_id) {
+        Engine.get_default().get_object_by_id(ekn_id, null, (engine, task) => {
+            let model;
+            try {
+                model = engine.get_object_by_id_finish(task);
+                this._load_model(model);
+            } catch (error) {
+                logError(error, 'Could not open link from reader article');
+            }
+        });
+    },
+
+    _load_model: function (model) {
+        let dispatcher = Dispatcher.get_default();
+        if (model instanceof MediaObjectModel.MediaObjectModel) {
+            dispatcher.dispatch({
+                action_type: Actions.SHOW_MEDIA,
+                model: model,
+            });
+        } else if (model instanceof ArticleObjectModel.ArticleObjectModel) {
+            dispatcher.dispatch({
+                action_type: Actions.ITEM_CLICKED,
+                model: model,
+            });
+        }
     },
 
     _get_page_number_for_article_model: function(model) {

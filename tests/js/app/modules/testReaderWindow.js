@@ -8,6 +8,7 @@ const Utils = imports.tests.utils;
 Utils.register_gresource();
 
 const Actions = imports.app.actions;
+const ContentObjectModel = imports.search.contentObjectModel;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
 const Launcher = imports.app.interfaces.launcher;
@@ -63,6 +64,7 @@ describe('Reader window', function () {
             'navigation': 'navigation',
             'lightbox': 'lightbox',
             'search': 'top-bar-search',
+            'card-type': 'document-card',
         });
 
         view = new ReaderWindow.ReaderWindow({
@@ -71,10 +73,8 @@ describe('Reader window', function () {
             factory_name: 'window',
         });
         for (let i = 0; i < 15; i++) {
-            let a = factory.create_named_module('document-card', {
-                info_notice: new Gtk.Label(),
-            });
-            view.append_article_page(a);
+            let model = new ContentObjectModel.ContentObjectModel();
+            view.append_article_page(model);
         }
     });
 
@@ -132,12 +132,11 @@ describe('Reader window', function () {
     });
 
     it('sets progress labels correctly', function () {
-        let progress_label = new Gtk.Label();
-        let a = factory.create_named_module('document-card', {
-            info_notice: progress_label,
-        });
-        view.append_article_page(a);
-        expect(progress_label.current_page).toBe(EXPECTED_TOTAL_PAGES);
+        let model = new ContentObjectModel.ContentObjectModel();
+        view.append_article_page(model);
+        // FIXME: Don't reach into private data
+        let card = view._article_pages[view._article_pages.length - 1];
+        expect(card.info_notice.current_page).toBe(EXPECTED_TOTAL_PAGES);
     });
 
     it('ensures visible page updates with show_*_page functions', function () {

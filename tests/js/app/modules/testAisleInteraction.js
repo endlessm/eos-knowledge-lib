@@ -125,8 +125,10 @@ const MockView = new Lang.Class({
     show_global_search_standalone_page: function () {},
     show_in_app_standalone_page: function () {},
     show_search_page: function () {},
-    append_article_page: function (page) {
-        this._article_pages.push(page);
+    append_article_page: function (model) {
+        this._article_pages.push(new Minimal.MinimalDocumentCard({
+            model: model,
+        }));
     },
     get_article_page: function (i) {
         return this._article_pages[i];

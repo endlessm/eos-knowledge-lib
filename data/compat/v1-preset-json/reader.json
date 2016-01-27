@@ -29,6 +29,9 @@
                 "document-arrangement": {
                     "type": "CarouselArrangement"
                 },
+                "card-type": {
+                    "type": "ReaderDocumentCard"
+                },
                 "front-page": "front-page",
                 "search-page": "search-page",
                 "standalone-page": "standalone-page",

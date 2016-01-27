@@ -14,6 +14,7 @@ const Lang = imports.lang;
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
 const Module = imports.app.interfaces.module;
+const ProgressLabel = imports.app.widgets.progressLabel;
 const StandalonePage = imports.app.modules.standalonePage;
 const StyleClasses = imports.app.styleClasses;
 
@@ -28,6 +29,17 @@ const StyleClasses = imports.app.styleClasses;
  *
  * Adds a lightbox above the article page, which can be used to show content
  * above it.
+ *
+ * Slots:
+ *   back-page
+ *   card-type
+ *   document-arrangement
+ *   front-page
+ *   lightbox
+ *   navigation
+ *   search
+ *   search-page
+ *   standalone-page
  */
 const ReaderWindow = new Lang.Class({
     Name: 'ReaderWindow',
@@ -229,12 +241,26 @@ const ReaderWindow = new Lang.Class({
         this._back_page.progress_label.total_pages = this.total_pages;
     },
 
-    /*
-     *  Method: append_article_page
+    /**
+     * Method: append_article_page
+     * Creates an article page and appends it to the window
      *
-     *  Appends an article page to the widget's array of article pages.
+     * Parameters:
+     *   model - the <ContentObjectModel> from which to create a page
      */
-    append_article_page: function (document_card) {
+    append_article_page: function (model) {
+        // FIXME: This should probably be a slot on a document page and not the
+        // window.
+        let document_card = this.create_submodule('card-type', {
+            model: model,
+            info_notice: new ProgressLabel.ProgressLabel(),
+        });
+        document_card.connect('ekn-link-clicked', (card, uri) => {
+            Dispatcher.get_default().dispatch({
+                action_type: Actions.ARTICLE_LINK_CLICKED,
+                ekn_id: uri,
+            });
+        });
         document_card.show_all();
         if (!(document_card in this._article_pages)) {
             this._article_pages.push(document_card);
@@ -350,8 +376,8 @@ const ReaderWindow = new Lang.Class({
     },
 
     get_slot_names: function () {
-        return ['front-page', 'back-page', 'search-page', 'standalone-page',
-            'document-arrangement', 'navigation', 'lightbox', 'search'];
+        return ['back-page', 'card-type', 'document-arrangement', 'front-page',
+            'lightbox', 'navigation', 'search', 'search-page', 'standalone-page'];
     },
 
     vfunc_size_allocate: function (alloc) {
