@@ -1,5 +1,7 @@
 /* Copyright 2014 Endless Mobile, Inc. */
 
+@import url("resource:///com/endlessm/knowledge/data/css/common.css");
+
 EosWindow {
     background-color: #efefef;
 }

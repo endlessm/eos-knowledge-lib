@@ -1,11 +1,13 @@
 // Copyright 2014 Endless Mobile, Inc.
 
 const Endless = imports.gi.Endless;
+const Gettext = imports.gettext;
 const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 
 const Actions = imports.app.actions;
+const Config = imports.app.config;
 const Dispatcher = imports.app.dispatcher;
 const Engine = imports.search.engine;
 const Module = imports.app.interfaces.module;
@@ -13,7 +15,9 @@ const QueryObject = imports.search.queryObject;
 const StyleClasses = imports.app.styleClasses;
 const Utils = imports.app.utils;
 
-const RESULTS_SIZE = 10;
+const RESULTS_SIZE = 4;
+
+let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
 /**
  * Class: SearchBox
@@ -37,6 +41,7 @@ const SearchBox = new Lang.Class({
         this.parent(props);
         this._autocomplete_models = {};
         this._cancellable = null;
+        this._link_action_set = false;
         this.get_style_context().add_class(StyleClasses.SEARCH_BOX);
 
         let dispatcher = Dispatcher.get_default();
@@ -53,6 +58,9 @@ const SearchBox = new Lang.Class({
             }
         });
 
+        this.connect('changed', () => {
+            this._update_link_action();
+        });
         this.connect('text-changed', () => {
             this._on_text_changed();
         });
@@ -69,6 +77,12 @@ const SearchBox = new Lang.Class({
                 query: this.text,
                 model: model,
                 context: this._autocomplete_models,
+            });
+        });
+        this.completion.connect('action-activated', () => {
+            Dispatcher.get_default().dispatch({
+                action_type: Actions.SEARCH_TEXT_ENTERED,
+                query: this.text,
             });
         });
     },
@@ -134,5 +148,17 @@ const SearchBox = new Lang.Class({
         }
 
         return model.title;
+    },
+
+    _update_link_action: function () {
+        let hide_link = this._list_store.iter_n_children(null) < RESULTS_SIZE;
+
+        if (this._link_action_set && hide_link) {
+            this.completion.delete_action(0);
+            this._link_action_set = false;
+        } else if (!this._link_action_set && !hide_link) {
+            this.completion.insert_action_text(0, _("See more results"));
+            this._link_action_set = true;
+        }
     },
 });

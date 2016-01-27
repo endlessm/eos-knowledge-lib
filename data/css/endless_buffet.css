@@ -1,5 +1,7 @@
 /* This is all temporary */
 
+@import url("resource:///com/endlessm/knowledge/data/css/common.css");
+
 EknWindow {
     background-size: cover;
 }
@@ -407,6 +409,27 @@ EknResponsiveMarginsModule.large {
 
 EknResponsiveMarginsModule.xlarge {
     margin: 0px 120px;
+}
+
+.endless-search-box .frame {
+   background-color: #d5e1ed;
+}
+
+.endless-search-box .view .cell {
+    border-color: #d5e1ed;
+}
+
+.endless-search-box .view .cell:selected {
+    background-color: #f5f5f5;
+}
+
+.endless-search-box .view:nth-child(2) .cell {
+    border-color: #d5e1ed;
+    background-color: #d5e1ed;
+}
+
+.endless-search-box .view:nth-child(2) .cell:selected {
+    background-color: #f5f5f5;
 }
 
 /* Changes for composite TVs */
