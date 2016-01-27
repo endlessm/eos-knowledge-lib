@@ -89,6 +89,7 @@ const ThematicModule = new Lang.Class({
         if (this._current_index >= this._current_arrangements.length)
             return;
         let arrangement = this._current_arrangements[this._current_index];
+        this._current_index += 1;
         let query = new QueryObject.QueryObject({
             limit: -1,
             tags: this._current_model.child_tags.concat(arrangement.accepted_child_tags),
@@ -103,7 +104,6 @@ const ThematicModule = new Lang.Class({
                 return;
             }
 
-            this._current_index += 1;
             // If we got no results for this arrangement, move onto the next one
             if (results.length === 0) {
                 this.show_more_content();
