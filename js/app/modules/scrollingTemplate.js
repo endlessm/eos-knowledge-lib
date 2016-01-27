@@ -55,6 +55,11 @@ const ScrollingTemplate = new Lang.Class({
                 case Actions.SHOW_ARTICLE_PAGE:
                     this._return_to_top();
                     break;
+                case Actions.CONTENT_ADDED:
+                    if (payload.scroll_server === this.name) {
+                        this.new_content_added();
+                    }
+                    break;
             }
         });
     },
