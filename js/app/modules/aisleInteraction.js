@@ -184,6 +184,9 @@ const AisleInteraction = new Lang.Class({
                 case Actions.ARTICLE_LINK_CLICKED:
                     this._load_ekn_id(payload.ekn_id);
                     break;
+                case Actions.ARTICLE_LOAD_FAILED:
+                    this._show_error_page();
+                    break;
             }
         });
 
@@ -712,48 +715,6 @@ const AisleInteraction = new Lang.Class({
         this._article_models = this._article_models.concat(models);
     },
 
-    // Take an ArticleObjectModel and create a ReaderDocumentCard view.
-    _create_article_page_from_article_model: function (model, info_notice) {
-        let card_props = {
-            model: model,
-            info_notice: info_notice,
-        };
-
-        // FIXME: This should probably be a slot on a document page and not the
-        // interaction model.
-        let document_card = this.create_submodule('document-card', card_props);
-        document_card.connect('ekn-link-clicked', (card, uri) => {
-            let scheme = GLib.uri_parse_scheme(uri);
-            if (scheme !== 'ekn')
-                return;
-
-            Engine.get_default().get_object_by_id(uri, null, (engine, task) => {
-                let clicked_model;
-                try {
-                    clicked_model = engine.get_object_by_id_finish(task);
-                } catch (error) {
-                    logError(error, 'Could not open link from reader article');
-                    return;
-                }
-
-                let dispatcher = Dispatcher.get_default();
-                if (clicked_model instanceof MediaObjectModel.MediaObjectModel) {
-                    dispatcher.dispatch({
-                        action_type: Actions.SHOW_MEDIA,
-                        model: clicked_model,
-                    });
-                } else if (clicked_model instanceof ArticleObjectModel.ArticleObjectModel) {
-                    dispatcher.dispatch({
-                        action_type: Actions.ITEM_CLICKED,
-                        model: clicked_model,
-                    });
-                }
-            });
-        });
-
-        return document_card;
-    },
-
     _load_ekn_id: function (ekn_id) {
         Engine.get_default().get_object_by_id(ekn_id, null, (engine, task) => {
             let model;
@@ -857,16 +818,7 @@ const AisleInteraction = new Lang.Class({
             }));
             info_notice.get_style_context().add_class(StyleClasses.READER_ARCHIVE_NOTICE_FRAME);
         }
-        let document_card = this._create_article_page_from_article_model(model, info_notice);
-        document_card.load_content(null, (card, task) => {
-            try {
-                card.load_content_finish(task);
-            } catch (error) {
-                logError(error);
-                this._show_error_page();
-            }
-        });
-        this._window.standalone_page.document_card = document_card;
+        this._window.standalone_page.display_model(model, info_notice);
     },
 
     _on_article_card_clicked: function (model) {
@@ -920,6 +872,6 @@ const AisleInteraction = new Lang.Class({
     },
 
     get_slot_names: function () {
-        return ['window', 'document-card'];
+        return ['window'];
     },
 });

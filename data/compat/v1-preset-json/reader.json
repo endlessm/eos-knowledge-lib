@@ -3,10 +3,7 @@
         "interaction": {
             "type": "AisleInteraction",
             "slots": {
-                "window": "window",
-                "document-card": {
-                    "type": "ReaderDocumentCard"
-                }
+                "window": "window"
             }
         },
         "window": {
@@ -117,7 +114,12 @@
             }
         },
         "standalone-page": {
-            "type": "StandalonePage"
+            "type": "StandalonePage",
+            "slots": {
+                "card-type": {
+                    "type": "ReaderDocumentCard"
+                }
+            }
         },
         "back-page": {
             "type": "BackCover"

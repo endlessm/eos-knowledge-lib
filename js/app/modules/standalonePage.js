@@ -8,11 +8,12 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
+const Actions = imports.app.actions;
 const ArchiveNotice = imports.app.widgets.archiveNotice;
 const Config = imports.app.config;
+const Dispatcher = imports.app.dispatcher;
 const ImagePreviewer = imports.app.widgets.imagePreviewer;
 const Module = imports.app.interfaces.module;
-const ReaderDocumentCard = imports.app.modules.readerDocumentCard;
 const StyleClasses = imports.app.styleClasses;
 const Utils = imports.app.utils;
 
@@ -188,6 +189,9 @@ const Banner = new Lang.Class({
  * FIXME: This is not a real module yet; it needs to be modularized.
  *
  * This page shows an article, title, attribution, and infobar.
+ *
+ * Slots:
+ *   card-type - type of <DocumentCard> created to display content
  */
 const StandalonePage = new Lang.Class({
     Name: 'StandalonePage',
@@ -197,17 +201,6 @@ const StandalonePage = new Lang.Class({
     Properties: {
         'factory': GObject.ParamSpec.override('factory', Module.Module),
         'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-        /**
-         * Property: document-card
-         *
-         * The <Reader.ReaderDocumentCard> widget created by this widget in order to
-         * show a standalone search result from the archive.
-         * Read-only.
-         */
-        'document-card': GObject.ParamSpec.object('document-card',
-            'Document card', 'The document card that shows a single article',
-            GObject.ParamFlags.READWRITE,
-            ReaderDocumentCard.ReaderDocumentCard.$gtype),
 
         /**
          * Property: infobar
@@ -257,27 +250,54 @@ const StandalonePage = new Lang.Class({
         this.infobar.title_image_uri = this.title_image_uri;
         this.infobar.background_image_uri = this.home_background_uri;
 
+        this._model = null;
         this._document_card = null;
 
         this.add(this.infobar);
     },
 
-    set document_card (v) {
-        if (v === this._document_card)
+    // Module override
+    get_slot_names: function () {
+        return ['card-type'];
+    },
+
+    /**
+     * Method: display_model
+     * TODO: remove info_notice param
+     */
+    display_model: function (model, info_notice) {
+        if (this._model === model)
             return;
         if (this._document_card) {
             this.remove(this._document_card);
             this._document_card = null;
         }
-        this._document_card = v;
-        if (this._document_card) {
-            this.add(this._document_card);
-            this.show_all();
-        }
-        this.notify('document-card');
-    },
 
-    get document_card () {
-        return this._document_card;
+        this._model = model;
+        if (!this._model)
+            return;
+
+        this._document_card = this.create_submodule('card-type', {
+            model: model,
+            info_notice: info_notice,
+        });
+        this.add(this._document_card);
+        this._document_card.show_all();
+        this._document_card.connect('ekn-link-clicked', (card, uri) => {
+            Dispatcher.get_default().dispatch({
+                action_type: Actions.ARTICLE_LINK_CLICKED,
+                ekn_id: uri,
+            });
+        });
+        this._document_card.load_content(null, (card, task) => {
+            try {
+                card.load_content_finish(task);
+            } catch (error) {
+                logError(error);
+                Dispatcher.get_default().dispatch({
+                    action_type: Actions.ARTICLE_LOAD_FAILED,
+                });
+            }
+        });
     },
 });

@@ -108,6 +108,7 @@ const MockView = new Lang.Class({
                 get_style_context: get_style_context,
                 show_content_view: function () {},
             },
+            display_model: function () {},
         };
 
         this.total_pages = 0;
@@ -265,8 +266,10 @@ describe('Aisle interaction', function () {
                 title: 'I Write a Blog',
             });
             engine.get_object_by_id_finish.and.returnValue(model);
+            spyOn(view.standalone_page, 'display_model');
             interaction.activate_search_result(0, MOCK_ID, 'fake query');
-            expect(view.standalone_page.document_card.info_notice).toBe(null);
+            expect(view.standalone_page.display_model)
+                .toHaveBeenCalledWith(jasmine.anything(), null);
         });
 
         it('starts at the right page when search result is in this issue', function () {
