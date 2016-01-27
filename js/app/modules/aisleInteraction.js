@@ -737,14 +737,15 @@ const AisleInteraction = new Lang.Class({
                     return;
                 }
 
+                let dispatcher = Dispatcher.get_default();
                 if (clicked_model instanceof MediaObjectModel.MediaObjectModel) {
-                    Dispatcher.get_default().dispatch({
+                    dispatcher.dispatch({
                         action_type: Actions.SHOW_MEDIA,
                         model: clicked_model,
                     });
                 } else if (clicked_model instanceof ArticleObjectModel.ArticleObjectModel) {
-                    this._history_presenter.set_current_item_from_props({
-                        page_type: this._ARTICLE_PAGE,
+                    dispatcher.dispatch({
+                        action_type: Actions.ITEM_CLICKED,
                         model: clicked_model,
                     });
                 }
