@@ -17,7 +17,7 @@ const CARD_WIDTH_SMALL = Card.MinSize.B;
 const CARD_WIDTH_BIG = Card.MinSize.C;
 const CARD_SIZE_MAX = Card.MinSize.H;
 const CARD_HEIGHT = Card.MinSize.B;
-const SUPPORT_CARD_COUNT = 3;
+const DEFAULT_SUPPORT_CARD_COUNT = 3;
 const HORIZONTAL_PROPORTION = 3;
 const FEATURED_CARD_WIDTH_FRACTION = 2 / 3;
 
@@ -39,11 +39,29 @@ const PianoArrangement = new Lang.Class({
         'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
         'all-visible': GObject.ParamSpec.override('all-visible', Arrangement.Arrangement),
         'spacing': GObject.ParamSpec.override('spacing', Arrangement.Arrangement),
+        /**
+         * Property: compact-mode
+         * Whether the arrangement should show its compact form
+         *
+         * By default, the Piano Arrangement shows three support cards at the right
+         * hand side of the featured card. But in compact mode, only two support
+         * cards are shown.
+         *
+         * Default:
+         *   false (default arrangement layout)
+         */
+        'compact-mode': GObject.ParamSpec.boolean('compact-mode',
+            'Compact mode',
+            'Whether the arrangement should show its compact form',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            false),
     },
 
     _init: function (props={}) {
         this._small_mode = false;
         this._spacing = 0;
+        this._compact_mode = false;
+        this._support_card_count = DEFAULT_SUPPORT_CARD_COUNT;
 
         this.parent(props);
     },
@@ -61,7 +79,7 @@ const PianoArrangement = new Lang.Class({
     },
 
     get_max_cards: function () {
-        return SUPPORT_CARD_COUNT + 1;
+        return this._support_card_count + 1;
     },
 
     get spacing() {
@@ -76,9 +94,21 @@ const PianoArrangement = new Lang.Class({
         this.queue_resize();
     },
 
+    get compact_mode() {
+        return this._compact_mode;
+    },
+
+    set compact_mode(value) {
+        if (this._compact_mode === value)
+            return;
+        this._compact_mode = value;
+        this.notify('compact-mode');
+        this._support_card_count = this._compact_mode ? DEFAULT_SUPPORT_CARD_COUNT - 1 : DEFAULT_SUPPORT_CARD_COUNT;
+    },
+
     get all_visible() {
-        let visible_support_cards = this._small_mode ? SUPPORT_CARD_COUNT - 1 : SUPPORT_CARD_COUNT;
-        return this.get_children().length <= (1 + visible_support_cards);
+        this._support_cards_shown = this._calculate_support_cards_shown();
+        return this.get_children().length <= (1 + this._support_cards_shown);
     },
 
     // Removing a visible widget should recalculate the positions of all widgets
@@ -100,8 +130,8 @@ const PianoArrangement = new Lang.Class({
 
     vfunc_get_preferred_height_for_width: function (width) {
         this._small_mode = (width < Arrangement.get_size_with_spacing(CARD_WIDTH_BIG, HORIZONTAL_PROPORTION, this._spacing));
-        let support_cards_shown = this._small_mode ? SUPPORT_CARD_COUNT - 1 : SUPPORT_CARD_COUNT;
-        let height = Arrangement.get_size_with_spacing(CARD_HEIGHT, support_cards_shown, this._spacing);
+        this._support_cards_shown = this._calculate_support_cards_shown();
+        let height = Arrangement.get_size_with_spacing(CARD_HEIGHT, this._support_cards_shown, this._spacing);
         return [height, height];
     },
 
@@ -113,18 +143,18 @@ const PianoArrangement = new Lang.Class({
         if (all_children.length === 0)
             return;
 
-        let support_cards_shown = this._small_mode ? SUPPORT_CARD_COUNT -1 : SUPPORT_CARD_COUNT;
+        this._support_cards_shown = this._calculate_support_cards_shown();
         let available_width = alloc.width - this._spacing;
 
         let featured_width = Math.floor(available_width * FEATURED_CARD_WIDTH_FRACTION);
-        let featured_height = Arrangement.get_size_with_spacing(CARD_HEIGHT, support_cards_shown, this._spacing);
+        let featured_height = Arrangement.get_size_with_spacing(CARD_HEIGHT, this._support_cards_shown, this._spacing);
         let child_width = Math.floor(available_width * (1 - FEATURED_CARD_WIDTH_FRACTION));
         let child_height = CARD_HEIGHT;
         let delta_y = child_height + this._spacing;
 
         // Calculate spare pixels
         // The floor operation we do above may lead us to have 1,2 spare pixels
-        let spare_pixels = alloc.height - (Arrangement.get_size_with_spacing(child_height, support_cards_shown, this._spacing));
+        let spare_pixels = alloc.height - (Arrangement.get_size_with_spacing(child_height, this._support_cards_shown, this._spacing));
 
         // Featured card:
         // Place the featured card at the left hand side of the arrangement
@@ -147,7 +177,7 @@ const PianoArrangement = new Lang.Class({
 
         // Support cards:
         // Place support cards in a column to the right of the featured card
-        all_children.slice(1, support_cards_shown + 1).forEach((card, i) => {
+        all_children.slice(1, this._support_cards_shown + 1).forEach((card, i) => {
             card.set_child_visible(true);
             let child_alloc = new Gdk.Rectangle({
                 x: x,
@@ -161,9 +191,17 @@ const PianoArrangement = new Lang.Class({
 
         // Additional cards:
         // Should not be visible!
-        all_children.slice(support_cards_shown + 1, all_children.length).forEach((card) => {
+        all_children.slice(this._support_cards_shown + 1, all_children.length).forEach((card) => {
             card.set_child_visible(false);
         });
         Utils.set_container_clip(this);
+    },
+
+    _calculate_support_cards_shown: function () {
+        if (this._compact_mode) {
+            return this._support_card_count;
+        } else {
+            return this._small_mode ? this._support_card_count - 1 : this._support_card_count;
+        }
     },
 });

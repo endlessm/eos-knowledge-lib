@@ -59,7 +59,9 @@ function main() {
     let module_name = ARGV.shift() + 'Arrangement';
     let warehouse = new Warehouse.Warehouse();
     let ArrangementClass = warehouse.type_to_class(module_name);
-    widgets.arrangement = new ArrangementClass();
+    widgets.arrangement = new ArrangementClass({
+        compact_mode: true,
+    });
 
     build_ui();
     connect_signals();

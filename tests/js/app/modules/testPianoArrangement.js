@@ -22,7 +22,7 @@ describe('Piano Arrangement', function () {
         let win;
 
         beforeEach(function () {
-            for (let i = 0; i < 5; i++) {
+            for (let i = 0; i < 4; i++) {
                 let card = new Minimal.MinimalCard();
                 arrangement.add(card);
             }
@@ -35,10 +35,13 @@ describe('Piano Arrangement', function () {
             win.destroy();
         });
 
-        function testSizingArrangementForDimensions(total_width, total_height, support_cards_shown, child_width) {
+        function testSizingArrangementForDimensions(compact_mode, all_visible, total_width, total_height, support_cards_shown, child_width) {
             it ('handles arrangement with dimensions ' + total_width + 'x' + total_height, function () {
+                arrangement.compact_mode = compact_mode;
                 win.set_size_request(total_width, total_width);
                 Utils.update_gui();
+
+                expect(arrangement.all_visible).toBe(all_visible);
 
                 arrangement.get_cards().forEach((card, i) => {
                     if (i === 0) {
@@ -59,23 +62,58 @@ describe('Piano Arrangement', function () {
             });
         }
 
-        // At 2000x600, the featured card should be 1333x600,
-        // and three children cards should be 666x200.
-        testSizingArrangementForDimensions(2000, 600, 3, 666);
-        // At 1200x600, the featured card should be 1200x400,
-        // and three children cards should be 400x200.
-        testSizingArrangementForDimensions(1200, 600, 3, 400);
-        // At 1000x600, the featured card should be 1000x400,
-        // and three children cards should be 333x200.
-        testSizingArrangementForDimensions(1000, 600, 3, 333);
-        // At 900x600, the featured card should be 900x400,
-        // and three children cards should be 300x200.
-        testSizingArrangementForDimensions(900, 600, 3, 300);
-        // At 800x400, the featured card should be 800x200
-        // , and two children cards should be 266x200.
-        testSizingArrangementForDimensions(800, 400, 2, 266);
-        // At 720x400, the featured card should be 720x200,
-        // and two children cards should be 240x200.
-        testSizingArrangementForDimensions(720, 400, 2, 240);
+        describe('in normal mode', function () {
+            // At 2000x600, the featured card should be 1333x600,
+            // and three children cards should be 666x200.
+            // All cards are visible.
+            testSizingArrangementForDimensions(false, true, 2000, 600, 3, 666);
+            // At 1200x600, the featured card should be 800x600,
+            // and three children cards should be 400x200.
+            // All cards are visible.
+            testSizingArrangementForDimensions(false, true, 1200, 600, 3, 400);
+            // At 1000x600, the featured card should be 666x600,
+            // and three children cards should be 333x200.
+            // All cards are visible.
+            testSizingArrangementForDimensions(false, true, 1000, 600, 3, 333);
+            // At 900x600, the featured card should be 600x600,
+            // and three children cards should be 300x200.
+            // All cards are visible.
+            testSizingArrangementForDimensions(false, true, 900, 600, 3, 300);
+            // At 800x400, the featured card should be 533x400,
+            // and two children cards should be 266x200.
+            // Not all cards are visible.
+            testSizingArrangementForDimensions(false, false, 800, 400, 2, 266);
+            // At 720x400, the featured card should be 480x400,
+            // and two children cards should be 240x200.
+            // Not all cards are visible.
+            testSizingArrangementForDimensions(false, false, 720, 400, 2, 240);
+        });
+
+        describe('in compact mode', function () {
+            // At 2000x400, the featured card should be 1333x400,
+            // and two children cards should be 666x200.
+            // Not all cards are visible.
+            testSizingArrangementForDimensions(true, false, 2000, 400, 2, 666);
+            // At 1200x400, the featured card should be 800x400,
+            // and two children cards should be 400x200.
+            // Not all cards are visible.
+            testSizingArrangementForDimensions(true, false, 1200, 400, 2, 400);
+            // At 1000x400, the featured card should be 666x400,
+            // and two children cards should be 333x200.
+            // Not all cards are visible.
+            testSizingArrangementForDimensions(true, false, 1000, 400, 2, 333);
+            // At 900x400, the featured card should be 600x400,
+            // and two children cards should be 300x200.
+            // Not all cards are visible.
+            testSizingArrangementForDimensions(true, false, 900, 400, 2, 300);
+            // At 800x400, the featured card should be 533x400
+            // , and two children cards should be 266x200.
+            // Not all cards are visible.
+            testSizingArrangementForDimensions(true, false, 800, 400, 2, 266);
+            // At 720x400, the featured card should be 480x400,
+            // and two children cards should be 240x200.
+            // Not all cards are visible.
+            testSizingArrangementForDimensions(true, false, 720, 400, 2, 240);
+        });
     });
 });
