@@ -103,21 +103,18 @@ describe('Mesh interaction', function () {
     it('dispatches present window on launch from desktop', function () {
         mesh.desktop_launch(0);
         Utils.update_gui();
-        expect(dispatcher.last_payload_with_type(Actions.PRESENT_WINDOW).launch_type)
-            .toBe(Launcher.LaunchType.DESKTOP);
+        expect(dispatcher.last_payload_with_type(Actions.PRESENT_WINDOW)).toBeDefined();
     });
 
     it('dispatches present window on launch from search', function () {
         mesh.search(0, 'query');
-        expect(dispatcher.last_payload_with_type(Actions.PRESENT_WINDOW).launch_type)
-            .toBe(Launcher.LaunchType.SEARCH);
+        expect(dispatcher.last_payload_with_type(Actions.PRESENT_WINDOW)).toBeDefined();
     });
 
     it('dispatches present window on launch from search result', function () {
         engine.get_object_by_id_finish.and.returnValue(new ContentObjectModel.ContentObjectModel());
         mesh.activate_search_result(0, 'ekn://foo/bar', 'query');
-        expect(dispatcher.last_payload_with_type(Actions.PRESENT_WINDOW).launch_type)
-            .toBe(Launcher.LaunchType.SEARCH_RESULT);
+        expect(dispatcher.last_payload_with_type(Actions.PRESENT_WINDOW)).toBeDefined();
     });
 
     it('dispatches present window only once', function () {
@@ -136,12 +133,13 @@ describe('Mesh interaction', function () {
         expect(payloads.length).toBe(1);
     });
 
-    it('indicates that the brand page has been read after launch from desktop', function () {
+    it('shows the brand page until timeout has expired and sets are loaded', function () {
         mesh.BRAND_PAGE_TIME_MS = 0;
         mesh.desktop_launch(0);
         expect(dispatcher.last_payload_with_type(Actions.SHOW_BRAND_PAGE)).toBeDefined();
+        expect(dispatcher.last_payload_with_type(Actions.SHOW_HOME_PAGE)).not.toBeDefined();
         Utils.update_gui();
-        expect(dispatcher.last_payload_with_type(Actions.BRAND_PAGE_DONE)).toBeDefined();
+        expect(dispatcher.last_payload_with_type(Actions.SHOW_HOME_PAGE)).toBeDefined();
     });
 
     it('shows the brand page only once', function () {
