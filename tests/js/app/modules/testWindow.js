@@ -169,12 +169,19 @@ describe('Window', function () {
             expect(view.set_busy).toHaveBeenCalledWith(false);
         });
 
-        it('presents itself when the app launches', function () {
+        it('presents itself after the first page is shown', function () {
             spyOn(view, 'show_all');
             spyOn(view, 'present');
             spyOn(view, 'present_with_time');
             dispatcher.dispatch({
                 action_type: Actions.PRESENT_WINDOW,
+                timestamp: 0,
+                launch_type: Launcher.LaunchType.DESKTOP,
+            });
+            expect(view.present).not.toHaveBeenCalled();
+            expect(view.present_with_time).not.toHaveBeenCalled();
+            dispatcher.dispatch({
+                action_type: Actions.SHOW_HOME_PAGE,
                 timestamp: 0,
                 launch_type: Launcher.LaunchType.DESKTOP,
             });

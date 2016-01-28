@@ -82,6 +82,9 @@ const MeshInteraction = new Lang.Class({
         this._current_search_query = '';
         this._set_cancellable = new Gio.Cancellable();
         this._search_cancellable = new Gio.Cancellable();
+        this._dispatched_present = false;
+        this._brand_page_timeout_id = 0;
+        this._home_content_loaded = false;
 
         let dispatcher = Dispatcher.get_default();
         dispatcher.register((payload) => {
@@ -131,40 +134,35 @@ const MeshInteraction = new Lang.Class({
 
         this._window.connect('key-press-event', this._on_key_press_event.bind(this));
         this._history_presenter.connect('history-item-changed', this._on_history_item_change.bind(this));
+
+        this._load_sets_on_home_page ();
     },
 
-    _load_sets_on_home_page: function (cancellable, callback) {
+    _load_sets_on_home_page: function () {
         let query_obj = new QueryObject.QueryObject({
             limit: -1,
             tags: [ Engine.HOME_PAGE_TAG ],
         });
-        let task = new AsyncTask.AsyncTask(this, cancellable, callback);
-        task.catch_errors(() => {
-            Engine.get_default().get_objects_by_query(query_obj, cancellable, task.catch_callback_errors((engine, inner_task) => {
-                let [models] = engine.get_objects_by_query_finish(inner_task);
+        Engine.get_default().get_objects_by_query(query_obj, null, (engine, inner_task) => {
+            let [models] = engine.get_objects_by_query_finish(inner_task);
 
-                // FIXME: This sorting should ideally happen in the arrangement
-                // once it has a sort-by API.
-                let sorted_models = models.sort((a, b) => {
-                    let sortVal = 0;
-                    if (a.featured)
-                        sortVal--;
-                    if (b.featured)
-                        sortVal++;
-                    return sortVal;
-                });
-                Dispatcher.get_default().dispatch({
-                    action_type: Actions.APPEND_SETS,
-                    models: sorted_models,
-                });
-
-                task.return_value(true);
-            }));
+            // FIXME: This sorting should ideally happen in the arrangement
+            // once it has a sort-by API.
+            let sorted_models = models.sort((a, b) => {
+                let sortVal = 0;
+                if (a.featured)
+                    sortVal--;
+                if (b.featured)
+                    sortVal++;
+                return sortVal;
+            });
+            Dispatcher.get_default().dispatch({
+                action_type: Actions.APPEND_SETS,
+                models: sorted_models,
+            });
+            this._home_content_loaded = true;
+            this._maybe_show_home();
         });
-    },
-
-    _load_sets_on_home_page_finish: function (task) {
-        return task.finish();
     },
 
     STYLE_MAP: {
@@ -224,14 +222,39 @@ const MeshInteraction = new Lang.Class({
                 });
                 break;
             case this.HOME_PAGE:
-                dispatcher.dispatch({
-                    action_type: Actions.SHOW_HOME_PAGE,
-                });
+                if (this._history_presenter.item_count() === 1) {
+                    Dispatcher.get_default().dispatch({
+                        action_type: Actions.SHOW_BRAND_PAGE,
+                    });
+                    this._brand_page_timeout_id = GLib.timeout_add(GLib.PRIORITY_DEFAULT, this.BRAND_PAGE_TIME_MS, () => {
+                        this._brand_page_timeout_id = 0;
+                        this._maybe_show_home();
+                        return GLib.SOURCE_REMOVE;
+                    });
+                } else {
+                    this._maybe_show_home();
+                }
                 break;
         }
         dispatcher.dispatch({
             action_type: Actions.SET_SEARCH_TEXT,
             text: search_text,
+        });
+    },
+
+    _maybe_show_home: function () {
+        let item = this._history_presenter.history_model.current_item;
+        if (!item || item.page_type !== this.HOME_PAGE)
+            return;
+        if (!this._home_content_loaded)
+            return;
+        if (this._brand_page_timeout_id)
+            return;
+        Dispatcher.get_default().dispatch({
+            action_type: Actions.SHOW_HOME_PAGE,
+        });
+        Dispatcher.get_default().dispatch({
+            action_type: Actions.FOCUS_SEARCH,
         });
     },
 
@@ -542,68 +565,37 @@ const MeshInteraction = new Lang.Class({
             [query, this.application.application_id]));
     },
 
-    // Helper function for two Launcher implementation methods. Returns true if
-    // an action was really dispatched. (In desktop_launch() we return right
-    // away if we were already launched, but dispatch the launch action later.)
-    _dispatch_launch: function (timestamp, launch_type) {
-        if (this._launched_once)
-            return false;
-        this._launched_once = true;
-
+    _dispatch_present: function (timestamp) {
+        if (this._dispatched_present)
+            return;
+        this._dispatched_present = true;
         Dispatcher.get_default().dispatch({
             action_type: Actions.PRESENT_WINDOW,
             timestamp: timestamp,
-            launch_type: launch_type,
         });
-        return true;
     },
 
     // Launcher implementation
     desktop_launch: function (timestamp) {
+        this._dispatch_present(timestamp);
         this._history_presenter.set_current_item_from_props({
             page_type: this.HOME_PAGE,
-        });
-
-        if (!this._dispatch_launch(timestamp, Launcher.LaunchType.DESKTOP)) {
-            return;
-        }
-
-        Dispatcher.get_default().dispatch({
-            action_type: Actions.SHOW_BRAND_PAGE,
-        });
-
-        GLib.timeout_add(GLib.PRIORITY_DEFAULT, this.BRAND_PAGE_TIME_MS, () => {
-            Dispatcher.get_default().dispatch({
-                action_type: Actions.BRAND_PAGE_DONE,
-            });
-            return GLib.SOURCE_REMOVE;
-        });
-
-        this._load_sets_on_home_page(null, (mesh, task) => {
-            this._load_sets_on_home_page_finish(task);
-            Dispatcher.get_default().dispatch({
-                action_type: Actions.FOCUS_SEARCH,
-            });
         });
     },
 
     // Launcher implementation
     search: function (timestamp, query) {
-        this._do_search(query);  // sets history presenter item
-        // Don't wait for the sets to load on the home page, since we don't
-        // start off showing the home page
-        this._load_sets_on_home_page(null, (mesh, task) =>
-            this._load_sets_on_home_page_finish(task));
-        this._dispatch_launch(timestamp, Launcher.LaunchType.SEARCH);
+        this._dispatch_present(timestamp);
+        this._do_search(query);
     },
 
     // Launcher implementation
     activate_search_result: function (timestamp, ekn_id, query) {
+        this._dispatch_present(timestamp);
         // Show an empty article page while waiting
         Dispatcher.get_default().dispatch({
             action_type: Actions.SHOW_ARTICLE_PAGE,
         });
-        this._dispatch_launch(timestamp, Launcher.LaunchType.SEARCH_RESULT);
 
         Engine.get_default().get_object_by_id(ekn_id, null, (engine, task) => {
             try {
@@ -617,10 +609,6 @@ const MeshInteraction = new Lang.Class({
                 logError(error);
             }
         });
-        // Don't wait for the sets to load on the home page, since we don't
-        // start off showing the home page
-        this._load_sets_on_home_page(null, (mesh, task) =>
-            this._load_sets_on_home_page_finish(task));
     },
 
     _load_uri: function (ekn_id) {

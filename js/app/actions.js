@@ -52,7 +52,6 @@ const SHOW_ARTICLE_SEARCH = 'show-article-search';
 const HIDE_ARTICLE_SEARCH = 'hide-article-search';
 const FOCUS_SEARCH = 'focus-search';
 const SHOW_BRAND_PAGE = 'show-brand-page';
-const BRAND_PAGE_DONE = 'brand-page-done';
 const SHOW_HOME_PAGE = 'show-home-page';
 const SHOW_ALL_SETS_PAGE = 'show-all-sets-page';
 const SHOW_SECTION_PAGE = 'show-section-page';

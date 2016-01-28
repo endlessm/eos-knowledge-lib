@@ -81,6 +81,10 @@ const BuffetInteraction = new Lang.Class({
             history_model: new EosKnowledgePrivate.HistoryModel(),
         });
 
+        this._dispatched_present = false;
+        this._brand_page_timeout_id = 0;
+        this._content_ready = false;
+
         // Load all sets, with which to populate the highlights and thematic
         // pages
         Engine.get_default().get_objects_by_query(new QueryObject.QueryObject({
@@ -131,11 +135,7 @@ const BuffetInteraction = new Lang.Class({
                     break;
                 case Actions.MODULE_READY:
                     this._content_ready = true;
-                    if (this._timer_ready) {
-                        Dispatcher.get_default().dispatch({
-                            action_type: Actions.BRAND_PAGE_DONE,
-                        });
-                    }
+                    this._maybe_show_home();
                     break;
                 case Actions.ARTICLE_LINK_CLICKED:
                     this._load_ekn_id(payload.ekn_id);
@@ -322,9 +322,18 @@ const BuffetInteraction = new Lang.Class({
                 });
                 break;
             case Pages.HOME:
-                dispatcher.dispatch({
-                    action_type: Actions.SHOW_HOME_PAGE,
-                });
+                if (this._history_presenter.item_count() === 1) {
+                    Dispatcher.get_default().dispatch({
+                        action_type: Actions.SHOW_BRAND_PAGE,
+                    });
+                    this._brand_page_timeout_id = GLib.timeout_add(GLib.PRIORITY_DEFAULT, this.BRAND_PAGE_TIME_MS, () => {
+                        this._brand_page_timeout_id = 0;
+                        this._maybe_show_home();
+                        return GLib.SOURCE_REMOVE;
+                    });
+                } else {
+                    this._maybe_show_home();
+                }
                 break;
             case Pages.ALL_SETS:
                 dispatcher.dispatch({
@@ -368,6 +377,19 @@ const BuffetInteraction = new Lang.Class({
         });
     },
 
+    _maybe_show_home: function () {
+        let item = this._history_presenter.history_model.current_item;
+        if (!item || item.page_type !== Pages.HOME)
+            return;
+        if (!this._content_ready)
+            return;
+        if (this._brand_page_timeout_id)
+            return;
+        Dispatcher.get_default().dispatch({
+            action_type: Actions.SHOW_HOME_PAGE,
+        });
+    },
+
     _load_ekn_id: function (ekn_id) {
         Engine.get_default().get_object_by_id(ekn_id, null, (engine, task) => {
             let model;
@@ -396,54 +418,33 @@ const BuffetInteraction = new Lang.Class({
         }
     },
 
-    // Helper function for the three Launcher implementation methods. Returns
-    // true if an action was really dispatched.
-    _dispatch_launch: function (timestamp, launch_type) {
-        if (this._launched_once)
-            return false;
-        this._launched_once = true;
-
+    _dispatch_present: function (timestamp) {
+        if (this._dispatched_present)
+            return;
+        this._dispatched_present = true;
         Dispatcher.get_default().dispatch({
             action_type: Actions.PRESENT_WINDOW,
             timestamp: timestamp,
-            launch_type: launch_type,
         });
-        return true;
     },
 
     // Launcher implementation
     desktop_launch: function (timestamp) {
+        this._dispatch_present(timestamp);
         this._history_presenter.set_current_item_from_props({
             page_type: Pages.HOME,
-        });
-
-        if (!this._dispatch_launch(timestamp, Launcher.LaunchType.DESKTOP)) {
-            return;
-        }
-
-        Dispatcher.get_default().dispatch({
-            action_type: Actions.SHOW_BRAND_PAGE,
-        });
-
-        GLib.timeout_add(GLib.PRIORITY_DEFAULT, this.BRAND_PAGE_TIME_MS, () => {
-            this._timer_ready = true;
-            if (this._content_ready) {
-                Dispatcher.get_default().dispatch({
-                    action_type: Actions.BRAND_PAGE_DONE,
-                });
-            }
-            return GLib.SOURCE_REMOVE;
         });
     },
 
     // Launcher override
     search: function (timestamp, query) {
+        this._dispatch_present(timestamp);
         this._start_search_via_history(query);
-        this._dispatch_launch(timestamp, Launcher.LaunchType.SEARCH);
     },
 
     // Launcher override
     activate_search_result: function (timestamp, ekn_id, query) {
+        this._dispatch_present(timestamp);
         // Show an empty article page while waiting
         Dispatcher.get_default().dispatch({
             action_type: Actions.SHOW_ARTICLE_PAGE,
@@ -460,7 +461,6 @@ const BuffetInteraction = new Lang.Class({
             } catch (error) {
                 logError(error);
             }
-            this._dispatch_launch(timestamp, Launcher.LaunchType.SEARCH_RESULT);
         });
     },
 

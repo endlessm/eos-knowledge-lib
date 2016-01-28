@@ -245,17 +245,13 @@ const Window = new Lang.Class({
                     this.set_busy(false);
                     break;
                 case Actions.PRESENT_WINDOW:
-                    if (payload.timestamp)
-                        this.present_with_time(payload.timestamp);
-                    else
-                        this.present();
+                    this._pending_present = true;
+                    this._present_timestamp = payload.timestamp;
                     break;
                 case Actions.SHOW_BRAND_PAGE:
                     if (this._brand_page)
                         this.show_page(this._brand_page);
-                    break;
-                case Actions.BRAND_PAGE_DONE:
-                    if (this._brand_page)
+                    else
                         this.show_page(this._home_page);
                     break;
                 case Actions.SHOW_HOME_PAGE:
@@ -308,6 +304,17 @@ const Window = new Lang.Class({
             !Utils.has_descendant_with_type(new_page, SearchBox.SearchBox);
     },
 
+    _present_if_needed: function () {
+        if (this._pending_present) {
+            if (this._present_timestamp)
+                this.present_with_time(this._present_timestamp);
+            else
+                this.present();
+            this._pending_present = false;
+            this._present_timestamp = null;
+        }
+    },
+
     show_page: function (new_page) {
         let old_page = this.get_visible_page();
         if (old_page === new_page) {
@@ -315,6 +322,7 @@ const Window = new Lang.Class({
             // first transition.
             this._stack.transition_duration = this.TRANSITION_DURATION;
             this._update_top_bar_visibility();
+            this._present_if_needed();
             return;
         }
 
@@ -361,6 +369,7 @@ const Window = new Lang.Class({
         // The first transition on app startup has duration 0, subsequent ones
         // are normal.
         this._stack.transition_duration = this.TRANSITION_DURATION;
+        this._present_if_needed();
     },
 
     /**
