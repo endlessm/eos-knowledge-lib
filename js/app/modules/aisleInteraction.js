@@ -707,8 +707,7 @@ const AisleInteraction = new Lang.Class({
 
     // First article data has been loaded asynchronously; now we can start
     // loading its content, and show the window. Until this point the user will
-    // have seen the loading splash screen. Also start loading the rest of the
-    // pages, asynchronously.
+    // have seen the loading splash screen.
     _create_pages_from_models: function (models) {
         models.forEach(this._window.append_article_page, this._window);
         this._article_models = this._article_models.concat(models);
