@@ -134,9 +134,8 @@ describe('Reader window', function () {
     it('sets progress labels correctly', function () {
         let model = new ContentObjectModel.ContentObjectModel();
         view.append_article_page(model);
-        // FIXME: Don't reach into private data
-        let card = view._article_pages[view._article_pages.length - 1];
-        expect(card.info_notice.current_page).toBe(EXPECTED_TOTAL_PAGES);
+        let card = factory.get_last_created_named_mock('document-card');
+        expect(card.page_number).toBe(EXPECTED_TOTAL_PAGES);
     });
 
     it('ensures visible page updates with show_*_page functions', function () {

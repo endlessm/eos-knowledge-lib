@@ -9,7 +9,6 @@ const CssClassMatcher = imports.tests.CssClassMatcher;
 const MockWidgets = imports.tests.mockWidgets;
 const ReaderDocumentCard = imports.app.modules.readerDocumentCard;
 const StyleClasses = imports.app.styleClasses;
-const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 
 Gtk.init(null);
 
@@ -18,7 +17,6 @@ describe('Reader Document Card', function () {
 
     beforeEach(function () {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
-        jasmine.addMatchers(WidgetDescendantMatcher.customMatchers);
 
         article_object = new ArticleObjectModel.ArticleObjectModel({
             ekn_id: 'ekn://astronomy-en/foo',
@@ -122,14 +120,13 @@ describe('Reader Document Card', function () {
         card.content_view.emit('load-changed', WebKit2.LoadEvent.FINISHED);
     });
 
-    describe('info notice', function () {
-        it('is added when set on construction', function () {
-            let widget = new Gtk.Label();
-            card = new ReaderDocumentCard.ReaderDocumentCard({
-                model: article_object,
-                info_notice: widget,
-            });
-            expect(card).toHaveDescendant(widget);
-        });
+    it('displays page number in UI', function () {
+        card.page_number = 1234;
+        expect(Gtk.test_find_label(card, '*1234*')).not.toBeNull();
+    });
+
+    it('displays total pages in UI', function () {
+        card.total_pages = 4321;
+        expect(Gtk.test_find_label(card, '*4321*')).not.toBeNull();
     });
 });

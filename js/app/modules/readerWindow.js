@@ -14,7 +14,6 @@ const Lang = imports.lang;
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
 const Module = imports.app.interfaces.module;
-const ProgressLabel = imports.app.widgets.progressLabel;
 const StandalonePage = imports.app.modules.standalonePage;
 const StyleClasses = imports.app.styleClasses;
 
@@ -231,12 +230,11 @@ const ReaderWindow = new Lang.Class({
     },
 
     _update_progress_labels: function () {
-        for (let i = 0; i < this._article_pages.length; i++) {
+        this._article_pages.forEach((page, ix) => {
             // Account for overview and done pages
-            let progress_label = this._article_pages[i].info_notice;
-            progress_label.current_page = i + 2;
-            progress_label.total_pages = this.total_pages;
-        }
+            page.page_number = ix + 2;
+            page.total_pages = this.total_pages;
+        });
         this._back_page.progress_label.current_page = this.total_pages;
         this._back_page.progress_label.total_pages = this.total_pages;
     },
@@ -253,7 +251,6 @@ const ReaderWindow = new Lang.Class({
         // window.
         let document_card = this.create_submodule('card-type', {
             model: model,
-            info_notice: new ProgressLabel.ProgressLabel(),
         });
         document_card.connect('ekn-link-clicked', (card, uri) => {
             Dispatcher.get_default().dispatch({

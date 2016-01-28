@@ -251,25 +251,15 @@ describe('Aisle interaction', function () {
                 title: 'I Write a Blog',
             });
             engine.get_object_by_id_finish.and.returnValue(model);
+            spyOn(view.standalone_page, 'display_model');
             spyOn(view, 'show_global_search_standalone_page');
             interaction.activate_search_result(0, MOCK_ID, 'fake query');
             expect(engine.get_object_by_id).toHaveBeenCalledWith(MOCK_ID,
                                                                  jasmine.any(Object),
                                                                  jasmine.any(Function));
             expect(view.show_global_search_standalone_page).toHaveBeenCalled();
-        });
-
-        it('loads the global search standalone page without a info notice', function () {
-            const MOCK_ID = 'abc123';
-            let model = new ArticleObjectModel.ArticleObjectModel({
-                article_number: 5000,
-                title: 'I Write a Blog',
-            });
-            engine.get_object_by_id_finish.and.returnValue(model);
-            spyOn(view.standalone_page, 'display_model');
-            interaction.activate_search_result(0, MOCK_ID, 'fake query');
             expect(view.standalone_page.display_model)
-                .toHaveBeenCalledWith(jasmine.anything(), null);
+                .toHaveBeenCalledWith(jasmine.anything(), true);
         });
 
         it('starts at the right page when search result is in this issue', function () {

@@ -13,7 +13,6 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const Actions = imports.app.actions;
-const ArchiveNotice = imports.app.widgets.archiveNotice;
 const ArticleObjectModel = imports.search.articleObjectModel;
 const ArticleSnippetCard = imports.app.modules.articleSnippetCard;
 const BackCover = imports.app.modules.backCover;
@@ -616,7 +615,7 @@ const AisleInteraction = new Lang.Class({
 
     _go_to_article: function (model, from_global_search) {
         if (this._is_archived(model)) {
-            this._load_standalone_article(model, from_global_search);
+            this._window.standalone_page.display_model(model, from_global_search);
             if (from_global_search) {
                 this._window.show_global_search_standalone_page();
             } else {
@@ -805,20 +804,6 @@ const AisleInteraction = new Lang.Class({
             action_type: Actions.APPEND_ITEMS,
             models: snippets,
         });
-    },
-
-    _load_standalone_article: function (model, from_global_search) {
-        let info_notice = null;
-        if (!from_global_search) {
-            info_notice = new Gtk.Frame();
-            // Ensures that the archive notice on the in app standalone page
-            // matches that of the standalone page you reach via global search
-            info_notice.add(new ArchiveNotice.ArchiveNotice({
-                label: this._window.standalone_page.infobar.archive_notice.label,
-            }));
-            info_notice.get_style_context().add_class(StyleClasses.READER_ARCHIVE_NOTICE_FRAME);
-        }
-        this._window.standalone_page.display_model(model, info_notice);
     },
 
     _on_article_card_clicked: function (model) {

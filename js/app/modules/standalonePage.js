@@ -263,9 +263,9 @@ const StandalonePage = new Lang.Class({
 
     /**
      * Method: display_model
-     * TODO: remove info_notice param
+     * TODO: remove from_global_search param
      */
-    display_model: function (model, info_notice) {
+    display_model: function (model, from_global_search) {
         if (this._model === model)
             return;
         if (this._document_card) {
@@ -279,7 +279,8 @@ const StandalonePage = new Lang.Class({
 
         this._document_card = this.create_submodule('card-type', {
             model: model,
-            info_notice: info_notice,
+            display_context: !from_global_search,
+            archived: true,
         });
         this.add(this._document_card);
         this._document_card.show_all();
