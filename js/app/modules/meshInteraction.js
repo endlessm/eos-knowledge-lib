@@ -108,12 +108,12 @@ const MeshInteraction = new Lang.Class({
                         model: payload.model,
                     });
                     break;
-                case Actions.NEED_MORE_ITEMS:
-                    this._load_more_set_results();
-                    break;
-                case Actions.NEED_MORE_SEARCH:
-                    this._load_more_search_results();
-                    break;
+                // case Actions.NEED_MORE_ITEMS:
+                //     this._load_more_set_results();
+                //     break;
+                // case Actions.NEED_MORE_SEARCH:
+                //     this._load_more_search_results();
+                //     break;
                 case Actions.AUTOCOMPLETE_CLICKED:
                     this._history_presenter.set_current_item_from_props({
                         page_type: this.ARTICLE_PAGE,
