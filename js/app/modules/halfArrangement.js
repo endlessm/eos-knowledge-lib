@@ -3,8 +3,6 @@
 /* exported HalfArrangement */
 
 const Endless = imports.gi.Endless;
-const Gdk = imports.gi.Gdk;
-const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 
@@ -111,14 +109,7 @@ const HalfArrangement = new Lang.Class({
         // Featured cards:
         // Place two featured cards per row at top of arrangement
         all_children.slice(0, this._featured_cards_count).forEach((card, ix) => {
-            let card_alloc = new Gdk.Rectangle({
-                x: x,
-                y: y,
-                width: featured_card_width,
-                height: FEATURED_CARD_HEIGHT,
-            });
-            card.size_allocate(card_alloc);
-            card.set_child_visible(true);
+            this.place_card(card, x, y, featured_card_width, FEATURED_CARD_HEIGHT);
 
             if ((ix + 1) % FEATURED_CARDS_PER_ROW === 0) {
                 x = alloc.x;
@@ -141,14 +132,7 @@ const HalfArrangement = new Lang.Class({
         // Child cards
         // Place rest of cards below the featured cards, in as many rows as needed
         all_children.slice(this._featured_cards_count).forEach((card, ix) => {
-            let card_alloc = new Gdk.Rectangle({
-                x: x,
-                y: y,
-                width: card_width,
-                height: card_height,
-            });
-            card.size_allocate(card_alloc);
-            card.set_child_visible(true);
+            this.place_card(card, x, y, card_width, card_height);
 
             if ((ix + 1) % this._cards_per_row === 0) {
                 x = alloc.x;

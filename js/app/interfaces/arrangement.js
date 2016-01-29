@@ -2,6 +2,7 @@
 
 /* exported Arrangement */
 
+const Gdk = imports.gi.Gdk;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
@@ -88,6 +89,16 @@ const Arrangement = new Lang.Interface({
         }
     },
 
+    place_card: function (card, x, y, width, height) {
+        let card_alloc = new Gdk.Rectangle({
+            x: x,
+            y: y,
+            width: width,
+            height: height,
+        });
+        card.size_allocate(card_alloc);
+        card.set_child_visible(true);
+    },
 });
 
 function get_spare_pixels_for_card_index (spare_pixels, cards_per_row, idx) {
