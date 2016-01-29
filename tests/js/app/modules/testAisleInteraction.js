@@ -243,7 +243,7 @@ describe('Aisle interaction', function () {
             }).not.toThrow();
         });
 
-        it('loads the standalone page when launched with a search result', function () {
+        it('dispatches appropriately when launched with an archived search result', function () {
             const MOCK_ID = 'abc123';
             let model = new ArticleObjectModel.ArticleObjectModel({
                 article_number: 5000,
@@ -251,15 +251,15 @@ describe('Aisle interaction', function () {
                 title: 'I Write a Blog',
             });
             engine.get_object_by_id_finish.and.returnValue(model);
-            spyOn(view.standalone_page, 'display_model');
-            spyOn(view, 'show_global_search_standalone_page');
             interaction.activate_search_result(0, MOCK_ID, 'fake query');
             expect(engine.get_object_by_id).toHaveBeenCalledWith(MOCK_ID,
                                                                  jasmine.any(Object),
                                                                  jasmine.any(Function));
-            expect(view.show_global_search_standalone_page).toHaveBeenCalled();
-            expect(view.standalone_page.display_model)
-                .toHaveBeenCalledWith(jasmine.anything(), true);
+            expect(dispatcher.last_payload_with_type(Actions.SHOW_ARTICLE)).toEqual(jasmine.objectContaining({
+                model: model,
+                archived: true,
+                from_global_search: true,
+            }));
         });
 
         it('starts at the right page when search result is in this issue', function () {

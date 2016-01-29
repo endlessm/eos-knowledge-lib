@@ -154,6 +154,13 @@ const ReaderWindow = new Lang.Class({
                 case Actions.SET_READY:
                     this.set_busy(false);
                     break;
+                case Actions.SHOW_ARTICLE:
+                    // FIXME: We currently only pay attention if archived=true.
+                    // For further modularization, AisleInteraction._go_to_page
+                    // should be handled here in the archived=false case.
+                    if (payload.archived)
+                        this._show_standalone_page();
+                    break;
             }
         });
 
@@ -284,16 +291,6 @@ const ReaderWindow = new Lang.Class({
         this.standalone_page.show();
         this._stack.set_transition_type(Gtk.StackTransitionType.CROSSFADE);
         this._stack.set_visible_child(this.standalone_page);
-    },
-
-    show_global_search_standalone_page: function () {
-        this.standalone_page.infobar.show();
-        this._show_standalone_page();
-    },
-
-    show_in_app_standalone_page: function () {
-        this.standalone_page.infobar.hide();
-        this._show_standalone_page();
     },
 
     show_search_page: function () {

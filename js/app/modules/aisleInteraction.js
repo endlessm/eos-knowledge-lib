@@ -186,6 +186,9 @@ const AisleInteraction = new Lang.Class({
                 case Actions.ARTICLE_LOAD_FAILED:
                     this._show_error_page();
                     break;
+                case Actions.LEAVE_PREVIEW_CLICKED:
+                    this._open_magazine();
+                    break;
             }
         });
 
@@ -203,7 +206,6 @@ const AisleInteraction = new Lang.Class({
             this._window.disconnect(handler);  // One-shot signal handler only.
         }.bind(this));
 
-        this._window.standalone_page.infobar.connect('response', this._open_magazine.bind(this));
         this._history_presenter.connect('history-item-changed', this._on_history_item_change.bind(this));
         this._webview_tooltip_presenter.connect('show-tooltip', this._on_show_tooltip.bind(this));
     },
@@ -358,10 +360,6 @@ const AisleInteraction = new Lang.Class({
                 break;
             case this._ARTICLE_PAGE:
                 this._go_to_article(item.model, item.from_global_search);
-                dispatcher.dispatch({
-                    action_type: Actions.SHOW_ARTICLE,
-                    model: item.model,
-                });
                 break;
             case this._OVERVIEW_PAGE:
                 this._go_to_page(0);
@@ -614,17 +612,19 @@ const AisleInteraction = new Lang.Class({
     },
 
     _go_to_article: function (model, from_global_search) {
-        if (this._is_archived(model)) {
-            this._window.standalone_page.display_model(model, from_global_search);
-            if (from_global_search) {
-                this._window.show_global_search_standalone_page();
-            } else {
-                this._window.show_in_app_standalone_page();
-            }
-        } else {
+        let archived = this._is_archived(model);
+        if (!archived) {
             let page_number = this._get_page_number_for_article_model(model);
             this._go_to_page(page_number);
         }
+        Dispatcher.get_default().dispatch({
+            action_type: Actions.SHOW_ARTICLE,
+            model: model,
+            archived: archived,
+            // FIXME: get rid of from_global_search on this event, have a
+            // separate event for standalone page
+            from_global_search: from_global_search,
+        });
         this._present_if_needed();
     },
 

@@ -19,6 +19,8 @@ const Utils = imports.app.utils;
 
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
+const OPEN_MAGAZINE_RESPONSE = 1;
+
 const OpenButton = new Lang.Class({
     Name: 'OpenButton',
     GTypeName: 'EknOpenButton',
@@ -141,7 +143,7 @@ const Banner = new Lang.Class({
         });
         Utils.set_hand_cursor_on_widget(button);
 
-        this.add_action_widget(button, 1);
+        this.add_action_widget(button, OPEN_MAGAZINE_RESPONSE);
         this.get_content_area().add(this._title_image);
         this.get_content_area().add(this.archive_notice);
     },
@@ -179,6 +181,14 @@ const Banner = new Lang.Class({
             let context = this.get_style_context();
             context.add_provider(provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
         }
+    },
+
+    on_response: function (response_id) {
+        if (response_id !== OPEN_MAGAZINE_RESPONSE)
+            return;
+        Dispatcher.get_default().dispatch({
+            action_type: Actions.LEAVE_PREVIEW_CLICKED,
+        });
     },
 });
 
@@ -254,6 +264,18 @@ const StandalonePage = new Lang.Class({
         this._document_card = null;
 
         this.add(this.infobar);
+
+        Dispatcher.get_default().register(payload => {
+            switch (payload.action_type) {
+                case Actions.SHOW_ARTICLE:
+                    if (payload.archived) {
+                        this._display_model(payload.model,
+                            payload.from_global_search);
+                        this.infobar.visible = payload.from_global_search;
+                    }
+                    break;
+            }
+        });
     },
 
     // Module override
@@ -261,11 +283,8 @@ const StandalonePage = new Lang.Class({
         return ['card-type'];
     },
 
-    /**
-     * Method: display_model
-     * TODO: remove from_global_search param
-     */
-    display_model: function (model, from_global_search) {
+    // FIXME: remove from_global_search param
+    _display_model: function (model, from_global_search) {
         if (this._model === model)
             return;
         if (this._document_card) {

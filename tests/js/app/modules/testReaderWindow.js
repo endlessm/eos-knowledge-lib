@@ -124,7 +124,12 @@ describe('Reader window', function () {
     });
 
     it('disables navigation on standalone page', function () {
-        view.show_in_app_standalone_page();
+        dispatcher.dispatch({
+            action_type: Actions.SHOW_ARTICLE,
+            model: new ContentObjectModel.ContentObjectModel(),
+            archived: true,
+            from_global_search: false,
+        });
         let payload = dispatcher.last_payload_with_type(Actions.NAV_BACK_ENABLED_CHANGED);
         expect(payload.enabled).toBe(false);
         payload = dispatcher.last_payload_with_type(Actions.NAV_FORWARD_ENABLED_CHANGED);
@@ -141,7 +146,12 @@ describe('Reader window', function () {
     it('ensures visible page updates with show_*_page functions', function () {
         view.show_article_page(1);
         expect(view.article_pages_visible()).toBe(true);
-        view.show_in_app_standalone_page();
+        dispatcher.dispatch({
+            action_type: Actions.SHOW_ARTICLE,
+            model: new ContentObjectModel.ContentObjectModel(),
+            archived: true,
+            from_global_search: false,
+        });
         expect(view.article_pages_visible()).toBe(false);
     });
 
