@@ -220,20 +220,40 @@ const QueryObject = Lang.Class({
             'tags': {
                 value: props.tags ? props.tags.slice(0) : [],
                 writable: false,
+            },
             /**
              * Property: ids
              *
              * A list of specific ekn ids to limit the search to. Can be used with
              * an empty query to retrieve the given set of ids.
              */
-            },
             'ids': {
                 value: props.ids ? props.ids.slice(0) : [],
+                writable: false,
+            },
+            /**
+             * Property: excluded_ids
+             *
+             * A list of specific ekn ids to exclude the search from.
+             */
+            'excluded_ids': {
+                value: props.excluded_ids ? props.excluded_ids.slice(0) : [],
+                writable: false,
+            },
+            /**
+             * Property: excluded_tags
+             *
+             * A list of specific ekn ids to exclude the search from.
+             */
+            'excluded_tags': {
+                value: props.excluded_tags ? props.excluded_tags.slice(0) : [],
                 writable: false,
             },
         });
         delete props.tags;
         delete props.ids;
+        delete props.excluded_ids;
+        delete props.excluded_tags;
 
         this.parent(props);
     },
@@ -346,33 +366,39 @@ const QueryObject = Lang.Class({
 
     _blacklist_clause: function () {
         let explicit_tags = Blacklist.blacklist[this.domain] || [];
-        let prefixed_tags = explicit_tags.map(Utils.quote).map((tag) => {
+        let prefixed_tags = explicit_tags.concat(this.excluded_tags).map(Utils.quote).map((tag) => {
             return _XAPIAN_OP_NOT + _XAPIAN_PREFIX_TAG + tag;
         });
-        return prefixed_tags.join(_XAPIAN_OP_AND);
+
+        let excluded_ids = this.excluded_ids.map(this._uri_to_xapian_id.bind(this)).map((id) => {
+            return _XAPIAN_OP_NOT + id;
+        });
+        return prefixed_tags.concat(excluded_ids).join(_XAPIAN_OP_AND);
+    },
+
+    _uri_to_xapian_id: function (uri) {
+        if (GLib.uri_parse_scheme(uri) !== 'ekn')
+            throw new Error('EKN ID has unexpected uri scheme ' + uri);
+
+        let path = uri.slice('ekn://'.length).split('/');
+        if (path.length !== 2)
+            throw new Error('EKN ID has unexpected structure ' + uri);
+
+        // EKN domain is the last part of the app ID (without the reverse domain name)
+        let id_domain = path[0];
+        if (this.domain !== id_domain)
+            throw new Error('EKN ID has domain ' + id_domain + ', but QueryObject has domain ' + this.domain);
+
+        // EKN ID is a 16 or 40-hexdigit hash
+        let hash = path[1];
+        if (hash.search(/^(?=[A-Za-z0-9]*$)(?:.{16}|.{40})$/) === -1)
+            throw new Error('EKN ID has malformed hash ' + uri);
+
+        return _XAPIAN_PREFIX_ID + hash;
     },
 
     _ids_clause: function () {
-        let id_clauses = this.ids.map((id) => {
-            if (GLib.uri_parse_scheme(id) !== 'ekn')
-                throw new Error('EKN ID has unexpected uri scheme ' + id);
-
-            let path = id.slice('ekn://'.length).split('/');
-            if (path.length !== 2)
-                throw new Error('EKN ID has unexpected structure ' + id);
-
-            // EKN domain is the last part of the app ID (without the reverse domain name)
-            let id_domain = path[0];
-            if (this.domain !== id_domain)
-                throw new Error('EKN ID has domain ' + id_domain + ', but QueryObject has domain ' + this.domain);
-
-            // EKN ID is a 16 or 40-hexdigit hash
-            let hash = path[1];
-            if (hash.search(/^(?=[A-Za-z0-9]*$)(?:.{16}|.{40})$/) === -1)
-                throw new Error('EKN ID has malformed hash ' + id);
-
-            return _XAPIAN_PREFIX_ID + hash;
-        });
+        let id_clauses = this.ids.map(this._uri_to_xapian_id.bind(this));
         return id_clauses.join(_XAPIAN_OP_OR);
     },
 
