@@ -45,22 +45,15 @@ function transform_v1_description(json) {
     switch (json.templateType) {
     case "A":
     case "B":
-        set_prop_for_name('window', 'title', json['appTitle']);
-        set_prop_for_name('window', 'background-image-uri', json['backgroundHomeURI']);
-        set_prop_for_name('window', 'blur-background-image-uri', json['backgroundSectionURI']);
-        set_prop_for_type('AppBanner', 'image-uri', json['titleImageURI']);
-        break;
     case "buffet":
         set_prop_for_name('window', 'title', json['appTitle']);
         set_prop_for_name('window', 'background-image-uri', json['backgroundHomeURI']);
         set_prop_for_name('window', 'blur-background-image-uri', json['backgroundSectionURI']);
-        set_prop_for_type('AppBanner', 'image-uri', json['titleImageURI']);
         break;
     case "encyclopedia":
         set_prop_for_name('window', 'title', json['appTitle']);
         set_prop_for_name('window', 'home-background-uri', json['backgroundHomeURI']);
         set_prop_for_name('window', 'results-background-uri', json['backgroundSectionURI']);
-        set_prop_for_type('AppBanner', 'image-uri', json['titleImageURI']);
         break;
     case "reader":
         set_prop_for_name('window', 'title', json['appTitle']);
@@ -71,11 +64,13 @@ function transform_v1_description(json) {
         set_prop_for_name('standalone-page', 'title', json['appTitle']);
         set_prop_for_name('standalone-page', 'title-image-uri', json['titleImageURI']);
         set_prop_for_name('standalone-page', 'home-background-uri', json['backgroundHomeURI']);
-        set_prop_for_type('AppBanner', 'image-uri', json['titleImageURI']);
         break;
     default:
         throw new Error('Unrecognized v1 preset type: ' + json.templateType);
     }
+
+    // Setting properties for types should be relevant no matter what the preset
+    set_prop_for_type('AppBanner', 'image-uri', json['titleImageURI']);
 
     return preset;
 }
