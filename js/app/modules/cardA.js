@@ -64,8 +64,8 @@ const CardA = new Lang.Class({
 
             this.set_label_or_hide(this._synopsis_label, this.model.synopsis);
             this._synopsis_label.visible = this._synopsis_label.visible && !is_pdf;
-            this._label_adjust_handler = this._synopsis_label.connect_after('size-allocate',
-                this._after_synopsis_label_size_allocate.bind(this));
+            // this._label_adjust_handler = this._synopsis_label.connect_after('size-allocate',
+            //     this._after_synopsis_label_size_allocate.bind(this));
         }
 
         Utils.set_hand_cursor_on_widget(this);
