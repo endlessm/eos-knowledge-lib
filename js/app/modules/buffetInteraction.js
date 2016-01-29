@@ -149,6 +149,9 @@ const BuffetInteraction = new Lang.Class({
                 case Actions.NEED_MORE_SUGGESTED_ARTICLES:
                     this._load_more_suggestions(payload.query);
                     break;
+                case Actions.NEED_MORE_SUPPLEMENTARY_ARTICLES:
+                    this._load_more_supplementary_articles(payload);
+                    break;
                 case Actions.MODULE_READY:
                     this._content_ready = true;
                     this._show_home_if_ready();
@@ -193,6 +196,48 @@ const BuffetInteraction = new Lang.Class({
 
         this._history_presenter.connect('history-item-changed',
             this._on_history_item_change.bind(this));
+    },
+
+    _load_more_supplementary_articles: function (payload) {
+        let query_props = {
+            tag_match: QueryObject.QueryObjectTagMatch.ALL,
+        };
+
+        if (payload.need_unread) {
+            query_props.excluded_ids = [...this.reading_history.get_read_articles()];
+        }
+
+        let current_set_tags = payload.set_tags.slice();
+        current_set_tags.push('EknArticleObject');
+
+        // SupplementaryArticle modules can either show articles from the same category
+        // as the current article, or articles from different categories.
+        // In the the second case, we want to exclude all articles tagged with
+        // the current article's tags.
+        if (payload.same_set) {
+            query_props.tags = current_set_tags;
+        } else {
+            query_props.excluded_tags = current_set_tags;
+        }
+
+        let query = new QueryObject.QueryObject(query_props);
+        Engine.get_default().get_objects_by_query(query, null, (engine, task) => {
+            let results, get_more_results_query;
+            try {
+                [results, get_more_results_query] = engine.get_objects_by_query_finish(task);
+            } catch (error) {
+                logError(error);
+                return;
+            }
+
+            Dispatcher.get_default().dispatch({
+                action_type: Actions.APPEND_SUPPLEMENTARY_ARTICLES,
+                models: results,
+                same_set: payload.same_set,
+                set_tags: payload.set_tags,
+                need_unread: payload.need_unread,
+            });
+        });
     },
 
     // this number ought to be the number of articles in database
@@ -336,6 +381,11 @@ const BuffetInteraction = new Lang.Class({
                 dispatcher.dispatch({
                     action_type: Actions.SHOW_SECTION_PAGE,
                 });
+                this._load_more_supplementary_articles({
+                    set_tags: item.model.child_tags,
+                    same_set: false,
+                    need_unread: true,
+                });
                 break;
             case Pages.HOME:
                 if (this._history_presenter.item_count() === 1) {
@@ -385,7 +435,21 @@ const BuffetInteraction = new Lang.Class({
                     action_type: Actions.SHOW_ARTICLE_PAGE,
                     context_label: item.context_label,
                 });
+
                 this.reading_history.mark_article_read(item.model.ekn_id);
+
+                // First load unread articles that are in the same category
+                this._load_more_supplementary_articles({
+                    set_tags: item.model.tags,
+                    same_set: true,
+                    need_unread: true,
+                });
+                // Then also load unread articles from different categories
+                this._load_more_supplementary_articles({
+                    set_tags: item.model.tags,
+                    same_set: false,
+                    need_unread: true,
+                });
                 break;
         }
         dispatcher.dispatch({
