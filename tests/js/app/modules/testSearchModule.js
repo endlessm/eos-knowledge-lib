@@ -70,6 +70,18 @@ describe('Search module', function () {
         expect(search_module.visible_child_name).toBe('spinner');
     });
 
+    it('only activates the spinner when it is shown', function () {
+        search_module.visible_child_name = 'message';
+        Utils.update_gui();
+        expect(search_module.get_child_by_name('spinner').active).toBe(false);
+        dispatcher.dispatch({
+            action_type: Actions.SEARCH_STARTED,
+            query: 'myfoobar',
+        });
+        Utils.update_gui();
+        expect(search_module.get_child_by_name('spinner').active).toBe(true);
+    });
+
     it('displays the search page when there are search results', function () {
         search_module.visible_child_name = 'message';
         dispatcher.dispatch({

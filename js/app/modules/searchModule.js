@@ -95,7 +95,7 @@ const SearchModule = new Lang.Class({
     },
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/searchModule.ui',
-    InternalChildren: [ 'message-title', 'message-subtitle', 'no-results-grid' ],
+    InternalChildren: [ 'message-title', 'message-subtitle', 'no-results-grid', 'spinner' ],
 
     _init: function (props={}) {
         this.parent(props);
@@ -123,6 +123,9 @@ const SearchModule = new Lang.Class({
                 });
             });
         }
+        this.connect('notify::visible-child', () => {
+            this._spinner.active = this.visible_child_name === SPINNER_PAGE_NAME;
+        });
 
         dispatcher.register((payload) => {
             switch (payload.action_type) {
