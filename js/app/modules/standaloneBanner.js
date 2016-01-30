@@ -4,6 +4,7 @@
 
 const Gettext = imports.gettext;
 const Gio = imports.gi.Gio;
+const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
@@ -70,9 +71,11 @@ const StandaloneBanner = new Lang.Class({
             max_fraction: 0.5,
         });
         if (this.title_image_uri) {
-            // FIXME sync
-            let stream = Gio.File.new_for_uri(this.title_image_uri).read(null);
-            this._title_image.set_content(stream);
+            let file = Gio.File.new_for_uri(this.title_image_uri);
+            file.read_async(GLib.PRIORITY_DEFAULT, null, (file, res) => {
+                let stream = file.read_finish(res);
+                this._title_image.set_content(stream);
+            });
         }
         this._infobar_content_area.add(this._title_image);
         // title image is packed after the autoconstructed widgets, but it needs
