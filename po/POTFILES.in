@@ -17,5 +17,5 @@ js/app/modules/readerDocumentCard.js
 js/app/modules/readerWindow.js
 js/app/modules/searchBannerModule.js
 js/app/modules/searchModule.js
-js/app/modules/standalonePage.js
+js/app/modules/standaloneBanner.js
 js/app/utils.js

@@ -92,24 +92,6 @@ const MockView = new Lang.Class({
             get_style_context: get_style_context,
             app_banner: {},
         };
-        this.standalone_page = {
-            get_style_context: get_style_context,
-            infobar: {
-                archive_notice: {
-                    label: 'My title',
-                },
-                connect: function () {},
-                show: function () {},
-                hide: function () {},
-                get_action_area: function () { return {}; },
-            },
-            article_page: {
-                title_view: {},
-                get_style_context: get_style_context,
-                show_content_view: function () {},
-            },
-            display_model: function () {},
-        };
 
         this.total_pages = 0;
         this._article_pages = [];

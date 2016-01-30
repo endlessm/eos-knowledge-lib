@@ -309,6 +309,8 @@ javascript_tests = \
 	tests/js/app/modules/testSideMenuTemplate.js \
 	tests/js/app/modules/testSplitPercentageTemplate.js \
 	tests/js/app/modules/testSquareGuysArrangement.js \
+	tests/js/app/modules/testStandaloneBanner.js \
+	tests/js/app/modules/testStandalonePage.js \
 	tests/js/app/modules/testSuggestedArticlesModule.js \
 	tests/js/app/modules/testSuggestedCategoriesModule.js \
 	tests/js/app/modules/testTextCard.js \

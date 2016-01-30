@@ -142,6 +142,7 @@
     <file>js/app/modules/sideMenuTemplate.js</file>
     <file>js/app/modules/splitPercentageTemplate.js</file>
     <file>js/app/modules/squareGuysArrangement.js</file>
+    <file>js/app/modules/standaloneBanner.js</file>
     <file>js/app/modules/standalonePage.js</file>
     <file>js/app/modules/suggestedArticlesModule.js</file>
     <file>js/app/modules/suggestedCategoriesModule.js</file>

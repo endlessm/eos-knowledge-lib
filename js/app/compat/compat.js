@@ -61,9 +61,6 @@ function transform_v1_description(json) {
         set_prop_for_name('window', 'home-background-uri', json['backgroundHomeURI']);
         set_prop_for_name('front-page', 'background-image-uri', json['backgroundHomeURI']);
         set_prop_for_name('back-page', 'background-image-uri', json['backgroundSectionURI']);
-        set_prop_for_name('standalone-page', 'title', json['appTitle']);
-        set_prop_for_name('standalone-page', 'title-image-uri', json['titleImageURI']);
-        set_prop_for_name('standalone-page', 'home-background-uri', json['backgroundHomeURI']);
         break;
     default:
         throw new Error('Unrecognized v1 preset type: ' + json.templateType);
@@ -71,6 +68,9 @@ function transform_v1_description(json) {
 
     // Setting properties for types should be relevant no matter what the preset
     set_prop_for_type('AppBanner', 'image-uri', json['titleImageURI']);
+    set_prop_for_type('StandaloneBanner', 'title', json['appTitle']);
+    set_prop_for_type('StandaloneBanner', 'title-image-uri', json['titleImageURI']);
+    set_prop_for_type('StandaloneBanner', 'background-image-uri', json['backgroundHomeURI']);
 
     return preset;
 }

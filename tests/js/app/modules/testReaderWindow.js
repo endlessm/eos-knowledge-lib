@@ -1,8 +1,8 @@
 // Copyright 2015 Endless Mobile, Inc.
 
 const Endless = imports.gi.Endless;
+const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const GLib = imports.gi.GLib;
-const Gtk = imports.gi.Gtk;
 
 const Utils = imports.tests.utils;
 Utils.register_gresource();
@@ -52,6 +52,7 @@ describe('Reader window', function () {
         factory.add_named_mock('back-page', Minimal.MinimalBackCover);
         factory.add_named_mock('search-page', Minimal.MinimalPage);
         factory.add_named_mock('standalone-page', Minimal.MinimalBinModule);
+        factory.add_named_mock('archive-page', Minimal.MinimalBinModule);
         factory.add_named_mock('document-arrangement', Minimal.MinimalArrangement);
         factory.add_named_mock('lightbox', Minimal.MinimalBinModule);
         factory.add_named_mock('navigation', Minimal.MinimalBinModule);
@@ -60,6 +61,7 @@ describe('Reader window', function () {
             'back-page': 'back-page',
             'search-page': 'search-page',
             'standalone-page': 'standalone-page',
+            'archive-page': 'archive-page',
             'document-arrangement': 'document-arrangement',
             'navigation': 'navigation',
             'lightbox': 'lightbox',
@@ -80,16 +82,6 @@ describe('Reader window', function () {
 
     afterEach(function () {
         view.destroy();
-    });
-
-    it('constructs', function () {});
-
-    it('has a standalone-page widget', function () {
-        expect(view.standalone_page).toBeA(Gtk.Widget);
-    });
-
-    it('has a debug buttons widget', function () {
-        expect(view.issue_nav_buttons).toBeA(Gtk.Widget);
     });
 
     it('contains 16 pages', function () {
@@ -116,7 +108,7 @@ describe('Reader window', function () {
     });
 
     it('enables navigation on an article page', function () {
-        view.show_article_page(2, true);
+        view.show_article_page(2, EosKnowledgePrivate.LoadingAnimationType.FORWARDS_NAVIGATION);
         let payload = dispatcher.last_payload_with_type(Actions.NAV_BACK_ENABLED_CHANGED);
         expect(payload.enabled).toBe(true);
         payload = dispatcher.last_payload_with_type(Actions.NAV_FORWARD_ENABLED_CHANGED);
@@ -191,5 +183,19 @@ describe('Reader window', function () {
             launch_type: Launcher.LaunchType.DESKTOP,
         });
         expect(view.present.calls.any() || view.present_with_time.calls.any()).toBeTruthy();
+    });
+
+    it('shows the standalone page when show article dispatched from global search', function () {
+        let standalone_page = factory.get_last_created_named_mock('standalone-page');
+        // Is this an implementation detail of the container?
+        expect(standalone_page.get_child_visible()).toBeFalsy();
+        dispatcher.dispatch({
+            action_type: Actions.SHOW_ARTICLE,
+            model: new ContentObjectModel.ContentObjectModel(),
+            archived: true,
+            from_global_search: true,
+        });
+        Utils.update_gui();
+        expect(standalone_page.get_child_visible()).toBeTruthy();
     });
 });

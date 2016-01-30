@@ -32,6 +32,7 @@
                 "front-page": "front-page",
                 "search-page": "search-page",
                 "standalone-page": "standalone-page",
+                "archive-page": "archive-page",
                 "back-page": "back-page"
             }
         },
@@ -114,6 +115,25 @@
             }
         },
         "standalone-page": {
+            "type": "BannerTemplate",
+            "slots": {
+                "banner": {
+                    "type": "StandaloneBanner"
+                },
+                "content": {
+                    "type": "StandalonePage",
+                    "slots": {
+                        "card-type": {
+                            "type": "ReaderDocumentCard",
+                            "properties": {
+                                "display-context": false
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "archive-page": {
             "type": "StandalonePage",
             "slots": {
                 "card-type": {

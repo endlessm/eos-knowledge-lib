@@ -218,7 +218,9 @@ const MinimalDocumentCard = new Lang.Class({
             'Next Card', 'Next Card',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, Gtk.Widget),
         'highlight-string': GObject.ParamSpec.override('highlight-string', Card.Card),
-
+        'archived': GObject.ParamSpec.boolean('archived', '', '',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            false),
     },
 
     _init: function (props={}) {
@@ -245,11 +247,6 @@ const MinimalBinModule = new Lang.Class({
     Properties: {
         'factory': GObject.ParamSpec.override('factory', Module.Module),
         'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-    },
-
-    _init: function (props={}) {
-        this.parent(props);
-        this.infobar = new Gtk.Label(); // StandalonePage requires this
     },
 });
 
