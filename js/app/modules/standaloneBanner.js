@@ -9,49 +9,15 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const Actions = imports.app.actions;
-const ArchiveNotice = imports.app.widgets.archiveNotice;
 const Config = imports.app.config;
 const Dispatcher = imports.app.dispatcher;
 const ImagePreviewer = imports.app.widgets.imagePreviewer;
 const Module = imports.app.interfaces.module;
-const StyleClasses = imports.app.styleClasses;
 const Utils = imports.app.utils;
 
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
 const OPEN_MAGAZINE_RESPONSE = 1;
-
-const OpenButton = new Lang.Class({
-    Name: 'OpenButton',
-    GTypeName: 'EknOpenButton',
-    Extends: Gtk.Button,
-
-    _OPEN_ICON: '/com/endlessm/knowledge/data/images/reader/standalone_arrow.svg',
-
-    _init: function (props={}) {
-        this.parent(props);
-
-        let image = new Gtk.Image({
-            resource: this._OPEN_ICON,
-            visible: true,
-        });
-        let frame = new Gtk.Frame();
-        this._label_text = '';
-        this._label = new Gtk.Label({
-            use_markup: true,
-        });
-        let grid = new Gtk.Grid({
-            orientation: Gtk.Orientation.HORIZONTAL,
-            column_spacing: 10,
-        });
-        frame.add(grid);
-        grid.add(this._label);
-        grid.add(image);
-        this.add(frame);
-
-        this.get_style_context().add_class(StyleClasses.READER_OPEN_BUTTON);
-    },
-});
 
 /**
  * Class: StandaloneBanner
@@ -91,16 +57,12 @@ const StandaloneBanner = new Lang.Class({
             ''),
     },
 
-    _init: function (props={}) {
-        props.vexpand = false;
-        this.parent(props);
+    Template: 'resource:///com/endlessm/knowledge/data/widgets/standaloneBanner.ui',
+    InternalChildren: [ 'archive-label', 'button', 'button-label',
+        'infobar-content-area' ],
 
-        this._archive_notice = new ArchiveNotice.ArchiveNotice({
-            expand: true,
-            halign: Gtk.Align.CENTER,
-            valign: Gtk.Align.CENTER,
-            label: _("This article is part of the archive of the magazine %s.").format(this.title),
-        });
+    _init: function (props={}) {
+        this.parent(props);
 
         this._title_image = new ImagePreviewer.ImagePreviewer({
             valign: Gtk.Align.START,
@@ -112,17 +74,16 @@ const StandaloneBanner = new Lang.Class({
             let stream = Gio.File.new_for_uri(this.title_image_uri).read(null);
             this._title_image.set_content(stream);
         }
+        this._infobar_content_area.add(this._title_image);
+        // title image is packed after the autoconstructed widgets, but it needs
+        // to be first
+        this._infobar_content_area.reorder_child(this._title_image, 0);
 
-        let button = new OpenButton();
+        this._archive_label.label = _("This article is part of the archive of the magazine %s.").format(this.title);
         /* 1014 = 0.99 px * 1024 Pango units / px */
-        button._label.label = ('<span letter_spacing="1014">' +
+        this._button_label.label = ('<span letter_spacing="1014">' +
             _("Open the magazine").toLocaleUpperCase() + '</span>');
-        Utils.set_hand_cursor_on_widget(button);
-
-        this.add_action_widget(button, OPEN_MAGAZINE_RESPONSE);
-        let content_area = this.get_content_area();
-        content_area.add(this._title_image);
-        content_area.add(this._archive_notice);
+        Utils.set_hand_cursor_on_widget(this._button);
 
         if (this.background_image_uri) {
             let frame_css = '* { background-image: url("' + this.background_image_uri + '"); background-size: cover; background-position: center;}';

@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.18.3 -->
+<interface>
+  <requires lib="gtk+" version="3.12"/>
+  <template class="EknStandaloneBanner" parent="GtkInfoBar">
+    <property name="visible">True</property>
+    <property name="app_paintable">True</property>
+    <property name="can_focus">False</property>
+    <property name="vexpand">False</property>
+    <child internal-child="action_area">
+      <object class="GtkButtonBox" id="infobar-action-area">
+        <property name="can_focus">False</property>
+        <child>
+          <object class="GtkButton" id="button">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <child>
+              <object class="GtkFrame" id="frame">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label_xalign">0</property>
+                <property name="shadow_type">none</property>
+                <child>
+                  <object class="GtkGrid" id="grid">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="column_spacing">10</property>
+                    <child>
+                      <object class="GtkImage" id="image">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="resource">/com/endlessm/knowledge/data/images/reader/standalone_arrow.svg</property>
+                      </object>
+                      <packing>
+                        <property name="left_attach">1</property>
+                        <property name="top_attach">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="button-label">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label">PLACEHOLDER</property>
+                        <property name="use_markup">True</property>
+                      </object>
+                      <packing>
+                        <property name="left_attach">0</property>
+                        <property name="top_attach">0</property>
+                      </packing>
+                    </child>
+                  </object>
+                </child>
+                <child type="label_item">
+                  <placeholder/>
+                </child>
+              </object>
+            </child>
+            <style>
+              <class name="open-button"/>
+            </style>
+          </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">False</property>
+        <property name="position">0</property>
+      </packing>
+    </child>
+    <action-widgets>
+      <action-widget response="1">button</action-widget>
+    </action-widgets>
+    <child internal-child="content_area">
+      <object class="GtkBox" id="infobar-content-area">
+        <property name="can_focus">False</property>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <object class="GtkGrid" id="archive-notice">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="halign">center</property>
+            <property name="valign">center</property>
+            <property name="hexpand">True</property>
+            <property name="vexpand">True</property>
+            <property name="column_spacing">8</property>
+            <child>
+              <object class="GtkImage" id="archive-icon">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="resource">/com/endlessm/knowledge/data/images/reader/archive.svg</property>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="archive-label">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label">This article is part of the archive of the magazine PLACEHOLDER</property>
+                <property name="wrap">True</property>
+                <property name="wrap_mode">word-char</property>
+                <property name="ellipsize">end</property>
+                <property name="lines">2</property>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="top_attach">0</property>
+              </packing>
+            </child>
+            <style>
+              <class name="archive-notice"/>
+            </style>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">False</property>
+        <property name="position">0</property>
+      </packing>
+    </child>
+    <action-widgets>
+      <action-widget response="1">button</action-widget>
+    </action-widgets>
+    <child>
+      <placeholder/>
+    </child>
+  </template>
+</interface>

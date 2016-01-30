@@ -45,7 +45,6 @@
     <file compressed="true">data/templates/js/no-link-remover.js</file>
     <file compressed="true">data/templates/js/scroll-manager.js</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/appBanner.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">data/widgets/archiveNotice.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/articleSnippetCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/backCover.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/cardA.ui</file>
@@ -67,6 +66,7 @@
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/searchResultCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/sequenceCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/sideMenuTemplate.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">data/widgets/standaloneBanner.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/suggestedArticlesModule.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/suggestedCategoriesModule.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/textCard.ui</file>
@@ -159,7 +159,6 @@
     <file>js/app/utils.js</file>
     <file>js/app/warehouse.js</file>
     <file>js/app/webviewTooltipPresenter.js</file>
-    <file>js/app/widgets/archiveNotice.js</file>
     <file>js/app/widgets/eknWebview.js</file>
     <file>js/app/widgets/imageCoverFrame.js</file>
     <file>js/app/widgets/imagePreviewer.js</file>
