@@ -9,15 +9,17 @@ const Utils = imports.tests.utils;
 Gtk.init(null);
 
 describe('Responsive margins module', function () {
+    let responsive_margins, factory;
+
     beforeEach(function () {
-        this.factory = new MockFactory.MockFactory();
-        this.factory.add_named_mock('content', Gtk.Label);
-        this.factory.add_named_mock('module', ResponsiveMarginsModule.ResponsiveMarginsModule, {
+        factory = new MockFactory.MockFactory();
+        factory.add_named_mock('content', Gtk.Label);
+        factory.add_named_mock('module', ResponsiveMarginsModule.ResponsiveMarginsModule, {
             'content': 'content',
         });
 
-        this.responsive_margins = new ResponsiveMarginsModule.ResponsiveMarginsModule({
-            factory: this.factory,
+        responsive_margins = new ResponsiveMarginsModule.ResponsiveMarginsModule({
+            factory: factory,
             factory_name: 'module',
         });
 
@@ -38,10 +40,36 @@ describe('Responsive margins module', function () {
         .xlarge {\
           margin: 40px;\
         }');
-        this.responsive_margins.get_style_context().add_provider(provider, 800);
+        responsive_margins.get_style_context().add_provider(provider, 800);
     });
 
     it('constructs', function () {});
+
+    function testMarginsForDimensions(total_width, margin) {
+        describe('at ' + total_width + ' width', function () {
+            let win;
+            beforeEach(function () {
+                win = new Gtk.OffscreenWindow();
+            });
+
+            afterEach(function () {
+                win.destroy();
+            });
+
+            it ('sets margins for internal child to ' + margin + 'px when width=' + total_width, function () {
+                let label = responsive_margins.get_children()[0];
+                label.expand = true;
+                win.add(responsive_margins);
+                win.set_size_request(total_width, 600);
+                win.show_all();
+
+                win.queue_resize();
+                Utils.update_gui();
+
+                expect(total_width).toBe(responsive_margins.get_allocated_width() + margin * 2);
+            });
+        });
+    }
 
     testMarginsForDimensions(720, 0);
     testMarginsForDimensions(800, 10);
@@ -50,27 +78,3 @@ describe('Responsive margins module', function () {
     testMarginsForDimensions(1600, 40);
 });
 
-function testMarginsForDimensions(total_width, margin) {
-    let win;
-
-    beforeEach(function () {
-        win = new Gtk.OffscreenWindow();
-    });
-
-    afterEach(function () {
-        win.destroy();
-    });
-
-    it ('sets margins for internal child to ' + margin + 'px when width=' + total_width, function () {
-        let label = this.responsive_margins.get_children()[0];
-        label.expand = true;
-        win.add(this.responsive_margins);
-        win.set_size_request(total_width, 600);
-        win.show_all();
-
-        win.queue_resize();
-        Utils.update_gui();
-
-        expect(total_width).toBe(this.responsive_margins.get_allocated_width() + margin * 2);
-    });
-}
