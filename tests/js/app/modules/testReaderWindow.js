@@ -190,10 +190,8 @@ describe('Reader window', function () {
         // Is this an implementation detail of the container?
         expect(standalone_page.get_child_visible()).toBeFalsy();
         dispatcher.dispatch({
-            action_type: Actions.SHOW_ARTICLE,
+            action_type: Actions.SHOW_STANDALONE_PREVIEW,
             model: new ContentObjectModel.ContentObjectModel(),
-            archived: true,
-            from_global_search: true,
         });
         Utils.update_gui();
         expect(standalone_page.get_child_visible()).toBeTruthy();

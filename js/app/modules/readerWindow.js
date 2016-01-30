@@ -147,12 +147,11 @@ const ReaderWindow = new Lang.Class({
                     // FIXME: We currently only pay attention if archived=true.
                     // For further modularization, AisleInteraction._go_to_page
                     // should be handled here in the archived=false case.
-                    if (payload.archived) {
-                        if (payload.from_global_search)
-                            this._show_standalone_page();
-                        else
-                            this._show_archive_page();
-                    }
+                    if (payload.archived)
+                        this._show_archive_page();
+                    break;
+                case Actions.SHOW_STANDALONE_PREVIEW:
+                    this._show_standalone_page();
                     break;
             }
         });

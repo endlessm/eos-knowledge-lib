@@ -61,3 +61,4 @@ const SHOW_SECTION_PAGE = 'show-section-page';
 const SHOW_SEARCH_PAGE = 'show-search-page';
 const SHOW_ARTICLE_PAGE = 'show-article-page';
 const PRESENT_WINDOW = 'present-window';
+const SHOW_STANDALONE_PREVIEW = 'show-standalone-preview';

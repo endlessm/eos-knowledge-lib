@@ -237,11 +237,8 @@ describe('Aisle interaction', function () {
             expect(engine.get_object_by_id).toHaveBeenCalledWith(MOCK_ID,
                                                                  jasmine.any(Object),
                                                                  jasmine.any(Function));
-            expect(dispatcher.last_payload_with_type(Actions.SHOW_ARTICLE)).toEqual(jasmine.objectContaining({
-                model: model,
-                archived: true,
-                from_global_search: true,
-            }));
+            expect(dispatcher.last_payload_with_type(Actions.SHOW_STANDALONE_PREVIEW))
+                .toEqual(jasmine.objectContaining({ model: model }));
         });
 
         it('starts at the right page when search result is in this issue', function () {
