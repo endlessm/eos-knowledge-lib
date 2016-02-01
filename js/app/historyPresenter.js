@@ -83,6 +83,13 @@ const HistoryPresenter = new GObject.Class({
         });
     },
 
+    item_count: function () {
+        if (!this.history_model.current_item)
+            return 0;
+        // Current page plus our two list lengths
+        return this.history_model.get_back_list().length + 1 + this.history_model.get_forward_list().length;
+    },
+
     set_current_item: function (item) {
         if (this.history_model.current_item === null || !this.history_model.current_item.equals(item)) {
             this.history_model.current_item = item;

@@ -53,7 +53,7 @@ const EncyclopediaWindow = new Lang.Class({
 
         dispatcher.register((payload) => {
             switch(payload.action_type) {
-                case Actions.FIRST_LAUNCH:
+                case Actions.PRESENT_WINDOW:
                     if (payload.timestamp)
                         this.present_with_time(payload.timestamp);
                     else

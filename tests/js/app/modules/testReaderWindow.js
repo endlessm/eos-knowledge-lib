@@ -178,7 +178,7 @@ describe('Reader window', function () {
         spyOn(view, 'present');
         spyOn(view, 'present_with_time');
         dispatcher.dispatch({
-            action_type: Actions.FIRST_LAUNCH,
+            action_type: Actions.PRESENT_WINDOW,
             timestamp: 0,
             launch_type: Launcher.LaunchType.DESKTOP,
         });

@@ -275,20 +275,20 @@ describe('Aisle interaction', function () {
 
         it('dispatches app-launched on launch from desktop', function () {
             interaction.desktop_launch(0);
-            expect(dispatcher.last_payload_with_type(Actions.FIRST_LAUNCH).launch_type)
+            expect(dispatcher.last_payload_with_type(Actions.PRESENT_WINDOW).launch_type)
                 .toBe(Launcher.LaunchType.DESKTOP);
         });
 
         it('dispatches app-launched on launch from search', function () {
             interaction.search(0, 'query');
-            expect(dispatcher.last_payload_with_type(Actions.FIRST_LAUNCH).launch_type)
+            expect(dispatcher.last_payload_with_type(Actions.PRESENT_WINDOW).launch_type)
                 .toBe(Launcher.LaunchType.SEARCH);
         });
 
         it('dispatches app-launched on launch from search result', function () {
             engine.get_object_by_id_finish.and.returnValue(new ArticleObjectModel.ArticleObjectModel());
             interaction.activate_search_result(0, 'ekn://foo/bar', 'query');
-            expect(dispatcher.last_payload_with_type(Actions.FIRST_LAUNCH).launch_type)
+            expect(dispatcher.last_payload_with_type(Actions.PRESENT_WINDOW).launch_type)
                 .toBe(Launcher.LaunchType.SEARCH_RESULT);
         });
 
@@ -296,14 +296,14 @@ describe('Aisle interaction', function () {
             engine.get_object_by_id_finish.and.returnValue(new ArticleObjectModel.ArticleObjectModel());
 
             interaction.desktop_launch(0);
-            let payloads = dispatcher.payloads_with_type(Actions.FIRST_LAUNCH);
+            let payloads = dispatcher.payloads_with_type(Actions.PRESENT_WINDOW);
             expect(payloads.length).toBe(1);
 
             interaction.desktop_launch(0);
             interaction.search(0, 'query');
             interaction.activate_search_result(0, 'ekn://foo/bar', 'query');
 
-            payloads = dispatcher.payloads_with_type(Actions.FIRST_LAUNCH);
+            payloads = dispatcher.payloads_with_type(Actions.PRESENT_WINDOW);
             expect(payloads.length).toBe(1);
         });
     });

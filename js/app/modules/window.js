@@ -127,7 +127,8 @@ const Window = new Lang.Class({
         this._all_sets_page = this.create_submodule('all-sets-page');
         this._search_page = this.create_submodule('search-page');
         this._article_page = this.create_submodule('article-page');
-        this._brand_screen = this.create_submodule('brand-screen');
+        this._brand_page = this.create_submodule('brand-page');
+
         if (this.template_type === 'B') {
             this._home_page.get_style_context().add_class(StyleClasses.HOME_PAGE_B);
             this._section_page.get_style_context().add_class(StyleClasses.SECTION_PAGE_B);
@@ -143,8 +144,8 @@ const Window = new Lang.Class({
         this._stack = new Gtk.Stack({
             transition_duration: 0,
         });
-        if (this._brand_screen)
-            this._stack.add(this._brand_screen);
+        if (this._brand_page)
+            this._stack.add(this._brand_page);
         this._stack.add(this._home_page);
         this._stack.add(this._section_page);
         this._stack.add(this._search_page);
@@ -243,18 +244,14 @@ const Window = new Lang.Class({
                 case Actions.SET_READY:
                     this.set_busy(false);
                     break;
-                case Actions.FIRST_LAUNCH:
-                    if (payload.timestamp)
-                        this.present_with_time(payload.timestamp);
+                case Actions.PRESENT_WINDOW:
+                    this._pending_present = true;
+                    this._present_timestamp = payload.timestamp;
+                    break;
+                case Actions.SHOW_BRAND_PAGE:
+                    if (this._brand_page)
+                        this.show_page(this._brand_page);
                     else
-                        this.present();
-                    break;
-                case Actions.SHOW_BRAND_SCREEN:
-                    if (this._brand_screen)
-                        this.show_page(this._brand_screen);
-                    break;
-                case Actions.BRAND_SCREEN_DONE:
-                    if (this._brand_screen)
                         this.show_page(this._home_page);
                     break;
                 case Actions.SHOW_HOME_PAGE:
@@ -307,6 +304,17 @@ const Window = new Lang.Class({
             !Utils.has_descendant_with_type(new_page, SearchBox.SearchBox);
     },
 
+    _present_if_needed: function () {
+        if (this._pending_present) {
+            if (this._present_timestamp)
+                this.present_with_time(this._present_timestamp);
+            else
+                this.present();
+            this._pending_present = false;
+            this._present_timestamp = null;
+        }
+    },
+
     show_page: function (new_page) {
         let old_page = this.get_visible_page();
         if (old_page === new_page) {
@@ -314,10 +322,11 @@ const Window = new Lang.Class({
             // first transition.
             this._stack.transition_duration = this.TRANSITION_DURATION;
             this._update_top_bar_visibility();
+            this._present_if_needed();
             return;
         }
 
-        let is_on_left = (page) => [this._home_page, this._brand_screen].indexOf(page) > -1;
+        let is_on_left = (page) => [this._home_page, this._brand_page].indexOf(page) > -1;
         let is_on_center = (page) => [this._section_page, this._search_page].indexOf(page) > -1;
         let nav_back_visible = false;
         if (is_on_left(new_page)) {
@@ -360,6 +369,7 @@ const Window = new Lang.Class({
         // The first transition on app startup has duration 0, subsequent ones
         // are normal.
         this._stack.transition_duration = this.TRANSITION_DURATION;
+        this._present_if_needed();
     },
 
     /**
@@ -384,7 +394,7 @@ const Window = new Lang.Class({
 
     // Module override
     get_slot_names: function () {
-        return ['brand-screen', 'home-page', 'section-page', 'all-sets-page', 'search-page',
+        return ['brand-page', 'home-page', 'section-page', 'all-sets-page', 'search-page',
             'article-page', 'navigation', 'lightbox', 'search'];
     },
 

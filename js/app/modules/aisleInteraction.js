@@ -529,7 +529,7 @@ const AisleInteraction = new Lang.Class({
         if (this._pending_present_timestamp !== null) {
             if (!this._launched_once) {
                 Dispatcher.get_default().dispatch({
-                    action_type: Actions.FIRST_LAUNCH,
+                    action_type: Actions.PRESENT_WINDOW,
                     timestamp: this._pending_present_timestamp,
                     launch_type: this._launch_type,
                 });
