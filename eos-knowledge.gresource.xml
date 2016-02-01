@@ -125,6 +125,7 @@
     <file>js/app/modules/pianoArrangement.js</file>
     <file>js/app/modules/pianolaArrangement.js</file>
     <file>js/app/modules/postCard.js</file>
+    <file>js/app/modules/quarterArrangement.js</file>
     <file>js/app/modules/readerCard.js</file>
     <file>js/app/modules/readerDocumentCard.js</file>
     <file>js/app/modules/readerWindow.js</file>
