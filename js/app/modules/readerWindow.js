@@ -14,7 +14,6 @@ const Lang = imports.lang;
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
 const Module = imports.app.interfaces.module;
-const StandalonePage = imports.app.modules.standalonePage;
 const StyleClasses = imports.app.styleClasses;
 
 /**
@@ -28,6 +27,18 @@ const StyleClasses = imports.app.styleClasses;
  *
  * Adds a lightbox above the article page, which can be used to show content
  * above it.
+ *
+ * Slots:
+ *   archive-page
+ *   back-page
+ *   card-type
+ *   document-arrangement
+ *   front-page
+ *   lightbox
+ *   navigation
+ *   search
+ *   search-page
+ *   standalone-page
  */
 const ReaderWindow = new Lang.Class({
     Name: 'ReaderWindow',
@@ -38,18 +49,6 @@ const ReaderWindow = new Lang.Class({
     Properties: {
         'factory': GObject.ParamSpec.override('factory', Module.Module),
         'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-
-        /**
-         * Property: standalone-page
-         *
-         * The StandalonePage widget created by this widget in order to
-         * show a standalone search result from the archive.
-         * Read-only.
-         */
-        'standalone-page': GObject.ParamSpec.object('standalone-page',
-            'Standalone page', 'The page that shows a single article',
-            GObject.ParamFlags.READABLE,
-            StandalonePage.StandalonePage.$gtype),
 
         /**
          * Property: issue-nav-buttons
@@ -104,7 +103,8 @@ const ReaderWindow = new Lang.Class({
         this._front_page = this.create_submodule('front-page');
         this._back_page = this.create_submodule('back-page');
         this._search_page = this.create_submodule('search-page');
-        this.standalone_page = this.create_submodule('standalone-page');
+        this._standalone_page = this.create_submodule('standalone-page');
+        this._archive_page = this.create_submodule('archive-page');
         this._search_page.get_style_context().add_class(StyleClasses.READER_SEARCH_RESULTS_PAGE);
 
         let dispatcher = Dispatcher.get_default();
@@ -143,6 +143,16 @@ const ReaderWindow = new Lang.Class({
                 case Actions.SET_READY:
                     this.set_busy(false);
                     break;
+                case Actions.SHOW_ARTICLE:
+                    // FIXME: We currently only pay attention if archived=true.
+                    // For further modularization, AisleInteraction._go_to_page
+                    // should be handled here in the archived=false case.
+                    if (payload.archived)
+                        this._show_archive_page();
+                    break;
+                case Actions.SHOW_STANDALONE_PREVIEW:
+                    this._show_standalone_page();
+                    break;
             }
         });
 
@@ -173,7 +183,8 @@ const ReaderWindow = new Lang.Class({
         });
         this._stack.add(this._front_page);
         this._stack.add(this._back_page);
-        this._stack.add(this.standalone_page);
+        this._stack.add(this._standalone_page);
+        this._stack.add(this._archive_page);
         this._stack.add(this._search_page);
         this._stack.add(this._arrangement);
         this._stack.show_all();
@@ -219,22 +230,34 @@ const ReaderWindow = new Lang.Class({
     },
 
     _update_progress_labels: function () {
-        for (let i = 0; i < this._article_pages.length; i++) {
+        this._article_pages.forEach((page, ix) => {
             // Account for overview and done pages
-            let progress_label = this._article_pages[i].info_notice;
-            progress_label.current_page = i + 2;
-            progress_label.total_pages = this.total_pages;
-        }
+            page.page_number = ix + 2;
+            page.total_pages = this.total_pages;
+        });
         this._back_page.progress_label.current_page = this.total_pages;
         this._back_page.progress_label.total_pages = this.total_pages;
     },
 
-    /*
-     *  Method: append_article_page
+    /**
+     * Method: append_article_page
+     * Creates an article page and appends it to the window
      *
-     *  Appends an article page to the widget's array of article pages.
+     * Parameters:
+     *   model - the <ContentObjectModel> from which to create a page
      */
-    append_article_page: function (document_card) {
+    append_article_page: function (model) {
+        // FIXME: This should probably be a slot on a document page and not the
+        // window.
+        let document_card = this.create_submodule('card-type', {
+            model: model,
+        });
+        document_card.connect('ekn-link-clicked', (card, uri) => {
+            Dispatcher.get_default().dispatch({
+                action_type: Actions.ARTICLE_LINK_CLICKED,
+                ekn_id: uri,
+            });
+        });
         document_card.show_all();
         if (!(document_card in this._article_pages)) {
             this._article_pages.push(document_card);
@@ -258,19 +281,15 @@ const ReaderWindow = new Lang.Class({
     },
 
     _show_standalone_page: function () {
-        this.standalone_page.show();
+        this._standalone_page.show();
         this._stack.set_transition_type(Gtk.StackTransitionType.CROSSFADE);
-        this._stack.set_visible_child(this.standalone_page);
+        this._stack.set_visible_child(this._standalone_page);
     },
 
-    show_global_search_standalone_page: function () {
-        this.standalone_page.infobar.show();
-        this._show_standalone_page();
-    },
-
-    show_in_app_standalone_page: function () {
-        this.standalone_page.infobar.hide();
-        this._show_standalone_page();
+    _show_archive_page: function () {
+        this._archive_page.show();
+        this._stack.set_transition_type(Gtk.StackTransitionType.CROSSFADE);
+        this._stack.set_visible_child(this._archive_page);
     },
 
     show_search_page: function () {
@@ -328,8 +347,9 @@ const ReaderWindow = new Lang.Class({
     },
 
     article_pages_visible: function () {
-        return this._stack.get_visible_child() !== this._search_page &&
-            this._stack.get_visible_child() !== this.standalone_page;
+        let not_article_pages = [this._search_page, this._standalone_page,
+            this._archive_page];
+        return not_article_pages.indexOf(this._stack.get_visible_child()) === -1;
     },
 
     get total_pages() {
@@ -350,8 +370,9 @@ const ReaderWindow = new Lang.Class({
     },
 
     get_slot_names: function () {
-        return ['front-page', 'back-page', 'search-page', 'standalone-page',
-            'document-arrangement', 'navigation', 'lightbox', 'search'];
+        return ['archive-page', 'back-page', 'card-type', 'document-arrangement',
+            'front-page', 'lightbox', 'navigation', 'search', 'search-page',
+            'standalone-page'];
     },
 
     vfunc_size_allocate: function (alloc) {

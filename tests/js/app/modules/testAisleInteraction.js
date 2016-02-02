@@ -92,23 +92,6 @@ const MockView = new Lang.Class({
             get_style_context: get_style_context,
             app_banner: {},
         };
-        this.standalone_page = {
-            get_style_context: get_style_context,
-            infobar: {
-                archive_notice: {
-                    label: 'My title',
-                },
-                connect: function () {},
-                show: function () {},
-                hide: function () {},
-                get_action_area: function () { return {}; },
-            },
-            article_page: {
-                title_view: {},
-                get_style_context: get_style_context,
-                show_content_view: function () {},
-            },
-        };
 
         this.total_pages = 0;
         this._article_pages = [];
@@ -125,8 +108,10 @@ const MockView = new Lang.Class({
     show_global_search_standalone_page: function () {},
     show_in_app_standalone_page: function () {},
     show_search_page: function () {},
-    append_article_page: function (page) {
-        this._article_pages.push(page);
+    append_article_page: function (model) {
+        this._article_pages.push(new Minimal.MinimalDocumentCard({
+            model: model,
+        }));
     },
     get_article_page: function (i) {
         return this._article_pages[i];
@@ -240,7 +225,7 @@ describe('Aisle interaction', function () {
             }).not.toThrow();
         });
 
-        it('loads the standalone page when launched with a search result', function () {
+        it('dispatches appropriately when launched with an archived search result', function () {
             const MOCK_ID = 'abc123';
             let model = new ArticleObjectModel.ArticleObjectModel({
                 article_number: 5000,
@@ -248,23 +233,12 @@ describe('Aisle interaction', function () {
                 title: 'I Write a Blog',
             });
             engine.get_object_by_id_finish.and.returnValue(model);
-            spyOn(view, 'show_global_search_standalone_page');
             interaction.activate_search_result(0, MOCK_ID, 'fake query');
             expect(engine.get_object_by_id).toHaveBeenCalledWith(MOCK_ID,
                                                                  jasmine.any(Object),
                                                                  jasmine.any(Function));
-            expect(view.show_global_search_standalone_page).toHaveBeenCalled();
-        });
-
-        it('loads the global search standalone page without a info notice', function () {
-            const MOCK_ID = 'abc123';
-            let model = new ArticleObjectModel.ArticleObjectModel({
-                article_number: 5000,
-                title: 'I Write a Blog',
-            });
-            engine.get_object_by_id_finish.and.returnValue(model);
-            interaction.activate_search_result(0, MOCK_ID, 'fake query');
-            expect(view.standalone_page.document_card.info_notice).toBe(null);
+            expect(dispatcher.last_payload_with_type(Actions.SHOW_STANDALONE_PREVIEW))
+                .toEqual(jasmine.objectContaining({ model: model }));
         });
 
         it('starts at the right page when search result is in this issue', function () {

@@ -1,13 +1,14 @@
 // Copyright 2015 Endless Mobile, Inc.
 
 const Endless = imports.gi.Endless;
+const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const GLib = imports.gi.GLib;
-const Gtk = imports.gi.Gtk;
 
 const Utils = imports.tests.utils;
 Utils.register_gresource();
 
 const Actions = imports.app.actions;
+const ContentObjectModel = imports.search.contentObjectModel;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
 const Launcher = imports.app.interfaces.launcher;
@@ -51,6 +52,7 @@ describe('Reader window', function () {
         factory.add_named_mock('back-page', Minimal.MinimalBackCover);
         factory.add_named_mock('search-page', Minimal.MinimalPage);
         factory.add_named_mock('standalone-page', Minimal.MinimalBinModule);
+        factory.add_named_mock('archive-page', Minimal.MinimalBinModule);
         factory.add_named_mock('document-arrangement', Minimal.MinimalArrangement);
         factory.add_named_mock('lightbox', Minimal.MinimalBinModule);
         factory.add_named_mock('navigation', Minimal.MinimalBinModule);
@@ -59,10 +61,12 @@ describe('Reader window', function () {
             'back-page': 'back-page',
             'search-page': 'search-page',
             'standalone-page': 'standalone-page',
+            'archive-page': 'archive-page',
             'document-arrangement': 'document-arrangement',
             'navigation': 'navigation',
             'lightbox': 'lightbox',
             'search': 'top-bar-search',
+            'card-type': 'document-card',
         });
 
         view = new ReaderWindow.ReaderWindow({
@@ -71,25 +75,13 @@ describe('Reader window', function () {
             factory_name: 'window',
         });
         for (let i = 0; i < 15; i++) {
-            let a = factory.create_named_module('document-card', {
-                info_notice: new Gtk.Label(),
-            });
-            view.append_article_page(a);
+            let model = new ContentObjectModel.ContentObjectModel();
+            view.append_article_page(model);
         }
     });
 
     afterEach(function () {
         view.destroy();
-    });
-
-    it('constructs', function () {});
-
-    it('has a standalone-page widget', function () {
-        expect(view.standalone_page).toBeA(Gtk.Widget);
-    });
-
-    it('has a debug buttons widget', function () {
-        expect(view.issue_nav_buttons).toBeA(Gtk.Widget);
     });
 
     it('contains 16 pages', function () {
@@ -116,7 +108,7 @@ describe('Reader window', function () {
     });
 
     it('enables navigation on an article page', function () {
-        view.show_article_page(2, true);
+        view.show_article_page(2, EosKnowledgePrivate.LoadingAnimationType.FORWARDS_NAVIGATION);
         let payload = dispatcher.last_payload_with_type(Actions.NAV_BACK_ENABLED_CHANGED);
         expect(payload.enabled).toBe(true);
         payload = dispatcher.last_payload_with_type(Actions.NAV_FORWARD_ENABLED_CHANGED);
@@ -124,7 +116,12 @@ describe('Reader window', function () {
     });
 
     it('disables navigation on standalone page', function () {
-        view.show_in_app_standalone_page();
+        dispatcher.dispatch({
+            action_type: Actions.SHOW_ARTICLE,
+            model: new ContentObjectModel.ContentObjectModel(),
+            archived: true,
+            from_global_search: false,
+        });
         let payload = dispatcher.last_payload_with_type(Actions.NAV_BACK_ENABLED_CHANGED);
         expect(payload.enabled).toBe(false);
         payload = dispatcher.last_payload_with_type(Actions.NAV_FORWARD_ENABLED_CHANGED);
@@ -132,18 +129,21 @@ describe('Reader window', function () {
     });
 
     it('sets progress labels correctly', function () {
-        let progress_label = new Gtk.Label();
-        let a = factory.create_named_module('document-card', {
-            info_notice: progress_label,
-        });
-        view.append_article_page(a);
-        expect(progress_label.current_page).toBe(EXPECTED_TOTAL_PAGES);
+        let model = new ContentObjectModel.ContentObjectModel();
+        view.append_article_page(model);
+        let card = factory.get_last_created_named_mock('document-card');
+        expect(card.page_number).toBe(EXPECTED_TOTAL_PAGES);
     });
 
     it('ensures visible page updates with show_*_page functions', function () {
         view.show_article_page(1);
         expect(view.article_pages_visible()).toBe(true);
-        view.show_in_app_standalone_page();
+        dispatcher.dispatch({
+            action_type: Actions.SHOW_ARTICLE,
+            model: new ContentObjectModel.ContentObjectModel(),
+            archived: true,
+            from_global_search: false,
+        });
         expect(view.article_pages_visible()).toBe(false);
     });
 
@@ -183,5 +183,17 @@ describe('Reader window', function () {
             launch_type: Launcher.LaunchType.DESKTOP,
         });
         expect(view.present.calls.any() || view.present_with_time.calls.any()).toBeTruthy();
+    });
+
+    it('shows the standalone page when show article dispatched from global search', function () {
+        let standalone_page = factory.get_last_created_named_mock('standalone-page');
+        // Is this an implementation detail of the container?
+        expect(standalone_page.get_child_visible()).toBeFalsy();
+        dispatcher.dispatch({
+            action_type: Actions.SHOW_STANDALONE_PREVIEW,
+            model: new ContentObjectModel.ContentObjectModel(),
+        });
+        Utils.update_gui();
+        expect(standalone_page.get_child_visible()).toBeTruthy();
     });
 });

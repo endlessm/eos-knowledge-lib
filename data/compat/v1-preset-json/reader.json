@@ -3,10 +3,7 @@
         "interaction": {
             "type": "AisleInteraction",
             "slots": {
-                "window": "window",
-                "document-card": {
-                    "type": "ReaderDocumentCard"
-                }
+                "window": "window"
             }
         },
         "window": {
@@ -29,9 +26,13 @@
                 "document-arrangement": {
                     "type": "CarouselArrangement"
                 },
+                "card-type": {
+                    "type": "ReaderDocumentCard"
+                },
                 "front-page": "front-page",
                 "search-page": "search-page",
                 "standalone-page": "standalone-page",
+                "archive-page": "archive-page",
                 "back-page": "back-page"
             }
         },
@@ -114,7 +115,31 @@
             }
         },
         "standalone-page": {
-            "type": "StandalonePage"
+            "type": "BannerTemplate",
+            "slots": {
+                "banner": {
+                    "type": "StandaloneBanner"
+                },
+                "content": {
+                    "type": "StandalonePage",
+                    "slots": {
+                        "card-type": {
+                            "type": "ReaderDocumentCard",
+                            "properties": {
+                                "display-context": false
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "archive-page": {
+            "type": "StandalonePage",
+            "slots": {
+                "card-type": {
+                    "type": "ReaderDocumentCard"
+                }
+            }
         },
         "back-page": {
             "type": "BackCover"

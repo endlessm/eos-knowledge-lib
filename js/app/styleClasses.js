@@ -481,13 +481,6 @@ const READER_PROGRESS_LABEL = 'progress-label';
 const READER_BACK_COVER = 'back-cover';
 
 /**
- * Constant: READER_OPEN_BUTTON
- *
- * Matches the button to open the magazine from the standalone page.
- */
-const READER_OPEN_BUTTON = 'open-button';
-
-/**
  * Constant: READER_ARTICLE_PAGE_ATTRIBUTION
  *
  * Matches the attribution on the reader's ArticlePage.

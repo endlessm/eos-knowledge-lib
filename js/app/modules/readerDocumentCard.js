@@ -1,6 +1,7 @@
 // Copyright 2015 Endless Mobile, Inc.
 
 const Endless = imports.gi.Endless;
+const Gettext = imports.gettext;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
@@ -8,11 +9,16 @@ const Lang = imports.lang;
 
 const AsyncTask = imports.search.asyncTask;
 const Card = imports.app.interfaces.card;
+const Config = imports.app.config;
 const DocumentCard = imports.app.interfaces.documentCard;
 const EknWebview = imports.app.widgets.eknWebview;
 const Module = imports.app.interfaces.module;
+const ProgressLabel = imports.app.widgets.progressLabel;
+const StyleClasses = imports.app.styleClasses;
 const Utils = imports.app.utils;
 const WebKit2 = imports.gi.WebKit2;
+
+let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
 const _PROGRESS_LABEL_MARGIN = 20;
 const _DECORATIVE_BAR_HEIGHT = 19;
@@ -43,16 +49,44 @@ const ReaderDocumentCard = new Lang.Class({
         'content-view': GObject.ParamSpec.override('content-view', DocumentCard.DocumentCard),
         'custom-css': GObject.ParamSpec.override('custom-css',
             DocumentCard.DocumentCard),
+        // FIXME: The following properties only make sense for reader apps.
+        // StandalonePage and ReaderWindow use them, so it follows that those
+        // modules also only make sense for reader apps.
+        // Issue for extending such information to all models / cards:
+        // https://github.com/endlessm/eos-sdk/issues/4036
         /**
-         * Property: info-notice
-         *
-         * A widget showing info about the cards position in the app, overlaid
-         * over card contents.
+         * Property: page-number
+         * Page number of this page in the collection
          */
-        'info-notice': GObject.ParamSpec.object('info-notice', 'Progress Label',
-            'The progress indicator at the top of the page',
+        'page-number': GObject.ParamSpec.uint('page-number', 'Page number',
+            'Page number of this page in the collection',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
+            0, GLib.MAXUINT32, 0),
+        /**
+         * Property: total-pages
+         * Number of pages in this collection
+         */
+        'total-pages': GObject.ParamSpec.uint('total-pages', 'Total pages',
+            'Number of pages in this collection',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
+            0, GLib.MAXUINT32, 0),
+        /**
+         * Property: archived
+         * Whether this article is archived
+         */
+        'archived': GObject.ParamSpec.boolean('archived', 'Archived',
+            'Whether this article is archived',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            Gtk.Widget),
+            false),
+        /**
+         * Property: display-context
+         * Whether to display context about the collection
+         */
+        'display-context': GObject.ParamSpec.boolean('display-context',
+            'Display context',
+            'Whether to display context about the collection',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            true),
     },
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/readerDocumentCard.ui',
@@ -62,6 +96,9 @@ const ReaderDocumentCard = new Lang.Class({
     _init: function (props={}) {
         if (!(props.custom_css || props['custom-css'] || props.customCss))
             props.custom_css = 'reader.css';
+
+        this._page_number = 0;
+        this._total_pages = 0;
 
         this.parent(props);
 
@@ -83,11 +120,24 @@ const ReaderDocumentCard = new Lang.Class({
         });
         this._size_group.add_widget(this._title_view);
 
-        if (this.info_notice) {
-            this.info_notice.valign = Gtk.Align.START;
-            this.info_notice.halign = Gtk.Align.CENTER;
-            this.info_notice.margin_top = _PROGRESS_LABEL_MARGIN + _DECORATIVE_BAR_HEIGHT;
-            this.add_overlay(this.info_notice);
+        if (this.display_context) {
+            this._info_notice = new ProgressLabel.ProgressLabel({
+                valign: Gtk.Align.START,
+                halign: Gtk.Align.CENTER,
+                margin_top: _PROGRESS_LABEL_MARGIN + _DECORATIVE_BAR_HEIGHT,
+            });
+            this.add_overlay(this._info_notice);
+            if (this.archived) {
+                this._info_notice.label = _("This article is part of the archive.");
+                this._info_notice.get_style_context().add_class(StyleClasses.READER_ARCHIVE_NOTICE_FRAME);
+            } else {
+                this.bind_property('page-number',
+                    this._info_notice, 'current-page',
+                    GObject.BindingFlags.SYNC_CREATE);
+                this.bind_property('total-pages',
+                    this._info_notice, 'total-pages',
+                    GObject.BindingFlags.SYNC_CREATE);
+            }
         }
 
         if (Endless.is_composite_tv_screen(null)) {
@@ -95,6 +145,28 @@ const ReaderDocumentCard = new Lang.Class({
             this._separator.margin_start = _COMPOSITE_SEPARATOR_MARGIN_PX;
             this._separator.margin_end = _COMPOSITE_SEPARATOR_MARGIN_PX;
         }
+    },
+
+    get page_number() {
+        return this._page_number;
+    },
+
+    set page_number(value) {
+        if (this._page_number === value)
+            return;
+        this._page_number = value;
+        this.notify('page-number');
+    },
+
+    get total_pages() {
+        return this._total_pages;
+    },
+
+    set total_pages(value) {
+        if (this._total_pages === value)
+            return;
+        this._total_pages = value;
+        this.notify('total-pages');
     },
 
     _set_attribution_label_from_model: function () {

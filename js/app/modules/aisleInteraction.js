@@ -13,7 +13,6 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const Actions = imports.app.actions;
-const ArchiveNotice = imports.app.widgets.archiveNotice;
 const ArticleObjectModel = imports.search.articleObjectModel;
 const ArticleSnippetCard = imports.app.modules.articleSnippetCard;
 const BackCover = imports.app.modules.backCover;
@@ -25,7 +24,6 @@ const Interaction = imports.app.interfaces.interaction;
 const Launcher = imports.app.interfaces.launcher;
 const MediaObjectModel = imports.search.mediaObjectModel;
 const Module = imports.app.interfaces.module;
-const ProgressLabel = imports.app.widgets.progressLabel;
 const QueryObject = imports.search.queryObject;
 const ReaderCard = imports.app.modules.readerCard;
 const ReaderDocumentCard = imports.app.modules.readerDocumentCard;
@@ -182,6 +180,15 @@ const AisleInteraction = new Lang.Class({
                         model: payload.model,
                     });
                     break;
+                case Actions.ARTICLE_LINK_CLICKED:
+                    this._load_ekn_id(payload.ekn_id);
+                    break;
+                case Actions.ARTICLE_LOAD_FAILED:
+                    this._show_error_page();
+                    break;
+                case Actions.LEAVE_PREVIEW_CLICKED:
+                    this._open_magazine();
+                    break;
             }
         });
 
@@ -199,7 +206,6 @@ const AisleInteraction = new Lang.Class({
             this._window.disconnect(handler);  // One-shot signal handler only.
         }.bind(this));
 
-        this._window.standalone_page.infobar.connect('response', this._open_magazine.bind(this));
         this._history_presenter.connect('history-item-changed', this._on_history_item_change.bind(this));
         this._webview_tooltip_presenter.connect('show-tooltip', this._on_show_tooltip.bind(this));
     },
@@ -354,10 +360,6 @@ const AisleInteraction = new Lang.Class({
                 break;
             case this._ARTICLE_PAGE:
                 this._go_to_article(item.model, item.from_global_search);
-                dispatcher.dispatch({
-                    action_type: Actions.SHOW_ARTICLE,
-                    model: item.model,
-                });
                 break;
             case this._OVERVIEW_PAGE:
                 this._go_to_page(0);
@@ -610,16 +612,23 @@ const AisleInteraction = new Lang.Class({
     },
 
     _go_to_article: function (model, from_global_search) {
-        if (this._is_archived(model)) {
-            this._load_standalone_article(model, from_global_search);
-            if (from_global_search) {
-                this._window.show_global_search_standalone_page();
-            } else {
-                this._window.show_in_app_standalone_page();
-            }
-        } else {
+        let archived = this._is_archived(model);
+        if (!archived) {
             let page_number = this._get_page_number_for_article_model(model);
             this._go_to_page(page_number);
+        }
+        let dispatcher = Dispatcher.get_default();
+        if (from_global_search) {
+            dispatcher.dispatch({
+                action_type: Actions.SHOW_STANDALONE_PREVIEW,
+                model: model,
+            });
+        } else {
+            dispatcher.dispatch({
+                action_type: Actions.SHOW_ARTICLE,
+                model: model,
+                archived: archived,
+            });
         }
         this._present_if_needed();
     },
@@ -703,55 +712,37 @@ const AisleInteraction = new Lang.Class({
 
     // First article data has been loaded asynchronously; now we can start
     // loading its content, and show the window. Until this point the user will
-    // have seen the loading splash screen. Also start loading the rest of the
-    // pages, asynchronously.
+    // have seen the loading splash screen.
     _create_pages_from_models: function (models) {
-        models.forEach(function (model) {
-            let page = this._create_article_page_from_article_model(model, new ProgressLabel.ProgressLabel());
-            this._window.append_article_page(page);
-        }, this);
+        models.forEach(this._window.append_article_page, this._window);
         this._article_models = this._article_models.concat(models);
     },
 
-    // Take an ArticleObjectModel and create a ReaderDocumentCard view.
-    _create_article_page_from_article_model: function (model, info_notice) {
-        let card_props = {
-            model: model,
-            info_notice: info_notice,
-        };
-
-        // FIXME: This should probably be a slot on a document page and not the
-        // interaction model.
-        let document_card = this.create_submodule('document-card', card_props);
-        document_card.connect('ekn-link-clicked', (card, uri) => {
-            let scheme = GLib.uri_parse_scheme(uri);
-            if (scheme !== 'ekn')
-                return;
-
-            Engine.get_default().get_object_by_id(uri, null, (engine, task) => {
-                let clicked_model;
-                try {
-                    clicked_model = engine.get_object_by_id_finish(task);
-                } catch (error) {
-                    logError(error, 'Could not open link from reader article');
-                    return;
-                }
-
-                if (clicked_model instanceof MediaObjectModel.MediaObjectModel) {
-                    Dispatcher.get_default().dispatch({
-                        action_type: Actions.SHOW_MEDIA,
-                        model: clicked_model,
-                    });
-                } else if (clicked_model instanceof ArticleObjectModel.ArticleObjectModel) {
-                    this._history_presenter.set_current_item_from_props({
-                        page_type: this._ARTICLE_PAGE,
-                        model: clicked_model,
-                    });
-                }
-            });
+    _load_ekn_id: function (ekn_id) {
+        Engine.get_default().get_object_by_id(ekn_id, null, (engine, task) => {
+            let model;
+            try {
+                model = engine.get_object_by_id_finish(task);
+                this._load_model(model);
+            } catch (error) {
+                logError(error, 'Could not open link from reader article');
+            }
         });
+    },
 
-        return document_card;
+    _load_model: function (model) {
+        let dispatcher = Dispatcher.get_default();
+        if (model instanceof MediaObjectModel.MediaObjectModel) {
+            dispatcher.dispatch({
+                action_type: Actions.SHOW_MEDIA,
+                model: model,
+            });
+        } else if (model instanceof ArticleObjectModel.ArticleObjectModel) {
+            dispatcher.dispatch({
+                action_type: Actions.ITEM_CLICKED,
+                model: model,
+            });
+        }
     },
 
     _get_page_number_for_article_model: function(model) {
@@ -819,29 +810,6 @@ const AisleInteraction = new Lang.Class({
         });
     },
 
-    _load_standalone_article: function (model, from_global_search) {
-        let info_notice = null;
-        if (!from_global_search) {
-            info_notice = new Gtk.Frame();
-            // Ensures that the archive notice on the in app standalone page
-            // matches that of the standalone page you reach via global search
-            info_notice.add(new ArchiveNotice.ArchiveNotice({
-                label: this._window.standalone_page.infobar.archive_notice.label,
-            }));
-            info_notice.get_style_context().add_class(StyleClasses.READER_ARCHIVE_NOTICE_FRAME);
-        }
-        let document_card = this._create_article_page_from_article_model(model, info_notice);
-        document_card.load_content(null, (card, task) => {
-            try {
-                card.load_content_finish(task);
-            } catch (error) {
-                logError(error);
-                this._show_error_page();
-            }
-        });
-        this._window.standalone_page.document_card = document_card;
-    },
-
     _on_article_card_clicked: function (model) {
         this._history_presenter.set_current_item_from_props({
             page_type: this._ARTICLE_PAGE,
@@ -893,6 +861,6 @@ const AisleInteraction = new Lang.Class({
     },
 
     get_slot_names: function () {
-        return ['window', 'document-card'];
+        return ['window'];
     },
 });
