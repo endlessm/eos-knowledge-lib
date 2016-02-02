@@ -56,6 +56,13 @@ const MinimalArrangement = new Lang.Class({
         this._cards= [];
     },
 
+    remove: function (card) {
+        let index = this._cards.indexOf(card);
+        if (index !== -1) {
+            this._cards.splice(index, 1);
+        }
+    },
+
     set_transition_type: function (type) {
         this._type = type;
     },
