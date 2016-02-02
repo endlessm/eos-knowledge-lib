@@ -3,7 +3,6 @@
 /* exported PianoArrangement */
 
 const Endless = imports.gi.Endless;
-const Gdk = imports.gi.Gdk;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
@@ -163,14 +162,7 @@ const PianoArrangement = new Lang.Class({
         // this spot, but for that we'd need the arrangement interface to
         // receive a model, instead of a widget in the "add" method.
         let featured_card = all_children[0];
-        let featured_card_alloc = new Gdk.Rectangle({
-            x: alloc.x,
-            y: alloc.y,
-            width: featured_width,
-            height: featured_height,
-        });
-        featured_card.set_child_visible(true);
-        featured_card.size_allocate(featured_card_alloc);
+        this.place_card(featured_card, alloc.x, alloc.y, featured_width, featured_height);
 
         let x = alloc.x + featured_width + this._spacing;
         let y = alloc.y;
@@ -178,14 +170,8 @@ const PianoArrangement = new Lang.Class({
         // Support cards:
         // Place support cards in a column to the right of the featured card
         all_children.slice(1, this._support_cards_shown + 1).forEach((card, i) => {
-            card.set_child_visible(true);
-            let child_alloc = new Gdk.Rectangle({
-                x: x,
-                y: y,
-                width: child_width,
-                height: child_height,
-            });
-            card.size_allocate(child_alloc);
+            this.place_card(card, x, y, child_width, child_height);
+
             y += delta_y + (i < spare_pixels ? 1 : 0);
         });
 

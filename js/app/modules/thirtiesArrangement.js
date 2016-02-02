@@ -3,7 +3,6 @@
 /* exported ThirtiesArrangement */
 
 const Endless = imports.gi.Endless;
-const Gdk = imports.gi.Gdk;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
@@ -140,14 +139,7 @@ const ThirtiesArrangement = new Lang.Class({
         let y = alloc.y;
 
         all_children.slice(0, visible_children_count).forEach((card, i) => {
-            card.set_child_visible(true);
-            let child_alloc = new Gdk.Rectangle({
-                x: x,
-                y: y,
-                width: child_width,
-                height: child_height,
-            });
-            card.size_allocate(child_alloc);
+            this.place_card(card, x, y, child_width, child_height);
 
             if ((i + 1) % COL_COUNT === 0) {
                 x = alloc.x;

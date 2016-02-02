@@ -3,7 +3,6 @@
 /* exported WindshieldArrangement */
 
 const Endless = imports.gi.Endless;
-const Gdk = imports.gi.Gdk;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
@@ -115,14 +114,7 @@ const WindshieldArrangement = new Lang.Class({
         // this spot, but for that we'd need the arrangement interface to
         // receive a model, instead of a widget in the "add" method.
         let featured_card = all_children[0];
-        let featured_card_alloc = new Gdk.Rectangle({
-            x: alloc.x,
-            y: alloc.y,
-            width: alloc.width,
-            height: featured_height,
-        });
-        featured_card.set_child_visible(true);
-        featured_card.size_allocate(featured_card_alloc);
+        this.place_card(featured_card, alloc.x, alloc.y, alloc.width, featured_height);
 
         let x = alloc.x;
         let y = alloc.y + featured_height + this._spacing;
@@ -130,14 +122,8 @@ const WindshieldArrangement = new Lang.Class({
         // Support cards:
         // Place three support cards in a row below the featured cards
         all_children.slice(1, SECOND_ROW_CARD_COUNT + 1).forEach((card, i) => {
-            card.set_child_visible(true);
-            let child_alloc = new Gdk.Rectangle({
-                x: x,
-                y: y,
-                width: child_width,
-                height: child_height,
-            });
-            card.size_allocate(child_alloc);
+            this.place_card(card, x, y, child_width, child_height);
+
             x += delta_x + (i < spare_pixels ? 1 : 0);
         });
 

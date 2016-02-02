@@ -3,10 +3,8 @@
 /* exported SquareGuysArrangement */
 
 const Endless = imports.gi.Endless;
-const Gdk = imports.gi.Gdk;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
-const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const Arrangement = imports.app.interfaces.arrangement;
@@ -122,14 +120,8 @@ const SquareGuysArrangement = new Lang.Class({
             Math.min(all_children.length, this._max_rows  * col_count);
 
         all_children.slice(0, visible_children_count).forEach((card, ix) => {
-            card.set_child_visible(true);
-            let child_alloc = new Gdk.Rectangle({
-                x: x,
-                y: y,
-                width: child_width,
-                height: child_height,
-            });
-            card.size_allocate(child_alloc);
+            this.place_card(card, x, y, child_width, child_height);
+
             if ((ix + 1) % col_count === 0) {
                 x = alloc.x;
                 y += delta_y;

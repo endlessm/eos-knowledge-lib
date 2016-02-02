@@ -292,6 +292,7 @@ javascript_tests = \
 	tests/js/app/modules/testPaperTemplate.js \
 	tests/js/app/modules/testPianoArrangement.js \
 	tests/js/app/modules/testPostCard.js \
+	tests/js/app/modules/testQuarterArrangement.js \
 	tests/js/app/modules/testReaderCard.js \
 	tests/js/app/modules/testReaderDocumentCard.js \
 	tests/js/app/modules/testReaderWindow.js \
