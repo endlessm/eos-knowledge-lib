@@ -115,6 +115,9 @@ const SuggestedCategoriesModule = new Lang.Class({
                 case Actions.CLEAR_SETS:
                     this._arrangement.clear();
                     break;
+                case Actions.FILTER_SETS:
+                    this._filter_sets(payload.sets);
+                    break;
             }
         });
     },
@@ -136,5 +139,13 @@ const SuggestedCategoriesModule = new Lang.Class({
             });
         });
         this._arrangement.add_card(card);
+    },
+
+    _filter_sets: function (sets) {
+        this._arrangement.get_cards().forEach((card) => {
+            if (sets.indexOf(card.model.ekn_id) !== -1) {
+                this._arrangement.remove(card);
+            }
+        });
     },
 });
