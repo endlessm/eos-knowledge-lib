@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2016-01-19 02:54+0000\n"
+"POT-Creation-Date: 2016-01-26 05:57+0000\n"
 "PO-Revision-Date: 2015-12-14 21:01+0000\n"
 "Last-Translator: mattdangerw <watson@endlessm.com>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/pt_BR/)\n"
@@ -115,18 +115,18 @@ msgstr "Cortesia de conteúdo de {blog-link}.  Utilizado com permissão."
 msgid "Content courtesy of {blog-link}, licensed under {license-link}."
 msgstr "Cortesia de conteúdo de {blog-link}, licenciado sob {license-link}."
 
-#: js/app/modules/aisleInteraction.js:801
-#: js/app/modules/aisleInteraction.js:808
+#: js/app/modules/aisleInteraction.js:799
+#: js/app/modules/aisleInteraction.js:806
 msgid "Oops!"
 msgstr "Opa!"
 
-#: js/app/modules/aisleInteraction.js:802
+#: js/app/modules/aisleInteraction.js:800
 msgid ""
 "We could not find this magazine!\n"
 "Please try again after restarting your computer."
 msgstr "Não conseguimos encontrar essa revista!\nPor favor, tente novamente após reiniciar seu computador. "
 
-#: js/app/modules/aisleInteraction.js:809
+#: js/app/modules/aisleInteraction.js:807
 msgid ""
 "There was an error loading that page.\n"
 "Try another one or try again after restarting your computer."
@@ -134,14 +134,14 @@ msgstr "Ocorreu um erro no carregamento da página. \nTente outro ou tente novam
 
 #. TRANSLATORS: This shows the page number; %d will be replaced with
 #. the page number of the article.
-#: js/app/modules/aisleInteraction.js:871
+#: js/app/modules/aisleInteraction.js:869
 #, javascript-format
 msgid "Page %d"
 msgstr "Página %d"
 
 #. TRANSLATORS: %s will be replaced with the text the user
 #. searched for. Make sure to keep %s token in your translation.
-#: js/app/modules/buffetInteraction.js:156 js/app/modules/contextBanner.js:81
+#: js/app/modules/buffetInteraction.js:154 js/app/modules/contextBanner.js:81
 #, javascript-format
 msgid "Results were found for “%s”"
 msgstr "Foram encontrados resultados para “%s”"
@@ -197,15 +197,15 @@ msgstr "Resultados para “%s”"
 msgid "OOPS!"
 msgstr "OPA!"
 
-#: js/app/modules/searchModule.js:201
+#: js/app/modules/searchModule.js:195
 msgid "Sorry! :-("
 msgstr "Desculpe! :-("
 
-#: js/app/modules/searchModule.js:202
+#: js/app/modules/searchModule.js:196
 msgid "There are no results that match your search.\n"
 msgstr "Não encontramos nenhum resultado para a sua busca.\n"
 
-#: js/app/modules/searchModule.js:204
+#: js/app/modules/searchModule.js:198
 msgid ""
 "We recommend that you:\n"
 "\n"
@@ -214,7 +214,7 @@ msgid ""
 "  •  Try using more general words"
 msgstr "Recomendamos que você:\n\n• Confira se a palavra foi escrita corretamente\n• Tente outras palavras com o mesmo significado\n• Tente usar palavras mais genéricas"
 
-#: js/app/modules/searchModule.js:231
+#: js/app/modules/searchModule.js:225
 msgid "There was an error during your search."
 msgstr "Houve um erro durante a sua pesquisa."
 
