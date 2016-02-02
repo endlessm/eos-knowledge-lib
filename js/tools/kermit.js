@@ -50,8 +50,9 @@ function grep (path, pattern) {
 
         if (metadata_text.match(regex) !== null) {
             let id = record.get_hex_name();
-            let content_type = record.data.get_content_type();
-            let title = JSON.parse(metadata_text).title;
+            let metadata = JSON.parse(metadata_text);
+            let content_type = metadata.contentType;
+            let title = metadata.title;
             print_result(id, content_type, title);
         }
 
