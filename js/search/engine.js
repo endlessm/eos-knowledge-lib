@@ -25,14 +25,6 @@ const HOME_PAGE_TAG = 'EknHomePageTag';
 const _XB_QUERY_ENDPOINT = '/query';
 const _XB_FIX_ENDPOINT = '/fix';
 
-/**
- * Constant: XAPIAN_DB_RECORD
- *
- * The name record in a shard file that contains the Xapian DB in the data
- * portion. The given SHA-1 is simply a hash of the string "xapian-db".
- */
-const XAPIAN_DB_RECORD = GLib.compute_checksum_for_string(GLib.ChecksumType.SHA1, 'xapian-db', -1);
-
 const Domain = new Lang.Class({
     Name: 'Domain',
 
@@ -560,25 +552,7 @@ const Engine = Lang.Class({
         let uri = new Soup.URI(host_uri);
         uri.set_port(this.port);
         uri.set_path(endpoint);
-
-        let record;
-
-        let domain_obj = this._get_domain(domain);
-        let shard_file = domain_obj.get_shard_file();
-        if (shard_file)
-            record = shard_file.find_record_by_hex_name(XAPIAN_DB_RECORD);
-        else
-            record = null;
-
-        // If we have the record, then use it. Otherwise, fall back to the
-        // old database directory.
-        if (record) {
-            params.path = domain_obj.get_shard_path();
-            params.db_offset = record.data.get_offset();
-        } else {
-            params.path = GLib.build_filenamev([domain_obj.get_content_path(), this._DB_DIR]);
-        }
-
+        params.path = GLib.build_filenamev([domain_obj.get_content_path(), this._DB_DIR]);
         uri.set_query(this._serialize_query(params));
         return uri;
     },
