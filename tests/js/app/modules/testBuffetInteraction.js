@@ -35,8 +35,15 @@ const MockView = new Lang.Class({
     },
 });
 
+const MockReadingHistoryModel = new Lang.Class({
+    Name: 'MockReadingHistoryModel',
+    Extends: GObject.Object,
+
+    mark_article_read: function () {},
+});
+
 describe('Buffet interaction', function () {
-    let buffet, dispatcher, engine, factory, set_models, article_model, media_model;
+    let buffet, dispatcher, engine, factory, set_models, article_model, media_model, reading_history;
 
     beforeEach(function () {
         dispatcher = MockDispatcher.mock_default();
@@ -59,9 +66,13 @@ describe('Buffet interaction', function () {
             'window': 'window',
         });
 
+        reading_history = new MockReadingHistoryModel();
+        spyOn(reading_history, 'mark_article_read');
+
         buffet = new BuffetInteraction.BuffetInteraction({
             factory: factory,
             factory_name: 'interaction',
+            reading_history: reading_history,
         });
         spyOn(buffet, 'record_search_metric');
     });
@@ -210,6 +221,10 @@ describe('Buffet interaction', function () {
                     context: [prev_model, article_model, next_model],
                     context_label: 'Some Context',
                 });
+            });
+
+            it('records reading history', function() {
+                expect(reading_history.mark_article_read).toHaveBeenCalledWith(article_model.ekn_id);
             });
 
             it('changes to the article page', function () {
