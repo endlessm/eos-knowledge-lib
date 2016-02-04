@@ -16,7 +16,6 @@ describe ('Media Card', function () {
     beforeEach(function () {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
         jasmine.addMatchers(InstanceOfMatcher.customMatchers);
-        Utils.register_gresource();
 
         imageObject = new MediaObjectModel.ImageObjectModel({
             caption: 'foo',
