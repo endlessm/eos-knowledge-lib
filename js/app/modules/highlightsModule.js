@@ -83,6 +83,7 @@ const HighlightsModule = new Lang.Class({
                         this._create_set(this._sets[1], 'small-arrangement', 'card-type', true);
                     if (this._sets.length > 2)
                         this._create_set(this._sets[2], 'large-arrangement', 'large-card-type', true);
+                    this._send_sets_to_filter();
                     break;
             }
         });
@@ -179,5 +180,12 @@ const HighlightsModule = new Lang.Class({
         this.get_children().forEach(this.remove, this);
         this._sets = [];
         this._loaded_sets = 0;
+    },
+
+    _send_sets_to_filter: function () {
+        Dispatcher.get_default().dispatch({
+            action_type: Actions.FILTER_SETS,
+            sets: this._sets.map(set => set.ekn_id),
+        });
     },
 });

@@ -101,6 +101,11 @@ describe('Highlights module', function () {
             headers = factory.get_created_named_mocks('set-card');
         });
 
+        it('sends the sets it is displaying, so they can be filtered', function() {
+            let payloads = dispatcher.payloads_with_type(Actions.FILTER_SETS);
+            expect(payloads.length).toBe(1);
+        });
+
         it('adds three arrangements', function () {
             expect(factory.get_created_named_mocks('arrangement1').length).toBe(2);
             // (2, because one is for the featured cards)
