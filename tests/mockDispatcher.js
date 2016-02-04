@@ -36,6 +36,8 @@ const MockDispatcher = new Lang.Class({
     },
 
     dispatch: function (payload) {
+        if (this.print_error && payload.action_type === 'show-home-page')
+            logError(new Error('show home page dispatched'));
         this._queue.push(payload);
         if (!this._processing)
             this._process_queue();

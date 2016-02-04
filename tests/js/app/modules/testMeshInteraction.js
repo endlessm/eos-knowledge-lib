@@ -170,9 +170,13 @@ describe('Mesh interaction', function () {
     });
 
     it('cannot go back from the search page after launch from search', function () {
+        dispatcher.print_error = true;
         mesh.BRAND_PAGE_TIME_MS = 0;
         mesh.search(0, 'query');
         Utils.update_gui();
+        printerr('HISTORY');
+        mesh._history_presenter.history_model.get_back_list().forEach((item) => printerr(item.page_type));
+        printerr(mesh._history_presenter.history_model.current_item.page_type);
         expect(dispatcher.last_payload_with_type(Actions.SHOW_HOME_PAGE)).not.toBeDefined();
         expect(dispatcher.last_payload_with_type(Actions.SHOW_SEARCH_PAGE)).toBeDefined();
         let payload = dispatcher.last_payload_with_type(Actions.HISTORY_BACK_ENABLED_CHANGED);
@@ -180,10 +184,14 @@ describe('Mesh interaction', function () {
     });
 
     it('cannot go back from the article page after launch from search result', function () {
+        dispatcher.print_error = true;
         mesh.BRAND_PAGE_TIME_MS = 0;
         engine.get_object_by_id_finish.and.returnValue(new ContentObjectModel.ContentObjectModel());
         mesh.activate_search_result(0, 'ekn://foo/bar', 'query');
         Utils.update_gui();
+        printerr('HISTORY');
+        mesh._history_presenter.history_model.get_back_list().forEach((item) => printerr(item.page_type));
+        printerr(mesh._history_presenter.history_model.current_item.page_type);
         expect(dispatcher.last_payload_with_type(Actions.SHOW_HOME_PAGE)).not.toBeDefined();
         expect(dispatcher.last_payload_with_type(Actions.SHOW_ARTICLE_PAGE)).toBeDefined();
         let payload = dispatcher.last_payload_with_type(Actions.HISTORY_BACK_ENABLED_CHANGED);
