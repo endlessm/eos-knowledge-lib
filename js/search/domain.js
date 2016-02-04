@@ -162,24 +162,15 @@ const Domain = new Lang.Class({
                     return;
                 }
 
-                // We need to instantiate models for our results asynchronously.
-                // We'll set up a function here to resolve a result, which
-                // triggers our callback when the last article resolves.
-                let resolved = 0;
-                let results = new Array(json_ld.results.length);
-                let resolve = (index, model) => {
-                    results[index] = model;
-                    resolved++;
-                    if (resolved === results.length)
-                        task.return_value(results);
-                };
-
-                json_ld.results.forEach((result, index) => {
-                    this.resolve_xapian_result(result, cancellable, task.catch_callback_errors((domain_obj, xapian_task) => {
-                        let model = this.resolve_xapian_result_finish(xapian_task);
-                        resolve(index, model);
-                    }));
-                });
+                AsyncTask.all(this, (add_task) => {
+                    json_ld.results.forEach((result) => {
+                        add_task((cancellable, callback) => this.resolve_xapian_result(result, cancellable, callback),
+                                 (task) => this.resolve_xapian_result_finish(task));
+                    });
+                }, cancellable, task.catch_callback_errors((source, resolve_task) => {
+                    let results = AsyncTask.all_finish(resolve_task);
+                    task.return_value(results);
+                }));
             }));
         }));
         return task;

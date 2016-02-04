@@ -146,3 +146,43 @@ const AsyncTask = Lang.Class({
         return this._object;
     },
 });
+
+// A perhaps silly way to emulate Promise.all using AsyncTask.
+function all (source, func, cancellable, callback) {
+    let task = new AsyncTask(source, cancellable, callback);
+
+    let results = [];
+    let waiting = 0;
+
+    let subfuncs = [];
+
+    func((add_task_func, finish) => {
+        let task_idx = results.length;
+        results.push(null);
+        ++waiting;
+
+        function task_callback(source, subtask) {
+            let value = finish(subtask);
+            results[task_idx] = value;
+            if (--waiting === 0)
+                task.return_value(results);
+        }
+
+        // Delay calling add_task_func until after we return from the main function
+        // just in case one subtask resolves immediately...
+        subfuncs.push(add_task_func.bind(null, cancellable, task.catch_callback_errors(task_callback)));
+    });
+
+    // Now go ahead and call the add_task_funcs.
+    subfuncs.forEach((func) => func());
+
+    // If we don't have any subfunctions, return immediately.
+    if (subfuncs.length === 0)
+        task.return_value([]);
+
+    return task;
+}
+
+function all_finish (task) {
+    return task.finish();
+}
