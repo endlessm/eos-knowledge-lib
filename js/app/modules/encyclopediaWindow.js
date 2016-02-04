@@ -41,9 +41,15 @@ const EncyclopediaWindow = new Lang.Class({
         this._search_page = this.create_submodule('search-page');
         this._article_page = this.create_submodule('article-page');
 
+        this._home_button = new Endless.TopbarHomeButton({
+            sensitive: false,
+        });
         this._history_buttons = new Endless.TopbarNavButton();
         this._history_buttons.show_all();
         let dispatcher = Dispatcher.get_default();
+        this._home_button.connect('clicked', () => {
+            dispatcher.dispatch({ action_type: Actions.HOME_CLICKED });
+        });
         this._history_buttons.back_button.connect('clicked', () => {
             dispatcher.dispatch({ action_type: Actions.HISTORY_BACK_CLICKED });
         });
@@ -79,8 +85,15 @@ const EncyclopediaWindow = new Lang.Class({
 
         this.page_manager.transition_duration = 500;  // ms
 
+        let button_box = new Gtk.Box({
+            orientation: Gtk.Orientation.HORIZONTAL
+        });
+        button_box.add(this._home_button);
+        button_box.add(this._history_buttons);
+        button_box.show_all();
+
         this.page_manager.add(this._home_page, {
-            left_topbar_widget: this._history_buttons,
+            left_topbar_widget: button_box,
             background_uri: this.home_background_uri,
             background_repeats: false,
             background_size: 'cover',
@@ -88,7 +101,7 @@ const EncyclopediaWindow = new Lang.Class({
         });
 
         this.page_manager.add(this._search_page, {
-            left_topbar_widget: this._history_buttons,
+            left_topbar_widget: button_box,
             background_uri: this.results_background_uri,
             background_repeats: false,
             background_size: 'cover',
@@ -99,7 +112,7 @@ const EncyclopediaWindow = new Lang.Class({
         this._lightbox.add(this._article_page);
 
         this.page_manager.add(this._lightbox, {
-            left_topbar_widget: this._history_buttons,
+            left_topbar_widget: button_box,
             background_uri: this.results_background_uri,
             background_repeats: false,
             background_size: 'cover',
@@ -113,6 +126,9 @@ const EncyclopediaWindow = new Lang.Class({
     },
 
     show_page: function (page) {
+        // Disable the home button when the current page is the home page
+        this._home_button.sensitive = (page !== this._home_page);
+
         if (this.get_visible_page() === page)
             return;
         if (page === this._article_page)
