@@ -171,6 +171,7 @@ describe('Mesh interaction', function () {
 
     it('cannot go back from the search page after launch from search', function () {
         dispatcher.print_error = true;
+        mesh.print_error = true;
         mesh.BRAND_PAGE_TIME_MS = 0;
         mesh.search(0, 'query');
         Utils.update_gui();
@@ -185,6 +186,7 @@ describe('Mesh interaction', function () {
 
     it('cannot go back from the article page after launch from search result', function () {
         dispatcher.print_error = true;
+        mesh.print_error = true;
         mesh.BRAND_PAGE_TIME_MS = 0;
         engine.get_object_by_id_finish.and.returnValue(new ContentObjectModel.ContentObjectModel());
         mesh.activate_search_result(0, 'ekn://foo/bar', 'query');
