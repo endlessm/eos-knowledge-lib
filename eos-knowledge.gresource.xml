@@ -185,6 +185,7 @@
     <file>js/search/blacklist.js</file>
     <file>js/search/contentObjectModel.js</file>
     <file>js/search/datadir.js</file>
+    <file>js/search/domain.js</file>
     <file>js/search/engine.js</file>
     <file>js/search/mediaObjectModel.js</file>
     <file>js/search/queryObject.js</file>
@@ -192,6 +193,7 @@
     <file>js/search/setObjectModel.js</file>
     <file>js/search/treeNode.js</file>
     <file>js/search/utils.js</file>
+    <file>js/search/xapianBridge.js</file>
     <file>js/tools/kermit.js</file>
     <file>js/tools/picard.js</file>
   </gresource>

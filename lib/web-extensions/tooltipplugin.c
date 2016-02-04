@@ -127,7 +127,6 @@ on_method_call (GDBusConnection       *connection,
   WebKitFrame *frame = webkit_web_page_get_main_frame (page);
   JSGlobalContextRef js = webkit_frame_get_javascript_global_context (frame);
 
-  JSValueRef exc = NULL;
   JSObjectRef window = JSContextGetGlobalObject (js);
   JSObjectRef document = get_object_property (js, window, "document");
   if (document == NULL)

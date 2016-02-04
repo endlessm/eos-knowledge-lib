@@ -5,6 +5,8 @@
 *.typelib
 *.gresource
 *.gresource.deps
+*~
+\#*\#
 /js/app/config.js
 /js/app/config.js.in
 /ekn-app-runner
