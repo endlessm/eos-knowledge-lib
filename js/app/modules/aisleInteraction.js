@@ -158,6 +158,11 @@ const AisleInteraction = new Lang.Class({
                     let next_page = (this._current_page + 1) % this._window.total_pages;
                     this._add_history_item_for_page(next_page);
                     break;
+                case Actions.HOME_CLICKED:
+                    this._history_presenter.set_current_item_from_props({
+                        page_type: this._OVERVIEW_PAGE,
+                    });
+                    break;
                 case Actions.SEARCH_CLICKED:
                     this._history_presenter.set_current_item_from_props({
                         page_type: this._ARTICLE_PAGE,
