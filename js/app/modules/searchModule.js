@@ -116,7 +116,7 @@ const SearchModule = new Lang.Class({
         let dispatcher = Dispatcher.get_default();
         if (this._arrangement instanceof InfiniteScrolledWindow.InfiniteScrolledWindow) {
             this._arrangement.connect('need-more-content', () => {
-                if (this._arrangement.get_cards().length >= this.max_children)
+                if (this._arrangement.get_models().length >= this.max_children)
                     return;
                 dispatcher.dispatch({
                     action_type: Actions.NEED_MORE_SEARCH,
@@ -134,7 +134,7 @@ const SearchModule = new Lang.Class({
                 break;
             case Actions.APPEND_SEARCH:
                 let fade = this.fade_cards &&
-                    (this._arrangement.get_cards().length > 0);
+                    (this._arrangement.get_models().length > 0);
                 payload.models.forEach((card) => {
                     this._add_card(card, fade, payload.query);
                 });
@@ -164,14 +164,14 @@ const SearchModule = new Lang.Class({
 
     // Module override
     get_slot_names: function () {
-        return ['arrangement', 'card-type', 'article-suggestions', 'category-suggestions'];
+        return ['arrangement', 'article-suggestions', 'category-suggestions'];
     },
 
     _add_card: function (model, fade, query='') {
-        if (this._arrangement.get_cards().length >= this.max_children)
+        if (this._arrangement.get_models().length >= this.max_children)
             return;
-        let card = this.create_submodule('card-type', {
-            model: model,
+        let card = this._arrangement.add_model(model, {
+            // FIXME highlight_string is totally ignored here
             highlight_string: query,
         });
         if (fade)
@@ -180,15 +180,14 @@ const SearchModule = new Lang.Class({
             Dispatcher.get_default().dispatch({
                 action_type: Actions.SEARCH_CLICKED,
                 model: model,
-                context: this._arrangement.get_cards().map((card) => card.model),
+                context: this._arrangement.get_models(),
                 query: query,
             });
         });
-        this._arrangement.add_card(card);
     },
 
     _finish_search: function (query) {
-        let count = this._arrangement.get_cards().length;
+        let count = this._arrangement.get_models().length;
         if (count > 0) {
             this.visible_child_name = RESULTS_PAGE_NAME;
             this.get_style_context().remove_class(StyleClasses.NO_RESULTS);

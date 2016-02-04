@@ -53,20 +53,17 @@ const SuggestedArticlesModule = new Lang.Class({
 
     // Module override
     get_slot_names: function () {
-        return ['arrangement', 'card-type'];
+        return ['arrangement'];
     },
 
     _add_card: function (model) {
-        let card = this.create_submodule('card-type', {
-            model: model,
-        });
+        let card = this._arrangement.add_model(model);
         card.connect('clicked', () => {
             Dispatcher.get_default().dispatch({
                 action_type: Actions.ITEM_CLICKED,
                 model: model,
-                context: this._arrangement.get_cards().map((card) => card.model),
+                context: this._arrangement.get_models(),
             });
         });
-        this._arrangement.add_card(card);
     },
 });

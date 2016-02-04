@@ -45,18 +45,12 @@ const GridArrangement = new Lang.Class({
             GObject.BindingFlags.SYNC_CREATE);
         this.bind_property('spacing', this._flow_box, 'row-spacing',
             GObject.BindingFlags.SYNC_CREATE);
-        this._real_remove = this.remove;
-        this.remove = this.override_remove;
     },
 
-    // Preserve the illusion that the cards are direct children
-    override_remove: function (widget) {
-        if (widget.get_parent() === this) {
-            this._real_remove(widget);
-            return;
-        }
+    // Arrangement override
+    unpack_card: function (card) {
         this._flow_box.get_children().some(flow_box_child => {
-            if (flow_box_child.get_child() === widget) {
+            if (flow_box_child.get_child() === card) {
                 this._flow_box.remove(flow_box_child);
                 return true;
             }
@@ -64,19 +58,8 @@ const GridArrangement = new Lang.Class({
         });
     },
 
-    // Arrangement implementation
-    add_card: function (widget) {
-        this._flow_box.add(widget);
-    },
-
-    // Arrangement implementation
-    get_cards: function () {
-        return this._flow_box.get_children().map((flow_child) => flow_child.get_child());
-    },
-
-    // Arrangement implementation
-    clear: function () {
-        let children = this._flow_box.get_children();
-        children.forEach((child) => this._flow_box.remove(child));
+    // Arrangement override
+    pack_card: function (card) {
+        this._flow_box.add(card);
     },
 });

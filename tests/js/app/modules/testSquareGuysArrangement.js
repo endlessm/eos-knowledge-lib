@@ -3,7 +3,9 @@
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
+const ContentObjectModel = imports.search.contentObjectModel;
 const Minimal = imports.tests.minimal;
+const MockFactory = imports.tests.mockFactory;
 const SquareGuysArrangement = imports.app.modules.squareGuysArrangement;
 const Utils = imports.tests.utils;
 
@@ -12,8 +14,14 @@ Gtk.init(null);
 Minimal.test_arrangement_compliance(SquareGuysArrangement.SquareGuysArrangement);
 
 describe('SquareGuys arrangement', function () {
+    let factory;
+
     beforeEach(function () {
-        this.arrangement = new SquareGuysArrangement.SquareGuysArrangement();
+        factory = new MockFactory.MockFactory();
+        factory.add_named_mock('card', Minimal.MinimalCard);
+        factory.add_named_mock('arrangement', SquareGuysArrangement.SquareGuysArrangement, {
+            'card-type': 'card',
+        });
     });
 
     describe('maximum rows', function () {
@@ -51,56 +59,49 @@ describe('SquareGuys arrangement', function () {
 
     describe('get_max_cards', function () {
         it ('is 4 for one row', function () {
-            let arrangement = new SquareGuysArrangement.SquareGuysArrangement({
+            let arrangement = factory.create_named_module('arrangement', {
                 max_rows: 1,
             });
             expect(arrangement.get_max_cards()).toBe(4);
         });
 
         it ('is 8 for two rows', function () {
-            let arrangement = new SquareGuysArrangement.SquareGuysArrangement({
+            let arrangement = factory.create_named_module('arrangement', {
                 max_rows: 2,
             });
             expect(arrangement.get_max_cards()).toBe(8);
         });
 
         it ('is -1 if max rows unset', function () {
-            let arrangement = new SquareGuysArrangement.SquareGuysArrangement();
+            let arrangement = factory.create_named_module('arrangement');
             expect(arrangement.get_max_cards()).toBe(-1);
         });
     });
 });
 
 function testSizingArrangementForDimensions(message, arr_width, arr_height, max_rows, visible_children, child_width, child_height) {
-    let arrangement, cards, add_card, win;
-
-    beforeEach(function () {
-        arrangement = new SquareGuysArrangement.SquareGuysArrangement({
+    it(message + ' (' + arr_width + 'x' + arr_height + ')', function () {
+        let factory = new MockFactory.MockFactory();
+        factory.add_named_mock('card', Minimal.MinimalCard);
+        factory.add_named_mock('arrangement', SquareGuysArrangement.SquareGuysArrangement, {
+            'card-type': 'card',
+        }, {
             hexpand: false,
             valign: Gtk.Align.START,
             spacing: 0,
             max_rows: max_rows,
         });
-        add_card = (card) => {
-            card.show_all();
-            arrangement.add(card);
-            return card;
-        };
-        cards = [];
-        win = new Gtk.OffscreenWindow();
-    });
+        let arrangement = factory.create_named_module('arrangement');
+        let win = new Gtk.OffscreenWindow();
 
-    afterEach(function () {
-        win.destroy();
-    });
-
-    it (message + ' (' + arr_width + 'x' + arr_height + ')', function () {
         win.add(arrangement);
         win.set_size_request(arr_width, arr_height);
         win.show_all();
 
         for (let i=0; i<8; i++) {
-            cards.push(add_card(new Minimal.MinimalCard()));
+            let model = new ContentObjectModel.ContentObjectModel();
+            arrangement.add_model(model);
+            arrangement.get_card_for_model(model).show_all();
         }
 
         win.queue_resize();
@@ -115,5 +116,7 @@ function testSizingArrangementForDimensions(message, arr_width, arr_height, max_
                 expect(card.get_child_visible()).toBe(false);
             }
         });
+
+        win.destroy();
     });
 }

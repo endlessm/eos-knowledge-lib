@@ -53,7 +53,9 @@ describe('Reader window', function () {
         factory.add_named_mock('search-page', Minimal.MinimalPage);
         factory.add_named_mock('standalone-page', Minimal.MinimalBinModule);
         factory.add_named_mock('archive-page', Minimal.MinimalBinModule);
-        factory.add_named_mock('document-arrangement', Minimal.MinimalArrangement);
+        factory.add_named_mock('document-arrangement', Minimal.MinimalArrangement, {
+            'card-type': 'document-card',
+        });
         factory.add_named_mock('lightbox', Minimal.MinimalBinModule);
         factory.add_named_mock('navigation', Minimal.MinimalBinModule);
         factory.add_named_mock('window', ReaderWindow.ReaderWindow, {

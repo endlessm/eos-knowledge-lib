@@ -2,7 +2,9 @@
 
 const Gtk = imports.gi.Gtk;
 
+const ContentObjectModel = imports.search.contentObjectModel;
 const Minimal = imports.tests.minimal;
+const MockFactory = imports.tests.mockFactory;
 const QuarterArrangement = imports.app.modules.quarterArrangement;
 const Utils = imports.tests.utils;
 
@@ -11,14 +13,21 @@ Gtk.init(null);
 Minimal.test_arrangement_compliance(QuarterArrangement.QuarterArrangement);
 
 describe('Quarter Arrangement', function () {
-    let arrangement, win;
+    let arrangement, win, models;
 
     beforeEach(function () {
-        arrangement = new QuarterArrangement.QuarterArrangement();
+        let factory = new MockFactory.MockFactory();
+        factory.add_named_mock('card', Minimal.MinimalCard);
+        factory.add_named_mock('arrangement', QuarterArrangement.QuarterArrangement, {
+            'card-type': 'card',
+        });
+        arrangement = factory.create_named_module('arrangement');
 
+        models = [];
         for (let i = 0; i < 10; i++) {
-            let card = new Minimal.MinimalCard();
-            arrangement.add_card(card);
+            let model = new ContentObjectModel.ContentObjectModel();
+            arrangement.add_model(model);
+            models.push(model);
         }
         win = new Gtk.OffscreenWindow();
         win.add(arrangement);
@@ -38,18 +47,19 @@ describe('Quarter Arrangement', function () {
                 win.queue_resize();
                 Utils.update_gui();
 
-                let all_cards = arrangement.get_cards();
+                let featured_cards = arrangement.get_children().slice(0, featured_cards_per_row);
+                let support_cards = arrangement.get_children().slice(featured_cards_per_row);
 
                 let featured_card_width = Math.floor(arrangement_size / featured_cards_per_row);
                 let support_card_width = Math.floor(arrangement_size / support_cards_per_row);
                 // Test featured cards
-                all_cards.slice(0, featured_cards_per_row).forEach((card) => {
+                featured_cards.forEach(card => {
                     expect(card.get_allocation().width).toBe(featured_card_width);
                     expect(card.get_child_visible()).toBe(true);
                 });
 
                 // Test support cards
-                all_cards.slice(featured_cards_per_row, all_cards.length).forEach((card) => {
+                support_cards.forEach(card => {
                     expect(card.get_allocation().width).toBe(support_card_width);
                     expect(card.get_child_visible()).toBe(true);
                 });

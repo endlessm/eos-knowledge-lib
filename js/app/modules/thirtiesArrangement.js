@@ -54,18 +54,6 @@ const ThirtiesArrangement = new Lang.Class({
         this.parent(props);
     },
 
-    add_card: function (widget) {
-        this.add(widget);
-    },
-
-    get_cards: function () {
-        return this.get_children();
-    },
-
-    clear: function () {
-        this.get_children().forEach((child) => this.remove(child));
-    },
-
     get spacing() {
         return this._spacing;
     },

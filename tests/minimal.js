@@ -40,27 +40,7 @@ const MinimalArrangement = new Lang.Class({
 
     _init: function (props={}) {
         this.parent(props);
-        this._cards = [];
         this.show_all();
-    },
-
-    get_cards: function () {
-        return this._cards;
-    },
-
-    add_card: function (card) {
-        this._cards.push(card);
-    },
-
-    clear: function () {
-        this._cards= [];
-    },
-
-    remove: function (card) {
-        let index = this._cards.indexOf(card);
-        if (index !== -1) {
-            this._cards.splice(index, 1);
-        }
     },
 
     set_transition_type: function (type) {
@@ -261,55 +241,94 @@ const MinimalBinModule = new Lang.Class({
 
 function test_arrangement_compliance(ArrangementClass, extra_slots={}) {
     describe(ArrangementClass.$gtype.name + ' implements Arrangement correctly', function () {
-        let arrangement, cards;
+        let factory, arrangement;
 
         beforeEach(function () {
             jasmine.addMatchers(WidgetDescendantMatcher.customMatchers);
 
-            arrangement = new ArrangementClass();
-            cards = [];
+            factory = new MockFactory.MockFactory();
+            factory.add_named_mock('card', MinimalCard);
+            let slots = {
+                'card-type': 'card',
+            };
+            for (let slot in extra_slots) {
+                factory.add_named_mock(slot, extra_slots[slot]);
+                slots[slot] = slot;
+            }
+            factory.add_named_mock('arrangement', ArrangementClass, slots);
+            arrangement = factory.create_named_module('arrangement');
         });
 
         it('by constructing', function () {
             expect(arrangement).toBeDefined();
         });
 
-        function add_cards(arrangement, ncards) {
+        function add_cards(a, ncards) {
+            let models = [];
             for (let ix = 0; ix < ncards; ix++) {
-                cards.push(new MinimalCard({
-                    model: new ContentObjectModel.ContentObjectModel(),
-                }));
+                let model = new ContentObjectModel.ContentObjectModel();
+                a.add_model(model);
+                models.push(model);
             }
-            cards.forEach(arrangement.add_card, arrangement);
             Utils.update_gui();
+            let created_cards = factory.get_created_named_mocks('card');
+            let cards = models.map(model => created_cards.filter(card => card.model === model)[0]);
+            return cards.slice(cards.length - ncards);
         }
 
         it('by adding cards to the list', function () {
-            add_cards(arrangement, 3);
+            let cards = add_cards(arrangement, 3);
+
             cards.forEach((card) =>
                 expect(arrangement).toHaveDescendant(card));
-            expect(arrangement.get_cards().length).toBe(3);
+            expect(arrangement.get_models().length).toBe(3);
         });
 
         it('by removing cards from the list', function () {
-            add_cards(arrangement, 3);
+            let cards = add_cards(arrangement, 3);
             arrangement.clear();
             Utils.update_gui();
 
             cards.forEach((card) =>
                 expect(arrangement).not.toHaveDescendant(card));
-            expect(arrangement.get_cards().length).toBe(0);
+            expect(arrangement.get_models().length).toBe(0);
         });
 
         it('by being able to remove individual cards', function () {
-            add_cards(arrangement, 3);
-            arrangement.remove(cards[1]);
+            let cards = add_cards(arrangement, 3);
+            let models = arrangement.get_models();
+            arrangement.remove_model(models[1]);
             Utils.update_gui();
 
-            expect(arrangement.get_cards().length).toBe(2);
+            expect(arrangement.get_models().length).toBe(2);
             expect(arrangement).toHaveDescendant(cards[0]);
             expect(arrangement).not.toHaveDescendant(cards[1]);
             expect(arrangement).toHaveDescendant(cards[2]);
+        });
+
+        it('by retrieving the contained models', function () {
+            let cards = add_cards(arrangement, 3);
+
+            cards.forEach(card =>
+                expect(arrangement.get_models()).toContain(card.model));
+        });
+
+        it('by returning the card corresponding to a model', function () {
+            let model1 = new ContentObjectModel.ContentObjectModel();
+            let model2 = new ContentObjectModel.ContentObjectModel();
+            arrangement.add_model(model1);
+            arrangement.add_model(model2);
+            expect(arrangement.get_card_for_model(model1).model).toBe(model1);
+            expect(arrangement.get_card_for_model(model2).model).toBe(model2);
+        });
+
+        it('by returning a card as it is created', function () {
+            let model1 = new ContentObjectModel.ContentObjectModel();
+            let model2 = new ContentObjectModel.ContentObjectModel();
+            let card1 = arrangement.add_model(model1);
+            let card2 = arrangement.add_model(model2);
+            expect(card1.model).toBe(model1);
+            expect(card2.model).toBe(model2);
         });
     });
 }
@@ -323,10 +342,11 @@ function test_card_container_compliance(action, CardContainerClass, extra_slots=
             factory = new MockFactory.MockFactory();
 
             factory.add_named_mock('card', MinimalCard);
-            factory.add_named_mock('arrangement', MinimalArrangement);
+            factory.add_named_mock('arrangement', MinimalArrangement, {
+                'card-type': 'card',
+            });
             let slots = {
                 'arrangement': 'arrangement',
-                'card-type': 'card',
             };
             for (let slot in extra_slots) {
                 factory.add_named_mock(slot, extra_slots[slot]);
@@ -346,27 +366,33 @@ function test_card_container_compliance(action, CardContainerClass, extra_slots=
             });
 
             it('does not fade in the first batch of cards', function () {
+                let model = new ContentObjectModel.ContentObjectModel();
                 dispatcher.dispatch({
                     action_type: action,
-                    models: [new ContentObjectModel.ContentObjectModel()],
+                    models: [model],
                 });
                 Utils.update_gui();
-                expect(arrangement.get_cards()[0].fade_in).not.toHaveBeenCalled();
+                expect(arrangement.get_card_for_model(model).fade_in)
+                    .not.toHaveBeenCalled();
             });
 
             it('does so otherwise when requested', function () {
+                let model = new ContentObjectModel.ContentObjectModel();
                 dispatcher.dispatch({
                     action_type: action,
-                    models: [new ContentObjectModel.ContentObjectModel()],
+                    models: [model],
                 });
                 Utils.update_gui();
-                expect(arrangement.get_cards()[0].fade_in).not.toHaveBeenCalled();
+                expect(arrangement.get_card_for_model(model).fade_in)
+                    .not.toHaveBeenCalled();
+                model = new ContentObjectModel.ContentObjectModel();
                 dispatcher.dispatch({
                     action_type: action,
-                    models: [new ContentObjectModel.ContentObjectModel()],
+                    models: [model],
                 });
                 Utils.update_gui();
-                expect(arrangement.get_cards()[1].fade_in).toHaveBeenCalled();
+                expect(arrangement.get_card_for_model(model).fade_in)
+                    .toHaveBeenCalled();
             });
         });
 
@@ -375,18 +401,22 @@ function test_card_container_compliance(action, CardContainerClass, extra_slots=
                 fade_cards: false,
             });
             let arrangement = factory.get_last_created_named_mock('arrangement');
+            let model = new ContentObjectModel.ContentObjectModel();
             dispatcher.dispatch({
                 action_type: action,
-                models: [new ContentObjectModel.ContentObjectModel()],
+                models: [model],
             });
             Utils.update_gui();
-            expect(arrangement.get_cards()[0].fade_in).not.toHaveBeenCalled();
+            expect(arrangement.get_card_for_model(model).fade_in)
+                .not.toHaveBeenCalled();
+            model = new ContentObjectModel.ContentObjectModel();
             dispatcher.dispatch({
                 action_type: action,
-                models: [new ContentObjectModel.ContentObjectModel()],
+                models: [model],
             });
             Utils.update_gui();
-            expect(arrangement.get_cards()[1].fade_in).not.toHaveBeenCalled();
+            expect(arrangement.get_card_for_model(model).fade_in)
+                .not.toHaveBeenCalled();
         });
     });
 }

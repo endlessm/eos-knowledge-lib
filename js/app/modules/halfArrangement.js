@@ -52,21 +52,6 @@ const HalfArrangement = new Lang.Class({
         this.parent(props);
     },
 
-    // Arrangement implementation
-    add_card: function (widget) {
-        this.add(widget);
-    },
-
-    // Arrangement implementation
-    get_cards: function () {
-        return this.get_children();
-    },
-
-    // Arrangement implementation
-    clear: function () {
-        this.get_children().forEach((child) => this.remove(child));
-    },
-
     // Removal of any card should cause a recalculate
     vfunc_remove: function (widget) {
         this.parent(widget);

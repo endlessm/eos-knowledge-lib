@@ -24,7 +24,6 @@ const StyleClasses = imports.app.styleClasses;
  *
  * Slots:
  *   arrangement
- *   card-type
  */
 const SetGroupModule = new Lang.Class({
     Name: 'SetGroupModule',
@@ -52,7 +51,6 @@ const SetGroupModule = new Lang.Class({
 
     _init: function (props={}) {
         this.parent(props);
-        this._cards = [];
         this.has_more_content = false;
         this._arrangement = this.create_submodule('arrangement');
         this.add(this._arrangement);
@@ -72,7 +70,7 @@ const SetGroupModule = new Lang.Class({
                     break;
                 case Actions.APPEND_SETS:
                     let fade = this.fade_cards &&
-                        (this._arrangement.get_cards().length > 0);
+                        (this._arrangement.get_models().length > 0);
                     payload.models.forEach(this._add_card.bind(this, fade));
 
                     if (this._arrangement instanceof InfiniteScrolledWindow.InfiniteScrolledWindow) {
@@ -91,31 +89,29 @@ const SetGroupModule = new Lang.Class({
 
     // Module override
     get_slot_names: function () {
-        return ['arrangement', 'card-type'];
+        return ['arrangement'];
     },
 
     _add_card: function (fade, model) {
-        let card = this.create_submodule('card-type', {
-            model: model,
-        });
+        if (this._arrangement.get_models().length === this.max_children)
+            return;
+
+        let card = this._arrangement.add_model(model);
         if (fade)
             card.fade_in();
         card.connect('clicked', () => {
             Dispatcher.get_default().dispatch({
                 action_type: Actions.SET_CLICKED,
                 model: model,
-                context: this._arrangement.get_cards().map((card) => card.model),
+                context: this._arrangement.get_models(),
             });
         });
-        this._cards.push(card);
-        if (this._cards.length <= this.max_children) {
-            this._arrangement.add_card(card);
-        }
         this._check_more_content();
     },
 
     _check_more_content: function () {
-        this.has_more_content = this._cards.length > this.max_children || !this._arrangement.all_visible;
+        this.has_more_content = this._arrangement.get_models().length > this.max_children ||
+            !this._arrangement.all_visible;
         this.notify('has-more-content');
     },
 

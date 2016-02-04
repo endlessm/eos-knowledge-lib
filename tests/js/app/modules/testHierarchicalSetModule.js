@@ -46,7 +46,7 @@ describe('Hierarchical set module', function () {
     it('starts with an empty arrangement', function () {
         expect(arrangement).toBeDefined();
         expect(module).toHaveDescendant(arrangement);
-        expect(arrangement.get_cards().length).toBe(0);
+        expect(arrangement.get_models().length).toBe(0);
     });
 
     it('does not create a card widget at construct time', function () {
@@ -101,7 +101,7 @@ describe('Hierarchical set module', function () {
         });
 
         it('adds article cards when receiving article models', function () {
-            expect(arrangement.get_cards().length).toBe(articles.length);
+            expect(arrangement.get_models().length).toBe(articles.length);
         });
 
         it('clears all items but leaves title and arrangement', function () {
@@ -128,13 +128,14 @@ describe('Hierarchical set module', function () {
 
         describe('when clicking', function () {
             it('on a card in an arrangement, dispatches item-clicked', function () {
-                let card = arrangement.get_cards()[0];
+                let model = arrangement.get_models()[0];
+                let card = arrangement.get_card_for_model(model);
                 card.emit('clicked');
                 Utils.update_gui();
                 let payload = dispatcher.last_payload_with_type(Actions.ITEM_CLICKED);
                 expect(payload.context_label).toEqual("Set Title");
                 expect(dispatcher.last_payload_with_type(Actions.ITEM_CLICKED))
-                    .toEqual(jasmine.objectContaining({ model: card.model }));
+                    .toEqual(jasmine.objectContaining({ model: model }));
             });
         });
 

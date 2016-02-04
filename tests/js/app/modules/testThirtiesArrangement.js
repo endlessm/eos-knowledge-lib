@@ -2,8 +2,9 @@
 
 const Gtk = imports.gi.Gtk;
 
+const ContentObjectModel = imports.search.contentObjectModel;
 const Minimal = imports.tests.minimal;
-const MockWidgets = imports.tests.mockWidgets;
+const MockFactory = imports.tests.mockFactory;
 const ThirtiesArrangement = imports.app.modules.thirtiesArrangement;
 const Utils = imports.tests.utils;
 
@@ -15,7 +16,12 @@ describe('Thirties arrangement', function () {
     let arrangement;
 
     beforeEach(function () {
-        arrangement = new ThirtiesArrangement.ThirtiesArrangement();
+        let factory = new MockFactory.MockFactory();
+        factory.add_named_mock('card', Minimal.MinimalCard);
+        factory.add_named_mock('arrangement', ThirtiesArrangement.ThirtiesArrangement, {
+            'card-type': 'card',
+        });
+        arrangement = factory.create_named_module('arrangement');
     });
 
     describe('sizing allocation', function () {
@@ -23,8 +29,8 @@ describe('Thirties arrangement', function () {
 
         beforeEach(function () {
             for (let i = 0; i < 10; i++) {
-                let card = new Minimal.MinimalCard();
-                arrangement.add_card(card);
+                let model = new ContentObjectModel.ContentObjectModel();
+                arrangement.add_model(model);
             }
             win = new Gtk.OffscreenWindow();
             win.add(arrangement);

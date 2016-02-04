@@ -18,7 +18,6 @@ const Module = imports.app.interfaces.module;
  *
  * Slots:
  *   arrangement
- *   card-type
  */
 const ItemGroupModule = new Lang.Class({
     Name: 'ItemGroupModule',
@@ -52,7 +51,7 @@ const ItemGroupModule = new Lang.Class({
                     break;
                 case Actions.APPEND_ITEMS:
                     let fade = this.fade_cards &&
-                        (this._arrangement.get_cards().length > 0);
+                        (this._arrangement.get_models().length > 0);
                     payload.models.forEach(this._add_card.bind(this, fade));
                     if (this._arrangement instanceof InfiniteScrolledWindow.InfiniteScrolledWindow) {
                         this._arrangement.new_content_added();
@@ -70,22 +69,19 @@ const ItemGroupModule = new Lang.Class({
 
     // Module override
     get_slot_names: function () {
-        return ['arrangement', 'card-type'];
+        return ['arrangement'];
     },
 
     _add_card: function (fade, model) {
-        let card = this.create_submodule('card-type', {
-            model: model,
-        });
+        let card = this._arrangement.add_model(model);
         if (fade)
             card.fade_in();
         card.connect('clicked', () => {
             Dispatcher.get_default().dispatch({
                 action_type: Actions.ITEM_CLICKED,
                 model: model,
-                context: this._arrangement.get_cards().map((card) => card.model),
+                context: this._arrangement.get_models(),
             });
         });
-        this._arrangement.add_card(card);
     },
 });

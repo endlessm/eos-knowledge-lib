@@ -3,8 +3,10 @@
 const Gtk = imports.gi.Gtk;
 
 const Card = imports.app.interfaces.card;
+const ContentObjectModel = imports.search.contentObjectModel;
 const HalfArrangement = imports.app.modules.halfArrangement;
 const Minimal = imports.tests.minimal;
+const MockFactory = imports.tests.mockFactory;
 const Utils = imports.tests.utils;
 
 Gtk.init(null);
@@ -13,19 +15,18 @@ Minimal.test_arrangement_compliance(HalfArrangement.HalfArrangement);
 
 describe('Half Arrangement', function () {
     beforeEach(function () {
-        this.arrangement = new HalfArrangement.HalfArrangement();
+        let factory = new MockFactory.MockFactory();
+        factory.add_named_mock('card', Minimal.MinimalCard);
+        factory.add_named_mock('arrangement', HalfArrangement.HalfArrangement, {
+            'card-type': 'card',
+        });
+        this.arrangement = factory.create_named_module('arrangement');
     });
 
     describe('sizing allocation', function () {
         beforeEach(function () {
-            let add_card = (card) => {
-                card.show_all();
-                this.arrangement.add_card(card);
-                return card;
-            };
-
             for (let i = 0; i < 5; i++)
-                add_card(new Minimal.MinimalCard());
+                this.arrangement.add_model(new ContentObjectModel.ContentObjectModel());
 
             this.win = new Gtk.OffscreenWindow();
             this.win.add(this.arrangement);
@@ -96,7 +97,7 @@ function testSizingArrangementForDimensions(arrangement_size, card_width, card_h
         this.win.queue_resize();
         Utils.update_gui();
 
-        let all_cards = this.arrangement.get_cards();
+        let all_cards = this.arrangement.get_children();
         // Test featured cards
         all_cards.slice(0, 2).forEach((card) => {
             expect(card.get_child_visible()).toBe(true);
@@ -116,16 +117,16 @@ function testSizingArrangementForDimensions(arrangement_size, card_width, card_h
 function testFeaturedCardsInArrangement(total_cards, featured_cards, featured_size, non_featured_size) {
     it('treats ' + featured_cards + ' cards as featured when ' + total_cards + ' cards are added', function () {
         for (let i = 0; i < total_cards; i++) {
-            this.arrangement.add_card(new Minimal.MinimalCard());
+            this.arrangement.add_model(new ContentObjectModel.ContentObjectModel());
         }
         this.win.show_all();
         this.win.queue_resize();
         Utils.update_gui();
 
-        this.arrangement.get_cards().slice(0, featured_cards).forEach((card) => {
+        this.arrangement.get_children().slice(0, featured_cards).forEach((card) => {
             expect(card.get_allocation().width).toBe(featured_size);
         });
-        this.arrangement.get_cards().slice(featured_cards).forEach((card) => {
+        this.arrangement.get_children().slice(featured_cards).forEach((card) => {
             expect(card.get_allocation().width).toBe(non_featured_size);
         });
     });

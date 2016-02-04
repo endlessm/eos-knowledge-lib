@@ -85,7 +85,7 @@ const HierarchicalSetModule = new Lang.Class({
 
     // Module override
     get_slot_names: function () {
-        return ['arrangement', 'card-type', 'set-card-type'];
+        return ['arrangement', 'set-card-type'];
     },
 
     show_more_content: function () {
@@ -127,7 +127,7 @@ const HierarchicalSetModule = new Lang.Class({
                 if (model instanceof SetObjectModel.SetObjectModel) {
                     this._add_set_card(model);
                 } else if (model instanceof ArticleObjectModel.ArticleObjectModel) {
-                    this._add_article_card(model);
+                    this._arrangement.add_model(model);
                 }
             });
             Dispatcher.get_default().dispatch({
@@ -140,21 +140,6 @@ const HierarchicalSetModule = new Lang.Class({
             action_type: Actions.SET_READY,
             model: model,
         });
-    },
-
-    _add_article_card: function (model) {
-        let card = this.create_submodule('card-type', {
-            model: model,
-        });
-        card.connect('clicked', () => {
-            Dispatcher.get_default().dispatch({
-                action_type: Actions.ITEM_CLICKED,
-                model: model,
-                context: this._arrangement.get_cards().map((card) => card.model),
-                context_label: this._current_model.title,
-            });
-        });
-        this._arrangement.add_card(card);
     },
 
     _add_set_card: function (model) {

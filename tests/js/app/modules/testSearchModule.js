@@ -32,11 +32,11 @@ describe('Search module', function () {
         dispatcher = MockDispatcher.mock_default();
         factory = new MockFactory.MockFactory();
         factory.add_named_mock('results-card', Minimal.MinimalCard);
-        factory.add_named_mock('results-arrangement',
-            Minimal.MinimalArrangement);
+        factory.add_named_mock('results-arrangement', Minimal.MinimalArrangement, {
+            'card-type': 'results-card',
+        });
         factory.add_named_mock('search-module', SearchModule.SearchModule, {
             'arrangement': 'results-arrangement',
-            'card-type': 'results-card',
         });
         search_module = factory.create_named_module('search-module');
         search_module.show_all();
@@ -126,7 +126,7 @@ describe('Search module', function () {
             action_type: Actions.APPEND_SEARCH,
             models: [new ContentObjectModel.ContentObjectModel()],
         });
-        expect(arrangement.get_cards().length).toBe(1);
+        expect(arrangement.get_models().length).toBe(1);
     });
 
     it('removes old results from the card container when adding new ones', function () {
@@ -137,7 +137,7 @@ describe('Search module', function () {
         dispatcher.dispatch({
             action_type: Actions.CLEAR_SEARCH,
         });
-        expect(arrangement.get_cards().length).toBe(0);
+        expect(arrangement.get_models().length).toBe(0);
     });
 
     it('dispatches when an infinite scrolled window arrangement reaches the end', function () {
@@ -153,18 +153,13 @@ describe('Search module', function () {
                 'spacing': GObject.ParamSpec.override('spacing',
                     Arrangement.Arrangement),
             },
-            _init: function (props) {
-                this.parent(props);
-            },
-            add_card: function () {},
-            get_cards: function () { return []; },
-            clear: function () {},
         });
 
-        factory.add_named_mock('infinite-arrangement', InfiniteArrangement);
+        factory.add_named_mock('infinite-arrangement', InfiniteArrangement, {
+            'card-type': 'results-card',
+        });
         factory.add_named_mock('infinite-module', SearchModule.SearchModule, {
             'arrangement': 'infinite-arrangement',
-            'card-type': 'results-card',
         });
         search_module = factory.create_named_module('infinite-module');
         arrangement = factory.get_created_named_mocks('infinite-arrangement')[0];
@@ -201,7 +196,7 @@ describe('Search module', function () {
             action_type: Actions.APPEND_SEARCH,
             models: [ model ],
         });
-        arrangement.get_cards()[0].emit('clicked');
+        arrangement.get_card_for_model(model).emit('clicked');
         Utils.update_gui();
         let payload = dispatcher.last_payload_with_type(Actions.SEARCH_CLICKED);
         let matcher = jasmine.objectContaining({

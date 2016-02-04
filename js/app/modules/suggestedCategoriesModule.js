@@ -24,7 +24,6 @@ const Utils = imports.app.utils;
  *
  * Slots:
  *   arrangement
- *   card-type
  */
 const SuggestedCategoriesModule = new Lang.Class({
     Name: 'SuggestedCategoriesModule',
@@ -124,27 +123,24 @@ const SuggestedCategoriesModule = new Lang.Class({
 
     // Module override
     get_slot_names: function () {
-        return ['arrangement', 'card-type'];
+        return ['arrangement'];
     },
 
     _add_card: function (model) {
-        let card = this.create_submodule('card-type', {
-            model: model,
-        });
+        let card = this._arrangement.add_model(model);
         card.connect('clicked', () => {
             Dispatcher.get_default().dispatch({
                 action_type: Actions.SET_CLICKED,
                 model: model,
-                context: this._arrangement.get_cards().map((card) => card.model),
+                context: this._arrangement.get_models(),
             });
         });
-        this._arrangement.add_card(card);
     },
 
     _filter_sets: function (sets) {
-        this._arrangement.get_cards().forEach((card) => {
-            if (sets.indexOf(card.model.ekn_id) !== -1) {
-                this._arrangement.remove(card);
+        this._arrangement.get_models().forEach(model => {
+            if (sets.indexOf(model.ekn_id) !== -1) {
+                this._arrangement.remove_model(model);
             }
         });
     },

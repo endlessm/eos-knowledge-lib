@@ -4,6 +4,7 @@ Gtk.init(null);
 
 const ContentObjectModel = imports.search.contentObjectModel;
 const Minimal = imports.tests.minimal;
+const MockFactory = imports.tests.mockFactory;
 const TiledGridArrangement = imports.app.modules.tiledGridArrangement;
 const Utils = imports.tests.utils;
 
@@ -13,16 +14,20 @@ describe('Tiled grid arrangement', function () {
     let arrangement, cards;
 
     beforeEach(function () {
-        arrangement = new TiledGridArrangement.TiledGridArrangement();
+        let factory = new MockFactory.MockFactory();
+        factory.add_named_mock('card', Minimal.MinimalCard);
+        factory.add_named_mock('arrangement', TiledGridArrangement.TiledGridArrangement, {
+            'card-type': 'card',
+        });
+        arrangement = factory.create_named_module('arrangement');
         cards = [];
     });
 
     function add_cards(ncards) {
-        for (let ix = 0; ix < ncards; ix++)
-            cards.push(new Minimal.MinimalCard({
-                model: new ContentObjectModel.ContentObjectModel(),
-            }));
-        cards.forEach(arrangement.add_card, arrangement);
+        for (let ix = 0; ix < ncards; ix++) {
+            let model = new ContentObjectModel.ContentObjectModel();
+            cards.push(arrangement.add_model(model));
+        }
         Utils.update_gui();
     }
 

@@ -91,8 +91,7 @@ const HighlightsModule = new Lang.Class({
 
     // Module override
     get_slot_names: function () {
-        return ['large-arrangement', 'small-arrangement', 'card-type',
-            'header-card-type', 'large-card-type'];
+        return ['large-arrangement', 'small-arrangement', 'header-card-type'];
     },
 
     _add_set_card: function (model) {
@@ -111,18 +110,15 @@ const HighlightsModule = new Lang.Class({
     },
 
     _add_article_card: function (model, card_slot, arrangement) {
-        let card = this.create_submodule(card_slot, {
-            model: model,
-        });
+        let card = arrangement.add_model(model);
         card.connect('clicked', () => {
             Dispatcher.get_default().dispatch({
                 action_type: Actions.ITEM_CLICKED,
                 model: model,
-                context: arrangement.get_cards().map((card) => card.model),
+                context: arrangement.get_models(),
                 context_label: _("Highlights"),
             });
         });
-        arrangement.add_card(card);
     },
 
     // Load all articles referenced by the shown arrangements in order to

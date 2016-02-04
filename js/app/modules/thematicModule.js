@@ -86,7 +86,7 @@ const ThematicModule = new Lang.Class({
 
     // Module override
     get_slot_names: function () {
-        return ['arrangement', 'card-type', 'header-card-type'];
+        return ['arrangement', 'header-card-type'];
     },
 
     show_more_content: function () {
@@ -154,18 +154,15 @@ const ThematicModule = new Lang.Class({
     },
 
     _add_article_card: function (model, arrangement) {
-        let card = this.create_submodule('card-type', {
-            model: model,
-        });
+        let card = arrangement.add_model(model);
         card.connect('clicked', () => {
             Dispatcher.get_default().dispatch({
                 action_type: Actions.ITEM_CLICKED,
                 model: model,
-                context: arrangement.get_cards().map((card) => card.model),
+                context: arrangement.get_models(),
                 context_label: arrangement.set_title,
             });
         });
-        arrangement.add_card(card);
     },
 
     _add_set: function (model) {

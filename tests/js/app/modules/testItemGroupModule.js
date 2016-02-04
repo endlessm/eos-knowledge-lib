@@ -19,11 +19,12 @@ describe('Item group module', function () {
         dispatcher = MockDispatcher.mock_default();
 
         factory = new MockFactory.MockFactory();
-        factory.add_named_mock('test-arrangement', Minimal.MinimalArrangement);
+        factory.add_named_mock('test-arrangement', Minimal.MinimalArrangement, {
+            'card-type': 'home-card',
+        });
         factory.add_named_mock('home-card', Minimal.MinimalCard);
         factory.add_named_mock('item-group', ItemGroupModule.ItemGroupModule, {
             'arrangement': 'test-arrangement',
-            'card-type': 'home-card',
         });
         group = factory.create_named_module('item-group');
         arrangement = factory.get_created_named_mocks('test-arrangement')[0];
@@ -52,7 +53,7 @@ describe('Item group module', function () {
             action_type: Actions.APPEND_ITEMS,
             models: models,
         });
-        expect(arrangement.get_cards().length).toBe(3);
+        expect(arrangement.get_models().length).toBe(3);
         expect(factory.get_created_named_mocks('home-card').length).toBe(3);
     });
 
@@ -74,7 +75,7 @@ describe('Item group module', function () {
             action_type: Actions.APPEND_ITEMS,
             models: models,
         });
-        expect(arrangement.get_cards().length).toBe(3);
+        expect(arrangement.get_models().length).toBe(3);
         expect(factory.get_created_named_mocks('home-card').length).toBe(6);
     });
 
@@ -84,7 +85,7 @@ describe('Item group module', function () {
             action_type: Actions.APPEND_ITEMS,
             models: [ model ],
         });
-        arrangement.get_cards()[0].emit('clicked');
+        arrangement.get_card_for_model(model).emit('clicked');
         Utils.update_gui();
         let payload = dispatcher.last_payload_with_type(Actions.ITEM_CLICKED);
         let matcher = jasmine.objectContaining({
