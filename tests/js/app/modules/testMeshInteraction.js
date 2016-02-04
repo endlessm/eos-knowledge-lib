@@ -90,6 +90,7 @@ describe('Mesh interaction', function () {
     it('can be constructed', function () {});
 
     it('dispatches category models for home page', () => {
+        mesh.testname = 'dispatches category models for home page';
         mesh.desktop_launch(0);
         Utils.update_gui();
         let payloads = dispatcher.dispatched_payloads.filter((payload) => {
@@ -101,6 +102,7 @@ describe('Mesh interaction', function () {
     });
 
     it('dispatches present window on launch from desktop', function () {
+        mesh.testname = 'dispatches present window on launch from desktop';
         mesh.desktop_launch(0);
         Utils.update_gui();
         expect(dispatcher.last_payload_with_type(Actions.PRESENT_WINDOW)).toBeDefined();
@@ -118,6 +120,7 @@ describe('Mesh interaction', function () {
     });
 
     it('dispatches present window only once', function () {
+        mesh.testname = 'dispatches present window only once';
         engine.get_object_by_id_finish.and.returnValue(new ContentObjectModel.ContentObjectModel());
 
         mesh.desktop_launch(0);
@@ -170,11 +173,13 @@ describe('Mesh interaction', function () {
     });
 
     it('cannot go back from the search page after launch from search', function () {
+        mesh.testname = 'cannot go back from the search page after launch from search';
         dispatcher.print_error = true;
-        mesh.print_error = true;
+        window.print_error = true;
         mesh.BRAND_PAGE_TIME_MS = 0;
         mesh.search(0, 'query');
         Utils.update_gui();
+        window.print_error = false;
         printerr('HISTORY');
         mesh._history_presenter.history_model.get_back_list().forEach((item) => printerr(item.page_type));
         printerr(mesh._history_presenter.history_model.current_item.page_type);
@@ -185,12 +190,14 @@ describe('Mesh interaction', function () {
     });
 
     it('cannot go back from the article page after launch from search result', function () {
+        mesh.testname = 'cannot go back from the article page after launch from search result';
         dispatcher.print_error = true;
-        mesh.print_error = true;
+        window.print_error = true;
         mesh.BRAND_PAGE_TIME_MS = 0;
         engine.get_object_by_id_finish.and.returnValue(new ContentObjectModel.ContentObjectModel());
         mesh.activate_search_result(0, 'ekn://foo/bar', 'query');
         Utils.update_gui();
+        window.print_error = false;
         printerr('HISTORY');
         mesh._history_presenter.history_model.get_back_list().forEach((item) => printerr(item.page_type));
         printerr(mesh._history_presenter.history_model.current_item.page_type);

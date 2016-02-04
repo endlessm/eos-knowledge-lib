@@ -243,19 +243,19 @@ const MeshInteraction = new Lang.Class({
 
     _show_home_if_ready: function () {
         let item = this._history_presenter.history_model.current_item;
-        if (this.print_error)
-            printerr('IN SHOW HOME', item, item.page_type);
+        if (window.print_error)
+            printerr('IN SHOW HOME', this.testname, item, item.page_type);
         if (!item || item.page_type !== this.HOME_PAGE)
             return;
-        if (this.print_error)
+        if (window.print_error)
             printerr('PASSED FIRST');
         if (!this._home_content_loaded)
             return;
-        if (this.print_error)
+        if (window.print_error)
             printerr('PASSED SECOND');
         if (this._brand_page_timeout_id)
             return;
-        if (this.print_error)
+        if (window.print_error)
             printerr('PASSED THIRD');
         Dispatcher.get_default().dispatch({
             action_type: Actions.SHOW_HOME_PAGE,
