@@ -124,7 +124,7 @@ const Card = new Lang.Interface({
          */
         'highlight-string': GObject.ParamSpec.string('highlight-string',
             'Highlight string', 'Substring to be highlighted on card',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            GObject.ParamFlags.READWRITE,
             ''),
     },
 
@@ -142,6 +142,20 @@ const Card = new Lang.Interface({
         if (this._css)
             return this._css;
         return '';
+    },
+
+    get highlight_string () {
+        if (this._highlight_string)
+            return this._highlight_string;
+        return '';
+    },
+
+    set highlight_string (value) {
+        if (this._highlight_string === value)
+            return;
+        this._highlight_string = value;
+        this.update_highlight_string();
+        this.notify('highlight-string');
     },
 
     // Overridable in tests; otherwise keep synchronized with the CSS
@@ -251,6 +265,8 @@ const Card = new Lang.Interface({
      *
      * Sets up a label that should highlight any substrings within it that
      * match the card's highlight-string property.
+     * Does the same as <set_label_or_hide()> but highlights the highlight
+     * string in the label as well.
      */
     set_label_with_highlight: function (label, str) {
         // parenthesize the targeted string so we can reference it later on in
@@ -271,11 +287,41 @@ const Card = new Lang.Interface({
     },
 
     /**
+     * Method: update_highlight_string
+     * Implement for highlighting card titles and synopses
+     *
+     * Implement this method in order to allow highlighting search terms on
+     * card titles and synopses.
+     * If not overridden, then setting <highlight-string> will have no effect.
+     *
+     * Note that this may be called early in the construct phase of your object,
+     * so make sure that you check whether any widgets you access exist.
+     * Also, make sure to call it after chaining up in your constructor.
+     *
+     * There is no need to chain up when overriding this method, since it has no
+     * effect by default.
+     */
+    update_highlight_string: function () {
+        // no-op unless overridden, but not mandatory to override
+    },
+
+    /**
      * Method: set_title_label_from_model
      *
      * Sets up a label to show the model's title.
      */
     set_title_label_from_model: function (label) {
+        this.set_label_or_hide(label,
+            Utils.format_capitals(this.model.title, this.title_capitalization));
+    },
+
+    /**
+     * Method: set_title_label_with_highlight
+     *
+     * Sets up a label to show the model's title, and also highlights the
+     * highlight string in the title.
+     */
+    set_title_label_with_highlight: function (label) {
         this.set_label_with_highlight(label,
             Utils.format_capitals(this.model.title, this.title_capitalization));
     },

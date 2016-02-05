@@ -2,7 +2,8 @@
 
 /* exported MinimalArrangement, MinimalBackCover, MinimalCard, MinimalDocumentCard,
 MinimalPage, MinimalHomePage, MinimalInteraction, MinimalBinModule, MinimalModule,
-test_arrangement_compliance, test_card_container_compliance */
+test_arrangement_compliance, test_card_container_compliance,
+test_card_highlight_string_compliance */
 
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
@@ -239,6 +240,40 @@ const MinimalBinModule = new Lang.Class({
     },
 });
 
+function test_card_highlight_string_compliance(CardClass) {
+    describe(CardClass.$gtype.name + ' implements the optional highlighting part of Card', function () {
+        let model, card;
+
+        beforeEach(function () {
+            model = new ContentObjectModel.ContentObjectModel({
+                title: '!!! containing hippo',
+                synopsis: '@@@ synopsis also containing hippo',
+            });
+            card = new CardClass({
+                model: model,
+                highlight_string: 'hippo',
+            });
+        });
+        it('by highlighting a search string when constructed', function () {
+            expect(Gtk.test_find_label(card, '*!!!*').label).toMatch(/<span.*>hippo<\/span>/i);
+            expect(Gtk.test_find_label(card, '*@@@*').label).toMatch(/<span.*>hippo<\/span>/i);
+        });
+
+        it('by de-highlighting a search string', function () {
+            card.highlight_string = '';
+            expect(Gtk.test_find_label(card, '*!!!*').label).toMatch(/ hippo$/i);
+            expect(Gtk.test_find_label(card, '*@@@*').label).toMatch(/ hippo$/i);
+        });
+
+        it('by highlighting a search string', function () {
+            card = new CardClass({ model: model });
+            card.highlight_string = 'hippo';
+            expect(Gtk.test_find_label(card, '*!!!*').label).toMatch(/<span.*>hippo<\/span>/i);
+            expect(Gtk.test_find_label(card, '*@@@*').label).toMatch(/<span.*>hippo<\/span>/i);
+        });
+    });
+}
+
 function test_arrangement_compliance(ArrangementClass, extra_slots={}) {
     describe(ArrangementClass.$gtype.name + ' implements Arrangement correctly', function () {
         let factory, arrangement;
@@ -329,6 +364,19 @@ function test_arrangement_compliance(ArrangementClass, extra_slots={}) {
             let card2 = arrangement.add_model(model2);
             expect(card1.model).toBe(model1);
             expect(card2.model).toBe(model2);
+        });
+
+        it('by highlighting strings as cards are added', function () {
+            arrangement.highlight_string('foo');
+            let card = add_cards(arrangement, 1)[0];
+            expect(card.highlight_string).toEqual('foo');
+        });
+
+        it('by highlighting strings on existing cards', function () {
+            let card = add_cards(arrangement, 1)[0];
+            expect(card.highlight_string).not.toEqual('foo');
+            arrangement.highlight_string('foo');
+            expect(card.highlight_string).toEqual('foo');
         });
     });
 }

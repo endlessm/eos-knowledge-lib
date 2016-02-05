@@ -77,9 +77,10 @@ const Arrangement = new Lang.Interface({
      *   the <Card> created for the model, for convenience in connecting signals
      */
     add_model: function (model) {
-        let card = this.create_submodule('card-type', {
-            model: model,
-        });
+        let card_props = { model: model };
+        if (this._highlight_string)
+            card_props.highlight_string = this._highlight_string;
+        let card = this.create_submodule('card-type', card_props);
         this._cards_by_id().set(model.ekn_id, card);
         this._models_by_id().set(model.ekn_id, model);
         this.pack_card(card);
@@ -167,6 +168,28 @@ const Arrangement = new Lang.Interface({
     clear_highlight: function() {
         for (let card of this._cards_by_id().values()) {
             card.get_style_context().remove_class(StyleClasses.HIGHLIGHTED);
+        }
+    },
+
+    /**
+     * Method: highlight_string
+     * Highlight occurrences of a string on all the cards
+     *
+     * This method causes all occurrences of @str to be highlighted on each
+     * card that the arrangement is showing, using <Card.highlight-string>.
+     *
+     * Parameters:
+     *   str - a string, or **null** to remove highlights
+     */
+    highlight_string: function (str) {
+        if (this._highlight_string === str)
+            return;
+        this._highlight_string = str;
+
+        for (let card of this._cards_by_id().values()) {
+            let str_to_set = str ? str : '';
+            if (card.highlight_string !== str_to_set)
+                card.highlight_string = str_to_set;
         }
     },
 

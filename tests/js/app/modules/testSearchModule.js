@@ -41,6 +41,7 @@ describe('Search module', function () {
         search_module = factory.create_named_module('search-module');
         search_module.show_all();
         arrangement = factory.get_created_named_mocks('results-arrangement')[0];
+        spyOn(arrangement, 'highlight_string');
     });
 
     it('constructs', function () {});
@@ -195,6 +196,7 @@ describe('Search module', function () {
         dispatcher.dispatch({
             action_type: Actions.APPEND_SEARCH,
             models: [ model ],
+            query: 'foo',
         });
         arrangement.get_card_for_model(model).emit('clicked');
         Utils.update_gui();
@@ -204,6 +206,17 @@ describe('Search module', function () {
             context: [ model ],
         });
         expect(payload).toEqual(matcher);
+    });
+
+    it('tells the arrangement to highlight search strings', function () {
+        let model = new ContentObjectModel.ContentObjectModel();
+        dispatcher.dispatch({
+            action_type: Actions.APPEND_SEARCH,
+            models: [ model ],
+            query: 'foo',
+        });
+        Utils.update_gui();
+        expect(arrangement.highlight_string).toHaveBeenCalledWith('foo');
     });
 });
 

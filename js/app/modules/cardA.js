@@ -47,7 +47,7 @@ const CardA = new Lang.Class({
     _init: function (props={}) {
         this.parent(props);
 
-        this.set_title_label_from_model(this._title_label);
+        this.set_title_label_with_highlight(this._title_label);
 
         if (this.model instanceof SetObjectModel.SetObjectModel) {
             this.set_thumbnail_frame_from_model(this._thumbnail_frame);
@@ -62,7 +62,7 @@ const CardA = new Lang.Class({
             this._pdf_icon.visible = is_pdf;
             this._pdf_label.visible = is_pdf;
 
-            this.set_label_or_hide(this._synopsis_label, this.model.synopsis);
+            this.set_label_with_highlight(this._synopsis_label, this.model.synopsis);
             this._synopsis_label.visible = this._synopsis_label.visible && !is_pdf;
             this._label_adjust_handler = this._synopsis_label.connect_after('size-allocate',
                 this._after_synopsis_label_size_allocate.bind(this));
@@ -84,6 +84,14 @@ const CardA = new Lang.Class({
         this.connect('state-flags-changed', () => {
             this._tweener.set_active((this.get_state_flags() & Gtk.StateFlags.PRELIGHT) !== 0);
         });
+    },
+
+    // Card override
+    update_highlight_string: function () {
+        if (this._title_label)
+            this.set_title_label_with_highlight(this._title_label);
+        if (this._synopsis_label && this._synopsis_label.visible)
+            this.set_label_with_highlight(this._synopsis_label, this.model.synopsis);
     },
 
     _draw_cache_surface: function (cr) {

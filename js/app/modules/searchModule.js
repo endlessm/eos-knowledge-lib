@@ -135,6 +135,7 @@ const SearchModule = new Lang.Class({
             case Actions.APPEND_SEARCH:
                 let fade = this.fade_cards &&
                     (this._arrangement.get_models().length > 0);
+                this._arrangement.highlight_string(payload.query);
                 payload.models.forEach((card) => {
                     this._add_card(card, fade, payload.query);
                 });
@@ -170,10 +171,7 @@ const SearchModule = new Lang.Class({
     _add_card: function (model, fade, query='') {
         if (this._arrangement.get_models().length >= this.max_children)
             return;
-        let card = this._arrangement.add_model(model, {
-            // FIXME highlight_string is totally ignored here
-            highlight_string: query,
-        });
+        let card = this._arrangement.add_model(model);
         if (fade)
             card.fade_in();
         card.connect('clicked', () => {

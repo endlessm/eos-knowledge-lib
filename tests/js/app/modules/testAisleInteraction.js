@@ -451,6 +451,7 @@ describe('Aisle interaction', function () {
                 expect(dispatcher.dispatched_payloads).toContain(jasmine.objectContaining({
                     action_type: Actions.APPEND_SEARCH,
                     models: MOCK_RESULTS,
+                    query: 'Azucar',
                 }));
 
                 expect(dispatcher.dispatched_payloads).toContain(jasmine.objectContaining({

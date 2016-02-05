@@ -221,6 +221,11 @@ EknWindow.parallax.background-right {
     text-shadow: white 0px 1px 0px;
 }
 
+.card-a .title.highlighted,
+.card-a .card-synopsis.highlighted {
+    background-color: #d3d7cf;
+}
+
 .pdf-card-icon {
     padding-top: 10px;
     transition: padding 250ms ease-in-out;

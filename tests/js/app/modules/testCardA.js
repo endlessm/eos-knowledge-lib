@@ -6,6 +6,7 @@ Utils.register_gresource();
 const CardA = imports.app.modules.cardA;
 const ContentObjectModel = imports.search.contentObjectModel;
 const CssClassMatcher = imports.tests.CssClassMatcher;
+const Minimal = imports.tests.minimal;
 const StyleClasses = imports.app.styleClasses;
 
 Gtk.init(null);
@@ -53,3 +54,5 @@ describe('Card A', function () {
         expect(Gtk.test_find_label(card, '*@@@*').use_markup).toBeTruthy();
     });
 });
+
+Minimal.test_card_highlight_string_compliance(CardA.CardA);

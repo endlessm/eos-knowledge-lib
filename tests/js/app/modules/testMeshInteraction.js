@@ -329,7 +329,10 @@ describe('Mesh interaction', function () {
                 Actions.SEARCH_READY
             ])).toBe(true);
             let payload = dispatcher.last_payload_with_type(Actions.APPEND_SEARCH);
-            expect(payload.models).toEqual([ article_model ]);
+            expect(payload).toEqual(jasmine.objectContaining({
+                models: [ article_model ],
+                query: query,
+            }));
         });
 
         it('dispatches search-failed if the search fails', function () {
@@ -396,7 +399,10 @@ describe('Mesh interaction', function () {
                 query: 'foo',
             });
             let payload = dispatcher.last_payload_with_type(Actions.APPEND_SEARCH);
-            expect(payload.models).toEqual([ article_model ]);
+            expect(payload).toEqual(jasmine.objectContaining({
+                models: [ article_model ],
+                query: 'foo',
+            }));
         });
     });
 
