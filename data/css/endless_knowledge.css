@@ -160,7 +160,7 @@ EknWindow.parallax.background-right {
 .section-page-a .card-a .title,
 .search-page-a .card-a .title {
     font-size: 0.9em;
-    text-shadow: 0px 1px 0px white;
+/*    text-shadow: 0px 1px 0px white;*/
 }
 
 .home-page-a .card-a .title {
@@ -200,7 +200,7 @@ EknWindow.parallax.background-right {
 
 .sidebar-template .sidebar .text-card.highlighted {
     background: alpha(white, 0.8);
-    text-shadow: 0px 1px 0px white;
+/*    text-shadow: 0px 1px 0px white;*/
     font-weight: bold;
     transition-property: none;
 }
@@ -215,7 +215,7 @@ EknWindow.parallax.background-right {
     padding: 0px 0px 4px 0px;
     color: #666666;
     font-size: 0.8em;
-    text-shadow: white 0px 1px 0px;
+/*    text-shadow: white 0px 1px 0px;*/
 }
 
 .pdf-card-icon {
@@ -299,19 +299,19 @@ EknWindow.parallax.background-right {
     border-style: solid;
     border-color: alpha(black, 0.3);
     padding: 5px;
-    box-shadow: inset 0px 1px 0px alpha(white, 0.3);
+/*    box-shadow: inset 0px 1px 0px alpha(white, 0.3);*/
 }
 
 .toc-arrow:hover {
     color: white;
     border-color: alpha(black, 0.4);
-    box-shadow: inset 0px 1px 0px alpha(white, 0.4);
+/*    box-shadow: inset 0px 1px 0px alpha(white, 0.4);*/
 }
 
 .toc-arrow:insensitive {
     color: alpha(rgb(204, 204, 204), 0.3);
     border-color: alpha(black, 0.15);
-    box-shadow: inset 0px 1px 0px alpha(white, 0.15);
+/*    box-shadow: inset 0px 1px 0px alpha(white, 0.15);*/
 }
 
 /* Style table of contents when collapsed without section titles */
@@ -342,12 +342,12 @@ EknWindow.parallax.background-right {
     -GtkButton-image-spacing: 15px;
     font-weight: bold;
     font-size: 0.75em;  /* 12pt * 1/12 * 0.75 DPI correction factor */
-    text-shadow: 0px -1px 0px alpha(black, 0.40);
-    icon-shadow: 0px -1px 1px alpha(black, 0.44);
+/*    text-shadow: 0px -1px 0px alpha(black, 0.40);*/
+/*    icon-shadow: 0px -1px 1px alpha(black, 0.44);*/
     background: linear-gradient(to bottom,
                                 @tab-button-gradient-light,
                                 @tab-button-gradient-dark);
-    box-shadow: inset 0px 1px 4px 0px alpha(white, 0.19);
+/*    box-shadow: inset 0px 1px 4px 0px alpha(white, 0.19);*/
 }
 
 .tab-button:hover {
@@ -373,7 +373,7 @@ EknWindow.parallax.background-right {
 }
 
 .home-page-a .search-box, .home-page-b .search-box {
-    box-shadow: inset 0em 0.16em 0.16em alpha(black, 0.14);
+/*    box-shadow: inset 0em 0.16em 0.16em alpha(black, 0.14);*/
     background-image: linear-gradient(-179deg, alpha(black, 0.17) 0%,
                                                alpha(white, 0.13) 79%),
                       linear-gradient(to bottom, white, white);
@@ -396,7 +396,7 @@ EknWindow.parallax.background-right {
 }
 
 .home-page-a .search-box:focus, .home-page-b .search-box:focus {
-    box-shadow: inset 0px 0px 3px 2px #5097D1;
+/*    box-shadow: inset 0px 0px 3px 2px #5097D1;*/
 }
 
 .home-page-a .search-box.image, .home-page-b .search-box.image {
@@ -432,7 +432,7 @@ EknWindow.parallax.background-right {
     background-image: linear-gradient(89deg,
                                       alpha(white, 0.1) 0%,
                                       alpha(black, 0.1) 100%);
-    box-shadow: inset 1px 0px 0px 0px alpha(black, 0.15);
+/*    box-shadow: inset 1px 0px 0px 0px alpha(black, 0.15);*/
 }
 
 .section-page-b .scrollbar.slider,
@@ -476,14 +476,14 @@ EosWindow .scrollbar.slider {
     color: white;
     background-color: alpha(black, 0.2);
     border: 1px solid alpha(white, 0.4);
-    box-shadow: inset 0px 1px 1px 0px alpha(black, 0.5),
-        inset 0px 1px 4px 0px alpha(black, 0.4);
+/*    box-shadow: inset 0px 1px 1px 0px alpha(black, 0.5),
+        inset 0px 1px 4px 0px alpha(black, 0.4);*/
     -EknGrowButton-grow-pixels: 15;
 }
 
 .nav-back-button GtkImage, .nav-forward-button GtkImage {
     color: white;
-    box-shadow: 0px 1px alpha(black, 0.8); /* FIXME: box-shadow outset doesn't currently work in GTK */
+    /*box-shadow: 0px 1px alpha(black, 0.8);*/
 }
 
 .nav-back-button, .nav-forward-button.rtl {
@@ -575,7 +575,7 @@ EosWindow .scrollbar.slider {
 .composite .card-a .card-synopsis {
     color: black;
     font-size: 14px;
-    text-shadow: none;
+/*    text-shadow: none;*/
 }
 
 .composite .home-page-a .search-box,
