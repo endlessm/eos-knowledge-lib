@@ -374,6 +374,14 @@ EknAppBanner {
     color: #c4eefc;
 }
 
+EknTopMenuTemplate .top-menu {
+    background-color: blue;
+}
+
+EknTopMenuTemplate .top-menu .text-card .title {
+    color: white;
+}
+
 .document-card WebKitWebView {
     background-color: white;
 }

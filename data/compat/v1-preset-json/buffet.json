@@ -116,10 +116,39 @@
             }
         },
         "home-page": {
-            "type": "SideMenuTemplate",
+            "type": "TopMenuTemplate",
             "slots": {
-                "context": "context-banner",
-                "sidebar": "main-menu",
+                "top-menu": {
+                    "type": "TwoPieceTemplate",
+                    "properties": {
+                        "orientation": "horizontal"
+                    },
+                    "slots": {
+                        "first": {
+                            "type": "AppBanner",
+                            "properties": {
+                                "max-fraction": 0.1
+                            }
+                        },
+                        "second": {
+                            "type": "SetGroupModule",
+                            "properties": {
+                                "max-children": 7
+                            },
+                            "slots": {
+                                "arrangement": {
+                                    "type": "OverflowArrangement",
+                                    "properties": {
+                                        "orientation": "horizontal"
+                                    }
+                                },
+                                "card-type": {
+                                    "type": "TextCard"
+                                }
+                            }
+                        }
+                    }
+                },
                 "content": {
                     "type": "ScrollingTemplate",
                     "slots": {
