@@ -31,11 +31,9 @@ describe('Thematic module', function () {
             'card-type': 'article-card',
             'header-card-type': 'set-card',
         });
-        module = new ThematicModule.ThematicModule({
-            factory: factory,
-            factory_name: 'highlights',
-            visible: true,
-        });
+        module = factory.create_named_module('highlights');
+
+        module.show();
     });
 
     it('constructs', function () {

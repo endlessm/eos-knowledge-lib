@@ -21,16 +21,11 @@ describe('Split percentage template', function () {
         factory = new MockFactory.MockFactory();
         factory.add_named_mock('start', MockWidgets.MockSizeWidget);
         factory.add_named_mock('end', MockWidgets.MockSizeWidget);
-        factory.add_named_mock('start-template', SplitPercentageTemplate.SplitPercentageTemplate,
-        {
+        factory.add_named_mock('start-template', SplitPercentageTemplate.SplitPercentageTemplate, {
             'start': 'start',
             'end': 'end',
         });
-
-        template = new SplitPercentageTemplate.SplitPercentageTemplate({
-            factory: factory,
-            factory_name: 'start-template',
-        });
+        template = factory.create_named_module('start-template');
 
         start = factory.get_created_named_mocks('start')[0];
         end = factory.get_created_named_mocks('end')[0];

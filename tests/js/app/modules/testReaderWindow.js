@@ -67,13 +67,10 @@ describe('Reader window', function () {
             'lightbox': 'lightbox',
             'search': 'top-bar-search',
             'card-type': 'document-card',
-        });
-
-        view = new ReaderWindow.ReaderWindow({
+        }, {
             application: app,
-            factory: factory,
-            factory_name: 'window',
         });
+        view = factory.create_named_module('window');
         for (let i = 0; i < 15; i++) {
             let model = new ContentObjectModel.ContentObjectModel();
             view.append_article_page(model);

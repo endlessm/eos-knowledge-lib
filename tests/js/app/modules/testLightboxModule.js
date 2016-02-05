@@ -28,11 +28,7 @@ describe('Lightbox module', function () {
         factory.add_named_mock('lightbox', LightboxModule.LightboxModule, {
             'card-type': 'lightbox-card',
         });
-
-        module = new LightboxModule.LightboxModule({
-            factory: factory,
-            factory_name: 'lightbox',
-        });
+        module = factory.create_named_module('lightbox');
     });
 
     it('can be constructed', function () {});

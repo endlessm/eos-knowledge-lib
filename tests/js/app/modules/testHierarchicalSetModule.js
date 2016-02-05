@@ -33,9 +33,7 @@ describe('Hierarchical set module', function () {
             'card-type': 'article-card',
             'set-card-type': 'set-card',
         });
-        module = new HierarchicalSetModule.HierarchicalSetModule({
-            factory: factory,
-            factory_name: 'hierarchical',
+        module = factory.create_named_module('hierarchical', {
             visible: true,
         });
         arrangement = factory.get_last_created_named_mock('arrangement');

@@ -77,13 +77,11 @@ describe('Mesh interaction', function () {
         factory.add_named_mock('window', MockView);
         factory.add_named_mock('interaction', MeshInteraction.MeshInteraction, {
             'window': 'window',
-        });
-        mesh = new MeshInteraction.MeshInteraction({
+        }, {
             application: application,
-            factory: factory,
-            factory_name: 'interaction',
             template_type: 'B',
         });
+        mesh = factory.create_named_module('interaction');
         mesh.BRAND_PAGE_TIME_MS = 0;
         spyOn(mesh, '_record_search_metric');
     });

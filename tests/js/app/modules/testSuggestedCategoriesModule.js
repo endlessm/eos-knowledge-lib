@@ -27,10 +27,7 @@ describe('Suggested categories module', function () {
             'arrangement': 'test-arrangement',
             'card-type': 'home-card',
         });
-        suggestions = new SuggestedCategoriesModule.SuggestedCategoriesModule({
-            factory: factory,
-            factory_name: 'suggested-categories',
-        });
+        suggestions = factory.create_named_module('suggested-categories');
         arrangement = factory.get_created_named_mocks('test-arrangement')[0];
     });
 
@@ -109,9 +106,7 @@ describe('Suggested categories module', function () {
     });
 
     it('adds only featured cards when featured-only is true', function () {
-        suggestions = new SuggestedCategoriesModule.SuggestedCategoriesModule({
-            factory: factory,
-            factory_name: 'suggested-categories',
+        suggestions = factory.create_named_module('suggested-categories', {
             featured_only: true,
         });
         arrangement = factory.get_created_named_mocks('test-arrangement')[1];

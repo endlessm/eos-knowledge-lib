@@ -25,11 +25,7 @@ describe('Scrolling template', function () {
         factory.add_named_mock('template', ScrollingTemplate.ScrollingTemplate, {
             'content': 'placeholder',
         });
-
-        template = new ScrollingTemplate.ScrollingTemplate({
-            factory: factory,
-            factory_name: 'template',
-        });
+        template = factory.create_named_module('template');
     });
 
     it('constructs', function () {});

@@ -21,16 +21,11 @@ describe('Sidebar template', function () {
         factory = new MockFactory.MockFactory();
         factory.add_named_mock('mock-sidebar', Gtk.Label);
         factory.add_named_mock('mock-content', Gtk.Label);
-        factory.add_named_mock('sidebar-template', SidebarTemplate.SidebarTemplate,
-        {
+        factory.add_named_mock('sidebar-template', SidebarTemplate.SidebarTemplate, {
             'sidebar': 'mock-sidebar',
             'content': 'mock-content',
         });
-
-        template = new SidebarTemplate.SidebarTemplate({
-            factory: factory,
-            factory_name: 'sidebar-template',
-        });
+        template = factory.create_named_module('sidebar-template');
 
         sidebar = factory.get_created_named_mocks('mock-sidebar')[0];
         content = factory.get_created_named_mocks('mock-content')[0];

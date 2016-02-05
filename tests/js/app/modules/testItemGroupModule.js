@@ -25,10 +25,7 @@ describe('Item group module', function () {
             'arrangement': 'test-arrangement',
             'card-type': 'home-card',
         });
-        group = new ItemGroupModule.ItemGroupModule({
-            factory: factory,
-            factory_name: 'item-group',
-        });
+        group = factory.create_named_module('item-group');
         arrangement = factory.get_created_named_mocks('test-arrangement')[0];
     });
 

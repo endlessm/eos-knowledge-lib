@@ -53,10 +53,7 @@ describe('Highlights module', function () {
             'header-card-type': 'set-card',
             'large-card-type': 'large-card',
         });
-        module = new HighlightsModule.HighlightsModule({
-            factory: factory,
-            factory_name: 'highlights',
-        });
+        module = factory.create_named_module('highlights');
     });
 
     it('constructs', function () {

@@ -38,10 +38,7 @@ describe('Search module', function () {
             'arrangement': 'results-arrangement',
             'card-type': 'results-card',
         });
-        search_module = new SearchModule.SearchModule({
-            factory: factory,
-            factory_name: 'search-module',
-        });
+        search_module = factory.create_named_module('search-module');
         search_module.show_all();
         arrangement = factory.get_created_named_mocks('results-arrangement')[0];
     });
@@ -169,10 +166,7 @@ describe('Search module', function () {
             'arrangement': 'infinite-arrangement',
             'card-type': 'results-card',
         });
-        search_module = new SearchModule.SearchModule({
-            factory: factory,
-            factory_name: 'infinite-module',
-        });
+        search_module = factory.create_named_module('infinite-module');
         arrangement = factory.get_created_named_mocks('infinite-arrangement')[0];
 
         arrangement.emit('need-more-content');

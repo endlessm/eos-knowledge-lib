@@ -14,23 +14,18 @@ const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 Gtk.init(null);
 
 describe('Paper Template module', function () {
-    let paper_template, factory;
+    let paper_template;
 
     beforeEach(function () {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
         jasmine.addMatchers(WidgetDescendantMatcher.customMatchers);
 
-        factory = new MockFactory.MockFactory();
+        let factory = new MockFactory.MockFactory();
         factory.add_named_mock('mock-content', Gtk.Label);
-        factory.add_named_mock('paper-template', PaperTemplate.PaperTemplate,
-        {
+        factory.add_named_mock('paper-template', PaperTemplate.PaperTemplate, {
             'content': 'mock-content',
         });
-
-        paper_template = new PaperTemplate.PaperTemplate({
-            factory: factory,
-            factory_name: 'paper-template',
-        });
+        paper_template = factory.create_named_module('paper-template');
     });
 
     it('can be constructed', function () {});

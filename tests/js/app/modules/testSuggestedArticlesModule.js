@@ -27,10 +27,7 @@ describe('Suggested articles module', function () {
             'arrangement': 'test-arrangement',
             'card-type': 'home-card',
         });
-        suggestions = new SuggestedArticlesModule.SuggestedArticlesModule({
-            factory: factory,
-            factory_name: 'suggested-articles',
-        });
+        suggestions = factory.create_named_module('suggested-articles');
         arrangement = factory.get_created_named_mocks('test-arrangement')[0];
     });
 

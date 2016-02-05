@@ -339,9 +339,7 @@ function test_card_container_compliance(action, CardContainerClass, extra_slots=
             let arrangement;
 
             beforeEach(function () {
-                new CardContainerClass({
-                    factory: factory,
-                    factory_name: 'card-container',
+                factory.create_named_module('card-container', {
                     fade_cards: true,
                 });
                 arrangement = factory.get_last_created_named_mock('arrangement');
@@ -373,9 +371,7 @@ function test_card_container_compliance(action, CardContainerClass, extra_slots=
         });
 
         it('does not fade in when not requested to', function () {
-            new CardContainerClass({
-                factory: factory,
-                factory_name: 'card-container',
+            factory.create_named_module('card-container', {
                 fade_cards: false,
             });
             let arrangement = factory.get_last_created_named_mock('arrangement');

@@ -26,12 +26,10 @@ describe('Supplementary articles module', function () {
         factory.add_named_mock('supplementary-articles', SupplementaryArticlesModule.SupplementaryArticlesModule, {
             'arrangement': 'test-arrangement',
             'card-type': 'home-card',
-        });
-        supplementary = new SupplementaryArticlesModule.SupplementaryArticlesModule({
-            factory: factory,
-            factory_name: 'supplementary-articles',
+        }, {
             same_set: true,
         });
+        supplementary = factory.create_named_module('supplementary-articles');
         arrangement = factory.get_created_named_mocks('test-arrangement')[0];
     });
 

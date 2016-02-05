@@ -21,15 +21,10 @@ describe('SetBannerModule module', function () {
 
         factory = new MockFactory.MockFactory();
         factory.add_named_mock('mock-card', Minimal.MinimalCard);
-        factory.add_named_mock('set-banner-module', SetBannerModule.SetBannerModule,
-        {
+        factory.add_named_mock('set-banner-module', SetBannerModule.SetBannerModule, {
             'card-type': 'mock-card',
         });
-
-        module = new SetBannerModule.SetBannerModule({
-            factory: factory,
-            factory_name: 'set-banner-module',
-        });
+        module = factory.create_named_module('set-banner-module');
     });
 
     it('constructs', function () {});

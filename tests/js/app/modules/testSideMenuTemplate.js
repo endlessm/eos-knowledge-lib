@@ -31,10 +31,7 @@ describe('Side menu template', function () {
             'context': 'mock-context',
             'sidebar': 'mock-sidebar',
         });
-        template = new SideMenuTemplate.SideMenuTemplate({
-            factory: factory,
-            factory_name: 'template',
-        });
+        template = factory.create_named_module('template');
     });
 
     it('constructs', function () {

@@ -16,7 +16,7 @@ const MockFactory = new Lang.Class({
         this._mock_props = {};
     },
 
-    create_named_module: function (name, props) {
+    create_named_module: function (name, props={}) {
         this._created_mocks[name] = this._created_mocks[name] || [];
         if (this._mock_classes.hasOwnProperty(name)) {
             // Unlike the real factory, we allow creating things that are not
