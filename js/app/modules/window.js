@@ -296,14 +296,15 @@ const Window = new Lang.Class({
 
         this.get_child().show_all();
         this._set_background_position_style(StyleClasses.BACKGROUND_LEFT);
+        context.add_class(StyleClasses.BACKGROUND_LEFT);
     },
 
     _set_background_position_style: function (klass) {
-        let context = this.get_style_context();
-        context.remove_class(StyleClasses.BACKGROUND_LEFT);
-        context.remove_class(StyleClasses.BACKGROUND_CENTER);
-        context.remove_class(StyleClasses.BACKGROUND_RIGHT);
-        context.add_class(klass);
+        // let context = this.get_style_context();
+        // context.remove_class(StyleClasses.BACKGROUND_LEFT);
+        // context.remove_class(StyleClasses.BACKGROUND_CENTER);
+        // context.remove_class(StyleClasses.BACKGROUND_RIGHT);
+        // context.add_class(klass);
     },
 
     _update_top_bar_visibility: function () {
