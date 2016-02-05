@@ -366,9 +366,9 @@ const QueryObject = Lang.Class({
             if (this.domain !== id_domain)
                 throw new Error('EKN ID has domain ' + id_domain + ', but QueryObject has domain ' + this.domain);
 
-            // EKN ID is a 16-hexdigit hash
+            // EKN ID is a 16 or 40-hexdigit hash
             let hash = path[1];
-            if (hash.search(/^[A-Za-z0-9]{16}$/) === -1)
+            if (hash.search(/^(?=[A-Za-z0-9]*$)(?:.{16}|.{40})$/) === -1)
                 throw new Error('EKN ID has malformed hash ' + id);
 
             return _XAPIAN_PREFIX_ID + hash;
