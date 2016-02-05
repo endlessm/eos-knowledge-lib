@@ -375,6 +375,13 @@ const SIDEBAR_TEMPLATE = 'sidebar-template';
 const SIDEBAR = 'sidebar';
 
 /**
+ * Constant: TOP_MENU
+ *
+ * Matches the top menu.
+ */
+const TOP_MENU = 'top-menu';
+
+/**
  * Constant: CONTENT
  *
  * Matches the main content area of modules.
