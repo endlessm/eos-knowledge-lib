@@ -362,6 +362,7 @@ const Window = new Lang.Class({
             enabled: nav_back_visible,
         });
         this._stack.visible_child = new_page;
+        printerr('PAGE CHANGE STARTING');
 
         // The first transition on app startup has duration 0, subsequent ones
         // are normal.
