@@ -11,10 +11,10 @@ const Utils = imports.tests.utils;
 Minimal.test_arrangement_compliance(TiledGridArrangement.TiledGridArrangement);
 
 describe('Tiled grid arrangement', function () {
-    let arrangement, cards;
+    let arrangement, cards, factory;
 
     beforeEach(function () {
-        let factory = new MockFactory.MockFactory();
+        factory = new MockFactory.MockFactory();
         factory.add_named_mock('card', Minimal.MinimalCard);
         factory.add_named_mock('arrangement', TiledGridArrangement.TiledGridArrangement, {
             'card-type': 'card',
@@ -26,8 +26,9 @@ describe('Tiled grid arrangement', function () {
     function add_cards(ncards) {
         for (let ix = 0; ix < ncards; ix++) {
             let model = new ContentObjectModel.ContentObjectModel();
-            cards.push(arrangement.add_model(model));
+            arrangement.add_model(model);
         }
+        cards = factory.get_created_named_mocks('card');
         Utils.update_gui();
     }
 

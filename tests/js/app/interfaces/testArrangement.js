@@ -7,10 +7,10 @@ const MockFactory = imports.tests.mockFactory;
 Gtk.init(null);
 
 describe('Arrangement interface', function () {
-    let arrangement;
+    let arrangement, factory;
 
     beforeEach(function () {
-        let factory = new MockFactory.MockFactory();
+        factory = new MockFactory.MockFactory();
         factory.add_named_mock('card', Minimal.MinimalCard);
         factory.add_named_mock('arrangement', Minimal.MinimalArrangement, {
             'card-type': 'card',
@@ -31,5 +31,15 @@ describe('Arrangement interface', function () {
         arrangement.fade_cards = true;
         arrangement.add_model(new ContentObjectModel.ContentObjectModel());
         expect(arrangement.fade_card_in).toHaveBeenCalled();
+    });
+
+    it('emits a signal when the card is clicked', function (done) {
+        let model = new ContentObjectModel.ContentObjectModel();
+        arrangement.add_model(model);
+        arrangement.connect('card-clicked', (arrangement, clicked_model) => {
+            expect(clicked_model).toBe(model);
+            done();
+        });
+        factory.get_last_created_named_mock('card').emit('clicked');
     });
 });

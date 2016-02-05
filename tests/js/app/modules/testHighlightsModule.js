@@ -154,8 +154,7 @@ describe('Highlights module', function () {
 
             it('on the card in the featured arrangement, dispatches item-clicked', function () {
                 let model = featured.get_models()[0];
-                let card = featured.get_card_for_model(model);
-                card.emit('clicked');
+                featured.emit('card-clicked', model);
                 Utils.update_gui();
                 let payload = dispatcher.last_payload_with_type(Actions.ITEM_CLICKED);
                 let matcher = jasmine.objectContaining({
@@ -168,8 +167,7 @@ describe('Highlights module', function () {
 
             it('on the card in another arrangement, dispatches item-clicked', function () {
                 let model = theme1.get_models()[0];
-                let card = theme1.get_card_for_model(model);
-                card.emit('clicked');
+                theme1.emit('card-clicked', model);
                 Utils.update_gui();
                 let payload = dispatcher.last_payload_with_type(Actions.ITEM_CLICKED);
                 let matcher = jasmine.objectContaining({

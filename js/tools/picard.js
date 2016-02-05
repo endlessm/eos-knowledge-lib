@@ -199,8 +199,7 @@ function connect_signals() {
     });
     widgets.add_box.connect('clicked', () => {
         let model = new ContentObjectModel.ContentObjectModel();
-        let card = widgets.arrangement.add_model(model);
-        card.show_all();
+        widgets.arrangement.add_model(model);
         widgets.remove_box.sensitive = true;
         widgets.clear.sensitive = true;
         widgets.add_box.get_style_context().remove_class('hint');

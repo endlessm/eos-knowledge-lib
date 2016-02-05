@@ -110,7 +110,7 @@ const ThematicModule = new Lang.Class({
             if (results.length === 0) {
                 this.show_more_content();
             } else {
-                results.forEach((model) => this._add_article_card(model, arrangement));
+                results.forEach(arrangement.add_model, arrangement);
                 arrangement.visible = true;
                 Dispatcher.get_default().dispatch({
                     action_type: Actions.CONTENT_ADDED,
@@ -151,18 +151,6 @@ const ThematicModule = new Lang.Class({
         return card;
     },
 
-    _add_article_card: function (model, arrangement) {
-        let card = arrangement.add_model(model);
-        card.connect('clicked', () => {
-            Dispatcher.get_default().dispatch({
-                action_type: Actions.ITEM_CLICKED,
-                model: model,
-                context: arrangement.get_models(),
-                context_label: arrangement.set_title,
-            });
-        });
-    },
-
     _add_set: function (model) {
         this._sets.push(model);
         let header = this._create_set_card(model);
@@ -181,6 +169,14 @@ const ThematicModule = new Lang.Class({
         });
         arrangement.accepted_child_tags = model.child_tags.slice();
         arrangement.set_title = model.title;
+        arrangement.connect('card-clicked', (arrangement, model) => {
+            Dispatcher.get_default().dispatch({
+                action_type: Actions.ITEM_CLICKED,
+                model: model,
+                context: arrangement.get_models(),
+                context_label: arrangement.set_title,
+            });
+        });
         this._arrangements.push(arrangement);
 
         if (model.featured) {

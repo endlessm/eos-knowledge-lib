@@ -200,7 +200,7 @@ describe('Search module', function () {
             models: [ model ],
             query: 'foo',
         });
-        arrangement.get_card_for_model(model).emit('clicked');
+        arrangement.emit('card-clicked', model);
         Utils.update_gui();
         let payload = dispatcher.last_payload_with_type(Actions.SEARCH_CLICKED);
         let matcher = jasmine.objectContaining({

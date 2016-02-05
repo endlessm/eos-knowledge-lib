@@ -35,17 +35,24 @@ const SuggestedArticlesModule = new Lang.Class({
 
     _init: function (props={}) {
         this.parent(props);
-        this._arrangement = this.create_submodule('arrangement');
-        this.add(this._arrangement);
+        let arrangement = this.create_submodule('arrangement');
+        arrangement.connect('card-clicked', (arrangement, model) => {
+            Dispatcher.get_default().dispatch({
+                action_type: Actions.ITEM_CLICKED,
+                model: model,
+                context: arrangement.get_models(),
+            });
+        });
+        this.add(arrangement);
 
         let dispatcher = Dispatcher.get_default();
         dispatcher.register((payload) => {
             switch(payload.action_type) {
                 case Actions.CLEAR_SUGGESTED_ARTICLES:
-                    this._arrangement.clear();
+                    arrangement.clear();
                     break;
                 case Actions.APPEND_SUGGESTED_ARTICLES:
-                    payload.models.forEach(this._add_card, this);
+                    payload.models.forEach(arrangement.add_model, arrangement);
                     break;
             }
         });
@@ -54,16 +61,5 @@ const SuggestedArticlesModule = new Lang.Class({
     // Module override
     get_slot_names: function () {
         return ['arrangement'];
-    },
-
-    _add_card: function (model) {
-        let card = this._arrangement.add_model(model);
-        card.connect('clicked', () => {
-            Dispatcher.get_default().dispatch({
-                action_type: Actions.ITEM_CLICKED,
-                model: model,
-                context: this._arrangement.get_models(),
-            });
-        });
     },
 });

@@ -85,6 +85,13 @@ const SuggestedCategoriesModule = new Lang.Class({
         this.add(separator);
 
         this._arrangement = this.create_submodule('arrangement');
+        this._arrangement.connect('card-clicked', (arrangement, model) => {
+            Dispatcher.get_default().dispatch({
+                action_type: Actions.SET_CLICKED,
+                model: model,
+                context: arrangement.get_models(),
+            });
+        });
         this.add(this._arrangement);
 
         if (!this.show_title) {
@@ -109,7 +116,8 @@ const SuggestedCategoriesModule = new Lang.Class({
                     let models = payload.models;
                     if (this.featured_only)
                         models = models.filter(model => model.featured);
-                    models.forEach(this._add_card, this);
+                    models.forEach(this._arrangement.add_model,
+                        this._arrangement);
                     break;
                 case Actions.CLEAR_SETS:
                     this._arrangement.clear();
@@ -124,17 +132,6 @@ const SuggestedCategoriesModule = new Lang.Class({
     // Module override
     get_slot_names: function () {
         return ['arrangement'];
-    },
-
-    _add_card: function (model) {
-        let card = this._arrangement.add_model(model);
-        card.connect('clicked', () => {
-            Dispatcher.get_default().dispatch({
-                action_type: Actions.SET_CLICKED,
-                model: model,
-                context: this._arrangement.get_models(),
-            });
-        });
     },
 
     _filter_sets: function (sets) {

@@ -193,8 +193,7 @@ describe('Thematic module', function () {
 
                     it('on a card in an arrangement, dispatches item-clicked', function () {
                         let model = arrangements[0].get_models()[0];
-                        let card = arrangements[0].get_card_for_model(model);
-                        card.emit('clicked');
+                        arrangements[0].emit('card-clicked', model);
                         Utils.update_gui();
                         let payload = dispatcher.last_payload_with_type(Actions.ITEM_CLICKED);
                         expect(payload.context_label).toEqual("Set Title");

@@ -129,8 +129,7 @@ describe('Hierarchical set module', function () {
         describe('when clicking', function () {
             it('on a card in an arrangement, dispatches item-clicked', function () {
                 let model = arrangement.get_models()[0];
-                let card = arrangement.get_card_for_model(model);
-                card.emit('clicked');
+                arrangement.emit('card-clicked', model);
                 Utils.update_gui();
                 let payload = dispatcher.last_payload_with_type(Actions.ITEM_CLICKED);
                 expect(payload.context_label).toEqual("Set Title");

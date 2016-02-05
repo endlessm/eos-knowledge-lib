@@ -122,7 +122,7 @@ describe('Supplementary articles module', function () {
             models: [ model ],
             same_set: true,
         });
-        arrangement.get_card_for_model(model).emit('clicked');
+        arrangement.emit('card-clicked', model);
         Utils.update_gui();
         let payload = dispatcher.last_payload_with_type(Actions.ITEM_CLICKED);
         let matcher = jasmine.objectContaining({

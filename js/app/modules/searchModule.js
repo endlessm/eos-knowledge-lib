@@ -99,8 +99,17 @@ const SearchModule = new Lang.Class({
     InternalChildren: [ 'message-title', 'message-subtitle', 'no-results-grid', 'spinner' ],
 
     _init: function (props={}) {
+        this._query = '';
         this.parent(props);
         this._arrangement = this.create_submodule('arrangement');
+        this._arrangement.connect('card-clicked', (arrangement, model) => {
+            Dispatcher.get_default().dispatch({
+                action_type: Actions.SEARCH_CLICKED,
+                model: model,
+                context: arrangement.get_models(),
+                query: this._query,
+            });
+        });
         this.add_named(this._arrangement, RESULTS_PAGE_NAME);
 
         this._suggested_articles_module = this.create_submodule('article-suggestions');
@@ -134,12 +143,11 @@ const SearchModule = new Lang.Class({
                 this._arrangement.clear();
                 break;
             case Actions.APPEND_SEARCH:
+                this._query = payload.query;
                 this._arrangement.fade_cards =
                     (this._arrangement.get_models().length > 0);
                 this._arrangement.highlight_string(payload.query);
-                payload.models.forEach((card) => {
-                    this._add_card(card, payload.query);
-                });
+                payload.models.forEach(this._add_card, this);
 
                 if (this._arrangement instanceof InfiniteScrolledWindow.InfiniteScrolledWindow) {
                     this._arrangement.new_content_added();
@@ -169,18 +177,10 @@ const SearchModule = new Lang.Class({
         return ['arrangement', 'article-suggestions', 'category-suggestions'];
     },
 
-    _add_card: function (model, query='') {
+    _add_card: function (model) {
         if (this._arrangement.get_models().length >= this.max_children)
             return;
-        let card = this._arrangement.add_model(model);
-        card.connect('clicked', () => {
-            Dispatcher.get_default().dispatch({
-                action_type: Actions.SEARCH_CLICKED,
-                model: model,
-                context: this._arrangement.get_models(),
-                query: query,
-            });
-        });
+        this._arrangement.add_model(model);
     },
 
     _finish_search: function (query) {

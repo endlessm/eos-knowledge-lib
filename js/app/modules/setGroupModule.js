@@ -54,6 +54,13 @@ const SetGroupModule = new Lang.Class({
         this.parent(props);
         this.has_more_content = false;
         this._arrangement = this.create_submodule('arrangement');
+        this._arrangement.connect('card-clicked', (arrangement, model) => {
+            Dispatcher.get_default().dispatch({
+                action_type: Actions.SET_CLICKED,
+                model: model,
+                context: arrangement.get_models(),
+            });
+        });
         this.add(this._arrangement);
         this.get_style_context().add_class(StyleClasses.SET_GROUP);
 
@@ -97,14 +104,7 @@ const SetGroupModule = new Lang.Class({
         if (this._arrangement.get_models().length === this.max_children)
             return;
 
-        let card = this._arrangement.add_model(model);
-        card.connect('clicked', () => {
-            Dispatcher.get_default().dispatch({
-                action_type: Actions.SET_CLICKED,
-                model: model,
-                context: this._arrangement.get_models(),
-            });
-        });
+        this._arrangement.add_model(model);
         this._check_more_content();
     },
 

@@ -8,6 +8,7 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
+const ContentObjectModel = imports.search.contentObjectModel;
 const Module = imports.app.interfaces.module;
 const StyleClasses = imports.app.styleClasses;
 
@@ -74,6 +75,19 @@ const Arrangement = new Lang.Interface({
             false),
     },
 
+    Signals: {
+        /**
+         * Signal: card-clicked
+         * Emitted when one of the arrangement's cards is clicked
+         *
+         * Parameters:
+         *   model - the <ContentObjectModel> of the card that was clicked
+         */
+        'card-clicked': {
+            param_types: [ ContentObjectModel.ContentObjectModel ],
+        },
+    },
+
     _cards_by_id: function () {
         if (!this._cards_by_id_map)
             this._cards_by_id_map = new Map();
@@ -95,9 +109,6 @@ const Arrangement = new Lang.Interface({
      *
      * Parameters:
      *   model - a <ContentObjectModel>
-     *
-     * Returns:
-     *   the <Card> created for the model, for convenience in connecting signals
      */
     add_model: function (model) {
         let card_props = { model: model };
@@ -106,12 +117,20 @@ const Arrangement = new Lang.Interface({
         let card = this.create_submodule('card-type', card_props);
         this._cards_by_id().set(model.ekn_id, card);
         this._models_by_id().set(model.ekn_id, model);
+
+        // It's either this or have Card require Gtk.Button, but that would be
+        // very bad for DocumentCards.
+        if (GObject.signal_lookup('clicked', card.constructor.$gtype) !== 0) {
+            card.connect('clicked', card => {
+                this.emit('card-clicked', card.model);
+            });
+        }
+
         this.pack_card(card);
         if (this.fade_cards)
             this.fade_card_in(card);
         else
             card.show_all();
-        return card;
     },
 
     /**

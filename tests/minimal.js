@@ -359,15 +359,6 @@ function test_arrangement_compliance(ArrangementClass, extra_slots={}) {
             expect(arrangement.get_card_for_model(model2).model).toBe(model2);
         });
 
-        it('by returning a card as it is created', function () {
-            let model1 = new ContentObjectModel.ContentObjectModel();
-            let model2 = new ContentObjectModel.ContentObjectModel();
-            let card1 = arrangement.add_model(model1);
-            let card2 = arrangement.add_model(model2);
-            expect(card1.model).toBe(model1);
-            expect(card2.model).toBe(model2);
-        });
-
         it('by highlighting strings as cards are added', function () {
             arrangement.highlight_string('foo');
             let card = add_cards(arrangement, 1)[0];

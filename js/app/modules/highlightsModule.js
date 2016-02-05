@@ -107,18 +107,6 @@ const HighlightsModule = new Lang.Class({
         this.add(card);
     },
 
-    _add_article_card: function (model, card_slot, arrangement) {
-        let card = arrangement.add_model(model);
-        card.connect('clicked', () => {
-            Dispatcher.get_default().dispatch({
-                action_type: Actions.ITEM_CLICKED,
-                model: model,
-                context: arrangement.get_models(),
-                context_label: _("Highlights"),
-            });
-        });
-    },
-
     // Load all articles referenced by the shown arrangements in order to
     // populate the arrangements with them. This happens after APPEND_SETS.
     _create_set: function (set, arrangement_slot, card_slot, add_header) {
@@ -139,6 +127,14 @@ const HighlightsModule = new Lang.Class({
             vexpand: true,
             visible: true,
         });
+        arrangement.connect('card-clicked', (arrangement, model) => {
+            Dispatcher.get_default().dispatch({
+                action_type: Actions.ITEM_CLICKED,
+                model: model,
+                context: arrangement.get_models(),
+                context_label: _("Highlights"),
+            });
+        });
         this.add(arrangement);
 
         let query = new QueryObject.QueryObject({
@@ -155,7 +151,7 @@ const HighlightsModule = new Lang.Class({
                 return;
             }
 
-            models.forEach(model => this._add_article_card(model, card_slot, arrangement));
+            models.forEach(arrangement.add_model, arrangement);
             this._finish_load();
         });
     },

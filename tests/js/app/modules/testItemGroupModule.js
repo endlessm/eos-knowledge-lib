@@ -85,7 +85,7 @@ describe('Item group module', function () {
             action_type: Actions.APPEND_ITEMS,
             models: [ model ],
         });
-        arrangement.get_card_for_model(model).emit('clicked');
+        arrangement.emit('card-clicked', model);
         Utils.update_gui();
         let payload = dispatcher.last_payload_with_type(Actions.ITEM_CLICKED);
         let matcher = jasmine.objectContaining({

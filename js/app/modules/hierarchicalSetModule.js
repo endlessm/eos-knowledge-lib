@@ -63,6 +63,14 @@ const HierarchicalSetModule = new Lang.Class({
         this.parent(props);
 
         this._arrangement = this.create_submodule('arrangement');
+        this._arrangement.connect('card-clicked', (arrangement, model) => {
+            Dispatcher.get_default().dispatch({
+                action_type: Actions.ITEM_CLICKED,
+                model: model,
+                context: arrangement.get_models(),
+                context_label: this._current_model.title,
+            });
+        });
         this.add(this._arrangement);
         this._set_cards = [];
         this._current_model = null;
