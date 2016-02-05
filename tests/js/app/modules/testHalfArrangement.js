@@ -12,6 +12,7 @@ const Utils = imports.tests.utils;
 Gtk.init(null);
 
 Minimal.test_arrangement_compliance(HalfArrangement.HalfArrangement);
+Minimal.test_arrangement_fade_in_compliance(HalfArrangement.HalfArrangement);
 
 describe('Half Arrangement', function () {
     beforeEach(function () {

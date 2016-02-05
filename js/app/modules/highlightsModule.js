@@ -54,8 +54,6 @@ const HighlightsModule = new Lang.Class({
     Properties: {
         'factory': GObject.ParamSpec.override('factory', Module.Module),
         'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-        'fade-cards': GObject.ParamSpec.override('fade-cards',
-            CardContainer.CardContainer),
     },
 
     // Overridable in tests

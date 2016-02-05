@@ -63,9 +63,6 @@
                                 }
                             }
                         }
-                    },
-                    "properties": {
-                        "fade-cards": true
                     }
                 }
             }
@@ -161,7 +158,6 @@
                         "category-suggestions": null
                     },
                     "properties": {
-                        "fade-cards": true,
                         "message-justify": "left",
                         "message-halign": "center"
                     }

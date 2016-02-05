@@ -11,17 +11,29 @@ const Utils = imports.tests.utils;
 Gtk.init(null);
 
 Minimal.test_arrangement_compliance(ThirtiesArrangement.ThirtiesArrangement);
+Minimal.test_arrangement_fade_in_compliance(ThirtiesArrangement.ThirtiesArrangement);
 
 describe('Thirties arrangement', function () {
-    let arrangement;
+    let arrangement, factory;
 
     beforeEach(function () {
-        let factory = new MockFactory.MockFactory();
+        factory = new MockFactory.MockFactory();
         factory.add_named_mock('card', Minimal.MinimalCard);
         factory.add_named_mock('arrangement', ThirtiesArrangement.ThirtiesArrangement, {
             'card-type': 'card',
         });
         arrangement = factory.create_named_module('arrangement');
+    });
+
+    it('does not fade in cards if it has a fixed size', function () {
+        arrangement = factory.create_named_module('arrangement', {
+            max_rows: 1,
+            fade_cards: true,
+        });
+        let model = new ContentObjectModel.ContentObjectModel();
+        arrangement.add_model(model);
+        expect(arrangement.get_card_for_model(model).fade_in)
+            .not.toHaveBeenCalled();
     });
 
     describe('sizing allocation', function () {

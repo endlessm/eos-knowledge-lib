@@ -53,8 +53,6 @@ const HierarchicalSetModule = new Lang.Class({
         'factory': GObject.ParamSpec.override('factory', Module.Module),
         'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
         'scroll-server': GObject.ParamSpec.override('scroll-server', Scrollable.Scrollable),
-        'fade-cards': GObject.ParamSpec.override('fade-cards',
-            CardContainer.CardContainer),
     },
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/hierarchicalSetModule.ui',

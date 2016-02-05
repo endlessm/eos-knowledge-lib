@@ -19,6 +19,7 @@ const TiledGridArrangement = new Lang.Class({
         'factory': GObject.ParamSpec.override('factory', Module.Module),
         'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
         'all-visible': GObject.ParamSpec.override('all-visible', Arrangement.Arrangement),
+        'fade-cards': GObject.ParamSpec.override('fade-cards', Arrangement.Arrangement),
         'spacing': GObject.ParamSpec.override('spacing', Arrangement.Arrangement),
     },
 
@@ -28,6 +29,11 @@ const TiledGridArrangement = new Lang.Class({
             GObject.BindingFlags.SYNC_CREATE);
         this.bind_property('spacing', this, 'row-spacing',
             GObject.BindingFlags.SYNC_CREATE);
+    },
+
+    // Arrangement override
+    fade_card_in: function (card) {
+        card.show_all();
     },
 
     // Arrangement override

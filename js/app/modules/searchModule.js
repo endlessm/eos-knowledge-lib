@@ -26,8 +26,11 @@ const SPINNER_PAGE_NAME = 'spinner';
  * Class: SearchModule
  * Search results module
  *
- * Module that can display a container of cards, or a message that no
- * results were found, or a message that there was an error during the search.
+ * Module that can display cards delivered in batches using
+ * <Actions.APPEND_SEARCH>, or show a message that no results were found, or a
+ * message that there was an error during the search.
+ *
+ * Any cards lazily loaded after the first batch are faded in.
  *
  * CSS classes:
  *   search-results - on the widget itself
@@ -45,8 +48,6 @@ const SearchModule = new Lang.Class({
     Properties: {
         'factory': GObject.ParamSpec.override('factory', Module.Module),
         'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-        'fade-cards': GObject.ParamSpec.override('fade-cards',
-            CardContainer.CardContainer),
         /**
          * Property: max-children
          *
@@ -133,11 +134,11 @@ const SearchModule = new Lang.Class({
                 this._arrangement.clear();
                 break;
             case Actions.APPEND_SEARCH:
-                let fade = this.fade_cards &&
+                this._arrangement.fade_cards =
                     (this._arrangement.get_models().length > 0);
                 this._arrangement.highlight_string(payload.query);
                 payload.models.forEach((card) => {
-                    this._add_card(card, fade, payload.query);
+                    this._add_card(card, payload.query);
                 });
 
                 if (this._arrangement instanceof InfiniteScrolledWindow.InfiniteScrolledWindow) {
@@ -168,12 +169,10 @@ const SearchModule = new Lang.Class({
         return ['arrangement', 'article-suggestions', 'category-suggestions'];
     },
 
-    _add_card: function (model, fade, query='') {
+    _add_card: function (model, query='') {
         if (this._arrangement.get_models().length >= this.max_children)
             return;
         let card = this._arrangement.add_model(model);
-        if (fade)
-            card.fade_in();
         card.connect('clicked', () => {
             Dispatcher.get_default().dispatch({
                 action_type: Actions.SEARCH_CLICKED,

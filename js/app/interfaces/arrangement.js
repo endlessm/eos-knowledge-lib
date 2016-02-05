@@ -49,6 +49,29 @@ const Arrangement = new Lang.Interface({
             'The amount of space in pixels between cards',
             GObject.ParamFlags.READWRITE,
             0, GLib.MAXUINT16, 0),
+        /**
+         * Property: fade-cards
+         * Whether to fade in cards or just show them
+         *
+         * In some circumstances, arrangements should fade in their cards.
+         * For example, in a <SearchModule>, lazily loaded batches of cards
+         * beyond the first batch should fade in instead of appearing abruptly.
+         *
+         * Set this to *true* to make newly added cards fade in, instead of
+         * appearing abruptly. The animation's appearance is controlled by the
+         * *invisible* and *fade-in* CSS classes on the <Card> widget.
+         *
+         * You can opt out of this if the arrangement should never fade in
+         * its cards, for instance <CarouselArrangement>.
+         * In that case, override <Arrangement.fade_card>.
+         *
+         * Default:
+         *   false
+         */
+        'fade-cards': GObject.ParamSpec.boolean('fade-cards', 'Fade cards',
+            'Whether new cards should fade in gradually',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
+            false),
     },
 
     _cards_by_id: function () {
@@ -84,6 +107,10 @@ const Arrangement = new Lang.Interface({
         this._cards_by_id().set(model.ekn_id, card);
         this._models_by_id().set(model.ekn_id, model);
         this.pack_card(card);
+        if (this.fade_cards)
+            this.fade_card_in(card);
+        else
+            card.show_all();
         return card;
     },
 
@@ -219,6 +246,22 @@ const Arrangement = new Lang.Interface({
      */
     unpack_card: function (card) {
         this.remove(card);
+    },
+
+    /**
+     * Method: fade_card_in
+     * Private method intended to be overridden in implementations
+     *
+     * Override this method if your container should do something different to
+     * fade in a card than simply call <Card.fade_in()> on it.
+     * For example, if your container should not fade cards in at all, then
+     * override this to call **card.show_all()**.
+     *
+     * Parameters:
+     *   card - a <Card> implementation
+     */
+    fade_card_in: function (card) {
+        card.fade_in();
     },
 
     place_card: function (card, x, y, width, height) {

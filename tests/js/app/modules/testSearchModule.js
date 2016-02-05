@@ -151,6 +151,8 @@ describe('Search module', function () {
                 'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
                 'all-visible': GObject.ParamSpec.override('all-visible',
                     Arrangement.Arrangement),
+                'fade-cards': GObject.ParamSpec.override('fade-cards',
+                    Arrangement.Arrangement),
                 'spacing': GObject.ParamSpec.override('spacing',
                     Arrangement.Arrangement),
             },
@@ -220,5 +222,5 @@ describe('Search module', function () {
     });
 });
 
-Minimal.test_card_container_compliance(Actions.APPEND_SEARCH,
+Minimal.test_card_container_fade_in_compliance(Actions.APPEND_SEARCH,
     SearchModule.SearchModule);

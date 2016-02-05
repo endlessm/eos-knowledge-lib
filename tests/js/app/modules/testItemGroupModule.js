@@ -96,5 +96,5 @@ describe('Item group module', function () {
     });
 });
 
-Minimal.test_card_container_compliance(Actions.APPEND_ITEMS,
+Minimal.test_card_container_fade_in_compliance(Actions.APPEND_ITEMS,
     ItemGroupModule.ItemGroupModule);

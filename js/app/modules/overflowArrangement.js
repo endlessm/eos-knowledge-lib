@@ -19,6 +19,12 @@ const OverflowArrangement = new Lang.Class({
         'factory': GObject.ParamSpec.override('factory', Module.Module),
         'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
         'all-visible': GObject.ParamSpec.override('all-visible', Arrangement.Arrangement),
+        'fade-cards': GObject.ParamSpec.override('fade-cards', Arrangement.Arrangement),
         // 'spacing' already implemented by SpaceContainer
+    },
+
+    // Arrangement override
+    fade_card_in: function (card) {
+        card.show_all();
     },
 });

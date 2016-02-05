@@ -2,8 +2,8 @@
 
 /* exported MinimalArrangement, MinimalBackCover, MinimalCard, MinimalDocumentCard,
 MinimalPage, MinimalHomePage, MinimalInteraction, MinimalBinModule, MinimalModule,
-test_arrangement_compliance, test_card_container_compliance,
-test_card_highlight_string_compliance */
+test_arrangement_compliance, test_arrangement_fade_in_compliance,
+test_card_container_fade_in_compliance, test_card_highlight_string_compliance */
 
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
@@ -35,6 +35,8 @@ const MinimalArrangement = new Lang.Class({
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
             0, GLib.MAXUINT32, 1),
         'all-visible': GObject.ParamSpec.override('all-visible',
+            Arrangement.Arrangement),
+        'fade-cards': GObject.ParamSpec.override('fade-cards',
             Arrangement.Arrangement),
         'spacing': GObject.ParamSpec.override('spacing', Arrangement.Arrangement),
     },
@@ -381,13 +383,49 @@ function test_arrangement_compliance(ArrangementClass, extra_slots={}) {
     });
 }
 
-function test_card_container_compliance(action, CardContainerClass, extra_slots={}) {
-    describe(CardContainerClass.$gtype.name + ' implements CardContainer correctly', function () {
-        let factory, dispatcher;
+function test_arrangement_fade_in_compliance(ArrangementClass, extra_slots={}) {
+    describe(ArrangementClass.$gtype.name + ' implements the optional fade-in part of Arrangement', function () {
+        let factory, arrangement;
+
+        beforeEach(function () {
+            factory = new MockFactory.MockFactory();
+            factory.add_named_mock('card', MinimalCard);
+            let slots = {
+                'card-type': 'card',
+            };
+            for (let slot in extra_slots) {
+                factory.add_named_mock(slot, extra_slots[slot]);
+                slots[slot] = slot;
+            }
+            factory.add_named_mock('arrangement', ArrangementClass, slots);
+            arrangement = factory.create_named_module('arrangement');
+        });
+
+        it('by fading in cards when requested to', function () {
+            arrangement.fade_cards = true;
+            let model = new ContentObjectModel.ContentObjectModel();
+            arrangement.add_model(model);
+            expect(arrangement.get_card_for_model(model).fade_in)
+                .toHaveBeenCalled();
+        });
+
+        it('by not fading in cards when requested not to', function () {
+            arrangement.fade_cards = false;
+            let model = new ContentObjectModel.ContentObjectModel();
+            arrangement.add_model(model);
+            expect(arrangement.get_card_for_model(model).fade_in)
+                .not.toHaveBeenCalled();
+        });
+    });
+}
+
+function test_card_container_fade_in_compliance(action, CardContainerClass, extra_slots={}) {
+    describe(CardContainerClass.$gtype.name + ' implements the optional fade-in part of CardContainer', function () {
+        let arrangement, dispatcher, model;
 
         beforeEach(function () {
             dispatcher = MockDispatcher.mock_default();
-            factory = new MockFactory.MockFactory();
+            let factory = new MockFactory.MockFactory();
 
             factory.add_named_mock('card', MinimalCard);
             factory.add_named_mock('arrangement', MinimalArrangement, {
@@ -401,70 +439,28 @@ function test_card_container_compliance(action, CardContainerClass, extra_slots=
                 slots[slot] = slot;
             }
             factory.add_named_mock('card-container', CardContainerClass, slots);
-        });
-
-        describe('when requested to fade in', function () {
-            let arrangement;
-
-            beforeEach(function () {
-                factory.create_named_module('card-container', {
-                    fade_cards: true,
-                });
-                arrangement = factory.get_last_created_named_mock('arrangement');
-            });
-
-            it('does not fade in the first batch of cards', function () {
-                let model = new ContentObjectModel.ContentObjectModel();
-                dispatcher.dispatch({
-                    action_type: action,
-                    models: [model],
-                });
-                Utils.update_gui();
-                expect(arrangement.get_card_for_model(model).fade_in)
-                    .not.toHaveBeenCalled();
-            });
-
-            it('does so otherwise when requested', function () {
-                let model = new ContentObjectModel.ContentObjectModel();
-                dispatcher.dispatch({
-                    action_type: action,
-                    models: [model],
-                });
-                Utils.update_gui();
-                expect(arrangement.get_card_for_model(model).fade_in)
-                    .not.toHaveBeenCalled();
-                model = new ContentObjectModel.ContentObjectModel();
-                dispatcher.dispatch({
-                    action_type: action,
-                    models: [model],
-                });
-                Utils.update_gui();
-                expect(arrangement.get_card_for_model(model).fade_in)
-                    .toHaveBeenCalled();
-            });
-        });
-
-        it('does not fade in when not requested to', function () {
-            factory.create_named_module('card-container', {
-                fade_cards: false,
-            });
-            let arrangement = factory.get_last_created_named_mock('arrangement');
-            let model = new ContentObjectModel.ContentObjectModel();
-            dispatcher.dispatch({
-                action_type: action,
-                models: [model],
-            });
-            Utils.update_gui();
-            expect(arrangement.get_card_for_model(model).fade_in)
-                .not.toHaveBeenCalled();
+            factory.create_named_module('card-container');
+            arrangement = factory.get_last_created_named_mock('arrangement');
             model = new ContentObjectModel.ContentObjectModel();
             dispatcher.dispatch({
                 action_type: action,
                 models: [model],
             });
             Utils.update_gui();
-            expect(arrangement.get_card_for_model(model).fade_in)
-                .not.toHaveBeenCalled();
+        });
+
+        it('does not fade in the first batch of cards', function () {
+            expect(arrangement.fade_cards).toBeFalsy();
+        });
+
+        it('does fade in subsequent batches', function () {
+            model = new ContentObjectModel.ContentObjectModel();
+            dispatcher.dispatch({
+                action_type: action,
+                models: [model],
+            });
+            Utils.update_gui();
+            expect(arrangement.fade_cards).toBeTruthy();
         });
     });
 }

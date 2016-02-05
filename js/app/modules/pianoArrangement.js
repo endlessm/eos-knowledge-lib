@@ -37,6 +37,7 @@ const PianoArrangement = new Lang.Class({
         'factory': GObject.ParamSpec.override('factory', Module.Module),
         'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
         'all-visible': GObject.ParamSpec.override('all-visible', Arrangement.Arrangement),
+        'fade-cards': GObject.ParamSpec.override('fade-cards', Arrangement.Arrangement),
         'spacing': GObject.ParamSpec.override('spacing', Arrangement.Arrangement),
         /**
          * Property: compact-mode
@@ -96,6 +97,11 @@ const PianoArrangement = new Lang.Class({
     get all_visible() {
         this._support_cards_shown = this._calculate_support_cards_shown();
         return this.get_children().length <= (1 + this._support_cards_shown);
+    },
+
+    // Arrangement override
+    fade_card_in: function (card) {
+        card.show_all();
     },
 
     // Removing a visible widget should recalculate the positions of all widgets

@@ -14,7 +14,11 @@ const Module = imports.app.interfaces.module;
 
 /**
  * Class: ItemGroupModule
- * A module will displays all items in a set as cards in an arrangement.
+ * A module that displays all items in a set as cards in an arrangement
+ *
+ * This container displays cards delivered in batches using
+ * <Actions.APPEND_ITEMS>.
+ * Any cards lazily loaded after the first batch are faded in.
  *
  * Slots:
  *   arrangement
@@ -28,8 +32,6 @@ const ItemGroupModule = new Lang.Class({
     Properties: {
         'factory': GObject.ParamSpec.override('factory', Module.Module),
         'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-        'fade-cards': GObject.ParamSpec.override('fade-cards',
-            CardContainer.CardContainer),
     },
 
     _init: function (props={}) {
@@ -50,9 +52,9 @@ const ItemGroupModule = new Lang.Class({
                     this._cards = [];
                     break;
                 case Actions.APPEND_ITEMS:
-                    let fade = this.fade_cards &&
+                    this._arrangement.fade_cards =
                         (this._arrangement.get_models().length > 0);
-                    payload.models.forEach(this._add_card.bind(this, fade));
+                    payload.models.forEach(this._add_card, this);
                     if (this._arrangement instanceof InfiniteScrolledWindow.InfiniteScrolledWindow) {
                         this._arrangement.new_content_added();
                     }
@@ -72,10 +74,8 @@ const ItemGroupModule = new Lang.Class({
         return ['arrangement'];
     },
 
-    _add_card: function (fade, model) {
+    _add_card: function (model) {
         let card = this._arrangement.add_model(model);
-        if (fade)
-            card.fade_in();
         card.connect('clicked', () => {
             Dispatcher.get_default().dispatch({
                 action_type: Actions.ITEM_CLICKED,
