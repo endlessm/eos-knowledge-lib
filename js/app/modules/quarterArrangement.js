@@ -12,19 +12,19 @@ const Card = imports.app.interfaces.card;
 const Module = imports.app.interfaces.module;
 const Utils = imports.app.utils;
 
-const HORIZONTAL_MODE = {
+const _HorizontalMode = {
     TINY: 1,
     SMALL: 2,
     LARGE: 3,
 };
-const HORIZONTAL_THRESHOLD = {
+const _HorizontalThreshold = {
     TINY: 720,
     SMALL: 900,
 };
 const FEATURED_CARD_HEIGHT = Card.MinSize.C;
 const FEATURED_CARD_MIN_WIDTH = Card.MinSize.C;
 const FEATURED_CARD_MAX_WIDTH = Card.MinSize.H;
-const FEATURED_CARD_COUNT = {
+const _FeaturedCardCount = {
     TINY: 2,
     SMALL: 3,
     LARGE: 4,
@@ -63,8 +63,8 @@ const QuarterArrangement = new Lang.Class({
         this.parent(props);
 
         // Initialize assuming we're on large mode
-        this._horizontal_mode = HORIZONTAL_MODE.LARGE;
-        this._featured_cards_to_show = FEATURED_CARD_COUNT.LARGE;
+        this._horizontal_mode = _HorizontalMode.LARGE;
+        this._featured_cards_to_show = _FeaturedCardCount.LARGE;
         this._support_cards_per_row = SUPPORT_CARD_COUNT;
     },
 
@@ -103,8 +103,8 @@ const QuarterArrangement = new Lang.Class({
     },
 
     vfunc_get_preferred_width: function () {
-        return [Arrangement.get_size_with_spacing(FEATURED_CARD_MIN_WIDTH, FEATURED_CARD_COUNT.TINY, this._spacing),
-            Arrangement.get_size_with_spacing(FEATURED_CARD_MAX_WIDTH, FEATURED_CARD_COUNT.LARGE, this._spacing)];
+        return [Arrangement.get_size_with_spacing(FEATURED_CARD_MIN_WIDTH, _FeaturedCardCount.TINY, this._spacing),
+            Arrangement.get_size_with_spacing(FEATURED_CARD_MAX_WIDTH, _FeaturedCardCount.LARGE, this._spacing)];
     },
 
     vfunc_get_preferred_height_for_width: function (width) {
@@ -171,17 +171,17 @@ const QuarterArrangement = new Lang.Class({
     },
 
     _setup_horizontal_mode: function (width) {
-        if (width <= HORIZONTAL_THRESHOLD.TINY) {
-            this._horizontal_mode = HORIZONTAL_MODE.TINY;
-            this._featured_cards_to_show = FEATURED_CARD_COUNT.TINY;
+        if (width <= _HorizontalThreshold.TINY) {
+            this._horizontal_mode = _HorizontalMode.TINY;
+            this._featured_cards_to_show = _FeaturedCardCount.TINY;
             this._support_cards_per_row = SUPPORT_CARD_COUNT - 1;
-        } else if (width <= HORIZONTAL_THRESHOLD.SMALL) {
-            this._horizontal_mode = HORIZONTAL_MODE.SMALL;
-            this._featured_cards_to_show = FEATURED_CARD_COUNT.SMALL;
+        } else if (width <= _HorizontalThreshold.SMALL) {
+            this._horizontal_mode = _HorizontalMode.SMALL;
+            this._featured_cards_to_show = _FeaturedCardCount.SMALL;
             this._support_cards_per_row = SUPPORT_CARD_COUNT - 1;
         } else {
-            this._horizontal_mode = HORIZONTAL_MODE.LARGE;
-            this._featured_cards_to_show = FEATURED_CARD_COUNT.LARGE;
+            this._horizontal_mode = _HorizontalMode.LARGE;
+            this._featured_cards_to_show = _FeaturedCardCount.LARGE;
             this._support_cards_per_row = SUPPORT_CARD_COUNT;
         }
     },
