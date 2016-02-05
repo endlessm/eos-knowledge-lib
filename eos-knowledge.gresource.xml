@@ -69,6 +69,7 @@
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/standaloneBanner.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/suggestedArticlesModule.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/suggestedCategoriesModule.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">data/widgets/supplementaryArticlesModule.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/textCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/thumbCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/tooltips.ui</file>
@@ -147,6 +148,7 @@
     <file>js/app/modules/standalonePage.js</file>
     <file>js/app/modules/suggestedArticlesModule.js</file>
     <file>js/app/modules/suggestedCategoriesModule.js</file>
+    <file>js/app/modules/supplementaryArticlesModule.js</file>
     <file>js/app/modules/textCard.js</file>
     <file>js/app/modules/thematicModule.js</file>
     <file>js/app/modules/thirtiesArrangement.js</file>

@@ -314,6 +314,7 @@ javascript_tests = \
 	tests/js/app/modules/testStandalonePage.js \
 	tests/js/app/modules/testSuggestedArticlesModule.js \
 	tests/js/app/modules/testSuggestedCategoriesModule.js \
+	tests/js/app/modules/testSupplementaryArticlesModule.js \
 	tests/js/app/modules/testTextCard.js \
 	tests/js/app/modules/testThematicModule.js \
 	tests/js/app/modules/testThirtiesArrangement.js \

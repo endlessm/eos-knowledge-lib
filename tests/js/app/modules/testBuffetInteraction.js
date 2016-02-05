@@ -40,6 +40,9 @@ const MockReadingHistoryModel = new Lang.Class({
     Extends: GObject.Object,
 
     mark_article_read: function () {},
+    get_read_articles: function () {
+        return new Set();
+    },
 });
 
 describe('Buffet interaction', function () {
@@ -196,6 +199,11 @@ describe('Buffet interaction', function () {
                 .toBeDefined();
         });
 
+        it('dispatch a set of unread articles', function () {
+            expect(dispatcher.last_payload_with_type(Actions.APPEND_SUPPLEMENTARY_ARTICLES)).toBeDefined();
+            expect(dispatcher.last_payload_with_type(Actions.APPEND_SUPPLEMENTARY_ARTICLES).same_set).toBeFalsy();
+        });
+
         it('goes back to the home page when the home button is clicked', function () {
             dispatcher.dispatch({
                 action_type: Actions.HOME_CLICKED,
@@ -270,6 +278,29 @@ describe('Buffet interaction', function () {
     test_article_click_action(Actions.ITEM_CLICKED, 'item');
     test_article_click_action(Actions.SEARCH_CLICKED, 'search item');
     test_article_click_action(Actions.AUTOCOMPLETE_CLICKED, 'autocomplete entry');
+
+    describe('when an article is clicked', function () {
+        it('dispatches unread articles from both within and outside current category', function () {
+            engine.get_object_by_id_finish.and.returnValue(article_model);
+            dispatcher.dispatch({
+                action_type: Actions.ITEM_CLICKED,
+                model: article_model,
+            });
+            let payloads = dispatcher.payloads_with_type(Actions.APPEND_SUPPLEMENTARY_ARTICLES);
+            expect(payloads.length).toBe(2);
+
+            expect(payloads[0].need_unread).toBeTruthy();
+            expect(payloads[1].need_unread).toBeTruthy();
+            // One of the dispatches should ask for articles from the same set
+            // and the other should ask for articles from different sets. Ensure
+            // that we are getting both types.
+            if (payloads[0].same_set === true) {
+                expect(payloads[1].same_set).toBeFalsy();
+            } else {
+                expect(payloads[1].same_set).toBeTruthy();
+            }
+        });
+    });
 
     describe('when a set link is clicked', function () {
         it('changes to the set page if link is a set', function () {

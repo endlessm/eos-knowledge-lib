@@ -241,10 +241,16 @@ describe('QueryObject', function () {
             let query_obj = new QueryObject.QueryObject({
                 domain: 'fake-blacklist-domain',
                 query: 'tyrion wins',
+                excluded_ids: ['ekn://fake-blacklist-domain/cleganebowlfever', 'ekn://fake-blacklist-domain/errybodygethyped'],
+                excluded_tags: ['chicken', 'shop'],
             });
             let result = query_obj.get_query_parser_string(query_obj);
             expect(result).toMatch('NOT tag:"foo"');
             expect(result).toMatch('NOT tag:"bar"');
+            expect(result).toMatch('NOT id:cleganebowlfever');
+            expect(result).toMatch('NOT id:errybodygethyped');
+            expect(result).toMatch('NOT tag:"chicken"');
+            expect(result).toMatch('NOT tag:"shop"');
         });
 
         it('should handle large queries', function () {
