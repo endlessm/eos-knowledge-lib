@@ -61,11 +61,6 @@ const QuarterArrangement = new Lang.Class({
         this._small_card_mode = false;
 
         this.parent(props);
-
-        // Initialize assuming we're on large mode
-        this._horizontal_mode = _HorizontalMode.LARGE;
-        this._featured_cards_to_show = _FeaturedCardCount.LARGE;
-        this._support_cards_per_row = SUPPORT_CARD_COUNT;
     },
 
     add_card: function (widget) {
@@ -108,15 +103,15 @@ const QuarterArrangement = new Lang.Class({
     },
 
     vfunc_get_preferred_height_for_width: function (width) {
-        this._setup_horizontal_mode(width);
+        let [featured_cards_to_show, support_cards_per_row] = this._determine_horizontal_mode(width);
         let all_cards_count = this.get_children().length;
 
         // Calculate vertical space for featured cards row
         let featured_cards_height_alloc = FEATURED_CARD_HEIGHT + this._spacing;
 
         // Calculate vertical space for support card rows
-        let support_cards = all_cards_count - this._featured_cards_to_show;
-        let support_rows = Math.ceil(support_cards / this._support_cards_per_row);
+        let support_cards = all_cards_count - featured_cards_to_show;
+        let support_rows = Math.ceil(support_cards / support_cards_per_row);
         let support_cards_height_alloc = Arrangement.get_size_with_spacing(SUPPORT_CARD_HEIGHT, support_rows, this._spacing);
         let height = featured_cards_height_alloc + support_cards_height_alloc;
 
@@ -130,10 +125,10 @@ const QuarterArrangement = new Lang.Class({
         if (all_cards.length === 0)
             return;
 
-        this._setup_horizontal_mode(alloc.width);
+        let [featured_cards_to_show, support_cards_per_row] = this._determine_horizontal_mode(alloc.width);
 
-        let featured_card_width = this._get_card_width(alloc.width, this._featured_cards_to_show);
-        let spare_pixels = alloc.width - Arrangement.get_size_with_spacing(featured_card_width, this._featured_cards_to_show, this._spacing);
+        let featured_card_width = this._get_card_width(alloc.width, featured_cards_to_show);
+        let spare_pixels = alloc.width - Arrangement.get_size_with_spacing(featured_card_width, featured_cards_to_show, this._spacing);
 
         let x = alloc.x;
         let y = alloc.y;
@@ -141,13 +136,13 @@ const QuarterArrangement = new Lang.Class({
 
         // Featured cards:
         // Place two-four featured cards per row at top of arrangement
-        all_cards.slice(0, this._featured_cards_to_show).forEach((card) => {
+        all_cards.slice(0, featured_cards_to_show).forEach((card) => {
             this.place_card(card, x, y, featured_card_width, FEATURED_CARD_HEIGHT);
             x += delta_x;
         });
 
-        let support_card_width = this._get_card_width(alloc.width, this._support_cards_per_row);
-        spare_pixels = alloc.width - Arrangement.get_size_with_spacing(support_card_width, this._support_cards_per_row, this._spacing);
+        let support_card_width = this._get_card_width(alloc.width, support_cards_per_row);
+        spare_pixels = alloc.width - Arrangement.get_size_with_spacing(support_card_width, support_cards_per_row, this._spacing);
 
         x = alloc.x;
         y += FEATURED_CARD_HEIGHT + this._spacing;
@@ -156,34 +151,34 @@ const QuarterArrangement = new Lang.Class({
 
         // Support cards:
         // Place rest of cards below the featured cards, in as many rows as needed
-        all_cards.slice(this._featured_cards_to_show).forEach((card, ix) => {
+        all_cards.slice(featured_cards_to_show).forEach((card, ix) => {
             this.place_card(card, x, y, support_card_width, SUPPORT_CARD_HEIGHT);
 
-            if ((ix + 1) % this._support_cards_per_row === 0) {
+            if ((ix + 1) % support_cards_per_row === 0) {
                 x = alloc.x;
                 y += delta_y;
             } else {
-                x += delta_x + Arrangement.get_spare_pixels_for_card_index(spare_pixels, this._support_cards_per_row, ix);
+                x += delta_x + Arrangement.get_spare_pixels_for_card_index(spare_pixels, support_cards_per_row, ix);
             }
         });
 
         Utils.set_container_clip(this);
     },
 
-    _setup_horizontal_mode: function (width) {
+    _determine_horizontal_mode: function (width) {
+        let featured_cards_to_show;
+        let support_cards_per_row
         if (width <= _HorizontalThreshold.TINY) {
-            this._horizontal_mode = _HorizontalMode.TINY;
-            this._featured_cards_to_show = _FeaturedCardCount.TINY;
-            this._support_cards_per_row = SUPPORT_CARD_COUNT - 1;
+            featured_cards_to_show = _FeaturedCardCount.TINY;
+            support_cards_per_row = SUPPORT_CARD_COUNT - 1;
         } else if (width <= _HorizontalThreshold.SMALL) {
-            this._horizontal_mode = _HorizontalMode.SMALL;
-            this._featured_cards_to_show = _FeaturedCardCount.SMALL;
-            this._support_cards_per_row = SUPPORT_CARD_COUNT - 1;
+            featured_cards_to_show = _FeaturedCardCount.SMALL;
+            support_cards_per_row = SUPPORT_CARD_COUNT - 1;
         } else {
-            this._horizontal_mode = _HorizontalMode.LARGE;
-            this._featured_cards_to_show = _FeaturedCardCount.LARGE;
-            this._support_cards_per_row = SUPPORT_CARD_COUNT;
+            featured_cards_to_show = _FeaturedCardCount.LARGE;
+            support_cards_per_row = SUPPORT_CARD_COUNT;
         }
+        return [featured_cards_to_show, support_cards_per_row];
     },
 
     _get_card_width: function (total_width, card_count) {
