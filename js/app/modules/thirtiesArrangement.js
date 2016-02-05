@@ -117,8 +117,6 @@ const ThirtiesArrangement = new Lang.Class({
         this.parent(alloc);
 
         let all_children = this.get_children();
-
-        // If arrangement has no child cards yet, simply exit
         if (all_children.length === 0)
             return;
 
