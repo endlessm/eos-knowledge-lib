@@ -80,9 +80,12 @@
                             "type": "ResponsiveMarginsModule",
                             "slots": {
                                 "content": {
-                                    "type": "TwoVerticalTemplate",
+                                    "type": "TwoPieceTemplate",
+                                    "properties": {
+                                        "orientation": "vertical"
+                                    },
                                     "slots": {
-                                        "top": {
+                                        "first": {
                                             "type": "ThematicModule",
                                             "properties": {
                                                 "halign": "center",
@@ -103,7 +106,7 @@
                                                 "header-card-type": "header-card"
                                             }
                                         },
-                                        "bottom": "category-suggestions"
+                                        "second": "category-suggestions"
                                     }
                                 }
                             }
@@ -124,9 +127,12 @@
                             "type": "ResponsiveMarginsModule",
                             "slots": {
                                 "content": {
-                                    "type": "TwoVerticalTemplate",
+                                    "type": "TwoPieceTemplate",
+                                    "properties": {
+                                        "orientation": "vertical"
+                                    },
                                     "slots": {
-                                        "top": {
+                                        "first": {
                                             "type": "HighlightsModule",
                                             "properties": {
                                                 "halign": "center",
@@ -159,7 +165,7 @@
                                                 }
                                             }
                                         },
-                                        "bottom": "category-suggestions"
+                                        "second": "category-suggestions"
                                     }
                                 }
                             }
