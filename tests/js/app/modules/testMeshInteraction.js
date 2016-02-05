@@ -84,6 +84,7 @@ describe('Mesh interaction', function () {
             factory_name: 'interaction',
             template_type: 'B',
         });
+        mesh.BRAND_PAGE_TIME_MS = 0;
         spyOn(mesh, '_record_search_metric');
     });
 
@@ -134,7 +135,6 @@ describe('Mesh interaction', function () {
     });
 
     it('shows the brand page until timeout has expired and sets are loaded', function () {
-        mesh.BRAND_PAGE_TIME_MS = 0;
         mesh.desktop_launch(0);
         expect(dispatcher.last_payload_with_type(Actions.SHOW_BRAND_PAGE)).toBeDefined();
         expect(dispatcher.last_payload_with_type(Actions.SHOW_HOME_PAGE)).not.toBeDefined();
@@ -143,7 +143,6 @@ describe('Mesh interaction', function () {
     });
 
     it('shows the brand page only once', function () {
-        mesh.BRAND_PAGE_TIME_MS = 0;
         mesh.desktop_launch(0);
         mesh.desktop_launch(0);
         Utils.update_gui();
@@ -152,7 +151,6 @@ describe('Mesh interaction', function () {
     });
 
     it('does not show the brand page on other launch methods', function () {
-        mesh.BRAND_PAGE_TIME_MS = 0;
         engine.get_object_by_id_finish.and.returnValue(new ContentObjectModel.ContentObjectModel());
         mesh.search(0, 'query');
         mesh.activate_search_result(0, 'ekn://foo/bar', 'query');
@@ -161,7 +159,6 @@ describe('Mesh interaction', function () {
     });
 
     it('cannot go back from the home page after launch from desktop', function () {
-        mesh.BRAND_PAGE_TIME_MS = 0;
         mesh.desktop_launch(0);
         Utils.update_gui();
         expect(dispatcher.last_payload_with_type(Actions.SHOW_HOME_PAGE)).toBeDefined();
@@ -170,7 +167,6 @@ describe('Mesh interaction', function () {
     });
 
     it('cannot go back from the search page after launch from search', function () {
-        mesh.BRAND_PAGE_TIME_MS = 0;
         mesh.search(0, 'query');
         Utils.update_gui();
         expect(dispatcher.last_payload_with_type(Actions.SHOW_HOME_PAGE)).not.toBeDefined();
@@ -180,7 +176,6 @@ describe('Mesh interaction', function () {
     });
 
     it('cannot go back from the article page after launch from search result', function () {
-        mesh.BRAND_PAGE_TIME_MS = 0;
         engine.get_object_by_id_finish.and.returnValue(new ContentObjectModel.ContentObjectModel());
         mesh.activate_search_result(0, 'ekn://foo/bar', 'query');
         Utils.update_gui();
@@ -191,7 +186,6 @@ describe('Mesh interaction', function () {
     });
 
     it('goes back to the home page via the sidebar after launch from search', function () {
-        mesh.BRAND_PAGE_TIME_MS = 0;
         mesh.search(0, 'query');
         Utils.update_gui();
         dispatcher.reset();
@@ -202,7 +196,6 @@ describe('Mesh interaction', function () {
     });
 
     it('goes back to the home page via the sidebar after launch from search result', function () {
-        mesh.BRAND_PAGE_TIME_MS = 0;
         engine.get_object_by_id_finish.and.returnValue(new ContentObjectModel.ContentObjectModel());
         mesh.activate_search_result(0, 'ekn://foo/bar', 'query');
         Utils.update_gui();
@@ -403,7 +396,6 @@ describe('Mesh interaction', function () {
 
     describe('history', function () {
         beforeEach(function () {
-            mesh.BRAND_PAGE_TIME_MS = 0;
             mesh.desktop_launch(0);
             engine.get_objects_by_query_finish.and.returnValue([[
                 new ContentObjectModel.ContentObjectModel({
