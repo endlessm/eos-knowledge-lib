@@ -127,7 +127,6 @@ const QuarterArrangement = new Lang.Class({
         this.parent(alloc);
 
         let all_cards = this.get_children();
-        // If arrangement has no child cards yet, simply exit
         if (all_cards.length === 0)
             return;
 

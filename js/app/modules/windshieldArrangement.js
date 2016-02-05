@@ -87,8 +87,8 @@ const WindshieldArrangement = new Lang.Class({
     vfunc_size_allocate: function (alloc) {
         this.parent(alloc);
 
-        // If arrangement has no child cards yet, simply exit
-        if (this.get_children().length === 0)
+        let all_children = this.get_children();
+        if (all_children.length === 0)
             return;
 
         this._small_mode = (alloc.width < Arrangement.get_size_with_spacing(CARD_SIZE_BIG, SECOND_ROW_CARD_COUNT, this._spacing));
@@ -105,7 +105,6 @@ const WindshieldArrangement = new Lang.Class({
         // Calculate spare pixels
         // The floor operation we do above may lead us to have 1,2 spare pixels
         let spare_pixels = alloc.width - (Arrangement.get_size_with_spacing(child_width, SECOND_ROW_CARD_COUNT, this._spacing));
-        let all_children = this.get_children();
 
         // Featured card:
         // Place the featured card at the at top of the arrangement
