@@ -114,6 +114,11 @@ const ReaderWindow = new Lang.Class({
             no_show_all: true,
         });
 
+        this._home_button = new Endless.TopbarHomeButton();
+        this._home_button.connect('clicked', () => {
+            dispatcher.dispatch({ action_type: Actions.HOME_CLICKED });
+        });
+
         this._history_buttons = new Endless.TopbarNavButton();
         this._history_buttons.back_button.connect('clicked', () => {
             dispatcher.dispatch({ action_type: Actions.HISTORY_BACK_CLICKED });
@@ -199,8 +204,14 @@ const ReaderWindow = new Lang.Class({
         // Looks a bit ugly but only used for debugging.
         box.add(this.issue_nav_buttons);
 
+        let button_box = new Gtk.Box({
+            orientation: Gtk.Orientation.HORIZONTAL,
+        });
+        button_box.add(this._home_button);
+        button_box.add(this._history_buttons);
+
         this.page_manager.add(lightbox, {
-            left_topbar_widget: this._history_buttons,
+            left_topbar_widget: button_box,
             center_topbar_widget: box,
         });
         this._front_page.show_all();
@@ -218,6 +229,9 @@ const ReaderWindow = new Lang.Class({
     },
 
     _update_nav_button_visibility: function () {
+        // Disable the home button when the current page is the front page
+        this._home_button.sensitive = (this._stack.visible_child !== this._front_page);
+
         let dispatcher = Dispatcher.get_default();
         dispatcher.dispatch({
             action_type: Actions.NAV_BACK_ENABLED_CHANGED,

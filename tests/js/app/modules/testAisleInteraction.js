@@ -329,6 +329,13 @@ describe('Aisle interaction', function () {
             expect(view.show_back_page).toHaveBeenCalled();
         });
 
+        it('goes back to the front page when home button is clicked', function () {
+            interaction._add_history_item_for_page(5);
+            spyOn(view, 'show_front_page');
+            dispatcher.dispatch({ action_type: Actions.HOME_CLICKED });
+            expect(view.show_front_page).toHaveBeenCalled();
+        });
+
         it('tells the view to animate forward when going to a later page', function () {
             spyOn(view, 'show_article_page');
             interaction._go_to_page(1, EosKnowledgePrivate.LoadingAnimationType.FORWARDS_NAVIGATION);

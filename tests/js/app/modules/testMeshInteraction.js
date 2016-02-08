@@ -206,6 +206,14 @@ describe('Mesh interaction', function () {
         expect(dispatcher.last_payload_with_type(Actions.SHOW_HOME_PAGE)).toBeDefined();
     });
 
+    it('goes back to the home page when home button is clicked', function () {
+        dispatcher.dispatch({
+            action_type: Actions.HOME_CLICKED,
+        });
+        Utils.update_gui();
+        expect(dispatcher.last_payload_with_type(Actions.SHOW_HOME_PAGE)).toBeDefined();
+    });
+
     describe('on set click', function () {
         let article_model, set_model;
         beforeEach(function () {

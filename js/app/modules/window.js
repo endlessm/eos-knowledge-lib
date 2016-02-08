@@ -170,13 +170,21 @@ const Window = new Lang.Class({
             matryoshka = lightbox;
         }
 
+        this._home_button = new Endless.TopbarHomeButton();
         this._history_buttons = new Endless.TopbarNavButton();
         this._search_box = this.create_submodule('search', {
             no_show_all: true,
             visible: false,
         });
+
+        let button_box = new Gtk.Box({
+            orientation: Gtk.Orientation.HORIZONTAL
+        });
+        button_box.add(this._home_button);
+        button_box.add(this._history_buttons);
+
         this.page_manager.add(matryoshka, {
-            left_topbar_widget: this._history_buttons,
+            left_topbar_widget: button_box,
             center_topbar_widget: this._search_box,
         });
 
@@ -220,6 +228,9 @@ const Window = new Lang.Class({
             enabled: false,
         });
 
+        this._home_button.connect('clicked', () => {
+            dispatcher.dispatch({ action_type: Actions.HOME_CLICKED });
+        });
         this._history_buttons.back_button.connect('clicked', () => {
             dispatcher.dispatch({ action_type: Actions.HISTORY_BACK_CLICKED });
         });
@@ -273,7 +284,7 @@ const Window = new Lang.Class({
         });
 
         this._history_buttons.get_style_context().add_class(Gtk.STYLE_CLASS_LINKED);
-        this._history_buttons.show_all();
+        button_box.show_all();
 
         this._stack.connect('notify::transition-running', function () {
             this._home_page.animating = this._stack.transition_running;
@@ -316,6 +327,9 @@ const Window = new Lang.Class({
     },
 
     show_page: function (new_page) {
+        // Disable the home button when the current page is the home or brand page
+        this._home_button.sensitive = (new_page !== this._home_page && new_page !== this._brand_page);
+
         let old_page = this.get_visible_page();
         if (old_page === new_page) {
             // Even though we didn't change, this should still count as the

@@ -187,6 +187,16 @@ describe('Window', function () {
             });
             expect(view.present.calls.any() || view.present_with_time.calls.any()).toBeTruthy();
         });
+
+        it('disables the home button when in the home page', function () {
+            let home_page = factory.get_created_named_mocks('home-page')[0];
+            let other_page = factory.get_created_named_mocks('section-page')[0];
+            expect(view._home_button).toBeDefined();
+            view.show_page(other_page);
+            expect(view._home_button.sensitive).toBe(true);
+            view.show_page(home_page);
+            expect(view._home_button.sensitive).toBe(false);
+        });
     });
 
     describe('with a brand page and no lightbox / navigation', function () {
@@ -248,6 +258,16 @@ describe('Window', function () {
             Utils.update_gui();
             let search = factory.get_created_named_mocks('top-bar-search')[0];
             expect(search.visible).toBeFalsy();
+        });
+
+        it('disables the home button when in the brand page', function () {
+            let brand_page = factory.get_created_named_mocks('brand-page')[0];
+            let other_page = factory.get_created_named_mocks('section-page')[0];
+            expect(view._home_button).toBeDefined();
+            view.show_page(other_page);
+            expect(view._home_button.sensitive).toBe(true);
+            view.show_page(brand_page);
+            expect(view._home_button.sensitive).toBe(false);
         });
     });
 });

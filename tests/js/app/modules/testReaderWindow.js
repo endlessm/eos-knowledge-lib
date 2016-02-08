@@ -128,6 +128,14 @@ describe('Reader window', function () {
         expect(payload.enabled).toBe(false);
     });
 
+    it('disables the home button when in the front page', function () {
+        expect(view._home_button).toBeDefined();
+        view.show_article_page(1);
+        expect(view._home_button.sensitive).toBe(true);
+        view.show_front_page();
+        expect(view._home_button.sensitive).toBe(false);
+    });
+
     it('sets progress labels correctly', function () {
         let model = new ContentObjectModel.ContentObjectModel();
         view.append_article_page(model);

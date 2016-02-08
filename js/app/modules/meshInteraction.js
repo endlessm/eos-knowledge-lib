@@ -97,6 +97,11 @@ const MeshInteraction = new Lang.Class({
                 case Actions.NAV_BACK_CLICKED:
                     this._on_back();
                     break;
+                case Actions.HOME_CLICKED:
+                    this._history_presenter.set_current_item_from_props({
+                        page_type: this.HOME_PAGE,
+                    });
+                    break;
                 case Actions.SET_CLICKED:
                     this._history_presenter.set_current_item_from_props({
                         page_type: this.SECTION_PAGE,
