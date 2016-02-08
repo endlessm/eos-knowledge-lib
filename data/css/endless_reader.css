@@ -345,11 +345,11 @@ scrollbars, style the GTK scrollbars to look slightly more like them */
 
 .composite .progress-label,
 .composite .article-snippet .synopsis {
-    font-size: 14px;
+    font-size: 12.3px;  /* 14px spec * 88% because spec was at 110% scale not 125% */
 }
 
 .composite .reader-card .title {
-    font-size: 18px;
+    font-size: 15.8px;  /* 18px spec * 88% */
     font-weight: 500;
 }
 
@@ -364,10 +364,10 @@ scrollbars, style the GTK scrollbars to look slightly more like them */
 }
 
 .composite .back-cover .subtitle {
-    font-size: 18px;
+    font-size: 15.8px;  /* 18px spec * 88% */
 }
 
 .composite .document-card .title {
     font-weight: bold;
-    font-size: 22px;
+    font-size: 19.4px;  /* 22px spec * 88% */
 }

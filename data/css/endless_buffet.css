@@ -428,7 +428,7 @@ EknResponsiveMarginsModule.xlarge {
 .composite .search-result-card.width-d .card-synopsis,
 .composite .search-result-card.width-e .title,
 .composite .search-result-card.width-e .card-synopsis {
-    font-size: 16px;
+    font-size: 14.1px;  /* 16px spec * 88% because spec was at 110% scale not 125% */
 }
 
 .composite EknHighlightsModule .text-card .title.label,
@@ -445,5 +445,5 @@ EknResponsiveMarginsModule.xlarge {
 }
 
 .composite EknAppBanner {
-    font-size: 19px;
+    font-size: 16.7px;  /* 19px spec * 88% */
 }
