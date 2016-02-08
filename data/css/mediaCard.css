@@ -30,9 +30,9 @@
 }
 
 .composite .media-card-caption {
-    font-size: 12px;
+    font-size: 10.6px;  /* 12px spec * 88% because spec was at 110% scale not 125% */
 }
 
 .composite .media-card-attribution-text {
-    font-size: 9px;
+    font-size: 7.9px;  /* 9px spec * 88% */
 }

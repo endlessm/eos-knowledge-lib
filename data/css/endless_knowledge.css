@@ -550,40 +550,40 @@ EosWindow .scrollbar.slider {
 }
 
 .composite .headerbar .entry {
-    font-size: 18px;
+    font-size: 15.8px;  /* 18px spec * 88% because spec was at 110% scale not 125% */
 }
 
 .composite .search-page-a .search-results .results-message-title,
 .composite .search-page-a .search-results .results-message-subtitle,
 .composite .search-page-a .search-results .error-message {
-    font-size: 16px;
+    font-size: 14.1px;  /* 16px spec * 88% */
 }
 
 .composite .search-page-b .search-results .results-message-title,
 .composite .search-page-b .search-results .results-message-subtitle,
 .composite .search-page-b .search-results .error-message {
-    font-size: 12px;
+    font-size: 10.6px;  /* 12px spec * 88% */
 }
 
 .composite .card-a .title {
     font-weight: 600;
-    font-size: 16px;
+    font-size: 14.1px;  /* 16px spec * 88% */
 }
 
 .composite .section-page-a .card-a .title,
 .composite .search-page-a .card-a .title {
-    font-size: 14px;
+    font-size: 12.3px;  /* 14px spec * 88% */
 }
 
 .composite .card-a .card-synopsis {
     color: black;
-    font-size: 14px;
+    font-size: 12.3px;  /* 14px spec * 88% */
     text-shadow: none;
 }
 
 .composite .home-page-a .search-box,
 .composite .home-page-b .search-box {
-    font-size: 16px;
+    font-size: 14.1px;  /* 16px spec * 88% */
 }
 
 .composite .section-page-b EknItemGroupModule,
