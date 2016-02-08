@@ -99,17 +99,17 @@ const ThirtiesArrangement = new Lang.Class({
     },
 
     vfunc_get_preferred_width: function () {
-        return [this._get_size_with_spacing(CARD_WIDTH_SMALL, COL_COUNT),
-            this._get_size_with_spacing(CARD_WIDTH_BIG, COL_COUNT)];
+        return [Arrangement.get_size_with_spacing(CARD_WIDTH_SMALL, COL_COUNT, this._spacing),
+            Arrangement.get_size_with_spacing(CARD_WIDTH_BIG, COL_COUNT, this._spacing)];
     },
 
     vfunc_get_preferred_height_for_width: function (width) {
-        this._small_mode = (width < this._get_size_with_spacing(CARD_HEIGHT_THRESHOLD, COL_COUNT));
+        this._small_mode = (width < Arrangement.get_size_with_spacing(CARD_HEIGHT_THRESHOLD, COL_COUNT, this._spacing));
 
         let card_height = this._small_mode ? CARD_HEIGHT_SMALL : CARD_HEIGHT_BIG;
         let rows_for_children = Math.ceil(this.get_children().length / COL_COUNT);
         let rows_visible = this._max_rows === 0 ? rows_for_children : Math.min(this._max_rows, rows_for_children);
-        let height = this._get_size_with_spacing(card_height, rows_visible);
+        let height = Arrangement.get_size_with_spacing(card_height, rows_visible, this._spacing);
         return [height, height];
     },
 
@@ -131,7 +131,7 @@ const ThirtiesArrangement = new Lang.Class({
 
         // Calculate spare pixels
         // The floor operation we do above may lead us to have 1,2 spare pixels
-        let spare_pixels = alloc.width - (this._get_size_with_spacing(child_width, COL_COUNT));
+        let spare_pixels = alloc.width - (Arrangement.get_size_with_spacing(child_width, COL_COUNT, this._spacing));
 
         let x = alloc.x;
         let y = alloc.y;
@@ -162,9 +162,5 @@ const ThirtiesArrangement = new Lang.Class({
         this.parent(widget);
         if (needs_resize)
             this.queue_resize();
-    },
-
-    _get_size_with_spacing: function (size, count) {
-        return size * count + this._spacing * (count - 1);
     },
 });
