@@ -319,6 +319,7 @@ javascript_tests = \
 	tests/js/app/modules/testSupplementaryArticlesModule.js \
 	tests/js/app/modules/testTextCard.js \
 	tests/js/app/modules/testThematicModule.js \
+	tests/js/app/modules/testThirdRockArrangement.js \
 	tests/js/app/modules/testThirtiesArrangement.js \
 	tests/js/app/modules/testThumbCard.js \
 	tests/js/app/modules/testTiledGridArrangement.js \

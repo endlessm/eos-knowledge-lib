@@ -1,0 +1,151 @@
+// Copyright 2015 Endless Mobile, Inc.
+
+/* exported ThirdRockArrangement */
+
+const Endless = imports.gi.Endless;
+const GObject = imports.gi.GObject;
+const Gtk = imports.gi.Gtk;
+const Lang = imports.lang;
+
+const Arrangement = imports.app.interfaces.arrangement;
+const Card = imports.app.interfaces.card;
+const Module = imports.app.interfaces.module;
+const Utils = imports.app.utils;
+
+const _HorizontalMode = {
+    TINY: 'TINY',
+    LARGE: 'LARGE',
+};
+const _HorizontalThreshold = {
+    TINY: 720,
+};
+const _PreferredCardWidth = {
+    TINY: Card.MinSize.B,
+    LARGE: Card.MinSize.D,
+};
+const _CardHeight = {
+    TINY: Card.MinSize.C,
+    LARGE: Card.MinSize.D,
+};
+const _CARD_COUNT = 3;
+
+/**
+ * Class: ThirdRockArrangement
+ * Arrangement with three full-height cards.
+ *
+ * This arrangement shows three democratic cards at full-height. It has two modes:
+ *  - Normal mode: The full height is given to each card.
+ *  - Compact mode: a short version of the arrangement is presented, and the cards
+ *    adjust accordingly.
+ */
+const ThirdRockArrangement = new Lang.Class({
+    Name: 'ThirdRockArrangement',
+    GTypeName: 'EknThirdRockArrangement',
+    Extends: Endless.CustomContainer,
+    Implements: [ Module.Module, Arrangement.Arrangement ],
+
+    Properties: {
+        'factory': GObject.ParamSpec.override('factory', Module.Module),
+        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
+        'all-visible': GObject.ParamSpec.override('all-visible', Arrangement.Arrangement),
+        'spacing': GObject.ParamSpec.override('spacing', Arrangement.Arrangement),
+    },
+
+    _init: function (props={}) {
+        this._spacing = 0;
+
+        this.parent(props);
+    },
+
+    add_card: function (widget) {
+        this.add(widget);
+    },
+
+    get_cards: function () {
+        return this.get_children();
+    },
+
+    clear: function () {
+        this.get_children().forEach((child) => this.remove(child));
+    },
+
+    get spacing() {
+        return this._spacing;
+    },
+
+    get all_visible() {
+        return this.get_children().length <= _CARD_COUNT;
+    },
+
+    set spacing(value) {
+        if (this._spacing === value)
+            return;
+        this._spacing = value;
+        this.notify('spacing');
+        this.queue_resize();
+    },
+
+    // Removing a widget should recalculate the positions of all widgets
+    vfunc_remove: function (widget) {
+        this.parent(widget);
+        this.queue_resize();
+    },
+
+    vfunc_get_request_mode: function () {
+        return Gtk.SizeRequestMode.HEIGHT_FOR_WIDTH;
+    },
+
+    vfunc_get_preferred_width: function () {
+        return [Arrangement.get_size_with_spacing(_PreferredCardWidth.TINY, _CARD_COUNT, this._spacing),
+            Arrangement.get_size_with_spacing(_PreferredCardWidth.LARGE, _CARD_COUNT, this._spacing)];
+    },
+
+    vfunc_get_preferred_height_for_width: function (width) {
+        let horizontal_mode = this._get_horizontal_mode(width);
+        let height = _CardHeight[horizontal_mode];
+        return [height, height];
+    },
+
+    vfunc_size_allocate: function (alloc) {
+        this.parent(alloc);
+
+        let all_cards = this.get_children();
+        if (all_cards.length === 0)
+            return;
+
+        let horizontal_mode = this._get_horizontal_mode(alloc.width);
+        let available_width = alloc.width - (_CARD_COUNT - 1) * this._spacing;
+        let child_width = Math.floor(available_width / _CARD_COUNT);
+        let child_height = _CardHeight[horizontal_mode];
+        let delta_x = child_width + this._spacing;
+        let spare_pixels = alloc.width - (Arrangement.get_size_with_spacing(child_width, _CARD_COUNT));
+
+        let delta_x = child_width + this._spacing;
+        let spare_pixels = alloc.width - (Arrangement.get_size_with_spacing(child_width, _CARD_COUNT, this._spacing));
+        let x = alloc.x;
+        let y = alloc.y;
+
+        all_cards.slice(0, _CARD_COUNT).forEach((card, i) => {
+            this.place_card(card, x, y, child_width, child_height);
+
+            let sp = Arrangement.get_spare_pixels_for_card_index(spare_pixels, _CARD_COUNT, i);
+            x += delta_x + sp;
+        });
+
+        all_cards.slice(_CARD_COUNT).forEach((card) => {
+            card.set_child_visible(false);
+        });
+
+        Utils.set_container_clip(this);
+    },
+
+    _get_horizontal_mode: function (width) {
+        let horizontal_mode;
+        if (width <= _HorizontalThreshold.TINY) {
+            horizontal_mode = _HorizontalMode.TINY;
+        } else {
+            horizontal_mode = _HorizontalMode.LARGE;
+        }
+        return horizontal_mode;
+    },
+});
