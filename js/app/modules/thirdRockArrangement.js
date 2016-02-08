@@ -24,8 +24,14 @@ const _PreferredCardWidth = {
     LARGE: Card.MinSize.D,
 };
 const _CardHeight = {
-    TINY: Card.MinSize.C,
-    LARGE: Card.MinSize.D,
+    Normal: {
+        TINY: Card.MinSize.C,
+        LARGE: Card.MinSize.D,
+    },
+    Compact: {
+        TINY: Card.MinSize.B,
+        LARGE: Card.MinSize.C,
+    }
 };
 const _CARD_COUNT = 3;
 
@@ -49,10 +55,26 @@ const ThirdRockArrangement = new Lang.Class({
         'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
         'all-visible': GObject.ParamSpec.override('all-visible', Arrangement.Arrangement),
         'spacing': GObject.ParamSpec.override('spacing', Arrangement.Arrangement),
+        /**
+         * Property: compact-mode
+         * Whether the arrangement should show its compact form
+         *
+         * By default, the ThirdRock Arrangement shows three full-height cards.
+         * But on compact mode, it shortens the height of its cards.
+         *
+         * Default:
+         *   false (default arrangement layout)
+         */
+        'compact-mode': GObject.ParamSpec.boolean('compact-mode',
+            'Compact mode',
+            'Whether the arrangement should show its compact form',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            false),
     },
 
     _init: function (props={}) {
         this._spacing = 0;
+        this._compact_mode = false;
 
         this.parent(props);
     },
@@ -75,6 +97,16 @@ const ThirdRockArrangement = new Lang.Class({
 
     get all_visible() {
         return this.get_children().length <= _CARD_COUNT;
+    },
+
+    get compact_mode() {
+        return this._compact_mode;
+    },
+
+    set compact_mode(value) {
+        if (this._compact_mode === value)
+            return;
+        this._compact_mode = value;
     },
 
     set spacing(value) {
@@ -102,7 +134,8 @@ const ThirdRockArrangement = new Lang.Class({
 
     vfunc_get_preferred_height_for_width: function (width) {
         let horizontal_mode = this._get_horizontal_mode(width);
-        let height = _CardHeight[horizontal_mode];
+        let height = _CardHeight[this._compact_mode ? 'Compact' : 'Normal'][horizontal_mode];
+
         return [height, height];
     },
 
@@ -116,9 +149,7 @@ const ThirdRockArrangement = new Lang.Class({
         let horizontal_mode = this._get_horizontal_mode(alloc.width);
         let available_width = alloc.width - (_CARD_COUNT - 1) * this._spacing;
         let child_width = Math.floor(available_width / _CARD_COUNT);
-        let child_height = _CardHeight[horizontal_mode];
-        let delta_x = child_width + this._spacing;
-        let spare_pixels = alloc.width - (Arrangement.get_size_with_spacing(child_width, _CARD_COUNT));
+        let child_height = _CardHeight[this._compact_mode ? 'Compact' : 'Normal'][horizontal_mode];;
 
         let delta_x = child_width + this._spacing;
         let spare_pixels = alloc.width - (Arrangement.get_size_with_spacing(child_width, _CARD_COUNT, this._spacing));

@@ -34,10 +34,12 @@ describe('ThirdRock arrangement', function () {
             win.destroy();
         });
 
-        function testSizingArrangementForDimensions(arr_width, arr_height, child_width) {
+        function testSizingArrangementForDimensions(compact_mode, arr_width, arr_height, child_width) {
             let message = 'handles arrangement for specified dimensions' + ' (' + arr_width + 'x' + arr_height + ')';
 
             it(message, function () {
+                arrangement.compact_mode = compact_mode;
+
                 win.set_size_request(arr_width, arr_height);
                 Utils.update_gui();
 
@@ -56,15 +58,30 @@ describe('ThirdRock arrangement', function () {
             });
         }
 
-        // At 1200x400, all cards of width=400
-        testSizingArrangementForDimensions(1200, 400, 400);
-        // At 1000x400, all cards of width=333
-        testSizingArrangementForDimensions(1000, 400, 333);
-        // At 900x400, all cards of width=300
-        testSizingArrangementForDimensions(900, 400, 300);
-        // At 800x300, all cards of width=266
-        testSizingArrangementForDimensions(800, 300, 266);
-        // At 600x300, all cards of width=200
-        testSizingArrangementForDimensions(600, 300, 200);
+        describe('on normal mode', function () {
+            // On normal mode and width=1200, arrangement height=400, all cards of width=400
+            testSizingArrangementForDimensions(false, 1200, 400, 400);
+            // On normal mode and width=1000, arrangement height=400, all cards of width=333
+            testSizingArrangementForDimensions(false, 1000, 400, 333);
+            // On normal mode and width=900, arrangement height=400, all cards of width=300
+            testSizingArrangementForDimensions(false, 900, 400, 300);
+            // On normal mode and width=800, arrangement height=400, all cards of width=266
+            testSizingArrangementForDimensions(false, 800, 400, 266);
+            // On normal mode and width=600, arrangement height=300, all cards of width=200
+            testSizingArrangementForDimensions(false, 600, 300, 200);
+        });
+
+        describe('on compact mode', function () {
+            // On compact mode and width=1200, arrangement height=300, all cards of width=400
+            testSizingArrangementForDimensions(true, 1200, 400, 400);
+            // On compact mode and width=1000, arrangement height=300, all cards of width=333
+            testSizingArrangementForDimensions(true, 1000, 400, 333);
+            // On compact mode and width=900, arrangement height=300, all cards of width=300
+            testSizingArrangementForDimensions(true, 900, 400, 300);
+            // On compact mode and width=800, arrangement height=200, all cards of width=266
+            testSizingArrangementForDimensions(true, 800, 300, 266);
+            // On compact mode and width=600, arrangement height=200, all cards of width=200
+            testSizingArrangementForDimensions(true, 600, 300, 200);
+        });
     });
 });
