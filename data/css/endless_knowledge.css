@@ -62,6 +62,9 @@ EknWindow {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+}
+
+EknWindow.parallax {
     transition: background-position 0.5s ease;
 }
 
