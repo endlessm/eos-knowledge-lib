@@ -3,6 +3,7 @@
 const Gtk = imports.gi.Gtk;
 
 const Card = imports.app.interfaces.card;
+const Compliance = imports.tests.compliance;
 const ContentObjectModel = imports.search.contentObjectModel;
 const HalfArrangement = imports.app.modules.halfArrangement;
 const Minimal = imports.tests.minimal;
@@ -11,8 +12,8 @@ const Utils = imports.tests.utils;
 
 Gtk.init(null);
 
-Minimal.test_arrangement_compliance(HalfArrangement.HalfArrangement);
-Minimal.test_arrangement_fade_in_compliance(HalfArrangement.HalfArrangement);
+Compliance.test_arrangement_compliance(HalfArrangement.HalfArrangement);
+Compliance.test_arrangement_fade_in_compliance(HalfArrangement.HalfArrangement);
 
 describe('Half Arrangement', function () {
     beforeEach(function () {

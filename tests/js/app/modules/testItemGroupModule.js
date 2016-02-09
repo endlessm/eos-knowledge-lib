@@ -3,6 +3,7 @@ const Gtk = imports.gi.Gtk;
 Gtk.init(null);
 
 const Actions = imports.app.actions;
+const Compliance = imports.tests.compliance;
 const ContentObjectModel = imports.search.contentObjectModel;
 const ItemGroupModule = imports.app.modules.itemGroupModule;
 const Minimal = imports.tests.minimal;
@@ -96,5 +97,5 @@ describe('Item group module', function () {
     });
 });
 
-Minimal.test_card_container_fade_in_compliance(Actions.APPEND_ITEMS,
+Compliance.test_card_container_fade_in_compliance(Actions.APPEND_ITEMS,
     ItemGroupModule.ItemGroupModule);

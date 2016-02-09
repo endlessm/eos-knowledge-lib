@@ -1,8 +1,8 @@
 const Gtk = imports.gi.Gtk;
 
-const Minimal = imports.tests.minimal;
+const Compliance = imports.tests.compliance;
 const OverflowArrangement = imports.app.modules.overflowArrangement;
 
 Gtk.init(null);
 
-Minimal.test_arrangement_compliance(OverflowArrangement.OverflowArrangement);
+Compliance.test_arrangement_compliance(OverflowArrangement.OverflowArrangement);

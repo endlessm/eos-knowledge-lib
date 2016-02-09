@@ -2,6 +2,7 @@
 
 const Gtk = imports.gi.Gtk;
 
+const Compliance = imports.tests.compliance;
 const ContentObjectModel = imports.search.contentObjectModel;
 const Minimal = imports.tests.minimal;
 const MockFactory = imports.tests.mockFactory;
@@ -10,7 +11,7 @@ const WindshieldArrangement = imports.app.modules.windshieldArrangement;
 
 Gtk.init(null);
 
-Minimal.test_arrangement_compliance(WindshieldArrangement.WindshieldArrangement);
+Compliance.test_arrangement_compliance(WindshieldArrangement.WindshieldArrangement);
 
 describe('Windshield Arrangement', function () {
     let arrangement, factory;

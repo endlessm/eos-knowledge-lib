@@ -378,6 +378,7 @@ EXTRA_DIST += \
 	$(test_content) \
 	tests/CssClassMatcher.js \
 	tests/InstanceOfMatcher.js \
+	tests/compliance.js \
 	tests/minimal.js \
 	tests/mockCardContainer.js \
 	tests/mockDispatcher.js \

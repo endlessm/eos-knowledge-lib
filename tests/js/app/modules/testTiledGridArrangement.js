@@ -2,13 +2,14 @@ const Gtk = imports.gi.Gtk;
 
 Gtk.init(null);
 
+const Compliance = imports.tests.compliance;
 const ContentObjectModel = imports.search.contentObjectModel;
 const Minimal = imports.tests.minimal;
 const MockFactory = imports.tests.mockFactory;
 const TiledGridArrangement = imports.app.modules.tiledGridArrangement;
 const Utils = imports.tests.utils;
 
-Minimal.test_arrangement_compliance(TiledGridArrangement.TiledGridArrangement);
+Compliance.test_arrangement_compliance(TiledGridArrangement.TiledGridArrangement);
 
 describe('Tiled grid arrangement', function () {
     let arrangement, cards, factory;

@@ -4,8 +4,8 @@ const Utils = imports.tests.utils;
 Utils.register_gresource();
 
 const CarouselArrangement = imports.app.modules.carouselArrangement;
-const Minimal = imports.tests.minimal;
+const Compliance = imports.tests.compliance;
 
 Gtk.init(null);
 
-Minimal.test_arrangement_compliance(CarouselArrangement.CarouselArrangement);
+Compliance.test_arrangement_compliance(CarouselArrangement.CarouselArrangement);

@@ -3,9 +3,9 @@ const Gtk = imports.gi.Gtk;
 const Utils = imports.tests.utils;
 Utils.register_gresource();
 
+const Compliance = imports.tests.compliance;
 const ContentObjectModel = imports.search.contentObjectModel;
 const CssClassMatcher = imports.tests.CssClassMatcher;
-const Minimal = imports.tests.minimal;
 const SearchResultCard = imports.app.modules.searchResultCard;
 const StyleClasses = imports.app.styleClasses;
 
@@ -35,4 +35,4 @@ describe('Search result card widget', function () {
     });
 });
 
-Minimal.test_card_highlight_string_compliance(SearchResultCard.SearchResultCard);
+Compliance.test_card_highlight_string_compliance(SearchResultCard.SearchResultCard);

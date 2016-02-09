@@ -3,6 +3,7 @@
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
+const Compliance = imports.tests.compliance;
 const ContentObjectModel = imports.search.contentObjectModel;
 const Minimal = imports.tests.minimal;
 const MockFactory = imports.tests.mockFactory;
@@ -11,7 +12,7 @@ const Utils = imports.tests.utils;
 
 Gtk.init(null);
 
-Minimal.test_arrangement_compliance(SquareGuysArrangement.SquareGuysArrangement);
+Compliance.test_arrangement_compliance(SquareGuysArrangement.SquareGuysArrangement);
 
 describe('SquareGuys arrangement', function () {
     let factory;

@@ -2,6 +2,7 @@
 
 const Gtk = imports.gi.Gtk;
 
+const Compliance = imports.tests.compliance;
 const ContentObjectModel = imports.search.contentObjectModel;
 const Minimal = imports.tests.minimal;
 const MockFactory = imports.tests.mockFactory;
@@ -10,7 +11,7 @@ const Utils = imports.tests.utils;
 
 Gtk.init(null);
 
-Minimal.test_arrangement_compliance(PianoArrangement.PianoArrangement);
+Compliance.test_arrangement_compliance(PianoArrangement.PianoArrangement);
 
 describe('Piano Arrangement', function () {
     let arrangement;

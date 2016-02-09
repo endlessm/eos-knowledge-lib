@@ -2,6 +2,7 @@
 
 const Gtk = imports.gi.Gtk;
 
+const Compliance = imports.tests.compliance;
 const ContentObjectModel = imports.search.contentObjectModel;
 const Minimal = imports.tests.minimal;
 const MockFactory = imports.tests.mockFactory;
@@ -10,8 +11,8 @@ const Utils = imports.tests.utils;
 
 Gtk.init(null);
 
-Minimal.test_arrangement_compliance(QuarterArrangement.QuarterArrangement);
-Minimal.test_arrangement_fade_in_compliance(QuarterArrangement.QuarterArrangement);
+Compliance.test_arrangement_compliance(QuarterArrangement.QuarterArrangement);
+Compliance.test_arrangement_fade_in_compliance(QuarterArrangement.QuarterArrangement);
 
 describe('Quarter Arrangement', function () {
     let arrangement, win, models;

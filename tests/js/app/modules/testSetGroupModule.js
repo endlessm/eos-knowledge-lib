@@ -5,6 +5,7 @@ const Gtk = imports.gi.Gtk;
 Gtk.init(null);
 
 const Actions = imports.app.actions;
+const Compliance = imports.tests.compliance;
 const ContentObjectModel = imports.search.contentObjectModel;
 const Minimal = imports.tests.minimal;
 const MockDispatcher = imports.tests.mockDispatcher;
@@ -98,5 +99,5 @@ describe('Set group module', function () {
     });
 });
 
-Minimal.test_card_container_fade_in_compliance(Actions.APPEND_SETS,
+Compliance.test_card_container_fade_in_compliance(Actions.APPEND_SETS,
     SetGroupModule.SetGroupModule);

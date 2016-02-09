@@ -9,6 +9,7 @@ Utils.register_gresource();
 
 const Actions = imports.app.actions;
 const Arrangement = imports.app.interfaces.arrangement;
+const Compliance = imports.tests.compliance;
 const ContentObjectModel = imports.search.contentObjectModel;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const InfiniteScrolledWindow = imports.app.widgets.infiniteScrolledWindow;
@@ -222,5 +223,5 @@ describe('Search module', function () {
     });
 });
 
-Minimal.test_card_container_fade_in_compliance(Actions.APPEND_SEARCH,
+Compliance.test_card_container_fade_in_compliance(Actions.APPEND_SEARCH,
     SearchModule.SearchModule);
