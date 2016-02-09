@@ -47,7 +47,7 @@ const Dispatcher = new Lang.Class({
             throw new Error('Dispatch payloads need an action_type');
         this._queue.push(payload);
         if (!this._idle_id)
-            this._idle_id = GLib.idle_add(GLib.PRIORITY_LOW,
+            this._idle_id = GLib.idle_add(GLib.PRIORITY_HIGH_IDLE,
                 this._process_queue.bind(this));
     },
 
