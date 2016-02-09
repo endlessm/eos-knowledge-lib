@@ -152,6 +152,7 @@
     <file>js/app/modules/supplementaryArticlesModule.js</file>
     <file>js/app/modules/textCard.js</file>
     <file>js/app/modules/thematicModule.js</file>
+    <file>js/app/modules/thirdRockArrangement.js</file>
     <file>js/app/modules/thirtiesArrangement.js</file>
     <file>js/app/modules/thumbCard.js</file>
     <file>js/app/modules/tiledGridArrangement.js</file>
