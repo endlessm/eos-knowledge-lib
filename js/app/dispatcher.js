@@ -1,6 +1,7 @@
 // Copyright 2015 Endless Mobile, Inc.
 
 const GLib = imports.gi.GLib;
+const Gtk = imports.gi.Gtk;
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 
@@ -34,7 +35,7 @@ const Dispatcher = new Lang.Class({
         if (this._paused)
             return;
         if (this._idle_id === 0)
-            this._idle_id = GLib.idle_add(GLib.PRIORITY_LOW,
+            this._idle_id = GLib.idle_add(Gtk.PRIORITY_RESIZE - 10,
                 this._process_queue.bind(this));
     },
 
