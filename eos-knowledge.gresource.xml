@@ -53,6 +53,7 @@
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/encyclopediaCoverTemplate.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/gridArrangement.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/hamburgerBasementTemplate.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">data/widgets/hierarchicalSetModule.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/knowledgeDocumentCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/listArrangement.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/mediaCard.ui</file>
@@ -65,6 +66,7 @@
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/searchModule.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/searchResultCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/sequenceCard.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">data/widgets/setPreviewCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/sideMenuTemplate.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/standaloneBanner.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/suggestedArticlesModule.ui</file>
@@ -113,6 +115,7 @@
     <file>js/app/modules/gridArrangement.js</file>
     <file>js/app/modules/halfArrangement.js</file>
     <file>js/app/modules/hamburgerBasementTemplate.js</file>
+    <file>js/app/modules/hierarchicalSetModule.js</file>
     <file>js/app/modules/highlightsModule.js</file>
     <file>js/app/modules/itemGroupModule.js</file>
     <file>js/app/modules/knowledgeDocumentCard.js</file>
@@ -141,6 +144,7 @@
     <file>js/app/modules/sequenceCard.js</file>
     <file>js/app/modules/setBannerModule.js</file>
     <file>js/app/modules/setGroupModule.js</file>
+    <file>js/app/modules/setPreviewCard.js</file>
     <file>js/app/modules/sidebarTemplate.js</file>
     <file>js/app/modules/sideMenuTemplate.js</file>
     <file>js/app/modules/splitPercentageTemplate.js</file>

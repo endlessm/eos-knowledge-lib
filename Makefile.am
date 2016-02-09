@@ -282,6 +282,7 @@ javascript_tests = \
 	tests/js/app/modules/testDividedBannerTemplate.js \
 	tests/js/app/modules/testHalfArrangement.js \
 	tests/js/app/modules/testHamburgerBasementTemplate.js \
+	tests/js/app/modules/testHierarchicalSetModule.js \
 	tests/js/app/modules/testHighlightsModule.js \
 	tests/js/app/modules/testItemGroupModule.js \
 	tests/js/app/modules/testKnowledgeDocumentCard.js \
@@ -308,6 +309,7 @@ javascript_tests = \
 	tests/js/app/modules/testSequenceCard.js \
 	tests/js/app/modules/testSetBannerModule.js \
 	tests/js/app/modules/testSetGroupModule.js \
+	tests/js/app/modules/testSetPreviewCard.js \
 	tests/js/app/modules/testSidebarTemplate.js \
 	tests/js/app/modules/testSideMenuTemplate.js \
 	tests/js/app/modules/testSplitPercentageTemplate.js \

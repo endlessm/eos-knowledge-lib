@@ -100,6 +100,8 @@ const MinimalCard = new Lang.Class({
         spyOn(this, 'fade_in').and.callThrough();
     },
 
+    load_content: function () {},
+
     vfunc_size_allocate: function (allocation) {
         this.parent(allocation);
         this.update_card_sizing_classes(allocation.height, allocation.width);
