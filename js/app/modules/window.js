@@ -280,10 +280,10 @@ const Window = new Lang.Class({
             this.notify('animating');
             if (this._stack.transition_running) {
                 context.add_class(StyleClasses.ANIMATING);
-                Utils.squash_all_window_content_updates_heavy_handedly();
+                Utils.squash_all_window_content_updates_heavy_handedly(this);
             } else {
                 context.remove_class(StyleClasses.ANIMATING);
-                Utils.unsquash_all_window_content_updates_heavy_handedly();
+                Utils.unsquash_all_window_content_updates_heavy_handedly(this);
             }
         }.bind(this));
 
