@@ -285,12 +285,8 @@ const Window = new Lang.Class({
 
         this._stack.connect('notify::transition-running', function () {
             this._home_page.animating = this._stack.transition_running;
-            if (this._stack.transition_running) {
-                context.add_class(StyleClasses.ANIMATING);
-            } else {
+            if (!this._stack.transition_running)
                 this._stack.sensitive = true;
-                context.remove_class(StyleClasses.ANIMATING);
-            }
         }.bind(this));
 
         this._stack.connect_after('notify::visible-child',
