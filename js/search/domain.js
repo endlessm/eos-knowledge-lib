@@ -23,15 +23,19 @@ const Domain = new Lang.Class({
         this._domain = domain;
         this._xapian_bridge = xapian_bridge;
 
-        this._content_path = null;
+        this._content_dir = null;
         this._shard_file = null;
     },
 
-    _get_content_path: function () {
-        if (this._content_path === null)
-            this._content_path = datadir.get_data_dir_for_domain(this._domain).get_path();
+    _get_content_dir: function () {
+        if (this._content_dir === null)
+            this._content_dir = datadir.get_data_dir_for_domain(this._domain);
 
-        return this._content_path;
+        return this._content_dir;
+    },
+
+    _get_content_path: function () {
+        return this._get_content_dir().get_path();
     },
 
     // Returns a marshaled ObjectModel based on json_ld's @type value, or throws
@@ -162,24 +166,15 @@ const Domain = new Lang.Class({
                     return;
                 }
 
-                // We need to instantiate models for our results asynchronously.
-                // We'll set up a function here to resolve a result, which
-                // triggers our callback when the last article resolves.
-                let resolved = 0;
-                let results = new Array(json_ld.results.length);
-                let resolve = (index, model) => {
-                    results[index] = model;
-                    resolved++;
-                    if (resolved === results.length)
-                        task.return_value(results);
-                };
-
-                json_ld.results.forEach((result, index) => {
-                    this.resolve_xapian_result(result, cancellable, task.catch_callback_errors((domain_obj, xapian_task) => {
-                        let model = this.resolve_xapian_result_finish(xapian_task);
-                        resolve(index, model);
-                    }));
-                });
+                AsyncTask.all(this, (add_task) => {
+                    json_ld.results.forEach((result) => {
+                        add_task((cancellable, callback) => this.resolve_xapian_result(result, cancellable, callback),
+                                 (task) => this.resolve_xapian_result_finish(task));
+                    });
+                }, cancellable, task.catch_callback_errors((source, resolve_task) => {
+                    let results = AsyncTask.all_finish(resolve_task);
+                    task.return_value(results);
+                }));
             }));
         }));
         return task;
@@ -187,6 +182,15 @@ const Domain = new Lang.Class({
 
     get_objects_by_query_finish: function (task) {
         return task.finish();
+    },
+
+    /**
+     * Function: check_for_updates
+     *
+     * Synchronously check for updates to the domain.
+     */
+    check_for_updates: function () {
+        // By default, do nothing.
     },
 });
 
@@ -395,11 +399,198 @@ const DomainV2 = new Lang.Class({
     },
 });
 
+const DownloaderIface = '\
+<node name="/" xmlns:doc="http://www.freedesktop.org/dbus/1.0/doc.dtd"> \
+  <interface name="com.endlessm.EknDownloader"> \
+    <method name = "ApplyUpdate"> \
+      <arg type="s" name="subscription_id" direction="in" /> \
+      <arg type="b" name="applied_update" direction="out" /> \
+    </method> \
+    <method name = "FetchUpdate"> \
+      <arg type="s" name="subscription_id" direction="in" /> \
+    </method> \
+  </interface> \
+</node>';
+const DownloaderProxy = Gio.DBusProxy.makeProxyWrapper(DownloaderIface);
+
+const DomainV3 = new Lang.Class({
+    Name: 'DomainV3',
+    Extends: Domain,
+
+    _get_subscription_id: function () {
+        let file = this._get_content_dir().get_child('subscriptions.json');
+        let [success, data] = file.load_contents(null);
+        let subscriptions = JSON.parse(data);
+
+        // XXX: For now, we only support the first subscription.
+        return subscriptions.subscriptions[0].id;
+    },
+
+    get_subscription_ids: function () {
+        return [this._get_subscription_id()];
+    },
+
+    _get_subscription_dir: function () {
+        if (this._subscription_dir === undefined) {
+            let subscription_id = this._get_subscription_id();
+            let user_data_dir = Gio.File.new_for_path(GLib.get_user_data_dir());
+            this._subscription_dir = user_data_dir.get_child('com.endlessm.subscriptions').get_child(subscription_id);
+            Utils.ensure_directory(this._subscription_dir);
+        }
+
+        return this._subscription_dir;
+    },
+
+    _get_manifest_file: function () {
+        let subscription_dir = this._get_subscription_dir();
+        let manifest_file = subscription_dir.get_child('manifest.json');
+        return manifest_file;
+    },
+
+    _init_subscription_symlinks: function (cancellable) {
+        // In order to bootstrap content inside bundles while still keeping one subscriptions
+        // directory, we symlink shards from the content bundle into the subscription directory.
+
+        let subscription_id = this._get_subscription_id();
+        let bundle_dir = this._get_content_dir().get_child('com.endlessm.subscriptions').get_child(subscription_id);
+        let subscription_dir = this._get_subscription_dir();
+
+        // Load the manifest from the bundle.
+        let bundle_manifest = bundle_dir.get_child('manifest.json');
+        if (!bundle_manifest.query_exists(cancellable))
+            return;
+
+        let [success, data] = bundle_manifest.load_contents(cancellable);
+        let manifest = JSON.parse(data);
+
+        manifest.shards.forEach((shard_entry) => {
+            let bundle_shard_file = bundle_dir.get_child(shard_entry.path);
+            if (!bundle_shard_file.query_exists(cancellable))
+                return;
+
+            let subscription_shard_file = subscription_dir.get_child(shard_entry.path);
+
+            try {
+                // Symlink into the subscriptions dir.
+                subscription_shard_file.make_symbolic_link(bundle_shard_file.get_path(), cancellable);
+            } catch (e if e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.EXISTS)) {
+                // Shard already exists, we're good.
+            }
+        });
+
+        // Now that that's all done, copy over the manifest. Don't symlink.
+        bundle_manifest.copy(this._get_manifest_file(), Gio.FileCopyFlags.NONE, cancellable, null);
+    },
+
+    _load_shards: function (cancellable) {
+        if (this._shards === undefined) {
+            let manifest_file = this._get_manifest_file();
+
+            if (!manifest_file.query_exists(cancellable))
+                this._init_subscription_symlinks(cancellable);
+
+            let [success, data] = manifest_file.load_contents(cancellable);
+            let manifest = JSON.parse(data);
+
+            let subscription_dir = this._get_subscription_dir();
+            this._shards = manifest.shards.map(function(shard_entry) {
+                let file = subscription_dir.get_child(shard_entry.path);
+                return new EosShard.ShardFile({
+                    path: file.get_path(),
+                });
+            });
+        }
+
+        return this._shards;
+    },
+
+    load: function (cancellable, callback) {
+        this._load_shards(cancellable);
+
+        return AsyncTask.all(this, (add_task) => {
+            this._shards.forEach((shard) => {
+                add_task((cancellable, callback) => shard.init_async(0, cancellable, callback),
+                         (result) => shard.init_finish(result));
+            });
+        }, cancellable, callback);
+    },
+
+    load_finish: function (task) {
+        return AsyncTask.all_finish(task);
+    },
+
+    get_domain_query_params: function () {
+        let params = {};
+        params.manifest_path = this._get_manifest_file().get_path();
+        return params;
+    },
+
+    get_object_by_id: function (id, cancellable, callback) {
+        let task = new AsyncTask.AsyncTask(this, cancellable, callback);
+        task.catch_errors(() => {
+            let find_record = (hash) => {
+                for (let i = 0; i < this._shards.length; i++) {
+                    let shard_file = this._shards[i];
+                    let record = shard_file.find_record_by_hex_name(hash);
+                    if (record)
+                        return record;
+                }
+
+                throw new Error('Could not find shard record for ' + hash);
+            };
+
+            let [domain, hash] = Utils.components_from_ekn_id(id);
+            let record = find_record(hash);
+
+            let metadata_stream = record.metadata.get_stream();
+            Utils.read_stream(metadata_stream, cancellable, task.catch_callback_errors((stream, stream_task) => {
+                let data = Utils.read_stream_finish(stream_task);
+                let json_ld = JSON.parse(data);
+                let props = {
+                    ekn_version: 3,
+                    get_content_stream: () => record.data.get_stream(),
+                };
+                task.return_value(this._get_model_from_json_ld(props, json_ld));
+            }));
+        });
+        return task;
+    },
+
+    get_object_by_id_finish: function (task) {
+        return task.finish();
+    },
+
+    resolve_xapian_result: function (result, cancellable, callback) {
+        let id = result;
+        return this.get_object_by_id(id, cancellable, callback);
+    },
+
+    resolve_xapian_result_finish: function (task) {
+        return task.finish();
+    },
+
+    check_for_updates: function () {
+        try {
+            let proxy = new DownloaderProxy(Gio.DBus.session, 'com.endlessm.EknDownloader', '/com/endlessm/EknDownloader');
+
+            // Synchronously apply any update we have.
+            proxy.ApplyUpdateSync(this._get_subscription_id());
+
+            // Regardless of whether or not we applied an update,
+            // let's see about fetching a new one...
+            proxy.FetchUpdateRemote(this._get_subscription_id());
+        } catch(e) {
+            logError(e, "Could not update domain");
+        }
+    },
+});
+
 function get_domain_impl (domain, xapian_bridge) {
     let ekn_version = Utils.get_ekn_version_for_domain(domain);
     let impls = {
         '1': DomainV1,
         '2': DomainV2,
+        '3': DomainV3,
     };
 
     let impl = impls[ekn_version];

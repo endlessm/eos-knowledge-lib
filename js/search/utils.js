@@ -117,3 +117,11 @@ function string_to_stream(string) {
     let bytes = ByteArray.fromString(string).toGBytes();
     return Gio.MemoryInputStream.new_from_bytes(bytes);
 }
+
+function ensure_directory (dir) {
+    try {
+        dir.make_directory_with_parents(null);
+    } catch (e if e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.EXISTS)) {
+        // Directory already exists, we're good.
+    }
+}
