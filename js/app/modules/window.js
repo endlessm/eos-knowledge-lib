@@ -287,7 +287,6 @@ const Window = new Lang.Class({
         button_box.show_all();
 
         this._stack.connect('notify::transition-running', function () {
-            this._home_page.animating = this._stack.transition_running;
             if (this._stack.transition_running)
                 context.add_class(StyleClasses.ANIMATING);
             else
