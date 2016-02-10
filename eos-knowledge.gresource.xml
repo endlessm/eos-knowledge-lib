@@ -146,6 +146,7 @@
     <file>js/app/modules/setGroupModule.js</file>
     <file>js/app/modules/setPreviewCard.js</file>
     <file>js/app/modules/sidebarTemplate.js</file>
+    <file>js/app/modules/sideBySideArrangement.js</file>
     <file>js/app/modules/sideMenuTemplate.js</file>
     <file>js/app/modules/splitPercentageTemplate.js</file>
     <file>js/app/modules/squareGuysArrangement.js</file>
