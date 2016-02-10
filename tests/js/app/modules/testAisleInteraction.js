@@ -149,6 +149,7 @@ describe('Aisle interaction', function () {
         dispatcher = MockDispatcher.mock_default();
         engine = MockEngine.mock_default();
 
+        spyOn(AppUtils, 'get_web_plugin_dbus_name').and.returnValue('test0');
         // Prevent CSS from leaking into other tests
         spyOn(Gtk.StyleContext, 'add_provider_for_screen');
 
@@ -169,15 +170,12 @@ describe('Aisle interaction', function () {
         factory.add_named_mock('interaction', AisleInteraction.AisleInteraction, {
             'window': 'window',
             'document-card': 'document-card',
-        });
-
-        spyOn(AppUtils, 'get_web_plugin_dbus_name').and.returnValue("test0");
-        interaction = new AisleInteraction.AisleInteraction({
+        }, {
             application: application,
             settings: settings,
-            factory: factory,
-            factory_name: 'interaction',
         });
+
+        interaction = factory.create_named_module('interaction');
         view = factory.get_created_named_mocks('window')[0];
         spyOn(interaction, 'record_search_metric');
     });
@@ -453,6 +451,7 @@ describe('Aisle interaction', function () {
                 expect(dispatcher.dispatched_payloads).toContain(jasmine.objectContaining({
                     action_type: Actions.APPEND_SEARCH,
                     models: MOCK_RESULTS,
+                    query: 'Azucar',
                 }));
 
                 expect(dispatcher.dispatched_payloads).toContain(jasmine.objectContaining({

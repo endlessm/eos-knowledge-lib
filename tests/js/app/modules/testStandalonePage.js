@@ -22,10 +22,7 @@ describe('Standalone page', function () {
         factory.add_named_mock('page', StandalonePage.StandalonePage, {
             'card-type': 'card',
         });
-        page = new StandalonePage.StandalonePage({
-            factory: factory,
-            factory_name: 'page',
-        });
+        page = factory.create_named_module('page');
     });
 
     it('loads a document when show article is dispatched with an archived article', function () {

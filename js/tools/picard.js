@@ -9,7 +9,7 @@ const System = imports.system;
 const Card = imports.app.interfaces.card;
 const ContentObjectModel = imports.search.contentObjectModel;
 const Module = imports.app.interfaces.module;
-const Warehouse = imports.app.warehouse;
+const ModuleFactory = imports.app.moduleFactory;
 
 // For those interested in picard's etymology, it goes roughly like this:
 // Arrangement smoke test -> Tasteful floral arrangement -> Martha Stewart ->
@@ -57,9 +57,23 @@ function main() {
         Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 
     let module_name = ARGV.shift() + 'Arrangement';
-    let warehouse = new Warehouse.Warehouse();
-    let ArrangementClass = warehouse.type_to_class(module_name);
-    widgets.arrangement = new ArrangementClass();
+    let factory = new ModuleFactory.ModuleFactory({
+        app_json: {
+            "version": 2,
+            "modules": {
+                "arrangement": {
+                    "type": module_name,
+                    "slots": {
+                        "card-type": {
+                            "type": "ColorBox",
+                        },
+                    },
+                },
+            },
+        },
+    });
+    factory.warehouse.register_class('ColorBox', ColorBox);
+    widgets.arrangement = factory.create_named_module('arrangement');
 
     build_ui();
     connect_signals();
@@ -184,24 +198,21 @@ function connect_signals() {
         widgets.titlebar.subtitle = width + 'x' + height;
     });
     widgets.add_box.connect('clicked', () => {
-        let box = new ColorBox({
-            model: new ContentObjectModel.ContentObjectModel(),
-        });
-        box.show_all();
-        widgets.arrangement.add_card(box);
+        let model = new ContentObjectModel.ContentObjectModel();
+        widgets.arrangement.add_model(model);
         widgets.remove_box.sensitive = true;
         widgets.clear.sensitive = true;
         widgets.add_box.get_style_context().remove_class('hint');
     });
     widgets.remove_box.connect('clicked', () => {
-        let boxes = widgets.arrangement.get_cards();
-        if (boxes.length === 0)
+        let models = widgets.arrangement.get_models();
+        if (models.length === 0)
             return;
-        if (boxes.length === 1) {
+        if (models.length === 1) {
             widgets.remove_box.sensitive = false;
             widgets.clear.sensitive = false;
         }
-        widgets.arrangement.remove(boxes[0]);
+        widgets.arrangement.remove_model(models[0]);
     });
     widgets.clear.connect('clicked', () => {
         widgets.arrangement.clear();

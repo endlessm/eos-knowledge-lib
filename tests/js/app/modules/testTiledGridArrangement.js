@@ -2,27 +2,34 @@ const Gtk = imports.gi.Gtk;
 
 Gtk.init(null);
 
+const Compliance = imports.tests.compliance;
 const ContentObjectModel = imports.search.contentObjectModel;
 const Minimal = imports.tests.minimal;
+const MockFactory = imports.tests.mockFactory;
 const TiledGridArrangement = imports.app.modules.tiledGridArrangement;
 const Utils = imports.tests.utils;
 
-Minimal.test_arrangement_compliance(TiledGridArrangement.TiledGridArrangement);
+Compliance.test_arrangement_compliance(TiledGridArrangement.TiledGridArrangement);
 
 describe('Tiled grid arrangement', function () {
-    let arrangement, cards;
+    let arrangement, cards, factory;
 
     beforeEach(function () {
-        arrangement = new TiledGridArrangement.TiledGridArrangement();
+        factory = new MockFactory.MockFactory();
+        factory.add_named_mock('card', Minimal.MinimalCard);
+        factory.add_named_mock('arrangement', TiledGridArrangement.TiledGridArrangement, {
+            'card-type': 'card',
+        });
+        arrangement = factory.create_named_module('arrangement');
         cards = [];
     });
 
     function add_cards(ncards) {
-        for (let ix = 0; ix < ncards; ix++)
-            cards.push(new Minimal.MinimalCard({
-                model: new ContentObjectModel.ContentObjectModel(),
-            }));
-        cards.forEach(arrangement.add_card, arrangement);
+        for (let ix = 0; ix < ncards; ix++) {
+            let model = new ContentObjectModel.ContentObjectModel();
+            arrangement.add_model(model);
+        }
+        cards = factory.get_created_named_mocks('card');
         Utils.update_gui();
     }
 

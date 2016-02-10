@@ -33,6 +33,5 @@ let create_interaction = function (application, resource_path) {
         template_type: app_json['templateType'],
         css: css,
         application: application,
-        factory: factory,
     });
 };

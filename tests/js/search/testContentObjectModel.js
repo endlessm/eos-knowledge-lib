@@ -40,6 +40,11 @@ describe ('Content Object Model', function () {
         expect(contentObject.title).toEqual(MOCK_CONTENT_DATA.title);
     });
 
+    it('successfully creates a new object with no info at all', function () {
+        contentObject = new ContentObjectModel.ContentObjectModel();
+        expect(contentObject.ekn_id.startsWith('ekn://none/')).toBeTruthy();
+    });
+
     describe ('properties', function () {
         beforeEach (function() {
             contentObject = new ContentObjectModel.ContentObjectModel({}, MOCK_CONTENT_DATA);

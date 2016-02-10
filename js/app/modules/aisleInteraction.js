@@ -355,6 +355,7 @@ const AisleInteraction = new Lang.Class({
                     dispatcher.dispatch({
                         action_type: Actions.APPEND_SEARCH,
                         models: results,
+                        query: item.query,
                     });
                     dispatcher.dispatch({
                         action_type: Actions.SEARCH_READY,

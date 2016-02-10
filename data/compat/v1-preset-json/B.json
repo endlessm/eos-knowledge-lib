@@ -67,10 +67,12 @@
                     },
                     "slots": {
                         "arrangement": {
-                            "type": "TiledGridArrangement"
-                        },
-                        "card-type": {
-                            "type": "CardB"
+                            "type": "TiledGridArrangement",
+                            "slots": {
+                                "card-type": {
+                                    "type": "CardB"
+                                }
+                            }
                         }
                     }
                 }
@@ -97,10 +99,12 @@
                     "type": "ItemGroupModule",
                     "slots": {
                         "arrangement": {
-                            "type": "ListArrangement"
-                        },
-                        "card-type": {
-                            "type": "TextCard"
+                            "type": "ListArrangement",
+                            "slots": {
+                                "card-type": {
+                                    "type": "TextCard"
+                                }
+                            }
                         }
                     }
                 }
@@ -122,10 +126,12 @@
                     "type": "SearchModule",
                     "slots": {
                         "arrangement": {
-                            "type": "ListArrangement"
-                        },
-                        "card-type": {
-                            "type": "TextCard"
+                            "type": "ListArrangement",
+                            "slots": {
+                                "card-type": {
+                                    "type": "TextCard"
+                                }
+                            }
                         },
                         "article-suggestions": null,
                         "category-suggestions": null
@@ -154,10 +160,12 @@
                             "type": "SearchModule",
                             "slots": {
                                 "arrangement": {
-                                    "type": "ListArrangement"
-                                },
-                                "card-type": {
-                                    "type": "TextCard"
+                                    "type": "ListArrangement",
+                                    "slots": {
+                                        "card-type": {
+                                            "type": "TextCard"
+                                        }
+                                    }
                                 },
                                 "article-suggestions": null,
                                 "category-suggestions": null
@@ -170,10 +178,12 @@
                             "type": "ItemGroupModule",
                             "slots": {
                                 "arrangement": {
-                                    "type": "ListArrangement"
-                                },
-                                "card-type": {
-                                    "type": "TextCard"
+                                    "type": "ListArrangement",
+                                    "slots": {
+                                        "card-type": {
+                                            "type": "TextCard"
+                                        }
+                                    }
                                 }
                             }
                         }

@@ -3,9 +3,10 @@ const Gtk = imports.gi.Gtk;
 const Utils = imports.tests.utils;
 Utils.register_gresource();
 
-const SearchResultCard = imports.app.modules.searchResultCard;
+const Compliance = imports.tests.compliance;
 const ContentObjectModel = imports.search.contentObjectModel;
 const CssClassMatcher = imports.tests.CssClassMatcher;
+const SearchResultCard = imports.app.modules.searchResultCard;
 const StyleClasses = imports.app.styleClasses;
 
 Gtk.init(null);
@@ -33,3 +34,5 @@ describe('Search result card widget', function () {
         expect(Gtk.test_find_label(card, '*@@@*').use_markup).toBeTruthy();
     });
 });
+
+Compliance.test_card_highlight_string_compliance(SearchResultCard.SearchResultCard);

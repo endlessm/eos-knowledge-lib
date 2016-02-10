@@ -263,9 +263,9 @@ const ReaderWindow = new Lang.Class({
     append_article_page: function (model) {
         // FIXME: This should probably be a slot on a document page and not the
         // window.
-        let document_card = this.create_submodule('card-type', {
-            model: model,
-        });
+        this._arrangement.add_model(model);
+        // FIXME: ReaderWindow should not deal with DocumentCard widgets.
+        let document_card = this._arrangement.get_card_for_model(model);
         document_card.connect('ekn-link-clicked', (card, uri) => {
             Dispatcher.get_default().dispatch({
                 action_type: Actions.ARTICLE_LINK_CLICKED,
@@ -276,7 +276,6 @@ const ReaderWindow = new Lang.Class({
         if (!(document_card in this._article_pages)) {
             this._article_pages.push(document_card);
         }
-        this._arrangement.add_card(document_card);
         this._update_progress_labels();
     },
 

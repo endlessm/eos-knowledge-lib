@@ -25,10 +25,7 @@ describe('Banner template', function () {
             'content': 'mock-content',
         });
 
-        template = new BannerTemplate.BannerTemplate({
-            factory: factory,
-            factory_name: 'banner-template',
-        });
+        template = factory.create_named_module('banner-template');
     });
 
     it('constructs', function () {});
@@ -43,15 +40,8 @@ describe('Banner template', function () {
     it('has a widget with separator CSS class regardless of image-separator', function () {
         expect(template).toHaveDescendantWithCssClass(Gtk.STYLE_CLASS_SEPARATOR);
 
-        factory.add_named_mock('image-separator-banner', BannerTemplate.BannerTemplate, {
-            banner: 'mock-banner',
-            content: 'mock-content',
-        }, {
+        template = factory.create_named_module('banner-template', {
             image_separator: true,
-        });
-        template = new BannerTemplate.BannerTemplate({
-            factory: factory,
-            factory_name: 'image-separator-banner',
         });
         expect(template).toHaveDescendantWithCssClass(Gtk.STYLE_CLASS_SEPARATOR);
     });

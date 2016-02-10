@@ -5,6 +5,7 @@ const Gtk = imports.gi.Gtk;
 Gtk.init(null);
 
 const Actions = imports.app.actions;
+const Compliance = imports.tests.compliance;
 const ContentObjectModel = imports.search.contentObjectModel;
 const Minimal = imports.tests.minimal;
 const MockDispatcher = imports.tests.mockDispatcher;
@@ -21,16 +22,14 @@ describe('Set group module', function () {
         dispatcher = MockDispatcher.mock_default();
 
         factory = new MockFactory.MockFactory();
-        factory.add_named_mock('test-arrangement', Minimal.MinimalArrangement);
+        factory.add_named_mock('test-arrangement', Minimal.MinimalArrangement, {
+            'card-type': 'home-card',
+        });
         factory.add_named_mock('home-card', Minimal.MinimalCard);
         factory.add_named_mock('item-group', SetGroupModule.SetGroupModule, {
             'arrangement': 'test-arrangement',
-            'card-type': 'home-card',
         });
-        group = new SetGroupModule.SetGroupModule({
-            factory: factory,
-            factory_name: 'item-group',
-        });
+        group = factory.create_named_module('item-group');
         arrangement = factory.get_created_named_mocks('test-arrangement')[0];
     });
 
@@ -57,7 +56,7 @@ describe('Set group module', function () {
             action_type: Actions.APPEND_SETS,
             models: models,
         });
-        expect(arrangement.get_cards().length).toBe(3);
+        expect(arrangement.get_models().length).toBe(3);
         expect(factory.get_created_named_mocks('home-card').length).toBe(3);
     });
 
@@ -79,7 +78,7 @@ describe('Set group module', function () {
             action_type: Actions.APPEND_SETS,
             models: models,
         });
-        expect(arrangement.get_cards().length).toBe(3);
+        expect(arrangement.get_models().length).toBe(3);
         expect(factory.get_created_named_mocks('home-card').length).toBe(6);
     });
 
@@ -89,7 +88,7 @@ describe('Set group module', function () {
             action_type: Actions.APPEND_SETS,
             models: [ model ],
         });
-        arrangement.get_cards()[0].emit('clicked');
+        arrangement.emit('card-clicked', model);
         Utils.update_gui();
         let payload = dispatcher.last_payload_with_type(Actions.SET_CLICKED);
         let matcher = jasmine.objectContaining({
@@ -100,5 +99,5 @@ describe('Set group module', function () {
     });
 });
 
-Minimal.test_card_container_compliance(Actions.APPEND_SETS,
+Compliance.test_card_container_fade_in_compliance(Actions.APPEND_SETS,
     SetGroupModule.SetGroupModule);

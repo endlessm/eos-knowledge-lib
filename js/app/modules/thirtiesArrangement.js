@@ -30,6 +30,7 @@ const ThirtiesArrangement = new Lang.Class({
         'factory': GObject.ParamSpec.override('factory', Module.Module),
         'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
         'all-visible': GObject.ParamSpec.override('all-visible', Arrangement.Arrangement),
+        'fade-cards': GObject.ParamSpec.override('fade-cards', Arrangement.Arrangement),
         'spacing': GObject.ParamSpec.override('spacing', Arrangement.Arrangement),
         /**
          * Property: max-rows
@@ -52,18 +53,6 @@ const ThirtiesArrangement = new Lang.Class({
         this._small_mode = false;
 
         this.parent(props);
-    },
-
-    add_card: function (widget) {
-        this.add(widget);
-    },
-
-    get_cards: function () {
-        return this.get_children();
-    },
-
-    clear: function () {
-        this.get_children().forEach((child) => this.remove(child));
     },
 
     get spacing() {
@@ -92,6 +81,14 @@ const ThirtiesArrangement = new Lang.Class({
 
     get all_visible() {
         return this.get_children().length <= COL_COUNT * this._max_rows;
+    },
+
+    // Arrangement override
+    fade_card_in: function (card) {
+        if (this._max_rows === 0)
+            Arrangement.Arrangement.fade_card_in(this, card);
+        else
+            card.show_all();
     },
 
     vfunc_get_request_mode: function () {

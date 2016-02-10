@@ -56,14 +56,13 @@
                             "type": "GridArrangement",
                             "properties": {
                                 "bottom-buffer": 250
+                            },
+                            "slots": {
+                                "card-type": {
+                                    "type": "CardA"
+                                }
                             }
-                        },
-                        "card-type": {
-                            "type": "CardA"
                         }
-                    },
-                    "properties": {
-                        "fade-cards": true
                     }
                 }
             }
@@ -98,10 +97,12 @@
                             "type": "OverflowArrangement",
                             "properties": {
                                 "orientation": "horizontal"
+                            },
+                            "slots": {
+                                "card-type": {
+                                    "type": "CardA"
+                                }
                             }
-                        },
-                        "card-type": {
-                            "type": "CardA"
                         }
                     }
                 },
@@ -115,10 +116,12 @@
                             "type": "GridArrangement",
                             "properties": {
                                 "bottom-buffer": 250
+                            },
+                            "slots": {
+                                "card-type": {
+                                    "type": "CardA"
+                                }
                             }
-                        },
-                        "card-type": {
-                            "type": "CardA"
                         }
                     }
                 }
@@ -144,16 +147,17 @@
                             "type": "GridArrangement",
                             "properties": {
                                 "bottom-buffer": 250
+                            },
+                            "slots": {
+                                "card-type": {
+                                    "type": "CardA"
+                                }
                             }
-                        },
-                        "card-type": {
-                            "type": "CardA"
                         },
                         "article-suggestions": null,
                         "category-suggestions": null
                     },
                     "properties": {
-                        "fade-cards": true,
                         "message-justify": "left",
                         "message-halign": "center"
                     }

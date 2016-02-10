@@ -41,22 +41,21 @@ describe('Highlights module', function () {
         engine.get_objects_by_query_finish.and.returnValue([[], null]);
 
         factory = new MockFactory.MockFactory();
-        factory.add_named_mock('arrangement1', LimitedArrangment);
-        factory.add_named_mock('arrangement2', LimitedArrangment);
+        factory.add_named_mock('arrangement1', LimitedArrangment, {
+            'card-type': 'article-card',
+        });
+        factory.add_named_mock('arrangement2', LimitedArrangment, {
+            'card-type': 'large-card',
+        });
         factory.add_named_mock('article-card', Minimal.MinimalCard);
         factory.add_named_mock('set-card', Minimal.MinimalCard);
         factory.add_named_mock('large-card', Minimal.MinimalCard);
         factory.add_named_mock('highlights', HighlightsModule.HighlightsModule, {
             'large-arrangement': 'arrangement1',
             'small-arrangement': 'arrangement2',
-            'card-type': 'article-card',
             'header-card-type': 'set-card',
-            'large-card-type': 'large-card',
         });
-        module = new HighlightsModule.HighlightsModule({
-            factory: factory,
-            factory_name: 'highlights',
-        });
+        module = factory.create_named_module('highlights');
     });
 
     it('constructs', function () {
@@ -117,18 +116,18 @@ describe('Highlights module', function () {
         });
 
         it('puts cards in the proper arrangements', function () {
-            let featured_cards = featured.get_cards();
-            expect(featured_cards.length).toBe(1);
-            expect(featured_cards[0].model.tags).toEqual(['a']);
+            let featured_models = featured.get_models();
+            expect(featured_models.length).toBe(1);
+            expect(featured_models[0].tags).toEqual(['a']);
 
-            let theme1_cards = theme1.get_cards();
-            expect(theme1_cards.length).toBe(1);
-            expect(theme1_cards[0].model.tags).toEqual(['b']);
+            let theme1_models = theme1.get_models();
+            expect(theme1_models.length).toBe(1);
+            expect(theme1_models[0].tags).toEqual(['b']);
 
-            let theme2_cards = theme2.get_cards();
-            expect(theme2_cards.length).toBe(2);
-            expect(theme2_cards[0].model.tags).toEqual(['c']);
-            expect(theme2_cards[1].model.tags).toEqual(['d']);
+            let theme2_models = theme2.get_models();
+            expect(theme2_models.length).toBe(2);
+            expect(theme2_models[0].tags).toEqual(['c']);
+            expect(theme2_models[1].tags).toEqual(['d']);
         });
 
         it('clears the arrangements when clear-sets is dispatched', function () {
@@ -154,25 +153,25 @@ describe('Highlights module', function () {
             });
 
             it('on the card in the featured arrangement, dispatches item-clicked', function () {
-                let card = featured.get_cards()[0];
-                card.emit('clicked');
+                let model = featured.get_models()[0];
+                featured.emit('card-clicked', model);
                 Utils.update_gui();
                 let payload = dispatcher.last_payload_with_type(Actions.ITEM_CLICKED);
                 let matcher = jasmine.objectContaining({
-                    model: card.model,
-                    context: featured.get_cards().map(card => card.model),
+                    model: model,
+                    context: featured.get_models(),
                     context_label: 'Highlights',
                 });
                 expect(payload).toEqual(matcher);
             });
 
             it('on the card in another arrangement, dispatches item-clicked', function () {
-                let card = theme1.get_cards()[0];
-                card.emit('clicked');
+                let model = theme1.get_models()[0];
+                theme1.emit('card-clicked', model);
                 Utils.update_gui();
                 let payload = dispatcher.last_payload_with_type(Actions.ITEM_CLICKED);
                 let matcher = jasmine.objectContaining({
-                    model: card.model,
+                    model: model,
                     context: article_models.filter((model) => model.tags[0] === 'b'),
                 });
                 expect(payload).toEqual(matcher);

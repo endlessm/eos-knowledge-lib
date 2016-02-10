@@ -21,17 +21,16 @@ describe('Supplementary articles module', function () {
         dispatcher = MockDispatcher.mock_default();
 
         factory = new MockFactory.MockFactory();
-        factory.add_named_mock('test-arrangement', Minimal.MinimalArrangement);
+        factory.add_named_mock('test-arrangement', Minimal.MinimalArrangement, {
+            'card-type': 'home-card',
+        });
         factory.add_named_mock('home-card', Minimal.MinimalCard);
         factory.add_named_mock('supplementary-articles', SupplementaryArticlesModule.SupplementaryArticlesModule, {
             'arrangement': 'test-arrangement',
-            'card-type': 'home-card',
-        });
-        supplementary = new SupplementaryArticlesModule.SupplementaryArticlesModule({
-            factory: factory,
-            factory_name: 'supplementary-articles',
+        }, {
             same_set: true,
         });
+        supplementary = factory.create_named_module('supplementary-articles');
         arrangement = factory.get_created_named_mocks('test-arrangement')[0];
     });
 
@@ -41,11 +40,6 @@ describe('Supplementary articles module', function () {
 
     it('creates and packs an arrangement widget', function () {
         expect(supplementary).toHaveDescendant(arrangement);
-    });
-
-    it('does not create a card widget at construct time', function () {
-        let cards = factory.get_created_named_mocks('home-card');
-        expect(cards.length).toEqual(0);
     });
 
     it('adds dispatched cards to the arrangement', function () {
@@ -59,7 +53,7 @@ describe('Supplementary articles module', function () {
             models: models,
             same_set: true,
         });
-        expect(arrangement.get_cards().length).toBe(3);
+        expect(arrangement.get_models().length).toBe(3);
         expect(factory.get_created_named_mocks('home-card').length).toBe(3);
     });
 
@@ -74,7 +68,7 @@ describe('Supplementary articles module', function () {
             models: models,
             same_set: false,
         });
-        expect(arrangement.get_cards().length).toBe(0);
+        expect(arrangement.get_models().length).toBe(0);
     });
 
     it('requests _read_ cards when it receives zero unread cards', function () {
@@ -85,7 +79,7 @@ describe('Supplementary articles module', function () {
             need_unread: true,
             set_tags: ['foo', 'bar'],
         });
-        expect(arrangement.get_cards().length).toBe(0);
+        expect(arrangement.get_models().length).toBe(0);
 
         Utils.update_gui();
         let payload = dispatcher.last_payload_with_type(Actions.NEED_MORE_SUPPLEMENTARY_ARTICLES);
@@ -117,7 +111,7 @@ describe('Supplementary articles module', function () {
             models: models,
             same_set: true,
         });
-        expect(arrangement.get_cards().length).toBe(3);
+        expect(arrangement.get_models().length).toBe(3);
         expect(factory.get_created_named_mocks('home-card').length).toBe(6);
     });
 
@@ -128,7 +122,7 @@ describe('Supplementary articles module', function () {
             models: [ model ],
             same_set: true,
         });
-        arrangement.get_cards()[0].emit('clicked');
+        arrangement.emit('card-clicked', model);
         Utils.update_gui();
         let payload = dispatcher.last_payload_with_type(Actions.ITEM_CLICKED);
         let matcher = jasmine.objectContaining({

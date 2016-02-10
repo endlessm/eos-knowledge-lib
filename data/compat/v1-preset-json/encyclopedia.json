@@ -94,12 +94,14 @@
                                             "properties": {
                                                 "hexpand": true,
                                                 "halign": "fill"
-                                            }
-                                        },
-                                        "card-type": {
-                                            "type": "TextCard",
-                                            "properties": {
-                                                "underline-on-hover": true
+                                            },
+                                            "slots": {
+                                                "card-type": {
+                                                    "type": "TextCard",
+                                                    "properties": {
+                                                        "underline-on-hover": true
+                                                    }
+                                                }
                                             }
                                         },
                                         "article-suggestions": null,

@@ -1,5 +1,8 @@
 {
     "modules": {
+        "document-card": {
+            "type": "ReaderDocumentCard"
+        },
         "interaction": {
             "type": "AisleInteraction",
             "slots": {
@@ -24,10 +27,10 @@
                     }
                 },
                 "document-arrangement": {
-                    "type": "CarouselArrangement"
-                },
-                "card-type": {
-                    "type": "ReaderDocumentCard"
+                    "type": "CarouselArrangement",
+                    "slots": {
+                        "card-type": "document-card"
+                    }
                 },
                 "front-page": "front-page",
                 "search-page": "search-page",
@@ -59,13 +62,15 @@
                         "content": {
                             "type": "ItemGroupModule",
                             "slots": {
-                                "card-type": {
-                                    "type": "ArticleSnippetCard"
-                                },
                                 "arrangement": {
                                     "type": "OverflowArrangement",
                                     "properties": {
                                         "orientation": "vertical"
+                                    },
+                                    "slots": {
+                                        "card-type": {
+                                            "type": "ArticleSnippetCard"
+                                        }
                                     }
                                 }
                             },
@@ -103,10 +108,12 @@
                                 "margin-top": 20,
                                 "bottom-buffer": 250,
                                 "max-children-per-line": 9
+                            },
+                            "slots": {
+                                "card-type": {
+                                    "type": "ReaderCard"
+                                }
                             }
-                        },
-                        "card-type": {
-                            "type": "ReaderCard"
                         },
                         "article-suggestions": null,
                         "category-suggestions": null
@@ -136,9 +143,7 @@
         "archive-page": {
             "type": "StandalonePage",
             "slots": {
-                "card-type": {
-                    "type": "ReaderDocumentCard"
-                }
+                "card-type": "document-card"
             }
         },
         "back-page": {

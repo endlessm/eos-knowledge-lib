@@ -54,6 +54,7 @@ const ThirdRockArrangement = new Lang.Class({
         'factory': GObject.ParamSpec.override('factory', Module.Module),
         'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
         'all-visible': GObject.ParamSpec.override('all-visible', Arrangement.Arrangement),
+        'fade-cards': GObject.ParamSpec.override('fade-cards', Arrangement.Arrangement),
         'spacing': GObject.ParamSpec.override('spacing', Arrangement.Arrangement),
         /**
          * Property: compact-mode
@@ -77,18 +78,6 @@ const ThirdRockArrangement = new Lang.Class({
         this._compact_mode = false;
 
         this.parent(props);
-    },
-
-    add_card: function (widget) {
-        this.add(widget);
-    },
-
-    get_cards: function () {
-        return this.get_children();
-    },
-
-    clear: function () {
-        this.get_children().forEach((child) => this.remove(child));
     },
 
     get spacing() {

@@ -280,6 +280,7 @@ javascript_tests = \
 	tests/js/app/modules/testContextBanner.js \
 	tests/js/app/modules/testEncyclopediaWindow.js \
 	tests/js/app/modules/testDividedBannerTemplate.js \
+	tests/js/app/modules/testGridArrangement.js \
 	tests/js/app/modules/testHalfArrangement.js \
 	tests/js/app/modules/testHamburgerBasementTemplate.js \
 	tests/js/app/modules/testHierarchicalSetModule.js \
@@ -377,6 +378,7 @@ EXTRA_DIST += \
 	$(test_content) \
 	tests/CssClassMatcher.js \
 	tests/InstanceOfMatcher.js \
+	tests/compliance.js \
 	tests/minimal.js \
 	tests/mockCardContainer.js \
 	tests/mockDispatcher.js \

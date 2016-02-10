@@ -18,11 +18,7 @@ describe('Responsive margins module', function () {
         factory.add_named_mock('module', ResponsiveMarginsModule.ResponsiveMarginsModule, {
             'content': 'content',
         });
-
-        responsive_margins = new ResponsiveMarginsModule.ResponsiveMarginsModule({
-            factory: factory,
-            factory_name: 'module',
-        });
+        responsive_margins = factory.create_named_module('module');
 
         let provider = new Gtk.CssProvider();
         provider.load_from_data('\

@@ -29,6 +29,9 @@ describe('Article stack', function () {
         factory.add_named_mock('article-stack-module', ArticleStackModule.ArticleStackModule, {
             'card-type': 'mock-card',
         });
+        module = factory.create_named_module('article-stack-module');
+
+        spyOn(AppUtils, 'get_web_plugin_dbus_name').and.returnValue('test0');
 
         article_model = new ArticleObjectModel.ArticleObjectModel();
         previous_model = new ArticleObjectModel.ArticleObjectModel({
@@ -37,14 +40,6 @@ describe('Article stack', function () {
         next_model = new ArticleObjectModel.ArticleObjectModel({
             title: 'bar',
         });
-
-        spyOn(AppUtils, 'get_web_plugin_dbus_name').and.returnValue('test0');
-
-        module = new ArticleStackModule.ArticleStackModule({
-            factory: factory,
-            factory_name: 'article-stack-module',
-        });
-
         dispatcher.dispatch({
             action_type: Actions.SHOW_ARTICLE,
             model: article_model,

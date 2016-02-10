@@ -54,8 +54,6 @@ const HighlightsModule = new Lang.Class({
     Properties: {
         'factory': GObject.ParamSpec.override('factory', Module.Module),
         'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-        'fade-cards': GObject.ParamSpec.override('fade-cards',
-            CardContainer.CardContainer),
     },
 
     // Overridable in tests
@@ -91,8 +89,7 @@ const HighlightsModule = new Lang.Class({
 
     // Module override
     get_slot_names: function () {
-        return ['large-arrangement', 'small-arrangement', 'card-type',
-            'header-card-type', 'large-card-type'];
+        return ['large-arrangement', 'small-arrangement', 'header-card-type'];
     },
 
     _add_set_card: function (model) {
@@ -108,21 +105,6 @@ const HighlightsModule = new Lang.Class({
             });
         });
         this.add(card);
-    },
-
-    _add_article_card: function (model, card_slot, arrangement) {
-        let card = this.create_submodule(card_slot, {
-            model: model,
-        });
-        card.connect('clicked', () => {
-            Dispatcher.get_default().dispatch({
-                action_type: Actions.ITEM_CLICKED,
-                model: model,
-                context: arrangement.get_cards().map((card) => card.model),
-                context_label: _("Highlights"),
-            });
-        });
-        arrangement.add_card(card);
     },
 
     // Load all articles referenced by the shown arrangements in order to
@@ -145,6 +127,14 @@ const HighlightsModule = new Lang.Class({
             vexpand: true,
             visible: true,
         });
+        arrangement.connect('card-clicked', (arrangement, model) => {
+            Dispatcher.get_default().dispatch({
+                action_type: Actions.ITEM_CLICKED,
+                model: model,
+                context: arrangement.get_models(),
+                context_label: _("Highlights"),
+            });
+        });
         this.add(arrangement);
 
         let query = new QueryObject.QueryObject({
@@ -161,7 +151,7 @@ const HighlightsModule = new Lang.Class({
                 return;
             }
 
-            models.forEach(model => this._add_article_card(model, card_slot, arrangement));
+            models.forEach(arrangement.add_model, arrangement);
             this._finish_load();
         });
     },

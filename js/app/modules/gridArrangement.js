@@ -20,6 +20,7 @@ const GridArrangement = new Lang.Class({
         'factory': GObject.ParamSpec.override('factory', Module.Module),
         'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
         'all-visible': GObject.ParamSpec.override('all-visible', Arrangement.Arrangement),
+        'fade-cards': GObject.ParamSpec.override('fade-cards', Arrangement.Arrangement),
         'spacing': GObject.ParamSpec.override('spacing', Arrangement.Arrangement),
         /**
          * Property: max-children-per-line
@@ -45,18 +46,12 @@ const GridArrangement = new Lang.Class({
             GObject.BindingFlags.SYNC_CREATE);
         this.bind_property('spacing', this._flow_box, 'row-spacing',
             GObject.BindingFlags.SYNC_CREATE);
-        this._real_remove = this.remove;
-        this.remove = this.override_remove;
     },
 
-    // Preserve the illusion that the cards are direct children
-    override_remove: function (widget) {
-        if (widget.get_parent() === this) {
-            this._real_remove(widget);
-            return;
-        }
+    // Arrangement override
+    unpack_card: function (card) {
         this._flow_box.get_children().some(flow_box_child => {
-            if (flow_box_child.get_child() === widget) {
+            if (flow_box_child.get_child() === card) {
                 this._flow_box.remove(flow_box_child);
                 return true;
             }
@@ -64,16 +59,8 @@ const GridArrangement = new Lang.Class({
         });
     },
 
-    add_card: function (widget) {
-        this._flow_box.add(widget);
-    },
-
-    get_cards: function () {
-        return this._flow_box.get_children().map((flow_child) => flow_child.get_child());
-    },
-
-    clear: function () {
-        let children = this._flow_box.get_children();
-        children.forEach((child) => this._flow_box.remove(child));
+    // Arrangement override
+    pack_card: function (card) {
+        this._flow_box.add(card);
     },
 });

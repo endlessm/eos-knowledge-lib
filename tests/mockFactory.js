@@ -2,6 +2,8 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
+const Module = imports.app.interfaces.module;
+
 const MockFactory = new Lang.Class({
     Name: 'MockFactory',
     Extends: GObject.Object,
@@ -14,11 +16,20 @@ const MockFactory = new Lang.Class({
         this._mock_props = {};
     },
 
-    create_named_module: function (name, props) {
+    create_named_module: function (name, props={}) {
         this._created_mocks[name] = this._created_mocks[name] || [];
         if (this._mock_classes.hasOwnProperty(name)) {
+            // Unlike the real factory, we allow creating things that are not
+            // Modules in the mock factory, for convenience
+            let Klass = this._mock_classes[name];
+            // Lang.Class.implements() only works for GJS-defined classes
+            if (typeof Klass.implements !== 'undefined' && Klass.implements(Module.Module)) {
+                props.factory = this;
+                props.factory_name = name;
+            }
+
             Lang.copyProperties(this._mock_props[name], props);
-            let retval = new this._mock_classes[name](props);
+            let retval = new Klass(props);
             this._created_mocks[name].push(retval);
             return retval;
         }

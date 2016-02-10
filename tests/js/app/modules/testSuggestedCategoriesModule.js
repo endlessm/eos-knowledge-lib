@@ -21,16 +21,14 @@ describe('Suggested categories module', function () {
         dispatcher = MockDispatcher.mock_default();
 
         factory = new MockFactory.MockFactory();
-        factory.add_named_mock('test-arrangement', Minimal.MinimalArrangement);
+        factory.add_named_mock('test-arrangement', Minimal.MinimalArrangement, {
+            'card-type': 'home-card',
+        });
         factory.add_named_mock('home-card', Minimal.MinimalCard);
         factory.add_named_mock('suggested-categories', SuggestedCategoriesModule.SuggestedCategoriesModule, {
             'arrangement': 'test-arrangement',
-            'card-type': 'home-card',
         });
-        suggestions = new SuggestedCategoriesModule.SuggestedCategoriesModule({
-            factory: factory,
-            factory_name: 'suggested-categories',
-        });
+        suggestions = factory.create_named_module('suggested-categories');
         arrangement = factory.get_created_named_mocks('test-arrangement')[0];
     });
 
@@ -57,7 +55,7 @@ describe('Suggested categories module', function () {
             action_type: Actions.APPEND_SETS,
             models: models,
         });
-        expect(arrangement.get_cards().length).toBe(3);
+        expect(arrangement.get_models().length).toBe(3);
         expect(factory.get_created_named_mocks('home-card').length).toBe(3);
     });
 
@@ -79,7 +77,7 @@ describe('Suggested categories module', function () {
             action_type: Actions.APPEND_SETS,
             models: models,
         });
-        expect(arrangement.get_cards().length).toBe(3);
+        expect(arrangement.get_models().length).toBe(3);
         expect(factory.get_created_named_mocks('home-card').length).toBe(6);
     });
 
@@ -105,13 +103,11 @@ describe('Suggested categories module', function () {
             sets: [first_ekn_id],
         });
 
-        expect(arrangement.get_cards().length).toBe(1);
+        expect(arrangement.get_models().length).toBe(1);
     });
 
     it('adds only featured cards when featured-only is true', function () {
-        suggestions = new SuggestedCategoriesModule.SuggestedCategoriesModule({
-            factory: factory,
-            factory_name: 'suggested-categories',
+        suggestions = factory.create_named_module('suggested-categories', {
             featured_only: true,
         });
         arrangement = factory.get_created_named_mocks('test-arrangement')[1];
@@ -121,7 +117,7 @@ describe('Suggested categories module', function () {
             action_type: Actions.APPEND_SETS,
             models: models,
         });
-        expect(arrangement.get_cards().length).toBe(2);
+        expect(arrangement.get_models().length).toBe(2);
     });
 
     it('dispatches set clicked', function () {
@@ -130,7 +126,7 @@ describe('Suggested categories module', function () {
             action_type: Actions.APPEND_SETS,
             models: [ model ],
         });
-        arrangement.get_cards()[0].emit('clicked');
+        arrangement.emit('card-clicked', model);
         Utils.update_gui();
         let payload = dispatcher.last_payload_with_type(Actions.SET_CLICKED);
         let matcher = jasmine.objectContaining({

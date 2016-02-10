@@ -33,11 +33,7 @@ describe('HamburgerBasementTemplate module', function () {
             'bottom': 'Placeholder3',
             'basement': 'Placeholder4',
         });
-
-        home_page = new HamburgerBasementTemplate.HamburgerBasementTemplate({
-            factory: factory,
-            factory_name: 'home-page-template',
-        });
+        home_page = factory.create_named_module('home-page-template');
     });
 
     it('constructs', function () {});

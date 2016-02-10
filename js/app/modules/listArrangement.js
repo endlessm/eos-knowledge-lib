@@ -19,6 +19,7 @@ const ListArrangement = new Lang.Class({
         'factory': GObject.ParamSpec.override('factory', Module.Module),
         'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
         'all-visible': GObject.ParamSpec.override('all-visible', Arrangement.Arrangement),
+        'fade-cards': GObject.ParamSpec.override('fade-cards', Arrangement.Arrangement),
         'spacing': GObject.ParamSpec.override('spacing', Arrangement.Arrangement),
     },
 
@@ -29,35 +30,17 @@ const ListArrangement = new Lang.Class({
         this.parent(props);
         this.bind_property('spacing', this._grid, 'row-spacing',
             GObject.BindingFlags.SYNC_CREATE);
-        this._real_remove = this.remove;
-        this.remove = this.override_remove;
     },
 
-    // Preserve the illusion that the cards are direct children
-    override_remove: function (widget) {
-        if (widget.get_parent() === this) {
-            this._real_remove(widget);
-            return;
-        }
+    // Arrangement override
+    unpack_card: function (widget) {
         this._grid.remove(widget);
         this._size_group.remove_widget(widget);
     },
 
-    add_card: function (widget) {
+    // Arrangement override
+    pack_card: function (widget) {
         this._grid.add(widget);
         this._size_group.add_widget(widget);
-    },
-
-    get_cards: function () {
-        return this._grid.get_children();
-    },
-
-    clear: function () {
-        this._grid.get_children().forEach((child) => {
-            this._grid.remove(child);
-        });
-        this._size_group.get_widgets().forEach((widget) => {
-            this._size_group.remove_widget(widget);
-        });
     },
 });

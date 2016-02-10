@@ -116,8 +116,15 @@ describe('Card interface', function () {
         let provider = new Gtk.CssProvider();
         provider.load_from_data(css);
         label.get_style_context().add_provider(provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
-        card.set_title_label_from_model(label);
+        card.set_title_label_with_highlight(label);
         expect(label.label.match(/<span .*bgcolor="#ff0000.*">title<\/span>/)).not.toBeNull();
+    });
+
+    it('updates the highlight string', function () {
+        card = new Minimal.MinimalCard({ model: model });
+        spyOn(card, 'update_highlight_string');
+        card.highlight_string = 'title';
+        expect(card.update_highlight_string).toHaveBeenCalled();
     });
 
     it('sets a thumbnail frame visible if model has a thumbnail uri', function () {

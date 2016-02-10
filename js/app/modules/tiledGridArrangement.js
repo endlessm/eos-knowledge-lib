@@ -19,11 +19,11 @@ const TiledGridArrangement = new Lang.Class({
         'factory': GObject.ParamSpec.override('factory', Module.Module),
         'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
         'all-visible': GObject.ParamSpec.override('all-visible', Arrangement.Arrangement),
+        'fade-cards': GObject.ParamSpec.override('fade-cards', Arrangement.Arrangement),
         'spacing': GObject.ParamSpec.override('spacing', Arrangement.Arrangement),
     },
 
     _init: function (props={}) {
-        this._cards = [];
         this.parent(props);
         this.bind_property('spacing', this, 'column-spacing',
             GObject.BindingFlags.SYNC_CREATE);
@@ -31,35 +31,26 @@ const TiledGridArrangement = new Lang.Class({
             GObject.BindingFlags.SYNC_CREATE);
     },
 
-    vfunc_remove: function (widget) {
-        this.parent(widget);
-        this._cards.splice(this._cards.indexOf(widget), 1);
+    // Arrangement override
+    fade_card_in: function (card) {
+        card.show_all();
     },
 
-    add_card: function (widget) {
+    // Arrangement override
+    pack_card: function () {
         // FIXME: For now we're always showing two rows of cards.
         // An alternative would be to show 1 row for 4 cards, and 2 rows otherwise
-        let cards = this._cards.slice();
-        cards.forEach(this.remove, this);
-        this._cards = cards;
-        this._cards.push(widget);
+        this.get_children().forEach(this.remove, this);
+        // The card to be packed is already in this array:
+        let cards = this.get_models().map(this.get_card_for_model, this);
 
-        let columns = Math.ceil(this._cards.length / 2);
+        let columns = Math.ceil(cards.length / 2);
         let i = 0;
-        for (let card of this._cards) {
+        for (let card of cards) {
             let col = i % columns;
             let row = Math.floor(i / columns);
             this.attach(card, col, row, 1, 1);
             i++;
         }
-    },
-
-    get_cards: function () {
-        return this._cards;
-    },
-
-    clear: function () {
-        let cards = this._cards.slice();
-        cards.forEach(this.remove, this);
     },
 });

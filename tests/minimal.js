@@ -1,8 +1,8 @@
 // Copyright 2015 Endless Mobile, Inc.
 
-/* exported MinimalArrangement, MinimalBackCover, MinimalCard, MinimalDocumentCard,
-MinimalPage, MinimalHomePage, MinimalInteraction, MinimalBinModule, MinimalModule,
-test_arrangement_compliance, test_card_container_compliance */
+/* exported MinimalArrangement, MinimalBackCover, MinimalBinModule, MinimalCard,
+MinimalDocumentCard, MinimalHomePage, MinimalInteraction, MinimalModule,
+MinimalScrollable, MinimalPage */
 
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
@@ -11,16 +11,11 @@ const Lang = imports.lang;
 
 const Arrangement = imports.app.interfaces.arrangement;
 const Card = imports.app.interfaces.card;
-const ContentObjectModel = imports.search.contentObjectModel;
 const DocumentCard = imports.app.interfaces.documentCard;
 const Interaction = imports.app.interfaces.interaction;
 const Launcher = imports.app.interfaces.launcher;
-const MockDispatcher = imports.tests.mockDispatcher;
-const MockFactory = imports.tests.mockFactory;
 const Module = imports.app.interfaces.module;
 const Scrollable = imports.app.interfaces.scrollable;
-const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
-const Utils = imports.tests.utils;
 
 const MinimalArrangement = new Lang.Class({
     Name: 'MinimalArrangement',
@@ -35,32 +30,14 @@ const MinimalArrangement = new Lang.Class({
             0, GLib.MAXUINT32, 1),
         'all-visible': GObject.ParamSpec.override('all-visible',
             Arrangement.Arrangement),
+        'fade-cards': GObject.ParamSpec.override('fade-cards',
+            Arrangement.Arrangement),
         'spacing': GObject.ParamSpec.override('spacing', Arrangement.Arrangement),
     },
 
     _init: function (props={}) {
         this.parent(props);
-        this._cards = [];
         this.show_all();
-    },
-
-    get_cards: function () {
-        return this._cards;
-    },
-
-    add_card: function (card) {
-        this._cards.push(card);
-    },
-
-    clear: function () {
-        this._cards= [];
-    },
-
-    remove: function (card) {
-        let index = this._cards.indexOf(card);
-        if (index !== -1) {
-            this._cards.splice(index, 1);
-        }
     },
 
     set_transition_type: function (type) {
@@ -258,139 +235,3 @@ const MinimalBinModule = new Lang.Class({
         'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
     },
 });
-
-function test_arrangement_compliance(ArrangementClass, extra_slots={}) {
-    describe(ArrangementClass.$gtype.name + ' implements Arrangement correctly', function () {
-        let arrangement, cards;
-
-        beforeEach(function () {
-            jasmine.addMatchers(WidgetDescendantMatcher.customMatchers);
-
-            arrangement = new ArrangementClass();
-            cards = [];
-        });
-
-        it('by constructing', function () {
-            expect(arrangement).toBeDefined();
-        });
-
-        function add_cards(arrangement, ncards) {
-            for (let ix = 0; ix < ncards; ix++) {
-                cards.push(new MinimalCard({
-                    model: new ContentObjectModel.ContentObjectModel(),
-                }));
-            }
-            cards.forEach(arrangement.add_card, arrangement);
-            Utils.update_gui();
-        }
-
-        it('by adding cards to the list', function () {
-            add_cards(arrangement, 3);
-            cards.forEach((card) =>
-                expect(arrangement).toHaveDescendant(card));
-            expect(arrangement.get_cards().length).toBe(3);
-        });
-
-        it('by removing cards from the list', function () {
-            add_cards(arrangement, 3);
-            arrangement.clear();
-            Utils.update_gui();
-
-            cards.forEach((card) =>
-                expect(arrangement).not.toHaveDescendant(card));
-            expect(arrangement.get_cards().length).toBe(0);
-        });
-
-        it('by being able to remove individual cards', function () {
-            add_cards(arrangement, 3);
-            arrangement.remove(cards[1]);
-            Utils.update_gui();
-
-            expect(arrangement.get_cards().length).toBe(2);
-            expect(arrangement).toHaveDescendant(cards[0]);
-            expect(arrangement).not.toHaveDescendant(cards[1]);
-            expect(arrangement).toHaveDescendant(cards[2]);
-        });
-    });
-}
-
-function test_card_container_compliance(action, CardContainerClass, extra_slots={}) {
-    describe(CardContainerClass.$gtype.name + ' implements CardContainer correctly', function () {
-        let factory, dispatcher;
-
-        beforeEach(function () {
-            dispatcher = MockDispatcher.mock_default();
-            factory = new MockFactory.MockFactory();
-
-            factory.add_named_mock('card', MinimalCard);
-            factory.add_named_mock('arrangement', MinimalArrangement);
-            let slots = {
-                'arrangement': 'arrangement',
-                'card-type': 'card',
-            };
-            for (let slot in extra_slots) {
-                factory.add_named_mock(slot, extra_slots[slot]);
-                slots[slot] = slot;
-            }
-            factory.add_named_mock('card-container', CardContainerClass, slots);
-        });
-
-        describe('when requested to fade in', function () {
-            let arrangement;
-
-            beforeEach(function () {
-                new CardContainerClass({
-                    factory: factory,
-                    factory_name: 'card-container',
-                    fade_cards: true,
-                });
-                arrangement = factory.get_last_created_named_mock('arrangement');
-            });
-
-            it('does not fade in the first batch of cards', function () {
-                dispatcher.dispatch({
-                    action_type: action,
-                    models: [new ContentObjectModel.ContentObjectModel()],
-                });
-                Utils.update_gui();
-                expect(arrangement.get_cards()[0].fade_in).not.toHaveBeenCalled();
-            });
-
-            it('does so otherwise when requested', function () {
-                dispatcher.dispatch({
-                    action_type: action,
-                    models: [new ContentObjectModel.ContentObjectModel()],
-                });
-                Utils.update_gui();
-                expect(arrangement.get_cards()[0].fade_in).not.toHaveBeenCalled();
-                dispatcher.dispatch({
-                    action_type: action,
-                    models: [new ContentObjectModel.ContentObjectModel()],
-                });
-                Utils.update_gui();
-                expect(arrangement.get_cards()[1].fade_in).toHaveBeenCalled();
-            });
-        });
-
-        it('does not fade in when not requested to', function () {
-            new CardContainerClass({
-                factory: factory,
-                factory_name: 'card-container',
-                fade_cards: false,
-            });
-            let arrangement = factory.get_last_created_named_mock('arrangement');
-            dispatcher.dispatch({
-                action_type: action,
-                models: [new ContentObjectModel.ContentObjectModel()],
-            });
-            Utils.update_gui();
-            expect(arrangement.get_cards()[0].fade_in).not.toHaveBeenCalled();
-            dispatcher.dispatch({
-                action_type: action,
-                models: [new ContentObjectModel.ContentObjectModel()],
-            });
-            Utils.update_gui();
-            expect(arrangement.get_cards()[1].fade_in).not.toHaveBeenCalled();
-        });
-    });
-}

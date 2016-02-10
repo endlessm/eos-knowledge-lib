@@ -26,8 +26,11 @@ const SPINNER_PAGE_NAME = 'spinner';
  * Class: SearchModule
  * Search results module
  *
- * Module that can display a container of cards, or a message that no
- * results were found, or a message that there was an error during the search.
+ * Module that can display cards delivered in batches using
+ * <Actions.APPEND_SEARCH>, or show a message that no results were found, or a
+ * message that there was an error during the search.
+ *
+ * Any cards lazily loaded after the first batch are faded in.
  *
  * CSS classes:
  *   search-results - on the widget itself
@@ -45,8 +48,6 @@ const SearchModule = new Lang.Class({
     Properties: {
         'factory': GObject.ParamSpec.override('factory', Module.Module),
         'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-        'fade-cards': GObject.ParamSpec.override('fade-cards',
-            CardContainer.CardContainer),
         /**
          * Property: max-children
          *
@@ -98,8 +99,17 @@ const SearchModule = new Lang.Class({
     InternalChildren: [ 'message-title', 'message-subtitle', 'no-results-grid', 'spinner' ],
 
     _init: function (props={}) {
+        this._query = '';
         this.parent(props);
         this._arrangement = this.create_submodule('arrangement');
+        this._arrangement.connect('card-clicked', (arrangement, model) => {
+            Dispatcher.get_default().dispatch({
+                action_type: Actions.SEARCH_CLICKED,
+                model: model,
+                context: arrangement.get_models(),
+                query: this._query,
+            });
+        });
         this.add_named(this._arrangement, RESULTS_PAGE_NAME);
 
         this._suggested_articles_module = this.create_submodule('article-suggestions');
@@ -116,7 +126,7 @@ const SearchModule = new Lang.Class({
         let dispatcher = Dispatcher.get_default();
         if (this._arrangement instanceof InfiniteScrolledWindow.InfiniteScrolledWindow) {
             this._arrangement.connect('need-more-content', () => {
-                if (this._arrangement.get_cards().length >= this.max_children)
+                if (this._arrangement.get_models().length >= this.max_children)
                     return;
                 dispatcher.dispatch({
                     action_type: Actions.NEED_MORE_SEARCH,
@@ -133,11 +143,11 @@ const SearchModule = new Lang.Class({
                 this._arrangement.clear();
                 break;
             case Actions.APPEND_SEARCH:
-                let fade = this.fade_cards &&
-                    (this._arrangement.get_cards().length > 0);
-                payload.models.forEach((card) => {
-                    this._add_card(card, fade, payload.query);
-                });
+                this._query = payload.query;
+                this._arrangement.fade_cards =
+                    (this._arrangement.get_models().length > 0);
+                this._arrangement.highlight_string(payload.query);
+                payload.models.forEach(this._add_card, this);
 
                 if (this._arrangement instanceof InfiniteScrolledWindow.InfiniteScrolledWindow) {
                     this._arrangement.new_content_added();
@@ -164,31 +174,17 @@ const SearchModule = new Lang.Class({
 
     // Module override
     get_slot_names: function () {
-        return ['arrangement', 'card-type', 'article-suggestions', 'category-suggestions'];
+        return ['arrangement', 'article-suggestions', 'category-suggestions'];
     },
 
-    _add_card: function (model, fade, query='') {
-        if (this._arrangement.get_cards().length >= this.max_children)
+    _add_card: function (model) {
+        if (this._arrangement.get_models().length >= this.max_children)
             return;
-        let card = this.create_submodule('card-type', {
-            model: model,
-            highlight_string: query,
-        });
-        if (fade)
-            card.fade_in();
-        card.connect('clicked', () => {
-            Dispatcher.get_default().dispatch({
-                action_type: Actions.SEARCH_CLICKED,
-                model: model,
-                context: this._arrangement.get_cards().map((card) => card.model),
-                query: query,
-            });
-        });
-        this._arrangement.add_card(card);
+        this._arrangement.add_model(model);
     },
 
     _finish_search: function (query) {
-        let count = this._arrangement.get_cards().length;
+        let count = this._arrangement.get_models().length;
         if (count > 0) {
             this.visible_child_name = RESULTS_PAGE_NAME;
             this.get_style_context().remove_class(StyleClasses.NO_RESULTS);

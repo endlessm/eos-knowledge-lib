@@ -72,6 +72,8 @@ describe('Window', function () {
             'navigation': 'navigation',
             'lightbox': 'lightbox',
             'search': 'top-bar-search',
+        }, {
+            application: app,
         });
         factory.add_named_mock('window-with-brand-page', Window.Window, {
             'brand-page': 'brand-page',
@@ -83,6 +85,8 @@ describe('Window', function () {
             'navigation': null,
             'lightbox': null,
             'search': 'top-bar-search',
+        }, {
+            application: app,
         });
     });
 
@@ -90,11 +94,7 @@ describe('Window', function () {
         let view;
 
         beforeEach(function () {
-            view = new Window.Window({
-                application: app,
-                factory: factory,
-                factory_name: 'window',
-            });
+            view = factory.create_named_module('window');
         });
 
         afterEach(function () {
@@ -205,11 +205,7 @@ describe('Window', function () {
         beforeEach(function () {
             jasmine.addMatchers(WidgetDescendantMatcher.customMatchers);
 
-            view = new Window.Window({
-                application: app,
-                factory: factory,
-                factory_name: 'window-with-brand-page',
-            });
+            view = factory.create_named_module('window-with-brand-page');
         });
 
         afterEach(function () {

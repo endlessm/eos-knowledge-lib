@@ -63,20 +63,18 @@ describe('Buffet interaction', function () {
         engine = MockEngine.mock_default();
         engine.get_objects_by_query_finish.and.returnValue([set_models, null]);
 
+        reading_history = new MockReadingHistoryModel();
+        spyOn(reading_history, 'mark_article_read');
+
         factory = new MockFactory.MockFactory();
         factory.add_named_mock('window', MockView);
         factory.add_named_mock('interaction', BuffetInteraction.BuffetInteraction, {
             'window': 'window',
-        });
-
-        reading_history = new MockReadingHistoryModel();
-        spyOn(reading_history, 'mark_article_read');
-
-        buffet = new BuffetInteraction.BuffetInteraction({
-            factory: factory,
-            factory_name: 'interaction',
+        }, {
             reading_history: reading_history,
         });
+
+        buffet = factory.create_named_module('interaction');
         spyOn(buffet, 'record_search_metric');
     });
 

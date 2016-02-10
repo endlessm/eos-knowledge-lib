@@ -2,19 +2,27 @@
 
 const Gtk = imports.gi.Gtk;
 
+const Compliance = imports.tests.compliance;
+const ContentObjectModel = imports.search.contentObjectModel;
 const Minimal = imports.tests.minimal;
+const MockFactory = imports.tests.mockFactory;
 const QuiltArrangement = imports.app.modules.quiltArrangement;
 const Utils = imports.tests.utils;
 
 Gtk.init(null);
 
-Minimal.test_arrangement_compliance(QuiltArrangement.QuiltArrangement);
+Compliance.test_arrangement_compliance(QuiltArrangement.QuiltArrangement);
 
 describe('Quilt arrangement', function () {
-    let arrangement;
+    let arrangement, factory;
 
     beforeEach(function () {
-        arrangement = new QuiltArrangement.QuiltArrangement();
+        factory = new MockFactory.MockFactory();
+        factory.add_named_mock('card', Minimal.MinimalCard);
+        factory.add_named_mock('arrangement', QuiltArrangement.QuiltArrangement, {
+            'card-type': 'card',
+        });
+        arrangement = factory.create_named_module('arrangement');
     });
 
     describe('sizing allocation', function () {
@@ -22,8 +30,8 @@ describe('Quilt arrangement', function () {
 
         beforeEach(function () {
             for (let i = 0; i < 5; i++) {
-                let card = new Minimal.MinimalCard();
-                arrangement.add_card(card);
+                let model = new ContentObjectModel.ContentObjectModel();
+                arrangement.add_model(model);
             }
             win = new Gtk.OffscreenWindow();
             win.add(arrangement);
@@ -42,7 +50,8 @@ describe('Quilt arrangement', function () {
                 win.set_size_request(arr_width, arr_height);
                 Utils.update_gui();
 
-                arrangement.get_children().forEach((card, i) => {
+                let cards = factory.get_created_named_mocks('card').reverse();
+                cards.forEach((card, i) => {
                     if (i < visible_cards) {
                         if (i === 0) {
                             expect(card.get_allocation().width).toBe(primary_width);

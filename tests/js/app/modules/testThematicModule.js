@@ -23,19 +23,18 @@ describe('Thematic module', function () {
         dispatcher = MockDispatcher.mock_default();
 
         factory = new MockFactory.MockFactory();
-        factory.add_named_mock('arrangement', Minimal.MinimalArrangement);
+        factory.add_named_mock('arrangement', Minimal.MinimalArrangement, {
+            'card-type': 'article-card',
+        });
         factory.add_named_mock('article-card', Minimal.MinimalCard);
         factory.add_named_mock('set-card', Minimal.MinimalCard);
         factory.add_named_mock('highlights', ThematicModule.ThematicModule, {
             'arrangement': 'arrangement',
-            'card-type': 'article-card',
             'header-card-type': 'set-card',
         });
-        module = new ThematicModule.ThematicModule({
-            factory: factory,
-            factory_name: 'highlights',
-            visible: true,
-        });
+        module = factory.create_named_module('highlights');
+
+        module.show();
     });
 
     it('constructs', function () {
@@ -120,8 +119,9 @@ describe('Thematic module', function () {
                     // Should only show 1 arrangement to start with
                     expect(arrs.length).toBe(1);
 
-                    expect(arrs[0].get_cards()[0].model.tags).toContain('a');
-                    expect(arrs[0].get_cards()[0].model.tags).toContain('e');
+                    let model = arrs[0].get_models()[0];
+                    expect(model.tags).toContain('a');
+                    expect(model.tags).toContain('e');
                     let visible_headers = headers.filter(header => header.is_visible());
                     expect(visible_headers.length).toBe(1);
                     visible_headers.forEach(header =>
@@ -131,25 +131,25 @@ describe('Thematic module', function () {
                 it('sorts cards for all the articles into the arrangements', function () {
                     // This is tenuous because it assumes the arrangements are all
                     // created in the order they're specified in the payload
-                    let a_cards = arrangements[0].get_cards();
-                    expect(a_cards.length).toBe(1);
-                    expect(a_cards[0].model.tags).toEqual(article_models[0].tags);
+                    let a_models = arrangements[0].get_models();
+                    expect(a_models.length).toBe(1);
+                    expect(a_models[0].tags).toEqual(article_models[0].tags);
 
                     // Now load the next arrangement
                     module.show_more_content();
-                    let bc_cards = arrangements[1].get_cards();
-                    expect(bc_cards.length).toBe(2);
-                    expect(bc_cards.map(card => card.model)).toEqual(jasmine.arrayContaining([
+                    let bc_models = arrangements[1].get_models();
+                    expect(bc_models.length).toBe(2);
+                    expect(bc_models).toEqual(jasmine.arrayContaining([
                         jasmine.objectContaining({ tags: article_models[2].tags }),
                         jasmine.objectContaining({ tags: article_models[3].tags }),
                     ]));
 
                     // Load third arrangement
                     module.show_more_content();
-                    let d_cards = arrangements[2].get_cards();
+                    let d_models = arrangements[2].get_models();
                     // All cards have 'd' and 'e' tags so all should show up in this arrangement
-                    expect(d_cards.length).toBe(6);
-                    expect(d_cards.map(card => card.model)).toEqual(article_models);
+                    expect(d_models.length).toBe(6);
+                    expect(d_models).toEqual(article_models);
                 });
 
                 it('clears items but leaves the sets', function () {
@@ -192,13 +192,13 @@ describe('Thematic module', function () {
                     });
 
                     it('on a card in an arrangement, dispatches item-clicked', function () {
-                        let card = arrangements[0].get_cards()[0];
-                        card.emit('clicked');
+                        let model = arrangements[0].get_models()[0];
+                        arrangements[0].emit('card-clicked', model);
                         Utils.update_gui();
                         let payload = dispatcher.last_payload_with_type(Actions.ITEM_CLICKED);
                         expect(payload.context_label).toEqual("Set Title");
                         expect(dispatcher.last_payload_with_type(Actions.ITEM_CLICKED))
-                            .toEqual(jasmine.objectContaining({ model: card.model }));
+                            .toEqual(jasmine.objectContaining({ model: model }));
                     });
                 });
             });
@@ -233,7 +233,7 @@ describe('Thematic module', function () {
                 it('shows no empty arrangements', function () {
                     let visible_arrangements = arrangements.filter(arrangement => arrangement.visible);
                     visible_arrangements.forEach(arrangement => {
-                        expect(arrangement.get_cards().length).toBeGreaterThan(0);
+                        expect(arrangement.get_models().length).toBeGreaterThan(0);
                     });
                     let visible_headers = headers.filter(header => header.is_visible());
                     expect(visible_headers.length).toBe(visible_arrangements.length);

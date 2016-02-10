@@ -393,6 +393,7 @@ const MeshInteraction = new Lang.Class({
             dispatcher.dispatch({
                 action_type: Actions.APPEND_SEARCH,
                 models: results,
+                query: item.query,
             });
             this._update_highlight();
             dispatcher.dispatch({

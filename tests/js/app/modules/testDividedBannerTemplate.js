@@ -34,11 +34,7 @@ describe('DividedBannerTemplate module', function () {
             'top-right': 'Placeholder2',
             'bottom': 'Placeholder3',
         });
-
-        home_page = new DividedBannerTemplate.DividedBannerTemplate({
-            factory: factory,
-            factory_name: 'home-page-template',
-        });
+        home_page = factory.create_named_module('home-page-template');
     });
 
     it('constructs', function () {});

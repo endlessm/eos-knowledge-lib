@@ -9,6 +9,7 @@ Utils.register_gresource();
 
 const Actions = imports.app.actions;
 const Arrangement = imports.app.interfaces.arrangement;
+const Compliance = imports.tests.compliance;
 const ContentObjectModel = imports.search.contentObjectModel;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const InfiniteScrolledWindow = imports.app.widgets.infiniteScrolledWindow;
@@ -32,18 +33,16 @@ describe('Search module', function () {
         dispatcher = MockDispatcher.mock_default();
         factory = new MockFactory.MockFactory();
         factory.add_named_mock('results-card', Minimal.MinimalCard);
-        factory.add_named_mock('results-arrangement',
-            Minimal.MinimalArrangement);
-        factory.add_named_mock('search-module', SearchModule.SearchModule, {
-            'arrangement': 'results-arrangement',
+        factory.add_named_mock('results-arrangement', Minimal.MinimalArrangement, {
             'card-type': 'results-card',
         });
-        search_module = new SearchModule.SearchModule({
-            factory: factory,
-            factory_name: 'search-module',
+        factory.add_named_mock('search-module', SearchModule.SearchModule, {
+            'arrangement': 'results-arrangement',
         });
+        search_module = factory.create_named_module('search-module');
         search_module.show_all();
         arrangement = factory.get_created_named_mocks('results-arrangement')[0];
+        spyOn(arrangement, 'highlight_string');
     });
 
     it('constructs', function () {});
@@ -129,7 +128,7 @@ describe('Search module', function () {
             action_type: Actions.APPEND_SEARCH,
             models: [new ContentObjectModel.ContentObjectModel()],
         });
-        expect(arrangement.get_cards().length).toBe(1);
+        expect(arrangement.get_models().length).toBe(1);
     });
 
     it('removes old results from the card container when adding new ones', function () {
@@ -140,7 +139,7 @@ describe('Search module', function () {
         dispatcher.dispatch({
             action_type: Actions.CLEAR_SEARCH,
         });
-        expect(arrangement.get_cards().length).toBe(0);
+        expect(arrangement.get_models().length).toBe(0);
     });
 
     it('dispatches when an infinite scrolled window arrangement reaches the end', function () {
@@ -153,26 +152,20 @@ describe('Search module', function () {
                 'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
                 'all-visible': GObject.ParamSpec.override('all-visible',
                     Arrangement.Arrangement),
+                'fade-cards': GObject.ParamSpec.override('fade-cards',
+                    Arrangement.Arrangement),
                 'spacing': GObject.ParamSpec.override('spacing',
                     Arrangement.Arrangement),
             },
-            _init: function (props) {
-                this.parent(props);
-            },
-            add_card: function () {},
-            get_cards: function () { return []; },
-            clear: function () {},
         });
 
-        factory.add_named_mock('infinite-arrangement', InfiniteArrangement);
-        factory.add_named_mock('infinite-module', SearchModule.SearchModule, {
-            'arrangement': 'infinite-arrangement',
+        factory.add_named_mock('infinite-arrangement', InfiniteArrangement, {
             'card-type': 'results-card',
         });
-        search_module = new SearchModule.SearchModule({
-            factory: factory,
-            factory_name: 'infinite-module',
+        factory.add_named_mock('infinite-module', SearchModule.SearchModule, {
+            'arrangement': 'infinite-arrangement',
         });
+        search_module = factory.create_named_module('infinite-module');
         arrangement = factory.get_created_named_mocks('infinite-arrangement')[0];
 
         arrangement.emit('need-more-content');
@@ -206,8 +199,9 @@ describe('Search module', function () {
         dispatcher.dispatch({
             action_type: Actions.APPEND_SEARCH,
             models: [ model ],
+            query: 'foo',
         });
-        arrangement.get_cards()[0].emit('clicked');
+        arrangement.emit('card-clicked', model);
         Utils.update_gui();
         let payload = dispatcher.last_payload_with_type(Actions.SEARCH_CLICKED);
         let matcher = jasmine.objectContaining({
@@ -216,7 +210,18 @@ describe('Search module', function () {
         });
         expect(payload).toEqual(matcher);
     });
+
+    it('tells the arrangement to highlight search strings', function () {
+        let model = new ContentObjectModel.ContentObjectModel();
+        dispatcher.dispatch({
+            action_type: Actions.APPEND_SEARCH,
+            models: [ model ],
+            query: 'foo',
+        });
+        Utils.update_gui();
+        expect(arrangement.highlight_string).toHaveBeenCalledWith('foo');
+    });
 });
 
-Minimal.test_card_container_compliance(Actions.APPEND_SEARCH,
+Compliance.test_card_container_fade_in_compliance(Actions.APPEND_SEARCH,
     SearchModule.SearchModule);

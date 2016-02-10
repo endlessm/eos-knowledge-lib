@@ -2,19 +2,27 @@
 
 const Gtk = imports.gi.Gtk;
 
+const Compliance = imports.tests.compliance;
+const ContentObjectModel = imports.search.contentObjectModel;
 const Minimal = imports.tests.minimal;
+const MockFactory = imports.tests.mockFactory;
 const Utils = imports.tests.utils;
 const WindshieldArrangement = imports.app.modules.windshieldArrangement;
 
 Gtk.init(null);
 
-Minimal.test_arrangement_compliance(WindshieldArrangement.WindshieldArrangement);
+Compliance.test_arrangement_compliance(WindshieldArrangement.WindshieldArrangement);
 
 describe('Windshield Arrangement', function () {
-    let arrangement;
+    let arrangement, factory;
 
     beforeEach(function () {
-        arrangement = new WindshieldArrangement.WindshieldArrangement();
+        factory = new MockFactory.MockFactory();
+        factory.add_named_mock('card', Minimal.MinimalCard);
+        factory.add_named_mock('arrangement', WindshieldArrangement.WindshieldArrangement, {
+            'card-type': 'card',
+        });
+        arrangement = factory.create_named_module('arrangement');
     });
 
     describe('sizing allocation', function () {
@@ -22,8 +30,8 @@ describe('Windshield Arrangement', function () {
 
         beforeEach(function () {
             for (let i = 0; i < 5; i++) {
-                let card = new Minimal.MinimalCard();
-                arrangement.add(card);
+                let model = new ContentObjectModel.ContentObjectModel();
+                arrangement.add_model(model);
             }
             win = new Gtk.OffscreenWindow();
             win.add(arrangement);
@@ -39,7 +47,8 @@ describe('Windshield Arrangement', function () {
                 win.set_size_request(total_width, total_height);
                 Utils.update_gui();
 
-                arrangement.get_cards().forEach((card, i) => {
+                let cards = factory.get_created_named_mocks('card').reverse();
+                cards.forEach((card, i) => {
                     if (i === 0) {
                         // FIXME: For now we're treating the first card as the
                         // featured card.

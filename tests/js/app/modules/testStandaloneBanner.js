@@ -9,7 +9,6 @@ Utils.register_gresource();
 
 const Actions = imports.app.actions;
 const MockDispatcher = imports.tests.mockDispatcher;
-const MockFactory = imports.tests.mockFactory;
 const StandaloneBanner = imports.app.modules.standaloneBanner;
 
 describe('Standalone banner', function () {
@@ -17,11 +16,7 @@ describe('Standalone banner', function () {
 
     beforeEach(function () {
         dispatcher = MockDispatcher.mock_default();
-        let factory = new MockFactory.MockFactory();
-        factory.add_named_mock('banner', StandaloneBanner.StandaloneBanner);
         banner = new StandaloneBanner.StandaloneBanner({
-            factory: factory,
-            factory_name: 'banner',
             title: 'App Title',
         });
     });

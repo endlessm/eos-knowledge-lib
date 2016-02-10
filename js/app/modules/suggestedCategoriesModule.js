@@ -24,7 +24,6 @@ const Utils = imports.app.utils;
  *
  * Slots:
  *   arrangement
- *   card-type
  */
 const SuggestedCategoriesModule = new Lang.Class({
     Name: 'SuggestedCategoriesModule',
@@ -86,6 +85,13 @@ const SuggestedCategoriesModule = new Lang.Class({
         this.add(separator);
 
         this._arrangement = this.create_submodule('arrangement');
+        this._arrangement.connect('card-clicked', (arrangement, model) => {
+            Dispatcher.get_default().dispatch({
+                action_type: Actions.SET_CLICKED,
+                model: model,
+                context: arrangement.get_models(),
+            });
+        });
         this.add(this._arrangement);
 
         if (!this.show_title) {
@@ -110,7 +116,8 @@ const SuggestedCategoriesModule = new Lang.Class({
                     let models = payload.models;
                     if (this.featured_only)
                         models = models.filter(model => model.featured);
-                    models.forEach(this._add_card, this);
+                    models.forEach(this._arrangement.add_model,
+                        this._arrangement);
                     break;
                 case Actions.CLEAR_SETS:
                     this._arrangement.clear();
@@ -124,27 +131,13 @@ const SuggestedCategoriesModule = new Lang.Class({
 
     // Module override
     get_slot_names: function () {
-        return ['arrangement', 'card-type'];
-    },
-
-    _add_card: function (model) {
-        let card = this.create_submodule('card-type', {
-            model: model,
-        });
-        card.connect('clicked', () => {
-            Dispatcher.get_default().dispatch({
-                action_type: Actions.SET_CLICKED,
-                model: model,
-                context: this._arrangement.get_cards().map((card) => card.model),
-            });
-        });
-        this._arrangement.add_card(card);
+        return ['arrangement'];
     },
 
     _filter_sets: function (sets) {
-        this._arrangement.get_cards().forEach((card) => {
-            if (sets.indexOf(card.model.ekn_id) !== -1) {
-                this._arrangement.remove(card);
+        this._arrangement.get_models().forEach(model => {
+            if (sets.indexOf(model.ekn_id) !== -1) {
+                this._arrangement.remove_model(model);
             }
         });
     },

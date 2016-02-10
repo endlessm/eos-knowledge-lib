@@ -2,20 +2,27 @@
 
 const Gtk = imports.gi.Gtk;
 
+const Compliance = imports.tests.compliance;
+const ContentObjectModel = imports.search.contentObjectModel;
 const Minimal = imports.tests.minimal;
-const MockWidgets = imports.tests.mockWidgets;
+const MockFactory = imports.tests.mockFactory;
 const PianoArrangement = imports.app.modules.pianoArrangement;
 const Utils = imports.tests.utils;
 
 Gtk.init(null);
 
-Minimal.test_arrangement_compliance(PianoArrangement.PianoArrangement);
+Compliance.test_arrangement_compliance(PianoArrangement.PianoArrangement);
 
 describe('Piano Arrangement', function () {
     let arrangement;
 
     beforeEach(function () {
-        arrangement = new PianoArrangement.PianoArrangement();
+        let factory = new MockFactory.MockFactory();
+        factory.add_named_mock('card', Minimal.MinimalCard);
+        factory.add_named_mock('arrangement', PianoArrangement.PianoArrangement, {
+            'card-type': 'card',
+        });
+        arrangement = factory.create_named_module('arrangement');
     });
 
     describe('sizing allocation', function () {
@@ -23,8 +30,8 @@ describe('Piano Arrangement', function () {
 
         beforeEach(function () {
             for (let i = 0; i < 4; i++) {
-                let card = new Minimal.MinimalCard();
-                arrangement.add(card);
+                let model = new ContentObjectModel.ContentObjectModel();
+                arrangement.add_model(model);
             }
             win = new Gtk.OffscreenWindow();
             win.add(arrangement);
@@ -43,7 +50,7 @@ describe('Piano Arrangement', function () {
 
                 expect(arrangement.all_visible).toBe(all_visible);
 
-                arrangement.get_cards().forEach((card, i) => {
+                arrangement.get_children().forEach((card, i) => {
                     if (i === 0) {
                         // FIXME: For now we're treating the first card as the featured card.
                         expect(card.get_child_visible()).toBe(true);

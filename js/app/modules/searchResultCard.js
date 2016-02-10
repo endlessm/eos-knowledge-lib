@@ -35,14 +35,20 @@ const SearchResultCard = new Lang.Class({
     _init: function (props={}) {
         this.parent(props);
 
-        this.set_title_label_from_model(this._title_label);
+        this.update_highlight_string();
         this.set_thumbnail_frame_from_model(this._thumbnail_frame);
-        this.set_label_or_hide(this._synopsis_label, this.model.synopsis);
-        this.set_label_with_highlight(this._synopsis_label, this.model.synopsis);
         this.set_size_request(Card.MinSize.D, Card.MinSize.A);
         this._synopsis_label.visible = true;
 
         Utils.set_hand_cursor_on_widget(this);
+    },
+
+    // Card override
+    update_highlight_string: function () {
+        if (this._title_label)
+            this.set_title_label_with_highlight(this._title_label);
+        if (this._synopsis_label)
+            this.set_label_with_highlight(this._synopsis_label, this.model.synopsis);
     },
 
     _TEXT_SIZE_RATIO: 0.64,

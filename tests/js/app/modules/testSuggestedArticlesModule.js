@@ -21,16 +21,14 @@ describe('Suggested articles module', function () {
         dispatcher = MockDispatcher.mock_default();
 
         factory = new MockFactory.MockFactory();
-        factory.add_named_mock('test-arrangement', Minimal.MinimalArrangement);
+        factory.add_named_mock('test-arrangement', Minimal.MinimalArrangement, {
+            'card-type': 'home-card',
+        });
         factory.add_named_mock('home-card', Minimal.MinimalCard);
         factory.add_named_mock('suggested-articles', SuggestedArticlesModule.SuggestedArticlesModule, {
             'arrangement': 'test-arrangement',
-            'card-type': 'home-card',
         });
-        suggestions = new SuggestedArticlesModule.SuggestedArticlesModule({
-            factory: factory,
-            factory_name: 'suggested-articles',
-        });
+        suggestions = factory.create_named_module('suggested-articles');
         arrangement = factory.get_created_named_mocks('test-arrangement')[0];
     });
 
@@ -57,7 +55,7 @@ describe('Suggested articles module', function () {
             action_type: Actions.APPEND_SUGGESTED_ARTICLES,
             models: models,
         });
-        expect(arrangement.get_cards().length).toBe(3);
+        expect(arrangement.get_models().length).toBe(3);
         expect(factory.get_created_named_mocks('home-card').length).toBe(3);
     });
 
@@ -79,7 +77,7 @@ describe('Suggested articles module', function () {
             action_type: Actions.APPEND_SUGGESTED_ARTICLES,
             models: models,
         });
-        expect(arrangement.get_cards().length).toBe(3);
+        expect(arrangement.get_models().length).toBe(3);
         expect(factory.get_created_named_mocks('home-card').length).toBe(6);
     });
 
@@ -89,7 +87,7 @@ describe('Suggested articles module', function () {
             action_type: Actions.APPEND_SUGGESTED_ARTICLES,
             models: [ model ],
         });
-        arrangement.get_cards()[0].emit('clicked');
+        arrangement.emit('card-clicked', model);
         Utils.update_gui();
         let payload = dispatcher.last_payload_with_type(Actions.ITEM_CLICKED);
         let matcher = jasmine.objectContaining({

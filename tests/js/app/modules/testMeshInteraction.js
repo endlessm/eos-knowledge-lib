@@ -77,13 +77,11 @@ describe('Mesh interaction', function () {
         factory.add_named_mock('window', MockView);
         factory.add_named_mock('interaction', MeshInteraction.MeshInteraction, {
             'window': 'window',
-        });
-        mesh = new MeshInteraction.MeshInteraction({
+        }, {
             application: application,
-            factory: factory,
-            factory_name: 'interaction',
             template_type: 'B',
         });
+        mesh = factory.create_named_module('interaction');
         mesh.BRAND_PAGE_TIME_MS = 0;
         spyOn(mesh, '_record_search_metric');
     });
@@ -331,7 +329,10 @@ describe('Mesh interaction', function () {
                 Actions.SEARCH_READY
             ])).toBe(true);
             let payload = dispatcher.last_payload_with_type(Actions.APPEND_SEARCH);
-            expect(payload.models).toEqual([ article_model ]);
+            expect(payload).toEqual(jasmine.objectContaining({
+                models: [ article_model ],
+                query: query,
+            }));
         });
 
         it('dispatches search-failed if the search fails', function () {
@@ -398,7 +399,10 @@ describe('Mesh interaction', function () {
                 query: 'foo',
             });
             let payload = dispatcher.last_payload_with_type(Actions.APPEND_SEARCH);
-            expect(payload.models).toEqual([ article_model ]);
+            expect(payload).toEqual(jasmine.objectContaining({
+                models: [ article_model ],
+                query: 'foo',
+            }));
         });
     });
 

@@ -23,10 +23,7 @@ describe('Search and item module', function () {
             'item': 'test-item',
             'search': 'test-search',
         });
-        module = new SearchAndItemModule.SearchAndItemModule({
-            factory: factory,
-            factory_name: 'module',
-        });
+        module = factory.create_named_module('module');
         module.show_all();
         search = factory.get_created_named_mocks('test-search')[0];
         item = factory.get_created_named_mocks('test-item')[0];

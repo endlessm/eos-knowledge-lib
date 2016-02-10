@@ -54,9 +54,11 @@
                                             "type": "SquareGuysArrangement",
                                             "properties": {
                                                 "spacing": 20
+                                            },
+                                            "slots": {
+                                                "card-type": "set-card"
                                             }
-                                        },
-                                        "card-type": "set-card"
+                                        }
                                     }
                                 }
                             }
@@ -97,9 +99,11 @@
                                                     "type": "HalfArrangement",
                                                     "properties": {
                                                         "spacing": 20
+                                                    },
+                                                    "slots": {
+                                                        "card-type": "main-card"
                                                     }
                                                 },
-                                                "card-type": "main-card",
                                                 "header-card-type": "header-card"
                                             }
                                         },
@@ -140,6 +144,14 @@
                                                     "type": "WindshieldArrangement",
                                                     "properties": {
                                                         "spacing": 20
+                                                    },
+                                                    "slots": {
+                                                        "card-type": {
+                                                            "type": "PostCard",
+                                                            "properties": {
+                                                                "title-capitalization": "uppercase"
+                                                            }
+                                                        }
                                                     }
                                                 },
                                                 "small-arrangement": {
@@ -147,16 +159,12 @@
                                                     "properties": {
                                                         "spacing": 20,
                                                         "max-rows": 2
+                                                    },
+                                                    "slots": {
+                                                        "card-type": "main-card"
                                                     }
                                                 },
-                                                "card-type": "main-card",
-                                                "header-card-type": "header-card",
-                                                "large-card-type": {
-                                                    "type": "PostCard",
-                                                    "properties": {
-                                                        "title-capitalization": "uppercase"
-                                                    }
-                                                }
+                                                "header-card-type": "header-card"
                                             }
                                         },
                                         "bottom": "category-suggestions"
@@ -180,10 +188,12 @@
                             "type": "ListArrangement",
                             "properties": {
                                 "bottom-buffer": 250
+                            },
+                            "slots": {
+                                "card-type": {
+                                    "type": "SearchResultCard"
+                                }
                             }
-                        },
-                        "card-type": {
-                            "type": "SearchResultCard"
                         },
                         "article-suggestions": "article-suggestions",
                         "category-suggestions": "category-suggestions"
@@ -229,9 +239,11 @@
                         "margin-start": 20,
                         "margin-end": 20,
                         "margin-bottom": 20
+                    },
+                    "slots": {
+                        "card-type": "main-card"
                     }
-                },
-                "card-type": "main-card"
+                }
             }
         },
         "category-suggestions": {
@@ -246,9 +258,11 @@
                         "margin-start": 20,
                         "margin-end": 20,
                         "margin-bottom": 20
+                    },
+                    "slots": {
+                        "card-type": "set-card"
                     }
-                },
-                "card-type": "set-card"
+                }
             }
         },
         "main-card": {
@@ -277,13 +291,15 @@
             },
             "slots": {
                 "arrangement": {
-                    "type": "ListArrangement"
-                },
-                "card-type": {
-                    "type": "TextCard",
-                    "properties": {
-                        "title-capitalization": "uppercase",
-                        "margin-top": 5
+                    "type": "ListArrangement",
+                    "slots": {
+                        "card-type": {
+                            "type": "TextCard",
+                            "properties": {
+                                "title-capitalization": "uppercase",
+                                "margin-top": 5
+                            }
+                        }
                     }
                 }
             }
