@@ -292,28 +292,28 @@ $max-d: 599px;
 @media (device-width: 720px) and (device-height: 480px),
        (device-width: 720px) and (device-height: 576px) {
     #inside-content {
-        font-size: 22px;
+        font-size: 19.4px;  /* 22px spec * 88% because spec was at 110% scale not 125% */
         color: black;
 
         .infobox {
             th:only-child,
             caption {
-                line-height: 20px;
-                font-size: 20px !important;
+                line-height: 17.6px;  /* 20px * 88% */
+                font-size: 17.6px !important;  /* 20px * 88% */
             }
 
             tr > th:first-child:not(:only-child),
             tr > td:first-child:not(:only-child),
             th ~ td,
             td:first-child ~ td {
-                line-height: 20px;
-                font-size: 20px;
+                line-height: 17.6px;  /* 20px * 88% */
+                font-size: 17.6px;  /* 20px * 88% */
             }
         }
 
         .thumbcaption,
         td .eos-image-link + * {
-            font-size: 20px;
+            font-size: 17.6px;  /* 20px * 88% */
         }
     }
 }

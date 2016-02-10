@@ -440,6 +440,6 @@ html {
        (device-width: 720px) and (device-height: 576px) {
     .mw-body {
         font-family: $font1-composite;
-        font-size: 22px;
+        font-size: 19.4px;  /* 22px * 88% because spec was at 110% scale not 125% */
     }
 }
