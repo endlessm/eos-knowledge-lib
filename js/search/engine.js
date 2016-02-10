@@ -239,12 +239,14 @@ const Engine = Lang.Class({
     },
 
     /**
-     * Method: preload_default_domain
+     * Method: update_and_preload_default_domain
      *
-     * Calls preload_domain with the default domain.
+     * Synchronously checks for updates to apply to the current domain.
      */
-    preload_default_domain: function () {
-        this._get_domain(this.default_domain).load(null, () => {});
+    update_and_preload_default_domain: function () {
+        let domain = this._get_domain(this.default_domain);
+        domain.check_for_updates();
+        domain.load(null, () => {});
     },
 });
 

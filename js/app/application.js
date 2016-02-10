@@ -84,7 +84,7 @@ const Application = new Lang.Class({
 
     vfunc_startup: function () {
         this.parent();
-        Engine.get_default().preload_default_domain();
+        Engine.get_default().update_and_preload_default_domain();
     },
 
     LoadPage: function (ekn_id, query, timestamp) {

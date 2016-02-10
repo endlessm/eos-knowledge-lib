@@ -183,6 +183,15 @@ const Domain = new Lang.Class({
     get_objects_by_query_finish: function (task) {
         return task.finish();
     },
+
+    /**
+     * Function: check_for_updates
+     *
+     * Synchronously check for updates to the domain.
+     */
+    check_for_updates: function () {
+        // By default, do nothing.
+    },
 });
 
 const DomainV1 = new Lang.Class({
@@ -390,6 +399,20 @@ const DomainV2 = new Lang.Class({
     },
 });
 
+const DownloaderIface = '\
+<node name="/" xmlns:doc="http://www.freedesktop.org/dbus/1.0/doc.dtd"> \
+  <interface name="com.endlessm.EknDownloader"> \
+    <method name = "ApplyUpdate"> \
+      <arg type="s" name="subscription_id" direction="in" /> \
+      <arg type="b" name="applied_update" direction="out" /> \
+    </method> \
+    <method name = "FetchUpdate"> \
+      <arg type="s" name="subscription_id" direction="in" /> \
+    </method> \
+  </interface> \
+</node>';
+const DownloaderProxy = Gio.DBusProxy.makeProxyWrapper(DownloaderIface);
+
 const DomainV3 = new Lang.Class({
     Name: 'DomainV3',
     Extends: Domain,
@@ -544,6 +567,21 @@ const DomainV3 = new Lang.Class({
 
     resolve_xapian_result_finish: function (task) {
         return task.finish();
+    },
+
+    check_for_updates: function () {
+        try {
+            let proxy = new DownloaderProxy(Gio.DBus.session, 'com.endlessm.EknDownloader', '/com/endlessm/EknDownloader');
+
+            // Synchronously apply any update we have.
+            proxy.ApplyUpdateSync(this._get_subscription_id());
+
+            // Regardless of whether or not we applied an update,
+            // let's see about fetching a new one...
+            proxy.FetchUpdateRemote(this._get_subscription_id());
+        } catch(e) {
+            logError(e, "Could not update domain");
+        }
     },
 });
 
