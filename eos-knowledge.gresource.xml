@@ -75,6 +75,7 @@
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/textCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/thumbCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/tooltips.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">data/widgets/topMenuTemplate.ui</file>
     <file>js/app/actions.js</file>
     <file>js/app/aisleUserSettingsModel.js</file>
     <file>js/app/application.js</file>
@@ -161,7 +162,8 @@
     <file>js/app/modules/thirtiesArrangement.js</file>
     <file>js/app/modules/thumbCard.js</file>
     <file>js/app/modules/tiledGridArrangement.js</file>
-    <file>js/app/modules/twoVerticalTemplate.js</file>
+    <file>js/app/modules/topMenuTemplate.js</file>
+    <file>js/app/modules/twoPieceTemplate.js</file>
     <file>js/app/modules/window.js</file>
     <file>js/app/modules/windshieldArrangement.js</file>
     <file>js/app/readingHistoryModel.js</file>
