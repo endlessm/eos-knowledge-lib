@@ -564,7 +564,7 @@ EosWindow .scrollbar.slider {
 
 .composite .card-a .title {
     font-weight: 600;
-    font-size: 14.1px;  /* 16px spec * 88% */
+    font-size: 12.3px;  /* Original spec may have been wrong */
 }
 
 .composite .section-page-a .card-a .title,
