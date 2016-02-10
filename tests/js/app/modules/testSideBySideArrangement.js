@@ -2,34 +2,40 @@
 
 const Gtk = imports.gi.Gtk;
 
+const Compliance = imports.tests.compliance;
+const ContentObjectModel = imports.search.contentObjectModel;
 const Minimal = imports.tests.minimal;
+const MockFactory = imports.tests.mockFactory;
 const SideBySideArrangement = imports.app.modules.sideBySideArrangement;
 const Utils = imports.tests.utils;
 
 Gtk.init(null);
 
-Minimal.test_arrangement_compliance(SideBySideArrangement.SideBySideArrangement);
+Compliance.test_arrangement_compliance(SideBySideArrangement.SideBySideArrangement);
+
+const CHILD_WIDTH = 100;
 
 describe('SideBySide Arrangement', function () {
     let arrangement;
 
     beforeEach(function () {
-        arrangement = new SideBySideArrangement.SideBySideArrangement();
+        let factory = new MockFactory.MockFactory();
+        factory.add_named_mock('card', Minimal.MinimalCard, {}, {
+            width_request: CHILD_WIDTH,
+        });
+        factory.add_named_mock('arrangement', SideBySideArrangement.SideBySideArrangement, {
+            'card-type': 'card',
+        });
+        arrangement = factory.create_named_module('arrangement');
     });
 
     describe('sizing allocation', function () {
-        let win, arrangement_height, child_width;
+        let win;
 
         beforeEach(function () {
-            // Constant sizes on the widgets
-            arrangement_height = 100;
-            child_width = 100;
-
             for (let i = 0; i < 10; i++) {
-                let card = new Minimal.MinimalCard({
-                    width_request: child_width,
-                });
-                arrangement.add_card(card);
+                let model = new ContentObjectModel.ContentObjectModel();
+                arrangement.add_model(model);
             }
             win = new Gtk.OffscreenWindow();
             win.add(arrangement);
@@ -52,7 +58,7 @@ describe('SideBySide Arrangement', function () {
                     if (i < visible_children) {
                         expect(card.get_child_visible()).toBe(true);
                         expect(card.get_allocation().x).toBe(x);
-                        x += (child_width + spacing);
+                        x += (CHILD_WIDTH + spacing);
                     } else {
                         expect(card.get_child_visible()).toBe(false);
                     }
