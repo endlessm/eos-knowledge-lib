@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2016-01-26 05:57+0000\n"
-"PO-Revision-Date: 2015-12-14 20:23+0000\n"
+"POT-Creation-Date: 2016-02-09 02:46+0000\n"
+"PO-Revision-Date: 2016-02-09 02:46+0000\n"
 "Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
 "Language-Team: Hindi (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/hi/)\n"
 "MIME-Version: 1.0\n"
@@ -108,18 +108,18 @@ msgstr ""
 msgid "Content courtesy of {blog-link}, licensed under {license-link}."
 msgstr ""
 
-#: js/app/modules/aisleInteraction.js:799
-#: js/app/modules/aisleInteraction.js:806
+#: js/app/modules/aisleInteraction.js:795
+#: js/app/modules/aisleInteraction.js:802
 msgid "Oops!"
 msgstr ""
 
-#: js/app/modules/aisleInteraction.js:800
+#: js/app/modules/aisleInteraction.js:796
 msgid ""
 "We could not find this magazine!\n"
 "Please try again after restarting your computer."
 msgstr ""
 
-#: js/app/modules/aisleInteraction.js:807
+#: js/app/modules/aisleInteraction.js:803
 msgid ""
 "There was an error loading that page.\n"
 "Try another one or try again after restarting your computer."
@@ -127,20 +127,20 @@ msgstr ""
 
 #. TRANSLATORS: This shows the page number; %d will be replaced with
 #. the page number of the article.
-#: js/app/modules/aisleInteraction.js:869
+#: js/app/modules/aisleInteraction.js:842
 #, javascript-format
 msgid "Page %d"
 msgstr ""
 
 #. TRANSLATORS: %s will be replaced with the text the user
 #. searched for. Make sure to keep %s token in your translation.
-#: js/app/modules/buffetInteraction.js:154 js/app/modules/contextBanner.js:81
+#: js/app/modules/buffetInteraction.js:173 js/app/modules/contextBanner.js:81
 #, javascript-format
 msgid "Results were found for “%s”"
 msgstr ""
 
 #: js/app/modules/contextBanner.js:48 js/app/modules/contextBanner.js:56
-#: js/app/modules/highlightsModule.js:121
+#: js/app/modules/highlightsModule.js:122
 msgid "Highlights"
 msgstr ""
 
@@ -162,6 +162,10 @@ msgstr ""
 #: js/app/modules/readerCard.js:60
 #, javascript-format
 msgid "Page %s"
+msgstr ""
+
+#: js/app/modules/readerDocumentCard.js:131
+msgid "This article is part of the archive."
 msgstr ""
 
 #. TRANSLATORS: This message is displayed while an app is
@@ -190,15 +194,15 @@ msgstr ""
 msgid "OOPS!"
 msgstr ""
 
-#: js/app/modules/searchModule.js:195
+#: js/app/modules/searchModule.js:202
 msgid "Sorry! :-("
 msgstr ""
 
-#: js/app/modules/searchModule.js:196
+#: js/app/modules/searchModule.js:203
 msgid "There are no results that match your search.\n"
 msgstr ""
 
-#: js/app/modules/searchModule.js:198
+#: js/app/modules/searchModule.js:205
 msgid ""
 "We recommend that you:\n"
 "\n"
@@ -207,17 +211,17 @@ msgid ""
 "  •  Try using more general words"
 msgstr ""
 
-#: js/app/modules/searchModule.js:225
+#: js/app/modules/searchModule.js:232
 msgid "There was an error during your search."
 msgstr ""
 
-#: js/app/modules/standalonePage.js:139
-msgid "Open the magazine"
-msgstr ""
-
-#: js/app/modules/standalonePage.js:256
+#: js/app/modules/standaloneBanner.js:85
 #, javascript-format
 msgid "This article is part of the archive of the magazine %s."
+msgstr ""
+
+#: js/app/modules/standaloneBanner.js:88
+msgid "Open the magazine"
 msgstr ""
 
 #. TRANSLATORS: anything inside curly braces '{}' is going to be substituted

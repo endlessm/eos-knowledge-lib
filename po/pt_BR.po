@@ -14,9 +14,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2016-01-26 05:57+0000\n"
-"PO-Revision-Date: 2015-12-14 21:01+0000\n"
-"Last-Translator: mattdangerw <watson@endlessm.com>\n"
+"POT-Creation-Date: 2016-02-09 02:46+0000\n"
+"PO-Revision-Date: 2016-02-09 02:46+0000\n"
+"Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -115,18 +115,18 @@ msgstr "Cortesia de conteúdo de {blog-link}.  Utilizado com permissão."
 msgid "Content courtesy of {blog-link}, licensed under {license-link}."
 msgstr "Cortesia de conteúdo de {blog-link}, licenciado sob {license-link}."
 
-#: js/app/modules/aisleInteraction.js:799
-#: js/app/modules/aisleInteraction.js:806
+#: js/app/modules/aisleInteraction.js:795
+#: js/app/modules/aisleInteraction.js:802
 msgid "Oops!"
 msgstr "Opa!"
 
-#: js/app/modules/aisleInteraction.js:800
+#: js/app/modules/aisleInteraction.js:796
 msgid ""
 "We could not find this magazine!\n"
 "Please try again after restarting your computer."
 msgstr "Não conseguimos encontrar essa revista!\nPor favor, tente novamente após reiniciar seu computador. "
 
-#: js/app/modules/aisleInteraction.js:807
+#: js/app/modules/aisleInteraction.js:803
 msgid ""
 "There was an error loading that page.\n"
 "Try another one or try again after restarting your computer."
@@ -134,20 +134,20 @@ msgstr "Ocorreu um erro no carregamento da página. \nTente outro ou tente novam
 
 #. TRANSLATORS: This shows the page number; %d will be replaced with
 #. the page number of the article.
-#: js/app/modules/aisleInteraction.js:869
+#: js/app/modules/aisleInteraction.js:842
 #, javascript-format
 msgid "Page %d"
 msgstr "Página %d"
 
 #. TRANSLATORS: %s will be replaced with the text the user
 #. searched for. Make sure to keep %s token in your translation.
-#: js/app/modules/buffetInteraction.js:154 js/app/modules/contextBanner.js:81
+#: js/app/modules/buffetInteraction.js:173 js/app/modules/contextBanner.js:81
 #, javascript-format
 msgid "Results were found for “%s”"
 msgstr "Foram encontrados resultados para “%s”"
 
 #: js/app/modules/contextBanner.js:48 js/app/modules/contextBanner.js:56
-#: js/app/modules/highlightsModule.js:121
+#: js/app/modules/highlightsModule.js:122
 msgid "Highlights"
 msgstr "Destaques"
 
@@ -170,6 +170,10 @@ msgstr "Ver todas as categorias"
 #, javascript-format
 msgid "Page %s"
 msgstr "Página %s"
+
+#: js/app/modules/readerDocumentCard.js:131
+msgid "This article is part of the archive."
+msgstr ""
 
 #. TRANSLATORS: This message is displayed while an app is
 #. searching for results. The %s will be replaced with the term
@@ -197,15 +201,15 @@ msgstr "Resultados para “%s”"
 msgid "OOPS!"
 msgstr "OPA!"
 
-#: js/app/modules/searchModule.js:195
+#: js/app/modules/searchModule.js:202
 msgid "Sorry! :-("
 msgstr "Desculpe! :-("
 
-#: js/app/modules/searchModule.js:196
+#: js/app/modules/searchModule.js:203
 msgid "There are no results that match your search.\n"
 msgstr "Não encontramos nenhum resultado para a sua busca.\n"
 
-#: js/app/modules/searchModule.js:198
+#: js/app/modules/searchModule.js:205
 msgid ""
 "We recommend that you:\n"
 "\n"
@@ -214,18 +218,18 @@ msgid ""
 "  •  Try using more general words"
 msgstr "Recomendamos que você:\n\n• Confira se a palavra foi escrita corretamente\n• Tente outras palavras com o mesmo significado\n• Tente usar palavras mais genéricas"
 
-#: js/app/modules/searchModule.js:225
+#: js/app/modules/searchModule.js:232
 msgid "There was an error during your search."
 msgstr "Houve um erro durante a sua pesquisa."
 
-#: js/app/modules/standalonePage.js:139
-msgid "Open the magazine"
-msgstr "Abra a revista"
-
-#: js/app/modules/standalonePage.js:256
+#: js/app/modules/standaloneBanner.js:85
 #, javascript-format
 msgid "This article is part of the archive of the magazine %s."
 msgstr "Este artigo é parte do acervo da revista %s."
+
+#: js/app/modules/standaloneBanner.js:88
+msgid "Open the magazine"
+msgstr "Abra a revista"
 
 #. TRANSLATORS: anything inside curly braces '{}' is going to be substituted
 #. in code. Please make sure to leave the curly braces around any words that
