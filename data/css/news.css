@@ -1,0 +1,74 @@
+@import url("resource:///com/endlessm/knowledge/data/css/common.css");
+
+.all-type-card {
+    background-color: white;
+    box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.24);
+    padding: 20px;
+}
+
+.all-type-card .title {
+    font-family: 'Fira Sans';
+    font-weight: bold;
+    color: #0f1b3c;
+    font-size: 1.125em; /* 18px/12 * 72/96 */
+}
+
+.all-type-card .card-synopsis {
+    font-family: 'Merriweather';
+    font-style: italic;
+    color: #666666;
+    font-size: 1.0em; /* 16px/12 * 72/96 */
+}
+
+.all-type-card .card-context {
+    font-family: 'Merriweather';
+    font-weight: bold;
+    color: #7297a7;
+    font-size: 0.875em; /* 14px/12 * 72/96 */
+}
+
+.all-type-card:hover .title {
+    color: #7297a7;
+}
+
+.all-type-card.width-c {
+    padding: 30px;
+}
+.all-type-card.width-c .title {
+    font-size: 1.44em; /* 23px/12 * 72/96 */
+}
+
+.all-type-card.width-c.height-d,
+.all-type-card.width-d {
+    padding: 30px;
+}
+.all-type-card.width-c.height-d .title,
+.all-type-card.width-d .title {
+    font-size: 1.69em; /* 27px/12 * 72/96 */
+}
+
+.all-type-card.width-d.height-d,
+.all-type-card.width-e,
+.all-type-card.width-f.height-c {
+    padding: 40px;
+}
+.all-type-card.width-d.height-d .title,
+.all-type-card.width-e .title,
+.all-type-card.width-f.height-c .title {
+    font-size: 2.31em; /* 37px/12 * 72/96 */
+}
+
+.all-type-card.width-e.height-d,
+.all-type-card.width-e.height-e,
+.all-type-card.width-f,
+.all-type-card.width-g,
+.all-type-card.width-h {
+    padding: 50px;
+}
+.all-type-card.width-e.height-d .title,
+.all-type-card.width-e.height-e .title,
+.all-type-card.width-f .title,
+.all-type-card.width-g .title,
+.all-type-card.width-h .title {
+    font-size: 3.06em; /* 49px/12 * 72/96 */
+}

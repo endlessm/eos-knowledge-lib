@@ -1,0 +1,122 @@
+// Copyright 2016 Endless Mobile, Inc.
+
+const GObject = imports.gi.GObject;
+const GLib = imports.gi.GLib;
+const Gtk = imports.gi.Gtk;
+const Lang = imports.lang;
+
+const Card = imports.app.interfaces.card;
+const MarginButton = imports.app.widgets.marginButton;
+const Module = imports.app.interfaces.module;
+const Utils = imports.app.utils;
+
+/**
+ * Class: AllTypeCard
+ *
+ * Card for displaying a snippet of an article in the News App
+ *
+ * This widget can display a snippet of an article using labels
+ * for the title, the synopsis and the context which is a tag,
+ * if it is available.
+ *
+ * Style classes:
+ *   card, all-type-card - on the widget itself
+ *   title - on the title label
+ *   card-synopsis - on the synopsis label
+ *   card-context - on the context label
+ */
+const AllTypeCard = new Lang.Class({
+    Name: 'AllTypeCard',
+    GTypeName: 'EknAllTypeCard',
+    Extends: MarginButton.MarginButton,
+    Implements: [ Module.Module, Card.Card ],
+
+    Properties: {
+        'factory': GObject.ParamSpec.override('factory', Module.Module),
+        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
+        'model': GObject.ParamSpec.override('model', Card.Card),
+        'title-capitalization': GObject.ParamSpec.override('title-capitalization',
+            Card.Card),
+        'highlight-string': GObject.ParamSpec.override('highlight-string', Card.Card),
+        'text-halign': GObject.ParamSpec.override('text-halign', Card.Card),
+    },
+
+    Template: 'resource:///com/endlessm/knowledge/data/widgets/allTypeCard.ui',
+    InternalChildren: ['title-label', 'synopsis-label', 'context-label'],
+
+    _init: function (props={}) {
+        this.parent(props);
+
+        this.set_label_or_hide(this._title_label, this.model.title);
+        this.set_label_or_hide(this._synopsis_label, this.model.synopsis);
+
+        this._context = this.get_filtered_tags()[0];
+        if (this._context) {
+            this.set_label_or_hide(this._context_label, this._context);
+        }
+
+        Utils.set_hand_cursor_on_widget(this);
+
+        this._idle_id = 0;
+        this.connect_after('size-allocate', () => {
+            if (this._idle_id) {
+                return;
+            }
+            this._idle_id = GLib.idle_add(GLib.PRIORITY_DEFAULT_IDLE,
+                this._update_labels_and_css.bind(this));
+        });
+    },
+
+    _update_labels_and_css: function () {
+        let card_alloc = this.get_allocation();
+        let width = card_alloc.width;
+        let height = card_alloc.height;
+
+        this.update_card_sizing_classes(height, width);
+        this._update_title(height, width);
+        this._update_synopsis(height, width);
+        this._context_label.visible = (this._context && height >= Card.MinSize.B);
+
+        this._idle_id = 0;
+        return GLib.SOURCE_REMOVE;
+    },
+
+    _update_title: function (height, width) {
+        let lines = 2;
+        let valign = Gtk.Align.END;
+
+        if (width <= Card.MaxSize.B && height <= Card.MaxSize.A) {
+            lines = 2;
+        } else if (width <= Card.MaxSize.C && height <= Card.MaxSize.D) {
+            lines = 3;
+        } else if (width <= Card.MaxSize.D && height <= Card.MaxSize.C) {
+            lines = 2;
+        } else if (width <= Card.MaxSize.D && height <= Card.MaxSize.D) {
+            lines = 3;
+        }
+
+        if (height <= Card.MaxSize.B) {
+            valign = Gtk.Align.CENTER;
+        }
+
+        this._title_label.lines = lines;
+        this._title_label.valign = valign;
+    },
+
+    _update_synopsis: function (height, width) {
+        this._synopsis_label.visible = (height >= Card.MinSize.C);
+        if (!this._synopsis_label.visible) {
+            return;
+        }
+
+        let lines = 5;
+
+        if (width <= Card.MaxSize.E && height <= Card.MaxSize.C) {
+            lines = 3;
+        } else if (width <= Card.MaxSize.F && height <= Card.MaxSize.D) {
+            lines = 4;
+        }
+
+        this._synopsis_label.lines = lines;
+    },
+});

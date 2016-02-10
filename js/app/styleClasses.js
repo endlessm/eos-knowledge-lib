@@ -53,6 +53,13 @@ const SEQUENCE_CARD = 'sequence-card';
 const SEARCH_RESULT_CARD = 'search-result-card';
 
 /**
+ * Constant: ALL_TYPE_CARD
+ *
+ * Matches #EknAllTypeCard widgets.
+ */
+const ALL_TYPE_CARD = 'all-type-card';
+
+/**
  * Constant: CARD_WIDTH
  *
  * This object packs the different CSS classes that describe the width of a card
@@ -119,6 +126,13 @@ const ARTICLE = 'article';
  *
  */
 const HIGHLIGHTED = 'highlighted';
+
+/**
+ * Constant: CARD_CONTEXT
+ *
+ * Matches the context on a card.
+ */
+const CARD_CONTEXT = 'card-context';
 
 /**
  * Constant: CARD_SYNOPSIS
