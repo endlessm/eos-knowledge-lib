@@ -45,6 +45,7 @@ const SetPreviewCard = new Lang.Class({
         'title-capitalization': GObject.ParamSpec.override('title-capitalization',
             Card.Card),
         'highlight-string': GObject.ParamSpec.override('highlight-string', Card.Card),
+        'text-halign': GObject.ParamSpec.override('text-halign', Card.Card),
     },
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/setPreviewCard.ui',

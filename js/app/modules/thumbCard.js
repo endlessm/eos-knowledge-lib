@@ -37,6 +37,7 @@ const ThumbCard = new Lang.Class({
         'title-capitalization': GObject.ParamSpec.override('title-capitalization',
             Card.Card),
         'highlight-string': GObject.ParamSpec.override('highlight-string', Card.Card),
+        'text-halign': GObject.ParamSpec.override('text-halign', Card.Card),
     },
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/thumbCard.ui',
@@ -86,7 +87,7 @@ const ThumbCard = new Lang.Class({
             proportion = 1/2;
         } else {
             this._title_label.justify = Gtk.Justification.CENTER;
-            this._title_label.halign = this._synopsis_label.halign = this._space_container.halign = Gtk.Align.CENTER;
+            this._title_label.halign = this._synopsis_label.halign = this._space_container.halign = this.text_halign;
             orientation = Gtk.Orientation.VERTICAL;
             this._title_label.xalign = 0.5;
             proportion = 2/3;
