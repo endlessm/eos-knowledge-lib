@@ -98,7 +98,7 @@ describe('DomainV1', function () {
         domain = engine._get_domain('foo');
 
         // Don't hit the disk.
-        domain._content_path = '/foo';
+        domain._content_dir = Gio.File.new_for_path('/foo');
     });
 
     // Setup a spy in place of the Soup-based request function
@@ -482,7 +482,7 @@ describe('DomainV2', function () {
         domain = engine._get_domain('foo');
 
         // Don't hit the disk.
-        domain._content_path = '/foo';
+        domain._content_dir = Gio.File.new_for_path('/foo');
         spyOn(domain, 'load').and.callFake(function (cancellable, callback) {
             callback(null);
         });
