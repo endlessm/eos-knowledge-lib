@@ -265,7 +265,7 @@ bin_SCRIPTS += \
 	$(NULL)
 
 confdir = $(sysconfdir)/eos-knowledge-lib
-conf_DATA = data/downloader.ini
+dist_conf_DATA = data/downloader.ini
 
 # # # TESTS # # #
 
