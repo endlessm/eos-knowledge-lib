@@ -55,6 +55,7 @@ describe('Window', function () {
         factory.add_named_mock('item-group', MockWidgets.MockItemGroupModule);
         factory.add_named_mock('search-results', MockWidgets.MockItemGroupModule);
         factory.add_named_mock('home-page', Minimal.MinimalPage);
+        factory.add_named_mock('section-page', Minimal.MinimalPage);
         factory.add_named_mock('search-page', Minimal.MinimalPage);
         factory.add_named_mock('article-page', Minimal.MinimalPage);
         factory.add_named_mock('all-sets-page', Minimal.MinimalPage);
@@ -63,7 +64,6 @@ describe('Window', function () {
         factory.add_named_mock('brand-page', Minimal.MinimalPage);
         factory.add_named_mock('real-search-box', SearchBox.SearchBox);
         factory.add_named_mock('window', Window.Window, {
-            'brand-page': null,
             'home-page': 'home-page',
             'section-page': 'section-page',
             'search-page': 'search-page',
@@ -82,8 +82,6 @@ describe('Window', function () {
             'search-page': 'real-search-box',
             'article-page': 'article-page',
             'all-sets-page': 'all-sets-page',
-            'navigation': null,
-            'lightbox': null,
             'search': 'top-bar-search',
         }, {
             application: app,

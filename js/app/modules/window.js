@@ -410,6 +410,7 @@ const Window = new Lang.Class({
     get_slot_names: function () {
         return ['brand-page', 'home-page', 'section-page', 'all-sets-page', 'search-page',
             'article-page', 'navigation', 'lightbox', 'search'];
+        // optional: brand-page, all-sets-page, navigation
     },
 
     vfunc_size_allocate: function (alloc) {

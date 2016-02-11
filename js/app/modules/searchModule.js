@@ -175,6 +175,7 @@ const SearchModule = new Lang.Class({
     // Module override
     get_slot_names: function () {
         return ['arrangement', 'article-suggestions', 'category-suggestions'];
+        // optional: article-suggestions, category-suggestions
     },
 
     _add_card: function (model) {

@@ -25,12 +25,13 @@ describe('Hierarchical set module', function () {
         dispatcher = MockDispatcher.mock_default();
 
         factory = new MockFactory.MockFactory();
-        factory.add_named_mock('arrangement', Minimal.MinimalArrangement);
+        factory.add_named_mock('arrangement', Minimal.MinimalArrangement, {
+            'card-type': 'article-card',
+        });
         factory.add_named_mock('article-card', Minimal.MinimalCard);
         factory.add_named_mock('set-card', Minimal.MinimalCard);
         factory.add_named_mock('hierarchical', HierarchicalSetModule.HierarchicalSetModule, {
             'arrangement': 'arrangement',
-            'card-type': 'article-card',
             'set-card-type': 'set-card',
         });
         module = factory.create_named_module('hierarchical', {
