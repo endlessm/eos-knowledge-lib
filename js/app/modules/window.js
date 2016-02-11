@@ -42,33 +42,6 @@ const Window = new Lang.Class({
         'factory': GObject.ParamSpec.override('factory', Module.Module),
         'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
         /**
-         * Property: section-page
-         *
-         * The section page template.
-         */
-        'section-page': GObject.ParamSpec.object('section-page', 'Section page',
-            'The section page of this view widget.',
-            GObject.ParamFlags.READABLE,
-            Gtk.Widget),
-        /**
-         * Property: article-page
-         *
-         * The article page template.
-         */
-        'article-page': GObject.ParamSpec.object('article-page', 'Article page',
-            'The article page of this view widget.',
-            GObject.ParamFlags.READABLE,
-            Gtk.Widget),
-        /**
-         * Property: search-page
-         *
-         * The search page template.
-         */
-        'search-page': GObject.ParamSpec.object('search-page', 'Search page',
-            'The search page of this view widget.',
-            GObject.ParamFlags.READABLE,
-            Gtk.Widget),
-        /**
          * Property: background-image-uri
          *
          * The background image uri for this window.
