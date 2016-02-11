@@ -96,6 +96,8 @@ function format_capitals (string, text_transform) {
         return string;
     case EosKnowledgePrivate.TextTransform.UPPERCASE:
         return string.toLocaleUpperCase();
+    case EosKnowledgePrivate.TextTransform.LOWERCASE:
+        return string.toLocaleLowerCase();
     }
     throw new RangeError('Not a supported value of TextTransform');
 }
