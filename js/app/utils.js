@@ -322,10 +322,21 @@ function get_desktop_app_info () {
     return Gio.DesktopAppInfo.new(app_id + '.desktop');
 }
 
+let no_transition_provider;
 function squash_all_window_content_updates_heavy_handedly () {
+    if (!no_transition_provider) {
+        no_transition_provider = new Gtk.CssProvider();
+        no_transition_provider.load_from_data('EosWindow * { transition-property: none; }');
+    }
+    Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(),
+        no_transition_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION + 10);
     Dispatcher.get_default().pause();
 }
 
 function unsquash_all_window_content_updates_heavy_handedly () {
+    if (no_transition_provider) {
+        Gtk.StyleContext.remove_provider_for_screen(Gdk.Screen.get_default(),
+            no_transition_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION + 10);
+    }
     Dispatcher.get_default().resume();
 }
