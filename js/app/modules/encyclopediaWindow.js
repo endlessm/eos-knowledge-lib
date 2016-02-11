@@ -6,6 +6,7 @@ const Lang = imports.lang;
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
 const Module = imports.app.interfaces.module;
+const StyleClasses = imports.app.styleClasses;
 const Utils = imports.app.utils;
 
 const EncyclopediaWindow = new Lang.Class({
@@ -38,8 +39,11 @@ const EncyclopediaWindow = new Lang.Class({
         this.parent(props);
 
         this._home_page = this.create_submodule('home-page');
+        this._home_page.get_style_context().add_class('home-page');
         this._search_page = this.create_submodule('search-page');
+        this._search_page.get_style_context().add_class('search-page');
         this._article_page = this.create_submodule('article-page');
+        this._article_page.get_style_context().add_class('article-page');
 
         this._home_button = new Endless.TopbarHomeButton({
             sensitive: false,
@@ -83,7 +87,19 @@ const EncyclopediaWindow = new Lang.Class({
             }
         });
 
-        this.page_manager.transition_duration = 500;  // ms
+        if (this.home_background_uri) {
+            let page_css = '* { background-image: url("' + this.home_background_uri + '"); }';
+            let provider = new Gtk.CssProvider();
+            provider.load_from_data(page_css);
+            this._home_page.get_style_context().add_provider(provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+        }
+        if (this.results_background_uri) {
+            let page_css = '* { background-image: url("' + this.results_background_uri + '"); }';
+            let provider = new Gtk.CssProvider();
+            provider.load_from_data(page_css);
+            this._search_page.get_style_context().add_provider(provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+            this._article_page.get_style_context().add_provider(provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+        }
 
         let button_box = new Gtk.Box({
             orientation: Gtk.Orientation.HORIZONTAL
@@ -94,18 +110,10 @@ const EncyclopediaWindow = new Lang.Class({
 
         this.page_manager.add(this._home_page, {
             left_topbar_widget: button_box,
-            background_uri: this.home_background_uri,
-            background_repeats: false,
-            background_size: 'cover',
-            background_position: 'center center'
         });
 
         this.page_manager.add(this._search_page, {
             left_topbar_widget: button_box,
-            background_uri: this.results_background_uri,
-            background_repeats: false,
-            background_size: 'cover',
-            background_position: 'top center',
         });
 
         this._lightbox = this.create_submodule('lightbox');
@@ -113,10 +121,6 @@ const EncyclopediaWindow = new Lang.Class({
 
         this.page_manager.add(this._lightbox, {
             left_topbar_widget: button_box,
-            background_uri: this.results_background_uri,
-            background_repeats: false,
-            background_size: 'cover',
-            background_position: 'top center'
         });
         this.get_child().show_all();
 
