@@ -3,7 +3,6 @@
 const Gtk = imports.gi.Gtk;
 
 const Compliance = imports.tests.compliance;
-const ContentObjectModel = imports.search.contentObjectModel;
 const Minimal = imports.tests.minimal;
 const MockFactory = imports.tests.mockFactory;
 const QuarterArrangement = imports.app.modules.quarterArrangement;
@@ -15,7 +14,7 @@ Compliance.test_arrangement_compliance(QuarterArrangement.QuarterArrangement);
 Compliance.test_arrangement_fade_in_compliance(QuarterArrangement.QuarterArrangement);
 
 describe('Quarter Arrangement', function () {
-    let arrangement, win, models;
+    let arrangement, win;
 
     beforeEach(function () {
         let factory = new MockFactory.MockFactory();
@@ -25,12 +24,7 @@ describe('Quarter Arrangement', function () {
         });
         arrangement = factory.create_named_module('arrangement');
 
-        models = [];
-        for (let i = 0; i < 10; i++) {
-            let model = new ContentObjectModel.ContentObjectModel();
-            arrangement.add_model(model);
-            models.push(model);
-        }
+        Minimal.add_ordered_cards(arrangement, 10);
         win = new Gtk.OffscreenWindow();
         win.add(arrangement);
         win.show_all();

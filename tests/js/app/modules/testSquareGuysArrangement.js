@@ -1,10 +1,8 @@
 // Copyright 2015 Endless Mobile, Inc.
 
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Compliance = imports.tests.compliance;
-const ContentObjectModel = imports.search.contentObjectModel;
 const Minimal = imports.tests.minimal;
 const MockFactory = imports.tests.mockFactory;
 const SquareGuysArrangement = imports.app.modules.squareGuysArrangement;
@@ -93,17 +91,12 @@ function testSizingArrangementForDimensions(message, arr_width, arr_height, max_
             max_rows: max_rows,
         });
         let arrangement = factory.create_named_module('arrangement');
-        let win = new Gtk.OffscreenWindow();
+        Minimal.add_ordered_cards(arrangement, 8);
 
+        let win = new Gtk.OffscreenWindow();
         win.add(arrangement);
         win.set_size_request(arr_width, arr_height);
         win.show_all();
-
-        for (let i=0; i<8; i++) {
-            let model = new ContentObjectModel.ContentObjectModel();
-            arrangement.add_model(model);
-            arrangement.get_card_for_model(model).show_all();
-        }
 
         win.queue_resize();
         Utils.update_gui();

@@ -3,7 +3,6 @@
 const Gtk = imports.gi.Gtk;
 
 const Compliance = imports.tests.compliance;
-const ContentObjectModel = imports.search.contentObjectModel;
 const Minimal = imports.tests.minimal;
 const MockFactory = imports.tests.mockFactory;
 const ThirdRockArrangement = imports.app.modules.thirdRockArrangement;
@@ -29,10 +28,7 @@ describe('ThirdRock arrangement', function () {
         let win;
 
         beforeEach(function () {
-            for (let i = 0; i < 10; i++) {
-                let model = new ContentObjectModel.ContentObjectModel();
-                arrangement.add_model(model);
-            }
+            Minimal.add_ordered_cards(arrangement, 10);
             win = new Gtk.OffscreenWindow();
             win.add(arrangement);
             win.show_all();

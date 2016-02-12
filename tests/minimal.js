@@ -1,8 +1,8 @@
 // Copyright 2015 Endless Mobile, Inc.
 
-/* exported MinimalArrangement, MinimalBackCover, MinimalBinModule, MinimalCard,
-MinimalDocumentCard, MinimalHomePage, MinimalInteraction, MinimalModule,
-MinimalScrollable, MinimalPage */
+/* exported add_ordered_cards, MinimalArrangement, MinimalBackCover,
+MinimalBinModule, MinimalCard, MinimalDocumentCard, MinimalHomePage,
+MinimalInteraction, MinimalModule, MinimalScrollable, MinimalPage */
 
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
@@ -11,6 +11,7 @@ const Lang = imports.lang;
 
 const Arrangement = imports.app.interfaces.arrangement;
 const Card = imports.app.interfaces.card;
+const ContentObjectModel = imports.search.contentObjectModel;
 const DocumentCard = imports.app.interfaces.documentCard;
 const Interaction = imports.app.interfaces.interaction;
 const Launcher = imports.app.interfaces.launcher;
@@ -235,3 +236,12 @@ const MinimalBinModule = new Lang.Class({
         'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
     },
 });
+
+function add_ordered_cards(arrangement, ncards) {
+    for (let i = 0; i < ncards; i++) {
+        let model = new ContentObjectModel.ContentObjectModel({
+            title: i.toString(),
+        });
+        arrangement.add_model(model);
+    }
+}

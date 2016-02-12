@@ -4,7 +4,6 @@ const Gtk = imports.gi.Gtk;
 
 const Card = imports.app.interfaces.card;
 const Compliance = imports.tests.compliance;
-const ContentObjectModel = imports.search.contentObjectModel;
 const HalfArrangement = imports.app.modules.halfArrangement;
 const Minimal = imports.tests.minimal;
 const MockFactory = imports.tests.mockFactory;
@@ -36,9 +35,7 @@ describe('Half Arrangement', function () {
 
     function testSizingArrangementForDimensions(arrangement_size, card_width, card_height) {
         it('handles arrangement with width=' + arrangement_size, function () {
-            for (let i = 0; i < 5; i++)
-                arrangement.add_model(new ContentObjectModel.ContentObjectModel());
-
+            Minimal.add_ordered_cards(arrangement, 5);
             win.set_size_request(arrangement_size, arrangement_size);
             win.show_all();
 
@@ -64,9 +61,7 @@ describe('Half Arrangement', function () {
 
     function testFeaturedCardsInArrangement(total_cards, featured_cards, featured_size, non_featured_size) {
         it('treats ' + featured_cards + ' cards as featured when ' + total_cards + ' cards are added', function () {
-            for (let i = 0; i < total_cards; i++) {
-                arrangement.add_model(new ContentObjectModel.ContentObjectModel());
-            }
+            Minimal.add_ordered_cards(arrangement, total_cards);
 
             // In a 1000px wide arrangement, feature cards will be 500px wide
             // and regular cards will be 333px wide.
