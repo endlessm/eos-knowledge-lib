@@ -46,6 +46,7 @@ function transform_v1_description(json) {
     case "A":
     case "B":
     case "buffet":
+    case "news":
         set_prop_for_name('window', 'title', json['appTitle']);
         set_prop_for_name('window', 'background-image-uri', json['backgroundHomeURI']);
         set_prop_for_name('window', 'blur-background-image-uri', json['backgroundSectionURI']);
