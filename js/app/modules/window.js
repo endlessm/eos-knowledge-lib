@@ -287,10 +287,13 @@ const Window = new Lang.Class({
         button_box.show_all();
 
         this._stack.connect('notify::transition-running', function () {
-            if (this._stack.transition_running)
+            if (this._stack.transition_running) {
                 context.add_class(StyleClasses.ANIMATING);
-            else
+                dispatcher.pause();
+            } else {
                 context.remove_class(StyleClasses.ANIMATING);
+                dispatcher.resume();
+            }
         }.bind(this));
 
         this._stack.connect_after('notify::visible-child',
