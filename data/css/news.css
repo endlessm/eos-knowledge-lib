@@ -72,3 +72,12 @@
 .all-type-card.width-h .title {
     font-size: 3.06em; /* 49px/12 * 72/96 */
 }
+
+.all-type-card.highlighted {
+    background-color: #18264a;
+    box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.22);
+}
+
+.all-type-card.highlighted .title {
+    color: white;
+}

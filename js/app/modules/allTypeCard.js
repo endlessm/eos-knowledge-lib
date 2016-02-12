@@ -8,6 +8,7 @@ const Lang = imports.lang;
 const Card = imports.app.interfaces.card;
 const MarginButton = imports.app.widgets.marginButton;
 const Module = imports.app.interfaces.module;
+const StyleClasses = imports.app.styleClasses;
 const Utils = imports.app.utils;
 
 /**
@@ -39,6 +40,11 @@ const AllTypeCard = new Lang.Class({
             Card.Card),
         'highlight-string': GObject.ParamSpec.override('highlight-string', Card.Card),
         'text-halign': GObject.ParamSpec.override('text-halign', Card.Card),
+        'highlighted': GObject.ParamSpec.boolean('highlighted',
+            'Highlighted Mode',
+            'Whether this card is displayed as a highlighted card',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            false),
     },
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/allTypeCard.ui',
@@ -53,6 +59,10 @@ const AllTypeCard = new Lang.Class({
         this._context = this.get_filtered_tags()[0];
         if (this._context) {
             this.set_label_or_hide(this._context_label, this._context);
+        }
+
+        if (this.highlighted) {
+            this.get_style_context().add_class(StyleClasses.HIGHLIGHTED);
         }
 
         Utils.set_hand_cursor_on_widget(this);
