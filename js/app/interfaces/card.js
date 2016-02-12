@@ -126,6 +126,18 @@ const Card = new Lang.Interface({
             'Highlight string', 'Substring to be highlighted on card',
             GObject.ParamFlags.READWRITE,
             ''),
+        /**
+         * Property: text-halign
+         * Horizontal alignment of text when card is in _not_ in horizontal mode.
+         *
+         * Default value:
+         *   **Gtk.Align.CENTER**
+         */
+        'text-halign': GObject.ParamSpec.enum('text-halign',
+            'Title halign', 'Horizontal alignment of title text',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            Gtk.Align.$gtype, Gtk.Align.CENTER),
+
     },
 
     set css (v) {

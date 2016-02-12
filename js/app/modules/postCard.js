@@ -28,6 +28,7 @@ const PostCard = new Lang.Class({
         'title-capitalization': GObject.ParamSpec.override('title-capitalization',
             Card.Card),
         'highlight-string': GObject.ParamSpec.override('highlight-string', Card.Card),
+        'text-halign': GObject.ParamSpec.override('text-halign', Card.Card),
     },
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/postCard.ui',
@@ -72,6 +73,7 @@ const PostCard = new Lang.Class({
             let content_height = this._get_content_height(alloc.height);
             child_alloc.y = alloc.height - content_height;
             child_alloc.height = content_height;
+            this._title_label.halign = this._space_container.halign = this.text_halign;
         }
         this._shadow_frame.size_allocate(child_alloc);
         this.update_card_sizing_classes(alloc.height, alloc.width);

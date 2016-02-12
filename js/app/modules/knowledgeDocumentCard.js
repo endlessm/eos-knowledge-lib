@@ -50,6 +50,7 @@ const KnowledgeDocumentCard = new Lang.Class({
         'custom-css': GObject.ParamSpec.override('custom-css',
             DocumentCard.DocumentCard),
         'highlight-string': GObject.ParamSpec.override('highlight-string', Card.Card),
+        'text-halign': GObject.ParamSpec.override('text-halign', Card.Card),
 
         /**
          * Property: show-top-title
