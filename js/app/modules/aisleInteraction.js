@@ -321,7 +321,9 @@ const AisleInteraction = new Lang.Class({
                     action_type: Actions.SEARCH_STARTED,
                     query: item.query,
                 });
-                this._window.show_search_page();
+                dispatcher.dispatch({
+                    action_type: Actions.SHOW_SEARCH_PAGE,
+                });
                 let query_obj = new QueryObject.QueryObject({
                     query: item.query,
                     limit: RESULTS_SIZE,
@@ -663,13 +665,25 @@ const AisleInteraction = new Lang.Class({
             animation_type = EosKnowledgePrivate.LoadingAnimationType.MULTI_FORWARDS_NAVIGATION;
         }
 
+        let dispatcher = Dispatcher.get_default();
         let current_article = index - 1;
-        if (index === 0)
-            this._window.show_front_page(animation_type);
-        else if (index === this._window.total_pages - 1)
-            this._window.show_back_page(animation_type);
-        else
-            this._window.show_article_page(current_article, animation_type);
+        if (index === 0) {
+            dispatcher.dispatch({
+                action_type: Actions.SHOW_FRONT_PAGE,
+                animation_type: animation_type,
+            });
+        } else if (index === this._window.total_pages - 1) {
+            dispatcher.dispatch({
+                action_type: Actions.SHOW_BACK_PAGE,
+                animation_type: animation_type,
+            });
+        } else {
+            dispatcher.dispatch({
+                action_type: Actions.SHOW_ARTICLE_PAGE,
+                index: current_article,
+                animation_type: animation_type,
+            });
+        }
 
         // We want to always have ready on deck the webviews for the current
         // article, the article preceding the current one, and the next article.
