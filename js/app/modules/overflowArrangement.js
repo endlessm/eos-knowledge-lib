@@ -27,4 +27,16 @@ const OverflowArrangement = new Lang.Class({
     fade_card_in: function (card) {
         card.show_all();
     },
+
+    pack_card: function (card, position=-1) {
+        if (position === -1) {
+            this.add(card);
+            return;
+        }
+        let moved_children = this.get_models().slice(position + 1)
+            .map(this.get_card_for_model, this);
+        moved_children.forEach(this.remove, this);
+        this.add(card);
+        moved_children.forEach(this.add, this);
+    },
 });

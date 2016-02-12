@@ -20,8 +20,10 @@ describe('Half Arrangement', function () {
     beforeEach(function () {
         factory = new MockFactory.MockFactory();
         factory.add_named_mock('card', Minimal.MinimalCard);
+        factory.add_named_mock('order', Minimal.CardCreateOrder);
         factory.add_named_mock('arrangement', HalfArrangement.HalfArrangement, {
             'card-type': 'card',
+            'order': 'order',
         });
         arrangement = factory.create_named_module('arrangement');
 
@@ -42,7 +44,7 @@ describe('Half Arrangement', function () {
             win.queue_resize();
             Utils.update_gui();
 
-            let all_cards = arrangement.get_children();
+            let all_cards = factory.get_created_named_mocks('card');
             // Test featured cards
             all_cards.slice(0, 2).forEach((card) => {
                 expect(card.get_child_visible()).toBe(true);
@@ -70,7 +72,7 @@ describe('Half Arrangement', function () {
             win.queue_resize();
             Utils.update_gui();
 
-            let cards = arrangement.get_children();
+            let cards = factory.get_created_named_mocks('card');
             cards.slice(0, featured_cards).forEach((card) => {
                 expect(card.get_allocation().width).toBe(featured_size);
             });

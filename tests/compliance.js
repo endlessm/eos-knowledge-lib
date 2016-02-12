@@ -120,6 +120,32 @@ function test_arrangement_compliance(ArrangementClass, extra_slots={}) {
                 expect(arrangement.get_models()).toContain(card.model));
         });
 
+        it('by retrieving the models in sorted order', function () {
+            factory.add_named_mock('order', Minimal.CardCreateOrder);
+            let slots = {
+                'card-type': 'card',
+                'order': 'order',
+            };
+            for (let slot in extra_slots) {
+                factory.add_named_mock(slot, extra_slots[slot]);
+                slots[slot] = slot;
+            }
+            factory.add_named_mock('ordered-arrangement', ArrangementClass,
+                slots);
+            arrangement = factory.create_named_module('ordered-arrangement');
+
+            let models = [];
+            for (let ix = 5; ix > 0; ix--) {
+                let model = new ContentObjectModel.ContentObjectModel({
+                    title: ix.toString(),
+                });
+                arrangement.add_model(model);
+                models.push(model);
+            }
+
+            expect(arrangement.get_models()).toEqual(models.reverse());
+        });
+
         it('by returning the card corresponding to a model', function () {
             let model1 = new ContentObjectModel.ContentObjectModel();
             let model2 = new ContentObjectModel.ContentObjectModel();

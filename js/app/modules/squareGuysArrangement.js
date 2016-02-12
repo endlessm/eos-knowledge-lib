@@ -110,7 +110,7 @@ const SquareGuysArrangement = new Lang.Class({
             delta_x += extra_card_spacing;
         }
 
-        let all_children = this.get_children();
+        let all_children = this.get_models().map(this.get_card_for_model, this);
         let visible_children_count = this._max_rows === 0 ? all_children.length :
             Math.min(all_children.length, this._max_rows  * col_count);
 

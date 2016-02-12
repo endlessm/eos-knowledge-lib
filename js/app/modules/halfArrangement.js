@@ -93,11 +93,11 @@ const HalfArrangement = new Lang.Class({
         let delta_x = featured_card_width + this._spacing + spare_pixels;
         let delta_y = FEATURED_CARD_HEIGHT + this._spacing;
 
-        let all_children = this.get_children();
+        let all_cards = this.get_models().map(this.get_card_for_model, this);
 
         // Featured cards:
         // Place two featured cards per row at top of arrangement
-        all_children.slice(0, this._featured_cards_count).forEach((card, ix) => {
+        all_cards.slice(0, this._featured_cards_count).forEach((card, ix) => {
             this.place_card(card, x, y, featured_card_width, FEATURED_CARD_HEIGHT);
 
             if ((ix + 1) % FEATURED_CARDS_PER_ROW === 0) {
@@ -120,7 +120,7 @@ const HalfArrangement = new Lang.Class({
 
         // Child cards
         // Place rest of cards below the featured cards, in as many rows as needed
-        all_children.slice(this._featured_cards_count).forEach((card, ix) => {
+        all_cards.slice(this._featured_cards_count).forEach((card, ix) => {
             this.place_card(card, x, y, card_width, card_height);
 
             if ((ix + 1) % this._cards_per_row === 0) {

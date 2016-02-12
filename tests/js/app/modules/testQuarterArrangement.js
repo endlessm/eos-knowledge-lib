@@ -14,13 +14,15 @@ Compliance.test_arrangement_compliance(QuarterArrangement.QuarterArrangement);
 Compliance.test_arrangement_fade_in_compliance(QuarterArrangement.QuarterArrangement);
 
 describe('Quarter Arrangement', function () {
-    let arrangement, win;
+    let arrangement, win, factory;
 
     beforeEach(function () {
-        let factory = new MockFactory.MockFactory();
+        factory = new MockFactory.MockFactory();
         factory.add_named_mock('card', Minimal.MinimalCard);
+        factory.add_named_mock('order', Minimal.CardCreateOrder);
         factory.add_named_mock('arrangement', QuarterArrangement.QuarterArrangement, {
             'card-type': 'card',
+            'order': 'order',
         });
         arrangement = factory.create_named_module('arrangement');
 
@@ -43,8 +45,9 @@ describe('Quarter Arrangement', function () {
                 win.queue_resize();
                 Utils.update_gui();
 
-                let featured_cards = arrangement.get_children().slice(0, featured_cards_per_row);
-                let support_cards = arrangement.get_children().slice(featured_cards_per_row);
+                let cards = factory.get_created_named_mocks('card');
+                let featured_cards = cards.slice(0, featured_cards_per_row);
+                let support_cards = cards.slice(featured_cards_per_row);
 
                 let featured_card_width = Math.floor(arrangement_size / featured_cards_per_row);
                 let support_card_width = Math.floor(arrangement_size / support_cards_per_row);

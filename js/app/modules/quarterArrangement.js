@@ -110,9 +110,10 @@ const QuarterArrangement = new Lang.Class({
     vfunc_size_allocate: function (alloc) {
         this.parent(alloc);
 
-        let all_cards = this.get_children();
-        if (all_cards.length === 0)
+        let models = this.get_models();
+        if (models.length === 0)
             return;
+        let all_cards = models.map(this.get_card_for_model, this);
 
         let [featured_cards_to_show, support_cards_per_row] = this._determine_horizontal_mode(alloc.width);
 

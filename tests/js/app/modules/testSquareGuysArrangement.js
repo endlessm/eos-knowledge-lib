@@ -82,8 +82,10 @@ function testSizingArrangementForDimensions(message, arr_width, arr_height, max_
     it(message + ' (' + arr_width + 'x' + arr_height + ')', function () {
         let factory = new MockFactory.MockFactory();
         factory.add_named_mock('card', Minimal.MinimalCard);
+        factory.add_named_mock('order', Minimal.CardCreateOrder);
         factory.add_named_mock('arrangement', SquareGuysArrangement.SquareGuysArrangement, {
             'card-type': 'card',
+            'order': 'order',
         }, {
             hexpand: false,
             valign: Gtk.Align.START,
@@ -101,7 +103,8 @@ function testSizingArrangementForDimensions(message, arr_width, arr_height, max_
         win.queue_resize();
         Utils.update_gui();
 
-        arrangement.get_children().forEach((card, i) => {
+        let cards = factory.get_created_named_mocks('card');
+        cards.forEach((card, i) => {
             if (i < visible_children) {
                 expect(card.get_allocation().width).toBe(child_width);
                 expect(card.get_allocation().height).toBe(child_height);

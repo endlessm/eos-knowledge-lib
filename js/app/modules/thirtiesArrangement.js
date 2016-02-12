@@ -113,12 +113,12 @@ const ThirtiesArrangement = new Lang.Class({
     vfunc_size_allocate: function (alloc) {
         this.parent(alloc);
 
-        let all_children = this.get_children();
-        if (all_children.length === 0)
+        let models = this.get_models();
+        if (models.length === 0)
             return;
 
-        let visible_children_count = this._max_rows === 0 ? all_children.length :
-            Math.min(all_children.length, this._max_rows  * COL_COUNT);
+        let visible_children_count = this._max_rows === 0 ? models.length :
+            Math.min(models.length, this._max_rows  * COL_COUNT);
 
         let available_width = alloc.width - ((COL_COUNT - 1) * this._spacing);
         let child_width = Math.floor(available_width / COL_COUNT);
@@ -133,7 +133,8 @@ const ThirtiesArrangement = new Lang.Class({
         let x = alloc.x;
         let y = alloc.y;
 
-        all_children.slice(0, visible_children_count).forEach((card, i) => {
+        let all_cards = models.map(this.get_card_for_model, this);
+        all_cards.slice(0, visible_children_count).forEach((card, i) => {
             this.place_card(card, x, y, child_width, child_height);
 
             if ((i + 1) % COL_COUNT === 0) {
@@ -146,7 +147,7 @@ const ThirtiesArrangement = new Lang.Class({
         });
 
         // Additional cards should not be visible!
-        all_children.slice(visible_children_count, all_children.length).forEach((card) => {
+        all_cards.slice(visible_children_count, models.length).forEach((card) => {
             card.set_child_visible(false);
         });
 

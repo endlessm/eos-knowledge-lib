@@ -15,15 +15,17 @@ Compliance.test_arrangement_compliance(SideBySideArrangement.SideBySideArrangeme
 const CHILD_WIDTH = 100;
 
 describe('SideBySide Arrangement', function () {
-    let arrangement;
+    let arrangement, factory;
 
     beforeEach(function () {
-        let factory = new MockFactory.MockFactory();
+        factory = new MockFactory.MockFactory();
         factory.add_named_mock('card', Minimal.MinimalCard, {}, {
             width_request: CHILD_WIDTH,
         });
+        factory.add_named_mock('order', Minimal.CardCreateOrder);
         factory.add_named_mock('arrangement', SideBySideArrangement.SideBySideArrangement, {
             'card-type': 'card',
+            'order': 'order',
         });
         arrangement = factory.create_named_module('arrangement');
     });
@@ -50,7 +52,8 @@ describe('SideBySide Arrangement', function () {
                 win.set_size_request(arr_width, 100);
                 Utils.update_gui();
 
-                arrangement.get_children().forEach((card, i) => {
+                let cards = factory.get_created_named_mocks('card');
+                cards.forEach((card, i) => {
                     if (i < visible_children) {
                         expect(card.get_child_visible()).toBe(true);
                         expect(card.get_allocation().x).toBe(x);

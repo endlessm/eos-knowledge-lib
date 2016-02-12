@@ -18,8 +18,10 @@ describe('Quilt arrangement', function () {
     beforeEach(function () {
         factory = new MockFactory.MockFactory();
         factory.add_named_mock('card', Minimal.MinimalCard);
+        factory.add_named_mock('order', Minimal.CardCreateOrder);
         factory.add_named_mock('arrangement', QuiltArrangement.QuiltArrangement, {
             'card-type': 'card',
+            'order': 'order',
         });
         arrangement = factory.create_named_module('arrangement');
     });
@@ -46,7 +48,7 @@ describe('Quilt arrangement', function () {
                 win.set_size_request(arr_width, arr_height);
                 Utils.update_gui();
 
-                let cards = factory.get_created_named_mocks('card').reverse();
+                let cards = factory.get_created_named_mocks('card');
                 cards.forEach((card, i) => {
                     if (i < visible_cards) {
                         if (i === 0) {
