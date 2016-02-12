@@ -56,7 +56,7 @@ describe('Set group module', function () {
             action_type: Actions.APPEND_SETS,
             models: models,
         });
-        expect(arrangement.get_models().length).toBe(3);
+        expect(arrangement.get_count()).toBe(3);
         expect(factory.get_created_named_mocks('home-card').length).toBe(3);
     });
 
@@ -78,7 +78,7 @@ describe('Set group module', function () {
             action_type: Actions.APPEND_SETS,
             models: models,
         });
-        expect(arrangement.get_models().length).toBe(3);
+        expect(arrangement.get_count()).toBe(3);
         expect(factory.get_created_named_mocks('home-card').length).toBe(6);
     });
 

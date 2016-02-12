@@ -44,7 +44,7 @@ const TiledGridArrangement = new Lang.Class({
         // The card to be packed is already in this array:
         let cards = this.get_models().map(this.get_card_for_model, this);
 
-        let columns = Math.ceil(cards.length / 2);
+        let columns = Math.ceil(this.get_count() / 2);
         let i = 0;
         for (let card of cards) {
             let col = i % columns;

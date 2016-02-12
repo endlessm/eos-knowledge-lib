@@ -85,7 +85,7 @@ const ThirdRockArrangement = new Lang.Class({
     },
 
     get all_visible() {
-        return this.get_children().length <= _CARD_COUNT;
+        return this.get_count() <= _CARD_COUNT;
     },
 
     get compact_mode() {
@@ -131,10 +131,10 @@ const ThirdRockArrangement = new Lang.Class({
     vfunc_size_allocate: function (alloc) {
         this.parent(alloc);
 
-        let models = this.get_models();
-        if (models.length === 0)
+        if (this.get_count() === 0)
             return;
-        let all_cards = models.map(this.get_card_for_model, this);
+
+        let all_cards = this.get_models().map(this.get_card_for_model, this);
 
         let horizontal_mode = this._get_horizontal_mode(alloc.width);
         let available_width = alloc.width - (_CARD_COUNT - 1) * this._spacing;

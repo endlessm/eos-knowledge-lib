@@ -93,7 +93,7 @@ const QuarterArrangement = new Lang.Class({
 
     vfunc_get_preferred_height_for_width: function (width) {
         let [featured_cards_to_show, support_cards_per_row] = this._determine_horizontal_mode(width);
-        let all_cards_count = this.get_children().length;
+        let all_cards_count = this.get_count();
 
         // Calculate vertical space for featured cards row
         let featured_cards_height_alloc = FEATURED_CARD_HEIGHT + this._spacing;
@@ -110,10 +110,10 @@ const QuarterArrangement = new Lang.Class({
     vfunc_size_allocate: function (alloc) {
         this.parent(alloc);
 
-        let models = this.get_models();
-        if (models.length === 0)
+        if (this.get_count() === 0)
             return;
-        let all_cards = models.map(this.get_card_for_model, this);
+
+        let all_cards = this.get_models().map(this.get_card_for_model, this);
 
         let [featured_cards_to_show, support_cards_per_row] = this._determine_horizontal_mode(alloc.width);
 

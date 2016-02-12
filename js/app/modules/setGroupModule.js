@@ -78,7 +78,7 @@ const SetGroupModule = new Lang.Class({
                     break;
                 case Actions.APPEND_SETS:
                     this._arrangement.fade_cards =
-                        (this._arrangement.get_models().length > 0);
+                        (this._arrangement.get_count() > 0);
                     payload.models.forEach(this._add_card, this);
 
                     if (this._arrangement instanceof InfiniteScrolledWindow.InfiniteScrolledWindow) {
@@ -101,7 +101,7 @@ const SetGroupModule = new Lang.Class({
     },
 
     _add_card: function (model) {
-        if (this._arrangement.get_models().length === this.max_children)
+        if (this._arrangement.get_count() === this.max_children)
             return;
 
         this._arrangement.add_model(model);
@@ -109,7 +109,7 @@ const SetGroupModule = new Lang.Class({
     },
 
     _check_more_content: function () {
-        this.has_more_content = this._arrangement.get_models().length > this.max_children ||
+        this.has_more_content = this._arrangement.get_count() > this.max_children ||
             !this._arrangement.all_visible;
         this.notify('has-more-content');
     },

@@ -55,7 +55,7 @@ describe('Suggested categories module', function () {
             action_type: Actions.APPEND_SETS,
             models: models,
         });
-        expect(arrangement.get_models().length).toBe(3);
+        expect(arrangement.get_count()).toBe(3);
         expect(factory.get_created_named_mocks('home-card').length).toBe(3);
     });
 
@@ -77,7 +77,7 @@ describe('Suggested categories module', function () {
             action_type: Actions.APPEND_SETS,
             models: models,
         });
-        expect(arrangement.get_models().length).toBe(3);
+        expect(arrangement.get_count()).toBe(3);
         expect(factory.get_created_named_mocks('home-card').length).toBe(6);
     });
 
@@ -103,7 +103,7 @@ describe('Suggested categories module', function () {
             sets: [first_ekn_id],
         });
 
-        expect(arrangement.get_models().length).toBe(1);
+        expect(arrangement.get_count()).toBe(1);
     });
 
     it('adds only featured cards when featured-only is true', function () {
@@ -117,7 +117,7 @@ describe('Suggested categories module', function () {
             action_type: Actions.APPEND_SETS,
             models: models,
         });
-        expect(arrangement.get_models().length).toBe(2);
+        expect(arrangement.get_count()).toBe(2);
     });
 
     it('dispatches set clicked', function () {

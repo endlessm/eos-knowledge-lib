@@ -82,11 +82,11 @@ const WindshieldArrangement = new Lang.Class({
     vfunc_size_allocate: function (alloc) {
         this.parent(alloc);
 
-        let models = this.get_models();
-        if (models.length === 0)
+        let count = this.get_count();
+        if (count === 0)
             return;
 
-        let all_cards = models.map(this.get_card_for_model, this);
+        let all_cards = this.get_models().map(this.get_card_for_model, this);
 
         this._small_mode = (alloc.width < Arrangement.get_size_with_spacing(CARD_SIZE_BIG, SECOND_ROW_CARD_COUNT, this._spacing));
 
@@ -125,7 +125,7 @@ const WindshieldArrangement = new Lang.Class({
 
         // Additional cards:
         // Should not be visible!
-        all_cards.slice(SECOND_ROW_CARD_COUNT + 1, models.length).forEach((card) => {
+        all_cards.slice(SECOND_ROW_CARD_COUNT + 1, count).forEach((card) => {
             card.set_child_visible(false);
         });
         Utils.set_container_clip(this);

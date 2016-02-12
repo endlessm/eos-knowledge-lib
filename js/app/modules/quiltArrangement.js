@@ -112,7 +112,7 @@ const QuiltArrangement = new Lang.Class({
     },
 
     get all_visible() {
-        return this.get_children().length <= this._total_cards_to_show;
+        return this.get_count() <= this._total_cards_to_show;
     },
 
     // Removing a visible widget should recalculate the positions of all widgets
@@ -143,11 +143,11 @@ const QuiltArrangement = new Lang.Class({
     vfunc_size_allocate: function (alloc) {
         this.parent(alloc);
 
-        let models = this.get_models();
-        if (models.length === 0)
+        let count = this.get_count();
+        if (count === 0)
             return;
 
-        let all_cards = models.map(this.get_card_for_model, this);
+        let all_cards = this.get_models().map(this.get_card_for_model, this);
 
         let [horizontal_mode, total_cards_to_show] = this._determine_horizontal_mode(alloc.width);
         this._total_cards_to_show = total_cards_to_show;
@@ -167,7 +167,7 @@ const QuiltArrangement = new Lang.Class({
         this.place_card(all_cards[0], x, y, primary_width, _PrimaryCard.Height[horizontal_mode] + this._spacing);
         x += primary_width + this._spacing;
 
-        if (all_cards.length === 1)
+        if (count === 1)
             return;
 
         // Place secondary card

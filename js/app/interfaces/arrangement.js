@@ -101,6 +101,20 @@ const Arrangement = new Lang.Interface({
     },
 
     /**
+     * Method: get_count
+     * Count the card models in the arrangement
+     *
+     * This is a method for technical reasons, but it should be treated like a
+     * read-only property.
+     *
+     * Returns:
+     *   Number of card models in the arrangement
+     */
+    get_count: function () {
+        return this._models_by_id().size;
+    },
+
+    /**
      * Method: add_model
      * Add a card model to the arrangement
      *

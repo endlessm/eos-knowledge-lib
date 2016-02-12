@@ -58,8 +58,7 @@ const ItemGroupModule = new Lang.Class({
                     arrangement.clear();
                     break;
                 case Actions.APPEND_ITEMS:
-                    arrangement.fade_cards =
-                        (arrangement.get_models().length > 0);
+                    arrangement.fade_cards = (arrangement.get_count() > 0);
                     payload.models.forEach(arrangement.add_model, arrangement);
                     if (arrangement instanceof InfiniteScrolledWindow.InfiniteScrolledWindow) {
                         arrangement.new_content_added();

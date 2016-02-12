@@ -79,7 +79,7 @@ const SquareGuysArrangement = new Lang.Class({
 
     vfunc_get_preferred_height: function () {
         let card_size = this._small_mode ? CARD_SIZE_SMALL : CARD_SIZE_BIG;
-        let rows_for_children = Math.ceil(this.get_children().length / this._get_columns_per_row());
+        let rows_for_children = Math.ceil(this.get_count() / this._get_columns_per_row());
         let rows_visible = this._max_rows === 0 ? rows_for_children : Math.min(this._max_rows, rows_for_children);
         let height = Arrangement.get_size_with_spacing(card_size, rows_visible, this._spacing);
         return [height, height];
@@ -111,8 +111,9 @@ const SquareGuysArrangement = new Lang.Class({
         }
 
         let all_children = this.get_models().map(this.get_card_for_model, this);
-        let visible_children_count = this._max_rows === 0 ? all_children.length :
-            Math.min(all_children.length, this._max_rows  * col_count);
+        let count = this.get_count();
+        let visible_children_count = this._max_rows === 0 ? count :
+            Math.min(count, this._max_rows  * col_count);
 
         all_children.slice(0, visible_children_count).forEach((card, ix) => {
             this.place_card(card, x, y, child_width, child_height);
@@ -125,7 +126,7 @@ const SquareGuysArrangement = new Lang.Class({
             }
         });
 
-        all_children.slice(visible_children_count, all_children.length).forEach((card) => {
+        all_children.slice(visible_children_count, count).forEach((card) => {
             card.set_child_visible(false);
         });
         Utils.set_container_clip(this);

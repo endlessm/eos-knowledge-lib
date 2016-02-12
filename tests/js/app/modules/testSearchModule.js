@@ -128,7 +128,7 @@ describe('Search module', function () {
             action_type: Actions.APPEND_SEARCH,
             models: [new ContentObjectModel.ContentObjectModel()],
         });
-        expect(arrangement.get_models().length).toBe(1);
+        expect(arrangement.get_count()).toBe(1);
     });
 
     it('removes old results from the card container when adding new ones', function () {
@@ -139,7 +139,7 @@ describe('Search module', function () {
         dispatcher.dispatch({
             action_type: Actions.CLEAR_SEARCH,
         });
-        expect(arrangement.get_models().length).toBe(0);
+        expect(arrangement.get_count()).toBe(0);
     });
 
     it('dispatches when an infinite scrolled window arrangement reaches the end', function () {

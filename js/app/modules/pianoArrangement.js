@@ -96,7 +96,7 @@ const PianoArrangement = new Lang.Class({
 
     get all_visible() {
         this._support_cards_shown = this._calculate_support_cards_shown();
-        return this.get_children().length <= (1 + this._support_cards_shown);
+        return this.get_count() <= (1 + this._support_cards_shown);
     },
 
     // Arrangement override
@@ -131,11 +131,11 @@ const PianoArrangement = new Lang.Class({
     vfunc_size_allocate: function (alloc) {
         this.parent(alloc);
 
-        let models = this.get_models();
-        if (models.length === 0)
+        let count = this.get_count();
+        if (count === 0)
             return;
 
-        let all_cards = models.map(this.get_card_for_model, this);
+        let all_cards = this.get_models().map(this.get_card_for_model, this);
 
         this._support_cards_shown = this._calculate_support_cards_shown();
         let available_width = alloc.width - this._spacing;
@@ -172,7 +172,7 @@ const PianoArrangement = new Lang.Class({
 
         // Additional cards:
         // Should not be visible!
-        all_cards.slice(this._support_cards_shown + 1, models.length).forEach((card) => {
+        all_cards.slice(this._support_cards_shown + 1, count).forEach((card) => {
             card.set_child_visible(false);
         });
         Utils.set_container_clip(this);

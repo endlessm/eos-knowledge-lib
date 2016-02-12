@@ -47,7 +47,7 @@ describe('Hierarchical set module', function () {
     it('starts with an empty arrangement', function () {
         expect(arrangement).toBeDefined();
         expect(module).toHaveDescendant(arrangement);
-        expect(arrangement.get_models().length).toBe(0);
+        expect(arrangement.get_count()).toBe(0);
     });
 
     it('does not create a card widget at construct time', function () {
@@ -102,7 +102,7 @@ describe('Hierarchical set module', function () {
         });
 
         it('adds article cards when receiving article models', function () {
-            expect(arrangement.get_models().length).toBe(articles.length);
+            expect(arrangement.get_count()).toBe(articles.length);
         });
 
         it('clears all items but leaves title and arrangement', function () {

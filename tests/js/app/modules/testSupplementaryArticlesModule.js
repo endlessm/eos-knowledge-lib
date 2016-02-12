@@ -53,7 +53,7 @@ describe('Supplementary articles module', function () {
             models: models,
             same_set: true,
         });
-        expect(arrangement.get_models().length).toBe(3);
+        expect(arrangement.get_count()).toBe(3);
         expect(factory.get_created_named_mocks('home-card').length).toBe(3);
     });
 
@@ -68,7 +68,7 @@ describe('Supplementary articles module', function () {
             models: models,
             same_set: false,
         });
-        expect(arrangement.get_models().length).toBe(0);
+        expect(arrangement.get_count()).toBe(0);
     });
 
     it('requests _read_ cards when it receives zero unread cards', function () {
@@ -79,7 +79,7 @@ describe('Supplementary articles module', function () {
             need_unread: true,
             set_tags: ['foo', 'bar'],
         });
-        expect(arrangement.get_models().length).toBe(0);
+        expect(arrangement.get_count()).toBe(0);
 
         Utils.update_gui();
         let payload = dispatcher.last_payload_with_type(Actions.NEED_MORE_SUPPLEMENTARY_ARTICLES);
@@ -111,7 +111,7 @@ describe('Supplementary articles module', function () {
             models: models,
             same_set: true,
         });
-        expect(arrangement.get_models().length).toBe(3);
+        expect(arrangement.get_count()).toBe(3);
         expect(factory.get_created_named_mocks('home-card').length).toBe(6);
     });
 
