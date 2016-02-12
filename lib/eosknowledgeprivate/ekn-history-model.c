@@ -344,20 +344,22 @@ ekn_history_model_clear (EknHistoryModel *self)
  * #EknHistoryModel:current-item, and the #EknHistoryModel:current-item is added
  * to the #EknHistoryModel:forward-list.
  *
- * It is an error to call this method if the value of
- * #EknHistoryModel:can-go-back is %FALSE.
- * It is also an error to call this method if the #EknHistoryModel:current-item
+ * If no item is available to go back to, this method does nothing.
+ *
+ * It is an error to call this method if the #EknHistoryModel:current-item
  * is set to %NULL.
  */
 void
 ekn_history_model_go_back (EknHistoryModel *self)
 {
   g_return_if_fail (self != NULL && EKN_IS_HISTORY_MODEL (self));
-  g_return_if_fail (ekn_history_model_get_can_go_back (self));
 
   EknHistoryModelPrivate *priv = ekn_history_model_get_instance_private (self);
 
   g_return_if_fail (priv->current != NULL);
+
+  if (!ekn_history_model_get_can_go_back (self))
+    return;
 
   go_back_n_steps (self, 1);
 }
@@ -371,20 +373,22 @@ ekn_history_model_go_back (EknHistoryModel *self)
  * #EknHistoryModel:current-item, and the #EknHistoryModel:current-item is added
  * to the #EknHistoryModel:back-list.
  *
- * It is an error to call this method if the value of
- * #EknHistoryModel:can-go-forward is %FALSE.
- * It is also an error to call this method if the #EknHistoryModel:current-item
+ * If no item is available to go forward to, this method does nothing.
+ *
+ * It is an error to call this method if the #EknHistoryModel:current-item
  * is set to %NULL.
  */
 void
 ekn_history_model_go_forward (EknHistoryModel *self)
 {
   g_return_if_fail (self != NULL && EKN_IS_HISTORY_MODEL (self));
-  g_return_if_fail (ekn_history_model_get_can_go_forward (self));
 
   EknHistoryModelPrivate *priv = ekn_history_model_get_instance_private (self);
 
   g_return_if_fail (priv->current != NULL);
+
+  if (!ekn_history_model_get_can_go_forward (self))
+    return;
 
   go_forward_n_steps (self, 1);
 }
