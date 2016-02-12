@@ -16,9 +16,29 @@ const Dispatcher = new Lang.Class({
         this._listeners = {};
         this._listener_counter = 0;
         this._idle_id = 0;
+        this._paused = false;
     },
 
-    stop: function () {
+    pause: function () {
+        this._clear_idle();
+        this._paused = true;
+    },
+
+    resume: function () {
+        this._paused = false;
+        if (this._queue.length > 0)
+            this._add_idle();
+    },
+
+    _add_idle: function () {
+        if (this._paused)
+            return;
+        if (this._idle_id === 0)
+            this._idle_id = GLib.idle_add(GLib.PRIORITY_LOW,
+                this._process_queue.bind(this));
+    },
+
+    _clear_idle: function () {
         if (this._idle_id)
             GLib.source_remove(this._idle_id);
         this._idle_id = 0;
@@ -46,9 +66,7 @@ const Dispatcher = new Lang.Class({
         if (!payload.action_type)
             throw new Error('Dispatch payloads need an action_type');
         this._queue.push(payload);
-        if (!this._idle_id)
-            this._idle_id = GLib.idle_add(GLib.PRIORITY_LOW,
-                this._process_queue.bind(this));
+        this._add_idle();
     },
 
     register: function (callback) {
@@ -61,7 +79,7 @@ const Dispatcher = new Lang.Class({
     },
 
     reset: function () {
-        this.stop();
+        this._clear_idle();
         this._queue = [];
         this._listeners = {};
         this._listener_counter = 0;
