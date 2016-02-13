@@ -164,16 +164,12 @@ const Arrangement = new Lang.Interface({
      *
      * Parameters:
      *   model - a <ContentObjectModel>
-     *
-     * Returns:
-     *   the <Card> removed from the container, for convenience
      */
     remove_model: function (model) {
         let card = this._cards_by_id().get(model.ekn_id);
         this._cards_by_id().delete(model.ekn_id);
         this._models_by_id().delete(model.ekn_id);
         this.unpack_card(card);
-        return card;
     },
 
     /**
