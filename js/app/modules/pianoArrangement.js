@@ -96,7 +96,7 @@ const PianoArrangement = new Lang.Class({
 
     get all_visible() {
         this._support_cards_shown = this._calculate_support_cards_shown();
-        return this.get_count() <= (1 + this._support_cards_shown);
+        return this.get_card_count() <= (1 + this._support_cards_shown);
     },
 
     // Arrangement override
@@ -131,11 +131,12 @@ const PianoArrangement = new Lang.Class({
     vfunc_size_allocate: function (alloc) {
         this.parent(alloc);
 
-        let count = this.get_count();
+        let count = this.get_card_count();
         if (count === 0)
             return;
 
-        let all_cards = this.get_models().map(this.get_card_for_model, this);
+        let all_cards = this.get_filtered_models()
+            .map(this.get_card_for_model, this);
 
         this._support_cards_shown = this._calculate_support_cards_shown();
         let available_width = alloc.width - this._spacing;

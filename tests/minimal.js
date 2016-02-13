@@ -1,9 +1,9 @@
 // Copyright 2015 Endless Mobile, Inc.
 
-/* exported add_ordered_cards, CardCreateOrder, MinimalArrangement,
-MinimalBackCover, MinimalBinModule, MinimalCard, MinimalDocumentCard,
-MinimalHomePage, MinimalInteraction, MinimalModule, MinimalScrollable,
-MinimalPage */
+/* exported add_filtered_cards, add_ordered_cards, CardCreateOrder,
+MinimalArrangement, MinimalBackCover, MinimalBinModule, MinimalCard,
+MinimalDocumentCard, MinimalHomePage, MinimalInteraction, MinimalModule,
+MinimalScrollable, MinimalPage, TitleFilter */
 
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
@@ -14,6 +14,7 @@ const Arrangement = imports.app.interfaces.arrangement;
 const Card = imports.app.interfaces.card;
 const ContentObjectModel = imports.search.contentObjectModel;
 const DocumentCard = imports.app.interfaces.documentCard;
+const Filter = imports.app.interfaces.filter;
 const Interaction = imports.app.interfaces.interaction;
 const Launcher = imports.app.interfaces.launcher;
 const Module = imports.app.interfaces.module;
@@ -255,11 +256,46 @@ const CardCreateOrder = new Lang.Class({
     },
 });
 
+const TitleFilter = new Lang.Class({
+    Name: 'TitleFilter',
+    Extends: GObject.Object,
+    Implements: [ Module.Module, Filter.Filter ],
+
+    Properties: {
+        'factory': GObject.ParamSpec.override('factory', Module.Module),
+        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
+        'invert': GObject.ParamSpec.override('invert', Filter.Filter),
+    },
+
+    include_impl: function (model) {
+        return model.title !== '0Filter me out';
+    },
+});
+
 function add_ordered_cards(arrangement, ncards) {
     let models = [];
     for (let i = 0; i < ncards; i++) {
         let model = new ContentObjectModel.ContentObjectModel({
             title: i.toString(),
+        });
+        models.push(model);
+        arrangement.add_model(model);
+    }
+    return models;
+}
+
+function add_filtered_cards(arrangement, n_yes, n_no) {
+    let models = [];
+    for (let i = 0; i < n_yes; i++) {
+        let model = new ContentObjectModel.ContentObjectModel({
+            title: '0Filter me out',
+        });
+        models.push(model);
+        arrangement.add_model(model);
+    }
+    for (let i = 0; i < n_no; i++) {
+        let model = new ContentObjectModel.ContentObjectModel({
+            title: '#nofilter',
         });
         models.push(model);
         arrangement.add_model(model);

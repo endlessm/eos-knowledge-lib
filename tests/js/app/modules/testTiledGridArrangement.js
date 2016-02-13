@@ -17,15 +17,18 @@ describe('Tiled grid arrangement', function () {
         factory = new MockFactory.MockFactory();
         factory.add_named_mock('card', Minimal.MinimalCard);
         factory.add_named_mock('order', Minimal.CardCreateOrder);
+        factory.add_named_mock('filter', Minimal.TitleFilter);
         factory.add_named_mock('arrangement', TiledGridArrangement.TiledGridArrangement, {
             'card-type': 'card',
             'order': 'order',
+            'filter': 'filter',
         });
         arrangement = factory.create_named_module('arrangement');
     });
 
     function add_cards(ncards) {
         Minimal.add_ordered_cards(arrangement, ncards);
+        Minimal.add_filtered_cards(arrangement, 1, 0);
         Utils.update_gui();
         return factory.get_created_named_mocks('card');
     }

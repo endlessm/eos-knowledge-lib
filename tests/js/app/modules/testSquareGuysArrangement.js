@@ -83,9 +83,11 @@ function testSizingArrangementForDimensions(message, arr_width, arr_height, max_
         let factory = new MockFactory.MockFactory();
         factory.add_named_mock('card', Minimal.MinimalCard);
         factory.add_named_mock('order', Minimal.CardCreateOrder);
+        factory.add_named_mock('filter', Minimal.TitleFilter);
         factory.add_named_mock('arrangement', SquareGuysArrangement.SquareGuysArrangement, {
             'card-type': 'card',
             'order': 'order',
+            'filter': 'filter',
         }, {
             hexpand: false,
             valign: Gtk.Align.START,
@@ -94,6 +96,7 @@ function testSizingArrangementForDimensions(message, arr_width, arr_height, max_
         });
         let arrangement = factory.create_named_module('arrangement');
         Minimal.add_ordered_cards(arrangement, 8);
+        Minimal.add_filtered_cards(arrangement, 1, 0);
 
         let win = new Gtk.OffscreenWindow();
         win.add(arrangement);

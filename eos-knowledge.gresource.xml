@@ -95,6 +95,7 @@
     <file>js/app/interfaces/cardContainer.js</file>
     <file>js/app/interfaces/documentCard.js</file>
     <file>js/app/interfaces/expandable.js</file>
+    <file>js/app/interfaces/filter.js</file>
     <file>js/app/interfaces/interaction.js</file>
     <file>js/app/interfaces/launcher.js</file>
     <file>js/app/interfaces/module.js</file>

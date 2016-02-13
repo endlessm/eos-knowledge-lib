@@ -21,9 +21,11 @@ describe('Half Arrangement', function () {
         factory = new MockFactory.MockFactory();
         factory.add_named_mock('card', Minimal.MinimalCard);
         factory.add_named_mock('order', Minimal.CardCreateOrder);
+        factory.add_named_mock('filter', Minimal.TitleFilter);
         factory.add_named_mock('arrangement', HalfArrangement.HalfArrangement, {
             'card-type': 'card',
             'order': 'order',
+            'filter': 'filter',
         });
         arrangement = factory.create_named_module('arrangement');
 
@@ -38,6 +40,7 @@ describe('Half Arrangement', function () {
     function testSizingArrangementForDimensions(arrangement_size, card_width, card_height) {
         it('handles arrangement with width=' + arrangement_size, function () {
             Minimal.add_ordered_cards(arrangement, 5);
+            Minimal.add_filtered_cards(arrangement, 1, 0);
             win.set_size_request(arrangement_size, arrangement_size);
             win.show_all();
 

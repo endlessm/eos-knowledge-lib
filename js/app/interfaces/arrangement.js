@@ -115,6 +115,25 @@ const Arrangement = new Lang.Interface({
     },
 
     /**
+     * Method: get_card_count
+     * Count the cards being shown in the arrangement
+     *
+     * Contrast to <get_count()>.
+     * This returns the number of cards currently displaying in the arrangement.
+     * There may be card models added to the arrangement that are not shown as
+     * cards because they are filtered out.
+     *
+     * This is a method for technical reasons, but it should be treated like a
+     * read-only property.
+     *
+     * Returns:
+     *   Number of cards in the arrangement
+     */
+    get_card_count: function () {
+        return this._cards_by_id().size;
+    },
+
+    /**
      * Method: add_model
      * Add a card model to the arrangement
      *
@@ -125,12 +144,17 @@ const Arrangement = new Lang.Interface({
      *   model - a <ContentObjectModel>
      */
     add_model: function (model) {
+        this._models_by_id().set(model.ekn_id, model);
+
+        let filter = this.get_filter();
+        if (filter && !filter.include(model))
+            return;
+
         let card_props = { model: model };
         if (this._highlight_string)
             card_props.highlight_string = this._highlight_string;
         let card = this.create_submodule('card-type', card_props);
         this._cards_by_id().set(model.ekn_id, card);
-        this._models_by_id().set(model.ekn_id, model);
 
         // It's either this or have Card require Gtk.Button, but that would be
         // very bad for DocumentCards.
@@ -142,7 +166,7 @@ const Arrangement = new Lang.Interface({
 
         let order = this.get_order();
         if (order) {
-            let models = this.get_models();
+            let models = this.get_filtered_models();
             let position = models.indexOf(model);
             this.pack_card(card, position);
         } else {
@@ -166,10 +190,12 @@ const Arrangement = new Lang.Interface({
      *   model - a <ContentObjectModel>
      */
     remove_model: function (model) {
-        let card = this._cards_by_id().get(model.ekn_id);
-        this._cards_by_id().delete(model.ekn_id);
         this._models_by_id().delete(model.ekn_id);
-        this.unpack_card(card);
+        let card = this._cards_by_id().get(model.ekn_id);
+        if (card) {
+            this._cards_by_id().delete(model.ekn_id);
+            this.unpack_card(card);
+        }
     },
 
     /**
@@ -185,6 +211,24 @@ const Arrangement = new Lang.Interface({
     },
 
     /**
+     * Method: get_filtered_models
+     * Get card models in the arrangement that are to be displayed
+     *
+     * Use this function in your <Arrangement> implementation when you are
+     * deciding how to lay out the cards.
+     *
+     * Returns:
+     *   an array of <ContentObjectModels>
+     */
+    get_filtered_models: function () {
+        let filter = this.get_filter();
+        let models = this.get_models();
+        if (!filter)
+            return models;
+        return models.filter(filter.include.bind(filter));
+    },
+
+    /**
      * Method: get_card_for_model
      * Get the created <Card> for a card model
      *
@@ -193,7 +237,8 @@ const Arrangement = new Lang.Interface({
      *
      * Returns:
      *   A <Card> whose <Card.model> property is @model, or **undefined** if
-     *   there is none
+     *   no such card exists, either because the arrangement is not displaying
+     *   it, or because @model is not in the arrangement
      */
     get_card_for_model: function (model) {
         return this._cards_by_id().get(model.ekn_id);
@@ -208,7 +253,7 @@ const Arrangement = new Lang.Interface({
     //
     // return Arrangement.get_slot_names(this).concat(['more', 'slots']);
     get_slot_names: function () {
-        return ['card-type', 'order'];
+        return ['card-type', 'order', 'filter'];
     },
 
     /**
@@ -227,7 +272,8 @@ const Arrangement = new Lang.Interface({
         for (let model of this.get_models()) {
             if (model.ekn_id === highlight_model.ekn_id) {
                 let card = this.get_card_for_model(model);
-                card.get_style_context().add_class(StyleClasses.HIGHLIGHTED);
+                if (card)
+                    card.get_style_context().add_class(StyleClasses.HIGHLIGHTED);
                 return;
             }
         }
@@ -248,6 +294,13 @@ const Arrangement = new Lang.Interface({
         if (typeof this._order_module === 'undefined')
             this._order_module = this.create_submodule('order');
         return this._order_module;
+    },
+
+    get_filter: function () {
+        // null is a valid value for Filter
+        if (typeof this._filter_module === 'undefined')
+            this._filter_module = this.create_submodule('filter');
+        return this._filter_module;
     },
 
     /**

@@ -15,9 +15,11 @@ describe('Arrangement interface', function () {
         factory.add_named_mock('order', Minimal.CardCreateOrder, {}, {
             ascending: false,
         });
+        factory.add_named_mock('filter', Minimal.TitleFilter);
         factory.add_named_mock('arrangement', Minimal.MinimalArrangement, {
             'card-type': 'card',
             'order': 'order',
+            'filter': 'filter',
         });
         arrangement = factory.create_named_module('arrangement');
     });
@@ -47,12 +49,22 @@ describe('Arrangement interface', function () {
         factory.get_last_created_named_mock('card').emit('clicked');
     });
 
-    it('tells the arrangement to pack its cards correctly', function () {
+    it('packs its cards in the correct order', function () {
         spyOn(arrangement, 'pack_card');
         let models = Minimal.add_ordered_cards(arrangement, 5);
         arrangement.pack_card.calls.allArgs().forEach((args, ix) => {
             expect(args[0].model).toBe(models[ix]);
             expect(args[1]).toBe(0);  // each card packed in front
+        });
+    });
+
+    it('filters its cards', function () {
+        spyOn(arrangement, 'pack_card');
+        let models = Minimal.add_filtered_cards(arrangement, 3, 3);
+        expect(arrangement.pack_card.calls.count()).toBe(3);
+        arrangement.pack_card.calls.allArgs().map(args => args[0].model).forEach(model => {
+            expect(models).toContain(model);
+            expect(model.title).toEqual('#nofilter');
         });
     });
 });
