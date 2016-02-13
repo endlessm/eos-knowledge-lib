@@ -235,7 +235,7 @@ describe('Aisle interaction', function () {
             expect(engine.get_object_by_id).toHaveBeenCalledWith(MOCK_ID,
                                                                  jasmine.any(Object),
                                                                  jasmine.any(Function));
-            expect(dispatcher.last_payload_with_type(Actions.SHOW_STANDALONE_PREVIEW))
+            expect(dispatcher.last_payload_with_type(Actions.SHOW_STANDALONE_PAGE))
                 .toEqual(jasmine.objectContaining({ model: model }));
         });
 

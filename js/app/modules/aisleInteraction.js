@@ -624,16 +624,19 @@ const AisleInteraction = new Lang.Class({
             this._go_to_page(page_number);
         }
         let dispatcher = Dispatcher.get_default();
+        dispatcher.dispatch({
+            action_type: Actions.SHOW_ARTICLE,
+            model: model,
+            archived: archived,
+        });
         if (from_global_search) {
             dispatcher.dispatch({
-                action_type: Actions.SHOW_STANDALONE_PREVIEW,
+                action_type: Actions.SHOW_STANDALONE_PAGE,
                 model: model,
             });
-        } else {
+        } else if (archived) {
             dispatcher.dispatch({
-                action_type: Actions.SHOW_ARTICLE,
-                model: model,
-                archived: archived,
+                action_type: Actions.SHOW_ARCHIVE_PAGE,
             });
         }
         this._present_if_needed();

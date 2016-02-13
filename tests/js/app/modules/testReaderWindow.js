@@ -116,10 +116,7 @@ describe('Reader window', function () {
 
     it('disables navigation on standalone page', function () {
         dispatcher.dispatch({
-            action_type: Actions.SHOW_ARTICLE,
-            model: new ContentObjectModel.ContentObjectModel(),
-            archived: true,
-            from_global_search: false,
+            action_type: Actions.SHOW_STANDALONE_PAGE,
         });
         let payload = dispatcher.last_payload_with_type(Actions.NAV_BACK_ENABLED_CHANGED);
         expect(payload.enabled).toBe(false);
@@ -146,10 +143,7 @@ describe('Reader window', function () {
         view.show_article_page(1);
         expect(view.article_pages_visible()).toBe(true);
         dispatcher.dispatch({
-            action_type: Actions.SHOW_ARTICLE,
-            model: new ContentObjectModel.ContentObjectModel(),
-            archived: true,
-            from_global_search: false,
+            action_type: Actions.SHOW_ARCHIVE_PAGE,
         });
         expect(view.article_pages_visible()).toBe(false);
     });
@@ -197,8 +191,7 @@ describe('Reader window', function () {
         // Is this an implementation detail of the container?
         expect(standalone_page.get_child_visible()).toBeFalsy();
         dispatcher.dispatch({
-            action_type: Actions.SHOW_STANDALONE_PREVIEW,
-            model: new ContentObjectModel.ContentObjectModel(),
+            action_type: Actions.SHOW_STANDALONE_PAGE,
         });
         Utils.update_gui();
         expect(standalone_page.get_child_visible()).toBeTruthy();

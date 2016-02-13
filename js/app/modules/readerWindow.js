@@ -148,14 +148,10 @@ const ReaderWindow = new Lang.Class({
                 case Actions.SET_READY:
                     this.set_busy(false);
                     break;
-                case Actions.SHOW_ARTICLE:
-                    // FIXME: We currently only pay attention if archived=true.
-                    // For further modularization, AisleInteraction._go_to_page
-                    // should be handled here in the archived=false case.
-                    if (payload.archived)
-                        this._show_archive_page();
+                case Actions.SHOW_ARCHIVE_PAGE:
+                    this._show_archive_page();
                     break;
-                case Actions.SHOW_STANDALONE_PREVIEW:
+                case Actions.SHOW_STANDALONE_PAGE:
                     this._show_standalone_page();
                     break;
             }
