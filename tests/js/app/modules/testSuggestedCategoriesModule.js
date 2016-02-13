@@ -106,20 +106,6 @@ describe('Suggested categories module', function () {
         expect(arrangement.get_count()).toBe(1);
     });
 
-    it('adds only featured cards when featured-only is true', function () {
-        suggestions = factory.create_named_module('suggested-categories', {
-            featured_only: true,
-        });
-        arrangement = factory.get_created_named_mocks('test-arrangement')[1];
-        let models = [true, false, true].map(featured =>
-            new ContentObjectModel.ContentObjectModel({ featured: featured }));
-        dispatcher.dispatch({
-            action_type: Actions.APPEND_SETS,
-            models: models,
-        });
-        expect(arrangement.get_count()).toBe(2);
-    });
-
     it('dispatches set clicked', function () {
         let model = new ContentObjectModel.ContentObjectModel();
         dispatcher.dispatch({

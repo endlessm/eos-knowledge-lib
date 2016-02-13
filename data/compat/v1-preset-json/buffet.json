@@ -291,8 +291,7 @@
         "main-menu": {
             "type": "SuggestedCategoriesModule",
             "properties": {
-                    "featured-only": true,
-                    "show-title": false
+                "show-title": false
             },
             "slots": {
                 "arrangement": {
@@ -304,6 +303,9 @@
                                 "title-capitalization": "uppercase",
                                 "margin-top": 5
                             }
+                        },
+                        "filter": {
+                            "type": "FeaturedFilter"
                         }
                     }
                 }
