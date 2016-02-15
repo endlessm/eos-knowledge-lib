@@ -1,16 +1,15 @@
 // Copyright 2016 Endless Mobile, Inc.
 
 const GObject = imports.gi.GObject;
-const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const Actions = imports.app.actions;
 const Card = imports.app.interfaces.card;
+const CardContainer = imports.app.modules.cardContainer;
 const Dispatcher = imports.app.dispatcher;
 const Engine = imports.search.engine;
 const Module = imports.app.interfaces.module;
 const QueryObject = imports.search.queryObject;
-const TextCard = imports.app.modules.textCard;
 
 const NUM_ARTICLES_TO_SHOW = 3;
 
@@ -35,7 +34,7 @@ const NUM_ARTICLES_TO_SHOW = 3;
 const SetPreviewCard = new Lang.Class({
     Name: 'SetPreviewCard',
     GTypeName: 'EknSetPreviewCard',
-    Extends: Gtk.Grid,
+    Extends: CardContainer.CardContainer,
     Implements: [ Module.Module, Card.Card ],
 
     Properties: {
@@ -48,34 +47,27 @@ const SetPreviewCard = new Lang.Class({
         'text-halign': GObject.ParamSpec.override('text-halign', Card.Card),
     },
 
-    Template: 'resource:///com/endlessm/knowledge/data/widgets/setPreviewCard.ui',
-    InternalChildren: [ 'see-more-label' ],
+    _init: function (props={}) {
+        props.title = props.model.title;
+        this.parent(props);
 
-    _init: function (params={}) {
-        this.parent(params);
-
-        let card = new TextCard.TextCard({
-            factory: this.factory,
-            factory_name: this.factory_name,
-            model: this.model,
-            visible: true,
-            halign: Gtk.Align.START,
-        });
-
-        card.connect('clicked', () => {
+        this.title_button.connect('clicked', () => {
             Dispatcher.get_default().dispatch({
                 action_type: Actions.SET_CLICKED,
                 model: this.model,
             });
         });
 
-        this.attach(card, 0, 0, 1, 1);
-        this._arrangement = this.create_submodule('arrangement');
-        this.attach(this._arrangement, 0, 1, 2, 1);
+        this.see_more_button.connect('clicked', () => {
+            Dispatcher.get_default().dispatch({
+                action_type: Actions.SET_CLICKED,
+                model: this.model,
+            });
+        });
     },
 
     load_content: function () {
-        this._arrangement.visible = true;
+        this.arrangement.visible = true;
         let query = new QueryObject.QueryObject({
             limit: NUM_ARTICLES_TO_SHOW,
             tags: this.model.child_tags,
@@ -88,23 +80,9 @@ const SetPreviewCard = new Lang.Class({
                 logError(e, 'Failed to load articles from database');
                 return;
             }
-            models.forEach(model => this._add_article_card(model));
+            models.forEach(model => this.arrangement.add_model(model));
+            this.see_more_button.visible = !this.arrangement.all_visible;
         });
-    },
-
-    _add_article_card: function (model) {
-        let card = this.create_submodule('card-type', {
-            model: model,
-        });
-        card.connect('clicked', () => {
-            Dispatcher.get_default().dispatch({
-                action_type: Actions.ITEM_CLICKED,
-                model: model,
-                context: this._arrangement.get_cards().map((card) => card.model),
-                context_label: this.model.title,
-            });
-        });
-        this._arrangement.add_card(card);
     },
 
     // Module override

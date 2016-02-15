@@ -8,6 +8,7 @@ data/widgets/suggestedCategoriesModule.ui
 js/app/articleHTMLRenderer.js
 js/app/modules/aisleInteraction.js
 js/app/modules/buffetInteraction.js
+js/app/modules/cardContainer.js
 js/app/modules/contextBanner.js
 js/app/modules/encyclopediaWindow.js
 js/app/modules/hamburgerBasementTemplate.js
@@ -18,4 +19,5 @@ js/app/modules/readerWindow.js
 js/app/modules/searchBannerModule.js
 js/app/modules/searchModule.js
 js/app/modules/standaloneBanner.js
+js/app/modules/supplementaryArticlesModule.js
 js/app/utils.js

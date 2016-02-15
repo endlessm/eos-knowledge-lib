@@ -30,6 +30,7 @@
     <file preprocess="xml-stripblanks" compressed="true">data/images/arrow-white.svg</file>
     <file preprocess="xml-stripblanks" compressed="true">data/images/title-arrow-dark.svg</file>
     <file preprocess="xml-stripblanks" compressed="true">data/images/title-arrow-light.svg</file>
+    <file preprocess="xml-stripblanks" compressed="true">data/images/right_arrow.svg</file>
     <file preprocess="xml-stripblanks">data/images/deckbg.svg</file>
     <file>data/images/separator.png</file>
     <file compressed="true">data/templates/article.mst</file>
@@ -69,12 +70,10 @@
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/searchModule.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/searchResultCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/sequenceCard.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">data/widgets/setPreviewCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/sideMenuTemplate.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/standaloneBanner.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/suggestedArticlesModule.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/suggestedCategoriesModule.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">data/widgets/supplementaryArticlesModule.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/textCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/thumbCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/tooltips.ui</file>
@@ -113,6 +112,7 @@
     <file>js/app/modules/buffetInteraction.js</file>
     <file>js/app/modules/cardA.js</file>
     <file>js/app/modules/cardB.js</file>
+    <file>js/app/modules/cardContainer.js</file>
     <file>js/app/modules/carouselArrangement.js</file>
     <file>js/app/modules/contextBanner.js</file>
     <file>js/app/modules/dividedBannerTemplate.js</file>
