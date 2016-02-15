@@ -97,6 +97,16 @@ const Window = new Lang.Class({
         'template-type':  GObject.ParamSpec.string('template-type', 'Template Type',
             'Which template the window should display with',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, 'A'),
+        /**
+         * Property: animating
+         *
+         * Temporary property which can be used to notify when the page
+         * transition our running. Will likely be replaced when we have a better
+         * way to update state between non-interaction modules.
+         */
+        'animating': GObject.ParamSpec.boolean('animating',
+            'Animating', 'Animating',
+            GObject.ParamFlags.READABLE, false),
     },
 
     Signals: {
@@ -286,7 +296,10 @@ const Window = new Lang.Class({
         this._history_buttons.get_style_context().add_class(Gtk.STYLE_CLASS_LINKED);
         button_box.show_all();
 
+        this.animating = false;
         this._stack.connect('notify::transition-running', function () {
+            this.animating = this._stack.transition_running;
+            this.notify('animating');
             if (this._stack.transition_running) {
                 context.add_class(StyleClasses.ANIMATING);
                 dispatcher.pause();
