@@ -203,8 +203,7 @@ const Card = new Lang.Interface({
 
         // Sort the context tags from shortest to longest in order to
         // maximise chances that we can fit two of them on the card.
-        let tags = this.model.tags.filter((tag) => !tag.startsWith('Ekn'))
-                              .sort((a, b) => a.length - b.length);
+        let tags = this.get_filtered_tags();
         if (tags.length > 0) {
             let first_tag = new Gtk.Label({
                 lines: 1,
@@ -224,6 +223,17 @@ const Card = new Lang.Interface({
         this._space_container.get_style_context().add_class('card-context');
         this._space_container.show_all();
         container.add(this._space_container);
+    },
+
+    /**
+     * Method: get_filtered_tags
+     *
+     * Gets the list of tags that do not start with the Ekn prefix.
+     * The list is sorted by the length of the tags in ascending order.
+     */
+    get_filtered_tags: function () {
+        return this.model.tags.filter((tag) => !tag.startsWith('Ekn'))
+                              .sort((a, b) => a.length - b.length);
     },
 
     /**
