@@ -59,6 +59,7 @@ const SpaceContainer = new Lang.Class({
     _init: function (props={}) {
         this._all_fit = true;
         this._spacing = 0;
+        this._children = [];
         this.parent(props);
     },
 
@@ -78,19 +79,35 @@ const SpaceContainer = new Lang.Class({
         return this._all_fit;
     },
 
+    add: function (child) {
+        Gtk.Container.prototype.add.call(this, child);
+        this._children.push(child);
+    },
+
+    remove: function (child) {
+        Gtk.Container.prototype.remove.call(this, child);
+        let index_to_remove = this._children.indexOf(child);
+        if (index_to_remove === -1)
+            throw new Error('Widget not found');
+        this._children.splice(index_to_remove, 1);
+    },
+
+    insert: function (child, position) {
+        Gtk.Container.prototype.add.call(this, child);
+        this._children.splice(position, 0, child);
+    },
+
     _get_visible_children: function () {
-        // Reverse the children because CustomContainer prepends children to its list.
-        return this.get_children().reverse().filter((child) => child.visible);
+        return this._children.filter((child) => child.visible);
     },
 
     // The secondary dimension (i.e., width if orientation == VERTICAL) is the
     // maximum minimal and natural secondary dimensions of any one child, even
     // including ones that are not shown.
     _get_preferred_secondary: function (secondary, space) {
-        let children = this.get_children();
-        if (children.length === 0)
+        if (this._children.length === 0)
             return [0, 0];
-        return children.reduce((accum, child) => {
+        return this._children.reduce((accum, child) => {
             let [min, nat] = accum;
             let [child_min, child_nat] = this._child_get_preferred_size(child, secondary, space);
             return [Math.max(child_min, min), Math.max(child_nat, nat)];

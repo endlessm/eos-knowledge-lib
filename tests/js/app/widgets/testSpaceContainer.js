@@ -90,6 +90,18 @@ describe('Space container', function () {
         let container = new SpaceContainer.SpaceContainer();
     });
 
+    it('inserts child widgets at a particular position', function () {
+        let container = new SpaceContainer.SpaceContainer();
+        let boxes = [150, 150, 150].map(size => new IncompressibleBox(size));
+        container.add(boxes[0]);
+        container.add(boxes[2]);
+        container.insert(boxes[1], 1);
+        win.add(container);
+        win.show_all();
+        [true, true, false].forEach((expected_visible, ix) =>
+            expect(boxes[ix].get_child_visible()).toEqual(expected_visible));
+    });
+
     describe('vertically oriented', function () {
         beforeEach(function () {
             // Use the suite's "this" object so that the container is available
