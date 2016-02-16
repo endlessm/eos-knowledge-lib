@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2016-02-09 02:46+0000\n"
+"POT-Creation-Date: 2016-02-10 18:07+0000\n"
 "PO-Revision-Date: 2016-02-09 02:46+0000\n"
 "Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/zh_CN/)\n"
@@ -109,18 +109,18 @@ msgstr "内容由{博客链接}提供。经授权许可使用。"
 msgid "Content courtesy of {blog-link}, licensed under {license-link}."
 msgstr "内容由{博客链接}提供，已得到{认证链接}许可认证。"
 
-#: js/app/modules/aisleInteraction.js:795
-#: js/app/modules/aisleInteraction.js:802
+#: js/app/modules/aisleInteraction.js:796
+#: js/app/modules/aisleInteraction.js:803
 msgid "Oops!"
 msgstr "哎呀！"
 
-#: js/app/modules/aisleInteraction.js:796
+#: js/app/modules/aisleInteraction.js:797
 msgid ""
 "We could not find this magazine!\n"
 "Please try again after restarting your computer."
 msgstr "我们无法找到该杂志！请在重启电脑后重新尝试。"
 
-#: js/app/modules/aisleInteraction.js:803
+#: js/app/modules/aisleInteraction.js:804
 msgid ""
 "There was an error loading that page.\n"
 "Try another one or try again after restarting your computer."
@@ -128,7 +128,7 @@ msgstr "加载该页时出现一个错误。请尝试另一页或在重启电脑
 
 #. TRANSLATORS: This shows the page number; %d will be replaced with
 #. the page number of the article.
-#: js/app/modules/aisleInteraction.js:842
+#: js/app/modules/aisleInteraction.js:843
 #, javascript-format
 msgid "Page %d"
 msgstr "第%d页"
@@ -141,7 +141,7 @@ msgid "Results were found for “%s”"
 msgstr "已找到“%s”的结果"
 
 #: js/app/modules/contextBanner.js:48 js/app/modules/contextBanner.js:56
-#: js/app/modules/highlightsModule.js:122
+#: js/app/modules/highlightsModule.js:135
 msgid "Highlights"
 msgstr "标记"
 
@@ -195,15 +195,15 @@ msgstr "“%s”的结果"
 msgid "OOPS!"
 msgstr "哎呀！"
 
-#: js/app/modules/searchModule.js:202
+#: js/app/modules/searchModule.js:198
 msgid "Sorry! :-("
 msgstr "很抱歉！:-("
 
-#: js/app/modules/searchModule.js:203
+#: js/app/modules/searchModule.js:199
 msgid "There are no results that match your search.\n"
 msgstr "没有符合您搜索的结果。\n"
 
-#: js/app/modules/searchModule.js:205
+#: js/app/modules/searchModule.js:201
 msgid ""
 "We recommend that you:\n"
 "\n"
@@ -212,7 +212,7 @@ msgid ""
 "  •  Try using more general words"
 msgstr "我们建议您：·\n检查您的拼写\n尝试相同意思的其他表述\n使用更普遍的表述"
 
-#: js/app/modules/searchModule.js:232
+#: js/app/modules/searchModule.js:228
 msgid "There was an error during your search."
 msgstr "搜索中出现一个错误。"
 

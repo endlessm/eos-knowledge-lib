@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2016-02-09 02:46+0000\n"
+"POT-Creation-Date: 2016-02-10 18:07+0000\n"
 "PO-Revision-Date: 2016-02-09 02:46+0000\n"
 "Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
 "Language-Team: Indonesian (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/id/)\n"
@@ -108,18 +108,18 @@ msgstr "Konten adalah hak milik {blog-link}. Digunakan dengan izin."
 msgid "Content courtesy of {blog-link}, licensed under {license-link}."
 msgstr "Konten adalah hak milik {blog-link}, berlisensi di bawah {license-link}."
 
-#: js/app/modules/aisleInteraction.js:795
-#: js/app/modules/aisleInteraction.js:802
+#: js/app/modules/aisleInteraction.js:796
+#: js/app/modules/aisleInteraction.js:803
 msgid "Oops!"
 msgstr "Ups!"
 
-#: js/app/modules/aisleInteraction.js:796
+#: js/app/modules/aisleInteraction.js:797
 msgid ""
 "We could not find this magazine!\n"
 "Please try again after restarting your computer."
 msgstr "Kami tidak dapat menemukan majalah ini! Mohon coba lagi setelah menyalakan ulang komputer Anda."
 
-#: js/app/modules/aisleInteraction.js:803
+#: js/app/modules/aisleInteraction.js:804
 msgid ""
 "There was an error loading that page.\n"
 "Try another one or try again after restarting your computer."
@@ -127,7 +127,7 @@ msgstr "Terjadi kesalahan saat memuat halaman itu.\nCoba yang lain atau coba lag
 
 #. TRANSLATORS: This shows the page number; %d will be replaced with
 #. the page number of the article.
-#: js/app/modules/aisleInteraction.js:842
+#: js/app/modules/aisleInteraction.js:843
 #, javascript-format
 msgid "Page %d"
 msgstr "Halaman %d"
@@ -140,7 +140,7 @@ msgid "Results were found for “%s”"
 msgstr "Ada hasil ditemukan untuk \"%s\""
 
 #: js/app/modules/contextBanner.js:48 js/app/modules/contextBanner.js:56
-#: js/app/modules/highlightsModule.js:122
+#: js/app/modules/highlightsModule.js:135
 msgid "Highlights"
 msgstr "Sorotan"
 
@@ -194,15 +194,15 @@ msgstr "Hasil untuk “%s”"
 msgid "OOPS!"
 msgstr "UPS!"
 
-#: js/app/modules/searchModule.js:202
+#: js/app/modules/searchModule.js:198
 msgid "Sorry! :-("
 msgstr "Maaf! :-("
 
-#: js/app/modules/searchModule.js:203
+#: js/app/modules/searchModule.js:199
 msgid "There are no results that match your search.\n"
 msgstr ""
 
-#: js/app/modules/searchModule.js:205
+#: js/app/modules/searchModule.js:201
 msgid ""
 "We recommend that you:\n"
 "\n"
@@ -211,7 +211,7 @@ msgid ""
 "  •  Try using more general words"
 msgstr "Kami menyarankan:\n\n  •  Periksa ejaan Anda\n  •  Coba kata lain yang artinya sama\n  •  Coba menggunakan kata yang lebih umum"
 
-#: js/app/modules/searchModule.js:232
+#: js/app/modules/searchModule.js:228
 msgid "There was an error during your search."
 msgstr "Ada gangguan pada pencarian Anda."
 

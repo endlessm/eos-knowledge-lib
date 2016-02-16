@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2016-02-09 02:46+0000\n"
+"POT-Creation-Date: 2016-02-10 18:07+0000\n"
 "PO-Revision-Date: 2016-02-09 02:46+0000\n"
 "Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
 "Language-Team: Hindi (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/hi/)\n"
@@ -108,18 +108,18 @@ msgstr ""
 msgid "Content courtesy of {blog-link}, licensed under {license-link}."
 msgstr ""
 
-#: js/app/modules/aisleInteraction.js:795
-#: js/app/modules/aisleInteraction.js:802
+#: js/app/modules/aisleInteraction.js:796
+#: js/app/modules/aisleInteraction.js:803
 msgid "Oops!"
 msgstr ""
 
-#: js/app/modules/aisleInteraction.js:796
+#: js/app/modules/aisleInteraction.js:797
 msgid ""
 "We could not find this magazine!\n"
 "Please try again after restarting your computer."
 msgstr ""
 
-#: js/app/modules/aisleInteraction.js:803
+#: js/app/modules/aisleInteraction.js:804
 msgid ""
 "There was an error loading that page.\n"
 "Try another one or try again after restarting your computer."
@@ -127,7 +127,7 @@ msgstr ""
 
 #. TRANSLATORS: This shows the page number; %d will be replaced with
 #. the page number of the article.
-#: js/app/modules/aisleInteraction.js:842
+#: js/app/modules/aisleInteraction.js:843
 #, javascript-format
 msgid "Page %d"
 msgstr ""
@@ -140,7 +140,7 @@ msgid "Results were found for “%s”"
 msgstr ""
 
 #: js/app/modules/contextBanner.js:48 js/app/modules/contextBanner.js:56
-#: js/app/modules/highlightsModule.js:122
+#: js/app/modules/highlightsModule.js:135
 msgid "Highlights"
 msgstr ""
 
@@ -194,15 +194,15 @@ msgstr ""
 msgid "OOPS!"
 msgstr ""
 
-#: js/app/modules/searchModule.js:202
+#: js/app/modules/searchModule.js:198
 msgid "Sorry! :-("
 msgstr ""
 
-#: js/app/modules/searchModule.js:203
+#: js/app/modules/searchModule.js:199
 msgid "There are no results that match your search.\n"
 msgstr ""
 
-#: js/app/modules/searchModule.js:205
+#: js/app/modules/searchModule.js:201
 msgid ""
 "We recommend that you:\n"
 "\n"
@@ -211,7 +211,7 @@ msgid ""
 "  •  Try using more general words"
 msgstr ""
 
-#: js/app/modules/searchModule.js:232
+#: js/app/modules/searchModule.js:228
 msgid "There was an error during your search."
 msgstr ""
 
