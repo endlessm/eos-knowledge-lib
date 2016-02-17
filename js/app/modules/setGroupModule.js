@@ -8,7 +8,6 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const Actions = imports.app.actions;
-const CardContainer = imports.app.interfaces.cardContainer;
 const Dispatcher = imports.app.dispatcher;
 const Expandable = imports.app.interfaces.expandable;
 const InfiniteScrolledWindow = imports.app.widgets.infiniteScrolledWindow;
@@ -32,8 +31,7 @@ const SetGroupModule = new Lang.Class({
     Name: 'SetGroupModule',
     GTypeName: 'EknSetGroupModule',
     Extends: Gtk.Frame,
-    Implements: [ Module.Module, Expandable.Expandable,
-        CardContainer.CardContainer ],
+    Implements: [ Module.Module, Expandable.Expandable ],
 
     Properties: {
         'factory': GObject.ParamSpec.override('factory', Module.Module),
