@@ -18,7 +18,6 @@ const StyleClasses = imports.app.styleClasses;
  *
  * Slots:
  *   arrangement
- *   card-type
  */
 const SuggestedArticlesModule = new Lang.Class({
     Name: 'SuggestedArticlesModule',
