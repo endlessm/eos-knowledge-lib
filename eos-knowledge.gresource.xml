@@ -119,6 +119,7 @@
     <file>js/app/modules/dividedBannerTemplate.js</file>
     <file>js/app/modules/encyclopediaCoverTemplate.js</file>
     <file>js/app/modules/encyclopediaWindow.js</file>
+    <file>js/app/modules/featuredOrder.js</file>
     <file>js/app/modules/gridArrangement.js</file>
     <file>js/app/modules/halfArrangement.js</file>
     <file>js/app/modules/hamburgerBasementTemplate.js</file>
