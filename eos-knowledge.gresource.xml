@@ -131,6 +131,7 @@
     <file>js/app/modules/pianoArrangement.js</file>
     <file>js/app/modules/pianolaArrangement.js</file>
     <file>js/app/modules/postCard.js</file>
+    <file>js/app/modules/publishedDateOrder.js</file>
     <file>js/app/modules/quarterArrangement.js</file>
     <file>js/app/modules/quiltArrangement.js</file>
     <file>js/app/modules/readerCard.js</file>
