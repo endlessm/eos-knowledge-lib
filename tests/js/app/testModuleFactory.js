@@ -17,14 +17,15 @@ const MOCK_APP_JSON = {
             type: 'TestModule',
             slots: {
                 'test-slot': 'test-submodule',
-                'optional-slot': null,
                 'anonymous-slot-1': {
                     type: 'TestModule',
                 },
                 'anonymous-slot-2': {
                     type: 'TestModule',
                 },
-                'dot.slot': null,
+                "dot.slot": {
+                    type: 'TestModule',
+                },
             },
         },
         'test-submodule': {
@@ -100,7 +101,7 @@ describe('Module factory', function () {
         expect(warehouse.type_to_class).toHaveBeenCalledWith('TestModule');
     });
 
-    it('allows null as a value to indicate a slot is not filled', function () {
+    it('allows omitting an optional slot in app.json, returning null', function () {
         let parent = module_factory.create_named_module('test');
         let submodule = module_factory.create_module_for_slot(parent,
             'optional-slot');

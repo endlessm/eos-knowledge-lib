@@ -70,7 +70,7 @@ const HalfArrangement = new Lang.Class({
         let req_height = Arrangement.get_size_with_spacing(FEATURED_CARD_HEIGHT, featured_rows, this._spacing);
 
         // Calculate space for support cards
-        let children_count = this.get_children().length - this._featured_cards_count;
+        let children_count = this.get_count() - this._featured_cards_count;
         let children_rows = Math.ceil(children_count / this._cards_per_row);
         let card_height = this._small_card_mode ? CARD_HEIGHT_MIN : CARD_HEIGHT_MAX;
         req_height += card_height * children_rows + this._spacing * (children_rows - 1);
@@ -93,11 +93,11 @@ const HalfArrangement = new Lang.Class({
         let delta_x = featured_card_width + this._spacing + spare_pixels;
         let delta_y = FEATURED_CARD_HEIGHT + this._spacing;
 
-        let all_children = this.get_children();
+        let all_cards = this.get_models().map(this.get_card_for_model, this);
 
         // Featured cards:
         // Place two featured cards per row at top of arrangement
-        all_children.slice(0, this._featured_cards_count).forEach((card, ix) => {
+        all_cards.slice(0, this._featured_cards_count).forEach((card, ix) => {
             this.place_card(card, x, y, featured_card_width, FEATURED_CARD_HEIGHT);
 
             if ((ix + 1) % FEATURED_CARDS_PER_ROW === 0) {
@@ -120,7 +120,7 @@ const HalfArrangement = new Lang.Class({
 
         // Child cards
         // Place rest of cards below the featured cards, in as many rows as needed
-        all_children.slice(this._featured_cards_count).forEach((card, ix) => {
+        all_cards.slice(this._featured_cards_count).forEach((card, ix) => {
             this.place_card(card, x, y, card_width, card_height);
 
             if ((ix + 1) % this._cards_per_row === 0) {
@@ -146,6 +146,6 @@ const HalfArrangement = new Lang.Class({
     },
 
     _get_featured_cards_count: function () {
-        return this.get_children().length > 4 ? FEATURED_CARDS_PER_ROW : this.get_children().length;
+        return this.get_count() > 4 ? FEATURED_CARDS_PER_ROW : this.get_count();
     },
 });

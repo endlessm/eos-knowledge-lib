@@ -39,8 +39,13 @@ const ListArrangement = new Lang.Class({
     },
 
     // Arrangement override
-    pack_card: function (widget) {
-        this._grid.add(widget);
+    pack_card: function (widget, position=-1) {
         this._size_group.add_widget(widget);
+        if (position === -1) {
+            this._grid.add(widget);
+            return;
+        }
+        this._grid.insert_row(position);
+        this._grid.attach(widget, 0, position, 1, 1);
     },
 });

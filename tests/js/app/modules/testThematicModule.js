@@ -233,7 +233,7 @@ describe('Thematic module', function () {
                 it('shows no empty arrangements', function () {
                     let visible_arrangements = arrangements.filter(arrangement => arrangement.visible);
                     visible_arrangements.forEach(arrangement => {
-                        expect(arrangement.get_models().length).toBeGreaterThan(0);
+                        expect(arrangement.get_count()).toBeGreaterThan(0);
                     });
                     let visible_headers = headers.filter(header => header.is_visible());
                     expect(visible_headers.length).toBe(visible_arrangements.length);

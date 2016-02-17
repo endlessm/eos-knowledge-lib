@@ -80,7 +80,7 @@ const ThirtiesArrangement = new Lang.Class({
     },
 
     get all_visible() {
-        return this.get_children().length <= COL_COUNT * this._max_rows;
+        return this.get_count() <= COL_COUNT * this._max_rows;
     },
 
     // Arrangement override
@@ -104,7 +104,7 @@ const ThirtiesArrangement = new Lang.Class({
         this._small_mode = (width < Arrangement.get_size_with_spacing(CARD_HEIGHT_THRESHOLD, COL_COUNT, this._spacing));
 
         let card_height = this._small_mode ? CARD_HEIGHT_SMALL : CARD_HEIGHT_BIG;
-        let rows_for_children = Math.ceil(this.get_children().length / COL_COUNT);
+        let rows_for_children = Math.ceil(this.get_count() / COL_COUNT);
         let rows_visible = this._max_rows === 0 ? rows_for_children : Math.min(this._max_rows, rows_for_children);
         let height = Arrangement.get_size_with_spacing(card_height, rows_visible, this._spacing);
         return [height, height];
@@ -113,12 +113,12 @@ const ThirtiesArrangement = new Lang.Class({
     vfunc_size_allocate: function (alloc) {
         this.parent(alloc);
 
-        let all_children = this.get_children();
-        if (all_children.length === 0)
+        let count = this.get_count();
+        if (count === 0)
             return;
 
-        let visible_children_count = this._max_rows === 0 ? all_children.length :
-            Math.min(all_children.length, this._max_rows  * COL_COUNT);
+        let visible_children_count = this._max_rows === 0 ? count :
+            Math.min(count, this._max_rows  * COL_COUNT);
 
         let available_width = alloc.width - ((COL_COUNT - 1) * this._spacing);
         let child_width = Math.floor(available_width / COL_COUNT);
@@ -133,7 +133,8 @@ const ThirtiesArrangement = new Lang.Class({
         let x = alloc.x;
         let y = alloc.y;
 
-        all_children.slice(0, visible_children_count).forEach((card, i) => {
+        let all_cards = this.get_models().map(this.get_card_for_model, this);
+        all_cards.slice(0, visible_children_count).forEach((card, i) => {
             this.place_card(card, x, y, child_width, child_height);
 
             if ((i + 1) % COL_COUNT === 0) {
@@ -146,7 +147,7 @@ const ThirtiesArrangement = new Lang.Class({
         });
 
         // Additional cards should not be visible!
-        all_children.slice(visible_children_count, all_children.length).forEach((card) => {
+        all_cards.slice(visible_children_count, count).forEach((card) => {
             card.set_child_visible(false);
         });
 

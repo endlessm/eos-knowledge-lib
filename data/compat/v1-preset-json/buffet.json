@@ -12,7 +12,6 @@
                 "search": {
                     "type": "SearchBox"
                 },
-                "navigation": null,
                 "lightbox": {
                     "type": "LightboxModule",
                     "slots": {

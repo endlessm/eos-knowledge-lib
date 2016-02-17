@@ -25,12 +25,13 @@ describe('Hierarchical set module', function () {
         dispatcher = MockDispatcher.mock_default();
 
         factory = new MockFactory.MockFactory();
-        factory.add_named_mock('arrangement', Minimal.MinimalArrangement);
+        factory.add_named_mock('arrangement', Minimal.MinimalArrangement, {
+            'card-type': 'article-card',
+        });
         factory.add_named_mock('article-card', Minimal.MinimalCard);
         factory.add_named_mock('set-card', Minimal.MinimalCard);
         factory.add_named_mock('hierarchical', HierarchicalSetModule.HierarchicalSetModule, {
             'arrangement': 'arrangement',
-            'card-type': 'article-card',
             'set-card-type': 'set-card',
         });
         module = factory.create_named_module('hierarchical', {
@@ -46,7 +47,7 @@ describe('Hierarchical set module', function () {
     it('starts with an empty arrangement', function () {
         expect(arrangement).toBeDefined();
         expect(module).toHaveDescendant(arrangement);
-        expect(arrangement.get_models().length).toBe(0);
+        expect(arrangement.get_count()).toBe(0);
     });
 
     it('does not create a card widget at construct time', function () {
@@ -101,7 +102,7 @@ describe('Hierarchical set module', function () {
         });
 
         it('adds article cards when receiving article models', function () {
-            expect(arrangement.get_models().length).toBe(articles.length);
+            expect(arrangement.get_count()).toBe(articles.length);
         });
 
         it('clears all items but leaves title and arrangement', function () {

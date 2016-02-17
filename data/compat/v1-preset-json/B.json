@@ -23,11 +23,9 @@
                         }
                     }
                 },
-                "brand-page": null,
                 "home-page": "home-page",
                 "section-page": "section-page",
                 "search-page": "search-page",
-                "all-sets-page": null,
                 "article-page": "article-page"
             }
         },
@@ -132,9 +130,7 @@
                                     "type": "TextCard"
                                 }
                             }
-                        },
-                        "article-suggestions": null,
-                        "category-suggestions": null
+                        }
                     },
                     "properties": {
                         "message-valign": "center"
@@ -166,9 +162,7 @@
                                             "type": "TextCard"
                                         }
                                     }
-                                },
-                                "article-suggestions": null,
-                                "category-suggestions": null
+                                }
                             },
                             "properties": {
                                 "message-valign": "center"

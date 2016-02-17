@@ -126,7 +126,7 @@ const SearchModule = new Lang.Class({
         let dispatcher = Dispatcher.get_default();
         if (this._arrangement instanceof InfiniteScrolledWindow.InfiniteScrolledWindow) {
             this._arrangement.connect('need-more-content', () => {
-                if (this._arrangement.get_models().length >= this.max_children)
+                if (this._arrangement.get_count() >= this.max_children)
                     return;
                 dispatcher.dispatch({
                     action_type: Actions.NEED_MORE_SEARCH,
@@ -145,7 +145,7 @@ const SearchModule = new Lang.Class({
             case Actions.APPEND_SEARCH:
                 this._query = payload.query;
                 this._arrangement.fade_cards =
-                    (this._arrangement.get_models().length > 0);
+                    (this._arrangement.get_count() > 0);
                 this._arrangement.highlight_string(payload.query);
                 payload.models.forEach(this._add_card, this);
 
@@ -175,16 +175,17 @@ const SearchModule = new Lang.Class({
     // Module override
     get_slot_names: function () {
         return ['arrangement', 'article-suggestions', 'category-suggestions'];
+        // optional: article-suggestions, category-suggestions
     },
 
     _add_card: function (model) {
-        if (this._arrangement.get_models().length >= this.max_children)
+        if (this._arrangement.get_count() >= this.max_children)
             return;
         this._arrangement.add_model(model);
     },
 
     _finish_search: function (query) {
-        let count = this._arrangement.get_models().length;
+        let count = this._arrangement.get_count();
         if (count > 0) {
             this.visible_child_name = RESULTS_PAGE_NAME;
             this.get_style_context().remove_class(StyleClasses.NO_RESULTS);

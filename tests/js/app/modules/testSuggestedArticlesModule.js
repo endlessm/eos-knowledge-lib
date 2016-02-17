@@ -55,7 +55,7 @@ describe('Suggested articles module', function () {
             action_type: Actions.APPEND_SUGGESTED_ARTICLES,
             models: models,
         });
-        expect(arrangement.get_models().length).toBe(3);
+        expect(arrangement.get_count()).toBe(3);
         expect(factory.get_created_named_mocks('home-card').length).toBe(3);
     });
 
@@ -77,7 +77,7 @@ describe('Suggested articles module', function () {
             action_type: Actions.APPEND_SUGGESTED_ARTICLES,
             models: models,
         });
-        expect(arrangement.get_models().length).toBe(3);
+        expect(arrangement.get_count()).toBe(3);
         expect(factory.get_created_named_mocks('home-card').length).toBe(6);
     });
 

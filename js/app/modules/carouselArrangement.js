@@ -28,4 +28,10 @@ const CarouselArrangement = new Lang.Class({
     fade_card_in: function (card) {
         card.show_all();
     },
+
+    // FIXME: Order is ignored in this arrangement for now, because a stack
+    // effectively has no inherent ordering of pages. (Instead, we set the
+    // visible child directly.) If we added UI controls to this module for
+    // flipping through the pages in order, then we'd have to start paying
+    // attention to the order of cards.
 });

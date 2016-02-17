@@ -3,7 +3,6 @@ const Gtk = imports.gi.Gtk;
 Gtk.init(null);
 
 const Compliance = imports.tests.compliance;
-const ContentObjectModel = imports.search.contentObjectModel;
 const Minimal = imports.tests.minimal;
 const MockFactory = imports.tests.mockFactory;
 const TiledGridArrangement = imports.app.modules.tiledGridArrangement;
@@ -12,25 +11,23 @@ const Utils = imports.tests.utils;
 Compliance.test_arrangement_compliance(TiledGridArrangement.TiledGridArrangement);
 
 describe('Tiled grid arrangement', function () {
-    let arrangement, cards, factory;
+    let arrangement, factory;
 
     beforeEach(function () {
         factory = new MockFactory.MockFactory();
         factory.add_named_mock('card', Minimal.MinimalCard);
+        factory.add_named_mock('order', Minimal.CardCreateOrder);
         factory.add_named_mock('arrangement', TiledGridArrangement.TiledGridArrangement, {
             'card-type': 'card',
+            'order': 'order',
         });
         arrangement = factory.create_named_module('arrangement');
-        cards = [];
     });
 
     function add_cards(ncards) {
-        for (let ix = 0; ix < ncards; ix++) {
-            let model = new ContentObjectModel.ContentObjectModel();
-            arrangement.add_model(model);
-        }
-        cards = factory.get_created_named_mocks('card');
+        Minimal.add_ordered_cards(arrangement, ncards);
         Utils.update_gui();
+        return factory.get_created_named_mocks('card');
     }
 
     function check_card_placement(card, left, top, width, height) {
@@ -45,7 +42,7 @@ describe('Tiled grid arrangement', function () {
     }
 
     it('packs four cards as 2x2', function () {
-        add_cards(4);
+        let cards = add_cards(4);
         check_card_placement(cards[0], 0, 0, 1, 1);
         check_card_placement(cards[1], 1, 0, 1, 1);
         check_card_placement(cards[2], 0, 1, 1, 1);
@@ -53,7 +50,7 @@ describe('Tiled grid arrangement', function () {
     });
 
     it('packs six cards as 3x2', function () {
-        add_cards(6);
+        let cards = add_cards(6);
         check_card_placement(cards[0], 0, 0, 1, 1);
         check_card_placement(cards[1], 1, 0, 1, 1);
         check_card_placement(cards[2], 2, 0, 1, 1);
@@ -63,7 +60,7 @@ describe('Tiled grid arrangement', function () {
     });
 
     it('packs eight cards as 4x2', function () {
-        add_cards(8);
+        let cards = add_cards(8);
         check_card_placement(cards[0], 0, 0, 1, 1);
         check_card_placement(cards[1], 1, 0, 1, 1);
         check_card_placement(cards[2], 2, 0, 1, 1);

@@ -3,7 +3,6 @@
 const Gtk = imports.gi.Gtk;
 
 const Compliance = imports.tests.compliance;
-const ContentObjectModel = imports.search.contentObjectModel;
 const Minimal = imports.tests.minimal;
 const MockFactory = imports.tests.mockFactory;
 const Utils = imports.tests.utils;
@@ -19,8 +18,10 @@ describe('Windshield Arrangement', function () {
     beforeEach(function () {
         factory = new MockFactory.MockFactory();
         factory.add_named_mock('card', Minimal.MinimalCard);
+        factory.add_named_mock('order', Minimal.CardCreateOrder);
         factory.add_named_mock('arrangement', WindshieldArrangement.WindshieldArrangement, {
             'card-type': 'card',
+            'order': 'order',
         });
         arrangement = factory.create_named_module('arrangement');
     });
@@ -29,10 +30,7 @@ describe('Windshield Arrangement', function () {
         let win;
 
         beforeEach(function () {
-            for (let i = 0; i < 5; i++) {
-                let model = new ContentObjectModel.ContentObjectModel();
-                arrangement.add_model(model);
-            }
+            Minimal.add_ordered_cards(arrangement, 5);
             win = new Gtk.OffscreenWindow();
             win.add(arrangement);
             win.show_all();
@@ -47,7 +45,7 @@ describe('Windshield Arrangement', function () {
                 win.set_size_request(total_width, total_height);
                 Utils.update_gui();
 
-                let cards = factory.get_created_named_mocks('card').reverse();
+                let cards = factory.get_created_named_mocks('card');
                 cards.forEach((card, i) => {
                     if (i === 0) {
                         // FIXME: For now we're treating the first card as the

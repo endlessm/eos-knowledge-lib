@@ -1,5 +1,4 @@
 const GObject = imports.gi.GObject;
-const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const Module = imports.app.interfaces.module;
@@ -18,6 +17,7 @@ const MockFactory = new Lang.Class({
 
     create_named_module: function (name, props={}) {
         this._created_mocks[name] = this._created_mocks[name] || [];
+        let retval = null;
         if (this._mock_classes.hasOwnProperty(name)) {
             // Unlike the real factory, we allow creating things that are not
             // Modules in the mock factory, for convenience
@@ -29,11 +29,8 @@ const MockFactory = new Lang.Class({
             }
 
             Lang.copyProperties(this._mock_props[name], props);
-            let retval = new Klass(props);
-            this._created_mocks[name].push(retval);
-            return retval;
+            retval = new Klass(props);
         }
-        let retval = new Gtk.Label();
         this._created_mocks[name].push(retval);
         return retval;
     },

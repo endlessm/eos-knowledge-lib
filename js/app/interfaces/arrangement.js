@@ -101,6 +101,20 @@ const Arrangement = new Lang.Interface({
     },
 
     /**
+     * Method: get_count
+     * Count the card models in the arrangement
+     *
+     * This is a method for technical reasons, but it should be treated like a
+     * read-only property.
+     *
+     * Returns:
+     *   Number of card models in the arrangement
+     */
+    get_count: function () {
+        return this._models_by_id().size;
+    },
+
+    /**
      * Method: add_model
      * Add a card model to the arrangement
      *
@@ -126,7 +140,15 @@ const Arrangement = new Lang.Interface({
             });
         }
 
-        this.pack_card(card);
+        let order = this.get_order();
+        if (order) {
+            let models = this.get_models();
+            let position = models.indexOf(model);
+            this.pack_card(card, position);
+        } else {
+            this.pack_card(card);
+        }
+
         if (this.fade_cards)
             this.fade_card_in(card);
         else
@@ -159,7 +181,11 @@ const Arrangement = new Lang.Interface({
      * Get all card models in the arrangement
      */
     get_models: function () {
-        return [...this._models_by_id().values()];
+        let models = [...this._models_by_id().values()];
+        let order = this.get_order();
+        if (order)
+            models.sort(order.compare.bind(order));
+        return models;
     },
 
     /**
@@ -186,7 +212,7 @@ const Arrangement = new Lang.Interface({
     //
     // return Arrangement.get_slot_names(this).concat(['more', 'slots']);
     get_slot_names: function () {
-        return ['card-type'];
+        return ['card-type', 'order'];
     },
 
     /**
@@ -215,6 +241,17 @@ const Arrangement = new Lang.Interface({
         for (let card of this._cards_by_id().values()) {
             card.get_style_context().remove_class(StyleClasses.HIGHLIGHTED);
         }
+    },
+
+    /**
+     * Method: get_order
+     * Private method intended to be used from implementations
+     */
+    get_order: function () {
+        // null is a valid value for Order
+        if (typeof this._order_module === 'undefined')
+            this._order_module = this.create_submodule('order');
+        return this._order_module;
     },
 
     /**
@@ -248,9 +285,12 @@ const Arrangement = new Lang.Interface({
      *
      * Parameters:
      *   card - a <Card> implementation
+     *   position - an integer specifying in what order the card should be
+     *     packed, relative to other cards. -1 means "don't care".
      */
-    pack_card: function (card) {
+    pack_card: function (card, position=-1) {
         this.add(card);
+        void position;  // unused
     },
 
     /**

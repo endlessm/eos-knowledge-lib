@@ -46,6 +46,12 @@ const GridArrangement = new Lang.Class({
             GObject.BindingFlags.SYNC_CREATE);
         this.bind_property('spacing', this._flow_box, 'row-spacing',
             GObject.BindingFlags.SYNC_CREATE);
+
+        let order = this.get_order();
+        if (order) {
+            this._flow_box.set_sort_func((child1, child2) =>
+                order.compare(child1.get_child().model, child2.get_child().model));
+        }
     },
 
     // Arrangement override

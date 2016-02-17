@@ -20,8 +20,10 @@ describe('Thirties arrangement', function () {
     beforeEach(function () {
         factory = new MockFactory.MockFactory();
         factory.add_named_mock('card', Minimal.MinimalCard);
+        factory.add_named_mock('order', Minimal.CardCreateOrder);
         factory.add_named_mock('arrangement', ThirtiesArrangement.ThirtiesArrangement, {
             'card-type': 'card',
+            'order': 'order',
         });
         arrangement = factory.create_named_module('arrangement');
     });
@@ -41,10 +43,7 @@ describe('Thirties arrangement', function () {
         let win;
 
         beforeEach(function () {
-            for (let i = 0; i < 10; i++) {
-                let model = new ContentObjectModel.ContentObjectModel();
-                arrangement.add_model(model);
-            }
+            Minimal.add_ordered_cards(arrangement, 10);
             win = new Gtk.OffscreenWindow();
             win.add(arrangement);
             win.show_all();
@@ -64,7 +63,8 @@ describe('Thirties arrangement', function () {
                 win.set_size_request(arr_width, arr_height);
                 Utils.update_gui();
 
-                arrangement.get_children().forEach((card, i) => {
+                let cards = factory.get_created_named_mocks('card');
+                cards.forEach((card, i) => {
                     if (i < visible_children) {
                         expect(card.get_allocation().width).toBe(child_width);
                         expect(card.get_child_visible()).toBe(true);

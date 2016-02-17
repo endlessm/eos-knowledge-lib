@@ -1,10 +1,8 @@
 // Copyright 2015 Endless Mobile, Inc.
 
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Compliance = imports.tests.compliance;
-const ContentObjectModel = imports.search.contentObjectModel;
 const Minimal = imports.tests.minimal;
 const MockFactory = imports.tests.mockFactory;
 const SquareGuysArrangement = imports.app.modules.squareGuysArrangement;
@@ -84,8 +82,10 @@ function testSizingArrangementForDimensions(message, arr_width, arr_height, max_
     it(message + ' (' + arr_width + 'x' + arr_height + ')', function () {
         let factory = new MockFactory.MockFactory();
         factory.add_named_mock('card', Minimal.MinimalCard);
+        factory.add_named_mock('order', Minimal.CardCreateOrder);
         factory.add_named_mock('arrangement', SquareGuysArrangement.SquareGuysArrangement, {
             'card-type': 'card',
+            'order': 'order',
         }, {
             hexpand: false,
             valign: Gtk.Align.START,
@@ -93,22 +93,18 @@ function testSizingArrangementForDimensions(message, arr_width, arr_height, max_
             max_rows: max_rows,
         });
         let arrangement = factory.create_named_module('arrangement');
-        let win = new Gtk.OffscreenWindow();
+        Minimal.add_ordered_cards(arrangement, 8);
 
+        let win = new Gtk.OffscreenWindow();
         win.add(arrangement);
         win.set_size_request(arr_width, arr_height);
         win.show_all();
 
-        for (let i=0; i<8; i++) {
-            let model = new ContentObjectModel.ContentObjectModel();
-            arrangement.add_model(model);
-            arrangement.get_card_for_model(model).show_all();
-        }
-
         win.queue_resize();
         Utils.update_gui();
 
-        arrangement.get_children().forEach((card, i) => {
+        let cards = factory.get_created_named_mocks('card');
+        cards.forEach((card, i) => {
             if (i < visible_children) {
                 expect(card.get_allocation().width).toBe(child_width);
                 expect(card.get_allocation().height).toBe(child_height);

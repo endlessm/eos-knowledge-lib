@@ -3,7 +3,6 @@
 const Gtk = imports.gi.Gtk;
 
 const Compliance = imports.tests.compliance;
-const ContentObjectModel = imports.search.contentObjectModel;
 const Minimal = imports.tests.minimal;
 const MockFactory = imports.tests.mockFactory;
 const QuiltArrangement = imports.app.modules.quiltArrangement;
@@ -19,8 +18,10 @@ describe('Quilt arrangement', function () {
     beforeEach(function () {
         factory = new MockFactory.MockFactory();
         factory.add_named_mock('card', Minimal.MinimalCard);
+        factory.add_named_mock('order', Minimal.CardCreateOrder);
         factory.add_named_mock('arrangement', QuiltArrangement.QuiltArrangement, {
             'card-type': 'card',
+            'order': 'order',
         });
         arrangement = factory.create_named_module('arrangement');
     });
@@ -29,10 +30,7 @@ describe('Quilt arrangement', function () {
         let win;
 
         beforeEach(function () {
-            for (let i = 0; i < 5; i++) {
-                let model = new ContentObjectModel.ContentObjectModel();
-                arrangement.add_model(model);
-            }
+            Minimal.add_ordered_cards(arrangement, 5);
             win = new Gtk.OffscreenWindow();
             win.add(arrangement);
             win.show_all();
@@ -50,7 +48,7 @@ describe('Quilt arrangement', function () {
                 win.set_size_request(arr_width, arr_height);
                 Utils.update_gui();
 
-                let cards = factory.get_created_named_mocks('card').reverse();
+                let cards = factory.get_created_named_mocks('card');
                 cards.forEach((card, i) => {
                     if (i < visible_cards) {
                         if (i === 0) {

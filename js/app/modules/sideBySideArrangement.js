@@ -80,10 +80,11 @@ const SideBySideArrangement = new Lang.Class({
         this.parent(alloc);
 
         this._all_visible = true;
-        let all_cards = this.get_children();
 
-        if (all_cards.length === 0)
+        if (this.get_count() === 0)
             return;
+
+        let all_cards = this.get_models().map(this.get_card_for_model, this);
 
         let spacing = this._get_horizontal_spacing(alloc.width);
         let available_width = alloc.width;

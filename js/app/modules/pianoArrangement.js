@@ -96,7 +96,7 @@ const PianoArrangement = new Lang.Class({
 
     get all_visible() {
         this._support_cards_shown = this._calculate_support_cards_shown();
-        return this.get_children().length <= (1 + this._support_cards_shown);
+        return this.get_count() <= (1 + this._support_cards_shown);
     },
 
     // Arrangement override
@@ -131,9 +131,11 @@ const PianoArrangement = new Lang.Class({
     vfunc_size_allocate: function (alloc) {
         this.parent(alloc);
 
-        let all_children = this.get_children();
-        if (all_children.length === 0)
+        let count = this.get_count();
+        if (count === 0)
             return;
+
+        let all_cards = this.get_models().map(this.get_card_for_model, this);
 
         this._support_cards_shown = this._calculate_support_cards_shown();
         let available_width = alloc.width - this._spacing;
@@ -154,7 +156,7 @@ const PianoArrangement = new Lang.Class({
         // This should change to have a model with the featured flag added in
         // this spot, but for that we'd need the arrangement interface to
         // receive a model, instead of a widget in the "add" method.
-        let featured_card = all_children[0];
+        let featured_card = all_cards[0];
         this.place_card(featured_card, alloc.x, alloc.y, featured_width, featured_height);
 
         let x = alloc.x + featured_width + this._spacing;
@@ -162,7 +164,7 @@ const PianoArrangement = new Lang.Class({
 
         // Support cards:
         // Place support cards in a column to the right of the featured card
-        all_children.slice(1, this._support_cards_shown + 1).forEach((card, i) => {
+        all_cards.slice(1, this._support_cards_shown + 1).forEach((card, i) => {
             this.place_card(card, x, y, child_width, child_height);
 
             y += delta_y + (i < spare_pixels ? 1 : 0);
@@ -170,7 +172,7 @@ const PianoArrangement = new Lang.Class({
 
         // Additional cards:
         // Should not be visible!
-        all_children.slice(this._support_cards_shown + 1, all_children.length).forEach((card) => {
+        all_cards.slice(this._support_cards_shown + 1, count).forEach((card) => {
             card.set_child_visible(false);
         });
         Utils.set_container_clip(this);

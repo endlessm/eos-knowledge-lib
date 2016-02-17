@@ -32,18 +32,18 @@ describe('Encyclopedia Window', function () {
         factory = new MockFactory.MockFactory();
         factory.add_named_mock('home-page', Minimal.MinimalPage);
         factory.add_named_mock('search-page', Minimal.MinimalPage);
+        factory.add_named_mock('article-page', Minimal.MinimalPage);
         factory.add_named_mock('lightbox', Minimal.MinimalBinModule);
         factory.add_named_mock('window', EncyclopediaWindow.EncyclopediaWindow, {
             'home-page': 'home-page',
             'search-page': 'search-page',
+            'article-page': 'article-page',
             'lightbox': 'lightbox',
+        }, {
+            application: app,
         });
 
-        view = new EncyclopediaWindow.EncyclopediaWindow({
-            application: app,
-            factory: factory,
-            factory_name: 'window',
-        });
+        view = factory.create_named_module('window');
     });
 
     afterEach(function () {

@@ -88,7 +88,7 @@ function test_arrangement_compliance(ArrangementClass, extra_slots={}) {
 
             cards.forEach((card) =>
                 expect(arrangement).toHaveDescendant(card));
-            expect(arrangement.get_models().length).toBe(3);
+            expect(arrangement.get_count()).toBe(3);
         });
 
         it('by removing cards from the list', function () {
@@ -98,7 +98,7 @@ function test_arrangement_compliance(ArrangementClass, extra_slots={}) {
 
             cards.forEach((card) =>
                 expect(arrangement).not.toHaveDescendant(card));
-            expect(arrangement.get_models().length).toBe(0);
+            expect(arrangement.get_count()).toBe(0);
         });
 
         it('by being able to remove individual cards', function () {
@@ -107,7 +107,7 @@ function test_arrangement_compliance(ArrangementClass, extra_slots={}) {
             arrangement.remove_model(models[1]);
             Utils.update_gui();
 
-            expect(arrangement.get_models().length).toBe(2);
+            expect(arrangement.get_count()).toBe(2);
             expect(arrangement).toHaveDescendant(cards[0]);
             expect(arrangement).not.toHaveDescendant(cards[1]);
             expect(arrangement).toHaveDescendant(cards[2]);
@@ -118,6 +118,32 @@ function test_arrangement_compliance(ArrangementClass, extra_slots={}) {
 
             cards.forEach(card =>
                 expect(arrangement.get_models()).toContain(card.model));
+        });
+
+        it('by retrieving the models in sorted order', function () {
+            factory.add_named_mock('order', Minimal.CardCreateOrder);
+            let slots = {
+                'card-type': 'card',
+                'order': 'order',
+            };
+            for (let slot in extra_slots) {
+                factory.add_named_mock(slot, extra_slots[slot]);
+                slots[slot] = slot;
+            }
+            factory.add_named_mock('ordered-arrangement', ArrangementClass,
+                slots);
+            arrangement = factory.create_named_module('ordered-arrangement');
+
+            let models = [];
+            for (let ix = 5; ix > 0; ix--) {
+                let model = new ContentObjectModel.ContentObjectModel({
+                    title: ix.toString(),
+                });
+                arrangement.add_model(model);
+                models.push(model);
+            }
+
+            expect(arrangement.get_models()).toEqual(models.reverse());
         });
 
         it('by returning the card corresponding to a model', function () {

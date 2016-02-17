@@ -27,4 +27,11 @@ const OverflowArrangement = new Lang.Class({
     fade_card_in: function (card) {
         card.show_all();
     },
+
+    pack_card: function (card, position=-1) {
+        if (position === -1)
+            this.add(card);
+        else
+            this.insert(card, position);
+    },
 });
