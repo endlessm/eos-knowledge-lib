@@ -14,6 +14,7 @@
     <file compressed="true">data/css/endless_buffet.css</file>
     <file compressed="true">data/css/hide_title.css</file>
     <file compressed="true">data/css/mediaCard.css</file>
+    <file compressed="true">data/css/news.css</file>
     <file compressed="true">data/css/lightbox.css</file>
     <file compressed="true">data/css/no_image_links.css</file>
     <file compressed="true">data/css/themes/jungle.css</file>
@@ -45,6 +46,7 @@
     <file compressed="true">data/templates/js/jquery-min.js</file>
     <file compressed="true">data/templates/js/no-link-remover.js</file>
     <file compressed="true">data/templates/js/scroll-manager.js</file>
+    <file compressed="true" preprocess="xml-stripblanks">data/widgets/allTypeCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/appBanner.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/articleSnippetCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/backCover.ui</file>
@@ -102,6 +104,7 @@
     <file>js/app/libs/mustache.js</file>
     <file>js/app/moduleFactory.js</file>
     <file>js/app/modules/aisleInteraction.js</file>
+    <file>js/app/modules/allTypeCard.js</file>
     <file>js/app/modules/alphabeticalOrder.js</file>
     <file>js/app/modules/appBanner.js</file>
     <file>js/app/modules/articleSnippetCard.js</file>
