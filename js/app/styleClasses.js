@@ -291,6 +291,13 @@ const DOCUMENT_CARD_TOOLBAR_FRAME = 'document-card-toolbar-frame';
 const SEARCH_BOX = 'search-box';
 
 /**
+ * Constant: SUGGESTED_ARTICLES
+ *
+ * Matches the suggested articles module.
+ */
+const SUGGESTED_ARTICLES = 'suggested-articles';
+
+/**
  * Constant: CARD_CONTAINER
  *
  * Matches the horizontal card container.

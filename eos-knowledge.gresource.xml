@@ -72,7 +72,6 @@
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/sequenceCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/sideMenuTemplate.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/standaloneBanner.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">data/widgets/suggestedArticlesModule.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/suggestedCategoriesModule.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/textCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/thumbCard.ui</file>
