@@ -56,7 +56,7 @@ describe('Dispatcher', function () {
             dispatcher.dispatch({
                 action_type: 'foo',
             });
-            setTimeout(() => {
+            GLib.idle_add(GLib.PRIORITY_LOW, () => {
                 expect(spy).not.toHaveBeenCalled();
                 done();
             });
