@@ -40,9 +40,7 @@ let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
  * Slots:
  *   large-arrangement - large arrangement to display cards in
  *   small-arrangement - smaller arrangement to display cards in
- *   card-type - type of cards to create for articles
  *   header-card-type - type of cards to create for sets
- *   large-card-type - type of cards to create in the lower large-arrangement
  */
 const HighlightsModule = new Lang.Class({
     Name: 'HighlightsModule',
@@ -75,11 +73,11 @@ const HighlightsModule = new Lang.Class({
                     Utils.shuffle(models, models.map(GLib.random_double));
                     this._sets = models.slice(0, 3);
                     if (this._sets.length > 0)
-                        this._create_set(this._sets[0], 'large-arrangement', 'card-type', false);
+                        this._create_set(this._sets[0], 'large-arrangement', false);
                     if (this._sets.length > 1)
-                        this._create_set(this._sets[1], 'small-arrangement', 'card-type', true);
+                        this._create_set(this._sets[1], 'small-arrangement', true);
                     if (this._sets.length > 2)
-                        this._create_set(this._sets[2], 'large-arrangement', 'large-card-type', true);
+                        this._create_set(this._sets[2], 'large-arrangement', true);
                     this._send_sets_to_filter();
                     break;
             }
@@ -117,7 +115,7 @@ const HighlightsModule = new Lang.Class({
 
     // Load all articles referenced by the shown arrangements in order to
     // populate the arrangements with them. This happens after APPEND_SETS.
-    _create_set: function (set, arrangement_slot, card_slot, add_header) {
+    _create_set: function (set, arrangement_slot, add_header) {
         if (add_header) {
             this._add_set_card(set);
 
@@ -129,7 +127,6 @@ const HighlightsModule = new Lang.Class({
             separator.get_style_context().add_class(Gtk.STYLE_CLASS_SEPARATOR);
             this.add(separator);
         }
-
 
         let arrangement = this.create_submodule(arrangement_slot, {
             vexpand: true,
