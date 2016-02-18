@@ -53,7 +53,25 @@ const Order = new Lang.Interface({
      *   A value greater than 0 if @right should sort before @left.
      */
     compare: function (left, right) {
-        return (this.ascending ? 1 : -1) * this.compare_impl(left, right);
+        let result = this.compare_impl(left, right);
+        if (result === 0 && this._get_sub_order())
+            result = this._sub_order.compare(left, right);
+        return (this.ascending ? 1 : -1) * result;
+    },
+
+    _get_sub_order: function () {
+        // null is a valid value for sub-order
+        if (typeof this._sub_order === 'undefined')
+            this._sub_order = this.create_submodule('sub-order');
+        return this._sub_order;
+    },
+
+    // Module override
+    // If you want to override this again in your implementation, do like so:
+    //
+    // return Order.get_slot_names(this).concat(['more', 'slots']);
+    get_slot_names: function () {
+        return ['sub-order'];
     },
 
     /**
