@@ -2,13 +2,17 @@
 
 /* exported SupplementaryArticlesModule */
 
+const Gettext = imports.gettext;
 const GObject = imports.gi.GObject;
-const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const Actions = imports.app.actions;
+const Config = imports.app.config;
 const Dispatcher = imports.app.dispatcher;
 const Module = imports.app.interfaces.module;
+const CardContainer = imports.app.modules.cardContainer;
+
+let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
 /**
  * Class: SupplementaryArticlesModule
@@ -22,7 +26,7 @@ const Module = imports.app.interfaces.module;
 const SupplementaryArticlesModule = new Lang.Class({
     Name: 'SupplementaryArticlesModule',
     GTypeName: 'EknSupplementaryArticlesModule',
-    Extends: Gtk.Grid,
+    Extends: CardContainer.CardContainer,
     Implements: [ Module.Module ],
 
     Properties: {
@@ -38,25 +42,15 @@ const SupplementaryArticlesModule = new Lang.Class({
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, true),
     },
 
-    Template: 'resource:///com/endlessm/knowledge/data/widgets/supplementaryArticlesModule.ui',
-
     _init: function (props={}) {
+        props.title = _("Other News");
         this.parent(props);
-        let arrangement = this.create_submodule('arrangement');
-        arrangement.connect('card-clicked', (arrangement, model) => {
-            Dispatcher.get_default().dispatch({
-                action_type: Actions.ITEM_CLICKED,
-                model: model,
-                context: arrangement.get_models(),
-            });
-        });
-        this.attach(arrangement, 0, 1, 2, 1);
 
         let dispatcher = Dispatcher.get_default();
         dispatcher.register((payload) => {
             switch(payload.action_type) {
                 case Actions.CLEAR_SUPPLEMENTARY_ARTICLES:
-                    arrangement.clear();
+                    this.arrangement.clear();
                     break;
                 case Actions.APPEND_SUPPLEMENTARY_ARTICLES:
                     if (payload.same_set !== this.same_set)
@@ -73,7 +67,8 @@ const SupplementaryArticlesModule = new Lang.Class({
                             need_unread: false,
                         });
                     }
-                    payload.models.forEach(arrangement.add_model, arrangement);
+                    payload.models.forEach(this.arrangement.add_model, this.arrangement);
+                    this.see_more_button.visible = !this.arrangement.all_visible;
                     break;
             }
         });

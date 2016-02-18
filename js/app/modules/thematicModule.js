@@ -7,7 +7,6 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const Actions = imports.app.actions;
-const CardContainer = imports.app.interfaces.cardContainer;
 const Dispatcher = imports.app.dispatcher;
 const Engine = imports.search.engine;
 const Module = imports.app.interfaces.module;
@@ -45,8 +44,7 @@ const ThematicModule = new Lang.Class({
     Name: 'ThematicModule',
     GTypeName: 'EknThematicModule',
     Extends: Gtk.Grid,
-    Implements: [ Module.Module, Scrollable.Scrollable,
-        CardContainer.CardContainer ],
+    Implements: [ Module.Module, Scrollable.Scrollable ],
 
     Properties: {
         'factory': GObject.ParamSpec.override('factory', Module.Module),
