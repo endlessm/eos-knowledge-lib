@@ -94,10 +94,16 @@ describe('Reader window', function () {
 
     it('throws an error when out of bounds pages are accessed', function () {
         expect(function () {
-            view.show_article_page(400, true);
+            dispatcher.dispatch({
+                action_type: Actions.SHOW_ARTICLE_PAGE,
+                index: 400,
+            });
         }).toThrow();
         expect(function () {
-            view.show_article_page(2, true);
+            dispatcher.dispatch({
+                action_type: Actions.SHOW_ARTICLE_PAGE,
+                index: 2,
+            });
         }).not.toThrow();
     });
 
@@ -107,7 +113,10 @@ describe('Reader window', function () {
     });
 
     it('enables navigation on an article page', function () {
-        view.show_article_page(2, EosKnowledgePrivate.LoadingAnimationType.FORWARDS_NAVIGATION);
+        dispatcher.dispatch({
+            action_type: Actions.SHOW_ARTICLE_PAGE,
+            index: 2,
+        });
         let payload = dispatcher.last_payload_with_type(Actions.NAV_BACK_ENABLED_CHANGED);
         expect(payload.enabled).toBe(true);
         payload = dispatcher.last_payload_with_type(Actions.NAV_FORWARD_ENABLED_CHANGED);
@@ -116,10 +125,7 @@ describe('Reader window', function () {
 
     it('disables navigation on standalone page', function () {
         dispatcher.dispatch({
-            action_type: Actions.SHOW_ARTICLE,
-            model: new ContentObjectModel.ContentObjectModel(),
-            archived: true,
-            from_global_search: false,
+            action_type: Actions.SHOW_STANDALONE_PAGE,
         });
         let payload = dispatcher.last_payload_with_type(Actions.NAV_BACK_ENABLED_CHANGED);
         expect(payload.enabled).toBe(false);
@@ -129,9 +135,14 @@ describe('Reader window', function () {
 
     it('disables the home button when in the front page', function () {
         expect(view._home_button).toBeDefined();
-        view.show_article_page(1);
+        dispatcher.dispatch({
+            action_type: Actions.SHOW_ARTICLE_PAGE,
+            index: 1,
+        });
         expect(view._home_button.sensitive).toBe(true);
-        view.show_front_page();
+        dispatcher.dispatch({
+            action_type: Actions.SHOW_FRONT_PAGE,
+        });
         expect(view._home_button.sensitive).toBe(false);
     });
 
@@ -143,13 +154,13 @@ describe('Reader window', function () {
     });
 
     it('ensures visible page updates with show_*_page functions', function () {
-        view.show_article_page(1);
+        dispatcher.dispatch({
+            action_type: Actions.SHOW_ARTICLE_PAGE,
+            index: 1,
+        });
         expect(view.article_pages_visible()).toBe(true);
         dispatcher.dispatch({
-            action_type: Actions.SHOW_ARTICLE,
-            model: new ContentObjectModel.ContentObjectModel(),
-            archived: true,
-            from_global_search: false,
+            action_type: Actions.SHOW_ARCHIVE_PAGE,
         });
         expect(view.article_pages_visible()).toBe(false);
     });
@@ -197,8 +208,7 @@ describe('Reader window', function () {
         // Is this an implementation detail of the container?
         expect(standalone_page.get_child_visible()).toBeFalsy();
         dispatcher.dispatch({
-            action_type: Actions.SHOW_STANDALONE_PREVIEW,
-            model: new ContentObjectModel.ContentObjectModel(),
+            action_type: Actions.SHOW_STANDALONE_PAGE,
         });
         Utils.update_gui();
         expect(standalone_page.get_child_visible()).toBeTruthy();

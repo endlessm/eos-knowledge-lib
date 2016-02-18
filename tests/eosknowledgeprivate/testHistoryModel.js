@@ -183,6 +183,15 @@ describe('History model', function () {
             expect(notify).toHaveBeenCalledWith('forward-list');
         });
 
+        it('ignores go_back when at beginning of history', function () {
+            model.current_item = model.get_item(-2);
+            expect(model.current_item).toEqual(jasmine.objectContaining(SOUR_CREAM));
+            notify.calls.reset();
+            model.go_back();
+            expect(model.current_item).toEqual(jasmine.objectContaining(SOUR_CREAM));
+            expect(notify).not.toHaveBeenCalledWith('current-item');
+        });
+
         it('navigates forwards to the correct state', function () {
             model.go_forward();
             expect(model.current_item).toEqual(jasmine.objectContaining(BUTTER));
@@ -204,6 +213,15 @@ describe('History model', function () {
             expect(notify).not.toHaveBeenCalledWith('can-go-forward');
             expect(notify).toHaveBeenCalledWith('back-list');
             expect(notify).toHaveBeenCalledWith('forward-list');
+        });
+
+        it('ignores go_forward when at the end of history', function () {
+            model.current_item = model.get_item(2);
+            expect(model.current_item).toEqual(jasmine.objectContaining(BACON));
+            notify.calls.reset();
+            model.go_forward();
+            expect(model.current_item).toEqual(jasmine.objectContaining(BACON));
+            expect(notify).not.toHaveBeenCalledWith('current-item');
         });
 
         it('jumps to what is already the current item', function () {

@@ -148,14 +148,22 @@ const ReaderWindow = new Lang.Class({
                 case Actions.SET_READY:
                     this.set_busy(false);
                     break;
-                case Actions.SHOW_ARTICLE:
-                    // FIXME: We currently only pay attention if archived=true.
-                    // For further modularization, AisleInteraction._go_to_page
-                    // should be handled here in the archived=false case.
-                    if (payload.archived)
-                        this._show_archive_page();
+                case Actions.SHOW_FRONT_PAGE:
+                    this._show_front_page(payload.animation_type);
                     break;
-                case Actions.SHOW_STANDALONE_PREVIEW:
+                case Actions.SHOW_BACK_PAGE:
+                    this._show_back_page(payload.animation_type);
+                    break;
+                case Actions.SHOW_ARTICLE_PAGE:
+                    this._show_article_page(payload.index, payload.animation_type);
+                    break;
+                case Actions.SHOW_SEARCH_PAGE:
+                    this._show_search_page();
+                    break;
+                case Actions.SHOW_ARCHIVE_PAGE:
+                    this._show_archive_page();
+                    break;
+                case Actions.SHOW_STANDALONE_PAGE:
                     this._show_standalone_page();
                     break;
             }
@@ -220,8 +228,10 @@ const ReaderWindow = new Lang.Class({
         this._stack.connect('notify::transition-running', () => {
             if (this._stack.transition_running) {
                 this.get_style_context().add_class(StyleClasses.ANIMATING);
+                dispatcher.pause();
             } else {
                 this.get_style_context().remove_class(StyleClasses.ANIMATING);
+                dispatcher.resume();
             }
         });
         this._stack.connect('notify::visible-child', () => this._update_nav_button_visibility());
@@ -305,12 +315,12 @@ const ReaderWindow = new Lang.Class({
         this._stack.set_visible_child(this._archive_page);
     },
 
-    show_search_page: function () {
+    _show_search_page: function () {
         this._stack.set_transition_type(Gtk.StackTransitionType.CROSSFADE);
         this._stack.set_visible_child(this._search_page);
     },
 
-    show_article_page: function (index, animation_type) {
+    _show_article_page: function (index, animation_type) {
         this._set_stack_transition(animation_type, true);
         let page = this._article_pages[index];
         page.show();
@@ -318,13 +328,13 @@ const ReaderWindow = new Lang.Class({
         this._arrangement.set_visible_child(page);
     },
 
-    show_front_page: function (animation_type) {
+    _show_front_page: function (animation_type) {
         this._set_stack_transition(animation_type);
         this._front_page.show();
         this._stack.set_visible_child(this._front_page);
     },
 
-    show_back_page: function (animation_type) {
+    _show_back_page: function (animation_type) {
         this._set_stack_transition(animation_type);
         this._back_page.show();
         this._stack.set_visible_child(this._back_page);

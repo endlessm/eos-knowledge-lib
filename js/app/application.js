@@ -111,7 +111,7 @@ const Application = new Lang.Class({
     },
 
     vfunc_shutdown: function () {
-        Dispatcher.get_default().stop();
+        Dispatcher.get_default().pause();
         this.parent();
     },
 });

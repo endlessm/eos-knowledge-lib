@@ -14,7 +14,7 @@ describe('Dispatcher', function () {
     });
 
     afterEach(function () {
-        dispatcher.stop();
+        dispatcher.reset();
     });
 
     it('get_default always returns the same dispatcher', function () {
@@ -107,16 +107,49 @@ describe('Dispatcher', function () {
         });
     });
 
-    // Spying on GLib.source_remove and expecting the idle source to be added
-    // as a consequence of dispatch() is unfortunately an implementation detail.
-    it('does not stop twice if calling stop() twice', function () {
-        spyOn(GLib, 'source_remove').and.callThrough();
-        let dispatcher = new Dispatcher.Dispatcher();
-        dispatcher.dispatch({
-            action_type: 'foo',
+    describe('pausing and resuming', function () {
+        it('does not dispatch payloads when paused', function (done) {
+            let spy = jasmine.createSpy();
+            dispatcher.register(spy);
+            dispatcher.pause();
+            dispatcher.dispatch({
+                action_type: 'foo',
+            });
+            GLib.idle_add(GLib.PRIORITY_LOW, () => {
+                expect(spy).not.toHaveBeenCalled();
+                done();
+            });
         });
-        dispatcher.stop();
-        dispatcher.stop();
-        expect(GLib.source_remove.calls.count()).toEqual(1);
+
+        it('handles multiple pause calls without issue', function (done) {
+            let spy = jasmine.createSpy();
+            dispatcher.register(spy);
+            dispatcher.pause();
+            dispatcher.pause();
+            dispatcher.dispatch({
+                action_type: 'foo',
+            });
+            GLib.idle_add(GLib.PRIORITY_LOW, () => {
+                expect(spy).not.toHaveBeenCalled();
+                done();
+            });
+        });
+
+        it('dispatches all paused payloads after resuming', function (done) {
+            function check_finished () {
+                if (spy.calls.count() === 2)
+                    done();
+            }
+            let spy = jasmine.createSpy().and.callFake(check_finished);
+            dispatcher.register(spy);
+            dispatcher.pause();
+            dispatcher.dispatch({
+                action_type: 'foo',
+            });
+            dispatcher.dispatch({
+                action_type: 'bar',
+            });
+            dispatcher.resume();
+        });
     });
 });

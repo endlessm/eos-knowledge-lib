@@ -78,6 +78,15 @@ const ThematicModule = new Lang.Class({
                     break;
             }
         });
+
+        this._arrangement_update_functions = [];
+        this._ui_frozen = false;
+        this.connect('hierarchy-changed', () => {
+            this.get_toplevel().connect('notify::animating', (toplevel) => {
+                this._ui_frozen = toplevel.animating;
+                this._update_arrangements();
+            });
+        });
     },
 
     // Module override
@@ -108,14 +117,26 @@ const ThematicModule = new Lang.Class({
             if (results.length === 0) {
                 this.show_more_content();
             } else {
-                results.forEach(arrangement.add_model, arrangement);
-                arrangement.visible = true;
-                Dispatcher.get_default().dispatch({
-                    action_type: Actions.CONTENT_ADDED,
-                    scroll_server: this.scroll_server,
-                });
+                this._arrangement_update_functions.push(() => { this._pack_arrangement(arrangement, results); });
+                this._update_arrangements();
             }
         });
+    },
+
+    _pack_arrangement: function (arrangement, models) {
+        models.forEach(arrangement.add_model, arrangement);
+        arrangement.visible = true;
+        Dispatcher.get_default().dispatch({
+            action_type: Actions.CONTENT_ADDED,
+            scroll_server: this.scroll_server,
+        });
+    },
+
+    _update_arrangements: function () {
+        if (this._ui_frozen)
+            return;
+        this._arrangement_update_functions.map(fn => fn());
+        this._arrangement_update_functions = [];
     },
 
     _show_set: function (model) {
@@ -202,6 +223,7 @@ const ThematicModule = new Lang.Class({
         this._arrangements = [];
         this._featured_arrangements = [];
         this._non_featured_arrangements = [];
+        this._arrangement_update_functions = [];
         this._sets = [];
     },
 

@@ -41,9 +41,6 @@ const StandalonePage = new Lang.Class({
                     if (payload.archived)
                         this._display_model(payload.model);
                     break;
-                case Actions.SHOW_STANDALONE_PREVIEW:
-                    this._display_model(payload.model);
-                    break;
             }
         });
     },

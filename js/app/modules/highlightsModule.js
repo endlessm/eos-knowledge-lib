@@ -84,6 +84,15 @@ const HighlightsModule = new Lang.Class({
                     break;
             }
         });
+
+        this._arrangement_update_functions = [];
+        this._ui_frozen = false;
+        this.connect('hierarchy-changed', () => {
+            this.get_toplevel().connect('notify::animating', (toplevel) => {
+                this._ui_frozen = toplevel.animating;
+                this._update_arrangements();
+            });
+        });
     },
 
     // Module override
@@ -146,16 +155,28 @@ const HighlightsModule = new Lang.Class({
                 [models, get_more] = engine.get_objects_by_query_finish(res);
             } catch (e) {
                 logError(e, 'Failed to load articles from database');
-                this._finish_load();
+                this._arrangement_loaded();
                 return;
             }
 
-            models.forEach(arrangement.add_model, arrangement);
-            this._finish_load();
+            this._arrangement_update_functions.push(() => { this._pack_arrangement(arrangement, models); });
+            this._update_arrangements();
         });
     },
 
-    _finish_load: function () {
+    _pack_arrangement: function (arrangement, models) {
+        models.forEach(arrangement.add_model, arrangement);
+        this._arrangement_loaded();
+    },
+
+    _update_arrangements: function () {
+        if (this._ui_frozen)
+            return;
+        this._arrangement_update_functions.map(fn => fn());
+        this._arrangement_update_functions = [];
+    },
+
+    _arrangement_loaded: function () {
         this._loaded_sets++;
         if (this._loaded_sets < this._sets.length)
             return;
@@ -167,6 +188,7 @@ const HighlightsModule = new Lang.Class({
 
     _clear_all: function () {
         this.get_children().forEach(this.remove, this);
+        this._arrangement_update_fns = [];
         this._sets = [];
         this._loaded_sets = 0;
     },

@@ -309,6 +309,19 @@ describe('Mesh interaction', function () {
             expect(dispatcher.last_payload_with_type(Actions.SHOW_SEARCH_PAGE)).toBeDefined();
         });
 
+        it('dispatches search started before showing the search page', function () {
+            dispatcher.dispatch({
+                action_type: Actions.SEARCH_TEXT_ENTERED,
+                query: query,
+            });
+            let payload_actions = dispatcher.dispatched_payloads.map((payload) => payload.action_type);
+            let started_index = payload_actions.indexOf(Actions.SEARCH_STARTED);
+            let show_page_index = payload_actions.indexOf(Actions.SHOW_SEARCH_PAGE);
+            expect(started_index).not.toBe(-1);
+            expect(show_page_index).not.toBe(-1);
+            expect(started_index).toBeLessThan(show_page_index);
+        });
+
         it('records a metric', function () {
             dispatcher.dispatch({
                 action_type: Actions.SEARCH_TEXT_ENTERED,

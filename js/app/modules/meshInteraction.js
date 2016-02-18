@@ -200,11 +200,11 @@ const MeshInteraction = new Lang.Class({
         let search_text = '';
         switch (item.page_type) {
             case this.SEARCH_PAGE:
+                search_text = item.query;
+                this._update_search_results(item);
                 dispatcher.dispatch({
                     action_type: Actions.SHOW_SEARCH_PAGE,
                 });
-                search_text = item.query;
-                this._update_search_results(item);
                 break;
             case this.SECTION_PAGE:
                 this._update_set_results(item, () => {
