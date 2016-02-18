@@ -1,10 +1,11 @@
 // Copyright 2016 Endless Mobile, Inc.
 
-const FeaturedOrder = imports.app.modules.featuredOrder;
 const ContentObjectModel = imports.search.contentObjectModel;
+const FeaturedOrder = imports.app.modules.featuredOrder;
+const MockFactory = imports.tests.mockFactory;
 
 describe('Featured order', function () {
-    let order, models;
+    let order, models, factory;
 
     const UNSORTED = [
         false,
@@ -29,7 +30,9 @@ describe('Featured order', function () {
 
     describe('ascending', function () {
         beforeEach(function () {
-            order = new FeaturedOrder.FeaturedOrder();
+            factory = new MockFactory.MockFactory();
+            factory.add_named_mock('order', FeaturedOrder.FeaturedOrder);
+            order = factory.create_named_module('order');
         });
 
         it('is the default', function () {
@@ -44,9 +47,11 @@ describe('Featured order', function () {
 
     describe('descending', function () {
         beforeEach(function () {
-            order = new FeaturedOrder.FeaturedOrder({
+            factory = new MockFactory.MockFactory();
+            factory.add_named_mock('order', FeaturedOrder.FeaturedOrder, {}, {
                 ascending: false,
             });
+            order = factory.create_named_module('order');
         });
 
         it('sorts models by placing non-featured before featured', function () {

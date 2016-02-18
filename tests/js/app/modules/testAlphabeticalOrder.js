@@ -2,15 +2,16 @@
 
 const AlphabeticalOrder = imports.app.modules.alphabeticalOrder;
 const ContentObjectModel = imports.search.contentObjectModel;
+const MockFactory = imports.tests.mockFactory;
 
 describe('Alphabetical order', function () {
-    let order, models;
+    let order, models, factory;
 
     const UNSORTED_TITLES = ['Frilled shark', 'Goldfish', 'Squid',
         'Pistol shrimp', 'Jellyfish', 'Ocelot', 'Aardvark', 'Fruit bat',
-        'Kangaroo'];
+        'Kangaroo', 'Jellyfish'];
     const SORTED_TITLES = ['Aardvark', 'Frilled shark', 'Fruit bat', 'Goldfish',
-        'Jellyfish', 'Kangaroo', 'Ocelot', 'Pistol shrimp', 'Squid'];
+        'Jellyfish', 'Jellyfish', 'Kangaroo', 'Ocelot', 'Pistol shrimp', 'Squid'];
 
     beforeEach(function () {
         models = UNSORTED_TITLES.map(title =>
@@ -19,7 +20,9 @@ describe('Alphabetical order', function () {
 
     describe('ascending', function () {
         beforeEach(function () {
-            order = new AlphabeticalOrder.AlphabeticalOrder();
+            factory = new MockFactory.MockFactory();
+            factory.add_named_mock('order', AlphabeticalOrder.AlphabeticalOrder);
+            order = factory.create_named_module('order');
         });
 
         it('is the default', function () {
@@ -34,9 +37,11 @@ describe('Alphabetical order', function () {
 
     describe('descending', function () {
         beforeEach(function () {
-            order = new AlphabeticalOrder.AlphabeticalOrder({
+            factory = new MockFactory.MockFactory();
+            factory.add_named_mock('order', AlphabeticalOrder.AlphabeticalOrder, {}, {
                 ascending: false,
             });
+            order = factory.create_named_module('order');
         });
 
         it('sorts models by title', function () {
