@@ -243,8 +243,8 @@ subst_files = \
 	$(NULL)
 
 $(subst_files): %: %.in Makefile
-	$(MKDIR_P) $(@D)
-	$(AM_V_GEN)$(subst) $< > $@
+	$(AM_V_GEN)$(MKDIR_P) $(@D) && \
+	$(subst) $< > $@
 
 CLEANFILES += $(subst_files)
 EXTRA_DIST += $(patsubst %,%.in,$(subst_files))
