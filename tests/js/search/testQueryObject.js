@@ -6,26 +6,33 @@ describe('QueryObject', function () {
         let ids = ['ekn://busters-es/0123456789012345',
                    'ekn://busters-es/fabaffacabacbafa'];
         let tags = ['Venkman', 'Stantz'];
+        let child_tags = ['ghosts', 'ghouls'];
         let query_obj = new QueryObject.QueryObject({
             ids: ids,
             tags: tags,
+            child_tags: child_tags,
         });
         expect(ids).toEqual(query_obj.ids);
         expect(tags).toEqual(query_obj.tags);
+        expect(child_tags).toEqual(query_obj.child_tags);
     });
 
     it('makes a deep copy of arrays passed into it', function () {
         let ids = ['ekn://busters-es/0123456789012345',
                    'ekn://busters-es/fabaffacabacbafa'];
         let tags = ['Venkman', 'Stantz'];
+        let child_tags = ['ghosts', 'ghouls'];
         let query_obj = new QueryObject.QueryObject({
             ids: ids,
             tags: tags,
+            child_tags: child_tags,
         });
         ids = ids.concat(['ekn://busters-es/0123456789abcdef']);
         delete tags[1];
+        delete child_tags[1];
         expect(query_obj.ids).not.toEqual(ids);
         expect(query_obj.tags).not.toEqual(tags);
+        expect(query_obj.child_tags).not.toEqual(child_tags);
     });
 
     describe('new_from_object constructor', function () {
@@ -219,13 +226,23 @@ describe('QueryObject', function () {
             expect(result).toMatch('tag:"cats" OR tag:"dogs" OR tag:"turtles"');
         });
 
+        it('contains child tags from query object', function () {
+            let query_obj = new QueryObject.QueryObject({
+                child_tags: ['kittens', 'puppies', 'hatchlings'],
+            });
+            let result = query_obj.get_query_parser_string(query_obj);
+            expect(result).toMatch('child_tag:"kittens" OR child_tag:"puppies" OR child_tag:"hatchlings"');
+        });
+
         it('joins tags with AND for tag-match all', function () {
             let query_obj = new QueryObject.QueryObject({
                 tags: ['cats', 'dogs', 'turtles'],
+                child_tags: ['kittens', 'puppies', 'hatchlings'],
                 tag_match: QueryObject.QueryObjectTagMatch.ALL,
             });
             let result = query_obj.get_query_parser_string(query_obj);
             expect(result).toMatch('tag:"cats" AND tag:"dogs" AND tag:"turtles"');
+            expect(result).toMatch('child_tag:"kittens" AND child_tag:"puppies" AND child_tag:"hatchlings"');
         });
 
         it('should surround multiword tags in quotes', function () {

@@ -13,6 +13,7 @@ GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.
 const _XAPIAN_PREFIX_EXACT_TITLE = 'exact_title:';
 const _XAPIAN_PREFIX_ID = 'id:';
 const _XAPIAN_PREFIX_TAG = 'tag:';
+const _XAPIAN_PREFIX_CHILD_TAG = 'child_tag:';
 const _XAPIAN_PREFIX_TITLE = 'title:';
 
 // Xapian QueryParser operators
@@ -221,6 +222,15 @@ const QueryObject = Lang.Class({
                 writable: false,
             },
             /**
+             * Property: child_tags
+             *
+             * A list of child_tags to restrict the search to.
+             */
+            'child_tags': {
+                value: props.child_tags ? props.child_tags.slice(0) : [],
+                writable: false,
+            },
+            /**
              * Property: ids
              *
              * A list of specific ekn ids to limit the search to. Can be used with
@@ -250,6 +260,7 @@ const QueryObject = Lang.Class({
             },
         });
         delete props.tags;
+        delete props.child_tags;
         delete props.ids;
         delete props.excluded_ids;
         delete props.excluded_tags;
@@ -352,12 +363,12 @@ const QueryObject = Lang.Class({
         return clauses.map(Utils.parenthesize).join(_XAPIAN_OP_OR);
     },
 
-    _tags_clause: function () {
-        // Tag lists should be joined as a series of individual tag queries
-        // joined by ORs, so an article that has any of the tags will match
-        // e.g. [foo,bar,baz] => 'K:foo OR K:bar OR K:baz'
-        let prefixed_tags = this.tags.map(Utils.quote).map((tag) => {
-            return _XAPIAN_PREFIX_TAG + tag;
+    _tags_clause: function (tags, xapian_prefix) {
+        // Tag lists should be joined as a series of individual tag queries.
+        // The tags will either be conjoined by an OR operator (ANY), or an
+        // AND operator (ALL), depending on the value set for QueryObjectTagMatch.
+        let prefixed_tags = tags.map(Utils.quote).map((tag) => {
+            return xapian_prefix + tag;
         });
         let join_op = this.tag_match === QueryObjectTagMatch.ANY ? _XAPIAN_OP_OR : _XAPIAN_OP_AND;
         return prefixed_tags.join(join_op);
@@ -404,7 +415,8 @@ const QueryObject = Lang.Class({
     get_query_parser_string: function () {
         let clauses = [];
         clauses.push(this._query_clause());
-        clauses.push(this._tags_clause());
+        clauses.push(this._tags_clause(this.tags, _XAPIAN_PREFIX_TAG));
+        clauses.push(this._tags_clause(this.child_tags, _XAPIAN_PREFIX_CHILD_TAG));
         clauses.push(this._blacklist_clause());
         clauses.push(this._ids_clause());
         return clauses.filter((c) => c).map(Utils.parenthesize).join(_XAPIAN_OP_AND);
