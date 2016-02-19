@@ -31,15 +31,15 @@ let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
  * We recommend placing it in a <ScrollingTemplate> or another module that can
  * allow it to scroll.
  * The top arrangement shows an assortment of cards from all sets.
- * Each subsequent arrangement shows the highlights of one non-featured
- * (thematic) set.
+ * Each subsequent arrangement, or support arrangement, shows the highlights of
+ * one non-featured (thematic) set.
  * Clicking on a card in the arrangement takes you directly to that article.
  * Above each arrangement is a card ("header") showing the title of the set
  * which can also be clicked to show more information about that set.
  *
  * Slots:
- *   large-arrangement - large arrangement to display cards in
- *   small-arrangement - smaller arrangement to display cards in
+ *   highlight-arrangement - large arrangement to display highlighted category
+ *   support-arrangement - smaller arrangement to display support categories
  *   header-card-type - type of cards to create for sets
  */
 const HighlightsModule = new Lang.Class({
@@ -51,6 +51,17 @@ const HighlightsModule = new Lang.Class({
     Properties: {
         'factory': GObject.ParamSpec.override('factory', Module.Module),
         'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
+        /**
+         * Property: support-sets
+         * The number of support sets to display
+         *
+         * Flags:
+         *   construct-only
+         */
+        'support-sets': GObject.ParamSpec.uint('support-sets', 'Support Sets',
+            'The number of support sets to display',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            0, GLib.MAXUINT16, 0),
     },
 
     _init: function (props={}) {
@@ -68,13 +79,15 @@ const HighlightsModule = new Lang.Class({
                 case Actions.APPEND_SETS:
                     let models = payload.models.filter(model => !model.featured);
                     Utils.shuffle(models, models.map(GLib.random_double));
-                    this._sets = models.slice(0, 3);
+                    // Account for "highlight" set
+                    this._sets = models.slice(0, this.support_sets + 1);
                     if (this._sets.length > 0)
-                        this._create_set(this._sets[0], 'large-arrangement', false);
-                    if (this._sets.length > 1)
-                        this._create_set(this._sets[1], 'small-arrangement', true);
-                    if (this._sets.length > 2)
-                        this._create_set(this._sets[2], 'large-arrangement', true);
+                        this._create_set(this._sets[0], 'highlight-arrangement', false);
+                    if (this._sets.length > 1) {
+                        this._sets.slice(1).forEach((set) => {
+                            this._create_set(set, 'support-arrangement', true);
+                        });
+                    }
                     this._send_sets_to_filter();
                     break;
             }
@@ -92,7 +105,7 @@ const HighlightsModule = new Lang.Class({
 
     // Module override
     get_slot_names: function () {
-        return ['large-arrangement', 'small-arrangement', 'header-card-type'];
+        return ['highlight-arrangement', 'support-arrangement', 'header-card-type'];
     },
 
     _add_set_card: function (model) {

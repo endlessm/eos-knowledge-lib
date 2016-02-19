@@ -142,10 +142,11 @@
                                                 "margin-top": 20,
                                                 "margin-bottom": 20,
                                                 "margin-start": 20,
-                                                "margin-end": 20
+                                                "margin-end": 20,
+                                                "support-sets": 1
                                             },
                                             "slots": {
-                                                "large-arrangement": {
+                                                "highlight-arrangement": {
                                                     "type": "WindshieldArrangement",
                                                     "properties": {
                                                         "spacing": 20
@@ -159,7 +160,7 @@
                                                         }
                                                     }
                                                 },
-                                                "small-arrangement": {
+                                                "support-arrangement": {
                                                     "type": "SquareGuysArrangement",
                                                     "properties": {
                                                         "spacing": 20,

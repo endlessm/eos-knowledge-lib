@@ -26,7 +26,6 @@ const LimitedArrangment = new Lang.Class({
     },
 });
 
-
 describe('Highlights module', function () {
     let module, factory, dispatcher, engine;
 
@@ -51,11 +50,13 @@ describe('Highlights module', function () {
         factory.add_named_mock('set-card', Minimal.MinimalCard);
         factory.add_named_mock('large-card', Minimal.MinimalCard);
         factory.add_named_mock('highlights', HighlightsModule.HighlightsModule, {
-            'large-arrangement': 'arrangement1',
-            'small-arrangement': 'arrangement2',
+            'highlight-arrangement': 'arrangement1',
+            'support-arrangement': 'arrangement2',
             'header-card-type': 'set-card',
         });
-        module = factory.create_named_module('highlights');
+        module = factory.create_named_module('highlights', {
+            'support-sets': 2,
+        });
     });
 
     it('constructs', function () {
@@ -70,7 +71,7 @@ describe('Highlights module', function () {
     });
 
     describe('after dispatching sets', function () {
-        let featured, theme1, theme2, headers, set_models, article_models;
+        let highlight, support1, support2, headers, set_models, article_models;
 
         beforeEach(function () {
             set_models = [['a'], ['b'], ['c', 'd']].map(tags =>
@@ -94,9 +95,9 @@ describe('Highlights module', function () {
                 models: set_models,
             });
 
-            featured = factory.get_created_named_mocks('arrangement1')[0];
-            theme1 = factory.get_created_named_mocks('arrangement2')[0];
-            theme2 = factory.get_created_named_mocks('arrangement1')[1];
+            highlight = factory.get_created_named_mocks('arrangement1')[0];
+            support1 = factory.get_created_named_mocks('arrangement2')[0];
+            support2 = factory.get_created_named_mocks('arrangement2')[1];
             headers = factory.get_created_named_mocks('set-card');
         });
 
@@ -105,10 +106,9 @@ describe('Highlights module', function () {
             expect(payloads.length).toBe(1);
         });
 
-        it('adds three arrangements', function () {
-            expect(factory.get_created_named_mocks('arrangement1').length).toBe(2);
-            // (2, because one is for the featured cards)
-            expect(factory.get_created_named_mocks('arrangement2').length).toBe(1);
+        it('adds one highlight arrangement and two support arrangements', function () {
+            expect(factory.get_created_named_mocks('arrangement1').length).toBe(1);
+            expect(factory.get_created_named_mocks('arrangement2').length).toBe(2);
         });
 
         it('adds two header cards', function () {
@@ -116,25 +116,26 @@ describe('Highlights module', function () {
         });
 
         it('puts cards in the proper arrangements', function () {
-            let featured_models = featured.get_models();
-            expect(featured_models.length).toBe(1);
-            expect(featured_models[0].tags).toEqual(['a']);
+            let highlight_models = highlight.get_models();
+            expect(highlight_models.length).toBe(1);
+            expect(highlight_models[0].tags).toEqual(['a']);
 
-            let theme1_models = theme1.get_models();
-            expect(theme1_models.length).toBe(1);
-            expect(theme1_models[0].tags).toEqual(['b']);
+            let support1_models = support1.get_models();
+            expect(support1_models.length).toBe(1);
+            expect(support1_models[0].tags).toEqual(['b']);
 
-            let theme2_models = theme2.get_models();
-            expect(theme2_models.length).toBe(2);
-            expect(theme2_models[0].tags).toEqual(['c']);
-            expect(theme2_models[1].tags).toEqual(['d']);
+            let support2_models = support2.get_models();
+            expect(support2_models.length).toBe(2);
+            expect(support2_models[0].tags).toEqual(['c']);
+            expect(support2_models[1].tags).toEqual(['d']);
         });
 
         it('clears the arrangements when clear-sets is dispatched', function () {
             dispatcher.dispatch({
                 action_type: Actions.CLEAR_SETS,
             });
-            [theme1, theme2]
+            expect(module).not.toHaveDescendant(highlight);
+            [support1, support2]
                 .forEach(arrangement => expect(module).not.toHaveDescendant(arrangement));
             headers.forEach(header => expect(module).not.toHaveDescendant(header));
         });
@@ -152,22 +153,22 @@ describe('Highlights module', function () {
                 expect(payload).toEqual(matcher);
             });
 
-            it('on the card in the featured arrangement, dispatches item-clicked', function () {
-                let model = featured.get_models()[0];
-                featured.emit('card-clicked', model);
+            it('on the card in the highlight arrangement, dispatches item-clicked', function () {
+                let model = highlight.get_models()[0];
+                highlight.emit('card-clicked', model);
                 Utils.update_gui();
                 let payload = dispatcher.last_payload_with_type(Actions.ITEM_CLICKED);
                 let matcher = jasmine.objectContaining({
                     model: model,
-                    context: featured.get_models(),
+                    context: highlight.get_models(),
                     context_label: 'Highlights',
                 });
                 expect(payload).toEqual(matcher);
             });
 
             it('on the card in another arrangement, dispatches item-clicked', function () {
-                let model = theme1.get_models()[0];
-                theme1.emit('card-clicked', model);
+                let model = support1.get_models()[0];
+                support1.emit('card-clicked', model);
                 Utils.update_gui();
                 let payload = dispatcher.last_payload_with_type(Actions.ITEM_CLICKED);
                 let matcher = jasmine.objectContaining({
