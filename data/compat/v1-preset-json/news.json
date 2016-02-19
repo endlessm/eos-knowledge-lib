@@ -296,8 +296,7 @@
                         "second": {
                             "type": "SuggestedCategoriesModule",
                             "properties": {
-                                    "featured-only": true,
-                                    "show-title": false
+                                "show-title": false
                             },
                             "slots": {
                                 "arrangement": {
