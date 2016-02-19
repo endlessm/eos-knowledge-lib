@@ -55,8 +55,10 @@ function test_arrangement_compliance(ArrangementClass, extra_slots={}) {
 
             factory = new MockFactory.MockFactory();
             factory.add_named_mock('card', Minimal.MinimalCard);
+            factory.add_named_mock('filter', Minimal.TitleFilter);
             let slots = {
                 'card-type': 'card',
+                'filter': 'filter',
             };
             for (let slot in extra_slots) {
                 factory.add_named_mock(slot, extra_slots[slot]);
@@ -81,6 +83,14 @@ function test_arrangement_compliance(ArrangementClass, extra_slots={}) {
             let created_cards = factory.get_created_named_mocks('card');
             let cards = models.map(model => created_cards.filter(card => card.model === model)[0]);
             return cards.slice(cards.length - ncards);
+        }
+
+        function add_filtered_card(a) {
+            let model = new ContentObjectModel.ContentObjectModel({
+                title: '0Filter me out',
+            });
+            a.add_model(model);
+            return model;
         }
 
         it('by adding cards to the list', function () {
@@ -166,6 +176,42 @@ function test_arrangement_compliance(ArrangementClass, extra_slots={}) {
             expect(card.highlight_string).not.toEqual('foo');
             arrangement.highlight_string('foo');
             expect(card.highlight_string).toEqual('foo');
+        });
+
+        it('by not creating a card for a filtered-out model', function () {
+            add_filtered_card(arrangement);
+            expect(factory.get_created_named_mocks('card').length).toBe(0);
+        });
+
+        it('by not updating the card count for a filtered-out model', function () {
+            add_cards(arrangement, 3);
+            add_filtered_card(arrangement);
+
+            expect(arrangement.get_count()).toBe(4);
+            expect(arrangement.get_card_count()).toBe(3);
+        });
+
+        it('by removing a model that has no card', function () {
+            add_cards(arrangement, 3);
+            let model = add_filtered_card(arrangement);
+            arrangement.remove_model(model);
+
+            expect(arrangement.get_models()).not.toContain(model);
+        });
+
+        it('by not returning a card for a model that has none', function () {
+            let model = add_filtered_card(arrangement);
+
+            expect(arrangement.get_card_for_model(model)).not.toBeDefined();
+        });
+
+        it('by not including filtered-out models in the filtered models list', function () {
+            add_cards(arrangement, 3);
+            let model = add_filtered_card(arrangement);
+            let models = arrangement.get_filtered_models();
+
+            expect(models.length).toBe(3);
+            expect(models).not.toContain(model);
         });
     });
 }

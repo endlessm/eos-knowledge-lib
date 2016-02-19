@@ -21,9 +21,11 @@ describe('Thirties arrangement', function () {
         factory = new MockFactory.MockFactory();
         factory.add_named_mock('card', Minimal.MinimalCard);
         factory.add_named_mock('order', Minimal.CardCreateOrder);
+        factory.add_named_mock('filter', Minimal.TitleFilter);
         factory.add_named_mock('arrangement', ThirtiesArrangement.ThirtiesArrangement, {
             'card-type': 'card',
             'order': 'order',
+            'filter': 'filter',
         });
         arrangement = factory.create_named_module('arrangement');
     });
@@ -44,6 +46,7 @@ describe('Thirties arrangement', function () {
 
         beforeEach(function () {
             Minimal.add_ordered_cards(arrangement, 10);
+            Minimal.add_filtered_cards(arrangement, 1, 0);
             win = new Gtk.OffscreenWindow();
             win.add(arrangement);
             win.show_all();

@@ -291,8 +291,9 @@ javascript_tests = \
 	tests/js/app/modules/testCardB.js \
 	tests/js/app/modules/testCarouselArrangement.js \
 	tests/js/app/modules/testContextBanner.js \
-	tests/js/app/modules/testEncyclopediaWindow.js \
 	tests/js/app/modules/testDividedBannerTemplate.js \
+	tests/js/app/modules/testEncyclopediaWindow.js \
+	tests/js/app/modules/testFeaturedFilter.js \
 	tests/js/app/modules/testFeaturedOrder.js \
 	tests/js/app/modules/testGridArrangement.js \
 	tests/js/app/modules/testHalfArrangement.js \

@@ -35,20 +35,6 @@ const SuggestedCategoriesModule = new Lang.Class({
         'factory': GObject.ParamSpec.override('factory', Module.Module),
         'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
         /**
-         * Property: featured-only
-         * Show only featured models in the arrangement
-         *
-         * FIXME: This should be turned into a filter module that can be added
-         * to the arrangement.
-         *
-         * Default value:
-         *   false
-         */
-        'featured-only': GObject.ParamSpec.boolean('featured-only',
-            'Featured only', 'Show only featured models in the arrangement',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            false),
-        /**
          * Property: show-title
          * Whether to show the title at the top
          *
@@ -113,10 +99,7 @@ const SuggestedCategoriesModule = new Lang.Class({
                 case Actions.APPEND_SETS:
                     // Use the sets generated on app startup to populate the
                     // suggested categories module.
-                    let models = payload.models;
-                    if (this.featured_only)
-                        models = models.filter(model => model.featured);
-                    models.forEach(this._arrangement.add_model,
+                    payload.models.forEach(this._arrangement.add_model,
                         this._arrangement);
                     break;
                 case Actions.CLEAR_SETS:

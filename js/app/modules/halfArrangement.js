@@ -70,7 +70,7 @@ const HalfArrangement = new Lang.Class({
         let req_height = Arrangement.get_size_with_spacing(FEATURED_CARD_HEIGHT, featured_rows, this._spacing);
 
         // Calculate space for support cards
-        let children_count = this.get_count() - this._featured_cards_count;
+        let children_count = this.get_card_count() - this._featured_cards_count;
         let children_rows = Math.ceil(children_count / this._cards_per_row);
         let card_height = this._small_card_mode ? CARD_HEIGHT_MIN : CARD_HEIGHT_MAX;
         req_height += card_height * children_rows + this._spacing * (children_rows - 1);
@@ -93,7 +93,8 @@ const HalfArrangement = new Lang.Class({
         let delta_x = featured_card_width + this._spacing + spare_pixels;
         let delta_y = FEATURED_CARD_HEIGHT + this._spacing;
 
-        let all_cards = this.get_models().map(this.get_card_for_model, this);
+        let all_cards = this.get_filtered_models()
+            .map(this.get_card_for_model, this);
 
         // Featured cards:
         // Place two featured cards per row at top of arrangement
@@ -146,6 +147,7 @@ const HalfArrangement = new Lang.Class({
     },
 
     _get_featured_cards_count: function () {
-        return this.get_count() > 4 ? FEATURED_CARDS_PER_ROW : this.get_count();
+        let card_count = this.get_card_count();
+        return card_count > 4 ? FEATURED_CARDS_PER_ROW : card_count;
     },
 });

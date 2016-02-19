@@ -82,11 +82,12 @@ const WindshieldArrangement = new Lang.Class({
     vfunc_size_allocate: function (alloc) {
         this.parent(alloc);
 
-        let count = this.get_count();
+        let count = this.get_card_count();
         if (count === 0)
             return;
 
-        let all_cards = this.get_models().map(this.get_card_for_model, this);
+        let all_cards = this.get_filtered_models()
+            .map(this.get_card_for_model, this);
 
         this._small_mode = (alloc.width < Arrangement.get_size_with_spacing(CARD_SIZE_BIG, SECOND_ROW_CARD_COUNT, this._spacing));
 

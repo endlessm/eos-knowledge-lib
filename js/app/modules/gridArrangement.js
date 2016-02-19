@@ -52,6 +52,12 @@ const GridArrangement = new Lang.Class({
             this._flow_box.set_sort_func((child1, child2) =>
                 order.compare(child1.get_child().model, child2.get_child().model));
         }
+
+        let filter = this.get_filter();
+        if (filter) {
+            this._flow_box.set_filter_func(child =>
+                filter.include(child.get_child().model));
+        }
     },
 
     // Arrangement override

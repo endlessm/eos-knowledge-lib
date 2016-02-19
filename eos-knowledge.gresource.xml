@@ -92,6 +92,7 @@
     <file>js/app/interfaces/card.js</file>
     <file>js/app/interfaces/documentCard.js</file>
     <file>js/app/interfaces/expandable.js</file>
+    <file>js/app/interfaces/filter.js</file>
     <file>js/app/interfaces/interaction.js</file>
     <file>js/app/interfaces/launcher.js</file>
     <file>js/app/interfaces/module.js</file>
@@ -117,6 +118,7 @@
     <file>js/app/modules/dividedBannerTemplate.js</file>
     <file>js/app/modules/encyclopediaCoverTemplate.js</file>
     <file>js/app/modules/encyclopediaWindow.js</file>
+    <file>js/app/modules/featuredFilter.js</file>
     <file>js/app/modules/featuredOrder.js</file>
     <file>js/app/modules/gridArrangement.js</file>
     <file>js/app/modules/halfArrangement.js</file>
