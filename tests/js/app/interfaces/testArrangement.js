@@ -12,7 +12,7 @@ describe('Arrangement interface', function () {
     beforeEach(function () {
         factory = new MockFactory.MockFactory();
         factory.add_named_mock('card', Minimal.MinimalCard);
-        factory.add_named_mock('order', Minimal.CardCreateOrder, {}, {
+        factory.add_named_mock('order', Minimal.MinimalOrder, {}, {
             ascending: false,
         });
         factory.add_named_mock('filter', Minimal.TitleFilter);

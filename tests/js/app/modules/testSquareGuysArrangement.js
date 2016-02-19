@@ -82,7 +82,7 @@ function testSizingArrangementForDimensions(message, arr_width, arr_height, max_
     it(message + ' (' + arr_width + 'x' + arr_height + ')', function () {
         let factory = new MockFactory.MockFactory();
         factory.add_named_mock('card', Minimal.MinimalCard);
-        factory.add_named_mock('order', Minimal.CardCreateOrder);
+        factory.add_named_mock('order', Minimal.MinimalOrder);
         factory.add_named_mock('filter', Minimal.TitleFilter);
         factory.add_named_mock('arrangement', SquareGuysArrangement.SquareGuysArrangement, {
             'card-type': 'card',
