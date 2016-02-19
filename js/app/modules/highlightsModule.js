@@ -53,9 +53,6 @@ const HighlightsModule = new Lang.Class({
         'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
     },
 
-    // Overridable in tests
-    RESULTS_BATCH_SIZE: 15,
-
     _init: function (props={}) {
         props.orientation = Gtk.Orientation.VERTICAL;
         this.parent(props);
