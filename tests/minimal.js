@@ -1,6 +1,6 @@
 // Copyright 2015 Endless Mobile, Inc.
 
-/* exported add_filtered_cards, add_ordered_cards, CardCreateOrder,
+/* exported add_filtered_cards, add_ordered_cards, MinimalOrder,
 MinimalArrangement, MinimalBackCover, MinimalBinModule, MinimalCard,
 MinimalDocumentCard, MinimalHomePage, MinimalInteraction, MinimalModule,
 MinimalScrollable, MinimalPage, TitleFilter */
@@ -242,8 +242,8 @@ const MinimalBinModule = new Lang.Class({
     },
 });
 
-const CardCreateOrder = new Lang.Class({
-    Name: 'CardCreateOrder',
+const MinimalOrder = new Lang.Class({
+    Name: 'MinimalOrder',
     Extends: GObject.Object,
     Implements: [ Module.Module, Order.Order ],
 
@@ -251,10 +251,13 @@ const CardCreateOrder = new Lang.Class({
         'factory': GObject.ParamSpec.override('factory', Module.Module),
         'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
         'ascending': GObject.ParamSpec.override('ascending', Order.Order),
+        'model-prop': GObject.ParamSpec.string('model-prop', '', '',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            'title'),
     },
 
     compare_impl: function (left, right) {
-        return left.title.localeCompare(right.title);
+        return left[this.model_prop].localeCompare(right[this.model_prop]);
     },
 });
 

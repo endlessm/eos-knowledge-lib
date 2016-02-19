@@ -1,12 +1,14 @@
 // Copyright 2016 Endless Mobile, Inc.
 
-const PublishedDateOrder = imports.app.modules.publishedDateOrder;
 const ArticleObjectModel = imports.search.articleObjectModel;
+const MockFactory = imports.tests.mockFactory;
+const PublishedDateOrder = imports.app.modules.publishedDateOrder;
 
 describe('Published date order', function () {
-    let order, models;
+    let order, models, factory;
 
     const UNSORTED_DATES = [
+        '2013-07-03T00:00:00',
         '2013-07-03T00:00:00',
         '2014-07-03T00:00:00',
         '',
@@ -15,6 +17,7 @@ describe('Published date order', function () {
     const SORTED_DATES = [
         '',
         '2012-07-03T00:00:00',
+        '2013-07-03T00:00:00',
         '2013-07-03T00:00:00',
         '2014-07-03T00:00:00',
     ];
@@ -26,7 +29,9 @@ describe('Published date order', function () {
 
     describe('ascending', function () {
         beforeEach(function () {
-            order = new PublishedDateOrder.PublishedDateOrder();
+            factory = new MockFactory.MockFactory();
+            factory.add_named_mock('order', PublishedDateOrder.PublishedDateOrder);
+            order = factory.create_named_module('order');
         });
 
         it('is the default', function () {
@@ -41,9 +46,11 @@ describe('Published date order', function () {
 
     describe('descending', function () {
         beforeEach(function () {
-            order = new PublishedDateOrder.PublishedDateOrder({
+            factory = new MockFactory.MockFactory();
+            factory.add_named_mock('order', PublishedDateOrder.PublishedDateOrder, {}, {
                 ascending: false,
             });
+            order = factory.create_named_module('order');
         });
 
         it('sorts models by published date', function () {

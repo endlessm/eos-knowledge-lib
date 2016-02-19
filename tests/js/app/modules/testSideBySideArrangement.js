@@ -22,7 +22,7 @@ describe('SideBySide Arrangement', function () {
         factory.add_named_mock('card', Minimal.MinimalCard, {}, {
             width_request: CHILD_WIDTH,
         });
-        factory.add_named_mock('order', Minimal.CardCreateOrder);
+        factory.add_named_mock('order', Minimal.MinimalOrder);
         factory.add_named_mock('filter', Minimal.TitleFilter);
         factory.add_named_mock('arrangement', SideBySideArrangement.SideBySideArrangement, {
             'card-type': 'card',

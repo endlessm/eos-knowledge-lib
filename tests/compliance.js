@@ -131,7 +131,7 @@ function test_arrangement_compliance(ArrangementClass, extra_slots={}) {
         });
 
         it('by retrieving the models in sorted order', function () {
-            factory.add_named_mock('order', Minimal.CardCreateOrder);
+            factory.add_named_mock('order', Minimal.MinimalOrder);
             let slots = {
                 'card-type': 'card',
                 'order': 'order',
