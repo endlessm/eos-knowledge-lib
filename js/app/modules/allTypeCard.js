@@ -56,7 +56,7 @@ const AllTypeCard = new Lang.Class({
         this.set_label_or_hide(this._title_label, this.model.title);
         this.set_label_or_hide(this._synopsis_label, this.model.synopsis);
 
-        this._context = this.get_filtered_tags()[0];
+        this._context = this.get_parent_set_titles()[0];
         if (this._context) {
             this.set_label_or_hide(this._context_label, this._context);
         }

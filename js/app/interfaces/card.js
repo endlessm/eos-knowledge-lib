@@ -15,6 +15,7 @@ const ContentObjectModel = imports.search.contentObjectModel;
 const Engine = imports.search.engine;
 const ImageCoverFrame = imports.app.widgets.imageCoverFrame;
 const Module = imports.app.interfaces.module;
+const SetMap = imports.app.setMap;
 const SetObjectModel = imports.search.setObjectModel;
 const SpaceContainer = imports.app.widgets.spaceContainer;
 const StyleClasses = imports.app.styleClasses;
@@ -203,18 +204,18 @@ const Card = new Lang.Interface({
 
         // Sort the context tags from shortest to longest in order to
         // maximise chances that we can fit two of them on the card.
-        let tags = this.get_filtered_tags();
-        if (tags.length > 0) {
+        let titles = this.get_parent_set_titles().sort((a, b) => a.length - b.length);
+        if (titles.length > 0) {
             let first_tag = new Gtk.Label({
                 lines: 1,
-                label: tags[0].toLocaleUpperCase(),
+                label: titles[0].toLocaleUpperCase(),
             });
             this._space_container.add(first_tag);
 
-            if (tags.length > 1) {
+            if (titles.length > 1) {
                 let second_tag = new Gtk.Label({
                     lines: 1,
-                    label: ' | ' + tags[1].toLocaleUpperCase(),
+                    label: ' | ' + titles[1].toLocaleUpperCase(),
                 });
                 this._space_container.add(second_tag);
             }
@@ -226,14 +227,16 @@ const Card = new Lang.Interface({
     },
 
     /**
-     * Method: get_filtered_tags
+     * Method: get_parent_set_titles
      *
-     * Gets the list of tags that do not start with the Ekn prefix.
-     * The list is sorted by the length of the tags in ascending order.
+     * Gets the unique list of titles of this article's parent sets.
      */
-    get_filtered_tags: function () {
+    get_parent_set_titles: function () {
         return this.model.tags.filter((tag) => !tag.startsWith('Ekn'))
-                              .sort((a, b) => a.length - b.length);
+                              .map((tag) => SetMap.get_set_for_tag(tag))
+                              .filter((set) => typeof set !== 'undefined')
+                              .map((set) => set.title)
+                              .filter((title, pos, self) => self.indexOf(title) === pos);
     },
 
     /**
