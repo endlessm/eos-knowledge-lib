@@ -175,6 +175,7 @@
     <file>js/app/modules/window.js</file>
     <file>js/app/modules/windshieldArrangement.js</file>
     <file>js/app/readingHistoryModel.js</file>
+    <file>js/app/setMap.js</file>
     <file>js/app/styleClasses.js</file>
     <file>js/app/toggleTweener.js</file>
     <file>js/app/utils.js</file>

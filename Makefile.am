@@ -354,6 +354,7 @@ javascript_tests = \
 	tests/js/app/testHistoryPresenter.js \
 	tests/js/app/testModuleFactory.js \
 	tests/js/app/testReadingHistoryModel.js \
+	tests/js/app/testSetMap.js \
 	tests/js/app/testStyleKnobGenerator.js \
 	tests/js/app/testToggleTweener.js \
 	tests/js/app/testUtils.js \
