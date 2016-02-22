@@ -30,15 +30,8 @@ const EncyclopediaCoverTemplate = new Lang.Class({
     _init: function (props={}) {
         this.parent(props);
 
-        const PACKING_ARGS = {
-            'top': [0, 0, 1, 1],
-            'bottom': [0, 1, 1, 1],
-        };
-        this.get_slot_names().forEach((slot) => {
-            let submodule = this.create_submodule(slot);
-            this.attach.bind(this, submodule).apply(this, PACKING_ARGS[slot]);
-            this['_' + slot] = submodule;
-        });
+        this.add(this.create_submodule('top'));
+        this.add(this.create_submodule('bottom'));
     },
 
     get_slot_names: function () {
