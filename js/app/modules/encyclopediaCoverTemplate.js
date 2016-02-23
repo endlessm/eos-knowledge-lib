@@ -3,7 +3,6 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const Module = imports.app.interfaces.module;
-const SearchBox = imports.app.modules.searchBox;
 
 /**
  * Class: EncyclopediaCoverTemplate
