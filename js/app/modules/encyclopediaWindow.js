@@ -127,9 +127,9 @@ const EncyclopediaWindow = new Lang.Class({
         this.page_manager.transition_duration = Utils.DEFAULT_PAGE_TRANSITION_DURATION;
         this.page_manager.connect('notify::transition-running', () => {
             if (this.page_manager.transition_running) {
-                dispatcher.pause();
+                Utils.squash_all_window_content_updates_heavy_handedly();
             } else {
-                dispatcher.resume();
+                Utils.unsquash_all_window_content_updates_heavy_handedly();
             }
         });
     },

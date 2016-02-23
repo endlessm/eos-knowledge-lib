@@ -12,6 +12,7 @@ const GLib = imports.gi.GLib;
 const Gtk = imports.gi.Gtk;
 
 const Config = imports.app.config;
+const Dispatcher = imports.app.dispatcher;
 
 const DEFAULT_PAGE_TRANSITION_DURATION = 500;
 
@@ -319,4 +320,12 @@ function low_performance_mode () {
 function get_desktop_app_info () {
     let app_id = Gio.Application.get_default().application_id;
     return Gio.DesktopAppInfo.new(app_id + '.desktop');
+}
+
+function squash_all_window_content_updates_heavy_handedly () {
+    Dispatcher.get_default().pause();
+}
+
+function unsquash_all_window_content_updates_heavy_handedly () {
+    Dispatcher.get_default().resume();
 }
