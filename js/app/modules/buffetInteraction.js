@@ -28,6 +28,7 @@ const QueryObject = imports.search.queryObject;
 const Utils = imports.app.utils;
 
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
+let RESOURCE_PATH = '/com/endlessm/knowledge/data/css/';
 
 const Pages = {
     HOME: 'home',
@@ -63,6 +64,19 @@ const BuffetInteraction = new Lang.Class({
         'application': GObject.ParamSpec.override('application', Interaction.Interaction),
         'template-type': GObject.ParamSpec.override('template-type', Interaction.Interaction),
         'css': GObject.ParamSpec.override('css', Interaction.Interaction),
+        /**
+         * Property: theme
+         * Theme CSS specification filename
+         *
+         * The CSS filename that is associated with the app default design.
+         *
+         * Flags:
+         *   Construct only
+         */
+        'theme': GObject.ParamSpec.string('theme', 'Theme',
+            'Theme CSS specification filename',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            'endless_buffet'),
     },
 
     BRAND_PAGE_TIME_MS: 1500,
@@ -265,7 +279,7 @@ const BuffetInteraction = new Lang.Class({
 
     _load_theme: function () {
         let provider = new Gtk.CssProvider();
-        provider.load_from_resource('/com/endlessm/knowledge/data/css/endless_buffet.css');
+        provider.load_from_resource(RESOURCE_PATH + this.theme + '.css');
         Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(),
             provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
     },

@@ -2,6 +2,9 @@
     "modules": {
         "interaction": {
             "type": "BuffetInteraction",
+            "properties": {
+                "theme": "endless_buffet"
+            },
             "slots": {
                 "window": "window"
             }

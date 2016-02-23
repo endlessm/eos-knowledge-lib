@@ -2,6 +2,9 @@
     "modules": {
         "interaction": {
             "type": "BuffetInteraction",
+            "properties": {
+                "theme": "news"
+            },
             "slots": {
                 "window": "window"
             }
