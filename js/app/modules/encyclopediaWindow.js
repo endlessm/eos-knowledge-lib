@@ -124,6 +124,7 @@ const EncyclopediaWindow = new Lang.Class({
         });
         this.get_child().show_all();
 
+        this.page_manager.transition_duration = 500;
         this.page_manager.connect('notify::transition-running', () => {
             if (this.page_manager.transition_running) {
                 dispatcher.pause();
