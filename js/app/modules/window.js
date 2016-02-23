@@ -95,7 +95,6 @@ const Window = new Lang.Class({
 
     WINDOW_WIDTH_THRESHOLD: 800,
     WINDOW_HEIGHT_THRESHOLD: 600,
-    TRANSITION_DURATION: 500,
 
     _init: function (props) {
         this.parent(props);
@@ -331,7 +330,7 @@ const Window = new Lang.Class({
         if (old_page === new_page) {
             // Even though we didn't change, this should still count as the
             // first transition.
-            this._stack.transition_duration = this.TRANSITION_DURATION;
+            this._stack.transition_duration = Utils.DEFAULT_PAGE_TRANSITION_DURATION;
             this._update_top_bar_visibility();
             this._present_if_needed();
             return;
@@ -379,7 +378,7 @@ const Window = new Lang.Class({
 
         // The first transition on app startup has duration 0, subsequent ones
         // are normal.
-        this._stack.transition_duration = this.TRANSITION_DURATION;
+        this._stack.transition_duration = Utils.DEFAULT_PAGE_TRANSITION_DURATION;
         this._present_if_needed();
     },
 
