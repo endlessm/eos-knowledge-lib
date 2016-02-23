@@ -121,7 +121,7 @@ const EncyclopediaWindow = new Lang.Class({
         this.get_child().show_all();
 
         this.page_manager.connect('notify::transition-running', () => {
-            if (this._stack.transition_running) {
+            if (this.page_manager.transition_running) {
                 dispatcher.pause();
             } else {
                 dispatcher.resume();
