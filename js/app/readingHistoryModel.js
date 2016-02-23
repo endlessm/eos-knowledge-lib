@@ -75,10 +75,10 @@ const ReadingHistoryModel= new Lang.Class({
         if (this._pending_operation)
             return;
 
-        this._pending_operation = GLib.timeout_add_seconds(GLib.PRIORITY_LOW, 1, function () {
+        this._pending_operation = GLib.timeout_add_seconds(GLib.PRIORITY_LOW, 1, () => {
             Utils.save_object_to_file([...this._read_articles], this._reading_history_file);
             this._pending_operation = null;
-        }.bind(this));
+        });
     },
 
     mark_article_read: function (article_id) {
