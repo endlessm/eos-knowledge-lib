@@ -103,3 +103,85 @@ ekn_widget_style_get_int (GtkWidget *widget, const gchar *name)
   gtk_widget_style_get (widget, name, &ret, NULL);
   return ret;
 }
+
+/**
+ * ekn_extract_pixbuf_dominant_color:
+ * @pixbuf: a #GdkPixbuf
+ *
+ * Extracts the dominant color from the GdkPixbuf.
+ *
+ * Returns: a string with the color in Hex format
+ */
+gchar*
+ekn_extract_pixbuf_dominant_color (GdkPixbuf *pixbuf)
+{
+  const guint8 *pixels, *pixel;
+  const gint skip_x = 10, skip_y = 10, alpha_threshold = 40;
+  const gdouble rgb_range = 255.0, hue_range = 359.0, sv_threshold = 0.3;
+  gdouble r, g, b, h, s, v;
+  gint channels, height, width, rowstride, y = 0, x = 0, hue, max_hue = 0;
+  gboolean has_alpha;
+  gint hues[360] = {0};
+  gdouble sats[360] = {0};
+  gdouble vals[360] = {0};
+
+  g_return_val_if_fail (gdk_pixbuf_get_colorspace (pixbuf) == GDK_COLORSPACE_RGB, NULL);
+  g_return_val_if_fail (gdk_pixbuf_get_bits_per_sample (pixbuf) == 8, NULL);
+
+  height = gdk_pixbuf_get_height (pixbuf);
+  width = gdk_pixbuf_get_width (pixbuf);
+  rowstride = gdk_pixbuf_get_rowstride (pixbuf);
+  channels = gdk_pixbuf_get_n_channels (pixbuf);
+  pixels = gdk_pixbuf_read_pixels (pixbuf);
+  has_alpha = gdk_pixbuf_get_has_alpha (pixbuf);
+
+  while (y < height)
+    {
+      pixel = pixels + (y * rowstride) + (x * channels);
+
+      r = pixel[0] / rgb_range;
+      g = pixel[1] / rgb_range;
+      b = pixel[2] / rgb_range;
+
+      gtk_rgb_to_hsv (r, g, b, &h, &s, &v);
+
+      /* Only consider pixels that are not too dark and not too transparent */
+      if (s > sv_threshold &&
+          v > sv_threshold &&
+          !(has_alpha && pixel[3] < alpha_threshold))
+        {
+          hue = (gint) floor (h * hue_range);
+          hues[hue] += 1;
+          sats[hue] += s;
+          vals[hue] += v;
+
+          if (hues[hue] > hues[max_hue])
+            max_hue = hue;
+        }
+
+      if (x + skip_x >= width)
+        {
+          x = 0;
+          y += skip_y;
+        }
+      else
+        {
+          x += skip_x;
+        }
+    }
+
+  /* If it didn't find the dominant color return a neutral color */
+  if (G_UNLIKELY (!hues[max_hue]))
+    return g_strdup ("#BBBCB6");
+
+  /* Improve the color by averaging saturation and value */
+  h = max_hue / hue_range;
+  s = sats[max_hue] / hues[max_hue];
+  v = vals[max_hue] / hues[max_hue];
+
+  gtk_hsv_to_rgb (h, s, v, &r, &g, &b);
+  return g_strdup_printf ("#%02X%02X%02X",
+                          (gint) (r * rgb_range),
+                          (gint) (g * rgb_range),
+                          (gint) (b * rgb_range));
+}

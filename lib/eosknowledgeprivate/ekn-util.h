@@ -11,7 +11,10 @@
 
 #include "ekn-types.h"
 
+#include <math.h>
+
 #include <gtk/gtk.h>
+#include <gdk/gdkpixbuf.h>
 #include <webkit2/webkit2.h>
 
 G_BEGIN_DECLS
@@ -34,6 +37,9 @@ gfloat ekn_widget_style_get_float (GtkWidget *widget,
 EKN_AVAILABLE_IN_0_0
 gint ekn_widget_style_get_int (GtkWidget *widget,
                                const gchar *name);
+
+EKN_AVAILABLE_IN_0_4
+gchar* ekn_extract_pixbuf_dominant_color (GdkPixbuf *pixbuf);
 
 G_END_DECLS
 
