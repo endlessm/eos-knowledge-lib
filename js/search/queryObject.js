@@ -214,8 +214,7 @@ const QueryObject = Lang.Class({
             /**
              * Property: tags
              *
-             * A list of tags to restrict the search to. All articles returned will
-             * match at least one of the tags.
+             * A list of tags to restrict the search to.
              */
             'tags': {
                 value: props.tags ? props.tags.slice(0) : [],

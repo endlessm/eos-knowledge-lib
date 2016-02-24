@@ -15,6 +15,8 @@ const CssClassMatcher = imports.tests.CssClassMatcher;
 const MediaObjectModel = imports.search.mediaObjectModel;
 const Minimal = imports.tests.minimal;
 const MockEngine = imports.tests.mockEngine;
+const SetMap = imports.app.setMap;
+const SetObjectModel = imports.search.setObjectModel;
 const StyleClasses = imports.app.styleClasses;
 
 Gtk.init(null);
@@ -25,6 +27,20 @@ describe('Card interface', function () {
     beforeEach(function () {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
 
+        let data = [
+            {
+                ekn_id: '1',
+                title: 'Foo',
+                child_tags: ['foo'],
+            },
+            {
+                ekn_id: '2',
+                title: 'Bar',
+                child_tags: ['bar'],
+            },
+        ];
+        let sets = data.map((obj) => new SetObjectModel.SetObjectModel(obj));
+        SetMap.init_map_with_models(sets);
         model = new ArticleObjectModel.ArticleObjectModel({
             title: 'record title &',
             thumbnail_uri: 'ekn://foo/bar',

@@ -22,6 +22,7 @@ const Launcher = imports.app.interfaces.launcher;
 const MediaObjectModel = imports.search.mediaObjectModel;
 const Module = imports.app.interfaces.module;
 const ReadingHistoryModel = imports.app.readingHistoryModel;
+const SetMap = imports.app.setMap;
 const SetObjectModel = imports.search.setObjectModel;
 const QueryObject = imports.search.queryObject;
 const Utils = imports.app.utils;
@@ -114,6 +115,8 @@ const BuffetInteraction = new Lang.Class({
                 logError(e, 'Failed to load sets from database');
                 return;
             }
+
+            SetMap.init_map_with_models(models);
 
             Dispatcher.get_default().dispatch({
                 action_type: Actions.APPEND_SETS,

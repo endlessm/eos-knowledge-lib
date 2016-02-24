@@ -8,15 +8,23 @@ const Card = imports.app.interfaces.card;
 const ContentObjectModel = imports.search.contentObjectModel;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const AllTypeCard = imports.app.modules.allTypeCard;
+const SetMap = imports.app.setMap;
+const SetObjectModel = imports.search.setObjectModel;
 const StyleClasses = imports.app.styleClasses;
 
 Gtk.init(null);
 
 describe('All Type Card', function () {
-    let card;
+    let card, set;
 
     beforeEach(function () {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
+
+        set = new SetObjectModel.SetObjectModel({
+            ekn_id: '2',
+            title: 'Bar',
+        });
+        spyOn(SetMap, 'get_set_for_tag').and.returnValue(set);
         card = new AllTypeCard.AllTypeCard({
             model: new ContentObjectModel.ContentObjectModel({
                 title: '!!!',
