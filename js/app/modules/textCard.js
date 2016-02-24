@@ -11,6 +11,9 @@ const StyleClasses = imports.app.styleClasses;
 const ThemeableImage = imports.app.widgets.themeableImage;
 const Utils = imports.app.utils;
 
+// The highlight decoration element is 5x5
+const HIGHLIGHT_DECORATION_DIMENSION = 5;
+
 /**
  * Class: TextCard
  *
@@ -87,6 +90,33 @@ const TextCard = new Lang.Class({
         });
         after.get_style_context().add_class(StyleClasses.AFTER);
         this._grid.attach(after, 2, 0, 1, 1);
+    },
+
+    vfunc_draw: function (cr) {
+        if (this.get_style_context().has_class(StyleClasses.HIGHLIGHTED)) {
+            let x = this.get_allocation().width;
+            let y = this._title_label.get_allocation().height;
+
+            cr.save();
+            Gdk.cairo_set_source_rgba(cr, new Gdk.RGBA({
+                red: 1.0,
+                green: 1.0,
+                blue: 1.0,
+                alpha: 1.0,
+            }));
+            cr.moveTo(0, y);
+            cr.lineTo((x - HIGHLIGHT_DECORATION_DIMENSION) / 2, y);
+            cr.lineTo(x / 2, y + (HIGHLIGHT_DECORATION_DIMENSION / 2));
+            cr.lineTo((x + HIGHLIGHT_DECORATION_DIMENSION) / 2, y);
+            cr.lineTo(x, y);
+            cr.stroke();
+            cr.restore();
+        }
+
+        this.parent(cr);
+
+        cr.$dispose();  // workaround not freeing cairo context
+        return Gdk.EVENT_PROPAGATE;
     },
 });
 

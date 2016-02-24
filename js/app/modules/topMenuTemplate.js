@@ -52,14 +52,20 @@ const TopMenuTemplate = new Lang.Class({
         this._menu_open = false;
         this.parent(props);
 
-        let top_menu = this.create_submodule('top-menu', {
-            hexpand: true,
+        let top_menu_container = new Gtk.Frame({
             halign: Gtk.Align.FILL,
+            visible: true,
         });
-        top_menu.get_style_context().add_class(StyleClasses.TOP_MENU);
-        top_menu.show_all();
+        let top_menu = this.create_submodule('top-menu', {
+            halign: Gtk.Align.FILL,
+            visible: true,
+        });
+        top_menu_container.get_style_context().add_class(StyleClasses.TOP_MENU);
+        top_menu_container.add(top_menu);
 
-        this._menu_panel = this.add_panel_widget(top_menu, Gtk.PositionType.TOP);
+        this._menu_panel = this.add_panel_widget(top_menu_container, Gtk.PositionType.TOP);
+        this._menu_panel.expand = true;
+
         this._open_menu();
         let content = this.create_submodule('content');
         this._grid.add(content);
