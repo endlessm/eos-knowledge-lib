@@ -52,6 +52,14 @@ const TextCard = new Lang.Class({
             'Underline on hover', 'Whether to underline the link on hover',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             false),
+        /**
+         * Property: decorate-on-highlight
+         * Whether to draw a custom decoration when the card is highlighted
+         */
+        'decorate-on-highlight': GObject.ParamSpec.boolean('decorate-on-highlight',
+            'Decorate on highlight', 'Whether to draw a custom decoration when the card is highlighted',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            false),
     },
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/textCard.ui',
@@ -93,7 +101,7 @@ const TextCard = new Lang.Class({
     },
 
     vfunc_draw: function (cr) {
-        if (this.get_style_context().has_class(StyleClasses.HIGHLIGHTED)) {
+        if (this.decorate_on_highlight && this.get_style_context().has_class(StyleClasses.HIGHLIGHTED)) {
             let x = this.get_allocation().width;
             let y = this._title_label.get_allocation().height;
 
@@ -115,7 +123,7 @@ const TextCard = new Lang.Class({
 
         this.parent(cr);
 
-        cr.$dispose();  // workaround not freeing cairo context
+        cr.$dispose();
         return Gdk.EVENT_PROPAGATE;
     },
 });

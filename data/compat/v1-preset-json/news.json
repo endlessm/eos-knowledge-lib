@@ -315,7 +315,8 @@
                                     "properties": {
                                         "title-capitalization": "lowercase",
                                         "margin-top": 5,
-                                        "halign": "center"
+                                        "halign": "center",
+                                        "decorate-on-highlight": true
                                     }
                                 },
                                 "filter": {

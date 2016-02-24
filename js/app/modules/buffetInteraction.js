@@ -240,6 +240,8 @@ const BuffetInteraction = new Lang.Class({
                 need_unread: payload.need_unread,
             });
         });
+
+        this._update_highlight();
     },
 
     // this number ought to be the number of articles in database
@@ -275,6 +277,8 @@ const BuffetInteraction = new Lang.Class({
                 models: Utils.shuffle(random_results, rand_sequence).slice(0, 4),
             });
         });
+
+        this._update_highlight();
     },
 
     _load_theme: function () {
@@ -294,6 +298,16 @@ const BuffetInteraction = new Lang.Class({
             page_type: Pages.SEARCH,
             query: sanitized_query,
         });
+    },
+
+    _update_highlight: function () {
+        let item = this._history_presenter.history_model.current_item;
+        if (item.page_type === Pages.SET) {
+            Dispatcher.get_default().dispatch({
+                action_type: Actions.HIGHLIGHT_ITEM,
+                model: item.model,
+            });
+        }
     },
 
     _do_search: function (history_item) {
@@ -338,6 +352,8 @@ const BuffetInteraction = new Lang.Class({
                 query: history_item.query,
             });
         });
+
+        this._update_highlight();
     },
 
     _load_more_results: function () {
@@ -365,12 +381,18 @@ const BuffetInteraction = new Lang.Class({
         // we'll have a new more results query. But this keeps us from double
         // loading this query.
         this._get_more_results_query = null;
+
+        this._update_highlight();
     },
 
     _on_history_item_change: function (presenter, item, is_going_back) {
         let dispatcher = Dispatcher.get_default();
         dispatcher.dispatch({
             action_type: Actions.HIDE_MEDIA,
+        });
+        dispatcher.dispatch({
+            action_type: Actions.CLEAR_HIGHLIGHTED_ITEM,
+            model: item.model,
         });
 
         let search_text = '';
@@ -471,6 +493,8 @@ const BuffetInteraction = new Lang.Class({
         Dispatcher.get_default().dispatch({
             action_type: Actions.SHOW_HOME_PAGE,
         });
+
+        this._update_highlight();
     },
 
     _load_ekn_id: function (ekn_id) {

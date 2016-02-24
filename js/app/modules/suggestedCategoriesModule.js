@@ -108,6 +108,12 @@ const SuggestedCategoriesModule = new Lang.Class({
                 case Actions.FILTER_SETS:
                     this._filter_sets(payload.sets);
                     break;
+                case Actions.HIGHLIGHT_ITEM:
+                    this._arrangement.highlight(payload.model);
+                    break;
+                case Actions.CLEAR_HIGHLIGHTED_ITEM:
+                    this._arrangement.clear_highlight();
+                    break;
             }
         });
     },
