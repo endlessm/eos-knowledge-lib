@@ -63,27 +63,12 @@ const BuffetInteraction = new Lang.Class({
         'application': GObject.ParamSpec.override('application', Interaction.Interaction),
         'template-type': GObject.ParamSpec.override('template-type', Interaction.Interaction),
         'css': GObject.ParamSpec.override('css', Interaction.Interaction),
-        /**
-         * Property: reading-history
-         * Handles the Reading history
-         *
-         * Necessary for injecting a mock object in unit tests.
-         *
-         * Flags:
-         *   Construct only
-         */
-        'reading-history': GObject.ParamSpec.object('reading-history', 'Reading History',
-            'Handles the Reading History',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            GObject.Object.$gtype),
     },
 
     BRAND_PAGE_TIME_MS: 1500,
 
     _init: function (props={}) {
         this._launched_once = this._timer_ready = this._content_ready = false;
-
-        props.reading_history = props.reading_history || new ReadingHistoryModel.ReadingHistoryModel();
 
         this.parent(props);
 
@@ -207,7 +192,7 @@ const BuffetInteraction = new Lang.Class({
         };
 
         if (payload.need_unread) {
-            query_props.excluded_ids = [...this.reading_history.get_read_articles()];
+            query_props.excluded_ids = [...ReadingHistoryModel.get_default().get_read_articles()];
         }
 
         let current_set_tags = payload.set_tags.slice();
@@ -439,7 +424,7 @@ const BuffetInteraction = new Lang.Class({
                     context_label: item.context_label,
                 });
 
-                this.reading_history.mark_article_read(item.model.ekn_id);
+                ReadingHistoryModel.get_default().mark_article_read(item.model.ekn_id);
 
                 // First load unread articles that are in the same category
                 this._load_more_supplementary_articles({

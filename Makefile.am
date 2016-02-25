@@ -405,6 +405,7 @@ EXTRA_DIST += \
 	tests/mockEngine.js \
 	tests/mockFactory.js \
 	tests/mockPlaceholder.js \
+	tests/mockReadingHistoryModel.js \
 	tests/mockShard.js \
 	tests/mockWidgets.js \
 	tests/utils.js \

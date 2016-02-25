@@ -95,3 +95,12 @@ const ReadingHistoryModel= new Lang.Class({
         return this._read_articles;
     },
 });
+
+let get_default = (function () {
+    let default_history_model;
+    return function () {
+        if (!default_history_model)
+            default_history_model = new ReadingHistoryModel();
+        return default_history_model;
+    };
+})();
