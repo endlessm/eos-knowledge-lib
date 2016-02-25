@@ -53,7 +53,8 @@ function grep (path, pattern) {
             let metadata = JSON.parse(metadata_text);
             let content_type = metadata.contentType;
             let title = metadata.title;
-            print_result(id, content_type, title);
+            let offset = record.data.get_offset();
+            print_result(id, content_type, title, offset);
         }
 
         // Unfortunately, Spidermonkey isn't able to effectively track the
@@ -99,14 +100,16 @@ function perform_query (engine, query_obj) {
     });
 }
 
-function print_result (id, content_type, title) {
+function print_result (id, content_type, title, offset) {
     let output = [
         id,
         content_type,
         // use JSON.stringify to escape title and wrap in quotes
         JSON.stringify(title),
-    ].join(' - ');
-    print(output);
+    ];
+    if (typeof offset !== 'undefined')
+        output.push('Offset ' + offset);
+    print(output.join(' - '));
 }
 
 function dump (path, id, data_or_meta) {
