@@ -3,7 +3,6 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const Module = imports.app.interfaces.module;
-const SearchBox = imports.app.modules.searchBox;
 
 /**
  * Class: EncyclopediaCoverTemplate
@@ -17,7 +16,7 @@ const SearchBox = imports.app.modules.searchBox;
 const EncyclopediaCoverTemplate = new Lang.Class({
     Name: 'EncyclopediaCoverTemplate',
     GTypeName: 'EknEncyclopediaCoverTemplate',
-    Extends: Gtk.Grid,
+    Extends: Gtk.Frame,
     Implements: [ Module.Module ],
 
     Properties: {
@@ -26,19 +25,13 @@ const EncyclopediaCoverTemplate = new Lang.Class({
     },
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/encyclopediaCoverTemplate.ui',
+    InternalChildren: [ 'grid' ],
 
     _init: function (props={}) {
         this.parent(props);
 
-        const PACKING_ARGS = {
-            'top': [0, 0, 1, 1],
-            'bottom': [0, 1, 1, 1],
-        };
-        this.get_slot_names().forEach((slot) => {
-            let submodule = this.create_submodule(slot);
-            this.attach.bind(this, submodule).apply(this, PACKING_ARGS[slot]);
-            this['_' + slot] = submodule;
-        });
+        this._grid.add(this.create_submodule('top'));
+        this._grid.add(this.create_submodule('bottom'));
     },
 
     get_slot_names: function () {

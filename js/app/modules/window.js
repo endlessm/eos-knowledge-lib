@@ -42,33 +42,6 @@ const Window = new Lang.Class({
         'factory': GObject.ParamSpec.override('factory', Module.Module),
         'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
         /**
-         * Property: section-page
-         *
-         * The section page template.
-         */
-        'section-page': GObject.ParamSpec.object('section-page', 'Section page',
-            'The section page of this view widget.',
-            GObject.ParamFlags.READABLE,
-            Gtk.Widget),
-        /**
-         * Property: article-page
-         *
-         * The article page template.
-         */
-        'article-page': GObject.ParamSpec.object('article-page', 'Article page',
-            'The article page of this view widget.',
-            GObject.ParamFlags.READABLE,
-            Gtk.Widget),
-        /**
-         * Property: search-page
-         *
-         * The search page template.
-         */
-        'search-page': GObject.ParamSpec.object('search-page', 'Search page',
-            'The search page of this view widget.',
-            GObject.ParamFlags.READABLE,
-            Gtk.Widget),
-        /**
          * Property: background-image-uri
          *
          * The background image uri for this window.
@@ -122,7 +95,6 @@ const Window = new Lang.Class({
 
     WINDOW_WIDTH_THRESHOLD: 800,
     WINDOW_HEIGHT_THRESHOLD: 600,
-    TRANSITION_DURATION: 500,
 
     _init: function (props) {
         this.parent(props);
@@ -182,10 +154,16 @@ const Window = new Lang.Class({
 
         this._home_button = new Endless.TopbarHomeButton();
         this._history_buttons = new Endless.TopbarNavButton();
-        this._search_box = this.create_submodule('search', {
-            no_show_all: true,
-            visible: false,
-        });
+
+        // Keep the search bar in a stack for two reasons
+        //  - our top bar will always be constant sized
+        //  - showing the search bar will not trigger a window resize
+        this._search_stack = new Gtk.Stack();
+        this._invisible_frame = new Gtk.Frame();
+        this._search_stack.add(this._invisible_frame);
+        this._search_box = this.create_submodule('search');
+        this._search_stack.add(this._search_box);
+        this._search_stack.show_all();
 
         let button_box = new Gtk.Box({
             orientation: Gtk.Orientation.HORIZONTAL
@@ -195,7 +173,7 @@ const Window = new Lang.Class({
 
         this.page_manager.add(matryoshka, {
             left_topbar_widget: button_box,
-            center_topbar_widget: this._search_box,
+            center_topbar_widget: this._search_stack,
         });
 
         let frame_css = '';
@@ -302,10 +280,10 @@ const Window = new Lang.Class({
             this.notify('animating');
             if (this._stack.transition_running) {
                 context.add_class(StyleClasses.ANIMATING);
-                dispatcher.pause();
+                Utils.squash_all_window_content_updates_heavy_handedly(this);
             } else {
                 context.remove_class(StyleClasses.ANIMATING);
-                dispatcher.resume();
+                Utils.unsquash_all_window_content_updates_heavy_handedly(this);
             }
         }.bind(this));
 
@@ -326,8 +304,11 @@ const Window = new Lang.Class({
 
     _update_top_bar_visibility: function () {
         let new_page = this._stack.visible_child;
-        this._search_box.visible =
-            !Utils.has_descendant_with_type(new_page, SearchBox.SearchBox);
+        if (Utils.has_descendant_with_type(new_page, SearchBox.SearchBox)) {
+            this._search_stack.visible_child = this._invisible_frame;
+        } else {
+            this._search_stack.visible_child = this._search_box;
+        }
     },
 
     _present_if_needed: function () {
@@ -349,7 +330,7 @@ const Window = new Lang.Class({
         if (old_page === new_page) {
             // Even though we didn't change, this should still count as the
             // first transition.
-            this._stack.transition_duration = this.TRANSITION_DURATION;
+            this._stack.transition_duration = Utils.DEFAULT_PAGE_TRANSITION_DURATION;
             this._update_top_bar_visibility();
             this._present_if_needed();
             return;
@@ -391,13 +372,11 @@ const Window = new Lang.Class({
             action_type: Actions.NAV_BACK_ENABLED_CHANGED,
             enabled: nav_back_visible,
         });
-        if (Utils.low_performance_mode())
-            this._stack.transition_type = Gtk.StackTransitionType.NONE;
         this._stack.visible_child = new_page;
 
         // The first transition on app startup has duration 0, subsequent ones
         // are normal.
-        this._stack.transition_duration = this.TRANSITION_DURATION;
+        this._stack.transition_duration = Utils.DEFAULT_PAGE_TRANSITION_DURATION;
         this._present_if_needed();
     },
 

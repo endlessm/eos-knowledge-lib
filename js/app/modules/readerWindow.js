@@ -15,6 +15,7 @@ const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
 const Module = imports.app.interfaces.module;
 const StyleClasses = imports.app.styleClasses;
+const Utils = imports.app.utils;
 
 /**
  * Class: Reader.Window
@@ -94,7 +95,6 @@ const ReaderWindow = new Lang.Class({
 
     WINDOW_WIDTH_THRESHOLD: 800,
     WINDOW_HEIGHT_THRESHOLD: 600,
-    _STACK_TRANSITION_TIME: 500,
 
     _init: function (props) {
         props = props || {};
@@ -189,10 +189,10 @@ const ReaderWindow = new Lang.Class({
         this._search_box = this.create_submodule('search');
 
         this._stack = new Gtk.Stack({
-            transition_duration: this._STACK_TRANSITION_TIME,
+            transition_duration: Utils.DEFAULT_PAGE_TRANSITION_DURATION,
         });
         this._arrangement = this.create_submodule('document-arrangement', {
-            transition_duration: this._STACK_TRANSITION_TIME,
+            transition_duration: Utils.DEFAULT_PAGE_TRANSITION_DURATION,
         });
         this._stack.add(this._front_page);
         this._stack.add(this._back_page);
@@ -228,10 +228,10 @@ const ReaderWindow = new Lang.Class({
         this._stack.connect('notify::transition-running', () => {
             if (this._stack.transition_running) {
                 this.get_style_context().add_class(StyleClasses.ANIMATING);
-                dispatcher.pause();
+                Utils.squash_all_window_content_updates_heavy_handedly(this);
             } else {
                 this.get_style_context().remove_class(StyleClasses.ANIMATING);
-                dispatcher.resume();
+                Utils.unsquash_all_window_content_updates_heavy_handedly(this);
             }
         });
         this._stack.connect('notify::visible-child', () => this._update_nav_button_visibility());

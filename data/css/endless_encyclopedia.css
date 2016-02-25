@@ -1,6 +1,22 @@
 
 @import url("resource:///com/endlessm/knowledge/data/css/common.css");
 
+.home-page,
+.search-page,
+.article-page {
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.home-page {
+    background-position: center center;
+}
+
+.search-page,
+.article-page {
+    background-position: top center;
+}
+
 .entry {
     background: rgba(0,0,0,0.2);
     padding: 0.5em .3em 0.5em .3em;

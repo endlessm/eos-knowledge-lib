@@ -44,11 +44,7 @@ EosWindow {
 }
 
 .card.fade-in {
-    /* FIXME: we have to add in a margin transition here or we override the card a
-     * margin transition. Would be good to have to copy the margin theme to two
-     * places. Investigate and fix. */
-    transition: opacity 1000ms ease-in-out,
-                margin 250ms ease-in-out;
+    transition: opacity 1000ms ease-in-out;
     opacity: 1.0;
 }
 
@@ -62,6 +58,9 @@ EknWindow {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+}
+
+EknWindow.parallax {
     transition: background-position 0.5s ease;
 }
 
@@ -228,12 +227,9 @@ EknWindow.parallax.background-right {
 
 .pdf-card-icon {
     padding-top: 10px;
-    transition: padding 250ms ease-in-out;
 }
 
 .pdf-card-label {
-    padding-top: 10px;
-    padding-left: 8px;
     font-size: 0.9em;
     color: #666666
 }
