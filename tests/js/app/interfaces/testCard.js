@@ -97,9 +97,9 @@ describe('Card interface', function () {
     it('sets a context label visible if model has tags', function () {
         let grid = new Gtk.Grid();
         card.set_context_label_from_model(grid);
-        let first_tag = Gtk.test_find_label(grid, 'FOO');
+        let first_tag = Gtk.test_find_label(grid, 'Foo');
         expect(first_tag).not.toBeNull();
-        let second_tag = Gtk.test_find_label(grid, ' | BAR');
+        let second_tag = Gtk.test_find_label(grid, ' | Bar');
         expect(second_tag).not.toBeNull();
     });
 

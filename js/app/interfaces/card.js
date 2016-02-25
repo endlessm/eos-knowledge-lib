@@ -117,6 +117,18 @@ const Card = new Lang.Interface({
             EosKnowledgePrivate.TextTransformType,
             EosKnowledgePrivate.TextTransform.NONE),
         /**
+         * Property: context-capitalization
+         * Manner in which the card's context label is formatted
+         *
+         * This property is a temporary stand-in for achieving this via the CSS
+         * *text-transform* property.
+         */
+        'context-capitalization': GObject.ParamSpec.enum('context-capitalization',
+            'Title capitalization', 'Manner in which the context is formatted',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            EosKnowledgePrivate.TextTransformType,
+            EosKnowledgePrivate.TextTransform.NONE),
+        /**
          * Property: highlight-string
          * A substring within a card's title or synopsis to get highlighted
          *
@@ -208,14 +220,14 @@ const Card = new Lang.Interface({
         if (titles.length > 0) {
             let first_tag = new Gtk.Label({
                 lines: 1,
-                label: titles[0].toLocaleUpperCase(),
+                label: Utils.format_capitals(titles[0], this.context_capitalization),
             });
             this._space_container.add(first_tag);
 
             if (titles.length > 1) {
                 let second_tag = new Gtk.Label({
                     lines: 1,
-                    label: ' | ' + titles[1].toLocaleUpperCase(),
+                    label: ' | ' + Utils.format_capitals(titles[1], this.context_capitalization),
                 });
                 this._space_container.add(second_tag);
             }
