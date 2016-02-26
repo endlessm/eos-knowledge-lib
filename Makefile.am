@@ -345,6 +345,7 @@ javascript_tests = \
 	tests/js/app/modules/testThumbCard.js \
 	tests/js/app/modules/testTiledGridArrangement.js \
 	tests/js/app/modules/testTopMenuTemplate.js \
+	tests/js/app/modules/testUnreadFilter.js \
 	tests/js/app/modules/testWindow.js \
 	tests/js/app/modules/testWindshieldArrangement.js \
 	tests/js/app/testAisleUserSettingsModel.js \
@@ -405,6 +406,7 @@ EXTRA_DIST += \
 	tests/mockEngine.js \
 	tests/mockFactory.js \
 	tests/mockPlaceholder.js \
+	tests/mockReadingHistoryModel.js \
 	tests/mockShard.js \
 	tests/mockWidgets.js \
 	tests/utils.js \

@@ -20,6 +20,7 @@ const Module = imports.app.interfaces.module;
 const MockDispatcher = imports.tests.mockDispatcher;
 const MockEngine = imports.tests.mockEngine;
 const MockFactory = imports.tests.mockFactory;
+const MockReadingHistoryModel = imports.tests.mockReadingHistoryModel;
 const SetObjectModel = imports.search.setObjectModel;
 
 const MockView = new Lang.Class({
@@ -35,21 +36,12 @@ const MockView = new Lang.Class({
     },
 });
 
-const MockReadingHistoryModel = new Lang.Class({
-    Name: 'MockReadingHistoryModel',
-    Extends: GObject.Object,
-
-    mark_article_read: function () {},
-    get_read_articles: function () {
-        return new Set();
-    },
-});
-
 describe('Buffet interaction', function () {
     let buffet, dispatcher, engine, factory, set_models, article_model, media_model, reading_history;
 
     beforeEach(function () {
         dispatcher = MockDispatcher.mock_default();
+        reading_history = MockReadingHistoryModel.mock_default();
 
         // Prevent CSS from leaking into other tests
         spyOn(Gtk.StyleContext, 'add_provider_for_screen');
@@ -63,15 +55,12 @@ describe('Buffet interaction', function () {
         engine = MockEngine.mock_default();
         engine.get_objects_by_query_finish.and.returnValue([set_models, null]);
 
-        reading_history = new MockReadingHistoryModel();
         spyOn(reading_history, 'mark_article_read');
 
         factory = new MockFactory.MockFactory();
         factory.add_named_mock('window', MockView);
         factory.add_named_mock('interaction', BuffetInteraction.BuffetInteraction, {
             'window': 'window',
-        }, {
-            reading_history: reading_history,
         });
 
         buffet = factory.create_named_module('interaction');

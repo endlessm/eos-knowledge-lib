@@ -172,6 +172,7 @@
     <file>js/app/modules/tiledGridArrangement.js</file>
     <file>js/app/modules/topMenuTemplate.js</file>
     <file>js/app/modules/twoPieceTemplate.js</file>
+    <file>js/app/modules/unreadFilter.js</file>
     <file>js/app/modules/window.js</file>
     <file>js/app/modules/windshieldArrangement.js</file>
     <file>js/app/readingHistoryModel.js</file>
