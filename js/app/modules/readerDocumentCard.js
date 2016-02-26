@@ -45,6 +45,8 @@ const ReaderDocumentCard = new Lang.Class({
         'model': GObject.ParamSpec.override('model', Card.Card),
         'title-capitalization': GObject.ParamSpec.override('title-capitalization',
             Card.Card),
+        'context-capitalization': GObject.ParamSpec.override('context-capitalization',
+            Card.Card),
         'highlight-string': GObject.ParamSpec.override('highlight-string', Card.Card),
         'text-halign': GObject.ParamSpec.override('text-halign', Card.Card),
         'content-view': GObject.ParamSpec.override('content-view', DocumentCard.DocumentCard),

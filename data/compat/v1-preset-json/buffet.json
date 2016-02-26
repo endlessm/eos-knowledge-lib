@@ -155,7 +155,8 @@
                                                         "card-type": {
                                                             "type": "PostCard",
                                                             "properties": {
-                                                                "title-capitalization": "uppercase"
+                                                                "title-capitalization": "uppercase",
+                                                                "context-capitalization": "uppercase"
                                                             }
                                                         }
                                                     }
@@ -274,7 +275,8 @@
         "main-card": {
             "type": "ThumbCard",
             "properties": {
-                "title-capitalization": "uppercase"
+                "title-capitalization": "uppercase",
+                "context-capitalization": "uppercase"
             }
         },
         "header-card": {
@@ -286,7 +288,8 @@
         "set-card": {
             "type": "PostCard",
             "properties": {
-                "title-capitalization": "uppercase"
+                "title-capitalization": "uppercase",
+                "context-capitalization": "uppercase"
             }
         },
         "main-menu": {

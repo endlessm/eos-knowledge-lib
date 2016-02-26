@@ -27,6 +27,8 @@ const PostCard = new Lang.Class({
         'model': GObject.ParamSpec.override('model', Card.Card),
         'title-capitalization': GObject.ParamSpec.override('title-capitalization',
             Card.Card),
+        'context-capitalization': GObject.ParamSpec.override('context-capitalization',
+            Card.Card),
         'highlight-string': GObject.ParamSpec.override('highlight-string', Card.Card),
         'text-halign': GObject.ParamSpec.override('text-halign', Card.Card),
     },
@@ -74,6 +76,8 @@ const PostCard = new Lang.Class({
             child_alloc.y = alloc.height - content_height;
             child_alloc.height = content_height;
             this._title_label.halign = this._space_container.halign = this.text_halign;
+            this._title_label.justify = Utils.alignment_to_justification(this.text_halign);
+            this._title_label.xalign = Utils.alignment_to_xalign(this.text_halign);
         }
         this._shadow_frame.size_allocate(child_alloc);
         this.update_card_sizing_classes(alloc.height, alloc.width);

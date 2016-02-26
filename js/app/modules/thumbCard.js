@@ -36,6 +36,8 @@ const ThumbCard = new Lang.Class({
         'model': GObject.ParamSpec.override('model', Card.Card),
         'title-capitalization': GObject.ParamSpec.override('title-capitalization',
             Card.Card),
+        'context-capitalization': GObject.ParamSpec.override('context-capitalization',
+            Card.Card),
         'highlight-string': GObject.ParamSpec.override('highlight-string', Card.Card),
         'text-halign': GObject.ParamSpec.override('text-halign', Card.Card),
     },
@@ -80,18 +82,16 @@ const ThumbCard = new Lang.Class({
         // the proportion of space to be taken up by the
         // thumbnail image
         if (this._should_go_horizontal(alloc.width, alloc.height)) {
-            this._title_label.justify = Gtk.Justification.LEFT;
-            this._title_label.halign = this._synopsis_label.halign = this._space_container.halign = Gtk.Align.START;
+            this.text_halign = Gtk.Align.START;
             orientation = Gtk.Orientation.HORIZONTAL;
-            this._title_label.xalign = 0;
             proportion = 1/2;
         } else {
-            this._title_label.justify = Gtk.Justification.CENTER;
-            this._title_label.halign = this._synopsis_label.halign = this._space_container.halign = this.text_halign;
             orientation = Gtk.Orientation.VERTICAL;
-            this._title_label.xalign = 0.5;
             proportion = 2/3;
         }
+        this._title_label.halign = this._synopsis_label.halign = this._space_container.halign = this.text_halign;
+        this._title_label.justify = Utils.alignment_to_justification(this.text_halign);
+        this._title_label.xalign = Utils.alignment_to_xalign(this.text_halign);
 
         let [thumb_w, thumb_h, text_w, text_h] = this._get_dimensions(alloc, orientation, proportion);
 

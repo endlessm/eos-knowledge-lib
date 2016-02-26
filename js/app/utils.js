@@ -352,3 +352,33 @@ function unsquash_all_window_content_updates_heavy_handedly (window) {
     Dispatcher.get_default().resume();
     window.get_child().sensitive = true;
 }
+
+function alignment_to_justification (align) {
+    switch (align) {
+        case Gtk.Align.FILL:
+        case Gtk.Align.CENTER:
+            return Gtk.Justification.CENTER;
+        case Gtk.Align.START:
+            return (Gtk.get_locale_direction() === Gtk.TextDirection.RTL) ?
+                Gtk.Justification.RIGHT : Gtk.Justification.LEFT;
+        case Gtk.Align.END:
+            return (Gtk.get_locale_direction() === Gtk.TextDirection.RTL) ?
+                Gtk.Justification.LEFT : Gtk.Justification.RIGHT;
+    }
+    return Gtk.Justification.CENTER;
+}
+
+function alignment_to_xalign (align) {
+    switch (align) {
+        case Gtk.Align.FILL:
+        case Gtk.Align.CENTER:
+            return 0.5;
+        case Gtk.Align.START:
+            return (Gtk.get_locale_direction() === Gtk.TextDirection.RTL) ?
+                1.0 : 0;
+        case Gtk.Align.END:
+            return (Gtk.get_locale_direction() === Gtk.TextDirection.RTL) ?
+                0 : 1.0;
+    }
+    return 0.5;
+}
