@@ -148,4 +148,22 @@ describe('Article HTML Renderer', function () {
         expect(wiki_html).toEqual(reference_wiki_html);
         expect(wikihow_html).toEqual(reference_wikihow_html);
     });
+
+    it('includes MathJax in rendered Wikipedia, Wikibooks, and Wikisource articles', function () {
+        let html = renderer.render(wikibooks_model);
+        expect(html).toMatch('<script type="text/x-mathjax-config">');
+        wikibooks_model.source = 'wikipedia';
+        html = renderer.render(wikibooks_model);
+        expect(html).toMatch('<script type="text/x-mathjax-config">');
+        wikibooks_model.source = 'wikisource';
+        html = renderer.render(wikibooks_model);
+        expect(html).toMatch('<script type="text/x-mathjax-config">');
+    });
+
+    it('does not include MathJax in articles from other sources', function () {
+        let html = renderer.render(wikihow_model);
+        expect(html).not.toMatch('<script type="text/x-mathjax-config">');
+        html = renderer.render(embedly_model);
+        expect(html).not.toMatch('<script type="text/x-mathjax-config">');
+    });
 });

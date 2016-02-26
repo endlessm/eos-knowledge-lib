@@ -133,6 +133,11 @@ const ArticleHTMLRenderer = new Lang.Class({
         return javascript_files;
     },
 
+    _should_include_mathjax: function (model) {
+        let may_have_mathjax = ['wikipedia', 'wikibooks', 'wikisource'];
+        return (may_have_mathjax.indexOf(model.source) !== -1);
+    },
+
     set_custom_css_files: function (custom_css_files) {
         this._custom_css_files = custom_css_files;
     },
@@ -158,7 +163,7 @@ const ArticleHTMLRenderer = new Lang.Class({
             'copy-button-text': _("Copy"),
             'css-files': css_files,
             'javascript-files': js_files,
-            'include-mathjax': true,
+            'include-mathjax': this._should_include_mathjax(model),
             'mathjax-path': Config.mathjax_path,
         });
     },
