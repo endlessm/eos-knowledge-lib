@@ -76,6 +76,8 @@ const PostCard = new Lang.Class({
             child_alloc.y = alloc.height - content_height;
             child_alloc.height = content_height;
             this._title_label.halign = this._space_container.halign = this.text_halign;
+            this._title_label.justify = Utils.alignment_to_justification(this.text_halign);
+            this._title_label.xalign = Utils.alignment_to_xalign(this.text_halign);
         }
         this._shadow_frame.size_allocate(child_alloc);
         this.update_card_sizing_classes(alloc.height, alloc.width);
