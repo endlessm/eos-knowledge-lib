@@ -85,6 +85,7 @@
     <file>js/app/compat/styleKnobGenerator.js</file>
     <file>js/app/config.js</file>
     <file>js/app/dispatcher.js</file>
+    <file>js/app/dominantColor.js</file>
     <file>js/app/historyItem.js</file>
     <file>js/app/historyPresenter.js</file>
     <file>js/app/interactionLoader.js</file>
