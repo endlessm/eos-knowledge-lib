@@ -3,6 +3,8 @@ const ArticleHTMLRenderer = imports.app.articleHTMLRenderer;
 const ArticleObjectModel = imports.search.articleObjectModel;
 const Utils = imports.tests.utils;
 const SearchUtils = imports.search.utils;
+const SetMap = imports.app.setMap;
+const SetObjectModel = imports.search.setObjectModel;
 
 describe('Article HTML Renderer', function () {
     let wikihow_model, wikibooks_model, embedly_model, javascripty_model;
@@ -165,5 +167,60 @@ describe('Article HTML Renderer', function () {
         expect(html).not.toMatch('<script type="text/x-mathjax-config">');
         html = renderer.render(embedly_model);
         expect(html).not.toMatch('<script type="text/x-mathjax-config">');
+    });
+
+    describe('Prensa Libre source', function () {
+        let model, html;
+
+        beforeEach(function () {
+            SetMap.init_map_with_models([
+                new SetObjectModel.SetObjectModel({
+                    tags: ['EknHomePageTag', 'EknSetObject'],
+                    title: 'Guatemala',
+                    child_tags: ['guatemala'],
+                    featured: true,
+                }),
+                new SetObjectModel.SetObjectModel({
+                    tags: ['guatemala', 'EknSetObject'],
+                    title: 'Comunitario',
+                    child_tags: ['guatemala/comunitario'],
+                    featured: false,
+                }),
+            ]);
+            model = new ArticleObjectModel.ArticleObjectModel({
+                source_uri: 'http://www.prensalibre.com/internacional/el-papa-francisco-dice-que-trump-no-puede-proclamarse-cristiano',
+                original_uri: 'http://www.prensalibre.com/internacional/el-papa-francisco-dice-que-trump-no-puede-proclamarse-cristiano',
+                get_content_stream: () => SearchUtils.string_to_stream('<html><body><p>Prensa Libre</p></body></html>'),
+                content_type: 'text/html',
+                source: 'prensa-libre',
+                source_name: 'Prensa Libre',
+                license: 'Owner permission',
+                title: 'El papa Francisco dice que Trump no puede proclamarse cristiano',
+                authors: ['Por La Redacci\u00f3n'],
+                published: '2016-02-25T09:31:00',
+                tags: ['guatemala/comunitario', 'guatemala', 'EknArticleObject'],
+            });
+            html = renderer.render(model);
+        });
+
+        it('shows a link back to the original source', function () {
+            expect(html).toMatch(model.original_uri);
+        });
+
+        it('shows the date published', function () {
+            expect(html).toMatch('2016');
+            expect(html).toMatch('25');
+            // FIXME: Date formatting is locale-dependent. Should maybe check
+            // for the existence of a div, but that's not robust.
+        });
+
+        it('shows the main category the article is tagged with', function () {
+            expect(html).toMatch('guatemala');
+            expect(html).not.toMatch('comunitario');
+        });
+
+        it('loads the appropriate CSS file', function () {
+            expect(html).toMatch('prensa-libre.css');
+        });
     });
 });

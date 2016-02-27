@@ -7,6 +7,7 @@ const Lang = imports.lang;
 const Config = imports.app.config;
 const Mustache = imports.app.libs.mustache.Mustache;
 const SearchUtils = imports.search.utils;
+const SetMap = imports.app.setMap;
 
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
@@ -95,6 +96,14 @@ const ArticleHTMLRenderer = new Lang.Class({
                     blog_link = model.source_name;
                 let message = _get_display_string_for_license(model.license);
                 return message.replace('{blog-link}', blog_link);
+            case 'prensa-libre':
+                let prensa_libre_link = _to_link(model.original_uri, 'Prensalibre.com');
+                // TRANSLATORS: anything inside curly braces '{}' is going to be
+                // substituted in code. Please make sure to leave the curly
+                // braces around any words that have them, and do not translate
+                // words inside curly braces.
+                return _("Read more at {link}")
+                    .replace('{link}', prensa_libre_link);
             default:
                 return false;
         }
@@ -113,6 +122,9 @@ const ArticleHTMLRenderer = new Lang.Class({
                 break;
             case 'embedly':
                 css_files.push('embedly.css');
+                break;
+            case 'prensa-libre':
+                css_files.push('prensa-libre.css');
                 break;
         }
         return css_files;
@@ -136,6 +148,21 @@ const ArticleHTMLRenderer = new Lang.Class({
     _should_include_mathjax: function (model) {
         let may_have_mathjax = ['wikipedia', 'wikibooks', 'wikisource'];
         return (may_have_mathjax.indexOf(model.source) !== -1);
+    },
+
+    _get_extra_header_info: function (model) {
+        if (model.source !== 'prensa-libre')
+            return false;
+
+        let featured_set = model.tags
+            .filter(tag => !tag.startsWith('Ekn'))
+            .map(tag => SetMap.get_set_for_tag(tag))
+            .filter(set => set.featured)[0];
+        return {
+            'date-published': new Date(model.published).toLocaleDateString(),
+            'context': featured_set.title.toLowerCase(),
+            'source-link': _to_link(model.original_uri, 'Prensalibre.com'),
+        };
     },
 
     set_custom_css_files: function (custom_css_files) {
@@ -165,6 +192,7 @@ const ArticleHTMLRenderer = new Lang.Class({
             'javascript-files': js_files,
             'include-mathjax': this._should_include_mathjax(model),
             'mathjax-path': Config.mathjax_path,
+            'extra-header-information': this._get_extra_header_info(model),
         });
     },
 });

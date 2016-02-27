@@ -57,6 +57,7 @@ scss_verbose_0 = @echo "  SCSS     $@";
 
 scss_toplevels = \
 	$(srcdir)/data/templates/css/embedly.scss \
+	$(srcdir)/data/templates/css/prensa-libre.scss \
 	$(srcdir)/data/templates/css/reader.scss \
 	$(srcdir)/data/templates/css/reader2.scss \
 	$(srcdir)/data/templates/css/wikihow.scss \
