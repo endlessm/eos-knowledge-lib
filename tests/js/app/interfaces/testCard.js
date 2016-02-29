@@ -54,7 +54,7 @@ describe('Card interface', function () {
     });
 
     it('adds the "invisible" and "fade-in" style classes while fading', function (done) {
-        card.FADE_IN_TIME_MS = 20;
+        card.FADE_IN_TIME_MS = 10;
         card.fade_in();
         expect(card).toHaveCssClass(StyleClasses.INVISIBLE);
         expect(card).toHaveCssClass(StyleClasses.FADE_IN);
@@ -68,7 +68,7 @@ describe('Card interface', function () {
     });
 
     it('is insensitive while fading', function (done) {
-        card.FADE_IN_TIME_MS = 20;
+        card.FADE_IN_TIME_MS = 10;
         card.fade_in();
         expect(card.sensitive).toBeFalsy();
         Utils.update_gui();
