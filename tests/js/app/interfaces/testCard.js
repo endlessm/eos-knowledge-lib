@@ -53,39 +53,30 @@ describe('Card interface', function () {
         });
     });
 
-    // FIXME: the following two tests relied to much on exact timings and were
-    // fragile on machines under high load or with slower processors. We should
-    // rewrite in a way that does not rely on callback timings.
-    xit('adds the "invisible" and "fade-in" style classes while fading', function (done) {
+    it('adds the "invisible" and "fade-in" style classes while fading', function (done) {
         card.FADE_IN_TIME_MS = 20;
-        Mainloop.timeout_add(10, () => {
-            expect(card).toHaveCssClass(StyleClasses.INVISIBLE);
-            expect(card).toHaveCssClass(StyleClasses.FADE_IN);
-            return GLib.SOURCE_REMOVE;
-        });
+        card.fade_in();
+        expect(card).toHaveCssClass(StyleClasses.INVISIBLE);
+        expect(card).toHaveCssClass(StyleClasses.FADE_IN);
+        Utils.update_gui();
         Mainloop.timeout_add(25, () => {
             expect(card).not.toHaveCssClass(StyleClasses.INVISIBLE);
             expect(card).not.toHaveCssClass(StyleClasses.FADE_IN);
             done();
             return GLib.SOURCE_REMOVE;
         });
-        card.fade_in();
-        Utils.update_gui();
     });
 
-    xit('is insensitive while fading', function (done) {
+    it('is insensitive while fading', function (done) {
         card.FADE_IN_TIME_MS = 20;
-        Mainloop.timeout_add(10, () => {
-            expect(card.sensitive).toBeFalsy();
-            return GLib.SOURCE_REMOVE;
-        });
+        card.fade_in();
+        expect(card.sensitive).toBeFalsy();
+        Utils.update_gui();
         Mainloop.timeout_add(25, () => {
             expect(card.sensitive).toBeTruthy();
             done();
             return GLib.SOURCE_REMOVE;
         });
-        card.fade_in();
-        Utils.update_gui();
     });
 
     it('sets a title label visible if model has a title', function () {
