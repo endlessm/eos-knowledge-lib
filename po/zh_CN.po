@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2016-02-16 02:48+0000\n"
-"PO-Revision-Date: 2016-02-21 04:35+0000\n"
+"POT-Creation-Date: 2016-02-23 02:45+0000\n"
+"PO-Revision-Date: 2016-02-25 12:06+0000\n"
 "Last-Translator: zhifeng peng <jnufeng@126.com>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
@@ -48,10 +48,6 @@ msgstr "上一篇"
 #: js/app/modules/hamburgerBasementTemplate.js:48
 msgid "HOME"
 msgstr "主页"
-
-#: data/widgets/suggestedArticlesModule.ui:17
-msgid "You might be interested in..."
-msgstr "您可能会对此感兴趣……"
 
 #: data/widgets/suggestedCategoriesModule.ui:22
 msgid "Browse by topic"
@@ -110,18 +106,18 @@ msgstr "内容由{博客链接}提供。经授权许可使用。"
 msgid "Content courtesy of {blog-link}, licensed under {license-link}."
 msgstr "内容由{博客链接}提供，已得到{认证链接}许可认证。"
 
-#: js/app/modules/aisleInteraction.js:796
-#: js/app/modules/aisleInteraction.js:803
+#: js/app/modules/aisleInteraction.js:813
+#: js/app/modules/aisleInteraction.js:820
 msgid "Oops!"
 msgstr "哎呀！"
 
-#: js/app/modules/aisleInteraction.js:797
+#: js/app/modules/aisleInteraction.js:814
 msgid ""
 "We could not find this magazine!\n"
 "Please try again after restarting your computer."
 msgstr "我们无法找到该杂志！请在重启电脑后重新尝试。"
 
-#: js/app/modules/aisleInteraction.js:804
+#: js/app/modules/aisleInteraction.js:821
 msgid ""
 "There was an error loading that page.\n"
 "Try another one or try again after restarting your computer."
@@ -129,7 +125,7 @@ msgstr "加载该页时出现一个错误。请尝试另一页或在重启电脑
 
 #. TRANSLATORS: This shows the page number; %d will be replaced with
 #. the page number of the article.
-#: js/app/modules/aisleInteraction.js:843
+#: js/app/modules/aisleInteraction.js:860
 #, javascript-format
 msgid "Page %d"
 msgstr "第%d页"
@@ -141,8 +137,12 @@ msgstr "第%d页"
 msgid "Results were found for “%s”"
 msgstr "已找到“%s”的结果"
 
+#: js/app/modules/cardContainer.js:88
+msgid "See more"
+msgstr "看见更多的"
+
 #: js/app/modules/contextBanner.js:48 js/app/modules/contextBanner.js:56
-#: js/app/modules/highlightsModule.js:135
+#: js/app/modules/highlightsModule.js:143
 msgid "Highlights"
 msgstr "强调"
 
@@ -225,6 +225,14 @@ msgstr "该文章是在杂志%s档案中一部分。"
 #: js/app/modules/standaloneBanner.js:88
 msgid "Open the magazine"
 msgstr "打开杂志"
+
+#: js/app/modules/suggestedArticlesModule.js:37
+msgid "You might be interested in..."
+msgstr "您可能会对此感兴趣……"
+
+#: js/app/modules/supplementaryArticlesModule.js:46
+msgid "Other News"
+msgstr "其它信息"
 
 #. TRANSLATORS: anything inside curly braces '{}' is going to be substituted
 #. in code. Please make sure to leave the curly braces around any words that

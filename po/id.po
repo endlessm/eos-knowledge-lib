@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2016-02-16 02:48+0000\n"
-"PO-Revision-Date: 2016-02-09 02:46+0000\n"
+"POT-Creation-Date: 2016-02-23 02:45+0000\n"
+"PO-Revision-Date: 2016-02-23 02:46+0000\n"
 "Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
 "Language-Team: Indonesian (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/id/)\n"
 "MIME-Version: 1.0\n"
@@ -46,10 +46,6 @@ msgstr "Artikel Sebelumnya"
 #: js/app/modules/hamburgerBasementTemplate.js:48
 msgid "HOME"
 msgstr "BERANDA"
-
-#: data/widgets/suggestedArticlesModule.ui:17
-msgid "You might be interested in..."
-msgstr "Anda mungkin tertarik pada..."
 
 #: data/widgets/suggestedCategoriesModule.ui:22
 msgid "Browse by topic"
@@ -108,18 +104,18 @@ msgstr "Konten adalah hak milik {blog-link}. Digunakan dengan izin."
 msgid "Content courtesy of {blog-link}, licensed under {license-link}."
 msgstr "Konten adalah hak milik {blog-link}, berlisensi di bawah {license-link}."
 
-#: js/app/modules/aisleInteraction.js:796
-#: js/app/modules/aisleInteraction.js:803
+#: js/app/modules/aisleInteraction.js:813
+#: js/app/modules/aisleInteraction.js:820
 msgid "Oops!"
 msgstr "Ups!"
 
-#: js/app/modules/aisleInteraction.js:797
+#: js/app/modules/aisleInteraction.js:814
 msgid ""
 "We could not find this magazine!\n"
 "Please try again after restarting your computer."
 msgstr "Kami tidak dapat menemukan majalah ini! Mohon coba lagi setelah menyalakan ulang komputer Anda."
 
-#: js/app/modules/aisleInteraction.js:804
+#: js/app/modules/aisleInteraction.js:821
 msgid ""
 "There was an error loading that page.\n"
 "Try another one or try again after restarting your computer."
@@ -127,7 +123,7 @@ msgstr "Terjadi kesalahan saat memuat halaman itu.\nCoba yang lain atau coba lag
 
 #. TRANSLATORS: This shows the page number; %d will be replaced with
 #. the page number of the article.
-#: js/app/modules/aisleInteraction.js:843
+#: js/app/modules/aisleInteraction.js:860
 #, javascript-format
 msgid "Page %d"
 msgstr "Halaman %d"
@@ -139,8 +135,12 @@ msgstr "Halaman %d"
 msgid "Results were found for “%s”"
 msgstr "Ada hasil ditemukan untuk \"%s\""
 
+#: js/app/modules/cardContainer.js:88
+msgid "See more"
+msgstr ""
+
 #: js/app/modules/contextBanner.js:48 js/app/modules/contextBanner.js:56
-#: js/app/modules/highlightsModule.js:135
+#: js/app/modules/highlightsModule.js:143
 msgid "Highlights"
 msgstr "Sorotan"
 
@@ -223,6 +223,14 @@ msgstr "Artikel ini adalah bagian dari arsip dari majalah %s."
 #: js/app/modules/standaloneBanner.js:88
 msgid "Open the magazine"
 msgstr "Buka majalah"
+
+#: js/app/modules/suggestedArticlesModule.js:37
+msgid "You might be interested in..."
+msgstr "Anda mungkin tertarik pada..."
+
+#: js/app/modules/supplementaryArticlesModule.js:46
+msgid "Other News"
+msgstr ""
 
 #. TRANSLATORS: anything inside curly braces '{}' is going to be substituted
 #. in code. Please make sure to leave the curly braces around any words that

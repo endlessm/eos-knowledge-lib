@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2016-02-16 02:48+0000\n"
-"PO-Revision-Date: 2016-02-09 02:46+0000\n"
+"POT-Creation-Date: 2016-02-23 02:45+0000\n"
+"PO-Revision-Date: 2016-02-23 02:46+0000\n"
 "Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
 "Language-Team: Arabic (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/ar/)\n"
 "MIME-Version: 1.0\n"
@@ -47,10 +47,6 @@ msgstr "المقالة السابقة"
 #: js/app/modules/hamburgerBasementTemplate.js:48
 msgid "HOME"
 msgstr "الصفحة الرئيسية"
-
-#: data/widgets/suggestedArticlesModule.ui:17
-msgid "You might be interested in..."
-msgstr "ربما تكون مهتماً بـ..."
 
 #: data/widgets/suggestedCategoriesModule.ui:22
 msgid "Browse by topic"
@@ -109,18 +105,18 @@ msgstr "المحتوى مهدى من {blog-link}. تم استخدامه بإذن
 msgid "Content courtesy of {blog-link}, licensed under {license-link}."
 msgstr "المحتوى مهدى من {blog-link}، ومرخص بموجب {license-link}."
 
-#: js/app/modules/aisleInteraction.js:796
-#: js/app/modules/aisleInteraction.js:803
+#: js/app/modules/aisleInteraction.js:813
+#: js/app/modules/aisleInteraction.js:820
 msgid "Oops!"
 msgstr "يا لهذا!"
 
-#: js/app/modules/aisleInteraction.js:797
+#: js/app/modules/aisleInteraction.js:814
 msgid ""
 "We could not find this magazine!\n"
 "Please try again after restarting your computer."
 msgstr "لم نتمكن من إيجاد هذه المجلة!\nيُرجى المحاولة مرة أُخرى بعد إعادة تشغيل جهاز الكمبيوتر الخاص بك."
 
-#: js/app/modules/aisleInteraction.js:804
+#: js/app/modules/aisleInteraction.js:821
 msgid ""
 "There was an error loading that page.\n"
 "Try another one or try again after restarting your computer."
@@ -128,7 +124,7 @@ msgstr "وقع خطأٌ ما أثناء تحميل تلك الصفحة.\nجرب 
 
 #. TRANSLATORS: This shows the page number; %d will be replaced with
 #. the page number of the article.
-#: js/app/modules/aisleInteraction.js:843
+#: js/app/modules/aisleInteraction.js:860
 #, javascript-format
 msgid "Page %d"
 msgstr "صفحة %d"
@@ -140,8 +136,12 @@ msgstr "صفحة %d"
 msgid "Results were found for “%s”"
 msgstr "النتائج التي عثرنا عليها لـ “%s”"
 
+#: js/app/modules/cardContainer.js:88
+msgid "See more"
+msgstr ""
+
 #: js/app/modules/contextBanner.js:48 js/app/modules/contextBanner.js:56
-#: js/app/modules/highlightsModule.js:135
+#: js/app/modules/highlightsModule.js:143
 msgid "Highlights"
 msgstr "الموضوعات البارزة"
 
@@ -224,6 +224,14 @@ msgstr "هذه المقالة هي جزء من أرشيف مجلة %s."
 #: js/app/modules/standaloneBanner.js:88
 msgid "Open the magazine"
 msgstr "فتح المجلة"
+
+#: js/app/modules/suggestedArticlesModule.js:37
+msgid "You might be interested in..."
+msgstr "ربما تكون مهتماً بـ..."
+
+#: js/app/modules/supplementaryArticlesModule.js:46
+msgid "Other News"
+msgstr ""
 
 #. TRANSLATORS: anything inside curly braces '{}' is going to be substituted
 #. in code. Please make sure to leave the curly braces around any words that
