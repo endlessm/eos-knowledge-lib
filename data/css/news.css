@@ -1,5 +1,5 @@
 @import url("resource:///com/endlessm/knowledge/data/css/common.css");
-@import url("resource:///com/endlessm/knowledge/data/css/endless_buffet.css");
+@import url("resource:///com/endlessm/knowledge/data/css/buffet_core.css");
 
 EknPanelFrame .top-menu {
     background-color: rgba(5, 12, 32, 0.9);
