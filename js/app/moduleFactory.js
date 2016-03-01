@@ -6,6 +6,9 @@ const Engine = imports.search.engine;
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Warehouse = imports.app.warehouse;
 
+/**
+ * Class: ModuleFactory
+ */
 const ModuleFactory = new Lang.Class({
     Name: 'ModuleFactory',
     Extends: GObject.Object,

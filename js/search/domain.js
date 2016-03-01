@@ -15,6 +15,9 @@ const QueryObject = imports.search.queryObject;
 const SetObjectModel = imports.search.setObjectModel;
 const Utils = imports.search.utils;
 
+/**
+ * Class: Domain
+ */
 const Domain = new Lang.Class({
     Name: 'Domain',
     Abstract: true,

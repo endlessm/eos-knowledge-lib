@@ -14,7 +14,7 @@ const Utils = imports.app.utils;
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
 /**
- * Class: Reader.Card
+ * Class: ReaderCard
  *
  * A card implementation with sizing and styling specific to Reader apps.
  *

@@ -10,6 +10,9 @@ const Arrangement = imports.app.interfaces.arrangement;
 const InfiniteScrolledWindow = imports.app.widgets.infiniteScrolledWindow;
 const Module = imports.app.interfaces.module;
 
+/**
+ * Class: GridArrangement
+ */
 const GridArrangement = new Lang.Class({
     Name: 'GridArrangement',
     GTypeName: 'EknGridArrangement',

@@ -1,5 +1,5 @@
 /**
- * File: styleClasses
+ * File: StyleClasses
  *
  * This file enumerates all of our knowledge widget css style classes in a bunch
  * of constants.

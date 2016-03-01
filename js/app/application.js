@@ -28,6 +28,9 @@ const KnowledgeSearchIface = '\
   </interface> \
 </node>';
 
+/**
+ * Class: Application
+ */
 const Application = new Lang.Class({
     Name: 'Application',
     GTypeName: 'EknApplication',

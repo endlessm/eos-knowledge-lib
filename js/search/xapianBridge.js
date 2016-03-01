@@ -8,6 +8,9 @@ const Soup = imports.gi.Soup;
 const AsyncTask = imports.search.asyncTask;
 const QueryObject = imports.search.queryObject;
 
+/**
+ * Class: XapianBridge
+ */
 const XapianBridge = new Lang.Class({
     Name: 'XapianBridge',
     GTypeName: 'EknXapianBridge',
