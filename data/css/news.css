@@ -107,3 +107,7 @@ EknSideBySideArrangement .text-card.highlighted:hover .title.label {
 .all-type-card.highlighted .title {
     color: white;
 }
+
+.card.arrow {
+    -gtk-icon-source: none; /* kill the arrow that Gtk adds by default in Gtk.render_arrow() */
+}
