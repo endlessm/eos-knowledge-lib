@@ -5,20 +5,23 @@ const DominantColor = imports.app.dominantColor;
 const MockEngine = imports.tests.mockEngine;
 const Utils = imports.tests.utils;
 
-const TEST_CONTENT_DIR = Utils.get_test_content_builddir();
+const TEST_CONTENT_BUILDDIR = Utils.get_test_content_builddir();
 
 describe ('Dominant Color', function () {
     let color, image, engine;
 
     beforeEach(function () {
         color = '#604C28';
-        image = TEST_CONTENT_DIR + 'red_wedding.jpg';
+        image = 'resource:///com/endlessm/thrones/red_wedding.jpg';
         engine = MockEngine.mock_default();
+
+        let resource = Gio.Resource.load(TEST_CONTENT_BUILDDIR + 'test-content.gresource');
+        resource._register();
     });
 
     it('extracts color when fetching the image from a resource file', function (done) {
         let model = new ContentObjectModel.ContentObjectModel({
-            thumbnail_uri: 'file://' + image,
+            thumbnail_uri: image,
         });
 
         _check_color_for_model(model, done);
@@ -32,7 +35,7 @@ describe ('Dominant Color', function () {
         let image_model = new ContentObjectModel.ContentObjectModel({
             ekn_id: 'ekn:///image',
             get_content_stream: () => {
-                let file = Gio.File.new_for_path(image);
+                let file = Gio.File.new_for_uri(image);
                 return file.read(null);
             },
         });
