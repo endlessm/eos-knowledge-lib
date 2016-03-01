@@ -317,7 +317,11 @@ const SubscriptionDownloader = new Lang.Class({
 
             let request = new FileDownloadRequest(manifest_uri, new_manifest_file);
             this._file_downloader.download_file(request, cancellable, task.catch_callback_errors((source, download_task) => {
-                this._file_downloader.download_file_finish(download_task);
+                try {
+                    this._file_downloader.download_file_finish(download_task);
+                } catch(e if e.matches(Gio.ResolverError, Gio.ResolverError.NOT_FOUND)) {
+                    return task.return_value(false);
+                }
 
                 let new_manifest = load_manifest(new_manifest_file, cancellable);
                 this._download_new_shards(directory, old_manifest, new_manifest, cancellable, task.catch_callback_errors((source, download_task) => {
