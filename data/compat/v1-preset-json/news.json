@@ -314,6 +314,9 @@
                                                 "title-capitalization": "lowercase",
                                                 "margin-top": 5
                                             }
+                                        },
+                                        "filter": {
+                                            "type": "FeaturedFilter"
                                         }
                                     }
                                 }
