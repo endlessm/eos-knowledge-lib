@@ -226,7 +226,6 @@ subst = $(SED) \
 	-e 's,%pkglibdir%,$(pkglibdir),g' \
 	-e 's,%typelibdir%,$(typelibdir),g' \
 	-e 's,%webextensiondir%,$(webextensiondir),g' \
-	-e 's,%sysconfdir%,$(sysconfdir),g' \
 	$(NULL)
 
 subst_files = \
@@ -264,8 +263,7 @@ bin_SCRIPTS += \
 	picard \
 	$(NULL)
 
-confdir = $(sysconfdir)/eos-knowledge-lib
-dist_conf_DATA = data/downloader.ini
+dist_pkgdata_DATA = data/downloader.ini
 
 # # # TESTS # # #
 
