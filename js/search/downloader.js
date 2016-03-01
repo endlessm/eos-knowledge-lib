@@ -198,7 +198,7 @@ const SubscriptionDownloader = new Lang.Class({
     _load_from_config: function () {
         let config_env = GLib.getenv('EKN_UPDATER_CONFIG');
         if (config_env === null)
-            config_env = Config.SYSCONFDIR + '/eos-knowledge-lib/downloader.ini';
+            config_env = Config.PKGDATADIR + '/downloader.ini';
 
         let kf = GLib.KeyFile.new();
         kf.load_from_file(config_env, GLib.KeyFileFlags.NONE);
