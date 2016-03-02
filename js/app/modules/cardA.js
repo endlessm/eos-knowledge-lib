@@ -147,10 +147,18 @@ const CardA = new Lang.Class({
     },
 
     vfunc_get_preferred_width: function () {
+        // FIXME: figure out better way to respect childs size request
+        let [min,] = this.parent();
+        if (min > WIDTH)
+            logError(new Error('CardA min width '+ min + ' greater than ' + WIDTH));
         return [WIDTH, WIDTH];
     },
 
     vfunc_get_preferred_height: function () {
+        // FIXME: figure out better way to respect childs size request
+        let [min,] = this.parent();
+        if (min > HEIGHT)
+            logError(new Error('CardA min width '+ min + ' greater than ' + HEIGHT));
         return [HEIGHT, HEIGHT];
     },
 });
