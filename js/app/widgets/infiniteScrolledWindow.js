@@ -5,6 +5,9 @@ const Lang = imports.lang;
 
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 
+/**
+ * Class: InfiniteScrolledWindow
+ */
 const InfiniteScrolledWindow = new Lang.Class({
     Name: 'InfiniteScrolledWindow',
     GTypeName: 'EknInfiniteScrolledWindow',

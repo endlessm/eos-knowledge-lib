@@ -2,6 +2,9 @@ const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 
+/**
+ * Interface: Module
+ */
 const Module = new Lang.Interface({
     Name: 'Module',
     Requires: [ GObject.Object ],

@@ -9,6 +9,9 @@ const Module = imports.app.interfaces.module;
 const StyleClasses = imports.app.styleClasses;
 const Utils = imports.app.utils;
 
+/**
+ * Class: EncyclopediaWindow
+ */
 const EncyclopediaWindow = new Lang.Class({
     Name: 'EncyclopediaWindow',
     Extends: Endless.Window,

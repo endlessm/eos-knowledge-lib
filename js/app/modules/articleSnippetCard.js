@@ -12,7 +12,7 @@ const StyleClasses = imports.app.styleClasses;
 const Utils = imports.app.utils;
 
 /**
- * Class: Reader.ArticleSnippetCard
+ * Class: ArticleSnippetCard
  * Widget to display an article snippet
  *
  * Displays a snippet with a title and a couple of lines of synopsis.

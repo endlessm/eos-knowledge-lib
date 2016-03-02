@@ -18,7 +18,7 @@ const StyleClasses = imports.app.styleClasses;
 const Utils = imports.app.utils;
 
 /**
- * Class: Reader.Window
+ * Class: ReaderWindow
  * The window of the reader app.
  *
  * This class has the API to add, modify, and display article and done pages.

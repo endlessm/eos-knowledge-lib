@@ -24,6 +24,9 @@ function load_article_template () {
     return _template_contents;
 }
 
+/**
+ * Class: ArticleHTMLRenderer
+ */
 const ArticleHTMLRenderer = new Lang.Class({
     Name: "ArticleHTMLRenderer",
     GTypeName: 'EknArticleHTMLRenderer',

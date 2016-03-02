@@ -18,6 +18,9 @@ const CARD_SIZE_SMALL = Card.MinSize.B;
 const CARD_SIZE_BIG = Card.MinSize.C;
 const CARD_SIZE_MAX = Card.MaxSize.C;
 
+/**
+ * Class: SquareGuysArrangement
+ */
 const SquareGuysArrangement = new Lang.Class({
     Name: 'SquareGuysArrangement',
     GTypeName: 'EknSquareGuysArrangement',

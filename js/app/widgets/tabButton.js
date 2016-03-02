@@ -7,6 +7,9 @@ const Utils = imports.app.utils;
 
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 
+/**
+ * Class: TabButton
+ */
 const TabButton = new Lang.Class({
     Name: 'TabButton',
     GTypeName: 'EknTabButton',

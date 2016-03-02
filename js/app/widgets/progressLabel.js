@@ -12,7 +12,7 @@ String.prototype.format = Format.format;
 GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 
 /**
- * Class: Reader.ProgressLabel
+ * Class: ProgressLabel
  * Widget indicating how much of the magazine issue has been read
  *
  * Extends:

@@ -20,6 +20,9 @@ const CARD_WIDTH_SMALL = Card.MinSize.B;
 const CARD_WIDTH_BIG = Card.MinSize.H;
 const COL_COUNT = 3;
 
+/**
+ * Class: ThirtiesArrangement
+ */
 const ThirtiesArrangement = new Lang.Class({
     Name: 'ThirtiesArrangement',
     GTypeName: 'EknThirtiesArrangement',
