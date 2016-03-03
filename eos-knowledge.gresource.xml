@@ -20,6 +20,7 @@
     <file compressed="true">data/css/no_image_links.css</file>
     <file compressed="true">data/css/themes/jungle.css</file>
     <file compressed="true">data/css/themes/templateA.css</file>
+    <file>data/images/background.png</file>
     <file>data/images/pdf-background.png</file>
     <file>data/images/pdf_icon.png</file>
     <file preprocess="xml-stripblanks">data/images/reader/archive.svg</file>
@@ -113,6 +114,7 @@
     <file>js/app/modules/articleSnippetCard.js</file>
     <file>js/app/modules/articleStackModule.js</file>
     <file>js/app/modules/backCover.js</file>
+    <file>js/app/modules/backgroundModule.js</file>
     <file>js/app/modules/bannerTemplate.js</file>
     <file>js/app/modules/buffetInteraction.js</file>
     <file>js/app/modules/cardA.js</file>

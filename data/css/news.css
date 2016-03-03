@@ -2,7 +2,7 @@
 @import url("resource:///com/endlessm/knowledge/data/css/buffet_core.css");
 
 EknScrollingTemplate:not(.overshoot):not(.undershoot),
-EknSearchModule,
+EknBackgroundModule,
 EknSearchBannerModule {
     background-color: #e9e5e0;
 }
