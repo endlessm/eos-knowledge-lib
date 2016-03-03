@@ -8,11 +8,10 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const Arrangement = imports.app.interfaces.arrangement;
-const Card = imports.app.interfaces.card;
 const Module = imports.app.interfaces.module;
 
 const MENU_HEIGHT = 50;
-const MAX_CARDS = 8;
+const MIN_CARDS = 4;
 const _HorizontalThreshold = {
     TINY: 720,
     SMALL: 900,
@@ -73,7 +72,19 @@ const SideBySideArrangement = new Lang.Class({
     },
 
     vfunc_get_preferred_width: function () {
-        return [0, MAX_CARDS * Card.MinSize.H];
+        let min = 0;
+        let nat = 0;
+        this.get_filtered_models().slice(0, MIN_CARDS).forEach((model, i) => {
+            let card = this.get_card_for_model(model);
+            let [c_min, ] = card.get_preferred_width();
+            min += (c_min + (i > 0 ? _HorizontalSpacing.TINY : 0));
+        });
+        this.get_filtered_models().forEach((model, i) => {
+            let card = this.get_card_for_model(model);
+            let [, c_nat] = card.get_preferred_width();
+            nat += (c_nat + (i > 0 ? _HorizontalSpacing.XLARGE : 0));
+        });
+        return [min, nat];
     },
 
     vfunc_size_allocate: function (alloc) {

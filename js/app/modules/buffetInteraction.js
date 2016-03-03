@@ -28,6 +28,7 @@ const QueryObject = imports.search.queryObject;
 const Utils = imports.app.utils;
 
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
+let RESOURCE_PATH = '/com/endlessm/knowledge/data/css/';
 
 const Pages = {
     HOME: 'home',
@@ -63,6 +64,19 @@ const BuffetInteraction = new Lang.Class({
         'application': GObject.ParamSpec.override('application', Interaction.Interaction),
         'template-type': GObject.ParamSpec.override('template-type', Interaction.Interaction),
         'css': GObject.ParamSpec.override('css', Interaction.Interaction),
+        /**
+         * Property: theme
+         * Theme CSS specification filename
+         *
+         * The CSS filename that is associated with the app default design.
+         *
+         * Flags:
+         *   Construct only
+         */
+        'theme': GObject.ParamSpec.string('theme', 'Theme',
+            'Theme CSS specification filename',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            'endless_buffet'),
     },
 
     BRAND_PAGE_TIME_MS: 1500,
@@ -226,6 +240,8 @@ const BuffetInteraction = new Lang.Class({
                 need_unread: payload.need_unread,
             });
         });
+
+        this._update_highlight();
     },
 
     // this number ought to be the number of articles in database
@@ -261,11 +277,13 @@ const BuffetInteraction = new Lang.Class({
                 models: Utils.shuffle(random_results, rand_sequence).slice(0, 4),
             });
         });
+
+        this._update_highlight();
     },
 
     _load_theme: function () {
         let provider = new Gtk.CssProvider();
-        provider.load_from_resource('/com/endlessm/knowledge/data/css/endless_buffet.css');
+        provider.load_from_resource(RESOURCE_PATH + this.theme + '.css');
         Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(),
             provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
     },
@@ -280,6 +298,16 @@ const BuffetInteraction = new Lang.Class({
             page_type: Pages.SEARCH,
             query: sanitized_query,
         });
+    },
+
+    _update_highlight: function () {
+        let item = this._history_presenter.history_model.current_item;
+        if (item.page_type === Pages.SET) {
+            Dispatcher.get_default().dispatch({
+                action_type: Actions.HIGHLIGHT_ITEM,
+                model: item.model,
+            });
+        }
     },
 
     _do_search: function (history_item) {
@@ -324,6 +352,8 @@ const BuffetInteraction = new Lang.Class({
                 query: history_item.query,
             });
         });
+
+        this._update_highlight();
     },
 
     _load_more_results: function () {
@@ -351,12 +381,18 @@ const BuffetInteraction = new Lang.Class({
         // we'll have a new more results query. But this keeps us from double
         // loading this query.
         this._get_more_results_query = null;
+
+        this._update_highlight();
     },
 
     _on_history_item_change: function (presenter, item, is_going_back) {
         let dispatcher = Dispatcher.get_default();
         dispatcher.dispatch({
             action_type: Actions.HIDE_MEDIA,
+        });
+        dispatcher.dispatch({
+            action_type: Actions.CLEAR_HIGHLIGHTED_ITEM,
+            model: item.model,
         });
 
         let search_text = '';
@@ -457,6 +493,8 @@ const BuffetInteraction = new Lang.Class({
         Dispatcher.get_default().dispatch({
             action_type: Actions.SHOW_HOME_PAGE,
         });
+
+        this._update_highlight();
     },
 
     _load_ekn_id: function (ekn_id) {
