@@ -1,5 +1,5 @@
 @import url("resource:///com/endlessm/knowledge/data/css/common.css");
-@import url("resource:///com/endlessm/knowledge/data/css/endless_buffet.css");
+@import url("resource:///com/endlessm/knowledge/data/css/buffet_core.css");
 
 EknPanelFrame .top-menu {
     background-color: rgba(5, 12, 32, 0.9);
@@ -106,4 +106,8 @@ EknSideBySideArrangement .text-card.highlighted:hover .title.label {
 
 .all-type-card.highlighted .title {
     color: white;
+}
+
+.card.arrow {
+    -gtk-icon-source: none; /* kill the arrow that Gtk adds by default in Gtk.render_arrow() */
 }

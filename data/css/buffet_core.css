@@ -1,0 +1,433 @@
+/* This is all temporary */
+
+@import url("resource:///com/endlessm/knowledge/data/css/common.css");
+
+EknWindow {
+    background-size: cover;
+}
+
+.scrollbar {
+    -GtkRange-trough-border: 3px;
+    -GtkRange-slider-width: 8px;
+}
+
+.scrollbar.slider {
+    background-color: #9b9b9b;
+    border-radius: 20px;
+}
+
+.card .title,
+.search-results .results-message-title,
+.suggested-categories .browse-content .title,
+.suggested-articles .browse-content .title  {
+    color: #044a80;
+}
+
+.card .title.highlighted,
+.card .card-synopsis.highlighted {
+    background-color: #d9f0f8;
+}
+
+.search-results .separator,
+.search-results .results-message-subtitle,
+.browse-content .title {
+    color: #999999;
+}
+
+.search-results .results-message-title,
+.search-results .results-message-subtitle {
+    padding: 20px 60px 0px 60px;
+    padding-left: 60px;
+    padding-right: 60px;
+    font-size: 18px;
+}
+
+.search-results .results-message-subtitle {
+    padding-bottom: 40px;
+}
+
+EknHighlightsModule .text-card .title.label,
+EknThematicModule .text-card .title.label,
+.browse-content .title {
+    font-weight: 200;
+    font-size: 22px;
+}
+
+EknHighlightsModule .separator,
+EknThematicModule .separator {
+    background-color: #999999;
+    -EknThemeableImage-min-height: 1;
+    margin: 4px 0px 10px 0px;
+}
+
+EknSuggestedCategoriesModule .separator {
+    background-color: #999999;
+    -EknThemeableImage-min-height: 1;
+    margin: 4px 50px 20px 50px;
+}
+
+.browse-content {
+    padding: 20px 50px 0px 50px;
+}
+
+EknSearchModule .suggested-categories,
+EknSearchModule .suggested-articles {
+    background-color: #f6f6f6;
+}
+
+EknScrollingTemplate:not(.overshoot):not(.undershoot),
+EknSearchModule {
+    background-color: #e7ecee;
+}
+
+EknSearchModule .no-results {
+    background-color: white;
+}
+
+EknSuggestedCategoriesModule .button:hover .title,
+.text-card:hover .title {
+    color: #49bde3;
+}
+
+EknSuggestedCategoriesModule .browse-content .after,
+EknHighlightsModule .text-card .after,
+EknThematicModule .text-card .after {
+    -gtk-icon-source: url('resource:///com/endlessm/knowledge/data/images/title-arrow-dark.svg');
+    -EknThemeableImage-min-height: 10;
+    -EknThemeableImage-min-width: 11;
+    margin-left: 8px;
+    margin-top: 6px;
+}
+
+EknSuggestedCategoriesModule .browse-content:hover .after,
+EknHighlightsModule .text-card:hover .after,
+EknThematicModule .text-card:hover .after {
+    -gtk-icon-source: url('resource:///com/endlessm/knowledge/data/images/title-arrow-light.svg');
+}
+
+/* default size */
+.card {
+    font-size: 14px;
+}
+
+.card.width-c .title,
+.card.width-d.height-c .title,
+.card.width-d.height-b .title {
+    font-size: 16px;
+}
+
+.card.width-d.height-d .title,
+.card.width-e.height-b .title,
+.card.width-e.height-c .title {
+    font-size: 23px;
+}
+
+.card.width-d .title,
+.card.width-e .title,
+.card.width-f .title,
+.card.width-g .title,
+.card.width-h .title {
+    font-size: 37px;
+}
+
+.card .content-frame {
+    padding: 20px;
+}
+
+.thumb-card.width-d.height-b .content-frame,
+.thumb-card.width-e.height-b .content-frame,
+.thumb-card.width-e.height-c .content-frame {
+    padding: 20px 30px 20px 30px;
+}
+
+.card.width-e .content-frame,
+.card.width-f .content-frame,
+.card.width-g .content-frame,
+.card.width-h .content-frame {
+    padding: 40px;
+}
+
+.card.width-e.height-e .card-context,
+.card.width-f .card-context,
+.card.width-g .card-context,
+.card.width-h .card-context {
+    font-size: 14px;
+}
+
+.search-result-card.width-d .title,
+.search-result-card.width-d .card-synopsis {
+    font-size: 14px;
+}
+
+.search-result-card.width-e .title,
+.search-result-card.width-e .card-synopsis {
+    font-size: 14px;
+}
+
+.search-result-card.width-f .title,
+.search-result-card.width-f .card-synopsis {
+    font-size: 16px;
+}
+
+.search-result-card.width-g .title,
+.search-result-card.width-h .title {
+    font-size: 22px;
+}
+
+.search-result-card.width-g .card-synopsis,
+.search-result-card.width-h .card-synopsis {
+    font-size: 18px;
+}
+
+.search-result-card.width-e .content-frame,
+.search-result-card.width-f .content-frame {
+    padding: 20px;
+}
+
+.thumb-card,
+.post-card.article,
+.search-result-card {
+    background-color: white;
+    box-shadow: 0 0 5px alpha(black, 0.25);
+    border-color: transparent;  /* used for the triangle in the corner */
+}
+
+.post-card.set .thumbnail {
+    border: 0px solid transparent;  /* used for the triangle in the corner */
+}
+
+.post-card.article .content-frame {
+    background-image: linear-gradient(to top, black 0%, alpha(black, 0.69) 30%, alpha(black, 0.5) 49%, alpha(black, 0) 100%);
+}
+
+.post-card.article .title {
+    padding-bottom: 20px;
+    color: white;
+}
+
+.post-card.set {
+    background-image: url('resource:///com/endlessm/knowledge/data/images/deckbg.svg');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-position: center;
+}
+
+.post-card.set:active {
+    background-size: 98% 98%;
+}
+
+.post-card.set .content-frame {
+    padding: 20px 0px 20px 0px;
+    background-color: alpha(white, 0.949);
+}
+
+.post-card.set .title {
+    font-weight: 300;
+}
+
+.card-synopsis {
+    color: black;
+    font-size: 14px;
+    padding-top: 30px;
+}
+
+.card-context {
+    font-size: 12px;
+    font-style: italic;
+    color: #49bde3;
+}
+
+.results-message-title,
+.results-message.subtitle {
+    color: black;
+}
+
+.document-card .sequence-card {
+    background-color: white;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.25);
+    padding: 15px 30px;
+}
+
+.document-card .sequence-card .title {
+    font-size: 16px;
+    font-weight: normal;
+    color: #044a80;
+}
+
+.document-card .sequence-card .previous-label,
+.document-card .sequence-card .next-label {
+    font-size: 11px;
+    color: #49bde3;
+}
+
+.document-card .panel {
+    -EknSlidingPanel-fill-percentage: 0.73;
+    -EknSlidingPanel-shadow-margin: 7;
+}
+
+EknSideMenuTemplate .context-bar {
+    background-image: linear-gradient(to bottom, #f5f5f5 0%, #e9e9e9 100%);
+    box-shadow: 0px 2px 5px 0px alpha(black, 0.15);
+}
+
+EknSideMenuTemplate .context-bar-shadow-frame {
+    padding-bottom: 10px;
+}
+
+EknSideMenuTemplate .panel {
+    -EknSlidingPanel-shadow-margin: 40;
+}
+
+EknSideMenuTemplate .menu {
+    background-color: white;
+    box-shadow: 0px 1px 20px 0px alpha(black, 0.5);
+}
+
+EknSideMenuTemplate .menu .home-button,
+EknSideMenuTemplate .menu .card .title {
+    font-size: 16px;
+    font-family: 'Lato Thin';
+    color: #044a80;
+}
+
+.home-button {
+    font-weight: bold;
+}
+
+EknSideMenuTemplate .menu .home-button:hover,
+EknSideMenuTemplate .menu .card:hover .title {
+    color: #5bc2e5;
+}
+
+EknSideMenuTemplate .menu .separator {
+    color: #cccccc;
+}
+
+EknSideMenuTemplate .close-button,
+EknSideMenuTemplate .menu-button {
+    color: #666666;
+}
+
+EknSideMenuTemplate .menu-button {
+    padding: 10px;
+}
+
+EknSideMenuTemplate .close-button:hover,
+EknSideMenuTemplate .menu-button:hover {
+    color: #49bde3;
+}
+
+EknSideMenuTemplate .text-card,
+EknSideMenuTemplate .home-button,
+EknSideMenuTemplate .close-button {
+    padding: 6px 0px;
+}
+
+EknContextBanner {
+    font-family: 'Lato Thin';
+    font-size: 22px;
+    color: #666666;
+    text-shadow: 0px 1px alpha(white, 0.004);
+}
+
+EknAppBanner {
+    font-family: Lato;
+    font-size: 1.19em; /* 19px / 12px/em * 72/96 */
+    color: #c4eefc;
+}
+
+.document-card WebKitWebView {
+    background-color: white;
+}
+
+.webview-tooltip {
+    background-color: alpha(black, 0.4);
+    border-radius: 8px 8px 8px 8px;
+    padding: 10px 14px;
+}
+
+.webview-tooltip GtkLabel {
+    color: white;
+    font-family: Lato;
+    font-size: 1.0em; /* 16px / 12px/em * 72/96 */
+    font-weight: bold;
+}
+
+EknResponsiveMarginsModule.tiny {
+    margin: 0px;
+}
+
+EknResponsiveMarginsModule.small {
+    margin: 0px 40px;
+}
+
+EknResponsiveMarginsModule.medium {
+    margin: 0px 62px;
+}
+
+EknResponsiveMarginsModule.large {
+    margin: 0px 83px;
+}
+
+EknResponsiveMarginsModule.xlarge {
+    margin: 0px 120px;
+}
+
+.endless-search-box .frame {
+   background-color: #d5e1ed;
+}
+
+.endless-search-box .view .cell {
+    border-color: #d5e1ed;
+}
+
+.endless-search-box .view .cell:selected {
+    background-color: #f5f5f5;
+}
+
+.endless-search-box .view:nth-child(2) .cell {
+    border-color: #d5e1ed;
+    background-color: #d5e1ed;
+}
+
+.endless-search-box .view:nth-child(2) .cell:selected {
+    background-color: #f5f5f5;
+}
+
+/* Changes for composite TVs */
+
+.composite .search-results GtkListBoxRow {
+    padding: 0 40px;
+}
+
+.composite .card-context {
+    font-style: normal;
+}
+
+.composite .thumb-card .card-context {
+    color: gray;
+}
+
+.composite .search-result-card.width-d .title,
+.composite .search-result-card.width-d .card-synopsis,
+.composite .search-result-card.width-e .title,
+.composite .search-result-card.width-e .card-synopsis {
+    font-size: 14.1px;  /* 16px spec * 88% because spec was at 110% scale not 125% */
+}
+
+.composite EknHighlightsModule .text-card .title.label,
+.composite EknThematicModule .text-card .title.label,
+.composite .browse-content .title,
+.composite .post-card.set .title {
+    font-weight: normal;
+}
+
+.composite EknSideMenuTemplate .menu .home-button,
+.composite EknSideMenuTemplate .menu .card .title,
+.composite EknContextBanner {
+    font-family: Lato;
+}
+
+.composite EknAppBanner {
+    font-size: 16.7px;  /* 19px spec * 88% */
+}
