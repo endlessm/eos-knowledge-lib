@@ -187,8 +187,13 @@ describe('Buffet interaction', function () {
         });
 
         it('dispatch a set of unread articles', function () {
-            expect(dispatcher.last_payload_with_type(Actions.APPEND_SUPPLEMENTARY_ARTICLES)).toBeDefined();
-            expect(dispatcher.last_payload_with_type(Actions.APPEND_SUPPLEMENTARY_ARTICLES).same_set).toBeFalsy();
+            let payload = dispatcher.last_payload_with_type(Actions.APPEND_SUPPLEMENTARY_ARTICLES);
+            expect(payload).toBeDefined();
+            expect(payload.same_set).toBeFalsy();
+            expect(engine.get_objects_by_query.calls.mostRecent().args[0])
+                .toEqual(jasmine.objectContaining({
+                    tags: jasmine.arrayContaining(['EknArticleObject']),
+                }));
         });
 
         it('goes back to the home page when the home button is clicked', function () {
