@@ -367,47 +367,46 @@
             }
         },
         "main-menu": {
-            "type": "TwoPieceTemplate",
-            "properties": {
-                "orientation": "horizontal",
-                "column-spacing": 20,
-                "row-spacing": 20,
-                "halign": "center"
-            },
+            "type": "ResponsiveMarginsModule",
             "slots": {
-                "first": {
-                    "type": "AppBanner",
-                    "properties": {
-                        "max-fraction": 0.15,
-                        "show-subtitle": false,
-                        "visible": true
-                    }
-                },
-                "second": {
-                    "type": "SuggestedCategoriesModule",
-                    "properties": {
-                        "show-title": false,
-                        "visible": true
-                    },
+                "content": {
+                    "type": "TopMenuModule",
                     "slots": {
-                        "arrangement": {
-                            "type": "SideBySideArrangement",
+                        "banner": {
+                            "type": "AppBanner",
                             "properties": {
-                                "halign": "center",
+                                "max-fraction": 0.15,
+                                "show-subtitle": false,
+                                "visible": true
+                            }
+                        },
+                        "menu": {
+                            "type": "SuggestedCategoriesModule",
+                            "properties": {
+                                "show-title": false,
                                 "visible": true
                             },
                             "slots": {
-                                "card-type": {
-                                    "type": "TextCard",
+                                "arrangement": {
+                                    "type": "SideBySideArrangement",
                                     "properties": {
-                                        "title-capitalization": "lowercase",
-                                        "margin-top": 5,
                                         "halign": "center",
-                                        "decorate-on-highlight": true
+                                        "visible": true
+                                    },
+                                    "slots": {
+                                        "card-type": {
+                                            "type": "TextCard",
+                                            "properties": {
+                                                "title-capitalization": "lowercase",
+                                                "margin-top": 5,
+                                                "halign": "center",
+                                                "decorate-on-highlight": true
+                                            }
+                                        },
+                                        "filter": {
+                                            "type": "FeaturedFilter"
+                                        }
                                     }
-                                },
-                                "filter": {
-                                    "type": "FeaturedFilter"
                                 }
                             }
                         }

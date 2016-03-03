@@ -175,6 +175,7 @@
     <file>js/app/modules/thirtiesArrangement.js</file>
     <file>js/app/modules/thumbCard.js</file>
     <file>js/app/modules/tiledGridArrangement.js</file>
+    <file>js/app/modules/topMenuModule.js</file>
     <file>js/app/modules/topMenuTemplate.js</file>
     <file>js/app/modules/twoPieceTemplate.js</file>
     <file>js/app/modules/unreadFilter.js</file>
