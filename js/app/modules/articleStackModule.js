@@ -10,10 +10,10 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const Actions = imports.app.actions;
+const Card = imports.app.interfaces.card;
 const Dispatcher = imports.app.dispatcher;
 const Engine = imports.search.engine;
 const Module = imports.app.interfaces.module;
-const SequenceCard = imports.app.modules.sequenceCard;
 const WebviewTooltipPresenter = imports.app.webviewTooltipPresenter;
 
 /**
@@ -88,30 +88,34 @@ const ArticleStackModule = new Lang.Class({
             model: payload.model,
         };
         if (payload.previous_model) {
-            let card = new SequenceCard.SequenceCard({
+            let card = this.create_submodule('nav-card-type', {
                 model: payload.previous_model,
-                sequence: SequenceCard.Sequence.PREVIOUS,
+                sequence: Card.Sequence.PREVIOUS,
             });
-            document_card_props.previous_card = card;
-            card.connect('clicked', () => {
-                Dispatcher.get_default().dispatch({
-                    action_type: Actions.PREVIOUS_DOCUMENT_CLICKED,
-                    model: card.model,
+            if (card !== null) {
+                document_card_props.previous_card = card;
+                card.connect('clicked', () => {
+                    Dispatcher.get_default().dispatch({
+                        action_type: Actions.PREVIOUS_DOCUMENT_CLICKED,
+                        model: card.model,
+                    });
                 });
-            });
+            }
         }
         if (payload.next_model) {
-            let card = new SequenceCard.SequenceCard({
+            let card = this.create_submodule('nav-card-type', {
                 model: payload.next_model,
-                sequence: SequenceCard.Sequence.NEXT,
+                sequence: Card.Sequence.NEXT,
             });
-            document_card_props.next_card = card;
-            card.connect('clicked', () => {
-                Dispatcher.get_default().dispatch({
-                    action_type: Actions.NEXT_DOCUMENT_CLICKED,
-                    model: card.model,
+            if (card !== null) {
+                document_card_props.next_card = card;
+                card.connect('clicked', () => {
+                    Dispatcher.get_default().dispatch({
+                        action_type: Actions.NEXT_DOCUMENT_CLICKED,
+                        model: card.model,
+                    });
                 });
-            });
+            }
         }
         let document_card = this.create_submodule('card-type', document_card_props);
 
@@ -185,6 +189,6 @@ const ArticleStackModule = new Lang.Class({
      },
 
     get_slot_names: function () {
-        return ['card-type'];
+        return ['card-type', 'nav-card-type'];
     },
 });

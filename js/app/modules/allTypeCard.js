@@ -47,6 +47,7 @@ const AllTypeCard = new Lang.Class({
             'Whether this card is displayed as a highlighted card',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             false),
+        'sequence': GObject.ParamSpec.override('sequence', Card.Card),
     },
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/allTypeCard.ui',

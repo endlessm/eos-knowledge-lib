@@ -47,6 +47,7 @@ const SetPreviewCard = new Lang.Class({
             Card.Card),
         'highlight-string': GObject.ParamSpec.override('highlight-string', Card.Card),
         'text-halign': GObject.ParamSpec.override('text-halign', Card.Card),
+        'sequence': GObject.ParamSpec.override('sequence', Card.Card),
     },
 
     _init: function (props={}) {

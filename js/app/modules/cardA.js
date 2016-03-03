@@ -41,6 +41,7 @@ const CardA = new Lang.Class({
             Card.Card),
         'highlight-string': GObject.ParamSpec.override('highlight-string', Card.Card),
         'text-halign': GObject.ParamSpec.override('text-halign', Card.Card),
+        'sequence': GObject.ParamSpec.override('sequence', Card.Card),
     },
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/cardA.ui',

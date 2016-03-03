@@ -219,6 +219,9 @@
                                 "show-top-title": false,
                                 "show-toc": false
                             }
+                        },
+                        "nav-card-type": {
+                            "type": "SearchResultCard"
                         }
                     }
                 }

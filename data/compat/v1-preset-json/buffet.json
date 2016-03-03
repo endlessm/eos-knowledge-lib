@@ -233,6 +233,9 @@
                                 "show-toc": false,
                                 "custom-css": "reader2.css"
                             }
+                        },
+                        "nav-card-type": {
+                            "type": "SequenceCard"
                         }
                     }
                 }

@@ -15,11 +15,21 @@ const ContentObjectModel = imports.search.contentObjectModel;
 const Engine = imports.search.engine;
 const ImageCoverFrame = imports.app.widgets.imageCoverFrame;
 const Module = imports.app.interfaces.module;
+const SearchUtils = imports.search.utils;
 const SetMap = imports.app.setMap;
 const SetObjectModel = imports.search.setObjectModel;
 const SpaceContainer = imports.app.widgets.spaceContainer;
 const StyleClasses = imports.app.styleClasses;
 const Utils = imports.app.utils;
+
+/**
+ * Enum: Sequence
+ *
+ * PREVIOUS - Previous article in the sequence.
+ * NEXT     - Next article in the sequence.
+ * NONE     - Not part of a sequence.
+ */
+const Sequence = SearchUtils.define_enum(['PREVIOUS', 'NEXT', 'NONE']);
 
 /**
  * Constants: MinSize
@@ -150,7 +160,13 @@ const Card = new Lang.Interface({
             'Title halign', 'Horizontal alignment of title text',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             Gtk.Align.$gtype, Gtk.Align.CENTER),
-
+        /**
+         * Property: sequence
+         * A <Sequence> value for the card. Previous or next.
+         */
+        'sequence': GObject.ParamSpec.uint('sequence', 'Sequence', 'Sequence',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            0, Object.keys(Sequence).length, Sequence.NONE),
     },
 
     set css (v) {
@@ -181,6 +197,25 @@ const Card = new Lang.Interface({
         this._highlight_string = value;
         this.update_highlight_string();
         this.notify('highlight-string');
+    },
+
+    get sequence () {
+        if (this._sequence)
+            return this._sequence;
+        return Sequence.NONE;
+    },
+
+    set sequence (value) {
+        if (this._sequence === value)
+            return;
+        this._sequence = value;
+        if (this._sequence === Sequence.PREVIOUS) {
+            this.get_style_context().add_class(StyleClasses.PREVIOUS);
+        }
+        if (this._sequence === Sequence.NEXT) {
+            this.get_style_context().add_class(StyleClasses.NEXT);
+        }
+        this.notify('sequence');
     },
 
     // Overridable in tests; otherwise keep synchronized with the CSS
