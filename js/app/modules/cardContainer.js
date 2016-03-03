@@ -2,6 +2,7 @@
 
 /* exported CardContainer */
 
+const Format = imports.format;
 const Gettext = imports.gettext;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
@@ -15,6 +16,7 @@ const StyleClasses = imports.app.styleClasses;
 const Utils = imports.app.utils;
 
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
+String.prototype.format = Format.format;
 
 /**
  * Class: CardContainer
@@ -101,8 +103,11 @@ const CardContainer = new Lang.Class({
             return;
         this._title_label = v;
         this.title_button.label = this._title_label;
-        if (this.show_trigger)
-            this._see_more_button.label = _("See more") + ' ' + this._title_label;
+        if (this.show_trigger) {
+            // TRANSLATORS: %s will be replaced with the name of the category
+            // that we are offering to show more of.
+            this._see_more_button.label = _("See more %s").format(this._title_label);
+        }
     },
 
     get title() {

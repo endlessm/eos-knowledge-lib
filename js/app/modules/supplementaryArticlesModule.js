@@ -43,7 +43,7 @@ const SupplementaryArticlesModule = new Lang.Class({
     },
 
     _init: function (props={}) {
-        props.title = _("Other News");
+        props.title = _("Other news");
         this.parent(props);
 
         let dispatcher = Dispatcher.get_default();
