@@ -215,8 +215,7 @@
                             "type": "KnowledgeDocumentCard",
                             "properties": {
                                 "show-top-title": false,
-                                "show-toc": false,
-                                "custom-css": "reader2.css"
+                                "show-toc": false
                             }
                         }
                     }

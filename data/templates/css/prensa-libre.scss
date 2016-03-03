@@ -1,0 +1,311 @@
+@import "clipboard";
+
+$body-font: Merriweather;
+$body-font-composite: "DejaVu Sans";
+$headline-font: "Fira Sans";
+$caption-font: "Fira Sans";
+
+$gray: #666666;
+$dark-gray: #333333;
+$medium-gray: #e9e5e0;
+$light-gray: #faf5f0;
+$dark-blue: #0f1b3c;
+$red: #b11c08;
+$blue: #7297a7;
+
+$body-line-height: 1.5;
+
+$compact-max-size: 779px;
+$large-min-size: 1180px;
+
+// Remove user agent styles
+figure, blockquote, p {
+    -webkit-margin-before: 0;
+    -webkit-margin-after: 0;
+    -webkit-margin-start: 0;
+    -webkit-margin-end: 0;
+}
+
+// Remove unused elements
+.auth-info, [data-soma-widget="Title"] {
+    display: none;
+}
+
+html {
+    overflow-x: hidden;  // So 100vw divs don't cause a horizontal scrollbar
+    font-family: $body-font;
+}
+
+main {
+    color: $dark-gray;
+    line-height: $body-line-height;
+}
+
+// Headers
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: $headline-font;
+    font-weight: bold;
+    line-height: 1.333;
+}
+
+header h1 {
+    color: $dark-blue;
+    line-height: 1.18;
+}
+
+// Body text
+
+// Synopsis
+p[data-soma-widget="Subtitle"] {
+    font-style: italic;
+    color: $gray;
+}
+
+a {
+    color: $red;
+    text-decoration: none;
+}
+
+a:hover {
+    color: $blue;
+    text-decoration: underline;
+}
+
+// Page features
+
+figure,
+.photo {
+    img {
+        width: 100%;
+    }
+
+    figcaption {
+        font-family: $caption-font;
+        color: $gray;
+    }
+
+    background-color: $light-gray;
+}
+
+blockquote {
+    display: flex;
+
+    p {
+        font-family: $headline-font;
+        font-style: italic;
+        color: $blue;
+        align-self: center;
+    }
+
+    &::before {
+        content: url('../images/quote.svg');
+        align-self: flex-start;
+    }
+}
+
+aside {
+    // Spread out width over whole viewport
+    position: relative;
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+
+    background-color: $light-gray;
+}
+
+.extra-header {
+    display: flex;
+    align-items: flex-start;
+    align-content: flex-start;
+    justify-content: space-between;
+
+    .context {
+        font-family: $body-font;
+        color: $red;
+        flex: 1;
+    }
+
+    .extra-header-right {
+        font-family: $caption-font;
+        max-width: 25%;
+        text-align: right;
+    }
+
+    .date-published {
+        color: $gray;
+        font-style: italic;
+        margin-bottom: 0;
+    }
+
+    .source-link {
+        margin-bottom: 0;
+    }
+}
+
+hr {
+    border: 1px solid $medium-gray;
+}
+
+.disclaimer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    p {
+        font-family: $caption-font;
+        color: $gray;
+        margin-bottom: 0;
+    }
+
+    &::before {
+        content: url('../images/prensa-libre.svg');
+    }
+}
+
+// Responsive
+
+// Define all our responsive properties in terms of three parameters, then
+// include this mixin in the various media queries
+@mixin responsive-elements($body-size, $indent: 20.4vw, $dedent: -10.2vw) {
+    $body-unit-height: $body-line-height * $body-size;
+
+    main {
+        margin: (2 * $body-unit-height) $indent 0;
+        font-size: $body-size;
+    }
+
+    .eos-article-title {
+        margin: 0 $indent;
+    }
+
+    .disclaimer {
+        margin: $body-unit-height $indent;
+    }
+
+    .extra-header {
+        font-size: 0.8 * $body-size;
+        line-height: $body-size;
+        margin: (2 * $body-unit-height) ($indent + $dedent) $body-unit-height;
+    }
+
+    header h1 {
+        font-size: 2.8 * $body-size;
+        margin: 0 $dedent $body-unit-height;
+    }
+
+    h2 {
+        font-size: 2.2 * $body-size;
+        margin-top: 2 * $body-unit-height;
+    }
+
+    h3 {
+        font-size: 1.7 * $body-size;
+        margin-top: 2 * $body-unit-height;
+    }
+
+    h4 {
+        font-size: 1.4 * $body-size;
+    }
+
+    h5 {
+        font-size: 1.2 * $body-size;
+    }
+
+    h6 {
+        font-weight: normal;
+        font-style: italic;
+        line-height: $body-line-height;
+    }
+
+    p[data-soma-widget="Subtitle"] {
+        margin-left: $dedent;
+        margin-bottom: $body-unit-height;
+    }
+
+    p, ul {
+        margin-bottom: $body-unit-height;
+    }
+
+    figure,
+    .photo {
+        figcaption {
+            padding: $body-unit-height;
+            font-size: 0.8 * $body-size;
+        }
+
+        margin-top: 2 * $body-unit-height;
+        margin-bottom: 2 * $body-unit-height;
+    }
+
+    blockquote {
+        margin-left: $dedent;
+        margin-bottom: $body-unit-height;
+
+        p {
+            margin: 0 $dedent 0 0;
+        }
+
+        &::before {
+            min-width: 3 * $body-size;
+            height: 3 * $body-size;
+            margin-right: calc(-3 * #{$body-size} - #{$dedent});
+        }
+    }
+
+    aside {
+        padding: $body-unit-height 0;
+
+        & > * {
+            margin-left: $indent;
+            margin-right: $indent;
+        }
+    }
+
+    .disclaimer::before {
+        height: 2 * $body-size;
+        // ugh, width: auto doesn't work for SVGs not specified via <img>
+        // See https://css-tricks.com/scale-svg/
+        width: 730 / 150 * 2 * $body-size;
+    }
+}
+
+@include responsive-elements($body-size: 20px);
+
+@media (max-width: $compact-max-size) {
+    $body-size: 20px;
+    $indent: 10vw;
+    @include responsive-elements($body-size, $indent, $dedent: 0);
+
+    header h1 {
+        font-size: 2.5 * $body-size;
+    }
+
+    figure,
+    .photo {
+        // Spread out width over whole viewport
+        position: relative;
+        width: 100vw;
+        margin-left: calc(50% - 50vw);
+    }
+
+    blockquote {
+        margin-left: $indent;
+        margin-right: 0;
+
+        &::before {
+            margin-left: -$indent;
+        }
+    }
+}
+
+@media (min-width: $large-min-size) {
+    @include responsive-elements($body-size: 24px);
+}
+
+/* Composite resolutions */
+@media (device-width: 720px) and (device-height: 480px),
+       (device-width: 720px) and (device-height: 576px) {
+    .main {
+        font-family: $body-font-composite;
+    }
+}
