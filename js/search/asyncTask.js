@@ -80,10 +80,18 @@ const AsyncTask = Lang.Class({
     catch_callback_errors: function (fn) {
         if (this._done)
             return () => {};
+        let caller_stack = new Error().stack;
+        // Remove this current stack frame
+        caller_stack = caller_stack.split('\n').slice(1).join('\n');
         return () => {
             try {
                 fn.apply(this._source, arguments);
             } catch (error) {
+                // Nested invocations of catch_callback_errors can happen; only
+                // keep the stack trace from the inmost one, as it's got the
+                // most information
+                if (!/--- Called from: ---/.test(error.stack))
+                    error.stack += '--- Called from: ---\n' + caller_stack;
                 this.return_error(error);
             }
         };
