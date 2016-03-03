@@ -125,10 +125,10 @@
                                             },
                                             "slots": {
                                                 "arrangement": {
-                                                    "type": "ThirdRockArrangement",
+                                                    "type": "ThirtiesArrangement",
                                                     "properties": {
                                                         "spacing": 20,
-                                                        "compact-mode": true
+                                                        "max-rows": 1
                                                     },
                                                     "slots": {
                                                         "card-type": "main-card"
