@@ -137,7 +137,7 @@
                                                 "header-card-type": "header-card"
                                             }
                                         },
-                                        "second": "set-slices"
+                                        "second": "article-suggestions"
                                     }
                                 }
                             }
@@ -164,8 +164,7 @@
                                 }
                             }
                         },
-                        "article-suggestions": "article-suggestions",
-                        "category-suggestions": "set-slices"
+                        "article-suggestions": "article-suggestions"
                     },
                     "properties": {
                         "halign": "fill",
@@ -226,7 +225,10 @@
             }
         },
         "article-suggestions": {
-            "type": "SuggestedArticlesModule",
+            "type": "SupplementaryArticlesModule",
+            "properties": {
+                "same-set": false
+            },
             "slots": {
                 "arrangement": {
                     "type": "SquareGuysArrangement",
@@ -236,9 +238,17 @@
                         "margin-start": 20,
                         "margin-end": 20,
                         "margin-bottom": 20
+                    },
+                    "slots": {
+                        "card-type": {
+                            "type": "ThumbCard",
+                            "properties": {
+                                "context-capitalization": "lowercase",
+                                "text-halign": "start"
+                            }
+                        }
                     }
-                },
-                "card-type": "main-card"
+                }
             }
         },
         "set-slices": {

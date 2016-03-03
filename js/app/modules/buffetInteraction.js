@@ -210,15 +210,16 @@ const BuffetInteraction = new Lang.Class({
         }
 
         let current_set_tags = payload.set_tags.slice();
-        current_set_tags.push('EknArticleObject');
 
         // SupplementaryArticle modules can either show articles from the same category
         // as the current article, or articles from different categories.
         // In the the second case, we want to exclude all articles tagged with
         // the current article's tags.
         if (payload.same_set) {
+            current_set_tags.push('EknArticleObject');
             query_props.tags = current_set_tags;
         } else {
+            query_props.tags = ['EknArticleObject'];
             query_props.excluded_tags = current_set_tags;
         }
 
