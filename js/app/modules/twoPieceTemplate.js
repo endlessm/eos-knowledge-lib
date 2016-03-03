@@ -8,10 +8,19 @@ const Module = imports.app.interfaces.module;
 
 /**
  * Class: TwoPieceTemplate
+ * Layout template placing two components next to each other
+ *
+ * This layout can put two components next to each other (if its **orientation**
+ * property is **Gtk.Orientation.HORIZONTAL**) or on top of each other (for
+ * **Gtk.Orientation.VERTICAL**).
  *
  * Slots:
  *   - first
  *   - second
+ *
+ * CSS classes:
+ *   first - on the first component
+ *   second - on the second component
  */
 const TwoPieceTemplate = new Lang.Class({
     Name: 'TwoPieceTemplate',
@@ -28,8 +37,13 @@ const TwoPieceTemplate = new Lang.Class({
         props.expand = true;
         this.parent(props);
 
-        this.add(this.create_submodule('first'));
-        this.add(this.create_submodule('second'));
+        let first = this.create_submodule('first');
+        first.get_style_context().add_class('first');
+        this.add(first);
+
+        let second = this.create_submodule('second');
+        second.get_style_context().add_class('second');
+        this.add(second);
     },
 
     get_slot_names: function () {
