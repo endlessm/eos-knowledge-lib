@@ -130,6 +130,7 @@ const ThematicModule = new Lang.Class({
             action_type: Actions.CONTENT_ADDED,
             scroll_server: this.scroll_server,
         });
+        this._send_feature_item(arrangement);
     },
 
     _update_arrangements: function () {
@@ -146,6 +147,7 @@ const ThematicModule = new Lang.Class({
             this._non_featured_arrangements : this._featured_arrangements;
         this._current_index = 0;
         this._current_model = model;
+        this._is_feature_item_sent = false;
         this.show_more_content();
 
         Dispatcher.get_default().dispatch({
@@ -233,5 +235,20 @@ const ThematicModule = new Lang.Class({
             arrangement.clear();
             arrangement.hide();
         });
+    },
+
+    _send_feature_item: function (arrangement) {
+        if (this._is_feature_item_sent)
+            return
+
+        let model = arrangement.get_filtered_models()[0];
+        if (!model)
+            return
+
+        Dispatcher.get_default().dispatch({
+            action_type: Actions.FEATURE_ITEM,
+            model: model,
+        });
+        this._is_feature_item_sent = true;
     },
 });
