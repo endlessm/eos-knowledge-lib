@@ -16,6 +16,13 @@ const Engine = imports.search.engine;
 const Module = imports.app.interfaces.module;
 const WebviewTooltipPresenter = imports.app.webviewTooltipPresenter;
 
+const Navigation = {
+    PREVIOUS: 'previous',
+    NEXT: 'next',
+    BOTH: 'both',
+    NEITHER: 'neither',
+};
+
 /**
  * Class: ArticleStackModule
  *
@@ -51,6 +58,17 @@ const ArticleStackModule = new Lang.Class({
             'Do Sliding Animation', 'Do Sliding Animation',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             true),
+        /**
+         * Property: allow-navigation
+         * What direction of navigation to allow.
+         *
+         * We can either allow 'previous', 'next', 'neither', or 'both' navigation
+         * from the current article.
+         */
+        'allow-navigation': GObject.ParamSpec.string('allow-navigation',
+            'Allow navigation', 'What direction of navigation to allow',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            Navigation.BOTH),
     },
 
     CONTENT_TRANSITION_DURATION: 500,
@@ -87,7 +105,8 @@ const ArticleStackModule = new Lang.Class({
         let document_card_props = {
             model: payload.model,
         };
-        if (payload.previous_model) {
+        if (payload.previous_model &&
+            (this.allow_navigation === Navigation.PREVIOUS || this.allow_navigation === Navigation.BOTH)) {
             let card = this.create_submodule('nav-card-type', {
                 model: payload.previous_model,
                 sequence: Card.Sequence.PREVIOUS,
@@ -102,7 +121,8 @@ const ArticleStackModule = new Lang.Class({
                 });
             }
         }
-        if (payload.next_model) {
+        if (payload.next_model &&
+            (this.allow_navigation === Navigation.NEXT || this.allow_navigation === Navigation.BOTH)) {
             let card = this.create_submodule('nav-card-type', {
                 model: payload.next_model,
                 sequence: Card.Sequence.NEXT,
