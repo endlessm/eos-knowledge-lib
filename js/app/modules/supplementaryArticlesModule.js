@@ -68,7 +68,6 @@ const SupplementaryArticlesModule = new Lang.Class({
                         });
                     }
                     payload.models.forEach(this.arrangement.add_model, this.arrangement);
-                    this.see_more_button.visible = !this.arrangement.all_visible;
                     break;
             }
         });

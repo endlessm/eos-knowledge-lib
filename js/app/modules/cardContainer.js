@@ -41,6 +41,17 @@ const CardContainer = new Lang.Class({
         'title': GObject.ParamSpec.string('title',
             'Title', 'Title of this container',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
+        /**
+         * Property: show-trigger
+         * Show a "trigger" at the top right for the user to view more
+         *
+         * Default:
+         *   **true**
+         */
+        'show-trigger': GObject.ParamSpec.boolean('show-trigger', 'Show trigger',
+            'Show a "trigger" at the top right for the user to view more',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            true),
     },
 
     _init: function (props={}) {
@@ -52,14 +63,6 @@ const CardContainer = new Lang.Class({
         });
 
         this.title_button.get_style_context().add_class(StyleClasses.CARD_TITLE);
-
-        this.see_more_button = new Gtk.Button({
-            halign:  Gtk.Align.END,
-            hexpand:  true,
-            always_show_image: true,
-            image_position: Gtk.PositionType.RIGHT,
-            image: image,
-        });
 
         this.parent(props);
 
@@ -73,10 +76,23 @@ const CardContainer = new Lang.Class({
         });
 
         Utils.set_hand_cursor_on_widget(this.title_button);
-        Utils.set_hand_cursor_on_widget(this.see_more_button);
         this.attach(this.title_button, 0, 0, 1, 1);
-        this.attach(this.see_more_button, 1, 0, 1, 1);
         this.attach(this.arrangement, 0, 1, 2, 1);
+
+        if (this.show_trigger) {
+            this.see_more_button = new Gtk.Button({
+                halign:  Gtk.Align.END,
+                hexpand:  true,
+                always_show_image: true,
+                image_position: Gtk.PositionType.RIGHT,
+                image: image,
+            });
+            Utils.set_hand_cursor_on_widget(this.see_more_button);
+            this.attach(this.see_more_button, 1, 0, 1, 1);
+            this.arrangement.bind_property('all-visible',
+                this.see_more_button, 'visible',
+                GObject.BindingFlags.SYNC_CREATE | GObject.BindingFlags.INVERT_BOOLEAN);
+        }
         this.show_all();
     },
 
@@ -85,7 +101,8 @@ const CardContainer = new Lang.Class({
             return;
         this._title_label = v;
         this.title_button.label = this._title_label;
-        this.see_more_button.label = _("See more") + ' ' + this._title_label;
+        if (this.show_trigger)
+            this._see_more_button.label = _("See more") + ' ' + this._title_label;
     },
 
     get title() {

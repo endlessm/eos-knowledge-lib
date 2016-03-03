@@ -227,7 +227,8 @@
         "article-suggestions": {
             "type": "SupplementaryArticlesModule",
             "properties": {
-                "same-set": false
+                "same-set": false,
+                "show-trigger": false
             },
             "slots": {
                 "arrangement": {

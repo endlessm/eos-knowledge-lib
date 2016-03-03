@@ -60,12 +60,14 @@ const SetPreviewCard = new Lang.Class({
             });
         });
 
-        this.see_more_button.connect('clicked', () => {
-            Dispatcher.get_default().dispatch({
-                action_type: Actions.SET_CLICKED,
-                model: this.model,
+        if (this.show_trigger) {
+            this.see_more_button.connect('clicked', () => {
+                Dispatcher.get_default().dispatch({
+                    action_type: Actions.SET_CLICKED,
+                    model: this.model,
+                });
             });
-        });
+        }
     },
 
     load_content: function () {
@@ -83,7 +85,6 @@ const SetPreviewCard = new Lang.Class({
                 return;
             }
             models.forEach(model => this.arrangement.add_model(model));
-            this.see_more_button.visible = !this.arrangement.all_visible;
         });
     },
 
