@@ -61,7 +61,6 @@ describe('Split percentage template', function () {
 
             template.expand = true;
             win.add(template);
-            win.show_all();
             win.set_size_request(500, 500);
         });
 
@@ -72,6 +71,8 @@ describe('Split percentage template', function () {
         it('requests height for width with the correct values', function () {
             start.mode_spy.and.returnValue(Gtk.SizeRequestMode.HEIGHT_FOR_WIDTH);
             end.mode_spy.and.returnValue(Gtk.SizeRequestMode.HEIGHT_FOR_WIDTH);
+            win.show_all();
+
             start.queue_resize();
             end.queue_resize();
             template.get_preferred_height_for_width(500);
@@ -80,6 +81,7 @@ describe('Split percentage template', function () {
         });
 
         it('allocate respects the start percentage style property', function () {
+            win.show_all();
             Utils.update_gui();
             expect(end.get_allocated_width()).toBe(start.get_allocated_width());
         });
