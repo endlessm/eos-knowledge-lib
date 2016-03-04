@@ -170,7 +170,42 @@
                                         }
                                     }
                                 },
-                                "article-suggestions": "article-suggestions"
+                                "article-suggestions": {
+                                    "type": "ResponsiveMarginsModule",
+                                    "slots": {
+                                        "content": {
+                                            "type": "SuggestedArticlesModule",
+                                            "properties": {
+                                                "show-trigger": false,
+                                                "title-capitalization": "lowercase",
+                                                "margin-top": 40,
+                                                "margin-bottom": 40,
+                                                "valign": "end"
+                                            },
+                                            "slots": {
+                                                "arrangement": {
+                                                    "type": "SquareGuysArrangement",
+                                                    "properties" : {
+                                                        "max-rows": 1,
+                                                        "spacing": 10,
+                                                        "margin-start": 20,
+                                                        "margin-end": 20,
+                                                        "margin-bottom": 20
+                                                    },
+                                                    "slots": {
+                                                        "card-type": {
+                                                            "type": "ThumbCard",
+                                                            "properties": {
+                                                                "context-capitalization": "lowercase",
+                                                                "text-halign": "start"
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
                             },
                             "properties": {
                                 "halign": "fill",

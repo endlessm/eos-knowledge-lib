@@ -42,7 +42,8 @@ EknSideBySideArrangement .text-card.highlighted:hover .title.label {
     background-color: #0f1b3c;
 }
 
-EknSupplementaryArticlesModule > .title {
+EknSupplementaryArticlesModule > .title,
+EknSuggestedArticlesModule > .title {
     font-family: Merriweather;
     font-weight: bold;
     font-size: 22px;
