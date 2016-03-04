@@ -50,6 +50,8 @@ const SupplementaryArticlesModule = new Lang.Class({
         dispatcher.register((payload) => {
             switch(payload.action_type) {
                 case Actions.CLEAR_SUPPLEMENTARY_ARTICLES:
+                    if (payload.same_set !== this.same_set)
+                        break;
                     this.arrangement.clear();
                     break;
                 case Actions.APPEND_SUPPLEMENTARY_ARTICLES:
