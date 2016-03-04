@@ -50,6 +50,18 @@ EknSupplementaryArticlesModule > .title {
     padding-bottom: 20px;
 }
 
+EknSearchBannerModule {
+    padding: 50px 80px 0;
+    font-family: Merriweather;
+    font-weight: bold;
+    color: #050c20;
+    font-size: 64px;  /* 320% * 20px */
+}
+
+.search-page-a .separator {
+    color: #e9e5e0;
+}
+
 .all-type-card {
     background-color: white;
     box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.24);
