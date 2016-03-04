@@ -326,6 +326,20 @@ const NAV_BACK_BUTTON = 'nav-back-button';
 const NAV_FORWARD_BUTTON = 'nav-forward-button';
 
 /**
+ * Constant: PREVIOUS
+ *
+ * Matches cards indicating a previous member of a sequence.
+ */
+const PREVIOUS = 'previous';
+
+/**
+ * Constant: NEXT
+ *
+ * Matches cards indicating a next member of a sequence.
+ */
+const NEXT = 'next';
+
+/**
  * Constant: RTL
  *
  * Matches the Right-to-left (RTL) assets in the UI.

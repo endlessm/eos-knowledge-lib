@@ -36,6 +36,10 @@ html {
     font-family: $body-font;
 }
 
+body {
+    margin-bottom: 200px;
+}
+
 main {
     color: $dark-gray;
     line-height: $body-line-height;

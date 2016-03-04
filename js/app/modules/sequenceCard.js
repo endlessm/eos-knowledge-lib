@@ -6,16 +6,7 @@ const Lang = imports.lang;
 
 const Card = imports.app.interfaces.card;
 const Module = imports.app.interfaces.module;
-const SearchUtils = imports.search.utils;
 const Utils = imports.app.utils;
-
-/**
- * Enum: Sequence
- *
- * PREVIOUS - Previous article in the sequence.
- * NEXT     - Next article in the sequence.
- */
-const Sequence = SearchUtils.define_enum(['PREVIOUS', 'NEXT']);
 
 /**
  * Class: SequenceCard
@@ -45,13 +36,7 @@ const SequenceCard = new Lang.Class({
             Card.Card),
         'highlight-string': GObject.ParamSpec.override('highlight-string', Card.Card),
         'text-halign': GObject.ParamSpec.override('text-halign', Card.Card),
-        /**
-         * Property: sequence
-         * A <Sequence> value for the card. Previous or next.
-         */
-        'sequence': GObject.ParamSpec.uint('sequence', 'Sequence', 'Sequence',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            0, Object.keys(Sequence).length, Sequence.Previous),
+        'sequence': GObject.ParamSpec.override('sequence', Card.Card),
     },
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/sequenceCard.ui',
@@ -64,7 +49,7 @@ const SequenceCard = new Lang.Class({
         this.set_title_label_from_model(this._title_label);
         this._title_label_text = this._title_label.label;
 
-        this._previous_label.visible = (this.sequence === Sequence.PREVIOUS);
-        this._next_label.visible = (this.sequence === Sequence.NEXT);
+        this._previous_label.visible = (this.sequence === Card.Sequence.PREVIOUS);
+        this._next_label.visible = (this.sequence === Card.Sequence.NEXT);
     },
 });

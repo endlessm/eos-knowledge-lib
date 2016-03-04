@@ -210,7 +210,8 @@
                 "content": {
                     "type": "ArticleStackModule",
                     "properties" : {
-                        "do-sliding-animation": false
+                        "do-sliding-animation": false,
+                        "allow-navigation": "next"
                     },
                     "slots": {
                         "card-type": {
@@ -219,6 +220,9 @@
                                 "show-top-title": false,
                                 "show-toc": false
                             }
+                        },
+                        "nav-card-type": {
+                            "type": "SearchResultCard"
                         }
                     }
                 }
