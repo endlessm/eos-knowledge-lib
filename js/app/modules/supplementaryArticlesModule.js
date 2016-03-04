@@ -43,18 +43,20 @@ const SupplementaryArticlesModule = new Lang.Class({
     },
 
     _init: function (props={}) {
-        props.title = _("Other News");
+        props.title = _("Other news");
         this.parent(props);
 
         let dispatcher = Dispatcher.get_default();
         dispatcher.register((payload) => {
             switch(payload.action_type) {
                 case Actions.CLEAR_SUPPLEMENTARY_ARTICLES:
+                    if (payload.same_set !== this.same_set)
+                        break;
                     this.arrangement.clear();
                     break;
                 case Actions.APPEND_SUPPLEMENTARY_ARTICLES:
                     if (payload.same_set !== this.same_set)
-                        return;
+                        break;
 
                     // If we asked for unread articles and didn't get any
                     // try now asking for _read_ articles with the same
@@ -68,7 +70,6 @@ const SupplementaryArticlesModule = new Lang.Class({
                         });
                     }
                     payload.models.forEach(this.arrangement.add_model, this.arrangement);
-                    this.see_more_button.visible = !this.arrangement.all_visible;
                     break;
             }
         });

@@ -3,12 +3,14 @@
 /* exported ResponsiveMarginsModule */
 
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
+const Gdk = imports.gi.Gdk;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const Module = imports.app.interfaces.module;
+const Utils = imports.app.utils;
 
 /**
  * Class: ResponsiveMarginsModule
@@ -17,7 +19,7 @@ const Module = imports.app.interfaces.module;
 const ResponsiveMarginsModule = new Lang.Class({
     Name: 'ResponsiveMarginsModule',
     GTypeName: 'EknResponsiveMarginsModule',
-    Extends: Gtk.Frame,
+    Extends: Gtk.Bin,
     Implements: [ Module.Module ],
 
     Properties: {
@@ -100,6 +102,8 @@ const ResponsiveMarginsModule = new Lang.Class({
     },
 
     vfunc_size_allocate: function (alloc) {
+        this.set_allocation(alloc);
+
         let margins = this._get_responsive_margins();
         let [min_size, nat_size] = this.get_preferred_size();
         let base_min_width = min_size.width - margins.tiny.left - margins.tiny.right;
@@ -116,7 +120,20 @@ const ResponsiveMarginsModule = new Lang.Class({
         alloc.y += margin.top;
         alloc.width -= margin.left + margin.right;
         alloc.height -= margin.top + margin.bottom;
-        this.parent(alloc);
+        this.get_child().size_allocate(alloc);
+        Utils.set_container_clip(this);
+    },
+
+    vfunc_draw: function (cr) {
+        let width = this.get_allocated_width();
+        let height = this.get_allocated_height();
+        let style = this.get_style_context();
+        Gtk.render_background(style, cr, 0, 0, width, height);
+        Gtk.render_frame(style, cr, 0, 0, width, height);
+        Gtk.render_focus(style, cr, 0, 0, width, height);
+        this.parent(cr);
+        cr.$dispose();
+        return Gdk.EVENT_PROPAGATE;
     },
 
     // Module override

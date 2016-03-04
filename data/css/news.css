@@ -26,6 +26,20 @@ EknSideBySideArrangement .text-card.highlighted:hover .title.label {
     border-bottom: none;
 }
 
+/* Selects the background around the suggested articles modules; cumbersome! */
+.vertical EknResponsiveMarginsModule.second,
+.no-results .vertical EknResponsiveMarginsModule {
+    background-color: #0f1b3c;
+}
+
+EknSupplementaryArticlesModule > .title {
+    font-family: Merriweather;
+    font-weight: bold;
+    font-size: 22px;
+    color: white;
+    padding-bottom: 20px;
+}
+
 .all-type-card {
     background-color: white;
     box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.24);

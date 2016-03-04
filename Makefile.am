@@ -344,6 +344,7 @@ javascript_tests = \
 	tests/js/app/modules/testThumbCard.js \
 	tests/js/app/modules/testTiledGridArrangement.js \
 	tests/js/app/modules/testTopMenuTemplate.js \
+	tests/js/app/modules/testTwoPieceTemplate.js \
 	tests/js/app/modules/testUnreadFilter.js \
 	tests/js/app/modules/testWindow.js \
 	tests/js/app/modules/testWindshieldArrangement.js \

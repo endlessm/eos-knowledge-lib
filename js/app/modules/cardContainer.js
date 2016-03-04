@@ -2,6 +2,8 @@
 
 /* exported CardContainer */
 
+const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
+const Format = imports.format;
 const Gettext = imports.gettext;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
@@ -15,6 +17,7 @@ const StyleClasses = imports.app.styleClasses;
 const Utils = imports.app.utils;
 
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
+String.prototype.format = Format.format;
 
 /**
  * Class: CardContainer
@@ -41,6 +44,29 @@ const CardContainer = new Lang.Class({
         'title': GObject.ParamSpec.string('title',
             'Title', 'Title of this container',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
+        /**
+         * Property: title-capitalization
+         * Manner in which the title is formatted
+         *
+         * This property is a temporary stand-in for achieving this via the CSS
+         * *text-transform* property.
+         */
+        'title-capitalization': GObject.ParamSpec.enum('title-capitalization',
+            'Title capitalization', 'Manner in which the title is formatted',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            EosKnowledgePrivate.TextTransformType,
+            EosKnowledgePrivate.TextTransform.NONE),
+        /**
+         * Property: show-trigger
+         * Show a "trigger" at the top right for the user to view more
+         *
+         * Default:
+         *   **true**
+         */
+        'show-trigger': GObject.ParamSpec.boolean('show-trigger', 'Show trigger',
+            'Show a "trigger" at the top right for the user to view more',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            true),
     },
 
     _init: function (props={}) {
@@ -52,14 +78,6 @@ const CardContainer = new Lang.Class({
         });
 
         this.title_button.get_style_context().add_class(StyleClasses.CARD_TITLE);
-
-        this.see_more_button = new Gtk.Button({
-            halign:  Gtk.Align.END,
-            hexpand:  true,
-            always_show_image: true,
-            image_position: Gtk.PositionType.RIGHT,
-            image: image,
-        });
 
         this.parent(props);
 
@@ -73,25 +91,58 @@ const CardContainer = new Lang.Class({
         });
 
         Utils.set_hand_cursor_on_widget(this.title_button);
-        Utils.set_hand_cursor_on_widget(this.see_more_button);
         this.attach(this.title_button, 0, 0, 1, 1);
-        this.attach(this.see_more_button, 1, 0, 1, 1);
         this.attach(this.arrangement, 0, 1, 2, 1);
+
+        if (this.show_trigger) {
+            this.see_more_button = new Gtk.Button({
+                halign:  Gtk.Align.END,
+                hexpand:  true,
+                always_show_image: true,
+                image_position: Gtk.PositionType.RIGHT,
+                image: image,
+            });
+            Utils.set_hand_cursor_on_widget(this.see_more_button);
+            this.attach(this.see_more_button, 1, 0, 1, 1);
+            this.arrangement.bind_property('all-visible',
+                this.see_more_button, 'visible',
+                GObject.BindingFlags.SYNC_CREATE | GObject.BindingFlags.INVERT_BOOLEAN);
+        }
         this.show_all();
+    },
+
+    _update_title: function () {
+        this.title_button.label = Utils.format_capitals(this._title_label,
+            this.title_capitalization);
+        if (this.show_trigger) {
+            // TRANSLATORS: %s will be replaced with the name of the category
+            // that we are offering to show more of.
+            this._see_more_button.label = _("See more %s").format(this._title_label);
+        }
     },
 
     set title(v) {
         if (this._title_label === v)
             return;
         this._title_label = v;
-        this.title_button.label = this._title_label;
-        this.see_more_button.label = _("See more") + ' ' + this._title_label;
+        this._update_title();
     },
 
     get title() {
         if (this._title_label)
             return this._title_label;
         return '';
+    },
+
+    get title_capitalization() {
+        return this._title_capitalization || EosKnowledgePrivate.TextTransform.NONE;
+    },
+
+    set title_capitalization(value) {
+        if (this._title_capitalization === value)
+            return;
+        this._title_capitalization = value;
+        this._update_title();
     },
 
     // Module override

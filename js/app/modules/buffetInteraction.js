@@ -406,6 +406,10 @@ const BuffetInteraction = new Lang.Class({
                 dispatcher.dispatch({
                     action_type: Actions.SHOW_SECTION_PAGE,
                 });
+                dispatcher.dispatch({
+                    action_type: Actions.CLEAR_SUPPLEMENTARY_ARTICLES,
+                    same_set: false,
+                });
                 this._load_more_supplementary_articles({
                     set_tags: item.model.child_tags,
                     same_set: false,
