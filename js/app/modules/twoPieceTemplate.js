@@ -26,11 +26,6 @@ const TwoPieceTemplate = new Lang.Class({
 
     _init: function (props={}) {
         props.expand = true;
-        if (props.orientation === Gtk.Orientation.VERTICAL) {
-            props.halign = Gtk.Align.FILL;
-        } else if (props.orientation === Gtk.Orientation.HORIZONTAL) {
-            props.valign = Gtk.Align.FILL;
-        }
         this.parent(props);
 
         this.add(this.create_submodule('first'));
