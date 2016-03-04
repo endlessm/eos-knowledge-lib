@@ -10,7 +10,7 @@ const Module = imports.app.interfaces.module;
 const SlidingPanelOverlay = imports.app.widgets.slidingPanelOverlay;
 const StyleClasses = imports.app.styleClasses;
 
-const _EXTRA_TOP_MARGIN = 20;
+const _EXTRA_TOP_MARGIN = 80;
 
 /**
  * Class: TopMenuTemplate
