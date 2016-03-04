@@ -56,7 +56,7 @@ const SupplementaryArticlesModule = new Lang.Class({
                     break;
                 case Actions.APPEND_SUPPLEMENTARY_ARTICLES:
                     if (payload.same_set !== this.same_set)
-                        return;
+                        break;
 
                     // If we asked for unread articles and didn't get any
                     // try now asking for _read_ articles with the same
