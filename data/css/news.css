@@ -63,6 +63,22 @@ EknSearchBannerModule {
     color: #e9e5e0;
 }
 
+.search-results .results-message-title {
+    font-family: 'Fira Sans';
+    color: #7297a7;
+    font-size: 30px;  /* 150% * 20px */
+    padding: 50px 80px 30px;
+}
+
+.search-results .results-message-subtitle {
+    font-family: Merriweather;
+    font-style: italic;
+    color: #666666;
+    font-size: 22px;  /* 110% * 20px */
+    padding-bottom: 50px;
+    padding-left: 80px;
+}
+
 .all-type-card {
     background-color: white;
     box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.24);

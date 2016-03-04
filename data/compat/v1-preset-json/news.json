@@ -187,9 +187,7 @@
                                                     "type": "SquareGuysArrangement",
                                                     "properties" : {
                                                         "max-rows": 1,
-                                                        "spacing": 10,
-                                                        "margin-start": 20,
-                                                        "margin-end": 20,
+                                                        "spacing": 20,
                                                         "margin-bottom": 20
                                                     },
                                                     "slots": {
