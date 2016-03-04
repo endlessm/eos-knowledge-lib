@@ -232,7 +232,10 @@
                     "properties": {
                         "same-set": false,
                         "show-trigger": false,
-                        "title-capitalization": "lowercase"
+                        "title-capitalization": "lowercase",
+                        "margin-top": 40,
+                        "margin-bottom": 40,
+                        "valign": "end"
                     },
                     "slots": {
                         "arrangement": {
