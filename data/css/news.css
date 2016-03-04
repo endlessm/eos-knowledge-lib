@@ -125,3 +125,10 @@ EknSupplementaryArticlesModule > .title {
 .card.arrow {
     -gtk-icon-source: none; /* kill the arrow that Gtk adds by default in Gtk.render_arrow() */
 }
+
+EknSetBannerModule .card .title,
+EknSetBannerModule .card:hover .title {
+    color: white;
+    font-size: 48px;
+    font-family: Merriweather;
+}

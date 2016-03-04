@@ -1,5 +1,6 @@
 // Copyright 2015 Endless Mobile, Inc.
 
+const Gdk = imports.gi.Gdk;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
@@ -35,6 +36,11 @@ const SetBannerModule = new Lang.Class({
                 case Actions.SHOW_SET:
                     let card = this.create_submodule('card-type', {
                         model: payload.model,
+                    });
+                    // Cards on the banner should not look clickable
+                    card.connect('enter-notify-event', function (card) {
+                        card.window.set_cursor(null);
+                        return Gdk.EVENT_PROPAGATE;
                     });
                     if (this.get_child())
                         this.remove(this.get_child());
