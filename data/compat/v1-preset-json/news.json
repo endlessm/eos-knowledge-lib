@@ -105,15 +105,15 @@
                     },
                     "slots": {
                         "content": {
-                            "type": "ResponsiveMarginsModule",
+                            "type": "TwoPieceTemplate",
+                            "properties": {
+                                "orientation": "vertical"
+                            },
                             "slots": {
-                                "content": {
-                                    "type": "TwoPieceTemplate",
-                                    "properties": {
-                                        "orientation": "vertical"
-                                    },
+                                "first": {
+                                    "type": "ResponsiveMarginsModule",
                                     "slots": {
-                                        "first": {
+                                        "content": {
                                             "type": "ThematicModule",
                                             "properties": {
                                                 "halign": "center",
@@ -136,10 +136,10 @@
                                                 },
                                                 "header-card-type": "header-card"
                                             }
-                                        },
-                                        "second": "article-suggestions"
+                                        }
                                     }
-                                }
+                                },
+                                "second": "article-suggestions"
                             }
                         }
                     }
@@ -225,28 +225,33 @@
             }
         },
         "article-suggestions": {
-            "type": "SupplementaryArticlesModule",
-            "properties": {
-                "same-set": false,
-                "show-trigger": false,
-                "title-capitalization": "lowercase"
-            },
+            "type": "ResponsiveMarginsModule",
             "slots": {
-                "arrangement": {
-                    "type": "SquareGuysArrangement",
-                    "properties" : {
-                        "max-rows": 1,
-                        "spacing": 10,
-                        "margin-start": 20,
-                        "margin-end": 20,
-                        "margin-bottom": 20
+                "content": {
+                    "type": "SupplementaryArticlesModule",
+                    "properties": {
+                        "same-set": false,
+                        "show-trigger": false,
+                        "title-capitalization": "lowercase"
                     },
                     "slots": {
-                        "card-type": {
-                            "type": "ThumbCard",
-                            "properties": {
-                                "context-capitalization": "lowercase",
-                                "text-halign": "start"
+                        "arrangement": {
+                            "type": "SquareGuysArrangement",
+                            "properties" : {
+                                "max-rows": 1,
+                                "spacing": 10,
+                                "margin-start": 20,
+                                "margin-end": 20,
+                                "margin-bottom": 20
+                            },
+                            "slots": {
+                                "card-type": {
+                                    "type": "ThumbCard",
+                                    "properties": {
+                                        "context-capitalization": "lowercase",
+                                        "text-halign": "start"
+                                    }
+                                }
                             }
                         }
                     }
