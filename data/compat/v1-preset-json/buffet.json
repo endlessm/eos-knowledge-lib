@@ -210,6 +210,7 @@
                     },
                     "properties": {
                         "halign": "fill",
+                        "message-halign": "center",
                         "message-justify": "left"
                     }
                 }
