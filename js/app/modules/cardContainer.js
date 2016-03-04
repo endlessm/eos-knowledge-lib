@@ -2,6 +2,7 @@
 
 /* exported CardContainer */
 
+const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Format = imports.format;
 const Gettext = imports.gettext;
 const GObject = imports.gi.GObject;
@@ -43,6 +44,18 @@ const CardContainer = new Lang.Class({
         'title': GObject.ParamSpec.string('title',
             'Title', 'Title of this container',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
+        /**
+         * Property: title-capitalization
+         * Manner in which the title is formatted
+         *
+         * This property is a temporary stand-in for achieving this via the CSS
+         * *text-transform* property.
+         */
+        'title-capitalization': GObject.ParamSpec.enum('title-capitalization',
+            'Title capitalization', 'Manner in which the title is formatted',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            EosKnowledgePrivate.TextTransformType,
+            EosKnowledgePrivate.TextTransform.NONE),
         /**
          * Property: show-trigger
          * Show a "trigger" at the top right for the user to view more
@@ -98,11 +111,9 @@ const CardContainer = new Lang.Class({
         this.show_all();
     },
 
-    set title(v) {
-        if (this._title_label === v)
-            return;
-        this._title_label = v;
-        this.title_button.label = this._title_label;
+    _update_title: function () {
+        this.title_button.label = Utils.format_capitals(this._title_label,
+            this.title_capitalization);
         if (this.show_trigger) {
             // TRANSLATORS: %s will be replaced with the name of the category
             // that we are offering to show more of.
@@ -110,10 +121,28 @@ const CardContainer = new Lang.Class({
         }
     },
 
+    set title(v) {
+        if (this._title_label === v)
+            return;
+        this._title_label = v;
+        this._update_title();
+    },
+
     get title() {
         if (this._title_label)
             return this._title_label;
         return '';
+    },
+
+    get title_capitalization() {
+        return this._title_capitalization || EosKnowledgePrivate.TextTransform.NONE;
+    },
+
+    set title_capitalization(value) {
+        if (this._title_capitalization === value)
+            return;
+        this._title_capitalization = value;
+        this._update_title();
     },
 
     // Module override
