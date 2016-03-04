@@ -111,7 +111,7 @@ describe('Responsive margins module', function () {
                 win.queue_resize();
                 Utils.update_gui();
 
-                expect(total_width).toBe(responsive_margins.get_allocated_width() + margin * 2);
+                expect(total_width).toBe(label.get_allocated_width() + margin * 2);
             });
         });
     }
