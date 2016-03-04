@@ -16,36 +16,6 @@ EknWindow {
     border-radius: 20px;
 }
 
-.card .title,
-.search-results .results-message-title,
-.suggested-categories .browse-content .title,
-.suggested-articles .browse-content .title  {
-    color: #044a80;
-}
-
-.card .title.highlighted,
-.card .card-synopsis.highlighted {
-    background-color: #d9f0f8;
-}
-
-.search-results .separator,
-.search-results .results-message-subtitle,
-.browse-content .title {
-    color: #999999;
-}
-
-.search-results .results-message-title,
-.search-results .results-message-subtitle {
-    padding: 20px 60px 0px 60px;
-    padding-left: 60px;
-    padding-right: 60px;
-    font-size: 18px;
-}
-
-.search-results .results-message-subtitle {
-    padding-bottom: 40px;
-}
-
 EknHighlightsModule .text-card .title.label,
 EknThematicModule .text-card .title.label,
 .browse-content .title {
@@ -68,11 +38,6 @@ EknSuggestedCategoriesModule .separator {
 
 .browse-content {
     padding: 20px 50px 0px 50px;
-}
-
-EknSearchModule .suggested-categories,
-EknSearchModule .suggested-articles {
-    background-color: #f6f6f6;
 }
 
 EknScrollingTemplate:not(.overshoot):not(.undershoot),
