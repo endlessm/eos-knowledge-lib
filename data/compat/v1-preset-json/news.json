@@ -105,41 +105,64 @@
                     },
                     "slots": {
                         "content": {
-                            "type": "TwoPieceTemplate",
+                            "type": "BannerTemplate",
                             "properties": {
-                                "orientation": "vertical"
+                                "image-separator": true
                             },
                             "slots": {
-                                "first": {
-                                    "type": "ResponsiveMarginsModule",
+                                "banner": {
+                                    "type": "SetBannerModule",
+                                    "properties": {
+                                        "halign": "center",
+                                        "margin-top": 40
+                                    },
                                     "slots": {
-                                        "content": {
-                                            "type": "ThematicModule",
+                                        "card-type": {
+                                            "type": "TextCard",
                                             "properties": {
-                                                "halign": "center",
-                                                "margin-top": 20,
-                                                "margin-bottom": 20,
-                                                "margin-start": 20,
-                                                "margin-end": 20,
-                                                "scroll-server": "theme-scroll"
-                                            },
-                                            "slots": {
-                                                "arrangement": {
-                                                    "type": "ThirtiesArrangement",
-                                                    "properties": {
-                                                        "spacing": 20,
-                                                        "max-rows": 1
-                                                    },
-                                                    "slots": {
-                                                        "card-type": "main-card"
-                                                    }
-                                                },
-                                                "header-card-type": "header-card"
+                                                "title-capitalization": "lowercase"
                                             }
                                         }
                                     }
                                 },
-                                "second": "article-suggestions"
+                                "content": {
+                                    "type": "TwoPieceTemplate",
+                                    "properties": {
+                                        "orientation": "vertical"
+                                    },
+                                    "slots": {
+                                        "first": {
+                                            "type": "ResponsiveMarginsModule",
+                                            "slots": {
+                                                "content": {
+                                                    "type": "ThematicModule",
+                                                    "properties": {
+                                                        "halign": "center",
+                                                        "margin-top": 20,
+                                                        "margin-bottom": 20,
+                                                        "margin-start": 20,
+                                                        "margin-end": 20,
+                                                        "scroll-server": "theme-scroll"
+                                                    },
+                                                    "slots": {
+                                                        "arrangement": {
+                                                            "type": "ThirtiesArrangement",
+                                                            "properties": {
+                                                                "spacing": 20,
+                                                                "max-rows": 1
+                                                            },
+                                                            "slots": {
+                                                                "card-type": "main-card"
+                                                            }
+                                                        },
+                                                        "header-card-type": "header-card"
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "second": "article-suggestions"
+                                    }
+                                }
                             }
                         }
                     }
