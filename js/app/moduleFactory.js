@@ -112,7 +112,10 @@ const ModuleFactory = new Lang.Class({
             throw new Error('No slot named ' + slot + ' according to module.get_slot_names.');
         if (slot.indexOf('.') !== -1)
             logError(new Error('Slot names should never contain a "."'));
-        let slot_value = this._get_module_description_by_name(parent_module.factory_name)['slots'][slot];
+        let slots = this._get_module_description_by_name(parent_module.factory_name)['slots'];
+        if (!slots)
+            return null;
+        let slot_value = slots[slot];
         if (slot_value === null || slot_value === undefined)
             return null;
         let factory_name = slot_value;
