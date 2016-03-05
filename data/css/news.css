@@ -1,6 +1,16 @@
 @import url("resource:///com/endlessm/knowledge/data/css/common.css");
 @import url("resource:///com/endlessm/knowledge/data/css/buffet_core.css");
 
+EknScrollingTemplate:not(.overshoot):not(.undershoot),
+EknSearchModule,
+EknSearchBannerModule {
+    background-color: #e9e5e0;
+}
+
+.card .title {
+    color: #0f1b3c;
+}
+
 EknPanelFrame .top-menu {
     background-color: rgba(5, 12, 32, 0.9);
     box-shadow: 0px 10px 20px 0px rgba(0, 0, 0, 0.2);
@@ -32,12 +42,41 @@ EknSideBySideArrangement .text-card.highlighted:hover .title.label {
     background-color: #0f1b3c;
 }
 
-EknSupplementaryArticlesModule > .title {
+EknSupplementaryArticlesModule > .title,
+EknSuggestedArticlesModule > .title {
     font-family: Merriweather;
     font-weight: bold;
     font-size: 22px;
     color: white;
     padding-bottom: 20px;
+}
+
+EknSearchBannerModule {
+    padding: 50px 80px 0;
+    font-family: Merriweather;
+    font-weight: bold;
+    color: #050c20;
+    font-size: 64px;  /* 320% * 20px */
+}
+
+.search-page-a .separator {
+    color: #e9e5e0;
+}
+
+.search-results .results-message-title {
+    font-family: 'Fira Sans';
+    color: #7297a7;
+    font-size: 30px;  /* 150% * 20px */
+    padding: 50px 80px 30px;
+}
+
+.search-results .results-message-subtitle {
+    font-family: Merriweather;
+    font-style: italic;
+    color: #666666;
+    font-size: 22px;  /* 110% * 20px */
+    padding-bottom: 50px;
+    padding-left: 80px;
 }
 
 .all-type-card {

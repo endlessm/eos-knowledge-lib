@@ -95,7 +95,8 @@ const SearchModule = new Lang.Class({
     },
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/searchModule.ui',
-    InternalChildren: [ 'message-title', 'message-subtitle', 'no-results-grid', 'spinner' ],
+    InternalChildren: [ 'message-grid', 'message-subtitle', 'message-title',
+        'no-results-grid', 'spinner' ],
 
     _init: function (props={}) {
         this._query = '';
@@ -120,7 +121,8 @@ const SearchModule = new Lang.Class({
 
         this._message_title.justify = this._message_subtitle.justify = this.message_justify;
         this._no_results_grid.valign = this.message_valign;
-        this._message_title.halign = this._message_subtitle.halign = this.message_halign;
+        this._message_grid.halign = this._message_title.halign =
+            this._message_subtitle.halign = this.message_halign;
 
         let dispatcher = Dispatcher.get_default();
         if (this._arrangement instanceof InfiniteScrolledWindow.InfiniteScrolledWindow) {
