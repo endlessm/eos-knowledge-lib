@@ -69,3 +69,4 @@ const SHOW_ARCHIVE_PAGE = 'show-archive-page';
 const SHOW_STANDALONE_PAGE = 'show-standalone-page';
 const PRESENT_WINDOW = 'present-window';
 const FILTER_SETS = 'filter-sets';
+const FEATURE_ITEM = 'feature-item';

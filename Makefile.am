@@ -285,6 +285,7 @@ javascript_tests = \
 	tests/js/app/modules/testArticleSnippetCard.js \
 	tests/js/app/modules/testArticleStackModule.js \
 	tests/js/app/modules/testBackCover.js \
+	tests/js/app/modules/testBackgroundModule.js \
 	tests/js/app/modules/testBannerTemplate.js \
 	tests/js/app/modules/testBuffetInteraction.js \
 	tests/js/app/modules/testCardA.js \

@@ -70,6 +70,7 @@ const HighlightsModule = new Lang.Class({
 
         this._sets = [];
         this._loaded_sets = 0;
+        this._is_feature_item_sent = false;
 
         Dispatcher.get_default().register((payload) => {
             switch (payload.action_type) {
@@ -168,6 +169,7 @@ const HighlightsModule = new Lang.Class({
 
             this._arrangement_update_functions.push(() => { this._pack_arrangement(arrangement, models); });
             this._update_arrangements();
+            this._send_feature_item(arrangement);
         });
     },
 
@@ -198,6 +200,7 @@ const HighlightsModule = new Lang.Class({
         this._arrangement_update_fns = [];
         this._sets = [];
         this._loaded_sets = 0;
+        this._is_feature_item_sent = false;
     },
 
     _send_sets_to_filter: function () {
@@ -205,5 +208,20 @@ const HighlightsModule = new Lang.Class({
             action_type: Actions.FILTER_SETS,
             sets: this._sets.map(set => set.ekn_id),
         });
+    },
+
+    _send_feature_item: function (arrangement) {
+        if (this._is_feature_item_sent)
+            return
+
+        let model = arrangement.get_filtered_models()[0];
+        if (!model)
+            return
+
+        Dispatcher.get_default().dispatch({
+            action_type: Actions.FEATURE_ITEM,
+            model: model,
+        });
+        this._is_feature_item_sent = true;
     },
 });

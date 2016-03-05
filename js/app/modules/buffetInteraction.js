@@ -348,6 +348,13 @@ const BuffetInteraction = new Lang.Class({
                 query: history_item.query,
             });
 
+            if (results.length > 0) {
+                dispatcher.dispatch({
+                    action_type: Actions.FEATURE_ITEM,
+                    model: results[0],
+                });
+            }
+
             dispatcher.dispatch({
                 action_type: Actions.SEARCH_READY,
                 query: history_item.query,
@@ -459,6 +466,10 @@ const BuffetInteraction = new Lang.Class({
                     if (index < item.context.length - 1)
                         payload.next_model = item.context[index + 1];
                 }
+                dispatcher.dispatch({
+                    action_type: Actions.FEATURE_ITEM,
+                    model: item.model,
+                });
                 dispatcher.dispatch(payload);
                 dispatcher.dispatch({
                     action_type: Actions.SHOW_ARTICLE_PAGE,
