@@ -78,12 +78,13 @@ describe('Responsive margins module', function () {
     test_constant_size_requests('height');
 
     it ('height for width passes correct width for tiny and xlarge margins', function () {
+        let content = factory.get_last_created_named_mock('content');
+        content.mode_spy.and.returnValue(Gtk.SizeRequestMode.HEIGHT_FOR_WIDTH);
+
         let win = new Gtk.OffscreenWindow();
         win.add(responsive_margins);
         win.show_all();
 
-        let content = factory.get_last_created_named_mock('content');
-        content.mode_spy.and.returnValue(Gtk.SizeRequestMode.HEIGHT_FOR_WIDTH);
         content.queue_resize();
         responsive_margins.get_preferred_height_for_width(200);
         expect(content.height_for_width_spy).toHaveBeenCalledWith(180);
