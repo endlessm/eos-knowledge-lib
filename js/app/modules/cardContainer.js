@@ -14,6 +14,7 @@ const Config = imports.app.config;
 const Dispatcher = imports.app.dispatcher;
 const Module = imports.app.interfaces.module;
 const StyleClasses = imports.app.styleClasses;
+const ThemeableImage = imports.app.widgets.themeableImage;
 const Utils = imports.app.utils;
 
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
@@ -81,18 +82,22 @@ const CardContainer = new Lang.Class({
 
         this.parent(props);
 
+        let separator = new ThemeableImage.ThemeableImage({
+            visible: true,
+            halign: Gtk.Align.FILL,
+            valign: Gtk.Align.CENTER,
+        });
+        separator.get_style_context().add_class(Gtk.STYLE_CLASS_SEPARATOR);
+
         this.arrangement = this.create_submodule('arrangement');
         this.arrangement.connect('card-clicked', (arrangement, model) => {
-            Dispatcher.get_default().dispatch({
-                action_type: Actions.ITEM_CLICKED,
-                model: model,
-                context: this.arrangement.get_models(),
-            });
+            this.card_clicked(arrangement, model);
         });
 
         Utils.set_hand_cursor_on_widget(this.title_button);
         this.attach(this.title_button, 0, 0, 1, 1);
-        this.attach(this.arrangement, 0, 1, 2, 1);
+        this.attach(separator, 0, 1, 2, 1);
+        this.attach(this.arrangement, 0, 2, 2, 1);
 
         if (this.show_trigger) {
             this.see_more_button = new Gtk.Button({
@@ -149,5 +154,21 @@ const CardContainer = new Lang.Class({
     // Module override
     get_slot_names: function () {
         return ['arrangement'];
+    },
+
+    /**
+     * Method: card_clicked
+     * To be overridden in subclasses
+     *
+     * Override this method if you want to influence the payload that is sent
+     * when one of the arrangement's cards is clicked.
+     * Normally this is <Actions.ITEM_CLICKED>.
+     */
+    card_clicked: function (arrangement, model) {
+        Dispatcher.get_default().dispatch({
+            action_type: Actions.ITEM_CLICKED,
+            model: model,
+            context: this.arrangement.get_models(),
+        });
     },
 });

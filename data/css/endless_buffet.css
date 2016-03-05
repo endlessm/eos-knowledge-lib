@@ -1,6 +1,7 @@
 @import url("resource:///com/endlessm/knowledge/data/css/buffet_core.css");
 
 .card .title,
+EknSetPreviewCard .title,
 .search-results .results-message-title,
 .suggested-categories .browse-content .title,
 .suggested-articles .browse-content .title  {

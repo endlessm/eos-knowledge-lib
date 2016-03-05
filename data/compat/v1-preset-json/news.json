@@ -86,23 +86,28 @@
                                                         }
                                                     }
                                                 },
-                                                "support-arrangement": {
-                                                    "type": "ThirtiesArrangement",
-                                                    "properties": {
-                                                        "spacing": 20,
-                                                        "max-rows": 1
-                                                    },
+                                                "support-card-type": {
+                                                    "type": "SetPreviewCard",
                                                     "slots": {
-                                                        "card-type": "main-card",
-                                                        "order": {
-                                                            "type": "PublishedDateOrder",
+                                                        "arrangement": {
+                                                            "type": "ThirtiesArrangement",
                                                             "properties": {
-                                                                "ascending": false
+                                                                "spacing": 20,
+                                                                "max-rows": 1
+                                                            },
+                                                            "slots": {
+                                                                "card-type": "main-card",
+                                                                "order": {
+                                                                    "type": "PublishedDateOrder",
+                                                                    "properties": {
+                                                                        "ascending": false
+                                                                    }
+                                                                }
                                                             }
-                                                        }
+                                                        },
+                                                        "header-card-type": "header-card"
                                                     }
-                                                },
-                                                "header-card-type": "header-card"
+                                                }
                                             }
                                         }
                                     }

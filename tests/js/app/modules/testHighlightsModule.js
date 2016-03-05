@@ -40,19 +40,14 @@ describe('Highlights module', function () {
         engine.get_objects_by_query_finish.and.returnValue([[], null]);
 
         factory = new MockFactory.MockFactory();
-        factory.add_named_mock('arrangement1', LimitedArrangment, {
+        factory.add_named_mock('arrangement', LimitedArrangment, {
             'card-type': 'article-card',
-        });
-        factory.add_named_mock('arrangement2', LimitedArrangment, {
-            'card-type': 'large-card',
         });
         factory.add_named_mock('article-card', Minimal.MinimalCard);
         factory.add_named_mock('set-card', Minimal.MinimalCard);
-        factory.add_named_mock('large-card', Minimal.MinimalCard);
         factory.add_named_mock('highlights', HighlightsModule.HighlightsModule, {
-            'highlight-arrangement': 'arrangement1',
-            'support-arrangement': 'arrangement2',
-            'header-card-type': 'set-card',
+            'highlight-arrangement': 'arrangement',
+            'support-card-type': 'set-card',
         });
         module = factory.create_named_module('highlights', {
             'support-sets': 2,
@@ -64,14 +59,12 @@ describe('Highlights module', function () {
     });
 
     it('does not create a card widget at construct time', function () {
-        let cards = factory.get_created_named_mocks('article-card');
-        expect(cards.length).toEqual(0);
-        cards = factory.get_created_named_mocks('set-card');
+        let cards = factory.get_created_named_mocks('set-card');
         expect(cards.length).toEqual(0);
     });
 
     describe('after dispatching sets', function () {
-        let highlight, support1, support2, headers, set_models, article_models;
+        let highlight, support1, support2, set_models, article_models;
 
         beforeEach(function () {
             set_models = [['a'], ['b'], ['c', 'd']].map(tags =>
@@ -95,10 +88,9 @@ describe('Highlights module', function () {
                 models: set_models,
             });
 
-            highlight = factory.get_created_named_mocks('arrangement1')[0];
-            support1 = factory.get_created_named_mocks('arrangement2')[0];
-            support2 = factory.get_created_named_mocks('arrangement2')[1];
-            headers = factory.get_created_named_mocks('set-card');
+            highlight = factory.get_created_named_mocks('arrangement')[0];
+            support1 = factory.get_created_named_mocks('set-card')[0];
+            support2 = factory.get_created_named_mocks('set-card')[1];
         });
 
         it('sends the sets it is displaying, so they can be filtered', function() {
@@ -107,76 +99,35 @@ describe('Highlights module', function () {
         });
 
         it('adds one highlight arrangement and two support arrangements', function () {
-            expect(factory.get_created_named_mocks('arrangement1').length).toBe(1);
-            expect(factory.get_created_named_mocks('arrangement2').length).toBe(2);
+            expect(factory.get_created_named_mocks('arrangement').length).toBe(1);
+            expect(factory.get_created_named_mocks('set-card').length).toBe(2);
         });
 
-        it('adds two header cards', function () {
-            expect(headers.length).toBe(2);
-        });
-
-        it('puts cards in the proper arrangements', function () {
+        it('puts cards in the highlight arrangement', function () {
             let highlight_models = highlight.get_models();
             expect(highlight_models.length).toBe(1);
             expect(highlight_models[0].tags).toEqual(['a']);
-
-            let support1_models = support1.get_models();
-            expect(support1_models.length).toBe(1);
-            expect(support1_models[0].tags).toEqual(['b']);
-
-            let support2_models = support2.get_models();
-            expect(support2_models.length).toBe(2);
-            expect(support2_models[0].tags).toEqual(['c']);
-            expect(support2_models[1].tags).toEqual(['d']);
         });
 
         it('clears the arrangements when clear-sets is dispatched', function () {
             dispatcher.dispatch({
                 action_type: Actions.CLEAR_SETS,
             });
-            expect(module).not.toHaveDescendant(highlight);
-            [support1, support2]
-                .forEach(arrangement => expect(module).not.toHaveDescendant(arrangement));
-            headers.forEach(header => expect(module).not.toHaveDescendant(header));
+            [highlight, support1, support2]
+                .forEach(widget => expect(module).not.toHaveDescendant(widget));
         });
 
-        describe('when clicking', function () {
-            it('on the header card, dispatches set-clicked', function () {
-                let header = factory.get_created_named_mocks('set-card')[0];
-                header.emit('clicked');
-                Utils.update_gui();
-                let payload = dispatcher.last_payload_with_type(Actions.SET_CLICKED);
-                let matcher = jasmine.objectContaining({
-                    model: header.model,
-                    context: set_models,
-                });
-                expect(payload).toEqual(matcher);
+        it('dispatches item-clicked when clicking on a card in the highlight arrangement', function () {
+            let model = highlight.get_models()[0];
+            highlight.emit('card-clicked', model);
+            Utils.update_gui();
+            let payload = dispatcher.last_payload_with_type(Actions.ITEM_CLICKED);
+            let matcher = jasmine.objectContaining({
+                model: model,
+                context: highlight.get_models(),
+                context_label: 'Highlights',
             });
-
-            it('on the card in the highlight arrangement, dispatches item-clicked', function () {
-                let model = highlight.get_models()[0];
-                highlight.emit('card-clicked', model);
-                Utils.update_gui();
-                let payload = dispatcher.last_payload_with_type(Actions.ITEM_CLICKED);
-                let matcher = jasmine.objectContaining({
-                    model: model,
-                    context: highlight.get_models(),
-                    context_label: 'Highlights',
-                });
-                expect(payload).toEqual(matcher);
-            });
-
-            it('on the card in another arrangement, dispatches item-clicked', function () {
-                let model = support1.get_models()[0];
-                support1.emit('card-clicked', model);
-                Utils.update_gui();
-                let payload = dispatcher.last_payload_with_type(Actions.ITEM_CLICKED);
-                let matcher = jasmine.objectContaining({
-                    model: model,
-                    context: article_models.filter((model) => model.tags[0] === 'b'),
-                });
-                expect(payload).toEqual(matcher);
-            });
+            expect(payload).toEqual(matcher);
         });
     });
 
@@ -187,8 +138,8 @@ describe('Highlights module', function () {
             action_type: Actions.APPEND_SETS,
             models: models,
         });
-        let headers = factory.get_created_named_mocks('set-card');
-        headers.forEach(header => expect(header.model.featured).toBe(false));
+        let set_cards = factory.get_created_named_mocks('set-card');
+        set_cards.forEach(card => expect(card.model.featured).toBe(false));
     });
 
     it('handles only two sets', function () {
@@ -197,8 +148,8 @@ describe('Highlights module', function () {
             action_type: Actions.APPEND_SETS,
             models: models,
         });
-        expect(factory.get_created_named_mocks('arrangement1').length).toBe(1);
-        expect(factory.get_created_named_mocks('arrangement2').length).toBe(1);
+        expect(factory.get_created_named_mocks('arrangement').length).toBe(1);
+        expect(factory.get_created_named_mocks('set-card').length).toBe(1);
     });
 
     it('handles only one set', function () {
@@ -207,19 +158,7 @@ describe('Highlights module', function () {
             action_type: Actions.APPEND_SETS,
             models: models,
         });
-        expect(factory.get_created_named_mocks('arrangement1').length).toBe(1);
-        expect(factory.get_created_named_mocks('arrangement2').length).toBe(0);
-    });
-
-    it('only creates as many cards as necessary', function () {
-        let set_models = [1, 2, 3].map(() => new SetObjectModel.SetObjectModel());
-        dispatcher.dispatch({
-            action_type: Actions.APPEND_SETS,
-            models: set_models,
-        });
-        expect(engine.get_objects_by_query.calls.count()).toBe(3);
-        engine.get_objects_by_query.calls.allArgs().forEach((args) => {
-            expect(args[0].limit).toBe(2);
-        });
+        expect(factory.get_created_named_mocks('arrangement').length).toBe(1);
+        expect(factory.get_created_named_mocks('set-card').length).toBe(0);
     });
 });

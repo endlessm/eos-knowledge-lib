@@ -164,17 +164,25 @@
                                                         }
                                                     }
                                                 },
-                                                "support-arrangement": {
-                                                    "type": "SquareGuysArrangement",
+                                                "support-card-type": {
+                                                    "type": "SetPreviewCard",
                                                     "properties": {
-                                                        "spacing": 20,
-                                                        "max-rows": 2
+                                                        "show-trigger": false
                                                     },
                                                     "slots": {
-                                                        "card-type": "main-card"
+                                                        "arrangement": {
+                                                            "type": "SquareGuysArrangement",
+                                                            "properties": {
+                                                                "spacing": 20,
+                                                                "max-rows": 2
+                                                            },
+                                                            "slots": {
+                                                                "card-type": "main-card"
+                                                            }
+                                                        },
+                                                        "header-card-type": "header-card"
                                                     }
-                                                },
-                                                "header-card-type": "header-card"
+                                                }
                                             }
                                         },
                                         "second": "category-suggestions"

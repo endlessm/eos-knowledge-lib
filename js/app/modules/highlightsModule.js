@@ -14,7 +14,6 @@ const Dispatcher = imports.app.dispatcher;
 const Engine = imports.search.engine;
 const Module = imports.app.interfaces.module;
 const QueryObject = imports.search.queryObject;
-const ThemeableImage = imports.app.widgets.themeableImage;
 const Utils = imports.app.utils;
 
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
@@ -27,20 +26,20 @@ let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
  * sets, where the non-featured sets act as "themes" which unite articles across
  * the featured sets.
  *
- * This module shows a few arrangements consecutively.
+ * This module shows a few arrangements and cards consecutively.
  * We recommend placing it in a <ScrollingTemplate> or another module that can
  * allow it to scroll.
  * The top arrangement shows an assortment of cards from all sets.
- * Each subsequent arrangement, or support arrangement, shows the highlights of
- * one non-featured (thematic) set.
- * Clicking on a card in the arrangement takes you directly to that article.
- * Above each arrangement is a card ("header") showing the title of the set
- * which can also be clicked to show more information about that set.
+ * Each subsequent card, or "support card," shows one non-featured (thematic)
+ * set.
+ * Clicking on a support card shows you more information about that set.
+ * Normally a card type would be chosen for these support cards that displays
+ * other cards inside it, such as <SetPreviewCard>.
+ * This card type must support a <SetPreviewCard.load_content()> method.
  *
  * Slots:
  *   highlight-arrangement - large arrangement to display highlighted category
- *   support-arrangement - smaller arrangement to display support categories
- *   header-card-type - type of cards to create for sets
+ *   support-card-type - type of cards to create for sets
  */
 const HighlightsModule = new Lang.Class({
     Name: 'HighlightsModule',
@@ -83,11 +82,9 @@ const HighlightsModule = new Lang.Class({
                     // Account for "highlight" set
                     this._sets = models.slice(0, this.support_sets + 1);
                     if (this._sets.length > 0)
-                        this._create_set(this._sets[0], 'highlight-arrangement', false);
+                        this._create_highlight_set(this._sets[0]);
                     if (this._sets.length > 1) {
-                        this._sets.slice(1).forEach((set) => {
-                            this._create_set(set, 'support-arrangement', true);
-                        });
+                        this._sets.slice(1).forEach(this._add_set_card, this);
                     }
                     this._send_sets_to_filter();
                     break;
@@ -106,40 +103,26 @@ const HighlightsModule = new Lang.Class({
 
     // Module override
     get_slot_names: function () {
-        return ['highlight-arrangement', 'support-arrangement', 'header-card-type'];
+        return ['highlight-arrangement', 'support-card-type'];
     },
 
     _add_set_card: function (model) {
-        let card = this.create_submodule('header-card-type', {
+        let card = this.create_submodule('support-card-type', {
             model: model,
             halign: Gtk.Align.START,
         });
-        card.connect('clicked', () => {
-            Dispatcher.get_default().dispatch({
-                action_type: Actions.SET_CLICKED,
-                model: model,
-                context: this._sets,
-            });
-        });
         this.add(card);
+
+        this._arrangement_update_functions.push(() => {
+            card.load_content(this._arrangement_loaded.bind(this));
+        });
+        this._update_arrangements();
     },
 
     // Load all articles referenced by the shown arrangements in order to
     // populate the arrangements with them. This happens after APPEND_SETS.
-    _create_set: function (set, arrangement_slot, add_header) {
-        if (add_header) {
-            this._add_set_card(set);
-
-            let separator = new ThemeableImage.ThemeableImage({
-                visible: true,
-                halign: Gtk.Align.FILL,
-                valign: Gtk.Align.CENTER,
-            });
-            separator.get_style_context().add_class(Gtk.STYLE_CLASS_SEPARATOR);
-            this.add(separator);
-        }
-
-        let arrangement = this.create_submodule(arrangement_slot, {
+    _create_highlight_set: function (set) {
+        let arrangement = this.create_submodule('highlight-arrangement', {
             vexpand: true,
             visible: true,
         });
