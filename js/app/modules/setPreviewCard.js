@@ -11,8 +11,6 @@ const Engine = imports.search.engine;
 const Module = imports.app.interfaces.module;
 const QueryObject = imports.search.queryObject;
 
-const NUM_ARTICLES_TO_SHOW = 3;
-
 /**
  * Class: SetPreviewCard
  *
@@ -74,7 +72,7 @@ const SetPreviewCard = new Lang.Class({
     load_content: function () {
         this.arrangement.visible = true;
         let query = new QueryObject.QueryObject({
-            limit: NUM_ARTICLES_TO_SHOW,
+            limit: this.arrangement.get_max_cards(),
             tags: this.model.child_tags,
         });
         Engine.get_default().get_objects_by_query(query, null, (engine, res) => {
