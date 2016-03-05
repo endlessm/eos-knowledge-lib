@@ -11,6 +11,11 @@ EknSearchBannerModule {
     color: #0f1b3c;
 }
 
+EknAppBanner {
+    font-family: 'Fira Sans';
+    color: #7297a7;
+}
+
 EknPanelFrame .top-menu {
     background-color: rgba(5, 12, 32, 0.9);
     box-shadow: 0px 10px 20px 0px rgba(0, 0, 0, 0.2);
@@ -170,4 +175,32 @@ EknSetBannerModule .card:hover .title {
     color: white;
     font-size: 48px;
     font-family: Merriweather;
+}
+
+.post-card .title {
+    font-family: 'Fira Sans';
+    font-weight: bold;
+}
+
+.post-card .card-context {
+    font-family: 'Merriweather';
+    font-weight: bold;
+}
+
+EknSupplementaryArticlesModule .text-button {
+    color: white;
+    font-family: 'Merriweather';
+    font-weight: bold;
+}
+
+EknHighlightsModule .text-card .title,
+EknThematicModule .text-card .title {
+  color: #0f1b3c;
+  font-family: 'Merriweather';
+  font-weight: bold;
+}
+
+EknHighlightsModule .text-card:hover .title,
+EknThematicModule .text-card:hover .title {
+  color: #7297a7;
 }
