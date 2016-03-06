@@ -43,10 +43,8 @@ describe('Set Preview card widget', function () {
             'arrangement': 'arrangement',
             'header-card-type': 'header-card',
         });
-        card = new SetPreviewCard.SetPreviewCard({
+        card = factory.create_named_module('preview-card-module', {
             model: new ContentObjectModel.ContentObjectModel(),
-            factory: factory,
-            factory_name: 'preview-card-module',
         });
     });
 
@@ -55,12 +53,10 @@ describe('Set Preview card widget', function () {
     });
 
     it('sets label', function () {
-        let card = new SetPreviewCard.SetPreviewCard({
+        let card = factory.create_named_module('preview-card-module', {
             model: new ContentObjectModel.ContentObjectModel({
                 title: 'Hello world',
             }),
-            factory: factory,
-            factory_name: 'preview-card-module'
         });
         expect(Gtk.test_find_label(card, 'Hello world')).toBeTruthy();
     });
