@@ -2,7 +2,6 @@
 
 /* exported HierarchicalSetModule */
 
-const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
@@ -53,11 +52,8 @@ const HierarchicalSetModule = new Lang.Class({
         'scroll-server': GObject.ParamSpec.override('scroll-server', Scrollable.Scrollable),
     },
 
-    Template: 'resource:///com/endlessm/knowledge/data/widgets/hierarchicalSetModule.ui',
-
-    InternalChildren: [ 'title-label' ],
-
     _init: function (props={}) {
+        props.orientation = Gtk.Orientation.VERTICAL;
         this.parent(props);
 
         this._arrangement = this.create_submodule('arrangement');
@@ -110,7 +106,6 @@ const HierarchicalSetModule = new Lang.Class({
         this._clear_items();
         this._current_model = model;
         this._current_index = 0;
-        this._title_label.label = GLib.markup_escape_text(model.title, -1);
         this._load_content();
         Dispatcher.get_default().dispatch({
             action_type: Actions.SET_READY,

@@ -62,7 +62,6 @@
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/encyclopediaCoverTemplate.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/gridArrangement.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/hamburgerBasementTemplate.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">data/widgets/hierarchicalSetModule.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/knowledgeDocumentCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/listArrangement.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/mediaCard.ui</file>
