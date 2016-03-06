@@ -86,28 +86,7 @@
                                                         }
                                                     }
                                                 },
-                                                "support-card-type": {
-                                                    "type": "SetPreviewCard",
-                                                    "slots": {
-                                                        "arrangement": {
-                                                            "type": "ThirtiesArrangement",
-                                                            "properties": {
-                                                                "spacing": 20,
-                                                                "max-rows": 1
-                                                            },
-                                                            "slots": {
-                                                                "card-type": "main-card",
-                                                                "order": {
-                                                                    "type": "PublishedDateOrder",
-                                                                    "properties": {
-                                                                        "ascending": false
-                                                                    }
-                                                                }
-                                                            }
-                                                        },
-                                                        "header-card-type": "header-card"
-                                                    }
-                                                },
+                                                "support-card-type": "set-preview",
                                                 "sets-filter": {
                                                     "type": "FeaturedFilter"
                                                 }
@@ -168,7 +147,7 @@
                                                     "type": "ResponsiveMarginsModule",
                                                     "slots": {
                                                         "content": {
-                                                            "type": "ThematicModule",
+                                                            "type": "HierarchicalSetModule",
                                                             "properties": {
                                                                 "halign": "center",
                                                                 "margin-top": 20,
@@ -179,16 +158,18 @@
                                                             },
                                                             "slots": {
                                                                 "arrangement": {
-                                                                    "type": "ThirtiesArrangement",
+                                                                    "type": "ListArrangement",
                                                                     "properties": {
-                                                                        "spacing": 20,
-                                                                        "max-rows": 1
+                                                                        "vscrollbar-policy": "never",
+                                                                        "spacing": 20
                                                                     },
                                                                     "slots": {
-                                                                        "card-type": "main-card"
+                                                                        "card-type": {
+                                                                            "type": "SearchResultCard"
+                                                                        }
                                                                     }
                                                                 },
-                                                                "header-card-type": "header-card"
+                                                                "set-card-type": "set-preview"
                                                             }
                                                         }
                                                     }
@@ -416,6 +397,28 @@
             "type": "TextCard",
             "properties": {
                 "title-capitalization": "uppercase"
+            }
+        },
+        "set-preview": {
+            "type": "SetPreviewCard",
+            "slots": {
+                "arrangement": {
+                    "type": "ThirtiesArrangement",
+                    "properties": {
+                        "spacing": 20,
+                        "max-rows": 1
+                    },
+                    "slots": {
+                        "card-type": "main-card",
+                        "order": {
+                            "type": "PublishedDateOrder",
+                            "properties": {
+                                "ascending": false
+                            }
+                        }
+                    }
+                },
+                "header-card-type": "header-card"
             }
         },
         "main-menu": {
