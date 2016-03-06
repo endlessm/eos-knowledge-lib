@@ -107,6 +107,9 @@
                                                         },
                                                         "header-card-type": "header-card"
                                                     }
+                                                },
+                                                "sets-filter": {
+                                                    "type": "FeaturedFilter"
                                                 }
                                             }
                                         }

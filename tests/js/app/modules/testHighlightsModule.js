@@ -131,17 +131,6 @@ describe('Highlights module', function () {
         });
     });
 
-    it('does not add arrangements for featured sets', function () {
-        let models = [true, true, false, false, false].map(featured =>
-            new SetObjectModel.SetObjectModel({ featured: featured }));
-        dispatcher.dispatch({
-            action_type: Actions.APPEND_SETS,
-            models: models,
-        });
-        let set_cards = factory.get_created_named_mocks('set-card');
-        set_cards.forEach(card => expect(card.model.featured).toBe(false));
-    });
-
     it('handles only two sets', function () {
         let models = [1, 2].map(() => new SetObjectModel.SetObjectModel());
         dispatcher.dispatch({

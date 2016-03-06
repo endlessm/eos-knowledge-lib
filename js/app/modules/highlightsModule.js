@@ -20,18 +20,13 @@ let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
 /**
  * Class: HighlightsModule
- * Module for showing featured articles as well as themes
- *
- * This module is designed for apps that have both featured and non-featured
- * sets, where the non-featured sets act as "themes" which unite articles across
- * the featured sets.
+ * Module for showing featured articles as well as other sets
  *
  * This module shows a few arrangements and cards consecutively.
  * We recommend placing it in a <ScrollingTemplate> or another module that can
  * allow it to scroll.
  * The top arrangement shows an assortment of cards from all sets.
- * Each subsequent card, or "support card," shows one non-featured (thematic)
- * set.
+ * Each subsequent card, or "support card," shows one other set.
  * Clicking on a support card shows you more information about that set.
  * Normally a card type would be chosen for these support cards that displays
  * other cards inside it, such as <SetPreviewCard>.
@@ -40,6 +35,7 @@ let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
  * Slots:
  *   highlight-arrangement - large arrangement to display highlighted category
  *   support-card-type - type of cards to create for sets
+ *   sets-filter - <Filter> for deciding which sets to show
  */
 const HighlightsModule = new Lang.Class({
     Name: 'HighlightsModule',
@@ -71,13 +67,17 @@ const HighlightsModule = new Lang.Class({
         this._loaded_sets = 0;
         this._is_feature_item_sent = false;
 
+        this._filter = this.create_submodule('sets-filter');
+
         Dispatcher.get_default().register((payload) => {
             switch (payload.action_type) {
                 case Actions.CLEAR_SETS:
                     this._clear_all();
                     break;
                 case Actions.APPEND_SETS:
-                    let models = payload.models.filter(model => !model.featured);
+                    let models = payload.models;
+                    if (this._filter)
+                        models = models.filter(this._filter.include, this._filter);
                     Utils.shuffle(models, models.map(GLib.random_double));
                     // Account for "highlight" set
                     this._sets = models.slice(0, this.support_sets + 1);
@@ -103,7 +103,7 @@ const HighlightsModule = new Lang.Class({
 
     // Module override
     get_slot_names: function () {
-        return ['highlight-arrangement', 'support-card-type'];
+        return ['highlight-arrangement', 'support-card-type', 'sets-filter'];
     },
 
     _add_set_card: function (model) {
