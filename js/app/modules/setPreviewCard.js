@@ -84,6 +84,9 @@ const SetPreviewCard = new Lang.Class({
                 case Actions.CLEAR_ITEMS:
                     this.arrangement.clear();
                     break;
+                case Actions.FILTER_ITEMS:
+                    this._filter_items(payload.ids);
+                    break;
             }
         });
     },
@@ -121,6 +124,12 @@ const SetPreviewCard = new Lang.Class({
             context: this.arrangement.get_models(),
             context_label: this.model.title,
         });
+    },
+
+    _filter_items: function (items) {
+        this.arrangement.get_models()
+            .filter(model => items.indexOf(model.ekn_id) !== -1)
+            .forEach(this.arrangement.remove_model, this.arrangement);
     },
 });
 

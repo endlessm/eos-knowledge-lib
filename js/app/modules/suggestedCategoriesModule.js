@@ -105,9 +105,6 @@ const SuggestedCategoriesModule = new Lang.Class({
                 case Actions.CLEAR_SETS:
                     this._arrangement.clear();
                     break;
-                case Actions.FILTER_SETS:
-                    this._filter_sets(payload.sets);
-                    break;
                 case Actions.HIGHLIGHT_ITEM:
                     this._arrangement.highlight(payload.model);
                     break;
@@ -121,13 +118,5 @@ const SuggestedCategoriesModule = new Lang.Class({
     // Module override
     get_slot_names: function () {
         return ['arrangement'];
-    },
-
-    _filter_sets: function (sets) {
-        this._arrangement.get_models().forEach(model => {
-            if (sets.indexOf(model.ekn_id) !== -1) {
-                this._arrangement.remove_model(model);
-            }
-        });
     },
 });

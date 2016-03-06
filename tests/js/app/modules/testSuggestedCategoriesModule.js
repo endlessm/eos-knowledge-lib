@@ -81,31 +81,6 @@ describe('Suggested categories module', function () {
         expect(factory.get_created_named_mocks('home-card').length).toBe(6);
     });
 
-    it('removes cards that are filtered out', function () {
-        let first_ekn_id = 'ekn://test/set/1';
-        let second_ekn_id = 'ekn://test/set/2';
-
-        let models = [
-            new ContentObjectModel.ContentObjectModel({
-                ekn_id: first_ekn_id,
-            }),
-            new ContentObjectModel.ContentObjectModel({
-                ekn_id: second_ekn_id,
-            }),
-        ];
-
-        dispatcher.dispatch({
-            action_type: Actions.APPEND_SETS,
-            models: models,
-        });
-        dispatcher.dispatch({
-            action_type: Actions.FILTER_SETS,
-            sets: [first_ekn_id],
-        });
-
-        expect(arrangement.get_count()).toBe(1);
-    });
-
     it('dispatches set clicked', function () {
         let model = new ContentObjectModel.ContentObjectModel();
         dispatcher.dispatch({
