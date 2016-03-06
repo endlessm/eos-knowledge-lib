@@ -102,11 +102,13 @@ const CardContainer = new Lang.Class({
         if (this.show_trigger) {
             this.see_more_button = new Gtk.Button({
                 halign:  Gtk.Align.END,
+                valign: Gtk.Align.END,
                 hexpand:  true,
                 always_show_image: true,
                 image_position: Gtk.PositionType.RIGHT,
                 image: image,
             });
+            this.see_more_button.get_style_context().add_class('trigger');
             Utils.set_hand_cursor_on_widget(this.see_more_button);
             this.attach(this.see_more_button, 1, 0, 1, 1);
             this.arrangement.bind_property('all-visible',

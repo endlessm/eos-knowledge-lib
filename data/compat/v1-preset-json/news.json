@@ -58,10 +58,8 @@
                                             "type": "HighlightsModule",
                                             "properties": {
                                                 "halign": "center",
-                                                "margin-top": 20,
-                                                "margin-bottom": 20,
-                                                "margin-start": 20,
-                                                "margin-end": 20,
+                                                "margin-top": 50,
+                                                "margin-bottom": 50,
                                                 "support-sets": 4
                                             },
                                             "slots": {

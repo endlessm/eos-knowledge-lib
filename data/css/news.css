@@ -11,6 +11,34 @@ EknSearchBannerModule {
     color: #0f1b3c;
 }
 
+.trigger {
+    font-family: 'Fira Sans';
+    font-size: 25px;
+    color: #0f1b3c;
+}
+
+.trigger:hover {
+    color: #7297a7;
+}
+
+EknSetPreviewCard .text-card .title {
+    color: #0f1b3c;
+    font-family: 'Merriweather';
+    font-weight: bold;
+    padding-top: 50px;
+    font-size: 40px;
+}
+
+EknSetPreviewCard .text-card:hover .title {
+    color: #7297a7;
+}
+
+EknSetPreviewCard .separator {
+    background-color: transparent;
+    -EknThemeableImage-min-height: 0;
+    margin: 0px 0px 30px;
+}
+
 EknAppBanner {
     font-family: 'Fira Sans';
     color: #7297a7;
@@ -194,16 +222,4 @@ EknSupplementaryArticlesModule .text-button {
     color: white;
     font-family: 'Merriweather';
     font-weight: bold;
-}
-
-EknHighlightsModule .text-card .title,
-EknThematicModule .text-card .title {
-  color: #0f1b3c;
-  font-family: 'Merriweather';
-  font-weight: bold;
-}
-
-EknHighlightsModule .text-card:hover .title,
-EknThematicModule .text-card:hover .title {
-  color: #7297a7;
 }
