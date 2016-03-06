@@ -76,6 +76,15 @@ describe('Set Preview card widget', function () {
             expect(factory.get_created_named_mocks('article-card').length).toEqual(3);
         });
 
+        it('clears its cards when clear-items is dispatched', function () {
+            dispatcher.dispatch({
+                action_type: Actions.CLEAR_ITEMS,
+            });
+            Utils.update_gui();
+            let support_cards = factory.get_created_named_mocks('article-card');
+            support_cards.forEach(widget => expect(card).not.toHaveDescendant(widget));
+        });
+
         it('dispatches set-clicked when the title card is clicked', function () {
             let header = factory.get_created_named_mocks('header-card')[0];
             header.emit('clicked');

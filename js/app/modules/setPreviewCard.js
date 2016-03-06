@@ -78,6 +78,14 @@ const SetPreviewCard = new Lang.Class({
                 });
             });
         }
+
+        Dispatcher.get_default().register(payload => {
+            switch (payload.action_type) {
+                case Actions.CLEAR_ITEMS:
+                    this.arrangement.clear();
+                    break;
+            }
+        });
     },
 
     load_content: function (done) {
