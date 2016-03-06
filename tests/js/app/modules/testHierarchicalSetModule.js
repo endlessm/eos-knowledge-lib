@@ -93,7 +93,7 @@ describe('Hierarchical set module', function () {
             expect(engine.get_objects_by_query)
             .toHaveBeenCalledWith(jasmine.objectContaining({
                 tags: ['a', 'b', 'c'],
-                limit: 3,
+                limit: jasmine.any(Number),
             }), jasmine.any(Object), jasmine.any(Function));
         });
 
