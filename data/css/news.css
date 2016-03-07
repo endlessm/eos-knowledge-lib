@@ -2,9 +2,12 @@
 @import url("resource:///com/endlessm/knowledge/data/css/buffet_core.css");
 
 EknScrollingTemplate:not(.overshoot):not(.undershoot),
-EknBackgroundModule,
-EknSearchBannerModule {
+EknBackgroundModule {
     background-color: #e9e5e0;
+}
+
+EknSearchModule {
+    background-color: transparent;
 }
 
 .card .title {
@@ -90,10 +93,11 @@ EknSearchBannerModule {
     font-weight: bold;
     color: #050c20;
     font-size: 64px;  /* 320% * 20px */
+    background-color: transparent;
 }
 
 .search-page-a .separator {
-    color: #e9e5e0;
+    color: transparent;
 }
 
 .search-results .results-message-title {

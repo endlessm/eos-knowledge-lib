@@ -22,12 +22,12 @@ const _maxWidth = {
     medium: 1499,
 };
 
-// FIXME: Tweak values when the proper cards are in use
+// FIXME: tweak articles heights when the background is visible
 const _topImageHeight = {
-    home:    {small: 400, medium: 500, big: 600},
-    section: {small: 130, medium: 170, big: 180},
+    home:    {small: 410, medium: 510, big: 510},
+    section: {small: 200, medium: 215, big: 215},
     article: {small: 140, medium: 180, big: 200},
-    search:  {small: 140, medium: 180, big: 200},
+    search:  {small: 354, medium: 279, big: 279},
 };
 
 const _cssTemplate = 'EknBackgroundModule {\
