@@ -26,7 +26,7 @@ describe('Article stack', function () {
 
         factory = new MockFactory.MockFactory();
         factory.add_named_mock('mock-card', Minimal.MinimalDocumentCard);
-        factory.add_named_mock('mock-nav-card', Minimal.MinimalCard);
+        factory.add_named_mock('mock-nav-card', Minimal.MinimalNavigationCard);
         factory.add_named_mock('article-stack-module', ArticleStackModule.ArticleStackModule, {
             'card-type': 'mock-card',
             'nav-card-type': 'mock-nav-card',
@@ -61,8 +61,8 @@ describe('Article stack', function () {
 
     it('sets up a previous and next card if in the payload', function () {
         let card = factory.get_created_named_mocks('mock-card')[0];
-        expect(card.previous_card).toBeA(Minimal.MinimalCard);
-        expect(card.next_card).toBeA(Minimal.MinimalCard);
+        expect(card.previous_card).toBeA(Minimal.MinimalNavigationCard);
+        expect(card.next_card).toBeA(Minimal.MinimalNavigationCard);
     });
 
     it('dispatches article link clicked', function () {

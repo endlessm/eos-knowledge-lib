@@ -6,6 +6,7 @@ const Lang = imports.lang;
 
 const Card = imports.app.interfaces.card;
 const MarginButton = imports.app.widgets.marginButton;
+const NavigationCard = imports.app.interfaces.navigationCard;
 const Module = imports.app.interfaces.module;
 const Utils = imports.app.utils;
 
@@ -18,7 +19,7 @@ const SearchResultCard = new Lang.Class({
     Name: 'SearchResultCard',
     GTypeName: 'EknSearchResultCard',
     Extends: MarginButton.MarginButton,
-    Implements: [ Module.Module, Card.Card ],
+    Implements: [ Module.Module, Card.Card, NavigationCard.NavigationCard ],
 
     Properties: {
         'factory': GObject.ParamSpec.override('factory', Module.Module),
@@ -31,18 +32,29 @@ const SearchResultCard = new Lang.Class({
         'highlight-string': GObject.ParamSpec.override('highlight-string', Card.Card),
         'text-halign': GObject.ParamSpec.override('text-halign', Card.Card),
         'sequence': GObject.ParamSpec.override('sequence', Card.Card),
+        'navigation-context': GObject.ParamSpec.override('navigation-context', NavigationCard.NavigationCard),
+        /**
+         * Property: show-synopsis
+         * Whether to show the synopsis label.
+         */
+        'show-synopsis': GObject.ParamSpec.boolean('show-synopsis',
+            'Show synopsis', 'Whether to show the synopsis label',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            true),
     },
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/searchResultCard.ui',
-    InternalChildren: [ 'thumbnail-frame', 'content-frame', 'title-label', 'synopsis-label'],
+    InternalChildren: [ 'thumbnail-frame', 'content-frame', 'title-label', 'synopsis-label', 'navigation-context-label'],
 
     _init: function (props={}) {
         this.parent(props);
 
         this.update_highlight_string();
+        if (this.navigation_context)
+            this.set_label_or_hide(this._navigation_context_label, this.navigation_context);
         this.set_thumbnail_frame_from_model(this._thumbnail_frame);
         this.set_size_request(Card.MinSize.D, Card.MinSize.A);
-        this._synopsis_label.visible = true;
+        this._synopsis_label.visible = this.show_synopsis;
 
         Utils.set_hand_cursor_on_widget(this);
     },

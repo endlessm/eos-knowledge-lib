@@ -2,6 +2,7 @@
 
 /* exported ArticleStackModule */
 
+const Gettext = imports.gettext;
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Gdk = imports.gi.Gdk;
 const GLib = imports.gi.GLib;
@@ -11,10 +12,13 @@ const Lang = imports.lang;
 
 const Actions = imports.app.actions;
 const Card = imports.app.interfaces.card;
+const Config = imports.app.config;
 const Dispatcher = imports.app.dispatcher;
 const Engine = imports.search.engine;
 const Module = imports.app.interfaces.module;
 const WebviewTooltipPresenter = imports.app.webviewTooltipPresenter;
+
+let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
 const Navigation = {
     PREVIOUS: 'previous',
@@ -110,6 +114,7 @@ const ArticleStackModule = new Lang.Class({
             let card = this.create_submodule('nav-card-type', {
                 model: payload.previous_model,
                 sequence: Card.Sequence.PREVIOUS,
+                navigation_context: _("Previous article"),
             });
             if (card !== null) {
                 document_card_props.previous_card = card;
@@ -126,6 +131,7 @@ const ArticleStackModule = new Lang.Class({
             let card = this.create_submodule('nav-card-type', {
                 model: payload.next_model,
                 sequence: Card.Sequence.NEXT,
+                navigation_context: _("Next article"),
             });
             if (card !== null) {
                 document_card_props.next_card = card;

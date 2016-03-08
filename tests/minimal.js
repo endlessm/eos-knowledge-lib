@@ -18,6 +18,7 @@ const Filter = imports.app.interfaces.filter;
 const Interaction = imports.app.interfaces.interaction;
 const Launcher = imports.app.interfaces.launcher;
 const Module = imports.app.interfaces.module;
+const NavigationCard = imports.app.interfaces.navigationCard;
 const Order = imports.app.interfaces.order;
 const Scrollable = imports.app.interfaces.scrollable;
 
@@ -90,6 +91,30 @@ const MinimalCard = new Lang.Class({
     vfunc_size_allocate: function (allocation) {
         this.parent(allocation);
         this.update_card_sizing_classes(allocation.height, allocation.width);
+    },
+});
+
+const MinimalNavigationCard = new Lang.Class({
+    Name: 'MinimalNavigationCard',
+    Extends: Gtk.Button,
+    Implements: [ Module.Module, Card.Card, NavigationCard.NavigationCard ],
+
+    Properties: {
+        'factory': GObject.ParamSpec.override('factory', Module.Module),
+        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
+        'model': GObject.ParamSpec.override('model', Card.Card),
+        'title-capitalization': GObject.ParamSpec.override('title-capitalization',
+            Card.Card),
+        'context-capitalization': GObject.ParamSpec.override('context-capitalization',
+            Card.Card),
+        'highlight-string': GObject.ParamSpec.override('highlight-string', Card.Card),
+        'text-halign': GObject.ParamSpec.override('text-halign', Card.Card),
+        'sequence': GObject.ParamSpec.override('sequence', Card.Card),
+        'navigation-context': GObject.ParamSpec.override('navigation-context', NavigationCard.NavigationCard),
+    },
+
+    _init: function (props={}) {
+        this.parent(props);
     },
 });
 
