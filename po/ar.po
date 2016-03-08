@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2016-02-23 02:45+0000\n"
+"POT-Creation-Date: 2016-03-01 02:45+0000\n"
 "PO-Revision-Date: 2016-02-23 02:46+0000\n"
 "Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
 "Language-Team: Arabic (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/ar/)\n"
@@ -131,7 +131,7 @@ msgstr "صفحة %d"
 
 #. TRANSLATORS: %s will be replaced with the text the user
 #. searched for. Make sure to keep %s token in your translation.
-#: js/app/modules/buffetInteraction.js:173 js/app/modules/contextBanner.js:81
+#: js/app/modules/buffetInteraction.js:161 js/app/modules/contextBanner.js:81
 #, javascript-format
 msgid "Results were found for “%s”"
 msgstr "النتائج التي عثرنا عليها لـ “%s”"
@@ -141,7 +141,7 @@ msgid "See more"
 msgstr ""
 
 #: js/app/modules/contextBanner.js:48 js/app/modules/contextBanner.js:56
-#: js/app/modules/highlightsModule.js:143
+#: js/app/modules/highlightsModule.js:150
 msgid "Highlights"
 msgstr "الموضوعات البارزة"
 
@@ -160,12 +160,12 @@ msgstr "نتائج البحث الخاصة بـ “%s”"
 msgid "SEE ALL CATEGORIES"
 msgstr "مشاهدة جميع الفئات"
 
-#: js/app/modules/readerCard.js:61
+#: js/app/modules/readerCard.js:63
 #, javascript-format
 msgid "Page %s"
 msgstr "الصفحة %s"
 
-#: js/app/modules/readerDocumentCard.js:132
+#: js/app/modules/readerDocumentCard.js:134
 msgid "This article is part of the archive."
 msgstr ""
 
@@ -238,10 +238,10 @@ msgstr ""
 #. have them and DO NOT translate words inside curly braces. Also, note: the
 #. "and" is used to join together the names of authors of a blog post. For
 #. example: "Jane Austen and Henry Miller and William Clifford"
-#: js/app/utils.js:83
+#: js/app/utils.js:86
 msgid "by {author}"
 msgstr "بواسطة (المؤلف)"
 
-#: js/app/utils.js:83
+#: js/app/utils.js:86
 msgid "and"
 msgstr "و"
