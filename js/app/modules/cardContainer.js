@@ -107,6 +107,7 @@ const CardContainer = new Lang.Class({
             this.arrangement.bind_property('all-visible',
                 this.see_more_button, 'visible',
                 GObject.BindingFlags.SYNC_CREATE | GObject.BindingFlags.INVERT_BOOLEAN);
+            this._update_title();
         }
         this.show_all();
     },
@@ -114,10 +115,10 @@ const CardContainer = new Lang.Class({
     _update_title: function () {
         this.title_button.label = Utils.format_capitals(this._title_label,
             this.title_capitalization);
-        if (this.show_trigger) {
+        if (this.show_trigger && this.see_more_button) {
             // TRANSLATORS: %s will be replaced with the name of the category
             // that we are offering to show more of.
-            this._see_more_button.label = _("See more %s").format(this._title_label);
+            this.see_more_button.label = _("See more %s").format(this._title_label);
         }
     },
 

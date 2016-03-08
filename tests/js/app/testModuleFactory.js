@@ -108,6 +108,13 @@ describe('Module factory', function () {
         expect(submodule).toBeNull();
     });
 
+    it('also allows omitting slots object altogether in app.json, returning null', function () {
+        let parent = module_factory.create_named_module('test-submodule');
+        let submodule = module_factory.create_module_for_slot(parent,
+            'optional-slot');
+        expect(submodule).toBeNull();
+    });
+
     it('gives a module its factory name if it has one', function () {
         let module = module_factory.create_named_module('test');
         expect(module.factory_name).toBe('test');

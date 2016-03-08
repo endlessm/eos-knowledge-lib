@@ -77,6 +77,12 @@
                                                                 "context-capitalization": "lowercase",
                                                                 "text-halign": "start"
                                                             }
+                                                        },
+                                                        "order": {
+                                                            "type": "PublishedDateOrder",
+                                                            "properties": {
+                                                                "ascending": false
+                                                            }
                                                         }
                                                     }
                                                 },
@@ -87,7 +93,13 @@
                                                         "max-rows": 1
                                                     },
                                                     "slots": {
-                                                        "card-type": "main-card"
+                                                        "card-type": "main-card",
+                                                        "order": {
+                                                            "type": "PublishedDateOrder",
+                                                            "properties": {
+                                                                "ascending": false
+                                                            }
+                                                        }
                                                     }
                                                 },
                                                 "header-card-type": "header-card"
