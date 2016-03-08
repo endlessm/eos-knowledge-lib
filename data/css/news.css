@@ -106,9 +106,11 @@ EknSearchBannerModule {
     font-size: 1.0em; /* 16px/12 * 72/96 */
 }
 
-.all-type-card .card-context {
+.all-type-card .card-context,
+.search-result-card .card-context {
     font-family: 'Merriweather';
     font-weight: bold;
+    font-style: normal;
     color: #7297a7;
     font-size: 0.875em; /* 14px/12 * 72/96 */
 }
@@ -116,6 +118,10 @@ EknSearchBannerModule {
 .all-type-card:hover .title,
 .search-result-card:hover .title {
     color: #7297a7;
+}
+
+.search-result-card.next:hover .title {
+    color: #0f1b3c;
 }
 
 .all-type-card.width-c {
