@@ -170,6 +170,7 @@ const KnowledgeDocumentCard = new Lang.Class({
             }
         }
         this.toc.visible = this.show_toc && _toc_visible;
+        this._toolbar_frame.visible = this.toc.visible;
 
         this.toc.transition_duration = this._SCROLL_DURATION;
 
@@ -363,15 +364,10 @@ const KnowledgeDocumentCard = new Lang.Class({
                 width: alloc.width - 2 * margin,
                 height: alloc.height
             });
-            this._toolbar_frame.set_child_visible(false);
-            if (this.show_top_title) {
-                this._top_title_label.visible = true;
-            }
             this._content_frame.size_allocate(switcher_alloc);
             return;
         }
 
-        this._toolbar_frame.set_child_visible(true);
         // Decide if toolbar should be collapsed
         if (this._should_collapse(alloc.width)) {
             if (!this.toc.collapsed) {
@@ -422,7 +418,7 @@ const KnowledgeDocumentCard = new Lang.Class({
 
     vfunc_get_preferred_width: function () {
         if (!this.toc.visible) {
-            return this.content_view.get_preferred_width();
+            return this._content_frame.get_preferred_width();
         }
         let [toolbar_min, toolbar_nat] = this._toolbar_frame.get_preferred_width();
         let [switcher_min, switcher_nat] = this._content_frame.get_preferred_width();
@@ -431,7 +427,7 @@ const KnowledgeDocumentCard = new Lang.Class({
 
     vfunc_get_preferred_height_for_width: function (width) {
         if (!this.toc.visible) {
-            return this.content_view.get_preferred_height_for_width(width);
+            return this._content_frame.get_preferred_height_for_width(width);
         }
         let toolbar_width = this._get_toolbar_width(width);
         let [toolbar_min, toolbar_nat] = this._toolbar_frame.get_preferred_height_for_width(toolbar_width);
