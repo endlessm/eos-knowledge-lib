@@ -29,9 +29,11 @@ describe('Search result card widget', function () {
                 title: '!!!',
                 synopsis: '@@@',
             }),
+            navigation_context: '???',
         });
         expect(Gtk.test_find_label(card, '*!!!*').use_markup).toBeTruthy();
         expect(Gtk.test_find_label(card, '*@@@*').use_markup).toBeTruthy();
+        expect(Gtk.test_find_label(card, '*???*').use_markup).toBeTruthy();
     });
 });
 

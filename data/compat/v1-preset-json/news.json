@@ -315,7 +315,10 @@
                                     }
                                 },
                                 "nav-card-type": {
-                                    "type": "SearchResultCard"
+                                    "type": "SearchResultCard",
+                                    "properties": {
+                                        "show-synopsis": false
+                                    }
                                 }
                             }
                         }

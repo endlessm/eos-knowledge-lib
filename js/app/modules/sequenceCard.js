@@ -6,6 +6,7 @@ const Lang = imports.lang;
 
 const Card = imports.app.interfaces.card;
 const Module = imports.app.interfaces.module;
+const NavigationCard = imports.app.interfaces.navigationCard;
 const Utils = imports.app.utils;
 
 /**
@@ -25,7 +26,7 @@ const SequenceCard = new Lang.Class({
     Name: 'SequenceCard',
     GTypeName: 'EknSequenceCard',
     Extends: Gtk.Button,
-    Implements: [ Module.Module, Card.Card ],
+    Implements: [ Module.Module, Card.Card, NavigationCard.NavigationCard ],
 
     Properties: {
         'factory': GObject.ParamSpec.override('factory', Module.Module),
@@ -37,6 +38,7 @@ const SequenceCard = new Lang.Class({
         'highlight-string': GObject.ParamSpec.override('highlight-string', Card.Card),
         'text-halign': GObject.ParamSpec.override('text-halign', Card.Card),
         'sequence': GObject.ParamSpec.override('sequence', Card.Card),
+        'navigation-context': GObject.ParamSpec.override('navigation-context', NavigationCard.NavigationCard),
     },
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/sequenceCard.ui',
