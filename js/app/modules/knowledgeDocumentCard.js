@@ -170,6 +170,7 @@ const KnowledgeDocumentCard = new Lang.Class({
             }
         }
         this.toc.visible = this.show_toc && _toc_visible;
+        this._toolbar_frame.visible = this.toc.visible;
 
         this.toc.transition_duration = this._SCROLL_DURATION;
 
@@ -363,15 +364,10 @@ const KnowledgeDocumentCard = new Lang.Class({
                 width: alloc.width - 2 * margin,
                 height: alloc.height
             });
-            this._toolbar_frame.set_child_visible(false);
-            if (this.show_top_title) {
-                this._top_title_label.visible = true;
-            }
             this._content_frame.size_allocate(switcher_alloc);
             return;
         }
 
-        this._toolbar_frame.set_child_visible(true);
         // Decide if toolbar should be collapsed
         if (this._should_collapse(alloc.width)) {
             if (!this.toc.collapsed) {
