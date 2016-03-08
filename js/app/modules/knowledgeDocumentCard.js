@@ -418,7 +418,7 @@ const KnowledgeDocumentCard = new Lang.Class({
 
     vfunc_get_preferred_width: function () {
         if (!this.toc.visible) {
-            return this.content_view.get_preferred_width();
+            return this._content_frame.get_preferred_width();
         }
         let [toolbar_min, toolbar_nat] = this._toolbar_frame.get_preferred_width();
         let [switcher_min, switcher_nat] = this._content_frame.get_preferred_width();
@@ -427,7 +427,7 @@ const KnowledgeDocumentCard = new Lang.Class({
 
     vfunc_get_preferred_height_for_width: function (width) {
         if (!this.toc.visible) {
-            return this.content_view.get_preferred_height_for_width(width);
+            return this._content_frame.get_preferred_height_for_width(width);
         }
         let toolbar_width = this._get_toolbar_width(width);
         let [toolbar_min, toolbar_nat] = this._toolbar_frame.get_preferred_height_for_width(toolbar_width);
