@@ -59,6 +59,9 @@ const PostCard = new Lang.Class({
             });
         } else {
             this.set_context_label_from_model(this._inner_content_grid);
+            this._title_label.halign = this._space_container.halign = this.text_halign;
+            this._title_label.justify = Utils.alignment_to_justification(this.text_halign);
+            this._title_label.xalign = Utils.alignment_to_xalign(this.text_halign);
         }
     },
 
@@ -76,9 +79,6 @@ const PostCard = new Lang.Class({
             let content_height = this._get_content_height(alloc.height);
             child_alloc.y = alloc.height - content_height;
             child_alloc.height = content_height;
-            this._title_label.halign = this._space_container.halign = this.text_halign;
-            this._title_label.justify = Utils.alignment_to_justification(this.text_halign);
-            this._title_label.xalign = Utils.alignment_to_xalign(this.text_halign);
         }
         this._shadow_frame.size_allocate(child_alloc);
         this.update_card_sizing_classes(alloc.height, alloc.width);
