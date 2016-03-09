@@ -13,6 +13,9 @@ $dark-blue: #0f1b3c;
 $red: #b11c08;
 $blue: #7297a7;
 
+$top-overlay: rgba(255, 0, 0, 0.4);
+$bottom-overlay: #e9e5e0;
+
 $body-line-height: 1.5;
 
 $compact-max-size: 779px;
@@ -34,10 +37,19 @@ figure, blockquote, p {
 html {
     overflow-x: hidden;  // So 100vw divs don't cause a horizontal scrollbar
     font-family: $body-font;
+    background-image: linear-gradient($bottom-overlay, $bottom-overlay), linear-gradient($top-overlay, $top-overlay), url('../images/background.png');
+    background-size: auto, auto, cover;
+    background-repeat: no-repeat;
+    background-position: 0px 300px, 0px 0px, 0px 0px;
 }
 
 body {
     margin-bottom: 200px;
+    margin-top: 60px;
+    margin-right: 100px;
+    margin-left: 100px;
+    padding-top: 5px;
+    background-color: white;
 }
 
 main {
@@ -109,10 +121,13 @@ blockquote {
 }
 
 aside {
-    // Spread out width over whole viewport
     position: relative;
-    width: 100vw;
-    margin-left: calc(50% - 50vw);
+    width: 100%;
+
+    & > * {
+        margin-left: 10%;
+        margin-right: 10%;
+    }
 
     background-color: $light-gray;
 }
@@ -258,11 +273,6 @@ hr {
 
     aside {
         padding: $body-unit-height 0;
-
-        & > * {
-            margin-left: $indent;
-            margin-right: $indent;
-        }
     }
 
     .disclaimer::before {
@@ -282,14 +292,6 @@ hr {
 
     header h1 {
         font-size: 2.5 * $body-size;
-    }
-
-    figure,
-    .photo {
-        // Spread out width over whole viewport
-        position: relative;
-        width: 100vw;
-        margin-left: calc(50% - 50vw);
     }
 
     blockquote {

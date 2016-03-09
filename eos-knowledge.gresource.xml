@@ -42,6 +42,7 @@
     <file compressed="true">data/templates/css/reader2.css</file>
     <file compressed="true">data/templates/css/wikihow.css</file>
     <file compressed="true">data/templates/css/wikimedia.css</file>
+    <file>data/templates/images/background.png</file>
     <file>data/templates/images/noise.png</file>
     <file>data/templates/images/object-view.png</file>
     <file compressed="true" preprocess="xml-stripblanks">data/templates/images/prensa-libre.svg</file>
