@@ -93,9 +93,10 @@ describe('Highlights module', function () {
             support2 = factory.get_created_named_mocks('set-card')[1];
         });
 
-        it('sends the sets it is displaying, so they can be filtered', function() {
-            let payloads = dispatcher.payloads_with_type(Actions.FILTER_SETS);
+        it('sends the items it is displaying, so they can be filtered', function() {
+            let payloads = dispatcher.payloads_with_type(Actions.FILTER_ITEMS);
             expect(payloads.length).toBe(1);
+            expect(payloads[0].ids.length).toEqual(highlight.get_card_count());
         });
 
         it('adds one highlight arrangement and two support arrangements', function () {

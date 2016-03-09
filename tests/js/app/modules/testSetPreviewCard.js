@@ -30,7 +30,9 @@ describe('Set Preview card widget', function () {
         engine.get_objects_by_query.and.callFake((query, cancellable, callback) => {
             callback(engine);
         });
-        let mock_models = [1, 2, 3].map(() => new ArticleObjectModel.ArticleObjectModel());
+        let mock_models = [1, 2, 3].map(num => new ArticleObjectModel.ArticleObjectModel({
+            ekn_id: 'ekn://test/' + num,
+        }));
         engine.get_objects_by_query_finish.and.returnValue([mock_models, null]);
 
         factory = new MockFactory.MockFactory();
@@ -105,6 +107,19 @@ describe('Set Preview card widget', function () {
                 context_label: card.model.title,
             });
             expect(payload).toEqual(matcher);
+        });
+
+        it('removes cards that are filtered out', function () {
+            dispatcher.dispatch({
+                action_type: Actions.FILTER_ITEMS,
+                ids: ['ekn://test/1', 'ekn://test/3'],
+            });
+            let arrangement = factory.get_created_named_mocks('arrangement')[0];
+            let support_cards = factory.get_created_named_mocks('article-card');
+            expect(arrangement.get_count()).toBe(1);
+            expect(card).not.toHaveDescendant(support_cards[0]);
+            expect(card).toHaveDescendant(support_cards[1]);
+            expect(card).not.toHaveDescendant(support_cards[2]);
         });
     });
 });

@@ -86,7 +86,6 @@ const HighlightsModule = new Lang.Class({
                     if (this._sets.length > 1) {
                         this._sets.slice(1).forEach(this._add_set_card, this);
                     }
-                    this._send_sets_to_filter();
                     break;
             }
         });
@@ -153,6 +152,7 @@ const HighlightsModule = new Lang.Class({
             this._arrangement_update_functions.push(() => { this._pack_arrangement(arrangement, models); });
             this._update_arrangements();
             this._send_feature_item(arrangement);
+            this._send_items_to_filter(arrangement);
         });
     },
 
@@ -186,10 +186,12 @@ const HighlightsModule = new Lang.Class({
         this._is_feature_item_sent = false;
     },
 
-    _send_sets_to_filter: function () {
+    _send_items_to_filter: function (arrangement) {
+        let models_showing = arrangement.get_filtered_models()
+            .filter(model => arrangement.get_card_for_model(model) !== null);
         Dispatcher.get_default().dispatch({
-            action_type: Actions.FILTER_SETS,
-            sets: this._sets.map(set => set.ekn_id),
+            action_type: Actions.FILTER_ITEMS,
+            ids: models_showing.map(model => model.ekn_id),
         });
     },
 
