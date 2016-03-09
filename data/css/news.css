@@ -24,6 +24,18 @@ EknSearchModule {
     color: #7297a7;
 }
 
+.trigger .image {
+    -gtk-icon-source: url('resource:///com/endlessm/knowledge/data/images/title-arrow-dark.svg');
+    -EknThemeableImage-min-height: 15;
+    -EknThemeableImage-min-width: 16;
+    margin-left: 5px;
+    margin-bottom: 11px;
+}
+
+.trigger:hover .image {
+    -gtk-icon-source: url('resource:///com/endlessm/knowledge/data/images/title-arrow-light.svg');
+}
+
 EknSetPreviewCard .text-card .title {
     color: #0f1b3c;
     font-family: 'Merriweather';

@@ -71,9 +71,6 @@ const CardContainer = new Lang.Class({
     },
 
     _init: function (props={}) {
-        let image = new Gtk.Image({
-            resource: '/com/endlessm/knowledge/data/images/right_arrow.svg',
-        });
         this.title_button = new Gtk.Button({
             halign: Gtk.Align.START,
         });
@@ -100,21 +97,32 @@ const CardContainer = new Lang.Class({
         this.attach(this.arrangement, 0, 2, 2, 1);
 
         if (this.show_trigger) {
-            this.see_more_button = new Gtk.Button({
+            this.trigger = new Gtk.Button({
                 halign:  Gtk.Align.END,
                 valign: Gtk.Align.END,
                 hexpand:  true,
-                always_show_image: true,
-                image_position: Gtk.PositionType.RIGHT,
-                image: image,
             });
-            this.see_more_button.get_style_context().add_class('trigger');
-            Utils.set_hand_cursor_on_widget(this.see_more_button);
-            this.attach(this.see_more_button, 1, 0, 1, 1);
-            this.arrangement.bind_property('all-visible',
-                this.see_more_button, 'visible',
+            let trigger_box = new Gtk.Box({
+                orientation: Gtk.Orientation.HORIZONTAL,
+            });
+
+            this.trigger_label = new Gtk.Label();
+            trigger_box.add(this.trigger_label);
+
+            let trigger_image = new ThemeableImage.ThemeableImage({
+                visible: true,
+                valign: Gtk.Align.END,
+                halign: Gtk.Align.END,
+            });
+            trigger_box.add(trigger_image);
+
+            this.trigger.add(trigger_box);
+            this.trigger.get_style_context().add_class('trigger');
+            Utils.set_hand_cursor_on_widget(this.trigger);
+            this.arrangement.bind_property('all-visible', this.trigger, 'visible',
                 GObject.BindingFlags.SYNC_CREATE | GObject.BindingFlags.INVERT_BOOLEAN);
             this._update_title();
+            this.attach(this.trigger, 1, 0, 1, 1);
         }
         this.show_all();
     },
@@ -122,10 +130,10 @@ const CardContainer = new Lang.Class({
     _update_title: function () {
         this.title_button.label = Utils.format_capitals(this._title_label,
             this.title_capitalization);
-        if (this.show_trigger && this.see_more_button) {
+        if (this.show_trigger && this.trigger_label) {
             // TRANSLATORS: %s will be replaced with the name of the category
             // that we are offering to show more of.
-            this.see_more_button.label = _("See more %s").format(this._title_label);
+            this.trigger_label.label = _("See more %s").format(this._title_label);
         }
     },
 
