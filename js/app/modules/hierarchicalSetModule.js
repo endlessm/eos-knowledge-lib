@@ -95,6 +95,7 @@ const HierarchicalSetModule = new Lang.Class({
         }
         let set_card = this._set_cards[this._current_index];
         this._current_index += 1;
+        set_card.visible = true;
         set_card.load_content();
         Dispatcher.get_default().dispatch({
             action_type: Actions.CONTENT_ADDED,
@@ -163,6 +164,7 @@ const HierarchicalSetModule = new Lang.Class({
     _add_set_card: function (model) {
         let card = this.create_submodule('set-card-type', {
             model: model,
+            no_show_all: true,
         });
         this._set_cards.push(card);
         let separator = new ThemeableImage.ThemeableImage({

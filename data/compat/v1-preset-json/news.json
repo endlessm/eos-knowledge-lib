@@ -105,7 +105,8 @@
                 "content": {
                     "type": "ScrollingTemplate",
                     "properties": {
-                        "name": "theme-scroll"
+                        "name": "theme-scroll",
+                        "bottom-buffer": 250
                     },
                     "slots": {
                         "content": {
