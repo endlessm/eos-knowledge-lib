@@ -1,5 +1,7 @@
 // Copyright 2014 Endless Mobile, Inc.
 
+/* exported AppBanner */
+
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
@@ -7,6 +9,8 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
+const Actions = imports.app.actions;
+const Dispatcher = imports.app.dispatcher;
 const Module = imports.app.interfaces.module;
 const ImagePreviewer = imports.app.widgets.imagePreviewer;
 const Utils = imports.app.utils;
@@ -82,6 +86,18 @@ const AppBanner = new Lang.Class({
             'Max fraction of size to display the logo at',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             0.0, 1.0, 1.0),
+        /**
+         * Property: clickable
+         * Whether the app banner is clickable
+         *
+         * When this property is set to "true", the application banner will be
+         * wrapped inside a button, which when clicked, will dispatch a signalto
+         * go to the home page.
+         */
+        'clickable': GObject.ParamSpec.boolean('clickable', 'Clickable',
+            'Whether the app banner is clickable',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            false),
     },
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/appBanner.ui',
@@ -96,7 +112,18 @@ const AppBanner = new Lang.Class({
             max_fraction: this.max_fraction,
             expand: true,
         });
-        this.attach(this._logo, 0, 0, 1, 1);
+        if (this.clickable) {
+            let banner_button = new Gtk.Button();
+            banner_button.add(this._logo);
+            this.attach(banner_button, 0, 0, 1, 1);
+            banner_button.connect('clicked', () => {
+                Dispatcher.get_default().dispatch({
+                    action_type: Actions.HOME_CLICKED
+                });
+            });
+        } else {
+            this.attach(this._logo, 0, 0, 1, 1);
+        }
 
         if (this.image_uri) {
             let stream = Gio.File.new_for_uri(this.image_uri).read(null);

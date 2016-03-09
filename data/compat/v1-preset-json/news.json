@@ -433,6 +433,7 @@
                             "properties": {
                                 "max-fraction": 0.15,
                                 "show-subtitle": false,
+                                "clickable": true,
                                 "visible": true
                             }
                         },

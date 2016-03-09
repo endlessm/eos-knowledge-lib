@@ -73,4 +73,20 @@ describe('App banner module', function () {
             expect(subtitle_widget.justify).toBe(expected_justifications[align]);
         }
     });
+
+    describe('when the banner is clickable', function () {
+        let clickable_banner;
+
+        beforeEach(function () {
+            clickable_banner = new AppBanner.AppBanner({
+                image_uri: pig_uri,
+                clickable: true,
+                show_subtitle: true,
+            });
+        });
+
+        it('wraps the banner in a button', function () {
+
+        });
+    });
 });
