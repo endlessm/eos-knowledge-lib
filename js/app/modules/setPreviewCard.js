@@ -70,7 +70,7 @@ const SetPreviewCard = new Lang.Class({
         this.title = this.model.title;  // triggers update
 
         if (this.show_trigger) {
-            this.see_more_button.connect('clicked', () => {
+            this.trigger.connect('clicked', () => {
                 Dispatcher.get_default().dispatch({
                     action_type: Actions.SET_CLICKED,
                     model: this.model,
