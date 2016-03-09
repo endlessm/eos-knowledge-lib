@@ -295,31 +295,23 @@
             "slots": {
                 "top-menu": "main-menu",
                 "content": {
-                    "type": "BackgroundModule",
-                    "properties": {
-                        "page-mode": "article"
+                    "type": "ArticleStackModule",
+                    "properties" : {
+                        "do-sliding-animation": false,
+                        "allow-navigation": "next"
                     },
                     "slots": {
-                        "content": {
-                            "type": "ArticleStackModule",
-                            "properties" : {
-                                "do-sliding-animation": false,
-                                "allow-navigation": "next"
-                            },
-                            "slots": {
-                                "card-type": {
-                                    "type": "KnowledgeDocumentCard",
-                                    "properties": {
-                                        "show-top-title": false,
-                                        "show-toc": false
-                                    }
-                                },
-                                "nav-card-type": {
-                                    "type": "SearchResultCard",
-                                    "properties": {
-                                        "show-synopsis": false
-                                    }
-                                }
+                        "card-type": {
+                            "type": "KnowledgeDocumentCard",
+                            "properties": {
+                                "show-top-title": false,
+                                "show-toc": false
+                            }
+                        },
+                        "nav-card-type": {
+                            "type": "SearchResultCard",
+                            "properties": {
+                                "show-synopsis": false
                             }
                         }
                     }
