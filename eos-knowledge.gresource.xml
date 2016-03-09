@@ -30,6 +30,8 @@
     <file preprocess="xml-stripblanks">data/images/reader/standalone_arrow.svg</file>
     <file preprocess="xml-stripblanks" compressed="true">data/images/arrow-gray.svg</file>
     <file preprocess="xml-stripblanks" compressed="true">data/images/arrow-white.svg</file>
+    <file preprocess="xml-stripblanks" compressed="true">data/images/news-arrow-dark.svg</file>
+    <file preprocess="xml-stripblanks" compressed="true">data/images/news-arrow-light.svg</file>
     <file preprocess="xml-stripblanks" compressed="true">data/images/title-arrow-dark.svg</file>
     <file preprocess="xml-stripblanks" compressed="true">data/images/title-arrow-light.svg</file>
     <file preprocess="xml-stripblanks" compressed="true">data/images/right_arrow.svg</file>
