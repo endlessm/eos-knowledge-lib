@@ -35,7 +35,7 @@ const PostCard = new Lang.Class({
     },
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/postCard.ui',
-    InternalChildren: [ 'thumbnail-frame', 'title-label', 'inner-content-grid', 'shadow-frame' ],
+    InternalChildren: [ 'thumbnail-frame', 'title-label', 'inner-content-grid', 'shadow-frame', 'overlay' ],
 
     _init: function (props={}) {
         this.parent(props);
@@ -63,24 +63,29 @@ const PostCard = new Lang.Class({
             this._title_label.justify = Utils.alignment_to_justification(this.text_halign);
             this._title_label.xalign = Utils.alignment_to_xalign(this.text_halign);
         }
+
+        this._overlay.connect('get-child-position', this._overlay_get_child_position.bind(this));
+    },
+
+    _overlay_get_child_position: function (overlay, child, allocation) {
+        let width = overlay.get_allocated_width();
+        let height = overlay.get_allocated_height();
+        allocation.x = 0;
+        allocation.width = width;
+        if (this._showing_set) {
+            let sleeve_height = height > Card.MaxSize.B ? 120 : 80;
+            allocation.y = (height / 2) - (sleeve_height / 2);
+            allocation.height = sleeve_height;
+        } else {
+            let content_height = this._get_content_height(height);
+            allocation.y = height - content_height;
+            allocation.height = content_height;
+        }
+        return [true, allocation];
     },
 
     vfunc_size_allocate: function (alloc) {
         this.parent(alloc);
-        let child_alloc = new Gdk.Rectangle({
-            x: 0,
-            width: alloc.width,
-        });
-        if (this._showing_set) {
-            let sleeve_height = alloc.height > Card.MaxSize.B ? 120 : 80;
-            child_alloc.y = (alloc.height / 2) - (sleeve_height / 2);
-            child_alloc.height = sleeve_height;
-        } else {
-            let content_height = this._get_content_height(alloc.height);
-            child_alloc.y = alloc.height - content_height;
-            child_alloc.height = content_height;
-        }
-        this._shadow_frame.size_allocate(child_alloc);
         this.update_card_sizing_classes(alloc.height, alloc.width);
     },
 
