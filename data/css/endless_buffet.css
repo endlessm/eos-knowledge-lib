@@ -1,6 +1,7 @@
 @import url("resource:///com/endlessm/knowledge/data/css/buffet_core.css");
 
 .card .title,
+EknSetPreviewCard .title,
 .search-results .results-message-title,
 .suggested-categories .browse-content .title,
 .suggested-articles .browse-content .title  {
@@ -10,6 +11,40 @@
 .card .title.highlighted,
 .card .card-synopsis.highlighted {
     background-color: #d9f0f8;
+}
+
+EknHighlightsModule .text-card .title.label,
+EknThematicModule .text-card .title.label,
+EknSetPreviewCard .title,
+.browse-content .title {
+    font-weight: 200;
+    font-size: 22px;
+}
+
+EknHighlightsModule .separator,
+EknSetPreviewCard .separator,
+EknThematicModule .separator {
+    background-color: #999999;
+    -EknThemeableImage-min-height: 1;
+    margin: 4px 0px 10px 0px;
+}
+
+EknSuggestedCategoriesModule .browse-content .after,
+EknHighlightsModule .text-card .after,
+EknSetPreviewCard .title .after,
+EknThematicModule .text-card .after {
+    -gtk-icon-source: url('resource:///com/endlessm/knowledge/data/images/title-arrow-dark.svg');
+    -EknThemeableImage-min-height: 10;
+    -EknThemeableImage-min-width: 11;
+    margin-left: 8px;
+    margin-top: 6px;
+}
+
+EknSuggestedCategoriesModule .browse-content:hover .after,
+EknHighlightsModule .text-card:hover .after,
+EknSetPreviewCard .title .after,
+EknThematicModule .text-card:hover .after {
+    -gtk-icon-source: url('resource:///com/endlessm/knowledge/data/images/title-arrow-light.svg');
 }
 
 EknSearchModule .suggested-categories,

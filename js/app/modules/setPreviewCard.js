@@ -1,6 +1,7 @@
 // Copyright 2016 Endless Mobile, Inc.
 
 const GObject = imports.gi.GObject;
+const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const Actions = imports.app.actions;
@@ -23,11 +24,11 @@ const QueryObject = imports.search.queryObject;
  *
  * Style classes:
  *   card - on the widget itself
- *   title - on the title label
  *
  * Slots:
  *   arrangement - arrangement in which to display this sets article cards.
  *   card-type - type of cards to create for articles
+ *   header-card-type - type of card to create for title label
  */
 const SetPreviewCard = new Lang.Class({
     Name: 'SetPreviewCard',
@@ -49,27 +50,45 @@ const SetPreviewCard = new Lang.Class({
     },
 
     _init: function (props={}) {
-        props.title = props.model.title;
         this.parent(props);
 
-        this.title_button.connect('clicked', () => {
+        // Replace CardContainer's title button with a real card (usually a
+        // TextCard)
+        this.title_button.hide();
+        let header_card = this.create_submodule('header-card-type', {
+            model: this.model,
+            halign: Gtk.Align.START,
+        });
+        this.attach(header_card, 0, 0, 1, 1);
+        header_card.connect('clicked', () => {
             Dispatcher.get_default().dispatch({
                 action_type: Actions.SET_CLICKED,
                 model: this.model,
+                context_label: this.model.title,
             });
         });
+        this.title = this.model.title;  // triggers update
 
         if (this.show_trigger) {
             this.see_more_button.connect('clicked', () => {
                 Dispatcher.get_default().dispatch({
                     action_type: Actions.SET_CLICKED,
                     model: this.model,
+                    context_label: this.model.title,
                 });
             });
         }
+
+        Dispatcher.get_default().register(payload => {
+            switch (payload.action_type) {
+                case Actions.CLEAR_ITEMS:
+                    this.arrangement.clear();
+                    break;
+            }
+        });
     },
 
-    load_content: function () {
+    load_content: function (done) {
         this.arrangement.visible = true;
         let query = new QueryObject.QueryObject({
             limit: this.arrangement.get_max_cards(),
@@ -84,12 +103,24 @@ const SetPreviewCard = new Lang.Class({
                 return;
             }
             models.forEach(model => this.arrangement.add_model(model));
+            if (done)
+                done();
         });
     },
 
     // Module override
     get_slot_names: function () {
-        return ['arrangement', 'card-type'];
+        return ['arrangement', 'card-type', 'header-card-type'];
+    },
+
+    // CardContainer override
+    card_clicked: function (arrangement, model) {
+        Dispatcher.get_default().dispatch({
+            action_type: Actions.ITEM_CLICKED,
+            model: model,
+            context: this.arrangement.get_models(),
+            context_label: this.model.title,
+        });
     },
 });
 

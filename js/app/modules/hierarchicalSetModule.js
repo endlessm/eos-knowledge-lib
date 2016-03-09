@@ -2,7 +2,6 @@
 
 /* exported HierarchicalSetModule */
 
-const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
@@ -17,7 +16,7 @@ const Scrollable = imports.app.interfaces.scrollable;
 const SetObjectModel = imports.search.setObjectModel;
 const ThemeableImage = imports.app.widgets.themeableImage;
 
-const NUM_ARTICLES_PER_SECTION = 3;
+const BATCH_SIZE = 15;
 
 /**
  * Class: HierarchicalSetModule
@@ -53,11 +52,8 @@ const HierarchicalSetModule = new Lang.Class({
         'scroll-server': GObject.ParamSpec.override('scroll-server', Scrollable.Scrollable),
     },
 
-    Template: 'resource:///com/endlessm/knowledge/data/widgets/hierarchicalSetModule.ui',
-
-    InternalChildren: [ 'title-label' ],
-
     _init: function (props={}) {
+        props.orientation = Gtk.Orientation.VERTICAL;
         this.parent(props);
 
         this._arrangement = this.create_submodule('arrangement');
@@ -93,8 +89,10 @@ const HierarchicalSetModule = new Lang.Class({
     },
 
     show_more_content: function () {
-        if (this._current_index >= this._set_cards.length)
+        if (this._current_index >= this._set_cards.length) {
+            this._load_content();
             return;
+        }
         let set_card = this._set_cards[this._current_index];
         this._current_index += 1;
         set_card.load_content();
@@ -108,17 +106,27 @@ const HierarchicalSetModule = new Lang.Class({
         this._clear_items();
         this._current_model = model;
         this._current_index = 0;
-        this._title_label.label = GLib.markup_escape_text(model.title, -1);
-        let query = new QueryObject.QueryObject({
-            limit: NUM_ARTICLES_PER_SECTION,
-            tags: this._current_model.child_tags,
-            tag_match: QueryObject.QueryObjectTagMatch.ALL,
+        this._load_content();
+        Dispatcher.get_default().dispatch({
+            action_type: Actions.SET_READY,
+            model: model,
         });
+    },
+
+    _load_content: function () {
+        let query = this._get_more;
+        if (!query) {
+            query = new QueryObject.QueryObject({
+                limit: BATCH_SIZE,
+                tags: this._current_model.child_tags,
+                tag_match: QueryObject.QueryObjectTagMatch.ALL,
+            });
+        }
 
         Engine.get_default().get_objects_by_query(query, null, (engine, task) => {
             let results;
             try {
-                [results] = engine.get_objects_by_query_finish(task);
+                [results, this._get_more] = engine.get_objects_by_query_finish(task);
             } catch (e) {
                 logError(e, 'Failed to load objects from set');
                 return;
@@ -130,7 +138,8 @@ const HierarchicalSetModule = new Lang.Class({
             results.forEach((model) => {
                 if (model instanceof SetObjectModel.SetObjectModel) {
                     this._add_set_card(model);
-                } else if (model instanceof ArticleObjectModel.ArticleObjectModel) {
+                } else if (model instanceof ArticleObjectModel.ArticleObjectModel &&
+                    this._belongs_to_current_set_and_not_subset(model)) {
                     this._arrangement.add_model(model);
                 }
             });
@@ -139,11 +148,16 @@ const HierarchicalSetModule = new Lang.Class({
                 scroll_server: this.scroll_server,
             });
         });
+    },
 
-        Dispatcher.get_default().dispatch({
-            action_type: Actions.SET_READY,
-            model: model,
-        });
+    _belongs_to_current_set_and_not_subset: function (model) {
+        let model_parent_tags = this._current_model.tags
+            .filter(tag => !tag.startsWith('Ekn'));
+        let tags_in_current_model =
+            new Set(this._current_model.child_tags.concat(model_parent_tags));
+        let tags_not_in_current_model = model.tags.filter(tag =>
+            !tag.startsWith('Ekn') && !tags_in_current_model.has(tag));
+        return (tags_not_in_current_model.length === 0);
     },
 
     _add_set_card: function (model) {
@@ -165,5 +179,6 @@ const HierarchicalSetModule = new Lang.Class({
         this._arrangement.clear();
         this._set_cards.forEach(this.remove, this);
         this._set_cards = [];
+        this._get_more = null;
     },
 });

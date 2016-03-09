@@ -16,20 +16,6 @@ EknWindow {
     border-radius: 20px;
 }
 
-EknHighlightsModule .text-card .title.label,
-EknThematicModule .text-card .title.label,
-.browse-content .title {
-    font-weight: 200;
-    font-size: 22px;
-}
-
-EknHighlightsModule .separator,
-EknThematicModule .separator {
-    background-color: #999999;
-    -EknThemeableImage-min-height: 1;
-    margin: 4px 0px 10px 0px;
-}
-
 EknSuggestedCategoriesModule .separator {
     background-color: #999999;
     -EknThemeableImage-min-height: 1;
@@ -50,24 +36,18 @@ EknSearchModule .no-results {
 }
 
 EknSuggestedCategoriesModule .button:hover .title,
+EknSetPreviewCard:hover .title,
 .text-card:hover .title {
     color: #49bde3;
 }
 
+/* FIXME: why does removing this cause ResponsiveMarginsModule to lose its margins? */
 EknSuggestedCategoriesModule .browse-content .after,
 EknHighlightsModule .text-card .after,
+EknSetPreviewCard .title .after,
 EknThematicModule .text-card .after {
-    -gtk-icon-source: url('resource:///com/endlessm/knowledge/data/images/title-arrow-dark.svg');
     -EknThemeableImage-min-height: 10;
     -EknThemeableImage-min-width: 11;
-    margin-left: 8px;
-    margin-top: 6px;
-}
-
-EknSuggestedCategoriesModule .browse-content:hover .after,
-EknHighlightsModule .text-card:hover .after,
-EknThematicModule .text-card:hover .after {
-    -gtk-icon-source: url('resource:///com/endlessm/knowledge/data/images/title-arrow-light.svg');
 }
 
 /* default size */
@@ -319,6 +299,7 @@ EknResponsiveMarginsModule.xlarge {
 
 .composite EknHighlightsModule .text-card .title.label,
 .composite EknThematicModule .text-card .title.label,
+.composite EknSetPreviewCard .title,
 .composite .browse-content .title,
 .composite .post-card.set .title {
     font-weight: normal;
