@@ -138,6 +138,7 @@ const HighlightsModule = new Lang.Class({
         let query = new QueryObject.QueryObject({
             limit: arrangement.get_max_cards(),
             tags: set.child_tags,
+            excluded_tags: ['EknSetObject'],
         });
         Engine.get_default().get_objects_by_query(query, null, (engine, res) => {
             let models, get_more;

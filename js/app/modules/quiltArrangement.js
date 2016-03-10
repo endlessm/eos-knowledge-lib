@@ -115,6 +115,10 @@ const QuiltArrangement = new Lang.Class({
         return this.get_card_count() <= this._total_cards_to_show;
     },
 
+    get_max_cards: function () {
+        return this._total_cards_to_show;
+    },
+
     // Removing a visible widget should recalculate the positions of all widgets
     vfunc_remove: function (widget) {
         let needs_resize = widget.get_child_visible();
