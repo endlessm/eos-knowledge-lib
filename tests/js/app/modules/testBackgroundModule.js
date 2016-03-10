@@ -51,4 +51,16 @@ describe('Background Module', function () {
 
         expect(Gtk.CssProvider.prototype.load_from_data.calls.mostRecent().args[0]).toMatch(color);
     });
+
+    it('handles models without thumbnail', function () {
+        let model = new ContentObjectModel.ContentObjectModel();
+
+        dispatcher.dispatch({
+            action_type: Actions.FEATURE_ITEM,
+            model: model,
+        });
+        Utils.update_gui();
+
+        expect(Gtk.CssProvider.prototype.load_from_data).toHaveBeenCalled();
+    });
 });

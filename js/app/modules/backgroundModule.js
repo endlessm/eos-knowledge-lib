@@ -14,6 +14,8 @@ const DominantColor = imports.app.dominantColor;
 const Module = imports.app.interfaces.module;
 const Utils = imports.app.utils;
 
+const DEFAULT_COLOR = '#BBBCB6';
+
 // FIXME: Replace for real blurred images
 const _topImage = 'resource:///com/endlessm/knowledge/data/images/background.png';
 
@@ -142,7 +144,12 @@ const BackgroundModule = new Lang.Class({
         this._model = model;
 
         DominantColor.get_dominant_color(model, null, (helper, task) => {
-            let color = helper.get_dominant_color_finish(task);
+            let color;
+            try {
+                color = helper.get_dominant_color_finish(task);
+            } catch (error) {
+                color = DEFAULT_COLOR;
+            }
             this._set_background(color);
         });
     },
