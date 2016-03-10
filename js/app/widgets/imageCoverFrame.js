@@ -66,7 +66,7 @@ const ImageCoverFrame = Lang.Class({
         // This is just a static image, we should only need to redraw after a
         // resize of the contents is changed
         let allocation = this.get_allocation();
-        if (this._last_width !== allocation.width && this._last_height !== allocation.height)
+        if (this._last_width !== allocation.width || this._last_height !== allocation.height)
             this._surface_cache.invalidate();
         this._last_width = allocation.width;
         this._last_height = allocation.height;

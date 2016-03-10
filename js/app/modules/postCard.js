@@ -35,7 +35,7 @@ const PostCard = new Lang.Class({
     },
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/postCard.ui',
-    InternalChildren: [ 'thumbnail-frame', 'title-label', 'inner-content-grid', 'shadow-frame' ],
+    InternalChildren: [ 'thumbnail-frame', 'title-label', 'inner-content-grid', 'shadow-frame', 'overlay' ],
 
     _init: function (props={}) {
         this.parent(props);
@@ -59,36 +59,48 @@ const PostCard = new Lang.Class({
             });
         } else {
             this.set_context_label_from_model(this._inner_content_grid);
-        }
-    },
-
-    vfunc_size_allocate: function (alloc) {
-        this.parent(alloc);
-        let child_alloc = new Gdk.Rectangle({
-            x: 0,
-            width: alloc.width,
-        });
-        if (this._showing_set) {
-            let sleeve_height = alloc.height > Card.MaxSize.B ? 120 : 80;
-            child_alloc.y = (alloc.height / 2) - (sleeve_height / 2);
-            child_alloc.height = sleeve_height;
-        } else {
-            let content_height = this._get_content_height(alloc.height);
-            child_alloc.y = alloc.height - content_height;
-            child_alloc.height = content_height;
             this._title_label.halign = this._space_container.halign = this.text_halign;
             this._title_label.justify = Utils.alignment_to_justification(this.text_halign);
             this._title_label.xalign = Utils.alignment_to_xalign(this.text_halign);
         }
-        this._shadow_frame.size_allocate(child_alloc);
+
+        this._overlay.connect('get-child-position', this._overlay_get_child_position.bind(this));
+    },
+
+    _overlay_get_child_position: function (overlay, child, allocation) {
+        let width = overlay.get_allocated_width();
+        let height = overlay.get_allocated_height();
+        allocation.x = 0;
+        allocation.width = width;
+        let [min_height,] = child.get_preferred_height_for_width(width);
+        if (this._showing_set) {
+            let sleeve_height = height > Card.MaxSize.B ? 120 : 80;
+            sleeve_height = Math.max(sleeve_height, min_height);
+            allocation.y = (height / 2) - (sleeve_height / 2);
+            allocation.height = sleeve_height;
+        } else {
+            let content_height = this._get_content_height(height);
+            content_height = Math.max(content_height, min_height);
+            allocation.y = height - content_height;
+            allocation.height = content_height;
+        }
+        return [true, allocation];
+    },
+
+    vfunc_size_allocate: function (alloc) {
+        this.parent(alloc);
         this.update_card_sizing_classes(alloc.height, alloc.width);
     },
 
     vfunc_draw: function (cr) {
         if (this._showing_set) {
+            // FIXME: Would really be better to draw inside the frame directly
+            // than try to suss out the position here. Really really, lets just
+            // make this a border image in css
             let margin = this._thumbnail_frame.margin;
             let sleeve_alloc = this._shadow_frame.get_allocation();
-            let shadow_top = sleeve_alloc.y + sleeve_alloc.height;
+            let sleeve_offset = this._shadow_frame.get_window().get_position()[1] - this._overlay.get_allocation().y;
+            let shadow_top = sleeve_alloc.y + sleeve_alloc.height + sleeve_offset;
 
             cr.save();
             Gdk.cairo_set_source_rgba(cr, new Gdk.RGBA({
