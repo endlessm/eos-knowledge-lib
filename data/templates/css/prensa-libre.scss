@@ -106,6 +106,7 @@ figure,
 
 blockquote {
     display: flex;
+    flex-wrap: wrap;
 
     p {
         font-family: $headline-font;
@@ -262,11 +263,18 @@ hr {
 
         p {
             margin: 0 $dedent 0 0;
+            flex-basis: 100%;
+        }
+
+        cite {
+            margin-left: -$dedent;
+            flex-basis: 100%;
         }
 
         &::before {
-            min-width: 3 * $body-size;
+            width: 3 * $body-size;
             height: 3 * $body-size;
+            flex-basis: 3 * $body-size;
             margin-right: calc(-3 * #{$body-size} - #{$dedent});
         }
     }
