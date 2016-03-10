@@ -72,12 +72,15 @@ const PostCard = new Lang.Class({
         let height = overlay.get_allocated_height();
         allocation.x = 0;
         allocation.width = width;
+        let [min_height,] = child.get_preferred_height_for_width(width);
         if (this._showing_set) {
             let sleeve_height = height > Card.MaxSize.B ? 120 : 80;
+            sleeve_height = Math.max(sleeve_height, min_height);
             allocation.y = (height / 2) - (sleeve_height / 2);
             allocation.height = sleeve_height;
         } else {
             let content_height = this._get_content_height(height);
+            content_height = Math.max(content_height, min_height);
             allocation.y = height - content_height;
             allocation.height = content_height;
         }
