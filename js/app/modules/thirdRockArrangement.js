@@ -106,6 +106,10 @@ const ThirdRockArrangement = new Lang.Class({
         this.queue_resize();
     },
 
+    get_max_cards: function () {
+        return _CARD_COUNT;
+    },
+
     // Removing a widget should recalculate the positions of all widgets
     vfunc_remove: function (widget) {
         this.parent(widget);

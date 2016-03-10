@@ -86,6 +86,10 @@ const ThirtiesArrangement = new Lang.Class({
         return this.get_card_count() <= COL_COUNT * this._max_rows;
     },
 
+    get_max_cards: function () {
+        return COL_COUNT * this._max_rows;
+    },
+
     // Arrangement override
     fade_card_in: function (card) {
         if (this._max_rows === 0)
