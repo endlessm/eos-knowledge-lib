@@ -94,9 +94,13 @@ const PostCard = new Lang.Class({
 
     vfunc_draw: function (cr) {
         if (this._showing_set) {
+            // FIXME: Would really be better to draw inside the frame directly
+            // than try to suss out the position here. Really really, lets just
+            // make this a border image in css
             let margin = this._thumbnail_frame.margin;
             let sleeve_alloc = this._shadow_frame.get_allocation();
-            let shadow_top = sleeve_alloc.y + sleeve_alloc.height;
+            let sleeve_offset = this._shadow_frame.get_window().get_position()[1] - this._overlay.get_allocation().y;
+            let shadow_top = sleeve_alloc.y + sleeve_alloc.height + sleeve_offset;
 
             cr.save();
             Gdk.cairo_set_source_rgba(cr, new Gdk.RGBA({
