@@ -90,7 +90,8 @@ const HierarchicalSetModule = new Lang.Class({
 
     show_more_content: function () {
         if (this._current_index >= this._set_cards.length) {
-            this._load_content();
+            if (this._get_more)
+                this._load_content(this._get_more);
             return;
         }
         let set_card = this._set_cards[this._current_index];
@@ -107,23 +108,21 @@ const HierarchicalSetModule = new Lang.Class({
         this._clear_items();
         this._current_model = model;
         this._current_index = 0;
-        this._load_content();
+
+        let query = new QueryObject.QueryObject({
+            limit: BATCH_SIZE,
+            tags: this._current_model.child_tags,
+            tag_match: QueryObject.QueryObjectTagMatch.ALL,
+        });
+
+        this._load_content(query);
         Dispatcher.get_default().dispatch({
             action_type: Actions.SET_READY,
             model: model,
         });
     },
 
-    _load_content: function () {
-        let query = this._get_more;
-        if (!query) {
-            query = new QueryObject.QueryObject({
-                limit: BATCH_SIZE,
-                tags: this._current_model.child_tags,
-                tag_match: QueryObject.QueryObjectTagMatch.ALL,
-            });
-        }
-
+    _load_content: function (query) {
         Engine.get_default().get_objects_by_query(query, null, (engine, task) => {
             let results;
             try {
