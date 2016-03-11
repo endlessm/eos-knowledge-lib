@@ -95,8 +95,7 @@ const SideBySideArrangement = new Lang.Class({
         if (this.get_card_count() === 0)
             return;
 
-        let all_cards = this.get_filtered_models()
-            .map(this.get_card_for_model, this);
+        let all_cards = this.get_filtered_models().map((model) => this.get_card_for_model(model));
 
         let spacing = this._get_horizontal_spacing(alloc.width);
         let available_width = alloc.width;
@@ -104,8 +103,8 @@ const SideBySideArrangement = new Lang.Class({
         let y = alloc.y;
 
         all_cards.forEach((card) => {
-            let [card_min, card_nat] = card.get_preferred_width();
-            if (card_nat < available_width) {
+            let [, card_nat] = card.get_preferred_width();
+            if (card_nat <= available_width) {
                 let offset = card_nat + spacing;
                 this.place_card(card, x, y, card_nat, MENU_HEIGHT);
                 available_width -= offset;
