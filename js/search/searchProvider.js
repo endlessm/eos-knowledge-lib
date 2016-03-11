@@ -153,8 +153,12 @@ const AppSearchProvider = Lang.Class({
             } catch (error) {
                 if (!error.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED)) {
                     logError(error);
+                    invocation.return_error_literal(this._search_provider_domain,
+                        SearchProviderErrors.RetrievalError,
+                        'Error retrieving results: ' + error);
+                } else {
+                    invocation.return_gerror(error);
                 }
-                invocation.return_error_literal(this._search_provider_domain, SearchProviderErrors.RetrievalError, 'Error retrieving results: ' + error);
             }
             app.release();
         });
