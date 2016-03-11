@@ -34,7 +34,6 @@ const _topImageHeight = {
 
 const _cssTemplate = 'EknBackgroundModule {\
     background-image: linear-gradient(@{bottom}), linear-gradient(alpha(@{overlay}, 0.4)), url("@{image}");\
-    background-size: auto, auto, cover;\
     background-position: 0px @{small}px, 0px 0px, 0px 0px;\
 }\
 EknBackgroundModule.medium {\
