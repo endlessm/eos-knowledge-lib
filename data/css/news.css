@@ -226,6 +226,7 @@ EknSearchBannerModule {
 EknSetBannerModule .card .title,
 EknSetBannerModule .card:hover .title {
     color: white;
+    font-weight: bold;
     font-size: 48px;
     font-family: Merriweather;
 }
