@@ -64,7 +64,7 @@
                                             },
                                             "slots": {
                                                 "highlight-arrangement": {
-                                                    "type": "QuiltArrangement",
+                                                    "type": "PianoArrangement",
                                                     "properties": {
                                                         "spacing": 20
                                                     },
