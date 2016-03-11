@@ -424,7 +424,7 @@
                         "banner": {
                             "type": "AppBanner",
                             "properties": {
-                                "max-fraction": 0.15,
+                                "max-fraction": 0.3,
                                 "show-subtitle": false,
                                 "visible": true
                             }
