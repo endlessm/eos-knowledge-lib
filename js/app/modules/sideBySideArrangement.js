@@ -11,7 +11,6 @@ const Arrangement = imports.app.interfaces.arrangement;
 const Module = imports.app.interfaces.module;
 
 const MENU_HEIGHT = 50;
-const MIN_CARDS = 4;
 const _HorizontalThreshold = {
     TINY: 720,
     SMALL: 900,
@@ -68,22 +67,27 @@ const SideBySideArrangement = new Lang.Class({
     },
 
     vfunc_get_preferred_height: function () {
+        if (this.get_filtered_models().length === 0)
+            return [0, 0];
+
         return [MENU_HEIGHT, MENU_HEIGHT];
     },
 
     vfunc_get_preferred_width: function () {
-        let min = 0;
-        let nat = 0;
-        this.get_filtered_models().slice(0, MIN_CARDS).forEach((model, i) => {
-            let card = this.get_card_for_model(model);
-            let [c_min, ] = card.get_preferred_width();
-            min += (c_min + (i > 0 ? _HorizontalSpacing.TINY : 0));
-        });
-        this.get_filtered_models().forEach((model, i) => {
-            let card = this.get_card_for_model(model);
-            let [, c_nat] = card.get_preferred_width();
-            nat += (c_nat + (i > 0 ? _HorizontalSpacing.XLARGE : 0));
-        });
+        let filtered_models = this.get_filtered_models();
+        if (filtered_models.length === 0)
+            return [0, 0];
+
+        let all_cards = filtered_models.map((model) => this.get_card_for_model(model));
+        let [min, nat] = all_cards[0].get_preferred_width();
+
+        nat += all_cards.slice(1).reduce((accum, card) => {
+            let [, card_nat] = card.get_preferred_width();
+            return accum + card_nat;
+        }, 0);
+
+        let spacing = this._get_horizontal_spacing(nat);
+        nat += spacing * (all_cards.length - 1);
         return [min, nat];
     },
 
