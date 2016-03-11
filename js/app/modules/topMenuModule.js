@@ -96,10 +96,12 @@ const TopMenuModule = new Lang.Class({
                 height: banner_nat_height,
             });
             this._banner.size_allocate(banner_rect);
+            x += alloc.width - menu_nat_width;
+        } else {
+            x += (alloc.width - menu_nat_width) / 2;
         }
         this._banner.set_child_visible(show_banner);
 
-        x += alloc.width - menu_nat_width;
         let menu_rect = new Gdk.Rectangle({
             x: x,
             y: _get_centered_coord(alloc.height, menu_nat_height),
