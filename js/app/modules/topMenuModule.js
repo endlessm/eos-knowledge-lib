@@ -91,7 +91,7 @@ const TopMenuModule = new Lang.Class({
         if (show_banner) {
             let banner_rect = new Gdk.Rectangle({
                 x: x,
-                y: _get_centered_coord(alloc.height, banner_nat_height),
+                y: alloc.y + _get_centered_coord(alloc.height, banner_nat_height),
                 width: banner_nat_width,
                 height: banner_nat_height,
             });
@@ -104,7 +104,7 @@ const TopMenuModule = new Lang.Class({
 
         let menu_rect = new Gdk.Rectangle({
             x: x,
-            y: _get_centered_coord(alloc.height, menu_nat_height),
+            y: alloc.y + _get_centered_coord(alloc.height, menu_nat_height),
             width: menu_nat_width,
             height: menu_nat_height,
         });
