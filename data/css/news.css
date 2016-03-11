@@ -60,9 +60,9 @@ EknAppBanner {
 }
 
 EknPanelFrame .top-menu {
-    background-color: rgba(5, 12, 32, 0.9);
+    background-color: #050c20;
     box-shadow: 0px 10px 20px 0px rgba(0, 0, 0, 0.2);
-    padding: 0px 20px;
+    padding: 3px 20px;
 }
 
 EknSideBySideArrangement .text-card .title.label {
@@ -226,6 +226,7 @@ EknSearchBannerModule {
 EknSetBannerModule .card .title,
 EknSetBannerModule .card:hover .title {
     color: white;
+    font-weight: bold;
     font-size: 48px;
     font-family: Merriweather;
 }
