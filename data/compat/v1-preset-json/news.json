@@ -60,6 +60,8 @@
                                                 "halign": "center",
                                                 "margin-top": 50,
                                                 "margin-bottom": 50,
+                                                "margin-start": 20,
+                                                "margin-end": 20,
                                                 "support-sets": 4
                                             },
                                             "slots": {
