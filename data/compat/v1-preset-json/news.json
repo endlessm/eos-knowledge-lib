@@ -200,7 +200,12 @@
                             "type": "BannerTemplate",
                             "slots": {
                                 "banner": {
-                                    "type": "SearchBannerModule"
+                                    "type": "SearchBannerModule",
+                                    "properties": {
+                                        "halign": "center",
+                                        "xalign": 0.5,
+                                        "justify": "center"
+                                    }
                                 },
                                 "content": {
                                     "type": "SearchModule",
@@ -212,7 +217,11 @@
                                             },
                                             "slots": {
                                                 "card-type": {
-                                                    "type": "SearchResultCard"
+                                                    "type": "SearchResultCard",
+                                                    "properties": {
+                                                        "margin-start": 200,
+                                                        "margin-end": 200
+                                                    }
                                                 }
                                             }
                                         },
