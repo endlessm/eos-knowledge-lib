@@ -119,6 +119,10 @@ EknSearchBannerModule {
     padding: 50px 80px 30px;
 }
 
+.results-message-title {
+    color: white;
+}
+
 .search-results .results-message-subtitle {
     font-family: Merriweather;
     font-style: italic;
