@@ -11,6 +11,9 @@
         },
         "window": {
             "type": "Window",
+            "properties": {
+                "animations": false
+            },
             "slots": {
                 "search": {
                     "type": "SearchBox"
