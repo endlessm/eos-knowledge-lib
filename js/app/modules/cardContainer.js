@@ -91,7 +91,6 @@ const CardContainer = new Lang.Class({
             this.card_clicked(arrangement, model);
         });
 
-        Utils.set_hand_cursor_on_widget(this.title_button);
         this.attach(this.title_button, 0, 0, 1, 1);
         this.attach(separator, 0, 1, 2, 1);
         this.attach(this.arrangement, 0, 2, 2, 1);
@@ -121,6 +120,7 @@ const CardContainer = new Lang.Class({
             Utils.set_hand_cursor_on_widget(this.trigger);
             this.arrangement.bind_property('all-visible', this.trigger, 'visible',
                 GObject.BindingFlags.SYNC_CREATE | GObject.BindingFlags.INVERT_BOOLEAN);
+            Utils.set_hand_cursor_on_widget(this.title_button);
             this._update_title();
             this.attach(this.trigger, 1, 0, 1, 1);
         }
