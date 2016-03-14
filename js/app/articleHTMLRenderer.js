@@ -160,6 +160,7 @@ const ArticleHTMLRenderer = new Lang.Class({
         let featured_set = model.tags
             .filter(tag => !tag.startsWith('Ekn'))
             .map(tag => SetMap.get_set_for_tag(tag))
+            .filter(set => typeof set !== 'undefined')
             .filter(set => set.featured)[0];
         return {
             'date-published': new Date(model.published).toLocaleDateString(),
