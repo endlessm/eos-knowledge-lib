@@ -80,6 +80,15 @@ const Window = new Lang.Class({
         'animating': GObject.ParamSpec.boolean('animating',
             'Animating', 'Animating',
             GObject.ParamFlags.READABLE, false),
+        /**
+         * Property: animations
+         *
+         * Enables the animations during page transitions for this window.
+         */
+        'animations': GObject.ParamSpec.boolean('animations',
+            'Animations',
+            'Enables the animations during page transitions for this window',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, true),
     },
 
     Signals: {
@@ -336,38 +345,20 @@ const Window = new Lang.Class({
             return;
         }
 
-        let is_on_left = (page) => [this._home_page, this._brand_page].indexOf(page) > -1;
-        let is_on_center = (page) => [this._section_page, this._search_page].indexOf(page) > -1;
         let nav_back_visible = false;
-        if (is_on_left(new_page)) {
+        if (this._is_page_on_left(new_page)) {
             nav_back_visible = false;
             this._set_background_position_style(StyleClasses.BACKGROUND_LEFT);
-            if (is_on_left(old_page)) {
-                this._stack.transition_type = Gtk.StackTransitionType.CROSSFADE;
-            } else {
-                this._stack.transition_type = Gtk.StackTransitionType.SLIDE_RIGHT;
-            }
-        } else if (is_on_center(new_page)) {
-            if (is_on_left(old_page)) {
-                this._stack.transition_type = Gtk.StackTransitionType.SLIDE_LEFT;
-            } else if (is_on_center(old_page)) {
-                this._stack.transition_type = Gtk.StackTransitionType.CROSSFADE;
-            } else if (this.template_type === 'B') {
-                this._stack.transition_type = Gtk.StackTransitionType.CROSSFADE;
-            } else {
-                this._stack.transition_type = Gtk.StackTransitionType.SLIDE_RIGHT;
-            }
+        } else if (this._is_page_on_center(new_page)) {
             nav_back_visible = true;
             this._set_background_position_style(StyleClasses.BACKGROUND_CENTER);
         } else {
-            if (this.template_type === 'B') {
-                this._stack.transition_type = Gtk.StackTransitionType.CROSSFADE;
-            } else {
-                this._stack.transition_type = Gtk.StackTransitionType.SLIDE_LEFT;
-            }
             nav_back_visible = true;
             this._set_background_position_style(StyleClasses.BACKGROUND_RIGHT);
         }
+
+        this._set_page_transition_type(new_page, old_page);
+
         Dispatcher.get_default().dispatch({
             action_type: Actions.NAV_BACK_ENABLED_CHANGED,
             enabled: nav_back_visible,
@@ -378,6 +369,42 @@ const Window = new Lang.Class({
         // are normal.
         this._stack.transition_duration = Utils.DEFAULT_PAGE_TRANSITION_DURATION;
         this._present_if_needed();
+    },
+
+    _is_page_on_center: function (page) {
+        return [this._section_page, this._search_page].indexOf(page) > -1;
+    },
+
+    _is_page_on_left: function (page) {
+        return [this._home_page, this._brand_page].indexOf(page) > -1;
+    },
+
+    _set_page_transition_type: function (new_page, old_page) {
+        if (!this.animations) {
+            return;
+        } else if (this._is_page_on_left(new_page)) {
+            if (this._is_page_on_left(old_page)) {
+                this._stack.transition_type = Gtk.StackTransitionType.CROSSFADE;
+            } else {
+                this._stack.transition_type = Gtk.StackTransitionType.SLIDE_RIGHT;
+            }
+        } else if (this._is_page_on_center(new_page)) {
+            if (this._is_page_on_left(old_page)) {
+                this._stack.transition_type = Gtk.StackTransitionType.SLIDE_LEFT;
+            } else if (this._is_page_on_center(old_page)) {
+                this._stack.transition_type = Gtk.StackTransitionType.CROSSFADE;
+            } else if (this.template_type === 'B') {
+                this._stack.transition_type = Gtk.StackTransitionType.CROSSFADE;
+            } else {
+                this._stack.transition_type = Gtk.StackTransitionType.SLIDE_RIGHT;
+            }
+        } else {
+            if (this.template_type === 'B') {
+                this._stack.transition_type = Gtk.StackTransitionType.CROSSFADE;
+            } else {
+                this._stack.transition_type = Gtk.StackTransitionType.SLIDE_LEFT;
+            }
+        }
     },
 
     /**
