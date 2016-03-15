@@ -60,20 +60,6 @@ const ThumbCard = new Lang.Class({
         Utils.set_hand_cursor_on_widget(this);
     },
 
-    _get_dimensions: function (alloc, orientation) {
-        let thumb_width, thumb_height, text_width, text_height;
-        if (orientation == Gtk.Orientation.VERTICAL) {
-            thumb_width = text_width = alloc.width;
-            text_height = this._get_text_height(alloc);
-            thumb_height = alloc.height - text_height;
-        } else {
-            thumb_height = text_height = alloc.height;
-            text_width = this._get_text_width(alloc);
-            thumb_width = alloc.width - text_width;
-        }
-        return [thumb_width, thumb_height, text_width, text_height];
-    },
-
     vfunc_size_allocate: function (alloc) {
         this.parent(alloc);
         let orientation;
@@ -123,6 +109,20 @@ const ThumbCard = new Lang.Class({
         this._thumbnail_frame.size_allocate(thumb_alloc);
         this._content_frame.size_allocate(text_alloc);
         this.update_card_sizing_classes(alloc.height, alloc.width);
+    },
+
+    _get_dimensions: function (alloc, orientation) {
+        let thumb_width, thumb_height, text_width, text_height;
+        if (orientation == Gtk.Orientation.VERTICAL) {
+            thumb_width = text_width = alloc.width;
+            text_height = this._get_text_height(alloc);
+            thumb_height = alloc.height - text_height;
+        } else {
+            thumb_height = text_height = alloc.height;
+            text_width = this._get_text_width(alloc);
+            thumb_width = alloc.width - text_width;
+        }
+        return [thumb_width, thumb_height, text_width, text_height];
     },
 
     _get_text_height: function (alloc) {
