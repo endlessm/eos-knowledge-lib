@@ -69,6 +69,7 @@ const HierarchicalSetModule = new Lang.Class({
         this._set_cards = [];
         this._current_model = null;
         this._current_index = -1;
+        this._is_feature_item_sent = false;
         this.scrollable_init();
 
         Dispatcher.get_default().register((payload) => {
@@ -108,6 +109,7 @@ const HierarchicalSetModule = new Lang.Class({
         this._clear_items();
         this._current_model = model;
         this._current_index = 0;
+        this._is_feature_item_sent = false;
 
         let query = new QueryObject.QueryObject({
             limit: BATCH_SIZE,
@@ -143,6 +145,7 @@ const HierarchicalSetModule = new Lang.Class({
                     this._arrangement.add_model(model);
                 }
             });
+            this._send_feature_item();
             Dispatcher.get_default().dispatch({
                 action_type: Actions.CONTENT_ADDED,
                 scroll_server: this.scroll_server,
@@ -181,5 +184,26 @@ const HierarchicalSetModule = new Lang.Class({
         this._set_cards.forEach(this.remove, this);
         this._set_cards = [];
         this._get_more = null;
+    },
+
+    _send_feature_item: function () {
+        if (this._is_feature_item_sent)
+            return;
+
+        let model;
+        if (this._arrangement.get_card_count()) {
+            model = this._arrangement.get_filtered_models()[0];
+        } else {
+            model = this._current_model;
+        }
+
+        if (!model)
+            return;
+
+        Dispatcher.get_default().dispatch({
+            action_type: Actions.FEATURE_ITEM,
+            model: model,
+        });
+        this._is_feature_item_sent = true;
     },
 });
