@@ -59,7 +59,7 @@ const ThumbCard = new Lang.Class({
         Utils.set_hand_cursor_on_widget(this);
     },
 
-    _get_dimensions: function (alloc, orientation, proportion) {
+    _get_dimensions: function (alloc, orientation) {
         let thumb_width, thumb_height, text_width, text_height;
         if (orientation == Gtk.Orientation.VERTICAL) {
             thumb_width = text_width = alloc.width;
@@ -75,26 +75,21 @@ const ThumbCard = new Lang.Class({
 
     vfunc_size_allocate: function (alloc) {
         this.parent(alloc);
-        let orientation, proportion;
+        let orientation;
 
-        // The orientation and the proportion variables
-        // uniquely determine how the widgets on this card
-        // will lay themselves out. The proportion refers to
-        // the proportion of space to be taken up by the
-        // thumbnail image
+        // The orientation determines how the widgets on this card will lay
+        // themselves out.
         if (this._should_go_horizontal(alloc.width, alloc.height)) {
             this.text_halign = Gtk.Align.START;
             orientation = Gtk.Orientation.HORIZONTAL;
-            proportion = 1/2;
         } else {
             orientation = Gtk.Orientation.VERTICAL;
-            proportion = 2/3;
         }
         this._title_label.halign = this._synopsis_label.halign = this._space_container.halign = this.text_halign;
         this._title_label.justify = Utils.alignment_to_justification(this.text_halign);
         this._title_label.xalign = Utils.alignment_to_xalign(this.text_halign);
 
-        let [thumb_w, thumb_h, text_w, text_h] = this._get_dimensions(alloc, orientation, proportion);
+        let [thumb_w, thumb_h, text_w, text_h] = this._get_dimensions(alloc, orientation);
 
         let thumb_alloc = new Gdk.Rectangle({
             x: alloc.x,
