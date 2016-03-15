@@ -164,8 +164,8 @@
                                                                 "arrangement": {
                                                                     "type": "ListArrangement",
                                                                     "properties": {
-                                                                        "vscrollbar-policy": "never",
-                                                                        "spacing": 20
+                                                                        "row-spacing": 20,
+                                                                        "orientation": "vertical"
                                                                     },
                                                                     "slots": {
                                                                         "card-type": {
@@ -214,7 +214,7 @@
                                     "type": "SearchModule",
                                     "slots": {
                                         "arrangement": {
-                                            "type": "ListArrangement",
+                                            "type": "ScrollingListArrangement",
                                             "properties": {
                                                 "bottom-buffer": 250
                                             },

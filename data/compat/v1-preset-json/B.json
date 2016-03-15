@@ -97,7 +97,7 @@
                     "type": "ItemGroupModule",
                     "slots": {
                         "arrangement": {
-                            "type": "ListArrangement",
+                            "type": "ScrollingListArrangement",
                             "slots": {
                                 "card-type": {
                                     "type": "TextCard"
@@ -124,7 +124,7 @@
                     "type": "SearchModule",
                     "slots": {
                         "arrangement": {
-                            "type": "ListArrangement",
+                            "type": "ScrollingListArrangement",
                             "slots": {
                                 "card-type": {
                                     "type": "TextCard"
@@ -156,7 +156,7 @@
                             "type": "SearchModule",
                             "slots": {
                                 "arrangement": {
-                                    "type": "ListArrangement",
+                                    "type": "ScrollingListArrangement",
                                     "slots": {
                                         "card-type": {
                                             "type": "TextCard"
@@ -172,7 +172,7 @@
                             "type": "ItemGroupModule",
                             "slots": {
                                 "arrangement": {
-                                    "type": "ListArrangement",
+                                    "type": "ScrollingListArrangement",
                                     "slots": {
                                         "card-type": {
                                             "type": "TextCard"
