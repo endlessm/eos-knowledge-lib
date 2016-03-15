@@ -9,9 +9,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2016-03-01 02:45+0000\n"
-"PO-Revision-Date: 2016-02-25 12:06+0000\n"
-"Last-Translator: zhifeng peng <jnufeng@126.com>\n"
+"POT-Creation-Date: 2016-03-08 02:49+0000\n"
+"PO-Revision-Date: 2016-03-08 02:50+0000\n"
+"Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -57,7 +57,7 @@ msgstr "根据主题浏览"
 #. to be substituted in code. Please make sure to leave the
 #. curly braces around any words that have them and DO NOT
 #. translate words inside curly braces.
-#: js/app/articleHTMLRenderer.js:75
+#: js/app/articleHTMLRenderer.js:79
 msgid ""
 "This page contains content from {original-link}, available under a {license-"
 "link} license."
@@ -65,7 +65,7 @@ msgstr "该页存在来源于{原始链接}的内容，已获得{认证链接}�
 
 #. TRANSLATORS: Replace this with a link to the homepage of
 #. wikiHow in your language.
-#: js/app/articleHTMLRenderer.js:82
+#: js/app/articleHTMLRenderer.js:86
 msgid "http://wikihow.com"
 msgstr "http://wikihow.com"
 
@@ -73,28 +73,36 @@ msgstr "http://wikihow.com"
 #. to be substituted in code. Please make sure to leave the
 #. curly braces around any words that have them and DO NOT
 #. translate words inside curly braces.
-#: js/app/articleHTMLRenderer.js:87
+#: js/app/articleHTMLRenderer.js:91
 msgid ""
 "See {wikihow-article-link} for more details, videos, pictures and "
 "attribution. Courtesy of {wikihow-link}, where anyone can easily learn how "
 "to do anything."
 msgstr "查看更多关于{wikihow-文章链接}的细节，视频，图片和来源。内容由{wikihow-link}提供，在此您可以轻松掌握各种技巧。"
 
-#: js/app/articleHTMLRenderer.js:158
+#. TRANSLATORS: anything inside curly braces '{}' is going to be
+#. substituted in code. Please make sure to leave the curly
+#. braces around any words that have them, and do not translate
+#. words inside curly braces.
+#: js/app/articleHTMLRenderer.js:108
+msgid "Read more at {link}"
+msgstr ""
+
+#: js/app/articleHTMLRenderer.js:193
 msgid "Copy"
 msgstr "复制"
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
-#: js/app/articleHTMLRenderer.js:176
+#: js/app/articleHTMLRenderer.js:212
 msgid "Content taken from {blog-link}."
 msgstr "来源于{博客链接}的内容。"
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
-#: js/app/articleHTMLRenderer.js:181
+#: js/app/articleHTMLRenderer.js:217
 msgid "Content courtesy of {blog-link}. Used with kind permission."
 msgstr "内容由{博客链接}提供。经授权许可使用。"
 
@@ -102,7 +110,7 @@ msgstr "内容由{博客链接}提供。经授权许可使用。"
 #. is going to be substituted in code. Please make sure that your
 #. translation contains both {blog-link} and {license-link} and they are not
 #. translated.
-#: js/app/articleHTMLRenderer.js:189
+#: js/app/articleHTMLRenderer.js:225
 msgid "Content courtesy of {blog-link}, licensed under {license-link}."
 msgstr "内容由{博客链接}提供，已得到{认证链接}许可认证。"
 
@@ -132,17 +140,20 @@ msgstr "第%d页"
 
 #. TRANSLATORS: %s will be replaced with the text the user
 #. searched for. Make sure to keep %s token in your translation.
-#: js/app/modules/buffetInteraction.js:161 js/app/modules/contextBanner.js:81
+#: js/app/modules/buffetInteraction.js:175 js/app/modules/contextBanner.js:81
 #, javascript-format
 msgid "Results were found for “%s”"
 msgstr "已找到“%s”的结果"
 
-#: js/app/modules/cardContainer.js:88
-msgid "See more"
-msgstr "看见更多的"
+#. TRANSLATORS: %s will be replaced with the name of the category
+#. that we are offering to show more of.
+#: js/app/modules/cardContainer.js:121
+#, javascript-format
+msgid "See more %s"
+msgstr ""
 
 #: js/app/modules/contextBanner.js:48 js/app/modules/contextBanner.js:56
-#: js/app/modules/highlightsModule.js:150
+#: js/app/modules/highlightsModule.js:151
 msgid "Highlights"
 msgstr "强调"
 
@@ -161,12 +172,12 @@ msgstr "搜索“%s”的结果"
 msgid "SEE ALL CATEGORIES"
 msgstr "展示全部类别"
 
-#: js/app/modules/readerCard.js:63
+#: js/app/modules/readerCard.js:64
 #, javascript-format
 msgid "Page %s"
 msgstr "第%s页"
 
-#: js/app/modules/readerDocumentCard.js:134
+#: js/app/modules/readerDocumentCard.js:135
 msgid "This article is part of the archive."
 msgstr "这篇文章是档案文件的一部分。"
 
@@ -196,15 +207,15 @@ msgstr "“%s”的结果"
 msgid "OOPS!"
 msgstr "哎呀！"
 
-#: js/app/modules/searchModule.js:198
+#: js/app/modules/searchModule.js:200
 msgid "Sorry! :-("
 msgstr "很抱歉！:-("
 
-#: js/app/modules/searchModule.js:199
+#: js/app/modules/searchModule.js:201
 msgid "There are no results that match your search.\n"
 msgstr "没有符合您搜索的结果。\n"
 
-#: js/app/modules/searchModule.js:201
+#: js/app/modules/searchModule.js:203
 msgid ""
 "We recommend that you:\n"
 "\n"
@@ -213,7 +224,7 @@ msgid ""
 "  •  Try using more general words"
 msgstr "我们建议您：·\n检查您的拼写\n尝试相同意思的其他表述\n使用更普遍的表述"
 
-#: js/app/modules/searchModule.js:228
+#: js/app/modules/searchModule.js:230
 msgid "There was an error during your search."
 msgstr "搜索中出现一个错误。"
 
@@ -231,8 +242,8 @@ msgid "You might be interested in..."
 msgstr "您可能会对此感兴趣……"
 
 #: js/app/modules/supplementaryArticlesModule.js:46
-msgid "Other News"
-msgstr "其它信息"
+msgid "Other news"
+msgstr ""
 
 #. TRANSLATORS: anything inside curly braces '{}' is going to be substituted
 #. in code. Please make sure to leave the curly braces around any words that

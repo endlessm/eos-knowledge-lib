@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2016-03-01 02:45+0000\n"
-"PO-Revision-Date: 2016-02-23 02:46+0000\n"
+"POT-Creation-Date: 2016-03-08 02:49+0000\n"
+"PO-Revision-Date: 2016-03-08 02:50+0000\n"
 "Last-Translator: endlessmobile_build <philip@endlessm.com>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
@@ -62,7 +62,7 @@ msgstr "Explore por tema"
 #. to be substituted in code. Please make sure to leave the
 #. curly braces around any words that have them and DO NOT
 #. translate words inside curly braces.
-#: js/app/articleHTMLRenderer.js:75
+#: js/app/articleHTMLRenderer.js:79
 msgid ""
 "This page contains content from {original-link}, available under a {license-"
 "link} license."
@@ -70,7 +70,7 @@ msgstr "Esta página contém conteúdo de {original-link}, disponível mediante 
 
 #. TRANSLATORS: Replace this with a link to the homepage of
 #. wikiHow in your language.
-#: js/app/articleHTMLRenderer.js:82
+#: js/app/articleHTMLRenderer.js:86
 msgid "http://wikihow.com"
 msgstr "http://wikihow.com.br"
 
@@ -78,28 +78,36 @@ msgstr "http://wikihow.com.br"
 #. to be substituted in code. Please make sure to leave the
 #. curly braces around any words that have them and DO NOT
 #. translate words inside curly braces.
-#: js/app/articleHTMLRenderer.js:87
+#: js/app/articleHTMLRenderer.js:91
 msgid ""
 "See {wikihow-article-link} for more details, videos, pictures and "
 "attribution. Courtesy of {wikihow-link}, where anyone can easily learn how "
 "to do anything."
 msgstr "Veja {wikihow-article-link} para mais detalhes, videos, imagens e atribuições. Cortesia de {wikihow-link}, onde qualquer pessoa pode facilmente aprender como fazer qualquer coisa. "
 
-#: js/app/articleHTMLRenderer.js:158
+#. TRANSLATORS: anything inside curly braces '{}' is going to be
+#. substituted in code. Please make sure to leave the curly
+#. braces around any words that have them, and do not translate
+#. words inside curly braces.
+#: js/app/articleHTMLRenderer.js:108
+msgid "Read more at {link}"
+msgstr ""
+
+#: js/app/articleHTMLRenderer.js:193
 msgid "Copy"
 msgstr "Copiar"
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
-#: js/app/articleHTMLRenderer.js:176
+#: js/app/articleHTMLRenderer.js:212
 msgid "Content taken from {blog-link}."
 msgstr "Conteúdo retirado de {blog-link}."
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
-#: js/app/articleHTMLRenderer.js:181
+#: js/app/articleHTMLRenderer.js:217
 msgid "Content courtesy of {blog-link}. Used with kind permission."
 msgstr "Cortesia de conteúdo de {blog-link}.  Utilizado com permissão."
 
@@ -107,7 +115,7 @@ msgstr "Cortesia de conteúdo de {blog-link}.  Utilizado com permissão."
 #. is going to be substituted in code. Please make sure that your
 #. translation contains both {blog-link} and {license-link} and they are not
 #. translated.
-#: js/app/articleHTMLRenderer.js:189
+#: js/app/articleHTMLRenderer.js:225
 msgid "Content courtesy of {blog-link}, licensed under {license-link}."
 msgstr "Cortesia de conteúdo de {blog-link}, licenciado sob {license-link}."
 
@@ -137,17 +145,20 @@ msgstr "Página %d"
 
 #. TRANSLATORS: %s will be replaced with the text the user
 #. searched for. Make sure to keep %s token in your translation.
-#: js/app/modules/buffetInteraction.js:161 js/app/modules/contextBanner.js:81
+#: js/app/modules/buffetInteraction.js:175 js/app/modules/contextBanner.js:81
 #, javascript-format
 msgid "Results were found for “%s”"
 msgstr "Foram encontrados resultados para “%s”"
 
-#: js/app/modules/cardContainer.js:88
-msgid "See more"
+#. TRANSLATORS: %s will be replaced with the name of the category
+#. that we are offering to show more of.
+#: js/app/modules/cardContainer.js:121
+#, javascript-format
+msgid "See more %s"
 msgstr ""
 
 #: js/app/modules/contextBanner.js:48 js/app/modules/contextBanner.js:56
-#: js/app/modules/highlightsModule.js:150
+#: js/app/modules/highlightsModule.js:151
 msgid "Highlights"
 msgstr "Destaques"
 
@@ -166,12 +177,12 @@ msgstr "Resultados da pesquisa por “%s”"
 msgid "SEE ALL CATEGORIES"
 msgstr "Ver todas as categorias"
 
-#: js/app/modules/readerCard.js:63
+#: js/app/modules/readerCard.js:64
 #, javascript-format
 msgid "Page %s"
 msgstr "Página %s"
 
-#: js/app/modules/readerDocumentCard.js:134
+#: js/app/modules/readerDocumentCard.js:135
 msgid "This article is part of the archive."
 msgstr ""
 
@@ -201,15 +212,15 @@ msgstr "Resultados para “%s”"
 msgid "OOPS!"
 msgstr "OPA!"
 
-#: js/app/modules/searchModule.js:198
+#: js/app/modules/searchModule.js:200
 msgid "Sorry! :-("
 msgstr "Desculpe! :-("
 
-#: js/app/modules/searchModule.js:199
+#: js/app/modules/searchModule.js:201
 msgid "There are no results that match your search.\n"
 msgstr "Não encontramos nenhum resultado para a sua busca.\n"
 
-#: js/app/modules/searchModule.js:201
+#: js/app/modules/searchModule.js:203
 msgid ""
 "We recommend that you:\n"
 "\n"
@@ -218,7 +229,7 @@ msgid ""
 "  •  Try using more general words"
 msgstr "Recomendamos que você:\n\n• Confira se a palavra foi escrita corretamente\n• Tente outras palavras com o mesmo significado\n• Tente usar palavras mais genéricas"
 
-#: js/app/modules/searchModule.js:228
+#: js/app/modules/searchModule.js:230
 msgid "There was an error during your search."
 msgstr "Houve um erro durante a sua pesquisa."
 
@@ -236,7 +247,7 @@ msgid "You might be interested in..."
 msgstr "Talvez você se interesse por..."
 
 #: js/app/modules/supplementaryArticlesModule.js:46
-msgid "Other News"
+msgid "Other news"
 msgstr ""
 
 #. TRANSLATORS: anything inside curly braces '{}' is going to be substituted
