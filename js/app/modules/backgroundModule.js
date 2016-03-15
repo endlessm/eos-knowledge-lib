@@ -20,13 +20,15 @@ const DEFAULT_COLOR = '#BBBCB6';
 const _topImage = 'resource:///com/endlessm/knowledge/data/images/background.png';
 
 const _maxWidth = {
-    small: 999,
-    medium: 1499,
+    home:    {small: 1024, medium: 1100},
+    section: {small: 999, medium: 1499},
+    article: {small: 999, medium: 1499},
+    search:  {small: 999, medium: 1499},
 };
 
 // FIXME: tweak articles heights when the background is visible
 const _topImageHeight = {
-    home:    {small: 410, medium: 510, big: 510},
+    home:    {small: 510, medium: 510, big: 730},
     section: {small: 200, medium: 215, big: 215},
     article: {small: 140, medium: 180, big: 200},
     search:  {small: 354, medium: 279, big: 279},
@@ -121,9 +123,9 @@ const BackgroundModule = new Lang.Class({
         let css_class = 'big';
         let alloc = this.get_allocation();
 
-        if (alloc.width <= _maxWidth.small) {
+        if (alloc.width <= _maxWidth[this.page_mode].small) {
             css_class = 'small';
-        } else if (alloc.width <= _maxWidth.medium) {
+        } else if (alloc.width <= _maxWidth[this.page_mode].medium) {
             css_class = 'medium';
         }
 
