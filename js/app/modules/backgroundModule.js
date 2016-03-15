@@ -20,7 +20,7 @@ const DEFAULT_COLOR = '#BBBCB6';
 const _topImage = 'resource:///com/endlessm/knowledge/data/images/background.png';
 
 const _maxWidth = {
-    home:    {small: 999, medium: 1499},
+    home:    {small: 1024, medium: 1100},
     section: {small: 999, medium: 1499},
     article: {small: 999, medium: 1499},
     search:  {small: 999, medium: 1499},
@@ -28,7 +28,7 @@ const _maxWidth = {
 
 // FIXME: tweak articles heights when the background is visible
 const _topImageHeight = {
-    home:    {small: 410, medium: 510, big: 510},
+    home:    {small: 510, medium: 510, big: 730},
     section: {small: 200, medium: 215, big: 215},
     article: {small: 140, medium: 180, big: 200},
     search:  {small: 354, medium: 279, big: 279},
