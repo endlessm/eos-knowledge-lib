@@ -15,7 +15,7 @@ EknSetPreviewCard .title,
 
 EknHighlightsModule .text-card .title.label,
 EknThematicModule .text-card .title.label,
-EknSetPreviewCard .title,
+EknSetPreviewCard .text-card .title,
 .browse-content .title {
     font-weight: 200;
     font-size: 22px;
