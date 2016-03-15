@@ -143,7 +143,7 @@ EknSearchBannerModule {
     font-family: 'Fira Sans';
     font-weight: bold;
     color: #0f1b3c;
-    font-size: 1.125em; /* 18px/12 * 72/96 */
+    font-size: 13.5px; /* 18px * 75% (DPI correction) */
 }
 
 .all-type-card .card-synopsis,
@@ -151,7 +151,7 @@ EknSearchBannerModule {
     font-family: 'Merriweather';
     font-style: italic;
     color: #666666;
-    font-size: 1.0em; /* 16px/12 * 72/96 */
+    font-size: 12px; /* 16px * 75% (DPI correction) */
 }
 
 .all-type-card .card-context,
@@ -160,7 +160,7 @@ EknSearchBannerModule {
     font-weight: bold;
     font-style: normal;
     color: #7297a7;
-    font-size: 0.875em; /* 14px/12 * 72/96 */
+    font-size: 10.5px; /* 14px * 75% (DPI correction) */
 }
 
 .all-type-card:hover .title,
@@ -176,7 +176,7 @@ EknSearchBannerModule {
     padding: 30px;
 }
 .all-type-card.width-c .title {
-    font-size: 1.44em; /* 23px/12 * 72/96 */
+    font-size: 17.25px; /* 23px * 75% (DPI correction) */
 }
 
 .all-type-card.width-c.height-d,
@@ -185,7 +185,7 @@ EknSearchBannerModule {
 }
 .all-type-card.width-c.height-d .title,
 .all-type-card.width-d .title {
-    font-size: 1.69em; /* 27px/12 * 72/96 */
+    font-size: 20.25px; /* 27px * 75% (DPI correction) */
 }
 
 .all-type-card.width-d.height-d,
@@ -196,7 +196,7 @@ EknSearchBannerModule {
 .all-type-card.width-d.height-d .title,
 .all-type-card.width-e .title,
 .all-type-card.width-f.height-c .title {
-    font-size: 2.31em; /* 37px/12 * 72/96 */
+    font-size: 27.75px; /* 37px * 75% (DPI correction) */
 }
 
 .all-type-card.width-e.height-d,
@@ -211,7 +211,7 @@ EknSearchBannerModule {
 .all-type-card.width-f .title,
 .all-type-card.width-g .title,
 .all-type-card.width-h .title {
-    font-size: 3.06em; /* 49px/12 * 72/96 */
+    font-size: 36.75px; /* 49px * 75% (DPI correction) */
 }
 
 .all-type-card.highlighted {
