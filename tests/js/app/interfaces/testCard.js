@@ -85,12 +85,11 @@ describe('Card interface', function () {
         expect(label.visible).toBeTruthy();
     });
 
-    it('sets a context label visible if model has tags', function () {
-        let grid = new Gtk.Grid();
-        card.set_context_label_from_model(grid);
-        let first_tag = Gtk.test_find_label(grid, 'Foo');
+    it('sets up a context widget with model tags', function () {
+        let widget = card.create_context_widget_from_model();
+        let first_tag = Gtk.test_find_label(widget, 'Foo');
         expect(first_tag).not.toBeNull();
-        let second_tag = Gtk.test_find_label(grid, ' | Bar');
+        let second_tag = Gtk.test_find_label(widget, ' | Bar');
         expect(second_tag).not.toBeNull();
     });
 

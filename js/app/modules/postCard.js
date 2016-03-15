@@ -58,8 +58,9 @@ const PostCard = new Lang.Class({
                 return Gdk.EVENT_PROPAGATE;
             });
         } else {
-            this.set_context_label_from_model(this._inner_content_grid);
-            this._title_label.halign = this._space_container.halign = this.text_halign;
+            this._context_widget = this.create_context_widget_from_model();
+            this._inner_content_grid.add(this._context_widget);
+            this._title_label.halign = this._context_widget.halign = this.text_halign;
             this._title_label.justify = Utils.alignment_to_justification(this.text_halign);
             this._title_label.xalign = Utils.alignment_to_xalign(this.text_halign);
         }

@@ -52,7 +52,8 @@ const ThumbCard = new Lang.Class({
         this.set_title_label_from_model(this._title_label);
         this.set_thumbnail_frame_from_model(this._thumbnail_frame);
         this.set_label_or_hide(this._synopsis_label, this.model.synopsis);
-        this.set_context_label_from_model(this._inner_grid);
+        this._context_widget = this.create_context_widget_from_model();
+        this._inner_grid.add(this._context_widget);
 
         this.set_size_request(Card.MinSize.B, Card.MinSize.B);
 
@@ -85,7 +86,7 @@ const ThumbCard = new Lang.Class({
         } else {
             orientation = Gtk.Orientation.VERTICAL;
         }
-        this._title_label.halign = this._synopsis_label.halign = this._space_container.halign = this.text_halign;
+        this._title_label.halign = this._synopsis_label.halign = this._context_widget.halign = this.text_halign;
         this._title_label.justify = Utils.alignment_to_justification(this.text_halign);
         this._title_label.xalign = Utils.alignment_to_xalign(this.text_halign);
 
@@ -114,9 +115,9 @@ const ThumbCard = new Lang.Class({
         }
 
         if (this._should_hide_context(alloc.width, alloc.height)) {
-            this._space_container.hide();
+            this._context_widget.hide();
         } else {
-            this._space_container.show_all();
+            this._context_widget.show_all();
         }
 
         this._thumbnail_frame.size_allocate(thumb_alloc);
