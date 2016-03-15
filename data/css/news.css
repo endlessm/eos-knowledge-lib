@@ -16,7 +16,7 @@ EknSearchModule {
 
 .trigger {
     font-family: 'Fira Sans';
-    font-size: 25px;
+    font-size: 15px;  /* 20px * 75% (DPI correction) */
     color: #0f1b3c;
 }
 
@@ -29,7 +29,7 @@ EknSearchModule {
     -EknThemeableImage-min-height: 15;
     -EknThemeableImage-min-width: 16;
     margin-left: 5px;
-    margin-bottom: 11px;
+    margin-bottom: 5px;
 }
 
 .trigger:hover .image {
@@ -41,7 +41,7 @@ EknSetPreviewCard .text-card .title {
     font-family: 'Merriweather';
     font-weight: bold;
     padding-top: 50px;
-    font-size: 40px;
+    font-size: 30px;  /* 40px * 75% (DPI correction) */
 }
 
 EknSetPreviewCard .text-card:hover .title {
@@ -94,7 +94,7 @@ EknSupplementaryArticlesModule > .title,
 EknSuggestedArticlesModule > .title {
     font-family: Merriweather;
     font-weight: bold;
-    font-size: 22px;
+    font-size: 16.5px;  /* 22px * 75% (DPI correction) */
     color: white;
     padding-bottom: 20px;
 }
@@ -104,7 +104,7 @@ EknSearchBannerModule {
     font-family: Merriweather;
     font-weight: bold;
     color: #050c20;
-    font-size: 64px;  /* 320% * 20px */
+    font-size: 48px;  /* 320% * 20px * 75% (DPI correction) */
     background-color: transparent;
 }
 
@@ -115,7 +115,7 @@ EknSearchBannerModule {
 .search-results .results-message-title {
     font-family: 'Fira Sans';
     color: #7297a7;
-    font-size: 30px;  /* 150% * 20px */
+    font-size: 22.5px;  /* 150% * 20px * 75% (DPI correction) */
     padding: 50px 80px 30px;
 }
 
@@ -127,7 +127,7 @@ EknSearchBannerModule {
     font-family: Merriweather;
     font-style: italic;
     color: #666666;
-    font-size: 22px;  /* 110% * 20px */
+    font-size: 16.5px;  /* 110% * 20px * 75% (DPI correction) */
     padding-bottom: 50px;
     padding-left: 80px;
 }
@@ -231,8 +231,9 @@ EknSetBannerModule .card .title,
 EknSetBannerModule .card:hover .title {
     color: white;
     font-weight: bold;
-    font-size: 48px;
+    font-size: 40.5px;  /* 54px * 75% (DPI correction) */
     font-family: Merriweather;
+    padding-top: 50px;
 }
 
 .post-card .title {
