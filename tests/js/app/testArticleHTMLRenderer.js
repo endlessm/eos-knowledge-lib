@@ -170,23 +170,27 @@ describe('Article HTML Renderer', function () {
     });
 
     describe('Prensa Libre source', function () {
-        let model, html;
+        let model, html, set_models;
 
         beforeEach(function () {
-            SetMap.init_map_with_models([
+            set_models = [
                 new SetObjectModel.SetObjectModel({
                     tags: ['EknHomePageTag', 'EknSetObject'],
                     title: 'Guatemala',
                     child_tags: ['guatemala'],
                     featured: true,
+                    ekn_id: 'ekn://prensalibre/1',
                 }),
                 new SetObjectModel.SetObjectModel({
                     tags: ['guatemala', 'EknSetObject'],
                     title: 'Comunitario',
                     child_tags: ['guatemala/comunitario'],
                     featured: false,
+                    ekn_id: 'ekn://prensalibre/2',
                 }),
-            ]);
+            ];
+
+            SetMap.init_map_with_models(set_models);
             model = new ArticleObjectModel.ArticleObjectModel({
                 source_uri: 'http://www.prensalibre.com/internacional/el-papa-francisco-dice-que-trump-no-puede-proclamarse-cristiano',
                 original_uri: 'http://www.prensalibre.com/internacional/el-papa-francisco-dice-que-trump-no-puede-proclamarse-cristiano',
@@ -214,9 +218,12 @@ describe('Article HTML Renderer', function () {
             // for the existence of a div, but that's not robust.
         });
 
-        it('shows the main category the article is tagged with', function () {
+        it('shows the main category (and link) the article is tagged with', function () {
             expect(html).toMatch('guatemala');
+            expect(html).toMatch(set_models[0].ekn_id);
+
             expect(html).not.toMatch('comunitario');
+            expect(html).not.toMatch(set_models[1].ekn_id);
         });
 
         it('loads the appropriate CSS file', function () {

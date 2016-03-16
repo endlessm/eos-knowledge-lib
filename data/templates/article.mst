@@ -11,7 +11,7 @@
             {{#extra-header-information}}
             <div class="extra-header">
                 {{#context}}
-                <div class="context"><p>{{.}}</p></div>
+                <div class="context"><p>{{{.}}}</p></div>
                 {{/context}}
                 <div class="extra-header-right">
                     {{#date-published}}

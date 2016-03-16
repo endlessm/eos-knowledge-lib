@@ -321,6 +321,16 @@ describe('Buffet interaction', function () {
             expect(payload.model).toBe(article_model);
         });
 
+        it('changes to the set page if link is a set', function () {
+            engine.get_object_by_id_finish.and.returnValue(set_models[0]);
+            dispatcher.dispatch({
+                action_type: Actions.ARTICLE_LINK_CLICKED,
+                ekn_id: 'ekn://foo/bar',
+            });
+            let payload = dispatcher.last_payload_with_type(Actions.SHOW_SET);
+            expect(payload.model).toBe(set_models[0]);
+        });
+
         it('shows media if the link is a media object', function () {
             engine.get_object_by_id_finish.and.returnValue(media_model);
             dispatcher.dispatch({
