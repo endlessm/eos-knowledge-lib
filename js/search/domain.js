@@ -450,20 +450,36 @@ const DomainV3 = new Lang.Class({
         return manifest_file;
     },
 
-    _init_subscription_symlinks: function (cancellable) {
+    _clean_up_old_symlinks: function (subscription_dir, cancellable) {
+        let file_enum = subscription_dir.enumerate_children('standard::name,standard::type',
+                                                            Gio.FileQueryInfoFlags.NOFOLLOW_SYMLINKS, null);
+
+        let info;
+        while ((info = file_enum.next_file(cancellable))) {
+            let file = file_enum.get_child(info);
+            if (!file.query_exists(cancellable))
+                file.delete(cancellable);
+        }
+    },
+
+    _get_bundle_dir: function () {
+        let subscription_id = this._get_subscription_id();
+        let content_dir = this._get_content_dir();
+        let bundle_dir = content_dir.get_child('com.endlessm.subscriptions').get_child(subscription_id);
+        return bundle_dir;
+    },
+
+    _make_bundle_symlinks: function (cancellable) {
         // In order to bootstrap content inside bundles while still keeping one subscriptions
         // directory, we symlink shards from the content bundle into the subscription directory.
 
-        let subscription_id = this._get_subscription_id();
-        let bundle_dir = this._get_content_dir().get_child('com.endlessm.subscriptions').get_child(subscription_id);
+        let bundle_dir = this._get_bundle_dir();
         let subscription_dir = this._get_subscription_dir();
 
-        // Load the manifest from the bundle.
-        let bundle_manifest = bundle_dir.get_child('manifest.json');
-        if (!bundle_manifest.query_exists(cancellable))
-            return;
+        this._clean_up_old_symlinks(subscription_dir, cancellable);
 
-        let [success, data] = bundle_manifest.load_contents(cancellable);
+        let manifest_file = this._get_manifest_file();
+        let [success, data] = manifest_file.load_contents(cancellable);
         let manifest = JSON.parse(data);
 
         manifest.shards.forEach((shard_entry) => {
@@ -480,17 +496,22 @@ const DomainV3 = new Lang.Class({
                 // Shard already exists, we're good.
             }
         });
-
-        // Now that that's all done, copy over the manifest. Don't symlink.
-        bundle_manifest.copy(this._get_manifest_file(), Gio.FileCopyFlags.NONE, cancellable, null);
     },
 
     _load_shards: function (cancellable) {
         if (this._shards === undefined) {
             let manifest_file = this._get_manifest_file();
 
-            if (!manifest_file.query_exists(cancellable))
-                this._init_subscription_symlinks(cancellable);
+            // If the manifest.json doesn't exist, and we have a manifest in the bundle, symlink
+            // to it to bootstrap our subscription.
+            if (!manifest_file.query_exists(cancellable)) {
+                let bundle_dir = this._get_bundle_dir();
+                let bundle_manifest_file = bundle_dir.get_child('manifest.json');
+                if (bundle_manifest_file.query_exists(cancellable))
+                    manifest_file.make_symbolic_link(bundle_manifest_file.get_path(), cancellable);
+            }
+
+            this._make_bundle_symlinks(cancellable);
 
             let [success, data] = manifest_file.load_contents(cancellable);
             let manifest = JSON.parse(data);
