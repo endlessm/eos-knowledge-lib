@@ -538,6 +538,12 @@ const BuffetInteraction = new Lang.Class({
                 action_type: Actions.SHOW_MEDIA,
                 model: model,
             });
+        } else if (model instanceof SetObjectModel.SetObjectModel) {
+            this._history_presenter.set_current_item_from_props({
+                page_type: Pages.SET,
+                model: model,
+                context_label: model.title,
+            });
         }
     },
 
