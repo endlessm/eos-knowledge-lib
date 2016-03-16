@@ -164,7 +164,7 @@ const ArticleHTMLRenderer = new Lang.Class({
             .filter(set => set.featured)[0];
         return {
             'date-published': new Date(model.published).toLocaleDateString(),
-            'context': featured_set.title.toLowerCase(),
+            'context': _to_set_link(featured_set),
             'source-link': _to_link(model.original_uri, 'Prensalibre.com'),
         };
     },
@@ -200,6 +200,10 @@ const ArticleHTMLRenderer = new Lang.Class({
         });
     },
 });
+
+function _to_set_link (model) {
+    return '<a class="eos-show-link" href="' + model.ekn_id + '">' + Mustache.escape(model.title.toLowerCase()) + '</a>';
+}
 
 function _to_link(uri, text) {
     return '<a class="eos-show-link" href="browser-' + uri + '">' + Mustache.escape(text) + '</a>';
