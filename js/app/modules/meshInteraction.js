@@ -352,6 +352,7 @@ const MeshInteraction = new Lang.Class({
         let query_obj = new QueryObject.QueryObject({
             query: item.query,
             limit: RESULTS_SIZE,
+            tags: ['EknArticleObject'],
         });
         let dispatcher = Dispatcher.get_default();
         if (this._current_search_query === item.query) {

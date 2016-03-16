@@ -327,6 +327,7 @@ const AisleInteraction = new Lang.Class({
                 let query_obj = new QueryObject.QueryObject({
                     query: item.query,
                     limit: RESULTS_SIZE,
+                    tags: ['EknArticleObject'],
                 });
 
                 Engine.get_default().get_objects_by_query(query_obj, null, (engine, task) => {
