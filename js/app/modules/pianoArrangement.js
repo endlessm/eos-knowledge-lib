@@ -58,7 +58,6 @@ const PianoArrangement = new Lang.Class({
     },
 
     _init: function (props={}) {
-        this._small_mode = false;
         this._spacing = 0;
         this._compact_mode = false;
         this._support_card_count = DEFAULT_SUPPORT_CARD_COUNT;
@@ -95,7 +94,7 @@ const PianoArrangement = new Lang.Class({
     },
 
     get all_visible() {
-        this._support_cards_shown = this._calculate_support_cards_shown();
+        this._support_cards_shown = this._calculate_support_cards_shown(this.get_allocation().width);
         return this.get_card_count() <= (1 + this._support_cards_shown);
     },
 
@@ -122,8 +121,7 @@ const PianoArrangement = new Lang.Class({
     },
 
     vfunc_get_preferred_height_for_width: function (width) {
-        this._small_mode = (width < Arrangement.get_size_with_spacing(CARD_WIDTH_BIG, HORIZONTAL_PROPORTION, this._spacing));
-        this._support_cards_shown = this._calculate_support_cards_shown();
+        this._support_cards_shown = this._calculate_support_cards_shown(width);
         let height = Arrangement.get_size_with_spacing(CARD_HEIGHT, this._support_cards_shown, this._spacing);
         return [height, height];
     },
@@ -138,7 +136,7 @@ const PianoArrangement = new Lang.Class({
         let all_cards = this.get_filtered_models()
             .map(this.get_card_for_model, this);
 
-        this._support_cards_shown = this._calculate_support_cards_shown();
+        this._support_cards_shown = this._calculate_support_cards_shown(alloc.width);
         let available_width = alloc.width - this._spacing;
 
         let featured_width = Math.floor(available_width * FEATURED_CARD_WIDTH_FRACTION);
@@ -179,11 +177,15 @@ const PianoArrangement = new Lang.Class({
         Utils.set_container_clip(this);
     },
 
-    _calculate_support_cards_shown: function () {
+    _calculate_support_cards_shown: function (width) {
         if (this._compact_mode) {
             return this._support_card_count;
+        }
+
+        if (width < Arrangement.get_size_with_spacing(CARD_WIDTH_BIG, HORIZONTAL_PROPORTION, this._spacing)) {
+            return this._support_card_count - 1;
         } else {
-            return this._small_mode ? this._support_card_count - 1 : this._support_card_count;
+            return this._support_card_count;
         }
     },
 });

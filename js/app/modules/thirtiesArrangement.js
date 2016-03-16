@@ -53,7 +53,6 @@ const ThirtiesArrangement = new Lang.Class({
     _init: function (props={}) {
         this._max_rows = 0;
         this._spacing = 0;
-        this._small_mode = false;
 
         this.parent(props);
     },
@@ -108,9 +107,7 @@ const ThirtiesArrangement = new Lang.Class({
     },
 
     vfunc_get_preferred_height_for_width: function (width) {
-        this._small_mode = (width < Arrangement.get_size_with_spacing(CARD_HEIGHT_THRESHOLD, COL_COUNT, this._spacing));
-
-        let card_height = this._small_mode ? CARD_HEIGHT_SMALL : CARD_HEIGHT_BIG;
+        let card_height = this._get_card_height(width);
         let rows_for_children = Math.ceil(this.get_card_count() / COL_COUNT);
         let rows_visible = this._max_rows === 0 ? rows_for_children : Math.min(this._max_rows, rows_for_children);
         let height = Arrangement.get_size_with_spacing(card_height, rows_visible, this._spacing);
@@ -129,7 +126,7 @@ const ThirtiesArrangement = new Lang.Class({
 
         let available_width = alloc.width - ((COL_COUNT - 1) * this._spacing);
         let child_width = Math.floor(available_width / COL_COUNT);
-        let child_height = this._small_mode ? CARD_HEIGHT_SMALL : CARD_HEIGHT_BIG;
+        let child_height = this._get_card_height(alloc.width);
         let delta_x = child_width + this._spacing;
         let delta_y = child_height + this._spacing;
 
@@ -168,5 +165,10 @@ const ThirtiesArrangement = new Lang.Class({
         this.parent(widget);
         if (needs_resize)
             this.queue_resize();
+    },
+
+    _get_card_height: function (width) {
+        let small_mode = (width < Arrangement.get_size_with_spacing(CARD_HEIGHT_THRESHOLD, COL_COUNT, this._spacing));
+        return small_mode ? CARD_HEIGHT_SMALL : CARD_HEIGHT_BIG;
     },
 });
