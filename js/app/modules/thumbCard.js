@@ -52,49 +52,31 @@ const ThumbCard = new Lang.Class({
         this.set_title_label_from_model(this._title_label);
         this.set_thumbnail_frame_from_model(this._thumbnail_frame);
         this.set_label_or_hide(this._synopsis_label, this.model.synopsis);
-        this.set_context_label_from_model(this._inner_grid);
+        this._context_widget = this.create_context_widget_from_model();
+        this._inner_grid.add(this._context_widget);
 
         this.set_size_request(Card.MinSize.B, Card.MinSize.B);
 
         Utils.set_hand_cursor_on_widget(this);
     },
 
-    _get_dimensions: function (alloc, orientation, proportion) {
-        let thumb_width, thumb_height, text_width, text_height;
-        if (orientation == Gtk.Orientation.VERTICAL) {
-            thumb_width = text_width = alloc.width;
-            text_height = this._get_text_height(alloc);
-            thumb_height = alloc.height - text_height;
-        } else {
-            thumb_height = text_height = alloc.height;
-            text_width = this._get_text_width(alloc);
-            thumb_width = alloc.width - text_width;
-        }
-        return [thumb_width, thumb_height, text_width, text_height];
-    },
-
     vfunc_size_allocate: function (alloc) {
         this.parent(alloc);
-        let orientation, proportion;
+        let orientation;
 
-        // The orientation and the proportion variables
-        // uniquely determine how the widgets on this card
-        // will lay themselves out. The proportion refers to
-        // the proportion of space to be taken up by the
-        // thumbnail image
+        // The orientation determines how the widgets on this card will lay
+        // themselves out.
         if (this._should_go_horizontal(alloc.width, alloc.height)) {
             this.text_halign = Gtk.Align.START;
             orientation = Gtk.Orientation.HORIZONTAL;
-            proportion = 1/2;
         } else {
             orientation = Gtk.Orientation.VERTICAL;
-            proportion = 2/3;
         }
-        this._title_label.halign = this._synopsis_label.halign = this._space_container.halign = this.text_halign;
+        this._title_label.halign = this._synopsis_label.halign = this._context_widget.halign = this.text_halign;
         this._title_label.justify = Utils.alignment_to_justification(this.text_halign);
         this._title_label.xalign = Utils.alignment_to_xalign(this.text_halign);
 
-        let [thumb_w, thumb_h, text_w, text_h] = this._get_dimensions(alloc, orientation, proportion);
+        let [thumb_w, thumb_h, text_w, text_h] = this._get_dimensions(alloc, orientation);
 
         let thumb_alloc = new Gdk.Rectangle({
             x: alloc.x,
@@ -119,14 +101,29 @@ const ThumbCard = new Lang.Class({
         }
 
         if (this._should_hide_context(alloc.width, alloc.height)) {
-            this._space_container.hide();
+            this._context_widget.hide();
         } else {
-            this._space_container.show_all();
+            this._context_widget.show_all();
         }
 
         this._thumbnail_frame.size_allocate(thumb_alloc);
         this._content_frame.size_allocate(text_alloc);
         this.update_card_sizing_classes(alloc.height, alloc.width);
+    },
+
+    _get_dimensions: function (alloc, orientation) {
+        let thumb_width, thumb_height, text_width, text_height;
+        let text_scale = Utils.get_text_scaling_factor();
+        if (orientation == Gtk.Orientation.VERTICAL) {
+            thumb_width = text_width = alloc.width;
+            text_height = this._get_text_height(alloc) * text_scale;
+            thumb_height = alloc.height - text_height;
+        } else {
+            thumb_height = text_height = alloc.height;
+            text_width = this._get_text_width(alloc) * text_scale;
+            thumb_width = alloc.width - text_width;
+        }
+        return [thumb_width, thumb_height, text_width, text_height];
     },
 
     _get_text_height: function (alloc) {

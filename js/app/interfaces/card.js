@@ -233,7 +233,7 @@ const Card = new Lang.Interface({
     },
 
     /**
-     * Method: set_context_label_from_model
+     * Method: create_context_widget_from_model
      *
      * Sets the text on a context label. The context is the list of tags
      * associated with this article. Tags are also incidentally the same
@@ -244,8 +244,8 @@ const Card = new Lang.Interface({
      * Moreover, we want to exclude the 'Ekn'-prefixed tags which won't mean
      * anything to the user.
      */
-    set_context_label_from_model: function (container) {
-        this._space_container = new SpaceContainer.SpaceContainer({
+    create_context_widget_from_model: function () {
+        let widget = new SpaceContainer.SpaceContainer({
             orientation: Gtk.Orientation.HORIZONTAL,
         });
 
@@ -257,20 +257,20 @@ const Card = new Lang.Interface({
                 lines: 1,
                 label: Utils.format_capitals(titles[0], this.context_capitalization),
             });
-            this._space_container.add(first_tag);
+            widget.add(first_tag);
 
             if (titles.length > 1) {
                 let second_tag = new Gtk.Label({
                     lines: 1,
                     label: ' | ' + Utils.format_capitals(titles[1], this.context_capitalization),
                 });
-                this._space_container.add(second_tag);
+                widget.add(second_tag);
             }
         }
 
-        this._space_container.get_style_context().add_class('card-context');
-        this._space_container.show_all();
-        container.add(this._space_container);
+        widget.get_style_context().add_class('card-context');
+        widget.show_all();
+        return widget;
     },
 
     /**
