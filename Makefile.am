@@ -318,6 +318,7 @@ javascript_tests = \
 	tests/js/app/modules/testReaderDocumentCard.js \
 	tests/js/app/modules/testReaderWindow.js \
 	tests/js/app/modules/testResponsiveMarginsModule.js \
+	tests/js/app/modules/testScrollingListArrangement.js \
 	tests/js/app/modules/testScrollingTemplate.js \
 	tests/js/app/modules/testSearchAndItemModule.js \
 	tests/js/app/modules/testSearchBannerModule.js \

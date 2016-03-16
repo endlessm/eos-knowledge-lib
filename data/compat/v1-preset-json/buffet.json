@@ -212,7 +212,7 @@
                     "type": "SearchModule",
                     "slots": {
                         "arrangement": {
-                            "type": "ListArrangement",
+                            "type": "ScrollingListArrangement",
                             "properties": {
                                 "bottom-buffer": 250
                             },
@@ -323,7 +323,7 @@
             },
             "slots": {
                 "arrangement": {
-                    "type": "ListArrangement",
+                    "type": "ScrollingListArrangement",
                     "slots": {
                         "card-type": {
                             "type": "TextCard",

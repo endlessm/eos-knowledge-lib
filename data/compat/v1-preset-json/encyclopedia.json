@@ -90,7 +90,7 @@
                                     },
                                     "slots": {
                                         "arrangement": {
-                                            "type": "ListArrangement",
+                                            "type": "ScrollingListArrangement",
                                             "properties": {
                                                 "hexpand": true,
                                                 "halign": "fill"

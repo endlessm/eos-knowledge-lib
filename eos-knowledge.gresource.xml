@@ -66,12 +66,12 @@
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/gridArrangement.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/hamburgerBasementTemplate.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/knowledgeDocumentCard.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">data/widgets/listArrangement.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/mediaCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/paperTemplate.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/postCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/readerCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/readerDocumentCard.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">data/widgets/scrollingListArrangement.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/scrollingTemplate.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/searchBannerModule.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/searchModule.ui</file>
@@ -154,6 +154,7 @@
     <file>js/app/modules/readerDocumentCard.js</file>
     <file>js/app/modules/readerWindow.js</file>
     <file>js/app/modules/responsiveMarginsModule.js</file>
+    <file>js/app/modules/scrollingListArrangement.js</file>
     <file>js/app/modules/scrollingTemplate.js</file>
     <file>js/app/modules/searchAndItemModule.js</file>
     <file>js/app/modules/searchBannerModule.js</file>
