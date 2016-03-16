@@ -1,6 +1,10 @@
 @import url("resource:///com/endlessm/knowledge/data/css/common.css");
 @import url("resource:///com/endlessm/knowledge/data/css/buffet_core.css");
 
+* {
+    -GtkScrollbar-min-slider-length: 100; /* larger than the top-menu height */
+}
+
 EknScrollingTemplate:not(.overshoot):not(.undershoot),
 EknBackgroundModule {
     background-color: #e9e5e0;
