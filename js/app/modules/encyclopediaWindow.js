@@ -67,10 +67,8 @@ const EncyclopediaWindow = new Lang.Class({
         dispatcher.register((payload) => {
             switch(payload.action_type) {
                 case Actions.PRESENT_WINDOW:
-                    if (payload.timestamp)
-                        this.present_with_time(payload.timestamp);
-                    else
-                        this.present();
+                    this._pending_present = true;
+                    this._present_timestamp = payload.timestamp;
                     break;
                 case Actions.HISTORY_BACK_ENABLED_CHANGED:
                     this._history_buttons.back_button.sensitive = payload.enabled;
@@ -141,12 +139,25 @@ const EncyclopediaWindow = new Lang.Class({
         return this.page_manager.visible_child;
     },
 
+    _present_if_needed: function () {
+        if (this._pending_present) {
+            if (this._present_timestamp)
+                this.present_with_time(this._present_timestamp);
+            else
+                this.present();
+            this._pending_present = false;
+            this._present_timestamp = null;
+        }
+    },
+
     show_page: function (page) {
         // Disable the home button when the current page is the home page
         this._home_button.sensitive = (page !== this._home_page);
 
-        if (this.get_visible_page() === page)
+        if (this.get_visible_page() === page) {
+            this._present_if_needed();
             return;
+        }
         if (page === this._article_page)
             page = this._lightbox;
         if (this.get_visible_page() === this._home_page) {
@@ -157,6 +168,7 @@ const EncyclopediaWindow = new Lang.Class({
             this.page_manager.transition_type = Gtk.StackTransitionType.NONE;
         }
         this.page_manager.visible_child = page;
+        this._present_if_needed();
     },
 
     get_slot_names: function () {
