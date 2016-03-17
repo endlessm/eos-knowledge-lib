@@ -323,6 +323,7 @@ const BuffetInteraction = new Lang.Class({
         let query_obj = new QueryObject.QueryObject({
             query: history_item.query,
             limit: RESULTS_SIZE,
+            tags: ['EknArticleObject'],
         });
         Engine.get_default().get_objects_by_query(query_obj, null, (engine, task) => {
             let results, get_more;
