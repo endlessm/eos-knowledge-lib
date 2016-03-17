@@ -170,6 +170,12 @@
                                                                     "slots": {
                                                                         "card-type": {
                                                                             "type": "SearchResultCard"
+                                                                        },
+                                                                       "order": {
+                                                                            "type": "PublishedDateOrder",
+                                                                            "properties": {
+                                                                                "ascending": false
+                                                                            }
                                                                         }
                                                                     }
                                                                 },
