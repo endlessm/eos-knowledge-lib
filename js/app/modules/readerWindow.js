@@ -32,7 +32,6 @@ const Utils = imports.app.utils;
  * Slots:
  *   archive-page
  *   back-page
- *   card-type
  *   document-arrangement
  *   front-page
  *   lightbox
@@ -411,7 +410,7 @@ const ReaderWindow = new Lang.Class({
     },
 
     get_slot_names: function () {
-        return ['archive-page', 'back-page', 'card-type', 'document-arrangement',
+        return ['archive-page', 'back-page', 'document-arrangement',
             'front-page', 'lightbox', 'navigation', 'search', 'search-page',
             'standalone-page'];
     },
