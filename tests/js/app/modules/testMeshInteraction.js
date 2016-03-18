@@ -116,22 +116,6 @@ describe('Mesh interaction', function () {
         expect(dispatcher.last_payload_with_type(Actions.PRESENT_WINDOW)).toBeDefined();
     });
 
-    it('dispatches present window only once', function () {
-        engine.get_object_by_id_finish.and.returnValue(new ContentObjectModel.ContentObjectModel());
-
-        mesh.desktop_launch(0);
-        Utils.update_gui();
-        let payloads = dispatcher.payloads_with_type(Actions.PRESENT_WINDOW);
-        expect(payloads.length).toBe(1);
-
-        mesh.desktop_launch(0);
-        mesh.search(0, 'query');
-        mesh.activate_search_result(0, 'ekn://foo/bar', 'query');
-
-        payloads = dispatcher.payloads_with_type(Actions.PRESENT_WINDOW);
-        expect(payloads.length).toBe(1);
-    });
-
     it('shows the brand page until timeout has expired and sets are loaded', function () {
         mesh.desktop_launch(0);
         expect(dispatcher.last_payload_with_type(Actions.SHOW_BRAND_PAGE)).toBeDefined();

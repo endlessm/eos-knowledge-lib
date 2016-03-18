@@ -191,7 +191,7 @@ describe('Reader window', function () {
         expect(view.set_busy).toHaveBeenCalledWith(false);
     });
 
-    it('presents itself when the app launches', function () {
+    it('presents itself after the first page is shown', function () {
         spyOn(view, 'show_all');
         spyOn(view, 'present');
         spyOn(view, 'present_with_time');
@@ -199,6 +199,11 @@ describe('Reader window', function () {
             action_type: Actions.PRESENT_WINDOW,
             timestamp: 0,
             launch_type: Launcher.LaunchType.DESKTOP,
+        });
+        expect(view.present).not.toHaveBeenCalled();
+        expect(view.present_with_time).not.toHaveBeenCalled();
+        dispatcher.dispatch({
+            action_type: Actions.SHOW_FRONT_PAGE,
         });
         expect(view.present.calls.any() || view.present_with_time.calls.any()).toBeTruthy();
     });

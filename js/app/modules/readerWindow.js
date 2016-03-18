@@ -130,8 +130,8 @@ const ReaderWindow = new Lang.Class({
         dispatcher.register((payload) => {
             switch(payload.action_type) {
                 case Actions.PRESENT_WINDOW:
-                    this.show_all();
-                    this.present_with_time(payload.timestamp);
+                    this._pending_present = true;
+                    this._present_timestamp = payload.timestamp;
                     break;
                 case Actions.HISTORY_BACK_ENABLED_CHANGED:
                     this._history_buttons.back_button.sensitive = payload.enabled;
@@ -236,6 +236,7 @@ const ReaderWindow = new Lang.Class({
         });
         this._stack.connect('notify::visible-child', () => this._update_nav_button_visibility());
         this._update_nav_button_visibility();
+        this.get_child().show_all();
     },
 
     _update_nav_button_visibility: function () {
@@ -303,21 +304,35 @@ const ReaderWindow = new Lang.Class({
         this._update_progress_labels();
     },
 
+    _present_if_needed: function () {
+        if (this._pending_present) {
+            if (this._present_timestamp)
+                this.present_with_time(this._present_timestamp);
+            else
+                this.present();
+            this._pending_present = false;
+            this._present_timestamp = null;
+        }
+    },
+
     _show_standalone_page: function () {
         this._standalone_page.show();
         this._stack.set_transition_type(Gtk.StackTransitionType.CROSSFADE);
         this._stack.set_visible_child(this._standalone_page);
+        this._present_if_needed();
     },
 
     _show_archive_page: function () {
         this._archive_page.show();
         this._stack.set_transition_type(Gtk.StackTransitionType.CROSSFADE);
         this._stack.set_visible_child(this._archive_page);
+        this._present_if_needed();
     },
 
     _show_search_page: function () {
         this._stack.set_transition_type(Gtk.StackTransitionType.CROSSFADE);
         this._stack.set_visible_child(this._search_page);
+        this._present_if_needed();
     },
 
     _show_article_page: function (index, animation_type) {
@@ -326,18 +341,21 @@ const ReaderWindow = new Lang.Class({
         page.show();
         this._stack.set_visible_child(this._arrangement);
         this._arrangement.set_visible_child(page);
+        this._present_if_needed();
     },
 
     _show_front_page: function (animation_type) {
         this._set_stack_transition(animation_type);
         this._front_page.show();
         this._stack.set_visible_child(this._front_page);
+        this._present_if_needed();
     },
 
     _show_back_page: function (animation_type) {
         this._set_stack_transition(animation_type);
         this._back_page.show();
         this._stack.set_visible_child(this._back_page);
+        this._present_if_needed();
     },
 
     // Converts from our LoadingAnimationType enum to a GtkStackTransitionType
