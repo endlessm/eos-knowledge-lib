@@ -333,7 +333,9 @@ const DomainV2 = new Lang.Class({
     load: function (cancellable, callback) {
         let task = new AsyncTask.AsyncTask(this, cancellable, callback);
         let shard_file = this._get_shard_file();
-        shard_file.init_async(0, cancellable, task.catch_callback_errors((shard_file, result) => {
+        // Don't allow async_init() to be cancelled; otherwise, cancellation
+        // will spoil the object for future use.
+        shard_file.init_async(0, null, task.catch_callback_errors((shard_file, result) => {
             shard_file.init_finish(result);
             task.return_value(true);
         }));
@@ -533,7 +535,9 @@ const DomainV3 = new Lang.Class({
 
         return AsyncTask.all(this, (add_task) => {
             this._shards.forEach((shard) => {
-                add_task((cancellable, callback) => shard.init_async(0, cancellable, callback),
+                // Don't allow init_async() to be cancelled; otherwise,
+                // cancellation will spoil the object for future use.
+                add_task((cancellable, callback) => shard.init_async(0, null, callback),
                          (result) => shard.init_finish(result));
             });
         }, cancellable, callback);
