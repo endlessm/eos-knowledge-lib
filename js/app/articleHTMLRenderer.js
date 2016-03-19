@@ -166,6 +166,7 @@ const ArticleHTMLRenderer = new Lang.Class({
             'date-published': new Date(model.published).toLocaleDateString(),
             'context': _to_set_link(featured_set),
             'source-link': _to_link(model.original_uri, 'Prensalibre.com'),
+            'author': model.authors.join('—'),
         };
     },
 

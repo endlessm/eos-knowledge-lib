@@ -18,7 +18,12 @@
                     <p class="date-published">{{.}}</p>
                     {{/date-published}}
                     {{#source-link}}
-                    <p class="source-link">{{{.}}}</p>
+                    <p class="source-link">
+                        {{{.}}}
+                        {{#author}}
+                        &mdash; {{.}}
+                        {{/author}}
+                    </p>
                     {{/source-link}}
                 </div>
             </div>
