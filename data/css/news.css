@@ -246,6 +246,7 @@ EknSetBannerModule .card:hover .title {
 }
 
 .post-card .card-context {
+    color: #7297a7;
     font-family: 'Merriweather';
     font-weight: bold;
 }
