@@ -101,7 +101,7 @@ const SearchResultCard = new Lang.Class({
         });
         this._content_frame.size_allocate(text_alloc);
 
-        this.update_card_sizing_classes(total_width, alloc.width);
+        this.update_card_sizing_classes(card_alloc.height, card_alloc.width);
     },
 
     vfunc_draw: function (cr) {
