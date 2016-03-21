@@ -108,7 +108,7 @@ EknSearchBannerModule {
     font-family: Merriweather;
     font-weight: bold;
     color: #050c20;
-    font-size: 48px;  /* 320% * 20px * 75% (DPI correction) */
+    font-size: 40.5px;  /* 54px * 75% (DPI correction) */
     background-color: transparent;
 }
 
