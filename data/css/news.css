@@ -176,6 +176,10 @@ EknSearchBannerModule {
     color: #0f1b3c;
 }
 
+.search-result-card .title.highlighted {
+    background-color: rgba(114, 151, 167, 0.3);
+}
+
 .all-type-card.width-c {
     padding: 30px;
 }
