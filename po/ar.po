@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2016-03-15 14:43-0700\n"
+"POT-Creation-Date: 2016-03-18 21:02+0000\n"
 "PO-Revision-Date: 2016-03-17 06:00+0000\n"
 "Last-Translator: Philip Chimento <philip.chimento@gmail.com>\n"
 "Language-Team: Arabic (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/ar/)\n"
@@ -94,14 +94,14 @@ msgstr "نسخة"
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
-#: js/app/articleHTMLRenderer.js:213
+#: js/app/articleHTMLRenderer.js:217
 msgid "Content taken from {blog-link}."
 msgstr "المُحتوى مأخوذ من {blog-link}."
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
-#: js/app/articleHTMLRenderer.js:218
+#: js/app/articleHTMLRenderer.js:222
 msgid "Content courtesy of {blog-link}. Used with kind permission."
 msgstr "المحتوى مهدى من {blog-link}. تم استخدامه بإذن كريم من صاحبه."
 
@@ -109,22 +109,22 @@ msgstr "المحتوى مهدى من {blog-link}. تم استخدامه بإذن
 #. is going to be substituted in code. Please make sure that your
 #. translation contains both {blog-link} and {license-link} and they are not
 #. translated.
-#: js/app/articleHTMLRenderer.js:226
+#: js/app/articleHTMLRenderer.js:230
 msgid "Content courtesy of {blog-link}, licensed under {license-link}."
 msgstr "المحتوى مهدى من {blog-link}، ومرخص بموجب {license-link}."
 
-#: js/app/modules/aisleInteraction.js:813
-#: js/app/modules/aisleInteraction.js:820
+#: js/app/modules/aisleInteraction.js:796
+#: js/app/modules/aisleInteraction.js:803
 msgid "Oops!"
 msgstr "يا لهذا!"
 
-#: js/app/modules/aisleInteraction.js:814
+#: js/app/modules/aisleInteraction.js:797
 msgid ""
 "We could not find this magazine!\n"
 "Please try again after restarting your computer."
 msgstr "لم نتمكن من إيجاد هذه المجلة!\nيُرجى المحاولة مرة أُخرى بعد إعادة تشغيل جهاز الكمبيوتر الخاص بك."
 
-#: js/app/modules/aisleInteraction.js:821
+#: js/app/modules/aisleInteraction.js:804
 msgid ""
 "There was an error loading that page.\n"
 "Try another one or try again after restarting your computer."
@@ -132,14 +132,14 @@ msgstr "وقع خطأٌ ما أثناء تحميل تلك الصفحة.\nجرب 
 
 #. TRANSLATORS: This shows the page number; %d will be replaced with
 #. the page number of the article.
-#: js/app/modules/aisleInteraction.js:860
+#: js/app/modules/aisleInteraction.js:843
 #, javascript-format
 msgid "Page %d"
 msgstr "صفحة %d"
 
 #. TRANSLATORS: %s will be replaced with the text the user
 #. searched for. Make sure to keep %s token in your translation.
-#: js/app/modules/buffetInteraction.js:175 js/app/modules/contextBanner.js:81
+#: js/app/modules/buffetInteraction.js:174 js/app/modules/contextBanner.js:81
 #, javascript-format
 msgid "Results were found for “%s”"
 msgstr "النتائج التي عثرنا عليها لـ “%s”"
@@ -206,7 +206,7 @@ msgstr "النتائج عن “%s”"
 msgid "OOPS!"
 msgstr "عفواً!"
 
-#: js/app/modules/searchBox.js:160
+#: js/app/modules/searchBox.js:161
 msgid "See more results"
 msgstr "قُم بمشاهدة المزيد من النتائج"
 
@@ -244,7 +244,7 @@ msgstr "فتح المجلة"
 msgid "You might be interested in..."
 msgstr "ربما تكون مهتماً بـ..."
 
-#: js/app/modules/supplementaryArticlesModule.js:46
+#: js/app/modules/supplementaryArticlesModule.js:45
 msgid "Other news"
 msgstr "الأخبار الأخرى"
 

@@ -3,13 +3,14 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# Roddy Shuler <roddy@endlessm.com>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2016-03-15 14:43-0700\n"
-"PO-Revision-Date: 2016-03-15 23:38+0000\n"
-"Last-Translator: Philip Chimento <philip.chimento@gmail.com>\n"
+"POT-Creation-Date: 2016-03-18 21:02+0000\n"
+"PO-Revision-Date: 2016-03-20 04:17+0000\n"
+"Last-Translator: Roddy Shuler <roddy@endlessm.com>\n"
 "Language-Team: Indonesian (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/id/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -93,14 +94,14 @@ msgstr "Salin"
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
-#: js/app/articleHTMLRenderer.js:213
+#: js/app/articleHTMLRenderer.js:217
 msgid "Content taken from {blog-link}."
 msgstr "Konten diambil dari {blog-link}."
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
-#: js/app/articleHTMLRenderer.js:218
+#: js/app/articleHTMLRenderer.js:222
 msgid "Content courtesy of {blog-link}. Used with kind permission."
 msgstr "Konten adalah hak milik {blog-link}. Digunakan dengan izin."
 
@@ -108,22 +109,22 @@ msgstr "Konten adalah hak milik {blog-link}. Digunakan dengan izin."
 #. is going to be substituted in code. Please make sure that your
 #. translation contains both {blog-link} and {license-link} and they are not
 #. translated.
-#: js/app/articleHTMLRenderer.js:226
+#: js/app/articleHTMLRenderer.js:230
 msgid "Content courtesy of {blog-link}, licensed under {license-link}."
 msgstr "Konten adalah hak milik {blog-link}, berlisensi di bawah {license-link}."
 
-#: js/app/modules/aisleInteraction.js:813
-#: js/app/modules/aisleInteraction.js:820
+#: js/app/modules/aisleInteraction.js:796
+#: js/app/modules/aisleInteraction.js:803
 msgid "Oops!"
 msgstr "Ups!"
 
-#: js/app/modules/aisleInteraction.js:814
+#: js/app/modules/aisleInteraction.js:797
 msgid ""
 "We could not find this magazine!\n"
 "Please try again after restarting your computer."
 msgstr "Kami tidak dapat menemukan majalah ini! Mohon coba lagi setelah menyalakan ulang komputer Anda."
 
-#: js/app/modules/aisleInteraction.js:821
+#: js/app/modules/aisleInteraction.js:804
 msgid ""
 "There was an error loading that page.\n"
 "Try another one or try again after restarting your computer."
@@ -131,14 +132,14 @@ msgstr "Terjadi kesalahan saat memuat halaman itu.\nCoba yang lain atau coba lag
 
 #. TRANSLATORS: This shows the page number; %d will be replaced with
 #. the page number of the article.
-#: js/app/modules/aisleInteraction.js:860
+#: js/app/modules/aisleInteraction.js:843
 #, javascript-format
 msgid "Page %d"
 msgstr "Halaman %d"
 
 #. TRANSLATORS: %s will be replaced with the text the user
 #. searched for. Make sure to keep %s token in your translation.
-#: js/app/modules/buffetInteraction.js:175 js/app/modules/contextBanner.js:81
+#: js/app/modules/buffetInteraction.js:174 js/app/modules/contextBanner.js:81
 #, javascript-format
 msgid "Results were found for “%s”"
 msgstr "Ada hasil ditemukan untuk \"%s\""
@@ -205,7 +206,7 @@ msgstr "Hasil untuk “%s”"
 msgid "OOPS!"
 msgstr "UPS!"
 
-#: js/app/modules/searchBox.js:160
+#: js/app/modules/searchBox.js:161
 msgid "See more results"
 msgstr "Lihat lebih banyak hasil"
 
@@ -243,7 +244,7 @@ msgstr "Buka majalah"
 msgid "You might be interested in..."
 msgstr "Anda mungkin tertarik pada..."
 
-#: js/app/modules/supplementaryArticlesModule.js:46
+#: js/app/modules/supplementaryArticlesModule.js:45
 msgid "Other news"
 msgstr "Berita lainnya"
 
@@ -254,7 +255,7 @@ msgstr "Berita lainnya"
 #. example: "Jane Austen and Henry Miller and William Clifford"
 #: js/app/utils.js:86
 msgid "by {author}"
-msgstr "oleh {penulis}"
+msgstr "oleh {author}"
 
 #: js/app/utils.js:86
 msgid "and"

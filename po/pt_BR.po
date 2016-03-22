@@ -5,7 +5,7 @@
 # Translators:
 # Fernando Farfan <fernando@endlessm.com>, 2015
 # Ivan G. Gonçalves <i@endlessm.com>, 2015
-# Mariana Barbosa <mari@endlessm.com>, 2015
+# Mariana Barbosa <mari@endlessm.com>, 2015-2016
 # Martin Abente Lahaye <tch@sugarlabs.org>, 2016
 # Philip Chimento <philip.chimento@gmail.com>, 2015
 # Renato Peixoto Pinto <renato@endlessm.com>, 2014
@@ -15,9 +15,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2016-03-15 14:43-0700\n"
-"PO-Revision-Date: 2016-03-15 23:00+0000\n"
-"Last-Translator: Martin Abente Lahaye <tch@sugarlabs.org>\n"
+"POT-Creation-Date: 2016-03-18 21:02+0000\n"
+"PO-Revision-Date: 2016-03-21 16:16+0000\n"
+"Last-Translator: Mariana Barbosa <mari@endlessm.com>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -92,7 +92,7 @@ msgstr "Veja {wikihow-article-link} para mais detalhes, videos, imagens e atribu
 #. words inside curly braces.
 #: js/app/articleHTMLRenderer.js:108
 msgid "Read more at {link}"
-msgstr ""
+msgstr "Leia mais em {link}"
 
 #: js/app/articleHTMLRenderer.js:194
 msgid "Copy"
@@ -101,14 +101,14 @@ msgstr "Copiar"
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
-#: js/app/articleHTMLRenderer.js:213
+#: js/app/articleHTMLRenderer.js:217
 msgid "Content taken from {blog-link}."
 msgstr "Conteúdo retirado de {blog-link}."
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
-#: js/app/articleHTMLRenderer.js:218
+#: js/app/articleHTMLRenderer.js:222
 msgid "Content courtesy of {blog-link}. Used with kind permission."
 msgstr "Cortesia de conteúdo de {blog-link}.  Utilizado com permissão."
 
@@ -116,22 +116,22 @@ msgstr "Cortesia de conteúdo de {blog-link}.  Utilizado com permissão."
 #. is going to be substituted in code. Please make sure that your
 #. translation contains both {blog-link} and {license-link} and they are not
 #. translated.
-#: js/app/articleHTMLRenderer.js:226
+#: js/app/articleHTMLRenderer.js:230
 msgid "Content courtesy of {blog-link}, licensed under {license-link}."
 msgstr "Cortesia de conteúdo de {blog-link}, licenciado sob {license-link}."
 
-#: js/app/modules/aisleInteraction.js:813
-#: js/app/modules/aisleInteraction.js:820
+#: js/app/modules/aisleInteraction.js:796
+#: js/app/modules/aisleInteraction.js:803
 msgid "Oops!"
 msgstr "Opa!"
 
-#: js/app/modules/aisleInteraction.js:814
+#: js/app/modules/aisleInteraction.js:797
 msgid ""
 "We could not find this magazine!\n"
 "Please try again after restarting your computer."
 msgstr "Não conseguimos encontrar essa revista!\nPor favor, tente novamente após reiniciar seu computador. "
 
-#: js/app/modules/aisleInteraction.js:821
+#: js/app/modules/aisleInteraction.js:804
 msgid ""
 "There was an error loading that page.\n"
 "Try another one or try again after restarting your computer."
@@ -139,14 +139,14 @@ msgstr "Ocorreu um erro no carregamento da página. \nTente outro ou tente novam
 
 #. TRANSLATORS: This shows the page number; %d will be replaced with
 #. the page number of the article.
-#: js/app/modules/aisleInteraction.js:860
+#: js/app/modules/aisleInteraction.js:843
 #, javascript-format
 msgid "Page %d"
 msgstr "Página %d"
 
 #. TRANSLATORS: %s will be replaced with the text the user
 #. searched for. Make sure to keep %s token in your translation.
-#: js/app/modules/buffetInteraction.js:175 js/app/modules/contextBanner.js:81
+#: js/app/modules/buffetInteraction.js:174 js/app/modules/contextBanner.js:81
 #, javascript-format
 msgid "Results were found for “%s”"
 msgstr "Foram encontrados resultados para “%s”"
@@ -156,7 +156,7 @@ msgstr "Foram encontrados resultados para “%s”"
 #: js/app/modules/cardContainer.js:135
 #, javascript-format
 msgid "See more %s"
-msgstr ""
+msgstr "Ver mais %s"
 
 #: js/app/modules/contextBanner.js:48 js/app/modules/contextBanner.js:56
 #: js/app/modules/highlightsModule.js:133
@@ -185,7 +185,7 @@ msgstr "Página %s"
 
 #: js/app/modules/readerDocumentCard.js:135
 msgid "This article is part of the archive."
-msgstr ""
+msgstr "Este artigo é parte do acervo."
 
 #. TRANSLATORS: This message is displayed while an app is
 #. searching for results. The %s will be replaced with the term
@@ -213,7 +213,7 @@ msgstr "Resultados para “%s”"
 msgid "OOPS!"
 msgstr "OPA!"
 
-#: js/app/modules/searchBox.js:160
+#: js/app/modules/searchBox.js:161
 msgid "See more results"
 msgstr "Ver mais resultados"
 
@@ -251,9 +251,9 @@ msgstr "Abra a revista"
 msgid "You might be interested in..."
 msgstr "Talvez você se interesse por..."
 
-#: js/app/modules/supplementaryArticlesModule.js:46
+#: js/app/modules/supplementaryArticlesModule.js:45
 msgid "Other news"
-msgstr ""
+msgstr "Outras notícias"
 
 #. TRANSLATORS: anything inside curly braces '{}' is going to be substituted
 #. in code. Please make sure to leave the curly braces around any words that

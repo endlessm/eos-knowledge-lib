@@ -4,14 +4,15 @@
 # 
 # Translators:
 # chenzibing <chenzibing_endless@126.com>, 2016
+# Roddy Shuler <roddy@endlessm.com>, 2016
 # zhifeng peng <jnufeng@126.com>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2016-03-15 14:43-0700\n"
-"PO-Revision-Date: 2016-03-15 21:44+0000\n"
-"Last-Translator: Philip Chimento <philip.chimento@gmail.com>\n"
+"POT-Creation-Date: 2016-03-18 21:02+0000\n"
+"PO-Revision-Date: 2016-03-20 04:24+0000\n"
+"Last-Translator: Roddy Shuler <roddy@endlessm.com>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -61,7 +62,7 @@ msgstr "根据主题浏览"
 msgid ""
 "This page contains content from {original-link}, available under a {license-"
 "link} license."
-msgstr "该页存在来源于{原始链接}的内容，已获得{认证链接}的许可认证。"
+msgstr "该页存在来源于{original-link}的内容，已获得{license-link}的许可认证。"
 
 #. TRANSLATORS: Replace this with a link to the homepage of
 #. wikiHow in your language.
@@ -78,7 +79,7 @@ msgid ""
 "See {wikihow-article-link} for more details, videos, pictures and "
 "attribution. Courtesy of {wikihow-link}, where anyone can easily learn how "
 "to do anything."
-msgstr "查看更多关于{wikihow-文章链接}的细节，视频，图片和来源。内容由{wikihow-link}提供，在此您可以轻松掌握各种技巧。"
+msgstr "查看更多关于{wikihow-article-link}的细节，视频，图片和来源。内容由{wikihow-link}提供，在此您可以轻松掌握各种技巧。"
 
 #. TRANSLATORS: anything inside curly braces '{}' is going to be
 #. substituted in code. Please make sure to leave the curly
@@ -95,37 +96,37 @@ msgstr "复制"
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
-#: js/app/articleHTMLRenderer.js:213
+#: js/app/articleHTMLRenderer.js:217
 msgid "Content taken from {blog-link}."
-msgstr "来源于{博客链接}的内容。"
+msgstr "来源于{blog-link}的内容。"
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
-#: js/app/articleHTMLRenderer.js:218
+#: js/app/articleHTMLRenderer.js:222
 msgid "Content courtesy of {blog-link}. Used with kind permission."
-msgstr "内容由{博客链接}提供。经授权许可使用。"
+msgstr "内容由{blog-link}提供。经授权许可使用。"
 
 #. TRANSLATORS: the text inside curly braces ({blog-link}, {license-link})
 #. is going to be substituted in code. Please make sure that your
 #. translation contains both {blog-link} and {license-link} and they are not
 #. translated.
-#: js/app/articleHTMLRenderer.js:226
+#: js/app/articleHTMLRenderer.js:230
 msgid "Content courtesy of {blog-link}, licensed under {license-link}."
-msgstr "内容由{博客链接}提供，已得到{认证链接}许可认证。"
+msgstr "内容由{blog-link}提供，已得到{license-link}许可认证。"
 
-#: js/app/modules/aisleInteraction.js:813
-#: js/app/modules/aisleInteraction.js:820
+#: js/app/modules/aisleInteraction.js:796
+#: js/app/modules/aisleInteraction.js:803
 msgid "Oops!"
 msgstr "哎呀！"
 
-#: js/app/modules/aisleInteraction.js:814
+#: js/app/modules/aisleInteraction.js:797
 msgid ""
 "We could not find this magazine!\n"
 "Please try again after restarting your computer."
 msgstr "我们无法找到该杂志！请在重启电脑后重新尝试。"
 
-#: js/app/modules/aisleInteraction.js:821
+#: js/app/modules/aisleInteraction.js:804
 msgid ""
 "There was an error loading that page.\n"
 "Try another one or try again after restarting your computer."
@@ -133,14 +134,14 @@ msgstr "加载该页时出现一个错误。请尝试另一页或在重启电脑
 
 #. TRANSLATORS: This shows the page number; %d will be replaced with
 #. the page number of the article.
-#: js/app/modules/aisleInteraction.js:860
+#: js/app/modules/aisleInteraction.js:843
 #, javascript-format
 msgid "Page %d"
 msgstr "第%d页"
 
 #. TRANSLATORS: %s will be replaced with the text the user
 #. searched for. Make sure to keep %s token in your translation.
-#: js/app/modules/buffetInteraction.js:175 js/app/modules/contextBanner.js:81
+#: js/app/modules/buffetInteraction.js:174 js/app/modules/contextBanner.js:81
 #, javascript-format
 msgid "Results were found for “%s”"
 msgstr "已找到“%s”的结果"
@@ -207,7 +208,7 @@ msgstr "“%s”的结果"
 msgid "OOPS!"
 msgstr "哎呀！"
 
-#: js/app/modules/searchBox.js:160
+#: js/app/modules/searchBox.js:161
 msgid "See more results"
 msgstr ""
 
@@ -245,7 +246,7 @@ msgstr "打开杂志"
 msgid "You might be interested in..."
 msgstr "您可能会对此感兴趣……"
 
-#: js/app/modules/supplementaryArticlesModule.js:46
+#: js/app/modules/supplementaryArticlesModule.js:45
 msgid "Other news"
 msgstr ""
 
