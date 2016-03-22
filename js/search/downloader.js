@@ -224,6 +224,12 @@ const SubscriptionDownloader = new Lang.Class({
         // XXX: We're currently indexing by filename, assuming it will be good enough.
         // Will it be, or should we also store e.g. ETag?
         let to_download = subtract_set(new_shards, old_shards, (shard) => shard.path);
+        let to_delete = subtract_set(old_shards, new_shards, (shard) => shard.path);
+
+        if (to_download.length === 0 && to_delete.length === 0) {
+            task.return_value(false);
+            return task;
+        }
 
         AsyncTask.all(this, (add_task) => {
             to_download.forEach((shard) => {
@@ -333,7 +339,9 @@ const SubscriptionDownloader = new Lang.Class({
 
                 let new_manifest = load_manifest(new_manifest_file, cancellable);
                 this._download_new_shards(directory, old_manifest, new_manifest, cancellable, task.catch_callback_errors((source, download_task) => {
-                    this._download_new_shards_finish(download_task);
+                    let have_new_manifest = this._download_new_shards_finish(download_task);
+                    if (!have_new_manifest)
+                        new_manifest_file.delete(cancellable);
                 }));
             }));
 
