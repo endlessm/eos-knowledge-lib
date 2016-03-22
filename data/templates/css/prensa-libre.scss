@@ -1,4 +1,5 @@
 @import "clipboard";
+@import "eos-modal";
 
 $body-font: Merriweather;
 $body-font-composite: "DejaVu Sans";
@@ -182,6 +183,10 @@ hr {
     }
 }
 
+.eos-modal {
+    font-family: $body-font;
+}
+
 // Responsive
 
 // Define all our responsive properties in terms of three parameters, then
@@ -200,6 +205,11 @@ hr {
 
     .disclaimer {
         margin: $body-unit-height $indent;
+    }
+
+    .eos-modal,
+    .eos-modal-link {
+        font-size: 0.6 * $body-size;
     }
 
     .extra-header {
@@ -320,6 +330,10 @@ hr {
 @media (device-width: 720px) and (device-height: 480px),
        (device-width: 720px) and (device-height: 576px) {
     .main {
+        font-family: $body-font-composite;
+    }
+
+    .eos-modal {
         font-family: $body-font-composite;
     }
 }

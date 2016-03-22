@@ -65,6 +65,7 @@ scss_toplevels = \
 	$(NULL)
 scss_partials = \
 	$(srcdir)/data/templates/css/_clipboard.scss \
+	$(srcdir)/data/templates/css/_eos-modal.scss \
 	$(srcdir)/data/templates/css/_eos-no-link.scss \
 	$(NULL)
 scss_targets = $(patsubst $(srcdir)/%.scss,$(builddir)/%.css,$(scss_toplevels))
