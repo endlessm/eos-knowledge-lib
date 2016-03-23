@@ -149,24 +149,24 @@ const CardContainer = new Lang.Class({
         }
     },
 
-    set title(v) {
+    set title (v) {
         if (this._title_label === v)
             return;
         this._title_label = v;
         this._update_title();
     },
 
-    get title() {
+    get title () {
         if (this._title_label)
             return this._title_label;
         return '';
     },
 
-    get title_capitalization() {
+    get title_capitalization () {
         return this._title_capitalization || EosKnowledgePrivate.TextTransform.NONE;
     },
 
-    set title_capitalization(value) {
+    set title_capitalization (value) {
         if (this._title_capitalization === value)
             return;
         this._title_capitalization = value;
