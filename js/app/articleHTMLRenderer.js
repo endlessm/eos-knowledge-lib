@@ -11,6 +11,16 @@ const SetMap = imports.app.setMap;
 
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
+const _MODAL_TEMPLATE = '\
+<a class="eos-modal-link" href="#modal"> {text} </a>\
+<div class="eos-modal" id="modal">\
+    <a class="eos-modal-close-background" href="#close"></a>\
+    <div>\
+        <a class="eos-modal-close-button" href="#close"> &times </a>\
+        {content}\
+    </div>\
+</div>';
+
 const _ARTICLE_TEMPLATE = 'resource:///com/endlessm/knowledge/data/templates/article.mst';
 let _template_contents;
 // Caches so we only load once.
@@ -100,13 +110,18 @@ const ArticleHTMLRenderer = new Lang.Class({
                 let message = _get_display_string_for_license(model.license);
                 return message.replace('{blog-link}', blog_link);
             case 'prensa-libre':
-                let prensa_libre_link = _to_link(model.original_uri, 'Prensalibre.com');
+                let disclaimer_label = _("Legal Notice and Intellectual Property Policy");
+                let disclaimer_content = _to_disclaimer_paragraph(_("DISCLAIMER PLACEHOLDER"));
+                let disclaimer_link = _to_modal_link(disclaimer_label, disclaimer_content);
+                let article_link = _to_link(model.original_uri, 'Prensalibre.com');
                 // TRANSLATORS: anything inside curly braces '{}' is going to be
                 // substituted in code. Please make sure to leave the curly
                 // braces around any words that have them, and do not translate
                 // words inside curly braces.
-                return _("Read more at {link}")
-                    .replace('{link}', prensa_libre_link);
+                let disclaimer = _("Read more at {link}")
+                    .replace('{link}', article_link);
+                disclaimer += '<br>' + disclaimer_link;
+                return disclaimer;
             default:
                 return false;
         }
@@ -208,6 +223,16 @@ function _to_set_link (model) {
 
 function _to_link(uri, text) {
     return '<a class="eos-show-link" href="browser-' + uri + '">' + Mustache.escape(text) + '</a>';
+}
+
+function _to_modal_link(text, content) {
+    let modal_html = _MODAL_TEMPLATE.replace('{text}', Mustache.escape(text));
+    modal_html = modal_html.replace('{content}', content);
+    return modal_html;
+}
+
+function _to_disclaimer_paragraph(text) {
+    return '<p align="justify">' + Mustache.escape(text) + '</p>';
 }
 
 function _get_display_string_for_license(license) {
