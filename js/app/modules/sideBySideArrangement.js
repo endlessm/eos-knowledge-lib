@@ -11,11 +11,6 @@ const Arrangement = imports.app.interfaces.arrangement;
 const Module = imports.app.interfaces.module;
 
 const MENU_HEIGHT = 50;
-const _HorizontalThreshold = {
-    TINY: 720,
-    SMALL: 900,
-    LARGE: 1200,
-};
 const _HorizontalSpacing = {
     TINY: 15,
     SMALL: 20,
@@ -44,7 +39,6 @@ const SideBySideArrangement = new Lang.Class({
     },
 
     _init: function (props={}) {
-        this._horizontal_threshold = _HorizontalThreshold.LARGE;
         this._all_visible = true;
 
         this.parent(props);
@@ -86,8 +80,7 @@ const SideBySideArrangement = new Lang.Class({
             return accum + card_nat;
         }, 0);
 
-        let spacing = this._get_horizontal_spacing(nat);
-        nat += spacing * (all_cards.length - 1);
+        nat += _HorizontalSpacing.XLARGE * (all_cards.length - 1);
         return [min, nat];
     },
 
@@ -101,7 +94,13 @@ const SideBySideArrangement = new Lang.Class({
 
         let all_cards = this.get_filtered_models().map((model) => this.get_card_for_model(model));
 
-        let spacing = this._get_horizontal_spacing(alloc.width);
+        let cards_width = all_cards.reduce((accum, card) => {
+            let [, card_nat] = card.get_preferred_width();
+            return accum + card_nat;
+        }, 0);
+
+        let leftover = (alloc.width - cards_width) / (all_cards.length - 1)
+        let spacing = this._get_horizontal_spacing(leftover);
         let available_width = alloc.width;
         let x = alloc.x;
         let y = alloc.y;
@@ -122,11 +121,13 @@ const SideBySideArrangement = new Lang.Class({
 
     _get_horizontal_spacing: function (width) {
         let spacing;
-        if (width <= _HorizontalThreshold.TINY) {
+        if (width < _HorizontalSpacing.TINY) {
+            spacing = 0;
+        } else if (width < _HorizontalSpacing.SMALL) {
             spacing = _HorizontalSpacing.TINY;
-        } else if (width <= _HorizontalThreshold.SMALL) {
+        } else if (width < _HorizontalSpacing.LARGE) {
             spacing = _HorizontalSpacing.SMALL;
-        } else if (width <= _HorizontalThreshold.LARGE) {
+        } else if (width < _HorizontalSpacing.XLARGE) {
             spacing = _HorizontalSpacing.LARGE;
         } else {
             spacing = _HorizontalSpacing.XLARGE;

@@ -98,14 +98,14 @@ const TopMenuModule = new Lang.Class({
             this._banner.size_allocate(banner_rect);
             x += alloc.width - menu_nat_width;
         } else {
-            x += (alloc.width - menu_nat_width) / 2;
+            x += Math.max(0, (alloc.width - menu_nat_width) / 2);
         }
         this._banner.set_child_visible(show_banner);
 
         let menu_rect = new Gdk.Rectangle({
             x: x,
             y: alloc.y + _get_centered_coord(alloc.height, menu_nat_height),
-            width: menu_nat_width,
+            width: Math.min(alloc.width, menu_nat_width),
             height: menu_nat_height,
         });
         this._menu.size_allocate(menu_rect);
