@@ -146,7 +146,8 @@ EknSearchBannerModule {
 }
 
 .all-type-card .title,
-.search-result-card .title {
+.search-result-card .title,
+.thumb-card .title {
     font-family: 'Fira Sans';
     font-weight: bold;
     color: @title-blue;
@@ -162,7 +163,8 @@ EknSearchBannerModule {
 }
 
 .all-type-card .card-context,
-.search-result-card .card-context {
+.search-result-card .card-context,
+.thumb-card .card-context {
     font-family: 'Merriweather';
     font-weight: bold;
     font-style: normal;
@@ -256,6 +258,10 @@ EknSetBannerModule .card:hover .title {
     color: @context-blue;
     font-family: 'Merriweather';
     font-weight: bold;
+}
+
+.thumb-card {
+    box-shadow: 0px 5px 10px 0px alpha(black, 0.22);
 }
 
 EknSupplementaryArticlesModule .text-button {
