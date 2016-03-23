@@ -11,8 +11,8 @@ const Lang = imports.lang;
 const Module = imports.app.interfaces.module;
 const Utils = imports.app.utils;
 
-// FIXME: Should be responsive and change to 50 after a width threshold is crossed
-const TOP_MENU_HEIGHT = 60;
+// FIXME: Should be responsive and change to 60 after a width threshold is crossed
+const TOP_MENU_HEIGHT = 50;
 
 /**
  * Class: TopMenuModule
