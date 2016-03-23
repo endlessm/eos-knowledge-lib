@@ -415,6 +415,9 @@
         },
         "set-preview": {
             "type": "SetPreviewCard",
+            "properties": {
+                "trigger-capitalization": "lowercase"
+            },
             "slots": {
                 "arrangement": {
                     "type": "ThirtiesArrangement",
