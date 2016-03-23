@@ -48,7 +48,7 @@ const WebviewTooltipPresenter = new GObject.Class({
 
     set_document_card: function (document_card) {
         document_card.content_view.connect('mouse-target-changed', (view, hit_test) => {
-            if (!hit_test.context_is_link()) {
+            if (!hit_test.context_is_link() || hit_test.link_uri.match(/^ekn:\/\/.*#/)) {
                 this._remove_link_tooltip();
                 return;
             }
