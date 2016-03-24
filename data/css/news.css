@@ -9,7 +9,9 @@
 @define-color context-blue #7297a7;
 
 EknScrollingTemplate:not(.overshoot):not(.undershoot),
-EknBackgroundModule {
+EknBackgroundModule,
+.no-results-message-grid,
+.scrollbar {
     background-color: #e9e5e0;
 }
 

@@ -271,6 +271,7 @@
                                     },
                                     "properties": {
                                         "halign": "fill",
+                                        "message-halign": "fill",
                                         "message-justify": "left"
                                     }
                                 }
