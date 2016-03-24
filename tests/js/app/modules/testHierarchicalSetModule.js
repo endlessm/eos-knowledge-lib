@@ -140,15 +140,9 @@ describe('Hierarchical set module', function () {
         });
 
         describe('showing more content', function () {
-            let set_card;
-            beforeEach(function () {
-                set_card = set_cards[0];
-                spyOn(set_card, 'load_content');
-            });
-
             it('calls load_content', function () {
                 module.show_more_content();
-                expect(set_card.load_content).toHaveBeenCalled();
+                expect(set_cards[0].load_content).toHaveBeenCalled();
             });
         });
     });

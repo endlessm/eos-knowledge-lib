@@ -125,7 +125,10 @@ const HierarchicalSetModule = new Lang.Class({
     },
 
     _load_content: function (query) {
+        if (this._load_operation_in_progress)
+            return;
         Engine.get_default().get_objects_by_query(query, null, (engine, task) => {
+            this._load_operation_in_progress = false;
             let results;
             try {
                 [results, this._get_more] = engine.get_objects_by_query_finish(task);
@@ -152,6 +155,7 @@ const HierarchicalSetModule = new Lang.Class({
                 scroll_server: this.scroll_server,
             });
         });
+        this._load_operation_in_progress = true;
     },
 
     _belongs_to_current_set_and_not_subset: function (model) {
