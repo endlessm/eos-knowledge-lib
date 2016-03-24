@@ -9,9 +9,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2016-03-18 21:02+0000\n"
-"PO-Revision-Date: 2016-03-16 00:45+0000\n"
-"Last-Translator: Philip Chimento <philip.chimento@gmail.com>\n"
+"POT-Creation-Date: 2016-03-23 16:05-0700\n"
+"PO-Revision-Date: 2016-03-23 23:05+0000\n"
+"Last-Translator: Roddy Shuler <roddy@endlessm.com>\n"
 "Language-Team: French (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -57,7 +57,7 @@ msgstr "Parcourir par thème"
 #. to be substituted in code. Please make sure to leave the
 #. curly braces around any words that have them and DO NOT
 #. translate words inside curly braces.
-#: js/app/articleHTMLRenderer.js:79
+#: js/app/articleHTMLRenderer.js:89
 msgid ""
 "This page contains content from {original-link}, available under a {license-"
 "link} license."
@@ -65,7 +65,7 @@ msgstr "Cette page contient des contenus de {original-link}, disponible sous une
 
 #. TRANSLATORS: Replace this with a link to the homepage of
 #. wikiHow in your language.
-#: js/app/articleHTMLRenderer.js:86
+#: js/app/articleHTMLRenderer.js:96
 msgid "http://wikihow.com"
 msgstr "http://wikihow.com"
 
@@ -73,36 +73,44 @@ msgstr "http://wikihow.com"
 #. to be substituted in code. Please make sure to leave the
 #. curly braces around any words that have them and DO NOT
 #. translate words inside curly braces.
-#: js/app/articleHTMLRenderer.js:91
+#: js/app/articleHTMLRenderer.js:101
 msgid ""
 "See {wikihow-article-link} for more details, videos, pictures and "
 "attribution. Courtesy of {wikihow-link}, where anyone can easily learn how "
 "to do anything."
 msgstr "Consultez {wikihow-article-link} pour plus de détails, des vidéos, des images et des attributions. Avec la permission de {wikihow-link}, où tout un chacun peut facilement apprendre à tout faire."
 
+#: js/app/articleHTMLRenderer.js:113
+msgid "Legal Notice and Intellectual Property Policy"
+msgstr ""
+
+#: js/app/articleHTMLRenderer.js:114
+msgid "DISCLAIMER PLACEHOLDER"
+msgstr ""
+
 #. TRANSLATORS: anything inside curly braces '{}' is going to be
 #. substituted in code. Please make sure to leave the curly
 #. braces around any words that have them, and do not translate
 #. words inside curly braces.
-#: js/app/articleHTMLRenderer.js:108
+#: js/app/articleHTMLRenderer.js:121
 msgid "Read more at {link}"
 msgstr "Consulter {link} pour en savoir plus"
 
-#: js/app/articleHTMLRenderer.js:194
+#: js/app/articleHTMLRenderer.js:210
 msgid "Copy"
 msgstr "Copier"
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
-#: js/app/articleHTMLRenderer.js:217
+#: js/app/articleHTMLRenderer.js:243
 msgid "Content taken from {blog-link}."
 msgstr "Contenu issu de {blog-link}."
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
-#: js/app/articleHTMLRenderer.js:222
+#: js/app/articleHTMLRenderer.js:248
 msgid "Content courtesy of {blog-link}. Used with kind permission."
 msgstr "Permission de contenu de {blog-link}. Utilisé grâce à une aimable permission."
 
@@ -110,7 +118,7 @@ msgstr "Permission de contenu de {blog-link}. Utilisé grâce à une aimable per
 #. is going to be substituted in code. Please make sure that your
 #. translation contains both {blog-link} and {license-link} and they are not
 #. translated.
-#: js/app/articleHTMLRenderer.js:230
+#: js/app/articleHTMLRenderer.js:256
 msgid "Content courtesy of {blog-link}, licensed under {license-link}."
 msgstr "Permission de contenu de {blog-link}, sous licence {license-link}."
 
@@ -147,7 +155,7 @@ msgstr "Des résultats ont été trouvés pour « %s »"
 
 #. TRANSLATORS: %s will be replaced with the name of the category
 #. that we are offering to show more of.
-#: js/app/modules/cardContainer.js:135
+#: js/app/modules/cardContainer.js:147
 #, javascript-format
 msgid "See more %s"
 msgstr "Afficher plus de %s"

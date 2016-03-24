@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: eos-knowledge 0.4.0\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-"
 "inc\n"
-"POT-Creation-Date: 2016-03-22 01:46+0000\n"
+"POT-Creation-Date: 2016-03-24 00:07+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -56,7 +56,7 @@ msgstr ""
 #. to be substituted in code. Please make sure to leave the
 #. curly braces around any words that have them and DO NOT
 #. translate words inside curly braces.
-#: js/app/articleHTMLRenderer.js:79
+#: js/app/articleHTMLRenderer.js:89
 msgid ""
 "This page contains content from {original-link}, available under a {license-"
 "link} license."
@@ -64,7 +64,7 @@ msgstr ""
 
 #. TRANSLATORS: Replace this with a link to the homepage of
 #. wikiHow in your language.
-#: js/app/articleHTMLRenderer.js:86
+#: js/app/articleHTMLRenderer.js:96
 msgid "http://wikihow.com"
 msgstr ""
 
@@ -72,36 +72,44 @@ msgstr ""
 #. to be substituted in code. Please make sure to leave the
 #. curly braces around any words that have them and DO NOT
 #. translate words inside curly braces.
-#: js/app/articleHTMLRenderer.js:91
+#: js/app/articleHTMLRenderer.js:101
 msgid ""
 "See {wikihow-article-link} for more details, videos, pictures and "
 "attribution. Courtesy of {wikihow-link}, where anyone can easily learn how "
 "to do anything."
 msgstr ""
 
+#: js/app/articleHTMLRenderer.js:113
+msgid "Legal Notice and Intellectual Property Policy"
+msgstr ""
+
+#: js/app/articleHTMLRenderer.js:114
+msgid "DISCLAIMER PLACEHOLDER"
+msgstr ""
+
 #. TRANSLATORS: anything inside curly braces '{}' is going to be
 #. substituted in code. Please make sure to leave the curly
 #. braces around any words that have them, and do not translate
 #. words inside curly braces.
-#: js/app/articleHTMLRenderer.js:108
+#: js/app/articleHTMLRenderer.js:121
 msgid "Read more at {link}"
 msgstr ""
 
-#: js/app/articleHTMLRenderer.js:195
+#: js/app/articleHTMLRenderer.js:210
 msgid "Copy"
 msgstr ""
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
-#: js/app/articleHTMLRenderer.js:218
+#: js/app/articleHTMLRenderer.js:243
 msgid "Content taken from {blog-link}."
 msgstr ""
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
-#: js/app/articleHTMLRenderer.js:223
+#: js/app/articleHTMLRenderer.js:248
 msgid "Content courtesy of {blog-link}. Used with kind permission."
 msgstr ""
 
@@ -109,7 +117,7 @@ msgstr ""
 #. is going to be substituted in code. Please make sure that your
 #. translation contains both {blog-link} and {license-link} and they are not
 #. translated.
-#: js/app/articleHTMLRenderer.js:231
+#: js/app/articleHTMLRenderer.js:256
 msgid "Content courtesy of {blog-link}, licensed under {license-link}."
 msgstr ""
 
@@ -146,7 +154,7 @@ msgstr ""
 
 #. TRANSLATORS: %s will be replaced with the name of the category
 #. that we are offering to show more of.
-#: js/app/modules/cardContainer.js:135
+#: js/app/modules/cardContainer.js:147
 #, javascript-format
 msgid "See more %s"
 msgstr ""
