@@ -84,6 +84,7 @@ const MinimalCard = new Lang.Class({
         this.parent(props);
         // For test_card_container_compliance() below
         spyOn(this, 'fade_in').and.callThrough();
+        spyOn(this, 'load_content').and.callThrough();
     },
 
     load_content: function () {},
