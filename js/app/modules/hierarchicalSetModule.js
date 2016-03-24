@@ -145,6 +145,7 @@ const HierarchicalSetModule = new Lang.Class({
                     this._arrangement.add_model(model);
                 }
             });
+            this.show_more_content();
             this._send_feature_item();
             Dispatcher.get_default().dispatch({
                 action_type: Actions.CONTENT_ADDED,
