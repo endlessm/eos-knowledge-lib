@@ -7,7 +7,6 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const Card = imports.app.interfaces.card;
-const MarginButton = imports.app.widgets.marginButton;
 const Module = imports.app.interfaces.module;
 const Utils = imports.app.utils;
 
@@ -107,7 +106,7 @@ const ThumbCardLayout = new Lang.Class({
 const ThumbCard = new Lang.Class({
     Name: 'ThumbCard',
     GTypeName: 'EknThumbCard',
-    Extends: MarginButton.MarginButton,
+    Extends: Gtk.Button,
     Implements: [ Module.Module, Card.Card ],
 
     Properties: {

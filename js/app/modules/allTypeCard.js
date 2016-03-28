@@ -6,7 +6,6 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const Card = imports.app.interfaces.card;
-const MarginButton = imports.app.widgets.marginButton;
 const Module = imports.app.interfaces.module;
 const StyleClasses = imports.app.styleClasses;
 const Utils = imports.app.utils;
@@ -29,7 +28,7 @@ const Utils = imports.app.utils;
 const AllTypeCard = new Lang.Class({
     Name: 'AllTypeCard',
     GTypeName: 'EknAllTypeCard',
-    Extends: MarginButton.MarginButton,
+    Extends: Gtk.Button,
     Implements: [ Module.Module, Card.Card ],
 
     Properties: {

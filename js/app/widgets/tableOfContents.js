@@ -8,7 +8,6 @@ const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 const Pango = imports.gi.Pango;
 
-const MarginButton = imports.app.widgets.marginButton;
 const StyleClasses = imports.app.styleClasses;
 const Utils = imports.app.utils;
 
@@ -412,7 +411,7 @@ const TableOfContents = new Lang.Class({
 const SectionButton = new Lang.Class({
     Name: 'SectionButton',
     GTypeName: 'EknSectionButton',
-    Extends: MarginButton.MarginButton,
+    Extends: Gtk.Button,
 
     _MIN_CHARS: 20,
 

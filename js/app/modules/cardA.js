@@ -7,7 +7,6 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const Card = imports.app.interfaces.card;
-const MarginButton = imports.app.widgets.marginButton;
 const Module = imports.app.interfaces.module;
 const SetObjectModel = imports.search.setObjectModel;
 const ToggleTweener = imports.app.toggleTweener;
@@ -28,7 +27,7 @@ const HOVER_HEIGHT = Math.ceil(HEIGHT * (1 + GROW_FRACTION));
 const CardA = new Lang.Class({
     Name: 'CardA',
     GTypeName: 'EknCardA',
-    Extends: MarginButton.MarginButton,
+    Extends: Gtk.Button,
     Implements: [ Module.Module, Card.Card ],
 
     Properties: {
@@ -107,7 +106,7 @@ const CardA = new Lang.Class({
         cr.translate(HOVER_WIDTH / 2, HOVER_HEIGHT / 2);
         cr.scale(1 + GROW_FRACTION, 1 + GROW_FRACTION);
         cr.translate(- allocation.width / 2, - allocation.height / 2);
-        MarginButton.MarginButton.prototype.vfunc_draw.call(this, cr);
+        Gtk.Button.prototype.vfunc_draw.call(this, cr);
     },
 
     vfunc_draw: function (cr) {
