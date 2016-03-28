@@ -72,7 +72,7 @@ EknPanelFrame .top-menu {
 EknSideBySideArrangement .text-card .title.label {
     font-family: 'Fira Sans';
     color: rgba(255, 255, 255, 0.6);
-    padding: 5px 0px;
+    padding: 13px 0px 3px 0px;
     font-size: 13.5px;  /* 18px * 75% (DPI correction) */
 }
 

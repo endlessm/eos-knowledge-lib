@@ -470,7 +470,6 @@
                                             "type": "TextCard",
                                             "properties": {
                                                 "title-capitalization": "lowercase",
-                                                "margin-top": 5,
                                                 "halign": "center",
                                                 "decorate-on-highlight": true
                                             }
