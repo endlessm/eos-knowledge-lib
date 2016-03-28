@@ -5,6 +5,9 @@
     -GtkScrollbar-min-slider-length: 100; /* larger than the top-menu height */
 }
 
+@define-color title-blue #0f1b3c;
+@define-color context-blue #7297a7;
+
 EknScrollingTemplate:not(.overshoot):not(.undershoot),
 EknBackgroundModule {
     background-color: #e9e5e0;
@@ -15,17 +18,17 @@ EknSearchModule {
 }
 
 .card .title {
-    color: #0f1b3c;
+    color: @title-blue;
 }
 
 .trigger {
     font-family: 'Fira Sans';
     font-size: 15px;  /* 20px * 75% (DPI correction) */
-    color: #0f1b3c;
+    color: @title-blue;
 }
 
 .trigger:hover {
-    color: #7297a7;
+    color: @context-blue;
 }
 
 .trigger .image {
@@ -41,7 +44,7 @@ EknSearchModule {
 }
 
 EknSetPreviewCard .text-card .title {
-    color: #0f1b3c;
+    color: @title-blue;
     font-family: 'Merriweather';
     font-weight: bold;
     padding-top: 50px;
@@ -49,7 +52,7 @@ EknSetPreviewCard .text-card .title {
 }
 
 EknSetPreviewCard .text-card:hover .title {
-    color: #7297a7;
+    color: @context-blue;
 }
 
 EknSetPreviewCard .separator {
@@ -60,7 +63,7 @@ EknSetPreviewCard .separator {
 
 EknAppBanner {
     font-family: 'Fira Sans';
-    color: #7297a7;
+    color: @context-blue;
 }
 
 EknPanelFrame .top-menu {
@@ -76,8 +79,8 @@ EknSideBySideArrangement .text-card .title.label {
 }
 
 EknSideBySideArrangement .text-card:hover .title.label {
-    border-bottom: 1px solid #7297a7;
-    color: #7297a7;
+    border-bottom: 1px solid @context-blue;
+    color: @context-blue;
 }
 
 EknSideBySideArrangement .text-card.highlighted .title.label {
@@ -118,7 +121,7 @@ EknSearchBannerModule {
 
 .search-results .results-message-title {
     font-family: 'Fira Sans';
-    color: #7297a7;
+    color: @context-blue;
     font-size: 22.5px;  /* 150% * 20px * 75% (DPI correction) */
     padding: 50px 80px 30px;
 }
@@ -143,10 +146,11 @@ EknSearchBannerModule {
 }
 
 .all-type-card .title,
-.search-result-card .title {
+.search-result-card .title,
+.thumb-card .title {
     font-family: 'Fira Sans';
     font-weight: bold;
-    color: #0f1b3c;
+    color: @title-blue;
     font-size: 13.5px; /* 18px * 75% (DPI correction) */
 }
 
@@ -159,21 +163,22 @@ EknSearchBannerModule {
 }
 
 .all-type-card .card-context,
-.search-result-card .card-context {
+.search-result-card .card-context,
+.thumb-card .card-context {
     font-family: 'Merriweather';
     font-weight: bold;
     font-style: normal;
-    color: #7297a7;
+    color: @context-blue;
     font-size: 10.5px; /* 14px * 75% (DPI correction) */
 }
 
 .all-type-card:hover .title,
 .search-result-card:hover .title {
-    color: #7297a7;
+    color: @context-blue;
 }
 
 .search-result-card.next:hover .title {
-    color: #0f1b3c;
+    color: @title-blue;
 }
 
 .search-result-card .title.highlighted {
@@ -250,9 +255,13 @@ EknSetBannerModule .card:hover .title {
 }
 
 .post-card .card-context {
-    color: #7297a7;
+    color: @context-blue;
     font-family: 'Merriweather';
     font-weight: bold;
+}
+
+.thumb-card {
+    box-shadow: 0px 5px 10px 0px alpha(black, 0.22);
 }
 
 EknSupplementaryArticlesModule .text-button {
