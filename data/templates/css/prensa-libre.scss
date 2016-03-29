@@ -216,7 +216,7 @@ hr {
     .extra-header {
         font-size: 0.8 * $body-size;
         line-height: $body-size;
-        margin: (2 * $body-unit-height) ($indent + $dedent) $body-unit-height;
+        margin: $body-unit-height ($indent + $dedent) $body-unit-height;
     }
 
     header h1 {
