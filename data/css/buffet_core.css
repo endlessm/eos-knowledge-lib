@@ -2,21 +2,21 @@
 
 @import url("resource:///com/endlessm/knowledge/data/css/common.css");
 
-EknWindow {
+EosWindow {
     background-size: cover;
 }
 
-.scrollbar {
+scrollbar {
     -GtkRange-trough-border: 3px;
     -GtkRange-slider-width: 8px;
 }
 
-.scrollbar.slider {
+scrollbar slider {
     background-color: #9b9b9b;
     border-radius: 20px;
 }
 
-EknSuggestedCategoriesModule .separator {
+EknSuggestedCategoriesModule separator {
     background-color: #999999;
     -EknThemeableImage-min-height: 1;
     margin: 4px 50px 20px 50px;
@@ -26,7 +26,7 @@ EknSuggestedCategoriesModule .separator {
     padding: 20px 50px 0px 50px;
 }
 
-EknScrollingTemplate:not(.overshoot):not(.undershoot),
+EknScrollingTemplate,
 EknSearchModule {
     background-color: #e7ecee;
 }
@@ -254,7 +254,7 @@ EknResponsiveMarginsModule.xlarge {
     margin: 0px 120px;
 }
 
-.endless-search-box .frame {
+.endless-search-box frame {
    background-color: #d5e1ed;
 }
 
@@ -277,7 +277,7 @@ EknResponsiveMarginsModule.xlarge {
 
 /* Changes for composite TVs */
 
-.composite .search-results GtkListBoxRow {
+.composite .search-results row {
     padding: 0 40px;
 }
 

@@ -16,7 +16,7 @@ EosWindow {
     padding: 3px;
 }
 
-.article-search .entry {
+.article-search entry {
     background: rgba(0,0,0,0.3);
     padding: 0.5em .3em 0.5em .3em;
     font-size: 13.3px;
@@ -54,25 +54,25 @@ EosWindow {
     border-width: 0px;
 }
 
-EknWindow {
+EosWindow {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
 }
 
-EknWindow.parallax {
+EosWindow.parallax {
     transition: background-position 0.5s ease;
 }
 
-EknWindow.parallax.background-left {
+EosWindow.parallax.background-left {
     background-position: 0% 50%;
 }
 
-EknWindow.parallax.background-center {
+EosWindow.parallax.background-center {
     background-position: 50% 50%;
 }
 
-EknWindow.parallax.background-right {
+EosWindow.parallax.background-right {
     background-position: 100% 50%;
 }
 
@@ -126,8 +126,8 @@ EknWindow.parallax.background-right {
     padding: 8px 15px;
 }
 
-.section-page-a GtkSeparator,
-.search-page-a GtkSeparator {
+.section-page-a separator,
+.search-page-a separator {
     color: rgba(255, 255, 255, 0.3);
 }
 
@@ -312,7 +312,7 @@ EknWindow.parallax.background-right {
     box-shadow: inset 0px 1px 0px alpha(white, 0.4);
 }
 
-.toc-arrow:insensitive {
+.toc-arrow:disabled {
     color: alpha(rgb(204, 204, 204), 0.3);
     border-color: alpha(black, 0.15);
     box-shadow: inset 0px 1px 0px alpha(white, 0.15);
@@ -403,11 +403,11 @@ EknWindow.parallax.background-right {
     box-shadow: inset 0px 0px 3px 2px #5097D1;
 }
 
-.home-page-a .search-box.image, .home-page-b .search-box.image {
+.home-page-a .search-box image, .home-page-b .search-box image {
     color: #919191;
 }
 
-.home-page-a GtkSeparator {
+.home-page-a separator {
     border-style: solid;
     border-width: 3px;
     -GtkWidget-wide-separators: true;
@@ -430,8 +430,8 @@ EknWindow.parallax.background-right {
     padding-left: 60px;
 }
 
-.section-page-b .scrollbar.trough,
-.search-page-b .scrollbar.trough {
+.section-page-b scrollbar trough,
+.search-page-b scrollbar trough {
     background-color: alpha(black, 0.5);
     background-image: linear-gradient(89deg,
                                       alpha(white, 0.1) 0%,
@@ -439,8 +439,8 @@ EknWindow.parallax.background-right {
     box-shadow: inset 1px 0px 0px 0px alpha(black, 0.15);
 }
 
-.section-page-b .scrollbar.slider,
-.search-page-b .scrollbar.slider {
+.section-page-b scrollbar slider,
+.search-page-b scrollbar slider {
     background-color: #888888;
 }
 
@@ -450,18 +450,18 @@ EknWindow.parallax.background-right {
 
 /* FIXME: for the time being, until we can properly customize the webkit
 scrollbars, style the GTK scrollbars to look slightly more like them */
-EosWindow .scrollbar {
+EosWindow scrollbar {
     -GtkRange-trough-border: 3px;
     -GtkRange-slider-width: 8px;
 }
 
-EosWindow .scrollbar.slider {
+EosWindow scrollbar slider {
     background-color: #333333;
     border-radius: 20px;
 }
 
 /* Hide scrollbars when animating, they look bad. */
-.animating .scrollbar.slider {
+.animating scrollbar slider {
     background-color: transparent;
 }
 
@@ -485,7 +485,7 @@ EosWindow .scrollbar.slider {
     -EknGrowButton-grow-pixels: 15;
 }
 
-.nav-back-button GtkImage, .nav-forward-button GtkImage {
+.nav-back-button .image, .nav-forward-button .image {
     color: white;
     box-shadow: 0px 1px alpha(black, 0.8); /* FIXME: box-shadow outset doesn't currently work in GTK */
 }
@@ -522,7 +522,7 @@ EosWindow .scrollbar.slider {
     -gtk-icon-source: -gtk-icontheme("go-next-symbolic-rtl");
 }
 
-.pdf-view:not(.overshoot):not(.undershoot) {
+.pdf-view {
     background-image: url('resource:///com/endlessm/knowledge/data/images/pdf-background.png');
 }
 
@@ -532,7 +532,7 @@ EosWindow .scrollbar.slider {
     padding: 10px 14px;
 }
 
-.webview-tooltip GtkLabel {
+.webview-tooltip label {
     color: white;
     font-family: Lato;
     font-size: 1.0em; /* 16px / 12px/em * 72/96 */
@@ -550,7 +550,7 @@ EosWindow .scrollbar.slider {
     font-family: Roboto;
 }
 
-.composite .headerbar .entry {
+.composite headerbar entry {
     font-size: 21.1px;  /* 18px spec * 88% because spec was at 110% scale not 125% */
 }
 

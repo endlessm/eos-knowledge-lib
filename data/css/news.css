@@ -8,10 +8,10 @@
 @define-color title-blue #0f1b3c;
 @define-color context-blue #7297a7;
 
-EknScrollingTemplate:not(.overshoot):not(.undershoot),
+EknScrollingTemplate,
 EknBackgroundModule,
 .results-message-background,
-.scrollbar {
+scrollbar {
     background-color: #e9e5e0;
 }
 
@@ -57,7 +57,7 @@ EknSetPreviewCard .text-card:hover .title {
     color: @context-blue;
 }
 
-EknSetPreviewCard .separator {
+EknSetPreviewCard separator {
     background-color: transparent;
     -EknThemeableImage-min-height: 0;
     margin: 0px 0px 30px;
@@ -74,23 +74,23 @@ EknPanelFrame .top-menu {
     padding: 0px 20px;
 }
 
-EknSideBySideArrangement .text-card .title.label {
+EknSideBySideArrangement .text-card label.title {
     font-family: 'Fira Sans';
     color: rgba(255, 255, 255, 0.6);
     padding: 13px 0px 3px 0px;
     font-size: 18px;
 }
 
-EknSideBySideArrangement .text-card:hover .title.label {
+EknSideBySideArrangement .text-card:hover label.title {
     border-bottom: 1px solid @context-blue;
     color: @context-blue;
 }
 
-EknSideBySideArrangement .text-card.highlighted .title.label {
+EknSideBySideArrangement .text-card.highlighted label.title {
     color: white;
 }
 
-EknSideBySideArrangement .text-card.highlighted:hover .title.label {
+EknSideBySideArrangement .text-card.highlighted:hover label.title {
     border-bottom: none;
 }
 
@@ -118,7 +118,7 @@ EknSearchBannerModule {
     background-color: transparent;
 }
 
-.search-page-a .separator {
+.search-page-a separator {
     color: transparent;
 }
 

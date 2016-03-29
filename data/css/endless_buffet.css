@@ -21,9 +21,9 @@ EknSetPreviewCard .text-card .title,
     font-size: 29.3px;
 }
 
-EknHighlightsModule .separator,
-EknSetPreviewCard .separator,
-EknThematicModule .separator {
+EknHighlightsModule separator,
+EknSetPreviewCard separator,
+EknThematicModule separator {
     background-color: #999999;
     -EknThemeableImage-min-height: 1;
     margin: 4px 0px 10px 0px;
@@ -52,7 +52,7 @@ EknSearchModule .suggested-articles {
     background-color: #f6f6f6;
 }
 
-.search-results .separator,
+.search-results separator,
 .search-results .results-message-subtitle,
 .browse-content .title {
     color: #999999;
@@ -143,7 +143,7 @@ EknSideMenuTemplate .menu .card:hover .title {
     color: #5bc2e5;
 }
 
-EknSideMenuTemplate .menu .separator {
+EknSideMenuTemplate .menu separator {
     color: #cccccc;
 }
 

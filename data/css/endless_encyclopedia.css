@@ -21,7 +21,8 @@ EosWindow {
     background-position: top center;
 }
 
-.entry {
+.search-box,
+.article-search entry {
     background: rgba(0,0,0,0.2);
     padding: 0.5em .3em 0.5em .3em;
     font-size: 13.3px;
@@ -44,17 +45,17 @@ EosWindow {
     padding: 3px;
 }
 
-.article-search .entry {
+.article-search entry {
     background: rgba(0,0,0,0.3);
     border-color: rgba(0,0,0,0.25);
 }
 
-.article-search .button {
+.article-search button {
     padding: 5px;
     color: #7a7e7f;
 }
 
-.article-search .button:hover {
+.article-search button:hover {
     color: #54595a;
 }
 
@@ -80,7 +81,7 @@ GtkEntry:selected {
     padding-bottom: 20px;
 }
 
-.divided-banner-template .separator {
+.divided-banner-template separator {
     padding-bottom: 15px;
     background-image: url('resource:///com/endlessm/knowledge/data/images/separator.png');
     background-size: 100%;
@@ -96,7 +97,7 @@ GtkEntry:selected {
     font-weight: bold;
 }
 
-.divided-banner-template .separator {
+.divided-banner-template separator {
     color: #888a85;
 }
 
@@ -132,12 +133,12 @@ GtkEntry:selected {
                       url('resource:///com/endlessm/knowledge/data/templates/images/noise.png');
 }
 
-.scrollbar {
+scrollbar {
     -GtkRange-trough-border: 3px;
     -GtkRange-slider-width: 8px;
 }
 
-.scrollbar.slider {
+scrollbar slider {
     background-color: #9b9b9b;
     border-radius: 20px;
 }
@@ -148,7 +149,7 @@ GtkEntry:selected {
     padding: 10px 14px;
 }
 
-.webview-tooltip GtkLabel {
+.webview-tooltip label {
     color: white;
     font-family: Lato;
     font-size: 1.3em; /* 16px / 12px/em */
@@ -161,7 +162,8 @@ GtkEntry:selected {
     font-family: Roboto;
 }
 
-.composite .entry {
+.composite .search-box,
+.composite .article-search entry {
     font-size: 21.1px;  /* 18 px spec * 88% because spec was at 110% scale not 125% */
     background-color: alpha(black, 0.8);
 }
@@ -172,7 +174,7 @@ GtkEntry:selected {
     font-weight: bold;
 }
 
-.composite .webview-tooltip GtkLabel {
+.composite .webview-tooltip label {
     font-weight: bold;
     font-size: 18.8px;  /* 16px spec * 88% */
 }
