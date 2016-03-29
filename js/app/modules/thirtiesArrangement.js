@@ -13,8 +13,8 @@ const Card = imports.app.interfaces.card;
 const Module = imports.app.interfaces.module;
 const Utils = imports.app.utils;
 
-const CARD_HEIGHT_SMALL = Card.MinSize.A;
-const CARD_HEIGHT_BIG = Card.MinSize.B;
+const CARD_HEIGHT_SMALL = Card.MinSize.B;
+const CARD_HEIGHT_BIG = Card.MinSize.C;
 const CARD_HEIGHT_THRESHOLD = Card.MinSize.C;
 const CARD_WIDTH_SMALL = Card.MinSize.B;
 const CARD_WIDTH_BIG = Card.MinSize.H;
