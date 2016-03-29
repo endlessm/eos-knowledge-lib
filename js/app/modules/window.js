@@ -191,7 +191,7 @@ const Window = new Lang.Class({
         let frame_css = '';
         if (this.background_image_uri) {
             frame_css += '\
-                EknWindow.background-left { \
+                .background-left { \
                     background-image: url("' + this.background_image_uri + '");\
                 }\n';
             try {
@@ -205,7 +205,7 @@ const Window = new Lang.Class({
         }
         if (this.blur_background_image_uri) {
             frame_css += '\
-                EknWindow.background-center, EknWindow.background-right { \
+                .background-center, .background-right { \
                     background-image: url("' + this.blur_background_image_uri + '");\
                 }';
         }
@@ -464,7 +464,7 @@ const Window = new Lang.Class({
                 PARALLAX_BACKGROUND_SCALE;
             let bg_width = Math.ceil(this._background_image_width * bg_mult_ratio);
             let bg_height = Math.ceil(this._background_image_height * bg_mult_ratio);
-            let frame_css = 'EknWindow { background-size: ' + bg_width + 'px ' +
+            let frame_css = '* { background-size: ' + bg_width + 'px ' +
                 bg_height + 'px; }';
             this._bg_size_provider.load_from_data(frame_css);
         }
