@@ -103,9 +103,9 @@ EknSupplementaryArticlesModule > .title,
 EknSuggestedArticlesModule > .title {
     font-family: Merriweather;
     font-weight: bold;
-    font-size: 16.5px;  /* 22px * 75% (DPI correction) */
+    font-size: 30px;  /* 40px * 75% (DPI correction) */
     color: white;
-    padding-bottom: 20px;
+    padding-bottom: 30px;
 }
 
 EknSearchBannerModule {
@@ -264,10 +264,4 @@ EknSetBannerModule .card:hover .title {
 
 .thumb-card {
     box-shadow: 0px 5px 10px 0px alpha(black, 0.22);
-}
-
-EknSupplementaryArticlesModule .text-button {
-    color: white;
-    font-family: 'Merriweather';
-    font-weight: bold;
 }
