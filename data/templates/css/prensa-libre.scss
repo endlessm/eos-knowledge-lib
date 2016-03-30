@@ -20,6 +20,7 @@ $bottom-overlay: #e9e5e0;
 $body-line-height: 1.5;
 
 $compact-max-size: 779px;
+$medium-max-size: 979px;
 $large-min-size: 1180px;
 
 // Remove user agent styles
@@ -47,8 +48,22 @@ html {
 body {
     margin-bottom: 200px;
     margin-top: 60px;
-    margin-right: 100px;
-    margin-left: 100px;
+    @media (max-width: $compact-max-size) {
+        margin-right: 40px;
+        margin-left: 40px;
+    }
+    @media (min-width: $compact-max-size + 1) and (max-width: $medium-max-size) {
+        margin-right: 83px;
+        margin-left: 83px;
+    }
+    @media (min-width: $medium-max-size + 1) and (max-width: $large-min-size - 1) {
+        margin-right: 102px;
+        margin-left: 102px;
+    }
+    @media (min-width: $large-min-size) {
+        margin-right: 120px;
+        margin-left: 120px;
+    }
     padding-top: 5px;
     background-color: white;
     box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.24);
@@ -333,6 +348,11 @@ hr {
        (device-width: 720px) and (device-height: 576px) {
     .main {
         font-family: $body-font-composite;
+    }
+
+    body {
+        margin-right: 0;
+        margin-left: 0;
     }
 
     .eos-modal {
