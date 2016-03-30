@@ -205,7 +205,8 @@ hr {
     }
 
     .disclaimer {
-        margin: $body-unit-height $indent;
+        margin: 0 $indent;
+        padding: $body-unit-height 0;
     }
 
     .eos-modal,
