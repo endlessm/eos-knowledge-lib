@@ -86,6 +86,14 @@ describe('Window', function () {
         }, {
             application: app,
         });
+        factory.add_named_mock('window-without-optional-pages', Window.Window, {
+            'home-page': 'home-page',
+            'search-page': 'real-search-box',
+            'article-page': 'article-page',
+            'search': 'top-bar-search',
+        }, {
+            application: app,
+        });
     });
 
     describe('without brand page', function () {
@@ -263,5 +271,13 @@ describe('Window', function () {
             view.show_page(brand_page);
             expect(view._home_button.sensitive).toBe(false);
         });
+    });
+
+    it('still works without all optional components', function () {
+        let view;
+        expect(() => {
+            view = factory.create_named_module('window-without-optional-pages');
+        }).not.toThrow();
+        view.destroy();
     });
 });
