@@ -242,8 +242,8 @@
                                                     "properties": {
                                                         "show-trigger": false,
                                                         "title-capitalization": "lowercase",
-                                                        "margin-top": 40,
-                                                        "margin-bottom": 40,
+                                                        "margin-top": 50,
+                                                        "margin-bottom": 50,
                                                         "valign": "end"
                                                     },
                                                     "slots": {
@@ -348,8 +348,9 @@
                         "same-set": false,
                         "show-trigger": false,
                         "title-capitalization": "lowercase",
-                        "margin-top": 40,
-                        "margin-bottom": 40,
+                        "margin-start": 20,
+                        "margin-top": 50,
+                        "margin-bottom": 50,
                         "valign": "end"
                     },
                     "slots": {
@@ -357,8 +358,7 @@
                             "type": "SquareGuysArrangement",
                             "properties" : {
                                 "max-rows": 1,
-                                "spacing": 10,
-                                "margin-start": 20,
+                                "spacing": 20,
                                 "margin-end": 20,
                                 "margin-bottom": 20
                             },
