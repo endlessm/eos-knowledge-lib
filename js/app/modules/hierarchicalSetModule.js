@@ -14,7 +14,6 @@ const Module = imports.app.interfaces.module;
 const QueryObject = imports.search.queryObject;
 const Scrollable = imports.app.interfaces.scrollable;
 const SetObjectModel = imports.search.setObjectModel;
-const ThemeableImage = imports.app.widgets.themeableImage;
 
 const BATCH_SIZE = 15;
 
@@ -178,12 +177,11 @@ const HierarchicalSetModule = new Lang.Class({
             no_show_all: true,
         });
         this._set_cards.push(card);
-        let separator = new ThemeableImage.ThemeableImage({
+        let separator = new Gtk.Separator({
             visible: true,
             halign: Gtk.Align.FILL,
             valign: Gtk.Align.CENTER,
         });
-        separator.get_style_context().add_class(Gtk.STYLE_CLASS_SEPARATOR);
         this.add(separator);
         this.add(card);
     },

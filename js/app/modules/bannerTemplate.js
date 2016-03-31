@@ -46,18 +46,6 @@ const BannerTemplate = new Lang.Class({
             'How much to indent the separator by on either side',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             0, GLib.MAXUINT32, 0),
-        /**
-         * Property: image-separator
-         * Whether to render the default separator or allow an image
-         *
-         * Default:
-         *   false (default separator)
-         */
-        'image-separator': GObject.ParamSpec.boolean('image-separator',
-            'Image separator',
-            'Whether to render the default separator or allow an image',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            false),
     },
 
     _init: function (props={}) {
@@ -69,14 +57,8 @@ const BannerTemplate = new Lang.Class({
             margin_start: this.separator_margin,
             margin_end: this.separator_margin,
         };
-        let separator;
-        if (this.image_separator) {
-            separator = new Gtk.Frame(separator_props);
-            separator.get_style_context().add_class(Gtk.STYLE_CLASS_SEPARATOR);
-        }
-        else {
-            separator = new Gtk.Separator(separator_props);
-        }
+        let separator = new Gtk.Separator(separator_props);
+        separator.get_style_context().add_class('banner-separator');
 
         if (Endless.is_composite_tv_screen(null)) {
             this.margin_start *= COMPOSITE_REDUCE_MARGINS_FRACTION;

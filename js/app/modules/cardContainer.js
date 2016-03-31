@@ -92,12 +92,11 @@ const CardContainer = new Lang.Class({
 
         this.parent(props);
 
-        let separator = new ThemeableImage.ThemeableImage({
+        let separator = new Gtk.Separator({
             visible: true,
             halign: Gtk.Align.FILL,
             valign: Gtk.Align.CENTER,
         });
-        separator.get_style_context().add_class(Gtk.STYLE_CLASS_SEPARATOR);
 
         this.arrangement = this.create_submodule('arrangement');
         this.arrangement.connect('card-clicked', (arrangement, model) => {

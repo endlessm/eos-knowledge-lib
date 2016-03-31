@@ -36,13 +36,4 @@ describe('Banner template', function () {
         let content = factory.get_created_named_mocks('mock-content')[0];
         expect(template).toHaveDescendant(content);
     });
-
-    it('has a widget with separator CSS class regardless of image-separator', function () {
-        expect(template).toHaveDescendantWithCssClass(Gtk.STYLE_CLASS_SEPARATOR);
-
-        template = factory.create_named_module('banner-template', {
-            image_separator: true,
-        });
-        expect(template).toHaveDescendantWithCssClass(Gtk.STYLE_CLASS_SEPARATOR);
-    });
 });

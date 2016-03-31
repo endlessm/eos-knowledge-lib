@@ -123,9 +123,6 @@
                             "slots": {
                                 "content": {
                                     "type": "BannerTemplate",
-                                    "properties": {
-                                        "image-separator": true
-                                    },
                                     "slots": {
                                         "banner": {
                                             "type": "SetBannerModule",

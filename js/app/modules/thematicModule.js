@@ -12,7 +12,6 @@ const Engine = imports.search.engine;
 const Module = imports.app.interfaces.module;
 const QueryObject = imports.search.queryObject;
 const Scrollable = imports.app.interfaces.scrollable;
-const ThemeableImage = imports.app.widgets.themeableImage;
 
 /**
  * Class: ThematicModule
@@ -175,12 +174,11 @@ const ThematicModule = new Lang.Class({
         this._sets.push(model);
         let header = this._create_set_card(model);
 
-        let separator = new ThemeableImage.ThemeableImage({
+        let separator = new Gtk.Separator({
             visible: true,
             halign: Gtk.Align.FILL,
             valign: Gtk.Align.CENTER,
         });
-        separator.get_style_context().add_class(Gtk.STYLE_CLASS_SEPARATOR);
 
         let arrangement = this.create_submodule('arrangement', {
             vexpand: true,
