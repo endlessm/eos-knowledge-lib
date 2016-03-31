@@ -529,7 +529,9 @@ const MeshInteraction = new Lang.Class({
      */
     _load_theme: function () {
         let provider = new Gtk.CssProvider();
-        if (this.template_type === 'encyclopedia') {
+        if (this.factory.version >= 2) {
+            provider.load_from_data(this.css);
+        } else if (this.template_type === 'encyclopedia') {
             let css_file = Gio.File.new_for_uri(DATA_RESOURCE_PATH + 'css/endless_encyclopedia.css');
             provider.load_from_file(css_file);
         } else {
