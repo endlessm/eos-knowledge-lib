@@ -47,6 +47,9 @@ const SetPreviewCard = new Lang.Class({
         'highlight-string': GObject.ParamSpec.override('highlight-string', Card.Card),
         'text-halign': GObject.ParamSpec.override('text-halign', Card.Card),
         'sequence': GObject.ParamSpec.override('sequence', Card.Card),
+        'fixme-load-subsets': GObject.ParamSpec.boolean('fixme-load-subsets', '', '',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            false),
     },
 
     _init: function (props={}) {
@@ -93,10 +96,16 @@ const SetPreviewCard = new Lang.Class({
 
     load_content: function (done) {
         this.arrangement.visible = true;
-        let query = new QueryObject.QueryObject({
+        let query_props = {
             limit: this.arrangement.get_max_cards(),
-            tags: this.model.child_tags,
-        });
+        };
+        if (this.fixme_load_subsets) {
+            query_props.tags = this.model.child_tags.concat('EknSetObject');
+            query_props.tag_match = QueryObject.QueryObjectTagMatch.ALL;
+        } else {
+            query_props.tags = this.model.child_tags;
+        }
+        let query = new QueryObject.QueryObject(query_props);
         Engine.get_default().get_objects_by_query(query, null, (engine, res) => {
             let models, get_more;
             try {
