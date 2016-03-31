@@ -89,8 +89,11 @@ const AppBanner = new Module.Class({
             visible: true,
             min_fraction: this.min_fraction,
             max_fraction: this.max_fraction,
-            expand: true,
             valign: Gtk.Align.END,
+            hexpand: true,
+            halign: Gtk.Align.CENTER,
+            margin_top: 20,
+            margin_bottom: 20,
         });
         this.attach(this._logo, 0, 0, 1, 1);
 
