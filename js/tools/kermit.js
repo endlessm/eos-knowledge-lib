@@ -7,6 +7,7 @@ const System = imports.system;
 
 const USAGE = [
     'usage: kermit grep <shard path> <pattern>',
+    '       kermit list <shard path>',
     '       kermit dump <shard path> <ekn id> [data|metadata]',
     '       kermit query <domain> "<querystring>"',
     '',
@@ -24,6 +25,11 @@ function main () {
         case 'grep':
             if (ARGV.length === 3) {
                 grep(ARGV[1], ARGV[2]);
+                break;
+            }
+        case 'list':
+            if (ARGV.length === 2) {
+                grep(ARGV[1], '');
                 break;
             }
         case 'dump':
