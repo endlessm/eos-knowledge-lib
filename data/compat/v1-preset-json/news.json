@@ -448,7 +448,7 @@
                         "banner": {
                             "type": "AppBanner",
                             "properties": {
-                                "max-fraction": 0.3,
+                                "max-fraction": 0.2,
                                 "show-subtitle": false,
                                 "visible": true
                             }
@@ -471,7 +471,6 @@
                                             "type": "TextCard",
                                             "properties": {
                                                 "title-capitalization": "lowercase",
-                                                "margin-top": 5,
                                                 "halign": "center",
                                                 "decorate-on-highlight": true
                                             }
