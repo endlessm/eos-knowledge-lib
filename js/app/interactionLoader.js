@@ -30,7 +30,8 @@ let create_interaction = function (application, resource_path) {
     application.image_attribution_file = resource_file.get_child('credits.json');
 
     return factory.create_named_module('interaction', {
-        template_type: app_json['templateType'],
+        // v2 app.jsons have no templateType key
+        template_type: app_json['templateType'] || '',
         css: css,
         application: application,
     });
