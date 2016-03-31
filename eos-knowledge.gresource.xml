@@ -23,6 +23,7 @@
     <file>data/images/background.png</file>
     <file>data/images/pdf-background.png</file>
     <file>data/images/pdf_icon.png</file>
+    <file>data/images/static.png</file>
     <file preprocess="xml-stripblanks">data/images/reader/archive.svg</file>
     <file preprocess="xml-stripblanks">data/images/reader/external-link.svg</file>
     <file preprocess="xml-stripblanks">data/images/reader/left-arrow.svg</file>
@@ -63,6 +64,7 @@
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/cardB.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/dividedBannerTemplate.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/encyclopediaCoverTemplate.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">data/widgets/fakeVideoDocumentCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/gridArrangement.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/hamburgerBasementTemplate.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/knowledgeDocumentCard.ui</file>
@@ -128,6 +130,7 @@
     <file>js/app/modules/dividedBannerTemplate.js</file>
     <file>js/app/modules/encyclopediaCoverTemplate.js</file>
     <file>js/app/modules/encyclopediaWindow.js</file>
+    <file>js/app/modules/fakeVideoDocumentCard.js</file>
     <file>js/app/modules/featuredFilter.js</file>
     <file>js/app/modules/featuredOrder.js</file>
     <file>js/app/modules/gridArrangement.js</file>
