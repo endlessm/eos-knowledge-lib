@@ -9,6 +9,7 @@ const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
+const WebKit2 = imports.gi.WebKit2;
 
 const Actions = imports.app.actions;
 const Card = imports.app.interfaces.card;
@@ -189,7 +190,8 @@ const ArticleStackModule = new Lang.Class({
             this.visible_child = document_card;
             document_card.content_view.grab_focus();
         }
-        this._webview_tooltip_presenter.set_document_card(document_card);
+        if (document_card.content_view instanceof WebKit2.WebView)
+            this._webview_tooltip_presenter.set_document_card(document_card);
     },
 
     _on_show_tooltip: function (tooltip_presenter, tooltip, uri) {

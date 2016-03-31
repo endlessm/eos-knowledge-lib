@@ -122,12 +122,14 @@ const Window = new Lang.Class({
 
         if (this.template_type === 'B') {
             this._home_page.get_style_context().add_class(StyleClasses.HOME_PAGE_B);
-            this._section_page.get_style_context().add_class(StyleClasses.SECTION_PAGE_B);
+            if (this._section_page)
+                this._section_page.get_style_context().add_class(StyleClasses.SECTION_PAGE_B);
             this._search_page.get_style_context().add_class(StyleClasses.SEARCH_PAGE_B);
             this._article_page.get_style_context().add_class(StyleClasses.ARTICLE_PAGE_B);
         } else {
             this._home_page.get_style_context().add_class(StyleClasses.HOME_PAGE_A);
-            this._section_page.get_style_context().add_class(StyleClasses.SECTION_PAGE_A);
+            if (this._section_page)
+                this._section_page.get_style_context().add_class(StyleClasses.SECTION_PAGE_A);
             this._search_page.get_style_context().add_class(StyleClasses.SEARCH_PAGE_A);
             this._article_page.get_style_context().add_class(StyleClasses.ARTICLE_PAGE_A);
         }
@@ -138,7 +140,8 @@ const Window = new Lang.Class({
         if (this._brand_page)
             this._stack.add(this._brand_page);
         this._stack.add(this._home_page);
-        this._stack.add(this._section_page);
+        if (this._section_page)
+            this._stack.add(this._section_page);
         this._stack.add(this._search_page);
         this._stack.add(this._article_page);
         if (this._all_sets_page)

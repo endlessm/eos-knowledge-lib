@@ -21,6 +21,13 @@ const ModuleFactory = new Lang.Class({
         'warehouse': GObject.ParamSpec.object('warehouse', 'Warehouse', 'Warehouse',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             GObject.Object.$gtype),
+        /**
+         * Property: version
+         * Version of the app.json that powers this factory
+         */
+        'version': GObject.ParamSpec.uint('version', 'Version',
+            'Version of the app.json that powers this factory',
+            GObject.ParamFlags.READABLE, 0, 999, 2),
     },
 
     _init: function (props={}) {
@@ -49,10 +56,17 @@ const ModuleFactory = new Lang.Class({
             // rather than in the database. We create fake objects for them.
             Compat.create_v1_set_models(this.app_json, Engine.get_default());
             this.app_json = Compat.transform_v1_description(this.app_json);
+            this._version = 1;
+        } else {
+            this._version = this.app_json.version;
         }
         // After this point, the app.json must be the current version!
 
         this._anonymous_name_to_description = {};
+    },
+
+    get version() {
+        return this._version;
     },
 
     _parse_json_property: function (module_class, property_name, json_value) {
