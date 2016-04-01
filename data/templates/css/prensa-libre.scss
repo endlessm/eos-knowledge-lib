@@ -189,9 +189,11 @@ hr {
     justify-content: space-between;
 
     p {
+        flex-shrink: 3;
         font-family: $caption-font;
         color: $gray;
         margin-bottom: 0;
+        padding-left: 40px;
     }
 
     &::before {
@@ -316,10 +318,10 @@ hr {
     }
 
     .disclaimer::before {
-        height: 2 * $body-size;
+        height: 1.5 * $body-size;
         // ugh, width: auto doesn't work for SVGs not specified via <img>
         // See https://css-tricks.com/scale-svg/
-        width: 730 / 150 * 2 * $body-size;
+        width: 730 / 150 * 1.5 * $body-size;
     }
 }
 
