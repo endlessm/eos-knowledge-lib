@@ -140,15 +140,18 @@ const HierarchicalSetModule = new Lang.Class({
             if (results.length === 0)
                 return;
 
+            let is_loading_sets = true;
             results.forEach((model) => {
                 if (model instanceof SetObjectModel.SetObjectModel) {
                     this._add_set_card(model);
                 } else if (model instanceof ArticleObjectModel.ArticleObjectModel &&
                     this._belongs_to_current_set_and_not_subset(model)) {
                     this._arrangement.add_model(model);
+                    is_loading_sets = false;
                 }
             });
-            this.show_more_content();
+            if (is_loading_sets)
+                this.show_more_content();
             this._send_feature_item();
             Dispatcher.get_default().dispatch({
                 action_type: Actions.CONTENT_ADDED,
