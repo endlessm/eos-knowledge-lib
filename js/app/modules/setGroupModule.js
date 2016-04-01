@@ -107,8 +107,7 @@ const SetGroupModule = new Lang.Class({
     },
 
     _check_more_content: function () {
-        this.has_more_content = this._arrangement.get_count() > this.max_children ||
-            !this._arrangement.all_visible;
+        this.has_more_content = !this._arrangement.all_visible;
         this.notify('has-more-content');
     },
 
