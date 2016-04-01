@@ -70,17 +70,21 @@ describe('SideBySide Arrangement', function () {
 
         // At width=2000px, all ten cards should be visible with 50px spacing
         testSizingArrangementForDimensions(2000, 10, 50);
-        // At width=1200px, eight cards should be visible, with 40px spacing
-        testSizingArrangementForDimensions(1200, 8, 40);
-        // At width=1000px, seven cards should be visible, with 40px spacing
-        testSizingArrangementForDimensions(1000, 7, 40);
-        // At width=800px, seven cards should be visible, with 20px spacing
-        testSizingArrangementForDimensions(900, 7, 20);
-        // At width=800px, six cards should be visible, with 20px spacing
-        testSizingArrangementForDimensions(800, 6, 20);
-        // At width=720px, six cards should be visible, with 15px spacing
-        testSizingArrangementForDimensions(720, 6, 15);
-        // At width=600px, five cards should be visible, with 15x spacing
-        testSizingArrangementForDimensions(600, 5, 15);
+        // At width=1400px, all ten cards should be visible, with 40px spacing
+        testSizingArrangementForDimensions(1400, 10, 40);
+        // At width=1200px, all ten cards should be visible, with 20px spacing
+        testSizingArrangementForDimensions(1200, 10, 20);
+        // At width=1150px, all ten cards should be visible, with 15px spacing
+        testSizingArrangementForDimensions(1150, 10, 15);
+        // At width=1000px, all ten cards should be visible, with 0px spacing
+        testSizingArrangementForDimensions(1000, 10, 0);
+        // At width=900px, nine cards should be visible, with 0px spacing
+        testSizingArrangementForDimensions(900, 9, 0);
+        // At width=800px, eight cards should be visible, with 0px spacing
+        testSizingArrangementForDimensions(800, 8, 0);
+        // At width=720px, seven cards should be visible, with 0px spacing
+        testSizingArrangementForDimensions(720, 7, 0);
+        // At width=600px, six cards should be visible, with 0x spacing
+        testSizingArrangementForDimensions(600, 6, 0);
     });
 });
