@@ -60,6 +60,9 @@ const SetGroupModule = new Lang.Class({
             });
         });
         this.add(this._arrangement);
+        this._arrangement.connect('notify::all-visible', () => {
+            this._check_more_content();
+        });
         this.get_style_context().add_class(StyleClasses.SET_GROUP);
 
         let dispatcher = Dispatcher.get_default();
@@ -109,10 +112,5 @@ const SetGroupModule = new Lang.Class({
     _check_more_content: function () {
         this.has_more_content = !this._arrangement.all_visible;
         this.notify('has-more-content');
-    },
-
-    vfunc_size_allocate: function (alloc) {
-        this.parent(alloc);
-        this._check_more_content();
     },
 });
