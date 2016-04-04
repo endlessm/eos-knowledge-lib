@@ -166,7 +166,6 @@
                 "card-type": {
                     "type": "KnowledgeDocumentCard",
                     "properties": {
-                        "show-top-title": true,
                         "show-toc": true
                     }
                 }
