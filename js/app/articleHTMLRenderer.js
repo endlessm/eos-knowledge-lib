@@ -12,7 +12,6 @@ const SetMap = imports.app.setMap;
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
 const _MODAL_TEMPLATE = '\
-<a class="eos-modal-link" href="#modal"> {text} </a>\
 <div class="eos-modal" id="modal">\
     <a class="eos-modal-close-background" href="#close"></a>\
     <div>\
@@ -110,10 +109,9 @@ const ArticleHTMLRenderer = new Lang.Class({
                 let message = _get_display_string_for_license(model.license);
                 return message.replace('{blog-link}', blog_link);
             case 'prensa-libre':
-                let disclaimer_label = _("Legal Notice and Intellectual Property Policy");
-                let disclaimer_content = _to_disclaimer_paragraph(_("DISCLAIMER PLACEHOLDER"));
-                let disclaimer_link = _to_modal_link(disclaimer_label, disclaimer_content);
                 let article_link = _to_link(model.original_uri, 'Prensalibre.com');
+                let disclaimer_label = _("Legal Notice and Intellectual Property Policy");
+                let disclaimer_link = _to_modal_link(disclaimer_label);
                 // TRANSLATORS: anything inside curly braces '{}' is going to be
                 // substituted in code. Please make sure to leave the curly
                 // braces around any words that have them, and do not translate
@@ -125,6 +123,16 @@ const ArticleHTMLRenderer = new Lang.Class({
             default:
                 return false;
         }
+    },
+
+    _get_disclaimer_window: function (model) {
+        if (model.source !== 'prensa-libre') {
+            return false;
+        }
+
+        let disclaimer_content = _to_disclaimer_paragraph(_("DISCLAIMER PLACEHOLDER"));
+        let modal_html = _MODAL_TEMPLATE.replace('{content}', disclaimer_content);
+        return modal_html;
     },
 
     _get_css_files: function (model) {
@@ -207,6 +215,7 @@ const ArticleHTMLRenderer = new Lang.Class({
             'title': this.show_title ? model.title : false,
             'body-html': this._strip_tags(html),
             'disclaimer': this._get_disclaimer(model),
+            'disclaimer-window': this._get_disclaimer_window(model),
             'copy-button-text': _("Copy"),
             'css-files': css_files,
             'javascript-files': js_files,
@@ -225,10 +234,8 @@ function _to_link(uri, text) {
     return '<a class="eos-show-link" href="browser-' + uri + '">' + Mustache.escape(text) + '</a>';
 }
 
-function _to_modal_link(text, content) {
-    let modal_html = _MODAL_TEMPLATE.replace('{text}', Mustache.escape(text));
-    modal_html = modal_html.replace('{content}', content);
-    return modal_html;
+function _to_modal_link(text) {
+    return '<a class="eos-modal-link" href="#modal">' + Mustache.escape(text) + '</a>';
 }
 
 function _to_disclaimer_paragraph(text) {

@@ -43,6 +43,9 @@
                     <p>{{{.}}}</p>
                 </div>
                 {{/disclaimer}}
+                {{#disclaimer-window}}
+                    {{{.}}}
+                {{/disclaimer-window}}
             </section>
         </div>
         {{#javascript-files}}
