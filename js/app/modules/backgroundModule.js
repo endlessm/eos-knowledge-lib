@@ -35,14 +35,14 @@ const _topImageHeight = {
 };
 
 const _cssTemplate = 'EknBackgroundModule {\
-    background-image: linear-gradient(@{bottom}), linear-gradient(alpha(@{overlay}, 0.4)), url("@{image}");\
-    background-position: 0px @{small}px, 0px 0px, 0px 0px;\
+    background-image: linear-gradient(@{bottom}), linear-gradient(alpha(black, 0.3)), linear-gradient(alpha(@{overlay}, 0.4)), url("@{image}");\
+    background-position: 0px @{small}px, 0px 0px, 0px 0px, 0px 0px;\
 }\
 EknBackgroundModule.medium {\
-    background-position: 0px @{medium}px, 0px 0px, 0px 0px;\
+    background-position: 0px @{medium}px, 0px 0px, 0px 0px, 0px 0px;\
 }\
 EknBackgroundModule.big {\
-    background-position: 0px @{big}px, 0px 0px, 0px 0px;\
+    background-position: 0px @{big}px, 0px 0px, 0px 0px, 0px 0px;\
 }';
 
 /**
