@@ -325,7 +325,7 @@
                         "card-type": {
                             "type": "KnowledgeDocumentCard",
                             "properties": {
-                                "show-top-title": false,
+                                "show-titles": false,
                                 "show-toc": false
                             }
                         },

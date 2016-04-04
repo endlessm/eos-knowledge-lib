@@ -56,14 +56,13 @@ const KnowledgeDocumentCard = new Lang.Class({
         'sequence': GObject.ParamSpec.override('sequence', Card.Card),
 
         /**
-         * Property: show-top-title
+         * Property: show-titles
          *
-         * Set true if the top title label should be visible when the toc is
-         * either hidden or collapsed.
+         * Set true if the title label and top title label should be visible.
          */
-        'show-top-title':  GObject.ParamSpec.boolean('show-top-title', 'Show Top Title',
-            'Whether to show the top title label when toc is collapsed/hidden',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, false),
+        'show-titles':  GObject.ParamSpec.boolean('show-titles', 'Show Title Labels',
+            'Whether to show the title label and top title label',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, true),
         /**
          * Property: show-toc
          *
@@ -143,9 +142,13 @@ const KnowledgeDocumentCard = new Lang.Class({
 
         this._setup_toc();
 
-        this._title_label.bind_property('visible',
-            this._top_title_label, 'visible',
-            GObject.BindingFlags.SYNC_CREATE | GObject.BindingFlags.INVERT_BOOLEAN | GObject.BindingFlags.BIDIRECTIONAL);
+        if (this.show_titles) {
+            this._title_label.bind_property('visible',
+                this._top_title_label, 'visible',
+                GObject.BindingFlags.SYNC_CREATE | GObject.BindingFlags.INVERT_BOOLEAN | GObject.BindingFlags.BIDIRECTIONAL);
+        } else {
+            this._title_label.visible = this._top_title_label.visible = false;
+        }
     },
 
     _setup_toc: function () {
