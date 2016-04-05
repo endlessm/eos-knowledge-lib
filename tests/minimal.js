@@ -232,7 +232,7 @@ const MinimalDocumentCard = new Lang.Class({
         'show-toc': GObject.ParamSpec.boolean('show-toc', '', '',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
             true),
-        'show-top-title': GObject.ParamSpec.boolean('show-top-title', '', '',
+        'show-titles': GObject.ParamSpec.boolean('show-titles', '', '',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
             true),
         'previous-card': GObject.ParamSpec.object('previous-card',
