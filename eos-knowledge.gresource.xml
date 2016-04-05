@@ -229,6 +229,7 @@
     <file>js/search/treeNode.js</file>
     <file>js/search/utils.js</file>
     <file>js/search/xapianBridge.js</file>
+    <file>js/tools/eminem.js</file>
     <file>js/tools/kermit.js</file>
     <file>js/tools/picard.js</file>
   </gresource>
