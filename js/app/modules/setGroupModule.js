@@ -61,7 +61,7 @@ const SetGroupModule = new Lang.Class({
         });
         this.add(this._arrangement);
         this._arrangement.connect('notify::all-visible', () => {
-            this._check_more_content();
+            GLib.idle_add(GLib.PRIORITY_DEFAULT_IDLE, this._check_more_content.bind(this));
         });
         this.get_style_context().add_class(StyleClasses.SET_GROUP);
 
