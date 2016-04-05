@@ -114,6 +114,7 @@ const SetGroupModule = new Lang.Class({
 
     vfunc_size_allocate: function (alloc) {
         this.parent(alloc);
-        this._check_more_content();
+        this._idle_id = GLib.idle_add(GLib.PRIORITY_LOW,
+                this._check_more_content.bind(this));
     },
 });
