@@ -286,6 +286,14 @@ const BuffetInteraction = new Lang.Class({
         provider.load_from_resource(RESOURCE_PATH + this.theme + '.css');
         Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(),
             provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+
+        if (this.css) {
+            let overrides_provider = new Gtk.CssProvider();
+            overrides_provider.load_from_data(this.css);
+            Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(),
+                overrides_provider,
+                Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION + 1);
+        }
     },
 
     _start_search_via_history: function (query) {
