@@ -75,12 +75,18 @@ const SetGroupModule = new Lang.Class({
                     this._cards = [];
                     break;
                 case Actions.APPEND_SETS:
-                    this._arrangement.fade_cards =
-                        (this._arrangement.get_count() > 0);
+                    let first_batch = (this._arrangement.get_count() === 0);
+                    this._arrangement.fade_cards = !first_batch;
                     payload.models.forEach(this._add_card, this);
 
                     if (this._arrangement instanceof InfiniteScrolledWindow.InfiniteScrolledWindow) {
                         this._arrangement.new_content_added();
+                    }
+                    if (first_batch) {
+                        Dispatcher.get_default().dispatch({
+                            action_type: Actions.MODULE_READY,
+                            module: this,
+                        });
                     }
                     break;
                 case Actions.HIGHLIGHT_ITEM:
