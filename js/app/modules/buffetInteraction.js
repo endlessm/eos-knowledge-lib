@@ -98,7 +98,6 @@ const BuffetInteraction = new Lang.Class({
         });
 
         this._brand_page_timeout_id = 0;
-        this._content_ready = false;
 
         // Load all sets, with which to populate the highlights and thematic
         // pages
