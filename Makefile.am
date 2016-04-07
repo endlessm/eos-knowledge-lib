@@ -239,6 +239,7 @@ subst_files = \
 	eos-encyclopedia \
 	js/app/config.js \
 	js/search/config.js \
+	eminem \
 	kermit \
 	picard \
 	$(NULL)
@@ -261,6 +262,7 @@ bin_SCRIPTS += \
 	ekn-search-provider \
 	ekn-app-runner \
 	eos-encyclopedia \
+	eminem \
 	kermit \
 	picard \
 	$(NULL)
