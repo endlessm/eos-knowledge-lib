@@ -120,6 +120,8 @@ function unfreeze (subscription_id, input_path) {
 }
 
 function inspect_domain (domain) {
+    let cancellable = null;
+
     print(Format.vprintf("domain: %s", [domain]));
 
     let data_dir = Datadir.get_data_dir_for_domain(domain);
@@ -139,7 +141,7 @@ function inspect_domain (domain) {
     } else if (ekn_version === 3) {
         let subscription_id = domain_obj.get_subscription_ids()[0];
         print(Format.vprintf("subscription ID: %s", [subscription_id]));
-        print(Format.vprintf("subscription dir: %s", [get_subscription_dir(subscription_id).get_path()]));
+        print(Format.vprintf("subscription dir: %s", [get_subscription_dir(subscription_id, cancellable).get_path()]));
     }
 }
 
