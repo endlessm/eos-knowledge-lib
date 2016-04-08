@@ -14,6 +14,7 @@ const Utils = imports.app.utils;
  */
 const EncyclopediaWindow = new Lang.Class({
     Name: 'EncyclopediaWindow',
+    GTypeName: 'EknEncyclopediaWindow',
     Extends: Endless.Window,
     Implements: [ Module.Module ],
 
