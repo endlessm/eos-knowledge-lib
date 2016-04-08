@@ -3,12 +3,9 @@
     background-color: white;
 }
 
-.media-card GtkSeparator {
-    border-style: solid;
-    border-width: 4px;
-    border-color: #d6d6d6;
-    -GtkWidget-wide-separators: true;
-    -GtkWidget-separator-height: 1;
+.media-card separator {
+    background-color: #d6d6d6;
+    min-height: 1px;
 }
 
 .media-card-caption {

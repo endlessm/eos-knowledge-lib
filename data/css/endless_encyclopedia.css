@@ -82,7 +82,7 @@ GtkEntry:selected {
 }
 
 .divided-banner-template separator {
-    padding-bottom: 15px;
+    min-height: 15px;
     background-image: url('resource:///com/endlessm/knowledge/data/images/separator.png');
     background-size: 100%;
     background-repeat: no-repeat;
@@ -97,8 +97,10 @@ GtkEntry:selected {
     font-weight: bold;
 }
 
-.divided-banner-template separator {
-    color: #888a85;
+.divided-banner-template .search-results separator {
+    min-height: 1px;
+    background-image: none;
+    background-color: #888a85;
 }
 
 .search-results .results-message-title,

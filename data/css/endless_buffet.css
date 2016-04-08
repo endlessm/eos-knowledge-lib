@@ -25,7 +25,7 @@ EknHighlightsModule separator,
 EknSetPreviewCard separator,
 EknThematicModule separator {
     background-color: #999999;
-    -EknThemeableImage-min-height: 1;
+    min-height: 1px;
     margin: 4px 0px 10px 0px;
 }
 
@@ -52,7 +52,10 @@ EknSearchModule .suggested-articles {
     background-color: #f6f6f6;
 }
 
-.search-results separator,
+.search-results separator {
+    background-color: #999999;
+}
+
 .search-results .results-message-subtitle,
 .browse-content .title {
     color: #999999;
@@ -144,7 +147,8 @@ EknSideMenuTemplate .menu .card:hover .title {
 }
 
 EknSideMenuTemplate .menu separator {
-    color: #cccccc;
+    min-height: 1px;
+    background-color: #cccccc;
 }
 
 EknSideMenuTemplate .close-button,

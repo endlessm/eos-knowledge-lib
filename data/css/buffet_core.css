@@ -18,7 +18,7 @@ scrollbar slider {
 
 EknSuggestedCategoriesModule separator {
     background-color: #999999;
-    -EknThemeableImage-min-height: 1;
+    min-height: 1px;
     margin: 4px 50px 20px 50px;
 }
 
