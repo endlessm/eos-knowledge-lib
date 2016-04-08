@@ -28,6 +28,7 @@ const Utils = imports.app.utils;
 const AllTypeCard = new Lang.Class({
     Name: 'AllTypeCard',
     GTypeName: 'EknAllTypeCard',
+    CssName: 'EknAllTypeCard',
     Extends: Gtk.Button,
     Implements: [ Module.Module, Card.Card ],
 

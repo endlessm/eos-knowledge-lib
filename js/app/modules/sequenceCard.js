@@ -25,6 +25,7 @@ const Utils = imports.app.utils;
 const SequenceCard = new Lang.Class({
     Name: 'SequenceCard',
     GTypeName: 'EknSequenceCard',
+    CssName: 'EknSequenceCard',
     Extends: Gtk.Button,
     Implements: [ Module.Module, Card.Card, NavigationCard.NavigationCard ],
 

@@ -22,6 +22,7 @@ let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 const BackCover = new Lang.Class({
     Name: 'BackCover',
     GTypeName: 'EknBackCover',
+    CssName: 'EknBackCover',
     Extends: Gtk.Frame,
     Implements: [ Module.Module ],
 

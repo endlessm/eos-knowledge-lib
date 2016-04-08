@@ -18,6 +18,7 @@ const Utils = imports.app.utils;
 const SearchResultCard = new Lang.Class({
     Name: 'SearchResultCard',
     GTypeName: 'EknSearchResultCard',
+    CssName: 'EknSearchResultCard',
     Extends: Gtk.Button,
     Implements: [ Module.Module, Card.Card, NavigationCard.NavigationCard ],
 

@@ -12,6 +12,7 @@ const Module = imports.app.interfaces.module;
 const CarouselArrangement = new Lang.Class({
     Name: 'CarouselArrangement',
     GTypeName: 'EknCarouselArrangement',
+    CssName: 'EknCarouselArrangement',
     Extends: Gtk.Stack,
     Implements: [ Module.Module, Arrangement.Arrangement ],
 

@@ -38,6 +38,7 @@ const Navigation = {
 const ArticleStackModule = new Lang.Class({
     Name: 'ArticleStackModule',
     GTypeName: 'EknArticleStackModule',
+    CssName: 'EknArticleStackModule',
     Extends: Gtk.Stack,
     Implements: [ Module.Module ],
 

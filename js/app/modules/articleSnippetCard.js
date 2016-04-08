@@ -25,6 +25,7 @@ const Utils = imports.app.utils;
 const ArticleSnippetCard = new Lang.Class({
     Name: 'ArticleSnippetCard',
     GTypeName: 'EknArticleSnippetCard',
+    CssName: 'EknArticleSnippetCard',
     Extends: Gtk.Button,
     Implements: [ Module.Module, Card.Card ],
 

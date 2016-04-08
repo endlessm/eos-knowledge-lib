@@ -19,6 +19,7 @@ const Module = imports.app.interfaces.module;
 const SearchAndItemModule = new Lang.Class({
     Name: 'SearchAndItemModule',
     GTypeName: 'EknSearchAndItemModule',
+    CssName: 'EknSearchAndItemModule',
     Extends: Gtk.Stack,
     Implements: [ Module.Module ],
 

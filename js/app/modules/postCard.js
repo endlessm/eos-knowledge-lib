@@ -17,6 +17,7 @@ const Utils = imports.app.utils;
 const PostCard = new Lang.Class({
     Name: 'PostCard',
     GTypeName: 'EknPostCard',
+    CssName: 'EknPostCard',
     Extends: Gtk.Button,
     Implements: [ Module.Module, Card.Card ],
 

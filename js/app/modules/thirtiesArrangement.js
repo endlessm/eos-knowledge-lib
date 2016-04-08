@@ -26,6 +26,7 @@ const COL_COUNT = 3;
 const ThirtiesArrangement = new Lang.Class({
     Name: 'ThirtiesArrangement',
     GTypeName: 'EknThirtiesArrangement',
+    CssName: 'EknThirtiesArrangement',
     Extends: Endless.CustomContainer,
     Implements: [ Module.Module, Arrangement.Arrangement ],
 

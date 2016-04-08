@@ -14,6 +14,7 @@ const Module = imports.app.interfaces.module;
 const LightboxModule = new GObject.Class({
     Name: 'LightboxModule',
     GTypeName: 'EknLightboxModule',
+    CssName: 'EknLightboxModule',
     Extends: Lightbox.Lightbox,
     Implements: [ Module.Module ],
 

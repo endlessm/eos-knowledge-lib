@@ -27,6 +27,7 @@ const HOVER_HEIGHT = Math.ceil(HEIGHT * (1 + GROW_FRACTION));
 const CardA = new Lang.Class({
     Name: 'CardA',
     GTypeName: 'EknCardA',
+    CssName: 'EknCardA',
     Extends: Gtk.Button,
     Implements: [ Module.Module, Card.Card ],
 

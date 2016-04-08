@@ -28,6 +28,7 @@ const Utils = imports.app.utils;
 const SuggestedCategoriesModule = new Lang.Class({
     Name: 'SuggestedCategoriesModule',
     GTypeName: 'EknSuggestedCategoriesModule',
+    CssName: 'EknSuggestedCategoriesModule',
     Extends: Gtk.Grid,
     Implements: [ Module.Module ],
 

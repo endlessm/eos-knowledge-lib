@@ -30,6 +30,7 @@ const Utils = imports.app.utils;
 const SidebarTemplate = new Lang.Class({
     Name: 'SidebarTemplate',
     GTypeName: 'EknSidebarTemplate',
+    CssName: 'EknSidebarTemplate',
     Extends: Endless.CustomContainer,
     Implements: [ Module.Module ],
 

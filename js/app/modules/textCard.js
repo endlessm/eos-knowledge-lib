@@ -31,6 +31,7 @@ const HIGHLIGHT_DECORATION_DIMENSION = 5;
 const TextCard = new Lang.Class({
     Name: 'TextCard',
     GTypeName: 'EknTextCard',
+    CssName: 'EknTextCard',
     Extends: Gtk.Button,
     Implements: [ Module.Module, Card.Card, NavigationCard.NavigationCard ],
 

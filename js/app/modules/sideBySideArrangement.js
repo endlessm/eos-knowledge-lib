@@ -27,6 +27,7 @@ const _HorizontalSpacing = {
 const SideBySideArrangement = new Lang.Class({
     Name: 'SideBySideArrangement',
     GTypeName: 'EknSideBySideArrangement',
+    CssName: 'EknSideBySideArrangement',
     Extends: Endless.CustomContainer,
     Implements: [ Module.Module, Arrangement.Arrangement ],
 

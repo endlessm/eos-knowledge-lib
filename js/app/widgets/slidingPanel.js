@@ -11,6 +11,7 @@ const StyleClasses = imports.app.styleClasses;
 const PanelFrame = new Lang.Class({
     Name: 'PanelFrame',
     GTypeName: 'EknPanelFrame',
+    CssName: 'EknPanelFrame',
     Extends: Gtk.Frame,
 
     _init: function (panel, params={}) {
@@ -42,6 +43,7 @@ const PanelFrame = new Lang.Class({
 const SlidingPanel = new Lang.Class({
     Name: 'SlidingPanel',
     GTypeName: 'EknSlidingPanel',
+    CssName: 'EknSlidingPanel',
     Extends: Gtk.Stack,
 
     Properties: {

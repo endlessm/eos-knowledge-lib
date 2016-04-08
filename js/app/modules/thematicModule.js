@@ -43,6 +43,7 @@ const ThemeableImage = imports.app.widgets.themeableImage;
 const ThematicModule = new Lang.Class({
     Name: 'ThematicModule',
     GTypeName: 'EknThematicModule',
+    CssName: 'EknThematicModule',
     Extends: Gtk.Grid,
     Implements: [ Module.Module, Scrollable.Scrollable ],
 

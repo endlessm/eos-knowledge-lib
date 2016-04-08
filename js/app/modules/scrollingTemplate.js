@@ -21,6 +21,7 @@ const Module = imports.app.interfaces.module;
 const ScrollingTemplate = new Lang.Class({
     Name: 'ScrollingTemplate',
     GTypeName: 'EknScrollingTemplate',
+    CssName: 'EknScrollingTemplate',
     Extends: InfiniteScrolledWindow.InfiniteScrolledWindow,
     Implements: [ Module.Module ],
 

@@ -25,6 +25,7 @@ const Module = imports.app.interfaces.module;
 const ItemGroupModule = new Lang.Class({
     Name: 'ItemGroupModule',
     GTypeName: 'EknItemGroupModule',
+    CssName: 'EknItemGroupModule',
     Extends: Gtk.Frame,
     Implements: [ Module.Module ],
 

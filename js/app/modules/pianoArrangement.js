@@ -30,6 +30,7 @@ const FEATURED_CARD_WIDTH_FRACTION = 2 / 3;
 const PianoArrangement = new Lang.Class({
     Name: 'PianoArrangement',
     GTypeName: 'EknPianoArrangement',
+    CssName: 'EknPianoArrangement',
     Extends: Endless.CustomContainer,
     Implements: [ Module.Module, Arrangement.Arrangement ],
 

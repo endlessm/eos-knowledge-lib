@@ -16,6 +16,7 @@ const Module = imports.app.interfaces.module;
 const EncyclopediaCoverTemplate = new Lang.Class({
     Name: 'EncyclopediaCoverTemplate',
     GTypeName: 'EknEncyclopediaCoverTemplate',
+    CssName: 'EknEncyclopediaCoverTemplate',
     Extends: Gtk.Frame,
     Implements: [ Module.Module ],
 

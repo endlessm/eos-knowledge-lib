@@ -36,6 +36,7 @@ const _COMPOSITE_TITLE_VIEW_LEFT_MARGIN_PX = 40;
 const ReaderDocumentCard = new Lang.Class({
     Name: 'ReaderDocumentCard',
     GTypeName: 'EknReaderDocumentCard',
+    CssName: 'EknReaderDocumentCard',
     Extends: Gtk.Overlay,
     Implements: [ Module.Module, Card.Card, DocumentCard.DocumentCard ],
 

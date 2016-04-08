@@ -22,6 +22,7 @@ const Utils = imports.app.utils;
 const PaperTemplate = new Lang.Class({
     Name: 'PaperTemplate',
     GTypeName: 'EknPaperTemplate',
+    CssName: 'EknPaperTemplate',
     Extends: Gtk.Frame,
     Implements: [ Module.Module ],
 

@@ -12,6 +12,7 @@ const Module = imports.app.interfaces.module;
 const ScrollingListArrangement = new Lang.Class({
     Name: 'ScrollingListArrangement',
     GTypeName: 'EknScrollingListArrangement',
+    CssName: 'EknScrollingListArrangement',
     Extends: InfiniteScrolledWindow.InfiniteScrolledWindow,
     Implements: [ Module.Module, Arrangement.Arrangement ],
 
