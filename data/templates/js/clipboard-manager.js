@@ -6,6 +6,8 @@
 const FADE_DURATION = 200;
 
 $(document).ready(function () {
+    var $copy_button = $('#copy-button');
+
     var mouse_is_down = false;
     // Webview should start focused
     var window_focus = true;
@@ -20,19 +22,19 @@ $(document).ready(function () {
     var update_copy_button = function() {
         var selection = window.getSelection();
         if (selection.isCollapsed || mouse_is_down || !window_focus) {
-            $('#copy-button').fadeOut(FADE_DURATION);
+            $copy_button.fadeOut(FADE_DURATION);
         } else {
             var range = selection.getRangeAt(0).cloneRange();
             range.collapse(true);
             var rect = range.getClientRects()[0];
 
-            var top_position = Math.max(rect.top - $('#copy-button').outerHeight(true), 0) + $(window).scrollTop();
-            var left_position =  Math.max(rect.left - $('#copy-button').outerWidth(true), 0) + $(window).scrollLeft();
-            $('#copy-button').css({
+            var top_position = Math.max(rect.top - $copy_button.outerHeight(true), 0) + $(window).scrollTop();
+            var left_position =  Math.max(rect.left - $copy_button.outerWidth(true), 0) + $(window).scrollLeft();
+            $copy_button.css({
                 top: top_position,
                 left: left_position,
             });
-            $('#copy-button').fadeIn(FADE_DURATION);
+            $copy_button.fadeIn(FADE_DURATION);
         }
     };
 
@@ -46,13 +48,13 @@ $(document).ready(function () {
         update_copy_button();
     });
 
-    $('#copy-button').mousedown(function (event) {
+    $copy_button.mousedown(function (event) {
         // Returning false prevents mousedown signal from propagating up the DOM tree.
         // This keeps us from losing our selection when clicking on the copy
         // button.
         return false;
     }).click(function () {
         document.execCommand('Copy');
-        $('#copy-button').fadeOut(FADE_DURATION);
+        $copy_button.fadeOut(FADE_DURATION);
     });
 });
