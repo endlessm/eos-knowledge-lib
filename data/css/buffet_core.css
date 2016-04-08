@@ -7,11 +7,11 @@ EosWindow {
 }
 
 scrollbar {
-    -GtkRange-trough-border: 3px;
-    -GtkRange-slider-width: 8px;
+    padding: 3px;
 }
 
 scrollbar slider {
+    min-width: 8px;
     background-color: #9b9b9b;
     border-radius: 20px;
 }

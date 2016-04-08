@@ -432,6 +432,7 @@ EosWindow.parallax.background-right {
 
 .section-page-b scrollbar trough,
 .search-page-b scrollbar trough {
+    padding: 0px 3px;
     background-color: alpha(black, 0.5);
     background-image: linear-gradient(89deg,
                                       alpha(white, 0.1) 0%,
@@ -450,14 +451,15 @@ EosWindow.parallax.background-right {
 
 /* FIXME: for the time being, until we can properly customize the webkit
 scrollbars, style the GTK scrollbars to look slightly more like them */
-EosWindow scrollbar {
-    -GtkRange-trough-border: 3px;
-    -GtkRange-slider-width: 8px;
-}
-
 EosWindow scrollbar slider {
+    min-width: 8px;
+    min-height: 8px;
     background-color: #333333;
     border-radius: 20px;
+}
+
+EosWindow scrollbar trough {
+    padding: 3px;
 }
 
 /* Hide scrollbars when animating, they look bad. */

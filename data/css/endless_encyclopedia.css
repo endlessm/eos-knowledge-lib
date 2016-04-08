@@ -134,13 +134,13 @@ GtkEntry:selected {
 }
 
 scrollbar {
-    -GtkRange-trough-border: 3px;
-    -GtkRange-slider-width: 8px;
+    padding: 0px 3px;
 }
 
 scrollbar slider {
     background-color: #9b9b9b;
     border-radius: 20px;
+    min-width: 8px;
 }
 
 .webview-tooltip {

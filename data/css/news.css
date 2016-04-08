@@ -1,8 +1,8 @@
 @import url("resource:///com/endlessm/knowledge/data/css/common.css");
 @import url("resource:///com/endlessm/knowledge/data/css/buffet_core.css");
 
-* {
-    -GtkScrollbar-min-slider-length: 100; /* larger than the top-menu height */
+scrollbar.vertical slider {
+    min-height: 100px;
 }
 
 @define-color title-blue #0f1b3c;
