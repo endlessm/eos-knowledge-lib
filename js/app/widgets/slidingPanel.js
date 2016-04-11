@@ -12,7 +12,7 @@ const PanelFrame = new Lang.Class({
     Name: 'PanelFrame',
     GTypeName: 'EknPanelFrame',
     CssName: 'EknPanelFrame',
-    Extends: Gtk.Frame,
+    Extends: Gtk.Bin,
 
     _init: function (panel, params={}) {
         this.parent(params);
