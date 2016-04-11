@@ -320,7 +320,8 @@ const SubscriptionDownloader = new Lang.Class({
                 try {
                     this._file_downloader.download_file_finish(download_task);
                 } catch(e if e.matches(Gio.ResolverError, Gio.ResolverError.NOT_FOUND)) {
-                    return task.return_value(false);
+                    task.return_value(false);
+                    return;
                 }
 
                 let new_manifest = load_manifest(new_manifest_file, cancellable);

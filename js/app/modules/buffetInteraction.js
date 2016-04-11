@@ -97,7 +97,6 @@ const BuffetInteraction = new Lang.Class({
             history_model: new EosKnowledgePrivate.HistoryModel(),
         });
 
-        this._dispatched_present = false;
         this._brand_page_timeout_id = 0;
         this._content_ready = false;
 
@@ -549,9 +548,6 @@ const BuffetInteraction = new Lang.Class({
     },
 
     _dispatch_present: function (timestamp) {
-        if (this._dispatched_present)
-            return;
-        this._dispatched_present = true;
         Dispatcher.get_default().dispatch({
             action_type: Actions.PRESENT_WINDOW,
             timestamp: timestamp,

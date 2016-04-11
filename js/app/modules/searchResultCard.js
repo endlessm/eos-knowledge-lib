@@ -54,6 +54,7 @@ const SearchResultCard = new Lang.Class({
             this.set_label_or_hide(this._navigation_context_label, this.navigation_context);
         this.set_thumbnail_frame_from_model(this._thumbnail_frame);
         this.set_size_request(Card.MinSize.D, Card.MinSize.A);
+        this.update_card_sizing_classes(Card.MinSize.A, Card.MinSize.D);
         this._synopsis_label.visible = this.show_synopsis;
 
         Utils.set_hand_cursor_on_widget(this);
@@ -101,7 +102,7 @@ const SearchResultCard = new Lang.Class({
         });
         this._content_frame.size_allocate(text_alloc);
 
-        this.update_card_sizing_classes(total_width, alloc.width);
+        this.update_card_sizing_classes(card_alloc.height, card_alloc.width);
     },
 
     vfunc_draw: function (cr) {

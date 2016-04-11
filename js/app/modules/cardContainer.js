@@ -68,6 +68,18 @@ const CardContainer = new Lang.Class({
             'Show a "trigger" at the top right for the user to view more',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             true),
+        /**
+         * Property: trigger-capitalization
+         * Manner in which the card's trigger button is formatted
+         *
+         * This property is a temporary stand-in for achieving this via the CSS
+         * *text-transform* property.
+         */
+        'trigger-capitalization': GObject.ParamSpec.enum('trigger-capitalization',
+            'Trigger capitalization', 'Manner in which the card\'s trigger button  is formatted',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            EosKnowledgePrivate.TextTransformType,
+            EosKnowledgePrivate.TextTransform.NONE),
     },
 
     _init: function (props={}) {
@@ -132,31 +144,43 @@ const CardContainer = new Lang.Class({
         if (this.show_trigger && this.trigger_label) {
             // TRANSLATORS: %s will be replaced with the name of the category
             // that we are offering to show more of.
-            this.trigger_label.label = _("See more %s").format(this._title_label);
+            let trigger_legend = _("See more %s").format(this._title_label);
+            this.trigger_label.label = Utils.format_capitals(trigger_legend, this._trigger_capitalization);
         }
     },
 
-    set title(v) {
+    set title (v) {
         if (this._title_label === v)
             return;
         this._title_label = v;
         this._update_title();
     },
 
-    get title() {
+    get title () {
         if (this._title_label)
             return this._title_label;
         return '';
     },
 
-    get title_capitalization() {
+    get title_capitalization () {
         return this._title_capitalization || EosKnowledgePrivate.TextTransform.NONE;
     },
 
-    set title_capitalization(value) {
+    set title_capitalization (value) {
         if (this._title_capitalization === value)
             return;
         this._title_capitalization = value;
+        this._update_title();
+    },
+
+    get trigger_capitalization () {
+        return this._trigger_capitalization || EosKnowledgePrivate.TextTransform.NONE;
+    },
+
+    set trigger_capitalization (value) {
+        if (this._trigger_capitalization === value)
+            return;
+        this._trigger_capitalization = value;
         this._update_title();
     },
 

@@ -84,6 +84,9 @@
                     </style>
                   </object>
                 </child>
+                <style>
+                  <class name="no-results-message-grid"/>
+                </style>
               </object>
             </child>
           </object>

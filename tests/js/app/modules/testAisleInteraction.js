@@ -101,6 +101,7 @@ const MockView = new Lang.Class({
     },
 
     present_with_time: function () {},
+    present: function () {},
     show_all: function () {},
     append_article_page: function (model) {
         this._article_pages.push(new Minimal.MinimalDocumentCard({
@@ -256,21 +257,6 @@ describe('Aisle interaction', function () {
             interaction.activate_search_result(0, 'ekn://foo/bar', 'query');
             expect(dispatcher.last_payload_with_type(Actions.PRESENT_WINDOW).launch_type)
                 .toBe(Launcher.LaunchType.SEARCH_RESULT);
-        });
-
-        it('dispatches app-launched only once', function () {
-            engine.get_object_by_id_finish.and.returnValue(new ArticleObjectModel.ArticleObjectModel());
-
-            interaction.desktop_launch(0);
-            let payloads = dispatcher.payloads_with_type(Actions.PRESENT_WINDOW);
-            expect(payloads.length).toBe(1);
-
-            interaction.desktop_launch(0);
-            interaction.search(0, 'query');
-            interaction.activate_search_result(0, 'ekn://foo/bar', 'query');
-
-            payloads = dispatcher.payloads_with_type(Actions.PRESENT_WINDOW);
-            expect(payloads.length).toBe(1);
         });
     });
 

@@ -3,12 +3,14 @@
 const Endless = imports.gi.Endless;
 const GLib = imports.gi.GLib;
 
+const Actions = imports.app.actions;
+const MockDispatcher = imports.tests.mockDispatcher;
 const Minimal = imports.tests.minimal;
 const MockFactory = imports.tests.mockFactory;
 const EncyclopediaWindow = imports.app.modules.encyclopediaWindow;
 
 describe('Encyclopedia Window', function () {
-    let view, app, factory;
+    let view, app, factory, dispatcher;
 
     beforeAll(function (done) {
         // Generate a unique ID for each app instance that we test
@@ -29,6 +31,7 @@ describe('Encyclopedia Window', function () {
     });
 
     beforeEach(function () {
+        dispatcher = MockDispatcher.mock_default();
         factory = new MockFactory.MockFactory();
         factory.add_named_mock('home-page', Minimal.MinimalPage);
         factory.add_named_mock('search-page', Minimal.MinimalPage);
@@ -62,5 +65,21 @@ describe('Encyclopedia Window', function () {
         expect(view._home_button.sensitive).toBe(true);
         view.show_page(home_page);
         expect(view._home_button.sensitive).toBe(false);
+    });
+
+    it('presents itself after the first page is shown', function () {
+        spyOn(view, 'show_all');
+        spyOn(view, 'present');
+        spyOn(view, 'present_with_time');
+        dispatcher.dispatch({
+            action_type: Actions.PRESENT_WINDOW,
+            timestamp: 0,
+        });
+        expect(view.present).not.toHaveBeenCalled();
+        expect(view.present_with_time).not.toHaveBeenCalled();
+        dispatcher.dispatch({
+            action_type: Actions.SHOW_HOME_PAGE,
+        });
+        expect(view.present.calls.any() || view.present_with_time.calls.any()).toBeTruthy();
     });
 });

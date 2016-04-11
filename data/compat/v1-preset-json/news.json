@@ -242,8 +242,8 @@
                                                     "properties": {
                                                         "show-trigger": false,
                                                         "title-capitalization": "lowercase",
-                                                        "margin-top": 40,
-                                                        "margin-bottom": 40,
+                                                        "margin-top": 50,
+                                                        "margin-bottom": 50,
                                                         "valign": "end"
                                                     },
                                                     "slots": {
@@ -271,6 +271,7 @@
                                     },
                                     "properties": {
                                         "halign": "fill",
+                                        "message-halign": "fill",
                                         "message-justify": "left"
                                     }
                                 }
@@ -347,8 +348,9 @@
                         "same-set": false,
                         "show-trigger": false,
                         "title-capitalization": "lowercase",
-                        "margin-top": 40,
-                        "margin-bottom": 40,
+                        "margin-start": 20,
+                        "margin-top": 50,
+                        "margin-bottom": 50,
                         "valign": "end"
                     },
                     "slots": {
@@ -356,8 +358,7 @@
                             "type": "SquareGuysArrangement",
                             "properties" : {
                                 "max-rows": 1,
-                                "spacing": 10,
-                                "margin-start": 20,
+                                "spacing": 20,
                                 "margin-end": 20,
                                 "margin-bottom": 20
                             },
@@ -415,6 +416,9 @@
         },
         "set-preview": {
             "type": "SetPreviewCard",
+            "properties": {
+                "trigger-capitalization": "lowercase"
+            },
             "slots": {
                 "arrangement": {
                     "type": "ThirtiesArrangement",
@@ -444,7 +448,7 @@
                         "banner": {
                             "type": "AppBanner",
                             "properties": {
-                                "max-fraction": 0.3,
+                                "max-fraction": 0.2,
                                 "show-subtitle": false,
                                 "visible": true
                             }
@@ -467,7 +471,6 @@
                                             "type": "TextCard",
                                             "properties": {
                                                 "title-capitalization": "lowercase",
-                                                "margin-top": 5,
                                                 "halign": "center",
                                                 "decorate-on-highlight": true
                                             }

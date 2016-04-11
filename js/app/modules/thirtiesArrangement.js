@@ -13,9 +13,9 @@ const Card = imports.app.interfaces.card;
 const Module = imports.app.interfaces.module;
 const Utils = imports.app.utils;
 
-const CARD_HEIGHT_SMALL = Card.MinSize.A;
-const CARD_HEIGHT_BIG = Card.MinSize.B;
-const CARD_HEIGHT_THRESHOLD = Card.MinSize.C;
+const CARD_HEIGHT_SMALL = Card.MinSize.B;
+const CARD_HEIGHT_BIG = Card.MinSize.C;
+const CARD_WIDTH_THRESHOLD = Card.MinSize.C;
 const CARD_WIDTH_SMALL = Card.MinSize.B;
 const CARD_WIDTH_BIG = Card.MinSize.H;
 const COL_COUNT = 3;
@@ -168,7 +168,7 @@ const ThirtiesArrangement = new Lang.Class({
     },
 
     _get_card_height: function (width) {
-        let small_mode = (width < Arrangement.get_size_with_spacing(CARD_HEIGHT_THRESHOLD, COL_COUNT, this._spacing));
+        let small_mode = (width < Arrangement.get_size_with_spacing(CARD_WIDTH_THRESHOLD, COL_COUNT, this._spacing));
         return small_mode ? CARD_HEIGHT_SMALL : CARD_HEIGHT_BIG;
     },
 });

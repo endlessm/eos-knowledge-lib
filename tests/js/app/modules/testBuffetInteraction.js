@@ -83,21 +83,6 @@ describe('Buffet interaction', function () {
         expect(dispatcher.last_payload_with_type(Actions.PRESENT_WINDOW)).toBeDefined();
     });
 
-    it('dispatches present window only once', function () {
-        engine.get_object_by_id_finish.and.returnValue(new ContentObjectModel.ContentObjectModel());
-
-        buffet.desktop_launch(0);
-        let payloads = dispatcher.payloads_with_type(Actions.PRESENT_WINDOW);
-        expect(payloads.length).toBe(1);
-
-        buffet.desktop_launch(0);
-        buffet.search(0, 'query');
-        buffet.activate_search_result(0, 'ekn://foo/bar', 'query');
-
-        payloads = dispatcher.payloads_with_type(Actions.PRESENT_WINDOW);
-        expect(payloads.length).toBe(1);
-    });
-
     it('shows the brand page until timeout has expired and content is ready', function () {
         buffet.BRAND_PAGE_TIME_MS = 0;
         buffet.desktop_launch(0);

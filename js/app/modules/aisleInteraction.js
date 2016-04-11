@@ -116,8 +116,6 @@ const AisleInteraction = new Lang.Class({
     _NUM_ARTICLE_PAGE_STYLES: 3,
 
     _init: function (props) {
-        this._launched_once = false;
-
         let css = Gio.File.new_for_uri(DATA_RESOURCE_PATH + 'css/endless_reader.css');
         Utils.add_css_provider_from_file(css, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 
@@ -143,8 +141,6 @@ const AisleInteraction = new Lang.Class({
 
         this._style_knobs = StyleKnobGenerator.get_knobs_from_css(this.css, this.template_type);
         this.load_theme();
-
-        this._pending_present_timestamp = null;
 
         this._webview_tooltip_presenter = new WebviewTooltipPresenter.WebviewTooltipPresenter();
 
@@ -269,11 +265,10 @@ const AisleInteraction = new Lang.Class({
 
     // Launcher override
     search: function (timestamp, query) {
-        this._pending_present_timestamp = timestamp;
-        this._launch_type = Launcher.LaunchType.SEARCH;
         this._ensure_content_loaded(() => {
             this._on_search(query);
         });
+        this._dispatch_present(timestamp, Launcher.LaunchType.SEARCH);
     },
 
     _on_search: function (query) {
@@ -364,7 +359,6 @@ const AisleInteraction = new Lang.Class({
                         action_type: Actions.SEARCH_READY,
                         query: item.query,
                     });
-                    this._present_if_needed();
                 });
                 break;
             case this._ARTICLE_PAGE:
@@ -388,17 +382,14 @@ const AisleInteraction = new Lang.Class({
 
     // Launcher override
     desktop_launch: function (timestamp=Gdk.CURRENT_TIME) {
-        this._pending_present_timestamp = timestamp;
-        this._launch_type = Launcher.LaunchType.DESKTOP;
         this._ensure_content_loaded(() => {
             this._add_history_item_for_page(this.settings.bookmark_page);
         });
+        this._dispatch_present(timestamp, Launcher.LaunchType.DESKTOP);
     },
 
     // Launcher override
     activate_search_result: function (timestamp, id, query) {
-        this._pending_present_timestamp = timestamp;
-        this._launch_type = Launcher.LaunchType.SEARCH_RESULT;
         this._ensure_content_loaded(() => {
             Engine.get_default().get_object_by_id(id, null, (engine, task) => {
                 let model;
@@ -413,10 +404,10 @@ const AisleInteraction = new Lang.Class({
                 } catch (error) {
                     logError(error);
                     this._show_specific_error_page();
-                    this._present_if_needed();
                 }
             });
         });
+        this._dispatch_present(timestamp, Launcher.LaunchType.SEARCH_RESULT);
     },
 
     // Should be mocked out during tests so that we don't actually send metrics
@@ -536,18 +527,12 @@ const AisleInteraction = new Lang.Class({
         this.settings.bookmark_page = 0;
     },
 
-    _present_if_needed: function () {
-        if (this._pending_present_timestamp !== null) {
-            if (!this._launched_once) {
-                Dispatcher.get_default().dispatch({
-                    action_type: Actions.PRESENT_WINDOW,
-                    timestamp: this._pending_present_timestamp,
-                    launch_type: this._launch_type,
-                });
-                this._launched_once = true;
-            }
-            this._pending_present_timestamp = null;
-        }
+    _dispatch_present: function (timestamp, launch_type) {
+        Dispatcher.get_default().dispatch({
+            action_type: Actions.PRESENT_WINDOW,
+            timestamp: timestamp,
+            launch_type: launch_type,
+        });
     },
 
     _ensure_content_loaded: function (callback) {
@@ -583,7 +568,6 @@ const AisleInteraction = new Lang.Class({
             if (error) {
                 logError(error);
                 this._show_general_error_page();
-                this._present_if_needed();
             } else if (results.length < 1) {
                 // We have exhausted all articles in this magazine.
                 // Reset counter and start from beginning!
@@ -613,7 +597,6 @@ const AisleInteraction = new Lang.Class({
             } catch (error) {
                 logError(error);
                 this._show_general_error_page();
-                this._present_if_needed();
             }
 
             this._fetch_content_recursive(results, get_more_results_query, callback, progress_callback);
@@ -642,7 +625,6 @@ const AisleInteraction = new Lang.Class({
                 action_type: Actions.SHOW_ARCHIVE_PAGE,
             });
         }
-        this._present_if_needed();
     },
 
     // Takes user to the page specified by <index>
@@ -731,7 +713,6 @@ const AisleInteraction = new Lang.Class({
         // Guaranteed to have changed; we returned early if not changed.
 
         this.settings.bookmark_page = index;
-        this._present_if_needed();
     },
 
     // First article data has been loaded asynchronously; now we can start
@@ -806,6 +787,7 @@ const AisleInteraction = new Lang.Class({
         let err_label = this._create_error_label(headline, message);
         this._window.page_manager.add(err_label);
         this._window.page_manager.visible_child = err_label;
+        this._window.present();
     },
 
     // Use _create_error_label to show a general error page, when there is no

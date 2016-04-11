@@ -21,7 +21,6 @@ let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
  *
  * Slots:
  *   arrangement
- *   card-type
  */
 const SupplementaryArticlesModule = new Lang.Class({
     Name: 'SupplementaryArticlesModule',

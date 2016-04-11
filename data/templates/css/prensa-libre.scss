@@ -51,6 +51,7 @@ body {
     margin-left: 100px;
     padding-top: 5px;
     background-color: white;
+    box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.24);
 }
 
 main {
@@ -204,7 +205,13 @@ hr {
     }
 
     .disclaimer {
-        margin: $body-unit-height $indent;
+        margin: 0 $indent;
+        padding: $body-unit-height 0;
+    }
+
+    .eos-modal,
+    .eos-modal-link {
+        font-size: 0.6 * $body-size;
     }
 
     .eos-modal,
@@ -215,7 +222,7 @@ hr {
     .extra-header {
         font-size: 0.8 * $body-size;
         line-height: $body-size;
-        margin: (2 * $body-unit-height) ($indent + $dedent) $body-unit-height;
+        margin: $body-unit-height ($indent + $dedent) $body-unit-height;
     }
 
     header h1 {
