@@ -385,7 +385,7 @@ const LightboxContainer = new Lang.Class({
             return;
 
         let content_width = this._lightbox_widget.get_preferred_width()[1];
-        let content_height = this._lightbox_widget.get_preferred_height()[1];
+        let content_height = this._lightbox_widget.get_preferred_height_for_width(content_width)[1];
         let close_width = this._MIN_BORDER;
         let close_height = this._MIN_BORDER;
         if (this.close_visible) {
