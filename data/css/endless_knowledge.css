@@ -343,7 +343,6 @@ EosWindow.parallax.background-right {
     padding-top: 1.0em;
     padding-bottom: 0.9em;
     border-style: solid;
-    -GtkButton-image-spacing: 15px;
     font-weight: bold;
     font-size: 0.75em;  /* 12pt * 1/12 * 0.75 DPI correction factor */
     text-shadow: 0px -1px 0px alpha(black, 0.40);
@@ -352,6 +351,14 @@ EosWindow.parallax.background-right {
                                 @tab-button-gradient-light,
                                 @tab-button-gradient-dark);
     box-shadow: inset 0px 1px 4px 0px alpha(white, 0.19);
+}
+
+.tab-button:dir(ltr) image {
+    padding-left: 15px;
+}
+
+.tab-button:dir(rtl) image {
+    padding-right: 15px;
 }
 
 .tab-button:hover {
