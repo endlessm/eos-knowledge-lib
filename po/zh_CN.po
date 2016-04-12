@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2016-03-24 00:07+0000\n"
+"POT-Creation-Date: 2016-04-05 01:45+0000\n"
 "PO-Revision-Date: 2016-03-23 23:05+0000\n"
 "Last-Translator: Roddy Shuler <roddy@endlessm.com>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/zh_CN/)\n"
@@ -58,7 +58,7 @@ msgstr "根据主题浏览"
 #. to be substituted in code. Please make sure to leave the
 #. curly braces around any words that have them and DO NOT
 #. translate words inside curly braces.
-#: js/app/articleHTMLRenderer.js:89
+#: js/app/articleHTMLRenderer.js:88
 msgid ""
 "This page contains content from {original-link}, available under a {license-"
 "link} license."
@@ -66,7 +66,7 @@ msgstr "该页存在来源于{original-link}的内容，已获得{license-link}�
 
 #. TRANSLATORS: Replace this with a link to the homepage of
 #. wikiHow in your language.
-#: js/app/articleHTMLRenderer.js:96
+#: js/app/articleHTMLRenderer.js:95
 msgid "http://wikihow.com"
 msgstr "http://wikihow.com"
 
@@ -74,7 +74,7 @@ msgstr "http://wikihow.com"
 #. to be substituted in code. Please make sure to leave the
 #. curly braces around any words that have them and DO NOT
 #. translate words inside curly braces.
-#: js/app/articleHTMLRenderer.js:101
+#: js/app/articleHTMLRenderer.js:100
 msgid ""
 "See {wikihow-article-link} for more details, videos, pictures and "
 "attribution. Courtesy of {wikihow-link}, where anyone can easily learn how "
@@ -85,33 +85,33 @@ msgstr "查看更多关于{wikihow-article-link}的细节，视频，图片和�
 msgid "Legal Notice and Intellectual Property Policy"
 msgstr ""
 
-#: js/app/articleHTMLRenderer.js:114
-msgid "DISCLAIMER PLACEHOLDER"
-msgstr ""
-
 #. TRANSLATORS: anything inside curly braces '{}' is going to be
 #. substituted in code. Please make sure to leave the curly
 #. braces around any words that have them, and do not translate
 #. words inside curly braces.
-#: js/app/articleHTMLRenderer.js:121
+#: js/app/articleHTMLRenderer.js:119
 msgid "Read more at {link}"
 msgstr ""
 
-#: js/app/articleHTMLRenderer.js:210
+#: js/app/articleHTMLRenderer.js:133
+msgid "DISCLAIMER PLACEHOLDER"
+msgstr ""
+
+#: js/app/articleHTMLRenderer.js:219
 msgid "Copy"
 msgstr "复制"
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
-#: js/app/articleHTMLRenderer.js:243
+#: js/app/articleHTMLRenderer.js:250
 msgid "Content taken from {blog-link}."
 msgstr "来源于{blog-link}的内容。"
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
-#: js/app/articleHTMLRenderer.js:248
+#: js/app/articleHTMLRenderer.js:255
 msgid "Content courtesy of {blog-link}. Used with kind permission."
 msgstr "内容由{blog-link}提供。经授权许可使用。"
 
@@ -119,7 +119,7 @@ msgstr "内容由{blog-link}提供。经授权许可使用。"
 #. is going to be substituted in code. Please make sure that your
 #. translation contains both {blog-link} and {license-link} and they are not
 #. translated.
-#: js/app/articleHTMLRenderer.js:256
+#: js/app/articleHTMLRenderer.js:263
 msgid "Content courtesy of {blog-link}, licensed under {license-link}."
 msgstr "内容由{blog-link}提供，已得到{license-link}许可认证。"
 
