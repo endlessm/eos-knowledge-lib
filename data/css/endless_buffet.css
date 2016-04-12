@@ -91,7 +91,7 @@ EknSearchModule .suggested-articles {
     outline: 1px solid #49bde3;
     border-color: #49bde3;  /* used for the triangle in the corner */
     outline-offset: -1px;
-    outline-radius: 0;
+    -gtk-outline-radius: 0;
 }
 
 .thumb-card:active,

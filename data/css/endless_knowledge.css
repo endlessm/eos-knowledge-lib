@@ -22,7 +22,6 @@ EosWindow {
     font-size: 13.3px;
     color: #fff;
 
-    -GtkWidget-focus-line-width: 0;
     border-style: solid;
     border-radius: 50px;
 
@@ -348,7 +347,7 @@ EosWindow.parallax.background-right {
     font-weight: bold;
     font-size: 0.75em;  /* 12pt * 1/12 * 0.75 DPI correction factor */
     text-shadow: 0px -1px 0px alpha(black, 0.40);
-    icon-shadow: 0px -1px 1px alpha(black, 0.44);
+    -gtk-icon-shadow: 0px -1px 1px alpha(black, 0.44);
     background: linear-gradient(to bottom,
                                 @tab-button-gradient-light,
                                 @tab-button-gradient-dark);
@@ -387,7 +386,6 @@ EosWindow.parallax.background-right {
     color: #2e3436;
     font-size: 1em;
 
-    -GtkWidget-focus-line-width: 0;
     border-style: solid;
     border-radius: 10em;
 

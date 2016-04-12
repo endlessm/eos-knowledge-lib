@@ -28,7 +28,6 @@ EosWindow {
     font-size: 13.3px;
     color: #fff;
 
-    -GtkWidget-focus-line-width: 0;
     border-style: solid;
     border-radius: 50px;
 
