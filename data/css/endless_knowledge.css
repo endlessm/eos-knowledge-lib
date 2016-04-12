@@ -407,13 +407,6 @@ EosWindow.parallax.background-right {
     margin: 3px 5px;
 }
 
-.home-page-a separator {
-    border-style: solid;
-    border-width: 3px;
-    -GtkWidget-wide-separators: true;
-    -GtkWidget-separator-height: 3;
-}
-
 .home-page-b .set-group {
     background-color: black;
 }
