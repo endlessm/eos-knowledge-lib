@@ -404,6 +404,7 @@ EosWindow.parallax.background-right {
 
 .home-page-a .search-box image, .home-page-b .search-box image {
     color: #919191;
+    margin: 3px 5px;
 }
 
 .home-page-a separator {

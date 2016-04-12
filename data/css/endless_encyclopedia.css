@@ -44,6 +44,11 @@ EosWindow {
     padding: 3px;
 }
 
+.search-box image,
+.article-search entry image {
+    margin: 0 3px;
+}
+
 .article-search entry {
     background: rgba(0,0,0,0.3);
     border-color: rgba(0,0,0,0.25);
