@@ -10,7 +10,7 @@
 
 EknScrollingTemplate:not(.overshoot):not(.undershoot),
 EknBackgroundModule,
-.no-results-message-grid,
+.results-message-background,
 .scrollbar {
     background-color: #e9e5e0;
 }
@@ -126,11 +126,12 @@ EknSearchBannerModule {
     font-family: 'Fira Sans';
     color: @context-blue;
     font-size: 22.5px;  /* 150% * 20px * 75% (DPI correction) */
-    padding: 50px 80px 30px;
+    padding: 50px 80px 30px 160px;
 }
 
 .results-message-title {
     color: white;
+    padding-bottom: 30px;
 }
 
 .search-results .results-message-subtitle {
@@ -139,7 +140,7 @@ EknSearchBannerModule {
     color: #666666;
     font-size: 16.5px;  /* 110% * 20px * 75% (DPI correction) */
     padding-bottom: 50px;
-    padding-left: 80px;
+    padding-left: 160px;
 }
 
 .all-type-card {
