@@ -18,7 +18,7 @@ EknThematicModule .text-card .title.label,
 EknSetPreviewCard .text-card .title,
 .browse-content .title {
     font-weight: 200;
-    font-size: 22px;
+    font-size: 29.3px;
 }
 
 EknHighlightsModule .separator,
@@ -63,7 +63,7 @@ EknSearchModule .suggested-articles {
     padding: 20px 60px 0px 60px;
     padding-left: 60px;
     padding-right: 60px;
-    font-size: 18px;
+    font-size: 24px;
 }
 
 .search-results .results-message-subtitle {
@@ -133,7 +133,7 @@ EknSideMenuTemplate .menu {
 
 EknSideMenuTemplate .menu .home-button,
 EknSideMenuTemplate .menu .card .title {
-    font-size: 16px;
+    font-size: 21.3px;
     font-family: 'Lato Thin';
     color: #044a80;
 }
@@ -169,7 +169,7 @@ EknSideMenuTemplate .close-button {
 
 EknContextBanner {
     font-family: 'Lato Thin';
-    font-size: 22px;
+    font-size: 29.3px;
     color: #666666;
     text-shadow: 0px 1px alpha(white, 0.004);
 }

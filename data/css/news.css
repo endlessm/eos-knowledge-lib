@@ -25,7 +25,7 @@ EknSearchModule {
 
 .trigger {
     font-family: 'Fira Sans';
-    font-size: 15px;  /* 20px * 75% (DPI correction) */
+    font-size: 20px;
     color: @title-blue;
 }
 
@@ -50,7 +50,7 @@ EknSetPreviewCard .text-card .title {
     font-family: 'Merriweather';
     font-weight: bold;
     padding-top: 50px;
-    font-size: 30px;  /* 40px * 75% (DPI correction) */
+    font-size: 40px;
 }
 
 EknSetPreviewCard .text-card:hover .title {
@@ -78,7 +78,7 @@ EknSideBySideArrangement .text-card .title.label {
     font-family: 'Fira Sans';
     color: rgba(255, 255, 255, 0.6);
     padding: 13px 0px 3px 0px;
-    font-size: 13.5px;  /* 18px * 75% (DPI correction) */
+    font-size: 18px;
 }
 
 EknSideBySideArrangement .text-card:hover .title.label {
@@ -104,7 +104,7 @@ EknSupplementaryArticlesModule > .title,
 EknSuggestedArticlesModule > .title {
     font-family: Merriweather;
     font-weight: bold;
-    font-size: 30px;  /* 40px * 75% (DPI correction) */
+    font-size: 40px;
     color: white;
     padding-bottom: 30px;
 }
@@ -114,7 +114,7 @@ EknSearchBannerModule {
     font-family: Merriweather;
     font-weight: bold;
     color: #050c20;
-    font-size: 40.5px;  /* 54px * 75% (DPI correction) */
+    font-size: 54px;
     background-color: transparent;
 }
 
@@ -125,7 +125,7 @@ EknSearchBannerModule {
 .search-results .results-message-title {
     font-family: 'Fira Sans';
     color: @context-blue;
-    font-size: 22.5px;  /* 150% * 20px * 75% (DPI correction) */
+    font-size: 30px;
     padding: 50px 80px 30px 160px;
 }
 
@@ -138,7 +138,7 @@ EknSearchBannerModule {
     font-family: Merriweather;
     font-style: italic;
     color: #666666;
-    font-size: 16.5px;  /* 110% * 20px * 75% (DPI correction) */
+    font-size: 22px;
     padding-bottom: 50px;
     padding-left: 160px;
 }
@@ -155,7 +155,7 @@ EknSearchBannerModule {
     font-family: 'Fira Sans';
     font-weight: bold;
     color: @title-blue;
-    font-size: 13.5px; /* 18px * 75% (DPI correction) */
+    font-size: 18px;
 }
 
 .all-type-card .card-synopsis,
@@ -163,7 +163,7 @@ EknSearchBannerModule {
     font-family: 'Merriweather';
     font-style: italic;
     color: #666666;
-    font-size: 12px; /* 16px * 75% (DPI correction) */
+    font-size: 16px;
 }
 
 .all-type-card .card-context,
@@ -173,7 +173,7 @@ EknSearchBannerModule {
     font-weight: bold;
     font-style: normal;
     color: @context-blue;
-    font-size: 10.5px; /* 14px * 75% (DPI correction) */
+    font-size: 14px;
 }
 
 .all-type-card:hover .title,
@@ -193,7 +193,7 @@ EknSearchBannerModule {
     padding: 30px;
 }
 .all-type-card.width-c .title {
-    font-size: 17.25px; /* 23px * 75% (DPI correction) */
+    font-size: 23px;
 }
 
 .all-type-card.width-c.height-d,
@@ -202,7 +202,7 @@ EknSearchBannerModule {
 }
 .all-type-card.width-c.height-d .title,
 .all-type-card.width-d .title {
-    font-size: 20.25px; /* 27px * 75% (DPI correction) */
+    font-size: 27px;
 }
 
 .all-type-card.width-d.height-d,
@@ -213,7 +213,7 @@ EknSearchBannerModule {
 .all-type-card.width-d.height-d .title,
 .all-type-card.width-e .title,
 .all-type-card.width-f.height-c .title {
-    font-size: 27.75px; /* 37px * 75% (DPI correction) */
+    font-size: 37px;
 }
 
 .all-type-card.width-e.height-d,
@@ -228,7 +228,7 @@ EknSearchBannerModule {
 .all-type-card.width-f .title,
 .all-type-card.width-g .title,
 .all-type-card.width-h .title {
-    font-size: 36.75px; /* 49px * 75% (DPI correction) */
+    font-size: 49px;
 }
 
 .all-type-card.highlighted {
@@ -248,7 +248,7 @@ EknSetBannerModule .card .title,
 EknSetBannerModule .card:hover .title {
     color: white;
     font-weight: bold;
-    font-size: 40.5px;  /* 54px * 75% (DPI correction) */
+    font-size: 54px;
     font-family: Merriweather;
     padding-top: 50px;
 }

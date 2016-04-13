@@ -24,7 +24,7 @@ EosWindow {
 .entry {
     background: rgba(0,0,0,0.2);
     padding: 0.5em .3em 0.5em .3em;
-    font-size: 10px;
+    font-size: 13.3px;
     color: #fff;
 
     -GtkWidget-focus-line-width: 0;
@@ -109,7 +109,7 @@ GtkEntry:selected {
 }
 
 .search-results .card {
-    padding-bottom: 2em; /* (39px line height - 15px text height) / 12px/em */
+    padding-bottom: 1.5em;
 }
 
 .search-results .card .title {
@@ -124,7 +124,7 @@ GtkEntry:selected {
     -EknThemeableImage-min-width: 6;
     -EknThemeableImage-min-height: 6;
     color: rgba(145, 145, 145, 0.5);
-    padding-right: 0.8em;
+    padding-right: 0.6em;
 }
 
 .paper-template .content {
@@ -162,27 +162,27 @@ GtkEntry:selected {
 }
 
 .composite .entry {
-    font-size: 15.8px;  /* 18 px spec * 88% because spec was at 110% scale not 125% */
+    font-size: 21.1px;  /* 18 px spec * 88% because spec was at 110% scale not 125% */
     background-color: alpha(black, 0.8);
 }
 
 .composite .divided-banner-template .title {
     font-weight: normal;
-    font-size: 17.6px;  /* 20px spec * 88% */
+    font-size: 23.5px;  /* 20px spec * 88% */
     font-weight: bold;
 }
 
 .composite .webview-tooltip GtkLabel {
     font-weight: bold;
-    font-size: 14.1px;  /* 16px spec * 88% */
+    font-size: 18.8px;  /* 16px spec * 88% */
 }
 
 .composite .search-results .results-message-title,
 .composite .search-results .results-message-subtitle,
 .composite .search-results .error-message {
-    font-size: 13.2px;  /* 15px spec * 88% */
+    font-size: 17.6px;  /* 15px spec * 88% */
 }
 
 .composite .search-results .card .title {
-    font-size: 14.1px;  /* 16px spec * 88% */
+    font-size: 18.8px;  /* 16px spec * 88% */
 }
