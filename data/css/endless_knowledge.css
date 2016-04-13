@@ -21,12 +21,18 @@ EosWindow {
     padding: 0.5em .3em 0.5em .3em;
     font-size: 13.3px;
     color: #fff;
+    caret-color: #fff;
 
     border-style: solid;
     border-radius: 50px;
 
     border-width: 3px;
     border-color: rgba(0,0,0,0.25);
+}
+
+.article-search entry selection {
+    color: rgba(0,0,0,0.7);
+    background-color: #fff;
 }
 
 .article-search .button {
@@ -391,6 +397,7 @@ EosWindow.parallax.background-right {
     background-clip: padding-box;
     padding: 0.75em 0.55em 0.75em 0.55em;
     color: #2e3436;
+    caret-color: #2e3436;
     font-size: 1em;
 
     border-style: solid;
@@ -398,6 +405,11 @@ EosWindow.parallax.background-right {
 
     border-width: .33em;
     border-color: alpha(black, 0.19);
+}
+
+.home-page-a .search-box selection, .home-page-b .search-box selection {
+    color: white;
+    background-color: #2e3436;
 }
 
 .home-page-a .search-box:selected, .home-page-b .search-box:selected {

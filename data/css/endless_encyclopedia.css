@@ -27,6 +27,7 @@ EosWindow {
     padding: 0.5em .3em 0.5em .3em;
     font-size: 13.3px;
     color: #fff;
+    caret-color: #fff;
 
     border-style: solid;
     border-radius: 50px;
@@ -49,6 +50,12 @@ EosWindow {
     margin: 0 3px;
 }
 
+.search-box selection,
+.article-search selection {
+    color: rgba(0, 0, 0, 0.7);
+    background-color: #fff;
+}
+
 .article-search entry {
     background: rgba(0,0,0,0.3);
     border-color: rgba(0,0,0,0.25);
@@ -61,10 +68,6 @@ EosWindow {
 
 .article-search button:hover {
     color: #54595a;
-}
-
-GtkEntry:selected {
-    background-color: gray;
 }
 
 /* WebKit creates GTK tooltips internally, so style them here */
