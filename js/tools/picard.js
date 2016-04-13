@@ -1,28 +1,23 @@
+const Endless = imports.gi.Endless;
 const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
-const System = imports.system;
 
 const Card = imports.app.interfaces.card;
-const ContentObjectModel = imports.search.contentObjectModel;
+const ArticleObjectModel = imports.search.articleObjectModel;
 const Module = imports.app.interfaces.module;
 const ModuleFactory = imports.app.moduleFactory;
+
+const CONTENTDIR = Endless.getCurrentFileDir() + '/js/tools/content/';
+const CSSDIR = Endless.getCurrentFileDir() + '/data/css/';
 
 // For those interested in picard's etymology, it goes roughly like this:
 // Arrangement smoke test -> Tasteful floral arrangement -> Martha Stewart ->
 // Patrick Stewart -> Jean-Luc Picard
 
-const USAGE = [
-    'usage: picard <ArrangementName>',
-    '   (e.g. WindshieldArrangement)',
-    '',
-    'picard is a utility for exploring card containers.',
-    '',
-    'Here are the available arrangements:',
-].join('\n');
 const RESOLUTIONS = [[720, 576], [800, 600], [1024, 768], [1280, 800],
     [1920, 1080]];
 const COLORS = ['fce94f', 'fcaf3e', 'e9b96e', '8ae234', '729fcf', 'ad7fa8',
@@ -43,60 +38,81 @@ const CSS = '\
 let widgets = {};
 
 function main() {
-    if (ARGV.length < 1) {
-        print(USAGE);
-        list_available_arrangements();
-        System.exit(0);
-    }
-
     Gtk.init(null);
 
+    _load_library_css();
     let provider = new Gtk.CssProvider();
     provider.load_from_data(CSS);
     Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(), provider,
         Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 
-    let module_name = ARGV.shift() + 'Arrangement';
+    build_ui();
+    load_arrangement(widgets.arrangement_combo_box.get_active_text() + 'Arrangement', widgets.card_combo_box.get_active_text() + 'Card');
+    connect_signals();
+    widgets.window.show_all();
+    Gtk.main();
+}
+
+function _load_library_css () {
+    ['endless_knowledge.css', 'buffet_core.css'].forEach((file) => {
+        let css_file = Gio.File.new_for_uri('file://' + CSSDIR + file);
+        let provider = new Gtk.CssProvider();
+        provider.load_from_file(css_file);
+        Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(),
+                                                 provider,
+                                                 Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+    });
+}
+
+function load_arrangement (arrangement_type, card_type) {
+    if (widgets.scroll.get_child())
+        widgets.scroll.remove(widgets.scroll.get_child());
+
+    widgets.titlebar.title = arrangement_type + ' containing ' + card_type;
     let factory = new ModuleFactory.ModuleFactory({
         app_json: {
             "version": 2,
             "modules": {
                 "arrangement": {
-                    "type": module_name,
+                    "type": arrangement_type,
                     "slots": {
                         "card-type": {
-                            "type": "ColorBox",
+                            "type": card_type,
                         },
                     },
                 },
             },
         },
     });
-    factory.warehouse.register_class('ColorBox', ColorBox);
+    factory.warehouse.register_class('ColorBoxCard', ColorBox);
     widgets.arrangement = factory.create_named_module('arrangement');
-
-    build_ui();
-    connect_signals();
-    widgets.titlebar.title = module_name;
     widgets.scroll.add(widgets.arrangement);
-    widgets.window.show_all();
-    Gtk.main();
+    widgets.scroll.show_all();
 }
 
-function list_available_arrangements() {
+function get_available_module_type(type) {
     let modules_dir = Gio.File.new_for_uri('resource:///com/endlessm/knowledge/js/app/modules');
     let iter = modules_dir.enumerate_children('standard::*',
         Gio.FileQueryInfoFlags.NONE, null);
     let info;
+    let arr = [];
     while ((info = iter.next_file(null))) {
         let name = info.get_display_name();
-        if (!name.endsWith('Arrangement.js'))
+        if (!name.endsWith(type + '.js'))
             continue;
-        name = name.replace(/Arrangement\.js$/, '');
+        name = name.replace(new RegExp(type + '\.js$'), '');
         name = name[0].toUpperCase() + name.slice(1);
-        print('  ' + name);
+        arr.push(name);
     }
+    return arr;
 }
+
+const UNUSED_CARDS = [
+    'KnowledgeDocument',
+    'ReaderDocument',
+    'SetPreview',
+    'Media',
+];
 
 function build_ui() {
     widgets.titlebar = new Gtk.HeaderBar({
@@ -166,6 +182,21 @@ function build_ui() {
         popover: widgets.menu,
         direction: Gtk.ArrowType.NONE,
     });
+
+    widgets.card_combo_box = new Gtk.ComboBoxText();
+    get_available_module_type('Card').concat(['ColorBox']).filter((name) => {
+        return UNUSED_CARDS.indexOf(name) < 0;
+    }).forEach((name) => {
+        widgets.card_combo_box.append_text(name);
+    });
+    widgets.card_combo_box.set_active(0);
+
+    widgets.arrangement_combo_box = new Gtk.ComboBoxText();
+    get_available_module_type('Arrangement').forEach((name) => {
+        widgets.arrangement_combo_box.append_text(name);
+    });
+    widgets.arrangement_combo_box.set_active(0);
+
     widgets.scroll = new Gtk.ScrolledWindow({
         hscrollbar_policy: Gtk.PolicyType.NEVER,
     });
@@ -180,6 +211,8 @@ function build_ui() {
     widgets.titlebar.pack_start(add_remove);
     widgets.titlebar.pack_start(widgets.clear);
     widgets.titlebar.pack_start(widgets.hamburger);
+    widgets.titlebar.pack_start(widgets.arrangement_combo_box);
+    widgets.titlebar.pack_start(widgets.card_combo_box);
     widgets.window.add(widgets.scroll);
 
     menu_grid.attach(spacing_label, 0, 0, 1, 1);
@@ -190,6 +223,30 @@ function build_ui() {
     widgets.menu.add(menu_grid);
     menu_grid.show_all();  // doesn't get shown automatically
 }
+const SYNOPSIS = 'Aenean sollicitudin, purus ac \
+feugiat fermentum, est nulla finibus enim, vitae \
+convallis dui eros ac enim. Proin efficitur sollicitudin \
+lectus, nec consequat turpis volutpat quis. Vestibulum \
+sagittis ut leo nec ullamcorper. Nullam eget odio a elit \
+placerat varius non id dui.';
+
+const IMAGES = ['joffrey.jpg', 'kings_landing.jpg', 'whitewalker.jpg'];
+
+function clear_arrangement () {
+    widgets.arrangement.clear();
+    widgets.remove_box.sensitive = false;
+    widgets.clear.sensitive = false;
+}
+
+function change_modules () {
+    let models = widgets.arrangement.get_models();
+    clear_arrangement();
+    load_arrangement(widgets.arrangement_combo_box.get_active_text() + 'Arrangement',
+                     widgets.card_combo_box.get_active_text() + 'Card');
+    models.forEach((model) => {
+        widgets.arrangement.add_model(model);
+    });
+}
 
 function connect_signals() {
     widgets.window.connect('destroy', Gtk.main_quit);
@@ -198,7 +255,11 @@ function connect_signals() {
         widgets.titlebar.subtitle = width + 'x' + height;
     });
     widgets.add_box.connect('clicked', () => {
-        let model = new ContentObjectModel.ContentObjectModel();
+        let model = new ArticleObjectModel.ArticleObjectModel({
+            title: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+            synopsis: SYNOPSIS,
+            thumbnail_uri: 'file://' + CONTENTDIR + IMAGES[GLib.random_int_range(0, IMAGES.length)],
+        });
         widgets.arrangement.add_model(model);
         widgets.remove_box.sensitive = true;
         widgets.clear.sensitive = true;
@@ -212,13 +273,13 @@ function connect_signals() {
             widgets.remove_box.sensitive = false;
             widgets.clear.sensitive = false;
         }
-        widgets.arrangement.remove_model(models[0]);
+        widgets.arrangement.remove_model(models[models.length -1 ]);
     });
-    widgets.clear.connect('clicked', () => {
-        widgets.arrangement.clear();
-        widgets.remove_box.sensitive = false;
-        widgets.clear.sensitive = false;
-    });
+
+    widgets.arrangement_combo_box.connect('changed', change_modules)
+    widgets.card_combo_box.connect('changed', change_modules);
+
+    widgets.clear.connect('clicked', clear_arrangement);
     widgets.spacing.bind_property('value', widgets.arrangement, 'spacing',
         GObject.BindingFlags.SYNC_CREATE);
     RESOLUTIONS.forEach((res, ix) => {
