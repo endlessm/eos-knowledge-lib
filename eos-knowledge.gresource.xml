@@ -165,6 +165,7 @@
     <file>js/app/modules/setBannerModule.js</file>
     <file>js/app/modules/setGroupModule.js</file>
     <file>js/app/modules/setPreviewCard.js</file>
+    <file>js/app/modules/setsFilter.js</file>
     <file>js/app/modules/sidebarTemplate.js</file>
     <file>js/app/modules/sideBySideArrangement.js</file>
     <file>js/app/modules/sideMenuTemplate.js</file>

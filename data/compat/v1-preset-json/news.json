@@ -81,6 +81,7 @@
                                                                 "text-halign": "start"
                                                             }
                                                         },
+                                                        "filter": "no-sets",
                                                         "order": {
                                                             "type": "PublishedDateOrder",
                                                             "properties": {
@@ -428,6 +429,7 @@
                     },
                     "slots": {
                         "card-type": "main-card",
+                        "filter": "no-sets",
                         "order": {
                             "type": "PublishedDateOrder",
                             "properties": {
@@ -484,6 +486,12 @@
                         }
                     }
                 }
+            }
+        },
+        "no-sets": {
+            "type": "SetsFilter",
+            "properties": {
+                "invert": true
             }
         }
     }
