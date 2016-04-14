@@ -115,7 +115,7 @@ const ArticleStackModule = new Lang.Class({
             let card = this.create_submodule('nav-card-type', {
                 model: payload.previous_model,
                 sequence: Card.Sequence.PREVIOUS,
-                navigation_context: _("Previous article"),
+                navigation_context: _("Previous Article"),
             });
             if (card !== null) {
                 document_card_props.previous_card = card;
@@ -132,7 +132,7 @@ const ArticleStackModule = new Lang.Class({
             let card = this.create_submodule('nav-card-type', {
                 model: payload.next_model,
                 sequence: Card.Sequence.NEXT,
-                navigation_context: _("Next article"),
+                navigation_context: _("Next Article"),
             });
             if (card !== null) {
                 document_card_props.next_card = card;
