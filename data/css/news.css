@@ -11,7 +11,7 @@ scrollbar.vertical slider {
 EknScrollingTemplate,
 EknBackgroundModule,
 .results-message-background,
-scrollbar {
+EosWindow scrollbar {
     background-color: #e9e5e0;
 }
 

@@ -6,11 +6,11 @@ EosWindow {
     background-size: cover;
 }
 
-scrollbar {
+EosWindow scrollbar {
     padding: 3px;
 }
 
-scrollbar slider {
+EosWindow scrollbar slider {
     min-width: 8px;
     background-color: #9b9b9b;
     border-radius: 20px;
