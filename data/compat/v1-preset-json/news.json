@@ -272,7 +272,7 @@
                                     },
                                     "properties": {
                                         "halign": "fill",
-                                        "message-halign": "fill",
+                                        "message-halign": "start",
                                         "message-justify": "left"
                                     }
                                 }
