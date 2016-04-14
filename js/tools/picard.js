@@ -11,9 +11,10 @@ const SetObjectModel = imports.search.setObjectModel;
 const Module = imports.app.interfaces.module;
 const ModuleFactory = imports.app.moduleFactory;
 const SetMap = imports.app.setMap;
+const Utils = imports.app.utils;
 
-const CSSDIR = 'resource:///com/endlessm/knowledge/data/css/';
 const IMAGES_DIR = 'resource:///com/endlessm/knowledge/data/images/picard/';
+const CSS_DIR = 'resource:///com/endlessm/knowledge/data/css/';
 
 // For those interested in picard's etymology, it goes roughly like this:
 // Arrangement smoke test -> Tasteful floral arrangement -> Martha Stewart ->
@@ -41,7 +42,10 @@ let widgets = {};
 function main () {
     Gtk.init(null);
 
-    _load_library_css();
+    [CSS_DIR + 'picard.css', CSS_DIR + 'news.css'].map(Gio.File.new_for_uri).forEach((file) => {
+        Utils.add_css_provider_from_file(file, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+    });
+
     let provider = new Gtk.CssProvider();
     provider.load_from_data(CSS);
     Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(), provider,
@@ -52,17 +56,6 @@ function main () {
     connect_signals();
     widgets.window.show_all();
     Gtk.main();
-}
-
-function _load_library_css () {
-    ['endless_knowledge.css', 'buffet_core.css'].forEach((file) => {
-        let css_file = Gio.File.new_for_uri(CSSDIR + file);
-        let provider = new Gtk.CssProvider();
-        provider.load_from_file(css_file);
-        Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(),
-                                                 provider,
-                                                 Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
-    });
 }
 
 function load_arrangement (arrangement_type, card_type) {
