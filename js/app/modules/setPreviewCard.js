@@ -96,7 +96,6 @@ const SetPreviewCard = new Lang.Class({
         let query = new QueryObject.QueryObject({
             limit: this.arrangement.get_max_cards(),
             tags: this.model.child_tags,
-            excluded_tags: ['EknSetObject'],
         });
         Engine.get_default().get_objects_by_query(query, null, (engine, res) => {
             let models, get_more;

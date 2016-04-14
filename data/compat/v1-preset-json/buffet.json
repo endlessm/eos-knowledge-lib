@@ -164,7 +164,8 @@
                                                                 "title-capitalization": "uppercase",
                                                                 "context-capitalization": "uppercase"
                                                             }
-                                                        }
+                                                        },
+                                                        "filter": "no-sets"
                                                     }
                                                 },
                                                 "support-card-type": {
@@ -180,7 +181,8 @@
                                                                 "max-rows": 2
                                                             },
                                                             "slots": {
-                                                                "card-type": "main-card"
+                                                                "card-type": "main-card",
+                                                                "filter": "no-sets"
                                                             }
                                                         },
                                                         "header-card-type": "header-card"
@@ -341,6 +343,12 @@
         },
         "context-banner": {
             "type": "ContextBanner"
+        },
+        "no-sets": {
+            "type": "SetsFilter",
+            "properties": {
+                "invert": true
+            }
         }
     }
 }
