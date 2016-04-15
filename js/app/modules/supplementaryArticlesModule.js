@@ -26,7 +26,6 @@ const SupplementaryArticlesModule = new Module.Class({
     GTypeName: 'EknSupplementaryArticlesModule',
     CssName: 'EknSupplementaryArticlesModule',
     Extends: CardContainer.CardContainer,
-    Implements: [ Module.Module ],
 
     Properties: {
         /**

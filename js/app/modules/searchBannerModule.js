@@ -29,7 +29,6 @@ const SearchBannerModule = new Module.Class({
     GTypeName: 'EknSearchBannerModule',
     CssName: 'EknSearchBannerModule',
     Extends: Gtk.Label,
-    Implements: [ Module.Module ],
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/searchBannerModule.ui',
 

@@ -14,7 +14,7 @@ const Order = imports.app.interfaces.order;
 const FeaturedOrder = new Module.Class({
     Name: 'FeaturedOrder',
     Extends: GObject.Object,
-    Implements: [Module.Module, Order.Order],
+    Implements: [Order.Order],
 
     compare_impl: function (left, right) {
         if (left.featured === right.featured)

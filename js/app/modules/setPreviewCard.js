@@ -33,7 +33,7 @@ const SetPreviewCard = new Module.Class({
     GTypeName: 'EknSetPreviewCard',
     CssName: 'EknSetPreviewCard',
     Extends: CardContainer.CardContainer,
-    Implements: [ Module.Module, Card.Card ],
+    Implements: [Card.Card],
 
     _init: function (props={}) {
         this.parent(props);

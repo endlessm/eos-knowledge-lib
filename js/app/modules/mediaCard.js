@@ -19,7 +19,7 @@ const MediaCard = new Module.Class({
     GTypeName: 'EknMediaCard',
     CssName: 'EknMediaCard',
     Extends: Gtk.Frame,
-    Implements: [ Module.Module, Card.Card ],
+    Implements: [Card.Card],
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/mediaCard.ui',
     InternalChildren: [ 'caption-label', 'attribution-label', 'grid',

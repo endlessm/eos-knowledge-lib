@@ -14,7 +14,6 @@ const LightboxModule = new Module.Class({
     GTypeName: 'EknLightboxModule',
     CssName: 'EknLightboxModule',
     Extends: Lightbox.Lightbox,
-    Implements: [ Module.Module ],
 
     _init: function (props={}) {
         this.parent(props);

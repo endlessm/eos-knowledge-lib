@@ -14,7 +14,7 @@ const Order = imports.app.interfaces.order;
 const PublishedDateOrder = new Module.Class({
     Name: 'PublishedDateOrder',
     Extends: GObject.Object,
-    Implements: [Module.Module, Order.Order],
+    Implements: [Order.Order],
 
     compare_impl: function (left, right) {
         if (!left.published && !right.published)

@@ -52,7 +52,6 @@ const MockSearchBox = new Knowledge.Class({
 const MockItemGroupModule = new Module.Class({
     Name: 'MockItemGroupModule',
     Extends: Gtk.Widget,
-    Implements: [ Module.Module ],
 
     Signals: {
         'article-selected': {},

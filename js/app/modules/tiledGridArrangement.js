@@ -13,7 +13,7 @@ const TiledGridArrangement = new Module.Class({
     GTypeName: 'EknTiledGridArrangement',
     CssName: 'EknTiledGridArrangement',
     Extends: Gtk.Grid,
-    Implements: [ Module.Module, Arrangement.Arrangement ],
+    Implements: [Arrangement.Arrangement],
 
     _init: function (props={}) {
         this.parent(props);

@@ -39,7 +39,6 @@ const ArticleStackModule = new Module.Class({
     GTypeName: 'EknArticleStackModule',
     CssName: 'EknArticleStackModule',
     Extends: Gtk.Stack,
-    Implements: [ Module.Module ],
 
     Properties: {
         /**

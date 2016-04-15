@@ -28,7 +28,6 @@ const BannerTemplate = new Module.Class({
     GTypeName: 'EknBannerTemplate',
     CssName: 'EknBannerTemplate',
     Extends: Gtk.Grid,
-    Implements: [ Module.Module ],
 
     Properties: {
         /**

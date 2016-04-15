@@ -14,7 +14,7 @@ const Order = imports.app.interfaces.order;
 const AlphabeticalOrder = new Module.Class({
     Name: 'AlphabeticalOrder',
     Extends: GObject.Object,
-    Implements: [Module.Module, Order.Order],
+    Implements: [Order.Order],
 
     compare_impl: function (left, right) {
         return left.title.localeCompare(right.title);

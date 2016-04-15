@@ -18,7 +18,6 @@ const SplitPercentageTemplate = new Module.Class({
     GTypeName: 'EknSplitPercentageTemplate',
     CssName: 'EknSplitPercentageTemplate',
     Extends: Endless.CustomContainer,
-    Implements: [ Module.Module ],
 
     Properties: {
         /**

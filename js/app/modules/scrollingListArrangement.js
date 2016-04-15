@@ -13,7 +13,7 @@ const ScrollingListArrangement = new Module.Class({
     GTypeName: 'EknScrollingListArrangement',
     CssName: 'EknScrollingListArrangement',
     Extends: InfiniteScrolledWindow.InfiniteScrolledWindow,
-    Implements: [ Module.Module, Arrangement.Arrangement ],
+    Implements: [Arrangement.Arrangement],
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/scrollingListArrangement.ui',
     InternalChildren: [ 'grid', 'size-group' ],

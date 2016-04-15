@@ -43,7 +43,7 @@ const ThematicModule = new Module.Class({
     GTypeName: 'EknThematicModule',
     CssName: 'EknThematicModule',
     Extends: Gtk.Grid,
-    Implements: [ Module.Module, Scrollable.Scrollable ],
+    Implements: [Scrollable.Scrollable],
 
     _init: function (props={}) {
         props.orientation = Gtk.Orientation.VERTICAL;

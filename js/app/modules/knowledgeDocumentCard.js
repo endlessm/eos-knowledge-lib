@@ -38,7 +38,7 @@ const KnowledgeDocumentCard = new Module.Class({
     GTypeName: 'EknKnowledgeDocumentCard',
     CssName: 'EknKnowledgeDocumentCard',
     Extends: Endless.CustomContainer,
-    Implements: [ Module.Module, Card.Card, DocumentCard.DocumentCard ],
+    Implements: [Card.Card, DocumentCard.DocumentCard],
 
     Properties: {
         /**

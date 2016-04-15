@@ -17,7 +17,7 @@ const GridArrangement = new Module.Class({
     GTypeName: 'EknGridArrangement',
     CssName: 'EknGridArrangement',
     Extends: InfiniteScrolledWindow.InfiniteScrolledWindow,
-    Implements: [ Module.Module, Arrangement.Arrangement ],
+    Implements: [Arrangement.Arrangement],
 
     Properties: {
         /**

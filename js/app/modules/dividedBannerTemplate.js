@@ -16,7 +16,6 @@ const DividedBannerTemplate = new Module.Class({
     GTypeName: 'EknDividedBannerTemplate',
     CssName: 'EknDividedBannerTemplate',
     Extends: Gtk.Grid,
-    Implements: [ Module.Module ],
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/dividedBannerTemplate.ui',
 

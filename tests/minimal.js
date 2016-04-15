@@ -24,7 +24,7 @@ const Scrollable = imports.app.interfaces.scrollable;
 const MinimalArrangement = new Module.Class({
     Name: 'MinimalArrangement',
     Extends: Gtk.Grid,
-    Implements: [ Module.Module, Arrangement.Arrangement ],
+    Implements: [Arrangement.Arrangement],
 
     Properties: {
         'transition-duration': GObject.ParamSpec.uint('transition-duration', '', '',
@@ -57,7 +57,7 @@ const MinimalArrangement = new Module.Class({
 const MinimalCard = new Module.Class({
     Name: 'MinimalCard',
     Extends: Gtk.Button,
-    Implements: [ Module.Module, Card.Card ],
+    Implements: [Card.Card],
 
     _init: function (props={}) {
         this.parent(props);
@@ -77,13 +77,13 @@ const MinimalCard = new Module.Class({
 const MinimalNavigationCard = new Module.Class({
     Name: 'MinimalNavigationCard',
     Extends: Gtk.Button,
-    Implements: [ Module.Module, Card.Card, NavigationCard.NavigationCard ],
+    Implements: [Card.Card, NavigationCard.NavigationCard],
 });
 
 const MinimalScrollable = new Module.Class({
     Name: 'MinimalScrollable',
     Extends: GObject.Object,
-    Implements: [ Module.Module, Scrollable.Scrollable ],
+    Implements: [Scrollable.Scrollable],
 
     _init: function (props={}) {
         this.parent(props);
@@ -96,7 +96,7 @@ const MinimalScrollable = new Module.Class({
 const MinimalInteraction = new Module.Class({
     Name: 'MinimalInteraction',
     Extends: GObject.Object,
-    Implements: [ Module.Module, Launcher.Launcher, Interaction.Interaction ],
+    Implements: [Launcher.Launcher, Interaction.Interaction],
 
     desktop_launch: function () {},
 });
@@ -104,7 +104,6 @@ const MinimalInteraction = new Module.Class({
 const MinimalPage = new Module.Class({
     Name: 'MinimalPage',
     Extends: Gtk.Grid,
-    Implements: [ Module.Module ],
 
     _init: function (props={}) {
         this.parent(props);
@@ -115,7 +114,6 @@ const MinimalPage = new Module.Class({
 const MinimalBackCover = new Module.Class({
     Name: 'MinimalBackCover',
     Extends: Gtk.Widget,
-    Implements: [ Module.Module ],
 
     Properties: {
         'progress-label': GObject.ParamSpec.object('progress-label', 'Progress label',
@@ -132,13 +130,12 @@ const MinimalBackCover = new Module.Class({
 const MinimalModule = new Module.Class({
     Name: 'MinimalModule',
     Extends: GObject.Object,
-    Implements: [ Module.Module ],
 });
 
 const MinimalDocumentCard = new Module.Class({
     Name: 'MinimalDocumentCard',
     Extends: Gtk.Widget,
-    Implements: [ Module.Module, Card.Card, DocumentCard.DocumentCard ],
+    Implements: [Card.Card, DocumentCard.DocumentCard],
 
     Properties: {
         'info-notice': GObject.ParamSpec.object('info-notice', '', '',
@@ -180,13 +177,12 @@ const MinimalDocumentCard = new Module.Class({
 const MinimalBinModule = new Module.Class({
     Name: 'MinimalBinModule',
     Extends: Gtk.Frame,
-    Implements: [ Module.Module ],
 });
 
 const MinimalOrder = new Module.Class({
     Name: 'MinimalOrder',
     Extends: GObject.Object,
-    Implements: [ Module.Module, Order.Order ],
+    Implements: [Order.Order],
 
     Properties: {
         'model-prop': GObject.ParamSpec.string('model-prop', '', '',
@@ -202,7 +198,7 @@ const MinimalOrder = new Module.Class({
 const TitleFilter = new Module.Class({
     Name: 'TitleFilter',
     Extends: GObject.Object,
-    Implements: [ Module.Module, Filter.Filter ],
+    Implements: [Filter.Filter],
 
     include_impl: function (model) {
         return model.title !== '0Filter me out';

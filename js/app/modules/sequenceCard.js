@@ -25,7 +25,7 @@ const SequenceCard = new Module.Class({
     GTypeName: 'EknSequenceCard',
     CssName: 'EknSequenceCard',
     Extends: Gtk.Button,
-    Implements: [ Module.Module, Card.Card, NavigationCard.NavigationCard ],
+    Implements: [Card.Card, NavigationCard.NavigationCard],
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/sequenceCard.ui',
     InternalChildren: [ 'title-label', 'next-label', 'previous-label' ],

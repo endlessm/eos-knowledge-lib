@@ -11,7 +11,7 @@ const SetsFilter = new Module.Class({
     Name: 'SetsFilter',
     GTypeName: 'EknSetsFilter',
     Extends: GObject.Object,
-    Implements: [ Module.Module, Filter.Filter ],
+    Implements: [Filter.Filter],
 
     // Filter implementation
     include_impl: function (model) {

@@ -16,7 +16,6 @@ const EncyclopediaCoverTemplate = new Module.Class({
     GTypeName: 'EknEncyclopediaCoverTemplate',
     CssName: 'EknEncyclopediaCoverTemplate',
     Extends: Gtk.Frame,
-    Implements: [ Module.Module ],
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/encyclopediaCoverTemplate.ui',
     InternalChildren: [ 'grid' ],

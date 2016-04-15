@@ -24,7 +24,6 @@ const AppBanner = new Module.Class({
     GTypeName: 'EknAppBanner',
     CssName: 'EknAppBanner',
     Extends: Gtk.Grid,
-    Implements: [ Module.Module ],
 
     Properties: {
         /**

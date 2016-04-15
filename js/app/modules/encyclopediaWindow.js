@@ -13,7 +13,6 @@ const Utils = imports.app.utils;
 const EncyclopediaWindow = new Module.Class({
     Name: 'EncyclopediaWindow',
     Extends: Endless.Window,
-    Implements: [ Module.Module ],
 
     Properties: {
         /**

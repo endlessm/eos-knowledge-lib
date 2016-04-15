@@ -12,7 +12,7 @@ const CarouselArrangement = new Module.Class({
     GTypeName: 'EknCarouselArrangement',
     CssName: 'EknCarouselArrangement',
     Extends: Gtk.Stack,
-    Implements: [ Module.Module, Arrangement.Arrangement ],
+    Implements: [Arrangement.Arrangement],
 
     // Arrangement override
     fade_card_in: function (card) {

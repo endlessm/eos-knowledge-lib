@@ -22,7 +22,7 @@ const ArticleSnippetCard = new Module.Class({
     GTypeName: 'EknArticleSnippetCard',
     CssName: 'EknArticleSnippetCard',
     Extends: Gtk.Button,
-    Implements: [ Module.Module, Card.Card ],
+    Implements: [Card.Card],
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/articleSnippetCard.ui',
     InternalChildren: [ 'title-label', 'synopsis-label' ],

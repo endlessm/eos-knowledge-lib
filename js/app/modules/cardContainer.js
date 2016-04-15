@@ -33,7 +33,6 @@ const CardContainer = new Module.Class({
     GTypeName: 'EknCardContainer',
     CssName: 'EknCardContainer',
     Extends: Gtk.Grid,
-    Implements: [ Module.Module ],
 
     Properties: {
         /**

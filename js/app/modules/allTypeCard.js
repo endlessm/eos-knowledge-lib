@@ -29,7 +29,7 @@ const AllTypeCard = new Module.Class({
     GTypeName: 'EknAllTypeCard',
     CssName: 'EknAllTypeCard',
     Extends: Gtk.Button,
-    Implements: [ Module.Module, Card.Card ],
+    Implements: [Card.Card],
 
     Properties: {
         'highlighted': GObject.ParamSpec.boolean('highlighted',

@@ -20,7 +20,6 @@ const ResponsiveMarginsModule = new Module.Class({
     GTypeName: 'EknResponsiveMarginsModule',
     CssName: 'EknResponsiveMarginsModule',
     Extends: Gtk.Bin,
-    Implements: [ Module.Module ],
 
     _init: function (props={}) {
         this.parent(props);

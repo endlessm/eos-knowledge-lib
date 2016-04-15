@@ -33,7 +33,7 @@ const HalfArrangement = new Module.Class({
     Name: 'HalfArrangement',
     GTypeName: 'EknHalfArrangement',
     Extends: Endless.CustomContainer,
-    Implements: [ Module.Module, Arrangement.Arrangement ],
+    Implements: [Arrangement.Arrangement],
 
     _init: function (props={}) {
         this._spacing = 0;

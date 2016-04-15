@@ -12,7 +12,7 @@ const ListArrangement = new Module.Class({
     GTypeName: 'EknListArrangement',
     CssName: 'EknListArrangement',
     Extends: Gtk.Grid,
-    Implements: [ Module.Module, Arrangement.Arrangement ],
+    Implements: [Arrangement.Arrangement],
 
     _init: function (props={}) {
         this.parent(props);

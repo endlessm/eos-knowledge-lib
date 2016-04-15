@@ -19,7 +19,7 @@ const SearchResultCard = new Module.Class({
     GTypeName: 'EknSearchResultCard',
     CssName: 'EknSearchResultCard',
     Extends: Gtk.Button,
-    Implements: [ Module.Module, Card.Card, NavigationCard.NavigationCard ],
+    Implements: [Card.Card, NavigationCard.NavigationCard],
 
     Properties: {
         /**

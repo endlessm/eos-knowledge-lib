@@ -31,7 +31,7 @@ const SetGroupModule = new Module.Class({
     GTypeName: 'EknSetGroupModule',
     CssName: 'EknSetGroupModule',
     Extends: Gtk.Frame,
-    Implements: [ Module.Module, Expandable.Expandable ],
+    Implements: [Expandable.Expandable],
 
     Properties: {
         /**

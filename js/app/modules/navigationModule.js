@@ -13,7 +13,6 @@ const NavigationModule = new Module.Class({
     GTypeName: 'EknNavigationModule',
     CssName: 'EknNavigationModule',
     Extends: NavButtonOverlay.NavButtonOverlay,
-    Implements: [ Module.Module ],
 
     _init: function (props={}) {
         this.parent(props);

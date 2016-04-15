@@ -34,7 +34,6 @@ const TopMenuModule = new Module.Class({
     GTypeName: 'EknTopMenuModule',
     CssName: 'EknTopMenuModule',
     Extends: Endless.CustomContainer,
-    Implements: [ Module.Module ],
 
     _init: function (props={}) {
         this.hexpand = true;

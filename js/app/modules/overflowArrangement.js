@@ -11,7 +11,7 @@ const OverflowArrangement = new Module.Class({
     GTypeName: 'EknOverflowArrangement',
     CssName: 'EknOverflowArrangement',
     Extends: SpaceContainer.SpaceContainer,
-    Implements: [ Module.Module, Arrangement.Arrangement ],
+    Implements: [Arrangement.Arrangement],
 
     // Arrangement override
     fade_card_in: function (card) {

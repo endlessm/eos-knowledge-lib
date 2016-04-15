@@ -27,7 +27,7 @@ const SideBySideArrangement = new Module.Class({
     GTypeName: 'EknSideBySideArrangement',
     CssName: 'EknSideBySideArrangement',
     Extends: Endless.CustomContainer,
-    Implements: [ Module.Module, Arrangement.Arrangement ],
+    Implements: [Arrangement.Arrangement],
 
     _init: function (props={}) {
         this._all_visible = true;

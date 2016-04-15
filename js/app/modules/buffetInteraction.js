@@ -55,7 +55,7 @@ const BuffetInteraction = new Module.Class({
     Name: 'BuffetInteraction',
     GTypeName: 'EknBuffetInteraction',
     Extends: GObject.Object,
-    Implements: [ Module.Module, Launcher.Launcher, Interaction.Interaction ],
+    Implements: [Launcher.Launcher, Interaction.Interaction],
 
     Properties: {
         /**

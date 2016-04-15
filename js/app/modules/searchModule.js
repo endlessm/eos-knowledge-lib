@@ -42,7 +42,6 @@ const SearchModule = new Module.Class({
     GTypeName: 'EknSearchModule',
     CssName: 'EknSearchModule',
     Extends: Gtk.Stack,
-    Implements: [ Module.Module ],
 
     Properties: {
         /**
