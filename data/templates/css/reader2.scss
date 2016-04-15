@@ -25,7 +25,7 @@ html {
         }
     }
 
-    .infobox, .thumb, .mbox-small, .tright, .floatright, .vertical-navbox,
+    .infobox, .infobox_v2, .thumb, .mbox-small, .tright, .floatright, .vertical-navbox,
     table[align="right"] {
         margin: 0px 10px 20px 20px;
         clear: right;
@@ -84,7 +84,7 @@ html {
         background-color: #cccccc;
     }
 
-    .infobox {
+    .infobox, .infobox_v2 {
         color: #666666;
         box-shadow: none;
         line-height: normal;
@@ -186,7 +186,7 @@ $max-d: 599px;
     .mw-body {
         /* infobox[style] is necessary for specificity required to override
         wikimedia.css */
-        .infobox, .infobox[style], .thumb, .mbox-small, .tright, .floatright,
+        .infobox, .infobox[style], .infobox_v2, .infobox_v2[style], .thumb, .mbox-small, .tright, .floatright,
         .vertical-navbox, table[align="right"] {
             clear: both;
             float: none;
@@ -219,7 +219,7 @@ $max-d: 599px;
 @media (min-width: $extravagant-layout) {
     .mw-body {
         /* See note above about infobox[style] */
-        .infobox, .infobox[style], .thumb, .mbox-small, .tright, .floatright,
+        .infobox, .infobox[style], .infobox_v2, .infobox_v2[style], .thumb, .mbox-small, .tright, .floatright,
         .vertical-navbox, table[align="right"] {
             margin-right: 20px;
             margin-bottom: 24px;
@@ -262,7 +262,7 @@ $max-d: 599px;
             font-size: 17px;
         }
 
-        .infobox {
+        .infobox, .infobox_v2 {
             th:only-child,
             caption {
                 line-height: 22px;
@@ -295,7 +295,7 @@ $max-d: 599px;
         font-size: 19.4px;  /* 22px spec * 88% because spec was at 110% scale not 125% */
         color: black;
 
-        .infobox {
+        .infobox, .infobox_v2 {
             th:only-child,
             caption {
                 line-height: 17.6px;  /* 20px * 88% */
