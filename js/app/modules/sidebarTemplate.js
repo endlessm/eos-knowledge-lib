@@ -31,7 +31,6 @@ const SidebarTemplate = new Module.Class({
     GTypeName: 'EknSidebarTemplate',
     CssName: 'EknSidebarTemplate',
     Extends: Endless.CustomContainer,
-    Implements: [ Module.Module ],
 
     Properties: {
         /**

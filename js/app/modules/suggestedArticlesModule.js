@@ -25,7 +25,6 @@ const SuggestedArticlesModule = new Module.Class({
     GTypeName: 'EknSuggestedArticlesModule',
     CssName: 'EknSuggestedArticlesModule',
     Extends: CardContainer.CardContainer,
-    Implements: [ Module.Module ],
 
     _init: function (props={}) {
         props.title = _("You might be interested in...");

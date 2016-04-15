@@ -25,7 +25,6 @@ const TwoPieceTemplate = new Module.Class({
     GTypeName: 'EknTwoPieceTemplate',
     CssName: 'EknTwoPieceTemplate',
     Extends: Gtk.Grid,
-    Implements: [ Module.Module ],
 
     _init: function (props={}) {
         props.expand = true;

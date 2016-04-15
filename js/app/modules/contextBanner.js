@@ -36,7 +36,6 @@ const ContextBanner = new Module.Class({
     GTypeName: 'EknContextBanner',
     CssName: 'EknContextBanner',
     Extends: Gtk.Label,
-    Implements: [ Module.Module ],
 
     _init: function (props={}) {
         props.label = _("Highlights");

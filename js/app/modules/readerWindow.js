@@ -43,7 +43,6 @@ const ReaderWindow = new Module.Class({
     Name: 'ReaderWindow',
     GTypeName: 'EknReaderWindow',
     Extends: Endless.Window,
-    Implements: [ Module.Module ],
 
     Properties: {
         /**

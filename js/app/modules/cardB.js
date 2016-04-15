@@ -17,7 +17,7 @@ const CardB = new Module.Class({
     GTypeName: 'EknCardB',
     CssName: 'EknCardB',
     Extends: Gtk.Button,
-    Implements: [ Module.Module, Card.Card ],
+    Implements: [Card.Card],
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/cardB.ui',
     InternalChildren: [ 'thumbnail-frame', 'title-label' ],

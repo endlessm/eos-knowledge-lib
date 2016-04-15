@@ -56,7 +56,7 @@ const AisleInteraction = new Module.Class({
     Name: 'AisleInteraction',
     GTypeName: 'EknAisleInteraction',
     Extends: GObject.Object,
-    Implements: [ Module.Module, Launcher.Launcher, Interaction.Interaction ],
+    Implements: [Launcher.Launcher, Interaction.Interaction],
 
     Properties: {
         /**

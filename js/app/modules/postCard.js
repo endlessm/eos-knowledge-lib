@@ -17,7 +17,7 @@ const PostCard = new Module.Class({
     GTypeName: 'EknPostCard',
     CssName: 'EknPostCard',
     Extends: Gtk.Button,
-    Implements: [ Module.Module, Card.Card ],
+    Implements: [Card.Card],
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/postCard.ui',
     InternalChildren: [ 'thumbnail-frame', 'title-label', 'inner-content-grid', 'shadow-frame', 'overlay' ],

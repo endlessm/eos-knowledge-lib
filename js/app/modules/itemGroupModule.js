@@ -25,7 +25,6 @@ const ItemGroupModule = new Module.Class({
     GTypeName: 'EknItemGroupModule',
     CssName: 'EknItemGroupModule',
     Extends: Gtk.Frame,
-    Implements: [ Module.Module ],
 
     _init: function (props={}) {
         this.parent(props);

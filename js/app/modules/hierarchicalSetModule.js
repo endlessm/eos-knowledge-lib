@@ -42,7 +42,7 @@ const HierarchicalSetModule = new Module.Class({
     GTypeName: 'EknHierarchicalSetModule',
     CssName: 'EknHierarchicalSetModule',
     Extends: Gtk.Grid,
-    Implements: [ Module.Module, Scrollable.Scrollable ],
+    Implements: [Scrollable.Scrollable],
 
     _init: function (props={}) {
         props.orientation = Gtk.Orientation.VERTICAL;

@@ -62,7 +62,6 @@ const BackgroundModule = new Module.Class({
     GTypeName: 'EknBackgroundModule',
     CssName: 'EknBackgroundModule',
     Extends: Gtk.Frame,
-    Implements: [ Module.Module ],
 
     Properties: {
         /**

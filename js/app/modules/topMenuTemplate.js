@@ -36,7 +36,6 @@ const TopMenuTemplate = new Module.Class({
     GTypeName: 'EknTopMenuTemplate',
     CssName: 'EknTopMenuTemplate',
     Extends: SlidingPanelOverlay.SlidingPanelOverlay,
-    Implements: [ Module.Module ],
 
     Properties: {
         'menu-open': GObject.ParamSpec.boolean('menu-open', 'Menu open',

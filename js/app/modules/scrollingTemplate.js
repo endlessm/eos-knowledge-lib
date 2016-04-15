@@ -19,7 +19,6 @@ const ScrollingTemplate = new Module.Class({
     GTypeName: 'EknScrollingTemplate',
     CssName: 'EknScrollingTemplate',
     Extends: InfiniteScrolledWindow.InfiniteScrolledWindow,
-    Implements: [ Module.Module ],
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/scrollingTemplate.ui',
     InternalChildren: [ 'viewport' ],

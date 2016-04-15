@@ -29,7 +29,6 @@ const SuggestedCategoriesModule = new Module.Class({
     GTypeName: 'EknSuggestedCategoriesModule',
     CssName: 'EknSuggestedCategoriesModule',
     Extends: Gtk.Grid,
-    Implements: [ Module.Module ],
 
     Properties: {
         /**

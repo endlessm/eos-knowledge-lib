@@ -32,7 +32,7 @@ const TextCard = new Module.Class({
     GTypeName: 'EknTextCard',
     CssName: 'EknTextCard',
     Extends: Gtk.Button,
-    Implements: [ Module.Module, Card.Card, NavigationCard.NavigationCard ],
+    Implements: [Card.Card, NavigationCard.NavigationCard],
 
     Properties: {
         /**

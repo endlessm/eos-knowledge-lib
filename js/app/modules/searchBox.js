@@ -27,7 +27,6 @@ const SearchBox = new Module.Class({
     GTypeName: 'EknSearchBox',
     CssName: 'EknSearchBox',
     Extends: Endless.SearchBox,
-    Implements: [ Module.Module ],
 
     _init: function (props={}) {
         if (props.visible === undefined)

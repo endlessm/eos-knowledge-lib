@@ -48,7 +48,7 @@ const ThirdRockArrangement = new Module.Class({
     GTypeName: 'EknThirdRockArrangement',
     CssName: 'EknThirdRockArrangement',
     Extends: Endless.CustomContainer,
-    Implements: [ Module.Module, Arrangement.Arrangement ],
+    Implements: [Arrangement.Arrangement],
 
     Properties: {
         /**

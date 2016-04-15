@@ -11,7 +11,7 @@ const FeaturedFilter = new Module.Class({
     Name: 'FeaturedFilter',
     GTypeName: 'EknFeaturedFilter',
     Extends: GObject.Object,
-    Implements: [ Module.Module, Filter.Filter ],
+    Implements: [Filter.Filter],
 
     // Filter implementation
     include_impl: function (model) {

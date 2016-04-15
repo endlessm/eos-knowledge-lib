@@ -27,7 +27,7 @@ const WindshieldArrangement = new Module.Class({
     GTypeName: 'EknWindshieldArrangement',
     CssName: 'EknWindshieldArrangement',
     Extends: Endless.CustomContainer,
-    Implements: [ Module.Module, Arrangement.Arrangement ],
+    Implements: [Arrangement.Arrangement],
 
     _init: function (props={}) {
         this._small_mode = false;

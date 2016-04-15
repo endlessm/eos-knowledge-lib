@@ -15,12 +15,23 @@ const Knowledge = imports.app.knowledge;
  * > const MyModule = new Module.Class({
  * >     Name: 'MyModule',
  * >     Extends: GObject.Object,
- * >     Implements: [Module.Module],
  * > });
+ *
+ * The <Module.Module> interface is implemented automatically even if you don't
+ * specify it, since all modules must implement this interface.
  */
 const Class = new Lang.Class({
     Name: 'Class',
     Extends: Knowledge.Class,
+
+    _construct: function (props={}) {
+        // Make sure Module is implemented before chaining
+        props.Implements = props.Implements || [];
+        if (props.Implements.indexOf(Module) === -1)
+            props.Implements.unshift(Module);
+
+        return this.parent(props);
+    },
 });
 
 /**

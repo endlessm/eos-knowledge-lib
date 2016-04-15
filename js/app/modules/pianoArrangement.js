@@ -31,7 +31,7 @@ const PianoArrangement = new Module.Class({
     GTypeName: 'EknPianoArrangement',
     CssName: 'EknPianoArrangement',
     Extends: Endless.CustomContainer,
-    Implements: [ Module.Module, Arrangement.Arrangement ],
+    Implements: [Arrangement.Arrangement],
 
     Properties: {
         /**

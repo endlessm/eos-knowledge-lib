@@ -12,7 +12,7 @@ const UnreadFilter = new Module.Class({
     Name: 'UnreadFilter',
     GTypeName: 'EknUnreadFilter',
     Extends: GObject.Object,
-    Implements: [ Module.Module, Filter.Filter ],
+    Implements: [Filter.Filter],
 
     // Filter implementation
     include_impl: function (model) {

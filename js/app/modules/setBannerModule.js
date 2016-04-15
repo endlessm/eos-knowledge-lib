@@ -21,7 +21,6 @@ const SetBannerModule = new Module.Class({
     GTypeName: 'EknSetBannerModule',
     CssName: 'EknSetBannerModule',
     Extends: Gtk.Frame,
-    Implements: [ Module.Module ],
 
     _init: function (props={}) {
         this.parent(props);

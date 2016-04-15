@@ -108,7 +108,7 @@ const ThumbCard = new Module.Class({
     GTypeName: 'EknThumbCard',
     CssName: 'EknThumbCard',
     Extends: Gtk.Button,
-    Implements: [ Module.Module, Card.Card ],
+    Implements: [Card.Card],
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/thumbCard.ui',
     InternalChildren: [ 'thumbnail-frame', 'inner-grid', 'content-frame', 'title-label', 'synopsis-label' ],

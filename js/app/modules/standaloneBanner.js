@@ -28,7 +28,6 @@ const StandaloneBanner = new Module.Class({
     GTypeName: 'EknStandaloneBanner',
     CssName: 'EknStandaloneBanner',
     Extends: Gtk.InfoBar,
-    Implements: [ Module.Module ],
 
     Properties: {
         /**

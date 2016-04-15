@@ -41,7 +41,6 @@ const HighlightsModule = new Module.Class({
     GTypeName: 'EknHighlightsModule',
     CssName: 'EknHighlightsModule',
     Extends: Gtk.Grid,
-    Implements: [ Module.Module ],
 
     Properties: {
         /**

@@ -39,7 +39,7 @@ const MeshInteraction = new Module.Class({
     Name: 'MeshInteraction',
     GTypeName: 'EknMeshInteraction',
     Extends: GObject.Object,
-    Implements: [ Module.Module, Launcher.Launcher, Interaction.Interaction ],
+    Implements: [Launcher.Launcher, Interaction.Interaction],
 
     ARTICLE_PAGE: 'article',
     HOME_PAGE: 'home',

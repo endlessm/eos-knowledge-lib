@@ -22,7 +22,6 @@ const PaperTemplate = new Module.Class({
     GTypeName: 'EknPaperTemplate',
     CssName: 'EknPaperTemplate',
     Extends: Gtk.Bin,
-    Implements: [ Module.Module ],
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/paperTemplate.ui',
     InternalChildren: [ 'content-frame' ],

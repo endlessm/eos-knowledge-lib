@@ -25,7 +25,6 @@ const HamburgerBasementTemplate = new Module.Class({
     GTypeName: 'EknHamburgerBasementTemplate',
     CssName: 'EknHamburgerBasementTemplate',
     Extends: Gtk.Stack,
-    Implements: [ Module.Module ],
 
     Properties: {
         /**

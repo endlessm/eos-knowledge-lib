@@ -46,7 +46,7 @@ const QuarterArrangement = new Module.Class({
     GTypeName: 'EknQuarterArrangement',
     CssName: 'EknQuarterArrangement',
     Extends: Endless.CustomContainer,
-    Implements: [ Module.Module, Arrangement.Arrangement ],
+    Implements: [Arrangement.Arrangement],
 
     _init: function (props={}) {
         this._spacing = 0;

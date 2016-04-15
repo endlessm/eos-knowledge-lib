@@ -18,7 +18,6 @@ const BackCover = new Module.Class({
     GTypeName: 'EknBackCover',
     CssName: 'EknBackCover',
     Extends: Gtk.Frame,
-    Implements: [ Module.Module ],
 
     Properties: {
         /**

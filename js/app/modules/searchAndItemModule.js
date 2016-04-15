@@ -19,7 +19,6 @@ const SearchAndItemModule = new Module.Class({
     GTypeName: 'EknSearchAndItemModule',
     CssName: 'EknSearchAndItemModule',
     Extends: Gtk.Stack,
-    Implements: [ Module.Module ],
 
     _init: function (props={}) {
         props.visible = true;

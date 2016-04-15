@@ -34,7 +34,6 @@ const Window = new Module.Class({
     Name: 'Window',
     GTypeName: 'EknWindow',
     Extends: Endless.Window,
-    Implements: [ Module.Module ],
 
     Properties: {
         /**

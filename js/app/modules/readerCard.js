@@ -28,7 +28,7 @@ const ReaderCard = new Module.Class({
     GTypeName: 'EknReaderCard',
     CssName: 'EknReaderCard',
     Extends: Gtk.Button,
-    Implements: [ Module.Module, Card.Card ],
+    Implements: [Card.Card],
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/readerCard.ui',
     InternalChildren: [  'title-label', 'archive-icon', 'card-info-grid',

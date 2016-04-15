@@ -23,7 +23,6 @@ const StandalonePage = new Module.Class({
     GTypeName: 'EknStandalonePage',
     CssName: 'EknStandalonePage',
     Extends: Gtk.Frame,
-    Implements: [ Module.Module ],
 
     _init: function (props={}) {
         this.parent(props);

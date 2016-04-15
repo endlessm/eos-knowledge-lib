@@ -25,7 +25,7 @@ const SquareGuysArrangement = new Module.Class({
     GTypeName: 'EknSquareGuysArrangement',
     CssName: 'EknSquareGuysArrangement',
     Extends: Endless.CustomContainer,
-    Implements: [ Module.Module, Arrangement.Arrangement ],
+    Implements: [Arrangement.Arrangement],
 
     Properties: {
         /**

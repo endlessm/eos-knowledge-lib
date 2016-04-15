@@ -37,7 +37,7 @@ const ReaderDocumentCard = new Module.Class({
     GTypeName: 'EknReaderDocumentCard',
     CssName: 'EknReaderDocumentCard',
     Extends: Gtk.Overlay,
-    Implements: [ Module.Module, Card.Card, DocumentCard.DocumentCard ],
+    Implements: [Card.Card, DocumentCard.DocumentCard],
 
     Properties: {
         // FIXME: The following properties only make sense for reader apps.

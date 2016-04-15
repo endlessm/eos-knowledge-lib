@@ -81,7 +81,7 @@ const QuiltArrangement = new Module.Class({
     GTypeName: 'EknQuiltArrangement',
     CssName: 'EknQuiltArrangement',
     Extends: Endless.CustomContainer,
-    Implements: [ Module.Module, Arrangement.Arrangement ],
+    Implements: [Arrangement.Arrangement],
 
     _init: function (props={}) {
         this._spacing = 0;
