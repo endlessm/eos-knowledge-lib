@@ -14,16 +14,6 @@ const UnreadFilter = new Module.Class({
     Extends: GObject.Object,
     Implements: [ Module.Module, Filter.Filter ],
 
-    Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-        'invert': GObject.ParamSpec.override('invert', Filter.Filter),
-    },
-
-    _init: function (props={}) {
-        this.parent(props);
-    },
-
     // Filter implementation
     include_impl: function (model) {
         return !ReadingHistoryModel.get_default().is_read_article(model.ekn_id);

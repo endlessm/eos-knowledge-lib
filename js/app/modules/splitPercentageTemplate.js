@@ -29,8 +29,6 @@ const SplitPercentageTemplate = new Module.Class({
             'Background image URI', 'URI for background image of this widget',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             ''),
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
     },
 
     _init: function (props={}) {

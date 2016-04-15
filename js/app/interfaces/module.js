@@ -16,7 +16,6 @@ const Knowledge = imports.app.knowledge;
  * >     Name: 'MyModule',
  * >     Extends: GObject.Object,
  * >     Implements: [Module.Module],
- * >     Properties:  // ...
  * > });
  */
 const Class = new Lang.Class({

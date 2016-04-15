@@ -2,8 +2,6 @@
 
 /* exported ScrollingTemplate */
 
-const GObject = imports.gi.GObject;
-
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
 const InfiniteScrolledWindow = imports.app.widgets.infiniteScrolledWindow;
@@ -22,11 +20,6 @@ const ScrollingTemplate = new Module.Class({
     CssName: 'EknScrollingTemplate',
     Extends: InfiniteScrolledWindow.InfiniteScrolledWindow,
     Implements: [ Module.Module ],
-
-    Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-    },
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/scrollingTemplate.ui',
     InternalChildren: [ 'viewport' ],

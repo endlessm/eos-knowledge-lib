@@ -1,5 +1,3 @@
-const GObject = imports.gi.GObject;
-
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
 const NavButtonOverlay = imports.app.widgets.navButtonOverlay;
@@ -16,11 +14,6 @@ const NavigationModule = new Module.Class({
     CssName: 'EknNavigationModule',
     Extends: NavButtonOverlay.NavButtonOverlay,
     Implements: [ Module.Module ],
-
-    Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-    },
 
     _init: function (props={}) {
         this.parent(props);

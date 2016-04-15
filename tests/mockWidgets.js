@@ -54,10 +54,6 @@ const MockItemGroupModule = new Module.Class({
     Extends: Gtk.Widget,
     Implements: [ Module.Module ],
 
-    Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-    },
     Signals: {
         'article-selected': {},
         'need-more-content': {},

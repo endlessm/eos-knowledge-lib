@@ -26,8 +26,6 @@ const SpaceContainer = new Knowledge.Class({
     Extends: Endless.CustomContainer,
     Implements: [Gtk.Orientable],
     Properties: {
-        'orientation': GObject.ParamSpec.override('orientation',
-            Gtk.Orientable),
         /**
          * Property: spacing
          * The amount of space between children

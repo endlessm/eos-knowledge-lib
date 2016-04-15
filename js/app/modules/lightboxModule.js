@@ -1,5 +1,3 @@
-const GObject = imports.gi.GObject;
-
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
 const Engine = imports.search.engine;
@@ -17,11 +15,6 @@ const LightboxModule = new Module.Class({
     CssName: 'EknLightboxModule',
     Extends: Lightbox.Lightbox,
     Implements: [ Module.Module ],
-
-    Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-    },
 
     _init: function (props={}) {
         this.parent(props);

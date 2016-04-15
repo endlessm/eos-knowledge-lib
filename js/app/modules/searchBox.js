@@ -3,7 +3,6 @@
 const Endless = imports.gi.Endless;
 const Gettext = imports.gettext;
 const Gio = imports.gi.Gio;
-const GObject = imports.gi.GObject;
 
 const Actions = imports.app.actions;
 const Config = imports.app.config;
@@ -29,11 +28,6 @@ const SearchBox = new Module.Class({
     CssName: 'EknSearchBox',
     Extends: Endless.SearchBox,
     Implements: [ Module.Module ],
-
-    Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-    },
 
     _init: function (props={}) {
         if (props.visible === undefined)

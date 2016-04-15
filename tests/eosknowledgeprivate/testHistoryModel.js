@@ -1,19 +1,15 @@
 // Copyright 2014 Endless Mobile, Inc.
 
-const GObject = imports.gi.GObject;
-const Lang = imports.lang;
-
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
+const GObject = imports.gi.GObject;
 
-const MockItemModel = new Lang.Class({
+const Knowledge = imports.app.knowledge;
+
+const MockItemModel = new Knowledge.Class({
     Name: 'MockItemModel',
     GTypeName: 'testHistoryModel_MockItemModel',
     Extends: GObject.Object,
     Implements: [ EosKnowledgePrivate.HistoryItemModel ],
-    Properties: {
-        'title': GObject.ParamSpec.override('title',
-            EosKnowledgePrivate.HistoryItemModel),
-    },
 
     get title() {
         return this._title;

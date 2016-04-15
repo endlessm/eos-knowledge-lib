@@ -1,6 +1,5 @@
 // Copyright 2015 Endless Mobile, Inc.
 
-const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 
 const Actions = imports.app.actions;
@@ -21,11 +20,6 @@ const SearchAndItemModule = new Module.Class({
     CssName: 'EknSearchAndItemModule',
     Extends: Gtk.Stack,
     Implements: [ Module.Module ],
-
-    Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-    },
 
     _init: function (props={}) {
         props.visible = true;

@@ -4,7 +4,6 @@
 
 const Endless = imports.gi.Endless;
 const Gdk = imports.gi.Gdk;
-const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 
 const Module = imports.app.interfaces.module;
@@ -36,11 +35,6 @@ const TopMenuModule = new Module.Class({
     CssName: 'EknTopMenuModule',
     Extends: Endless.CustomContainer,
     Implements: [ Module.Module ],
-
-    Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-    },
 
     _init: function (props={}) {
         this.hexpand = true;

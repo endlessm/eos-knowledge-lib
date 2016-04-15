@@ -361,6 +361,7 @@ javascript_tests = \
 	tests/js/app/testDominantColor.js \
 	tests/js/app/testHistoryItem.js \
 	tests/js/app/testHistoryPresenter.js \
+	tests/js/app/testKnowledge.js \
 	tests/js/app/testModuleFactory.js \
 	tests/js/app/testReadingHistoryModel.js \
 	tests/js/app/testSetMap.js \

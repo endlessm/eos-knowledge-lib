@@ -41,6 +41,10 @@ gint ekn_widget_style_get_int (GtkWidget *widget,
 EKN_AVAILABLE_IN_0_4
 gchar* ekn_extract_pixbuf_dominant_color (GdkPixbuf *pixbuf);
 
+EKN_AVAILABLE_IN_0_4
+GParamSpec **ekn_interface_gtype_list_properties(GType     gtype,
+                                                 unsigned *n_properties_returned);
+
 G_END_DECLS
 
 #endif /* EKN_UTIL_H */

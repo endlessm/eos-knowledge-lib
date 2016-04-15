@@ -1,16 +1,13 @@
-const GObject = imports.gi.GObject;
-const Lang = imports.lang;
-
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
+const GObject = imports.gi.GObject;
 
-const MockItemModel = new Lang.Class({
+const Knowledge = imports.app.knowledge;
+
+const MockItemModel = new Knowledge.Class({
     Name: 'MockItemModel',
     Extends: GObject.Object,
     Implements: [ EosKnowledgePrivate.HistoryItemModel ],
-    Properties: {
-        'title': GObject.ParamSpec.override('title',
-            EosKnowledgePrivate.HistoryItemModel),
-    },
+
     get title() {
         return this._title;
     },
@@ -26,10 +23,6 @@ describe('History item model', function () {
         }).not.toThrow();
     });
 
-    // This test is currently a no-brainer, but after GJS gets patched, it
-    // should still work even if the 'title' property is removed from the
-    // MockItemModel class.
-    // https://bugzilla.gnome.org/show_bug.cgi?id=727368
     it('remembers its title', function () {
         let model = new MockItemModel({
             title: 'Slartibartfast'

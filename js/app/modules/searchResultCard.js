@@ -22,17 +22,6 @@ const SearchResultCard = new Module.Class({
     Implements: [ Module.Module, Card.Card, NavigationCard.NavigationCard ],
 
     Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-        'model': GObject.ParamSpec.override('model', Card.Card),
-        'title-capitalization': GObject.ParamSpec.override('title-capitalization',
-            Card.Card),
-        'context-capitalization': GObject.ParamSpec.override('context-capitalization',
-            Card.Card),
-        'highlight-string': GObject.ParamSpec.override('highlight-string', Card.Card),
-        'text-halign': GObject.ParamSpec.override('text-halign', Card.Card),
-        'sequence': GObject.ParamSpec.override('sequence', Card.Card),
-        'navigation-context': GObject.ParamSpec.override('navigation-context', NavigationCard.NavigationCard),
         /**
          * Property: show-synopsis
          * Whether to show the synopsis label.

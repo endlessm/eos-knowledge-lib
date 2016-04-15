@@ -39,8 +39,6 @@ const TopMenuTemplate = new Module.Class({
     Implements: [ Module.Module ],
 
     Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
         'menu-open': GObject.ParamSpec.boolean('menu-open', 'Menu open',
             'Whether the menu is showing', GObject.ParamFlags.READABLE, false),
     },

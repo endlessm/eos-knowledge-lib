@@ -32,21 +32,11 @@ const AllTypeCard = new Module.Class({
     Implements: [ Module.Module, Card.Card ],
 
     Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-        'model': GObject.ParamSpec.override('model', Card.Card),
-        'title-capitalization': GObject.ParamSpec.override('title-capitalization',
-            Card.Card),
-        'context-capitalization': GObject.ParamSpec.override('context-capitalization',
-            Card.Card),
-        'highlight-string': GObject.ParamSpec.override('highlight-string', Card.Card),
-        'text-halign': GObject.ParamSpec.override('text-halign', Card.Card),
         'highlighted': GObject.ParamSpec.boolean('highlighted',
             'Highlighted Mode',
             'Whether this card is displayed as a highlighted card',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             false),
-        'sequence': GObject.ParamSpec.override('sequence', Card.Card),
     },
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/allTypeCard.ui',

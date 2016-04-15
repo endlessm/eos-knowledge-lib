@@ -2,7 +2,6 @@
 
 /* exported HierarchicalSetModule */
 
-const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 
 const Actions = imports.app.actions;
@@ -44,12 +43,6 @@ const HierarchicalSetModule = new Module.Class({
     CssName: 'EknHierarchicalSetModule',
     Extends: Gtk.Grid,
     Implements: [ Module.Module, Scrollable.Scrollable ],
-
-    Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-        'scroll-server': GObject.ParamSpec.override('scroll-server', Scrollable.Scrollable),
-    },
 
     _init: function (props={}) {
         props.orientation = Gtk.Orientation.VERTICAL;

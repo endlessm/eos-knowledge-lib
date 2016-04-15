@@ -27,9 +27,6 @@ const AppBanner = new Module.Class({
     Implements: [ Module.Module ],
 
     Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-
         /**
          * Property: image-uri
          * A URI to the title image. Defaults to an empty string.
