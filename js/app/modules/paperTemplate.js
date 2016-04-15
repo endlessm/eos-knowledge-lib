@@ -1,7 +1,6 @@
 // Copyright 2015 Endless Mobile, Inc.
 
 const Gdk = imports.gi.Gdk;
-const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 
 const Module = imports.app.interfaces.module;
@@ -24,11 +23,6 @@ const PaperTemplate = new Module.Class({
     CssName: 'EknPaperTemplate',
     Extends: Gtk.Bin,
     Implements: [ Module.Module ],
-
-    Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-    },
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/paperTemplate.ui',
     InternalChildren: [ 'content-frame' ],

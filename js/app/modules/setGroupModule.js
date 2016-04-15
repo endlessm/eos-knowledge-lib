@@ -34,9 +34,6 @@ const SetGroupModule = new Module.Class({
     Implements: [ Module.Module, Expandable.Expandable ],
 
     Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-        'has-more-content': GObject.ParamSpec.override('has-more-content', Expandable.Expandable),
         /**
          * Property: max-children
          *

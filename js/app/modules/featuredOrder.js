@@ -16,12 +16,6 @@ const FeaturedOrder = new Module.Class({
     Extends: GObject.Object,
     Implements: [Module.Module, Order.Order],
 
-    Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-        'ascending': GObject.ParamSpec.override('ascending', Order.Order),
-    },
-
     compare_impl: function (left, right) {
         if (left.featured === right.featured)
             return 0;

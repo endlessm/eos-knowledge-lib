@@ -44,8 +44,6 @@ const HighlightsModule = new Module.Class({
     Implements: [ Module.Module ],
 
     Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
         /**
          * Property: support-sets
          * The number of support sets to display

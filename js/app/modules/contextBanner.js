@@ -4,7 +4,6 @@
 
 const Format = imports.format;
 const Gettext = imports.gettext;
-const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 
 const Actions = imports.app.actions;
@@ -38,11 +37,6 @@ const ContextBanner = new Module.Class({
     CssName: 'EknContextBanner',
     Extends: Gtk.Label,
     Implements: [ Module.Module ],
-
-    Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-    },
 
     _init: function (props={}) {
         props.label = _("Highlights");

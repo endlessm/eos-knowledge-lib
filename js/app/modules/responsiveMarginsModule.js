@@ -22,11 +22,6 @@ const ResponsiveMarginsModule = new Module.Class({
     Extends: Gtk.Bin,
     Implements: [ Module.Module ],
 
-    Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-    },
-
     _init: function (props={}) {
         this.parent(props);
 

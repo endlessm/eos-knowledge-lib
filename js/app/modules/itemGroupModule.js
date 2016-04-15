@@ -2,7 +2,6 @@
 
 /* exported ItemGroupModule */
 
-const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 
 const Actions = imports.app.actions;
@@ -27,11 +26,6 @@ const ItemGroupModule = new Module.Class({
     CssName: 'EknItemGroupModule',
     Extends: Gtk.Frame,
     Implements: [ Module.Module ],
-
-    Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-    },
 
     _init: function (props={}) {
         this.parent(props);

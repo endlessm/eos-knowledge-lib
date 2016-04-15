@@ -3,7 +3,6 @@
 /* exported SuggestedArticlesModule */
 
 const Gettext = imports.gettext;
-const GObject = imports.gi.GObject;
 
 const Actions = imports.app.actions;
 const CardContainer = imports.app.modules.cardContainer;
@@ -27,11 +26,6 @@ const SuggestedArticlesModule = new Module.Class({
     CssName: 'EknSuggestedArticlesModule',
     Extends: CardContainer.CardContainer,
     Implements: [ Module.Module ],
-
-    Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-    },
 
     _init: function (props={}) {
         props.title = _("You might be interested in...");

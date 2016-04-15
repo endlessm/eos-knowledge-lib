@@ -1,4 +1,3 @@
-const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 
 const Module = imports.app.interfaces.module;
@@ -18,11 +17,6 @@ const EncyclopediaCoverTemplate = new Module.Class({
     CssName: 'EknEncyclopediaCoverTemplate',
     Extends: Gtk.Frame,
     Implements: [ Module.Module ],
-
-    Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-    },
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/encyclopediaCoverTemplate.ui',
     InternalChildren: [ 'grid' ],

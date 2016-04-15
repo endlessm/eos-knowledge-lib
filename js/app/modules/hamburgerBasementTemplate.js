@@ -28,8 +28,6 @@ const HamburgerBasementTemplate = new Module.Class({
     Implements: [ Module.Module ],
 
     Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
         /**
          * Property: upper-button-label
          * Label on the tab button on the upper page

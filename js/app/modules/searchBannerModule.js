@@ -2,7 +2,6 @@
 
 const Format = imports.format;
 const Gettext = imports.gettext;
-const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 
 const Actions = imports.app.actions;
@@ -31,11 +30,6 @@ const SearchBannerModule = new Module.Class({
     CssName: 'EknSearchBannerModule',
     Extends: Gtk.Label,
     Implements: [ Module.Module ],
-
-    Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-    },
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/searchBannerModule.ui',
 

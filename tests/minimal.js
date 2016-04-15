@@ -27,16 +27,9 @@ const MinimalArrangement = new Module.Class({
     Implements: [ Module.Module, Arrangement.Arrangement ],
 
     Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
         'transition-duration': GObject.ParamSpec.uint('transition-duration', '', '',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
             0, GLib.MAXUINT32, 1),
-        'all-visible': GObject.ParamSpec.override('all-visible',
-            Arrangement.Arrangement),
-        'fade-cards': GObject.ParamSpec.override('fade-cards',
-            Arrangement.Arrangement),
-        'spacing': GObject.ParamSpec.override('spacing', Arrangement.Arrangement),
     },
 
     _init: function (props={}) {
@@ -66,19 +59,6 @@ const MinimalCard = new Module.Class({
     Extends: Gtk.Button,
     Implements: [ Module.Module, Card.Card ],
 
-    Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-        'model': GObject.ParamSpec.override('model', Card.Card),
-        'title-capitalization': GObject.ParamSpec.override('title-capitalization',
-            Card.Card),
-        'context-capitalization': GObject.ParamSpec.override('context-capitalization',
-            Card.Card),
-        'highlight-string': GObject.ParamSpec.override('highlight-string', Card.Card),
-        'text-halign': GObject.ParamSpec.override('text-halign', Card.Card),
-        'sequence': GObject.ParamSpec.override('sequence', Card.Card),
-    },
-
     _init: function (props={}) {
         this.parent(props);
         // For test_card_container_compliance() below
@@ -98,36 +78,12 @@ const MinimalNavigationCard = new Module.Class({
     Name: 'MinimalNavigationCard',
     Extends: Gtk.Button,
     Implements: [ Module.Module, Card.Card, NavigationCard.NavigationCard ],
-
-    Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-        'model': GObject.ParamSpec.override('model', Card.Card),
-        'title-capitalization': GObject.ParamSpec.override('title-capitalization',
-            Card.Card),
-        'context-capitalization': GObject.ParamSpec.override('context-capitalization',
-            Card.Card),
-        'highlight-string': GObject.ParamSpec.override('highlight-string', Card.Card),
-        'text-halign': GObject.ParamSpec.override('text-halign', Card.Card),
-        'sequence': GObject.ParamSpec.override('sequence', Card.Card),
-        'navigation-context': GObject.ParamSpec.override('navigation-context', NavigationCard.NavigationCard),
-    },
-
-    _init: function (props={}) {
-        this.parent(props);
-    },
 });
 
 const MinimalScrollable = new Module.Class({
     Name: 'MinimalScrollable',
     Extends: GObject.Object,
     Implements: [ Module.Module, Scrollable.Scrollable ],
-
-    Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-        'scroll-server': GObject.ParamSpec.override('scroll-server', Scrollable.Scrollable),
-    },
 
     _init: function (props={}) {
         this.parent(props);
@@ -142,18 +98,6 @@ const MinimalInteraction = new Module.Class({
     Extends: GObject.Object,
     Implements: [ Module.Module, Launcher.Launcher, Interaction.Interaction ],
 
-    Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-        'application': GObject.ParamSpec.override('application', Interaction.Interaction),
-        'template-type': GObject.ParamSpec.override('template-type', Interaction.Interaction),
-        'css': GObject.ParamSpec.override('css', Interaction.Interaction),
-    },
-
-    _init: function (props={}) {
-        this.parent(props);
-    },
-
     desktop_launch: function () {},
 });
 
@@ -161,11 +105,6 @@ const MinimalPage = new Module.Class({
     Name: 'MinimalPage',
     Extends: Gtk.Grid,
     Implements: [ Module.Module ],
-
-    Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-    },
 
     _init: function (props={}) {
         this.parent(props);
@@ -179,8 +118,6 @@ const MinimalBackCover = new Module.Class({
     Implements: [ Module.Module ],
 
     Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
         'progress-label': GObject.ParamSpec.object('progress-label', 'Progress label',
             '', GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE,
             Gtk.Widget),
@@ -196,15 +133,6 @@ const MinimalModule = new Module.Class({
     Name: 'MinimalModule',
     Extends: GObject.Object,
     Implements: [ Module.Module ],
-
-    Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-    },
-
-    _init: function (props={}) {
-        this.parent(props);
-    },
 });
 
 const MinimalDocumentCard = new Module.Class({
@@ -213,18 +141,6 @@ const MinimalDocumentCard = new Module.Class({
     Implements: [ Module.Module, Card.Card, DocumentCard.DocumentCard ],
 
     Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-        'model': GObject.ParamSpec.override('model', Card.Card),
-        'title-capitalization': GObject.ParamSpec.override('title-capitalization',
-            Card.Card),
-        'context-capitalization': GObject.ParamSpec.override('context-capitalization',
-            Card.Card),
-        'text-halign': GObject.ParamSpec.override('text-halign', Card.Card),
-        'sequence': GObject.ParamSpec.override('sequence', Card.Card),
-        'content-view': GObject.ParamSpec.override('content-view', DocumentCard.DocumentCard),
-        'custom-css': GObject.ParamSpec.override('custom-css',
-            DocumentCard.DocumentCard),
         'info-notice': GObject.ParamSpec.object('info-notice', '', '',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
             Gtk.Widget),
@@ -240,7 +156,6 @@ const MinimalDocumentCard = new Module.Class({
         'next-card': GObject.ParamSpec.object('next-card',
             'Next Card', 'Next Card',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, Gtk.Widget),
-        'highlight-string': GObject.ParamSpec.override('highlight-string', Card.Card),
         'archived': GObject.ParamSpec.boolean('archived', '', '',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             false),
@@ -266,11 +181,6 @@ const MinimalBinModule = new Module.Class({
     Name: 'MinimalBinModule',
     Extends: Gtk.Frame,
     Implements: [ Module.Module ],
-
-    Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-    },
 });
 
 const MinimalOrder = new Module.Class({
@@ -279,9 +189,6 @@ const MinimalOrder = new Module.Class({
     Implements: [ Module.Module, Order.Order ],
 
     Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-        'ascending': GObject.ParamSpec.override('ascending', Order.Order),
         'model-prop': GObject.ParamSpec.string('model-prop', '', '',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             'title'),
@@ -296,12 +203,6 @@ const TitleFilter = new Module.Class({
     Name: 'TitleFilter',
     Extends: GObject.Object,
     Implements: [ Module.Module, Filter.Filter ],
-
-    Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-        'invert': GObject.ParamSpec.override('invert', Filter.Filter),
-    },
 
     include_impl: function (model) {
         return model.title !== '0Filter me out';

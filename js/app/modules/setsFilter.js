@@ -13,12 +13,6 @@ const SetsFilter = new Module.Class({
     Extends: GObject.Object,
     Implements: [ Module.Module, Filter.Filter ],
 
-    Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-        'invert': GObject.ParamSpec.override('invert', Filter.Filter),
-    },
-
     // Filter implementation
     include_impl: function (model) {
         return (model.tags.indexOf('EknSetObject') !== -1);

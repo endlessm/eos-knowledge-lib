@@ -41,20 +41,6 @@ const KnowledgeDocumentCard = new Module.Class({
     Implements: [ Module.Module, Card.Card, DocumentCard.DocumentCard ],
 
     Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-        'model': GObject.ParamSpec.override('model', Card.Card),
-        'title-capitalization': GObject.ParamSpec.override('title-capitalization',
-            Card.Card),
-        'context-capitalization': GObject.ParamSpec.override('context-capitalization',
-            Card.Card),
-        'content-view': GObject.ParamSpec.override('content-view', DocumentCard.DocumentCard),
-        'custom-css': GObject.ParamSpec.override('custom-css',
-            DocumentCard.DocumentCard),
-        'highlight-string': GObject.ParamSpec.override('highlight-string', Card.Card),
-        'text-halign': GObject.ParamSpec.override('text-halign', Card.Card),
-        'sequence': GObject.ParamSpec.override('sequence', Card.Card),
-
         /**
          * Property: show-titles
          *

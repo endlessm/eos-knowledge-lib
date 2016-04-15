@@ -1,7 +1,6 @@
 const Endless = imports.gi.Endless;
 const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
-const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 
 const Utils = imports.app.utils;
@@ -21,19 +20,6 @@ const MediaCard = new Module.Class({
     CssName: 'EknMediaCard',
     Extends: Gtk.Frame,
     Implements: [ Module.Module, Card.Card ],
-
-    Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-        'model': GObject.ParamSpec.override('model', Card.Card),
-        'title-capitalization': GObject.ParamSpec.override('title-capitalization',
-            Card.Card),
-        'context-capitalization': GObject.ParamSpec.override('context-capitalization',
-            Card.Card),
-        'highlight-string': GObject.ParamSpec.override('highlight-string', Card.Card),
-        'text-halign': GObject.ParamSpec.override('text-halign', Card.Card),
-        'sequence': GObject.ParamSpec.override('sequence', Card.Card),
-    },
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/mediaCard.ui',
     InternalChildren: [ 'caption-label', 'attribution-label', 'grid',

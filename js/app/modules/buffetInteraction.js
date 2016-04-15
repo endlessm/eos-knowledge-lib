@@ -58,11 +58,6 @@ const BuffetInteraction = new Module.Class({
     Implements: [ Module.Module, Launcher.Launcher, Interaction.Interaction ],
 
     Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-        'application': GObject.ParamSpec.override('application', Interaction.Interaction),
-        'template-type': GObject.ParamSpec.override('template-type', Interaction.Interaction),
-        'css': GObject.ParamSpec.override('css', Interaction.Interaction),
         /**
          * Property: theme
          * Theme CSS specification filename

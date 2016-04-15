@@ -1,4 +1,3 @@
-const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 
 const Module = imports.app.interfaces.module;
@@ -18,11 +17,6 @@ const DividedBannerTemplate = new Module.Class({
     CssName: 'EknDividedBannerTemplate',
     Extends: Gtk.Grid,
     Implements: [ Module.Module ],
-
-    Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-    },
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/dividedBannerTemplate.ui',
 

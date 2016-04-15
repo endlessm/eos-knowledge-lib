@@ -15,14 +15,6 @@ const ScrollingListArrangement = new Module.Class({
     Extends: InfiniteScrolledWindow.InfiniteScrolledWindow,
     Implements: [ Module.Module, Arrangement.Arrangement ],
 
-    Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-        'all-visible': GObject.ParamSpec.override('all-visible', Arrangement.Arrangement),
-        'fade-cards': GObject.ParamSpec.override('fade-cards', Arrangement.Arrangement),
-        'spacing': GObject.ParamSpec.override('spacing', Arrangement.Arrangement),
-    },
-
     Template: 'resource:///com/endlessm/knowledge/data/widgets/scrollingListArrangement.ui',
     InternalChildren: [ 'grid', 'size-group' ],
 

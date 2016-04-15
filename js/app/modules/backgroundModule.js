@@ -65,8 +65,6 @@ const BackgroundModule = new Module.Class({
     Implements: [ Module.Module ],
 
     Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
         /**
          * Property: page-mode
          * Mode for setting the height breakpoints of the beige overlay

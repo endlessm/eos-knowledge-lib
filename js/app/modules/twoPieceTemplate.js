@@ -1,6 +1,5 @@
 // Copyright 2016 Endless Mobile, Inc.
 
-const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 
 const Module = imports.app.interfaces.module;
@@ -27,11 +26,6 @@ const TwoPieceTemplate = new Module.Class({
     CssName: 'EknTwoPieceTemplate',
     Extends: Gtk.Grid,
     Implements: [ Module.Module ],
-
-    Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-    },
 
     _init: function (props={}) {
         props.expand = true;

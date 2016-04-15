@@ -18,8 +18,6 @@ const HistoryItem = new Knowledge.Class({
     Extends: GObject.Object,
     Implements: [ EosKnowledgePrivate.HistoryItemModel ],
     Properties: {
-        'title': GObject.ParamSpec.override('title',
-            EosKnowledgePrivate.HistoryItemModel),
         /**
          * Property: page-type
          *

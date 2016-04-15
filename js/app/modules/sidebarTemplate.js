@@ -40,9 +40,6 @@ const SidebarTemplate = new Module.Class({
          */
         'sidebar-first':  GObject.ParamSpec.boolean('sidebar-first', 'Sidebar First', 'Sidebar First',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, true),
-
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
     },
 
     _init: function (props={}) {
