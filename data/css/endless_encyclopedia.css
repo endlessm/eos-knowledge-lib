@@ -54,25 +54,6 @@
     color: #54595a;
 }
 
-PopupWindow {
-    background-color: alpha(black, 0.6);
-    font-size: 13px;
-    color: #686868;
-}
-
-PopupWindow .frame {
-    background-color: white;
-    border-radius: 15px;
-}
-
-PopupWindow .button {
-    color: #888;
-}
-
-PopupWindow .button:hover {
-    color: white;
-}
-
 GtkEntry:selected {
     background-color: gray;
 }
