@@ -44,6 +44,10 @@ const SuggestedCategoriesModule = new Module.Class({
             true),
     },
 
+    Slots: {
+        'arrangement': {},
+    },
+
     Template: 'resource:///com/endlessm/knowledge/data/widgets/suggestedCategoriesModule.ui',
     InternalChildren: [ 'title-button', 'title-button-grid' ],
 
@@ -109,10 +113,5 @@ const SuggestedCategoriesModule = new Module.Class({
                     break;
             }
         });
-    },
-
-    // Module override
-    get_slot_names: function () {
-        return ['arrangement'];
     },
 });

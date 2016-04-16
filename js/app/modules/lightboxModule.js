@@ -8,12 +8,19 @@ const Module = imports.app.interfaces.module;
  * Class: LightboxModule
  *
  * A module which displays media content over other
+ *
+ * Slots:
+ *   card-type
  */
 const LightboxModule = new Module.Class({
     Name: 'LightboxModule',
     GTypeName: 'EknLightboxModule',
     CssName: 'EknLightboxModule',
     Extends: Lightbox.Lightbox,
+
+    Slots: {
+        'card-type': {},
+    },
 
     _init: function (props={}) {
         this.parent(props);
@@ -88,9 +95,5 @@ const LightboxModule = new Module.Class({
         this.reveal_overlays = true;
         this.has_back_button = this._current_index > 0;
         this.has_forward_button = this._current_index < resources.length - 1;
-    },
-
-    get_slot_names: function () {
-        return ['card-type'];
     },
 });

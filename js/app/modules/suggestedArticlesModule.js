@@ -16,9 +16,6 @@ let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 /**
  * Class: SuggestedArticlesModule
  * A module that displays all suggested articles as cards in an arrangement.
- *
- * Slots:
- *   arrangement
  */
 const SuggestedArticlesModule = new Module.Class({
     Name: 'SuggestedArticlesModule',
@@ -43,10 +40,5 @@ const SuggestedArticlesModule = new Module.Class({
                     break;
             }
         });
-    },
-
-    // Module override
-    get_slot_names: function () {
-        return ['arrangement'];
     },
 });

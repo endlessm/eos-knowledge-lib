@@ -55,6 +55,12 @@ const SideMenuTemplate = new Module.Class({
             'Whether the menu is showing', GObject.ParamFlags.READABLE, false),
     },
 
+    Slots: {
+        'content': {},
+        'context': {},
+        'sidebar': {},
+    },
+
     Template: 'resource:///com/endlessm/knowledge/data/widgets/sideMenuTemplate.ui',
     Children: [ 'home-button', 'menu-button', 'menu-close-button' ],
     InternalChildren: [ 'context-bar', 'grid', 'menu-grid', 'separator' ],
@@ -96,11 +102,6 @@ const SideMenuTemplate = new Module.Class({
 
     get menu_open() {
         return this._menu_panel.reveal_panel;
-    },
-
-    // Module override
-    get_slot_names: function () {
-        return ['content', 'context', 'sidebar'];
     },
 
     _open_menu: function () {

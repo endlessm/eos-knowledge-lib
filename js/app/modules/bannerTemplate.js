@@ -44,6 +44,11 @@ const BannerTemplate = new Module.Class({
             0, GLib.MAXUINT32, 0),
     },
 
+    Slots: {
+        'banner': {},
+        'content': {},
+    },
+
     _init: function (props={}) {
         props.orientation = Gtk.Orientation.VERTICAL;
         props.expand = true;
@@ -64,9 +69,5 @@ const BannerTemplate = new Module.Class({
         this.add(this.create_submodule('banner'));
         this.add(separator);
         this.add(this.create_submodule('content'));
-    },
-
-    get_slot_names: function () {
-        return [ 'banner', 'content' ];
     },
 });

@@ -78,6 +78,10 @@ const BackgroundModule = new Module.Class({
             'article'),
     },
 
+    Slots: {
+        'content': {},
+    },
+
     _init: function (props={}) {
         this.parent(props);
         this.add(this.create_submodule('content'));
@@ -108,11 +112,6 @@ const BackgroundModule = new Module.Class({
                 this._idle_id = 0;
             });
         });
-    },
-
-    // Module override
-    get_slot_names: function () {
-        return ['content'];
     },
 
     _update_css_class: function () {

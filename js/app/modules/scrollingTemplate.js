@@ -20,6 +20,10 @@ const ScrollingTemplate = new Module.Class({
     CssName: 'EknScrollingTemplate',
     Extends: InfiniteScrolledWindow.InfiniteScrolledWindow,
 
+    Slots: {
+        'content': {},
+    },
+
     Template: 'resource:///com/endlessm/knowledge/data/widgets/scrollingTemplate.ui',
     InternalChildren: [ 'viewport' ],
 
@@ -53,11 +57,6 @@ const ScrollingTemplate = new Module.Class({
                     break;
             }
         });
-    },
-
-    // Module override
-    get_slot_names: function () {
-        return ['content'];
     },
 
     // return scroll position to the top of the window

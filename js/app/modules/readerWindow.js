@@ -83,6 +83,18 @@ const ReaderWindow = new Module.Class({
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
     },
 
+    Slots: {
+        'archive-page': {},
+        'back-page': {},
+        'document-arrangement': {},
+        'front-page': {},
+        'lightbox': {},
+        'navigation': {},
+        'search': {},
+        'search-page': {},
+        'standalone-page': {},
+    },
+
     Signals: {
         'debug-hotkey-pressed': {},
     },
@@ -402,12 +414,6 @@ const ReaderWindow = new Module.Class({
             cursor = Gdk.Cursor.new_for_display(Gdk.Display.get_default(),
                 Gdk.CursorType.WATCH);
         gdk_window.cursor = cursor;
-    },
-
-    get_slot_names: function () {
-        return ['archive-page', 'back-page', 'document-arrangement',
-            'front-page', 'lightbox', 'navigation', 'search', 'search-page',
-            'standalone-page'];
     },
 
     vfunc_size_allocate: function (alloc) {

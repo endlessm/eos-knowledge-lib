@@ -12,6 +12,9 @@ const Module = imports.app.interfaces.module;
  *
  * An Interaction drives the flow of the application from page to page. It also
  * adds the pages to the app window’s page manager.
+ *
+ * Slots:
+ *   window
  */
 const Interaction = new Lang.Interface({
     Name: 'Interaction',
@@ -59,5 +62,9 @@ const Interaction = new Lang.Interface({
         'css': GObject.ParamSpec.string('css', 'css',
             'CSS overrides for the Knowledge app',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
+    },
+
+    Slots: {
+        'window': {},
     },
 });

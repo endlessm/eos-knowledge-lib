@@ -30,9 +30,46 @@ const Class = new Lang.Class({
         if (props.Implements.indexOf(Module) === -1)
             props.Implements.unshift(Module);
 
-        return this.parent(props);
+        let slots = {};
+        // Looking for a 'Slots' property on the interface's prototype allows us
+        // to get away with not defining a separate meta-interface for module
+        // interfaces. If we need something more fancy, such as freezing the
+        // interface's slots object, we can switch later.
+        props.Implements.forEach(iface =>
+            Lang.copyProperties(iface.prototype.Slots, slots));
+        Lang.copyProperties(props.Extends.__slots__, slots);
+        Lang.copyProperties(props.Slots, slots);
+        delete props.Slots;
+
+        let module = this.parent(props);
+
+        Object.defineProperties(module, {
+            '__slots__': {
+                writable: false,
+                configurable: false,
+                enumerable: false,
+                value: _freeze_recurse(slots),
+            },
+        });
+
+        /**
+         * Method: get_slot_names
+         * Class method for listing names of slots
+         *
+         * Returns an array containing the names of slots offered by this module.
+         */
+        module.get_slot_names = function () {
+            return Object.keys(this.__slots__);
+        };
+
+        return module;
     },
 });
+
+function _freeze_recurse(o) {
+    Object.getOwnPropertyNames(o).forEach(prop => _freeze_recurse(o[prop]));
+    return Object.freeze(o);
+}
 
 /**
  * Interface: Module
@@ -63,17 +100,6 @@ const Module = new Lang.Interface({
         'factory-name': GObject.ParamSpec.string('factory-name', 'Module Name', 'Module Name',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             ''),
-    },
-
-    /**
-     * Method: get_slot_names
-     * List names for slots
-     *
-     * Returns an array containing the names of slots offered by this module.
-     * Should be overridden when appropriate in subclasses.
-     */
-    get_slot_names: function () {
-        return [];
     },
 
     /**

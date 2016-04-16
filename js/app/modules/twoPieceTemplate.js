@@ -26,6 +26,11 @@ const TwoPieceTemplate = new Module.Class({
     CssName: 'EknTwoPieceTemplate',
     Extends: Gtk.Grid,
 
+    Slots: {
+        'first': {},
+        'second': {},
+    },
+
     _init: function (props={}) {
         props.expand = true;
         this.parent(props);
@@ -37,9 +42,5 @@ const TwoPieceTemplate = new Module.Class({
         let second = this.create_submodule('second');
         second.get_style_context().add_class('second');
         this.add(second);
-    },
-
-    get_slot_names: function () {
-        return ['first', 'second'];
     },
 });

@@ -14,12 +14,19 @@ const Utils = imports.app.utils;
 /**
  * Class: ResponsiveMarginsModule
  * A module that displays a window and has responsive margins.
+ *
+ * Slots:
+ *   content
  */
 const ResponsiveMarginsModule = new Module.Class({
     Name: 'ResponsiveMarginsModule',
     GTypeName: 'EknResponsiveMarginsModule',
     CssName: 'EknResponsiveMarginsModule',
     Extends: Gtk.Bin,
+
+    Slots: {
+        'content': {},
+    },
 
     _init: function (props={}) {
         this.parent(props);
@@ -128,11 +135,6 @@ const ResponsiveMarginsModule = new Module.Class({
         this.parent(cr);
         cr.$dispose();
         return Gdk.EVENT_PROPAGATE;
-    },
-
-    // Module override
-    get_slot_names: function () {
-        return ['content'];
     },
 });
 

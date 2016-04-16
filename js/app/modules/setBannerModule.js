@@ -22,6 +22,10 @@ const SetBannerModule = new Module.Class({
     CssName: 'EknSetBannerModule',
     Extends: Gtk.Frame,
 
+    Slots: {
+        'card-type': {},
+    },
+
     _init: function (props={}) {
         this.parent(props);
         Dispatcher.get_default().register((payload) => {
@@ -41,9 +45,5 @@ const SetBannerModule = new Module.Class({
                     break;
             }
         });
-    },
-
-    get_slot_names: function () {
-        return [ 'card-type' ];
     },
 });

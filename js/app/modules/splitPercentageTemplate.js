@@ -12,6 +12,10 @@ const Utils = imports.app.utils;
 /**
  * Class: SplitPercentageTemplate
  * Template with a sidebar and content area
+ *
+ * Slots:
+ *   start
+ *   end
  */
 const SplitPercentageTemplate = new Module.Class({
     Name: 'SplitPercentageTemplate',
@@ -28,6 +32,11 @@ const SplitPercentageTemplate = new Module.Class({
             'Background image URI', 'URI for background image of this widget',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             ''),
+    },
+
+    Slots: {
+        'start': {},
+        'end': {},
     },
 
     _init: function (props={}) {
@@ -69,10 +78,6 @@ const SplitPercentageTemplate = new Module.Class({
             return;
         this._start_fraction = start_fraction;
         this.queue_resize();
-    },
-
-    get_slot_names: function () {
-        return [ 'start', 'end' ];
     },
 
     _distribute_width: function (available_width) {

@@ -20,6 +20,11 @@ const SearchAndItemModule = new Module.Class({
     CssName: 'EknSearchAndItemModule',
     Extends: Gtk.Stack,
 
+    Slots: {
+        'search': {},
+        'item': {},
+    },
+
     _init: function (props={}) {
         props.visible = true;
         this.parent(props);
@@ -38,10 +43,5 @@ const SearchAndItemModule = new Module.Class({
                     break;
             }
         });
-    },
-
-    // Module override
-    get_slot_names: function () {
-        return ['search', 'item'];
     },
 });

@@ -36,6 +36,11 @@ const SPINNER_PAGE_NAME = 'spinner';
  *   results-message-title - on the title text showing a no results message
  *   results-message-subtitle - on the subtitle text showing a no results message
  *   error-message - on the text showing an error
+ *
+ * Slots:
+ *   arrangement
+ *   article-suggestions - optional
+ *   category-suggestions - optional
  */
 const SearchModule = new Module.Class({
     Name: 'SearchModule',
@@ -89,6 +94,12 @@ const SearchModule = new Module.Class({
             'Message halign', 'Horizontal alignment of message text',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             Gtk.Align.$gtype, Gtk.Align.START),
+    },
+
+    Slots: {
+        'arrangement': {},
+        'article-suggestions': {},  // optional
+        'category-suggestions': {},  // optional
     },
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/searchModule.ui',
@@ -168,12 +179,6 @@ const SearchModule = new Module.Class({
                 break;
             }
         });
-    },
-
-    // Module override
-    get_slot_names: function () {
-        return ['arrangement', 'article-suggestions', 'category-suggestions'];
-        // optional: article-suggestions, category-suggestions
     },
 
     _add_card: function (model) {

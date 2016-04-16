@@ -17,9 +17,6 @@ let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
  * Class: SupplementaryArticlesModule
  * A module that displays all unread articles as cards in an arrangement. If no
  * unread articles are available it will show read articles with the same criteria.
- *
- * Slots:
- *   arrangement
  */
 const SupplementaryArticlesModule = new Module.Class({
     Name: 'SupplementaryArticlesModule',
@@ -69,10 +66,5 @@ const SupplementaryArticlesModule = new Module.Class({
                     break;
             }
         });
-    },
-
-    // Module override
-    get_slot_names: function () {
-        return ['arrangement'];
     },
 });

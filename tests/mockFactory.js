@@ -52,8 +52,9 @@ const MockFactory = new Knowledge.Class({
     },
 
     create_module_for_slot: function (parent, slot, props={}) {
-        if (parent.get_slot_names().indexOf(slot) === -1)
-            throw new Error('No slot named ' + slot + ' according to module.get_slot_names.');
+        if (!(slot in parent.constructor.__slots__))
+            throw new Error('No slot named ' + slot +
+                '; did you forget to define it in Slots?');
         let module_name = this._mock_slots[parent.factory_name][slot];
         if (module_name === null)
             return null;
