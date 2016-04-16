@@ -45,6 +45,10 @@ const SetGroupModule = new Module.Class({
             0, GLib.MAXINT32, 1000),
     },
 
+    Slots: {
+        'arrangement': {},
+    },
+
     _init: function (props={}) {
         this.parent(props);
         this.has_more_content = false;
@@ -98,11 +102,6 @@ const SetGroupModule = new Module.Class({
                     break;
             }
         });
-    },
-
-    // Module override
-    get_slot_names: function () {
-        return ['arrangement'];
     },
 
     _add_card: function (model) {

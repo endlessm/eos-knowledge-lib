@@ -19,6 +19,12 @@ let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
  *
  * CSS Styles:
  *      hamburger-basement-template - on the template
+ *
+ * Slots:
+ *   top
+ *   middle
+ *   bottom
+ *   basement
  */
 const HamburgerBasementTemplate = new Module.Class({
     Name: 'HamburgerBasementTemplate',
@@ -43,6 +49,13 @@ const HamburgerBasementTemplate = new Module.Class({
             'Basement tab button label', 'Basement tab button label',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             _("HOME")),
+    },
+
+    Slots: {
+        'top': {},
+        'middle': {},
+        'bottom': {},
+        'basement': {},
     },
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/hamburgerBasementTemplate.ui',
@@ -112,9 +125,5 @@ const HamburgerBasementTemplate = new Module.Class({
             });
         });
         return panel;
-    },
-
-    get_slot_names: function () {
-        return ['top', 'middle', 'bottom', 'basement'];
     },
 });

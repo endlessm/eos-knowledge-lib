@@ -26,14 +26,19 @@ const TOP_MENU_HEIGHT = 50;
  *   <Module>
  *
  * Slots:
- *   banner: Typically an image previewer to display the logo
- *   menu: Module that contains the horizontal menu
+ *   banner - Typically an image previewer to display the logo
+ *   menu - Module that contains the horizontal menu
  */
 const TopMenuModule = new Module.Class({
     Name: 'TopMenuModule',
     GTypeName: 'EknTopMenuModule',
     CssName: 'EknTopMenuModule',
     Extends: Endless.CustomContainer,
+
+    Slots: {
+        'banner': {},
+        'menu': {},
+    },
 
     _init: function (props={}) {
         this.hexpand = true;
@@ -46,11 +51,6 @@ const TopMenuModule = new Module.Class({
         this.add(this._menu);
 
         this.show_all();
-    },
-
-    // Module override
-    get_slot_names: function () {
-        return ['banner', 'menu'];
     },
 
     vfunc_get_request_mode: function () {

@@ -10,12 +10,20 @@ const Module = imports.app.interfaces.module;
  * CSS Styles:
  *      encyclopedia-cover-template - on the template
  *
+ * Slots:
+ *   top
+ *   bottom
  */
 const EncyclopediaCoverTemplate = new Module.Class({
     Name: 'EncyclopediaCoverTemplate',
     GTypeName: 'EknEncyclopediaCoverTemplate',
     CssName: 'EknEncyclopediaCoverTemplate',
     Extends: Gtk.Frame,
+
+    Slots: {
+        'top': {},
+        'bottom': {},
+    },
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/encyclopediaCoverTemplate.ui',
     InternalChildren: [ 'grid' ],
@@ -25,9 +33,5 @@ const EncyclopediaCoverTemplate = new Module.Class({
 
         this._grid.add(this.create_submodule('top'));
         this._grid.add(this.create_submodule('bottom'));
-    },
-
-    get_slot_names: function () {
-        return [ 'top', 'bottom' ];
     },
 });

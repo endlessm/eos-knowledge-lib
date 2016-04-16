@@ -79,6 +79,10 @@ const CardContainer = new Module.Class({
             EosKnowledgePrivate.TextTransform.NONE),
     },
 
+    Slots: {
+        'arrangement': {},
+    },
+
     _init: function (props={}) {
         this.title_button = new Gtk.Button({
             halign: Gtk.Align.START,
@@ -178,11 +182,6 @@ const CardContainer = new Module.Class({
             return;
         this._trigger_capitalization = value;
         this._update_title();
-    },
-
-    // Module override
-    get_slot_names: function () {
-        return ['arrangement'];
     },
 
     /**

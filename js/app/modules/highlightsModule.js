@@ -56,6 +56,12 @@ const HighlightsModule = new Module.Class({
             0, GLib.MAXUINT16, 0),
     },
 
+    Slots: {
+        'highlight-arrangement': {},
+        'support-card-type': {},
+        'sets-filter': {},
+    },
+
     _init: function (props={}) {
         props.orientation = Gtk.Orientation.VERTICAL;
         this.parent(props);
@@ -95,11 +101,6 @@ const HighlightsModule = new Module.Class({
                 this._update_arrangements();
             });
         });
-    },
-
-    // Module override
-    get_slot_names: function () {
-        return ['highlight-arrangement', 'support-card-type', 'sets-filter'];
     },
 
     _add_set_card: function (model) {

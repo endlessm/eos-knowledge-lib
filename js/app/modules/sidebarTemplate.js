@@ -41,6 +41,11 @@ const SidebarTemplate = new Module.Class({
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, true),
     },
 
+    Slots: {
+        'sidebar': {},
+        'content': {},
+    },
+
     _init: function (props={}) {
         props.expand = true;
         this.parent(props);
@@ -80,10 +85,6 @@ const SidebarTemplate = new Module.Class({
         this._sidebar_width_large = sidebar_width_large;
         this._sidebar_width_small = sidebar_width_small;
         this.queue_resize();
-    },
-
-    get_slot_names: function () {
-        return [ 'sidebar', 'content' ];
     },
 
     vfunc_get_request_mode: function () {

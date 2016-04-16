@@ -591,11 +591,6 @@ const BuffetInteraction = new Module.Class({
         });
     },
 
-    // Module override
-    get_slot_names: function () {
-        return ['window'];
-    },
-
     // Should be mocked out during tests so that we don't actually send metrics
     record_search_metric: function (query) {
         let recorder = EosMetrics.EventRecorder.get_default();

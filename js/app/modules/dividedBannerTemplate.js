@@ -10,12 +10,22 @@ const Module = imports.app.interfaces.module;
  * CSS Styles:
  *      home-page-b-template - on the template
  *
+ * Slots:
+ *   top-left
+ *   top-right
+ *   bottom
  */
 const DividedBannerTemplate = new Module.Class({
     Name: 'DividedBannerTemplate',
     GTypeName: 'EknDividedBannerTemplate',
     CssName: 'EknDividedBannerTemplate',
     Extends: Gtk.Grid,
+
+    Slots: {
+        'top-left': {},
+        'top-right': {},
+        'bottom': {},
+    },
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/dividedBannerTemplate.ui',
 
@@ -30,17 +40,13 @@ const DividedBannerTemplate = new Module.Class({
             'top-right': [1, 0, 1, 1],
             'bottom': [0, 1, 2, 2],
         };
-        this.get_slot_names().forEach((slot) => {
+        DividedBannerTemplate.get_slot_names().forEach(slot => {
             let submodule = this.create_submodule(slot);
             this.attach.bind(this, submodule).apply(this, PACKING_ARGS[slot]);
             this['_' + slot] = submodule;
         });
 
         this._orig_row_spacing = null;
-    },
-
-    get_slot_names: function () {
-        return [ 'top-left', 'top-right', 'bottom' ];
     },
 
     vfunc_size_allocate: function (alloc) {

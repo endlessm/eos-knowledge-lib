@@ -16,12 +16,19 @@ const Utils = imports.app.utils;
  * CSS Styles:
  *      paper-template - on the template as a whole, which is a GtkAlignment
  *      content - on the paper itself (the GtkFrame within the alignment)
+ *
+ * Slots:
+ *   content
  */
 const PaperTemplate = new Module.Class({
     Name: 'PaperTemplate',
     GTypeName: 'EknPaperTemplate',
     CssName: 'EknPaperTemplate',
     Extends: Gtk.Bin,
+
+    Slots: {
+        'content': {},
+    },
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/paperTemplate.ui',
     InternalChildren: [ 'content-frame' ],
@@ -63,9 +70,5 @@ const PaperTemplate = new Module.Class({
         this.parent(cr);
         cr.$dispose();
         return false;
-    },
-
-    get_slot_names: function () {
-        return ['content'];
     },
 });

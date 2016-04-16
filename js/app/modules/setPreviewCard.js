@@ -24,8 +24,6 @@ const QueryObject = imports.search.queryObject;
  *   card - on the widget itself
  *
  * Slots:
- *   arrangement - arrangement in which to display this sets article cards.
- *   card-type - type of cards to create for articles
  *   header-card-type - type of card to create for title label
  */
 const SetPreviewCard = new Module.Class({
@@ -34,6 +32,10 @@ const SetPreviewCard = new Module.Class({
     CssName: 'EknSetPreviewCard',
     Extends: CardContainer.CardContainer,
     Implements: [Card.Card],
+
+    Slots: {
+        'header-card-type': {},
+    },
 
     _init: function (props={}) {
         this.parent(props);
@@ -95,11 +97,6 @@ const SetPreviewCard = new Module.Class({
             if (done)
                 done();
         });
-    },
-
-    // Module override
-    get_slot_names: function () {
-        return ['arrangement', 'card-type', 'header-card-type'];
     },
 
     // CardContainer override

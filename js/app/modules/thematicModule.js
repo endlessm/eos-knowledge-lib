@@ -35,7 +35,6 @@ const Scrollable = imports.app.interfaces.scrollable;
  *
  * Slots:
  *   arrangement - arrangement to display cards in
- *   card-type - type of cards to create for articles
  *   header-card-type - type of cards to create for sets
  */
 const ThematicModule = new Module.Class({
@@ -44,6 +43,11 @@ const ThematicModule = new Module.Class({
     CssName: 'EknThematicModule',
     Extends: Gtk.Grid,
     Implements: [Scrollable.Scrollable],
+
+    Slots: {
+        'arrangement': {},
+        'header-card-type': {},
+    },
 
     _init: function (props={}) {
         props.orientation = Gtk.Orientation.VERTICAL;
@@ -80,11 +84,6 @@ const ThematicModule = new Module.Class({
                 this._update_arrangements();
             });
         });
-    },
-
-    // Module override
-    get_slot_names: function () {
-        return ['arrangement', 'header-card-type'];
     },
 
     show_more_content: function () {

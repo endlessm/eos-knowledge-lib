@@ -26,6 +26,10 @@ const ItemGroupModule = new Module.Class({
     CssName: 'EknItemGroupModule',
     Extends: Gtk.Frame,
 
+    Slots: {
+        'arrangement': {},
+    },
+
     _init: function (props={}) {
         this.parent(props);
         let arrangement = this.create_submodule('arrangement');
@@ -64,10 +68,5 @@ const ItemGroupModule = new Module.Class({
                     break;
             }
         });
-    },
-
-    // Module override
-    get_slot_names: function () {
-        return ['arrangement'];
     },
 });

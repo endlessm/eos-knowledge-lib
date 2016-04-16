@@ -42,6 +42,11 @@ const TopMenuTemplate = new Module.Class({
             'Whether the menu is showing', GObject.ParamFlags.READABLE, false),
     },
 
+    Slots: {
+        'top-menu': {},
+        'content': {},
+    },
+
     Template: 'resource:///com/endlessm/knowledge/data/widgets/topMenuTemplate.ui',
     InternalChildren: [ 'grid' ],
 
@@ -81,11 +86,6 @@ const TopMenuTemplate = new Module.Class({
 
     get menu_open() {
         return this._menu_panel.reveal_panel;
-    },
-
-    // Module override
-    get_slot_names: function () {
-        return ['content', 'top-menu' ];
     },
 
     _on_scroll: function (adjustment) {

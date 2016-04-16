@@ -858,8 +858,4 @@ const AisleInteraction = new Module.Class({
         }
         return Gdk.EVENT_STOP;
     },
-
-    get_slot_names: function () {
-        return ['window'];
-    },
 });

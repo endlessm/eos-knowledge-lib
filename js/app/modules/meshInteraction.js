@@ -632,8 +632,4 @@ const MeshInteraction = new Module.Class({
             });
         }
     },
-
-    get_slot_names: function () {
-        return 'window';
-    },
 });

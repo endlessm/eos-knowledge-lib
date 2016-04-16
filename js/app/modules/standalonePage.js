@@ -24,6 +24,10 @@ const StandalonePage = new Module.Class({
     CssName: 'EknStandalonePage',
     Extends: Gtk.Frame,
 
+    Slots: {
+        'card-type': {},
+    },
+
     _init: function (props={}) {
         this.parent(props);
         this._model = null;
@@ -37,11 +41,6 @@ const StandalonePage = new Module.Class({
                     break;
             }
         });
-    },
-
-    // Module override
-    get_slot_names: function () {
-        return ['card-type'];
     },
 
     _display_model: function (model) {

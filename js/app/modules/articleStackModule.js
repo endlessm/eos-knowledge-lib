@@ -73,6 +73,11 @@ const ArticleStackModule = new Module.Class({
             Navigation.BOTH),
     },
 
+    Slots: {
+        'card-type': {},
+        'nav-card-type': {},
+    },
+
     CONTENT_TRANSITION_DURATION: 500,
 
     _init: function (props={}) {
@@ -212,8 +217,4 @@ const ArticleStackModule = new Module.Class({
         }
         return Gdk.EVENT_STOP;
      },
-
-    get_slot_names: function () {
-        return ['card-type', 'nav-card-type'];
-    },
 });

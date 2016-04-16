@@ -34,7 +34,6 @@ const BATCH_SIZE = 15;
  *
  * Slots:
  *   arrangement - arrangement to display article cards in
- *   card-type - type of cards to create for articles
  *   set-card-type - type of cards to create for sets
  */
 const HierarchicalSetModule = new Module.Class({
@@ -43,6 +42,11 @@ const HierarchicalSetModule = new Module.Class({
     CssName: 'EknHierarchicalSetModule',
     Extends: Gtk.Grid,
     Implements: [Scrollable.Scrollable],
+
+    Slots: {
+        'arrangement': {},
+        'set-card-type': {},
+    },
 
     _init: function (props={}) {
         props.orientation = Gtk.Orientation.VERTICAL;
@@ -74,11 +78,6 @@ const HierarchicalSetModule = new Module.Class({
                     break;
             }
         });
-    },
-
-    // Module override
-    get_slot_names: function () {
-        return ['arrangement', 'set-card-type'];
     },
 
     show_more_content: function () {

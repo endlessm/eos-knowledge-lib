@@ -20,6 +20,9 @@ const Module = imports.app.interfaces.module;
  *
  * Requires:
  *   <Module>
+ *
+ * Slots:
+ *   sub-order
  */
 const Order = new Lang.Interface({
     Name: 'Order',
@@ -37,6 +40,10 @@ const Order = new Lang.Interface({
             'Sort in ascending order rather than descending',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             true),
+    },
+
+    Slots: {
+        'sub-order': {},
     },
 
     /**
@@ -64,14 +71,6 @@ const Order = new Lang.Interface({
         if (typeof this._sub_order === 'undefined')
             this._sub_order = this.create_submodule('sub-order');
         return this._sub_order;
-    },
-
-    // Module override
-    // If you want to override this again in your implementation, do like so:
-    //
-    // return Order.get_slot_names(this).concat(['more', 'slots']);
-    get_slot_names: function () {
-        return ['sub-order'];
     },
 
     /**

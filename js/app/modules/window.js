@@ -29,6 +29,17 @@ const PARALLAX_BACKGROUND_SCALE = 1.1;
  *
  * Adds a lightbox above the section and article page, which can be
  * used to show content above either of these pages.
+ *
+ * Slots:
+ *   all-sets-page - optional
+ *   article-page
+ *   brand-page - optional
+ *   home-page
+ *   lightbox
+ *   navigation - optional
+ *   search
+ *   search-page
+ *   section-page
  */
 const Window = new Module.Class({
     Name: 'Window',
@@ -84,6 +95,18 @@ const Window = new Module.Class({
             'Animations',
             'Enables the animations during page transitions for this window',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, true),
+    },
+
+    Slots: {
+        'all-sets-page': {},  // optional
+        'article-page': {},
+        'brand-page': {},  // optional
+        'home-page': {},
+        'lightbox': {},
+        'navigation': {},  // optional
+        'search': {},
+        'search-page': {},
+        'section-page': {},
     },
 
     Signals: {
@@ -423,13 +446,6 @@ const Window = new Module.Class({
             cursor = Gdk.Cursor.new_for_display(Gdk.Display.get_default(),
                 Gdk.CursorType.WATCH);
         gdk_window.cursor = cursor;
-    },
-
-    // Module override
-    get_slot_names: function () {
-        return ['brand-page', 'home-page', 'section-page', 'all-sets-page', 'search-page',
-            'article-page', 'navigation', 'lightbox', 'search'];
-        // optional: brand-page, all-sets-page, navigation
     },
 
     vfunc_size_allocate: function (alloc) {

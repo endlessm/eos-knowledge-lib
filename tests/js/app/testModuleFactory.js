@@ -58,11 +58,13 @@ const MOCK_APP_JSON = {
 const MockModule = new Module.Class({
     Name: 'MockModule',
     Extends: Minimal.MinimalModule,
-
-    get_slot_names: function () {
-        return ['test-slot', 'optional-slot', 'anonymous-slot-1',
-            'anonymous-slot-2', 'dot.slot'];
-    },
+    Slots: {
+        'test-slot': {},
+        'optional-slot': {},
+        'anonymous-slot-1': {},
+        'anonymous-slot-2': {},
+        'dot.slot': {},
+    }
 });
 
 const MockWarehouse = new Knowledge.Class({
@@ -120,7 +122,7 @@ describe('Module factory', function () {
         expect(module.factory_name).toBe('test');
     });
 
-    it('errors if creating a module slot not listed in get_slot_names', function () {
+    it('errors if creating a module slot not listed in Slots', function () {
         let parent = module_factory.create_named_module('test');
         expect(() => {
             module_factory.create_module_for_slot(parent, 'fake-slot');
