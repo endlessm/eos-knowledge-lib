@@ -4,6 +4,11 @@
         {{#css-files}}
         <link rel="stylesheet" type="text/css" href="resource:///com/endlessm/knowledge/data/templates/css/{{{.}}}"/>
         {{/css-files}}
+        {{#link-hash}}
+        <script>
+            window.LINKS = {{{.}}};
+        </script>
+        {{/link-hash}}
     </head>
     <body>
         <div id="copy-button">{{copy-button-text}}</div>

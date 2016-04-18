@@ -8,6 +8,7 @@ const Domain = imports.search.domain;
 const QueryObject = imports.search.queryObject;
 const Utils = imports.search.utils;
 const XapianBridge = imports.search.xapianBridge;
+const Bloom = imports.search.bloomfilter;
 
 /**
  * Constant: HOME_PAGE_TAG
@@ -246,7 +247,32 @@ const Engine = Lang.Class({
     update_and_preload_default_domain: function () {
         let domain = this._get_domain(this.default_domain);
         domain.check_for_updates();
-        domain.load(null, () => {});
+        domain.load(null, () => {
+            let ekn_id = 'ekn://' + this.default_domain + '/4dba9091495e8f277893e0d400e9e092f9f6f551';
+            this.get_object_by_id(ekn_id, null, (a, task) => {
+                let obj = task.finish()
+                let stream = obj.get_content_stream()
+                let table = JSON.parse(Utils.read_stream_sync(stream));
+
+                let n = Object.keys(table).length;
+                let p = 0.01;
+                let m = Math.ceil(-1 * (n * Math.log(p)) / (Math.LN2 * Math.LN2));
+                let k = Math.ceil((m/n)*Math.LN2);
+                this.filter = new Bloom.BloomFilter(m, k);
+
+                for (let link in table) {
+                    this.filter.add(link);
+                }
+                this.link_table = table;
+            })
+        });
+    },
+
+    test_link: function (link) {
+        if (this.filter.test(link))
+            return this.link_table[link];
+        else
+            return false;
     },
 });
 

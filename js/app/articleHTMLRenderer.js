@@ -3,6 +3,7 @@ const Gettext = imports.gettext;
 const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
+const Engine = imports.search.engine;
 
 const Config = imports.app.config;
 const Mustache = imports.app.libs.mustache.Mustache;
@@ -214,6 +215,7 @@ const ArticleHTMLRenderer = new Lang.Class({
         return Mustache.render(this._template, {
             'title': this.show_title ? model.title : false,
             'body-html': this._strip_tags(html),
+            'link-hash': this._find_links(model),
             'disclaimer': this._get_disclaimer(model),
             'disclaimer-window': this._get_disclaimer_window(model),
             'copy-button-text': _("Copy"),
@@ -223,6 +225,13 @@ const ArticleHTMLRenderer = new Lang.Class({
             'mathjax-path': Config.mathjax_path,
             'extra-header-information': this._get_extra_header_info(model),
         });
+    },
+
+    _find_links: function (model) {
+        var engine = Engine.get_default();
+        var hash = {};
+        model.links.forEach((link) => hash[link] = engine.test_link(link));
+        return JSON.stringify(hash);
     },
 });
 
