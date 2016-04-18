@@ -14,6 +14,16 @@ const Config = imports.app.config;
 const Engine = imports.search.engine;
 const Utils = imports.app.utils;
 
+function should_enable_inspector() {
+    if (Config.inspector_enabled)
+        return true;
+
+    if (GLib.getenv('EKN_ENABLE_INSPECTOR'))
+        return true;
+
+    return false;
+}
+
 /**
  * Class: EknWebview
  * WebKit WebView subclass which provides utility functions for loading
@@ -66,7 +76,7 @@ const EknWebview = new Lang.Class({
         this.renderer = new ArticleHTMLRenderer.ArticleHTMLRenderer();
 
         let web_settings = this.get_settings();
-        web_settings.enable_developer_extras = Config.inspector_enabled;
+        web_settings.enable_developer_extras = should_enable_inspector();
         web_settings.enable_write_console_messages_to_stdout = true;
         web_settings.javascript_can_access_clipboard = true;
 
