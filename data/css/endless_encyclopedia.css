@@ -1,6 +1,10 @@
 
 @import url("resource:///com/endlessm/knowledge/data/css/common.css");
 
+EosWindow {
+    font-size: 8pt;
+}
+
 .home-page,
 .search-page,
 .article-page {

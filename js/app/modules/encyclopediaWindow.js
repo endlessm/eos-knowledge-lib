@@ -39,7 +39,6 @@ const EncyclopediaWindow = new Lang.Class({
 
     _init: function (props={}) {
         delete props.template_type;
-        props.font_scaling_active = true;
         this.parent(props);
 
         this._home_page = this.create_submodule('home-page');
