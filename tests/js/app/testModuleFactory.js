@@ -1,12 +1,12 @@
 // Copyright 2015 Endless Mobile, Inc.
 
-const Lang = imports.lang;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
 const Knowledge = imports.app.knowledge;
 const Minimal = imports.tests.minimal;
+const Module = imports.app.interfaces.module;
 const ModuleFactory = imports.app.moduleFactory;
 
 Gtk.init(null);
@@ -55,7 +55,7 @@ const MOCK_APP_JSON = {
     },
 };
 
-const MockModule = new Lang.Class({
+const MockModule = new Module.Class({
     Name: 'MockModule',
     Extends: Minimal.MinimalModule,
 

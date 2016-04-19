@@ -3,7 +3,6 @@
 const Gdk = imports.gi.Gdk;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Card = imports.app.interfaces.card;
 const Module = imports.app.interfaces.module;
@@ -14,7 +13,7 @@ const Utils = imports.app.utils;
  * Class: PostCard
  * A postcard for the new reader app.
  */
-const PostCard = new Lang.Class({
+const PostCard = new Module.Class({
     Name: 'PostCard',
     GTypeName: 'EknPostCard',
     CssName: 'EknPostCard',

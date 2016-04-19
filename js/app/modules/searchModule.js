@@ -5,7 +5,6 @@ const Gettext = imports.gettext;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Actions = imports.app.actions;
 const Config = imports.app.config;
@@ -38,7 +37,7 @@ const SPINNER_PAGE_NAME = 'spinner';
  *   results-message-subtitle - on the subtitle text showing a no results message
  *   error-message - on the text showing an error
  */
-const SearchModule = new Lang.Class({
+const SearchModule = new Module.Class({
     Name: 'SearchModule',
     GTypeName: 'EknSearchModule',
     CssName: 'EknSearchModule',

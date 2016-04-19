@@ -3,13 +3,12 @@
 /* exported OverflowArrangement */
 
 const GObject = imports.gi.GObject;
-const Lang = imports.lang;
 
 const Arrangement = imports.app.interfaces.arrangement;
 const SpaceContainer = imports.app.widgets.spaceContainer;
 const Module = imports.app.interfaces.module;
 
-const OverflowArrangement = new Lang.Class({
+const OverflowArrangement = new Module.Class({
     Name: 'OverflowArrangement',
     GTypeName: 'EknOverflowArrangement',
     CssName: 'EknOverflowArrangement',

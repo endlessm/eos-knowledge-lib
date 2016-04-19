@@ -1,6 +1,5 @@
 // Copyright 2015 Endless Mobile, Inc.
 
-const Lang = imports.lang;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 
@@ -13,9 +12,7 @@ const Actions = imports.app.actions;
 const ArticleObjectModel = imports.search.articleObjectModel;
 const BuffetInteraction = imports.app.modules.buffetInteraction;
 const ContentObjectModel = imports.search.contentObjectModel;
-const Launcher = imports.app.interfaces.launcher;
 const MediaObjectModel = imports.search.mediaObjectModel;
-const Minimal = imports.tests.minimal;
 const Module = imports.app.interfaces.module;
 const MockDispatcher = imports.tests.mockDispatcher;
 const MockEngine = imports.tests.mockEngine;
@@ -23,7 +20,7 @@ const MockFactory = imports.tests.mockFactory;
 const MockReadingHistoryModel = imports.tests.mockReadingHistoryModel;
 const SetObjectModel = imports.search.setObjectModel;
 
-const MockView = new Lang.Class({
+const MockView = new Module.Class({
     Name: 'testBuffetInteraction_MockView',
     Extends: Gtk.Window,
     Implements: [ Module.Module ],

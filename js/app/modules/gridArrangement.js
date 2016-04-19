@@ -4,7 +4,6 @@
 
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
-const Lang = imports.lang;
 
 const Arrangement = imports.app.interfaces.arrangement;
 const InfiniteScrolledWindow = imports.app.widgets.infiniteScrolledWindow;
@@ -13,7 +12,7 @@ const Module = imports.app.interfaces.module;
 /**
  * Class: GridArrangement
  */
-const GridArrangement = new Lang.Class({
+const GridArrangement = new Module.Class({
     Name: 'GridArrangement',
     GTypeName: 'EknGridArrangement',
     CssName: 'EknGridArrangement',

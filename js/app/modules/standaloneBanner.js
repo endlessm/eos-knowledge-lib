@@ -7,7 +7,6 @@ const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Actions = imports.app.actions;
 const Config = imports.app.config;
@@ -24,7 +23,7 @@ const OPEN_MAGAZINE_RESPONSE = 1;
  * Class: StandaloneBanner
  * The banner at the top of the standalone page
  */
-const StandaloneBanner = new Lang.Class({
+const StandaloneBanner = new Module.Class({
     Name: 'StandaloneBanner',
     GTypeName: 'EknStandaloneBanner',
     CssName: 'EknStandaloneBanner',

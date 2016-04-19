@@ -2,7 +2,6 @@
 
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Card = imports.app.interfaces.card;
 const Module = imports.app.interfaces.module;
@@ -14,7 +13,7 @@ const Utils = imports.app.utils;
  * A card implementation with sizing and styling specific to template B.
  * Will only show a title and image.
  */
-const CardB = new Lang.Class({
+const CardB = new Module.Class({
     Name: 'CardB',
     GTypeName: 'EknCardB',
     CssName: 'EknCardB',

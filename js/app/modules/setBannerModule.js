@@ -3,7 +3,6 @@
 const Gdk = imports.gi.Gdk;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
@@ -18,7 +17,7 @@ const Module = imports.app.interfaces.module;
  * Slots:
  *   card-type
  */
-const SetBannerModule = new Lang.Class({
+const SetBannerModule = new Module.Class({
     Name: 'SetBannerModule',
     GTypeName: 'EknSetBannerModule',
     CssName: 'EknSetBannerModule',

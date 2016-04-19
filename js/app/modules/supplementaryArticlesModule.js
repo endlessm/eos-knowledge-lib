@@ -4,7 +4,6 @@
 
 const Gettext = imports.gettext;
 const GObject = imports.gi.GObject;
-const Lang = imports.lang;
 
 const Actions = imports.app.actions;
 const Config = imports.app.config;
@@ -22,7 +21,7 @@ let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
  * Slots:
  *   arrangement
  */
-const SupplementaryArticlesModule = new Lang.Class({
+const SupplementaryArticlesModule = new Module.Class({
     Name: 'SupplementaryArticlesModule',
     GTypeName: 'EknSupplementaryArticlesModule',
     CssName: 'EknSupplementaryArticlesModule',

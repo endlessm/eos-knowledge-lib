@@ -3,13 +3,12 @@
 /* exported UnreadFilter */
 
 const GObject = imports.gi.GObject;
-const Lang = imports.lang;
 
 const Filter = imports.app.interfaces.filter;
 const Module = imports.app.interfaces.module;
 const ReadingHistoryModel = imports.app.readingHistoryModel;
 
-const UnreadFilter = new Lang.Class({
+const UnreadFilter = new Module.Class({
     Name: 'UnreadFilter',
     GTypeName: 'EknUnreadFilter',
     Extends: GObject.Object,

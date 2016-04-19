@@ -5,7 +5,6 @@
 const Endless = imports.gi.Endless;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Arrangement = imports.app.interfaces.arrangement;
 const Card = imports.app.interfaces.card;
@@ -24,7 +23,7 @@ const CARD_SIZE_MAX = Card.MinSize.D;
  * This arrangement shows a featured card in a very prominent spot, followed by
  * three secondary cards.
  */
-const WindshieldArrangement = new Lang.Class({
+const WindshieldArrangement = new Module.Class({
     Name: 'WindshieldArrangement',
     GTypeName: 'EknWindshieldArrangement',
     CssName: 'EknWindshieldArrangement',

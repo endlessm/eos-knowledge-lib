@@ -4,7 +4,6 @@
 
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Actions = imports.app.actions;
 const ArticleObjectModel = imports.search.articleObjectModel;
@@ -39,7 +38,7 @@ const BATCH_SIZE = 15;
  *   card-type - type of cards to create for articles
  *   set-card-type - type of cards to create for sets
  */
-const HierarchicalSetModule = new Lang.Class({
+const HierarchicalSetModule = new Module.Class({
     Name: 'HierarchicalSetModule',
     GTypeName: 'EknHierarchicalSetModule',
     CssName: 'EknHierarchicalSetModule',

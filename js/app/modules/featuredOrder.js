@@ -3,7 +3,6 @@
 /* exported FeaturedOrder */
 
 const GObject = imports.gi.GObject;
-const Lang = imports.lang;
 
 const Module = imports.app.interfaces.module;
 const Order = imports.app.interfaces.order;
@@ -12,7 +11,7 @@ const Order = imports.app.interfaces.order;
  * Class: FeaturedOrder
  * Order that sorts cards by placing featured before non-featured
  */
-const FeaturedOrder = new Lang.Class({
+const FeaturedOrder = new Module.Class({
     Name: 'FeaturedOrder',
     Extends: GObject.Object,
     Implements: [Module.Module, Order.Order],

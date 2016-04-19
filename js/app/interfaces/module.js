@@ -1,6 +1,28 @@
-const GLib = imports.gi.GLib;
+/* exported Class, Module */
+
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
+
+const Knowledge = imports.app.knowledge;
+
+/**
+ * Class: Class
+ * Counterpart to Lang.Class for modules
+ *
+ * To create a new module, use this metaclass as you would use Lang.Class to
+ * create a regular class:
+ *
+ * > const MyModule = new Module.Class({
+ * >     Name: 'MyModule',
+ * >     Extends: GObject.Object,
+ * >     Implements: [Module.Module],
+ * >     Properties:  // ...
+ * > });
+ */
+const Class = new Lang.Class({
+    Name: 'Class',
+    Extends: Knowledge.Class,
+});
 
 /**
  * Interface: Module

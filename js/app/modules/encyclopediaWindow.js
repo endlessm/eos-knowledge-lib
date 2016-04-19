@@ -1,18 +1,16 @@
 const Endless = imports.gi.Endless;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
 const Module = imports.app.interfaces.module;
-const StyleClasses = imports.app.styleClasses;
 const Utils = imports.app.utils;
 
 /**
  * Class: EncyclopediaWindow
  */
-const EncyclopediaWindow = new Lang.Class({
+const EncyclopediaWindow = new Module.Class({
     Name: 'EncyclopediaWindow',
     Extends: Endless.Window,
     Implements: [ Module.Module ],

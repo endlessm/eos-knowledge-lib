@@ -3,12 +3,11 @@
 /* exported FeaturedFilter */
 
 const GObject = imports.gi.GObject;
-const Lang = imports.lang;
 
 const Filter = imports.app.interfaces.filter;
 const Module = imports.app.interfaces.module;
 
-const FeaturedFilter = new Lang.Class({
+const FeaturedFilter = new Module.Class({
     Name: 'FeaturedFilter',
     GTypeName: 'EknFeaturedFilter',
     Extends: GObject.Object,

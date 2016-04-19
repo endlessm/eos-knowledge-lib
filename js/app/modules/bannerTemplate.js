@@ -4,7 +4,6 @@ const Endless = imports.gi.Endless;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Module = imports.app.interfaces.module;
 
@@ -24,7 +23,7 @@ const COMPOSITE_REDUCE_MARGINS_FRACTION = 0.4;
  * CSS classes:
  *   separator - on the separator
  */
-const BannerTemplate = new Lang.Class({
+const BannerTemplate = new Module.Class({
     Name: 'BannerTemplate',
     GTypeName: 'EknBannerTemplate',
     CssName: 'EknBannerTemplate',

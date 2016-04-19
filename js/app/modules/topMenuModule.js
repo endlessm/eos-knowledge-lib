@@ -6,7 +6,6 @@ const Endless = imports.gi.Endless;
 const Gdk = imports.gi.Gdk;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Module = imports.app.interfaces.module;
 const Utils = imports.app.utils;
@@ -31,7 +30,7 @@ const TOP_MENU_HEIGHT = 50;
  *   banner: Typically an image previewer to display the logo
  *   menu: Module that contains the horizontal menu
  */
-const TopMenuModule = new Lang.Class({
+const TopMenuModule = new Module.Class({
     Name: 'TopMenuModule',
     GTypeName: 'EknTopMenuModule',
     CssName: 'EknTopMenuModule',

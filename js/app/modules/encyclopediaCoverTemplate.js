@@ -1,6 +1,5 @@
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Module = imports.app.interfaces.module;
 
@@ -13,7 +12,7 @@ const Module = imports.app.interfaces.module;
  *      encyclopedia-cover-template - on the template
  *
  */
-const EncyclopediaCoverTemplate = new Lang.Class({
+const EncyclopediaCoverTemplate = new Module.Class({
     Name: 'EncyclopediaCoverTemplate',
     GTypeName: 'EknEncyclopediaCoverTemplate',
     CssName: 'EknEncyclopediaCoverTemplate',

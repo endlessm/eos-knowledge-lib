@@ -3,13 +3,12 @@
 /* exported ScrollingListArrangement */
 
 const GObject = imports.gi.GObject;
-const Lang = imports.lang;
 
 const Arrangement = imports.app.interfaces.arrangement;
 const InfiniteScrolledWindow = imports.app.widgets.infiniteScrolledWindow;
 const Module = imports.app.interfaces.module;
 
-const ScrollingListArrangement = new Lang.Class({
+const ScrollingListArrangement = new Module.Class({
     Name: 'ScrollingListArrangement',
     GTypeName: 'EknScrollingListArrangement',
     CssName: 'EknScrollingListArrangement',

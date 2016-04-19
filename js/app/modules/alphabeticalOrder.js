@@ -3,7 +3,6 @@
 /* exported AlphabeticalOrder */
 
 const GObject = imports.gi.GObject;
-const Lang = imports.lang;
 
 const Module = imports.app.interfaces.module;
 const Order = imports.app.interfaces.order;
@@ -12,7 +11,7 @@ const Order = imports.app.interfaces.order;
  * Class: AlphabeticalOrder
  * Order that sorts cards alphabetically by title
  */
-const AlphabeticalOrder = new Lang.Class({
+const AlphabeticalOrder = new Module.Class({
     Name: 'AlphabeticalOrder',
     Extends: GObject.Object,
     Implements: [Module.Module, Order.Order],

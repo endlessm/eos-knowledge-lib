@@ -8,7 +8,6 @@ const Gdk = imports.gi.Gdk;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 const WebKit2 = imports.gi.WebKit2;
 
 const Actions = imports.app.actions;
@@ -35,7 +34,7 @@ const Navigation = {
  * card, starts an asynchronous load of the document content and transitions
  * in the content when its ready.
  */
-const ArticleStackModule = new Lang.Class({
+const ArticleStackModule = new Module.Class({
     Name: 'ArticleStackModule',
     GTypeName: 'EknArticleStackModule',
     CssName: 'EknArticleStackModule',

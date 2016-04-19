@@ -4,7 +4,6 @@
 
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Module = imports.app.interfaces.module;
 const SlidingPanelOverlay = imports.app.widgets.slidingPanelOverlay;
@@ -32,7 +31,7 @@ const _EXTRA_TOP_MARGIN = 50;
  *   content - Main content of the template
  *
  */
-const TopMenuTemplate = new Lang.Class({
+const TopMenuTemplate = new Module.Class({
     Name: 'TopMenuTemplate',
     GTypeName: 'EknTopMenuTemplate',
     CssName: 'EknTopMenuTemplate',

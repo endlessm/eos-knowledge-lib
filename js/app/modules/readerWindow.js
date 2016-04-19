@@ -9,7 +9,6 @@ const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
@@ -40,7 +39,7 @@ const Utils = imports.app.utils;
  *   search-page
  *   standalone-page
  */
-const ReaderWindow = new Lang.Class({
+const ReaderWindow = new Module.Class({
     Name: 'ReaderWindow',
     GTypeName: 'EknReaderWindow',
     Extends: Endless.Window,

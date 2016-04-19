@@ -5,7 +5,6 @@ const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 const WebKit2 = imports.gi.WebKit2;
 
 const AsyncTask = imports.search.asyncTask;
@@ -34,7 +33,7 @@ const Utils = imports.app.utils;
  * The toolbar frame surrounds the <title> and <toc> on the right. The
  * content frame surrounds the <webview> on the left.
  */
-const KnowledgeDocumentCard = new Lang.Class({
+const KnowledgeDocumentCard = new Module.Class({
     Name: 'KnowledgeDocumentCard',
     GTypeName: 'EknKnowledgeDocumentCard',
     CssName: 'EknKnowledgeDocumentCard',

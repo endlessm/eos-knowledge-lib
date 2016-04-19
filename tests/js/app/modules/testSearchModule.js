@@ -2,7 +2,6 @@
 
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Utils = imports.tests.utils;
 Utils.register_gresource();
@@ -143,7 +142,7 @@ describe('Search module', function () {
     });
 
     it('dispatches when an infinite scrolled window arrangement reaches the end', function () {
-        const InfiniteArrangement = new Lang.Class({
+        const InfiniteArrangement = new Module.Class({
             Name: 'InfiniteArrangement',
             Extends: InfiniteScrolledWindow.InfiniteScrolledWindow,
             Implements: [ Module.Module, Arrangement.Arrangement ],

@@ -4,7 +4,6 @@
 
 const Endless = imports.gi.Endless;
 const GObject = imports.gi.GObject;
-const Lang = imports.lang;
 
 const Arrangement = imports.app.interfaces.arrangement;
 const Card = imports.app.interfaces.card;
@@ -31,7 +30,7 @@ const MINIMUM_ARRANGEMENT_WIDTH = 2 * Card.MinSize.C;
  * Each row of supporting cards packs either three or four, depending on the
  * total width of the arrangement.
  */
-const HalfArrangement = new Lang.Class({
+const HalfArrangement = new Module.Class({
     Name: 'HalfArrangement',
     GTypeName: 'EknHalfArrangement',
     Extends: Endless.CustomContainer,

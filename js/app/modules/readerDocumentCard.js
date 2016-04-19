@@ -5,7 +5,6 @@ const Gettext = imports.gettext;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const AsyncTask = imports.search.asyncTask;
 const Card = imports.app.interfaces.card;
@@ -33,7 +32,7 @@ const _COMPOSITE_TITLE_VIEW_LEFT_MARGIN_PX = 40;
  * can add a view, e.g. a webview, to show some content for the
  * article.
  */
-const ReaderDocumentCard = new Lang.Class({
+const ReaderDocumentCard = new Module.Class({
     Name: 'ReaderDocumentCard',
     GTypeName: 'EknReaderDocumentCard',
     CssName: 'EknReaderDocumentCard',

@@ -6,11 +6,9 @@ const GdkPixbuf = imports.gi.GdkPixbuf;
 const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
-const Launcher = imports.app.interfaces.launcher;
 const Module = imports.app.interfaces.module;
 const SearchBox = imports.app.modules.searchBox;
 const StyleClasses = imports.app.styleClasses;
@@ -32,7 +30,7 @@ const PARALLAX_BACKGROUND_SCALE = 1.1;
  * Adds a lightbox above the section and article page, which can be
  * used to show content above either of these pages.
  */
-const Window = new Lang.Class({
+const Window = new Module.Class({
     Name: 'Window',
     GTypeName: 'EknWindow',
     Extends: Endless.Window,

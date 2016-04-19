@@ -1,7 +1,5 @@
-const Cairo = imports.gi.cairo;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Module = imports.app.interfaces.module;
 
@@ -14,7 +12,7 @@ const Module = imports.app.interfaces.module;
  *      home-page-b-template - on the template
  *
  */
-const DividedBannerTemplate = new Lang.Class({
+const DividedBannerTemplate = new Module.Class({
     Name: 'DividedBannerTemplate',
     GTypeName: 'EknDividedBannerTemplate',
     CssName: 'EknDividedBannerTemplate',

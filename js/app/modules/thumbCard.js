@@ -4,7 +4,6 @@ const Endless = imports.gi.Endless;
 const Gdk = imports.gi.Gdk;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Card = imports.app.interfaces.card;
 const Knowledge = imports.app.knowledge;
@@ -105,7 +104,7 @@ const ThumbCardLayout = new Knowledge.Class({
  *
  * A thumbnail card for the new reader app
  */
-const ThumbCard = new Lang.Class({
+const ThumbCard = new Module.Class({
     Name: 'ThumbCard',
     GTypeName: 'EknThumbCard',
     CssName: 'EknThumbCard',

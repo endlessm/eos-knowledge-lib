@@ -49,7 +49,7 @@ const MockSearchBox = new Knowledge.Class({
     set_text_programmatically: function () {},
 });
 
-const MockItemGroupModule = new Lang.Class({
+const MockItemGroupModule = new Module.Class({
     Name: 'MockItemGroupModule',
     Extends: Gtk.Widget,
     Implements: [ Module.Module ],

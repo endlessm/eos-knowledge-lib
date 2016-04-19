@@ -3,7 +3,6 @@
 const Gettext = imports.gettext;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Config = imports.app.config;
 const Module = imports.app.interfaces.module;
@@ -21,7 +20,7 @@ let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
  * CSS Styles:
  *      hamburger-basement-template - on the template
  */
-const HamburgerBasementTemplate = new Lang.Class({
+const HamburgerBasementTemplate = new Module.Class({
     Name: 'HamburgerBasementTemplate',
     GTypeName: 'EknHamburgerBasementTemplate',
     CssName: 'EknHamburgerBasementTemplate',

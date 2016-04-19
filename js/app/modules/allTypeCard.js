@@ -3,7 +3,6 @@
 const GObject = imports.gi.GObject;
 const GLib = imports.gi.GLib;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Card = imports.app.interfaces.card;
 const Module = imports.app.interfaces.module;
@@ -25,7 +24,7 @@ const Utils = imports.app.utils;
  *   card-synopsis - on the synopsis label
  *   card-context - on the context label
  */
-const AllTypeCard = new Lang.Class({
+const AllTypeCard = new Module.Class({
     Name: 'AllTypeCard',
     GTypeName: 'EknAllTypeCard',
     CssName: 'EknAllTypeCard',
