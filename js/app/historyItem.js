@@ -19,14 +19,8 @@ const HistoryItem = new Lang.Class({
     Extends: GObject.Object,
     Implements: [ EosKnowledgePrivate.HistoryItemModel ],
     Properties: {
-        /**
-         * Property: title
-         *
-         * FIXME: maybe remove from interface? never actually used.
-         */
-        'title': GObject.ParamSpec.string('title', 'override', 'override',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            ''),
+        'title': GObject.ParamSpec.override('title',
+            EosKnowledgePrivate.HistoryItemModel),
         /**
          * Property: page-type
          *
@@ -99,6 +93,13 @@ const HistoryItem = new Lang.Class({
         this.parent(props);
     },
 
+    get title() {
+        return this._title;
+    },
+
+    set title(value) {
+        this._title = value;
+    },
 
     equals: function (item) {
         if (this.model)

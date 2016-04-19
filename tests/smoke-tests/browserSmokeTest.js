@@ -10,9 +10,8 @@ const HistoryItem = new Lang.Class({
     Extends: GObject.Object,
     Implements: [ EosKnowledgePrivate.HistoryItemModel ],
     Properties: {
-        'title': GObject.ParamSpec.string('title', 'override', 'override',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            '')
+        'title': GObject.ParamSpec.override('title',
+            EosKnowledgePrivate.HistoryItemModel),
     }
 });
 

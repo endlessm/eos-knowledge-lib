@@ -25,13 +25,8 @@ const SpaceContainer = new Lang.Class({
     Extends: Endless.CustomContainer,
     Implements: [Gtk.Orientable],
     Properties: {
-        /**
-         * Property: orientation
-         * Implemented from **Gtk.Orientable**
-         */
-        'orientation': GObject.ParamSpec.enum('orientation', 'override', 'override',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
-            Gtk.Orientation.$gtype, Gtk.Orientation.VERTICAL),
+        'orientation': GObject.ParamSpec.override('orientation',
+            Gtk.Orientable),
         /**
          * Property: spacing
          * The amount of space between children
@@ -60,7 +55,20 @@ const SpaceContainer = new Lang.Class({
         this._all_fit = true;
         this._spacing = 0;
         this._children = [];
+        this._orientation = Gtk.Orientation.HORIZONTAL;
         this.parent(props);
+    },
+
+    get orientation() {
+        return this._orientation;
+    },
+
+    set orientation(value) {
+        if (this._orientation === value)
+            return;
+        this._orientation = value;
+        this.notify('orientation');
+        this.queue_resize();
     },
 
     get spacing() {

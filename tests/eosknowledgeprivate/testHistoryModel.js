@@ -11,12 +11,16 @@ const MockItemModel = new Lang.Class({
     Extends: GObject.Object,
     Implements: [ EosKnowledgePrivate.HistoryItemModel ],
     Properties: {
-        // FIXME this property should not be here, but it is required because
-        // you cannot override interface-defined properties in GJS (yet).
-        // https://bugzilla.gnome.org/show_bug.cgi?id=727368
-        'title': GObject.ParamSpec.string('title', 'override', 'override',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            '')
+        'title': GObject.ParamSpec.override('title',
+            EosKnowledgePrivate.HistoryItemModel),
+    },
+
+    get title() {
+        return this._title;
+    },
+
+    set title(value) {
+        this._title = value;
     },
 
     // for debugging test results
@@ -28,14 +32,6 @@ const MockItemModel = new Lang.Class({
 describe('History model', function () {
     let model, notify;
 
-    let SOUR_CREAM = { title: 'Sour Cream '};
-    let POTATOES = { title: 'Potatoes' };
-    let CHIVES = { title: 'Chives' };
-    let BUTTER = { title: 'Butter' };
-    let BACON = { title: 'Bacon' };
-    let SALT = { title: 'Salt' };
-    let ANY = jasmine.any(Object);
-
     beforeEach(function () {
         model = new EosKnowledgePrivate.HistoryModel();
 
@@ -46,15 +42,15 @@ describe('History model', function () {
     });
 
     it('navigates to a page', function () {
-        model.current_item = new MockItemModel(POTATOES);
-        expect(model.current_item).toEqual(jasmine.objectContaining(POTATOES));
+        model.current_item = new MockItemModel({ title: 'Potatoes' });
+        expect(model.current_item.title).toEqual('Potatoes');
     });
 
     it('notifies when navigating to a page from empty', function () {
-        model.current_item = new MockItemModel(SOUR_CREAM);
+        model.current_item = new MockItemModel({ title: 'Sour Cream' });
 
         expect(notify).toHaveBeenCalledWith('current-item');
-        expect(model.current_item).toEqual(jasmine.objectContaining(SOUR_CREAM));
+        expect(model.current_item.title).toEqual('Sour Cream');
         expect(notify).not.toHaveBeenCalledWith('can-go-back');
         expect(notify).not.toHaveBeenCalledWith('can-go-forward');
         expect(notify).not.toHaveBeenCalledWith('back-list');
@@ -62,26 +58,27 @@ describe('History model', function () {
     });
 
     it('notifies when navigating to a page from another page', function () {
-        model.current_item = new MockItemModel(SOUR_CREAM);
+        model.current_item = new MockItemModel({ title: 'Sour Cream' });
         notify.calls.reset();
-        model.current_item = new MockItemModel(POTATOES);
+        model.current_item = new MockItemModel({ title: 'Potatoes' });
 
         expect(notify).toHaveBeenCalledWith('current-item');
-        expect(model.current_item).toEqual(jasmine.objectContaining(POTATOES));
+        expect(model.current_item.title).toEqual('Potatoes');
         expect(notify).toHaveBeenCalledWith('can-go-back');
         expect(model.can_go_back).toBe(true);
         expect(notify).not.toHaveBeenCalledWith('can-go-forward');
         expect(model.can_go_forward).toBe(false);
         expect(notify).toHaveBeenCalledWith('back-list');
-        expect(model.get_back_list()).toEqual([jasmine.objectContaining(SOUR_CREAM)]);
+        expect(model.get_back_list().map(item => item.title))
+            .toEqual(['Sour Cream']);
         expect(notify).not.toHaveBeenCalledWith('forward-list');
     });
 
     describe('with items', function () {
         beforeEach(function () {
             // Populate model
-            [SOUR_CREAM, POTATOES, CHIVES, BUTTER, BACON].forEach(function (item) {
-                model.current_item = new MockItemModel(item);
+            ['Sour Cream', 'Potatoes', 'Chives', 'Butter', 'Bacon'].forEach(item => {
+                model.current_item = new MockItemModel({ title: item });
             });
             // Go back to the middle
             model.current_item = model.get_item(-2);
@@ -89,14 +86,14 @@ describe('History model', function () {
         });
 
         it('has the correct state', function () {
-            expect(model.current_item).toEqual(jasmine.objectContaining(CHIVES));
-            expect(model.get_back_list()).toEqual([
-                jasmine.objectContaining(POTATOES),
-                jasmine.objectContaining(SOUR_CREAM)
+            expect(model.current_item.title).toEqual('Chives');
+            expect(model.get_back_list().map(item => item.title)).toEqual([
+                'Potatoes',
+                'Sour Cream',
             ]);
-            expect(model.get_forward_list()).toEqual([
-                jasmine.objectContaining(BUTTER),
-                jasmine.objectContaining(BACON)
+            expect(model.get_forward_list().map(item => item.title)).toEqual([
+                'Butter',
+                'Bacon',
             ]);
         });
 
@@ -132,19 +129,19 @@ describe('History model', function () {
         });
 
         it('navigates to the correct state', function () {
-            model.current_item = new MockItemModel(SALT);
+            model.current_item = new MockItemModel({ title: 'Salt' });
 
-            expect(model.current_item).toEqual(jasmine.objectContaining(SALT));
-            expect(model.get_back_list()).toEqual([
-                jasmine.objectContaining(CHIVES),
-                jasmine.objectContaining(POTATOES),
-                jasmine.objectContaining(SOUR_CREAM)
+            expect(model.current_item.title).toEqual('Salt');
+            expect(model.get_back_list().map(item => item.title)).toEqual([
+                'Chives',
+                'Potatoes',
+                'Sour Cream',
             ]);
             expect(model.get_forward_list()).toEqual([]);
         });
 
         it('notifies when navigating', function () {
-            model.current_item = new MockItemModel(SALT);
+            model.current_item = new MockItemModel({ title: 'Salt' });
 
             expect(notify).toHaveBeenCalledWith('current-item');
             expect(notify).not.toHaveBeenCalledWith('can-go-back');
@@ -157,14 +154,13 @@ describe('History model', function () {
         it('navigates backwards to the correct state', function () {
             model.go_back();
 
-            expect(model.current_item).toEqual(jasmine.objectContaining(POTATOES));
-            expect(model.get_back_list()).toEqual([
-                jasmine.objectContaining(SOUR_CREAM)
-            ]);
-            expect(model.get_forward_list()).toEqual([
-                jasmine.objectContaining(CHIVES),
-                jasmine.objectContaining(BUTTER),
-                jasmine.objectContaining(BACON)
+            expect(model.current_item.title).toEqual('Potatoes');
+            expect(model.get_back_list().map(item => item.title))
+                .toEqual(['Sour Cream']);
+            expect(model.get_forward_list().map(item => item.title)).toEqual([
+                'Chives',
+                'Butter',
+                'Bacon',
             ]);
         });
 
@@ -183,24 +179,23 @@ describe('History model', function () {
 
         it('ignores go_back when at beginning of history', function () {
             model.current_item = model.get_item(-2);
-            expect(model.current_item).toEqual(jasmine.objectContaining(SOUR_CREAM));
+            expect(model.current_item.title).toEqual('Sour Cream');
             notify.calls.reset();
             model.go_back();
-            expect(model.current_item).toEqual(jasmine.objectContaining(SOUR_CREAM));
+            expect(model.current_item.title).toEqual('Sour Cream');
             expect(notify).not.toHaveBeenCalledWith('current-item');
         });
 
         it('navigates forwards to the correct state', function () {
             model.go_forward();
-            expect(model.current_item).toEqual(jasmine.objectContaining(BUTTER));
-            expect(model.get_back_list()).toEqual([
-                jasmine.objectContaining(CHIVES),
-                jasmine.objectContaining(POTATOES),
-                jasmine.objectContaining(SOUR_CREAM)
+            expect(model.current_item.title).toEqual('Butter');
+            expect(model.get_back_list().map(item => item.title)).toEqual([
+                'Chives',
+                'Potatoes',
+                'Sour Cream',
             ]);
-            expect(model.get_forward_list()).toEqual([
-                jasmine.objectContaining(BACON)
-            ]);
+            expect(model.get_forward_list().map(item => item.title))
+                .toEqual(['Bacon']);
         });
 
         it('notifies when navigating forwards', function () {
@@ -215,10 +210,10 @@ describe('History model', function () {
 
         it('ignores go_forward when at the end of history', function () {
             model.current_item = model.get_item(2);
-            expect(model.current_item).toEqual(jasmine.objectContaining(BACON));
+            expect(model.current_item.title).toEqual('Bacon');
             notify.calls.reset();
             model.go_forward();
-            expect(model.current_item).toEqual(jasmine.objectContaining(BACON));
+            expect(model.current_item.title).toEqual('Bacon');
             expect(notify).not.toHaveBeenCalledWith('current-item');
         });
 
@@ -244,14 +239,13 @@ describe('History model', function () {
         it('jumps backwards one step to the correct state', function () {
             model.current_item = model.get_item(-1);
 
-            expect(model.current_item).toEqual(jasmine.objectContaining(POTATOES));
-            expect(model.get_back_list()).toEqual([
-                jasmine.objectContaining(SOUR_CREAM)
-            ]);
-            expect(model.get_forward_list()).toEqual([
-                jasmine.objectContaining(CHIVES),
-                jasmine.objectContaining(BUTTER),
-                jasmine.objectContaining(BACON)
+            expect(model.current_item.title).toEqual('Potatoes');
+            expect(model.get_back_list().map(item => item.title))
+                .toEqual(['Sour Cream']);
+            expect(model.get_forward_list().map(item => item.title)).toEqual([
+                'Chives',
+                'Butter',
+                'Bacon',
             ]);
         });
 
@@ -268,13 +262,13 @@ describe('History model', function () {
         it('jumps backwards more than one step to the correct state', function () {
             model.current_item = model.get_item(-2);
 
-            expect(model.current_item).toEqual(jasmine.objectContaining(SOUR_CREAM));
+            expect(model.current_item.title).toEqual('Sour Cream');
             expect(model.get_back_list()).toEqual([]);
-            expect(model.get_forward_list()).toEqual([
-                jasmine.objectContaining(POTATOES),
-                jasmine.objectContaining(CHIVES),
-                jasmine.objectContaining(BUTTER),
-                jasmine.objectContaining(BACON)
+            expect(model.get_forward_list().map(item => item.title)).toEqual([
+                'Potatoes',
+                'Chives',
+                'Butter',
+                'Bacon',
             ]);
         });
 
@@ -289,15 +283,14 @@ describe('History model', function () {
         it('jumps forwards one step to the correct state', function () {
             model.current_item = model.get_item(+1);
 
-            expect(model.current_item).toEqual(jasmine.objectContaining(BUTTER));
-            expect(model.get_back_list()).toEqual([
-                jasmine.objectContaining(CHIVES),
-                jasmine.objectContaining(POTATOES),
-                jasmine.objectContaining(SOUR_CREAM)
+            expect(model.current_item.title).toEqual('Butter');
+            expect(model.get_back_list().map(item => item.title)).toEqual([
+                'Chives',
+                'Potatoes',
+                'Sour Cream',
             ]);
-            expect(model.get_forward_list()).toEqual([
-                jasmine.objectContaining(BACON)
-            ]);
+            expect(model.get_forward_list().map(item => item.title))
+                .toEqual(['Bacon']);
         });
 
         it('notifies when jumping forwards one step', function () {
@@ -313,12 +306,12 @@ describe('History model', function () {
         it('jumps forwards more than one step to the correct state', function () {
             model.current_item = model.get_item(+2);
 
-            expect(model.current_item).toEqual(jasmine.objectContaining(BACON));
-            expect(model.get_back_list()).toEqual([
-                jasmine.objectContaining(BUTTER),
-                jasmine.objectContaining(CHIVES),
-                jasmine.objectContaining(POTATOES),
-                jasmine.objectContaining(SOUR_CREAM)
+            expect(model.current_item.title).toEqual('Bacon');
+            expect(model.get_back_list().map(item => item.title)).toEqual([
+                'Butter',
+                'Chives',
+                'Potatoes',
+                'Sour Cream',
             ]);
             expect(model.get_forward_list()).toEqual([]);
         });

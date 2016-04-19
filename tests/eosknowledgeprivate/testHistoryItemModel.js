@@ -8,13 +8,15 @@ const MockItemModel = new Lang.Class({
     Extends: GObject.Object,
     Implements: [ EosKnowledgePrivate.HistoryItemModel ],
     Properties: {
-        // FIXME this property should not be here, but it is required because
-        // you cannot override interface-defined properties in GJS (yet).
-        // https://bugzilla.gnome.org/show_bug.cgi?id=727368
-        'title': GObject.ParamSpec.string('title', 'override', 'override',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            '')
-    }
+        'title': GObject.ParamSpec.override('title',
+            EosKnowledgePrivate.HistoryItemModel),
+    },
+    get title() {
+        return this._title;
+    },
+    set title(value) {
+        this._title = value;
+    },
 });
 
 describe('History item model', function () {
