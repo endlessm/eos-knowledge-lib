@@ -5,8 +5,6 @@ const Lang = imports.lang;
 const ImagePreviewer = imports.app.widgets.imagePreviewer;
 const StyleClasses = imports.app.styleClasses;
 
-GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
-
 /**
  * Class: Previewer
  * Previews an image (and more in the future) in a widget.

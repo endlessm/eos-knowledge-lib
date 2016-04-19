@@ -6,8 +6,6 @@ const Lang = imports.lang;
 
 const ContentObjectModel = imports.search.contentObjectModel;
 
-GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
-
 /**
  * Class: MediaObjectModel
  * The model class for media objects. A media object has the same

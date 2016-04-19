@@ -7,8 +7,6 @@ const Lang = imports.lang;
 
 const Utils = imports.app.utils;
 
-GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
-
 /**
  * Class: AisleUserSettingsModel
  *
