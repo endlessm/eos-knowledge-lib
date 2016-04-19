@@ -1,9 +1,8 @@
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const GObject = imports.gi.GObject;
-const Lang = imports.lang;
 
-const Arrangement = imports.app.interfaces.arrangement;
 const ContentObjectModel = imports.search.contentObjectModel;
+const Knowledge = imports.app.knowledge;
 
 /**
  * Class: HistoryItem
@@ -14,7 +13,7 @@ const ContentObjectModel = imports.search.contentObjectModel;
  * and article pages.
  *
  */
-const HistoryItem = new Lang.Class({
+const HistoryItem = new Knowledge.Class({
     Name: 'HistoryItem',
     Extends: GObject.Object,
     Implements: [ EosKnowledgePrivate.HistoryItemModel ],

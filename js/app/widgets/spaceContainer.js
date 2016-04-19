@@ -3,7 +3,8 @@ const Gdk = imports.gi.Gdk;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
+
+const Knowledge = imports.app.knowledge;
 
 /**
  * Class: SpaceContainer
@@ -19,7 +20,7 @@ const Lang = imports.lang;
  * Parent class:
  *   *Endless.CustomContainer*
  */
-const SpaceContainer = new Lang.Class({
+const SpaceContainer = new Knowledge.Class({
     Name: 'SpaceContainer',
     GTypeName: 'EknSpaceContainer',
     Extends: Endless.CustomContainer,

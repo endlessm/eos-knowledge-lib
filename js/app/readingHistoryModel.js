@@ -5,8 +5,8 @@
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
-const Lang = imports.lang;
 
+const Knowledge = imports.app.knowledge;
 const Utils = imports.app.utils;
 
 /**
@@ -18,7 +18,7 @@ const Utils = imports.app.utils;
  * This set of article ID's is persisted in a JSON file in the user's home directory
  * and updated every time a new article is read.
  */
-const ReadingHistoryModel= new Lang.Class({
+const ReadingHistoryModel= new Knowledge.Class({
     Name: 'ReadingHistoryModel',
     GTypeName: 'EknReadingHistoryModel',
     Extends: GObject.Object,

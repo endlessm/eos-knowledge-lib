@@ -1,9 +1,10 @@
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 
+const Knowledge = imports.app.knowledge;
 const Module = imports.app.interfaces.module;
 
-const MockFactory = new Lang.Class({
+const MockFactory = new Knowledge.Class({
     Name: 'MockFactory',
     Extends: GObject.Object,
 

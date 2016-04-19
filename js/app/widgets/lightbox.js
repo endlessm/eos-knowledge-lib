@@ -7,6 +7,7 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
+const Knowledge = imports.app.knowledge;
 const StyleClasses = imports.app.styleClasses;
 const Utils = imports.app.utils;
 
@@ -27,7 +28,7 @@ const Utils = imports.app.utils;
  * lightbox. To respect the <reveal-overlays> property show_all() will not work
  * on the widget overlays.
  */
-const Lightbox = new Lang.Class({
+const Lightbox = new Knowledge.Class({
     Name: 'Lightbox',
     GTypeName: 'EknLightbox',
     Extends: Gtk.Overlay,
@@ -225,7 +226,7 @@ const Lightbox = new Lang.Class({
 });
 
 // A private container used to house the lightbox-widget in the overlay.
-const LightboxContainer = new Lang.Class({
+const LightboxContainer = new Knowledge.Class({
     Name: 'LightboxContainer',
     GTypeName: 'EknLightboxContainer',
     Extends: Endless.CustomContainer,

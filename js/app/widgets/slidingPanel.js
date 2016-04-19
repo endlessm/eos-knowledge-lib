@@ -4,11 +4,11 @@ const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
+const Knowledge = imports.app.knowledge;
 const StyleClasses = imports.app.styleClasses;
 
-const PanelFrame = new Lang.Class({
+const PanelFrame = new Knowledge.Class({
     Name: 'PanelFrame',
     GTypeName: 'EknPanelFrame',
     CssName: 'EknPanelFrame',
@@ -40,7 +40,7 @@ const PanelFrame = new Lang.Class({
  * Class: SlidingPanel
  * A widget which can slide its contents visible or out of sight.
  */
-const SlidingPanel = new Lang.Class({
+const SlidingPanel = new Knowledge.Class({
     Name: 'SlidingPanel',
     GTypeName: 'EknSlidingPanel',
     CssName: 'EknSlidingPanel',

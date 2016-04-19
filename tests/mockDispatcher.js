@@ -1,13 +1,13 @@
 // Copyright 2015 Endless Mobile, Inc.
 
 const GObject = imports.gi.GObject;
-const Lang = imports.lang;
 
 const Dispatcher = imports.app.dispatcher;
+const Knowledge = imports.app.knowledge;
 
 // Similar to our actual dispatcher, but entirely synchronous and does not catch
 // errors, which will make our tests easier to write and fail faster.
-const MockDispatcher = new Lang.Class({
+const MockDispatcher = new Knowledge.Class({
     Name: 'MockDispatcher',
     GTypeName: 'MockDispatcher',
     Extends: GObject.Object,

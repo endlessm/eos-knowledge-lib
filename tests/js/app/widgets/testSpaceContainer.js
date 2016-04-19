@@ -1,6 +1,6 @@
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
+const Knowledge = imports.app.knowledge;
 const SpaceContainer = imports.app.widgets.spaceContainer;
 
 Gtk.init(null);
@@ -8,7 +8,7 @@ Gtk.init(null);
 const TEST_WINDOW_SIZE = 300;
 
 // Colored box with a fixed size request of a particular size.
-const IncompressibleBox = new Lang.Class({
+const IncompressibleBox = new Knowledge.Class({
     Name: 'IncompressibleBox',
     Extends: Gtk.Frame,
     _init: function (size, props={}) {
@@ -31,7 +31,7 @@ const IncompressibleBox = new Lang.Class({
 
 // Colored box with a natural request of a particular size. It can be compressed
 // by up to half of its natural request in either direction.
-const CompressibleBox = new Lang.Class({
+const CompressibleBox = new Knowledge.Class({
     Name: 'CompressibleBox',
     Extends: IncompressibleBox,
 
@@ -45,7 +45,7 @@ const CompressibleBox = new Lang.Class({
 });
 
 // Box with a height-for-width or width-for-height request of a particular size squared.
-const ConstantAreaBox = new Lang.Class({
+const ConstantAreaBox = new Knowledge.Class({
     Name: 'ConstantAreaBox',
     Extends: CompressibleBox,
 
