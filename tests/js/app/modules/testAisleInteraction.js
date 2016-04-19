@@ -25,7 +25,6 @@ const QueryObject = imports.search.queryObject;
 Gtk.init(null);
 
 const UPDATE_INTERVAL_MS = 604800000;
-GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 
 
 const MockApplication = new Lang.Class({

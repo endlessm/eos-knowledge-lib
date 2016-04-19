@@ -3,8 +3,6 @@ const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 
-GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
-
 /**
  * Class: ContentObjectModel
  * This is the base class for all content objects in the knowledge app.

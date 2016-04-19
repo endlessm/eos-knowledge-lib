@@ -8,8 +8,6 @@ const Soup = imports.gi.Soup;
 const ContentObjectModel = imports.search.contentObjectModel;
 const TreeNode = imports.search.treeNode;
 
-GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
-
 /**
  * Class: ArticleObjectModel
  * The model class for article objects. An article has the same properties as a

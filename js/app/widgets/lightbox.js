@@ -10,8 +10,6 @@ const Lang = imports.lang;
 const StyleClasses = imports.app.styleClasses;
 const Utils = imports.app.utils;
 
-GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
-
 /**
  * Class: Lightbox
  * Show widget in a lightbox above other content

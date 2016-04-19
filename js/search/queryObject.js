@@ -7,8 +7,6 @@ const Lang = imports.lang;
 const Blacklist = imports.search.blacklist;
 const Utils = imports.search.utils;
 
-GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
-
 // Xapian prefixes used to query data
 const _XAPIAN_PREFIX_EXACT_TITLE = 'exact_title:';
 const _XAPIAN_PREFIX_ID = 'id:';

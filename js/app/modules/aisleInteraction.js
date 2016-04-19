@@ -35,7 +35,6 @@ const Utils = imports.app.utils;
 const WebviewTooltipPresenter = imports.app.webviewTooltipPresenter;
 
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
-GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 
 const RESULTS_SIZE = 15;
 const TOTAL_ARTICLES = 30;

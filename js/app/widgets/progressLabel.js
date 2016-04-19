@@ -9,7 +9,6 @@ const Lang = imports.lang;
 const StyleClasses = imports.app.styleClasses;
 
 String.prototype.format = Format.format;
-GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 
 /**
  * Class: ProgressLabel
