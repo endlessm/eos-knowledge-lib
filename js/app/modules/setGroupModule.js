@@ -75,7 +75,6 @@ const SetGroupModule = new Lang.Class({
             switch(payload.action_type) {
                 case Actions.CLEAR_SETS:
                     this._arrangement.clear();
-                    this._cards = [];
                     break;
                 case Actions.APPEND_SETS:
                     this._arrangement.fade_cards =
