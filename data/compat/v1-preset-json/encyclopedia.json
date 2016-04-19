@@ -60,6 +60,7 @@
                     "type": "SearchBox",
                     "properties": {
                         "halign": "center",
+                        "valign": "center",
                         "hexpand": true
                     }
                 },
@@ -131,6 +132,7 @@
                     "type": "SearchBox",
                     "properties": {
                         "halign": "center",
+                        "valign": "center",
                         "hexpand": true
                     }
                 },
