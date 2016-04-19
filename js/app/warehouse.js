@@ -4,6 +4,9 @@ const Lang = imports.lang;
 const Warehouse = new Lang.Class({
     Name: 'Warehouse',
     Extends: GObject.Object,
+    // ModuleFactory has a 'warehouse' property with an object param spec, so
+    // this class is required to extend GObject.Object even though it doesn't
+    // use any GObject features.
 
     _init: function (props={}) {
         this.parent(props);
