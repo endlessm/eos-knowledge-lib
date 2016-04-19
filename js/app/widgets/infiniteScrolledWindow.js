@@ -1,12 +1,13 @@
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
+
+const Knowledge = imports.app.knowledge;
 
 /**
  * Class: InfiniteScrolledWindow
  */
-const InfiniteScrolledWindow = new Lang.Class({
+const InfiniteScrolledWindow = new Knowledge.Class({
     Name: 'InfiniteScrolledWindow',
     GTypeName: 'EknInfiniteScrolledWindow',
     Extends: Gtk.ScrolledWindow,

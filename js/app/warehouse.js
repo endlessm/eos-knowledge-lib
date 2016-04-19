@@ -1,7 +1,8 @@
 const GObject = imports.gi.GObject;
-const Lang = imports.lang;
 
-const Warehouse = new Lang.Class({
+const Knowledge = imports.app.knowledge;
+
+const Warehouse = new Knowledge.Class({
     Name: 'Warehouse',
     Extends: GObject.Object,
     // ModuleFactory has a 'warehouse' property with an object param spec, so

@@ -4,8 +4,8 @@ const Format = imports.format;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
+const Knowledge = imports.app.knowledge;
 const StyleClasses = imports.app.styleClasses;
 
 String.prototype.format = Format.format;
@@ -20,7 +20,7 @@ String.prototype.format = Format.format;
  * CSS classes:
  *   progress-label - on the widget
  */
-const ProgressLabel = new Lang.Class({
+const ProgressLabel = new Knowledge.Class({
     Name: 'ProgressLabel',
     GTypeName: 'EknReaderProgressLabel',
     Extends: Gtk.Label,

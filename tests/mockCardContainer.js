@@ -1,9 +1,10 @@
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
+
+const Knowledge = imports.app.knowledge;
 const StyleClasses = imports.app.styleClasses;
 
-const MockCardContainer = new Lang.Class({
+const MockCardContainer = new Knowledge.Class({
     Name: 'MockCardContainer',
     Extends: Gtk.Frame,
     Properties: {

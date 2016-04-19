@@ -2,9 +2,10 @@ const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const GObject = imports.gi.GObject;
 const GLib = imports.gi.GLib;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
-const ThemeableImage = new Lang.Class({
+const Knowledge = imports.app.knowledge;
+
+const ThemeableImage = new Knowledge.Class({
     Name: 'ThemeableImage',
     GTypeName: 'EknThemeableImage',
     Extends: Gtk.Widget,

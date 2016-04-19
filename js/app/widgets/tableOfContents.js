@@ -8,6 +8,7 @@ const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 const Pango = imports.gi.Pango;
 
+const Knowledge = imports.app.knowledge;
 const StyleClasses = imports.app.styleClasses;
 const Utils = imports.app.utils;
 
@@ -30,7 +31,7 @@ const Utils = imports.app.utils;
  * section entries if three are present. The <selected-section> will always be
  * among the visible section entries.
  */
-const TableOfContents = new Lang.Class({
+const TableOfContents = new Knowledge.Class({
     Name: 'TableOfContents',
     GTypeName: 'EknTableOfContents',
     Extends: Endless.CustomContainer,
@@ -406,7 +407,7 @@ const TableOfContents = new Lang.Class({
     }
 });
 
-const SectionButton = new Lang.Class({
+const SectionButton = new Knowledge.Class({
     Name: 'SectionButton',
     GTypeName: 'EknSectionButton',
     Extends: Gtk.Button,

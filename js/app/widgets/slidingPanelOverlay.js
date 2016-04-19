@@ -4,15 +4,15 @@ const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
+const Knowledge = imports.app.knowledge;
 const SlidingPanel = imports.app.widgets.slidingPanel;
 
 /**
  * Class: SlidingPanelOverlay
  * Overlays a <SlidingPanel> above some content.
  */
-const SlidingPanelOverlay = new Lang.Class({
+const SlidingPanelOverlay = new Knowledge.Class({
     Name: 'SlidingPanelOverlay',
     GTypeName: 'EknSlidingPanelOverlay',
     Extends: Gtk.Overlay,

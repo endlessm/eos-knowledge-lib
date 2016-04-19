@@ -7,6 +7,7 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const Card = imports.app.interfaces.card;
+const Knowledge = imports.app.knowledge;
 const Module = imports.app.interfaces.module;
 const Utils = imports.app.utils;
 
@@ -19,7 +20,7 @@ const SMALL_WIDTH = 190;
 const MEDIUM_WIDTH = 290;
 const LARGE_WIDTH = 390;
 
-const ThumbCardLayout = new Lang.Class({
+const ThumbCardLayout = new Knowledge.Class({
     Name: 'ThumbCardLayout',
     GTypeName: 'EknThumbCardLayout',
     CssName: 'EknThumbCardLayout',

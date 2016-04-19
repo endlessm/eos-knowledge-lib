@@ -1,8 +1,8 @@
 const EvinceDocument = imports.gi.EvinceDocument;
 const EvinceView = imports.gi.EvinceView;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
+const Knowledge = imports.app.knowledge;
 const StyleClasses = imports.app.styleClasses;
 
 const _MAX_PDF_VIEW_WIDTH = 1300;
@@ -18,7 +18,7 @@ const _MAX_PDF_VIEW_WIDTH = 1300;
  * Parent class:
  *     Gtk.ScrolledWindow
  */
-const PDFView = new Lang.Class({
+const PDFView = new Knowledge.Class({
     Name: 'PDFView',
     GTypeName: 'EknPDFView',
     Extends: Gtk.ScrolledWindow,

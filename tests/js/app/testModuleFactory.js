@@ -5,6 +5,7 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
+const Knowledge = imports.app.knowledge;
 const Minimal = imports.tests.minimal;
 const ModuleFactory = imports.app.moduleFactory;
 
@@ -64,7 +65,7 @@ const MockModule = new Lang.Class({
     },
 });
 
-const MockWarehouse = new Lang.Class({
+const MockWarehouse = new Knowledge.Class({
     Name: 'MockWarehouse',
     Extends: GObject.Object,
     // ModuleFactory has a 'warehouse' property with an object param spec, so

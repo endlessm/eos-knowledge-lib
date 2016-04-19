@@ -4,12 +4,13 @@ const Lang = imports.lang;
 const Compat = imports.app.compat.compat;
 const Engine = imports.search.engine;
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
+const Knowledge = imports.app.knowledge;
 const Warehouse = imports.app.warehouse;
 
 /**
  * Class: ModuleFactory
  */
-const ModuleFactory = new Lang.Class({
+const ModuleFactory = new Knowledge.Class({
     Name: 'ModuleFactory',
     Extends: GObject.Object,
     Properties: {

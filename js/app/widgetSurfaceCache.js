@@ -3,7 +3,8 @@
 const Cairo = imports.cairo;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
-const Lang = imports.lang;
+
+const Knowledge = imports.app.knowledge;
 
 /**
  * Class: WidgetSurfaceCache
@@ -14,7 +15,7 @@ const Lang = imports.lang;
  *
  * Careful with this helper, only cache surfaces you know will not update!
  */
-const WidgetSurfaceCache = new Lang.Class({
+const WidgetSurfaceCache = new Knowledge.Class({
     Name: 'WidgetSurfaceCache',
     GTypeName: 'EknWidgetSurfaceCache',
     Extends: GObject.Object,
