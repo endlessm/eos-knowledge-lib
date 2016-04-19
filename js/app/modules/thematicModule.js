@@ -4,7 +4,6 @@
 
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
@@ -39,7 +38,7 @@ const Scrollable = imports.app.interfaces.scrollable;
  *   card-type - type of cards to create for articles
  *   header-card-type - type of cards to create for sets
  */
-const ThematicModule = new Lang.Class({
+const ThematicModule = new Module.Class({
     Name: 'ThematicModule',
     GTypeName: 'EknThematicModule',
     CssName: 'EknThematicModule',

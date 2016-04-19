@@ -2,7 +2,6 @@
 
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Card = imports.app.interfaces.card;
 const Module = imports.app.interfaces.module;
@@ -22,7 +21,7 @@ const Utils = imports.app.utils;
  *   next-label - on the next label
  *   title - on the title label
  */
-const SequenceCard = new Lang.Class({
+const SequenceCard = new Module.Class({
     Name: 'SequenceCard',
     GTypeName: 'EknSequenceCard',
     CssName: 'EknSequenceCard',

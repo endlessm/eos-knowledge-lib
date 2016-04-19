@@ -3,7 +3,6 @@ const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Utils = imports.app.utils;
 const Card = imports.app.interfaces.card;
@@ -16,7 +15,7 @@ const Previewer = imports.app.widgets.previewer;
  * A card which display an image along with a caption and attribution text, best
  * used with a MediaObject Model.
  */
-const MediaCard = new Lang.Class({
+const MediaCard = new Module.Class({
     Name: 'MediaCard',
     GTypeName: 'EknMediaCard',
     CssName: 'EknMediaCard',

@@ -10,7 +10,6 @@ const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Actions = imports.app.actions;
 const ArticleObjectModel = imports.search.articleObjectModel;
@@ -53,7 +52,7 @@ const _SEARCH_METRIC = 'a628c936-5d87-434a-a57a-015a0f223838';
  * Manages magazine issues, displaying them in the <view>, and keeping track of
  * which ones have been read.
  */
-const AisleInteraction = new Lang.Class({
+const AisleInteraction = new Module.Class({
     Name: 'AisleInteraction',
     GTypeName: 'EknAisleInteraction',
     Extends: GObject.Object,

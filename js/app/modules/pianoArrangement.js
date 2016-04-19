@@ -5,7 +5,6 @@
 const Endless = imports.gi.Endless;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Arrangement = imports.app.interfaces.arrangement;
 const Card = imports.app.interfaces.card;
@@ -27,7 +26,7 @@ const FEATURED_CARD_WIDTH_FRACTION = 2 / 3;
  * This arrangement shows a featured card in a very prominent spot, followed by
  * three secondary cards at its right side.
  */
-const PianoArrangement = new Lang.Class({
+const PianoArrangement = new Module.Class({
     Name: 'PianoArrangement',
     GTypeName: 'EknPianoArrangement',
     CssName: 'EknPianoArrangement',

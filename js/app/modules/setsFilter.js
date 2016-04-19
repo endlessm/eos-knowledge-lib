@@ -3,12 +3,11 @@
 /* exported SetsFilter */
 
 const GObject = imports.gi.GObject;
-const Lang = imports.lang;
 
 const Filter = imports.app.interfaces.filter;
 const Module = imports.app.interfaces.module;
 
-const SetsFilter = new Lang.Class({
+const SetsFilter = new Module.Class({
     Name: 'SetsFilter',
     GTypeName: 'EknSetsFilter',
     Extends: GObject.Object,

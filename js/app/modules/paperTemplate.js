@@ -3,7 +3,6 @@
 const Gdk = imports.gi.Gdk;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Module = imports.app.interfaces.module;
 const Utils = imports.app.utils;
@@ -19,7 +18,7 @@ const Utils = imports.app.utils;
  *      paper-template - on the template as a whole, which is a GtkAlignment
  *      content - on the paper itself (the GtkFrame within the alignment)
  */
-const PaperTemplate = new Lang.Class({
+const PaperTemplate = new Module.Class({
     Name: 'PaperTemplate',
     GTypeName: 'EknPaperTemplate',
     CssName: 'EknPaperTemplate',

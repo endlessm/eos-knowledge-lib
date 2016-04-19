@@ -5,7 +5,6 @@
 const Endless = imports.gi.Endless;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Arrangement = imports.app.interfaces.arrangement;
 const Card = imports.app.interfaces.card;
@@ -78,7 +77,7 @@ const SECONDARY_HORIZONTAL_PROPORTION = {
  * secondary card that is placed vertically next to the primary card. If width
  * is enough, a third column with two support cards is shown.
  */
-const QuiltArrangement = new Lang.Class({
+const QuiltArrangement = new Module.Class({
     Name: 'QuiltArrangement',
     GTypeName: 'EknQuiltArrangement',
     CssName: 'EknQuiltArrangement',

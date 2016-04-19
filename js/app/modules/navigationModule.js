@@ -10,7 +10,7 @@ const Module = imports.app.interfaces.module;
  *
  * A module which displays navigation arrows on either side of a page.
  */
-const NavigationModule = new GObject.Class({
+const NavigationModule = new Module.Class({
     Name: 'NavigationModule',
     GTypeName: 'EknNavigationModule',
     CssName: 'EknNavigationModule',

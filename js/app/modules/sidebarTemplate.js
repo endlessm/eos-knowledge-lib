@@ -8,7 +8,6 @@ const Gdk = imports.gi.Gdk;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Module = imports.app.interfaces.module;
 const StyleClasses = imports.app.styleClasses;
@@ -27,7 +26,7 @@ const Utils = imports.app.utils;
  *   sidebar - a frame containing the sidebar module
  *   content - a frame containing the content module
  */
-const SidebarTemplate = new Lang.Class({
+const SidebarTemplate = new Module.Class({
     Name: 'SidebarTemplate',
     GTypeName: 'EknSidebarTemplate',
     CssName: 'EknSidebarTemplate',

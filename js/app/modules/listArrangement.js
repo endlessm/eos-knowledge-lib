@@ -4,12 +4,11 @@
 
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Arrangement = imports.app.interfaces.arrangement;
 const Module = imports.app.interfaces.module;
 
-const ListArrangement = new Lang.Class({
+const ListArrangement = new Module.Class({
     Name: 'ListArrangement',
     GTypeName: 'EknListArrangement',
     CssName: 'EknListArrangement',

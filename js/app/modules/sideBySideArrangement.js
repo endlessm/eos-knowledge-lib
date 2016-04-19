@@ -5,7 +5,6 @@
 const Endless = imports.gi.Endless;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Arrangement = imports.app.interfaces.arrangement;
 const Module = imports.app.interfaces.module;
@@ -24,7 +23,7 @@ const _HorizontalSpacing = {
  * This arrangement presents cards in a horizontal layout, and is intended to
  * display menu items.
  */
-const SideBySideArrangement = new Lang.Class({
+const SideBySideArrangement = new Module.Class({
     Name: 'SideBySideArrangement',
     GTypeName: 'EknSideBySideArrangement',
     CssName: 'EknSideBySideArrangement',

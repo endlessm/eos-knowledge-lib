@@ -8,7 +8,6 @@ MinimalScrollable, MinimalPage, TitleFilter */
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Arrangement = imports.app.interfaces.arrangement;
 const Card = imports.app.interfaces.card;
@@ -22,7 +21,7 @@ const NavigationCard = imports.app.interfaces.navigationCard;
 const Order = imports.app.interfaces.order;
 const Scrollable = imports.app.interfaces.scrollable;
 
-const MinimalArrangement = new Lang.Class({
+const MinimalArrangement = new Module.Class({
     Name: 'MinimalArrangement',
     Extends: Gtk.Grid,
     Implements: [ Module.Module, Arrangement.Arrangement ],
@@ -62,7 +61,7 @@ const MinimalArrangement = new Lang.Class({
     },
 });
 
-const MinimalCard = new Lang.Class({
+const MinimalCard = new Module.Class({
     Name: 'MinimalCard',
     Extends: Gtk.Button,
     Implements: [ Module.Module, Card.Card ],
@@ -95,7 +94,7 @@ const MinimalCard = new Lang.Class({
     },
 });
 
-const MinimalNavigationCard = new Lang.Class({
+const MinimalNavigationCard = new Module.Class({
     Name: 'MinimalNavigationCard',
     Extends: Gtk.Button,
     Implements: [ Module.Module, Card.Card, NavigationCard.NavigationCard ],
@@ -119,7 +118,7 @@ const MinimalNavigationCard = new Lang.Class({
     },
 });
 
-const MinimalScrollable = new Lang.Class({
+const MinimalScrollable = new Module.Class({
     Name: 'MinimalScrollable',
     Extends: GObject.Object,
     Implements: [ Module.Module, Scrollable.Scrollable ],
@@ -138,7 +137,7 @@ const MinimalScrollable = new Lang.Class({
     show_more_content: function () {},
 });
 
-const MinimalInteraction = new Lang.Class({
+const MinimalInteraction = new Module.Class({
     Name: 'MinimalInteraction',
     Extends: GObject.Object,
     Implements: [ Module.Module, Launcher.Launcher, Interaction.Interaction ],
@@ -158,7 +157,7 @@ const MinimalInteraction = new Lang.Class({
     desktop_launch: function () {},
 });
 
-const MinimalPage = new Lang.Class({
+const MinimalPage = new Module.Class({
     Name: 'MinimalPage',
     Extends: Gtk.Grid,
     Implements: [ Module.Module ],
@@ -174,7 +173,7 @@ const MinimalPage = new Lang.Class({
     },
 });
 
-const MinimalBackCover = new Lang.Class({
+const MinimalBackCover = new Module.Class({
     Name: 'MinimalBackCover',
     Extends: Gtk.Widget,
     Implements: [ Module.Module ],
@@ -193,7 +192,7 @@ const MinimalBackCover = new Lang.Class({
     },
 });
 
-const MinimalModule = new Lang.Class({
+const MinimalModule = new Module.Class({
     Name: 'MinimalModule',
     Extends: GObject.Object,
     Implements: [ Module.Module ],
@@ -208,7 +207,7 @@ const MinimalModule = new Lang.Class({
     },
 });
 
-const MinimalDocumentCard = new Lang.Class({
+const MinimalDocumentCard = new Module.Class({
     Name: 'MinimalDocumentCard',
     Extends: Gtk.Widget,
     Implements: [ Module.Module, Card.Card, DocumentCard.DocumentCard ],
@@ -263,7 +262,7 @@ const MinimalDocumentCard = new Lang.Class({
     clear_content: function () {},
 });
 
-const MinimalBinModule = new Lang.Class({
+const MinimalBinModule = new Module.Class({
     Name: 'MinimalBinModule',
     Extends: Gtk.Frame,
     Implements: [ Module.Module ],
@@ -274,7 +273,7 @@ const MinimalBinModule = new Lang.Class({
     },
 });
 
-const MinimalOrder = new Lang.Class({
+const MinimalOrder = new Module.Class({
     Name: 'MinimalOrder',
     Extends: GObject.Object,
     Implements: [ Module.Module, Order.Order ],
@@ -293,7 +292,7 @@ const MinimalOrder = new Lang.Class({
     },
 });
 
-const TitleFilter = new Lang.Class({
+const TitleFilter = new Module.Class({
     Name: 'TitleFilter',
     Extends: GObject.Object,
     Implements: [ Module.Module, Filter.Filter ],

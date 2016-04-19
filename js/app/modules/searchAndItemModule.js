@@ -2,7 +2,6 @@
 
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
@@ -16,7 +15,7 @@ const Module = imports.app.interfaces.module;
  *   search
  *   item
  */
-const SearchAndItemModule = new Lang.Class({
+const SearchAndItemModule = new Module.Class({
     Name: 'SearchAndItemModule',
     GTypeName: 'EknSearchAndItemModule',
     CssName: 'EknSearchAndItemModule',

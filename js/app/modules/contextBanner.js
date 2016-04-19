@@ -6,7 +6,6 @@ const Format = imports.format;
 const Gettext = imports.gettext;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Actions = imports.app.actions;
 const Config = imports.app.config;
@@ -33,7 +32,7 @@ let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
  * Implements:
  *   <Module>
  */
-const ContextBanner = new Lang.Class({
+const ContextBanner = new Module.Class({
     Name: 'ContextBanner',
     GTypeName: 'EknContextBanner',
     CssName: 'EknContextBanner',

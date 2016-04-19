@@ -1,14 +1,10 @@
 // Copyright 2015 Endless Mobile, Inc.
 
-const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
-const Pango = imports.gi.Pango;
 
 const Card = imports.app.interfaces.card;
 const Module = imports.app.interfaces.module;
-const StyleClasses = imports.app.styleClasses;
 const Utils = imports.app.utils;
 
 /**
@@ -22,7 +18,7 @@ const Utils = imports.app.utils;
  *   title - on the <Card.title_label>
  *   synopsis - on the <Card.synopsis_label>
  */
-const ArticleSnippetCard = new Lang.Class({
+const ArticleSnippetCard = new Module.Class({
     Name: 'ArticleSnippetCard',
     GTypeName: 'EknArticleSnippetCard',
     CssName: 'EknArticleSnippetCard',

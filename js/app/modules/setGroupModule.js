@@ -5,7 +5,6 @@
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
@@ -27,7 +26,7 @@ const StyleClasses = imports.app.styleClasses;
  * Slots:
  *   arrangement
  */
-const SetGroupModule = new Lang.Class({
+const SetGroupModule = new Module.Class({
     Name: 'SetGroupModule',
     GTypeName: 'EknSetGroupModule',
     CssName: 'EknSetGroupModule',

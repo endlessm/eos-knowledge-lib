@@ -3,7 +3,6 @@
 const Gdk = imports.gi.Gdk;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Card = imports.app.interfaces.card;
 const Module = imports.app.interfaces.module;
@@ -28,7 +27,7 @@ const HIGHLIGHT_DECORATION_DIMENSION = 5;
  *   card, text-card - on the widget itself
  *   title - on the title label
  */
-const TextCard = new Lang.Class({
+const TextCard = new Module.Class({
     Name: 'TextCard',
     GTypeName: 'EknTextCard',
     CssName: 'EknTextCard',

@@ -9,7 +9,6 @@ const Gettext = imports.gettext;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Actions = imports.app.actions;
 const ArticleObjectModel = imports.search.articleObjectModel;
@@ -52,7 +51,7 @@ const SEARCH_METRIC_EVENT_ID = 'a628c936-5d87-434a-a57a-015a0f223838';
  * Implements:
  *    <Module>, <Launcher>, <Interaction>
  */
-const BuffetInteraction = new Lang.Class({
+const BuffetInteraction = new Module.Class({
     Name: 'BuffetInteraction',
     GTypeName: 'EknBuffetInteraction',
     Extends: GObject.Object,

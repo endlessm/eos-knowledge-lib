@@ -4,7 +4,6 @@ const Gdk = imports.gi.Gdk;
 const Endless = imports.gi.Endless;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Card = imports.app.interfaces.card;
 const Module = imports.app.interfaces.module;
@@ -24,7 +23,7 @@ const HOVER_HEIGHT = Math.ceil(HEIGHT * (1 + GROW_FRACTION));
  *
  * A card implementation with sizing and styling specific to template A
  */
-const CardA = new Lang.Class({
+const CardA = new Module.Class({
     Name: 'CardA',
     GTypeName: 'EknCardA',
     CssName: 'EknCardA',

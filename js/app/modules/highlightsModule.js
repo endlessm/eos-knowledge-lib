@@ -6,7 +6,6 @@ const Gettext = imports.gettext;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Actions = imports.app.actions;
 const Config = imports.app.config;
@@ -37,7 +36,7 @@ let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
  *   support-card-type - type of cards to create for sets
  *   sets-filter - <Filter> for deciding which sets to show
  */
-const HighlightsModule = new Lang.Class({
+const HighlightsModule = new Module.Class({
     Name: 'HighlightsModule',
     GTypeName: 'EknHighlightsModule',
     CssName: 'EknHighlightsModule',

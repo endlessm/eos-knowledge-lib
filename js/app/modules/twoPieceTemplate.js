@@ -2,7 +2,6 @@
 
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Module = imports.app.interfaces.module;
 
@@ -22,7 +21,7 @@ const Module = imports.app.interfaces.module;
  *   first - on the first component
  *   second - on the second component
  */
-const TwoPieceTemplate = new Lang.Class({
+const TwoPieceTemplate = new Module.Class({
     Name: 'TwoPieceTemplate',
     GTypeName: 'EknTwoPieceTemplate',
     CssName: 'EknTwoPieceTemplate',

@@ -5,7 +5,6 @@
 const Endless = imports.gi.Endless;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
-const Lang = imports.lang;
 
 const Arrangement = imports.app.interfaces.arrangement;
 const Card = imports.app.interfaces.card;
@@ -21,7 +20,7 @@ const CARD_SIZE_MAX = Card.MaxSize.C;
 /**
  * Class: SquareGuysArrangement
  */
-const SquareGuysArrangement = new Lang.Class({
+const SquareGuysArrangement = new Module.Class({
     Name: 'SquareGuysArrangement',
     GTypeName: 'EknSquareGuysArrangement',
     CssName: 'EknSquareGuysArrangement',

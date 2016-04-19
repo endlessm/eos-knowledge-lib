@@ -2,7 +2,6 @@
 
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Actions = imports.app.actions;
 const Card = imports.app.interfaces.card;
@@ -30,7 +29,7 @@ const QueryObject = imports.search.queryObject;
  *   card-type - type of cards to create for articles
  *   header-card-type - type of card to create for title label
  */
-const SetPreviewCard = new Lang.Class({
+const SetPreviewCard = new Module.Class({
     Name: 'SetPreviewCard',
     GTypeName: 'EknSetPreviewCard',
     CssName: 'EknSetPreviewCard',

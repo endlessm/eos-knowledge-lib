@@ -11,7 +11,7 @@ const Module = imports.app.interfaces.module;
  *
  * A module which displays media content over other
  */
-const LightboxModule = new GObject.Class({
+const LightboxModule = new Module.Class({
     Name: 'LightboxModule',
     GTypeName: 'EknLightboxModule',
     CssName: 'EknLightboxModule',

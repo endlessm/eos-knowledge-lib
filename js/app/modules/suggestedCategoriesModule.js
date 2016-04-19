@@ -4,7 +4,6 @@
 
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
@@ -25,7 +24,7 @@ const Utils = imports.app.utils;
  * Slots:
  *   arrangement
  */
-const SuggestedCategoriesModule = new Lang.Class({
+const SuggestedCategoriesModule = new Module.Class({
     Name: 'SuggestedCategoriesModule',
     GTypeName: 'EknSuggestedCategoriesModule',
     CssName: 'EknSuggestedCategoriesModule',

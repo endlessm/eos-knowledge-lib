@@ -2,11 +2,9 @@
 
 /* exported BackgroundModule */
 
-const Gdk = imports.gi.Gdk;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
@@ -59,7 +57,7 @@ EknBackgroundModule.big {\
  * Slots:
  *   content - a template module
  */
-const BackgroundModule = new Lang.Class({
+const BackgroundModule = new Module.Class({
     Name: 'BackgroundModule',
     GTypeName: 'EknBackgroundModule',
     CssName: 'EknBackgroundModule',

@@ -5,7 +5,6 @@ const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Gdk = imports.gi.Gdk;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Module = imports.app.interfaces.module;
 const Utils = imports.app.utils;
@@ -14,7 +13,7 @@ const Utils = imports.app.utils;
  * Class: SplitPercentageTemplate
  * Template with a sidebar and content area
  */
-const SplitPercentageTemplate = new Lang.Class({
+const SplitPercentageTemplate = new Module.Class({
     Name: 'SplitPercentageTemplate',
     GTypeName: 'EknSplitPercentageTemplate',
     CssName: 'EknSplitPercentageTemplate',

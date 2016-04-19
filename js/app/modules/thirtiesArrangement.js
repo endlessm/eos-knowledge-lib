@@ -6,7 +6,6 @@ const Endless = imports.gi.Endless;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Arrangement = imports.app.interfaces.arrangement;
 const Card = imports.app.interfaces.card;
@@ -23,7 +22,7 @@ const COL_COUNT = 3;
 /**
  * Class: ThirtiesArrangement
  */
-const ThirtiesArrangement = new Lang.Class({
+const ThirtiesArrangement = new Module.Class({
     Name: 'ThirtiesArrangement',
     GTypeName: 'EknThirtiesArrangement',
     CssName: 'EknThirtiesArrangement',

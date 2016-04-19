@@ -1,10 +1,8 @@
 // Copyright 2015 Endless Mobile, Inc.
 
 const Gettext = imports.gettext;
-const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Card = imports.app.interfaces.card;
 const Module = imports.app.interfaces.module;
@@ -26,7 +24,7 @@ let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
  *    decorative-bar - ornament on the top of the card
  *    hover-frame - hover frame
  */
-const ReaderCard = new Lang.Class({
+const ReaderCard = new Module.Class({
     Name: 'ReaderCard',
     GTypeName: 'EknReaderCard',
     CssName: 'EknReaderCard',

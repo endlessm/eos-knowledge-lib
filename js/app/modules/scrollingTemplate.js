@@ -3,8 +3,6 @@
 /* exported ScrollingTemplate */
 
 const GObject = imports.gi.GObject;
-const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
@@ -18,7 +16,7 @@ const Module = imports.app.interfaces.module;
  * Slots:
  *   content - where to put the content
  */
-const ScrollingTemplate = new Lang.Class({
+const ScrollingTemplate = new Module.Class({
     Name: 'ScrollingTemplate',
     GTypeName: 'EknScrollingTemplate',
     CssName: 'EknScrollingTemplate',

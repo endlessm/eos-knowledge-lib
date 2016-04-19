@@ -7,10 +7,8 @@ const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Actions = imports.app.actions;
-const ArticleHTMLRenderer = imports.app.articleHTMLRenderer;
 const ArticleObjectModel = imports.search.articleObjectModel;
 const Dispatcher = imports.app.dispatcher;
 const Engine = imports.search.engine;
@@ -37,7 +35,7 @@ const RESULTS_SIZE = 10;
  * A very exploratory interaction, the content is organized into categories and
  * may have filters, but can be reached through many different paths.
  */
-const MeshInteraction = new Lang.Class({
+const MeshInteraction = new Module.Class({
     Name: 'MeshInteraction',
     GTypeName: 'EknMeshInteraction',
     Extends: GObject.Object,

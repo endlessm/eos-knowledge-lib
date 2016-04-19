@@ -7,7 +7,6 @@ const Gdk = imports.gi.Gdk;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Module = imports.app.interfaces.module;
 const Utils = imports.app.utils;
@@ -16,7 +15,7 @@ const Utils = imports.app.utils;
  * Class: ResponsiveMarginsModule
  * A module that displays a window and has responsive margins.
  */
-const ResponsiveMarginsModule = new Lang.Class({
+const ResponsiveMarginsModule = new Module.Class({
     Name: 'ResponsiveMarginsModule',
     GTypeName: 'EknResponsiveMarginsModule',
     CssName: 'EknResponsiveMarginsModule',

@@ -5,7 +5,6 @@
 const Gdk = imports.gi.Gdk;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
@@ -45,7 +44,7 @@ const _MENU_HOT_ZONE_WIDTH_PX = 3;
  *   menu - on the whole menu sidebar
  *   menu-button - on the button that opens the menu
  */
-const SideMenuTemplate = new Lang.Class({
+const SideMenuTemplate = new Module.Class({
     Name: 'SideMenuTemplate',
     GTypeName: 'EknSideMenuTemplate',
     CssName: 'EknSideMenuTemplate',

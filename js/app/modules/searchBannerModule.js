@@ -4,7 +4,6 @@ const Format = imports.format;
 const Gettext = imports.gettext;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Actions = imports.app.actions;
 const Config = imports.app.config;
@@ -26,7 +25,7 @@ let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
  *   error-message - on the banner when displaying status about an error
  *   query - on the portion of the banner indicating a user query string
  */
-const SearchBannerModule = new Lang.Class({
+const SearchBannerModule = new Module.Class({
     Name: 'SearchBannerModule',
     GTypeName: 'EknSearchBannerModule',
     CssName: 'EknSearchBannerModule',
