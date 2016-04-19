@@ -51,6 +51,7 @@ const SetGroupModule = new Lang.Class({
     _init: function (props={}) {
         this.parent(props);
         this.has_more_content = false;
+        this._has_extra_cards = false;
         this._arrangement = this.create_submodule('arrangement');
         this._arrangement.connect('card-clicked', (arrangement, model) => {
             Dispatcher.get_default().dispatch({
@@ -75,6 +76,7 @@ const SetGroupModule = new Lang.Class({
             switch(payload.action_type) {
                 case Actions.CLEAR_SETS:
                     this._arrangement.clear();
+                    this._has_extra_cards = false;
                     break;
                 case Actions.APPEND_SETS:
                     let first_batch = (this._arrangement.get_count() === 0);
@@ -107,15 +109,14 @@ const SetGroupModule = new Lang.Class({
     },
 
     _add_card: function (model) {
-        if (this._arrangement.get_count() === this.max_children)
-            return;
-
-        this._arrangement.add_model(model);
+        this._has_extra_cards = this._arrangement.get_count() >= this.max_children;
+        if (!this._has_extra_cards)
+            this._arrangement.add_model(model);
         this._check_more_content();
     },
 
     _check_more_content: function () {
-        this.has_more_content = !this._arrangement.all_visible;
+        this.has_more_content = this._has_extra_cards || !this._arrangement.all_visible;
         this.notify('has-more-content');
     },
 });
