@@ -84,7 +84,7 @@ const HamburgerBasementTemplate = new Lang.Class({
                 if (this.get_visible_child() === this._basement_grid) {
                     top_panel.reveal_panel = true;
                 } else {
-                    bottom_panel.reveal_panel = true;
+                    bottom_panel.reveal_panel = this._bottom.has_more_content;
                 }
             }
         });
