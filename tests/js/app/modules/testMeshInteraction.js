@@ -23,7 +23,8 @@ const MockView = new Lang.Class({
     Name: 'MockView',
     Extends: GObject.Object,
 
-    _init: function () {
+    _init: function (props) {
+        void props;  // Silently ignore properties
         this.parent();
     },
 

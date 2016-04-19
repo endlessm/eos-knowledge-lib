@@ -67,10 +67,9 @@ const MockModule = new Lang.Class({
 const MockWarehouse = new Lang.Class({
     Name: 'MockWarehouse',
     Extends: GObject.Object,
-
-    _init: function (props={}) {
-        this.parent(props);
-    },
+    // ModuleFactory has a 'warehouse' property with an object param spec, so
+    // this class is required to extend GObject.Object even though it doesn't
+    // use any GObject features.
 
     type_to_class: function (type) {
         if (type === 'MinimalCard')
