@@ -30,7 +30,6 @@ const Utils = imports.app.utils;
  */
 const Lightbox = new Knowledge.Class({
     Name: 'Lightbox',
-    GTypeName: 'EknLightbox',
     Extends: Gtk.Overlay,
     Properties: {
         /**
@@ -228,7 +227,6 @@ const Lightbox = new Knowledge.Class({
 // A private container used to house the lightbox-widget in the overlay.
 const LightboxContainer = new Knowledge.Class({
     Name: 'LightboxContainer',
-    GTypeName: 'EknLightboxContainer',
     Extends: Endless.CustomContainer,
     Signals: {
         'clicked': {},

@@ -9,7 +9,6 @@ const Module = imports.app.interfaces.module;
 
 const CarouselArrangement = new Module.Class({
     Name: 'CarouselArrangement',
-    GTypeName: 'EknCarouselArrangement',
     CssName: 'EknCarouselArrangement',
     Extends: Gtk.Stack,
     Implements: [Arrangement.Arrangement],

@@ -17,7 +17,6 @@ const Module = imports.app.interfaces.module;
  */
 const DividedBannerTemplate = new Module.Class({
     Name: 'DividedBannerTemplate',
-    GTypeName: 'EknDividedBannerTemplate',
     CssName: 'EknDividedBannerTemplate',
     Extends: Gtk.Grid,
 

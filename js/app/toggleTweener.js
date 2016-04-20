@@ -17,7 +17,6 @@ const Knowledge = imports.app.knowledge;
  */
 const ToggleTweener = new Knowledge.Class({
     Name: 'ToggleTweener',
-    GTypeName: 'EknToggleTweener',
     Extends: GObject.Object,
 
     Properties: {

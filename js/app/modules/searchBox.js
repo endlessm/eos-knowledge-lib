@@ -24,7 +24,6 @@ let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
  */
 const SearchBox = new Module.Class({
     Name: 'SearchBox',
-    GTypeName: 'EknSearchBox',
     CssName: 'EknSearchBox',
     Extends: Endless.SearchBox,
 

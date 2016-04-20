@@ -26,7 +26,6 @@ let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
  */
 const SearchBannerModule = new Module.Class({
     Name: 'SearchBannerModule',
-    GTypeName: 'EknSearchBannerModule',
     CssName: 'EknSearchBannerModule',
     Extends: Gtk.Label,
 

@@ -20,7 +20,6 @@ const Module = imports.app.interfaces.module;
  */
 const StandalonePage = new Module.Class({
     Name: 'StandalonePage',
-    GTypeName: 'EknStandalonePage',
     CssName: 'EknStandalonePage',
     Extends: Gtk.Frame,
 

@@ -20,7 +20,6 @@ const PianoArrangement = imports.app.modules.pianoArrangement;
  */
 const PianolaArrangement = new Module.Class({
     Name: 'PianolaArrangement',
-    GTypeName: 'EknPianolaArrangement',
     CssName: 'EknPianolaArrangement',
     Extends: PianoArrangement.PianoArrangement,
 

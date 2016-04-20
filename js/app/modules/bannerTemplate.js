@@ -25,7 +25,6 @@ const COMPOSITE_REDUCE_MARGINS_FRACTION = 0.4;
  */
 const BannerTemplate = new Module.Class({
     Name: 'BannerTemplate',
-    GTypeName: 'EknBannerTemplate',
     CssName: 'EknBannerTemplate',
     Extends: Gtk.Grid,
 

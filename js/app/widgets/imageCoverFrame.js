@@ -15,7 +15,6 @@ const WidgetSurfaceCache = imports.app.widgetSurfaceCache;
  */
 const ImageCoverFrame = new Knowledge.Class({
     Name: 'ImageCoverFrame',
-    GTypeName: 'EknImageCoverFrame',
     Extends: Gtk.Widget,
 
     _init: function (props={}) {

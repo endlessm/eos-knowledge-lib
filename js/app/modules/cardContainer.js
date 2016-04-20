@@ -30,7 +30,6 @@ String.prototype.format = Format.format;
  */
 const CardContainer = new Module.Class({
     Name: 'CardContainer',
-    GTypeName: 'EknCardContainer',
     CssName: 'EknCardContainer',
     Extends: Gtk.Grid,
 

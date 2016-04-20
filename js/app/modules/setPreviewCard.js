@@ -28,7 +28,6 @@ const QueryObject = imports.search.queryObject;
  */
 const SetPreviewCard = new Module.Class({
     Name: 'SetPreviewCard',
-    GTypeName: 'EknSetPreviewCard',
     CssName: 'EknSetPreviewCard',
     Extends: CardContainer.CardContainer,
     Implements: [Card.Card],

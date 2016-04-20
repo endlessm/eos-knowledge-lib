@@ -37,7 +37,6 @@ const RESULTS_SIZE = 10;
  */
 const MeshInteraction = new Module.Class({
     Name: 'MeshInteraction',
-    GTypeName: 'EknMeshInteraction',
     Extends: GObject.Object,
     Implements: [Launcher.Launcher, Interaction.Interaction],
 

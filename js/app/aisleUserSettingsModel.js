@@ -18,7 +18,6 @@ const Utils = imports.app.utils;
  */
 const AisleUserSettingsModel = new Knowledge.Class({
     Name: 'AisleUserSettingsModel',
-    GTypeName: 'EknAisleUserSettingsModel',
     Extends: GObject.Object,
     Properties: {
         /**

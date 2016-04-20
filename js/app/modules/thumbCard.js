@@ -20,7 +20,6 @@ const LARGE_WIDTH = 390;
 
 const ThumbCardLayout = new Knowledge.Class({
     Name: 'ThumbCardLayout',
-    GTypeName: 'EknThumbCardLayout',
     CssName: 'EknThumbCardLayout',
     Extends: Endless.CustomContainer,
 
@@ -105,7 +104,6 @@ const ThumbCardLayout = new Knowledge.Class({
  */
 const ThumbCard = new Module.Class({
     Name: 'ThumbCard',
-    GTypeName: 'EknThumbCard',
     CssName: 'EknThumbCard',
     Extends: Gtk.Button,
     Implements: [Card.Card],

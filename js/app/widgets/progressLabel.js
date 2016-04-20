@@ -21,8 +21,7 @@ String.prototype.format = Format.format;
  *   progress-label - on the widget
  */
 const ProgressLabel = new Knowledge.Class({
-    Name: 'ProgressLabel',
-    GTypeName: 'EknReaderProgressLabel',
+    Name: 'ReaderProgressLabel',
     Extends: Gtk.Label,
     Properties: {
         /**

@@ -9,7 +9,6 @@ const Knowledge = imports.app.knowledge;
 // errors, which will make our tests easier to write and fail faster.
 const MockDispatcher = new Knowledge.Class({
     Name: 'MockDispatcher',
-    GTypeName: 'MockDispatcher',
     Extends: GObject.Object,
 
     _init: function (props={}) {

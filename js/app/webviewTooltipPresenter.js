@@ -32,7 +32,6 @@ const WEBVIEW_OBJECT_PATH = '/com/endlessm/webview';
  */
 const WebviewTooltipPresenter = new Knowledge.Class({
     Name: 'WebviewTooltipPresenter',
-    GTypeName: 'EknWebviewTooltipPresenter',
     Extends: GObject.Object,
 
     Signals: {

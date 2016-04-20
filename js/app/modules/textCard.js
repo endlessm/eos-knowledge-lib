@@ -29,7 +29,6 @@ const HIGHLIGHT_DECORATION_DIMENSION = 5;
  */
 const TextCard = new Module.Class({
     Name: 'TextCard',
-    GTypeName: 'EknTextCard',
     CssName: 'EknTextCard',
     Extends: Gtk.Button,
     Implements: [Card.Card, NavigationCard.NavigationCard],

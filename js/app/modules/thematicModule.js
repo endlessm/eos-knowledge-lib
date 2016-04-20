@@ -39,7 +39,6 @@ const Scrollable = imports.app.interfaces.scrollable;
  */
 const ThematicModule = new Module.Class({
     Name: 'ThematicModule',
-    GTypeName: 'EknThematicModule',
     CssName: 'EknThematicModule',
     Extends: Gtk.Grid,
     Implements: [Scrollable.Scrollable],

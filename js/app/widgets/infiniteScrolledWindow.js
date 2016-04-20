@@ -9,7 +9,6 @@ const Knowledge = imports.app.knowledge;
  */
 const InfiniteScrolledWindow = new Knowledge.Class({
     Name: 'InfiniteScrolledWindow',
-    GTypeName: 'EknInfiniteScrolledWindow',
     Extends: Gtk.ScrolledWindow,
     Properties: {
         /**

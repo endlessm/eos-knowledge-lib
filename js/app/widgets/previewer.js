@@ -15,7 +15,6 @@ const StyleClasses = imports.app.styleClasses;
  */
 const Previewer = new Knowledge.Class({
     Name: 'Previewer',
-    GTypeName: 'EknPreviewer',
     Extends: Gtk.Bin,
     Properties: {
         /**

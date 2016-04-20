@@ -10,7 +10,6 @@ const StyleClasses = imports.app.styleClasses;
 
 const PanelFrame = new Knowledge.Class({
     Name: 'PanelFrame',
-    GTypeName: 'EknPanelFrame',
     CssName: 'EknPanelFrame',
     Extends: Gtk.Bin,
 
@@ -42,7 +41,6 @@ const PanelFrame = new Knowledge.Class({
  */
 const SlidingPanel = new Knowledge.Class({
     Name: 'SlidingPanel',
-    GTypeName: 'EknSlidingPanel',
     CssName: 'EknSlidingPanel',
     Extends: Gtk.Stack,
 

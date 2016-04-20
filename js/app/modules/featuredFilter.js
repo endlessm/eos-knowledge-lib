@@ -9,7 +9,6 @@ const Module = imports.app.interfaces.module;
 
 const FeaturedFilter = new Module.Class({
     Name: 'FeaturedFilter',
-    GTypeName: 'EknFeaturedFilter',
     Extends: GObject.Object,
     Implements: [Filter.Filter],
 

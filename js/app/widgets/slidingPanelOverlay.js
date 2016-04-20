@@ -14,7 +14,6 @@ const SlidingPanel = imports.app.widgets.slidingPanel;
  */
 const SlidingPanelOverlay = new Knowledge.Class({
     Name: 'SlidingPanelOverlay',
-    GTypeName: 'EknSlidingPanelOverlay',
     Extends: Gtk.Overlay,
 
     Properties: {

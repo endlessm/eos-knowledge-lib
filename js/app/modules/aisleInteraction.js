@@ -54,7 +54,6 @@ const _SEARCH_METRIC = 'a628c936-5d87-434a-a57a-015a0f223838';
  */
 const AisleInteraction = new Module.Class({
     Name: 'AisleInteraction',
-    GTypeName: 'EknAisleInteraction',
     Extends: GObject.Object,
     Implements: [Launcher.Launcher, Interaction.Interaction],
 

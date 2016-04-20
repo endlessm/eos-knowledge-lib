@@ -24,7 +24,6 @@ const CARD_SIZE_MAX = Card.MinSize.D;
  */
 const WindshieldArrangement = new Module.Class({
     Name: 'WindshieldArrangement',
-    GTypeName: 'EknWindshieldArrangement',
     CssName: 'EknWindshieldArrangement',
     Extends: Endless.CustomContainer,
     Implements: [Arrangement.Arrangement],

@@ -22,7 +22,6 @@ const _SCROLLBAR_MARGIN_PX = 13;  // FIXME should be dynamic
  */
 const GrowButton = new Knowledge.Class({
     Name: 'GrowButton',
-    GTypeName: 'EknGrowButton',
     Extends: Gtk.Button,
 
     _init: function (props={}) {
@@ -69,7 +68,6 @@ Gtk.Widget.install_style_property.call(GrowButton, GObject.ParamSpec.int(
  */
 const NavButtonOverlay = new Knowledge.Class({
     Name: 'NavButtonOverlay',
-    GTypeName: 'EknNavButtonOverlay',
     Extends: Gtk.Overlay,
     Properties: {
         /**
