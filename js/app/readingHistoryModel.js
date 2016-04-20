@@ -20,7 +20,6 @@ const Utils = imports.app.utils;
  */
 const ReadingHistoryModel= new Knowledge.Class({
     Name: 'ReadingHistoryModel',
-    GTypeName: 'EknReadingHistoryModel',
     Extends: GObject.Object,
 
     Properties: {

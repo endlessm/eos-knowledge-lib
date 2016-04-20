@@ -33,7 +33,6 @@ let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
  */
 const ContextBanner = new Module.Class({
     Name: 'ContextBanner',
-    GTypeName: 'EknContextBanner',
     CssName: 'EknContextBanner',
     Extends: Gtk.Label,
 

@@ -39,7 +39,6 @@ function load_article_template () {
  */
 const ArticleHTMLRenderer = new Knowledge.Class({
     Name: "ArticleHTMLRenderer",
-    GTypeName: 'EknArticleHTMLRenderer',
     Extends: GObject.Object,
 
     Properties: {

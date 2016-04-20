@@ -10,7 +10,6 @@ const ReadingHistoryModel = imports.app.readingHistoryModel;
 
 const UnreadFilter = new Module.Class({
     Name: 'UnreadFilter',
-    GTypeName: 'EknUnreadFilter',
     Extends: GObject.Object,
     Implements: [Filter.Filter],
 

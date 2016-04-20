@@ -22,7 +22,6 @@ const Knowledge = imports.app.knowledge;
  */
 const SpaceContainer = new Knowledge.Class({
     Name: 'SpaceContainer',
-    GTypeName: 'EknSpaceContainer',
     Extends: Endless.CustomContainer,
     Implements: [Gtk.Orientable],
     Properties: {

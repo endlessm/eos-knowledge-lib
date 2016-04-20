@@ -31,7 +31,6 @@ const MINIMUM_ARRANGEMENT_WIDTH = 2 * Card.MinSize.C;
  */
 const HalfArrangement = new Module.Class({
     Name: 'HalfArrangement',
-    GTypeName: 'EknHalfArrangement',
     Extends: Endless.CustomContainer,
     Implements: [Arrangement.Arrangement],
 

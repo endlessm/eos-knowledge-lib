@@ -17,7 +17,6 @@ const Knowledge = imports.app.knowledge;
  */
 const WidgetSurfaceCache = new Knowledge.Class({
     Name: 'WidgetSurfaceCache',
-    GTypeName: 'EknWidgetSurfaceCache',
     Extends: GObject.Object,
 
     Properties: {

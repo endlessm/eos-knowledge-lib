@@ -20,7 +20,6 @@ const _MAX_PDF_VIEW_WIDTH = 1300;
  */
 const PDFView = new Knowledge.Class({
     Name: 'PDFView',
-    GTypeName: 'EknPDFView',
     Extends: Gtk.ScrolledWindow,
 
     _init: function (props) {

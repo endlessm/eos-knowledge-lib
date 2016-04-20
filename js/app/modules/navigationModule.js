@@ -10,7 +10,6 @@ const Module = imports.app.interfaces.module;
  */
 const NavigationModule = new Module.Class({
     Name: 'NavigationModule',
-    GTypeName: 'EknNavigationModule',
     CssName: 'EknNavigationModule',
     Extends: NavButtonOverlay.NavButtonOverlay,
 

@@ -8,7 +8,6 @@ const Module = imports.app.interfaces.module;
 
 const OverflowArrangement = new Module.Class({
     Name: 'OverflowArrangement',
-    GTypeName: 'EknOverflowArrangement',
     CssName: 'EknOverflowArrangement',
     Extends: SpaceContainer.SpaceContainer,
     Implements: [Arrangement.Arrangement],

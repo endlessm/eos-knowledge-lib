@@ -9,7 +9,6 @@ const StyleClasses = imports.app.styleClasses;
  */
 const TabButton = new Knowledge.Class({
     Name: 'TabButton',
-    GTypeName: 'EknTabButton',
     Extends: Gtk.Button,
 
     Properties: {

@@ -28,7 +28,6 @@ const StyleClasses = imports.app.styleClasses;
  */
 const SetGroupModule = new Module.Class({
     Name: 'SetGroupModule',
-    GTypeName: 'EknSetGroupModule',
     CssName: 'EknSetGroupModule',
     Extends: Gtk.Frame,
     Implements: [Expandable.Expandable],

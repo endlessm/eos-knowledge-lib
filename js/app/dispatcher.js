@@ -8,7 +8,6 @@ const Knowledge = imports.app.knowledge;
 
 const Dispatcher = new Knowledge.Class({
     Name: 'Dispatcher',
-    GTypeName: 'EknDispatcher',
     Extends: GObject.Object,
 
     _init: function (props={}) {

@@ -9,7 +9,6 @@ const Module = imports.app.interfaces.module;
 
 const SetsFilter = new Module.Class({
     Name: 'SetsFilter',
-    GTypeName: 'EknSetsFilter',
     Extends: GObject.Object,
     Implements: [Filter.Filter],
 

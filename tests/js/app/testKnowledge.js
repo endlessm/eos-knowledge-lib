@@ -8,6 +8,23 @@ Gtk.init(null);
 const Knowledge = imports.app.knowledge;
 
 describe('Syntactic sugar metaclass', function () {
+    it('automatically sets the correct GTypeName', function () {
+        const MyTypeName = new Knowledge.Class({
+            Name: 'MyTypeName',
+            Extends: GObject.Object,
+        });
+        expect(MyTypeName.$gtype.name).toEqual('EknMyTypeName');
+    });
+
+    it('can still set a custom GTypeName', function () {
+        const MyCustomTypeName = new Knowledge.Class({
+            Name: 'MyCustomTypeName',
+            GTypeName: 'Barry',
+            Extends: GObject.Object,
+        });
+        expect(MyCustomTypeName.$gtype.name).toEqual('Barry');
+    });
+
     it('overrides properties automatically (this test should not warn)', function () {
         const MyGObjectInterface = new Lang.Interface({
             Name: 'MyGObjectInterface',
@@ -41,7 +58,7 @@ describe('Syntactic sugar metaclass', function () {
             Name: 'MyWidgetModule',
             Extends: Gtk.Grid,
             Template: ByteArray.fromString('<interface>' +
-                '  <template class="Gjs_MyWidgetModule" parent="GtkGrid">' +
+                '  <template class="EknMyWidgetModule" parent="GtkGrid">' +
                 '    <child>' +
                 '      <object class="GtkLabel" id="child"/>' +
                 '    </child>' +

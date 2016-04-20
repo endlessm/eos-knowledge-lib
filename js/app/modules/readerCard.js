@@ -25,7 +25,6 @@ let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
  */
 const ReaderCard = new Module.Class({
     Name: 'ReaderCard',
-    GTypeName: 'EknReaderCard',
     CssName: 'EknReaderCard',
     Extends: Gtk.Button,
     Implements: [Card.Card],

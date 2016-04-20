@@ -33,7 +33,6 @@ const KnowledgeSearchIface = '\
  */
 const Application = new Knowledge.Class({
     Name: 'Application',
-    GTypeName: 'EknApplication',
     Extends: Endless.Application,
 
     Properties: {

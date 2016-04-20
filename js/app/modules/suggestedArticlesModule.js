@@ -19,7 +19,6 @@ let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
  */
 const SuggestedArticlesModule = new Module.Class({
     Name: 'SuggestedArticlesModule',
-    GTypeName: 'EknSuggestedArticlesModule',
     CssName: 'EknSuggestedArticlesModule',
     Extends: CardContainer.CardContainer,
 

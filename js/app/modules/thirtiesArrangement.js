@@ -24,7 +24,6 @@ const COL_COUNT = 3;
  */
 const ThirtiesArrangement = new Module.Class({
     Name: 'ThirtiesArrangement',
-    GTypeName: 'EknThirtiesArrangement',
     CssName: 'EknThirtiesArrangement',
     Extends: Endless.CustomContainer,
     Implements: [Arrangement.Arrangement],

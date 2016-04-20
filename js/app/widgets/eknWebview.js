@@ -39,8 +39,7 @@ function should_enable_inspector() {
  *     WebKit2.WebView
  */
 const EknWebview = new Knowledge.Class({
-    Name: 'EknWebview',
-    GTypeName: 'EknWebview',
+    Name: 'Webview',
     Extends: WebKit2.WebView,
 
     Properties: {

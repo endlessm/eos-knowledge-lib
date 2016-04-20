@@ -7,7 +7,6 @@ const Knowledge = imports.app.knowledge;
 
 const ThemeableImage = new Knowledge.Class({
     Name: 'ThemeableImage',
-    GTypeName: 'EknThemeableImage',
     Extends: Gtk.Widget,
 
     _init: function (props={}) {

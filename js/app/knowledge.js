@@ -18,6 +18,9 @@ const Lang = imports.lang;
  * > // ...
  * > });
  *
+ * If no GTypeName is given, then it will automatically be set to the class's
+ * Name, prefixed with 'Ekn', as opposed to the 'Gjs_' that Lang.Class uses.
+ *
  * Properties from interfaces listed in Implements: are overridden
  * automatically, meaning there's no need for you to use
  * GObject.ParamSpec.override.
@@ -27,6 +30,9 @@ const Class = new Lang.Class({
     Extends: GObject.Class,
 
     _construct: function (props={}) {
+        if (!props.GTypeName)
+            props.GTypeName = 'Ekn' + props.Name;
+
         props.Properties = props.Properties || {};
         props.Implements = props.Implements || [];
 

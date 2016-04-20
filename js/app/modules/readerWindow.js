@@ -41,7 +41,6 @@ const Utils = imports.app.utils;
  */
 const ReaderWindow = new Module.Class({
     Name: 'ReaderWindow',
-    GTypeName: 'EknReaderWindow',
     Extends: Endless.Window,
 
     Properties: {

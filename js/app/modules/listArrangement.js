@@ -9,7 +9,6 @@ const Module = imports.app.interfaces.module;
 
 const ListArrangement = new Module.Class({
     Name: 'ListArrangement',
-    GTypeName: 'EknListArrangement',
     CssName: 'EknListArrangement',
     Extends: Gtk.Grid,
     Implements: [Arrangement.Arrangement],

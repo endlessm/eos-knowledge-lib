@@ -33,7 +33,6 @@ const Utils = imports.app.utils;
  */
 const TableOfContents = new Knowledge.Class({
     Name: 'TableOfContents',
-    GTypeName: 'EknTableOfContents',
     Extends: Endless.CustomContainer,
     Properties: {
         /**
@@ -409,7 +408,6 @@ const TableOfContents = new Knowledge.Class({
 
 const SectionButton = new Knowledge.Class({
     Name: 'SectionButton',
-    GTypeName: 'EknSectionButton',
     Extends: Gtk.Button,
 
     _MIN_CHARS: 20,

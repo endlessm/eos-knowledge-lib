@@ -43,7 +43,6 @@ const SUPPORT_CARD_COUNT = 3;
  */
 const QuarterArrangement = new Module.Class({
     Name: 'QuarterArrangement',
-    GTypeName: 'EknQuarterArrangement',
     CssName: 'EknQuarterArrangement',
     Extends: Endless.CustomContainer,
     Implements: [Arrangement.Arrangement],

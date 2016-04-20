@@ -22,7 +22,6 @@ const Utils = imports.app.utils;
  */
 const PaperTemplate = new Module.Class({
     Name: 'PaperTemplate',
-    GTypeName: 'EknPaperTemplate',
     CssName: 'EknPaperTemplate',
     Extends: Gtk.Bin,
 

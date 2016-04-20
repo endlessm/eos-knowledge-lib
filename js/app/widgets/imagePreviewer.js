@@ -16,7 +16,6 @@ const Knowledge = imports.app.knowledge;
  */
 const ImagePreviewer = new Knowledge.Class({
     Name: 'ImagePreviewer',
-    GTypeName: 'EknImagePreviewer',
     Extends: Gtk.Widget,
     Properties: {
         /**

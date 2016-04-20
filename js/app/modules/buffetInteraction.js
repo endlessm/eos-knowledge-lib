@@ -53,7 +53,6 @@ const SEARCH_METRIC_EVENT_ID = 'a628c936-5d87-434a-a57a-015a0f223838';
  */
 const BuffetInteraction = new Module.Class({
     Name: 'BuffetInteraction',
-    GTypeName: 'EknBuffetInteraction',
     Extends: GObject.Object,
     Implements: [Launcher.Launcher, Interaction.Interaction],
 

@@ -78,7 +78,6 @@ const SECONDARY_HORIZONTAL_PROPORTION = {
  */
 const QuiltArrangement = new Module.Class({
     Name: 'QuiltArrangement',
-    GTypeName: 'EknQuiltArrangement',
     CssName: 'EknQuiltArrangement',
     Extends: Endless.CustomContainer,
     Implements: [Arrangement.Arrangement],

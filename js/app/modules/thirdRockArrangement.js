@@ -45,7 +45,6 @@ const _CARD_COUNT = 3;
  */
 const ThirdRockArrangement = new Module.Class({
     Name: 'ThirdRockArrangement',
-    GTypeName: 'EknThirdRockArrangement',
     CssName: 'EknThirdRockArrangement',
     Extends: Endless.CustomContainer,
     Implements: [Arrangement.Arrangement],

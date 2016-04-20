@@ -38,7 +38,6 @@ const BATCH_SIZE = 15;
  */
 const HierarchicalSetModule = new Module.Class({
     Name: 'HierarchicalSetModule',
-    GTypeName: 'EknHierarchicalSetModule',
     CssName: 'EknHierarchicalSetModule',
     Extends: Gtk.Grid,
     Implements: [Scrollable.Scrollable],

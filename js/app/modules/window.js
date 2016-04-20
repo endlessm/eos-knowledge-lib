@@ -43,7 +43,6 @@ const PARALLAX_BACKGROUND_SCALE = 1.1;
  */
 const Window = new Module.Class({
     Name: 'Window',
-    GTypeName: 'EknWindow',
     Extends: Endless.Window,
 
     Properties: {

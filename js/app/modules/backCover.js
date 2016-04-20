@@ -15,7 +15,6 @@ const Utils = imports.app.utils;
  */
 const BackCover = new Module.Class({
     Name: 'BackCover',
-    GTypeName: 'EknBackCover',
     CssName: 'EknBackCover',
     Extends: Gtk.Frame,
 

@@ -12,7 +12,6 @@ const HistoryItem = imports.app.historyItem;
  */
 const HistoryPresenter = new GObject.Class({
     Name: 'HistoryPresenter',
-    GTypeName: 'EknHistoryPresenter',
 
     Properties: {
         /**

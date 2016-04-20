@@ -38,7 +38,6 @@ let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
  */
 const HighlightsModule = new Module.Class({
     Name: 'HighlightsModule',
-    GTypeName: 'EknHighlightsModule',
     CssName: 'EknHighlightsModule',
     Extends: Gtk.Grid,
 
