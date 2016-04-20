@@ -70,6 +70,8 @@ const Class = new Lang.Class({
 });
 
 function _freeze_recurse(o) {
+    if (typeof o !== 'object')
+        return o;
     Object.getOwnPropertyNames(o).forEach(prop => _freeze_recurse(o[prop]));
     return Object.freeze(o);
 }
