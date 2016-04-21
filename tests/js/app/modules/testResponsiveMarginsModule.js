@@ -1,5 +1,6 @@
 // Copyright 2015 Endless Mobile, Inc.
 
+const Gdk = imports.gi.Gdk;
 const Gtk = imports.gi.Gtk;
 
 const MockFactory = imports.tests.mockFactory;
@@ -10,6 +11,18 @@ const Utils = imports.tests.utils;
 Gtk.init(null);
 
 describe('Responsive margins module', function () {
+    let provider;
+    beforeAll(function () {
+       provider = Utils.create_reset_provider();
+       Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(),
+                                                provider,
+                                                Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+    });
+    afterAll(function () {
+        Gtk.StyleContext.remove_provider_for_screen(Gdk.Screen.get_default(),
+                                                    provider);
+    });
+
     let responsive_margins, factory;
 
     beforeEach(function () {
@@ -22,9 +35,6 @@ describe('Responsive margins module', function () {
 
         let provider = new Gtk.CssProvider();
         provider.load_from_data('\
-        * {\
-            border-width: 0px;\
-        }\
         .tiny {\
           margin: 10px;\
         }\

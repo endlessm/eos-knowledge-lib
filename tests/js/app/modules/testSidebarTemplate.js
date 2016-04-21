@@ -1,5 +1,6 @@
 // Copyright 2015 Endless Mobile, Inc.
 
+const Gdk = imports.gi.Gdk;
 const Gtk = imports.gi.Gtk;
 
 const CssClassMatcher = imports.tests.CssClassMatcher;
@@ -51,7 +52,17 @@ describe('Sidebar template', function () {
     });
 
     describe('size_allocate', function () {
-        let win;
+        let provider, win;
+        beforeAll(function () {
+           provider = Utils.create_reset_provider();
+           Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(),
+                                                    provider,
+                                                    Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+        });
+        afterAll(function () {
+            Gtk.StyleContext.remove_provider_for_screen(Gdk.Screen.get_default(),
+                                                        provider);
+        });
 
         beforeEach(function () {
             win = new Gtk.OffscreenWindow();
