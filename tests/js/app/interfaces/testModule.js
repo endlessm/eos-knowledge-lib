@@ -75,4 +75,14 @@ describe('Module metaclass', function () {
         expect(MySlotChild.get_slot_names()).toContain('parent-slot');
         expect(MySlotChild.get_slot_names()).toContain('child-slot');
     });
+
+    it('does not allow dots in slot names', function () {
+        expect(() => new Module.Class({
+            Name: 'MyDotModule',
+            Extends: GObject.Object,
+            Slots: {
+                'dot.slot': {},
+            },
+        })).toThrow();
+    });
 });

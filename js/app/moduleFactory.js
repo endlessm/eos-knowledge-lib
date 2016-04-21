@@ -127,8 +127,6 @@ const ModuleFactory = new Knowledge.Class({
             throw new Error('No slot named ' + slot +
                 '; did you define it in Slots in your Module.Class definition?');
 
-        if (slot.indexOf('.') !== -1)
-            logError(new Error('Slot names should never contain a "."'));
         let slots = this._get_module_description_by_name(parent_module.factory_name)['slots'];
         if (!slots)
             return null;
