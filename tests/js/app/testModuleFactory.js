@@ -24,9 +24,6 @@ const MOCK_APP_JSON = {
                 'anonymous-slot-2': {
                     type: 'TestModule',
                 },
-                "dot.slot": {
-                    type: 'TestModule',
-                },
             },
         },
         'test-submodule': {
@@ -63,7 +60,6 @@ const MockModule = new Module.Class({
         'optional-slot': {},
         'anonymous-slot-1': {},
         'anonymous-slot-2': {},
-        'dot.slot': {},
     }
 });
 
@@ -127,13 +123,6 @@ describe('Module factory', function () {
         expect(() => {
             module_factory.create_module_for_slot(parent, 'fake-slot');
         }).toThrow();
-    });
-
-    it('warns if creating a malformed slot name', function () {
-        let parent = module_factory.create_named_module('test');
-        spyOn(window, 'logError');
-        module_factory.create_module_for_slot(parent, 'dot.slot');
-        expect(logError).toHaveBeenCalled();
     });
 
     describe('anonymous modules', function () {

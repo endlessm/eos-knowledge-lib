@@ -41,6 +41,9 @@ const Class = new Lang.Class({
         Lang.copyProperties(props.Slots, slots);
         delete props.Slots;
 
+        if (Object.keys(slots).some(name => name.indexOf('.') !== -1))
+            throw new Error('Slot names should never contain a "."');
+
         let module = this.parent(props);
 
         Object.defineProperties(module, {
