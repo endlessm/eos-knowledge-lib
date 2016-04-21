@@ -1,4 +1,5 @@
 const ByteArray = imports.byteArray;
+const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
@@ -71,5 +72,32 @@ describe('Syntactic sugar metaclass', function () {
             },
         });
         new MyWidgetModule();
+    });
+
+    it('can install style properties', function () {
+        let MyStyleModule = new Knowledge.Class({
+            Name: 'MyStyleModule',
+            Extends: Gtk.Grid,
+            StyleProperties: {
+                'foo': GObject.ParamSpec.int('foo', '', '',
+                    GObject.ParamFlags.READABLE, 0, 10, 5),
+            },
+            read_foo: function () {
+                return EosKnowledgePrivate.widget_style_get_int(this, 'foo');
+            },
+        });
+        let widget = new MyStyleModule();
+        expect(widget.read_foo()).toEqual(5);
+    });
+
+    it("won't install style properties on a non-GtkWidget", function () {
+        expect(() => new Knowledge.Class({
+            Name: 'MyNonWidget',
+            Extends: GObject.Object,
+            StyleProperties: {
+                'foo': GObject.ParamSpec.int('foo', '', '',
+                    GObject.ParamFlags.READABLE, 0, 10, 5),
+            },
+        })).toThrow();
     });
 });

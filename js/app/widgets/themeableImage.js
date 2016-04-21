@@ -1,3 +1,5 @@
+/* exported ThemeableImage */
+
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const GObject = imports.gi.GObject;
 const GLib = imports.gi.GLib;
@@ -8,6 +10,14 @@ const Knowledge = imports.app.knowledge;
 const ThemeableImage = new Knowledge.Class({
     Name: 'ThemeableImage',
     Extends: Gtk.Widget,
+
+    StyleProperties: {
+        // FIXME: Standin till these are supported in gtk.
+        'min-height': GObject.ParamSpec.int('min-height', 'Min Height',
+            'Min Height', GObject.ParamFlags.READABLE, 0, GLib.MAXINT32, 0),
+        'min-width': GObject.ParamSpec.int('min-width', 'Min Width',
+            'Min Width', GObject.ParamFlags.READABLE, 0, GLib.MAXINT32, 0),
+    },
 
     _init: function (props={}) {
         this.parent(props);
@@ -96,11 +106,3 @@ const ThemeableImage = new Knowledge.Class({
         cr.$dispose();
     },
 });
-
-// FIXME: Standin till these are supported in gtk.
-Gtk.Widget.install_style_property.call(ThemeableImage, GObject.ParamSpec.int(
-    'min-height', 'Min Height', 'Min Height',
-    GObject.ParamFlags.READABLE, 0, GLib.MAXINT32, 0));
-Gtk.Widget.install_style_property.call(ThemeableImage, GObject.ParamSpec.int(
-    'min-width', 'Min Width', 'Min Width',
-    GObject.ParamFlags.READABLE, 0, GLib.MAXINT32, 0));

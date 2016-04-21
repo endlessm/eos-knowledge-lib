@@ -1,3 +1,5 @@
+/* exported SlidingPanel */
+
 // Copyright 2015 Endless Mobile, Inc.
 
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
@@ -90,6 +92,18 @@ const SlidingPanel = new Knowledge.Class({
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             false),
     },
+    StyleProperties: {
+        // These custom style properties are specifically for when using the
+        // slidingPanel in a slidingPanelOverlay. Fill percentage will control
+        // how much of the side the panel is on to fill.
+        'fill-percentage': GObject.ParamSpec.float('fill-percentage',
+            'Fill percentage', 'Fill percentage',  GObject.ParamFlags.READABLE,
+            0, 1, 1),
+        // Shadow margin will add extra drawable area on the slidingPanel in a
+        // slidingPanelOverlay. Useful for drawing a box-shadow.
+        'shadow-margin': GObject.ParamSpec.int('shadow-margin', 'Shadow Margin',
+            'Shadow Margin', GObject.ParamFlags.READABLE, 0, GLib.MAXINT32, 0),
+    },
 
     _init: function (props={}) {
         this._panel_frame = new PanelFrame(this, {
@@ -174,15 +188,3 @@ const SlidingPanel = new Knowledge.Class({
             this.set_visible_child(v ? this._panel_frame : this._transparent_frame);
     },
 });
-
-// These custom style properties are specifically for when using the
-// slidingPanel in a slidingPanelOverlay. Fill percentage will control how much
-// of the side the panel is on to fill.
-Gtk.Widget.install_style_property.call(SlidingPanel, GObject.ParamSpec.float(
-    'fill-percentage', 'Fill percentage', 'Fill percentage',
-    GObject.ParamFlags.READABLE, 0, 1, 1));
-// Shadow margin will add extra drawable area on the slidingPanel in a
-// slidingPanelOverlay. Useful for drawing a box-shadow.
-Gtk.Widget.install_style_property.call(SlidingPanel, GObject.ParamSpec.int(
-    'shadow-margin', 'Shadow Margin', 'Shadow Margin',
-    GObject.ParamFlags.READABLE, 0, GLib.MAXINT32, 0));

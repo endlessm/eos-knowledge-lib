@@ -39,6 +39,17 @@ const SidebarTemplate = new Module.Class({
         'sidebar-first':  GObject.ParamSpec.boolean('sidebar-first', 'Sidebar First', 'Sidebar First',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, true),
     },
+    StyleProperties: {
+        'sidebar-width-large': GObject.ParamSpec.int('sidebar-width-large',
+            'Sidebar Width Large', 'Sidebar Width Large',
+            GObject.ParamFlags.READABLE, 0, GLib.MAXINT32, 400),
+        'sidebar-width-small': GObject.ParamSpec.int('sidebar-width-small',
+            'Sidebar Width Small', 'Sidebar Width Small',
+            GObject.ParamFlags.READABLE, 0, GLib.MAXINT32, 240),
+        'threshold-width-large': GObject.ParamSpec.int('threshold-width-large',
+            'Threshold Width Large', 'Threshold Width Large',
+            GObject.ParamFlags.READABLE, 0, GLib.MAXINT32, 800),
+    },
 
     Slots: {
         'sidebar': {},
@@ -135,13 +146,3 @@ const SidebarTemplate = new Module.Class({
         Utils.set_container_clip(this);
     },
 });
-
-Gtk.Widget.install_style_property.call(SidebarTemplate, GObject.ParamSpec.int(
-    'sidebar-width-large', 'Sidebar Width Large', 'Sidebar Width Large',
-    GObject.ParamFlags.READABLE, 0, GLib.MAXINT32, 400));
-Gtk.Widget.install_style_property.call(SidebarTemplate, GObject.ParamSpec.int(
-    'sidebar-width-small', 'Sidebar Width Small', 'Sidebar Width Small',
-    GObject.ParamFlags.READABLE, 0, GLib.MAXINT32, 240));
-Gtk.Widget.install_style_property.call(SidebarTemplate, GObject.ParamSpec.int(
-    'threshold-width-large', 'Threshold Width Large', 'Threshold Width Large',
-    GObject.ParamFlags.READABLE, 0, GLib.MAXINT32, 800));

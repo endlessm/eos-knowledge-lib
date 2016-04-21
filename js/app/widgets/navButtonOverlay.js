@@ -24,6 +24,11 @@ const GrowButton = new Knowledge.Class({
     Name: 'GrowButton',
     Extends: Gtk.Button,
 
+    StyleProperties: {
+        'grow-pixels': GObject.ParamSpec.int('grow-pixels', 'Grow Pixels',
+            'Grow Pixels', GObject.ParamFlags.READABLE, 0, GLib.MAXINT32, 0),
+    },
+
     _init: function (props={}) {
         this.parent(props);
 
@@ -52,9 +57,6 @@ const GrowButton = new Knowledge.Class({
         return Gdk.EVENT_PROPAGATE;
     },
 });
-Gtk.Widget.install_style_property.call(GrowButton, GObject.ParamSpec.int(
-    'grow-pixels', 'Grow Pixels', 'Grow Pixels',
-    GObject.ParamFlags.READABLE, 0, GLib.MAXINT32, 0));
 
 /**
  * Class: NavButtonOverlay
