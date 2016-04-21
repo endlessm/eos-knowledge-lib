@@ -23,6 +23,21 @@ const ResponsiveMarginsModule = new Module.Class({
     CssName: 'EknResponsiveMarginsModule',
     Extends: Gtk.Bin,
 
+    StyleProperties: {
+        'margin-threshold-small': GObject.ParamSpec.int('margin-threshold-small',
+            'Margin Threshold Small', 'Margin Threshold Small',
+            GObject.ParamFlags.READABLE, 0, GLib.MAXINT32, 800),
+        'margin-threshold-medium': GObject.ParamSpec.int('margin-threshold-medium',
+            'Margin Threshold Medium', 'Margin Threshold Medium',
+            GObject.ParamFlags.READABLE, 0, GLib.MAXINT32, 1000),
+        'margin-threshold-large': GObject.ParamSpec.int('margin-threshold-large',
+            'Margin Threshold Large', 'Margin Threshold Large',
+            GObject.ParamFlags.READABLE, 0, GLib.MAXINT32, 1200),
+        'margin-threshold-xlarge': GObject.ParamSpec.int('margin-threshold-xlarge',
+            'Margin Threshold XLarge', 'Margin Threshold XLarge',
+            GObject.ParamFlags.READABLE, 0, GLib.MAXINT32, 1500),
+    },
+
     Slots: {
         'content': {},
     },
@@ -136,16 +151,3 @@ const ResponsiveMarginsModule = new Module.Class({
         return Gdk.EVENT_PROPAGATE;
     },
 });
-
-Gtk.Widget.install_style_property.call(ResponsiveMarginsModule, GObject.ParamSpec.int(
-    'margin-threshold-small', 'Margin Threshold Small', 'Margin Threshold Small',
-    GObject.ParamFlags.READABLE, 0, GLib.MAXINT32, 800));
-Gtk.Widget.install_style_property.call(ResponsiveMarginsModule, GObject.ParamSpec.int(
-    'margin-threshold-medium', 'Margin Threshold Medium', 'Margin Threshold Medium',
-    GObject.ParamFlags.READABLE, 0, GLib.MAXINT32, 1000));
-Gtk.Widget.install_style_property.call(ResponsiveMarginsModule, GObject.ParamSpec.int(
-    'margin-threshold-large', 'Margin Threshold Large', 'Margin Threshold Large',
-    GObject.ParamFlags.READABLE, 0, GLib.MAXINT32, 1200));
-Gtk.Widget.install_style_property.call(ResponsiveMarginsModule, GObject.ParamSpec.int(
-    'margin-threshold-xlarge', 'Margin Threshold XLarge', 'Margin Threshold XLarge',
-    GObject.ParamFlags.READABLE, 0, GLib.MAXINT32, 1500));

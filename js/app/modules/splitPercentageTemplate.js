@@ -1,3 +1,5 @@
+/* SplitPercentageTemplate */
+
 // Copyright 2016 Endless Mobile, Inc.
 
 const Endless = imports.gi.Endless;
@@ -31,6 +33,11 @@ const SplitPercentageTemplate = new Module.Class({
             'Background image URI', 'URI for background image of this widget',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             ''),
+    },
+    StyleProperties: {
+        'start-percentage': GObject.ParamSpec.float('start-percentage',
+            'Start Percentage', 'Start Percentage', GObject.ParamFlags.READABLE,
+            0, 1, 0.5),
     },
 
     Slots: {
@@ -156,7 +163,3 @@ const SplitPercentageTemplate = new Module.Class({
         Utils.set_container_clip(this);
     },
 });
-
-Gtk.Widget.install_style_property.call(SplitPercentageTemplate, GObject.ParamSpec.float(
-    'start-percentage', 'Start Percentage', 'Start Percentage',
-    GObject.ParamFlags.READABLE, 0, 1, 0.5));
