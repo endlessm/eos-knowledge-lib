@@ -1,0 +1,4483 @@
+WARNING: Lang.Class declaration found!
+CLASS NAME: AisleUserSettingsModel
+INFO:
+  Name: AisleUserSettingsModel
+  GTypeName: EknAisleUserSettingsModel
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/aisleUserSettingsModel.js
+  Lineno: 21
+/**
+ * Class: AisleUserSettingsModel
+ *
+ * This model is an abstraction of all the user settings for apps using the
+ * aisle interaction.
+ *
+ * FIXME: Maybe make this more general purposed beyond the aisle interaction? At
+ * least when other apps have need to persistent state.
+ */
+PARAMS:
+props
+PROPERTIES:
+  Name: bookmark-page
+  Type: uint
+  Comment:
+        /**
+         * Property: bookmark-page
+         * Bookmark Article
+         *
+         * The page most recently read by the user.
+         * Page 0 means the overview page; 1 means the first article.
+         * Note this number is referring to the page within the app,
+         * NOT the database article number. To get the article number
+         * from the page you would do start_article + bookmark_page - 1
+         *
+         * Default value:
+         *  0
+         */
+  Name: highest-article-read
+  Type: uint
+  Comment:
+        /**
+         * Property: highest-article-read
+         * Highest Article Read
+         *
+         * The high watermark of user's reading history.
+         * The number is zero-based, that is, 0 means the first article.
+         * Note, this does NOT refer to a page in the app; it refers to
+         * an article number in the database.
+         *
+         * Default value:
+         *  0
+         */
+  Name: settings-file
+  Type: object
+  Comment:
+        /**
+         * Property: settings-file
+         * User Settings File
+         *
+         * The file in which to store the user settings. Usually a file in the
+         * app's config directory.
+         *
+         * Flags:
+         *   Construct only
+         */
+  Name: start-article
+  Type: uint
+  Comment:
+        /**
+         * Property: start-article
+         * Start Article
+         *
+         * The first article in the current set that is being read by the user.
+         *
+         * Default value:
+         *  0
+         */
+  Name: update-timestamp
+  Type: string
+  Comment:
+        /**
+         * Property: update-timestamp
+         * Update Timestamp
+         *
+         * The last time that the readable content was updated, in ISO date format.
+         *
+         * Default value:
+         *  ''
+         */
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: Application
+INFO:
+  Name: Application
+  GTypeName: EknApplication
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/application.js
+  Lineno: 34
+/**
+ * Class: Application
+ */
+PARAMS:
+props
+PROPERTIES:
+  Name: resource-path
+  Type: string
+  Comment:
+        /**
+         * Property: resource-path
+         * Path to applications gresource.
+         */
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: ArticleHTMLRenderer
+INFO:
+  Name: ArticleHTMLRenderer
+  GTypeName: EknArticleHTMLRenderer
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/articleHTMLRenderer.js
+  Lineno: 40
+/**
+ * Class: ArticleHTMLRenderer
+ */
+PARAMS:
+props
+PROPERTIES:
+  Name: show-title
+  Type: boolean
+  Comment:
+        /**
+         * Property: show-title
+         * True if the article title should be rendered inside the web page.
+         */
+  Name: enable-scroll-manager
+  Type: boolean
+  Comment:
+        /**
+         * Property: enable-scroll-manager
+         * True if the web side javascript to scroll with the table of contents
+         * should be injected.
+         */
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: Dispatcher
+INFO:
+  Name: Dispatcher
+  GTypeName: EknDispatcher
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/dispatcher.js
+  Lineno: 8
+!! NOTICE !! This class has no documentation block !!PARAMS:
+props
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: HistoryItem
+INFO:
+  Name: HistoryItem
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/historyItem.js
+  Lineno: 17
+/**
+ * Class: HistoryItem
+ *
+ * An object to be used by a HistoryModel in order to keep track of the pages
+ * that a user visits. Each HistoryItem contains the properties necessary
+ * to recreate that page. This includes query parameters in the case of search
+ * and article pages.
+ *
+ */
+PARAMS:
+props
+PROPERTIES:
+  Name: title
+  Type: string
+  Comment:
+        /**
+         * Property: title
+         *
+         * FIXME: maybe remove from interface? never actually used.
+         */
+  Name: page-type
+  Type: string
+  Comment:
+        /**
+         * Property: page-type
+         *
+         * A string that stores the type of page that corresponds to a history item.
+         * Supported page types are 'search', 'section', 'article', and 'home'.
+         */
+  Name: model
+  Type: object
+  Comment:
+        /**
+         * Property: model
+         * Content object model representing this page
+         *
+         * For 'article' pages, a <ArticleObjectModel> of the currently
+         * displayed article. For 'section' pages, a <ContentObjectModel> of the
+         * currently displayed set. Null for other pages.
+         */
+  Name: query
+  Type: string
+  Comment:
+        /**
+         * Property: query
+         *
+         * A query string entered by the user causing navigation to this history
+         * item.
+         */
+  Name: context-label
+  Type: string
+  Comment:
+        /**
+         * Property: context-label
+         *
+         * A context label describing what category this item belongs to.
+         */
+  Name: from-global-search
+  Type: boolean
+  Comment:
+        /**
+         * Property: from-global-search
+         *
+         * True if this history object was activated from global search,
+         * currently only used for reader app standalone page, which shows a
+         * different banner in that case.
+         */
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: ModuleFactory
+INFO:
+  Name: ModuleFactory
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/moduleFactory.js
+  Lineno: 12
+/**
+ * Class: ModuleFactory
+ */
+PARAMS:
+props
+PROPERTIES:
+  Name: warehouse
+  Type: object
+  Comment:
+        /**
+         * Property: warehouse
+         *
+         * The warehouse that holds the paths for creating modules.
+         */
+  Name: version
+  Type: uint
+  Comment:
+        /**
+         * Property: version
+         * Version of the app.json that powers this factory
+         */
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: AisleInteraction
+INFO:
+  Name: AisleInteraction
+  GTypeName: EknAisleInteraction
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/modules/aisleInteraction.js
+  Lineno: 57
+/**
+ * Class: AisleInteraction
+ * AisleInteraction module.
+ *
+ * Manages magazine issues, displaying them in the <view>, and keeping track of
+ * which ones have been read.
+ */
+PARAMS:
+props
+PROPERTIES:
+  Name: factory
+  Type: override
+  Name: factory-name
+  Type: override
+  Name: application
+  Type: override
+  Name: template-type
+  Type: override
+  Name: css
+  Type: override
+  Name: settings
+  Type: object
+  Comment:
+        /**
+         * Property: settings
+         * Handles the User Settings
+         *
+         * Handles the <AisleUserSettingsModel>, which controls things like the
+         * last article read and last issue read.
+         *
+         * Flags:
+         *   Construct only
+         */
+  Name: current-page
+  Type: uint
+  Comment:
+        /**
+         * Property: current-page
+         *
+         * The current article page number.
+         *
+         * If a standalone page is displaying, then this value is not relevant.
+         * A value of 0 represents the overview page, and a value of one beyond
+         * the last page represents the done page.
+         *
+         * Flags:
+         *   Read only
+         */
+  Name: history-model
+  Type: object
+  Comment:
+        /**
+         * Property: history-model
+         *
+         * The history model for this application.
+         *
+         * The history model keeps track of which pages have been visited
+         * by the user.
+         *
+         * Flags:
+         *   Read only
+         */
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: AllTypeCard
+INFO:
+  Name: AllTypeCard
+  GTypeName: EknAllTypeCard
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/modules/allTypeCard.js
+  Lineno: 29
+/**
+ * Class: AllTypeCard
+ *
+ * Card for displaying a snippet of an article in the News App
+ *
+ * This widget can display a snippet of an article using labels
+ * for the title, the synopsis and the context which is a tag,
+ * if it is available.
+ *
+ * Style classes:
+ *   card, all-type-card - on the widget itself
+ *   title - on the title label
+ *   card-synopsis - on the synopsis label
+ *   card-context - on the context label
+ */
+PARAMS:
+props
+PROPERTIES:
+  Name: factory
+  Type: override
+  Name: factory-name
+  Type: override
+  Name: model
+  Type: override
+  Name: title-capitalization
+  Type: override
+  Name: context-capitalization
+  Type: override
+  Name: highlight-string
+  Type: override
+  Name: text-halign
+  Type: override
+  Name: highlighted
+  Type: boolean
+  Name: sequence
+  Type: override
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: AlphabeticalOrder
+INFO:
+  Name: AlphabeticalOrder
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/modules/alphabeticalOrder.js
+  Lineno: 15
+/**
+ * Class: AlphabeticalOrder
+ * Order that sorts cards alphabetically by title
+ */
+PARAMS:
+PROPERTIES:
+  Name: factory
+  Type: override
+  Name: factory-name
+  Type: override
+  Name: ascending
+  Type: override
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: AppBanner
+INFO:
+  Name: AppBanner
+  GTypeName: EknAppBanner
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/modules/appBanner.js
+  Lineno: 23
+/**
+ * Class: AppBanner
+ *
+ * A module for the application's logo.
+ *
+ * CSS classes:
+ *   app-banner - on the module itself
+ *   subtitle - on the label displaying the app's subtitle
+ */
+PARAMS:
+props
+PROPERTIES:
+  Name: factory
+  Type: override
+  Name: factory-name
+  Type: override
+  Name: image-uri
+  Type: string
+  Comment:
+        /**
+         * Property: image-uri
+         * A URI to the title image. Defaults to an empty string.
+         */
+  Name: show-subtitle
+  Type: boolean
+  Comment:
+        /**
+         * Property: show-subtitle
+         * Whether to show an application subtitle underneath the image.
+         * Subtitle will be taken from the desktop file description field.
+         */
+  Name: subtitle-capitalization
+  Type: enum
+  Comment:
+        /**
+         * Property: subtitle-capitalization
+         * Manner in which the app's subtitle is formatted
+         *
+         * This property is a temporary stand-in for achieving this via the CSS
+         * *text-transform* property.
+         */
+  Name: min-fraction
+  Type: float
+  Comment:
+        /**
+         * Property: min-fraction
+         * Delegates to <ImagePreviewer.min-fraction>
+         *
+         * Allows setting this property on the logo widget from the app.json.
+         * It's construct only for simplicity.
+         */
+  Name: max-fraction
+  Type: float
+  Comment:
+        /**
+         * Property: max-fraction
+         * Delegates to <ImagePreviewer.max-fraction>
+         *
+         * Allows setting this property on the logo widget from the app.json.
+         * It's construct only for simplicity.
+         */
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: ArticleSnippetCard
+INFO:
+  Name: ArticleSnippetCard
+  GTypeName: EknArticleSnippetCard
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/modules/articleSnippetCard.js
+  Lineno: 25
+/**
+ * Class: ArticleSnippetCard
+ * Widget to display an article snippet
+ *
+ * Displays a snippet with a title and a couple of lines of synopsis.
+ *
+ * CSS classes:
+ *   article-snippet - on the widget itself
+ *   title - on the <Card.title_label>
+ *   synopsis - on the <Card.synopsis_label>
+ */
+PARAMS:
+props
+PROPERTIES:
+  Name: factory
+  Type: override
+  Name: factory-name
+  Type: override
+  Name: model
+  Type: override
+  Name: title-capitalization
+  Type: override
+  Name: context-capitalization
+  Type: override
+  Name: highlight-string
+  Type: override
+  Name: text-halign
+  Type: override
+  Name: sequence
+  Type: override
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: ArticleStackModule
+INFO:
+  Name: ArticleStackModule
+  GTypeName: EknArticleStackModule
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/modules/articleStackModule.js
+  Lineno: 38
+/**
+ * Class: ArticleStackModule
+ *
+ * Listens for the show-article action to be dispatched, creates a document
+ * card, starts an asynchronous load of the document content and transitions
+ * in the content when its ready.
+ */
+PARAMS:
+props
+PROPERTIES:
+  Name: factory
+  Type: override
+  Name: factory-name
+  Type: override
+  Name: engine
+  Type: object
+  Comment:
+        /**
+         * Property: engine
+         * Handle to EOS knowledge engine. For testing only.
+         */
+  Name: do-sliding-animation
+  Type: boolean
+  Comment:
+        /**
+         * Property: do-sliding-animation
+         * Whether the stack should use a sliding animation or just crossfade.
+         *
+         * If true, the article stack module will transition new articles in
+         * from the left and old from the right. If false, will just crossfade.
+         */
+  Name: allow-navigation
+  Type: string
+  Comment:
+        /**
+         * Property: allow-navigation
+         * What direction of navigation to allow.
+         *
+         * We can either allow 'previous', 'next', 'neither', or 'both' navigation
+         * from the current article.
+         */
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: BackCover
+INFO:
+  Name: BackCover
+  GTypeName: EknBackCover
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/modules/backCover.js
+  Lineno: 22
+/**
+ * Class: BackCover
+ *
+ * A module which displays information for the back cover of a reader
+ * magazine app.
+ */
+PARAMS:
+props
+PROPERTIES:
+  Name: factory
+  Type: override
+  Name: factory-name
+  Type: override
+  Name: background-image-uri
+  Type: string
+  Comment:
+        /**
+         * Property: background-image-uri
+         * URI of the page background
+         */
+  Name: progress-label
+  Type: object
+  Comment:
+        /**
+         * Property: progress-label
+         *
+         * A widget showing where in the series of articles this page
+         * resides. It is a <ProgressLabel> widget.
+         */
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: BackgroundModule
+INFO:
+  Name: BackgroundModule
+  GTypeName: EknBackgroundModule
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/modules/backgroundModule.js
+  Lineno: 62
+/**
+ * Class: BackgroundModule
+ * Module for displaying a background
+ *
+ * The background is composed of three layers, a blurred image that goes
+ * on the top, a tinted semi-transparent overlay that covers the image
+ * and a beige overlay that covers the bottom.
+ *
+ * The tinted overlay color is extracted from thumbnail image of a
+ * <ContentObjectModel>.
+ *
+ * Slots:
+ *   content - a template module
+ */
+PARAMS:
+props
+PROPERTIES:
+  Name: factory
+  Type: override
+  Name: factory-name
+  Type: override
+  Name: page-mode
+  Type: string
+  Comment:
+        /**
+         * Property: page-mode
+         * Mode for setting the height breakpoints of the beige overlay
+         *
+         * A string specifying the mode that sets the height breakpoints of
+         * the beige overlay. Each mode corresponds to a page, either 'section',
+         * 'article', 'home' or 'search'.
+         */
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: BannerTemplate
+INFO:
+  Name: BannerTemplate
+  GTypeName: EknBannerTemplate
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/modules/bannerTemplate.js
+  Lineno: 27
+/**
+ * Class: BannerTemplate
+ * This template has a top banner area, separator, and main content area.
+ *
+ * The left and right margins on this layout template will reduce to 40% of
+ * their given values on a composite TV screen.
+ *
+ * Slots
+ *   banner
+ *   content
+ *
+ * CSS classes:
+ *   separator - on the separator
+ */
+PARAMS:
+props
+PROPERTIES:
+  Name: factory
+  Type: override
+  Name: factory-name
+  Type: override
+  Name: separator-margin
+  Type: uint
+  Comment:
+        /**
+         * Property: separator-margin
+         * How much to indent the separator by on either side
+         *
+         * Default value:
+         *   0
+         */
+  Name: image-separator
+  Type: boolean
+  Comment:
+        /**
+         * Property: image-separator
+         * Whether to render the default separator or allow an image
+         *
+         * Default:
+         *   false (default separator)
+         */
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: BuffetInteraction
+INFO:
+  Name: BuffetInteraction
+  GTypeName: EknBuffetInteraction
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/modules/buffetInteraction.js
+  Lineno: 55
+/**
+ * Class: BuffetInteraction
+ * Interaction that presents all the content and lets the user choose
+ *
+ * For the Travel app, we serve up all the content at once.
+ * The various presentation modules (e.g. <HighlightsModule>) sort it, and the
+ * arrangements (e.g. <WindshieldArrangement>) present it in attractive ways.
+ * The user can pass along the buffet table, choosing what looks nice.
+ *
+ * Implements:
+ *    <Module>, <Launcher>, <Interaction>
+ */
+PARAMS:
+props
+PROPERTIES:
+  Name: factory
+  Type: override
+  Name: factory-name
+  Type: override
+  Name: application
+  Type: override
+  Name: template-type
+  Type: override
+  Name: css
+  Type: override
+  Name: theme
+  Type: string
+  Comment:
+        /**
+         * Property: theme
+         * Theme CSS specification filename
+         *
+         * The CSS filename that is associated with the app default design.
+         *
+         * Flags:
+         *   Construct only
+         */
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: CardA
+INFO:
+  Name: CardA
+  GTypeName: EknCardA
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/modules/cardA.js
+  Lineno: 28
+/**
+ * Class: CardA
+ *
+ * A card implementation with sizing and styling specific to template A
+ */
+PARAMS:
+props
+PROPERTIES:
+  Name: factory
+  Type: override
+  Name: factory-name
+  Type: override
+  Name: model
+  Type: override
+  Name: title-capitalization
+  Type: override
+  Name: context-capitalization
+  Type: override
+  Name: highlight-string
+  Type: override
+  Name: text-halign
+  Type: override
+  Name: sequence
+  Type: override
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: CardB
+INFO:
+  Name: CardB
+  GTypeName: EknCardB
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/modules/cardB.js
+  Lineno: 17
+/**
+ * Class: CardB
+ *
+ * A card implementation with sizing and styling specific to template B.
+ * Will only show a title and image.
+ */
+PARAMS:
+props
+PROPERTIES:
+  Name: factory
+  Type: override
+  Name: factory-name
+  Type: override
+  Name: model
+  Type: override
+  Name: title-capitalization
+  Type: override
+  Name: context-capitalization
+  Type: override
+  Name: highlight-string
+  Type: override
+  Name: text-halign
+  Type: override
+  Name: sequence
+  Type: override
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: CardContainer
+INFO:
+  Name: CardContainer
+  GTypeName: EknCardContainer
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/modules/cardContainer.js
+  Lineno: 32
+/**
+ * Class: CardContainer
+ * A generic module for displaying cards in some sort of container. This class is
+ * generally not used explicitly, but is subclassed by other modules wanting
+ * to display cards.
+ *
+ * Slots:
+ *   arrangement
+ */
+PARAMS:
+props
+PROPERTIES:
+  Name: factory
+  Type: override
+  Name: factory-name
+  Type: override
+  Name: title
+  Type: string
+  Comment:
+        /**
+         * Property: title
+         * Title of this container
+         */
+  Name: title-capitalization
+  Type: enum
+  Comment:
+        /**
+         * Property: title-capitalization
+         * Manner in which the title is formatted
+         *
+         * This property is a temporary stand-in for achieving this via the CSS
+         * *text-transform* property.
+         */
+  Name: show-trigger
+  Type: boolean
+  Comment:
+        /**
+         * Property: show-trigger
+         * Show a "trigger" at the top right for the user to view more
+         *
+         * Default:
+         *   **true**
+         */
+  Name: trigger-capitalization
+  Type: enum
+  Comment:
+        /**
+         * Property: trigger-capitalization
+         * Manner in which the card's trigger button is formatted
+         *
+         * This property is a temporary stand-in for achieving this via the CSS
+         * *text-transform* property.
+         */
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: CarouselArrangement
+INFO:
+  Name: CarouselArrangement
+  GTypeName: EknCarouselArrangement
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/modules/carouselArrangement.js
+  Lineno: 12
+!! NOTICE !! This class has no documentation block !!PARAMS:
+PROPERTIES:
+  Name: factory
+  Type: override
+  Name: factory-name
+  Type: override
+  Name: all-visible
+  Type: override
+  Name: fade-cards
+  Type: override
+  Name: spacing
+  Type: override
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: ContextBanner
+INFO:
+  Name: ContextBanner
+  GTypeName: EknContextBanner
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/modules/contextBanner.js
+  Lineno: 36
+/**
+ * Class: ContextBanner
+ * Show some context about what is happening in the app
+ *
+ * This is a banner module that displays a different heading depending on what
+ * action last happened.
+ * When the home page is shown, it displays "Highlights".
+ * When a set is shown, it displays the set's title.
+ * When search results are shown, it displays a message with the number of
+ * search results and the search text.
+ *
+ * This module is meant to be used in <SideMenuTemplate>'s **context** slot, but
+ * can also be useful elsewhere.
+ *
+ * Implements:
+ *   <Module>
+ */
+PARAMS:
+props
+PROPERTIES:
+  Name: factory
+  Type: override
+  Name: factory-name
+  Type: override
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: DividedBannerTemplate
+INFO:
+  Name: DividedBannerTemplate
+  GTypeName: EknDividedBannerTemplate
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/modules/dividedBannerTemplate.js
+  Lineno: 17
+/**
+ * Class: DividedBannerTemplate
+ *
+ * A Home Page Template used for Template B apps.
+ *
+ * CSS Styles:
+ *      home-page-b-template - on the template
+ *
+ */
+PARAMS:
+props
+PROPERTIES:
+  Name: factory
+  Type: override
+  Name: factory-name
+  Type: override
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: EncyclopediaCoverTemplate
+INFO:
+  Name: EncyclopediaCoverTemplate
+  GTypeName: EknEncyclopediaCoverTemplate
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/modules/encyclopediaCoverTemplate.js
+  Lineno: 16
+/**
+ * Class: EncyclopediaCoverTemplate
+ *
+ * A Template used for the cover of encyclopedia apps.
+ *
+ * CSS Styles:
+ *      encyclopedia-cover-template - on the template
+ *
+ */
+PARAMS:
+props
+PROPERTIES:
+  Name: factory
+  Type: override
+  Name: factory-name
+  Type: override
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: EncyclopediaWindow
+INFO:
+  Name: EncyclopediaWindow
+  GTypeName: EknEncyclopediaWindow
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/modules/encyclopediaWindow.js
+  Lineno: 15
+/**
+ * Class: EncyclopediaWindow
+ */
+PARAMS:
+props
+PROPERTIES:
+  Name: factory
+  Type: override
+  Name: factory-name
+  Type: override
+  Name: home-background-uri
+  Type: string
+  Comment:
+        /**
+         * Property: home-background-uri
+         * URI of the home page background
+         */
+  Name: results-background-uri
+  Type: string
+  Comment:
+        /**
+         * Property: results-background-uri
+         * URI of the results page background
+         */
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: FeaturedFilter
+INFO:
+  Name: FeaturedFilter
+  GTypeName: EknFeaturedFilter
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/modules/featuredFilter.js
+  Lineno: 11
+!! NOTICE !! This class has no documentation block !!PARAMS:
+PROPERTIES:
+  Name: factory
+  Type: override
+  Name: factory-name
+  Type: override
+  Name: invert
+  Type: override
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: FeaturedOrder
+INFO:
+  Name: FeaturedOrder
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/modules/featuredOrder.js
+  Lineno: 15
+/**
+ * Class: FeaturedOrder
+ * Order that sorts cards by placing featured before non-featured
+ */
+PARAMS:
+PROPERTIES:
+  Name: factory
+  Type: override
+  Name: factory-name
+  Type: override
+  Name: ascending
+  Type: override
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: GridArrangement
+INFO:
+  Name: GridArrangement
+  GTypeName: EknGridArrangement
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/modules/gridArrangement.js
+  Lineno: 16
+/**
+ * Class: GridArrangement
+ */
+PARAMS:
+props
+PROPERTIES:
+  Name: factory
+  Type: override
+  Name: factory-name
+  Type: override
+  Name: all-visible
+  Type: override
+  Name: fade-cards
+  Type: override
+  Name: spacing
+  Type: override
+  Name: max-children-per-line
+  Type: int
+  Comment:
+        /**
+         * Property: max-children-per-line
+         *
+         * The maximum amount of children to request space for consecutively
+         * in the given orientation.
+         */
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: HalfArrangement
+INFO:
+  Name: HalfArrangement
+  GTypeName: EknHalfArrangement
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/modules/halfArrangement.js
+  Lineno: 34
+/**
+ * Class: HalfArrangement
+ * Arrangement with two featured cards and as many supporting cards as desired
+ *
+ * This arrangement shows two featured cards in the first row, followed by as
+ * many supporting cards as needed in subsequent rows.
+ *
+ * Each row of supporting cards packs either three or four, depending on the
+ * total width of the arrangement.
+ */
+PARAMS:
+props
+PROPERTIES:
+  Name: factory
+  Type: override
+  Name: factory-name
+  Type: override
+  Name: all-visible
+  Type: override
+  Name: fade-cards
+  Type: override
+  Name: spacing
+  Type: override
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: HamburgerBasementTemplate
+INFO:
+  Name: HamburgerBasementTemplate
+  GTypeName: EknHamburgerBasementTemplate
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/modules/hamburgerBasementTemplate.js
+  Lineno: 24
+/**
+ * Class: HamburgerBasementTemplate
+ *
+ * A template with two 'pages', a upper page with three vertical slots, and a
+ * basement page with one large slot.
+ *
+ * CSS Styles:
+ *      hamburger-basement-template - on the template
+ */
+PARAMS:
+props
+PROPERTIES:
+  Name: factory
+  Type: override
+  Name: factory-name
+  Type: override
+  Name: upper-button-label
+  Type: string
+  Comment:
+        /**
+         * Property: upper-button-label
+         * Label on the tab button on the upper page
+         */
+  Name: basement-button-label
+  Type: string
+  Comment:
+        /**
+         * Property: basement-button-label
+         * Label on the tab button on the basement page
+         */
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: HierarchicalSetModule
+INFO:
+  Name: HierarchicalSetModule
+  GTypeName: EknHierarchicalSetModule
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/modules/hierarchicalSetModule.js
+  Lineno: 43
+/**
+ * Class: HierarchicalSetModule
+ * Module for showing subsets and articles within a category
+ *
+ * This module is designed for sets which have subsets within them.
+ * Hence it is hierarchical. If subsets exist, this module will show them
+ * in a series of arrangements. If this set does not have subsets (and only
+ * has articles), those articles will be shown.
+ *
+ * This module shows a few arrangements consecutively.
+ * We recommend placing it in a <ScrollingArrangement> or another module that
+ * can allow it to scroll.
+ *
+ * This module shows articles and subsets from one set. Articles which are
+ * direct members of the set are shown at the top. Below that you can find
+ * subset cards, each of which will show articles within its subset.
+ *
+ * Slots:
+ *   arrangement - arrangement to display article cards in
+ *   card-type - type of cards to create for articles
+ *   set-card-type - type of cards to create for sets
+ */
+PARAMS:
+props
+PROPERTIES:
+  Name: factory
+  Type: override
+  Name: factory-name
+  Type: override
+  Name: scroll-server
+  Type: override
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: HighlightsModule
+INFO:
+  Name: HighlightsModule
+  GTypeName: EknHighlightsModule
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/modules/highlightsModule.js
+  Lineno: 40
+/**
+ * Class: HighlightsModule
+ * Module for showing featured articles as well as other sets
+ *
+ * This module shows a few arrangements and cards consecutively.
+ * We recommend placing it in a <ScrollingTemplate> or another module that can
+ * allow it to scroll.
+ * The top arrangement shows an assortment of cards from all sets.
+ * Each subsequent card, or "support card," shows one other set.
+ * Clicking on a support card shows you more information about that set.
+ * Normally a card type would be chosen for these support cards that displays
+ * other cards inside it, such as <SetPreviewCard>.
+ * This card type must support a <SetPreviewCard.load_content()> method.
+ *
+ * Slots:
+ *   highlight-arrangement - large arrangement to display highlighted category
+ *   support-card-type - type of cards to create for sets
+ *   sets-filter - <Filter> for deciding which sets to show
+ */
+PARAMS:
+props
+PROPERTIES:
+  Name: factory
+  Type: override
+  Name: factory-name
+  Type: override
+  Name: support-sets
+  Type: uint
+  Comment:
+        /**
+         * Property: support-sets
+         * The number of support sets to display
+         *
+         * Flags:
+         *   construct-only
+         */
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: ItemGroupModule
+INFO:
+  Name: ItemGroupModule
+  GTypeName: EknItemGroupModule
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/modules/itemGroupModule.js
+  Lineno: 25
+/**
+ * Class: ItemGroupModule
+ * A module that displays all items in a set as cards in an arrangement
+ *
+ * This container displays cards delivered in batches using
+ * <Actions.APPEND_ITEMS>.
+ * Any cards lazily loaded after the first batch are faded in.
+ *
+ * Slots:
+ *   arrangement
+ */
+PARAMS:
+props
+PROPERTIES:
+  Name: factory
+  Type: override
+  Name: factory-name
+  Type: override
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: KnowledgeDocumentCard
+INFO:
+  Name: KnowledgeDocumentCard
+  GTypeName: EknKnowledgeDocumentCard
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/modules/knowledgeDocumentCard.js
+  Lineno: 37
+/**
+ * Class: KnowledgeDocumentCard
+ *
+ * A card implementation for showing entire documents of content.
+ *
+ * This widget will handle toggling the <TableOfContents.collapsed> parameter
+ * of the table of contents depending on available space. It provides two
+ * internal frames with style classes
+ * StyleClasses.ARTICLE_PAGE_TOOLBAR_FRAME and
+ * StyleClasses.ARTICLE_PAGE_CONTENT_FRAME for theming purposes.
+ * The toolbar frame surrounds the <title> and <toc> on the right. The
+ * content frame surrounds the <webview> on the left.
+ */
+PARAMS:
+props
+PROPERTIES:
+  Name: factory
+  Type: override
+  Name: factory-name
+  Type: override
+  Name: model
+  Type: override
+  Name: title-capitalization
+  Type: override
+  Name: context-capitalization
+  Type: override
+  Name: content-view
+  Type: override
+  Name: custom-css
+  Type: override
+  Name: highlight-string
+  Type: override
+  Name: text-halign
+  Type: override
+  Name: sequence
+  Type: override
+  Name: show-titles
+  Type: boolean
+  Comment:
+        /**
+         * Property: show-titles
+         *
+         * Set true if the title label and top title label should be visible.
+         */
+  Name: show-toc
+  Type: boolean
+  Comment:
+        /**
+         * Property: show-toc
+         *
+         * Set true if the toc should be visible.
+         */
+  Name: toc
+  Type: object
+  Comment:
+        /**
+         * Property: toc
+         *
+         * The <TableOfContents> widget created by this widget. Read-only,
+         * modify using the table of contents api.
+         */
+  Name: previous-card
+  Type: object
+  Comment:
+        /**
+         * Property: previous-card
+         * Card linking to the previous document card.
+         */
+  Name: next-card
+  Type: object
+  Comment:
+        /**
+         * Property: next-card
+         * Card linking to the next document card.
+         */
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: ListArrangement
+INFO:
+  Name: ListArrangement
+  GTypeName: EknListArrangement
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/modules/listArrangement.js
+  Lineno: 12
+!! NOTICE !! This class has no documentation block !!PARAMS:
+props
+PROPERTIES:
+  Name: factory
+  Type: override
+  Name: factory-name
+  Type: override
+  Name: all-visible
+  Type: override
+  Name: fade-cards
+  Type: override
+  Name: spacing
+  Type: override
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: MediaCard
+INFO:
+  Name: MediaCard
+  GTypeName: EknMediaCard
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/modules/mediaCard.js
+  Lineno: 19
+/**
+ * Class: MediaCard
+ *
+ * A card which display an image along with a caption and attribution text, best
+ * used with a MediaObject Model.
+ */
+PARAMS:
+props
+PROPERTIES:
+  Name: factory
+  Type: override
+  Name: factory-name
+  Type: override
+  Name: model
+  Type: override
+  Name: title-capitalization
+  Type: override
+  Name: context-capitalization
+  Type: override
+  Name: highlight-string
+  Type: override
+  Name: text-halign
+  Type: override
+  Name: sequence
+  Type: override
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: MeshInteraction
+INFO:
+  Name: MeshInteraction
+  GTypeName: EknMeshInteraction
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/modules/meshInteraction.js
+  Lineno: 40
+/**
+ * Class: MeshInteraction
+ *
+ * The Mesh interaction model controls the Encyclopedia and presets formerly
+ * known as templates A and B.
+ * A very exploratory interaction, the content is organized into categories and
+ * may have filters, but can be reached through many different paths.
+ */
+PARAMS:
+props
+PROPERTIES:
+  Name: factory
+  Type: override
+  Name: factory-name
+  Type: override
+  Name: application
+  Type: override
+  Name: template-type
+  Type: override
+  Name: css
+  Type: override
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: OverflowArrangement
+INFO:
+  Name: OverflowArrangement
+  GTypeName: EknOverflowArrangement
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/modules/overflowArrangement.js
+  Lineno: 12
+!! NOTICE !! This class has no documentation block !!PARAMS:
+PROPERTIES:
+  Name: factory
+  Type: override
+  Name: factory-name
+  Type: override
+  Name: all-visible
+  Type: override
+  Name: fade-cards
+  Type: override
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: PaperTemplate
+INFO:
+  Name: PaperTemplate
+  GTypeName: EknPaperTemplate
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/modules/paperTemplate.js
+  Lineno: 22
+/**
+ * Class: PaperTemplate
+ *
+ * A template which displays the contents of its one slot as if it were printed on a sheet
+ * of paper. The color or texture of the paper can be set with CSS, using
+ * .paper-template .content as a selector.
+ *
+ * CSS Styles:
+ *      paper-template - on the template as a whole, which is a GtkAlignment
+ *      content - on the paper itself (the GtkFrame within the alignment)
+ */
+PARAMS:
+props
+PROPERTIES:
+  Name: factory
+  Type: override
+  Name: factory-name
+  Type: override
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: PianoArrangement
+INFO:
+  Name: PianoArrangement
+  GTypeName: EknPianoArrangement
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/modules/pianoArrangement.js
+  Lineno: 30
+/**
+ * Class: PianoArrangement
+ * Arrangement with featured card on prominent spot and three supporting cards
+ *
+ * This arrangement shows a featured card in a very prominent spot, followed by
+ * three secondary cards at its right side.
+ */
+PARAMS:
+props
+PROPERTIES:
+  Name: factory
+  Type: override
+  Name: factory-name
+  Type: override
+  Name: all-visible
+  Type: override
+  Name: fade-cards
+  Type: override
+  Name: spacing
+  Type: override
+  Name: compact-mode
+  Type: boolean
+  Comment:
+        /**
+         * Property: compact-mode
+         * Whether the arrangement should show its compact form
+         *
+         * By default, the Piano Arrangement shows three support cards at the right
+         * hand side of the featured card. But in compact mode, only two support
+         * cards are shown.
+         *
+         * Default:
+         *   false (default arrangement layout)
+         */
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: PianolaArrangement
+INFO:
+  Name: PianolaArrangement
+  GTypeName: EknPianolaArrangement
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/modules/pianolaArrangement.js
+  Lineno: 25
+/**
+ * Class: PianolaArrangement
+ * Helper class to be used with Picard to show the "compact mode" of the Piano arrangement.
+ *
+ * As per design specifications, the PianoArrangement now has a "compact mode",
+ * in which two support cards are shown regardless of the dimensions of the
+ * arrangement. Behold, the PianolaArrangement!
+ *
+ * This helper class encapsulates this "compact mode" of the Piano arrangement,
+ * and is meant to be invoked by our Picard tester application.
+ * Under normal circumstances, it would be preferred to call the actual Piano
+ * arrangement and pass the `compact-mode` property as needed.
+ */
+PARAMS:
+props
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: PostCard
+INFO:
+  Name: PostCard
+  GTypeName: EknPostCard
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/modules/postCard.js
+  Lineno: 18
+/**
+ * Class: PostCard
+ * A postcard for the new reader app.
+ */
+PARAMS:
+props
+PROPERTIES:
+  Name: factory
+  Type: override
+  Name: factory-name
+  Type: override
+  Name: model
+  Type: override
+  Name: title-capitalization
+  Type: override
+  Name: context-capitalization
+  Type: override
+  Name: highlight-string
+  Type: override
+  Name: text-halign
+  Type: override
+  Name: sequence
+  Type: override
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: PublishedDateOrder
+INFO:
+  Name: PublishedDateOrder
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/modules/publishedDateOrder.js
+  Lineno: 15
+/**
+ * Class: PublishedDateOrder
+ * Order that sorts object models by publication date
+ */
+PARAMS:
+PROPERTIES:
+  Name: factory
+  Type: override
+  Name: factory-name
+  Type: override
+  Name: ascending
+  Type: override
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: QuarterArrangement
+INFO:
+  Name: QuarterArrangement
+  GTypeName: EknQuarterArrangement
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/modules/quarterArrangement.js
+  Lineno: 46
+/**
+ * Class: QuarterArrangement
+ * Arrangement with a row of (2-4) featured cards and as many supporting cards as desired
+ *
+ * This arrangement shows a row of featured cards featuring from two to four cards,
+ * depending on the arrangement width. The featured row is followed by as many
+ * supporting cards as needed in subsequent rows.
+ *
+ * Each row of supporting cards packs either two or three, depending on the total
+ * width of the arrangement.
+ */
+PARAMS:
+props
+PROPERTIES:
+  Name: factory
+  Type: override
+  Name: factory-name
+  Type: override
+  Name: all-visible
+  Type: override
+  Name: fade-cards
+  Type: override
+  Name: spacing
+  Type: override
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: QuiltArrangement
+INFO:
+  Name: QuiltArrangement
+  GTypeName: EknQuiltArrangement
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/modules/quiltArrangement.js
+  Lineno: 81
+/**
+ * Class: QuiltArrangement
+ * Arrangement with primary card and secondary card on prominent spots, and two
+ * support cards if enough width.
+ *
+ * The arrangement shows a primary card in the leftmost space, followed by a
+ * secondary card that is placed vertically next to the primary card. If width
+ * is enough, a third column with two support cards is shown.
+ */
+PARAMS:
+props
+PROPERTIES:
+  Name: factory
+  Type: override
+  Name: factory-name
+  Type: override
+  Name: all-visible
+  Type: override
+  Name: fade-cards
+  Type: override
+  Name: spacing
+  Type: override
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: ReaderCard
+INFO:
+  Name: ReaderCard
+  GTypeName: EknReaderCard
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/modules/readerCard.js
+  Lineno: 29
+/**
+ * Class: ReaderCard
+ *
+ * A card implementation with sizing and styling specific to Reader apps.
+ *
+ * CSS Styles:
+ *    card, reader-card - on the card itself
+ *    card-info-frame - card info frame
+ *    card-info-title - card info title
+ *    title - card's label
+ *    decorative-bar - ornament on the top of the card
+ *    hover-frame - hover frame
+ */
+PARAMS:
+props
+PROPERTIES:
+  Name: factory
+  Type: override
+  Name: factory-name
+  Type: override
+  Name: model
+  Type: override
+  Name: title-capitalization
+  Type: override
+  Name: context-capitalization
+  Type: override
+  Name: highlight-string
+  Type: override
+  Name: text-halign
+  Type: override
+  Name: sequence
+  Type: override
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: ReaderDocumentCard
+INFO:
+  Name: ReaderDocumentCard
+  GTypeName: EknReaderDocumentCard
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/modules/readerDocumentCard.js
+  Lineno: 36
+/**
+ * Class: ReaderDocumentCard
+ * A card implementation for showing full article content of a record
+ *
+ * This widget will has a function show_content_view, by which one
+ * can add a view, e.g. a webview, to show some content for the
+ * article.
+ */
+PARAMS:
+props
+PROPERTIES:
+  Name: factory
+  Type: override
+  Name: factory-name
+  Type: override
+  Name: model
+  Type: override
+  Name: title-capitalization
+  Type: override
+  Name: context-capitalization
+  Type: override
+  Name: highlight-string
+  Type: override
+  Name: text-halign
+  Type: override
+  Name: sequence
+  Type: override
+  Name: content-view
+  Type: override
+  Name: custom-css
+  Type: override
+  Name: page-number
+  Type: uint
+  Comment:
+        /**
+         * Property: page-number
+         * Page number of this page in the collection
+         */
+  Name: total-pages
+  Type: uint
+  Comment:
+        /**
+         * Property: total-pages
+         * Number of pages in this collection
+         */
+  Name: archived
+  Type: boolean
+  Comment:
+        /**
+         * Property: archived
+         * Whether this article is archived
+         */
+  Name: display-context
+  Type: boolean
+  Comment:
+        /**
+         * Property: display-context
+         * Whether to display context about the collection
+         */
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: ReaderWindow
+INFO:
+  Name: ReaderWindow
+  GTypeName: EknReaderWindow
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/modules/readerWindow.js
+  Lineno: 43
+/**
+ * Class: ReaderWindow
+ * The window of the reader app.
+ *
+ * This class has the API to add, modify, and display article and done pages.
+ * It adds to and removes from a private array of articlePages and
+ * it updates the progressLabels on all of these pages according to which
+ * page is being displayed.
+ *
+ * Adds a lightbox above the article page, which can be used to show content
+ * above it.
+ *
+ * Slots:
+ *   archive-page
+ *   back-page
+ *   document-arrangement
+ *   front-page
+ *   lightbox
+ *   navigation
+ *   search
+ *   search-page
+ *   standalone-page
+ */
+PARAMS:
+props
+PROPERTIES:
+  Name: factory
+  Type: override
+  Name: factory-name
+  Type: override
+  Name: issue-nav-buttons
+  Type: object
+  Comment:
+        /**
+         * Property: issue-nav-buttons
+         *
+         * An <Endless.TopbarNavButton> widget created by this window.
+         * Not normally shown except for debugging purposes.
+         * Read-only.
+         */
+  Name: total-pages
+  Type: uint
+  Comment:
+        /**
+         * Property: total-pages
+         *
+         * The total number of pages.
+         */
+  Name: home-background-uri
+  Type: string
+  Comment:
+        /**
+         * Property: home-background-uri
+         * URI of the home page background
+         */
+  Name: title-image-uri
+  Type: string
+  Comment:
+        /**
+         * Property: title-image-uri
+         *
+         * FIXME: when the infobar is a proper module this can go away.
+         */
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: ResponsiveMarginsModule
+INFO:
+  Name: ResponsiveMarginsModule
+  GTypeName: EknResponsiveMarginsModule
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/modules/responsiveMarginsModule.js
+  Lineno: 19
+/**
+ * Class: ResponsiveMarginsModule
+ * A module that displays a window and has responsive margins.
+ */
+PARAMS:
+props
+PROPERTIES:
+  Name: factory
+  Type: override
+  Name: factory-name
+  Type: override
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: ScrollingListArrangement
+INFO:
+  Name: ScrollingListArrangement
+  GTypeName: EknScrollingListArrangement
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/modules/scrollingListArrangement.js
+  Lineno: 12
+!! NOTICE !! This class has no documentation block !!PARAMS:
+props
+PROPERTIES:
+  Name: factory
+  Type: override
+  Name: factory-name
+  Type: override
+  Name: all-visible
+  Type: override
+  Name: fade-cards
+  Type: override
+  Name: spacing
+  Type: override
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: ScrollingTemplate
+INFO:
+  Name: ScrollingTemplate
+  GTypeName: EknScrollingTemplate
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/modules/scrollingTemplate.js
+  Lineno: 21
+/**
+ * Class: ScrollingTemplate
+ * Layout template that allows its content to scroll vertically
+ *
+ * Slots:
+ *   content - where to put the content
+ */
+PARAMS:
+props
+PROPERTIES:
+  Name: factory
+  Type: override
+  Name: factory-name
+  Type: override
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: SearchAndItemModule
+INFO:
+  Name: SearchAndItemModule
+  GTypeName: EknSearchAndItemModule
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/modules/searchAndItemModule.js
+  Lineno: 19
+/**
+ * Class: SearchAndItemModule
+ * A module that will flip between a <SearchModule> and <ItemGroupModule>.
+ *
+ * Slots:
+ *   search
+ *   item
+ */
+PARAMS:
+props
+PROPERTIES:
+  Name: factory
+  Type: override
+  Name: factory-name
+  Type: override
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: SearchBannerModule
+INFO:
+  Name: SearchBannerModule
+  GTypeName: EknSearchBannerModule
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/modules/searchBannerModule.js
+  Lineno: 29
+/**
+ * Class: SearchBannerModule
+ * Banner with status information about search results
+ *
+ * CSS classes:
+ *   title - on the banner
+ *   results-message - on the banner when displaying status about results
+ *   error-message - on the banner when displaying status about an error
+ *   query - on the portion of the banner indicating a user query string
+ */
+PARAMS:
+props
+PROPERTIES:
+  Name: factory
+  Type: override
+  Name: factory-name
+  Type: override
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: SearchBox
+INFO:
+  Name: SearchBox
+  GTypeName: EknSearchBox
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/modules/searchBox.js
+  Lineno: 27
+/**
+ * Class: SearchBox
+ *
+ * A search bar for querying information in the knowledge apps.
+ */
+PARAMS:
+props
+PROPERTIES:
+  Name: factory
+  Type: override
+  Name: factory-name
+  Type: override
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: SearchModule
+INFO:
+  Name: SearchModule
+  GTypeName: EknSearchModule
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/modules/searchModule.js
+  Lineno: 41
+/**
+ * Class: SearchModule
+ * Search results module
+ *
+ * Module that can display cards delivered in batches using
+ * <Actions.APPEND_SEARCH>, or show a message that no results were found, or a
+ * message that there was an error during the search.
+ *
+ * Any cards lazily loaded after the first batch are faded in.
+ *
+ * CSS classes:
+ *   search-results - on the widget itself
+ *   no-results - on the widget when showing a no results message
+ *   results-message-title - on the title text showing a no results message
+ *   results-message-subtitle - on the subtitle text showing a no results message
+ *   error-message - on the text showing an error
+ */
+PARAMS:
+props
+PROPERTIES:
+  Name: factory
+  Type: override
+  Name: factory-name
+  Type: override
+  Name: max-children
+  Type: int
+  Comment:
+        /**
+         * Property: max-children
+         *
+         * The maximum amount of child widgets to show.
+         *
+         * Default value:
+         *   **1000**
+         */
+  Name: message-justify
+  Type: enum
+  Comment:
+        /**
+         * Property: message-justify
+         * Horizontal justification of message text
+         *
+         * Default value:
+         *   **Gtk.Justification.LEFT**
+         */
+  Name: message-valign
+  Type: enum
+  Comment:
+        /**
+         * Property: message-valign
+         * Vertical alignment of message text
+         *
+         * Default value:
+         *   **Gtk.Align.START**
+         */
+  Name: message-halign
+  Type: enum
+  Comment:
+        /**
+         * Property: message-halign
+         * Horizontal alignment of message text
+         *
+         * Default value:
+         *   **Gtk.Align.START**
+         */
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: SearchResultCard
+INFO:
+  Name: SearchResultCard
+  GTypeName: EknSearchResultCard
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/modules/searchResultCard.js
+  Lineno: 18
+/**
+ * Class: SearchResultCard
+ *
+ * A thumbnail card for the new reader app
+ */
+PARAMS:
+props
+PROPERTIES:
+  Name: factory
+  Type: override
+  Name: factory-name
+  Type: override
+  Name: model
+  Type: override
+  Name: title-capitalization
+  Type: override
+  Name: context-capitalization
+  Type: override
+  Name: highlight-string
+  Type: override
+  Name: text-halign
+  Type: override
+  Name: sequence
+  Type: override
+  Name: navigation-context
+  Type: override
+  Name: show-synopsis
+  Type: boolean
+  Comment:
+        /**
+         * Property: show-synopsis
+         * Whether to show the synopsis label.
+         */
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: SequenceCard
+INFO:
+  Name: SequenceCard
+  GTypeName: EknSequenceCard
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/modules/sequenceCard.js
+  Lineno: 25
+/**
+ * Class: SequenceCard
+ * Card with a previous or next message.
+ *
+ * This widget displays a clickable topic to the user. Connect to the <clicked>
+ * signal to perform an action when the user clicks on the card.
+ *
+ * Style classes:
+ *   card, sequence-card - on the widget itself
+ *   previous-label - on the previous label
+ *   next-label - on the next label
+ *   title - on the title label
+ */
+PARAMS:
+params
+PROPERTIES:
+  Name: factory
+  Type: override
+  Name: factory-name
+  Type: override
+  Name: model
+  Type: override
+  Name: title-capitalization
+  Type: override
+  Name: context-capitalization
+  Type: override
+  Name: highlight-string
+  Type: override
+  Name: text-halign
+  Type: override
+  Name: sequence
+  Type: override
+  Name: navigation-context
+  Type: override
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: SetBannerModule
+INFO:
+  Name: SetBannerModule
+  GTypeName: EknSetBannerModule
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/modules/setBannerModule.js
+  Lineno: 21
+/**
+ * Class: SetBannerModule
+ *
+ * A module which listens for the set-select action to be dispatched, and
+ * creates a card for the selected model.
+ *
+ * Slots:
+ *   card-type
+ */
+PARAMS:
+props
+PROPERTIES:
+  Name: factory
+  Type: override
+  Name: factory-name
+  Type: override
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: SetGroupModule
+INFO:
+  Name: SetGroupModule
+  GTypeName: EknSetGroupModule
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/modules/setGroupModule.js
+  Lineno: 30
+/**
+ * Class: SetGroupModule
+ * A module that displays all application sets as cards in an arrangement
+ *
+ * This container displays cards delivered in batches via <Actions.APPEND_SETS>.
+ * Any cards lazily loaded after the first batch are faded in.
+ *
+ * CSS Styles:
+ *      set-group - on the module
+ *
+ * Slots:
+ *   arrangement
+ */
+PARAMS:
+props
+PROPERTIES:
+  Name: factory
+  Type: override
+  Name: factory-name
+  Type: override
+  Name: has-more-content
+  Type: override
+  Name: max-children
+  Type: int
+  Comment:
+        /**
+         * Property: max-children
+         *
+         * The maximum amount of child widgets to show
+         */
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: SetPreviewCard
+INFO:
+  Name: SetPreviewCard
+  GTypeName: EknSetPreviewCard
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/modules/setPreviewCard.js
+  Lineno: 33
+/**
+ * Class: SetPreviewCard
+ *
+ * Class to show cards backed by a <SetObjectModel> in the knowledge lib UI
+ *
+ * This card will represent a set from our knowledge app database. It will show
+ * the set title, followed by a small number of articles from that set, as a
+ * preview. Clicking on the set title will then presumably take you to a page
+ * showing a more complete version of the set's contents.
+ *
+ * Style classes:
+ *   card - on the widget itself
+ *
+ * Slots:
+ *   arrangement - arrangement in which to display this sets article cards.
+ *   card-type - type of cards to create for articles
+ *   header-card-type - type of card to create for title label
+ */
+PARAMS:
+props
+PROPERTIES:
+  Name: factory
+  Type: override
+  Name: factory-name
+  Type: override
+  Name: model
+  Type: override
+  Name: title-capitalization
+  Type: override
+  Name: context-capitalization
+  Type: override
+  Name: highlight-string
+  Type: override
+  Name: text-halign
+  Type: override
+  Name: sequence
+  Type: override
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: SetsFilter
+INFO:
+  Name: SetsFilter
+  GTypeName: EknSetsFilter
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/modules/setsFilter.js
+  Lineno: 11
+!! NOTICE !! This class has no documentation block !!PARAMS:
+PROPERTIES:
+  Name: factory
+  Type: override
+  Name: factory-name
+  Type: override
+  Name: invert
+  Type: override
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: SideBySideArrangement
+INFO:
+  Name: SideBySideArrangement
+  GTypeName: EknSideBySideArrangement
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/modules/sideBySideArrangement.js
+  Lineno: 27
+/**
+ * Class: SideBySideArrangement
+ * Arrangement to be used in horizontal menus
+ *
+ * This arrangement presents cards in a horizontal layout, and is intended to
+ * display menu items.
+ */
+PARAMS:
+props
+PROPERTIES:
+  Name: factory
+  Type: override
+  Name: factory-name
+  Type: override
+  Name: all-visible
+  Type: override
+  Name: fade-cards
+  Type: override
+  Name: spacing
+  Type: override
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: SideMenuTemplate
+INFO:
+  Name: SideMenuTemplate
+  GTypeName: EknSideMenuTemplate
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/modules/sideMenuTemplate.js
+  Lineno: 48
+/**
+ * Class: SideMenuTemplate
+ * A layout template that provides a context bar on top and a sliding side menu
+ *
+ * This layout template has one slot for its main content.
+ * It shows a "context bar" above that content, which has another slot for a
+ * module that shows context about the page, such as a <SetBanner>.
+ *
+ * The context bar has a button that opens a side menu, which is also a slot
+ * that can be filled.
+ * The side menu has a "Home" button on the top.
+ * You can also open the menu by hovering the mouse near the side of the
+ * template and close it by moving the mouse out of the menu.
+ *
+ * Implements:
+ *   <Module>
+ *
+ * Slots:
+ *   sidebar - The content in the menu that slides out (optional)
+ *   context - Slot for content in the center of the context bar (optional)
+ *   content - Main content of the template
+ *
+ * CSS classes:
+ *   close-button - on the button that closes the menu
+ *   context-bar - on the context bar
+ *   context-bar-shadow-frame - hack for padding the context bar so the shadow
+ *                              shows up
+ *   home-button - on the button that goes to the home page
+ *   menu - on the whole menu sidebar
+ *   menu-button - on the button that opens the menu
+ */
+PARAMS:
+props
+PROPERTIES:
+  Name: factory
+  Type: override
+  Name: factory-name
+  Type: override
+  Name: menu-open
+  Type: boolean
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: SidebarTemplate
+INFO:
+  Name: SidebarTemplate
+  GTypeName: EknSidebarTemplate
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/modules/sidebarTemplate.js
+  Lineno: 30
+/**
+ * Class: SidebarTemplate
+ * Template with a sidebar and content area
+ *
+ * Slots:
+ *   sidebar
+ *   content
+ *
+ * CSS Styles:
+ *   sidebar-template - on the template
+ *   sidebar - a frame containing the sidebar module
+ *   content - a frame containing the content module
+ */
+PARAMS:
+props
+PROPERTIES:
+  Name: sidebar-first
+  Type: boolean
+  Comment:
+        /**
+         * Property: sidebar-first
+         * True if the sidebar should be first in the reading direction.
+         */
+  Name: factory
+  Type: override
+  Name: factory-name
+  Type: override
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: SplitPercentageTemplate
+INFO:
+  Name: SplitPercentageTemplate
+  GTypeName: EknSplitPercentageTemplate
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/modules/splitPercentageTemplate.js
+  Lineno: 17
+/**
+ * Class: SplitPercentageTemplate
+ * Template with a sidebar and content area
+ */
+PARAMS:
+props
+PROPERTIES:
+  Name: background-image-uri
+  Type: string
+  Comment:
+        /**
+         * Property: background-image-uri
+         * The background image URI for this template.
+         */
+  Name: factory
+  Type: override
+  Name: factory-name
+  Type: override
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: SquareGuysArrangement
+INFO:
+  Name: SquareGuysArrangement
+  GTypeName: EknSquareGuysArrangement
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/modules/squareGuysArrangement.js
+  Lineno: 24
+/**
+ * Class: SquareGuysArrangement
+ */
+PARAMS:
+props
+PROPERTIES:
+  Name: factory
+  Type: override
+  Name: factory-name
+  Type: override
+  Name: all-visible
+  Type: override
+  Name: fade-cards
+  Type: override
+  Name: spacing
+  Type: override
+  Name: max-rows
+  Type: uint
+  Comment:
+        /**
+         * Property: max-rows
+         * Maximum number of card rows to be displayed
+         *
+         * A value of zero means no maximum.
+         *
+         * Default:
+         *   0
+         */
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: StandaloneBanner
+INFO:
+  Name: StandaloneBanner
+  GTypeName: EknStandaloneBanner
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/modules/standaloneBanner.js
+  Lineno: 27
+/**
+ * Class: StandaloneBanner
+ * The banner at the top of the standalone page
+ */
+PARAMS:
+props
+PROPERTIES:
+  Name: factory
+  Type: override
+  Name: factory-name
+  Type: override
+  Name: title
+  Type: string
+  Comment:
+        /**
+         * Property: title
+         * Title of the app
+         */
+  Name: background-image-uri
+  Type: string
+  Comment:
+        /**
+         * Property: background-image-uri
+         * A URI to the background image for the banner
+         */
+  Name: title-image-uri
+  Type: string
+  Comment:
+        /**
+         * Property: title-image-uri
+         * A URI to the title image
+         */
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: StandalonePage
+INFO:
+  Name: StandalonePage
+  GTypeName: EknStandalonePage
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/modules/standalonePage.js
+  Lineno: 23
+/**
+ * Class: StandalonePage
+ * The standalone article page of the reader app
+ *
+ * This module is used to display archived articles (that aren't part of the
+ * current collection) and also the article page reached from global search.
+ *
+ * Slots:
+ *   card-type - type of <DocumentCard> created to display content
+ */
+PARAMS:
+props
+PROPERTIES:
+  Name: factory
+  Type: override
+  Name: factory-name
+  Type: override
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: SuggestedArticlesModule
+INFO:
+  Name: SuggestedArticlesModule
+  GTypeName: EknSuggestedArticlesModule
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/modules/suggestedArticlesModule.js
+  Lineno: 25
+/**
+ * Class: SuggestedArticlesModule
+ * A module that displays all suggested articles as cards in an arrangement.
+ *
+ * Slots:
+ *   arrangement
+ */
+PARAMS:
+props
+PROPERTIES:
+  Name: factory
+  Type: override
+  Name: factory-name
+  Type: override
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: SuggestedCategoriesModule
+INFO:
+  Name: SuggestedCategoriesModule
+  GTypeName: EknSuggestedCategoriesModule
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/modules/suggestedCategoriesModule.js
+  Lineno: 28
+/**
+ * Class: SuggestedCategoriesModule
+ * A module that displays all suggested articles as cards in an arrangement.
+ *
+ * CSS classes:
+ *   suggested-categories - on the module itself
+ *   browse-content - on the "Browse Categories" title
+ *
+ * Slots:
+ *   arrangement
+ */
+PARAMS:
+props
+PROPERTIES:
+  Name: factory
+  Type: override
+  Name: factory-name
+  Type: override
+  Name: show-title
+  Type: boolean
+  Comment:
+        /**
+         * Property: show-title
+         * Whether to show the title at the top
+         *
+         * Default value:
+         *   true
+         */
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: SupplementaryArticlesModule
+INFO:
+  Name: SupplementaryArticlesModule
+  GTypeName: EknSupplementaryArticlesModule
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/modules/supplementaryArticlesModule.js
+  Lineno: 25
+/**
+ * Class: SupplementaryArticlesModule
+ * A module that displays all unread articles as cards in an arrangement. If no
+ * unread articles are available it will show read articles with the same criteria.
+ *
+ * Slots:
+ *   arrangement
+ */
+PARAMS:
+props
+PROPERTIES:
+  Name: factory
+  Type: override
+  Name: factory-name
+  Type: override
+  Name: same-set
+  Type: boolean
+  Comment:
+        /**
+         * Property: same-set
+         *
+         * Whether to show articles from the same set or from different sets.
+         */
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: TextCard
+INFO:
+  Name: TextCard
+  GTypeName: EknTextCard
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/modules/textCard.js
+  Lineno: 31
+/**
+ * Class: TextCard
+ *
+ * Class to show text-only cards in the knowledge lib UI
+ *
+ * This widget displays a clickable topic to the user.
+ * Connect to the <clicked> signal to perform an action
+ * when the user clicks on the card.
+ *
+ * Style classes:
+ *   card, text-card - on the widget itself
+ *   title - on the title label
+ */
+PARAMS:
+params
+PROPERTIES:
+  Name: factory
+  Type: override
+  Name: factory-name
+  Type: override
+  Name: model
+  Type: override
+  Name: title-capitalization
+  Type: override
+  Name: context-capitalization
+  Type: override
+  Name: highlight-string
+  Type: override
+  Name: text-halign
+  Type: override
+  Name: sequence
+  Type: override
+  Name: navigation-context
+  Type: override
+  Name: underline-on-hover
+  Type: boolean
+  Comment:
+        /**
+         * Property: underline-on-hover
+         * Whether to underline the link on hover
+         */
+  Name: decorate-on-highlight
+  Type: boolean
+  Comment:
+        /**
+         * Property: decorate-on-highlight
+         * Whether to draw a custom decoration when the card is highlighted
+         */
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: ThematicModule
+INFO:
+  Name: ThematicModule
+  GTypeName: EknThematicModule
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/modules/thematicModule.js
+  Lineno: 43
+/**
+ * Class: ThematicModule
+ * Module for showing themes from one main category
+ *
+ * This module is designed for apps that have both featured and non-featured
+ * sets, where the non-featured sets act as "themes" which unite articles across
+ * the featured sets.
+ *
+ * This module shows a few arrangements consecutively.
+ * We recommend placing it in a <ScrollingArrangement> or another module that
+ * can allow it to scroll.
+ *
+ * In contrast to the <HighlightsModule> this module shows articles from one
+ * set, subdivided into several arrangements.
+ * Each arrangement shows either one theme from the selected featured set,
+ * or one featured set that has cards from the selected theme.
+ *
+ * Clicking on a card in the arrangement takes you directly to that article.
+ * Above each arrangement is a card ("header") showing the title of the set
+ * which can also be clicked to show more information about that set.
+ *
+ * Slots:
+ *   arrangement - arrangement to display cards in
+ *   card-type - type of cards to create for articles
+ *   header-card-type - type of cards to create for sets
+ */
+PARAMS:
+props
+PROPERTIES:
+  Name: factory
+  Type: override
+  Name: factory-name
+  Type: override
+  Name: scroll-server
+  Type: override
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: ThirdRockArrangement
+INFO:
+  Name: ThirdRockArrangement
+  GTypeName: EknThirdRockArrangement
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/modules/thirdRockArrangement.js
+  Lineno: 47
+/**
+ * Class: ThirdRockArrangement
+ * Arrangement with three full-height cards.
+ *
+ * This arrangement shows three democratic cards at full-height. It has two modes:
+ *  - Normal mode: The full height is given to each card.
+ *  - Compact mode: a short version of the arrangement is presented, and the cards
+ *    adjust accordingly.
+ */
+PARAMS:
+props
+PROPERTIES:
+  Name: factory
+  Type: override
+  Name: factory-name
+  Type: override
+  Name: all-visible
+  Type: override
+  Name: fade-cards
+  Type: override
+  Name: spacing
+  Type: override
+  Name: compact-mode
+  Type: boolean
+  Comment:
+        /**
+         * Property: compact-mode
+         * Whether the arrangement should show its compact form
+         *
+         * By default, the ThirdRock Arrangement shows three full-height cards.
+         * But on compact mode, it shortens the height of its cards.
+         *
+         * Default:
+         *   false (default arrangement layout)
+         */
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: ThirtiesArrangement
+INFO:
+  Name: ThirtiesArrangement
+  GTypeName: EknThirtiesArrangement
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/modules/thirtiesArrangement.js
+  Lineno: 26
+/**
+ * Class: ThirtiesArrangement
+ */
+PARAMS:
+props
+PROPERTIES:
+  Name: factory
+  Type: override
+  Name: factory-name
+  Type: override
+  Name: all-visible
+  Type: override
+  Name: fade-cards
+  Type: override
+  Name: spacing
+  Type: override
+  Name: max-rows
+  Type: uint
+  Comment:
+        /**
+         * Property: max-rows
+         * Maximum number of card rows to be displayed
+         *
+         * A value of zero means no maximum.
+         *
+         * Default:
+         *   0
+         */
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: ThumbCardLayout
+INFO:
+  Name: ThumbCardLayout
+  GTypeName: EknThumbCardLayout
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/modules/thumbCard.js
+  Lineno: 23
+!! NOTICE !! This class has no documentation block !!PARAMS:
+thumbnail
+content
+props
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: ThumbCard
+INFO:
+  Name: ThumbCard
+  GTypeName: EknThumbCard
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/modules/thumbCard.js
+  Lineno: 107
+/**
+ * Class: ThumbCard
+ *
+ * A thumbnail card for the new reader app
+ */
+PARAMS:
+props
+PROPERTIES:
+  Name: factory
+  Type: override
+  Name: factory-name
+  Type: override
+  Name: model
+  Type: override
+  Name: title-capitalization
+  Type: override
+  Name: context-capitalization
+  Type: override
+  Name: highlight-string
+  Type: override
+  Name: text-halign
+  Type: override
+  Name: sequence
+  Type: override
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: TiledGridArrangement
+INFO:
+  Name: TiledGridArrangement
+  GTypeName: EknTiledGridArrangement
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/modules/tiledGridArrangement.js
+  Lineno: 12
+!! NOTICE !! This class has no documentation block !!PARAMS:
+props
+PROPERTIES:
+  Name: factory
+  Type: override
+  Name: factory-name
+  Type: override
+  Name: all-visible
+  Type: override
+  Name: fade-cards
+  Type: override
+  Name: spacing
+  Type: override
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: TopMenuModule
+INFO:
+  Name: TopMenuModule
+  GTypeName: EknTopMenuModule
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/modules/topMenuModule.js
+  Lineno: 34
+/**
+ * Class: TopMenuModule
+ * Module that shows a banner and a top menu.
+ *
+ * This module shows two submodules: (1) a banner, typically a logo; (2) a horizontal
+ * menu that includes all the options.
+ *
+ * When the module cannot accomodate both the banner and the menu, it hides the
+ * banner.
+ *
+ * Implements:
+ *   <Module>
+ *
+ * Slots:
+ *   banner: Typically an image previewer to display the logo
+ *   menu: Module that contains the horizontal menu
+ */
+PARAMS:
+props
+PROPERTIES:
+  Name: factory
+  Type: override
+  Name: factory-name
+  Type: override
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: TopMenuTemplate
+INFO:
+  Name: TopMenuTemplate
+  GTypeName: EknTopMenuTemplate
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/modules/topMenuTemplate.js
+  Lineno: 35
+/**
+ * Class: TopMenuTemplate
+ * A layout template with a top menu bar that slides out over the content
+ *
+ * This layout template has one slot for its main content and a slot for the
+ * top menu bar.
+ *
+ * The top menu starts out visible and then slides upwards, out of sight as the
+ * user scrolls down the page (assuming content is a scrolling template).
+ * When the user scrolls back up, the top menu slides out and becomes visible
+ * again.
+ *
+ * Implements:
+ *   <Module>
+ *
+ * Slots:
+ *   top-menu - The content in the menu that slides out
+ *   content - Main content of the template
+ *
+ */
+PARAMS:
+props
+PROPERTIES:
+  Name: factory
+  Type: override
+  Name: factory-name
+  Type: override
+  Name: menu-open
+  Type: boolean
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: TwoPieceTemplate
+INFO:
+  Name: TwoPieceTemplate
+  GTypeName: EknTwoPieceTemplate
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/modules/twoPieceTemplate.js
+  Lineno: 25
+/**
+ * Class: TwoPieceTemplate
+ * Layout template placing two components next to each other
+ *
+ * This layout can put two components next to each other (if its **orientation**
+ * property is **Gtk.Orientation.HORIZONTAL**) or on top of each other (for
+ * **Gtk.Orientation.VERTICAL**).
+ *
+ * Slots:
+ *   - first
+ *   - second
+ *
+ * CSS classes:
+ *   first - on the first component
+ *   second - on the second component
+ */
+PARAMS:
+props
+PROPERTIES:
+  Name: factory
+  Type: override
+  Name: factory-name
+  Type: override
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: UnreadFilter
+INFO:
+  Name: UnreadFilter
+  GTypeName: EknUnreadFilter
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/modules/unreadFilter.js
+  Lineno: 12
+!! NOTICE !! This class has no documentation block !!PARAMS:
+props
+PROPERTIES:
+  Name: factory
+  Type: override
+  Name: factory-name
+  Type: override
+  Name: invert
+  Type: override
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: Window
+INFO:
+  Name: Window
+  GTypeName: EknWindow
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/modules/window.js
+  Lineno: 35
+/**
+ * Class: Window
+ *
+ * This represents the toplevel window widget for template A, containing all
+ * template A pages.
+ *
+ * Adds a lightbox above the section and article page, which can be
+ * used to show content above either of these pages.
+ */
+PARAMS:
+props
+PROPERTIES:
+  Name: factory
+  Type: override
+  Name: factory-name
+  Type: override
+  Name: background-image-uri
+  Type: string
+  Comment:
+        /**
+         * Property: background-image-uri
+         *
+         * The background image uri for this window.
+         * Gets set on home page of the application.
+         */
+  Name: blur-background-image-uri
+  Type: string
+  Comment:
+        /**
+         * Property: blur-background-image-uri
+         *
+         * The blurred background image uri for this window.
+         * Gets set on section and article pages of the application.
+         */
+  Name: template-type
+  Type: string
+  Comment:
+        /**
+         * Property: template-type
+         *
+         * A string for the template type the window should render as
+         * currently support 'A' and 'B' templates.
+         */
+  Name: animating
+  Type: boolean
+  Comment:
+        /**
+         * Property: animating
+         *
+         * Temporary property which can be used to notify when the page
+         * transition our running. Will likely be replaced when we have a better
+         * way to update state between non-interaction modules.
+         */
+  Name: animations
+  Type: boolean
+  Comment:
+        /**
+         * Property: animations
+         *
+         * Enables the animations during page transitions for this window.
+         */
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: WindshieldArrangement
+INFO:
+  Name: WindshieldArrangement
+  GTypeName: EknWindshieldArrangement
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/modules/windshieldArrangement.js
+  Lineno: 27
+/**
+ * Class: WindshieldArrangement
+ * Arrangement with featured card on prominent spot and three supporting cards
+ *
+ * This arrangement shows a featured card in a very prominent spot, followed by
+ * three secondary cards.
+ */
+PARAMS:
+props
+PROPERTIES:
+  Name: factory
+  Type: override
+  Name: factory-name
+  Type: override
+  Name: all-visible
+  Type: override
+  Name: fade-cards
+  Type: override
+  Name: spacing
+  Type: override
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: ReadingHistoryModel
+INFO:
+  Name: ReadingHistoryModel
+  GTypeName: EknReadingHistoryModel
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/readingHistoryModel.js
+  Lineno: 21
+/**
+ * Class: ReadingHistoryModel
+ *
+ * The ReadingHistoryModel keeps track of the articles that the user has
+ * read for a specific application.
+ *
+ * This set of article ID's is persisted in a JSON file in the user's home directory
+ * and updated every time a new article is read.
+ */
+PARAMS:
+props
+PROPERTIES:
+  Name: history-file
+  Type: object
+  Comment:
+        /**
+         * Property: history-file
+         * Contains the reading history on disk
+         *
+         * Necessary for injecting a mock object in unit tests.
+         *
+         * Flags:
+         *   Construct only
+         */
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: ToggleTweener
+INFO:
+  Name: ToggleTweener
+  GTypeName: EknToggleTweener
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/toggleTweener.js
+  Lineno: 18
+/**
+ * Class: ToggleTweener
+ * A helper to tween a widget between two states.
+ *
+ * The toggle tweener takes inactive and active values and will ease
+ * between those two states over the <transition-duration>.
+ *
+ * Uses the widget's frame clock to update the tweening state.
+ */
+PARAMS:
+widget
+props
+PROPERTIES:
+  Name: inactive-value
+  Type: float
+  Comment:
+        /**
+         * Property: inactive-value
+         * The value <get_value> should return when tweener is inactive.
+         */
+  Name: active-value
+  Type: float
+  Comment:
+        /**
+         * Property: active-value
+         * The value <get_value> should return when tweener is active.
+         */
+  Name: transition-duration
+  Type: uint
+  Comment:
+        /**
+         * Property: transition-duration
+         * The time, in milliseconds, to transition from inactive to active.
+         */
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: WidgetSurfaceCache
+INFO:
+  Name: WidgetSurfaceCache
+  GTypeName: EknWidgetSurfaceCache
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/widgetSurfaceCache.js
+  Lineno: 17
+/**
+ * Class: WidgetSurfaceCache
+ * A helper for caching the results of a draw function to a surface.
+ *
+ * This object takes in a widget and a draw function, and will ready a cairo
+ * surface with the results of the draw call whenever <get_surface> is called.
+ *
+ * Careful with this helper, only cache surfaces you know will not update!
+ */
+PARAMS:
+widget
+draw
+props
+PROPERTIES:
+  Name: has-alpha
+  Type: boolean
+  Comment:
+        /**
+         * Property: has-alpha
+         * Whether the surface should have an alpha channel.
+         */
+  Name: width
+  Type: int
+  Comment:
+        /**
+         * Property: width
+         * Width of the surface. If -1, allocated_width will be used.
+         */
+  Name: height
+  Type: int
+  Comment:
+        /**
+         * Property: height
+         * Height of the surface. If -1, allocated_height will be used.
+         */
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: PDFView
+INFO:
+  Name: PDFView
+  GTypeName: EknPDFView
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/widgets/PDFView.js
+  Lineno: 21
+/**
+ * Class: PDFView
+ *
+ * The view used to display PDFs in the article page.
+ *
+ * Makes all the Evince calls necessary to load a PDF. Only exposes one
+ * <load_uri> function.
+ *
+ * Parent class:
+ *     Gtk.ScrolledWindow
+ */
+PARAMS:
+props
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: EknWebview
+INFO:
+  Name: EknWebview
+  GTypeName: EknWebview
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/widgets/eknWebview.js
+  Lineno: 41
+/**
+ * Class: EknWebview
+ * WebKit WebView subclass which provides utility functions for loading
+ * and handling content from the knowledge engine and a clean interface
+ * for injecting custom JS and CSS from gresource files.
+ *
+ * Calling <inject_js_from_resource()> or <inject_css_from_resource()> will
+ * ensure that the current page (if any) as well as all subsequently loaded
+ * pages in this webview will have the given JS or CSS injected only when the
+ * HTML document has finished loading
+ *
+ * Parent class:
+ *     WebKit2.WebView
+ */
+PARAMS:
+params
+PROPERTIES:
+  Name: renderer
+  Type: object
+  Comment:
+        /**
+         * Property: renderer
+         * The <ArticleHTMLRenderer> for rendering article html from a model.
+         */
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: ImageCoverFrame
+INFO:
+  Name: ImageCoverFrame
+  GTypeName: EknImageCoverFrame
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/widgets/imageCoverFrame.js
+  Lineno: 15
+/**
+ * Class: ImageCoverFrame
+ *
+ * A widget to mimic the CSS 'background-size:cover;'
+ * effect on images. The image is scaled to cover the entire
+ * space it is allocated and then centered.
+ *
+ */
+PARAMS:
+props
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: ImagePreviewer
+INFO:
+  Name: ImagePreviewer
+  GTypeName: EknImagePreviewer
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/widgets/imagePreviewer.js
+  Lineno: 16
+/**
+ * Class: ImagePreviewer
+ *
+ * A private class used by the Previewer. Will display an image in a widget.
+ * Unlike GtkImage this widget will size down its image to the available
+ * space, which is where most of the complexity in this class comes from.
+ */
+PARAMS:
+props
+PROPERTIES:
+  Name: aspect
+  Type: float
+  Comment:
+        /**
+         * Property: aspect
+         *
+         * The aspect the previewer widget should display at
+         */
+  Name: min-fraction
+  Type: float
+  Comment:
+        /**
+         * Property: min-fraction
+         * The smallest fraction of the widget's natural size to display at.
+         */
+  Name: max-fraction
+  Type: float
+  Comment:
+        /**
+         * Property: max-fraction
+         * The largest fraction of the widget's natural size to display at.
+         */
+  Name: enforce-minimum-size
+  Type: boolean
+  Comment:
+        /**
+         * Property: enforce-minimum-size
+         *
+         * Whether this previewer should enforce a minimum size on its images.
+         */
+  Name: minimum-size
+  Type: int
+  Comment:
+        /**
+         * Property: minimum-size
+         *
+         * The height/width of a "minimum image size" square. If the file being
+         * previewed fits inside this box, the image will be scaled up until
+         * its largest dimension is exactly equal to this minimum size.
+         */
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: InArticleSearch
+INFO:
+  Name: ArticleSearch
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/widgets/inArticleSearch.js
+  Lineno: 14
+!! NOTICE !! This class has no documentation block !!PARAMS:
+web_view
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: InfiniteScrolledWindow
+INFO:
+  Name: InfiniteScrolledWindow
+  GTypeName: EknInfiniteScrolledWindow
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/widgets/infiniteScrolledWindow.js
+  Lineno: 11
+/**
+ * Class: InfiniteScrolledWindow
+ */
+PARAMS:
+props
+PROPERTIES:
+  Name: bottom-buffer
+  Type: int
+  Comment:
+        /**
+         * Property: bottom-buffer
+         *
+         * A integer value for the number of pixels of buffer the InfiniteScrolledWindow will still
+         * consider the bottom of the the scroll window. i.e. If button-buffer is 30 this widget will
+         * emit need-more-content when the user scrolls to 30 pixels before the
+         * bottom.
+         */
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: Lightbox
+INFO:
+  Name: Lightbox
+  GTypeName: EknLightbox
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/widgets/lightbox.js
+  Lineno: 32
+/**
+ * Class: Lightbox
+ * Show widget in a lightbox above other content
+ *
+ * EosKnowledgePrivate.Lightbox is a container which allows displaying a
+ * <lightbox-widget> above some other base content. The base content
+ * should be added with lightbox.add().
+ *
+ * To show or hide both of these widgets above the main content, set the
+ * <reveal-overlays> property. The lightbox will animate the content visible
+ * and invisible and update the <overlays-revealed> property when the
+ * animation is complete.
+ *
+ * You need to call show() on the <lightbox-widget> before adding it to the
+ * lightbox. To respect the <reveal-overlays> property show_all() will not work
+ * on the widget overlays.
+ */
+PARAMS:
+params
+PROPERTIES:
+  Name: lightbox-widget
+  Type: object
+  Comment:
+        /**
+         * Property: lightbox-widget
+         * The widget to display centered in the lightbox above the base content
+         */
+  Name: reveal-overlays
+  Type: boolean
+  Comment:
+        /**
+         * Property: reveal-overlays
+         * True if lightbox widget should be visible above main widget
+         */
+  Name: overlays-revealed
+  Type: boolean
+  Comment:
+        /**
+         * Property: overlays-revealed
+         * True if lightbox is revealed and animation target reached
+         */
+  Name: transition-duration
+  Type: uint
+  Comment:
+        /**
+         * Property: transition-duration
+         * The duration of the animation of the overlays to visible/invisible
+         */
+  Name: has-close-button
+  Type: boolean
+  Comment:
+        /**
+         * Property: has-close-button
+         * True if the lightbox should have a close button to dismiss the overlay
+         */
+  Name: has-forward-button
+  Type: boolean
+  Comment:
+        /**
+         * Property: has-forward-button
+         * Whether the forward button should be displayed
+         */
+  Name: has-back-button
+  Type: boolean
+  Comment:
+        /**
+         * Property: has-back-button
+         * Whether the back button should be displayed
+         */
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: LightboxContainer
+INFO:
+  Name: LightboxContainer
+  GTypeName: EknLightboxContainer
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/widgets/lightbox.js
+  Lineno: 230
+!! NOTICE !! This class has no documentation block !!PARAMS:
+params
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: MarginButton
+INFO:
+  Name: MarginButton
+  GTypeName: EknMarginButton
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/widgets/marginButton.js
+  Lineno: 6
+!! NOTICE !! This class has no documentation block !!PARAMS:
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: GrowButton
+INFO:
+  Name: GrowButton
+  GTypeName: EknGrowButton
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/widgets/navButtonOverlay.js
+  Lineno: 23
+/**
+ * Class: GrowButton
+ *
+ * A button which grows to reveal more of itself on hover. Previously done as a
+ * padding animation, in css, but resizing the button every frame was too slow.
+ */
+PARAMS:
+props
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: NavButtonOverlay
+INFO:
+  Name: NavButtonOverlay
+  GTypeName: EknNavButtonOverlay
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/widgets/navButtonOverlay.js
+  Lineno: 70
+/**
+ * Class: NavButtonOverlay
+ *
+ * An overlay with a back and forwards buttons on either side of the widget.
+ * Either of buttons can be turned invisible using <back-visible> or
+ * <forward-visible>.
+ *
+ * Emits <back-clicked> and <forward-clicked> signals when the corresponding
+ * button is clicked.
+ */
+PARAMS:
+props
+PROPERTIES:
+  Name: back-visible
+  Type: boolean
+  Comment:
+        /**
+         * Property: back-visible
+         * Whether the back button should be displayed
+         */
+  Name: forward-visible
+  Type: boolean
+  Comment:
+        /**
+         * Property: forward-visible
+         * Whether the forward button should be displayed
+         */
+  Name: accommodate-scrollbar
+  Type: boolean
+  Comment:
+        /**
+         * Property: accommodate-scrollbar
+         * Whether to move the rightmost button to accommodate a scrollbar.
+         *
+         * If this property is set to true, then the right-side button gets an
+         * extra margin equal to the width of a scrollbar.
+         */
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: Previewer
+INFO:
+  Name: Previewer
+  GTypeName: EknPreviewer
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/widgets/previewer.js
+  Lineno: 18
+/**
+ * Class: Previewer
+ * Previews an image (and more in the future) in a widget.
+ *
+ * The API is quite simple, just set the file property to a GFile of the file
+ * you would like be previewed. If it is one of the supported types, it will
+ * be loaded up for you, if not an error will be thrown.
+ */
+PARAMS:
+props
+PROPERTIES:
+  Name: aspect
+  Type: float
+  Comment:
+        /**
+         * Property: aspect
+         *
+         * The aspect aspect the previewer widget should display at
+         */
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: ProgressLabel
+INFO:
+  Name: ProgressLabel
+  GTypeName: EknReaderProgressLabel
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/widgets/progressLabel.js
+  Lineno: 24
+/**
+ * Class: ProgressLabel
+ * Widget indicating how much of the magazine issue has been read
+ *
+ * Extends:
+ *   Gtk.Label
+ *
+ * CSS classes:
+ *   progress-label - on the widget
+ */
+PARAMS:
+props
+PROPERTIES:
+  Name: current-page
+  Type: uint
+  Comment:
+        /**
+         * Property: current-page
+         *
+         * The current page number.
+         */
+  Name: total-pages
+  Type: uint
+  Comment:
+        /**
+         * Property: total-pages
+         *
+         * The total number of pages.
+         */
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: PanelFrame
+INFO:
+  Name: PanelFrame
+  GTypeName: EknPanelFrame
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/widgets/slidingPanel.js
+  Lineno: 11
+!! NOTICE !! This class has no documentation block !!PARAMS:
+panel
+params
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: SlidingPanel
+INFO:
+  Name: SlidingPanel
+  GTypeName: EknSlidingPanel
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/widgets/slidingPanel.js
+  Lineno: 42
+/**
+ * Class: SlidingPanel
+ * A widget which can slide its contents visible or out of sight.
+ */
+PARAMS:
+props
+PROPERTIES:
+  Name: hide-direction
+  Type: enum
+  Comment:
+        /**
+         * Property: hide-direction
+         * Direction to slide out of sight when hiding.
+         *
+         * We could make this mutable, but right now there's no need so keeping
+         * construct only to keep the code simpler
+         */
+  Name: panel-widget
+  Type: object
+  Comment:
+        /**
+         * Property: panel-widget
+         * The widget that slides in and out.
+         */
+  Name: reveal-panel
+  Type: boolean
+  Comment:
+        /**
+         * Property: reveal-panel
+         * Whether the container should reveal the child. 
+         */
+  Name: panel-revealed
+  Type: boolean
+  Comment:
+        /**
+         * Property: panel-revealed
+         * True if the panel is fully revealed or animating to the hidden state.
+         */
+  Name: hide-when-invisible
+  Type: boolean
+  Comment:
+        /**
+         * Property: hide-when-invisible
+         *
+         * True if the panel should hide entirely when not animating or showing
+         * the widget.
+         */
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: SlidingPanelOverlay
+INFO:
+  Name: SlidingPanelOverlay
+  GTypeName: EknSlidingPanelOverlay
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/widgets/slidingPanelOverlay.js
+  Lineno: 15
+/**
+ * Class: SlidingPanelOverlay
+ * Overlays a <SlidingPanel> above some content.
+ */
+PARAMS:
+props
+PROPERTIES:
+  Name: transition-duration
+  Type: uint
+  Comment:
+        /**
+         * Property: transition-duration
+         * The duration of the animation of the overlays to visible/invisible
+         */
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: SpaceContainer
+INFO:
+  Name: SpaceContainer
+  GTypeName: EknSpaceContainer
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/widgets/spaceContainer.js
+  Lineno: 22
+/**
+ * Class: SpaceContainer
+ * Container that shows only as many widgets as it has space for
+ *
+ * Usually a container will try to display all the widgets that have been added
+ * to it.
+ * You can add as many widgets as you want to *SpaceContainer*, but it will only
+ * show as many as it has space for.
+ * If you resize your window so that there is space for more widgets, they will
+ * appear.
+ *
+ * Parent class:
+ *   *Endless.CustomContainer*
+ */
+PARAMS:
+props
+PROPERTIES:
+  Name: orientation
+  Type: enum
+  Comment:
+        /**
+         * Property: orientation
+         * Implemented from **Gtk.Orientable**
+         */
+  Name: spacing
+  Type: uint
+  Comment:
+        /**
+         * Property: spacing
+         * The amount of space between children
+         *
+         * Default:
+         *   0
+         */
+  Name: all-visible
+  Type: boolean
+  Comment:
+        /**
+         * Property: all-visible
+         * Whether all children are visible or some were cut off
+         *
+         * Flags:
+         *   read-only
+         */
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: TabButton
+INFO:
+  Name: TabButton
+  GTypeName: EknTabButton
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/widgets/tabButton.js
+  Lineno: 13
+/**
+ * Class: TabButton
+ */
+PARAMS:
+props
+PROPERTIES:
+  Name: position
+  Type: enum
+  Comment:
+        /**
+         * Property: position
+         *
+         * The position of the button on the page
+         */
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: TableOfContents
+INFO:
+  Name: TableOfContents
+  GTypeName: EknTableOfContents
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/widgets/tableOfContents.js
+  Lineno: 36
+/**
+ * Class: TableOfContents
+ *
+ * A widget which displays a table of contents for article content. The table
+ * of contents is displayed as a vertical list of clickable section titles
+ * with numeric indices. Also contains an up arrow and down arrow above and
+ * below the list, the exact function of which is left up to the user of this
+ * class.
+ *
+ * To set the sections titles use the <section-list> property. Each string in
+ * the section list will become a clickable label with the
+ * EKN_STYLE_CLASS_TOC_ENTRY style property. One of these section entries can
+ * be considered selected and will have the selected style property. This
+ * entry is controlled with the <selected-section> property.
+ *
+ * This widget will size down vertically, but will always show at least three
+ * section entries if three are present. The <selected-section> will always be
+ * among the visible section entries.
+ */
+PARAMS:
+params
+PROPERTIES:
+  Name: selected-section
+  Type: int
+  Comment:
+        /**
+         * Property: selected-section
+         *
+         * The zero based index of the section which should be is currently
+         * selected. This selected widget will always be visible in
+         * the table of contents if not all sections can be displayed, and
+         * will have the selected style class on it.
+         *
+         * The selected-section is read-only and will animate to follow the
+         * target-section property.
+         *
+         * Changing section-list will reset this to 0.
+         */
+  Name: target-section
+  Type: int
+  Comment:
+        /**
+         * Property: target-section
+         *
+         * The zero based index of the section that the table of contents
+         * should select. selected-section will animate to this property
+         * after transition-duration milliseconds have passed.
+         *
+         * Changing section-list will reset this to 0.
+         */
+  Name: transition-duration
+  Type: uint
+  Comment:
+        /**
+         * Property: transition-duration
+         *
+         * The duration of the animation of selected-section to target-section.
+         */
+  Name: collapsed
+  Type: boolean
+  Comment:
+        /**
+         * Property: collapsed
+         *
+         * True if table of contents should display in a collapsed state. In a
+         * collapsed state the table of contents will show only the numbered
+         * indices of section and there arrow buttons, but not the titles of
+         * the sections themselves. The widget will need much less horizontal
+         * space.
+         *
+         * Defaults to false.
+         */
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: SectionButton
+INFO:
+  Name: SectionButton
+  GTypeName: EknSectionButton
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/widgets/tableOfContents.js
+  Lineno: 412
+!! NOTICE !! This class has no documentation block !!PARAMS:
+section_title
+section_index
+params
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: ThemeableImage
+INFO:
+  Name: ThemeableImage
+  GTypeName: EknThemeableImage
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/app/widgets/themeableImage.js
+  Lineno: 7
+!! NOTICE !! This class has no documentation block !!PARAMS:
+props
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: Application
+INFO:
+  Name: EknSearchProviderApplication
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/search/application.js
+  Lineno: 6
+!! NOTICE !! This class has no documentation block !!PARAMS:
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: ArticleObjectModel
+INFO:
+  Name: ArticleObjectModel
+  GTypeName: EknArticleObjectModel
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/search/articleObjectModel.js
+  Lineno: 18
+/**
+ * Class: ArticleObjectModel
+ * The model class for article objects. An article has the same properties as a
+ * <ContentObjectModel>, plus a number of properties specific to articles.
+ */
+PARAMS:
+props
+json_ld
+PROPERTIES:
+  Name: source
+  Type: string
+  Comment:
+        /**
+         * Property: source
+         *
+         * Source of the HTML. Right now can be embedly, wikipedia, wikihow,
+         * wikisource or wikibooks.
+         */
+  Name: source-name
+  Type: string
+  Comment:
+        /**
+         * Property: source-name
+         * Human-readable name of the source of this article
+         *
+         * A string containing the name of this article's source.
+         * For example, "Wikipedia" or "Huffington Post" or "Cosimo's Blog".
+         */
+  Name: word-count
+  Type: uint
+  Comment:
+        /**
+         * Property: word-count
+         * Integer indicating how many words are in the article
+         */
+  Name: table-of-contents
+  Type: object
+  Comment:
+        /**
+         * Property: table-of-contents
+         * A GtkTreeStore representing the article's hierarchical
+         * table of contents
+         */
+  Name: issue-number
+  Type: uint
+  Comment:
+        /**
+         * Property: issue-number
+         * Integer indicating the issue number for the Reader application.
+         * Defaults to 0, which means that this ArticleObject is not part of the
+         * Reader application and hence it does not have an issue number.
+         */
+  Name: article-number
+  Type: uint
+  Comment:
+        /**
+         * Property: article-number
+         * Integer that indicates the order of the ArticleObject within the issue.
+         * Defaults to 0, which means that this ArticleObject is not part of the
+         * Reader application and hence it does not have an article number.
+         */
+  Name: published
+  Type: string
+  Comment:
+        /**
+         * Property: published
+         * The date this article was published. It treats dates
+         * according to the ISO8601 standard.
+         */
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: AsyncTask
+INFO:
+  Name: AsyncTask
+  GTypeName: EknAsyncTask
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/search/asyncTask.js
+  Lineno: 24
+/**
+ * Class: AsyncTask
+ *
+ * A convenience class for writing Gio style asynchronous functions. Basically
+ * like a GTask, but can be used in javascript with lots of goodies for easy
+ * javascript error checking.
+ *
+ * At a high level, a task will have two functions <return_value> and
+ * <return_error>, which will set our task result and then call into a callback
+ * function, signaling that the task has run. Then the <finish> function can be
+ * run to retrieve the result or error.
+ *
+ * Parameters:
+ *   source - The source object, i.e. the object with the asynchronous function
+ *   cancellable - A Gio.Cancellable, can be null
+ *   callback - The function to call on task completion
+ */
+PARAMS:
+source
+cancellable
+callback
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: ContentObjectModel
+INFO:
+  Name: ContentObjectModel
+  GTypeName: EknContentObjectModel
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/search/contentObjectModel.js
+  Lineno: 12
+/**
+ * Class: ContentObjectModel
+ * This is the base class for all content objects in the knowledge app.
+ */
+PARAMS:
+props
+json_ld
+PROPERTIES:
+  Name: ekn-id
+  Type: string
+  Comment:
+        /**
+         * Property: ekn-id
+         * Unique ID of the model
+         *
+         * This is an internal ID assigned by EKN.
+         * If none is provided, the model will generate its own id with domain
+         * "none".
+         */
+  Name: ekn-version
+  Type: int
+  Comment:
+        /**
+         * Property: ekn-version
+         *
+         * The version of the on-disk data format for this bundle. This value
+         * is incremented whenever we have a major change in this format, and
+         * is used to support backwards compatible changes.
+         *
+         * Defaults to 1
+         */
+  Name: title
+  Type: string
+  Comment:
+        /**
+         * Property: title
+         * A string with the title of the content object. Defaults to an empty string.
+         */
+  Name: original-title
+  Type: string
+  Comment:
+        /**
+         * Property: original-title
+         * A string with the original title of the content object. Defaults to an empty string.
+         */
+  Name: original-uri
+  Type: string
+  Comment:
+        /**
+         * Property: original-uri
+         * URI where the original version of this content can be downloaded
+         *
+         * This property is distinct from <source-uri>, which represents the URI
+         * where the article was downloaded from during database build.
+         *
+         * However, on an <ArticleObjectModel> with <source> equal to
+         * "wikipedia", "wikihow", "wikisource", or "wikibooks", it will be
+         * set to the value of <source-uri> if it is not present in the
+         * database, for backwards compatibility reasons.
+         */
+  Name: thumbnail-uri
+  Type: string
+  Comment:
+        /**
+         * Property: thumbnail-uri
+         * URI of the the thumbnail image
+         *
+         * Usually the EKN ID of an <ImageObjectModel>.
+         */
+  Name: language
+  Type: string
+  Comment:
+        /**
+         * Property: language
+         * The language for this content object. Defaults to an empty string.
+         */
+  Name: copyright-holder
+  Type: string
+  Comment:
+        /**
+         * Property: copyright-holder
+         * The copyright holder for this content object. Defaults to an empty string.
+         */
+  Name: source-uri
+  Type: string
+  Comment:
+        /**
+         * Property: source-uri
+         * URI where this content was downloaded from during database build
+         *
+         * TODO Should we check to always have a value for <source-uri>?
+         * Don't use this property for user-visible things.
+         * It is only used internally.
+         */
+  Name: content-type
+  Type: string
+  Comment:
+        /**
+         * Property: content-type
+         * The source content's mimetype
+         */
+  Name: synopsis
+  Type: string
+  Comment:
+        /**
+         * Property: synopsis
+         * The synopsis for this content object. Defaults to an empty string.
+         */
+  Name: last-modified-date
+  Type: string
+  Comment:
+        /**
+         * Property: last-modified-date
+         * The date of last modification for this content object. It treats dates
+         * according to the ISO8601 standard.
+         */
+  Name: license
+  Type: string
+  Comment:
+        /**
+         * Property: license
+         * The license for this content object. Defaults to an empty string.
+         */
+  Name: redirects-to
+  Type: string
+  Comment:
+        /**
+         * Property: redirects-to
+         * The EKN ID of the ContentObject to which this model should redirect.
+         */
+  Name: featured
+  Type: boolean
+  Comment:
+        /**
+         * Property: featured
+         * Whether this content should be given priority in the UI
+         */
+
+
+ERROR: Unable to parse /home/ffarfan/checkout/eos-knowledge-lib/js/search/domain.js: Line 497: Unexpected token if
+ERROR: Unable to parse /home/ffarfan/checkout/eos-knowledge-lib/js/search/downloader.js: Line 181: Unexpected token if
+WARNING: Lang.Class declaration found!
+CLASS NAME: Engine
+INFO:
+  Name: Engine
+  GTypeName: EknEngine
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/search/engine.js
+  Lineno: 24
+/**
+ * Class: Engine
+ *
+ * Engine represents the connection to the Knowledge Engine's API. It exposes
+ * that API through two methods, <get_object_by_id> and <get_objects_by_query>.
+ */
+PARAMS:
+params
+PROPERTIES:
+  Name: default-domain
+  Type: string
+  Comment:
+        /**
+         * Property: default-domain
+         *
+         * The domain to use to find content in case none is explicitly
+         * passed into the query.
+         *
+         * e.g. animals-es
+         */
+  Name: default-domain-path
+  Type: string
+  Comment:
+        /**
+         * Property: default-domain-path
+         *
+         * The path to the default domains database, if unset will be search for
+         * in XDG_DATA_DIRS normally.
+         *
+         * e.g. /endless/share/ekn/data/animals-es
+         */
+  Name: language
+  Type: string
+  Comment:
+        /**
+         * Property: language
+         *
+         * The ISO639 language code which will be used for various search
+         * features, such as term stemming and spelling correction.
+         *
+         * Defaults to empty string
+         */
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: MediaObjectModel
+INFO:
+  Name: MediaObjectModel
+  GTypeName: EknMediaObjectModel
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/search/mediaObjectModel.js
+  Lineno: 17
+/**
+ * Class: MediaObjectModel
+ * The model class for media objects. A media object has the same
+ * properties as a <ContentObjectModel>, plus <caption>, <height>
+ * and <width> properties
+ */
+PARAMS:
+props
+json_ld
+PROPERTIES:
+  Name: caption
+  Type: string
+  Comment:
+        /**
+         * Property: caption
+         * A displayable string which describes the media object in the same
+         * language as the MediaObject. Defaults to empty string
+         */
+  Name: height
+  Type: uint
+  Comment:
+        /**
+         * Property: height
+         * The height of the media in pixels. Defaults to 0
+         */
+  Name: width
+  Type: uint
+  Comment:
+        /**
+         * Property: width
+         * The width of the media in pixels. Defaults to 0
+         */
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: ImageObjectModel
+INFO:
+  Name: ImageObjectModel
+  GTypeName: EknImageObjectModel
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/search/mediaObjectModel.js
+  Lineno: 76
+/**
+ * Class: ImageObjectModel
+ * The model class for media objects. A media obejct has the same properties as
+ * a <MediaObjectModel>
+ */
+PARAMS:
+props
+json_ld
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: VideoObjectModel
+INFO:
+  Name: VideoObjectModel
+  GTypeName: EknVideoObjectModel
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/search/mediaObjectModel.js
+  Lineno: 92
+/**
+ * Class: VideoObjectModel
+ * The model class for media objects. A media obejct has the same 
+ * properties as a <MediaObjectModel>, plus <duration> and <transcript>
+ * properties
+ */
+PARAMS:
+props
+json_ld
+PROPERTIES:
+  Name: duration
+  Type: string
+  Comment:
+        /**
+         * Property: duration
+         * The duration of the video in ISO 8601 format. Defaults to empty
+         * string
+         */
+  Name: transcript
+  Type: string
+  Comment:
+        /**
+         * Property: transcript
+         * Transcript of the video, in the same language as the video. Defaults
+         * to empty string
+         */
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: QueryObject
+INFO:
+  Name: QueryObject
+  GTypeName: EknQueryObject
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/search/queryObject.js
+  Lineno: 99
+/**
+ * Class: QueryObject
+ *
+ * The QueryObject class allows you to describe a query to a knowledge app
+ * database for articles. Use this with <Engine.get_object_by_id> to retrieve
+ * article from the database.
+ *
+ * This class has no functionality, but is just a bag of properties to tweak
+ * the type of query being made. QueryObjects are immutable after creation,
+ * which allows them to be used safely in a <HistoryItem>. All properties
+ * must be passed in on construction.
+ *
+ * See <new_from_object> for a convenience constructor to create a new object
+ * with a few tweaked values.
+ */
+PARAMS:
+props
+PROPERTIES:
+  Name: domain
+  Type: string
+  Comment:
+        /**
+         * Property: domain
+         *
+         * The ekn domain of the database to query to. If not set, the <Engine>
+         * will fill this in with the <Engine.default-domain> property.
+         */
+  Name: query
+  Type: string
+  Comment:
+        /**
+         * Property: query
+         *
+         * The actual query string that was entered by the user with all terms
+         * that should be searched for.
+         */
+  Name: stopword-free-query
+  Type: string
+  Comment:
+        /**
+         * Property: stopword-free-query
+         *
+         * A corrected version of the query property with stopword words removed.
+         */
+  Name: type
+  Type: uint
+  Comment:
+        /**
+         * Property: type
+         *
+         * The type of query to preform, see <QueryObjectType>.
+         *
+         * Defaults to <QueryObjectType.INCREMENTAL>.
+         */
+  Name: match
+  Type: uint
+  Comment:
+        /**
+         * Property: match
+         *
+         * What to match against in the source documents, see <QueryObjectMatch>.
+         *
+         * Defaults to <QueryObjectMatch.TITLE_ONLY>.
+         */
+  Name: limit
+  Type: uint
+  Comment:
+        /**
+         * Property: limit
+         *
+         * The maximum number of results to return.
+         *
+         * Defaults to 10.
+         */
+  Name: offset
+  Type: uint
+  Comment:
+        /**
+         * Property: offset
+         *
+         * The number of results to skip, can be use with <limit> to paginate
+         * results.
+         *
+         * Defaults to 0.
+         */
+  Name: sort
+  Type: uint
+  Comment:
+        /**
+         * Property: sort
+         *
+         * What to sort results by, see <QueryObjectSort>.
+         *
+         * Defaults to <QueryObjectSort.RELEVANCE>.
+         */
+  Name: order
+  Type: uint
+  Comment:
+        /**
+         * Property: order
+         *
+         * Order of results, see <QueryObjectOrder>.
+         *
+         * Defaults to <QueryObjectOrder.ASCENDING>.
+         */
+  Name: tag-match
+  Type: uint
+  Comment:
+        /**
+         * Property: tag-match
+         *
+         * How to match tags in the query, see <QueryObjectTagMatch>.
+         *
+         * Defaults to <QueryObjectTagMatch.ANY>.
+         */
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: AppSearchProvider
+INFO:
+  Name: EknAppSearchProvider
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/search/searchProvider.js
+  Lineno: 73
+/**
+ * Class: SearchProvider
+ *
+ * A search provider for a single knowledge app, to be used through dbus by the
+ * shell's global search. Requires the app id of the knowledge app it should run
+ * searches for.
+ *
+ * This search provider will activate the actual knowledge app over dbus with a
+ * result or search to display. As such, it can be used from in or outside of
+ * the actual application process.
+ */
+PARAMS:
+args
+PROPERTIES:
+  Name: application-id
+  Type: string
+  Comment:
+        /**
+         * Property: id
+         * The app id of the application this provider is for.
+         */
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: GlobalSearchProvider
+INFO:
+  Name: EknGlobalSearchProvider
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/search/searchProvider.js
+  Lineno: 219
+!! NOTICE !! This class has no documentation block !!PARAMS:
+
+
+WARNING: Lang.Class declaration found!
+CLASS NAME: SetObjectModel
+INFO:
+  Name: SetObjectModel
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/search/setObjectModel.js
+  Lineno: 12
+/**
+ * Class: SetObjectModel
+ * Models a set, which is a record that contains other records
+ */
+PARAMS:
+props
+json_ld
+
+
+ERROR: Unable to parse /home/ffarfan/checkout/eos-knowledge-lib/js/search/utils.js: Line 124: Unexpected token if
+WARNING: Lang.Class declaration found!
+CLASS NAME: XapianBridge
+INFO:
+  Name: XapianBridge
+  GTypeName: EknXapianBridge
+  Filename: /home/ffarfan/checkout/eos-knowledge-lib/js/search/xapianBridge.js
+  Lineno: 14
+/**
+ * Class: XapianBridge
+ */
+PARAMS:
+params
+PROPERTIES:
+  Name: host
+  Type: string
+  Comment:
+        /**
+         * Property: host
+         *
+         * The hostname of the xapian bridge. You generally don't
+         * need to set this.
+         *
+         * Defaults to '127.0.0.1'
+         * FIXME: the default should just be localhost, but libsoup has a bug
+         * whereby it does not resolve localhost when it is offline:
+         * https://bugzilla.gnome.org/show_bug.cgi?id=692291
+         * Once this bug is fixed, we should change this to be localhost.
+         */
+  Name: port
+  Type: int
+  Comment:
+        /**
+         * Property: port
+         *
+         * The port of the xapian bridge. You generally don't need
+         * to set this.
+         *
+         * Defaults to 3004
+         */
+  Name: language
+  Type: string
+  Comment:
+        /**
+         * Property: language
+         *
+         * The ISO639 language code which will be used for various search
+         * features, such as term stemming and spelling correction.
+         *
+         * Defaults to empty string
+         */
+
+

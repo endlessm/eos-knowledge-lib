@@ -1,0 +1,13 @@
+{
+    "source": {
+        "include": [ "js/" ],
+        "exclude": [ "js/app/libs", "js/tools", "js/app/warehouse.js" ]
+    },
+    "destination": "jsdoc3_out",
+    "plugins": [
+        "plugins/underscore",
+        "plugins/markdown",
+        "plugins/summarize",
+        "testplugin"
+    ]
+}
