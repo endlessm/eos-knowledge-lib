@@ -4,7 +4,7 @@ const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
-const CardA = imports.app.modules.cardA;
+const LegacyPolaroidCard = imports.app.modules.legacyPolaroidCard;
 const Utils = imports.tests.utils;
 
 const TEST_APPLICATION_ID = 'com.endlessm.knowledge.card';
@@ -26,15 +26,15 @@ const TestApplication = new Lang.Class ({
                                                  Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 
         let cards = [
-            new CardA.CardA({
+            new LegacyPolaroidCard.LegacyPolaroidCard({
                 title: 'Synopsis Card',
                 synopsis: 'This is a really long synopsis. It is so long, that I have to sit here and think of things to write to show how long it is. And I still need more text. What else is there to write?',
             }),
-            new CardA.CardA({
+            new LegacyPolaroidCard.LegacyPolaroidCard({
                 title: 'Picture Card',
                 thumbnail_uri: TESTDIR + '/test-content/pig1.jpg',
             }),
-            new CardA.CardA({
+            new LegacyPolaroidCard.LegacyPolaroidCard({
                 title: 'Everything card',
                 synopsis: 'This card has everything',
                 thumbnail_uri: TESTDIR + '/test-content/pig2.jpg',

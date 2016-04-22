@@ -4,7 +4,7 @@ const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
-const CardA = imports.app.modules.cardA;
+const LegacyPolaroidCard = imports.app.modules.legacyPolaroidCard;
 const Lightbox = imports.app.widgets.lightbox;
 const MediaCard = imports.app.modules.mediaCard;
 const Previewer = imports.app.widgets.previewer;
@@ -61,7 +61,7 @@ const TestApplication = new Lang.Class({
             wideimage: null
         };
 
-        let image_card = new CardA.CardA({
+        let image_card = new LegacyPolaroidCard.LegacyPolaroidCard({
             title: 'Open image in lightbox'
         });
         image_card.connect('clicked', Lang.bind(this, function () {
@@ -70,7 +70,7 @@ const TestApplication = new Lang.Class({
             this._lightbox.infobox_widget = this._infoboxes.image;
         }.bind(this)));
 
-        let copyrighted_card = new CardA.CardA({
+        let copyrighted_card = new LegacyPolaroidCard.LegacyPolaroidCard({
             title: 'Open secret sauce in lightbox'
         });
         copyrighted_card.connect('clicked', Lang.bind(this, function () {
@@ -79,7 +79,7 @@ const TestApplication = new Lang.Class({
             this._lightbox.infobox_widget = this._infoboxes.copyrighted;
         }.bind(this)));
 
-        let tallimage_card = new CardA.CardA({
+        let tallimage_card = new LegacyPolaroidCard.LegacyPolaroidCard({
             title: 'Open tall image in lightbox'
         });
         tallimage_card.connect('clicked', Lang.bind(this, function () {
@@ -88,7 +88,7 @@ const TestApplication = new Lang.Class({
             this._lightbox.infobox_widget = this._infoboxes.tallimage;
         }.bind(this)));
 
-        let wideimage_card = new CardA.CardA({
+        let wideimage_card = new LegacyPolaroidCard.LegacyPolaroidCard({
             title: 'Open wide image in lightbox'
         });
         wideimage_card.connect('clicked', Lang.bind(this, function () {

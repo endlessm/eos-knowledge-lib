@@ -57,7 +57,7 @@
                             },
                             "slots": {
                                 "card-type": {
-                                    "type": "CardA"
+                                    "type": "LegacyPolaroidCard"
                                 }
                             }
                         }
@@ -97,7 +97,7 @@
                             },
                             "slots": {
                                 "card-type": {
-                                    "type": "CardA"
+                                    "type": "LegacyPolaroidCard"
                                 }
                             }
                         }
@@ -116,7 +116,7 @@
                             },
                             "slots": {
                                 "card-type": {
-                                    "type": "CardA"
+                                    "type": "LegacyPolaroidCard"
                                 }
                             }
                         }
@@ -147,7 +147,7 @@
                             },
                             "slots": {
                                 "card-type": {
-                                    "type": "CardA"
+                                    "type": "LegacyPolaroidCard"
                                 }
                             }
                         }

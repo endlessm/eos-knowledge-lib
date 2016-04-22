@@ -159,7 +159,7 @@ const MeshInteraction = new Module.Class({
 
     STYLE_MAP: {
         A: {
-            section_card: '.card-a',
+            section_card: '.legacy-polaroid-card',
             article_card: '.article-card',
             section_page_banner: '.section-page-a EknSetBannerModule',
             search_page_banner: '.search-page-a EknSearchBannerModule',

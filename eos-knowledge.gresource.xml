@@ -63,13 +63,13 @@
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/appBanner.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/articleSnippetCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/backCover.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">data/widgets/cardA.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/cardB.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/dividedBannerTemplate.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/encyclopediaCoverTemplate.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/gridArrangement.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/hamburgerBasementTemplate.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/knowledgeDocumentCard.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">data/widgets/legacyPolaroidCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/mediaCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/paperTemplate.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/postCard.ui</file>
@@ -125,7 +125,6 @@
     <file>js/app/modules/backgroundModule.js</file>
     <file>js/app/modules/bannerTemplate.js</file>
     <file>js/app/modules/buffetInteraction.js</file>
-    <file>js/app/modules/cardA.js</file>
     <file>js/app/modules/cardB.js</file>
     <file>js/app/modules/cardContainer.js</file>
     <file>js/app/modules/carouselArrangement.js</file>
@@ -142,6 +141,7 @@
     <file>js/app/modules/highlightsModule.js</file>
     <file>js/app/modules/itemGroupModule.js</file>
     <file>js/app/modules/knowledgeDocumentCard.js</file>
+    <file>js/app/modules/legacyPolaroidCard.js</file>
     <file>js/app/modules/lightboxModule.js</file>
     <file>js/app/modules/listArrangement.js</file>
     <file>js/app/modules/mediaCard.js</file>
