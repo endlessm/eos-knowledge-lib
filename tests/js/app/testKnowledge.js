@@ -100,4 +100,29 @@ describe('Syntactic sugar metaclass', function () {
             },
         })).toThrow();
     });
+
+    describe('getters for style properties', function () {
+        let MyStyleGetter = new Knowledge.Class({
+            Name: 'MyStyleGetter',
+            Extends: Gtk.Grid,
+            StyleProperties: {
+                'foo-bar': GObject.ParamSpec.int('foo-bar', '', '',
+                    GObject.ParamFlags.READABLE, 0, 10, 5),
+            },
+        });
+
+        it('are defined', function () {
+            let widget = new MyStyleGetter();
+            expect(widget.foo_bar).toEqual(5);
+        });
+
+        it('are on the prototype', function () {
+            let MyChild = new Knowledge.Class({
+                Name: 'MyChild',
+                Extends: MyStyleGetter,
+            });
+            let widget = new MyChild();
+            expect(widget.foo_bar).toEqual(5);
+        });
+    });
 });

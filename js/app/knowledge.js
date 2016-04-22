@@ -38,6 +38,9 @@ const Lang = imports.lang;
  * > EknMyClass {
  * >     -EknMyClass-foo-bar: 5;
  * > }
+ *
+ * You can read these properties using a getter: in the above example
+ * `this.foo_bar` would be equal to 5.
  */
 const Class = new Lang.Class({
     Name: 'Class',
@@ -69,9 +72,17 @@ const Class = new Lang.Class({
         let newclass = metaclass.prototype._construct(props);
 
         if (metaclass === Gtk.Widget.prototype.__metaclass__) {
-            Object.keys(style_properties).forEach(prop =>
-                Gtk.Widget.install_style_property.call(newclass,
-                    style_properties[prop]));
+            Object.keys(style_properties).forEach(prop => {
+                let pspec = style_properties[prop];
+                Gtk.Widget.install_style_property.call(newclass, pspec);
+                let type_str = _type_to_str(style_properties[prop].value_type);
+                let snake_name = prop.replace('-', '_', 'g');
+                Object.defineProperty(newclass.prototype, snake_name, {
+                    get: function () {
+                        return _style_property_getter.call(this, type_str, prop);
+                    },
+                });
+            });
         } else if (Object.keys(style_properties).length) {
             // Unfortunately, the above call will cheerfully succeed even if
             // newclass isn't a Gtk.Widget
@@ -82,3 +93,15 @@ const Class = new Lang.Class({
         return newclass;
     },
 });
+
+function _type_to_str(gtype) {
+    if (gtype === GObject.TYPE_INT)
+        return 'int';
+    if (gtype === GObject.TYPE_FLOAT)
+        return 'float';
+    throw new Error('Unhandled GType for style properties: ' + gtype.toString());
+}
+
+function _style_property_getter(type_str, prop_name) {
+    return EosKnowledgePrivate['widget_style_get_' + type_str](this, prop_name);
+}

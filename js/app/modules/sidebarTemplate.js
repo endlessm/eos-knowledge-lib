@@ -3,7 +3,6 @@
 /* exported SidebarTemplate, get_css_for_module */
 
 const Endless = imports.gi.Endless;
-const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Gdk = imports.gi.Gdk;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
@@ -84,9 +83,9 @@ const SidebarTemplate = new Module.Class({
     },
 
     _update_custom_style: function () {
-        let threshold_width_large = EosKnowledgePrivate.widget_style_get_int(this, 'threshold-width-large');
-        let sidebar_width_large = EosKnowledgePrivate.widget_style_get_int(this, 'sidebar-width-large');
-        let sidebar_width_small = EosKnowledgePrivate.widget_style_get_int(this, 'sidebar-width-small');
+        let threshold_width_large = this.threshold_width_large;
+        let sidebar_width_large = this.sidebar_width_large;
+        let sidebar_width_small = this.sidebar_width_small;
         if (this._threshold_width_large === threshold_width_large &&
             this._sidebar_width_large === sidebar_width_large &&
             this._sidebar_width_small === sidebar_width_small)
