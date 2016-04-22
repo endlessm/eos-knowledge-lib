@@ -200,7 +200,7 @@ const Card = new Lang.Interface({
     },
 
     get sequence () {
-        if (this._sequence)
+        if (typeof this._sequence !== 'undefined')
             return this._sequence;
         return Sequence.NONE;
     },
