@@ -34,6 +34,7 @@ const TOP_MENU_HEIGHT = 50;
 const TopMenuModule = new Lang.Class({
     Name: 'TopMenuModule',
     GTypeName: 'EknTopMenuModule',
+    CssName: 'EknTopMenuModule',
     Extends: Endless.CustomContainer,
     Implements: [ Module.Module ],
 

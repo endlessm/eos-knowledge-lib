@@ -2,10 +2,10 @@
 
 const Gdk = imports.gi.Gdk;
 const GObject = imports.gi.GObject;
+const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const Card = imports.app.interfaces.card;
-const MarginButton = imports.app.widgets.marginButton;
 const NavigationCard = imports.app.interfaces.navigationCard;
 const Module = imports.app.interfaces.module;
 const Utils = imports.app.utils;
@@ -18,7 +18,8 @@ const Utils = imports.app.utils;
 const SearchResultCard = new Lang.Class({
     Name: 'SearchResultCard',
     GTypeName: 'EknSearchResultCard',
-    Extends: MarginButton.MarginButton,
+    CssName: 'EknSearchResultCard',
+    Extends: Gtk.Button,
     Implements: [ Module.Module, Card.Card, NavigationCard.NavigationCard ],
 
     Properties: {

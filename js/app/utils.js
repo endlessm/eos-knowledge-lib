@@ -310,7 +310,10 @@ function render_border_with_arrow (widget, cr) {
     cr.restore();
 
     // Render the arrow on top of the triangle
+    context.save();
+    context.add_class('arrow');
     Gtk.render_arrow(context, cr, 0, width - 15, height - 15, 12);
+    context.restore();
 }
 
 function low_performance_mode () {

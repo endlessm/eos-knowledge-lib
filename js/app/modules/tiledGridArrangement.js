@@ -12,6 +12,7 @@ const Module = imports.app.interfaces.module;
 const TiledGridArrangement = new Lang.Class({
     Name: 'TiledGridArrangement',
     GTypeName: 'EknTiledGridArrangement',
+    CssName: 'EknTiledGridArrangement',
     Extends: Gtk.Grid,
     Implements: [ Module.Module, Arrangement.Arrangement ],
 

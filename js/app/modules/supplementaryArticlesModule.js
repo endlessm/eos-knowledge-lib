@@ -25,6 +25,7 @@ let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 const SupplementaryArticlesModule = new Lang.Class({
     Name: 'SupplementaryArticlesModule',
     GTypeName: 'EknSupplementaryArticlesModule',
+    CssName: 'EknSupplementaryArticlesModule',
     Extends: CardContainer.CardContainer,
     Implements: [ Module.Module ],
 

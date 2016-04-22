@@ -201,7 +201,6 @@
     <file>js/app/widgets/inArticleSearch.js</file>
     <file>js/app/widgets/infiniteScrolledWindow.js</file>
     <file>js/app/widgets/lightbox.js</file>
-    <file>js/app/widgets/marginButton.js</file>
     <file>js/app/widgets/navButtonOverlay.js</file>
     <file>js/app/widgets/PDFView.js</file>
     <file>js/app/widgets/previewer.js</file>

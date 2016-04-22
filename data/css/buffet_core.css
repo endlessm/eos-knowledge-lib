@@ -2,23 +2,23 @@
 
 @import url("resource:///com/endlessm/knowledge/data/css/common.css");
 
-EknWindow {
+EosWindow {
     background-size: cover;
 }
 
-.scrollbar {
-    -GtkRange-trough-border: 3px;
-    -GtkRange-slider-width: 8px;
+scrollbar {
+    padding: 3px;
 }
 
-.scrollbar.slider {
+scrollbar slider {
+    min-width: 8px;
     background-color: #9b9b9b;
     border-radius: 20px;
 }
 
-EknSuggestedCategoriesModule .separator {
+EknSuggestedCategoriesModule separator {
     background-color: #999999;
-    -EknThemeableImage-min-height: 1;
+    min-height: 1px;
     margin: 4px 50px 20px 50px;
 }
 
@@ -26,7 +26,7 @@ EknSuggestedCategoriesModule .separator {
     padding: 20px 50px 0px 50px;
 }
 
-EknScrollingTemplate:not(.overshoot):not(.undershoot),
+EknScrollingTemplate,
 EknSearchModule {
     background-color: #e7ecee;
 }
@@ -52,19 +52,19 @@ EknThematicModule .text-card .after {
 
 /* default size */
 .card {
-    font-size: 14px;
+    font-size: 18.7px;
 }
 
 .card.width-c .title,
 .card.width-d.height-c .title,
 .card.width-d.height-b .title {
-    font-size: 16px;
+    font-size: 21.3px;
 }
 
 .card.width-d.height-d .title,
 .card.width-e.height-b .title,
 .card.width-e.height-c .title {
-    font-size: 23px;
+    font-size: 30.7px;
 }
 
 .card.width-d .title,
@@ -72,7 +72,7 @@ EknThematicModule .text-card .after {
 .card.width-f .title,
 .card.width-g .title,
 .card.width-h .title {
-    font-size: 37px;
+    font-size: 49.3px;
 }
 
 .card .content-frame {
@@ -96,32 +96,32 @@ EknThematicModule .text-card .after {
 .card.width-f .card-context,
 .card.width-g .card-context,
 .card.width-h .card-context {
-    font-size: 14px;
+    font-size: 18.7px;
 }
 
 .search-result-card.width-d .title,
 .search-result-card.width-d .card-synopsis {
-    font-size: 14px;
+    font-size: 18.7px;
 }
 
 .search-result-card.width-e .title,
 .search-result-card.width-e .card-synopsis {
-    font-size: 14px;
+    font-size: 18.7px;
 }
 
 .search-result-card.width-f .title,
 .search-result-card.width-f .card-synopsis {
-    font-size: 16px;
+    font-size: 21.3px;
 }
 
 .search-result-card.width-g .title,
 .search-result-card.width-h .title {
-    font-size: 22px;
+    font-size: 29.3px;
 }
 
 .search-result-card.width-g .card-synopsis,
 .search-result-card.width-h .card-synopsis {
-    font-size: 18px;
+    font-size: 24px;
 }
 
 .search-result-card.width-e .content-frame,
@@ -172,12 +172,12 @@ EknThematicModule .text-card .after {
 
 .card-synopsis {
     color: black;
-    font-size: 14px;
+    font-size: 18.7px;
     padding-top: 30px;
 }
 
 .card-context {
-    font-size: 12px;
+    font-size: 16px;
     color: #49bde3;
 }
 
@@ -193,14 +193,14 @@ EknThematicModule .text-card .after {
 }
 
 .document-card .sequence-card .title {
-    font-size: 16px;
+    font-size: 21.3px;
     font-weight: normal;
     color: #044a80;
 }
 
 .document-card .sequence-card .previous-label,
 .document-card .sequence-card .next-label {
-    font-size: 11px;
+    font-size: 14.7px;
     color: #49bde3;
 }
 
@@ -254,7 +254,7 @@ EknResponsiveMarginsModule.xlarge {
     margin: 0px 120px;
 }
 
-.endless-search-box .frame {
+.endless-search-box frame {
    background-color: #d5e1ed;
 }
 
@@ -277,7 +277,7 @@ EknResponsiveMarginsModule.xlarge {
 
 /* Changes for composite TVs */
 
-.composite .search-results GtkListBoxRow {
+.composite .search-results row {
     padding: 0 40px;
 }
 
@@ -293,7 +293,7 @@ EknResponsiveMarginsModule.xlarge {
 .composite .search-result-card.width-d .card-synopsis,
 .composite .search-result-card.width-e .title,
 .composite .search-result-card.width-e .card-synopsis {
-    font-size: 14.1px;  /* 16px spec * 88% because spec was at 110% scale not 125% */
+    font-size: 18.8px;  /* 16px spec * 88% because spec was at 110% scale not 125% */
 }
 
 .composite EknHighlightsModule .text-card .title.label,
@@ -305,5 +305,5 @@ EknResponsiveMarginsModule.xlarge {
 }
 
 .composite EknAppBanner {
-    font-size: 16.7px;  /* 19px spec * 88% */
+    font-size: 22.3px;  /* 19px spec * 88% */
 }

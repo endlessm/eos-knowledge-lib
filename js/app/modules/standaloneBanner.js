@@ -27,6 +27,7 @@ const OPEN_MAGAZINE_RESPONSE = 1;
 const StandaloneBanner = new Lang.Class({
     Name: 'StandaloneBanner',
     GTypeName: 'EknStandaloneBanner',
+    CssName: 'EknStandaloneBanner',
     Extends: Gtk.InfoBar,
     Implements: [ Module.Module ],
 

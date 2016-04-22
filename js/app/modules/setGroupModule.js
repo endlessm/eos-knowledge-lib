@@ -30,6 +30,7 @@ const StyleClasses = imports.app.styleClasses;
 const SetGroupModule = new Lang.Class({
     Name: 'SetGroupModule',
     GTypeName: 'EknSetGroupModule',
+    CssName: 'EknSetGroupModule',
     Extends: Gtk.Frame,
     Implements: [ Module.Module, Expandable.Expandable ],
 

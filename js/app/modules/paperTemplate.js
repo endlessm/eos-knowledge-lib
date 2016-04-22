@@ -22,7 +22,8 @@ const Utils = imports.app.utils;
 const PaperTemplate = new Lang.Class({
     Name: 'PaperTemplate',
     GTypeName: 'EknPaperTemplate',
-    Extends: Gtk.Frame,
+    CssName: 'EknPaperTemplate',
+    Extends: Gtk.Bin,
     Implements: [ Module.Module ],
 
     Properties: {
@@ -58,6 +59,18 @@ const PaperTemplate = new Lang.Class({
         });
         this._content_frame.size_allocate(content_alloc);
         Utils.set_container_clip(this);
+    },
+
+    vfunc_draw: function (cr) {
+        let width = this.get_allocated_width();
+        let height = this.get_allocated_height();
+        let style = this.get_style_context();
+        Gtk.render_background(style, cr, 0, 0, width, height);
+        Gtk.render_frame(style, cr, 0, 0, width, height);
+        Gtk.render_focus(style, cr, 0, 0, width, height);
+        this.parent(cr);
+        cr.$dispose();
+        return false;
     },
 
     get_slot_names: function () {

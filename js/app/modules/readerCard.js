@@ -29,6 +29,7 @@ let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 const ReaderCard = new Lang.Class({
     Name: 'ReaderCard',
     GTypeName: 'EknReaderCard',
+    CssName: 'EknReaderCard',
     Extends: Gtk.Button,
     Implements: [ Module.Module, Card.Card ],
 

@@ -12,6 +12,7 @@ const Module = imports.app.interfaces.module;
 const OverflowArrangement = new Lang.Class({
     Name: 'OverflowArrangement',
     GTypeName: 'EknOverflowArrangement',
+    CssName: 'EknOverflowArrangement',
     Extends: SpaceContainer.SpaceContainer,
     Implements: [ Module.Module, Arrangement.Arrangement ],
 

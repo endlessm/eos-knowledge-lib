@@ -25,6 +25,7 @@ const Module = imports.app.interfaces.module;
 const TwoPieceTemplate = new Lang.Class({
     Name: 'TwoPieceTemplate',
     GTypeName: 'EknTwoPieceTemplate',
+    CssName: 'EknTwoPieceTemplate',
     Extends: Gtk.Grid,
     Implements: [ Module.Module ],
 

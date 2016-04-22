@@ -35,6 +35,7 @@ const _EXTRA_TOP_MARGIN = 50;
 const TopMenuTemplate = new Lang.Class({
     Name: 'TopMenuTemplate',
     GTypeName: 'EknTopMenuTemplate',
+    CssName: 'EknTopMenuTemplate',
     Extends: SlidingPanelOverlay.SlidingPanelOverlay,
     Implements: [ Module.Module ],
 

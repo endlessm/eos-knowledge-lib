@@ -16,6 +16,7 @@ const Module = imports.app.interfaces.module;
 const GridArrangement = new Lang.Class({
     Name: 'GridArrangement',
     GTypeName: 'EknGridArrangement',
+    CssName: 'EknGridArrangement',
     Extends: InfiniteScrolledWindow.InfiniteScrolledWindow,
     Implements: [ Module.Module, Arrangement.Arrangement ],
 

@@ -25,6 +25,7 @@ const PianoArrangement = imports.app.modules.pianoArrangement;
 const PianolaArrangement = new Lang.Class({
     Name: 'PianolaArrangement',
     GTypeName: 'EknPianolaArrangement',
+    CssName: 'EknPianolaArrangement',
     Extends: PianoArrangement.PianoArrangement,
 
     _init: function (props={}) {

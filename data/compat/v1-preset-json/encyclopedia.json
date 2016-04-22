@@ -70,7 +70,6 @@
                         "content": {
                             "type": "BannerTemplate",
                             "properties": {
-                                "image-separator": true,
                                 "margin-start": 45,
                                 "margin-end": 45
                             },

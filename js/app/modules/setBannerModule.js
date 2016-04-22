@@ -21,6 +21,7 @@ const Module = imports.app.interfaces.module;
 const SetBannerModule = new Lang.Class({
     Name: 'SetBannerModule',
     GTypeName: 'EknSetBannerModule',
+    CssName: 'EknSetBannerModule',
     Extends: Gtk.Frame,
     Implements: [ Module.Module ],
 

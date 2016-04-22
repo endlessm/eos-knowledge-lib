@@ -21,13 +21,14 @@ EosWindow {
     background-position: top center;
 }
 
-.entry {
+.search-box,
+.article-search entry {
     background: rgba(0,0,0,0.2);
     padding: 0.5em .3em 0.5em .3em;
-    font-size: 10px;
+    font-size: 13.3px;
     color: #fff;
+    caret-color: #fff;
 
-    -GtkWidget-focus-line-width: 0;
     border-style: solid;
     border-radius: 50px;
 
@@ -44,22 +45,29 @@ EosWindow {
     padding: 3px;
 }
 
-.article-search .entry {
+.search-box image,
+.article-search entry image {
+    margin: 0 3px;
+}
+
+.search-box selection,
+.article-search selection {
+    color: rgba(0, 0, 0, 0.7);
+    background-color: #fff;
+}
+
+.article-search entry {
     background: rgba(0,0,0,0.3);
     border-color: rgba(0,0,0,0.25);
 }
 
-.article-search .button {
+.article-search button {
     padding: 5px;
     color: #7a7e7f;
 }
 
-.article-search .button:hover {
+.article-search button:hover {
     color: #54595a;
-}
-
-GtkEntry:selected {
-    background-color: gray;
 }
 
 /* WebKit creates GTK tooltips internally, so style them here */
@@ -80,8 +88,8 @@ GtkEntry:selected {
     padding-bottom: 20px;
 }
 
-.divided-banner-template .separator {
-    padding-bottom: 15px;
+.divided-banner-template separator {
+    min-height: 15px;
     background-image: url('resource:///com/endlessm/knowledge/data/images/separator.png');
     background-size: 100%;
     background-repeat: no-repeat;
@@ -96,8 +104,10 @@ GtkEntry:selected {
     font-weight: bold;
 }
 
-.divided-banner-template .separator {
-    color: #888a85;
+.divided-banner-template .search-results separator {
+    min-height: 1px;
+    background-image: none;
+    background-color: #888a85;
 }
 
 .search-results .results-message-title,
@@ -109,7 +119,7 @@ GtkEntry:selected {
 }
 
 .search-results .card {
-    padding-bottom: 2em; /* (39px line height - 15px text height) / 12px/em */
+    padding-bottom: 1.5em;
 }
 
 .search-results .card .title {
@@ -124,7 +134,7 @@ GtkEntry:selected {
     -EknThemeableImage-min-width: 6;
     -EknThemeableImage-min-height: 6;
     color: rgba(145, 145, 145, 0.5);
-    padding-right: 0.8em;
+    padding-right: 0.6em;
 }
 
 .paper-template .content {
@@ -132,14 +142,14 @@ GtkEntry:selected {
                       url('resource:///com/endlessm/knowledge/data/templates/images/noise.png');
 }
 
-.scrollbar {
-    -GtkRange-trough-border: 3px;
-    -GtkRange-slider-width: 8px;
+scrollbar {
+    padding: 0px 3px;
 }
 
-.scrollbar.slider {
+scrollbar slider {
     background-color: #9b9b9b;
     border-radius: 20px;
+    min-width: 8px;
 }
 
 .webview-tooltip {
@@ -148,7 +158,7 @@ GtkEntry:selected {
     padding: 10px 14px;
 }
 
-.webview-tooltip GtkLabel {
+.webview-tooltip label {
     color: white;
     font-family: Lato;
     font-size: 1.3em; /* 16px / 12px/em */
@@ -161,28 +171,29 @@ GtkEntry:selected {
     font-family: Roboto;
 }
 
-.composite .entry {
-    font-size: 15.8px;  /* 18 px spec * 88% because spec was at 110% scale not 125% */
+.composite .search-box,
+.composite .article-search entry {
+    font-size: 21.1px;  /* 18 px spec * 88% because spec was at 110% scale not 125% */
     background-color: alpha(black, 0.8);
 }
 
 .composite .divided-banner-template .title {
     font-weight: normal;
-    font-size: 17.6px;  /* 20px spec * 88% */
+    font-size: 23.5px;  /* 20px spec * 88% */
     font-weight: bold;
 }
 
-.composite .webview-tooltip GtkLabel {
+.composite .webview-tooltip label {
     font-weight: bold;
-    font-size: 14.1px;  /* 16px spec * 88% */
+    font-size: 18.8px;  /* 16px spec * 88% */
 }
 
 .composite .search-results .results-message-title,
 .composite .search-results .results-message-subtitle,
 .composite .search-results .error-message {
-    font-size: 13.2px;  /* 15px spec * 88% */
+    font-size: 17.6px;  /* 15px spec * 88% */
 }
 
 .composite .search-results .card .title {
-    font-size: 14.1px;  /* 16px spec * 88% */
+    font-size: 18.8px;  /* 16px spec * 88% */
 }

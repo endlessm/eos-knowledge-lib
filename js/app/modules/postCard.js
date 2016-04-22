@@ -6,7 +6,6 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const Card = imports.app.interfaces.card;
-const MarginButton = imports.app.widgets.marginButton;
 const Module = imports.app.interfaces.module;
 const SetObjectModel = imports.search.setObjectModel;
 const Utils = imports.app.utils;
@@ -18,7 +17,8 @@ const Utils = imports.app.utils;
 const PostCard = new Lang.Class({
     Name: 'PostCard',
     GTypeName: 'EknPostCard',
-    Extends: MarginButton.MarginButton,
+    CssName: 'EknPostCard',
+    Extends: Gtk.Button,
     Implements: [ Module.Module, Card.Card ],
 
     Properties: {

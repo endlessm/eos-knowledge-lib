@@ -18,14 +18,14 @@ EknThematicModule .text-card .title.label,
 EknSetPreviewCard .text-card .title,
 .browse-content .title {
     font-weight: 200;
-    font-size: 22px;
+    font-size: 29.3px;
 }
 
-EknHighlightsModule .separator,
-EknSetPreviewCard .separator,
-EknThematicModule .separator {
+EknHighlightsModule separator,
+EknSetPreviewCard separator,
+EknThematicModule separator {
     background-color: #999999;
-    -EknThemeableImage-min-height: 1;
+    min-height: 1px;
     margin: 4px 0px 10px 0px;
 }
 
@@ -52,7 +52,10 @@ EknSearchModule .suggested-articles {
     background-color: #f6f6f6;
 }
 
-.search-results .separator,
+.search-results separator {
+    background-color: #999999;
+}
+
 .search-results .results-message-subtitle,
 .browse-content .title {
     color: #999999;
@@ -63,7 +66,7 @@ EknSearchModule .suggested-articles {
     padding: 20px 60px 0px 60px;
     padding-left: 60px;
     padding-right: 60px;
-    font-size: 18px;
+    font-size: 24px;
 }
 
 .search-results .results-message-subtitle {
@@ -88,7 +91,7 @@ EknSearchModule .suggested-articles {
     outline: 1px solid #49bde3;
     border-color: #49bde3;  /* used for the triangle in the corner */
     outline-offset: -1px;
-    outline-radius: 0;
+    -gtk-outline-radius: 0;
 }
 
 .thumb-card:active,
@@ -133,7 +136,7 @@ EknSideMenuTemplate .menu {
 
 EknSideMenuTemplate .menu .home-button,
 EknSideMenuTemplate .menu .card .title {
-    font-size: 16px;
+    font-size: 21.3px;
     font-family: 'Lato Thin';
     color: #044a80;
 }
@@ -143,8 +146,9 @@ EknSideMenuTemplate .menu .card:hover .title {
     color: #5bc2e5;
 }
 
-EknSideMenuTemplate .menu .separator {
-    color: #cccccc;
+EknSideMenuTemplate .menu separator {
+    min-height: 1px;
+    background-color: #cccccc;
 }
 
 EknSideMenuTemplate .close-button,
@@ -169,7 +173,7 @@ EknSideMenuTemplate .close-button {
 
 EknContextBanner {
     font-family: 'Lato Thin';
-    font-size: 22px;
+    font-size: 29.3px;
     color: #666666;
     text-shadow: 0px 1px alpha(white, 0.004);
 }

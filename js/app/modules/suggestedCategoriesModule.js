@@ -28,6 +28,7 @@ const Utils = imports.app.utils;
 const SuggestedCategoriesModule = new Lang.Class({
     Name: 'SuggestedCategoriesModule',
     GTypeName: 'EknSuggestedCategoriesModule',
+    CssName: 'EknSuggestedCategoriesModule',
     Extends: Gtk.Grid,
     Implements: [ Module.Module ],
 
@@ -61,13 +62,12 @@ const SuggestedCategoriesModule = new Lang.Class({
         after.get_style_context().add_class(StyleClasses.AFTER);
         this._title_button_grid.attach(after, 1, 0, 1, 1);
 
-        let separator = new ThemeableImage.ThemeableImage({
+        let separator = new Gtk.Separator({
             visible: true,
             halign: Gtk.Align.FILL,
             valign: Gtk.Align.CENTER,
             no_show_all: true,
         });
-        separator.get_style_context().add_class(Gtk.STYLE_CLASS_SEPARATOR);
         this.add(separator);
 
         this._arrangement = this.create_submodule('arrangement');

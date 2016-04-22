@@ -28,3 +28,10 @@ function update_gui () {
     while (Gtk.events_pending())
         Gtk.main_iteration(false);
 }
+
+// A provider which reset all theme. Useful for testing sizing, e.g.
+function create_reset_provider () {
+    let provider = new Gtk.CssProvider();
+    provider.load_from_data('* { all: unset; }');
+    return provider;
+}

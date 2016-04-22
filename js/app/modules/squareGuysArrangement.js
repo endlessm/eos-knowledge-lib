@@ -24,6 +24,7 @@ const CARD_SIZE_MAX = Card.MaxSize.C;
 const SquareGuysArrangement = new Lang.Class({
     Name: 'SquareGuysArrangement',
     GTypeName: 'EknSquareGuysArrangement',
+    CssName: 'EknSquareGuysArrangement',
     Extends: Endless.CustomContainer,
     Implements: [ Module.Module, Arrangement.Arrangement ],
 

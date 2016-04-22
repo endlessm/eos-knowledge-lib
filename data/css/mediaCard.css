@@ -3,12 +3,9 @@
     background-color: white;
 }
 
-.media-card GtkSeparator {
-    border-style: solid;
-    border-width: 4px;
-    border-color: #d6d6d6;
-    -GtkWidget-wide-separators: true;
-    -GtkWidget-separator-height: 1;
+.media-card separator {
+    background-color: #d6d6d6;
+    min-height: 1px;
 }
 
 .media-card-caption {
@@ -30,9 +27,9 @@
 }
 
 .composite .media-card-caption {
-    font-size: 10.6px;  /* 12px spec * 88% because spec was at 110% scale not 125% */
+    font-size: 14.1px;  /* 12px spec * 88% because spec was at 110% scale not 125% */
 }
 
 .composite .media-card-attribution-text {
-    font-size: 7.9px;  /* 9px spec * 88% */
+    font-size: 10.5px;  /* 9px spec * 88% */
 }

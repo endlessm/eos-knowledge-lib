@@ -7,7 +7,6 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const Card = imports.app.interfaces.card;
-const MarginButton = imports.app.widgets.marginButton;
 const Module = imports.app.interfaces.module;
 const Utils = imports.app.utils;
 
@@ -23,6 +22,7 @@ const LARGE_WIDTH = 390;
 const ThumbCardLayout = new Lang.Class({
     Name: 'ThumbCardLayout',
     GTypeName: 'EknThumbCardLayout',
+    CssName: 'EknThumbCardLayout',
     Extends: Endless.CustomContainer,
 
     _init: function (thumbnail, content, props={}) {
@@ -107,7 +107,8 @@ const ThumbCardLayout = new Lang.Class({
 const ThumbCard = new Lang.Class({
     Name: 'ThumbCard',
     GTypeName: 'EknThumbCard',
-    Extends: MarginButton.MarginButton,
+    CssName: 'EknThumbCard',
+    Extends: Gtk.Button,
     Implements: [ Module.Module, Card.Card ],
 
     Properties: {
