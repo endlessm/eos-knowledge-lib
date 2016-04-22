@@ -11,6 +11,7 @@ const Utils = imports.tests.utils;
 Utils.register_gresource();
 
 const ArticleObjectModel = imports.search.articleObjectModel;
+const Card = imports.app.interfaces.card;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const MediaObjectModel = imports.search.mediaObjectModel;
 const Minimal = imports.tests.minimal;
@@ -153,6 +154,26 @@ describe('Card interface', function () {
         card.model.article_number = 5;
         card.set_style_variant_from_model();
         expect(card).toHaveCssClass('variant2');
+    });
+
+    describe ('sequence', function () {
+        it('is none by default', function () {
+            expect(card.sequence).toBe(Card.Sequence.NONE);
+        });
+
+        it('can be set properly', function () {
+            card.sequence = Card.Sequence.PREVIOUS;
+            expect(card.sequence).toBe(Card.Sequence.PREVIOUS);
+            card.sequence = Card.Sequence.NEXT;
+            expect(card.sequence).toBe(Card.Sequence.NEXT);
+            card.sequence = Card.Sequence.NONE;
+            expect(card.sequence).toBe(Card.Sequence.NONE);
+        });
+
+        it('notifies when changed', function (done) {
+            card.connect('notify::sequence', done);
+            card.sequence = Card.Sequence.PREVIOUS;
+        });
     });
 
     describe ('specific sizing classes', function () {
