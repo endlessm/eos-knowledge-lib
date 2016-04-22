@@ -3,7 +3,6 @@
 // Copyright 2016 Endless Mobile, Inc.
 
 const Endless = imports.gi.Endless;
-const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Gdk = imports.gi.Gdk;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
@@ -79,7 +78,7 @@ const SplitPercentageTemplate = new Module.Class({
     },
 
     _update_custom_style: function () {
-        let start_fraction = EosKnowledgePrivate.widget_style_get_float(this, 'start-percentage');
+        let start_fraction = this.start_percentage;
         if (this._start_fraction === start_fraction)
             return;
         this._start_fraction = start_fraction;

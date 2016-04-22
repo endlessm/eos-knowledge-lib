@@ -2,7 +2,6 @@
 
 /* exported ResponsiveMarginsModule */
 
-const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Gdk = imports.gi.Gdk;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
@@ -60,7 +59,7 @@ const ResponsiveMarginsModule = new Module.Class({
     _update_custom_style: function () {
         let changed = false;
         ['small', 'medium', 'large', 'xlarge'].forEach((klass) => {
-            let threshold = EosKnowledgePrivate.widget_style_get_int(this, 'margin-threshold-' + klass);
+            let threshold = this['margin_threshold_' + klass];
             if (threshold === this._thresholds[klass])
                 return;
             this._thresholds[klass] = threshold;

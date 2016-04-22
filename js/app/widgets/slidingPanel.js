@@ -2,7 +2,6 @@
 
 // Copyright 2015 Endless Mobile, Inc.
 
-const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
@@ -25,7 +24,7 @@ const PanelFrame = new Knowledge.Class({
         if (!this.get_child())
             return;
 
-        let shadow_margin = EosKnowledgePrivate.widget_style_get_int(this.panel, 'shadow-margin');
+        let shadow_margin = this.panel.shadow_margin;
 
         // Remove the extra space given by the SlidingPanelOverlay
         allocation.width -= 2 * shadow_margin;

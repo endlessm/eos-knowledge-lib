@@ -1,6 +1,5 @@
 // Copyright 2014 Endless Mobile, Inc.
 
-const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Gdk = imports.gi.Gdk;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
@@ -46,8 +45,7 @@ const GrowButton = new Knowledge.Class({
     },
 
     _update_custom_style: function () {
-        let grow_pixels = EosKnowledgePrivate.widget_style_get_int(this, 'grow-pixels');
-        this._tweener.inactive_value = this.halign === Gtk.Align.START ? -grow_pixels : grow_pixels;
+        this._tweener.inactive_value = this.halign === Gtk.Align.START ? -this.grow_pixels : this.grow_pixels;
     },
 
     vfunc_draw: function (cr) {
