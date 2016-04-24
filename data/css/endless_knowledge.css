@@ -81,6 +81,11 @@ EosWindow.parallax.background-right {
     background-position: 100% 50%;
 }
 
+.section-page-a,
+.search-page-a {
+    padding: 0 100px;
+}
+
 .section-page-a .title,
 .section-page-b .title,
 .search-page-a .title,
