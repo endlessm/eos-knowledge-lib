@@ -181,6 +181,8 @@ EknSplitPercentageTemplate,
 
 .document-card .decoration {
     background-color: #e3e3e3;
+    min-width: 34px;
+    min-height: 2px;
 }
 
 .nav-back-button, .nav-forward-button {
