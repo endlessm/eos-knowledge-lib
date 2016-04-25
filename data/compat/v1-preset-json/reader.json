@@ -86,9 +86,6 @@
         },
         "search-page": {
             "type": "BannerTemplate",
-            "properties": {
-                "separator-margin": 30
-            },
             "slots": {
                 "banner": {
                     "type": "SearchBanner",

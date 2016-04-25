@@ -17,6 +17,10 @@ EosWindow separator {
     background-color: alpha(black, 0.1);
 }
 
+.search-results-page separator {
+    margin: 0 30px;
+}
+
 .article-snippet .title {
     font-size: 2.0em; /* should be overridden */
 }

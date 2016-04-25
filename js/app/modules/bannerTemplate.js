@@ -28,21 +28,6 @@ const BannerTemplate = new Module.Class({
     CssName: 'EknBannerTemplate',
     Extends: Gtk.Grid,
 
-    Properties: {
-        /**
-         * Property: separator-margin
-         * How much to indent the separator by on either side
-         *
-         * Default value:
-         *   0
-         */
-        'separator-margin': GObject.ParamSpec.uint('separator-margin',
-            'Separator margin',
-            'How much to indent the separator by on either side',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            0, GLib.MAXUINT32, 0),
-    },
-
     Slots: {
         'banner': {},
         'content': {},
@@ -53,11 +38,9 @@ const BannerTemplate = new Module.Class({
         props.expand = true;
         this.parent(props);
 
-        let separator_props = {
-            margin_start: this.separator_margin,
-            margin_end: this.separator_margin,
-        };
-        let separator = new Gtk.Separator(separator_props);
+        let separator = new Gtk.Separator({
+            visible: true,
+        });
         separator.get_style_context().add_class('banner-separator');
 
         if (Endless.is_composite_tv_screen(null)) {
