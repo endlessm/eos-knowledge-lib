@@ -185,12 +185,14 @@ const ArticleHTMLRenderer = new Lang.Class({
             .map(tag => SetMap.get_set_for_tag(tag))
             .filter(set => typeof set !== 'undefined')
             .filter(set => set.featured)[0];
-        return {
+        let retval = {
             'date-published': new Date(model.published).toLocaleDateString(),
-            'context': _to_set_link(featured_set),
             'source-link': _to_link(model.original_uri, 'Prensalibre.com'),
             'author': model.authors.join('—'),
         };
+        if (featured_set)
+            retval.context = _to_set_link(featured_set);
+        return retval;
     },
 
     set_custom_css_files: function (custom_css_files) {
