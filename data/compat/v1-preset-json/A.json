@@ -78,7 +78,6 @@
                 "middle": {
                     "type": "SearchBox",
                     "properties": {
-                        "width-request": 400,
                         "halign": "center"
                     }
                 },

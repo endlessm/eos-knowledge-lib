@@ -407,6 +407,14 @@ EosWindow.parallax.background-right {
     border-color: alpha(black, 0.19);
 }
 
+.home-page-a .search-box {
+    min-width: 400px;
+}
+
+.home-page-b .search-box {
+    min-width: 350px;
+}
+
 .home-page-a .search-box selection, .home-page-b .search-box selection {
     color: white;
     background-color: #2e3436;
