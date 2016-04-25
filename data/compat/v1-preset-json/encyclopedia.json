@@ -33,8 +33,7 @@
                     "type": "AppBanner",
                     "properties": {
                         "min-fraction": 0.5,
-                        "max-fraction": 0.5,
-                        "margin-bottom": 42
+                        "max-fraction": 0.5
                     }
                 },
                 "second": {
@@ -53,8 +52,6 @@
                     "properties": {
                         "min-fraction": 0.2,
                         "max-fraction": 0.2,
-                        "margin-top": 10,
-                        "margin-bottom": 10,
                         "valign": "start",
                         "vexpand": false,
                         "halign": "center"
@@ -73,10 +70,6 @@
                     "slots": {
                         "content": {
                             "type": "BannerTemplate",
-                            "properties": {
-                                "margin-start": 45,
-                                "margin-end": 45
-                            },
                             "slots": {
                                 "banner": {
                                     "type": "SearchBanner",
@@ -87,7 +80,6 @@
                                 "content": {
                                     "type": "Search",
                                     "properties": {
-                                        "margin-top": 20,
                                         "message-halign": "start",
                                         "halign": "fill"
                                     },
@@ -120,8 +112,6 @@
                     "properties": {
                         "min-fraction": 0.2,
                         "max-fraction": 0.2,
-                        "margin-top": 10,
-                        "margin-bottom": 10,
                         "valign": "start",
                         "vexpand": false,
                         "halign": "center"
