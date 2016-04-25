@@ -93,11 +93,7 @@
                                         "first": {
                                             "type": "Thematic",
                                             "properties": {
-                                                "halign": "center",
-                                                "margin-top": 20,
-                                                "margin-bottom": 20,
-                                                "margin-start": 20,
-                                                "margin-end": 20
+                                                "halign": "center"
                                             },
                                             "slots": {
                                                 "arrangement": {
@@ -145,10 +141,6 @@
                                             "type": "Highlights",
                                             "properties": {
                                                 "halign": "center",
-                                                "margin-top": 20,
-                                                "margin-bottom": 20,
-                                                "margin-start": 20,
-                                                "margin-end": 20,
                                                 "support-sets": 2
                                             },
                                             "slots": {
@@ -269,10 +261,7 @@
                     "type": "SquareGuysArrangement",
                     "properties" : {
                         "max-rows": 1,
-                        "spacing": 10,
-                        "margin-start": 20,
-                        "margin-end": 20,
-                        "margin-bottom": 20
+                        "spacing": 10
                     },
                     "slots": {
                         "card-type": "main-card"
@@ -288,10 +277,7 @@
                     "properties": {
                         "max-rows": 1,
                         "valign": "end",
-                        "spacing": 20,
-                        "margin-start": 20,
-                        "margin-end": 20,
-                        "margin-bottom": 20
+                        "spacing": 20
                     },
                     "slots": {
                         "card-type": "set-card"
@@ -307,10 +293,7 @@
             }
         },
         "header-card": {
-            "type": "TitleCard",
-            "properties": {
-                "margin-top": 25
-            }
+            "type": "TitleCard"
         },
         "set-card": {
             "type": "PostCard",
@@ -331,8 +314,7 @@
                         "card-type": {
                             "type": "TitleCard",
                             "properties": {
-                                "title-capitalization": "uppercase",
-                                "margin-top": 5
+                                "title-capitalization": "uppercase"
                             }
                         },
                         "filter": {
