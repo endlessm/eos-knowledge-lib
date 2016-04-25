@@ -243,7 +243,8 @@
                 "content": {
                     "type": "ArticleStackModule",
                     "properties" : {
-                        "do-sliding-animation": false
+                        "do-sliding-animation": false,
+                        "allow-navigation": "next"
                     },
                     "slots": {
                         "card-type": {
