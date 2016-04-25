@@ -166,7 +166,7 @@ const MeshInteraction = new Module.Class({
             no_search_results_page: '.no-search-results-page-a'
         },
         B: {
-            section_card: '.card-b',
+            section_card: '.legacy-post-card',
             article_card: '.text-card',
             section_page_banner: '.section-page-b EknSetBannerModule',
             search_page_banner: '.search-page-b EknSearchBannerModule',

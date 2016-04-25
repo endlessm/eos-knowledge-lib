@@ -2,7 +2,7 @@
 <!-- Generated with glade 3.18.3 -->
 <interface>
   <requires lib="gtk+" version="3.12"/>
-  <template class="EknCardB" parent="GtkButton">
+  <template class="EknLegacyPostCard" parent="GtkButton">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="receives_default">False</property>
@@ -50,7 +50,7 @@
       </object>
     </child>
     <style>
-      <class name="card-b"/>
+      <class name="legacy-post-card"/>
       <class name="card"/>
     </style>
   </template>

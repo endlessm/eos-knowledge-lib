@@ -291,7 +291,6 @@ javascript_tests = \
 	tests/js/app/modules/testBackgroundModule.js \
 	tests/js/app/modules/testBannerTemplate.js \
 	tests/js/app/modules/testBuffetInteraction.js \
-	tests/js/app/modules/testCardB.js \
 	tests/js/app/modules/testCarouselArrangement.js \
 	tests/js/app/modules/testContextBanner.js \
 	tests/js/app/modules/testDividedBannerTemplate.js \
@@ -306,6 +305,7 @@ javascript_tests = \
 	tests/js/app/modules/testItemGroupModule.js \
 	tests/js/app/modules/testKnowledgeDocumentCard.js \
 	tests/js/app/modules/testLegacyPolaroidCard.js \
+	tests/js/app/modules/testLegacyPostCard.js \
 	tests/js/app/modules/testLightboxModule.js \
 	tests/js/app/modules/testListArrangement.js \
 	tests/js/app/modules/testMediaCard.js \

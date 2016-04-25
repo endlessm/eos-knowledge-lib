@@ -1,4 +1,4 @@
-// Copyright 2014 Endless Mobile, Inc.
+// Copyright 2016 Endless Mobile, Inc.
 
 const Gtk = imports.gi.Gtk;
 
@@ -7,18 +7,18 @@ const Module = imports.app.interfaces.module;
 const Utils = imports.app.utils;
 
 /**
- * Class: CardB
+ * Class: LegacyPostCard
  *
  * A card implementation with sizing and styling specific to template B.
  * Will only show a title and image.
  */
-const CardB = new Module.Class({
-    Name: 'CardB',
-    CssName: 'EknCardB',
+const LegacyPostCard = new Module.Class({
+    Name: 'LegacyPostCard',
+    CssName: 'EknLegacyPostCard',
     Extends: Gtk.Button,
     Implements: [Card.Card],
 
-    Template: 'resource:///com/endlessm/knowledge/data/widgets/cardB.ui',
+    Template: 'resource:///com/endlessm/knowledge/data/widgets/legacyPostCard.ui',
     InternalChildren: [ 'thumbnail-frame', 'title-label' ],
 
     _init: function (props={}) {

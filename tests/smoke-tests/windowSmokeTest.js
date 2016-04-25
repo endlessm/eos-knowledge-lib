@@ -4,8 +4,8 @@ const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
-const CardB = imports.app.modules.cardB;
 const LegacyPolaroidCard = imports.app.modules.legacyPolaroidCard;
+const LegacyPostCard = imports.app.modules.legacyPostCard;
 const TextCard = imports.app.modules.textCard;
 const Window = imports.app.window;
 const Utils = imports.tests.utils;
@@ -73,7 +73,7 @@ const TestApplication = new Lang.Class({
 
         // ============ HOME PAGE ==================
         view.home_page.title_image_uri = 'resource:///com/endlessm/thrones/agot.svg';
-        let card_class = template_type === 'B' ? CardB.CardB : LegacyPolaroidCard.LegacyPolaroidCard;
+        let card_class = template_type === 'B' ? LegacyPostCard.LegacyPostCard : LegacyPolaroidCard.LegacyPolaroidCard;
         view.home_page.cards = [
             new card_class({
                 title: 'A card',
