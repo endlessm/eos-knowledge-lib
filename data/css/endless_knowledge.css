@@ -165,6 +165,10 @@ EosWindow.parallax.background-right {
     font-weight: bold;
 }
 
+.card-a .thumbnail {
+    min-height: 133px;
+}
+
 .section-page-a .card-a .title,
 .search-page-a .card-a .title {
     font-size: 0.9em;
