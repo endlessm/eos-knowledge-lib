@@ -34,10 +34,6 @@ const ReaderCard = new Module.Class({
         'card-info-label', 'hover-frame' ],
 
     _init: function(props={}) {
-        // TODO: we do want all cards to be the same size, but we may want to
-        // make this size scale with resolution down the road
-        props.width_request = 200;
-        props.height_request = 250;
         this.parent(props);
 
         this.set_title_label_from_model(this._title_label);

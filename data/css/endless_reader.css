@@ -248,6 +248,8 @@ EknSplitPercentageTemplate,
 }
 
 .reader-card {
+    min-width: 200px;
+    min-height: 250px;
     background-color: #f4f4f4;
     border-style: solid;
     border-width: 10px 10px 10px 10px;
