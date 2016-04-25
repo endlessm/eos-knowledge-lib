@@ -5,7 +5,6 @@
 const Gdk = imports.gi.Gdk;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
@@ -45,18 +44,20 @@ const _MENU_HOT_ZONE_WIDTH_PX = 3;
  *   menu - on the whole menu sidebar
  *   menu-button - on the button that opens the menu
  */
-const SideMenuTemplate = new Lang.Class({
+const SideMenuTemplate = new Module.Class({
     Name: 'SideMenuTemplate',
-    GTypeName: 'EknSideMenuTemplate',
     CssName: 'EknSideMenuTemplate',
     Extends: SlidingPanelOverlay.SlidingPanelOverlay,
-    Implements: [ Module.Module ],
 
     Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
         'menu-open': GObject.ParamSpec.boolean('menu-open', 'Menu open',
             'Whether the menu is showing', GObject.ParamFlags.READABLE, false),
+    },
+
+    Slots: {
+        'content': {},
+        'context': {},
+        'sidebar': {},
     },
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/sideMenuTemplate.ui',
@@ -100,11 +101,6 @@ const SideMenuTemplate = new Lang.Class({
 
     get menu_open() {
         return this._menu_panel.reveal_panel;
-    },
-
-    // Module override
-    get_slot_names: function () {
-        return ['content', 'context', 'sidebar'];
     },
 
     _open_menu: function () {

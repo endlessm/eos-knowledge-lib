@@ -5,7 +5,6 @@ const Gettext = imports.gettext;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Actions = imports.app.actions;
 const Config = imports.app.config;
@@ -37,17 +36,18 @@ const SPINNER_PAGE_NAME = 'spinner';
  *   results-message-title - on the title text showing a no results message
  *   results-message-subtitle - on the subtitle text showing a no results message
  *   error-message - on the text showing an error
+ *
+ * Slots:
+ *   arrangement
+ *   article-suggestions - optional
+ *   category-suggestions - optional
  */
-const SearchModule = new Lang.Class({
+const SearchModule = new Module.Class({
     Name: 'SearchModule',
-    GTypeName: 'EknSearchModule',
     CssName: 'EknSearchModule',
     Extends: Gtk.Stack,
-    Implements: [ Module.Module ],
 
     Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
         /**
          * Property: max-children
          *
@@ -93,6 +93,12 @@ const SearchModule = new Lang.Class({
             'Message halign', 'Horizontal alignment of message text',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             Gtk.Align.$gtype, Gtk.Align.START),
+    },
+
+    Slots: {
+        'arrangement': {},
+        'article-suggestions': {},  // optional
+        'category-suggestions': {},  // optional
     },
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/searchModule.ui',
@@ -172,12 +178,6 @@ const SearchModule = new Lang.Class({
                 break;
             }
         });
-    },
-
-    // Module override
-    get_slot_names: function () {
-        return ['arrangement', 'article-suggestions', 'category-suggestions'];
-        // optional: article-suggestions, category-suggestions
     },
 
     _add_card: function (model) {

@@ -4,9 +4,7 @@
 
 const Endless = imports.gi.Endless;
 const Gdk = imports.gi.Gdk;
-const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Module = imports.app.interfaces.module;
 const Utils = imports.app.utils;
@@ -28,19 +26,17 @@ const TOP_MENU_HEIGHT = 50;
  *   <Module>
  *
  * Slots:
- *   banner: Typically an image previewer to display the logo
- *   menu: Module that contains the horizontal menu
+ *   banner - Typically an image previewer to display the logo
+ *   menu - Module that contains the horizontal menu
  */
-const TopMenuModule = new Lang.Class({
+const TopMenuModule = new Module.Class({
     Name: 'TopMenuModule',
-    GTypeName: 'EknTopMenuModule',
     CssName: 'EknTopMenuModule',
     Extends: Endless.CustomContainer,
-    Implements: [ Module.Module ],
 
-    Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
+    Slots: {
+        'banner': {},
+        'menu': {},
     },
 
     _init: function (props={}) {
@@ -54,11 +50,6 @@ const TopMenuModule = new Lang.Class({
         this.add(this._menu);
 
         this.show_all();
-    },
-
-    // Module override
-    get_slot_names: function () {
-        return ['banner', 'menu'];
     },
 
     vfunc_get_request_mode: function () {

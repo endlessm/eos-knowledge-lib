@@ -185,3 +185,28 @@ ekn_extract_pixbuf_dominant_color (GdkPixbuf *pixbuf)
                           (gint) (g * rgb_range),
                           (gint) (b * rgb_range));
 }
+
+/**
+ * ekn_interface_gtype_list_properties:
+ * gtype: #GType ID for a GObject interface
+ * n_properties_returned: (out): return location for array length
+ *
+ * List all the properties for the given interface type ID.
+ * This is a wrapper because these functions don't return the right types in
+ * GJS.
+ * Call it like
+ * `EosKnowledgePrivate.interface_gtype_list_properies(MyType.$gtype)`.
+ *
+ * Returns: (transfer container) (array length=n_properties_returned):
+ *  an array of #GParamSpec with the interface's properties
+ */
+GParamSpec **
+ekn_interface_gtype_list_properties(GType     gtype,
+                                    unsigned *n_properties_returned)
+{
+  gpointer g_iface = g_type_default_interface_ref (gtype);
+  GParamSpec **retval =
+    g_object_interface_list_properties (g_iface, n_properties_returned);
+  g_type_default_interface_unref (g_iface);
+  return retval;
+}

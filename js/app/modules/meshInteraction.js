@@ -7,10 +7,8 @@ const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Actions = imports.app.actions;
-const ArticleHTMLRenderer = imports.app.articleHTMLRenderer;
 const ArticleObjectModel = imports.search.articleObjectModel;
 const Dispatcher = imports.app.dispatcher;
 const Engine = imports.search.engine;
@@ -37,19 +35,10 @@ const RESULTS_SIZE = 10;
  * A very exploratory interaction, the content is organized into categories and
  * may have filters, but can be reached through many different paths.
  */
-const MeshInteraction = new Lang.Class({
+const MeshInteraction = new Module.Class({
     Name: 'MeshInteraction',
-    GTypeName: 'EknMeshInteraction',
     Extends: GObject.Object,
-    Implements: [ Module.Module, Launcher.Launcher, Interaction.Interaction ],
-
-    Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-        'application': GObject.ParamSpec.override('application', Interaction.Interaction),
-        'template-type': GObject.ParamSpec.override('template-type', Interaction.Interaction),
-        'css': GObject.ParamSpec.override('css', Interaction.Interaction),
-    },
+    Implements: [Launcher.Launcher, Interaction.Interaction],
 
     ARTICLE_PAGE: 'article',
     HOME_PAGE: 'home',
@@ -641,9 +630,5 @@ const MeshInteraction = new Lang.Class({
                 model: model,
             });
         }
-    },
-
-    get_slot_names: function () {
-        return 'window';
     },
 });

@@ -9,7 +9,6 @@ const Gettext = imports.gettext;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Actions = imports.app.actions;
 const ArticleObjectModel = imports.search.articleObjectModel;
@@ -52,18 +51,12 @@ const SEARCH_METRIC_EVENT_ID = 'a628c936-5d87-434a-a57a-015a0f223838';
  * Implements:
  *    <Module>, <Launcher>, <Interaction>
  */
-const BuffetInteraction = new Lang.Class({
+const BuffetInteraction = new Module.Class({
     Name: 'BuffetInteraction',
-    GTypeName: 'EknBuffetInteraction',
     Extends: GObject.Object,
-    Implements: [ Module.Module, Launcher.Launcher, Interaction.Interaction ],
+    Implements: [Launcher.Launcher, Interaction.Interaction],
 
     Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-        'application': GObject.ParamSpec.override('application', Interaction.Interaction),
-        'template-type': GObject.ParamSpec.override('template-type', Interaction.Interaction),
-        'css': GObject.ParamSpec.override('css', Interaction.Interaction),
         /**
          * Property: theme
          * Theme CSS specification filename
@@ -595,11 +588,6 @@ const BuffetInteraction = new Lang.Class({
                 logError(error);
             }
         });
-    },
-
-    // Module override
-    get_slot_names: function () {
-        return ['window'];
     },
 
     // Should be mocked out during tests so that we don't actually send metrics

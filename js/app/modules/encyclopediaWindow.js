@@ -1,25 +1,26 @@
 const Endless = imports.gi.Endless;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
 const Module = imports.app.interfaces.module;
-const StyleClasses = imports.app.styleClasses;
 const Utils = imports.app.utils;
 
 /**
  * Class: EncyclopediaWindow
+ *
+ * Slots:
+ *   article-page
+ *   home-page
+ *   lightbox
+ *   search-page
  */
-const EncyclopediaWindow = new Lang.Class({
+const EncyclopediaWindow = new Module.Class({
     Name: 'EncyclopediaWindow',
     Extends: Endless.Window,
-    Implements: [ Module.Module ],
 
     Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
         /**
          * Property: home-background-uri
          * URI of the home page background
@@ -34,6 +35,13 @@ const EncyclopediaWindow = new Lang.Class({
         'results-background-uri': GObject.ParamSpec.string('results-background-uri',
             'Results Background URI', 'Results Background URI',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
+    },
+
+    Slots: {
+        'article-page': {},
+        'home-page': {},
+        'lightbox': {},
+        'search-page': {},
     },
 
     _init: function (props={}) {
@@ -168,9 +176,5 @@ const EncyclopediaWindow = new Lang.Class({
         }
         this.page_manager.visible_child = page;
         this._present_if_needed();
-    },
-
-    get_slot_names: function () {
-        return ['home-page', 'search-page', 'article-page', 'lightbox'];
     },
 });

@@ -2,9 +2,7 @@
 
 const Format = imports.format;
 const Gettext = imports.gettext;
-const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Actions = imports.app.actions;
 const Config = imports.app.config;
@@ -26,17 +24,10 @@ let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
  *   error-message - on the banner when displaying status about an error
  *   query - on the portion of the banner indicating a user query string
  */
-const SearchBannerModule = new Lang.Class({
+const SearchBannerModule = new Module.Class({
     Name: 'SearchBannerModule',
-    GTypeName: 'EknSearchBannerModule',
     CssName: 'EknSearchBannerModule',
     Extends: Gtk.Label,
-    Implements: [ Module.Module ],
-
-    Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-    },
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/searchBannerModule.ui',
 

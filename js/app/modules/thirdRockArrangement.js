@@ -5,7 +5,6 @@
 const Endless = imports.gi.Endless;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Arrangement = imports.app.interfaces.arrangement;
 const Card = imports.app.interfaces.card;
@@ -44,19 +43,13 @@ const _CARD_COUNT = 3;
  *  - Compact mode: a short version of the arrangement is presented, and the cards
  *    adjust accordingly.
  */
-const ThirdRockArrangement = new Lang.Class({
+const ThirdRockArrangement = new Module.Class({
     Name: 'ThirdRockArrangement',
-    GTypeName: 'EknThirdRockArrangement',
     CssName: 'EknThirdRockArrangement',
     Extends: Endless.CustomContainer,
-    Implements: [ Module.Module, Arrangement.Arrangement ],
+    Implements: [Arrangement.Arrangement],
 
     Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-        'all-visible': GObject.ParamSpec.override('all-visible', Arrangement.Arrangement),
-        'fade-cards': GObject.ParamSpec.override('fade-cards', Arrangement.Arrangement),
-        'spacing': GObject.ParamSpec.override('spacing', Arrangement.Arrangement),
         /**
          * Property: compact-mode
          * Whether the arrangement should show its compact form

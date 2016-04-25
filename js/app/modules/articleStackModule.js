@@ -8,7 +8,6 @@ const Gdk = imports.gi.Gdk;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 const WebKit2 = imports.gi.WebKit2;
 
 const Actions = imports.app.actions;
@@ -35,16 +34,12 @@ const Navigation = {
  * card, starts an asynchronous load of the document content and transitions
  * in the content when its ready.
  */
-const ArticleStackModule = new Lang.Class({
+const ArticleStackModule = new Module.Class({
     Name: 'ArticleStackModule',
-    GTypeName: 'EknArticleStackModule',
     CssName: 'EknArticleStackModule',
     Extends: Gtk.Stack,
-    Implements: [ Module.Module ],
 
     Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
         /**
          * Property: engine
          * Handle to EOS knowledge engine. For testing only.
@@ -75,6 +70,11 @@ const ArticleStackModule = new Lang.Class({
             'Allow navigation', 'What direction of navigation to allow',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             Navigation.BOTH),
+    },
+
+    Slots: {
+        'card-type': {},
+        'nav-card-type': {},
     },
 
     CONTENT_TRANSITION_DURATION: 500,
@@ -216,8 +216,4 @@ const ArticleStackModule = new Lang.Class({
         }
         return Gdk.EVENT_STOP;
      },
-
-    get_slot_names: function () {
-        return ['card-type', 'nav-card-type'];
-    },
 });

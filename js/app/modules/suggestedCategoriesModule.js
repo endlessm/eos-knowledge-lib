@@ -4,7 +4,6 @@
 
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
@@ -25,16 +24,12 @@ const Utils = imports.app.utils;
  * Slots:
  *   arrangement
  */
-const SuggestedCategoriesModule = new Lang.Class({
+const SuggestedCategoriesModule = new Module.Class({
     Name: 'SuggestedCategoriesModule',
-    GTypeName: 'EknSuggestedCategoriesModule',
     CssName: 'EknSuggestedCategoriesModule',
     Extends: Gtk.Grid,
-    Implements: [ Module.Module ],
 
     Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
         /**
          * Property: show-title
          * Whether to show the title at the top
@@ -46,6 +41,10 @@ const SuggestedCategoriesModule = new Lang.Class({
             'Show title', 'Whether to show the title at the top',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             true),
+    },
+
+    Slots: {
+        'arrangement': {},
     },
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/suggestedCategoriesModule.ui',
@@ -113,10 +112,5 @@ const SuggestedCategoriesModule = new Lang.Class({
                     break;
             }
         });
-    },
-
-    // Module override
-    get_slot_names: function () {
-        return ['arrangement'];
     },
 });

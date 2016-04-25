@@ -2,11 +2,10 @@
 
 const Endless = imports.gi.Endless;
 const Gdk = imports.gi.Gdk;
-const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Card = imports.app.interfaces.card;
+const Knowledge = imports.app.knowledge;
 const Module = imports.app.interfaces.module;
 const Utils = imports.app.utils;
 
@@ -19,9 +18,8 @@ const SMALL_WIDTH = 190;
 const MEDIUM_WIDTH = 290;
 const LARGE_WIDTH = 390;
 
-const ThumbCardLayout = new Lang.Class({
+const ThumbCardLayout = new Knowledge.Class({
     Name: 'ThumbCardLayout',
-    GTypeName: 'EknThumbCardLayout',
     CssName: 'EknThumbCardLayout',
     Extends: Endless.CustomContainer,
 
@@ -104,25 +102,11 @@ const ThumbCardLayout = new Lang.Class({
  *
  * A thumbnail card for the new reader app
  */
-const ThumbCard = new Lang.Class({
+const ThumbCard = new Module.Class({
     Name: 'ThumbCard',
-    GTypeName: 'EknThumbCard',
     CssName: 'EknThumbCard',
     Extends: Gtk.Button,
-    Implements: [ Module.Module, Card.Card ],
-
-    Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-        'model': GObject.ParamSpec.override('model', Card.Card),
-        'title-capitalization': GObject.ParamSpec.override('title-capitalization',
-            Card.Card),
-        'context-capitalization': GObject.ParamSpec.override('context-capitalization',
-            Card.Card),
-        'highlight-string': GObject.ParamSpec.override('highlight-string', Card.Card),
-        'text-halign': GObject.ParamSpec.override('text-halign', Card.Card),
-        'sequence': GObject.ParamSpec.override('sequence', Card.Card),
-    },
+    Implements: [Card.Card],
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/thumbCard.ui',
     InternalChildren: [ 'thumbnail-frame', 'inner-grid', 'content-frame', 'title-label', 'synopsis-label' ],

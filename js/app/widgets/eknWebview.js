@@ -4,7 +4,6 @@ const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 const WebKit2 = imports.gi.WebKit2;
 
 const ArticleHTMLRenderer = imports.app.articleHTMLRenderer;
@@ -12,6 +11,7 @@ const ArticleObjectModel = imports.search.articleObjectModel;
 const Compat = imports.app.compat.compat;
 const Config = imports.app.config;
 const Engine = imports.search.engine;
+const Knowledge = imports.app.knowledge;
 const Utils = imports.app.utils;
 
 function should_enable_inspector() {
@@ -38,9 +38,8 @@ function should_enable_inspector() {
  * Parent class:
  *     WebKit2.WebView
  */
-const EknWebview = new Lang.Class({
-    Name: 'EknWebview',
-    GTypeName: 'EknWebview',
+const EknWebview = new Knowledge.Class({
+    Name: 'Webview',
     Extends: WebKit2.WebView,
 
     Properties: {

@@ -4,25 +4,15 @@
 
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Arrangement = imports.app.interfaces.arrangement;
 const Module = imports.app.interfaces.module;
 
-const TiledGridArrangement = new Lang.Class({
+const TiledGridArrangement = new Module.Class({
     Name: 'TiledGridArrangement',
-    GTypeName: 'EknTiledGridArrangement',
     CssName: 'EknTiledGridArrangement',
     Extends: Gtk.Grid,
-    Implements: [ Module.Module, Arrangement.Arrangement ],
-
-    Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-        'all-visible': GObject.ParamSpec.override('all-visible', Arrangement.Arrangement),
-        'fade-cards': GObject.ParamSpec.override('fade-cards', Arrangement.Arrangement),
-        'spacing': GObject.ParamSpec.override('spacing', Arrangement.Arrangement),
-    },
+    Implements: [Arrangement.Arrangement],
 
     _init: function (props={}) {
         this.parent(props);

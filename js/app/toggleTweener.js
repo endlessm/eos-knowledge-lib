@@ -2,9 +2,9 @@
 
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
-const Lang = imports.lang;
 
 const Equations = imports.tweener.equations;
+const Knowledge = imports.app.knowledge;
 
 /**
  * Class: ToggleTweener
@@ -15,9 +15,8 @@ const Equations = imports.tweener.equations;
  *
  * Uses the widget's frame clock to update the tweening state.
  */
-const ToggleTweener = new Lang.Class({
+const ToggleTweener = new Knowledge.Class({
     Name: 'ToggleTweener',
-    GTypeName: 'EknToggleTweener',
     Extends: GObject.Object,
 
     Properties: {

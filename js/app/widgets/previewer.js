@@ -1,11 +1,9 @@
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const ImagePreviewer = imports.app.widgets.imagePreviewer;
+const Knowledge = imports.app.knowledge;
 const StyleClasses = imports.app.styleClasses;
-
-GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 
 /**
  * Class: Previewer
@@ -15,9 +13,8 @@ GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.
  * you would like be previewed. If it is one of the supported types, it will
  * be loaded up for you, if not an error will be thrown.
  */
-const Previewer = new Lang.Class({
+const Previewer = new Knowledge.Class({
     Name: 'Previewer',
-    GTypeName: 'EknPreviewer',
     Extends: Gtk.Bin,
     Properties: {
         /**

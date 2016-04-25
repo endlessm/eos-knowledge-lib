@@ -3,7 +3,6 @@
 const Gdk = imports.gi.Gdk;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Card = imports.app.interfaces.card;
 const NavigationCard = imports.app.interfaces.navigationCard;
@@ -15,25 +14,13 @@ const Utils = imports.app.utils;
  *
  * A thumbnail card for the new reader app
  */
-const SearchResultCard = new Lang.Class({
+const SearchResultCard = new Module.Class({
     Name: 'SearchResultCard',
-    GTypeName: 'EknSearchResultCard',
     CssName: 'EknSearchResultCard',
     Extends: Gtk.Button,
-    Implements: [ Module.Module, Card.Card, NavigationCard.NavigationCard ],
+    Implements: [Card.Card, NavigationCard.NavigationCard],
 
     Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-        'model': GObject.ParamSpec.override('model', Card.Card),
-        'title-capitalization': GObject.ParamSpec.override('title-capitalization',
-            Card.Card),
-        'context-capitalization': GObject.ParamSpec.override('context-capitalization',
-            Card.Card),
-        'highlight-string': GObject.ParamSpec.override('highlight-string', Card.Card),
-        'text-halign': GObject.ParamSpec.override('text-halign', Card.Card),
-        'sequence': GObject.ParamSpec.override('sequence', Card.Card),
-        'navigation-context': GObject.ParamSpec.override('navigation-context', NavigationCard.NavigationCard),
         /**
          * Property: show-synopsis
          * Whether to show the synopsis label.

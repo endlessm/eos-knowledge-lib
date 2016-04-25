@@ -3,7 +3,6 @@
 const GObject = imports.gi.GObject;
 const GLib = imports.gi.GLib;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Card = imports.app.interfaces.card;
 const Module = imports.app.interfaces.module;
@@ -25,29 +24,18 @@ const Utils = imports.app.utils;
  *   card-synopsis - on the synopsis label
  *   card-context - on the context label
  */
-const AllTypeCard = new Lang.Class({
+const AllTypeCard = new Module.Class({
     Name: 'AllTypeCard',
-    GTypeName: 'EknAllTypeCard',
     CssName: 'EknAllTypeCard',
     Extends: Gtk.Button,
-    Implements: [ Module.Module, Card.Card ],
+    Implements: [Card.Card],
 
     Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-        'model': GObject.ParamSpec.override('model', Card.Card),
-        'title-capitalization': GObject.ParamSpec.override('title-capitalization',
-            Card.Card),
-        'context-capitalization': GObject.ParamSpec.override('context-capitalization',
-            Card.Card),
-        'highlight-string': GObject.ParamSpec.override('highlight-string', Card.Card),
-        'text-halign': GObject.ParamSpec.override('text-halign', Card.Card),
         'highlighted': GObject.ParamSpec.boolean('highlighted',
             'Highlighted Mode',
             'Whether this card is displayed as a highlighted card',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             false),
-        'sequence': GObject.ParamSpec.override('sequence', Card.Card),
     },
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/allTypeCard.ui',

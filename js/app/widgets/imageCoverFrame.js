@@ -1,7 +1,8 @@
 const Gdk = imports.gi.Gdk;
 const GdkPixbuf = imports.gi.GdkPixbuf;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
+
+const Knowledge = imports.app.knowledge;
 const WidgetSurfaceCache = imports.app.widgetSurfaceCache;
 
 /**
@@ -12,9 +13,8 @@ const WidgetSurfaceCache = imports.app.widgetSurfaceCache;
  * space it is allocated and then centered.
  *
  */
-const ImageCoverFrame = Lang.Class({
+const ImageCoverFrame = new Knowledge.Class({
     Name: 'ImageCoverFrame',
-    GTypeName: 'EknImageCoverFrame',
     Extends: Gtk.Widget,
 
     _init: function (props={}) {

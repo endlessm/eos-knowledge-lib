@@ -4,7 +4,6 @@
 
 const Gettext = imports.gettext;
 const GObject = imports.gi.GObject;
-const Lang = imports.lang;
 
 const Actions = imports.app.actions;
 const Config = imports.app.config;
@@ -18,20 +17,13 @@ let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
  * Class: SupplementaryArticlesModule
  * A module that displays all unread articles as cards in an arrangement. If no
  * unread articles are available it will show read articles with the same criteria.
- *
- * Slots:
- *   arrangement
  */
-const SupplementaryArticlesModule = new Lang.Class({
+const SupplementaryArticlesModule = new Module.Class({
     Name: 'SupplementaryArticlesModule',
-    GTypeName: 'EknSupplementaryArticlesModule',
     CssName: 'EknSupplementaryArticlesModule',
     Extends: CardContainer.CardContainer,
-    Implements: [ Module.Module ],
 
     Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
         /**
          * Property: same-set
          *
@@ -73,10 +65,5 @@ const SupplementaryArticlesModule = new Lang.Class({
                     break;
             }
         });
-    },
-
-    // Module override
-    get_slot_names: function () {
-        return ['arrangement'];
     },
 });

@@ -19,8 +19,10 @@ const StyleClasses = imports.app.styleClasses;
  * An arrangement controls how a group of cards are presented in the UI.
  * Examples of arrangements: a list, a grid, etc.
  *
- * Arrangements provide a slot named **card-type** which controls how the card
- * models are converted into cards.
+ * Slots:
+ *   card-type - controls how the card models are converted into cards
+ *   order
+ *   filter
  */
 const Arrangement = new Lang.Interface({
     Name: 'Arrangement',
@@ -73,6 +75,12 @@ const Arrangement = new Lang.Interface({
             'Whether new cards should fade in gradually',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
             false),
+    },
+
+    Slots: {
+        'card-type': {},
+        'order': {},
+        'filter': {},
     },
 
     Signals: {
@@ -246,14 +254,6 @@ const Arrangement = new Lang.Interface({
 
     get_max_cards: function () {
         return -1;
-    },
-
-    // Module override
-    // If you want to override this again in your implementation, do like so:
-    //
-    // return Arrangement.get_slot_names(this).concat(['more', 'slots']);
-    get_slot_names: function () {
-        return ['card-type', 'order', 'filter'];
     },
 
     /**

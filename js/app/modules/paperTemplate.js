@@ -1,9 +1,7 @@
 // Copyright 2015 Endless Mobile, Inc.
 
 const Gdk = imports.gi.Gdk;
-const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Module = imports.app.interfaces.module;
 const Utils = imports.app.utils;
@@ -18,17 +16,17 @@ const Utils = imports.app.utils;
  * CSS Styles:
  *      paper-template - on the template as a whole, which is a GtkAlignment
  *      content - on the paper itself (the GtkFrame within the alignment)
+ *
+ * Slots:
+ *   content
  */
-const PaperTemplate = new Lang.Class({
+const PaperTemplate = new Module.Class({
     Name: 'PaperTemplate',
-    GTypeName: 'EknPaperTemplate',
     CssName: 'EknPaperTemplate',
     Extends: Gtk.Bin,
-    Implements: [ Module.Module ],
 
-    Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
+    Slots: {
+        'content': {},
     },
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/paperTemplate.ui',
@@ -71,9 +69,5 @@ const PaperTemplate = new Lang.Class({
         this.parent(cr);
         cr.$dispose();
         return false;
-    },
-
-    get_slot_names: function () {
-        return ['content'];
     },
 });

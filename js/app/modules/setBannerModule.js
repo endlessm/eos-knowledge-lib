@@ -1,9 +1,7 @@
 // Copyright 2015 Endless Mobile, Inc.
 
 const Gdk = imports.gi.Gdk;
-const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
@@ -18,16 +16,13 @@ const Module = imports.app.interfaces.module;
  * Slots:
  *   card-type
  */
-const SetBannerModule = new Lang.Class({
+const SetBannerModule = new Module.Class({
     Name: 'SetBannerModule',
-    GTypeName: 'EknSetBannerModule',
     CssName: 'EknSetBannerModule',
     Extends: Gtk.Frame,
-    Implements: [ Module.Module ],
 
-    Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
+    Slots: {
+        'card-type': {},
     },
 
     _init: function (props={}) {
@@ -49,9 +44,5 @@ const SetBannerModule = new Lang.Class({
                     break;
             }
         });
-    },
-
-    get_slot_names: function () {
-        return [ 'card-type' ];
     },
 });

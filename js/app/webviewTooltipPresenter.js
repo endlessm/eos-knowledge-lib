@@ -8,6 +8,7 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 
 const Compat = imports.app.compat.compat;
+const Knowledge = imports.app.knowledge;
 const StyleClasses = imports.app.styleClasses;
 const Utils = imports.app.utils;
 
@@ -29,9 +30,9 @@ const WEBVIEW_OBJECT_PATH = '/com/endlessm/webview';
  * The WebviewTooltipPresenter handles the connection of the webview tooltip to
  * be added to a particular document card.
  */
-const WebviewTooltipPresenter = new GObject.Class({
+const WebviewTooltipPresenter = new Knowledge.Class({
     Name: 'WebviewTooltipPresenter',
-    GTypeName: 'EknWebviewTooltipPresenter',
+    Extends: GObject.Object,
 
     Signals: {
         'show-tooltip': {

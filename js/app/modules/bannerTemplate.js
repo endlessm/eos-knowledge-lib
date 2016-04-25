@@ -4,7 +4,6 @@ const Endless = imports.gi.Endless;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Module = imports.app.interfaces.module;
 
@@ -24,16 +23,12 @@ const COMPOSITE_REDUCE_MARGINS_FRACTION = 0.4;
  * CSS classes:
  *   separator - on the separator
  */
-const BannerTemplate = new Lang.Class({
+const BannerTemplate = new Module.Class({
     Name: 'BannerTemplate',
-    GTypeName: 'EknBannerTemplate',
     CssName: 'EknBannerTemplate',
     Extends: Gtk.Grid,
-    Implements: [ Module.Module ],
 
     Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
         /**
          * Property: separator-margin
          * How much to indent the separator by on either side
@@ -46,6 +41,11 @@ const BannerTemplate = new Lang.Class({
             'How much to indent the separator by on either side',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             0, GLib.MAXUINT32, 0),
+    },
+
+    Slots: {
+        'banner': {},
+        'content': {},
     },
 
     _init: function (props={}) {
@@ -68,9 +68,5 @@ const BannerTemplate = new Lang.Class({
         this.add(this.create_submodule('banner'));
         this.add(separator);
         this.add(this.create_submodule('content'));
-    },
-
-    get_slot_names: function () {
-        return [ 'banner', 'content' ];
     },
 });

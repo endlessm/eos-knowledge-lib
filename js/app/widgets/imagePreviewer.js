@@ -3,8 +3,9 @@ const GdkPixbuf = imports.gi.GdkPixbuf;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const GLib = imports.gi.GLib;
-const Lang = imports.lang;
 const Mainloop = imports.mainloop;
+
+const Knowledge = imports.app.knowledge;
 
 /**
  * Class: ImagePreviewer
@@ -13,9 +14,8 @@ const Mainloop = imports.mainloop;
  * Unlike GtkImage this widget will size down its image to the available
  * space, which is where most of the complexity in this class comes from.
  */
-const ImagePreviewer = Lang.Class({
+const ImagePreviewer = new Knowledge.Class({
     Name: 'ImagePreviewer',
-    GTypeName: 'EknImagePreviewer',
     Extends: Gtk.Widget,
     Properties: {
         /**

@@ -1,8 +1,6 @@
 // Copyright 2016 Endless Mobile, Inc.
 
-const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Module = imports.app.interfaces.module;
 
@@ -22,16 +20,14 @@ const Module = imports.app.interfaces.module;
  *   first - on the first component
  *   second - on the second component
  */
-const TwoPieceTemplate = new Lang.Class({
+const TwoPieceTemplate = new Module.Class({
     Name: 'TwoPieceTemplate',
-    GTypeName: 'EknTwoPieceTemplate',
     CssName: 'EknTwoPieceTemplate',
     Extends: Gtk.Grid,
-    Implements: [ Module.Module ],
 
-    Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
+    Slots: {
+        'first': {},
+        'second': {},
     },
 
     _init: function (props={}) {
@@ -45,9 +41,5 @@ const TwoPieceTemplate = new Lang.Class({
         let second = this.create_submodule('second');
         second.get_style_context().add_class('second');
         this.add(second);
-    },
-
-    get_slot_names: function () {
-        return ['first', 'second'];
     },
 });

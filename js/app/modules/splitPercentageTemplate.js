@@ -1,11 +1,11 @@
+/* SplitPercentageTemplate */
+
 // Copyright 2016 Endless Mobile, Inc.
 
 const Endless = imports.gi.Endless;
-const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Gdk = imports.gi.Gdk;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Module = imports.app.interfaces.module;
 const Utils = imports.app.utils;
@@ -13,13 +13,15 @@ const Utils = imports.app.utils;
 /**
  * Class: SplitPercentageTemplate
  * Template with a sidebar and content area
+ *
+ * Slots:
+ *   start
+ *   end
  */
-const SplitPercentageTemplate = new Lang.Class({
+const SplitPercentageTemplate = new Module.Class({
     Name: 'SplitPercentageTemplate',
-    GTypeName: 'EknSplitPercentageTemplate',
     CssName: 'EknSplitPercentageTemplate',
     Extends: Endless.CustomContainer,
-    Implements: [ Module.Module ],
 
     Properties: {
         /**
@@ -30,8 +32,16 @@ const SplitPercentageTemplate = new Lang.Class({
             'Background image URI', 'URI for background image of this widget',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             ''),
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
+    },
+    StyleProperties: {
+        'start-percentage': GObject.ParamSpec.float('start-percentage',
+            'Start Percentage', 'Start Percentage', GObject.ParamFlags.READABLE,
+            0, 1, 0.5),
+    },
+
+    Slots: {
+        'start': {},
+        'end': {},
     },
 
     _init: function (props={}) {
@@ -68,15 +78,11 @@ const SplitPercentageTemplate = new Lang.Class({
     },
 
     _update_custom_style: function () {
-        let start_fraction = EosKnowledgePrivate.widget_style_get_float(this, 'start-percentage');
+        let start_fraction = this.start_percentage;
         if (this._start_fraction === start_fraction)
             return;
         this._start_fraction = start_fraction;
         this.queue_resize();
-    },
-
-    get_slot_names: function () {
-        return [ 'start', 'end' ];
     },
 
     _distribute_width: function (available_width) {
@@ -156,7 +162,3 @@ const SplitPercentageTemplate = new Lang.Class({
         Utils.set_container_clip(this);
     },
 });
-
-Gtk.Widget.install_style_property.call(SplitPercentageTemplate, GObject.ParamSpec.float(
-    'start-percentage', 'Start Percentage', 'Start Percentage',
-    GObject.ParamFlags.READABLE, 0, 1, 0.5));

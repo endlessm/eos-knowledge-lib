@@ -4,7 +4,6 @@
 
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
-const Lang = imports.lang;
 
 const Arrangement = imports.app.interfaces.arrangement;
 const InfiniteScrolledWindow = imports.app.widgets.infiniteScrolledWindow;
@@ -13,19 +12,13 @@ const Module = imports.app.interfaces.module;
 /**
  * Class: GridArrangement
  */
-const GridArrangement = new Lang.Class({
+const GridArrangement = new Module.Class({
     Name: 'GridArrangement',
-    GTypeName: 'EknGridArrangement',
     CssName: 'EknGridArrangement',
     Extends: InfiniteScrolledWindow.InfiniteScrolledWindow,
-    Implements: [ Module.Module, Arrangement.Arrangement ],
+    Implements: [Arrangement.Arrangement],
 
     Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-        'all-visible': GObject.ParamSpec.override('all-visible', Arrangement.Arrangement),
-        'fade-cards': GObject.ParamSpec.override('fade-cards', Arrangement.Arrangement),
-        'spacing': GObject.ParamSpec.override('spacing', Arrangement.Arrangement),
         /**
          * Property: max-children-per-line
          *

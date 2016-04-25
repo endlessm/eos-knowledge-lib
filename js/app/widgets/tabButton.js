@@ -1,18 +1,14 @@
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
+const Knowledge = imports.app.knowledge;
 const StyleClasses = imports.app.styleClasses;
-const Utils = imports.app.utils;
-
-GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 
 /**
  * Class: TabButton
  */
-const TabButton = new Lang.Class({
+const TabButton = new Knowledge.Class({
     Name: 'TabButton',
-    GTypeName: 'EknTabButton',
     Extends: Gtk.Button,
 
     Properties: {

@@ -3,11 +3,11 @@
 const GLib = imports.gi.GLib;
 const Gtk = imports.gi.Gtk;
 const GObject = imports.gi.GObject;
-const Lang = imports.lang;
 
-const Dispatcher = new Lang.Class({
+const Knowledge = imports.app.knowledge;
+
+const Dispatcher = new Knowledge.Class({
     Name: 'Dispatcher',
-    GTypeName: 'EknDispatcher',
     Extends: GObject.Object,
 
     _init: function (props={}) {

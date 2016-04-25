@@ -5,7 +5,6 @@ const Gettext = imports.gettext;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const AsyncTask = imports.search.asyncTask;
 const Card = imports.app.interfaces.card;
@@ -33,27 +32,13 @@ const _COMPOSITE_TITLE_VIEW_LEFT_MARGIN_PX = 40;
  * can add a view, e.g. a webview, to show some content for the
  * article.
  */
-const ReaderDocumentCard = new Lang.Class({
+const ReaderDocumentCard = new Module.Class({
     Name: 'ReaderDocumentCard',
-    GTypeName: 'EknReaderDocumentCard',
     CssName: 'EknReaderDocumentCard',
     Extends: Gtk.Overlay,
-    Implements: [ Module.Module, Card.Card, DocumentCard.DocumentCard ],
+    Implements: [Card.Card, DocumentCard.DocumentCard],
 
     Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-        'model': GObject.ParamSpec.override('model', Card.Card),
-        'title-capitalization': GObject.ParamSpec.override('title-capitalization',
-            Card.Card),
-        'context-capitalization': GObject.ParamSpec.override('context-capitalization',
-            Card.Card),
-        'highlight-string': GObject.ParamSpec.override('highlight-string', Card.Card),
-        'text-halign': GObject.ParamSpec.override('text-halign', Card.Card),
-        'sequence': GObject.ParamSpec.override('sequence', Card.Card),
-        'content-view': GObject.ParamSpec.override('content-view', DocumentCard.DocumentCard),
-        'custom-css': GObject.ParamSpec.override('custom-css',
-            DocumentCard.DocumentCard),
         // FIXME: The following properties only make sense for reader apps.
         // StandalonePage and ReaderWindow use them, so it follows that those
         // modules also only make sense for reader apps.

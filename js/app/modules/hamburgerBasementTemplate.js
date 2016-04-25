@@ -3,7 +3,6 @@
 const Gettext = imports.gettext;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Config = imports.app.config;
 const Module = imports.app.interfaces.module;
@@ -20,17 +19,19 @@ let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
  *
  * CSS Styles:
  *      hamburger-basement-template - on the template
+ *
+ * Slots:
+ *   top
+ *   middle
+ *   bottom
+ *   basement
  */
-const HamburgerBasementTemplate = new Lang.Class({
+const HamburgerBasementTemplate = new Module.Class({
     Name: 'HamburgerBasementTemplate',
-    GTypeName: 'EknHamburgerBasementTemplate',
     CssName: 'EknHamburgerBasementTemplate',
     Extends: Gtk.Stack,
-    Implements: [ Module.Module ],
 
     Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
         /**
          * Property: upper-button-label
          * Label on the tab button on the upper page
@@ -47,6 +48,13 @@ const HamburgerBasementTemplate = new Lang.Class({
             'Basement tab button label', 'Basement tab button label',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             _("HOME")),
+    },
+
+    Slots: {
+        'top': {},
+        'middle': {},
+        'bottom': {},
+        'basement': {},
     },
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/hamburgerBasementTemplate.ui',
@@ -116,9 +124,5 @@ const HamburgerBasementTemplate = new Lang.Class({
             });
         });
         return panel;
-    },
-
-    get_slot_names: function () {
-        return ['top', 'middle', 'bottom', 'basement'];
     },
 });

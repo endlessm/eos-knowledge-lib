@@ -2,12 +2,10 @@
 
 /* exported ResponsiveMarginsModule */
 
-const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Gdk = imports.gi.Gdk;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Module = imports.app.interfaces.module;
 const Utils = imports.app.utils;
@@ -15,17 +13,32 @@ const Utils = imports.app.utils;
 /**
  * Class: ResponsiveMarginsModule
  * A module that displays a window and has responsive margins.
+ *
+ * Slots:
+ *   content
  */
-const ResponsiveMarginsModule = new Lang.Class({
+const ResponsiveMarginsModule = new Module.Class({
     Name: 'ResponsiveMarginsModule',
-    GTypeName: 'EknResponsiveMarginsModule',
     CssName: 'EknResponsiveMarginsModule',
     Extends: Gtk.Bin,
-    Implements: [ Module.Module ],
 
-    Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
+    StyleProperties: {
+        'margin-threshold-small': GObject.ParamSpec.int('margin-threshold-small',
+            'Margin Threshold Small', 'Margin Threshold Small',
+            GObject.ParamFlags.READABLE, 0, GLib.MAXINT32, 800),
+        'margin-threshold-medium': GObject.ParamSpec.int('margin-threshold-medium',
+            'Margin Threshold Medium', 'Margin Threshold Medium',
+            GObject.ParamFlags.READABLE, 0, GLib.MAXINT32, 1000),
+        'margin-threshold-large': GObject.ParamSpec.int('margin-threshold-large',
+            'Margin Threshold Large', 'Margin Threshold Large',
+            GObject.ParamFlags.READABLE, 0, GLib.MAXINT32, 1200),
+        'margin-threshold-xlarge': GObject.ParamSpec.int('margin-threshold-xlarge',
+            'Margin Threshold XLarge', 'Margin Threshold XLarge',
+            GObject.ParamFlags.READABLE, 0, GLib.MAXINT32, 1500),
+    },
+
+    Slots: {
+        'content': {},
     },
 
     _init: function (props={}) {
@@ -46,7 +59,7 @@ const ResponsiveMarginsModule = new Lang.Class({
     _update_custom_style: function () {
         let changed = false;
         ['small', 'medium', 'large', 'xlarge'].forEach((klass) => {
-            let threshold = EosKnowledgePrivate.widget_style_get_int(this, 'margin-threshold-' + klass);
+            let threshold = this['margin_threshold_' + klass];
             if (threshold === this._thresholds[klass])
                 return;
             this._thresholds[klass] = threshold;
@@ -136,22 +149,4 @@ const ResponsiveMarginsModule = new Lang.Class({
         cr.$dispose();
         return Gdk.EVENT_PROPAGATE;
     },
-
-    // Module override
-    get_slot_names: function () {
-        return ['content'];
-    },
 });
-
-Gtk.Widget.install_style_property.call(ResponsiveMarginsModule, GObject.ParamSpec.int(
-    'margin-threshold-small', 'Margin Threshold Small', 'Margin Threshold Small',
-    GObject.ParamFlags.READABLE, 0, GLib.MAXINT32, 800));
-Gtk.Widget.install_style_property.call(ResponsiveMarginsModule, GObject.ParamSpec.int(
-    'margin-threshold-medium', 'Margin Threshold Medium', 'Margin Threshold Medium',
-    GObject.ParamFlags.READABLE, 0, GLib.MAXINT32, 1000));
-Gtk.Widget.install_style_property.call(ResponsiveMarginsModule, GObject.ParamSpec.int(
-    'margin-threshold-large', 'Margin Threshold Large', 'Margin Threshold Large',
-    GObject.ParamFlags.READABLE, 0, GLib.MAXINT32, 1200));
-Gtk.Widget.install_style_property.call(ResponsiveMarginsModule, GObject.ParamSpec.int(
-    'margin-threshold-xlarge', 'Margin Threshold XLarge', 'Margin Threshold XLarge',
-    GObject.ParamFlags.READABLE, 0, GLib.MAXINT32, 1500));

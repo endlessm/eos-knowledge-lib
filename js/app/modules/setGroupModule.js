@@ -5,7 +5,6 @@
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
@@ -27,17 +26,13 @@ const StyleClasses = imports.app.styleClasses;
  * Slots:
  *   arrangement
  */
-const SetGroupModule = new Lang.Class({
+const SetGroupModule = new Module.Class({
     Name: 'SetGroupModule',
-    GTypeName: 'EknSetGroupModule',
     CssName: 'EknSetGroupModule',
     Extends: Gtk.Frame,
-    Implements: [ Module.Module, Expandable.Expandable ],
+    Implements: [Expandable.Expandable],
 
     Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-        'has-more-content': GObject.ParamSpec.override('has-more-content', Expandable.Expandable),
         /**
          * Property: max-children
          *
@@ -47,6 +42,10 @@ const SetGroupModule = new Lang.Class({
             'The number of children to show in this container',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             0, GLib.MAXINT32, 1000),
+    },
+
+    Slots: {
+        'arrangement': {},
     },
 
     _init: function (props={}) {
@@ -102,11 +101,6 @@ const SetGroupModule = new Lang.Class({
                     break;
             }
         });
-    },
-
-    // Module override
-    get_slot_names: function () {
-        return ['arrangement'];
     },
 
     _add_card: function (model) {

@@ -3,12 +3,10 @@
 /* exported SidebarTemplate, get_css_for_module */
 
 const Endless = imports.gi.Endless;
-const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Gdk = imports.gi.Gdk;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Module = imports.app.interfaces.module;
 const StyleClasses = imports.app.styleClasses;
@@ -27,12 +25,10 @@ const Utils = imports.app.utils;
  *   sidebar - a frame containing the sidebar module
  *   content - a frame containing the content module
  */
-const SidebarTemplate = new Lang.Class({
+const SidebarTemplate = new Module.Class({
     Name: 'SidebarTemplate',
-    GTypeName: 'EknSidebarTemplate',
     CssName: 'EknSidebarTemplate',
     Extends: Endless.CustomContainer,
-    Implements: [ Module.Module ],
 
     Properties: {
         /**
@@ -41,9 +37,22 @@ const SidebarTemplate = new Lang.Class({
          */
         'sidebar-first':  GObject.ParamSpec.boolean('sidebar-first', 'Sidebar First', 'Sidebar First',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, true),
+    },
+    StyleProperties: {
+        'sidebar-width-large': GObject.ParamSpec.int('sidebar-width-large',
+            'Sidebar Width Large', 'Sidebar Width Large',
+            GObject.ParamFlags.READABLE, 0, GLib.MAXINT32, 400),
+        'sidebar-width-small': GObject.ParamSpec.int('sidebar-width-small',
+            'Sidebar Width Small', 'Sidebar Width Small',
+            GObject.ParamFlags.READABLE, 0, GLib.MAXINT32, 240),
+        'threshold-width-large': GObject.ParamSpec.int('threshold-width-large',
+            'Threshold Width Large', 'Threshold Width Large',
+            GObject.ParamFlags.READABLE, 0, GLib.MAXINT32, 800),
+    },
 
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
+    Slots: {
+        'sidebar': {},
+        'content': {},
     },
 
     _init: function (props={}) {
@@ -74,9 +83,9 @@ const SidebarTemplate = new Lang.Class({
     },
 
     _update_custom_style: function () {
-        let threshold_width_large = EosKnowledgePrivate.widget_style_get_int(this, 'threshold-width-large');
-        let sidebar_width_large = EosKnowledgePrivate.widget_style_get_int(this, 'sidebar-width-large');
-        let sidebar_width_small = EosKnowledgePrivate.widget_style_get_int(this, 'sidebar-width-small');
+        let threshold_width_large = this.threshold_width_large;
+        let sidebar_width_large = this.sidebar_width_large;
+        let sidebar_width_small = this.sidebar_width_small;
         if (this._threshold_width_large === threshold_width_large &&
             this._sidebar_width_large === sidebar_width_large &&
             this._sidebar_width_small === sidebar_width_small)
@@ -85,10 +94,6 @@ const SidebarTemplate = new Lang.Class({
         this._sidebar_width_large = sidebar_width_large;
         this._sidebar_width_small = sidebar_width_small;
         this.queue_resize();
-    },
-
-    get_slot_names: function () {
-        return [ 'sidebar', 'content' ];
     },
 
     vfunc_get_request_mode: function () {
@@ -140,13 +145,3 @@ const SidebarTemplate = new Lang.Class({
         Utils.set_container_clip(this);
     },
 });
-
-Gtk.Widget.install_style_property.call(SidebarTemplate, GObject.ParamSpec.int(
-    'sidebar-width-large', 'Sidebar Width Large', 'Sidebar Width Large',
-    GObject.ParamFlags.READABLE, 0, GLib.MAXINT32, 400));
-Gtk.Widget.install_style_property.call(SidebarTemplate, GObject.ParamSpec.int(
-    'sidebar-width-small', 'Sidebar Width Small', 'Sidebar Width Small',
-    GObject.ParamFlags.READABLE, 0, GLib.MAXINT32, 240));
-Gtk.Widget.install_style_property.call(SidebarTemplate, GObject.ParamSpec.int(
-    'threshold-width-large', 'Threshold Width Large', 'Threshold Width Large',
-    GObject.ParamFlags.READABLE, 0, GLib.MAXINT32, 800));

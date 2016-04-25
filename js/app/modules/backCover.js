@@ -1,17 +1,11 @@
 // Copyright 2015 Endless Mobile, Inc.
 
-const Gettext = imports.gettext;
-const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
-const Config = imports.app.config;
 const Module = imports.app.interfaces.module;
 const ProgressLabel = imports.app.widgets.progressLabel;
 const Utils = imports.app.utils;
-
-let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
 /**
  * Class: BackCover
@@ -19,16 +13,12 @@ let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
  * A module which displays information for the back cover of a reader
  * magazine app.
  */
-const BackCover = new Lang.Class({
+const BackCover = new Module.Class({
     Name: 'BackCover',
-    GTypeName: 'EknBackCover',
     CssName: 'EknBackCover',
     Extends: Gtk.Frame,
-    Implements: [ Module.Module ],
 
     Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
         /**
          * Property: background-image-uri
          * URI of the page background

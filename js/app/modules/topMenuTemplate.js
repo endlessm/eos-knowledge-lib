@@ -4,7 +4,6 @@
 
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Module = imports.app.interfaces.module;
 const SlidingPanelOverlay = imports.app.widgets.slidingPanelOverlay;
@@ -32,18 +31,19 @@ const _EXTRA_TOP_MARGIN = 50;
  *   content - Main content of the template
  *
  */
-const TopMenuTemplate = new Lang.Class({
+const TopMenuTemplate = new Module.Class({
     Name: 'TopMenuTemplate',
-    GTypeName: 'EknTopMenuTemplate',
     CssName: 'EknTopMenuTemplate',
     Extends: SlidingPanelOverlay.SlidingPanelOverlay,
-    Implements: [ Module.Module ],
 
     Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
         'menu-open': GObject.ParamSpec.boolean('menu-open', 'Menu open',
             'Whether the menu is showing', GObject.ParamFlags.READABLE, false),
+    },
+
+    Slots: {
+        'top-menu': {},
+        'content': {},
     },
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/topMenuTemplate.ui',
@@ -85,11 +85,6 @@ const TopMenuTemplate = new Lang.Class({
 
     get menu_open() {
         return this._menu_panel.reveal_panel;
-    },
-
-    // Module override
-    get_slot_names: function () {
-        return ['content', 'top-menu' ];
     },
 
     _on_scroll: function (adjustment) {

@@ -1,22 +1,19 @@
-const GObject = imports.gi.GObject;
-const Lang = imports.lang;
-
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
+const GObject = imports.gi.GObject;
 
-GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
+const Knowledge = imports.app.knowledge;
 
-const MockItemModel = new Lang.Class({
+const MockItemModel = new Knowledge.Class({
     Name: 'MockItemModel',
     Extends: GObject.Object,
     Implements: [ EosKnowledgePrivate.HistoryItemModel ],
-    Properties: {
-        // FIXME this property should not be here, but it is required because
-        // you cannot override interface-defined properties in GJS (yet).
-        // https://bugzilla.gnome.org/show_bug.cgi?id=727368
-        'title': GObject.ParamSpec.string('title', 'override', 'override',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            '')
-    }
+
+    get title() {
+        return this._title;
+    },
+    set title(value) {
+        this._title = value;
+    },
 });
 
 describe('History item model', function () {
@@ -26,10 +23,6 @@ describe('History item model', function () {
         }).not.toThrow();
     });
 
-    // This test is currently a no-brainer, but after GJS gets patched, it
-    // should still work even if the 'title' property is removed from the
-    // MockItemModel class.
-    // https://bugzilla.gnome.org/show_bug.cgi?id=727368
     it('remembers its title', function () {
         let model = new MockItemModel({
             title: 'Slartibartfast'

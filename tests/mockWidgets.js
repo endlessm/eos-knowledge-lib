@@ -7,10 +7,11 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
+const Knowledge = imports.app.knowledge;
 const Minimal = imports.tests.minimal;
 const Module = imports.app.interfaces.module;
 
-const MockButton = new Lang.Class({
+const MockButton = new Knowledge.Class({
     Name: 'MockButton',
     Extends: GObject.Object,
     Properties: {
@@ -22,7 +23,7 @@ const MockButton = new Lang.Class({
     },
 });
 
-const MockScrolledArrangement = new Lang.Class({
+const MockScrolledArrangement = new Knowledge.Class({
     Name: 'MockScrolledArrangement',
     Extends: Minimal.MinimalArrangement,
     Properties: {
@@ -34,7 +35,7 @@ const MockScrolledArrangement = new Lang.Class({
     },
 });
 
-const MockSearchBox = new Lang.Class({
+const MockSearchBox = new Knowledge.Class({
     Name: 'MockSearchBox',
     Extends: Gtk.Label,
     Signals: {
@@ -43,24 +44,15 @@ const MockSearchBox = new Lang.Class({
         'menu-item-selected': {},
     },
 
-    _init: function (props={}) {
-        this.parent(props);
-    },
-
     set_menu_items: function () {},
 
     set_text_programmatically: function () {},
 });
 
-const MockItemGroupModule = new Lang.Class({
+const MockItemGroupModule = new Module.Class({
     Name: 'MockItemGroupModule',
     Extends: Gtk.Widget,
-    Implements: [ Module.Module ],
 
-    Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-    },
     Signals: {
         'article-selected': {},
         'need-more-content': {},
@@ -69,7 +61,7 @@ const MockItemGroupModule = new Lang.Class({
     add_card: function () {},
 });
 
-const MockSidebarTemplate = new Lang.Class({
+const MockSidebarTemplate = new Knowledge.Class({
     Name: 'MockSidebarTemplate',
     Extends: Gtk.Grid,
     _init: function (props={}) {
@@ -83,7 +75,7 @@ const MockSidebarTemplate = new Lang.Class({
     connect: function () {},
 });
 
-const MockRenderer = new Lang.Class({
+const MockRenderer = new Knowledge.Class({
     Name: 'MockRenderer',
     Extends: GObject.Object,
     Properties: {
@@ -96,9 +88,6 @@ const MockRenderer = new Lang.Class({
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
             false),
     },
-    _init: function (props={}) {
-        this.parent(props);
-    },
     set_custom_css_files: function () {},
     set_custom_javascript_files: function () {},
     render: function () {
@@ -106,7 +95,7 @@ const MockRenderer = new Lang.Class({
     },
 });
 
-const MockEknWebview = new Lang.Class({
+const MockEknWebview = new Knowledge.Class({
     Name: 'MockEknWebview',
     Extends: Gtk.Frame,
     Signals: {
@@ -128,7 +117,7 @@ const MockEknWebview = new Lang.Class({
     get_page_id: function () { return 1; },
 });
 
-const MockSizeWidget = new Lang.Class({
+const MockSizeWidget = new Knowledge.Class({
     Name: 'MockSkizeWidget',
     Extends: Gtk.Widget,
 

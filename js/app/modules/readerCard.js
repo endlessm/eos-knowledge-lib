@@ -1,10 +1,7 @@
 // Copyright 2015 Endless Mobile, Inc.
 
 const Gettext = imports.gettext;
-const GLib = imports.gi.GLib;
-const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Card = imports.app.interfaces.card;
 const Module = imports.app.interfaces.module;
@@ -26,25 +23,11 @@ let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
  *    decorative-bar - ornament on the top of the card
  *    hover-frame - hover frame
  */
-const ReaderCard = new Lang.Class({
+const ReaderCard = new Module.Class({
     Name: 'ReaderCard',
-    GTypeName: 'EknReaderCard',
     CssName: 'EknReaderCard',
     Extends: Gtk.Button,
-    Implements: [ Module.Module, Card.Card ],
-
-    Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-        'model': GObject.ParamSpec.override('model', Card.Card),
-        'title-capitalization': GObject.ParamSpec.override('title-capitalization',
-            Card.Card),
-        'context-capitalization': GObject.ParamSpec.override('context-capitalization',
-            Card.Card),
-        'highlight-string': GObject.ParamSpec.override('highlight-string', Card.Card),
-        'text-halign': GObject.ParamSpec.override('text-halign', Card.Card),
-        'sequence': GObject.ParamSpec.override('sequence', Card.Card),
-    },
+    Implements: [Card.Card],
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/readerCard.ui',
     InternalChildren: [  'title-label', 'archive-icon', 'card-info-grid',

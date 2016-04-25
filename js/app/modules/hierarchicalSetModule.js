@@ -2,9 +2,7 @@
 
 /* exported HierarchicalSetModule */
 
-const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Actions = imports.app.actions;
 const ArticleObjectModel = imports.search.articleObjectModel;
@@ -36,20 +34,17 @@ const BATCH_SIZE = 15;
  *
  * Slots:
  *   arrangement - arrangement to display article cards in
- *   card-type - type of cards to create for articles
  *   set-card-type - type of cards to create for sets
  */
-const HierarchicalSetModule = new Lang.Class({
+const HierarchicalSetModule = new Module.Class({
     Name: 'HierarchicalSetModule',
-    GTypeName: 'EknHierarchicalSetModule',
     CssName: 'EknHierarchicalSetModule',
     Extends: Gtk.Grid,
-    Implements: [ Module.Module, Scrollable.Scrollable ],
+    Implements: [Scrollable.Scrollable],
 
-    Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-        'scroll-server': GObject.ParamSpec.override('scroll-server', Scrollable.Scrollable),
+    Slots: {
+        'arrangement': {},
+        'set-card-type': {},
     },
 
     _init: function (props={}) {
@@ -82,11 +77,6 @@ const HierarchicalSetModule = new Lang.Class({
                     break;
             }
         });
-    },
-
-    // Module override
-    get_slot_names: function () {
-        return ['arrangement', 'set-card-type'];
     },
 
     show_more_content: function () {

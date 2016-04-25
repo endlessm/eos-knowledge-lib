@@ -1,11 +1,12 @@
 // Copyright 2015 Endless Mobile, Inc.
 
-const Lang = imports.lang;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
+const Knowledge = imports.app.knowledge;
 const Minimal = imports.tests.minimal;
+const Module = imports.app.interfaces.module;
 const ModuleFactory = imports.app.moduleFactory;
 
 Gtk.init(null);
@@ -21,9 +22,6 @@ const MOCK_APP_JSON = {
                     type: 'TestModule',
                 },
                 'anonymous-slot-2': {
-                    type: 'TestModule',
-                },
-                "dot.slot": {
                     type: 'TestModule',
                 },
             },
@@ -54,23 +52,23 @@ const MOCK_APP_JSON = {
     },
 };
 
-const MockModule = new Lang.Class({
+const MockModule = new Module.Class({
     Name: 'MockModule',
     Extends: Minimal.MinimalModule,
-
-    get_slot_names: function () {
-        return ['test-slot', 'optional-slot', 'anonymous-slot-1',
-            'anonymous-slot-2', 'dot.slot'];
-    },
+    Slots: {
+        'test-slot': {},
+        'optional-slot': {},
+        'anonymous-slot-1': {},
+        'anonymous-slot-2': {},
+    }
 });
 
-const MockWarehouse = new Lang.Class({
+const MockWarehouse = new Knowledge.Class({
     Name: 'MockWarehouse',
     Extends: GObject.Object,
-
-    _init: function (props={}) {
-        this.parent(props);
-    },
+    // ModuleFactory has a 'warehouse' property with an object param spec, so
+    // this class is required to extend GObject.Object even though it doesn't
+    // use any GObject features.
 
     type_to_class: function (type) {
         if (type === 'MinimalCard')
@@ -120,18 +118,11 @@ describe('Module factory', function () {
         expect(module.factory_name).toBe('test');
     });
 
-    it('errors if creating a module slot not listed in get_slot_names', function () {
+    it('errors if creating a module slot not listed in Slots', function () {
         let parent = module_factory.create_named_module('test');
         expect(() => {
             module_factory.create_module_for_slot(parent, 'fake-slot');
         }).toThrow();
-    });
-
-    it('warns if creating a malformed slot name', function () {
-        let parent = module_factory.create_named_module('test');
-        spyOn(window, 'logError');
-        module_factory.create_module_for_slot(parent, 'dot.slot');
-        expect(logError).toHaveBeenCalled();
     });
 
     describe('anonymous modules', function () {

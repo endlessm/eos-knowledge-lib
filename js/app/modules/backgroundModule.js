@@ -2,11 +2,9 @@
 
 /* exported BackgroundModule */
 
-const Gdk = imports.gi.Gdk;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
@@ -59,16 +57,12 @@ EknBackgroundModule.big {\
  * Slots:
  *   content - a template module
  */
-const BackgroundModule = new Lang.Class({
+const BackgroundModule = new Module.Class({
     Name: 'BackgroundModule',
-    GTypeName: 'EknBackgroundModule',
     CssName: 'EknBackgroundModule',
     Extends: Gtk.Frame,
-    Implements: [ Module.Module ],
 
     Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
         /**
          * Property: page-mode
          * Mode for setting the height breakpoints of the beige overlay
@@ -81,6 +75,10 @@ const BackgroundModule = new Lang.Class({
             'Mode for setting beige overlay height breakpoints. Either \'section\', \'article\', \'search\' or \'home\'',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             'article'),
+    },
+
+    Slots: {
+        'content': {},
     },
 
     _init: function (props={}) {
@@ -113,11 +111,6 @@ const BackgroundModule = new Lang.Class({
                 this._idle_id = 0;
             });
         });
-    },
-
-    // Module override
-    get_slot_names: function () {
-        return ['content'];
     },
 
     _update_css_class: function () {

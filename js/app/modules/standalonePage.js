@@ -2,9 +2,7 @@
 
 /* exported StandalonePage */
 
-const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
@@ -20,15 +18,13 @@ const Module = imports.app.interfaces.module;
  * Slots:
  *   card-type - type of <DocumentCard> created to display content
  */
-const StandalonePage = new Lang.Class({
+const StandalonePage = new Module.Class({
     Name: 'StandalonePage',
-    GTypeName: 'EknStandalonePage',
     CssName: 'EknStandalonePage',
     Extends: Gtk.Frame,
-    Implements: [ Module.Module ],
-    Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
+
+    Slots: {
+        'card-type': {},
     },
 
     _init: function (props={}) {
@@ -44,11 +40,6 @@ const StandalonePage = new Lang.Class({
                     break;
             }
         });
-    },
-
-    // Module override
-    get_slot_names: function () {
-        return ['card-type'];
     },
 
     _display_model: function (model) {

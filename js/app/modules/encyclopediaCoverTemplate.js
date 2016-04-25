@@ -1,6 +1,4 @@
-const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Module = imports.app.interfaces.module;
 
@@ -12,17 +10,18 @@ const Module = imports.app.interfaces.module;
  * CSS Styles:
  *      encyclopedia-cover-template - on the template
  *
+ * Slots:
+ *   top
+ *   bottom
  */
-const EncyclopediaCoverTemplate = new Lang.Class({
+const EncyclopediaCoverTemplate = new Module.Class({
     Name: 'EncyclopediaCoverTemplate',
-    GTypeName: 'EknEncyclopediaCoverTemplate',
     CssName: 'EknEncyclopediaCoverTemplate',
     Extends: Gtk.Frame,
-    Implements: [ Module.Module ],
 
-    Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
+    Slots: {
+        'top': {},
+        'bottom': {},
     },
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/encyclopediaCoverTemplate.ui',
@@ -33,9 +32,5 @@ const EncyclopediaCoverTemplate = new Lang.Class({
 
         this._grid.add(this.create_submodule('top'));
         this._grid.add(this.create_submodule('bottom'));
-    },
-
-    get_slot_names: function () {
-        return [ 'top', 'bottom' ];
     },
 });

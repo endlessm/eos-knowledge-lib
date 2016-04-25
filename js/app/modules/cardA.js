@@ -2,9 +2,7 @@
 
 const Gdk = imports.gi.Gdk;
 const Endless = imports.gi.Endless;
-const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Card = imports.app.interfaces.card;
 const Module = imports.app.interfaces.module;
@@ -24,25 +22,11 @@ const HOVER_HEIGHT = Math.ceil(HEIGHT * (1 + GROW_FRACTION));
  *
  * A card implementation with sizing and styling specific to template A
  */
-const CardA = new Lang.Class({
+const CardA = new Module.Class({
     Name: 'CardA',
-    GTypeName: 'EknCardA',
     CssName: 'EknCardA',
     Extends: Gtk.Button,
-    Implements: [ Module.Module, Card.Card ],
-
-    Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-        'model': GObject.ParamSpec.override('model', Card.Card),
-        'title-capitalization': GObject.ParamSpec.override('title-capitalization',
-            Card.Card),
-        'context-capitalization': GObject.ParamSpec.override('context-capitalization',
-            Card.Card),
-        'highlight-string': GObject.ParamSpec.override('highlight-string', Card.Card),
-        'text-halign': GObject.ParamSpec.override('text-halign', Card.Card),
-        'sequence': GObject.ParamSpec.override('sequence', Card.Card),
-    },
+    Implements: [Card.Card],
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/cardA.ui',
     InternalChildren: [ 'thumbnail-frame', 'title-label', 'synopsis-label',

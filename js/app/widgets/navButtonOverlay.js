@@ -1,12 +1,11 @@
 // Copyright 2014 Endless Mobile, Inc.
 
-const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Gdk = imports.gi.Gdk;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
+const Knowledge = imports.app.knowledge;
 const StyleClasses = imports.app.styleClasses;
 const ThemeableImage = imports.app.widgets.themeableImage;
 const ToggleTweener = imports.app.toggleTweener;
@@ -20,10 +19,14 @@ const _SCROLLBAR_MARGIN_PX = 13;  // FIXME should be dynamic
  * A button which grows to reveal more of itself on hover. Previously done as a
  * padding animation, in css, but resizing the button every frame was too slow.
  */
-const GrowButton = new Lang.Class({
+const GrowButton = new Knowledge.Class({
     Name: 'GrowButton',
-    GTypeName: 'EknGrowButton',
     Extends: Gtk.Button,
+
+    StyleProperties: {
+        'grow-pixels': GObject.ParamSpec.int('grow-pixels', 'Grow Pixels',
+            'Grow Pixels', GObject.ParamFlags.READABLE, 0, GLib.MAXINT32, 0),
+    },
 
     _init: function (props={}) {
         this.parent(props);
@@ -42,8 +45,7 @@ const GrowButton = new Lang.Class({
     },
 
     _update_custom_style: function () {
-        let grow_pixels = EosKnowledgePrivate.widget_style_get_int(this, 'grow-pixels');
-        this._tweener.inactive_value = this.halign === Gtk.Align.START ? -grow_pixels : grow_pixels;
+        this._tweener.inactive_value = this.halign === Gtk.Align.START ? -this.grow_pixels : this.grow_pixels;
     },
 
     vfunc_draw: function (cr) {
@@ -53,9 +55,6 @@ const GrowButton = new Lang.Class({
         return Gdk.EVENT_PROPAGATE;
     },
 });
-Gtk.Widget.install_style_property.call(GrowButton, GObject.ParamSpec.int(
-    'grow-pixels', 'Grow Pixels', 'Grow Pixels',
-    GObject.ParamFlags.READABLE, 0, GLib.MAXINT32, 0));
 
 /**
  * Class: NavButtonOverlay
@@ -67,9 +66,8 @@ Gtk.Widget.install_style_property.call(GrowButton, GObject.ParamSpec.int(
  * Emits <back-clicked> and <forward-clicked> signals when the corresponding
  * button is clicked.
  */
-const NavButtonOverlay = new Lang.Class({
+const NavButtonOverlay = new Knowledge.Class({
     Name: 'NavButtonOverlay',
-    GTypeName: 'EknNavButtonOverlay',
     Extends: Gtk.Overlay,
     Properties: {
         /**

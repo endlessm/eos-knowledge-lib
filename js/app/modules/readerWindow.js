@@ -9,7 +9,6 @@ const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
@@ -40,16 +39,11 @@ const Utils = imports.app.utils;
  *   search-page
  *   standalone-page
  */
-const ReaderWindow = new Lang.Class({
+const ReaderWindow = new Module.Class({
     Name: 'ReaderWindow',
-    GTypeName: 'EknReaderWindow',
     Extends: Endless.Window,
-    Implements: [ Module.Module ],
 
     Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-
         /**
          * Property: issue-nav-buttons
          *
@@ -86,6 +80,18 @@ const ReaderWindow = new Lang.Class({
         'title-image-uri': GObject.ParamSpec.string('title-image-uri',
             'Title Image URI', 'Title Image URI',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
+    },
+
+    Slots: {
+        'archive-page': {},
+        'back-page': {},
+        'document-arrangement': {},
+        'front-page': {},
+        'lightbox': {},
+        'navigation': {},
+        'search': {},
+        'search-page': {},
+        'standalone-page': {},
     },
 
     Signals: {
@@ -407,12 +413,6 @@ const ReaderWindow = new Lang.Class({
             cursor = Gdk.Cursor.new_for_display(Gdk.Display.get_default(),
                 Gdk.CursorType.WATCH);
         gdk_window.cursor = cursor;
-    },
-
-    get_slot_names: function () {
-        return ['archive-page', 'back-page', 'document-arrangement',
-            'front-page', 'lightbox', 'navigation', 'search', 'search-page',
-            'standalone-page'];
     },
 
     vfunc_size_allocate: function (alloc) {

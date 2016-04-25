@@ -4,7 +4,6 @@ const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 
 const Utils = imports.tests.utils;
@@ -14,6 +13,7 @@ const Actions = imports.app.actions;
 const AisleInteraction = imports.app.modules.aisleInteraction;
 const AppUtils = imports.app.utils;
 const ArticleObjectModel = imports.search.articleObjectModel;
+const Knowledge = imports.app.knowledge;
 const Launcher = imports.app.interfaces.launcher;
 const Minimal = imports.tests.minimal;
 const MockDispatcher = imports.tests.mockDispatcher;
@@ -25,16 +25,14 @@ const QueryObject = imports.search.queryObject;
 Gtk.init(null);
 
 const UPDATE_INTERVAL_MS = 604800000;
-GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 
-
-const MockApplication = new Lang.Class({
+const MockApplication = new Knowledge.Class({
     Name: 'MockApplication',
     Extends: GObject.Object,
     application_id: 'com.endlessm.EosKnowledgePrivate.testAisleInteraction',
 });
 
-const MockUserSettingsModel = new Lang.Class({
+const MockUserSettingsModel = new Knowledge.Class({
     Name: 'MockUserSettingsModel',
     Extends: GObject.Object,
     Properties: {
@@ -53,7 +51,7 @@ const MockUserSettingsModel = new Lang.Class({
     },
 });
 
-const MockNavButtons = new Lang.Class({
+const MockNavButtons = new Knowledge.Class({
     Name: 'MockNavButtons',
     Extends: GObject.Object,
     Properties: {
@@ -68,7 +66,7 @@ let get_style_context = function () {
     };
 };
 
-const MockView = new Lang.Class({
+const MockView = new Knowledge.Class({
     Name: 'MockView',
     GTypeName: 'MockView_TestAisleInteraction',
     Extends: GObject.Object,

@@ -2,10 +2,6 @@
 
 /* exported PianolaArrangement */
 
-const GObject = imports.gi.GObject;
-const Lang = imports.lang;
-
-const Arrangement = imports.app.interfaces.arrangement;
 const Module = imports.app.interfaces.module;
 const PianoArrangement = imports.app.modules.pianoArrangement;
 
@@ -22,9 +18,8 @@ const PianoArrangement = imports.app.modules.pianoArrangement;
  * Under normal circumstances, it would be preferred to call the actual Piano
  * arrangement and pass the `compact-mode` property as needed.
  */
-const PianolaArrangement = new Lang.Class({
+const PianolaArrangement = new Module.Class({
     Name: 'PianolaArrangement',
-    GTypeName: 'EknPianolaArrangement',
     CssName: 'EknPianolaArrangement',
     Extends: PianoArrangement.PianoArrangement,
 

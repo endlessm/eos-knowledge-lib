@@ -3,7 +3,6 @@
 const Gdk = imports.gi.Gdk;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Card = imports.app.interfaces.card;
 const Module = imports.app.interfaces.module;
@@ -28,26 +27,13 @@ const HIGHLIGHT_DECORATION_DIMENSION = 5;
  *   card, text-card - on the widget itself
  *   title - on the title label
  */
-const TextCard = new Lang.Class({
+const TextCard = new Module.Class({
     Name: 'TextCard',
-    GTypeName: 'EknTextCard',
     CssName: 'EknTextCard',
     Extends: Gtk.Button,
-    Implements: [ Module.Module, Card.Card, NavigationCard.NavigationCard ],
+    Implements: [Card.Card, NavigationCard.NavigationCard],
 
     Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-        'model': GObject.ParamSpec.override('model', Card.Card),
-        'title-capitalization': GObject.ParamSpec.override('title-capitalization',
-            Card.Card),
-        'context-capitalization': GObject.ParamSpec.override('context-capitalization',
-            Card.Card),
-        'highlight-string': GObject.ParamSpec.override('highlight-string', Card.Card),
-        'text-halign': GObject.ParamSpec.override('text-halign', Card.Card),
-        'sequence': GObject.ParamSpec.override('sequence', Card.Card),
-        'navigation-context': GObject.ParamSpec.override('navigation-context', NavigationCard.NavigationCard),
-
         /**
          * Property: underline-on-hover
          * Whether to underline the link on hover

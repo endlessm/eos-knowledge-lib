@@ -4,12 +4,13 @@ const Lang = imports.lang;
 const Compat = imports.app.compat.compat;
 const Engine = imports.search.engine;
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
+const Knowledge = imports.app.knowledge;
 const Warehouse = imports.app.warehouse;
 
 /**
  * Class: ModuleFactory
  */
-const ModuleFactory = new Lang.Class({
+const ModuleFactory = new Knowledge.Class({
     Name: 'ModuleFactory',
     Extends: GObject.Object,
     Properties: {
@@ -122,10 +123,10 @@ const ModuleFactory = new Lang.Class({
      *   extra_props - dictionary of construct properties for the submodule
      */
     create_module_for_slot: function (parent_module, slot, extra_props={}) {
-        if (parent_module.get_slot_names().indexOf(slot) === -1)
-            throw new Error('No slot named ' + slot + ' according to module.get_slot_names.');
-        if (slot.indexOf('.') !== -1)
-            logError(new Error('Slot names should never contain a "."'));
+        if (!(slot in parent_module.constructor.__slots__))
+            throw new Error('No slot named ' + slot +
+                '; did you define it in Slots in your Module.Class definition?');
+
         let slots = this._get_module_description_by_name(parent_module.factory_name)['slots'];
         if (!slots)
             return null;

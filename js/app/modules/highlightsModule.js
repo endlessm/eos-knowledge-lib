@@ -6,7 +6,6 @@ const Gettext = imports.gettext;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Actions = imports.app.actions;
 const Config = imports.app.config;
@@ -37,16 +36,12 @@ let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
  *   support-card-type - type of cards to create for sets
  *   sets-filter - <Filter> for deciding which sets to show
  */
-const HighlightsModule = new Lang.Class({
+const HighlightsModule = new Module.Class({
     Name: 'HighlightsModule',
-    GTypeName: 'EknHighlightsModule',
     CssName: 'EknHighlightsModule',
     Extends: Gtk.Grid,
-    Implements: [ Module.Module ],
 
     Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
         /**
          * Property: support-sets
          * The number of support sets to display
@@ -58,6 +53,12 @@ const HighlightsModule = new Lang.Class({
             'The number of support sets to display',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             0, GLib.MAXUINT16, 0),
+    },
+
+    Slots: {
+        'highlight-arrangement': {},
+        'support-card-type': {},
+        'sets-filter': {},
     },
 
     _init: function (props={}) {
@@ -99,11 +100,6 @@ const HighlightsModule = new Lang.Class({
                 this._update_arrangements();
             });
         });
-    },
-
-    // Module override
-    get_slot_names: function () {
-        return ['highlight-arrangement', 'support-card-type', 'sets-filter'];
     },
 
     _add_set_card: function (model) {

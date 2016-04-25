@@ -5,16 +5,13 @@ const Lang = imports.lang;
 
 const WebviewSwitcherView = imports.app.webviewSwitcherView;
 
-GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
-
 const HistoryItem = new Lang.Class({
     Name: 'HistoryItem',
     Extends: GObject.Object,
     Implements: [ EosKnowledgePrivate.HistoryItemModel ],
     Properties: {
-        'title': GObject.ParamSpec.string('title', 'override', 'override',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            '')
+        'title': GObject.ParamSpec.override('title',
+            EosKnowledgePrivate.HistoryItemModel),
     }
 });
 

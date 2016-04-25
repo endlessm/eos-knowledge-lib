@@ -32,6 +32,7 @@ EKN_VERSION_MIN_REQUIRED
 EKN_VERSION_PREV_STABLE
 EKN_DEFINE_ENUM_TYPE
 EKN_ENUM_VALUE
+ekn_interface_gtype_list_properties
 ekn_private_new_input_output_window
 ekn_param_spec_is_enum
 ekn_param_spec_enum_value_from_string

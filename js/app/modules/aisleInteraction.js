@@ -10,7 +10,6 @@ const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Actions = imports.app.actions;
 const ArticleObjectModel = imports.search.articleObjectModel;
@@ -35,7 +34,6 @@ const Utils = imports.app.utils;
 const WebviewTooltipPresenter = imports.app.webviewTooltipPresenter;
 
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
-GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 
 const RESULTS_SIZE = 15;
 const TOTAL_ARTICLES = 30;
@@ -54,18 +52,12 @@ const _SEARCH_METRIC = 'a628c936-5d87-434a-a57a-015a0f223838';
  * Manages magazine issues, displaying them in the <view>, and keeping track of
  * which ones have been read.
  */
-const AisleInteraction = new Lang.Class({
+const AisleInteraction = new Module.Class({
     Name: 'AisleInteraction',
-    GTypeName: 'EknAisleInteraction',
     Extends: GObject.Object,
-    Implements: [ Module.Module, Launcher.Launcher, Interaction.Interaction ],
+    Implements: [Launcher.Launcher, Interaction.Interaction],
 
     Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-        'application': GObject.ParamSpec.override('application', Interaction.Interaction),
-        'template-type': GObject.ParamSpec.override('template-type', Interaction.Interaction),
-        'css': GObject.ParamSpec.override('css', Interaction.Interaction),
         /**
          * Property: settings
          * Handles the User Settings
@@ -864,9 +856,5 @@ const AisleInteraction = new Lang.Class({
             this._webview_tooltip_presenter.show_external_link_tooltip(tooltip, uri);
         }
         return Gdk.EVENT_STOP;
-    },
-
-    get_slot_names: function () {
-        return ['window'];
     },
 });

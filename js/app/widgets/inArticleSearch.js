@@ -2,16 +2,16 @@
 
 const Gdk = imports.gi.Gdk;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 const WebKit2 = imports.gi.WebKit2;
 
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
+const Knowledge = imports.app.knowledge;
 const StyleClasses = imports.app.styleClasses;
 
 const ARTICLE_SEARCH_MAX_RESULTS = 200;
 
-const InArticleSearch = new Lang.Class({
+const InArticleSearch = new Knowledge.Class({
     Name: 'ArticleSearch',
     Extends: Gtk.Frame,
 

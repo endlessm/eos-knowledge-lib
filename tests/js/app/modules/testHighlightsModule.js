@@ -1,7 +1,6 @@
 // Copyright 2015 Endless Mobile, Inc.
 
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 Gtk.init(null);
 
@@ -12,12 +11,13 @@ const Minimal = imports.tests.minimal;
 const MockDispatcher = imports.tests.mockDispatcher;
 const MockEngine = imports.tests.mockEngine;
 const MockFactory = imports.tests.mockFactory;
+const Module = imports.app.interfaces.module;
 const SetObjectModel = imports.search.setObjectModel;
 const Utils = imports.tests.utils;
 const UtilsApp = imports.app.utils;
 const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 
-const LimitedArrangment = new Lang.Class({
+const LimitedArrangment = new Module.Class({
     Name: 'LimitedArrangment',
     Extends: Minimal.MinimalArrangement,
 

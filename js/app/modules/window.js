@@ -6,11 +6,9 @@ const GdkPixbuf = imports.gi.GdkPixbuf;
 const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
-const Launcher = imports.app.interfaces.launcher;
 const Module = imports.app.interfaces.module;
 const SearchBox = imports.app.modules.searchBox;
 const StyleClasses = imports.app.styleClasses;
@@ -31,16 +29,23 @@ const PARALLAX_BACKGROUND_SCALE = 1.1;
  *
  * Adds a lightbox above the section and article page, which can be
  * used to show content above either of these pages.
+ *
+ * Slots:
+ *   all-sets-page - optional
+ *   article-page
+ *   brand-page - optional
+ *   home-page
+ *   lightbox
+ *   navigation - optional
+ *   search
+ *   search-page
+ *   section-page
  */
-const Window = new Lang.Class({
+const Window = new Module.Class({
     Name: 'Window',
-    GTypeName: 'EknWindow',
     Extends: Endless.Window,
-    Implements: [ Module.Module ],
 
     Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
         /**
          * Property: background-image-uri
          *
@@ -89,6 +94,18 @@ const Window = new Lang.Class({
             'Animations',
             'Enables the animations during page transitions for this window',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, true),
+    },
+
+    Slots: {
+        'all-sets-page': {},  // optional
+        'article-page': {},
+        'brand-page': {},  // optional
+        'home-page': {},
+        'lightbox': {},
+        'navigation': {},  // optional
+        'search': {},
+        'search-page': {},
+        'section-page': {},
     },
 
     Signals: {
@@ -428,13 +445,6 @@ const Window = new Lang.Class({
             cursor = Gdk.Cursor.new_for_display(Gdk.Display.get_default(),
                 Gdk.CursorType.WATCH);
         gdk_window.cursor = cursor;
-    },
-
-    // Module override
-    get_slot_names: function () {
-        return ['brand-page', 'home-page', 'section-page', 'all-sets-page', 'search-page',
-            'article-page', 'navigation', 'lightbox', 'search'];
-        // optional: brand-page, all-sets-page, navigation
     },
 
     vfunc_size_allocate: function (alloc) {

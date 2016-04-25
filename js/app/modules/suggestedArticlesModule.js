@@ -3,8 +3,6 @@
 /* exported SuggestedArticlesModule */
 
 const Gettext = imports.gettext;
-const GObject = imports.gi.GObject;
-const Lang = imports.lang;
 
 const Actions = imports.app.actions;
 const CardContainer = imports.app.modules.cardContainer;
@@ -18,21 +16,11 @@ let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 /**
  * Class: SuggestedArticlesModule
  * A module that displays all suggested articles as cards in an arrangement.
- *
- * Slots:
- *   arrangement
  */
-const SuggestedArticlesModule = new Lang.Class({
+const SuggestedArticlesModule = new Module.Class({
     Name: 'SuggestedArticlesModule',
-    GTypeName: 'EknSuggestedArticlesModule',
     CssName: 'EknSuggestedArticlesModule',
     Extends: CardContainer.CardContainer,
-    Implements: [ Module.Module ],
-
-    Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-    },
 
     _init: function (props={}) {
         props.title = _("You might be interested in...");
@@ -51,10 +39,5 @@ const SuggestedArticlesModule = new Lang.Class({
                     break;
             }
         });
-    },
-
-    // Module override
-    get_slot_names: function () {
-        return ['arrangement'];
     },
 });

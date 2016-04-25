@@ -3,11 +3,9 @@
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
-const Lang = imports.lang;
 
+const Knowledge = imports.app.knowledge;
 const Utils = imports.app.utils;
-
-GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE;
 
 /**
  * Class: AisleUserSettingsModel
@@ -18,9 +16,8 @@ GObject.ParamFlags.READWRITE = GObject.ParamFlags.READABLE | GObject.ParamFlags.
  * FIXME: Maybe make this more general purposed beyond the aisle interaction? At
  * least when other apps have need to persistent state.
  */
-const AisleUserSettingsModel = new Lang.Class({
+const AisleUserSettingsModel = new Knowledge.Class({
     Name: 'AisleUserSettingsModel',
-    GTypeName: 'EknAisleUserSettingsModel',
     Extends: GObject.Object,
     Properties: {
         /**

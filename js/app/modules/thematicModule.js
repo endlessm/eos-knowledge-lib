@@ -4,7 +4,6 @@
 
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
@@ -36,20 +35,17 @@ const Scrollable = imports.app.interfaces.scrollable;
  *
  * Slots:
  *   arrangement - arrangement to display cards in
- *   card-type - type of cards to create for articles
  *   header-card-type - type of cards to create for sets
  */
-const ThematicModule = new Lang.Class({
+const ThematicModule = new Module.Class({
     Name: 'ThematicModule',
-    GTypeName: 'EknThematicModule',
     CssName: 'EknThematicModule',
     Extends: Gtk.Grid,
-    Implements: [ Module.Module, Scrollable.Scrollable ],
+    Implements: [Scrollable.Scrollable],
 
-    Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-        'scroll-server': GObject.ParamSpec.override('scroll-server', Scrollable.Scrollable),
+    Slots: {
+        'arrangement': {},
+        'header-card-type': {},
     },
 
     _init: function (props={}) {
@@ -87,11 +83,6 @@ const ThematicModule = new Lang.Class({
                 this._update_arrangements();
             });
         });
-    },
-
-    // Module override
-    get_slot_names: function () {
-        return ['arrangement', 'header-card-type'];
     },
 
     show_more_content: function () {

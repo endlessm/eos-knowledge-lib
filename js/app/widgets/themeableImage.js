@@ -1,13 +1,22 @@
-const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
+/* exported ThemeableImage */
+
 const GObject = imports.gi.GObject;
 const GLib = imports.gi.GLib;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
-const ThemeableImage = new Lang.Class({
+const Knowledge = imports.app.knowledge;
+
+const ThemeableImage = new Knowledge.Class({
     Name: 'ThemeableImage',
-    GTypeName: 'EknThemeableImage',
     Extends: Gtk.Widget,
+
+    StyleProperties: {
+        // FIXME: Standin till these are supported in gtk.
+        'min-height': GObject.ParamSpec.int('min-height', 'Min Height',
+            'Min Height', GObject.ParamFlags.READABLE, 0, GLib.MAXINT32, 0),
+        'min-width': GObject.ParamSpec.int('min-width', 'Min Width',
+            'Min Width', GObject.ParamFlags.READABLE, 0, GLib.MAXINT32, 0),
+    },
 
     _init: function (props={}) {
         this.parent(props);
@@ -25,8 +34,8 @@ const ThemeableImage = new Lang.Class({
     },
 
     _update_custom_style: function () {
-        let min_width = EosKnowledgePrivate.widget_style_get_int(this, 'min-width');
-        let min_height = EosKnowledgePrivate.widget_style_get_int(this, 'min-height');
+        let min_width = this.min_width;
+        let min_height = this.min_height;
         if (min_width !== this._min_width || min_height !== this._min_height)
             this.queue_resize();
         this._min_width = min_width;
@@ -96,11 +105,3 @@ const ThemeableImage = new Lang.Class({
         cr.$dispose();
     },
 });
-
-// FIXME: Standin till these are supported in gtk.
-Gtk.Widget.install_style_property.call(ThemeableImage, GObject.ParamSpec.int(
-    'min-height', 'Min Height', 'Min Height',
-    GObject.ParamFlags.READABLE, 0, GLib.MAXINT32, 0));
-Gtk.Widget.install_style_property.call(ThemeableImage, GObject.ParamSpec.int(
-    'min-width', 'Min Width', 'Min Width',
-    GObject.ParamFlags.READABLE, 0, GLib.MAXINT32, 0));

@@ -7,7 +7,6 @@ const Format = imports.format;
 const Gettext = imports.gettext;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Actions = imports.app.actions;
 const Config = imports.app.config;
@@ -29,16 +28,12 @@ String.prototype.format = Format.format;
  * Slots:
  *   arrangement
  */
-const CardContainer = new Lang.Class({
+const CardContainer = new Module.Class({
     Name: 'CardContainer',
-    GTypeName: 'EknCardContainer',
     CssName: 'EknCardContainer',
     Extends: Gtk.Grid,
-    Implements: [ Module.Module ],
 
     Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
         /**
          * Property: title
          * Title of this container
@@ -81,6 +76,10 @@ const CardContainer = new Lang.Class({
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             EosKnowledgePrivate.TextTransformType,
             EosKnowledgePrivate.TextTransform.NONE),
+    },
+
+    Slots: {
+        'arrangement': {},
     },
 
     _init: function (props={}) {
@@ -182,11 +181,6 @@ const CardContainer = new Lang.Class({
             return;
         this._trigger_capitalization = value;
         this._update_title();
-    },
-
-    // Module override
-    get_slot_names: function () {
-        return ['arrangement'];
     },
 
     /**

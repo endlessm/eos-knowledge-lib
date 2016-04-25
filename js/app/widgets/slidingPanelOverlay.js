@@ -1,20 +1,18 @@
 // Copyright 2015 Endless Mobile, Inc.
 
-const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
+const Knowledge = imports.app.knowledge;
 const SlidingPanel = imports.app.widgets.slidingPanel;
 
 /**
  * Class: SlidingPanelOverlay
  * Overlays a <SlidingPanel> above some content.
  */
-const SlidingPanelOverlay = new Lang.Class({
+const SlidingPanelOverlay = new Knowledge.Class({
     Name: 'SlidingPanelOverlay',
-    GTypeName: 'EknSlidingPanelOverlay',
     Extends: Gtk.Overlay,
 
     Properties: {
@@ -52,9 +50,6 @@ const SlidingPanelOverlay = new Lang.Class({
 
         let clamp = (v, low, high) => Math.min(high, Math.max(low, v));
 
-        let fill_percentage = EosKnowledgePrivate.widget_style_get_float(panel, 'fill-percentage');
-        let shadow_margin = EosKnowledgePrivate.widget_style_get_int(panel, 'shadow-margin');
-
         let direction = panel.hide_direction;
         let [fill_coord, fill_size, align_coord, align_size] = ['x', 'width', 'y', 'height'];
         if (direction === Gtk.PositionType.LEFT || direction === Gtk.PositionType.RIGHT)
@@ -63,7 +58,7 @@ const SlidingPanelOverlay = new Lang.Class({
 
         let [min, nat] = panel.get_preferred_size();
         let allocation = this.get_allocation();
-        child_allocation[fill_size] = clamp(nat[fill_size], allocation[fill_size] * fill_percentage, allocation[fill_size]);
+        child_allocation[fill_size] = clamp(nat[fill_size], allocation[fill_size] * panel.fill_percentage, allocation[fill_size]);
         child_allocation[fill_coord] = (allocation[fill_size] - child_allocation[fill_size]) / 2;
         child_allocation[align_size] = nat[align_size];
         child_allocation[align_coord] = start ? 0 : allocation[align_size] - child_allocation[align_size];
@@ -71,6 +66,7 @@ const SlidingPanelOverlay = new Lang.Class({
         // Add the extra margin for drawing box shadows after the rest of
         // sizing. This way the fill fraction will still be accurate to the real
         // panel size.
+        let shadow_margin = panel.shadow_margin;
         child_allocation.width += 2 * shadow_margin;
         child_allocation.height += 2 * shadow_margin;
         child_allocation.x -= shadow_margin;

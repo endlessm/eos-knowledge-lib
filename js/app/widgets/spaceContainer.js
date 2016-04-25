@@ -3,7 +3,8 @@ const Gdk = imports.gi.Gdk;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
+
+const Knowledge = imports.app.knowledge;
 
 /**
  * Class: SpaceContainer
@@ -19,19 +20,11 @@ const Lang = imports.lang;
  * Parent class:
  *   *Endless.CustomContainer*
  */
-const SpaceContainer = new Lang.Class({
+const SpaceContainer = new Knowledge.Class({
     Name: 'SpaceContainer',
-    GTypeName: 'EknSpaceContainer',
     Extends: Endless.CustomContainer,
     Implements: [Gtk.Orientable],
     Properties: {
-        /**
-         * Property: orientation
-         * Implemented from **Gtk.Orientable**
-         */
-        'orientation': GObject.ParamSpec.enum('orientation', 'override', 'override',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
-            Gtk.Orientation.$gtype, Gtk.Orientation.VERTICAL),
         /**
          * Property: spacing
          * The amount of space between children
@@ -60,7 +53,20 @@ const SpaceContainer = new Lang.Class({
         this._all_fit = true;
         this._spacing = 0;
         this._children = [];
+        this._orientation = Gtk.Orientation.HORIZONTAL;
         this.parent(props);
+    },
+
+    get orientation() {
+        return this._orientation;
+    },
+
+    set orientation(value) {
+        if (this._orientation === value)
+            return;
+        this._orientation = value;
+        this.notify('orientation');
+        this.queue_resize();
     },
 
     get spacing() {

@@ -2,9 +2,9 @@ const Endless = imports.gi.Endless;
 const Gettext = imports.gettext;
 const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
-const Lang = imports.lang;
 
 const Config = imports.app.config;
+const Knowledge = imports.app.knowledge;
 const Mustache = imports.app.libs.mustache.Mustache;
 const SearchUtils = imports.search.utils;
 const SetMap = imports.app.setMap;
@@ -37,9 +37,8 @@ function load_article_template () {
 /**
  * Class: ArticleHTMLRenderer
  */
-const ArticleHTMLRenderer = new Lang.Class({
+const ArticleHTMLRenderer = new Knowledge.Class({
     Name: "ArticleHTMLRenderer",
-    GTypeName: 'EknArticleHTMLRenderer',
     Extends: GObject.Object,
 
     Properties: {

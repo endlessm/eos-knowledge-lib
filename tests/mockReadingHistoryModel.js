@@ -1,11 +1,11 @@
 // Copyright 2016 Endless Mobile, Inc.
 
 const GObject = imports.gi.GObject;
-const Lang = imports.lang;
 
+const Knowledge = imports.app.knowledge;
 const ReadingHistoryModel = imports.app.readingHistoryModel;
 
-const MockReadingHistoryModel = new Lang.Class({
+const MockReadingHistoryModel = new Knowledge.Class({
     Name: 'MockReadingHistoryModel',
     Extends: GObject.Object,
 

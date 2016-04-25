@@ -5,10 +5,10 @@ const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
-const Lang = imports.lang;
 
 const Dispatcher = imports.app.dispatcher;
 const Engine = imports.search.engine;
+const Knowledge = imports.app.knowledge;
 const LegacySearchProvider = imports.search.searchProvider;
 const InteractionLoader = imports.app.interactionLoader;
 const Utils = imports.search.utils;
@@ -31,9 +31,8 @@ const KnowledgeSearchIface = '\
 /**
  * Class: Application
  */
-const Application = new Lang.Class({
+const Application = new Knowledge.Class({
     Name: 'Application',
-    GTypeName: 'EknApplication',
     Extends: Endless.Application,
 
     Properties: {

@@ -2,9 +2,7 @@
 
 /* exported ItemGroupModule */
 
-const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
@@ -22,16 +20,13 @@ const Module = imports.app.interfaces.module;
  * Slots:
  *   arrangement
  */
-const ItemGroupModule = new Lang.Class({
+const ItemGroupModule = new Module.Class({
     Name: 'ItemGroupModule',
-    GTypeName: 'EknItemGroupModule',
     CssName: 'EknItemGroupModule',
     Extends: Gtk.Frame,
-    Implements: [ Module.Module ],
 
-    Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
+    Slots: {
+        'arrangement': {},
     },
 
     _init: function (props={}) {
@@ -72,10 +67,5 @@ const ItemGroupModule = new Lang.Class({
                     break;
             }
         });
-    },
-
-    // Module override
-    get_slot_names: function () {
-        return ['arrangement'];
     },
 });

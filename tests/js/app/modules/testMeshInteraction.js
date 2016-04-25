@@ -3,7 +3,6 @@
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Utils = imports.tests.utils;
 Utils.register_gresource();
@@ -11,7 +10,7 @@ Utils.register_gresource();
 const Actions = imports.app.actions;
 const ContentObjectModel = imports.search.contentObjectModel;
 const MeshInteraction = imports.app.modules.meshInteraction;
-const Launcher = imports.app.interfaces.launcher;
+const Knowledge = imports.app.knowledge;
 const MockDispatcher = imports.tests.mockDispatcher;
 const MockEngine = imports.tests.mockEngine;
 const MockFactory = imports.tests.mockFactory;
@@ -19,11 +18,12 @@ const SetObjectModel = imports.search.setObjectModel;
 
 Gtk.init(null);
 
-const MockView = new Lang.Class({
+const MockView = new Knowledge.Class({
     Name: 'MockView',
     Extends: GObject.Object,
 
-    _init: function () {
+    _init: function (props) {
+        void props;  // Silently ignore properties
         this.parent();
     },
 

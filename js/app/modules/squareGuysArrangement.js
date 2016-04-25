@@ -5,7 +5,6 @@
 const Endless = imports.gi.Endless;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
-const Lang = imports.lang;
 
 const Arrangement = imports.app.interfaces.arrangement;
 const Card = imports.app.interfaces.card;
@@ -21,19 +20,13 @@ const CARD_SIZE_MAX = Card.MaxSize.C;
 /**
  * Class: SquareGuysArrangement
  */
-const SquareGuysArrangement = new Lang.Class({
+const SquareGuysArrangement = new Module.Class({
     Name: 'SquareGuysArrangement',
-    GTypeName: 'EknSquareGuysArrangement',
     CssName: 'EknSquareGuysArrangement',
     Extends: Endless.CustomContainer,
-    Implements: [ Module.Module, Arrangement.Arrangement ],
+    Implements: [Arrangement.Arrangement],
 
     Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-        'all-visible': GObject.ParamSpec.override('all-visible', Arrangement.Arrangement),
-        'fade-cards': GObject.ParamSpec.override('fade-cards', Arrangement.Arrangement),
-        'spacing': GObject.ParamSpec.override('spacing', Arrangement.Arrangement),
         /**
          * Property: max-rows
          * Maximum number of card rows to be displayed

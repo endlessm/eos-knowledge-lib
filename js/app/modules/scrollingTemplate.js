@@ -2,10 +2,6 @@
 
 /* exported ScrollingTemplate */
 
-const GObject = imports.gi.GObject;
-const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
-
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
 const InfiniteScrolledWindow = imports.app.widgets.infiniteScrolledWindow;
@@ -18,16 +14,13 @@ const Module = imports.app.interfaces.module;
  * Slots:
  *   content - where to put the content
  */
-const ScrollingTemplate = new Lang.Class({
+const ScrollingTemplate = new Module.Class({
     Name: 'ScrollingTemplate',
-    GTypeName: 'EknScrollingTemplate',
     CssName: 'EknScrollingTemplate',
     Extends: InfiniteScrolledWindow.InfiniteScrolledWindow,
-    Implements: [ Module.Module ],
 
-    Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
+    Slots: {
+        'content': {},
     },
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/scrollingTemplate.ui',
@@ -63,11 +56,6 @@ const ScrollingTemplate = new Lang.Class({
                     break;
             }
         });
-    },
-
-    // Module override
-    get_slot_names: function () {
-        return ['content'];
     },
 
     // return scroll position to the top of the window

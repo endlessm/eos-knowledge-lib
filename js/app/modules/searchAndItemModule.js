@@ -1,8 +1,6 @@
 // Copyright 2015 Endless Mobile, Inc.
 
-const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
@@ -16,16 +14,14 @@ const Module = imports.app.interfaces.module;
  *   search
  *   item
  */
-const SearchAndItemModule = new Lang.Class({
+const SearchAndItemModule = new Module.Class({
     Name: 'SearchAndItemModule',
-    GTypeName: 'EknSearchAndItemModule',
     CssName: 'EknSearchAndItemModule',
     Extends: Gtk.Stack,
-    Implements: [ Module.Module ],
 
-    Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
+    Slots: {
+        'search': {},
+        'item': {},
     },
 
     _init: function (props={}) {
@@ -46,10 +42,5 @@ const SearchAndItemModule = new Lang.Class({
                     break;
             }
         });
-    },
-
-    // Module override
-    get_slot_names: function () {
-        return ['search', 'item'];
     },
 });

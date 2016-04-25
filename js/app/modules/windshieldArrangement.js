@@ -3,9 +3,7 @@
 /* exported WindshieldArrangement */
 
 const Endless = imports.gi.Endless;
-const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Arrangement = imports.app.interfaces.arrangement;
 const Card = imports.app.interfaces.card;
@@ -24,20 +22,11 @@ const CARD_SIZE_MAX = Card.MinSize.D;
  * This arrangement shows a featured card in a very prominent spot, followed by
  * three secondary cards.
  */
-const WindshieldArrangement = new Lang.Class({
+const WindshieldArrangement = new Module.Class({
     Name: 'WindshieldArrangement',
-    GTypeName: 'EknWindshieldArrangement',
     CssName: 'EknWindshieldArrangement',
     Extends: Endless.CustomContainer,
-    Implements: [ Module.Module, Arrangement.Arrangement ],
-
-    Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-        'all-visible': GObject.ParamSpec.override('all-visible', Arrangement.Arrangement),
-        'fade-cards': GObject.ParamSpec.override('fade-cards', Arrangement.Arrangement),
-        'spacing': GObject.ParamSpec.override('spacing', Arrangement.Arrangement),
-    },
+    Implements: [Arrangement.Arrangement],
 
     _init: function (props={}) {
         this._small_mode = false;

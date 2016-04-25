@@ -1,8 +1,6 @@
 // Copyright 2016 Endless Mobile, Inc.
 
-const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Actions = imports.app.actions;
 const Card = imports.app.interfaces.card;
@@ -26,28 +24,16 @@ const QueryObject = imports.search.queryObject;
  *   card - on the widget itself
  *
  * Slots:
- *   arrangement - arrangement in which to display this sets article cards.
- *   card-type - type of cards to create for articles
  *   header-card-type - type of card to create for title label
  */
-const SetPreviewCard = new Lang.Class({
+const SetPreviewCard = new Module.Class({
     Name: 'SetPreviewCard',
-    GTypeName: 'EknSetPreviewCard',
     CssName: 'EknSetPreviewCard',
     Extends: CardContainer.CardContainer,
-    Implements: [ Module.Module, Card.Card ],
+    Implements: [Card.Card],
 
-    Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-        'model': GObject.ParamSpec.override('model', Card.Card),
-        'title-capitalization': GObject.ParamSpec.override('title-capitalization',
-            Card.Card),
-        'context-capitalization': GObject.ParamSpec.override('context-capitalization',
-            Card.Card),
-        'highlight-string': GObject.ParamSpec.override('highlight-string', Card.Card),
-        'text-halign': GObject.ParamSpec.override('text-halign', Card.Card),
-        'sequence': GObject.ParamSpec.override('sequence', Card.Card),
+    Slots: {
+        'header-card-type': {},
     },
 
     _init: function (props={}) {
@@ -110,11 +96,6 @@ const SetPreviewCard = new Lang.Class({
             if (done)
                 done();
         });
-    },
-
-    // Module override
-    get_slot_names: function () {
-        return ['arrangement', 'card-type', 'header-card-type'];
     },
 
     // CardContainer override

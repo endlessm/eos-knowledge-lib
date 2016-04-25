@@ -6,7 +6,6 @@ const Endless = imports.gi.Endless;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Arrangement = imports.app.interfaces.arrangement;
 const Card = imports.app.interfaces.card;
@@ -23,19 +22,13 @@ const COL_COUNT = 3;
 /**
  * Class: ThirtiesArrangement
  */
-const ThirtiesArrangement = new Lang.Class({
+const ThirtiesArrangement = new Module.Class({
     Name: 'ThirtiesArrangement',
-    GTypeName: 'EknThirtiesArrangement',
     CssName: 'EknThirtiesArrangement',
     Extends: Endless.CustomContainer,
-    Implements: [ Module.Module, Arrangement.Arrangement ],
+    Implements: [Arrangement.Arrangement],
 
     Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-        'all-visible': GObject.ParamSpec.override('all-visible', Arrangement.Arrangement),
-        'fade-cards': GObject.ParamSpec.override('fade-cards', Arrangement.Arrangement),
-        'spacing': GObject.ParamSpec.override('spacing', Arrangement.Arrangement),
         /**
          * Property: max-rows
          * Maximum number of card rows to be displayed

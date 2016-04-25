@@ -1,5 +1,3 @@
-const GObject = imports.gi.GObject;
-
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
 const NavButtonOverlay = imports.app.widgets.navButtonOverlay;
@@ -10,17 +8,10 @@ const Module = imports.app.interfaces.module;
  *
  * A module which displays navigation arrows on either side of a page.
  */
-const NavigationModule = new GObject.Class({
+const NavigationModule = new Module.Class({
     Name: 'NavigationModule',
-    GTypeName: 'EknNavigationModule',
     CssName: 'EknNavigationModule',
     Extends: NavButtonOverlay.NavButtonOverlay,
-    Implements: [ Module.Module ],
-
-    Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-    },
 
     _init: function (props={}) {
         this.parent(props);

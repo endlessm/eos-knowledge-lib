@@ -1,9 +1,7 @@
 const Endless = imports.gi.Endless;
 const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
-const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Utils = imports.app.utils;
 const Card = imports.app.interfaces.card;
@@ -16,25 +14,11 @@ const Previewer = imports.app.widgets.previewer;
  * A card which display an image along with a caption and attribution text, best
  * used with a MediaObject Model.
  */
-const MediaCard = new Lang.Class({
+const MediaCard = new Module.Class({
     Name: 'MediaCard',
-    GTypeName: 'EknMediaCard',
     CssName: 'EknMediaCard',
     Extends: Gtk.Frame,
-    Implements: [ Module.Module, Card.Card ],
-
-    Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-        'model': GObject.ParamSpec.override('model', Card.Card),
-        'title-capitalization': GObject.ParamSpec.override('title-capitalization',
-            Card.Card),
-        'context-capitalization': GObject.ParamSpec.override('context-capitalization',
-            Card.Card),
-        'highlight-string': GObject.ParamSpec.override('highlight-string', Card.Card),
-        'text-halign': GObject.ParamSpec.override('text-halign', Card.Card),
-        'sequence': GObject.ParamSpec.override('sequence', Card.Card),
-    },
+    Implements: [Card.Card],
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/mediaCard.ui',
     InternalChildren: [ 'caption-label', 'attribution-label', 'grid',

@@ -5,7 +5,6 @@ const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Module = imports.app.interfaces.module;
 const ImagePreviewer = imports.app.widgets.imagePreviewer;
@@ -20,17 +19,12 @@ const Utils = imports.app.utils;
  *   app-banner - on the module itself
  *   subtitle - on the label displaying the app's subtitle
  */
-const AppBanner = new Lang.Class({
+const AppBanner = new Module.Class({
     Name: 'AppBanner',
-    GTypeName: 'EknAppBanner',
     CssName: 'EknAppBanner',
     Extends: Gtk.Grid,
-    Implements: [ Module.Module ],
 
     Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-
         /**
          * Property: image-uri
          * A URI to the title image. Defaults to an empty string.

@@ -28,9 +28,8 @@
  *     Extends: GObject.Object,
  *     Implements: [ EosKnowledge.HistoryItemModel ],
  *     Properties: {
- *         'title': GObject.ParamSpec.string('title', 'override', 'override',
- *             GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE | GObject.ParamFlags.CONSTRUCT_ONLY,
- *             ''),
+ *         'title': GObject.ParamSpec.override('title',
+ *              EosKnowledge.HistoryItemModel),
  *         'last-visited': GObject.ParamSpec.int64('last-visited', 'Last visited',
  *             'Time last visited',
  *              GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE,

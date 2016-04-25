@@ -1,8 +1,6 @@
 // Copyright 2015 Endless Mobile, Inc.
 
-const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Card = imports.app.interfaces.card;
 const Module = imports.app.interfaces.module;
@@ -22,25 +20,11 @@ const Utils = imports.app.utils;
  *   next-label - on the next label
  *   title - on the title label
  */
-const SequenceCard = new Lang.Class({
+const SequenceCard = new Module.Class({
     Name: 'SequenceCard',
-    GTypeName: 'EknSequenceCard',
     CssName: 'EknSequenceCard',
     Extends: Gtk.Button,
-    Implements: [ Module.Module, Card.Card, NavigationCard.NavigationCard ],
-
-    Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
-        'model': GObject.ParamSpec.override('model', Card.Card),
-        'title-capitalization': GObject.ParamSpec.override('title-capitalization', Card.Card),
-        'context-capitalization': GObject.ParamSpec.override('context-capitalization',
-            Card.Card),
-        'highlight-string': GObject.ParamSpec.override('highlight-string', Card.Card),
-        'text-halign': GObject.ParamSpec.override('text-halign', Card.Card),
-        'sequence': GObject.ParamSpec.override('sequence', Card.Card),
-        'navigation-context': GObject.ParamSpec.override('navigation-context', NavigationCard.NavigationCard),
-    },
+    Implements: [Card.Card, NavigationCard.NavigationCard],
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/sequenceCard.ui',
     InternalChildren: [ 'title-label', 'next-label', 'previous-label' ],

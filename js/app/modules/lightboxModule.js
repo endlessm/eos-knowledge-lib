@@ -1,5 +1,3 @@
-const GObject = imports.gi.GObject;
-
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
 const Engine = imports.search.engine;
@@ -10,17 +8,17 @@ const Module = imports.app.interfaces.module;
  * Class: LightboxModule
  *
  * A module which displays media content over other
+ *
+ * Slots:
+ *   card-type
  */
-const LightboxModule = new GObject.Class({
+const LightboxModule = new Module.Class({
     Name: 'LightboxModule',
-    GTypeName: 'EknLightboxModule',
     CssName: 'EknLightboxModule',
     Extends: Lightbox.Lightbox,
-    Implements: [ Module.Module ],
 
-    Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
+    Slots: {
+        'card-type': {},
     },
 
     _init: function (props={}) {
@@ -96,9 +94,5 @@ const LightboxModule = new GObject.Class({
         this.reveal_overlays = true;
         this.has_back_button = this._current_index > 0;
         this.has_forward_button = this._current_index < resources.length - 1;
-    },
-
-    get_slot_names: function () {
-        return ['card-type'];
     },
 });
