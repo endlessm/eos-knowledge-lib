@@ -63,7 +63,8 @@ const ModuleFactory = new Knowledge.Class({
         }
         // After this point, the app.json must be the current version!
 
-        this._anonymous_name_to_description = {};
+        this._name_to_description = {};
+        this._extract_names();
     },
 
     get version() {
@@ -147,9 +148,7 @@ const ModuleFactory = new Knowledge.Class({
      * and returns the resulting JSON object.
      */
     _get_module_description_by_name: function (name) {
-        let description = this.app_json['modules'][name];
-        if (!description)
-            description = this._anonymous_name_to_description[name];
+        let description = this._name_to_description[name];
         if (!description)
             throw new Error('No description found in app.json for ' + name);
 
@@ -158,7 +157,28 @@ const ModuleFactory = new Knowledge.Class({
 
     _setup_anonymous_module: function (factory_name, slot, description) {
         let name = factory_name + '.' + slot;
-        this._anonymous_name_to_description[name] = description;
         return name;
+    },
+
+    _extract_names: function () {
+        Object.keys(this.app_json['modules']).forEach((factory_name) => {
+            let description = this.app_json['modules'][factory_name];
+            this._name_to_description[factory_name] = description;
+            this._recursive_extract_names(factory_name, description);
+        });
+    },
+
+    _recursive_extract_names: function (parent_factory_name, description) {
+        if (typeof description !== 'object' || !('slots' in description))
+            return;
+        Object.keys(description['slots']).forEach((slot_name) => {
+            let slot_value = description['slots'][slot_name];
+            let factory_name = slot_value;
+            if (typeof slot_value === 'object') {
+                factory_name = this._setup_anonymous_module(parent_factory_name, slot_name, slot_value);
+                this._name_to_description[factory_name] = slot_value;
+            }
+            this._recursive_extract_names(factory_name, slot_value);
+        });
     },
 });
