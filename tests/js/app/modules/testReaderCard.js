@@ -61,26 +61,6 @@ describe('Reader Card widget', function () {
         });
     });
 
-    it('has a fixed size', function () {
-        let card1 = new ReaderCard.ReaderCard({
-            model: new ContentObjectModel.ContentObjectModel({
-                title: 'short',
-            }),
-        });
-        let card2 = new ReaderCard.ReaderCard({
-            model: new ContentObjectModel.ContentObjectModel({
-                title: 'Really really really really really really really ' +
-                    'really really really really really really really really ' +
-                    'really long title',
-            }),
-        });
-        let width = card1.get_preferred_width();
-        expect(width).toEqual(card2.get_preferred_width());
-        expect(card1.get_preferred_height()).toEqual(card2.get_preferred_height());
-        expect(width[0]).toEqual(width[1]);
-        expect(width[0]).toBeGreaterThan(1);
-    });
-
     it('has labels that understand Pango markup', function () {
         let card = new ReaderCard.ReaderCard({
             model: new ContentObjectModel.ContentObjectModel({

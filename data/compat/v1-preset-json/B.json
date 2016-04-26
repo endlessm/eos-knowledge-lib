@@ -49,7 +49,6 @@
                 "top-right": {
                     "type": "SearchBox",
                     "properties": {
-                        "width-request": 350,
                         "visible": true,
                         "shadow-type": "none",
                         "halign": "center",

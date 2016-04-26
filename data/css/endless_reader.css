@@ -181,6 +181,8 @@ EknSplitPercentageTemplate,
 
 .document-card .decoration {
     background-color: #e3e3e3;
+    min-width: 34px;
+    min-height: 2px;
 }
 
 .nav-back-button, .nav-forward-button {
@@ -248,12 +250,19 @@ EknSplitPercentageTemplate,
 }
 
 .reader-card {
+    min-width: 200px;
+    min-height: 250px;
     background-color: #f4f4f4;
     border-style: solid;
     border-width: 10px 10px 10px 10px;
     border-image: -gtk-gradient(radial, center center, 0, center center, 0.5,
                         from(#aaa), to(#ccc))
                   40 40 40 40 stretch;
+}
+
+.document-card .decorative-bar,
+.reader-card .decorative-bar {
+    min-height: 20px;
 }
 
 .reader-card .title {

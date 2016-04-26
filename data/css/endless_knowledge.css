@@ -165,6 +165,10 @@ EosWindow.parallax.background-right {
     font-weight: bold;
 }
 
+.card-a .thumbnail {
+    min-height: 133px;
+}
+
 .section-page-a .card-a .title,
 .search-page-a .card-a .title {
     font-size: 0.9em;
@@ -405,6 +409,14 @@ EosWindow.parallax.background-right {
 
     border-width: .33em;
     border-color: alpha(black, 0.19);
+}
+
+.home-page-a .search-box {
+    min-width: 400px;
+}
+
+.home-page-b .search-box {
+    min-width: 350px;
 }
 
 .home-page-a .search-box selection, .home-page-b .search-box selection {

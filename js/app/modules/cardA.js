@@ -40,7 +40,6 @@ const CardA = new Module.Class({
         if (this.model instanceof SetObjectModel.SetObjectModel) {
             this.set_thumbnail_frame_from_model(this._thumbnail_frame);
         }
-        this._thumbnail_frame.height_request = 133;
 
         if (!this._thumbnail_frame.visible) {
             this._title_label.xalign = 0;
