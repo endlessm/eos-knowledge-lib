@@ -63,7 +63,9 @@ const ModuleFactory = new Knowledge.Class({
         }
         // After this point, the app.json must be the current version!
 
+        this._name_to_module = {};
         this._name_to_description = {};
+        this._name_is_reference = {};
         this._extract_names();
     },
 
@@ -137,8 +139,17 @@ const ModuleFactory = new Knowledge.Class({
         let factory_name = slot_value;
         if (typeof slot_value === 'object')
             factory_name = this._get_anonymous_name(parent_module.factory_name, slot, slot_value);
+
+        if ('reference' in parent_module.constructor.__slots__[slot] && factory_name in this._name_to_module)
+            return this._name_to_module[factory_name];
+
         return this.create_named_module(factory_name, extra_props);
     },
+
+    register_module: function (factory_name, module) {
+        if (factory_name in this._name_is_reference && !(factory_name in this._name_to_module))
+            this._name_to_module[factory_name] = module;
+     },
 
     /**
      * Method: _get_module_description_by_name
@@ -179,7 +190,15 @@ const ModuleFactory = new Knowledge.Class({
                 factory_name = this._get_anonymous_name(parent_factory_name, slot_name, slot_value);
                 this._name_to_description[factory_name] = slot_value;
             }
+            this._check_if_reference(factory_name, slot_name, description);
             this._recursive_extract_names(factory_name, slot_value);
         });
+    },
+
+    _check_if_reference: function (factory_name, slot_name, parent_description) {
+        let parent_class = this.warehouse.type_to_class(parent_description['type']);
+        if ('reference' in parent_class.__slots__[slot_name]) {
+            this._name_is_reference[factory_name] = true;
+        }
     },
 });

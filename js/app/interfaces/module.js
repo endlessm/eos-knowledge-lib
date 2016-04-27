@@ -123,4 +123,8 @@ const Module = new Lang.Interface({
         return this.factory.create_module_for_slot(this, slot,
             extra_props);
     },
+
+    register_module: function () {
+        this.factory.register_module(this.factory_name, this);
+    },
 });

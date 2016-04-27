@@ -55,6 +55,14 @@ const MOCK_APP_JSON = {
                 'anonymous-slot-1': {
                     type: 'TestModule',
                     name: 'named-anonymous-1',
+                    slots: {
+                        'anonymous-slot-2': {
+                            type: 'TestModule',
+                            slots: {
+                                'reference-slot-1': 'named-anonymous-1',
+                            },
+                        },
+                    },
                 },
             },
         },
@@ -69,7 +77,15 @@ const MockModule = new Module.Class({
         'optional-slot': {},
         'anonymous-slot-1': {},
         'anonymous-slot-2': {},
-    }
+        'reference-slot-1': {
+            reference: true,
+        }
+    },
+
+    _init: function (props={}) {
+        this.parent(props);
+        this.register_module();
+    },
 });
 
 const MockWarehouse = new Knowledge.Class({
@@ -159,6 +175,23 @@ describe('Module factory', function () {
             let module1 = module_factory.create_module_for_slot(parent, 'anonymous-slot-1');
             let module2 = module_factory.create_named_module('named-anonymous-1');
             expect(module1).toEqual(module2);
+        });
+    });
+
+    describe('referenced modules', function () {
+        it('use the same instance when a slot is marked as a reference', function () {
+            let parent = module_factory.create_named_module('test2');
+            let module1 = module_factory.create_module_for_slot(parent, 'anonymous-slot-1');
+            let module2 = module_factory.create_module_for_slot(module1, 'anonymous-slot-2');
+            let module3 = module_factory.create_module_for_slot(module2, 'reference-slot-1');
+            expect(module1).toBe(module3);
+        });
+
+        it('use a different instance when a slot is not marked as reference', function () {
+            let parent = module_factory.create_named_module('test2');
+            let module1 = module_factory.create_module_for_slot(parent, 'anonymous-slot-1');
+            let module2 = module_factory.create_named_module('named-anonymous-1');
+            expect(module1).not.toBe(module2);
         });
     });
 
