@@ -9,20 +9,24 @@
     <file compressed="true">data/compat/v1-preset-json/reader.json</file>
     <file compressed="true">data/css/buffet_core.css</file>
     <file compressed="true">data/css/common.css</file>
+    <file compressed="true">data/css/endless_buffet.css</file>
     <file compressed="true">data/css/endless_encyclopedia.css</file>
     <file compressed="true">data/css/endless_knowledge.css</file>
     <file compressed="true">data/css/endless_reader.css</file>
-    <file compressed="true">data/css/endless_buffet.css</file>
     <file compressed="true">data/css/hide_title.css</file>
+    <file compressed="true">data/css/lightbox.css</file>
     <file compressed="true">data/css/mediaCard.css</file>
     <file compressed="true">data/css/news.css</file>
-    <file compressed="true">data/css/lightbox.css</file>
     <file compressed="true">data/css/no_image_links.css</file>
+    <file compressed="true">data/css/picard.css</file>
     <file compressed="true">data/css/themes/jungle.css</file>
     <file compressed="true">data/css/themes/templateA.css</file>
     <file>data/images/background.png</file>
     <file>data/images/pdf-background.png</file>
     <file>data/images/pdf_icon.png</file>
+    <file>data/images/picard/food.jpg</file>
+    <file>data/images/picard/forest.jpg</file>
+    <file>data/images/picard/people.jpg</file>
     <file preprocess="xml-stripblanks">data/images/reader/archive.svg</file>
     <file preprocess="xml-stripblanks">data/images/reader/external-link.svg</file>
     <file preprocess="xml-stripblanks">data/images/reader/left-arrow.svg</file>

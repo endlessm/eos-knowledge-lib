@@ -1,0 +1,14 @@
+frame, grid, border {
+    border: initial;
+}
+
+.card {
+    background-color: initial;
+    background-image: initial;
+    padding: initial;
+    border: initial;
+    margin: initial;
+    outline: initial;
+}
+
+@import url("resource:///com/endlessm/knowledge/data/css/endless_knowledge.css");
