@@ -1,4 +1,4 @@
-// Copyright 2016 Endless Mobile, Inc.
+// Copyright (C) 2016 Endless Mobile, Inc.
 
 const GObject = imports.gi.GObject;
 const GLib = imports.gi.GLib;

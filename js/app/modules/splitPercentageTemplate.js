@@ -1,6 +1,6 @@
 /* SplitPercentageTemplate */
 
-// Copyright 2016 Endless Mobile, Inc.
+// Copyright (C) 2016 Endless Mobile, Inc.
 
 const Endless = imports.gi.Endless;
 const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;

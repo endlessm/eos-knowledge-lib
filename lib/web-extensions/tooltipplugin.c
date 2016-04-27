@@ -1,3 +1,5 @@
+/* Copyright (C) 2016 Endless Mobile, Inc. */
+
 #include <string.h>
 
 #include <JavaScriptCore/JavaScript.h>

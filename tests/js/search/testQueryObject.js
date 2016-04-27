@@ -1,3 +1,5 @@
+// Copyright (C) 2016 Endless Mobile, Inc.
+
 const Blacklist = imports.search.blacklist;
 const QueryObject = imports.search.queryObject;
 

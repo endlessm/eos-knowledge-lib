@@ -1,5 +1,5 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
-/* Copyright 2013 Endless Mobile, Inc. */
+/* Copyright (C) 2013-2016 Endless Mobile, Inc. */
 
 #ifndef EKN_MACROS_H
 #define EKN_MACROS_H

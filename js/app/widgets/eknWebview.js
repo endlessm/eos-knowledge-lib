@@ -1,3 +1,5 @@
+// Copyright (C) 2016 Endless Mobile, Inc.
+
 const ByteArray = imports.byteArray;
 const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;

@@ -1,3 +1,5 @@
+/* Copyright (C) 2016 Endless Mobile, Inc. */
+
 #include <gio/gio.h>
 #include <glib.h>
 #include <glib-object.h>

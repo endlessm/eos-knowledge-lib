@@ -1,4 +1,4 @@
-// Copyright 2015 Endless Mobile, Inc.
+// Copyright (C) 2015-2016 Endless Mobile, Inc.
 
 // UI event actions, avoid updating other module UI from these, they will be
 // processed by the interaction models.

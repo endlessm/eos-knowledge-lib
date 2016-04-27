@@ -1,4 +1,4 @@
-// Copyright 2014 Endless Mobile, Inc.
+// Copyright (C) 2014-2016 Endless Mobile, Inc.
 
 const Endless = imports.gi.Endless;
 const Gdk = imports.gi.Gdk;

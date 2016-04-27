@@ -1,6 +1,6 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
-/* Copyright 2014 Endless Mobile, Inc. */
+/* Copyright (C) 2014-2016 Endless Mobile, Inc. */
 
 #include "ekn-history-model.h"
 #include "ekn-history-item-model.h"

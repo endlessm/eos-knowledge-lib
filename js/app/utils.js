@@ -1,3 +1,5 @@
+// Copyright (C) 2016 Endless Mobile, Inc.
+
 /* exported dbus_object_path_for_webview, get_css_for_title_and_module,
 get_web_plugin_dbus_name, get_web_plugin_dbus_name_for_webview,
 has_descendant_with_type, render_border_with_arrow,

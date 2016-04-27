@@ -1,3 +1,5 @@
+// Copyright (C) 2016 Endless Mobile, Inc.
+
 const Engine = imports.search.engine;
 const EosShard = imports.gi.EosShard;
 const GLib = imports.gi.GLib;

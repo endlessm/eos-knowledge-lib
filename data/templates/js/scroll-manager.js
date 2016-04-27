@@ -1,3 +1,5 @@
+// Copyright (C) 2016 Endless Mobile, Inc.
+
 /** scroll-manager.js
  *  The scroll manager does two things:
  *      1. Provide a scrollTo for animated scrolling to an anchor

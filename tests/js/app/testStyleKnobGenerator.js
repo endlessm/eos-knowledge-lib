@@ -1,3 +1,5 @@
+// Copyright (C) 2016 Endless Mobile, Inc.
+
 const Gio = imports.gi.Gio;
 const StyleKnobGenerator = imports.app.compat.styleKnobGenerator;
 const Utils = imports.tests.utils;

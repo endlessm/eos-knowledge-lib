@@ -1,3 +1,5 @@
+// Copyright (C) 2016 Endless Mobile, Inc.
+
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
 const NavButtonOverlay = imports.app.widgets.navButtonOverlay;

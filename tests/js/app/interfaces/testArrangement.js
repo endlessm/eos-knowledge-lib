@@ -1,3 +1,5 @@
+// Copyright (C) 2016 Endless Mobile, Inc.
+
 const Gtk = imports.gi.Gtk;
 
 const ContentObjectModel = imports.search.contentObjectModel;

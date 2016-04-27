@@ -1,3 +1,5 @@
+// Copyright (C) 2016 Endless Mobile, Inc.
+
 const Endless = imports.gi.Endless;
 const Gettext = imports.gettext;
 const Gio = imports.gi.Gio;

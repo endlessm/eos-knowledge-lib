@@ -1,4 +1,4 @@
-// Copyright 2016 Endless Mobile, Inc.
+// Copyright (C) 2016 Endless Mobile, Inc.
 
 const ContentObjectModel = imports.search.contentObjectModel;
 const FeaturedFilter = imports.app.modules.featuredFilter;
