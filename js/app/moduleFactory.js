@@ -136,7 +136,7 @@ const ModuleFactory = new Knowledge.Class({
             return null;
         let factory_name = slot_value;
         if (typeof slot_value === 'object')
-            factory_name = this._setup_anonymous_module(parent_module.factory_name, slot, slot_value);
+            factory_name = this._get_anonymous_name(parent_module.factory_name, slot, slot_value);
         return this.create_named_module(factory_name, extra_props);
     },
 
@@ -155,9 +155,10 @@ const ModuleFactory = new Knowledge.Class({
         return description;
     },
 
-    _setup_anonymous_module: function (factory_name, slot, description) {
-        let name = factory_name + '.' + slot;
-        return name;
+    _get_anonymous_name: function (parent_factory_name, slot_name, description) {
+        if ('name' in description)
+            return description['name'];
+        return parent_factory_name + '.' + slot_name;
     },
 
     _extract_names: function () {
@@ -175,7 +176,7 @@ const ModuleFactory = new Knowledge.Class({
             let slot_value = description['slots'][slot_name];
             let factory_name = slot_value;
             if (typeof slot_value === 'object') {
-                factory_name = this._setup_anonymous_module(parent_factory_name, slot_name, slot_value);
+                factory_name = this._get_anonymous_name(parent_factory_name, slot_name, slot_value);
                 this._name_to_description[factory_name] = slot_value;
             }
             this._recursive_extract_names(factory_name, slot_value);

@@ -49,6 +49,15 @@ const MOCK_APP_JSON = {
                 'halign': 'asdf',
             }
         },
+        'test2': {
+            type: 'TestModule',
+            slots: {
+                'anonymous-slot-1': {
+                    type: 'TestModule',
+                    name: 'named-anonymous-1',
+                },
+            },
+        },
     },
 };
 
@@ -143,6 +152,13 @@ describe('Module factory', function () {
             let module1 = module_factory.create_module_for_slot(parent, 'anonymous-slot-1');
             let module2 = module_factory.create_module_for_slot(parent, 'anonymous-slot-1');
             expect(module1.factory_name).toEqual(module2.factory_name);
+        });
+
+        it('modules can also be named', function () {
+            let parent = module_factory.create_named_module('test2');
+            let module1 = module_factory.create_module_for_slot(parent, 'anonymous-slot-1');
+            let module2 = module_factory.create_named_module('named-anonymous-1');
+            expect(module1).toEqual(module2);
         });
     });
 
