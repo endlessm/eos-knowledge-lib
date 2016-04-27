@@ -37,7 +37,6 @@
                 "home-page": "home-page",
                 "section-page": "section-page",
                 "search-page": "search-page",
-                "all-sets-page": "all-sets-page",
                 "article-page": "article-page"
             }
         },
@@ -271,36 +270,6 @@
                                         "halign": "fill",
                                         "message-halign": "start",
                                         "message-justify": "left"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "all-sets-page": {
-            "type": "TopMenuTemplate",
-            "slots": {
-                "top-menu": "main-menu",
-                "content": {
-                    "type": "ScrollingTemplate",
-                    "slots": {
-                        "content": {
-                            "type": "ResponsiveMarginsModule",
-                            "slots": {
-                                "content": {
-                                    "type": "SetGroupModule",
-                                    "slots": {
-                                        "arrangement": {
-                                            "type": "ThirdRockArrangement",
-                                            "properties": {
-                                                "spacing": 20
-                                            },
-                                            "slots": {
-                                                "card-type": "set-card"
-                                            }
-                                        }
                                     }
                                 }
                             }
