@@ -49,18 +49,6 @@ const SearchModule = new Module.Class({
 
     Properties: {
         /**
-         * Property: max-children
-         *
-         * The maximum amount of child widgets to show.
-         *
-         * Default value:
-         *   **1000**
-         */
-        'max-children':  GObject.ParamSpec.int('max-children', 'Max children',
-            'The maximum number of children to show in this container',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            0, GLib.MAXINT32, 1000),
-        /**
          * Property: message-justify
          * Horizontal justification of message text
          *
@@ -134,8 +122,6 @@ const SearchModule = new Module.Class({
         let dispatcher = Dispatcher.get_default();
         if (this._arrangement instanceof InfiniteScrolledWindow.InfiniteScrolledWindow) {
             this._arrangement.connect('need-more-content', () => {
-                if (this._arrangement.get_count() >= this.max_children)
-                    return;
                 dispatcher.dispatch({
                     action_type: Actions.NEED_MORE_SEARCH,
                 });
@@ -155,7 +141,7 @@ const SearchModule = new Module.Class({
                 this._arrangement.fade_cards =
                     (this._arrangement.get_count() > 0);
                 this._arrangement.highlight_string(payload.query);
-                payload.models.forEach(this._add_card, this);
+                payload.models.forEach(this._arrangement.add_model, this._arrangement);
 
                 if (this._arrangement instanceof InfiniteScrolledWindow.InfiniteScrolledWindow) {
                     this._arrangement.new_content_added();
@@ -178,12 +164,6 @@ const SearchModule = new Module.Class({
                 break;
             }
         });
-    },
-
-    _add_card: function (model) {
-        if (this._arrangement.get_count() >= this.max_children)
-            return;
-        this._arrangement.add_model(model);
     },
 
     _finish_search: function (query) {
