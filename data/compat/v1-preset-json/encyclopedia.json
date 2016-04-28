@@ -97,10 +97,7 @@
                                             },
                                             "slots": {
                                                 "card-type": {
-                                                    "type": "TextCard",
-                                                    "properties": {
-                                                        "underline-on-hover": true
-                                                    }
+                                                    "type": "TextCard"
                                                 }
                                             }
                                         }
