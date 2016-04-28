@@ -35,14 +35,6 @@ const TextCard = new Module.Class({
 
     Properties: {
         /**
-         * Property: underline-on-hover
-         * Whether to underline the link on hover
-         */
-        'underline-on-hover': GObject.ParamSpec.boolean('underline-on-hover',
-            'Underline on hover', 'Whether to underline the link on hover',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            false),
-        /**
          * Property: decorate-on-highlight
          * Whether to draw a custom decoration when the card is highlighted
          */
@@ -61,18 +53,6 @@ const TextCard = new Module.Class({
         Utils.set_hand_cursor_on_widget(this);
         this.set_title_label_from_model(this._title_label);
         this._title_label_text = this._title_label.label;
-
-        // FIXME: this should be in CSS, but "text-decoration" isn't supported
-        if (this.underline_on_hover) {
-            this.connect('enter-notify-event', () => {
-                this._title_label.label = '<u>' + this._title_label_text + '</u>';
-                return Gdk.EVENT_PROPAGATE;
-            });
-            this.connect('leave-notify-event', () => {
-                this._title_label.label = this._title_label_text;
-                return Gdk.EVENT_PROPAGATE;
-            });
-        }
 
         let before = new ThemeableImage.ThemeableImage({
             visible: true,

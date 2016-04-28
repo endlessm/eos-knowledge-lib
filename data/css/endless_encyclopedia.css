@@ -129,6 +129,10 @@ EosWindow {
     padding: 0 0 0 0;
 }
 
+.search-results .card:hover .title {
+    text-decoration: underline;
+}
+
 .search-results .card .before {
     -gtk-icon-source: -gtk-icontheme("media-record-symbolic");
     -EknThemeableImage-min-width: 6;
