@@ -159,14 +159,14 @@ const MeshInteraction = new Module.Class({
 
     STYLE_MAP: {
         A: {
-            section_card: '.card-a',
+            section_card: '.legacy-polaroid-card',
             article_card: '.article-card',
             section_page_banner: '.section-page-a EknSetBannerModule',
             search_page_banner: '.search-page-a EknSearchBannerModule',
             no_search_results_page: '.no-search-results-page-a'
         },
         B: {
-            section_card: '.card-b',
+            section_card: '.legacy-post-card',
             article_card: '.text-card',
             section_page_banner: '.section-page-b EknSetBannerModule',
             search_page_banner: '.search-page-b EknSearchBannerModule',

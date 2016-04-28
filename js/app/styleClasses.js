@@ -14,20 +14,20 @@
 const CARD = 'card';
 
 /**
- * Constant: CARD_A
+ * Constant: LEGACY_POLAROID_CARD
  *
- * Matches #EknCardA widgets.
- * It is present on any template A card.
+ * Matches #EknLegacyPolaroidCard widgets.
+ * It is present on any legacy polaroid card.
  */
-const CARD_A = 'card-a';
+const LEGACY_POLAROID_CARD = 'legacy-polaroid-card';
 
 /**
- * Constant: CARD_B
+ * Constant: LEGACY_POST_CARD
  *
- * Matches #EknCardB widgets.
- * It is present on any template B card.
+ * Matches #EknLegacyPostCard widgets.
+ * It is present on any legacy post card.
  */
-const CARD_B = 'card-b';
+const LEGACY_POST_CARD = 'legacy-post-card';
 
 /**
  * Constant: TEXT_CARD

@@ -4,7 +4,7 @@ const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
-const CardA = imports.app.modules.cardA;
+const LegacyPolaroidCard = imports.app.modules.legacyPolaroidCard;
 const HomePageA = imports.app.homePageA;
 const Utils = imports.tests.utils;
 
@@ -31,15 +31,15 @@ const TestApplication = new Lang.Class ({
                                                  Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 
         let cards = [
-            new CardA.CardA({
+            new LegacyPolaroidCard.LegacyPolaroidCard({
                 title: 'Subtitled Card',
                 synopsis: 'This is the Subtitle',
             }),
-            new CardA.CardA({
+            new LegacyPolaroidCard.LegacyPolaroidCard({
                 title: 'Picture Card',
                 thumbnail_uri: TESTDIR + '/test-content/pig1.jpg',
             }),
-            new CardA.CardA({
+            new LegacyPolaroidCard.LegacyPolaroidCard({
                 title: 'Everything card',
                 synopsis: 'This card has everything',
                 thumbnail_uri: TESTDIR + '/test-content/pig2.jpg',

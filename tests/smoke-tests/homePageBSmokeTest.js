@@ -4,7 +4,7 @@ const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
-const CardB = imports.app.modules.cardB;
+const LegacyPostCard = imports.app.modules.legacyPostCard;
 const HomePageB = imports.app.homePageB;
 const Utils = imports.tests.utils;
 
@@ -40,44 +40,44 @@ const TestApplication = new Lang.Class ({
                                                  Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 
         let cards = [
-            new CardB.CardB({
+            new LegacyPostCard.LegacyPostCard({
                 title: 'Card 1',
                 synopsis: 'The First Card',
                 thumbnail_uri: TESTDIR + '/test-content/relish.jpg',
             }),
-            new CardB.CardB({
+            new LegacyPostCard.LegacyPostCard({
                 title: 'Card 2',
                 synopsis: 'The Second Card',
                 thumbnail_uri: TESTDIR + '/test-content/pig1.jpg',
             }),
-            new CardB.CardB({
+            new LegacyPostCard.LegacyPostCard({
                 title: 'Card 3',
                 synopsis: 'The Third Card',
                 thumbnail_uri: TESTDIR + '/test-content/pig2.jpg',
             }),
-            new CardB.CardB({
+            new LegacyPostCard.LegacyPostCard({
                 title: 'Card 4',
                 synopsis: 'The Fourth Card',
                 thumbnail_uri: TESTDIR + '/test-content/pig1.jpg',
             }),
-            new CardB.CardB({
+            new LegacyPostCard.LegacyPostCard({
                 title: 'Card 5',
                 synopsis: 'The Fifth Card',
                 thumbnail_uri: TESTDIR + '/test-content/pig2.jpg',
             }),
-            new CardB.CardB({
+            new LegacyPostCard.LegacyPostCard({
                 title: 'Card 6',
                 synopsis: 'The Sixth Card',
                 // By Bogdan29roman, CC-BY-SA
                 // http://en.wikipedia.org/wiki/File:Mu%C5%9Ftar.jpg
                 thumbnail_uri: TESTDIR + '/test-content/mustard.jpg'
             }),
-            new CardB.CardB({
+            new LegacyPostCard.LegacyPostCard({
                 title: 'Card 7',
                 synopsis: 'The Seventh Card',
                 thumbnail_uri: TESTDIR + '/test-content/pig2.jpg',
             }),
-            new CardB.CardB({
+            new LegacyPostCard.LegacyPostCard({
                 title: 'Card 8',
                 synopsis: 'The Eighth Card',
                 thumbnail_uri: TESTDIR + '/test-content/pig1.jpg',

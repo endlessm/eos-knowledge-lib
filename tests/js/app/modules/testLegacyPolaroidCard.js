@@ -3,7 +3,7 @@ const Gtk = imports.gi.Gtk;
 const Utils = imports.tests.utils;
 Utils.register_gresource();
 
-const CardA = imports.app.modules.cardA;
+const LegacyPolaroidCard = imports.app.modules.legacyPolaroidCard;
 const Compliance = imports.tests.compliance;
 const ContentObjectModel = imports.search.contentObjectModel;
 const CssClassMatcher = imports.tests.CssClassMatcher;
@@ -11,25 +11,25 @@ const StyleClasses = imports.app.styleClasses;
 
 Gtk.init(null);
 
-describe('Card A', function () {
+describe('Legacy Polaroid Card', function () {
     beforeEach(function () {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
     });
 
     it('has the correct style class', function () {
-        let card = new CardA.CardA({
+        let card = new LegacyPolaroidCard.LegacyPolaroidCard({
             model: new ContentObjectModel.ContentObjectModel(),
         });
-        expect(card).toHaveCssClass(StyleClasses.CARD_A);
+        expect(card).toHaveCssClass(StyleClasses.LEGACY_POLAROID_CARD);
     });
 
     it('has a fixed size', function () {
-        let card1 = new CardA.CardA({
+        let card1 = new LegacyPolaroidCard.LegacyPolaroidCard({
             model: new ContentObjectModel.ContentObjectModel({
                 title: 'short',
             }),
         });
-        let card2 = new CardA.CardA({
+        let card2 = new LegacyPolaroidCard.LegacyPolaroidCard({
             model: new ContentObjectModel.ContentObjectModel({
                 title: 'Really really really really really really really ' +
                     'really really really really really really really really ' +
@@ -44,7 +44,7 @@ describe('Card A', function () {
     });
 
     it('has labels that understand Pango markup', function () {
-        let card = new CardA.CardA({
+        let card = new LegacyPolaroidCard.LegacyPolaroidCard({
             model: new ContentObjectModel.ContentObjectModel({
                 title: '!!!',
                 synopsis: '@@@',
@@ -55,4 +55,4 @@ describe('Card A', function () {
     });
 });
 
-Compliance.test_card_highlight_string_compliance(CardA.CardA);
+Compliance.test_card_highlight_string_compliance(LegacyPolaroidCard.LegacyPolaroidCard);

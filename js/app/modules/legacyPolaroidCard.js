@@ -1,4 +1,4 @@
-// Copyright 2014 Endless Mobile, Inc.
+// Copyright 2016 Endless Mobile, Inc.
 
 const Gdk = imports.gi.Gdk;
 const Endless = imports.gi.Endless;
@@ -18,17 +18,17 @@ const HOVER_WIDTH = Math.ceil(WIDTH * (1 + GROW_FRACTION));
 const HOVER_HEIGHT = Math.ceil(HEIGHT * (1 + GROW_FRACTION));
 
 /**
- * Class: CardA
+ * Class: LegacyPolaroidCard
  *
  * A card implementation with sizing and styling specific to template A
  */
-const CardA = new Module.Class({
-    Name: 'CardA',
-    CssName: 'EknCardA',
+const LegacyPolaroidCard = new Module.Class({
+    Name: 'LegacyPolaroidCard',
+    CssName: 'EknLegacyPolaroidCard',
     Extends: Gtk.Button,
     Implements: [Card.Card],
 
-    Template: 'resource:///com/endlessm/knowledge/data/widgets/cardA.ui',
+    Template: 'resource:///com/endlessm/knowledge/data/widgets/legacyPolaroidCard.ui',
     InternalChildren: [ 'thumbnail-frame', 'title-label', 'synopsis-label',
         'pdf-icon', 'pdf-label' ],
 
@@ -133,7 +133,7 @@ const CardA = new Module.Class({
         // FIXME: figure out better way to respect childs size request
         let [min,] = this.parent();
         if (min > WIDTH)
-            logError(new Error('CardA min width '+ min + ' greater than ' + WIDTH));
+            logError(new Error('LegacyPolaroidCard min width '+ min + ' greater than ' + WIDTH));
         return [WIDTH, WIDTH];
     },
 
@@ -141,7 +141,7 @@ const CardA = new Module.Class({
         // FIXME: figure out better way to respect childs size request
         let [min,] = this.parent();
         if (min > HEIGHT)
-            logError(new Error('CardA min width '+ min + ' greater than ' + HEIGHT));
+            logError(new Error('LegacyPolaroidCard min width '+ min + ' greater than ' + HEIGHT));
         return [HEIGHT, HEIGHT];
     },
 });

@@ -4,8 +4,8 @@ const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
-const CardA = imports.app.modules.cardA;
-const CardB = imports.app.modules.cardB;
+const LegacyPolaroidCard = imports.app.modules.legacyPolaroidCard;
+const LegacyPostCard = imports.app.modules.legacyPostCard;
 const TextCard = imports.app.modules.textCard;
 const Window = imports.app.window;
 const Utils = imports.tests.utils;
@@ -73,7 +73,7 @@ const TestApplication = new Lang.Class({
 
         // ============ HOME PAGE ==================
         view.home_page.title_image_uri = 'resource:///com/endlessm/thrones/agot.svg';
-        let card_class = template_type === 'B' ? CardB.CardB : CardA.CardA;
+        let card_class = template_type === 'B' ? LegacyPostCard.LegacyPostCard : LegacyPolaroidCard.LegacyPolaroidCard;
         view.home_page.cards = [
             new card_class({
                 title: 'A card',
@@ -138,28 +138,28 @@ const TestApplication = new Lang.Class({
         } else {
             view.section_page.segments = {
                 'Lessons and Classes': [
-                    new CardA.CardA({
+                    new LegacyPolaroidCard.LegacyPolaroidCard({
                         title: 'Subtitled Card',
                     }),
-                    new CardA.CardA({
+                    new LegacyPolaroidCard.LegacyPolaroidCard({
                         title: 'Picture Card',
                         thumbnail_uri: TESTDIR + '/test-content/pig1.jpg',
                     })
                 ],
                 'Articles and Files': [
-                    new CardA.CardA({
+                    new LegacyPolaroidCard.LegacyPolaroidCard({
                         title: 'Everything card',
                         thumbnail_uri: TESTDIR + '/test-content/pig2.jpg',
                     }),
                 ],
                 'Devon and Higgins': [
-                    new CardA.CardA({
+                    new LegacyPolaroidCard.LegacyPolaroidCard({
                         title: 'Everything card',
                         thumbnail_uri: TESTDIR + '/test-content/pig2.jpg',
                     }),
                 ],
                 'Fernando and Frango': [
-                    new CardA.CardA({
+                    new LegacyPolaroidCard.LegacyPolaroidCard({
                         title: 'Everything card',
                         thumbnail_uri: TESTDIR + '/test-content/pig2.jpg',
                     }),

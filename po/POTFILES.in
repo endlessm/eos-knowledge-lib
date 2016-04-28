@@ -1,5 +1,5 @@
 data/widgets/backCover.ui
-data/widgets/cardA.ui
+data/widgets/legacyPolaroidCard.ui
 data/widgets/readerCard.ui
 data/widgets/sequenceCard.ui
 data/widgets/sideMenuTemplate.ui

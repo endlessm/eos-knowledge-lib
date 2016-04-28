@@ -67,7 +67,7 @@
                             "type": "TiledGridArrangement",
                             "slots": {
                                 "card-type": {
-                                    "type": "CardB"
+                                    "type": "LegacyPostCard"
                                 }
                             }
                         }
