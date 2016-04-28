@@ -41,11 +41,13 @@ const ThematicModule = new Module.Class({
     Name: 'ThematicModule',
     CssName: 'EknThematicModule',
     Extends: Gtk.Grid,
-    Implements: [Scrollable.Scrollable],
 
     Slots: {
         'arrangement': {},
         'header-card-type': {},
+        'scroll-server': {
+            reference: true,
+        },
     },
 
     _init: function (props={}) {
@@ -56,7 +58,10 @@ const ThematicModule = new Module.Class({
         this._non_featured_arrangements = [];
         this._sets = [];
 
-        this.scrollable_init();
+        this._scroll_server_module = this.create_submodule('scroll-server');
+        this._scroll_server_module.connect('need-more-content', () => {
+            this.show_more_content();
+        });
 
         Dispatcher.get_default().register((payload) => {
             switch (payload.action_type) {
@@ -117,10 +122,7 @@ const ThematicModule = new Module.Class({
     _pack_arrangement: function (arrangement, models) {
         models.forEach(arrangement.add_model, arrangement);
         arrangement.visible = true;
-        Dispatcher.get_default().dispatch({
-            action_type: Actions.CONTENT_ADDED,
-            scroll_server: this.scroll_server,
-        });
+        this._scroll_server_module.new_content_added()
     },
 
     _update_arrangements: function () {

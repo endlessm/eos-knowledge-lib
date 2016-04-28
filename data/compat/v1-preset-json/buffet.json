@@ -79,9 +79,7 @@
                 "sidebar": "main-menu",
                 "content": {
                     "type": "ScrollingTemplate",
-                    "properties": {
-                        "name": "theme-scroll"
-                    },
+                    "name": "theme-scroll",
                     "slots": {
                         "content": {
                             "type": "ResponsiveMarginsModule",
@@ -99,8 +97,7 @@
                                                 "margin-top": 20,
                                                 "margin-bottom": 20,
                                                 "margin-start": 20,
-                                                "margin-end": 20,
-                                                "scroll-server": "theme-scroll"
+                                                "margin-end": 20
                                             },
                                             "slots": {
                                                 "arrangement": {
@@ -112,7 +109,8 @@
                                                         "card-type": "main-card"
                                                     }
                                                 },
-                                                "header-card-type": "header-card"
+                                                "header-card-type": "header-card",
+                                                "scroll-server": "theme-scroll"
                                             }
                                         },
                                         "second": "category-suggestions"
