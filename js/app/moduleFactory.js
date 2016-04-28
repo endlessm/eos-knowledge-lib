@@ -63,6 +63,7 @@ const ModuleFactory = new Knowledge.Class({
         }
         // After this point, the app.json must be the current version!
 
+        this._do_not_register = false;
         this._name_to_module = {};
         this._name_to_description = {};
         this._name_is_reference = {};
@@ -136,17 +137,35 @@ const ModuleFactory = new Knowledge.Class({
         let slot_value = slots[slot];
         if (slot_value === null || slot_value === undefined)
             return null;
-        let factory_name = slot_value;
-        if (typeof slot_value === 'object')
-            factory_name = this._get_anonymous_name(parent_module.factory_name, slot, slot_value);
 
-        if ('reference' in parent_module.constructor.__slots__[slot] && factory_name in this._name_to_module)
+        let is_anonymous_slot = false;
+        let is_named_module_slot = typeof slot_value === 'string';
+        let is_reference_slot = 'reference' in parent_module.constructor.__slots__[slot];
+
+        let factory_name = slot_value;
+        if (typeof slot_value === 'object') {
+            is_anonymous_slot = true;
+            factory_name = this._get_anonymous_name(parent_module.factory_name, slot, slot_value);
+        }
+
+        if ((is_reference_slot || is_anonymous_slot) && factory_name in this._name_to_module)
             return this._name_to_module[factory_name];
+
+        if (is_named_module_slot && !is_reference_slot) {
+            this._do_not_register = true;
+        } else {
+            this._do_not_register = false;
+        }
+
 
         return this.create_named_module(factory_name, extra_props);
     },
 
     register_module: function (factory_name, module) {
+        if (this._do_not_register) {
+            this._do_not_register = false;
+            return;
+        }
         if (factory_name in this._name_is_reference && !(factory_name in this._name_to_module))
             this._name_to_module[factory_name] = module;
      },

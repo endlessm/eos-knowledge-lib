@@ -52,6 +52,13 @@ const MOCK_APP_JSON = {
         'test2': {
             type: 'TestModule',
             slots: {
+                'test-slot': 'named-anonymous-1',
+                'optional-slot': {
+                    type: 'TestModule',
+                    slots: {
+                        'reference-slot-1': 'named-anonymous-1',
+                    },
+                },
                 'anonymous-slot-1': {
                     type: 'TestModule',
                     name: 'named-anonymous-1',
@@ -62,6 +69,12 @@ const MOCK_APP_JSON = {
                                 'reference-slot-1': 'named-anonymous-1',
                             },
                         },
+                    },
+                },
+                'anonymous-slot-2': {
+                    type: 'TestModule',
+                    slots: {
+                        'test-slot': 'named-anonymous-1',
                     },
                 },
             },
@@ -192,6 +205,28 @@ describe('Module factory', function () {
             let module1 = module_factory.create_module_for_slot(parent, 'anonymous-slot-1');
             let module2 = module_factory.create_named_module('named-anonymous-1');
             expect(module1).not.toBe(module2);
+        });
+
+        it('order does not affect the outcome', function () {
+            let parent = module_factory.create_named_module('test2');
+
+            let module1 = module_factory.create_module_for_slot(parent, 'test-slot');
+
+            let module2 = module_factory.create_module_for_slot(parent, 'optional-slot');
+            let module3 = module_factory.create_module_for_slot(module2, 'reference-slot-1');
+
+            let module4 = module_factory.create_module_for_slot(parent, 'anonymous-slot-1');
+            let module5 = module_factory.create_module_for_slot(module4, 'anonymous-slot-2');
+            let module6 = module_factory.create_module_for_slot(module5, 'reference-slot-1');
+
+            let module7 = module_factory.create_module_for_slot(parent, 'anonymous-slot-2');
+            let module8 = module_factory.create_module_for_slot(module7, 'test-slot');
+
+            expect(module1).not.toBe(module3);
+            expect(module3).toBe(module4);
+            expect(module4).toBe(module6);
+            expect(module6).not.toBe(module8);
+            expect(module1).not.toBe(module8);
         });
     });
 
