@@ -1,3 +1,5 @@
+// Copyright (C) 2016 Endless Mobile, Inc.
+
 /* exported Class, Module */
 
 const GObject = imports.gi.GObject;

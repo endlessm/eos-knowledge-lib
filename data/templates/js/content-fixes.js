@@ -1,3 +1,5 @@
+// Copyright (C) 2016 Endless Mobile, Inc.
+
 var citationRequiredElements = document.querySelectorAll("sup > i > a");
 for (var i = 0; i < citationRequiredElements.length; i++)
 {

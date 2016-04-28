@@ -1,3 +1,5 @@
+// Copyright (C) 2016 Endless Mobile, Inc.
+
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
 const MediaObjectModel = imports.search.mediaObjectModel;
 

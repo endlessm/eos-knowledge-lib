@@ -1,4 +1,4 @@
-// Copyright 2016 Endless Mobile, Inc.
+// Copyright (C) 2016 Endless Mobile, Inc.
 
 const EosShard = imports.gi.EosShard;
 const Format = imports.format;

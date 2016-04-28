@@ -1,3 +1,4 @@
+// Copyright (C) 2016 Endless Mobile, Inc.
 
 const Ekns = imports.gi.EosKnowledgeSearchPrivate;
 const Gio = imports.gi.Gio;

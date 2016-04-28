@@ -1,3 +1,5 @@
+// Copyright (C) 2016 Endless Mobile, Inc.
+
 const SetObjectModel = imports.search.setObjectModel;
 
 describe('Set object model', function () {

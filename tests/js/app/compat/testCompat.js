@@ -1,3 +1,5 @@
+// Copyright (C) 2016 Endless Mobile, Inc.
+
 const Compat = imports.js.app.compat.compat;
 const MockEngine = imports.tests.mockEngine;
 

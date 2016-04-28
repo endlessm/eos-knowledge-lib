@@ -1,3 +1,5 @@
+// Copyright (C) 2016 Endless Mobile, Inc.
+
 const GObject = imports.gi.GObject;
 
 const Knowledge = imports.app.knowledge;

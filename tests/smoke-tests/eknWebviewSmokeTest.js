@@ -1,3 +1,5 @@
+// Copyright (C) 2016 Endless Mobile, Inc.
+
 const Endless = imports.gi.Endless;
 const Gio = imports.gi.Gio;
 const Lang = imports.lang;

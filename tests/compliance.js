@@ -1,4 +1,4 @@
-// Copyright 2016 Endless Mobile, Inc.
+// Copyright (C) 2016 Endless Mobile, Inc.
 
 /* exported test_arrangement_compliance, test_arrangement_fade_in_compliance,
 test_card_container_fade_in_compliance, test_card_highlight_string_compliance */

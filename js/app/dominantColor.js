@@ -1,3 +1,5 @@
+// Copyright (C) 2016 Endless Mobile, Inc.
+
 /* exported get_dominant_color, get_dominant_color_finish */
 
 const GdkPixbuf = imports.gi.GdkPixbuf;

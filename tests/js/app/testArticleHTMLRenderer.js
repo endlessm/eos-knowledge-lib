@@ -1,3 +1,4 @@
+// Copyright (C) 2016 Endless Mobile, Inc.
 
 const ArticleHTMLRenderer = imports.app.articleHTMLRenderer;
 const ArticleObjectModel = imports.search.articleObjectModel;

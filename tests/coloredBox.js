@@ -1,3 +1,5 @@
+// Copyright (C) 2016 Endless Mobile, Inc.
+
 /* exported ColoredBox */
 
 const GLib = imports.gi.GLib;

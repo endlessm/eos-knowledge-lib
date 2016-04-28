@@ -1,3 +1,5 @@
+// Copyright (C) 2016 Endless Mobile, Inc.
+
 imports.gi.versions.WebKit2 = '4.0';
 
 const Endless = imports.gi.Endless;

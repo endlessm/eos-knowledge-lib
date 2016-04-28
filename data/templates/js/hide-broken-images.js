@@ -1,3 +1,5 @@
+// Copyright (C) 2016 Endless Mobile, Inc.
+
 function hide_caption (img) {
     thumb = img.parentNode.parentNode.parentNode;
     img.style.display = 'none';

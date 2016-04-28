@@ -1,3 +1,5 @@
+// Copyright (C) 2016 Endless Mobile, Inc.
+
 const ArticleObjectModel = imports.search.articleObjectModel;
 const SetMap = imports.app.setMap;
 const SetObjectModel = imports.search.setObjectModel;

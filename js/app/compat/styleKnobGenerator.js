@@ -1,3 +1,5 @@
+// Copyright (C) 2016 Endless Mobile, Inc.
+
 const CssParse = imports.app.libs.cssParse;
 const Lang = imports.lang;
 

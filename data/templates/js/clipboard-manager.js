@@ -1,3 +1,5 @@
+// Copyright (C) 2016 Endless Mobile, Inc.
+
 /** clipboard_manager.js
  *  This utility handles the Copy/Paste behavior for the Knowledge Library.
  *

@@ -1,3 +1,5 @@
+// Copyright (C) 2016 Endless Mobile, Inc.
+
 // Ensures that all tags with class .eos-no-link are <span>
 // elements, so that they do not appear clickable, but still
 // retain any attributes they originally had.

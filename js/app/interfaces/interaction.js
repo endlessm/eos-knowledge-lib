@@ -1,4 +1,4 @@
-// Copyright 2015 Endless Mobile, Inc.
+// Copyright (C) 2015-2016 Endless Mobile, Inc.
 
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;

@@ -1,4 +1,4 @@
-// Copyright 2015 Endless Mobile, Inc.
+// Copyright (C) 2015-2016 Endless Mobile, Inc.
 
 /* exported add_filtered_cards, add_ordered_cards, MinimalOrder,
 MinimalArrangement, MinimalBackCover, MinimalBinModule, MinimalCard,
