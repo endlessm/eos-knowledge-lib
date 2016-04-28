@@ -5,14 +5,14 @@ EosWindow {
     font-size: 8pt;
 }
 
-.home-page,
+EosWindow,
 .search-page,
 .article-page {
     background-size: cover;
     background-repeat: no-repeat;
 }
 
-.home-page {
+EosWindow {
     background-position: center center;
 }
 
@@ -38,6 +38,10 @@ EosWindow {
     border-right-color: rgba(0, 0, 0, 0.49);
 
     border-bottom-color: rgba(255, 255, 255, 0.14);
+}
+
+.home-page .search-box {
+    min-width: 450px;
 }
 
 .article-search {

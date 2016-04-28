@@ -99,7 +99,7 @@ const EncyclopediaWindow = new Module.Class({
             let page_css = '* { background-image: url("' + this.home_background_uri + '"); }';
             let provider = new Gtk.CssProvider();
             provider.load_from_data(page_css);
-            this._home_page.get_style_context().add_provider(provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+            this.get_style_context().add_provider(provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
         }
         if (this.results_background_uri) {
             let page_css = '* { background-image: url("' + this.results_background_uri + '"); }';

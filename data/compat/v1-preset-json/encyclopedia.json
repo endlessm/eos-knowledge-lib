@@ -23,9 +23,13 @@
             }
         },
         "home-page": {
-            "type": "EncyclopediaCoverTemplate",
+            "type": "TwoPieceTemplate",
+            "properties": {
+                "orientation": "vertical",
+                "valign": "center"
+            },
             "slots": {
-                "top": {
+                "first": {
                     "type": "AppBanner",
                     "properties": {
                         "min-fraction": 0.5,
@@ -33,10 +37,10 @@
                         "margin-bottom": 42
                     }
                 },
-                "bottom": {
+                "second": {
                     "type": "SearchBox",
                     "properties": {
-                        "max-width-chars": 36
+                        "halign": "center"
                     }
                 }
             }
