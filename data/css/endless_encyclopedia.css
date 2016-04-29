@@ -16,6 +16,10 @@ EosWindow {
     background-position: center center;
 }
 
+.home-page {
+    padding: 0 80px;
+}
+
 .search-page,
 .article-page {
     background-position: top center;

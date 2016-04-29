@@ -40,6 +40,10 @@ const Mesh = new Module.Class({
     Extends: GObject.Object,
     Implements: [Launcher.Launcher, Controller.Controller],
 
+    Slots: {
+        'collection1': {},  // FIXME temporary
+    },
+
     ARTICLE_PAGE: 'article',
     HOME_PAGE: 'home',
     SEARCH_PAGE: 'search',
@@ -59,6 +63,9 @@ const Mesh = new Module.Class({
             application: this.application,
             template_type: this.template_type,
         });
+
+        // FIXME We don't have array-valued slots yet
+        this._collections = [this.create_submodule('collection1')];
 
         this._load_theme();
 
@@ -131,30 +138,13 @@ const Mesh = new Module.Class({
     },
 
     _load_sets_on_home_page: function () {
-        let query_obj = new QueryObject.QueryObject({
-            limit: -1,
-            tags: [ Engine.HOME_PAGE_TAG, 'EknSetObject' ],
-        });
-        Engine.get_default().get_objects_by_query(query_obj, null, (engine, inner_task) => {
-            let [models] = engine.get_objects_by_query_finish(inner_task);
+        // Excuse this rude overreaching; perhaps Module should have a
+        // "prepare_to_show" method that calls its children recursively, or
+        // something like that.
+        this._window._home_page.get_children()[0].load();
 
-            // FIXME: This sorting should ideally happen in the arrangement
-            // once it has a sort-by API.
-            let sorted_models = models.sort((a, b) => {
-                let sortVal = 0;
-                if (a.featured)
-                    sortVal--;
-                if (b.featured)
-                    sortVal++;
-                return sortVal;
-            });
-            Dispatcher.get_default().dispatch({
-                action_type: Actions.APPEND_SETS,
-                models: sorted_models,
-            });
-            this._home_content_loaded = true;
-            this._show_home_if_ready();
-        });
+        this._home_content_loaded = true;
+        this._show_home_if_ready();
     },
 
     STYLE_MAP: {

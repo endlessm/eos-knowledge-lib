@@ -21,8 +21,6 @@ const StyleClasses = imports.app.styleClasses;
  *
  * Slots:
  *   card-type - controls how the card models are converted into cards
- *   order
- *   filter
  */
 const Arrangement = new Lang.Interface({
     Name: 'Arrangement',
@@ -81,8 +79,6 @@ const Arrangement = new Lang.Interface({
         'card-type': {
             multi: true,
         },
-        'order': {},
-        'filter': {},
     },
 
     Signals: {
@@ -104,10 +100,10 @@ const Arrangement = new Lang.Interface({
         return this._cards_by_id_map;
     },
 
-    _models_by_id: function () {
-        if (!this._models_by_id_map)
-            this._models_by_id_map = new Map();
-        return this._models_by_id_map;
+    _models: function () {
+        if (!this._models_array)
+            this._models_array = [];
+        return this._models_array;
     },
 
     /**
@@ -121,26 +117,7 @@ const Arrangement = new Lang.Interface({
      *   Number of card models in the arrangement
      */
     get_count: function () {
-        return this._models_by_id().size;
-    },
-
-    /**
-     * Method: get_card_count
-     * Count the cards being shown in the arrangement
-     *
-     * Contrast to <get_count()>.
-     * This returns the number of cards currently displaying in the arrangement.
-     * There may be card models added to the arrangement that are not shown as
-     * cards because they are filtered out.
-     *
-     * This is a method for technical reasons, but it should be treated like a
-     * read-only property.
-     *
-     * Returns:
-     *   Number of cards in the arrangement
-     */
-    get_card_count: function () {
-        return this._cards_by_id().size;
+        return this._models().length;
     },
 
     _create_card: function (model) {
@@ -162,59 +139,55 @@ const Arrangement = new Lang.Interface({
     },
 
     /**
-     * Method: add_model
-     * Add a card model to the arrangement
+     * Method: set_models
+     * Display card models in the arrangement
      *
      * Note that adding a card directly with *Gtk.Container.add()* or one of its
      * more specialized relatives will not add a model to the arrangement.
      *
      * Parameters:
-     *   model - a <ContentObjectModel>
+     *   models - an array of <ContentObjectModel>s
      */
-    add_model: function (model) {
-        this._models_by_id().set(model.ekn_id, model);
-
+    set_models: function (models) {
         let max_cards = this.get_max_cards();
-        let order = this.get_order();
+        let ix;
+        for (ix = 0; ix < models.length; ix++) {
+            let model = models[ix];
+            let old_model = this._models()[ix];
+            let new_id = model.ekn_id;
 
-        if (!order && max_cards > -1 && this.get_count() > max_cards)
-            return;
+            if (old_model && old_model.ekn_id === new_id)
+                continue;
 
-        let filter = this.get_filter();
-        if (filter && !filter.include(model))
-            return;
+            // TODO: this should be more intelligent and see if a card is
+            // already created but in a different position; but this dumb
+            // iteration is enough for the proof of concept
 
-        let card;
-        if (order) {
-            let models = this.get_filtered_models();
-            let position = models.indexOf(model);
-            if (max_cards > -1 && position >= max_cards)
-                return;
-            card = this._create_card(model);
-            this.pack_card(card, position);
-        } else {
-            card = this._create_card(model);
+            if (old_model) {
+                this._models().splice(ix, 1, model);
+                this._remove_card_for_model(old_model);
+            } else {
+                this._models()[ix] = model;
+            }
+
+            if (max_cards > -1 && ix >= max_cards)
+                continue;
+
+            let card = this._create_card(model);
             this.pack_card(card);
+
+            if (this.fade_cards)
+                this.fade_card_in(card);
+            else
+                card.show_all();
         }
 
-        if (this.fade_cards)
-            this.fade_card_in(card);
-        else
-            card.show_all();
+        for (; ix < this._models.length; ix++)
+            this._remove_card_for_model(this._models()[ix]);
+        this._models().splice(ix, this._models.length - ix);
     },
 
-    /**
-     * Method: remove_model
-     * Remove a card model from the arrangement
-     *
-     * Note that removing a card directly with *Gtk.Container.remove()* will
-     * not remove the model from the arrangement.
-     *
-     * Parameters:
-     *   model - a <ContentObjectModel>
-     */
-    remove_model: function (model) {
-        this._models_by_id().delete(model.ekn_id);
+    _remove_card_for_model: function (model) {
         let card = this._cards_by_id().get(model.ekn_id);
         if (card) {
             this._cards_by_id().delete(model.ekn_id);
@@ -227,29 +200,7 @@ const Arrangement = new Lang.Interface({
      * Get all card models in the arrangement
      */
     get_models: function () {
-        let models = [...this._models_by_id().values()];
-        let order = this.get_order();
-        if (order)
-            models.sort(order.compare.bind(order));
-        return models;
-    },
-
-    /**
-     * Method: get_filtered_models
-     * Get card models in the arrangement that are to be displayed
-     *
-     * Use this function in your <Arrangement> implementation when you are
-     * deciding how to lay out the cards.
-     *
-     * Returns:
-     *   an array of <ContentObjectModels>
-     */
-    get_filtered_models: function () {
-        let filter = this.get_filter();
-        let models = this.get_models();
-        if (!filter)
-            return models;
-        return models.filter(filter.include.bind(filter));
+        return this._models().slice();
     },
 
     /**
@@ -291,7 +242,8 @@ const Arrangement = new Lang.Interface({
         for (let card of this._cards_by_id().values())
             this.unpack_card(card);
         this._cards_by_id().clear();
-        this._models_by_id().clear();
+        while (this._models().pop())
+            ;
     },
 
     highlight: function (highlight_model) {
@@ -305,24 +257,6 @@ const Arrangement = new Lang.Interface({
         for (let card of this._cards_by_id().values()) {
             card.get_style_context().remove_class(StyleClasses.HIGHLIGHTED);
         }
-    },
-
-    /**
-     * Method: get_order
-     * Private method intended to be used from implementations
-     */
-    get_order: function () {
-        // null is a valid value for Order
-        if (typeof this._order_module === 'undefined')
-            this._order_module = this.create_submodule('order');
-        return this._order_module;
-    },
-
-    get_filter: function () {
-        // null is a valid value for Filter
-        if (typeof this._filter_module === 'undefined')
-            this._filter_module = this.create_submodule('filter');
-        return this._filter_module;
     },
 
     /**
@@ -356,12 +290,9 @@ const Arrangement = new Lang.Interface({
      *
      * Parameters:
      *   card - a <Card> implementation
-     *   position - an integer specifying in what order the card should be
-     *     packed, relative to other cards. -1 means "don't care".
      */
-    pack_card: function (card, position=-1) {
+    pack_card: function (card) {
         this.add(card);
-        void position;  // unused
     },
 
     /**

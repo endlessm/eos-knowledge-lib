@@ -4,8 +4,15 @@ defines:
     shortdef: 'Layout.TwoPiece(orientation: vertical, valign: center)'
     slots:
       # FIXME remove fractions
-      first: 'Banner.App(min-fraction: 0.5, max-fraction: 0.5)'
-      second: 'Navigation.SearchBox(halign: center)'
+      first: 'Bannner.App(min-fraction: 0.5, max-fraction: 0.5)'
+      second: 'ContentGroup.ContentGroup(halign: center, title: "More news from %s")'
+        slots:
+          arrangement:
+            shortdef: 'Arrangement.Quilt(spacing: 20)'
+            slots:
+        references:
+          collection: 'front-page-collection'
+              card-type: Card.Text
 
   - &inner-page-layout
     type: Layout.DividedBanner
@@ -55,6 +62,13 @@ defines:
             shortdef: 'Layout.ArticleStack(do-sliding-animation: false)'
             slots:
               card-type: Card.KnowledgeDocument
+  - &collection1
+    type: 'Collection.Example'
+    id: 'front-page-collection'
+    slots:
+      filter:
+        type: 'Filter.NonDisambig'
+      order: 'Order.WordLength(ascending: false)'
 
 root:
   type: Controller.Mesh
