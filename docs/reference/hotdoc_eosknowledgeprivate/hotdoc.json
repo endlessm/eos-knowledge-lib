@@ -1,0 +1,55 @@
+{
+    "index": "markdown_files/index.markdown",
+    "output": "built_doc",
+    "c_include_directories": [
+        "../../.."
+    ],
+    "c_sources": [
+        "../../../lib/eosknowledgeprivate/ekn-enums.c",
+        "../../../lib/eosknowledgeprivate/ekn-enums.h",
+        "../../../lib/eosknowledgeprivate/ekn-history-item-model.c",
+        "../../../lib/eosknowledgeprivate/ekn-history-item-model.h",
+        "../../../lib/eosknowledgeprivate/ekn-history-model.c",
+        "../../../lib/eosknowledgeprivate/ekn-history-model.h",
+        "../../../lib/eosknowledgeprivate/ekn-init.c",
+        "../../../lib/eosknowledgeprivate/ekn-macros.h",
+        "../../../lib/eosknowledgeprivate/ekn-types.h",
+        "../../../lib/eosknowledgeprivate/ekn-util.c",
+        "../../../lib/eosknowledgeprivate/ekn-util.h",
+        "../../../lib/eosknowledgeprivate/ekn-version.h",
+        "../../../lib/eosknowledgeprivate/eosknowledge.h"
+    ],
+    "extra_c_flags": [
+        "-Wcast-align",
+        "-Wchar-subscripts",
+        "-Wno-deprecated-declarations",
+        "-Wmissing-declarations",
+        "-Wno-strict-aliasing",
+        "-Wnested-externs",
+        "-Wpointer-arith",
+        "-DGLIB_VERSION_MIN_REQUIRED=GLIB_VERSION_2_38",
+        "-DGLIB_VERSION_MAX_ALLOWED=GLIB_VERSION_2_38",
+        "-Wall",
+        "-Wno-sign-compare",
+        "-Wmissing-prototypes",
+        "-Wno-error",
+        "-Wsign-compare",
+        "-DGCR_COMPILATION",
+        "-DGCK_API_SUBJECT_TO_CHANGE",
+        "-DGCR_API_SUBJECT_TO_CHANGE"
+    ],
+    "languages": [
+        "C",
+        "javascript"
+    ],
+    "gi_sources": [
+        "../../../EosKnowledgePrivate-1.0.gir"
+    ],
+    "gtk_doc_escape_html": true,
+    "page_parser_escape_html": true,
+    "pkg_config_packages": [
+        "gtk+-3.0",
+        "glib-2.0",
+        "webkit2gtk-4.0"
+    ]
+}
