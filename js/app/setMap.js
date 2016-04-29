@@ -18,9 +18,13 @@ function init_map_with_models (models) {
 }
 
 function get_set_for_tag (tag) {
+    if (!tagMap)
+        return undefined;
     return tagMap.get(tag);
 }
 
 function get_parent_set (subset) {
+    if (!parentMap)
+        return undefined;
     return parentMap.get(subset.ekn_id);
 }
