@@ -165,7 +165,7 @@ EosWindow.parallax.background-right {
     font-weight: bold;
 }
 
-.card-a .thumbnail {
+.legacy-polaroid-card .thumbnail {
     min-height: 133px;
 }
 
