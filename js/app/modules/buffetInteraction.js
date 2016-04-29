@@ -44,7 +44,7 @@ const SEARCH_METRIC_EVENT_ID = 'a628c936-5d87-434a-a57a-015a0f223838';
  * Interaction that presents all the content and lets the user choose
  *
  * For the Travel app, we serve up all the content at once.
- * The various presentation modules (e.g. <HighlightsModule>) sort it, and the
+ * The various presentation modules (e.g. <Highlights>) sort it, and the
  * arrangements (e.g. <WindshieldArrangement>) present it in attractive ways.
  * The user can pass along the buffet table, choosing what looks nice.
  *

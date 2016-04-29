@@ -19,7 +19,7 @@
                     "type": "SearchBox"
                 },
                 "lightbox": {
-                    "type": "LightboxModule",
+                    "type": "MediaLightbox",
                     "slots": {
                         "card-type": {
                             "type": "MediaCard"
@@ -50,10 +50,10 @@
                     "type": "ScrollingTemplate",
                     "slots": {
                         "content": {
-                            "type": "ResponsiveMarginsModule",
+                            "type": "ResponsiveMargins",
                             "slots": {
                                 "content": {
-                                    "type": "SetGroupModule",
+                                    "type": "SetGroup",
                                     "slots": {
                                         "arrangement": {
                                             "type": "SquareGuysArrangement",
@@ -84,7 +84,7 @@
                     },
                     "slots": {
                         "content": {
-                            "type": "ResponsiveMarginsModule",
+                            "type": "ResponsiveMargins",
                             "slots": {
                                 "content": {
                                     "type": "TwoPieceTemplate",
@@ -93,7 +93,7 @@
                                     },
                                     "slots": {
                                         "first": {
-                                            "type": "ThematicModule",
+                                            "type": "Thematic",
                                             "properties": {
                                                 "halign": "center",
                                                 "margin-top": 20,
@@ -133,7 +133,7 @@
                     "type": "ScrollingTemplate",
                     "slots": {
                         "content": {
-                            "type": "ResponsiveMarginsModule",
+                            "type": "ResponsiveMargins",
                             "slots": {
                                 "content": {
                                     "type": "TwoPieceTemplate",
@@ -142,7 +142,7 @@
                                     },
                                     "slots": {
                                         "first": {
-                                            "type": "HighlightsModule",
+                                            "type": "Highlights",
                                             "properties": {
                                                 "halign": "center",
                                                 "margin-top": 20,
@@ -211,7 +211,7 @@
                 "context": "context-banner",
                 "sidebar": "main-menu",
                 "content": {
-                    "type": "SearchModule",
+                    "type": "Search",
                     "slots": {
                         "arrangement": {
                             "type": "ScrollingListArrangement",
@@ -241,7 +241,7 @@
                 "context": "context-banner",
                 "sidebar": "main-menu",
                 "content": {
-                    "type": "ArticleStackModule",
+                    "type": "ArticleStack",
                     "properties" : {
                         "do-sliding-animation": false,
                         "allow-navigation": "next"
@@ -263,7 +263,7 @@
             }
         },
         "article-suggestions": {
-            "type": "SuggestedArticlesModule",
+            "type": "SuggestedArticles",
             "slots": {
                 "arrangement": {
                     "type": "SquareGuysArrangement",
@@ -281,7 +281,7 @@
             }
         },
         "category-suggestions": {
-            "type": "SuggestedCategoriesModule",
+            "type": "SuggestedCategories",
             "slots": {
                 "arrangement": {
                     "type": "SquareGuysArrangement",
@@ -320,7 +320,7 @@
             }
         },
         "main-menu": {
-            "type": "SuggestedCategoriesModule",
+            "type": "SuggestedCategories",
             "properties": {
                 "show-title": false
             },

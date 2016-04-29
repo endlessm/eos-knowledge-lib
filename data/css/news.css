@@ -9,13 +9,13 @@ scrollbar.vertical slider {
 @define-color context-blue #7297a7;
 
 EknScrollingTemplate,
-EknBackgroundModule,
+EknBackground,
 .results-message-background,
 EosWindow scrollbar {
     background-color: #e9e5e0;
 }
 
-EknSearchModule {
+EknSearch {
     background-color: transparent;
 }
 
@@ -95,13 +95,13 @@ EknSideBySideArrangement .text-card.highlighted:hover label.title {
 }
 
 /* Selects the background around the suggested articles modules; cumbersome! */
-.vertical EknResponsiveMarginsModule.second,
-.no-results .vertical EknResponsiveMarginsModule {
+.vertical EknResponsiveMargins.second,
+.no-results .vertical EknResponsiveMargins {
     background-color: #0f1b3c;
 }
 
-EknSupplementaryArticlesModule > .title,
-EknSuggestedArticlesModule > .title {
+EknSupplementaryArticles > .title,
+EknSuggestedArticles > .title {
     font-family: Merriweather;
     font-weight: bold;
     font-size: 40px;
@@ -109,7 +109,7 @@ EknSuggestedArticlesModule > .title {
     padding-bottom: 30px;
 }
 
-EknSearchBannerModule {
+EknSearchBanner {
     padding: 50px 80px 0;
     font-family: Merriweather;
     font-weight: bold;
@@ -244,8 +244,8 @@ EknSearchBannerModule {
     -gtk-icon-source: none; /* kill the arrow that Gtk adds by default in Gtk.render_arrow() */
 }
 
-EknSetBannerModule .card .title,
-EknSetBannerModule .card:hover .title {
+EknSetBanner .card .title,
+EknSetBanner .card:hover .title {
     color: white;
     font-weight: bold;
     font-size: 54px;

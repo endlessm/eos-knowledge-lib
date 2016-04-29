@@ -20,7 +20,7 @@
                 },
                 "navigation": null,
                 "lightbox": {
-                    "type": "LightboxModule",
+                    "type": "MediaLightbox",
                     "slots": {
                         "card-type": {
                             "type": "MediaCard"
@@ -48,16 +48,16 @@
                     "type": "ScrollingTemplate",
                     "slots": {
                         "content": {
-                            "type": "BackgroundModule",
+                            "type": "Background",
                             "properties": {
                                 "page-mode": "home"
                             },
                             "slots": {
                                 "content": {
-                                    "type": "ResponsiveMarginsModule",
+                                    "type": "ResponsiveMargins",
                                     "slots": {
                                         "content": {
-                                            "type": "HighlightsModule",
+                                            "type": "Highlights",
                                             "properties": {
                                                 "halign": "center",
                                                 "margin-top": 50,
@@ -115,7 +115,7 @@
                     },
                     "slots": {
                         "content": {
-                            "type": "BackgroundModule",
+                            "type": "Background",
                             "properties": {
                                 "page-mode": "section"
                             },
@@ -124,7 +124,7 @@
                                     "type": "BannerTemplate",
                                     "slots": {
                                         "banner": {
-                                            "type": "SetBannerModule",
+                                            "type": "SetBanner",
                                             "properties": {
                                                 "halign": "center",
                                                 "margin-top": 40
@@ -145,10 +145,10 @@
                                             },
                                             "slots": {
                                                 "first": {
-                                                    "type": "ResponsiveMarginsModule",
+                                                    "type": "ResponsiveMargins",
                                                     "slots": {
                                                         "content": {
-                                                            "type": "HierarchicalSetModule",
+                                                            "type": "HierarchicalSet",
                                                             "properties": {
                                                                 "halign": "center",
                                                                 "margin-top": 20,
@@ -197,7 +197,7 @@
             "slots": {
                 "top-menu": "main-menu",
                 "content": {
-                    "type": "BackgroundModule",
+                    "type": "Background",
                     "properties": {
                         "page-mode": "search"
                     },
@@ -206,7 +206,7 @@
                             "type": "BannerTemplate",
                             "slots": {
                                 "banner": {
-                                    "type": "SearchBannerModule",
+                                    "type": "SearchBanner",
                                     "properties": {
                                         "halign": "center",
                                         "xalign": 0.5,
@@ -214,7 +214,7 @@
                                     }
                                 },
                                 "content": {
-                                    "type": "SearchModule",
+                                    "type": "Search",
                                     "slots": {
                                         "arrangement": {
                                             "type": "ScrollingListArrangement",
@@ -232,10 +232,10 @@
                                             }
                                         },
                                         "article-suggestions": {
-                                            "type": "ResponsiveMarginsModule",
+                                            "type": "ResponsiveMargins",
                                             "slots": {
                                                 "content": {
-                                                    "type": "SuggestedArticlesModule",
+                                                    "type": "SuggestedArticles",
                                                     "properties": {
                                                         "show-trigger": false,
                                                         "title-capitalization": "lowercase",
@@ -283,7 +283,7 @@
             "slots": {
                 "top-menu": "main-menu",
                 "content": {
-                    "type": "ArticleStackModule",
+                    "type": "ArticleStack",
                     "properties" : {
                         "do-sliding-animation": false,
                         "allow-navigation": "next"
@@ -307,10 +307,10 @@
             }
         },
         "article-suggestions": {
-            "type": "ResponsiveMarginsModule",
+            "type": "ResponsiveMargins",
             "slots": {
                 "content": {
-                    "type": "SupplementaryArticlesModule",
+                    "type": "SupplementaryArticles",
                     "properties": {
                         "same-set": false,
                         "show-trigger": false,
@@ -344,7 +344,7 @@
             }
         },
         "set-slices": {
-            "type": "SuggestedCategoriesModule",
+            "type": "SuggestedCategories",
             "slots": {
                 "arrangement": {
                     "type": "SquareGuysArrangement",
@@ -408,10 +408,10 @@
             }
         },
         "main-menu": {
-            "type": "ResponsiveMarginsModule",
+            "type": "ResponsiveMargins",
             "slots": {
                 "content": {
-                    "type": "TopMenuModule",
+                    "type": "TopMenu",
                     "slots": {
                         "banner": {
                             "type": "AppBanner",
@@ -422,7 +422,7 @@
                             }
                         },
                         "menu": {
-                            "type": "SuggestedCategoriesModule",
+                            "type": "SuggestedCategories",
                             "properties": {
                                 "show-title": false,
                                 "visible": true

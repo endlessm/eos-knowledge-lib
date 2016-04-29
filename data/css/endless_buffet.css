@@ -13,26 +13,26 @@ EknSetPreviewCard .title,
     background-color: #d9f0f8;
 }
 
-EknHighlightsModule .text-card .title.label,
-EknThematicModule .text-card .title.label,
+EknHighlights .text-card .title.label,
+EknThematic .text-card .title.label,
 EknSetPreviewCard .text-card .title,
 .browse-content .title {
     font-weight: 200;
     font-size: 29.3px;
 }
 
-EknHighlightsModule separator,
+EknHighlights separator,
 EknSetPreviewCard separator,
-EknThematicModule separator {
+EknThematic separator {
     background-color: #999999;
     min-height: 1px;
     margin: 4px 0px 10px 0px;
 }
 
-EknSuggestedCategoriesModule .browse-content .after,
-EknHighlightsModule .text-card .after,
+EknSuggestedCategories .browse-content .after,
+EknHighlights .text-card .after,
 EknSetPreviewCard .title .after,
-EknThematicModule .text-card .after {
+EknThematic .text-card .after {
     -gtk-icon-source: url('resource:///com/endlessm/knowledge/data/images/title-arrow-dark.svg');
     -EknThemeableImage-min-height: 10;
     -EknThemeableImage-min-width: 11;
@@ -40,15 +40,15 @@ EknThematicModule .text-card .after {
     margin-top: 6px;
 }
 
-EknSuggestedCategoriesModule .browse-content:hover .after,
-EknHighlightsModule .text-card:hover .after,
+EknSuggestedCategories .browse-content:hover .after,
+EknHighlights .text-card:hover .after,
 EknSetPreviewCard .title .after,
-EknThematicModule .text-card:hover .after {
+EknThematic .text-card:hover .after {
     -gtk-icon-source: url('resource:///com/endlessm/knowledge/data/images/title-arrow-light.svg');
 }
 
-EknSearchModule .suggested-categories,
-EknSearchModule .suggested-articles {
+EknSearch .suggested-categories,
+EknSearch .suggested-articles {
     background-color: #f6f6f6;
 }
 

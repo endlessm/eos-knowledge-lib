@@ -286,9 +286,9 @@ javascript_tests = \
 	tests/js/app/modules/testAlphabeticalOrder.js \
 	tests/js/app/modules/testAppBanner.js \
 	tests/js/app/modules/testArticleSnippetCard.js \
-	tests/js/app/modules/testArticleStackModule.js \
+	tests/js/app/modules/testArticleStack.js \
 	tests/js/app/modules/testBackCover.js \
-	tests/js/app/modules/testBackgroundModule.js \
+	tests/js/app/modules/testBackground.js \
 	tests/js/app/modules/testBannerTemplate.js \
 	tests/js/app/modules/testBuffetInteraction.js \
 	tests/js/app/modules/testCarouselArrangement.js \
@@ -300,15 +300,15 @@ javascript_tests = \
 	tests/js/app/modules/testGridArrangement.js \
 	tests/js/app/modules/testHalfArrangement.js \
 	tests/js/app/modules/testHamburgerBasementTemplate.js \
-	tests/js/app/modules/testHierarchicalSetModule.js \
-	tests/js/app/modules/testHighlightsModule.js \
-	tests/js/app/modules/testItemGroupModule.js \
+	tests/js/app/modules/testHierarchicalSet.js \
+	tests/js/app/modules/testHighlights.js \
+	tests/js/app/modules/testItemGroup.js \
 	tests/js/app/modules/testKnowledgeDocumentCard.js \
 	tests/js/app/modules/testLegacyPolaroidCard.js \
 	tests/js/app/modules/testLegacyPostCard.js \
-	tests/js/app/modules/testLightboxModule.js \
 	tests/js/app/modules/testListArrangement.js \
 	tests/js/app/modules/testMediaCard.js \
+	tests/js/app/modules/testMediaLightbox.js \
 	tests/js/app/modules/testMeshInteraction.js \
 	tests/js/app/modules/testOverflowArrangement.js \
 	tests/js/app/modules/testPaperTemplate.js \
@@ -320,17 +320,17 @@ javascript_tests = \
 	tests/js/app/modules/testReaderCard.js \
 	tests/js/app/modules/testReaderDocumentCard.js \
 	tests/js/app/modules/testReaderWindow.js \
-	tests/js/app/modules/testResponsiveMarginsModule.js \
+	tests/js/app/modules/testResponsiveMargins.js \
 	tests/js/app/modules/testScrollingListArrangement.js \
 	tests/js/app/modules/testScrollingTemplate.js \
-	tests/js/app/modules/testSearchAndItemModule.js \
-	tests/js/app/modules/testSearchBannerModule.js \
+	tests/js/app/modules/testSearchAndItem.js \
+	tests/js/app/modules/testSearchBanner.js \
 	tests/js/app/modules/testSearchBox.js \
-	tests/js/app/modules/testSearchModule.js \
+	tests/js/app/modules/testSearch.js \
 	tests/js/app/modules/testSearchResultCard.js \
 	tests/js/app/modules/testSequenceCard.js \
-	tests/js/app/modules/testSetBannerModule.js \
-	tests/js/app/modules/testSetGroupModule.js \
+	tests/js/app/modules/testSetBanner.js \
+	tests/js/app/modules/testSetGroup.js \
 	tests/js/app/modules/testSetPreviewCard.js \
 	tests/js/app/modules/testSetsFilter.js \
 	tests/js/app/modules/testSidebarTemplate.js \
@@ -340,16 +340,16 @@ javascript_tests = \
 	tests/js/app/modules/testSquareGuysArrangement.js \
 	tests/js/app/modules/testStandaloneBanner.js \
 	tests/js/app/modules/testStandalonePage.js \
-	tests/js/app/modules/testSuggestedArticlesModule.js \
-	tests/js/app/modules/testSuggestedCategoriesModule.js \
-	tests/js/app/modules/testSupplementaryArticlesModule.js \
+	tests/js/app/modules/testSuggestedArticles.js \
+	tests/js/app/modules/testSuggestedCategories.js \
+	tests/js/app/modules/testSupplementaryArticles.js \
 	tests/js/app/modules/testTextCard.js \
-	tests/js/app/modules/testThematicModule.js \
+	tests/js/app/modules/testThematic.js \
 	tests/js/app/modules/testThirdRockArrangement.js \
 	tests/js/app/modules/testThirtiesArrangement.js \
 	tests/js/app/modules/testThumbCard.js \
 	tests/js/app/modules/testTiledGridArrangement.js \
-	tests/js/app/modules/testTopMenuModule.js \
+	tests/js/app/modules/testTopMenu.js \
 	tests/js/app/modules/testTopMenuTemplate.js \
 	tests/js/app/modules/testTwoPieceTemplate.js \
 	tests/js/app/modules/testUnreadFilter.js \

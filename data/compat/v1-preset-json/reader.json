@@ -16,10 +16,10 @@
                     "type": "SearchBox"
                 },
                 "navigation": {
-                    "type": "NavigationModule"
+                    "type": "Navigation"
                 },
                 "lightbox": {
-                    "type": "LightboxModule",
+                    "type": "MediaLightbox",
                     "slots": {
                         "card-type": {
                             "type": "MediaCard"
@@ -43,7 +43,7 @@
             "type": "SplitPercentageTemplate",
             "slots": {
                 "start": {
-                    "type": "ResponsiveMarginsModule",
+                    "type": "ResponsiveMargins",
                     "slots": {
                         "content": {
                             "type": "AppBanner",
@@ -57,10 +57,10 @@
                     }
                 },
                 "end": {
-                    "type": "ResponsiveMarginsModule",
+                    "type": "ResponsiveMargins",
                     "slots": {
                         "content": {
-                            "type": "ItemGroupModule",
+                            "type": "ItemGroup",
                             "slots": {
                                 "arrangement": {
                                     "type": "OverflowArrangement",
@@ -91,13 +91,13 @@
             },
             "slots": {
                 "banner": {
-                    "type": "SearchBannerModule",
+                    "type": "SearchBanner",
                     "properties": {
                         "halign": "center"
                     }
                 },
                 "content": {
-                    "type": "SearchModule",
+                    "type": "Search",
                     "properties": {
                         "message-halign": "center"
                     },

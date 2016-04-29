@@ -16,7 +16,7 @@ EosWindow scrollbar slider {
     border-radius: 20px;
 }
 
-EknSuggestedCategoriesModule separator {
+EknSuggestedCategories separator {
     background-color: #999999;
     min-height: 1px;
     margin: 4px 50px 20px 50px;
@@ -27,25 +27,25 @@ EknSuggestedCategoriesModule separator {
 }
 
 EknScrollingTemplate,
-EknSearchModule {
+EknSearch {
     background-color: #e7ecee;
 }
 
-EknSearchModule .no-results {
+EknSearch .no-results {
     background-color: white;
 }
 
-EknSuggestedCategoriesModule .button:hover .title,
+EknSuggestedCategories .button:hover .title,
 EknSetPreviewCard:hover .title,
 .text-card:hover .title {
     color: #49bde3;
 }
 
-/* FIXME: why does removing this cause ResponsiveMarginsModule to lose its margins? */
-EknSuggestedCategoriesModule .browse-content .after,
-EknHighlightsModule .text-card .after,
+/* FIXME: why does removing this cause ResponsiveMargins to lose its margins? */
+EknSuggestedCategories .browse-content .after,
+EknHighlights .text-card .after,
 EknSetPreviewCard .title .after,
-EknThematicModule .text-card .after {
+EknThematic .text-card .after {
     -EknThemeableImage-min-height: 10;
     -EknThemeableImage-min-width: 11;
 }
@@ -234,23 +234,23 @@ EknAppBanner {
     font-weight: bold;
 }
 
-EknResponsiveMarginsModule.tiny {
+EknResponsiveMargins.tiny {
     margin: 0px;
 }
 
-EknResponsiveMarginsModule.small {
+EknResponsiveMargins.small {
     margin: 0px 40px;
 }
 
-EknResponsiveMarginsModule.medium {
+EknResponsiveMargins.medium {
     margin: 0px 62px;
 }
 
-EknResponsiveMarginsModule.large {
+EknResponsiveMargins.large {
     margin: 0px 83px;
 }
 
-EknResponsiveMarginsModule.xlarge {
+EknResponsiveMargins.xlarge {
     margin: 0px 120px;
 }
 
@@ -296,8 +296,8 @@ EknResponsiveMarginsModule.xlarge {
     font-size: 18.8px;  /* 16px spec * 88% because spec was at 110% scale not 125% */
 }
 
-.composite EknHighlightsModule .text-card .title.label,
-.composite EknThematicModule .text-card .title.label,
+.composite EknHighlights .text-card .title.label,
+.composite EknThematic .text-card .title.label,
 .composite EknSetPreviewCard .title,
 .composite .browse-content .title,
 .composite .post-card.set .title {

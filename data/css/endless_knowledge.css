@@ -443,9 +443,9 @@ EosWindow.parallax.background-right {
 }
 
 
-.section-page-b EknItemGroupModule,
+.section-page-b EknItemGroup,
 .search-page-b .search-results,
-.article-page-b EknItemGroupModule,
+.article-page-b EknItemGroup,
 .article-page-b .search-results {
     background-color: alpha(black, 0.75);
 }
@@ -613,9 +613,9 @@ EosWindow scrollbar trough {
     font-size: 18.8px;  /* 16px spec * 88% */
 }
 
-.composite .section-page-b EknItemGroupModule,
+.composite .section-page-b EknItemGroup,
 .composite .search-page-b .search-results,
-.composite .article-page-b EknItemGroupModule,
+.composite .article-page-b EknItemGroup,
 .composite .article-page-b .search-results {
     background-color: alpha(black, 0.8);
 }

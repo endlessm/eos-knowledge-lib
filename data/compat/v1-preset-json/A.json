@@ -13,10 +13,10 @@
                     "type": "SearchBox"
                 },
                 "navigation": {
-                    "type": "NavigationModule"
+                    "type": "Navigation"
                 },
                 "lightbox": {
-                    "type": "LightboxModule",
+                    "type": "MediaLightbox",
                     "slots": {
                         "card-type": {
                             "type": "MediaCard"
@@ -37,7 +37,7 @@
             },
             "slots": {
                 "banner": {
-                    "type": "SetBannerModule",
+                    "type": "SetBanner",
                     "properties": {
                         "halign": "center"
                     },
@@ -48,7 +48,7 @@
                     }
                 },
                 "content": {
-                    "type": "ItemGroupModule",
+                    "type": "ItemGroup",
                     "slots": {
                         "arrangement": {
                             "type": "GridArrangement",
@@ -82,7 +82,7 @@
                     }
                 },
                 "bottom": {
-                    "type": "SetGroupModule",
+                    "type": "SetGroup",
                     "properties": {
                         "expand": true,
                         "halign": "center",
@@ -104,7 +104,7 @@
                     }
                 },
                 "basement": {
-                    "type": "SetGroupModule",
+                    "type": "SetGroup",
                     "properties": {
                         "expand": true
                     },
@@ -132,13 +132,13 @@
             },
             "slots": {
                 "banner": {
-                    "type": "SearchBannerModule",
+                    "type": "SearchBanner",
                     "properties": {
                         "halign": "center"
                     }
                 },
                 "content": {
-                    "type": "SearchModule",
+                    "type": "Search",
                     "slots": {
                         "arrangement": {
                             "type": "GridArrangement",
@@ -160,7 +160,7 @@
             }
         },
         "article-page": {
-            "type": "ArticleStackModule",
+            "type": "ArticleStack",
             "slots": {
                 "card-type": {
                     "type": "KnowledgeDocumentCard",
