@@ -225,3 +225,137 @@ scrollbar slider {
 .composite .search-results .card .title {
     font-size: 18.8px;  /* 16px spec * 88% */
 }
+
+
+/* Import Card stuff from buffet core */
+
+/* default size */
+.text-card {
+    font-size: 18.7px;
+    background-color: white;
+    box-shadow: 0 0 5px alpha(black, 0.25);
+    border-color: transparent;  /* used for the triangle in the corner */
+}
+
+.text-card.width-c .title,
+.text-card.width-d.height-c .title,
+.text-card.width-d.height-b .title {
+    font-size: 21.3px;
+}
+
+.text-card.width-d.height-d .title,
+.text-card.width-e.height-b .title,
+.text-card.width-e.height-c .title {
+    font-size: 30.7px;
+}
+
+.text-card.width-d .title,
+.text-card.width-e .title,
+.text-card.width-f .title,
+.text-card.width-g .title,
+.text-card.width-h .title {
+    font-size: 49.3px;
+}
+
+.text-card .content-frame {
+    padding: 20px;
+}
+
+.text-card.width-e .content-frame,
+.text-card.width-f .content-frame,
+.text-card.width-g .content-frame,
+.text-card.width-h .content-frame {
+    padding: 40px;
+}
+
+.text-card.width-e.height-e .card-context,
+.text-card.width-f .card-context,
+.text-card.width-g .card-context,
+.text-card.width-h .card-context {
+    font-size: 18.7px;
+}
+
+@define-color title-blue #0f1b3c;
+@define-color context-blue #7297a7;
+
+.text-card .title {
+    font-family: 'Fira Sans';
+    font-weight: bold;
+    color: @title-blue;
+    font-size: 18px;
+}
+
+.text-card .card-synopsis {
+    font-family: 'Merriweather';
+    font-style: italic;
+    color: #666666;
+    font-size: 16px;
+}
+
+.text-card .card-context {
+    font-family: 'Merriweather';
+    font-weight: bold;
+    font-style: normal;
+    color: @context-blue;
+    font-size: 14px;
+    padding-top: 30px;
+}
+
+.text-card:hover .title {
+    color: @context-blue;
+}
+
+.text-card.width-c {
+    padding: 30px;
+}
+.text-card.width-c .title {
+    font-size: 23px;
+}
+
+.text-card.width-c.height-d,
+.text-card.width-d {
+    padding: 30px;
+}
+.text-card.width-c.height-d .title,
+.text-card.width-d .title {
+    font-size: 27px;
+}
+
+.text-card.width-d.height-d,
+.text-card.width-e,
+.text-card.width-f.height-c {
+    padding: 40px;
+}
+.text-card.width-d.height-d .title,
+.text-card.width-e .title,
+.text-card.width-f.height-c .title {
+    font-size: 37px;
+}
+
+.text-card.width-e.height-d,
+.text-card.width-e.height-e,
+.text-card.width-f,
+.text-card.width-g,
+.text-card.width-h {
+    padding: 50px;
+}
+.text-card.width-e.height-d .title,
+.text-card.width-e.height-e .title,
+.text-card.width-f .title,
+.text-card.width-g .title,
+.text-card.width-h .title {
+    font-size: 49px;
+}
+
+.text-card.highlighted {
+    background-color: #18264a;
+    box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.22);
+}
+
+.text-card.highlighted .title {
+    color: white;
+}
+
+.text-card.arrow {
+    -gtk-icon-source: none; /* kill the arrow that Gtk adds by default in Gtk.render_arrow() */
+}
