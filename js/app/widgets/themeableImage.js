@@ -1,6 +1,5 @@
 /* exported ThemeableImage */
 
-const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const GObject = imports.gi.GObject;
 const GLib = imports.gi.GLib;
 const Gtk = imports.gi.Gtk;
@@ -35,8 +34,8 @@ const ThemeableImage = new Knowledge.Class({
     },
 
     _update_custom_style: function () {
-        let min_width = EosKnowledgePrivate.widget_style_get_int(this, 'min-width');
-        let min_height = EosKnowledgePrivate.widget_style_get_int(this, 'min-height');
+        let min_width = this.min_width;
+        let min_height = this.min_height;
         if (min_width !== this._min_width || min_height !== this._min_height)
             this.queue_resize();
         this._min_width = min_width;
