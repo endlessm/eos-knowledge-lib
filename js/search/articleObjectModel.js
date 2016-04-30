@@ -106,8 +106,13 @@ const ArticleObjectModel = new Lang.Class({
                 value: props.authors ? props.authors.slice(0) : [],
                 writable: false,
             },
+            'links': {
+                value: props.links ? props.links.slice(0) : [],
+                writable: false,
+            },
         });
         delete props.authors;
+        delete props.links;
 
         this.parent(props, json_ld);
 
@@ -118,6 +123,9 @@ const ArticleObjectModel = new Lang.Class({
         // Marshal properties specific to ArticleObjectModel
         if (json_ld.hasOwnProperty('authors'))
             props.authors = json_ld.authors;
+
+        if (json_ld.hasOwnProperty('links'))
+            props.links = json_ld.links;
 
         if (json_ld.hasOwnProperty('wordCount'))
             props.word_count = parseInt(json_ld.wordCount);

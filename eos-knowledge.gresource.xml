@@ -57,8 +57,8 @@
     <file compressed="true">data/templates/js/content-fixes.js</file>
     <file compressed="true">data/templates/js/hide-broken-images.js</file>
     <file compressed="true">data/templates/js/jquery-min.js</file>
-    <file compressed="true">data/templates/js/no-link-remover.js</file>
     <file compressed="true">data/templates/js/scroll-manager.js</file>
+    <file compressed="true">data/templates/js/crosslink.js</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/allTypeCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/appBanner.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/articleSnippetCard.ui</file>

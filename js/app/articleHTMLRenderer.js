@@ -2,6 +2,8 @@ const Endless = imports.gi.Endless;
 const Gettext = imports.gettext;
 const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
+const Lang = imports.lang;
+const Engine = imports.search.engine;
 
 const Config = imports.app.config;
 const Knowledge = imports.app.knowledge;
@@ -161,7 +163,7 @@ const ArticleHTMLRenderer = new Knowledge.Class({
             'clipboard-manager.js',
             'content-fixes.js',
             'hide-broken-images.js',
-            'no-link-remover.js',
+            'crosslink.js',
         ];
 
         if (this.enable_scroll_manager)
@@ -213,6 +215,7 @@ const ArticleHTMLRenderer = new Knowledge.Class({
         return Mustache.render(this._template, {
             'title': this.show_title ? model.title : false,
             'body-html': this._strip_tags(html),
+            'link-hash': this._find_links(model),
             'disclaimer': this._get_disclaimer(model),
             'disclaimer-window': this._get_disclaimer_window(model),
             'copy-button-text': _("Copy"),
@@ -222,6 +225,12 @@ const ArticleHTMLRenderer = new Knowledge.Class({
             'mathjax-path': Config.mathjax_path,
             'extra-header-information': this._get_extra_header_info(model),
         });
+    },
+
+    _find_links: function (model) {
+        let engine = Engine.get_default();
+        let link_table = model.links.map((link) => engine.test_link(link) ? link : null);
+        return JSON.stringify(hash);
     },
 });
 

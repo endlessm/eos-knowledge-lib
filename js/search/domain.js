@@ -521,13 +521,36 @@ const DomainV3 = new Lang.Class({
             let subscription_dir = this._get_subscription_dir();
             this._shards = manifest.shards.map(function(shard_entry) {
                 let file = subscription_dir.get_child(shard_entry.path);
-                return new EosShard.ShardFile({
+                let shard = new EosShard.ShardFile({
                     path: file.get_path(),
                 });
+                try {
+                    shard.init(null);
+                } catch (e) {
+                    print('no shard found at', shard_entry.path);
+                    return false;
+                }
+                return shard;
+            });
+
+            // Knock out shards that don't exist.
+            this._shards = this._shards.filter((k) => k);
+
+            this._link_tables = this._shards.map((shard) => {
+                return shard.find_record_by_hex_name('4dba9091495e8f277893e0d400e9e092f9f6f551').load_as_jlist();
             });
         }
 
         return this._shards;
+    },
+
+    test_link: function (link) {
+        for (let table of this._link_tables) {
+            let result = table.lookup_key(link);
+            if (result !== null)
+                return result;
+        }
+        return false;
     },
 
     load: function (cancellable, callback) {
@@ -598,6 +621,7 @@ const DomainV3 = new Lang.Class({
     },
 
     check_for_updates: function () {
+        return; // ignore updates
         try {
             let proxy = new DownloaderProxy(Gio.DBus.session, 'com.endlessm.EknDownloader', '/com/endlessm/EknDownloader');
 
