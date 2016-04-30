@@ -52,14 +52,19 @@ function grep (path, pattern) {
     let records = shard.list_records();
     records.forEach(function (record, i) {
         let regex = new RegExp(pattern);
-        let metadata_text = record.metadata.load_contents().get_data().toString();
+        let id = record.get_hex_name();
+        let metadata_bytes = record.metadata.load_contents();
+        let offset = record.data.get_offset();
+        if (!metadata_bytes) {
+            print_result(id, "Unknown", "Unknown - no metadata", offset);
+            return;
+        }
+        let metadata_text = metadata_bytes.get_data().toString();
 
         if (metadata_text.match(regex) !== null) {
-            let id = record.get_hex_name();
             let metadata = JSON.parse(metadata_text);
             let content_type = metadata.contentType;
             let title = metadata.title;
-            let offset = record.data.get_offset();
             print_result(id, content_type, title, offset);
         }
 
