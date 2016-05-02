@@ -45,12 +45,12 @@ const TEXT_CARD = 'text-card';
 const SEQUENCE_CARD = 'sequence-card';
 
 /**
- * Constant: SEARCH_RESULT_CARD
+ * Constant: LIST_CARD
  *
- * Matches #EknSearchResultCard widgets.
- * It is present on any search result card widget or subclass thereof.
+ * Matches #EknListCard widgets.
+ * It is present on any list card widget or subclass thereof.
  */
-const SEARCH_RESULT_CARD = 'search-result-card';
+const LIST_CARD = 'list-card';
 
 /**
  * Constant: ALL_TYPE_CARD

@@ -69,6 +69,7 @@
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/knowledgeDocumentCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/legacyPolaroidCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/legacyPostCard.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">data/widgets/listCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/mediaCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/paperTemplate.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/postCard.ui</file>
@@ -78,7 +79,6 @@
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/scrollingTemplate.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/search.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/searchBanner.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">data/widgets/searchResultCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/sequenceCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/sideMenuTemplate.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/standaloneBanner.ui</file>
@@ -141,6 +141,7 @@
     <file>js/app/modules/legacyPolaroidCard.js</file>
     <file>js/app/modules/legacyPostCard.js</file>
     <file>js/app/modules/listArrangement.js</file>
+    <file>js/app/modules/listCard.js</file>
     <file>js/app/modules/mediaCard.js</file>
     <file>js/app/modules/mediaLightbox.js</file>
     <file>js/app/modules/meshInteraction.js</file>
@@ -163,7 +164,6 @@
     <file>js/app/modules/searchAndItem.js</file>
     <file>js/app/modules/searchBanner.js</file>
     <file>js/app/modules/searchBox.js</file>
-    <file>js/app/modules/searchResultCard.js</file>
     <file>js/app/modules/sequenceCard.js</file>
     <file>js/app/modules/setBanner.js</file>
     <file>js/app/modules/setGroup.js</file>

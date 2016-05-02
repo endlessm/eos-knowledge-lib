@@ -10,13 +10,13 @@ const Module = imports.app.interfaces.module;
 const Utils = imports.app.utils;
 
 /**
- * Class: SearchResultCard
+ * Class: ListCard
  *
  * A thumbnail card for the new reader app
  */
-const SearchResultCard = new Module.Class({
-    Name: 'SearchResultCard',
-    CssName: 'EknSearchResultCard',
+const ListCard = new Module.Class({
+    Name: 'ListCard',
+    CssName: 'EknListCard',
     Extends: Gtk.Button,
     Implements: [Card.Card, NavigationCard.NavigationCard],
 
@@ -31,7 +31,7 @@ const SearchResultCard = new Module.Class({
             true),
     },
 
-    Template: 'resource:///com/endlessm/knowledge/data/widgets/searchResultCard.ui',
+    Template: 'resource:///com/endlessm/knowledge/data/widgets/listCard.ui',
     InternalChildren: [ 'thumbnail-frame', 'content-frame', 'title-label', 'synopsis-label', 'navigation-context-label'],
 
     _init: function (props={}) {

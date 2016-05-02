@@ -220,7 +220,7 @@
                             },
                             "slots": {
                                 "card-type": {
-                                    "type": "SearchResultCard"
+                                    "type": "ListCard"
                                 }
                             }
                         },

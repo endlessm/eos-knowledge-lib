@@ -75,7 +75,7 @@ EknSearch .suggested-articles {
 
 .thumb-card.arrow,
 .post-card.article.arrow,
-.search-result-card.arrow {
+.list-card.arrow {
     -gtk-icon-source: url('resource:///com/endlessm/knowledge/data/images/arrow-gray.svg');
     -gtk-icon-transform: rotate(45deg);
 }
@@ -86,8 +86,8 @@ EknSearch .suggested-articles {
 .post-card.article:active,
 .post-card.set:hover .thumbnail,
 .post-card.set:active .thumbnail,
-.search-result-card:hover,
-.search-result-card:active {
+.list-card:hover,
+.list-card:active {
     outline: 1px solid #49bde3;
     border-color: #49bde3;  /* used for the triangle in the corner */
     outline-offset: -1px;
@@ -96,7 +96,7 @@ EknSearch .suggested-articles {
 
 .thumb-card:active,
 .post-card.article:active,
-.search-result-card:active {
+.list-card:active {
     box-shadow: none;
 }
 
@@ -105,8 +105,8 @@ EknSearch .suggested-articles {
 .post-card.article.arrow:hover,
 .post-card.article.arrow:active,
 .post-card.set .thumbnail.arrow, /* both hover and non-hover */
-.search-result-card.arrow:hover,
-.search-result-card.arrow:active {
+.list-card.arrow:hover,
+.list-card.arrow:active {
     -gtk-icon-source: url('resource:///com/endlessm/knowledge/data/images/arrow-white.svg');
     -gtk-icon-transform: rotate(45deg);
 }

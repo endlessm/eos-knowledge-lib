@@ -150,7 +150,7 @@ EknSearchBanner {
 }
 
 .all-type-card .title,
-.search-result-card .title,
+.list-card .title,
 .thumb-card .title {
     font-family: 'Fira Sans';
     font-weight: bold;
@@ -159,7 +159,7 @@ EknSearchBanner {
 }
 
 .all-type-card .card-synopsis,
-.search-result-card .card-synopsis {
+.list-card .card-synopsis {
     font-family: 'Merriweather';
     font-style: italic;
     color: #666666;
@@ -167,7 +167,7 @@ EknSearchBanner {
 }
 
 .all-type-card .card-context,
-.search-result-card .card-context,
+.list-card .card-context,
 .thumb-card .card-context {
     font-family: 'Merriweather';
     font-weight: bold;
@@ -177,15 +177,15 @@ EknSearchBanner {
 }
 
 .all-type-card:hover .title,
-.search-result-card:hover .title {
+.list-card:hover .title {
     color: @context-blue;
 }
 
-.search-result-card.next:hover .title {
+.list-card.next:hover .title {
     color: @title-blue;
 }
 
-.search-result-card .title.highlighted {
+.list-card .title.highlighted {
     background-color: rgba(114, 151, 167, 0.3);
 }
 

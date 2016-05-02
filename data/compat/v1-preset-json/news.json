@@ -166,7 +166,7 @@
                                                                     },
                                                                     "slots": {
                                                                         "card-type": {
-                                                                            "type": "SearchResultCard"
+                                                                            "type": "ListCard"
                                                                         },
                                                                        "order": {
                                                                             "type": "PublishedDateOrder",
@@ -223,7 +223,7 @@
                                             },
                                             "slots": {
                                                 "card-type": {
-                                                    "type": "SearchResultCard",
+                                                    "type": "ListCard",
                                                     "properties": {
                                                         "margin-start": 200,
                                                         "margin-end": 200
@@ -297,7 +297,7 @@
                             }
                         },
                         "nav-card-type": {
-                            "type": "SearchResultCard",
+                            "type": "ListCard",
                             "properties": {
                                 "show-synopsis": false
                             }

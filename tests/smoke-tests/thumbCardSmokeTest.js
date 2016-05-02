@@ -13,7 +13,7 @@ const SetObjectModel = imports.search.setObjectModel;
 const Engine = imports.search.engine;
 const MediaObjectModel = imports.search.mediaObjectModel;
 const PostCard = imports.app.modules.postCard;
-const SearchResultCard = imports.app.modules.searchResultCard;
+const ListCard = imports.app.modules.listCard;
 const ThumbCard = imports.app.modules.thumbCard;
 
 const TEST_APPLICATION_ID = 'com.endlessm.knowledge.card';
@@ -132,7 +132,7 @@ const TestApplication = new Lang.Class ({
 
         let thumb_grid = create_cards(ThumbCard.ThumbCard, Gtk.Orientation.HORIZONTAL);
         let post_grid = create_cards(PostCard.PostCard, Gtk.Orientation.HORIZONTAL);
-        let search_results_grid = create_cards(SearchResultCard.SearchResultCard, Gtk.Orientation.VERTICAL);
+        let search_results_grid = create_cards(ListCard.ListCard, Gtk.Orientation.VERTICAL);
 
         let grand_grid = new Gtk.Grid({
             orientation: Gtk.Orientation.VERTICAL,

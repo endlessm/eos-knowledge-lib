@@ -307,6 +307,7 @@ javascript_tests = \
 	tests/js/app/modules/testLegacyPolaroidCard.js \
 	tests/js/app/modules/testLegacyPostCard.js \
 	tests/js/app/modules/testListArrangement.js \
+	tests/js/app/modules/testListCard.js \
 	tests/js/app/modules/testMediaCard.js \
 	tests/js/app/modules/testMediaLightbox.js \
 	tests/js/app/modules/testMeshInteraction.js \
@@ -323,11 +324,10 @@ javascript_tests = \
 	tests/js/app/modules/testResponsiveMargins.js \
 	tests/js/app/modules/testScrollingListArrangement.js \
 	tests/js/app/modules/testScrollingTemplate.js \
+	tests/js/app/modules/testSearch.js \
 	tests/js/app/modules/testSearchAndItem.js \
 	tests/js/app/modules/testSearchBanner.js \
 	tests/js/app/modules/testSearchBox.js \
-	tests/js/app/modules/testSearch.js \
-	tests/js/app/modules/testSearchResultCard.js \
 	tests/js/app/modules/testSequenceCard.js \
 	tests/js/app/modules/testSetBanner.js \
 	tests/js/app/modules/testSetGroup.js \
