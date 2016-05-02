@@ -26,7 +26,7 @@ const Scrollable = new Lang.Interface({
          * Property: scroll-server
          * The scroll server backing this module.
          *
-         * A string specifying the 'name' of the ScrollingTemplate module which
+         * A string specifying the 'name' of the InfiniteScrollingLayout module which
          * will provide updates to this module regarding when to load more
          * content.
          */
@@ -41,7 +41,7 @@ const Scrollable = new Lang.Interface({
      * implement the scrollable interface will receive the NEED_MORE_CONTENT
      * signal. Each module will then check if the signal was meant for it by
      * comparing the scroll_server property on the payload (which uniquely
-     * identifies a ScrollingTemplate) to the scroll_server property they have.
+     * identifies a InfiniteScrollingLayout) to the scroll_server property they have.
      */
     scrollable_init: function () {
         Dispatcher.get_default().register((payload) => {

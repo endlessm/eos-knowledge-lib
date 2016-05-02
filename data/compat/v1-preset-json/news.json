@@ -45,7 +45,7 @@
             "slots": {
                 "top-menu": "main-menu",
                 "content": {
-                    "type": "ScrollingTemplate",
+                    "type": "InfiniteScrollingLayout",
                     "slots": {
                         "content": {
                             "type": "Background",
@@ -108,7 +108,7 @@
             "slots": {
                 "top-menu": "main-menu",
                 "content": {
-                    "type": "ScrollingTemplate",
+                    "type": "InfiniteScrollingLayout",
                     "properties": {
                         "name": "theme-scroll",
                         "bottom-buffer": 250

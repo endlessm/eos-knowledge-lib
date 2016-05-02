@@ -1,6 +1,6 @@
 // Copyright 2015 Endless Mobile, Inc.
 
-/* exported ScrollingTemplate */
+/* exported InfiniteScrollingLayout */
 
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
@@ -8,22 +8,22 @@ const InfiniteScrolledWindow = imports.app.widgets.infiniteScrolledWindow;
 const Module = imports.app.interfaces.module;
 
 /**
- * Class: ScrollingTemplate
+ * Class: InfiniteScrollingLayout
  * Layout template that allows its content to scroll vertically
  *
  * Slots:
  *   content - where to put the content
  */
-const ScrollingTemplate = new Module.Class({
-    Name: 'ScrollingTemplate',
-    CssName: 'EknScrollingTemplate',
+const InfiniteScrollingLayout = new Module.Class({
+    Name: 'InfiniteScrollingLayout',
+    CssName: 'EknInfiniteScrollingLayout',
     Extends: InfiniteScrolledWindow.InfiniteScrolledWindow,
 
     Slots: {
         'content': {},
     },
 
-    Template: 'resource:///com/endlessm/knowledge/data/widgets/scrollingTemplate.ui',
+    Template: 'resource:///com/endlessm/knowledge/data/widgets/infiniteScrollingLayout.ui',
     InternalChildren: [ 'viewport' ],
 
     _init: function (props={}) {

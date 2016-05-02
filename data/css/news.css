@@ -8,7 +8,7 @@ scrollbar.vertical slider {
 @define-color title-blue #0f1b3c;
 @define-color context-blue #7297a7;
 
-EknScrollingTemplate,
+EknInfiniteScrollingLayout,
 EknBackground,
 .results-message-background,
 EosWindow scrollbar {

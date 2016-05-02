@@ -9,7 +9,7 @@ const Actions = imports.app.actions;
 const MockDispatcher = imports.tests.mockDispatcher;
 const MockFactory = imports.tests.mockFactory;
 const MockPlaceholder = imports.tests.mockPlaceholder;
-const ScrollingTemplate = imports.app.modules.scrollingTemplate;
+const InfiniteScrollingLayout = imports.app.modules.infiniteScrollingLayout;
 const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 
 Gtk.init(null);
@@ -22,7 +22,7 @@ describe('Scrolling template', function () {
 
         factory = new MockFactory.MockFactory();
         factory.add_named_mock('placeholder', MockPlaceholder.MockPlaceholder);
-        factory.add_named_mock('template', ScrollingTemplate.ScrollingTemplate, {
+        factory.add_named_mock('template', InfiniteScrollingLayout.InfiniteScrollingLayout, {
             'content': 'placeholder',
         });
         template = factory.create_named_module('template');

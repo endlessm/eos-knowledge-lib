@@ -66,6 +66,7 @@
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/dividedBannerTemplate.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/gridArrangement.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/hamburgerBasementTemplate.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">data/widgets/infiniteScrollingLayout.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/knowledgeDocumentCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/legacyPolaroidCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/legacyPostCard.ui</file>
@@ -75,10 +76,9 @@
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/postCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/readerCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/readerDocumentCard.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">data/widgets/scrollingListArrangement.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">data/widgets/scrollingTemplate.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/search.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/searchBanner.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">data/widgets/scrollingListArrangement.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/sequenceCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/sideMenuTemplate.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/standaloneBanner.ui</file>
@@ -136,6 +136,7 @@
     <file>js/app/modules/hamburgerBasementTemplate.js</file>
     <file>js/app/modules/hierarchicalSet.js</file>
     <file>js/app/modules/highlights.js</file>
+    <file>js/app/modules/infiniteScrollingLayout.js</file>
     <file>js/app/modules/itemGroup.js</file>
     <file>js/app/modules/knowledgeDocumentCard.js</file>
     <file>js/app/modules/legacyPolaroidCard.js</file>
@@ -159,7 +160,6 @@
     <file>js/app/modules/readerWindow.js</file>
     <file>js/app/modules/responsiveMargins.js</file>
     <file>js/app/modules/scrollingListArrangement.js</file>
-    <file>js/app/modules/scrollingTemplate.js</file>
     <file>js/app/modules/search.js</file>
     <file>js/app/modules/searchAndItem.js</file>
     <file>js/app/modules/searchBanner.js</file>

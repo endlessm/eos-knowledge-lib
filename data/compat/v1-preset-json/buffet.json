@@ -47,7 +47,7 @@
                 "context": "context-banner",
                 "sidebar": "main-menu",
                 "content": {
-                    "type": "ScrollingTemplate",
+                    "type": "InfiniteScrollingLayout",
                     "slots": {
                         "content": {
                             "type": "ResponsiveMargins",
@@ -78,7 +78,7 @@
                 "context": "context-banner",
                 "sidebar": "main-menu",
                 "content": {
-                    "type": "ScrollingTemplate",
+                    "type": "InfiniteScrollingLayout",
                     "properties": {
                         "name": "theme-scroll"
                     },
@@ -130,7 +130,7 @@
                 "context": "context-banner",
                 "sidebar": "main-menu",
                 "content": {
-                    "type": "ScrollingTemplate",
+                    "type": "InfiniteScrollingLayout",
                     "slots": {
                         "content": {
                             "type": "ResponsiveMargins",

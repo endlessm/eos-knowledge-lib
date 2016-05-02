@@ -302,6 +302,7 @@ javascript_tests = \
 	tests/js/app/modules/testHamburgerBasementTemplate.js \
 	tests/js/app/modules/testHierarchicalSet.js \
 	tests/js/app/modules/testHighlights.js \
+	tests/js/app/modules/testInfiniteScrollingLayout.js \
 	tests/js/app/modules/testItemGroup.js \
 	tests/js/app/modules/testKnowledgeDocumentCard.js \
 	tests/js/app/modules/testLegacyPolaroidCard.js \
@@ -323,7 +324,6 @@ javascript_tests = \
 	tests/js/app/modules/testReaderWindow.js \
 	tests/js/app/modules/testResponsiveMargins.js \
 	tests/js/app/modules/testScrollingListArrangement.js \
-	tests/js/app/modules/testScrollingTemplate.js \
 	tests/js/app/modules/testSearch.js \
 	tests/js/app/modules/testSearchAndItem.js \
 	tests/js/app/modules/testSearchBanner.js \

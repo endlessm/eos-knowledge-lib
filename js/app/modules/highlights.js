@@ -22,7 +22,7 @@ let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
  * Module for showing featured articles as well as other sets
  *
  * This module shows a few arrangements and cards consecutively.
- * We recommend placing it in a <ScrollingTemplate> or another module that can
+ * We recommend placing it in a <InfiniteScrollingLayout> or another module that can
  * allow it to scroll.
  * The top arrangement shows an assortment of cards from all sets.
  * Each subsequent card, or "support card," shows one other set.
