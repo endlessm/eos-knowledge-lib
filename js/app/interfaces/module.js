@@ -106,6 +106,13 @@ const Module = new Lang.Interface({
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             ''),
 
+        /**
+         * Property: factory_id
+         *
+         * The factory_id is used to identify this specific module instance. The
+         * factory will use the factory_id to pass this instance to other modules
+         * that reference this module instance.
+         */
         'factory-id': GObject.ParamSpec.string('factory-id', 'Module ID', 'Module ID',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             ''),
@@ -128,11 +135,28 @@ const Module = new Lang.Interface({
             extra_props);
     },
 
+    /**
+     * Method: register_module
+     * Register this module instance in the factory
+     *
+     * Tells the module factory that this module instance should be mapped to
+     * this factory_id.
+     */
     register_module: function () {
-        this.factory.register_module(this.factory_id, this);
+        this.factory.register_module(this, this.factory_id);
     },
 
-    reference_module: function (reference_name) {
-        return this.factory.get_module_for_reference(this, reference_name);
+    /**
+     * Method: reference_module
+     * Returns a module instance
+     *
+     * Asks the module factory for a specific module instance. The instance ID
+     * is specified in the {reference_slot} in the app json.
+     *
+     * Properties:
+     *   reference_slot - Reference slot that specifies the ID (string)
+     */
+    reference_module: function (reference_slot) {
+        return this.factory.get_module_for_reference(this, reference_slot);
     },
 });

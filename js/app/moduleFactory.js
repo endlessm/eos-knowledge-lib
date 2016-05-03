@@ -65,8 +65,8 @@ const ModuleFactory = new Knowledge.Class({
 
         this._anonymous_name_to_description = {};
 
-        this._id_to_module = {};
-        this._id_to_name = {};
+        this._id_to_module = new Map();
+        this._id_to_name = new Map();
         this._extract_ids();
     },
 
@@ -148,13 +148,35 @@ const ModuleFactory = new Knowledge.Class({
         return this.create_named_module(factory_name, extra_props);
     },
 
-    get_module_for_reference: function (parent_module, reference_name) {
+    /**
+     * Method: get_module_for_reference
+     * Returns the module instance specified in the reference slot
+     *
+     * Returns the module instance specified in the {reference_slot} of the module
+     * {parent_module}.
+     *
+     * Parameters:
+     *   parent_module - Module which refers to the module instance
+     *   reference_slot - Reference slot which contains the ID of module instance
+     */
+    get_module_for_reference: function (parent_module, reference_slot) {
         let description = this._get_module_description_by_name(parent_module.factory_name);
-        let id = description['references'][reference_name];
+        let id = description['references'][reference_slot];
         return this.create_named_module(this._id_to_name[id]);
     },
 
-    register_module: function (id, module) {
+    /**
+     * Method: register_module
+     * Maps a module instance to an ID
+     *
+     * Maps the {module} instance to it's {id}. This information is later used
+     * by other modules to reference this specific instance.
+     *
+     * Parameters:
+     *   module - instance of the module
+     *   id - ID of the module
+     */
+    register_module: function (module, id) {
         if (id in this._id_to_name && !(id in this._id_to_module))
             this._id_to_module[id] = module;
     },
