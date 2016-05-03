@@ -16,11 +16,13 @@ const CARD_SIZE_BIG = Card.MinSize.C;
 const CARD_SIZE_MAX = Card.MinSize.D;
 
 /**
- * Class: WindshieldArrangement
  * Arrangement with featured card on prominent spot and three supporting cards
  *
  * This arrangement shows a featured card in a very prominent spot, followed by
  * three secondary cards.
+ *
+ * @class WindshieldArrangement
+ * @implements Arrangement
  */
 const WindshieldArrangement = new Module.Class({
     Name: 'WindshieldArrangement',

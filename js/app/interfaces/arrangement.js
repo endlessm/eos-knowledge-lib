@@ -13,7 +13,6 @@ const Module = imports.app.interfaces.module;
 const StyleClasses = imports.app.styleClasses;
 
 /**
- * Interface: Arrangement
  * Arrangement and order of cards in a container
  *
  * An arrangement controls how a group of cards are presented in the UI.
@@ -23,6 +22,19 @@ const StyleClasses = imports.app.styleClasses;
  *   card-type - controls how the card models are converted into cards
  *   order
  *   filter
+ *
+ * @interface Arrangement
+ * @property {Boolean} all-visible  Whether all children are visible or some were cut off
+ * @property {Integer} spacing      The amount of space in pixels between cards
+ * @property {Boolean} fade-cards   Whether to fade in cards or just show them
+ *
+ * @function get_card_count         Count the cards being shown in the arrangement
+ * @function get_count              Count the card models in the arrangement
+ * @funciton add_model              Foo
+ * @funciton remove_model           Bar
+ * @funciton get_models             Baz
+ * @funciton get_filtered_models    A
+ * @funciton get_card_for_model     B
  */
 const Arrangement = new Lang.Interface({
     Name: 'Arrangement',
@@ -30,47 +42,14 @@ const Arrangement = new Lang.Interface({
     Requires: [ Gtk.Container, Module.Module ],
 
     Properties: {
-        /**
-         * Property: all-visible
-         * Whether all children are visible or some were cut off
-         *
-         * Flags:
-         *   read-only
-         */
         'all-visible': GObject.ParamSpec.boolean('all-visible', 'All visible',
             'All children visible',
             GObject.ParamFlags.READABLE,
             true),
-        /**
-         * Property: spacing
-         * The amount of space in pixels between cards
-         *
-         * Default:
-         *   0
-         */
         'spacing': GObject.ParamSpec.uint('spacing', 'Spacing',
             'The amount of space in pixels between cards',
             GObject.ParamFlags.READWRITE,
             0, GLib.MAXUINT16, 0),
-        /**
-         * Property: fade-cards
-         * Whether to fade in cards or just show them
-         *
-         * In some circumstances, arrangements should fade in their cards.
-         * For example, in a <SearchModule>, lazily loaded batches of cards
-         * beyond the first batch should fade in instead of appearing abruptly.
-         *
-         * Set this to *true* to make newly added cards fade in, instead of
-         * appearing abruptly. The animation's appearance is controlled by the
-         * *invisible* and *fade-in* CSS classes on the <Card> widget.
-         *
-         * You can opt out of this if the arrangement should never fade in
-         * its cards, for instance <CarouselArrangement>.
-         * In that case, override <Arrangement.fade_card>.
-         *
-         * Default:
-         *   false
-         */
         'fade-cards': GObject.ParamSpec.boolean('fade-cards', 'Fade cards',
             'Whether new cards should fade in gradually',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
@@ -84,13 +63,6 @@ const Arrangement = new Lang.Interface({
     },
 
     Signals: {
-        /**
-         * Signal: card-clicked
-         * Emitted when one of the arrangement's cards is clicked
-         *
-         * Parameters:
-         *   model - the <ContentObjectModel> of the card that was clicked
-         */
         'card-clicked': {
             param_types: [ ContentObjectModel.ContentObjectModel ],
         },
@@ -109,24 +81,21 @@ const Arrangement = new Lang.Interface({
     },
 
     /**
-     * Method: get_count
      * Count the card models in the arrangement
      *
      * This is a method for technical reasons, but it should be treated like a
      * read-only property.
      *
-     * Returns:
-     *   Number of card models in the arrangement
+     * @returns {Number}  Number of card models in the arrangement
      */
     get_count: function () {
         return this._models_by_id().size;
     },
 
     /**
-     * Method: get_card_count
      * Count the cards being shown in the arrangement
      *
-     * Contrast to <get_count()>.
+     * Contrast to {get_count()}.
      * This returns the number of cards currently displaying in the arrangement.
      * There may be card models added to the arrangement that are not shown as
      * cards because they are filtered out.
@@ -134,22 +103,20 @@ const Arrangement = new Lang.Interface({
      * This is a method for technical reasons, but it should be treated like a
      * read-only property.
      *
-     * Returns:
-     *   Number of cards in the arrangement
+     * @returns {Number}  Number of cards in the arrangement
+     *
      */
     get_card_count: function () {
         return this._cards_by_id().size;
     },
 
     /**
-     * Method: add_model
      * Add a card model to the arrangement
      *
      * Note that adding a card directly with *Gtk.Container.add()* or one of its
      * more specialized relatives will not add a model to the arrangement.
      *
-     * Parameters:
-     *   model - a <ContentObjectModel>
+     * @param {Object}  model - a {ContentObjectModel}
      */
     add_model: function (model) {
         this._models_by_id().set(model.ekn_id, model);
@@ -188,14 +155,12 @@ const Arrangement = new Lang.Interface({
     },
 
     /**
-     * Method: remove_model
      * Remove a card model from the arrangement
      *
      * Note that removing a card directly with *Gtk.Container.remove()* will
      * not remove the model from the arrangement.
      *
-     * Parameters:
-     *   model - a <ContentObjectModel>
+     * @param {Object}  model - a {ContentObjectModel}
      */
     remove_model: function (model) {
         this._models_by_id().delete(model.ekn_id);
@@ -207,8 +172,9 @@ const Arrangement = new Lang.Interface({
     },
 
     /**
-     * Method: get_models
      * Get all card models in the arrangement
+     *
+     * @returns {Object}  All card models in the arrangement
      */
     get_models: function () {
         let models = [...this._models_by_id().values()];
@@ -219,14 +185,12 @@ const Arrangement = new Lang.Interface({
     },
 
     /**
-     * Method: get_filtered_models
      * Get card models in the arrangement that are to be displayed
      *
-     * Use this function in your <Arrangement> implementation when you are
+     * Use this function in your {Arrangement} implementation when you are
      * deciding how to lay out the cards.
      *
-     * Returns:
-     *   an array of <ContentObjectModels>
+     * @returns {Array}  an array of {ContentObjectModels}
      */
     get_filtered_models: function () {
         let filter = this.get_filter();
@@ -237,14 +201,11 @@ const Arrangement = new Lang.Interface({
     },
 
     /**
-     * Method: get_card_for_model
-     * Get the created <Card> for a card model
+     * Get the created {Card} for a card model
      *
-     * Parameters:
-     *   model - a <ContentObjectModel>
+     * @param {Object}  model - a {ContentObjectModel}
      *
-     * Returns:
-     *   A <Card> whose <Card.model> property is @model, or **undefined** if
+     * @returns {Object}  A {Card} whose {Card.model} property is @model, or **undefined** if
      *   no such card exists, either because the arrangement is not displaying
      *   it, or because @model is not in the arrangement
      */
@@ -257,7 +218,6 @@ const Arrangement = new Lang.Interface({
     },
 
     /**
-     * Method: clear
      * Remove all cards from the arrangement
      */
     clear: function () {
@@ -267,6 +227,11 @@ const Arrangement = new Lang.Interface({
         this._models_by_id().clear();
     },
 
+    /**
+     * Highlights a specific model
+     *
+     * @param {Object} model  The model whos associated card should be highlighted
+     */
     highlight: function (highlight_model) {
         this.clear_highlight();
         for (let model of this.get_models()) {
@@ -286,7 +251,6 @@ const Arrangement = new Lang.Interface({
     },
 
     /**
-     * Method: get_order
      * Private method intended to be used from implementations
      */
     get_order: function () {
@@ -304,14 +268,12 @@ const Arrangement = new Lang.Interface({
     },
 
     /**
-     * Method: highlight_string
      * Highlight occurrences of a string on all the cards
      *
      * This method causes all occurrences of @str to be highlighted on each
-     * card that the arrangement is showing, using <Card.highlight-string>.
+     * card that the arrangement is showing, using {Card.highlight-string}.
      *
-     * Parameters:
-     *   str - a string, or **null** to remove highlights
+     * @param {String}  str - a string, or **null** to remove highlights
      */
     highlight_string: function (str) {
         if (this._highlight_string === str)
@@ -326,15 +288,13 @@ const Arrangement = new Lang.Interface({
     },
 
     /**
-     * Method: pack_card
      * Private method intended to be used from implementations
      *
      * Override this method if your container needs anything more complicated
      * than just Gtk.Container.add().
      *
-     * Parameters:
-     *   card - a <Card> implementation
-     *   position - an integer specifying in what order the card should be
+     * @param {Object} card - a {Card} implementation
+     * @param {Number} position - an integer specifying in what order the card should be
      *     packed, relative to other cards. -1 means "don't care".
      */
     pack_card: function (card, position=-1) {
@@ -343,30 +303,28 @@ const Arrangement = new Lang.Interface({
     },
 
     /**
-     * Method: unpack_card
      * Private method intended to be used from implementations
      *
      * Override this method if your container needs anything more complicated
      * than just Gtk.Container.remove().
      *
      * Parameters:
-     *   card - a <Card> implementation
+     *   card - a {Card} implementation
      */
     unpack_card: function (card) {
         this.remove(card);
     },
 
     /**
-     * Method: fade_card_in
      * Private method intended to be overridden in implementations
      *
      * Override this method if your container should do something different to
-     * fade in a card than simply call <Card.fade_in()> on it.
+     * fade in a card than simply call {Card.fade_in()} on it.
      * For example, if your container should not fade cards in at all, then
      * override this to call **card.show_all()**.
      *
      * Parameters:
-     *   card - a <Card> implementation
+     *   card - a {Card} implementation
      */
     fade_card_in: function (card) {
         card.fade_in();
