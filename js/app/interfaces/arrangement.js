@@ -27,14 +27,6 @@ const StyleClasses = imports.app.styleClasses;
  * @property {Boolean} all-visible  Whether all children are visible or some were cut off
  * @property {Integer} spacing      The amount of space in pixels between cards
  * @property {Boolean} fade-cards   Whether to fade in cards or just show them
- *
- * @function get_card_count         Count the cards being shown in the arrangement
- * @function get_count              Count the card models in the arrangement
- * @funciton add_model              Foo
- * @funciton remove_model           Bar
- * @funciton get_models             Baz
- * @funciton get_filtered_models    A
- * @funciton get_card_for_model     B
  */
 const Arrangement = new Lang.Interface({
     Name: 'Arrangement',
@@ -87,6 +79,8 @@ const Arrangement = new Lang.Interface({
      * read-only property.
      *
      * @returns {Number}  Number of card models in the arrangement
+     * @memberof Arrangement
+     * @instance
      */
     get_count: function () {
         return this._models_by_id().size;
@@ -104,6 +98,8 @@ const Arrangement = new Lang.Interface({
      * read-only property.
      *
      * @returns {Number}  Number of cards in the arrangement
+     * @memberof Arrangement
+     * @instance
      *
      */
     get_card_count: function () {
@@ -117,6 +113,8 @@ const Arrangement = new Lang.Interface({
      * more specialized relatives will not add a model to the arrangement.
      *
      * @param {Object}  model - a {ContentObjectModel}
+     * @memberof Arrangement
+     * @instance
      */
     add_model: function (model) {
         this._models_by_id().set(model.ekn_id, model);
@@ -161,6 +159,8 @@ const Arrangement = new Lang.Interface({
      * not remove the model from the arrangement.
      *
      * @param {Object}  model - a {ContentObjectModel}
+     * @memberof Arrangement
+     * @instance
      */
     remove_model: function (model) {
         this._models_by_id().delete(model.ekn_id);
@@ -175,6 +175,8 @@ const Arrangement = new Lang.Interface({
      * Get all card models in the arrangement
      *
      * @returns {Object}  All card models in the arrangement
+     * @memberof Arrangement
+     * @instance
      */
     get_models: function () {
         let models = [...this._models_by_id().values()];
@@ -191,6 +193,8 @@ const Arrangement = new Lang.Interface({
      * deciding how to lay out the cards.
      *
      * @returns {Array}  an array of {ContentObjectModels}
+     * @memberof Arrangement
+     * @instance
      */
     get_filtered_models: function () {
         let filter = this.get_filter();
@@ -208,6 +212,8 @@ const Arrangement = new Lang.Interface({
      * @returns {Object}  A {Card} whose {Card.model} property is @model, or **undefined** if
      *   no such card exists, either because the arrangement is not displaying
      *   it, or because @model is not in the arrangement
+     * @memberof Arrangement
+     * @instance
      */
     get_card_for_model: function (model) {
         return this._cards_by_id().get(model.ekn_id);
@@ -219,6 +225,8 @@ const Arrangement = new Lang.Interface({
 
     /**
      * Remove all cards from the arrangement
+     * @memberof Arrangement
+     * @instance
      */
     clear: function () {
         for (let card of this._cards_by_id().values())
@@ -231,6 +239,8 @@ const Arrangement = new Lang.Interface({
      * Highlights a specific model
      *
      * @param {Object} model  The model whos associated card should be highlighted
+     * @memberof Arrangement
+     * @instance
      */
     highlight: function (highlight_model) {
         this.clear_highlight();
@@ -252,6 +262,7 @@ const Arrangement = new Lang.Interface({
 
     /**
      * Private method intended to be used from implementations
+     * @memberof Arrangement
      */
     get_order: function () {
         // null is a valid value for Order
@@ -274,6 +285,8 @@ const Arrangement = new Lang.Interface({
      * card that the arrangement is showing, using {Card.highlight-string}.
      *
      * @param {String}  str - a string, or **null** to remove highlights
+     * @memberof Arrangement
+     * @instance
      */
     highlight_string: function (str) {
         if (this._highlight_string === str)
@@ -296,6 +309,7 @@ const Arrangement = new Lang.Interface({
      * @param {Object} card - a {Card} implementation
      * @param {Number} position - an integer specifying in what order the card should be
      *     packed, relative to other cards. -1 means "don't care".
+     * @memberof Arrangement
      */
     pack_card: function (card, position=-1) {
         this.add(card);
