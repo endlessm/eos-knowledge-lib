@@ -27,15 +27,17 @@ const Utils = imports.app.utils;
 const DATA_RESOURCE_PATH = 'resource:///com/endlessm/knowledge/data/';
 const RESULTS_SIZE = 10;
 
-/**
- * Class: MeshInteraction
- *
- * The Mesh interaction model controls the Encyclopedia and presets formerly
- * known as templates A and B.
- * A very exploratory interaction, the content is organized into categories and
- * may have filters, but can be reached through many different paths.
- */
 const MeshInteraction = new Module.Class({
+    //
+    //  # Class: MeshInteraction
+    //
+    //  The Mesh interaction model controls the Encyclopedia and presets formerly
+    //  known as templates A and B.
+    //  A very exploratory interaction, the content is organized into categories and
+    //  may have filters, but can be reached through many different paths.
+    //
+    // ## Implements: [Launcher](launcher.html), [Interaction](interaction.html)
+    //
     Name: 'MeshInteraction',
     Extends: GObject.Object,
     Implements: [Launcher.Launcher, Interaction.Interaction],
