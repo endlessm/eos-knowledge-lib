@@ -14,10 +14,13 @@ const MockFactory = new Knowledge.Class({
         this._created_mocks = {};
         this._mock_slots = {};
         this._mock_props = {};
+        this._mock_references = {};
+        this._mock_id_to_module = {};
     },
 
     create_named_module: function (name, props={}) {
         this._created_mocks[name] = this._created_mocks[name] || [];
+
         let retval = null;
         if (this._mock_classes.hasOwnProperty(name)) {
             // Unlike the real factory, we allow creating things that are not
@@ -36,10 +39,15 @@ const MockFactory = new Knowledge.Class({
         return retval;
     },
 
-    add_named_mock: function (name, klass, slots={}, props={}) {
+    add_named_mock: function (name, klass, slots={}, props={}, references={}) {
         this._mock_classes[name] = klass;
         this._mock_slots[name] = slots;
         this._mock_props[name] = props;
+        this._mock_references[name] = references;
+    },
+
+    add_reference_mock: function (id, klass) {
+        this._mock_id_to_module[id] = new klass();
     },
 
     get_created_named_mocks: function (name) {
@@ -62,5 +70,13 @@ const MockFactory = new Knowledge.Class({
         Lang.copyProperties(this._mock_props[module_name], props);
 
         return this.create_named_module(module_name, props);
+    },
+
+    register_module: function (id, module) {
+    },
+
+    get_module_for_reference: function (parent, reference) {
+        let id = this._mock_references[parent.factory_name][reference];
+        return this._mock_id_to_module[id];
     },
 });
