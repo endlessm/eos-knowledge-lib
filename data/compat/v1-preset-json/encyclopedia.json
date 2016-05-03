@@ -100,7 +100,7 @@
                                             },
                                             "slots": {
                                                 "card-type": {
-                                                    "type": "TextCard"
+                                                    "type": "TitleCard"
                                                 }
                                             }
                                         }

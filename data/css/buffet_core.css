@@ -26,7 +26,7 @@ EknSuggestedCategories separator {
     padding: 20px 50px 0px 50px;
 }
 
-EknScrollingTemplate,
+EknInfiniteScrollingLayout,
 EknSearch {
     background-color: #e7ecee;
 }
@@ -37,15 +37,15 @@ EknSearch .no-results {
 
 EknSuggestedCategories .button:hover .title,
 EknSetPreviewCard:hover .title,
-.text-card:hover .title {
+.title-card:hover .title {
     color: #49bde3;
 }
 
 /* FIXME: why does removing this cause ResponsiveMargins to lose its margins? */
 EknSuggestedCategories .browse-content .after,
-EknHighlights .text-card .after,
+EknHighlights .title-card .after,
 EknSetPreviewCard .title .after,
-EknThematic .text-card .after {
+EknThematic .title-card .after {
     -EknThemeableImage-min-height: 10;
     -EknThemeableImage-min-width: 11;
 }
@@ -99,39 +99,39 @@ EknThematic .text-card .after {
     font-size: 18.7px;
 }
 
-.search-result-card.width-d .title,
-.search-result-card.width-d .card-synopsis {
+.list-card.width-d .title,
+.list-card.width-d .card-synopsis {
     font-size: 18.7px;
 }
 
-.search-result-card.width-e .title,
-.search-result-card.width-e .card-synopsis {
+.list-card.width-e .title,
+.list-card.width-e .card-synopsis {
     font-size: 18.7px;
 }
 
-.search-result-card.width-f .title,
-.search-result-card.width-f .card-synopsis {
+.list-card.width-f .title,
+.list-card.width-f .card-synopsis {
     font-size: 21.3px;
 }
 
-.search-result-card.width-g .title,
-.search-result-card.width-h .title {
+.list-card.width-g .title,
+.list-card.width-h .title {
     font-size: 29.3px;
 }
 
-.search-result-card.width-g .card-synopsis,
-.search-result-card.width-h .card-synopsis {
+.list-card.width-g .card-synopsis,
+.list-card.width-h .card-synopsis {
     font-size: 24px;
 }
 
-.search-result-card.width-e .content-frame,
-.search-result-card.width-f .content-frame {
+.list-card.width-e .content-frame,
+.list-card.width-f .content-frame {
     padding: 20px;
 }
 
 .thumb-card,
 .post-card.article,
-.search-result-card {
+.list-card {
     background-color: white;
     box-shadow: 0 0 5px alpha(black, 0.25);
     border-color: transparent;  /* used for the triangle in the corner */
@@ -289,15 +289,15 @@ EknResponsiveMargins.xlarge {
     color: gray;
 }
 
-.composite .search-result-card.width-d .title,
-.composite .search-result-card.width-d .card-synopsis,
-.composite .search-result-card.width-e .title,
-.composite .search-result-card.width-e .card-synopsis {
+.composite .list-card.width-d .title,
+.composite .list-card.width-d .card-synopsis,
+.composite .list-card.width-e .title,
+.composite .list-card.width-e .card-synopsis {
     font-size: 18.8px;  /* 16px spec * 88% because spec was at 110% scale not 125% */
 }
 
-.composite EknHighlights .text-card .title.label,
-.composite EknThematic .text-card .title.label,
+.composite EknHighlights .title-card .title.label,
+.composite EknThematic .title-card .title.label,
 .composite EknSetPreviewCard .title,
 .composite .browse-content .title,
 .composite .post-card.set .title {

@@ -8,7 +8,7 @@ scrollbar.vertical slider {
 @define-color title-blue #0f1b3c;
 @define-color context-blue #7297a7;
 
-EknScrollingTemplate,
+EknInfiniteScrollingLayout,
 EknBackground,
 .results-message-background,
 EosWindow scrollbar {
@@ -45,7 +45,7 @@ EknSearch {
     -gtk-icon-source: url('resource:///com/endlessm/knowledge/data/images/news-arrow-light.svg');
 }
 
-EknSetPreviewCard .text-card .title {
+EknSetPreviewCard .title-card .title {
     color: @title-blue;
     font-family: 'Merriweather';
     font-weight: bold;
@@ -53,7 +53,7 @@ EknSetPreviewCard .text-card .title {
     font-size: 40px;
 }
 
-EknSetPreviewCard .text-card:hover .title {
+EknSetPreviewCard .title-card:hover .title {
     color: @context-blue;
 }
 
@@ -74,23 +74,23 @@ EknPanelFrame .top-menu {
     padding: 0px 20px;
 }
 
-EknSideBySideArrangement .text-card label.title {
+EknSideBySideArrangement .title-card label.title {
     font-family: 'Fira Sans';
     color: rgba(255, 255, 255, 0.6);
     padding: 13px 0px 3px 0px;
     font-size: 18px;
 }
 
-EknSideBySideArrangement .text-card:hover label.title {
+EknSideBySideArrangement .title-card:hover label.title {
     border-bottom: 1px solid @context-blue;
     color: @context-blue;
 }
 
-EknSideBySideArrangement .text-card.highlighted label.title {
+EknSideBySideArrangement .title-card.highlighted label.title {
     color: white;
 }
 
-EknSideBySideArrangement .text-card.highlighted:hover label.title {
+EknSideBySideArrangement .title-card.highlighted:hover label.title {
     border-bottom: none;
 }
 
@@ -143,14 +143,14 @@ EknSearchBanner {
     padding-left: 160px;
 }
 
-.all-type-card {
+.text-card {
     background-color: white;
     box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.24);
     padding: 20px;
 }
 
-.all-type-card .title,
-.search-result-card .title,
+.text-card .title,
+.list-card .title,
 .thumb-card .title {
     font-family: 'Fira Sans';
     font-weight: bold;
@@ -158,16 +158,16 @@ EknSearchBanner {
     font-size: 18px;
 }
 
-.all-type-card .card-synopsis,
-.search-result-card .card-synopsis {
+.text-card .card-synopsis,
+.list-card .card-synopsis {
     font-family: 'Merriweather';
     font-style: italic;
     color: #666666;
     font-size: 16px;
 }
 
-.all-type-card .card-context,
-.search-result-card .card-context,
+.text-card .card-context,
+.list-card .card-context,
 .thumb-card .card-context {
     font-family: 'Merriweather';
     font-weight: bold;
@@ -176,67 +176,67 @@ EknSearchBanner {
     font-size: 14px;
 }
 
-.all-type-card:hover .title,
-.search-result-card:hover .title {
+.text-card:hover .title,
+.list-card:hover .title {
     color: @context-blue;
 }
 
-.search-result-card.next:hover .title {
+.list-card.next:hover .title {
     color: @title-blue;
 }
 
-.search-result-card .title.highlighted {
+.list-card .title.highlighted {
     background-color: rgba(114, 151, 167, 0.3);
 }
 
-.all-type-card.width-c {
+.text-card.width-c {
     padding: 30px;
 }
-.all-type-card.width-c .title {
+.text-card.width-c .title {
     font-size: 23px;
 }
 
-.all-type-card.width-c.height-d,
-.all-type-card.width-d {
+.text-card.width-c.height-d,
+.text-card.width-d {
     padding: 30px;
 }
-.all-type-card.width-c.height-d .title,
-.all-type-card.width-d .title {
+.text-card.width-c.height-d .title,
+.text-card.width-d .title {
     font-size: 27px;
 }
 
-.all-type-card.width-d.height-d,
-.all-type-card.width-e,
-.all-type-card.width-f.height-c {
+.text-card.width-d.height-d,
+.text-card.width-e,
+.text-card.width-f.height-c {
     padding: 40px;
 }
-.all-type-card.width-d.height-d .title,
-.all-type-card.width-e .title,
-.all-type-card.width-f.height-c .title {
+.text-card.width-d.height-d .title,
+.text-card.width-e .title,
+.text-card.width-f.height-c .title {
     font-size: 37px;
 }
 
-.all-type-card.width-e.height-d,
-.all-type-card.width-e.height-e,
-.all-type-card.width-f,
-.all-type-card.width-g,
-.all-type-card.width-h {
+.text-card.width-e.height-d,
+.text-card.width-e.height-e,
+.text-card.width-f,
+.text-card.width-g,
+.text-card.width-h {
     padding: 50px;
 }
-.all-type-card.width-e.height-d .title,
-.all-type-card.width-e.height-e .title,
-.all-type-card.width-f .title,
-.all-type-card.width-g .title,
-.all-type-card.width-h .title {
+.text-card.width-e.height-d .title,
+.text-card.width-e.height-e .title,
+.text-card.width-f .title,
+.text-card.width-g .title,
+.text-card.width-h .title {
     font-size: 49px;
 }
 
-.all-type-card.highlighted {
+.text-card.highlighted {
     background-color: #18264a;
     box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.22);
 }
 
-.all-type-card.highlighted .title {
+.text-card.highlighted .title {
     color: white;
 }
 

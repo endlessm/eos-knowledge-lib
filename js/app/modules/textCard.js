@@ -1,105 +1,123 @@
-// Copyright 2014 Endless Mobile, Inc.
+// Copyright 2016 Endless Mobile, Inc.
 
-const Gdk = imports.gi.Gdk;
 const GObject = imports.gi.GObject;
+const GLib = imports.gi.GLib;
 const Gtk = imports.gi.Gtk;
 
 const Card = imports.app.interfaces.card;
 const Module = imports.app.interfaces.module;
-const NavigationCard = imports.app.interfaces.navigationCard;
 const StyleClasses = imports.app.styleClasses;
-const ThemeableImage = imports.app.widgets.themeableImage;
 const Utils = imports.app.utils;
-
-// The highlight decoration element is 5x5
-const HIGHLIGHT_DECORATION_DIMENSION = 5;
 
 /**
  * Class: TextCard
  *
- * Class to show text-only cards in the knowledge lib UI
+ * Card for displaying a snippet of an article in the News App
  *
- * This widget displays a clickable topic to the user.
- * Connect to the <clicked> signal to perform an action
- * when the user clicks on the card.
+ * This widget can display a snippet of an article using labels
+ * for the title, the synopsis and the context which is a tag,
+ * if it is available.
  *
  * Style classes:
  *   card, text-card - on the widget itself
  *   title - on the title label
+ *   card-synopsis - on the synopsis label
+ *   card-context - on the context label
  */
 const TextCard = new Module.Class({
     Name: 'TextCard',
     CssName: 'EknTextCard',
     Extends: Gtk.Button,
-    Implements: [Card.Card, NavigationCard.NavigationCard],
+    Implements: [Card.Card],
 
     Properties: {
-        /**
-         * Property: decorate-on-highlight
-         * Whether to draw a custom decoration when the card is highlighted
-         */
-        'decorate-on-highlight': GObject.ParamSpec.boolean('decorate-on-highlight',
-            'Decorate on highlight', 'Whether to draw a custom decoration when the card is highlighted',
+        'highlighted': GObject.ParamSpec.boolean('highlighted',
+            'Highlighted Mode',
+            'Whether this card is displayed as a highlighted card',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             false),
     },
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/textCard.ui',
-    InternalChildren: [ 'grid', 'title-label' ],
+    InternalChildren: ['title-label', 'synopsis-label', 'context-label'],
 
-    _init: function (params={}) {
-        this.parent(params);
+    _init: function (props={}) {
+        this.parent(props);
 
-        Utils.set_hand_cursor_on_widget(this);
-        this.set_title_label_from_model(this._title_label);
-        this._title_label_text = this._title_label.label;
+        this.set_label_or_hide(this._title_label, this.model.title);
+        this.set_label_or_hide(this._synopsis_label, this.model.synopsis);
 
-        let before = new ThemeableImage.ThemeableImage({
-            visible: true,
-            valign: Gtk.Align.CENTER,
-            halign: Gtk.Align.CENTER,
-        });
-        before.get_style_context().add_class(StyleClasses.BEFORE);
-        this._grid.attach(before, 0, 0, 1, 1);
-        let after = new ThemeableImage.ThemeableImage({
-            visible: true,
-            valign: Gtk.Align.CENTER,
-            halign: Gtk.Align.CENTER,
-        });
-        after.get_style_context().add_class(StyleClasses.AFTER);
-        this._grid.attach(after, 2, 0, 1, 1);
-    },
-
-    vfunc_draw: function (cr) {
-        if (this.decorate_on_highlight && this.get_style_context().has_class(StyleClasses.HIGHLIGHTED)) {
-            let x = this.get_allocation().width;
-            let y = this._title_label.get_allocation().height;
-
-            cr.save();
-            Gdk.cairo_set_source_rgba(cr, new Gdk.RGBA({
-                red: 1.0,
-                green: 1.0,
-                blue: 1.0,
-                alpha: 1.0,
-            }));
-            cr.moveTo(0, y);
-            cr.lineTo((x - HIGHLIGHT_DECORATION_DIMENSION) / 2, y);
-            cr.lineTo(x / 2, y + (HIGHLIGHT_DECORATION_DIMENSION / 2));
-            cr.lineTo((x + HIGHLIGHT_DECORATION_DIMENSION) / 2, y);
-            cr.lineTo(x, y);
-            cr.stroke();
-            cr.restore();
+        this._context = this.get_parent_set_titles()[0];
+        if (this._context) {
+            this.set_label_or_hide(this._context_label, this._context);
         }
 
-        this.parent(cr);
+        if (this.highlighted) {
+            this.get_style_context().add_class(StyleClasses.HIGHLIGHTED);
+        }
 
-        cr.$dispose();
-        return Gdk.EVENT_PROPAGATE;
+        Utils.set_hand_cursor_on_widget(this);
+
+        this._idle_id = 0;
+        this.connect_after('size-allocate', () => {
+            if (this._idle_id) {
+                return;
+            }
+            this._idle_id = GLib.idle_add(GLib.PRIORITY_DEFAULT_IDLE,
+                this._update_labels_and_css.bind(this));
+        });
+    },
+
+    _update_labels_and_css: function () {
+        let card_alloc = this.get_allocation();
+        let width = card_alloc.width;
+        let height = card_alloc.height;
+
+        this.update_card_sizing_classes(height, width);
+        this._update_title(height, width);
+        this._update_synopsis(height, width);
+        this._context_label.visible = (this._context && height >= Card.MinSize.B);
+
+        this._idle_id = 0;
+        return GLib.SOURCE_REMOVE;
+    },
+
+    _update_title: function (height, width) {
+        let lines = 2;
+        let valign = Gtk.Align.END;
+
+        if (width <= Card.MaxSize.B && height <= Card.MaxSize.A) {
+            lines = 2;
+        } else if (width <= Card.MaxSize.C && height <= Card.MaxSize.D) {
+            lines = 3;
+        } else if (width <= Card.MaxSize.D && height <= Card.MaxSize.C) {
+            lines = 2;
+        } else if (width <= Card.MaxSize.D && height <= Card.MaxSize.D) {
+            lines = 3;
+        }
+
+        if (height <= Card.MaxSize.B) {
+            valign = Gtk.Align.CENTER;
+        }
+
+        this._title_label.lines = lines;
+        this._title_label.valign = valign;
+    },
+
+    _update_synopsis: function (height, width) {
+        this._synopsis_label.visible = (height >= Card.MinSize.C);
+        if (!this._synopsis_label.visible) {
+            return;
+        }
+
+        let lines = 5;
+
+        if (width <= Card.MaxSize.E && height <= Card.MaxSize.C) {
+            lines = 3;
+        } else if (width <= Card.MaxSize.F && height <= Card.MaxSize.D) {
+            lines = 4;
+        }
+
+        this._synopsis_label.lines = lines;
     },
 });
-
-function get_css_for_module (css_data) {
-    let str = '@define-color template-b-text-color ' + css_data['title-color'] + ';\n';
-    str += '@define-color template-b-text-color-hover ' + css_data['hover-color'] + ';\n';
-    return str;
-}

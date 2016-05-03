@@ -45,7 +45,7 @@
             "slots": {
                 "top-menu": "main-menu",
                 "content": {
-                    "type": "ScrollingTemplate",
+                    "type": "InfiniteScrollingLayout",
                     "slots": {
                         "content": {
                             "type": "Background",
@@ -108,7 +108,7 @@
             "slots": {
                 "top-menu": "main-menu",
                 "content": {
-                    "type": "ScrollingTemplate",
+                    "type": "InfiniteScrollingLayout",
                     "properties": {
                         "name": "theme-scroll",
                         "bottom-buffer": 250
@@ -131,7 +131,7 @@
                                             },
                                             "slots": {
                                                 "card-type": {
-                                                    "type": "TextCard",
+                                                    "type": "TitleCard",
                                                     "properties": {
                                                         "title-capitalization": "lowercase"
                                                     }
@@ -166,7 +166,7 @@
                                                                     },
                                                                     "slots": {
                                                                         "card-type": {
-                                                                            "type": "SearchResultCard"
+                                                                            "type": "ListCard"
                                                                         },
                                                                        "order": {
                                                                             "type": "PublishedDateOrder",
@@ -223,7 +223,7 @@
                                             },
                                             "slots": {
                                                 "card-type": {
-                                                    "type": "SearchResultCard",
+                                                    "type": "ListCard",
                                                     "properties": {
                                                         "margin-start": 200,
                                                         "margin-end": 200
@@ -297,7 +297,7 @@
                             }
                         },
                         "nav-card-type": {
-                            "type": "SearchResultCard",
+                            "type": "ListCard",
                             "properties": {
                                 "show-synopsis": false
                             }
@@ -370,13 +370,13 @@
             }
         },
         "header-card": {
-            "type": "TextCard",
+            "type": "TitleCard",
             "properties": {
                 "margin-top": 25
             }
         },
         "set-card": {
-            "type": "TextCard",
+            "type": "TitleCard",
             "properties": {
                 "title-capitalization": "uppercase"
             }
@@ -436,7 +436,7 @@
                                     },
                                     "slots": {
                                         "card-type": {
-                                            "type": "TextCard",
+                                            "type": "TitleCard",
                                             "properties": {
                                                 "title-capitalization": "lowercase",
                                                 "halign": "center",

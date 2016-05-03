@@ -47,7 +47,7 @@
                 "context": "context-banner",
                 "sidebar": "main-menu",
                 "content": {
-                    "type": "ScrollingTemplate",
+                    "type": "InfiniteScrollingLayout",
                     "slots": {
                         "content": {
                             "type": "ResponsiveMargins",
@@ -78,7 +78,7 @@
                 "context": "context-banner",
                 "sidebar": "main-menu",
                 "content": {
-                    "type": "ScrollingTemplate",
+                    "type": "InfiniteScrollingLayout",
                     "properties": {
                         "name": "theme-scroll"
                     },
@@ -130,7 +130,7 @@
                 "context": "context-banner",
                 "sidebar": "main-menu",
                 "content": {
-                    "type": "ScrollingTemplate",
+                    "type": "InfiniteScrollingLayout",
                     "slots": {
                         "content": {
                             "type": "ResponsiveMargins",
@@ -220,7 +220,7 @@
                             },
                             "slots": {
                                 "card-type": {
-                                    "type": "SearchResultCard"
+                                    "type": "ListCard"
                                 }
                             }
                         },
@@ -307,7 +307,7 @@
             }
         },
         "header-card": {
-            "type": "TextCard",
+            "type": "TitleCard",
             "properties": {
                 "margin-top": 25
             }
@@ -329,7 +329,7 @@
                     "type": "ScrollingListArrangement",
                     "slots": {
                         "card-type": {
-                            "type": "TextCard",
+                            "type": "TitleCard",
                             "properties": {
                                 "title-capitalization": "uppercase",
                                 "margin-top": 5

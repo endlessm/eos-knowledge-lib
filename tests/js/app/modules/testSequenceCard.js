@@ -21,7 +21,7 @@ describe('Sequence card widget', function () {
         });
     });
 
-    it('has card and text-card class', function () {
+    it('has card and sequence-card class', function () {
         let card = new SequenceCard.SequenceCard({
             model: model,
         });

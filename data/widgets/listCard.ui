@@ -2,7 +2,7 @@
 <!-- Generated with glade 3.18.3 -->
 <interface domain="eos-knowledge">
   <requires lib="gtk+" version="3.12"/>
-  <template class="EknSearchResultCard" parent="GtkButton">
+  <template class="EknListCard" parent="GtkButton">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="receives_default">False</property>
@@ -81,7 +81,7 @@
       </object>
     </child>
     <style>
-      <class name="search-result-card"/>
+      <class name="list-card"/>
       <class name="card"/>
     </style>
   </template>

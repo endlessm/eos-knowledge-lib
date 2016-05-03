@@ -30,12 +30,12 @@ const LEGACY_POLAROID_CARD = 'legacy-polaroid-card';
 const LEGACY_POST_CARD = 'legacy-post-card';
 
 /**
- * Constant: TEXT_CARD
+ * Constant: TITLE_CARD
  *
- * Matches #EknTextCard widgets.
+ * Matches #EknTitleCard widgets.
  * It is present on any text card widget or subclass thereof.
  */
-const TEXT_CARD = 'text-card';
+const TITLE_CARD = 'title-card';
 
 /**
  * Constant: SEQUENCE_CARD
@@ -45,19 +45,19 @@ const TEXT_CARD = 'text-card';
 const SEQUENCE_CARD = 'sequence-card';
 
 /**
- * Constant: SEARCH_RESULT_CARD
+ * Constant: LIST_CARD
  *
- * Matches #EknSearchResultCard widgets.
- * It is present on any search result card widget or subclass thereof.
+ * Matches #EknListCard widgets.
+ * It is present on any list card widget or subclass thereof.
  */
-const SEARCH_RESULT_CARD = 'search-result-card';
+const LIST_CARD = 'list-card';
 
 /**
- * Constant: ALL_TYPE_CARD
+ * Constant: TEXT_CARD
  *
- * Matches #EknAllTypeCard widgets.
+ * Matches #EknTextCard widgets.
  */
-const ALL_TYPE_CARD = 'all-type-card';
+const TEXT_CARD = 'text-card';
 
 /**
  * Constant: CARD_WIDTH
