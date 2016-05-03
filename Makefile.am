@@ -282,7 +282,6 @@ javascript_tests = \
 	tests/js/app/interfaces/testOrder.js \
 	tests/js/app/interfaces/testScrollable.js \
 	tests/js/app/modules/testAisleInteraction.js \
-	tests/js/app/modules/testAllTypeCard.js \
 	tests/js/app/modules/testAlphabeticalOrder.js \
 	tests/js/app/modules/testAppBanner.js \
 	tests/js/app/modules/testArticleSnippetCard.js \
@@ -343,6 +342,7 @@ javascript_tests = \
 	tests/js/app/modules/testSuggestedArticles.js \
 	tests/js/app/modules/testSuggestedCategories.js \
 	tests/js/app/modules/testSupplementaryArticles.js \
+	tests/js/app/modules/testTextCard.js \
 	tests/js/app/modules/testThematic.js \
 	tests/js/app/modules/testThirdRockArrangement.js \
 	tests/js/app/modules/testThirtiesArrangement.js \

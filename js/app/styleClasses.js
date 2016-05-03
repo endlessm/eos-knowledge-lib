@@ -53,11 +53,11 @@ const SEQUENCE_CARD = 'sequence-card';
 const LIST_CARD = 'list-card';
 
 /**
- * Constant: ALL_TYPE_CARD
+ * Constant: TEXT_CARD
  *
- * Matches #EknAllTypeCard widgets.
+ * Matches #EknTextCard widgets.
  */
-const ALL_TYPE_CARD = 'all-type-card';
+const TEXT_CARD = 'text-card';
 
 /**
  * Constant: CARD_WIDTH

@@ -7,14 +7,14 @@ Utils.register_gresource();
 const Card = imports.app.interfaces.card;
 const ContentObjectModel = imports.search.contentObjectModel;
 const CssClassMatcher = imports.tests.CssClassMatcher;
-const AllTypeCard = imports.app.modules.allTypeCard;
+const TextCard = imports.app.modules.textCard;
 const SetMap = imports.app.setMap;
 const SetObjectModel = imports.search.setObjectModel;
 const StyleClasses = imports.app.styleClasses;
 
 Gtk.init(null);
 
-describe('All Type Card', function () {
+describe('Text Card', function () {
     let card, set;
 
     beforeEach(function () {
@@ -25,7 +25,7 @@ describe('All Type Card', function () {
             title: 'Bar',
         });
         spyOn(SetMap, 'get_set_for_tag').and.returnValue(set);
-        card = new AllTypeCard.AllTypeCard({
+        card = new TextCard.TextCard({
             model: new ContentObjectModel.ContentObjectModel({
                 title: '!!!',
                 synopsis: '@@@',
@@ -35,7 +35,7 @@ describe('All Type Card', function () {
     });
 
     it('has the correct style class', function () {
-        expect(card).toHaveCssClass(StyleClasses.ALL_TYPE_CARD);
+        expect(card).toHaveCssClass(StyleClasses.TEXT_CARD);
     });
 
     it('has label style classes', function () {

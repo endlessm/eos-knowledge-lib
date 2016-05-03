@@ -10,7 +10,7 @@ const StyleClasses = imports.app.styleClasses;
 const Utils = imports.app.utils;
 
 /**
- * Class: AllTypeCard
+ * Class: TextCard
  *
  * Card for displaying a snippet of an article in the News App
  *
@@ -19,14 +19,14 @@ const Utils = imports.app.utils;
  * if it is available.
  *
  * Style classes:
- *   card, all-type-card - on the widget itself
+ *   card, text-card - on the widget itself
  *   title - on the title label
  *   card-synopsis - on the synopsis label
  *   card-context - on the context label
  */
-const AllTypeCard = new Module.Class({
-    Name: 'AllTypeCard',
-    CssName: 'EknAllTypeCard',
+const TextCard = new Module.Class({
+    Name: 'TextCard',
+    CssName: 'EknTextCard',
     Extends: Gtk.Button,
     Implements: [Card.Card],
 
@@ -38,7 +38,7 @@ const AllTypeCard = new Module.Class({
             false),
     },
 
-    Template: 'resource:///com/endlessm/knowledge/data/widgets/allTypeCard.ui',
+    Template: 'resource:///com/endlessm/knowledge/data/widgets/textCard.ui',
     InternalChildren: ['title-label', 'synopsis-label', 'context-label'],
 
     _init: function (props={}) {

@@ -59,7 +59,6 @@
     <file compressed="true">data/templates/js/jquery-min.js</file>
     <file compressed="true">data/templates/js/no-link-remover.js</file>
     <file compressed="true">data/templates/js/scroll-manager.js</file>
-    <file compressed="true" preprocess="xml-stripblanks">data/widgets/allTypeCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/appBanner.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/articleSnippetCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/backCover.ui</file>
@@ -83,6 +82,7 @@
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/sideMenuTemplate.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/standaloneBanner.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/suggestedCategories.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">data/widgets/textCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/thumbCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/titleCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/tooltips.ui</file>
@@ -115,7 +115,6 @@
     <file>js/app/libs/mustache.js</file>
     <file>js/app/moduleFactory.js</file>
     <file>js/app/modules/aisleInteraction.js</file>
-    <file>js/app/modules/allTypeCard.js</file>
     <file>js/app/modules/alphabeticalOrder.js</file>
     <file>js/app/modules/appBanner.js</file>
     <file>js/app/modules/articleSnippetCard.js</file>
@@ -179,6 +178,7 @@
     <file>js/app/modules/suggestedArticles.js</file>
     <file>js/app/modules/suggestedCategories.js</file>
     <file>js/app/modules/supplementaryArticles.js</file>
+    <file>js/app/modules/textCard.js</file>
     <file>js/app/modules/thematic.js</file>
     <file>js/app/modules/thirdRockArrangement.js</file>
     <file>js/app/modules/thirtiesArrangement.js</file>
