@@ -105,6 +105,10 @@ const Module = new Lang.Interface({
         'factory-name': GObject.ParamSpec.string('factory-name', 'Module Name', 'Module Name',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             ''),
+
+        'factory-id': GObject.ParamSpec.string('factory-id', 'Module ID', 'Module ID',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            ''),
     },
 
     /**
@@ -122,5 +126,13 @@ const Module = new Lang.Interface({
     create_submodule: function (slot, extra_props={}) {
         return this.factory.create_module_for_slot(this, slot,
             extra_props);
+    },
+
+    register_module: function () {
+        this.factory.register_module(this.factory_id, this);
+    },
+
+    reference_module: function (reference_name) {
+        return this.factory.get_module_for_reference(this, reference_name);
     },
 });

@@ -64,6 +64,10 @@ const ModuleFactory = new Knowledge.Class({
         // After this point, the app.json must be the current version!
 
         this._anonymous_name_to_description = {};
+
+        this._id_to_module = {};
+        this._id_to_name = {};
+        this._extract_ids();
     },
 
     get version() {
@@ -88,11 +92,16 @@ const ModuleFactory = new Knowledge.Class({
 
     create_named_module: function (name, extra_props={}) {
         let description = this._get_module_description_by_name(name);
+        let id = ('id' in description) ? description['id'] : '';
+
+        if (id in this._id_to_module)
+            return this._id_to_module[id];
 
         let module_class = this.warehouse.type_to_class(description['type']);
         let module_props = {
             factory: this,
             factory_name: name,
+            factory_id: id,
         };
 
         if (description.hasOwnProperty('properties')) {
@@ -139,6 +148,17 @@ const ModuleFactory = new Knowledge.Class({
         return this.create_named_module(factory_name, extra_props);
     },
 
+    get_module_for_reference: function (parent_module, reference_name) {
+        let description = this._get_module_description_by_name(parent_module.factory_name);
+        let id = description['references'][reference_name];
+        return this.create_named_module(this._id_to_name[id]);
+    },
+
+    register_module: function (id, module) {
+        if (id in this._id_to_name && !(id in this._id_to_module))
+            this._id_to_module[id] = module;
+    },
+
     /**
      * Method: _get_module_description_by_name
      * Returns JSON description of module
@@ -160,5 +180,54 @@ const ModuleFactory = new Knowledge.Class({
         let name = factory_name + '.' + slot;
         this._anonymous_name_to_description[name] = description;
         return name;
+    },
+
+    _extract_ids: function () {
+        let modules = this.app_json['modules'];
+        /* build only 1 tree if it's a real app */
+        let keys = ('interaction' in modules) ? ['interaction'] : Object.keys(modules);
+        keys.forEach((factory_name) => {
+            let description = this.app_json['modules'][factory_name];
+            this._index_id(factory_name, description, false);
+            this._recursive_extract_ids(factory_name, description, false);
+        });
+    },
+
+    _recursive_extract_ids: function (parent_factory_name, parent_description, parent_is_multi) {
+        if (!('slots' in parent_description))
+            return;
+        Object.keys(parent_description['slots']).forEach((slot_name) => {
+            let slot_value = parent_description['slots'][slot_name];
+            let factory_name = slot_value;
+            /* keep track of whether we are inside or below a multi slot */
+            let is_multi = this._is_multi_slot(parent_description, slot_name, parent_is_multi);
+            if (typeof slot_value === 'string')
+                slot_value = this._get_module_description_by_name(slot_value);
+            if (typeof slot_value === 'object')
+                factory_name = this._setup_anonymous_module(parent_factory_name, slot_name, slot_value);
+            this._index_id(factory_name, slot_value, is_multi);
+            this._recursive_extract_ids(factory_name, slot_value, is_multi);
+        });
+    },
+
+    _index_id: function (factory_name, description, is_multi) {
+        if (!('id' in description))
+            return
+        let id = description['id'];
+
+        /* do not allow ID inside or below multi slots */
+        if (is_multi)
+            throw new Error('ID ' + id + ' defined in multi slot');
+
+        /* do not allow repeated IDs */
+        if (id in this._id_to_name)
+            throw new Error('ID ' + id + ' redefined for ' + factory_name);
+
+        this._id_to_name[id] = factory_name;
+    },
+
+    _is_multi_slot: function (description, slot_name, is_multi) {
+        let module_class = this.warehouse.type_to_class(description['type']);
+        return (is_multi || ('multi' in module_class.__slots__[slot_name]));
     },
 });

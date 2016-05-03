@@ -49,6 +49,101 @@ const MOCK_APP_JSON = {
                 'halign': 'asdf',
             }
         },
+        'test2': {
+            type: 'TestModule',
+            slots: {
+                'anonymous-slot-1': {
+                    type: 'TestModule',
+                    id: 'referenced-module-1',
+                    slots: {
+                        'anonymous-slot-2': {
+                            type: 'TestModule',
+                            references: {
+                                'reference-1': 'referenced-module-1',
+                            },
+                        },
+                    },
+                },
+            },
+        },
+        'test3': {
+            type: 'TestModule',
+            slots: {
+                'anonymous-slot-1': {
+                    type: 'TestModule',
+                    references: {
+                        'reference-1': 'referenced-module-2',
+                    },
+                },
+                'anonymous-slot-2': {
+                    tpye: 'TestModule',
+                    id: 'referenced-module-2',
+                },
+            },
+        },
+        'named-module': {
+            type: 'TestModule',
+            id: 'referenced-module-3'
+        },
+        'test4': {
+            type: 'TestModule',
+            slots: {
+                'anonymous-slot-1': {
+                    type: 'TestModule',
+                    references: {
+                        'reference-1': 'referenced-module-3',
+                    },
+                },
+            },
+        },
+    },
+};
+
+const NOT_UNIQUE_APP_JSON = {
+    version: 2,
+    modules: {
+        'named-module': {
+            type: 'TestModule',
+            id: 'referenced-module-1'
+        },
+        'test': {
+            type: 'TestModule',
+            slots: {
+                'test-slot': 'named-module',
+                'anonymous-slot-1': {
+                    type: 'TestModule',
+                    references: {
+                        'reference-1': 'referenced-module-1',
+                    },
+                },
+            },
+        },
+    },
+};
+
+const IN_MULTI_APP_JSON = {
+    version: 2,
+    modules: {
+        'test': {
+            type: 'TestModule',
+            slots: {
+                'anonymous-slot-1': {
+                    type: 'TestModule',
+                    references: {
+                        'reference-1': 'referenced-module-1',
+                    },
+                },
+                'multi-slot-1': {
+                    type: 'TestModule',
+                    slots: {
+                        'test-slot': {
+                            type: 'TestModule',
+                            id: 'referenced-module-1',
+                        },
+                    },
+                },
+            },
+        },
     },
 };
 
@@ -60,7 +155,15 @@ const MockModule = new Module.Class({
         'optional-slot': {},
         'anonymous-slot-1': {},
         'anonymous-slot-2': {},
-    }
+        'multi-slot-1': {
+            multi: true,
+        }
+    },
+
+    _init: function (props={}) {
+         this.parent(props);
+         this.register_module();
+     },
 });
 
 const MockWarehouse = new Knowledge.Class({
@@ -143,6 +246,50 @@ describe('Module factory', function () {
             let module1 = module_factory.create_module_for_slot(parent, 'anonymous-slot-1');
             let module2 = module_factory.create_module_for_slot(parent, 'anonymous-slot-1');
             expect(module1.factory_name).toEqual(module2.factory_name);
+        });
+    });
+
+    describe('referenced modules', function () {
+        it('use the same instance when a module is referenced', function () {
+            let parent = module_factory.create_named_module('test2');
+            let module1 = module_factory.create_module_for_slot(parent, 'anonymous-slot-1');
+            let module2 = module_factory.create_module_for_slot(module1, 'anonymous-slot-2');
+            let module3 = module_factory.get_module_for_reference(module2, 'reference-1');
+            expect(module1).toBe(module3);
+        });
+
+        it('is not affected by order definition', function () {
+            let parent = module_factory.create_named_module('test3');
+            let module1 = module_factory.create_module_for_slot(parent, 'anonymous-slot-1');
+            let module2 = module_factory.get_module_for_reference(module1, 'reference-1');
+            let module3 = module_factory.create_module_for_slot(parent, 'anonymous-slot-2');
+            expect(module2).toBe(module3);
+        });
+
+        it('support named modules', function () {
+            let named_module = module_factory.create_named_module('named-module');
+            let parent = module_factory.create_named_module('test4');
+            let module1 = module_factory.create_module_for_slot(parent, 'anonymous-slot-1');
+            let module2 = module_factory.get_module_for_reference(module1, 'reference-1');
+            expect(named_module).toBe(module2);
+        });
+
+        it('does not allow repeated IDs', function () {
+            expect(() => {
+                let factory = new ModuleFactory.ModuleFactory({
+                    app_json: NOT_UNIQUE_APP_JSON,
+                    warehouse: warehouse,
+                });
+            }).toThrow();
+        });
+
+        it('does not allow references to IDs inside or below multi slots', function () {
+            expect(() => {
+                let factory = new ModuleFactory.ModuleFactory({
+                    app_json: IN_MULTI_APP_JSON,
+                    warehouse: warehouse,
+                });
+            }).toThrow();
         });
     });
 
