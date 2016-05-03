@@ -72,7 +72,7 @@ const MockFactory = new Knowledge.Class({
         return this.create_named_module(module_name, props);
     },
 
-    register_module: function (id, module) {
+    register_module: function (module, id) {
     },
 
     get_module_for_reference: function (parent, reference) {

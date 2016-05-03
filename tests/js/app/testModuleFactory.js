@@ -250,7 +250,7 @@ describe('Module factory', function () {
     });
 
     describe('referenced modules', function () {
-        it('use the same instance when a module is referenced', function () {
+        it('re-use the same instance when a module is referenced', function () {
             let parent = module_factory.create_named_module('test2');
             let module1 = module_factory.create_module_for_slot(parent, 'anonymous-slot-1');
             let module2 = module_factory.create_module_for_slot(module1, 'anonymous-slot-2');
@@ -258,7 +258,7 @@ describe('Module factory', function () {
             expect(module1).toBe(module3);
         });
 
-        it('is not affected by order definition', function () {
+        it('creates the new instance if the module as not been created yet', function () {
             let parent = module_factory.create_named_module('test3');
             let module1 = module_factory.create_module_for_slot(parent, 'anonymous-slot-1');
             let module2 = module_factory.get_module_for_reference(module1, 'reference-1');
@@ -266,7 +266,7 @@ describe('Module factory', function () {
             expect(module2).toBe(module3);
         });
 
-        it('support named modules', function () {
+        it('references to named modules', function () {
             let named_module = module_factory.create_named_module('named-module');
             let parent = module_factory.create_named_module('test4');
             let module1 = module_factory.create_module_for_slot(parent, 'anonymous-slot-1');
@@ -274,7 +274,7 @@ describe('Module factory', function () {
             expect(named_module).toBe(module2);
         });
 
-        it('does not allow repeated IDs', function () {
+        it('does not allow repeated ids', function () {
             expect(() => {
                 let factory = new ModuleFactory.ModuleFactory({
                     app_json: NOT_UNIQUE_APP_JSON,
@@ -283,7 +283,7 @@ describe('Module factory', function () {
             }).toThrow();
         });
 
-        it('does not allow references to IDs inside or below multi slots', function () {
+        it('does not allow references to modules inside or below multi slots', function () {
             expect(() => {
                 let factory = new ModuleFactory.ModuleFactory({
                     app_json: IN_MULTI_APP_JSON,
