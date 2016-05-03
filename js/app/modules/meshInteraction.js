@@ -161,15 +161,15 @@ const MeshInteraction = new Module.Class({
         A: {
             section_card: '.legacy-polaroid-card',
             article_card: '.article-card',
-            section_page_banner: '.section-page-a EknSetBannerModule',
-            search_page_banner: '.search-page-a EknSearchBannerModule',
+            section_page_banner: '.section-page-a EknSetBanner',
+            search_page_banner: '.search-page-a EknSearchBanner',
             no_search_results_page: '.no-search-results-page-a'
         },
         B: {
             section_card: '.legacy-post-card',
             article_card: '.text-card',
-            section_page_banner: '.section-page-b EknSetBannerModule',
-            search_page_banner: '.search-page-b EknSearchBannerModule',
+            section_page_banner: '.section-page-b EknSetBanner',
+            search_page_banner: '.search-page-b EknSearchBanner',
             search_page: '.search-page-b',
             no_search_results_page: '.no-search-results-page-b'
         },

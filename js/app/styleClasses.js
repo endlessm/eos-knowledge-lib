@@ -638,13 +638,13 @@ const DECORATION = 'decoration';
 
 /**
  * Constant: SEARCH_RESULTS
- * On the <SearchModule> module
+ * On the <Search> module
  */
 const SEARCH_RESULTS = 'search-results';
 
 /**
  * Constant: NO_RESULTS
- * On the <SearchModule> module when there are no results
+ * On the <Search> module when there are no results
  */
 const NO_RESULTS = 'no-results';
 

@@ -76,13 +76,13 @@
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/readerDocumentCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/scrollingListArrangement.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/scrollingTemplate.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">data/widgets/searchBannerModule.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">data/widgets/searchModule.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">data/widgets/search.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">data/widgets/searchBanner.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/searchResultCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/sequenceCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/sideMenuTemplate.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/standaloneBanner.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">data/widgets/suggestedCategoriesModule.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">data/widgets/suggestedCategories.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/textCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/thumbCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/tooltips.ui</file>
@@ -119,9 +119,9 @@
     <file>js/app/modules/alphabeticalOrder.js</file>
     <file>js/app/modules/appBanner.js</file>
     <file>js/app/modules/articleSnippetCard.js</file>
-    <file>js/app/modules/articleStackModule.js</file>
+    <file>js/app/modules/articleStack.js</file>
     <file>js/app/modules/backCover.js</file>
-    <file>js/app/modules/backgroundModule.js</file>
+    <file>js/app/modules/background.js</file>
     <file>js/app/modules/bannerTemplate.js</file>
     <file>js/app/modules/buffetInteraction.js</file>
     <file>js/app/modules/cardContainer.js</file>
@@ -134,17 +134,17 @@
     <file>js/app/modules/gridArrangement.js</file>
     <file>js/app/modules/halfArrangement.js</file>
     <file>js/app/modules/hamburgerBasementTemplate.js</file>
-    <file>js/app/modules/hierarchicalSetModule.js</file>
-    <file>js/app/modules/highlightsModule.js</file>
-    <file>js/app/modules/itemGroupModule.js</file>
+    <file>js/app/modules/hierarchicalSet.js</file>
+    <file>js/app/modules/highlights.js</file>
+    <file>js/app/modules/itemGroup.js</file>
     <file>js/app/modules/knowledgeDocumentCard.js</file>
     <file>js/app/modules/legacyPolaroidCard.js</file>
     <file>js/app/modules/legacyPostCard.js</file>
-    <file>js/app/modules/lightboxModule.js</file>
     <file>js/app/modules/listArrangement.js</file>
     <file>js/app/modules/mediaCard.js</file>
+    <file>js/app/modules/mediaLightbox.js</file>
     <file>js/app/modules/meshInteraction.js</file>
-    <file>js/app/modules/navigationModule.js</file>
+    <file>js/app/modules/navigation.js</file>
     <file>js/app/modules/overflowArrangement.js</file>
     <file>js/app/modules/paperTemplate.js</file>
     <file>js/app/modules/pianoArrangement.js</file>
@@ -156,17 +156,17 @@
     <file>js/app/modules/readerCard.js</file>
     <file>js/app/modules/readerDocumentCard.js</file>
     <file>js/app/modules/readerWindow.js</file>
-    <file>js/app/modules/responsiveMarginsModule.js</file>
+    <file>js/app/modules/responsiveMargins.js</file>
     <file>js/app/modules/scrollingListArrangement.js</file>
     <file>js/app/modules/scrollingTemplate.js</file>
-    <file>js/app/modules/searchAndItemModule.js</file>
-    <file>js/app/modules/searchBannerModule.js</file>
+    <file>js/app/modules/search.js</file>
+    <file>js/app/modules/searchAndItem.js</file>
+    <file>js/app/modules/searchBanner.js</file>
     <file>js/app/modules/searchBox.js</file>
-    <file>js/app/modules/searchModule.js</file>
     <file>js/app/modules/searchResultCard.js</file>
     <file>js/app/modules/sequenceCard.js</file>
-    <file>js/app/modules/setBannerModule.js</file>
-    <file>js/app/modules/setGroupModule.js</file>
+    <file>js/app/modules/setBanner.js</file>
+    <file>js/app/modules/setGroup.js</file>
     <file>js/app/modules/setPreviewCard.js</file>
     <file>js/app/modules/setsFilter.js</file>
     <file>js/app/modules/sidebarTemplate.js</file>
@@ -176,16 +176,16 @@
     <file>js/app/modules/squareGuysArrangement.js</file>
     <file>js/app/modules/standaloneBanner.js</file>
     <file>js/app/modules/standalonePage.js</file>
-    <file>js/app/modules/suggestedArticlesModule.js</file>
-    <file>js/app/modules/suggestedCategoriesModule.js</file>
-    <file>js/app/modules/supplementaryArticlesModule.js</file>
+    <file>js/app/modules/suggestedArticles.js</file>
+    <file>js/app/modules/suggestedCategories.js</file>
+    <file>js/app/modules/supplementaryArticles.js</file>
     <file>js/app/modules/textCard.js</file>
-    <file>js/app/modules/thematicModule.js</file>
+    <file>js/app/modules/thematic.js</file>
     <file>js/app/modules/thirdRockArrangement.js</file>
     <file>js/app/modules/thirtiesArrangement.js</file>
     <file>js/app/modules/thumbCard.js</file>
     <file>js/app/modules/tiledGridArrangement.js</file>
-    <file>js/app/modules/topMenuModule.js</file>
+    <file>js/app/modules/topMenu.js</file>
     <file>js/app/modules/topMenuTemplate.js</file>
     <file>js/app/modules/twoPieceTemplate.js</file>
     <file>js/app/modules/unreadFilter.js</file>

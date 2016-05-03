@@ -50,39 +50,39 @@ EknSplitPercentageTemplate .end {
     background-image: linear-gradient(-180deg, rgba(176, 176, 176, 0.20) 1%, alpha(black, 0.30) 100%);
 }
 
-EknSplitPercentageTemplate .start EknResponsiveMarginsModule {
-    -EknResponsiveMarginsModule-margin-threshold-small: 576;
-    -EknResponsiveMarginsModule-margin-threshold-medium: 576;
-    -EknResponsiveMarginsModule-margin-threshold-large: 576;
-    -EknResponsiveMarginsModule-margin-threshold-xlarge: 576;
+EknSplitPercentageTemplate .start EknResponsiveMargins {
+    -EknResponsiveMargins-margin-threshold-small: 576;
+    -EknResponsiveMargins-margin-threshold-medium: 576;
+    -EknResponsiveMargins-margin-threshold-large: 576;
+    -EknResponsiveMargins-margin-threshold-xlarge: 576;
 }
 
-EknSplitPercentageTemplate .start EknResponsiveMarginsModule.tiny {
+EknSplitPercentageTemplate .start EknResponsiveMargins.tiny {
     margin: 20px;
 }
 
-EknSplitPercentageTemplate .start EknResponsiveMarginsModule.small,
-EknSplitPercentageTemplate .start EknResponsiveMarginsModule.medium,
-EknSplitPercentageTemplate .start EknResponsiveMarginsModule.large,
-EknSplitPercentageTemplate .start EknResponsiveMarginsModule.xlarge {
+EknSplitPercentageTemplate .start EknResponsiveMargins.small,
+EknSplitPercentageTemplate .start EknResponsiveMargins.medium,
+EknSplitPercentageTemplate .start EknResponsiveMargins.large,
+EknSplitPercentageTemplate .start EknResponsiveMargins.xlarge {
     margin: 60px;
 }
 
-EknSplitPercentageTemplate .end EknResponsiveMarginsModule {
-    -EknResponsiveMarginsModule-margin-threshold-small: 400;
-    -EknResponsiveMarginsModule-margin-threshold-medium: 400;
-    -EknResponsiveMarginsModule-margin-threshold-large: 400;
-    -EknResponsiveMarginsModule-margin-threshold-xlarge: 400;
+EknSplitPercentageTemplate .end EknResponsiveMargins {
+    -EknResponsiveMargins-margin-threshold-small: 400;
+    -EknResponsiveMargins-margin-threshold-medium: 400;
+    -EknResponsiveMargins-margin-threshold-large: 400;
+    -EknResponsiveMargins-margin-threshold-xlarge: 400;
 }
 
-EknSplitPercentageTemplate .end EknResponsiveMarginsModule.tiny {
+EknSplitPercentageTemplate .end EknResponsiveMargins.tiny {
     margin: 25px 60px 25px 25px;
 }
 
-EknSplitPercentageTemplate .end EknResponsiveMarginsModule.small,
-EknSplitPercentageTemplate .end EknResponsiveMarginsModule.medium,
-EknSplitPercentageTemplate .end EknResponsiveMarginsModule.large,
-EknSplitPercentageTemplate .end EknResponsiveMarginsModule.xlarge {
+EknSplitPercentageTemplate .end EknResponsiveMargins.small,
+EknSplitPercentageTemplate .end EknResponsiveMargins.medium,
+EknSplitPercentageTemplate .end EknResponsiveMargins.large,
+EknSplitPercentageTemplate .end EknResponsiveMargins.xlarge {
     margin: 50px 75px 50px 100px;
 }
 

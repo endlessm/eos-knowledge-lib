@@ -332,7 +332,7 @@ const AisleInteraction = new Module.Class({
                     }
                     // FIXME: This is an awful hack. We need our reader search
                     // cards to show the proper page number on hover, however we
-                    // make the cards in the SearchModule and not here. We need
+                    // make the cards in the Search module and not here. We need
                     // to figure out a good way to create cards with UI
                     // depending on application state anywhere our module tree,
                     // but for now we just hack up the models page_number.

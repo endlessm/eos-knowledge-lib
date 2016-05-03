@@ -10,7 +10,7 @@
             "type": "EncyclopediaWindow",
             "slots": {
                 "lightbox": {
-                    "type": "LightboxModule",
+                    "type": "MediaLightbox",
                     "slots": {
                         "card-type": {
                             "type": "MediaCard"
@@ -79,13 +79,13 @@
                             },
                             "slots": {
                                 "banner": {
-                                    "type": "SearchBannerModule",
+                                    "type": "SearchBanner",
                                     "properties": {
                                         "halign": "start"
                                     }
                                 },
                                 "content": {
-                                    "type": "SearchModule",
+                                    "type": "Search",
                                     "properties": {
                                         "margin-top": 20,
                                         "message-halign": "start",
@@ -139,7 +139,7 @@
                     "type": "PaperTemplate",
                     "slots": {
                         "content": {
-                            "type": "ArticleStackModule",
+                            "type": "ArticleStack",
                             "properties": {
                                 "do-sliding-animation": false
                             },
