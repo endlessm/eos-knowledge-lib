@@ -131,7 +131,7 @@
                                             },
                                             "slots": {
                                                 "card-type": {
-                                                    "type": "TextCard",
+                                                    "type": "TitleCard",
                                                     "properties": {
                                                         "title-capitalization": "lowercase"
                                                     }
@@ -370,13 +370,13 @@
             }
         },
         "header-card": {
-            "type": "TextCard",
+            "type": "TitleCard",
             "properties": {
                 "margin-top": 25
             }
         },
         "set-card": {
-            "type": "TextCard",
+            "type": "TitleCard",
             "properties": {
                 "title-capitalization": "uppercase"
             }
@@ -436,7 +436,7 @@
                                     },
                                     "slots": {
                                         "card-type": {
-                                            "type": "TextCard",
+                                            "type": "TitleCard",
                                             "properties": {
                                                 "title-capitalization": "lowercase",
                                                 "halign": "center",

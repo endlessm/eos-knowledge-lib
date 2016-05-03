@@ -37,15 +37,15 @@ EknSearch .no-results {
 
 EknSuggestedCategories .button:hover .title,
 EknSetPreviewCard:hover .title,
-.text-card:hover .title {
+.title-card:hover .title {
     color: #49bde3;
 }
 
 /* FIXME: why does removing this cause ResponsiveMargins to lose its margins? */
 EknSuggestedCategories .browse-content .after,
-EknHighlights .text-card .after,
+EknHighlights .title-card .after,
 EknSetPreviewCard .title .after,
-EknThematic .text-card .after {
+EknThematic .title-card .after {
     -EknThemeableImage-min-height: 10;
     -EknThemeableImage-min-width: 11;
 }
@@ -296,8 +296,8 @@ EknResponsiveMargins.xlarge {
     font-size: 18.8px;  /* 16px spec * 88% because spec was at 110% scale not 125% */
 }
 
-.composite EknHighlights .text-card .title.label,
-.composite EknThematic .text-card .title.label,
+.composite EknHighlights .title-card .title.label,
+.composite EknThematic .title-card .title.label,
 .composite EknSetPreviewCard .title,
 .composite .browse-content .title,
 .composite .post-card.set .title {

@@ -307,7 +307,7 @@
             }
         },
         "header-card": {
-            "type": "TextCard",
+            "type": "TitleCard",
             "properties": {
                 "margin-top": 25
             }
@@ -329,7 +329,7 @@
                     "type": "ScrollingListArrangement",
                     "slots": {
                         "card-type": {
-                            "type": "TextCard",
+                            "type": "TitleCard",
                             "properties": {
                                 "title-capitalization": "uppercase",
                                 "margin-top": 5

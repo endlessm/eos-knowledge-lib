@@ -13,9 +13,9 @@ EknSetPreviewCard .title,
     background-color: #d9f0f8;
 }
 
-EknHighlights .text-card .title.label,
-EknThematic .text-card .title.label,
-EknSetPreviewCard .text-card .title,
+EknHighlights .title-card .title.label,
+EknThematic .title-card .title.label,
+EknSetPreviewCard .title-card .title,
 .browse-content .title {
     font-weight: 200;
     font-size: 29.3px;
@@ -30,9 +30,9 @@ EknThematic separator {
 }
 
 EknSuggestedCategories .browse-content .after,
-EknHighlights .text-card .after,
+EknHighlights .title-card .after,
 EknSetPreviewCard .title .after,
-EknThematic .text-card .after {
+EknThematic .title-card .after {
     -gtk-icon-source: url('resource:///com/endlessm/knowledge/data/images/title-arrow-dark.svg');
     -EknThemeableImage-min-height: 10;
     -EknThemeableImage-min-width: 11;
@@ -41,9 +41,9 @@ EknThematic .text-card .after {
 }
 
 EknSuggestedCategories .browse-content:hover .after,
-EknHighlights .text-card:hover .after,
+EknHighlights .title-card:hover .after,
 EknSetPreviewCard .title .after,
-EknThematic .text-card:hover .after {
+EknThematic .title-card:hover .after {
     -gtk-icon-source: url('resource:///com/endlessm/knowledge/data/images/title-arrow-light.svg');
 }
 
@@ -166,7 +166,7 @@ EknSideMenuTemplate .menu-button:hover {
     color: #49bde3;
 }
 
-EknSideMenuTemplate .text-card,
+EknSideMenuTemplate .title-card,
 EknSideMenuTemplate .home-button,
 EknSideMenuTemplate .close-button {
     padding: 6px 0px;

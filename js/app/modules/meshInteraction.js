@@ -21,7 +21,7 @@ const Module = imports.app.interfaces.module;
 const QueryObject = imports.search.queryObject;
 const StyleKnobGenerator = imports.app.compat.styleKnobGenerator;
 const TabButton = imports.app.widgets.tabButton;
-const TextCard = imports.app.modules.textCard;
+const TitleCard = imports.app.modules.titleCard;
 const Utils = imports.app.utils;
 
 const DATA_RESOURCE_PATH = 'resource:///com/endlessm/knowledge/data/';
@@ -167,7 +167,7 @@ const MeshInteraction = new Module.Class({
         },
         B: {
             section_card: '.legacy-post-card',
-            article_card: '.text-card',
+            article_card: '.title-card',
             section_page_banner: '.section-page-b EknSetBanner',
             search_page_banner: '.search-page-b EknSearchBanner',
             search_page: '.search-page-b',
@@ -271,10 +271,10 @@ const MeshInteraction = new Module.Class({
         let str = '';
         for (let key in css_data) {
             let module_styles = css_data[key];
-            // For now, only TextCard and TabButton have bespoke CSS
+            // For now, only TitleCard and TabButton have bespoke CSS
             // structure, since they need to use the @define syntax
             if (key === 'article_card' && this.template_type === 'B') {
-                str += TextCard.get_css_for_module(module_styles);
+                str += TitleCard.get_css_for_module(module_styles);
             } else if (key === 'tab_button' && this.template_type === 'A') {
                 str += TabButton.get_css_for_module(module_styles);
             } else {

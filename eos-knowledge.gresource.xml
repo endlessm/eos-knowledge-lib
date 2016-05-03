@@ -76,15 +76,15 @@
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/postCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/readerCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/readerDocumentCard.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">data/widgets/scrollingListArrangement.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/search.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/searchBanner.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">data/widgets/scrollingListArrangement.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/sequenceCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/sideMenuTemplate.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/standaloneBanner.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/suggestedCategories.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">data/widgets/textCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/thumbCard.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">data/widgets/titleCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/tooltips.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/topMenuTemplate.ui</file>
     <file>js/app/actions.js</file>
@@ -179,12 +179,12 @@
     <file>js/app/modules/suggestedArticles.js</file>
     <file>js/app/modules/suggestedCategories.js</file>
     <file>js/app/modules/supplementaryArticles.js</file>
-    <file>js/app/modules/textCard.js</file>
     <file>js/app/modules/thematic.js</file>
     <file>js/app/modules/thirdRockArrangement.js</file>
     <file>js/app/modules/thirtiesArrangement.js</file>
     <file>js/app/modules/thumbCard.js</file>
     <file>js/app/modules/tiledGridArrangement.js</file>
+    <file>js/app/modules/titleCard.js</file>
     <file>js/app/modules/topMenu.js</file>
     <file>js/app/modules/topMenuTemplate.js</file>
     <file>js/app/modules/twoPieceTemplate.js</file>

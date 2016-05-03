@@ -6,7 +6,7 @@ const Lang = imports.lang;
 
 const LegacyPolaroidCard = imports.app.modules.legacyPolaroidCard;
 const LegacyPostCard = imports.app.modules.legacyPostCard;
-const TextCard = imports.app.modules.textCard;
+const TitleCard = imports.app.modules.titleCard;
 const Window = imports.app.window;
 const Utils = imports.tests.utils;
 
@@ -102,33 +102,33 @@ const TestApplication = new Lang.Class({
         view.section_page.title = 'History of Guatemala';
         if (template_type === 'B') {
             view.section_page.cards = [
-                new TextCard.TextCard({title: 'The Mayan Culture'}),
-                new TextCard.TextCard({title: 'Colapse of the Mayans'}),
-                new TextCard.TextCard({title: 'Arrival of the Spaniards'}),
-                new TextCard.TextCard({title: 'The Colonial Era'}),
-                new TextCard.TextCard({title: 'Independence'}),
-                new TextCard.TextCard({title: 'The Republic'}),
-                new TextCard.TextCard({title: 'Military Dictatorships'}),
-                new TextCard.TextCard({title: 'Civil War'}),
-                new TextCard.TextCard({title: 'The Democratic Transition'}),
-                new TextCard.TextCard({title: 'The Mayan Culture'}),
-                new TextCard.TextCard({title: 'Colapse of the Mayans'}),
-                new TextCard.TextCard({title: 'Arrival of the Spaniards'}),
-                new TextCard.TextCard({title: 'The Colonial Era'}),
-                new TextCard.TextCard({title: 'Independence'}),
-                new TextCard.TextCard({title: 'The Republic'}),
-                new TextCard.TextCard({title: 'Military Dictatorships'}),
-                new TextCard.TextCard({title: 'Civil War'}),
-                new TextCard.TextCard({title: 'The Democratic Transition'}),
-                new TextCard.TextCard({title: 'The Mayan Culture'}),
-                new TextCard.TextCard({title: 'Colapse of the Mayans'}),
-                new TextCard.TextCard({title: 'Arrival of the Spaniards'}),
-                new TextCard.TextCard({title: 'The Colonial Era'}),
-                new TextCard.TextCard({title: 'Independence'}),
-                new TextCard.TextCard({title: 'The Republic'}),
-                new TextCard.TextCard({title: 'Military Dictatorships'}),
-                new TextCard.TextCard({title: 'Civil War'}),
-                new TextCard.TextCard({title: 'The Democratic Transition'})
+                new TitleCard.TitleCard({title: 'The Mayan Culture'}),
+                new TitleCard.TitleCard({title: 'Colapse of the Mayans'}),
+                new TitleCard.TitleCard({title: 'Arrival of the Spaniards'}),
+                new TitleCard.TitleCard({title: 'The Colonial Era'}),
+                new TitleCard.TitleCard({title: 'Independence'}),
+                new TitleCard.TitleCard({title: 'The Republic'}),
+                new TitleCard.TitleCard({title: 'Military Dictatorships'}),
+                new TitleCard.TitleCard({title: 'Civil War'}),
+                new TitleCard.TitleCard({title: 'The Democratic Transition'}),
+                new TitleCard.TitleCard({title: 'The Mayan Culture'}),
+                new TitleCard.TitleCard({title: 'Colapse of the Mayans'}),
+                new TitleCard.TitleCard({title: 'Arrival of the Spaniards'}),
+                new TitleCard.TitleCard({title: 'The Colonial Era'}),
+                new TitleCard.TitleCard({title: 'Independence'}),
+                new TitleCard.TitleCard({title: 'The Republic'}),
+                new TitleCard.TitleCard({title: 'Military Dictatorships'}),
+                new TitleCard.TitleCard({title: 'Civil War'}),
+                new TitleCard.TitleCard({title: 'The Democratic Transition'}),
+                new TitleCard.TitleCard({title: 'The Mayan Culture'}),
+                new TitleCard.TitleCard({title: 'Colapse of the Mayans'}),
+                new TitleCard.TitleCard({title: 'Arrival of the Spaniards'}),
+                new TitleCard.TitleCard({title: 'The Colonial Era'}),
+                new TitleCard.TitleCard({title: 'Independence'}),
+                new TitleCard.TitleCard({title: 'The Republic'}),
+                new TitleCard.TitleCard({title: 'Military Dictatorships'}),
+                new TitleCard.TitleCard({title: 'Civil War'}),
+                new TitleCard.TitleCard({title: 'The Democratic Transition'})
             ];
             for (let card of view.section_page.cards) {
                 card.connect('clicked', function () {

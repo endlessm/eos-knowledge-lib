@@ -6,24 +6,24 @@ Utils.register_gresource();
 const ContentObjectModel = imports.search.contentObjectModel;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const StyleClasses = imports.app.styleClasses;
-const TextCard = imports.app.modules.textCard;
+const TitleCard = imports.app.modules.titleCard;
 
 Gtk.init(null);
 
-describe('Text card widget', function () {
+describe('Title card widget', function () {
     let card;
 
     beforeEach(function () {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
 
-        card = new TextCard.TextCard({
+        card = new TitleCard.TitleCard({
             model: new ContentObjectModel.ContentObjectModel(),
         });
     });
 
-    it('has card and text-card class', function () {
+    it('has card and title-card class', function () {
         expect(card).toHaveCssClass(StyleClasses.CARD);
-        expect(card).toHaveCssClass(StyleClasses.TEXT_CARD);
+        expect(card).toHaveCssClass(StyleClasses.TITLE_CARD);
     });
 
     it('has a label with title class', function () {
@@ -39,7 +39,7 @@ describe('Text card widget', function () {
     });
 
     it('has labels that understand Pango markup', function () {
-        let card = new TextCard.TextCard({
+        let card = new TitleCard.TitleCard({
             model: new ContentObjectModel.ContentObjectModel({
                 title: '!!!',
             }),

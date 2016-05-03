@@ -15,7 +15,7 @@ const Utils = imports.app.utils;
 const HIGHLIGHT_DECORATION_DIMENSION = 5;
 
 /**
- * Class: TextCard
+ * Class: TitleCard
  *
  * Class to show text-only cards in the knowledge lib UI
  *
@@ -24,12 +24,12 @@ const HIGHLIGHT_DECORATION_DIMENSION = 5;
  * when the user clicks on the card.
  *
  * Style classes:
- *   card, text-card - on the widget itself
+ *   card, title-card - on the widget itself
  *   title - on the title label
  */
-const TextCard = new Module.Class({
-    Name: 'TextCard',
-    CssName: 'EknTextCard',
+const TitleCard = new Module.Class({
+    Name: 'TitleCard',
+    CssName: 'EknTitleCard',
     Extends: Gtk.Button,
     Implements: [Card.Card, NavigationCard.NavigationCard],
 
@@ -44,7 +44,7 @@ const TextCard = new Module.Class({
             false),
     },
 
-    Template: 'resource:///com/endlessm/knowledge/data/widgets/textCard.ui',
+    Template: 'resource:///com/endlessm/knowledge/data/widgets/titleCard.ui',
     InternalChildren: [ 'grid', 'title-label' ],
 
     _init: function (params={}) {

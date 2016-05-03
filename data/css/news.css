@@ -45,7 +45,7 @@ EknSearch {
     -gtk-icon-source: url('resource:///com/endlessm/knowledge/data/images/news-arrow-light.svg');
 }
 
-EknSetPreviewCard .text-card .title {
+EknSetPreviewCard .title-card .title {
     color: @title-blue;
     font-family: 'Merriweather';
     font-weight: bold;
@@ -53,7 +53,7 @@ EknSetPreviewCard .text-card .title {
     font-size: 40px;
 }
 
-EknSetPreviewCard .text-card:hover .title {
+EknSetPreviewCard .title-card:hover .title {
     color: @context-blue;
 }
 
@@ -74,23 +74,23 @@ EknPanelFrame .top-menu {
     padding: 0px 20px;
 }
 
-EknSideBySideArrangement .text-card label.title {
+EknSideBySideArrangement .title-card label.title {
     font-family: 'Fira Sans';
     color: rgba(255, 255, 255, 0.6);
     padding: 13px 0px 3px 0px;
     font-size: 18px;
 }
 
-EknSideBySideArrangement .text-card:hover label.title {
+EknSideBySideArrangement .title-card:hover label.title {
     border-bottom: 1px solid @context-blue;
     color: @context-blue;
 }
 
-EknSideBySideArrangement .text-card.highlighted label.title {
+EknSideBySideArrangement .title-card.highlighted label.title {
     color: white;
 }
 
-EknSideBySideArrangement .text-card.highlighted:hover label.title {
+EknSideBySideArrangement .title-card.highlighted:hover label.title {
     border-bottom: none;
 }
 

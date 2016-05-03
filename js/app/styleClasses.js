@@ -30,12 +30,12 @@ const LEGACY_POLAROID_CARD = 'legacy-polaroid-card';
 const LEGACY_POST_CARD = 'legacy-post-card';
 
 /**
- * Constant: TEXT_CARD
+ * Constant: TITLE_CARD
  *
- * Matches #EknTextCard widgets.
+ * Matches #EknTitleCard widgets.
  * It is present on any text card widget or subclass thereof.
  */
-const TEXT_CARD = 'text-card';
+const TITLE_CARD = 'title-card';
 
 /**
  * Constant: SEQUENCE_CARD

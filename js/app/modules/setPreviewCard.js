@@ -40,7 +40,7 @@ const SetPreviewCard = new Module.Class({
         this.parent(props);
 
         // Replace CardContainer's title button with a real card (usually a
-        // TextCard)
+        // TitleCard)
         this.title_button.hide();
         let header_card = this.create_submodule('header-card-type', {
             model: this.model,

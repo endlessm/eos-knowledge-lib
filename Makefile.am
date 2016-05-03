@@ -343,12 +343,12 @@ javascript_tests = \
 	tests/js/app/modules/testSuggestedArticles.js \
 	tests/js/app/modules/testSuggestedCategories.js \
 	tests/js/app/modules/testSupplementaryArticles.js \
-	tests/js/app/modules/testTextCard.js \
 	tests/js/app/modules/testThematic.js \
 	tests/js/app/modules/testThirdRockArrangement.js \
 	tests/js/app/modules/testThirtiesArrangement.js \
 	tests/js/app/modules/testThumbCard.js \
 	tests/js/app/modules/testTiledGridArrangement.js \
+	tests/js/app/modules/testTitleCard.js \
 	tests/js/app/modules/testTopMenu.js \
 	tests/js/app/modules/testTopMenuTemplate.js \
 	tests/js/app/modules/testTwoPieceTemplate.js \
