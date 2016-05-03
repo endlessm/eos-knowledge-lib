@@ -28,6 +28,7 @@ const ScrollingTemplate = new Module.Class({
 
     _init: function (props={}) {
         this.parent(props);
+        this.register_module();
 
         let content = this.create_submodule('content');
 
