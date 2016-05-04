@@ -18,7 +18,9 @@ const MediaLightbox = new Module.Class({
     Extends: Lightbox.Lightbox,
 
     Slots: {
-        'card-type': {},
+        'card-type': {
+            multi: true,
+        },
     },
 
     _init: function (props={}) {

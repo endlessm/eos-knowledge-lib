@@ -42,7 +42,9 @@ const HierarchicalSet = new Module.Class({
 
     Slots: {
         'arrangement': {},
-        'set-card-type': {},
+        'set-card-type': {
+            multi: true,
+        },
     },
 
     References: {

@@ -57,7 +57,9 @@ const Highlights = new Module.Class({
 
     Slots: {
         'highlight-arrangement': {},
-        'support-card-type': {},
+        'support-card-type': {
+            multi: true,
+        },
         'sets-filter': {},
     },
 

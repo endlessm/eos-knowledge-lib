@@ -43,7 +43,9 @@ const Thematic = new Module.Class({
 
     Slots: {
         'arrangement': {},
-        'header-card-type': {},
+        'header-card-type': {
+            multi: true,
+        },
     },
 
     References: {

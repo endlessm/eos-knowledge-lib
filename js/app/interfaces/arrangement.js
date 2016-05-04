@@ -78,7 +78,9 @@ const Arrangement = new Lang.Interface({
     },
 
     Slots: {
-        'card-type': {},
+        'card-type': {
+            multi: true,
+        },
         'order': {},
         'filter': {},
     },
