@@ -193,6 +193,8 @@ const SubscriptionDownloader = new Lang.Class({
         Utils.ensure_directory(this._subscriptions_dir);
 
         this._load_from_config();
+
+        this._ongoing_downloads = new Set();
     },
 
     _load_from_config: function () {
@@ -222,6 +224,12 @@ const SubscriptionDownloader = new Lang.Class({
         // XXX: We're currently indexing by filename, assuming it will be good enough.
         // Will it be, or should we also store e.g. ETag?
         let to_download = subtract_set(new_shards, old_shards, (shard) => shard.path);
+        let to_delete = subtract_set(old_shards, new_shards, (shard) => shard.path);
+
+        if (to_download.length === 0 && to_delete.length === 0) {
+            task.return_value(false);
+            return task;
+        }
 
         AsyncTask.all(this, (add_task) => {
             to_download.forEach((shard) => {
@@ -300,8 +308,14 @@ const SubscriptionDownloader = new Lang.Class({
 
     fetch_update: function (subscription_id, cancellable, callback) {
         let task = new AsyncTask.AsyncTask(this, cancellable, callback);
+        task._subscription_id = subscription_id;
 
         task.catch_errors(() => {
+            if (this._ongoing_downloads.has(subscription_id))
+                return task.return_value(false);
+
+            this._ongoing_downloads.add(subscription_id);
+
             let directory = this._subscriptions_dir.get_child(subscription_id);
             Utils.ensure_directory(directory);
 
@@ -320,22 +334,25 @@ const SubscriptionDownloader = new Lang.Class({
                 try {
                     this._file_downloader.download_file_finish(download_task);
                 } catch(e if e.matches(Gio.ResolverError, Gio.ResolverError.NOT_FOUND)) {
-                    task.return_value(false);
                     return;
                 }
 
                 let new_manifest = load_manifest(new_manifest_file, cancellable);
                 this._download_new_shards(directory, old_manifest, new_manifest, cancellable, task.catch_callback_errors((source, download_task) => {
-                    this._download_new_shards_finish(download_task);
-                    task.return_value(true);
+                    let have_new_manifest = this._download_new_shards_finish(download_task);
+                    if (!have_new_manifest)
+                        new_manifest_file.delete(cancellable);
                 }));
             }));
+
+            return task.return_value(true);
         });
 
         return task;
     },
 
     fetch_update_finish: function (task) {
+        this._ongoing_downloads.delete(task._subscription_id);
         return task.finish();
     },
 });
