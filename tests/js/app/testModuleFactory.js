@@ -14,7 +14,7 @@ Gtk.init(null);
 const MOCK_APP_JSON = {
     version: 2,
     modules: {
-        'test': {
+        'interaction': {
             type: 'TestModule',
             slots: {
                 'test-slot': 'test-submodule',
@@ -23,6 +23,28 @@ const MOCK_APP_JSON = {
                 },
                 'anonymous-slot-2': {
                     type: 'TestModule',
+                },
+                'test-slot-2': {
+                    type: 'TestModule',
+                    slots: {
+                        'anonymous-slot-1': {
+                            type: 'TestModule',
+                            id: 'referenced-module-1',
+                            slots: {
+                                'anonymous-slot-2': {
+                                    type: 'TestModule',
+                                    references: {
+                                        'reference-1': 'referenced-module-1',
+                                    },
+                                },
+                                'optional-slot': 'named-module',
+                            },
+                        },
+                    },
+                    references: {
+                        'reference-1': 'referenced-module-1',
+                        'reference-2': 'referenced-module-2',
+                    },
                 },
             },
         },
@@ -49,6 +71,53 @@ const MOCK_APP_JSON = {
                 'halign': 'asdf',
             }
         },
+        'named-module': {
+            type: 'TestModule',
+            id: 'referenced-module-2'
+        },
+    },
+};
+
+const NOT_UNIQUE_APP_JSON = {
+    version: 2,
+    modules: {
+        'named-module': {
+            type: 'TestModule',
+            id: 'referenced-module-1'
+        },
+        'interaction': {
+            type: 'TestModule',
+            slots: {
+                'test-slot': 'named-module',
+                'optional-slot': 'named-module',
+            },
+        },
+    },
+};
+
+const IN_MULTI_APP_JSON = {
+    version: 2,
+    modules: {
+        'interaction': {
+            type: 'TestModule',
+            slots: {
+                'anonymous-slot-1': {
+                    type: 'TestModule',
+                    references: {
+                        'reference-1': 'referenced-module-1',
+                    },
+                },
+                'multi-slot-1': {
+                    type: 'TestModule',
+                    slots: {
+                        'test-slot': {
+                            type: 'TestModule',
+                            id: 'referenced-module-1',
+                        },
+                    },
+                },
+            },
+        },
     },
 };
 
@@ -60,7 +129,17 @@ const MockModule = new Module.Class({
         'optional-slot': {},
         'anonymous-slot-1': {},
         'anonymous-slot-2': {},
-    }
+        'test-slot-2': {},
+        'multi-slot-1': {
+            multi: true,
+        }
+    },
+
+    References: {
+        'reference-1': {},
+        'reference-2': {},
+        'optional-reference-1': {},
+    },
 });
 
 const MockWarehouse = new Knowledge.Class({
@@ -94,13 +173,13 @@ describe('Module factory', function () {
 
     it ('returns correct module constructor', function () {
         spyOn(warehouse, 'type_to_class').and.callThrough();
-        module_factory.create_named_module('test');
+        module_factory.create_named_module('interaction');
 
         expect(warehouse.type_to_class).toHaveBeenCalledWith('TestModule');
     });
 
     it('allows omitting an optional slot in app.json, returning null', function () {
-        let parent = module_factory.create_named_module('test');
+        let parent = module_factory.create_named_module('interaction');
         let submodule = module_factory.create_module_for_slot(parent,
             'optional-slot');
         expect(submodule).toBeNull();
@@ -114,12 +193,12 @@ describe('Module factory', function () {
     });
 
     it('gives a module its factory name if it has one', function () {
-        let module = module_factory.create_named_module('test');
-        expect(module.factory_name).toBe('test');
+        let module = module_factory.create_named_module('interaction');
+        expect(module.factory_name).toBe('interaction');
     });
 
     it('errors if creating a module slot not listed in Slots', function () {
-        let parent = module_factory.create_named_module('test');
+        let parent = module_factory.create_named_module('interaction');
         expect(() => {
             module_factory.create_module_for_slot(parent, 'fake-slot');
         }).toThrow();
@@ -127,28 +206,93 @@ describe('Module factory', function () {
 
     describe('anonymous modules', function () {
         it('are created when slot value is a module definition', function () {
-            let parent = module_factory.create_named_module('test');
+            let parent = module_factory.create_named_module('interaction');
             let module = module_factory.create_module_for_slot(parent, 'anonymous-slot-1');
             expect(module).toBeA(MockModule);
         });
 
         it('have correctly formed names', function () {
-            let parent = module_factory.create_named_module('test');
+            let parent = module_factory.create_named_module('interaction');
             let module = module_factory.create_module_for_slot(parent, 'anonymous-slot-1');
-            expect(module.factory_name).toBe('test.anonymous-slot-1');
+            expect(module.factory_name).toBe('interaction.anonymous-slot-1');
         });
 
         it('modules from the same definition have the same factory name', function () {
-            let parent = module_factory.create_named_module('test');
+            let parent = module_factory.create_named_module('interaction');
             let module1 = module_factory.create_module_for_slot(parent, 'anonymous-slot-1');
             let module2 = module_factory.create_module_for_slot(parent, 'anonymous-slot-1');
             expect(module1.factory_name).toEqual(module2.factory_name);
         });
     });
 
+    describe('referenced modules', function () {
+        it('re-use the same instance when already created', function () {
+            let parent = module_factory.create_named_module('interaction');
+            let module1 = module_factory.create_module_for_slot(parent, 'test-slot-2');
+            let module2 = module_factory.create_module_for_slot(module1, 'anonymous-slot-1');
+            let module3 = module_factory.create_module_for_slot(module2, 'anonymous-slot-2');
+            let module4;
+            module3.reference_module('reference-1', (module) => {
+                module4 = module;
+            });
+            expect(module2).toBe(module4);
+        });
+
+        it('re-use the same instance when not yet created', function () {
+            let parent = module_factory.create_named_module('interaction');
+            let module1 = module_factory.create_module_for_slot(parent, 'test-slot-2');
+            let module2;
+            module1.reference_module('reference-1', (module) => {
+                module2 = module;
+            });
+            let module3 = module_factory.create_module_for_slot(module1, 'anonymous-slot-1');
+            expect(module2).toBe(module3);
+        });
+
+        it('references modules defined as named modules', function () {
+            let parent = module_factory.create_named_module('interaction');
+            let module1 = module_factory.create_module_for_slot(parent, 'test-slot-2');
+            let module2 = module_factory.create_module_for_slot(module1, 'anonymous-slot-1');
+            let module3 = module_factory.create_module_for_slot(module2, 'optional-slot');
+            let module4;
+            module1.reference_module('reference-2', (module) => {
+                module4 = module;
+            });
+            expect(module3).toBe(module4);
+        });
+
+        it('allows optional references', function () {
+            let parent = module_factory.create_named_module('interaction');
+            let module1 = module_factory.create_module_for_slot(parent, 'test-slot-2');
+            let module2;
+            module1.reference_module('optional-reference-1', (module) => {
+                module2 = module;
+            });
+            expect(module2).toBeNull();
+        });
+
+        it('does not allow repeated ids', function () {
+            expect(() => {
+                let factory = new ModuleFactory.ModuleFactory({
+                    app_json: NOT_UNIQUE_APP_JSON,
+                    warehouse: warehouse,
+                });
+            }).toThrow();
+        });
+
+        it('does not allow references to modules inside or below multi slots', function () {
+            expect(() => {
+                let factory = new ModuleFactory.ModuleFactory({
+                    app_json: IN_MULTI_APP_JSON,
+                    warehouse: warehouse,
+                });
+            }).toThrow();
+        });
+    });
+
     describe('properties', function () {
         it('can be passed in on module creation', function () {
-            let parent = module_factory.create_named_module('test');
+            let parent = module_factory.create_named_module('interaction');
 
             let test_constructor = jasmine.createSpy('TestModuleConstructor');
             spyOn(warehouse, 'type_to_class').and.returnValue(test_constructor);
