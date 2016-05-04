@@ -1,0 +1,70 @@
+---
+defines:
+  - &home-page
+    shortdef: 'TwoPieceTemplate(orientation: vertical, valign: center)'
+    slots:
+      first: 'AppBanner(min-fraction: 0.5, max-fraction: 0.5, margin-bottom: 42)'
+      # TODO Move margin-bottom to CSS!
+      second: 'SearchBox(halign: center)'
+
+  - &inner-page-layout
+    type: DividedBannerTemplate
+    slots: &inner-page-layout-slots  # unfortunately both refs are needed
+      top-left:
+        type: AppBanner
+        properties:
+          min-fraction: 0.2
+          max-fraction: 0.2
+          margin-top: 10     # FIXME
+          margin-bottom: 10  # FIXME
+          valign: start
+          vexpand: false
+          halign: center
+      top-right: 'SearchBox(halign: center, valign: center, hexpand: true)'
+
+  - &search-page
+    <<: *inner-page-layout
+    slots:
+      <<: *inner-page-layout-slots
+      bottom:
+        type: PaperTemplate
+        slots:
+          content:
+            shortdef: 'BannerTemplate(margin-start: 45, margin-end: 45)'  # FIXME
+            slots:
+              banner: 'SearchBanner(halign: start)'
+              content:
+                shortdef: 'Search(margin-top: 20, message-halign: start, halign: fill)'
+                slots:
+                  arrangement:
+                    shortdef: 'ScrollingListArrangement(hexpand: true, halign: fill)'
+                    slots:
+                      card-type: TitleCard
+
+  - &article-page
+    <<: *inner-page-layout
+    slots:
+      <<: *inner-page-layout-slots
+      bottom:
+        type: PaperTemplate
+        slots:
+          content:
+            shortdef: 'ArticleStack(do-sliding-animation: false)'
+            slots:
+              card-type: KnowledgeDocumentCard
+
+  - &window
+    type: EncyclopediaWindow
+    slots:
+      lightbox:
+        type: MediaLightbox
+        slots:
+          card-type: MediaCard
+      home-page: *home-page
+      search-page: *search-page
+      article-page: *article-page
+
+interaction:
+  type: MeshInteraction
+  slots:
+    window: *window

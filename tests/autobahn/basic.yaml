@@ -1,0 +1,65 @@
+---
+defines:
+- &list
+  type: ListArrangement
+  slots:
+    card-type: ListCard  # was previously named SearchResultCard
+
+- &home-page
+  type: ScrollingLayout
+  id: home-scroll
+  slots:
+    content:
+      type: BannerTemplate
+      slots:
+        banner:
+          type: AppBanner
+          properties:
+            halign: fill
+            valign: start
+            max-fraction: 0.5
+            image-uri: resource:///com/endlessm/video-test-en/assets/titleImage.svg
+        content:
+          shortdef: 'ItemGroupModule(hexpand: true)'
+          slots:
+            arrangement:
+              <<: *list
+              references:
+                scroll-server: home-scroll
+
+- &search-page
+  type: ScrollingLayout
+  id: search-scroll
+  slots:
+    content:
+      type: BannerTemplate
+      slots:
+        banner: 'SearchBannerModule(halign: fill)'
+        content:
+          shortdef: 'SearchModule(message-justify: left, message-halign: center)'
+          slots:
+            arrangement:
+              <<: *list
+              references:
+                scroll-server: search-scroll
+
+- &article-page
+  shortdef: 'ArticleStackModule(allow-navigation: next)'
+  slots:
+    card-type: FakeVideoDocumentCard
+    nav-card-type: TextCard
+
+- &window
+  type: Window
+  slots:
+    search: SearchBox
+    navigation: NavigationModule
+    home-page: *home-page
+    search-page: *search-page
+    article-page: *article-page
+
+# This has to come after the references
+interaction:
+  type: MeshInteraction
+  slots:
+    window: *window

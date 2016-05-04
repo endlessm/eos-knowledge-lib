@@ -1,0 +1,111 @@
+{
+  "modules": {
+    "interaction": {
+      "slots": {
+        "window": {
+          "slots": {
+            "article-page": {
+              "properties": {
+                "allow-navigation": "next"
+              },
+              "slots": {
+                "card-type": {
+                  "type": "FakeVideoDocumentCard"
+                },
+                "nav-card-type": {
+                  "type": "TextCard"
+                }
+              },
+              "type": "ArticleStackModule"
+            },
+            "home-page": {
+              "id": "home-scroll",
+              "slots": {
+                "content": {
+                  "slots": {
+                    "banner": {
+                      "properties": {
+                        "halign": "fill",
+                        "image-uri": "resource:///com/endlessm/video-test-en/assets/titleImage.svg",
+                        "max-fraction": 0.5,
+                        "valign": "start"
+                      },
+                      "type": "AppBanner"
+                    },
+                    "content": {
+                      "properties": {
+                        "hexpand": true
+                      },
+                      "slots": {
+                        "arrangement": {
+                          "references": {
+                            "scroll-server": "home-scroll"
+                          },
+                          "slots": {
+                            "card-type": {
+                              "type": "ListCard"
+                            }
+                          },
+                          "type": "ListArrangement"
+                        }
+                      },
+                      "type": "ItemGroupModule"
+                    }
+                  },
+                  "type": "BannerTemplate"
+                }
+              },
+              "type": "ScrollingLayout"
+            },
+            "navigation": {
+              "type": "NavigationModule"
+            },
+            "search": {
+              "type": "SearchBox"
+            },
+            "search-page": {
+              "id": "search-scroll",
+              "slots": {
+                "content": {
+                  "slots": {
+                    "banner": {
+                      "properties": {
+                        "halign": "fill"
+                      },
+                      "type": "SearchBannerModule"
+                    },
+                    "content": {
+                      "properties": {
+                        "message-halign": "center",
+                        "message-justify": "left"
+                      },
+                      "slots": {
+                        "arrangement": {
+                          "references": {
+                            "scroll-server": "search-scroll"
+                          },
+                          "slots": {
+                            "card-type": {
+                              "type": "ListCard"
+                            }
+                          },
+                          "type": "ListArrangement"
+                        }
+                      },
+                      "type": "SearchModule"
+                    }
+                  },
+                  "type": "BannerTemplate"
+                }
+              },
+              "type": "ScrollingLayout"
+            }
+          },
+          "type": "Window"
+        }
+      },
+      "type": "MeshInteraction"
+    }
+  },
+  "version": 2
+}

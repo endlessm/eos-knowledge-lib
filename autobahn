@@ -1,0 +1,89 @@
+#!/usr/bin/env python3
+
+# Copyright 2016 Endless Mobile, Inc.
+
+import argparse
+import io
+import json
+import re
+import sys
+import yaml
+
+"""
+For those interested in Autobahn's etymology, it goes roughly like this:
+JSON -> Jason Schwartzman -> Shwartz -> Spaceballs -> Radar jammed -> Jam
+sandwich -> Cheese sandwich -> Kraft singles -> Kraftwerk -> Autobahn
+"""
+
+
+# This allows you to put a shortdef string (see below) into a slot, instead of
+# a module description.
+def expand_slot_shorthand(module):
+    if isinstance(module, str):
+        return {'shortdef': module}
+    return module
+
+
+# This is a shorthand which allows you to specify type and properties in one
+# string: 'MyModule{prop: value, prop2: value2}'. The properties part is a YAML
+# dictionary. Note that you do have to enclose the string in quotes in YAML,
+# because {, }, and : are active characters.
+def expand_shortdef(module):
+    if ('type' in module or 'properties' in module) and 'shortdef' in module:
+        raise ValueError('If you use "shortdef" then you cannot also have '
+            '"type" and "properties".')
+
+    shortdef = module.pop('shortdef', None)
+    if shortdef is None:
+        return module
+
+    match = re.match(r'^([a-zA-Z0-9_]+)\s*\((.*)\)\s*$', shortdef)
+    if match is None:
+        module['type'] = shortdef
+        return module
+
+    typename, propstring = match.group(1, 2)
+    module['properties'] = yaml.load('{' + propstring + '}')
+    module['type'] = typename
+
+    return module
+
+
+def walk(module_tree, transform_func):
+    # Transform first, in case the transformation adds slots
+    module_tree = transform_func(module_tree)
+    if 'slots' in module_tree:
+        slots = module_tree['slots']
+        for slot in slots:
+            slots[slot] = walk(slots[slot], transform_func)
+    return module_tree
+
+
+def preprocess(infile):
+    tree = yaml.load(infile)['interaction']
+    tree = walk(tree, expand_slot_shorthand)
+    tree = walk(tree, expand_shortdef)
+
+    app = {
+        'version': 2,
+        'modules': {
+            'interaction': tree,
+        },
+    }
+
+    return json.dumps(app, sort_keys=True, indent=2)
+
+# Ensure stdout is UTF-8
+default_out = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='Preprocess app.json.')
+    parser.add_argument('input', nargs='?', default=sys.stdin,
+                        type=argparse.FileType('r'),
+                        help='Input file (default: stdin)')
+    parser.add_argument('-o', '--output', default=default_out,
+                        type=argparse.FileType('w', encoding='utf-8'),
+                        help='File to write (default: stdout)')
+    args = parser.parse_args()
+    args.output.write(preprocess(args.input))
+    args.output.write('\n')
