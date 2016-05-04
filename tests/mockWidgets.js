@@ -33,6 +33,8 @@ const MockScrolledArrangement = new Knowledge.Class({
     Signals: {
         'need-more-content': {},  // needed for several arrangements
     },
+    new_content_added: function () {
+    },
 });
 
 const MockSearchBox = new Knowledge.Class({
