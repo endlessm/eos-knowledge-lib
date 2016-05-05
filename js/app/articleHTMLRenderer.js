@@ -69,14 +69,6 @@ const ArticleHTMLRenderer = new Knowledge.Class({
         this._custom_javascript_files = custom_javascript_files;
     },
 
-    _get_base_css_files: function () {
-        return ['clipboard.css'].concat(this._custom_css_files);
-    },
-
-    _get_base_js_files: function () {
-        return ['jquery-min.js', 'clipboard-manager.js'].concat(this._custom_javascript_files);
-    },
-
     _get_legacy_disclaimer: function (model) {
         switch (model.source) {
             case 'wikipedia':
@@ -154,7 +146,7 @@ const ArticleHTMLRenderer = new Knowledge.Class({
         return javascript_files;
     },
 
-    _render_legacy: function (model) {
+    _render_legacy_content: function (model) {
         let css_files = this._get_legacy_css_files(model);
         let js_files = this._get_legacy_javascript_files(model);
 
@@ -175,7 +167,7 @@ const ArticleHTMLRenderer = new Knowledge.Class({
         });
     },
 
-    _render_prensa_libre: function (model) {
+    _render_prensa_libre_content: function (model) {
         function get_extra_header_info() {
             let featured_set = model.tags
                 .filter(tag => !tag.startsWith('Ekn'))
@@ -208,26 +200,56 @@ const ArticleHTMLRenderer = new Knowledge.Class({
             return disclaimer;
         }
 
-        let css_files = this._get_base_css_files();
-        css_files.push('prensa-libre.css');
-
-        let js_files = this._get_base_js_files();
+        let disclaimer_window = _("DISCLAIMER PLACEHOLDER");
 
         let stream = model.get_content_stream();
         let html = SearchUtils.read_stream_sync(stream);
 
         let template = _load_template('news-article.mst');
 
-        let disclaimer_window = _("DISCLAIMER PLACEHOLDER");
-
         return Mustache.render(template, {
+            'css-files': ['prensa-libre.css'],
             'body-html': this._strip_tags(html),
             'disclaimer': get_disclaimer_link(),
             'disclaimer-window': disclaimer_window,
+            'extra-header-information': get_extra_header_info(),
+        });
+    },
+
+    _render_content: function (model) {
+        switch (model.source) {
+        case 'wikipedia':
+        case 'wikibooks':
+        case 'wikisource':
+        case 'wikihow':
+        case 'embedly':
+            return this._render_legacy_content(model);
+        case 'prensa-libre':
+            return this._render_prensa_libre_content(model);
+        default:
+            return null;
+        }
+    },
+
+    _get_wrapper_css_files: function () {
+        return ['clipboard.css'].concat(this._custom_css_files);
+    },
+
+    _get_wrapper_js_files: function () {
+        return ['jquery-min.js', 'clipboard-manager.js'].concat(this._custom_javascript_files);
+    },
+
+    _render_wrapper: function (content) {
+        let css_files = this._get_wrapper_css_files();
+        let js_files = this._get_wrapper_js_files();
+
+        let template = _load_template('article-wrapper.mst');
+
+        return Mustache.render(template, {
             'css-files': css_files,
             'javascript-files': js_files,
             'copy-button-text': _("Copy"),
-            'extra-header-information': get_extra_header_info(),
+            'content': content,
         });
     },
 
@@ -236,18 +258,8 @@ const ArticleHTMLRenderer = new Knowledge.Class({
      * string of ready to display html.
      */
     render: function (model) {
-        switch (model.source) {
-        case 'wikipedia':
-        case 'wikibooks':
-        case 'wikisource':
-        case 'wikihow':
-        case 'embedly':
-            return this._render_legacy(model);
-        case 'prensa-libre':
-            return this._render_prensa_libre(model);
-        default:
-            return null;
-        }
+        let content = this._render_content(model);
+        return this._render_wrapper(content);
     },
 });
 

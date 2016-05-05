@@ -1,50 +1,37 @@
-<html>
-    <head>
-        <meta charset="UTF-8">
-        {{#css-files}}
-        <link rel="stylesheet" type="text/css" href="resource:///com/endlessm/knowledge/data/templates/css/{{{.}}}"/>
-        {{/css-files}}
-    </head>
-    <body>
-        <div id="copy-button">{{copy-button-text}}</div>
-        {{#extra-header-information}}
-        <div class="extra-header">
-            {{#context}}
-            <div class="context"><p>{{{context}}}</p></div>
-            {{/context}}
-            <div class="extra-header-right">
-                {{#date-published}}
-                <p class="date-published">{{.}}</p>
-                {{/date-published}}
-                {{#source-link}}
-                <p class="source-link">
-                    {{{.}}}
-                    {{#author}}
-                    &mdash; {{.}}
-                    {{/author}}
-                </p>
-                {{/source-link}}
-            </div>
+{{#extra-header-information}}
+<div class="extra-header">
+    <div class="context"><p>{{{context}}}</p></div>
+    <div class="extra-header-right">
+        {{#date-published}}
+        <p class="date-published">{{.}}</p>
+        {{/date-published}}
+        {{#source-link}}
+        <p class="source-link">
+            {{{.}}}
+            {{#author}}
+            &mdash; {{.}}
+            {{/author}}
+        </p>
+        {{/source-link}}
+    </div>
+</div>
+{{/extra-header-information}}
+<section id="inside-content" class="section">
+    <div>{{{body-html}}}</div>
+    <hr>
+    {{#disclaimer}}
+    <div class="disclaimer">
+        <p>{{{.}}}</p>
+    </div>
+    {{/disclaimer}}
+    <div class="eos-modal" id="modal">
+        <a class="eos-modal-close-background" href="#close"></a>
+        <div>
+            <a class="eos-modal-close-button" href="#close"> &times </a>
+            <p align="justify">{{disclaimer-window}}</p>
         </div>
-        {{/extra-header-information}}
-        <section id="inside-content" class="section">
-            <div>{{{body-html}}}</div>
-            <hr>
-            {{#disclaimer}}
-            <div class="disclaimer">
-                <p>{{{.}}}</p>
-            </div>
-            {{/disclaimer}}
-            <div class="eos-modal" id="modal">
-                <a class="eos-modal-close-background" href="#close"></a>
-                <div>
-                    <a class="eos-modal-close-button" href="#close"> &times </a>
-                    <p align="justify">{{disclaimer-window}}</p>
-                </div>
-            </div>
-        </section>
-        {{#javascript-files}}
-        <script type="text/javascript" src="resource:///com/endlessm/knowledge/data/templates/js/{{{.}}}"></script>
-        {{/javascript-files}}
-    </body>
-</html>
+    </div>
+</section>
+{{#css-files}}
+<link rel="stylesheet" type="text/css" href="resource:///com/endlessm/knowledge/data/templates/css/{{{.}}}"/>
+{{/css-files}}

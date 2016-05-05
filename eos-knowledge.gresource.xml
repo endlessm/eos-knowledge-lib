@@ -43,6 +43,7 @@
     <file>data/images/separator.png</file>
     <file compressed="true">data/templates/legacy-article.mst</file>
     <file compressed="true">data/templates/news-article.mst</file>
+    <file compressed="true">data/templates/article-wrapper.mst</file>
     <file compressed="true">data/templates/css/clipboard.css</file>
     <file compressed="true">data/templates/css/embedly.css</file>
     <file compressed="true">data/templates/css/prensa-libre.css</file>
