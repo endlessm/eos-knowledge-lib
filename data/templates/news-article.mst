@@ -35,9 +35,13 @@
                 <p>{{{.}}}</p>
             </div>
             {{/disclaimer}}
-            {{#disclaimer-window}}
-            {{{.}}}
-            {{/disclaimer-window}}
+            <div class="eos-modal" id="modal">
+                <a class="eos-modal-close-background" href="#close"></a>
+                <div>
+                    <a class="eos-modal-close-button" href="#close"> &times </a>
+                    <p align="justify">{{disclaimer-window}}</p>
+                </div>
+            </div>
         </section>
         {{#javascript-files}}
         <script type="text/javascript" src="resource:///com/endlessm/knowledge/data/templates/js/{{{.}}}"></script>

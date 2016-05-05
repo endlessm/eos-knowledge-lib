@@ -11,15 +11,6 @@ const SetMap = imports.app.setMap;
 
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
-const _MODAL_TEMPLATE = '\
-<div class="eos-modal" id="modal">\
-    <a class="eos-modal-close-background" href="#close"></a>\
-    <div>\
-        <a class="eos-modal-close-button" href="#close"> &times </a>\
-        {content}\
-    </div>\
-</div>';
-
 let _template_cache = {};
 function _load_template(template_filename) {
     let uri = 'resource:///com/endlessm/knowledge/data/templates/' + template_filename;
@@ -127,9 +118,7 @@ const ArticleHTMLRenderer = new Knowledge.Class({
             return false;
         }
 
-        let disclaimer_content = _to_disclaimer_paragraph(_("DISCLAIMER PLACEHOLDER"));
-        let modal_html = _MODAL_TEMPLATE.replace('{content}', disclaimer_content);
-        return modal_html;
+        return _("DISCLAIMER PLACEHOLDER");
     },
 
     _get_css_files: function (model) {
@@ -257,10 +246,6 @@ function _to_link(uri, text) {
 
 function _to_modal_link(text) {
     return '<a class="eos-modal-link" href="#modal">' + Mustache.escape(text) + '</a>';
-}
-
-function _to_disclaimer_paragraph(text) {
-    return '<p align="justify">' + Mustache.escape(text) + '</p>';
 }
 
 function _get_display_string_for_license(license) {
