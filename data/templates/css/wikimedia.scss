@@ -90,7 +90,7 @@ html {
     font: 0.8125em $font1; /* 13px / 12px/em * 72/96 */
     line-height: 1.71;
     padding: 20px $cols * 2;
-    a {
+    a[href] {
         color: #277090;
         text-decoration: none;
     }

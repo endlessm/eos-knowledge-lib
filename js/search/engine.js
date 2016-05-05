@@ -252,6 +252,10 @@ const Engine = Lang.Class({
 
         domain.load(null, () => {});
     },
+
+    test_link: function (link) {
+        return this._get_domain(this.default_domain).test_link(link);
+    },
 });
 
 let the_engine = null;

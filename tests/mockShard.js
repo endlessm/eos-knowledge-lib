@@ -20,6 +20,20 @@ const MockShardFile = new Lang.Class({
     find_record_by_hex_name: function () {},
 });
 
+const MockDictionary = new Lang.Class({
+    Name: 'MockDictionary',
+    Extends: GObject.Object,
+
+    _init: function (dict) {
+        this._dict = dict;
+    },
+
+    lookup_key: function (key) {
+        if (this._dict.hasOwnProperty(key)) return this._dict[key];
+        return null;
+    },
+});
+
 const MockShardRecord = new Lang.Class({
     Name: 'MockShardRecord',
     Extends: GObject.Object,
@@ -40,4 +54,5 @@ const MockShardBlob = new Lang.Class({
     },
 
     get_stream: function () {},
+    load_as_dictionary: function () {},
 });

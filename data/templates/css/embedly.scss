@@ -58,7 +58,7 @@ html {
     li {
         line-height: 1.875;
     }
-    a {
+    a[href] {
         color: #666666;
         font-weight: bold;
         text-decoration: underline;

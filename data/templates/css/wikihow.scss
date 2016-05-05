@@ -64,7 +64,7 @@ em, i {
     font-style: italic;
 }
 
-a {
+a[href] {
     color: #d16550;
     text-decoration: none;
 }
@@ -115,7 +115,7 @@ $rhythm: 22px;
         line-height: 1.55;
         margin-bottom: $rhythm;
         // text-transform: uppercase
-        a {
+        a[href] {
             color: $gray-dark;
         }
     }
@@ -236,7 +236,7 @@ h2 + ol, h3 + ol, .steps_list_2 {
             text-transform: none;
             top: 50px;
             width: $cols * 13;
-            a {
+            a[href] {
                 color: #fff;
             }
         }

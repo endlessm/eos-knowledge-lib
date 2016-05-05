@@ -15,6 +15,10 @@ const QueryObject = imports.search.queryObject;
 const SetObjectModel = imports.search.setObjectModel;
 const Utils = imports.search.utils;
 
+// This hash is derived from sha1('link-table'), and for now is the hardcoded
+// location of link tables for all shards.
+const LINK_TABLE_ID = '4dba9091495e8f277893e0d400e9e092f9f6f551';
+
 /**
  * Class: Domain
  */
@@ -77,6 +81,17 @@ const Domain = new Lang.Class({
     },
 
     load_finish: function (task) {
+        throw new Error('Should be overridden in subclasses');
+    },
+
+    /**
+     * Function: test_link
+     *
+     * Attempts to determine if the given link corresponds to content within
+     * this domain. Returns an EKN URI to that content if so, and false
+     * otherwise.
+     */
+    test_link: function (link) {
         throw new Error('Should be overridden in subclasses');
     },
 
@@ -308,6 +323,9 @@ const DomainV1 = new Lang.Class({
     },
 });
 
+// XXX Note that DomainV2 apps are no longer going to be generated in
+// production, but we retain compatibility with it for the sake of
+// developer-made test apps.
 const DomainV2 = new Lang.Class({
     Name: 'DomainV2',
     Extends: Domain,
@@ -330,6 +348,19 @@ const DomainV2 = new Lang.Class({
         return this._shard_file;
     },
 
+    // We don't resolve links using the usual load() pattern because this
+    // method needs to be synchronous, but we're guaranteed that the shard is
+    // initialized by the time this is invoked by the HTML renderer.
+    _setup_link_table: function () {
+        // Ignore if we've already setup our table
+        if (this._link_table !== undefined)
+            return;
+
+        let table_record = this._shard_file.find_record_by_hex_name(LINK_TABLE_ID);
+        if (table_record)
+            this._link_table = table_record.data.load_as_dictionary();
+    },
+
     load: function (cancellable, callback) {
         let task = new AsyncTask.AsyncTask(this, cancellable, callback);
         let shard_file = this._get_shard_file();
@@ -337,6 +368,7 @@ const DomainV2 = new Lang.Class({
         // will spoil the object for future use.
         shard_file.init_async(0, null, task.catch_callback_errors((shard_file, result) => {
             shard_file.init_finish(result);
+            this._setup_link_table();
             task.return_value(true);
         }));
         return task;
@@ -344,6 +376,14 @@ const DomainV2 = new Lang.Class({
 
     load_finish: function (task) {
         return task.finish();
+    },
+
+    test_link: function (link) {
+        if (this._link_table === undefined)
+            return false;
+        let ekn_id = this._link_table.lookup_key(link);
+        if (!ekn_id) return false;
+        return ekn_id;
     },
 
     get_domain_query_params: function () {
@@ -530,17 +570,58 @@ const DomainV3 = new Lang.Class({
         return this._shards;
     },
 
+    test_link: function (link) {
+        for (let table of this._link_tables) {
+            let result = table.lookup_key(link);
+            if (result !== null)
+                return result;
+        }
+        return false;
+    },
+
+    // We don't resolve links using the usual load() pattern because this
+    // method needs to be synchronous, but we're guaranteed that all shards are
+    // initialized by the time this is invoked by the HTML renderer.
+    _setup_link_tables: function () {
+        // Ignore if we've already setup our tables
+        if (this._link_tables !== undefined)
+            return;
+
+        let tables = this._shards.map((shard) => {
+            let table_record = shard.find_record_by_hex_name(LINK_TABLE_ID);
+            if (table_record) {
+                return table_record.data.load_as_dictionary();
+            } else {
+                printerr("Couldn't find link table for shard!");
+                return null;
+            }
+        });
+
+        // Filter out invalid tables
+        this._link_tables = tables.filter((t) => t);
+    },
+
     load: function (cancellable, callback) {
         this._load_shards(cancellable);
 
-        return AsyncTask.all(this, (add_task) => {
+        let task = new AsyncTask.AsyncTask(this, cancellable, callback);
+        AsyncTask.all(this, (add_task) => {
             this._shards.forEach((shard) => {
                 // Don't allow init_async() to be cancelled; otherwise,
                 // cancellation will spoil the object for future use.
                 add_task((cancellable, callback) => shard.init_async(0, null, callback),
                          (result) => shard.init_finish(result));
             });
-        }, cancellable, callback);
+        }, cancellable, task.catch_callback_errors((source, resolve_task) => {
+            AsyncTask.all_finish(resolve_task);
+
+            // Fetch the link table dictionaries from each shard for link
+            // lookups
+            this._setup_link_tables();
+
+            task.return_value(true);
+        }));
+        return task;
     },
 
     load_finish: function (task) {

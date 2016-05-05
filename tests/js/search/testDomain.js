@@ -469,26 +469,51 @@ describe('DomainV1', function () {
     });
 });
 
+function create_mock_domain_for_version (versionNo) {
+    let engine = new Engine.Engine();
+    let bridge = engine._xapian_bridge;
+
+    spyOn(Utils, 'get_ekn_version_for_domain').and.callFake(() => versionNo);
+    let domain = engine._get_domain('foo');
+
+    // Don't hit the disk.
+    domain._content_dir = Gio.File.new_for_path('/foo');
+    spyOn(domain, 'load').and.callFake(function (cancellable, callback) {
+        callback(null);
+    });
+    spyOn(domain, 'load_finish').and.callFake(function () {
+        return null;
+    });
+
+    return domain;
+}
+
+function create_mock_shard_with_link_table (link_table_hash) {
+    let mock_shard_file = new MockShard.MockShardFile();
+
+    if (link_table_hash) {
+        let mock_shard_record = new MockShard.MockShardRecord();
+        let mock_data = new MockShard.MockShardBlob();
+        let mock_dictionary = new MockShard.MockDictionary(link_table_hash);
+
+        mock_shard_file.find_record_by_hex_name.and.callFake((hex) => mock_shard_record);
+        mock_shard_record.data = mock_data;
+        spyOn(mock_data, 'load_as_dictionary').and.callFake(() => mock_dictionary);
+
+    } else {
+        mock_shard_file.find_record_by_hex_name.and.callFake((hex) => null);
+    }
+
+    return mock_shard_file;
+}
+
 describe('DomainV2', function () {
     let domain, mock_shard_file, mock_shard_record, mock_data, mock_metadata;
 
     beforeEach(function () {
         jasmine.addMatchers(InstanceOfMatcher.customMatchers);
 
-        let engine = new Engine.Engine();
-        let bridge = engine._xapian_bridge;
-
-        spyOn(Utils, 'get_ekn_version_for_domain').and.callFake(function () 2);
-        domain = engine._get_domain('foo');
-
-        // Don't hit the disk.
-        domain._content_dir = Gio.File.new_for_path('/foo');
-        spyOn(domain, 'load').and.callFake(function (cancellable, callback) {
-            callback(null);
-        });
-        spyOn(domain, 'load_finish').and.callFake(function () {
-            return null;
-        });
+        domain = create_mock_domain_for_version(2);
 
         mock_shard_file = new MockShard.MockShardFile();
         mock_shard_record = new MockShard.MockShardRecord();
@@ -503,12 +528,13 @@ describe('DomainV2', function () {
 
     function mock_ekn_shard (shard_file) {
         domain._shard_file = shard_file;
+        domain._setup_link_table();
     }
 
     describe('get_object_by_id', function () {
         it('should throw an exception on missing records', function (done) {
             domain.get_object_by_id('whatever', null, function (domain, task) {
-                expect(function () domain.get_object_by_id_finish(task)).toThrow();
+                expect(() => domain.get_object_by_id_finish(task)).toThrow();
                 done();
             });
         });
@@ -662,6 +688,65 @@ describe('DomainV2', function () {
                 expect(callback_called).toEqual(1);
                 done();
             }, 25); // pause for a moment for any more callbacks
+        });
+    });
+
+    describe('test_link', function () {
+        it('returns false when no link table exists', function () {
+            mock_ekn_shard(create_mock_shard_with_link_table(null));
+            expect(domain.test_link('foo')).toEqual(false);
+        });
+
+        it('returns entries from the link table when it does exist', function () {
+            mock_ekn_shard(create_mock_shard_with_link_table({
+                'foo': 'bar',
+            }));
+            expect(domain.test_link('foo')).toEqual('bar');
+        });
+
+        it('returns false when the link table does not contain a link', function () {
+            mock_ekn_shard(create_mock_shard_with_link_table({
+                'foo': 'bar',
+            }));
+            expect(domain.test_link('123')).toEqual(false);
+        });
+    });
+});
+
+describe('DomainV3', () => {
+    let domain;
+
+    beforeEach(function () {
+        jasmine.addMatchers(InstanceOfMatcher.customMatchers);
+        domain = create_mock_domain_for_version(3);
+    });
+
+    describe('test_link', function () {
+        function mock_ekn_link_tables (link_table_hashes) {
+            let shards = link_table_hashes.map(create_mock_shard_with_link_table);
+            domain._shards = shards;
+            domain._setup_link_tables();
+        }
+
+        it('returns false when no link table exists', function () {
+            mock_ekn_link_tables([null]);
+            expect(domain.test_link('foo')).toEqual(false);
+        });
+
+        it('returns entries from a link table which contains the link', function () {
+            mock_ekn_link_tables([
+                { 'foo': 'bar' },
+                { 'bar': 'baz' },
+            ]);
+            expect(domain.test_link('foo')).toEqual('bar');
+        });
+
+        it('returns false when no link table contains the link', function () {
+            mock_ekn_link_tables([
+                { 'foo': 'bar' },
+                { 'bar': 'baz' },
+            ]);
+            expect(domain.test_link('123')).toEqual(false);
         });
     });
 });
