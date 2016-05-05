@@ -1,10 +1,14 @@
 {
+  "version": 2,
   "modules": {
     "interaction": {
+      "type": "MeshInteraction",
       "slots": {
         "window": {
+          "type": "Window",
           "slots": {
             "article-page": {
+              "type": "ArticleStackModule",
               "properties": {
                 "allow-navigation": "next"
               },
@@ -15,47 +19,46 @@
                 "nav-card-type": {
                   "type": "TextCard"
                 }
-              },
-              "type": "ArticleStackModule"
+              }
             },
             "home-page": {
+              "type": "ScrollingLayout",
               "id": "home-scroll",
               "slots": {
                 "content": {
+                  "type": "BannerTemplate",
                   "slots": {
                     "banner": {
+                      "type": "AppBanner",
                       "properties": {
                         "halign": "fill",
                         "image-uri": "resource:///com/endlessm/video-test-en/assets/titleImage.svg",
                         "max-fraction": 0.5,
                         "valign": "start"
-                      },
-                      "type": "AppBanner"
+                      }
                     },
                     "content": {
+                      "type": "ItemGroupModule",
                       "properties": {
                         "hexpand": true
                       },
                       "slots": {
                         "arrangement": {
-                          "references": {
-                            "scroll-server": "home-scroll"
-                          },
+                          "type": "ListArrangement",
                           "slots": {
                             "card-type": {
                               "type": "ListCard"
                             }
                           },
-                          "type": "ListArrangement"
+                          "references": {
+                            "scroll-server": "home-scroll"
+                          }
                         }
-                      },
-                      "type": "ItemGroupModule"
+                      }
                     }
-                  },
-                  "type": "BannerTemplate"
+                  }
                 }
-              },
-              "type": "ScrollingLayout"
+              }
             },
             "navigation": {
               "type": "NavigationModule"
@@ -64,48 +67,45 @@
               "type": "SearchBox"
             },
             "search-page": {
+              "type": "ScrollingLayout",
               "id": "search-scroll",
               "slots": {
                 "content": {
+                  "type": "BannerTemplate",
                   "slots": {
                     "banner": {
+                      "type": "SearchBannerModule",
                       "properties": {
                         "halign": "fill"
-                      },
-                      "type": "SearchBannerModule"
+                      }
                     },
                     "content": {
+                      "type": "SearchModule",
                       "properties": {
                         "message-halign": "center",
                         "message-justify": "left"
                       },
                       "slots": {
                         "arrangement": {
-                          "references": {
-                            "scroll-server": "search-scroll"
-                          },
+                          "type": "ListArrangement",
                           "slots": {
                             "card-type": {
                               "type": "ListCard"
                             }
                           },
-                          "type": "ListArrangement"
+                          "references": {
+                            "scroll-server": "search-scroll"
+                          }
                         }
-                      },
-                      "type": "SearchModule"
+                      }
                     }
-                  },
-                  "type": "BannerTemplate"
+                  }
                 }
-              },
-              "type": "ScrollingLayout"
+              }
             }
-          },
-          "type": "Window"
+          }
         }
-      },
-      "type": "MeshInteraction"
+      }
     }
-  },
-  "version": 2
+  }
 }

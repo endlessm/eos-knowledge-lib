@@ -3,6 +3,7 @@
 # Copyright 2016 Endless Mobile, Inc.
 
 import argparse
+import collections
 import io
 import json
 import re
@@ -49,6 +50,24 @@ def expand_shortdef(module):
     return module
 
 
+def sorted_ordered_dict(regdict):
+    sorted_items = sorted(regdict.items(), key=lambda t: t[0])
+    return collections.OrderedDict(sorted_items)
+
+
+def order_module_keys(module):
+    retval = collections.OrderedDict({'type': module['type']})
+    if 'id' in module:
+        retval['id'] = module['id']
+    if 'properties' in module:
+        retval['properties'] = sorted_ordered_dict(module['properties'])
+    if 'slots' in module:
+        retval['slots'] = sorted_ordered_dict(module['slots'])
+    if 'references' in module:
+        retval['references'] = sorted_ordered_dict(module['references'])
+    return retval
+
+
 def walk(module_tree, transform_func):
     # Transform first, in case the transformation adds slots
     module_tree = transform_func(module_tree)
@@ -63,15 +82,16 @@ def preprocess(infile):
     tree = yaml.load(infile)['interaction']
     tree = walk(tree, expand_slot_shorthand)
     tree = walk(tree, expand_shortdef)
+    tree = walk(tree, order_module_keys)
 
-    app = {
-        'version': 2,
-        'modules': {
+    app = collections.OrderedDict((
+        ('version', 2),
+        ('modules', {
             'interaction': tree,
-        },
-    }
+        }),
+    ))
 
-    return json.dumps(app, sort_keys=True, indent=2)
+    return json.dumps(app, indent=2)
 
 # Ensure stdout is UTF-8
 default_out = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
