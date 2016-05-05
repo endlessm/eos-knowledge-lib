@@ -61,7 +61,23 @@ const ArticleHTMLRenderer = new Knowledge.Class({
         return html.replace(/^\s*<html>\s*<body>/, '').replace(/<\/body>\s*<\/html>\s*$/, '');
     },
 
-    _get_disclaimer: function (model) {
+    set_custom_css_files: function (custom_css_files) {
+        this._custom_css_files = custom_css_files;
+    },
+
+    set_custom_javascript_files: function (custom_javascript_files) {
+        this._custom_javascript_files = custom_javascript_files;
+    },
+
+    _get_base_css_files: function () {
+        return ['clipboard.css'].concat(this._custom_css_files);
+    },
+
+    _get_base_js_files: function () {
+        return ['jquery-min.js', 'clipboard-manager.js'].concat(this._custom_javascript_files);
+    },
+
+    _get_legacy_disclaimer: function (model) {
         switch (model.source) {
             case 'wikipedia':
             case 'wikibooks':
@@ -96,33 +112,19 @@ const ArticleHTMLRenderer = new Knowledge.Class({
                     blog_link = model.source_name;
                 let message = _get_display_string_for_license(model.license);
                 return message.replace('{blog-link}', blog_link);
-            case 'prensa-libre':
-                let article_link = _to_link(model.original_uri, 'Prensalibre.com');
-                let disclaimer_label = _("Legal Notice and Intellectual Property Policy");
-                let disclaimer_link = _to_modal_link(disclaimer_label);
-                // TRANSLATORS: anything inside curly braces '{}' is going to be
-                // substituted in code. Please make sure to leave the curly
-                // braces around any words that have them, and do not translate
-                // words inside curly braces.
-                let disclaimer = _("Read more at {link}")
-                    .replace('{link}', article_link);
-                disclaimer += '<br>' + disclaimer_link;
-                return disclaimer;
             default:
                 return false;
         }
     },
 
-    _get_disclaimer_window: function (model) {
-        if (model.source !== 'prensa-libre') {
-            return false;
-        }
-
-        return _("DISCLAIMER PLACEHOLDER");
+    _should_include_mathjax: function (model) {
+        let may_have_mathjax = ['wikipedia', 'wikibooks', 'wikisource'];
+        return (may_have_mathjax.indexOf(model.source) !== -1);
     },
 
-    _get_css_files: function (model) {
-        let css_files = ['clipboard.css'];
+    _get_legacy_css_files: function (model) {
+        let css_files = this._get_base_css_files();
+
         switch (model.source) {
             case 'wikipedia':
             case 'wikibooks':
@@ -135,21 +137,16 @@ const ArticleHTMLRenderer = new Knowledge.Class({
             case 'embedly':
                 css_files.push('embedly.css');
                 break;
-            case 'prensa-libre':
-                css_files.push('prensa-libre.css');
-                break;
         }
         return css_files;
     },
 
-    _get_javascript_files: function (model) {
-        let javascript_files = [
-            'jquery-min.js',
-            'clipboard-manager.js',
+    _get_legacy_javascript_files: function (model) {
+        let javascript_files = this._get_base_js_files().concat([
             'content-fixes.js',
             'hide-broken-images.js',
             'no-link-remover.js',
-        ];
+        ]);
 
         if (this.enable_scroll_manager)
             javascript_files.push('scroll-manager.js');
@@ -157,56 +154,81 @@ const ArticleHTMLRenderer = new Knowledge.Class({
         return javascript_files;
     },
 
-    _should_include_mathjax: function (model) {
-        let may_have_mathjax = ['wikipedia', 'wikibooks', 'wikisource'];
-        return (may_have_mathjax.indexOf(model.source) !== -1);
+    _render_legacy: function (model) {
+        let css_files = this._get_legacy_css_files(model);
+        let js_files = this._get_legacy_javascript_files(model);
+
+        let stream = model.get_content_stream();
+        let html = SearchUtils.read_stream_sync(stream);
+
+        let template = _load_template('legacy-article.mst');
+
+        return Mustache.render(template, {
+            'title': this.show_title ? model.title : false,
+            'body-html': this._strip_tags(html),
+            'disclaimer': this._get_legacy_disclaimer(model),
+            'copy-button-text': _("Copy"),
+            'css-files': css_files,
+            'javascript-files': js_files,
+            'include-mathjax': this._should_include_mathjax(model),
+            'mathjax-path': Config.mathjax_path,
+        });
     },
 
-    _get_extra_header_info: function (model) {
-        if (model.source !== 'prensa-libre')
-            return false;
+    _render_prensa_libre: function (model) {
+        function get_extra_header_info() {
+            let featured_set = model.tags
+                .filter(tag => !tag.startsWith('Ekn'))
+                .map(tag => SetMap.get_set_for_tag(tag))
+                .filter(set => typeof set !== 'undefined')
+                .filter(set => set.featured)[0];
 
-        let featured_set = model.tags
-            .filter(tag => !tag.startsWith('Ekn'))
-            .map(tag => SetMap.get_set_for_tag(tag))
-            .filter(set => typeof set !== 'undefined')
-            .filter(set => set.featured)[0];
-        let retval = {
-            'date-published': new Date(model.published).toLocaleDateString(),
-            'source-link': _to_link(model.original_uri, 'Prensalibre.com'),
-            'author': model.authors.join('—'),
-        };
-        if (featured_set)
-            retval.context = _to_set_link(featured_set);
-        return retval;
-    },
+            let retval = {
+                'date-published': new Date(model.published).toLocaleDateString(),
+                'source-link': _to_link(model.original_uri, 'Prensalibre.com'),
+                'author': model.authors.join('—'),
+            };
 
-    set_custom_css_files: function (custom_css_files) {
-        this._custom_css_files = custom_css_files;
-    },
-
-    set_custom_javascript_files: function (custom_javascript_files) {
-        this._custom_javascript_files = custom_javascript_files;
-    },
-
-    _get_template_filename: function (model) {
-        switch (model.source) {
-        case 'wikipedia':
-        case 'wikibooks':
-        case 'wikisource':
-        case 'wikihow':
-        case 'embedly':
-            return 'legacy-article.mst';
-        case 'prensa-libre':
-            return 'news-article.mst';
-        default:
-            return null;
+            if (featured_set)
+                retval.context = _to_set_link(featured_set);
+            return retval;
         }
-    },
 
-    _load_template: function (model) {
-        let template_filename = this._get_template_filename(model);
-        return _load_template(template_filename);
+        function get_disclaimer_link() {
+            let article_link = _to_link(model.original_uri, 'Prensalibre.com');
+            let disclaimer_label = _("Legal Notice and Intellectual Property Policy");
+            let disclaimer_link = _to_modal_link(disclaimer_label);
+            // TRANSLATORS: anything inside curly braces '{}' is going to be
+            // substituted in code. Please make sure to leave the curly
+            // braces around any words that have them, and do not translate
+            // words inside curly braces.
+            let disclaimer = _("Read more at {link}")
+                .replace('{link}', article_link);
+            disclaimer += '<br>' + disclaimer_link;
+            return disclaimer;
+        }
+
+        let css_files = this._get_base_css_files();
+        css_files.push('prensa-libre.css');
+
+        let js_files = this._get_base_js_files();
+
+        let stream = model.get_content_stream();
+        let html = SearchUtils.read_stream_sync(stream);
+
+        let template = _load_template('news-article.mst');
+
+        let disclaimer_window = _("DISCLAIMER PLACEHOLDER");
+
+        return Mustache.render(template, {
+            'body-html': this._strip_tags(html),
+            'disclaimer': get_disclaimer_link(),
+            'disclaimer-window': disclaimer_window,
+            'css-files': css_files,
+            'javascript-files': js_files,
+            'copy-button-text': _("Copy"),
+            'extra-header-information': get_extra_header_info(),
+        });
     },
 
     /*
@@ -214,25 +236,18 @@ const ArticleHTMLRenderer = new Knowledge.Class({
      * string of ready to display html.
      */
     render: function (model) {
-        let css_files = this._get_css_files(model).concat(this._custom_css_files);
-        let js_files = this._get_javascript_files(model).concat(this._custom_javascript_files);
-
-        let stream = model.get_content_stream();
-        let html = SearchUtils.read_stream_sync(stream);
-        let template = this._load_template(model);
-
-        return Mustache.render(template, {
-            'title': this.show_title ? model.title : false,
-            'body-html': this._strip_tags(html),
-            'disclaimer': this._get_disclaimer(model),
-            'disclaimer-window': this._get_disclaimer_window(model),
-            'copy-button-text': _("Copy"),
-            'css-files': css_files,
-            'javascript-files': js_files,
-            'include-mathjax': this._should_include_mathjax(model),
-            'mathjax-path': Config.mathjax_path,
-            'extra-header-information': this._get_extra_header_info(model),
-        });
+        switch (model.source) {
+        case 'wikipedia':
+        case 'wikibooks':
+        case 'wikisource':
+        case 'wikihow':
+        case 'embedly':
+            return this._render_legacy(model);
+        case 'prensa-libre':
+            return this._render_prensa_libre(model);
+        default:
+            return null;
+        }
     },
 });
 
