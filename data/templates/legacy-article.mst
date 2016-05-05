@@ -8,24 +8,6 @@
     <body>
         <div id="copy-button">{{copy-button-text}}</div>
         <div class="mw-body" id="bodycontents">
-            {{#extra-header-information}}
-            <div class="extra-header">
-                <div class="context"><p>{{{context}}}</p></div>
-                <div class="extra-header-right">
-                    {{#date-published}}
-                    <p class="date-published">{{.}}</p>
-                    {{/date-published}}
-                    {{#source-link}}
-                    <p class="source-link">
-                        {{{.}}}
-                        {{#author}}
-                        &mdash; {{.}}
-                        {{/author}}
-                    </p>
-                    {{/source-link}}
-                </div>
-            </div>
-            {{/extra-header-information}}
             {{#title}}
             <div class="eos-article-title">
                 <header>
@@ -41,9 +23,6 @@
                     <p>{{{.}}}</p>
                 </div>
                 {{/disclaimer}}
-                {{#disclaimer-window}}
-                    {{{.}}}
-                {{/disclaimer-window}}
             </section>
         </div>
         {{#javascript-files}}

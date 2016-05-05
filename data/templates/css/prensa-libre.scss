@@ -31,7 +31,7 @@ figure, blockquote, p {
 }
 
 // Remove unused elements
-.auth-info, [data-soma-widget="Title"] {
+.auth-info {
     display: none;
 }
 

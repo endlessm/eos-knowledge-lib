@@ -1,0 +1,46 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        {{#css-files}}
+        <link rel="stylesheet" type="text/css" href="resource:///com/endlessm/knowledge/data/templates/css/{{{.}}}"/>
+        {{/css-files}}
+    </head>
+    <body>
+        <div id="copy-button">{{copy-button-text}}</div>
+        {{#extra-header-information}}
+        <div class="extra-header">
+            {{#context}}
+            <div class="context"><p>{{{context}}}</p></div>
+            {{/context}}
+            <div class="extra-header-right">
+                {{#date-published}}
+                <p class="date-published">{{.}}</p>
+                {{/date-published}}
+                {{#source-link}}
+                <p class="source-link">
+                    {{{.}}}
+                    {{#author}}
+                    &mdash; {{.}}
+                    {{/author}}
+                </p>
+                {{/source-link}}
+            </div>
+        </div>
+        {{/extra-header-information}}
+        <section id="inside-content" class="section">
+            <div>{{{body-html}}}</div>
+            <hr>
+            {{#disclaimer}}
+            <div class="disclaimer">
+                <p>{{{.}}}</p>
+            </div>
+            {{/disclaimer}}
+            {{#disclaimer-window}}
+            {{{.}}}
+            {{/disclaimer-window}}
+        </section>
+        {{#javascript-files}}
+        <script type="text/javascript" src="resource:///com/endlessm/knowledge/data/templates/js/{{{.}}}"></script>
+        {{/javascript-files}}
+    </body>
+</html>

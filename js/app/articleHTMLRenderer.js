@@ -20,18 +20,17 @@ const _MODAL_TEMPLATE = '\
     </div>\
 </div>';
 
-const _ARTICLE_TEMPLATE = 'resource:///com/endlessm/knowledge/data/templates/article.mst';
-let _template_contents;
-// Caches so we only load once.
-function load_article_template () {
-    if (_template_contents)
-        return _template_contents;
-    let file = Gio.file_new_for_uri(_ARTICLE_TEMPLATE);
-    let [success, string] = file.load_contents(null);
-    _template_contents = string.toString();
-    // Makes calls to Mustache.render with this template faster
-    Mustache.parse(_template_contents);
-    return _template_contents;
+let _template_cache = {};
+function _load_template(template_filename) {
+    let uri = 'resource:///com/endlessm/knowledge/data/templates/' + template_filename;
+    if (_template_cache[uri] === undefined) {
+        let file = Gio.file_new_for_uri(uri);
+        let [success, string] = file.load_contents(null);
+        let template = string.toString();
+        Mustache.parse(template);
+        _template_cache[uri] = template;
+    }
+    return _template_cache[uri];
 }
 
 /**
@@ -63,7 +62,6 @@ const ArticleHTMLRenderer = new Knowledge.Class({
 
     _init: function (props={}) {
         this.parent(props);
-        this._template = load_article_template();
         this._custom_css_files = [];
         this._custom_javascript_files = [];
     },
@@ -202,6 +200,26 @@ const ArticleHTMLRenderer = new Knowledge.Class({
         this._custom_javascript_files = custom_javascript_files;
     },
 
+    _get_template_filename: function (model) {
+        switch (model.source) {
+        case 'wikipedia':
+        case 'wikibooks':
+        case 'wikisource':
+        case 'wikihow':
+        case 'embedly':
+            return 'legacy-article.mst';
+        case 'prensa-libre':
+            return 'news-article.mst';
+        default:
+            return null;
+        }
+    },
+
+    _load_template: function (model) {
+        let template_filename = this._get_template_filename(model);
+        return _load_template(template_filename);
+    },
+
     /*
      * The render method is called with an article model :model and returns a
      * string of ready to display html.
@@ -212,7 +230,9 @@ const ArticleHTMLRenderer = new Knowledge.Class({
 
         let stream = model.get_content_stream();
         let html = SearchUtils.read_stream_sync(stream);
-        return Mustache.render(this._template, {
+        let template = this._load_template(model);
+
+        return Mustache.render(template, {
             'title': this.show_title ? model.title : false,
             'body-html': this._strip_tags(html),
             'disclaimer': this._get_disclaimer(model),
