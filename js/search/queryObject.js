@@ -118,6 +118,9 @@ const QueryObject = Lang.Class({
         'query': GObject.ParamSpec.string('query', 'Query string',
             'Query string with terms to search',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
+        'literal-query': GObject.ParamSpec.string('literal-query', 'Xapian query',
+            'Literal Xapian query',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
         /**
          * Property: stopword-free-query
          *
@@ -309,6 +312,9 @@ const QueryObject = Lang.Class({
     },
 
     _query_clause: function () {
+        if (this.literal_query)
+            return Utils.parenthesize(this.literal_query);
+
         let sanitized_query = this._sanitize_query(this.query);
         let terms = this._get_terms_from_string(sanitized_query);
         let exact_title_clause = _XAPIAN_PREFIX_EXACT_TITLE + terms.map(Utils.capitalize).join('_');

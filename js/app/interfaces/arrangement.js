@@ -269,14 +269,9 @@ const Arrangement = new Lang.Interface({
 
     highlight: function (highlight_model) {
         this.clear_highlight();
-        for (let model of this.get_models()) {
-            if (model.ekn_id === highlight_model.ekn_id) {
-                let card = this.get_card_for_model(model);
-                if (card)
-                    card.get_style_context().add_class(StyleClasses.HIGHLIGHTED);
-                return;
-            }
-        }
+        let card = this.get_card_for_model(highlight_model);
+        if (card)
+            card.get_style_context().add_class(StyleClasses.HIGHLIGHTED);
     },
 
     clear_highlight: function() {
