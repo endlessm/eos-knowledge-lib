@@ -212,117 +212,6 @@ const Domain = new Lang.Class({
     },
 });
 
-const DomainV1 = new Lang.Class({
-    Name: 'DomainV1',
-    Extends: Domain,
-
-    _DB_DIR: 'db',
-    _MEDIA_DIR: 'media',
-
-    _get_v1_model_from_string: function (string) {
-        let json_ld = JSON.parse(string);
-        let props = {
-            ekn_version: 1,
-        };
-        if (json_ld.hasOwnProperty('articleBody')) {
-            // Legacy databases store their HTML within the xapian databases
-            // themselves and don't store a contentType property
-            props.content_type = 'text/html';
-            props.get_content_stream = () => {
-                return Utils.string_to_stream(json_ld.articleBody);
-            };
-        } else if (json_ld.hasOwnProperty('contentURL')) {
-            let content_path = this._get_content_path();
-            let model_path = GLib.build_filenamev([content_path, this._MEDIA_DIR, json_ld.contentURL]);
-            // We don't care if the guess was certain or not, since the
-            // content_type is a required parameter
-            let [guessed_mimetype, __] = Gio.content_type_guess(model_path, null);
-            props.content_type = guessed_mimetype;
-            props.get_content_stream = () => {
-                let file = Gio.File.new_for_path(model_path);
-                return file.read(null);
-            };
-        }
-        return this._get_model_from_json_ld(props, json_ld);
-    },
-
-    load: function (cancellable, callback) {
-        let task = new AsyncTask.AsyncTask(this, cancellable, callback);
-        // Nothing to do.
-        task.return_value(true);
-        return task;
-    },
-
-    load_finish: function (task) {
-        return task.finish();
-    },
-
-    get_domain_query_params: function () {
-        let params = {};
-        params.path = GLib.build_filenamev([this._get_content_path(), this._DB_DIR]);
-        return params;
-    },
-
-    _handle_redirect: function (task, model, cancellable) {
-        // If the requested model should redirect to another, then fetch
-        // that model instead.
-        if (model.redirects_to.length > 0) {
-            this.get_object_by_id(model.redirects_to, cancellable, task.catch_callback_errors((engine, redirect_task) => {
-                task.return_value(this.get_object_by_id_finish(redirect_task));
-            }));
-        } else {
-            task.return_value(model);
-        }
-    },
-
-    get_object_by_id: function (id, cancellable, callback) {
-        let task = new AsyncTask.AsyncTask(this, cancellable, callback);
-        this.load(cancellable, task.catch_callback_errors((source, load_task) => {
-            this.load_finish(load_task);
-
-            let query_obj = new QueryObject.QueryObject({
-                limit: 1,
-                ids: [id],
-                domain: this._domain,
-            });
-            let domain_params = this.get_domain_query_params();
-            this._xapian_bridge.query(query_obj, domain_params, cancellable, task.catch_callback_errors((bridge, query_task) => {
-                let results = this._xapian_bridge.query_finish(query_task).results;
-                let model = this._get_v1_model_from_string(results[0]);
-                this._handle_redirect(task, model, cancellable);
-            }));
-        }));
-        return task;
-    },
-
-    get_object_by_id_finish: function (task) {
-        return task.finish();
-    },
-
-    resolve_xapian_result: function (result, cancellable, callback) {
-        let task = new AsyncTask.AsyncTask(this, cancellable, callback);
-
-        // Old bundles contain all the jsonld in xapian, and
-        // serve it in the results. If its a redirect we need to
-        // resolve it, otherwise we can resolve immediately.
-        let model = this._get_v1_model_from_string(result);
-        if (model.redirects_to.length > 0) {
-            let id = model.redirects_to;
-            this.get_object_by_id(id, cancellable, task.catch_callback_errors(() => {
-                task.return_value(this.get_object_by_id_finish());
-            }));
-        } else {
-            task.return_value(model);
-        }
-
-        return task;
-    },
-
-    resolve_xapian_result_finish: function (task) {
-        return task.finish();
-    },
-});
-
 // XXX Note that DomainV2 apps are no longer going to be generated in
 // production, but we retain compatibility with it for the sake of
 // developer-made test apps.
@@ -697,7 +586,6 @@ const DomainV3 = new Lang.Class({
 function get_domain_impl (domain, xapian_bridge) {
     let ekn_version = Utils.get_ekn_version_for_domain(domain);
     let impls = {
-        '1': DomainV1,
         '2': DomainV2,
         '3': DomainV3,
     };

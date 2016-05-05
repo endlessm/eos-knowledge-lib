@@ -13,7 +13,7 @@ describe('Engine', function () {
         engine = new Engine.Engine();
         engine.default_domain = 'foo';
 
-        spyOn(Utils, 'get_ekn_version_for_domain').and.returnValue(1);
+        spyOn(Utils, 'get_ekn_version_for_domain').and.returnValue(2);
         let domain = engine._get_domain('foo');
 
         // Don't hit the disk.
