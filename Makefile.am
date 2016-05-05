@@ -62,9 +62,9 @@ scss_toplevels = \
 	$(srcdir)/data/templates/css/reader2.scss \
 	$(srcdir)/data/templates/css/wikihow.scss \
 	$(srcdir)/data/templates/css/wikimedia.scss \
+	$(srcdir)/data/templates/css/clipboard.scss \
 	$(NULL)
 scss_partials = \
-	$(srcdir)/data/templates/css/_clipboard.scss \
 	$(srcdir)/data/templates/css/_eos-modal.scss \
 	$(srcdir)/data/templates/css/_eos-no-link.scss \
 	$(NULL)

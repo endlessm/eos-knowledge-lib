@@ -135,7 +135,7 @@ const ArticleHTMLRenderer = new Knowledge.Class({
     },
 
     _get_css_files: function (model) {
-        let css_files = [];
+        let css_files = ['clipboard.css'];
         switch (model.source) {
             case 'wikipedia':
             case 'wikibooks':

@@ -42,6 +42,7 @@
     <file preprocess="xml-stripblanks">data/images/deckbg.svg</file>
     <file>data/images/separator.png</file>
     <file compressed="true">data/templates/article.mst</file>
+    <file compressed="true">data/templates/css/clipboard.css</file>
     <file compressed="true">data/templates/css/embedly.css</file>
     <file compressed="true">data/templates/css/prensa-libre.css</file>
     <file compressed="true">data/templates/css/reader.css</file>
