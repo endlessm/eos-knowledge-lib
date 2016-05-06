@@ -7,6 +7,7 @@ const Gtk = imports.gi.Gtk;
 
 const Arrangement = imports.app.interfaces.arrangement;
 const Card = imports.app.interfaces.card;
+const Knowledge = imports.app.knowledge;
 const Module = imports.app.interfaces.module;
 const Utils = imports.app.utils;
 
@@ -67,46 +68,15 @@ const SECONDARY_HORIZONTAL_PROPORTION = {
     LARGE: 3 / 12,
 };
 
-/**
- * Class: QuiltArrangement
- * Arrangement with primary card and secondary card on prominent spots, and two
- * support cards if enough width.
- *
- * The arrangement shows a primary card in the leftmost space, followed by a
- * secondary card that is placed vertically next to the primary card. If width
- * is enough, a third column with two support cards is shown.
- */
-const QuiltArrangement = new Module.Class({
-    Name: 'QuiltArrangement',
-    CssName: 'EknQuiltArrangement',
+const _QuiltArrangementLayout = new Knowledge.Class({
+    Name: 'QuiltArrangementLayout',
     Extends: Endless.CustomContainer,
-    Implements: [Arrangement.Arrangement],
 
     _init: function (props={}) {
-        this._spacing = 0;
-        this._total_cards_to_show = 4;
+        this.spacing = 0;
+        this.total_cards_to_show = 4;
 
         this.parent(props);
-    },
-
-    get spacing() {
-        return this._spacing;
-    },
-
-    set spacing(v) {
-        if (this._spacing === v)
-            return;
-        this._spacing = v;
-        this.notify('spacing');
-        this.queue_resize();
-    },
-
-    get all_visible() {
-        return this.get_card_count() <= this._total_cards_to_show;
-    },
-
-    get_max_cards: function () {
-        return this._total_cards_to_show;
     },
 
     // Removing a visible widget should recalculate the positions of all widgets
@@ -122,8 +92,8 @@ const QuiltArrangement = new Module.Class({
     },
 
     vfunc_get_preferred_width: function () {
-        return [_PrimaryCard.Width.TINY + _SecondaryCard.Width.TINY + this._spacing,
-            Arrangement.get_size_with_spacing(Card.MinSize.H, 4, this._spacing)];
+        return [_PrimaryCard.Width.TINY + _SecondaryCard.Width.TINY + this.spacing,
+            Arrangement.get_size_with_spacing(Card.MinSize.H, 4, this.spacing)];
     },
 
     vfunc_get_preferred_height_for_width: function (width) {
@@ -137,43 +107,43 @@ const QuiltArrangement = new Module.Class({
     vfunc_size_allocate: function (alloc) {
         this.parent(alloc);
 
-        let count = this.get_card_count();
+        let count = this.get_children().length;
         if (count === 0)
             return;
 
-        let all_cards = this.get_cards();
+        let all_cards = this.get_parent().get_cards();
 
         let [horizontal_mode, total_cards_to_show] = this._determine_horizontal_mode(alloc.width);
-        this._total_cards_to_show = total_cards_to_show;
+        this.total_cards_to_show = total_cards_to_show;
 
         let x = alloc.x;
         let y = alloc.y;
 
-        let available_width = alloc.width - this._spacing;
+        let available_width = alloc.width - this.spacing;
         if (horizontal_mode === _HorizontalMode.LARGE)
-            available_width -= this._spacing;  // Additional spacing before third column
+            available_width -= this.spacing;  // Additional spacing before third column
 
         let primary_width = Math.floor(available_width * PRIMARY_HORIZONTAL_PROPORTION[horizontal_mode]);
         let secondary_width = Math.floor(available_width * SECONDARY_HORIZONTAL_PROPORTION[horizontal_mode]);
         let support_width = available_width - primary_width - secondary_width;
 
         // Place primary card
-        this.place_card(all_cards[0], x, y, primary_width, _PrimaryCard.Height[horizontal_mode] + this._spacing);
-        x += primary_width + this._spacing;
+        Arrangement.place_card(all_cards[0], x, y, primary_width, _PrimaryCard.Height[horizontal_mode] + this.spacing);
+        x += primary_width + this.spacing;
 
         if (count === 1)
             return;
 
         // Place secondary card
-        this.place_card(all_cards[1], x, y, secondary_width, _SecondaryCard.Height[horizontal_mode] + this._spacing);
-        x += secondary_width + this._spacing;
+        Arrangement.place_card(all_cards[1], x, y, secondary_width, _SecondaryCard.Height[horizontal_mode] + this.spacing);
+        x += secondary_width + this.spacing;
 
         let invisible_cards_offset = 4;
         // Place support cards, if needed
         if (horizontal_mode === _HorizontalMode.LARGE) {
             all_cards.slice(2, 4).forEach((card) => {
-                this.place_card(card, x, y, support_width, _SupportCards.HEIGHT);
-                y += _SupportCards.HEIGHT + this._spacing;
+                Arrangement.place_card(card, x, y, support_width, _SupportCards.HEIGHT);
+                y += _SupportCards.HEIGHT + this.spacing;
             });
         } else {
             invisible_cards_offset = 2;
@@ -198,5 +168,62 @@ const QuiltArrangement = new Module.Class({
             total_cards_to_show = 4;
         }
         return [horizontal_mode, total_cards_to_show];
+    },
+});
+
+/**
+ * Class: QuiltArrangement
+ * Arrangement with primary card and secondary card on prominent spots, and two
+ * support cards if enough width.
+ *
+ * The arrangement shows a primary card in the leftmost space, followed by a
+ * secondary card that is placed vertically next to the primary card. If width
+ * is enough, a third column with two support cards is shown.
+ */
+const QuiltArrangement = new Module.Class({
+    Name: 'QuiltArrangement',
+    CssName: 'EknQuiltArrangement',
+    Extends: Gtk.Grid,
+    Implements: [Arrangement.Arrangement],
+
+    _init: function (props={}) {
+        this._layout = new _QuiltArrangementLayout({
+            visible: true,
+            expand: true,
+        });
+        this.parent(props);
+
+        this.add(this._layout);
+    },
+
+    // Arrangement implementation
+    get_max_cards: function () {
+        return this._layout.total_cards_to_show;
+    },
+
+    // Arrangement override
+    pack_card: function (card) {
+        this._layout.add(card);
+    },
+
+    // Arrangement override
+    unpack_card: function (card) {
+        this._layout.remove(card);
+    },
+
+    get all_visible() {
+        return this.get_card_count() <= this._layout.total_cards_to_show;
+    },
+
+    get spacing() {
+        return this._layout.spacing;
+    },
+
+    set spacing(value) {
+        if (this._layout.spacing === value)
+            return;
+        this._layout.spacing = value;
+        this.notify('spacing');
+        this._layout.queue_resize();
     },
 });

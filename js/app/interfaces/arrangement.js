@@ -393,18 +393,18 @@ const Arrangement = new Lang.Interface({
     fade_card_in: function (card) {
         card.fade_in();
     },
-
-    place_card: function (card, x, y, width, height) {
-        let card_alloc = new Gdk.Rectangle({
-            x: x,
-            y: y,
-            width: width,
-            height: height,
-        });
-        card.size_allocate(card_alloc);
-        card.set_child_visible(true);
-    },
 });
+
+function place_card (card, x, y, width, height) {
+    let card_alloc = new Gdk.Rectangle({
+        x: x,
+        y: y,
+        width: width,
+        height: height,
+    });
+    card.size_allocate(card_alloc);
+    card.set_child_visible(true);
+}
 
 function get_spare_pixels_for_card_index (spare_pixels, cards_per_row, idx) {
     if (spare_pixels === 0)
