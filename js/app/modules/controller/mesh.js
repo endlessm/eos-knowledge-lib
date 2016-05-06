@@ -133,7 +133,7 @@ const Mesh = new Module.Class({
     _load_sets_on_home_page: function () {
         let query_obj = new QueryObject.QueryObject({
             limit: -1,
-            tags: [ Engine.HOME_PAGE_TAG ],
+            tags: [ Engine.HOME_PAGE_TAG, 'EknSetObject' ],
         });
         Engine.get_default().get_objects_by_query(query_obj, null, (engine, inner_task) => {
             let [models] = engine.get_objects_by_query_finish(inner_task);
