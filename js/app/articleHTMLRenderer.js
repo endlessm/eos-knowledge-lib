@@ -146,12 +146,16 @@ const ArticleHTMLRenderer = new Knowledge.Class({
         return javascript_files;
     },
 
+    _get_html: function (model) {
+        let stream = model.get_content_stream();
+        return SearchUtils.read_stream_sync(stream);
+    },
+
     _render_legacy_content: function (model) {
         let css_files = this._get_legacy_css_files(model);
         let js_files = this._get_legacy_javascript_files(model);
 
-        let stream = model.get_content_stream();
-        let html = SearchUtils.read_stream_sync(stream);
+        let html = this._get_html(model);
 
         let template = _load_template('legacy-article.mst');
 
@@ -202,8 +206,7 @@ const ArticleHTMLRenderer = new Knowledge.Class({
 
         let disclaimer_window = _("DISCLAIMER PLACEHOLDER");
 
-        let stream = model.get_content_stream();
-        let html = SearchUtils.read_stream_sync(stream);
+        let html = this._get_html(model);
 
         let template = _load_template('news-article.mst');
 
@@ -226,6 +229,8 @@ const ArticleHTMLRenderer = new Knowledge.Class({
             return this._render_legacy_content(model);
         case 'prensa-libre':
             return this._render_prensa_libre_content(model);
+        case 'server-template-v1':
+            return this._get_html(model);
         default:
             return null;
         }
