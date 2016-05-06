@@ -1,5 +1,6 @@
 // Copyright 2014 Endless Mobile, Inc.
 
+const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 
@@ -245,7 +246,10 @@ const Engine = Lang.Class({
      */
     update_and_preload_default_domain: function () {
         let domain = this._get_domain(this.default_domain);
-        domain.check_for_updates();
+
+        if (!GLib.getenv('EKN_DISABLE_UPDATES'))
+            domain.check_for_updates();
+
         domain.load(null, () => {});
     },
 });

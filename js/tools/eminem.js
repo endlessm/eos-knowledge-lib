@@ -1,4 +1,6 @@
 
+const ByteArray = imports.byteArray;
+const EosShard = imports.gi.EosShard;
 const Format = imports.format;
 const GLib = imports.gi.GLib;
 const Gio = imports.gi.Gio;
@@ -119,6 +121,57 @@ function unfreeze (subscription_id, input_path) {
     });
 }
 
+function regenerate_manifest (subscription_dir, cancellable) {
+    let manifest = {};
+
+    let file_enum = subscription_dir.enumerate_children('standard::name,standard::type',
+                                                        Gio.FileQueryInfoFlags.NOFOLLOW_SYMLINKS, null);
+    let info;
+
+    manifest.version = '1';
+    manifest.subscription_id = subscription_dir.get_basename();
+    manifest.xapian_databases = [];
+    manifest.shards = [];
+
+    while ((info = file_enum.next_file(cancellable))) {
+        let file = file_enum.get_child(info);
+        let path = file.get_path();
+        if (!path.endsWith('.shard'))
+            continue;
+
+        let shard_file = new EosShard.ShardFile({ path: path });
+        shard_file.init(cancellable);
+
+        // The Xapian DB is stored at this record ID in every shard.
+        const XAPIAN_DB_RECORD_ID = GLib.compute_checksum_for_string(GLib.ChecksumType.SHA1, 'xapian-db', -1);
+
+        let record = shard_file.find_record_by_hex_name(XAPIAN_DB_RECORD_ID);
+        manifest.xapian_databases.push({
+            path: file.get_basename(),
+            offset: record.data.get_offset(),
+        });
+        manifest.shards.push({
+            path: file.get_basename(),
+        });
+    }
+
+    return manifest;
+}
+
+function regenerate (path) {
+    let cancellable = null;
+
+    let subscription_dir = Gio.File.new_for_path(path);
+    let manifest = regenerate_manifest(subscription_dir, cancellable);
+    let manifest_str = JSON.stringify(manifest, null, 2);
+
+    let manifest_file = subscription_dir.get_child('manifest.json');
+    let bytes = ByteArray.fromString(manifest_str).toGBytes();
+
+    let out_stream = manifest_file.replace(null, false, Gio.FileCreateFlags.NONE, cancellable);
+    out_stream.write_bytes(bytes, null);
+}
+
 function inspect_domain (domain) {
     let cancellable = null;
 
@@ -157,6 +210,9 @@ const USAGE = [
     '       eminem unfreeze <subscription_id>',
     '         Restore the state of the subscription to the given manifest file (or stdin if not given).',
     '',
+    '       eminem regenerate <directory>',
+    '         Regenerate a manifest given a directory of shards.',
+    '',
     '       eminem inspect-domain <domain>',
     '         Inspect various information about the given domain.',
     '',
@@ -174,6 +230,8 @@ function main () {
         freeze(argv[0]);
     else if (action === 'unfreeze' && (argv.length === 1 || argv.length === 2))
         unfreeze(argv[0], argv[1]);
+    else if (action === 'regenerate' && argv.length === 1)
+        regenerate(argv[0]);
     else if (action === 'inspect-domain' && argv.length === 1)
         inspect_domain(argv[0]);
     else if (action === 'inspect-app-id' && argv.length === 1)
