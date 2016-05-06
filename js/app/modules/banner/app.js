@@ -102,7 +102,11 @@ const App = new Module.Class({
             this._logo.set_content(stream);
         }
 
-        let subtitle = Utils.get_desktop_app_info().get_description();
+        let subtitle = '';
+        let app_info = Utils.get_desktop_app_info();
+        if (app_info) {
+            subtitle = app_info.get_description();
+        }
         if (this.show_subtitle && subtitle) {
             subtitle = Utils.format_capitals(subtitle, this.subtitle_capitalization);
             // 758 = 0.74 px * 1024 Pango units / px
