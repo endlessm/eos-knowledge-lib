@@ -13,6 +13,7 @@ const Compat = imports.app.compat.compat;
 const Config = imports.app.config;
 const Engine = imports.search.engine;
 const Knowledge = imports.app.knowledge;
+const SearchUtils = imports.search.utils;
 const Utils = imports.app.utils;
 
 function should_enable_inspector() {
@@ -124,6 +125,10 @@ const EknWebview = new Knowledge.Class({
         return task;
     },
 
+    _load_record: function (id, cancellable, callback) {
+        return Engine.get_default().load_record_by_id(id, cancellable, callback);
+    },
+
     _load_ekn_uri: function (req) {
         let fail_with_error = (error) => {
             logError(error);
@@ -136,14 +141,30 @@ const EknWebview = new Knowledge.Class({
         let cancellable = null;
 
         let id = req.get_uri();
-        this._load_object(id, cancellable, (source, load_task) => {
-            try {
-                let [stream, content_type] = load_task.finish();
-                req.finish(stream, -1, content_type);
-            } catch (error) {
-                fail_with_error(error);
-            }
-        });
+
+        let components = SearchUtils.components_from_ekn_id(id);
+        if (components.length === 2) {
+            this._load_object(id, cancellable, (source, load_task) => {
+                try {
+                    let [stream, content_type] = load_task.finish();
+                    req.finish(stream, -1, content_type);
+                } catch (error) {
+                    fail_with_error(error);
+                }
+            });
+        } else {
+            let [domain, hash, blob_name] = components;
+            this._load_record(id, cancellable, (source, load_task) => {
+                try {
+                    let record = load_task.finish();
+                    let blob = record.lookup_blob(blob_name);
+                    let stream = blob.get_stream();
+                    req.finish(stream, -1, blob.content_type);
+                } catch (error) {
+                    fail_with_error(error);
+                }
+            });
+        }
     },
 
     // Tell MathJax to stop any processing; should improve performance when
