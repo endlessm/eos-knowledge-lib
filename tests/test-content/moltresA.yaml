@@ -1,0 +1,79 @@
+---
+defines:
+- &card
+  Card.LegacyPolaroid
+
+- &main-arrangement-slot
+  arrangement:
+    shortdef: 'Arrangement.Grid(bottom-buffer: 250)'
+    slots:
+      card-type: *card
+
+- &home-page
+  type: Layout.HamburgerBasement
+  slots:
+    # FIXME remove fractions
+    top: 'Banner.App(min-fraction: 0.1, max-fraction: 0.7)'
+    middle: 'Navigation.SearchBox(halign: center)'
+    bottom:
+      type: ContentGroup.Set
+      properties:
+        expand: true
+        halign: center
+        valign: center
+        max-children: 6
+      slots:
+        arrangement:
+          shortdef: 'Arrangement.Overflow(orientation: horizontal)'
+          slots:
+            card-type: *card
+    basement:
+      shortdef: 'ContentGroup.Set(expand: true)'
+      slots: *main-arrangement-slot
+
+- &section-page
+  type: Layout.Banner
+  slots:
+    banner:
+      shortdef: 'Banner.Set(halign: center)'
+      slots:
+        card-type: Card.Title
+    content:
+      type: ContentGroup.Item
+      slots: *main-arrangement-slot
+
+- &search-page
+  type: Layout.Banner
+  slots:
+    banner: 'Banner.Search(halign: center)'
+    content:
+      type: ContentGroup.Search
+      properties:
+        message-justify: left
+        message-halign: center
+      slots: *main-arrangement-slot
+
+- &article-page
+  type: Layout.ArticleStack
+  slots:
+    card-type: 'Card.KnowledgeDocument(show-toc: true)'
+
+root:
+  type: Controller.Mesh
+  slots:
+    window:
+      type: Window.App
+      properties:
+        background-image-uri: "resource:///com/endlessm/knowledge/data/images/tools/forest.jpg"
+        blur-background-image-uri: "resource:///com/endlessm/knowledge/data/images/tools/forest.jpg"
+      slots:
+        search: Navigation.SearchBox
+        navigation: Layout.Navigation
+        lightbox:
+          type: ContentGroup.MediaLightbox
+          slots:
+            card-type: Card.Media
+        home-page: *home-page
+        section-page: *section-page
+        search-page: *search-page
+        article-page: *article-page
