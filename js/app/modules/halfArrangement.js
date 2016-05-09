@@ -83,8 +83,7 @@ const HalfArrangement = new Module.Class({
         let delta_x = featured_card_width + this._spacing + spare_pixels;
         let delta_y = FEATURED_CARD_HEIGHT + this._spacing;
 
-        let all_cards = this.get_filtered_models()
-            .map(this.get_card_for_model, this);
+        let all_cards = this.get_cards();
 
         // Featured cards:
         // Place two featured cards per row at top of arrangement

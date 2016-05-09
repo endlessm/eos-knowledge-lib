@@ -103,8 +103,7 @@ const QuarterArrangement = new Module.Class({
         if (this.get_card_count() === 0)
             return;
 
-        let all_cards = this.get_filtered_models()
-            .map(this.get_card_for_model, this);
+        let all_cards = this.get_cards();
 
         let [featured_cards_to_show, support_cards_per_row] = this._determine_horizontal_mode(alloc.width);
 

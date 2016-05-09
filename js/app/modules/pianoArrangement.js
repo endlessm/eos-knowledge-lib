@@ -127,9 +127,7 @@ const PianoArrangement = new Module.Class({
         if (count === 0)
             return;
 
-        let all_cards = this.get_filtered_models()
-            .map(this.get_card_for_model, this)
-            .filter(card => card);
+        let all_cards = this.get_cards();
 
         this._support_cards_shown = this._calculate_support_cards_shown(alloc.width);
         let available_width = alloc.width - this._spacing;

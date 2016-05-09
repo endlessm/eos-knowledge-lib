@@ -107,12 +107,9 @@ const SquareGuysArrangement = new Module.Class({
             delta_x += extra_card_spacing;
         }
 
-        let all_children = this.get_filtered_models()
-            .map(this.get_card_for_model, this)
-            .filter(card => card);
-        let count = this.get_card_count();
-        let visible_children_count = this._max_rows === 0 ? count :
-            Math.min(count, this._max_rows  * col_count);
+        let all_children = this.get_cards();
+        let visible_children_count = this._max_rows === 0 ? all_children.length :
+            Math.min(all_children.length, this._max_rows  * col_count);
 
         all_children.slice(0, visible_children_count).forEach((card, ix) => {
             this.place_card(card, x, y, child_width, child_height);
@@ -125,7 +122,7 @@ const SquareGuysArrangement = new Module.Class({
             }
         });
 
-        all_children.slice(visible_children_count, count).forEach((card) => {
+        all_children.slice(visible_children_count, all_children.length).forEach((card) => {
             card.set_child_visible(false);
         });
         Utils.set_container_clip(this);

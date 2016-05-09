@@ -51,18 +51,17 @@ const SideBySideArrangement = new Module.Class({
     },
 
     vfunc_get_preferred_height: function () {
-        if (this.get_filtered_models().length === 0)
+        if (this.get_cards().length === 0)
             return [0, 0];
 
         return [MENU_HEIGHT, MENU_HEIGHT];
     },
 
     vfunc_get_preferred_width: function () {
-        let filtered_models = this.get_filtered_models();
-        if (filtered_models.length === 0)
+        let all_cards = this.get_cards();
+        if (all_cards.length === 0)
             return [0, 0];
 
-        let all_cards = filtered_models.map((model) => this.get_card_for_model(model));
         let [min, nat] = all_cards[0].get_preferred_width();
 
         nat += all_cards.slice(1).reduce((accum, card) => {
@@ -82,7 +81,7 @@ const SideBySideArrangement = new Module.Class({
         if (this.get_card_count() === 0)
             return;
 
-        let all_cards = this.get_filtered_models().map((model) => this.get_card_for_model(model));
+        let all_cards = this.get_cards();
 
         let cards_width = all_cards.reduce((accum, card) => {
             let [, card_nat] = card.get_preferred_width();

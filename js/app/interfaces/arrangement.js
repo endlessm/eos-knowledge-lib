@@ -253,6 +253,17 @@ const Arrangement = new Lang.Interface({
     },
 
     /**
+     * Method: get_cards
+     * Get card models in the arrangement that are to be displayed.
+     *
+     * This method will return filtered and ordered cards.
+     */
+    get_cards: function () {
+        let models = this.get_filtered_models();
+        return models.map((model) => this.get_card_for_model(model)).filter((card) => card);
+    },
+
+    /**
      * Method: get_card_for_model
      * Get the created <Card> for a card model
      *
