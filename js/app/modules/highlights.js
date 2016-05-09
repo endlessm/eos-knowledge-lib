@@ -17,6 +17,9 @@ const Utils = imports.app.utils;
 
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
+// Big enough to still provide enough material for sorting and filtering:
+const _BATCH_SIZE = 50;
+
 /**
  * Class: Highlights
  * Module for showing featured articles as well as other sets
@@ -133,7 +136,7 @@ const Highlights = new Module.Class({
         this.add(arrangement);
 
         let query = new QueryObject.QueryObject({
-            limit: arrangement.get_max_cards(),
+            limit: _BATCH_SIZE,
             tags: set.child_tags,
         });
         Engine.get_default().get_objects_by_query(query, null, (engine, res) => {
