@@ -80,6 +80,8 @@ const ThirtiesArrangement = new Module.Class({
     },
 
     get_max_cards: function () {
+        if (this._max_rows === 0)
+            return -1;
         return COL_COUNT * this._max_rows;
     },
 
