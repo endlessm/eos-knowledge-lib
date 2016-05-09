@@ -142,7 +142,8 @@ const QuiltArrangement = new Module.Class({
             return;
 
         let all_cards = this.get_filtered_models()
-            .map(this.get_card_for_model, this);
+            .map(this.get_card_for_model, this)
+            .filter(card => card);
 
         let [horizontal_mode, total_cards_to_show] = this._determine_horizontal_mode(alloc.width);
         this._total_cards_to_show = total_cards_to_show;

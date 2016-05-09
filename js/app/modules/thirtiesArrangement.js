@@ -132,7 +132,8 @@ const ThirtiesArrangement = new Module.Class({
         let y = alloc.y;
 
         let all_cards = this.get_filtered_models()
-            .map(this.get_card_for_model, this);
+            .map(this.get_card_for_model, this)
+            .filter(card => card);
         all_cards.slice(0, visible_children_count).forEach((card, i) => {
             this.place_card(card, x, y, child_width, child_height);
 

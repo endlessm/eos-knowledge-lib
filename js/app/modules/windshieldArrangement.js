@@ -77,7 +77,8 @@ const WindshieldArrangement = new Module.Class({
             return;
 
         let all_cards = this.get_filtered_models()
-            .map(this.get_card_for_model, this);
+            .map(this.get_card_for_model, this)
+            .filter(card => card);
 
         this._small_mode = (alloc.width < Arrangement.get_size_with_spacing(CARD_SIZE_BIG, SECOND_ROW_CARD_COUNT, this._spacing));
 
