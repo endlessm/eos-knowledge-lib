@@ -30,11 +30,18 @@ const MinimalArrangement = new Module.Class({
         'transition-duration': GObject.ParamSpec.uint('transition-duration', '', '',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
             0, GLib.MAXUINT32, 1),
+        'max-cards': GObject.ParamSpec.int('max-cards', '', '',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
+            -1, GLib.MAXINT32, -1),
     },
 
     _init: function (props={}) {
         this.parent(props);
         this.show_all();
+    },
+
+    get_max_cards: function () {
+        return this.max_cards;
     },
 
     set_transition_type: function (type) {
