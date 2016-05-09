@@ -1,0 +1,20 @@
+{
+    "source": {
+        "include": [
+            "js/app/modules/aisleInteraction.js",
+            "js/app/modules/appBanner.js"
+        ]
+    },
+    "destination": "./docs/reference/modular-framework",
+    "plugins": [
+        "moduleplugin",
+        "plugins/underscore",
+        "plugins/markdown",
+        "plugins/summarize"
+    ],
+    "templates": {
+        "default": {
+            "outputSourceFiles": false
+        }
+    }
+}
