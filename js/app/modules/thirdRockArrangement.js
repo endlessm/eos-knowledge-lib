@@ -139,7 +139,8 @@ const ThirdRockArrangement = new Lang.Class({
             return;
 
         let all_cards = this.get_filtered_models()
-            .map(this.get_card_for_model, this);
+            .map(this.get_card_for_model, this)
+            .filter(card => card);
 
         let horizontal_mode = this._get_horizontal_mode(alloc.width);
         let available_width = alloc.width - (_CARD_COUNT - 1) * this._spacing;

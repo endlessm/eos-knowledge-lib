@@ -67,4 +67,11 @@ describe('Arrangement interface', function () {
             expect(model.title).toEqual('#nofilter');
         });
     });
+
+    it('does not create cards for cards beyond the max', function () {
+        spyOn(arrangement, 'pack_card');
+        arrangement.max_cards = 1;
+        Minimal.add_filtered_cards(arrangement, 3, 3);
+        expect(arrangement.pack_card.calls.count()).toBe(1);
+    });
 });

@@ -114,7 +114,8 @@ const SquareGuysArrangement = new Lang.Class({
         }
 
         let all_children = this.get_filtered_models()
-            .map(this.get_card_for_model, this);
+            .map(this.get_card_for_model, this)
+            .filter(card => card);
         let count = this.get_card_count();
         let visible_children_count = this._max_rows === 0 ? count :
             Math.min(count, this._max_rows  * col_count);

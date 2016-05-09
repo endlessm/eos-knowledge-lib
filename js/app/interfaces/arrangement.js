@@ -133,23 +133,7 @@ const Arrangement = new Lang.Interface({
         return this._cards_by_id().size;
     },
 
-    /**
-     * Method: add_model
-     * Add a card model to the arrangement
-     *
-     * Note that adding a card directly with *Gtk.Container.add()* or one of its
-     * more specialized relatives will not add a model to the arrangement.
-     *
-     * Parameters:
-     *   model - a <ContentObjectModel>
-     */
-    add_model: function (model) {
-        this._models_by_id().set(model.ekn_id, model);
-
-        let filter = this.get_filter();
-        if (filter && !filter.include(model))
-            return;
-
+    _create_card: function (model) {
         let card_props = { model: model };
         if (this._highlight_string)
             card_props.highlight_string = this._highlight_string;
@@ -164,12 +148,42 @@ const Arrangement = new Lang.Interface({
             });
         }
 
+        return card;
+    },
+
+    /**
+     * Method: add_model
+     * Add a card model to the arrangement
+     *
+     * Note that adding a card directly with *Gtk.Container.add()* or one of its
+     * more specialized relatives will not add a model to the arrangement.
+     *
+     * Parameters:
+     *   model - a <ContentObjectModel>
+     */
+    add_model: function (model) {
+        this._models_by_id().set(model.ekn_id, model);
+
+        let max_cards = this.get_max_cards();
         let order = this.get_order();
+
+        if (!order && max_cards > -1 && this.get_count() > max_cards)
+            return;
+
+        let filter = this.get_filter();
+        if (filter && !filter.include(model))
+            return;
+
+        let card;
         if (order) {
             let models = this.get_filtered_models();
             let position = models.indexOf(model);
+            if (max_cards > -1 && position >= max_cards)
+                return;
+            card = this._create_card(model);
             this.pack_card(card, position);
         } else {
+            card = this._create_card(model);
             this.pack_card(card);
         }
 
