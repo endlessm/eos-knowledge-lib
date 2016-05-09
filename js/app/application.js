@@ -10,7 +10,7 @@ const Dispatcher = imports.app.dispatcher;
 const Engine = imports.search.engine;
 const Knowledge = imports.app.knowledge;
 const LegacySearchProvider = imports.search.searchProvider;
-const InteractionLoader = imports.app.interactionLoader;
+const ControllerLoader = imports.app.controllerLoader;
 const Utils = imports.search.utils;
 
 const KnowledgeSearchIface = '\
@@ -47,7 +47,7 @@ const Application = new Knowledge.Class({
 
     _init: function (props={}) {
         this.parent(props);
-        this._interaction = null;
+        this._controller = null;
         this._knowledge_search_impl = Gio.DBusExportedObject.wrapJSObject(KnowledgeSearchIface, this);
 
         Engine.get_default().default_domain = Utils.domain_from_app_id(this.application_id);
@@ -90,25 +90,25 @@ const Application = new Knowledge.Class({
     },
 
     LoadPage: function (ekn_id, query, timestamp) {
-        this.ensure_interaction();
-        this._interaction.activate_search_result(timestamp, ekn_id, query);
+        this.ensure_controller();
+        this._controller.activate_search_result(timestamp, ekn_id, query);
     },
 
     LoadQuery: function (query, timestamp) {
-        this.ensure_interaction();
-        this._interaction.search(timestamp, query);
+        this.ensure_controller();
+        this._controller.search(timestamp, query);
     },
 
     vfunc_activate: function () {
         this.parent();
-        this.ensure_interaction();
-        this._interaction.desktop_launch(Gdk.CURRENT_TIME);
+        this.ensure_controller();
+        this._controller.desktop_launch(Gdk.CURRENT_TIME);
     },
 
     // To be overridden in subclass
-    ensure_interaction: function () {
-        if (this._interaction === null) {
-            this._interaction = InteractionLoader.create_interaction(this, this.resource_path);
+    ensure_controller: function () {
+        if (this._controller === null) {
+            this._controller = ControllerLoader.create_controller(this, this.resource_path);
         }
     },
 

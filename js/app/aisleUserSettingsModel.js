@@ -11,9 +11,9 @@ const Utils = imports.app.utils;
  * Class: AisleUserSettingsModel
  *
  * This model is an abstraction of all the user settings for apps using the
- * aisle interaction.
+ * aisle controller.
  *
- * FIXME: Maybe make this more general purposed beyond the aisle interaction? At
+ * FIXME: Maybe make this more general purposed beyond the aisle controller? At
  * least when other apps have need to persistent state.
  */
 const AisleUserSettingsModel = new Knowledge.Class({

@@ -5,7 +5,7 @@ const Utils = imports.search.utils;
 
 /**
  * Class: Launcher
- * Interface for interactions and other app launchers
+ * Interface for controllers and other app launchers
  *
  * Knowledge apps can be launched in three ways: directly from the desktop, as
  * the result of clicking on a desktop search result, and with a search query.
@@ -30,7 +30,7 @@ const Launcher = new Lang.Interface({
      * implementation of this method, to show your main window.
      *
      * Parameters:
-     *   timestamp - the time the interaction was requested at
+     *   timestamp - the time the controller was requested at
      */
     desktop_launch: Lang.Interface.UNIMPLEMENTED,
 
@@ -47,7 +47,7 @@ const Launcher = new Lang.Interface({
      * implementation of this method, to show your main window.
      *
      * Parameters:
-     *   timestamp - the time the interaction was requested at
+     *   timestamp - the time the controller was requested at
      *   query - the search query to process
      */
     search: function (timestamp, query) {
@@ -66,7 +66,7 @@ const Launcher = new Lang.Interface({
      * implementation of this method, to show your main window.
      *
      * Parameters:
-     *   timestamp - the time the interaction was requested at
+     *   timestamp - the time the controller was requested at
      *   id - the knowledge engine ID of the document to open
      *   query - the search query that led to this result
      */

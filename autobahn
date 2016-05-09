@@ -39,7 +39,7 @@ def expand_shortdef(module):
     if shortdef is None:
         return module
 
-    match = re.match(r'^([a-zA-Z0-9_]+)\s*\((.*)\)\s*$', shortdef)
+    match = re.match(r'^([a-zA-Z0-9_.]+)\s*\((.*)\)\s*$', shortdef)
     if match is None:
         module['type'] = shortdef
         return module
