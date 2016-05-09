@@ -12,6 +12,9 @@ const Engine = imports.search.engine;
 const Module = imports.app.interfaces.module;
 const QueryObject = imports.search.queryObject;
 
+// Big enough to still provide enough material for sorting and filtering:
+const _BATCH_SIZE = 50;
+
 /**
  * Class: SetPreviewCard
  *
@@ -94,7 +97,7 @@ const SetPreviewCard = new Lang.Class({
     load_content: function (done) {
         this.arrangement.visible = true;
         let query = new QueryObject.QueryObject({
-            limit: this.arrangement.get_max_cards(),
+            limit: _BATCH_SIZE,
             tags: this.model.child_tags,
             excluded_tags: ['EknSetObject'],
         });
