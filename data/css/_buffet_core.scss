@@ -1,6 +1,4 @@
-/* This is all temporary */
-
-@import url("resource:///com/endlessm/knowledge/data/css/common.css");
+@import 'common';
 
 EosWindow {
     background-size: cover;
@@ -128,7 +126,7 @@ EknSetPreviewCard:hover .title,
 .post-card.article,
 .list-card {
     background-color: white;
-    box-shadow: 0 0 5px alpha(black, 0.25);
+    box-shadow: 0 0 5px transparentize(black, 1 - 0.25);
     border-color: transparent;  /* used for the triangle in the corner */
 }
 
@@ -137,7 +135,7 @@ EknSetPreviewCard:hover .title,
 }
 
 .post-card.article .content-frame {
-    background-image: linear-gradient(to top, black 0%, alpha(black, 0.69) 30%, alpha(black, 0.5) 49%, alpha(black, 0) 100%);
+    background-image: linear-gradient(to top, black 0%, transparentize(black, 1 - 0.69) 30%, transparentize(black, 1 - 0.5) 49%, transparentize(black, 1) 100%);
 }
 
 .post-card.article .title {
@@ -158,7 +156,7 @@ EknSetPreviewCard:hover .title,
 
 .post-card.set .content-frame {
     padding: 20px 0px 20px 0px;
-    background-color: alpha(white, 0.949);
+    background-color: transparentize(white, 1 - 0.949);
 }
 
 .post-card.set .title {
@@ -225,7 +223,7 @@ EknAppBanner .subtitle {
 }
 
 .webview-tooltip {
-    background-color: alpha(black, 0.4);
+    background-color: transparentize(black, 1 - 0.4);
     border-radius: 8px 8px 8px 8px;
     padding: 10px 14px;
 }
