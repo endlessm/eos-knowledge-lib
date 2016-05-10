@@ -130,9 +130,10 @@ html {
             padding: 10px !important;
         }
 
-        /* Select special case cell(s) with world heritage site text */
-        tr:first-child > th.cabecera, /* es */
-        tr:first-child.media i {      /* pt */
+        /* Select special case cell(s) with world heritage site text and others */
+        tr:first-child > th.cabecera,   /* es */
+        tr:first-child.media i,         /* pt */
+        tr:first-child > th.topo.mapa { /* pt */
             line-height: 20px;
 
             /* Override Wikipedia's harcoded style */
