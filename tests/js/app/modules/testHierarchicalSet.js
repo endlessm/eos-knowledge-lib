@@ -63,27 +63,40 @@ describe('Hierarchical set module', function () {
     });
 
     describe('after dispatching set', function () {
-        let master_set, subsets, set_cards, articles, engine, scroll_server;
+        let master_set, subsets, set_cards, engine, scroll_server;
+        let articles_in_master_set, articles_in_subset;
 
         beforeEach(function () {
+            let master_tags = ['a', 'b', 'c'];
+            let subset_tags = ['e', 'f', 'g'];
+
             master_set = new SetObjectModel.SetObjectModel({
-                child_tags: ['a', 'b', 'c'],
+                child_tags: master_tags,
                 title: 'Set Title',
             });
-            subsets = ['e', 'f', 'g'].map(tag =>
+            subsets = subset_tags.map(tag =>
                 new SetObjectModel.SetObjectModel({
                     featured: true,
                     child_tags: [tag],
                     title: 'Set Title',
                 }));
 
-            articles = ['title1', 'title2', 'title3'].map(title =>
+            articles_in_master_set = ['title1', 'title2', 'title3'].map(title =>
                 new ArticleObjectModel.ArticleObjectModel({
                     title: title,
+                    tags: master_tags,
+                }));
+            articles_in_subset = ['title1', 'title2', 'title3'].map(title =>
+                new ArticleObjectModel.ArticleObjectModel({
+                    title: title,
+                    tags: master_tags.concat('e'),
                 }));
 
             engine = MockEngine.mock_default();
-            engine.get_objects_by_query_finish.and.returnValue([subsets.concat(articles), null]);
+            engine.get_objects_by_query_finish.and.returnValue([
+                subsets.concat(articles_in_master_set)
+                    .concat(articles_in_subset),
+                null]);
 
             module.reference_module('scroll-server', (scroll_module) => {
                 scroll_server = scroll_module;
@@ -112,7 +125,19 @@ describe('Hierarchical set module', function () {
         });
 
         it('adds article cards when receiving article models', function () {
-            expect(arrangement.get_count()).toBe(articles.length);
+            expect(arrangement.get_count()).toBe(articles_in_master_set.length);
+        });
+
+        it("shows articles with the master set's tags", function () {
+            let shown_models = arrangement.get_models();
+            articles_in_master_set.forEach(model =>
+                expect(shown_models).toContain(model));
+        });
+
+        it("doesn't show articles that also have subsets' tags", function () {
+            let shown_models = arrangement.get_models();
+            articles_in_subset.forEach(model =>
+                expect(shown_models).not.toContain(model));
         });
 
         it('clears all items but leaves title and arrangement', function () {
