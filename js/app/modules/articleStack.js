@@ -73,8 +73,12 @@ const ArticleStack = new Module.Class({
     },
 
     Slots: {
-        'card-type': {},
-        'nav-card-type': {},
+        'card-type': {
+            multi: true,
+        },
+        'nav-card-type': {
+            multi: true,
+        },
     },
 
     CONTENT_TRANSITION_DURATION: 500,

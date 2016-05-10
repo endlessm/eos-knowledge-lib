@@ -10,7 +10,6 @@ const Dispatcher = imports.app.dispatcher;
 const Engine = imports.search.engine;
 const Module = imports.app.interfaces.module;
 const QueryObject = imports.search.queryObject;
-const Scrollable = imports.app.interfaces.scrollable;
 const SetObjectModel = imports.search.setObjectModel;
 
 const BATCH_SIZE = 15;
@@ -40,11 +39,16 @@ const HierarchicalSet = new Module.Class({
     Name: 'HierarchicalSet',
     CssName: 'EknHierarchicalSet',
     Extends: Gtk.Grid,
-    Implements: [Scrollable.Scrollable],
 
     Slots: {
         'arrangement': {},
-        'set-card-type': {},
+        'set-card-type': {
+            multi: true,
+        },
+    },
+
+    References: {
+        'scroll-server': {},
     },
 
     _init: function (props={}) {
@@ -65,7 +69,13 @@ const HierarchicalSet = new Module.Class({
         this._current_model = null;
         this._current_index = -1;
         this._is_feature_item_sent = false;
-        this.scrollable_init();
+
+        this.reference_module('scroll-server', (module) => {
+            this._scroll_server_module = module;
+            this._scroll_server_module.connect('need-more-content', () => {
+                this.show_more_content();
+            });
+        });
 
         Dispatcher.get_default().register((payload) => {
             switch (payload.action_type) {
@@ -89,10 +99,7 @@ const HierarchicalSet = new Module.Class({
         this._current_index += 1;
         set_card.visible = true;
         set_card.load_content();
-        Dispatcher.get_default().dispatch({
-            action_type: Actions.CONTENT_ADDED,
-            scroll_server: this.scroll_server,
-        });
+        this._scroll_server_module.new_content_added();
     },
 
     _show_set: function (model) {
@@ -143,10 +150,7 @@ const HierarchicalSet = new Module.Class({
             if (is_loading_sets)
                 this.show_more_content();
             this._send_feature_item();
-            Dispatcher.get_default().dispatch({
-                action_type: Actions.CONTENT_ADDED,
-                scroll_server: this.scroll_server,
-            });
+            this._scroll_server_module.new_content_added();
         });
         this._load_operation_in_progress = true;
     },

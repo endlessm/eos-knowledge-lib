@@ -19,8 +19,6 @@ const ARTICLE_LINK_CLICKED = 'article-link-clicked';
 const NEED_MORE_SETS = 'need-more-sets';
 const NEED_MORE_ITEMS = 'need-more-items';
 const NEED_MORE_SEARCH = 'need-more-search';
-const NEED_MORE_CONTENT = 'need-more-content';
-const CONTENT_ADDED = 'content-added';
 const ARTICLE_LOAD_FAILED = 'article-load-failed';
 const LEAVE_PREVIEW_CLICKED = 'leave-preview-clicked';
 

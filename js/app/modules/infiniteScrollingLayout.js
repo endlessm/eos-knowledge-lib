@@ -33,13 +33,6 @@ const InfiniteScrollingLayout = new Module.Class({
 
         this._viewport.add(content);
 
-        this.connect('need-more-content', () => {
-            Dispatcher.get_default().dispatch({
-                action_type: Actions.NEED_MORE_CONTENT,
-                scroll_server: this.name,
-            });
-        });
-
         Dispatcher.get_default().register((payload) => {
             switch (payload.action_type) {
                 case Actions.SHOW_HOME_PAGE:
@@ -48,11 +41,6 @@ const InfiniteScrollingLayout = new Module.Class({
                 case Actions.SHOW_SEARCH_PAGE:
                 case Actions.SHOW_ARTICLE_PAGE:
                     this._return_to_top();
-                    break;
-                case Actions.CONTENT_ADDED:
-                    if (payload.scroll_server === this.name) {
-                        this.new_content_added();
-                    }
                     break;
             }
         });

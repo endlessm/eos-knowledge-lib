@@ -13,6 +13,7 @@ const Minimal = imports.tests.minimal;
 const MockDispatcher = imports.tests.mockDispatcher;
 const MockEngine = imports.tests.mockEngine;
 const MockFactory = imports.tests.mockFactory;
+const MockWidgets = imports.tests.mockWidgets;
 const SetObjectModel = imports.search.setObjectModel;
 const HierarchicalSet = imports.app.modules.hierarchicalSet;
 const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
@@ -25,6 +26,7 @@ describe('Hierarchical set module', function () {
         dispatcher = MockDispatcher.mock_default();
 
         factory = new MockFactory.MockFactory();
+        factory.add_reference_mock('theme-scroll', MockWidgets.MockScrolledArrangement);
         factory.add_named_mock('arrangement', Minimal.MinimalArrangement, {
             'card-type': 'article-card',
         });
@@ -33,6 +35,9 @@ describe('Hierarchical set module', function () {
         factory.add_named_mock('hierarchical', HierarchicalSet.HierarchicalSet, {
             'arrangement': 'arrangement',
             'set-card-type': 'set-card',
+        }, {
+        }, {
+            'scroll-server': 'theme-scroll',
         });
         module = factory.create_named_module('hierarchical', {
             visible: true,
@@ -58,7 +63,7 @@ describe('Hierarchical set module', function () {
     });
 
     describe('after dispatching set', function () {
-        let master_set, subsets, set_cards, articles, engine;
+        let master_set, subsets, set_cards, articles, engine, scroll_server;
 
         beforeEach(function () {
             master_set = new SetObjectModel.SetObjectModel({
@@ -79,6 +84,11 @@ describe('Hierarchical set module', function () {
 
             engine = MockEngine.mock_default();
             engine.get_objects_by_query_finish.and.returnValue([subsets.concat(articles), null]);
+
+            module.reference_module('scroll-server', (scroll_module) => {
+                scroll_server = scroll_module;
+                spyOn(scroll_server, 'new_content_added');
+            });
 
             dispatcher.dispatch({
                 action_type: Actions.SHOW_SET,
@@ -123,8 +133,7 @@ describe('Hierarchical set module', function () {
         });
 
         it('acknowledges when content had been added', function () {
-            expect(dispatcher.last_payload_with_type(Actions.CONTENT_ADDED))
-                .toBeDefined();
+            expect(scroll_server.new_content_added).toHaveBeenCalled();
         });
 
         describe('when clicking', function () {

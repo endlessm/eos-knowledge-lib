@@ -3,7 +3,7 @@
 /* exported add_filtered_cards, add_ordered_cards, MinimalOrder,
 MinimalArrangement, MinimalBackCover, MinimalBinModule, MinimalCard,
 MinimalDocumentCard, MinimalHomePage, MinimalInteraction, MinimalModule,
-MinimalScrollable, MinimalPage, TitleFilter */
+MinimalPage, TitleFilter */
 
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
@@ -19,7 +19,6 @@ const Launcher = imports.app.interfaces.launcher;
 const Module = imports.app.interfaces.module;
 const NavigationCard = imports.app.interfaces.navigationCard;
 const Order = imports.app.interfaces.order;
-const Scrollable = imports.app.interfaces.scrollable;
 
 const MinimalArrangement = new Module.Class({
     Name: 'MinimalArrangement',
@@ -85,19 +84,6 @@ const MinimalNavigationCard = new Module.Class({
     Name: 'MinimalNavigationCard',
     Extends: Gtk.Button,
     Implements: [Card.Card, NavigationCard.NavigationCard],
-});
-
-const MinimalScrollable = new Module.Class({
-    Name: 'MinimalScrollable',
-    Extends: GObject.Object,
-    Implements: [Scrollable.Scrollable],
-
-    _init: function (props={}) {
-        this.parent(props);
-        this.scrollable_init();
-    },
-
-    show_more_content: function () {},
 });
 
 const MinimalInteraction = new Module.Class({

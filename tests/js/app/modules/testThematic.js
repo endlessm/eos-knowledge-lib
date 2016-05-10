@@ -10,6 +10,7 @@ const Minimal = imports.tests.minimal;
 const MockDispatcher = imports.tests.mockDispatcher;
 const MockEngine = imports.tests.mockEngine;
 const MockFactory = imports.tests.mockFactory;
+const MockWidgets = imports.tests.mockWidgets;
 const SetObjectModel = imports.search.setObjectModel;
 const Thematic = imports.app.modules.thematic;
 const Utils = imports.tests.utils;
@@ -23,6 +24,7 @@ describe('Thematic module', function () {
         dispatcher = MockDispatcher.mock_default();
 
         factory = new MockFactory.MockFactory();
+        factory.add_reference_mock('theme-scroll', MockWidgets.MockScrolledArrangement);
         factory.add_named_mock('arrangement', Minimal.MinimalArrangement, {
             'card-type': 'article-card',
         });
@@ -31,6 +33,9 @@ describe('Thematic module', function () {
         factory.add_named_mock('highlights', Thematic.Thematic, {
             'arrangement': 'arrangement',
             'header-card-type': 'set-card',
+        }, {
+        }, {
+            'scroll-server': 'theme-scroll',
         });
         module = factory.create_named_module('highlights');
 

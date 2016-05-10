@@ -109,8 +109,8 @@
                 "top-menu": "main-menu",
                 "content": {
                     "type": "InfiniteScrollingLayout",
+                    "id": "theme-scroll",
                     "properties": {
-                        "name": "theme-scroll",
                         "bottom-buffer": 250
                     },
                     "slots": {
@@ -154,8 +154,7 @@
                                                                 "margin-top": 20,
                                                                 "margin-bottom": 20,
                                                                 "margin-start": 20,
-                                                                "margin-end": 20,
-                                                                "scroll-server": "theme-scroll"
+                                                                "margin-end": 20
                                                             },
                                                             "slots": {
                                                                 "arrangement": {
@@ -177,6 +176,9 @@
                                                                     }
                                                                 },
                                                                 "set-card-type": "set-preview"
+                                                            },
+                                                            "references": {
+                                                                "scroll-server": "theme-scroll"
                                                             }
                                                         }
                                                     }

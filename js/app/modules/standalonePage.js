@@ -24,7 +24,9 @@ const StandalonePage = new Module.Class({
     Extends: Gtk.Frame,
 
     Slots: {
-        'card-type': {},
+        'card-type': {
+            multi: true,
+        },
     },
 
     _init: function (props={}) {

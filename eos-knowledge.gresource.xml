@@ -110,7 +110,6 @@
     <file>js/app/interfaces/module.js</file>
     <file>js/app/interfaces/navigationCard.js</file>
     <file>js/app/interfaces/order.js</file>
-    <file>js/app/interfaces/scrollable.js</file>
     <file>js/app/knowledge.js</file>
     <file>js/app/libs/cssParse.js</file>
     <file>js/app/libs/mustache.js</file>

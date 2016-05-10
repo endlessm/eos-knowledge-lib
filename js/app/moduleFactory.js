@@ -64,6 +64,11 @@ const ModuleFactory = new Knowledge.Class({
         // After this point, the app.json must be the current version!
 
         this._anonymous_name_to_description = {};
+
+        this._ids = new Set();
+        this._id_to_module = new Map();
+        this._id_to_pending_callbacks = new Map();
+        this._extract_ids(this.app_json['modules']['interaction'], false);
     },
 
     get version() {
@@ -88,12 +93,15 @@ const ModuleFactory = new Knowledge.Class({
 
     create_named_module: function (name, extra_props={}) {
         let description = this._get_module_description_by_name(name);
+        let id = ('id' in description) ? description['id'] : null;
 
         let module_class = this.warehouse.type_to_class(description['type']);
         let module_props = {
             factory: this,
             factory_name: name,
         };
+        if (id)
+            module_props['factory_id'] = id;
 
         if (description.hasOwnProperty('properties')) {
             let properties = description['properties'];
@@ -106,7 +114,14 @@ const ModuleFactory = new Knowledge.Class({
         }
         Lang.copyProperties(extra_props, module_props);
 
-        return new module_class(module_props);
+        let module = new module_class(module_props);
+
+        if (id) {
+            this._id_to_module.set(id, module);
+            this._deliver_module_reference(module);
+        }
+
+        return module;
     },
 
     /**
@@ -140,6 +155,54 @@ const ModuleFactory = new Knowledge.Class({
     },
 
     /**
+     * Method: request_module_reference
+     * Passes an existing module instance through the callback
+     *
+     * Passes an existing module instance through the callback if the module
+     * instance is available, if is not available, just keeps the callback so
+     * it can be called later when the module is created.
+     *
+     * Parameters:
+     *   module - module asking for another module instance
+     *   reference_slot - reference slot which contains the id of module instance
+     *   callback - function to be called whenever the instance is available
+     */
+    request_module_reference: function (module, reference_slot, callback) {
+        let id = this._get_id_for_reference(module, reference_slot);
+        if (id === null) {
+            callback(null);
+            return;
+        }
+        if (this._id_to_module.has(id)) {
+            callback(this._id_to_module.get(id));
+            return;
+        }
+        if (!this._id_to_pending_callbacks.has(id)) {
+            this._id_to_pending_callbacks.set(id, []);
+        }
+        this._id_to_pending_callbacks.get(id).push(callback);
+    },
+
+    _deliver_module_reference: function (module) {
+        let id = module.factory_id;
+        if (!this._id_to_pending_callbacks.has(id))
+            return;
+        this._id_to_pending_callbacks.get(id).forEach((callback) => {
+            callback(module);
+        });
+        this._id_to_pending_callbacks.delete(id);
+    },
+
+    _get_id_for_reference: function (parent_module, reference_slot) {
+        if (!(reference_slot in parent_module.constructor.__references__))
+            throw new Error('No referenced slot named ' + reference_slot);
+        let description = this._get_module_description_by_name(parent_module.factory_name);
+        if (!(reference_slot in description['references']))
+            return null;
+        return description['references'][reference_slot];
+    },
+
+    /**
      * Method: _get_module_description_by_name
      * Returns JSON description of module
      *
@@ -160,5 +223,41 @@ const ModuleFactory = new Knowledge.Class({
         let name = factory_name + '.' + slot;
         this._anonymous_name_to_description[name] = description;
         return name;
+    },
+
+    _extract_ids: function (parent_description, parent_is_multi) {
+        this._check_id(parent_description, parent_is_multi);
+        if (!('slots' in parent_description))
+            return;
+
+        Object.keys(parent_description['slots']).forEach((slot_name) => {
+            let slot_value = parent_description['slots'][slot_name];
+            /* keep track of whether is inside or below a multi slot */
+            let is_multi = this._is_multi_slot(parent_description, slot_name, parent_is_multi);
+            if(!slot_value)
+                return;
+            if (typeof slot_value === 'string')
+                slot_value = this._get_module_description_by_name(slot_value);
+
+            this._extract_ids(slot_value, is_multi);
+        });
+    },
+
+    _check_id: function (description, parent_is_multi) {
+        if (!('id' in description))
+            return;
+        let id = description['id'];
+        if (parent_is_multi)
+            throw new Error('id ' + id + ' defined in a multi slot');
+        if (this._ids.has(id))
+            throw new Error('id ' + id + ' is not unique');
+
+        this._ids.add(id);
+    },
+
+    _is_multi_slot: function (description, slot_name, parent_is_multi) {
+        let module_class = this.warehouse.type_to_class(description['type']);
+        let slot_props = module_class.__slots__[slot_name];
+        return (parent_is_multi || ('multi' in slot_props && slot_props['multi']));
     },
 });
