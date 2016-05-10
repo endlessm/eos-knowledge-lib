@@ -14,6 +14,7 @@ const MockDispatcher = imports.tests.mockDispatcher;
 const MockEngine = imports.tests.mockEngine;
 const MockFactory = imports.tests.mockFactory;
 const MockWidgets = imports.tests.mockWidgets;
+const SetMap = imports.app.setMap;
 const SetObjectModel = imports.search.setObjectModel;
 const HierarchicalSet = imports.app.modules.hierarchicalSet;
 const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
@@ -64,7 +65,7 @@ describe('Hierarchical set module', function () {
 
     describe('after dispatching set', function () {
         let master_set, subsets, set_cards, engine, scroll_server;
-        let articles_in_master_set, articles_in_subset;
+        let articles_in_master_set, articles_in_subset, articles_with_extra_tags;
 
         beforeEach(function () {
             let master_tags = ['a', 'b', 'c'];
@@ -91,11 +92,19 @@ describe('Hierarchical set module', function () {
                     title: title,
                     tags: master_tags.concat('e'),
                 }));
+            articles_with_extra_tags = [new ArticleObjectModel.ArticleObjectModel({
+                title: 'weird',
+                tags: master_tags.concat('bob', 'dylan'),
+            })];
+
+            spyOn(SetMap, 'get_set_for_tag').and.callFake(tag =>
+                subsets[subset_tags.indexOf(tag)]);
 
             engine = MockEngine.mock_default();
             engine.get_objects_by_query_finish.and.returnValue([
                 subsets.concat(articles_in_master_set)
-                    .concat(articles_in_subset),
+                    .concat(articles_in_subset)
+                    .concat(articles_with_extra_tags),
                 null]);
 
             module.reference_module('scroll-server', (scroll_module) => {
@@ -125,7 +134,8 @@ describe('Hierarchical set module', function () {
         });
 
         it('adds article cards when receiving article models', function () {
-            expect(arrangement.get_count()).toBe(articles_in_master_set.length);
+            expect(arrangement.get_count()).toBe(articles_in_master_set.length +
+                articles_with_extra_tags.length);
         });
 
         it("shows articles with the master set's tags", function () {
@@ -138,6 +148,12 @@ describe('Hierarchical set module', function () {
             let shown_models = arrangement.get_models();
             articles_in_subset.forEach(model =>
                 expect(shown_models).not.toContain(model));
+        });
+
+        it('ignores tags that are not sets', function () {
+            let shown_models = arrangement.get_models();
+            articles_with_extra_tags.forEach(model =>
+                expect(shown_models).toContain(model));
         });
 
         it('clears all items but leaves title and arrangement', function () {

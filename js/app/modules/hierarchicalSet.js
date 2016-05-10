@@ -10,6 +10,7 @@ const Dispatcher = imports.app.dispatcher;
 const Engine = imports.search.engine;
 const Module = imports.app.interfaces.module;
 const QueryObject = imports.search.queryObject;
+const SetMap = imports.app.setMap;
 const SetObjectModel = imports.search.setObjectModel;
 
 const BATCH_SIZE = 15;
@@ -161,7 +162,8 @@ const HierarchicalSet = new Module.Class({
         let tags_in_current_model =
             new Set(this._current_model.child_tags.concat(model_parent_tags));
         let tags_not_in_current_model = model.tags.filter(tag =>
-            !tag.startsWith('Ekn') && !tags_in_current_model.has(tag));
+            !tag.startsWith('Ekn') && !tags_in_current_model.has(tag) &&
+            SetMap.get_set_for_tag(tag));
         return (tags_not_in_current_model.length === 0);
     },
 
