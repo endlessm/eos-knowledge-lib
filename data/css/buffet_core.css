@@ -41,15 +41,6 @@ EknSetPreviewCard:hover .title,
     color: #49bde3;
 }
 
-/* FIXME: why does removing this cause ResponsiveMargins to lose its margins? */
-EknSuggestedCategories .browse-content .after,
-EknHighlights .title-card .after,
-EknSetPreviewCard .title .after,
-EknThematic .title-card .after {
-    -EknThemeableImage-min-height: 10;
-    -EknThemeableImage-min-width: 11;
-}
-
 /* default size */
 .card {
     font-size: 18.7px;
