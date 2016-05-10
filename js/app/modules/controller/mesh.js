@@ -521,12 +521,12 @@ const Mesh = new Module.Class({
         if (this.factory.version >= 2) {
             provider.load_from_data(this.css);
         } else if (this.template_type === 'encyclopedia') {
-            let css_file = Gio.File.new_for_uri(DATA_RESOURCE_PATH + 'css/endless_encyclopedia.css');
+            let css_file = Gio.File.new_for_uri(DATA_RESOURCE_PATH + 'css/encyclopedia.css');
             provider.load_from_file(css_file);
         } else {
             this._style_knobs = StyleKnobGenerator.get_knobs_from_css(this.css, this.template_type);
             let css_path = Gio.File.new_for_uri(DATA_RESOURCE_PATH).get_child('css');
-            let css_files = [css_path.get_child('endless_knowledge.css')];
+            let css_files = [css_path.get_child('mesh.css')];
             // FIXME: Get theme from app.json once we have finalized that
             let theme = this.template_type === 'A' ? 'templateA' : undefined;
             if (typeof theme !== 'undefined') {

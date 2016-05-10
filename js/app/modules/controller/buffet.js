@@ -69,7 +69,7 @@ const Buffet = new Module.Class({
         'theme': GObject.ParamSpec.string('theme', 'Theme',
             'Theme CSS specification filename',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            'endless_buffet'),
+            'buffet'),
     },
 
     BRAND_PAGE_TIME_MS: 1500,

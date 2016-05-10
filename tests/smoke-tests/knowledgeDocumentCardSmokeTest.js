@@ -56,7 +56,7 @@ const TestApplication = new Lang.Class({
         this.parent();
 
         let provider = new Gtk.CssProvider();
-        let css_file = Gio.File.new_for_uri('resource:///com/endlessm/knowledge/data/css/endless_buffet.css');
+        let css_file = Gio.File.new_for_uri('resource:///com/endlessm/knowledge/data/css/buffet.css');
         provider.load_from_file(css_file);
         Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(),
                                                  provider,

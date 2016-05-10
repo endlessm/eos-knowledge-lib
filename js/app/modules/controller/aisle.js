@@ -110,7 +110,7 @@ const Aisle = new Module.Class({
     _NUM_ARTICLE_PAGE_STYLES: 3,
 
     _init: function (props) {
-        let css = Gio.File.new_for_uri(DATA_RESOURCE_PATH + 'css/endless_reader.css');
+        let css = Gio.File.new_for_uri(DATA_RESOURCE_PATH + 'css/aisle.css');
         Utils.add_css_provider_from_file(css, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 
         props.settings = props.settings || new AisleUserSettingsModel.AisleUserSettingsModel({
@@ -236,7 +236,7 @@ const Aisle = new Module.Class({
      */
     load_theme: function () {
         let css_path = Gio.File.new_for_uri(DATA_RESOURCE_PATH).get_child('css');
-        let css_files = [css_path.get_child('endless_reader.css')];
+        let css_files = [css_path.get_child('aisle.css')];
         // FIXME: Get theme from app.json once we have finalized that
         let theme = 'jungle';
         if (typeof theme !== 'undefined') {
