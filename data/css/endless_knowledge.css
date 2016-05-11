@@ -507,6 +507,10 @@ EosWindow scrollbar trough {
     font-weight: bold;
 }
 
+.document-card .title.collapsed {
+    margin-bottom: 10px;
+}
+
 .nav-back-button, .nav-forward-button {
     color: white;
     background-color: alpha(black, 0.2);
