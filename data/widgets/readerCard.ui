@@ -21,8 +21,6 @@
               <object class="GtkFrame" id="decorative-bar">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="margin_start">8</property>
-                <property name="margin_end">8</property>
                 <property name="hexpand">True</property>
                 <property name="label_xalign">0</property>
                 <property name="shadow_type">none</property>
@@ -44,10 +42,6 @@
                 <property name="no_show_all">True</property>
                 <property name="halign">start</property>
                 <property name="valign">center</property>
-                <property name="margin_start">8</property>
-                <property name="margin_end">8</property>
-                <property name="margin_top">8</property>
-                <property name="margin_bottom">8</property>
                 <property name="hexpand">True</property>
                 <property name="vexpand">True</property>
                 <property name="use_markup">True</property>
