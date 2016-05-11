@@ -1,147 +1,142 @@
 {
     "modules": {
-        "document-card": {
-            "type": "ReaderDocumentCard"
-        },
         "interaction": {
             "type": "AisleInteraction",
             "slots": {
-                "window": "window"
-            }
-        },
-        "window": {
-            "type": "ReaderWindow",
-            "slots": {
-                "search": {
-                    "type": "SearchBox"
-                },
-                "navigation": {
-                    "type": "Navigation"
-                },
-                "lightbox": {
-                    "type": "MediaLightbox",
+                "window": {
+                    "type": "ReaderWindow",
                     "slots": {
-                        "card-type": {
-                            "type": "MediaCard"
-                        }
-                    }
-                },
-                "document-arrangement": {
-                    "type": "CarouselArrangement",
-                    "slots": {
-                        "card-type": "document-card"
-                    }
-                },
-                "front-page": "front-page",
-                "search-page": "search-page",
-                "standalone-page": "standalone-page",
-                "archive-page": "archive-page",
-                "back-page": "back-page"
-            }
-        },
-        "front-page": {
-            "type": "SplitPercentageTemplate",
-            "slots": {
-                "start": {
-                    "type": "ResponsiveMargins",
-                    "slots": {
-                        "content": {
-                            "type": "AppBanner",
-                            "properties": {
-                                "show-subtitle": true,
-                                "subtitle-capitalization": "uppercase",
-                                "valign": "start",
-                                "halign": "start"
-                            }
-                        }
-                    }
-                },
-                "end": {
-                    "type": "ResponsiveMargins",
-                    "slots": {
-                        "content": {
-                            "type": "ItemGroup",
+                        "search": {
+                            "type": "SearchBox"
+                        },
+                        "navigation": {
+                            "type": "Navigation"
+                        },
+                        "lightbox": {
+                            "type": "MediaLightbox",
                             "slots": {
-                                "arrangement": {
-                                    "type": "OverflowArrangement",
-                                    "properties": {
-                                        "orientation": "vertical"
-                                    },
+                                "card-type": {
+                                    "type": "MediaCard"
+                                }
+                            }
+                        },
+                        "document-arrangement": {
+                            "type": "CarouselArrangement",
+                            "slots": {
+                                "card-type": {
+                                    "type": "ReaderDocumentCard"
+                                }
+                            }
+                        },
+                        "front-page": {
+                            "type": "SplitPercentageTemplate",
+                            "slots": {
+                                "start": {
+                                    "type": "ResponsiveMargins",
                                     "slots": {
-                                        "card-type": {
-                                            "type": "ArticleSnippetCard"
+                                        "content": {
+                                            "type": "AppBanner",
+                                            "properties": {
+                                                "show-subtitle": true,
+                                                "subtitle-capitalization": "uppercase",
+                                                "valign": "start",
+                                                "halign": "start"
+                                            }
+                                        }
+                                    }
+                                },
+                                "end": {
+                                    "type": "ResponsiveMargins",
+                                    "slots": {
+                                        "content": {
+                                            "type": "ItemGroup",
+                                            "slots": {
+                                                "arrangement": {
+                                                    "type": "OverflowArrangement",
+                                                    "properties": {
+                                                        "orientation": "vertical"
+                                                    },
+                                                    "slots": {
+                                                        "card-type": {
+                                                            "type": "ArticleSnippetCard"
+                                                        }
+                                                    }
+                                                }
+                                            },
+                                            "properties": {
+                                                "expand": true,
+                                                "halign": "end",
+                                                "valign": "fill"
+                                            }
                                         }
                                     }
                                 }
-                            },
-                            "properties": {
-                                "expand": true,
-                                "halign": "end",
-                                "valign": "fill"
                             }
-                        }
-                    }
-                }
-            }
-        },
-        "search-page": {
-            "type": "BannerTemplate",
-            "slots": {
-                "banner": {
-                    "type": "SearchBanner",
-                    "properties": {
-                        "halign": "center"
-                    }
-                },
-                "content": {
-                    "type": "Search",
-                    "properties": {
-                        "message-halign": "center"
-                    },
-                    "slots": {
-                        "arrangement": {
-                            "type": "GridArrangement",
-                            "properties": {
-                                "bottom-buffer": 250,
-                                "max-children-per-line": 9
-                            },
+                        },
+                        "search-page": {
+                            "type": "BannerTemplate",
                             "slots": {
-                                "card-type": {
-                                    "type": "ReaderCard"
+                                "banner": {
+                                    "type": "SearchBanner",
+                                    "properties": {
+                                        "halign": "center"
+                                    }
+                                },
+                                "content": {
+                                    "type": "Search",
+                                    "properties": {
+                                        "message-halign": "center"
+                                    },
+                                    "slots": {
+                                        "arrangement": {
+                                            "type": "GridArrangement",
+                                            "properties": {
+                                                "bottom-buffer": 250,
+                                                "max-children-per-line": 9
+                                            },
+                                            "slots": {
+                                                "card-type": {
+                                                    "type": "ReaderCard"
+                                                }
+                                            }
+                                        }
+                                    }
                                 }
                             }
-                        }
-                    }
-                }
-            }
-        },
-        "standalone-page": {
-            "type": "BannerTemplate",
-            "slots": {
-                "banner": {
-                    "type": "StandaloneBanner"
-                },
-                "content": {
-                    "type": "StandalonePage",
-                    "slots": {
-                        "card-type": {
-                            "type": "ReaderDocumentCard",
-                            "properties": {
-                                "display-context": false
+                        },
+                        "standalone-page": {
+                            "type": "BannerTemplate",
+                            "slots": {
+                                "banner": {
+                                    "type": "StandaloneBanner"
+                                },
+                                "content": {
+                                    "type": "StandalonePage",
+                                    "slots": {
+                                        "card-type": {
+                                            "type": "ReaderDocumentCard",
+                                            "properties": {
+                                                "display-context": false
+                                            }
+                                        }
+                                    }
+                                }
                             }
+                        },
+                        "archive-page": {
+                            "type": "StandalonePage",
+                            "slots": {
+                                "card-type": {
+                                    "type": "ReaderDocumentCard"
+                                }
+                            }
+                        },
+                        "back-page": {
+                            "type": "BackCover"
                         }
                     }
                 }
             }
-        },
-        "archive-page": {
-            "type": "StandalonePage",
-            "slots": {
-                "card-type": "document-card"
-            }
-        },
-        "back-page": {
-            "type": "BackCover"
         }
     }
 }

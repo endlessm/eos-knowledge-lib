@@ -6,147 +6,341 @@
                 "theme": "endless_buffet"
             },
             "slots": {
-                "window": "window"
-            }
-        },
-        "window": {
-            "type": "Window",
-            "properties": {
-                "animations": false
-            },
-            "slots": {
-                "search": {
-                    "type": "SearchBox"
-                },
-                "lightbox": {
-                    "type": "MediaLightbox",
-                    "slots": {
-                        "card-type": {
-                            "type": "MediaCard"
-                        }
-                    }
-                },
-                "brand-page": {
-                    "type": "AppBanner",
+                "window": {
+                    "type": "Window",
                     "properties": {
-                        "max-fraction": 0.6,
-                        "show-subtitle": true,
-                        "subtitle-capitalization": "uppercase"
-                    }
-                },
-                "home-page": "home-page",
-                "section-page": "section-page",
-                "search-page": "search-page",
-                "all-sets-page": "all-sets-page",
-                "article-page": "article-page"
-            }
-        },
-        "all-sets-page": {
-            "type": "SideMenuTemplate",
-            "slots": {
-                "context": "context-banner",
-                "sidebar": "main-menu",
-                "content": {
-                    "type": "InfiniteScrollingLayout",
+                        "animations": false
+                    },
                     "slots": {
-                        "content": {
-                            "type": "ResponsiveMargins",
+                        "search": {
+                            "type": "SearchBox"
+                        },
+                        "lightbox": {
+                            "type": "MediaLightbox",
                             "slots": {
-                                "content": {
-                                    "type": "SetGroup",
+                                "card-type": {
+                                    "type": "MediaCard"
+                                }
+                            }
+                        },
+                        "brand-page": {
+                            "type": "AppBanner",
+                            "properties": {
+                                "max-fraction": 0.6,
+                                "show-subtitle": true,
+                                "subtitle-capitalization": "uppercase"
+                            }
+                        },
+                        "home-page": {
+                            "type": "SideMenuTemplate",
+                            "slots": {
+                                "context": {
+                                    "type": "ContextBanner"
+                                },
+                                "sidebar": {
+                                    "type": "SuggestedCategories",
+                                    "properties": {
+                                        "show-title": false
+                                    },
                                     "slots": {
                                         "arrangement": {
-                                            "type": "SquareGuysArrangement",
-                                            "properties": {
-                                                "spacing": 20
-                                            },
+                                            "type": "ScrollingListArrangement",
                                             "slots": {
-                                                "card-type": "set-card"
+                                                "card-type": {
+                                                    "type": "TitleCard",
+                                                    "properties": {
+                                                        "title-capitalization": "uppercase"
+                                                    }
+                                                },
+                                                "filter": {
+                                                    "type": "FeaturedFilter"
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "content": {
+                                    "type": "InfiniteScrollingLayout",
+                                    "slots": {
+                                        "content": {
+                                            "type": "ResponsiveMargins",
+                                            "slots": {
+                                                "content": {
+                                                    "type": "TwoPieceTemplate",
+                                                    "properties": {
+                                                        "orientation": "vertical"
+                                                    },
+                                                    "slots": {
+                                                        "first": {
+                                                            "type": "Highlights",
+                                                            "properties": {
+                                                                "halign": "center",
+                                                                "support-sets": 2
+                                                            },
+                                                            "slots": {
+                                                                "highlight-arrangement": {
+                                                                    "type": "WindshieldArrangement",
+                                                                    "properties": {
+                                                                        "spacing": 20
+                                                                    },
+                                                                    "slots": {
+                                                                        "card-type": {
+                                                                            "type": "PostCard",
+                                                                            "properties": {
+                                                                                "title-capitalization": "uppercase",
+                                                                                "context-capitalization": "uppercase"
+                                                                            }
+                                                                        },
+                                                                        "filter": {
+                                                                            "type": "SetsFilter",
+                                                                            "properties": {
+                                                                                "invert": true
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                },
+                                                                "support-card-type": {
+                                                                    "type": "SetPreviewCard",
+                                                                    "properties": {
+                                                                        "show-trigger": false
+                                                                    },
+                                                                    "slots": {
+                                                                        "arrangement": {
+                                                                            "type": "SquareGuysArrangement",
+                                                                            "properties": {
+                                                                                "spacing": 20,
+                                                                                "max-rows": 2
+                                                                            },
+                                                                            "slots": {
+                                                                                "card-type": {
+                                                                                    "type": "ThumbCard",
+                                                                                    "properties": {
+                                                                                        "title-capitalization": "uppercase",
+                                                                                        "context-capitalization": "uppercase"
+                                                                                    }
+                                                                                },
+                                                                                "filter": {
+                                                                                    "type": "SetsFilter",
+                                                                                    "properties": {
+                                                                                        "invert": true
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        },
+                                                                        "header-card-type": {
+                                                                            "type": "TitleCard"
+                                                                        }
+                                                                    }
+                                                                },
+                                                                "sets-filter": {
+                                                                    "type": "FeaturedFilter",
+                                                                    "properties": {
+                                                                        "invert": true
+                                                                    }
+                                                                }
+                                                            }
+                                                        },
+                                                        "second": {
+                                                            "type": "SuggestedCategories",
+                                                            "slots": {
+                                                                "arrangement": {
+                                                                    "type": "SquareGuysArrangement",
+                                                                    "properties": {
+                                                                        "max-rows": 1,
+                                                                        "valign": "end",
+                                                                        "spacing": 20
+                                                                    },
+                                                                    "slots": {
+                                                                        "card-type": {
+                                                                            "type": "PostCard",
+                                                                            "properties": {
+                                                                                "title-capitalization": "uppercase",
+                                                                                "context-capitalization": "uppercase"
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
                                             }
                                         }
                                     }
                                 }
                             }
-                        }
-                    }
-                }
-            }
-        },
-        "section-page": {
-            "type": "SideMenuTemplate",
-            "slots": {
-                "context": "context-banner",
-                "sidebar": "main-menu",
-                "content": {
-                    "type": "InfiniteScrollingLayout",
-                    "id": "theme-scroll",
-                    "slots": {
-                        "content": {
-                            "type": "ResponsiveMargins",
+                        },
+                        "section-page": {
+                            "type": "SideMenuTemplate",
                             "slots": {
-                                "content": {
-                                    "type": "TwoPieceTemplate",
+                                "context": {
+                                    "type": "ContextBanner"
+                                },
+                                "sidebar": {
+                                    "type": "SuggestedCategories",
                                     "properties": {
-                                        "orientation": "vertical"
+                                        "show-title": false
                                     },
                                     "slots": {
-                                        "first": {
-                                            "type": "Thematic",
-                                            "properties": {
-                                                "halign": "center"
-                                            },
+                                        "arrangement": {
+                                            "type": "ScrollingListArrangement",
                                             "slots": {
-                                                "arrangement": {
-                                                    "type": "HalfArrangement",
+                                                "card-type": {
+                                                    "type": "TitleCard",
                                                     "properties": {
-                                                        "spacing": 20
-                                                    },
-                                                    "slots": {
-                                                        "card-type": "main-card"
+                                                        "title-capitalization": "uppercase"
                                                     }
                                                 },
-                                                "header-card-type": "header-card"
-                                            },
-                                            "references": {
-                                                "scroll-server": "theme-scroll"
+                                                "filter": {
+                                                    "type": "FeaturedFilter"
+                                                }
                                             }
-                                        },
-                                        "second": "category-suggestions"
+                                        }
+                                    }
+                                },
+                                "content": {
+                                    "type": "InfiniteScrollingLayout",
+                                    "id": "theme-scroll",
+                                    "slots": {
+                                        "content": {
+                                            "type": "ResponsiveMargins",
+                                            "slots": {
+                                                "content": {
+                                                    "type": "TwoPieceTemplate",
+                                                    "properties": {
+                                                        "orientation": "vertical"
+                                                    },
+                                                    "slots": {
+                                                        "first": {
+                                                            "type": "Thematic",
+                                                            "properties": {
+                                                                "halign": "center"
+                                                            },
+                                                            "slots": {
+                                                                "arrangement": {
+                                                                    "type": "HalfArrangement",
+                                                                    "properties": {
+                                                                        "spacing": 20
+                                                                    },
+                                                                    "slots": {
+                                                                        "card-type": {
+                                                                            "type": "ThumbCard",
+                                                                            "properties": {
+                                                                                "title-capitalization": "uppercase",
+                                                                                "context-capitalization": "uppercase"
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                },
+                                                                "header-card-type": {
+                                                                    "type": "TitleCard"
+                                                                }
+                                                            },
+                                                            "references": {
+                                                                "scroll-server": "theme-scroll"
+                                                            }
+                                                        },
+                                                        "second": {
+                                                            "type": "SuggestedCategories",
+                                                            "slots": {
+                                                                "arrangement": {
+                                                                    "type": "SquareGuysArrangement",
+                                                                    "properties": {
+                                                                        "max-rows": 1,
+                                                                        "valign": "end",
+                                                                        "spacing": 20
+                                                                    },
+                                                                    "slots": {
+                                                                        "card-type": {
+                                                                            "type": "PostCard",
+                                                                            "properties": {
+                                                                                "title-capitalization": "uppercase",
+                                                                                "context-capitalization": "uppercase"
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
                                     }
                                 }
                             }
-                        }
-                    }
-                }
-            }
-        },
-        "home-page": {
-            "type": "SideMenuTemplate",
-            "slots": {
-                "context": "context-banner",
-                "sidebar": "main-menu",
-                "content": {
-                    "type": "InfiniteScrollingLayout",
-                    "slots": {
-                        "content": {
-                            "type": "ResponsiveMargins",
+                        },
+                        "search-page": {
+                            "type": "SideMenuTemplate",
                             "slots": {
-                                "content": {
-                                    "type": "TwoPieceTemplate",
+                                "context": {
+                                    "type": "ContextBanner"
+                                },
+                                "sidebar": {
+                                    "type": "SuggestedCategories",
                                     "properties": {
-                                        "orientation": "vertical"
+                                        "show-title": false
                                     },
                                     "slots": {
-                                        "first": {
-                                            "type": "Highlights",
+                                        "arrangement": {
+                                            "type": "ScrollingListArrangement",
+                                            "slots": {
+                                                "card-type": {
+                                                    "type": "TitleCard",
+                                                    "properties": {
+                                                        "title-capitalization": "uppercase"
+                                                    }
+                                                },
+                                                "filter": {
+                                                    "type": "FeaturedFilter"
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "content": {
+                                    "type": "Search",
+                                    "slots": {
+                                        "arrangement": {
+                                            "type": "ScrollingListArrangement",
                                             "properties": {
-                                                "halign": "center",
-                                                "support-sets": 2
+                                                "bottom-buffer": 250
                                             },
                                             "slots": {
-                                                "highlight-arrangement": {
-                                                    "type": "WindshieldArrangement",
+                                                "card-type": {
+                                                    "type": "ListCard"
+                                                }
+                                            }
+                                        },
+                                        "article-suggestions": {
+                                            "type": "SuggestedArticles",
+                                            "slots": {
+                                                "arrangement": {
+                                                    "type": "SquareGuysArrangement",
+                                                    "properties" : {
+                                                        "max-rows": 1,
+                                                        "spacing": 10
+                                                    },
+                                                    "slots": {
+                                                        "card-type": {
+                                                            "type": "ThumbCard",
+                                                            "properties": {
+                                                                "title-capitalization": "uppercase",
+                                                                "context-capitalization": "uppercase"
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "category-suggestions": {
+                                            "type": "SuggestedCategories",
+                                            "slots": {
+                                                "arrangement": {
+                                                    "type": "SquareGuysArrangement",
                                                     "properties": {
+                                                        "max-rows": 1,
+                                                        "valign": "end",
                                                         "spacing": 20
                                                     },
                                                     "slots": {
@@ -156,181 +350,132 @@
                                                                 "title-capitalization": "uppercase",
                                                                 "context-capitalization": "uppercase"
                                                             }
-                                                        },
-                                                        "filter": "no-sets"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "properties": {
+                                        "halign": "fill",
+                                        "message-halign": "center",
+                                        "message-justify": "left"
+                                    }
+                                }
+                            }
+                        },
+                        "all-sets-page": {
+                            "type": "SideMenuTemplate",
+                            "slots": {
+                                "context": {
+                                    "type": "ContextBanner"
+                                },
+                                "sidebar": {
+                                    "type": "SuggestedCategories",
+                                    "properties": {
+                                        "show-title": false
+                                    },
+                                    "slots": {
+                                        "arrangement": {
+                                            "type": "ScrollingListArrangement",
+                                            "slots": {
+                                                "card-type": {
+                                                    "type": "TitleCard",
+                                                    "properties": {
+                                                        "title-capitalization": "uppercase"
                                                     }
                                                 },
-                                                "support-card-type": {
-                                                    "type": "SetPreviewCard",
-                                                    "properties": {
-                                                        "show-trigger": false
-                                                    },
+                                                "filter": {
+                                                    "type": "FeaturedFilter"
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "content": {
+                                    "type": "InfiniteScrollingLayout",
+                                    "slots": {
+                                        "content": {
+                                            "type": "ResponsiveMargins",
+                                            "slots": {
+                                                "content": {
+                                                    "type": "SetGroup",
                                                     "slots": {
                                                         "arrangement": {
                                                             "type": "SquareGuysArrangement",
                                                             "properties": {
-                                                                "spacing": 20,
-                                                                "max-rows": 2
+                                                                "spacing": 20
                                                             },
                                                             "slots": {
-                                                                "card-type": "main-card",
-                                                                "filter": "no-sets"
+                                                                "card-type": {
+                                                                    "type": "PostCard",
+                                                                    "properties": {
+                                                                        "title-capitalization": "uppercase",
+                                                                        "context-capitalization": "uppercase"
+                                                                    }
+                                                                }
                                                             }
-                                                        },
-                                                        "header-card-type": "header-card"
-                                                    }
-                                                },
-                                                "sets-filter": {
-                                                    "type": "FeaturedFilter",
-                                                    "properties": {
-                                                        "invert": true
+                                                        }
                                                     }
                                                 }
                                             }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "article-page": {
+                            "type": "SideMenuTemplate",
+                            "slots": {
+                                "context": {
+                                    "type": "ContextBanner"
+                                },
+                                "sidebar": {
+                                    "type": "SuggestedCategories",
+                                    "properties": {
+                                        "show-title": false
+                                    },
+                                    "slots": {
+                                        "arrangement": {
+                                            "type": "ScrollingListArrangement",
+                                            "slots": {
+                                                "card-type": {
+                                                    "type": "TitleCard",
+                                                    "properties": {
+                                                        "title-capitalization": "uppercase"
+                                                    }
+                                                },
+                                                "filter": {
+                                                    "type": "FeaturedFilter"
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "content": {
+                                    "type": "ArticleStack",
+                                    "properties" : {
+                                        "do-sliding-animation": false,
+                                        "allow-navigation": "next"
+                                    },
+                                    "slots": {
+                                        "card-type": {
+                                            "type": "KnowledgeDocumentCard",
+                                            "properties": {
+                                                "show-titles": false,
+                                                "show-toc": false,
+                                                "custom-css": "reader2.css"
+                                            }
                                         },
-                                        "second": "category-suggestions"
+                                        "nav-card-type": {
+                                            "type": "SequenceCard"
+                                        }
                                     }
                                 }
                             }
                         }
                     }
                 }
-            }
-        },
-        "search-page": {
-            "type": "SideMenuTemplate",
-            "slots": {
-                "context": "context-banner",
-                "sidebar": "main-menu",
-                "content": {
-                    "type": "Search",
-                    "slots": {
-                        "arrangement": {
-                            "type": "ScrollingListArrangement",
-                            "properties": {
-                                "bottom-buffer": 250
-                            },
-                            "slots": {
-                                "card-type": {
-                                    "type": "ListCard"
-                                }
-                            }
-                        },
-                        "article-suggestions": "article-suggestions",
-                        "category-suggestions": "category-suggestions"
-                    },
-                    "properties": {
-                        "halign": "fill",
-                        "message-halign": "center",
-                        "message-justify": "left"
-                    }
-                }
-            }
-        },
-        "article-page": {
-            "type": "SideMenuTemplate",
-            "slots": {
-                "context": "context-banner",
-                "sidebar": "main-menu",
-                "content": {
-                    "type": "ArticleStack",
-                    "properties" : {
-                        "do-sliding-animation": false,
-                        "allow-navigation": "next"
-                    },
-                    "slots": {
-                        "card-type": {
-                            "type": "KnowledgeDocumentCard",
-                            "properties": {
-                                "show-titles": false,
-                                "show-toc": false,
-                                "custom-css": "reader2.css"
-                            }
-                        },
-                        "nav-card-type": {
-                            "type": "SequenceCard"
-                        }
-                    }
-                }
-            }
-        },
-        "article-suggestions": {
-            "type": "SuggestedArticles",
-            "slots": {
-                "arrangement": {
-                    "type": "SquareGuysArrangement",
-                    "properties" : {
-                        "max-rows": 1,
-                        "spacing": 10
-                    },
-                    "slots": {
-                        "card-type": "main-card"
-                    }
-                }
-            }
-        },
-        "category-suggestions": {
-            "type": "SuggestedCategories",
-            "slots": {
-                "arrangement": {
-                    "type": "SquareGuysArrangement",
-                    "properties": {
-                        "max-rows": 1,
-                        "valign": "end",
-                        "spacing": 20
-                    },
-                    "slots": {
-                        "card-type": "set-card"
-                    }
-                }
-            }
-        },
-        "main-card": {
-            "type": "ThumbCard",
-            "properties": {
-                "title-capitalization": "uppercase",
-                "context-capitalization": "uppercase"
-            }
-        },
-        "header-card": {
-            "type": "TitleCard"
-        },
-        "set-card": {
-            "type": "PostCard",
-            "properties": {
-                "title-capitalization": "uppercase",
-                "context-capitalization": "uppercase"
-            }
-        },
-        "main-menu": {
-            "type": "SuggestedCategories",
-            "properties": {
-                "show-title": false
-            },
-            "slots": {
-                "arrangement": {
-                    "type": "ScrollingListArrangement",
-                    "slots": {
-                        "card-type": {
-                            "type": "TitleCard",
-                            "properties": {
-                                "title-capitalization": "uppercase"
-                            }
-                        },
-                        "filter": {
-                            "type": "FeaturedFilter"
-                        }
-                    }
-                }
-            }
-        },
-        "context-banner": {
-            "type": "ContextBanner"
-        },
-        "no-sets": {
-            "type": "SetsFilter",
-            "properties": {
-                "invert": true
             }
         }
     }

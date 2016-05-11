@@ -3,139 +3,135 @@
         "interaction": {
             "type": "MeshInteraction",
             "slots": {
-                "window": "window"
-            }
-        },
-        "window": {
-            "type": "EncyclopediaWindow",
-            "slots": {
-                "lightbox": {
-                    "type": "MediaLightbox",
+                "window": {
+                    "type": "EncyclopediaWindow",
                     "slots": {
-                        "card-type": {
-                            "type": "MediaCard"
-                        }
-                    }
-                },
-                "home-page": "home-page",
-                "search-page": "search-page",
-                "article-page": "article-page"
-            }
-        },
-        "home-page": {
-            "type": "TwoPieceTemplate",
-            "properties": {
-                "orientation": "vertical",
-                "valign": "center"
-            },
-            "slots": {
-                "first": {
-                    "type": "AppBanner",
-                    "properties": {
-                        "min-fraction": 0.5,
-                        "max-fraction": 0.5
-                    }
-                },
-                "second": {
-                    "type": "SearchBox",
-                    "properties": {
-                        "halign": "center"
-                    }
-                }
-            }
-        },
-        "search-page": {
-            "type": "DividedBannerTemplate",
-            "slots": {
-                "top-left": {
-                    "type": "AppBanner",
-                    "properties": {
-                        "min-fraction": 0.2,
-                        "max-fraction": 0.2,
-                        "valign": "start",
-                        "vexpand": false,
-                        "halign": "center"
-                    }
-                },
-                "top-right": {
-                    "type": "SearchBox",
-                    "properties": {
-                        "halign": "center",
-                        "valign": "center",
-                        "hexpand": true
-                    }
-                },
-                "bottom": {
-                    "type": "PaperTemplate",
-                    "slots": {
-                        "content": {
-                            "type": "BannerTemplate",
+                        "lightbox": {
+                            "type": "MediaLightbox",
                             "slots": {
-                                "banner": {
-                                    "type": "SearchBanner",
+                                "card-type": {
+                                    "type": "MediaCard"
+                                }
+                            }
+                        },
+                        "home-page": {
+                            "type": "TwoPieceTemplate",
+                            "properties": {
+                                "orientation": "vertical",
+                                "valign": "center"
+                            },
+                            "slots": {
+                                "first": {
+                                    "type": "AppBanner",
                                     "properties": {
-                                        "halign": "start"
+                                        "min-fraction": 0.5,
+                                        "max-fraction": 0.5
                                     }
                                 },
-                                "content": {
-                                    "type": "Search",
+                                "second": {
+                                    "type": "SearchBox",
                                     "properties": {
-                                        "message-halign": "start",
-                                        "halign": "fill"
-                                    },
+                                        "halign": "center"
+                                    }
+                                }
+                            }
+                        },
+                        "search-page": {
+                            "type": "DividedBannerTemplate",
+                            "slots": {
+                                "top-left": {
+                                    "type": "AppBanner",
+                                    "properties": {
+                                        "min-fraction": 0.2,
+                                        "max-fraction": 0.2,
+                                        "valign": "start",
+                                        "vexpand": false,
+                                        "halign": "center"
+                                    }
+                                },
+                                "top-right": {
+                                    "type": "SearchBox",
+                                    "properties": {
+                                        "halign": "center",
+                                        "valign": "center",
+                                        "hexpand": true
+                                    }
+                                },
+                                "bottom": {
+                                    "type": "PaperTemplate",
                                     "slots": {
-                                        "arrangement": {
-                                            "type": "ScrollingListArrangement",
-                                            "properties": {
-                                                "hexpand": true,
-                                                "halign": "fill"
-                                            },
+                                        "content": {
+                                            "type": "BannerTemplate",
                                             "slots": {
-                                                "card-type": {
-                                                    "type": "TitleCard"
+                                                "banner": {
+                                                    "type": "SearchBanner",
+                                                    "properties": {
+                                                        "halign": "start"
+                                                    }
+                                                },
+                                                "content": {
+                                                    "type": "Search",
+                                                    "properties": {
+                                                        "message-halign": "start",
+                                                        "halign": "fill"
+                                                    },
+                                                    "slots": {
+                                                        "arrangement": {
+                                                            "type": "ScrollingListArrangement",
+                                                            "properties": {
+                                                                "hexpand": true,
+                                                                "halign": "fill"
+                                                            },
+                                                            "slots": {
+                                                                "card-type": {
+                                                                    "type": "TitleCard"
+                                                                }
+                                                            }
+                                                        }
+                                                    }
                                                 }
                                             }
                                         }
                                     }
                                 }
                             }
-                        }
-                    }
-                }
-            }
-        },
-        "article-page": {
-            "type": "DividedBannerTemplate",
-            "slots": {
-                "top-left": {
-                    "type": "AppBanner",
-                    "properties": {
-                        "min-fraction": 0.2,
-                        "max-fraction": 0.2,
-                        "valign": "start",
-                        "vexpand": false,
-                        "halign": "center"
-                    }
-                },
-                "top-right": {
-                    "type": "SearchBox",
-                    "properties": {
-                        "halign": "center",
-                        "valign": "center",
-                        "hexpand": true
-                    }
-                },
-                "bottom": {
-                    "type": "PaperTemplate",
-                    "slots": {
-                        "content": {
-                            "type": "ArticleStack",
-                            "properties": {
-                                "do-sliding-animation": false
-                            },
+                        },
+                        "article-page": {
+                            "type": "DividedBannerTemplate",
                             "slots": {
-                                "card-type": {
-                                    "type": "KnowledgeDocumentCard"
+                                "top-left": {
+                                    "type": "AppBanner",
+                                    "properties": {
+                                        "min-fraction": 0.2,
+                                        "max-fraction": 0.2,
+                                        "valign": "start",
+                                        "vexpand": false,
+                                        "halign": "center"
+                                    }
+                                },
+                                "top-right": {
+                                    "type": "SearchBox",
+                                    "properties": {
+                                        "halign": "center",
+                                        "valign": "center",
+                                        "hexpand": true
+                                    }
+                                },
+                                "bottom": {
+                                    "type": "PaperTemplate",
+                                    "slots": {
+                                        "content": {
+                                            "type": "ArticleStack",
+                                            "properties": {
+                                                "do-sliding-animation": false
+                                            },
+                                            "slots": {
+                                                "card-type": {
+                                                    "type": "KnowledgeDocumentCard"
+                                                }
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }

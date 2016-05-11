@@ -14,22 +14,13 @@ function load_v1_compatibility_preset (templateType) {
 function transform_v1_description(json) {
     let preset = load_v1_compatibility_preset(json.templateType);
     // Setup helpers for modifying the preset with old json data
-    let set_prop_on_module = (module, property, value) => {
-        if (!module.hasOwnProperty('properties'))
-            module['properties'] = {};
-        module['properties'][property] = value;
-    };
-    let set_prop_for_name = (factory_name, property, value) => {
-        let parts = factory_name.split('.');
-        let module = preset['modules'][parts[0]];
-        for (let slot of parts.slice(1))
-            module = module['slots'][slot];
-        set_prop_on_module(module, property, value);
-    };
-    let set_prop_for_type = (type, property, value) => {
+    function set_prop_for_type (type, property, value) {
         let recurse = (module) => {
-            if (type === module.type)
-                set_prop_on_module(module, property, value);
+            if (type === module.type) {
+                if (!module.hasOwnProperty('properties'))
+                    module['properties'] = {};
+                module['properties'][property] = value;
+            }
             if (!module['slots'])
                 return;
             for (let slot in module['slots']) {
@@ -38,40 +29,26 @@ function transform_v1_description(json) {
                     recurse(slot_value);
             }
         };
-        for (let name in preset['modules'])
-            recurse(preset['modules'][name]);
-    };
-
-    switch (json.templateType) {
-    case "A":
-    case "B":
-    case "buffet":
-    case "news":
-        set_prop_for_name('window', 'title', json['appTitle']);
-        set_prop_for_name('window', 'background-image-uri', json['backgroundHomeURI']);
-        set_prop_for_name('window', 'blur-background-image-uri', json['backgroundSectionURI']);
-        break;
-    case "encyclopedia":
-        set_prop_for_name('window', 'title', json['appTitle']);
-        set_prop_for_name('window', 'home-background-uri', json['backgroundHomeURI']);
-        set_prop_for_name('window', 'results-background-uri', json['backgroundSectionURI']);
-        break;
-    case "reader":
-        set_prop_for_name('window', 'title', json['appTitle']);
-        set_prop_for_name('window', 'title-image-uri', json['titleImageURI']);
-        set_prop_for_name('window', 'home-background-uri', json['backgroundHomeURI']);
-        set_prop_for_name('front-page', 'background-image-uri', json['backgroundHomeURI']);
-        set_prop_for_name('back-page', 'background-image-uri', json['backgroundSectionURI']);
-        break;
-    default:
-        throw new Error('Unrecognized v1 preset type: ' + json.templateType);
+        recurse(preset['modules']['interaction']);
     }
 
-    // Setting properties for types should be relevant no matter what the preset
+    if (json.templateType === "reader")
+        set_prop_for_type('SplitPercentageTemplate', 'background-image-uri', json['backgroundHomeURI']);
+
     set_prop_for_type('AppBanner', 'image-uri', json['titleImageURI']);
+    set_prop_for_type('BackCover', 'background-image-uri', json['backgroundSectionURI']);
+    set_prop_for_type('EncyclopediaWindow', 'title', json['appTitle']);
+    set_prop_for_type('EncyclopediaWindow', 'home-background-uri', json['backgroundHomeURI']);
+    set_prop_for_type('EncyclopediaWindow', 'results-background-uri', json['backgroundSectionURI']);
+    set_prop_for_type('ReaderWindow', 'title', json['appTitle']);
+    set_prop_for_type('ReaderWindow', 'title-image-uri', json['titleImageURI']);
+    set_prop_for_type('ReaderWindow', 'home-background-uri', json['backgroundHomeURI']);
     set_prop_for_type('StandaloneBanner', 'title', json['appTitle']);
     set_prop_for_type('StandaloneBanner', 'title-image-uri', json['titleImageURI']);
     set_prop_for_type('StandaloneBanner', 'background-image-uri', json['backgroundHomeURI']);
+    set_prop_for_type('Window', 'title', json['appTitle']);
+    set_prop_for_type('Window', 'background-image-uri', json['backgroundHomeURI']);
+    set_prop_for_type('Window', 'blur-background-image-uri', json['backgroundSectionURI']);
 
     return preset;
 }

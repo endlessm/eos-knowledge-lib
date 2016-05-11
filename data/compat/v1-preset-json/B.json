@@ -3,178 +3,173 @@
         "interaction": {
             "type": "MeshInteraction",
             "slots": {
-                "window": "window"
-            }
-        },
-        "window": {
-            "type": "Window",
-            "slots": {
-                "search": {
-                    "type": "SearchBox"
-                },
-                "navigation": {
-                    "type": "Navigation"
-                },
-                "lightbox": {
-                    "type": "MediaLightbox",
-                    "slots": {
-                        "card-type": {
-                            "type": "MediaCard"
-                        }
-                    }
-                },
-                "home-page": "home-page",
-                "section-page": "section-page",
-                "search-page": "search-page",
-                "article-page": "article-page"
-            }
-        },
-        "home-page": {
-            "type": "DividedBannerTemplate",
-            "properties": {
-                "row-spacing": 30,
-                "row-homogeneous": true
-            },
-            "slots": {
-                "top-left": {
-                    "type": "AppBanner",
-                    "properties": {
-                        "min-fraction": 0.2,
-                        "max-fraction": 0.7,
-                        "valign": "center",
-                        "halign": "center",
-                        "expand": false
-                    }
-                },
-                "top-right": {
-                    "type": "SearchBox",
-                    "properties": {
-                        "visible": true,
-                        "shadow-type": "none",
-                        "halign": "center",
-                        "valign": "center"
-                    }
-                },
-                "bottom": {
-                    "type": "SetGroup",
-                    "properties": {
-                        "expand": true,
-                        "halign": "fill",
-                        "valign": "fill"
-                    },
-                    "slots": {
-                        "arrangement": {
-                            "type": "TiledGridArrangement",
-                            "slots": {
-                                "card-type": {
-                                    "type": "LegacyPostCard"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "section-page": {
-            "type": "SidebarTemplate",
-            "properties": {
-                "sidebar-first": false
-            },
-            "slots": {
-                "content": {
-                    "type": "SetBanner",
-                    "properties": {
-                        "valign": "end"
-                    },
-                    "slots": {
-                        "card-type": {
-                            "type": "TitleCard"
-                        }
-                    }
-                },
-                "sidebar": {
-                    "type": "ItemGroup",
-                    "slots": {
-                        "arrangement": {
-                            "type": "ScrollingListArrangement",
-                            "slots": {
-                                "card-type": {
-                                    "type": "TitleCard"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "search-page": {
-            "type": "SidebarTemplate",
-            "properties": {
-                "sidebar-first": false
-            },
-            "slots": {
-                "content": {
-                    "type": "SearchBanner",
-                    "properties": {
-                        "valign": "center"
-                    }
-                },
-                "sidebar": {
-                    "type": "Search",
-                    "slots": {
-                        "arrangement": {
-                            "type": "ScrollingListArrangement",
-                            "slots": {
-                                "card-type": {
-                                    "type": "TitleCard"
-                                }
-                            }
-                        }
-                    },
-                    "properties": {
-                        "message-valign": "center"
-                    }
-                }
-            }
-        },
-        "article-page": {
-            "type": "SidebarTemplate",
-            "slots": {
-                "content": {
-                    "type": "ArticleStack",
-                    "slots": {
-                        "card-type": {
-                            "type": "KnowledgeDocumentCard"
-                        }
-                    }
-                },
-                "sidebar": {
-                    "type": "SearchAndItem",
+                "window": {
+                    "type": "Window",
                     "slots": {
                         "search": {
-                            "type": "Search",
+                            "type": "SearchBox"
+                        },
+                        "navigation": {
+                            "type": "Navigation"
+                        },
+                        "lightbox": {
+                            "type": "MediaLightbox",
                             "slots": {
-                                "arrangement": {
-                                    "type": "ScrollingListArrangement",
+                                "card-type": {
+                                    "type": "MediaCard"
+                                }
+                            }
+                        },
+                        "home-page": {
+                            "type": "DividedBannerTemplate",
+                            "properties": {
+                                "row-spacing": 30,
+                                "row-homogeneous": true
+                            },
+                            "slots": {
+                                "top-left": {
+                                    "type": "AppBanner",
+                                    "properties": {
+                                        "min-fraction": 0.2,
+                                        "max-fraction": 0.7,
+                                        "valign": "center",
+                                        "halign": "center",
+                                        "expand": false
+                                    }
+                                },
+                                "top-right": {
+                                    "type": "SearchBox",
+                                    "properties": {
+                                        "visible": true,
+                                        "shadow-type": "none",
+                                        "halign": "center",
+                                        "valign": "center"
+                                    }
+                                },
+                                "bottom": {
+                                    "type": "SetGroup",
+                                    "properties": {
+                                        "expand": true,
+                                        "halign": "fill",
+                                        "valign": "fill"
+                                    },
+                                    "slots": {
+                                        "arrangement": {
+                                            "type": "TiledGridArrangement",
+                                            "slots": {
+                                                "card-type": {
+                                                    "type": "LegacyPostCard"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "section-page": {
+                            "type": "SidebarTemplate",
+                            "properties": {
+                                "sidebar-first": false
+                            },
+                            "slots": {
+                                "content": {
+                                    "type": "SetBanner",
+                                    "properties": {
+                                        "valign": "end"
+                                    },
                                     "slots": {
                                         "card-type": {
                                             "type": "TitleCard"
                                         }
                                     }
+                                },
+                                "sidebar": {
+                                    "type": "ItemGroup",
+                                    "slots": {
+                                        "arrangement": {
+                                            "type": "ScrollingListArrangement",
+                                            "slots": {
+                                                "card-type": {
+                                                    "type": "TitleCard"
+                                                }
+                                            }
+                                        }
+                                    }
                                 }
-                            },
-                            "properties": {
-                                "message-valign": "center"
                             }
                         },
-                        "item": {
-                            "type": "ItemGroup",
+                        "search-page": {
+                            "type": "SidebarTemplate",
+                            "properties": {
+                                "sidebar-first": false
+                            },
                             "slots": {
-                                "arrangement": {
-                                    "type": "ScrollingListArrangement",
+                                "content": {
+                                    "type": "SearchBanner",
+                                    "properties": {
+                                        "valign": "center"
+                                    }
+                                },
+                                "sidebar": {
+                                    "type": "Search",
+                                    "slots": {
+                                        "arrangement": {
+                                            "type": "ScrollingListArrangement",
+                                            "slots": {
+                                                "card-type": {
+                                                    "type": "TitleCard"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "properties": {
+                                        "message-valign": "center"
+                                    }
+                                }
+                            }
+                        },
+                        "article-page": {
+                            "type": "SidebarTemplate",
+                            "slots": {
+                                "content": {
+                                    "type": "ArticleStack",
                                     "slots": {
                                         "card-type": {
-                                            "type": "TitleCard"
+                                            "type": "KnowledgeDocumentCard"
+                                        }
+                                    }
+                                },
+                                "sidebar": {
+                                    "type": "SearchAndItem",
+                                    "slots": {
+                                        "search": {
+                                            "type": "Search",
+                                            "slots": {
+                                                "arrangement": {
+                                                    "type": "ScrollingListArrangement",
+                                                    "slots": {
+                                                        "card-type": {
+                                                            "type": "TitleCard"
+                                                        }
+                                                    }
+                                                }
+                                            },
+                                            "properties": {
+                                                "message-valign": "center"
+                                            }
+                                        },
+                                        "item": {
+                                            "type": "ItemGroup",
+                                            "slots": {
+                                                "arrangement": {
+                                                    "type": "ScrollingListArrangement",
+                                                    "slots": {
+                                                        "card-type": {
+                                                            "type": "TitleCard"
+                                                        }
+                                                    }
+                                                }
+                                            }
                                         }
                                     }
                                 }
