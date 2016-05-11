@@ -1,23 +1,21 @@
 {
+    "version": 2,
     "root": {
         "type": "AisleInteraction",
         "slots": {
             "window": {
                 "type": "ReaderWindow",
                 "slots": {
-                    "search": {
-                        "type": "SearchBox"
-                    },
-                    "navigation": {
-                        "type": "Navigation"
-                    },
-                    "lightbox": {
-                        "type": "MediaLightbox",
+                    "archive-page": {
+                        "type": "StandalonePage",
                         "slots": {
                             "card-type": {
-                                "type": "MediaCard"
+                                "type": "ReaderDocumentCard"
                             }
                         }
+                    },
+                    "back-page": {
+                        "type": "BackCover"
                     },
                     "document-arrangement": {
                         "type": "CarouselArrangement",
@@ -30,25 +28,16 @@
                     "front-page": {
                         "type": "SplitPercentageTemplate",
                         "slots": {
-                            "start": {
-                                "type": "ResponsiveMargins",
-                                "slots": {
-                                    "content": {
-                                        "type": "AppBanner",
-                                        "properties": {
-                                            "show-subtitle": true,
-                                            "subtitle-capitalization": "uppercase",
-                                            "valign": "start",
-                                            "halign": "start"
-                                        }
-                                    }
-                                }
-                            },
                             "end": {
                                 "type": "ResponsiveMargins",
                                 "slots": {
                                     "content": {
                                         "type": "ItemGroup",
+                                        "properties": {
+                                            "expand": true,
+                                            "halign": "end",
+                                            "valign": "fill"
+                                        },
                                         "slots": {
                                             "arrangement": {
                                                 "type": "OverflowArrangement",
@@ -61,16 +50,39 @@
                                                     }
                                                 }
                                             }
-                                        },
+                                        }
+                                    }
+                                }
+                            },
+                            "start": {
+                                "type": "ResponsiveMargins",
+                                "slots": {
+                                    "content": {
+                                        "type": "AppBanner",
                                         "properties": {
-                                            "expand": true,
-                                            "halign": "end",
-                                            "valign": "fill"
+                                            "halign": "start",
+                                            "show-subtitle": true,
+                                            "subtitle-capitalization": "uppercase",
+                                            "valign": "start"
                                         }
                                     }
                                 }
                             }
                         }
+                    },
+                    "lightbox": {
+                        "type": "MediaLightbox",
+                        "slots": {
+                            "card-type": {
+                                "type": "MediaCard"
+                            }
+                        }
+                    },
+                    "navigation": {
+                        "type": "Navigation"
+                    },
+                    "search": {
+                        "type": "SearchBox"
                     },
                     "search-page": {
                         "type": "BannerTemplate",
@@ -121,17 +133,6 @@
                                 }
                             }
                         }
-                    },
-                    "archive-page": {
-                        "type": "StandalonePage",
-                        "slots": {
-                            "card-type": {
-                                "type": "ReaderDocumentCard"
-                            }
-                        }
-                    },
-                    "back-page": {
-                        "type": "BackCover"
                     }
                 }
             }
