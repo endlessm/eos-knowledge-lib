@@ -3,7 +3,6 @@ const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
 
-const Utils = imports.app.utils;
 const Card = imports.app.interfaces.card;
 const Module = imports.app.interfaces.module;
 const Previewer = imports.app.widgets.previewer;
@@ -25,16 +24,9 @@ const Media = new Module.Class({
         'attribution-button', 'separator' ],
 
     _MIN_WIDTH: 200,
-    _css_has_loaded: false,
 
     _init: function (props={}) {
         this.parent(props);
-
-        if (!this._css_has_loaded) {
-            let css = Gio.File.new_for_uri('resource:///com/endlessm/knowledge/data/css/mediaCard.css');
-            Utils.add_css_provider_from_file(css, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
-            this._css_has_loaded = true;
-        }
 
         // We can't make gjs types through templates right now, so previewer
         // must be constructed in code

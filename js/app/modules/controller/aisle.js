@@ -237,11 +237,6 @@ const Aisle = new Module.Class({
     load_theme: function () {
         let css_path = Gio.File.new_for_uri(DATA_RESOURCE_PATH).get_child('css');
         let css_files = [css_path.get_child('aisle.css')];
-        // FIXME: Get theme from app.json once we have finalized that
-        let theme = 'jungle';
-        if (typeof theme !== 'undefined') {
-            //css_files.push(css_path.get_child('themes').get_child(theme + '.css'));
-        }
         let all_css = css_files.reduce((str, css_file) => {
             return str + css_file.load_contents(null)[1];
         }, '');

@@ -12,15 +12,9 @@
     <file compressed="true">data/css/buffet_core.css</file>
     <file compressed="true">data/css/common.css</file>
     <file compressed="true">data/css/encyclopedia.css</file>
-    <file compressed="true">data/css/hide_title.css</file>
-    <file compressed="true">data/css/lightbox.css</file>
-    <file compressed="true">data/css/mediaCard.css</file>
     <file compressed="true">data/css/mesh.css</file>
     <file compressed="true">data/css/news.css</file>
-    <file compressed="true">data/css/no_image_links.css</file>
     <file compressed="true">data/css/picard.css</file>
-    <file compressed="true">data/css/themes/jungle.css</file>
-    <file compressed="true">data/css/themes/templateA.css</file>
     <file>data/images/background.png</file>
     <file>data/images/pdf-background.png</file>
     <file>data/images/pdf_icon.png</file>
