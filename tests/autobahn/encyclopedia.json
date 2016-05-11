@@ -1,121 +1,119 @@
 {
   "version": 2,
-  "modules": {
-    "interaction": {
-      "type": "MeshInteraction",
-      "slots": {
-        "window": {
-          "type": "EncyclopediaWindow",
-          "slots": {
-            "article-page": {
-              "type": "DividedBannerTemplate",
-              "slots": {
-                "bottom": {
-                  "type": "PaperTemplate",
-                  "slots": {
-                    "content": {
-                      "type": "ArticleStack",
-                      "properties": {
-                        "do-sliding-animation": false
-                      },
-                      "slots": {
-                        "card-type": {
-                          "type": "KnowledgeDocumentCard"
-                        }
+  "root": {
+    "type": "MeshInteraction",
+    "slots": {
+      "window": {
+        "type": "EncyclopediaWindow",
+        "slots": {
+          "article-page": {
+            "type": "DividedBannerTemplate",
+            "slots": {
+              "bottom": {
+                "type": "PaperTemplate",
+                "slots": {
+                  "content": {
+                    "type": "ArticleStack",
+                    "properties": {
+                      "do-sliding-animation": false
+                    },
+                    "slots": {
+                      "card-type": {
+                        "type": "KnowledgeDocumentCard"
                       }
                     }
                   }
-                },
-                "top-left": {
-                  "type": "AppBanner",
-                  "properties": {
-                    "halign": "center",
-                    "margin-bottom": 10,
-                    "margin-top": 10,
-                    "max-fraction": 0.2,
-                    "min-fraction": 0.2,
-                    "valign": "start",
-                    "vexpand": false
-                  }
-                },
-                "top-right": {
-                  "type": "SearchBox",
-                  "properties": {
-                    "halign": "center",
-                    "hexpand": true,
-                    "valign": "center"
-                  }
                 }
-              }
-            },
-            "home-page": {
-              "type": "TwoPieceTemplate",
-              "properties": {
-                "orientation": "vertical",
-                "valign": "center"
               },
-              "slots": {
-                "first": {
-                  "type": "AppBanner",
-                  "properties": {
-                    "margin-bottom": 42,
-                    "max-fraction": 0.5,
-                    "min-fraction": 0.5
-                  }
-                },
-                "second": {
-                  "type": "SearchBox",
-                  "properties": {
-                    "halign": "center"
-                  }
+              "top-left": {
+                "type": "AppBanner",
+                "properties": {
+                  "halign": "center",
+                  "margin-bottom": 10,
+                  "margin-top": 10,
+                  "max-fraction": 0.2,
+                  "min-fraction": 0.2,
+                  "valign": "start",
+                  "vexpand": false
+                }
+              },
+              "top-right": {
+                "type": "SearchBox",
+                "properties": {
+                  "halign": "center",
+                  "hexpand": true,
+                  "valign": "center"
                 }
               }
+            }
+          },
+          "home-page": {
+            "type": "TwoPieceTemplate",
+            "properties": {
+              "orientation": "vertical",
+              "valign": "center"
             },
-            "lightbox": {
-              "type": "MediaLightbox",
-              "slots": {
-                "card-type": {
-                  "type": "MediaCard"
+            "slots": {
+              "first": {
+                "type": "AppBanner",
+                "properties": {
+                  "margin-bottom": 42,
+                  "max-fraction": 0.5,
+                  "min-fraction": 0.5
+                }
+              },
+              "second": {
+                "type": "SearchBox",
+                "properties": {
+                  "halign": "center"
                 }
               }
-            },
-            "search-page": {
-              "type": "DividedBannerTemplate",
-              "slots": {
-                "bottom": {
-                  "type": "PaperTemplate",
-                  "slots": {
-                    "content": {
-                      "type": "BannerTemplate",
-                      "properties": {
-                        "margin-end": 45,
-                        "margin-start": 45
+            }
+          },
+          "lightbox": {
+            "type": "MediaLightbox",
+            "slots": {
+              "card-type": {
+                "type": "MediaCard"
+              }
+            }
+          },
+          "search-page": {
+            "type": "DividedBannerTemplate",
+            "slots": {
+              "bottom": {
+                "type": "PaperTemplate",
+                "slots": {
+                  "content": {
+                    "type": "BannerTemplate",
+                    "properties": {
+                      "margin-end": 45,
+                      "margin-start": 45
+                    },
+                    "slots": {
+                      "banner": {
+                        "type": "SearchBanner",
+                        "properties": {
+                          "halign": "start"
+                        }
                       },
-                      "slots": {
-                        "banner": {
-                          "type": "SearchBanner",
-                          "properties": {
-                            "halign": "start"
-                          }
+                      "content": {
+                        "type": "Search",
+                        "properties": {
+                          "halign": "fill",
+                          "margin-top": 20,
+                          "message-halign": "start"
                         },
-                        "content": {
-                          "type": "Search",
-                          "properties": {
-                            "halign": "fill",
-                            "margin-top": 20,
-                            "message-halign": "start"
-                          },
-                          "slots": {
-                            "arrangement": {
-                              "type": "ScrollingListArrangement",
-                              "properties": {
-                                "halign": "fill",
-                                "hexpand": true
-                              },
-                              "slots": {
-                                "card-type": {
-                                  "type": "TitleCard"
-                                }
+                        "slots": {
+                          "arrangement": {
+                            "type": "ScrollingListArrangement",
+                            "properties": {
+                              "halign": "fill",
+                              "hexpand": true
+                            },
+                            "slots": {
+                              "card-type": {
+                                "type": "TitleCard"
                               }
                             }
                           }
@@ -123,26 +121,26 @@
                       }
                     }
                   }
-                },
-                "top-left": {
-                  "type": "AppBanner",
-                  "properties": {
-                    "halign": "center",
-                    "margin-bottom": 10,
-                    "margin-top": 10,
-                    "max-fraction": 0.2,
-                    "min-fraction": 0.2,
-                    "valign": "start",
-                    "vexpand": false
-                  }
-                },
-                "top-right": {
-                  "type": "SearchBox",
-                  "properties": {
-                    "halign": "center",
-                    "hexpand": true,
-                    "valign": "center"
-                  }
+                }
+              },
+              "top-left": {
+                "type": "AppBanner",
+                "properties": {
+                  "halign": "center",
+                  "margin-bottom": 10,
+                  "margin-top": 10,
+                  "max-fraction": 0.2,
+                  "min-fraction": 0.2,
+                  "valign": "start",
+                  "vexpand": false
+                }
+              },
+              "top-right": {
+                "type": "SearchBox",
+                "properties": {
+                  "halign": "center",
+                  "hexpand": true,
+                  "valign": "center"
                 }
               }
             }

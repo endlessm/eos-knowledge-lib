@@ -29,7 +29,7 @@ function transform_v1_description(json) {
                     recurse(slot_value);
             }
         };
-        recurse(preset['modules']['interaction']);
+        recurse(preset['root']);
     }
 
     if (json.templateType === "reader")

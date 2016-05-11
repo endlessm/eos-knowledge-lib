@@ -67,7 +67,7 @@ const ModuleFactory = new Knowledge.Class({
         this._id_to_module = new Map();
         this._id_to_pending_callbacks = new Map();
         this._path_to_description = new Map();
-        this._extract_ids(this.app_json['modules']['interaction'], false);
+        this._extract_ids(this.app_json['root'], false);
     },
 
     get version() {
@@ -135,7 +135,7 @@ const ModuleFactory = new Knowledge.Class({
      *   extra_props - Extra construct properties for the module.
      */
     create_module_tree: function (extra_props={}) {
-        return this._create_module('root', this.app_json['modules']['interaction'],
+        return this._create_module('root', this.app_json['root'],
             extra_props);
     },
 
