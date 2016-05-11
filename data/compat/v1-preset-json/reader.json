@@ -86,9 +86,6 @@
         },
         "search-page": {
             "type": "BannerTemplate",
-            "properties": {
-                "separator-margin": 30
-            },
             "slots": {
                 "banner": {
                     "type": "SearchBanner",
@@ -105,7 +102,6 @@
                         "arrangement": {
                             "type": "GridArrangement",
                             "properties": {
-                                "margin-top": 20,
                                 "bottom-buffer": 250,
                                 "max-children-per-line": 9
                             },

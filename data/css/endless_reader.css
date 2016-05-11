@@ -17,6 +17,10 @@ EosWindow separator {
     background-color: alpha(black, 0.1);
 }
 
+.search-results-page separator {
+    margin: 0 30px;
+}
+
 .article-snippet .title {
     font-size: 2.0em; /* should be overridden */
 }
@@ -108,6 +112,10 @@ EknSplitPercentageTemplate,
 
 .search-results-page {
     background-color: #CCCCCC;
+}
+
+.search-results EknGridArrangement {
+    margin-top: 20px;
 }
 
 .search-results .results-message-title,
@@ -257,6 +265,10 @@ EknSplitPercentageTemplate,
                   40 40 40 40 stretch;
 }
 
+.reader-card .decorative-bar {
+    margin: 0px 8px;
+}
+
 .document-card .decorative-bar,
 .reader-card .decorative-bar {
     min-height: 20px;
@@ -265,6 +277,7 @@ EknSplitPercentageTemplate,
 .reader-card .title {
     font-size: 1.25em; /* 20px / 12px/em * 72/96 */
     text-shadow: 0px 1px 0px white;
+    margin: 8px;
 }
 
 .reader-card.variant0 .title {

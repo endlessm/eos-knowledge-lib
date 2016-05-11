@@ -35,19 +35,10 @@ EknSearch .no-results {
     background-color: white;
 }
 
-EknSuggestedCategories .button:hover .title,
+EknSuggestedCategories .browse-content:hover .title,
 EknSetPreviewCard:hover .title,
 .title-card:hover .title {
     color: #49bde3;
-}
-
-/* FIXME: why does removing this cause ResponsiveMargins to lose its margins? */
-EknSuggestedCategories .browse-content .after,
-EknHighlights .title-card .after,
-EknSetPreviewCard .title .after,
-EknThematic .title-card .after {
-    -EknThemeableImage-min-height: 10;
-    -EknThemeableImage-min-width: 11;
 }
 
 /* default size */
@@ -97,6 +88,10 @@ EknThematic .title-card .after {
 .card.width-g .card-context,
 .card.width-h .card-context {
     font-size: 18.7px;
+}
+
+.list-card {
+    margin: 10px 0;
 }
 
 .list-card.width-d .title,

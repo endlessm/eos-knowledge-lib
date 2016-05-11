@@ -253,6 +253,17 @@ const Arrangement = new Lang.Interface({
     },
 
     /**
+     * Method: get_cards
+     * Get card models in the arrangement that are to be displayed.
+     *
+     * This method will return filtered and ordered cards.
+     */
+    get_cards: function () {
+        let models = this.get_filtered_models();
+        return models.map((model) => this.get_card_for_model(model)).filter((card) => card);
+    },
+
+    /**
      * Method: get_card_for_model
      * Get the created <Card> for a card model
      *
@@ -382,18 +393,18 @@ const Arrangement = new Lang.Interface({
     fade_card_in: function (card) {
         card.fade_in();
     },
-
-    place_card: function (card, x, y, width, height) {
-        let card_alloc = new Gdk.Rectangle({
-            x: x,
-            y: y,
-            width: width,
-            height: height,
-        });
-        card.size_allocate(card_alloc);
-        card.set_child_visible(true);
-    },
 });
+
+function place_card (card, x, y, width, height) {
+    let card_alloc = new Gdk.Rectangle({
+        x: x,
+        y: y,
+        width: width,
+        height: height,
+    });
+    card.size_allocate(card_alloc);
+    card.set_child_visible(true);
+}
 
 function get_spare_pixels_for_card_index (spare_pixels, cards_per_row, idx) {
     if (spare_pixels === 0)

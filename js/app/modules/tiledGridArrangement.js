@@ -33,8 +33,7 @@ const TiledGridArrangement = new Module.Class({
         // An alternative would be to show 1 row for 4 cards, and 2 rows otherwise
         this.get_children().forEach(this.remove, this);
         // The card to be packed is already in this array:
-        let cards = this.get_filtered_models()
-            .map(this.get_card_for_model, this);
+        let cards = this.get_cards();
 
         let columns = Math.ceil(this.get_card_count() / 2);
         let i = 0;

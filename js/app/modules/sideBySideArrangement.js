@@ -6,6 +6,7 @@ const Endless = imports.gi.Endless;
 const Gtk = imports.gi.Gtk;
 
 const Arrangement = imports.app.interfaces.arrangement;
+const Knowledge = imports.app.knowledge;
 const Module = imports.app.interfaces.module;
 
 const MENU_HEIGHT = 50;
@@ -15,27 +16,15 @@ const _HorizontalSpacing = {
     LARGE: 40,
     XLARGE: 50,
 };
-/**
- * Class: SideBySideArrangement
- * Arrangement to be used in horizontal menus
- *
- * This arrangement presents cards in a horizontal layout, and is intended to
- * display menu items.
- */
-const SideBySideArrangement = new Module.Class({
-    Name: 'SideBySideArrangement',
-    CssName: 'EknSideBySideArrangement',
+
+const _SideBySideArrangementLayout = new Knowledge.Class({
+    Name: 'SideBySideArrangementLayout',
     Extends: Endless.CustomContainer,
-    Implements: [Arrangement.Arrangement],
 
     _init: function (props={}) {
-        this._all_visible = true;
+        this.all_visible = true;
 
         this.parent(props);
-    },
-
-    get all_visible() {
-        return this._all_visible;
     },
 
     // Removing a visible widget should recalculate the positions of all widgets
@@ -51,18 +40,17 @@ const SideBySideArrangement = new Module.Class({
     },
 
     vfunc_get_preferred_height: function () {
-        if (this.get_filtered_models().length === 0)
+        if (this.get_parent().get_cards().length === 0)
             return [0, 0];
 
         return [MENU_HEIGHT, MENU_HEIGHT];
     },
 
     vfunc_get_preferred_width: function () {
-        let filtered_models = this.get_filtered_models();
-        if (filtered_models.length === 0)
+        let all_cards = this.get_parent().get_cards();
+        if (all_cards.length === 0)
             return [0, 0];
 
-        let all_cards = filtered_models.map((model) => this.get_card_for_model(model));
         let [min, nat] = all_cards[0].get_preferred_width();
 
         nat += all_cards.slice(1).reduce((accum, card) => {
@@ -77,12 +65,12 @@ const SideBySideArrangement = new Module.Class({
     vfunc_size_allocate: function (alloc) {
         this.parent(alloc);
 
-        this._all_visible = true;
+        this.all_visible = true;
 
-        if (this.get_card_count() === 0)
+        if (this.get_children().length === 0)
             return;
 
-        let all_cards = this.get_filtered_models().map((model) => this.get_card_for_model(model));
+        let all_cards = this.get_parent().get_cards();
 
         let cards_width = all_cards.reduce((accum, card) => {
             let [, card_nat] = card.get_preferred_width();
@@ -99,11 +87,11 @@ const SideBySideArrangement = new Module.Class({
             let [, card_nat] = card.get_preferred_width();
             if (card_nat <= available_width) {
                 let offset = card_nat + spacing;
-                this.place_card(card, x, y, card_nat, MENU_HEIGHT);
+                Arrangement.place_card(card, x, y, card_nat, MENU_HEIGHT);
                 available_width -= offset;
                 x += offset;
             } else {
-                this._all_visible = false;
+                this.all_visible = false;
                 card.set_child_visible(false);
             }
         });
@@ -123,5 +111,43 @@ const SideBySideArrangement = new Module.Class({
             spacing = _HorizontalSpacing.XLARGE;
         }
         return spacing;
+    },
+});
+
+/**
+ * Class: SideBySideArrangement
+ * Arrangement to be used in horizontal menus
+ *
+ * This arrangement presents cards in a horizontal layout, and is intended to
+ * display menu items.
+ */
+const SideBySideArrangement = new Module.Class({
+    Name: 'SideBySideArrangement',
+    CssName: 'EknSideBySideArrangement',
+    Extends: Gtk.Grid,
+    Implements: [Arrangement.Arrangement],
+
+    _init: function (props={}) {
+        this._layout = new _SideBySideArrangementLayout({
+            visible: true,
+            expand: true,
+        });
+        this.parent(props);
+
+        this.add(this._layout);
+    },
+
+    // Arrangement override
+    pack_card: function (card) {
+        this._layout.add(card);
+    },
+
+    // Arrangement override
+    unpack_card: function (card) {
+        this._layout.remove(card);
+    },
+
+    get all_visible() {
+        return this_layout.all_visible;
     },
 });

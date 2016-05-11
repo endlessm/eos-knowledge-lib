@@ -107,17 +107,38 @@ const SpaceContainer = new Knowledge.Class({
         return this._children.filter((child) => child.visible);
     },
 
+    _get_css_box_sizes: function () {
+        let context = this.get_style_context();
+        let flags = this.get_state_flags();
+        return [context.get_margin(flags),
+                context.get_border(flags),
+                context.get_padding(flags)];
+    },
+
+    _get_css_box_size_for_dimension: function (dimension) {
+        if (dimension === 'height') {
+            return this._get_css_box_sizes().reduce((total, border) => {
+                return total + border.top + border.bottom;
+            }, 0);
+        }
+        return this._get_css_box_sizes().reduce((total, border) => {
+            return total + border.left + border.right;
+        }, 0);
+    },
+
     // The secondary dimension (i.e., width if orientation == VERTICAL) is the
     // maximum minimal and natural secondary dimensions of any one child, even
     // including ones that are not shown.
     _get_preferred_secondary: function (secondary, space) {
+        let extra = this._get_css_box_size_for_dimension(secondary);
         if (this._children.length === 0)
-            return [0, 0];
-        return this._children.reduce((accum, child) => {
+            return [extra, extra];
+        let [min, nat] = this._children.reduce((accum, child) => {
             let [min, nat] = accum;
             let [child_min, child_nat] = this._child_get_preferred_size(child, secondary, space);
             return [Math.max(child_min, min), Math.max(child_nat, nat)];
         }, [0, 0]);
+        return [min + extra, nat + extra];
     },
 
     // The primary dimension is height if orientation == VERTICAL, for example.
@@ -126,15 +147,16 @@ const SpaceContainer = new Knowledge.Class({
     // natural primary dimension is the combined natural primary dimension of
     // all children, since given enough space we would display all of them.
     _get_preferred_primary: function (primary, space) {
+        let extra = this._get_css_box_size_for_dimension(primary);
         let children = this._get_visible_children();
         if (children.length === 0)
-            return [0, 0];
+            return [extra, extra];
         let [min, nat] = this._child_get_preferred_size(children[0], primary, space);
         nat += children.slice(1).reduce((accum, child) => {
             let [child_min, child_nat] = this._child_get_preferred_size(child, primary, space);
             return accum + child_nat + this._spacing;
         }, 0);
-        return [min, nat];
+        return [min + extra, nat + extra];
     },
 
     _child_get_preferred_size: function (child, dimension, orthogonal_space) {
@@ -254,8 +276,19 @@ const SpaceContainer = new Knowledge.Class({
         return this._get_preferred_secondary('height', width);
     },
 
+    _shrink_allocation: function (allocation, border) {
+        allocation.x += border.left;
+        allocation.y += border.top;
+        allocation.width -= border.left + border.right;
+        allocation.height -= border.top + border.bottom;
+    },
+
     vfunc_size_allocate: function (allocation) {
+        let [margin, border, padding] = this._get_css_box_sizes();
+        this._shrink_allocation(allocation, margin);
         this.parent(allocation);
+        this._shrink_allocation(allocation, border);
+        this._shrink_allocation(allocation, padding);
 
         let children = this._get_visible_children();
         if (children.length === 0)
@@ -315,6 +348,18 @@ const SpaceContainer = new Knowledge.Class({
             let rect = new Gdk.Rectangle(props);
             info.child.size_allocate(rect);
         });
+    },
+
+    vfunc_draw: function (cr) {
+        let width = this.get_allocated_width();
+        let height = this.get_allocated_height();
+        let context = this.get_style_context();
+        Gtk.render_background(context, cr, 0, 0, width, height);
+        Gtk.render_frame(context, cr, 0, 0, width, height);
+        Gtk.render_focus(context, cr, 0, 0, width, height);
+        let ret = this.parent(cr);
+        cr.$dispose();
+        return ret;
     },
 
     vfunc_remove: function (child) {

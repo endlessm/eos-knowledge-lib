@@ -81,6 +81,11 @@ EosWindow.parallax.background-right {
     background-position: 100% 50%;
 }
 
+.section-page-a,
+.search-page-a {
+    padding: 0 100px;
+}
+
 .section-page-a .title,
 .section-page-b .title,
 .search-page-a .title,
@@ -500,6 +505,10 @@ EosWindow scrollbar trough {
     font-family: Montserrat;
     font-size: 2.25em; /* 36pt * 1/12 * 0.75 DPI correction factor */
     font-weight: bold;
+}
+
+.document-card .title.collapsed {
+    margin-bottom: 10px;
 }
 
 .nav-back-button, .nav-forward-button {

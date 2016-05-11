@@ -40,6 +40,10 @@ EosWindow {
     border-bottom-color: rgba(255, 255, 255, 0.14);
 }
 
+.home-page EknAppBanner {
+    margin-bottom: 42px;
+}
+
 .home-page .search-box {
     min-width: 450px;
 }
@@ -84,6 +88,14 @@ EosWindow {
     color: #464646;
 }
 
+.divided-banner-template EknAppBanner {
+    margin: 10px 0;
+}
+
+.divided-banner-template EknBannerTemplate {
+    padding: 0 45px;
+}
+
 .divided-banner-template .title {
     font-weight: 300;
     font-size: 2em; /* 24px / 12px/em */
@@ -106,6 +118,10 @@ EosWindow {
 
 .divided-banner-template .title.error-message {
     font-weight: bold;
+}
+
+.divided-banner-template .search-results {
+    margin-top: 20px;
 }
 
 .divided-banner-template .search-results separator {

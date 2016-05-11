@@ -19,6 +19,12 @@ EknSearch {
     background-color: transparent;
 }
 
+/* This used to be margin on the list cards inside, but ListCard doesn't support
+ * margin properly at the moment. */
+EknSearch .scrolling-list-grid {
+    padding: 0 200px;
+}
+
 .card .title {
     color: @title-blue;
 }
@@ -43,6 +49,14 @@ EknSearch {
 
 .trigger:hover .image {
     -gtk-icon-source: url('resource:///com/endlessm/knowledge/data/images/news-arrow-light.svg');
+}
+
+EknHighlights {
+    margin: 50px 20px;
+}
+
+EknSetPreviewCard .title-card {
+    margin-top: 25px;
 }
 
 EknSetPreviewCard .title-card .title {
@@ -94,10 +108,24 @@ EknSideBySideArrangement .title-card.highlighted:hover label.title {
     border-bottom: none;
 }
 
+EknHierarchicalSet {
+    margin: 20px;
+}
+
 /* Selects the background around the suggested articles modules; cumbersome! */
 .vertical EknResponsiveMargins.second,
 .no-results .vertical EknResponsiveMargins {
     background-color: #0f1b3c;
+}
+
+EknSuggestedArticles {
+    margin: 50px 0;
+    padding-bottom: 20px;
+}
+
+EknSupplementaryArticles {
+    margin: 50px 0 50px 20px;
+    padding: 0 20px 20px 0px;
 }
 
 EknSupplementaryArticles > .title,
@@ -242,6 +270,10 @@ EknSearchBanner {
 
 .card.arrow {
     -gtk-icon-source: none; /* kill the arrow that Gtk adds by default in Gtk.render_arrow() */
+}
+
+EknSetBanner {
+    margin-top: 40px;
 }
 
 EknSetBanner .card .title,

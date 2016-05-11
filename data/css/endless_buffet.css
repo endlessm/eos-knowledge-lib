@@ -13,6 +13,16 @@ EknSetPreviewCard .title,
     background-color: #d9f0f8;
 }
 
+EknHighlights,
+EknThematic {
+    padding: 20px;
+}
+
+EknThematic .title-card,
+EknSetPreviewCard .title-card {
+    margin-top: 25px;
+}
+
 EknHighlights .title-card .title.label,
 EknThematic .title-card .title.label,
 EknSetPreviewCard .title-card .title,
@@ -142,6 +152,10 @@ EknSideMenuTemplate .menu .card .title {
     color: #044a80;
 }
 
+EknSideMenuTemplate .menu .card {
+    margin-top: 5px;
+}
+
 EknSideMenuTemplate .menu .home-button:hover,
 EknSideMenuTemplate .menu .card:hover .title {
     color: #5bc2e5;
@@ -181,6 +195,11 @@ EknContextBanner {
 
 .card-context {
     font-style: italic;
+}
+
+EknSuggestedArticles EknSquareGuysArrangement,
+EknSuggestedCategories EknSquareGuysArrangement {
+    padding: 0 20px 20px 20px;
 }
 
 /* Changes for composite TVs */
