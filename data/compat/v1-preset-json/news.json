@@ -334,12 +334,6 @@
         "header-card": {
             "type": "TitleCard"
         },
-        "set-card": {
-            "type": "TitleCard",
-            "properties": {
-                "title-capitalization": "uppercase"
-            }
-        },
         "set-preview": {
             "type": "SetPreviewCard",
             "properties": {
