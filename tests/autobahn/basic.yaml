@@ -59,7 +59,7 @@ defines:
     article-page: *article-page
 
 # This has to come after the references
-interaction:
+root:
   type: MeshInteraction
   slots:
     window: *window

@@ -64,7 +64,7 @@ defines:
       search-page: *search-page
       article-page: *article-page
 
-interaction:
+root:
   type: MeshInteraction
   slots:
     window: *window

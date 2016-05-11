@@ -7,6 +7,8 @@ const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Knowledge = imports.app.knowledge;
 const Warehouse = imports.app.warehouse;
 
+const ROOT_NAME = 'root';
+
 /**
  * Class: ModuleFactory
  */
@@ -67,7 +69,7 @@ const ModuleFactory = new Knowledge.Class({
         this._id_to_module = new Map();
         this._id_to_pending_callbacks = new Map();
         this._path_to_description = new Map();
-        this._extract_ids(this.app_json['modules']['interaction'], false);
+        this._extract_ids(this.app_json[ROOT_NAME], false);
     },
 
     get version() {
@@ -135,7 +137,7 @@ const ModuleFactory = new Knowledge.Class({
      *   extra_props - Extra construct properties for the module.
      */
     create_module_tree: function (extra_props={}) {
-        return this._create_module('root', this.app_json['modules']['interaction'],
+        return this._create_module(ROOT_NAME, this.app_json[ROOT_NAME],
             extra_props);
     },
 

@@ -1,101 +1,99 @@
 {
   "version": 2,
-  "modules": {
-    "interaction": {
-      "type": "MeshInteraction",
-      "slots": {
-        "window": {
-          "type": "Window",
-          "slots": {
-            "article-page": {
-              "type": "ArticleStackModule",
-              "properties": {
-                "allow-navigation": "next"
-              },
-              "slots": {
-                "card-type": {
-                  "type": "FakeVideoDocumentCard"
-                },
-                "nav-card-type": {
-                  "type": "TextCard"
-                }
-              }
+  "root": {
+    "type": "MeshInteraction",
+    "slots": {
+      "window": {
+        "type": "Window",
+        "slots": {
+          "article-page": {
+            "type": "ArticleStackModule",
+            "properties": {
+              "allow-navigation": "next"
             },
-            "home-page": {
-              "type": "ScrollingLayout",
-              "id": "home-scroll",
-              "slots": {
-                "content": {
-                  "type": "BannerTemplate",
-                  "slots": {
-                    "banner": {
-                      "type": "AppBanner",
-                      "properties": {
-                        "halign": "fill",
-                        "image-uri": "resource:///com/endlessm/video-test-en/assets/titleImage.svg",
-                        "max-fraction": 0.5,
-                        "valign": "start"
-                      }
+            "slots": {
+              "card-type": {
+                "type": "FakeVideoDocumentCard"
+              },
+              "nav-card-type": {
+                "type": "TextCard"
+              }
+            }
+          },
+          "home-page": {
+            "type": "ScrollingLayout",
+            "id": "home-scroll",
+            "slots": {
+              "content": {
+                "type": "BannerTemplate",
+                "slots": {
+                  "banner": {
+                    "type": "AppBanner",
+                    "properties": {
+                      "halign": "fill",
+                      "image-uri": "resource:///com/endlessm/video-test-en/assets/titleImage.svg",
+                      "max-fraction": 0.5,
+                      "valign": "start"
+                    }
+                  },
+                  "content": {
+                    "type": "ItemGroupModule",
+                    "properties": {
+                      "hexpand": true
                     },
-                    "content": {
-                      "type": "ItemGroupModule",
-                      "properties": {
-                        "hexpand": true
-                      },
-                      "slots": {
-                        "arrangement": {
-                          "type": "ListArrangement",
-                          "slots": {
-                            "card-type": {
-                              "type": "ListCard"
-                            }
-                          },
-                          "references": {
-                            "scroll-server": "home-scroll"
+                    "slots": {
+                      "arrangement": {
+                        "type": "ListArrangement",
+                        "slots": {
+                          "card-type": {
+                            "type": "ListCard"
                           }
+                        },
+                        "references": {
+                          "scroll-server": "home-scroll"
                         }
                       }
                     }
                   }
                 }
               }
-            },
-            "navigation": {
-              "type": "NavigationModule"
-            },
-            "search": {
-              "type": "SearchBox"
-            },
-            "search-page": {
-              "type": "ScrollingLayout",
-              "id": "search-scroll",
-              "slots": {
-                "content": {
-                  "type": "BannerTemplate",
-                  "slots": {
-                    "banner": {
-                      "type": "SearchBannerModule",
-                      "properties": {
-                        "halign": "fill"
-                      }
+            }
+          },
+          "navigation": {
+            "type": "NavigationModule"
+          },
+          "search": {
+            "type": "SearchBox"
+          },
+          "search-page": {
+            "type": "ScrollingLayout",
+            "id": "search-scroll",
+            "slots": {
+              "content": {
+                "type": "BannerTemplate",
+                "slots": {
+                  "banner": {
+                    "type": "SearchBannerModule",
+                    "properties": {
+                      "halign": "fill"
+                    }
+                  },
+                  "content": {
+                    "type": "SearchModule",
+                    "properties": {
+                      "message-halign": "center",
+                      "message-justify": "left"
                     },
-                    "content": {
-                      "type": "SearchModule",
-                      "properties": {
-                        "message-halign": "center",
-                        "message-justify": "left"
-                      },
-                      "slots": {
-                        "arrangement": {
-                          "type": "ListArrangement",
-                          "slots": {
-                            "card-type": {
-                              "type": "ListCard"
-                            }
-                          },
-                          "references": {
-                            "scroll-server": "search-scroll"
+                    "slots": {
+                      "arrangement": {
+                        "type": "ListArrangement",
+                        "slots": {
+                          "card-type": {
+                            "type": "ListCard"
                           }
+                        },
+                        "references": {
+                          "scroll-server": "search-scroll"
                         }
                       }
                     }

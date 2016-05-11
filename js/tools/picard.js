@@ -66,20 +66,18 @@ function load_arrangement (arrangement_type, card_type) {
     let factory = new ModuleFactory.ModuleFactory({
         app_json: {
             "version": 2,
-            "modules": {
-                "arrangement": {
-                    "type": arrangement_type,
-                    "slots": {
-                        "card-type": {
-                            "type": card_type,
-                        },
+            "root": {
+                "type": arrangement_type,
+                "slots": {
+                    "card-type": {
+                        "type": card_type,
                     },
                 },
             },
         },
     });
     factory.warehouse.register_class('ColorBoxCard', ColorBox);
-    widgets.arrangement = factory.create_named_module('arrangement');
+    widgets.arrangement = factory.create_module_tree();
     widgets.spacing.bind_property('value', widgets.arrangement, 'spacing',
         GObject.BindingFlags.SYNC_CREATE);
     widgets.scroll.add(widgets.arrangement);

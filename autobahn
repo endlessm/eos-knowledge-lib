@@ -79,16 +79,14 @@ def walk(module_tree, transform_func):
 
 
 def preprocess(infile):
-    tree = yaml.load(infile)['interaction']
+    tree = yaml.load(infile)['root']
     tree = walk(tree, expand_slot_shorthand)
     tree = walk(tree, expand_shortdef)
     tree = walk(tree, order_module_keys)
 
     app = collections.OrderedDict((
         ('version', 2),
-        ('modules', {
-            'interaction': tree,
-        }),
+        ('root', tree),
     ))
 
     return json.dumps(app, indent=2)

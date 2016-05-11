@@ -13,70 +13,68 @@ Gtk.init(null);
 
 const MOCK_APP_JSON = {
     version: 2,
-    modules: {
-        'interaction': {
-            type: 'TestModule',
-            slots: {
-                'slot-1': {
-                    type: 'TestModule',
+    root: {
+        type: 'TestModule',
+        slots: {
+            'slot-1': {
+                type: 'TestModule',
+            },
+            'slot-2': {
+                type: 'TestModule',
+                slots: {
+                    'slot-1': {
+                        type: 'TestModule',
+                        id: 'referenced-module-1',
+                        slots: {
+                            'slot-1': {
+                                type: 'TestModule',
+                                references: {
+                                    'reference-1': 'referenced-module-1',
+                                },
+                            },
+                            'optional-slot': {
+                                type: 'TestModule',
+                                id: 'referenced-module-2'
+                            },
+                        },
+                    },
+                    'slot-2': {
+                        type: 'TestModule',
+                        slots: {
+                            // Example of correct properties
+                            'slot-1': {
+                                type: 'MinimalCard',
+                                properties: {
+                                    'expand': 'true',
+                                    'width-request': 200,
+                                    'halign': 'end',
+                                }
+                            },
+                            'slot-2': {
+                                type: 'TestModule',
+                                slots: {
+                                    // Example of bad properties
+                                    'slot-1': {
+                                        type: 'MinimalCard',
+                                        properties: {
+                                            'asdf': 'true',
+                                        }
+                                    },
+                                    // Example of bad enum value
+                                    'slot-2': {
+                                        type: 'MinimalCard',
+                                        properties: {
+                                            'halign': 'asdf',
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    },
                 },
-                'slot-2': {
-                    type: 'TestModule',
-                    slots: {
-                        'slot-1': {
-                            type: 'TestModule',
-                            id: 'referenced-module-1',
-                            slots: {
-                                'slot-1': {
-                                    type: 'TestModule',
-                                    references: {
-                                        'reference-1': 'referenced-module-1',
-                                    },
-                                },
-                                'optional-slot': {
-                                    type: 'TestModule',
-                                    id: 'referenced-module-2'
-                                },
-                            },
-                        },
-                        'slot-2': {
-                            type: 'TestModule',
-                            slots: {
-                                // Example of correct properties
-                                'slot-1': {
-                                    type: 'MinimalCard',
-                                    properties: {
-                                        'expand': 'true',
-                                        'width-request': 200,
-                                        'halign': 'end',
-                                    }
-                                },
-                                'slot-2': {
-                                    type: 'TestModule',
-                                    slots: {
-                                        // Example of bad properties
-                                        'slot-1': {
-                                            type: 'MinimalCard',
-                                            properties: {
-                                                'asdf': 'true',
-                                            }
-                                        },
-                                        // Example of bad enum value
-                                        'slot-2': {
-                                            type: 'MinimalCard',
-                                            properties: {
-                                                'halign': 'asdf',
-                                            },
-                                        },
-                                    },
-                                },
-                            },
-                        },
-                    },
-                    references: {
-                        'reference-1': 'referenced-module-1',
-                        'reference-2': 'referenced-module-2',
-                    },
+                references: {
+                    'reference-1': 'referenced-module-1',
+                    'reference-2': 'referenced-module-2',
                 },
             },
         },
@@ -85,18 +83,16 @@ const MOCK_APP_JSON = {
 
 const NOT_UNIQUE_APP_JSON = {
     version: 2,
-    modules: {
-        'interaction': {
-            type: 'TestModule',
-            slots: {
-                'slot-1': {
-                    type: 'TestModule',
-                    id: 'referenced-module-1'
-                },
-                'slot-2': {
-                    type: 'TestModule',
-                    id: 'referenced-module-1'
-                },
+    root: {
+        type: 'TestModule',
+        slots: {
+            'slot-1': {
+                type: 'TestModule',
+                id: 'referenced-module-1'
+            },
+            'slot-2': {
+                type: 'TestModule',
+                id: 'referenced-module-1'
             },
         },
     },
@@ -104,23 +100,21 @@ const NOT_UNIQUE_APP_JSON = {
 
 const IN_MULTI_APP_JSON = {
     version: 2,
-    modules: {
-        'interaction': {
-            type: 'TestModule',
-            slots: {
-                'slot-1': {
-                    type: 'TestModule',
-                    references: {
-                        'reference-1': 'referenced-module-1',
-                    },
+    root: {
+        type: 'TestModule',
+        slots: {
+            'slot-1': {
+                type: 'TestModule',
+                references: {
+                    'reference-1': 'referenced-module-1',
                 },
-                'multi-slot-1': {
-                    type: 'TestModule',
-                    slots: {
-                        'slot-1': {
-                            type: 'TestModule',
-                            id: 'referenced-module-1',
-                        },
+            },
+            'multi-slot-1': {
+                type: 'TestModule',
+                slots: {
+                    'slot-1': {
+                        type: 'TestModule',
+                        id: 'referenced-module-1',
                     },
                 },
             },
