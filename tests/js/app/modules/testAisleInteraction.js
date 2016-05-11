@@ -146,8 +146,6 @@ describe('Aisle interaction', function () {
         // Prevent CSS from leaking into other tests
         spyOn(Gtk.StyleContext, 'add_provider_for_screen');
 
-        let factory = new MockFactory.MockFactory();
-        factory.add_named_mock('document-card', Minimal.MinimalDocumentCard);
 
         let application = new MockApplication();
         settings = new MockUserSettingsModel({
@@ -159,10 +157,10 @@ describe('Aisle interaction', function () {
         engine.get_objects_by_query_finish.and.returnValue([[], null]);
         engine.get_object_by_id_finish.and.returnValue(null);
 
+        let factory = new MockFactory.MockFactory();
         factory.add_named_mock('window', MockView);
         factory.add_named_mock('interaction', AisleInteraction.AisleInteraction, {
             'window': 'window',
-            'document-card': 'document-card',
         }, {
             application: application,
             settings: settings,
