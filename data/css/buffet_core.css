@@ -90,6 +90,10 @@ EknSetPreviewCard:hover .title,
     font-size: 18.7px;
 }
 
+.list-card {
+    margin: 10px 0;
+}
+
 .list-card.width-d .title,
 .list-card.width-d .card-synopsis {
     font-size: 18.7px;
