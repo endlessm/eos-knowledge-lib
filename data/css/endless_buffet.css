@@ -164,6 +164,11 @@ EknSideMenuTemplate .menu .card:hover .title {
 EknSideMenuTemplate .menu separator {
     min-height: 1px;
     background-color: #cccccc;
+    margin: 5px 10px 0 10px;
+}
+
+EknSideMenuTemplate .menu .sidebar {
+    margin: 0 10px 5px 10px;
 }
 
 EknSideMenuTemplate .close-button,
@@ -178,6 +183,14 @@ EknSideMenuTemplate .menu-button {
 EknSideMenuTemplate .close-button:hover,
 EknSideMenuTemplate .menu-button:hover {
     color: #49bde3;
+}
+
+EknSideMenuTemplate .home-button {
+    margin: 10px 0 0 10px;
+}
+
+EknSideMenuTemplate .close-button {
+    margin: 10px 10px 0 0;
 }
 
 EknSideMenuTemplate .title-card,
