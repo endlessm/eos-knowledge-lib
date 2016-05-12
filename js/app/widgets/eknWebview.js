@@ -8,6 +8,7 @@ const WebKit2 = imports.gi.WebKit2;
 
 const ArticleHTMLRenderer = imports.app.articleHTMLRenderer;
 const ArticleObjectModel = imports.search.articleObjectModel;
+const AsyncTask = imports.search.asyncTask;
 const Compat = imports.app.compat.compat;
 const Config = imports.app.config;
 const Engine = imports.search.engine;
@@ -106,6 +107,23 @@ const EknWebview = new Knowledge.Class({
         });
     },
 
+    _load_object: function (id, cancellable, callback) {
+        let task = new AsyncTask.AsyncTask(this, cancellable, callback);
+        Engine.get_default().get_object_by_id(id, cancellable, task.catch_callback_errors((engine, load_task) => {
+            let model = engine.get_object_by_id_finish(load_task);
+            if (model instanceof ArticleObjectModel.ArticleObjectModel) {
+                let html = this.renderer.render(model);
+                let bytes = ByteArray.fromString(html).toGBytes();
+                let stream = Gio.MemoryInputStream.new_from_bytes(bytes);
+                task.return_value([stream, 'text/html; charset=utf-8']);
+            } else {
+                let stream = model.get_content_stream();
+                task.return_value([stream, null]);
+            }
+        }));
+        return task;
+    },
+
     _load_ekn_uri: function (req) {
         let fail_with_error = (error) => {
             logError(error);
@@ -115,28 +133,17 @@ const EknWebview = new Knowledge.Class({
             }));
         };
 
-        try {
-            Engine.get_default().get_object_by_id(req.get_uri(),
-                                                         null,
-                                                        (engine, task) => {
-                try {
-                    let model = engine.get_object_by_id_finish(task);
-                    if (model instanceof ArticleObjectModel.ArticleObjectModel) {
-                        let html = this.renderer.render(model);
-                        let bytes = ByteArray.fromString(html).toGBytes();
-                        let stream = Gio.MemoryInputStream.new_from_bytes(bytes);
-                        req.finish(stream, -1, 'text/html; charset=utf-8');
-                    } else {
-                        let stream = model.get_content_stream();
-                        req.finish(stream, -1, null);
-                    }
-                } catch (error) {
-                    fail_with_error(error);
-                }
-            });
-        } catch (error) {
-            fail_with_error(error);
-        }
+        let cancellable = null;
+
+        let id = req.get_uri();
+        this._load_object(id, cancellable, (source, load_task) => {
+            try {
+                let [stream, content_type] = load_task.finish();
+                req.finish(stream, -1, content_type);
+            } catch (error) {
+                fail_with_error(error);
+            }
+        });
     },
 
     // Tell MathJax to stop any processing; should improve performance when
