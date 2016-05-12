@@ -77,6 +77,14 @@ const MOCK_APP_JSON = {
                     'reference-2': 'referenced-module-2',
                 },
             },
+            'multi-slot-1': {
+                type: 'TestModule',
+                slots: {
+                    'slot-1': {
+                        type: 'TestModule',
+                    },
+                },
+            },
         },
     },
 };
@@ -193,6 +201,13 @@ describe('Module factory', function () {
         }).toThrow();
     });
 
+    it('errors if creating more than one instance of non-multi slot', function () {
+        module_factory.create_module_for_slot(root, 'slot-1');
+        expect(() => {
+            module_factory.create_module_for_slot(root, 'slot-1');
+        }).toThrow();
+    });
+
     it('creates a module for a module definition in a slot', function () {
         let module = module_factory.create_module_for_slot(root, 'slot-1');
         expect(module).toBeA(MockModule);
@@ -203,10 +218,18 @@ describe('Module factory', function () {
         expect(module.factory_name).toBe('root.slot-1');
     });
 
-    it('modules from the same definition have the same path', function () {
-        let module1 = module_factory.create_module_for_slot(root, 'slot-1');
-        let module2 = module_factory.create_module_for_slot(root, 'slot-1');
-        expect(module1.factory_name).toEqual(module2.factory_name);
+    it('creates modules from the same multi slot with different paths', function () {
+        let module1 = module_factory.create_module_for_slot(root, 'multi-slot-1');
+        let module2 = module_factory.create_module_for_slot(root, 'multi-slot-1');
+        expect(module1.factory_name).not.toEqual(module2.factory_name);
+    });
+
+    it('creates submodules of multi slots with different paths', function () {
+        let module1 = module_factory.create_module_for_slot(root, 'multi-slot-1');
+        let module2 = module_factory.create_module_for_slot(root, 'multi-slot-1');
+        let sub1 = module_factory.create_module_for_slot(module1, 'slot-1');
+        let sub2 = module_factory.create_module_for_slot(module2, 'slot-1');
+        expect(sub1.factory_name).not.toEqual(sub2.factory_name);
     });
 
     describe('referenced modules', function () {

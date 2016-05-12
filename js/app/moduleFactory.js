@@ -70,6 +70,7 @@ const ModuleFactory = new Knowledge.Class({
         this._id_to_pending_callbacks = new Map();
         this._path_to_description = new Map();
         this._extract_ids(this.app_json[ROOT_NAME], false);
+        this._unique_count = 0;
     },
 
     get version() {
@@ -155,7 +156,8 @@ const ModuleFactory = new Knowledge.Class({
      *   extra_props - dictionary of construct properties for the submodule
      */
     create_module_for_slot: function (parent_module, slot, extra_props={}) {
-        if (!(slot in parent_module.constructor.__slots__))
+        let slots_info = parent_module.constructor.__slots__;
+        if (!(slot in slots_info))
             throw new Error('No slot named ' + slot +
                 '; did you define it in Slots in your Module.Class definition?');
 
@@ -166,7 +168,20 @@ const ModuleFactory = new Knowledge.Class({
         if (slot_value === null || slot_value === undefined)
             return null;
 
+        // The "unique count" makes sure that each instance of a module created
+        // from a multi slot, as well as each instance's submodules, have a
+        // unique path. For example, root -> multi-slot would get a path of
+        // root.multi-slot.0, root.multi-slot.1, etc. If the module in that
+        // multi-slot had a non-multi slot, then you would have
+        // root.multi-slot.0.slot, root.multi-slot.1.slot, etc.
         let path = parent_module.factory_name + '.' + slot;
+        if (slots_info[slot].multi)
+            path += '.' + this._unique_count++;
+
+        if (this._path_to_description.has(path))
+            throw new Error('You are creating more than one instance of a ' +
+                'submodule that is not in a multi slot: ' + path);
+
         return this._create_module(path, slot_value, extra_props);
     },
 
