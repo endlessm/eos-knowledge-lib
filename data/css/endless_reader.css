@@ -114,6 +114,10 @@ EknSplitPercentageTemplate,
     background-color: #CCCCCC;
 }
 
+.search-results spinner {
+    margin: 20px;
+}
+
 .search-results EknGridArrangement {
     margin-top: 20px;
 }

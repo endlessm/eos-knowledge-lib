@@ -447,6 +447,9 @@ EosWindow.parallax.background-right {
     background-color: black;
 }
 
+.search-results spinner {
+    margin: 20px;
+}
 
 .section-page-b EknItemGroup,
 .search-page-b .search-results,

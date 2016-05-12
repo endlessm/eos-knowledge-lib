@@ -88,6 +88,10 @@ EosWindow {
     color: #464646;
 }
 
+.search-results spinner {
+    margin: 20px;
+}
+
 .divided-banner-template EknAppBanner {
     margin: 10px 0;
 }

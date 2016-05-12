@@ -176,6 +176,10 @@ EknSetPreviewCard:hover .title,
     color: #49bde3;
 }
 
+.search-results spinner {
+    margin: 20px;
+}
+
 .results-message-title,
 .results-message.subtitle {
     color: black;
