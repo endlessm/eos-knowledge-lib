@@ -17,7 +17,7 @@
                         "slots": {
                             "content": {
                                 "type": "ArticleStack",
-                                "properties" : {
+                                "properties": {
                                     "allow-navigation": "next",
                                     "do-sliding-animation": false
                                 },
@@ -47,22 +47,19 @@
                                                 "type": "AppBanner",
                                                 "properties": {
                                                     "max-fraction": 0.2,
-                                                    "show-subtitle": false,
-                                                    "visible": true
+                                                    "show-subtitle": false
                                                 }
                                             },
                                             "menu": {
                                                 "type": "SuggestedCategories",
                                                 "properties": {
-                                                    "show-title": false,
-                                                    "visible": true
+                                                    "show-title": false
                                                 },
                                                 "slots": {
                                                     "arrangement": {
                                                         "type": "SideBySideArrangement",
                                                         "properties": {
-                                                            "halign": "center",
-                                                            "visible": true
+                                                            "halign": "center"
                                                         },
                                                         "slots": {
                                                             "card-type": {
@@ -202,22 +199,19 @@
                                                 "type": "AppBanner",
                                                 "properties": {
                                                     "max-fraction": 0.2,
-                                                    "show-subtitle": false,
-                                                    "visible": true
+                                                    "show-subtitle": false
                                                 }
                                             },
                                             "menu": {
                                                 "type": "SuggestedCategories",
                                                 "properties": {
-                                                    "show-title": false,
-                                                    "visible": true
+                                                    "show-title": false
                                                 },
                                                 "slots": {
                                                     "arrangement": {
                                                         "type": "SideBySideArrangement",
                                                         "properties": {
-                                                            "halign": "center",
-                                                            "visible": true
+                                                            "halign": "center"
                                                         },
                                                         "slots": {
                                                             "card-type": {
@@ -249,7 +243,6 @@
                             }
                         }
                     },
-                    "navigation": null,
                     "search": {
                         "type": "SearchBox"
                     },
@@ -276,7 +269,6 @@
                                             "content": {
                                                 "type": "Search",
                                                 "properties": {
-                                                    "halign": "fill",
                                                     "message-halign": "start",
                                                     "message-justify": "left"
                                                 },
@@ -339,22 +331,19 @@
                                                 "type": "AppBanner",
                                                 "properties": {
                                                     "max-fraction": 0.2,
-                                                    "show-subtitle": false,
-                                                    "visible": true
+                                                    "show-subtitle": false
                                                 }
                                             },
                                             "menu": {
                                                 "type": "SuggestedCategories",
                                                 "properties": {
-                                                    "show-title": false,
-                                                    "visible": true
+                                                    "show-title": false
                                                 },
                                                 "slots": {
                                                     "arrangement": {
                                                         "type": "SideBySideArrangement",
                                                         "properties": {
-                                                            "halign": "center",
-                                                            "visible": true
+                                                            "halign": "center"
                                                         },
                                                         "slots": {
                                                             "card-type": {
@@ -540,22 +529,19 @@
                                                 "type": "AppBanner",
                                                 "properties": {
                                                     "max-fraction": 0.2,
-                                                    "show-subtitle": false,
-                                                    "visible": true
+                                                    "show-subtitle": false
                                                 }
                                             },
                                             "menu": {
                                                 "type": "SuggestedCategories",
                                                 "properties": {
-                                                    "show-title": false,
-                                                    "visible": true
+                                                    "show-title": false
                                                 },
                                                 "slots": {
                                                     "arrangement": {
                                                         "type": "SideBySideArrangement",
                                                         "properties": {
-                                                            "halign": "center",
-                                                            "visible": true
+                                                            "halign": "center"
                                                         },
                                                         "slots": {
                                                             "card-type": {

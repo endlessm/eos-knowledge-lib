@@ -63,9 +63,7 @@
                             "bottom": {
                                 "type": "SetGroup",
                                 "properties": {
-                                    "expand": true,
-                                    "halign": "fill",
-                                    "valign": "fill"
+                                    "expand": true
                                 },
                                 "slots": {
                                     "arrangement": {
@@ -81,7 +79,6 @@
                             "top-left": {
                                 "type": "AppBanner",
                                 "properties": {
-                                    "expand": false,
                                     "halign": "center",
                                     "max-fraction": 0.7,
                                     "min-fraction": 0.2,
@@ -93,8 +90,7 @@
                                 "properties": {
                                     "halign": "center",
                                     "shadow-type": "none",
-                                    "valign": "center",
-                                    "visible": true
+                                    "valign": "center"
                                 }
                             }
                         }

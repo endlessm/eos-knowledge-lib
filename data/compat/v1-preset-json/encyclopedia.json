@@ -93,14 +93,12 @@
                                             "content": {
                                                 "type": "Search",
                                                 "properties": {
-                                                    "halign": "fill",
                                                     "message-halign": "start"
                                                 },
                                                 "slots": {
                                                     "arrangement": {
                                                         "type": "ScrollingListArrangement",
                                                         "properties": {
-                                                            "halign": "fill",
                                                             "hexpand": true
                                                         },
                                                         "slots": {
