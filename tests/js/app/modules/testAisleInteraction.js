@@ -146,7 +146,6 @@ describe('Aisle interaction', function () {
         // Prevent CSS from leaking into other tests
         spyOn(Gtk.StyleContext, 'add_provider_for_screen');
 
-
         let application = new MockApplication();
         settings = new MockUserSettingsModel({
             highest_article_read: 0,
@@ -157,17 +156,22 @@ describe('Aisle interaction', function () {
         engine.get_objects_by_query_finish.and.returnValue([[], null]);
         engine.get_object_by_id_finish.and.returnValue(null);
 
-        let factory = new MockFactory.MockFactory();
-        factory.add_named_mock('window', MockView);
-        factory.add_named_mock('interaction', AisleInteraction.AisleInteraction, {
-            'window': 'window',
+        let factory = new MockFactory.MockFactory({
+            'MockView': MockView,
+            'AisleInteraction': AisleInteraction.AisleInteraction,
         }, {
+            type: 'AisleInteraction',
+            slots: {
+                'window': {
+                    type: 'MockView',
+                },
+            }
+        });
+        interaction = factory.create_module_tree({
             application: application,
             settings: settings,
         });
-
-        interaction = factory.create_named_module('interaction');
-        view = factory.get_created_named_mocks('window')[0];
+        view = factory.get_last_created_mock('MockView');
         spyOn(interaction, 'record_search_metric');
     });
 

@@ -20,9 +20,12 @@ describe('Alphabetical order', function () {
 
     describe('ascending', function () {
         beforeEach(function () {
-            factory = new MockFactory.MockFactory();
-            factory.add_named_mock('order', AlphabeticalOrder.AlphabeticalOrder);
-            order = factory.create_named_module('order');
+            factory = new MockFactory.MockFactory({
+                'AlphabeticalOrder': AlphabeticalOrder.AlphabeticalOrder,
+            }, {
+                type: 'AlphabeticalOrder',
+            });
+            order = factory.create_module_tree();
         });
 
         it('is the default', function () {
@@ -37,11 +40,9 @@ describe('Alphabetical order', function () {
 
     describe('descending', function () {
         beforeEach(function () {
-            factory = new MockFactory.MockFactory();
-            factory.add_named_mock('order', AlphabeticalOrder.AlphabeticalOrder, {}, {
+            order = factory.create_module_tree({
                 ascending: false,
             });
-            order = factory.create_named_module('order');
         });
 
         it('sorts models by title', function () {

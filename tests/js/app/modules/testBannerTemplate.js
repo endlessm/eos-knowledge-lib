@@ -16,24 +16,28 @@ describe('Banner template', function () {
         jasmine.addMatchers(CssClassMatcher.customMatchers);
         jasmine.addMatchers(WidgetDescendantMatcher.customMatchers);
 
-        factory = new MockFactory.MockFactory();
-        factory.add_named_mock('mock-banner', Gtk.Label);
-        factory.add_named_mock('mock-content', Gtk.Label);
-        factory.add_named_mock('banner-template', BannerTemplate.BannerTemplate,
-        {
-            'banner': 'mock-banner',
-            'content': 'mock-content',
+        factory = new MockFactory.MockFactory({
+            'BannerTemplate': BannerTemplate.BannerTemplate,
+        }, {
+            type: 'BannerTemplate',
+            slots: {
+                'banner': {
+                    type: 'Banner',
+                },
+                'content': {
+                    type: 'Content',
+                },
+            },
         });
-
-        template = factory.create_named_module('banner-template');
+        template = factory.create_module_tree();
     });
 
     it('constructs', function () {});
 
     it('packs all its children', function () {
-        let banner = factory.get_created_named_mocks('mock-banner')[0];
+        let banner = factory.get_last_created_mock('Banner');
         expect(template).toHaveDescendant(banner);
-        let content = factory.get_created_named_mocks('mock-content')[0];
+        let content = factory.get_last_created_mock('Content');
         expect(template).toHaveDescendant(content);
     });
 });

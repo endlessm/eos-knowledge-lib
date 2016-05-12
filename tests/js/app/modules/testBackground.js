@@ -15,16 +15,21 @@ const TEST_CONTENT_BUILDDIR = Utils.get_test_content_builddir();
 Gtk.init(null);
 
 describe('Background Module', function () {
-    let module, factory, dispatcher;
+    let module, dispatcher;
 
     beforeEach(function () {
         dispatcher = MockDispatcher.mock_default();
-        factory = new MockFactory.MockFactory();
-        factory.add_named_mock('content', Gtk.Label);
-        factory.add_named_mock('module', Background.Background, {
-            'content': 'content',
+        let factory = new MockFactory.MockFactory({
+            'Background': Background.Background,
+        }, {
+            type: 'Background',
+            slots: {
+                'content': {
+                    type: 'Content',
+                },
+            },
         });
-        module = factory.create_named_module('module');
+        module = factory.create_module_tree();
 
         let resource = Gio.Resource.load(TEST_CONTENT_BUILDDIR + 'test-content.gresource');
         resource._register();
