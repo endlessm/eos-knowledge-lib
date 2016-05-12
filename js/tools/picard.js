@@ -130,9 +130,8 @@ function get_dimensions_menu () {
     widgets.spacing.value = DEFAULT_CARD_SPACING;
     let resize_separator = new Gtk.Separator({
         orientation: Gtk.Orientation.HORIZONTAL,
-        margin_top: SPACING_UNIT,
-        margin_bottom: SPACING_UNIT,
     });
+    resize_separator.get_style_context().add_class('resize-separator');
     let resize_label = new Gtk.Label({
         label: '<b>Resize window</b>',
         use_markup: true,
@@ -221,9 +220,9 @@ function build_ui () {
     widgets.hamburger = new Gtk.MenuButton({
         popover: get_dimensions_menu(),
         direction: Gtk.ArrowType.NONE,
-        margin_right: 8,
         image: icon,
     });
+    resize_separator.get_style_context().add_class('titlebar-hamburger');
 
     widgets.module_selection = new Gtk.MenuButton({
         popover: get_module_menu(),
