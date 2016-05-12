@@ -35,8 +35,7 @@
                                         "type": "ItemGroup",
                                         "properties": {
                                             "expand": true,
-                                            "halign": "end",
-                                            "valign": "fill"
+                                            "halign": "end"
                                         },
                                         "slots": {
                                             "arrangement": {

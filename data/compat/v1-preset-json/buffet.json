@@ -60,6 +60,7 @@
                                             "card-type": {
                                                 "type": "TitleCard",
                                                 "properties": {
+                                                    "context-capitalization": "uppercase",
                                                     "title-capitalization": "uppercase"
                                                 }
                                             },
@@ -77,7 +78,7 @@
                         "slots": {
                             "content": {
                                 "type": "ArticleStack",
-                                "properties" : {
+                                "properties": {
                                     "allow-navigation": "next",
                                     "do-sliding-animation": false
                                 },
@@ -110,6 +111,7 @@
                                             "card-type": {
                                                 "type": "TitleCard",
                                                 "properties": {
+                                                    "context-capitalization": "uppercase",
                                                     "title-capitalization": "uppercase"
                                                 }
                                             },
@@ -257,6 +259,7 @@
                                             "card-type": {
                                                 "type": "TitleCard",
                                                 "properties": {
+                                                    "context-capitalization": "uppercase",
                                                     "title-capitalization": "uppercase"
                                                 }
                                             },
@@ -307,7 +310,7 @@
                                         "slots": {
                                             "arrangement": {
                                                 "type": "SquareGuysArrangement",
-                                                "properties" : {
+                                                "properties": {
                                                     "max-rows": 1,
                                                     "spacing": 10
                                                 },
@@ -362,6 +365,7 @@
                                             "card-type": {
                                                 "type": "TitleCard",
                                                 "properties": {
+                                                    "context-capitalization": "uppercase",
                                                     "title-capitalization": "uppercase"
                                                 }
                                             },
@@ -462,6 +466,7 @@
                                             "card-type": {
                                                 "type": "TitleCard",
                                                 "properties": {
+                                                    "context-capitalization": "uppercase",
                                                     "title-capitalization": "uppercase"
                                                 }
                                             },

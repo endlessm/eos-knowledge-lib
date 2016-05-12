@@ -31,8 +31,7 @@
                                     "halign": "center",
                                     "max-fraction": 0.2,
                                     "min-fraction": 0.2,
-                                    "valign": "start",
-                                    "vexpand": false
+                                    "valign": "start"
                                 }
                             },
                             "top-right": {
@@ -93,14 +92,12 @@
                                             "content": {
                                                 "type": "Search",
                                                 "properties": {
-                                                    "halign": "fill",
                                                     "message-halign": "start"
                                                 },
                                                 "slots": {
                                                     "arrangement": {
                                                         "type": "ScrollingListArrangement",
                                                         "properties": {
-                                                            "halign": "fill",
                                                             "hexpand": true
                                                         },
                                                         "slots": {
@@ -121,8 +118,7 @@
                                     "halign": "center",
                                     "max-fraction": 0.2,
                                     "min-fraction": 0.2,
-                                    "valign": "start",
-                                    "vexpand": false
+                                    "valign": "start"
                                 }
                             },
                             "top-right": {
