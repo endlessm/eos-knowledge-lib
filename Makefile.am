@@ -458,6 +458,7 @@ TESTS_ENVIRONMENT = \
 	export LD_LIBRARY_PATH="$(top_builddir)/.libs$${LD_LIBRARY_PATH:+:$$LD_LIBRARY_PATH}"; \
 	export G_TEST_SRCDIR="$(abs_srcdir)/tests"; \
 	export G_TEST_BUILDDIR="$(abs_builddir)/tests"; \
+	export LC_ALL=C; \
 	$(NULL)
 
 EXTRA_DIST += jasmine.json
