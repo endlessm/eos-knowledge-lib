@@ -1,0 +1,188 @@
+---
+defines:
+- &common-card-properties
+  context-capitalization: lowercase
+  text-halign: start
+- &suggestions-properties
+  show-trigger: false
+  title-capitalization: lowercase
+  valign: end
+
+# Various one-liners
+- &main-card
+  type: PostCard
+  properties: *common-card-properties
+- &header-card TitleCard
+- &no-sets 'SetsFilter{invert: true}'
+
+# Reused components
+- &menu
+  type: TopMenuTemplate
+  slots: &menu-slots
+    top-menu:
+      type: ResponsiveMargins
+      slots:
+        content:
+          type: TopMenu
+          slots:
+            banner: 'AppBanner{max-fraction: 0.2, show-subtitle: false}'
+            menu:
+              shortdef: 'SuggestedCategories{show-title: false}'
+              slots:
+                arrangement:
+                  shortdef: 'SideBySideArrangement{halign: center}'
+                  slots:
+                    card-type:
+                      type: TitleCard
+                      properties:
+                        title-capitalization: lowercase
+                        halign: center
+                        decorate-on-highlight: true
+                    filter: FeaturedFilter
+
+- &suggestions-arrangement
+  shortdef: 'SquareGuysArrangement{max-rows: 1, spacing: 20}'
+  slots:
+    card-type:
+      type: ThumbCard
+      properties: *common-card-properties
+
+- &set-preview
+  shortdef: 'SetPreviewCard{trigger-capitalization: lowercase}'
+  slots:
+    arrangement:
+      shortdef: 'ThirtiesArrangement{max-rows: 1, spacing: 20}'
+      slots:
+        card-type: *main-card
+        filter: *no-sets
+        order: 'PublishedDateOrder{ascending: false}'
+    header-card-type: *header-card
+
+# Pages
+- &home-page
+  <<: *menu
+  slots:
+    <<: *menu-slots
+    content:
+      type: InfiniteScrollingLayout
+      slots:
+        content:
+          shortdef: 'Background{page-mode: home}'
+          slots:
+            content:
+              type: ResponsiveMargins
+              slots:
+                content:
+                  shortdef: 'Highlights{halign: center, support-sets: 4}'
+                  slots:
+                    highlight-arrangement:
+                      shortdef: 'PianoArrangement{spacing: 20}'
+                      slots:
+                        card-type: *main-card
+                        filter: *no-sets
+                        order: 'PublishedDateOrder{ascending: false}'
+                    support-card-type: *set-preview
+                    sets-filter: FeaturedFilter
+
+- &section-page
+  <<: *menu
+  slots:
+    <<: *menu-slots
+    content:
+      shortdef: 'InfiniteScrollingLayout{bottom-buffer: 250}'
+      id: theme-scroll
+      slots:
+        content:
+          shortdef: 'Background{page-mode: section}'
+          slots:
+            content:
+              type: BannerTemplate
+              slots:
+                banner:
+                  shortdef: 'SetBanner{halign: center}'
+                  slots:
+                    card-type: 'TitleCard{title-capitalization: lowercase}'
+                content:
+                  shortdef: 'TwoPieceTemplate{orientation: vertical}'
+                  slots:
+                    first:
+                      type: ResponsiveMargins
+                      slots:
+                        content:
+                          shortdef: 'HierarchicalSet{halign: center}'
+                          slots:
+                            arrangement:
+                              type: ListArrangement
+                              properties:
+                                row-spacing: 20
+                                orientation: vertical
+                              slots:
+                                card-type: ListCard
+                                order: 'PublishedDateOrder{ascending: false}'
+                            set-card-type: *set-preview
+                          references:
+                            scroll-server: theme-scroll
+                    second:
+                      type: ResponsiveMargins
+                      slots:
+                        content:
+                          type: SupplementaryArticles
+                          properties:
+                            <<: *suggestions-properties
+                            same-set: false
+                          slots:
+                            arrangement: *suggestions-arrangement
+
+- &search-page
+  <<: *menu
+  slots:
+    <<: *menu-slots
+    content:
+      shortdef: 'Background{page-mode: search}'
+      slots:
+        content:
+          type: BannerTemplate
+          slots:
+            banner: 'SearchBanner{halign: center, xalign: 0.5, justify: center}'
+            content:
+              shortdef: 'Search{message-halign: start, message-justify: left}'
+              slots:
+                arrangement:
+                  shortdef: 'ScrollingListArrangement{bottom-buffer: 250}'
+                  slots:
+                    card-type: ListCard
+                article-suggestions:
+                  type: ResponsiveMargins
+                  slots:
+                    content:
+                      type: SuggestedArticles
+                      properties: *suggestions-properties
+                      slots:
+                        arrangement: *suggestions-arrangement
+
+- &article-page
+  <<: *menu
+  slots:
+    <<: *menu-slots
+    content:
+      shortdef: 'ArticleStack{do-sliding-animation: false, allow-navigation: next}'
+      slots:
+        card-type: 'KnowledgeDocumentCard{show-titles: false, show-toc: false}'
+        nav-card-type: 'ListCard{show-synopsis: false}'
+
+root:
+  shortdef: 'BuffetInteraction{theme: news}'
+  slots:
+    window:
+      shortdef: 'Window{animations: false}'
+      slots:
+        search: SearchBox
+        lightbox:
+          type: MediaLightbox
+          slots:
+            card-type: MediaCard
+        brand-page: 'AppBanner{max-fraction: 0.6, show-subtitle: true}'
+        home-page: *home-page
+        section-page: *section-page
+        search-page: *search-page
+        article-page: *article-page

@@ -1,0 +1,64 @@
+---
+defines:
+  - &home-page
+    shortdef: 'TwoPieceTemplate{orientation: vertical, valign: center}'
+    slots:
+      first: 'AppBanner{min-fraction: 0.5, max-fraction: 0.5}'
+      second: 'SearchBox{halign: center}'
+
+  - &inner-page-layout
+    type: DividedBannerTemplate
+    slots: &inner-page-layout-slots
+      top-left:
+        type: AppBanner
+        properties:
+          min-fraction: 0.2
+          max-fraction: 0.2
+          valign: start
+          halign: center
+      top-right: 'SearchBox{halign: center, valign: center, hexpand: true}'
+
+  - &search-page
+    <<: *inner-page-layout
+    slots:
+      <<: *inner-page-layout-slots
+      bottom:
+        type: PaperTemplate
+        slots:
+          content:
+            type: BannerTemplate
+            slots:
+              banner: 'SearchBanner{halign: start}'
+              content:
+                shortdef: 'Search{message-halign: start}'
+                slots:
+                  arrangement:
+                    shortdef: 'ScrollingListArrangement{hexpand: true}'
+                    slots:
+                      card-type: TitleCard
+
+  - &article-page
+    <<: *inner-page-layout
+    slots:
+      <<: *inner-page-layout-slots
+      bottom:
+        type: PaperTemplate
+        slots:
+          content:
+            shortdef: 'ArticleStack{do-sliding-animation: false}'
+            slots:
+              card-type: KnowledgeDocumentCard
+
+root:
+  type: MeshInteraction
+  slots:
+    window:
+      type: EncyclopediaWindow
+      slots:
+        lightbox:
+          type: MediaLightbox
+          slots:
+            card-type: MediaCard
+        home-page: *home-page
+        search-page: *search-page
+        article-page: *article-page

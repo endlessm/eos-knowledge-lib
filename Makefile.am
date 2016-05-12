@@ -82,6 +82,23 @@ CLEANFILES += $(scss_targets)
 clean-local::
 	rm -rf .sass-cache
 
+json_pp_verbose = $(json_pp_verbose_@AM_V@)
+json_pp_verbose_ = $(json_pp_verbose_@AM_DEFAULT_V@)
+json_pp_verbose_0 = @echo "  JSON     $@";
+
+.yaml.json:
+	$(json_pp_verbose) $(MKDIR_P) $(@D) && $(srcdir)/autobahn $< -o $@
+
+yaml_presets = \
+	data/compat/v1-preset-json/A.yaml \
+	data/compat/v1-preset-json/B.yaml \
+	data/compat/v1-preset-json/buffet.yaml \
+	data/compat/v1-preset-json/encyclopedia.yaml \
+	data/compat/v1-preset-json/news.yaml \
+	data/compat/v1-preset-json/reader.yaml \
+	$(NULL)
+json_presets = $(yaml_presets:.yaml=.json)
+
 resource_deps_verbose = $(resource_deps_verbose_@AM_V@)
 resource_deps_verbose_ = $(resource_deps_verbose_@AM_DEFAULT_V@)
 resource_deps_verbose_0 = @echo "  RESDEPS  $@";
@@ -111,7 +128,7 @@ EXTRA_DIST += $(gresources:.gresource=.gresource.xml) $(gresource_depedencies)
 
 # glib-compile-resources --generate-dependencies can't be run until all
 # dependencies are present, so we need to build the scss first
-eos-knowledge.gresource.deps: $(scss_targets) $(subst_files)
+eos-knowledge.gresource.deps: $(scss_targets) $(subst_files) $(json_presets)
 pkgdata_DATA += eos-knowledge.gresource
 gresources += eos-knowledge.gresource
 
