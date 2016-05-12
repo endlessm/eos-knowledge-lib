@@ -26,6 +26,10 @@ EosWindow separator {
     margin: 0 30px;
 }
 
+.search-results-page flowbox {
+    margin-top: 20px;
+}
+
 .article-snippet .title {
     font-size: 2.0em; /* should be overridden */
 }
