@@ -153,7 +153,8 @@ const ModuleFactory = new Knowledge.Class({
      *   extra_props - dictionary of construct properties for the submodule
      */
     create_module_for_slot: function (parent_module, slot, extra_props={}) {
-        if (!(slot in parent_module.constructor.__slots__))
+        let slots_info = parent_module.constructor.__slots__;
+        if (!(slot in slots_info))
             throw new Error('No slot named ' + slot +
                 '; did you define it in Slots in your Module.Class definition?');
 
@@ -165,6 +166,11 @@ const ModuleFactory = new Knowledge.Class({
             return null;
 
         let path = parent_module.factory_name + '.' + slot;
+
+        if (this._path_to_description.has(path) && !slots_info[slot].multi)
+            throw new Error('You are creating more than one instance of a ' +
+                'submodule that is not in a multi slot');
+
         return this._create_module(path, slot_value, extra_props);
     },
 

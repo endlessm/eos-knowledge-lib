@@ -77,6 +77,9 @@ const MOCK_APP_JSON = {
                     'reference-2': 'referenced-module-2',
                 },
             },
+            'multi-slot-1': {
+                type: 'TestModule',
+            },
         },
     },
 };
@@ -193,6 +196,13 @@ describe('Module factory', function () {
         }).toThrow();
     });
 
+    it('errors if creating more than one instance of non-multi slot', function () {
+        module_factory.create_module_for_slot(root, 'slot-1');
+        expect(() => {
+            module_factory.create_module_for_slot(root, 'slot-1');
+        }).toThrow();
+    });
+
     it('creates a module for a module definition in a slot', function () {
         let module = module_factory.create_module_for_slot(root, 'slot-1');
         expect(module).toBeA(MockModule);
@@ -204,8 +214,8 @@ describe('Module factory', function () {
     });
 
     it('modules from the same definition have the same path', function () {
-        let module1 = module_factory.create_module_for_slot(root, 'slot-1');
-        let module2 = module_factory.create_module_for_slot(root, 'slot-1');
+        let module1 = module_factory.create_module_for_slot(root, 'multi-slot-1');
+        let module2 = module_factory.create_module_for_slot(root, 'multi-slot-1');
         expect(module1.factory_name).toEqual(module2.factory_name);
     });
 
