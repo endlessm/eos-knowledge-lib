@@ -107,7 +107,6 @@ const AppBanner = new Module.Class({
             this._subtitle_label.label = ('<span letter_spacing="758">' +
                 GLib.markup_escape_text(subtitle, -1) + '</span>');
             this._subtitle_label.justify = Utils.alignment_to_justification(this.halign);
-            this._logo.margin_bottom = 70;
         }
         this._subtitle_label.visible = this.show_subtitle;
     },

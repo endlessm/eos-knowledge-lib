@@ -216,6 +216,10 @@ EknAppBanner {
     font-size: 1.19em; /* 19px / 12px/em * 72/96 */
 }
 
+EknAppBanner .subtitle {
+    margin-top: 70px;
+}
+
 .document-card WebKitWebView {
     background-color: white;
 }

@@ -6,6 +6,10 @@ EosWindow {
     background-color: #efefef;
 }
 
+EknAppBanner .subtitle {
+    margin-top: 70px;
+}
+
 .progress-label {
     font-size: 1em;
     color: #494949;
