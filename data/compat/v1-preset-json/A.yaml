@@ -1,0 +1,73 @@
+---
+defines:
+- &card
+  LegacyPolaroidCard
+
+- &main-arrangement-slot
+  arrangement:
+    shortdef: 'GridArrangement(bottom-buffer: 250)'
+    slots:
+      card-type: *card
+
+- &home-page
+  type: HamburgerBasementTemplate
+  slots:
+    # FIXME remove fractions
+    top: 'AppBanner(min-fraction: 0.1, max-fraction: 0.7)'
+    middle: 'SearchBox(halign: center)'
+    bottom:
+      type: SetGroup
+      properties:
+        expand: true
+        halign: center
+        valign: center
+        max-children: 6
+      slots:
+        arrangement:
+          shortdef: 'OverflowArrangement(orientation: horizontal)'
+          slots:
+            card-type: *card
+    basement:
+      shortdef: 'SetGroup(expand: true)'
+      slots: *main-arrangement-slot
+
+- &section-page
+  type: BannerTemplate
+  slots:
+    banner:
+      shortdef: 'SetBanner(halign: center)'
+      slots:
+        card-type: TitleCard
+    content:
+      type: ItemGroup
+      slots: *main-arrangement-slot
+
+- &search-page
+  type: BannerTemplate
+  slots:
+    banner: 'SearchBanner(halign: center)'
+    content:
+      shortdef: 'Search(message-justify: left, message-halign: center)'
+      slots: *main-arrangement-slot
+
+- &article-page
+  type: ArticleStack
+  slots:
+    card-type: 'KnowledgeDocumentCard(show-toc: true)'
+
+root:
+  type: MeshInteraction
+  slots:
+    window:
+      type: Window
+      slots:
+        search: SearchBox
+        navigation: Navigation
+        lightbox:
+          type: MediaLightbox
+          slots:
+            card-type: MediaCard
+        home-page: *home-page
+        section-page: *section-page
+        search-page: *search-page
+        article-page: *article-page
