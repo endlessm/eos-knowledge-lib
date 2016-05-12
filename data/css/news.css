@@ -88,6 +88,10 @@ EknPanelFrame .top-menu {
     padding: 0px 20px;
 }
 
+.top-menu-template-content {
+    margin-top: 50px;
+}
+
 EknSideBySideArrangement .title-card label.title {
     font-family: 'Fira Sans';
     color: rgba(255, 255, 255, 0.6);
