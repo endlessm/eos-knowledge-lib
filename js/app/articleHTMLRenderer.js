@@ -115,7 +115,7 @@ const ArticleHTMLRenderer = new Knowledge.Class({
     },
 
     _get_legacy_css_files: function (model) {
-        let css_files = this._get_base_css_files();
+        let css_files = [];
 
         switch (model.source) {
             case 'wikipedia':
@@ -134,11 +134,11 @@ const ArticleHTMLRenderer = new Knowledge.Class({
     },
 
     _get_legacy_javascript_files: function (model) {
-        let javascript_files = this._get_base_js_files().concat([
+        let javascript_files = [
             'content-fixes.js',
             'hide-broken-images.js',
             'no-link-remover.js',
-        ]);
+        ];
 
         if (this.enable_scroll_manager)
             javascript_files.push('scroll-manager.js');
