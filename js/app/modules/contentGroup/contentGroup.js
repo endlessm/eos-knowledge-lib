@@ -10,6 +10,9 @@ const Module = imports.app.interfaces.module;
 
 const BATCH_SIZE = 15;
 
+const CONTENT_PAGE_NAME = 'content';
+const SPINNER_PAGE_NAME = 'spinner';
+
 const ContentGroup = new Module.Class({
     Name: 'ContentGroup',
     Extends: Gtk.Grid,
@@ -33,11 +36,26 @@ const ContentGroup = new Module.Class({
                 context: this._selection.get_models(),
             });
         });
-        this.attach(this._arrangement, 0, 1, 1, 1);
+
+        let stack = new Gtk.Stack();
+        let spinner = new Gtk.Spinner();
+        stack.add_named(spinner, SPINNER_PAGE_NAME);
+        stack.add_named(this._arrangement, CONTENT_PAGE_NAME);
+
+        // When the spinner is not being shown on screen, set it to
+        // be inactive to help with performance.
+        stack.connect('notify::visible-child', () => {
+            spinner.active = stack.visible_child_name === SPINNER_PAGE_NAME;
+        });
 
         this._selection = this.create_submodule('selection');
         this._selection.connect('models-changed',
             this._on_models_changed.bind(this));
+        this._selection.connect('notify::loading', () => {
+            stack.visible_child_name = this._selection.loading ? SPINNER_PAGE_NAME : CONTENT_PAGE_NAME;
+        });
+
+        this.attach(stack, 0, 1, 1, 1);
 
         // These two lines are just to demonstrate getting something on screen.
         // They will be replaced by the generic MAKE_READY method on the module interface.
