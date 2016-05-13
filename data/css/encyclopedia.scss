@@ -109,7 +109,7 @@ EosWindow {
 
 .divided-banner-template separator {
     min-height: 15px;
-    background-image: url('resource:///com/endlessm/knowledge/data/images/separator.png');
+    background-image: url('../images/separator.png');
     background-size: 100%;
     background-repeat: no-repeat;
 }
@@ -166,7 +166,7 @@ EosWindow {
 
 .paper-template .content {
     background-image: linear-gradient(to bottom, #ececec 0%, #ececec 100%),
-                      url('resource:///com/endlessm/knowledge/data/templates/images/noise.png');
+                      url('../templates/images/noise.png');
 }
 
 scrollbar {

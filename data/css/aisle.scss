@@ -239,13 +239,13 @@ EknSplitPercentageTemplate,
 }
 
 .nav-back-button .image {
-    -gtk-icon-source: url('resource:///com/endlessm/knowledge/data/images/reader/left-arrow.svg');
+    -gtk-icon-source: url('../images/reader/left-arrow.svg');
     -EknThemeableImage-min-width: 24;
     -EknThemeableImage-min-height: 23;
 }
 
 .nav-forward-button .image {
-    -gtk-icon-source: url('resource:///com/endlessm/knowledge/data/images/reader/right-arrow.svg');
+    -gtk-icon-source: url('../images/reader/right-arrow.svg');
     -EknThemeableImage-min-width: 24;
     -EknThemeableImage-min-height: 23;
 }
@@ -360,11 +360,11 @@ EknSplitPercentageTemplate .subtitle {
 }
 
 .webview-tooltip .archive-icon {
-    -gtk-icon-source: url('resource:///com/endlessm/knowledge/data/images/reader/archive.svg');
+    -gtk-icon-source: url('../images/reader/archive.svg');
 }
 
 .webview-tooltip .external-link-icon {
-    -gtk-icon-source: url('resource:///com/endlessm/knowledge/data/images/reader/external-link.svg');
+    -gtk-icon-source: url('../images/reader/external-link.svg');
 }
 
 .archive-notice-frame {

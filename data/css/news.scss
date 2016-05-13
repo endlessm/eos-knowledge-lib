@@ -39,7 +39,7 @@ EknSearch .scrolling-list-grid {
 }
 
 .trigger .image {
-    -gtk-icon-source: url('resource:///com/endlessm/knowledge/data/images/news-arrow-dark.svg');
+    -gtk-icon-source: url('../images/news-arrow-dark.svg');
     -EknThemeableImage-min-height: 14;
     -EknThemeableImage-min-width: 14;
     margin-left: 5px;
@@ -47,7 +47,7 @@ EknSearch .scrolling-list-grid {
 }
 
 .trigger:hover .image {
-    -gtk-icon-source: url('resource:///com/endlessm/knowledge/data/images/news-arrow-light.svg');
+    -gtk-icon-source: url('../images/news-arrow-light.svg');
 }
 
 EknHighlights {

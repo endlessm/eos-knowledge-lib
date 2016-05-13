@@ -504,7 +504,7 @@ EosWindow scrollbar trough {
 
 .document-card WebKitWebView {
     background-color: #ececec;
-    background-image: url('resource:///com/endlessm/knowledge/data/templates/images/noise.png');
+    background-image: url('../templates/images/noise.png');
 }
 
 .document-card .title {
@@ -568,7 +568,7 @@ EosWindow scrollbar trough {
 }
 
 .pdf-view {
-    background-image: url('resource:///com/endlessm/knowledge/data/images/pdf-background.png');
+    background-image: url('../images/pdf-background.png');
 }
 
 .webview-tooltip {

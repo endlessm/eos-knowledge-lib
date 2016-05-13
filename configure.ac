@@ -259,7 +259,6 @@ AC_CONFIG_FILES([
     po/Makefile.in
     docs/reference/eosknowledgeprivate/Makefile
     js/app/config.js.in
-    config/compass.rb
 ])
 AC_CONFIG_HEADERS([config.h])  dnl Header with system-dependent #defines
 # Make docs/reference/js/eos.css available in the build tree
