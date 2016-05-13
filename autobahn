@@ -70,6 +70,8 @@ def order_module_keys(module):
 
 def walk(module_tree, transform_func):
     # Transform first, in case the transformation adds slots
+    if isinstance(module_tree, list):
+        return [walk(t, transform_func) for t in module_tree]
     module_tree = transform_func(module_tree)
     if 'slots' in module_tree:
         slots = module_tree['slots']

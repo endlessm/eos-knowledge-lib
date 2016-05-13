@@ -26,6 +26,11 @@ function transform_v1_description(json) {
                 return;
             for (let slot in module['slots']) {
                 let slot_value = module['slots'][slot];
+                if (Array.isArray(slot_value)) {
+                    for (let i = 0; i < slot_value.length; i++) {
+                        recurse(slot_value[i]);
+                    }
+                }
                 if (typeof slot_value === 'object' && slot_value !== null)
                     recurse(slot_value);
             }

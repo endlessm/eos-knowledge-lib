@@ -90,6 +90,24 @@ const MOCK_APP_JSON = {
                     },
                 },
             },
+            'array-slot': [
+                {
+                    type: 'TestModule',
+                    slots: {
+                        'slot-1': {
+                            type: 'TestModule',
+                        },
+                    },
+                },
+                {
+                    type: 'TestModule',
+                    slots: {
+                        'slot-1': {
+                            type: 'TestModule',
+                        },
+                    },
+                }
+            ]
         },
     },
 };
@@ -154,6 +172,9 @@ const MockModule = new Module.Class({
         'optional-slot': {},
         'multi-slot-1': {
             multi: true,
+        },
+        'array-slot': {
+            array: true,
         }
     },
 
@@ -263,6 +284,18 @@ describe('Module factory', function () {
                 warehouse: warehouse,
             });
         }).toThrow();
+    });
+
+    describe('array modules', function () {
+        it('are arrays', function () {
+            let array_module = module_factory.create_module_for_slot(root, 'array-slot');
+            expect(Array.isArray(array_module)).toBe(true);
+        });
+
+        it('create as many submodules as declared', function () {
+            let array_module = module_factory.create_module_for_slot(root, 'array-slot');
+            expect(array_module.length).toEqual(2);
+        });
     });
 
     describe('referenced modules', function () {

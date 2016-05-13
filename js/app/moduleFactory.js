@@ -163,12 +163,13 @@ const ModuleFactory = new Knowledge.Class({
             throw new Error('No slot named ' + slot +
                 '; did you define it in Slots in your Module.Class definition?');
 
+        let empty_return = slots_info[slot].array ? [] : null;
         let slots = this._path_to_description.get(parent_module.factory_path)['slots'];
         if (!slots)
-            return null;
+            return empty_return;
         let slot_value = slots[slot];
         if (slot_value === null || slot_value === undefined)
-            return null;
+            return empty_return;
 
         // The "unique count" makes sure that each instance of a module created
         // from a multi slot, as well as each instance's submodules, have a
@@ -184,7 +185,18 @@ const ModuleFactory = new Knowledge.Class({
             throw new Error('You are creating more than one instance of a ' +
                 'submodule that is not in a multi slot: ' + path);
 
-        return this._create_module(path, slot_value, extra_props);
+        // The module is not an array, we treat it as a single module
+        if (!slots_info[slot].array)
+            return this._create_module(path, slot_value, extra_props);
+
+        if (!Array.isArray(slot_value))
+            throw new Error('Slot ' + slot + ' is expected to be an array of submodules!');
+
+        let module_array = slot_value.map((submodule, ix) => {
+            let subpath = path + '.' + ix;
+            return this._create_module(subpath, submodule, extra_props);
+        });
+        return module_array;
     },
 
     /**
