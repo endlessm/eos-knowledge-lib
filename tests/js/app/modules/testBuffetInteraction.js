@@ -26,8 +26,6 @@ const MockView = new Module.Class({
     Implements: [ Module.Module ],
 
     Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name', Module.Module),
         'template-type': GObject.ParamSpec.string('template-type', '', '',
             GObject.ParamFlags.READWRITE, ''),
     },

@@ -215,13 +215,13 @@ describe('Module factory', function () {
 
     it('creates a module with a module tree path', function () {
         let module = module_factory.create_module_for_slot(root, 'slot-1');
-        expect(module.factory_name).toBe('root.slot-1');
+        expect(module.factory_path).toBe('root.slot-1');
     });
 
     it('creates modules from the same multi slot with different paths', function () {
         let module1 = module_factory.create_module_for_slot(root, 'multi-slot-1');
         let module2 = module_factory.create_module_for_slot(root, 'multi-slot-1');
-        expect(module1.factory_name).not.toEqual(module2.factory_name);
+        expect(module1.factory_path).not.toEqual(module2.factory_path);
     });
 
     it('creates submodules of multi slots with different paths', function () {
@@ -229,7 +229,7 @@ describe('Module factory', function () {
         let module2 = module_factory.create_module_for_slot(root, 'multi-slot-1');
         let sub1 = module_factory.create_module_for_slot(module1, 'slot-1');
         let sub2 = module_factory.create_module_for_slot(module2, 'slot-1');
-        expect(sub1.factory_name).not.toEqual(sub2.factory_name);
+        expect(sub1.factory_path).not.toEqual(sub2.factory_path);
     });
 
     describe('referenced modules', function () {

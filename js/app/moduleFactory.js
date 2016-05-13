@@ -101,7 +101,7 @@ const ModuleFactory = new Knowledge.Class({
         let module_class = this.warehouse.type_to_class(description['type']);
         let module_props = {
             factory: this,
-            factory_name: path,
+            factory_path: path,
         };
         if (id)
             module_props['factory_id'] = id;
@@ -161,7 +161,7 @@ const ModuleFactory = new Knowledge.Class({
             throw new Error('No slot named ' + slot +
                 '; did you define it in Slots in your Module.Class definition?');
 
-        let slots = this._path_to_description.get(parent_module.factory_name)['slots'];
+        let slots = this._path_to_description.get(parent_module.factory_path)['slots'];
         if (!slots)
             return null;
         let slot_value = slots[slot];
@@ -174,7 +174,7 @@ const ModuleFactory = new Knowledge.Class({
         // root.multi-slot.0, root.multi-slot.1, etc. If the module in that
         // multi-slot had a non-multi slot, then you would have
         // root.multi-slot.0.slot, root.multi-slot.1.slot, etc.
-        let path = parent_module.factory_name + '.' + slot;
+        let path = parent_module.factory_path + '.' + slot;
         if (slots_info[slot].multi)
             path += '.' + this._unique_count++;
 
@@ -227,7 +227,7 @@ const ModuleFactory = new Knowledge.Class({
     _get_id_for_reference: function (parent_module, reference_slot) {
         if (!(reference_slot in parent_module.constructor.__references__))
             throw new Error('No referenced slot named ' + reference_slot);
-        let description = this._path_to_description.get(parent_module.factory_name);
+        let description = this._path_to_description.get(parent_module.factory_path);
         if (!(reference_slot in description['references']))
             return null;
         return description['references'][reference_slot];
