@@ -6,6 +6,7 @@ import argparse
 import collections
 import io
 import json
+import os
 import re
 import sys
 import yaml
@@ -91,6 +92,13 @@ def preprocess(infile):
 
     return json.dumps(app, indent=2)
 
+
+def remove_output(f):
+    if f is default_out:
+        return
+    f.close()
+    os.unlink(f.name)
+
 # Ensure stdout is UTF-8
 default_out = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 
@@ -103,5 +111,15 @@ if __name__ == '__main__':
                         type=argparse.FileType('w', encoding='utf-8'),
                         help='File to write (default: stdout)')
     args = parser.parse_args()
-    args.output.write(preprocess(args.input))
-    args.output.write('\n')
+
+    try:
+        args.output.write(preprocess(args.input))
+    except yaml.error.MarkedYAMLError as exc:
+        remove_output(args.output)
+        sys.stderr.write('Invalid YAML: ' + str(exc) + '\n')
+        sys.exit(1)
+    except Exception:
+        remove_output(args.output)
+        raise
+    else:
+        args.output.write('\n')
