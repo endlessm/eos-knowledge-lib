@@ -7,6 +7,8 @@ const EosKnowledgePrivate = imports.gi.EosKnowledgePrivate;
 const Knowledge = imports.app.knowledge;
 const Warehouse = imports.app.warehouse;
 
+const ROOT_NAME = 'root';
+
 /**
  * Class: ModuleFactory
  */
@@ -63,12 +65,12 @@ const ModuleFactory = new Knowledge.Class({
         }
         // After this point, the app.json must be the current version!
 
-        this._anonymous_name_to_description = {};
-
         this._ids = new Set();
         this._id_to_module = new Map();
         this._id_to_pending_callbacks = new Map();
-        this._extract_ids(this.app_json['modules']['interaction'], false);
+        this._path_to_description = new Map();
+        this._extract_ids(this.app_json[ROOT_NAME], false);
+        this._unique_count = 0;
     },
 
     get version() {
@@ -91,14 +93,15 @@ const ModuleFactory = new Knowledge.Class({
         return [true, enum_value];
     },
 
-    create_named_module: function (name, extra_props={}) {
-        let description = this._get_module_description_by_name(name);
+    _create_module: function (path, description, extra_props={}) {
+        this._path_to_description.set(path, description);
+
         let id = ('id' in description) ? description['id'] : null;
 
         let module_class = this.warehouse.type_to_class(description['type']);
         let module_props = {
             factory: this,
-            factory_name: name,
+            factory_path: path,
         };
         if (id)
             module_props['factory_id'] = id;
@@ -125,6 +128,21 @@ const ModuleFactory = new Knowledge.Class({
     },
 
     /**
+     * Method: create_module_tree
+     * Creates the root of the module tree
+     *
+     * Creates the root module of the module tree described in app.json.
+     * This module is usually the interaction that drives the app.
+     *
+     * Parameters:
+     *   extra_props - Extra construct properties for the module.
+     */
+    create_module_tree: function (extra_props={}) {
+        return this._create_module(ROOT_NAME, this.app_json[ROOT_NAME],
+            extra_props);
+    },
+
+    /**
      * Method: create_module_for_slot
      * Returns module specified in app.json for a slot
      *
@@ -138,20 +156,33 @@ const ModuleFactory = new Knowledge.Class({
      *   extra_props - dictionary of construct properties for the submodule
      */
     create_module_for_slot: function (parent_module, slot, extra_props={}) {
-        if (!(slot in parent_module.constructor.__slots__))
+        let slots_info = parent_module.constructor.__slots__;
+        if (!(slot in slots_info))
             throw new Error('No slot named ' + slot +
                 '; did you define it in Slots in your Module.Class definition?');
 
-        let slots = this._get_module_description_by_name(parent_module.factory_name)['slots'];
+        let slots = this._path_to_description.get(parent_module.factory_path)['slots'];
         if (!slots)
             return null;
         let slot_value = slots[slot];
         if (slot_value === null || slot_value === undefined)
             return null;
-        let factory_name = slot_value;
-        if (typeof slot_value === 'object')
-            factory_name = this._setup_anonymous_module(parent_module.factory_name, slot, slot_value);
-        return this.create_named_module(factory_name, extra_props);
+
+        // The "unique count" makes sure that each instance of a module created
+        // from a multi slot, as well as each instance's submodules, have a
+        // unique path. For example, root -> multi-slot would get a path of
+        // root.multi-slot.0, root.multi-slot.1, etc. If the module in that
+        // multi-slot had a non-multi slot, then you would have
+        // root.multi-slot.0.slot, root.multi-slot.1.slot, etc.
+        let path = parent_module.factory_path + '.' + slot;
+        if (slots_info[slot].multi)
+            path += '.' + this._unique_count++;
+
+        if (this._path_to_description.has(path))
+            throw new Error('You are creating more than one instance of a ' +
+                'submodule that is not in a multi slot: ' + path);
+
+        return this._create_module(path, slot_value, extra_props);
     },
 
     /**
@@ -196,33 +227,10 @@ const ModuleFactory = new Knowledge.Class({
     _get_id_for_reference: function (parent_module, reference_slot) {
         if (!(reference_slot in parent_module.constructor.__references__))
             throw new Error('No referenced slot named ' + reference_slot);
-        let description = this._get_module_description_by_name(parent_module.factory_name);
+        let description = this._path_to_description.get(parent_module.factory_path);
         if (!(reference_slot in description['references']))
             return null;
         return description['references'][reference_slot];
-    },
-
-    /**
-     * Method: _get_module_description_by_name
-     * Returns JSON description of module
-     *
-     * Searches the 'modules' property in the app.json for the {name} key
-     * and returns the resulting JSON object.
-     */
-    _get_module_description_by_name: function (name) {
-        let description = this.app_json['modules'][name];
-        if (!description)
-            description = this._anonymous_name_to_description[name];
-        if (!description)
-            throw new Error('No description found in app.json for ' + name);
-
-        return description;
-    },
-
-    _setup_anonymous_module: function (factory_name, slot, description) {
-        let name = factory_name + '.' + slot;
-        this._anonymous_name_to_description[name] = description;
-        return name;
     },
 
     _extract_ids: function (parent_description, parent_is_multi) {
@@ -237,7 +245,7 @@ const ModuleFactory = new Knowledge.Class({
             if(!slot_value)
                 return;
             if (typeof slot_value === 'string')
-                slot_value = this._get_module_description_by_name(slot_value);
+                slot_value = this._path_to_description.get(slot_value);
 
             this._extract_ids(slot_value, is_multi);
         });

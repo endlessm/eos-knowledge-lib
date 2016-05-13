@@ -28,7 +28,7 @@ const MockFactory = new Knowledge.Class({
             // Lang.Class.implements() only works for GJS-defined classes
             if (typeof Klass.implements !== 'undefined' && Klass.implements(Module.Module)) {
                 props.factory = this;
-                props.factory_name = name;
+                props.factory_path = name;
             }
 
             Lang.copyProperties(this._mock_props[name], props);
@@ -62,7 +62,7 @@ const MockFactory = new Knowledge.Class({
         if (!(slot in parent.constructor.__slots__))
             throw new Error('No slot named ' + slot +
                 '; did you forget to define it in Slots?');
-        let module_name = this._mock_slots[parent.factory_name][slot];
+        let module_name = this._mock_slots[parent.factory_path][slot];
         if (module_name === null)
             return null;
 
@@ -72,7 +72,7 @@ const MockFactory = new Knowledge.Class({
     },
 
     request_module_reference: function (parent, reference_slot, callback) {
-        let id = this._mock_references[parent.factory_name][reference_slot];
+        let id = this._mock_references[parent.factory_path][reference_slot];
         callback(this._mock_id_to_module[id]);
     },
 });

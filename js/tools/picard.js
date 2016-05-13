@@ -3,7 +3,6 @@ const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 
 const Card = imports.app.interfaces.card;
 const ArticleObjectModel = imports.search.articleObjectModel;
@@ -66,20 +65,18 @@ function load_arrangement (arrangement_type, card_type) {
     let factory = new ModuleFactory.ModuleFactory({
         app_json: {
             "version": 2,
-            "modules": {
-                "arrangement": {
-                    "type": arrangement_type,
-                    "slots": {
-                        "card-type": {
-                            "type": card_type,
-                        },
+            "root": {
+                "type": arrangement_type,
+                "slots": {
+                    "card-type": {
+                        "type": card_type,
                     },
                 },
             },
         },
     });
     factory.warehouse.register_class('ColorBoxCard', ColorBox);
-    widgets.arrangement = factory.create_named_module('arrangement');
+    widgets.arrangement = factory.create_module_tree();
     widgets.spacing.bind_property('value', widgets.arrangement, 'spacing',
         GObject.BindingFlags.SYNC_CREATE);
     widgets.scroll.add(widgets.arrangement);
@@ -365,25 +362,10 @@ function format_card_class (size, use_height=false) {
 }
 
 // Colored box used instead of cards for smoke-testing
-const ColorBox = new Lang.Class({
+const ColorBox = new Module.Class({
     Name: 'ColorBox',
     Extends: Gtk.Frame,
-    Implements: [Module.Module, Card.Card],
-
-    Properties: {
-        'factory': GObject.ParamSpec.override('factory', Module.Module),
-        'factory-name': GObject.ParamSpec.override('factory-name',
-            Module.Module),
-        'model': GObject.ParamSpec.override('model', Card.Card),
-        'title-capitalization': GObject.ParamSpec.override('title-capitalization',
-            Card.Card),
-        'highlight-string': GObject.ParamSpec.override('highlight-string',
-            Card.Card),
-        'text-halign': GObject.ParamSpec.override('text-halign', Card.Card),
-        'sequence': GObject.ParamSpec.override('sequence', Card.Card),
-        'context-capitalization': GObject.ParamSpec.override('context-capitalization',
-            Card.Card),
-    },
+    Implements: [Card.Card],
 
     _init: function (props={}) {
         props.width_request = Card.MinSize.A;

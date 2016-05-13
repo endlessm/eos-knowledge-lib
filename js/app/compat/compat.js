@@ -2,6 +2,7 @@ const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 
 const Engine = imports.search.engine;
+const ModuleFactory = imports.app.moduleFactory;
 const SetObjectModel = imports.search.setObjectModel;
 const Utils = imports.app.utils;
 
@@ -29,7 +30,7 @@ function transform_v1_description(json) {
                     recurse(slot_value);
             }
         };
-        recurse(preset['modules']['interaction']);
+        recurse(preset[ModuleFactory.ROOT_NAME]);
     }
 
     if (json.templateType === "reader")

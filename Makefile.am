@@ -75,12 +75,25 @@ $(scss_targets): $(scss_partials)
 
 # scss build rule
 .scss.css:
-	$(scss_verbose) $(MKDIR_P) $(dir $@) && $(SCSS) --compass -E utf-8 --stop-on-error --sourcemap=none $< $@
+	$(scss_verbose) $(MKDIR_P) $(dir $@) && $(SCSS) --compass -E utf-8 --stop-on-error --sourcemap=none $< $@ || rm -f $@
 
 EXTRA_DIST += $(scss_toplevels) $(scss_partials)
 CLEANFILES += $(scss_targets)
 clean-local::
 	rm -rf .sass-cache
+
+.yaml.json:
+	$(AM_V_GEN)$(MKDIR_P) $(@D) && $(srcdir)/autobahn $< -o $@
+
+yaml_presets = \
+	data/compat/v1-preset-json/A.yaml \
+	data/compat/v1-preset-json/B.yaml \
+	data/compat/v1-preset-json/buffet.yaml \
+	data/compat/v1-preset-json/encyclopedia.yaml \
+	data/compat/v1-preset-json/news.yaml \
+	data/compat/v1-preset-json/reader.yaml \
+	$(NULL)
+json_presets = $(yaml_presets:.yaml=.json)
 
 resource_deps_verbose = $(resource_deps_verbose_@AM_V@)
 resource_deps_verbose_ = $(resource_deps_verbose_@AM_DEFAULT_V@)
@@ -111,7 +124,7 @@ EXTRA_DIST += $(gresources:.gresource=.gresource.xml) $(gresource_depedencies)
 
 # glib-compile-resources --generate-dependencies can't be run until all
 # dependencies are present, so we need to build the scss first
-eos-knowledge.gresource.deps: $(scss_targets) $(subst_files)
+eos-knowledge.gresource.deps: $(scss_targets) $(subst_files) $(json_presets)
 pkgdata_DATA += eos-knowledge.gresource
 gresources += eos-knowledge.gresource
 
@@ -262,12 +275,15 @@ bin_SCRIPTS += \
 	ekn-search-provider \
 	ekn-app-runner \
 	eos-encyclopedia \
+	autobahn \
 	eminem \
 	kermit \
 	picard \
 	$(NULL)
 
 dist_pkgdata_DATA = data/downloader.ini
+
+EXTRA_DIST += autobahn
 
 # # # TESTS # # #
 
@@ -390,6 +406,10 @@ javascript_tests = \
 	tests/js/search/testTreeNode.js \
 	tests/js/search/testXapianBridge.js \
 	$(NULL)
+yaml_tests = \
+	tests/autobahn/basic.yaml \
+	tests/autobahn/encyclopedia.yaml \
+	$(NULL)
 test_content = \
 	tests/test-content/agot.svg \
 	tests/test-content/app.json \
@@ -404,6 +424,8 @@ test_content = \
 	$(NULL)
 EXTRA_DIST += \
 	$(javascript_tests) \
+	$(yaml_tests) \
+	$(patsubst %.yaml,%.json,$(yaml_tests)) \
 	$(test_content) \
 	tests/CssClassMatcher.js \
 	tests/InstanceOfMatcher.js \
@@ -436,17 +458,22 @@ CLEANFILES += $(test_gresource)
 noinst_DATA = tests/test-content/test-content.gresource
 
 # Run tests when running 'make check'
-TESTS = $(javascript_tests) \
+TESTS = \
+	$(javascript_tests) \
+	$(yaml_tests) \
 	run_coverage.coverage \
 	$(NULL)
 LOG_COMPILER = gtester
 AM_LOG_FLAGS = -k --verbose
 
-TEST_EXTENSIONS = .js .coverage
+TEST_EXTENSIONS = .js .yaml .coverage
+
 JS_LOG_DRIVER = env AM_TAP_AWK='$(AWK)' $(SHELL) $(top_srcdir)/tap-driver.sh
 JS_LOG_DRIVER_FLAGS = --comments
 JS_LOG_COMPILER = jasmine
 AM_JS_LOG_FLAGS = --tap --no-config @JASMINE_REPORT_ARGUMENT@
+
+YAML_LOG_COMPILER = $(top_srcdir)/tests/autobahn/testautobahn.sh
 
 # Use locally built versions of EosKnowledgePrivate-1.0.gir, JS modules, and
 # libraries. We clobber GJS_PATH and include the js directory and the
@@ -461,7 +488,10 @@ TESTS_ENVIRONMENT = \
 	export LC_ALL=C; \
 	$(NULL)
 
-EXTRA_DIST += jasmine.json
+EXTRA_DIST += \
+	tests/autobahn/testautobahn.sh \
+	jasmine.json \
+	$(NULL)
 
 # # # COVERAGE # # #
 

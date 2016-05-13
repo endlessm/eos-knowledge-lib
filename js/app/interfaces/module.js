@@ -106,13 +106,17 @@ const Module = new Lang.Interface({
             GObject.Object.$gtype),
 
         /**
-         * Property: factory_name
+         * Property: factory_path
+         * Path indicating where a module comes from in the app.json
          *
-         * The factory_name is used to identify this module within the app.json. The
-         * factory will use the factory_name to  return the appropriate submodules
-         * for this module's slots.
+         * The factory path is used to identify this module within the app.json.
+         * It is a string, like "root.submodule.multislot.345.content", though
+         * you should not count on its contents being stable between releases.
+         * This string is unique for each instance created and is used
+         * internally.
          */
-        'factory-name': GObject.ParamSpec.string('factory-name', 'Module Name', 'Module Name',
+        'factory-path': GObject.ParamSpec.string('factory-path', 'Factory path',
+            'Path indicating where a module comes from in the app.json',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             ''),
 

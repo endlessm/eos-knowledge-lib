@@ -1,0 +1,84 @@
+---
+defines:
+- &document-card ReaderDocumentCard
+
+# Pages
+- &front-page
+  type: SplitPercentageTemplate
+  slots:
+    start:
+      type: ResponsiveMargins
+      slots:
+        content:
+          type: AppBanner
+          properties:
+            show-subtitle: true
+            subtitle-capitalization: uppercase
+            valign: start
+            halign: start
+    end:
+      type: ResponsiveMargins
+      slots:
+        content:
+          shortdef: 'ItemGroup(expand: true, halign: end)'
+          slots:
+            arrangement:
+              shortdef: 'OverflowArrangement(orientation: vertical)'
+              slots:
+                card-type: ArticleSnippetCard
+
+- &search-page
+  type: BannerTemplate
+  slots:
+    banner: 'SearchBanner(halign: center)'
+    content:
+      shortdef: 'Search(message-halign: center)'
+      slots:
+        arrangement:
+          type: GridArrangement
+          properties:
+            bottom-buffer: 250
+            max-children-per-line: 9
+          slots:
+            card-type: ReaderCard
+
+- &standalone-page
+  type: BannerTemplate
+  slots:
+    banner: StandaloneBanner
+    content:
+      type: StandalonePage
+      slots:
+        card-type:
+          type: *document-card
+          properties:
+            display-context: false
+
+- &archive-page
+  type: StandalonePage
+  slots:
+    card-type: *document-card
+
+- &back-page BackCover
+
+root:
+  type: AisleInteraction
+  slots:
+    window:
+      type: ReaderWindow
+      slots:
+        search: SearchBox
+        navigation: Navigation
+        lightbox:
+          type: MediaLightbox
+          slots:
+            card-type: MediaCard
+        document-arrangement:
+          type: CarouselArrangement
+          slots:
+            card-type: *document-card
+        front-page: *front-page
+        search-page: *search-page
+        standalone-page: *standalone-page
+        archive-page: *archive-page
+        back-page: *back-page

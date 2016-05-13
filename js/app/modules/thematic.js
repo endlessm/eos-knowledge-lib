@@ -42,7 +42,9 @@ const Thematic = new Module.Class({
     Extends: Gtk.Grid,
 
     Slots: {
-        'arrangement': {},
+        'arrangement': {
+            multi: true,
+        },
         'header-card-type': {
             multi: true,
         },

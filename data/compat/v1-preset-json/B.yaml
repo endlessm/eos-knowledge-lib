@@ -1,0 +1,82 @@
+---
+defines:
+- &sidebar-right
+  shortdef: 'SidebarTemplate(sidebar-first: false)'
+
+- &sidebar-list-slots
+  arrangement:
+    type: ScrollingListArrangement
+    slots:
+      card-type: TitleCard
+
+- &section-items
+  type: ItemGroup
+  slots: *sidebar-list-slots
+
+- &search-results
+  shortdef: 'Search(message-valign: center)'
+  slots: *sidebar-list-slots
+
+- &home-page
+  shortdef: 'DividedBannerTemplate(row-spacing: 30, row-homogeneous: true)'
+  slots:
+    top-left:
+      type: AppBanner
+      properties:
+        min-fraction: 0.2  # FIXME remove fractions
+        max-fraction: 0.7
+        valign: center
+        halign: center
+    top-right: 'SearchBox(shadow-type: none, halign: center, valign: center)'
+    bottom:
+      shortdef: 'SetGroup(expand: true)'
+      slots:
+        arrangement:
+          type: TiledGridArrangement
+          slots:
+            card-type: LegacyPostCard
+
+- &section-page
+  <<: *sidebar-right
+  slots:
+    content:
+      shortdef: 'SetBanner(valign: end)'
+      slots:
+        card-type: TitleCard
+    sidebar: *section-items
+
+- &search-page
+  <<: *sidebar-right
+  slots:
+    content: 'SearchBanner(valign: center)'
+    sidebar: *search-results
+
+- &article-page
+  type: SidebarTemplate
+  slots:
+    content:
+      type: ArticleStack
+      slots:
+        card-type: KnowledgeDocumentCard
+    sidebar:
+      type: SearchAndItem
+      slots:
+        search: *search-results
+        item: *section-items
+
+root:
+  type: MeshInteraction
+  slots:
+    window:
+      type: Window
+      slots:
+        search: SearchBox
+        navigation: Navigation
+        lightbox:
+          type: MediaLightbox
+          slots:
+            card-type: MediaCard
+        home-page: *home-page
+        section-page: *section-page
+        search-page: *search-page
+        article-page: *article-page

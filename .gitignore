@@ -19,6 +19,7 @@
 /eos-encyclopedia
 /data/com.endlessm.EknSearchProvider.service
 /data/com.endlessm.EknDownloader.service
+/data/compat/v1-preset-json/*.json
 
 # Sass
 .sass-cache
