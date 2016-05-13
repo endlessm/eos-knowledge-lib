@@ -65,13 +65,10 @@ defines:
           type: Layout.ResponsiveMargins
           slots:
             content:
-              shortdef: 'Layout.TwoPiece(orientation: vertical)'
+              shortdef: 'Layout.Box(orientation: vertical)'
               slots:
-                first:
-                  type: ContentGroup.Highlights
-                  properties:
-                    halign: center
-                    support-sets: 2
+                contents:
+                - shortdef: 'ContentGroup.Highlights(halign: center, support-sets: 2)'
                   slots:
                     highlight-arrangement:
                       type: Arrangement.Windshield
@@ -94,7 +91,7 @@ defines:
                             filter: *no-sets
                         header-card-type: *header-card
                     sets-filter: 'Filter.Featured(invert: true)'
-                second: *category-suggestions
+                - *category-suggestions
 
 - &section-page
   <<: *page-with-menu
@@ -108,10 +105,10 @@ defines:
           type: Layout.ResponsiveMargins
           slots:
             content:
-              shortdef: 'Layout.TwoPiece(orientation: vertical)'
+              shortdef: 'Layout.Box(orientation: vertical)'
               slots:
-                first:
-                  shortdef: 'ContentGroup.Thematic(halign: center)'
+                contents:
+                - shortdef: 'ContentGroup.Thematic(halign: center)'
                   slots:
                     arrangement:
                       type: Arrangement.Half
@@ -121,7 +118,7 @@ defines:
                     header-card-type: *header-card
                   references:
                     scroll-server: theme-scroll
-                second: *category-suggestions
+                - *category-suggestions
 
 - &search-page
   <<: *page-with-menu

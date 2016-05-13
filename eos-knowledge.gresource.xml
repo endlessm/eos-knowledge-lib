@@ -49,7 +49,6 @@
     <file compressed="true">data/templates/js/jquery-min.js</file>
     <file compressed="true">data/templates/js/scroll-manager.js</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/appBanner.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">data/widgets/dividedBannerTemplate.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/gridArrangement.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/hamburgerBasementTemplate.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/infiniteScrollingLayout.ui</file>
@@ -138,12 +137,12 @@
     <file>js/app/modules/contentGroup/thematic.js</file>
     <file>js/app/modules/controller/buffet.js</file>
     <file>js/app/modules/controller/mesh.js</file>
+    <file>js/app/modules/decoration/separator.js</file>
     <file>js/app/modules/filter/featured.js</file>
     <file>js/app/modules/filter/sets.js</file>
     <file>js/app/modules/filter/unread.js</file>
     <file>js/app/modules/layout/articleStack.js</file>
-    <file>js/app/modules/layout/banner.js</file>
-    <file>js/app/modules/layout/dividedBanner.js</file>
+    <file>js/app/modules/layout/box.js</file>
     <file>js/app/modules/layout/dynamicBackground.js</file>
     <file>js/app/modules/layout/hamburgerBasement.js</file>
     <file>js/app/modules/layout/infiniteScrolling.js</file>
@@ -155,7 +154,6 @@
     <file>js/app/modules/layout/sidebar.js</file>
     <file>js/app/modules/layout/sideMenu.js</file>
     <file>js/app/modules/layout/topMenu.js</file>
-    <file>js/app/modules/layout/twoPiece.js</file>
     <file>js/app/modules/navigation/searchBox.js</file>
     <file>js/app/modules/navigation/topMenu.js</file>
     <file>js/app/modules/order/alphabetical.js</file>

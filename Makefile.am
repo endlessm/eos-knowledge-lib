@@ -335,9 +335,8 @@ javascript_tests = \
 	tests/js/app/modules/filter/testSets.js \
 	tests/js/app/modules/filter/testUnread.js \
 	tests/js/app/modules/layout/testArticleStack.js \
+	tests/js/app/modules/layout/testBox.js \
 	tests/js/app/modules/layout/testDynamicBackground.js \
-	tests/js/app/modules/layout/testBanner.js \
-	tests/js/app/modules/layout/testDividedBanner.js \
 	tests/js/app/modules/layout/testHamburgerBasement.js \
 	tests/js/app/modules/layout/testInfiniteScrolling.js \
 	tests/js/app/modules/layout/testPaper.js \
@@ -347,7 +346,6 @@ javascript_tests = \
 	tests/js/app/modules/layout/testSidebar.js \
 	tests/js/app/modules/layout/testSideMenu.js \
 	tests/js/app/modules/layout/testTopMenu.js \
-	tests/js/app/modules/layout/testTwoPiece.js \
 	tests/js/app/modules/navigation/testSearchBox.js \
 	tests/js/app/modules/navigation/testTopMenu.js \
 	tests/js/app/modules/order/testAlphabetical.js \

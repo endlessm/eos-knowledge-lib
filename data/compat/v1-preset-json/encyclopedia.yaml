@@ -1,43 +1,44 @@
 ---
 defines:
   - &home-page
-    shortdef: 'Layout.TwoPiece(orientation: vertical, valign: center)'
+    shortdef: 'Layout.Box(orientation: vertical, halign: center, valign: center)'
     slots:
+      contents:
       # FIXME remove fractions
-      first: 'Banner.App(min-fraction: 0.5, max-fraction: 0.5, expand: true)'
-      second: 'Navigation.SearchBox(halign: center)'
+      - 'Banner.App(min-fraction: 0.5, max-fraction: 0.5, expand: true)'
+      - 'Navigation.SearchBox(halign: center)'
 
   - &inner-page-layout
-    type: Layout.DividedBanner
-    slots: &inner-page-layout-slots
-      top-left:
-        type: Banner.App
+    shortdef: 'Layout.Box(vexpand: false, halign: fill, homogeneous: true)'
+    slots:
+      contents:
+      - type: Banner.App
         properties:
           min-fraction: 0.2  # FIXME remove fractions
           max-fraction: 0.2
           valign: start
           halign: center
           hexpand: true
-      top-right:
-        type: Navigation.SearchBox
+      - type: Navigation.SearchBox
         properties:
           halign: center
           valign: center
           hexpand: true
 
   - &search-page
-    <<: *inner-page-layout
+    shortdef: 'Layout.Box(orientation: vertical, vexpand: false)'
     slots:
-      <<: *inner-page-layout-slots
-      bottom:
-        type: Layout.Paper
+      contents:
+      - *inner-page-layout
+      - type: Layout.Paper
         slots:
           content:
-            type: Layout.Banner
+            shortdef: 'Layout.Box(orientation: vertical)'
             slots:
-              banner: 'Banner.Search(halign: start)'
-              content:
-                shortdef: 'ContentGroup.Search(message-halign: start)'
+              contents:
+              - 'Banner.Search(halign: start)'
+              - Decoration.Separator
+              - shortdef: 'ContentGroup.Search(message-halign: start)'
                 slots:
                   arrangement:
                     shortdef: 'Arrangement.ScrollingList(hexpand: true)'
@@ -45,11 +46,11 @@ defines:
                       card-type: Card.Title
 
   - &article-page
-    <<: *inner-page-layout
+    shortdef: 'Layout.Box(orientation: vertical, vexpand: false)'
     slots:
-      <<: *inner-page-layout-slots
-      bottom:
-        type: Layout.Paper
+      contents:
+      - *inner-page-layout
+      - type: Layout.Paper
         slots:
           content:
             shortdef: 'Layout.ArticleStack(do-sliding-animation: false)'
