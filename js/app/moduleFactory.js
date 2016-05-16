@@ -266,6 +266,8 @@ const ModuleFactory = new Knowledge.Class({
     _is_multi_slot: function (description, slot_name, parent_is_multi) {
         let module_class = this.warehouse.type_to_class(description['type']);
         let slot_props = module_class.__slots__[slot_name];
+        if (typeof slot_props === 'undefined')
+            throw new Error("No slot " + slot_name + " found in module: " + module_class);
         return (parent_is_multi || ('multi' in slot_props && slot_props['multi']));
     },
 });
