@@ -177,4 +177,8 @@ const Encyclopedia = new Module.Class({
         this.page_manager.visible_child = page;
         this._present_if_needed();
     },
+
+    prepare_to_show: function () {
+        this._home_page.prepare_to_show();
+    },
 });

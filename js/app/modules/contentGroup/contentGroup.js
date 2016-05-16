@@ -125,4 +125,8 @@ const ContentGroup = new Module.Class({
             return this._title_label;
         return '';
     },
+
+    prepare_to_show: function () {
+        this.load();
+    },
 });

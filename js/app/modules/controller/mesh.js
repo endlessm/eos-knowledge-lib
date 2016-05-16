@@ -138,10 +138,7 @@ const Mesh = new Module.Class({
     },
 
     _load_sets_on_home_page: function () {
-        // Excuse this rude overreaching; perhaps Module should have a
-        // "prepare_to_show" method that calls its children recursively, or
-        // something like that.
-        this._window._home_page.get_children()[0].load();
+        this._window.prepare_to_show();
 
         this._home_content_loaded = true;
         this._show_home_if_ready();

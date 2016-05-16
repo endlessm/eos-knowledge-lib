@@ -163,4 +163,22 @@ const Module = new Lang.Interface({
     reference_module: function (reference_slot, callback) {
         this.factory.request_module_reference(this, reference_slot, callback);
     },
+
+    /**
+     * Method: prepare_to_show
+     * Intended to be implemented
+     *
+     * If your module has nothing additional to do to present itself on screen,
+     * then simply allow this default implementation of the method to be called.
+     * If you do have something extra to do, or if you want more control over
+     * which of your submodules get prepped, then override this method in your
+     * module class.
+     */
+    prepare_to_show: function () {
+        this.get_children().forEach((child) => {
+            if (typeof child.constructor.implements !== 'undefined' && child.constructor.implements(Module)) {
+                child.prepare_to_show();
+            }
+        });
+    },
 });

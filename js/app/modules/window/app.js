@@ -479,5 +479,9 @@ const App = new Module.Class({
             this._bg_size_provider.load_from_data(frame_css);
         }
         this._last_allocation = alloc;
-    }
+    },
+
+    prepare_to_show: function () {
+        this._home_page.prepare_to_show();
+    },
 });
