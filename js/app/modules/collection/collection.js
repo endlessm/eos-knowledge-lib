@@ -18,6 +18,13 @@ const Collection = new Module.Class({
         'can-load-more': GObject.ParamSpec.boolean('can-load-more',
             'Can load more', 'Whether the collection has more items to load',
             GObject.ParamFlags.READABLE, true),
+        /**
+         * Property: title
+         * Title of this collection
+         */
+        'title': GObject.ParamSpec.string('title',
+            'Title', 'Title of this content group',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
     },
 
     Signals: {

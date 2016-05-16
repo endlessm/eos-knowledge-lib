@@ -68,8 +68,13 @@ const Xapian = new Module.Class({
             }
 
             let results_added = results.filter(this.add_model, this);
-            if (results_added.length > 0)
+            if (results_added.length > 0) {
                 this.emit('models-changed');
+                // Just demonstrating the dynamic title API. This will set
+                // the title for this collection's content group.
+                this.title = results_added[0].title;
+                this.notify('title');
+            }
             if (results_added.length < num_desired && this._can_load_more)
                 this.load_more(num_desired - results_added.length);
         });

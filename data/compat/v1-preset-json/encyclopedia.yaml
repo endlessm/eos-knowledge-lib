@@ -4,8 +4,16 @@ defines:
     shortdef: 'Layout.TwoPiece(orientation: vertical, valign: center)'
     slots:
       # FIXME remove fractions
-      first: 'Bannner.App(min-fraction: 0.5, max-fraction: 0.5)'
-      second: 'ContentGroup.ContentGroup(halign: center, title: "More news from %s")'
+      first:
+        type: Banner.App
+        properties:
+          min-fraction: 0.5
+          max-fraction: 0.5
+      second:
+        type: ContentGroup.ContentGroup
+        properties:
+          halign: center
+          title: 'More news for %s'
         slots:
           arrangement:
             shortdef: 'Arrangement.Quilt(spacing: 20)'

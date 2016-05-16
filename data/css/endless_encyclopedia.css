@@ -88,6 +88,12 @@ EosWindow {
     background-color: alpha(#212526, 0.90);
 }
 
+.home-page content-group .title {
+    font-family: 'Fira Sans';
+    font-size: 48px;
+    font-weight: bold;
+}
+
 .search-results {
     color: #464646;
 }
