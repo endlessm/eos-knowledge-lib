@@ -81,6 +81,10 @@ EosWindow.parallax.background-right {
     background-position: 100% 50%;
 }
 
+.section-page-a flowbox {
+    margin-top: 20px;
+}
+
 .section-page-a,
 .search-page-a {
     padding: 0 100px;
@@ -447,6 +451,9 @@ EosWindow.parallax.background-right {
     background-color: black;
 }
 
+.search-results spinner {
+    margin: 20px;
+}
 
 .section-page-b EknItemGroup,
 .search-page-b .search-results,

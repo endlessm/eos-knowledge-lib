@@ -12,7 +12,6 @@
             <property name="can_focus">False</property>
             <property name="expand">True</property>
             <property name="valign">center</property>
-            <property name="margin_start">100</property>
             <child>
               <object class="GtkLabel" id="title-label">
                 <property name="can_focus">False</property>
@@ -25,7 +24,6 @@
                 <property name="visible">True</property>
                 <property name="halign">start</property>
                 <property name="use_markup">True</property>
-                <property name="margin_bottom">50</property>
                 <style>
                   <class name="title"/>
                 </style>
@@ -42,7 +40,6 @@
                 <property name="expand">False</property>
                 <property name="valign">end</property>
                 <property name="halign">start</property>
-                <property name="margin_end">22</property>
                 <property name="no_show_all">True</property>
                 <style>
                   <class name="decoration"/>
@@ -90,7 +87,6 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="halign">start</property>
-            <property name="margin_start">100</property>
             <property name="no_show_all">True</property>
             <style>
               <class name="decorative-bar"/>
@@ -110,10 +106,6 @@
             <property name="vexpand">True</property>
             <property name="halign">center</property>
             <property name="valign">fill</property>
-            <property name="margin_start">40</property>
-            <property name="margin_end">40</property>
-            <property name="margin_bottom">40</property>
-            <property name="margin_top">60</property>
           </object>
           <packing>
             <property name="left_attach">1</property>

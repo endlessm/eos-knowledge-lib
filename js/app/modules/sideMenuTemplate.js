@@ -79,16 +79,11 @@ const SideMenuTemplate = new Module.Class({
 
         let sidebar = this.create_submodule('sidebar', {
             vexpand: true,
-            // Try to adapt the margins to the margins we put on the rest of the
-            // menu in the Glade file. (Setting a border-width on the menu grid
-            // would be better, but a GtkContainer's border-width doesn't get
-            // the background image in CSS.)
-            margin_start: this._separator.margin_start,
-            margin_end: this._separator.margin_end,
-            margin_bottom: this.home_button.margin_top,
         });
-        if (sidebar)
+        if (sidebar) {
+            sidebar.get_style_context().add_class('sidebar');
             this._menu_grid.attach(sidebar, 0, 2, 2, 1);
+        }
 
         let content = this.create_submodule('content');
         this._grid.add(content);

@@ -6,9 +6,14 @@ EosWindow {
     background-color: #efefef;
 }
 
+EknAppBanner .subtitle {
+    margin-top: 70px;
+}
+
 .progress-label {
     font-size: 1em;
     color: #494949;
+    margin-top: 39px;
 }
 
 EosWindow separator {
@@ -19,6 +24,10 @@ EosWindow separator {
 
 .search-results-page separator {
     margin: 0 30px;
+}
+
+.search-results-page flowbox {
+    margin-top: 20px;
 }
 
 .article-snippet .title {
@@ -114,6 +123,10 @@ EknSplitPercentageTemplate,
     background-color: #CCCCCC;
 }
 
+.search-results spinner {
+    margin: 20px;
+}
+
 .search-results EknGridArrangement {
     margin-top: 20px;
 }
@@ -156,8 +169,17 @@ EknSplitPercentageTemplate,
     color: black;
 }
 
+.document-card separator {
+    margin: 60px 40px 40px 40px;
+}
+
+.document-card .title-view {
+    margin-left: 100px;
+}
+
 .document-card .title {
     font-size: 4em;
+    margin-bottom: 50px;
 }
 
 .document-card .attribution {
@@ -192,6 +214,7 @@ EknSplitPercentageTemplate,
     background-color: #e3e3e3;
     min-width: 34px;
     min-height: 2px;
+    margin-right: 22px;
 }
 
 .nav-back-button, .nav-forward-button {
@@ -267,6 +290,10 @@ EknSplitPercentageTemplate,
 
 .reader-card .decorative-bar {
     margin: 0px 8px;
+}
+
+.document-card .decorative-bar {
+    margin-left: 100px;
 }
 
 .document-card .decorative-bar,
@@ -392,4 +419,13 @@ EosWindow scrollbar trough {
 .composite .document-card .title {
     font-weight: bold;
     font-size: 25.9px;  /* 22px spec * 88% */
+}
+
+.composite .document-card separator {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.composite .document-card .title-view {
+    margin-left: 40px;
 }

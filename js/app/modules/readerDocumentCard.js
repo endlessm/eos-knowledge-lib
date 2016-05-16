@@ -19,11 +19,6 @@ const WebKit2 = imports.gi.WebKit2;
 
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
-const _PROGRESS_LABEL_MARGIN = 20;
-const _DECORATIVE_BAR_HEIGHT = 19;
-const _COMPOSITE_SEPARATOR_MARGIN_PX = 10;
-const _COMPOSITE_TITLE_VIEW_LEFT_MARGIN_PX = 40;
-
 /**
  * Class: ReaderDocumentCard
  * A card implementation for showing full article content of a record
@@ -114,7 +109,6 @@ const ReaderDocumentCard = new Module.Class({
             this._info_notice = new ProgressLabel.ProgressLabel({
                 valign: Gtk.Align.START,
                 halign: Gtk.Align.CENTER,
-                margin_top: _PROGRESS_LABEL_MARGIN + _DECORATIVE_BAR_HEIGHT,
             });
             this.add_overlay(this._info_notice);
             if (this.archived) {
@@ -128,12 +122,6 @@ const ReaderDocumentCard = new Module.Class({
                     this._info_notice, 'total-pages',
                     GObject.BindingFlags.SYNC_CREATE);
             }
-        }
-
-        if (Endless.is_composite_tv_screen(null)) {
-            this._title_view.margin_start = _COMPOSITE_TITLE_VIEW_LEFT_MARGIN_PX;
-            this._separator.margin_start = _COMPOSITE_SEPARATOR_MARGIN_PX;
-            this._separator.margin_end = _COMPOSITE_SEPARATOR_MARGIN_PX;
         }
     },
 

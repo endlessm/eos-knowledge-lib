@@ -176,6 +176,10 @@ EknSetPreviewCard:hover .title,
     color: #49bde3;
 }
 
+.search-results spinner {
+    margin: 20px;
+}
+
 .results-message-title,
 .results-message.subtitle {
     color: black;
@@ -210,6 +214,10 @@ EknSetPreviewCard:hover .title,
 
 EknAppBanner {
     font-size: 1.19em; /* 19px / 12px/em * 72/96 */
+}
+
+EknAppBanner .subtitle {
+    margin-top: 70px;
 }
 
 .document-card WebKitWebView {

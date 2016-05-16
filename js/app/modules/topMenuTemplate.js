@@ -9,8 +9,6 @@ const Module = imports.app.interfaces.module;
 const SlidingPanelOverlay = imports.app.widgets.slidingPanelOverlay;
 const StyleClasses = imports.app.styleClasses;
 
-const _EXTRA_TOP_MARGIN = 50;
-
 /**
  * Class: TopMenuTemplate
  * A layout template with a top menu bar that slides out over the content
@@ -77,9 +75,9 @@ const TopMenuTemplate = new Module.Class({
             if (scrolled_widget instanceof Gtk.Viewport)
                 scrolled_widget = scrolled_widget.get_child();
             if (scrolled_widget)
-                scrolled_widget.margin_top += _EXTRA_TOP_MARGIN;
+                scrolled_widget.get_style_context().add_class('top-menu-template-content');
         } else {
-            content.margin_top += _EXTRA_TOP_MARGIN;
+            content.get_style_context().add_class('top-menu-template-content');
         }
     },
 
