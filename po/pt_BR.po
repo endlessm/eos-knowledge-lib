@@ -1,6 +1,6 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR Endless Mobile, Inc.
-# This file is distributed under the same license as the PACKAGE package.
+# This file is distributed under the same license as the eos-knowledge package.
 # 
 # Translators:
 # Fernando Farfan <fernando@endlessm.com>, 2015
@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2016-04-05 01:45+0000\n"
+"POT-Creation-Date: 2016-05-10 01:37+0000\n"
 "PO-Revision-Date: 2016-03-23 23:05+0000\n"
 "Last-Translator: Roddy Shuler <roddy@endlessm.com>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/pt_BR/)\n"
@@ -34,28 +34,28 @@ msgid ""
 "Don't miss next week's issue with more articles in your favorite magazine!"
 msgstr "Não perca a edição da próxima semana com mais artigos em sua revista favorita!"
 
-#: data/widgets/cardA.ui:99
+#: data/widgets/legacyPolaroidCard.ui:99
 msgid "PDF"
 msgstr "PDF"
 
-#: data/widgets/readerCard.ui:113
+#: data/widgets/readerCard.ui:112
 msgid "Archive"
 msgstr "Arquivo"
 
-#: data/widgets/sequenceCard.ui:21
+#: data/widgets/sequenceCard.ui:21 js/app/modules/articleStack.js:136
 msgid "Next Article"
 msgstr "Próximo Artigo"
 
-#: data/widgets/sequenceCard.ui:59
+#: data/widgets/sequenceCard.ui:59 js/app/modules/articleStack.js:119
 msgid "Previous Article"
 msgstr "Artigo Anterior"
 
-#: data/widgets/sideMenuTemplate.ui:96
-#: js/app/modules/hamburgerBasementTemplate.js:48
+#: data/widgets/sideMenuTemplate.ui:95
+#: js/app/modules/hamburgerBasementTemplate.js:50
 msgid "HOME"
 msgstr "PÁGINA PRINCIPAL"
 
-#: data/widgets/suggestedCategoriesModule.ui:22
+#: data/widgets/suggestedCategories.ui:22
 msgid "Browse by topic"
 msgstr "Explore por tema"
 
@@ -63,7 +63,7 @@ msgstr "Explore por tema"
 #. to be substituted in code. Please make sure to leave the
 #. curly braces around any words that have them and DO NOT
 #. translate words inside curly braces.
-#: js/app/articleHTMLRenderer.js:88
+#: js/app/articleHTMLRenderer.js:87
 msgid ""
 "This page contains content from {original-link}, available under a {license-"
 "link} license."
@@ -71,7 +71,7 @@ msgstr "Esta página contém conteúdo de {original-link}, disponível mediante 
 
 #. TRANSLATORS: Replace this with a link to the homepage of
 #. wikiHow in your language.
-#: js/app/articleHTMLRenderer.js:95
+#: js/app/articleHTMLRenderer.js:94
 msgid "http://wikihow.com"
 msgstr "http://wikihow.com.br"
 
@@ -79,14 +79,14 @@ msgstr "http://wikihow.com.br"
 #. to be substituted in code. Please make sure to leave the
 #. curly braces around any words that have them and DO NOT
 #. translate words inside curly braces.
-#: js/app/articleHTMLRenderer.js:100
+#: js/app/articleHTMLRenderer.js:99
 msgid ""
 "See {wikihow-article-link} for more details, videos, pictures and "
 "attribution. Courtesy of {wikihow-link}, where anyone can easily learn how "
 "to do anything."
 msgstr "Veja {wikihow-article-link} para mais detalhes, videos, imagens e atribuições. Cortesia de {wikihow-link}, onde qualquer pessoa pode facilmente aprender como fazer qualquer coisa. "
 
-#: js/app/articleHTMLRenderer.js:113
+#: js/app/articleHTMLRenderer.js:112
 msgid "Legal Notice and Intellectual Property Policy"
 msgstr ""
 
@@ -94,29 +94,29 @@ msgstr ""
 #. substituted in code. Please make sure to leave the curly
 #. braces around any words that have them, and do not translate
 #. words inside curly braces.
-#: js/app/articleHTMLRenderer.js:119
+#: js/app/articleHTMLRenderer.js:118
 msgid "Read more at {link}"
 msgstr "Leia mais em {link}"
 
-#: js/app/articleHTMLRenderer.js:133
+#: js/app/articleHTMLRenderer.js:132
 msgid "DISCLAIMER PLACEHOLDER"
 msgstr ""
 
-#: js/app/articleHTMLRenderer.js:219
+#: js/app/articleHTMLRenderer.js:220
 msgid "Copy"
 msgstr "Copiar"
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
-#: js/app/articleHTMLRenderer.js:250
+#: js/app/articleHTMLRenderer.js:251
 msgid "Content taken from {blog-link}."
 msgstr "Conteúdo retirado de {blog-link}."
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
-#: js/app/articleHTMLRenderer.js:255
+#: js/app/articleHTMLRenderer.js:256
 msgid "Content courtesy of {blog-link}. Used with kind permission."
 msgstr "Cortesia de conteúdo de {blog-link}.  Utilizado com permissão."
 
@@ -124,22 +124,22 @@ msgstr "Cortesia de conteúdo de {blog-link}.  Utilizado com permissão."
 #. is going to be substituted in code. Please make sure that your
 #. translation contains both {blog-link} and {license-link} and they are not
 #. translated.
-#: js/app/articleHTMLRenderer.js:263
+#: js/app/articleHTMLRenderer.js:264
 msgid "Content courtesy of {blog-link}, licensed under {license-link}."
 msgstr "Cortesia de conteúdo de {blog-link}, licenciado sob {license-link}."
 
-#: js/app/modules/aisleInteraction.js:796
-#: js/app/modules/aisleInteraction.js:803
+#: js/app/modules/aisleInteraction.js:788
+#: js/app/modules/aisleInteraction.js:795
 msgid "Oops!"
 msgstr "Opa!"
 
-#: js/app/modules/aisleInteraction.js:797
+#: js/app/modules/aisleInteraction.js:789
 msgid ""
 "We could not find this magazine!\n"
 "Please try again after restarting your computer."
 msgstr "Não conseguimos encontrar essa revista!\nPor favor, tente novamente após reiniciar seu computador. "
 
-#: js/app/modules/aisleInteraction.js:804
+#: js/app/modules/aisleInteraction.js:796
 msgid ""
 "There was an error loading that page.\n"
 "Try another one or try again after restarting your computer."
@@ -147,51 +147,51 @@ msgstr "Ocorreu um erro no carregamento da página. \nTente outro ou tente novam
 
 #. TRANSLATORS: This shows the page number; %d will be replaced with
 #. the page number of the article.
-#: js/app/modules/aisleInteraction.js:843
+#: js/app/modules/aisleInteraction.js:835
 #, javascript-format
 msgid "Page %d"
 msgstr "Página %d"
 
 #. TRANSLATORS: %s will be replaced with the text the user
 #. searched for. Make sure to keep %s token in your translation.
-#: js/app/modules/buffetInteraction.js:174 js/app/modules/contextBanner.js:81
+#: js/app/modules/buffetInteraction.js:166 js/app/modules/contextBanner.js:73
 #, javascript-format
 msgid "Results were found for “%s”"
 msgstr "Foram encontrados resultados para “%s”"
 
 #. TRANSLATORS: %s will be replaced with the name of the category
 #. that we are offering to show more of.
-#: js/app/modules/cardContainer.js:147
+#: js/app/modules/cardContainer.js:146
 #, javascript-format
 msgid "See more %s"
 msgstr "Ver mais %s"
 
-#: js/app/modules/contextBanner.js:48 js/app/modules/contextBanner.js:56
-#: js/app/modules/highlightsModule.js:133
+#: js/app/modules/contextBanner.js:40 js/app/modules/contextBanner.js:48
+#: js/app/modules/highlights.js:133
 msgid "Highlights"
 msgstr "Destaques"
 
-#: js/app/modules/contextBanner.js:59
+#: js/app/modules/contextBanner.js:51
 msgid "All Categories"
 msgstr "Todas as Categorias"
 
 #. TRANSLATORS: %s will be replaced with the text the user
 #. searched for. Make sure to keep the %s token in your translation.
-#: js/app/modules/contextBanner.js:77
+#: js/app/modules/contextBanner.js:69
 #, javascript-format
 msgid "Search results for “%s”"
 msgstr "Resultados da pesquisa por “%s”"
 
-#: js/app/modules/hamburgerBasementTemplate.js:40
+#: js/app/modules/hamburgerBasementTemplate.js:42
 msgid "SEE ALL CATEGORIES"
 msgstr "Ver todas as categorias"
 
-#: js/app/modules/readerCard.js:64
+#: js/app/modules/readerCard.js:44
 #, javascript-format
 msgid "Page %s"
 msgstr "Página %s"
 
-#: js/app/modules/readerDocumentCard.js:135
+#: js/app/modules/readerDocumentCard.js:121
 msgid "This article is part of the archive."
 msgstr "Este artigo é parte do acervo."
 
@@ -201,7 +201,7 @@ msgstr "Este artigo é parte do acervo."
 #. surrounded by Unicode left and right double quotes (U+201C
 #. and U+201D). Make sure to include %s in your translation and
 #. use whatever quote marks are appropriate for your language.
-#: js/app/modules/searchBannerModule.js:56
+#: js/app/modules/searchBanner.js:50
 #, javascript-format
 msgid "Searching for “%s”"
 msgstr "Pesquisando por “%s”"
@@ -212,28 +212,28 @@ msgstr "Pesquisando por “%s”"
 #. surrounded by Unicode left and right double quotes (U+201C
 #. and U+201D). Make sure to include %s in your translation and
 #. use whatever quote marks are appropriate for your language.
-#: js/app/modules/searchBannerModule.js:68
+#: js/app/modules/searchBanner.js:62
 #, javascript-format
 msgid "Results for “%s”"
 msgstr "Resultados para “%s”"
 
-#: js/app/modules/searchBannerModule.js:74
+#: js/app/modules/searchBanner.js:68
 msgid "OOPS!"
 msgstr "OPA!"
 
-#: js/app/modules/searchBox.js:161
+#: js/app/modules/searchBox.js:153
 msgid "See more results"
 msgstr "Ver mais resultados"
 
-#: js/app/modules/searchModule.js:200
+#: js/app/modules/search.js:183
 msgid "Sorry! :-("
 msgstr "Desculpe! :-("
 
-#: js/app/modules/searchModule.js:201
+#: js/app/modules/search.js:184
 msgid "There are no results that match your search.\n"
 msgstr "Não encontramos nenhum resultado para a sua busca.\n"
 
-#: js/app/modules/searchModule.js:203
+#: js/app/modules/search.js:186
 msgid ""
 "We recommend that you:\n"
 "\n"
@@ -242,24 +242,24 @@ msgid ""
 "  •  Try using more general words"
 msgstr "Recomendamos que você:\n\n• Confira se a palavra foi escrita corretamente\n• Tente outras palavras com o mesmo significado\n• Tente usar palavras mais genéricas"
 
-#: js/app/modules/searchModule.js:230
+#: js/app/modules/search.js:213
 msgid "There was an error during your search."
 msgstr "Houve um erro durante a sua pesquisa."
 
-#: js/app/modules/standaloneBanner.js:85
+#: js/app/modules/standaloneBanner.js:81
 #, javascript-format
 msgid "This article is part of the archive of the magazine %s."
 msgstr "Este artigo é parte do acervo da revista %s."
 
-#: js/app/modules/standaloneBanner.js:88
+#: js/app/modules/standaloneBanner.js:84
 msgid "Open the magazine"
 msgstr "Abra a revista"
 
-#: js/app/modules/suggestedArticlesModule.js:37
+#: js/app/modules/suggestedArticles.js:26
 msgid "You might be interested in..."
 msgstr "Talvez você se interesse por..."
 
-#: js/app/modules/supplementaryArticlesModule.js:45
+#: js/app/modules/supplementaryArticles.js:38
 msgid "Other news"
 msgstr "Outras notícias"
 
