@@ -197,11 +197,11 @@ describe('Card interface', function () {
             this.win.destroy();
         });
 
-        Object.keys(StyleClasses.CARD_WIDTH).forEach(width_class => {
-            Object.keys(StyleClasses.CARD_HEIGHT).forEach(height_class => {
+        Object.keys(Card.WIDTH_STYLE_CLASSES).forEach(width_class => {
+            Object.keys(Card.HEIGHT_STYLE_CLASSES).forEach(height_class => {
                 let width = in_between_class_dimensions[width_class];
                 let height = in_between_class_dimensions[height_class];
-                test_style_classes_for_height_and_width(StyleClasses.CARD_WIDTH[width_class], StyleClasses.CARD_HEIGHT[height_class], height, width);
+                test_style_classes_for_height_and_width(Card.WIDTH_STYLE_CLASSES[width_class], Card.HEIGHT_STYLE_CLASSES[height_class], height, width);
             });
         });
     });
