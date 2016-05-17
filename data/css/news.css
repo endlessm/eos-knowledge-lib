@@ -9,7 +9,7 @@ scrollbar.vertical slider {
 @define-color context-blue #7297a7;
 
 EknInfiniteScrollingLayout,
-EknBackground,
+EknDynamicBackground,
 .results-message-background,
 EosWindow scrollbar {
     background-color: #e9e5e0;

@@ -10,53 +10,53 @@ defines:
 
 # Various one-liners
 - &main-card
-  type: PostCard
+  type: Card.Post
   properties: *common-card-properties
-- &header-card TitleCard
-- &no-sets 'SetsFilter(invert: true)'
+- &header-card Card.Title
+- &no-sets 'Filter.Sets(invert: true)'
 
 # Reused components
 - &menu
-  type: TopMenuTemplate
+  type: Layout.TopMenu
   slots: &menu-slots
     top-menu:
-      type: ResponsiveMargins
+      type: Layout.ResponsiveMargins
       slots:
         content:
-          type: TopMenu
+          type: Navigation.TopMenu
           slots:
             # FIXME remove fraction
-            banner: 'AppBanner(max-fraction: 0.2, show-subtitle: false)'
+            banner: 'Banner.App(max-fraction: 0.2, show-subtitle: false)'
             menu:
-              shortdef: 'SuggestedCategories(show-title: false)'
+              shortdef: 'ContentGroup.SuggestedCategories(show-title: false)'
               slots:
                 arrangement:
-                  shortdef: 'SideBySideArrangement(halign: center)'
+                  shortdef: 'Arrangement.SideBySide(halign: center)'
                   slots:
                     card-type:
-                      type: TitleCard
+                      type: Card.Title
                       properties:
                         title-capitalization: lowercase
                         halign: center
                         decorate-on-highlight: true
-                    filter: FeaturedFilter
+                    filter: Filter.Featured
 
 - &suggestions-arrangement
-  shortdef: 'SquareGuysArrangement(max-rows: 1, spacing: 20)'
+  shortdef: 'Arrangement.SquareGuys(max-rows: 1, spacing: 20)'
   slots:
     card-type:
-      type: ThumbCard
+      type: Card.Thumb
       properties: *common-card-properties
 
 - &set-preview
-  shortdef: 'SetPreviewCard(trigger-capitalization: lowercase)'
+  shortdef: 'Card.SetPreview(trigger-capitalization: lowercase)'
   slots:
     arrangement:
-      shortdef: 'ThirtiesArrangement(max-rows: 1, spacing: 20)'
+      shortdef: 'Arrangement.Thirties(max-rows: 1, spacing: 20)'
       slots:
         card-type: *main-card
         filter: *no-sets
-        order: 'PublishedDateOrder(ascending: false)'
+        order: 'Order.PublishedDate(ascending: false)'
     header-card-type: *header-card
 
 # Pages
@@ -65,69 +65,72 @@ defines:
   slots:
     <<: *menu-slots
     content:
-      type: InfiniteScrollingLayout
+      type: Layout.InfiniteScrolling
       slots:
         content:
-          shortdef: 'Background(page-mode: home)'
+          shortdef: 'Layout.DynamicBackground(page-mode: home)'
           slots:
             content:
-              type: ResponsiveMargins
+              type: Layout.ResponsiveMargins
               slots:
                 content:
-                  shortdef: 'Highlights(halign: center, support-sets: 4)'
+                  type: ContentGroup.Highlights
+                  properties:
+                    halign: center
+                    support-sets: 4
                   slots:
                     highlight-arrangement:
-                      shortdef: 'PianoArrangement(spacing: 20)'
+                      shortdef: 'Arrangement.Piano(spacing: 20)'
                       slots:
                         card-type: *main-card
                         filter: *no-sets
-                        order: 'PublishedDateOrder(ascending: false)'
+                        order: 'Order.PublishedDate(ascending: false)'
                     support-card-type: *set-preview
-                    sets-filter: FeaturedFilter
+                    sets-filter: Filter.Featured
 
 - &section-page
   <<: *menu
   slots:
     <<: *menu-slots
     content:
-      shortdef: 'InfiniteScrollingLayout(bottom-buffer: 250)'
+      shortdef: 'Layout.InfiniteScrolling(bottom-buffer: 250)'
       id: theme-scroll
       slots:
         content:
-          shortdef: 'Background(page-mode: section)'
+          shortdef: 'Layout.DynamicBackground(page-mode: section)'
           slots:
             content:
-              type: BannerTemplate
+              type: Layout.Banner
               slots:
                 banner:
-                  shortdef: 'SetBanner(halign: center)'
+                  shortdef: 'Banner.Set(halign: center)'
                   slots:
-                    card-type: 'TitleCard(title-capitalization: lowercase)'
+                    card-type: 'Card.Title(title-capitalization: lowercase)'
                 content:
-                  shortdef: 'TwoPieceTemplate(orientation: vertical)'
+                  shortdef: 'Layout.TwoPiece(orientation: vertical)'
                   slots:
                     first:
-                      type: ResponsiveMargins
+                      type: Layout.ResponsiveMargins
                       slots:
                         content:
-                          shortdef: 'HierarchicalSet(halign: center)'
+                          shortdef: 'ContentGroup.HierarchicalSet(halign: center)'
                           slots:
                             arrangement:
-                              type: ListArrangement
+                              type: Arrangement.List
                               properties:
                                 row-spacing: 20
                                 orientation: vertical
                               slots:
-                                card-type: ListCard
-                                order: 'PublishedDateOrder(ascending: false)'
+                                card-type: Card.List
+                                order: 'Order.PublishedDate(ascending: false)'
                             set-card-type: *set-preview
                           references:
                             scroll-server: theme-scroll
                     second:
-                      type: ResponsiveMargins
+                      type: Layout.ResponsiveMargins
                       slots:
                         content:
-                          type: SupplementaryArticles
+                          type: ContentGroup.SupplementaryArticles
                           properties:
                             <<: *suggestions-properties
                             same-set: false
@@ -139,24 +142,27 @@ defines:
   slots:
     <<: *menu-slots
     content:
-      shortdef: 'Background(page-mode: search)'
+      shortdef: 'Layout.DynamicBackground(page-mode: search)'
       slots:
         content:
-          type: BannerTemplate
+          type: Layout.Banner
           slots:
-            banner: 'SearchBanner(halign: center, xalign: 0.5, justify: center)'
+            banner: 'Banner.Search(halign: center, xalign: 0.5, justify: center)'
             content:
-              shortdef: 'Search(message-halign: start, message-justify: left)'
+              type: ContentGroup.Search
+              properties:
+                message-halign: start
+                message-justify: left
               slots:
                 arrangement:
-                  shortdef: 'ScrollingListArrangement(bottom-buffer: 250)'
+                  shortdef: 'Arrangement.ScrollingList(bottom-buffer: 250)'
                   slots:
-                    card-type: ListCard
+                    card-type: Card.List
                 article-suggestions:
-                  type: ResponsiveMargins
+                  type: Layout.ResponsiveMargins
                   slots:
                     content:
-                      type: SuggestedArticles
+                      type: ContentGroup.SuggestedArticles
                       properties: *suggestions-properties
                       slots:
                         arrangement: *suggestions-arrangement
@@ -166,23 +172,26 @@ defines:
   slots:
     <<: *menu-slots
     content:
-      shortdef: 'ArticleStack(do-sliding-animation: false, allow-navigation: next)'
+      type: Layout.ArticleStack
+      properties:
+        do-sliding-animation: false
+        allow-navigation: next
       slots:
-        card-type: 'KnowledgeDocumentCard(show-titles: false, show-toc: false)'
-        nav-card-type: 'ListCard(show-synopsis: false)'
+        card-type: 'Card.KnowledgeDocument(show-titles: false, show-toc: false)'
+        nav-card-type: 'Card.List(show-synopsis: false)'
 
 root:
-  shortdef: 'BuffetInteraction(theme: news)'
+  shortdef: 'Controller.Buffet(theme: news)'
   slots:
     window:
-      shortdef: 'Window(animations: false)'
+      shortdef: 'Window.App(animations: false)'
       slots:
-        search: SearchBox
+        search: Navigation.SearchBox
         lightbox:
-          type: MediaLightbox
+          type: ContentGroup.MediaLightbox
           slots:
-            card-type: MediaCard
-        brand-page: 'AppBanner(max-fraction: 0.6, show-subtitle: true)'
+            card-type: Card.Media
+        brand-page: 'Banner.App(max-fraction: 0.6, show-subtitle: true)'
         home-page: *home-page
         section-page: *section-page
         search-page: *search-page

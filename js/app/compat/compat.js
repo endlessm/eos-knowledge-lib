@@ -34,22 +34,22 @@ function transform_v1_description(json) {
     }
 
     if (json.templateType === "reader")
-        set_prop_for_type('SplitPercentageTemplate', 'background-image-uri', json['backgroundHomeURI']);
+        set_prop_for_type('Layout.SplitPercentage', 'background-image-uri', json['backgroundHomeURI']);
 
-    set_prop_for_type('AppBanner', 'image-uri', json['titleImageURI']);
-    set_prop_for_type('BackCover', 'background-image-uri', json['backgroundSectionURI']);
-    set_prop_for_type('EncyclopediaWindow', 'title', json['appTitle']);
-    set_prop_for_type('EncyclopediaWindow', 'home-background-uri', json['backgroundHomeURI']);
-    set_prop_for_type('EncyclopediaWindow', 'results-background-uri', json['backgroundSectionURI']);
-    set_prop_for_type('ReaderWindow', 'title', json['appTitle']);
-    set_prop_for_type('ReaderWindow', 'title-image-uri', json['titleImageURI']);
-    set_prop_for_type('ReaderWindow', 'home-background-uri', json['backgroundHomeURI']);
-    set_prop_for_type('StandaloneBanner', 'title', json['appTitle']);
-    set_prop_for_type('StandaloneBanner', 'title-image-uri', json['titleImageURI']);
-    set_prop_for_type('StandaloneBanner', 'background-image-uri', json['backgroundHomeURI']);
-    set_prop_for_type('Window', 'title', json['appTitle']);
-    set_prop_for_type('Window', 'background-image-uri', json['backgroundHomeURI']);
-    set_prop_for_type('Window', 'blur-background-image-uri', json['backgroundSectionURI']);
+    set_prop_for_type('Banner.App', 'image-uri', json['titleImageURI']);
+    set_prop_for_type('Page.BackCover', 'background-image-uri', json['backgroundSectionURI']);
+    set_prop_for_type('Window.Encyclopedia', 'title', json['appTitle']);
+    set_prop_for_type('Window.Encyclopedia', 'home-background-uri', json['backgroundHomeURI']);
+    set_prop_for_type('Window.Encyclopedia', 'results-background-uri', json['backgroundSectionURI']);
+    set_prop_for_type('Window.Reader', 'title', json['appTitle']);
+    set_prop_for_type('Window.Reader', 'title-image-uri', json['titleImageURI']);
+    set_prop_for_type('Window.Reader', 'home-background-uri', json['backgroundHomeURI']);
+    set_prop_for_type('Banner.Standalone', 'title', json['appTitle']);
+    set_prop_for_type('Banner.Standalone', 'title-image-uri', json['titleImageURI']);
+    set_prop_for_type('Banner.Standalone', 'background-image-uri', json['backgroundHomeURI']);
+    set_prop_for_type('Window.App', 'title', json['appTitle']);
+    set_prop_for_type('Window.App', 'background-image-uri', json['backgroundHomeURI']);
+    set_prop_for_type('Window.App', 'blur-background-image-uri', json['backgroundSectionURI']);
 
     return preset;
 }

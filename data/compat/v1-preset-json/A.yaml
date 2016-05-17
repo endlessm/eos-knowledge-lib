@@ -1,22 +1,22 @@
 ---
 defines:
 - &card
-  LegacyPolaroidCard
+  Card.LegacyPolaroid
 
 - &main-arrangement-slot
   arrangement:
-    shortdef: 'GridArrangement(bottom-buffer: 250)'
+    shortdef: 'Arrangement.Grid(bottom-buffer: 250)'
     slots:
       card-type: *card
 
 - &home-page
-  type: HamburgerBasementTemplate
+  type: Layout.HamburgerBasement
   slots:
     # FIXME remove fractions
-    top: 'AppBanner(min-fraction: 0.1, max-fraction: 0.7)'
-    middle: 'SearchBox(halign: center)'
+    top: 'Banner.App(min-fraction: 0.1, max-fraction: 0.7)'
+    middle: 'Navigation.SearchBox(halign: center)'
     bottom:
-      type: SetGroup
+      type: ContentGroup.Set
       properties:
         expand: true
         halign: center
@@ -24,49 +24,52 @@ defines:
         max-children: 6
       slots:
         arrangement:
-          shortdef: 'OverflowArrangement(orientation: horizontal)'
+          shortdef: 'Arrangement.Overflow(orientation: horizontal)'
           slots:
             card-type: *card
     basement:
-      shortdef: 'SetGroup(expand: true)'
+      shortdef: 'ContentGroup.Set(expand: true)'
       slots: *main-arrangement-slot
 
 - &section-page
-  type: BannerTemplate
+  type: Layout.Banner
   slots:
     banner:
-      shortdef: 'SetBanner(halign: center)'
+      shortdef: 'Banner.Set(halign: center)'
       slots:
-        card-type: TitleCard
+        card-type: Card.Title
     content:
-      type: ItemGroup
+      type: ContentGroup.Item
       slots: *main-arrangement-slot
 
 - &search-page
-  type: BannerTemplate
+  type: Layout.Banner
   slots:
-    banner: 'SearchBanner(halign: center)'
+    banner: 'Banner.Search(halign: center)'
     content:
-      shortdef: 'Search(message-justify: left, message-halign: center)'
+      type: ContentGroup.Search
+      properties:
+        message-justify: left
+        message-halign: center
       slots: *main-arrangement-slot
 
 - &article-page
-  type: ArticleStack
+  type: Layout.ArticleStack
   slots:
-    card-type: 'KnowledgeDocumentCard(show-toc: true)'
+    card-type: 'Card.KnowledgeDocument(show-toc: true)'
 
 root:
-  type: MeshInteraction
+  type: Controller.Mesh
   slots:
     window:
-      type: Window
+      type: Window.App
       slots:
-        search: SearchBox
-        navigation: Navigation
+        search: Navigation.SearchBox
+        navigation: Layout.Navigation
         lightbox:
-          type: MediaLightbox
+          type: ContentGroup.MediaLightbox
           slots:
-            card-type: MediaCard
+            card-type: Card.Media
         home-page: *home-page
         section-page: *section-page
         search-page: *search-page

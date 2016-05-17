@@ -1,26 +1,26 @@
 ---
 defines:
 - &list
-  type: ListArrangement
+  type: Arrangement.List
   slots:
-    card-type: ListCard  # was previously named SearchResultCard
+    card-type: Card.List  # was previously named SearchResultCard
 
 - &home-page
-  type: ScrollingLayout
+  type: Layout.Scrolling
   id: home-scroll
   slots:
     content:
-      type: BannerTemplate
+      type: Layout.Banner
       slots:
         banner:
-          type: AppBanner
+          type: Banner.App
           properties:
             halign: fill
             valign: start
             max-fraction: 0.5
             image-uri: resource:///com/endlessm/video-test-en/assets/titleImage.svg
         content:
-          shortdef: 'ItemGroupModule(hexpand: true)'
+          shortdef: 'ContentGroup.Item(hexpand: true)'
           slots:
             arrangement:
               <<: *list
@@ -28,15 +28,15 @@ defines:
                 scroll-server: home-scroll
 
 - &search-page
-  type: ScrollingLayout
+  type: Layout.Scrolling
   id: search-scroll
   slots:
     content:
-      type: BannerTemplate
+      type: Layout.Banner
       slots:
-        banner: 'SearchBannerModule(halign: fill)'
+        banner: 'Banner.Search(halign: fill)'
         content:
-          shortdef: 'SearchModule(message-justify: left, message-halign: center)'
+          shortdef: 'ContentGroup.Search(message-justify: left, message-halign: center)'
           slots:
             arrangement:
               <<: *list
@@ -44,22 +44,22 @@ defines:
                 scroll-server: search-scroll
 
 - &article-page
-  shortdef: 'ArticleStackModule(allow-navigation: next)'
+  shortdef: 'Layout.ArticleStack(allow-navigation: next)'
   slots:
-    card-type: FakeVideoDocumentCard
-    nav-card-type: TextCard
+    card-type: Card.FakeVideoDocument
+    nav-card-type: Card.Title
 
 - &window
-  type: Window
+  type: Window.App
   slots:
-    search: SearchBox
-    navigation: NavigationModule
+    search: Navigation.SearchBox
+    navigation: Layout.Navigation
     home-page: *home-page
     search-page: *search-page
     article-page: *article-page
 
 # This has to come after the references
 root:
-  type: MeshInteraction
+  type: Controller.Mesh
   slots:
     window: *window

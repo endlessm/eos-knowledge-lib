@@ -101,13 +101,13 @@
     <file>js/app/dominantColor.js</file>
     <file>js/app/historyItem.js</file>
     <file>js/app/historyPresenter.js</file>
-    <file>js/app/interactionLoader.js</file>
+    <file>js/app/controllerLoader.js</file>
     <file>js/app/interfaces/arrangement.js</file>
     <file>js/app/interfaces/card.js</file>
     <file>js/app/interfaces/documentCard.js</file>
     <file>js/app/interfaces/expandable.js</file>
     <file>js/app/interfaces/filter.js</file>
-    <file>js/app/interfaces/interaction.js</file>
+    <file>js/app/interfaces/controller.js</file>
     <file>js/app/interfaces/launcher.js</file>
     <file>js/app/interfaces/module.js</file>
     <file>js/app/interfaces/navigationCard.js</file>
@@ -116,83 +116,83 @@
     <file>js/app/libs/cssParse.js</file>
     <file>js/app/libs/mustache.js</file>
     <file>js/app/moduleFactory.js</file>
-    <file>js/app/modules/aisleInteraction.js</file>
-    <file>js/app/modules/alphabeticalOrder.js</file>
-    <file>js/app/modules/appBanner.js</file>
-    <file>js/app/modules/articleSnippetCard.js</file>
-    <file>js/app/modules/articleStack.js</file>
-    <file>js/app/modules/backCover.js</file>
-    <file>js/app/modules/background.js</file>
-    <file>js/app/modules/bannerTemplate.js</file>
-    <file>js/app/modules/buffetInteraction.js</file>
-    <file>js/app/modules/cardContainer.js</file>
-    <file>js/app/modules/carouselArrangement.js</file>
-    <file>js/app/modules/contextBanner.js</file>
-    <file>js/app/modules/dividedBannerTemplate.js</file>
-    <file>js/app/modules/encyclopediaWindow.js</file>
-    <file>js/app/modules/featuredFilter.js</file>
-    <file>js/app/modules/featuredOrder.js</file>
-    <file>js/app/modules/gridArrangement.js</file>
-    <file>js/app/modules/halfArrangement.js</file>
-    <file>js/app/modules/hamburgerBasementTemplate.js</file>
-    <file>js/app/modules/hierarchicalSet.js</file>
-    <file>js/app/modules/highlights.js</file>
-    <file>js/app/modules/infiniteScrollingLayout.js</file>
-    <file>js/app/modules/itemGroup.js</file>
-    <file>js/app/modules/knowledgeDocumentCard.js</file>
-    <file>js/app/modules/legacyPolaroidCard.js</file>
-    <file>js/app/modules/legacyPostCard.js</file>
-    <file>js/app/modules/listArrangement.js</file>
-    <file>js/app/modules/listCard.js</file>
-    <file>js/app/modules/mediaCard.js</file>
-    <file>js/app/modules/mediaLightbox.js</file>
-    <file>js/app/modules/meshInteraction.js</file>
-    <file>js/app/modules/navigation.js</file>
-    <file>js/app/modules/overflowArrangement.js</file>
-    <file>js/app/modules/paperTemplate.js</file>
-    <file>js/app/modules/pianoArrangement.js</file>
-    <file>js/app/modules/pianolaArrangement.js</file>
-    <file>js/app/modules/postCard.js</file>
-    <file>js/app/modules/publishedDateOrder.js</file>
-    <file>js/app/modules/quarterArrangement.js</file>
-    <file>js/app/modules/quiltArrangement.js</file>
-    <file>js/app/modules/readerCard.js</file>
-    <file>js/app/modules/readerDocumentCard.js</file>
-    <file>js/app/modules/readerWindow.js</file>
-    <file>js/app/modules/responsiveMargins.js</file>
-    <file>js/app/modules/scrollingListArrangement.js</file>
-    <file>js/app/modules/search.js</file>
-    <file>js/app/modules/searchAndItem.js</file>
-    <file>js/app/modules/searchBanner.js</file>
-    <file>js/app/modules/searchBox.js</file>
-    <file>js/app/modules/sequenceCard.js</file>
-    <file>js/app/modules/setBanner.js</file>
-    <file>js/app/modules/setGroup.js</file>
-    <file>js/app/modules/setPreviewCard.js</file>
-    <file>js/app/modules/setsFilter.js</file>
-    <file>js/app/modules/sidebarTemplate.js</file>
-    <file>js/app/modules/sideBySideArrangement.js</file>
-    <file>js/app/modules/sideMenuTemplate.js</file>
-    <file>js/app/modules/splitPercentageTemplate.js</file>
-    <file>js/app/modules/squareGuysArrangement.js</file>
-    <file>js/app/modules/standaloneBanner.js</file>
-    <file>js/app/modules/standalonePage.js</file>
-    <file>js/app/modules/suggestedArticles.js</file>
-    <file>js/app/modules/suggestedCategories.js</file>
-    <file>js/app/modules/supplementaryArticles.js</file>
-    <file>js/app/modules/textCard.js</file>
-    <file>js/app/modules/thematic.js</file>
-    <file>js/app/modules/thirdRockArrangement.js</file>
-    <file>js/app/modules/thirtiesArrangement.js</file>
-    <file>js/app/modules/thumbCard.js</file>
-    <file>js/app/modules/tiledGridArrangement.js</file>
-    <file>js/app/modules/titleCard.js</file>
-    <file>js/app/modules/topMenu.js</file>
-    <file>js/app/modules/topMenuTemplate.js</file>
-    <file>js/app/modules/twoPieceTemplate.js</file>
-    <file>js/app/modules/unreadFilter.js</file>
-    <file>js/app/modules/window.js</file>
-    <file>js/app/modules/windshieldArrangement.js</file>
+    <file>js/app/modules/arrangement/carousel.js</file>
+    <file>js/app/modules/arrangement/grid.js</file>
+    <file>js/app/modules/arrangement/half.js</file>
+    <file>js/app/modules/arrangement/list.js</file>
+    <file>js/app/modules/arrangement/overflow.js</file>
+    <file>js/app/modules/arrangement/piano.js</file>
+    <file>js/app/modules/arrangement/pianola.js</file>
+    <file>js/app/modules/arrangement/quarter.js</file>
+    <file>js/app/modules/arrangement/quilt.js</file>
+    <file>js/app/modules/arrangement/scrollingList.js</file>
+    <file>js/app/modules/arrangement/sideBySide.js</file>
+    <file>js/app/modules/arrangement/squareGuys.js</file>
+    <file>js/app/modules/arrangement/thirdRock.js</file>
+    <file>js/app/modules/arrangement/thirties.js</file>
+    <file>js/app/modules/arrangement/tiledGrid.js</file>
+    <file>js/app/modules/arrangement/windshield.js</file>
+    <file>js/app/modules/banner/app.js</file>
+    <file>js/app/modules/banner/context.js</file>
+    <file>js/app/modules/banner/search.js</file>
+    <file>js/app/modules/banner/set.js</file>
+    <file>js/app/modules/banner/standalone.js</file>
+    <file>js/app/modules/card/articleSnippet.js</file>
+    <file>js/app/modules/card/knowledgeDocument.js</file>
+    <file>js/app/modules/card/legacyPolaroid.js</file>
+    <file>js/app/modules/card/legacyPost.js</file>
+    <file>js/app/modules/card/list.js</file>
+    <file>js/app/modules/card/media.js</file>
+    <file>js/app/modules/card/post.js</file>
+    <file>js/app/modules/card/reader.js</file>
+    <file>js/app/modules/card/readerDocument.js</file>
+    <file>js/app/modules/card/sequence.js</file>
+    <file>js/app/modules/card/setPreview.js</file>
+    <file>js/app/modules/card/text.js</file>
+    <file>js/app/modules/card/thumb.js</file>
+    <file>js/app/modules/card/title.js</file>
+    <file>js/app/modules/contentGroup/cardContainer.js</file>
+    <file>js/app/modules/contentGroup/hierarchicalSet.js</file>
+    <file>js/app/modules/contentGroup/highlights.js</file>
+    <file>js/app/modules/contentGroup/item.js</file>
+    <file>js/app/modules/contentGroup/mediaLightbox.js</file>
+    <file>js/app/modules/contentGroup/search.js</file>
+    <file>js/app/modules/contentGroup/set.js</file>
+    <file>js/app/modules/contentGroup/suggestedArticles.js</file>
+    <file>js/app/modules/contentGroup/suggestedCategories.js</file>
+    <file>js/app/modules/contentGroup/supplementaryArticles.js</file>
+    <file>js/app/modules/contentGroup/thematic.js</file>
+    <file>js/app/modules/filter/featured.js</file>
+    <file>js/app/modules/filter/sets.js</file>
+    <file>js/app/modules/filter/unread.js</file>
+    <file>js/app/modules/controller/aisle.js</file>
+    <file>js/app/modules/controller/buffet.js</file>
+    <file>js/app/modules/controller/mesh.js</file>
+    <file>js/app/modules/layout/articleStack.js</file>
+    <file>js/app/modules/layout/dynamicBackground.js</file>
+    <file>js/app/modules/layout/banner.js</file>
+    <file>js/app/modules/layout/dividedBanner.js</file>
+    <file>js/app/modules/layout/hamburgerBasement.js</file>
+    <file>js/app/modules/layout/infiniteScrolling.js</file>
+    <file>js/app/modules/layout/navigation.js</file>
+    <file>js/app/modules/layout/paper.js</file>
+    <file>js/app/modules/layout/responsiveMargins.js</file>
+    <file>js/app/modules/layout/searchAndItem.js</file>
+    <file>js/app/modules/layout/sidebar.js</file>
+    <file>js/app/modules/layout/sideMenu.js</file>
+    <file>js/app/modules/layout/splitPercentage.js</file>
+    <file>js/app/modules/layout/topMenu.js</file>
+    <file>js/app/modules/layout/twoPiece.js</file>
+    <file>js/app/modules/navigation/searchBox.js</file>
+    <file>js/app/modules/navigation/topMenu.js</file>
+    <file>js/app/modules/order/alphabetical.js</file>
+    <file>js/app/modules/order/featured.js</file>
+    <file>js/app/modules/order/publishedDate.js</file>
+    <file>js/app/modules/page/backCover.js</file>
+    <file>js/app/modules/page/standalone.js</file>
+    <file>js/app/modules/window/app.js</file>
+    <file>js/app/modules/window/encyclopedia.js</file>
+    <file>js/app/modules/window/reader.js</file>
     <file>js/app/readingHistoryModel.js</file>
     <file>js/app/setMap.js</file>
     <file>js/app/styleClasses.js</file>

@@ -1,81 +1,86 @@
 ---
 defines:
 - &sidebar-right
-  shortdef: 'SidebarTemplate(sidebar-first: false)'
+  shortdef: 'Layout.Sidebar(sidebar-first: false)'
 
 - &sidebar-list-slots
   arrangement:
-    type: ScrollingListArrangement
+    type: Arrangement.ScrollingList
     slots:
-      card-type: TitleCard
+      card-type: Card.Title
 
 - &section-items
-  type: ItemGroup
+  type: ContentGroup.Item
   slots: *sidebar-list-slots
 
 - &search-results
-  shortdef: 'Search(message-valign: center)'
+  shortdef: 'ContentGroup.Search(message-valign: center)'
   slots: *sidebar-list-slots
 
 - &home-page
-  shortdef: 'DividedBannerTemplate(row-spacing: 30, row-homogeneous: true)'
+  shortdef: 'Layout.DividedBanner(row-spacing: 30, row-homogeneous: true)'
   slots:
     top-left:
-      type: AppBanner
+      type: Banner.App
       properties:
         min-fraction: 0.2  # FIXME remove fractions
         max-fraction: 0.7
         valign: center
         halign: center
-    top-right: 'SearchBox(shadow-type: none, halign: center, valign: center)'
+    top-right:
+      type: Navigation.SearchBox
+      properties:
+        shadow-type: none
+        halign: center
+        valign: center
     bottom:
-      shortdef: 'SetGroup(expand: true)'
+      shortdef: 'ContentGroup.Set(expand: true)'
       slots:
         arrangement:
-          type: TiledGridArrangement
+          type: Arrangement.TiledGrid
           slots:
-            card-type: LegacyPostCard
+            card-type: Card.LegacyPost
 
 - &section-page
   <<: *sidebar-right
   slots:
     content:
-      shortdef: 'SetBanner(valign: end)'
+      shortdef: 'Banner.Set(valign: end)'
       slots:
-        card-type: TitleCard
+        card-type: Card.Title
     sidebar: *section-items
 
 - &search-page
   <<: *sidebar-right
   slots:
-    content: 'SearchBanner(valign: center)'
+    content: 'Banner.Search(valign: center)'
     sidebar: *search-results
 
 - &article-page
-  type: SidebarTemplate
+  type: Layout.Sidebar
   slots:
     content:
-      type: ArticleStack
+      type: Layout.ArticleStack
       slots:
-        card-type: KnowledgeDocumentCard
+        card-type: Card.KnowledgeDocument
     sidebar:
-      type: SearchAndItem
+      type: Layout.SearchAndItem
       slots:
         search: *search-results
         item: *section-items
 
 root:
-  type: MeshInteraction
+  type: Controller.Mesh
   slots:
     window:
-      type: Window
+      type: Window.App
       slots:
-        search: SearchBox
-        navigation: Navigation
+        search: Navigation.SearchBox
+        navigation: Layout.Navigation
         lightbox:
-          type: MediaLightbox
+          type: ContentGroup.MediaLightbox
           slots:
-            card-type: MediaCard
+            card-type: Card.Media
         home-page: *home-page
         section-page: *section-page
         search-page: *search-page

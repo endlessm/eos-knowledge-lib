@@ -29,7 +29,7 @@ const MockEngine = new Lang.Class({
     get_ekn_id: function () {},
 
     // FIXME: we launch into the callbacks synchronously because all the tests
-    // in testAisleInteraction expect it currently. Would be good to rewrite
+    // in testAisleController expect it currently. Would be good to rewrite
     // those tests to tolerate a mock object that was actually async.
 
     get_object_by_id: function (query, cancellable, callback) {

@@ -21,11 +21,21 @@ const Warehouse = new Knowledge.Class({
     type_to_class: function (module_name) {
         if (this._local_modules.has(module_name))
             return this._local_modules.get(module_name);
-        let file_name = module_name.charAt(0).toLowerCase() + module_name.slice(1);
+
         try {
-            return imports.app.modules[file_name][module_name];
+            return module_name.split('.').reduce((current_dir, module_path, idx, arr) => {
+                let file_name = module_path.charAt(0).toLowerCase() + module_path.slice(1);
+                // If it's the last member of the path, then we need to add the module name to
+                // reference the actual class we want to retrieve.
+                // e.g. Card.Media --> card.media.Media
+                if (idx === arr.length - 1) {
+                    return current_dir[file_name][module_path];
+                }
+                return current_dir[file_name];
+            }, imports.app.modules);
         } catch (error if (error.message.startsWith('No JS module'))) {
-            throw new Error('Module of type ' + module_name + ' not found in file ' + file_name);
+            let path_name = module_name.split('.').map((name) => name.charAt(0).toLowerCase() + name.slice(1)).join('/');
+            throw new Error('Module of type ' + module_name + ' not found in file ' + path_name);
         }
     },
 });

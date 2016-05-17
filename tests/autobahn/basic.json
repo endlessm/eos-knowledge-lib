@@ -1,34 +1,34 @@
 {
   "version": 2,
   "root": {
-    "type": "MeshInteraction",
+    "type": "Controller.Mesh",
     "slots": {
       "window": {
-        "type": "Window",
+        "type": "Window.App",
         "slots": {
           "article-page": {
-            "type": "ArticleStackModule",
+            "type": "Layout.ArticleStack",
             "properties": {
               "allow-navigation": "next"
             },
             "slots": {
               "card-type": {
-                "type": "FakeVideoDocumentCard"
+                "type": "Card.FakeVideoDocument"
               },
               "nav-card-type": {
-                "type": "TextCard"
+                "type": "Card.Title"
               }
             }
           },
           "home-page": {
-            "type": "ScrollingLayout",
+            "type": "Layout.Scrolling",
             "id": "home-scroll",
             "slots": {
               "content": {
-                "type": "BannerTemplate",
+                "type": "Layout.Banner",
                 "slots": {
                   "banner": {
-                    "type": "AppBanner",
+                    "type": "Banner.App",
                     "properties": {
                       "halign": "fill",
                       "image-uri": "resource:///com/endlessm/video-test-en/assets/titleImage.svg",
@@ -37,16 +37,16 @@
                     }
                   },
                   "content": {
-                    "type": "ItemGroupModule",
+                    "type": "ContentGroup.Item",
                     "properties": {
                       "hexpand": true
                     },
                     "slots": {
                       "arrangement": {
-                        "type": "ListArrangement",
+                        "type": "Arrangement.List",
                         "slots": {
                           "card-type": {
-                            "type": "ListCard"
+                            "type": "Card.List"
                           }
                         },
                         "references": {
@@ -60,36 +60,36 @@
             }
           },
           "navigation": {
-            "type": "NavigationModule"
+            "type": "Layout.Navigation"
           },
           "search": {
-            "type": "SearchBox"
+            "type": "Navigation.SearchBox"
           },
           "search-page": {
-            "type": "ScrollingLayout",
+            "type": "Layout.Scrolling",
             "id": "search-scroll",
             "slots": {
               "content": {
-                "type": "BannerTemplate",
+                "type": "Layout.Banner",
                 "slots": {
                   "banner": {
-                    "type": "SearchBannerModule",
+                    "type": "Banner.Search",
                     "properties": {
                       "halign": "fill"
                     }
                   },
                   "content": {
-                    "type": "SearchModule",
+                    "type": "ContentGroup.Search",
                     "properties": {
                       "message-halign": "center",
                       "message-justify": "left"
                     },
                     "slots": {
                       "arrangement": {
-                        "type": "ListArrangement",
+                        "type": "Arrangement.List",
                         "slots": {
                           "card-type": {
-                            "type": "ListCard"
+                            "type": "Card.List"
                           }
                         },
                         "references": {

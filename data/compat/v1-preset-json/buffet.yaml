@@ -8,29 +8,29 @@ defines:
   spacing: 20
 
 # A few small repeated elements
-- &no-sets 'SetsFilter(invert: true)'
-- &header-card TitleCard
+- &no-sets 'Filter.Sets(invert: true)'
+- &header-card Card.Title
 - &main-card
-  type: ThumbCard
+  type: Card.Thumb
   properties: *card-all-uppercase-properties
 - &set-card
-  type: PostCard
+  type: Card.Post
   properties: *card-all-uppercase-properties
 
 - &article-suggestions
-  type: SuggestedArticles
+  type: ContentGroup.SuggestedArticles
   slots:
     arrangement:
       # Note spacing different from all the other arrangements; on purpose?
-      shortdef: 'SquareGuysArrangement(max-rows: 1, spacing: 10)'
+      shortdef: 'Arrangement.SquareGuys(max-rows: 1, spacing: 10)'
       slots:
         card-type: *main-card
 
 - &category-suggestions
-  type: SuggestedCategories
+  type: ContentGroup.SuggestedCategories
   slots:
     arrangement:
-      type: SquareGuysArrangement
+      type: Arrangement.SquareGuys
       properties:
         <<: *arrangement-spacing-properties
         max-rows: 1
@@ -39,50 +39,53 @@ defines:
         card-type: *set-card
 
 - &page-with-menu
-  type: SideMenuTemplate
+  type: Layout.SideMenu
   slots: &page-with-menu-slots
-    context: ContextBanner
+    context: Banner.Context
     sidebar:
       # Main menu
-      shortdef: 'SuggestedCategories(show-title: false)'
+      shortdef: 'ContentGroup.SuggestedCategories(show-title: false)'
       slots:
         arrangement:
-          type: ScrollingListArrangement
+          type: Arrangement.ScrollingList
           slots:
             card-type:
-              type: TitleCard
+              type: Card.Title
               properties: *card-all-uppercase-properties
-            filter: FeaturedFilter
+            filter: Filter.Featured
 
 - &home-page
   <<: *page-with-menu
   slots:
     <<: *page-with-menu-slots
     content:
-      type: InfiniteScrollingLayout
+      type: Layout.InfiniteScrolling
       slots:
         content:
-          type: ResponsiveMargins
+          type: Layout.ResponsiveMargins
           slots:
             content:
-              shortdef: 'TwoPieceTemplate(orientation: vertical)'
+              shortdef: 'Layout.TwoPiece(orientation: vertical)'
               slots:
                 first:
-                  shortdef: 'Highlights(halign: center, support-sets: 2)'
+                  type: ContentGroup.Highlights
+                  properties:
+                    halign: center
+                    support-sets: 2
                   slots:
                     highlight-arrangement:
-                      type: WindshieldArrangement
+                      type: Arrangement.Windshield
                       properties: *arrangement-spacing-properties
                       slots:
                         card-type:
-                          type: PostCard
+                          type: Card.Post
                           properties: *card-all-uppercase-properties
                         filter: *no-sets
                     support-card-type:
-                      shortdef: 'SetPreviewCard(show-trigger: false)'
+                      shortdef: 'Card.SetPreview(show-trigger: false)'
                       slots:
                         arrangement:
-                          type: SquareGuysArrangement
+                          type: Arrangement.SquareGuys
                           properties:
                             <<: *arrangement-spacing-properties
                             max-rows: 2
@@ -90,7 +93,7 @@ defines:
                             card-type: *main-card
                             filter: *no-sets
                         header-card-type: *header-card
-                    sets-filter: 'FeaturedFilter(invert: true)'
+                    sets-filter: 'Filter.Featured(invert: true)'
                 second: *category-suggestions
 
 - &section-page
@@ -98,20 +101,20 @@ defines:
   slots:
     <<: *page-with-menu-slots
     content:
-      type: InfiniteScrollingLayout
+      type: Layout.InfiniteScrolling
       id: theme-scroll
       slots:
         content:
-          type: ResponsiveMargins
+          type: Layout.ResponsiveMargins
           slots:
             content:
-              shortdef: 'TwoPieceTemplate(orientation: vertical)'
+              shortdef: 'Layout.TwoPiece(orientation: vertical)'
               slots:
                 first:
-                  shortdef: 'Thematic(halign: center)'
+                  shortdef: 'ContentGroup.Thematic(halign: center)'
                   slots:
                     arrangement:
-                      type: HalfArrangement
+                      type: Arrangement.Half
                       properties: *arrangement-spacing-properties
                       slots:
                         card-type: *main-card
@@ -125,16 +128,16 @@ defines:
   slots:
     <<: *page-with-menu-slots
     content:
-      type: Search
+      type: ContentGroup.Search
       properties:
         halign: fill
         message-halign: center
         message-justify: left
       slots:
         arrangement:
-          shortdef: 'ScrollingListArrangement(bottom-buffer: 250)'
+          shortdef: 'Arrangement.ScrollingList(bottom-buffer: 250)'
           slots:
-            card-type: ListCard
+            card-type: Card.List
         article-suggestions: *article-suggestions
         category-suggestions: *category-suggestions
 
@@ -143,16 +146,16 @@ defines:
   slots:
     <<: *page-with-menu-slots
     content:
-      type: InfiniteScrollingLayout
+      type: Layout.InfiniteScrolling
       slots:
         content:
-          type: ResponsiveMargins
+          type: Layout.ResponsiveMargins
           slots:
             content:
-              type: SetGroup
+              type: ContentGroup.Set
               slots:
                 arrangement:
-                  type: SquareGuysArrangement
+                  type: Arrangement.SquareGuys
                   properties: *arrangement-spacing-properties
                   slots:
                     card-type: *set-card
@@ -162,32 +165,32 @@ defines:
   slots:
     <<: *page-with-menu-slots
     content:
-      type: ArticleStack
+      type: Layout.ArticleStack
       properties:
         do-sliding-animation: false
         allow-navigation: next
       slots:
         card-type:
-          type: KnowledgeDocumentCard
+          type: Card.KnowledgeDocument
           properties:
             show-titles: false
             show-toc: false
             custom-css: reader2.css
-        nav-card-type: SequenceCard
+        nav-card-type: Card.Sequence
 
 root:
-  shortdef: 'BuffetInteraction(theme: endless_buffet)'
+  shortdef: 'Controller.Buffet(theme: endless_buffet)'
   slots:
     window:
-      shortdef: 'Window(animations: false)'
+      shortdef: 'Window.App(animations: false)'
       slots:
-        search: SearchBox
+        search: Navigation.SearchBox
         lightbox:
-          type: MediaLightbox
+          type: ContentGroup.MediaLightbox
           slots:
-            card-type: MediaCard
+            card-type: Card.Media
         brand-page:
-          type: AppBanner
+          type: Banner.App
           properties:
             max-fraction: 0.6  # FIXME remove fraction
             show-subtitle: true

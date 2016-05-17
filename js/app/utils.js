@@ -332,7 +332,7 @@ function get_desktop_app_info () {
 // no other css transitions (with the exception of the window background
 // parallax which is part of our page transition).
 // These steps ensure that we will only need to redraw every frame. If we rework
-// how state propagates from our interactions to our modules, we may be able to
+// how state propagates from our controllers to our modules, we may be able to
 // stop pausing the dispatcher. As gtk improvements land, we may be able to stop
 // squashing css transitions and leave widgets sensitive.
 let no_transition_provider;

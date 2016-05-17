@@ -1,53 +1,53 @@
 ---
 defines:
-- &document-card ReaderDocumentCard
+- &document-card Card.ReaderDocument
 
 # Pages
 - &front-page
-  type: SplitPercentageTemplate
+  type: Layout.SplitPercentage
   slots:
     start:
-      type: ResponsiveMargins
+      type: Layout.ResponsiveMargins
       slots:
         content:
-          type: AppBanner
+          type: Banner.App
           properties:
             show-subtitle: true
             subtitle-capitalization: uppercase
             valign: start
             halign: start
     end:
-      type: ResponsiveMargins
+      type: Layout.ResponsiveMargins
       slots:
         content:
-          shortdef: 'ItemGroup(expand: true, halign: end)'
+          shortdef: 'ContentGroup.Item(expand: true, halign: end)'
           slots:
             arrangement:
-              shortdef: 'OverflowArrangement(orientation: vertical)'
+              shortdef: 'Arrangement.Overflow(orientation: vertical)'
               slots:
-                card-type: ArticleSnippetCard
+                card-type: Card.ArticleSnippet
 
 - &search-page
-  type: BannerTemplate
+  type: Layout.Banner
   slots:
-    banner: 'SearchBanner(halign: center)'
+    banner: 'Banner.Search(halign: center)'
     content:
-      shortdef: 'Search(message-halign: center)'
+      shortdef: 'ContentGroup.Search(message-halign: center)'
       slots:
         arrangement:
-          type: GridArrangement
+          type: Arrangement.Grid
           properties:
             bottom-buffer: 250
             max-children-per-line: 9
           slots:
-            card-type: ReaderCard
+            card-type: Card.Reader
 
 - &standalone-page
-  type: BannerTemplate
+  type: Layout.Banner
   slots:
-    banner: StandaloneBanner
+    banner: Banner.Standalone
     content:
-      type: StandalonePage
+      type: Page.Standalone
       slots:
         card-type:
           type: *document-card
@@ -55,26 +55,26 @@ defines:
             display-context: false
 
 - &archive-page
-  type: StandalonePage
+  type: Page.Standalone
   slots:
     card-type: *document-card
 
-- &back-page BackCover
+- &back-page Page.BackCover
 
 root:
-  type: AisleInteraction
+  type: Controller.Aisle
   slots:
     window:
-      type: ReaderWindow
+      type: Window.Reader
       slots:
-        search: SearchBox
-        navigation: Navigation
+        search: Navigation.SearchBox
+        navigation: Layout.Navigation
         lightbox:
-          type: MediaLightbox
+          type: ContentGroup.MediaLightbox
           slots:
-            card-type: MediaCard
+            card-type: Card.Media
         document-arrangement:
-          type: CarouselArrangement
+          type: Arrangement.Carousel
           slots:
             card-type: *document-card
         front-page: *front-page

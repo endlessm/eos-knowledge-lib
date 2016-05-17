@@ -1,66 +1,71 @@
 ---
 defines:
   - &home-page
-    shortdef: 'TwoPieceTemplate(orientation: vertical, valign: center)'
+    shortdef: 'Layout.TwoPiece(orientation: vertical, valign: center)'
     slots:
       # FIXME remove fractions
-      first: 'AppBanner(min-fraction: 0.5, max-fraction: 0.5)'
-      second: 'SearchBox(halign: center)'
+      first: 'Banner.App(min-fraction: 0.5, max-fraction: 0.5)'
+      second: 'Navigation.SearchBox(halign: center)'
 
   - &inner-page-layout
-    type: DividedBannerTemplate
+    type: Layout.DividedBanner
     slots: &inner-page-layout-slots
       top-left:
-        type: AppBanner
+        type: Banner.App
         properties:
           min-fraction: 0.2  # FIXME remove fractions
           max-fraction: 0.2
           valign: start
           halign: center
           vexpand: false  # FIXME: ImagePreviewer inside AppBanner expands
-      top-right: 'SearchBox(halign: center, valign: center, hexpand: true)'
+      top-right:
+        type: Navigation.SearchBox
+        properties:
+          halign: center
+          valign: center
+          hexpand: true
 
   - &search-page
     <<: *inner-page-layout
     slots:
       <<: *inner-page-layout-slots
       bottom:
-        type: PaperTemplate
+        type: Layout.Paper
         slots:
           content:
-            type: BannerTemplate
+            type: Layout.Banner
             slots:
-              banner: 'SearchBanner(halign: start)'
+              banner: 'Banner.Search(halign: start)'
               content:
-                shortdef: 'Search(message-halign: start)'
+                shortdef: 'ContentGroup.Search(message-halign: start)'
                 slots:
                   arrangement:
-                    shortdef: 'ScrollingListArrangement(hexpand: true)'
+                    shortdef: 'Arrangement.ScrollingList(hexpand: true)'
                     slots:
-                      card-type: TitleCard
+                      card-type: Card.Title
 
   - &article-page
     <<: *inner-page-layout
     slots:
       <<: *inner-page-layout-slots
       bottom:
-        type: PaperTemplate
+        type: Layout.Paper
         slots:
           content:
-            shortdef: 'ArticleStack(do-sliding-animation: false)'
+            shortdef: 'Layout.ArticleStack(do-sliding-animation: false)'
             slots:
-              card-type: KnowledgeDocumentCard
+              card-type: Card.KnowledgeDocument
 
 root:
-  type: MeshInteraction
+  type: Controller.Mesh
   slots:
     window:
-      type: EncyclopediaWindow
+      type: Window.Encyclopedia
       slots:
         lightbox:
-          type: MediaLightbox
+          type: ContentGroup.MediaLightbox
           slots:
-            card-type: MediaCard
+            card-type: Card.Media
         home-page: *home-page
         search-page: *search-page
         article-page: *article-page

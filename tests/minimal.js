@@ -2,7 +2,7 @@
 
 /* exported add_filtered_cards, add_ordered_cards, MinimalOrder,
 MinimalArrangement, MinimalBackCover, MinimalBinModule, MinimalCard,
-MinimalDocumentCard, MinimalHomePage, MinimalInteraction, MinimalModule,
+MinimalDocumentCard, MinimalHomePage, MinimalController, MinimalModule,
 MinimalPage, TitleFilter */
 
 const GLib = imports.gi.GLib;
@@ -14,7 +14,7 @@ const Card = imports.app.interfaces.card;
 const ContentObjectModel = imports.search.contentObjectModel;
 const DocumentCard = imports.app.interfaces.documentCard;
 const Filter = imports.app.interfaces.filter;
-const Interaction = imports.app.interfaces.interaction;
+const Controller = imports.app.interfaces.controller;
 const Launcher = imports.app.interfaces.launcher;
 const Module = imports.app.interfaces.module;
 const NavigationCard = imports.app.interfaces.navigationCard;
@@ -86,10 +86,10 @@ const MinimalNavigationCard = new Module.Class({
     Implements: [Card.Card, NavigationCard.NavigationCard],
 });
 
-const MinimalInteraction = new Module.Class({
-    Name: 'MinimalInteraction',
+const MinimalController = new Module.Class({
+    Name: 'MinimalController',
     Extends: GObject.Object,
-    Implements: [Launcher.Launcher, Interaction.Interaction],
+    Implements: [Launcher.Launcher, Controller.Controller],
 
     desktop_launch: function () {},
 });
