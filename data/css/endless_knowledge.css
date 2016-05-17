@@ -532,13 +532,13 @@ EosWindow scrollbar trough {
     box-shadow: 0px 1px alpha(black, 0.8); /* FIXME: box-shadow outset doesn't currently work in GTK */
 }
 
-.nav-back-button, .nav-forward-button.rtl {
+.nav-back-button, .nav-forward-button:dir(rtl) {
     border-left: 0px;
     border-radius: 0px 27px 27px 0px;
     padding: 15px;
 }
 
-.nav-forward-button, .nav-back-button.rtl {
+.nav-forward-button, .nav-back-button:dir(rtl) {
     border-radius: 27px 0px 0px 27px;
     border-right: 0px;
     padding: 15px;
@@ -556,11 +556,11 @@ EosWindow scrollbar trough {
     -EknThemeableImage-min-height: 22;
 }
 
-.nav-back-button.rtl .image {
+.nav-back-button:dir(rtl) .image {
     -gtk-icon-source: -gtk-icontheme("go-previous-symbolic-rtl");
 }
 
-.nav-forward-button.rtl .image {
+.nav-forward-button:dir(rtl) .image {
     -gtk-icon-source: -gtk-icontheme("go-next-symbolic-rtl");
 }
 
