@@ -518,6 +518,10 @@ EosWindow scrollbar trough {
     margin-bottom: 10px;
 }
 
+.article-page-a .document-card-content-frame {
+    padding: 20px 0px;
+}
+
 .nav-back-button, .nav-forward-button {
     color: white;
     background-color: alpha(black, 0.2);

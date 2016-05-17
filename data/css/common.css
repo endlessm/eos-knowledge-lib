@@ -1,5 +1,6 @@
 /* Copyright 2016 Endless Mobile, Inc. */
 
+/* ===== SearchBox ===== */
 .endless-search-box .view {
     padding: 10px;
 }
@@ -25,4 +26,59 @@
 .endless-search-box .view:nth-child(2) .cell:selected {
     color: #044a80;
     background-color: #d5e1ed;
+}
+
+/* ===== MediaCard ===== */
+.media-card {
+    padding: 10px;
+    background-color: white;
+}
+
+.media-card separator {
+    background-color: #d6d6d6;
+    min-height: 1px;
+}
+
+.media-card-caption {
+    font-size: .81em;  /* 13pt * 1/12 * 0.75 DPI correction factor */
+    font-family: Lato;
+    color: #666666;
+}
+
+.media-card-attribution-text {
+    font-weight: bold;
+    font-size: .62em;  /* 10pt * 1/12 * 0.75 DPI correction factor */
+    font-family: Lato;
+    color: #b2b2b2;
+    transition: color 250ms ease-in-out;
+}
+
+.media-card-attribution-text:hover {
+    color: #ff6900;
+}
+
+.composite .media-card-caption {
+    font-size: 14.1px;  /* 12px spec * 88% because spec was at 110% scale not 125% */
+}
+
+.composite .media-card-attribution-text {
+    font-size: 10.5px;  /* 9px spec * 88% */
+}
+
+/* ===== LightBox ===== */
+.lightbox-navigation-button {
+    padding: 7px;
+    border-radius: 27px;
+    background-color: alpha(#888a85, 0.5);
+    background-image: linear-gradient(-89deg, rgba(255, 255, 255, 0.10) 0%, rgba(255, 255, 255, 0.50) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    box-shadow: inset 0px 1px 2px 0px rgba(0, 0, 0, 0.24);
+}
+
+.lightbox-navigation-button:hover {
+    background-color: alpha(#888a85, 0.8);
+}
+
+.lightbox-shadow {
+    background-color: alpha(black, 0.9);
 }
