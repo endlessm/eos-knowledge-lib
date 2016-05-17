@@ -7,7 +7,6 @@ const BackCover = imports.app.modules.page.backCover;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
 const ProgressLabel = imports.app.widgets.progressLabel;
-const StyleClasses = imports.app.styleClasses;
 
 Gtk.init(null);
 
@@ -29,14 +28,14 @@ describe('Back cover widget', function () {
     });
 
     it('has the back-cover CSS class', function () {
-        expect(page).toHaveCssClass(StyleClasses.READER_BACK_COVER);
+        expect(page).toHaveCssClass('back-cover');
     });
 
     it('has a child widget with title CSS class', function () {
-        expect(page).toHaveDescendantWithCssClass(StyleClasses.READER_TITLE);
+        expect(page).toHaveDescendantWithCssClass('title');
     });
 
     it('has a child widget with subtitle CSS class', function () {
-        expect(page).toHaveDescendantWithCssClass(StyleClasses.SUBTITLE);
+        expect(page).toHaveDescendantWithCssClass('subtitle');
     });
 });

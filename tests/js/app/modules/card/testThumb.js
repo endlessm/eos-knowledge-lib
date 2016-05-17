@@ -6,7 +6,6 @@ Utils.register_gresource();
 const Thumb = imports.app.modules.card.thumb;
 const ContentObjectModel = imports.search.contentObjectModel;
 const CssClassMatcher = imports.tests.CssClassMatcher;
-const StyleClasses = imports.app.styleClasses;
 
 Gtk.init(null);
 
@@ -19,7 +18,7 @@ describe('Thumb card widget', function () {
         let card = new Thumb.Thumb({
             model: new ContentObjectModel.ContentObjectModel(),
         });
-        expect(card).toHaveCssClass(StyleClasses.THUMB_CARD);
+        expect(card).toHaveCssClass('thumb-card');
     });
 
     it('has labels that understand Pango markup', function () {

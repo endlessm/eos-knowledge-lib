@@ -2,7 +2,6 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 
 const Knowledge = imports.app.knowledge;
-const StyleClasses = imports.app.styleClasses;
 
 /**
  * Class: TabButton
@@ -30,7 +29,7 @@ const TabButton = new Knowledge.Class({
         props.halign = Gtk.Align.CENTER;
         this.parent(props);
 
-        this.get_style_context().add_class(StyleClasses.TAB_BUTTON);
+        this.get_style_context().add_class('tab-button');
     },
 
     set position (v) {

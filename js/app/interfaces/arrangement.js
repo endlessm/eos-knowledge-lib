@@ -10,7 +10,6 @@ const Lang = imports.lang;
 
 const ContentObjectModel = imports.search.contentObjectModel;
 const Module = imports.app.interfaces.module;
-const StyleClasses = imports.app.styleClasses;
 
 /**
  * Interface: Arrangement
@@ -298,12 +297,12 @@ const Arrangement = new Lang.Interface({
         this.clear_highlight();
         let card = this.get_card_for_model(highlight_model);
         if (card)
-            card.get_style_context().add_class(StyleClasses.HIGHLIGHTED);
+            card.get_style_context().add_class('highlighted');
     },
 
     clear_highlight: function() {
         for (let card of this._cards_by_id().values()) {
-            card.get_style_context().remove_class(StyleClasses.HIGHLIGHTED);
+            card.get_style_context().remove_class('highlighted');
         }
     },
 

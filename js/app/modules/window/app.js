@@ -11,7 +11,6 @@ const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
 const Module = imports.app.interfaces.module;
 const SearchBox = imports.app.modules.navigation.searchBox;
-const StyleClasses = imports.app.styleClasses;
 const Utils = imports.app.utils;
 
 /**
@@ -138,17 +137,17 @@ const App = new Module.Class({
         this._brand_page = this.create_submodule('brand-page');
 
         if (this.template_type === 'B') {
-            this._home_page.get_style_context().add_class(StyleClasses.HOME_PAGE_B);
+            this._home_page.get_style_context().add_class('home-page-b');
             if (this._section_page)
-                this._section_page.get_style_context().add_class(StyleClasses.SECTION_PAGE_B);
-            this._search_page.get_style_context().add_class(StyleClasses.SEARCH_PAGE_B);
-            this._article_page.get_style_context().add_class(StyleClasses.ARTICLE_PAGE_B);
+                this._section_page.get_style_context().add_class('section-page-b');
+            this._search_page.get_style_context().add_class('search-page-b');
+            this._article_page.get_style_context().add_class('article-page-b');
         } else {
-            this._home_page.get_style_context().add_class(StyleClasses.HOME_PAGE_A);
+            this._home_page.get_style_context().add_class('home-page-a');
             if (this._section_page)
-                this._section_page.get_style_context().add_class(StyleClasses.SECTION_PAGE_A);
-            this._search_page.get_style_context().add_class(StyleClasses.SEARCH_PAGE_A);
-            this._article_page.get_style_context().add_class(StyleClasses.ARTICLE_PAGE_A);
+                this._section_page.get_style_context().add_class('section-page-a');
+            this._search_page.get_style_context().add_class('search-page-a');
+            this._article_page.get_style_context().add_class('article-page-a');
         }
 
         this._stack = new Gtk.Stack({
@@ -308,10 +307,10 @@ const App = new Module.Class({
             this.animating = this._stack.transition_running;
             this.notify('animating');
             if (this._stack.transition_running) {
-                context.add_class(StyleClasses.ANIMATING);
+                context.add_class('animating');
                 Utils.squash_all_window_content_updates_heavy_handedly(this);
             } else {
-                context.remove_class(StyleClasses.ANIMATING);
+                context.remove_class('animating');
                 Utils.unsquash_all_window_content_updates_heavy_handedly(this);
             }
         }.bind(this));
@@ -320,14 +319,14 @@ const App = new Module.Class({
             this._update_top_bar_visibility.bind(this));
 
         this.get_child().show_all();
-        this._set_background_position_style(StyleClasses.BACKGROUND_LEFT);
+        this._set_background_position_style('background-left');
     },
 
     _set_background_position_style: function (klass) {
         let context = this.get_style_context();
-        context.remove_class(StyleClasses.BACKGROUND_LEFT);
-        context.remove_class(StyleClasses.BACKGROUND_CENTER);
-        context.remove_class(StyleClasses.BACKGROUND_RIGHT);
+        context.remove_class('background-left');
+        context.remove_class('background-center');
+        context.remove_class('background-right');
         context.add_class(klass);
     },
 
@@ -368,13 +367,13 @@ const App = new Module.Class({
         let nav_back_visible = false;
         if (this._is_page_on_left(new_page)) {
             nav_back_visible = false;
-            this._set_background_position_style(StyleClasses.BACKGROUND_LEFT);
+            this._set_background_position_style('background-left');
         } else if (this._is_page_on_center(new_page)) {
             nav_back_visible = true;
-            this._set_background_position_style(StyleClasses.BACKGROUND_CENTER);
+            this._set_background_position_style('background-center');
         } else {
             nav_back_visible = true;
-            this._set_background_position_style(StyleClasses.BACKGROUND_RIGHT);
+            this._set_background_position_style('background-right');
         }
 
         this._set_page_transition_type(new_page, old_page);
@@ -452,11 +451,11 @@ const App = new Module.Class({
 
         let context = this.get_style_context();
         if (alloc.width <= this.WINDOW_WIDTH_THRESHOLD || alloc.height <= this.WINDOW_HEIGHT_THRESHOLD) {
-            context.remove_class(StyleClasses.WINDOW_LARGE);
-            context.add_class(StyleClasses.WINDOW_SMALL);
+            context.remove_class('window-large');
+            context.add_class('window-small');
         } else {
-            context.remove_class(StyleClasses.WINDOW_SMALL);
-            context.add_class(StyleClasses.WINDOW_LARGE);
+            context.remove_class('window-small');
+            context.add_class('window-large');
         }
 
         if (Utils.low_performance_mode())

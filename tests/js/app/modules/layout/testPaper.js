@@ -8,7 +8,6 @@ Utils.register_gresource();
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const MockFactory = imports.tests.mockFactory;
 const Paper = imports.app.modules.layout.paper;
-const StyleClasses = imports.app.styleClasses;
 const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 
 Gtk.init(null);
@@ -35,6 +34,6 @@ describe('Paper Template module', function () {
     });
 
     it('has a frame with the content CSS class', function () {
-        expect(paper_template).toHaveDescendantWithCssClass(StyleClasses.CONTENT);
+        expect(paper_template).toHaveDescendantWithCssClass('content');
     });
 });

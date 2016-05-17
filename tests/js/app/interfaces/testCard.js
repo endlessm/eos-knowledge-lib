@@ -18,7 +18,6 @@ const Minimal = imports.tests.minimal;
 const MockEngine = imports.tests.mockEngine;
 const SetMap = imports.app.setMap;
 const SetObjectModel = imports.search.setObjectModel;
-const StyleClasses = imports.app.styleClasses;
 
 Gtk.init(null);
 
@@ -57,12 +56,12 @@ describe('Card interface', function () {
     it('adds the "invisible" and "fade-in" style classes while fading', function (done) {
         card.FADE_IN_TIME_MS = 10;
         card.fade_in();
-        expect(card).toHaveCssClass(StyleClasses.INVISIBLE);
-        expect(card).toHaveCssClass(StyleClasses.FADE_IN);
+        expect(card).toHaveCssClass('invisible');
+        expect(card).toHaveCssClass('fade-in');
         Utils.update_gui();
         Mainloop.timeout_add(25, () => {
-            expect(card).not.toHaveCssClass(StyleClasses.INVISIBLE);
-            expect(card).not.toHaveCssClass(StyleClasses.FADE_IN);
+            expect(card).not.toHaveCssClass('invisible');
+            expect(card).not.toHaveCssClass('fade-in');
             done();
             return GLib.SOURCE_REMOVE;
         });

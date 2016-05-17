@@ -3,7 +3,6 @@ const Gtk = imports.gi.Gtk;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
 const SlidingPanel = imports.app.widgets.slidingPanel;
-const StyleClasses = imports.app.styleClasses;
 const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 
 Gtk.init(null);
@@ -34,7 +33,7 @@ describe('Sliding panel', function () {
             panel_widget: panel_widget,
             reveal_panel: true,
         });
-        expect(panel).toHaveCssClass(StyleClasses.PANEL);
+        expect(panel).toHaveCssClass('panel');
     });
 
     it('adds style classes appropriate to the hide direciton of the panel', function () {

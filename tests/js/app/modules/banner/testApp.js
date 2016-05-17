@@ -9,7 +9,6 @@ Utils.register_gresource();
 const App = imports.app.modules.banner.app;
 const AppUtils = imports.app.utils;
 const CssClassMatcher = imports.tests.CssClassMatcher;
-const StyleClasses = imports.app.styleClasses;
 
 Gtk.init(null);
 
@@ -47,12 +46,12 @@ describe('App banner module', function () {
     });
 
     it('has the app-banner CSS class', function () {
-        expect(app_banner).toHaveCssClass(StyleClasses.APP_BANNER);
+        expect(app_banner).toHaveCssClass('app-banner');
     });
 
     it('has a subtitle with the subtitle CSS class', function () {
         let subtitle_widget = Gtk.test_find_label(app_banner, 'A Cute Pig');
-        expect(subtitle_widget).toHaveCssClass(StyleClasses.SUBTITLE);
+        expect(subtitle_widget).toHaveCssClass('subtitle');
     });
 
     it('justifies the subtitle appropriately to its alignment', function () {

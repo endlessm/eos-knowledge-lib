@@ -9,7 +9,6 @@ const CardContainer = imports.app.modules.contentGroup.cardContainer;
 const Config = imports.app.config;
 const Dispatcher = imports.app.dispatcher;
 const Module = imports.app.interfaces.module;
-const StyleClasses = imports.app.styleClasses;
 
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
@@ -26,7 +25,7 @@ const SuggestedArticles = new Module.Class({
         props.title = _("You might be interested in...");
         this.parent(props);
 
-        this.get_style_context().add_class(StyleClasses.SUGGESTED_ARTICLES);
+        this.get_style_context().add_class('suggested-articles');
 
         let dispatcher = Dispatcher.get_default();
         dispatcher.register((payload) => {

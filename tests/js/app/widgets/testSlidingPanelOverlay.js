@@ -3,7 +3,6 @@ const Gtk = imports.gi.Gtk;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
 const SlidingPanelOverlay = imports.app.widgets.slidingPanelOverlay;
-const StyleClasses = imports.app.styleClasses;
 const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 
 Gtk.init(null);

@@ -2,7 +2,6 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 
 const Knowledge = imports.app.knowledge;
-const StyleClasses = imports.app.styleClasses;
 
 const MockCardContainer = new Knowledge.Class({
     Name: 'MockCardContainer',
@@ -17,7 +16,7 @@ const MockCardContainer = new Knowledge.Class({
         this.parent(props);
         this._grid = new Gtk.Grid();
         this.add(this._grid);
-        this.get_style_context().add_class(StyleClasses.CARD_CONTAINER);
+        this.get_style_context().add_class('card-container');
     },
 
     get grid() {

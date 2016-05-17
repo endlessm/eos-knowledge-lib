@@ -7,7 +7,6 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 
 const Knowledge = imports.app.knowledge;
-const StyleClasses = imports.app.styleClasses;
 const ThemeableImage = imports.app.widgets.themeableImage;
 const ToggleTweener = imports.app.toggleTweener;
 const Utils = imports.app.utils;
@@ -115,7 +114,7 @@ const NavButtonOverlay = new Knowledge.Class({
         this._back_button.connect('clicked', function () {
             this.emit('back-clicked');
         }.bind(this));
-        this._back_button.get_style_context().add_class(StyleClasses.NAV_BACK_BUTTON);
+        this._back_button.get_style_context().add_class('nav-back-button');
         this._back_button.show_all();
 
         /*
@@ -129,7 +128,7 @@ const NavButtonOverlay = new Knowledge.Class({
         this._forward_button.connect('clicked', function () {
             this.emit('forward-clicked');
         }.bind(this));
-        this._forward_button.get_style_context().add_class(StyleClasses.NAV_FORWARD_BUTTON);
+        this._forward_button.get_style_context().add_class('nav-forward-button');
         this._forward_button.show_all();
 
         this.parent(props);

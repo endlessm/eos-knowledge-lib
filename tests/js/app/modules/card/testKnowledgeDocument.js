@@ -12,7 +12,6 @@ const CssClassMatcher = imports.tests.CssClassMatcher;
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
 const Minimal = imports.tests.minimal;
 const MockWidgets = imports.tests.mockWidgets;
-const StyleClasses = imports.app.styleClasses;
 const TableOfContents = imports.app.widgets.tableOfContents;
 const TreeNode = imports.search.treeNode;
 const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
@@ -76,16 +75,16 @@ describe('Knowledge Document Card', function () {
 
     describe('Style class of document card', function () {
         it('has article card class', function () {
-            expect(card).toHaveCssClass(StyleClasses.CARD);
+            expect(card).toHaveCssClass('card');
         });
         it('has a descendant with title class', function () {
-            expect(card).toHaveDescendantWithCssClass(StyleClasses.CARD_TITLE);
+            expect(card).toHaveDescendantWithCssClass('title');
         });
         it('has a descendant with toolbar frame class', function () {
-            expect(card).toHaveDescendantWithCssClass(StyleClasses.DOCUMENT_CARD_TOOLBAR_FRAME);
+            expect(card).toHaveDescendantWithCssClass('document-card-toolbar-frame');
         });
         it('has an expanded table of contents by default', function () {
-            expect(card.toc).not.toHaveCssClass(StyleClasses.COLLAPSED);
+            expect(card.toc).not.toHaveCssClass('collapsed');
         });
     });
 

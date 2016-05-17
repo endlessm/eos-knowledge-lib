@@ -11,7 +11,6 @@ const Minimal = imports.tests.minimal;
 const MockDispatcher = imports.tests.mockDispatcher;
 const MockEngine = imports.tests.mockEngine;
 const MockFactory = imports.tests.mockFactory;
-const StyleClasses = imports.app.styleClasses;
 const SetPreview = imports.app.modules.card.setPreview;
 const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 
@@ -51,7 +50,7 @@ describe('Set Preview card widget', function () {
     });
 
     it('has a label with title class', function () {
-        expect(card).toHaveDescendantWithCssClass(StyleClasses.CARD_TITLE);
+        expect(card).toHaveDescendantWithCssClass('title');
     });
 
     it('sets label', function () {

@@ -16,7 +16,6 @@ const MockDispatcher = imports.tests.mockDispatcher;
 const Module = imports.app.interfaces.module;
 const MockFactory = imports.tests.mockFactory;
 const Search = imports.app.modules.contentGroup.search;
-const StyleClasses = imports.app.styleClasses;
 const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 
 Gtk.init(null);
@@ -55,7 +54,7 @@ describe('Search module', function () {
     });
 
     it('has the correct CSS class', function () {
-        expect(search_module).toHaveCssClass(StyleClasses.SEARCH_RESULTS);
+        expect(search_module).toHaveCssClass('search-results');
     });
 
     it('displays the spinner when a search is started', function () {
@@ -89,7 +88,7 @@ describe('Search module', function () {
             action_type: Actions.SEARCH_READY,
             query: 'myfoobar',
         });
-        expect(search_module).not.toHaveCssClass(StyleClasses.NO_RESULTS);
+        expect(search_module).not.toHaveCssClass('no-results');
         expect(search_module.visible_child_name).toBe('results');
     });
 
@@ -106,8 +105,8 @@ describe('Search module', function () {
         }));
 
         expect(search_module.visible_child_name).toBe('message');
-        expect(search_module).toHaveCssClass(StyleClasses.NO_RESULTS);
-        expect(search_module).toHaveDescendantWithCssClass(StyleClasses.RESULTS_MESSAGE_TITLE);
+        expect(search_module).toHaveCssClass('no-results');
+        expect(search_module).toHaveDescendantWithCssClass('results-message-title');
     });
 
     it('displays the message page with the error CSS class when the search fails', function () {
@@ -118,7 +117,7 @@ describe('Search module', function () {
             error: new Error(),
         });
         expect(search_module.visible_child_name).toBe('message');
-        expect(search_module).toHaveDescendantWithCssClass(StyleClasses.ERROR_MESSAGE);
+        expect(search_module).toHaveDescendantWithCssClass('error-message');
     });
 
     it('adds results to the card container', function () {

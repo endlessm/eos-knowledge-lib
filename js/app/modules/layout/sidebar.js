@@ -10,7 +10,6 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 
 const Module = imports.app.interfaces.module;
-const StyleClasses = imports.app.styleClasses;
 const Utils = imports.app.utils;
 
 /**
@@ -75,9 +74,9 @@ const Sidebar = new Module.Class({
         this.add(this.content_frame);
         this.add(this.sidebar_frame);
 
-        this.get_style_context().add_class(StyleClasses.SIDEBAR_TEMPLATE);
-        this.content_frame.get_style_context().add_class(StyleClasses.CONTENT);
-        this.sidebar_frame.get_style_context().add_class(StyleClasses.SIDEBAR);
+        this.get_style_context().add_class('sidebar-template');
+        this.content_frame.get_style_context().add_class('content');
+        this.sidebar_frame.get_style_context().add_class('sidebar');
 
         this.connect('style-set', () => this._update_custom_style());
         this.connect('style-updated', () => this._update_custom_style());

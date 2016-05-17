@@ -13,7 +13,6 @@ const Config = imports.app.config;
 const Dispatcher = imports.app.dispatcher;
 const InfiniteScrolledWindow = imports.app.widgets.infiniteScrolledWindow;
 const Module = imports.app.interfaces.module;
-const StyleClasses = imports.app.styleClasses;
 
 String.prototype.format = Format.format;
 let _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
@@ -172,11 +171,11 @@ const Search = new Module.Class({
         let count = this._arrangement.get_count();
         if (count > 0) {
             this.visible_child_name = RESULTS_PAGE_NAME;
-            this.get_style_context().remove_class(StyleClasses.NO_RESULTS);
+            this.get_style_context().remove_class('no-results');
         } else {
             let context = this._message_title.get_style_context();
-            context.remove_class(StyleClasses.ERROR_MESSAGE);
-            context.add_class(StyleClasses.RESULTS_MESSAGE_TITLE);
+            context.remove_class('error-message');
+            context.add_class('results-message-title');
             // FIXME: I think we want to set a larger line-height value here
             // but not possible in GTK CSS
             this._message_title.label =
@@ -198,7 +197,7 @@ const Search = new Module.Class({
             });
 
             this.visible_child_name = MESSAGE_PAGE_NAME;
-            this.get_style_context().add_class(StyleClasses.NO_RESULTS);
+            this.get_style_context().add_class('no-results');
         }
     },
 
@@ -208,8 +207,8 @@ const Search = new Module.Class({
     _finish_search_with_error: function (error) {
         this._arrangement.clear();
         let context = this._message_title.get_style_context();
-        context.remove_class(StyleClasses.RESULTS_MESSAGE_TITLE);
-        context.add_class(StyleClasses.ERROR_MESSAGE);
+        context.remove_class('results-message-title');
+        context.add_class('error-message');
         this._message_title.label = _("There was an error during your search.");
         this._message_subtitle = "";
         this.visible_child_name = MESSAGE_PAGE_NAME;

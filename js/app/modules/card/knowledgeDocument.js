@@ -15,7 +15,6 @@ const InArticleSearch = imports.app.widgets.inArticleSearch;
 const Module = imports.app.interfaces.module;
 const PDFView = imports.app.widgets.PDFView;
 const SlidingPanelOverlay = imports.app.widgets.slidingPanelOverlay;
-const StyleClasses = imports.app.styleClasses;
 const TableOfContents = imports.app.widgets.tableOfContents;
 const TreeNode = imports.search.treeNode;
 const Utils = imports.app.utils;
@@ -28,8 +27,8 @@ const Utils = imports.app.utils;
  * This widget will handle toggling the <TableOfContents.collapsed> parameter
  * of the table of contents depending on available space. It provides two
  * internal frames with style classes
- * StyleClasses.ARTICLE_PAGE_TOOLBAR_FRAME and
- * StyleClasses.ARTICLE_PAGE_CONTENT_FRAME for theming purposes.
+ * 'document-card-toolbar-frame' and
+ * 'document-card-content-frame' for theming purposes.
  * The toolbar frame surrounds the <title> and <toc> on the right. The
  * content frame surrounds the <webview> on the left.
  */
@@ -359,13 +358,13 @@ const KnowledgeDocument = new Module.Class({
         // Decide if toolbar should be collapsed
         if (this._should_collapse(alloc.width)) {
             if (!this.toc.collapsed) {
-                this._toolbar_frame.get_style_context().add_class(StyleClasses.COLLAPSED);
+                this._toolbar_frame.get_style_context().add_class('collapsed');
                 this.toc.collapsed = true;
                 this._title_label.visible = false;
             }
         } else {
             if (this.toc.collapsed) {
-                this._toolbar_frame.get_style_context().remove_class(StyleClasses.COLLAPSED);
+                this._toolbar_frame.get_style_context().remove_class('collapsed');
                 this.toc.collapsed = false;
             }
             // Needs to be outside the if block because _title_label could have been made invisible by

@@ -3,7 +3,6 @@ const Gtk = imports.gi.Gtk;
 
 const ImagePreviewer = imports.app.widgets.imagePreviewer;
 const Knowledge = imports.app.knowledge;
-const StyleClasses = imports.app.styleClasses;
 
 /**
  * Class: Previewer
@@ -38,7 +37,7 @@ const Previewer = new Knowledge.Class({
         });
         this.parent(props);
 
-        this.get_style_context().add_class(StyleClasses.PREVIEWER);
+        this.get_style_context().add_class('previewer');
     },
 
     set_content: function (stream, content_type) {

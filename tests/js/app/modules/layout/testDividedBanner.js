@@ -9,7 +9,6 @@ const CssClassMatcher = imports.tests.CssClassMatcher;
 const DividedBanner = imports.app.modules.layout.dividedBanner;
 const MockFactory = imports.tests.mockFactory;
 const MockPlaceholder = imports.tests.mockPlaceholder;
-const StyleClasses = imports.app.styleClasses;
 const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 
 const ORIG_ROW_SPACING = 30;

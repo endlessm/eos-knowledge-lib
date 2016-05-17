@@ -7,7 +7,6 @@ const WebKit2 = imports.gi.WebKit2;
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
 const Knowledge = imports.app.knowledge;
-const StyleClasses = imports.app.styleClasses;
 
 const ARTICLE_SEARCH_MAX_RESULTS = 200;
 
@@ -19,7 +18,7 @@ const InArticleSearch = new Knowledge.Class({
         this.parent({
             no_show_all: true,
         });
-        this.get_style_context().add_class(StyleClasses.ARTICLE_SEARCH);
+        this.get_style_context().add_class('article-search');
 
         this._web_view = web_view;
 

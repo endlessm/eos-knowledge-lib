@@ -7,7 +7,6 @@ const Gtk = imports.gi.Gtk;
 const Card = imports.app.interfaces.card;
 const Module = imports.app.interfaces.module;
 const NavigationCard = imports.app.interfaces.navigationCard;
-const StyleClasses = imports.app.styleClasses;
 const ThemeableImage = imports.app.widgets.themeableImage;
 const Utils = imports.app.utils;
 
@@ -59,19 +58,19 @@ const Title = new Module.Class({
             valign: Gtk.Align.CENTER,
             halign: Gtk.Align.CENTER,
         });
-        before.get_style_context().add_class(StyleClasses.BEFORE);
+        before.get_style_context().add_class('before');
         this._grid.attach(before, 0, 0, 1, 1);
         let after = new ThemeableImage.ThemeableImage({
             visible: true,
             valign: Gtk.Align.CENTER,
             halign: Gtk.Align.CENTER,
         });
-        after.get_style_context().add_class(StyleClasses.AFTER);
+        after.get_style_context().add_class('after');
         this._grid.attach(after, 2, 0, 1, 1);
     },
 
     vfunc_draw: function (cr) {
-        if (this.decorate_on_highlight && this.get_style_context().has_class(StyleClasses.HIGHLIGHTED)) {
+        if (this.decorate_on_highlight && this.get_style_context().has_class('highlighted')) {
             let x = this.get_allocation().width;
             let y = this._title_label.get_allocation().height;
 

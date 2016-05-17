@@ -13,7 +13,6 @@ const DocumentCard = imports.app.interfaces.documentCard;
 const EknWebview = imports.app.widgets.eknWebview;
 const Module = imports.app.interfaces.module;
 const ProgressLabel = imports.app.widgets.progressLabel;
-const StyleClasses = imports.app.styleClasses;
 const Utils = imports.app.utils;
 const WebKit2 = imports.gi.WebKit2;
 
@@ -113,7 +112,7 @@ const ReaderDocument = new Module.Class({
             this.add_overlay(this._info_notice);
             if (this.archived) {
                 this._info_notice.label = _("This article is part of the archive.");
-                this._info_notice.get_style_context().add_class(StyleClasses.READER_ARCHIVE_NOTICE_FRAME);
+                this._info_notice.get_style_context().add_class('archive-notice-frame');
             } else {
                 this.bind_property('page-number',
                     this._info_notice, 'current-page',

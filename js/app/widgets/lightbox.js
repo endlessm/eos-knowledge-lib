@@ -8,7 +8,6 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 
 const Knowledge = imports.app.knowledge;
-const StyleClasses = imports.app.styleClasses;
 const Utils = imports.app.utils;
 
 /**
@@ -133,7 +132,7 @@ const Lightbox = new Knowledge.Class({
         this._lightbox_container.connect('navigation-next-clicked',
             () => { this.emit('navigation-next-clicked'); });
 
-        this.get_style_context().add_class(StyleClasses.LIGHTBOX);
+        this.get_style_context().add_class('lightbox');
         this.bind_property('transition-duration',
                            this._revealer, 'transition-duration',
                            GObject.BindingFlags.SYNC_CREATE);
@@ -288,7 +287,7 @@ const LightboxContainer = new Knowledge.Class({
         this._previous_button.connect('clicked', function () {
             this.emit('navigation-previous-clicked');
         }.bind(this));
-        this._previous_button.get_style_context().add_class(StyleClasses.LIGHTBOX_NAVIGATION_BUTTON);
+        this._previous_button.get_style_context().add_class('lightbox-navigation-button');
 
         /**
          * Navigate next button
@@ -307,7 +306,7 @@ const LightboxContainer = new Knowledge.Class({
         this._next_button.connect('clicked', function () {
             this.emit('navigation-next-clicked');
         }.bind(this));
-        this._next_button.get_style_context().add_class(StyleClasses.LIGHTBOX_NAVIGATION_BUTTON);
+        this._next_button.get_style_context().add_class('lightbox-navigation-button');
 
         this.add(this._close_button);
         this.add(this._next_button);
@@ -359,7 +358,7 @@ const LightboxContainer = new Knowledge.Class({
         let context = this.get_style_context();
 
         context.save();
-        context.add_class(StyleClasses.LIGHTBOX_SHADOW);
+        context.add_class('lightbox-shadow');
         let width = this.get_allocated_width();
         let height = this.get_allocated_height();
         Gtk.render_background(context, cr, 0, 0, width, height);

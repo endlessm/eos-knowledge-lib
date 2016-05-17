@@ -8,7 +8,6 @@ const ContentObjectModel = imports.search.contentObjectModel;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const Post = imports.app.modules.card.post;
 const SetObjectModel = imports.search.setObjectModel;
-const StyleClasses = imports.app.styleClasses;
 
 Gtk.init(null);
 
@@ -22,16 +21,16 @@ describe('Postcard widget', function () {
             model: new ArticleObjectModel.ArticleObjectModel(),
         });
 
-        expect(card).toHaveCssClass(StyleClasses.POST_CARD);
-        expect(card).toHaveCssClass(StyleClasses.ARTICLE);
-        expect(card).not.toHaveCssClass(StyleClasses.SET);
+        expect(card).toHaveCssClass('post-card');
+        expect(card).toHaveCssClass('article');
+        expect(card).not.toHaveCssClass('set');
 
         card = new Post.Post({
             model: new SetObjectModel.SetObjectModel(),
         });
-        expect(card).toHaveCssClass(StyleClasses.POST_CARD);
-        expect(card).toHaveCssClass(StyleClasses.SET);
-        expect(card).not.toHaveCssClass(StyleClasses.ARTICLE);
+        expect(card).toHaveCssClass('post-card');
+        expect(card).toHaveCssClass('set');
+        expect(card).not.toHaveCssClass('article');
     });
 
     it('has labels that understand Pango markup', function () {

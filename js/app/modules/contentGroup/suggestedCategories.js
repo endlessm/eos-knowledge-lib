@@ -8,7 +8,6 @@ const Gtk = imports.gi.Gtk;
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
 const Module = imports.app.interfaces.module;
-const StyleClasses = imports.app.styleClasses;
 const ThemeableImage = imports.app.widgets.themeableImage;
 
 const Utils = imports.app.utils;
@@ -58,7 +57,7 @@ const SuggestedCategories = new Module.Class({
             valign: Gtk.Align.CENTER,
             halign: Gtk.Align.CENTER,
         });
-        after.get_style_context().add_class(StyleClasses.AFTER);
+        after.get_style_context().add_class('after');
         this._title_button_grid.attach(after, 1, 0, 1, 1);
 
         let separator = new Gtk.Separator({

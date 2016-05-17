@@ -8,7 +8,6 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 
 const Knowledge = imports.app.knowledge;
-const StyleClasses = imports.app.styleClasses;
 
 const PanelFrame = new Knowledge.Class({
     Name: 'PanelFrame',
@@ -114,7 +113,7 @@ const SlidingPanel = new Knowledge.Class({
         });
 
         this.parent(props);
-        this.get_style_context().add_class(StyleClasses.PANEL);
+        this.get_style_context().add_class('panel');
 
         if (this.hide_when_invisible)
             this.no_show_all = true;

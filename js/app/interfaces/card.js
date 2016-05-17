@@ -19,7 +19,6 @@ const SearchUtils = imports.search.utils;
 const SetMap = imports.app.setMap;
 const SetObjectModel = imports.search.setObjectModel;
 const SpaceContainer = imports.app.widgets.spaceContainer;
-const StyleClasses = imports.app.styleClasses;
 const Utils = imports.app.utils;
 
 /**
@@ -241,10 +240,10 @@ const Card = new Lang.Interface({
             return;
         this._sequence = value;
         if (this._sequence === Sequence.PREVIOUS) {
-            this.get_style_context().add_class(StyleClasses.PREVIOUS);
+            this.get_style_context().add_class('previous');
         }
         if (this._sequence === Sequence.NEXT) {
-            this.get_style_context().add_class(StyleClasses.NEXT);
+            this.get_style_context().add_class('next');
         }
         this.notify('sequence');
     },
@@ -324,9 +323,9 @@ const Card = new Lang.Interface({
      */
     add_contextual_css_class: function () {
         if (this.model instanceof SetObjectModel.SetObjectModel) {
-            this.get_style_context().add_class(StyleClasses.SET);
+            this.get_style_context().add_class('set');
         } else if (this.model instanceof ArticleObjectModel.ArticleObjectModel) {
-            this.get_style_context().add_class(StyleClasses.ARTICLE);
+            this.get_style_context().add_class('article');
         }
     },
 
@@ -380,7 +379,7 @@ const Card = new Lang.Interface({
         if (this.highlight_string) {
             let context = label.get_style_context();
             context.save();
-            context.add_class(StyleClasses.HIGHLIGHTED);
+            context.add_class('highlighted');
             let span = Utils.style_context_to_markup_span(label.get_style_context(), Gtk.StateFlags.NORMAL);
             title = title.replace(regex, span + '$1</span>');
             context.restore();
@@ -496,7 +495,7 @@ const Card = new Lang.Interface({
         }
 
         let context = this.get_style_context();
-        context.add_class(StyleClasses.INVISIBLE);
+        context.add_class('invisible');
         // FIXME: for some reason even if initial opacity = 0 in css, the
         // opacity will start at 1. Triggering a 'notify' on opacity seems to
         // get the actual initial opacity value in css to be respected
@@ -506,11 +505,11 @@ const Card = new Lang.Interface({
         this.sensitive = false;
         Mainloop.timeout_add(this.FADE_IN_TIME_MS, () => {
             this.sensitive = true;
-            context.remove_class(StyleClasses.INVISIBLE);
-            context.remove_class(StyleClasses.FADE_IN);
+            context.remove_class('invisible');
+            context.remove_class('fade-in');
             return GLib.SOURCE_REMOVE;
         });
         this.show();
-        context.add_class(StyleClasses.FADE_IN);
+        context.add_class('fade-in');
     },
 });
