@@ -83,6 +83,9 @@ const App = new Module.Class({
     InternalChildren: [ 'subtitle-label' ],
 
     _init: function (props={}) {
+        // We don't want the module to autoexpand, but it will unless explicitly
+        // forced not to because logo child has expand=true set.
+        props.expand = props.expand || false;
         this.parent(props);
 
         this._logo = new ImagePreviewer.ImagePreviewer({
