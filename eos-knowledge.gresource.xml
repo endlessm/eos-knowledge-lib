@@ -97,17 +97,17 @@
     <file>js/app/compat/compat.js</file>
     <file>js/app/compat/styleKnobGenerator.js</file>
     <file>js/app/config.js</file>
+    <file>js/app/controllerLoader.js</file>
     <file>js/app/dispatcher.js</file>
     <file>js/app/dominantColor.js</file>
     <file>js/app/historyItem.js</file>
     <file>js/app/historyPresenter.js</file>
-    <file>js/app/controllerLoader.js</file>
     <file>js/app/interfaces/arrangement.js</file>
     <file>js/app/interfaces/card.js</file>
+    <file>js/app/interfaces/controller.js</file>
     <file>js/app/interfaces/documentCard.js</file>
     <file>js/app/interfaces/expandable.js</file>
     <file>js/app/interfaces/filter.js</file>
-    <file>js/app/interfaces/controller.js</file>
     <file>js/app/interfaces/launcher.js</file>
     <file>js/app/interfaces/module.js</file>
     <file>js/app/interfaces/navigationCard.js</file>
@@ -162,16 +162,16 @@
     <file>js/app/modules/contentGroup/suggestedCategories.js</file>
     <file>js/app/modules/contentGroup/supplementaryArticles.js</file>
     <file>js/app/modules/contentGroup/thematic.js</file>
-    <file>js/app/modules/filter/featured.js</file>
-    <file>js/app/modules/filter/sets.js</file>
-    <file>js/app/modules/filter/unread.js</file>
     <file>js/app/modules/controller/aisle.js</file>
     <file>js/app/modules/controller/buffet.js</file>
     <file>js/app/modules/controller/mesh.js</file>
+    <file>js/app/modules/filter/featured.js</file>
+    <file>js/app/modules/filter/sets.js</file>
+    <file>js/app/modules/filter/unread.js</file>
     <file>js/app/modules/layout/articleStack.js</file>
-    <file>js/app/modules/layout/dynamicBackground.js</file>
     <file>js/app/modules/layout/banner.js</file>
     <file>js/app/modules/layout/dividedBanner.js</file>
+    <file>js/app/modules/layout/dynamicBackground.js</file>
     <file>js/app/modules/layout/hamburgerBasement.js</file>
     <file>js/app/modules/layout/infiniteScrolling.js</file>
     <file>js/app/modules/layout/navigation.js</file>
