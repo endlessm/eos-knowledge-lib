@@ -1,0 +1,46 @@
+#!/bin/bash
+
+# For those interested in Moltres' etymology, it goes something like this:
+# app.json runner: runner --> Usain Bolt --> bolt of lightning --> Zapdos (lightning type pokemon) ---> Moltres (fire type pokemon)
+
+export GI_TYPELIB_PATH="%typelibdir%${GI_TYPELIB_PATH:+:$GI_TYPELIB_PATH}"
+export LD_LIBRARY_PATH="%pkglibdir%${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+
+if [ "$GJS_DEBUG_OUTPUT" == "" ]; then
+    export GJS_DEBUG_OUTPUT=stderr
+fi
+
+if [ "$GJS_DEBUG_TOPICS" == "" ]; then
+    export GJS_DEBUG_TOPICS="JS ERROR;JS LOG"
+fi
+
+# This will undoubtedly change in the future, but for now we will disable some
+# of our more costly animations on arm.
+if [[ "$(uname -m)" == arm* ]]; then
+    export LOW_PERFORMANCE_MODE=1
+fi
+
+DEBUG_COMMAND=""
+if [ "$RUN_DEBUG" != "" ]; then
+    DEBUG_COMMAND="gdb --args"
+fi
+
+if [ "$#" -lt 1 ]; then
+    echo "Usage: moltres <path_to_app.json_file>"
+    exit 1
+fi
+
+APP_JSON_PATH="$1" && shift
+
+SCRIPT="const Gio = imports.gi.Gio;
+Gio.Resource.load('%pkgdatadir%/eos-knowledge.gresource')._register();
+imports.searchPath.unshift('resource:///com/endlessm/knowledge/js');
+
+const MoltresApplication = imports.app.moltresApplication;
+let application = new MoltresApplication.MoltresApplication({
+    app_json_path: '$APP_JSON_PATH',
+    application_id: 'com.endlessm.moltres',
+});
+application.run(['$0'].concat(ARGV));"
+
+exec $DEBUG_COMMAND gjs -c "$SCRIPT" "$@"

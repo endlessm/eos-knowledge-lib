@@ -24,9 +24,12 @@
     <file>data/images/background.png</file>
     <file>data/images/pdf-background.png</file>
     <file>data/images/pdf_icon.png</file>
-    <file>data/images/picard/food.jpg</file>
-    <file>data/images/picard/forest.jpg</file>
-    <file>data/images/picard/people.jpg</file>
+    <file>data/images/tools/food.jpg</file>
+    <file>data/images/tools/forest.jpg</file>
+    <file>data/images/tools/people.jpg</file>
+    <file>data/images/tools/football.jpg</file>
+    <file>data/images/tools/desk.jpg</file>
+    <file>data/images/tools/house.jpg</file>
     <file preprocess="xml-stripblanks">data/images/reader/archive.svg</file>
     <file preprocess="xml-stripblanks">data/images/reader/external-link.svg</file>
     <file preprocess="xml-stripblanks">data/images/reader/left-arrow.svg</file>
@@ -193,6 +196,7 @@
     <file>js/app/modules/window/app.js</file>
     <file>js/app/modules/window/encyclopedia.js</file>
     <file>js/app/modules/window/reader.js</file>
+    <file>js/app/moltresApplication.js</file>
     <file>js/app/readingHistoryModel.js</file>
     <file>js/app/setMap.js</file>
     <file>js/app/styleClasses.js</file>
@@ -228,6 +232,7 @@
     <file>js/search/downloader.js</file>
     <file>js/search/engine.js</file>
     <file>js/search/mediaObjectModel.js</file>
+    <file>js/search/moltresEngine.js</file>
     <file>js/search/queryObject.js</file>
     <file>js/search/searchProvider.js</file>
     <file>js/search/setObjectModel.js</file>

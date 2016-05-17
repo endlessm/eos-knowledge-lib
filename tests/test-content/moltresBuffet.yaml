@@ -1,0 +1,202 @@
+---
+defines:
+# Some props
+- &card-all-uppercase-properties
+  title-capitalization: uppercase
+  context-capitalization: uppercase
+- &arrangement-spacing-properties
+  spacing: 20
+
+# A few small repeated elements
+- &no-sets 'Filter.Sets(invert: true)'
+- &header-card Card.Title
+- &main-card
+  type: Card.Thumb
+  properties: *card-all-uppercase-properties
+- &set-card
+  type: Card.Post
+  properties: *card-all-uppercase-properties
+
+- &article-suggestions
+  type: ContentGroup.SuggestedArticles
+  slots:
+    arrangement:
+      # Note spacing different from all the other arrangements; on purpose?
+      shortdef: 'Arrangement.SquareGuys(max-rows: 1, spacing: 10)'
+      slots:
+        card-type: *main-card
+
+- &category-suggestions
+  type: ContentGroup.SuggestedCategories
+  slots:
+    arrangement:
+      type: Arrangement.SquareGuys
+      properties:
+        <<: *arrangement-spacing-properties
+        max-rows: 1
+        valign: end
+      slots:
+        card-type: *set-card
+
+- &page-with-menu
+  type: Layout.SideMenu
+  slots: &page-with-menu-slots
+    context: Banner.Context
+    sidebar:
+      # Main menu
+      shortdef: 'ContentGroup.SuggestedCategories(show-title: false)'
+      slots:
+        arrangement:
+          type: Arrangement.ScrollingList
+          slots:
+            card-type:
+              type: Card.Title
+              properties: *card-all-uppercase-properties
+            filter: Filter.Featured
+
+- &home-page
+  <<: *page-with-menu
+  slots:
+    <<: *page-with-menu-slots
+    content:
+      type: Layout.InfiniteScrolling
+      slots:
+        content:
+          type: Layout.ResponsiveMargins
+          slots:
+            content:
+              shortdef: 'Layout.TwoPiece(orientation: vertical)'
+              slots:
+                first:
+                  type: ContentGroup.Highlights
+                  properties:
+                    halign: center
+                    support-sets: 2
+                  slots:
+                    highlight-arrangement:
+                      type: Arrangement.Windshield
+                      properties: *arrangement-spacing-properties
+                      slots:
+                        card-type:
+                          type: Card.Post
+                          properties: *card-all-uppercase-properties
+                        filter: *no-sets
+                    support-card-type:
+                      shortdef: 'Card.SetPreview(show-trigger: false)'
+                      slots:
+                        arrangement:
+                          type: Arrangement.SquareGuys
+                          properties:
+                            <<: *arrangement-spacing-properties
+                            max-rows: 2
+                          slots:
+                            card-type: *main-card
+                            filter: *no-sets
+                        header-card-type: *header-card
+                    sets-filter: 'Filter.Featured(invert: true)'
+                second: *category-suggestions
+
+- &section-page
+  <<: *page-with-menu
+  slots:
+    <<: *page-with-menu-slots
+    content:
+      type: Layout.InfiniteScrolling
+      id: theme-scroll
+      slots:
+        content:
+          type: Layout.ResponsiveMargins
+          slots:
+            content:
+              shortdef: 'Layout.TwoPiece(orientation: vertical)'
+              slots:
+                first:
+                  shortdef: 'ContentGroup.Thematic(halign: center)'
+                  slots:
+                    arrangement:
+                      type: Arrangement.Half
+                      properties: *arrangement-spacing-properties
+                      slots:
+                        card-type: *main-card
+                    header-card-type: *header-card
+                  references:
+                    scroll-server: theme-scroll
+                second: *category-suggestions
+
+- &search-page
+  <<: *page-with-menu
+  slots:
+    <<: *page-with-menu-slots
+    content:
+      type: ContentGroup.Search
+      properties:
+        halign: fill
+        message-halign: center
+        message-justify: left
+      slots:
+        arrangement:
+          shortdef: 'Arrangement.ScrollingList(bottom-buffer: 250)'
+          slots:
+            card-type: Card.List
+        article-suggestions: *article-suggestions
+        category-suggestions: *category-suggestions
+
+- &all-sets-page
+  <<: *page-with-menu
+  slots:
+    <<: *page-with-menu-slots
+    content:
+      type: Layout.InfiniteScrolling
+      slots:
+        content:
+          type: Layout.ResponsiveMargins
+          slots:
+            content:
+              type: ContentGroup.Set
+              slots:
+                arrangement:
+                  type: Arrangement.SquareGuys
+                  properties: *arrangement-spacing-properties
+                  slots:
+                    card-type: *set-card
+
+- &article-page
+  <<: *page-with-menu
+  slots:
+    <<: *page-with-menu-slots
+    content:
+      type: Layout.ArticleStack
+      properties:
+        do-sliding-animation: false
+        allow-navigation: next
+      slots:
+        card-type:
+          type: Card.KnowledgeDocument
+          properties:
+            show-titles: false
+            show-toc: false
+            custom-css: reader2.css
+        nav-card-type: Card.Sequence
+
+root:
+  shortdef: 'Controller.Buffet(theme: endless_buffet)'
+  slots:
+    window:
+      shortdef: 'Window.App(animations: false)'
+      slots:
+        search: Navigation.SearchBox
+        lightbox:
+          type: ContentGroup.MediaLightbox
+          slots:
+            card-type: Card.Media
+        brand-page:
+          type: Banner.App
+          properties:
+            max-fraction: 0.6  # FIXME remove fraction
+            show-subtitle: true
+            subtitle-capitalization: uppercase
+        home-page: *home-page
+        section-page: *section-page
+        search-page: *search-page
+        all-sets-page: *all-sets-page
+        article-page: *article-page

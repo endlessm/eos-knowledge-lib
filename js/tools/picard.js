@@ -12,7 +12,7 @@ const ModuleFactory = imports.app.moduleFactory;
 const SetMap = imports.app.setMap;
 const Utils = imports.app.utils;
 
-const IMAGES_DIR = 'resource:///com/endlessm/knowledge/data/images/picard/';
+const IMAGES_DIR = 'resource:///com/endlessm/knowledge/data/images/tools/';
 const CSS_DIR = 'resource:///com/endlessm/knowledge/data/css/';
 
 // For those interested in picard's etymology, it goes roughly like this:

@@ -254,6 +254,7 @@ subst_files = \
 	js/search/config.js \
 	eminem \
 	kermit \
+	moltres \
 	picard \
 	$(NULL)
 
@@ -278,6 +279,7 @@ bin_SCRIPTS += \
 	autobahn \
 	eminem \
 	kermit \
+	moltres \
 	picard \
 	$(NULL)
 
