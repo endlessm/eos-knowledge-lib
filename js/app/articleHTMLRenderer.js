@@ -244,13 +244,14 @@ const ArticleHTMLRenderer = new Knowledge.Class({
         return ['jquery-min.js', 'clipboard-manager.js'].concat(this._custom_javascript_files);
     },
 
-    _render_wrapper: function (content) {
+    _render_wrapper: function (model, content) {
         let css_files = this._get_wrapper_css_files();
         let js_files = this._get_wrapper_js_files();
 
         let template = _load_template('article-wrapper.mst');
 
         return Mustache.render(template, {
+            'id': model.ekn_id,
             'css-files': css_files,
             'javascript-files': js_files,
             'copy-button-text': _("Copy"),
@@ -264,7 +265,7 @@ const ArticleHTMLRenderer = new Knowledge.Class({
      */
     render: function (model) {
         let content = this._render_content(model);
-        return this._render_wrapper(content);
+        return this._render_wrapper(model, content);
     },
 });
 

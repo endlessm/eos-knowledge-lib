@@ -8,7 +8,7 @@ const System = imports.system;
 const USAGE = [
     'usage: kermit grep <shard path> <pattern>',
     '       kermit list <shard path>',
-    '       kermit dump <shard path> <ekn id> [data|metadata]',
+    '       kermit dump <shard path> <ekn id> <data|metadata|blob name>',
     '       kermit query <domain> "<querystring>"',
     '',
     'kermit is a shard inspection utility for Knowledge Apps.',
@@ -53,17 +53,16 @@ function grep (path, pattern) {
     records.forEach(function (record, i) {
         let regex = new RegExp(pattern);
         let id = record.get_hex_name();
-        let metadata_bytes = record.metadata.load_contents();
+        let content_type = record.data.get_content_type();
         let offset = record.data.get_offset();
-        if (!metadata_bytes) {
-            print_result(id, "Unknown", "Unknown - no metadata", offset);
+        if (!record.metadata) {
+            print_result(id, content_type, "Unknown - no metadata", offset);
             return;
         }
-        let metadata_text = metadata_bytes.get_data().toString();
+        let metadata_text = record.metadata.load_contents().get_data().toString();
 
         if (metadata_text.match(regex) !== null) {
             let metadata = JSON.parse(metadata_text);
-            let content_type = metadata.contentType;
             let title = metadata.title;
             print_result(id, content_type, title, offset);
         }
@@ -123,10 +122,7 @@ function print_result (id, content_type, title, offset) {
     print(output.join(' - '));
 }
 
-function dump (path, id, data_or_meta) {
-    if (['data', 'metadata'].indexOf(data_or_meta) === -1)
-        fail_with_message(USAGE);
-
+function dump (path, id, blob_name) {
     let shard = get_shard_for_path(path);
     let record = shard.find_record_by_hex_name(id);
 
@@ -139,9 +135,18 @@ function dump (path, id, data_or_meta) {
         fail_with_message('Could not find shard entry for id', id);
     }
 
+    function find_blob() {
+        if (blob_name === 'data')
+            return record.data;
+        else if (blob_name === 'metadata')
+            return record.metadata;
+        else
+            return record.lookup_blob(blob_name);
+    }
+
     let stdout = Gio.UnixOutputStream.new(1, false);
-    let source = data_or_meta === 'data' ? record.data : record.metadata;
-    stdout.splice(source.get_stream(), Gio.OutputStreamSpliceFlags.NONE, null);
+    let blob = find_blob();
+    stdout.splice(blob.get_stream(), Gio.OutputStreamSpliceFlags.NONE, null);
 }
 
 function get_shard_for_path (path) {
