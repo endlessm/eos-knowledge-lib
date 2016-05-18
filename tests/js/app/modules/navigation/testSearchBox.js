@@ -10,7 +10,6 @@ const ContentObjectModel = imports.search.contentObjectModel;
 const MockDispatcher = imports.tests.mockDispatcher;
 const MockEngine = imports.tests.mockEngine;
 const SearchBox = imports.app.modules.navigation.searchBox;
-const StyleClasses = imports.app.styleClasses;
 
 describe('Search box module', function () {
     let box, engine, dispatcher;
@@ -27,7 +26,7 @@ describe('Search box module', function () {
     });
 
     it('has the correct style class', function () {
-        expect(box).toHaveCssClass(StyleClasses.SEARCH_BOX);
+        expect(box).toHaveCssClass('search-box');
     });
 
     it('sets search text when set-search-text is dispatched', function () {

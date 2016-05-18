@@ -5,7 +5,6 @@ Utils.register_gresource();
 
 const ContentObjectModel = imports.search.contentObjectModel;
 const CssClassMatcher = imports.tests.CssClassMatcher;
-const StyleClasses = imports.app.styleClasses;
 const Title = imports.app.modules.card.title;
 
 Gtk.init(null);
@@ -22,20 +21,20 @@ describe('Title card widget', function () {
     });
 
     it('has card and title-card class', function () {
-        expect(card).toHaveCssClass(StyleClasses.CARD);
-        expect(card).toHaveCssClass(StyleClasses.TITLE_CARD);
+        expect(card).toHaveCssClass('card');
+        expect(card).toHaveCssClass('title-card');
     });
 
     it('has a label with title class', function () {
-        expect(card).toHaveDescendantWithCssClass(StyleClasses.CARD_TITLE);
+        expect(card).toHaveDescendantWithCssClass('title');
     });
 
     it('has a widget with before class', function () {
-        expect(card).toHaveDescendantWithCssClass(StyleClasses.BEFORE);
+        expect(card).toHaveDescendantWithCssClass('before');
     });
 
     it('has a widget with after class', function () {
-        expect(card).toHaveDescendantWithCssClass(StyleClasses.AFTER);
+        expect(card).toHaveDescendantWithCssClass('after');
     });
 
     it('has labels that understand Pango markup', function () {

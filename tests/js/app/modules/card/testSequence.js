@@ -5,7 +5,6 @@ Utils.register_gresource();
 
 const ContentObjectModel = imports.search.contentObjectModel;
 const CssClassMatcher = imports.tests.CssClassMatcher;
-const StyleClasses = imports.app.styleClasses;
 const Sequence = imports.app.modules.card.sequence;
 
 Gtk.init(null);
@@ -25,15 +24,15 @@ describe('Sequence card widget', function () {
         let card = new Sequence.Sequence({
             model: model,
         });
-        expect(card).toHaveCssClass(StyleClasses.CARD);
-        expect(card).toHaveCssClass(StyleClasses.SEQUENCE_CARD);
+        expect(card).toHaveCssClass('card');
+        expect(card).toHaveCssClass('sequence-card');
     });
 
     it('has a label with title class', function () {
         let card = new Sequence.Sequence({
             model: model,
         });
-        expect(card).toHaveDescendantWithCssClass(StyleClasses.CARD_TITLE);
+        expect(card).toHaveDescendantWithCssClass('title');
     });
 
     it('has a label with previous/next style classes', function () {

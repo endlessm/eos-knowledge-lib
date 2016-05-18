@@ -10,7 +10,6 @@ const Dispatcher = imports.app.dispatcher;
 const Engine = imports.search.engine;
 const Module = imports.app.interfaces.module;
 const QueryObject = imports.search.queryObject;
-const StyleClasses = imports.app.styleClasses;
 const Utils = imports.app.utils;
 
 const RESULTS_SIZE = 4;
@@ -34,7 +33,7 @@ const SearchBox = new Module.Class({
         this._autocomplete_models = {};
         this._cancellable = null;
         this._link_action_set = false;
-        this.get_style_context().add_class(StyleClasses.SEARCH_BOX);
+        this.get_style_context().add_class('search-box');
 
         let dispatcher = Dispatcher.get_default();
         dispatcher.register((payload) => {

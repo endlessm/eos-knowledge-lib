@@ -19,7 +19,6 @@ const SearchUtils = imports.search.utils;
 const SetMap = imports.app.setMap;
 const SetObjectModel = imports.search.setObjectModel;
 const SpaceContainer = imports.app.widgets.spaceContainer;
-const StyleClasses = imports.app.styleClasses;
 const Utils = imports.app.utils;
 
 /**
@@ -30,6 +29,37 @@ const Utils = imports.app.utils;
  * NONE     - Not part of a sequence.
  */
 const Sequence = SearchUtils.define_enum(['PREVIOUS', 'NEXT', 'NONE']);
+
+/**
+ * Constant: WIDTH_STYLE_CLASSES
+ *
+ * This object packs the different CSS classes that describe the width of a card
+ * widget.
+ */
+const WIDTH_STYLE_CLASSES = {
+    A: 'width-a',
+    B: 'width-b',
+    C: 'width-c',
+    D: 'width-d',
+    E: 'width-e',
+    F: 'width-f',
+    G: 'width-g',
+    H: 'width-h',
+};
+
+/**
+ * Constant: HEIGHT_STYLE_CLASSES
+ *
+ * This object packs the different CSS classes that describe the height of a card
+ * widget.
+ */
+const HEIGHT_STYLE_CLASSES = {
+    A: 'height-a',
+    B: 'height-b',
+    C: 'height-c',
+    D: 'height-d',
+    E: 'height-e',
+};
 
 /**
  * Constants: MinSize
@@ -210,10 +240,10 @@ const Card = new Lang.Interface({
             return;
         this._sequence = value;
         if (this._sequence === Sequence.PREVIOUS) {
-            this.get_style_context().add_class(StyleClasses.PREVIOUS);
+            this.get_style_context().add_class('previous');
         }
         if (this._sequence === Sequence.NEXT) {
-            this.get_style_context().add_class(StyleClasses.NEXT);
+            this.get_style_context().add_class('next');
         }
         this.notify('sequence');
     },
@@ -293,9 +323,9 @@ const Card = new Lang.Interface({
      */
     add_contextual_css_class: function () {
         if (this.model instanceof SetObjectModel.SetObjectModel) {
-            this.get_style_context().add_class(StyleClasses.SET);
+            this.get_style_context().add_class('set');
         } else if (this.model instanceof ArticleObjectModel.ArticleObjectModel) {
-            this.get_style_context().add_class(StyleClasses.ARTICLE);
+            this.get_style_context().add_class('article');
         }
     },
 
@@ -349,7 +379,7 @@ const Card = new Lang.Interface({
         if (this.highlight_string) {
             let context = label.get_style_context();
             context.save();
-            context.add_class(StyleClasses.HIGHLIGHTED);
+            context.add_class('highlighted');
             let span = Utils.style_context_to_markup_span(label.get_style_context(), Gtk.StateFlags.NORMAL);
             title = title.replace(regex, span + '$1</span>');
             context.restore();
@@ -430,46 +460,26 @@ const Card = new Lang.Interface({
      * appropriate CSS classes, according to our design constraints.
      */
     update_card_sizing_classes: function (height, width) {
-        let width_class, height_class;
+        let width_class = WIDTH_STYLE_CLASSES['H'];
+        ['A', 'B', 'C', 'D', 'E', 'F', 'G'].reverse().forEach((name) => {
+            if (width <= MaxSize[name])
+                width_class = WIDTH_STYLE_CLASSES[name];
+        });
 
-        if (width <= MaxSize.A) {
-            width_class = StyleClasses.CARD_WIDTH.A;
-        } else if (width <= MaxSize.B) {
-            width_class = StyleClasses.CARD_WIDTH.B;
-        } else if (width <= MaxSize.C) {
-            width_class = StyleClasses.CARD_WIDTH.C;
-        } else if (width <= MaxSize.D) {
-            width_class = StyleClasses.CARD_WIDTH.D;
-        } else if (width <= MaxSize.E) {
-            width_class = StyleClasses.CARD_WIDTH.E;
-        } else if (width <= MaxSize.F) {
-            width_class = StyleClasses.CARD_WIDTH.F;
-        } else if (width <= MaxSize.G) {
-            width_class = StyleClasses.CARD_WIDTH.G;
-        } else {
-            width_class = StyleClasses.CARD_WIDTH.H;
-        }
-
-        if (height <= MaxSize.A) {
-            height_class = StyleClasses.CARD_HEIGHT.A;
-        } else if (height <= MaxSize.B) {
-            height_class = StyleClasses.CARD_HEIGHT.B;
-        } else if (height <= MaxSize.C) {
-            height_class = StyleClasses.CARD_HEIGHT.C;
-        } else if (height <= MaxSize.D) {
-            height_class = StyleClasses.CARD_HEIGHT.D;
-        } else {
-            height_class = StyleClasses.CARD_HEIGHT.E;
-        }
+        let height_class = HEIGHT_STYLE_CLASSES['E'];
+        ['A', 'B', 'C', 'D'].reverse().forEach((name) => {
+            if (height <= MaxSize[name])
+                height_class = HEIGHT_STYLE_CLASSES[name];
+        });
 
         let context = this.get_style_context();
         if (typeof width_class !== undefined && !context.has_class(width_class)) {
-            Object.keys(StyleClasses.CARD_WIDTH).forEach(name => context.remove_class(StyleClasses.CARD_WIDTH[name]));
+            Object.keys(WIDTH_STYLE_CLASSES).forEach(klass => context.remove_class(klass));
             context.add_class(width_class);
         }
 
         if (typeof width_class !== undefined && !context.has_class(height_class)) {
-            Object.keys(StyleClasses.CARD_HEIGHT).forEach(name => context.remove_class(StyleClasses.CARD_HEIGHT[name]));
+            Object.keys(HEIGHT_STYLE_CLASSES).forEach(klass => context.remove_class(klass));
             context.add_class(height_class);
         }
     },
@@ -485,7 +495,7 @@ const Card = new Lang.Interface({
         }
 
         let context = this.get_style_context();
-        context.add_class(StyleClasses.INVISIBLE);
+        context.add_class('invisible');
         // FIXME: for some reason even if initial opacity = 0 in css, the
         // opacity will start at 1. Triggering a 'notify' on opacity seems to
         // get the actual initial opacity value in css to be respected
@@ -495,11 +505,11 @@ const Card = new Lang.Interface({
         this.sensitive = false;
         Mainloop.timeout_add(this.FADE_IN_TIME_MS, () => {
             this.sensitive = true;
-            context.remove_class(StyleClasses.INVISIBLE);
-            context.remove_class(StyleClasses.FADE_IN);
+            context.remove_class('invisible');
+            context.remove_class('fade-in');
             return GLib.SOURCE_REMOVE;
         });
         this.show();
-        context.add_class(StyleClasses.FADE_IN);
+        context.add_class('fade-in');
     },
 });

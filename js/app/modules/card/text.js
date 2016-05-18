@@ -6,7 +6,6 @@ const Gtk = imports.gi.Gtk;
 
 const Card = imports.app.interfaces.card;
 const Module = imports.app.interfaces.module;
-const StyleClasses = imports.app.styleClasses;
 const Utils = imports.app.utils;
 
 /**
@@ -53,7 +52,7 @@ const Text = new Module.Class({
         }
 
         if (this.highlighted) {
-            this.get_style_context().add_class(StyleClasses.HIGHLIGHTED);
+            this.get_style_context().add_class('highlighted');
         }
 
         Utils.set_hand_cursor_on_widget(this);

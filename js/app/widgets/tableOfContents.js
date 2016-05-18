@@ -9,7 +9,6 @@ const Mainloop = imports.mainloop;
 const Pango = imports.gi.Pango;
 
 const Knowledge = imports.app.knowledge;
-const StyleClasses = imports.app.styleClasses;
 const Utils = imports.app.utils;
 
 /**
@@ -178,7 +177,7 @@ const TableOfContents = new Knowledge.Class({
 
         this.add(this._up_arrow_align);
         this.add(this._down_arrow_align);
-        this.get_style_context().add_class(StyleClasses.TOC);
+        this.get_style_context().add_class('toc');
         this.get_style_context().add_class(Gtk.STYLE_CLASS_VIEW);
     },
 
@@ -241,9 +240,9 @@ const TableOfContents = new Knowledge.Class({
             return;
         this._collapsed = v;
         if (this._collapsed) {
-            this.get_style_context().add_class(StyleClasses.COLLAPSED);
+            this.get_style_context().add_class('collapsed');
         } else {
-            this.get_style_context().remove_class(StyleClasses.COLLAPSED);
+            this.get_style_context().remove_class('collapsed');
         }
         this._collapse_sections();
         this.notify('collapsed');
@@ -326,7 +325,7 @@ const TableOfContents = new Knowledge.Class({
             image: image,
             halign: Gtk.Align.CENTER
         });
-        arrow.get_style_context().add_class(StyleClasses.TOC_ARROW);
+        arrow.get_style_context().add_class('toc-arrow');
         return arrow;
     },
 
@@ -414,7 +413,7 @@ const SectionButton = new Knowledge.Class({
 
     _init: function (section_title, section_index, params) {
         this.parent(params);
-        this.get_style_context().add_class(StyleClasses.TOC_ENTRY);
+        this.get_style_context().add_class('toc-entry');
         section_title = section_title.toUpperCase();
         this.index = section_index;
 
@@ -425,7 +424,7 @@ const SectionButton = new Knowledge.Class({
             xalign: 0,
             no_show_all: true
         });
-        this.title_label.get_style_context().add_class(StyleClasses.TOC_ENTRY_TITLE);
+        this.title_label.get_style_context().add_class('toc-entry-title');
         this._title_bold = new Gtk.Label({
             label: "<b>" + GLib.markup_escape_text(section_title, -1) + "</b>",
             use_markup: true,
@@ -443,7 +442,7 @@ const SectionButton = new Knowledge.Class({
         this.index_label = new Gtk.Label({
             label: (section_index + 1).toString()
         });
-        this.index_label.get_style_context().add_class(StyleClasses.TOC_ENTRY_INDEX);
+        this.index_label.get_style_context().add_class('toc-entry-index');
 
         let box = new Gtk.Box({
             orientation: Gtk.Orientation.HORIZONTAL

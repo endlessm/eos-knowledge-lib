@@ -6,7 +6,6 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 
 const ProgressLabel = imports.app.widgets.progressLabel;
-const StyleClasses = imports.app.styleClasses;
 const Utils = imports.tests.utils;
 
 let win = new Gtk.Window();
@@ -29,9 +28,9 @@ spinner1.bind_property('value', label, 'current-page', flags);
 spinner2.bind_property('value', label, 'total-pages', flags);
 label.connect('notify', function () {
     if (label.current_page === label.total_pages)
-        grid.get_style_context().add_class(StyleClasses.READER_DONE_PAGE);
+        grid.get_style_context().add_class('back-cover');
     else
-        grid.get_style_context().remove_class(StyleClasses.READER_DONE_PAGE);
+        grid.get_style_context().remove_class('back-cover');
 });
 win.connect('destroy', Gtk.main_quit);
 

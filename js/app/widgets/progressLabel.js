@@ -6,7 +6,6 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 
 const Knowledge = imports.app.knowledge;
-const StyleClasses = imports.app.styleClasses;
 
 String.prototype.format = Format.format;
 
@@ -53,7 +52,7 @@ const ProgressLabel = new Knowledge.Class({
         props.use_markup = true;
         this.parent(props);
 
-        this.get_style_context().add_class(StyleClasses.READER_PROGRESS_LABEL);
+        this.get_style_context().add_class('progress-label');
     },
 
     get current_page() {

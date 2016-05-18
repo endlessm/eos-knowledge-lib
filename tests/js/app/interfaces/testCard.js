@@ -18,7 +18,6 @@ const Minimal = imports.tests.minimal;
 const MockEngine = imports.tests.mockEngine;
 const SetMap = imports.app.setMap;
 const SetObjectModel = imports.search.setObjectModel;
-const StyleClasses = imports.app.styleClasses;
 
 Gtk.init(null);
 
@@ -57,12 +56,12 @@ describe('Card interface', function () {
     it('adds the "invisible" and "fade-in" style classes while fading', function (done) {
         card.FADE_IN_TIME_MS = 10;
         card.fade_in();
-        expect(card).toHaveCssClass(StyleClasses.INVISIBLE);
-        expect(card).toHaveCssClass(StyleClasses.FADE_IN);
+        expect(card).toHaveCssClass('invisible');
+        expect(card).toHaveCssClass('fade-in');
         Utils.update_gui();
         Mainloop.timeout_add(25, () => {
-            expect(card).not.toHaveCssClass(StyleClasses.INVISIBLE);
-            expect(card).not.toHaveCssClass(StyleClasses.FADE_IN);
+            expect(card).not.toHaveCssClass('invisible');
+            expect(card).not.toHaveCssClass('fade-in');
             done();
             return GLib.SOURCE_REMOVE;
         });
@@ -197,11 +196,11 @@ describe('Card interface', function () {
             this.win.destroy();
         });
 
-        Object.keys(StyleClasses.CARD_WIDTH).forEach(width_class => {
-            Object.keys(StyleClasses.CARD_HEIGHT).forEach(height_class => {
+        Object.keys(Card.WIDTH_STYLE_CLASSES).forEach(width_class => {
+            Object.keys(Card.HEIGHT_STYLE_CLASSES).forEach(height_class => {
                 let width = in_between_class_dimensions[width_class];
                 let height = in_between_class_dimensions[height_class];
-                test_style_classes_for_height_and_width(StyleClasses.CARD_WIDTH[width_class], StyleClasses.CARD_HEIGHT[height_class], height, width);
+                test_style_classes_for_height_and_width(Card.WIDTH_STYLE_CLASSES[width_class], Card.HEIGHT_STYLE_CLASSES[height_class], height, width);
             });
         });
     });

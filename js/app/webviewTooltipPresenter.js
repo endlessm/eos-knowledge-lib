@@ -9,7 +9,6 @@ const Gtk = imports.gi.Gtk;
 
 const Compat = imports.app.compat.compat;
 const Knowledge = imports.app.knowledge;
-const StyleClasses = imports.app.styleClasses;
 const Utils = imports.app.utils;
 
 const DBUS_TOOLTIP_INTERFACE = '\
@@ -173,7 +172,7 @@ const WebviewTooltipPresenter = new Knowledge.Class({
             }),
             modal: false,
         });
-        this._link_tooltip.get_style_context().add_class(StyleClasses.READER_WEBVIEW_TOOLTIP);
+        this._link_tooltip.get_style_context().add_class('webview-tooltip');
         if (!this.emit('show-tooltip', this._link_tooltip, uri))
             this._remove_link_tooltip();
     },

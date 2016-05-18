@@ -9,7 +9,6 @@ const CssClassMatcher = imports.tests.CssClassMatcher;
 const HamburgerBasement = imports.app.modules.layout.hamburgerBasement;
 const MockFactory = imports.tests.mockFactory;
 const MockPlaceholder = imports.tests.mockPlaceholder;
-const StyleClasses = imports.app.styleClasses;
 const WidgetDescendantMatcher = imports.tests.WidgetDescendantMatcher;
 
 Gtk.init(null);
@@ -59,7 +58,7 @@ describe('HamburgerBasementTemplate module', function () {
         });
 
         it('has tab button class', function () {
-            expect(home_page).toHaveDescendantWithCssClass(StyleClasses.TAB_BUTTON);
+            expect(home_page).toHaveDescendantWithCssClass('tab-button');
         });
     });
 });

@@ -24,7 +24,6 @@ const MediaObjectModel = imports.search.mediaObjectModel;
 const Module = imports.app.interfaces.module;
 const QueryObject = imports.search.queryObject;
 const SidebarTemplate = imports.app.modules.layout.sidebar;
-const StyleClasses = imports.app.styleClasses;
 const StyleKnobGenerator = imports.app.compat.styleKnobGenerator;
 const AisleUserSettingsModel = imports.app.aisleUserSettingsModel;
 const Utils = imports.app.utils;
@@ -773,7 +772,7 @@ const Aisle = new Module.Class({
             justify: Gtk.Justification.CENTER,
             use_markup: true,
         });
-        err_label.get_style_context().add_class(StyleClasses.READER_ERROR_PAGE);
+        err_label.get_style_context().add_class('error-page');
         err_label.show();
         return err_label;
     },

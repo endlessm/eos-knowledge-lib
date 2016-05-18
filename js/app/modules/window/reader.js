@@ -13,7 +13,6 @@ const Gtk = imports.gi.Gtk;
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
 const Module = imports.app.interfaces.module;
-const StyleClasses = imports.app.styleClasses;
 const Utils = imports.app.utils;
 
 /**
@@ -110,7 +109,7 @@ const Reader = new Module.Class({
         this._search_page = this.create_submodule('search-page');
         this._standalone_page = this.create_submodule('standalone-page');
         this._archive_page = this.create_submodule('archive-page');
-        this._search_page.get_style_context().add_class(StyleClasses.READER_SEARCH_RESULTS_PAGE);
+        this._search_page.get_style_context().add_class('search-results-page');
 
         let dispatcher = Dispatcher.get_default();
         let navigation = this.create_submodule('navigation');
@@ -232,10 +231,10 @@ const Reader = new Module.Class({
 
         this._stack.connect('notify::transition-running', () => {
             if (this._stack.transition_running) {
-                this.get_style_context().add_class(StyleClasses.ANIMATING);
+                this.get_style_context().add_class('animating');
                 Utils.squash_all_window_content_updates_heavy_handedly(this);
             } else {
-                this.get_style_context().remove_class(StyleClasses.ANIMATING);
+                this.get_style_context().remove_class('animating');
                 Utils.unsquash_all_window_content_updates_heavy_handedly(this);
             }
         });
@@ -420,11 +419,11 @@ const Reader = new Module.Class({
 
         let context = this.get_style_context();
         if (alloc.width <= this.WINDOW_WIDTH_THRESHOLD || alloc.height <= this.WINDOW_HEIGHT_THRESHOLD) {
-            context.remove_class(StyleClasses.WINDOW_LARGE);
-            context.add_class(StyleClasses.WINDOW_SMALL);
+            context.remove_class('window-large');
+            context.add_class('window-small');
         } else {
-            context.remove_class(StyleClasses.WINDOW_SMALL);
-            context.add_class(StyleClasses.WINDOW_LARGE);
+            context.remove_class('window-small');
+            context.add_class('window-large');
         }
     }
 });

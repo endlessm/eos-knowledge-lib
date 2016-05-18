@@ -7,7 +7,6 @@ const LegacyPolaroid = imports.app.modules.card.legacyPolaroid;
 const Compliance = imports.tests.compliance;
 const ContentObjectModel = imports.search.contentObjectModel;
 const CssClassMatcher = imports.tests.CssClassMatcher;
-const StyleClasses = imports.app.styleClasses;
 
 Gtk.init(null);
 
@@ -20,7 +19,7 @@ describe('Legacy Polaroid Card', function () {
         let card = new LegacyPolaroid.LegacyPolaroid({
             model: new ContentObjectModel.ContentObjectModel(),
         });
-        expect(card).toHaveCssClass(StyleClasses.LEGACY_POLAROID_CARD);
+        expect(card).toHaveCssClass('legacy-polaroid-card');
     });
 
     it('has a fixed size', function () {

@@ -1,7 +1,6 @@
 const Gtk = imports.gi.Gtk;
 
 const CssClassMatcher = imports.tests.CssClassMatcher;
-const StyleClasses = imports.app.styleClasses;
 const TableOfContents = imports.app.widgets.tableOfContents;
 
 Gtk.init(null);
@@ -56,19 +55,19 @@ describe('Table of contents widget', function () {
 
     describe('Style class of table of contents', function () {
         it('has toc class', function () {
-            expect(toc).toHaveCssClass(StyleClasses.TOC);
+            expect(toc).toHaveCssClass('toc');
         });
         it('has gtk view class', function () {
             expect(toc).toHaveCssClass(Gtk.STYLE_CLASS_VIEW);
         });
         it('has collapsed class when collapsed property true', function () {
             toc.collapsed = true;
-            expect(toc).toHaveCssClass(StyleClasses.COLLAPSED);
+            expect(toc).toHaveCssClass('collapsed');
             toc.collapsed = false;
-            expect(toc).not.toHaveCssClass(StyleClasses.COLLAPSED);
+            expect(toc).not.toHaveCssClass('collapsed');
         });
         it('has a descendant with toc entry class', function () {
-            expect(toc).toHaveDescendantWithCssClass(StyleClasses.TOC_ENTRY);
+            expect(toc).toHaveDescendantWithCssClass('toc-entry');
         });
     });
 });

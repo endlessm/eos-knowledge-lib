@@ -3,7 +3,6 @@ const EvinceView = imports.gi.EvinceView;
 const Gtk = imports.gi.Gtk;
 
 const Knowledge = imports.app.knowledge;
-const StyleClasses = imports.app.styleClasses;
 
 const _MAX_PDF_VIEW_WIDTH = 1300;
 
@@ -27,7 +26,7 @@ const PDFView = new Knowledge.Class({
         props.halign = Gtk.Align.CENTER;
         this.parent(props);
 
-        this.get_style_context().add_class(StyleClasses.PDF_VIEW);
+        this.get_style_context().add_class('pdf-view');
     },
 
     /**

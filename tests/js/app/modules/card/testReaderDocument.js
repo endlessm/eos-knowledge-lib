@@ -8,7 +8,6 @@ const ArticleObjectModel = imports.search.articleObjectModel;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const MockWidgets = imports.tests.mockWidgets;
 const ReaderDocument = imports.app.modules.card.readerDocument;
-const StyleClasses = imports.app.styleClasses;
 
 Gtk.init(null);
 
@@ -65,16 +64,16 @@ describe('Reader Document Card', function () {
 
     describe('Style class of document card', function () {
         it('has article card class', function () {
-            expect(card).toHaveCssClass(StyleClasses.CARD);
+            expect(card).toHaveCssClass('card');
         });
         it('has a descendant with title class', function () {
-            expect(card).toHaveDescendantWithCssClass(StyleClasses.CARD_TITLE);
+            expect(card).toHaveDescendantWithCssClass('title');
         });
         it('has a descendant with attribution class', function () {
-            expect(card).toHaveDescendantWithCssClass(StyleClasses.READER_ARTICLE_PAGE_ATTRIBUTION);
+            expect(card).toHaveDescendantWithCssClass('attribution');
         });
         it('has a descendant with decorative bar class', function () {
-            expect(card).toHaveDescendantWithCssClass(StyleClasses.READER_DECORATIVE_BAR);
+            expect(card).toHaveDescendantWithCssClass('decorative-bar');
         });
     });
 

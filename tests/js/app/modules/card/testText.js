@@ -10,7 +10,6 @@ const CssClassMatcher = imports.tests.CssClassMatcher;
 const Text = imports.app.modules.card.text;
 const SetMap = imports.app.setMap;
 const SetObjectModel = imports.search.setObjectModel;
-const StyleClasses = imports.app.styleClasses;
 
 Gtk.init(null);
 
@@ -35,13 +34,13 @@ describe('Text Card', function () {
     });
 
     it('has the correct style class', function () {
-        expect(card).toHaveCssClass(StyleClasses.TEXT_CARD);
+        expect(card).toHaveCssClass('text-card');
     });
 
     it('has label style classes', function () {
-        expect(card).toHaveDescendantWithCssClass(StyleClasses.CARD_TITLE);
-        expect(card).toHaveDescendantWithCssClass(StyleClasses.CARD_SYNOPSIS);
-        expect(card).toHaveDescendantWithCssClass(StyleClasses.CARD_CONTEXT);
+        expect(card).toHaveDescendantWithCssClass('title');
+        expect(card).toHaveDescendantWithCssClass('card-synopsis');
+        expect(card).toHaveDescendantWithCssClass('card-context');
     });
 
     it('has labels that understand Pango markup', function () {

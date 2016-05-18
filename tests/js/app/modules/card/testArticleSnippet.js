@@ -7,7 +7,6 @@ const ArticleObjectModel = imports.search.articleObjectModel;
 const ArticleSnippet = imports.app.modules.card.articleSnippet;
 const ContentObjectModel = imports.search.contentObjectModel;
 const CssClassMatcher = imports.tests.CssClassMatcher;
-const StyleClasses = imports.app.styleClasses;
 
 Gtk.init(null);
 
@@ -25,9 +24,9 @@ describe('Article snippet', function () {
     it('constructs', function () {});
 
     it('has the correct style classes', function () {
-        expect(snippet).toHaveCssClass(StyleClasses.READER_ARTICLE_SNIPPET);
-        expect(snippet).toHaveDescendantWithCssClass(StyleClasses.READER_TITLE);
-        expect(snippet).toHaveDescendantWithCssClass(StyleClasses.READER_SYNOPSIS);
+        expect(snippet).toHaveCssClass('article-snippet');
+        expect(snippet).toHaveDescendantWithCssClass('title');
+        expect(snippet).toHaveDescendantWithCssClass('synopsis');
     });
 
     it('sets style variant classes to variants [0, 2]', function () {

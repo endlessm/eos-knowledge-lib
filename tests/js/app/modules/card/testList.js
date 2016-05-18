@@ -7,7 +7,6 @@ const Compliance = imports.tests.compliance;
 const ContentObjectModel = imports.search.contentObjectModel;
 const CssClassMatcher = imports.tests.CssClassMatcher;
 const List = imports.app.modules.card.list;
-const StyleClasses = imports.app.styleClasses;
 
 Gtk.init(null);
 
@@ -20,7 +19,7 @@ describe('Search result card widget', function () {
         let card = new List.List({
             model: new ContentObjectModel.ContentObjectModel(),
         });
-        expect(card).toHaveCssClass(StyleClasses.LIST_CARD);
+        expect(card).toHaveCssClass('list-card');
     });
 
     it('has labels that understand Pango markup', function () {

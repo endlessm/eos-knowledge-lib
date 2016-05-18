@@ -7,7 +7,6 @@ const Gtk = imports.gi.Gtk;
 
 const Module = imports.app.interfaces.module;
 const SlidingPanelOverlay = imports.app.widgets.slidingPanelOverlay;
-const StyleClasses = imports.app.styleClasses;
 
 /**
  * Class: TopMenu
@@ -59,7 +58,7 @@ const TopMenu = new Module.Class({
             halign: Gtk.Align.FILL,
             visible: true,
         });
-        top_menu_container.get_style_context().add_class(StyleClasses.TOP_MENU);
+        top_menu_container.get_style_context().add_class('top-menu');
         top_menu_container.add(top_menu);
 
         this._menu_panel = this.add_panel_widget(top_menu_container, Gtk.PositionType.TOP);

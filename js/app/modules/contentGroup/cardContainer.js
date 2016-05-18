@@ -12,7 +12,6 @@ const Actions = imports.app.actions;
 const Config = imports.app.config;
 const Dispatcher = imports.app.dispatcher;
 const Module = imports.app.interfaces.module;
-const StyleClasses = imports.app.styleClasses;
 const ThemeableImage = imports.app.widgets.themeableImage;
 const Utils = imports.app.utils;
 
@@ -87,7 +86,7 @@ const CardContainer = new Module.Class({
             halign: Gtk.Align.START,
         });
 
-        this.title_button.get_style_context().add_class(StyleClasses.CARD_TITLE);
+        this.title_button.get_style_context().add_class('title');
 
         this.parent(props);
 

@@ -6,7 +6,6 @@ Utils.register_gresource();
 const LegacyPost = imports.app.modules.card.legacyPost;
 const ContentObjectModel = imports.search.contentObjectModel;
 const CssClassMatcher = imports.tests.CssClassMatcher;
-const StyleClasses = imports.app.styleClasses;
 
 Gtk.init(null);
 
@@ -23,7 +22,7 @@ describe('Legacy Post Card', function () {
 
     describe('Style class of card', function () {
         it('has card class', function () {
-            expect(card).toHaveCssClass(StyleClasses.LEGACY_POST_CARD);
+            expect(card).toHaveCssClass('legacy-post-card');
         });
     });
 
