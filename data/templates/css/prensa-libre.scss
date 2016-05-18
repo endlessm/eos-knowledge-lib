@@ -94,7 +94,7 @@ p[data-soma-widget="Subtitle"] {
     color: $gray;
 }
 
-a {
+a[href] {
     color: $red;
     text-decoration: none;
 }

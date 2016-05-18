@@ -2,6 +2,7 @@ const Endless = imports.gi.Endless;
 const Gettext = imports.gettext;
 const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
+const Engine = imports.search.engine;
 
 const Config = imports.app.config;
 const Knowledge = imports.app.knowledge;
@@ -137,7 +138,7 @@ const ArticleHTMLRenderer = new Knowledge.Class({
         let javascript_files = [
             'content-fixes.js',
             'hide-broken-images.js',
-            'no-link-remover.js',
+            'crosslink.js',
         ];
 
         if (this.enable_scroll_manager)
@@ -244,7 +245,7 @@ const ArticleHTMLRenderer = new Knowledge.Class({
         return ['jquery-min.js', 'clipboard-manager.js'].concat(this._custom_javascript_files);
     },
 
-    _render_wrapper: function (content) {
+    _render_wrapper: function (content, model) {
         let css_files = this._get_wrapper_css_files();
         let js_files = this._get_wrapper_js_files();
 
@@ -253,6 +254,7 @@ const ArticleHTMLRenderer = new Knowledge.Class({
         return Mustache.render(template, {
             'css-files': css_files,
             'javascript-files': js_files,
+            'link-array': this._find_active_links(model),
             'copy-button-text': _("Copy"),
             'content': content,
         });
@@ -264,7 +266,13 @@ const ArticleHTMLRenderer = new Knowledge.Class({
      */
     render: function (model) {
         let content = this._render_content(model);
-        return this._render_wrapper(content);
+        return this._render_wrapper(content, model);
+    },
+
+    _find_active_links: function (model) {
+        let engine = Engine.get_default();
+        let links = model.outgoing_links.map((link) => engine.test_link(link));
+        return JSON.stringify(links);
     },
 });
 

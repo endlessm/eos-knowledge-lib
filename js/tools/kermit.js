@@ -55,15 +55,15 @@ function grep (path, pattern) {
         let id = record.get_hex_name();
         let metadata_bytes = record.metadata.load_contents();
         let offset = record.data.get_offset();
+        let content_type = record.data.get_content_type();
         if (!metadata_bytes) {
-            print_result(id, "Unknown", "Unknown - no metadata", offset);
+            print_result(id, content_type, "Unknown - no metadata", offset);
             return;
         }
         let metadata_text = metadata_bytes.get_data().toString();
 
         if (metadata_text.match(regex) !== null) {
             let metadata = JSON.parse(metadata_text);
-            let content_type = metadata.contentType;
             let title = metadata.title;
             print_result(id, content_type, title, offset);
         }

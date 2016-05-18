@@ -4,6 +4,9 @@
         {{#css-files}}
         <link rel="stylesheet" type="text/css" href="resource:///com/endlessm/knowledge/data/templates/css/{{{.}}}"/>
         {{/css-files}}
+        <script>
+            window.LINKS = {{{link-array}}}{{{/link-array}}};
+        </script>
     </head>
     <body>
         <div id="copy-button">{{copy-button-text}}</div>

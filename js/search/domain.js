@@ -15,6 +15,10 @@ const QueryObject = imports.search.queryObject;
 const SetObjectModel = imports.search.setObjectModel;
 const Utils = imports.search.utils;
 
+// This hash is derived from sha1('link-table'), and for now is the hardcoded
+// location of link tables for all shards.
+const LINK_TABLE_ID = '4dba9091495e8f277893e0d400e9e092f9f6f551';
+
 /**
  * Class: Domain
  */
@@ -77,6 +81,17 @@ const Domain = new Lang.Class({
     },
 
     load_finish: function (task) {
+        throw new Error('Should be overridden in subclasses');
+    },
+
+    /**
+     * Function: test_link
+     *
+     * Attempts to determine if the given link corresponds to content within
+     * this domain. Returns an EKN URI to that content if so, and false
+     * otherwise.
+     */
+    test_link: function (link) {
         throw new Error('Should be overridden in subclasses');
     },
 
@@ -197,117 +212,9 @@ const Domain = new Lang.Class({
     },
 });
 
-const DomainV1 = new Lang.Class({
-    Name: 'DomainV1',
-    Extends: Domain,
-
-    _DB_DIR: 'db',
-    _MEDIA_DIR: 'media',
-
-    _get_v1_model_from_string: function (string) {
-        let json_ld = JSON.parse(string);
-        let props = {
-            ekn_version: 1,
-        };
-        if (json_ld.hasOwnProperty('articleBody')) {
-            // Legacy databases store their HTML within the xapian databases
-            // themselves and don't store a contentType property
-            props.content_type = 'text/html';
-            props.get_content_stream = () => {
-                return Utils.string_to_stream(json_ld.articleBody);
-            };
-        } else if (json_ld.hasOwnProperty('contentURL')) {
-            let content_path = this._get_content_path();
-            let model_path = GLib.build_filenamev([content_path, this._MEDIA_DIR, json_ld.contentURL]);
-            // We don't care if the guess was certain or not, since the
-            // content_type is a required parameter
-            let [guessed_mimetype, __] = Gio.content_type_guess(model_path, null);
-            props.content_type = guessed_mimetype;
-            props.get_content_stream = () => {
-                let file = Gio.File.new_for_path(model_path);
-                return file.read(null);
-            };
-        }
-        return this._get_model_from_json_ld(props, json_ld);
-    },
-
-    load: function (cancellable, callback) {
-        let task = new AsyncTask.AsyncTask(this, cancellable, callback);
-        // Nothing to do.
-        task.return_value(true);
-        return task;
-    },
-
-    load_finish: function (task) {
-        return task.finish();
-    },
-
-    get_domain_query_params: function () {
-        let params = {};
-        params.path = GLib.build_filenamev([this._get_content_path(), this._DB_DIR]);
-        return params;
-    },
-
-    _handle_redirect: function (task, model, cancellable) {
-        // If the requested model should redirect to another, then fetch
-        // that model instead.
-        if (model.redirects_to.length > 0) {
-            this.get_object_by_id(model.redirects_to, cancellable, task.catch_callback_errors((engine, redirect_task) => {
-                task.return_value(this.get_object_by_id_finish(redirect_task));
-            }));
-        } else {
-            task.return_value(model);
-        }
-    },
-
-    get_object_by_id: function (id, cancellable, callback) {
-        let task = new AsyncTask.AsyncTask(this, cancellable, callback);
-        this.load(cancellable, task.catch_callback_errors((source, load_task) => {
-            this.load_finish(load_task);
-
-            let query_obj = new QueryObject.QueryObject({
-                limit: 1,
-                ids: [id],
-                domain: this._domain,
-            });
-            let domain_params = this.get_domain_query_params();
-            this._xapian_bridge.query(query_obj, domain_params, cancellable, task.catch_callback_errors((bridge, query_task) => {
-                let results = this._xapian_bridge.query_finish(query_task).results;
-                let model = this._get_v1_model_from_string(results[0]);
-                this._handle_redirect(task, model, cancellable);
-            }));
-        }));
-        return task;
-    },
-
-    get_object_by_id_finish: function (task) {
-        return task.finish();
-    },
-
-    resolve_xapian_result: function (result, cancellable, callback) {
-        let task = new AsyncTask.AsyncTask(this, cancellable, callback);
-
-        // Old bundles contain all the jsonld in xapian, and
-        // serve it in the results. If its a redirect we need to
-        // resolve it, otherwise we can resolve immediately.
-        let model = this._get_v1_model_from_string(result);
-        if (model.redirects_to.length > 0) {
-            let id = model.redirects_to;
-            this.get_object_by_id(id, cancellable, task.catch_callback_errors(() => {
-                task.return_value(this.get_object_by_id_finish());
-            }));
-        } else {
-            task.return_value(model);
-        }
-
-        return task;
-    },
-
-    resolve_xapian_result_finish: function (task) {
-        return task.finish();
-    },
-});
-
+// XXX Note that DomainV2 apps are no longer going to be generated in
+// production, but we retain compatibility with it for the sake of
+// developer-made test apps.
 const DomainV2 = new Lang.Class({
     Name: 'DomainV2',
     Extends: Domain,
@@ -330,6 +237,19 @@ const DomainV2 = new Lang.Class({
         return this._shard_file;
     },
 
+    // We don't resolve links using the usual load() pattern because this
+    // method needs to be synchronous, but we're guaranteed that the shard is
+    // initialized by the time this is invoked by the HTML renderer.
+    _setup_link_table: function () {
+        // Ignore if we've already setup our table
+        if (this._link_table !== undefined)
+            return;
+
+        let table_record = this._shard_file.find_record_by_hex_name(LINK_TABLE_ID);
+        if (table_record)
+            this._link_table = table_record.data.load_as_dictionary();
+    },
+
     load: function (cancellable, callback) {
         let task = new AsyncTask.AsyncTask(this, cancellable, callback);
         let shard_file = this._get_shard_file();
@@ -337,6 +257,7 @@ const DomainV2 = new Lang.Class({
         // will spoil the object for future use.
         shard_file.init_async(0, null, task.catch_callback_errors((shard_file, result) => {
             shard_file.init_finish(result);
+            this._setup_link_table();
             task.return_value(true);
         }));
         return task;
@@ -344,6 +265,14 @@ const DomainV2 = new Lang.Class({
 
     load_finish: function (task) {
         return task.finish();
+    },
+
+    test_link: function (link) {
+        if (this._link_table === undefined)
+            return false;
+        let ekn_id = this._link_table.lookup_key(link);
+        if (!ekn_id) return false;
+        return ekn_id;
     },
 
     get_domain_query_params: function () {
@@ -530,17 +459,58 @@ const DomainV3 = new Lang.Class({
         return this._shards;
     },
 
+    test_link: function (link) {
+        for (let table of this._link_tables) {
+            let result = table.lookup_key(link);
+            if (result !== null)
+                return result;
+        }
+        return false;
+    },
+
+    // We don't resolve links using the usual load() pattern because this
+    // method needs to be synchronous, but we're guaranteed that all shards are
+    // initialized by the time this is invoked by the HTML renderer.
+    _setup_link_tables: function () {
+        // Ignore if we've already setup our tables
+        if (this._link_tables !== undefined)
+            return;
+
+        let tables = this._shards.map((shard) => {
+            let table_record = shard.find_record_by_hex_name(LINK_TABLE_ID);
+            if (table_record) {
+                return table_record.data.load_as_dictionary();
+            } else {
+                printerr("Couldn't find link table for shard!");
+                return null;
+            }
+        });
+
+        // Filter out invalid tables
+        this._link_tables = tables.filter((t) => t);
+    },
+
     load: function (cancellable, callback) {
         this._load_shards(cancellable);
 
-        return AsyncTask.all(this, (add_task) => {
+        let task = new AsyncTask.AsyncTask(this, cancellable, callback);
+        AsyncTask.all(this, (add_task) => {
             this._shards.forEach((shard) => {
                 // Don't allow init_async() to be cancelled; otherwise,
                 // cancellation will spoil the object for future use.
                 add_task((cancellable, callback) => shard.init_async(0, null, callback),
                          (result) => shard.init_finish(result));
             });
-        }, cancellable, callback);
+        }, cancellable, task.catch_callback_errors((source, resolve_task) => {
+            AsyncTask.all_finish(resolve_task);
+
+            // Fetch the link table dictionaries from each shard for link
+            // lookups
+            this._setup_link_tables();
+
+            task.return_value(true);
+        }));
+        return task;
     },
 
     load_finish: function (task) {
@@ -616,7 +586,6 @@ const DomainV3 = new Lang.Class({
 function get_domain_impl (domain, xapian_bridge) {
     let ekn_version = Utils.get_ekn_version_for_domain(domain);
     let impls = {
-        '1': DomainV1,
         '2': DomainV2,
         '3': DomainV3,
     };

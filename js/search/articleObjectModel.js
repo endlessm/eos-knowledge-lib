@@ -106,8 +106,17 @@ const ArticleObjectModel = new Lang.Class({
                 value: props.authors ? props.authors.slice(0) : [],
                 writable: false,
             },
+            /**
+             * Property: outgoing-links
+             * A list of the outbound links present in this article.
+             */
+            'outgoing_links': {
+                value: props.outgoing_links ? props.outgoing_links.slice(0) : [],
+                writable: false,
+            },
         });
         delete props.authors;
+        delete props.outgoing_links;
 
         this.parent(props, json_ld);
 
@@ -118,6 +127,9 @@ const ArticleObjectModel = new Lang.Class({
         // Marshal properties specific to ArticleObjectModel
         if (json_ld.hasOwnProperty('authors'))
             props.authors = json_ld.authors;
+
+        if (json_ld.hasOwnProperty('outgoingLinks'))
+            props.outgoing_links = json_ld.outgoingLinks;
 
         if (json_ld.hasOwnProperty('wordCount'))
             props.word_count = parseInt(json_ld.wordCount);
