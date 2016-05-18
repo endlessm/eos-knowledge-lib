@@ -222,6 +222,7 @@ const Reader = new Module.Class({
         });
         button_box.add(this._home_button);
         button_box.add(this._history_buttons);
+        button_box.show_all();
 
         this.page_manager.add(lightbox, {
             left_topbar_widget: button_box,
