@@ -416,7 +416,7 @@ javascript_tests = \
 	$(NULL)
 yaml_tests = \
 	tests/autobahn/basic.yaml \
-	tests/autobahn/encyclopedia.yaml \
+	tests/autobahn/fullApp.yaml \
 	$(NULL)
 test_content = \
 	tests/test-content/agot.svg \
