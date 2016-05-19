@@ -140,14 +140,18 @@ const App = new Module.Class({
             this._home_page.get_style_context().add_class('home-page-b');
             if (this._section_page)
                 this._section_page.get_style_context().add_class('section-page-b');
-            this._search_page.get_style_context().add_class('search-page-b');
-            this._article_page.get_style_context().add_class('article-page-b');
+            if (this._search_page)
+                this._search_page.get_style_context().add_class('search-page-b');
+            if (this._article_page)
+                this._article_page.get_style_context().add_class('article-page-b');
         } else {
             this._home_page.get_style_context().add_class('home-page-a');
             if (this._section_page)
                 this._section_page.get_style_context().add_class('section-page-a');
-            this._search_page.get_style_context().add_class('search-page-a');
-            this._article_page.get_style_context().add_class('article-page-a');
+            if (this._search_page)
+                this._search_page.get_style_context().add_class('search-page-a');
+            if (this._article_page)
+                this._article_page.get_style_context().add_class('article-page-a');
         }
 
         this._stack = new Gtk.Stack({
@@ -158,8 +162,10 @@ const App = new Module.Class({
         this._stack.add(this._home_page);
         if (this._section_page)
             this._stack.add(this._section_page);
-        this._stack.add(this._search_page);
-        this._stack.add(this._article_page);
+        if (this._search_page)
+            this._stack.add(this._search_page);
+        if (this._article_page)
+            this._stack.add(this._article_page);
         if (this._all_sets_page)
             this._stack.add(this._all_sets_page);
 
@@ -190,7 +196,8 @@ const App = new Module.Class({
         this._invisible_frame = new Gtk.Frame();
         this._search_stack.add(this._invisible_frame);
         this._search_box = this.create_submodule('search');
-        this._search_stack.add(this._search_box);
+        if (this._search_box)
+            this._search_stack.add(this._search_box);
         this._search_stack.show_all();
 
         let button_box = new Gtk.Box({
