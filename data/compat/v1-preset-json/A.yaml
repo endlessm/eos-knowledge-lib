@@ -5,7 +5,7 @@ defines:
 
 - &main-arrangement-slot
   arrangement:
-    shortdef: 'Arrangement.Grid(bottom-buffer: 250)'
+    type: Arrangement.Grid
     slots:
       card-type: *card
 
