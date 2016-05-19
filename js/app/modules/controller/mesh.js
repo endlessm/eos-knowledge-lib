@@ -6,7 +6,6 @@ const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
-const Gtk = imports.gi.Gtk;
 
 const Actions = imports.app.actions;
 const ArticleObjectModel = imports.search.articleObjectModel;
@@ -23,7 +22,6 @@ const TabButton = imports.app.widgets.tabButton;
 const TitleCard = imports.app.modules.card.title;
 const Utils = imports.app.utils;
 
-const CSS_RESOURCE_PATH = '/com/endlessm/knowledge/data/css/';
 const RESULTS_SIZE = 10;
 
 /**
@@ -468,16 +466,6 @@ const Mesh = new Module.Class({
                 model: item.model,
             });
         }
-    },
-
-    _load_theme: function () {
-        let theme = 'mesh';
-        if (this.template_type === 'encyclopedia')
-            theme = 'encyclopedia';
-        let provider = new Gtk.CssProvider();
-        provider.load_from_resource(CSS_RESOURCE_PATH + theme + '.css');
-        Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(),
-            provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
     },
 
     _do_search: function (query) {

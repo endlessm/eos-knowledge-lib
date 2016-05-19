@@ -62,7 +62,7 @@ defines:
 - &back-page Page.BackCover
 
 root:
-  type: Controller.Aisle
+  shortdef: 'Controller.Aisle(theme: aisle)'
   slots:
     window:
       type: Window.Reader

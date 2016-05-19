@@ -40,8 +40,6 @@ const RESULTS_SIZE = 15;
 const TOTAL_ARTICLES = 30;
 const NUM_OVERVIEW_SNIPPETS = 3;
 
-const CSS_RESOURCE_PATH = '/com/endlessm/knowledge/data/css/';
-
 // 1 week in miliseconds
 const UPDATE_INTERVAL_MS = 604800000;
 const _SEARCH_METRIC = 'a628c936-5d87-434a-a57a-015a0f223838';
@@ -129,7 +127,7 @@ const Aisle = new Module.Class({
             history_model: this.history_model,
         });
 
-        this.load_theme();
+        this._load_theme();
 
         this._webview_tooltip_presenter = new WebviewTooltipPresenter.WebviewTooltipPresenter();
 
@@ -202,13 +200,6 @@ const Aisle = new Module.Class({
 
     get current_page() {
         return this._current_page;
-    },
-
-    load_theme: function () {
-        let provider = new Gtk.CssProvider();
-        provider.load_from_resource(CSS_RESOURCE_PATH + 'aisle.css');
-        Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(),
-            provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
     },
 
     _ARTICLE_PAGE: 'article',
