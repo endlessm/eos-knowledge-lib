@@ -55,7 +55,7 @@ defines:
               card: Card.KnowledgeDocument
 
 root:
-  type: Controller.Mesh
+  shortdef: 'Controller.Mesh(theme: encyclopedia)'
   slots:
     window:
       type: Window.Encyclopedia

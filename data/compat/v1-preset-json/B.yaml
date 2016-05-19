@@ -72,7 +72,7 @@ defines:
         item: *section-items
 
 root:
-  type: Controller.Mesh
+  shortdef: 'Controller.Mesh(theme: mesh)'
   slots:
     window:
       type: Window.App
