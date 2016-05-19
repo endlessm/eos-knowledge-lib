@@ -1,0 +1,12 @@
+EknSupplementaryArticles {
+    margin: 50px 0 50px 20px;
+    padding: 0 20px 20px 0px;
+
+    & > .title {
+        font-family: $title-font;
+        font-weight: bold;
+        font-size: 40px;
+        color: $accent-light-color;
+        padding-bottom: 30px;
+    }
+}

@@ -57,6 +57,7 @@ scss_verbose_0 = @echo "  SCSS     $@";
 
 scss_toplevels = \
 	$(srcdir)/data/css/buffet.scss \
+	$(srcdir)/data/css/default.scss \
 	$(srcdir)/data/css/encyclopedia.scss \
 	$(srcdir)/data/css/mesh.scss \
 	$(srcdir)/data/css/news.scss \
@@ -69,7 +70,41 @@ scss_toplevels = \
 	$(NULL)
 scss_partials = \
 	$(srcdir)/data/css/_buffet_core.scss \
+	$(srcdir)/data/css/_colors.scss \
 	$(srcdir)/data/css/_common.scss \
+	$(srcdir)/data/css/_typography.scss \
+	$(srcdir)/data/css/modules/arrangement/_sideBySide.scss \
+	$(srcdir)/data/css/modules/banner/_app.scss \
+	$(srcdir)/data/css/modules/banner/_context.scss \
+	$(srcdir)/data/css/modules/banner/_search.scss \
+	$(srcdir)/data/css/modules/banner/_set.scss \
+	$(srcdir)/data/css/modules/card/_base.scss \
+	$(srcdir)/data/css/modules/card/_deck.scss \
+	$(srcdir)/data/css/modules/card/_knowledgeDocument.scss \
+	$(srcdir)/data/css/modules/card/_list.scss \
+	$(srcdir)/data/css/modules/card/_media.scss \
+	$(srcdir)/data/css/modules/card/_post.scss \
+	$(srcdir)/data/css/modules/card/_setPreview.scss \
+	$(srcdir)/data/css/modules/card/_text.scss \
+	$(srcdir)/data/css/modules/card/_thumb.scss \
+	$(srcdir)/data/css/modules/card/_title.scss \
+	$(srcdir)/data/css/modules/contentGroup/_cardContainer.scss \
+	$(srcdir)/data/css/modules/contentGroup/_hierarchicalSet.scss \
+	$(srcdir)/data/css/modules/contentGroup/_highlights.scss \
+	$(srcdir)/data/css/modules/contentGroup/_mediaLightbox.scss \
+	$(srcdir)/data/css/modules/contentGroup/_search.scss \
+	$(srcdir)/data/css/modules/contentGroup/_suggestedArticles.scss \
+	$(srcdir)/data/css/modules/contentGroup/_suggestedCategories.scss \
+	$(srcdir)/data/css/modules/contentGroup/_supplementaryArticles.scss \
+	$(srcdir)/data/css/modules/contentGroup/_thematic.scss \
+	$(srcdir)/data/css/modules/layout/_dynamicBackground.scss \
+	$(srcdir)/data/css/modules/layout/_infiniteScrolling.scss \
+	$(srcdir)/data/css/modules/layout/_responsiveMargins.scss \
+	$(srcdir)/data/css/modules/layout/_scrolling.scss \
+	$(srcdir)/data/css/modules/layout/_sideMenu.scss \
+	$(srcdir)/data/css/modules/layout/_topMenu.scss \
+	$(srcdir)/data/css/modules/navigation/_searchBox.scss \
+	$(srcdir)/data/css/modules/window/_app.scss \
 	$(srcdir)/data/templates/css/_eos-modal.scss \
 	$(srcdir)/data/templates/css/_eos-no-link.scss \
 	$(NULL)

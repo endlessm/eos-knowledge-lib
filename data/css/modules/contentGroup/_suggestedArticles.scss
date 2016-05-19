@@ -1,0 +1,18 @@
+EknSuggestedArticles {
+    margin: 50px 0;
+    padding-bottom: 20px;
+
+    & > .title {
+        font-family: $title-font;
+        font-weight: bold;
+        font-size: 40px;
+        color: $accent-light-color;
+        padding-bottom: 30px;
+    }
+}
+
+/* Selects the background around the suggested articles modules; cumbersome! */
+.vertical EknResponsiveMargins.supplementary-articles,
+.no-results .vertical EknResponsiveMargins {
+    background-color: $background-dark-color;
+}

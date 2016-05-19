@@ -1,0 +1,27 @@
+EknSuggestedCategories {
+    separator {
+        background-color: $black-20-color;
+        min-height: 1px;
+        margin: 4px 50px 20px 50px;
+    }
+
+    .browse-content {
+        padding: 20px 50px 0px 50px;
+
+        .title {
+            font-family: $title-font;
+            font-weight: bold;
+            font-size: 40px;
+            color: $accent-light-color;
+        }
+
+        &:hover .title {
+            color: $accent-dark-color;
+        }
+
+        .composite & .title {
+            font-weight: normal;
+        }
+
+    }
+}

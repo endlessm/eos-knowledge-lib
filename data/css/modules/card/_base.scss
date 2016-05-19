@@ -1,0 +1,65 @@
+.card {
+    font-size: 18.7px;
+
+    .title {
+        color: $primary-light-color;
+    }
+
+    .content-frame {
+        padding: 20px;
+    }
+
+    &.arrow {
+        -gtk-icon-source: none; /* kill the arrow that Gtk adds by default in Gtk.render_arrow() */
+    }
+
+    &.width-c .title,
+    &.width-d.height-c .title,
+    &.width-d.height-b .title {
+        font-size: 21.3px;
+    }
+
+    &.width-d.height-d .title,
+    &.width-e.height-b .title,
+    &.width-e.height-c .title {
+        font-size: 30.7px;
+    }
+
+    &.width-d .title,
+    &.width-e .title,
+    &.width-f .title,
+    &.width-g .title,
+    &.width-h .title {
+        font-size: 49.3px;
+    }
+
+    &.width-e .content-frame,
+    &.width-f .content-frame,
+    &.width-g .content-frame,
+    &.width-h .content-frame {
+        padding: 40px;
+    }
+
+    &.width-e.height-e .card-context,
+    &.width-f .card-context,
+    &.width-g .card-context,
+    &.width-h .card-context {
+        font-size: 18.7px;
+    }
+}
+
+.card-synopsis {
+    color: $black-60-color;
+    font-size: 18.7px;
+    padding-top: 30px;
+}
+
+.card-context {
+    font-size: 16px;
+    color: $primary-light-color;
+
+    /* FIXME: remove or update font-style after modularity issues are fixed */
+    .composite & {
+        font-style: normal;
+    }
+}

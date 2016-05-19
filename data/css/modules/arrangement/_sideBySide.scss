@@ -1,0 +1,27 @@
+EknSideBySideArrangement {
+    .title-card {
+        label.title {
+            font-family: $title-font;
+            color: $white-60-color;
+            padding: 13px 0px 3px 0px;
+            font-size: 18px;
+        }
+
+        &:hover label.title {
+            border-bottom: 1px solid $primary-light-color;
+            color: $accent-light-color;
+        }
+
+        &.highlighted {
+            background-color: $primary-dark-color;
+
+            label.title {
+                color: white;
+            }
+
+            &:hover label.title {
+                border-bottom: none;
+            }
+        }
+    }
+}

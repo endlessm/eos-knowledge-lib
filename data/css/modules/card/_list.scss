@@ -1,0 +1,77 @@
+.list-card {
+    margin: 10px 0;
+    background-color: white;
+    box-shadow: 0 0 5px transparentize(black, 1 - 0.25);
+    border-color: transparent;  /* used for the triangle in the corner */
+
+    .title {
+        font-family: $title-font;
+        font-weight: bold;
+        color: $primary-medium-color;
+        font-size: 18px;
+
+        &.highlighted {
+            background-color: rgba(114, 151, 167, 0.3);
+        }
+    }
+
+    .card-synopsis {
+        font-family: $body-font;
+        font-style: italic;
+        color: $black-60-color;
+        font-size: 16px;
+    }
+
+    .card-context {
+        font-family: $title-font;
+        font-weight: bold;
+        font-style: normal;
+        color: $primary-light-color;
+        font-size: 14px;
+    }
+
+    &:hover .title {
+        color: $primary-light-color;
+    }
+
+    &.next:hover .title {
+        color: $primary-dark-color;
+    }
+
+    &.width-d .title,
+    &.width-d .card-synopsis {
+        font-size: 18.7px;
+    }
+
+    &.width-e .title,
+    &.width-e .card-synopsis {
+        font-size: 18.7px;
+    }
+
+    &.width-f .title,
+    &.width-f .card-synopsis {
+        font-size: 21.3px;
+    }
+
+    &.width-g .title,
+    &.width-h .title {
+        font-size: 29.3px;
+    }
+
+    &.width-g .card-synopsis,
+    &.width-h .card-synopsis {
+        font-size: 24px;
+    }
+
+    &.width-e .content-frame,
+    &.width-f .content-frame {
+        padding: 20px;
+    }
+
+    .composite &.width-d .title,
+    .composite &.width-d .card-synopsis,
+    .composite &.width-e .title,
+    .composite &.width-e .card-synopsis {
+        font-size: 18.8px;  /* 16px spec * 88% because spec was at 110% scale not 125% */
+    }
+}

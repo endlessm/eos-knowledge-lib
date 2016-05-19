@@ -1,0 +1,14 @@
+EknThematic {
+    grid {
+        margin-bottom: 20px;
+    }
+
+    .title-card .title {
+        font-size: 40px;
+        font-weight: bold;
+    }
+
+    .composite & .title-card .title.label {
+        font-weight: normal;
+    }
+}

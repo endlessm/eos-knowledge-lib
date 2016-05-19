@@ -1,0 +1,15 @@
+EknPanelFrame .top-menu {
+    background-color: $primary-medium-color;
+    box-shadow: 0px 10px 20px 0px rgba(0, 0, 0, 0.2);
+    padding: 0px 20px;
+}
+
+.top-menu-template-content {
+    margin-top: 50px;
+}
+
+.top-menu EknAppBanner .image {
+    -EknThemeableImage-sizing: "size-min";
+    min-width: 146px;
+    min-height: 30px;
+}
