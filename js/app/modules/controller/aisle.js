@@ -24,7 +24,6 @@ const MediaObjectModel = imports.search.mediaObjectModel;
 const Module = imports.app.interfaces.module;
 const QueryObject = imports.search.queryObject;
 const SidebarTemplate = imports.app.modules.layout.sidebar;
-const StyleKnobGenerator = imports.app.compat.styleKnobGenerator;
 const AisleUserSettingsModel = imports.app.aisleUserSettingsModel;
 const Utils = imports.app.utils;
 const WebviewTooltipPresenter = imports.app.webviewTooltipPresenter;
@@ -41,7 +40,7 @@ const RESULTS_SIZE = 15;
 const TOTAL_ARTICLES = 30;
 const NUM_OVERVIEW_SNIPPETS = 3;
 
-const DATA_RESOURCE_PATH = 'resource:///com/endlessm/knowledge/data/';
+const CSS_RESOURCE_PATH = '/com/endlessm/knowledge/data/css/';
 
 // 1 week in miliseconds
 const UPDATE_INTERVAL_MS = 604800000;
@@ -110,9 +109,6 @@ const Aisle = new Module.Class({
     _NUM_ARTICLE_PAGE_STYLES: 3,
 
     _init: function (props) {
-        let css = Gio.File.new_for_uri(DATA_RESOURCE_PATH + 'css/endless_reader.css');
-        Utils.add_css_provider_from_file(css, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
-
         props.settings = props.settings || new AisleUserSettingsModel.AisleUserSettingsModel({
             settings_file: Gio.File.new_for_path(props.application.config_dir.get_path() + '/user_settings.json'),
         });
@@ -133,7 +129,6 @@ const Aisle = new Module.Class({
             history_model: this.history_model,
         });
 
-        this._style_knobs = StyleKnobGenerator.get_knobs_from_css(this.css, this.template_type);
         this.load_theme();
 
         this._webview_tooltip_presenter = new WebviewTooltipPresenter.WebviewTooltipPresenter();
@@ -209,45 +204,9 @@ const Aisle = new Module.Class({
         return this._current_page;
     },
 
-    _get_knob_css: function (css_data) {
-        let str = '';
-        for (let key in css_data) {
-            let num = (key.match(/\d+/) || [])[0];
-            if (/snippet[0-2]/.test(key)) {
-                str += Card.ArticleSnippet.get_css_for_module(css_data[key], num);
-            } else if (/article_page[0-2]/.test(key)) {
-                str += Card.ReaderDocument.get_css_for_module(css_data[key], num);
-            } else if (/reader_card[0-2]/.test(key)) {
-                str += Card.Reader.get_css_for_module(css_data[key], num);
-            } else if (key === 'back_cover') {
-                str += BackCover.get_css_for_module(css_data[key]);
-            } else if (key === 'overview_page') {
-                str += SidebarTemplate.get_css_for_module(css_data[key]);
-            }
-        }
-        return str;
-    },
-
-    /*
-     * FIXME: This function will change once we have finalized the structure
-     * of the app.json. Load both the base library css styles and the theme specific
-     * styles. Make sure to apply the theme styling second, so that
-     * it gets priority.
-     */
     load_theme: function () {
-        let css_path = Gio.File.new_for_uri(DATA_RESOURCE_PATH).get_child('css');
-        let css_files = [css_path.get_child('endless_reader.css')];
-        // FIXME: Get theme from app.json once we have finalized that
-        let theme = 'jungle';
-        if (typeof theme !== 'undefined') {
-            //css_files.push(css_path.get_child('themes').get_child(theme + '.css'));
-        }
-        let all_css = css_files.reduce((str, css_file) => {
-            return str + css_file.load_contents(null)[1];
-        }, '');
-        all_css += this._get_knob_css(this._style_knobs);
         let provider = new Gtk.CssProvider();
-        provider.load_from_data(all_css);
+        provider.load_from_resource(CSS_RESOURCE_PATH + 'aisle.css');
         Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(),
             provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
     },

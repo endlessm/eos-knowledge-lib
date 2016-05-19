@@ -1,9 +1,8 @@
+@import 'common';
 
-@import url("resource:///com/endlessm/knowledge/data/css/common.css");
-
-@define-color template-b-text-color #eeccf8;
-@define-color template-b-text-color-hover #d64970;
-@define-color template-b-text-color-highlighted #333333;
+$template-b-text-color: #eeccf8;
+$template-b-text-color-hover: #d64970;
+$template-b-text-color-highlighted: #333333;
 
 EosWindow {
     /* Changed color here so scrollbars are visible. Only affects smoke tests all
@@ -190,8 +189,8 @@ EosWindow.parallax.background-right {
 
 .sidebar-template .sidebar .title-card {
     padding: 6px;
-    border: 2px solid alpha(white, 0);
-    background-color: alpha(white, 0);
+    border: 2px solid transparentize(white, 1);
+    background-color: transparentize(white, 1);
     transition: background-color 250ms ease-in-out,
                 background-image 250ms ease-in-out,
                 border 250ms ease-in-out;
@@ -202,25 +201,25 @@ EosWindow.parallax.background-right {
     font-family: Lato;
     font-size: 1.125em; /* 18pt * 1/12 * 0.75 DPI correction factor */
     font-weight: normal;
-    color: @template-b-text-color;
+    color: $template-b-text-color;
     transition: color 250ms ease-in-out;
 }
 
 .sidebar-template .sidebar .title-card:hover,
 .sidebar-template .sidebar .title-card.highlighted:hover {
     border: 2px solid white;
-    background-color: alpha(white, 0.9);
+    background-color: transparentize(white, 1 - 0.9);
     background-image: linear-gradient(-179deg,
-                                      alpha(white, 0.05) 0%,
-                                      alpha(black, 0.05) 100%);
+                                      transparentize(white, 1 - 0.05) 0%,
+                                      transparentize(black, 1 - 0.05) 100%);
 }
 
 .sidebar-template .sidebar .title-card:hover .title {
-    color: @template-b-text-color-hover;
+    color: $template-b-text-color-hover;
 }
 
 .sidebar-template .sidebar .title-card.highlighted {
-    background: alpha(white, 0.8);
+    background: transparentize(white, 1 - 0.8);
     text-shadow: 0px 1px 0px white;
     font-weight: bold;
     transition-property: none;
@@ -228,7 +227,7 @@ EosWindow.parallax.background-right {
 
 .sidebar-template .sidebar .title-card.highlighted .title,
 .sidebar-template .sidebar .title-card.highlighted:hover .title {
-    color: @template-b-text-color-highlighted;
+    color: $template-b-text-color-highlighted;
     transition-property: none;
 }
 
@@ -253,18 +252,18 @@ EosWindow.parallax.background-right {
     color: #666666
 }
 
-@define-color legacy-post-card-border-color alpha(black, 0.7);
-@define-color legacy-post-card-border-color-hover white;
+$legacy-post-card-border-color: transparentize(black, 1 - 0.7);
+$legacy-post-card-border-color-hover: white;
 
 .legacy-post-card {
     border-style: solid;
     border-width: 5px;
-    border-color: @legacy-post-card-border-color;
+    border-color: $legacy-post-card-border-color;
     transition: border-color 250ms ease-in-out;
 }
 
 .legacy-post-card:hover {
-    border-color: @legacy-post-card-border-color-hover;
+    border-color: $legacy-post-card-border-color-hover;
 }
 
 .legacy-post-card .thumbnail {
@@ -272,17 +271,17 @@ EosWindow.parallax.background-right {
 }
 
 .legacy-post-card .title {
-    color: @template-b-text-color;
+    color: $template-b-text-color;
     font-size: 1.8em;
     padding: .9em 0em;
-    background-color: @legacy-post-card-border-color;
+    background-color: $legacy-post-card-border-color;
     transition: color 250ms ease-in-out,
                 background-color 250ms ease-in-out;
 }
 
 .legacy-post-card:hover .title {
-    color: @template-b-text-color-hover;
-    background-color: @legacy-post-card-border-color-hover;
+    color: $template-b-text-color-hover;
+    background-color: $legacy-post-card-border-color-hover;
 }
 
 /* ===== Table of contents styling ===== */
@@ -311,7 +310,7 @@ EosWindow.parallax.background-right {
 }
 
 .toc-entry:selected {
-    background-color: alpha(white, 0.247);
+    background-color: transparentize(white, 1 - 0.247);
 }
 
 /* Table of contents up and down buttons */
@@ -320,21 +319,21 @@ EosWindow.parallax.background-right {
     border-radius: 50%;
     border-width: 1px;
     border-style: solid;
-    border-color: alpha(black, 0.3);
+    border-color: transparentize(black, 1 - 0.3);
     padding: 5px;
-    box-shadow: inset 0px 1px 0px alpha(white, 0.3);
+    box-shadow: inset 0px 1px 0px transparentize(white, 1 - 0.3);
 }
 
 .toc-arrow:hover {
     color: white;
-    border-color: alpha(black, 0.4);
-    box-shadow: inset 0px 1px 0px alpha(white, 0.4);
+    border-color: transparentize(black, 1 - 0.4);
+    box-shadow: inset 0px 1px 0px transparentize(white, 1 - 0.4);
 }
 
 .toc-arrow:disabled {
-    color: alpha(rgb(204, 204, 204), 0.3);
-    border-color: alpha(black, 0.15);
-    box-shadow: inset 0px 1px 0px alpha(white, 0.15);
+    color: transparentize(rgb(204, 204, 204), 1 - 0.3);
+    border-color: transparentize(black, 1 - 0.15);
+    box-shadow: inset 0px 1px 0px transparentize(white, 1 - 0.15);
 }
 
 /* Style table of contents when collapsed without section titles */
@@ -347,13 +346,13 @@ EosWindow.parallax.background-right {
     padding-right: 0em;
 }
 
-@define-color tab-button-background #F16E47;
-@define-color tab-button-gradient-light @tab-button-background;
-@define-color tab-button-gradient-dark mix (@tab-button-background, black, .35);
-@define-color tab-button-gradient-active-light @tab-button-gradient-light;
-@define-color tab-button-gradient-active-dark @tab-button-gradient-dark;
-@define-color tab-button-gradient-hover-light mix (@tab-button-background, black, .05);
-@define-color tab-button-gradient-hover-dark mix (@tab-button-background, black, .5);
+$tab-button-background: #F16E47;
+$tab-button-gradient-light: $tab-button-background;
+$tab-button-gradient-dark: mix($tab-button-background, black, 65%);
+$tab-button-gradient-active-light: $tab-button-gradient-light;
+$tab-button-gradient-active-dark: $tab-button-gradient-dark;
+$tab-button-gradient-hover-light: mix($tab-button-background, black, 95%);
+$tab-button-gradient-hover-dark: mix($tab-button-background, black, 50%);
 
 .tab-button {
     color: white;
@@ -364,12 +363,12 @@ EosWindow.parallax.background-right {
     border-style: solid;
     font-weight: bold;
     font-size: 0.75em;  /* 12pt * 1/12 * 0.75 DPI correction factor */
-    text-shadow: 0px -1px 0px alpha(black, 0.40);
-    -gtk-icon-shadow: 0px -1px 1px alpha(black, 0.44);
+    text-shadow: 0px -1px 0px transparentize(black, 1 - 0.40);
+    -gtk-icon-shadow: 0px -1px 1px transparentize(black, 1 - 0.44);
     background: linear-gradient(to bottom,
-                                @tab-button-gradient-light,
-                                @tab-button-gradient-dark);
-    box-shadow: inset 0px 1px 4px 0px alpha(white, 0.19);
+                                $tab-button-gradient-light,
+                                $tab-button-gradient-dark);
+    box-shadow: inset 0px 1px 4px 0px transparentize(white, 1 - 0.19);
 }
 
 .tab-button:dir(ltr) image {
@@ -382,14 +381,14 @@ EosWindow.parallax.background-right {
 
 .tab-button:hover {
     background: linear-gradient(to bottom,
-                                @tab-button-gradient-hover-light,
-                                @tab-button-gradient-hover-dark);
+                                $tab-button-gradient-hover-light,
+                                $tab-button-gradient-hover-dark);
 }
 
 .tab-button:active {
     background: linear-gradient(to bottom,
-                                @tab-button-gradient-active-dark,
-                                @tab-button-gradient-active-light);
+                                $tab-button-gradient-active-dark,
+                                $tab-button-gradient-active-light);
 }
 
 .tab-button.bottom {
@@ -403,9 +402,9 @@ EosWindow.parallax.background-right {
 }
 
 .home-page-a .search-box, .home-page-b .search-box {
-    box-shadow: inset 0em 0.16em 0.16em alpha(black, 0.14);
-    background-image: linear-gradient(-179deg, alpha(black, 0.17) 0%,
-                                               alpha(white, 0.13) 79%),
+    box-shadow: inset 0em 0.16em 0.16em transparentize(black, 1 - 0.14);
+    background-image: linear-gradient(-179deg, transparentize(black, 1 - 0.17) 0%,
+                                               transparentize(white, 1 - 0.13) 79%),
                       linear-gradient(to bottom, white, white);
     background-clip: padding-box;
     padding: 0.75em 0.55em 0.75em 0.55em;
@@ -417,7 +416,7 @@ EosWindow.parallax.background-right {
     border-radius: 10em;
 
     border-width: .33em;
-    border-color: alpha(black, 0.19);
+    border-color: transparentize(black, 1 - 0.19);
 }
 
 .home-page-a .search-box {
@@ -459,7 +458,7 @@ EosWindow.parallax.background-right {
 .search-page-b .search-results,
 .article-page-b EknItemGroup,
 .article-page-b .search-results {
-    background-color: alpha(black, 0.75);
+    background-color: transparentize(black, 1 - 0.75);
 }
 
 .article-page-b .sidebar {
@@ -469,11 +468,11 @@ EosWindow.parallax.background-right {
 .section-page-b scrollbar trough,
 .search-page-b scrollbar trough {
     padding: 0px 3px;
-    background-color: alpha(black, 0.5);
+    background-color: transparentize(black, 1 - 0.5);
     background-image: linear-gradient(89deg,
-                                      alpha(white, 0.1) 0%,
-                                      alpha(black, 0.1) 100%);
-    box-shadow: inset 1px 0px 0px 0px alpha(black, 0.15);
+                                      transparentize(white, 1 - 0.1) 0%,
+                                      transparentize(black, 1 - 0.1) 100%);
+    box-shadow: inset 1px 0px 0px 0px transparentize(black, 1 - 0.15);
 }
 
 .section-page-b scrollbar slider,
@@ -505,7 +504,7 @@ EosWindow scrollbar trough {
 
 .document-card WebKitWebView {
     background-color: #ececec;
-    background-image: url('resource:///com/endlessm/knowledge/data/templates/images/noise.png');
+    background-image: url('../templates/images/noise.png');
 }
 
 .document-card .title {
@@ -518,18 +517,22 @@ EosWindow scrollbar trough {
     margin-bottom: 10px;
 }
 
+.article-page-a .document-card-content-frame {
+    padding: 20px 0px;
+}
+
 .nav-back-button, .nav-forward-button {
     color: white;
-    background-color: alpha(black, 0.2);
-    border: 1px solid alpha(white, 0.4);
-    box-shadow: inset 0px 1px 1px 0px alpha(black, 0.5),
-        inset 0px 1px 4px 0px alpha(black, 0.4);
+    background-color: transparentize(black, 1 - 0.2);
+    border: 1px solid transparentize(white, 1 - 0.4);
+    box-shadow: inset 0px 1px 1px 0px transparentize(black, 1 - 0.5),
+        inset 0px 1px 4px 0px transparentize(black, 1 - 0.4);
     -EknGrowButton-grow-pixels: 15;
 }
 
 .nav-back-button .image, .nav-forward-button .image {
     color: white;
-    box-shadow: 0px 1px alpha(black, 0.8); /* FIXME: box-shadow outset doesn't currently work in GTK */
+    box-shadow: 0px 1px transparentize(black, 1 - 0.8); /* FIXME: box-shadow outset doesn't currently work in GTK */
 }
 
 .nav-back-button, .nav-forward-button:dir(rtl) {
@@ -565,11 +568,11 @@ EosWindow scrollbar trough {
 }
 
 .pdf-view {
-    background-image: url('resource:///com/endlessm/knowledge/data/images/pdf-background.png');
+    background-image: url('../images/pdf-background.png');
 }
 
 .webview-tooltip {
-    background-color: alpha(black, 0.4);
+    background-color: transparentize(black, 1 - 0.4);
     border-radius: 8px 8px 8px 8px;
     padding: 10px 14px;
 }
@@ -633,5 +636,5 @@ EosWindow scrollbar trough {
 .composite .search-page-b .search-results,
 .composite .article-page-b EknItemGroup,
 .composite .article-page-b .search-results {
-    background-color: alpha(black, 0.8);
+    background-color: transparentize(black, 1 - 0.8);
 }

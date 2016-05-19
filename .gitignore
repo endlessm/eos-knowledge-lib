@@ -24,8 +24,8 @@
 # Sass
 .sass-cache
 # These css files are made from sass
+/data/css/*.css
 /data/templates/css/*.css
-/config/compass.rb
 
 # Autotools/Gettext droppings
 .deps

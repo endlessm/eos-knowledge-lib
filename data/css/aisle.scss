@@ -1,6 +1,6 @@
 /* Copyright 2014 Endless Mobile, Inc. */
 
-@import url("resource:///com/endlessm/knowledge/data/css/common.css");
+@import 'common';
 
 EosWindow {
     background-color: #efefef;
@@ -19,7 +19,7 @@ EknAppBanner .subtitle {
 EosWindow separator {
     min-height: 1px;
     min-width: 1px;
-    background-color: alpha(black, 0.1);
+    background-color: transparentize(black, 1 - 0.1);
 }
 
 .search-results-page separator {
@@ -60,7 +60,7 @@ EknSplitPercentageTemplate {
 
 EknSplitPercentageTemplate .end {
     background: rgba(51, 51, 51, 0.30);
-    background-image: linear-gradient(-180deg, rgba(176, 176, 176, 0.20) 1%, alpha(black, 0.30) 100%);
+    background-image: linear-gradient(-180deg, rgba(176, 176, 176, 0.20) 1%, transparentize(black, 1 - 0.30) 100%);
 }
 
 EknSplitPercentageTemplate .start EknResponsiveMargins {
@@ -219,7 +219,7 @@ EknSplitPercentageTemplate,
 
 .nav-back-button, .nav-forward-button {
     color: white;
-    background-color: alpha(black, 0.3);
+    background-color: transparentize(black, 1 - 0.3);
     padding: 16px; /* (55px (button width) - 23px (icon width)) / 2 */
     opacity: 1.0;
     transition: opacity 400ms;
@@ -239,13 +239,13 @@ EknSplitPercentageTemplate,
 }
 
 .nav-back-button .image {
-    -gtk-icon-source: url('resource:///com/endlessm/knowledge/data/images/reader/left-arrow.svg');
+    -gtk-icon-source: url('../images/reader/left-arrow.svg');
     -EknThemeableImage-min-width: 24;
     -EknThemeableImage-min-height: 23;
 }
 
 .nav-forward-button .image {
-    -gtk-icon-source: url('resource:///com/endlessm/knowledge/data/images/reader/right-arrow.svg');
+    -gtk-icon-source: url('../images/reader/right-arrow.svg');
     -EknThemeableImage-min-width: 24;
     -EknThemeableImage-min-height: 23;
 }
@@ -256,7 +256,7 @@ EknSplitPercentageTemplate,
 }
 
 .open-button {
-    border: 5px solid alpha(black, 0.35);
+    border: 5px solid transparentize(black, 1 - 0.35);
     border-radius: 35px;
 }
 
@@ -269,8 +269,8 @@ EknSplitPercentageTemplate,
 
 .open-button frame {
     background-image: linear-gradient(-180deg,
-                                      alpha(white, 0.20) 0%,
-                                      alpha(black, 0.20) 100%);
+                                      transparentize(white, 1 - 0.20) 0%,
+                                      transparentize(black, 1 - 0.20) 100%);
     background-color: #ECECEC;
     padding: 5px 15px 5px 20px;
     border: 1px solid black;
@@ -320,11 +320,11 @@ EknSplitPercentageTemplate,
 }
 
 .hover-frame {
-    background-color: alpha(#d7d7d7, 0.9);
+    background-color: transparentize(#d7d7d7, 1 - 0.9);
 }
 
 .card-info-frame {
-    background-color: alpha(black, 0.4);
+    background-color: transparentize(black, 1 - 0.4);
     padding: 6px 10px 6px 10px;
     border-radius: 8px;
 }
@@ -339,11 +339,11 @@ EknSplitPercentageTemplate .subtitle {
     font-family: Roboto;
     font-size: 1.06em; /* 17px / 12px/em * 72/96 */
     color: white;
-    text-shadow: 0px 2px 5px alpha(black, 0.43);
+    text-shadow: 0px 2px 5px transparentize(black, 1 - 0.43);
 }
 
 .webview-tooltip {
-    background-color: alpha(black, 0.4);
+    background-color: transparentize(black, 1 - 0.4);
     border-radius: 8px 8px 8px 8px;
     padding: 10px 14px;
 }
@@ -360,11 +360,11 @@ EknSplitPercentageTemplate .subtitle {
 }
 
 .webview-tooltip .archive-icon {
-    -gtk-icon-source: url('resource:///com/endlessm/knowledge/data/images/reader/archive.svg');
+    -gtk-icon-source: url('../images/reader/archive.svg');
 }
 
 .webview-tooltip .external-link-icon {
-    -gtk-icon-source: url('resource:///com/endlessm/knowledge/data/images/reader/external-link.svg');
+    -gtk-icon-source: url('../images/reader/external-link.svg');
 }
 
 .archive-notice-frame {
@@ -403,13 +403,13 @@ EosWindow scrollbar trough {
 }
 
 .composite EknSplitPercentageTemplate .end {
-    background-image: linear-gradient(to bottom, alpha(black, 0.7) 0%,
-                                      alpha(black, 0.7) 100%);
+    background-image: linear-gradient(to bottom, transparentize(black, 1 - 0.7) 0%,
+                                      transparentize(black, 1 - 0.7) 100%);
 }
 
 .composite .back-cover grid {
-    background-image: linear-gradient(to bottom, alpha(black, 0.5) 0%,
-                                      alpha(black, 0.5) 100%);
+    background-image: linear-gradient(to bottom, transparentize(black, 1 - 0.5) 0%,
+                                      transparentize(black, 1 - 0.5) 100%);
 }
 
 .composite .back-cover .subtitle {

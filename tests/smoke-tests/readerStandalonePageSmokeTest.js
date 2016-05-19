@@ -34,7 +34,7 @@ const TestApplication = new Lang.Class({
         this.parent();
 
         let provider = new Gtk.CssProvider();
-        let css_file = Gio.File.new_for_path('data/css/endless_reader.css');
+        let css_file = Gio.File.new_for_path('data/css/aisle.css');
         provider.load_from_file(css_file);
         Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(),
             provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);

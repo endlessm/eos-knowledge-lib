@@ -19,12 +19,11 @@ const Launcher = imports.app.interfaces.launcher;
 const MediaObjectModel = imports.search.mediaObjectModel;
 const Module = imports.app.interfaces.module;
 const QueryObject = imports.search.queryObject;
-const StyleKnobGenerator = imports.app.compat.styleKnobGenerator;
 const TabButton = imports.app.widgets.tabButton;
 const TitleCard = imports.app.modules.card.title;
 const Utils = imports.app.utils;
 
-const DATA_RESOURCE_PATH = 'resource:///com/endlessm/knowledge/data/';
+const CSS_RESOURCE_PATH = '/com/endlessm/knowledge/data/css/';
 const RESULTS_SIZE = 10;
 
 /**
@@ -267,27 +266,6 @@ const Mesh = new Module.Class({
         }
     },
 
-    _get_knob_css: function (css_data) {
-        let str = '';
-        for (let key in css_data) {
-            let module_styles = css_data[key];
-            // For now, only TitleCard and TabButton have bespoke CSS
-            // structure, since they need to use the @define syntax
-            if (key === 'article_card' && this.template_type === 'B') {
-                str += TitleCard.get_css_for_module(module_styles);
-            } else if (key === 'tab_button' && this.template_type === 'A') {
-                str += TabButton.get_css_for_module(module_styles);
-            } else {
-                // All other modules can just convert their knobs to CSS strings
-                // directly using the STYLE_MAP
-                str += Utils.get_css_for_title_and_module(module_styles,
-                    this.STYLE_MAP[this.template_type][key] + ' .title',
-                    this.STYLE_MAP[this.template_type][key]);
-            }
-        }
-        return str;
-    },
-
     _get_article_animation_type: function (item, is_going_back) {
         let last_item = this._history_presenter.history_model.get_item(is_going_back ? 1 : -1);
         if (!last_item || last_item.page_type !== this.ARTICLE_PAGE)
@@ -510,34 +488,12 @@ const Mesh = new Module.Class({
         }
     },
 
-    /*
-     * FIXME: This function will change once we have finalized the structure
-     * of the app.json. Load both the base library css styles and the theme specific
-     * styles. Make sure to apply the theme styling second, so that
-     * it gets priority.
-     */
     _load_theme: function () {
+        let theme = 'mesh';
+        if (this.template_type === 'encyclopedia')
+            theme = 'encyclopedia';
         let provider = new Gtk.CssProvider();
-        if (this.factory.version >= 2) {
-            provider.load_from_data(this.css);
-        } else if (this.template_type === 'encyclopedia') {
-            let css_file = Gio.File.new_for_uri(DATA_RESOURCE_PATH + 'css/endless_encyclopedia.css');
-            provider.load_from_file(css_file);
-        } else {
-            this._style_knobs = StyleKnobGenerator.get_knobs_from_css(this.css, this.template_type);
-            let css_path = Gio.File.new_for_uri(DATA_RESOURCE_PATH).get_child('css');
-            let css_files = [css_path.get_child('endless_knowledge.css')];
-            // FIXME: Get theme from app.json once we have finalized that
-            let theme = this.template_type === 'A' ? 'templateA' : undefined;
-            if (typeof theme !== 'undefined') {
-                css_files.push(css_path.get_child('themes').get_child(theme + '.css'));
-            }
-            let all_css = css_files.reduce((str, css_file) => {
-                return str + css_file.load_contents(null)[1];
-            }, '');
-            all_css += this._get_knob_css(this._style_knobs);
-            provider.load_from_data(all_css);
-        }
+        provider.load_from_resource(CSS_RESOURCE_PATH + theme + '.css');
         Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(),
             provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
     },

@@ -56,6 +56,12 @@ scss_verbose_ = $(scss_verbose_@AM_DEFAULT_V@)
 scss_verbose_0 = @echo "  SCSS     $@";
 
 scss_toplevels = \
+	$(srcdir)/data/css/aisle.scss \
+	$(srcdir)/data/css/buffet.scss \
+	$(srcdir)/data/css/encyclopedia.scss \
+	$(srcdir)/data/css/mesh.scss \
+	$(srcdir)/data/css/news.scss \
+	$(srcdir)/data/css/picard.scss \
 	$(srcdir)/data/templates/css/embedly.scss \
 	$(srcdir)/data/templates/css/prensa-libre.scss \
 	$(srcdir)/data/templates/css/reader.scss \
@@ -65,6 +71,8 @@ scss_toplevels = \
 	$(srcdir)/data/templates/css/clipboard.scss \
 	$(NULL)
 scss_partials = \
+	$(srcdir)/data/css/_buffet_core.scss \
+	$(srcdir)/data/css/_common.scss \
 	$(srcdir)/data/templates/css/_eos-modal.scss \
 	$(srcdir)/data/templates/css/_eos-no-link.scss \
 	$(NULL)

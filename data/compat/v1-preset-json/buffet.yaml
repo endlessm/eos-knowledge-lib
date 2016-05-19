@@ -179,7 +179,7 @@ defines:
         nav-card-type: Card.Sequence
 
 root:
-  shortdef: 'Controller.Buffet(theme: endless_buffet)'
+  shortdef: 'Controller.Buffet(theme: buffet)'
   slots:
     window:
       shortdef: 'Window.App(animations: false)'

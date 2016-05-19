@@ -91,8 +91,6 @@ const Lightbox = new Knowledge.Class({
         'navigation-next-clicked': {},
     },
 
-    _css_has_loaded: false,
-
     _init: function (params) {
         // Property values
         this._lightbox_widget = null;
@@ -120,12 +118,6 @@ const Lightbox = new Knowledge.Class({
         }));
 
         this.parent(params);
-
-        if (!this._css_has_loaded) {
-            let css = Gio.File.new_for_uri('resource:///com/endlessm/knowledge/data/css/lightbox.css');
-            Utils.add_css_provider_from_file(css, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
-            this._css_has_loaded = true;
-        }
 
         this._lightbox_container.connect('navigation-previous-clicked',
             () => { this.emit('navigation-previous-clicked'); });

@@ -36,7 +36,7 @@ win.connect('destroy', Gtk.main_quit);
 
 Utils.register_gresource();
 let provider = new Gtk.CssProvider();
-let css_file = Gio.File.new_for_uri('resource:///com/endlessm/knowledge/endless_reader.css');
+let css_file = Gio.File.new_for_uri('resource:///com/endlessm/knowledge/aisle.css');
 provider.load_from_file(css_file);
 Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(),
     provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);

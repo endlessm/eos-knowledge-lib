@@ -1,5 +1,4 @@
-
-@import url("resource:///com/endlessm/knowledge/data/css/common.css");
+@import 'common';
 
 EosWindow {
     font-size: 8pt;
@@ -81,7 +80,7 @@ EosWindow {
 /* WebKit creates GTK tooltips internally, so style them here */
 .tooltip {
     border-radius: 5px;
-    background-color: alpha(#212526, 0.90);
+    background-color: transparentize(#212526, 1 - 0.90);
 }
 
 .search-results {
@@ -110,7 +109,7 @@ EosWindow {
 
 .divided-banner-template separator {
     min-height: 15px;
-    background-image: url('resource:///com/endlessm/knowledge/data/images/separator.png');
+    background-image: url('../images/separator.png');
     background-size: 100%;
     background-repeat: no-repeat;
 }
@@ -167,7 +166,7 @@ EosWindow {
 
 .paper-template .content {
     background-image: linear-gradient(to bottom, #ececec 0%, #ececec 100%),
-                      url('resource:///com/endlessm/knowledge/data/templates/images/noise.png');
+                      url('../templates/images/noise.png');
 }
 
 scrollbar {
@@ -181,7 +180,7 @@ scrollbar slider {
 }
 
 .webview-tooltip {
-    background-color: alpha(black, 0.4);
+    background-color: transparentize(black, 1 - 0.4);
     border-radius: 8px 8px 8px 8px;
     padding: 10px 14px;
 }
@@ -202,7 +201,7 @@ scrollbar slider {
 .composite .search-box,
 .composite .article-search entry {
     font-size: 21.1px;  /* 18 px spec * 88% because spec was at 110% scale not 125% */
-    background-color: alpha(black, 0.8);
+    background-color: transparentize(black, 1 - 0.8);
 }
 
 .composite .divided-banner-template .title {

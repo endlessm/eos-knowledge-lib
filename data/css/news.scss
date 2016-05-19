@@ -1,12 +1,11 @@
-@import url("resource:///com/endlessm/knowledge/data/css/common.css");
-@import url("resource:///com/endlessm/knowledge/data/css/buffet_core.css");
+@import 'buffet_core';
 
 scrollbar.vertical slider {
     min-height: 100px;
 }
 
-@define-color title-blue #0f1b3c;
-@define-color context-blue #7297a7;
+$title-blue: #0f1b3c;
+$context-blue: #7297a7;
 
 EknInfiniteScrollingLayout,
 EknDynamicBackground,
@@ -26,21 +25,21 @@ EknSearch .scrolling-list-grid {
 }
 
 .card .title {
-    color: @title-blue;
+    color: $title-blue;
 }
 
 .trigger {
     font-family: 'Fira Sans';
     font-size: 20px;
-    color: @title-blue;
+    color: $title-blue;
 }
 
 .trigger:hover {
-    color: @context-blue;
+    color: $context-blue;
 }
 
 .trigger .image {
-    -gtk-icon-source: url('resource:///com/endlessm/knowledge/data/images/news-arrow-dark.svg');
+    -gtk-icon-source: url('../images/news-arrow-dark.svg');
     -EknThemeableImage-min-height: 14;
     -EknThemeableImage-min-width: 14;
     margin-left: 5px;
@@ -48,7 +47,7 @@ EknSearch .scrolling-list-grid {
 }
 
 .trigger:hover .image {
-    -gtk-icon-source: url('resource:///com/endlessm/knowledge/data/images/news-arrow-light.svg');
+    -gtk-icon-source: url('../images/news-arrow-light.svg');
 }
 
 EknHighlights {
@@ -60,7 +59,7 @@ EknSetPreviewCard .title-card {
 }
 
 EknSetPreviewCard .title-card .title {
-    color: @title-blue;
+    color: $title-blue;
     font-family: 'Merriweather';
     font-weight: bold;
     padding-top: 50px;
@@ -68,7 +67,7 @@ EknSetPreviewCard .title-card .title {
 }
 
 EknSetPreviewCard .title-card:hover .title {
-    color: @context-blue;
+    color: $context-blue;
 }
 
 EknSetPreviewCard separator {
@@ -79,7 +78,7 @@ EknSetPreviewCard separator {
 
 EknAppBanner {
     font-family: 'Fira Sans';
-    color: @context-blue;
+    color: $context-blue;
 }
 
 EknPanelFrame .top-menu {
@@ -100,8 +99,8 @@ EknSideBySideArrangement .title-card label.title {
 }
 
 EknSideBySideArrangement .title-card:hover label.title {
-    border-bottom: 1px solid @context-blue;
-    color: @context-blue;
+    border-bottom: 1px solid $context-blue;
+    color: $context-blue;
 }
 
 EknSideBySideArrangement .title-card.highlighted label.title {
@@ -156,7 +155,7 @@ EknSearchBanner {
 
 .search-results .results-message-title {
     font-family: 'Fira Sans';
-    color: @context-blue;
+    color: $context-blue;
     font-size: 30px;
     padding: 50px 80px 30px 160px;
 }
@@ -186,7 +185,7 @@ EknSearchBanner {
 .thumb-card .title {
     font-family: 'Fira Sans';
     font-weight: bold;
-    color: @title-blue;
+    color: $title-blue;
     font-size: 18px;
 }
 
@@ -204,17 +203,17 @@ EknSearchBanner {
     font-family: 'Merriweather';
     font-weight: bold;
     font-style: normal;
-    color: @context-blue;
+    color: $context-blue;
     font-size: 14px;
 }
 
 .text-card:hover .title,
 .list-card:hover .title {
-    color: @context-blue;
+    color: $context-blue;
 }
 
 .list-card.next:hover .title {
-    color: @title-blue;
+    color: $title-blue;
 }
 
 .list-card .title.highlighted {
@@ -295,11 +294,11 @@ EknSetBanner .card:hover .title {
 }
 
 .post-card .card-context {
-    color: @context-blue;
+    color: $context-blue;
     font-family: 'Merriweather';
     font-weight: bold;
 }
 
 .thumb-card {
-    box-shadow: 0px 5px 10px 0px alpha(black, 0.22);
+    box-shadow: 0px 5px 10px 0px transparentize(black, 1 - 0.22);
 }
