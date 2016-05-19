@@ -1,0 +1,795 @@
+/* Copyright 2016 Endless Mobile, Inc. */
+
+@import "project-setup";
+@import "compass";
+
+/* == Colors == */
+
+$default_color_01: #5e7790;
+$default_color_02: #2d3e4e;
+$default_color_03: #1b242e;
+
+$default_color_04: #ff6835;
+$default_color_05: #cc532b;
+
+$default_color_06: #e9e9e3;
+$default_color_07: #ddddd5;
+
+$default_white: white;
+$default_white_60: transparentize(white, 0.4);
+$default_black_20: transparentize(black, 0.8);
+$default_black_60: transparentize(black, 0.4);
+$default_black_80: transparentize(black, 0.2);
+
+/* == Fonts == */
+
+$default_font_01: 'Fira Sans';
+$default_font_02: 'Merriweather';
+
+/* == Modules == */
+
+.endless-search-box .view {
+    padding: 10px;
+}
+
+.endless-search-box .view .cell {
+    border-color: $default_color_06;
+    border-width: 3px;
+    border-radius: 2px;
+    border-style: solid;
+    background-color: $default_white;
+}
+
+.endless-search-box .view .cell:selected {
+    background-color: $default_color_07;
+}
+
+.endless-search-box .view:nth-child(2) .cell {
+    color: $default_color_01;
+    border-color: $default_color_06;
+    background-color: $default_color_06;
+}
+
+.endless-search-box .view:nth-child(2) .cell:selected {
+    color: $default_color_01;
+    background-color: $default_color_07;
+}
+
+.media-card {
+    padding: 10px;
+    background-color: $default_white;
+}
+
+.media-card separator {
+    background-color: $default_black_20;
+    min-height: 1px;
+}
+
+.media-card-caption {
+    font-size: .81em;  /* 13pt * 1/12 * 0.75 DPI correction factor */
+    font-family: $default_font_01;
+    color: #666666;
+}
+
+.media-card-attribution-text {
+    font-weight: bold;
+    font-size: .62em;  /* 10pt * 1/12 * 0.75 DPI correction factor */
+    font-family: $default_font_01;
+    color: #b2b2b2;
+    transition: color 250ms ease-in-out;
+}
+
+.media-card-attribution-text:hover {
+    color: #ff6900;
+}
+
+.composite .media-card-caption {
+    font-size: 14.1px;  /* 12px spec * 88% because spec was at 110% scale not 125% */
+}
+
+.composite .media-card-attribution-text {
+    font-size: 10.5px;  /* 9px spec * 88% */
+}
+
+.lightbox-navigation-button {
+    padding: 7px;
+    border-radius: 27px;
+    background-color: transparentize(#888a85, 1 - 0.5);
+    background-image: linear-gradient(-89deg, rgba(255, 255, 255, 0.10) 0%, rgba(255, 255, 255, 0.50) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    box-shadow: inset 0px 1px 2px 0px rgba(0, 0, 0, 0.24);
+}
+
+.lightbox-navigation-button:hover {
+    background-color: transparentize(#888a85, 1 - 0.8);
+}
+
+.lightbox-shadow {
+    background-color: transparentize(black, 1 - 0.9);
+}
+
+EosWindow {
+    background-size: cover;
+}
+
+EosWindow scrollbar {
+    padding: 3px;
+}
+
+EosWindow scrollbar slider {
+    min-width: 8px;
+    background-color: #9b9b9b;
+    border-radius: 20px;
+}
+
+.browse-content {
+    padding: 20px 50px 0px 50px;
+}
+
+EknInfiniteScrollingLayout,
+EknSearch {
+    background-color: #e7ecee;
+}
+
+EknSearch .no-results {
+    background-color: white;
+}
+
+EknSuggestedCategories separator {
+    background-color: $default_black_20;
+    min-height: 1px;
+    margin: 4px 50px 20px 50px;
+}
+
+EknSuggestedCategories .browse-content .title {
+    font-family: $default_font_01;
+    font-weight: bold;
+    font-size: 40px;
+    color: $default_color_04;
+}
+
+EknSuggestedCategories .browse-content:hover .title,
+EknSetPreviewCard:hover .title,
+.title-card:hover .title {
+    color: $default_color_05;
+}
+
+/* default size */
+.card {
+    font-size: 18.7px;
+}
+
+.card.width-c .title,
+.card.width-d.height-c .title,
+.card.width-d.height-b .title {
+    font-size: 21.3px;
+}
+
+.card.width-d.height-d .title,
+.card.width-e.height-b .title,
+.card.width-e.height-c .title {
+    font-size: 30.7px;
+}
+
+.card.width-d .title,
+.card.width-e .title,
+.card.width-f .title,
+.card.width-g .title,
+.card.width-h .title {
+    font-size: 49.3px;
+}
+
+.card .content-frame {
+    padding: 20px;
+}
+
+.thumb-card.width-d.height-b .content-frame,
+.thumb-card.width-e.height-b .content-frame,
+.thumb-card.width-e.height-c .content-frame {
+    padding: 20px 30px 20px 30px;
+}
+
+.card.width-e .content-frame,
+.card.width-f .content-frame,
+.card.width-g .content-frame,
+.card.width-h .content-frame {
+    padding: 40px;
+}
+
+.card.width-e.height-e .card-context,
+.card.width-f .card-context,
+.card.width-g .card-context,
+.card.width-h .card-context {
+    font-size: 18.7px;
+}
+
+.list-card {
+    margin: 10px 0;
+}
+
+.list-card.width-d .title,
+.list-card.width-d .card-synopsis {
+    font-size: 18.7px;
+}
+
+.list-card.width-e .title,
+.list-card.width-e .card-synopsis {
+    font-size: 18.7px;
+}
+
+.list-card.width-f .title,
+.list-card.width-f .card-synopsis {
+    font-size: 21.3px;
+}
+
+.list-card.width-g .title,
+.list-card.width-h .title {
+    font-size: 29.3px;
+}
+
+.list-card.width-g .card-synopsis,
+.list-card.width-h .card-synopsis {
+    font-size: 24px;
+}
+
+.list-card.width-e .content-frame,
+.list-card.width-f .content-frame {
+    padding: 20px;
+}
+
+.thumb-card,
+.post-card.article,
+.list-card {
+    background-color: white;
+    box-shadow: 0 0 5px transparentize(black, 1 - 0.25);
+    border-color: transparent;  /* used for the triangle in the corner */
+}
+
+.post-card.set .thumbnail {
+    border: 0px solid transparent;  /* used for the triangle in the corner */
+}
+
+.post-card.article .content-frame {
+    background-image: linear-gradient(to top, black 0%, transparentize(black, 1 - 0.69) 30%, transparentize(black, 1 - 0.5) 49%, transparentize(black, 1) 100%);
+}
+
+.post-card.article .title {
+    padding-bottom: 20px;
+    color: $default_white;
+}
+
+.post-card.set {
+    background-image: url('../images/deckbg.svg');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-position: center;
+}
+
+.post-card.set:active {
+    background-size: 98% 98%;
+}
+
+.post-card.set .content-frame {
+    padding: 20px 0px 20px 0px;
+    background-color: transparentize(white, 1 - 0.949);
+}
+
+.post-card.set .title {
+    font-weight: 300;
+}
+
+.card-synopsis {
+    color: $default_black_60;
+    font-size: 18.7px;
+    padding-top: 30px;
+}
+
+.card-context {
+    font-size: 16px;
+    color: $default_color_01;
+}
+
+.search-results spinner {
+    margin: 20px;
+}
+
+.results-message-title,
+.results-message.subtitle {
+    color: black;
+}
+
+.document-card .sequence-card {
+    background-color: white;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.25);
+    padding: 15px 30px;
+}
+
+.document-card .sequence-card .title {
+    font-size: 21.3px;
+    font-weight: normal;
+    color: $default_color_02;
+}
+
+.document-card .sequence-card .previous-label,
+.document-card .sequence-card .next-label {
+    font-size: 14.7px;
+    color: #49bde3;
+}
+
+.document-card .panel {
+    -EknSlidingPanel-fill-percentage: 0.73;
+    -EknSlidingPanel-shadow-margin: 7;
+}
+
+.home-button {
+    font-weight: bold;
+}
+
+EknAppBanner {
+    font-size: 1.19em; /* 19px / 12px/em * 72/96 */
+}
+
+EknAppBanner .subtitle {
+    margin-top: 70px;
+}
+
+.document-card WebKitWebView {
+    background-color: white;
+}
+
+.webview-tooltip {
+    background-color: transparentize(black, 1 - 0.4);
+    border-radius: 8px 8px 8px 8px;
+    padding: 10px 14px;
+}
+
+.webview-tooltip GtkLabel {
+    color: white;
+    font-family: $default_font_01;
+    font-size: 1.0em; /* 16px / 12px/em * 72/96 */
+    font-weight: bold;
+}
+
+EknResponsiveMargins.tiny {
+    margin: 0px;
+}
+
+EknResponsiveMargins.small {
+    margin: 0px 40px;
+}
+
+EknResponsiveMargins.medium {
+    margin: 0px 62px;
+}
+
+EknResponsiveMargins.large {
+    margin: 0px 83px;
+}
+
+EknResponsiveMargins.xlarge {
+    margin: 0px 120px;
+}
+
+/* Changes for composite TVs */
+
+.composite .search-results row {
+    padding: 0 40px;
+}
+
+.composite .card-context {
+    font-style: normal;
+}
+
+.composite .thumb-card .card-context {
+    color: gray;
+}
+
+.composite .list-card.width-d .title,
+.composite .list-card.width-d .card-synopsis,
+.composite .list-card.width-e .title,
+.composite .list-card.width-e .card-synopsis {
+    font-size: 18.8px;  /* 16px spec * 88% because spec was at 110% scale not 125% */
+}
+
+.composite EknHighlights .title-card .title.label,
+.composite EknThematic .title-card .title.label,
+.composite EknSetPreviewCard .title,
+.composite .browse-content .title,
+.composite .post-card.set .title {
+    font-weight: normal;
+}
+
+.composite EknAppBanner {
+    font-size: 22.3px;  /* 19px spec * 88% */
+}
+
+scrollbar.vertical slider {
+    min-height: 100px;
+}
+
+$title-blue: #0f1b3c;
+$context-blue: #7297a7;
+
+EknInfiniteScrollingLayout,
+EknDynamicBackground,
+.results-message-background,
+EosWindow scrollbar {
+    background-color: $default_color_06;
+}
+
+EknSearch {
+    background-color: transparent;
+}
+
+/* This used to be margin on the list cards inside, but ListCard doesn't support
+ * margin properly at the moment. */
+EknSearch .scrolling-list-grid {
+    padding: 0 200px;
+}
+
+.card .title {
+    color: $default_color_01;
+}
+
+.trigger {
+    font-family: $default_font_01;
+    font-size: 20px;
+    color: $default_color_04;
+}
+
+.trigger:hover {
+    color: $default_color_05;
+}
+
+.trigger .image {
+    -gtk-icon-source: url('../images/news-arrow-dark.svg');
+    -EknThemeableImage-min-height: 14;
+    -EknThemeableImage-min-width: 14;
+    margin-left: 5px;
+    margin-bottom: 5px;
+}
+
+.trigger:hover .image {
+    -gtk-icon-source: url('../images/news-arrow-light.svg');
+}
+
+EknHighlights {
+    margin: 50px 20px;
+}
+
+EknSetPreviewCard .title-card {
+    margin-top: 25px;
+}
+
+EknSetPreviewCard .title-card .title {
+    color: $default_color_04;
+    font-family: $default_font_01;
+    font-weight: bold;
+    padding-top: 50px;
+    font-size: 40px;
+}
+
+EknSetPreviewCard .title-card:hover .title {
+    color: $default_color_05;
+}
+
+EknSetPreviewCard separator {
+    background-color: $default_black_20;
+    min-height: 0;
+    margin: 0px 0px 30px;
+}
+
+EknAppBanner {
+    font-family: $default_font_01;
+    color: $context-blue;
+}
+
+EknPanelFrame .top-menu {
+    background-color: $default_color_02;
+    box-shadow: 0px 10px 20px 0px rgba(0, 0, 0, 0.2);
+    padding: 0px 20px;
+}
+
+.top-menu-template-content {
+    margin-top: 50px;
+}
+
+EknSideBySideArrangement .title-card label.title {
+    font-family: $default_font_01;
+    color: $default_white_60;
+    padding: 13px 0px 3px 0px;
+    font-size: 18px;
+}
+
+EknSideBySideArrangement .title-card:hover label.title {
+    border-bottom: 1px solid $context-blue;
+    color: $default_color_04;
+}
+
+EknSideBySideArrangement .title-card.highlighted label.title {
+    color: $default_white;
+}
+
+EknSideBySideArrangement .title-card.highlighted:hover label.title {
+    border-bottom: none;
+}
+
+EknSideBySideArrangement .title-card.highlighted {
+    background-color: $default_color_03;
+}
+
+EknHierarchicalSet {
+    margin: 20px;
+}
+
+/* Selects the background around the suggested articles modules; cumbersome! */
+.vertical EknResponsiveMargins.second,
+.no-results .vertical EknResponsiveMargins {
+    background-color: $default_color_07;
+}
+
+EknSuggestedArticles {
+    margin: 50px 0;
+    padding-bottom: 20px;
+}
+
+EknSupplementaryArticles {
+    margin: 50px 0 50px 20px;
+    padding: 0 20px 20px 0px;
+}
+
+EknSupplementaryArticles > .title,
+EknSuggestedArticles > .title {
+    font-family: $default_font_01;
+    font-weight: bold;
+    font-size: 40px;
+    color: $default_color_04;
+    padding-bottom: 30px;
+}
+
+EknSearchBanner {
+    padding: 50px 80px 0;
+    font-family: $default_font_01;
+    font-weight: bold;
+    color: #050c20;
+    font-size: 54px;
+    background-color: transparent;
+}
+
+.search-page-a separator {
+    background-color: $default_black_20;
+}
+
+.search-results .results-message-title {
+    font-family: $default_font_01;
+    color: $context-blue;
+    font-size: 30px;
+    padding: 50px 80px 30px 160px;
+}
+
+.results-message-title {
+    color: white;
+    padding-bottom: 30px;
+}
+
+.search-results .results-message-subtitle {
+    font-family: $default_font_01;
+    font-style: italic;
+    color: #666666;
+    font-size: 22px;
+    padding-bottom: 50px;
+    padding-left: 160px;
+}
+
+.text-card {
+    background-color: white;
+    box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.24);
+    padding: 20px;
+}
+
+.text-card .title,
+.list-card .title,
+.thumb-card .title {
+    font-family: $default_font_01;
+    font-weight: bold;
+    color: $default_color_02;
+    font-size: 18px;
+}
+
+.text-card .card-synopsis,
+.list-card .card-synopsis {
+    font-family: $default_font_01;
+    font-style: italic;
+    color: $default_black_60;
+    font-size: 16px;
+}
+
+.text-card .card-context,
+.list-card .card-context,
+.thumb-card .card-context {
+    font-family: $default_font_01;
+    font-weight: bold;
+    font-style: normal;
+    color: $default_color_01;
+    font-size: 14px;
+}
+
+.text-card:hover .title,
+.list-card:hover .title {
+    color: $context-blue;
+}
+
+.list-card.next:hover .title {
+    color: $title-blue;
+}
+
+.list-card .title.highlighted {
+    background-color: rgba(114, 151, 167, 0.3);
+}
+
+.text-card.width-c {
+    padding: 30px;
+}
+.text-card.width-c .title {
+    font-size: 23px;
+}
+
+.text-card.width-c.height-d,
+.text-card.width-d {
+    padding: 30px;
+}
+.text-card.width-c.height-d .title,
+.text-card.width-d .title {
+    font-size: 27px;
+}
+
+.text-card.width-d.height-d,
+.text-card.width-e,
+.text-card.width-f.height-c {
+    padding: 40px;
+}
+.text-card.width-d.height-d .title,
+.text-card.width-e .title,
+.text-card.width-f.height-c .title {
+    font-size: 37px;
+}
+
+.text-card.width-e.height-d,
+.text-card.width-e.height-e,
+.text-card.width-f,
+.text-card.width-g,
+.text-card.width-h {
+    padding: 50px;
+}
+.text-card.width-e.height-d .title,
+.text-card.width-e.height-e .title,
+.text-card.width-f .title,
+.text-card.width-g .title,
+.text-card.width-h .title {
+    font-size: 49px;
+}
+
+.text-card.highlighted {
+    background-color: #18264a;
+    box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.22);
+}
+
+.text-card.highlighted .title {
+    color: $default_white;
+}
+
+.card.arrow {
+    -gtk-icon-source: none; /* kill the arrow that Gtk adds by default in Gtk.render_arrow() */
+}
+
+EknSetBanner {
+    margin-top: 40px;
+}
+
+EknSetBanner .card .title,
+EknSetBanner .card:hover .title {
+    color: $default_color_02;
+    font-weight: bold;
+    font-size: 54px;
+    font-family: $default_font_01;
+    padding-top: 50px;
+}
+
+.post-card .title {
+    font-family: $default_font_01;
+    font-weight: bold;
+}
+
+.post-card .card-context {
+    color: $default_color_01;
+    font-family: $default_font_01;
+    font-weight: bold;
+}
+
+.thumb-card {
+    box-shadow: 0px 5px 10px 0px transparentize(black, 1 - 0.22);
+}
+
+EknSideMenuTemplate .context-bar {
+    background-image: linear-gradient(to bottom, $default_color_03 0%, $default_color_03 100%);
+    box-shadow: 0px 2px 5px 0px transparentize(black, 1 - 0.15);
+}
+
+EknSideMenuTemplate .context-bar-shadow-frame {
+    padding-bottom: 10px;
+}
+
+EknSideMenuTemplate .panel {
+    -EknSlidingPanel-shadow-margin: 40;
+}
+
+EknSideMenuTemplate .menu {
+    min-width: 199px;
+    background-color: $default_color_02;
+    box-shadow: 0px 1px 20px 0px transparentize(black, 1 - 0.5);
+}
+
+EknSideMenuTemplate .menu .home-button,
+EknSideMenuTemplate .menu .card .title {
+    font-size: 21.3px;
+    font-family: $default_font_01;
+    color: $default_white;
+}
+
+EknSideMenuTemplate .menu .card {
+    margin-top: 5px;
+}
+
+EknSideMenuTemplate .menu .home-button:hover,
+EknSideMenuTemplate .menu .card:hover .title {
+    color: $default_color_04;
+}
+
+EknSideMenuTemplate .menu separator {
+    min-height: 1px;
+    background-color: #default_black;
+    margin: 5px 10px 0 10px;
+}
+
+EknSideMenuTemplate .menu .sidebar {
+    margin: 0 10px 5px 10px;
+}
+
+EknSideMenuTemplate .close-button,
+EknSideMenuTemplate .menu-button {
+    color: #default_white;
+}
+
+EknSideMenuTemplate .menu-button {
+    padding: 10px;
+}
+
+EknSideMenuTemplate .close-button:hover,
+EknSideMenuTemplate .menu-button:hover {
+    color: $default_color_04;
+}
+
+EknSideMenuTemplate .home-button {
+    margin: 10px 0 0 10px;
+}
+
+EknSideMenuTemplate .close-button {
+    margin: 10px 10px 0 0;
+}
+
+EknSideMenuTemplate .title-card,
+EknSideMenuTemplate .home-button,
+EknSideMenuTemplate .close-button {
+    padding: 6px 0px;
+}
+
+EknContextBanner {
+    font-family: $default_font_01;
+    font-size: 29.3px;
+    color: $default_white;
+    text-shadow: 0px 1px transparentize(white, 1 - 0.004);
+}
+
+.composite EknContextBanner {
+    font-family: $default_font_01;
+}

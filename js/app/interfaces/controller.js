@@ -78,7 +78,7 @@ const Controller = new Lang.Interface({
         'theme': GObject.ParamSpec.string('theme', 'Theme',
             'Theme CSS specification filename',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            ''),
+            'default'),
     },
 
     Slots: {

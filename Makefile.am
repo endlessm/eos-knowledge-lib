@@ -58,6 +58,7 @@ scss_verbose_0 = @echo "  SCSS     $@";
 scss_toplevels = \
 	$(srcdir)/data/css/aisle.scss \
 	$(srcdir)/data/css/buffet.scss \
+	$(srcdir)/data/css/default.scss \
 	$(srcdir)/data/css/encyclopedia.scss \
 	$(srcdir)/data/css/mesh.scss \
 	$(srcdir)/data/css/news.scss \
