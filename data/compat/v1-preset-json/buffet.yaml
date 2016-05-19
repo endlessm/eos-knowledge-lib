@@ -135,7 +135,7 @@ defines:
         message-justify: left
       slots:
         arrangement:
-          shortdef: 'Arrangement.ScrollingList(bottom-buffer: 250)'
+          type: Arrangement.ScrollingList
           slots:
             card-type: Card.List
         article-suggestions: *article-suggestions

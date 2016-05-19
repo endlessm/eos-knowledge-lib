@@ -93,7 +93,7 @@ defines:
   slots:
     <<: *menu-slots
     content:
-      shortdef: 'Layout.InfiniteScrolling(bottom-buffer: 250)'
+      type: Layout.InfiniteScrolling
       id: theme-scroll
       slots:
         content:
@@ -155,7 +155,7 @@ defines:
                 message-justify: left
               slots:
                 arrangement:
-                  shortdef: 'Arrangement.ScrollingList(bottom-buffer: 250)'
+                  type: Arrangement.ScrollingList
                   slots:
                     card-type: Card.List
                 article-suggestions:

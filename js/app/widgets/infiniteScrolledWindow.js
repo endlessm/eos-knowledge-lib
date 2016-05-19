@@ -22,7 +22,7 @@ const InfiniteScrolledWindow = new Knowledge.Class({
         'bottom-buffer': GObject.ParamSpec.int('bottom-buffer', 'Bottom Buffer',
             'The pixel size of the bottom buffer',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            0, GLib.MAXINT32, 0),
+            0, GLib.MAXINT32, 250),
     },
     Signals: {
         /**
