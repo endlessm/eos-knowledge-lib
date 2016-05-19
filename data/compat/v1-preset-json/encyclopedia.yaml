@@ -4,7 +4,7 @@ defines:
     shortdef: 'Layout.TwoPiece(orientation: vertical, valign: center)'
     slots:
       # FIXME remove fractions
-      first: 'Banner.App(min-fraction: 0.5, max-fraction: 0.5)'
+      first: 'Banner.App(min-fraction: 0.5, max-fraction: 0.5, expand: true)'
       second: 'Navigation.SearchBox(halign: center)'
 
   - &inner-page-layout
