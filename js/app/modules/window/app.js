@@ -141,14 +141,18 @@ const App = new Module.Class({
             this._home_page.get_style_context().add_class(StyleClasses.HOME_PAGE_B);
             if (this._section_page)
                 this._section_page.get_style_context().add_class(StyleClasses.SECTION_PAGE_B);
-            this._search_page.get_style_context().add_class(StyleClasses.SEARCH_PAGE_B);
-            this._article_page.get_style_context().add_class(StyleClasses.ARTICLE_PAGE_B);
+            if (this._search_page)
+                this._search_page.get_style_context().add_class(StyleClasses.SEARCH_PAGE_B);
+            if (this._article_page)
+                this._article_page.get_style_context().add_class(StyleClasses.ARTICLE_PAGE_B);
         } else {
             this._home_page.get_style_context().add_class(StyleClasses.HOME_PAGE_A);
             if (this._section_page)
                 this._section_page.get_style_context().add_class(StyleClasses.SECTION_PAGE_A);
-            this._search_page.get_style_context().add_class(StyleClasses.SEARCH_PAGE_A);
-            this._article_page.get_style_context().add_class(StyleClasses.ARTICLE_PAGE_A);
+            if (this._search_page)
+                this._search_page.get_style_context().add_class(StyleClasses.SEARCH_PAGE_A);
+            if (this._article_page)
+                this._article_page.get_style_context().add_class(StyleClasses.ARTICLE_PAGE_A);
         }
 
         this._stack = new Gtk.Stack({
@@ -159,8 +163,10 @@ const App = new Module.Class({
         this._stack.add(this._home_page);
         if (this._section_page)
             this._stack.add(this._section_page);
-        this._stack.add(this._search_page);
-        this._stack.add(this._article_page);
+        if (this._search_page)
+            this._stack.add(this._search_page);
+        if (this._article_page)
+            this._stack.add(this._article_page);
         if (this._all_sets_page)
             this._stack.add(this._all_sets_page);
 
@@ -191,7 +197,8 @@ const App = new Module.Class({
         this._invisible_frame = new Gtk.Frame();
         this._search_stack.add(this._invisible_frame);
         this._search_box = this.create_submodule('search');
-        this._search_stack.add(this._search_box);
+        if (this._search_box)
+            this._search_stack.add(this._search_box);
         this._search_stack.show_all();
 
         let button_box = new Gtk.Box({
