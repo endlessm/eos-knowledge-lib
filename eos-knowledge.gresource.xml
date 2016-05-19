@@ -154,8 +154,11 @@
     <file>js/app/modules/card/text.js</file>
     <file>js/app/modules/card/thumb.js</file>
     <file>js/app/modules/card/title.js</file>
+    <file>js/app/modules/collection/allSets.js</file>
     <file>js/app/modules/collection/collection.js</file>
     <file>js/app/modules/collection/example.js</file>
+    <file>js/app/modules/collection/twitterSearch.js</file>
+    <file>js/app/modules/collection/twitterTimeline.js</file>
     <file>js/app/modules/collection/xapian.js</file>
     <file>js/app/modules/contentGroup/cardContainer.js</file>
     <file>js/app/modules/contentGroup/contentGroup.js</file>

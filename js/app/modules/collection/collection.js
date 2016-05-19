@@ -66,4 +66,10 @@ const Collection = new Module.Class({
         this._models_by_id.set(model.ekn_id, model);
         return true;
     },
+
+    /* Private, intended to be used from subclasses */
+    clear: function () {
+        this._models_by_id.clear();
+        this.emit('models-changed');
+    },
 });

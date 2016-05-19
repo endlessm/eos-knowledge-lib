@@ -182,7 +182,7 @@ const Arrangement = new Lang.Interface({
                 card.show_all();
         }
 
-        for (; ix < this._models.length; ix++)
+        for (; ix < this._models().length; ix++)
             this._remove_card_for_model(this._models()[ix]);
         this._models().splice(ix, this._models.length - ix);
     },
@@ -210,7 +210,7 @@ const Arrangement = new Lang.Interface({
      * This method will return filtered and ordered cards.
      */
     get_cards: function () {
-        let models = this.get_filtered_models();
+        let models = this.get_models();
         return models.map((model) => this.get_card_for_model(model)).filter((card) => card);
     },
 

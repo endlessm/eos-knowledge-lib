@@ -61,8 +61,8 @@ const MoltresEngine = new Lang.Class({
             return unique_data;
         }
         if (query.tags.indexOf('EknSetObject') >= 0) {
-            generation_func = () => {
-                let unique = uniquify(this._SETS[GLib.random_int_range(0, this._SETS.length)]);
+            generation_func = (ix) => {
+                let unique = uniquify(this._SETS[ix % this._SETS.length]);
                 return this._generate_set_object(unique);
             }
         } else {
@@ -74,7 +74,7 @@ const MoltresEngine = new Lang.Class({
 
         this._to_return = [];
         for (let i = 0; i < Math.min(10, query.limit); i++) {
-            this._to_return.push(generation_func());
+            this._to_return.push(generation_func(i));
         }
         callback(this);
     },
@@ -106,7 +106,8 @@ const MoltresEngine = new Lang.Class({
 
     _SETS: [
         {
-            title: 'Nature',
+            title: '@sarahjeong',
+            synopsis: 'sarah jeong',
             ekn_id: 'ekn://moltres/nature',
             child_tags: ['nature'],
             tags: ['EknSetObject'],
@@ -114,7 +115,8 @@ const MoltresEngine = new Lang.Class({
             featured: false,
         },
         {
-            title: 'People',
+            title: '@xor',
+            synopsis: 'Parker Higgins  ',
             ekn_id: 'ekn://moltres/people',
             child_tags: ['people'],
             tags: ['EknSetObject'],
@@ -122,7 +124,8 @@ const MoltresEngine = new Lang.Class({
             featured: false,
         },
         {
-            title: 'Work',
+            title: '@SwiftStories',
+            synopsis: 'Mike Swift',
             ekn_id: 'ekn://moltres/work',
             child_tags: ['work'],
             tags: ['EknSetObject'],
@@ -139,7 +142,7 @@ sagittis ut leo nec ullamcorper. Nullam eget odio a elit \
 placerat varius non id dui.',
 
     _generate_set_object: function (data) {
-        data.synopsis = this._SYNOPSIS;
+        //data.synopsis = this._SYNOPSIS;
         return new SetObjectModel.SetObjectModel(data);
     },
 

@@ -2,6 +2,7 @@
 
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
+const Gtk = imports.gi.Gtk;
 
 const Knowledge = imports.app.knowledge;
 
@@ -175,6 +176,8 @@ const Module = new Lang.Interface({
      * module class.
      */
     prepare_to_show: function () {
+        if (!(this instanceof Gtk.Container))
+            return;
         this.get_children().forEach((child) => {
             if (typeof child.constructor.implements !== 'undefined' && child.constructor.implements(Module)) {
                 child.prepare_to_show();

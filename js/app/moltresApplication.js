@@ -9,6 +9,8 @@ const ControllerLoader = imports.app.controllerLoader;
 const Knowledge = imports.app.knowledge;
 const MoltresEngine = imports.search.moltresEngine;
 
+Gio.Resource.load('/home/philip/install/share/eos-knowledge/eos-knowledge.gresource')._register();
+
 /**
  * Class: MoltresApplication
  *
@@ -43,7 +45,7 @@ const MoltresApplication = new Knowledge.Class({
             MoltresEngine.override_engine();
             // FIXME: The entire endless_knowledge theme is its 'custom css'.
             // This will be fixed once we figure out theming for v2 apps.
-            let css_file = Gio.File.new_for_path('data/css/endless_knowledge.css');
+            let css_file = Gio.File.new_for_path('demo.css');
             let [success, data] = css_file.load_contents(null);
             let css = data.toString();
             this._controller = ControllerLoader.create_controller_with_app_json(this, JSON.parse(app_json), {

@@ -18,9 +18,9 @@ defines:
           arrangement:
             shortdef: 'Arrangement.Quilt(spacing: 20)'
             slots:
+              card-type: Card.Text
         references:
           collection: 'front-page-collection'
-              card-type: Card.Text
 
   - &inner-page-layout
     type: Layout.DividedBanner

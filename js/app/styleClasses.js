@@ -252,7 +252,7 @@ const APP_BANNER = 'app-banner';
  *
  * Matches the Template A's HomePage.
  */
-const HOME_PAGE_A = 'home-page-a';
+const HOME_PAGE_A = 'home-page';
 
 /**
  * Constant: HOME_PAGE_B
@@ -358,7 +358,7 @@ const SECTION_PAGE_TITLE = 'title';
  *
  * Matches the Template A's SectionPage of the knowledge apps.
  */
-const SECTION_PAGE_A = 'section-page-a';
+const SECTION_PAGE_A = 'section-page';
 
 /**
  * Constant: SECTION_PAGE_B
@@ -372,7 +372,7 @@ const SECTION_PAGE_B = 'section-page-b';
  *
  * Matches the SearchPageA of the knowledge apps.
  */
-const SEARCH_PAGE_A = 'search-page-a';
+const SEARCH_PAGE_A = 'search-page';
 
 /**
  * Constant: SEARCH_PAGE_B

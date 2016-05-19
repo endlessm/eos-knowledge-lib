@@ -359,6 +359,8 @@ const App = new Module.Class({
     },
 
     show_page: function (new_page) {
+        new_page.prepare_to_show();
+
         // Disable the home button when the current page is the home or brand page
         this._home_button.sensitive = (new_page !== this._home_page && new_page !== this._brand_page);
 

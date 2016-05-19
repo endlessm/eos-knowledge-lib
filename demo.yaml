@@ -1,0 +1,82 @@
+defines:
+- &logo
+  type: Banner.App
+  properties:
+    valign: center
+    image-uri: 'file:///home/philip/checkout/eos-knowledge-lib/logo.svg'
+
+- &home-page
+  shortdef: 'Layout.TwoPiece(orientation: vertical)'
+  slots:
+    first:
+      type: ContentGroup.ContentGroup
+      properties:
+        vexpand: false
+        title: 'Oracle vs. Google Live Tweeters'
+      references:
+        collection: 'all-sets'
+      slots:
+        arrangement:
+          type: Arrangement.Thirties
+          properties:
+            max-rows: 1
+            spacing: 20
+          slots:
+            card-type: Card.Thumb
+    second: 'Navigation.SearchBox(valign: start, halign: center, expand: true)'
+
+- &twitter-stream-page
+  type: Layout.Banner
+  slots:
+    banner:
+      shortdef: 'Banner.Set(hexpand: true)'
+      slots:
+        card-type: 'Card.Title(halign: center)'
+    content:
+      type: ContentGroup.ContentGroup
+      properties:
+        halign: center
+      slots:
+        arrangement:
+          type: Arrangement.ScrollingList
+          slots:
+            card-type: Card.List
+      references:
+        collection: 'tweets-list'
+
+- &search-page
+  type: Layout.Banner
+  slots:
+    banner: Banner.Search
+    content:
+      shortdef: 'ContentGroup.ContentGroup(halign: center)'
+      slots:
+        arrangement:
+          type: Arrangement.ScrollingList
+          slots:
+            card-type: Card.List
+      references:
+        collection: 'tweets-search'
+
+root:
+  type: Controller.Mesh
+  slots:
+    window:
+      type: Window.App
+      slots:
+        search: Navigation.SearchBox
+        brand-page: *logo
+        home-page: *home-page
+        section-page: *twitter-stream-page
+        search-page: *search-page
+    collection1:
+      type: Collection.AllSets
+      id: 'all-sets'
+    collection2:
+      type: Collection.TwitterTimeline
+      id: 'tweets-list'
+    collection3:
+      type: Collection.TwitterSearch
+      id: 'tweets-search'
+      properties:
+        hashtag: '#googacle'

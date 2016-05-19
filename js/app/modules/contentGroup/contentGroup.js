@@ -7,6 +7,7 @@ const Gtk = imports.gi.Gtk;
 
 const Actions = imports.app.actions;
 const Dispatcher = imports.app.dispatcher;
+const InfiniteScrolledWindow = imports.app.widgets.infiniteScrolledWindow;
 const Module = imports.app.interfaces.module;
 
 const BATCH_SIZE = 15;
@@ -55,8 +56,11 @@ const ContentGroup = new Module.Class({
         this.attach(this._title, 0, 0, 1, 1);
         this._arrangement = this.create_submodule('arrangement');
         this._arrangement.connect('card-clicked', (arrangement, model) => {
+            let action_type = Actions.ITEM_CLICKED;
+            if (model.tags.indexOf('EknSetObject') !== -1)
+                action_type = Actions.SET_CLICKED;
             Dispatcher.get_default().dispatch({
-                action_type: Actions.ITEM_CLICKED,
+                action_type: action_type,
                 model: model,
                 context: this._collection.get_models(),
             });
@@ -78,6 +82,8 @@ const ContentGroup = new Module.Class({
             this._collection.connect('models-changed',
                 this._on_models_changed.bind(this));
             this._collection.connect('notify::loading', () => {
+                if (this._collection.get_models().length > 0)
+                    return;
                 stack.visible_child_name = this._collection.loading ? SPINNER_PAGE_NAME : CONTENT_PAGE_NAME;
             });
 
@@ -88,6 +94,11 @@ const ContentGroup = new Module.Class({
                 this._collection.bind_property('title',
                     this, 'title',
                     GObject.BindingFlags.DEFAULT);
+            }
+
+            if (this._arrangement instanceof InfiniteScrolledWindow.InfiniteScrolledWindow) {
+                this._arrangement.connect('need-more-content',
+                    this.load.bind(this));
             }
         });
 
@@ -100,6 +111,8 @@ const ContentGroup = new Module.Class({
         if (max_cards > -1)
             models.splice(max_cards);
         this._arrangement.set_models(models);
+        if (typeof this._arrangement.new_content_added === 'function')
+            this._arrangement.new_content_added();
     },
 
     load: function () {

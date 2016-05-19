@@ -42,6 +42,8 @@ const Mesh = new Module.Class({
 
     Slots: {
         'collection1': {},  // FIXME temporary
+        'collection2': {},
+        'collection3': {},
     },
 
     ARTICLE_PAGE: 'article',
@@ -65,7 +67,9 @@ const Mesh = new Module.Class({
         });
 
         // FIXME We don't have array-valued slots yet
-        this._collections = [this.create_submodule('collection1')];
+        this._collections = [this.create_submodule('collection1'),
+            this.create_submodule('collection2'),
+            this.create_submodule('collection3')];
 
         this._load_theme();
 
