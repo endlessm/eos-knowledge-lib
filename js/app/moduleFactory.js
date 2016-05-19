@@ -97,6 +97,7 @@ const ModuleFactory = new Knowledge.Class({
         this._path_to_description.set(path, description);
 
         let id = ('id' in description) ? description['id'] : null;
+        let styles = ('styles' in description) ? description['styles'] : null;
 
         let module_class = this.warehouse.type_to_class(description['type']);
         let module_props = {
@@ -119,6 +120,10 @@ const ModuleFactory = new Knowledge.Class({
 
         let module = new module_class(module_props);
 
+        if (styles) {
+            let context = module.get_style_context();
+            styles.forEach(context.add_class, context);
+        }
         if (id) {
             this._id_to_module.set(id, module);
             this._deliver_module_reference(module);
@@ -235,6 +240,8 @@ const ModuleFactory = new Knowledge.Class({
 
     _extract_ids: function (parent_description, parent_is_multi) {
         this._check_id(parent_description, parent_is_multi);
+        if (parent_description['styles'])
+            this._check_styles_support(parent_description);
         if (!('slots' in parent_description))
             return;
 
@@ -269,5 +276,12 @@ const ModuleFactory = new Knowledge.Class({
         if (typeof slot_props === 'undefined')
             throw new Error("No slot " + slot_name + " found in module: " + module_class);
         return (parent_is_multi || ('multi' in slot_props && slot_props['multi']));
+    },
+
+    _check_styles_support: function (description) {
+        let module_type = description['type'];
+        let module_class = this.warehouse.type_to_class(module_type);
+        if (typeof module_class.prototype.get_style_context === 'undefined')
+            throw new Error('No styles support in ' + module_type);
     },
 });

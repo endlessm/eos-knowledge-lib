@@ -60,12 +60,11 @@ def order_module_keys(module):
     retval = collections.OrderedDict({'type': module['type']})
     if 'id' in module:
         retval['id'] = module['id']
-    if 'properties' in module:
-        retval['properties'] = sorted_ordered_dict(module['properties'])
-    if 'slots' in module:
-        retval['slots'] = sorted_ordered_dict(module['slots'])
-    if 'references' in module:
-        retval['references'] = sorted_ordered_dict(module['references'])
+    if 'styles' in module:
+        retval['styles'] = sorted(module['styles'])
+    for key in ('properties', 'slots', 'references'):
+        if key in module:
+            retval[key] = sorted_ordered_dict(module[key])
     return retval
 
 
