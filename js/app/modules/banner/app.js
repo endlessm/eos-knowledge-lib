@@ -108,11 +108,7 @@ const App = new Module.Class({
             subtitle = app_info.get_description();
         }
         if (this.show_subtitle && subtitle) {
-            subtitle = Utils.format_capitals(subtitle, this.subtitle_capitalization);
-            // 758 = 0.74 px * 1024 Pango units / px
-            // FIXME: Should be achievable through CSS when we fix GTK
-            this._subtitle_label.label = ('<span letter_spacing="758">' +
-                GLib.markup_escape_text(subtitle, -1) + '</span>');
+            this._subtitle_label.label = Utils.format_capitals(subtitle, this.subtitle_capitalization);
             this._subtitle_label.justify = Utils.alignment_to_justification(this.halign);
         }
         this._subtitle_label.visible = this.show_subtitle;
