@@ -11,6 +11,9 @@ defines:
   slots:
     content:
       type: Layout.Banner
+      styles:
+        - b-style-class
+        - a-style-class
       slots:
         banner:
           type: Banner.App

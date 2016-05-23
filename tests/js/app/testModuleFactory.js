@@ -3,6 +3,7 @@
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 
+const CssClassMatcher = imports.tests.CssClassMatcher;
 const InstanceOfMatcher = imports.tests.InstanceOfMatcher;
 const Knowledge = imports.app.knowledge;
 const Minimal = imports.tests.minimal;
@@ -44,6 +45,10 @@ const MOCK_APP_JSON = {
                             // Example of correct properties
                             'slot-1': {
                                 type: 'MinimalCard',
+                                styles: [
+                                    'a-style-class',
+                                    'b-style-class',
+                                ],
                                 properties: {
                                     'expand': 'true',
                                     'width-request': 200,
@@ -130,6 +135,16 @@ const IN_MULTI_APP_JSON = {
     },
 };
 
+const NO_STYLE_SUPPORT_APP_JSON = {
+    version: 2,
+    root: {
+        type: 'TestModule',
+        styles: [
+            'a-style-class',
+        ],
+    },
+};
+
 const MockModule = new Module.Class({
     Name: 'MockModule',
     Extends: Minimal.MinimalModule,
@@ -167,6 +182,7 @@ describe('Module factory', function () {
     let module_factory, warehouse, root;
 
     beforeEach(function () {
+        jasmine.addMatchers(CssClassMatcher.customMatchers);
         jasmine.addMatchers(InstanceOfMatcher.customMatchers);
         warehouse = new MockWarehouse();
         module_factory = new ModuleFactory.ModuleFactory({
@@ -230,6 +246,23 @@ describe('Module factory', function () {
         let sub1 = module_factory.create_module_for_slot(module1, 'slot-1');
         let sub2 = module_factory.create_module_for_slot(module2, 'slot-1');
         expect(sub1.factory_path).not.toEqual(sub2.factory_path);
+    });
+
+    it('assigns style classes to the module', function () {
+        let module1 = module_factory.create_module_for_slot(root, 'slot-2');
+        let module2 = module_factory.create_module_for_slot(module1, 'slot-2');
+        let module3 = module_factory.create_module_for_slot(module2, 'slot-1');
+        expect(module3).toHaveCssClass('a-style-class');
+        expect(module3).toHaveCssClass('b-style-class');
+    });
+
+    it('does not allow style in modules that does not support it', function () {
+        expect(() => {
+            new ModuleFactory.ModuleFactory({
+                app_json: NO_STYLE_SUPPORT_APP_JSON,
+                warehouse: warehouse,
+            });
+        }).toThrow();
     });
 
     describe('referenced modules', function () {

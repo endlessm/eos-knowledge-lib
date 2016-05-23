@@ -26,6 +26,10 @@
             "slots": {
               "content": {
                 "type": "Layout.Banner",
+                "styles": [
+                  "a-style-class",
+                  "b-style-class"
+                ],
                 "slots": {
                   "banner": {
                     "type": "Banner.App",
