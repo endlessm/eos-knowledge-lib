@@ -11,14 +11,6 @@ const ThemeableImage = new Knowledge.Class({
     Name: 'ThemeableImage',
     Extends: Gtk.Widget,
 
-    StyleProperties: {
-        // FIXME: Standin till these are supported in gtk.
-        'min-height': GObject.ParamSpec.int('min-height', 'Min Height',
-            'Min Height', GObject.ParamFlags.READABLE, 0, GLib.MAXINT32, 0),
-        'min-width': GObject.ParamSpec.int('min-width', 'Min Width',
-            'Min Width', GObject.ParamFlags.READABLE, 0, GLib.MAXINT32, 0),
-    },
-
     _init: function (props={}) {
         this.parent(props);
         this.get_style_context().add_class(Gtk.STYLE_CLASS_IMAGE);
@@ -35,8 +27,12 @@ const ThemeableImage = new Knowledge.Class({
     },
 
     _update_custom_style: function () {
-        let min_width = EosKnowledgePrivate.style_context_get_custom_int(this.get_style_context(), 'min-width');
-        let min_height = EosKnowledgePrivate.style_context_get_custom_int(this.get_style_context(), 'min-height');
+        let min_width = EosKnowledgePrivate.style_context_get_int(this.get_style_context(),
+                                                                  'min-width'
+                                                                  this.get_state_flags());
+        let min_height = EosKnowledgePrivate.style_context_get_int(this.get_style_context(),
+                                                                   'min-height',
+                                                                   this.get_state_flags());
         if (min_width !== this._min_width || min_height !== this._min_height)
             this.queue_resize();
         this._min_width = min_width;
