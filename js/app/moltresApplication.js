@@ -40,9 +40,7 @@ const MoltresApplication = new Knowledge.Class({
             let app_json = Utils.parse_object_from_file(Gio.File.new_for_path(this.app_json_path));
 
             MoltresEngine.override_engine();
-            // FIXME: The entire mesh theme is its 'custom css'.
-            // This will be fixed once we figure out theming for v2 apps.
-            let css_file = Gio.File.new_for_path('data/css/mesh.css');
+            let css_file = Gio.File.new_for_path('data/css/default.css');
             let [success, data] = css_file.load_contents(null);
             let css = data.toString();
             this._controller = ControllerLoader.create_controller_with_app_json(this, app_json, {
