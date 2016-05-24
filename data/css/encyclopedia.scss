@@ -96,6 +96,13 @@ EosWindow {
     margin: 10px 0;
 }
 
+.search-page EknAppBanner .image,
+.article-page EknAppBanner .image {
+    -EknThemeableImage-sizing: "size-min";
+    min-width: 202px;
+    min-height: 72px;
+}
+
 .search-page EknPaperTemplate EknBoxLayout {
     padding: 0 45px;
 }

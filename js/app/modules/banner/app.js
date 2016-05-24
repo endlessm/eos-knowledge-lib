@@ -7,7 +7,7 @@ const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 
 const Module = imports.app.interfaces.module;
-const ImagePreviewer = imports.app.widgets.imagePreviewer;
+const ThemeableImage = imports.app.widgets.themeableImage;
 const Utils = imports.app.utils;
 
 /**
@@ -54,29 +54,6 @@ const App = new Module.Class({
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             EosKnowledgePrivate.TextTransformType,
             EosKnowledgePrivate.TextTransform.NONE),
-        /**
-         * Property: min-fraction
-         * Delegates to <ImagePreviewer.min-fraction>
-         *
-         * Allows setting this property on the logo widget from the app.json.
-         * It's construct only for simplicity.
-         */
-        'min-fraction': GObject.ParamSpec.float('min-fraction', 'Min fraction',
-            'Min fraction of size to display the logo at',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            0.0, 1.0, 0.0),
-
-        /**
-         * Property: max-fraction
-         * Delegates to <ImagePreviewer.max-fraction>
-         *
-         * Allows setting this property on the logo widget from the app.json.
-         * It's construct only for simplicity.
-         */
-        'max-fraction': GObject.ParamSpec.float('max-fraction', 'Max fraction',
-            'Max fraction of size to display the logo at',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            0.0, 1.0, 1.0),
     },
 
     Template: 'resource:///com/endlessm/knowledge/data/widgets/banner/app.ui',
@@ -88,18 +65,14 @@ const App = new Module.Class({
         props.expand = props.expand || false;
         this.parent(props);
 
-        this._logo = new ImagePreviewer.ImagePreviewer({
-            visible: true,
-            min_fraction: this.min_fraction,
-            max_fraction: this.max_fraction,
-            expand: true,
-            valign: Gtk.Align.END,
-        });
-        this.attach(this._logo, 0, 0, 1, 1);
-
         if (this.image_uri) {
-            let stream = Gio.File.new_for_uri(this.image_uri).read(null);
-            this._logo.set_content(stream);
+            let image = new ThemeableImage.ThemeableImage({
+                image_uri: this.image_uri,
+                visible: true,
+                expand: true,
+                valign: Gtk.Align.END,
+            });
+            this.attach(image, 0, 0, 1, 1);
         }
 
         let subtitle = '';

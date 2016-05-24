@@ -81,6 +81,12 @@ EknAppBanner {
     color: $context-blue;
 }
 
+.top-menu EknAppBanner .image {
+    -EknThemeableImage-sizing: "size-min";
+    min-width: 146px;
+    min-height: 30px;
+}
+
 EknPanelFrame .top-menu {
     background-color: #050c20;
     box-shadow: 0px 10px 20px 0px rgba(0, 0, 0, 0.2);

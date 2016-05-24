@@ -10,6 +10,12 @@ EosWindow {
     background-color: #888888;
 }
 
+EknAppBanner .image {
+    -EknThemeableImage-sizing: "size-down";
+    min-width: 200px;
+    min-height: 200px;
+}
+
 .article-search {
     background-color: #dbdbdb;
     padding: 3px;
