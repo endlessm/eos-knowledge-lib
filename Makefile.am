@@ -136,16 +136,6 @@ eos-knowledge.gresource.deps: $(scss_targets) $(subst_files) $(json_presets)
 pkgdata_DATA += eos-knowledge.gresource
 gresources += eos-knowledge.gresource
 
-compatdatadir = $(pkgdatadir)/compat
-compatdata_DATA = \
-	data/compat/encyclopedia-ar/com.endlessm.encyclopedia-ar.gresource \
-	data/compat/encyclopedia-en/com.endlessm.encyclopedia-en.gresource \
-	data/compat/encyclopedia-es/com.endlessm.encyclopedia-es.gresource \
-	data/compat/encyclopedia-fr/com.endlessm.encyclopedia-fr.gresource \
-	data/compat/encyclopedia-pt/com.endlessm.encyclopedia-pt.gresource \
-	$(NULL)
-gresources += $(compatdata_DATA)
-
 # # # MAIN LIBRARY # # #
 
 eosknowledgeprivate_headers = \
@@ -257,7 +247,6 @@ subst_files = \
 	ekn-downloader \
 	ekn-search-provider \
 	ekn-app-runner \
-	eos-encyclopedia \
 	js/app/config.js \
 	js/search/config.js \
 	eminem \
