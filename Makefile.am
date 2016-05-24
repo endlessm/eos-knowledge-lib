@@ -272,7 +272,6 @@ bin_SCRIPTS += \
 	ekn-downloader \
 	ekn-search-provider \
 	ekn-app-runner \
-	eos-encyclopedia \
 	autobahn \
 	eminem \
 	kermit \
