@@ -24,7 +24,8 @@ const PanelFrame = new Knowledge.Class({
         if (!this.get_child())
             return;
 
-        let shadow_margin = EosKnowledgePrivate.widget_style_get_int(this.panel, 'shadow-margin');
+        let shadow_margin = EosKnowledgePrivate.style_context_get_custom_int(this.panel.get_style_context(),
+                                                                             'shadow-margin');
 
         // Remove the extra space given by the SlidingPanelOverlay
         allocation.width -= 2 * shadow_margin;

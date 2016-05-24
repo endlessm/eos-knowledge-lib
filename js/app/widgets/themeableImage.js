@@ -35,8 +35,8 @@ const ThemeableImage = new Knowledge.Class({
     },
 
     _update_custom_style: function () {
-        let min_width = EosKnowledgePrivate.widget_style_get_int(this, 'min-width');
-        let min_height = EosKnowledgePrivate.widget_style_get_int(this, 'min-height');
+        let min_width = EosKnowledgePrivate.style_context_get_custom_int(this.get_style_context(), 'min-width');
+        let min_height = EosKnowledgePrivate.style_context_get_custom_int(this.get_style_context(), 'min-height');
         if (min_width !== this._min_width || min_height !== this._min_height)
             this.queue_resize();
         this._min_width = min_width;

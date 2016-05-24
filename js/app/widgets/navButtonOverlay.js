@@ -43,7 +43,8 @@ const GrowButton = new Knowledge.Class({
     },
 
     _update_custom_style: function () {
-        let grow_pixels = EosKnowledgePrivate.widget_style_get_int(this, 'grow-pixels');
+        let grow_pixels = EosKnowledgePrivate.style_context_get_custom_int(this.get_style_context(),
+                                                                           'grow-pixels');
         this._tweener.inactive_value = this.halign === Gtk.Align.START ? -grow_pixels : grow_pixels;
     },
 

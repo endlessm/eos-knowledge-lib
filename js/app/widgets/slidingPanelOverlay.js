@@ -51,8 +51,10 @@ const SlidingPanelOverlay = new Knowledge.Class({
 
         let clamp = (v, low, high) => Math.min(high, Math.max(low, v));
 
-        let fill_percentage = EosKnowledgePrivate.widget_style_get_float(panel, 'fill-percentage');
-        let shadow_margin = EosKnowledgePrivate.widget_style_get_int(panel, 'shadow-margin');
+        let fill_percentage = EosKnowledgePrivate.style_context_get_custom_int(panel.get_style_context(),
+                                                                               'fill-percentage');
+        let shadow_margin = EosKnowledgePrivate.style_context_get_custom_int(panel.get_style_context(),
+                                                                             'shadow-margin');
 
         let direction = panel.hide_direction;
         let [fill_coord, fill_size, align_coord, align_size] = ['x', 'width', 'y', 'height'];
