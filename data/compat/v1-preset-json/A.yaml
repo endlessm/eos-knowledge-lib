@@ -13,7 +13,7 @@ defines:
   type: Layout.HamburgerBasement
   slots:
     # FIXME remove fractions
-    top: 'Banner.App(min-fraction: 0.1, max-fraction: 0.7)'
+    top: Banner.App
     middle: 'Navigation.SearchBox(halign: center)'
     bottom:
       type: ContentGroup.Set

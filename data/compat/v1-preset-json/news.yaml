@@ -25,8 +25,7 @@ defines:
         content:
           type: Navigation.TopMenu
           slots:
-            # FIXME remove fraction
-            banner: 'Banner.App(max-fraction: 0.2, show-subtitle: false)'
+            banner: 'Banner.App(show-subtitle: false)'
             menu:
               shortdef: 'ContentGroup.SuggestedCategories(show-title: false)'
               slots:
@@ -194,7 +193,7 @@ root:
           type: ContentGroup.MediaLightbox
           slots:
             card-type: Card.Media
-        brand-page: 'Banner.App(max-fraction: 0.6, show-subtitle: true)'
+        brand-page: 'Banner.App(show-subtitle: true)'
         home-page: *home-page
         section-page: *section-page
         search-page: *search-page
