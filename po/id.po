@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eos-knowledge-lib\n"
 "Report-Msgid-Bugs-To: https://www.transifex.com/organization/endless-mobile-inc\n"
-"POT-Creation-Date: 2016-05-10 01:37+0000\n"
+"POT-Creation-Date: 2016-05-17 01:37+0000\n"
 "PO-Revision-Date: 2016-03-23 23:05+0000\n"
 "Last-Translator: Roddy Shuler <roddy@endlessm.com>\n"
 "Language-Team: Indonesian (http://www.transifex.com/endless-mobile-inc/eos-knowledge-lib/language/id/)\n"
@@ -31,15 +31,15 @@ msgstr "Jangan lewatkan edisi minggu depan dengan lebih banyak artikel di majala
 msgid "PDF"
 msgstr "PDF"
 
-#: data/widgets/readerCard.ui:112
+#: data/widgets/readerCard.ui:106
 msgid "Archive"
 msgstr "Arsip"
 
-#: data/widgets/sequenceCard.ui:21 js/app/modules/articleStack.js:136
+#: data/widgets/sequenceCard.ui:21 js/app/modules/articleStack.js:140
 msgid "Next Article"
 msgstr "Artikel Selanjutnya"
 
-#: data/widgets/sequenceCard.ui:59 js/app/modules/articleStack.js:119
+#: data/widgets/sequenceCard.ui:59 js/app/modules/articleStack.js:123
 msgid "Previous Article"
 msgstr "Artikel Sebelumnya"
 
@@ -56,7 +56,7 @@ msgstr "Jelajahi berdasarkan topik"
 #. to be substituted in code. Please make sure to leave the
 #. curly braces around any words that have them and DO NOT
 #. translate words inside curly braces.
-#: js/app/articleHTMLRenderer.js:87
+#: js/app/articleHTMLRenderer.js:84
 msgid ""
 "This page contains content from {original-link}, available under a {license-"
 "link} license."
@@ -64,7 +64,7 @@ msgstr "Halaman ini mengandung konten dari {original-link}, yang tersedia dengan
 
 #. TRANSLATORS: Replace this with a link to the homepage of
 #. wikiHow in your language.
-#: js/app/articleHTMLRenderer.js:94
+#: js/app/articleHTMLRenderer.js:91
 msgid "http://wikihow.com"
 msgstr "http://wikihow.com"
 
@@ -72,14 +72,18 @@ msgstr "http://wikihow.com"
 #. to be substituted in code. Please make sure to leave the
 #. curly braces around any words that have them and DO NOT
 #. translate words inside curly braces.
-#: js/app/articleHTMLRenderer.js:99
+#: js/app/articleHTMLRenderer.js:96
 msgid ""
 "See {wikihow-article-link} for more details, videos, pictures and "
 "attribution. Courtesy of {wikihow-link}, where anyone can easily learn how "
 "to do anything."
 msgstr "Lihat {wikihow-article-link} untuk rincian, video, gambar dan atribusi selengkapnya. Milik {wikihow-link}, di mana setiap orang dapat mempelajari cara melakukan sesuatu secara mudah."
 
-#: js/app/articleHTMLRenderer.js:112
+#: js/app/articleHTMLRenderer.js:166 js/app/articleHTMLRenderer.js:256
+msgid "Copy"
+msgstr "Salin"
+
+#: js/app/articleHTMLRenderer.js:195
 msgid "Legal Notice and Intellectual Property Policy"
 msgstr ""
 
@@ -87,29 +91,25 @@ msgstr ""
 #. substituted in code. Please make sure to leave the curly
 #. braces around any words that have them, and do not translate
 #. words inside curly braces.
-#: js/app/articleHTMLRenderer.js:118
+#: js/app/articleHTMLRenderer.js:201
 msgid "Read more at {link}"
 msgstr "Selengkapnya di {link}"
 
-#: js/app/articleHTMLRenderer.js:132
+#: js/app/articleHTMLRenderer.js:207
 msgid "DISCLAIMER PLACEHOLDER"
 msgstr ""
-
-#: js/app/articleHTMLRenderer.js:220
-msgid "Copy"
-msgstr "Salin"
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
-#: js/app/articleHTMLRenderer.js:251
+#: js/app/articleHTMLRenderer.js:288
 msgid "Content taken from {blog-link}."
 msgstr "Konten diambil dari {blog-link}."
 
 #. TRANSLATORS: the text inside curly braces {blog-link} is going to be
 #. substituted in code. Please make sure that your translation contains
 #. {blog-link} and it is not translated.
-#: js/app/articleHTMLRenderer.js:256
+#: js/app/articleHTMLRenderer.js:293
 msgid "Content courtesy of {blog-link}. Used with kind permission."
 msgstr "Konten adalah hak milik {blog-link}. Digunakan dengan izin."
 
@@ -117,7 +117,7 @@ msgstr "Konten adalah hak milik {blog-link}. Digunakan dengan izin."
 #. is going to be substituted in code. Please make sure that your
 #. translation contains both {blog-link} and {license-link} and they are not
 #. translated.
-#: js/app/articleHTMLRenderer.js:264
+#: js/app/articleHTMLRenderer.js:301
 msgid "Content courtesy of {blog-link}, licensed under {license-link}."
 msgstr "Konten adalah hak milik {blog-link}, berlisensi di bawah {license-link}."
 
@@ -160,7 +160,7 @@ msgid "See more %s"
 msgstr "Lihat lebih banyak %s"
 
 #: js/app/modules/contextBanner.js:40 js/app/modules/contextBanner.js:48
-#: js/app/modules/highlights.js:133
+#: js/app/modules/highlights.js:135
 msgid "Highlights"
 msgstr "Sorotan"
 
@@ -184,7 +184,7 @@ msgstr "LIHAT SEMUA KATEGORI"
 msgid "Page %s"
 msgstr "Halaman %s"
 
-#: js/app/modules/readerDocumentCard.js:121
+#: js/app/modules/readerDocumentCard.js:115
 msgid "This article is part of the archive."
 msgstr "Artikel ini bagian dari arsip."
 
