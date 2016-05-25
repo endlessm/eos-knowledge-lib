@@ -45,7 +45,7 @@ const Class = new Lang.Class({
 
     _construct: function (props={}) {
         if (!props.GTypeName)
-            props.GTypeName = 'Ekn' + props.Name;
+            props.GTypeName = 'Ekn' + props.Name.replace('.', '_', 'g');
 
         props.Properties = props.Properties || {};
         props.Implements = props.Implements || [];
