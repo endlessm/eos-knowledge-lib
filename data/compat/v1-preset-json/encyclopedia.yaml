@@ -17,7 +17,7 @@ defines:
           max-fraction: 0.2
           valign: start
           halign: center
-          vexpand: false  # FIXME: ImagePreviewer inside AppBanner expands
+          hexpand: true
       top-right:
         type: Navigation.SearchBox
         properties:
