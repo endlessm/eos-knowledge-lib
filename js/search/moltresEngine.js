@@ -19,7 +19,6 @@ const MoltresEngine = new Lang.Class({
         this._counter = 0;
     },
 
-    add_runtime_object: function () {},
     get_ekn_id: function () {},
 
     get_object_by_id: function (ekn_id, cancellable, callback) {

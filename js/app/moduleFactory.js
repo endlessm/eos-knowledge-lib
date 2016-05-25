@@ -55,9 +55,6 @@ const ModuleFactory = new Knowledge.Class({
         this.parent(props);
 
         if (!this.app_json.hasOwnProperty('version') || this.app_json.version < 2) {
-            // For v1 app.jsons, the categories are stored in the app.json
-            // rather than in the database. We create fake objects for them.
-            Compat.create_v1_set_models(this.app_json, Engine.get_default());
             this.app_json = Compat.transform_v1_description(this.app_json);
             this._version = 1;
         } else {

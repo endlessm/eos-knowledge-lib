@@ -156,24 +156,6 @@ const Mesh = new Module.Class({
         });
     },
 
-    STYLE_MAP: {
-        A: {
-            section_card: '.legacy-polaroid-card',
-            article_card: '.article-card',
-            section_page_banner: '.section-page-a EknSetBanner',
-            search_page_banner: '.search-page-a EknSearchBanner',
-            no_search_results_page: '.no-search-results-page-a'
-        },
-        B: {
-            section_card: '.legacy-post-card',
-            article_card: '.title-card',
-            section_page_banner: '.section-page-b EknSetBanner',
-            search_page_banner: '.search-page-b EknSearchBanner',
-            search_page: '.search-page-b',
-            no_search_results_page: '.no-search-results-page-b'
-        },
-    },
-
     _on_history_item_change: function (presenter, item, is_going_back) {
         let dispatcher = Dispatcher.get_default();
         dispatcher.dispatch({

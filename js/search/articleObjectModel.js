@@ -119,8 +119,6 @@ const ArticleObjectModel = new Lang.Class({
         delete props.outgoing_links;
 
         this.parent(props, json_ld);
-
-        this._article_legacy_fixups();
     },
 
     _article_props_from_json_ld: function (props, json_ld) {
@@ -151,65 +149,5 @@ const ArticleObjectModel = new Lang.Class({
 
         if (json_ld.hasOwnProperty('published'))
             props.published = json_ld.published;
-    },
-
-    _article_legacy_fixups: function () {
-        if (this.ekn_version === 1) {
-            // This is a holdover from the node knowledge engine where we guess
-            // the source of the html from the source_uri field, and if it comes
-            // from pantheon, assume embedly.
-            if (!this.source && this.source_uri) {
-                let host = Soup.URI.new(this.source_uri).get_host();
-
-                if (host === null) {
-                    throw new Error('Null source URI hostname found for article ' +
-                        'sourceURI: ' + this.source_uri);
-                }
-
-                if (/^.*.wikipedia\.org/.test(host)) {
-                    this.source = 'wikipedia';
-                } else if (/^.*\.wikisource\.org/.test(host)) {
-                    this.source = 'wikisource';
-                } else if (/^.*\.wikibooks\.org/.test(host)) {
-                    this.source = 'wikibooks';
-                } else if (/^.*wikihow\.com/.test(host)) {
-                    this.source = 'wikihow';
-                } else if ('eos-pantheon.herokuapp.com' === host || 'localhost' === host) {
-                    this.source = 'embedly';
-                } else if ('knowledge-build' === host) {
-                    // This is where we used to host pdf apps pre 2.3, needed for
-                    // compatibility with 2.2 era bundles
-                    this.source = 'pdf';
-                } else {
-                    throw new Error('Unrecognized source uri host: ' + host);
-                }
-            }
-
-            if (!this.original_uri && this.source_uri &&
-                ['wikipedia', 'wikihow', 'wikisource', 'wikibooks'].indexOf(this.source) !== -1)
-                this.original_uri = this.source_uri;
-
-            if (!this.source_name) {
-                if (this.source === 'wikipedia')
-                    this.source_name = 'Wikipedia';
-                else if (this.source === 'wikihow')
-                    this.source_name = 'wikiHow';
-                else if (this.source === 'wikisource')
-                    this.source_name = 'Wikisource';
-                else if (this.source === 'wikibooks')
-                    this.source_name = 'Wikibooks';
-            }
-
-            // Remove invalid value of license property which exists in pre-2.3 DBs.
-            // Replace with correct license.
-            if (this.license === 'Creative Commons')
-                delete this.license;
-            if (!this.license) {
-                if (['wikipedia', 'wikisource', 'wikibooks'].indexOf(this.source) !== -1)
-                    this.license = 'CC-BY-SA 3.0';
-                else if (this.source === 'wikihow')
-                    this.license = 'Owner permission';
-            }
-        }
     },
 });

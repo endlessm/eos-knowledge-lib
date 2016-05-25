@@ -25,7 +25,6 @@ const MockEngine = new Lang.Class({
         spyOn(this, 'get_objects_by_query_finish');
     },
 
-    add_runtime_object: function () {},
     get_ekn_id: function () {},
 
     // FIXME: we launch into the callbacks synchronously because all the tests

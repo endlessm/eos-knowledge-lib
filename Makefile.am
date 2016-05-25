@@ -288,7 +288,6 @@ EXTRA_DIST += autobahn
 javascript_tests = \
 	tests/eosknowledgeprivate/testHistoryItemModel.js \
 	tests/eosknowledgeprivate/testHistoryModel.js \
-	tests/js/app/compat/testCompat.js \
 	tests/js/app/interfaces/testArrangement.js \
 	tests/js/app/interfaces/testCard.js \
 	tests/js/app/interfaces/testController.js \
@@ -378,7 +377,6 @@ javascript_tests = \
 	tests/js/app/testModuleFactory.js \
 	tests/js/app/testReadingHistoryModel.js \
 	tests/js/app/testSetMap.js \
-	tests/js/app/testStyleKnobGenerator.js \
 	tests/js/app/testToggleTweener.js \
 	tests/js/app/testUtils.js \
 	tests/js/app/testWebExtension.js \

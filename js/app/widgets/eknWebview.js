@@ -155,7 +155,7 @@ const EknWebview = new Knowledge.Class({
 
     _onNavigation: function (webview, decision, decision_type) {
         if (decision_type === WebKit2.PolicyDecisionType.NAVIGATION_ACTION) {
-            let uri = Compat.normalize_old_browser_urls(decision.request.uri);
+            let uri = decision.request.uri;
             let scheme = GLib.uri_parse_scheme(uri);
             if (scheme !== null && this.EXTERNALLY_HANDLED_SCHEMES.indexOf(scheme) !== -1) {
                 Gtk.show_uri(null, uri, Gdk.CURRENT_TIME);

@@ -90,7 +90,6 @@
     <file>js/app/application.js</file>
     <file>js/app/articleHTMLRenderer.js</file>
     <file>js/app/compat/compat.js</file>
-    <file>js/app/compat/styleKnobGenerator.js</file>
     <file>js/app/config.js</file>
     <file>js/app/controllerLoader.js</file>
     <file>js/app/dispatcher.js</file>
@@ -108,7 +107,6 @@
     <file>js/app/interfaces/navigationCard.js</file>
     <file>js/app/interfaces/order.js</file>
     <file>js/app/knowledge.js</file>
-    <file>js/app/libs/cssParse.js</file>
     <file>js/app/libs/mustache.js</file>
     <file>js/app/moduleFactory.js</file>
     <file>js/app/modules/arrangement/carousel.js</file>
@@ -215,7 +213,6 @@
     <file>js/search/application.js</file>
     <file>js/search/articleObjectModel.js</file>
     <file>js/search/asyncTask.js</file>
-    <file>js/search/blacklist.js</file>
     <file>js/search/config.js</file>
     <file>js/search/contentObjectModel.js</file>
     <file>js/search/datadir.js</file>
