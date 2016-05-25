@@ -56,7 +56,6 @@ scss_verbose_ = $(scss_verbose_@AM_DEFAULT_V@)
 scss_verbose_0 = @echo "  SCSS     $@";
 
 scss_toplevels = \
-	$(srcdir)/data/css/aisle.scss \
 	$(srcdir)/data/css/buffet.scss \
 	$(srcdir)/data/css/encyclopedia.scss \
 	$(srcdir)/data/css/mesh.scss \
@@ -64,7 +63,6 @@ scss_toplevels = \
 	$(srcdir)/data/css/picard.scss \
 	$(srcdir)/data/templates/css/embedly.scss \
 	$(srcdir)/data/templates/css/prensa-libre.scss \
-	$(srcdir)/data/templates/css/reader.scss \
 	$(srcdir)/data/templates/css/reader2.scss \
 	$(srcdir)/data/templates/css/wikihow.scss \
 	$(srcdir)/data/templates/css/wikimedia.scss \
@@ -99,7 +97,6 @@ yaml_presets = \
 	data/compat/v1-preset-json/buffet.yaml \
 	data/compat/v1-preset-json/encyclopedia.yaml \
 	data/compat/v1-preset-json/news.yaml \
-	data/compat/v1-preset-json/reader.yaml \
 	$(NULL)
 json_presets = $(yaml_presets:.yaml=.json)
 
@@ -312,16 +309,12 @@ javascript_tests = \
 	tests/js/app/modules/banner/testContext.js \
 	tests/js/app/modules/banner/testSearch.js \
 	tests/js/app/modules/banner/testSet.js \
-	tests/js/app/modules/banner/testStandalone.js \
-	tests/js/app/modules/card/testArticleSnippet.js \
 	tests/js/app/modules/card/testKnowledgeDocument.js \
 	tests/js/app/modules/card/testLegacyPolaroid.js \
 	tests/js/app/modules/card/testLegacyPost.js \
 	tests/js/app/modules/card/testList.js \
 	tests/js/app/modules/card/testMedia.js \
 	tests/js/app/modules/card/testPost.js \
-	tests/js/app/modules/card/testReader.js \
-	tests/js/app/modules/card/testReaderDocument.js \
 	tests/js/app/modules/card/testSequence.js \
 	tests/js/app/modules/card/testSetPreview.js \
 	tests/js/app/modules/card/testText.js \
@@ -337,7 +330,6 @@ javascript_tests = \
 	tests/js/app/modules/contentGroup/testSuggestedCategories.js \
 	tests/js/app/modules/contentGroup/testSupplementaryArticles.js \
 	tests/js/app/modules/contentGroup/testThematic.js \
-	tests/js/app/modules/controller/testAisle.js \
 	tests/js/app/modules/controller/testBuffet.js \
 	tests/js/app/modules/controller/testMesh.js \
 	tests/js/app/modules/filter/testFeatured.js \
@@ -355,7 +347,6 @@ javascript_tests = \
 	tests/js/app/modules/layout/testSearchAndItem.js \
 	tests/js/app/modules/layout/testSidebar.js \
 	tests/js/app/modules/layout/testSideMenu.js \
-	tests/js/app/modules/layout/testSplitPercentage.js \
 	tests/js/app/modules/layout/testTopMenu.js \
 	tests/js/app/modules/layout/testTwoPiece.js \
 	tests/js/app/modules/navigation/testSearchBox.js \
@@ -363,12 +354,8 @@ javascript_tests = \
 	tests/js/app/modules/order/testAlphabetical.js \
 	tests/js/app/modules/order/testFeatured.js \
 	tests/js/app/modules/order/testPublishedDate.js \
-	tests/js/app/modules/page/testBackCover.js \
-	tests/js/app/modules/page/testStandalone.js \
 	tests/js/app/modules/window/testApp.js \
 	tests/js/app/modules/window/testEncyclopedia.js \
-	tests/js/app/modules/window/testReader.js \
-	tests/js/app/testAisleUserSettingsModel.js \
 	tests/js/app/testArticleHTMLRenderer.js \
 	tests/js/app/testDispatcher.js \
 	tests/js/app/testDominantColor.js \
@@ -386,7 +373,6 @@ javascript_tests = \
 	tests/js/app/widgets/testLightbox.js \
 	tests/js/app/widgets/testPDFView.js \
 	tests/js/app/widgets/testPreviewer.js \
-	tests/js/app/widgets/testProgressLabel.js \
 	tests/js/app/widgets/testSlidingPanel.js \
 	tests/js/app/widgets/testSlidingPanelOverlay.js \
 	tests/js/app/widgets/testSpaceContainer.js \
@@ -416,7 +402,6 @@ test_content = \
 	tests/test-content/overrides.css \
 	tests/test-content/overrides-a.css \
 	tests/test-content/overrides-b.css \
-	tests/test-content/overrides-reader.css \
 	tests/test-content/pdf-sample1.pdf \
 	$(NULL)
 EXTRA_DIST += \

@@ -6,8 +6,6 @@
     <file compressed="true">data/compat/v1-preset-json/buffet.json</file>
     <file compressed="true">data/compat/v1-preset-json/encyclopedia.json</file>
     <file compressed="true">data/compat/v1-preset-json/news.json</file>
-    <file compressed="true">data/compat/v1-preset-json/reader.json</file>
-    <file compressed="true">data/css/aisle.css</file>
     <file compressed="true">data/css/buffet.css</file>
     <file compressed="true">data/css/encyclopedia.css</file>
     <file compressed="true">data/css/mesh.css</file>
@@ -22,11 +20,6 @@
     <file>data/images/tools/football.jpg</file>
     <file>data/images/tools/desk.jpg</file>
     <file>data/images/tools/house.jpg</file>
-    <file preprocess="xml-stripblanks">data/images/reader/archive.svg</file>
-    <file preprocess="xml-stripblanks">data/images/reader/external-link.svg</file>
-    <file preprocess="xml-stripblanks">data/images/reader/left-arrow.svg</file>
-    <file preprocess="xml-stripblanks">data/images/reader/right-arrow.svg</file>
-    <file preprocess="xml-stripblanks">data/images/reader/standalone_arrow.svg</file>
     <file preprocess="xml-stripblanks" compressed="true">data/images/arrow-gray.svg</file>
     <file preprocess="xml-stripblanks" compressed="true">data/images/arrow-white.svg</file>
     <file preprocess="xml-stripblanks" compressed="true">data/images/news-arrow-dark.svg</file>
@@ -42,7 +35,6 @@
     <file compressed="true">data/templates/css/clipboard.css</file>
     <file compressed="true">data/templates/css/embedly.css</file>
     <file compressed="true">data/templates/css/prensa-libre.css</file>
-    <file compressed="true">data/templates/css/reader.css</file>
     <file compressed="true">data/templates/css/reader2.css</file>
     <file compressed="true">data/templates/css/wikihow.css</file>
     <file compressed="true">data/templates/css/wikimedia.css</file>
@@ -58,8 +50,6 @@
     <file compressed="true">data/templates/js/jquery-min.js</file>
     <file compressed="true">data/templates/js/scroll-manager.js</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/appBanner.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">data/widgets/articleSnippetCard.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">data/widgets/backCover.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/dividedBannerTemplate.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/gridArrangement.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/hamburgerBasementTemplate.ui</file>
@@ -71,14 +61,11 @@
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/mediaCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/paperTemplate.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/postCard.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">data/widgets/readerCard.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">data/widgets/readerDocumentCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/scrollingListArrangement.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/search.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/searchBanner.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/sequenceCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/sideMenuTemplate.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">data/widgets/standaloneBanner.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/suggestedCategories.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/textCard.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/thumbCard.ui</file>
@@ -86,7 +73,6 @@
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/tooltips.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">data/widgets/topMenuTemplate.ui</file>
     <file>js/app/actions.js</file>
-    <file>js/app/aisleUserSettingsModel.js</file>
     <file>js/app/application.js</file>
     <file>js/app/articleHTMLRenderer.js</file>
     <file>js/app/compat/compat.js</file>
@@ -129,16 +115,12 @@
     <file>js/app/modules/banner/context.js</file>
     <file>js/app/modules/banner/search.js</file>
     <file>js/app/modules/banner/set.js</file>
-    <file>js/app/modules/banner/standalone.js</file>
-    <file>js/app/modules/card/articleSnippet.js</file>
     <file>js/app/modules/card/knowledgeDocument.js</file>
     <file>js/app/modules/card/legacyPolaroid.js</file>
     <file>js/app/modules/card/legacyPost.js</file>
     <file>js/app/modules/card/list.js</file>
     <file>js/app/modules/card/media.js</file>
     <file>js/app/modules/card/post.js</file>
-    <file>js/app/modules/card/reader.js</file>
-    <file>js/app/modules/card/readerDocument.js</file>
     <file>js/app/modules/card/sequence.js</file>
     <file>js/app/modules/card/setPreview.js</file>
     <file>js/app/modules/card/text.js</file>
@@ -155,7 +137,6 @@
     <file>js/app/modules/contentGroup/suggestedCategories.js</file>
     <file>js/app/modules/contentGroup/supplementaryArticles.js</file>
     <file>js/app/modules/contentGroup/thematic.js</file>
-    <file>js/app/modules/controller/aisle.js</file>
     <file>js/app/modules/controller/buffet.js</file>
     <file>js/app/modules/controller/mesh.js</file>
     <file>js/app/modules/filter/featured.js</file>
@@ -174,7 +155,6 @@
     <file>js/app/modules/layout/searchAndItem.js</file>
     <file>js/app/modules/layout/sidebar.js</file>
     <file>js/app/modules/layout/sideMenu.js</file>
-    <file>js/app/modules/layout/splitPercentage.js</file>
     <file>js/app/modules/layout/topMenu.js</file>
     <file>js/app/modules/layout/twoPiece.js</file>
     <file>js/app/modules/navigation/searchBox.js</file>
@@ -182,11 +162,8 @@
     <file>js/app/modules/order/alphabetical.js</file>
     <file>js/app/modules/order/featured.js</file>
     <file>js/app/modules/order/publishedDate.js</file>
-    <file>js/app/modules/page/backCover.js</file>
-    <file>js/app/modules/page/standalone.js</file>
     <file>js/app/modules/window/app.js</file>
     <file>js/app/modules/window/encyclopedia.js</file>
-    <file>js/app/modules/window/reader.js</file>
     <file>js/app/moltresApplication.js</file>
     <file>js/app/readingHistoryModel.js</file>
     <file>js/app/setMap.js</file>
@@ -203,7 +180,6 @@
     <file>js/app/widgets/navButtonOverlay.js</file>
     <file>js/app/widgets/PDFView.js</file>
     <file>js/app/widgets/previewer.js</file>
-    <file>js/app/widgets/progressLabel.js</file>
     <file>js/app/widgets/slidingPanel.js</file>
     <file>js/app/widgets/slidingPanelOverlay.js</file>
     <file>js/app/widgets/spaceContainer.js</file>
