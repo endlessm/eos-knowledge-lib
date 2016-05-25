@@ -52,11 +52,10 @@ const WebviewTooltipPresenter = new Knowledge.Class({
                 this._remove_link_tooltip();
                 return;
             }
-            let uri = Compat.normalize_old_browser_urls(hit_test.link_uri);
             // Links to images within the database will open in a lightbox
             // instead. This is determined in the HTML by the eos-image-link
             // class, but we don't have access to that information here.
-            if (hit_test.context_is_image() && uri.startsWith('ekn://')) {
+            if (hit_test.context_is_image() && hit_test.link_uri.startsWith('ekn://')) {
                 this._remove_link_tooltip();
                 return;
             }
@@ -77,7 +76,7 @@ const WebviewTooltipPresenter = new Knowledge.Class({
                                 mouse_position[1], 1, 1]];
                             logError(error, 'No tooltip coordinates');
                         }
-                        this._display_link_tooltip(view, coordinates[0], uri);
+                        this._display_link_tooltip(view, coordinates[0], hit_test.link_uri);
                         Gio.DBus.unwatch_name(watch_id);
                     });
                 },
