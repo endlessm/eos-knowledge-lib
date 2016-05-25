@@ -123,34 +123,6 @@ describe('Article HTML Renderer', function () {
         expect(html).toMatch('creativecommons');
     });
 
-    it('renders wikihow and wiki articles properly with EOS 2.2 DB information', function () {
-        let reference_wiki_html = renderer.render(wikibooks_model);
-        let reference_wikihow_html = renderer.render(wikihow_model);
-
-        let wikihow_model_eos22 = new ArticleObjectModel.ArticleObjectModel({
-            source_uri: 'http://www.wikihow.com/Give-Passive-Aggressive-Gifts-for-Christmas',
-            content_type: 'text/html',
-            get_content_stream: () => { return SearchUtils.string_to_stream('<html><body><p>wikihow html</p></body></html>'); },
-            source: 'wikihow',
-            license: 'Creative Commons',
-            title: 'Wikihow & title',
-        });
-        let wikibooks_model_eos22 = new ArticleObjectModel.ArticleObjectModel({
-            source_uri: 'http://en.wikibooks.org/wiki/When_It_Hits_the_Fan',
-            content_type: 'text/html',
-            get_content_stream: () => { return SearchUtils.string_to_stream('<html><body><p>wikibooks html</p></body></html>'); },
-            source: 'wikibooks',
-            license: 'Creative Commons',
-            title: 'Wikibooks title',
-        });
-
-        let wiki_html = renderer.render(wikibooks_model_eos22);
-        let wikihow_html = renderer.render(wikihow_model_eos22);
-
-        expect(wiki_html).toEqual(reference_wiki_html);
-        expect(wikihow_html).toEqual(reference_wikihow_html);
-    });
-
     it('includes MathJax in rendered Wikipedia, Wikibooks, and Wikisource articles', function () {
         let html = renderer.render(wikibooks_model);
         expect(html).toMatch('<script type="text/x-mathjax-config">');
