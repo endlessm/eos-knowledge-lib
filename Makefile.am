@@ -351,6 +351,7 @@ javascript_tests = \
 	tests/js/app/modules/layout/testInfiniteScrolling.js \
 	tests/js/app/modules/layout/testPaper.js \
 	tests/js/app/modules/layout/testResponsiveMargins.js \
+	tests/js/app/modules/layout/testScrolling.js \
 	tests/js/app/modules/layout/testSearchAndItem.js \
 	tests/js/app/modules/layout/testSidebar.js \
 	tests/js/app/modules/layout/testSideMenu.js \
