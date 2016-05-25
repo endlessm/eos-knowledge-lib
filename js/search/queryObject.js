@@ -4,7 +4,6 @@ const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 
-const Blacklist = imports.search.blacklist;
 const Utils = imports.search.utils;
 
 // Xapian prefixes used to query data
@@ -367,18 +366,6 @@ const QueryObject = Lang.Class({
         return prefixed_tags.join(join_op);
     },
 
-    _blacklist_clause: function () {
-        let explicit_tags = Blacklist.blacklist[this.domain] || [];
-        let prefixed_tags = explicit_tags.concat(this.excluded_tags).map(Utils.quote).map((tag) => {
-            return _XAPIAN_OP_NOT + _XAPIAN_PREFIX_TAG + tag;
-        });
-
-        let excluded_ids = this.excluded_ids.map(this._uri_to_xapian_id.bind(this)).map((id) => {
-            return _XAPIAN_OP_NOT + id;
-        });
-        return prefixed_tags.concat(excluded_ids).join(_XAPIAN_OP_AND);
-    },
-
     _uri_to_xapian_id: function (uri) {
         if (GLib.uri_parse_scheme(uri) !== 'ekn')
             throw new Error('EKN ID has unexpected uri scheme ' + uri);
@@ -409,7 +396,6 @@ const QueryObject = Lang.Class({
         let clauses = [];
         clauses.push(this._query_clause());
         clauses.push(this._tags_clause());
-        clauses.push(this._blacklist_clause());
         clauses.push(this._ids_clause());
         return clauses.filter((c) => c).map(Utils.parenthesize).join(_XAPIAN_OP_AND);
     },

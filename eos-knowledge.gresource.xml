@@ -213,7 +213,6 @@
     <file>js/search/application.js</file>
     <file>js/search/articleObjectModel.js</file>
     <file>js/search/asyncTask.js</file>
-    <file>js/search/blacklist.js</file>
     <file>js/search/config.js</file>
     <file>js/search/contentObjectModel.js</file>
     <file>js/search/datadir.js</file>
