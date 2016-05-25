@@ -186,8 +186,6 @@ const ContentObjectModel = new Lang.Class({
         }
 
         this.parent(props);
-
-        this._content_legacy_fixups(json_ld);
     },
 
     _content_props_from_json_ld: function (props, json_ld) {
@@ -238,17 +236,5 @@ const ContentObjectModel = new Lang.Class({
 
         if (json_ld.hasOwnProperty('featured'))
             props.featured = json_ld.featured;
-    },
-
-    _content_legacy_fixups: function (json_ld) {
-        if (this.ekn_version === 1) {
-            // Old name for source_uri parameter
-            if (!this.source_uri && json_ld && json_ld.sourceURL)
-                this.source_uri = json_ld.sourceURL;
-
-            // Some of our old content had inconsistent capitalization
-            if (this.title)
-                this.title = this.title.charAt(0).toUpperCase() + this.title.slice(1);
-        }
     },
 });
