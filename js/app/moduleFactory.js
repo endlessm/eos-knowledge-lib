@@ -65,9 +65,7 @@ const ModuleFactory = new Knowledge.Class({
         this._ids = new Set();
         this._id_to_module = new Map();
         this._id_to_pending_callbacks = new Map();
-        this._path_to_description = new Map();
         this._extract_ids(this.app_json[ROOT_NAME], false);
-        this._unique_count = 0;
     },
 
     get version() {
@@ -145,6 +143,9 @@ const ModuleFactory = new Knowledge.Class({
      *   extra_props - Extra construct properties for the module.
      */
     create_module_tree: function (extra_props={}) {
+        this._path_to_description = new Map();
+        this._unique_count = 0;
+
         return this._create_module(ROOT_NAME, this.app_json[ROOT_NAME],
             extra_props);
     },
