@@ -12,7 +12,7 @@ const Utils = imports.app.utils;
 /**
  * Class: List
  *
- * A thumbnail card for the new reader app
+ * A long skinny card good for showing results in a vertical list format.
  */
 const List = new Module.Class({
     Name: 'ListCard',
